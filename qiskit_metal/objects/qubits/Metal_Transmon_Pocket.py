@@ -1,6 +1,21 @@
+# -*- coding: utf-8 -*-
+
+# This code is part of Qiskit.
+#
+# (C) Copyright IBM 2019.
+#
+# This code is licensed under the Apache License, Version 2.0. You may
+# obtain a copy of this license in the LICENSE.txt file in the root directory
+# of this source tree or at http://www.apache.org/licenses/LICENSE-2.0.
+#
+# Any modifications or derivative works of this code must retain this
+# copyright notice, and modified files need to carry a notice indicating
+# that they have been altered from the originals.
+
 '''
 @date: 2019
 @author: Zlatko K Minev
+modified: Thomas McConkey 2019/
      ________________________________
     |______ ____           __________|
     |      |____|         |____|     |
@@ -51,8 +66,8 @@ DEFAULT_OPTIONS['Metal_Transmon_Pocket'] = deepcopy(
 DEFAULT_OPTIONS['Metal_Transmon_Pocket'].update(Dict(
     pos_x='0um',
     pos_y='0um',
-    jj_gap='30um',
-    jj_width='20um',
+    pad_gap='30um',
+    inductor_width='20um',
     pad_width='455um',
     pad_height='90um',
     pocket_width='650um',
@@ -106,10 +121,10 @@ class Metal_Transmon_Pocket(Metal_Qubit): # pylint: disable=invalid-name
     ----------------------------------------------------------------------------
     pos_x / pos_y   - where the center of the pocket should be located on chip
                       (where the 'junction' is)
-    jj_gap          - the distance between the two charge islands, which is also the
+    pad_gap         - the distance between the two charge islands, which is also the
                       resulting 'length' of the pseudo junction
-    jj_width        - width of the pseudo junction between the two charge islands
-                      (if in doubt, make the same as jj_gap)
+    inductor_width  - width of the pseudo junction between the two charge islands
+                      (if in doubt, make the same as pad_gap). Really just for simulating in HFSS / other EM software
     pad_width       - the width (x-axis) of the charge island pads
     pad_height      - the size (y-axis) of the charge island pads
     pocket_width    - size of the pocket (cut out in ground) along x-axis
@@ -169,16 +184,16 @@ class Metal_Transmon_Pocket(Metal_Qubit): # pylint: disable=invalid-name
         options = self.options
 
         # Pads- extracts relevant values from options dictionary
-        jj_gap, jj_width, pad_width, pad_height, pocket_width, pocket_height,\
-            pos_x, pos_y = parse_options_user(options, 'jj_gap, jj_width, pad_width,\
+        pad_gap, inductor_width, pad_width, pad_height, pocket_width, pocket_height,\
+            pos_x, pos_y = parse_options_user(options, 'pad_gap, inductor_width, pad_width,\
                  pad_height, pocket_width, pocket_height, pos_x, pos_y')
         # then makes the shapely polygons
         pad = shapely_rectangle(pad_width, pad_height)
-        pad_top = translate(pad, 0, +(pad_height+jj_gap)/2.)
-        pad_bot = translate(pad, 0, -(pad_height+jj_gap)/2.)
+        pad_top = translate(pad, 0, +(pad_height+pad_gap)/2.)
+        pad_bot = translate(pad, 0, -(pad_height+pad_gap)/2.)
 
         # the rectangle representing the josephson junction
-        rect_jj = shapely_rectangle(jj_width, jj_gap)
+        rect_jj = shapely_rectangle(inductor_width, pad_gap)
         rect_pk = shapely_rectangle(pocket_width, pocket_height)
 
         # adds the shapely polygons to this qubits object dictionary
@@ -220,8 +235,8 @@ class Metal_Transmon_Pocket(Metal_Qubit): # pylint: disable=invalid-name
 
         # Transmon options
         options = self.options  # for transmon
-        jj_gap, _, pad_width, pad_height, pocket_width, _, pos_x, pos_y = \
-            parse_options_user(options, 'jj_gap, jj_width, pad_width, pad_height,\
+        pad_gap, _, pad_width, pad_height, pocket_width, _, pos_x, pos_y = \
+            parse_options_user(options, 'pad_gap, inductor_width, pad_width, pad_height,\
                 pocket_width, pocket_height, pos_x, pos_y')
 
         # Connector options
@@ -263,7 +278,7 @@ class Metal_Transmon_Pocket(Metal_Qubit): # pylint: disable=invalid-name
         objects = scale_objs(
             objects, options_connector['loc_W'], options_connector['loc_H'], origin=(0, 0))
         objects = translate_objs(objects, options_connector['loc_W']*(pad_width)/2.,
-                                 options_connector['loc_H']*(pad_height+jj_gap/2+pad_gap))
+                                 options_connector['loc_H']*(pad_height+pad_gap/2+pad_gap))
         objects = rotate_objs(
             objects, _angle_Y2X[options['orientation']], origin=(0, 0))
         objects = Dict(translate_objs(objects, pos_x, pos_y))

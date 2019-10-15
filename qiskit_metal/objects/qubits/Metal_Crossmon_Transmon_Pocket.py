@@ -1,5 +1,20 @@
+# -*- coding: utf-8 -*-
+
+# This code is part of Qiskit.
+#
+# (C) Copyright IBM 2019.
+#
+# This code is licensed under the Apache License, Version 2.0. You may
+# obtain a copy of this license in the LICENSE.txt file in the root directory
+# of this source tree or at http://www.apache.org/licenses/LICENSE-2.0.
+#
+# Any modifications or derivative works of this code must retain this
+# copyright notice, and modified files need to carry a notice indicating
+# that they have been altered from the originals.
+
+
 '''
-@date: 2019
+@date: 2019/09/08
 @author: Thomas McConkey
 '''
 
@@ -34,8 +49,6 @@ DEFAULT_OPTIONS['Metal_Crossmon_Transmon_Pocket'].update(Dict(
     cross_width='20um',
     cross_length='200um',
     cross_gap='20um',
-    jj_gap='20um',
-    jj_width='20um',
     orientation='X',  # X is aligned along the +X axis, while Y is aligned along the +Y axis
 
     _hfss=Dict(
@@ -65,6 +78,8 @@ DEFAULT_OPTIONS['Metal_Crossmon_Transmon_Pocket'].update(Dict(
 
 class Metal_Crossmon_Transmon_Pocket(Metal_Qubit): # pylint: disable=invalid-name
     '''
+Description:
+    ----------------------------------------------------------------------------
     Simple Crossmon Transmon object. Creates the Crossmon island, the "junction" on the
     south end, and up to 3 connectors on the remaining arms (Claw or gap).
     'claw_width' and 'claw_gap' define the width/gap of the CPW line that
@@ -84,8 +99,6 @@ class Metal_Crossmon_Transmon_Pocket(Metal_Qubit): # pylint: disable=invalid-nam
         cross_width - width of the CPW center trace making up the Crossmon
         cross_length - length of one Crossmon arm (from center)
         cross_gap - width of the CPW gap making up the Crossmon
-        jj_gap - should be the cross_gap
-        jj_width - should be the cross_width
         orientation - how to orient the qubit and connectors in the end (where the +X vector should point, '+X', '-X','+Y','-Y')
 
     Connectors
@@ -181,8 +194,8 @@ class Metal_Crossmon_Transmon_Pocket(Metal_Qubit): # pylint: disable=invalid-nam
 
         # Transmon options
         options = self.options  # for transmon
-        jj_gap, jj_width, cross_width, cross_length, cross_gap,\
-            pos_x, pos_y, orientation = parse_options_user(options, 'jj_gap, jj_width, cross_width,\
+        cross_width, cross_length, cross_gap,\
+            pos_x, pos_y, orientation = parse_options_user(options, 'cross_width,\
                  cross_length, cross_gap, pos_x, pos_y, orientation')
 
         # Connector options
@@ -190,7 +203,8 @@ class Metal_Crossmon_Transmon_Pocket(Metal_Qubit): # pylint: disable=invalid-nam
                  options_connector, 'connector_type, claw_gap, claw_length, claw_width, ground_spacing, connector_location')
 
 
-        #Building the connector structure. Different construction based on connector type (match any changes to the port_Line)
+        #Building the connector structure. Different construction based on connector type 
+        # (***match any changes to the port_Line)
         clawCPW = shapely.geometry.box(0,-claw_width/2, -4*claw_width,claw_width/2)
 
         if connector_type is 'Claw':
