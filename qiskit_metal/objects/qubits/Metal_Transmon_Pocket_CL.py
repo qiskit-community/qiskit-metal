@@ -1,0 +1,141 @@
+'''
+@date: 2019
+@author: Zlatko K Minev
+modified: Thomas McConkey - Added Charge Line
+
+
+Pocket "axis"
+        _________________
+        |               |
+        |_______________|       ^
+        ________x________       |  N
+        |               |       |
+        |_______________|
+
+Attempted version functioning as child of 'standard' transmon pocket
+***This is the child version which still is a bit buggy.***
+'''
+# pylint: disable=invalid-name
+# Modification of Transmon Pocket Object to include a charge line (would be better to just make as a child)
+
+from copy import deepcopy
+from ...config import Dict, DEFAULT_OPTIONS #, DEFAULT
+from ...draw_functions import shapely, shapely_rectangle, translate, translate_objs,\
+    rotate_objs, rotate_obj_dict, scale_objs, _angle_Y2X, make_connector_props,\
+    Polygon, parse_options_user, parse_units_user, buffer#, LineString,\
+    #, draw_objs
+#from ... import draw_hfss
+from shapely.ops import cascaded_union
+from shapely.geometry import shape
+from .Metal_Transmon_Pocket import Metal_Transmon_Pocket
+
+
+DEFAULT_OPTIONS['Metal_Transmon_Pocket_CL.connector'] = deepcopy(
+    DEFAULT_OPTIONS['Metal_Transmon_Pocket.connector'])
+
+
+DEFAULT_OPTIONS['Metal_Transmon_Pocket_CL'] = deepcopy(
+    DEFAULT_OPTIONS['Metal_Transmon_Pocket'])
+DEFAULT_OPTIONS['Metal_Transmon_Pocket_CL'].update(Dict(
+    make_CL='ON',
+    cl_gap='6um',  # the cpw dielectric gap of the charge line
+    cl_width='10um',  # the cpw trace width of the charge line
+    cl_length='20um',  # the length of the charge line 'arm' coupling the the qubit pocket. Measured from the base of the 90 degree bend
+    cl_groundGap='6um',  # how much ground between the charge line and the qubit pocket
+    # the side of the qubit pocket the charge line is placed on (before any rotations)
+    cl_PocketEdge='W',
+    cl_offCenter='100um',  # distance from the center axis the qubit pocket is built on
+))
+
+
+class Metal_Transmon_Pocket_CL(Metal_Transmon_Pocket):  # pylint: disable=invalid-name
+    '''
+    Makes a standard transmon qubit with two pads connectored by a junction.
+
+    Can add connectors on it using the `options_connectors` dictonary
+    '''
+
+    # def __init__(self, circ, name, options=None, options_connectors=None):
+    #    super().__init__(circ, name, options, options_connectors)
+
+# super call not quite working
+    def make(self):
+        super().make()
+
+        if self.options.make_CL == 'ON':
+            self.make_chargeLine()
+
+
+#####################################################################
+
+
+    def make_chargeLine(self):
+        # Grab option values
+        options = self.options
+        name = 'Charge_Line'
+        cl_gap, cl_width, cl_length, cl_groundGap = parse_options_user(
+            options, 'cl_gap, cl_width, cl_length, cl_groundGap')
+
+        jj_gap, pad_height, pocket_width, pocket_height,\
+            pos_x, pos_y = parse_options_user(
+                options, 'jj_gap, pad_height, pocket_width, pocket_height, pos_x, pos_y')
+
+        cl_Arm = shapely.geometry.box(0, 0, -cl_width, cl_length)
+        cl_CPW = shapely.geometry.box(0, 0, -8*cl_width, cl_width)
+        cl_Metal = cascaded_union([cl_Arm, cl_CPW])
+
+        cl_Etcher = buffer(cl_Metal, cl_gap)
+
+        port_Line = shapely.geometry.LineString([(-8*cl_width, 0), (-8*cl_width, cl_width)])
+
+        objects = dict(
+            cl_Metal=cl_Metal,
+            cl_Etcher=cl_Etcher,
+            port_Line=port_Line,
+        )
+
+        # Move the charge line to the left side of the pocket
+        objects = translate_objs(
+            objects, -(pocket_width/2 + cl_groundGap + cl_gap), -(jj_gap + pad_height)/2)
+
+        # Rotate it to the pockets orientation
+        objects = rotate_objs(objects, _angle_Y2X[options['orientation']], origin=(0, 0))
+
+        # Move to the final position
+        objects = translate_objs(objects, pos_x, pos_y)
+
+        # Making the circ connector for 'easy connect'
+        circ = self.circ
+        if not circ is None:
+            portPoints = list(shape(objects['port_Line']).coords)
+            vNorm = (-(portPoints[1][1] - portPoints[0][1]), (portPoints[1][0]-portPoints[0][0]))
+            circ.connectors[self.name+'_' +
+                            name] = make_connector_props(portPoints, options, vec_normal=vNorm)
+
+        # Removes temporary port_line from draw objects
+        del objects['port_Line']
+
+        # add to objects
+        self.objects.CL = objects
+
+        return objects
+
+# Super call not quite working
+    # def hfss_draw(self):
+    #     '''
+    #     Draw in HFSS.
+    #     Makes a meshing recntalge for the the pocket as well.
+    #     '''
+    #     super().hfss_draw()
+
+    #     if options.make_CL == 'ON': #checks if this qubit has a charge line, and if it does etches the appropriate section
+    #         oModeler.subtract(ground, [hfss_objs.CL['cl_Etcher']])
+
+    #     #attaches the different relevant geometries to perfect E boundaries (as equivalent thin film superconductor)
+    #     if DEFAULT['do_PerfE']:
+    #        if options.make_CL == 'ON':
+    #             oModeler.append_PerfE_assignment(name+'_CL' if DEFAULT['BC_individual'] else options_hfss['BC_name_conn'], hfss_objs.CL['cl_Metal'])
+
+    #    # if DEFAULT._hfss.do_mesh:
+
+    #     return hfss_objs
