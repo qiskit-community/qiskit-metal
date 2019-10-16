@@ -76,12 +76,14 @@ DEFAULT_OPTIONS['Metal_Crossmon_Transmon_Pocket'].update(Dict(
     ),
 ))
 
-class Metal_Crossmon_Transmon_Pocket(Metal_Qubit): # pylint: disable=invalid-name
+class Metal_Transmon_Cross(Metal_Qubit): # pylint: disable=invalid-name
     '''
 Description:
     ----------------------------------------------------------------------------
-    Simple Crossmon Transmon object. Creates the Crossmon island, the "junction" on the
-    south end, and up to 3 connectors on the remaining arms (Claw or gap).
+    Simple Metal Transmon Cross object. Creates the A cross-shaped island,
+    the "junction" on the south end, and up to 3 connectors on the remaining arms
+    (claw or gap).
+
     'claw_width' and 'claw_gap' define the width/gap of the CPW line that
     makes up the connector. Note, DC SQUID currently represented by single
     inductance sheet
@@ -122,8 +124,8 @@ Description:
     '''
     _img = 'Metal_Crossmon.png'
     #TO DO:
-    #* Add DC SQUID structure (maybe as an option, only for GDS?)
-    #* HFSS drawing mesh
+    # * Add DC SQUID structure (maybe as an option, only for GDS?)
+    # * HFSS drawing mesh
 
 ##############################################MAKE################################################################################
     def make(self):
