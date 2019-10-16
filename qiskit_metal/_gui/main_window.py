@@ -41,7 +41,7 @@ from .widgets.toolbar_icons import add_toolbar_icon
 from .widgets.dialog_create_metal import Dialog_create_metal
 from .widgets.trees.metal_objects import Tree_Metal_Objects
 from .widgets.trees.default_options import Tree_Default_Options
-from .widgets.log_window import Logging_Window_Widget, Logging_Hander_for_Log_Widget
+from .widgets.log_metal import Logging_Window_Widget, Logging_Hander_for_Log_Widget
 from ._handle_qt_messages import catch_exception_slot_pyqt
 
 class Metal_gui(QMainWindow):
