@@ -282,7 +282,7 @@ class PanAndZoom(ZoomOnWheel):
         tm = fig.canvas.manager.toolmanager # ToolbarQt   --- https://github.com/matplotlib/matplotlib/blob/master/lib/matplotlib/backends/backend_qt5.py
         self.tm = tm
         # Tool: Print point location
-        Tool_Point_Position.image = str(imgs_path/'click_1.png')
+        Tool_Point_Position.image = str(imgs_path/'click.png')
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
             tm.add_tool("Point_position", Tool_Point_Position, parent=self)
@@ -290,7 +290,7 @@ class PanAndZoom(ZoomOnWheel):
 
         # Tool: Copy to Clipboard
         from matplotlib.backend_tools import ToolCopyToClipboard
-        ToolCopyToClipboard.image = str(imgs_path/'clipboard.png')
+        ToolCopyToClipboard.image = str(imgs_path/'copy.png')
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
             tm.add_tool("Copy_to_clipboard", ToolCopyToClipboard) #  OVvrwties Ctrl+C and issues warning

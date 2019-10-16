@@ -12,8 +12,9 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 """
-Created on Thu May 19 14:41:25 2019
+Functions used to render the objets into polygons, hfss and so on.
 
+@date: 2019
 @author: Zlatko K. Minev
 """
 

@@ -17,3 +17,9 @@ Created on Tue May 14 17:13:40 2019
 
 @author: Zlatko
 """
+
+def monkey_patch(self, func):
+    '''
+    Debug function
+    '''
+    setattr(self, func.__name__, func.__get__(self, self.__class__))
