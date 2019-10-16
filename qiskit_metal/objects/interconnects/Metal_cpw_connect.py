@@ -47,10 +47,10 @@ class Metal_cpw_connect(Metal_Object):
 
 Description:
     ----------------------------------------------------------------------------
-    Creates a meandered CPW transmission line between two 'connector' points. 
+    Creates a meandered CPW transmission line between two 'connector' points.
     The transmission line is drawn from "connector1" to "connector2". These are
     tracked in the circuit dictionary which must also have been passed in.
-    
+
     Total length of the meander is found from;
 
 Options:
@@ -65,7 +65,7 @@ Options:
     connector1/2_leadin: 'buffer' length of straight CPW transmission line from the connector point
     _hfss=Dict(): options for hfss useage
     _gds=Dict(): options for gds useage
-    _calls: 
+    _calls:
 
     draw_cpw_trace (options_cpw):
     ----------------------------------------------------------------------------
@@ -80,16 +80,13 @@ Options:
 
     Conect named control points: connector1 ---> connector2,
     '''
-    #__gui_creation_args__ = ['connector1', 'connector2']
     _img = 'Metal_cpw_connect.png'
 
-    def __init__(self, circ,
-                 connector1=None,  # connector 1
-                 connector2=None,  # conenctor 2
-                 options=None,
-                 options_cpw=None, #TODO: Make these subs
-                 options_meander=None,
-                 name=None
+    def __init__(self, circ, name=None, options=None,
+                 connector1=None,
+                 connector2=None,
+                 options_cpw=None,
+                 options_meander=None
                  ):
 
         if options is None:

@@ -16,7 +16,7 @@
 '''
 Base object. All Metal objects should be derived from this base class
 Users making new custom objects should have this function be a parent of their new class to
-insure compatibility with the package. 
+insure compatibility with the package.
 
 2019-08-15
 @author: Zlatko K. Minev
@@ -42,7 +42,7 @@ class Metal_Object(): # pylint: disable=invalid-name
 
     _img = 'Metal_Object.png'
 
-    _gui_param_show = ['options', 'objects', 'objects_hfss'] # must be dicitonaries
+    _gui_param_show = ['options', 'objects', 'objects_hfss'] # must be dictionaries
     __i_am_metal__ = True
 
     def __init__(self, circ, name, options=None):
@@ -57,7 +57,7 @@ class Metal_Object(): # pylint: disable=invalid-name
         # Default blank option structure required
         # Should hfss and gds be part of base?
         self.options = Dict(
-            _hfss=Dict(),            
+            _hfss=Dict(),
             _gds=Dict(),
             chip='main',
         ) # maybe set these out in cofig or check for plugins, etc.

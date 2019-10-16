@@ -53,6 +53,9 @@ class Dialog_create_metal(QDialog):
     def __init__(self, parent, my_class,
                  WindowTitle=None):
         '''
+
+        Just gets  adictionary to use to create metal.
+
         Run self.show()
         '''
         super().__init__(parent)
