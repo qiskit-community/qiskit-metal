@@ -1,4 +1,5 @@
-"""Logging widget
+"""
+Logging widget
 
 Credits, based on:
     https://stackoverflow.com/questions/28655198/best-way-to-display-logs-in-pyqt

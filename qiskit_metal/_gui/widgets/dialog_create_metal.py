@@ -1,9 +1,24 @@
-'''
-Handle params for creatring ofan object
+# -*- coding: utf-8 -*-
 
-2019
-Zlatko K Minev
+# This code is part of Qiskit.
+#
+# (C) Copyright IBM 2019.
+#
+# This code is licensed under the Apache License, Version 2.0. You may
+# obtain a copy of this license in the LICENSE.txt file in the root directory
+# of this source tree or at http://www.apache.org/licenses/LICENSE-2.0.
+#
+# Any modifications or derivative works of this code must retain this
+# copyright notice, and modified files need to carry a notice indicating
+# that they have been altered from the originals.
+#
 '''
+Handle params for Creating an an object
+
+@date: 2019
+@author: Zlatko K Minev
+'''
+
 from inspect import signature
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QApplication, QWidget, QTreeView, QDockWidget, QHBoxLayout, QVBoxLayout,\
@@ -15,9 +30,10 @@ from PyQt5.QtGui import QTextDocument, QFont
 
 from ...toolbox.utility_functions import display_options
 from .trees.metal_parameter import parse_param_from_str
-from .trees.amazing_tree_dict import   Amazing_Dict_Tree_zkm
+from .trees.amazing_tree_dict import Amazing_Dict_Tree_zkm
 
 from copy import deepcopy
+
 
 class Dialog_create_metal(QDialog):
 
@@ -60,16 +76,15 @@ class Dialog_create_metal(QDialog):
         self.layout = QHBoxLayout()
         self.left_panel = QGroupBox(f"{my_class.__name__}")
         self.right_panel = QGroupBox('Default parameters')
-        self.layout.addWidget(self.left_panel, 1.4) # strech factor
+        self.layout.addWidget(self.left_panel, 1.4)  # strech factor
         self.layout.addWidget(self.right_panel)
 
         self.make_left_panel(self.left_panel)
         self.make_right_panel(self.right_panel)
 
         # Finalize
-        self.resize(700,450)
+        self.resize(700, 450)
         self.setLayout(self.layout)
-
 
     def make_left_panel(self, parent):
         self.layout_left = QVBoxLayout()
@@ -85,7 +100,7 @@ class Dialog_create_metal(QDialog):
             <body><b>Class:</b><br><font color='green'>{my_class.__name__}</font> {signature(my_class)}<br>
             <b>Description:</b>
                 <pre style="background-color: #EBECE4;"><code>{my_class.__doc__.strip()}</code></pre>
-            </body>""".strip().replace('\n','<br>')
+            </body>""".strip().replace('\n', '<br>')
             document.setHtml(text.strip())
 
             self.doc.setDocument(document)
@@ -96,10 +111,10 @@ class Dialog_create_metal(QDialog):
             doc.setAcceptRichText(True)
             doc.setAutoFillBackground(True)
             doc.setStyleSheet("background-color: rgb(250, 250, 250);")
-            #doc.setLineWrapMode(QTextEdit.WidgetWidth)
+            # doc.setLineWrapMode(QTextEdit.WidgetWidth)
             doc.setLineWrapMode(QTextEdit.NoWrap)
             #doc.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-            #doc.setMinimumHeight(50)
+            # doc.setMinimumHeight(50)
             #doc.setBaseSize(100, 50)
 
             # monoscpaed font
@@ -114,7 +129,7 @@ class Dialog_create_metal(QDialog):
     def make_right_panel(self, parent):
         self.right_layout = QVBoxLayout()
 
-        if 1: # Form with name
+        if 1:  # Form with name
             self.layout_form = QFormLayout()
             self.form_name = QLineEdit()
             self.label_name = QLabel('Object name:')
@@ -125,16 +140,16 @@ class Dialog_create_metal(QDialog):
             self.layout_form.addRow(self.label_name, self.form_name)
             self.right_layout.addLayout(self.layout_form)
 
-        if 1: # Tree
+        if 1:  # Tree
             self.tree = Amazing_Dict_Tree_zkm(self, self.options,
                                               nameme='Creation options',
                                               logger=self.logger
-                                            )
-            self.tree.setMinimumSize(QSize(200,200))
+                                              )
+            self.tree.setMinimumSize(QSize(200, 200))
             self.right_layout.addWidget(self.tree)
 
-        if 1: # Ok and Cancel
-            buttonBox = QDialogButtonBox(QDialogButtonBox.Cancel | QDialogButtonBox.Ok )
+        if 1:  # Ok and Cancel
+            buttonBox = QDialogButtonBox(QDialogButtonBox.Cancel | QDialogButtonBox.Ok)
             buttonBox.accepted.connect(self.on_accept)
             buttonBox.rejected.connect(self.on_reject)
             self.buttonBox = buttonBox
@@ -144,7 +159,7 @@ class Dialog_create_metal(QDialog):
 
     def _get_data(self):
         self.obj_name = self.form_name.text()
-        self.results = {'name':self.obj_name, 'options':self.options}
+        self.results = {'name': self.obj_name, 'options': self.options}
         return self.results
 
     def on_accept(self):
@@ -171,7 +186,7 @@ class Dialog_create_metal(QDialog):
         #self.texts = []
 
         # make nicker promit
-        #for arg_name in self.texts_key:
+        # for arg_name in self.texts_key:
         #    item = QTextEdit() if arg_name.startswith('option') else QLineEdit()
         #    form.addRow(QLabel(arg_name), item)
         #    self.texts += [item]
@@ -182,18 +197,18 @@ class Dialog_create_metal(QDialog):
         # make gneral to handle all arguments here
         #from inspect import signature
         #sig = signature(Metal_Transmon_Pocket)
-        #for pname, p in sig.parameters.items():
+        # for pname, p in sig.parameters.items():
         #    print(pname, p.empty, p.default, p.kind)
 
         #form.addRow(QLabel("Country:"), QComboBox())
         #form.addRow(QLabel("Age:"), QSpinBox())
         #self.form = form
-        #self.formGroupBox.setLayout(form)
-        #layout1.addWidget(self.formGroupBox)
+        # self.formGroupBox.setLayout(form)
+        # layout1.addWidget(self.formGroupBox)
 
         # add todialog
-        #layout.addLayout(layout1)
-        #self.setLayout(layout)
+        # layout.addLayout(layout1)
+        # self.setLayout(layout)
 
         # self.ok = QPushButton("Ok")
         # self.cancel = QPushButton("cancel")
@@ -203,7 +218,7 @@ class Dialog_create_metal(QDialog):
         # self.ok.clicked.connect(self.on_ok)
         # self.cancel.clicked.connect(self.on_cancel)
 
-    #def _get_data(self):
+    # def _get_data(self):
         # self.result_values = []
         # for i, t in enumerate(self.texts):
         #     if isinstance(t, QTextEdit):

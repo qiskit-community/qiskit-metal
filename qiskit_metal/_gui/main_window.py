@@ -224,7 +224,7 @@ class Metal_gui(QMainWindow):
         toolbar.addSeparator()
 
         add_toolbar_icon(toolbar, 'action_draw_connectors',
-                         self.imgs_path/'connectors_draw.png',
+                         self.imgs_path/'show_connectors.png',
                          self.draw_connectors,
                          'Draw all connectors of circ object',
                          'Shift+C', menu)

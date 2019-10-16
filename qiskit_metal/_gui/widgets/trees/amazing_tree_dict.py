@@ -1,6 +1,20 @@
 # -*- coding: utf-8 -*-
+
+# This code is part of Qiskit.
+#
+# (C) Copyright IBM 2019.
+#
+# This code is licensed under the Apache License, Version 2.0. You may
+# obtain a copy of this license in the LICENSE.txt file in the root directory
+# of this source tree or at http://www.apache.org/licenses/LICENSE-2.0.
+#
+# Any modifications or derivative works of this code must retain this
+# copyright notice, and modified files need to carry a notice indicating
+# that they have been altered from the originals.
+#
+
 """
-Created 2019-09-26
+@date: 2019-09-26
 @author: Zlatko K. Minev
 """
 
@@ -117,7 +131,7 @@ class Amazing_Dict_Tree_zkm(QTreeWidget):
         self.name = 'root'  # for internal tracking, could be done differently
         self.nameme = nameme  # name used in options menu
         self.menu_allow_delete = True
-        self.logger=logger
+        self.logger = logger
 
         self.setColumnCount(num_columns)  # can obtain by self.columnCount()
         if headers:
@@ -155,7 +169,7 @@ class Amazing_Dict_Tree_zkm(QTreeWidget):
         Create and Handle context menu when right click is applied
         """
         selected = self.selectedIndexes()
-        #self.selected = selected  # debug
+        # self.selected = selected  # debug
         if len(selected) > 0:
             item = self.itemFromIndex(selected[0])
             item_key = item.key
@@ -227,7 +241,8 @@ class Amazing_Dict_Tree_zkm(QTreeWidget):
                         dic[text_key] = new_obj
                         if dict_to_add:  # not root
                             # QTreeWidgetItem correspondoing to the dicitonary we want to edit
-                            self.on_expanded(self.indexFromItem(_dict_item))  # recreate remake dictionary
+                            # recreate remake dictionary
+                            self.on_expanded(self.indexFromItem(_dict_item))
                         else:  # root
                             self.rebuild()
 
@@ -273,13 +288,13 @@ class Amazing_Dict_Tree_zkm(QTreeWidget):
         Adds new items dynamically.
         """
         # Debug
-        #self._expand_model_index = expand_model_index # debug
-        #logger.info('on_expanded: item %s %s %s %s', expand_model_index, expand_model_index.row(),
+        # self._expand_model_index = expand_model_index # debug
+        # logger.info('on_expanded: item %s %s %s %s', expand_model_index, expand_model_index.row(),
         #      expand_model_index.data(), expand_model_index.parent())
 
-        item = self.itemFromIndex(expand_model_index) # get QTreeWidgetItem that was expanded
-        if item: # make sure not None
-            #if not hasattr(item, '__ignore_expand__'): # quick clude if we dont want to handle dict this way for metal objects for instance
+        item = self.itemFromIndex(expand_model_index)  # get QTreeWidgetItem that was expanded
+        if item:  # make sure not None
+            # if not hasattr(item, '__ignore_expand__'): # quick clude if we dont want to handle dict this way for metal objects for instance
             # Clear children
             item.takeChildren()
 
@@ -337,11 +352,11 @@ class Amazing_Dict_Tree_zkm(QTreeWidget):
 
         if Parameter_Zlatko.I_can_handle_this_type(value):
             item.widgetz = Parameter_Zlatko(self.dict,
-                                     parent_key_list + [key],
-                                     value,
-                                     on_return=self._on_edit_return(parent),
-                                     logger=self.logger)
-            self.setItemWidget(item, 1, item.widgetz) # place the QLineEdit
+                                            parent_key_list + [key],
+                                            value,
+                                            on_return=self._on_edit_return(parent),
+                                            logger=self.logger)
+            self.setItemWidget(item, 1, item.widgetz)  # place the QLineEdit
 
         elif isinstance(value, list) or isinstance(value, tuple):
             item.setData(1, 0, f'{str(value)}')

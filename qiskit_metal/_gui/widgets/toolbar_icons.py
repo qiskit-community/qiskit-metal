@@ -1,18 +1,25 @@
 # -*- coding: utf-8 -*-
+
+# This code is part of Qiskit.
+#
+# (C) Copyright IBM 2019.
+#
+# This code is licensed under the Apache License, Version 2.0. You may
+# obtain a copy of this license in the LICENSE.txt file in the root directory
+# of this source tree or at http://www.apache.org/licenses/LICENSE-2.0.
+#
+# Any modifications or derivative works of this code must retain this
+# copyright notice, and modified files need to carry a notice indicating
+# that they have been altered from the originals.
+
 """
 Created on Tue May 14 17:13:40 2019
 
 @author: Zlatko
 """
 from PyQt5.QtCore import Qt
-#from PyQt5 import QtCore, QtGui, QtWidgets
-#from PyQt5.QtCore import Qt, QDir
-from PyQt5.QtGui import QIcon #, QStandardItemModel, QStandardItem, QIntValidator
-#from PyQt5.QtWidgets import QApplication, QWidget, QTreeView, QDockWidget
-#from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QMainWindow, QListWidget
-#from PyQt5.QtWidgets import QTextEdit, QTreeWidget, QTreeWidgetItem, QLineEdit
-from PyQt5.QtWidgets import QAction#, QToolBar, QSlider, QInputDialog, QMessageBox
-#from PyQt5.QtWidgets import QLabel
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QAction
 
 from .._handle_qt_messages import catch_exception_slot_pyqt
 
