@@ -45,7 +45,7 @@ __version__ = '0.1.0'
 ##############################################################################
 ### Imports for user
 
-from .toolbox.addict import Dict
+from .toolbox.addict_QM import Dict
 from .config import DEFAULT, DEFAULT_OPTIONS
 from .toolbox.pythonic import copy_update
 

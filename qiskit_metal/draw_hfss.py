@@ -68,8 +68,7 @@ def draw_object_shapely(oModeler, obj, name, sizeZ = 0, pos_z = 0, hfss_options 
         poly_hfss = poly_hfss.rename(name) 
         return poly_hfss
         
-    else:
-        #TODO: Handle multipolygon and multline stirng, etc
+    else: 
         logger.error("Unhandled!")
         raise Exception(f"Unhandled object shape name={name} \nobj={obj}")
 

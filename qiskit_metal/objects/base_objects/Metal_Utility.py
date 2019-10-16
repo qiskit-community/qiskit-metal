@@ -13,13 +13,14 @@
 # that they have been altered from the originals.
 
 
+
 '''
 For basic utility functions involving Metal Objects
 Updated 2019/09/25 - Thomas McConkey
 @author: Zlatko
 '''
 
-from ...toolbox.addict import Dict
+from ...toolbox.addict_QM import Dict
 
 def is_metal_object(obj):
     '''

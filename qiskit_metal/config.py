@@ -22,7 +22,7 @@ File contains some config definitions. Mostly internal.
 
 import logging
 
-from .toolbox.addict import Dict
+from .toolbox.addict_QM import Dict
 from ._base_dicts import DEFAULT_OPTIONS, DEFAULT # pylint: disable=unused-import
 
 ####################################################################################

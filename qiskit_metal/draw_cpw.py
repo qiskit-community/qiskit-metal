@@ -77,7 +77,7 @@ Description:
     base_width: width of the wirebond pad (side parallel to chip edge)
     base_height: length of the wirebond pad (side orthogonal to chip edge)
     base_gap: dielectric gap between ground and pad
-    launch_height: ????
+    launch_height: length of taper
     cpw_width: center trace width of the CPW transmission line
     cpw_gap: dielectric gap of the CPW transmission line
     mesh_gap: width for HFSS mesh operations on the CPW transmission line
