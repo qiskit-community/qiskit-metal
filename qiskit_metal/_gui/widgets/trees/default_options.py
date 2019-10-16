@@ -1,32 +1,33 @@
 # -*- coding: utf-8 -*-
+
+# This code is part of Qiskit.
+#
+# (C) Copyright IBM 2019.
+#
+# This code is licensed under the Apache License, Version 2.0. You may
+# obtain a copy of this license in the LICENSE.txt file in the root directory
+# of this source tree or at http://www.apache.org/licenses/LICENSE-2.0.
+#
+# Any modifications or derivative works of this code must retain this
+# copyright notice, and modified files need to carry a notice indicating
+# that they have been altered from the originals.
+#
+
 """
-Created 2019
+@date: 2019
 @author: Zlatko K. Minev
 """
 
-#import ast
-#import numpy as np
-
-from PyQt5 import QtGui #QtCore, QtWidgets
-#from PyQt5.QtCore import Qt, QDir
-#from PyQt5.QtGui import QIcon, QStandardItemModel, QStandardItem, QIntValidator
-#from PyQt5.QtWidgets import QApplication, QWidget, QTreeView, QDockWidget
-#from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QMainWindow, QListWidget
-#from PyQt5.QtWidgets import QTextEdit, QTreeWidget, QTreeWidgetItem, QLineEdit
-#from PyQt5.QtWidgets import QToolBar, QAction, QSlider, QInputDialog, QMessageBox
-#from PyQt5.QtWidgets import QLabel
-
-#from .... import logger
-#from ..._handle_qt_messages import catch_exception_slot_pyqt, do_debug
+from PyQt5 import QtGui
 from .amazing_tree_dict import Amazing_Dict_Tree_zkm
 
 
 class Tree_Default_Options(Amazing_Dict_Tree_zkm):
 
     def __init__(self, parent,
-                content_dict=None,
-                gui=None,
-                **kwargs):
+                 content_dict=None,
+                 gui=None,
+                 **kwargs):
         """[Handles all the dictionary of all default objects
         can edit and expand and view]
 
@@ -39,10 +40,10 @@ class Tree_Default_Options(Amazing_Dict_Tree_zkm):
             num_columns {int} -- [description] (default: {2})
             nameme {str} -- [description] (default: {'Root dictionary'})
         """
-        self.gui = gui # used to call remake all
-        super().__init__(parent, content_dict = content_dict,
-                nameme='DEFAULT_OPTIONS dictionary',
-                logger=gui.logger, **kwargs)
+        self.gui = gui  # used to call remake all
+        super().__init__(parent, content_dict=content_dict,
+                         nameme='DEFAULT_OPTIONS dictionary',
+                         logger=gui.logger, **kwargs)
 
     def style_item_dict(self, parent, key, value, parent_key_list, item):
         """Style the row item in the case of dict

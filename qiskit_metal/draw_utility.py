@@ -19,8 +19,6 @@ Draw utility functions
 @author: Zlatko Minev
 """
 
-#import pyEPR
-#import ast
 import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt

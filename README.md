@@ -15,6 +15,7 @@ For development, the best way is to fork the repository. Then install the follow
 #### Core packages
 ```
 conda install shapely
+pip install addict
 ```
 
 Install pyEPR(https://github.com/zlatko-minev/pyEPR)

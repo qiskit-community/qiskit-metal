@@ -11,14 +11,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-#
 
 """
-
-GUI module, handles user interface
-
-@date:2019
-@author: Zlatko K. Minev
+@author: Zlatko
 """
-
-__author__ = 'Zlatko K. Minev'
