@@ -71,4 +71,4 @@ from . import draw_hfss
 from ._gui import Metal_gui
 #from .toolbox.mpl_interaction import figure_pz  # used for interactive figures
 
-from .toolbox.pythonic import display_options
+from .toolbox.utility_functions import display_options
