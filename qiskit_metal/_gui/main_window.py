@@ -41,7 +41,7 @@ from .widgets.toolbar_icons import add_toolbar_icon
 from .widgets.dialog_create_metal import Dialog_create_metal
 from .widgets.trees.metal_objects import Tree_Metal_Objects
 from .widgets.trees.default_options import Tree_Default_Options
-from .widgets.log_window import Logging_Window_Widget, Logging_Hander_for_Log_Widget
+from .widgets.log_metal import Logging_Window_Widget, Logging_Hander_for_Log_Widget
 from ._handle_qt_messages import catch_exception_slot_pyqt
 
 class Metal_gui(QMainWindow):
@@ -64,6 +64,7 @@ class Metal_gui(QMainWindow):
         self._setup_qApp()
 
         super().__init__()
+        self._style_sheet_name = 'metal_default.qss'
 
         # params
         self.circ = circ
@@ -450,12 +451,14 @@ class Metal_gui(QMainWindow):
             return True
 
         if path is None:
-            path = self.imgs_path.parent/'style_sheets'/'metal_default.qss'
+            path = self.imgs_path.parent/'_style_sheets'/self._style_sheet_name
+
         path = Path(path)
 
         if path.is_file():
             stylesheet = path.read_text()
-            # TODO: replace all :/ with the corrent path or handle correctly
+            # replace all :/ with the corrent path or handle correctly
+            stylesheet = stylesheet.replace(':/', str(self.imgs_path))
 
             self.setStyleSheet(stylesheet)
         else:
@@ -516,7 +519,8 @@ class Metal_gui(QMainWindow):
                 break
 
     def closeEvent(self, event):
-        """[This event handler is called with the given event when Qt receives a window close request for a top-level widget from the window system.
+        """
+        This event handler is called with the given event when Qt receives a window close request for a top-level widget from the window system.
 
             By default, the event is accepted and the widget is closed. ]
 
