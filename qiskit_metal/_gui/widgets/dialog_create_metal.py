@@ -28,7 +28,7 @@ from PyQt5.QtWidgets import QApplication, QWidget, QTreeView, QDockWidget, QHBox
 from PyQt5.QtCore import QSize
 from PyQt5.QtGui import QTextDocument, QFont
 
-from ...toolbox.pythonic import display_options
+from ...toolbox.utility_functions import display_options
 from .trees.metal_parameter import parse_param_from_str
 from .trees.amazing_tree_dict import Amazing_Dict_Tree_zkm
 
