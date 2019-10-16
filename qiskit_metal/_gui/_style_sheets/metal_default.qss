@@ -1,0 +1,95 @@
+/*
+ *  Qiskit Metal Main Default Stylesheet.
+ *
+ *  :author: Zlatko K. Minev
+ *  :editor: Zlatko K. Minev
+ */
+
+QMenuBar,
+QMenu,
+QDockWidget,
+QMainWindow,
+QStatusBar,
+QToolBar,
+QDialog,
+QLabel
+{
+    color: #f2f3f3;
+    background-color: #6A6E71;
+}
+QMenu::item
+{
+    padding: 0.5ex 3ex 0.5ex 3ex;
+    margin-left: 0.5ex;
+    border: 0.1ex solid transparent; /* reserve space for selection border */
+    height: 17px;
+    width:400px;
+}
+QTreeView,
+QTreeWidget,
+QListView
+{
+    border: 0.1ex solid #76797c;
+    background-color: #e9e9e9;
+}
+
+QDockWidget,
+QMenuBar
+{
+    font-size:10.5pt;
+    font-weight:bold;
+    color: #f2f3f3;
+    border: None;
+    border-bottom: 1px solid white;
+}
+QGroupBox
+{
+    font-size:10.5pt;
+    font-weight:bold;
+    color: #f2f3f3;
+}
+
+QToolTip
+{
+    border: 0.1ex solid #eff0f1;
+    background-color: #31363b;
+    color: #eff0f1;
+    padding: 0.5ex;
+    opacity: 200;
+}
+QToolBar
+{
+    background-color: #f0f1f1;
+}
+QToolButton
+{
+    font-size:9.5pt;
+}
+
+QWidget:item:hover
+{
+    background-color: #3daee9;
+    color: #eff0f1;
+}
+
+QWidget:item:selected
+{
+    background-color: #3daee9;
+}
+
+/*Matches all instances of QPushButton that are descendants (children, grandchildren, etc.) of a QDialog.*/
+QStatusBar QLabel
+{
+    font-size: 10.5pt;
+    font-weight: bold;
+}
+
+
+QToolTip
+{
+    border: 1px solid #5c9741;
+    background-color: #93979c;
+    color: #000000;
+    padding: 3px;
+    font-size: 10pt;
+}
