@@ -20,7 +20,7 @@ Updated 2019/09/25 - Thomas McConkey
 @author: Zlatko
 '''
 
-from ...toolbox.addict_QM import Dict
+from ...toolbox.attribute_dictionary import Dict
 
 def is_metal_object(obj):
     '''
