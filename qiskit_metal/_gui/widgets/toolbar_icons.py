@@ -2,19 +2,6 @@
 """
 Created on Tue May 14 17:13:40 2019
 
-Icon credits:
-    Freepik and FlatIcon
-    Make Metal:
-        https://www.flaticon.com/free-icon/gears_305098
-    Delte all Objects:
-        no longer used: https://www.flaticon.com/free-icon/clear-button_60994#term=clear&page=1&position=3
-        trash icon: https://www.flaticon.com/de/kostenloses-icon/loschen_1214428
-    Save:
-        https://www.flaticon.com/free-icon/save_174314#term=save%20circular&page=1&position=7
-    Freepik:
-        <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/"             title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/"             title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
-    Open:
-        https://www.flaticon.com/free-icon/open-book_234647#term=open%20circular&page=1&position=2
 @author: Zlatko
 """
 from PyQt5.QtCore import Qt
