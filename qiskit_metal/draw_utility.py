@@ -43,7 +43,7 @@ from shapely.affinity import rotate, scale, translate
 from . import draw_functions
 from . import logger, Dict
 from .toolbox.mpl_interaction import figure_pz
-from .toolbox.pythonic import dict_start_with, copy_update, get_traceback
+from .toolbox.utility_functions import dict_start_with, copy_update, get_traceback
 
 #########################################################################
 # Constants
