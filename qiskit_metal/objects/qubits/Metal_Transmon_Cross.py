@@ -31,7 +31,7 @@ from shapely.ops import cascaded_union
 from shapely.geometry import shape
 
 #Connector default options
-DEFAULT_OPTIONS['Metal_Crossmon_Transmon_Pocket.connectors'] = Dict(
+DEFAULT_OPTIONS['Metal_Transmon_Cross.connectors'] = Dict(
     connector_type = 'Claw',
     claw_length='30um',
     ground_spacing='5um',
@@ -41,9 +41,9 @@ DEFAULT_OPTIONS['Metal_Crossmon_Transmon_Pocket.connectors'] = Dict(
 )
 
 #
-DEFAULT_OPTIONS['Metal_Crossmon_Transmon_Pocket'] = deepcopy(
+DEFAULT_OPTIONS['Metal_Transmon_Cross'] = deepcopy(
     DEFAULT_OPTIONS['Metal_Qubit'])
-DEFAULT_OPTIONS['Metal_Crossmon_Transmon_Pocket'].update(Dict(
+DEFAULT_OPTIONS['Metal_Transmon_Cross'].update(Dict(
     pos_x='0um',
     pos_y='0um',
     cross_width='20um',
@@ -180,7 +180,7 @@ Description:
         Goes through connectors and makes each one.
         '''
         for name, options_connector in self.options.connectors.items():
-            ops = deepcopy(DEFAULT_OPTIONS['Metal_Crossmon_Transmon_Pocket.connectors'])
+            ops = deepcopy(DEFAULT_OPTIONS['Metal_Transmon_Cross.connectors'])
             ops.update(options_connector)
             options_connector.update(ops)
             self.make_connector(name, options_connector)
