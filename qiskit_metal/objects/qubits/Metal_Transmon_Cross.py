@@ -239,7 +239,7 @@ Description:
 
         clawRotate = 0
         if connector_location == 'N':
-            clawRotate = 90
+            clawRotate = -90
         elif connector_location == 'E':
             clawRotate = 180
 
