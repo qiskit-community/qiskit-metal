@@ -41,7 +41,7 @@ CREATE_METAL_CLASSES
 """
 CREATE_METAL_CLASSES = [
     'qiskit_metal.objects.qubits.Metal_Transmon_Pocket',
-    'qiskit_metal.objects.qubits.Metal_Crossmon_Transmon_Pocket',
+    'qiskit_metal.objects.qubits.Metal_Transmon_Cross',
     'qiskit_metal.objects.interconnects.Metal_cpw_connect',
     'qiskit_metal.objects.qubits.Metal_Transmon_Pocket_CL']
 
