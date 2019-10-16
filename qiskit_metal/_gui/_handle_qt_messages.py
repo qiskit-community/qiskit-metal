@@ -30,6 +30,7 @@ from .. import logging, logger
 # Core handler
 ###
 
+
 def _pyqt_message_handler(mode, context, message):
     '''
     The message handler is a function that prints out debug messages,
@@ -68,6 +69,7 @@ def _pyqt_message_handler(mode, context, message):
 # Auxilary handlers - mostly for debug purposes
 ###
 
+
 def do_debug(msg, name='info'):
     """
     Utility function used to print debug statemetns from PyQt5 Socket calls
@@ -79,7 +81,9 @@ def do_debug(msg, name='info'):
     Keyword Arguments:
         name {str} -- [info wran, debug, etc. ] (default: {'info'})
     """
+
     if 0:
+        # This just gives the qt main loop traceback. Not useful.
         callers = []
         for i in range(1, 20):
             try:
@@ -88,8 +92,9 @@ def do_debug(msg, name='info'):
             except Exception:  # pylint: disable=broad-except
                 pass
         callers = reversed(callers)
-        callers = '.'.join(callers)
+        callers = '\n'.join(callers)
         msg = callers + "\n" + str(msg)+'\n'
+
     getattr(logger, name)(msg)
 
 
@@ -113,18 +118,33 @@ def catch_exception_slot_pyqt(*args, catch=Exception, on_exception_emit=None):
 
     @pyqtSlot(*args)
     def slotdecorator(func):
+
         @wraps(func)
         def wrapper(*args, **kwargs):  # pylint: disable=unused-argument
+
             try:
                 #do_debug(f'func={func} args = {args}')
                 #print(f'func={func} args = {args}')
                 func(*args)
+
             except catch as e:  # pylint: disable=invalid-name,broad-except
-                do_debug(f"ERROR in pyqtSlot: {wrapper.__name__}:\n"
-                         f"Caught exception: {e.__repr__()}", 'error')
+
+                #import pickle
+                #pickle.dump(e, open("C:\\zkm-code\\qiskit_metal\\deleteme.p", "wb" ))
+
+                message = '\nERROR in PyQtSlot call.\n'\
+                    + f"\n{' message:':10s} {e.__repr__()}"\
+                    + f"{' module:':10s} {wrapper.__module__}" \
+                    + f"\n{' name:':10s} {wrapper.__qualname__}" \
+                    + f"\n{' args|kwargs:':10s} {args} | {kwargs}" \
+
+                do_debug(message, name='error')
+
                 if on_exception_emit is not None:
                     # args[0] is instance of bound signal
                     pyqt_signal = getattr(args[0], on_exception_emit)
                     pyqt_signal.emit(e, wrapper.__name__)
+
         return wrapper
+
     return slotdecorator
