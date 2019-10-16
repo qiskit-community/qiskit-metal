@@ -28,7 +28,7 @@ Updated 2019/09/25 - Thomas McConkey
 # pylint: disable=invalid-name
 
 import numpy as np
-from ...toolbox.addict_QM import Dict
+from ...toolbox.attribute_dictionary import Dict
 from ...config import DEFAULT, DEFAULT_OPTIONS
 from ...draw_functions import draw_objs, LineString
 from ...import_export import save_metal#, load_metal

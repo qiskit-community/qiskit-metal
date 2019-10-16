@@ -25,7 +25,7 @@ Updated 2019/09/25 - Thomas McConkey
 
 from collections import OrderedDict
 
-from ...toolbox.addict_QM import Dict
+from ...toolbox.attribute_dictionary import Dict
 from ...config import DEFAULT_OPTIONS
 from ...draw_utility import parse_units_user
 from ... import draw_functions

@@ -21,7 +21,7 @@ Created 2019
 """
 
 
-from .toolbox.addict_QM import Dict
+from .toolbox.attribute_dictionary import Dict
 
 ################################################################################
 ###

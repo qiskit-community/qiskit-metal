@@ -13,10 +13,11 @@
 # that they have been altered from the originals.
 
 '''
-Utility functions that are mostly pythonic
+Simply utility functions to improve QOL of QM developers and QM users
 
 @date: 2019
 @author: Zlatko K. Minev
+modified: Thomas McConkey 2019/10/16
 '''
 import traceback
 import warnings
@@ -25,21 +26,6 @@ import pandas as pd
 from copy import deepcopy
 
 
-def deprecated(func):
-    """This is a decorator which can be used to mark functions
-    as deprecated. It will result in a warning being emitted
-    when the function is used.
-    """
-    import functools
-    @functools.wraps(func)
-    def new_func(*args, **kwargs):
-        warnings.simplefilter('always', DeprecationWarning)  # turn off filter
-        warnings.warn("Call to deprecated function {}.".format(func.__name__),
-                      category=DeprecationWarning,
-                      stacklevel=2)
-        warnings.simplefilter('default', DeprecationWarning)  # reset filter
-        return func(*args, **kwargs)
-    return new_func
 
 ####################################################################################
 ### Dictionary related
@@ -56,9 +42,10 @@ def copy_update(options, *args, deep_copy = True, **kwargs):
         options.update(*args, **kwargs)
     return options
 
+
 def dict_start_with(my_dict, start_with, as_=list):
-    ''' Case sensise
-                    https://stackoverflow.com/questions/17106819/accessing-python-dict-values-with-the-key-start-characters
+    ''' Case sensitive
+        https://stackoverflow.com/questions/17106819/accessing-python-dict-values-with-the-key-start-characters
     my_dict = {'name': 'Klauss', 'age': 26, 'Date of birth': '15th july'}
     dict_start_with(my_dict, 'Date')
     '''
@@ -79,7 +66,7 @@ def display_options(*ops_names, options = None, find_dot_keys=True, do_display=T
     or
         dfs, html = display_options(Metal_Transmon_Pocket.__name__, do_display=False)
     '''
-    #IDEA: display also ._hfss and ._gds etc. for those that lhave it and add to plugins
+    #IDEA: display also ._hfss and ._gds etc. for those that have it and add to plugins
     if options is None:
         from ..draw_functions import DEFAULT_OPTIONS
         options = DEFAULT_OPTIONS
@@ -99,12 +86,14 @@ def display_options(*ops_names, options = None, find_dot_keys=True, do_display=T
     res_html = display_dfs(*res, do_display=do_display)
     return res, res_html
 
+
 ####################################################################################
 ### Tracebacks
 
 _old_warn = None
 def enable_warning_traceback():
-    """Show ow traceback on warning
+    """
+    Show ow traceback on warning
     """
 
     global _old_warn
@@ -117,6 +106,7 @@ def enable_warning_traceback():
         _old_warn(*args, **kwargs)
         print("".join(traceback.format_list(tb)[:-1]))
     warnings.warn = warn
+
 
 def get_traceback():
     '''
@@ -133,6 +123,3 @@ def print_traceback_easy(start=26):
     print(f"\n")
     print('\n'.join(map(repr,traceback.extract_stack()[start:])))
     print('\n')
-
-####################################################################################
-### ...

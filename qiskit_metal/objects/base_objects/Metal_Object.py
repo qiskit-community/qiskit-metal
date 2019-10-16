@@ -24,7 +24,7 @@ insure compatibility with the package.
 # pylint: disable=invalid-name
 
 from copy import deepcopy
-from ...toolbox.addict_QM import Dict
+from ...toolbox.attribute_dictionary import Dict
 from ...config import DEFAULT_OPTIONS
 
 
