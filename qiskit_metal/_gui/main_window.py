@@ -187,7 +187,8 @@ class Metal_gui(QMainWindow):
         self.menu_view = self.menu.addMenu("View")
         self.menu_act = self.menu.addMenu("Actions")
 
-        self.menu_file.addAction("Save")
+        self.menu_file.astyle = self.menu_file.addAction("Reload stylesheet")
+        self.menu_file.astyle.triggered.connect(self.load_stylesheet)
         self.menu_file.addSeparator()
         self.menu_file.addAction("Quit")
 

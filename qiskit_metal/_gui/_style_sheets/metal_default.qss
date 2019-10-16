@@ -1,5 +1,8 @@
 /*
  *  Qiskit Metal Main Default Stylesheet.
+ *  For reference, see
+ *    https://doc.qt.io/qt-5/stylesheet-reference.html
+ *    https://doc.qt.io/qt-5/stylesheet-syntax.html
  *
  *  :author: Zlatko K. Minev
  *  :editor: Zlatko K. Minev
@@ -19,11 +22,15 @@ QLabel
 }
 QMenu::item
 {
-    padding: 0.5ex 3ex 0.5ex 3ex;
-    margin-left: 0.5ex;
+    padding: 1ex 3ex 1ex 6ex;
+    margin-left: 5.5ex;
     border: 0.1ex solid transparent; /* reserve space for selection border */
     height: 17px;
-    width:400px;
+    /*width:400px;*/
+}
+QMenu::icon {
+    padding-left: 2ex;
+    padding-right: 2ex;
 }
 QTreeView,
 QTreeWidget,
@@ -49,13 +56,17 @@ QGroupBox
     color: #f2f3f3;
 }
 
+QApplicaiton
+{
+    font-size: 11pt;
+}
+
 QToolTip
 {
-    border: 0.1ex solid #eff0f1;
-    background-color: #31363b;
-    color: #eff0f1;
-    padding: 0.5ex;
-    opacity: 200;
+    border: 0.5px solid #5c9741;
+    background-color: #A3A7Ac;
+    color: #000000;
+    /*font-size: 12pt;*/
 }
 QToolBar
 {
@@ -82,14 +93,4 @@ QStatusBar QLabel
 {
     font-size: 10.5pt;
     font-weight: bold;
-}
-
-
-QToolTip
-{
-    border: 1px solid #5c9741;
-    background-color: #93979c;
-    color: #000000;
-    padding: 3px;
-    font-size: 10pt;
 }
