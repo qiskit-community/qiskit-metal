@@ -31,7 +31,7 @@ import numpy as np
 from ...toolbox.attribute_dictionary import Dict
 from ...config import DEFAULT, DEFAULT_OPTIONS
 from ...draw_functions import draw_objs, LineString
-from ...import_export import save_metal#, load_metal
+from ...backend.import_export import save_metal#, load_metal
 from .Metal_Utility import is_metal_object
 
 
