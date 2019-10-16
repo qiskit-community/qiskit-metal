@@ -31,10 +31,10 @@ DEFAULT_OPTIONS['Metal_cpw_connect'] = Dict(
     connector2='[INPUT NAME HERE]',
     connector1_leadin='200um',
     connector2_leadin='200um',
-    _hfss=Dict(),
-    _gds=Dict(),
+    cpw=Dict(),
+    meander=Dict(),
     _calls=['meander_between', 'connectorCPW_plotme',
-            'draw_cpw_trace', 'basic_meander']
+            'draw_cpw_trace', 'basic_meander']  # usef only for debug internal refernece here
 )
 '''
  connector1 : connector 1 from which to begin drawing the CPW
@@ -53,80 +53,51 @@ Description:
 
     Total length of the meander is found from;
 
-Options:
-    ----------------------------------------------------------------------------
-    Convention: Values (unless noted) are strings with units included,
-                (e.g., '30um')
-
-    Metal_cpw_connect (options)
-    ----------------------------------------------------------------------------
+Options (Metal_cpw_connect):
     connector1: string of the name of the starting connector point (as listed in circuit.connectors dictionary)
     connector2: string of the name of the ending connector point (as listed in circuit.connectors dictionary)
     connector1/2_leadin: 'buffer' length of straight CPW transmission line from the connector point
-    _hfss=Dict(): options for hfss useage
-    _gds=Dict(): options for gds useage
-    _calls:
 
-    draw_cpw_trace (options_cpw):
-    ----------------------------------------------------------------------------
+    Convention: Values (unless noted) are strings with units included,
+                (e.g., '30um')
 
-
-    meander_between (options_meander):
-    ----------------------------------------------------------------------------
-
-
+    options_cpw: See options for draw_cpw_trace:
+    options_meander: meander_between
 
     You must pass in the circuit object, which keeps tracks of all the connects
 
     Conect named control points: connector1 ---> connector2,
     '''
+
     _img = 'Metal_cpw_connect.png'
 
-    def __init__(self, circ, name=None, options=None,
-                 connector1=None,
-                 connector2=None,
-                 options_cpw=None,
-                 options_meander=None
-                 ):
+    _options_inherit = dict(
+        cpw='draw_cpw_trace',
+        meander='basic_meander',
+    )
 
-        if options is None:
-            options = DEFAULT_OPTIONS['Metal_cpw_connect'] #Dict()
-        if options_cpw is None:
-            options_cpw = DEFAULT_OPTIONS['draw_cpw_trace']  #Dict()
-        if options_meander is None:
-            options_meander = DEFAULT_OPTIONS['meander_between'] #Dict()
-
-        options = Dict(options)
-
-        if connector1 is None:
-            assert 'connector1' in options
-        else:
-            options.connector1 = connector1
-
-        if connector2 is None:
-            assert 'connector2' in options
-        else:
-            options.connector2 = connector2
-
-        if connector1 is '' or connector1 is '[INPUT NAME HERE]':
-            raise Exception('ERROR: You did not provide a name for the leading connector connector1')
-        if connector2 is '' or connector2 is '[INPUT NAME HERE]':
-            raise Exception('ERROR: You did not provide a name for the second connector connector2')
+    def __init__(self, circ, name=None, options=None):
 
         if name is None:
             name = 'cpw_'+options.connector1+'_'+options.connector2
 
         super().__init__(circ, name, options=options)
 
-        assert options.connector1 in self.get_connectors(
-        ), f'Connector name {options.connector1} not in the set of connectors defined {self.get_connectors().keys()}'
-        assert options.connector2 in self.get_connectors(
-        ), f'Connector name {options.connector2} not in the set of connectors defined {self.get_connectors().keys()}'
-
-        self.options.cpw = Dict(**self.options.cpw, **options_cpw)
-        self.options.meander = Dict(**self.options.meander, **options_meander)
+        self.check_connector_name()
 
         self.make()
+
+    def check_connector_name(self):
+        if self.options.connector1 is '' or self.options.connector1  is '[INPUT NAME HERE]':
+            raise Exception(
+                'ERROR: You did not provide a name for the leading connector connector1')
+        if self.options.connector1 is '' or self.options.connector2 is '[INPUT NAME HERE]':
+            raise Exception(
+                'ERROR: You did not provide a name for the second connector connector2')
+        assert self.options.connector1 in self.get_connectors(
+        ), f'Connector name {self.options.connector1} not in the set of connectors defined {self.get_connectors().keys()}'
+        assert self.options.connector2 in self.get_connectors(
+        ), f'Connector name {self.options.connector2} not in the set of connectors defined {self.get_connectors().keys()}'
 
     def make(self):
         connector1_leadin_dist, connector2_leadin_dist = parse_options_user(
@@ -137,6 +108,7 @@ Options:
         c1 = connectors[self.options.connector1]
         c2 = connectors[self.options.connector2]
         #print( connector1_leadin_dist, connector2_leadin_dist, c1,c2, self.options.connector1)
+
         points0 = array([  # control points (user units)
             c1['pos'],
             c1['pos'] + c1['normal']*connector1_leadin_dist,

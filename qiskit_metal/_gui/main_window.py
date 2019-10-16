@@ -65,6 +65,7 @@ class Metal_gui(QMainWindow):
 
         super().__init__()
         self._style_sheet_name = 'metal_default.qss'
+        self._style_sheet_path = None
 
         # params
         self.circ = circ
@@ -188,7 +189,7 @@ class Metal_gui(QMainWindow):
         self.menu_act = self.menu.addMenu("Actions")
 
         self.menu_file.astyle = self.menu_file.addAction("Reload stylesheet")
-        self.menu_file.astyle.triggered.connect(self.load_stylesheet)
+        self.menu_file.astyle.triggered.connect(self.reload_stylesheet)
         self.menu_file.addSeparator()
         self.menu_file.addAction("Quit")
 
@@ -440,8 +441,14 @@ class Metal_gui(QMainWindow):
         self.tabifyDockWidget(self.tree_circ_ops.dock, self.tree.dock)
         tree.resizeColumnToContents(0)
 
+    @catch_exception_slot_pyqt()
+    def reload_stylesheet(self, _):
+        raise('ERROR')
+        self.load_stylesheet(path=self._style_sheet_path)
+
     def load_stylesheet(self, path=None):
-        """Load and set stylesheet for the main gui
+        """
+        Load and set stylesheet for the main gui
 
         Keyword Arguments:
             path {[str]} -- [Path tos tylesheet. Can also de default] (default: {None})
@@ -455,6 +462,7 @@ class Metal_gui(QMainWindow):
             path = self.imgs_path.parent/'_style_sheets'/self._style_sheet_name
 
         path = Path(path)
+        self._style_sheet_path = str(path)
 
         if path.is_file():
             stylesheet = path.read_text()
@@ -689,7 +697,8 @@ class Metal_gui(QMainWindow):
         return ans
 
     def fig_tight_layout(self):
-        """Utility function, Does tight layout and redraw
+        """
+        Utility function, Does tight layout and redraw
         """
         self.fig_draw.tight_layout()
         self.fig_draw.canvas.draw()

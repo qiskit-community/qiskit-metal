@@ -18,7 +18,7 @@
 @author: Thomas McConkey
 '''
 
-#Imports required for drawing
+# Imports required for drawing
 from copy import deepcopy
 from ...config import DEFAULT_OPTIONS, DEFAULT
 from ...draw_functions import shapely, shapely_rectangle, translate, translate_objs,\
@@ -30,14 +30,14 @@ from .Metal_Qubit import Metal_Qubit
 from shapely.ops import cascaded_union
 from shapely.geometry import shape
 
-#Connector default options
+# Connector default options
 DEFAULT_OPTIONS['Metal_Transmon_Cross.connectors'] = Dict(
-    connector_type = 'Claw',
+    connector_type='Claw',
     claw_length='30um',
     ground_spacing='5um',
     claw_width=DEFAULT_OPTIONS.cpw.width,
     claw_gap=DEFAULT_OPTIONS.cpw.gap,
-    connector_location = 'W'
+    connector_location='W'
 )
 
 #
@@ -71,12 +71,14 @@ DEFAULT_OPTIONS['Metal_Transmon_Cross'].update(Dict(
         chip='main',               # which chip does qubit belong to
         mesh_pocket='10um',              # How much to mesh the pokcet beyond
     ),
+
     _gds=Dict(
 
     ),
 ))
 
-class Metal_Transmon_Cross(Metal_Qubit): # pylint: disable=invalid-name
+
+class Metal_Transmon_Cross(Metal_Qubit):  # pylint: disable=invalid-name
     '''
 Description:
     ----------------------------------------------------------------------------
@@ -123,7 +125,7 @@ Description:
 
     '''
     _img = 'Metal_Crossmon.png'
-    #TO DO:
+    # TO DO:
     # * Add DC SQUID structure (maybe as an option, only for GDS?)
     # * HFSS drawing mesh
 
@@ -134,6 +136,8 @@ Description:
 
 
 ###################################TRANSMON###########################################################################################
+
+
     def make_pocket(self):
         '''
         Makes a basic Crossmon, 4 arm cross.
@@ -142,31 +146,35 @@ Description:
 
         # First grabs the various option values.
         cross_width, cross_length, cross_gap,\
-            pos_x, pos_y= parse_options_user(options, 'cross_width,\
+            pos_x, pos_y = parse_options_user(options, 'cross_width,\
                  cross_length, cross_gap, pos_x, pos_y')
 
-        #Then starts drawing the cross using the above values.
-        #Vertical and Horizontal rectangles, and the 'etch' section which generates the gap (should have just used buffer, owell)
-        cross_ArmGapV = shapely.geometry.box(-(cross_width/2+cross_gap) , -cross_length-cross_gap, (cross_width/2+cross_gap), cross_length+cross_gap)
-        cross_ArmV = shapely.geometry.box(-cross_width/2 , -cross_length, cross_width/2, cross_length)
+        # Then starts drawing the cross using the above values.
+        # Vertical and Horizontal rectangles, and the 'etch' section which generates the gap (should have just used buffer, owell)
+        cross_ArmGapV = shapely.geometry.box(-(cross_width/2+cross_gap), -
+                                             cross_length-cross_gap, (cross_width/2+cross_gap), cross_length+cross_gap)
+        cross_ArmV = shapely.geometry.box(-cross_width/2, -
+                                          cross_length, cross_width/2, cross_length)
 
-        cross_ArmGapH = shapely.geometry.box( -cross_length - cross_gap,-(cross_width/2+cross_gap), cross_length+cross_gap , (cross_width/2+cross_gap))
-        cross_ArmH = shapely.geometry.box(-cross_length,-cross_width/2 ,  cross_length, cross_width/2)
+        cross_ArmGapH = shapely.geometry.box(-cross_length - cross_gap, -(
+            cross_width/2+cross_gap), cross_length+cross_gap, (cross_width/2+cross_gap))
+        cross_ArmH = shapely.geometry.box(-cross_length, -
+                                          cross_width/2,  cross_length, cross_width/2)
 
-        cross_Etcher = cascaded_union([cross_ArmGapH,cross_ArmGapV])
-        cross_Island = cascaded_union([cross_ArmH,cross_ArmV])
+        cross_Etcher = cascaded_union([cross_ArmGapH, cross_ArmGapV])
+        cross_Island = cascaded_union([cross_ArmH, cross_ArmV])
 
-        #The Junction (Should be the DC SQUID in future?)
-        rect_jj = shapely_rectangle(cross_width,cross_gap)
-        rect_jj = translate(rect_jj,0,-cross_length-cross_gap/2)
+        # The Junction (Should be the DC SQUID in future?)
+        rect_jj = shapely_rectangle(cross_width, cross_gap)
+        rect_jj = translate(rect_jj, 0, -cross_length-cross_gap/2)
 
         objects = dict(
             rect_jj=rect_jj,
-            cross_Island = cross_Island,
-            cross_Etcher = cross_Etcher,
+            cross_Island=cross_Island,
+            cross_Etcher=cross_Etcher,
         )
 
-        #Rotate and translate Crossmon
+        # Rotate and translate Crossmon
         objects = rotate_obj_dict(objects, _angle_Y2X[options['orientation']], origin=(0, 0))
         objects = translate_objs(objects, pos_x, pos_y)
 
@@ -201,41 +209,45 @@ Description:
                  cross_length, cross_gap, pos_x, pos_y, orientation')
 
         # Connector options
-        connector_type, claw_gap, claw_length, claw_width, ground_spacing, connector_location  = parse_options_user(\
-                 options_connector, 'connector_type, claw_gap, claw_length, claw_width, ground_spacing, connector_location')
+        connector_type, claw_gap, claw_length, claw_width, ground_spacing, connector_location = parse_options_user(
+            options_connector, 'connector_type, claw_gap, claw_length, claw_width, ground_spacing, connector_location')
 
-
-        #Building the connector structure. Different construction based on connector type 
+        # Building the connector structure. Different construction based on connector type
         # (***match any changes to the port_Line)
-        clawCPW = shapely.geometry.box(0,-claw_width/2, -4*claw_width,claw_width/2)
+        clawCPW = shapely.geometry.box(0, -claw_width/2, -4*claw_width, claw_width/2)
 
         if connector_type is 'Claw':
-            TEMP_clawHeight = 2*claw_gap + 2 * claw_width + 2*ground_spacing+ 2*cross_gap + cross_width #temp value
+            TEMP_clawHeight = 2*claw_gap + 2 * claw_width + 2 * \
+                ground_spacing + 2*cross_gap + cross_width  # temp value
 
-            clawBase = shapely.geometry.box(-claw_width, -(TEMP_clawHeight)/2, claw_length, TEMP_clawHeight/2)
-            clawSubtract = shapely.geometry.box(0 , -TEMP_clawHeight/2 + claw_width, claw_length, TEMP_clawHeight/2 - claw_width)
+            clawBase = shapely.geometry.box(-claw_width, -
+                                            (TEMP_clawHeight)/2, claw_length, TEMP_clawHeight/2)
+            clawSubtract = shapely.geometry.box(
+                0, -TEMP_clawHeight/2 + claw_width, claw_length, TEMP_clawHeight/2 - claw_width)
             clawBase = clawBase.difference(clawSubtract)
 
-            connector_Arm = cascaded_union([clawBase,clawCPW])
-            connector_Etcher = buffer(connector_Arm,claw_gap)
+            connector_Arm = cascaded_union([clawBase, clawCPW])
+            connector_Etcher = buffer(connector_Arm, claw_gap)
         else:
             connector_Arm = clawCPW
-            connector_Etcher = buffer(connector_Arm,claw_gap)
+            connector_Etcher = buffer(connector_Arm, claw_gap)
 
-        #Making the connector 'port' for circ.connector tracking (for easy connect functions). Done here so
-        #as to have the same translations and rotations as the connector. Could extract from the connector later, but since
-        #allowing different connector types, this seems more straightforward.
-        port_Line = shapely.geometry.LineString([(-4*claw_width,-claw_width/2),(-4*claw_width,claw_width/2)])
+        # Making the connector 'port' for circ.connector tracking (for easy connect functions). Done here so
+        # as to have the same translations and rotations as the connector. Could extract from the connector later, but since
+        # allowing different connector types, this seems more straightforward.
+        port_Line = shapely.geometry.LineString(
+            [(-4*claw_width, -claw_width/2), (-4*claw_width, claw_width/2)])
 
-        #Store connector in object dictionary
+        # Store connector in object dictionary
         objects = dict(
-        connector_Arm=connector_Arm,
-        connector_Etcher = connector_Etcher,
-        port_Line = port_Line,
+            connector_Arm=connector_Arm,
+            connector_Etcher=connector_Etcher,
+            port_Line=port_Line,
         )
 
-        #Moves to west arm before any rotations.
-        objects = translate_objs(objects, -(cross_length + cross_gap + ground_spacing + claw_gap),0)
+        # Moves to west arm before any rotations.
+        objects = translate_objs(
+            objects, -(cross_length + cross_gap + ground_spacing + claw_gap), 0)
 
         clawRotate = 0
         if connector_location == 'N':
@@ -243,23 +255,23 @@ Description:
         elif connector_location == 'E':
             clawRotate = 180
 
-        #Rotates to the appropriate arm, then rotate and translate to match the rotation/position of the Crossmon
-        objects = rotate_objs(objects, clawRotate, origin = (0,0))
+        # Rotates to the appropriate arm, then rotate and translate to match the rotation/position of the Crossmon
+        objects = rotate_objs(objects, clawRotate, origin=(0, 0))
 
         objects = rotate_obj_dict(objects, _angle_Y2X[options['orientation']], origin=(0, 0))
         objects = translate_objs(objects, pos_x, pos_y)
 
-
-        #Creating of the connection port for functions such as 'easy connect'. Uses the start and end point of the
-        #port_line line, and generates a normal vector (vNorm) pointing in the direction any connection should be (eg. away from the Crossmon)
-        #Not been fully tested with all potential variations.
+        # Creating of the connection port for functions such as 'easy connect'. Uses the start and end point of the
+        # port_line line, and generates a normal vector (vNorm) pointing in the direction any connection should be (eg. away from the Crossmon)
+        # Not been fully tested with all potential variations.
         circ = self.circ
         if not circ is None:
             portPoints = list(shape(objects['port_Line']).coords)
-            vNorm = (-(portPoints[1][1] - portPoints[0][1]),(portPoints[1][0]-portPoints[0][0]))
-            circ.connectors[self.name+'_'+name] = make_connector_props(portPoints,options, vec_normal=vNorm)
+            vNorm = (-(portPoints[1][1] - portPoints[0][1]), (portPoints[1][0]-portPoints[0][0]))
+            circ.connectors[self.name+'_' +
+                            name] = make_connector_props(portPoints, options, vec_normal=vNorm)
 
-        #Removes the temporary port_Line from draw objects
+        # Removes the temporary port_Line from draw objects
         del objects['port_Line']
         # add to objects
         self.objects.connectors[name] = objects
@@ -267,7 +279,7 @@ Description:
         return objects
 
 ##################################################################################################################
-    #To draw the shape into HFSS, setup meshses, boundaries, etc.
+    # To draw the shape into HFSS, setup meshses, boundaries, etc.
     def hfss_draw(self):
         '''
         Draw in HFSS.
@@ -280,28 +292,30 @@ Description:
         options = self.options
         options_hfss = self.options._hfss
         rect_options = options_hfss.rect_options
-        _, oModeler = circ.get_modeler() # pylint: disable=invalid-name
-        oh = lambda x: parse_units_user(options_hfss[x]) # pylint: disable=invalid-name
+        _, oModeler = circ.get_modeler()  # pylint: disable=invalid-name
+        def oh(x): return parse_units_user(options_hfss[x])  # pylint: disable=invalid-name
 
-        #Make mesh objects
+        # Make mesh objects
         rect_msh = self.objects.cross_Etcher
 
         # list of objects to draw in HFSS
         objs = [self.objects, dict(mesh=rect_msh)]
 
         # Pocket: Draw all pocket objects
-        self.objects_hfss = Dict(draw_hfss.draw_objects_shapely(circ.oModeler, objs, self.name, pos_z=self.get_chip_elevation(), hfss_options=rect_options))
+        self.objects_hfss = Dict(draw_hfss.draw_objects_shapely(
+            circ.oModeler, objs, self.name, pos_z=self.get_chip_elevation(), hfss_options=rect_options))
 
         hfss_objs = self.objects_hfss  # shortcut
 
         # Pocket: Subtract ground - Uses "etcher shapes" to cut away sections of ground that need to be removed for the circuit.
-        #Check the object names match to the shapes that should be 'etched'
+        # Check the object names match to the shapes that should be 'etched'
         ground = circ.get_ground_plane(options)
         oModeler.subtract(ground, [hfss_objs['cross_Etcher']])
-        subtracts = [hfss_objs.connectors[xx]['connector_Etcher'] for xx in self.objects.connectors]
+        subtracts = [hfss_objs.connectors[xx]['connector_Etcher']
+                     for xx in self.objects.connectors]
         oModeler.subtract(ground, subtracts)
 
-        #CODE BLOCK FOR ASSIGNING Perfecet Electric Boundary ('superconductor thin film')
+        # CODE BLOCK FOR ASSIGNING Perfecet Electric Boundary ('superconductor thin film')
         if DEFAULT['do_PerfE']:
             oModeler.append_PerfE_assignment(name+'_cross' if DEFAULT['BC_individual'] else options_hfss['BC_name_pads'],
                                              hfss_objs['cross_Island'])
@@ -310,10 +324,10 @@ Description:
                 oModeler.append_PerfE_assignment(name+'_conn' if DEFAULT['BC_individual'] else options_hfss['BC_name_conn'],
                                                  [hfss_objs.connectors[key]['connector_Arm']])
 
-        #CODE BLOCK FOR MAKING THE JUNCTIONS - check to make sure naming schemes are compatible
+        # CODE BLOCK FOR MAKING THE JUNCTIONS - check to make sure naming schemes are compatible
         # JJ line and Lumped RLC
         if 1:
-            rect_jj = hfss_objs['rect_jj'] # pylint: disable=invalid-name # pyEPR.hfss.Rect
+            rect_jj = hfss_objs['rect_jj']  # pylint: disable=invalid-name # pyEPR.hfss.Rect
             axis = self.options.orientation.lower()
             rect_jj.make_rlc_boundary(axis, l=options_hfss['Lj'],
                                       c=options_hfss['Cj'], r=options_hfss['_Rj'],
@@ -326,7 +340,7 @@ Description:
             poly_jj = poly_jj.rename('JJ_'+name+'_')
             poly_jj.show_direction = True
 
-        #CODE BLOCK FOR MESH OPERATIONS - Work in progress (optimal initial mesh locations TBD)
+        # CODE BLOCK FOR MESH OPERATIONS - Work in progress (optimal initial mesh locations TBD)
         if DEFAULT._hfss.do_mesh:
 
             # Pocket - trying to only mesh the gap but having some drawing issues.
@@ -334,6 +348,5 @@ Description:
             rect_mesh.wireframe = True
             circ.mesh_obj(
                 rect_mesh, options_hfss['mesh_name'], **options_hfss['mesh_kw'])
-
 
         return hfss_objs

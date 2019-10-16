@@ -23,7 +23,7 @@ QLabel
 QMenu::item
 {
     padding: 1ex 3ex 1ex 6ex;
-    margin-left: 5.5ex;
+    /*margin-left: 5.5ex; */
     border: 0.1ex solid transparent; /* reserve space for selection border */
     height: 17px;
     /*width:400px;*/
