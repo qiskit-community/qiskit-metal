@@ -41,7 +41,7 @@ DEFAULT_OPTIONS['Metal_Qubit'] = Dict(
 
 class Metal_Qubit(Metal_Object):  # pylint: disable=invalid-name
     '''
-    Qubit base class
+    Qubit base class. Use to subscript, not to generate directly.
 
     Has connectors that can be added
 

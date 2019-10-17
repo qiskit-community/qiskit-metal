@@ -27,7 +27,7 @@ their new class to insure compatibility with the package.
 
 from copy import deepcopy
 
-from .Metal_Utility import is_metal_circuit
+from .Metal_Utility import is_metal_design
 from ...toolbox.attribute_dictionary import Dict
 from ...config import DEFAULT_OPTIONS
 
@@ -80,7 +80,7 @@ class Metal_Object():  # pylint: disable=invalid-name
         assert is_metal_design(
             design), "Error you did not pass in a valid Metal Design object as a parent of this component."
 
-        self.circ = design
+        self.design = design
         self.name = name
 
         self.options = self.create_default_options()
