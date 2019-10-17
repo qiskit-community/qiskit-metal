@@ -150,3 +150,47 @@ QToolBar#toolbarCreate  QToolButton::menu-button {
     /* 16px width + 4px for border = 20px allocated above */
     width: 16px;
 }
+
+
+QScrollBar:vertical {
+    border: 0.5px solid #727272;
+    border-radius: 4px;
+    background:white;
+    width:10px;
+    margin: 0px 0px 0px 0px;
+}
+QScrollBar:horizontal {
+    border: 0.5px solid #727272;
+    border-radius: 4px;
+    background:white;
+    height:10px;
+    margin: 0px 0px 0px 0px;
+}
+
+QScrollBar::handle:vertical {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                                stop: 0.0 rgb(173, 194, 179),
+                                stop: 0.5 #148CD2,
+                                stop: 1.0 rgb(106, 106, 110));
+    min-height: 0px;
+}
+QScrollBar::handle:horizontal {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop: 0.0 rgb(173, 194, 179),
+                                stop: 0.5 #148CD2,
+                                stop: 1.0 rgb(106, 106, 110));
+    min-width: 0px;
+}
+
+QScrollBar::handle:horizontal:hover {
+    background-color: #148CD2;
+    border: 1px solid #148CD2;
+    border-radius: 4px;
+    min-width: 15px;
+  }
+QScrollBar::handle:vertical:hover {
+    background-color: #148CD2;
+    border: 1px solid #148CD2;
+    border-radius: 4px;
+    min-height: 15px;
+  }
