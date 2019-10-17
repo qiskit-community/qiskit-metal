@@ -30,7 +30,7 @@ from ._base_dicts import DEFAULT_OPTIONS, DEFAULT # pylint: disable=unused-impor
 """
 GUI_CONFIG
 
-    create_metal_classes
+    load_metal_modules
     ---------------------------
     Name of class folders that contain modules that will be available to be
     created in the GUI
@@ -46,10 +46,11 @@ GUI_CONFIG
     Tips tha the user can define to show in the gui. These rotate each time the gui is started.
 """
 GUI_CONFIG = Dict(
-    create_metal_classes = [
-        'qiskit_metal.objects.qubits',
-        'qiskit_metal.objects.interconnects'
-    ],
+
+    load_metal_modules = Dict(
+        Qubits = 'qiskit_metal.objects.qubits',
+        Interconnects = 'qiskit_metal.objects.interconnects'
+    ),
 
     tips = [
         'Right clicking the tree elements allows you to do neat things.',

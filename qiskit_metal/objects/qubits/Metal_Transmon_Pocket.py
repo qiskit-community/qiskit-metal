@@ -15,7 +15,7 @@
 '''
 @date: 2019
 @author: Zlatko K Minev
-modified: Thomas McConkey 2019/
+modified: Thomas McConkey 2019
      ________________________________
     |______ ____           __________|
     |      |____|         |____|     |

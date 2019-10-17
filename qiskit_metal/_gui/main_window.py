@@ -25,13 +25,14 @@ import importlib
 from pathlib import Path
 
 from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtCore import Qt, QDir
+from PyQt5.QtCore import Qt, QDir, QSize
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QMainWindow, QDockWidget
 from PyQt5.QtWidgets import QTextEdit, QLineEdit, QMessageBox
 from PyQt5.QtWidgets import QAction, QInputDialog, QFileDialog
-from PyQt5.QtWidgets import QLabel
+from PyQt5.QtWidgets import QLabel, QMenu, QToolButton, QStyle
 
+from ..config import GUI_CONFIG
 from .. import logger, save_metal, load_metal
 from ..draw_utility import plot_simple_gui_spawn, plot_simple_gui_style
 from ..draw_utility import draw_all_objects
@@ -44,9 +45,12 @@ from .widgets.trees.default_options import Tree_Default_Options
 from .widgets.log_metal import Logging_Window_Widget, Logging_Hander_for_Log_Widget
 from ._handle_qt_messages import catch_exception_slot_pyqt
 
+
 class Metal_gui(QMainWindow):
     myappid = u'qiskit.metal.main_gui'
     _window_title = "Qiskit Metal - Quantum VLSI and Sims"
+    _icon_default_create = 'create.png' # Maybe move to stylesheet
+    _icon_size_create = 40  # 31px typical; QStyle.PM_ToolBarIconSize/2 # QtWidgets - typical setting
 
     def __init__(self, circ, OBJECTS=None, DEFAULT_OPTIONS=None):
         '''
@@ -64,8 +68,6 @@ class Metal_gui(QMainWindow):
         self._setup_qApp()
 
         super().__init__()
-        self._style_sheet_name = 'metal_default.qss'
-        self._style_sheet_path = None
 
         # params
         self.circ = circ
@@ -75,6 +77,11 @@ class Metal_gui(QMainWindow):
         # set params
         self.set_OBJECTS(OBJECTS)
         self.set_DEFAULT_OPTIONS(DEFAULT_OPTIONS)
+
+        # Params we will specify
+        self._style_sheet_name = 'metal_default.qss'
+        self._style_sheet_path = None
+        self.toolbar_create_metal = None
 
         # create workspace
         self._setup_main_window()
@@ -243,7 +250,7 @@ class Metal_gui(QMainWindow):
                          self.draw_connectors,
                          'Shows the name of all connectors in the plot area.',
                          'Shift+C', menu,
-                         label = 'Show connectors')
+                         label='Show connectors')
 
         menu.addSeparator()
         toolbar.addSeparator()
@@ -308,67 +315,130 @@ class Metal_gui(QMainWindow):
 
     def _setup_create_objects(self):
 
-        # Decide if tree library might betbter probably . for now just quick here
+        # Decide if tree library might better here rather than toolbar?
+        # For now just quick here
+
         self.toolbar_create_metal = self.addToolBar('Create Metal')
         toolbar = self.toolbar_create_metal
+        toolbar.setObjectName('toolbarCreate')
         toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
-        # toolbar.setIconSize(QSize(50,50))
-        # toolbar.setStyleSheet("""
-        #    QAction {
-        #        font-size: 2pt;
-        #        font: 6px;
-        #    }""")
+        toolbar.setIconSize(QSize(self._icon_size_create, self._icon_size_create))
 
-        #####
-        # Labels
-        toolbar.title_Label = QLabel("Create\nmetal")
-        toolbar.title_Label.setAlignment(QtCore.Qt.AlignCenter)
-        toolbar.title_Label.setStyleSheet("""
-            QLabel {
-                background-color : #A7ADBA;
-                color: #101112;
-                padding: 4px;
-                border: none;
-                font-size: 4pt;
-                border-style: outset;
-                border-width: 0px;
-                border-radius: 5px;
-                font: bold 12px;
-                padding: 5px;
-            }""")  # Move to stylesheet        border-color: #6c94c0;       color: #38413B; background-color : #DAE4EF;             min-width: 7em;
-        toolbar.addWidget(toolbar.title_Label)
+        # Label
+        if 0:
+            toolbar.title_Label = QLabel("Create\n Metal")
+            toolbar.title_Label.setAlignment(QtCore.Qt.AlignCenter)
+            toolbar.title_Label.setObjectName('lblCreateMetal')
+            toolbar.addWidget(toolbar.title_Label)
 
         ####
         # Create buttons
-        from ..config import CREATE_METAL_CLASSES
-        for metal_class in CREATE_METAL_CLASSES:
-            self.add_metal_object(toolbar, metal_class)
 
-    def add_metal_object(self, toolbar,
-                         metal_class_name,
+        for name, metal_module in GUI_CONFIG.load_metal_modules.items():
+            self.add_metal_module(toolbar, name, metal_module)
+
+    def add_metal_module(self, toolbar, name, metal_module):
+        assert isinstance(metal_module, str)
+
+        module = load_metal_object_module(metal_module)
+        if module is False: # Failed to load module
+            return False
+
+        # While Path(module.__file__).parent should work, lets do more propper
+        paths_search = module.__spec__.submodule_search_locations # list
+        py_file_paths = []
+        for path_search in paths_search:
+            py_file_paths += list(Path(path_search).glob('*.py'))
+
+        if len(py_file_paths) == 0:
+            self.logger.warning(f'Did not find any objects in metal_module={metal_module}'\
+                                f' to load.\n Searched in path_search={path_search}')
+            return False
+
+        ### Create button for menu dropdown
+        button = QToolButton(toolbar)
+        button.setText(name)
+        button.setPopupMode(QToolButton.InstantPopup)
+        button.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
+        toolbar.addWidget(button)
+
+        # Icon
+        icon_path = self.imgs_path
+        if hasattr(module, '_img'):
+            icon_path /= module._img
+        else:
+            icon_path /= self._icon_default_create
+        button.setIcon(QIcon(str(icon_path)))
+
+
+        # Create Menu items
+        menu = QMenu()
+        menu.setObjectName('createMetal')
+        button.setMenu(menu)
+        for file_path in py_file_paths:
+            submodule_name = str(Path(file_path).stem)
+            if not submodule_name.startswith('_'):
+                self.add_metal_object(menu, module, submodule_name)
+
+    def add_metal_object(self, menu, parent_module, submodule_name,
                          tool_name=None):
         '''
-        Creates wrapper function
+        Creates wrapper functions and menu actions
         '''
 
-        assert isinstance(metal_class_name, str)
+        assert isinstance(submodule_name, str)
 
-        class_name = metal_class_name.split('.')[-1]
-        try:
-            module = importlib.import_module(metal_class_name)
-        except ImportError as error:
-            self.logger.error(
-                f'add_metal_object: Could not load object module for the toolbar.\n Failed to load {metal_class_name}\n Please check the name path and that the file does not have errors. \nError ({error}): \n{sys.exc_info()}')
-            return False
+        ###########################################################################
+        # LOAD MODULE AND CLASS
+
+        # Load the submodule
+        submodule_full_name = str(parent_module.__name__) + '.' + submodule_name
+        module = load_metal_object_module(submodule_full_name)
+
+        # Load the class from the submodule.
+        # Assume the class name is the same as the filename (module name)
+        class_name = submodule_name
+        log_msg = f'add_metal_object: Loaded module {submodule_full_name} from {parent_module.__file__}\n'
         try:
             metal_class = getattr(module, class_name)
         except Exception as error:
-            self.logger.error(
-                f'add_metal_object: Loaded module {class_name} but could not find/load class {class_name}\nError ({error}): \n{sys.exc_info()}')
+            self.logger.error(log_msg + f'but could not find/load class {class_name}\n'\
+                              'Error ({error}): \n{sys.exc_info()}')
             return False
 
+        self.logger.debug(log_msg + f'\n Loaded class {metal_class}')
+
+        ###########################################################################
+        ### Create GUI tools
+
+        # Tool name label
         if not tool_name:
             tool_name = class_name
+
+        label = tool_name.replace('_', ' ')
+
+        if 0: # break the name up
+            if label.startswith('Metal '):
+                label = label[6:]
+            if len(label) > 14:
+                label = label[:int(len(label)/2)] + '-\n' + \
+                    label[int(len(label)/2):]  # split to new line
+
+        # Image path
+        icon_path = (self.imgs_path/getattr(metal_class, '_img')) \
+            if hasattr(metal_class, '_img') else None
+
+        if not Path(icon_path).is_file():
+            icon_path2 = self.imgs_path/'Metal_Object.png'
+            logger.warning(f'Could not locate  image path {icon_path}')
+            if Path(icon_path2).is_file():
+                icon_path = icon_path2
+                logger.warning(f'Replacing with  image path {icon_path}')
+            else:
+                logger.warning(f'Could not even find base image path {icon_path2}')
+
+        #############################
+        # Create call function
 
         def create_metal_obj(*args):
             # Load module  on the fly
@@ -376,40 +446,24 @@ class Metal_gui(QMainWindow):
 
             nonlocal class_name
             nonlocal metal_class
-            #class_name = metal_class_name.split('.')[-1]
-            #metal_class = getattr(module, class_name)
 
             form = Dialog_create_metal(self, metal_class)
             result, my_args = form.get_params()
+
             if result:
                 if my_args['name']:
                     metal_class(self.circ, my_args['name'], options=my_args['options'])
                     self.refresh_all()
-
-        # Label
-        label = tool_name.replace('_', ' ')
-        if label.startswith('Metal '):
-            label = label[6:]
-        if len(label) > 14:
-            label = label[:int(len(label)/2)] + '-\n' + \
-                label[int(len(label)/2):]  # split to new line
-
-        # Image path
-        img = (self.imgs_path/getattr(metal_class, '_img')) \
-            if hasattr(metal_class, '_img') else None
-        if not Path(img).is_file():
-            img2 = self.imgs_path/'Metal_Object.png'
-            logger.warning(f'Could not locate  image path {img}')
-            if Path(img2).is_file():
-                img = img2
-                logger.warning(f'Replacing with  image path {img}')
-            else:
-                logger.warning(f'Could not even find base image path {img2}')
-
-        # Add tool
-        add_toolbar_icon(toolbar, tool_name, img, create_metal_obj, label=label)
-
+        # Save
         setattr(self, 'create_'+tool_name, create_metal_obj)
+
+        #############################
+        # Finally create menu tool and add
+        action = menu.addAction(label)
+        action.setIcon(QIcon(str(icon_path)))
+        action.triggered.connect(create_metal_obj)
+        action.setToolTip(f'Create a Qiskit Metal object: {submodule_full_name}')
+        setattr(self, 'createA_'+tool_name, action)
 
         return True
 
@@ -791,3 +845,27 @@ class Metal_gui(QMainWindow):
         self.tree_circ_ops.change_content_dict(self.circ.params)
         self.logger.info('Changed circuit, updated default dictionaries, etc.')
         self.refresh_all()
+
+
+def load_metal_object_module(metal_module_name):
+    """
+    Utility function to load module
+
+    Arguments:
+        metal_module_name {[str]} -- name
+
+    Returns:
+        imported module or False
+    """
+
+    try:
+        module = importlib.import_module(metal_module_name)
+        return module
+
+    except ImportError as error:
+        logger.error(
+            f'ERROR (load_metal_object_module): Could not load object module for '\
+            f'the toolbar.\n Failed to load {metal_class_name}\n Please check the '\
+            f'name path and that the file does not have errors. \nError ({error}):\n'\
+            f'{sys.exc_info()}')
+        return False
