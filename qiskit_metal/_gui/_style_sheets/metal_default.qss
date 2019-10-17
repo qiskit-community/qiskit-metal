@@ -88,12 +88,28 @@ QWidget:item:selected
     background-color: #3daee9;
 }
 
-/*Matches all instances of QPushButton that are descendants (children, grandchildren, etc.) of a QDialog.*/
-QStatusBar QLabel
-{
-    font-size: 10.5pt;
-    font-weight: bold;
+/*Matches all instances of QPushButton that are descendants
+    (children, grandchildren, etc.) of a .
+        font-weight: bold;*/
+QStatusBar {
+    color: rgb(129, 236, 129);
+    font-size: 11pt;
+    font-weight: 500;
+    border: 1px solid rgb(37, 49, 56);
+    background: rgb(54, 71, 82);
 }
+
+QStatusBar QToolTip {
+    padding: 0px;
+    opacity: 200;
+    border: 1px solid rgb(32, 44, 56);
+    background-color: rgb(22, 130, 200);
+}
+
+QStatusBar QLabel {
+    background: transparent;
+}
+
 
 QMenu#createMetal
 {

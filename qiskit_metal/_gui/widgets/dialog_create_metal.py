@@ -336,8 +336,8 @@ tr:hover {
             self.layout_form.addRow(self.label_name, self.form_name)
             self.right_layout.addLayout(self.layout_form)
 
-            if 1:
-            self.lbl = QLabel('Help: Right click Tree to pop up menu to create sub-dictionaries or string items.')
+        if 1:
+            self.lbl = QLabel('Help: Right click an item on the tree dictionary below to pop up menu to create sub-dictionaries or string items.')
             self.lbl.setWordWrap(True)
             self.right_layout.addWidget(self.lbl)
 
