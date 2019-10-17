@@ -83,15 +83,17 @@ class Metal_gui(QMainWindow):
         self._setup_tree_view()
         self._setup_tree_circ_options()
         self._setup_tree_default_options()
-        self._setup_menu_bar_final()
         self._setup_window_style()
         self._setup_main_toolbar()
         self._setup_logging()
+        self._setup_file_menu()
 
         # refresh
         self.show()
         self.refresh_all()
         self.raise_()
+
+        self.fig_tight_layout()
 
     def _setup_qApp(self):
         self.logger = logger
@@ -185,24 +187,34 @@ class Metal_gui(QMainWindow):
     def _setup_menu_bar(self):
         self.menu = self.menuBar()
         self.menu_file = self.menu.addMenu("File")
-        self.menu_view = self.menu.addMenu("View")
+        self.menu_plot = self.menu.addMenu("Plot")
         self.menu_act = self.menu.addMenu("Actions")
+        self.menu_windows = self.menu.addMenu("Windows")
 
-        self.menu_file.astyle = self.menu_file.addAction("Reload stylesheet")
-        self.menu_file.astyle.triggered.connect(self.reload_stylesheet)
+        self._setup_plot_menu()
+        self._setup_window_menu()
+
+    def _setup_window_menu(self):
+        self.menu_windows.astyle = self.menu_windows.addAction("Reload stylesheet")
+        self.menu_windows.astyle.triggered.connect(self.reload_stylesheet)
+
+        self.menu_windows.addSection('Show / Hide:')
+
+    def _setup_file_menu(self):
         self.menu_file.addSeparator()
-        self.menu_file.addAction("Quit")
+        self.menu_file.quit = self.menu_file.addAction("&Quit")
+        self.menu_file.quit.triggered.connect(self.close)
 
-    def _setup_menu_bar_final(self):
+    def _setup_plot_menu(self):
         '''
         Finish off a few things after all core items have been created,
         Especially the tree views. Link them in the toolbar.
         '''
-        # Menus
-        self.menu_view.tight_action = action = QAction('Tight layout')
-        action.triggered.connect(self.fig_tight_layout)
-        self.menu_view.tight = self.menu_view.addAction(action)
-        self.fig_tight_layout()
+        self.menu_plot.addSeparator()
+
+        self.menu_plot.tight_action = QAction('Figure tight layout')
+        self.menu_plot.tight_action.triggered.connect(self.fig_tight_layout)
+        self.menu_plot.tight = self.menu_plot.addAction(self.menu_plot.tight_action)
 
     def _setup_plot(self):
         fig_draw, ax_draw = plot_simple_gui_spawn(dict(num=None))
@@ -215,76 +227,82 @@ class Metal_gui(QMainWindow):
 
         # Custom toolbars
         toolbar = self.fig_draw.canvas.manager.toolbar
-        menu = self.menu_act
+        menu = self.menu_plot
 
         add_toolbar_icon(toolbar, 'action_refresh_plot',
                          self.imgs_path/'refresh-button.png',
                          self.re_draw,
-                         'Refresh plot only',
-                         'R', menu)
+                         'Refreshes the plot area only.',
+                         'R', self.menu,
+                         label='Refresh plot')
 
         toolbar.addSeparator()
 
         add_toolbar_icon(toolbar, 'action_draw_connectors',
                          self.imgs_path/'show_connectors.png',
                          self.draw_connectors,
-                         'Draw all connectors of circ object',
-                         'Shift+C', menu)
+                         'Shows the name of all connectors in the plot area.',
+                         'Shift+C', menu,
+                         label = 'Show connectors')
 
+        menu.addSeparator()
         toolbar.addSeparator()
 
         self.fig_draw.show()
 
     def _setup_main_toolbar(self):
-        self.toolbar_main_func = self.addToolBar(
+        self.toolbar_main = self.addToolBar(
             'Main functions')  # tood have htis add a menu show hide
-        toolbar = self.toolbar_main_func
+        toolbar = self.toolbar_main
         toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
         menu = self.menu_act
+
+        menu.addSeparator()
 
         add_toolbar_icon(toolbar, 'action_refresh_all',
                          self.imgs_path/'refresh-all.png',
                          self.refresh_all,
                          'Refresh all trees and plots in the gui.',
                          'Ctrl+R', menu,
-                         label="Refresh\nall")
+                         label="&Refresh\nall")
 
         add_toolbar_icon(toolbar, 'action_remake_all_objs',
                          self.imgs_path/'gears.png',
                          self.remake_all,
                          'Remake all objects with their current parameters',
                          'M', menu,
-                         label="Remake\nall")
+                         label="Re&make\nall")
 
         add_toolbar_icon(toolbar, 'action_clear_all_objects',
                          self.imgs_path/'clear-button.png',
                          self.clear_all_objects,
-                         'Clear\nall',
+                         '&Clear\nall',
                          None, menu,
                          label='Clear\nall')
 
+        menu.addSeparator()
         toolbar.addSeparator()
-
-        add_toolbar_icon(toolbar, 'action_gds_export',
-                         self.imgs_path/'GDS.png',
-                         self.action_gds_export,
-                         'Export\nto gds',
-                         None, menu,
-                         label='Export\nto gds')
 
         add_toolbar_icon(toolbar, 'action_save_metal',
                          self.imgs_path/'save.png',
                          self.action_save_metal,
-                         'Save metal circ object',
-                         None, menu,
-                         label='Save\ncircuit')
+                         'Save metal design to file',
+                         'Ctrl+S', self.menu_file,
+                         label='&Save\ndesign')
 
         add_toolbar_icon(toolbar, 'action_open_metal',
                          self.imgs_path/'open.png',
                          self.action_open_metal,
-                         'Open metal saved file',
+                         'Open metal design file',
+                         'Ctrl+O', self.menu_file,
+                         label='&Load\ndesign')
+
+        add_toolbar_icon(toolbar, 'action_gds_export',
+                         self.imgs_path/'GDS.png',
+                         self.action_gds_export,
+                         'Export\nto &gds',
                          None, menu,
-                         label='Load\ncircuit')
+                         label='Export\nto &gds')
 
         self._setup_create_objects()
 
@@ -443,7 +461,6 @@ class Metal_gui(QMainWindow):
 
     @catch_exception_slot_pyqt()
     def reload_stylesheet(self, _):
-        raise('ERROR')
         self.load_stylesheet(path=self._style_sheet_path)
 
     def load_stylesheet(self, path=None):
@@ -505,7 +522,7 @@ class Metal_gui(QMainWindow):
         dock.setFloating(False)
 
         # Add Menu button show/hide to main window
-        self.menu_view.addAction(dock.toggleViewAction())
+        self.menu_windows.addAction(dock.toggleViewAction())
 
         # Add to main window
         self.addDockWidget(getattr(Qt, location+'DockWidgetArea'), dock)

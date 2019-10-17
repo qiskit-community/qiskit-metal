@@ -22,10 +22,10 @@ QLabel
 }
 QMenu::item
 {
-    padding: 1ex 3ex 1ex 6ex;
+    padding: 1ex 3ex 1ex 10ex;
     /*margin-left: 5.5ex; */
-    border: 0.1ex solid transparent; /* reserve space for selection border */
-    height: 17px;
+    border: 1px solid transparent; /* reserve space for selection border */
+    height: 1.2em;
     /*width:400px;*/
 }
 QMenu::icon {

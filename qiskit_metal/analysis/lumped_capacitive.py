@@ -99,7 +99,7 @@ def chi(g, wr, w01, w12):
     return (chibus_1-chibus_0)/2
 
 
-def extract_hamiltonian_transmon_coupled_Noscillator(capMatrix, Ic, CJ, N, fb, fr, res_L4_corr=None):
+def extract_transmon_coupled_Noscillator(capMatrix, Ic, CJ, N, fb, fr, res_L4_corr=None):
     """
     Primary analysis function called by the user. Uses a (Maxwell) capacitance
     matrix generated from Q3D, and some additional values, to determine
