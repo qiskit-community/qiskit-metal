@@ -52,16 +52,16 @@ class Metal_gui(QMainWindow):
     _icon_default_create = 'create.png' # Maybe move to stylesheet
     _icon_size_create = 40  # 31px typical; QStyle.PM_ToolBarIconSize/2 # QtWidgets - typical setting
 
-    def __init__(self, circ, OBJECTS=None, DEFAULT_OPTIONS=None):
+    def __init__(self, design, OBJECTS=None, DEFAULT_OPTIONS=None):
         '''
         When running in IPython and Jupyter, make sure you have the QT loop launched.
 
         .. code-block python
             %matplotlib qt
             %gui qt
-            from qiskit_metal import Metal_gui, PlanarCircuit
+            from qiskit_metal import Metal_gui, PlanarDesign
 
-            layout = PlanarCircuit()
+            layout = PlanarDesign()
             gui = Qiskit_Metal_GUI(layout)
         '''
 
@@ -70,7 +70,7 @@ class Metal_gui(QMainWindow):
         super().__init__()
 
         # params
-        self.circ = circ
+        self.design = design
         self._OBJECTS = None
         self._DEFAULT_OPTIONS = None
 
@@ -88,7 +88,7 @@ class Metal_gui(QMainWindow):
         self._setup_menu_bar()
         self._setup_plot()
         self._setup_tree_view()
-        self._setup_tree_circ_options()
+        self._setup_tree_design_options()
         self._setup_tree_default_options()
         self._setup_window_style()
         self._setup_main_toolbar()
@@ -452,7 +452,7 @@ class Metal_gui(QMainWindow):
 
             if result:
                 if my_args['name']:
-                    metal_class(self.circ, my_args['name'], options=my_args['options'])
+                    metal_class(self.design, my_args['name'], options=my_args['options'])
                     self.refresh_all()
         # Save
         setattr(self, 'create_'+tool_name, create_metal_obj)
@@ -502,15 +502,15 @@ class Metal_gui(QMainWindow):
         tree.main_window.setCentralWidget(tree)
         tree.resizeColumnToContents(0)
 
-    def _setup_tree_circ_options(self):
-        tree = self.tree_circ_ops = Tree_Default_Options(
-            self, content_dict=self.circ.params, gui=self)
+    def _setup_tree_design_options(self):
+        tree = self.tree_design_ops = Tree_Default_Options(
+            self, content_dict=self.design.params, gui=self)
         tree.main_window = QMainWindow(self)
-        tree.dock = self._add_dock('Circuit Properties', tree.main_window, 'Right', 400)
+        tree.dock = self._add_dock('Design Properties', tree.main_window, 'Right', 400)
 
         # Main window for tree
         tree.main_window.setCentralWidget(tree)
-        self.tabifyDockWidget(self.tree_circ_ops.dock, self.tree.dock)
+        self.tabifyDockWidget(self.tree_design_ops.dock, self.tree.dock)
         tree.resizeColumnToContents(0)
 
     @catch_exception_slot_pyqt()
@@ -684,8 +684,8 @@ class Metal_gui(QMainWindow):
         self.re_draw()
         self.refresh_tree()
         self.refresh_tree_default_options()
-        # print('self.tree_circ_ops.rebuild()')
-        self.tree_circ_ops.rebuild()
+        # print('self.tree_design_ops.rebuild()')
+        self.tree_design_ops.rebuild()
 
     @catch_exception_slot_pyqt()
     def remake_all(self, *args):  # pylint: disable=unused-argument
@@ -693,7 +693,7 @@ class Metal_gui(QMainWindow):
         Remake all objects and refresh plots
         """
         logger.info('Remaking all Metal objects from options')
-        self.circ.make_all_objects()
+        self.design.make_all_objects()
         self.re_draw()
 
     @catch_exception_slot_pyqt()
@@ -702,14 +702,14 @@ class Metal_gui(QMainWindow):
         Draw all connetors
         args used for pyqt socket
         """
-        self.circ.plot_connectors(ax=self.ax_draw)
+        self.design.plot_connectors(ax=self.ax_draw)
         self.fig_draw.canvas.draw()
 
     @property
     def OBJECTS(self):
         """
         Returns:
-            [Dict] -- [Handle to Circuit's OBJECTS]
+            [Dict] -- [Handle to Design's OBJECTS]
         """
         return self._OBJECTS
 
@@ -718,7 +718,7 @@ class Metal_gui(QMainWindow):
         Should ideally only ever have 1 instance object of OBJECTS
         '''
         if OBJECTS is None:
-            OBJECTS = self.circ.OBJECTS
+            OBJECTS = self.design.OBJECTS
         self._OBJECTS = OBJECTS
         if hasattr(self, 'tree'):
             self.tree.change_content_dict(OBJECTS)
@@ -798,7 +798,7 @@ class Metal_gui(QMainWindow):
         ret = QMessageBox.question(self, '', "Are you sure you want to clear all Metal objects?",
                                    QMessageBox.Yes | QMessageBox.No)
         if ret == QMessageBox.Yes:
-            self.circ.clear_all_objects()
+            self.design.clear_all_objects()
             self.refresh_all()
 
     @catch_exception_slot_pyqt()
@@ -809,41 +809,41 @@ class Metal_gui(QMainWindow):
         filename = QFileDialog.getSaveFileName(None,
                                                'Select locaiton to export GDS file to')[0]
         if filename:
-            self.circ.gds_draw_all(filename)
+            self.design.gds_draw_all(filename)
 
     @catch_exception_slot_pyqt()
     def action_save_metal(self, *args):  # pylint: disable=unused-argument
         """
-        Handles click on save circ
+        Handles click on save design
         """
         filename = QFileDialog.getSaveFileName(None,
-                                               'Select locaiton to save Metal objects and circ to')[0]
+                                               'Select locaiton to save Metal objects and design to')[0]
         if filename:
-            save_metal(filename, self.circ)
+            save_metal(filename, self.design)
             logger.info(f'Successfully save metal to {filename}')
 
     @catch_exception_slot_pyqt()
     def action_open_metal(self, *args):  # pylint: disable=unused-argument
         """
-        Handles click on loading metal circuit
+        Handles click on loading metal design
         """
         filename = QFileDialog.getOpenFileName(None,
-                                               'Select locaiton to save Metal objects and circ to')[0]
+                                               'Select locaiton to save Metal objects and design to')[0]
         if filename:
-            circ = load_metal(filename)  # do_update=True
-            self.change_circ(circ)
+            design = load_metal(filename)  # do_update=True
+            self.change_design(design)
             logger.info(f'Successfully loaded file\n file={filename}')
 
-    def change_circ(self, circ):
+    def change_design(self, design):
         """Used in loading
 
         Arguments:
-            circ {[Metal_Circ_Base instance]} -- [new circuit]
+            design {[Metal_design_Base instance]} -- [new design]
         """
-        self.circ = circ
-        self.set_OBJECTS(self.circ.OBJECTS)
-        self.tree_circ_ops.change_content_dict(self.circ.params)
-        self.logger.info('Changed circuit, updated default dictionaries, etc.')
+        self.design = design
+        self.set_OBJECTS(self.design.OBJECTS)
+        self.tree_design_ops.change_content_dict(self.design.params)
+        self.logger.info('Changed design, updated default dictionaries, etc.')
         self.refresh_all()
 
 

@@ -67,7 +67,7 @@ class Tree_Default_Options(Amazing_Dict_Tree_zkm):
                     style_me('#DAE4EF')
                 else:
                     style_me('#c6d5e6')
-            elif key.startswith('Circuit_'):
+            elif key.startswith('Design_'):
                 style_me('#e6d7c6')
             elif key.startswith('easy'):
                 style_me('#c6d5e6')

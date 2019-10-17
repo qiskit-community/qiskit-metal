@@ -58,9 +58,9 @@ from .objects.qubits.Metal_Transmon_Pocket import Metal_Transmon_Pocket
 from .backend.import_export import save_metal, load_metal
 
 
-# Circuit
-from .objects.base_objects.Metal_Utility import is_metal_circuit
-from .objects.base_objects.Metal_Circuit_Planar import Circuit_Planar
+# Design
+from .objects.base_objects.Metal_Utility import is_metal_design
+from .objects.base_objects.Metal_Design_Planar import Design_Planar
 
 from . import draw_functions
 from . import draw_cpw

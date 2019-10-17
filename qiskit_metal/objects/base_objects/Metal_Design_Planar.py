@@ -14,8 +14,8 @@
 
 
 '''
-Planar circuit class for Qiskit Metal.
-For use with drawing of any 2D planar circuit structures. Provides a number of functions for HFSS drawing.
+Planar design class for Qiskit Metal.
+For use with drawing of any 2D planar design structures. Provides a number of functions for HFSS drawing.
 
 @date: Created on Tue May 14 17:16:47 2019
 @author: Zlatko K. Minev
@@ -30,13 +30,13 @@ from ...config import DEFAULT_OPTIONS
 from ...draw_utility import parse_units_user
 from ... import draw_functions
 
-from .Metal_Circuit_Base import Metal_Circuit_Base
+from .Metal_Design_Base import Metal_Design_Base
 from .Metal_Utility import is_metal_object
 
 DEFAULT_OPTIONS.update({
-    'Circuit_Planar': Dict({
+    'Design_Planar': Dict({
         ####################################################
-        # PlanarCircuit global paramters
+        # PlanarDesign global paramters
         'globals': Dict({
             'global_units': 'mm',
             'bounding_box': [[0, 0],
@@ -60,7 +60,7 @@ DEFAULT_OPTIONS.update({
 
         ####################################################
         # HFSS defined variables
-        # Design variables, chip parameter, and circuit
+        # Design variables, chip parameter, and design
         # Is where to place variable names which are wanted for optemetrics in HFSS
         'variables': {
         },
@@ -69,27 +69,27 @@ DEFAULT_OPTIONS.update({
     })
 
 
-class Circuit_Planar(Metal_Circuit_Base): # pylint: disable=invalid-name
+class Design_Planar(Metal_Design_Base): # pylint: disable=invalid-name
     """
-    Contains circuit definitions and has some utility functions.
+    Contains design definitions and has some utility functions.
     All Metal objects on chip are tracked by this parent as well as their connectors.
 
 
     Keyword Arguments:
     ------------------------
         objects {[Dict]} -- [Pass an objects dictionary] (default: {None})
-        connectors {[Dict]} -- [Tracks all connectrs in the circuit that can be used for
+        connectors {[Dict]} -- [Tracks all connectrs in the design that can be used for
                                 named connections. Made from points] (default: {None})
         oDesign_ {[pyEPR.hfss.HfssDesign]} -- [Used to draw in HFSS] (default: {None})
-        circuit_parameters {[type]} -- [Special options for the circuit] (default: {None})
+        design_parameters {[type]} -- [Special options for the design] (default: {None})
 
-    Circuit_Planar properties:
+    Design_Planar properties:
     ------------------------
         params (Dict) : Collection of all parameters
-            Sets up using default parameters, based on `DEFAULT_OPTIONS['PlanarCircuit']`
+            Sets up using default parameters, based on `DEFAULT_OPTIONS['PlanarDesign']`
             Keep each element as same object, update, do not change instance.
 
-    Metal_Circuit_Base properties:
+    Metal_Design_Base properties:
     ----------------------
         objects (Dict) : Dict of all Metal_Objects
         connectors (Dict) : Dict of all connectors associated with the Metal_Objects and
@@ -99,19 +99,19 @@ class Circuit_Planar(Metal_Circuit_Base): # pylint: disable=invalid-name
                  objects=None,
                  connectors=None,
                  oDesign_=None,
-                 circuit_parameters=None):
-        if not circuit_parameters:
-            circuit_parameters = {}
+                 design_parameters=None):
+        if not design_parameters:
+            design_parameters = {}
 
         super().__init__(objects=objects, connectors=connectors)
 
         self.params = Dict({
-            'globals': DEFAULT_OPTIONS['Circuit_Planar']['globals'],
-            'variables': DEFAULT_OPTIONS['Circuit_Planar']['variables'],
-            'chips': DEFAULT_OPTIONS['Circuit_Planar']['chips']
+            'globals': DEFAULT_OPTIONS['Design_Planar']['globals'],
+            'variables': DEFAULT_OPTIONS['Design_Planar']['variables'],
+            'chips': DEFAULT_OPTIONS['Design_Planar']['chips']
         })
-        for key in circuit_parameters:
-            self.params[key].update(circuit_parameters.get(key, {}))
+        for key in design_parameters:
+            self.params[key].update(design_parameters.get(key, {}))
 
         self.track_objs = {
             'qubits': {},
@@ -196,7 +196,7 @@ class Circuit_Planar(Metal_Circuit_Base): # pylint: disable=invalid-name
 #REQUIRES EPR PACKAGE TO FUNCTION PROPERLY#
     def set_oDesign(self, oDesign_): # pylint: disable=invalid-name
         '''
-        Set the HFSS design, connects the Circuit_Planar object to the HFSS design via the Ansys Electronic
+        Set the HFSS design, connects the Design_Planar object to the HFSS design via the Ansys Electronic
         Desktop API. Example using EPR package;
                 self.set_oDesign(pyEPR_HFSS().pinfo.design)
         '''
@@ -215,7 +215,7 @@ class Circuit_Planar(Metal_Circuit_Base): # pylint: disable=invalid-name
 
     def hfss_set_global_params(self, gparams=None):
         '''
-        Set up global properties of the circuit.
+        Set up global properties of the design.
         Updated global params.
 
         Args:
@@ -238,7 +238,7 @@ class Circuit_Planar(Metal_Circuit_Base): # pylint: disable=invalid-name
 
     def update_variables(self, variables=None):
         '''
-            Update variable in the circuit, as defined in the circ object and
+            Update variable in the design, as defined in the design object and
             applies them to the HFSS design.
         '''
         if variables is None:

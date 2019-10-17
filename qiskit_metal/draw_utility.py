@@ -669,16 +669,16 @@ def to_Vec3Dz(vec2D, z=0):
         return array(list(vec2D)+[z])
 
 
-def to_Vec3D(circ, options, vec2D):
+def to_Vec3D(design, options, vec2D):
     '''
-        For the given circut, get the z
+        For the given designut, get the z
     '''
     if isinstance(vec2D[0], Iterable):
-        return array([to_Vec3D(circ, options, vec) for vec in vec2D])
+        return array([to_Vec3D(design, options, vec) for vec in vec2D])
     else:
         # if not isinstance(options,dict):
         #    options={'chip':options}
-        z = parse_units(circ.get_substrate_z(
+        z = parse_units(design.get_substrate_z(
             options.get('chip', draw_functions.DEFAULT['chip'])))
         return array(list(vec2D)+[z])
 

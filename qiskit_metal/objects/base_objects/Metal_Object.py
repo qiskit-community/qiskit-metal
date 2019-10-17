@@ -77,7 +77,7 @@ class Metal_Object():  # pylint: disable=invalid-name
 
     def __init__(self, design, name, options=None):
 
-        assert is_metal_circuit(
+        assert is_metal_design(
             design), "Error you did not pass in a valid Metal Design object as a parent of this component."
 
         self.circ = design
@@ -93,8 +93,8 @@ class Metal_Object():  # pylint: disable=invalid-name
         self.objects_hfss = Dict()  # container for hfss objects
         self.objects_gds = Dict()  # container for gds objects (not yet implemented)
 
-        # Add self to circuit objects dictionary
-        self.circ.objects[name] = self
+        # Add self to design objects dictionary
+        self.design.objects[name] = self
 
     @classmethod
     def create_default_options(cls):
@@ -135,15 +135,15 @@ class Metal_Object():  # pylint: disable=invalid-name
     @property
     def OBJECTS(self):  # pylint: disable=invalid-name
         '''
-        returns object dictionary containing all Metal Objects in the circuit
+        returns object dictoanry containing all Metal Objects in the design
         '''
-        return self.circ.OBJECTS
+        return self.design.OBJECTS
 
     def get_connectors(self):
         '''
         Returns the all defined connectors
         '''
-        return self.circ.connectors
+        return self.design.connectors
 
     def update_objects(self):
         """
@@ -197,4 +197,4 @@ class Metal_Object():  # pylint: disable=invalid-name
         Returns the default chip elevation for the chip specified in
         self.options.chip
         '''
-        return self.circ.get_substrate_z(self.options)
+        return self.design.get_substrate_z(self.options)
