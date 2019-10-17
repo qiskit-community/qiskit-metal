@@ -1,11 +1,11 @@
 # Qiskit Metal [![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.png?v=103)](https://github.com/zlatko-minev/pyEPR) [![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/zlatko-minev/pyEPR)
 ### Quantum VLSI and Sims 
 
-# Docs and how to use
+## Docs and how to use
 
 (Under construction)
 
-# Installation notes
+## Installation notes
 
 For development, the best way is to fork the repository. Then install the following required packages. Certain packages are only required if you require a particulat plugin. For example, if one does not require to export to gds, one does not need to install pygds.
 
