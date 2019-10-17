@@ -22,22 +22,24 @@ from copy import deepcopy
 from ..base_objects.Metal_Object import Metal_Object, Dict
 from ...config import DEFAULT_OPTIONS
 
-#Default Options setup.
+
+###
+# Setup default options
 DEFAULT_OPTIONS['Metal_Qubit.connector'] = Dict()
 DEFAULT_OPTIONS['Metal_Qubit'] = Dict(
+    pos_x='0um',
+    pos_y='0um',
+    connectors=Dict(),
     _hfss=Dict(
         Lj='10nH',
         Cj=0,  # Warning - do not use non zero for pyEPR analysis at present, need to use upgrade
         _Rj=0,
     ),
-    _gds=Dict(),
-    pos_x='0um',
-    pos_y='0um',
-    connectors=Dict()
+    _gds=Dict()
 )
 
 
-class Metal_Qubit(Metal_Object): # pylint: disable=invalid-name
+class Metal_Qubit(Metal_Object):  # pylint: disable=invalid-name
     '''
     Qubit base class
 
@@ -89,5 +91,6 @@ class Metal_Qubit(Metal_Object): # pylint: disable=invalid-name
 
         for name in self.options.connectors:
             my_options_connector = self.options.connectors[name]
-            self.options.connectors[name] = deepcopy(Dict(DEFAULT_OPTIONS[class_name+'.connector']))
+            self.options.connectors[name] = deepcopy(
+                Dict(DEFAULT_OPTIONS[class_name+'.connector']))
             self.options.connectors[name].update(my_options_connector)

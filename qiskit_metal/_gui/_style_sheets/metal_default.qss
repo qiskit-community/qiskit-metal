@@ -22,10 +22,10 @@ QLabel
 }
 QMenu::item
 {
-    padding: 1ex 3ex 1ex 6ex;
-    margin-left: 5.5ex;
-    border: 0.1ex solid transparent; /* reserve space for selection border */
-    height: 17px;
+    padding: 1ex 3ex 1ex 10ex;
+    /*margin-left: 5.5ex; */
+    border: 1px solid transparent; /* reserve space for selection border */
+    height: 1.2em;
     /*width:400px;*/
 }
 QMenu::icon {
@@ -93,4 +93,22 @@ QStatusBar QLabel
 {
     font-size: 10.5pt;
     font-weight: bold;
+}
+
+QMenu#createMetal
+{
+    background-color: #3daee9;
+}
+
+QLabel#lblCreateMetal {
+    background-color : #A7ADBA;
+    color: #101112;
+    padding: 4px;
+    border: none;
+    font-size: 4pt;
+    border-style: outset;
+    border-width: 0px;
+    border-radius: 5px;
+    font: bold 12px;
+    padding: 5px;
 }

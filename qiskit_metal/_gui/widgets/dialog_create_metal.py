@@ -64,16 +64,13 @@ class Dialog_create_metal(QDialog):
         self.my_class = my_class
         self.results = {}
         self.logger = parent.logger
+        self.options = self.get_default_options(my_class)
 
         # Window style
         if not WindowTitle:
             WindowTitle = f'Create Metal Object `{my_class.__name__}`'
         self.setWindowTitle(WindowTitle)
         self.setModal(False)
-
-        # Default options
-        from ... import DEFAULT_OPTIONS
-        self.options = deepcopy(DEFAULT_OPTIONS[my_class.__name__])
 
         # Layout
         self.layout = QHBoxLayout()
@@ -88,6 +85,13 @@ class Dialog_create_metal(QDialog):
         # Finalize
         self.resize(700, 450)
         self.setLayout(self.layout)
+
+    def get_default_options(self, cls):
+        '''
+            Get the object default options
+        '''
+        from ... import DEFAULT_OPTIONS
+        return cls.create_default_options()
 
     def make_left_panel(self, parent):
         self.layout_left = QVBoxLayout()
@@ -182,55 +186,3 @@ class Dialog_create_metal(QDialog):
         '''
         result = self.exec()
         return result, self.results
-
-
-#form = QFormLayout()
-        #self.texts_key = ['name'] + my_class.__gui_creation_args__
-        #self.texts = []
-
-        # make nicker promit
-        # for arg_name in self.texts_key:
-        #    item = QTextEdit() if arg_name.startswith('option') else QLineEdit()
-        #    form.addRow(QLabel(arg_name), item)
-        #    self.texts += [item]
-        #    #value, used_ast = parse_param_from_str(text)
-        #    #print('value=',value, ' used_ast=',used_ast)
-        #    #my_args[arg_name] = value
-
-        # make gneral to handle all arguments here
-        #from inspect import signature
-        #sig = signature(Metal_Transmon_Pocket)
-        # for pname, p in sig.parameters.items():
-        #    print(pname, p.empty, p.default, p.kind)
-
-        #form.addRow(QLabel("Country:"), QComboBox())
-        #form.addRow(QLabel("Age:"), QSpinBox())
-        #self.form = form
-        # self.formGroupBox.setLayout(form)
-        # layout1.addWidget(self.formGroupBox)
-
-        # add todialog
-        # layout.addLayout(layout1)
-        # self.setLayout(layout)
-
-        # self.ok = QPushButton("Ok")
-        # self.cancel = QPushButton("cancel")
-        # layout2.addWidget(self.cancel)
-        # layout2.addWidget(self.ok)
-        # # Add button signal to greetings slot
-        # self.ok.clicked.connect(self.on_ok)
-        # self.cancel.clicked.connect(self.on_cancel)
-
-    # def _get_data(self):
-        # self.result_values = []
-        # for i, t in enumerate(self.texts):
-        #     if isinstance(t, QTextEdit):
-        #         text = t.toPlainText() # QTextEdit
-        #     else:
-        #         text = t.text() # QLineEdit
-        #     value, used_ast = parse_param_from_str(text)
-        #     if value == '':
-        #         value = None
-        #     #print('value=', value, ' used_ast=',used_ast)
-        #     self.result_values  += [value]
-        #     self.results[self.texts_key[i]] = value

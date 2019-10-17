@@ -626,7 +626,7 @@ def unit_vector(vector):
         v2 = unit_vector(vector[:2])
         return np.append(v2, vector[2])
     else:
-        raise 'You did not give a 2 or 3 vec'
+        raise Exception('You did not give a 2 or 3 vec')
 
 
 def get_unit_vec(two_points):

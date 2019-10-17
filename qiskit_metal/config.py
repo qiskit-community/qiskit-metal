@@ -20,56 +20,65 @@ File contains some config definitions. Mostly internal.
 @author: Zlatko K. Minev
 """
 
-import logging
-
 from .toolbox.attribute_dictionary import Dict
 from ._base_dicts import DEFAULT_OPTIONS, DEFAULT # pylint: disable=unused-import
 
-####################################################################################
-# GUI RELATED CONFIG
-###
-
-
-"""
-CREATE_METAL_CLASSES
-    Name of classes that will be available to be created in the GUI
-    Assumes that the module file name is the same as the class name.
-    For example, provided
-        'qiskit_metal.objects.Metal_Transmon_Pocket'
-    it will basically perform:
-        from qiskit_metal.objects.Metal_Transmon_Pocket import  Metal_Transmon_Pocket
-"""
-CREATE_METAL_CLASSES = [
-    'qiskit_metal.objects.qubits.Metal_Transmon_Pocket',
-    'qiskit_metal.objects.qubits.Metal_Transmon_Cross',
-    'qiskit_metal.objects.interconnects.Metal_cpw_connect',
-    'qiskit_metal.objects.qubits.Metal_Transmon_Pocket_CL']
-
-
-# Tips for the gui
-tips = [
-    'Right clicking the tree elements allows you to do neat things.',
-    '''You can show all connector names on the plot by clicking the connector\
- icon in the plot toolbar.''',
-
-    '''The gui and the python code work synchronously. If you modify something\
- in the gui, it will be reflected in your python interperter and vice versa.\
- Note that the gui does not automatically refresh on all events if you update\
- variables from the python interperter.''',
-
-    '''Changed some object parameters? Click the <b>Remake</b> button in the main\
- toolbar to recreate the polygons.'''
-]
-
 
 ####################################################################################
-# LOGGING RELATED CONFIG
-###
+# GUI CONFIG
+
+"""
+GUI_CONFIG
+
+    create_metal_classes
+    ---------------------------
+    Name of class folders that contain modules that will be available to be
+    created in the GUI
+
+    Conventions:
+    Assumes that the module file name is the same as the class name contained in it.
+    For example, provided `qiskit_metal.qubits` has `Metal_Transmon_Pocket.py`, the
+    gui will do
+        `from qiskit_metal.qubits.Metal_Transmon_Pocket import Metal_Transmon_Pocket`
+
+    tips
+    ---------------------------
+    Tips tha the user can define to show in the gui. These rotate each time the gui is started.
+"""
+GUI_CONFIG = Dict(
+    create_metal_classes = [
+        'qiskit_metal.objects.qubits',
+        'qiskit_metal.objects.interconnects'
+    ],
+
+    tips = [
+        'Right clicking the tree elements allows you to do neat things.',
+
+        'You can show all connector names on the plot by clicking the connector'\
+        'icon in the plot toolbar.',
+
+        'The gui and the python code work synchronously. If you modify something'\
+        'in the gui, it will be reflected in your python interperter and vice versa.'\
+        'Note that the gui does not automatically refresh on all events if you update'\
+        'variables from the python interperter.',
+
+        'Changed some object parameters? Click the <b>Remake</b> button in the main'\
+        'toolbar to recreate the polygons.'
+    ],
+
+    logger = Dict(
+        style = ".DEBUG {color: green;}\n.WARNING,.ERROR,.CRITICAL {color: red;}\n.'\
+                'ERROR,.CRITICAL {font-weight: bold;}\n",
+        num_lines = 500,
+    ),
+
+)
+
+####################################################################################
+# LOG CONFIG
 _log_format = '%(asctime)s %(levelname)s [%(funcName)s]: %(message)s'
 _log_datefmt = '%I:%M%p %Ss'
 
-# GUI Logging
-log_lines = 300
-_gui = Dict(
-    log_style=".DEBUG {color: green;}\n.WARNING,.ERROR,.CRITICAL {color: red;}\n.ERROR,.CRITICAL {font-weight: bold;}\n"
-)
+
+####################################################################################
+# USER CONFIG

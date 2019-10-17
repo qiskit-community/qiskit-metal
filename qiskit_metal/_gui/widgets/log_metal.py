@@ -47,7 +47,7 @@ class Logging_Window_Widget(QTextEdit):
 
         # props
         self.tracked_loggers = {}
-        self.logged_lines = collections.deque([], config.log_lines)
+        self.logged_lines = collections.deque([], config.GUI_CONFIG.logger.num_lines)
 
         ### layout
 
@@ -121,13 +121,13 @@ class Logging_Window_Widget(QTextEdit):
             </tr>
         </table>
         </span>
-        <b>Tip: </b> {random.choice(config.tips)}
+        <b>Tip: </b> {random.choice(config.GUI_CONFIG['tips'])}
         <br>''')
 
     def print_all_tips(self):
         """Prints all availabel tips in the log window
         """
-        for tip in config.tips:
+        for tip in config.GUI_CONFIG['tips']:
             self.log_message(f'''<span class="INFO">{' '*self.timestamp_len} {tip} </span>''')
 
     @catch_exception_slot_pyqt
@@ -161,7 +161,7 @@ class Logging_Window_Widget(QTextEdit):
         self.addAction(action)
 
         # style
-        self.document().setDefaultStyleSheet(config._gui.log_style)
+        self.document().setDefaultStyleSheet(config.GUI_CONFIG.logger.style)
 
     @property
     def get_all_checked(self):
