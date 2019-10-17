@@ -441,6 +441,9 @@ class Metal_gui(QMainWindow):
                 if my_args['name']:
                     metal_class(self.design, my_args['name'], options=my_args['options'])
                     self.refresh_all()
+                else:
+                    QMessageBox.about(self, "No name provided.", "Warning: You did not provide a"\
+                                      " name for the object. Object will not be created.")
         # Save
         setattr(self, 'create_'+tool_name, create_metal_obj)
 

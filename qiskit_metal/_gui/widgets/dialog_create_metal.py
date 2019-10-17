@@ -60,17 +60,50 @@ except ImportError as e:
 class Dialog_create_metal(QDialog):
 
     html_style = """
-        table, th, td {
-        border: 0px;
-        padding: 0px;
-        }
-        table, th, td {
-        background-color: #eff8ef;
-        padding: 0px;
-        border: 0px;
-        height: 0px;
-        }
-        """
+table, th, td {
+    border: 0px;
+    padding: 0px;
+}
+table, th, td {
+    background-color: #eff8ef;
+    padding: 0px;
+    border: 0px;
+    height: 0px;
+}
+    """
+
+    html_style_connectors = """
+/* includes alternating gray and white with on-hover color */
+
+.zkmheading {
+    color : #006400;
+}
+table {
+  border-collapse: collapse;
+}
+
+table, th, td {
+  border: 1px solid black;
+}
+
+td, th {
+    padding: 5px;
+}
+
+th {
+    font-size:large;
+    text-align:left;
+}
+
+tr:nth-child(even) {
+    background: #E0E0E0;
+}
+
+tr:hover {
+    background: silver;
+    cursor: pointer;
+}
+    """
 
     def __init__(self, parent, my_class,
                  WindowTitle=None):
@@ -108,34 +141,6 @@ class Dialog_create_metal(QDialog):
         self.resize(900, 600)
         self.setLayout(self.layout)
 
-        self.setStyleSheet(
-            "QScrollBar:vertical {"
-            "    border: 1px solid #999999;"
-            "    background:white;"
-            "    width:10px;    "
-            "    margin: 0px 0px 0px 0px;"
-            "}"
-            "QScrollBar::handle:vertical {"
-            "    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,"
-            "    stop: 0 rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130), stop:1 rgb(32, 47, 130));"
-            "    min-height: 0px;"
-            "}"
-            "QScrollBar::add-line:vertical {"
-            "    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,"
-            "    stop: 0 rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));"
-            "    height: 0px;"
-            "    subcontrol-position: bottom;"
-            "    subcontrol-origin: margin;"
-            "}"
-            "QScrollBar::sub-line:vertical {"
-            "    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,"
-            "    stop: 0  rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));"
-            "    height: 0 px;"
-            "    subcontrol-position: top;"
-            "    subcontrol-origin: margin;"
-            "}"
-        )
-
     def get_default_options(self, cls):
         '''
             Get the object default options
@@ -150,21 +155,28 @@ class Dialog_create_metal(QDialog):
         self.tab1 = QWidget()
         self.tab2 = QWidget()
         self.tab3 = QWidget()
+        self.tab4 = QWidget()
 
         # Add tabs and layout
         self.tabs.addTab(self.tab1,"Description / Help")
         self.tabs.addTab(self.tab2,"Source Code")
         self.tabs.addTab(self.tab3,"Formatted Docstring")
+        self.tabs.addTab(self.tab4,"Connectors")
 
         self.tab1.layout = QVBoxLayout()
         self.tab2.layout = QVBoxLayout()
         self.tab3.layout = QVBoxLayout()
+        self.tab4.layout = QVBoxLayout()
 
         self.tab1.setLayout(self.tab1.layout)
         self.tab2.setLayout(self.tab2.layout)
         self.tab3.setLayout(self.tab3.layout)
+        self.tab4.setLayout(self.tab4.layout)
 
-        for layout in [self.tab1.layout, self.tab2.layout]:
+        # i dont think this really does anything
+        for layout in [self.tab1.layout, self.tab2.layout,
+                       self.tab3.layout, self.tab4.layout,
+                       self.layout_left]:
             layout.setContentsMargins(0, 0, 0, 0)
             layout.setSpacing(0)
 
@@ -209,14 +221,14 @@ class Dialog_create_metal(QDialog):
             icon_text = ''
             if not (icon_path is None):
                 icon_text = f'''<b>Icon:</b>
-                <img src="{icon_path}"></img> '''
+                <img src="{icon_path}"></img><br> '''
 
             document.setDefaultStyleSheet(self.html_style)
             text = "<body>"\
             f"""<b>Class:</b><br>&nbsp;<span style="font-weight:bold; color:#006400;">{my_class.__name__}</span> {signature(my_class)}<br>
-            <b>Description:</b>
-                <pre style="background-color: #EBECE4;"><code>{text.strip()}</code></pre>
             {icon_text}
+            <b>Description:</b>"""\
+            f"""<pre style="background-color: #EBECE4;"><code>{text.strip()}</code></pre>
             </body>
             """.strip().replace('\n', '<br>')
             document.setHtml(text.strip())
@@ -277,12 +289,33 @@ class Dialog_create_metal(QDialog):
                                       ' Is this package installed?\n'
                                       ' If you would like to use it, please install.\n')
 
+        if 1:
+            # TAB 4
+            doc, document = create_doc()
+            self.doc4 = doc
+            self.document4 = document
+
+            # Text to go in document
+            gui = self.parent() # assume gui
+            connectors = gui.design.connectors
+
+            text =  '<h3 class="zkmheading">Available connectors:</h3>\n'+\
+                    '<table> <tr><th>Name</th><th>Properties</th></tr>\n'+\
+                    '\n'.join([ f"""<tr style="background:{'#E0E0E0' if num % 2 else '#ededed'};">
+                                         <td style="font-weight:bold;">{k}</td>
+                                         <td>{str(v).strip()}</td>
+                                    </tr>""" \
+                        for num, (k, v) in enumerate(connectors.items()) ]) +\
+                    '</table>'
+
+            document.setDefaultStyleSheet(self.html_style_connectors)
+            document.setHtml(text)
+            self.tab4.layout.addWidget(doc)
+
         # Scroll to top
-        for doc in [self.doc, self.doc2, self.doc3]:
-            #vs = doc.verticalScrollBar()
-            #vs.setValue(0)
+        for doc in [self.doc, self.doc2, self.doc3, self.doc4]:
             cursor = doc.textCursor()
-            cursor.setPosition(0)#cursor.position() - 5)
+            cursor.setPosition(0)
             doc.setTextCursor(cursor)
 
         #self.layout_left.addWidget(self.tabs)
