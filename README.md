@@ -20,9 +20,10 @@ pip install addict
 ```
 If you do not have conda, you can replace use pip instead of conda. 
 
-Install [pyEPR](https://github.com/zlatko-minev/pyEPR) by following the instructions on the repository. 
+Install [pyEPR](https://github.com/zlatko-minev/pyEPR) by following the instructions on the repository.   
+ * pyEPR provides a dully automated, eigen-analysis to calculate both the Hamiltonian and dissipative parameters of a distributed circuit, based on the fraction of energy stored in the non-linear/dissipative element in a given mode of the circuit
 
-#### Plugin: Export yo GDS for mask design
+#### Plugin: Export to GDS for mask design
 
 To use the GDS export plugin, please install `gdspy`. This will require you to first install Microsoft Visual C++ Build Tools, as a C++ compiler for speed is needed. This can be done with
 ```
@@ -30,11 +31,6 @@ pip install gdspy
 ```
 If you do not already have the compiler, and get `error: Microsoft Visual C++ 14.0 is required. Get it with "Microsoft Visual C++ Build Tools": https://visualstudio.microsoft.com/downloads/`, please download the build tools from the site. You can find it under `Tools for Visual Studio` entitled `Build Tools for Visual Studio 20xx`. Note, you do not need to intsll the Windows SDK.
 
-
-#### Additional packages
-
-**Energy Participation Ratio**
-  * Fully automated, eigen-analysis to calculate both the Hamiltonian and dissipative parameters of a distributed circuit, based on the fraction of energy stored in the non-linear/dissipative element in a given mode of the circuit
 
 ## Authors and Citation
 
