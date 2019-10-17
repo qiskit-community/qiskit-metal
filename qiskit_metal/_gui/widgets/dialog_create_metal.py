@@ -291,6 +291,7 @@ tr:hover {
 
         if 1:
             # TAB 4
+            #TODO: Abstract away the connector tab and make usable in other places to see
             doc, document = create_doc()
             self.doc4 = doc
             self.document4 = document
@@ -301,7 +302,7 @@ tr:hover {
 
             text =  '<h3 class="zkmheading">Available connectors:</h3>\n'+\
                     '<table> <tr><th>Name</th><th>Properties</th></tr>\n'+\
-                    '\n'.join([ f"""<tr style="background:{'#E0E0E0' if num % 2 else '#ededed'};">
+                    '\n'.join([ f"""<tr style="background:{'#F0F0F0' if num % 2 else '#e3e3e3'};">
                                          <td style="font-weight:bold;">{k}</td>
                                          <td>{str(v).strip()}</td>
                                     </tr>""" \
@@ -334,6 +335,11 @@ tr:hover {
                 self.label_name.setFont(font)
             self.layout_form.addRow(self.label_name, self.form_name)
             self.right_layout.addLayout(self.layout_form)
+
+            if 1:
+            self.lbl = QLabel('Help: Right click Tree to pop up menu to create sub-dictionaries or string items.')
+            self.lbl.setWordWrap(True)
+            self.right_layout.addWidget(self.lbl)
 
         if 1:  # Tree
             self.tree = Amazing_Dict_Tree_zkm(self, self.options,
