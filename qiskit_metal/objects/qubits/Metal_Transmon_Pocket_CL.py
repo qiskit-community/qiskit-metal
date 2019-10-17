@@ -135,21 +135,21 @@ class Metal_Transmon_Pocket_CL(Metal_Transmon_Pocket):  # pylint: disable=invali
         return objects
 
 #Super call not quite working
-    def hfss_draw(self):
-        '''
-        Draw in HFSS.
-        Makes a meshing recntalge for the the pocket as well.
-        '''
-        super().hfss_draw()
+    # def hfss_draw(self):
+    #     '''
+    #     Draw in HFSS.
+    #     Makes a meshing recntalge for the the pocket as well.
+    #     '''
+    #     super().hfss_draw()
 
-        if options.make_CL == 'ON': #checks if this qubit has a charge line, and if it does etches the appropriate section
-            oModeler.subtract(ground, [hfss_objs.CL['cl_Etcher']])
+    #     if options.make_CL == 'ON': #checks if this qubit has a charge line, and if it does etches the appropriate section
+    #         oModeler.subtract(ground, [hfss_objs.CL['cl_Etcher']])
 
-        #attaches the different relevant geometries to perfect E boundaries (as equivalent thin film superconductor)
-        if DEFAULT['do_PerfE']:
-           if options.make_CL == 'ON':
-                oModeler.append_PerfE_assignment(name+'_CL' if DEFAULT['BC_individual'] else options_hfss['BC_name_conn'], hfss_objs.CL['cl_Metal'])
+    #     #attaches the different relevant geometries to perfect E boundaries (as equivalent thin film superconductor)
+    #     if DEFAULT['do_PerfE']:
+    #        if options.make_CL == 'ON':
+    #             oModeler.append_PerfE_assignment(name+'_CL' if DEFAULT['BC_individual'] else options_hfss['BC_name_conn'], hfss_objs.CL['cl_Metal'])
 
-       # if DEFAULT._hfss.do_mesh:
+    #    # if DEFAULT._hfss.do_mesh:
 
-        return hfss_objs
+    #     return hfss_objs
