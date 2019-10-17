@@ -286,12 +286,12 @@ class Metal_Transmon_Pocket(Metal_Qubit): # pylint: disable=invalid-name
         # add to objects
         self.objects.connectors[name] = objects
 
-        # add connectors to circ tracker
-        circ = self.circ
-        if not circ is None:
+        # add connectors to design tracker
+        design = self.design
+        if not design is None:
             points = Polygon(objects.connector_wire).coords_ext
             # debug: draw_objs([LineString(points)], kw=dict(lw=2,c='r'))
-            circ.connectors[self.name+'_'+name] = make_connector_props(\
+            design.connectors[self.name+'_'+name] = make_connector_props(\
                                 points[2:2+2], options, vec_normal=points[2]-points[1])
 
         return objects
@@ -304,12 +304,12 @@ class Metal_Transmon_Pocket(Metal_Qubit): # pylint: disable=invalid-name
         Makes a meshing recntalge for the the pocket as well.
         '''
         # custom shortcuts
-        circ = self.circ
+        design = self.design
         name = self.name
         options = self.options
         options_hfss = self.options._hfss
         rect_options = options_hfss.rect_options
-        _, oModeler = circ.get_modeler() # pylint: disable=invalid-name
+        _, oModeler = design.get_modeler() # pylint: disable=invalid-name
         oh = lambda x: parse_units_user(options_hfss[x]) # pylint: disable=invalid-name
 
         # Pocket: make mesh rectangle for pocket
@@ -318,12 +318,12 @@ class Metal_Transmon_Pocket(Metal_Qubit): # pylint: disable=invalid-name
         objs = [self.objects, dict(mesh=rect_msh)]
 
         # Pocket: Draw all pocket objects
-        self.objects_hfss = Dict(draw_hfss.draw_objects_shapely(circ.oModeler, objs,
+        self.objects_hfss = Dict(draw_hfss.draw_objects_shapely(design.oModeler, objs,
                                                                 self.name, pos_z=self.get_chip_elevation(), hfss_options=rect_options))
         hfss_objs = self.objects_hfss  # shortcut
 
         # Pocket: Subtract ground
-        ground = circ.get_ground_plane(options)
+        ground = design.get_ground_plane(options)
         oModeler.subtract(ground, [hfss_objs['rect_pk']])
         subtracts = [hfss_objs.connectors[xx]['subtract_grnd_connector'] for xx in self.objects.connectors]
         oModeler.subtract(ground, subtracts)
@@ -358,17 +358,17 @@ class Metal_Transmon_Pocket(Metal_Qubit): # pylint: disable=invalid-name
             # Pocket
             rect_mesh = hfss_objs['mesh']
             rect_mesh.wireframe = True
-            circ.mesh_obj(
+            design.mesh_obj(
                 rect_mesh, options_hfss['mesh_name'], **options_hfss['mesh_kw'])
 
             # JJ
-            circ.mesh_obj(
+            design.mesh_obj(
                 hfss_objs['rect_jj'], options_hfss['mesh_name_jj'], **options_hfss['mesh_kw_jj'])
 
             # Pads
             rects = [hfss_objs[name_pad]
                      for name_pad in ['pad_top', 'pad_bot']]
-            circ.mesh_obj(
+            design.mesh_obj(
                 rects, options_hfss['mesh_name_pad'], **options_hfss['mesh_kw_pad'])
             #print(f"rects={rects}, options_hfss['mesh_name_pad']={options_hfss['mesh_name_pad']}, options_hfss['mesh_kw_pad']={options_hfss['mesh_kw_pad']}")
 
@@ -379,7 +379,7 @@ class Metal_Transmon_Pocket(Metal_Qubit): # pylint: disable=invalid-name
                     rects += [hfss_objs.connectors[key][name_pad]
                               for name_pad in ['connector_pad', 'connector_wire']]
                 #print(f"rects={rects}, options_hfss['mesh_name_bon']={options_hfss['mesh_name_con']}, options_hfss['mesh_kw_pad']={options_hfss['mesh_kw_pad']}")
-                circ.mesh_obj(
+                design.mesh_obj(
                     rects, options_hfss['mesh_name_con'], **options_hfss['mesh_kw_con'])
 
         return hfss_objs

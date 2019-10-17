@@ -46,8 +46,8 @@ _angle_Y2X = {'X':-90,'Y':0} # If draw along the Y axis, takes Y axis to X. Keep
 ###
 
 # @deprecated
-def do_PerfE(options, circ, obj):
-    _, oModeler = circ.get_modeler()
+def do_PerfE(options, design, obj):
+    _, oModeler = design.get_modeler()
     if options.get('do_PerfE',  DEFAULT['do_PerfE']):
         oModeler.append_PerfE_assignment(
             str(obj) if options.get('BC_individual', DEFAULT['BC_individual'])
@@ -55,22 +55,22 @@ def do_PerfE(options, circ, obj):
 
 
 # @deprecated
-def do_cut_ground(options, circ, objs):
+def do_cut_ground(options, design, objs):
     ''' do_cut '''
-    _, oModeler = circ.get_modeler()
+    _, oModeler = design.get_modeler()
     if options.get('do_cut',  DEFAULT['do_cut']):
         assert isinstance(objs, list)
-        oModeler.subtract(circ.get_ground_plane(options), objs)
+        oModeler.subtract(design.get_ground_plane(options), objs)
 
 # @deprecated
 
 
-def do_mesh(options, circ, objs):
+def do_mesh(options, design, objs):
     ''' do_mesh  - TO DO replace with funciton draw_hfss'''
-    _, oModeler = circ.get_modeler()
+    _, oModeler = design.get_modeler()
     if options.get('do_mesh',  DEFAULT._hfss.do_mesh):
         assert isinstance(objs, list)
-        oModeler.subtract(circ.get_ground_plane(options), objs)
+        oModeler.subtract(design.get_ground_plane(options), objs)
 
 
 ################################################################################
@@ -82,13 +82,13 @@ def do_mesh(options, circ, objs):
 DEFAULT_OPTIONS['draw_bounding_box'] = [[0, 0], [0, 0], ['0.890mm', '0.900mm']],
 
 
-def draw_bounding_box(circ, options=DEFAULT_OPTIONS['draw_bounding_box']):
+def draw_bounding_box(design, options=DEFAULT_OPTIONS['draw_bounding_box']):
     """
     .. figure:: figures/draw_chip1.png
         :align: center
         :width: 6in
     """
-    _, oModeler = circ.get_modeler()
+    _, oModeler = design.get_modeler()
 
     oModeler.draw_region(options, PaddingType="Absolute Offset")
 
@@ -109,7 +109,7 @@ DEFAULT_OPTIONS['draw_substrate'] = Dict({
 })
 
 
-def draw_substrate(circ, options):
+def draw_substrate(design, options):
     """
     .. figure:: figures/draw_chip1.png
         :align: center
@@ -119,7 +119,7 @@ def draw_substrate(circ, options):
         elevation: Specify the z heigth
     """
     options = {**DEFAULT_OPTIONS['draw_substrate'], **options}
-    _, oModeler = circ.get_modeler()
+    _, oModeler = design.get_modeler()
 
     elevation, size, pos_xy = parse_options_hfss(options, ['elevation', 'size', 'pos_xy'])
     origin = array([*pos_xy, elevation])
@@ -145,7 +145,7 @@ def draw_substrate(circ, options):
 
 ####################################################################################
 ###
-# Connector - This should move and be a class TODO: Make a class and move to planar circuit
+# Connector - This should move and be a class TODO: Make a class and move to planar design
 ###
 
 

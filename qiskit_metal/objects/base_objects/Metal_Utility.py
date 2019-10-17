@@ -31,10 +31,10 @@ def is_metal_object(obj):
     return hasattr(obj, '__i_am_metal__')
 
 
-def is_metal_circuit(obj):
+def is_metal_design(obj):
     '''
     Handle problem with isinstance when reloading modules
     '''
     if isinstance(obj, Dict):
         return False
-    return hasattr(obj, '__i_am_metal_circuit__')
+    return hasattr(obj, '__i_am_metal_design__')

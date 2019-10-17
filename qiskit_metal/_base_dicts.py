@@ -53,8 +53,8 @@ DEFAULT = Dict({
         ground_main = (100,120,140),  # lighter:  (196,202,206)
         ),
     'annots' : Dict( # annotaitons
-        circ_connectors_ofst = [0.025,0.025],
-        circ_connectors = dict( # called by ax.annotate
+        design_connectors_ofst = [0.025,0.025],
+        design_connectors = dict( # called by ax.annotate
             color='r',
             arrowprops = dict(color='r', shrink=0.1, width=0.05, headwidth=0.1),
         )

@@ -21,29 +21,29 @@ Saving and load metal data
 
 import pickle
 
-def save_metal(filename, circ):
+def save_metal(filename, design):
     """
     filename: str path
-    circ : circuit obejct Metal_Circ_Base
+    design : design obejct Metal_Design_Base
     TODO: Right now just does pick, should probably also have a user
     friendly file saved also with the params as JSON fo easier access
     """
-    pickle.dump(circ, open(filename, "wb" ))
+    pickle.dump(design, open(filename, "wb" ))
 
 
 def load_metal(filename, do_update=True):
     """
-    Returns the pickled circuit object and updates if asked the param dicts for
+    Returns the pickled design object and updates if asked the param dicts for
     defaults
 
     do_update: True
         updates DEFAULT, DEFAULT_OPTIONS with the params saved in the file
     """
-    circ = pickle.load( open( filename, "rb" ) )
+    design = pickle.load( open( filename, "rb" ) )
 
     if do_update:
         from .config import DEFAULT, DEFAULT_OPTIONS
-        DEFAULT.update(circ._DEFAULT)
-        DEFAULT_OPTIONS.update(circ._DEFAULT_OPTIONS)
+        DEFAULT.update(design._DEFAULT)
+        DEFAULT_OPTIONS.update(design._DEFAULT_OPTIONS)
 
-    return circ
+    return design

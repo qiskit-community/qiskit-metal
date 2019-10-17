@@ -65,10 +65,10 @@ class Metal_Qubit(Metal_Object): # pylint: disable=invalid-name
     _img = 'Metal_Qubit.png'
     #__gui_creation_args__ = ['options_connectors']
 
-    def __init__(self, circ, name, options=None, options_connectors=None,
+    def __init__(self, design, name, options=None, options_connectors=None,
                  _make=True):
 
-        super().__init__(circ, name, options=options)
+        super().__init__(design, name, options=options)
 
         if options_connectors:
             self.options.connectors.update(options_connectors)

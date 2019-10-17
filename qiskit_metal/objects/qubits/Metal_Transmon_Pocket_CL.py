@@ -69,8 +69,8 @@ class Metal_Transmon_Pocket_CL(Metal_Transmon_Pocket):  # pylint: disable=invali
     Can add connectors on it using the `options_connectors` dictonary
     '''
 
-    # def __init__(self, circ, name, options=None, options_connectors=None):
-    #    super().__init__(circ, name, options, options_connectors)
+    # def __init__(self, design, name, options=None, options_connectors=None):
+    #    super().__init__(design, name, options, options_connectors)
 
 # super call not quite working
     def make(self):
@@ -118,12 +118,12 @@ class Metal_Transmon_Pocket_CL(Metal_Transmon_Pocket):  # pylint: disable=invali
         # Move to the final position
         objects = translate_objs(objects, pos_x, pos_y)
 
-        # Making the circ connector for 'easy connect'
-        circ = self.circ
-        if not circ is None:
+        # Making the design connector for 'easy connect'
+        design = self.design
+        if not design is None:
             portPoints = list(shape(objects['port_Line']).coords)
             vNorm = (-(portPoints[1][1] - portPoints[0][1]), (portPoints[1][0]-portPoints[0][0]))
-            circ.connectors[self.name+'_' +
+            design.connectors[self.name+'_' +
                             name] = make_connector_props(portPoints, options, vec_normal=vNorm)
 
         # Removes temporary port_line from draw objects

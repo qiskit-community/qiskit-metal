@@ -49,7 +49,7 @@ Description:
     ----------------------------------------------------------------------------
     Creates a meandered CPW transmission line between two 'connector' points.
     The transmission line is drawn from "connector1" to "connector2". These are
-    tracked in the circuit dictionary which must also have been passed in.
+    tracked in the design dictionary which must also have been passed in.
 
     Total length of the meander is found from;
 
@@ -60,8 +60,8 @@ Options:
 
     Metal_cpw_connect (options)
     ----------------------------------------------------------------------------
-    connector1: string of the name of the starting connector point (as listed in circuit.connectors dictionary)
-    connector2: string of the name of the ending connector point (as listed in circuit.connectors dictionary)
+    connector1: string of the name of the starting connector point (as listed in design.connectors dictionary)
+    connector2: string of the name of the ending connector point (as listed in design.connectors dictionary)
     connector1/2_leadin: 'buffer' length of straight CPW transmission line from the connector point
     _hfss=Dict(): options for hfss useage
     _gds=Dict(): options for gds useage
@@ -76,13 +76,13 @@ Options:
 
 
 
-    You must pass in the circuit object, which keeps tracks of all the connects
+    You must pass in the design object, which keeps tracks of all the connects
 
     Conect named control points: connector1 ---> connector2,
     '''
     _img = 'Metal_cpw_connect.png'
 
-    def __init__(self, circ, name=None, options=None,
+    def __init__(self, design, name=None, options=None,
                  connector1=None,
                  connector2=None,
                  options_cpw=None,
@@ -116,7 +116,7 @@ Options:
         if name is None:
             name = 'cpw_'+options.connector1+'_'+options.connector2
 
-        super().__init__(circ, name, options=options)
+        super().__init__(design, name, options=options)
 
         assert options.connector1 in self.get_connectors(
         ), f'Connector name {options.connector1} not in the set of connectors defined {self.get_connectors().keys()}'
@@ -166,6 +166,6 @@ Options:
         options = self.options.cpw
 
         def to_vec3D(vec):
-            return to_Vec3D(self.circ, options, vec)
+            return to_Vec3D(self.design, options, vec)
 
-        draw_cpw_trace(self.circ, to_vec3D(self.points_meander), options)
+        draw_cpw_trace(self.design, to_vec3D(self.points_meander), options)

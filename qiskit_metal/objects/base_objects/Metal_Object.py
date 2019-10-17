@@ -45,12 +45,12 @@ class Metal_Object(): # pylint: disable=invalid-name
     _gui_param_show = ['options', 'objects', 'objects_hfss'] # must be dictionaries
     __i_am_metal__ = True
 
-    def __init__(self, circ, name, options=None):
-        from .Metal_Utility import is_metal_circuit
+    def __init__(self, design, name, options=None):
+        from .Metal_Utility import is_metal_design
 
-        assert is_metal_circuit(circ)
+        assert is_metal_design(design)
 
-        self.circ = circ
+        self.design = design
         self.name = name
 
         # Options
@@ -73,8 +73,8 @@ class Metal_Object(): # pylint: disable=invalid-name
         self.objects_hfss = Dict()  # container for hfss objects
         self.objects_gds = Dict() #container for gds objects (not yet implemented)
 
-        # Add self to circuit objects dictionary
-        self.circ.objects[name] = self
+        # Add self to design objects dictionary
+        self.design.objects[name] = self
 
     def __getitem__(self, key):
         '''
@@ -86,15 +86,15 @@ class Metal_Object(): # pylint: disable=invalid-name
     @property
     def OBJECTS(self): # pylint: disable=invalid-name
         '''
-        returns object dictoanry containing all Metal Objects in the circuit
+        returns object dictoanry containing all Metal Objects in the design
         '''
-        return self.circ.OBJECTS
+        return self.design.OBJECTS
 
     def get_connectors(self):
         '''
         Returns the all defined connectors
         '''
-        return self.circ.connectors
+        return self.design.connectors
 
     def update_objects(self):
         """
@@ -146,4 +146,4 @@ class Metal_Object(): # pylint: disable=invalid-name
         Returns the default chip elevation for the chip specified in
         self.options.chip
         '''
-        return self.circ.get_substrate_z(self.options)
+        return self.design.get_substrate_z(self.options)

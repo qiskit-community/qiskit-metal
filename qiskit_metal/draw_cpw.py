@@ -149,10 +149,10 @@ DEFAULT_OPTIONS['draw_launcher_basic'] = combinekw(DEFAULT_OPTIONS['make_launche
     'BC_name'  : 'Launchers',
     'kw_poly'  : dict(color=DEFAULT['col_in_cond'])
     })
-def draw_launcher_basic(circ, options):
+def draw_launcher_basic(design, options):
     options  = combinekw(DEFAULT_OPTIONS['draw_launcher_basic'], options)
-    options  = combinekw(options,dict(chip_size=circ.get_chip_size(options)))
-    to_vec3D = lambda vec: to_Vec3D(circ, options, parse_units(vec))
+    options  = combinekw(options,dict(chip_size=design.get_chip_size(options)))
+    to_vec3D = lambda vec: to_Vec3D(design, options, parse_units(vec))
     name     = options['name']
 
     # Make shapes in user units
@@ -163,7 +163,7 @@ def draw_launcher_basic(circ, options):
 
     if options['do_draw']: # Draw
 
-        _, oModeler = circ.get_modeler()
+        _, oModeler = design.get_modeler()
         def draw(poly, name_sup, flag=None):
             ops = options['kw_poly']
             if not flag is None:
@@ -176,21 +176,21 @@ def draw_launcher_basic(circ, options):
         Poly1 = draw(poly1,'_cut')
         Poly2 = draw(polyM,'_mesh',1) if options['do_mesh'] else None
 
-        do_cut_ground(options, circ, [str(Poly1)])
-        do_PerfE(options, circ, Poly0)
+        do_cut_ground(options, design, [str(Poly1)])
+        do_PerfE(options, design, Poly0)
 
         if options['do_mesh']:
             pass
 
         if 0: # track objects
-            circ.add_track_object(options, {
+            design.add_track_object(options, {
                     'shapely':[poly0, poly1, polyM, line, line1, lineM], # user units
                     'Poly' : [Poly0, Poly1, Poly2]
                })
 
     if 1: # add to connectors
         start = 3
-        circ.connectors[name] = make_connector_props(poly0.coords_ext[start:start+2], options,
+        design.connectors[name] = make_connector_props(poly0.coords_ext[start:start+2], options,
                                                        unparse=False)
 
 
@@ -234,7 +234,7 @@ DEFAULT_OPTIONS['draw_cpw_trace'] = {
     'mesh_kw'             : Dict(MaxLength='0.1mm')
 }
 
-def draw_cpw_trace(circ,
+def draw_cpw_trace(design,
                    points,
                    options = {},
                    category = 'CPW'
@@ -242,8 +242,8 @@ def draw_cpw_trace(circ,
     '''
         points : 2D List assumed in USER units.
     '''
-    _, oModeler = circ.get_modeler()
-    to_vec3D = lambda vec: to_Vec3D(circ, options, vec)
+    _, oModeler = design.get_modeler()
+    to_vec3D = lambda vec: to_Vec3D(design, options, vec)
 
     options  = combinekw(DEFAULT_OPTIONS['draw_cpw_trace'], options) # update with custom options
     poly_default_options = options['poly_default_options']
@@ -302,7 +302,7 @@ def draw_cpw_trace(circ,
 
         # Subtract from ground plane   TODO: RENAME
         if options['do_subtract_ground'] in TRUE_STR:
-            oModeler.subtract(circ.get_ground_plane(options),
+            oModeler.subtract(design.get_ground_plane(options),
                               [sheet_gap_trace],
                               keep_originals = options['do_sub_keep_original'] in TRUE_STR)
         if options['do_assign_perfE']:
@@ -312,9 +312,9 @@ def draw_cpw_trace(circ,
     else:
         sheet_center_trace, sheet_mesh_trace =None, None
 
-    ### Handle circuit tracking - track as much information as possible
+    ### Handle design tracking - track as much information as possible
     if 0:
-        circ.add_track_object(options, {
+        design.add_track_object(options, {
                                     'options'    : options,
                                     'points'     : points,
                                     'mesh_obj_name'      : obj_polyline_center_msN,
@@ -325,14 +325,14 @@ def draw_cpw_trace(circ,
     ### Add connectors
     if options['do_add_connectors']:
         dist = cpw_center_w/2.*vec_n
-        circ.connectors[name+'_start'] = make_connector_props([cpw_origin-dist, cpw_origin+dist], options)
+        design.connectors[name+'_start'] = make_connector_props([cpw_origin-dist, cpw_origin+dist], options)
 
         vec_D, vec_d, vec_n = get_vec_unit_norm([points[-2], points[-1]])
         dist, cpw_end = cpw_center_w/2.*vec_n, points[-1] # TODO: might need to play with orientation here
-        circ.connectors[name+'_end'] = make_connector_props([cpw_end-dist, cpw_end+dist], options)
+        design.connectors[name+'_end'] = make_connector_props([cpw_end-dist, cpw_end+dist], options)
 
     if 1:
-        circ.mesh_obj(str(sheet_mesh_trace), options['mesh_name'], **options['mesh_kw'])
+        design.mesh_obj(str(sheet_mesh_trace), options['mesh_name'], **options['mesh_kw'])
 
     #return  TODO: return objects here
 
@@ -492,7 +492,7 @@ DEFAULT_OPTIONS['easy_wirebond'] = Dict(
 )
 
 
-def easy_wirebond(circ, obj,
+def easy_wirebond(design, obj,
                   options = {},
                   name = None,
                   draw_hfss=True,
@@ -511,7 +511,7 @@ def easy_wirebond(circ, obj,
     OLD raw use:
         from qiskit_metal.draw_cpw import *
         name = 'cpw_Q1_bus_Q2_Q2_bus_Q1'
-        easy_wirebond(circ, OBJECTS[name], 'Bond_'+name, Dict(
+        easy_wirebond(design, OBJECTS[name], 'Bond_'+name, Dict(
             start=0, stop=-1, step=2, threshold='0.2mm'))
 
     TEST:
@@ -554,7 +554,7 @@ def easy_wirebond(circ, obj,
         else:
             raise Exception('Unkown object {obj}: does not have obj.objects')
     elif isinstance(obj, str):
-        points_meander = np.array(unparse_units(circ.track_objs[options['category']][obj]['points']))
+        points_meander = np.array(unparse_units(design.track_objs[options['category']][obj]['points']))
         #DEPRICATED here
     elif isinstance(obj, shapely.geometry.LineString):
         points_meander = np.array(obj.coords)
@@ -592,7 +592,7 @@ def easy_wirebond(circ, obj,
                              bond = LineString([p-ori*w/2, p+ori*w/2]))
             #draw_objs(shapes[i]) # draw shapely
             if draw_hfss:
-                _, oModeler = circ.get_modeler() ###
+                _, oModeler = design.get_modeler() ###
                 wirebond_names += [
                     oModeler.draw_wirebond(parse_units(pos), ori, parse_units(w),
                                         height=parse_units(height),

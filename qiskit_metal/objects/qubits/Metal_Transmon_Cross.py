@@ -222,7 +222,7 @@ Description:
             connector_Arm = clawCPW
             connector_Etcher = buffer(connector_Arm,claw_gap)
 
-        #Making the connector 'port' for circ.connector tracking (for easy connect functions). Done here so
+        #Making the connector 'port' for design.connector tracking (for easy connect functions). Done here so
         #as to have the same translations and rotations as the connector. Could extract from the connector later, but since
         #allowing different connector types, this seems more straightforward.
         port_Line = shapely.geometry.LineString([(-4*claw_width,-claw_width/2),(-4*claw_width,claw_width/2)])
@@ -253,11 +253,11 @@ Description:
         #Creating of the connection port for functions such as 'easy connect'. Uses the start and end point of the
         #port_line line, and generates a normal vector (vNorm) pointing in the direction any connection should be (eg. away from the Crossmon)
         #Not been fully tested with all potential variations.
-        circ = self.circ
-        if not circ is None:
+        design = self.design
+        if not design is None:
             portPoints = list(shape(objects['port_Line']).coords)
             vNorm = (-(portPoints[1][1] - portPoints[0][1]),(portPoints[1][0]-portPoints[0][0]))
-            circ.connectors[self.name+'_'+name] = make_connector_props(portPoints,options, vec_normal=vNorm)
+            design.connectors[self.name+'_'+name] = make_connector_props(portPoints,options, vec_normal=vNorm)
 
         #Removes the temporary port_Line from draw objects
         del objects['port_Line']
@@ -275,12 +275,12 @@ Description:
         '''
 
         # custom shortcuts (needs cleaning up)
-        circ = self.circ
+        design = self.design
         name = self.name
         options = self.options
         options_hfss = self.options._hfss
         rect_options = options_hfss.rect_options
-        _, oModeler = circ.get_modeler() # pylint: disable=invalid-name
+        _, oModeler = design.get_modeler() # pylint: disable=invalid-name
         oh = lambda x: parse_units_user(options_hfss[x]) # pylint: disable=invalid-name
 
         #Make mesh objects
@@ -290,13 +290,13 @@ Description:
         objs = [self.objects, dict(mesh=rect_msh)]
 
         # Pocket: Draw all pocket objects
-        self.objects_hfss = Dict(draw_hfss.draw_objects_shapely(circ.oModeler, objs, self.name, pos_z=self.get_chip_elevation(), hfss_options=rect_options))
+        self.objects_hfss = Dict(draw_hfss.draw_objects_shapely(design.oModeler, objs, self.name, pos_z=self.get_chip_elevation(), hfss_options=rect_options))
 
         hfss_objs = self.objects_hfss  # shortcut
 
-        # Pocket: Subtract ground - Uses "etcher shapes" to cut away sections of ground that need to be removed for the circuit.
+        # Pocket: Subtract ground - Uses "etcher shapes" to cut away sections of ground that need to be removed for the design.
         #Check the object names match to the shapes that should be 'etched'
-        ground = circ.get_ground_plane(options)
+        ground = design.get_ground_plane(options)
         oModeler.subtract(ground, [hfss_objs['cross_Etcher']])
         subtracts = [hfss_objs.connectors[xx]['connector_Etcher'] for xx in self.objects.connectors]
         oModeler.subtract(ground, subtracts)
@@ -332,7 +332,7 @@ Description:
             # Pocket - trying to only mesh the gap but having some drawing issues.
             rect_mesh = hfss_objs['mesh']
             rect_mesh.wireframe = True
-            circ.mesh_obj(
+            design.mesh_obj(
                 rect_mesh, options_hfss['mesh_name'], **options_hfss['mesh_kw'])
 
 

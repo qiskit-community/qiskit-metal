@@ -13,13 +13,13 @@
 # that they have been altered from the originals.
 
 '''
-Base class for circuit type objects in Qiskit Metal.
+Base class for design type objects in Qiskit Metal.
 
 This should be thought of as the 'package' level of the system. Aspects
 such as gemoetries of your package cavity, 3D vs. planar or multiple chips.
 
-Default use should be Metal_Circuit_Planar, which is a child of Metal_Circuit_Base.
-Any alternative systems should be made as a child of Metal_Circuit_Base.
+Default use should be Metal_Design_Planar, which is a child of Metal_Design_Base.
+Any alternative systems should be made as a child of Metal_Design_Base.
 
 @date: 2019
 @author: Zlatko K. Minev
@@ -36,10 +36,10 @@ from .Metal_Utility import is_metal_object
 
 
 
-class Metal_Circuit_Base(): # pylint: disable=invalid-name
+class Metal_Design_Base(): # pylint: disable=invalid-name
     '''
-    Base class for circuit type objects in Qiskit Metal.
-    All circuits should be derived from this base class.
+    Base class for design type objects in Qiskit Metal.
+    All designs should be derived from this base class.
 
     Key properties:
     ----------------------
@@ -50,7 +50,7 @@ class Metal_Circuit_Base(): # pylint: disable=invalid-name
     @date: 2019
     @author: Zlatko K. Minev
     '''
-    __i_am_metal_circuit__ = True
+    __i_am_metal_design__ = True
 
 
 #########INITIALIZATION##################################################
@@ -75,14 +75,14 @@ class Metal_Circuit_Base(): # pylint: disable=invalid-name
     @property
     def OBJECTS(self):
         '''
-        Returns Dict object that keeps track of all Metal objects in the circuit
+        Returns Dict object that keeps track of all Metal objects in the design
         '''
         return self._OBJECTS
 
     @property
     def objects(self):
         '''
-        Returns Dict object that keeps track of all Metal objects in the circuit
+        Returns Dict object that keeps track of all Metal objects in the design
         '''
         return self._OBJECTS
 
@@ -90,14 +90,14 @@ class Metal_Circuit_Base(): # pylint: disable=invalid-name
     @property
     def connectors(self):
         '''
-        Return the Dict object that keeps track of all connectors in the circuit.
+        Return the Dict object that keeps track of all connectors in the design.
         '''
         return self._connectors
 
 #########COMMANDS##################################################
     def reset_all_connectors(self):
         '''
-        Delete all connectors in the circuit.
+        Delete all connectors in the design.
         '''
         self.connectors.clear()
         return self.connectors
@@ -140,24 +140,24 @@ class Metal_Circuit_Base(): # pylint: disable=invalid-name
             draw_objs(line, ax=ax, kw=dict(lw=2,c='r'))
 
             ax.annotate(name, xy=conn.pos[:2], xytext=conn.pos +\
-                        np.array(DEFAULT.annots.circ_connectors_ofst),\
-                        **DEFAULT.annots.circ_connectors)
+                        np.array(DEFAULT.annots.design_connectors_ofst),\
+                        **DEFAULT.annots.design_connectors)
 
     def make_all_objects(self):
         """
         Remakes all objects with their current parameters. Easy way
         """
-        #self.logger.debug('Circuit: Making all objects')
+        #self.logger.debug('Design: Making all objects')
         for name, obj in self.objects.items(): # pylint: disable=unused-variable
             if is_metal_object(obj):
                 #self.logger.debug(f' Making {name}')
                 obj.make()
 
-    def save_circuit(self, path):
-        """Save the circuit as a pickled python object.
+    def save_design(self, path):
+        """Save the design as a pickled python object.
         Equivalent to
         ```python
-            save_metal(r'C:/my-circuit.metal',circ)
+            save_metal(r'C:/my-design.metal',design)
         ```
 
         Arguments:
