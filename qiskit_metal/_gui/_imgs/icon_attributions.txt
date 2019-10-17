@@ -23,3 +23,5 @@ Icon credits:
         https://www.flaticon.com/free-icon/lan_2138648#term=connector&page=1&position=25
     Refresh all:
         https://www.flaticon.com/free-icon/refresh_426867#term=refresh&page=2&position=58
+    Create:
+        https://www.flaticon.com/free-icon/create_929256#term=create&page=1&position=34
