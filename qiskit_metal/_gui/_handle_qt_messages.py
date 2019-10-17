@@ -128,7 +128,6 @@ def catch_exception_slot_pyqt(*args, catch=Exception, on_exception_emit=None):
                 func(*args)
 
             except catch as e:  # pylint: disable=invalid-name,broad-except
-
                 #import pickle
                 #pickle.dump(e, open("C:\\zkm-code\\qiskit_metal\\deleteme.p", "wb" ))
 

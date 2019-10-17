@@ -416,7 +416,6 @@ class Metal_gui(QMainWindow):
             tool_name = class_name
 
         label = tool_name.replace('_', ' ')
-
         if 0: # break the name up
             if label.startswith('Metal '):
                 label = label[6:]
@@ -424,22 +423,10 @@ class Metal_gui(QMainWindow):
                 label = label[:int(len(label)/2)] + '-\n' + \
                     label[int(len(label)/2):]  # split to new line
 
-        # Image path
-        icon_path = (self.imgs_path/getattr(metal_class, '_img')) \
-            if hasattr(metal_class, '_img') else None
-
-        if not Path(icon_path).is_file():
-            icon_path2 = self.imgs_path/'Metal_Object.png'
-            logger.warning(f'Could not locate  image path {icon_path}')
-            if Path(icon_path2).is_file():
-                icon_path = icon_path2
-                logger.warning(f'Replacing with  image path {icon_path}')
-            else:
-                logger.warning(f'Could not even find base image path {icon_path2}')
-
         #############################
         # Create call function
 
+        @catch_exception_slot_pyqt()
         def create_metal_obj(*args):
             # Load module  on the fly
             # Assumed that the module file name is the same as the class name
@@ -457,8 +444,11 @@ class Metal_gui(QMainWindow):
         # Save
         setattr(self, 'create_'+tool_name, create_metal_obj)
 
+
         #############################
         # Finally create menu tool and add
+        icon_path = self._get_metal_icon_path(metal_class)
+
         action = menu.addAction(label)
         action.setIcon(QIcon(str(icon_path)))
         action.triggered.connect(create_metal_obj)
@@ -466,6 +456,27 @@ class Metal_gui(QMainWindow):
         setattr(self, 'createA_'+tool_name, action)
 
         return True
+
+    def _get_metal_icon_path(self, metal_class):
+
+        if not hasattr(metal_class, '_img'):
+            return None
+
+        icon_path = self.imgs_path/getattr(metal_class, '_img')
+
+        if not Path(icon_path).is_file():
+
+            icon_path2 = self.imgs_path/'Metal_Object.png'
+            logger.warning(f'Could not locate  image path {icon_path}')
+
+            if Path(icon_path2).is_file():
+                icon_path = icon_path2
+                logger.warning(f'Replacing with  image path {icon_path}')
+            else:
+                logger.warning(f'Could not even find base image path {icon_path2}')
+                return None
+
+        return icon_path
 
     def _setup_tree_view(self):
 
