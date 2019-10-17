@@ -44,8 +44,8 @@ from shapely.geometry import shape
 from .Metal_Transmon_Pocket import Metal_Transmon_Pocket
 
 
-DEFAULT_OPTIONS['Metal_Transmon_Pocket_CL.connector'] = deepcopy(
-    DEFAULT_OPTIONS['Metal_Transmon_Pocket.connector'])
+DEFAULT_OPTIONS['Metal_Transmon_Pocket_CL.connectors'] = deepcopy(
+    DEFAULT_OPTIONS['Metal_Transmon_Pocket.connectors'])
 
 
 DEFAULT_OPTIONS['Metal_Transmon_Pocket_CL'] = deepcopy(
@@ -57,7 +57,7 @@ DEFAULT_OPTIONS['Metal_Transmon_Pocket_CL'].update(Dict(
     cl_length='20um',  # the length of the charge line 'arm' coupling the the qubit pocket. Measured from the base of the 90 degree bend
     cl_groundGap='6um',  # how much ground between the charge line and the qubit pocket
     # the side of the qubit pocket the charge line is placed on (before any rotations)
-    cl_PocketEdge='W',
+    cl_PocketEdge='W', #placeholder for now
     cl_offCenter='100um',  # distance from the center axis the qubit pocket is built on
 ))
 
@@ -90,9 +90,9 @@ class Metal_Transmon_Pocket_CL(Metal_Transmon_Pocket):  # pylint: disable=invali
         cl_gap, cl_width, cl_length, cl_groundGap = parse_options_user(
             options, 'cl_gap, cl_width, cl_length, cl_groundGap')
 
-        jj_gap, pad_height, pocket_width, pocket_height,\
+        pad_gap, pad_height, pocket_width, pocket_height,\
             pos_x, pos_y = parse_options_user(
-                options, 'jj_gap, pad_height, pocket_width, pocket_height, pos_x, pos_y')
+                options, 'pad_gap, pad_height, pocket_width, pocket_height, pos_x, pos_y')
 
         cl_Arm = shapely.geometry.box(0, 0, -cl_width, cl_length)
         cl_CPW = shapely.geometry.box(0, 0, -8*cl_width, cl_width)
@@ -110,7 +110,7 @@ class Metal_Transmon_Pocket_CL(Metal_Transmon_Pocket):  # pylint: disable=invali
 
         # Move the charge line to the left side of the pocket
         objects = translate_objs(
-            objects, -(pocket_width/2 + cl_groundGap + cl_gap), -(jj_gap + pad_height)/2)
+            objects, -(pocket_width/2 + cl_groundGap + cl_gap), -(pad_gap + pad_height)/2)
 
         # Rotate it to the pockets orientation
         objects = rotate_objs(objects, _angle_Y2X[options['orientation']], origin=(0, 0))
@@ -134,22 +134,22 @@ class Metal_Transmon_Pocket_CL(Metal_Transmon_Pocket):  # pylint: disable=invali
 
         return objects
 
-# Super call not quite working
-    # def hfss_draw(self):
-    #     '''
-    #     Draw in HFSS.
-    #     Makes a meshing recntalge for the the pocket as well.
-    #     '''
-    #     super().hfss_draw()
+#Super call not quite working
+    def hfss_draw(self):
+        '''
+        Draw in HFSS.
+        Makes a meshing recntalge for the the pocket as well.
+        '''
+        super().hfss_draw()
 
-    #     if options.make_CL == 'ON': #checks if this qubit has a charge line, and if it does etches the appropriate section
-    #         oModeler.subtract(ground, [hfss_objs.CL['cl_Etcher']])
+        if options.make_CL == 'ON': #checks if this qubit has a charge line, and if it does etches the appropriate section
+            oModeler.subtract(ground, [hfss_objs.CL['cl_Etcher']])
 
-    #     #attaches the different relevant geometries to perfect E boundaries (as equivalent thin film superconductor)
-    #     if DEFAULT['do_PerfE']:
-    #        if options.make_CL == 'ON':
-    #             oModeler.append_PerfE_assignment(name+'_CL' if DEFAULT['BC_individual'] else options_hfss['BC_name_conn'], hfss_objs.CL['cl_Metal'])
+        #attaches the different relevant geometries to perfect E boundaries (as equivalent thin film superconductor)
+        if DEFAULT['do_PerfE']:
+           if options.make_CL == 'ON':
+                oModeler.append_PerfE_assignment(name+'_CL' if DEFAULT['BC_individual'] else options_hfss['BC_name_conn'], hfss_objs.CL['cl_Metal'])
 
-    #    # if DEFAULT._hfss.do_mesh:
+       # if DEFAULT._hfss.do_mesh:
 
-    #     return hfss_objs
+        return hfss_objs
