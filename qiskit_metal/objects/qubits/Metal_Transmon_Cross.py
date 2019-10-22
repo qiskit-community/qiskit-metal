@@ -308,7 +308,7 @@ Description:
 
         # Pocket: Subtract ground - Uses "etcher shapes" to cut away sections of ground that need to be removed for the design.
         # Check the object names match to the shapes that should be 'etched'
-        ground = circ.get_ground_plane(options)
+        ground = design.get_ground_plane(options)
         oModeler.subtract(ground, [hfss_objs['cross_Etcher']])
         subtracts = [hfss_objs.connectors[xx]['connector_Etcher']
                      for xx in self.objects.connectors]
