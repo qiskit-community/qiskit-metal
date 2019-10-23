@@ -146,7 +146,7 @@ Description:
 
         # First grabs the various option values.
         cross_width, cross_length, cross_gap,\
-            pos_x, pos_y = parse_options_user(options, 'cross_width,\
+            pos_x, pos_y = parse_options_user(self.design.params.variables, options, 'cross_width,\
                  cross_length, cross_gap, pos_x, pos_y')
 
         # Then starts drawing the cross using the above values.
@@ -205,12 +205,12 @@ Description:
         # Transmon options
         options = self.options  # for transmon
         cross_width, cross_length, cross_gap,\
-            pos_x, pos_y, orientation = parse_options_user(options, 'cross_width,\
+            pos_x, pos_y, orientation = parse_options_user(self.design.params.variables, options, 'cross_width,\
                  cross_length, cross_gap, pos_x, pos_y, orientation')
 
         # Connector options
         connector_type, claw_gap, claw_length, claw_width, ground_spacing, connector_location = parse_options_user(
-            options_connector, 'connector_type, claw_gap, claw_length, claw_width, ground_spacing, connector_location')
+            self.design.params.variables, options_connector, 'connector_type, claw_gap, claw_length, claw_width, ground_spacing, connector_location')
 
         # Building the connector structure. Different construction based on connector type
         # (***match any changes to the port_Line)

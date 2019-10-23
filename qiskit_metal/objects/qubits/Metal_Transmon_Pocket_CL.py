@@ -88,11 +88,11 @@ class Metal_Transmon_Pocket_CL(Metal_Transmon_Pocket):  # pylint: disable=invali
         options = self.options
         name = 'Charge_Line'
         cl_gap, cl_width, cl_length, cl_groundGap = parse_options_user(
-            options, 'cl_gap, cl_width, cl_length, cl_groundGap')
+            self.design.params.variables, options, 'cl_gap, cl_width, cl_length, cl_groundGap')
 
         pad_gap, pad_height, pocket_width, pocket_height,\
             pos_x, pos_y = parse_options_user(
-                options, 'pad_gap, pad_height, pocket_width, pocket_height, pos_x, pos_y')
+                self.design.params.variables, options, 'pad_gap, pad_height, pocket_width, pocket_height, pos_x, pos_y')
 
         cl_Arm = shapely.geometry.box(0, 0, -cl_width, cl_length)
         cl_CPW = shapely.geometry.box(0, 0, -8*cl_width, cl_width)

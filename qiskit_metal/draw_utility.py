@@ -585,9 +585,12 @@ def parse_options_user(variableList, opts, names):
     for name in names:
         name = name.strip()
         if not name in opts:
-            logger.warning(f'Missing key {name} from options {opts}\n')
+            logger.warning(f'Missing key {name} from options {opts}.\n')
 
-        if not(opts[name][0].isdigit()): #add a throw if variable name not in variableList
+        if not(opts[name][0].isdigit()): 
+            if not opts[name] in variableList:
+                logger.warning(f'Missing variable {opts[name]} from variable list.\n')
+             
             res += [parse_units_user(variableList[opts[name]]) ]
         else:
             res += [parse_units_user(opts[name]) ]
