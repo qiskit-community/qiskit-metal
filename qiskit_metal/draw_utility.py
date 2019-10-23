@@ -573,7 +573,7 @@ def buffer(objects,  *args, **kwargs):
 # UNIT and Conversion related
 
 
-def parse_options_user(opts, names):
+def parse_options_user(variableList, opts, names):
     '''
     To user units.
     Parse a list of variable names (or a string of comma delimited ones
@@ -586,7 +586,11 @@ def parse_options_user(opts, names):
         name = name.strip()
         if not name in opts:
             logger.warning(f'Missing key {name} from options {opts}\n')
-        res += [parse_units_user(opts[name]) ]
+
+        if not(opts[name][0].isdigit()): #add a throw if variable name not in variableList
+            res += [parse_units_user(variableList[opts[name]]) ]
+        else:
+            res += [parse_units_user(opts[name]) ]
     return res
     #return [parse_units_user(opts[name.strip()]) for name in names]
 

@@ -187,7 +187,7 @@ class Metal_Transmon_Pocket(Metal_Qubit): # pylint: disable=invalid-name
 
         # Pads- extracts relevant values from options dictionary
         pad_gap, inductor_width, pad_width, pad_height, pocket_width, pocket_height,\
-            pos_x, pos_y = parse_options_user(options, 'pad_gap, inductor_width, pad_width,\
+            pos_x, pos_y = parse_options_user(self.design.params.variables, options, 'pad_gap, inductor_width, pad_width,\
                  pad_height, pocket_width, pocket_height, pos_x, pos_y')
         # then makes the shapely polygons
         pad = shapely_rectangle(pad_width, pad_height)
@@ -238,12 +238,12 @@ class Metal_Transmon_Pocket(Metal_Qubit): # pylint: disable=invalid-name
         # Transmon options
         options = self.options  # for transmon
         pad_gap, _, pad_width, pad_height, pocket_width, _, pos_x, pos_y = \
-            parse_options_user(options, 'pad_gap, inductor_width, pad_width, pad_height,\
+            parse_options_user(self.design.params.variables, options, 'pad_gap, inductor_width, pad_width, pad_height,\
                 pocket_width, pocket_height, pos_x, pos_y')
 
         # Connector options
         pad_gap, pad_cwidth, pad_cheight, pad_cpw_shift, cpw_width, pocket_extent,\
-             pocket_rise, pad_cpw_extent, cpw_extend, cpw_gap = parse_options_user(\
+             pocket_rise, pad_cpw_extent, cpw_extend, cpw_gap = parse_options_user(self.design.params.variables,\
                  options_connector, 'pad_gap, pad_width, pad_height, pad_cpw_shift,\
                      cpw_width, pocket_extent, pocket_rise, pad_cpw_extent, cpw_extend, cpw_gap')
 

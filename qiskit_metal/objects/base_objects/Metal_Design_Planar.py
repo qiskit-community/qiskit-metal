@@ -59,7 +59,7 @@ DEFAULT_OPTIONS.update({
         }),
 
         ####################################################
-        # HFSS defined variables
+        # Variables
         # Design variables, chip parameter, and design
         # Is where to place variable names which are wanted for optemetrics in HFSS
         'variables': {
