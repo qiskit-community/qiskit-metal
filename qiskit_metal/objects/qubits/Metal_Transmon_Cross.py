@@ -49,7 +49,8 @@ DEFAULT_OPTIONS['Metal_Transmon_Cross'].update(Dict(
     cross_width='20um',
     cross_length='200um',
     cross_gap='20um',
-    orientation='X',  # X is aligned along the +X axis, while Y is aligned along the +Y axis
+    orientation='Y',  # X has the SQUID on the X axis, while Y has the SQUID on the Y axis
+    #BETTER ROTATION NEEDED
 
     _hfss=Dict(
         rect_options=dict(color=DEFAULT['col_in_cond'],
@@ -249,9 +250,9 @@ Description:
             objects, -(cross_length + cross_gap + ground_spacing + claw_gap), 0)
 
         clawRotate = 0
-        if connector_location == 'N':
+        if connector_location.upper() == 'N':
             clawRotate = -90
-        elif connector_location == 'E':
+        elif connector_location.upper() == 'E':
             clawRotate = 180
 
         # Rotates to the appropriate arm, then rotate and translate to match the rotation/position of the Crossmon

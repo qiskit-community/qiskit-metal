@@ -41,6 +41,7 @@ from ...draw_functions import shapely, shapely_rectangle, translate, translate_o
 #from ... import draw_hfss
 from shapely.ops import cascaded_union
 from shapely.geometry import shape
+from shapely.affinity import scale
 from .Metal_Transmon_Pocket import Metal_Transmon_Pocket
 
 
@@ -90,9 +91,9 @@ class Metal_Transmon_Pocket_CL(Metal_Transmon_Pocket):  # pylint: disable=invali
         cl_gap, cl_width, cl_length, cl_groundGap = parse_options_user(
             self.design.params.variables, options, 'cl_gap, cl_width, cl_length, cl_groundGap')
 
-        pad_gap, pad_height, pocket_width, pocket_height,\
+        pad_gap, pad_height, pocket_width, pocket_height, pad_width,\
             pos_x, pos_y = parse_options_user(
-                self.design.params.variables, options, 'pad_gap, pad_height, pocket_width, pocket_height, pos_x, pos_y')
+                self.design.params.variables, options, 'pad_gap, pad_height, pocket_width, pocket_height, pad_width, pos_x, pos_y')
 
         cl_Arm = shapely.geometry.box(0, 0, -cl_width, cl_length)
         cl_CPW = shapely.geometry.box(0, 0, -8*cl_width, cl_width)
@@ -107,13 +108,24 @@ class Metal_Transmon_Pocket_CL(Metal_Transmon_Pocket):  # pylint: disable=invali
             cl_Etcher=cl_Etcher,
             port_Line=port_Line,
         )
+        cl_PocketEdge = options['cl_PocketEdge']
+        # Move the charge line to the side user requested
+        cl_Rotate = 0
+        if (cl_PocketEdge.upper() == 'W') or (cl_PocketEdge.upper() == 'E'):
+            objects = translate_objs(
+                objects, -(pocket_width/2 + cl_groundGap + cl_gap), -(pad_gap + pad_height)/2)
+            if (cl_PocketEdge.upper() == 'E'):
+                cl_Rotate = 180
+        elif (cl_PocketEdge.upper() == 'N') or (cl_PocketEdge.upper() == 'S'):
+            objects = translate_objs(
+                objects, -(pocket_height/2 + cl_groundGap + cl_gap), -(pad_width)/2)
+            cl_Rotate = 90
+            if (cl_PocketEdge.upper() == 'N'):
+                cl_Rotate = -90
 
-        # Move the charge line to the left side of the pocket
-        objects = translate_objs(
-            objects, -(pocket_width/2 + cl_groundGap + cl_gap), -(pad_gap + pad_height)/2)
-
+        
         # Rotate it to the pockets orientation
-        objects = rotate_objs(objects, _angle_Y2X[options['orientation']], origin=(0, 0))
+        objects = rotate_objs(objects, _angle_Y2X[options['orientation']] + cl_Rotate, origin=(0, 0))
 
         # Move to the final position
         objects = translate_objs(objects, pos_x, pos_y)

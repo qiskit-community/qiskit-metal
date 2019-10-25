@@ -74,7 +74,7 @@ DEFAULT_OPTIONS['Metal_Transmon_Pocket'].update(Dict(
     pad_height='90um',
     pocket_width='650um',
     pocket_height='650um',
-    orientation='X',  # X is aligned along the +X axis, while Y is aligned along the +Y axis
+    orientation='Y',  # X has dipole aligned along the +X axis, while Y has dipole aligned along the +Y axis
 
     _hfss=Dict(
         rect_options=dict(color=DEFAULT['col_in_cond'],
