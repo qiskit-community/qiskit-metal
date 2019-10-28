@@ -72,3 +72,5 @@ from ._gui import Metal_gui
 #from .toolbox.mpl_interaction import figure_pz  # used for interactive figures
 
 from .toolbox.utility_functions import display_options
+
+global design #setting design to be global for easy access to necessary parameters through out all functions

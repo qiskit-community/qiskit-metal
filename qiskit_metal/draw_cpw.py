@@ -383,7 +383,7 @@ DEFAULT_OPTIONS['basic_meander'] = {
     'lead_in_spacing' : '0.2mm',
     'direction_sign'  : +1,
     }
-def basic_meander(points0,
+def basic_meander(design, points0,
                   options):
     '''
     Assumes:
@@ -402,7 +402,7 @@ def basic_meander(points0,
     assert len(points0) == 2
     options = combinekw(DEFAULT_OPTIONS['basic_meander'], options)
     meander_spacing, meander_out, shift_fraction, lead_in_spacing = \
-        parse_options_user(options,['spacing', 'width', 'shift_fraction', 'lead_in_spacing'])
+        parse_options_user(design.params.variables,options,'spacing, width, shift_fraction, lead_in_spacing')
 
     # print('meander_spacing = {meander_spacing}')
 
@@ -457,7 +457,7 @@ def basic_meander(points0,
 
     return remove_co_linear_points(points)
 
-def meander_between(points, start_idx, meander_options):
+def meander_between(design, points, start_idx, meander_options):
     '''
     Specify to mender b/w two control points in an array
     Units should be USER units
@@ -467,7 +467,7 @@ def meander_between(points, start_idx, meander_options):
 
     Wrapper function calls `basic_meander`
     '''
-    meander = basic_meander(points[start_idx: start_idx+2], meander_options)
+    meander = basic_meander(design, points[start_idx: start_idx+2], meander_options)
     points  = np.delete(points, [start_idx, start_idx+1], axis=0)
     points  = np.insert(points, start_idx, meander, axis=0)
     points  = remove_co_linear_points(points) # it is possible to get 3 colinear points

@@ -205,13 +205,16 @@ Description:
 
         # Transmon options
         options = self.options  # for transmon
+        orientation = options['orientation']
         cross_width, cross_length, cross_gap,\
-            pos_x, pos_y, orientation = parse_options_user(self.design.params.variables, options, 'cross_width,\
-                 cross_length, cross_gap, pos_x, pos_y, orientation')
+            pos_x, pos_y = parse_options_user(self.design.params.variables, options, 'cross_width,\
+                 cross_length, cross_gap, pos_x, pos_y')
 
         # Connector options
-        connector_type, claw_gap, claw_length, claw_width, ground_spacing, connector_location = parse_options_user(
-            self.design.params.variables, options_connector, 'connector_type, claw_gap, claw_length, claw_width, ground_spacing, connector_location')
+        connector_type = options['connector_type,']
+        connector_location = options['connector_location']
+        claw_gap, claw_length, claw_width, ground_spacing = parse_options_user(
+            self.design.params.variables, options_connector, 'claw_gap, claw_length, claw_width, ground_spacing')
 
         # Building the connector structure. Different construction based on connector type
         # (***match any changes to the port_Line)
