@@ -578,9 +578,13 @@ def parse_options_user(variableList, opts, names):
     To user units.
     Parse a list of variable names (or a string of comma delimited ones
     to list of user parsed ones.
+
+    To do use:  `'variable1'.isidentifier()
     '''
+
     if isinstance(names, str):
         names = names.split(',')
+
     res = []
     for name in names:
         name = name.strip()
@@ -588,10 +592,10 @@ def parse_options_user(variableList, opts, names):
             logger.warning(f'Missing key {name} from options {opts}.\n')
 
         if isinstance(opts[name],str):
-            if not(opts[name][0].isdigit() or opts[name][0]=='-'): 
+            if not(opts[name][0].isdigit() or opts[name][0]=='-'):
                 if not opts[name] in variableList:
                     logger.warning(f'Missing variable {opts[name]} from variable list.\n')
-                
+
                 res += [parse_units_user(variableList[opts[name]]) ]
             else:
                 res += [parse_units_user(opts[name]) ]

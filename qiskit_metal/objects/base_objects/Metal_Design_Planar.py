@@ -66,10 +66,10 @@ DEFAULT_OPTIONS.update({
         },
 
     })
-    })
+})
 
 
-class Design_Planar(Metal_Design_Base): # pylint: disable=invalid-name
+class Design_Planar(Metal_Design_Base):  # pylint: disable=invalid-name
     """
     Contains design definitions and has some utility functions.
     All Metal objects on chip are tracked by this parent as well as their connectors.
@@ -95,6 +95,7 @@ class Design_Planar(Metal_Design_Base): # pylint: disable=invalid-name
         connectors (Dict) : Dict of all connectors associated with the Metal_Objects and
                         custom connectors
     """
+
     def __init__(self,
                  objects=None,
                  connectors=None,
@@ -123,7 +124,7 @@ class Design_Planar(Metal_Design_Base): # pylint: disable=invalid-name
 
         self.set_oDesign(oDesign_)
 
-#Likely can be safely removed (2019/09/25)
+# Likely can be safely removed (2019/09/25)
     # def add_track_object(self, options, track_me, name=None):
     #     '''
     #         Assumes there is a categoty and name
@@ -136,6 +137,7 @@ class Design_Planar(Metal_Design_Base): # pylint: disable=invalid-name
 
 
 #########COMMANDS##################################################
+
     def get_chip_size(self, options):
         '''
         Gets the size of the chip in the options dictionary
@@ -164,7 +166,8 @@ class Design_Planar(Metal_Design_Base): # pylint: disable=invalid-name
 
 
 #########GDS_COMMANDS##################################################
-    def gds_draw_all(self, path = None):
+
+    def gds_draw_all(self, path=None):
         r'''
         Create full gds export cell
 
@@ -194,16 +197,16 @@ class Design_Planar(Metal_Design_Base): # pylint: disable=invalid-name
 
 #########HFSS_COMMANDS##################################################
 #REQUIRES EPR PACKAGE TO FUNCTION PROPERLY#
-    def set_oDesign(self, oDesign_): # pylint: disable=invalid-name
+    def set_oDesign(self, oDesign_):  # pylint: disable=invalid-name
         '''
         Set the HFSS design, connects the Design_Planar object to the HFSS design via the Ansys Electronic
         Desktop API. Example using EPR package;
                 self.set_oDesign(pyEPR_HFSS().pinfo.design)
         '''
-        self.oDesign = oDesign_ # pylint: disable=invalid-name
+        self.oDesign = oDesign_  # pylint: disable=invalid-name
         self.oModeler = None
         if not oDesign_ is None:
-            self.oModeler = self.oDesign.modeler # pylint: disable=invalid-name
+            self.oModeler = self.oDesign.modeler  # pylint: disable=invalid-name
 
     def get_modeler(self):
         '''
@@ -246,7 +249,7 @@ class Design_Planar(Metal_Design_Base): # pylint: disable=invalid-name
         else:
             self.params.variables.update(variables)
 
-        design, _ = self.get_modeler() # pylint: disable=invalid-name
+        design, _ = self.get_modeler()  # pylint: disable=invalid-name
         if design:
             for key, val in self.params.variables.items():
                 design.set_variable(key, val)

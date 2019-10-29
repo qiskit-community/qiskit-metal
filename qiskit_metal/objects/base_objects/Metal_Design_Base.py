@@ -43,9 +43,9 @@ class Metal_Design_Base(): # pylint: disable=invalid-name
 
     Key properties:
     ----------------------
-        objects (Dict) : Dict of all Metal_Objects
+        objects (Dict) : Dict of all Metal_objects
         connectors (Dict) : Dict of all connectors associated with
-                            the Metal_Objects and custom connectors
+                            the Metal_objects and custom connectors
 
     @date: 2019
     @author: Zlatko K. Minev
@@ -57,10 +57,12 @@ class Metal_Design_Base(): # pylint: disable=invalid-name
     def __init__(self,
                  objects = None,
                  connectors = None,
-                 logger = None):
+                 logger = None,
+                 variables = None):
 
-        self._OBJECTS = Dict() if objects is None else objects
+        self._objects = Dict() if objects is None else objects
         self._connectors =  Dict() if connectors is None else connectors
+        self._variables = Dict() if variables is None else variables
 
         # handy in saving and keeping everyting referenced in one object
         self._DEFAULT = DEFAULT
@@ -71,28 +73,27 @@ class Metal_Design_Base(): # pylint: disable=invalid-name
             self.logger = logger
 
 #########PROPERTIES##################################################
-    ###OBJECT REPORTING
-    @property
-    def OBJECTS(self):
-        '''
-        Returns Dict object that keeps track of all Metal objects in the design
-        '''
-        return self._OBJECTS
 
     @property
     def objects(self):
         '''
         Returns Dict object that keeps track of all Metal objects in the design
         '''
-        return self._OBJECTS
+        return self._objects
 
-    ###CONNECTOR REPORTING
     @property
     def connectors(self):
         '''
         Return the Dict object that keeps track of all connectors in the design.
         '''
         return self._connectors
+
+    @property
+    def variables(self):
+        '''
+        Return the Dict object that keeps track of all variables in the design.
+        '''
+        return self._variables
 
 #########COMMANDS##################################################
     def reset_all_connectors(self):
@@ -106,8 +107,8 @@ class Metal_Design_Base(): # pylint: disable=invalid-name
         '''
         Resets the OBJECTS dictionary
         '''
-        self._OBJECTS.clear()
-        return self._OBJECTS
+        self._objects.clear()
+        return self._objects
 
     def reset_all_metal(self):
         '''
@@ -164,3 +165,12 @@ class Metal_Design_Base(): # pylint: disable=invalid-name
             path {[string]} -- [path to save file]
         """
         save_metal(path, self)
+
+    def parse_options(self, options_dict, option_names):
+        '''
+        Parse a list of option names from options_dict.
+
+        Adds units
+        '''
+        raise Exception('TODO')
+        return -1

@@ -40,7 +40,7 @@ from ..draw_utility import draw_all_objects
 from . import widgets
 from .widgets.toolbar_icons import add_toolbar_icon
 from .widgets.dialog_create_metal import Dialog_create_metal
-from .widgets.trees.metal_objects import Tree_Metal_Objects
+from .widgets.trees.metal_objects import Tree_Metal_objects
 from .widgets.trees.default_options import Tree_Default_Options
 from .widgets.log_metal import Logging_Window_Widget, Logging_Hander_for_Log_Widget
 from ._handle_qt_messages import catch_exception_slot_pyqt
@@ -71,11 +71,11 @@ class Metal_gui(QMainWindow):
 
         # params
         self.design = design
-        self._OBJECTS = None
+        self._objects = None
         self._DEFAULT_OPTIONS = None
 
         # set params
-        self.set_OBJECTS(OBJECTS)
+        self.set_objects(OBJECTS)
         self.set_DEFAULT_OPTIONS(DEFAULT_OPTIONS)
 
         # Params we will specify
@@ -483,7 +483,7 @@ class Metal_gui(QMainWindow):
 
     def _setup_tree_view(self):
 
-        tree = self.tree = Tree_Metal_Objects(self, OBJECTS=self.OBJECTS, gui=self)
+        tree = self.tree = Tree_Metal_objects(self, OBJECTS=self.OBJECTS, gui=self)
         tree.main_window = QMainWindow(self)
         tree.dock = self._add_dock('Object Explorer', tree.main_window, 'Right', 400)
         tree.dock.setToolTip('Press ENTER after done editing a value to remake the objects.')
@@ -725,15 +725,15 @@ class Metal_gui(QMainWindow):
         Returns:
             [Dict] -- [Handle to Design's OBJECTS]
         """
-        return self._OBJECTS
+        return self._objects
 
-    def set_OBJECTS(self, OBJECTS):
+    def set_objects(self, OBJECTS):
         '''
         Should ideally only ever have 1 instance object of OBJECTS
         '''
         if OBJECTS is None:
             OBJECTS = self.design.OBJECTS
-        self._OBJECTS = OBJECTS
+        self._objects = OBJECTS
         if hasattr(self, 'tree'):
             self.tree.change_content_dict(OBJECTS)
 
@@ -855,7 +855,7 @@ class Metal_gui(QMainWindow):
             design {[Metal_design_Base instance]} -- [new design]
         """
         self.design = design
-        self.set_OBJECTS(self.design.OBJECTS)
+        self.set_objects(self.design.OBJECTS)
         self.tree_design_ops.change_content_dict(self.design.params)
         self.logger.info('Changed design, updated default dictionaries, etc.')
         self.refresh_all()
