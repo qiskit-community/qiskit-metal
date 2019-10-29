@@ -216,7 +216,8 @@ Description:
 
         # Connector options
         connector_type = options['connector_type,']
-        connector_location = options['connector_location']
+        connector_location = options_connector['connector_location']
+        print(connector_location)
         claw_gap, claw_length, claw_width, ground_spacing = parse_options_user(
             options_connector, 'claw_gap, claw_length, claw_width, ground_spacing',
             self.design.params.variables)

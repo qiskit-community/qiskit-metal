@@ -109,6 +109,10 @@ class Metal_Object():  # pylint: disable=invalid-name
         # Every object should posses there
         options = deepcopy(DEFAULT_OPTIONS['Metal_Object'])
 
+        # Plugin extension
+        options._hfss = Dict()
+        options._gds = Dict()
+
         # Specific object default options
         default_options = Dict(DEFAULT_OPTIONS[cls.__name__])
         options.update(deepcopy(default_options))
@@ -118,10 +122,6 @@ class Metal_Object():  # pylint: disable=invalid-name
             options[key] = deepcopy(
                 Dict(DEFAULT_OPTIONS[value])
             )
-
-        # Plugin extensiosn
-        options._hfss = Dict()
-        options._gds = Dict()
 
         return options
 

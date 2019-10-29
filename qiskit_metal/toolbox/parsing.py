@@ -250,7 +250,7 @@ def parse_options_user(option_dict, parse_names = None, variable_dict=None,
     if as_dict:
         return res
     else:
-        return list(res.values)
+        return list(res.values())
 
 
 def parse_options_hfss(opts, parse_names):
