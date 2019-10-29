@@ -18,23 +18,16 @@ Functions used to render the objets into polygons, hfss and so on.
 @author: Zlatko K. Minev
 """
 
-import pyEPR
-import ast
 import numpy as np
-
-from numpy import sqrt, pi, array, flip
+from numpy import array
 from numpy.linalg import norm
-from collections import namedtuple
-from pyEPR.toolbox import combinekw
-from shapely.geometry import CAP_STYLE, JOIN_STYLE
+
+#from shapely.geometry import CAP_STYLE, JOIN_STYLE
 
 from . import Dict
-from .draw_utility import parse_units, get_vec_unit_norm, \
-    TRUE_STR, unparse_units, unit_vector,\
-    parse_options_hfss, Point, LineString, buffer,\
-    array_chop
+from .toolbox.parsing import parse_options_user, unparse_units, parse_options_hfss, parse_units
+from .draw_utility import  get_vec_unit_norm, unit_vector, array_chop
 from .draw_utility import *
-from . import draw_hfss
 from .config import DEFAULT, DEFAULT_OPTIONS
 
 _angle_Y2X = {'X':-90,'Y':0} # If draw along the Y axis, takes Y axis to X. Keeps Y fixed.

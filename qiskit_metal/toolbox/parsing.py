@@ -19,7 +19,8 @@ Parsing functions for  Qiskit Metal.
 @author: Zlatko K. Minev, Thomas McConkey
 '''
 
-from pyEPR.hfss import parse_units, parse_units_user  # unparse_units
+from pyEPR.hfss import parse_units, parse_units_user
+from pyEPR.hfss import unparse_units # not used here, but in imports of this file
 from .. import logger
 
 #########################################################################

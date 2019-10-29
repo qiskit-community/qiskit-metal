@@ -28,10 +28,11 @@ from shapely.geometry import Point, LineString, CAP_STYLE, JOIN_STYLE
 
 from . import DEFAULT, DEFAULT_OPTIONS, Dict, logger
 from .draw_functions import make_connector_props, do_cut_ground, do_PerfE, do_mesh
+from .toolbox.parsing import parse_options_user
 from .draw_utility import to_Vec3D, parse_units, parse_units_user,\
     get_vec_unit_norm, get_unit_vec,\
     TRUE_STR, remove_co_linear_points,\
-    parse_options_user, flip_merge, orient_position,\
+    flip_merge, orient_position,\
     Polygon, shapely
 from .draw_utility import *
 
