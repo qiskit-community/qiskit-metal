@@ -132,13 +132,6 @@ class Metal_Object():  # pylint: disable=invalid-name
         '''
         return getattr(self, key)
 
-    @property
-    def OBJECTS(self):  # pylint: disable=invalid-name
-        '''
-        returns object dictoanry containing all Metal Objects in the design
-        '''
-        return self.design.OBJECTS
-
     def get_connectors(self):
         '''
         Returns the all defined connectors

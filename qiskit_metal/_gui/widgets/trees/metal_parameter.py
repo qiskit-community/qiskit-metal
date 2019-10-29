@@ -84,7 +84,7 @@ class Parameter_Zlatko(QLineEdit):
         return _obj
 
     def get_obj_str(self):
-        return f"OBJECTS.{'.'.join(self.names)}.{self.name}"
+        return f"objects.{'.'.join(self.names)}.{self.name}"
 
     def get_value(self):
         '''

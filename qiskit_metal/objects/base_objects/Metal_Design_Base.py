@@ -105,7 +105,7 @@ class Metal_Design_Base(): # pylint: disable=invalid-name
 
     def reset_all_objects(self):
         '''
-        Resets the OBJECTS dictionary
+        Resets the objects dictionary
         '''
         self._objects.clear()
         return self._objects

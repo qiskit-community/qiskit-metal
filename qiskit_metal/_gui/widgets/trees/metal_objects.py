@@ -42,7 +42,7 @@ class Tree_Metal_Objects(Amazing_Dict_Tree_zkm):
     color_named = QtGui.QColor('#CCCC00')
 
     def __init__(self, parent,
-                OBJECTS=None,
+                objects=None,
                 gui=None,
                 **kwargs):
         """[Handles all the dictionary of all metal objects
@@ -59,9 +59,9 @@ class Tree_Metal_Objects(Amazing_Dict_Tree_zkm):
         """
         self.gui = gui # used to call remake all
         super().__init__(parent,
-                content_dict = OBJECTS,
+                content_dict = objects,
                 num_columns=2,
-                nameme='OBJECTS dictionary',
+                nameme='objects dictionary',
                 headers=["Object/Property", "Value"],
                 logger = gui.logger,
                 **kwargs)

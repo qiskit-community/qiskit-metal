@@ -40,7 +40,7 @@ from ..draw_utility import draw_all_objects
 from . import widgets
 from .widgets.toolbar_icons import add_toolbar_icon
 from .widgets.dialog_create_metal import Dialog_create_metal
-from .widgets.trees.metal_objects import Tree_Metal_objects
+from .widgets.trees.metal_objects import Tree_Metal_Objects
 from .widgets.trees.default_options import Tree_Default_Options
 from .widgets.log_metal import Logging_Window_Widget, Logging_Hander_for_Log_Widget
 from ._handle_qt_messages import catch_exception_slot_pyqt
@@ -52,7 +52,7 @@ class Metal_gui(QMainWindow):
     _icon_default_create = 'create.png' # Maybe move to stylesheet
     _icon_size_create = 40  # 31px typical; QStyle.PM_ToolBarIconSize/2 # QtWidgets - typical setting
 
-    def __init__(self, design, OBJECTS=None, DEFAULT_OPTIONS=None):
+    def __init__(self, design, objects=None, DEFAULT_OPTIONS=None):
         '''
         When running in IPython and Jupyter, make sure you have the QT loop launched.
 
@@ -75,7 +75,7 @@ class Metal_gui(QMainWindow):
         self._DEFAULT_OPTIONS = None
 
         # set params
-        self.set_objects(OBJECTS)
+        self.set_objects(objects)
         self.set_DEFAULT_OPTIONS(DEFAULT_OPTIONS)
 
         # Params we will specify
@@ -483,7 +483,7 @@ class Metal_gui(QMainWindow):
 
     def _setup_tree_view(self):
 
-        tree = self.tree = Tree_Metal_objects(self, OBJECTS=self.OBJECTS, gui=self)
+        tree = self.tree = Tree_Metal_Objects(self, objects=self.objects, gui=self)
         tree.main_window = QMainWindow(self)
         tree.dock = self._add_dock('Object Explorer', tree.main_window, 'Right', 400)
         tree.dock.setToolTip('Press ENTER after done editing a value to remake the objects.')
@@ -661,7 +661,7 @@ class Metal_gui(QMainWindow):
         self.ax_draw.clear_me()
 
         try:
-            draw_all_objects(self.OBJECTS, ax=self.ax_draw,
+            draw_all_objects(self.objects, ax=self.ax_draw,
                              func=self.re_draw_func)
         except Exception:
             self.logger.error('\n\n'+traceback.format_exc())
@@ -676,7 +676,7 @@ class Metal_gui(QMainWindow):
     @catch_exception_slot_pyqt()
     def refresh_tree(self, *args):  # pylint: disable=unused-argument
         """
-        Refresh the OBJECTS tree
+        Refresh the objects tree
         Calls repopulate on the Tree
         """
         self.tree.rebuild()  # change name to refresh?
@@ -720,22 +720,22 @@ class Metal_gui(QMainWindow):
         self.fig_draw.canvas.draw()
 
     @property
-    def OBJECTS(self):
+    def objects(self):
         """
         Returns:
-            [Dict] -- [Handle to Design's OBJECTS]
+            [Dict] -- [Handle to Design's objects]
         """
         return self._objects
 
-    def set_objects(self, OBJECTS):
+    def set_objects(self, objects):
         '''
-        Should ideally only ever have 1 instance object of OBJECTS
+        Should ideally only ever have 1 instance object of objects
         '''
-        if OBJECTS is None:
-            OBJECTS = self.design.OBJECTS
-        self._objects = OBJECTS
+        if objects is None:
+            objects = self.design.objects
+        self._objects = objects
         if hasattr(self, 'tree'):
-            self.tree.change_content_dict(OBJECTS)
+            self.tree.change_content_dict(objects)
 
     @property
     def DEFAULT_OPTIONS(self):
@@ -748,7 +748,7 @@ class Metal_gui(QMainWindow):
 
     def set_DEFAULT_OPTIONS(self, DEFAULT_OPTIONS):
         '''
-        Should ideally only ever have 1 instance object of OBJECTS
+        Should ideally only ever have 1 instance object of objects
         '''
         if DEFAULT_OPTIONS is None:
             from ..draw_functions import DEFAULT_OPTIONS
@@ -855,7 +855,7 @@ class Metal_gui(QMainWindow):
             design {[Metal_design_Base instance]} -- [new design]
         """
         self.design = design
-        self.set_objects(self.design.OBJECTS)
+        self.set_objects(self.design.objects)
         self.tree_design_ops.change_content_dict(self.design.params)
         self.logger.info('Changed design, updated default dictionaries, etc.')
         self.refresh_all()
