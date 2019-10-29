@@ -20,10 +20,12 @@
 
 # Imports required for drawing
 from copy import deepcopy
+from shapely.geometry import LineString
+
 from ...config import DEFAULT_OPTIONS, DEFAULT
 from ...draw_functions import shapely, shapely_rectangle, translate, translate_objs,\
     rotate_objs, rotate_obj_dict, scale_objs, _angle_Y2X, make_connector_props,\
-    Polygon, parse_options_user, parse_units_user, buffer, LineString,\
+    Polygon, parse_options_user, parse_units_user, buffer,\
     Dict, draw_objs
 from ... import draw_hfss
 from .Metal_Qubit import Metal_Qubit
@@ -147,8 +149,9 @@ Description:
 
         # First grabs the various option values.
         cross_width, cross_length, cross_gap,\
-            pos_x, pos_y = parse_options_user(self.design.params.variables, options, 'cross_width,\
-                 cross_length, cross_gap, pos_x, pos_y')
+            pos_x, pos_y = parse_options_user(options, 'cross_width,\
+                 cross_length, cross_gap, pos_x, pos_y',
+                 self.design.params.variables)
 
         # Then starts drawing the cross using the above values.
         # Vertical and Horizontal rectangles, and the 'etch' section which generates the gap (should have just used buffer, owell)
@@ -207,14 +210,16 @@ Description:
         options = self.options  # for transmon
         orientation = options['orientation']
         cross_width, cross_length, cross_gap,\
-            pos_x, pos_y = parse_options_user(self.design.params.variables, options, 'cross_width,\
-                 cross_length, cross_gap, pos_x, pos_y')
+            pos_x, pos_y = parse_options_user(options, 'cross_width,\
+                 cross_length, cross_gap, pos_x, pos_y',
+                 self.design.params.variables)
 
         # Connector options
         connector_type = options['connector_type,']
         connector_location = options['connector_location']
         claw_gap, claw_length, claw_width, ground_spacing = parse_options_user(
-            self.design.params.variables, options_connector, 'claw_gap, claw_length, claw_width, ground_spacing')
+            options_connector, 'claw_gap, claw_length, claw_width, ground_spacing',
+            self.design.params.variables)
 
         # Building the connector structure. Different construction based on connector type
         # (***match any changes to the port_Line)

@@ -879,7 +879,7 @@ def load_metal_object_module(metal_module_name):
     except ImportError as error:
         logger.error(
             f'ERROR (load_metal_object_module): Could not load object module for '\
-            f'the toolbar.\n Failed to load {metal_class_name}\n Please check the '\
-            f'name path and that the file does not have errors. \nError ({error}):\n'\
+            f'the toolbar.\n Failed to load \n\n >>> {metal_module_name} <<<\n\n Please check the '\
+            f'name path and that the file does not have errors. \n\n**Error:** \n{error}\n\n**ERROR FULL TRACE:**\n'\
             f'{sys.exc_info()}')
         return False

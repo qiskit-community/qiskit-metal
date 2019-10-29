@@ -21,9 +21,11 @@ modified: Thomas McConkey 2019/10/15
 # pylint: disable=invalid-name
 
 from numpy import array
+from shapely.geometry import LineString
+
 from ..base_objects.Metal_Object import Metal_Object, Dict
 from ...config import DEFAULT_OPTIONS
-from ...draw_cpw import parse_options_user, CAP_STYLE, JOIN_STYLE, meander_between, draw_cpw_trace, LineString, to_Vec3D
+from ...draw_cpw import parse_options_user, CAP_STYLE, JOIN_STYLE, meander_between, draw_cpw_trace, to_Vec3D
 
 
 DEFAULT_OPTIONS['Metal_cpw_connect'] = Dict(
@@ -100,8 +102,8 @@ Options (Metal_cpw_connect):
         ), f'Connector name {self.options.connector2} not in the set of connectors defined {self.get_connectors().keys()}'
 
     def make(self):
-        connector1_leadin_dist, connector2_leadin_dist = parse_options_user(self.design.params.variables,
-            self.options, 'connector1_leadin, connector2_leadin')
+        connector1_leadin_dist, connector2_leadin_dist = parse_options_user(
+            self.options, 'connector1_leadin, connector2_leadin', self.design.params.variables)
 
         # connectors
         connectors = self.get_connectors()
@@ -127,8 +129,9 @@ Options (Metal_cpw_connect):
         # For metal
         self.options.cpw = {
             **DEFAULT_OPTIONS['draw_cpw_trace'], **self.options.cpw, 'name': self.name}
-        cpw_width, cpw_gap = parse_options_user(self.design.params.variables,
-            self.options.cpw, 'trace_center_width, trace_center_gap')
+        cpw_width, cpw_gap = parse_options_user(
+            self.options.cpw, 'trace_center_width, trace_center_gap',
+            self.design.params.variables)
         self.objects.trace_center = self.objects.cpw_line.buffer(
             cpw_width/2, cap_style=CAP_STYLE.flat, join_style=JOIN_STYLE.mitre)
         self.objects.trace_gap = self.objects.trace_center.buffer(

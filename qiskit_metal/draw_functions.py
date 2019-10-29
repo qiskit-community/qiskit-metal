@@ -25,7 +25,7 @@ from numpy.linalg import norm
 #from shapely.geometry import CAP_STYLE, JOIN_STYLE
 
 from . import Dict
-from .toolbox.parsing import parse_options_user, unparse_units, parse_options_hfss, parse_units
+from .toolbox.parsing import parse_options_user, unparse_units, parse_options_hfss, parse_units, parse_units_user # parse_units_user used in imports of this
 from .draw_utility import  get_vec_unit_norm, unit_vector, array_chop
 from .draw_utility import *
 from .config import DEFAULT, DEFAULT_OPTIONS

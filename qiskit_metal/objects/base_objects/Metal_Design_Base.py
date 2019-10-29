@@ -28,9 +28,11 @@ Updated 2019/09/25 - Thomas McConkey
 # pylint: disable=invalid-name
 
 import numpy as np
+from shapely.geometry import LineString
+
 from ...toolbox.attribute_dictionary import Dict
 from ...config import DEFAULT, DEFAULT_OPTIONS
-from ...draw_functions import draw_objs, LineString
+from ...draw_functions import draw_objs
 from ...backend.import_export import save_metal#, load_metal
 from .Metal_Utility import is_metal_object
 

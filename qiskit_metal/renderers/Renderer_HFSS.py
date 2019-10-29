@@ -13,9 +13,10 @@
 # that they have been altered from the originals.
 
 from copy import deepcopy
+from shapely.geometry import LineString
+
 from ...config import DEFAULT_OPTIONS, DEFAULT
 from ...draw_functions import shapely, shapely_rectangle, translate, translate_objs,\
     rotate_objs, rotate_obj_dict, scale_objs, _angle_Y2X, make_connector_props,\
-    Polygon, parse_options_user, parse_units_user, buffer, LineString,\
-    Dict
+    Polygon, parse_options_user, parse_units_user, buffer, Dict
 from ... import draw_hfss

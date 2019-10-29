@@ -140,6 +140,6 @@ def parse_param_from_str(text):
     return value, used_ast
 
 
-def isinstance_number(object):
-    return any(map(lambda x: isinstance(object, x),
+def isinstance_number(obj):
+    return any(map(lambda x: isinstance(obj, x),
                    [int, float, np.int, np.float, np.int64, np.float64, np.long, np.integer]))

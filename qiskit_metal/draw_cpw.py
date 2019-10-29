@@ -28,8 +28,8 @@ from shapely.geometry import Point, LineString, CAP_STYLE, JOIN_STYLE
 
 from . import DEFAULT, DEFAULT_OPTIONS, Dict, logger
 from .draw_functions import make_connector_props, do_cut_ground, do_PerfE, do_mesh
-from .toolbox.parsing import parse_options_user
-from .draw_utility import to_Vec3D, parse_units, parse_units_user,\
+from .toolbox.parsing import parse_options_user, parse_units_user
+from .draw_utility import to_Vec3D,\
     get_vec_unit_norm, get_unit_vec,\
     TRUE_STR, remove_co_linear_points,\
     flip_merge, orient_position,\
@@ -403,7 +403,7 @@ def basic_meander(design, points0,
     assert len(points0) == 2
     options = combinekw(DEFAULT_OPTIONS['basic_meander'], options)
     meander_spacing, meander_out, shift_fraction, lead_in_spacing = \
-        parse_options_user(design.params.variables,options,'spacing, width, shift_fraction, lead_in_spacing')
+        parse_options_user(options,'spacing, width, shift_fraction, lead_in_spacing', design.params.variables)
 
     # print('meander_spacing = {meander_spacing}')
 

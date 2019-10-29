@@ -27,7 +27,7 @@ from collections import OrderedDict
 
 from ...toolbox.attribute_dictionary import Dict
 from ...config import DEFAULT_OPTIONS
-from ...draw_utility import parse_units_user
+from ...toolbox.parsing import parse_units_user
 from ... import draw_functions
 
 from .Metal_Design_Base import Metal_Design_Base

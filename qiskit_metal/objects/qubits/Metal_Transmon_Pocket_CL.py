@@ -33,15 +33,14 @@ Attempted version functioning as child of 'standard' transmon pocket
 # Modification of Transmon Pocket Object to include a charge line (would be better to just make as a child)
 
 from copy import deepcopy
-from ...config import Dict, DEFAULT_OPTIONS #, DEFAULT
-from ...draw_functions import shapely, shapely_rectangle, translate, translate_objs,\
-    rotate_objs, rotate_obj_dict, scale_objs, _angle_Y2X, make_connector_props,\
-    Polygon, parse_options_user, parse_units_user, buffer#, LineString,\
-    #, draw_objs
-#from ... import draw_hfss
 from shapely.ops import cascaded_union
 from shapely.geometry import shape
 from shapely.affinity import scale
+
+from ...config import Dict, DEFAULT_OPTIONS
+from ...draw_functions import shapely, shapely_rectangle, translate, translate_objs,\
+    rotate_objs, rotate_obj_dict, scale_objs, _angle_Y2X, make_connector_props,\
+    Polygon, parse_options_user, parse_units_user, buffer
 from .Metal_Transmon_Pocket import Metal_Transmon_Pocket
 
 
@@ -89,11 +88,13 @@ class Metal_Transmon_Pocket_CL(Metal_Transmon_Pocket):  # pylint: disable=invali
         options = self.options
         name = 'Charge_Line'
         cl_gap, cl_width, cl_length, cl_groundGap = parse_options_user(
-            self.design.params.variables, options, 'cl_gap, cl_width, cl_length, cl_groundGap')
+            options, 'cl_gap, cl_width, cl_length, cl_groundGap',
+            self.design.params.variables)
 
         pad_gap, pad_height, pocket_width, pocket_height, pad_width,\
-            pos_x, pos_y = parse_options_user(
-                self.design.params.variables, options, 'pad_gap, pad_height, pocket_width, pocket_height, pad_width, pos_x, pos_y')
+            pos_x, pos_y = parse_options_user(options,
+                'pad_gap, pad_height, pocket_width, pocket_height, pad_width, pos_x, pos_y',
+                self.design.params.variables)
 
         cl_Arm = shapely.geometry.box(0, 0, -cl_width, cl_length)
         cl_CPW = shapely.geometry.box(0, 0, -8*cl_width, cl_width)
@@ -123,7 +124,7 @@ class Metal_Transmon_Pocket_CL(Metal_Transmon_Pocket):  # pylint: disable=invali
             if (cl_PocketEdge.upper() == 'N'):
                 cl_Rotate = -90
 
-        
+
         # Rotate it to the pockets orientation
         objects = rotate_objs(objects, _angle_Y2X[options['orientation']] + cl_Rotate, origin=(0, 0))
 

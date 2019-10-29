@@ -38,11 +38,13 @@ modified: Thomas McConkey 2019
 # pylint: disable=invalid-name
 
 from copy import deepcopy
+from shapely.geometry import LineString
+
 from ...config import DEFAULT_OPTIONS, DEFAULT
 from ...draw_functions import shapely, shapely_rectangle, translate, translate_objs,\
     rotate_objs, rotate_obj_dict, scale_objs, _angle_Y2X, make_connector_props,\
-    Polygon, parse_options_user, parse_units_user, buffer, LineString,\
-    Dict#, draw_objs
+    Polygon, parse_options_user, parse_units_user, buffer,\
+    Dict
 from ... import draw_hfss
 from .Metal_Qubit import Metal_Qubit
 
@@ -187,8 +189,9 @@ class Metal_Transmon_Pocket(Metal_Qubit): # pylint: disable=invalid-name
 
         # Pads- extracts relevant values from options dictionary
         pad_gap, inductor_width, pad_width, pad_height, pocket_width, pocket_height,\
-            pos_x, pos_y = parse_options_user(self.design.params.variables, options, 'pad_gap, inductor_width, pad_width,\
-                 pad_height, pocket_width, pocket_height, pos_x, pos_y')
+            pos_x, pos_y = parse_options_user(options, 'pad_gap, inductor_width, pad_width,\
+                 pad_height, pocket_width, pocket_height, pos_x, pos_y',
+                 self.design.params.variables)
         # then makes the shapely polygons
         pad = shapely_rectangle(pad_width, pad_height)
         pad_top = translate(pad, 0, +(pad_height+pad_gap)/2.)
@@ -238,14 +241,16 @@ class Metal_Transmon_Pocket(Metal_Qubit): # pylint: disable=invalid-name
         # Transmon options
         options = self.options  # for transmon
         pad_gap, _, pad_width, pad_height, pocket_width, _, pos_x, pos_y = \
-            parse_options_user(self.design.params.variables, options, 'pad_gap, inductor_width, pad_width, pad_height,\
-                pocket_width, pocket_height, pos_x, pos_y')
+            parse_options_user(options, 'pad_gap, inductor_width, pad_width, pad_height,\
+                pocket_width, pocket_height, pos_x, pos_y',
+                self.design.params.variables)
 
         # Connector options
         pad_gap, pad_cwidth, pad_cheight, pad_cpw_shift, cpw_width, pocket_extent,\
-             pocket_rise, pad_cpw_extent, cpw_extend, cpw_gap = parse_options_user(self.design.params.variables,\
+             pocket_rise, pad_cpw_extent, cpw_extend, cpw_gap = parse_options_user(\
                  options_connector, 'pad_gap, pad_width, pad_height, pad_cpw_shift,\
-                     cpw_width, pocket_extent, pocket_rise, pad_cpw_extent, cpw_extend, cpw_gap')
+                     cpw_width, pocket_extent, pocket_rise, pad_cpw_extent, cpw_extend, cpw_gap',
+                     self.design.params.variables)
 
         connector_pad = shapely_rectangle(pad_cwidth, pad_cheight)
         connector_pad = translate(connector_pad, -pad_cwidth/2, pad_cheight/2)
