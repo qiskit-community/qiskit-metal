@@ -19,29 +19,27 @@ Draw utility functions
 @author: Zlatko Minev
 """
 
+from collections.abc import Iterable
+
 import numpy as np
+from numpy import array
+from numpy.linalg import norm
+
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-
-
-from numpy import sqrt, pi, array
-from numpy.linalg import norm
-from collections import namedtuple
-from collections.abc import Iterable
-from pyEPR.hfss import parse_units, unparse_units, parse_units_user
-from pyEPR.toolbox import combinekw
 
 import shapely
 import shapely.wkt
 from shapely.geometry import CAP_STYLE, JOIN_STYLE
-from shapely.geometry import Point, LineString, LinearRing,\
-    Polygon as Polygon_shapely, MultiPolygon
+from shapely.geometry import Point, LinearRing, Polygon as Polygon_shapely, MultiPolygon
 from shapely.affinity import rotate, scale, translate
 
+from pyEPR.hfss import parse_units
+from pyEPR.toolbox import combinekw
+
 from . import draw_functions
-from . import logger, Dict
+from . import logger
 from .toolbox.mpl_interaction import figure_pz
-from .toolbox.utility_functions import dict_start_with, copy_update, get_traceback
 
 #########################################################################
 # Constants
@@ -52,6 +50,7 @@ TRUE_STR = ['true', 'True', 'TRUE', '1', 't', 'y', 'Y', 'YES',
 #########################################################################
 # Geomtry classes
 
+# TODO: remove / supress this - superseed. Only used fro drawing, just turn to func
 class Polygon(Polygon_shapely):
 
     """def __init__(self, *args, rectangle=False, **kwargs):
@@ -172,9 +171,8 @@ def plot_shapely(objects,
             plot_shapely_style_v1(ax, labels=labels)
         return _iteration
 
-    if not isinstance(objects, shapely.geometry.base.BaseGeometry): # obj is None
+    if not isinstance(objects, shapely.geometry.base.BaseGeometry):  # obj is None
         return _iteration+1
-
 
     # We have now a single object to draw
     obj = objects
@@ -202,15 +200,16 @@ def plot_shapely(objects,
 
 draw_objs = plot_shapely
 
-def draw_all_objects(OBJECTS, ax, func=lambda x:x, root_name='OBJECTS'):
+
+def draw_all_objects(objects, ax, func=lambda x: x, root_name='objects'):
     from .objects.base_objects.Metal_Utility import is_metal_object
 
-    #logger.debug(OBJECTS.keys())
-    for name, obj in OBJECTS.items():
+    # logger.debug(objects.keys())
+    for name, obj in objects.items():
         if isinstance(obj, dict):
             if name.startswith('objects'):
                 #logger.debug(f'Drawing: {root_name}.{name}')
-                draw_objs(func(obj), ax=ax) # allow transmofmation of objects
+                draw_objs(func(obj), ax=ax)  # allow transmofmation of objects
             else:
                 draw_all_objects(obj, ax, root_name=root_name+'.'+name)
 
@@ -218,10 +217,11 @@ def draw_all_objects(OBJECTS, ax, func=lambda x:x, root_name='OBJECTS'):
             #logger.debug(f' Metal_Object: {obj}')
             draw_objs(obj.objects, ax=ax)
 
-def get_all_objects(objects, func=lambda x:x, root_name='OBJECTS'):
+
+def get_all_objects(objects, func=lambda x: x, root_name='objects'):
     from .objects.base_objects.Metal_Utility import is_metal_object
 
-    new_name = lambda name: root_name + '.' + name if not (root_name == '') else name
+    def new_name(name): return root_name + '.' + name if not (root_name == '') else name
 
     if is_metal_object(objects):
         return {objects.name: get_all_objects(objects.objects,
@@ -236,9 +236,9 @@ def get_all_objects(objects, func=lambda x:x, root_name='OBJECTS'):
             if is_metal_object(obj):
                 RES[name] = get_all_objects(obj.objects, root_name=new_name(name))
             elif isinstance(obj, dict):
-                #if name.startswith('objects'): # old school to remove eventually TODO
+                # if name.startswith('objects'): # old school to remove eventually TODO
                 #    RES[name] = func(obj) # allow transofmraiton of objects
-                #else:
+                # else:
                 RES[name] = get_all_objects(obj, root_name=new_name(name))
             elif isinstance(obj, shapely.geometry.base.BaseGeometry):
                 RES[name] = func(obj)
@@ -248,20 +248,21 @@ def get_all_objects(objects, func=lambda x:x, root_name='OBJECTS'):
         logger.debug(f'warning: {root_name} was not an object or dict or the right handle')
         return None
 
+
 def flatten_all_objects(objects, filter_obj=None):
-    assert  isinstance(objects, dict)
+    assert isinstance(objects, dict)
 
     RES = []
 
-#OLD CODE? REMOVE?
+# OLD CODE? REMOVE?
     #from .objects.Metal_Object import is_metal_object
-    #if is_metal_object(OBJECTS):
-    #    RES += flatten_all_objects(OBJECTS.objects, filter_obj)
-    #else:
+    # if is_metal_object(objects):
+    #    RES += flatten_all_objects(objects.objects, filter_obj)
+    # else:
     for name, obj in objects.items():
         if isinstance(obj, dict):
             RES += flatten_all_objects(obj, filter_obj)
-        #elif is_metal_object(obj):
+        # elif is_metal_object(obj):
         #    RES += flatten_all_objects(obj.objects, filter_obj)
         else:
             if filter_obj is None:
@@ -274,9 +275,10 @@ def flatten_all_objects(objects, filter_obj=None):
 
     return RES
 
-def get_all_object_bounds(OBJECTS):
+
+def get_all_object_bounds(objects):
     # Assumes they are all polygonal
-    objects = get_all_objects(OBJECTS)
+    objects = get_all_objects(objects)
     objs = flatten_all_objects(objects, filter_obj=shapely.geometry.Polygon)
     print(objs)
     (x_min, y_min, x_max, y_max) = MultiPolygon(objs).bounds
@@ -309,11 +311,11 @@ def plot_simple_gui_style(ax):
     ax.set_axisbelow(True)
 
     # Reset color cycle
-    #ax.set_prop_cycle(None)
+    # ax.set_prop_cycle(None)
     ax.set_prop_cycle(color=['#91aecf', '#a3bbd6', '#6e94be', '#a3bbd6'])
 
-    #fig.canvas.draw()
-    #fig.canvas.flush_events()
+    # fig.canvas.draw()
+    # fig.canvas.flush_events()
 
 
 def plot_simple_gui_spawn(fig_kw={}):
@@ -327,7 +329,7 @@ def plot_simple_gui_spawn(fig_kw={}):
                             **fig_kw})
 
     ax_draw = fig_draw.add_subplot(1, 1, 1)
-    #ax_draw.set_title('Layout')
+    # ax_draw.set_title('Layout')
     # If 'box', change the physical dimensions of the Axes. If 'datalim', change the x or y data limits.
     ax_draw.set_adjustable('datalim')
 
@@ -434,7 +436,7 @@ def rotate_obj_dict(objects, angle, *args, **kwargs):
         'X' does nothing
         'Y' is a 90 degree clockwise rotated object
     '''
-    #Should change to also cover negative rotations and flips?
+    # Should change to also cover negative rotations and flips?
     angle = {'X': 0, 'Y': 90}.get(angle, angle)
     if isinstance(objects, list):
         for i, obj in enumerate(objects):
@@ -452,7 +454,7 @@ def rotate_obj_dict(objects, angle, *args, **kwargs):
 rotate_objs = rotate_obj_dict
 
 
-def _func_obj_dict(func, objects, *args, _override = True, **kwargs):
+def _func_obj_dict(func, objects, *args, _override=True, **kwargs):
     '''
     _override:  overrides the dictionary.
     '''
@@ -520,7 +522,6 @@ def scale_objs(objects, *args, **kwargs):
     return _func_obj_dict(scale, objects, *args, **kwargs)
 
 
-
 def buffer(objects,  *args, **kwargs):
     '''
     Flat buffer of all objects in the dictionary
@@ -569,54 +570,6 @@ def buffer(objects,  *args, **kwargs):
         return obj.buffer(*args, **kwargs)
     return _func_obj_dict(buffer_me, objects, *args, **kwargs)
 
-#########################################################################
-# UNIT and Conversion related
-
-
-def parse_options_user(variableList, opts, names):
-    '''
-    To user units.
-    Parse a list of variable names (or a string of comma delimited ones
-    to list of user parsed ones.
-
-    To do use:  `'variable1'.isidentifier()
-    '''
-
-    if isinstance(names, str):
-        names = names.split(',')
-
-    res = []
-    for name in names:
-        name = name.strip()
-        if not name in opts:
-            logger.warning(f'Missing key {name} from options {opts}.\n')
-
-        if isinstance(opts[name],str):
-            if not(opts[name][0].isdigit() or opts[name][0]=='-'):
-                if not opts[name] in variableList:
-                    logger.warning(f'Missing variable {opts[name]} from variable list.\n')
-
-                res += [parse_units_user(variableList[opts[name]]) ]
-            else:
-                res += [parse_units_user(opts[name]) ]
-        else:
-            res += [parse_units_user(opts[name]) ]
-
-    return res
-    #return [parse_units_user(opts[name.strip()]) for name in names]
-
-
-def parse_options_hfss(opts, names):
-    '''
-    To HFSS units.
-
-    Parse a list of variable names (or a string of comma delimited ones
-    to list of HFSS parsed ones.
-    '''
-    if isinstance(names, str):
-        names = names.split(',')
-    return [parse_units(opts[name.strip()]) for name in names]
-
 
 #########################################################################
 # POINT LIST FUNCTIONS
@@ -624,16 +577,16 @@ def parse_options_hfss(opts, names):
 def check_duplicate_list(your_list):
     return len(your_list) != len(set(your_list))
 
-import traceback
+
 def unit_vector(vector):
     """ Return a vector where is XY components now make a unit vector
 
     Normalizes only in the XY plane, leaves the Z plane alone
     """
-    vector = array_chop(vector) # get rid of near zero crap
+    vector = array_chop(vector)  # get rid of near zero crap
     if len(vector) == 2:
         _norm = norm(vector)
-        if not bool(_norm): # zero length vector
+        if not bool(_norm):  # zero length vector
             logger.debug(f'Warning: zero vector length')
             return vector
         return vector / _norm
@@ -678,6 +631,12 @@ def get_vec_unit_norm(points,
 
 
 def to_Vec3Dz(vec2D, z=0):
+    '''
+    Used for darwing in HFSS only.
+    For the given design, get the z values in HFSS UNITS!
+
+    Manually specify z dimension.
+    '''
     if isinstance(vec2D[0], Iterable):
         return array([to_Vec3Dz(vec, z=z) for vec in vec2D])
     else:
@@ -686,7 +645,10 @@ def to_Vec3Dz(vec2D, z=0):
 
 def to_Vec3D(design, options, vec2D):
     '''
-        For the given designut, get the z
+    Used for darwing in HFSS only.
+    For the given design, get the z values in HFSS UNITS!
+
+    get z dimension from the design chip params
     '''
     if isinstance(vec2D[0], Iterable):
         return array([to_Vec3D(design, options, vec) for vec in vec2D])
@@ -697,22 +659,25 @@ def to_Vec3D(design, options, vec2D):
             options.get('chip', draw_functions.DEFAULT['chip'])))
         return array(list(vec2D)+[z])
 
+
 def array_chop(vec, zero=0, rtol=0, machine_tol=100):
     '''
     Zlatko chop array entires clsoe to zero
     '''
     vec = np.array(vec)
-    mask = np.isclose(vec, zero, rtol=rtol,atol=machine_tol*np.finfo(float).eps)
+    mask = np.isclose(vec, zero, rtol=rtol, atol=machine_tol*np.finfo(float).eps)
     vec[mask] = 0
     return vec
+
 
 def same_vectors(v1, v2, tol=100):
     '''
     Check if two vectors are within an infentesmimal distance set
     by `tol` and machine epsilon
     '''
-    v1,v2 = list(map(np.array, [v1,v2]))         # enforce numpy array
+    v1, v2 = list(map(np.array, [v1, v2]))         # enforce numpy array
     return float(norm(v1-v2)) < tol*np.finfo(float).eps
+
 
 def remove_co_linear_points(points):
     '''
@@ -749,9 +714,9 @@ def is_rectangle(obj):
     p = Polygon(obj).coords_ext
     if len(p) == 4:
         def isOrthogonal(i):
-            v1 = p[(i+1)%4]-p[(i+0)%4]
-            v2 = p[(i+2)%4]-p[(i+1)%4]
-            return abs(np.dot(v1,v2)) < 1E-16
-        return all(map(isOrthogonal, range(4))) # CHeck if all vectors are consequtivly orthogonal
+            v1 = p[(i+1) % 4]-p[(i+0) % 4]
+            v2 = p[(i+2) % 4]-p[(i+1) % 4]
+            return abs(np.dot(v1, v2)) < 1E-16
+        return all(map(isOrthogonal, range(4)))  # CHeck if all vectors are consequtivly orthogonal
     else:
         return False
