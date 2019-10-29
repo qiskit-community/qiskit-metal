@@ -110,6 +110,7 @@ class Metal_Design_Base(): # pylint: disable=invalid-name
         Resets the objects dictionary
         '''
         self._objects.clear()
+        self.reset_all_connectors()
         return self._objects
 
     def reset_all_metal(self):
@@ -117,7 +118,7 @@ class Metal_Design_Base(): # pylint: disable=invalid-name
         Removes the metal device
         '''
         self.reset_all_objects()
-        self.reset_all_connectors()
+        #self.reset_all_connectors()
         return self
 
 
