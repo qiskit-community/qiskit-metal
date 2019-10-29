@@ -29,7 +29,7 @@ from pyEPR.toolbox import combinekw
 from shapely.geometry import CAP_STYLE, JOIN_STYLE
 
 from . import Dict
-from .draw_utility import to_Vec3D, parse_units, get_vec_unit_norm, \
+from .draw_utility import parse_units, get_vec_unit_norm, \
     TRUE_STR, unparse_units, unit_vector,\
     parse_options_hfss, Point, LineString, buffer,\
     array_chop
