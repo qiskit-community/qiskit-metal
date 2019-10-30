@@ -30,6 +30,7 @@ Updated 2019/09/25 - Thomas McConkey
 import numpy as np
 from shapely.geometry import LineString
 
+from ...toolbox.parsing import parse_options_user
 from ...toolbox.attribute_dictionary import Dict
 from ...config import DEFAULT, DEFAULT_OPTIONS
 from ...draw_functions import draw_objs
@@ -168,11 +169,12 @@ class Metal_Design_Base(): # pylint: disable=invalid-name
         """
         save_metal(path, self)
 
-    def parse_options(self, options_dict, option_names):
+    def get_option_values(self, options_dict, option_names):
         '''
         Parse a list of option names from options_dict.
 
         Adds units
         '''
-        raise Exception('TODO')
-        return -1
+        return parse_options_user(options_dict, option_names, self._variables)
+
+        

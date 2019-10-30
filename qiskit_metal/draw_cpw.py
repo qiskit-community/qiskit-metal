@@ -102,7 +102,7 @@ Example use: ????
 
     #### Draw in natural space
     # Draw symmetrical
-    Bw, Bh, Lh, Cw, Cg, Bg, Mg = parse_options_user(options, ['base_width','base_height',\
+    Bw, Bh, Lh, Cw, Cg, Bg, Mg = self.design.get_option_values(options, ['base_width','base_height',\
                                 'launch_height','cpw_width', 'cpw_gap', 'base_gap',
                                 'mesh_gap'])
     Mg  = 0 if Mg is None else Mg
@@ -120,7 +120,7 @@ Example use: ????
 
 
     # Position
-    pos  = options['position']
+    pos  = self.design.get_option_values(options,'position')
     posY = pos[1]*(parse_units_user(options['chip_size'][{'X':1,'Y':0}[pos[0]]])/2. - parse_units_user(options['pos_gap']))
     pos1 = parse_units_user((pos[2],posY))
     pos1 = pos1 if pos[0] == 'X' else tuple(reversed(pos1))
