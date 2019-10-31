@@ -102,7 +102,7 @@ Example use: ????
 
     #### Draw in natural space
     # Draw symmetrical
-    Bw, Bh, Lh, Cw, Cg, Bg, Mg = self.design.get_option_values(options, ['base_width','base_height',\
+    Bw, Bh, Lh, Cw, Cg, Bg, Mg = parse_options_user(options, ['base_width','base_height',\
                                 'launch_height','cpw_width', 'cpw_gap', 'base_gap',
                                 'mesh_gap'])
     Mg  = 0 if Mg is None else Mg
@@ -120,7 +120,7 @@ Example use: ????
 
 
     # Position
-    pos  = self.design.get_option_values(options,'position')
+    pos  = options['position']
     posY = pos[1]*(parse_units_user(options['chip_size'][{'X':1,'Y':0}[pos[0]]])/2. - parse_units_user(options['pos_gap']))
     pos1 = parse_units_user((pos[2],posY))
     pos1 = pos1 if pos[0] == 'X' else tuple(reversed(pos1))
@@ -250,8 +250,8 @@ def draw_cpw_trace(design,
     poly_default_options = options['poly_default_options']
 
     ### Paramaters
-    name, fillet, cpw_center_w, cpw_center_gap_dt, trace_mesh_gap_dt = parse_units([options[x] for x in\
-                  ['name', 'fillet', 'trace_center_width', 'trace_mesh_gap', 'trace_mesh_gap']])
+    name, fillet, cpw_center_w, cpw_center_gap_dt, trace_mesh_gap_dt = design.get_option_values(options,
+                  'name, fillet, trace_center_width, trace_mesh_gap, trace_mesh_gap')
 
     cpw_center_gap = cpw_center_w   + 2*cpw_center_gap_dt   # total width of sweep line
     cpw_mesh_gap   = cpw_center_gap + 2*trace_mesh_gap_dt   # total width of sweep line
@@ -403,7 +403,7 @@ def basic_meander(design, points0,
     assert len(points0) == 2
     options = combinekw(DEFAULT_OPTIONS['basic_meander'], options)
     meander_spacing, meander_out, shift_fraction, lead_in_spacing = \
-        parse_options_user(options,'spacing, width, shift_fraction, lead_in_spacing', design.params.variables)
+        design.get_option_values(options,'spacing, width, shift_fraction, lead_in_spacing')
 
     # print('meander_spacing = {meander_spacing}')
 

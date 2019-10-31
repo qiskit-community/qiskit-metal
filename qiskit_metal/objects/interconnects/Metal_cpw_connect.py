@@ -102,8 +102,8 @@ Options (Metal_cpw_connect):
         ), f'Connector name {self.options.connector2} not in the set of connectors defined {self.get_connectors().keys()}'
 
     def make(self):
-        connector1_leadin_dist, connector2_leadin_dist = parse_options_user(
-            self.options, 'connector1_leadin, connector2_leadin', self.design.params.variables)
+        connector1_leadin_dist, connector2_leadin_dist = self.design.get_option_values(
+            self.options, 'connector1_leadin, connector2_leadin')
 
         # connectors
         connectors = self.get_connectors()
@@ -129,9 +129,8 @@ Options (Metal_cpw_connect):
         # For metal
         self.options.cpw = {
             **DEFAULT_OPTIONS['draw_cpw_trace'], **self.options.cpw, 'name': self.name}
-        cpw_width, cpw_gap = parse_options_user(
-            self.options.cpw, 'trace_center_width, trace_center_gap',
-            self.design.params.variables)
+        cpw_width, cpw_gap = self.design.get_option_values(
+            self.options.cpw, 'trace_center_width, trace_center_gap')
         self.objects.trace_center = self.objects.cpw_line.buffer(
             cpw_width/2, cap_style=CAP_STYLE.flat, join_style=JOIN_STYLE.mitre)
         self.objects.trace_gap = self.objects.trace_center.buffer(
