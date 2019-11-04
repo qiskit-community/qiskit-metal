@@ -57,7 +57,7 @@ DEFAULT_OPTIONS['Metal_Transmon_Pocket.connectors'] = Dict(
     pad_cpw_extent='25um',
     cpw_width=DEFAULT_OPTIONS.cpw.width,
     cpw_gap=DEFAULT_OPTIONS.cpw.gap,
-    cpw_extend='100um',  # how far into the CPW to extend
+    cpw_extend='100um',  # how far into the ground to extend the CPW line from the coupling pads
     pocket_extent='5um',
     pocket_rise='65um',
     loc_W=+1,  # width location  only +-1
@@ -76,7 +76,7 @@ DEFAULT_OPTIONS['Metal_Transmon_Pocket'].update(Dict(
     pad_height='90um',
     pocket_width='650um',
     pocket_height='650um',
-    orientation='Y',  # X has dipole aligned along the +X axis, while Y has dipole aligned along the +Y axis
+    orientation='0',  # 90 has dipole aligned along the +X axis, while 0 has dipole aligned along the +Y axis
 
     _hfss=Dict(
         rect_options=dict(color=DEFAULT['col_in_cond'],
@@ -189,9 +189,8 @@ class Metal_Transmon_Pocket(Metal_Qubit): # pylint: disable=invalid-name
 
         # Pads- extracts relevant values from options dictionary
         pad_gap, inductor_width, pad_width, pad_height, pocket_width, pocket_height,\
-            pos_x, pos_y = parse_options_user(options, 'pad_gap, inductor_width, pad_width,\
-                 pad_height, pocket_width, pocket_height, pos_x, pos_y',
-                 self.design.params.variables)
+            pos_x, pos_y,orientation = self.design.get_option_values(options, 'pad_gap, inductor_width, pad_width,\
+                 pad_height, pocket_width, pocket_height, pos_x, pos_y, orientation')
         # then makes the shapely polygons
         pad = shapely_rectangle(pad_width, pad_height)
         pad_top = translate(pad, 0, +(pad_height+pad_gap)/2.)
@@ -212,7 +211,7 @@ class Metal_Transmon_Pocket(Metal_Qubit): # pylint: disable=invalid-name
         #rotates and translates all the objects as requested. Uses package functions in 'draw_utility' for easy
         # rotation/translation
         objects = rotate_obj_dict(
-            objects, _angle_Y2X[options['orientation']], origin=(0, 0))
+            objects,orientation, origin=(0, 0))
         objects = translate_objs(objects, pos_x, pos_y)
 
         self.objects.update(objects)
@@ -240,17 +239,15 @@ class Metal_Transmon_Pocket(Metal_Qubit): # pylint: disable=invalid-name
 
         # Transmon options
         options = self.options  # for transmon
-        pad_gap, _, pad_width, pad_height, pocket_width, _, pos_x, pos_y = \
-            parse_options_user(options, 'pad_gap, inductor_width, pad_width, pad_height,\
-                pocket_width, pocket_height, pos_x, pos_y',
-                self.design.params.variables)
+        pad_gap, _, pad_width, pad_height, pocket_width, _, pos_x, pos_y,orientation = \
+            self.design.get_option_values(options, 'pad_gap, inductor_width, pad_width, pad_height,\
+                pocket_width, pocket_height, pos_x, pos_y ,orientation')
 
         # Connector options
         pad_gap, pad_cwidth, pad_cheight, pad_cpw_shift, cpw_width, pocket_extent,\
-             pocket_rise, pad_cpw_extent, cpw_extend, cpw_gap = parse_options_user(\
+             pocket_rise, pad_cpw_extent, cpw_extend, cpw_gap = self.design.get_option_values(\
                  options_connector, 'pad_gap, pad_width, pad_height, pad_cpw_shift,\
-                     cpw_width, pocket_extent, pocket_rise, pad_cpw_extent, cpw_extend, cpw_gap',
-                     self.design.params.variables)
+                     cpw_width, pocket_extent, pocket_rise, pad_cpw_extent, cpw_extend, cpw_gap')
 
         connector_pad = shapely_rectangle(pad_cwidth, pad_cheight)
         connector_pad = translate(connector_pad, -pad_cwidth/2, pad_cheight/2)
@@ -287,7 +284,7 @@ class Metal_Transmon_Pocket(Metal_Qubit): # pylint: disable=invalid-name
         objects = translate_objs(objects, options_connector['loc_W']*(pad_width)/2.,
                                  options_connector['loc_H']*(pad_height+pad_gap/2+pad_gap))
         objects = rotate_objs(
-            objects, _angle_Y2X[options['orientation']], origin=(0, 0))
+            objects, orientation, origin=(0, 0))
         objects = Dict(translate_objs(objects, pos_x, pos_y))
 
         # add to objects

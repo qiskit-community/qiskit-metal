@@ -25,7 +25,7 @@ from shapely.geometry import LineString
 from ...config import DEFAULT_OPTIONS, DEFAULT
 from ...draw_functions import shapely, shapely_rectangle, translate, translate_objs,\
     rotate_objs, rotate_obj_dict, scale_objs, _angle_Y2X, make_connector_props,\
-    Polygon, parse_options_user, parse_units_user, buffer,\
+    Polygon, buffer,\
     Dict, draw_objs
 from ... import draw_hfss
 from .Metal_Qubit import Metal_Qubit
@@ -34,12 +34,12 @@ from shapely.geometry import shape
 
 # Connector default options
 DEFAULT_OPTIONS['Metal_Transmon_Cross.connectors'] = Dict(
-    connector_type='Claw',
+    connector_type='0', #0 = Claw type, 1 = gap type
     claw_length='30um',
     ground_spacing='5um',
     claw_width=DEFAULT_OPTIONS.cpw.width,
     claw_gap=DEFAULT_OPTIONS.cpw.gap,
-    connector_location='W'
+    connector_location='0' #0 => 'west' arm, 90 => 'north' arm, 180 => 'east' arm
 )
 
 #
@@ -51,7 +51,7 @@ DEFAULT_OPTIONS['Metal_Transmon_Cross'].update(Dict(
     cross_width='20um',
     cross_length='200um',
     cross_gap='20um',
-    orientation='Y',  # X has the SQUID on the X axis, while Y has the SQUID on the Y axis
+    orientation='0',  # 90 has the SQUID on the X axis, while 0 has the SQUID on the Y axis
     #BETTER ROTATION NEEDED
 
     _hfss=Dict(
@@ -149,9 +149,8 @@ Description:
 
         # First grabs the various option values.
         cross_width, cross_length, cross_gap,\
-            pos_x, pos_y = parse_options_user(options, 'cross_width,\
-                 cross_length, cross_gap, pos_x, pos_y',
-                 self.design.params.variables)
+            pos_x, pos_y, orientation = self.design.get_option_values(options, 'cross_width,\
+                 cross_length, cross_gap, pos_x, pos_y, orientation')
 
         # Then starts drawing the cross using the above values.
         # Vertical and Horizontal rectangles, and the 'etch' section which generates the gap (should have just used buffer, owell)
@@ -179,7 +178,7 @@ Description:
         )
 
         # Rotate and translate Crossmon
-        objects = rotate_obj_dict(objects, _angle_Y2X[options['orientation']], origin=(0, 0))
+        objects = rotate_obj_dict(objects, orientation, origin=(0, 0))
         objects = translate_objs(objects, pos_x, pos_y)
 
         self.objects.update(objects)
@@ -208,25 +207,21 @@ Description:
 
         # Transmon options
         options = self.options  # for transmon
-        orientation = options['orientation']
         cross_width, cross_length, cross_gap,\
-            pos_x, pos_y = parse_options_user(options, 'cross_width,\
-                 cross_length, cross_gap, pos_x, pos_y',
-                 self.design.params.variables)
+            pos_x, pos_y, orientation = self.design.get_option_values(options, 'cross_width,\
+                 cross_length, cross_gap, pos_x, pos_y, orientation')
 
         # Connector options
-        connector_type = options['connector_type,']
-        connector_location = options_connector['connector_location']
-        print(connector_location)
-        claw_gap, claw_length, claw_width, ground_spacing = parse_options_user(
-            options_connector, 'claw_gap, claw_length, claw_width, ground_spacing',
-            self.design.params.variables)
+        #connector_type = options['connector_type,']
+        #connector_location = options_connector['connector_location']
+        claw_gap, claw_length, claw_width, ground_spacing, connector_type, connector_location = self.design.get_option_values(
+            options_connector, 'claw_gap, claw_length, claw_width, ground_spacing, connector_type, connector_location')
 
         # Building the connector structure. Different construction based on connector type
         # (***match any changes to the port_Line)
         clawCPW = shapely.geometry.box(0, -claw_width/2, -4*claw_width, claw_width/2)
 
-        if connector_type is 'Claw':
+        if connector_type == 0: #Claw connector
             TEMP_clawHeight = 2*claw_gap + 2 * claw_width + 2 * \
                 ground_spacing + 2*cross_gap + cross_width  # temp value
 
@@ -259,15 +254,15 @@ Description:
             objects, -(cross_length + cross_gap + ground_spacing + claw_gap), 0)
 
         clawRotate = 0
-        if connector_location.upper() == 'N':
-            clawRotate = -90
-        elif connector_location.upper() == 'E':
+        if connector_location>135:
             clawRotate = 180
+        elif connector_location>45:
+            clawRotate = -90
 
         # Rotates to the appropriate arm, then rotate and translate to match the rotation/position of the Crossmon
         objects = rotate_objs(objects, clawRotate, origin=(0, 0))
 
-        objects = rotate_obj_dict(objects, _angle_Y2X[options['orientation']], origin=(0, 0))
+        objects = rotate_obj_dict(objects, orientation, origin=(0, 0))
         objects = translate_objs(objects, pos_x, pos_y)
 
 
@@ -302,7 +297,7 @@ Description:
         options_hfss = self.options._hfss
         rect_options = options_hfss.rect_options
         _, oModeler = design.get_modeler()  # pylint: disable=invalid-name
-        def oh(x): return parse_units_user(options_hfss[x])  # pylint: disable=invalid-name
+        #def oh(x): return parse_units_user(options_hfss[x])  # pylint: disable=invalid-name
 
         # Make mesh objects
         rect_msh = self.objects.cross_Etcher

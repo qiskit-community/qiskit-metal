@@ -51,13 +51,13 @@ DEFAULT_OPTIONS['Metal_Transmon_Pocket_CL.connectors'] = deepcopy(
 DEFAULT_OPTIONS['Metal_Transmon_Pocket_CL'] = deepcopy(
     DEFAULT_OPTIONS['Metal_Transmon_Pocket'])
 DEFAULT_OPTIONS['Metal_Transmon_Pocket_CL'].update(Dict(
-    make_CL='ON',
+    make_CL=True,
     cl_gap='6um',  # the cpw dielectric gap of the charge line
     cl_width='10um',  # the cpw trace width of the charge line
     cl_length='20um',  # the length of the charge line 'arm' coupling the the qubit pocket. Measured from the base of the 90 degree bend
     cl_groundGap='6um',  # how much ground between the charge line and the qubit pocket
     # the side of the qubit pocket the charge line is placed on (before any rotations)
-    cl_PocketEdge='W', #placeholder for now
+    cl_PocketEdge='0', #-180 to +180 from the 'left edge', will round to the nearest 90.
     cl_offCenter='100um',  # distance from the center axis the qubit pocket is built on
 ))
 
@@ -76,7 +76,7 @@ class Metal_Transmon_Pocket_CL(Metal_Transmon_Pocket):  # pylint: disable=invali
     def make(self):
         super().make()
 
-        if self.options.make_CL == 'ON':
+        if self.options.make_CL == True:
             self.make_chargeLine()
 
 
@@ -87,14 +87,12 @@ class Metal_Transmon_Pocket_CL(Metal_Transmon_Pocket):  # pylint: disable=invali
         # Grab option values
         options = self.options
         name = 'Charge_Line'
-        cl_gap, cl_width, cl_length, cl_groundGap = parse_options_user(
-            options, 'cl_gap, cl_width, cl_length, cl_groundGap',
-            self.design.params.variables)
+        cl_gap, cl_width, cl_length, cl_groundGap, cl_PocketEdge = self.design.get_option_values(
+            options, 'cl_gap, cl_width, cl_length, cl_groundGap, cl_PocketEdge')
 
         pad_gap, pad_height, pocket_width, pocket_height, pad_width,\
-            pos_x, pos_y = parse_options_user(options,
-                'pad_gap, pad_height, pocket_width, pocket_height, pad_width, pos_x, pos_y',
-                self.design.params.variables)
+            pos_x, pos_y,orientation = self.design.get_option_values(options,
+                'pad_gap, pad_height, pocket_width, pocket_height, pad_width, pos_x, pos_y, orientation')
 
         cl_Arm = shapely.geometry.box(0, 0, -cl_width, cl_length)
         cl_CPW = shapely.geometry.box(0, 0, -8*cl_width, cl_width)
@@ -109,24 +107,24 @@ class Metal_Transmon_Pocket_CL(Metal_Transmon_Pocket):  # pylint: disable=invali
             cl_Etcher=cl_Etcher,
             port_Line=port_Line,
         )
-        cl_PocketEdge = options['cl_PocketEdge']
+
         # Move the charge line to the side user requested
         cl_Rotate = 0
-        if (cl_PocketEdge.upper() == 'W') or (cl_PocketEdge.upper() == 'E'):
+        if (abs(cl_PocketEdge) > 135) or (abs(cl_PocketEdge) <45):
             objects = translate_objs(
                 objects, -(pocket_width/2 + cl_groundGap + cl_gap), -(pad_gap + pad_height)/2)
-            if (cl_PocketEdge.upper() == 'E'):
+            if (abs(cl_PocketEdge) > 135):
                 cl_Rotate = 180
-        elif (cl_PocketEdge.upper() == 'N') or (cl_PocketEdge.upper() == 'S'):
+        else:
             objects = translate_objs(
                 objects, -(pocket_height/2 + cl_groundGap + cl_gap), -(pad_width)/2)
             cl_Rotate = 90
-            if (cl_PocketEdge.upper() == 'N'):
+            if (cl_PocketEdge<0):
                 cl_Rotate = -90
 
 
         # Rotate it to the pockets orientation
-        objects = rotate_objs(objects, _angle_Y2X[options['orientation']] + cl_Rotate, origin=(0, 0))
+        objects = rotate_objs(objects, orientation + cl_Rotate, origin=(0, 0))
 
         # Move to the final position
         objects = translate_objs(objects, pos_x, pos_y)

@@ -55,6 +55,7 @@ from .objects.base_objects.Metal_Object import Metal_Object
 from .objects.base_objects.Metal_Utility import is_metal_object
 from .objects.interconnects.Metal_cpw_connect import Metal_cpw_connect
 from .objects.qubits.Metal_Transmon_Pocket import Metal_Transmon_Pocket
+from .objects.qubits.Metal_Transmon_Cross import Metal_Transmon_Cross
 from .backend.import_export import save_metal, load_metal
 
 

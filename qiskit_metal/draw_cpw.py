@@ -250,8 +250,8 @@ def draw_cpw_trace(design,
     poly_default_options = options['poly_default_options']
 
     ### Paramaters
-    name, fillet, cpw_center_w, cpw_center_gap_dt, trace_mesh_gap_dt = parse_units([options[x] for x in\
-                  ['name', 'fillet', 'trace_center_width', 'trace_mesh_gap', 'trace_mesh_gap']])
+    name, fillet, cpw_center_w, cpw_center_gap_dt, trace_mesh_gap_dt = design.get_option_values(options,
+                  'name, fillet, trace_center_width, trace_mesh_gap, trace_mesh_gap')
 
     cpw_center_gap = cpw_center_w   + 2*cpw_center_gap_dt   # total width of sweep line
     cpw_mesh_gap   = cpw_center_gap + 2*trace_mesh_gap_dt   # total width of sweep line
@@ -403,7 +403,7 @@ def basic_meander(design, points0,
     assert len(points0) == 2
     options = combinekw(DEFAULT_OPTIONS['basic_meander'], options)
     meander_spacing, meander_out, shift_fraction, lead_in_spacing = \
-        parse_options_user(options,'spacing, width, shift_fraction, lead_in_spacing', design.params.variables)
+        design.get_option_values(options,'spacing, width, shift_fraction, lead_in_spacing')
 
     # print('meander_spacing = {meander_spacing}')
 
@@ -414,7 +414,7 @@ def basic_meander(design, points0,
 
     if options['snap_toXY']:
         def snap_unit_vector_toXY(vec_n):
-            ''' nspas to either the x or y unit vecotrs'''
+            ''' snaps to either the x or y unit vecotrs'''
             m = np.argmax(abs(vec_n))
             m = m if options['snap_force_ort'] == False else int(not(m))
             v = np.array([0,0])
