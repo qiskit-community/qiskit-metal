@@ -51,7 +51,7 @@ DEFAULT_OPTIONS['Metal_Transmon_Pocket_CL.connectors'] = deepcopy(
 DEFAULT_OPTIONS['Metal_Transmon_Pocket_CL'] = deepcopy(
     DEFAULT_OPTIONS['Metal_Transmon_Pocket'])
 DEFAULT_OPTIONS['Metal_Transmon_Pocket_CL'].update(Dict(
-    make_CL='ON',
+    make_CL=True,
     cl_gap='6um',  # the cpw dielectric gap of the charge line
     cl_width='10um',  # the cpw trace width of the charge line
     cl_length='20um',  # the length of the charge line 'arm' coupling the the qubit pocket. Measured from the base of the 90 degree bend
@@ -76,7 +76,7 @@ class Metal_Transmon_Pocket_CL(Metal_Transmon_Pocket):  # pylint: disable=invali
     def make(self):
         super().make()
 
-        if self.options.make_CL == 'ON':
+        if self.options.make_CL == True:
             self.make_chargeLine()
 
 

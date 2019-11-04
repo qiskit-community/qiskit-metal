@@ -414,7 +414,7 @@ def basic_meander(design, points0,
 
     if options['snap_toXY']:
         def snap_unit_vector_toXY(vec_n):
-            ''' nspas to either the x or y unit vecotrs'''
+            ''' snaps to either the x or y unit vecotrs'''
             m = np.argmax(abs(vec_n))
             m = m if options['snap_force_ort'] == False else int(not(m))
             v = np.array([0,0])

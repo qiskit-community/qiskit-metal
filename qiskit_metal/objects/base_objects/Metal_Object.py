@@ -81,6 +81,11 @@ class Metal_Object():  # pylint: disable=invalid-name
             design), "Error you did not pass in a valid Metal Design object as a parent of this component."
 
         self.design = design
+
+        if name in design.objects.keys():
+            raise ValueError('Object name already in use. Please choose an alternative name or delete the other object.')
+            return
+            
         self.name = name
 
         self.options = self.create_default_options()
