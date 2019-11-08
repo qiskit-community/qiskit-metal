@@ -133,8 +133,7 @@ class Metal_Transmon_Pocket(Metal_Qubit): # pylint: disable=invalid-name
     pad_height      - the size (y-axis) of the charge island pads
     pocket_width    - size of the pocket (cut out in ground) along x-axis
     pocket_height   - size of the pocket (cut out in ground) along y-axis
-    orientation     - how the pocket is oreintated,'X' or 'Y', where Y applies a 90 degree
-                      rotation to the pocket
+    orientation     - degree of qubit rotation
 
     Connectors:
     ----------------------------------------------------------------------------
