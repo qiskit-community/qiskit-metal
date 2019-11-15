@@ -524,11 +524,10 @@ class Metal_gui(QMainWindow):
 
         # Main window for tree
         tree.main_window.setCentralWidget(tree)
-        self.tabifyDockWidget(self.tree_design_ops.dock, self.tree.dock)
         tree.resizeColumnToContents(0)
 
 
-        ### ADD VARIABLE TAB
+        ### ADD variable tab
         tree = self.tree_design_vars = Tree_Default_Options(
             self, content_dict=self.design.variables, gui=self)
         tree.main_window = QMainWindow(self)
@@ -536,8 +535,10 @@ class Metal_gui(QMainWindow):
 
         # Main window for tree
         tree.main_window.setCentralWidget(tree)
-        self.tabifyDockWidget(self.tree_design_vars.dock, self.tree.dock)
         tree.resizeColumnToContents(0)
+
+        self.tabifyDockWidget(self.tree_design_ops.dock, self.tree_design_vars.dock)
+        self.tabifyDockWidget(self.tree_design_vars.dock, self.tree.dock)
 
     @catch_exception_slot_pyqt()
     def reload_stylesheet(self, _):
