@@ -131,11 +131,11 @@ def catch_exception_slot_pyqt(*args, catch=Exception, on_exception_emit=None):
                 #import pickle
                 #pickle.dump(e, open("C:\\zkm-code\\qiskit_metal\\deleteme.p", "wb" ))
 
-                message = '\nERROR in PyQtSlot call.\n'\
-                    + f"\n{' message:':10s} {e.__repr__()}"\
-                    + f"{' module:':10s} {wrapper.__module__}" \
-                    + f"\n{' name:':10s} {wrapper.__qualname__}" \
-                    + f"\n{' args|kwargs:':10s} {args} | {kwargs}" \
+                message = '\nERROR in call made by GUI function.\n'\
+                    + f"\n{' module:':12s} {wrapper.__module__}" \
+                    + f"\n{' function:':12s} {wrapper.__qualname__}" \
+                    + f"\n{' err msg:':12s} {e.__repr__()}"\
+                    + f"\n{' args|kws:':12s} {args} | {kwargs}" \
 
                 do_debug(message, name='error')
 

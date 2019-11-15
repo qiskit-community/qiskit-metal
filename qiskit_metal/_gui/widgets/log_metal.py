@@ -122,7 +122,7 @@ class Logging_Window_Widget(QTextEdit):
         </table>
         </span>
         <b>Tip: </b> {random.choice(config.GUI_CONFIG['tips'])}
-        <br>''')
+        <br>''', format_as_html=2)
 
     def print_all_tips(self):
         """Prints all availabel tips in the log window
@@ -197,16 +197,18 @@ class Logging_Window_Widget(QTextEdit):
         # set the write positon
         cursor = self.textCursor()
         cursor.movePosition(QtGui.QTextCursor.End)
-        cursor.insertBlock()
+        cursor.insertBlock()   # add a new block, which makes a new line
 
         # add message
-        if format_as_html:
+        if format_as_html == True:
             if not self.action_show_times.isChecked():
                 # remove the timestamp
-                head, body = message.split('>', 1)
+                head, body = message.split('<pre>', 1)
+                message = head + '<pre>' + body[1+self.timestamp_len:]  # get rid of timestamp
                 #print('\n\n\n', message, 'HEAD', head, 'BODY', body, 'FINAL', body[1+self.timestamp_len:])
-                message = head + '>' + body[1+self.timestamp_len:]  # get rid of timestamp
             #print(f'insertHtml: {message}')
+            cursor.insertHtml(message)
+        elif format_as_html == 2:
             cursor.insertHtml(message)
         else:
             cursor.insertText(message, self.text_format)
@@ -258,5 +260,5 @@ class Logging_Hander_for_Log_Widget(logging.Handler):
             record {[LogRecord]} -- [description]
         """
         html_record = html.escape(self.format(record))
-        html_log_message = '<span class="%s">%s</span>' % (record.levelname, html_record)
+        html_log_message = '<span class="%s"><pre>%s</pre></span>' % (record.levelname, html_record)
         self.log_panel.log_message_to(self.name, html_log_message)
