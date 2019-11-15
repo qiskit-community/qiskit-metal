@@ -29,7 +29,7 @@ from copy import deepcopy
 
 from .Metal_Utility import is_metal_design
 from ...toolbox.attribute_dictionary import Dict
-from ...toolbox.parsing import parse_options_dict
+from ...toolbox.parsing import parse_options_dict, parse_value
 from ...config import DEFAULT_OPTIONS
 
 
@@ -196,6 +196,46 @@ class Metal_Object():  # pylint: disable=invalid-name
         self.options.chip
         '''
         return self.design.get_substrate_z(self.options)
+
+
+    def parse_value(self, val):
+        """
+        Parse the value, converting string into interpreted values.
+        Parses units, variables, strings, lists, and dicitonaries.
+        Explained by example below.
+
+        Options Arguments:
+            options (dict) : default is None. If left None,
+                             then self.options is used
+
+        Example converstions with a `design`:
+
+        ..code-block python
+            design.variables.cpw_width = '10um' # Example variable
+            object.parse_value(Dict(
+                string1 = '1m',
+                string2 = '1mm',
+                string3 = '1um',
+                string4 = '1nm',
+                variable1 = 'cpw_width',
+                list1 = "['1m', '5um', 'cpw_width', -1, False, 'a string']",
+                dict1 = "{'key1':'4e-6mm'}"
+            ))
+
+        Yields:
+
+        ..code-block python
+            {'string1': 1000.0,
+            'string2': 1,
+            'string3': 0.001,
+            'string4': 1.0e-06,
+            'variable1': 0.01,
+            'list1': [1000.0, 0.005, 0.01, -1, False, 'a string'],
+            'dict1': {'key1': 4e-06}}
+
+        """
+
+        return parse_value(val, self.design.variables)
 
 
     def parse_options(self, options = None):

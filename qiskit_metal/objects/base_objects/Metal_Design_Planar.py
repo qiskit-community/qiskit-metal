@@ -24,10 +24,11 @@ Updated 2019/09/25 - Thomas McConkey
 # pylint: disable=invalid-name
 
 from collections import OrderedDict
+from copy import deepcopy
 
 from ...toolbox.attribute_dictionary import Dict
 from ...config import DEFAULT_OPTIONS
-from ...toolbox.parsing import parse_units_user
+from ...toolbox.parsing import parse_units_user, parse_value
 from ... import draw_functions
 
 from .Metal_Design_Base import Metal_Design_Base
@@ -57,14 +58,6 @@ DEFAULT_OPTIONS.update({
                 **DEFAULT_OPTIONS['draw_substrate']
             })
         }),
-
-        ####################################################
-        # Variables
-        # Design variables, chip parameter, and design
-        # Is where to place variable names which are wanted for optemetrics in HFSS
-        'variables': {
-        },
-
     })
 })
 
@@ -106,11 +99,8 @@ class Design_Planar(Metal_Design_Base):  # pylint: disable=invalid-name
 
         super().__init__(objects=objects, connectors=connectors)
 
-        self.params = Dict({
-            'globals': DEFAULT_OPTIONS['Design_Planar']['globals'],
-            'variables': DEFAULT_OPTIONS['Design_Planar']['variables'],
-            'chips': DEFAULT_OPTIONS['Design_Planar']['chips']
-        })
+        self.params = deepcopy(DEFAULT_OPTIONS['Design_Planar'])
+
         for key in design_parameters:
             self.params[key].update(design_parameters.get(key, {}))
 
@@ -124,26 +114,26 @@ class Design_Planar(Metal_Design_Base):  # pylint: disable=invalid-name
 
         self.set_oDesign(oDesign_)
 
-# Likely can be safely removed (2019/09/25)
-    # def add_track_object(self, options, track_me, name=None):
-    #     '''
-    #         Assumes there is a categoty and name
-    #     '''
-    #     if name is None:
-    #         name = options['name']
-    #     if options['category'] not in self.track_objs.keys():
-    #         self.track_objs[options['category']] = OrderedDict()
-    #     self.track_objs[options['category']][name] = track_me
 
+#########FUNCTIONS##################################################
 
-#########COMMANDS##################################################
-
-    def get_chip_size(self, options):
+    def get_chip_size(self, arg = None):
         '''
         Gets the size of the chip in the options dictionary
         Takes options.chip
         '''
-        return parse_units_user(self.params.chips[options['chip']]['size'])
+        if arg is None:
+            chip_name = 'main'
+        elif isinstance(arg, dict):
+            # Passed options
+            chip_name = arg['chip']
+        elif isinstance(arg, str):
+            chip_name = arg
+        else:
+            raise ValueError('Unexpected get_chip_size arguemtn type.\
+                              Should be dict, None or string name of chip.')
+
+        return self.parse_value(self.params.chips[chip_name]['size'])
 
     def get_substrate_z(self, chip_name='main'):
         '''

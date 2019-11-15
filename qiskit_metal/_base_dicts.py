@@ -42,7 +42,7 @@ DEFAULT_OPTIONS['cpw'] = Dict(
     fillet='90um',
 )
 
-
+#TODO: depricated.All of this should move to HFSS config
 DEFAULT = Dict({
     'chip'         : 'main',
     'do_PerfE'     : True,  # applied p-erf E BC

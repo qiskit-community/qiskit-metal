@@ -25,7 +25,7 @@ from numpy.linalg import norm
 #from shapely.geometry import CAP_STYLE, JOIN_STYLE
 
 from . import Dict
-from .toolbox.parsing import parse_options_user, unparse_units, parse_options_hfss, parse_units, parse_units_user # parse_units_user used in imports of this
+from .toolbox.parsing import parse_options_user, unparse_units, parse_options_hfss, parse_units, parse_units_user, parse_value # parse_units_user used in imports of this
 from .draw_utility import  get_vec_unit_norm, unit_vector, array_chop
 from .draw_utility import *
 from .config import DEFAULT, DEFAULT_OPTIONS
@@ -89,8 +89,8 @@ def draw_bounding_box(design, options=DEFAULT_OPTIONS['draw_bounding_box']):
 # draw_substrate
  # For chip size, negative draws the substrate box down
 DEFAULT_OPTIONS['draw_substrate'] = Dict({
-    'pos_xy': ['0um', '0um'],
-    'size': ['8.5mm', '6.5mm', '-0.750mm'],
+    'pos_xy': ['0um', '0um'], # TODO replace thses with strings
+    'size': "['8.5mm', '6.5mm', '-0.750mm']", # TODO replace thses with strings
     'elevation': 0,
     'ground_plane': 'ground_plane',
     'substrate': 'substrate',
@@ -114,7 +114,8 @@ def draw_substrate(design, options):
     options = {**DEFAULT_OPTIONS['draw_substrate'], **options}
     _, oModeler = design.get_modeler()
 
-    elevation, size, pos_xy = parse_options_hfss(options, ['elevation', 'size', 'pos_xy'])
+    elevation, pos_xy = parse_options_hfss(options, ['elevation', 'pos_xy'])
+    size = design.parse_value(options['size'])
     origin = array([*pos_xy, elevation])
 
     # sheet

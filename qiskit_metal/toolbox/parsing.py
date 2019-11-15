@@ -139,6 +139,9 @@ def is_numeric_possible(test_str:str):
 def parse_value(value : str, variable_dict : dict):
     """
     Parse a single string value to correct type and value
+    USER UNITS.
+
+    ** Main parsing funciton.**
 
     Arguments:
         value {[str]} -- string to parse
@@ -187,6 +190,12 @@ def parse_value(value : str, variable_dict : dict):
         # If the value is a dictionary, then parse that dictionary
         return parse_options_dict(value, variable_dict)
 
+    elif isinstance(value, list):
+        return [parse_value(val, variable_dict) for val in value]
+
+    elif isinstance(value, tuple):
+        return tuple([parse_value(val, variable_dict) for val in value])
+
     else: # no parsing needed, it is not a string
         return value
 
@@ -195,31 +204,16 @@ def parse_value(value : str, variable_dict : dict):
 def parse_options_dict(options:dict, variable_dict:dict):
     """
     Parses a list of option names from a dictionary of options.
-    * Assumes: User units.
-
-    The dictionary values will be parse as variables, strings, int, floats, etc. and
-    converted to USER units where appropriate.
-    Units can be set in the design.
-
-    Variable interpertation:
-         will use isidentifier:  `'variable1'.isidentifier()
+    The dictionary values will be parse as variables, strings, int, floats, etc.
+    Values with units are converted to **USER UNITS.** User units can be set in the design.
+    Variable interpertation will use string method isidentifier `'variable1'.isidentifier()
 
     Arguments:
-        option_dict {[type]} -- Dict with key value pairs of options, from which to parse.
-        parse_names {str, list, None} -- Either a list of strings that give the variables names,
-            which can be comma delimited, or a single variable name
-            e.g., one can pass
-            'var_name1, var_name2'
-            or
-            ['var_name1', 'var_name2']
-            If parse_names == None, then it will parse all the options in the dicitonary
-
-    Keyword Arguments:
+        options {[dict]} -- Dict with key value pairs of options, from which to parse.
         variable_dict {[dict]} -- Dictionary containing all variables (default: {None})
-        as_dict {bool} -- (default: False) Return as dicitonary or a lis
 
     Returns:
-        [list] -- List of the parsed values
+        [Dict] -- Dict of the parsed values
 
 
     Example test:
@@ -227,6 +221,32 @@ def parse_options_dict(options:dict, variable_dict:dict):
         parse_options_user({'a':4, 'b':'-0.1e6 nm', 'c':'x', 'd':'y','e':'z'},
                         'a,b,c,d,e',
                         vars_)
+
+    Example converstions with a `design`:
+
+        ..code-block python
+            design.variables.cpw_width = '10um' # Example variable
+            design.parse_options(Dict(
+                string1 = '1m',
+                string2 = '1mm',
+                string3 = '1um',
+                string4 = '1nm',
+                variable1 = 'cpw_width',
+                list1 = "['1m', '5um', 'cpw_width', -1, False, 'a string']",
+                dict1 = "{'key1':'4e-6mm'}"
+            ))
+
+        Yields:
+
+        ..code-block python
+            {'string1': 1000.0,
+            'string2': 1,
+            'string3': 0.001,
+            'string4': 1.0e-06,
+            'variable1': 0.01,
+            'list1': [1000.0, 0.005, 0.01, -1, False, 'a string'],
+            'dict1': {'key1': 4e-06}}
+
     """
     return Dict(map(
                     lambda item: [item[0],  parse_value(item[1], variable_dict)],  # key, value
@@ -236,8 +256,8 @@ def parse_options_dict(options:dict, variable_dict:dict):
 def parse_options_user(option_dict, parse_names = None, variable_dict=None,
                        as_dict = False):
     """
-    SOMEWHAT OUTDATED FUNCTION. MAY BE REMOVED IN FUTURE.
-
+    OUTDATED FUNCTION.
+    MAY BE REMOVED IN FUTURE.
     SUPERSEEDED BY `parse_options_dict`
 
     Parses a list of option names from a dictionary of options.
@@ -308,6 +328,10 @@ def parse_options_user(option_dict, parse_names = None, variable_dict=None,
 def parse_options_hfss(opts, parse_names):
     '''
     To HFSS units.
+
+    Used in HFSS renderer only.
+
+    TODO: Supersee by USER UNITS TO HFSS UNITS.
 
     Parse a list of variable names (or a string of comma delimited ones
     to list of HFSS parsed ones.

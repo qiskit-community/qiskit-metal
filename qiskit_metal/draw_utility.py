@@ -50,6 +50,11 @@ TRUE_STR = ['true', 'True', 'TRUE', '1', 't', 'y', 'Y', 'YES',
 #########################################################################
 # Geomtry classes
 
+def get_poly_pts(poly):
+    '''Return the coordinates with the last repeating point removed'''
+    coords = np.array(poly.exterior.coords)
+    return coords[:-1]
+
 # TODO: remove / supress this - superseed. Only used fro drawing, just turn to func
 class Polygon(Polygon_shapely):
 
@@ -66,9 +71,8 @@ class Polygon(Polygon_shapely):
 
     @property
     def coords_ext(self):
-        'Return the coordinates with the last repeating point removed'
-        coords = np.array(self.exterior.coords)
-        return coords[:-1]
+        '''Return the coordinates with the last repeating point removed'''
+        return get_poly_pts(self)
 
     def draw(self,
              ax=None,

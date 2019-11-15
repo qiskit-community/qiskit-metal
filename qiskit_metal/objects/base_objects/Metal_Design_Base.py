@@ -30,7 +30,7 @@ Updated 2019/09/25 - Thomas McConkey
 import numpy as np
 from shapely.geometry import LineString
 
-from ...toolbox.parsing import parse_options_user
+from ...toolbox.parsing import parse_units_user, parse_value, parse_options_user
 from ...toolbox.attribute_dictionary import Dict
 from ...config import DEFAULT, DEFAULT_OPTIONS
 from ...draw_functions import draw_objs
@@ -176,6 +176,41 @@ class Metal_Design_Base(): # pylint: disable=invalid-name
 
         Adds units
 
-        TODO: Remove this funciton and superseed with self.parse_options
+        TODO: Remove this funciton and superseed with self.parse_value
         '''
         return parse_options_user(options_dict, option_names, self._variables)
+
+    def parse_value(self, value):
+        """Parse a value into user units.
+
+        Example  converstions with a `design`:
+
+        ..code-block python
+            design.variables.cpw_width = '10um' # Example variable
+            design.parse_value(Dict(
+                string1 = '1m',
+                string2 = '1mm',
+                string3 = '1um',
+                string4 = '1nm',
+                variable1 = 'cpw_width',
+                list1 = "['1m', '5um', 'cpw_width', -1, False, 'a string']",
+                dict1 = "{'key1':'4e-6mm'}"
+            ))
+
+        Yields:
+
+        ..code-block python
+            {'string1': 1000.0,
+            'string2': 1,
+            'string3': 0.001,
+            'string4': 1.0e-06,
+            'variable1': 0.01,
+            'list1': [1000.0, 0.005, 0.01, -1, False, 'a string'],
+            'dict1': {'key1': 4e-06}}
+
+        """
+        return parse_value(value, self.variables)
+
+    def add_connector(self, args):
+        #TOOD:
+        pass
