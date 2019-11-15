@@ -137,7 +137,8 @@ def is_numeric_possible(test_str:str):
 
 # look into pyparsing
 def parse_value(value : str, variable_dict : dict):
-    """Parse a single string value to correct type and value
+    """
+    Parse a single string value to correct type and value
 
     Arguments:
         value {[str]} -- string to parse
@@ -182,12 +183,63 @@ def parse_value(value : str, variable_dict : dict):
         else: # assume it is just a string
             return value
 
+    elif isinstance(value, dict):
+        # If the value is a dictionary, then parse that dictionary
+        return parse_options_dict(value, variable_dict)
+
     else: # no parsing needed, it is not a string
         return value
+
+
+
+def parse_options_dict(options:dict, variable_dict:dict):
+    """
+    Parses a list of option names from a dictionary of options.
+    * Assumes: User units.
+
+    The dictionary values will be parse as variables, strings, int, floats, etc. and
+    converted to USER units where appropriate.
+    Units can be set in the design.
+
+    Variable interpertation:
+         will use isidentifier:  `'variable1'.isidentifier()
+
+    Arguments:
+        option_dict {[type]} -- Dict with key value pairs of options, from which to parse.
+        parse_names {str, list, None} -- Either a list of strings that give the variables names,
+            which can be comma delimited, or a single variable name
+            e.g., one can pass
+            'var_name1, var_name2'
+            or
+            ['var_name1', 'var_name2']
+            If parse_names == None, then it will parse all the options in the dicitonary
+
+    Keyword Arguments:
+        variable_dict {[dict]} -- Dictionary containing all variables (default: {None})
+        as_dict {bool} -- (default: False) Return as dicitonary or a lis
+
+    Returns:
+        [list] -- List of the parsed values
+
+
+    Example test:
+        vars_ = {'x':5.0, 'y':'5um'}
+        parse_options_user({'a':4, 'b':'-0.1e6 nm', 'c':'x', 'd':'y','e':'z'},
+                        'a,b,c,d,e',
+                        vars_)
+    """
+    return Dict(map(
+                    lambda item: [item[0],  parse_value(item[1], variable_dict)],  # key, value
+                options.items()))
+
 
 def parse_options_user(option_dict, parse_names = None, variable_dict=None,
                        as_dict = False):
     """
+    SOMEWHAT OUTDATED FUNCTION. MAY BE REMOVED IN FUTURE.
+
+    SUPERSEEDED BY `parse_options_dict`
+
     Parses a list of option names from a dictionary of options.
         Assumes: User units.
 
