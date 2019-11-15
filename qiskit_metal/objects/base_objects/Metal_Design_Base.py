@@ -179,39 +179,3 @@ class Metal_Design_Base(): # pylint: disable=invalid-name
         TODO: Remove this funciton and superseed with self.parse_options
         '''
         return parse_options_user(options_dict, option_names, self._variables)
-
-    def parse_options(self, options = None):
-        """
-        Parse the options, converting string into interpreted values.
-        Parses units, variables, strings, lists, and dicitonaries.
-        Explained by example below.
-
-        Example converstions with a `design`:
-
-        ..code-block python
-            design.variables.cpw_width = '10um' # Example variable
-            design.parse_options(Dict(
-                string1 = '1m',
-                string2 = '1mm',
-                string3 = '1um',
-                string4 = '1nm',
-                variable1 = 'cpw_width',
-                list1 = "['1m', '5um', 'cpw_width', -1, False, 'a string']",
-                dict1 = "{'key1':'4e-6mm'}"
-            ))
-
-        Yields:
-
-        ..code-block python
-            {'string1': 1000.0,
-            'string2': 1,
-            'string3': 0.001,
-            'string4': 1.0e-06,
-            'variable1': 0.01,
-            'list1': [1000.0, 0.005, 0.01, -1, False, 'a string'],
-            'dict1': {'key1': 4e-06}}
-
-        """
-
-        return parse_options_dict(options if options else self.,
-                                  self.design.variables)
