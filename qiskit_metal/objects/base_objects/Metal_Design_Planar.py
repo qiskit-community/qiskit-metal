@@ -104,14 +104,17 @@ class Design_Planar(Metal_Design_Base):  # pylint: disable=invalid-name
         for key in design_parameters:
             self.params[key].update(design_parameters.get(key, {}))
 
+        # TODO: Remove this. Track these elsewhere in renderer maybe or 
         self.track_objs = {
             'qubits': {},
             'cpw': {},
             'launchers': {}
         }
 
+        #TODO: Move into renderer 
         self._mesh_assign = Dict()  # internal dict used to append mesh ops and reassign
 
+        self.variables.cpw_width = DEFAULT_OPTIONS.cpw.width
         self.set_oDesign(oDesign_)
 
 

@@ -376,8 +376,10 @@ class Metal_gui(QMainWindow):
         menu.setObjectName('createMetal')
         button.setMenu(menu)
         for file_path in py_file_paths:
-            submodule_name = str(Path(file_path).stem)
-            if not submodule_name.startswith('_') and not submodule_name == 'Metal_Qubit':
+            submodule_name = str( Path(file_path).stem )
+            if not submodule_name.startswith('_') and \
+               not submodule_name in GUI_CONFIG.exclude_metal_classes:
+                
                 self.add_metal_object(menu, module, submodule_name)
 
     def add_metal_object(self, menu, parent_module, submodule_name,

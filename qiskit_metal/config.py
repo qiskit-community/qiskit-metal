@@ -49,8 +49,12 @@ GUI_CONFIG = Dict(
 
     load_metal_modules = Dict(
         Qubits = 'qiskit_metal.objects.qubits',
-        Interconnects = 'qiskit_metal.objects.interconnects'
+        Interconnects = 'qiskit_metal.objects.interconnects',
+        Connectors = 'qiskit_metal.objects.connectors'
+        
     ),
+
+    exclude_metal_classes = ['Metal_Qubit'],
 
     tips = [
         'Right clicking the tree elements allows you to do neat things.',
