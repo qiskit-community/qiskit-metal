@@ -31,7 +31,7 @@ from ...draw_utility import flip_merge, orient_position, get_poly_pts
 from ...draw_functions import make_connector_props
 
 DEFAULT_OPTIONS['cpw_launcher'] = Dict({
-    'name'         : 'Launch',
+    'chip'         : 'main',
     'base_width'   : '80um',
     'base_height'  : '80um',
     'base_gap'     : '58um',
@@ -41,8 +41,7 @@ DEFAULT_OPTIONS['cpw_launcher'] = Dict({
     'mesh_gap'     : DEFAULT_OPTIONS.cpw.mesh_width,
     'pos_gap'      : '200um',                        # gap to edge of chip
     'position'     : "['X', -1, '7mm']",          # +1 or -1, '10um' position along edge
-    'orientation'  : '0', # ignorred when triplet in position
-    'chip_size'    : "['8.5mm', '6.5mm', '-750um']", # should get this
+    'orientation'  : '0',                         # ignorred when triplet in position
     }
 )
 
@@ -109,15 +108,18 @@ class cpw_launcher(Metal_Object):
         Bw /= 2.
         Cw /= 2.
 
-        line  = shapely.wkt.loads(f'LINESTRING (0 0, {Bw} 0, {Bw} {Bh}, {Cw} {Bh+Lh})')
-        poly  = Polygon(flip_merge(line))
-        # Outside path and mesh
-        line1 = LineString(array(line.coords)  + array(((0,-Bg),(+Bg,-Bg),(+Bg,0),(Cg,0))))
+        ### Draw linesshapes firtst
+        # Inner piece
+        line_inner  = shapely.wkt.loads(f'LINESTRING (0 0, {Bw} 0, {Bw} {Bh}, {Cw} {Bh+Lh})')
+        # Outside piece which gets cut from ground plane 
+        line_outter = LineString(array(line_inner.coords)  + array(((0,-Bg),(+Bg,-Bg),(+Bg,0),(Cg,0))))
+        #
+        line_mesh = LineString(array(line_outter.coords) + array(((0,-Mg),(+Mg,-Mg),(+Mg,0),(Mg,0))))
 
-        lineM = LineString(array(line1.coords) + array(((0,-Mg),(+Mg,-Mg),(+Mg,0),(Mg,0))))
-
-        poly1 = Polygon(flip_merge(line1))
-        polyM = Polygon(flip_merge(lineM))
+        ### Turn into poygons
+        poly_inner  = Polygon(flip_merge(line_inner))
+        poly_outer = Polygon(flip_merge(line_outter))
+        poly_mesh = Polygon(flip_merge(line_mesh))
 
 
         # Position
@@ -141,20 +143,18 @@ class cpw_launcher(Metal_Object):
             raise ValueError("Cannot interpreit position of chip. Check how you specified it!! See the help of this class. ")
 
         # Move and orient
-        poly, poly1, polyM = orient_position([poly, poly1, polyM],  angle, pos1)
+        poly_inner, poly_outer, poly_mesh = orient_position([poly_inner, poly_outer, poly_mesh],  angle, pos1)
 
         self.objects.update(dict(
-            poly = poly,
-            poly1 = poly1,
-            polyM = polyM,
+            inner = poly_inner,
+            outer = poly_outer,
+            mesh = poly_mesh,
         ))
 
         # Connectors
         start = 3
-        self.design.connectors[self.name] = \
-            make_connector_props(get_poly_pts(poly)[start:start+2],
-                                 self.options, unparse=False)
-
+        points = get_poly_pts(poly_inner)[start:start+2]
+        self.add_connector(points, chip = ops['chip'], flip=True)
 
 
     def hfss_draw(self):

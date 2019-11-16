@@ -48,6 +48,7 @@ __version__ = '0.1.0'
 from .toolbox.attribute_dictionary import Dict
 from .config import DEFAULT, DEFAULT_OPTIONS
 from .toolbox.utility_functions import copy_update
+#from .toolbox.parsing import parse_value
 
 # Objects
 from . import objects

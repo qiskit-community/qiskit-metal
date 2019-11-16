@@ -76,15 +76,16 @@ class Metal_Object():  # pylint: disable=invalid-name
     # Inherit options from functions or objects that are called in the options dictionary
     _options_inherit = {}
 
-    def __init__(self, design, name, options=None):
+    def __init__(self, design, name, options=None, overwrite=False, make=False):
 
         assert is_metal_design(
             design), "Error you did not pass in a valid Metal Design object as a parent of this component."
 
         self.design = design
 
-        if name in design.objects.keys():
-            raise ValueError('Object name already in use. Please choose an alternative name or delete the other object.')
+        if not overwrite:
+            if name in design.objects.keys():
+                raise ValueError('Object name already in use. Please choose an alternative name or delete the other object.')
 
         self.name = name
 
@@ -100,6 +101,9 @@ class Metal_Object():  # pylint: disable=invalid-name
 
         # Add self to design objects dictionary
         self.design.objects[name] = self
+
+        if make:
+            self.make()
 
     @classmethod
     def create_default_options(cls):
@@ -277,3 +281,19 @@ class Metal_Object():  # pylint: disable=invalid-name
 
         return parse_options_dict(options if options else self.options,
                                   self.design.variables)
+
+    def add_connector(self, two_points: list, flip=False, chip='main', name=None):
+        """Add A connector to the design
+        
+        Arguments:
+            two_points {list} -- List of the two point coordinates that deifne the start 
+                                 and end of the connector 
+            ops {None / dict} -- Options
+        
+        Keyword Arguments:
+            name {[type]} -- By default is just the object name  (default: {None})
+        """
+        self.design.add_connector(name=name if name else self.name,
+                                  points=two_points, 
+                                  chip=chip,
+                                  flip=flip)

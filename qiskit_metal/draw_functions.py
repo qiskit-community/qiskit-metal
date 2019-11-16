@@ -142,6 +142,38 @@ def draw_substrate(design, options):
 # Connector - This should move and be a class TODO: Make a class and move to planar design
 ###
 
+def make_connector(points:list, flip=False, chip='main'):
+    """
+    Works in user units. 
+    
+    Arguments:
+        points {[list of coordinates]} -- Two points that define the connector
+    
+    Keyword Arguments:
+        flip {bool} -- Flip the normal or not  (default: {False})
+        chip {str} -- Name of the chip the connector sits on (default: {'main'})
+    
+    Returns:
+        [type] -- [description]
+    """
+    assert len(points) == 2
+
+    # Get the direction vector, the unit direction vec, and the normal vector
+    vec_D, vec_d, vec_n = get_vec_unit_norm(points)
+    if flip:
+        vec_n = -vec_n
+
+    return Dict(
+        points = points,
+        middle = np.sum(points, axis=0)/2.,
+        normal = vec_n,
+        tangent= vec_d,
+        width  = norm(vec_D),
+        chip   = chip
+    )
+
+
+
 
 def make_connector_props(points, options,
                          orient=[+1, +1],
@@ -175,7 +207,7 @@ def make_connector_props(points, options,
             else +1)
     #TODO: Handle 3 and 2 vectors
     return Dict({
-                'pos': unparse_units1(np.sum(points, axis=0)/2.),
+                'middle': unparse_units1(np.sum(points, axis=0)/2.),
                 'normal': vec_n,
                 'tangent': vec_d,
                 'width': unparse_units1(norm(vec_D)),

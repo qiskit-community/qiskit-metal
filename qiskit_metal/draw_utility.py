@@ -40,12 +40,7 @@ from pyEPR.toolbox import combinekw
 from . import draw_functions
 from . import logger
 from .toolbox.mpl_interaction import figure_pz
-
-#########################################################################
-# Constants
-TRUE_STR = ['true', 'True', 'TRUE', '1', 't', 'y', 'Y', 'YES',
-            'yes', 'yeah', 'yup', 'certainly', 'uh-huh', True, 1]
-
+from .toolbox.parsing import TRUE_STR
 
 #########################################################################
 # Geomtry classes

@@ -26,6 +26,7 @@ from shapely.geometry import LineString
 from ..base_objects.Metal_Object import Metal_Object, Dict
 from ...config import DEFAULT_OPTIONS
 from ...draw_cpw import parse_options_user, CAP_STYLE, JOIN_STYLE, meander_between, draw_cpw_trace, to_Vec3D
+from ...toolbox.parsing import TRUE_STR
 
 
 DEFAULT_OPTIONS['Metal_cpw_connect'] = Dict(
@@ -33,6 +34,7 @@ DEFAULT_OPTIONS['Metal_cpw_connect'] = Dict(
     connector2='[INPUT NAME HERE]',
     connector1_leadin='200um',
     connector2_leadin='200um',
+    do_meander='true',
     cpw=Dict(),
     meander=Dict(),
     _calls=['meander_between', 'connectorCPW_plotme',
@@ -78,16 +80,19 @@ Options (Metal_cpw_connect):
         meander='basic_meander',
     )
 
-    def __init__(self, design, name=None, options=None):
+    def __init__(self, design, name=None, options=None, overwrite=False, make=True):
 
         if name is None:
+            options = Dict(options)
             name = 'cpw_'+options.connector1+'_'+options.connector2
 
-        super().__init__(design, name, options=options)
+        super().__init__(design, name, options=options, overwrite =overwrite,
+                    make=False)
 
         self.check_connector_name()
 
-        self.make()
+        if make:
+            self.make()
 
     def check_connector_name(self):
         if self.options.connector1 is '' or self.options.connector1  is '[INPUT NAME HERE]':
@@ -112,18 +117,21 @@ Options (Metal_cpw_connect):
         #print( connector1_leadin_dist, connector2_leadin_dist, c1,c2, self.options.connector1)
 
         points0 = array([  # control points (user units)
-            c1['pos'],
-            c1['pos'] + c1['normal']*connector1_leadin_dist,
-            c2['pos'] + c2['normal']*connector2_leadin_dist,
-            c2['pos']
+            c1['middle'],
+            c1['middle'] + c1['normal']*connector1_leadin_dist,
+            c2['middle'] + c2['normal']*connector2_leadin_dist,
+            c2['middle']
         ])
 
         if connector2_leadin_dist < 0:
             points0 = points0[:-1]
 
         # Control line
-        self.points_meander = array(
-            meander_between(self.design, points0, 1, self.options.meander))
+        if self.options.do_meander.lower() in TRUE_STR:
+            self.points_meander = array(meander_between(
+                self.design, points0, 1, self.options.meander))
+        else:
+            self.points_meander = points0
         self.objects.cpw_line = LineString(self.points_meander)
 
         # For metal

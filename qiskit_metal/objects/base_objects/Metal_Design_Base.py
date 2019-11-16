@@ -33,7 +33,7 @@ from shapely.geometry import LineString
 from ...toolbox.parsing import parse_units_user, parse_value, parse_options_user
 from ...toolbox.attribute_dictionary import Dict
 from ...config import DEFAULT, DEFAULT_OPTIONS
-from ...draw_functions import draw_objs
+from ...draw_functions import draw_objs, make_connector
 from ...backend.import_export import save_metal#, load_metal
 from .Metal_Utility import is_metal_object
 
@@ -144,7 +144,7 @@ class Metal_Design_Base(): # pylint: disable=invalid-name
 
             draw_objs(line, ax=ax, kw=dict(lw=2,c='r'))
 
-            ax.annotate(name, xy=conn.pos[:2], xytext=conn.pos +\
+            ax.annotate(name, xy=conn.middle[:2], xytext=conn.middle +\
                         np.array(DEFAULT.annots.design_connectors_ofst),\
                         **DEFAULT.annots.design_connectors)
 
@@ -211,6 +211,14 @@ class Metal_Design_Base(): # pylint: disable=invalid-name
         """
         return parse_value(value, self.variables)
 
-    def add_connector(self, args):
-        #TOOD:
-        pass
+    def add_connector(self, name:str,  points:list, flip=False, chip='main'):
+        """Add named connector to the design by creating a connector dicitoanry. 
+        
+        Arguments:
+            name {[str]} -- Name of connector 
+        
+        Keyword Arguments:
+            points {[list]} --List of two points (default: {None})
+            ops {[dict]} -- Optionally add options (default: {None})
+        """
+        self.connectors[name] = make_connector(points, flip=flip, chip=chip)

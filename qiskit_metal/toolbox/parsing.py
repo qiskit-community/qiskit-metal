@@ -96,6 +96,12 @@ from pyEPR.hfss import unparse_units # not used here, but in imports of this fil
 from .. import logger, Dict
 
 #########################################################################
+# Constants
+TRUE_STR = ['true', 'True', 'TRUE', '1', 't', 'y', 'Y', 'YES',
+            'yes', 'yeah', 'yup', 'certainly', 'uh-huh', True, 1]
+
+
+#########################################################################
 # UNIT and Conversion related
 
 def is_variable_name(test_str : str):

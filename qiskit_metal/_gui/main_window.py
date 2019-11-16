@@ -245,9 +245,9 @@ class Metal_gui(QMainWindow):
 
         toolbar.addSeparator()
 
-        add_toolbar_icon(toolbar, 'action_draw_connectors',
+        add_toolbar_icon(toolbar, 'action_show_connectors',
                          self.imgs_path/'show_connectors.png',
-                         self.draw_connectors,
+                         self.show_connectors,
                          'Shows the name of all connectors in the plot area.',
                          'Shift+C', menu,
                          label='Show connectors')
@@ -726,7 +726,7 @@ class Metal_gui(QMainWindow):
         self.re_draw()
 
     @catch_exception_slot_pyqt()
-    def draw_connectors(self, *args):  # pylint: disable=unused-argument
+    def show_connectors(self, *args):  # pylint: disable=unused-argument
         """
         Draw all connetors
         args used for pyqt socket
