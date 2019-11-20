@@ -232,20 +232,21 @@ class Design_Planar(Metal_Design_Base):  # pylint: disable=invalid-name
 
         return self
 
-    def update_variables(self, variables=None):
+    def update_variables(self, variables=None, do_hfss=True):
         '''
             Update variable in the design, as defined in the design object and
             applies them to the HFSS design.
         '''
         if variables is None:
-            variables = self.params.variables
+            variables = self.variables
         else:
-            self.params.variables.update(variables)
+            self.variables.update(variables)
 
-        design, _ = self.get_modeler()  # pylint: disable=invalid-name
-        if design:
-            for key, val in self.params.variables.items():
-                design.set_variable(key, val)
+        if do_hfss:
+            design, _ = self.get_modeler()  # pylint: disable=invalid-name
+            if design:
+                for key, val in self.variables.items():
+                    design.set_variable(key, val)
 
     def mesh_obj(self, rect_mesh, mesh_name, **kwargs):
         '''
