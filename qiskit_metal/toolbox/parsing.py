@@ -104,6 +104,12 @@ TRUE_STR = ['true', 'True', 'TRUE', '1', 't', 'y', 'Y', 'YES',
 #########################################################################
 # UNIT and Conversion related
 
+def parse_value_hfss(*args):
+    '''
+    Parse to HFSS units (from user units)
+    '''
+    return parse_units(*args)
+
 def is_variable_name(test_str : str):
     """Is the test string a valid name for a variable or not?
 
