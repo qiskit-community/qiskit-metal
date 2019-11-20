@@ -150,4 +150,4 @@ Options (Metal_cpw_connect):
         def to_vec3D(vec):
             return to_Vec3D(self.design, options, vec)
 
-        draw_cpw_trace(self.design, to_vec3D(self.points_meander), options)
+        draw_cpw_trace(self.design, to_vec3D(self.points_meander), options, name=self.name)

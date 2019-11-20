@@ -28,7 +28,7 @@ from shapely.geometry import Point, LineString, CAP_STYLE, JOIN_STYLE
 
 from . import DEFAULT, DEFAULT_OPTIONS, Dict, logger
 from .draw_functions import make_connector_props, do_cut_ground, do_PerfE, do_mesh
-from .toolbox.parsing import parse_options_user, parse_units_user
+from .toolbox.parsing import parse_options_user, parse_units_user, parse_value_hfss
 from .draw_utility import to_Vec3D,\
     get_vec_unit_norm, get_unit_vec,\
     TRUE_STR, remove_co_linear_points,\
@@ -238,7 +238,8 @@ DEFAULT_OPTIONS['draw_cpw_trace'] = {
 def draw_cpw_trace(design,
                    points,
                    options = {},
-                   category = 'CPW'
+                   category = 'CPW',
+                   name = None
                   ):
     '''
         points : 2D List assumed in USER units.
@@ -250,8 +251,11 @@ def draw_cpw_trace(design,
     poly_default_options = options['poly_default_options']
 
     ### Paramaters
-    name, fillet, cpw_center_w, cpw_center_gap_dt, trace_mesh_gap_dt = design.get_option_values(options,
-                  'name, fillet, trace_center_width, trace_mesh_gap, trace_mesh_gap')
+    if name == None:
+        name = options['name']
+    fillet, cpw_center_w, cpw_center_gap_dt = parse_value_hfss(design.get_option_values(options,
+                  'fillet, trace_center_width, trace_mesh_gap'))
+    trace_mesh_gap_dt = cpw_center_gap_dt
 
     cpw_center_gap = cpw_center_w   + 2*cpw_center_gap_dt   # total width of sweep line
     cpw_mesh_gap   = cpw_center_gap + 2*trace_mesh_gap_dt   # total width of sweep line

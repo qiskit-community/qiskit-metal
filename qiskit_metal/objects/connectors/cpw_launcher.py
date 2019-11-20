@@ -42,8 +42,19 @@ DEFAULT_OPTIONS['cpw_launcher'] = Dict({
     'pos_gap'      : '200um',                        # gap to edge of chip
     'position'     : "['X', -1, '7mm']",          # +1 or -1, '10um' position along edge
     'orientation'  : '0',                         # ignorred when triplet in position
+    '_hfss'        : {
+        'name' : 'Launcher',
+        'chip' : 'main',
+        'category' : 'launchers',
+        'do_draw'  : True,
+        'do_plot'  : True,
+        'do_cut'   : True,
+        'do_PerfE' : True,
+        'do_mesh'  : DEFAULT['do_mesh'],
+        'BC_name'  : 'Launchers',
+        'kw_poly'  : dict(color=DEFAULT['col_in_cond'])
     }
-)
+})
 
 class cpw_launcher(Metal_Object):
     """
