@@ -94,7 +94,7 @@ DEFAULT_OPTIONS['draw_substrate'] = Dict({
     'elevation': 0,
     'ground_plane': 'ground_plane',
     'substrate': 'substrate',
-    'material': 'cold silicon',
+    'material': 'silicon',
     'color_plane': DEFAULT.colors.ground_main,
     'transparency_plane': 0,
     'transparency_substrate': 0,
