@@ -27,6 +27,7 @@ from ..base_objects.Metal_Object import Metal_Object, Dict
 from ...config import DEFAULT_OPTIONS
 from ...draw_cpw import parse_options_user, CAP_STYLE, JOIN_STYLE, meander_between, draw_cpw_trace, to_Vec3D
 from ...toolbox.parsing import TRUE_STR
+from ...draw_utility import remove_co_linear_points
 
 
 DEFAULT_OPTIONS['Metal_cpw_connect'] = Dict(
@@ -131,7 +132,7 @@ Options (Metal_cpw_connect):
             self.points_meander = array(meander_between(
                 self.design, points0, 1, self.options.meander))
         else:
-            self.points_meander = points0
+            self.points_meander = remove_co_linear_points(points0)
         self.objects.cpw_line = LineString(self.points_meander)
 
         # For metal
