@@ -227,7 +227,12 @@ class Design_Planar(Metal_Design_Base):  # pylint: disable=invalid-name
 
         import pyEPR
         units = gparams.get('global_units', 'mm')
-        modeler.set_units(units)
+
+        if 1:
+            modeler.set_units(units, rescale=False)
+            #pyEPR.hfss.LENGTH_UNIT = units  # HFSS seems to assume meters form a script no matter what 
+
+
         pyEPR.hfss.LENGTH_UNIT_ASSUMED = units  # used in parse_units
 
         return self
