@@ -17,7 +17,6 @@
 """
 from copy import deepcopy
 
-import shapely
 from shapely.geometry.base import BaseGeometry
 
 from ...config import DEFAULTS
@@ -72,11 +71,11 @@ class BaseElement():
 
     def duplicate(self):
         """
-        Return a copy of the object. 
+        Return a copy of the object.
 
-        TODO: 
-        -Deep copy all the geometry objects. 
-        -Do not copy the parent etc.  
+        TODO:
+        -Deep copy all the geometry objects.
+        -Do not copy the parent etc.
         """
         raise NotImplementedError()
 
@@ -84,14 +83,14 @@ class BaseElement():
         """
         Create the default self.render_geom from the registered renderers.
         """
-        render_geom = Dict()
         raise NotImplementedError()
-        return render_geom
+        #render_geom = Dict()
+        #return render_geom
 
-    def _create_default_render_geom(self):
+    def _create_default_render_params(self):
         """
         Create the default self.render_geom from the registered renderers.
         """
-        render_params = Dict()
         raise NotImplementedError()
-        return render_params
+        #render_params = Dict()
+        #return render_params
