@@ -46,7 +46,7 @@ __version__ = '0.1.0'
 ### Imports for user
 
 from .toolbox.attribute_dictionary import Dict
-from .config import DEFAULT, DEFAULT_OPTIONS
+from .config import DEFAULTS, DEFAULT_OPTIONS
 from .toolbox.utility_functions import copy_update
 #from .toolbox.parsing import parse_value
 
@@ -57,7 +57,7 @@ from .objects.base_objects.Metal_Utility import is_metal_object
 from .objects.interconnects.Metal_cpw_connect import Metal_cpw_connect
 from .objects.qubits.Metal_Transmon_Pocket import Metal_Transmon_Pocket
 from .objects.qubits.Metal_Transmon_Cross import Metal_Transmon_Cross
-from .backend.import_export import save_metal, load_metal
+from .toolbox_metal.import_export import save_metal, load_metal
 
 
 # Design

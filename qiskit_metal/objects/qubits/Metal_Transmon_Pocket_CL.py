@@ -157,10 +157,10 @@ class Metal_Transmon_Pocket_CL(Metal_Transmon_Pocket):  # pylint: disable=invali
     #         oModeler.subtract(ground, [hfss_objs.CL['cl_Etcher']])
 
     #     #attaches the different relevant geometries to perfect E boundaries (as equivalent thin film superconductor)
-    #     if DEFAULT['do_PerfE']:
+    #     if DEFAULTS['do_PerfE']:
     #        if options.make_CL == 'ON':
-    #             oModeler.append_PerfE_assignment(name+'_CL' if DEFAULT['BC_individual'] else options_hfss['BC_name_conn'], hfss_objs.CL['cl_Metal'])
+    #             oModeler.append_PerfE_assignment(name+'_CL' if DEFAULTS['BC_individual'] else options_hfss['BC_name_conn'], hfss_objs.CL['cl_Metal'])
 
-    #    # if DEFAULT._hfss.do_mesh:
+    #    # if DEFAULTS._hfss.do_mesh:
 
     #     return hfss_objs

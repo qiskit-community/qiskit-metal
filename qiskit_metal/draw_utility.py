@@ -654,8 +654,8 @@ def to_Vec3D(design, options, vec2D):
     else:
         # if not isinstance(options,dict):
         #    options={'chip':options}
-        z = parse_units(design.get_substrate_z(
-            options.get('chip', draw_functions.DEFAULT['chip'])))
+        z = parse_units(design.get_chip_z(
+            options.get('chip', draw_functions.DEFAULTS['chip'])))
         return array(list(vec2D)+[z])
 
 

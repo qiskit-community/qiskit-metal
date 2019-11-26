@@ -26,7 +26,7 @@ from numpy.linalg import norm
 from pyEPR.toolbox import combinekw
 from shapely.geometry import Point, LineString, CAP_STYLE, JOIN_STYLE
 
-from . import DEFAULT, DEFAULT_OPTIONS, Dict, logger
+from . import DEFAULTS, DEFAULT_OPTIONS, Dict, logger
 from .draw_functions import make_connector_props, do_cut_ground, do_PerfE, do_mesh
 from .toolbox.parsing import parse_options_user, parse_units_user, parse_value_hfss
 from .draw_utility import to_Vec3D,\
@@ -146,9 +146,9 @@ DEFAULT_OPTIONS['draw_launcher_basic'] = combinekw(DEFAULT_OPTIONS['make_launche
     'do_plot'  : True,
     'do_cut'   : True,
     'do_PerfE' : True,
-    'do_mesh'  : DEFAULT._hfss.do_mesh,
+    'do_mesh'  : DEFAULTS._hfss.do_mesh,
     'BC_name'  : 'Launchers',
-    'kw_poly'  : dict(color=DEFAULT['col_in_cond'])
+    'kw_poly'  : dict(color=DEFAULTS['col_in_cond'])
     })
 def draw_launcher_basic(design, options):
     options  = combinekw(DEFAULT_OPTIONS['draw_launcher_basic'], options)
@@ -221,7 +221,7 @@ DEFAULT_OPTIONS['draw_cpw_trace'] = {
     'fillet'              : DEFAULT_OPTIONS.cpw.fillet,        # Fillt
     'ground_plane'        : 'ground_plane', # name of ground plane to subtract from, maybe make also automatic
     'do_only_lines'       : 'False',        # only draw the lines
-    'do_mesh'             :  DEFAULT._hfss.do_mesh,  # Draw trace for meshing
+    'do_mesh'             :  DEFAULTS._hfss.do_mesh,  # Draw trace for meshing
     'do_subtract_ground'  : 'True',         # subtract from ground plane
     'do_sub_keep_original': 'False',        # keep_originals when perfomring subtraction
     'do_assign_perfE'     :  True,
@@ -230,7 +230,7 @@ DEFAULT_OPTIONS['draw_cpw_trace'] = {
     'category'            : 'cpw',
     'do_add_connectors'   :  True,
     'units'               : 'mm',           # default units
-    'poly_default_options': {'transparency':0.95, 'color':DEFAULT['col_in_cond']}, # dictionary 100,120,90
+    'poly_default_options': {'transparency':0.95, 'color':DEFAULTS['col_in_cond']}, # dictionary 100,120,90
     'mesh_name'           : 'cpw',
     'mesh_kw'             : Dict(MaxLength='0.1mm')
 }

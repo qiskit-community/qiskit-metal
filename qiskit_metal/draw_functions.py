@@ -28,7 +28,7 @@ from . import Dict
 from .toolbox.parsing import parse_options_user, unparse_units, parse_options_hfss, parse_units, parse_units_user, parse_value, parse_value_hfss # parse_units_user used in imports of this
 from .draw_utility import  get_vec_unit_norm, unit_vector, array_chop
 from .draw_utility import *
-from .config import DEFAULT, DEFAULT_OPTIONS
+from .config import DEFAULTS, DEFAULT_OPTIONS
 
 _angle_Y2X = {'X':-90,'Y':0} # If draw along the Y axis, takes Y axis to X. Keeps Y fixed.
 
@@ -41,9 +41,9 @@ _angle_Y2X = {'X':-90,'Y':0} # If draw along the Y axis, takes Y axis to X. Keep
 # @deprecated
 def do_PerfE(options, design, obj):
     _, oModeler = design.get_modeler()
-    if options.get('do_PerfE',  DEFAULT['do_PerfE']):
+    if options.get('do_PerfE',  DEFAULTS['do_PerfE']):
         oModeler.append_PerfE_assignment(
-            str(obj) if options.get('BC_individual', DEFAULT['BC_individual'])
+            str(obj) if options.get('BC_individual', DEFAULTS['BC_individual'])
             else options.get('BC_name', 'PerfE'), [str(obj)])
 
 
@@ -51,7 +51,7 @@ def do_PerfE(options, design, obj):
 def do_cut_ground(options, design, objs):
     ''' do_cut '''
     _, oModeler = design.get_modeler()
-    if options.get('do_cut',  DEFAULT['do_cut']):
+    if options.get('do_cut',  DEFAULTS['do_cut']):
         assert isinstance(objs, list)
         oModeler.subtract(design.get_ground_plane(options), objs)
 
@@ -61,7 +61,7 @@ def do_cut_ground(options, design, objs):
 def do_mesh(options, design, objs):
     ''' do_mesh  - TO DO replace with funciton draw_hfss'''
     _, oModeler = design.get_modeler()
-    if options.get('do_mesh',  DEFAULT._hfss.do_mesh):
+    if options.get('do_mesh',  DEFAULTS._hfss.do_mesh):
         assert isinstance(objs, list)
         oModeler.subtract(design.get_ground_plane(options), objs)
 
@@ -95,7 +95,7 @@ DEFAULT_OPTIONS['draw_substrate'] = Dict({
     'ground_plane': 'ground_plane',
     'substrate': 'substrate',
     'material': 'silicon',
-    'color_plane': DEFAULT.colors.ground_main,
+    'color_plane': DEFAULTS.colors.ground_main,
     'transparency_plane': 0,
     'transparency_substrate': 0,
     'wireframe_substrate': False

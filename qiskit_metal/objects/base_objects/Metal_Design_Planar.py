@@ -138,10 +138,11 @@ class Design_Planar(Metal_Design_Base):  # pylint: disable=invalid-name
 
         return self.parse_value(self.params.chips[chip_name]['size'])
 
-    def get_substrate_z(self, chip_name='main'):
+    def get_chip_z(self, chip_name='main'):
         '''
         Returns the z axis location of the plane which this chip is located at. Default of '0'
         Only of interest if making multiple chips
+        NEEDED
         '''
         if isinstance(chip_name, dict):
             chip_name = chip_name.get('chip', 'main')

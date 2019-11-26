@@ -199,7 +199,7 @@ class Metal_Object():  # pylint: disable=invalid-name
         Returns the default chip elevation for the chip specified in
         self.options.chip
         '''
-        return self.design.get_substrate_z(self.options)
+        return self.design.get_chip_z(self.options)
 
 
     def parse_value(self, val):

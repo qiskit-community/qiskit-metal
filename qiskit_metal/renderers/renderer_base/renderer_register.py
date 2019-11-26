@@ -13,5 +13,6 @@
 # that they have been altered from the originals.
 
 """
-@author: Zlatko
+@auhtor: 
+@date: 2019
 """

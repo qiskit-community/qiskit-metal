@@ -37,13 +37,13 @@ def load_metal(filename, do_update=True):
     defaults
 
     do_update: True
-        updates DEFAULT, DEFAULT_OPTIONS with the params saved in the file
+        updates DEFAULTS, DEFAULT_OPTIONS with the params saved in the file
     """
     design = pickle.load( open( filename, "rb" ) )
 
     if do_update:
-        from .config import DEFAULT, DEFAULT_OPTIONS
-        DEFAULT.update(design._DEFAULT)
+        from .config import DEFAULTS, DEFAULT_OPTIONS
+        DEFAULTS.update(design._DEFAULT)
         DEFAULT_OPTIONS.update(design._DEFAULT_OPTIONS)
 
     return design

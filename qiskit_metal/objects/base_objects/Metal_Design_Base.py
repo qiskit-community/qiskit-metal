@@ -32,9 +32,9 @@ from shapely.geometry import LineString
 
 from ...toolbox.parsing import parse_units_user, parse_value, parse_options_user
 from ...toolbox.attribute_dictionary import Dict
-from ...config import DEFAULT, DEFAULT_OPTIONS
+from ...config import DEFAULTS, DEFAULT_OPTIONS
 from ...draw_functions import draw_objs, make_connector
-from ...backend.import_export import save_metal#, load_metal
+from ...toolbox_metal.import_export import save_metal#, load_metal
 from .Metal_Utility import is_metal_object
 
 
@@ -68,7 +68,7 @@ class Metal_Design_Base(): # pylint: disable=invalid-name
         self._variables = Dict() if variables is None else variables
 
         # handy in saving and keeping everyting referenced in one object
-        self._DEFAULT = DEFAULT # Depricated, to be removed
+        self._DEFAULT = DEFAULTS # Depricated, to be removed
         self._DEFAULT_OPTIONS = DEFAULT_OPTIONS
 
         if logger is None:
@@ -145,8 +145,8 @@ class Metal_Design_Base(): # pylint: disable=invalid-name
             draw_objs(line, ax=ax, kw=dict(lw=2,c='r'))
 
             ax.annotate(name, xy=conn.middle[:2], xytext=conn.middle +\
-                        np.array(DEFAULT.annots.design_connectors_ofst),\
-                        **DEFAULT.annots.design_connectors)
+                        np.array(DEFAULTS.annots.design_connectors_ofst),\
+                        **DEFAULTS.annots.design_connectors)
 
     def make_all_objects(self):
         """

@@ -13,7 +13,7 @@
 # that they have been altered from the originals.
 
 """
-File contains defines the core two basic dicitonaries
+File contains basic dicitonaries.
 
 Created 2019
 
@@ -24,9 +24,7 @@ Created 2019
 from .toolbox.attribute_dictionary import Dict
 
 ################################################################################
-###
 ### Default Paramters
-###
 
 DEFAULT_OPTIONS = Dict()
 r"""
@@ -43,7 +41,7 @@ DEFAULT_OPTIONS['cpw'] = Dict(
 )
 
 #TODO: depricated.All of this should move to HFSS config
-DEFAULT = Dict({
+DEFAULTS = Dict({
     'chip'         : 'main',
     'do_PerfE'     : True,  # applied p-erf E BC
     'do_cut'       : True,  # cut from ground plane

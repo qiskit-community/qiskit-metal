@@ -13,7 +13,6 @@
 # that they have been altered from the originals.
 
 """
-Created on Tue May 14 17:13:40 2019
-
-@author: Zlatko
+@auhtor: Zlatko Minev
+@date: 2019
 """

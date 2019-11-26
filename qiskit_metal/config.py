@@ -21,8 +21,12 @@ File contains some config definitions. Mostly internal.
 """
 
 from .toolbox.attribute_dictionary import Dict
-from ._base_dicts import DEFAULT_OPTIONS, DEFAULT # pylint: disable=unused-import
+from ._defaults import DEFAULT_OPTIONS, DEFAULTS # pylint: disable=unused-import
 
+####################################################################################
+# RENDERER CONFIG
+
+load_renderers = ['metal', 'ansys', 'gds']
 
 ####################################################################################
 # GUI CONFIG
