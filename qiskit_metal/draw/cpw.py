@@ -25,7 +25,7 @@ from numpy import sqrt, pi, array, flip
 from numpy.linalg import norm
 from shapely.geometry import Point, LineString, CAP_STYLE, JOIN_STYLE
 
-from . import DEFAULTS, DEFAULT_OPTIONS, Dict, logger
+from .. import DEFAULTS, DEFAULT_OPTIONS, Dict, logger
 from .functions import make_connector_props, do_cut_ground, do_PerfE, do_mesh
 from ..toolbox.parsing import parse_options_user, parse_units_user, parse_value_hfss
 from .utility import to_Vec3D,\

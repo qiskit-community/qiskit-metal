@@ -75,7 +75,7 @@ def draw_shapely_poly_mpl(poly,
         )
         # holes
         polys = []
-        for hole in self.interiors:
+        for hole in poly.interiors:
             coords = tuple(hole.coords)
             poly = mpl.patches.Polygon(coords)
             polys.append(poly)
@@ -159,7 +159,7 @@ def plot_shapely(objects,
     obj = objects
 
     if isinstance(obj, shapely.geometry.Polygon):
-        Polygon.draw(obj, kw=kw, ax=ax, **kwargs)
+        draw_shapely_poly_mpl(obj, kw=kw, ax=ax, **kwargs)
 
     else:
         if isinstance(obj, shapely.geometry.MultiPoint):
@@ -698,7 +698,7 @@ def is_rectangle(obj):
     Assumes that the last point is not repeating
     '''
     assert isinstance(obj, shapely.geometry.Polygon)
-    p = Polygon(obj).coords_ext
+    p = get_poly_pts(obj)
     if len(p) == 4:
         def isOrthogonal(i):
             v1 = p[(i+1) % 4]-p[(i+0) % 4]
