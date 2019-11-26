@@ -22,15 +22,19 @@ import numpy as np
 from numpy import array
 from numpy.linalg import norm
 
-#from shapely.geometry import CAP_STYLE, JOIN_STYLE
+from .. import Dict
+from ..config import DEFAULT_OPTIONS, DEFAULTS
+from ..toolbox.parsing import (  # parse_units_user used in imports of this
+    parse_options_hfss, parse_options_user, parse_units, parse_units_user,
+    parse_value, parse_value_hfss, unparse_units)
+from .utility import *  # Todo: rempove this *
+from .utility import array_chop, get_vec_unit_norm, unit_vector
 
-from . import Dict
-from .toolbox.parsing import parse_options_user, unparse_units, parse_options_hfss, parse_units, parse_units_user, parse_value, parse_value_hfss # parse_units_user used in imports of this
-from .draw_utility import  get_vec_unit_norm, unit_vector, array_chop
-from .draw_utility import *
-from .config import DEFAULTS, DEFAULT_OPTIONS
+################################################################################
+# Constants
 
-_angle_Y2X = {'X':-90,'Y':0} # If draw along the Y axis, takes Y axis to X. Keeps Y fixed.
+# If draw along the Y axis, takes Y axis to X. Keeps Y fixed.
+_angle_Y2X = {'X': -90, 'Y': 0}
 
 
 ################################################################################
@@ -72,7 +76,8 @@ def do_mesh(options, design, objs):
 ###
 
 # Absolute Offset for -+X, -+Y, and -+Z; # 890 is the nominal depth of the copper penny 35 mil
-DEFAULT_OPTIONS['draw_bounding_box'] = [[0, 0], [0, 0], ['0.890mm', '0.900mm']],
+DEFAULT_OPTIONS['draw_bounding_box'] = [
+    [0, 0], [0, 0], ['0.890mm', '0.900mm']],
 
 
 def draw_bounding_box(design, options=DEFAULT_OPTIONS['draw_bounding_box']):
@@ -89,7 +94,7 @@ def draw_bounding_box(design, options=DEFAULT_OPTIONS['draw_bounding_box']):
 # draw_substrate
  # For chip size, negative draws the substrate box down
 DEFAULT_OPTIONS['draw_substrate'] = Dict({
-    'pos_xy': "['0um', '0um']", 
+    'pos_xy': "['0um', '0um']",
     'size': "['8.5mm', '6.5mm', '-0.750mm']",
     'elevation': 0,
     'ground_plane': 'ground_plane',
@@ -113,8 +118,8 @@ def draw_substrate(design, options):
     """
     options = {**DEFAULT_OPTIONS['draw_substrate'], **options}
     _, oModeler = design.get_modeler()
-    
-    hparse = lambda x: parse_value_hfss(design.parse_value(x))
+
+    def hparse(x): return parse_value_hfss(design.parse_value(x))
 
     # Parse and convert to HFSS units
     elevation = hparse(options['elevation'])
@@ -147,17 +152,17 @@ def draw_substrate(design, options):
 # Connector - This should move and be a class TODO: Make a class and move to planar design
 ###
 
-def make_connector(points:list, flip=False, chip='main'):
+def make_connector(points: list, flip=False, chip='main'):
     """
-    Works in user units. 
-    
+    Works in user units.
+
     Arguments:
         points {[list of coordinates]} -- Two points that define the connector
-    
+
     Keyword Arguments:
         flip {bool} -- Flip the normal or not  (default: {False})
         chip {str} -- Name of the chip the connector sits on (default: {'main'})
-    
+
     Returns:
         [type] -- [description]
     """
@@ -169,15 +174,13 @@ def make_connector(points:list, flip=False, chip='main'):
         vec_n = -vec_n
 
     return Dict(
-        points = points,
-        middle = np.sum(points, axis=0)/2.,
-        normal = vec_n,
-        tangent= vec_d,
-        width  = norm(vec_D),
-        chip   = chip
+        points=points,
+        middle=np.sum(points, axis=0)/2.,
+        normal=vec_n,
+        tangent=vec_d,
+        width=norm(vec_D),
+        chip=chip
     )
-
-
 
 
 def make_connector_props(points, options,
@@ -210,7 +213,7 @@ def make_connector_props(points, options,
         vec_n = (orient[0]*orient[1]*vec_n)*(
             -1 if options.get(_orient, 'x'.lower()) == 'x'
             else +1)
-    #TODO: Handle 3 and 2 vectors
+    # TODO: Handle 3 and 2 vectors
     return Dict({
                 'middle': unparse_units1(np.sum(points, axis=0)/2.),
                 'normal': vec_n,

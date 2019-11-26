@@ -23,10 +23,9 @@ Raises:
 """
 
 import shapely
-from . import logger
-from .draw_utility import to_Vec3Dz, Polygon, parse_units, is_rectangle  # * # lazy, todo fix
+from .. import logger
+from .utility import to_Vec3Dz, Polygon, parse_units, is_rectangle  # * # lazy, todo fix
 
-# TODO: perhaps rename to render from draw
 
 def draw_objects_shapely(oModeler, objects: dict, root_name: str, delimiter='_', **kwargs):
     """
@@ -52,7 +51,8 @@ def draw_objects_shapely(oModeler, objects: dict, root_name: str, delimiter='_',
 
     if isinstance(objects, list):
         for objs in objects:
-            res = draw_objects_shapely(oModeler, objs, root_name, delimiter='_', **kwargs)
+            res = draw_objects_shapely(
+                oModeler, objs, root_name, delimiter='_', **kwargs)
             objects_result.update(res)
         return objects_result
 
@@ -61,12 +61,14 @@ def draw_objects_shapely(oModeler, objects: dict, root_name: str, delimiter='_',
         new_name = root_name + delimiter + name
 
         if isinstance(obj, dict):
-            res = draw_objects_shapely(oModeler, obj, new_name, delimiter=delimiter, **kwargs)
+            res = draw_objects_shapely(
+                oModeler, obj, new_name, delimiter=delimiter, **kwargs)
         elif isinstance(obj, shapely.geometry.base.BaseGeometry):
             res = draw_object_shapely(oModeler, obj, new_name, **kwargs)
         else:
             logger.error("Unhandled!")
-            raise Exception(f"Unhandled object shape name={new_name} \nobj={obj}")
+            raise Exception(
+                f"Unhandled object shape name={new_name} \nobj={obj}")
         objects_result.update({name: res})
 
     return objects_result
@@ -98,7 +100,8 @@ def draw_object_shapely(oModeler, obj, name, size_z=0., pos_z=0., hfss_options=N
 
     if isinstance(obj, shapely.geometry.Polygon):
         points = Polygon(obj).coords_ext
-        points_3d = to_Vec3Dz(points, parse_units(pos_z))  # TODO: Handle multiple chips
+        # TODO: Handle multiple chips
+        points_3d = to_Vec3Dz(points, parse_units(pos_z))
 
         if is_rectangle(obj):  # Draw as rectangle
             logger.debug(f'Drawing a rectangle: {name}')
@@ -110,14 +113,16 @@ def draw_object_shapely(oModeler, obj, name, size_z=0., pos_z=0., hfss_options=N
 
         # Draw general closed poly
         points_3d = parse_units(points_3d)
-        poly_hfss = oModeler.draw_polyline(points_3d, closed=True, **hfss_options)
+        poly_hfss = oModeler.draw_polyline(
+            points_3d, closed=True, **hfss_options)
         # rename: handle bug if the name of the cut already exits and is used to make a cut
         poly_hfss = poly_hfss.rename(name)
         return poly_hfss
 
     elif isinstance(obj, shapely.geometry.LineString):
         points_3d = parse_units(points_3d)
-        poly_hfss = oModeler.draw_polyline(points_3d, closed=False, **hfss_options)
+        poly_hfss = oModeler.draw_polyline(
+            points_3d, closed=False, **hfss_options)
         poly_hfss = poly_hfss.rename(name)
         return poly_hfss
 

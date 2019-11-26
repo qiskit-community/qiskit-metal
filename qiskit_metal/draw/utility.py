@@ -18,29 +18,26 @@ Draw utility functions
 
 @author: Zlatko Minev
 """
+#TODO: clenaup and remove this file
 
 from collections.abc import Iterable
 
-import numpy as np
-from numpy import array
-from numpy.linalg import norm
-
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-
+import numpy as np
 import shapely
 import shapely.wkt
-from shapely.geometry import CAP_STYLE, JOIN_STYLE
-from shapely.geometry import Point, LinearRing, Polygon as Polygon_shapely, MultiPolygon
+from numpy import array
+from numpy.linalg import norm
 from shapely.affinity import rotate, scale, translate
+from shapely.geometry import (CAP_STYLE, JOIN_STYLE, LinearRing, MultiPolygon,
+                              Point)
+from shapely.geometry import Polygon as Polygon_shapely
 
-from pyEPR.hfss import parse_units
-from pyEPR.toolbox import combinekw
-
-from . import draw_functions
-from . import logger
-from .toolbox.mpl_interaction import figure_pz
-from .toolbox.parsing import TRUE_STR
+from .. import logger
+from ..toolbox.mpl_interaction import figure_pz
+from ..toolbox.parsing import TRUE_STR, parse_units
+from ..toolbox.pythonic import combinekw
 
 #########################################################################
 # Geomtry classes
@@ -89,7 +86,7 @@ class Polygon(Polygon_shapely):
             color = ax._get_lines.get_next_color()
             ax.add_collection(
                 mpl.collections.PatchCollection([poly],
-                                                **combinekw({'facecolor': color}, kw))
+                                                **{**{'facecolor': color}, **kw})
             )
             # holes
             polys = []
@@ -655,7 +652,7 @@ def to_Vec3D(design, options, vec2D):
         # if not isinstance(options,dict):
         #    options={'chip':options}
         z = parse_units(design.get_chip_z(
-            options.get('chip', draw_functions.DEFAULTS['chip'])))
+            options.get('chip', draw.functions.DEFAULTS['chip'])))
         return array(list(vec2D)+[z])
 
 

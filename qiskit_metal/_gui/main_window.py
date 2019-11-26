@@ -379,7 +379,7 @@ class Metal_gui(QMainWindow):
             submodule_name = str( Path(file_path).stem )
             if not submodule_name.startswith('_') and \
                not submodule_name in GUI_CONFIG.exclude_metal_classes:
-                
+
                 self.add_metal_object(menu, module, submodule_name)
 
     def add_metal_object(self, menu, parent_module, submodule_name,
@@ -766,7 +766,7 @@ class Metal_gui(QMainWindow):
         Should ideally only ever have 1 instance object of objects
         '''
         if DEFAULT_OPTIONS is None:
-            from ..draw_functions import DEFAULT_OPTIONS
+            from ..draw.functions import DEFAULT_OPTIONS
         self._DEFAULT_OPTIONS = DEFAULT_OPTIONS
         if hasattr(self, 'tree_def_ops'):
             self.tree_def_ops.change_content_dict(self._DEFAULT_OPTIONS)

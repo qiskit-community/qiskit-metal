@@ -26,9 +26,9 @@ from shapely.geometry import LineString, Polygon
 
 from ..base_objects.Metal_Object import Metal_Object, Dict
 from ...config import DEFAULT_OPTIONS, DEFAULTS
-from ...draw_cpw import parse_options_user, CAP_STYLE, JOIN_STYLE, meander_between, draw_cpw_trace, to_Vec3D
+from ...draw.cpw import parse_options_user, CAP_STYLE, JOIN_STYLE, meander_between, draw_cpw_trace, to_Vec3D
 from ...draw_utility import flip_merge, orient_position, get_poly_pts
-from ...draw_functions import make_connector_props, do_cut_ground, do_PerfE
+from ...draw.functions import make_connector_props, do_cut_ground, do_PerfE
 from ...toolbox.parsing import parse_value_hfss
 
 DEFAULT_OPTIONS['cpw_launcher'] = Dict({
@@ -122,7 +122,7 @@ class cpw_launcher(Metal_Object):
         ### Draw linesshapes firtst
         # Inner piece
         line_inner  = shapely.wkt.loads(f'LINESTRING (0 0, {Bw} 0, {Bw} {Bh}, {Cw} {Bh+Lh})')
-        # Outside piece which gets cut from ground plane 
+        # Outside piece which gets cut from ground plane
         line_outter = LineString(array(line_inner.coords)  + array(((0,-Bg),(+Bg,-Bg),(+Bg,0),(Cg,0))))
         #
         line_mesh = LineString(array(line_outter.coords) + array(((0,-Mg),(+Mg,-Mg),(+Mg,0),(Mg,0))))
@@ -169,20 +169,20 @@ class cpw_launcher(Metal_Object):
 
 
     def hfss_draw(self):
-            
+
         # Params
         options  = self.options._hfss
         options['chip_size'] = self.design.get_chip_size(self.options.chip)
         to_vec3D = lambda vec: to_Vec3D(self.design, options, parse_value_hfss(vec))
         name     = self.name #options['name']
-        
-        # Make shapes in user units 
+
+        # Make shapes in user units
         poly0 = self.objects['inner']
         poly1 = self.objects['outer']
         polyM = self.objects['mesh']
-        
-        if options['do_draw']: # Draw 
-            
+
+        if options['do_draw']: # Draw
+
             oDesign, oModeler = self.design.get_modeler()
             def draw(poly, name_sup, flag=None):
                 ops = self.design.parse_value(options['kw_poly'])
@@ -191,18 +191,18 @@ class cpw_launcher(Metal_Object):
                 line = oModeler.draw_polyline(to_vec3D(get_poly_pts(poly)), closed=True, **ops)
                 line = line.rename(name + name_sup)
                 return line
-            
+
             Poly0 = draw(poly0,'',0)
             Poly1 = draw(poly1,'_cut')
             Poly2 = draw(polyM,'_mesh',1) if options['do_mesh'] else None
-            
+
             do_cut_ground(options, self.design, [str(Poly1)])
             do_PerfE(options, self.design, Poly0)
-            
+
             if options['do_mesh']:
                 pass
-        
-            # these should be stored in the rendered or inside this  
+
+            # these should be stored in the rendered or inside this
             self.objects_hfss.update({
                 'inner':Poly0,
                 'outer':Poly1,

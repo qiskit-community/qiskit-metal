@@ -27,7 +27,7 @@ from pyEPR.toolbox import combinekw
 from shapely.geometry import Point, LineString, CAP_STYLE, JOIN_STYLE
 
 from . import DEFAULTS, DEFAULT_OPTIONS, Dict, logger
-from .draw_functions import make_connector_props, do_cut_ground, do_PerfE, do_mesh
+from .draw.functions import make_connector_props, do_cut_ground, do_PerfE, do_mesh
 from .toolbox.parsing import parse_options_user, parse_units_user, parse_value_hfss
 from .draw_utility import to_Vec3D,\
     get_vec_unit_norm, get_unit_vec,\
@@ -514,7 +514,7 @@ def easy_wirebond(design, obj,
 
 
     OLD raw use:
-        from qiskit_metal.draw_cpw import *
+        from qiskit_metal.draw.cpw import *
         name = 'cpw_Q1_bus_Q2_Q2_bus_Q1'
         easy_wirebond(design, objects[name], 'Bond_'+name, Dict(
             start=0, stop=-1, step=2, threshold='0.2mm'))

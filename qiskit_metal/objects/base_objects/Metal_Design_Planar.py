@@ -29,7 +29,8 @@ from copy import deepcopy
 from ...toolbox.attribute_dictionary import Dict
 from ...config import DEFAULT_OPTIONS
 from ...toolbox.parsing import parse_units_user, parse_value
-from ... import draw_functions
+from ... import draw
+from ... import draw.functions
 
 from .Metal_Design_Base import Metal_Design_Base
 from .Metal_Utility import is_metal_object
@@ -43,7 +44,7 @@ DEFAULT_OPTIONS.update({
             'bounding_box': [[0, 0],
                              [0, 0],
                              ['0.890mm', '0.900mm']],     # Absolute Offset; [[-x,x],[-y,y],[-z,z]], mainly for HFSS currently
-            # funciton used to draw the bounding box, found in 'draw_functions.py'
+            # funciton used to draw the bounding box, found in 'draw.functions.py'
             'func_draw_bounding_box': 'draw_bounding_box'
         }),
 
@@ -51,7 +52,7 @@ DEFAULT_OPTIONS.update({
         # Substrate chips
         #  Chip parameters. Currently required to have one primary chip with a
         # ground_plane named 'ground_plane' for easy compatibility with HFSS
-        # draw_substrate currently found in 'draw_functions.py'
+        # draw_substrate currently found in 'draw.functions.py'
         'chips': Dict({
             'main': Dict({
                 'func_draw': 'draw_substrate',
@@ -104,14 +105,14 @@ class Design_Planar(Metal_Design_Base):  # pylint: disable=invalid-name
         for key in design_parameters:
             self.params[key].update(design_parameters.get(key, {}))
 
-        # TODO: Remove this. Track these elsewhere in renderer maybe or 
+        # TODO: Remove this. Track these elsewhere in renderer maybe or
         self.track_objs = {
             'qubits': {},
             'cpw': {},
             'launchers': {}
         }
 
-        #TODO: Move into renderer 
+        #TODO: Move into renderer
         self._mesh_assign = Dict()  # internal dict used to append mesh ops and reassign
 
         self.variables.cpw_width = DEFAULT_OPTIONS.cpw.width
@@ -231,7 +232,7 @@ class Design_Planar(Metal_Design_Base):  # pylint: disable=invalid-name
 
         if 1:
             modeler.set_units(units, rescale=False)
-            #pyEPR.hfss.LENGTH_UNIT = units  # HFSS seems to assume meters form a script no matter what 
+            #pyEPR.hfss.LENGTH_UNIT = units  # HFSS seems to assume meters form a script no matter what
 
 
         pyEPR.hfss.LENGTH_UNIT_ASSUMED = units  # used in parse_units
@@ -294,10 +295,10 @@ class Design_Planar(Metal_Design_Base):  # pylint: disable=invalid-name
 
         # Draw each chip
         for chip_name, options in chips.items():
-            func_draw = getattr(draw_functions, options['func_draw'])
+            func_draw = getattr(draw.functions, options['func_draw'])
             func_draw(self, options)
 
         # Bounding box
         func_draw_box = getattr(
-            draw_functions, self.params.globals['func_draw_bounding_box'])
+            draw.functions, self.params.globals['func_draw_bounding_box'])
         func_draw_box(self, self.params.globals['bounding_box'])

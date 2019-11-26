@@ -68,7 +68,7 @@ def display_options(*ops_names, options = None, find_dot_keys=True, do_display=T
     '''
     #IDEA: display also ._hfss and ._gds etc. for those that have it and add to plugins
     if options is None:
-        from ..draw_functions import DEFAULT_OPTIONS
+        from ..draw.functions import DEFAULT_OPTIONS
         options = DEFAULT_OPTIONS
 
     res = []

@@ -13,6 +13,7 @@
 # that they have been altered from the originals.
 
 # pylint: disable=wrong-import-order
+# pylint: disable=wrong-import-position
 
 """
 Main Qiskit Metal public functionality.
@@ -22,55 +23,49 @@ Created on Tue May 14 17:13:40 2019
 @author: Zlatko K. Minev
 """
 
+__author__ = 'Zlatko Minev, Thomas McConkey, and them IBM Quantum Team'
+__version__ = '0.05.1'
+
 ##############################################################################
-### Setup logging
+### INTERNAL SETUP
+# Setup logging
 
 from .toolbox.logging import logging, setup_logger
 from . import config
 
-logger = setup_logger('Metal', config._log_format, config._log_datefmt)
-if 1:
-    #TODO: remove this dependency
-    import matplotlib as mpl
-    mpl.rcParams['toolbar'] = 'toolmanager'
-    __log = logging.getLogger('matplotlib.backend_managers')
-    __log.setLevel(logging.ERROR)
-    del __log
+logger = setup_logger('Metal', config.log.format, config.log.datefmt)
 del setup_logger
 
-__author__ = 'Zlatko K. Minev'
-__version__ = '0.1.0'
+#TODO: remove this dependency - needed for gui at the moment
+import matplotlib as mpl
+mpl.rcParams['toolbar'] = 'toolmanager'
+__LOG = logging.getLogger('matplotlib.backend_managers')
+__LOG.setLevel(logging.ERROR)
+del __LOG
+
+del logging
 
 
 ##############################################################################
 ### Imports for user
 
+# Core classes and default dictionaries
 from .toolbox.attribute_dictionary import Dict
 from .config import DEFAULTS, DEFAULT_OPTIONS
-from .toolbox.utility_functions import copy_update
-#from .toolbox.parsing import parse_value
 
-# Objects
-from . import objects
-from .objects.base_objects.Metal_Object import Metal_Object
-from .objects.base_objects.Metal_Utility import is_metal_object
-from .objects.interconnects.Metal_cpw_connect import Metal_cpw_connect
-from .objects.qubits.Metal_Transmon_Pocket import Metal_Transmon_Pocket
-from .objects.qubits.Metal_Transmon_Cross import Metal_Transmon_Cross
-from .toolbox_metal.import_export import save_metal, load_metal
+# Core Modules for user to use
+from . import designs
+from . import components
+from . import draw
+from . import renderers
+from . import analyses
+from . import toolbox
+from . import toolbox_metal
 
-
-# Design
-from .objects.base_objects.Metal_Utility import is_metal_design
-from .objects.base_objects.Metal_Design_Planar import Design_Planar
-
-from . import draw_functions
-from . import draw_cpw
-from . import draw_utility
-from . import draw_hfss
-
-# Guis
+# Metal GUI
 from ._gui import Metal_gui
-#from .toolbox.mpl_interaction import figure_pz  # used for interactive figures
 
+# Utility functions
+from .toolbox.utility_functions import copy_update
 from .toolbox.utility_functions import display_options
+#from .designs.base_designs.Metal_Utility import is_metal_design

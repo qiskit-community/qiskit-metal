@@ -15,7 +15,7 @@
 """
 @date: 2019
 """
-from copy import deepcopy
+#from copy import deepcopy
 
 from shapely.geometry.base import BaseGeometry
 
@@ -24,6 +24,13 @@ from ..base_components.base_component import BaseComponent
 
 
 class BaseElement():
+    """Main Metal class for the basic geometric object: an `element`.
+    A component, such as a qubit, is a collection of elements.
+    For example, an element includes a rectangle, a cpw path, or a more general polygon.
+
+    This is the base class, from which which all elements are dervied.
+    A renderer has to know how to handle all types of elements in order to render them.
+    """
 
     __name_delimiter = '_'  # for creating a full name
 
@@ -32,6 +39,17 @@ class BaseElement():
                  geom: BaseGeometry,
                  parent: BaseComponent,
                  chip=None):
+        """The constructor for the `BaseElement` class.
+
+        Arguments:
+            name {str} -- [description]
+            geom {BaseGeometry} -- A 2D `shapely` geometry. `LineString` or `Polygon`.
+            parent {BaseComponent} -- Parent class
+
+        Keyword Arguments:
+            chip {str} -- Which chip is the element on.
+                          (default: {config.DEFAULTS.chip, typically set to 'main'})
+        """
 
         # Type checks
         assert isinstance(name, str),\
@@ -85,7 +103,7 @@ class BaseElement():
         """
         raise NotImplementedError()
         #render_geom = Dict()
-        #return render_geom
+        # return render_geom
 
     def _create_default_render_params(self):
         """
@@ -93,4 +111,4 @@ class BaseElement():
         """
         raise NotImplementedError()
         #render_params = Dict()
-        #return render_params
+        # return render_params

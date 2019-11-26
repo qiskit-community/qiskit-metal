@@ -11,6 +11,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
+# pylint: disable=invalid-name
 
 """
 Created 2019
@@ -21,12 +22,18 @@ File contains some config definitions. Mostly internal.
 """
 
 from .toolbox.attribute_dictionary import Dict
-from ._defaults import DEFAULT_OPTIONS, DEFAULTS # pylint: disable=unused-import
+from ._defaults import DEFAULT_OPTIONS, DEFAULTS  # pylint: disable=unused-import
 
 ####################################################################################
 # RENDERER CONFIG
 
-load_renderers = ['metal', 'ansys', 'gds']
+# Define the renderes to load. Just provide the module names here.
+# The renderes will be loaded at ...
+renderers_to_load = dict(
+    metal='qiskit_metal.renderers.metal',
+    ansys='qiskit_metal.renderers.ansys',
+    gds='qiskit_metal.renderers.gds'
+)
 
 ####################################################################################
 # GUI CONFIG
@@ -47,46 +54,46 @@ GUI_CONFIG
 
     tips
     ---------------------------
-    Tips tha the user can define to show in the gui. These rotate each time the gui is started.
+    Tips that the user can define to show in the gui. These rotate each time the gui is started.
 """
 GUI_CONFIG = Dict(
 
-    load_metal_modules = Dict(
-        Qubits = 'qiskit_metal.objects.qubits',
-        Interconnects = 'qiskit_metal.objects.interconnects',
-        Connectors = 'qiskit_metal.objects.connectors'
-        
+    load_metal_modules=Dict(
+        Qubits='qiskit_metal.objects.qubits',
+        Interconnects='qiskit_metal.objects.interconnects',
+        Connectors='qiskit_metal.objects.connectors'
+
     ),
 
-    exclude_metal_classes = ['Metal_Qubit'],
+    exclude_metal_classes=['Metal_Qubit'],
 
-    tips = [
+    tips=[
         'Right clicking the tree elements allows you to do neat things.',
 
-        'You can show all connector names on the plot by clicking the connector'\
+        'You can show all connector names on the plot by clicking the connector'
         'icon in the plot toolbar.',
 
-        'The gui and the python code work synchronously. If you modify something'\
-        'in the gui, it will be reflected in your python interperter and vice versa.'\
-        'Note that the gui does not automatically refresh on all events if you update'\
+        'The gui and the python code work synchronously. If you modify something'
+        'in the gui, it will be reflected in your python interperter and vice versa.'
+        'Note that the gui does not automatically refresh on all events if you update'
         'variables from the python interperter.',
 
-        'Changed some object parameters? Click the <b>Remake</b> button in the main'\
+        'Changed some object parameters? Click the <b>Remake</b> button in the main'
         'toolbar to recreate the polygons.'
     ],
 
-    logger = Dict(
-        style = ".DEBUG {color: green;}\n.WARNING,.ERROR,.CRITICAL {color: red;}\n.'\
+    logger=Dict(
+        style=".DEBUG {color: green;}\n.WARNING,.ERROR,.CRITICAL {color: red;}\n.'\
                 'ERROR,.CRITICAL {font-weight: bold;}\n",
-        num_lines = 500,
+        num_lines=500,
     ),
 
 )
 
-####################################################################################
-# LOG CONFIG
-_log_format = '%(asctime)s %(levelname)s [%(funcName)s]: %(message)s'
-_log_datefmt = '%I:%M%p %Ss'
+log = Dict(
+    format='%(asctime)s %(levelname)s [%(funcName)s]: %(message)s',
+    datefmt='%I:%M%p %Ss'
+)
 
 
 ####################################################################################
