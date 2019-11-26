@@ -18,7 +18,8 @@ Draw utility functions
 
 @author: Zlatko Minev
 """
-#TODO: clenaup and remove this file
+# pylint: disable=ungrouped-imports
+# TODO: clenaup and remove this file
 
 from collections.abc import Iterable
 
@@ -32,75 +33,59 @@ from numpy.linalg import norm
 from shapely.affinity import rotate, scale, translate
 from shapely.geometry import (CAP_STYLE, JOIN_STYLE, LinearRing, MultiPolygon,
                               Point)
-from shapely.geometry import Polygon as Polygon_shapely
+from shapely.geometry import Polygon
 
 from .. import logger
 from ..toolbox.mpl_interaction import figure_pz
 from ..toolbox.parsing import TRUE_STR, parse_units
-from ..toolbox.pythonic import combinekw
 
 #########################################################################
-# Geomtry classes
+# Shapely Geometry Classes
+
 
 def get_poly_pts(poly):
-    '''Return the coordinates with the last repeating point removed'''
+    '''Shapely: Return the coordinates with the last repeating point removed'''
     coords = np.array(poly.exterior.coords)
     return coords[:-1]
 
-# TODO: remove / supress this - superseed. Only used fro drawing, just turn to func
-class Polygon(Polygon_shapely):
 
-    """def __init__(self, *args, rectangle=False, **kwargs):
-        '''
-        rectangle : Am I a rectangle or not, this can be made automatic later
-        This will not work because when i transofrm them they get dropped
-        The class is kept the same, but it is reconstructed only with the exisitng properties.
-        '''
-        super(Polygon, self).__init__(*args, **kwargs)
+def draw_shapely_poly_mpl(poly,
+                          ax=None,
+                          kw={},
+                          kw_hole={},
+                          plot_format=False):
+    '''
+    Style and draw a shapely polygon using MPL.
+    '''
+    # This function is somewhat outdated. needs update if to be used more.
 
-        self.rectangle = rectangle
-    """
+    kw = {**dict(lw=1, edgecolors='k', alpha=0.5), **kw}
+    kw_hole = {**dict(facecolors='w', lw=1, edgecolors='grey'), **kw}
 
-    @property
-    def coords_ext(self):
-        '''Return the coordinates with the last repeating point removed'''
-        return get_poly_pts(self)
+    if ax is None:
+        ax = plt.gca()
 
-    def draw(self,
-             ax=None,
-             kw={},
-             kw_hole={},
-             plot_format=False):
-        '''
-        Style and draw
-        '''
-        kw = {**dict(lw=1, edgecolors='k', alpha=0.5), **kw}
-        kw_hole = {**dict(facecolors='w', lw=1, edgecolors='grey'), **kw}
-
-        if ax is None:
-            ax = plt.gca()
-
-        if not self.exterior == LinearRing():  # not empty
-            coords = np.array(self.exterior.coords)
+    if not poly.exterior == LinearRing():  # not empty - better check?
+        coords = np.array(poly.exterior.coords)
+        poly = mpl.patches.Polygon(coords)
+        color = ax._get_lines.get_next_color()
+        ax.add_collection(
+            mpl.collections.PatchCollection([poly],
+                                            **{**{'facecolor': color}, **kw})
+        )
+        # holes
+        polys = []
+        for hole in self.interiors:
+            coords = tuple(hole.coords)
             poly = mpl.patches.Polygon(coords)
-            color = ax._get_lines.get_next_color()
-            ax.add_collection(
-                mpl.collections.PatchCollection([poly],
-                                                **{**{'facecolor': color}, **kw})
-            )
-            # holes
-            polys = []
-            for hole in self.interiors:
-                coords = tuple(hole.coords)
-                poly = mpl.patches.Polygon(coords)
-                polys.append(poly)
-            ax.add_collection(
-                mpl.collections.PatchCollection(polys, **kw_hole)
-            )
+            polys.append(poly)
+        ax.add_collection(
+            mpl.collections.PatchCollection(polys, **kw_hole)
+        )
 
-        if plot_format:
-            ax.set_aspect(1)
-            ax.autoscale()
+    if plot_format:
+        ax.set_aspect(1)
+        ax.autoscale()
 
 
 ##########################################################################################
@@ -217,7 +202,8 @@ def draw_all_objects(objects, ax, func=lambda x: x, root_name='objects'):
 def get_all_objects(objects, func=lambda x: x, root_name='objects'):
     from .objects.base_objects.Metal_Utility import is_metal_object
 
-    def new_name(name): return root_name + '.' + name if not (root_name == '') else name
+    def new_name(name): return root_name + '.' + \
+        name if not (root_name == '') else name
 
     if is_metal_object(objects):
         return {objects.name: get_all_objects(objects.objects,
@@ -230,7 +216,8 @@ def get_all_objects(objects, func=lambda x: x, root_name='objects'):
         RES = {}
         for name, obj in objects.items():
             if is_metal_object(obj):
-                RES[name] = get_all_objects(obj.objects, root_name=new_name(name))
+                RES[name] = get_all_objects(
+                    obj.objects, root_name=new_name(name))
             elif isinstance(obj, dict):
                 # if name.startswith('objects'): # old school to remove eventually TODO
                 #    RES[name] = func(obj) # allow transofmraiton of objects
@@ -241,7 +228,8 @@ def get_all_objects(objects, func=lambda x: x, root_name='objects'):
         return RES
 
     else:
-        logger.debug(f'warning: {root_name} was not an object or dict or the right handle')
+        logger.debug(
+            f'warning: {root_name} was not an object or dict or the right handle')
         return None
 
 
@@ -456,13 +444,15 @@ def _func_obj_dict(func, objects, *args, _override=True, **kwargs):
     '''
     if isinstance(objects, list):
         for i, obj in enumerate(objects):
-            value = _func_obj_dict(func, obj, *args, _override=_override, **kwargs)
+            value = _func_obj_dict(
+                func, obj, *args, _override=_override, **kwargs)
             if _override:
                 objects[i] = value
 
     elif isinstance(objects, dict):
         for name, obj in objects.items():
-            value = _func_obj_dict(func, obj, *args, _override=_override, **kwargs)
+            value = _func_obj_dict(
+                func, obj, *args, _override=_override, **kwargs)
             if _override:
                 objects[name] = value
     else:
@@ -661,7 +651,8 @@ def array_chop(vec, zero=0, rtol=0, machine_tol=100):
     Zlatko chop array entires clsoe to zero
     '''
     vec = np.array(vec)
-    mask = np.isclose(vec, zero, rtol=rtol, atol=machine_tol*np.finfo(float).eps)
+    mask = np.isclose(vec, zero, rtol=rtol,
+                      atol=machine_tol*np.finfo(float).eps)
     vec[mask] = 0
     return vec
 
@@ -713,6 +704,7 @@ def is_rectangle(obj):
             v1 = p[(i+1) % 4]-p[(i+0) % 4]
             v2 = p[(i+2) % 4]-p[(i+1) % 4]
             return abs(np.dot(v1, v2)) < 1E-16
-        return all(map(isOrthogonal, range(4)))  # CHeck if all vectors are consequtivly orthogonal
+        # CHeck if all vectors are consequtivly orthogonal
+        return all(map(isOrthogonal, range(4)))
     else:
         return False

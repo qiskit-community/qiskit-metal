@@ -99,7 +99,7 @@ def draw_object_shapely(oModeler, obj, name, size_z=0., pos_z=0., hfss_options=N
         hfss_options = {}
 
     if isinstance(obj, shapely.geometry.Polygon):
-        points = Polygon(obj).coords_ext
+        points = get_poly_pts(obj)
         # TODO: Handle multiple chips
         points_3d = to_Vec3Dz(points, parse_units(pos_z))
 

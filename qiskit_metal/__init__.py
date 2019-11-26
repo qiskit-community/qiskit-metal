@@ -28,7 +28,8 @@ __version__ = '0.05.1'
 
 ##############################################################################
 ### INTERNAL SETUP
-# Setup logging
+
+## Setup logging
 
 from .toolbox.logging import logging, setup_logger
 from . import config
@@ -36,13 +37,14 @@ from . import config
 logger = setup_logger('Metal', config.log.format, config.log.datefmt)
 del setup_logger
 
+## Setup logging for GUI mpl
 #TODO: remove this dependency - needed for gui at the moment
+
 import matplotlib as mpl
 mpl.rcParams['toolbar'] = 'toolmanager'
 __LOG = logging.getLogger('matplotlib.backend_managers')
 __LOG.setLevel(logging.ERROR)
 del __LOG
-
 del logging
 
 

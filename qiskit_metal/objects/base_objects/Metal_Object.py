@@ -180,13 +180,13 @@ class Metal_Object():  # pylint: disable=invalid-name
         # TODO: Hanbdle as plugin
         import gdspy
         import shapely
-        from ...draw_utility import Polygon, _func_obj_dict
+        from ...draw.utility import get_poly_pts, _func_obj_dict
 
         cell = gdspy.Cell(self.name)
 
         def my_func(me, *args, **kwargs):
             if isinstance(me, shapely.geometry.Polygon):
-                poly = Polygon(me).coords_ext
+                poly = get_poly_pts(me)
                 cell.add(gdspy.Polygon(poly, *args, **kwargs))
 
         kwargs = {**dict(layer=0), **kwargs}
@@ -284,16 +284,16 @@ class Metal_Object():  # pylint: disable=invalid-name
 
     def add_connector(self, two_points: list, flip=False, chip='main', name=None):
         """Add A connector to the design
-        
+
         Arguments:
-            two_points {list} -- List of the two point coordinates that deifne the start 
-                                 and end of the connector 
+            two_points {list} -- List of the two point coordinates that deifne the start
+                                 and end of the connector
             ops {None / dict} -- Options
-        
+
         Keyword Arguments:
             name {[type]} -- By default is just the object name  (default: {None})
         """
         self.design.add_connector(name=name if name else self.name,
-                                  points=two_points, 
+                                  points=two_points,
                                   chip=chip,
                                   flip=flip)

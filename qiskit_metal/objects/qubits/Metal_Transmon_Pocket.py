@@ -292,7 +292,7 @@ class Metal_Transmon_Pocket(Metal_Qubit): # pylint: disable=invalid-name
         # add connectors to design tracker
         design = self.design
         if not design is None:
-            points = Polygon(objects.connector_wire).coords_ext
+            points = get_poly_pts(objects.connector_wire)
             # debug: draw_objs([LineString(points)], kw=dict(lw=2,c='r'))
             design.connectors[self.name+'_'+name] = make_connector_props(\
                                 points[2:2+2], options, vec_normal=points[2]-points[1])
