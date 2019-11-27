@@ -26,7 +26,7 @@ from shapely.geometry import LineString
 from ..base_objects.Metal_Object import Metal_Object, Dict
 from ...config import DEFAULT_OPTIONS
 from ...draw.cpw import parse_options_user, CAP_STYLE, JOIN_STYLE, meander_between, draw_cpw_trace, to_Vec3D
-from ...toolbox.parsing import TRUE_STR
+from ...toolbox_metal.parsing import TRUE_STR
 
 
 DEFAULT_OPTIONS['Metal_cpw_connect'] = Dict(

@@ -16,16 +16,15 @@
 Simply utility functions to improve QOL of QM developers and QM users
 
 @date: 2019
-@author: Zlatko K. Minev
-modified: Thomas McConkey 2019/10/16
+@author: Zlatko K. Minev (IBM)
+@modified: Thomas McConkey 2019/10/16
 '''
+
 import traceback
 import warnings
-
-import pandas as pd
 from copy import deepcopy
 
-
+import pandas as pd
 
 ####################################################################################
 ### Dictionary related
@@ -123,3 +122,11 @@ def print_traceback_easy(start=26):
     print(f"\n")
     print('\n'.join(map(repr,traceback.extract_stack()[start:])))
     print('\n')
+
+
+
+def monkey_patch(self, func):
+    '''
+    Debug function
+    '''
+    setattr(self, func.__name__, func.__get__(self, self.__class__))

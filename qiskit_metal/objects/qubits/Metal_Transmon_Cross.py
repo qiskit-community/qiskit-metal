@@ -273,7 +273,8 @@ Description:
         if not design is None:
             portPoints = list(shape(objects['port_Line']).coords)
             vNorm = (-(portPoints[1][1] - portPoints[0][1]),(portPoints[1][0]-portPoints[0][0]))
-            design.connectors[self.name+'_'+name] = make_connector_props(portPoints,options, vec_normal=vNorm)
+            raise NotImplemented('Update make_connector -- add to design!?')
+            design.connectors[self.name+'_'+name] = make_connector(portPoints,options, vec_normal=vNorm)
 
         # Removes the temporary port_Line from draw objects
         del objects['port_Line']

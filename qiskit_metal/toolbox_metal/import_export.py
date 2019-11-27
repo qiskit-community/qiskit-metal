@@ -12,38 +12,42 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
+# pylint: disable=protected-access
+
 '''
 Saving and load metal data
 
-@author: Zlatko K. Minev
-@date:2019-09
+@author: Zlatko K. Minev (IBM)
+@date: 2019-09
 '''
 
 import pickle
+#from ..designs.base
 
-def save_metal(filename, design):
+def save_metal(filename : str, design):
     """
     filename: str path
     design : design obejct Metal_Design_Base
-    TODO: Right now just does pick, should probably also have a user
-    friendly file saved also with the params as JSON fo easier access
+
+    TODO: Right now just does pickle. Need to serialize object into JSON
+    or similar. THen recreate components.
     """
-    pickle.dump(design, open(filename, "wb" ))
+    pickle.dump(design, open(filename, "wb"))
 
 
-def load_metal(filename, do_update=True):
+def load_metal(filename : str, do_update=True):
     """
     Returns the pickled design object and updates if asked the param dicts for
     defaults
 
     do_update: True
-        updates DEFAULTS, DEFAULT_OPTIONS with the params saved in the file
+        updates DEFAULT, DEFAULT_OPTIONS with the params saved in the file
     """
-    design = pickle.load( open( filename, "rb" ) )
+    design = pickle.load(open(filename, "rb"))
 
     if do_update:
-        from .config import DEFAULTS, DEFAULT_OPTIONS
-        DEFAULTS.update(design._DEFAULT)
-        DEFAULT_OPTIONS.update(design._DEFAULT_OPTIONS)
+        from ..config import DEFAULT, DEFAULT_OPTIONS
+        DEFAULT.update(design._defaults)
+        DEFAULT_OPTIONS.update(design._default_options)
 
     return design

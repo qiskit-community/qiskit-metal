@@ -44,12 +44,12 @@ class Parameter_Zlatko(QLineEdit):
         widget.get_obj= get_obj.__get__(widget, widget_class)
     '''
 
-    def __init__(self, _objects, names, obj,
+    def __init__(self, _components, names, obj,
                  on_return=None, logger=None):
 
         super().__init__()
 
-        self._objects = _objects  # reference to dictionary of atributes
+        self._components = _components  # reference to dictionary of atributes
         self.names = names.copy()
         self.name = self.names.pop(-1)
         self.type = type(obj)
@@ -74,7 +74,7 @@ class Parameter_Zlatko(QLineEdit):
             """color: #115511; border:0; selection-background-color: darkgray;""")
 
     def get_obj(self):
-        _obj = self._objects
+        _obj = self._components
         for key in self.names:
             #assert key in _obj
             if isinstance(_obj, dict):

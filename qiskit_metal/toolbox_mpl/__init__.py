@@ -13,13 +13,8 @@
 # that they have been altered from the originals.
 
 """
-@auhtor: Zlatko Minev
-@date: 2019
+This folder contains code that is more speicifc to Metal.
+
+Created on Tue May 14 17:13:40 2019
+@author: Zlatko Minev
 """
-
-from . import cpw
-from . import functions
-from . import utility
-
-# Useful functions
-from .utility import get_vec_unit_norm

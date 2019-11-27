@@ -294,7 +294,8 @@ class Metal_Transmon_Pocket(Metal_Qubit): # pylint: disable=invalid-name
         if not design is None:
             points = get_poly_pts(objects.connector_wire)
             # debug: draw_objs([LineString(points)], kw=dict(lw=2,c='r'))
-            design.connectors[self.name+'_'+name] = make_connector_props(\
+            raise NotImplemented('Update make_connector -- add to design!?')
+            design.connectors[self.name+'_'+name] = make_connector(\
                                 points[2:2+2], options, vec_normal=points[2]-points[1])
 
         return objects

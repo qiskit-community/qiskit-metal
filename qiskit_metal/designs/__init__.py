@@ -13,13 +13,8 @@
 # that they have been altered from the originals.
 
 """
-@auhtor: Zlatko Minev
+Module containing all Qiskit Metal designs.
+
 @date: 2019
+@author: Zlatko Minev (IBM)
 """
-
-from . import cpw
-from . import functions
-from . import utility
-
-# Useful functions
-from .utility import get_vec_unit_norm

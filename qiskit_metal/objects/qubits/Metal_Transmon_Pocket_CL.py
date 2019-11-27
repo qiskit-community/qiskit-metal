@@ -134,8 +134,9 @@ class Metal_Transmon_Pocket_CL(Metal_Transmon_Pocket):  # pylint: disable=invali
         if not design is None:
             portPoints = list(shape(objects['port_Line']).coords)
             vNorm = (-(portPoints[1][1] - portPoints[0][1]), (portPoints[1][0]-portPoints[0][0]))
+            raise NotImplemented('Update make_connector -- add to design!?')
             design.connectors[self.name+'_' +
-                            name] = make_connector_props(portPoints, options, vec_normal=vNorm)
+                            name] = make_connector(portPoints, options, vec_normal=vNorm)
 
         # Removes temporary port_line from draw objects
         del objects['port_Line']
@@ -144,23 +145,3 @@ class Metal_Transmon_Pocket_CL(Metal_Transmon_Pocket):  # pylint: disable=invali
         self.objects.CL = objects
 
         return objects
-
-#Super call not quite working
-    # def hfss_draw(self):
-    #     '''
-    #     Draw in HFSS.
-    #     Makes a meshing recntalge for the the pocket as well.
-    #     '''
-    #     super().hfss_draw()
-
-    #     if options.make_CL == 'ON': #checks if this qubit has a charge line, and if it does etches the appropriate section
-    #         oModeler.subtract(ground, [hfss_objs.CL['cl_Etcher']])
-
-    #     #attaches the different relevant geometries to perfect E boundaries (as equivalent thin film superconductor)
-    #     if DEFAULTS['do_PerfE']:
-    #        if options.make_CL == 'ON':
-    #             oModeler.append_PerfE_assignment(name+'_CL' if DEFAULTS['BC_individual'] else options_hfss['BC_name_conn'], hfss_objs.CL['cl_Metal'])
-
-    #    # if DEFAULTS._hfss.do_mesh:
-
-    #     return hfss_objs

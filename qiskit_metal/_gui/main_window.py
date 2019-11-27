@@ -71,8 +71,8 @@ class Metal_gui(QMainWindow):
 
         # params
         self.design = design
-        self._objects = None
-        self._DEFAULT_OPTIONS = None
+        self._components = None
+        self._default_options = None
 
         # set params
         self.set_objects(objects)
@@ -740,7 +740,7 @@ class Metal_gui(QMainWindow):
         Returns:
             [Dict] -- [Handle to Design's objects]
         """
-        return self._objects
+        return self._components
 
     def set_objects(self, objects):
         '''
@@ -748,7 +748,7 @@ class Metal_gui(QMainWindow):
         '''
         if objects is None:
             objects = self.design.objects
-        self._objects = objects
+        self._components = objects
         if hasattr(self, 'tree'):
             self.tree.change_content_dict(objects)
 
@@ -759,7 +759,7 @@ class Metal_gui(QMainWindow):
         Returns:
             [Dict] -- [DEFAULT_OPTIONS]
         """
-        return self._DEFAULT_OPTIONS
+        return self._default_options
 
     def set_DEFAULT_OPTIONS(self, DEFAULT_OPTIONS):
         '''
@@ -767,9 +767,9 @@ class Metal_gui(QMainWindow):
         '''
         if DEFAULT_OPTIONS is None:
             from ..draw.functions import DEFAULT_OPTIONS
-        self._DEFAULT_OPTIONS = DEFAULT_OPTIONS
+        self._default_options = DEFAULT_OPTIONS
         if hasattr(self, 'tree_def_ops'):
-            self.tree_def_ops.change_content_dict(self._DEFAULT_OPTIONS)
+            self.tree_def_ops.change_content_dict(self._default_options)
 
     def resizeEvent(self, event):
         """

@@ -27,7 +27,7 @@ from shapely.geometry import Point, LineString, CAP_STYLE, JOIN_STYLE
 
 from .. import DEFAULTS, DEFAULT_OPTIONS, Dict, logger
 from .functions import make_connector_props, do_cut_ground, do_PerfE, do_mesh
-from ..toolbox.parsing import parse_options_user, parse_units_user, parse_value_hfss
+from ..toolbox_metal.parsing import parse_options_user, parse_units_user, parse_value_hfss
 from .utility import to_Vec3D,\
     get_vec_unit_norm, get_unit_vec,\
     TRUE_STR, remove_co_linear_points,\
@@ -161,11 +161,13 @@ def draw_cpw_trace(design,
     ### Add connectors
     if options['do_add_connectors']:
         dist = cpw_center_w/2.*vec_n
-        design.connectors[name+'_start'] = make_connector_props([cpw_origin-dist, cpw_origin+dist], options)
+        raise NotImplemented('Update make_connector -- add to design!?')
+        design.connectors[name+'_start'] = make_connector([cpw_origin-dist, cpw_origin+dist], options)
 
         vec_D, vec_d, vec_n = get_vec_unit_norm([points[-2], points[-1]])
         dist, cpw_end = cpw_center_w/2.*vec_n, points[-1] # TODO: might need to play with orientation here
-        design.connectors[name+'_end'] = make_connector_props([cpw_end-dist, cpw_end+dist], options)
+        raise NotImplemented('Update make_connector -- add to design!?')
+        design.connectors[name+'_end'] = make_connector([cpw_end-dist, cpw_end+dist], options)
 
     if 1:
         design.mesh_obj(str(sheet_mesh_trace), options['mesh_name'], **options['mesh_kw'])

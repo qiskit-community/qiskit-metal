@@ -29,7 +29,7 @@ from copy import deepcopy
 
 from .Metal_Utility import is_metal_design
 from ...toolbox.attribute_dictionary import Dict
-from ...toolbox.parsing import parse_options_dict, parse_value
+from ...toolbox_metal.parsing import parse_params, parse_value
 from ...config import DEFAULT_OPTIONS
 
 
@@ -279,7 +279,7 @@ class Metal_Object():  # pylint: disable=invalid-name
 
         """
 
-        return parse_options_dict(options if options else self.options,
+        return parse_params(options if options else self.options,
                                   self.design.variables)
 
     def add_connector(self, two_points: list, flip=False, chip='main', name=None):

@@ -23,15 +23,11 @@ Updated 2019/09/25 - Thomas McConkey
 '''
 # pylint: disable=invalid-name
 
-from collections import OrderedDict
 from copy import deepcopy
 
-from ...toolbox.attribute_dictionary import Dict
+from ... import Dict, draw
 from ...config import DEFAULT_OPTIONS
-from ...toolbox.parsing import parse_units_user, parse_value
-from ... import draw
-from ... import draw.functions
-
+#from ...toolbox_metal.parsing import parse_units_user, parse_value
 from .Metal_Design_Base import Metal_Design_Base
 from .Metal_Utility import is_metal_object
 
@@ -40,7 +36,6 @@ DEFAULT_OPTIONS.update({
         ####################################################
         # PlanarDesign global paramters
         'globals': Dict({
-            'global_units': 'mm',
             'bounding_box': [[0, 0],
                              [0, 0],
                              ['0.890mm', '0.900mm']],     # Absolute Offset; [[-x,x],[-y,y],[-z,z]], mainly for HFSS currently
@@ -66,12 +61,12 @@ DEFAULT_OPTIONS.update({
 class Design_Planar(Metal_Design_Base):  # pylint: disable=invalid-name
     """
     Contains design definitions and has some utility functions.
-    All Metal objects on chip are tracked by this parent as well as their connectors.
+    All Metal components on chip are tracked by this parent as well as their connectors.
 
 
     Keyword Arguments:
     ------------------------
-        objects {[Dict]} -- [Pass an objects dictionary] (default: {None})
+        components {[Dict]} -- [Pass an components dictionary] (default: {None})
         connectors {[Dict]} -- [Tracks all connectrs in the design that can be used for
                                 named connections. Made from points] (default: {None})
         oDesign_ {[pyEPR.hfss.HfssDesign]} -- [Used to draw in HFSS] (default: {None})
@@ -85,20 +80,20 @@ class Design_Planar(Metal_Design_Base):  # pylint: disable=invalid-name
 
     Metal_Design_Base properties:
     ----------------------
-        objects (Dict) : Dict of all Metal_Objects
+        components (Dict) : Dict of all Metal_Objects
         connectors (Dict) : Dict of all connectors associated with the Metal_Objects and
                         custom connectors
     """
 
     def __init__(self,
-                 objects=None,
+                 components=None,
                  connectors=None,
                  oDesign_=None,
                  design_parameters=None):
         if not design_parameters:
             design_parameters = {}
 
-        super().__init__(objects=objects, connectors=connectors)
+        super().__init__(components=components, connectors=connectors)
 
         self.params = deepcopy(DEFAULT_OPTIONS['Design_Planar'])
 
@@ -180,7 +175,7 @@ class Design_Planar(Metal_Design_Base):  # pylint: disable=invalid-name
 
         gdspy.current_library.cell_dict.clear()
         device = gdspy.Cell('TOP_CELL')
-        for _, obj in self.objects.items():
+        for _, obj in self.components.items():
             if is_metal_object(obj):
                 cell = obj.gds_draw()
                 device.add(gdspy.CellReference(cell))
@@ -207,7 +202,7 @@ class Design_Planar(Metal_Design_Base):  # pylint: disable=invalid-name
         '''
         Return the hfss modeler object
 
-        Returns oDesign and oModeler objects from pyEPR
+        Returns oDesign and oModeler components from pyEPR
         '''
         return (self.oDesign, self.oModeler)
 
@@ -215,6 +210,8 @@ class Design_Planar(Metal_Design_Base):  # pylint: disable=invalid-name
         '''
         Set up global properties of the design.
         Updated global params.
+
+        TODO: Move to hfss render
 
         Args:
             gparams (dict) : update global params with this dictionary.
@@ -228,7 +225,7 @@ class Design_Planar(Metal_Design_Base):  # pylint: disable=invalid-name
         _, modeler = self.get_modeler()
 
         import pyEPR
-        units = gparams.get('global_units', 'mm')
+        units = self.default
 
         if 1:
             modeler.set_units(units, rescale=False)

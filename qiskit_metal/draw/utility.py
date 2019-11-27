@@ -36,8 +36,8 @@ from shapely.geometry import (CAP_STYLE, JOIN_STYLE, LinearRing, MultiPolygon,
 from shapely.geometry import Polygon
 
 from .. import logger
-from ..toolbox.mpl_interaction import figure_pz
-from ..toolbox.parsing import TRUE_STR, parse_units
+from ..toolbox_mpl.mpl_interaction import figure_pz
+from ..toolbox_metal.parsing import TRUE_STR, parse_units
 
 #########################################################################
 # Shapely Geometry Classes
@@ -49,8 +49,8 @@ def get_poly_pts(poly):
     return coords[:-1]
 
 
-def draw_shapely_poly_mpl(poly,
-                          ax=None,
+def draw_shapely_poly_mpl(poly:Polygon,
+                          ax,
                           kw={},
                           kw_hole={},
                           plot_format=False):
@@ -61,9 +61,6 @@ def draw_shapely_poly_mpl(poly,
 
     kw = {**dict(lw=1, edgecolors='k', alpha=0.5), **kw}
     kw_hole = {**dict(facecolors='w', lw=1, edgecolors='grey'), **kw}
-
-    if ax is None:
-        ax = plt.gca()
 
     if not poly.exterior == LinearRing():  # not empty - better check?
         coords = np.array(poly.exterior.coords)
@@ -110,53 +107,53 @@ def plot_shapely_style_v1(ax, labels=None):
         ax.legend(loc='center left', bbox_to_anchor=(1, 0.5), prop=fontP)
 
 
-def plot_shapely(objects,
+def plot_shapely(components,
                  ax=None,
                  kw={},
                  plot_format=True,
                  labels=None,
                  __depth=-1,  # how many sublists in we are
-                 _iteration=0,  # how many objects we have plotted
+                 _iteration=0,  # how many components we have plotted
                  **kwargs):  # such as kw_hole
     '''
-    Plot a list or dicitoanry of shapely objects.
+    Plot a list or dicitoanry of shapely components.
 
     TODO: Update to handle plotting argumetn with *args and **kwargs
     but this needs the .draw functions to be updated
     '''
     __depth = __depth + 1
-    #print(__depth, _iteration, objects, '\n')
+    #print(__depth, _iteration, components, '\n')
 
     # Default Parameters
     if ax is None:
         ax = plt.gca()
     if labels is 'auto':
-        labels = list(map(str, range(len(objects))))
+        labels = list(map(str, range(len(components))))
     if not labels is None:
         kw = {**dict(label=labels[_iteration]), **kw}
 
     # Handle itterables
-    if isinstance(objects, dict):
-        for _, objs in objects.items():
+    if isinstance(components, dict):
+        for _, objs in components.items():
             _iteration = plot_shapely(objs, ax=ax, kw=kw, plot_format=plot_format,
                                       labels=labels, __depth=__depth, _iteration=_iteration, **kwargs)
         if plot_format and (__depth == 0):
             plot_shapely_style_v1(ax, labels=labels)
         return _iteration
 
-    elif isinstance(objects, list):
-        for objs in objects:
+    elif isinstance(components, list):
+        for objs in components:
             _iteration = plot_shapely(objs, ax=ax, kw=kw, plot_format=plot_format,
                                       labels=labels, __depth=__depth, _iteration=_iteration, **kwargs)
         if plot_format and (__depth == 0):
             plot_shapely_style_v1(ax, labels=labels)
         return _iteration
 
-    if not isinstance(objects, shapely.geometry.base.BaseGeometry):  # obj is None
+    if not isinstance(components, shapely.geometry.base.BaseGeometry):  # obj is None
         return _iteration+1
 
     # We have now a single object to draw
-    obj = objects
+    obj = components
 
     if isinstance(obj, shapely.geometry.Polygon):
         draw_shapely_poly_mpl(obj, kw=kw, ax=ax, **kwargs)
@@ -182,45 +179,45 @@ def plot_shapely(objects,
 draw_objs = plot_shapely
 
 
-def draw_all_objects(objects, ax, func=lambda x: x, root_name='objects'):
-    from .objects.base_objects.Metal_Utility import is_metal_object
+def draw_all_objects(components, ax, func=lambda x: x, root_name='components'):
+    from .components.base_objects.Metal_Utility import is_metal_object
 
-    # logger.debug(objects.keys())
-    for name, obj in objects.items():
+    # logger.debug(components.keys())
+    for name, obj in components.items():
         if isinstance(obj, dict):
-            if name.startswith('objects'):
+            if name.startswith('components'):
                 #logger.debug(f'Drawing: {root_name}.{name}')
-                draw_objs(func(obj), ax=ax)  # allow transmofmation of objects
+                draw_objs(func(obj), ax=ax)  # allow transmofmation of components
             else:
                 draw_all_objects(obj, ax, root_name=root_name+'.'+name)
 
         elif is_metal_object(obj):
             #logger.debug(f' Metal_Object: {obj}')
-            draw_objs(obj.objects, ax=ax)
+            draw_objs(obj.components, ax=ax)
 
 
-def get_all_objects(objects, func=lambda x: x, root_name='objects'):
-    from .objects.base_objects.Metal_Utility import is_metal_object
+def get_all_objects(components, func=lambda x: x, root_name='components'):
+    from .components.base_objects.Metal_Utility import is_metal_object
 
     def new_name(name): return root_name + '.' + \
         name if not (root_name == '') else name
 
-    if is_metal_object(objects):
-        return {objects.name: get_all_objects(objects.objects,
-                                              root_name=new_name(objects.name))}
+    if is_metal_object(components):
+        return {components.name: get_all_objects(components.components,
+                                              root_name=new_name(components.name))}
 
-    elif isinstance(objects, shapely.geometry.base.BaseGeometry):
+    elif isinstance(components, shapely.geometry.base.BaseGeometry):
         return obj
 
-    elif isinstance(objects, dict):
+    elif isinstance(components, dict):
         RES = {}
-        for name, obj in objects.items():
+        for name, obj in components.items():
             if is_metal_object(obj):
                 RES[name] = get_all_objects(
-                    obj.objects, root_name=new_name(name))
+                    obj.components, root_name=new_name(name))
             elif isinstance(obj, dict):
-                # if name.startswith('objects'): # old school to remove eventually TODO
-                #    RES[name] = func(obj) # allow transofmraiton of objects
+                # if name.startswith('components'): # old school to remove eventually TODO
+                #    RES[name] = func(obj) # allow transofmraiton of components
                 # else:
                 RES[name] = get_all_objects(obj, root_name=new_name(name))
             elif isinstance(obj, shapely.geometry.base.BaseGeometry):
@@ -233,21 +230,21 @@ def get_all_objects(objects, func=lambda x: x, root_name='objects'):
         return None
 
 
-def flatten_all_objects(objects, filter_obj=None):
-    assert isinstance(objects, dict)
+def flatten_all_objects(components, filter_obj=None):
+    assert isinstance(components, dict)
 
     RES = []
 
 # OLD CODE? REMOVE?
-    #from .objects.Metal_Object import is_metal_object
-    # if is_metal_object(objects):
-    #    RES += flatten_all_objects(objects.objects, filter_obj)
+    #from .components.Metal_Object import is_metal_object
+    # if is_metal_object(components):
+    #    RES += flatten_all_objects(components.components, filter_obj)
     # else:
-    for name, obj in objects.items():
+    for name, obj in components.items():
         if isinstance(obj, dict):
             RES += flatten_all_objects(obj, filter_obj)
         # elif is_metal_object(obj):
-        #    RES += flatten_all_objects(obj.objects, filter_obj)
+        #    RES += flatten_all_objects(obj.components, filter_obj)
         else:
             if filter_obj is None:
                 RES += [obj]
@@ -260,10 +257,10 @@ def flatten_all_objects(objects, filter_obj=None):
     return RES
 
 
-def get_all_object_bounds(objects):
+def get_all_object_bounds(components):
     # Assumes they are all polygonal
-    objects = get_all_objects(objects)
-    objs = flatten_all_objects(objects, filter_obj=shapely.geometry.Polygon)
+    components = get_all_objects(components)
+    objs = flatten_all_objects(components, filter_obj=shapely.geometry.Polygon)
     print(objs)
     (x_min, y_min, x_max, y_max) = MultiPolygon(objs).bounds
     return (x_min, y_min, x_max, y_max)
@@ -404,7 +401,7 @@ def orient_position(obj, angle, pos, pos_rot=(0, 0)):
         return translate(obj, *pos1)
 
 
-def rotate_obj_dict(objects, angle, *args, **kwargs):
+def rotate_obj_dict(components, angle, *args, **kwargs):
     '''
     Returns a rotated geometry on a 2D plane.
 
@@ -422,47 +419,47 @@ def rotate_obj_dict(objects, angle, *args, **kwargs):
     '''
     # Should change to also cover negative rotations and flips?
     angle = {'X': 0, 'Y': 90}.get(angle, angle)
-    if isinstance(objects, list):
-        for i, obj in enumerate(objects):
-            objects[i] = rotate_obj_dict(obj, angle, *args, **kwargs)
-    elif isinstance(objects, dict):
-        for name, obj in objects.items():
-            objects[name] = rotate_obj_dict(obj, angle, *args, **kwargs)
+    if isinstance(components, list):
+        for i, obj in enumerate(components):
+            components[i] = rotate_obj_dict(obj, angle, *args, **kwargs)
+    elif isinstance(components, dict):
+        for name, obj in components.items():
+            components[name] = rotate_obj_dict(obj, angle, *args, **kwargs)
     else:
-        if not objects is None:
+        if not components is None:
             # this is now a single object
-            objects = rotate(objects, angle, *args, **kwargs)
-    return objects
+            components = rotate(components, angle, *args, **kwargs)
+    return components
 
 
 rotate_objs = rotate_obj_dict
 
 
-def _func_obj_dict(func, objects, *args, _override=True, **kwargs):
+def _func_obj_dict(func, components, *args, _override=True, **kwargs):
     '''
     _override:  overrides the dictionary.
     '''
-    if isinstance(objects, list):
-        for i, obj in enumerate(objects):
+    if isinstance(components, list):
+        for i, obj in enumerate(components):
             value = _func_obj_dict(
                 func, obj, *args, _override=_override, **kwargs)
             if _override:
-                objects[i] = value
+                components[i] = value
 
-    elif isinstance(objects, dict):
-        for name, obj in objects.items():
+    elif isinstance(components, dict):
+        for name, obj in components.items():
             value = _func_obj_dict(
                 func, obj, *args, _override=_override, **kwargs)
             if _override:
-                objects[name] = value
+                components[name] = value
     else:
-        if not objects is None:
+        if not components is None:
             # this is now a single object
-            objects = func(objects, *args, **kwargs)
-    return objects
+            components = func(components, *args, **kwargs)
+    return components
 
 
-def translate_objs(objects, *args, **kwargs):
+def translate_objs(components, *args, **kwargs):
     r'''
     translate(geom, xoff=0.0, yoff=0.0, zoff=0.0)
     Docstring:
@@ -475,12 +472,12 @@ def translate_objs(objects, *args, **kwargs):
         | 0  0  1 zoff |
         \ 0  0  0   1  /
     '''
-    return _func_obj_dict(translate, objects, *args, **kwargs)
+    return _func_obj_dict(translate, components, *args, **kwargs)
 
 
-def scale_objs(objects, *args, **kwargs):
+def scale_objs(components, *args, **kwargs):
     '''
-    Operatos on a list or Dict of objects.
+    Operatos on a list or Dict of components.
 
     Signature: scale(geom, xfact=1.0, yfact=1.0, zfact=1.0, origin='center')
 
@@ -505,12 +502,12 @@ def scale_objs(objects, *args, **kwargs):
         yoff = y0 - y0 * yfact
         zoff = z0 - z0 * zfact
     '''
-    return _func_obj_dict(scale, objects, *args, **kwargs)
+    return _func_obj_dict(scale, components, *args, **kwargs)
 
 
-def buffer(objects,  *args, **kwargs):
+def buffer(components,  *args, **kwargs):
     '''
-    Flat buffer of all objects in the dictionary
+    Flat buffer of all components in the dictionary
     Default stlye:
         cap_style=CAP_STYLE.flat
         join_style=JOIN_STYLE.mitre
@@ -554,7 +551,7 @@ def buffer(objects,  *args, **kwargs):
 
     def buffer_me(obj, *args, **kwargs):
         return obj.buffer(*args, **kwargs)
-    return _func_obj_dict(buffer_me, objects, *args, **kwargs)
+    return _func_obj_dict(buffer_me, components, *args, **kwargs)
 
 
 #########################################################################
@@ -642,7 +639,7 @@ def to_Vec3D(design, options, vec2D):
         # if not isinstance(options,dict):
         #    options={'chip':options}
         z = parse_units(design.get_chip_z(
-            options.get('chip', draw.functions.DEFAULTS['chip'])))
+            options.get('chip', draw.functions.DEFAULT['chip'])))
         return array(list(vec2D)+[z])
 
 

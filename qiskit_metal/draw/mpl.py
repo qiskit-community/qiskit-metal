@@ -11,15 +11,13 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 """
-@auhtor: Zlatko Minev
+Created 2019
+
+Matplotlib draw utility functions for shapely objects, for elements, and for components.
+
 @date: 2019
+@author: Zlatko Minev
 """
+# pylint: disable=ungrouped-imports
 
-from . import cpw
-from . import functions
-from . import utility
-
-# Useful functions
-from .utility import get_vec_unit_norm

@@ -13,7 +13,7 @@
 # that they have been altered from the originals.
 
 '''
-Base class for design type objects in Qiskit Metal.
+Base class for design type components in Qiskit Metal.
 
 This should be thought of as the 'package' level of the system. Aspects
 such as gemoetries of your package cavity, 3D vs. planar or multiple chips.
@@ -30,23 +30,22 @@ Updated 2019/09/25 - Thomas McConkey
 import numpy as np
 from shapely.geometry import LineString
 
-from ...toolbox.parsing import parse_units_user, parse_value, parse_options_user
-from ...toolbox.attribute_dictionary import Dict
-from ...config import DEFAULTS, DEFAULT_OPTIONS
+from ... import Dict
+from ...toolbox_metal.parsing import parse_value, parse_options
+from ...config import DEFAULT, DEFAULT_OPTIONS
 from ...draw.functions import draw_objs, make_connector
-from ...toolbox_metal.import_export import save_metal#, load_metal
+from ...toolbox_metal.import_export import save_metal
 from .Metal_Utility import is_metal_object
 
 
-
-class Metal_Design_Base(): # pylint: disable=invalid-name
+class Metal_Design_Base():  # pylint: disable=invalid-name
     '''
-    Base class for design type objects in Qiskit Metal.
+    Base class for design type components in Qiskit Metal.
     All designs should be derived from this base class.
 
     Key properties:
     ----------------------
-        objects (Dict) : Dict of all Metal_objects
+        components (Dict) : Dict of all Metal_objects
         connectors (Dict) : Dict of all connectors associated with
                             the Metal_objects and custom connectors
 
@@ -57,19 +56,21 @@ class Metal_Design_Base(): # pylint: disable=invalid-name
 
 
 #########INITIALIZATION##################################################
-    def __init__(self,
-                 objects = None,
-                 connectors = None,
-                 logger = None,
-                 variables = None):
 
-        self._objects = Dict() if objects is None else objects
-        self._connectors =  Dict() if connectors is None else connectors
+
+    def __init__(self,
+                 components=None,
+                 connectors=None,
+                 logger=None,
+                 variables=None):
+
+        self._components = Dict() if components is None else components
+        self._connectors = Dict() if connectors is None else connectors
         self._variables = Dict() if variables is None else variables
 
         # handy in saving and keeping everyting referenced in one object
-        self._DEFAULT = DEFAULTS # Depricated, to be removed
-        self._DEFAULT_OPTIONS = DEFAULT_OPTIONS
+        self._defaults = DEFAULT  # Depricated, to be removed
+        self._default_options = DEFAULT_OPTIONS
 
         if logger is None:
             from ... import logger
@@ -78,11 +79,11 @@ class Metal_Design_Base(): # pylint: disable=invalid-name
 #########PROPERTIES##################################################
 
     @property
-    def objects(self):
+    def components(self):
         '''
-        Returns Dict object that keeps track of all Metal objects in the design
+        Returns Dict object that keeps track of all Metal components in the design
         '''
-        return self._objects
+        return self._components
 
     @property
     def connectors(self):
@@ -98,7 +99,28 @@ class Metal_Design_Base(): # pylint: disable=invalid-name
         '''
         return self._variables
 
+    @property
+    def defaults(self):
+        '''
+        Return DEFAULT dictionary, which contains some key Metal DEFAULT params used
+        in various Metal functions. These include default units, etc.
+
+        Think of these as global defaults.
+        '''
+        return self._defaults
+
+    @property
+    def default_options(self):
+        '''
+        Return handle to the dicitonary of default options used in creating Metal
+        component, and in calling other drawing and key functions.
+        '''
+        return self._default_options
+
+
 #########COMMANDS##################################################
+
+
     def reset_all_connectors(self):
         '''
         Delete all connectors in the design.
@@ -108,20 +130,19 @@ class Metal_Design_Base(): # pylint: disable=invalid-name
 
     def reset_all_objects(self):
         '''
-        Resets the objects dictionary
+        Resets the components dictionary
         '''
-        self._objects.clear()
+        self._components.clear()
         self.reset_all_connectors()
-        return self._objects
+        return self._components
 
     def reset_all_metal(self):
         '''
         Removes the metal device
         '''
         self.reset_all_objects()
-        #self.reset_all_connectors()
+        # self.reset_all_connectors()
         return self
-
 
     clear_all_objects = reset_all_objects
 
@@ -133,7 +154,7 @@ class Metal_Design_Base(): # pylint: disable=invalid-name
         '''
         Plots all connectors on the active axes. Draws the 1D line that
         represents the "port" of a connector point. These are referenced for smart placement
-         of Metal objects, such as when using functions like Metal_CPW_Connect.
+         of Metal components, such as when using functions like Metal_CPW_Connect.
         '''
         if ax is None:
             import matplotlib.pyplot as plt
@@ -142,18 +163,18 @@ class Metal_Design_Base(): # pylint: disable=invalid-name
         for name, conn in self.connectors.items():
             line = LineString(conn.points)
 
-            draw_objs(line, ax=ax, kw=dict(lw=2,c='r'))
+            draw_objs(line, ax=ax, kw=dict(lw=2, c='r'))
 
-            ax.annotate(name, xy=conn.middle[:2], xytext=conn.middle +\
-                        np.array(DEFAULTS.annots.design_connectors_ofst),\
-                        **DEFAULTS.annots.design_connectors)
+            ax.annotate(name, xy=conn.middle[:2], xytext=conn.middle +
+                        np.array(DEFAULT.annots.design_connectors_ofst),
+                        **DEFAULT.annots.design_connectors)
 
     def make_all_objects(self):
         """
-        Remakes all objects with their current parameters. Easy way
+        Remakes all components with their current parameters. Easy way
         """
-        #self.logger.debug('Design: Making all objects')
-        for name, obj in self.objects.items(): # pylint: disable=unused-variable
+        #self.logger.debug('Design: Making all components')
+        for name, obj in self.components.items():  # pylint: disable=unused-variable
             if is_metal_object(obj):
                 #self.logger.debug(f' Making {name}')
                 obj.make()
@@ -211,7 +232,7 @@ class Metal_Design_Base(): # pylint: disable=invalid-name
         """
         return parse_value(value, self.variables)
 
-    def add_connector(self, name:str,  points:list, flip=False, chip='main'):
+    def add_connector(self, name: str,  points: list, flip=False, chip='main'):
         """Add named connector to the design by creating a connector dicitoanry.
 
         Arguments:
