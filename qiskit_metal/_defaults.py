@@ -41,7 +41,8 @@ DEFAULT_OPTIONS['cpw'] = Dict(
 )
 
 #TODO: depricated.All of this should move to HFSS config
-DEFAULTS = Dict({
+DEFAULT = Dict({
+    'units'        : 'mm',
     'chip'         : 'main',
     'do_PerfE'     : True,  # applied p-erf E BC
     'do_cut'       : True,  # cut from ground plane
@@ -78,4 +79,3 @@ Default Paramters for many basic functions:
 
 .. sectionauthor:: Zlatko K Minev <zlatko.minev@ibm.com>
 """
-#TODO: Updat the do_PerfE etxc. into hfss

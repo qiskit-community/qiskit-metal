@@ -14,6 +14,7 @@ In the shell, assuming you are using a conda distrubiton, use
 ```
 conda install shapely
 pip install addict
+pip install pint
 ```
 If you do not have conda, you can replace use pip instead of conda. 
 

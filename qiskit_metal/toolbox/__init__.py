@@ -13,18 +13,8 @@
 # that they have been altered from the originals.
 
 """
-This folder contains code that is general and not Metal specific. 
+This folder contains code that is general and not Metal specific.
 
 Created on Tue May 14 17:13:40 2019
-@author: Zlatko Minev
-"""
-
-
-
-"""
-def monkey_patch(self, func):
-    '''
-    Debug function
-    '''
-    setattr(self, func.__name__, func.__get__(self, self.__class__))
+@author: Zlatko Minev (IBM)
 """
