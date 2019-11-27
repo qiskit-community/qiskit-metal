@@ -25,9 +25,14 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import shapely
 
-from shapely.geometry import Point, LineString, LinearRing, Polygon
+from shapely.geometry import LinearRing, Polygon # Point, LineString,
 from .mpl_interaction import figure_pz
 from ..components import is_component
+
+
+
+##########################################################################################
+# Plotting subroutines
 
 
 def _render_poly_to_mpl(poly: Polygon,
@@ -68,26 +73,6 @@ def _render_poly_to_mpl(poly: Polygon,
         )
 
 
-##########################################################################################
-# Plotting subroutines
-
-def plot_style_shapely_v1(ax, labels=None):
-    '''
-    Style function for axis called by `render_to_mpl`
-    '''
-    if ax is None:
-        ax = plt.gca()
-
-    # If 'box', change the physical dimensions of the Axes. If 'datalim', change the x or y data limits.
-    ax.set_adjustable('datalim')
-    ax.set_aspect(1)
-    # ax.autoscale() # for gui
-
-    # Labels
-    if not labels is None:
-        fontP = mpl.font_manager.FontProperties()
-        fontP.set_size('small')
-        ax.legend(loc='center left', bbox_to_anchor=(1, 0.5), prop=fontP)
 
 
 def render_to_mpl(components,
@@ -119,7 +104,8 @@ def render_to_mpl(components,
     if isinstance(components, dict):
         for _, objs in components.items():
             _iteration = render_to_mpl(objs, ax=ax, kw=kw, plot_format=plot_format,
-                                            labels=labels, __depth=__depth, _iteration=_iteration, **kwargs)
+                                            labels=labels, __depth=__depth,
+                                            _iteration=_iteration, **kwargs)
         if plot_format and (__depth == 0):
             plot_style_shapely_v1(ax, labels=labels)
         return _iteration
@@ -127,7 +113,8 @@ def render_to_mpl(components,
     elif isinstance(components, list):
         for objs in components:
             _iteration = render_to_mpl(objs, ax=ax, kw=kw, plot_format=plot_format,
-                                            labels=labels, __depth=__depth, _iteration=_iteration, **kwargs)
+                                            labels=labels, __depth=__depth,
+                                            _iteration=_iteration, **kwargs)
         if plot_format and (__depth == 0):
             plot_style_shapely_v1(ax, labels=labels)
         return _iteration
@@ -186,9 +173,31 @@ def draw_all_objects(components, ax, func=lambda x: x, root_name='components'):
             #logger.debug(f' Metal_Object: {obj}')
             render_to_mpl(obj.components, ax=ax)
 
+##########################################################################################
+# Style subroutines
+
+def plot_style_shapely_v1(ax, labels=None):
+    '''
+    Style function for axis called by `render_to_mpl`
+    '''
+    if ax is None:
+        ax = plt.gca()
+
+    # If 'box', change the physical dimensions of the Axes.
+    # If 'datalim', change the x or y data limits.
+    ax.set_adjustable('datalim')
+    ax.set_aspect(1)
+    # ax.autoscale() # for gui
+
+    # Labels
+    if not labels is None:
+        fontP = mpl.font_manager.FontProperties()
+        fontP.set_size('small')
+        ax.legend(loc='center left', bbox_to_anchor=(1, 0.5), prop=fontP)
+
 
 #################################################################################
-# PLOT FULL
+# Top level plotting calls - PLOT FULL
 
 def plot_simple_gui_style(ax):
     #fig = ax.figure
@@ -211,6 +220,7 @@ def plot_simple_gui_style(ax):
         loc = mpl.ticker.MultipleLocator(base=0.1)
         ax.xaxis.set_major_locator(loc)
         ax.yaxis.set_major_locator(loc)
+
     ax.grid(which='major', linestyle='--', **kw)
     ax.grid(which='minor', linestyle=':', **kw)
     ax.set_axisbelow(True)
@@ -223,19 +233,22 @@ def plot_simple_gui_style(ax):
     # fig.canvas.flush_events()
 
 
-def plot_simple_gui_spawn(fig_kw={}):
+def plot_simple_gui_spawn(fig_kw=None):
     '''
     Run with
     ..code-block python
         %matplotlib qt
         fig_draw, ax_draw = plot_simple_gui_spawn()
     '''
+    if not fig_kw:
+        fig_kw = {}
     fig_draw = figure_pz(**{**dict(num=1),
                             **fig_kw})
 
     ax_draw = fig_draw.add_subplot(1, 1, 1)
     # ax_draw.set_title('Layout')
-    # If 'box', change the physical dimensions of the Axes. If 'datalim', change the x or y data limits.
+    # If 'box', change the physical dimensions of the Axes. If 'datalim',
+    # change the x or y data limits.
     ax_draw.set_adjustable('datalim')
 
     ax_draw.set_xlabel('X position (mm)')

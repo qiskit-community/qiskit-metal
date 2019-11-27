@@ -30,6 +30,6 @@ from . import mpl
 from . import cpw
 
 # Useful functions
-from .utility import vec_unit_norm, get_poly_pts, vec_add_z
+from .utility import vec_unit_norm, get_poly_pts, vec_add_z, vec_norm
 from .basic import rectangle, is_rectangle, flip_merge, rotate, translate, scale, buffer,\
     rotate_position, _iter_func_geom_

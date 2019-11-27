@@ -27,9 +27,7 @@ import shapely
 import shapely.wkt
 from numpy import array
 from numpy.linalg import norm
-from shapely.affinity import rotate, scale, translate
-from shapely.geometry import (CAP_STYLE, JOIN_STYLE, MultiPolygon, Point,
-                              Polygon)
+from shapely.geometry import Polygon
 
 from .. import logger, is_component, is_element
 from ..toolbox_mpl.mpl_interaction import figure_pz
@@ -38,7 +36,7 @@ from ..toolbox_mpl.mpl_interaction import figure_pz
 
 __all__ = ['get_poly_pts', 'get_all_component_bounds', 'get_all_geoms', 'flatten_all_filter',
            'remove_colinear_pts', 'array_chop', 'vec_is_same', 'vec_add_z', 'vec_unit_norm',
-           'vec_angle', 'vec_unit_planar']
+           'vec_angle', 'vec_unit_planar', 'vec_norm']
 
 #########################################################################
 # Shapely Geometry Basic Coordinates
@@ -143,13 +141,13 @@ def flatten_all_filter(components: dict, filter_obj=None):
     return RES
 
 
-def get_all_component_bounds(components: dict, filter_obj=shapely.geometry.Polygon):
+def get_all_component_bounds(components: dict, filter_obj=Polygon):
     """
     Pass in a dict of components to calcualte the total bounding box.
 
     Arguments:
         components {dict} -- [description]
-        filter_obj {shapely.geometry.Polygon} -- only use instances of this object to
+        filter_obj {Polygon} -- only use instances of this object to
                              calcualte the bounds
 
     Returns:
@@ -230,6 +228,9 @@ def remove_colinear_pts(points):
 #########################################################################
 # Vector functions
 
+vec_norm = norm  # pylint: disable=invalid-name
+
+
 def vec_is_same(v1, v2, tol=100):
     '''
     Check if two vectors are within an infentesmimal distance set
@@ -237,6 +238,7 @@ def vec_is_same(v1, v2, tol=100):
     '''
     v1, v2 = list(map(np.array, [v1, v2]))         # enforce numpy array
     return float(norm(v1-v2)) < tol*np.finfo(float).eps
+
 
 def vec_unit_planar(vector: np.array):
     """
@@ -272,7 +274,7 @@ def vec_unit_planar(vector: np.array):
         raise Exception('You did not give a 2 or 3 vec')
 
 
-def vec_unit_norm(points : np.array):
+def vec_unit_norm(points: np.array):
     """
     Get the unit and the normal vector. Assumed a 2D vector is passed in.
 
