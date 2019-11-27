@@ -23,11 +23,36 @@ from .. import Dict
 from .. import draw
 #from .. import config
 
+def is_design(obj):
+    """Check if an object is a Metal Design, i.e., an instance of
+     `DesignBase`.
+
+    The problem is that the `isinstance` built-in method fails
+    when this module is reloaded.
+
+    Arguments:
+        obj {[object]} -- Test this object
+
+    Returns:
+        [bool] -- True if is a Metal design
+    """
+    if isinstance(obj, Dict):
+        return False
+
+    return hasattr(obj, '__i_am_design__')
+
 class DesignBase():
     """
     DesignBase is the base class for Qiskit Metal Designs.
     A design is the most top-level object in all of Qiskit Metal.
     """
+
+
+    # Dummy private attribute used to check if an instanciated object is
+    # indeed a DesignBase class. The problem is that the `isinstance`
+    # built-in method fails when this module is reloaded.
+    # Used by `is_design` to check.
+    __i_am_design__ = True
 
     def __init__(self):
         pass  # super().__init__()

@@ -58,4 +58,10 @@ class BaseComponent():
         self.name = name
         self.design = design  # parent
 
-        self.components = Dict()
+        self.elements = Dict()
+
+    def get_all_geom(self):
+        """
+        Get all shapely geometry as a dict
+        """
+        return {elem.full_name : elem.geom for name, elem in self.elements}

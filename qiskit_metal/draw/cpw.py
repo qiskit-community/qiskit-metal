@@ -27,7 +27,7 @@ from shapely.geometry import Point, LineString, CAP_STYLE, JOIN_STYLE
 
 from .. import DEFAULT, DEFAULT_OPTIONS, Dict, logger
 from .functions import make_connector_props, do_cut_ground, do_PerfE, do_mesh
-from ..toolbox_metal.parsing import parse_options_user, parse_units_user, parse_value_hfss
+from ..toolbox_metal.parsing import  parse_value, parse_value_hfss
 from .utility import to_Vec3D,\
     get_vec_unit_norm, get_unit_vec,\
     TRUE_STR, remove_co_linear_points,\
@@ -411,7 +411,7 @@ def easy_wirebond(design, obj,
     # Place once per segment;  iterate each path segement
 
     start, stop, step = [options[n.strip()] for n in ('start, stop, step'.split(','))]
-    w, ofst, th, height = parse_options_user(options, ['w', 'offset', 'threshold', 'height'])
+    w, ofst, th, height  = design.parse_params('w,offset,threshold,height')
 
     wirebond_names = []
     shapes = {}

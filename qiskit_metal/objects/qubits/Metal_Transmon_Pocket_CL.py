@@ -39,8 +39,8 @@ from shapely.affinity import scale
 
 from ...config import Dict, DEFAULT_OPTIONS
 from ...draw.functions import shapely, shapely_rectangle, translate, translate_objs,\
-    rotate_objs, rotate_obj_dict, scale_objs, _angle_Y2X, make_connector_props,\
-    Polygon, parse_options_user, parse_units_user, buffer
+    rotate_objs, rotate_objs, scale_objs, _angle_Y2X, make_connector_props,\
+    Polygon, parse_units_user, buffer
 from .Metal_Transmon_Pocket import Metal_Transmon_Pocket
 
 

@@ -18,3 +18,5 @@ Module containing all Qiskit Metal designs.
 @date: 2019
 @author: Zlatko Minev (IBM)
 """
+
+from .design_base import is_design

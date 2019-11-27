@@ -372,42 +372,27 @@ def parse_value(value: str, variable_dict: dict):
         return value
 
 
-def _parse_dict(pdict: dict, variable_dict: dict):
+
+def parse_params(params:dict, parse_names:str, variable_dict=None):
     """
-    Parses a list of option names from a dictionary of pdict.
-    Convinience function that calls `parse_value`.
-    See `parse_value`
-
-    Arguments:
-        pdict {[dict]} -- Dict with key value pairs of pdict, from which to parse.
-        variable_dict {[dict]} -- Dictionary containing all variables (default: {None})
-
-    Returns:
-        [Dict] -- Dict of the parsed values
-
-
-    Example test:
-        vars_ = {'x':5.0, 'y':'5um'}
-        parse_params_user({'a':4, 'b':'-0.1e6 nm', 'c':'x', 'd':'y','e':'z'},
-                        'a,b,c,d,e',
-                        vars_)
-
-    Example converstions with a `design`:
-
-        ..code-block python
-            design.variables.cpw_width = '10um' # Example variable
-
-
-        Yields:
-
-        ..code-block python
-            {'string1': 1000.0,
-            'string2': 1,
-            'string3': 0.001,
-            'string4': 1.0e-06,
-            'variable1': 0.01,
-            'list1': [1000.0, 0.005, 0.01, -1, False, 'a string'],
-            'dict1': {'key1': 4e-06}}
-
+    Calls parse_value to extract from a dictionary a small subset of values.
+    You can specify parse_names = 'x,y,z,cpw_width'
     """
-    return
+
+    # Prep args
+    if not variable_dict:       # If None, create an empty dict
+        variable_dict = {}
+
+    res = []
+    for name in parse_names.split(','):
+        name = name.strip()  # remove trailing and leading white spaces in the name
+
+        # is the name in the options at all?
+        if not name in params:
+            logger.warning(f'Missing key {name} from params {params}. Skipping ...\n')
+            continue
+
+        # option_dict[name] should be a string
+        res += [parse_value(params[name], variable_dict)]
+
+    return res

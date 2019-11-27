@@ -27,9 +27,9 @@ their new class to insure compatibility with the package.
 
 from copy import deepcopy
 
-from .Metal_Utility import is_metal_design
+from .Metal_Utility import is_design
 from ...toolbox.attr_dict import Dict
-from ...toolbox_metal.parsing import parse_params, parse_value
+from ...toolbox_metal.parsing import parse_value
 from ...config import DEFAULT_OPTIONS
 
 
@@ -78,7 +78,7 @@ class Metal_Object():  # pylint: disable=invalid-name
 
     def __init__(self, design, name, options=None, overwrite=False, make=False):
 
-        assert is_metal_design(
+        assert is_design(
             design), "Error you did not pass in a valid Metal Design object as a parent of this component."
 
         self.design = design
@@ -204,41 +204,50 @@ class Metal_Object():  # pylint: disable=invalid-name
 
     def parse_value(self, val):
         """
-        Parse the value, converting string into interpreted values.
-        Parses units, variables, strings, lists, and dicitonaries.
-        Explained by example below.
+        Parse a string, mappable (dict, Dict), iterrable (list, tuple) to account for units conversion,
+        some basic arithmetic, and design variables.
+        This is the main parsing function of Qiskit Metal.
 
-        Options Arguments:
-            options (dict) : default is None. If left None,
-                             then self.options is used
+        Handled Inputs:
 
-        Example converstions with a `design`:
+            Strings:
+                Strings of numbers, numbers with units; e.g., '1', '1nm', '1 um'
+                    Converts to int or float.
+                    Some basic arithmatic is possible, see below.
+                Strings of variables 'variable1'.
+                    Variable interpertation will use string method
+                    isidentifier `'variable1'.isidentifier()
+                Strings of
 
-        ..code-block python
-            design.variables.cpw_width = '10um' # Example variable
-            object.parse_value(Dict(
-                string1 = '1m',
-                string2 = '1mm',
-                string3 = '1um',
-                string4 = '1nm',
-                variable1 = 'cpw_width',
-                list1 = "['1m', '5um', 'cpw_width', -1, False, 'a string']",
-                dict1 = "{'key1':'4e-6mm'}"
-            ))
+            Dictionaries:
+                Returns ordered `Dict` with same key-value mappings, where the values have
+                been subjected to parse_value.
 
-        Yields:
+            Itterables(list, tuple, ...):
+                Returns same kind and calls itself `parse_value` on each elemnt.
 
-        ..code-block python
-            {'string1': 1000.0,
-            'string2': 1,
-            'string3': 0.001,
-            'string4': 1.0e-06,
-            'variable1': 0.01,
-            'list1': [1000.0, 0.005, 0.01, -1, False, 'a string'],
-            'dict1': {'key1': 4e-06}}
+            Numbers:
+                Returns the number as is. Int to int, etc.
 
+
+        Arithemetic:
+            Some basic arithemetic can be handled as well, such as `'-2 * 1e5 nm'`
+            will yield float(-0.2) when the default units are set to `mm`.
+
+        Default units:
+            User units can be set in the design. The design will set config.DEFAULT.units
+
+        Examples:
+            See the docstring for this module.
+                >> ?qiskit_metal.toolbox_metal.parsing
+
+        Arguments:
+            value {[str]} -- string to parse
+            variable_dict {[dict]} -- dict pointer of variables
+
+        Return:
+            Parse value: str, float, list, tuple, or ast eval
         """
-
         return parse_value(val, self.design.variables)
 
 
@@ -252,35 +261,13 @@ class Metal_Object():  # pylint: disable=invalid-name
             options (dict) : default is None. If left None,
                              then self.options is used
 
-        Example converstions with a `design`:
+        Calls `self.parse_value`.
 
-        ..code-block python
-            design.variables.cpw_width = '10um' # Example variable
-            design.parse_options(Dict(
-                string1 = '1m',
-                string2 = '1mm',
-                string3 = '1um',
-                string4 = '1nm',
-                variable1 = 'cpw_width',
-                list1 = "['1m', '5um', 'cpw_width', -1, False, 'a string']",
-                dict1 = "{'key1':'4e-6mm'}"
-            ))
-
-        Yields:
-
-        ..code-block python
-            {'string1': 1000.0,
-            'string2': 1,
-            'string3': 0.001,
-            'string4': 1.0e-06,
-            'variable1': 0.01,
-            'list1': [1000.0, 0.005, 0.01, -1, False, 'a string'],
-            'dict1': {'key1': 4e-06}}
+        See `self.parse_value` for more infomation.
 
         """
 
-        return parse_params(options if options else self.options,
-                                  self.design.variables)
+        return self.parse_value(options if options else self.options)
 
     def add_connector(self, two_points: list, flip=False, chip='main', name=None):
         """Add A connector to the design

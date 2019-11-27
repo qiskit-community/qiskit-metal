@@ -31,9 +31,9 @@ import numpy as np
 from shapely.geometry import LineString
 
 from ... import Dict
-from ...toolbox_metal.parsing import parse_value, parse_options
+from ...toolbox_metal.parsing import parse_value, parse_params
 from ...config import DEFAULT, DEFAULT_OPTIONS
-from ...draw.functions import draw_objs, make_connector
+from ...draw.utils import draw_objs, make_connector
 from ...toolbox_metal.import_export import save_metal
 from .Metal_Utility import is_component
 
@@ -204,35 +204,61 @@ class Metal_Design_Base():  # pylint: disable=invalid-name
     """
 
     def parse_value(self, value):
-        """Parse a value into user units.
+        """
+        Parse a string, mappable (dict, Dict), iterrable (list, tuple) to account for units conversion,
+        some basic arithmetic, and design variables.
+        This is the main parsing function of Qiskit Metal.
 
-        Example  converstions with a `design`:
+        Handled Inputs:
 
-        ..code-block python
-            design.variables.cpw_width = '10um' # Example variable
-            design.parse_value(Dict(
-                string1 = '1m',
-                string2 = '1mm',
-                string3 = '1um',
-                string4 = '1nm',
-                variable1 = 'cpw_width',
-                list1 = "['1m', '5um', 'cpw_width', -1, False, 'a string']",
-                dict1 = "{'key1':'4e-6mm'}"
-            ))
+            Strings:
+                Strings of numbers, numbers with units; e.g., '1', '1nm', '1 um'
+                    Converts to int or float.
+                    Some basic arithmatic is possible, see below.
+                Strings of variables 'variable1'.
+                    Variable interpertation will use string method
+                    isidentifier `'variable1'.isidentifier()
+                Strings of
 
-        Yields:
+            Dictionaries:
+                Returns ordered `Dict` with same key-value mappings, where the values have
+                been subjected to parse_value.
 
-        ..code-block python
-            {'string1': 1000.0,
-            'string2': 1,
-            'string3': 0.001,
-            'string4': 1.0e-06,
-            'variable1': 0.01,
-            'list1': [1000.0, 0.005, 0.01, -1, False, 'a string'],
-            'dict1': {'key1': 4e-06}}
+            Itterables(list, tuple, ...):
+                Returns same kind and calls itself `parse_value` on each elemnt.
 
+            Numbers:
+                Returns the number as is. Int to int, etc.
+
+
+        Arithemetic:
+            Some basic arithemetic can be handled as well, such as `'-2 * 1e5 nm'`
+            will yield float(-0.2) when the default units are set to `mm`.
+
+        Default units:
+            User units can be set in the design. The design will set config.DEFAULT.units
+
+        Examples:
+            See the docstring for this module.
+                >> ?qiskit_metal.toolbox_metal.parsing
+
+        Arguments:
+            value {[str]} -- string to parse
+            variable_dict {[dict]} -- dict pointer of variables
+
+        Return:
+            Parse value: str, float, list, tuple, or ast eval
         """
         return parse_value(value, self.variables)
+
+    def parse_params(self, params: dict, param_names: str):
+        """Use self.parse_value to parse only some options from a params dictionary
+
+        Arguments:
+            params (dict) -- Input dict to pull form
+            param_names (str) -- eg, 'x,y,z,cpw_width'
+        """
+        return parse_params(params, param_names, variable_dict=self.variables)
 
     def add_connector(self, name: str,  points: list, flip=False, chip='main'):
         """Add named connector to the design by creating a connector dicitoanry.

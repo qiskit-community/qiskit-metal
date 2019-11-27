@@ -24,7 +24,7 @@ from shapely.geometry import LineString
 
 from ...config import DEFAULT_OPTIONS, DEFAULT
 from ...draw.functions import shapely, shapely_rectangle, translate, translate_objs,\
-    rotate_objs, rotate_obj_dict, scale_objs, _angle_Y2X, make_connector_props,\
+    rotate_objs, rotate_objs, scale_objs, _angle_Y2X, make_connector_props,\
     Polygon, buffer,\
     Dict, draw_objs
 from ... import draw_hfss
@@ -178,7 +178,7 @@ Description:
         )
 
         # Rotate and translate Crossmon
-        objects = rotate_obj_dict(objects, orientation, origin=(0, 0))
+        objects = rotate_objs(objects, orientation, origin=(0, 0))
         objects = translate_objs(objects, pos_x, pos_y)
 
         self.objects.update(objects)
@@ -262,7 +262,7 @@ Description:
         # Rotates to the appropriate arm, then rotate and translate to match the rotation/position of the Crossmon
         objects = rotate_objs(objects, clawRotate, origin=(0, 0))
 
-        objects = rotate_obj_dict(objects, orientation, origin=(0, 0))
+        objects = rotate_objs(objects, orientation, origin=(0, 0))
         objects = translate_objs(objects, pos_x, pos_y)
 
 

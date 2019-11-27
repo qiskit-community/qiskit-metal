@@ -26,7 +26,7 @@ from shapely.geometry import LineString, Polygon
 
 from ..base_objects.Metal_Object import Metal_Object, Dict
 from ...config import DEFAULT_OPTIONS, DEFAULT
-from ...draw.cpw import parse_options_user, CAP_STYLE, JOIN_STYLE, meander_between, draw_cpw_trace, to_Vec3D
+from ...draw.cpw import CAP_STYLE, JOIN_STYLE, meander_between, draw_cpw_trace, to_Vec3D
 from ...draw_utility import flip_merge, orient_position, get_poly_pts
 from ...draw.functions import make_connector_props, do_cut_ground, do_PerfE
 from ...toolbox_metal.parsing import parse_value_hfss

@@ -12,37 +12,37 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 """
-Created 2019
+Main module for shapely and basic geometric utility functions used in drawing.
 
-Draw utility functions
 
-@author: Zlatko Minev
+@date: 2019
+@author: Zlatko Minev (IBM)
 """
 # pylint: disable=ungrouped-imports
-# TODO: clenaup and remove this file
 
-from collections.abc import Iterable
+from collections.abc import Iterable, Mapping
 
-import matplotlib as mpl
-import matplotlib.pyplot as plt
 import numpy as np
 import shapely
 import shapely.wkt
 from numpy import array
 from numpy.linalg import norm
 from shapely.affinity import rotate, scale, translate
-from shapely.geometry import (CAP_STYLE, JOIN_STYLE, LinearRing, MultiPolygon,
-                              Point)
-from shapely.geometry import Polygon
+from shapely.geometry import (CAP_STYLE, JOIN_STYLE, MultiPolygon, Point,
+                              Polygon)
 
-from .. import logger
+from .. import logger, is_component, is_element
 from ..toolbox_mpl.mpl_interaction import figure_pz
-from ..toolbox_metal.parsing import TRUE_STR, parse_units
+
+# TODO: define rotate, scale, translate to operate on shapely, element, component, and itterable, mappable
+
+__all__ = ['get_poly_pts', 'get_all_component_bounds', 'get_all_geoms', 'flatten_all_filter']
 
 #########################################################################
 # Shapely Geometry Basic Coordinates
 
-def get_poly_pts(poly:Polygon):
+
+def get_poly_pts(poly: Polygon):
     """
     Return the coordinates of a Shapely polygon with the last repeating point removed
 
@@ -55,34 +55,58 @@ def get_poly_pts(poly:Polygon):
     return np.array(poly.exterior.coords)[:-1]
 
 
+def get_all_geoms(obj, func=lambda x: x, root_name='components'):
+    """Get a dict of dict of all shapely objects, from components, dict, etc.
 
-def get_all_objects(components, func=lambda x: x, root_name='components'):
-    from .components.base_objects.Metal_Utility import is_component
+    Used to compute the bounding box.
 
+    Arguments:
+        components {[dict,list,element,component]} --
+
+    Keyword Arguments:
+        func {[function]} -- [description] (default: {lambdax:x})
+        root_name {str} -- Name to prepend in the flattening (default: {'components'})
+
+    Returns:
+        [dict] -- [description]
+    """
+
+    # Prelim
+    # Calculate the new name
     def new_name(name): return root_name + '.' + \
         name if not (root_name == '') else name
 
-    if is_component(components):
-        return {components.name: get_all_objects(components.components,
-                                              root_name=new_name(components.name))}
+    # Check what we have
 
-    elif isinstance(components, shapely.geometry.base.BaseGeometry):
+    if is_component(obj):
+        # Is it a metal component? Then traverse its components
+        return obj.get_all_geom()  # dict of shapely geoms
+
+    elif is_element(obj):
+        # is it a metal element?
+        return {obj.name: obj.geom}  # shapely geom
+
+    elif isinstance(obj, shapely.geometry.base.BaseGeometry):
+        # Is it the shapely object? This is the bottom of the search tree, then return
         return obj
 
-    elif isinstance(components, dict):
+    elif isinstance(obj, Mapping):
+        return {get_all_geoms(sub_obj, root_name=new_name(name)) for name, sub_obj in obj.items()}
+        '''
         RES = {}
-        for name, obj in components.items():
+        for name, sub_obj in obj.items():
             if is_component(obj):
-                RES[name] = get_all_objects(
-                    obj.components, root_name=new_name(name))
-            elif isinstance(obj, dict):
+                RES[name] = get_all_geoms(
+                    sub_obj.components, root_name=new_name(name))
+            elif isinstance(sub_obj, dict):
                 # if name.startswith('components'): # old school to remove eventually TODO
                 #    RES[name] = func(obj) # allow transofmraiton of components
                 # else:
-                RES[name] = get_all_objects(obj, root_name=new_name(name))
-            elif isinstance(obj, shapely.geometry.base.BaseGeometry):
+                RES[name] = get_all_geoms(sub_obj, root_name=new_name(name))
+            elif isinstance(sub_obj, shapely.geometry.base.BaseGeometry):
                 RES[name] = func(obj)
         return RES
+        '''
 
     else:
         logger.debug(
@@ -90,257 +114,55 @@ def get_all_objects(components, func=lambda x: x, root_name='components'):
         return None
 
 
-def flatten_all_objects(components, filter_obj=None):
+def flatten_all_filter(components : dict, filter_obj=None):
+    """Internal function to flatten a dict of shapely objects.
+
+    Arguments:
+        components {dict} -- [description]
+
+    Keyword Arguments:
+        filter_obj {[class]} -- Filter based on this calss (default: {None})
+    """
     assert isinstance(components, dict)
 
     RES = []
-
-# OLD CODE? REMOVE?
-    #from .components.Metal_Object import is_component
-    # if is_component(components):
-    #    RES += flatten_all_objects(components.components, filter_obj)
-    # else:
     for name, obj in components.items():
         if isinstance(obj, dict):
-            RES += flatten_all_objects(obj, filter_obj)
-        # elif is_component(obj):
-        #    RES += flatten_all_objects(obj.components, filter_obj)
+            RES += flatten_all_filter(obj, filter_obj)
         else:
             if filter_obj is None:
-                RES += [obj]
+                RES += [obj] # add whatever we have in here
             else:
                 if isinstance(obj, filter_obj):
                     RES += [obj]
                 else:
-                    print(name)
+                    print('flatten_all_filter: ', name)
 
     return RES
 
 
-def get_all_object_bounds(components):
-    # Assumes they are all polygonal
-    components = get_all_objects(components)
-    objs = flatten_all_objects(components, filter_obj=shapely.geometry.Polygon)
-    print(objs)
-    (x_min, y_min, x_max, y_max) = MultiPolygon(objs).bounds
+def get_all_component_bounds(components: dict, filter_obj=shapely.geometry.Polygon):
+    """
+    Pass in a dict of components to calcualte the total bounding box.
+
+    Arguments:
+        components {dict} -- [description]
+        filter_obj {shapely.geometry.Polygon} -- only use instances of this object to
+                             calcualte the bounds
+
+    Returns:
+        (x_min, y_min, x_max, y_max)
+    """
+    assert isinstance(components, dict)
+
+    components = get_all_geoms(components)
+    components = flatten_all_filter(components, filter_obj=filter_obj)
+
+    (x_min, y_min, x_max, y_max) = MultiPolygon(components).bounds
+
     return (x_min, y_min, x_max, y_max)
 
 
-#########################################################################
-# Shapely draw
-
-
-def shapely_rectangle(w, h):
-    w, h = float(w), float(h)
-    pad = f"""POLYGON (({-w/2} {-h/2},
-                        {+w/2} {-h/2},
-                        {+w/2} {+h/2},
-                        {-w/2} {+h/2},
-                        {-w/2} {-h/2}))"""  # last  point has to close on self
-    return Polygon(shapely.wkt.loads(pad))  # My Polygon class
-
-
-#########################################################################
-# Shapely affine transorms
-
-def flip_merge(line, flip=dict(xfact=-1, origin=(0, 0))):
-    ''' scale(geom, xfact=1.0, yfact=1.0, zfact=1.0, origin='center')
-
-        The point of origin can be a keyword 'center' for the 2D bounding
-        box center (default), 'centroid' for the geometry's 2D centroid,
-        a Point object or a coordinate tuple (x0, y0, z0).
-        Negative scale factors will mirror or reflect coordinates.
-    '''
-    line_flip = scale(line, **flip)
-    coords = list(line.coords) + list(reversed(line_flip.coords))
-    return coords
-
-
-def orient(obj, angle, origin='center'):
-    '''
-    Returns a rotated geometry on a 2D plane.
-
-    The angle of rotation can be specified in either degrees (default)
-    or radians by setting use_radians=True. Positive angles are
-    counter-clockwise and negative are clockwise rotations.
-
-    The point of origin can be a keyword 'center' for the
-    bounding box center (default), 'centroid' for the geometry's
-    centroid, a Point object or a coordinate tuple (x0, y0).
-
-    angle : 'X' or 'Y' or degrees
-        'X' does nothing
-        'Y' is a 90 degree clockwise rotated object
-    '''
-    if isinstance(obj, list):
-        return [orient(o, angle, origin) for o in obj]
-    else:
-        angle = {'X': 0, 'Y': 90}.get(angle, angle)
-        obj = rotate(obj, angle, origin)
-        return obj
-
-
-def orient_position(obj, angle, pos, pos_rot=(0, 0)):
-
-    if isinstance(obj, list):
-        return [orient_position(o, angle, pos, pos_rot) for o in obj]
-    else:
-        obj = orient(obj, angle, pos_rot)
-        pos1 = list(orient(Point(pos), angle).coords)[0]
-        return translate(obj, *pos1)
-
-
-def rotate_obj_dict(components, angle, *args, **kwargs):
-    '''
-    Returns a rotated geometry on a 2D plane.
-
-    The angle of rotation can be specified in either degrees (default)
-    or radians by setting use_radians=True. Positive angles are
-    counter-clockwise and negative are clockwise rotations.
-
-    The point of origin can be a keyword 'center' for the
-    bounding box center (default), 'centroid' for the geometry's
-    centroid, a Point object or a coordinate tuple (x0, y0).
-
-    angle : 'X' or 'Y' or degrees
-        'X' does nothing
-        'Y' is a 90 degree clockwise rotated object
-    '''
-    # Should change to also cover negative rotations and flips?
-    angle = {'X': 0, 'Y': 90}.get(angle, angle)
-    if isinstance(components, list):
-        for i, obj in enumerate(components):
-            components[i] = rotate_obj_dict(obj, angle, *args, **kwargs)
-    elif isinstance(components, dict):
-        for name, obj in components.items():
-            components[name] = rotate_obj_dict(obj, angle, *args, **kwargs)
-    else:
-        if not components is None:
-            # this is now a single object
-            components = rotate(components, angle, *args, **kwargs)
-    return components
-
-
-rotate_objs = rotate_obj_dict
-
-
-def _func_obj_dict(func, components, *args, _override=True, **kwargs):
-    '''
-    _override:  overrides the dictionary.
-    '''
-    if isinstance(components, list):
-        for i, obj in enumerate(components):
-            value = _func_obj_dict(
-                func, obj, *args, _override=_override, **kwargs)
-            if _override:
-                components[i] = value
-
-    elif isinstance(components, dict):
-        for name, obj in components.items():
-            value = _func_obj_dict(
-                func, obj, *args, _override=_override, **kwargs)
-            if _override:
-                components[name] = value
-    else:
-        if not components is None:
-            # this is now a single object
-            components = func(components, *args, **kwargs)
-    return components
-
-
-def translate_objs(components, *args, **kwargs):
-    r'''
-    translate(geom, xoff=0.0, yoff=0.0, zoff=0.0)
-    Docstring:
-    Returns a translated geometry shifted by offsets along each dimension.
-
-    The general 3D affine transformation matrix for translation is:
-
-        / 1  0  0 xoff \
-        | 0  1  0 yoff |
-        | 0  0  1 zoff |
-        \ 0  0  0   1  /
-    '''
-    return _func_obj_dict(translate, components, *args, **kwargs)
-
-
-def scale_objs(components, *args, **kwargs):
-    '''
-    Operatos on a list or Dict of components.
-
-    Signature: scale(geom, xfact=1.0, yfact=1.0, zfact=1.0, origin='center')
-
-    Returns a scaled geometry, scaled by factors along each dimension.
-
-    The point of origin can be a keyword 'center' for the 2D bounding box
-    center (default), 'centroid' for the geometry's 2D centroid, a Point
-    object or a coordinate tuple (x0, y0, z0).
-
-    Negative scale factors will mirror or reflect coordinates.
-
-    The general 3D affine transformation matrix for scaling is:
-
-        / xfact  0    0   xoff \
-        |   0  yfact  0   yoff |
-        |   0    0  zfact zoff |
-        \   0    0    0     1  /
-
-    where the offsets are calculated from the origin Point(x0, y0, z0):
-
-        xoff = x0 - x0 * xfact
-        yoff = y0 - y0 * yfact
-        zoff = z0 - z0 * zfact
-    '''
-    return _func_obj_dict(scale, components, *args, **kwargs)
-
-
-def buffer(components,  *args, **kwargs):
-    '''
-    Flat buffer of all components in the dictionary
-    Default stlye:
-        cap_style=CAP_STYLE.flat
-        join_style=JOIN_STYLE.mitre
-
-    Signature:
-    x.buffer(
-        ['distance', 'resolution=16', 'quadsegs=None', 'cap_style=1', 'join_style=1', 'mitre_limit=5.0'],
-    )
-    Docstring:
-    Returns a geometry with an envelope at a distance from the object's
-    envelope
-
-    A negative distance has a "shrink" effect. A zero distance may be used
-    to "tidy" a polygon. The resolution of the buffer around each vertex of
-    the object increases by increasing the resolution keyword parameter
-    or second positional parameter. Note: the use of a `quadsegs` parameter
-    is deprecated and will be gone from the next major release.
-
-    The styles of caps are: CAP_STYLE.round (1), CAP_STYLE.flat (2), and
-    CAP_STYLE.square (3).
-
-    The styles of joins between offset segments are: JOIN_STYLE.round (1),
-    JOIN_STYLE.mitre (2), and JOIN_STYLE.bevel (3).
-
-    The mitre limit ratio is used for very sharp corners. The mitre ratio
-    is the ratio of the distance from the corner to the end of the mitred
-    offset corner. When two line segments meet at a sharp angle, a miter
-    join will extend the original geometry. To prevent unreasonable
-    geometry, the mitre limit allows controlling the maximum length of the
-    join corner. Corners with a ratio which exceed the limit will be
-    beveled.
-
-    Example use:
-    --------------------
-        x = shapely_rectangle(1,1)
-        y = buffer_flat([x,x,[x,x,{'a':x}]], 0.5)
-        draw_objs([x,y])
-    '''
-    kwargs = {**dict(cap_style=CAP_STYLE.flat, join_style=JOIN_STYLE.mitre),
-              **kwargs}
-
-    def buffer_me(obj, *args, **kwargs):
-        return obj.buffer(*args, **kwargs)
-    return _func_obj_dict(buffer_me, components, *args, **kwargs)
 
 
 #########################################################################
@@ -415,6 +237,9 @@ def to_Vec3Dz(vec2D, z=0):
         return array(list(vec2D)+[z])
 
 
+"""
+#DEPRICATED: MOVED TO RENDER FOR HFSS. Just pass in the right arguments to to_Vec3Dz
+
 def to_Vec3D(design, options, vec2D):
     '''
     Used for darwing in HFSS only.
@@ -430,11 +255,13 @@ def to_Vec3D(design, options, vec2D):
         z = parse_value_hfss(design.get_chip_z(
             options.get('chip', draw.functions.DEFAULT['chip'])))
         return array(list(vec2D)+[z])
+"""
 
 
 def array_chop(vec, zero=0, rtol=0, machine_tol=100):
     '''
-    Zlatko chop array entires clsoe to zero
+    Chop array entires close to zero.
+    Zlatko quick solution.
     '''
     vec = np.array(vec)
     mask = np.isclose(vec, zero, rtol=rtol,
@@ -474,23 +301,3 @@ def remove_co_linear_points(points):
     points = np.delete(points, remove_idx, axis=0)
 
     return points
-
-
-def is_rectangle(obj):
-    '''
-    Test if we have a rectnalge.
-    If there are 4 ext cooridnate then
-    check if consequtive vectors are orhtogonal
-    Assumes that the last point is not repeating
-    '''
-    assert isinstance(obj, shapely.geometry.Polygon)
-    p = get_poly_pts(obj)
-    if len(p) == 4:
-        def isOrthogonal(i):
-            v1 = p[(i+1) % 4]-p[(i+0) % 4]
-            v2 = p[(i+2) % 4]-p[(i+1) % 4]
-            return abs(np.dot(v1, v2)) < 1E-16
-        # CHeck if all vectors are consequtivly orthogonal
-        return all(map(isOrthogonal, range(4)))
-    else:
-        return False

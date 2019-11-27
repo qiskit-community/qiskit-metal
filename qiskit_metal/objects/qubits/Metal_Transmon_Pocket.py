@@ -42,10 +42,9 @@ from shapely.geometry import LineString
 
 from ...config import DEFAULT_OPTIONS, DEFAULT
 from ...draw.functions import shapely, shapely_rectangle, translate, translate_objs,\
-    rotate_objs, rotate_obj_dict, scale_objs, _angle_Y2X, make_connector_props,\
-    Polygon, parse_options_user, parse_units_user, buffer,\
-    Dict
-from ... import draw_hfss
+    rotate_objs, rotate_objs, scale_objs, _angle_Y2X, make_connector_props,\
+    Polygon, parse_units_user, buffer, Dict
+from ...renderers.renderer_ansys import  draw_ansys
 from .Metal_Qubit import Metal_Qubit
 
 
@@ -209,7 +208,7 @@ class Metal_Transmon_Pocket(Metal_Qubit): # pylint: disable=invalid-name
 
         #rotates and translates all the objects as requested. Uses package functions in 'draw_utility' for easy
         # rotation/translation
-        objects = rotate_obj_dict(
+        objects = rotate_objs(
             objects,orientation, origin=(0, 0))
         objects = translate_objs(objects, pos_x, pos_y)
 
@@ -322,7 +321,7 @@ class Metal_Transmon_Pocket(Metal_Qubit): # pylint: disable=invalid-name
         objs = [self.objects, dict(mesh=rect_msh)]
 
         # Pocket: Draw all pocket objects
-        self.objects_hfss = Dict(draw_hfss.draw_objects_shapely(design.oModeler, objs,
+        self.objects_hfss = Dict(draw_ansys.draw_objects_shapely(design.oModeler, objs,
                                                                 self.name, pos_z=self.get_chip_elevation(), hfss_options=rect_options))
         hfss_objs = self.objects_hfss  # shortcut
 

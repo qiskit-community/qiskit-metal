@@ -55,6 +55,11 @@ del logging
 from .toolbox.attr_dict import Dict
 from .config import DEFAULT, DEFAULT_OPTIONS
 
+# Core class check functions
+from .components import is_component
+from .components import is_element
+from .designs import is_design
+
 # Core Modules for user to use
 from . import designs
 from . import components
@@ -70,4 +75,3 @@ from ._gui import Metal_gui
 # Utility functions
 from .toolbox.utility_functions import copy_update
 from .toolbox.utility_functions import display_options
-#from .designs.base_designs.Metal_Utility import is_metal_design

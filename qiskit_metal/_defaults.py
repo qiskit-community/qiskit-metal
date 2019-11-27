@@ -52,7 +52,9 @@ DEFAULT = Dict(
             color='r',  # called by ax.annotate
             arrowprops=dict(color='r', shrink=0.1, width=0.05, headwidth=0.1)
         )
-    )
+    ),
+    buffer_resolution=16, # for shapely buffer
+    buffer_mitre_limit=5.0
 )
 r"""
 Default paramters for many basic functions:

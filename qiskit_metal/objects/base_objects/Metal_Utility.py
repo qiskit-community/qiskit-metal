@@ -31,7 +31,7 @@ def is_component(obj):
     return hasattr(obj, '__i_am_metal__')
 
 
-def is_metal_design(obj):
+def is_design(obj):
     '''
     Handle problem with isinstance when reloading modules
     '''
