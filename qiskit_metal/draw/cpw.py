@@ -362,9 +362,9 @@ def easy_wirebond(design, obj,
 
     ############################################
     # Get points of cpw and handle Metal Object
-    from .objects.base_objects.Metal_Utility import is_metal_component
+    from .objects.base_objects.Metal_Utility import is_component
 
-    if is_metal_component(obj):
+    if is_component(obj):
 
         if parent_obj is None:
             parent_obj = obj
@@ -443,7 +443,7 @@ def easy_wirebond(design, obj,
     # Save new objects to parent object
     if not (parent_obj is None):
 
-        if is_metal_component(obj):
+        if is_component(obj):
             obj = parent_obj
             obj.objects.wirebonds = shapes
             obj.hfss_objects = wirebond_names

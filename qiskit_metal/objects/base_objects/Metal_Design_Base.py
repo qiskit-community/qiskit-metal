@@ -35,7 +35,7 @@ from ...toolbox_metal.parsing import parse_value, parse_options
 from ...config import DEFAULT, DEFAULT_OPTIONS
 from ...draw.functions import draw_objs, make_connector
 from ...toolbox_metal.import_export import save_metal
-from .Metal_Utility import is_metal_component
+from .Metal_Utility import is_component
 
 
 class Metal_Design_Base():  # pylint: disable=invalid-name
@@ -175,7 +175,7 @@ class Metal_Design_Base():  # pylint: disable=invalid-name
         """
         #self.logger.debug('Design: Making all components')
         for name, obj in self.components.items():  # pylint: disable=unused-variable
-            if is_metal_component(obj):
+            if is_component(obj):
                 #self.logger.debug(f' Making {name}')
                 obj.make()
 

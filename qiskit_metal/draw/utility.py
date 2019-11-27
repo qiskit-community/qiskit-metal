@@ -57,12 +57,12 @@ def get_poly_pts(poly:Polygon):
 
 
 def get_all_objects(components, func=lambda x: x, root_name='components'):
-    from .components.base_objects.Metal_Utility import is_metal_component
+    from .components.base_objects.Metal_Utility import is_component
 
     def new_name(name): return root_name + '.' + \
         name if not (root_name == '') else name
 
-    if is_metal_component(components):
+    if is_component(components):
         return {components.name: get_all_objects(components.components,
                                               root_name=new_name(components.name))}
 
@@ -72,7 +72,7 @@ def get_all_objects(components, func=lambda x: x, root_name='components'):
     elif isinstance(components, dict):
         RES = {}
         for name, obj in components.items():
-            if is_metal_component(obj):
+            if is_component(obj):
                 RES[name] = get_all_objects(
                     obj.components, root_name=new_name(name))
             elif isinstance(obj, dict):
@@ -96,14 +96,14 @@ def flatten_all_objects(components, filter_obj=None):
     RES = []
 
 # OLD CODE? REMOVE?
-    #from .components.Metal_Object import is_metal_component
-    # if is_metal_component(components):
+    #from .components.Metal_Object import is_component
+    # if is_component(components):
     #    RES += flatten_all_objects(components.components, filter_obj)
     # else:
     for name, obj in components.items():
         if isinstance(obj, dict):
             RES += flatten_all_objects(obj, filter_obj)
-        # elif is_metal_component(obj):
+        # elif is_component(obj):
         #    RES += flatten_all_objects(obj.components, filter_obj)
         else:
             if filter_obj is None:

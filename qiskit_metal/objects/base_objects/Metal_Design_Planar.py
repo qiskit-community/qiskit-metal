@@ -28,7 +28,7 @@ from copy import deepcopy
 from ... import Dict, draw
 from ...config import DEFAULT_OPTIONS
 from .Metal_Design_Base import Metal_Design_Base
-from .Metal_Utility import is_metal_component
+from .Metal_Utility import is_component
 
 DEFAULT_OPTIONS.update({
     'Design_Planar': Dict({
@@ -175,7 +175,7 @@ class Design_Planar(Metal_Design_Base):  # pylint: disable=invalid-name
         gdspy.current_library.cell_dict.clear()
         device = gdspy.Cell('TOP_CELL')
         for _, obj in self.components.items():
-            if is_metal_component(obj):
+            if is_component(obj):
                 cell = obj.gds_draw()
                 device.add(gdspy.CellReference(cell))
 

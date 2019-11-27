@@ -26,7 +26,7 @@ import shapely
 
 from shapely.geometry import Point, LineString, LinearRing, Polygon
 from .mpl_interaction import figure_pz
-from ..components import is_metal_component
+from ..components import is_component
 
 def draw_shapely_poly_mpl(poly:Polygon,
                           ax,
@@ -171,7 +171,7 @@ def draw_all_objects(components, ax, func=lambda x: x, root_name='components'):
             else:
                 draw_all_objects(obj, ax, root_name=root_name+'.'+name)
 
-        elif is_metal_component(obj):
+        elif is_component(obj):
             #logger.debug(f' Metal_Object: {obj}')
             draw_objs(obj.components, ax=ax)
 

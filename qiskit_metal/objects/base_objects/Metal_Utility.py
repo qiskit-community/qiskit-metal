@@ -22,7 +22,7 @@ Updated 2019/09/25 - Thomas McConkey
 
 from ...toolbox.attr_dict import Dict
 
-def is_metal_component(obj):
+def is_component(obj):
     '''
     Handle problem with isinstance when reloading modules
     '''
