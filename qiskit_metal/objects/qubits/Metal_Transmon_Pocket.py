@@ -40,7 +40,7 @@ modified: Thomas McConkey 2019
 from copy import deepcopy
 from shapely.geometry import LineString
 
-from ...config import DEFAULT_OPTIONS, DEFAULTS
+from ...config import DEFAULT_OPTIONS, DEFAULT
 from ...draw.functions import shapely, shapely_rectangle, translate, translate_objs,\
     rotate_objs, rotate_obj_dict, scale_objs, _angle_Y2X, make_connector_props,\
     Polygon, parse_options_user, parse_units_user, buffer,\
@@ -79,7 +79,7 @@ DEFAULT_OPTIONS['Metal_Transmon_Pocket'].update(Dict(
     orientation='0',  # 90 has dipole aligned along the +X axis, while 0 has dipole aligned along the +Y axis
 
     _hfss=Dict(
-        rect_options=dict(color=DEFAULTS['col_in_cond'],
+        rect_options=dict(color=DEFAULT['col_in_cond'],
                           transparency=0),  # default options for a rectangle
         BC_name_pads='qubit_pads',
         BC_name_conn='qubit_connectors',
@@ -332,13 +332,13 @@ class Metal_Transmon_Pocket(Metal_Qubit): # pylint: disable=invalid-name
         subtracts = [hfss_objs.connectors[xx]['subtract_grnd_connector'] for xx in self.objects.connectors]
         oModeler.subtract(ground, subtracts)
 
-        if DEFAULTS['do_PerfE']:
-            oModeler.append_PerfE_assignment(name+'_pads' if DEFAULTS['BC_individual'] else options_hfss['BC_name_pads'],
+        if DEFAULT['do_PerfE']:
+            oModeler.append_PerfE_assignment(name+'_pads' if DEFAULT['BC_individual'] else options_hfss['BC_name_pads'],
                                              [hfss_objs['pad_top'],
                                               hfss_objs['pad_bot']])
 
             for key in self.options.connectors:
-                oModeler.append_PerfE_assignment(name+'_conn' if DEFAULTS['BC_individual'] else options_hfss['BC_name_conn'],
+                oModeler.append_PerfE_assignment(name+'_conn' if DEFAULT['BC_individual'] else options_hfss['BC_name_conn'],
                                                  [hfss_objs.connectors[key]['connector_pad'],
                                                   hfss_objs.connectors[key]['connector_wire']])
 
@@ -357,7 +357,7 @@ class Metal_Transmon_Pocket(Metal_Qubit): # pylint: disable=invalid-name
             poly_jj = poly_jj.rename('JJ_'+name+'_')
             poly_jj.show_direction = True
 
-        if DEFAULTS._hfss.do_mesh:
+        if DEFAULT._hfss.do_mesh:
 
             # Pocket
             rect_mesh = hfss_objs['mesh']

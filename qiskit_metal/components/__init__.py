@@ -16,3 +16,6 @@
 @auhtor: Zlatko Minev
 @date: 2019
 """
+
+from .base_components import BaseComponent, is_component
+from .base_elements import BaseElement, is_element

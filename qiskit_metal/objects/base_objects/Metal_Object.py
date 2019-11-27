@@ -28,7 +28,7 @@ their new class to insure compatibility with the package.
 from copy import deepcopy
 
 from .Metal_Utility import is_metal_design
-from ...toolbox.attribute_dictionary import Dict
+from ...toolbox.attr_dict import Dict
 from ...toolbox_metal.parsing import parse_params, parse_value
 from ...config import DEFAULT_OPTIONS
 

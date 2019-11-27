@@ -13,14 +13,41 @@
 # that they have been altered from the originals.
 
 """
+This is the main module that defines what an element is in Qiskit Metal.
+See the docstring of BaseElement
+    >> ?BaseElement
+
+@author: Zlatko Minev, Thomas McConekey, ... (IBM)
 @date: 2019
 """
+
 #from copy import deepcopy
 
 from shapely.geometry.base import BaseGeometry
 
-from ...config import DEFAULTS
+from ... import Dict
+from ...config import DEFAULT
 from ..base_components.base_component import BaseComponent
+
+__all__ = ['is_element', 'BaseElement']
+
+def is_element(obj):
+    """Check if an object is a Metal BaseElement, i.e., an instance of
+     `BaseElement`.
+
+    The problem is that the `isinstance` built-in method fails
+    when this module is reloaded.
+
+    Arguments:
+        obj {[object]} -- Test this object
+
+    Returns:
+        [bool] -- True if is a Metal element
+    """
+    if isinstance(obj, Dict):
+        return False
+
+    return hasattr(obj, '__i_am_element__')
 
 
 class BaseElement():
@@ -33,6 +60,12 @@ class BaseElement():
     """
 
     __name_delimiter = '_'  # for creating a full name
+
+    # Dummy private attribute used to check if an instanciated object is
+    # indeed a BaseComponent class. The problem is that the `isinstance`
+    # built-in method fails when this module is reloaded.
+    # Used by `is_element` to check.
+    __i_am_element__ = True
 
     def __init__(self,
                  name: str,
@@ -48,7 +81,7 @@ class BaseElement():
 
         Keyword Arguments:
             chip {str} -- Which chip is the element on.
-                          (default: {config.DEFAULTS.chip, typically set to 'main'})
+                          (default: {config.DEFAULT.chip, typically set to 'main'})
         """
 
         # Type checks
@@ -65,7 +98,7 @@ class BaseElement():
         self.geom = geom
         self.parent = parent
 
-        self.chip = DEFAULTS.chip if chip is None else chip
+        self.chip = DEFAULT.chip if chip is None else chip
 
         # Renderer related
         self.render_geom = self._create_default_render_geom()

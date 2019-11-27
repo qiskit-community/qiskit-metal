@@ -13,17 +13,49 @@
 # that they have been altered from the originals.
 
 """
+This is the main module that defines what a component is in Qiskit Metal.
+See the docstring of BaseComponent
+    >> ?BaseComponent
+
+@author: Zlatko Minev, Thomas McConekey, ... (IBM)
 @date: 2019
 """
 
-from ...toolbox.attribute_dictionary import Dict
-#from ..base_elements.base_element import 
+from ...toolbox.attr_dict import Dict
+# from ..base_elements.base_element import
+
+
+__all__ = ['is_component', 'BaseComponent']
+
+
+def is_component(obj):
+    """Check if an object is an instance of `BaseComponent`.
+
+    The problem is that the `isinstance` built-in method fails
+    when this module is reloaded.
+
+    Arguments:
+        obj {[object]} -- Test this object
+
+    Returns:
+        [bool] -- True if is a Metal object
+    """
+    if isinstance(obj, Dict):
+        return False
+
+    return hasattr(obj, '__i_am_component__')
+
 
 class BaseComponent():
 
-    def __init__(self, name:str, design):
+    # Dummy private attribute used to check if an instanciated object is
+    # indeed a BaseComponent class. The problem is that the `isinstance`
+    # built-in method fails when this module is reloaded.
+    # Used by `is_component` to check.
+    __i_am_component__ = True
+
+    def __init__(self, name: str, design):
         self.name = name
-        self.design=design # parent
+        self.design = design  # parent
 
         self.components = Dict()
-        pass

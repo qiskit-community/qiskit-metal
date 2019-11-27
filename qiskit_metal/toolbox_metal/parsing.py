@@ -31,9 +31,11 @@ Example parsing values test:
 
         def test2(val, _vars):
             res = parse_value(val, _vars)
-            print( f'{type(val).__name__:<6} |{val:>38} >> {str(res):<47} | {type(res).__name__:<6}')
+            print( f'{type(val).__name__:<6} |{str(val):>38} >> {str(res):<47} | {type(res).__name__:<6}')
 
-        vars_ = {'x':5.0, 'y':'5um'}
+        vars_ = Dict({'x':5.0, 'y':'5um', 'cpw_width':'10um'})
+
+        print('------------------------------------------------\nString: Basics')
         test(1, vars_)
         test(1., vars_)
         test('1', vars_)
@@ -63,26 +65,44 @@ Example parsing values test:
         test(' + 1. ', vars_)
         test('1 .', vars_)
 
-        print('------------------------------------------------\nArithmetic')
+        print('------------------------------------------------\nString: Arithmetic')
         test('2*1', vars_)
         test('2*10mm', vars_)
         test('-2 * 1e5 nm', vars_)
 
-        print('------------------------------------------------\nVars')
+        print('------------------------------------------------\nString: Variable')
         test('x', vars_)
         test('y', vars_)
         test('z', vars_)
         test('x1', vars_)
+        test('2*y', vars_)
 
-        print('------------------------------------------------\nList and dict')
+        print('------------------------------------------------\nString: convert list and dict')
         test2(' [1,2,3.,4., "5um", " -0.1e6 nm"  ] ', vars_)
         test2(' {3:2, 4: " -0.1e6 nm"  } ', vars_)
 
 
+        print('\n\n------------------------------------------------\nDict: convert list and dict\n')
+        my_dict = Dict(
+            string1 = '1m',
+            string2 = '1mm',
+            string3 = '1um',
+            string4 = '1nm',
+            variable1 = 'cpw_width',
+            list1 = "['1m', '5um', 'cpw_width', -1, False, 'a string']",
+            dict1 = "{'key1':'4e-6mm', '2mm':'100um'}"
+        )
+        #test2(my_dict, vars_)
+        display(parse_value(my_dict, vars_))
+
+
 Returns:
 ------------------
+
     .. code-block:: python
 
+        ------------------------------------------------
+        String: Basics
         int    |           1 >> 1                    | int
         float  |         1.0 >> 1.0                  | float
         str    |           1 >> 1.0                  | float
@@ -112,20 +132,33 @@ Returns:
         str    |       + 1.  >>  + 1.                | str
         str    |         1 . >> 1 .                  | str
         ------------------------------------------------
-        Arithmetic
+        String: Arithmetic
         str    |         2*1 >> 2*1                  | str
         str    |      2*10mm >> 20                   | int
         str    | -2 * 1e5 nm >> -0.20000000000000004 | float
         ------------------------------------------------
-        Vars
+        String: Variable
         str    |           x >> 5.0                  | float
         str    |           y >> 0.005                | float
         str    |           z >> z                    | str
         str    |          x1 >> x1                   | str
+        str    |         2*y >> 2*y                  | str
         ------------------------------------------------
-        List and dict
+        String: convert list and dict
         str    |   [1,2,3.,4., "5um", " -0.1e6 nm"  ]  >> [1, 2, 3.0, 4.0, 0.005, -0.10000000000000002]   | list
         str    |             {3:2, 4: " -0.1e6 nm"  }  >> {3: 2, 4: -0.10000000000000002}                 | Dict
+
+
+        ------------------------------------------------
+        Dict: convert list and dict
+
+        {'string1': 1000.0,
+        'string2': 1,
+        'string3': 0.001,
+        'string4': 1.0000000000000002e-06,
+        'variable1': 0.01,
+        'list1': [1000.0, 0.005, 0.01, -1, False, 'a string'],
+        'dict1': {'key1': 4e-06, '2mm': 0.1}}
 
 @date: 2019
 @author: Zlatko K. Minev, Thomas McConkey (IBM)
@@ -133,14 +166,16 @@ Returns:
 
 import ast
 from collections.abc import Iterable
+from collections.abc import Mapping
 from numbers import Number
 
 import pint
 
 from .. import Dict, config, logger
 
-__all__ = ['is_variable_name', 'is_numeric_possible',
-           'parse_value', 'parse_params']
+__all__ = ['parse_value',  # Main function
+           'is_variable_name',  # extra helpers
+           'is_numeric_possible']
 
 #########################################################################
 # Constants
@@ -243,8 +278,11 @@ def parse_value(value: str, variable_dict: dict):
 
         Strings:
             Strings of numbers, numbers with units; e.g., '1', '1nm', '1 um'
-                Converts to float.
-            Strings of variables 'variable1'
+                Converts to int or float.
+                Some basic arithmatic is possible, see below.
+            Strings of variables 'variable1'.
+                Variable interpertation will use string method
+                isidentifier `'variable1'.isidentifier()
             Strings of
 
         Dictionaries:
@@ -261,6 +299,13 @@ def parse_value(value: str, variable_dict: dict):
     Arithemetic:
         Some basic arithemetic can be handled as well, such as `'-2 * 1e5 nm'`
         will yield float(-0.2) when the default units are set to `mm`.
+
+    Default units:
+        User units can be set in the design. The design will set config.DEFAULT.units
+
+    Examples:
+        See the docstring for this module.
+            >> ?qiskit_metal.toolbox_metal.parsing
 
     Arguments:
         value {[str]} -- string to parse
@@ -308,9 +353,12 @@ def parse_value(value: str, variable_dict: dict):
         else:  # assume it is just a string (not intended to be parsed)
             return value
 
-    elif isinstance(value, dict):  # collections.abc.Mapping
-        # If the value is a dictionary, then parse that dictionary
-        return parse_params(value, variable_dict)  # returns Dict
+    elif isinstance(value, Mapping):
+        # If the value is a dictionary (dict,Dict,...),
+        # then parse that dictionary. return Dict
+        return Dict(map(lambda item:  # item = [key, value]
+                        [item[0], parse_value(item[1], variable_dict)],
+                        value.items()))
 
     elif isinstance(value, Iterable):
         # list, tuple, ... Return the same type
@@ -324,15 +372,14 @@ def parse_value(value: str, variable_dict: dict):
         return value
 
 
-def parse_params(options: dict, variable_dict: dict):
+def _parse_dict(pdict: dict, variable_dict: dict):
     """
-    Parses a list of option names from a dictionary of options.
-    The dictionary values will be parse as variables, strings, int, floats, etc.
-    Values with units are converted to **USER UNITS.** User units can be set in the design.
-    Variable interpertation will use string method isidentifier `'variable1'.isidentifier()
+    Parses a list of option names from a dictionary of pdict.
+    Convinience function that calls `parse_value`.
+    See `parse_value`
 
     Arguments:
-        options {[dict]} -- Dict with key value pairs of options, from which to parse.
+        pdict {[dict]} -- Dict with key value pairs of pdict, from which to parse.
         variable_dict {[dict]} -- Dictionary containing all variables (default: {None})
 
     Returns:
@@ -341,7 +388,7 @@ def parse_params(options: dict, variable_dict: dict):
 
     Example test:
         vars_ = {'x':5.0, 'y':'5um'}
-        parse_options_user({'a':4, 'b':'-0.1e6 nm', 'c':'x', 'd':'y','e':'z'},
+        parse_params_user({'a':4, 'b':'-0.1e6 nm', 'c':'x', 'd':'y','e':'z'},
                         'a,b,c,d,e',
                         vars_)
 
@@ -349,15 +396,7 @@ def parse_params(options: dict, variable_dict: dict):
 
         ..code-block python
             design.variables.cpw_width = '10um' # Example variable
-            design.parse_options(Dict(
-                string1 = '1m',
-                string2 = '1mm',
-                string3 = '1um',
-                string4 = '1nm',
-                variable1 = 'cpw_width',
-                list1 = "['1m', '5um', 'cpw_width', -1, False, 'a string']",
-                dict1 = "{'key1':'4e-6mm'}"
-            ))
+
 
         Yields:
 
@@ -371,7 +410,4 @@ def parse_params(options: dict, variable_dict: dict):
             'dict1': {'key1': 4e-06}}
 
     """
-    return Dict(map(
-        lambda item: [item[0], parse_value(
-            item[1], variable_dict)],  # key, value
-        options.items()))
+    return

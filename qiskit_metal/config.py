@@ -21,7 +21,7 @@ File contains some config definitions. Mostly internal.
 @author: Zlatko K. Minev
 """
 
-from .toolbox.attribute_dictionary import Dict
+from .toolbox.attr_dict import Dict
 from ._defaults import DEFAULT_OPTIONS, DEFAULT  # pylint: disable=unused-import
 
 ####################################################################################

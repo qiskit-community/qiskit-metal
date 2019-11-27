@@ -27,9 +27,8 @@ from copy import deepcopy
 
 from ... import Dict, draw
 from ...config import DEFAULT_OPTIONS
-#from ...toolbox_metal.parsing import parse_units_user, parse_value
 from .Metal_Design_Base import Metal_Design_Base
-from .Metal_Utility import is_metal_object
+from .Metal_Utility import is_metal_component
 
 DEFAULT_OPTIONS.update({
     'Design_Planar': Dict({
@@ -176,7 +175,7 @@ class Design_Planar(Metal_Design_Base):  # pylint: disable=invalid-name
         gdspy.current_library.cell_dict.clear()
         device = gdspy.Cell('TOP_CELL')
         for _, obj in self.components.items():
-            if is_metal_object(obj):
+            if is_metal_component(obj):
                 cell = obj.gds_draw()
                 device.add(gdspy.CellReference(cell))
 
@@ -231,8 +230,8 @@ class Design_Planar(Metal_Design_Base):  # pylint: disable=invalid-name
             modeler.set_units(units, rescale=False)
             #pyEPR.hfss.LENGTH_UNIT = units  # HFSS seems to assume meters form a script no matter what
 
-
-        pyEPR.hfss.LENGTH_UNIT_ASSUMED = units  # used in parse_units
+        # ??
+        pyEPR.hfss.LENGTH_UNIT_ASSUMED = units  # used in parse_value_hfss
 
         return self
 

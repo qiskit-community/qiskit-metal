@@ -22,7 +22,7 @@
 from copy import deepcopy
 from shapely.geometry import LineString
 
-from ...config import DEFAULT_OPTIONS, DEFAULTS
+from ...config import DEFAULT_OPTIONS, DEFAULT
 from ...draw.functions import shapely, shapely_rectangle, translate, translate_objs,\
     rotate_objs, rotate_obj_dict, scale_objs, _angle_Y2X, make_connector_props,\
     Polygon, buffer,\
@@ -55,7 +55,7 @@ DEFAULT_OPTIONS['Metal_Transmon_Cross'].update(Dict(
     #BETTER ROTATION NEEDED
 
     _hfss=Dict(
-        rect_options=dict(color=DEFAULTS['col_in_cond'],
+        rect_options=dict(color=DEFAULT['col_in_cond'],
                           transparency=0),  # default options for a rectangle
         BC_name_pads='qubit_cross',
         BC_name_conn='qubit_connectors',
@@ -321,12 +321,12 @@ Description:
         oModeler.subtract(ground, subtracts)
 
         # CODE BLOCK FOR ASSIGNING Perfecet Electric Boundary ('superconductor thin film')
-        if DEFAULTS['do_PerfE']:
-            oModeler.append_PerfE_assignment(name+'_cross' if DEFAULTS['BC_individual'] else options_hfss['BC_name_pads'],
+        if DEFAULT['do_PerfE']:
+            oModeler.append_PerfE_assignment(name+'_cross' if DEFAULT['BC_individual'] else options_hfss['BC_name_pads'],
                                              hfss_objs['cross_Island'])
 
             for key in self.options.connectors:
-                oModeler.append_PerfE_assignment(name+'_conn' if DEFAULTS['BC_individual'] else options_hfss['BC_name_conn'],
+                oModeler.append_PerfE_assignment(name+'_conn' if DEFAULT['BC_individual'] else options_hfss['BC_name_conn'],
                                                  [hfss_objs.connectors[key]['connector_Arm']])
 
         # CODE BLOCK FOR MAKING THE JUNCTIONS - check to make sure naming schemes are compatible
@@ -346,7 +346,7 @@ Description:
             poly_jj.show_direction = True
 
         # CODE BLOCK FOR MESH OPERATIONS - Work in progress (optimal initial mesh locations TBD)
-        if DEFAULTS._hfss.do_mesh:
+        if DEFAULT._hfss.do_mesh:
 
             # Pocket - trying to only mesh the gap but having some drawing issues.
             rect_mesh = hfss_objs['mesh']

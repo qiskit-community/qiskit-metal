@@ -35,7 +35,7 @@ from ...toolbox_metal.parsing import parse_value, parse_options
 from ...config import DEFAULT, DEFAULT_OPTIONS
 from ...draw.functions import draw_objs, make_connector
 from ...toolbox_metal.import_export import save_metal
-from .Metal_Utility import is_metal_object
+from .Metal_Utility import is_metal_component
 
 
 class Metal_Design_Base():  # pylint: disable=invalid-name
@@ -175,22 +175,23 @@ class Metal_Design_Base():  # pylint: disable=invalid-name
         """
         #self.logger.debug('Design: Making all components')
         for name, obj in self.components.items():  # pylint: disable=unused-variable
-            if is_metal_object(obj):
+            if is_metal_component(obj):
                 #self.logger.debug(f' Making {name}')
                 obj.make()
 
     def save_design(self, path):
         """Save the design as a pickled python object.
         Equivalent to
-        ```python
-            save_metal(r'C:/my-design.metal',design)
-        ```
+            ```python
+                save_metal(r'C:/my-design.metal',design)
+            ```
 
         Arguments:
             path {[string]} -- [path to save file]
         """
         save_metal(path, self)
 
+    """
     def get_option_values(self, options_dict, option_names):
         '''
         Parse a list of option names from options_dict.
@@ -200,6 +201,7 @@ class Metal_Design_Base():  # pylint: disable=invalid-name
         TODO: Remove this funciton and superseed with self.parse_value
         '''
         return parse_options_user(options_dict, option_names, self._variables)
+    """
 
     def parse_value(self, value):
         """Parse a value into user units.

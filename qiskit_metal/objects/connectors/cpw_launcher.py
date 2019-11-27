@@ -25,7 +25,7 @@ from numpy import array
 from shapely.geometry import LineString, Polygon
 
 from ..base_objects.Metal_Object import Metal_Object, Dict
-from ...config import DEFAULT_OPTIONS, DEFAULTS
+from ...config import DEFAULT_OPTIONS, DEFAULT
 from ...draw.cpw import parse_options_user, CAP_STYLE, JOIN_STYLE, meander_between, draw_cpw_trace, to_Vec3D
 from ...draw_utility import flip_merge, orient_position, get_poly_pts
 from ...draw.functions import make_connector_props, do_cut_ground, do_PerfE
@@ -52,7 +52,7 @@ DEFAULT_OPTIONS['cpw_launcher'] = Dict({
         'do_PerfE' : 'True',
         'do_mesh'  : 'false',
         'BC_name'  : 'Launchers',
-        'kw_poly'  : f"{{'color':{DEFAULTS['col_in_cond']}}}"
+        'kw_poly'  : f"{{'color':{DEFAULT['col_in_cond']}}}"
     }
 })
 

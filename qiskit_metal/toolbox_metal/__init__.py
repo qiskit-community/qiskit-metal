@@ -18,3 +18,7 @@ This folder contains code that is more speicifc to Metal.
 Created on Tue May 14 17:13:40 2019
 @author: Zlatko Minev
 """
+
+from .parsing import parse_value
+from .parsing import is_variable_name
+from .parsing import is_numeric_possible

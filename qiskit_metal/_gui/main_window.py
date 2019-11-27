@@ -17,33 +17,33 @@ Main GUI frontend interface for Metal.
 @author: Zlatko
 """
 
-import sys
-import logging
-import traceback
 import importlib
-
+import logging
+import sys
+import traceback
 from pathlib import Path
 
 from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtCore import Qt, QDir, QSize
+from PyQt5.QtCore import QDir, QSize, Qt
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QApplication, QMainWindow, QDockWidget
-from PyQt5.QtWidgets import QTextEdit, QLineEdit, QMessageBox
-from PyQt5.QtWidgets import QAction, QInputDialog, QFileDialog
-from PyQt5.QtWidgets import QLabel, QMenu, QToolButton, QStyle
+from PyQt5.QtWidgets import (QAction, QApplication, QDockWidget,  # , QStyle
+                             QFileDialog, QInputDialog, QLabel, QLineEdit,
+                             QMainWindow, QMenu, QMessageBox, QTextEdit,
+                             QToolButton)
 
+from .. import logger
 from ..config import GUI_CONFIG
-from .. import logger, save_metal, load_metal
-from ..draw_utility import plot_simple_gui_spawn, plot_simple_gui_style
-from ..draw_utility import draw_all_objects
-
+from ..toolbox_metal.import_export import load_metal
+from ..toolbox_mpl.mpl_shapely import (draw_all_objects, plot_simple_gui_spawn,
+                                   plot_simple_gui_style)
 from . import widgets
-from .widgets.toolbar_icons import add_toolbar_icon
-from .widgets.dialog_create_metal import Dialog_create_metal
-from .widgets.trees.metal_objects import Tree_Metal_Objects
-from .widgets.trees.default_options import Tree_Default_Options
-from .widgets.log_metal import Logging_Window_Widget, Logging_Hander_for_Log_Widget
 from ._handle_qt_messages import catch_exception_slot_pyqt
+from .widgets.dialog_create_metal import Dialog_create_metal
+from .widgets.log_metal import (Logging_Hander_for_Log_Widget,
+                                Logging_Window_Widget)
+from .widgets.toolbar_icons import add_toolbar_icon
+from .widgets.trees.default_options import Tree_Default_Options
+from .widgets.trees.metal_objects import Tree_Metal_Objects
 
 
 class Metal_gui(QMainWindow):
@@ -766,7 +766,7 @@ class Metal_gui(QMainWindow):
         Should ideally only ever have 1 instance object of objects
         '''
         if DEFAULT_OPTIONS is None:
-            from ..draw.functions import DEFAULT_OPTIONS
+            from .. import DEFAULT_OPTIONS
         self._default_options = DEFAULT_OPTIONS
         if hasattr(self, 'tree_def_ops'):
             self.tree_def_ops.change_content_dict(self._default_options)
@@ -848,7 +848,7 @@ class Metal_gui(QMainWindow):
         filename = QFileDialog.getSaveFileName(None,
                                                'Select locaiton to save Metal objects and design to')[0]
         if filename:
-            save_metal(filename, self.design)
+            self.design.save(filename)
             logger.info(f'Successfully save metal to {filename}')
 
     @catch_exception_slot_pyqt()

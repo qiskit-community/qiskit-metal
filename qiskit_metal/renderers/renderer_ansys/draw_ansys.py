@@ -24,8 +24,8 @@ Raises:
 
 import shapely
 from .. import logger
-from .utility import to_Vec3Dz, Polygon, parse_units, is_rectangle  # * # lazy, todo fix
-
+from .utility import to_Vec3Dz, Polygon, is_rectangle  # * # lazy, todo fix
+from .parse import parse_value_hfss
 
 def draw_objects_shapely(oModeler, components: dict, root_name: str, delimiter='_', **kwargs):
     """
@@ -101,18 +101,18 @@ def draw_object_shapely(oModeler, obj, name, size_z=0., pos_z=0., hfss_options=N
     if isinstance(obj, shapely.geometry.Polygon):
         points = get_poly_pts(obj)
         # TODO: Handle multiple chips
-        points_3d = to_Vec3Dz(points, parse_units(pos_z))
+        points_3d = to_Vec3Dz(points, parse_value_hfss(pos_z))
 
         if is_rectangle(obj):  # Draw as rectangle
             logger.debug(f'Drawing a rectangle: {name}')
             (x_min, y_min, x_max, y_max) = obj.bounds
-            poly_hfss = oModeler.draw_rect_corner(*parse_units(
+            poly_hfss = oModeler.draw_rect_corner(*parse_value_hfss(
                 [[x_min, y_min, pos_z], x_max-x_min, y_max-y_min, size_z]),
                 name=name, **hfss_options)
             return poly_hfss
 
         # Draw general closed poly
-        points_3d = parse_units(points_3d)
+        points_3d = parse_value_hfss(points_3d)
         poly_hfss = oModeler.draw_polyline(
             points_3d, closed=True, **hfss_options)
         # rename: handle bug if the name of the cut already exits and is used to make a cut
@@ -120,7 +120,7 @@ def draw_object_shapely(oModeler, obj, name, size_z=0., pos_z=0., hfss_options=N
         return poly_hfss
 
     elif isinstance(obj, shapely.geometry.LineString):
-        points_3d = parse_units(points_3d)
+        points_3d = parse_value_hfss(points_3d)
         poly_hfss = oModeler.draw_polyline(
             points_3d, closed=False, **hfss_options)
         poly_hfss = poly_hfss.rename(name)

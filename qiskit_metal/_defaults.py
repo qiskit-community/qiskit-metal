@@ -20,62 +20,45 @@ Created 2019
 @author: Zlatko K. Minev
 """
 
-
-from .toolbox.attribute_dictionary import Dict
+from .toolbox.attr_dict import Dict
 
 ################################################################################
-### Default Paramters
+# Default Paramters
 
-DEFAULT_OPTIONS = Dict()
+DEFAULT_OPTIONS = Dict(
+    cpw=Dict(
+        width='10um',
+        gap='6um',
+        mesh_width='6um',
+        fillet='90um',
+    )
+)
 r"""
 DEFAULT_OPTIONS:
 ------------------------
     Dictionary of the needed options for all functions defined in this module.
     Each options should also have a default value.
-"""
-DEFAULT_OPTIONS['cpw'] = Dict(
-    width='10um',
-    gap='6um',
-    mesh_width='6um',
-    fillet='90um',
-)
 
-#TODO: depricated.All of this should move to HFSS config
-DEFAULT = Dict({
-    'units'        : 'mm',
-    'chip'         : 'main',
-    'do_PerfE'     : True,  # applied p-erf E BC
-    'do_cut'       : True,  # cut from ground plane
-    'BC_individual': False, # Apply individual names ot each BC, otherwise requires BC_name
-    'col_in_cond'  : (255,0,0), #(196,202,206), # Default color for the inner conductors 100,120,90
-    'colors'       : Dict(
-        ground_main = (100,120,140),  # lighter:  (196,202,206)
-        ),
-    'annots' : Dict( # annotaitons
-        design_connectors_ofst = [0.025,0.025],
-        design_connectors = dict( # called by ax.annotate
-            color='r',
-            arrowprops = dict(color='r', shrink=0.1, width=0.05, headwidth=0.1),
+    This dictionary pointer should not be overwritten. Rather, update the dictionary values.
+"""
+
+
+DEFAULT = Dict(
+    units='mm',
+    chip='main',
+    draw_mpl=Dict(
+        annot_connector_ofst=[0.025, 0.025],
+        annot_connector=dict(
+            color='r',  # called by ax.annotate
+            arrowprops=dict(color='r', shrink=0.1, width=0.05, headwidth=0.1)
         )
-    ),
-    '_hfss' : Dict(
-        do_mesh=True,  # do mesh rect draw and specify mesh size
     )
-})
+)
 r"""
-Default Paramters for many basic functions:
+Default paramters for many basic functions:
 ------------------------
 
-:chip:           Default anme of chip to draw on. Not fully integrated everwhere.
-                 TODO Many places still assume main or zero z.
-:do_PerfE:       Applied p-erf E BC
-:do_cut:         Cut from ground plane
-:do_mesh:        Do mesh rect draw and specify mesh size
-:BC_individual:  Apply individual names ot each BC, otherwise requires BC_name
-:col_in_cond:    Default color for the inner conductors
-.. math::
-
-    n_{\mathrm{offset}} = \sum_{k=0}^{N-1} s_k n_k
+:chip:           Default name of chip to draw on.
 
 .. sectionauthor:: Zlatko K Minev <zlatko.minev@ibm.com>
 """

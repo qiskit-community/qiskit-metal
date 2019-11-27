@@ -17,7 +17,11 @@
 @date: 2019
 """
 
-from pyEPR.hfss import parse_units
+# See also: is_variable_name, is_numeric_possible
+#from ... import Dict
+from ...toolbox_metal.parsing import parse_value
+
+from pyEPR.hfss import parse_units as __parse_units_hfss__
 from pyEPR.hfss import unparse_units # not used here, but in imports of this file
 
 __all__ = ['parse_value_hfss', 'unparse_units']
@@ -26,22 +30,6 @@ def parse_value_hfss(*args):
     '''
     Parse to HFSS units (from user units)
     '''
-    return parse_units(*args)
+    return __parse_units_hfss__(*args)
 
-
-#TODO: Remove this
-def parse_options_hfss(opts, parse_names):
-    '''
-    To HFSS units.
-
-    Used in HFSS renderer only.
-
-    TODO: Supersee by USER UNITS TO HFSS UNITS.
-
-    Parse a list of variable names (or a string of comma delimited ones
-    to list of HFSS parsed ones.
-    '''
-    if isinstance(parse_names, str):
-        parse_names = parse_names.split(',')
-
-    return [parse_units(opts[name.strip()]) for name in parse_names]
+#TODO: function to itterate and convert user units to

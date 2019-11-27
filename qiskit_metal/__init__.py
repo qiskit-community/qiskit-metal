@@ -52,8 +52,8 @@ del logging
 ### Imports for user
 
 # Core classes and default dictionaries
-from .toolbox.attribute_dictionary import Dict
-from .config import DEFAULTS, DEFAULT_OPTIONS
+from .toolbox.attr_dict import Dict
+from .config import DEFAULT, DEFAULT_OPTIONS
 
 # Core Modules for user to use
 from . import designs

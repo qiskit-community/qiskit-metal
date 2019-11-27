@@ -25,7 +25,7 @@ from numpy import sqrt, pi, array, flip
 from numpy.linalg import norm
 from shapely.geometry import Point, LineString, CAP_STYLE, JOIN_STYLE
 
-from .. import DEFAULTS, DEFAULT_OPTIONS, Dict, logger
+from .. import DEFAULT, DEFAULT_OPTIONS, Dict, logger
 from .functions import make_connector_props, do_cut_ground, do_PerfE, do_mesh
 from ..toolbox_metal.parsing import parse_options_user, parse_units_user, parse_value_hfss
 from .utility import to_Vec3D,\
@@ -52,7 +52,7 @@ DEFAULT_OPTIONS['draw_cpw_trace'] = {
     'fillet'              : DEFAULT_OPTIONS.cpw.fillet,        # Fillt
     'ground_plane'        : 'ground_plane', # name of ground plane to subtract from, maybe make also automatic
     'do_only_lines'       : 'False',        # only draw the lines
-    'do_mesh'             :  DEFAULTS._hfss.do_mesh,  # Draw trace for meshing
+    'do_mesh'             :  DEFAULT._hfss.do_mesh,  # Draw trace for meshing
     'do_subtract_ground'  : 'True',         # subtract from ground plane
     'do_sub_keep_original': 'False',        # keep_originals when perfomring subtraction
     'do_assign_perfE'     :  True,
@@ -61,7 +61,7 @@ DEFAULT_OPTIONS['draw_cpw_trace'] = {
     'category'            : 'cpw',
     'do_add_connectors'   :  True,
     'units'               : 'mm',           # default units
-    'poly_default_options': {'transparency':0.95, 'color':DEFAULTS['col_in_cond']}, # dictionary 100,120,90
+    'poly_default_options': {'transparency':0.95, 'color':DEFAULT['col_in_cond']}, # dictionary 100,120,90
     'mesh_name'           : 'cpw',
     'mesh_kw'             : Dict(MaxLength='0.1mm')
 }
@@ -362,9 +362,9 @@ def easy_wirebond(design, obj,
 
     ############################################
     # Get points of cpw and handle Metal Object
-    from .objects.base_objects.Metal_Utility import is_metal_object
+    from .objects.base_objects.Metal_Utility import is_metal_component
 
-    if is_metal_object(obj):
+    if is_metal_component(obj):
 
         if parent_obj is None:
             parent_obj = obj
@@ -443,7 +443,7 @@ def easy_wirebond(design, obj,
     # Save new objects to parent object
     if not (parent_obj is None):
 
-        if is_metal_object(obj):
+        if is_metal_component(obj):
             obj = parent_obj
             obj.objects.wirebonds = shapes
             obj.hfss_objects = wirebond_names

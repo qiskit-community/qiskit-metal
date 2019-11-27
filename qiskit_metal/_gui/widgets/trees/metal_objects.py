@@ -31,7 +31,7 @@ from PyQt5.QtWidgets import QTextEdit, QTreeWidget, QTreeWidgetItem, QLineEdit
 #from PyQt5.QtWidgets import QToolBar, QAction, QSlider, QInputDialog, QMessageBox
 #from PyQt5.QtWidgets import QLabel
 
-from .... import logger, is_metal_object
+from .... import logger, is_metal_component
 #from .metal_parameter import Parameter_Zlatko
 from .amazing_tree_dict import Amazing_Dict_Tree_zkm
 
@@ -111,7 +111,7 @@ class Tree_Metal_Objects(Amazing_Dict_Tree_zkm):
             parent_key_list {[type]} -- [description]
         """
         #logger.info('metal_objects')
-        if is_metal_object(content):
+        if is_metal_component(content):
             #logger.info(' METAL OBJ')
             if not parent:
                 parent = self.invisibleRootItem()  # root item
@@ -142,7 +142,7 @@ class Tree_Metal_Objects(Amazing_Dict_Tree_zkm):
             value {[type]} -- [description]
             parent_key_list {[type]} -- [description]
         """
-        if is_metal_object(value):
+        if is_metal_component(value):
             #item.__ignore_expand__ = True
             item.setChildIndicatorPolicy(item.ShowIndicator) # expandable
 

@@ -15,9 +15,12 @@
 """
 Created 2019/10/16
 
-Placeholder to allow for future modifications of the Dict class if desired.
+Placeholder to allow for future modifications of the attribute dictionary class.
+We use the `addict` package `Dict` class.
 
-@author: Thomas McConkey
+@author: Thomas McConkey (IBM)
 """
+
+# pylint: disable=unused-import
 
 from addict import Dict
