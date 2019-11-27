@@ -17,12 +17,13 @@
 @date: 2019
 """
 
+from pyEPR.hfss import parse_units as __parse_units_hfss__
+from pyEPR.hfss import \
+    unparse_units  # not used here, but in imports of this file
+
 # See also: is_variable_name, is_numeric_possible
 #from ... import Dict
 from ...toolbox_metal.parsing import parse_value
-
-from pyEPR.hfss import parse_units as __parse_units_hfss__
-from pyEPR.hfss import unparse_units # not used here, but in imports of this file
 
 __all__ = ['parse_value_hfss', 'unparse_units']
 

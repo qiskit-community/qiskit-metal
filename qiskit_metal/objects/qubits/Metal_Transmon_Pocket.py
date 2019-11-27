@@ -39,12 +39,10 @@ modified: Thomas McConkey 2019
 
 from copy import deepcopy
 
-from ... import DEFAULT_OPTIONS, DEFAULT, Dict
-from ... import draw
+from ... import DEFAULT, DEFAULT_OPTIONS, Dict, draw
 from ...renderers.renderer_ansys import draw_ansys
 from ...renderers.renderer_ansys.parse import to_ansys_units
 from .Metal_Qubit import Metal_Qubit
-
 
 DEFAULT_OPTIONS['Metal_Transmon_Pocket.connectors'] = Dict(
     pad_gap='15um',

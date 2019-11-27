@@ -195,7 +195,7 @@ def orient(obj, angle, origin='center'):
 
 
 
-def orient_position(obj, angle: float, pos: list, pos_rot=(0, 0)):
+def rotate_position(obj, angle: float, pos: list, pos_rot=(0, 0)):
     '''
     Orient and then place position. Just a shortcut function.
 
@@ -210,24 +210,24 @@ def orient_position(obj, angle: float, pos: list, pos_rot=(0, 0)):
     Returns:
         [type] -- Rotate dand translated, same as input
     '''
-    def orient_position_shapely(sobj):
+    def rotate_position_shapely(sobj):
         pos1 = list(orient(Point(pos), angle).coords)[0]  # move to position
         sobj = shapely.affinity.rotate((sobj, angle, pos_rot)  # rotate about pos_rot
         return shapely.affinity.translate(sobj, *pos1)
 
     if isinstance(obj, list):
-        return [orient_position(o, angle, pos, pos_rot) for o in obj]
+        return [rotate_position(o, angle, pos, pos_rot) for o in obj]
 
     elif is_element(obj):
         # should we do the rendered geometry?
-        obj.geom=orient_position_shapely(obj)
+        obj.geom=rotate_position_shapely(obj)
         return obj
 
     elif isinstance(obj, shapely.geometry.base.BaseGeometry):
-        return orient_position_shapely(obj)
+        return rotate_position_shapely(obj)
 
     else:
-        logger.error(f'ERROR in orient_position: Unkown object. {obj}')
+        logger.error(f'ERROR in rotate_position: Unkown object. {obj}')
 
 
 

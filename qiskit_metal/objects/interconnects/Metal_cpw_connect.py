@@ -23,11 +23,12 @@ modified: Thomas McConkey 2019/10/15
 from numpy import array
 from shapely.geometry import LineString
 
-from ..base_objects.Metal_Object import Metal_Object, Dict
+from ... import draw
 from ...config import DEFAULT_OPTIONS
-from ...draw.cpw import CAP_STYLE, JOIN_STYLE, meander_between, draw_cpw_trace, to_Vec3D
+from ...draw.cpw import CAP_STYLE, JOIN_STYLE, draw_cpw_trace, meander_between
+from ...renderers.renderer_ansys.parse import to_ansys_units
 from ...toolbox_metal.parsing import TRUE_STR
-
+from ..base_objects.Metal_Object import Dict, Metal_Object
 
 DEFAULT_OPTIONS['Metal_cpw_connect'] = Dict(
     connector1='[INPUT NAME HERE]',
@@ -147,7 +148,6 @@ Options (Metal_cpw_connect):
     def hfss_draw(self):
         options = self.options.cpw
 
-        def to_vec3D(vec):
-            return to_Vec3D(self.design, options, vec)
+        to_vec3D = lambda vec: draw.vec_add_z(vec, to_ansys_units(design.get_chip_z(options['chip'])))
 
         draw_cpw_trace(self.design, to_vec3D(self.points_meander), options, name=self.name)

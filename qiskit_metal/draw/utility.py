@@ -27,7 +27,7 @@ import shapely
 import shapely.wkt
 from numpy import array
 from numpy.linalg import norm
-from shapely.geometry import Polygon
+from shapely.geometry import Polygon, MultiPolygon
 
 from .. import logger, is_component, is_element
 from ..toolbox_mpl.mpl_interaction import figure_pz

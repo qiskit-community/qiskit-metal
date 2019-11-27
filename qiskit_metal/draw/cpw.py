@@ -26,7 +26,7 @@ from numpy import sqrt, pi, array, flip
 from numpy.linalg import norm
 from shapely.geometry import Point, Polygon, LineString, CAP_STYLE, JOIN_STYLE
 
-from .. import DEFAULT, DEFAULT_OPTIONS, Dict, logger
+from .. import DEFAULT, DEFAULT_OPTIONS, Dict, logger, draw
 from ..toolbox_metal.parsing import  parse_value, TRUE_STR
 from .utility import vec_add_z,\
     vec_unit_norm, vec_unit_planar,\
@@ -75,9 +75,9 @@ def draw_cpw_trace(design,
         points : 2D List assumed in USER units.
     '''
     _, oModeler = design.get_modeler()
-    to_vec3D = lambda vec: to_Vec3D(design, options, vec)
+    to_vec3D = lambda vec: draw.vec_add_z(vec, design.get_chip_z(options['chip']))
 
-    options  = combinekw(DEFAULT_OPTIONS['draw_cpw_trace'], options) # update with custom options
+    options  = {**DEFAULT_OPTIONS['draw_cpw_trace'], **options} # update with custom options
     poly_default_options = options['poly_default_options']
 
     ### Paramaters
