@@ -20,7 +20,9 @@
 import shapely
 import shapely.wkt as wkt
 
-from shapely.geometry import Point, LineString, Polygon, box
+from shapely.geometry import Point, LineString, Polygon
+from shapely.geometry import box, shape
+from shapely.ops import cascaded_union
 
 from . import basic
 from . import utility
@@ -28,6 +30,6 @@ from . import mpl
 from . import cpw
 
 # Useful functions
-from .utility import get_vec_unit_norm, get_poly_pts, to_Vec3Dz
+from .utility import vec_unit_norm, get_poly_pts, vec_add_z
 from .basic import rectangle, is_rectangle, flip_merge, rotate, translate, scale, buffer,\
     rotate_position, _iter_func_geom_

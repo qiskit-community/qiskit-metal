@@ -29,7 +29,7 @@ from ._defaults import DEFAULT_OPTIONS, DEFAULT  # pylint: disable=unused-import
 
 # Define the renderes to load. Just provide the module names here.
 # The renderes will be loaded at ...
-renderers_to_load = dict(
+renderers_to_load = Dict(
     metal='qiskit_metal.renderers.metal',
     ansys='qiskit_metal.renderers.ansys',
     gds='qiskit_metal.renderers.gds'

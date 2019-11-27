@@ -82,7 +82,7 @@ def make_connector(points: list, flip=False, chip='main'):
     assert len(points) == 2
 
     # Get the direction vector, the unit direction vec, and the normal vector
-    vec_dist, vec_dist_unit, vec_normal = draw.get_vec_unit_norm(points)
+    vec_dist, vec_dist_unit, vec_normal = draw.vec_unit_norm(points)
 
     if flip:
         vec_normal = -vec_normal

@@ -18,6 +18,7 @@ Plotting functions for shapely components using mpl.
 Created 2019
 @author: Zlatko Minev (IBM)
 """
+#TODO: should this become a render module?
 
 import numpy as np
 import matplotlib as mpl

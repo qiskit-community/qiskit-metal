@@ -33,13 +33,9 @@ Attempted version functioning as child of 'standard' transmon pocket
 # Modification of Transmon Pocket Object to include a charge line (would be better to just make as a child)
 
 from copy import deepcopy
-from shapely.ops import cascaded_union
 
-
-from ... import DEFAULT_OPTIONS, DEFAULT, Dict
+from ... import DEFAULT_OPTIONS, Dict
 from ... import draw
-from ...renderers.renderer_ansys import draw_ansys
-from ...renderers.renderer_ansys.parse import to_ansys_units
 from .Metal_Qubit import Metal_Qubit
 
 from .Metal_Transmon_Pocket import Metal_Transmon_Pocket
@@ -95,13 +91,13 @@ class Metal_Transmon_Pocket_CL(Metal_Transmon_Pocket):  # pylint: disable=invali
             pos_x, pos_y,orientation = self.design.get_option_values(options,
                 'pad_gap, pad_height, pocket_width, pocket_height, pad_width, pos_x, pos_y, orientation')
 
-        cl_Arm = shapely.geometry.box(0, 0, -cl_width, cl_length)
-        cl_CPW = shapely.geometry.box(0, 0, -8*cl_width, cl_width)
-        cl_Metal = cascaded_union([cl_Arm, cl_CPW])
+        cl_Arm = draw.box(0, 0, -cl_width, cl_length)
+        cl_CPW = draw.box(0, 0, -8*cl_width, cl_width)
+        cl_Metal = draw.cascaded_union([cl_Arm, cl_CPW])
 
-        cl_Etcher = buffer(cl_Metal, cl_gap)
+        cl_Etcher = draw.buffer(cl_Metal, cl_gap)
 
-        port_Line = shapely.geometry.LineString([(-8*cl_width, 0), (-8*cl_width, cl_width)])
+        port_Line = draw.LineString([(-8*cl_width, 0), (-8*cl_width, cl_width)])
 
         objects = dict(
             cl_Metal=cl_Metal,
@@ -112,12 +108,12 @@ class Metal_Transmon_Pocket_CL(Metal_Transmon_Pocket):  # pylint: disable=invali
         # Move the charge line to the side user requested
         cl_Rotate = 0
         if (abs(cl_PocketEdge) > 135) or (abs(cl_PocketEdge) <45):
-            objects = translate(
+            objects = draw.translate(
                 objects, -(pocket_width/2 + cl_groundGap + cl_gap), -(pad_gap + pad_height)/2)
             if (abs(cl_PocketEdge) > 135):
                 cl_Rotate = 180
         else:
-            objects = translate(
+            objects = draw.translate(
                 objects, -(pocket_height/2 + cl_groundGap + cl_gap), -(pad_width)/2)
             cl_Rotate = 90
             if (cl_PocketEdge<0):
@@ -125,19 +121,19 @@ class Metal_Transmon_Pocket_CL(Metal_Transmon_Pocket):  # pylint: disable=invali
 
 
         # Rotate it to the pockets orientation
-        objects = rotate(objects, orientation + cl_Rotate, origin=(0, 0))
+        objects = draw.rotate(objects, orientation + cl_Rotate, origin=(0, 0))
 
         # Move to the final position
-        objects = translate(objects, pos_x, pos_y)
+        objects = draw.translate(objects, pos_x, pos_y)
 
         # Making the design connector for 'easy connect'
         design = self.design
         if not design is None:
-            portPoints = list(shape(objects['port_Line']).coords)
+            portPoints = list(draw.shape(objects['port_Line']).coords)
             vNorm = (-(portPoints[1][1] - portPoints[0][1]), (portPoints[1][0]-portPoints[0][0]))
-            raise NotImplemented('Update make_connector -- add to design!?')
-            design.connectors[self.name+'_' +
-                            name] = make_connector(portPoints, options, vec_normal=vNorm)
+            #design.connectors[self.name+'_' +
+            #                name] = make_connector(portPoints, options, vec_normal=vNorm)
+            self.design.add_connector(self.name+'_'+name, portPoints, flip=False) #TODO: chip
 
         # Removes temporary port_line from draw objects
         del objects['port_Line']

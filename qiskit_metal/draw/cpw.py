@@ -28,9 +28,9 @@ from shapely.geometry import Point, Polygon, LineString, CAP_STYLE, JOIN_STYLE
 
 from .. import DEFAULT, DEFAULT_OPTIONS, Dict, logger
 from ..toolbox_metal.parsing import  parse_value, TRUE_STR
-from .utility import to_Vec3Dz,\
-    get_vec_unit_norm, get_unit_vec,\
-    remove_co_linear_points
+from .utility import vec_add_z,\
+    vec_unit_norm, vec_unit_planar,\
+    remove_colinear_pts
 from .basic import flip_merge, rotate_position
 from .utility import *
 
@@ -95,7 +95,7 @@ def draw_cpw_trace(design,
     #list_units = lambda array, unit=options['units']: np.array(list(map(lambda x: parse_entry(str(x)+unit),array)))
     points     = parse_units(points) #list(map(list_units, points))
     cpw_origin = points[0]
-    vec_D, vec_d, vec_n = get_vec_unit_norm([points[0], points[1]]) # distance vector, unit dist. vector, normal unit vector
+    vec_D, vec_d, vec_n = vec_unit_norm([points[0], points[1]]) # distance vector, unit dist. vector, normal unit vector
 
     ### Make Polyline
     def make_obj_polyline_track(name, swp_w, poly_default_options=poly_default_options):
@@ -163,7 +163,7 @@ def draw_cpw_trace(design,
         raise NotImplemented('Update make_connector -- add to design!?')
         design.connectors[name+'_start'] = make_connector([cpw_origin-dist, cpw_origin+dist], options)
 
-        vec_D, vec_d, vec_n = get_vec_unit_norm([points[-2], points[-1]])
+        vec_D, vec_d, vec_n = vec_unit_norm([points[-2], points[-1]])
         dist, cpw_end = cpw_center_w/2.*vec_n, points[-1] # TODO: might need to play with orientation here
         raise NotImplemented('Update make_connector -- add to design!?')
         design.connectors[name+'_end'] = make_connector([cpw_end-dist, cpw_end+dist], options)
@@ -245,8 +245,8 @@ def basic_meander(design, points0,
 
     meander_out = meander_spacing/2. if meander_out is None else meander_out/2.0
     points0 = list(map(np.array, points0))          # enforce numpy array
-    points  = remove_co_linear_points(np.array(points0))
-    vec_D, vec_d, vec_n = get_vec_unit_norm(points0) # distance vector, unit dist. vector, normal unit vector
+    points  = remove_colinear_pts(np.array(points0))
+    vec_D, vec_d, vec_n = vec_unit_norm(points0) # distance vector, unit dist. vector, normal unit vector
 
     if options['snap_toXY']:
         def snap_unit_vector_toXY(vec_n):
@@ -284,7 +284,7 @@ def basic_meander(design, points0,
     if 1: # alter the last point  so it isnt at an angle
         # this willl fail when they overlap
         pts   = points[-2:]
-        unitv = get_unit_vec(pts)
+        unitv = vec_unit_planar(pts)
         #dist  = norm(pts)
         line  = LineString([points[-1]+unitv*100,points[-1]-unitv*100]) # span enoguh space
         point = line.interpolate(line.project(Point(final_pt)))
@@ -292,7 +292,7 @@ def basic_meander(design, points0,
 
     points += [final_pt]
 
-    return remove_co_linear_points(points)
+    return remove_colinear_pts(points)
 
 def meander_between(design, points, start_idx, meander_options):
     '''
@@ -307,7 +307,7 @@ def meander_between(design, points, start_idx, meander_options):
     meander = basic_meander(design, points[start_idx: start_idx+2], meander_options)
     points  = np.delete(points, [start_idx, start_idx+1], axis=0)
     points  = np.insert(points, start_idx, meander, axis=0)
-    points  = remove_co_linear_points(points) # it is possible to get 3 colinear points
+    points  = remove_colinear_pts(points) # it is possible to get 3 colinear points
     return points
 
 
@@ -393,7 +393,7 @@ def easy_wirebond(design, obj,
     elif isinstance(obj, str):
         points_meander = np.array(unparse_units(design.track_objs[options['category']][obj]['points']))
         #DEPRICATED here
-    elif isinstance(obj, shapely.geometry.LineString):
+    elif isinstance(obj, draw.LineString):
         points_meander = np.array(obj.coords)
     elif isinstance(obj, np.ndarray) or isinstance(obj, list):
         points_meander = np.array(obj)
@@ -416,7 +416,7 @@ def easy_wirebond(design, obj,
     shapes = {}
     for i in range(start, len(points_meander) + stop, step):
         p1, p2 = map(array, points_meander[i:i+2])
-        vec_D, vec_d, vec_n = get_vec_unit_norm([p1, p2])
+        vec_D, vec_d, vec_n = vec_unit_norm([p1, p2])
         #print(p1, vec_n, norm(vec_D), '\n ',p1,p2, vec_n ) #render_to_mpl([Point(p1),Point(p2)])
 
         if (norm(vec_D) > th) and (norm(vec_D)/2. >  ofst): # if the segment is longer than thresohld place a bond
