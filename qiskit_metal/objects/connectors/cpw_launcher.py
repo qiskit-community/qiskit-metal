@@ -156,7 +156,7 @@ class cpw_launcher(Metal_Object):
         # Move and orient
         poly_inner, poly_outer, poly_mesh = orient_position([poly_inner, poly_outer, poly_mesh],  angle, pos1)
 
-        self.objects.update(dict(
+        self.components.update(dict(
             inner = poly_inner,
             outer = poly_outer,
             mesh = poly_mesh,
@@ -177,9 +177,9 @@ class cpw_launcher(Metal_Object):
         name     = self.name #options['name']
 
         # Make shapes in user units
-        poly0 = self.objects['inner']
-        poly1 = self.objects['outer']
-        polyM = self.objects['mesh']
+        poly0 = self.components['inner']
+        poly1 = self.components['outer']
+        polyM = self.components['mesh']
 
         if options['do_draw']: # Draw
 

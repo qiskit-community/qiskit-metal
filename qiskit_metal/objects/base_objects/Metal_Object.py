@@ -84,7 +84,7 @@ class Metal_Object():  # pylint: disable=invalid-name
         self.design = design
 
         if not overwrite:
-            if name in design.objects.keys():
+            if name in design.components.keys():
                 raise ValueError('Object name already in use. Please choose an alternative name or delete the other object.')
 
         self.name = name
@@ -95,12 +95,12 @@ class Metal_Object():  # pylint: disable=invalid-name
             self.options.update(options)
 
         # Objects - storage dictionaries
-        self.objects = Dict()  # container for shapely polygons
+        self.components = Dict()  # container for shapely polygons
         self.objects_hfss = Dict()  # container for hfss objects
         self.objects_gds = Dict()  # container for gds objects (not yet implemented)
 
         # Add self to design objects dictionary
-        self.design.objects[name] = self
+        self.design.components[name] = self
 
         if make:
             self.make()
@@ -190,7 +190,7 @@ class Metal_Object():  # pylint: disable=invalid-name
                 cell.add(gdspy.Polygon(poly, *args, **kwargs))
 
         kwargs = {**dict(layer=0), **kwargs}
-        _func_obj_dict(my_func, self.objects, _override=False, **kwargs)
+        _func_obj_dict(my_func, self.components, _override=False, **kwargs)
 
         return cell
 

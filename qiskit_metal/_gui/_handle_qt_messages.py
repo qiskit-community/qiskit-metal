@@ -20,11 +20,12 @@ This is a utility module used to handle pyqt error messages on slots and etc.
 
 import types
 import inspect
+import logging
 from functools import wraps
 from PyQt5.QtCore import pyqtSlot
 
 from PyQt5 import QtCore
-from .. import logging, logger
+from .. import logger
 
 #######################################################################################
 # Core handler

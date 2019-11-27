@@ -18,3 +18,5 @@ This folder contains code that is general and not Metal specific.
 Created on Tue May 14 17:13:40 2019
 @author: Zlatko Minev (IBM)
 """
+
+from .attr_dict import Dict

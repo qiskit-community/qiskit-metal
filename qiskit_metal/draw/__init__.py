@@ -17,9 +17,17 @@
 @date: 2019
 """
 
-from . import cpw
-from . import functions
+import shapely
+import shapely.wkt as wkt
+
+from shapely.geometry import Point, LineString, Polygon, box
+
+from . import basic
 from . import utility
+from . import mpl
+from . import cpw
 
 # Useful functions
-from .utility import get_vec_unit_norm
+from .utility import get_vec_unit_norm, get_poly_pts, to_Vec3Dz
+from .basic import rectangle, is_rectangle, flip_merge, rotate, translate, scale, buffer,\
+    rotate_position, _iter_func_geom_

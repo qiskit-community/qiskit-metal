@@ -78,7 +78,7 @@ class Metal_Qubit(Metal_Object):  # pylint: disable=invalid-name
 
         self._set_options_connectors()
 
-        self.objects.connectors = Dict()
+        self.components.connectors = Dict()
 
         if _make:
             self.make()

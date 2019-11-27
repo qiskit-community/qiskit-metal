@@ -485,7 +485,7 @@ class Metal_gui(QMainWindow):
 
     def _setup_tree_view(self):
 
-        tree = self.tree = Tree_Metal_Objects(self, objects=self.objects, gui=self)
+        tree = self.tree = Tree_Metal_Objects(self, objects=self.components, gui=self)
         tree.main_window = QMainWindow(self)
         tree.dock = self._add_dock('Object Explorer', tree.main_window, 'Right', 400)
         tree.dock.setToolTip('Press ENTER after done editing a value to remake the objects.')
@@ -676,7 +676,7 @@ class Metal_gui(QMainWindow):
         self.ax_draw.clear_me()
 
         try:
-            draw_all_objects(self.objects, ax=self.ax_draw,
+            draw_all_objects(self.components, ax=self.ax_draw,
                              func=self.re_draw_func)
         except Exception:
             self.logger.error('\n\n'+traceback.format_exc())
@@ -747,7 +747,7 @@ class Metal_gui(QMainWindow):
         Should ideally only ever have 1 instance object of objects
         '''
         if objects is None:
-            objects = self.design.objects
+            objects = self.design.components
         self._components = objects
         if hasattr(self, 'tree'):
             self.tree.change_content_dict(objects)
@@ -870,7 +870,7 @@ class Metal_gui(QMainWindow):
             design {[Metal_design_Base instance]} -- [new design]
         """
         self.design = design
-        self.set_objects(self.design.objects)
+        self.set_objects(self.design.components)
         self.tree_design_ops.change_content_dict(self.design.params)
         self.logger.info('Changed design, updated default dictionaries, etc.')
         self.refresh_all()

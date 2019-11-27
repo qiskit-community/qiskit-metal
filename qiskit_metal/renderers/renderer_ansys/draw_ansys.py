@@ -23,9 +23,12 @@ Raises:
 """
 
 import shapely
-from .. import logger
-from .utility import to_Vec3Dz, Polygon, is_rectangle  # * # lazy, todo fix
+from numpy import array
+
+from ... import DEFAULT, DEFAULT_OPTIONS, logger, Dict
+from ...draw import get_poly_pts, is_rectangle, to_Vec3Dz
 from .parse import parse_value_hfss
+
 
 def draw_objects_shapely(oModeler, components: dict, root_name: str, delimiter='_', **kwargs):
     """
@@ -151,7 +154,7 @@ def do_PerfE(options, design, obj):
 
 # @deprecated
 def do_cut_ground(options, design, objs):
-    ''' do_cut '''
+    """do_cut """
     _, oModeler = design.get_modeler()
     if options.get('do_cut',  DEFAULT['do_cut']):
         assert isinstance(objs, list)
@@ -159,7 +162,7 @@ def do_cut_ground(options, design, objs):
 
 # @deprecated
 def do_mesh(options, design, objs):
-    ''' do_mesh  - TO DO replace with funciton draw_hfss'''
+    """ do_mesh  - TO DO replace with funciton draw_hfss"""
     _, oModeler = design.get_modeler()
     if options.get('do_mesh',  DEFAULT._hfss.do_mesh):
         assert isinstance(objs, list)
@@ -242,4 +245,3 @@ def draw_substrate(design, options):
                              color=(186, 186, 205),
                              transparency=options['transparency_substrate'],
                              wireframe=options['wireframe_substrate'])
-

@@ -28,28 +28,35 @@ from shapely.geometry import Point, LineString, LinearRing, Polygon
 from .mpl_interaction import figure_pz
 from ..components import is_component
 
-def draw_shapely_poly_mpl(poly:Polygon,
-                          ax,
-                          kw={},
-                          kw_hole={},
-                          plot_format=False):
+
+def _render_poly_to_mpl(poly: Polygon,
+                        ax,
+                        kw=None,
+                        kw_hole=None):
     '''
     Style and draw a shapely polygon using MPL.
     '''
-    # This function is somewhat outdated. needs update if to be used more.
+    if kw_hole is None:
+        kw_hole = {}
+    if kw is None:
+        kw = {}
 
+    # should probably  only creat thes once and pass these in here
     kw = {**dict(lw=1, edgecolors='k', alpha=0.5), **kw}
     kw_hole = {**dict(facecolors='w', lw=1, edgecolors='grey'), **kw}
 
     if not poly.exterior == LinearRing():  # not empty - better check?
+
+        # Exteriror
         coords = np.array(poly.exterior.coords)
-        poly = mpl.patches.Polygon(coords)
+        mpl_poly = mpl.patches.Polygon(coords)
         color = ax._get_lines.get_next_color()
         ax.add_collection(
-            mpl.collections.PatchCollection([poly],
+            mpl.collections.PatchCollection([mpl_poly],
                                             **{**{'facecolor': color}, **kw})
         )
-        # holes
+
+        # Interior (i.e., holes)
         polys = []
         for hole in poly.interiors:
             coords = tuple(hole.coords)
@@ -59,19 +66,13 @@ def draw_shapely_poly_mpl(poly:Polygon,
             mpl.collections.PatchCollection(polys, **kw_hole)
         )
 
-    if plot_format:
-        ax.set_aspect(1)
-        ax.autoscale()
-
-
-
 
 ##########################################################################################
 # Plotting subroutines
 
-def plot_shapely_style_v1(ax, labels=None):
+def plot_style_shapely_v1(ax, labels=None):
     '''
-    Style function for axis called by `plot_shapely`
+    Style function for axis called by `render_to_mpl`
     '''
     if ax is None:
         ax = plt.gca()
@@ -79,7 +80,7 @@ def plot_shapely_style_v1(ax, labels=None):
     # If 'box', change the physical dimensions of the Axes. If 'datalim', change the x or y data limits.
     ax.set_adjustable('datalim')
     ax.set_aspect(1)
-    # ax.autoscale()
+    # ax.autoscale() # for gui
 
     # Labels
     if not labels is None:
@@ -88,14 +89,14 @@ def plot_shapely_style_v1(ax, labels=None):
         ax.legend(loc='center left', bbox_to_anchor=(1, 0.5), prop=fontP)
 
 
-def plot_shapely(components,
-                 ax=None,
-                 kw={},
-                 plot_format=True,
-                 labels=None,
-                 __depth=-1,  # how many sublists in we are
-                 _iteration=0,  # how many components we have plotted
-                 **kwargs):  # such as kw_hole
+def render_to_mpl(components,
+                       ax=None,
+                       kw={},
+                       plot_format=True,
+                       labels=None,
+                       __depth=-1,  # how many sublists in we are
+                       _iteration=0,  # how many components we have plotted
+                       **kwargs):  # such as kw_hole
     '''
     Plot a list or dicitoanry of shapely components.
 
@@ -116,18 +117,18 @@ def plot_shapely(components,
     # Handle itterables
     if isinstance(components, dict):
         for _, objs in components.items():
-            _iteration = plot_shapely(objs, ax=ax, kw=kw, plot_format=plot_format,
-                                      labels=labels, __depth=__depth, _iteration=_iteration, **kwargs)
+            _iteration = render_to_mpl(objs, ax=ax, kw=kw, plot_format=plot_format,
+                                            labels=labels, __depth=__depth, _iteration=_iteration, **kwargs)
         if plot_format and (__depth == 0):
-            plot_shapely_style_v1(ax, labels=labels)
+            plot_style_shapely_v1(ax, labels=labels)
         return _iteration
 
     elif isinstance(components, list):
         for objs in components:
-            _iteration = plot_shapely(objs, ax=ax, kw=kw, plot_format=plot_format,
-                                      labels=labels, __depth=__depth, _iteration=_iteration, **kwargs)
+            _iteration = render_to_mpl(objs, ax=ax, kw=kw, plot_format=plot_format,
+                                            labels=labels, __depth=__depth, _iteration=_iteration, **kwargs)
         if plot_format and (__depth == 0):
-            plot_shapely_style_v1(ax, labels=labels)
+            plot_style_shapely_v1(ax, labels=labels)
         return _iteration
 
     if not isinstance(components, shapely.geometry.base.BaseGeometry):  # obj is None
@@ -137,7 +138,7 @@ def plot_shapely(components,
     obj = components
 
     if isinstance(obj, shapely.geometry.Polygon):
-        draw_shapely_poly_mpl(obj, kw=kw, ax=ax, **kwargs)
+        _render_poly_to_mpl(obj, kw=kw, ax=ax, **kwargs)
 
     else:
         if isinstance(obj, shapely.geometry.MultiPoint):
@@ -152,32 +153,41 @@ def plot_shapely(components,
         ax.plot(*zip(*list(coords)), **kw)
 
     if plot_format and (__depth == 0):
-        plot_shapely_style_v1(ax, labels=labels)
+        plot_style_shapely_v1(ax, labels=labels)
 
     return _iteration+1
 
 
-draw_objs = plot_shapely
-
-
+#  TODO: IS THIS FUNCITON NEEDED? can we just use render_to_mpl
 def draw_all_objects(components, ax, func=lambda x: x, root_name='components'):
+    """passed in Called by self.components
+
+    Arguments:
+        components {[type]} -- [description]
+        ax {[type]} -- [description]
+
+    Keyword Arguments:
+        func {[type]} -- [description] (default: {lambdax:x})
+        root_name {str} -- [description] (default: {'components'})
+    """
 
     # logger.debug(components.keys())
     for name, obj in components.items():
         if isinstance(obj, dict):
             if name.startswith('components'):
                 #logger.debug(f'Drawing: {root_name}.{name}')
-                draw_objs(func(obj), ax=ax)  # allow transmofmation of components
+                # allow transmofmation of components
+                render_to_mpl(func(obj), ax=ax)
             else:
                 draw_all_objects(obj, ax, root_name=root_name+'.'+name)
 
         elif is_component(obj):
             #logger.debug(f' Metal_Object: {obj}')
-            draw_objs(obj.components, ax=ax)
+            render_to_mpl(obj.components, ax=ax)
 
 
 #################################################################################
-### PLOT FULL
+# PLOT FULL
 
 def plot_simple_gui_style(ax):
     #fig = ax.figure

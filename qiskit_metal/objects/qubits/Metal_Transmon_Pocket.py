@@ -38,13 +38,11 @@ modified: Thomas McConkey 2019
 # pylint: disable=invalid-name
 
 from copy import deepcopy
-from shapely.geometry import LineString
 
-from ...config import DEFAULT_OPTIONS, DEFAULT
-from ...draw.functions import shapely, shapely_rectangle, translate, translate_objs,\
-    rotate_objs, rotate_objs, scale_objs, _angle_Y2X, make_connector_props,\
-    Polygon, parse_units_user, buffer, Dict
-from ...renderers.renderer_ansys import  draw_ansys
+from ... import DEFAULT_OPTIONS, DEFAULT, Dict
+from ... import draw
+from ...renderers.renderer_ansys import draw_ansys
+from ...renderers.renderer_ansys.parse import to_ansys_units
 from .Metal_Qubit import Metal_Qubit
 
 
@@ -190,13 +188,13 @@ class Metal_Transmon_Pocket(Metal_Qubit): # pylint: disable=invalid-name
             pos_x, pos_y,orientation = self.design.get_option_values(options, 'pad_gap, inductor_width, pad_width,\
                  pad_height, pocket_width, pocket_height, pos_x, pos_y, orientation')
         # then makes the shapely polygons
-        pad = shapely_rectangle(pad_width, pad_height)
-        pad_top = translate(pad, 0, +(pad_height+pad_gap)/2.)
-        pad_bot = translate(pad, 0, -(pad_height+pad_gap)/2.)
+        pad = draw.rectangle(pad_width, pad_height)
+        pad_top = draw.translate(pad, 0, +(pad_height+pad_gap)/2.)
+        pad_bot = draw.translate(pad, 0, -(pad_height+pad_gap)/2.)
 
-        # the rectangle representing the josephson junction
-        rect_jj = shapely_rectangle(inductor_width, pad_gap)
-        rect_pk = shapely_rectangle(pocket_width, pocket_height)
+        # the draw.rectangle representing the josephson junction
+        rect_jj = draw.rectangle(inductor_width, pad_gap)
+        rect_pk = draw.rectangle(pocket_width, pocket_height)
 
         # adds the shapely polygons to this qubits object dictionary
         objects = dict(
@@ -208,11 +206,11 @@ class Metal_Transmon_Pocket(Metal_Qubit): # pylint: disable=invalid-name
 
         #rotates and translates all the objects as requested. Uses package functions in 'draw_utility' for easy
         # rotation/translation
-        objects = rotate_objs(
+        objects = draw.rotate(
             objects,orientation, origin=(0, 0))
-        objects = translate_objs(objects, pos_x, pos_y)
+        objects = draw.translate(objects, pos_x, pos_y)
 
-        self.objects.update(objects)
+        self.components.update(objects)
 
         return objects
 
@@ -247,25 +245,25 @@ class Metal_Transmon_Pocket(Metal_Qubit): # pylint: disable=invalid-name
                  options_connector, 'pad_gap, pad_width, pad_height, pad_cpw_shift,\
                      cpw_width, pocket_extent, pocket_rise, pad_cpw_extent, cpw_extend, cpw_gap')
 
-        connector_pad = shapely_rectangle(pad_cwidth, pad_cheight)
-        connector_pad = translate(connector_pad, -pad_cwidth/2, pad_cheight/2)
+        connector_pad = draw.rectangle(pad_cwidth, pad_cheight)
+        connector_pad = draw.translate(connector_pad, -pad_cwidth/2, pad_cheight/2)
 
         #print(pocket_width, pad_width, cpw_extend, pad_cpw_shift, cpw_width, pocket_rise)
-        connector_wire_l = shapely.wkt.loads(f"""LINESTRING (\
+        connector_wire_l = draw.wkt.loads(f"""LINESTRING (\
                                             0 {pad_cpw_shift+cpw_width/2}, \
                                             {pad_cpw_extent}                           {pad_cpw_shift+cpw_width/2}, \
                                             {(pocket_width-pad_width)/2-pocket_extent} {pad_cpw_shift+cpw_width/2+pocket_rise}, \
                                             {(pocket_width-pad_width)/2+cpw_extend}    {pad_cpw_shift+cpw_width/2+pocket_rise}\
                                         )""")
-        connector_wire = buffer(connector_wire_l, cpw_width/2)
+        connector_wire = draw.buffer(connector_wire_l, cpw_width/2)
 
         if 1:
             # draw a cutout for the ground plane
             _points = list(map(list, connector_wire_l.coords[-2:]))
             # extend the end of the connector by this much
             _points[-1][0] += cpw_gap
-            subtract_grnd_connector = LineString(_points)
-            subtract_grnd_connector = buffer(subtract_grnd_connector, cpw_width/2+cpw_gap)
+            subtract_grnd_connector = draw.LineString(_points)
+            subtract_grnd_connector = draw.buffer(subtract_grnd_connector, cpw_width/2+cpw_gap)
 
         objects = dict(
             connector_pad=connector_pad,
@@ -277,25 +275,22 @@ class Metal_Transmon_Pocket(Metal_Qubit): # pylint: disable=invalid-name
         assert options_connector['loc_W'] in [-1, +1]
         assert options_connector['loc_H'] in [-1, +1]
 
-        objects = scale_objs(
+        objects = draw.scale(
             objects, options_connector['loc_W'], options_connector['loc_H'], origin=(0, 0))
-        objects = translate_objs(objects, options_connector['loc_W']*(pad_width)/2.,
+        objects = draw.translate(objects, options_connector['loc_W']*(pad_width)/2.,
                                  options_connector['loc_H']*(pad_height+pad_gap/2+pad_gap))
-        objects = rotate_objs(
+        objects = draw.rotate(
             objects, orientation, origin=(0, 0))
-        objects = Dict(translate_objs(objects, pos_x, pos_y))
+        objects = Dict(draw.translate(objects, pos_x, pos_y))
 
         # add to objects
-        self.objects.connectors[name] = objects
+        self.components.connectors[name] = objects
 
         # add connectors to design tracker
-        design = self.design
-        if not design is None:
-            points = get_poly_pts(objects.connector_wire)
-            # debug: draw_objs([LineString(points)], kw=dict(lw=2,c='r'))
-            raise NotImplemented('Update make_connector -- add to design!?')
-            design.connectors[self.name+'_'+name] = make_connector(\
-                                points[2:2+2], options, vec_normal=points[2]-points[1])
+        points = draw.get_poly_pts(objects.connector_wire)
+        self.design.add_connector(self.name+'_'+name, points[2:2+2], flip=False) #TODO: chip
+        #connectors[self.name+'_'+name] = make_connector(\
+        # points[2:2+2], options, vec_normal=points[2]-points[1])
 
         return objects
 
@@ -313,12 +308,12 @@ class Metal_Transmon_Pocket(Metal_Qubit): # pylint: disable=invalid-name
         options_hfss = self.options._hfss
         rect_options = options_hfss.rect_options
         _, oModeler = design.get_modeler() # pylint: disable=invalid-name
-        oh = lambda x: parse_units_user(options_hfss[x]) # pylint: disable=invalid-name
+        oh = lambda x: to_ansys_units(design.parse_value(options_hfss[x])) # pylint: disable=invalid-name
 
         # Pocket: make mesh rectangle for pocket
-        rect_msh = buffer(self.objects.rect_pk, oh('mesh_pocket'))
+        rect_msh = draw.buffer(self.components.rect_pk, oh('mesh_pocket'))
         # list of objects to draw in HFSS
-        objs = [self.objects, dict(mesh=rect_msh)]
+        objs = [self.components, dict(mesh=rect_msh)]
 
         # Pocket: Draw all pocket objects
         self.objects_hfss = Dict(draw_ansys.draw_objects_shapely(design.oModeler, objs,
@@ -328,7 +323,7 @@ class Metal_Transmon_Pocket(Metal_Qubit): # pylint: disable=invalid-name
         # Pocket: Subtract ground
         ground = design.get_ground_plane(options)
         oModeler.subtract(ground, [hfss_objs['rect_pk']])
-        subtracts = [hfss_objs.connectors[xx]['subtract_grnd_connector'] for xx in self.objects.connectors]
+        subtracts = [hfss_objs.connectors[xx]['subtract_grnd_connector'] for xx in self.components.connectors]
         oModeler.subtract(ground, subtracts)
 
         if DEFAULT['do_PerfE']:

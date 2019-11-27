@@ -33,7 +33,7 @@ from shapely.geometry import LineString
 from ... import Dict
 from ...toolbox_metal.parsing import parse_value, parse_params
 from ...config import DEFAULT, DEFAULT_OPTIONS
-from ...draw.utils import draw_objs, make_connector
+from ...draw.utils import render_to_mpl, make_connector
 from ...toolbox_metal.import_export import save_metal
 from .Metal_Utility import is_component
 
@@ -163,7 +163,7 @@ class Metal_Design_Base():  # pylint: disable=invalid-name
         for name, conn in self.connectors.items():
             line = LineString(conn.points)
 
-            draw_objs(line, ax=ax, kw=dict(lw=2, c='r'))
+            render_to_mpl(line, ax=ax, kw=dict(lw=2, c='r'))
 
             ax.annotate(name, xy=conn.middle[:2], xytext=conn.middle +
                         np.array(DEFAULT.annots.design_connectors_ofst),
@@ -190,18 +190,6 @@ class Metal_Design_Base():  # pylint: disable=invalid-name
             path {[string]} -- [path to save file]
         """
         save_metal(path, self)
-
-    """
-    def get_option_values(self, options_dict, option_names):
-        '''
-        Parse a list of option names from options_dict.
-
-        Adds units
-
-        TODO: Remove this funciton and superseed with self.parse_value
-        '''
-        return parse_options_user(options_dict, option_names, self._variables)
-    """
 
     def parse_value(self, value):
         """

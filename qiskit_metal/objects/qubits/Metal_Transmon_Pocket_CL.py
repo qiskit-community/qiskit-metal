@@ -34,13 +34,14 @@ Attempted version functioning as child of 'standard' transmon pocket
 
 from copy import deepcopy
 from shapely.ops import cascaded_union
-from shapely.geometry import shape
-from shapely.affinity import scale
 
-from ...config import Dict, DEFAULT_OPTIONS
-from ...draw.functions import shapely, shapely_rectangle, translate, translate_objs,\
-    rotate_objs, rotate_objs, scale_objs, _angle_Y2X, make_connector_props,\
-    Polygon, parse_units_user, buffer
+
+from ... import DEFAULT_OPTIONS, DEFAULT, Dict
+from ... import draw
+from ...renderers.renderer_ansys import draw_ansys
+from ...renderers.renderer_ansys.parse import to_ansys_units
+from .Metal_Qubit import Metal_Qubit
+
 from .Metal_Transmon_Pocket import Metal_Transmon_Pocket
 
 
@@ -111,12 +112,12 @@ class Metal_Transmon_Pocket_CL(Metal_Transmon_Pocket):  # pylint: disable=invali
         # Move the charge line to the side user requested
         cl_Rotate = 0
         if (abs(cl_PocketEdge) > 135) or (abs(cl_PocketEdge) <45):
-            objects = translate_objs(
+            objects = translate(
                 objects, -(pocket_width/2 + cl_groundGap + cl_gap), -(pad_gap + pad_height)/2)
             if (abs(cl_PocketEdge) > 135):
                 cl_Rotate = 180
         else:
-            objects = translate_objs(
+            objects = translate(
                 objects, -(pocket_height/2 + cl_groundGap + cl_gap), -(pad_width)/2)
             cl_Rotate = 90
             if (cl_PocketEdge<0):
@@ -124,10 +125,10 @@ class Metal_Transmon_Pocket_CL(Metal_Transmon_Pocket):  # pylint: disable=invali
 
 
         # Rotate it to the pockets orientation
-        objects = rotate_objs(objects, orientation + cl_Rotate, origin=(0, 0))
+        objects = rotate(objects, orientation + cl_Rotate, origin=(0, 0))
 
         # Move to the final position
-        objects = translate_objs(objects, pos_x, pos_y)
+        objects = translate(objects, pos_x, pos_y)
 
         # Making the design connector for 'easy connect'
         design = self.design
@@ -142,6 +143,6 @@ class Metal_Transmon_Pocket_CL(Metal_Transmon_Pocket):  # pylint: disable=invali
         del objects['port_Line']
 
         # add to objects
-        self.objects.CL = objects
+        self.components.CL = objects
 
         return objects

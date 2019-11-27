@@ -20,19 +20,18 @@ Function to draw CPW geometries
 import ast
 import numpy as np
 import matplotlib.pyplot as plt
+import shapely
 
 from numpy import sqrt, pi, array, flip
 from numpy.linalg import norm
-from shapely.geometry import Point, LineString, CAP_STYLE, JOIN_STYLE
+from shapely.geometry import Point, Polygon, LineString, CAP_STYLE, JOIN_STYLE
 
 from .. import DEFAULT, DEFAULT_OPTIONS, Dict, logger
-from .functions import make_connector_props, do_cut_ground, do_PerfE, do_mesh
-from ..toolbox_metal.parsing import  parse_value, parse_value_hfss
-from .utility import to_Vec3D,\
+from ..toolbox_metal.parsing import  parse_value, TRUE_STR
+from .utility import to_Vec3Dz,\
     get_vec_unit_norm, get_unit_vec,\
-    TRUE_STR, remove_co_linear_points,\
-    flip_merge, orient_position,\
-    Polygon, shapely
+    remove_co_linear_points
+from .basic import flip_merge, rotate_position
 from .utility import *
 
 
@@ -354,7 +353,7 @@ def easy_wirebond(design, obj,
 
     TEST:
         options = objects['cpw_Q1_bus_Q2_Q2_bus_Q1']['options_hfss']
-        cpw_line = objects['cpw_Q1_bus_Q2_Q2_bus_Q1']['objects']['cpw_line']#.objects.cpw_line
+        cpw_line = objects['cpw_Q1_bus_Q2_Q2_bus_Q1']['objects']['cpw_line']#.components.cpw_line
         points_meander = np.array(cpw_line.coords)
     '''
 
@@ -362,7 +361,7 @@ def easy_wirebond(design, obj,
 
     ############################################
     # Get points of cpw and handle Metal Object
-    from .objects.base_objects.Metal_Utility import is_component
+    from .components.base_objects.Metal_Utility import is_component
 
     if is_component(obj):
 
@@ -376,21 +375,21 @@ def easy_wirebond(design, obj,
                    **obj.options.easy_wirebond, # if there are already wirebond options
                    **options}
 
-        if 'cpw_line' in obj.objects:
-            points_meander = np.array(obj.objects.cpw_line.coords)
+        if 'cpw_line' in obj.components:
+            points_meander = np.array(obj.components.cpw_line.coords)
         else:
-            raise Exception('Object {obj} does not have obj.objects.cpw_line')
+            raise Exception('Object {obj} does not have obj.components.cpw_line')
 
     ############################################
     # Handle non metal obejcts (yes, too many here, not all needed)
     elif isinstance(obj, Dict):
         if ('objects' in obj):
-            if 'cpw_line' in obj.objects:
-                points_meander = np.array(obj.objects.cpw_line.coords)
+            if 'cpw_line' in obj.components:
+                points_meander = np.array(obj.components.cpw_line.coords)
             else:
-                raise Exception('Unkown object {obj} does not have obj.objects.cpw_line')
+                raise Exception('Unkown object {obj} does not have obj.components.cpw_line')
         else:
-            raise Exception('Unkown object {obj}: does not have obj.objects')
+            raise Exception('Unkown object {obj}: does not have obj.components')
     elif isinstance(obj, str):
         points_meander = np.array(unparse_units(design.track_objs[options['category']][obj]['points']))
         #DEPRICATED here
@@ -418,7 +417,7 @@ def easy_wirebond(design, obj,
     for i in range(start, len(points_meander) + stop, step):
         p1, p2 = map(array, points_meander[i:i+2])
         vec_D, vec_d, vec_n = get_vec_unit_norm([p1, p2])
-        #print(p1, vec_n, norm(vec_D), '\n ',p1,p2, vec_n ) #draw_objs([Point(p1),Point(p2)])
+        #print(p1, vec_n, norm(vec_D), '\n ',p1,p2, vec_n ) #render_to_mpl([Point(p1),Point(p2)])
 
         if (norm(vec_D) > th) and (norm(vec_D)/2. >  ofst): # if the segment is longer than thresohld place a bond
            # make sure wirbondf doesn stick out
@@ -428,7 +427,7 @@ def easy_wirebond(design, obj,
             p = np.array(pos)
             shapes[str(i)] = dict(center=Point(pos),
                              bond = LineString([p-ori*w/2, p+ori*w/2]))
-            #draw_objs(shapes[i]) # draw shapely
+            #render_to_mpl(shapes[i]) # draw shapely
             if draw_hfss:
                 _, oModeler = design.get_modeler() ###
                 wirebond_names += [
@@ -445,7 +444,7 @@ def easy_wirebond(design, obj,
 
         if is_component(obj):
             obj = parent_obj
-            obj.objects.wirebonds = shapes
+            obj.components.wirebonds = shapes
             obj.hfss_objects = wirebond_names
             obj.options.easy_wirebond = options
         else:

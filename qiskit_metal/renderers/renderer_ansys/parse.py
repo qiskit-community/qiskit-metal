@@ -33,3 +33,6 @@ def parse_value_hfss(*args):
     return __parse_units_hfss__(*args)
 
 #TODO: function to itterate and convert user units to
+
+def to_ansys_units(value): # can make more efifiecnt if we assuem this is already a flaot
+    __parse_units_hfss__(value)

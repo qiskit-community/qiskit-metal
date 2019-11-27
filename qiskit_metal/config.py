@@ -59,9 +59,9 @@ GUI_CONFIG
 GUI_CONFIG = Dict(
 
     load_metal_modules=Dict(
-        Qubits='qiskit_metal.objects.qubits',
-        Interconnects='qiskit_metal.objects.interconnects',
-        Connectors='qiskit_metal.objects.connectors'
+        Qubits='qiskit_metal.components.qubits',
+        Interconnects='qiskit_metal.components.interconnects',
+        Connectors='qiskit_metal.components.connectors'
 
     ),
 

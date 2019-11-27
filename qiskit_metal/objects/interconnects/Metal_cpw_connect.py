@@ -132,16 +132,16 @@ Options (Metal_cpw_connect):
                 self.design, points0, 1, self.options.meander))
         else:
             self.points_meander = points0
-        self.objects.cpw_line = LineString(self.points_meander)
+        self.components.cpw_line = LineString(self.points_meander)
 
         # For metal
         self.options.cpw = {
             **DEFAULT_OPTIONS['draw_cpw_trace'], **self.options.cpw, 'name': self.name}
         cpw_width, cpw_gap = self.design.get_option_values(
             self.options.cpw, 'trace_center_width, trace_center_gap')
-        self.objects.trace_center = self.objects.cpw_line.buffer(
+        self.components.trace_center = self.components.cpw_line.buffer(
             cpw_width/2, cap_style=CAP_STYLE.flat, join_style=JOIN_STYLE.mitre)
-        self.objects.trace_gap = self.objects.trace_center.buffer(
+        self.components.trace_gap = self.components.trace_center.buffer(
             cpw_gap,  cap_style=CAP_STYLE.flat, join_style=JOIN_STYLE.mitre)
 
     def hfss_draw(self):

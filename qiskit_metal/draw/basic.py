@@ -32,7 +32,7 @@ from .. import is_component, is_element, logger, config
 from .utility import get_poly_pts
 
 __all__ = ['rectangle', 'is_rectangle', 'flip_merge', 'rotate', 'rotate_position',
-             '_iter_func_geom_', 'translate', 'scale', 'buffer']
+           '_iter_func_geom_', 'translate', 'scale', 'buffer']
 
 
 def rectangle(w: float, h: float):
@@ -101,12 +101,13 @@ def flip_merge(line: shapely.geometry.LineString,
     a Point object or a coordinate tuple (x0, y0, z0).
     Negative scale factors will mirror or reflect coordinates.
     '''
-    line_flip = shapely.affinity.scale(line, xfact=xfact, yfact=yfact, origin=origin)
+    line_flip = shapely.affinity.scale(
+        line, xfact=xfact, yfact=yfact, origin=origin)
     coords = list(line.coords) + list(reversed(line_flip.coords))
     return coords
 
 
-def _iter_func_geom_(func, objs, *args, overwrite=True, **kwargs):
+def _iter_func_geom_(func, objs, *args, overwrite=False, **kwargs):
     """Apply function to shapely geometry, and handle. This will create a new dictionary.
 
     Applied to on:
@@ -230,7 +231,7 @@ def orient_position(obj, angle: float, pos: list, pos_rot=(0, 0)):
 
 
 
-def rotate_objs(components, angle, *args, **kwargs):
+def rotate(components, angle, *args, **kwargs):
     '''
     Returns a rotated geometry on a 2D plane.
 
@@ -250,10 +251,10 @@ def rotate_objs(components, angle, *args, **kwargs):
     angle={'X': 0, 'Y': 90}.get(angle, angle)
     if isinstance(components, list):
         for i, obj in enumerate(components):
-            components[i]=rotate_objs(obj, angle, *args, **kwargs)
+            components[i]=rotate(obj, angle, *args, **kwargs)
     elif isinstance(components, dict):
         for name, obj in components.items():
-            components[name]=rotate_objs(obj, angle, *args, **kwargs)
+            components[name]=rotate(obj, angle, *args, **kwargs)
     else:
         if not components is None:
             # this is now a single object
@@ -289,7 +290,8 @@ def _func_obj_dict(func, components, *args, _override=True, **kwargs):
     return components
 """
 
-def rotate(elements, angle, origin='center', use_radians=False):
+
+def rotate(elements, angle, origin='center', use_radians=False, overwrite=False):
     r"""
     Calls: shapely.affinity.rotate(
         geom, angle, origin='center', use_radians=False)
@@ -317,10 +319,10 @@ def rotate(elements, angle, origin='center', use_radians=False):
         yoff = y0 - x0 * sin(r) - y0 * cos(r)
     """
     return _iter_func_geom_(shapely.affinity.rotate, elements,
-                            angle, origin=origin, use_radians=use_radians)
+                            angle, origin=origin, use_radians=use_radians, overwrite=overwrite)
 
 
-def translate(elements, xoff=0.0, yoff=0.0, zoff=0.0):
+def translate(elements, xoff=0.0, yoff=0.0, zoff=0.0, overwrite=False):
     r'''
     translate(geom, xoff=0.0, yoff=0.0, zoff=0.0)
 
@@ -335,10 +337,10 @@ def translate(elements, xoff=0.0, yoff=0.0, zoff=0.0):
         \ 0  0  0   1  /
     '''
     return _iter_func_geom_(shapely.affinity.translate, elements,
-                            xoff=xoff, yoff=yoff, zoff=zoff)
+                            xoff=xoff, yoff=yoff, zoff=zoff, overwrite=overwrite)
 
 
-def scale(elements, xfact=1.0, yfact=1.0, zfact=1.0, origin='center'):
+def scale(elements, xfact=1.0, yfact=1.0, zfact=1.0, origin='center', overwrite=False):
     r'''
     Operatos on a list or Dict of components.
 
@@ -366,10 +368,10 @@ def scale(elements, xfact=1.0, yfact=1.0, zfact=1.0, origin='center'):
         zoff = z0 - z0 * zfact
     '''
     return _iter_func_geom_(shapely.affinity.scale, elements,
-                            xfact=xfact, yfact=yfact, zfact=zfact, origin=origin)
+                            xfact=xfact, yfact=yfact, zfact=zfact, origin=origin, overwrite=overwrite)
 
 
-def rotate_position(elements, angle: float, pos: list, pos_rot=(0, 0)):
+def rotate_position(elements, angle: float, pos: list, pos_rot=(0, 0), overwrite=False):
     '''
     Orient and then place position. Just a shortcut function.
 
@@ -391,17 +393,16 @@ def rotate_position(elements, angle: float, pos: list, pos_rot=(0, 0)):
             sobj, angle, pos_rot)  # rotate about pos_rot
         return shapely.affinity.translate(sobj, *pos1)  # move to position
 
-    return _iter_func_geom_(rotate_position_shapely, elements,
-                            angle=angle, pos=pos, pos_rot=pos_rot)
+    return _iter_func_geom_(rotate_position_shapely, elements, overwrite=overwrite)
 
 
 def buffer(elements,
-           distance,
+           distance: float,
            resolution=None,
-           quadsegs=None,
            cap_style=CAP_STYLE.flat,
            join_style=JOIN_STYLE.mitre,
-           mitre_limit=None):
+           mitre_limit=None,
+           overwrite=False):
     '''
     Flat buffer of all components in the dictionary
 
@@ -427,8 +428,7 @@ def buffer(elements,
     A negative distance has a "shrink" effect. A zero distance may be used
     to "tidy" a polygon. The resolution of the buffer around each vertex of
     the object increases by increasing the resolution keyword parameter
-    or second positional parameter. Note: the use of a `quadsegs` parameter
-    is deprecated and will be gone from the next major release.
+    or second positional parameter. resolution = how many points
 
     The styles of caps are: CAP_STYLE.round (1), CAP_STYLE.flat (2), and
     CAP_STYLE.square (3).
@@ -446,9 +446,9 @@ def buffer(elements,
 
     Example use:
     --------------------
-        x = shapely_rectangle(1,1)
+        x = rectangle(1,1)
         y = buffer_flat([x,x,[x,x,{'a':x}]], 0.5)
-        draw_objs([x,y])
+        render_to_mpl([x,y])
     '''
     if mitre_limit is None:
         mitre_limit = config.DEFAULT.buffer_mitre_limit
@@ -463,7 +463,7 @@ def buffer(elements,
 
     return _iter_func_geom_(buffer_me, elements, distance,
                             resolution=resolution,
-                            quadsegs=quadsegs,
                             cap_style=cap_style,
                             join_style=join_style,
-                            mitre_limit=None)
+                            mitre_limit=mitre_limit,
+                            overwrite=overwrite)
