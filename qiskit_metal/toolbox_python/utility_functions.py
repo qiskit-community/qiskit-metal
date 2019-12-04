@@ -27,9 +27,10 @@ from copy import deepcopy
 import pandas as pd
 
 ####################################################################################
-### Dictionary related
+# Dictionary related
 
-def copy_update(options, *args, deep_copy = True, **kwargs):
+
+def copy_update(options, *args, deep_copy=True, **kwargs):
     '''
     Utility funciton to merge two dictionaries
     '''
@@ -49,12 +50,13 @@ def dict_start_with(my_dict, start_with, as_=list):
     dict_start_with(my_dict, 'Date')
     '''
     if as_ == list:
-        return [v for k, v in my_dict.items() if k.startswith(start_with)] #start_with in k]
+        # start_with in k]
+        return [v for k, v in my_dict.items() if k.startswith(start_with)]
     elif as_ == dict:
-        return {k:v for k, v in my_dict.items() if k.startswith(start_with)}
+        return {k: v for k, v in my_dict.items() if k.startswith(start_with)}
 
 
-def display_options(*ops_names, options = None, find_dot_keys=True, do_display=True):
+def display_options(*ops_names, options=None, find_dot_keys=True, do_display=True):
     '''
     Print html display of options dictionary by default `DEFAULT_OPTIONS`
 
@@ -65,7 +67,7 @@ def display_options(*ops_names, options = None, find_dot_keys=True, do_display=T
     or
         dfs, html = display_options(Metal_Transmon_Pocket.__name__, do_display=False)
     '''
-    #IDEA: display also ._hfss and ._gds etc. for those that have it and add to plugins
+    # IDEA: display also ._hfss and ._gds etc. for those that have it and add to plugins
     if options is None:
         from .. import DEFAULT_OPTIONS
         options = DEFAULT_OPTIONS
@@ -73,8 +75,8 @@ def display_options(*ops_names, options = None, find_dot_keys=True, do_display=T
     res = []
     for keyname in ops_names:
         if find_dot_keys:
-            names = list(filter(lambda x, match=keyname: x is match or\
-                             x.startswith(match+'.'), DEFAULT_OPTIONS.keys()))
+            names = list(filter(lambda x, match=keyname: x is match or
+                                x.startswith(match+'.'), DEFAULT_OPTIONS.keys()))
             names.sort()
             for name in names:
                 res += [pd.Series(options[name], name=name).to_frame()]
@@ -87,9 +89,11 @@ def display_options(*ops_names, options = None, find_dot_keys=True, do_display=T
 
 
 ####################################################################################
-### Tracebacks
+# Tracebacks
 
 _old_warn = None
+
+
 def enable_warning_traceback():
     """
     Show ow traceback on warning
@@ -97,6 +101,7 @@ def enable_warning_traceback():
 
     global _old_warn
     _old_warn = warnings.warn
+
     def warn(*args, **kwargs):
         '''
         Warn user with traceback to warning
@@ -120,9 +125,8 @@ def print_traceback_easy(start=26):
     Utility funciton to print traceback for debug
     '''
     print(f"\n")
-    print('\n'.join(map(repr,traceback.extract_stack()[start:])))
+    print('\n'.join(map(repr, traceback.extract_stack()[start:])))
     print('\n')
-
 
 
 def monkey_patch(self, func):

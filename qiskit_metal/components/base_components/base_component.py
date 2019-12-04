@@ -21,7 +21,7 @@ See the docstring of BaseComponent
 @date: 2019
 """
 
-from ...toolbox.attr_dict import Dict
+from ...toolbox_python.attr_dict import Dict
 # from ..base_elements.base_element import
 
 

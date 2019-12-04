@@ -37,10 +37,10 @@ if __ihave_pyqt__:
     del QtCore, _pyqt_message_handler
 
     # main window
-    from .main_window import Metal_gui
+    from .main_window import MetalGUI
 
 else:
-    def Metal_gui(*args, **kwargs): # pylint: disable=unused-argument
+    def MetalGUI(*args, **kwargs): # pylint: disable=unused-argument
         """
         ERROR: unable to load PyQt5! Please make sure PyQt5 is installed.
         See Metal installation instrucitons and help.

@@ -20,7 +20,7 @@ Updated 2019/09/25 - Thomas McConkey
 @author: Zlatko
 '''
 
-from ...toolbox.attr_dict import Dict
+from ...toolbox_python.attr_dict import Dict
 
 def is_component(obj):
     '''

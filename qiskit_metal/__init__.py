@@ -31,7 +31,7 @@ __version__ = '0.05.1'
 
 ## Setup logging
 
-from .toolbox.logging import logging, setup_logger
+from .toolbox_python.logging import logging, setup_logger
 from . import config
 
 logger = setup_logger('Metal', config.log.format, config.log.datefmt)
@@ -46,13 +46,14 @@ __LOG = logging.getLogger('matplotlib.backend_managers')
 __LOG.setLevel(logging.ERROR)
 del __LOG
 del logging
+del mpl
 
 
 ##############################################################################
 ### Imports for user
 
 # Core classes and default dictionaries
-from .toolbox.attr_dict import Dict
+from .toolbox_python.attr_dict import Dict
 from .config import DEFAULT, DEFAULT_OPTIONS
 
 # Core class check functions
@@ -66,12 +67,13 @@ from . import components
 from . import draw
 from . import renderers
 from . import analyses
-from . import toolbox
+from . import toolbox_python
 from . import toolbox_metal
+from . import toolbox_mpl
 
 # Metal GUI
-from ._gui import Metal_gui
+from ._gui import MetalGUI as metal_gui
 
 # Utility functions
-from .toolbox.utility_functions import copy_update
-from .toolbox.utility_functions import display_options
+from .toolbox_python.utility_functions import copy_update
+from .toolbox_python.utility_functions import display_options

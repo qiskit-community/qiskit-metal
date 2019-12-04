@@ -46,8 +46,8 @@ from .widgets.trees.default_options import Tree_Default_Options
 from .widgets.trees.metal_objects import Tree_Metal_Objects
 
 
-class Metal_gui(QMainWindow):
-    myappid = u'qiskit.metal.main_gui'
+class MetalGUI(QMainWindow):
+    myappid = u'qiskit.MetalGUI'
     _window_title = "Qiskit Metal - Quantum VLSI and Sims"
     _icon_default_create = 'create.png' # Maybe move to stylesheet
     _icon_size_create = 40  # 31px typical; QStyle.PM_ToolBarIconSize/2 # QtWidgets - typical setting
@@ -59,7 +59,7 @@ class Metal_gui(QMainWindow):
         .. code-block python
             %matplotlib qt
             %gui qt
-            from qiskit_metal import Metal_gui, PlanarDesign
+            from qiskit_metal import MetalGUI, PlanarDesign
 
             layout = PlanarDesign()
             gui = Qiskit_Metal_GUI(layout)

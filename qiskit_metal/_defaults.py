@@ -20,7 +20,7 @@ Created 2019
 @author: Zlatko K. Minev
 """
 
-from .toolbox.attr_dict import Dict
+from .toolbox_python.attr_dict import Dict
 
 ################################################################################
 # Default Paramters

@@ -12,7 +12,9 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 '''
-Function to draw CPW geometries
+Function to draw CPW geometries.
+
+TODO: CREATE A PROPER PATH CLASS.
 
 @author: Zlatko K. Minev, 2019
 '''

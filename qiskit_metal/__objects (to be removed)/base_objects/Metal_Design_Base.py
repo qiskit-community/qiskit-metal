@@ -212,7 +212,6 @@ class Metal_Design_Base():  # pylint: disable=invalid-name
     def parse_params(self, params: dict, param_names: str):
         """
         Extra utility function that can call parse_value on individual options.
-
         Use self.parse_value to parse only some options from a params dictionary
 
         Arguments:

@@ -13,11 +13,21 @@
 # that they have been altered from the originals.
 
 """
-Module containing all Qiskit Metal designs.
+Basic Qiskit Metal Planar (2D) design for CPW type geometry.
+
 
 @date: 2019
-@author: Zlatko Minev (IBM)
+@author: Zlatko Minev, Thomas McConeky, ... (IBM)
 """
 
-from .design_base import is_design, DesignBase
-from .design_planar import DesignPlanar
+from .design_base import DesignBase
+
+__all__ = ['DesignPlanar']
+
+class DesignPlanar(DesignBase):
+    """Metal class for a planar (2D) design, consisting of a single plane chip.
+    Typically assumed to have some CPW geometires.
+
+    Inherits DesignBase class.
+    """
+    pass

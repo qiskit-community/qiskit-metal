@@ -30,7 +30,7 @@ def save_metal(filename : str, design):
     design : design obejct Metal_Design_Base
 
     TODO: Right now just does pickle. Need to serialize object into JSON
-    or similar. THen recreate components.
+    or similar. Then recreate components.
     """
     pickle.dump(design, open(filename, "wb"))
 
@@ -47,6 +47,12 @@ def load_metal(filename : str, do_update=True):
 
     if do_update:
         from ..config import DEFAULT, DEFAULT_OPTIONS
+
+        DEFAULT.clear()
+        DEFAULT_OPTIONS.clear()
+
+        # Will this work? I need to change the pointers,
+        # so that they are linked after
         DEFAULT.update(design._defaults)
         DEFAULT_OPTIONS.update(design._default_options)
 
