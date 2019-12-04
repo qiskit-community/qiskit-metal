@@ -330,6 +330,10 @@ def parse_value(value: str, variable_dict: dict):
                 return parse_value(variable_dict[val], variable_dict)
             else:
                 # Assume it is a string and just return it
+                # CAUTION: This could cause issues for the user, if they meant to pass a variable
+                # but mistyped it or didn't define it. But they might also want to pass a string
+                # that is variable name compatible, such as pec.
+                # This is basically about type checking, which we can get back to later.
                 return val
 
         elif is_for_ast_eval(val):

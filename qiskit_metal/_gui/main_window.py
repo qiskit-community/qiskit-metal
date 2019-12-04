@@ -280,9 +280,9 @@ class Metal_gui(QMainWindow):
                          'M', menu,
                          label="Re&make\nall")
 
-        add_toolbar_icon(toolbar, 'action_clear_all_objects',
+        add_toolbar_icon(toolbar, 'action_clear_all_components',
                          self.imgs_path/'clear-button.png',
-                         self.clear_all_objects,
+                         self.clear_all_components,
                          '&Clear\nall',
                          None, menu,
                          label='Clear\nall')
@@ -722,7 +722,7 @@ class Metal_gui(QMainWindow):
         Remake all objects and refresh plots
         """
         logger.info('Remaking all Metal objects from options')
-        self.design.make_all_objects()
+        self.design.make_all_components()
         self.re_draw()
 
     @catch_exception_slot_pyqt()
@@ -819,7 +819,7 @@ class Metal_gui(QMainWindow):
         return None
 
     @catch_exception_slot_pyqt()
-    def clear_all_objects(self, *args):  # pylint: disable=unused-argument
+    def clear_all_components(self, *args):  # pylint: disable=unused-argument
         """
         Called by gui to clear all objects. Checks first with use dialog
         *args is required for the PyQt5 Socket
@@ -827,7 +827,7 @@ class Metal_gui(QMainWindow):
         ret = QMessageBox.question(self, '', "Are you sure you want to clear all Metal objects?",
                                    QMessageBox.Yes | QMessageBox.No)
         if ret == QMessageBox.Yes:
-            self.design.clear_all_objects()
+            self.design.clear_all_components()
             self.refresh_all()
 
     @catch_exception_slot_pyqt()

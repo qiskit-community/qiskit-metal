@@ -30,7 +30,7 @@ from copy import deepcopy
 from .Metal_Utility import is_design
 from ...toolbox.attr_dict import Dict
 from ...toolbox_metal.parsing import parse_value
-from ...config import DEFAULT_OPTIONS
+from ...config import DEFAULT_OPTIONS, DEFAULT
 
 
 DEFAULT_OPTIONS['Metal_Object'] = Dict(
@@ -56,11 +56,13 @@ class Metal_Object():  # pylint: disable=invalid-name
 
     Internals:
     ------------------
-        _options_inherit : Inherit options from functions or objects that are called in the options dictionary.
-            Used in the creation of a default options for the object.
-        _img (str) : Name of the image to display in the GUI toolbar. Save to `qiskit_metal/_gui/_imgs`
+        _options_inherit : Inherit options from functions or objects that are called in the
+                           options dictionary.
+                           Used in the creation of a default options for the object.
+        _img (str)      :  Name of the image to display in the GUI toolbar.
+                           Save to `qiskit_metal/_gui/_imgs`
         _gui_param_show (list) : Let's the gui know which Dict attributed of the object to show.
-            These must be Dict.
+                           These must be Dict.
     '''
 
     # Image to display in the GUI toolbar
@@ -78,14 +80,15 @@ class Metal_Object():  # pylint: disable=invalid-name
 
     def __init__(self, design, name, options=None, overwrite=False, make=False):
 
-        assert is_design(
-            design), "Error you did not pass in a valid Metal Design object as a parent of this component."
+        assert is_design(design), "Error you did not pass in a valid Metal Design object\
+             as a parent of this component."
 
         self.design = design
 
         if not overwrite:
             if name in design.components.keys():
-                raise ValueError('Object name already in use. Please choose an alternative name or delete the other object.')
+                raise ValueError('Object name already in use. Please choose an alternative name\
+                     or delete the other object.')
 
         self.name = name
 
@@ -166,9 +169,11 @@ class Metal_Object():  # pylint: disable=invalid-name
         Draw in HFSS
         This method should be overwritten by the childs hfss_draw function.
         '''
-    # Needs cleaning up and expanding. Should children classes have the gds_draw function internally?
-    # Seperate? Leave as part of parent class?
-    # Currently makes new cell for each object. Could be conflict between negative/positive polygon representation?
+        # Needs cleaning up and expanding.
+        # Should children classes have the gds_draw function internally?
+        # Seperate? Leave as part of parent class?
+        # Currently makes new cell for each object.
+        # Could be conflict between negative/positive polygon representation?
 
     def gds_draw(self, **kwargs):
         '''
@@ -201,11 +206,10 @@ class Metal_Object():  # pylint: disable=invalid-name
         '''
         return self.design.get_chip_z(self.options)
 
-
     def parse_value(self, val):
         """
-        Parse a string, mappable (dict, Dict), iterrable (list, tuple) to account for units conversion,
-        some basic arithmetic, and design variables.
+        Parse a string, mappable (dict, Dict), iterrable (list, tuple) to account for
+        units conversion, some basic arithmetic, and design variables.
         This is the main parsing function of Qiskit Metal.
 
         Handled Inputs:
@@ -250,8 +254,7 @@ class Metal_Object():  # pylint: disable=invalid-name
         """
         return parse_value(val, self.design.variables)
 
-
-    def parse_options(self, options = None):
+    def parse_options(self, options=None):
         """
         Parse the options, converting string into interpreted values.
         Parses units, variables, strings, lists, and dicitonaries.
@@ -269,8 +272,8 @@ class Metal_Object():  # pylint: disable=invalid-name
 
         return self.parse_value(options if options else self.options)
 
-    def add_connector(self, two_points: list, flip=False, chip='main', name=None):
-        """Add A connector to the design
+    def add_connector(self, two_points: list, flip=False, chip=None, name=None):
+        """Register a connector with the design.
 
         Arguments:
             two_points {list} -- List of the two point coordinates that deifne the start
@@ -278,8 +281,12 @@ class Metal_Object():  # pylint: disable=invalid-name
             ops {None / dict} -- Options
 
         Keyword Arguments:
-            name {[type]} -- By default is just the object name  (default: {None})
+            name {string or None} -- By default is just the object name  (default: {None})
+            chip {string or None} -- chip name or defaults to DEFAULT.chip
         """
+        if chip is None:
+            chip = DEFAULT.chip
+
         self.design.add_connector(name=name if name else self.name,
                                   points=two_points,
                                   chip=chip,

@@ -121,62 +121,30 @@ class Metal_Design_Base():  # pylint: disable=invalid-name
 #########COMMANDS##################################################
 
 
-    def reset_all_connectors(self):
+    def clear_all_connectors(self):
         '''
         Delete all connectors in the design.
         '''
         self.connectors.clear()
         return self.connectors
 
-    def reset_all_objects(self):
+    def clear_all_components(self):
         '''
-        Resets the components dictionary
+        Clears the components dictionary
         '''
         self._components.clear()
-        self.reset_all_connectors()
+        self.clear_all_connectors()
         return self._components
-
-    def reset_all_metal(self):
-        '''
-        Removes the metal device
-        '''
-        self.reset_all_objects()
-        # self.reset_all_connectors()
-        return self
-
-    clear_all_objects = reset_all_objects
 
     def __getitem__(self, key):
         return getattr(self, key)
 
-#########DRAWING##################################################
-    def plot_connectors(self, ax=None):
-        '''
-        Plots all connectors on the active axes. Draws the 1D line that
-        represents the "port" of a connector point. These are referenced for smart placement
-         of Metal components, such as when using functions like Metal_CPW_Connect.
-        '''
-        if ax is None:
-            import matplotlib.pyplot as plt
-            ax = plt.gca()
-
-        for name, conn in self.connectors.items():
-            line = LineString(conn.points)
-
-            render_to_mpl(line, ax=ax, kw=dict(lw=2, c='r'))
-
-            ax.annotate(name, xy=conn.middle[:2], xytext=conn.middle +
-                        np.array(DEFAULT.annots.design_connectors_ofst),
-                        **DEFAULT.annots.design_connectors)
-
-    def make_all_objects(self):
+    def make_all_components(self):
         """
-        Remakes all components with their current parameters. Easy way
+        Remakes all components with their current parameters.
         """
-        #self.logger.debug('Design: Making all components')
         for name, obj in self.components.items():  # pylint: disable=unused-variable
             if is_component(obj):
-                #self.logger.debug(f' Making {name}')
                 obj.make()
 
     def save_design(self, path):
@@ -193,8 +161,10 @@ class Metal_Design_Base():  # pylint: disable=invalid-name
 
     def parse_value(self, value):
         """
-        Parse a string, mappable (dict, Dict), iterrable (list, tuple) to account for units conversion,
-        some basic arithmetic, and design variables.
+        Main parsing function.
+
+        Parse a string, mappable (dict, Dict), iterrable (list, tuple) to account for
+        units conversion, some basic arithmetic, and design variables.
         This is the main parsing function of Qiskit Metal.
 
         Handled Inputs:
@@ -240,7 +210,10 @@ class Metal_Design_Base():  # pylint: disable=invalid-name
         return parse_value(value, self.variables)
 
     def parse_params(self, params: dict, param_names: str):
-        """Use self.parse_value to parse only some options from a params dictionary
+        """
+        Extra utility function that can call parse_value on individual options.
+
+        Use self.parse_value to parse only some options from a params dictionary
 
         Arguments:
             params (dict) -- Input dict to pull form

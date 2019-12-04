@@ -106,7 +106,7 @@ class Design_Planar(Metal_Design_Base):  # pylint: disable=invalid-name
             'launchers': {}
         }
 
-        #TODO: Move into renderer
+        # TODO: Move into renderer
         self._mesh_assign = Dict()  # internal dict used to append mesh ops and reassign
 
         self.variables.cpw_width = DEFAULT_OPTIONS.cpw.width
@@ -115,18 +115,18 @@ class Design_Planar(Metal_Design_Base):  # pylint: disable=invalid-name
 
 #########FUNCTIONS##################################################
 
-    def get_chip_size(self, arg = None):
+    def get_chip_size(self, chip_name=None):
         '''
         Gets the size of the chip in the options dictionary
         Takes options.chip
         '''
-        if arg is None:
+        if chip_name is None:
             chip_name = 'main'
-        elif isinstance(arg, dict):
+        elif isinstance(chip_name, dict):
             # Passed options
-            chip_name = arg['chip']
-        elif isinstance(arg, str):
-            chip_name = arg
+            chip_name = chip_name['chip']
+        elif isinstance(chip_name, str):
+            chip_name = chip_name
         else:
             raise ValueError('Unexpected get_chip_size arguemtn type.\
                               Should be dict, None or string name of chip.')
@@ -152,37 +152,6 @@ class Design_Planar(Metal_Design_Base):  # pylint: disable=invalid-name
     def get_ground_plane(self, options):
         ''' assumes options is a dict that has a key 'chip' '''
         return self.params.chips[options.get('chip', 'main')]['ground_plane']
-
-
-#########GDS_COMMANDS##################################################
-
-    def gds_draw_all(self, path=None):
-        r'''
-        Create full gds export cell
-
-        path : str : if passed will save
-
-        Can see with
-            gdspy.LayoutViewer()
-
-        can save with
-            # Save all created cells in file 'first.gds'
-            path = r'C:\zkm\2019-hfss\gds'
-            gdspy.write_gds(path+r'\first.gds')
-        '''
-        import gdspy
-
-        gdspy.current_library.cell_dict.clear()
-        device = gdspy.Cell('TOP_CELL')
-        for _, obj in self.components.items():
-            if is_component(obj):
-                cell = obj.gds_draw()
-                device.add(gdspy.CellReference(cell))
-
-        if path:
-            gdspy.write_gds(path)
-
-        return gdspy.current_library.cell_dict
 
 #########HFSS_COMMANDS##################################################
 #REQUIRES EPR PACKAGE TO FUNCTION PROPERLY#
@@ -228,7 +197,7 @@ class Design_Planar(Metal_Design_Base):  # pylint: disable=invalid-name
 
         if 1:
             modeler.set_units(units, rescale=False)
-            #pyEPR.hfss.LENGTH_UNIT = units  # HFSS seems to assume meters form a script no matter what
+            # pyEPR.hfss.LENGTH_UNIT = units  # HFSS seems to assume meters form a script no matter what
 
         # ??
         pyEPR.hfss.LENGTH_UNIT_ASSUMED = units  # used in parse_value_hfss
