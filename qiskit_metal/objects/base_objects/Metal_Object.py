@@ -76,7 +76,7 @@ class Metal_Object():  # pylint: disable=invalid-name
     # Inherit options from functions or objects that are called in the options dictionary
     _options_inherit = {}
 
-    def __init__(self, design, name, options=None, overwrite=False, make=False):
+    def __init__(self, design, name, options=None, overwrite=False, make=True):
 
         assert is_metal_design(
             design), "Error you did not pass in a valid Metal Design object as a parent of this component."
