@@ -98,3 +98,4 @@ ENV/
 *.aedtresults*
 *.aedt.lock
 qiskit_metal/.idea/
+qiskit_metal/.vscode/

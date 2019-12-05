@@ -23,12 +23,14 @@ import shapely
 
 from numpy import array
 from shapely.geometry import LineString, Polygon
+from shapely.affinity import translate
 
 from ..base_objects.Metal_Object import Metal_Object, Dict
 from ...config import DEFAULT_OPTIONS, DEFAULT
 from ...draw_cpw import parse_options_user, CAP_STYLE, JOIN_STYLE, meander_between, draw_cpw_trace, to_Vec3D
 from ...draw_utility import flip_merge, orient_position, get_poly_pts
-from ...draw_functions import make_connector_props, do_cut_ground, do_PerfE
+from ...draw_hfss import draw_object_shapely
+from ...draw_functions import make_connector_props, do_cut_ground, do_PerfE, shapely_rectangle
 from ...toolbox.parsing import parse_value_hfss
 
 DEFAULT_OPTIONS['cpw_launcher'] = Dict({
@@ -131,13 +133,15 @@ class cpw_launcher(Metal_Object):
         poly_inner  = Polygon(flip_merge(line_inner))
         poly_outer = Polygon(flip_merge(line_outter))
         poly_mesh = Polygon(flip_merge(line_mesh))
-
+        
+        poly_port = translate(shapely_rectangle(Bw*2, Bg), 0, -(Bg)/2)
+        
 
         # Position
         pos  = ops['position']
         if len(pos) == 3:
             # specify from edge of chip -- done poorly, do in a more user friendly way?
-            chip_size = self.self.design.get_chip_size('main') # array of 3 numbers
+            chip_size = self.design.get_chip_size('main') # array of 3 numbers
             arg = {'X':1, 'Y':0}[pos[0]]
 
             posY = pos[1]*chip_size[arg]/2. - ops['pos_gap']
@@ -154,12 +158,14 @@ class cpw_launcher(Metal_Object):
             raise ValueError("Cannot interpreit position of chip. Check how you specified it!! See the help of this class. ")
 
         # Move and orient
-        poly_inner, poly_outer, poly_mesh = orient_position([poly_inner, poly_outer, poly_mesh],  angle, pos1)
+        poly_inner, poly_outer, poly_mesh, poly_port = orient_position([poly_inner, poly_outer, 
+                                                                        poly_mesh, poly_port],  angle, pos1)
 
         self.objects.update(dict(
             inner = poly_inner,
             outer = poly_outer,
             mesh = poly_mesh,
+            port = poly_port,
         ))
 
         # Connectors
@@ -183,7 +189,7 @@ class cpw_launcher(Metal_Object):
         
         if options['do_draw']: # Draw 
             
-            oDesign, oModeler = self.design.get_modeler()
+            _, oModeler = self.design.get_modeler()
             def draw(poly, name_sup, flag=None):
                 ops = self.design.parse_value(options['kw_poly'])
                 if not flag is None:
@@ -201,10 +207,30 @@ class cpw_launcher(Metal_Object):
             
             if options['do_mesh']:
                 pass
-        
+
+            if 1: # port
+                rect_port = draw_object_shapely(oModeler, self.objects['port'], self.name+'_port') # pyEPR.hfss.Rect
+                rect_port.make_lumped_port(angle_to_xy(self.design.parse_value(self.options.orientation), 
+                                                       self.design.logger, self.name), 
+                                            name='port_'+self.name)
+            
             # these should be stored in the rendered or inside this  
             self.objects_hfss.update({
                 'inner':Poly0,
                 'outer':Poly1,
-                'mesh':Poly2
+                'mesh':Poly2,
+                'port':rect_port
             })
+
+
+def angle_to_xy(angle, logger, name):
+    # a cludge - to be replaced by rotated rectangle 
+    angle = float(angle)
+    if angle in [-450.,-270.,-90.,+90.,270.,450.]:
+        return 'x'
+    elif angle in [-540., -360., -180.,  0.,  180.,  360.,  540.]:
+        return 'y'
+    else:
+        logger.error(f'Could not map angle {angle} for object {name} to x or y. \
+        Must be in [-450,-270,-90,+90,270,450] or in   [-540, -360, -180,  0,  180,  360,  540]')
+        return angle
