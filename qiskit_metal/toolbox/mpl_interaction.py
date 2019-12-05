@@ -486,7 +486,7 @@ class PanAndZoom(ZoomOnWheel):
 
         self._ix_iy_old = ix, iy
 
-        _text = f'(x,y) = ({ix:.4f}, {iy:.4f})  Δ last point ({ix-ix_old:.4f}, {iy-iy_old:.4f})'
+        _text = f'(x,y) = ({ix:.6f}, {iy:.6f})  Δ last point ({ix-ix_old:.6f}, {iy-iy_old:.6f}) mm'
         if hasattr(self, '_status_label_2'):
             self._status_label_2.setText(_text)
         print(_text)
