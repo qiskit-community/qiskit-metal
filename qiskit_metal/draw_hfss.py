@@ -90,7 +90,8 @@ def draw_object_shapely(oModeler, obj, name, size_z=0., pos_z=0., hfss_options=N
         Exception: Unhandled object shape
 
     Returns:
-        pyEPR hfss poly -- [description]
+        pyEPR.hfss.Poly -- [description]
+        pyEPR.hfss.Rect -- for a rectangle
     """
 
     if not hfss_options:
@@ -100,13 +101,14 @@ def draw_object_shapely(oModeler, obj, name, size_z=0., pos_z=0., hfss_options=N
         points = Polygon(obj).coords_ext
         points_3d = to_Vec3Dz(points, parse_units(pos_z))  # TODO: Handle multiple chips
 
+        # TODO: Need to handle rectangle and rotated rectangle differently
         if is_rectangle(obj):  # Draw as rectangle
             logger.debug(f'Drawing a rectangle: {name}')
             (x_min, y_min, x_max, y_max) = obj.bounds
             poly_hfss = oModeler.draw_rect_corner(*parse_units(
                 [[x_min, y_min, pos_z], x_max-x_min, y_max-y_min, size_z]),
                 name=name, **hfss_options)
-            return poly_hfss
+            return poly_hfss # returns pyEPR.hfss.Rect
 
         # Draw general closed poly
         points_3d = parse_units(points_3d)

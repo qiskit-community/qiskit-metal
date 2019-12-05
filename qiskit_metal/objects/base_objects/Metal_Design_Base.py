@@ -144,7 +144,7 @@ class Metal_Design_Base(): # pylint: disable=invalid-name
 
             draw_objs(line, ax=ax, kw=dict(lw=2,c='r'))
 
-            ax.annotate(name, xy=conn.middle[:2], xytext=conn.middle +\
+            ax.annotate(name, xy=conn.middle[:2], xytext=conn.middle[:2] +\
                         np.array(DEFAULT.annots.design_connectors_ofst),\
                         **DEFAULT.annots.design_connectors)
 
