@@ -121,19 +121,19 @@ class Metal_Design_Base():  # pylint: disable=invalid-name
 #########COMMANDS##################################################
 
 
-    def clear_all_connectors(self):
+    def delete_all_connectors(self):
         '''
         Delete all connectors in the design.
         '''
         self.connectors.clear()
         return self.connectors
 
-    def clear_all_components(self):
+    def delete_all_components(self):
         '''
         Clears the components dictionary
         '''
         self._components.clear()
-        self.clear_all_connectors()
+        self.delete_all_connectors()
         return self._components
 
     def __getitem__(self, key):
