@@ -17,5 +17,5 @@
 @date: 2019
 """
 
-from .base_components import BaseComponent, is_component
-from .base_elements import BaseElement, is_element
+from .base.base import BaseComponent, is_component
+from .elements.base import BaseElement, is_element

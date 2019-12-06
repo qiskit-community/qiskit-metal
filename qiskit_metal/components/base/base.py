@@ -22,7 +22,7 @@ See the docstring of BaseComponent
 """
 
 from ...toolbox_python.attr_dict import Dict
-# from ..base_elements.base_element import
+# from ..elements.base import
 
 
 __all__ = ['is_component', 'BaseComponent']

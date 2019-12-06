@@ -27,7 +27,7 @@ from shapely.geometry.base import BaseGeometry
 
 from ... import Dict
 from ...config import DEFAULT
-from ..base_components.base_component import BaseComponent
+from ..base.base import BaseComponent
 
 __all__ = ['is_element', 'BaseElement']
 

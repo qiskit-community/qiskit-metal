@@ -67,6 +67,7 @@ class DesignBase():
         self._components = Dict()
         self._connectors = Dict()
         self._variables = Dict()
+        self._chips = Dict()
 
         self._defaults = DEFAULT  # Depricated, to be removed
         self._default_options = DEFAULT_OPTIONS
