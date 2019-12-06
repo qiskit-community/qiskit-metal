@@ -124,20 +124,20 @@ class DesignBase():
 
 #########General methods###################################################
 
-    def clear_all_connectors(self):
+    def delete_all_connectors(self):
         '''
         Clear all connectors in the design.
         '''
         self.connectors.clear()
         return self.connectors
 
-    def clear_all_components(self):
+    def delete_all_components(self):
         '''
         Clear all components in the design dictionary.
         Also clears all connectors.
         '''
         self._components.clear()
-        self.clear_all_connectors()
+        self.delete_all_connectors()
         return self._components
 
     def make_all_components(self):
@@ -147,6 +147,17 @@ class DesignBase():
         for name, obj in self.components.items():  # pylint: disable=unused-variable
             if is_component(obj):
                 obj.make()
+    
+    def delete_component(self, component_name):
+        """
+        Deletes component and connectors attached to said component.
+        """
+        connector_names = self.components.component_name.connector_names
+        for c_name in connector_names:
+            self.connectors.pop(c_name)
+
+        self.components.pop(component_name)
+        
 
 #########I/O###############################################################
 
@@ -237,7 +248,7 @@ class DesignBase():
         """
         return parse_params(params, param_names, variable_dict=self.variables)
 
-    def add_connector(self, name: str,  points: list, flip=False, chip='main'):
+    def add_connector(self, name: str,  points: list, parent_name: str, flip=False, chip='main'):
         """Add named connector to the design by creating a connector dicitoanry.
 
         Arguments:
@@ -247,7 +258,7 @@ class DesignBase():
             points {[list]} --List of two points (default: {None})
             ops {[dict]} -- Optionally add options (default: {None})
         """
-        self.connectors[name] = make_connector(points, flip=flip, chip=chip)
+        self.connectors[name] = make_connector(points, parent_name, flip=flip, chip=chip)
 
 
 ####################################################################################
@@ -256,8 +267,9 @@ class DesignBase():
 # TODO: Decide how to handle this.
 #   Should this be a class?
 #   Should we keep function here or just move into design?
+# MAKE it so it has reference to who made it 
 
-def make_connector(points: list, flip=False, chip='main'):
+def make_connector(points: list, parent_name, flip=False, chip='main'):
     """
     Works in user units.
 
@@ -285,5 +297,6 @@ def make_connector(points: list, flip=False, chip='main'):
         normal=vec_normal,
         tangent=vec_dist_unit,
         width=np.linalg.norm(vec_dist),
-        chip=chip
+        chip=chip,
+        parent_name = parent_name
     )
