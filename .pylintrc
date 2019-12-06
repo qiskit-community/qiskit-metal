@@ -6,7 +6,7 @@
 # A comma-separated list of package or module names from where C extensions may
 # be loaded. Extensions are loading into the active Python interpreter and may
 # run arbitrary code.
-extension-pkg-whitelist=
+extension-pkg-whitelist=PyQt5
 
 # Add files or directories to the blacklist. They should be base names, not
 # paths.
@@ -141,7 +141,9 @@ disable=print-statement,
         xreadlines-attribute,
         deprecated-sys-function,
         exception-escape,
-        comprehension-escape
+        comprehension-escape,
+        fixme,              # disabled as TODOs would show up as warnings
+        logging-fstring-interpolation # fstrings inside logging
 
 # Enable the message, report, category or checker with the given id(s). You can
 # either give multiple identifier separated by comma (,) or put this option
@@ -282,7 +284,7 @@ missing-member-max-choices=1
 
 # List of additional names supposed to be defined in builtins. Remember that
 # you should avoid defining new builtins when possible.
-additional-builtins=
+additional-builtins=abs,map,isinstance,open,sum,str,len,NotImplementedError,hasattr,float,list,int
 
 # Tells whether unused global variables should be treated as a violation.
 allow-global-unused-variables=yes
@@ -432,7 +434,15 @@ good-names=i,
            _,
            logger,
            q,
-           r
+           r,
+           log,
+           isinstance,
+           RES,
+           vec_D,
+           v1,
+           v2,
+           ax,
+           kw
 
 # Include a hint for the correct naming format with invalid-name.
 include-naming-hint=no
