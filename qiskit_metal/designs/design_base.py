@@ -237,16 +237,24 @@ class DesignBase():
         """
         return parse_params(params, param_names, variable_dict=self.variables)
 
-    def add_connector(self, name: str,  points: list, flip=False, chip='main'):
+    def add_connector(self, name: str, points: list, parent, flip=False, chip='main'):
         """Add named connector to the design by creating a connector dicitoanry.
 
         Arguments:
-            name {[str]} -- Name of connector
+            name {str} -- Name of connector
+            points {list} -- list of 2 2D points
+            parent -- component or string or None. Will be converted to a string, which will
+                      the name of the component.
 
         Keyword Arguments:
-            points {[list]} --List of two points (default: {None})
-            ops {[dict]} -- Optionally add options (default: {None})
+            points {list} --List of two points (default: {None})
+            ops {dict} -- Optionally add options (default: {None})
         """
+        if is_component(parent):
+            parent = parent.name
+        elif parent is None:
+            parent = 'none'
+        # assert isinstance(parent, str) # could enfornce
         self.connectors[name] = make_connector(points, flip=flip, chip=chip)
 
 
