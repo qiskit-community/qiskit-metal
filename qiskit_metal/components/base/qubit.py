@@ -13,7 +13,12 @@
 # that they have been altered from the originals.
 
 """
-@auhtor: Zlatko Minev
+@author: Zlatko Minev, Thomas McConekey, ... (IBM)
 @date: 2019
 """
-from .base_element import is_element, BaseElement
+
+from .base import BaseComponent
+
+class BaseQubit(BaseComponent):
+    # TODO
+    pass

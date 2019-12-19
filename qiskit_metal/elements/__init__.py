@@ -16,6 +16,6 @@
 @auhtor: Zlatko Minev
 @date: 2019
 """
-
-from .base.base import BaseComponent, is_component
-from ..elements.base import BaseElement, is_element
+from .base import is_element, BaseElement
+from .path import PathElement
+from .poly import PolyElement

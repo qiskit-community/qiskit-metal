@@ -25,11 +25,12 @@ See the docstring of BaseElement
 
 from shapely.geometry.base import BaseGeometry
 
-from ... import Dict
-from ...config import DEFAULT
-from ..base.base import BaseComponent
+from .. import Dict
+from ..config import DEFAULT
+from ..components.base import BaseComponent
 
 __all__ = ['is_element', 'BaseElement']
+
 
 def is_element(obj):
     """Check if an object is a Metal BaseElement, i.e., an instance of
@@ -71,17 +72,47 @@ class BaseElement():
                  name: str,
                  geom: BaseGeometry,
                  parent: BaseComponent,
-                 chip=None):
+                 chip=None,
+                 fillet=None,
+                 subtract=False,
+                 ):
         """The constructor for the `BaseElement` class.
 
         Arguments:
-            name {str} -- [description]
+            name {str} -- Name of the element used to render, if needed. A simple string.
             geom {BaseGeometry} -- A 2D `shapely` geometry. `LineString` or `Polygon`.
-            parent {BaseComponent} -- Parent class
+            parent {BaseComponent} -- Parent class: a Metal BaseComponent
 
         Keyword Arguments:
             chip {str} -- Which chip is the element on.
                           (default: {config.DEFAULT.chip, typically set to 'main'})
+            fillet {float, str, or tuple} -- float or string of the radius of the fillet.
+                          Can also pass a tuple of (raidus, [list of vertecies to fillet])
+                          (default: None - no fillet)
+            subtract {bool} -- subtract from ground plane of `chip` or not. There is one
+                            ground plane  per chip.
+
+        Internal data structure:
+            name {str} -- Name of the element used to render, if needed. A simple string.
+            geom {BaseGeometry} -- Shapely BaseGeometry that defines the element properties.
+            parent {BaseComponent} -- Parent class: a Metal BaseComponent
+            chip {str} -- String name (used as pointer) to chip on which the element is rendered.
+                         By  default config.DEFAULT.chip, typically set to 'main'}
+
+
+        Internal data structure related to renderers:
+
+            render_geom {Dict} -- Geometry rendered by the render that is associated with
+                            this element can be stored here. This is a dictonary of dictionaries.
+                            Each key is a renderer name. The inner dictionary contains the
+                            (name, object) pairs.
+                            Default is created by method `_create_default_render_geom`.
+
+            render_params {Dict} -- Dictionary of default params used in a renderer to render
+                        this parameter.
+                        Each key is a renderer name.
+                        The value is a dictionary of (key, value) settings for the renderer.
+                        Default is created by method `_create_default_render_geom`.
         """
 
         # Type checks
@@ -98,7 +129,13 @@ class BaseElement():
         self.geom = geom
         self.parent = parent
 
+        # Different elements within the same components can be on different chips
         self.chip = DEFAULT.chip if chip is None else chip
+
+        self.fillet = fillet
+
+        # Subtract from ground of not. bool. one ground per chip
+        self.subtract = subtract
 
         # Renderer related
         self.render_geom = self._create_default_render_geom()
@@ -120,19 +157,30 @@ class BaseElement():
         """
         return self.parent.name + self.__name_delimiter + self.name
 
-    def duplicate(self):
+    def duplicate(self, new_name: str, overwrite: bool):
         """
         Return a copy of the object.
 
         TODO:
         -Deep copy all the geometry objects.
         -Do not copy the parent etc.
+
+        Arguments:
+            new_name {str} -- New component name
+            overwrite {bool} -- If name exists, do we override?
+
+        Raises:
+            NotImplementedError: [description]
         """
+        # check that new_name is not already defined in component
+        # if overwrite then do overwite
+
         raise NotImplementedError()
 
     def _create_default_render_geom(self):
         """
         Create the default self.render_geom from the registered renderers.
+        Sets up dictionary hierarchy.
         """
         raise NotImplementedError()
         #render_geom = Dict()

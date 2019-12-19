@@ -17,5 +17,6 @@
 @date: 2019
 """
 
-from .base_component import is_component
-from .base_component import BaseComponent
+from .base import is_component
+from .base import BaseComponent
+

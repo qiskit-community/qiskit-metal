@@ -13,9 +13,17 @@
 # that they have been altered from the originals.
 
 """
-@auhtor: Zlatko Minev
+This is the main module that defines what a Base Junction, such as
+a Josephson tunnel junction is.
+
+To handle Manhatan, BFT, etc.
+
+@author: Zlatko Minev, Thomas McConekey, ... (IBM)
 @date: 2019
 """
 
-from .base.base import BaseComponent, is_component
-from ..elements.base import BaseElement, is_element
+from .base import BaseComponent
+
+class BaseJunction(BaseComponent):
+    # TODO
+    pass

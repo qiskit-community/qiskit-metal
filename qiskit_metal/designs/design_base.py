@@ -57,6 +57,14 @@ class DesignBase():
     A design is the most top-level object in all of Qiskit Metal.
     """
 
+    # TODO -- Break up DesignBase into several interface classes,
+    # such as DesignConnectorInterface, DesignComponentInterface, etc.
+    # in order to do a more Dependency Inversion Principle (DIP) style,
+    # see also Dependency Injection (DI). This can also generalize nicely
+    # to special flip chips, etc. to handle complexity!
+    # Technically, components, connectors, variables, etc. are all separate entities
+    # that can interface
+
     # Dummy private attribute used to check if an instanciated object is
     # indeed a DesignBase class. The problem is that the `isinstance`
     # built-in method fails when this module is reloaded.
@@ -73,6 +81,9 @@ class DesignBase():
         self._default_options = DEFAULT_OPTIONS
 
         self.logger = logger
+
+        # Notes, etc. that the user might want to store
+        self.metadata = Dict(notes='')
 
 #########PROPERTIES##################################################
 
@@ -151,15 +162,79 @@ class DesignBase():
             if is_component(obj):
                 obj.make()
 
-    def delete_component(self, component_name):
+    def rename_component(self, component_name: str, new_component_name: str):
+        """Rename component.
+
+        Arguments:
+            component_name {str} -- Old name
+            new_component_name {str} -- New name
+
+        Returns:
+            int -- Results:
+                1: True name is changed.
+                -1: Failed, new component name exists.
+                -2: Failed, invalid new name
         """
-        Deletes component and connectors attached to said component.
+        #
+        if new_component_name in self.components:
+            self.logger.info(f'Cannot rename {component_name} to {new_component_name}. Since {new_component_name} exists')
+            return -1
+
+        # Check that the name is a valid component name
+        if is_valid_component_name(component_name):
+            self.logger.info(f'Cannot rename {component_name} to {new_component_name}.')
+            return -2
+
+        # do rename
+            TODO
+        return True
+
+    def delete_component(self, component_name: str, force=False):
+        """Deletes component and connectors attached to said component.
+        If no component by that name is present, then just return True
+        If component has dependencices return false and do not delete,
+        unless force=True.
+
+        Arguments:
+            component_name {str} -- Name of component to delete
+
+        Keyword Arguments:
+            force {bool} -- force delete component even if it has children (default: {False})
+
+        Returns:
+            bool -- is there no such component
         """
-        connector_names = self.components.component_name.connector_names
+
+        # Nothing to delete if name not in components
+        if not component_name in self.components:
+            self.logger.info('Called delete component {component_name}, but such a \
+                             component is not in the design dicitonary of components.')
+            return True
+
+        # check if components has dependencies
+        #   if it does, then do not delete, unless force=true
+        #       logger.error('Cannot delete component{component_name}. It has dependencies. ')
+        #          return false
+        #   if it does not then delete
+
+        # Do delete component ruthelessly
+        return self._delete_component(component_name)
+
+    def _delete_component(self, component_name: str):
+        """Delete component without doing any checks.
+
+        Returns:
+            bool -- [description]
+        """
+        # Remove connectors
+        connector_names = self.components[component_name].connector_names
         for c_name in connector_names:
             self.connectors.pop(c_name)
 
-        self.components.pop(component_name)
+        # Remove from design dictionary of components
+        self.components.pop(component_name, None)
+
+        return True
 
 
 #########I/O###############################################################
@@ -268,9 +343,26 @@ class DesignBase():
             parent = parent.name
         elif parent is None:
             parent = 'none'
+
         # assert isinstance(parent, str) # could enfornce
         self.connectors[name] = make_connector(
             points, parent, flip=flip, chip=chip)
+
+    def update_component(self, component_name: str, dependencies=True):
+        """Update the component and any dependencies it may have.
+        Mediator type function to update all children.
+
+        Arguments:
+            component_name {str} -- [description]
+
+        Keyword Arguments:
+            dependencies {bool} -- Do update all dependencies (default: {True})
+        """
+
+        # Get dependency graph
+
+        # Remake components in order
+        pass
 
 
 ####################################################################################

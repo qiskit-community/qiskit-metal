@@ -13,9 +13,6 @@
 # that they have been altered from the originals.
 
 """
-@auhtor: Zlatko Minev
+@auhtor: Zlatko Minev, Thomas McConkey, ... (IBM)
 @date: 2019
 """
-
-from .base.base import BaseComponent, is_component
-from ..elements.base import BaseElement, is_element
