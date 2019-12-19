@@ -46,6 +46,7 @@ def is_component(obj):
 
     return hasattr(obj, '__i_am_component__')
 
+### NOT YET IN USE
 from logging import Logger
 class NameInterface():
 
@@ -118,7 +119,7 @@ class NameInterface():
 
 
 
-class BaseComponent(NameInterface):
+class BaseComponent():
 
     # Dummy private attribute used to check if an instanciated object is
     # indeed a BaseComponent class. The problem is that the `isinstance`
