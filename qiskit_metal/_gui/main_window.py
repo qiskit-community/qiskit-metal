@@ -34,8 +34,8 @@ from PyQt5.QtWidgets import (QAction, QApplication, QDockWidget,  # , QStyle
 from .. import logger
 from ..config import GUI_CONFIG
 from ..toolbox_metal.import_export import load_metal
-from ..toolbox_mpl.mpl_shapely import (draw_all_objects, plot_simple_gui_spawn,
-                                   plot_simple_gui_style)
+#from ..toolbox_mpl.mpl_shapely import (draw_all_objects, plot_simple_gui_spawn,
+#                                   plot_simple_gui_style)
 from . import widgets
 from ._handle_qt_messages import catch_exception_slot_pyqt
 from .widgets.dialog_create_metal import Dialog_create_metal

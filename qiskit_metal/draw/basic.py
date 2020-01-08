@@ -14,7 +14,6 @@
 """
 Main module for shapely basic drawing.
 
-
 @date: 2019
 @author: Zlatko Minev (IBM)
 """
@@ -23,12 +22,12 @@ from collections.abc import Iterable, Mapping
 
 import numpy as np
 import shapely
-import shapely.wkt
 import shapely.affinity
-from shapely.geometry import (CAP_STYLE, JOIN_STYLE, Point,
-                              Polygon)
+import shapely.wkt
+from shapely.geometry import CAP_STYLE, JOIN_STYLE, Point, Polygon
 
-from .. import is_component, is_element, logger, config
+from .. import config, logger
+from ..components.base import is_component
 from .utility import get_poly_pts
 
 __all__ = ['rectangle', 'is_rectangle', 'flip_merge', 'rotate', 'rotate_position',

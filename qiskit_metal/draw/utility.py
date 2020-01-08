@@ -29,8 +29,8 @@ from numpy import array
 from numpy.linalg import norm
 from shapely.geometry import Polygon, MultiPolygon
 
-from .. import logger, is_component, is_element
-from ..toolbox_mpl.mpl_interaction import figure_pz
+from .. import logger
+from ..components.base import is_component
 
 # TODO: define rotate, scale, translate to operate on shapely, element, component, and itterable, mappable
 
@@ -82,9 +82,9 @@ def get_all_geoms(obj, func=lambda x: x, root_name='components'):
         # Is it a metal component? Then traverse its components
         return obj.get_all_geom()  # dict of shapely geoms
 
-    elif is_element(obj):
-        # is it a metal element?
-        return {obj.name: obj.geom}  # shapely geom
+    #elif is_element(obj):
+    #    # is it a metal element?
+    #    return {obj.name: obj.geom}  # shapely geom
 
     elif isinstance(obj, shapely.geometry.base.BaseGeometry):
         # Is it the shapely object? This is the bottom of the search tree, then return

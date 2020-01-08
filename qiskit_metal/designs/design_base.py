@@ -24,10 +24,10 @@ To create a basic UML diagram
 import numpy as np
 
 from .. import Dict, draw, logger
+from ..components.base import is_component
 from ..config import DEFAULT, DEFAULT_OPTIONS
 from ..toolbox_metal.import_export import load_metal, save_metal
-from ..toolbox_metal.parsing import parse_value, parse_params
-from ..components import is_component
+from ..toolbox_metal.parsing import parse_params, parse_value
 
 __all__ = ['is_design', 'DesignBase']
 

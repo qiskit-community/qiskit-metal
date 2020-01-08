@@ -58,8 +58,8 @@ from .config import DEFAULT, DEFAULT_OPTIONS
 
 # Core class check functions
 from .components import is_component
-from .components import is_element
 from .designs import is_design
+from .elements import is_element_table, ElementTables
 
 # Core Modules for user to use
 from . import designs
@@ -80,5 +80,5 @@ from .toolbox_python.utility_functions import display_options
 
 
 # Import default renderers
-from .renderers.renderer_mpl import RendererMPL
+#from .renderers.renderer_mpl.renderer_mpl import RendererMPL
 #renderer_mpl = RendererMPL()
