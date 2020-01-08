@@ -40,9 +40,7 @@ DEFAULT['renderer_mpl'] = Dict(
 
 class RendererMPL(RendererGUIBase):
     """
-    Renderer for matplotlib.
-
-    Should alow for some GUI interaction.
+    Renderer for matplotlib in a GUI environment.
 
     TODO: How do we handle component selection, etc.
     """

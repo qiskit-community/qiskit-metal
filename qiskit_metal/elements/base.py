@@ -30,6 +30,7 @@ from shapely.geometry.base import BaseGeometry
 from .. import Dict
 from ..config import DEFAULT
 from ..components.base import BaseComponent
+from ..toolbox_python.utility_functions import data_frame_empty_typed
 
 __all__ = ['is_element_table', 'ElementTables']
 
@@ -69,11 +70,11 @@ ELEMENT_COLUMNS = dict(
         name=str,  # name of the element
         geometry=object,
         layer=int,
-        type=str, # metal, helper 
+        type=str,  # metal, helper
         chip=str,  # is this redundant with layer?
         subtract=bool,
         fillet=object,
-        color='', # none by default, can overwrite, not used by all renderers
+        color='',  # none by default, can overwrite, not used by all renderers
         __renderers__=dict(
             # ADD specific renderers here, all renderes must register here.
             # hfss = dict( ... ) # pick names as hfss_name
@@ -141,7 +142,7 @@ class ElementTables():
     name_delimiter = '_'
 
     @classmethod
-    def add_renderer_extension(cls, renderer_name:str, elements:dict):
+    def add_renderer_extension(cls, renderer_name: str, elements: dict):
         """Add renderer element extension to ELEMENT_COLUMNS.
         Called when the load function of a renderer is called.
 
@@ -153,7 +154,8 @@ class ElementTables():
         for element_type, element_column_ext_dict in elements.items():
             if not element_type in cls.ELEMENT_COLUMNS:
                 cls.ELEMENT_COLUMNS[element_type] = dict(__renderers__=dict())
-            cls.ELEMENT_COLUMNS[element_type]['__renderers__'].update(element_column_ext_dict)
+            cls.ELEMENT_COLUMNS[element_type]['__renderers__'].update(
+                element_column_ext_dict)
 
     @classmethod
     def get_element_types(cls):
@@ -187,23 +189,51 @@ class ElementTables():
         self.create_tables()
 
     def create_tables(self):
+        """
+        Creates the default tables once. Populates the dict 'tables' of DataFrames,
+        each with columns corresponding to the types of elements defined in ELEMENT_COLUMNS.
+
+        Should only be done once when a new design is created.
+        """
         for table_name in self.get_element_types():
             # Create dataframe with correct columns and d types
+            assert isinstance(table_name, str)
+            assert table_name.isidentifier()
 
             # Get column names
-            # Get base names, add concrete names, then add renderer names
-            columns = self.ELEMENT_COLUMNS['base'].copy()
-            columns_renderers_base = columns.pop('__renderers__')
-            columns_concrete = self.ELEMENT_COLUMNS[table_name]
+            # Base names, add concrete names, then add renderer names
 
+            # Base names
+            columns_base = self.ELEMENT_COLUMNS['base'].copy()
+            columns_base_renderers = columns.pop('__renderers__')
+
+            # Concrete names
+            columns_concrete = self.ELEMENT_COLUMNS[table_name].copy()
+            columns_concrete_renderer = columns_concrete.pop('__renderers__')
+
+            assert isinstance(columns_base_renderers, dict) and\
+                isinstance(columns_concrete_renderer, dict),\
+                "Please make sure that all elements types have __renderers__\
+                     which is a dictionary."
+
+            # Combine all base names and renderer names
+            columns = columns_base
             columns.update(columns_concrete)
-
-            columns.update()
+            # add renderer columns: base and then concrete
+            columns.update(self._prepend_renderer_names(
+                table_name, columns_base_renderers))
+            columns.update(self._prepend_renderer_names(
+                table_name, columns_concrete_renderer))
 
             # Create df with correct column names
+            table = data_frame_empty_typed(columns)
+            table.name = table_name
 
             # Assign
-            self.tables[table_name] = df
+            self.tables[table_name] = table
+
+    def _prepend_renderer_names(self, table_name: str, rdict: dict):
+        return {table_name + self.name_delimiter + k: v for k, v in rdict.items()}
 
     # def get_
 

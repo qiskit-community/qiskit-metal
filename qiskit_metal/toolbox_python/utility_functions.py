@@ -87,6 +87,21 @@ def display_options(*ops_names, options=None, find_dot_keys=True, do_display=Tru
     res_html = display_dfs(*res, do_display=do_display)
     return res, res_html
 
+def data_frame_empty_typed(column_types:dict):
+    """Creates and empty DataFrame with dtypes for each column given
+    by the dicitonary,
+
+    Arguments:
+        column_types {dict} -- key, dtype pairs
+
+    Returns:
+        DataFrame
+    """
+    df = pd.DataFrame()
+    for name, dtype in column_types.items():
+        df[name] = pd.Series(dtype=dtype)
+    return df
+
 
 ####################################################################################
 # Tracebacks
