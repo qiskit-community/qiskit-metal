@@ -20,6 +20,7 @@
 from ...designs import DesignBase, is_design
 from ...elements import ElementTables
 
+
 class RendererBase():
     """Abstract base class for all Renderers of Metal designs and their compoinents and elements.
 
@@ -32,7 +33,7 @@ class RendererBase():
             chips
     """
 
-    name = 'base' # overwrite this!
+    name = 'base'  # overwrite this!
 
     __loaded_renderers__ = set()
     __instantiated_renderers__ = dict()
@@ -45,7 +46,7 @@ class RendererBase():
     #            poly=dict(thickness=float, material=str), )
     element_extensions = dict()
 
-    #TODO: To add: default parameters for the renderer for component element values.
+    # TODO: To add: default parameters for the renderer for component element values.
 
     @classmethod
     def load(cls):
@@ -59,41 +60,42 @@ class RendererBase():
             True -- If success, otherwise throws an error.
         """
 
-        ### Check name
+        # Check name
         name = cls.name
 
         if name in RendererBase.__loaded_renderers__:
-            print(f'Warning: Renderer name={name}, class={cls} already loaded. Doing nothing.')
+            print(
+                f'Warning: Renderer name={name}, class={cls} already loaded. Doing nothing.')
 
-        ### Add elemnet extensions
+        # Add elemnet extensions
         # see docstring for RendererBase.element_extensions
         ElementTables.add_renderer_extension(cls.name, cls.element_extensions)
 
-        #### Add component extensions
+        # Add component extensions
         # to be used in the creation of default params for component elements
         raise NotImplementedError()
 
-        ### Finish and register offically as ready to use.
+        # Finish and register offically as ready to use.
         RendererBase.__loaded_renderers__.add(name)
 
         return True
 
     @staticmethod
-    def get_renderer(name:str):
-         """Returns an already loaded and instantiated renderer.
+    def get_renderer(name: str):
+        """Returns an already loaded and instantiated renderer.
 
-         Arguments:
-             name {[str]} -- [description]
-         """
-         if not name in RendererBase.__loaded_renderers__:
-             print('ERROR: The renderer {name} has not yet been loaded. Please use the load function!')
+        Arguments:
+            name {[str]} -- [description]
+        """
+        if not name in RendererBase.__loaded_renderers__:
+            print(
+                'ERROR: The renderer {name} has not yet been loaded. Please use the load function!')
 
-         if not name in RendererBase.__instantiated_renderers__:
-             print('ERROR: The renderer {name} has not yet been instantiated. Please instantiate the class!')
+        if not name in RendererBase.__instantiated_renderers__:
+            print(
+                'ERROR: The renderer {name} has not yet been instantiated. Please instantiate the class!')
 
-         return RendererBase.__instantiated_renderers__[name]
-
-
+        return RendererBase.__instantiated_renderers__[name]
 
     def __init__(self, design: DesignBase, initiate=True):
         # TODO: check that the renderer has been loaded with load_renderer
@@ -110,7 +112,6 @@ class RendererBase():
 
         # Register as an instantiated renderer.
         RendererBase.__instantiated_renderers__[self.name] = self
-
 
     def initate(self, re_initiate=False):
         '''
@@ -181,13 +182,13 @@ class RendererBase():
 
     def render_element(self, element):
         raise NotImplementedError()
-        #if isinstance(element, path):
+        # if isinstance(element, path):
         #    self.render_element_path(element)
 
-        #elif isinstance(element, poly):
+        # elif isinstance(element, poly):
         #    self.render_element_poly(element)
 
-        #else:
+        # else:
         #    self.logger.error('RENDERER ERROR: Unkown element {element}')
 
     def render_element_path(self, path):
