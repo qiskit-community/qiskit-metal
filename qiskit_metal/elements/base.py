@@ -23,18 +23,20 @@ See the docstring of BaseElement
 
 #from copy import deepcopy
 
+import pandas as pd
 from shapely.geometry.base import BaseGeometry
+# from collections import OrderedDict # dict are oreder in Python 3.6+ by default, this is jsut in case for backward compatability
 
 from .. import Dict
 from ..config import DEFAULT
 from ..components.base import BaseComponent
 
-__all__ = ['is_element', 'BaseElement']
+__all__ = ['is_element_table', 'ElementTables']
 
 
-def is_element(obj):
-    """Check if an object is a Metal BaseElement, i.e., an instance of
-     `BaseElement`.
+def is_element_table(obj):
+    """Check if an object is a Metal BaseElementTable, i.e., an instance of
+     `ElementTables`.
 
     The problem is that the `isinstance` built-in method fails
     when this module is reloaded.
@@ -48,148 +50,256 @@ def is_element(obj):
     if isinstance(obj, Dict):
         return False
 
-    return hasattr(obj, '__i_am_element__')
+    return hasattr(obj, '__i_am_element_table__')
 
 
-class BaseElement():
-    """Main Metal class for the basic geometric object: an `element`.
+#############################################################################
+#
+# Dicitonary that specifies the structue of the elment tables
+#
+
+ELEMENT_COLUMNS = dict(
+
+    ################################################
+    # DO NOT MODIFY THE base DICITONARY.
+    # This is for Metal API use only.
+    # To add a new element type, add a new key below.
+    base=dict(
+        component=str,  # name of the component to which the element belongs
+        name=str,  # name of the element
+        geometry=object,
+        layer=int,
+        type=str,
+        chip=str,  # is this redundant with layer?
+        subtract=bool,
+        fillet=object,
+        color='', # none by default, can overwrite, not used by all renderers
+        __renderers__=dict(
+            # ADD specific renderers here, all renderes must register here.
+            # hfss = dict( ... ) # pick names as hfss_name
+        )
+    ),
+
+
+    ################################################
+    # Specifies a path, such as a CPW.
+    path=dict(
+        width=float,
+        __renderers__=dict(
+        )
+    ),
+
+    ################################################
+    # Specifies a polygon
+    poly=dict(
+        __renderers__=dict(
+        )
+    ),
+
+    ################################################
+    # Specifies a curved object, such as a circle
+    # Not yet implemented
+    # curved = dict(
+    # __renderers__= dict(
+    # )
+    # )
+)
+
+
+#############################################################################
+#
+# Class to create, store, and handle element tables.
+#
+
+class ElementTables():
+    """Class to create, store, and handle element tables.
+
+    Metal class for the table of basic geometric objects: `elements`.
     A component, such as a qubit, is a collection of elements.
     For example, an element includes a rectangle, a cpw path, or a more general polygon.
 
-    This is the base class, from which which all elements are dervied.
+    An element is a row in a table.
+
+    All elements of a type (Path or Polygon, or otherwise) are stored in a
+    single table of their element type.
+
+    All elements of the same kind are stored in a table.
     A renderer has to know how to handle all types of elements in order to render them.
     """
-
-    __name_delimiter = '_'  # for creating a full name
 
     # Dummy private attribute used to check if an instanciated object is
     # indeed a BaseComponent class. The problem is that the `isinstance`
     # built-in method fails when this module is reloaded.
     # Used by `is_element` to check.
-    __i_am_element__ = True
+    __i_am_element_table__ = True
 
-    def __init__(self,
-                 name: str,
-                 geom: BaseGeometry,
-                 parent: BaseComponent,
-                 chip=None,
-                 fillet=None,
-                 subtract=False,
-                 ):
-        """The constructor for the `BaseElement` class.
+    # Table column names to use to create.
+    # this dict should be updated by renderers.
+    ELEMENT_COLUMNS = ELEMENT_COLUMNS
+
+    # For creating names of columns of renderer properties
+    name_delimiter = '_'
+
+    @classmethod
+    def add_renderer_extension(cls, renderer_name:str, elements:dict):
+        """Add renderer element extension to ELEMENT_COLUMNS.
+        Called when the load function of a renderer is called.
 
         Arguments:
-            name {str} -- Name of the element used to render, if needed. A simple string.
-            geom {BaseGeometry} -- A 2D `shapely` geometry. `LineString` or `Polygon`.
-            parent {BaseComponent} -- Parent class: a Metal BaseComponent
-
-        Keyword Arguments:
-            chip {str} -- Which chip is the element on.
-                          (default: {config.DEFAULT.chip, typically set to 'main'})
-            fillet {float, str, or tuple} -- float or string of the radius of the fillet.
-                          Can also pass a tuple of (raidus, [list of vertecies to fillet])
-                          (default: None - no fillet)
-            subtract {bool} -- subtract from ground plane of `chip` or not. There is one
-                            ground plane  per chip.
-
-        Internal data structure:
-            name {str} -- Name of the element used to render, if needed. A simple string.
-            geom {BaseGeometry} -- Shapely BaseGeometry that defines the element properties.
-            parent {BaseComponent} -- Parent class: a Metal BaseComponent
-            chip {str} -- String name (used as pointer) to chip on which the element is rendered.
-                         By  default config.DEFAULT.chip, typically set to 'main'}
-
-
-        Internal data structure related to renderers:
-
-            render_geom {Dict} -- Geometry rendered by the render that is associated with
-                            this element can be stored here. This is a dictonary of dictionaries.
-                            Each key is a renderer name. The inner dictionary contains the
-                            (name, object) pairs.
-                            Default is created by method `_create_default_render_geom`.
-
-            render_params {Dict} -- Dictionary of default params used in a renderer to render
-                        this parameter.
-                        Each key is a renderer name.
-                        The value is a dictionary of (key, value) settings for the renderer.
-                        Default is created by method `_create_default_render_geom`.
+            renderer_name {str} -- name of renderer
+            elements {dict} --  dict of dict. keys give element type names,
+                                such as base, poly, path, etc.
         """
+        for element_type, element_column_ext_dict in elements.items():
+            if not element_type in cls.ELEMENT_COLUMNS:
+                cls.ELEMENT_COLUMNS[element_type] = dict(__renderers__=dict())
+            cls.ELEMENT_COLUMNS[element_type]['__renderers__'].update(element_column_ext_dict)
 
-        # Type checks
-        assert isinstance(name, str),\
-            "Please use only strings as names for elements."
-        assert isinstance(geom, BaseGeometry),\
-            "You must pass a shapely Polygon or LineString or\
-             BaseGeometry objects to `geom` in oroder to create an element."
-        assert isinstance(parent, BaseGeometry),\
-            "You must pass in only BaseComponent inherited objects to parent for elements."
-
-        # Arguments
-        self.name = name
-        self.geom = geom
-        self.parent = parent
-
-        # Different elements within the same components can be on different chips
-        self.chip = DEFAULT.chip if chip is None else chip
-
-        self.fillet = fillet
-
-        # Subtract from ground of not. bool. one ground per chip
-        self.subtract = subtract
-
-        # Renderer related
-        self.render_geom = self._create_default_render_geom()
-        self.render_params = self._create_default_render_params()
-
-    @property
-    def z_value(self):
-        """Return the z elevation of the chip on which the element is siting
-        """
-        return self.parent.design.get_chip_z(self.chip)
-
-    @property
-    def full_name(self):
-        """Return full name of the object, such as Q1_connector_pad
-        Where the parent name is Q1 and the object name is "connector_pad"
+    @classmethod
+    def get_element_types(cls):
+        """Return the names of the available elements to create.
+        This does not include 'base', but is rather such as poly and path.
 
         Returns:
-            string
+            list(str) -- list of name in self.ELEMENT_COLUMNS
         """
-        return self.parent.name + self.__name_delimiter + self.name
+        names = list(cls.ELEMENT_COLUMNS.keys())
+        names.remove('base')
+        return names
 
-    def duplicate(self, new_name: str, overwrite: bool):
+    @property
+    def tables(self):
+        """Read-only dictionary of tables with keys self.get_element_types()
+
+        Returns:
+            dict of pandas dataframes
+
         """
-        Return a copy of the object.
+        return self._tables
 
-        TODO:
-        -Deep copy all the geometry objects.
-        -Do not copy the parent etc.
+    def __init__(self, design):
+        """The constructor for the `BaseElement` class.
 
-        Arguments:
-            new_name {str} -- New component name
-            overwrite {bool} -- If name exists, do we override?
-
-        Raises:
-            NotImplementedError: [description]
         """
-        # check that new_name is not already defined in component
-        # if overwrite then do overwite
+        self.design = design
 
-        raise NotImplementedError()
+        self._tables = Dict()
+        self.create_tables()
 
-    def _create_default_render_geom(self):
-        """
-        Create the default self.render_geom from the registered renderers.
-        Sets up dictionary hierarchy.
-        """
-        raise NotImplementedError()
-        #render_geom = Dict()
-        # return render_geom
+    def create_tables(self):
+        for table_name in self.get_element_types():
+            # Create dataframe with correct columns and d types
 
-    def _create_default_render_params(self):
-        """
-        Create the default self.render_geom from the registered renderers.
-        """
-        raise NotImplementedError()
-        #render_params = Dict()
-        # return render_params
+            # Get column names
+            # Get base names, add concrete names, then add renderer names
+            columns = self.ELEMENT_COLUMNS['base'].copy()
+            columns_renderers_base = columns.pop('__renderers__')
+            columns_concrete = self.ELEMENT_COLUMNS[table_name]
+
+            columns.update(columns_concrete)
+
+            columns.update()
+
+            # Create df with correct column names
+
+            # Assign
+            self.tables[table_name] = df
+
+    # def get_
+
+        # """The constructor for the `BaseElement` class.
+
+        # Arguments:
+        #     name {str} -- Name of the element used to render, if needed. A simple string.
+        #     geom {BaseGeometry} -- A 2D `shapely` geometry. `LineString` or `Polygon`.
+        #     parent {BaseComponent} -- Parent class: a Metal BaseComponent
+
+        # Keyword Arguments:
+        #     chip {str} -- Which chip is the element on.
+        #                   (default: {config.DEFAULT.chip, typically set to 'main'})
+        #     fillet {float, str, or tuple} -- float or string of the radius of the fillet.
+        #                   Can also pass a tuple of (raidus, [list of vertecies to fillet])
+        #                   (default: None - no fillet)
+        #     subtract {bool} -- subtract from ground plane of `chip` or not. There is one
+        #                     ground plane  per chip.
+
+        # Internal data structure:
+        #     name {str} -- Name of the element used to render, if needed. A simple string.
+        #     geom {BaseGeometry} -- Shapely BaseGeometry that defines the element properties.
+        #     parent {BaseComponent} -- Parent class: a Metal BaseComponent
+        #     chip {str} -- String name (used as pointer) to chip on which the element is rendered.
+        #                  By  default config.DEFAULT.chip, typically set to 'main'}
+
+        # Internal data structure related to renderers:
+
+        #     render_geom {Dict} -- Geometry rendered by the render that is associated with
+        #                     this element can be stored here. This is a dictonary of dictionaries.
+        #                     Each key is a renderer name. The inner dictionary contains the
+        #                     (name, object) pairs.
+        #                     Default is created by method `_create_default_render_geom`.
+
+        #     render_params {Dict} -- Dictionary of default params used in a renderer to render
+        #                 this parameter.
+        #                 Each key is a renderer name.
+        #                 The value is a dictionary of (key, value) settings for the renderer.
+        #                 Default is created by method `_create_default_render_geom`.
+        # """
+
+        # # Type checks
+        # assert isinstance(name, str),\
+        #     "Please use only strings as names for elements."
+        # assert isinstance(geom, BaseGeometry),\
+        #     "You must pass a shapely Polygon or LineString or\
+        #      BaseGeometry objects to `geom` in oroder to create an element."
+        # assert isinstance(parent, BaseGeometry),\
+        #     "You must pass in only BaseComponent inherited objects to parent for elements."
+
+        # # Arguments
+        # self.name = name
+        # self.geom = geom
+        # self.parent = parent
+
+        # # Different elements within the same components can be on different chips
+        # self.chip = DEFAULT.chip if chip is None else chip
+
+        # self.fillet = fillet
+
+        # # Subtract from ground of not. bool. one ground per chip
+        # self.subtract = subtract
+
+        # # Renderer related
+        # self.render_geom = self._create_default_render_geom()
+        # self.render_params = self._create_default_render_params()
+
+    # @property
+    # def z_value(self):
+    #     """Return the z elevation of the chip on which the element is siting
+    #     """
+    #     return self.parent.design.get_chip_z(self.chip)
+
+    # @property
+    # def full_name(self):
+    #     """Return full name of the object, such as Q1_connector_pad
+    #     Where the parent name is Q1 and the object name is "connector_pad"
+
+    #     Returns:
+    #         string
+    #     """
+    #     return self.parent.name + self.__name_delimiter + self.name
+
+    # def _create_default_render_geom(self):
+    #     """
+    #     Create the default self.render_geom from the registered renderers.
+    #     Sets up dictionary hierarchy.
+    #     """
+    #     raise NotImplementedError()
+    #     #render_geom = Dict()
+    #     # return render_geom
+
+    # def _create_default_render_params(self):
+    #     """
+    #     Create the default self.render_geom from the registered renderers.
+    #     """
+    #     raise NotImplementedError()
+    #     #render_params = Dict()
+    #     # return render_params
