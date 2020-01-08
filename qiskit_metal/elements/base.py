@@ -23,6 +23,7 @@ See the docstring of BaseElement
 
 #from copy import deepcopy
 
+import inspect
 import pandas as pd
 from shapely.geometry.base import BaseGeometry
 # from collections import OrderedDict # dict are oreder in Python 3.6+ by default, this is jsut in case for backward compatability
@@ -74,10 +75,19 @@ ELEMENT_COLUMNS = dict(
         chip=str,  # is this redundant with layer?
         subtract=bool,
         fillet=object,
-        color='',  # none by default, can overwrite, not used by all renderers
+        color=str,  # none by default, can overwrite, not used by all renderers
         __renderers__=dict(
             # ADD specific renderers here, all renderes must register here.
             # hfss = dict( ... ) # pick names as hfss_name
+            # hfss=dict(
+            #     boundaray_name=str,
+            #     material=str,
+            #     perfectE=bool
+            # ),
+            # gds=dict(
+            #     type=str,
+            #     color=str,
+            # )
         )
     ),
 
@@ -115,7 +125,11 @@ ELEMENT_COLUMNS = dict(
 class ElementTables():
     """Class to create, store, and handle element tables.
 
-    Metal class for the table of basic geometric objects: `elements`.
+    A regular user would not need to create tables themselves.
+    This is handled automatically by the design creation and plugins.
+
+    Structure
+    --------
     A component, such as a qubit, is a collection of elements.
     For example, an element includes a rectangle, a cpw path, or a more general polygon.
 
@@ -126,6 +140,55 @@ class ElementTables():
 
     All elements of the same kind are stored in a table.
     A renderer has to know how to handle all types of elements in order to render them.
+
+    For plugin developers
+    --------
+    In the followin, we provide an example that illustrates for plugin developers how
+    to add custom elements and custom element properties. For example, we will add, for a renderer
+    called hfss, a string property called 'boundary', a bool property called 'perfectE', and a property called 'material'.
+
+    For plugin developers, example use:
+
+        .. code-block:: python
+            :linenos:
+            :emphasize-lines: 4,6
+
+        import qiskit_metal as metal
+
+        design = metal.designs.DesignPlanar()
+        elements = metal.ElementTables(design)
+
+        elements.tables['path']
+        >>> component	name	geometry	layer	type	chip	subtract	fillet	color	width
+
+
+    Now, if we want to add custom elements through two fake renderers called hfss and gds:
+
+    .. code-block:: python
+        :linenos:
+        :emphasize-lines: 1-15
+
+        metal.ElementTables.add_renderer_extension('hfss', dict(
+            base=dict(
+                boundary=str,
+                perfectE=bool,
+                material=str,
+                )
+            ))
+
+        metal.ElementTables.add_renderer_extension('gds', dict(
+            path=dict(
+                color=str,
+                pcell=bool,
+                )
+            ))
+
+        design = metal.designs.DesignPlanar()
+        elements = metal.ElementTables(design)
+
+        elements.tables['path']
+        >>> component	name	geometry	layer	type	chip	subtract	fillet	color	width	hfss_boundary	hfss_perfectE	hfss_material	gds_color	gds_pcell
+
     """
 
     # Dummy private attribute used to check if an instanciated object is
@@ -151,10 +214,25 @@ class ElementTables():
             elements {dict} --  dict of dict. keys give element type names,
                                 such as base, poly, path, etc.
         """
-        for element_type, element_column_ext_dict in elements.items():
-            if not element_type in cls.ELEMENT_COLUMNS:
-                cls.ELEMENT_COLUMNS[element_type] = dict(__renderers__=dict())
-            cls.ELEMENT_COLUMNS[element_type]['__renderers__'].update(
+
+        # Make sure that the base and all other element kinds have this renderer registerd
+        for element_key in cls.ELEMENT_COLUMNS:
+            if not renderer_name in cls.ELEMENT_COLUMNS[element_key]['__renderers__']:
+                cls.ELEMENT_COLUMNS[element_key]['__renderers__'][renderer_name] = dict(
+                )
+
+        # Now update the dicitonaries with all elements that the renderer may have
+        for element_key, element_column_ext_dict in elements.items():
+
+            # The element the render is specifying is not in the specified elements;
+            # then add it. This shouldn't really happen.
+            # The rest of the renderer dict keys in __renderers__  are missing for
+            # the created type. Avoid doing, else hope it works.
+            if not element_key in cls.ELEMENT_COLUMNS:
+                cls.ELEMENT_COLUMNS[element_key] = dict(__renderers__=dict())
+
+            # Now add elements
+            cls.ELEMENT_COLUMNS[element_key]['__renderers__'][renderer_name].update(
                 element_column_ext_dict)
 
     @classmethod
@@ -179,11 +257,12 @@ class ElementTables():
         """
         return self._tables
 
-    def __init__(self, design):
+    def __init__(self, design, logger=None):
         """The constructor for the `BaseElement` class.
 
         """
         self.design = design
+        self.logger = logger or design.logger
 
         self._tables = Dict()
         self.create_tables()
@@ -195,6 +274,8 @@ class ElementTables():
 
         Should only be done once when a new design is created.
         """
+        self.logger.debug('Creating Element Tables.')
+
         for table_name in self.get_element_types():
             # Create dataframe with correct columns and d types
             assert isinstance(table_name, str)
@@ -205,7 +286,7 @@ class ElementTables():
 
             # Base names
             columns_base = self.ELEMENT_COLUMNS['base'].copy()
-            columns_base_renderers = columns.pop('__renderers__')
+            columns_base_renderers = columns_base.pop('__renderers__')
 
             # Concrete names
             columns_concrete = self.ELEMENT_COLUMNS[table_name].copy()
@@ -220,20 +301,51 @@ class ElementTables():
             columns = columns_base
             columns.update(columns_concrete)
             # add renderer columns: base and then concrete
-            columns.update(self._prepend_renderer_names(
-                table_name, columns_base_renderers))
-            columns.update(self._prepend_renderer_names(
-                table_name, columns_concrete_renderer))
+            for renderer_key in columns_base_renderers:
+                columns.update(self._prepend_renderer_names(
+                    table_name, renderer_key, columns_base_renderers))
+                columns.update(self._prepend_renderer_names(
+                    table_name, renderer_key, columns_concrete_renderer))
+
+            # Validate -- Throws an error if not valid
+            self._validate_column_dictionary(table_name, columns)
 
             # Create df with correct column names
             table = data_frame_empty_typed(columns)
-            table.name = table_name
+            table.name = table_name  # not used elsewhere
 
             # Assign
             self.tables[table_name] = table
 
-    def _prepend_renderer_names(self, table_name: str, rdict: dict):
-        return {table_name + self.name_delimiter + k: v for k, v in rdict.items()}
+    def _validate_column_dictionary(self, table_name: str,  column_dict: dict):
+        """Validate
+        A possible error here is if the user did not pass a valid data type
+        This raises TypeError: data type '' not understood
+
+        Throws an error if not valid
+        """
+        __pre = 'ERROR CREATING ELEMENT TABLE FOR DESIGN: \
+            \n  ELEMENT_TABLE_NAME = {table_name}\
+            \n  KEY                = {k} \
+            \n  VALUE              = {v}\n '
+
+        for k, v in column_dict.items():
+            assert isinstance(k, str), __pre.format(**locals()) +\
+                ' Key needs to be a string!'
+            assert k.isidentifier(), __pre.format(**locals()) +\
+                ' Key needs to be a valid string identifier!'
+            assert inspect.isclass(v), __pre.format(**locals()) +\
+                ' Value needs to be a class!'
+
+    def get_rname(self, renderer_name: str, key: str):
+        '''
+        Get name for renderer property
+        '''
+        return renderer_name + self.name_delimiter + key  # self.name_delimiter +
+
+    def _prepend_renderer_names(self, table_name: str, renderer_key: str, rdict: dict):
+        return {self.get_rname(renderer_key, k): v
+                for k, v in rdict.get(renderer_key, {}).items()}
 
     # def get_
 
