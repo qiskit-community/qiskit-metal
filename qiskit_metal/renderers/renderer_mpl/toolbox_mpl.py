@@ -76,13 +76,13 @@ def _render_poly_to_mpl(poly: Polygon,
 
 
 def render_to_mpl(components,
-                       ax=None,
-                       kw={},
-                       plot_format=True,
-                       labels=None,
-                       __depth=-1,  # how many sublists in we are
-                       _iteration=0,  # how many components we have plotted
-                       **kwargs):  # such as kw_hole
+                    ax=None,
+                    kw={},
+                    plot_format=True,
+                    labels=None,
+                    __depth=-1,  # how many sublists in we are
+                    _iteration=0,  # how many components we have plotted
+                    **kwargs):  # such as kw_hole
     '''
     Plot a list or dicitoanry of shapely components.
 
