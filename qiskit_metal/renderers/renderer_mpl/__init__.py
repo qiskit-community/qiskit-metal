@@ -17,22 +17,5 @@
 @date: 2019
 """
 
-
-def plot_connectors(self, ax=None):
-    '''
-    Plots all connectors on the active axes. Draws the 1D line that
-    represents the "port" of a connector point. These are referenced for smart placement
-        of Metal components, such as when using functions like Metal_CPW_Connect.
-    '''
-    if ax is None:
-        import matplotlib.pyplot as plt
-        ax = plt.gca()
-
-    for name, conn in self.connectors.items():
-        line = LineString(conn.points)
-
-        render_to_mpl(line, ax=ax, kw=dict(lw=2, c='r'))
-
-        ax.annotate(name, xy=conn.middle[:2], xytext=conn.middle +
-                    np.array(DEFAULT.annots.design_connectors_ofst),
-                    **DEFAULT.annots.design_connectors)
+from .renderer_mpl import  RendererMPL
+from . import toolbox

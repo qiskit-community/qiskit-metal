@@ -46,15 +46,8 @@ DEFAULT_OPTIONS:
 DEFAULT = Dict(
     units='mm',
     chip='main',
-    draw_mpl=Dict(
-        annot_connector_ofst=[0.025, 0.025],
-        annot_connector=dict(
-            color='r',  # called by ax.annotate
-            arrowprops=dict(color='r', shrink=0.1, width=0.05, headwidth=0.1)
-        )
-    ),
     buffer_resolution=16, # for shapely buffer
-    buffer_mitre_limit=5.0
+    buffer_mitre_limit=5.0,
 )
 r"""
 Default paramters for many basic functions:

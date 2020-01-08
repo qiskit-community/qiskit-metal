@@ -18,7 +18,7 @@ Plotting functions for shapely components using mpl.
 Created 2019
 @author: Zlatko Minev (IBM)
 """
-#TODO: should this become a render module?
+
 
 import numpy as np
 import matplotlib as mpl
@@ -27,7 +27,7 @@ import shapely
 
 from shapely.geometry import LinearRing, Polygon # Point, LineString,
 from .mpl_interaction import figure_pz
-from ..components import is_component
+from ...components import is_component
 
 
 

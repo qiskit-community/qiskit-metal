@@ -54,21 +54,20 @@ Known limitations:
 
 import logging
 import math
+import warnings
 import weakref
 
-import numpy
-import warnings
-
 import matplotlib.pyplot as _plt
-from .. import Dict
-
-
-#try:
-
+import numpy
+from matplotlib.backend_tools import ToolBase, ToolToggleBase
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QAction, QLabel#, QWidget, QHBoxLayout, QVBoxLayout, QLineEdit, QToolBar,  QSlider
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QAction, QLabel
+
+from ... import Dict
+
+__all__ = ['figure_pz', 'MplInteraction', 'PanAndZoom']
 
 
 class MplInteraction(object):
@@ -247,7 +246,7 @@ class PanAndZoom(ZoomOnWheel):
         self._event = None  # To store reference event during interaction
 
         self.options = Dict(dict(
-            report_point_position = False,
+            report_point_position=False,
         ))
 
         self._get_images_path()
@@ -255,14 +254,14 @@ class PanAndZoom(ZoomOnWheel):
         self._style_figure()
 
     def _get_images_path(self):
-        try: # Get tool image path
+        try:  # Get tool image path
             from pathlib import Path
             from .. import _gui
             imgs_path = Path(_gui.__file__).parent/'_imgs'
             if imgs_path.is_dir() == False:
                 print(f'Bad File path for images! {imgs_path}')
                 imgs_path = None
-        except  Exception as e:
+        except Exception as e:
             print('ERROR: ', e)
             imgs_path = None
         self.imgs_path = imgs_path
@@ -270,59 +269,60 @@ class PanAndZoom(ZoomOnWheel):
         return imgs_path
 
     def _add_toolbar_tools(self):
-        #TODO: subclass this
+        # TODO: subclass this
         fig = self.figure
         imgs_path = self.imgs_path
         toolbar = self.toolbar = fig.canvas.manager.toolbar
 
         # Get tool manager
 
-        #TODO: Remove use of tool manager just use pyQT5 bare as below
+        # TODO: Remove use of tool manager just use pyQT5 bare as below
 
-        tm = fig.canvas.manager.toolmanager # ToolbarQt   --- https://github.com/matplotlib/matplotlib/blob/master/lib/matplotlib/backends/backend_qt5.py
+        # ToolbarQt   --- https://github.com/matplotlib/matplotlib/blob/master/lib/matplotlib/backends/backend_qt5.py
+        tm = fig.canvas.manager.toolmanager
         self.tm = tm
         # Tool: Print point location
         Tool_Point_Position.image = str(imgs_path/'click.png')
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
             tm.add_tool("Point_position", Tool_Point_Position, parent=self)
-        fig.canvas.manager.toolbar.add_tool(tm.get_tool("Point_position"), "toolgroup")
+        fig.canvas.manager.toolbar.add_tool(
+            tm.get_tool("Point_position"), "toolgroup")
 
         # Tool: Copy to Clipboard
         from matplotlib.backend_tools import ToolCopyToClipboard
         ToolCopyToClipboard.image = str(imgs_path/'copy.png')
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
-            tm.add_tool("Copy_to_clipboard", ToolCopyToClipboard) #  OVvrwties Ctrl+C and issues warning
-        fig.canvas.manager.toolbar.add_tool(tm.get_tool("Copy_to_clipboard"), "toolgroup")
+            # OVvrwties Ctrl+C and issues warning
+            tm.add_tool("Copy_to_clipboard", ToolCopyToClipboard)
+        fig.canvas.manager.toolbar.add_tool(
+            tm.get_tool("Copy_to_clipboard"), "toolgroup")
 
-        if 1: # add QT Pieces
+        if 1:  # add QT Pieces
             toolbar.action_ascale = QAction(QIcon(str(imgs_path/'auto_zoom.png')),
-                                    'Auto scale', toolbar)
+                                            'Auto scale', toolbar)
             toolbar.action_ascale.setShortcut('A')
             toolbar.action_ascale.setShortcutContext(Qt.WindowShortcut)
             toolbar.action_ascale.setStatusTip('Autoscale')
             toolbar.action_ascale.triggered.connect(self.auto_scale)
             toolbar.addAction(toolbar.action_ascale)
 
-
         # Status Bar: Second label to report
-        figManager = fig.canvas.manager #plt.get_current_fig_manager()
+        figManager = fig.canvas.manager  # plt.get_current_fig_manager()
         status_bar = figManager.window.statusBar()
         self._status_label_2 = QLabel(status_bar)
         self._status_label_2.setText('')
         status_bar.addWidget(self._status_label_2)
         #from matplotlib.backends.backend_qt5 import StatusbarQt
         #st = StatusbarQt(figManager.window, figManager.toolmanager)
-        #figManager.statusbar.set_message('')
+        # figManager.statusbar.set_message('')
 
     def auto_scale(self):
         for ax in self.figure.axes:
             ax.autoscale()
-        #self.figure.canvas.flush_events()
+        # self.figure.canvas.flush_events()
         self.figure.canvas.draw()
-
-
 
     def _style_figure(self):
         self.figure.dpi = 150
@@ -456,7 +456,7 @@ class PanAndZoom(ZoomOnWheel):
                 if self._pressed_button == 1:  # pan
                     self._pan(event)
 
-                    if self.options.report_point_position: # check if we want to report point
+                    if self.options.report_point_position:  # check if we want to report point
                         self._report_point_position(event)
 
                 elif self._pressed_button == 3:  # zoom area
@@ -482,7 +482,7 @@ class PanAndZoom(ZoomOnWheel):
         if hasattr(self, '_ix_iy_old'):
             ix_old, iy_old = self._ix_iy_old
         else:
-            ix_old, iy_old = (ix,iy)
+            ix_old, iy_old = (ix, iy)
 
         self._ix_iy_old = ix, iy
 
@@ -495,16 +495,17 @@ class PanAndZoom(ZoomOnWheel):
 def figure_pz(*args, **kwargs):
     """matplotlib.pyplot.figure with pan and zoom interaction"""
     #import warnings
-    #warnings.filterwarnings(action='ignore')
+    # warnings.filterwarnings(action='ignore')
 
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         fig = _plt.figure(*args, **kwargs)
     fig.pan_zoom = PanAndZoom(fig)
 
-    #warnings.resetwarnings()
+    # warnings.resetwarnings()
 
     return fig
+
 
 """
 if __name__ == "__main__":
@@ -582,24 +583,18 @@ if __name__ == "__main__":
 """
 
 
-
-
-
-
-from matplotlib.backend_tools import ToolBase, ToolToggleBase
-
 class Tool_Point_Position(ToolToggleBase):
     '''Tools'''
     default_keymap = 'Ctrl+p'
     description = 'Click to get point coordinate printed'
     default_toggled = False
-    image = None # str(imgs_path)
+    image = None  # str(imgs_path)
 
     def __init__(self, *args, parent=None, **kwargs):
         super().__init__(*args, **kwargs)
         if parent is None:
             raise('Pass a parent')
-        self.parent=parent
+        self.parent = parent
 
     def enable(self, *args):
         self.parent.options.report_point_position = True

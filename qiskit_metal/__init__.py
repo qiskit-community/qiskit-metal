@@ -69,7 +69,7 @@ from . import renderers
 from . import analyses
 from . import toolbox_python
 from . import toolbox_metal
-from . import toolbox_mpl
+from .renderers.renderer_mpl import toolbox_mpl # for plotting in matplotlib
 
 # Metal GUI
 from ._gui import MetalGUI as metal_gui
@@ -77,3 +77,8 @@ from ._gui import MetalGUI as metal_gui
 # Utility functions
 from .toolbox_python.utility_functions import copy_update
 from .toolbox_python.utility_functions import display_options
+
+
+# Import default renderers
+from .renderers.renderer_mpl import RendererMPL
+#renderer_mpl = RendererMPL()
