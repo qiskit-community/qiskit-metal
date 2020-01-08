@@ -83,6 +83,8 @@ class MetalGUI(QMainWindow):
         self._style_sheet_path = None
         self.toolbar_create_metal = None
 
+        # TODO: Create renderer
+
         # create workspace
         self._setup_main_window()
         self._setup_menu_bar()

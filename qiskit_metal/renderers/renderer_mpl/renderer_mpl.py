@@ -43,6 +43,8 @@ class RendererMPL(RendererGUIBase):
     Renderer for matplotlib.
 
     Should alow for some GUI interaction.
+
+    TODO: How do we handle component selection, etc.
     """
     name = 'mpl'
     element_extensions = dict()
@@ -64,6 +66,7 @@ class RendererMPL(RendererGUIBase):
         '''
 
         for name, conn in self.design.connectors.items():
+
             line = LineString(conn.points)
 
             self.render_shapely(line, kw=DEFAULT.annot_conectors.line_kw)
@@ -71,4 +74,3 @@ class RendererMPL(RendererGUIBase):
             self.ax.annotate(name, xy=conn.middle[:2], xytext=conn.middle +
                              np.array(DEFAULT.annot_conectors.ofst),
                              **DEFAULT.annot_conectors.annotate_kw)
-

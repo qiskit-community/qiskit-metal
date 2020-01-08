@@ -50,11 +50,12 @@ class RendererGuiBase(RendererBase):
     def style_axis(self, ax):
         raise NotImplementedError()
 
-    def render_design(self):
-        for name, component in self.design.components.items():
-            self.plot_component(component)
+    def render_design(self, selection=None):
+        #TOOD: handle selection
+        for _, component in self.design.components.items():
+            self.render_component(component)
 
-    def render_component(self):
+    def render_component(self, component):
         raise NotImplementedError()
 
     def render_shapely(self):

@@ -59,8 +59,8 @@ import weakref
 
 import matplotlib.pyplot as _plt
 import numpy
-from matplotlib.backend_tools import ToolBase, ToolToggleBase
-from PyQt5 import QtWidgets
+
+from matplotlib.backend_tools import ToolBase  # , ToolToggleBase
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QAction, QLabel

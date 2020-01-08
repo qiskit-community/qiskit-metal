@@ -172,9 +172,10 @@ class RendererBase():
     def render_chip(self, name):
         raise NotImplementedError()
 
-    def render_components(self):
+    def render_components(self, selection=None):
         '''
         Render all components of the design.
+        If selection is none, then render all components.
         '''
         raise NotImplementedError()
 
