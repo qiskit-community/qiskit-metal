@@ -16,6 +16,6 @@
 @auhtor: Zlatko Minev
 @date: 2019
 """
-from .base import is_element, BaseElement
-from .path import PathElement
-from .poly import PolyElement
+from .base import is_element_table, ElementTables
+#from .path import PathElements
+#from .poly import PolyElements

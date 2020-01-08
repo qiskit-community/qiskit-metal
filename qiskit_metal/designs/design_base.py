@@ -50,7 +50,6 @@ def is_design(obj):
 
     return hasattr(obj, '__i_am_design__')
 
-
 class DesignBase():
     """
     DesignBase is the base class for Qiskit Metal Designs.

@@ -116,7 +116,7 @@ class NameInterface():
         self._name = new_name
 
 
-
+#class ComponentGUIinterface
 
 
 class BaseComponent():
@@ -174,7 +174,7 @@ class BaseComponent():
 
 
     @classmethod
-    def create_default_options(self, cls):
+    def create_default_options(cls):
         """
         Creates default options for the Metal Componnet class required for the class
         to function; i.e., be created, made, and rendered. Provides the blank option

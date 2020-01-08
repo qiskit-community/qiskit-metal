@@ -144,10 +144,19 @@ class Logging_Window_Widget(QTextEdit):
 
 
     def add_logger(self, name):
-        """Adds a logger to the widget
+        """Adds a logger name to the widget.
+        Does not actully take in the logger itself.
+
+            - adds name to tracked_loggers, as QAction
+            - adds an action to the menu
+
+        Logger is added with
+            gui.logger.addHandler(self._log_handler)
+        where
+            _log_handler is Logging_Hander_for_Log_Widget
 
         Arguments:
-            name {[type]} -- [description]
+            name {string} -- Name of logger to be added
         """
         if name in self.tracked_loggers:
             return
@@ -160,7 +169,7 @@ class Logging_Window_Widget(QTextEdit):
         action.triggered.connect(self.rebuild_all_messages)
         self.addAction(action)
 
-        # style
+        # style -- move
         self.document().setDefaultStyleSheet(config.GUI_CONFIG.logger.style)
 
     @property
