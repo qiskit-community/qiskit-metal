@@ -18,3 +18,4 @@
 """
 
 from .renderer_base import RendererBase
+from .renderer_gui_base import RendererGUIBase

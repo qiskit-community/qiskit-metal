@@ -20,8 +20,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 from shapely.geometry import LineString
 
-from ..renderer_base import RendererBase
+from ..renderer_base import RendererGUIBase
 from ...config import DEFAULT, Dict
+from .toolbox_mpl import render_to_mpl
 
 __all__ = ['RendererMPL']
 
@@ -37,7 +38,7 @@ DEFAULT['renderer_mpl'] = Dict(
 )
 
 
-class RendererMPL(RendererBase):
+class RendererMPL(RendererGUIBase):
     """
     Renderer for matplotlib.
 
@@ -46,7 +47,13 @@ class RendererMPL(RendererBase):
     name = 'mpl'
     element_extensions = dict()
 
-    def plot_connectors(self, ax):
+    def render_shapely(self, obj, kw=None):
+        # TODO: simplify, specialize, and update this function
+        # right now, this is just calling the V0.1 old style
+        render_to_mpl(obj, ax=self.ax, kw= {} or kw)
+
+
+    def render_connectors(self):
         '''
         Plots all connectors on the active axes. Draws the 1D line that
         represents the "port" of a connector point. These are referenced for smart placement
@@ -59,8 +66,9 @@ class RendererMPL(RendererBase):
         for name, conn in self.design.connectors.items():
             line = LineString(conn.points)
 
-            render_to_mpl(line, ax=ax, kw=DEFAULT.annot_conectors.line_kw)
+            self.render_shapely(line, kw=DEFAULT.annot_conectors.line_kw)
 
-            ax.annotate(name, xy=conn.middle[:2], xytext=conn.middle +
-                        np.array(DEFAULT.annot_conectors.ofst),
-                        **DEFAULT.annot_conectors.annotate_kw)
+            self.ax.annotate(name, xy=conn.middle[:2], xytext=conn.middle +
+                             np.array(DEFAULT.annot_conectors.ofst),
+                             **DEFAULT.annot_conectors.annotate_kw)
+

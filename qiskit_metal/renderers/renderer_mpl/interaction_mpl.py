@@ -253,6 +253,8 @@ class PanAndZoom(ZoomOnWheel):
         self._add_toolbar_tools()
         self._style_figure()
 
+        self._ix_iy_old = (0,0)
+
     def _get_images_path(self):
         try:  # Get tool image path
             from pathlib import Path

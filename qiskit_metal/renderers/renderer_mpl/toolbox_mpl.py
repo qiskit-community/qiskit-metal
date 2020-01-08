@@ -25,10 +25,9 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import shapely
 
-from shapely.geometry import LinearRing, Polygon # Point, LineString,
-from .mpl_interaction import figure_pz
+from shapely.geometry import LinearRing, Polygon  # Point, LineString,
+from .interaction_mpl import figure_pz
 from ...components import is_component
-
 
 
 ##########################################################################################
@@ -73,16 +72,14 @@ def _render_poly_to_mpl(poly: Polygon,
         )
 
 
-
-
 def render_to_mpl(components,
-                    ax=None,
-                    kw={},
-                    plot_format=True,
-                    labels=None,
-                    __depth=-1,  # how many sublists in we are
-                    _iteration=0,  # how many components we have plotted
-                    **kwargs):  # such as kw_hole
+                  ax=None,
+                  kw={},
+                  plot_format=True,
+                  labels=None,
+                  __depth=-1,  # how many sublists in we are
+                  _iteration=0,  # how many components we have plotted
+                  **kwargs):  # such as kw_hole
     '''
     Plot a list or dicitoanry of shapely components.
 
@@ -104,8 +101,8 @@ def render_to_mpl(components,
     if isinstance(components, dict):
         for _, objs in components.items():
             _iteration = render_to_mpl(objs, ax=ax, kw=kw, plot_format=plot_format,
-                                            labels=labels, __depth=__depth,
-                                            _iteration=_iteration, **kwargs)
+                                       labels=labels, __depth=__depth,
+                                       _iteration=_iteration, **kwargs)
         if plot_format and (__depth == 0):
             plot_style_shapely_v1(ax, labels=labels)
         return _iteration
@@ -113,8 +110,8 @@ def render_to_mpl(components,
     elif isinstance(components, list):
         for objs in components:
             _iteration = render_to_mpl(objs, ax=ax, kw=kw, plot_format=plot_format,
-                                            labels=labels, __depth=__depth,
-                                            _iteration=_iteration, **kwargs)
+                                       labels=labels, __depth=__depth,
+                                       _iteration=_iteration, **kwargs)
         if plot_format and (__depth == 0):
             plot_style_shapely_v1(ax, labels=labels)
         return _iteration
@@ -146,9 +143,10 @@ def render_to_mpl(components,
     return _iteration+1
 
 
-#  TODO: IS THIS FUNCITON NEEDED? can we just use render_to_mpl
 def draw_all_objects(components, ax, func=lambda x: x, root_name='components'):
-    """passed in Called by self.components
+    """
+    #  TODO: This is very outdated, remove
+
 
     Arguments:
         components {[type]} -- [description]
@@ -175,6 +173,7 @@ def draw_all_objects(components, ax, func=lambda x: x, root_name='components'):
 
 ##########################################################################################
 # Style subroutines
+
 
 def plot_style_shapely_v1(ax, labels=None):
     '''
