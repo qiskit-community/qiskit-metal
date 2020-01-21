@@ -18,7 +18,7 @@
 @author: Zlatko K. Minev
 """
 
-__all__ = ['Tree_Metal_Objects']
+__all__ = ['TreeMetalObjects']
 
 import shapely
 
@@ -32,10 +32,10 @@ from PyQt5.QtWidgets import QTextEdit, QTreeWidget, QTreeWidgetItem, QLineEdit
 #from PyQt5.QtWidgets import QLabel
 
 from .... import logger, is_component
-#from .metal_parameter import Parameter_Zlatko
-from .amazing_tree_dict import Amazing_Dict_Tree_zkm
+#from .metal_parameter import ParameterZlatko
+from .amazing_tree_dict import AmazingDictTreeZKM
 
-class Tree_Metal_Objects(Amazing_Dict_Tree_zkm):
+class TreeMetalObjects(AmazingDictTreeZKM):
 
     color_slight = QtGui.QColor('#EEEEEE')
     color_polys = QtGui.QColor('#e6bbad')

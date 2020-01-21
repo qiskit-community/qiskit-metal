@@ -153,7 +153,7 @@ def _iter_func_geom_(func, objs, *args, overwrite=False, **kwargs):
                          overwrite=overwrite, **kwargs)
         return objs
 
-    elif is_element(objs):
+    elif is_element(objs): #will need updating to new table format
         # apply on geom of element; return element
         func(objs.geom, *args, **kwargs)
         return objs

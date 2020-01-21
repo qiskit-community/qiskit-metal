@@ -72,7 +72,7 @@ from . import toolbox_metal
 from .renderers.renderer_mpl import toolbox_mpl # for plotting in matplotlib
 
 # Metal GUI
-from ._gui import MetalGUI as metal_gui
+from ._gui import MetalGUI
 
 # Utility functions
 from .toolbox_python.utility_functions import copy_update

@@ -34,7 +34,7 @@ from .utility import vec_add_z,\
     vec_unit_norm, vec_unit_planar,\
     remove_colinear_pts
 from .basic import flip_merge, rotate_position
-from .utility import *
+from .utility import * #this import out of date given new folder structure?
 
 
 
@@ -42,7 +42,7 @@ from .utility import *
 ###
 ###  CPW BASIC DRAWING
 ###
-
+#NEEDS UPDATING FOR ELEMENTS AND RENDERER - bunch should be in renderer_ansys
 DEFAULT_OPTIONS['draw_cpw_trace'] = {
     'func_draw'           : 'draw_cpw_trace',
     'chip'                : 'main',

@@ -84,7 +84,7 @@ def display_options(*ops_names, options=None, find_dot_keys=True, do_display=Tru
             res += [pd.Series(options[keyname], name=keyname).to_frame()]
 
     from pyEPR.toolbox import display_dfs
-    res_html = display_dfs(*res, do_display=do_display)
+    res_html = display_dfs(*res, do_display=do_display)  #why not just directly call the function DataFrame_display_side_by_side(*args) ?
     return res, res_html
 
 def data_frame_empty_typed(column_types:dict):

@@ -20,7 +20,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from shapely.geometry import LineString
 
-from ..renderer_base.renderer_gui_base import RendererGUIBase
+from ..renderer_base.renderer_gui_base import RendererGuiBase
 from ...config import DEFAULT, Dict
 from .toolbox_mpl import render_to_mpl
 

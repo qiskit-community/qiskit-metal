@@ -38,7 +38,7 @@ from ..._handle_qt_messages import catch_exception_slot_pyqt, do_debug
 ###########################################################################################
 
 
-class Parameter_Zlatko(QLineEdit):
+class ParameterZlatko(QLineEdit): #Probably will need to rename class
     '''
     Monkey patch:
         widget.get_obj= get_obj.__get__(widget, widget_class)

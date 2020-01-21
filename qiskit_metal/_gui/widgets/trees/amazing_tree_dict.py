@@ -30,7 +30,7 @@ from PyQt5.QtWidgets import QToolBar, QAction, QSlider, QInputDialog, QMessageBo
 from PyQt5.QtWidgets import QLabel, QSizePolicy
 
 from .... import Dict, logger
-from .metal_parameter import Parameter_Zlatko
+from .metal_parameter import ParameterZlatko
 
 
 def get_nested_dict_item(dic, key_list, level=0):
@@ -73,7 +73,7 @@ def pop_nested_dict_item(dic, key_list, level=0):
         dic.pop(key_list[level])
 
 
-class Amazing_Dict_Tree_zkm(QTreeWidget):
+class AmazingDictTreeZKM(QTreeWidget):
 
     def __init__(self, parent,
                  content_dict=None,
@@ -119,7 +119,7 @@ class Amazing_Dict_Tree_zkm(QTreeWidget):
                         cc=5,
                         options=Dict(w1=13))
 
-            tree = parent.tree = Amazing_Dict_Tree_zkm(parent, myDict)
+            tree = parent.tree = AmazingDictTreeZKM(parent, myDict)
             parent.layout().addWidget(parent.tree)
         ```
         """
@@ -350,8 +350,8 @@ class Amazing_Dict_Tree_zkm(QTreeWidget):
 
     def handle_item_other_custom(self, parent, key, value, parent_key_list, item):
 
-        if Parameter_Zlatko.I_can_handle_this_type(value):
-            item.widgetz = Parameter_Zlatko(self.dict,
+        if ParameterZlatko.I_can_handle_this_type(value):
+            item.widgetz = ParameterZlatko(self.dict,
                                             parent_key_list + [key],
                                             value,
                                             on_return=self._on_edit_return(parent),

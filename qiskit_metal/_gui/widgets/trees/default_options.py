@@ -19,10 +19,10 @@
 """
 
 from PyQt5 import QtGui
-from .amazing_tree_dict import Amazing_Dict_Tree_zkm
+from .amazing_tree_dict import AmazingDictTreeZKM
 
 
-class Tree_Default_Options(Amazing_Dict_Tree_zkm):
+class TreeDefaultOptions(AmazingDictTreeZKM):
 
     def __init__(self, parent,
                  content_dict=None,

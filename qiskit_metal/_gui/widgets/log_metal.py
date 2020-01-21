@@ -21,10 +21,10 @@ from PyQt5.QtWidgets import QTextEdit, QAction
 from ... import config, __version__
 from .._handle_qt_messages import catch_exception_slot_pyqt
 
-__all__ = ['Logging_Window_Widget', 'Logging_Hander_for_Log_Widget']
+__all__ = ['LoggingWindowWidget', 'LoggingHandlerForLogWidget']
 
 
-class Logging_Window_Widget(QTextEdit):
+class LoggingWindowWidget(QTextEdit):
     timestamp_len = 19
 
     def __init__(self, img_path='/'):
@@ -153,7 +153,7 @@ class Logging_Window_Widget(QTextEdit):
         Logger is added with
             gui.logger.addHandler(self._log_handler)
         where
-            _log_handler is Logging_Hander_for_Log_Widget
+            _log_handler is LoggingHandlerForLogWidget
 
         Arguments:
             name {string} -- Name of logger to be added
@@ -228,7 +228,7 @@ class Logging_Window_Widget(QTextEdit):
         self.ensureCursorVisible()
 
 
-class Logging_Hander_for_Log_Widget(logging.Handler):
+class LoggingHandlerForLogWidget(logging.Handler):
 
     def __init__(self, name, parent, log_string=None):
         """
@@ -252,7 +252,7 @@ class Logging_Hander_for_Log_Widget(logging.Handler):
         if log_string:
             self._log_string = log_string
         else:
-            self._log_string = f'%(asctime).{Logging_Window_Widget.timestamp_len}s %(name)s: %(message)s [%(module)s.%(funcName)s]'
+            self._log_string = f'%(asctime).{LoggingWindowWidget.timestamp_len}s %(name)s: %(message)s [%(module)s.%(funcName)s]'
         self._log_formatter = logging.Formatter(self._log_string)
         self.setFormatter(self._log_formatter)
 

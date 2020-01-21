@@ -258,7 +258,7 @@ class PanAndZoom(ZoomOnWheel):
     def _get_images_path(self):
         try:  # Get tool image path
             from pathlib import Path
-            from .. import _gui
+            from ... import _gui
             imgs_path = Path(_gui.__file__).parent/'_imgs'
             if imgs_path.is_dir() == False:
                 print(f'Bad File path for images! {imgs_path}')
@@ -284,10 +284,10 @@ class PanAndZoom(ZoomOnWheel):
         tm = fig.canvas.manager.toolmanager
         self.tm = tm
         # Tool: Print point location
-        Tool_Point_Position.image = str(imgs_path/'click.png')
+        ToolPointPosition.image = str(imgs_path/'click.png')
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
-            tm.add_tool("Point_position", Tool_Point_Position, parent=self)
+            tm.add_tool("Point_position", ToolPointPosition, parent=self)
         fig.canvas.manager.toolbar.add_tool(
             tm.get_tool("Point_position"), "toolgroup")
 
@@ -585,7 +585,7 @@ if __name__ == "__main__":
 """
 
 
-class Tool_Point_Position(ToolToggleBase):
+class ToolPointPosition(ToolToggleBase):
     '''Tools'''
     default_keymap = 'Ctrl+p'
     description = 'Click to get point coordinate printed'

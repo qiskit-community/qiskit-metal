@@ -56,7 +56,7 @@ class NameInterface():
         return self._name
 
     @staticmethod
-    def _validate_name(name:str):
+    def _validate_name(name:str): #include check that isn't already in use?
         """Test if the name is a valid name
         Typically: isidentifier
 
@@ -143,7 +143,7 @@ class BaseComponent():
         '''
         self.design.components[self.name] = self
 
-    def get_geom_all(self):
+    def get_geom_all(self): #will need change for panda table
         """
         Get all shapely geometry as a dict
         """
@@ -188,7 +188,10 @@ class BaseComponent():
         """
         raise NotImplementedError()
 
-    def parse_value(self, value):
+    def parse_value(self, value): #Will maybe need tweaks given new approach of data table? 
+        #Maybe still should be fine as any values will be in component options still?
+        #Though the data table approach and rendering directly via shapely could lead to problem
+        #with variable use
         """
         Parse a string, mappable (dict, Dict), iterrable (list, tuple) to account for
         units conversion, some basic arithmetic, and design variables.

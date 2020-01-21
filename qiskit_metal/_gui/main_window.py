@@ -35,15 +35,16 @@ from .. import logger
 from ..config import GUI_CONFIG
 from ..toolbox_metal.import_export import load_metal
 #from ..toolbox_mpl.mpl_shapely import (draw_all_objects, plot_simple_gui_spawn,
-#                                   plot_simple_gui_style)
+#                                   plot_simple_gui_style)  
+# removal of this import has cause a function call issue down below - line 230, 682, 688
 from . import widgets
 from ._handle_qt_messages import catch_exception_slot_pyqt
-from .widgets.dialog_create_metal import Dialog_create_metal
-from .widgets.log_metal import (Logging_Hander_for_Log_Widget,
-                                Logging_Window_Widget)
+from .widgets.DialogCreateMetal import DialogCreateMetal
+from .widgets.log_metal import (LoggingHandlerForLogWidget,
+                                LoggingWindowWidget)
 from .widgets.toolbar_icons import add_toolbar_icon
-from .widgets.trees.default_options import Tree_Default_Options
-from .widgets.trees.metal_objects import Tree_Metal_Objects
+from .widgets.trees.default_options import TreeDefaultOptions
+from .widgets.trees.metal_objects import TreeMetalObjects
 
 
 class MetalGUI(QMainWindow):
@@ -62,7 +63,7 @@ class MetalGUI(QMainWindow):
             from qiskit_metal import MetalGUI, PlanarDesign
 
             layout = PlanarDesign()
-            gui = Qiskit_Metal_GUI(layout)
+            gui = Qiskit_MetalGUI(layout)
         '''
 
         self._setup_qApp()
@@ -91,7 +92,7 @@ class MetalGUI(QMainWindow):
         self._setup_plot()
         self._setup_tree_view()
         self._setup_tree_design_options()
-        self._setup_tree_default_options()
+        self._setup_TreeDefaultOptions()
         self._setup_window_style()
         self._setup_main_toolbar()
         self._setup_logging()
@@ -157,11 +158,11 @@ class MetalGUI(QMainWindow):
         based on: https://stackoverflow.com/questions/28655198/best-way-to-display-logs-in-pyqt
         '''
         # Log window widget
-        self.logger_window = Logging_Window_Widget(self.imgs_path)
+        self.logger_window = LoggingWindowWidget(self.imgs_path)
 
         # Handlers
         self.logger_window.add_logger('Metal')
-        self._log_handler = Logging_Hander_for_Log_Widget('Metal', self)
+        self._log_handler = LoggingHandlerForLogWidget('Metal', self)
         logger.addHandler(self._log_handler)  # logger is the metal logger Metal
 
         # TODO: Make modular and add pyEPR
@@ -438,7 +439,7 @@ class MetalGUI(QMainWindow):
             nonlocal class_name
             nonlocal metal_class
 
-            form = Dialog_create_metal(self, metal_class)
+            form = DialogCreateMetal(self, metal_class)
             result, my_args = form.get_params()
 
             if result:
@@ -487,7 +488,7 @@ class MetalGUI(QMainWindow):
 
     def _setup_tree_view(self):
 
-        tree = self.tree = Tree_Metal_Objects(self, objects=self.components, gui=self)
+        tree = self.tree = TreeMetalObjects(self, objects=self.components, gui=self)
         tree.main_window = QMainWindow(self)
         tree.dock = self._add_dock('Object Explorer', tree.main_window, 'Right', 400)
         tree.dock.setToolTip('Press ENTER after done editing a value to remake the objects.')
@@ -507,9 +508,9 @@ class MetalGUI(QMainWindow):
         #tree.add_toolbar_refresh(toolbar, main_window, self.imgs_path)
         #tree.add_toolbar_slider(toolbar, main_window, self.imgs_path)
 
-    def _setup_tree_default_options(self):
+    def _setup_TreeDefaultOptions(self):
 
-        tree = self.tree_def_ops = Tree_Default_Options(
+        tree = self.tree_def_ops = TreeDefaultOptions(
             self, content_dict=self.DEFAULT_OPTIONS, gui=self)
         tree.main_window = QMainWindow(self)
         tree.dock = self._add_dock('Default Properties', tree.main_window, 'Right', 400)
@@ -521,7 +522,7 @@ class MetalGUI(QMainWindow):
         tree.resizeColumnToContents(0)
 
     def _setup_tree_design_options(self):
-        tree = self.tree_design_ops = Tree_Default_Options(
+        tree = self.tree_design_ops = TreeDefaultOptions(
             self, content_dict=self.design.params, gui=self)
         tree.main_window = QMainWindow(self)
         tree.dock = self._add_dock('Design Properties', tree.main_window, 'Right', 400)
@@ -532,7 +533,7 @@ class MetalGUI(QMainWindow):
 
 
         ### ADD variable tab
-        tree = self.tree_design_vars = Tree_Default_Options(
+        tree = self.tree_design_vars = TreeDefaultOptions(
             self, content_dict=self.design.variables, gui=self)
         tree.main_window = QMainWindow(self)
         tree.dock = self._add_dock('Variables', tree.main_window, 'Right', 400)
@@ -700,7 +701,7 @@ class MetalGUI(QMainWindow):
         # self.tree_def_ops.refresh()
 
     @catch_exception_slot_pyqt()
-    def refresh_tree_default_options(self, *args):  # pylint: disable=unused-argument
+    def refresh_TreeDefaultOptions(self, *args):  # pylint: disable=unused-argument
         """
         Refresh the tree with default options.
         Calls repopulate on the Tree
@@ -714,7 +715,7 @@ class MetalGUI(QMainWindow):
         """
         self.re_draw()
         self.refresh_tree()
-        self.refresh_tree_default_options()
+        self.refresh_TreeDefaultOptions()
         # print('self.tree_design_ops.rebuild()')
         self.tree_design_ops.rebuild()
 

@@ -11,6 +11,9 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
+
+#WILL NEED UPDATING TO NEW ELEMENT SCHEME
+
 """
 Main module for shapely and basic geometric utility functions used in drawing.
 
@@ -172,7 +175,7 @@ def check_duplicate_list(your_list):
 
 def array_chop(vec, zero=0, rtol=0, machine_tol=100):
     '''
-    Chop array entires close to zero.
+    Chop array entries close to zero.
     Zlatko quick solution.
     '''
     vec = np.array(vec)

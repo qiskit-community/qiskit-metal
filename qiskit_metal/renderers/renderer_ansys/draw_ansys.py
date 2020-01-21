@@ -193,6 +193,7 @@ def draw_bounding_box(design, options=DEFAULT_OPTIONS['draw_bounding_box']):
 
 # draw_substrate
  # For chip size, negative draws the substrate box down
+ # This should be grabbing from design instead of its own default options
 DEFAULT_OPTIONS['draw_substrate'] = Dict({
     'pos_xy': "['0um', '0um']",
     'size': "['8.5mm', '6.5mm', '-0.750mm']",

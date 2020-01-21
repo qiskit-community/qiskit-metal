@@ -34,7 +34,7 @@ from PyQt5.QtGui import QTextDocument, QFont
 from ... import logger
 from ...toolbox_python.utility_functions import display_options
 from .trees.metal_parameter import parse_param_from_str
-from .trees.amazing_tree_dict import Amazing_Dict_Tree_zkm
+from .trees.amazing_tree_dict import AmazingDictTreeZKM
 
 from copy import deepcopy
 
@@ -57,7 +57,7 @@ except ImportError as e:
 
 
 
-class Dialog_create_metal(QDialog):
+class DialogCreateMetal(QDialog):
 
     html_style = """
 table, th, td {
@@ -342,7 +342,7 @@ tr:hover {
             self.right_layout.addWidget(self.lbl)
 
         if 1:  # Tree
-            self.tree = Amazing_Dict_Tree_zkm(self, self.options,
+            self.tree = AmazingDictTreeZKM(self, self.options,
                                               nameme='Creation options',
                                               logger=self.logger
                                               )
