@@ -34,12 +34,12 @@ from PyQt5.QtWidgets import (QAction, QApplication, QDockWidget,  # , QStyle
 from .. import logger
 from ..config import GUI_CONFIG
 from ..toolbox_metal.import_export import load_metal
-#from ..toolbox_mpl.mpl_shapely import (draw_all_objects, plot_simple_gui_spawn,
-#                                   plot_simple_gui_style)  
+from ..renderers.renderer_mpl.toolbox_mpl import (draw_all_objects, plot_simple_gui_spawn,
+                                   plot_simple_gui_style)
 # removal of this import has cause a function call issue down below - line 230, 682, 688
 from . import widgets
 from ._handle_qt_messages import catch_exception_slot_pyqt
-from .widgets.DialogCreateMetal import DialogCreateMetal
+from .widgets.dialog_create_metal import DialogCreateMetal
 from .widgets.log_metal import (LoggingHandlerForLogWidget,
                                 LoggingWindowWidget)
 from .widgets.toolbar_icons import add_toolbar_icon
