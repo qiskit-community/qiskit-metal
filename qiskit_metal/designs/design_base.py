@@ -15,12 +15,12 @@
 """
 Module containing all Qiskit Metal designs.
 
-To create a basic UML diagram
->> pyreverse -o png -p desin_base design_base.py -A  -S
-
 @date: 2019
 @author: Zlatko Minev, Thomas McConeky, ... (IBM)
 """
+# To create a basic UML diagram
+#>> pyreverse -o png -p desin_base design_base.py -A  -S
+
 import numpy as np
 
 from .. import Dict, draw, logger
@@ -29,26 +29,7 @@ from ..config import DEFAULT, DEFAULT_OPTIONS
 from ..toolbox_metal.import_export import load_metal, save_metal
 from ..toolbox_metal.parsing import parse_params, parse_value
 
-__all__ = ['is_design', 'DesignBase']
-
-
-def is_design(obj):
-    """Check if an object is a Metal Design, i.e., an instance of
-     `DesignBase`.
-
-    The problem is that the `isinstance` built-in method fails
-    when this module is reloaded.
-
-    Arguments:
-        obj {[object]} -- Test this object
-
-    Returns:
-        [bool] -- True if is a Metal design
-    """
-    if isinstance(obj, Dict):
-        return False
-
-    return hasattr(obj, '__i_am_design__')
+__all__ = ['DesignBase']
 
 class DesignBase():
     """

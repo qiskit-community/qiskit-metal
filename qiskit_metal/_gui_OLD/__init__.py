@@ -15,11 +15,13 @@
 """
 GUI module, handles user interface.
 
-The gui module is only loaded if PyQt5 can be found.
+The gui module is only loaded if PyQt5 can be found
 
 Created on Tue May 14 17:13:40 2019
 @author: Zlatko
 """
+__author__ = 'Zlatko K. Minev'
+__version__ = '0.2.2'
 
 # Check if PyQt5 is available for import
 try:
@@ -29,9 +31,8 @@ except (ImportError, ModuleNotFoundError):
     __ihave_pyqt__ = False
 
 if __ihave_pyqt__:
-
     # Add hook for when we start the gui - Logging for QT errors
-    from .logging.handle_qt_messages import QtCore, _pyqt_message_handler
+    from ._handle_qt_messages import QtCore, _pyqt_message_handler
     QtCore.qInstallMessageHandler(_pyqt_message_handler)
     del QtCore, _pyqt_message_handler
 
@@ -39,11 +40,10 @@ if __ihave_pyqt__:
     from .main_window import MetalGUI
 
 else:
-
-    # Function as an error function for the class MetalGUI
-    def MetalGUI(*args, **kwargs): # pylint: disable=unused-argument,bad-option-value
+    def MetalGUI(*args, **kwargs): # pylint: disable=unused-argument Note: case left purposeful as such
+        #since is functioning as an error function for the class MetalGUI
         """
-        ERROR: Unable to load PyQt5! Please make sure PyQt5 is installed.
+        ERROR: unable to load PyQt5! Please make sure PyQt5 is installed.
         See Metal installation instrucitons and help.
         """
 

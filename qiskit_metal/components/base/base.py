@@ -22,7 +22,6 @@ See the docstring of BaseComponent
 """
 
 from ...toolbox_python.attr_dict import Dict
-# from ..elements.base import
 from ...designs import is_design
 
 
@@ -188,7 +187,7 @@ class BaseComponent():
         """
         raise NotImplementedError()
 
-    def parse_value(self, value): #Will maybe need tweaks given new approach of data table? 
+    def parse_value(self, value): #Will maybe need tweaks given new approach of data table?
         #Maybe still should be fine as any values will be in component options still?
         #Though the data table approach and rendering directly via shapely could lead to problem
         #with variable use

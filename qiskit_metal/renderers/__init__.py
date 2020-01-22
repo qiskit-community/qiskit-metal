@@ -17,3 +17,5 @@ Created on Tue May 14 17:13:40 2019
 
 @author: Zlatko
 """
+
+from .setup_default import setup_renderers

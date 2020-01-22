@@ -13,16 +13,5 @@
 # that they have been altered from the originals.
 
 """
-GUI front-end interface for Qiskit Metal in PyQt5.
-@author: Zlatko Minev, IBM
+GUI Logging
 """
-
-import sys
-import logging
-import traceback
-#import importlib
-
-from pathlib import Path
-
-class MetalGUI():
-    pass

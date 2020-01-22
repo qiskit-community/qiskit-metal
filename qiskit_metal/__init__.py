@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2019.
+# (C) Copyright IBM 2019-202.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -16,52 +16,32 @@
 # pylint: disable=wrong-import-position
 
 """
-Main Qiskit Metal public functionality.
+Qiskit Metal main public functionality.
 
 Created on Tue May 14 17:13:40 2019
-
 @author: Zlatko K. Minev
 """
-
+__version__ = '0.06.1'
+__license__ = "Apache 2.0"
+__copyright__= 'Copyright IBM 2019-2020'
 __author__ = 'Zlatko Minev, Thomas McConkey, and them IBM Quantum Team'
-__version__ = '0.05.1'
+__status__ = "Development"
 
-##############################################################################
-### INTERNAL SETUP
-
-## Setup logging
-
-from .toolbox_python.logging import logging, setup_logger
 from . import config
 
+# Setup logging
+from .toolbox_python.logging import setup_logger
 logger = setup_logger('Metal', config.log.format, config.log.datefmt)
 del setup_logger
 
-## Setup logging for GUI mpl
-#TODO: remove this dependency - needed for gui at the moment
-
-import matplotlib as mpl
-mpl.rcParams['toolbar'] = 'toolmanager'
-__LOG = logging.getLogger('matplotlib.backend_managers')
-__LOG.setLevel(logging.ERROR)
-del __LOG
-del logging
-del mpl
-
-
-##############################################################################
-### Imports for user
-
-# Core classes and default dictionaries
+# Metal Dict
 from .toolbox_python.attr_dict import Dict
+
+# TODO: Remove the as global variables, just use in design when
+# instanciating the default params and overwriting them.
 from .config import DEFAULT, DEFAULT_OPTIONS
 
-# Core class check functions
-from .components import is_component
-from .designs import is_design
-from .elements import is_element_table, ElementTables
-
-# Core Modules for user to use
+# Core modules for user to use
 from . import designs
 from . import components
 from . import draw
@@ -69,16 +49,17 @@ from . import renderers
 from . import analyses
 from . import toolbox_python
 from . import toolbox_metal
-from .renderers.renderer_mpl import toolbox_mpl # for plotting in matplotlib
 
 # Metal GUI
-from ._gui import MetalGUI
+#from ._gui import MetalGUI
+
+# Utility modules
+# For plotting in matplotlib;  May be superseeded by a renderer?
+from .renderers.renderer_mpl import toolbox_mpl as plt
 
 # Utility functions
 from .toolbox_python.utility_functions import copy_update
 from .toolbox_python.utility_functions import display_options
 
-
 # Import default renderers
-#from .renderers.renderer_mpl.renderer_mpl import RendererMPL
-#renderer_mpl = RendererMPL()
+from .renderers import setup_renderers

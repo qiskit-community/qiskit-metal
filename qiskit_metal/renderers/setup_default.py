@@ -13,26 +13,18 @@
 # that they have been altered from the originals.
 
 """
-@auhtor: Zlatko Minev
-@date: 2019
+Initialize default renderers for Metal
+
+@author: Zlatko
 """
-from ...toolbox_python.attr_dict import Dict
 
-def is_component(obj):
-    """Check if an object is an instance of `BaseComponent`.
+from .. import config
+from .. import Dict
 
-    The problem is that the `isinstance` built-in method fails
-    when this module is reloaded.
-
-    Arguments:
-        obj {[object]} -- Test this object
-
-    Returns:
-        [bool] -- True if is a Metal object
+def setup_renderers():
     """
-    if isinstance(obj, Dict):
-        return False
+    #TODO: Sets up the default renderers.
 
-    return hasattr(obj, '__i_am_component__')
-
-from .base import BaseComponent
+    Use config to set up default renderes
+    """
+    return Dict()

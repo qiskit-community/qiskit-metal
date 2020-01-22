@@ -1,0 +1,20 @@
+<RCC>
+  <qresource>
+    <file alias="delete_all">_imgs/delete.png</file>
+    <file alias="design">_imgs/circuit.png</file>
+    <file alias="component">_imgs/Component.png</file>
+    <file>_imgs/protoboard.png</file>
+    <file>_imgs/search.png</file>
+    <file>_imgs/support.png</file>
+    <file alias="cancel">_imgs/cancel.png</file>
+    <file alias="elements">_imgs/frequency.png</file>
+    <file alias="log">_imgs/log.png</file>
+    <file alias="delete">_imgs/rubber.png</file>
+    <file>_imgs/lightbulb.png</file>
+    <file alias="load">_imgs/stack.png</file>
+    <file alias="save">_imgs/pencil.png</file>
+    <file>_imgs/search.png</file>
+    <file alias="metal_logo">_imgs/metal_logo.png</file>
+    <file alias="refresh">_imgs/refresh.png</file>
+  </qresource>
+</RCC>

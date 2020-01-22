@@ -3,25 +3,28 @@ Icon credits:
     Icons made by users of Freepik from www.flaticon.com.
     For details, see below:
 
-    Make Metal:
-        https://www.flaticon.com/free-icon/gears_305098
-    Trash (delte all objects):
-        trash icon: https://www.flaticon.com/de/kostenloses-icon/loschen_1214428
     Save:
-        https://www.flaticon.com/free-icon/save_174314#term=save%20circular&page=1&position=7
-    Open:
-        https://www.flaticon.com/free-icon/open-book_234647#term=open%20circular&page=1&position=2
-    Click:
-        https://www.flaticon.com/free-icon/cursor_142246#term=click&page=1&position=2
-    Copy / Clipboard:
-        https://www.flaticon.com/free-icon/copy_832050
-    Zoom auto:
-        https://www.flaticon.com/free-icon/research_202374#term=zoom&page=4&position=2
-    Refresh:
-        https://www.flaticon.com/free-icon/refresh-button_61444#term=refresh&page=1&position=2
-    Show connectors:
-        https://www.flaticon.com/free-icon/lan_2138648#term=connector&page=1&position=25
-    Refresh all:
-        https://www.flaticon.com/free-icon/refresh_426867#term=refresh&page=2&position=58
-    Create:
-        https://www.flaticon.com/free-icon/create_929256#term=create&page=1&position=34
+	https://www.flaticon.com/free-icon/loading_2413723?term=load&page=1&position=63
+	<div>Icons made by <a href="https://www.flaticon.com/authors/iconixar" title="iconixar">iconixar</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+
+    Design:
+	https://www.flaticon.com/packs/robotics-engineering-2
+	Icons made by <a href="https://www.flaticon.com/authors/eucalyp" title="Eucalyp">Eucalyp</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
+
+    Maintenence, Protoboard, Chip, Binary Code:
+	https://www.flaticon.com/free-icon/protoboard_1118341
+	https://www.flaticon.com/free-icon/chip_1118338
+	https://www.flaticon.com/free-icon/binary-code_1118326
+	Icons made by <a href="https://www.flaticon.com/authors/eucalyp" title="Eucalyp">Eucalyp</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
+
+   Pencil, Sheet, lightbulb, eraser
+	https://www.flaticon.com/packs/graphic-design-tools-14
+	https://www.flaticon.com/free-icon/pencil_1639307
+	https://www.flaticon.com/free-icon/paper-sheet_1639290
+	https://www.flaticon.com/free-icon/lightbulb_1639263
+	https://www.flaticon.com/free-icon/eraser_1639236
+	Icons made by <a href="https://www.flaticon.com/authors/eucalyp" title="Eucalyp">Eucalyp</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
+
+   Delete: data managment 
+	https://www.flaticon.com/packs/data-management-4
+	https://www.flaticon.com/free-icon/delete_1935869

@@ -19,5 +19,25 @@ Module containing all Qiskit Metal designs.
 @author: Zlatko Minev (IBM)
 """
 
-from .design_base import is_design, DesignBase
+from .. import Dict
+
+def is_design(obj):
+    """Check if an object is a Metal Design, i.e., an instance of
+     `DesignBase`.
+
+    The problem is that the `isinstance` built-in method fails
+    when this module is reloaded.
+
+    Arguments:
+        obj {[object]} -- Test this object
+
+    Returns:
+        [bool] -- True if is a Metal design
+    """
+    if isinstance(obj, Dict):
+        return False
+
+    return hasattr(obj, '__i_am_design__')
+
+from .design_base import DesignBase
 from .design_planar import DesignPlanar
