@@ -213,7 +213,7 @@ class AmazingDictTreeZKM(QTreeWidget):
                 @catch_exception_slot_pyqt()
                 def return_add_item(x):
                     # Get name of new key
-                    text_key, okPressed = QInputDialog.getText(
+                    text_key, okPressed = QInputDialog.get_text(
                         self, f"Name of new {kind} to add?", "Choose name:", QLineEdit.Normal, "")
                     if okPressed and text_key != '':
                         #print('new dictionary:', text, item_key_list, self.get_dict_item(dict_to_add))
@@ -222,14 +222,14 @@ class AmazingDictTreeZKM(QTreeWidget):
                         if kind is 'dictionary':
                             new_obj = Dict()  # maybe asteval here
                         elif kind is 'string':
-                            text, okPressed = QInputDialog.getText(
+                            text, okPressed = QInputDialog.get_text(
                                 self, f"Choose value of {kind} to add?", "Choose value:", QLineEdit.Normal, "")
                             if okPressed:
                                 new_obj = text
                             else:
                                 return
                         elif kind is 'float':
-                            text, okPressed = QInputDialog.getText(
+                            text, okPressed = QInputDialog.get_text(
                                 self, f"Choose value of {kind} to add?", "Choose value:", QLineEdit.Normal, "0.0")
                             if okPressed and text != '':
                                 new_obj = float(text)
@@ -350,7 +350,7 @@ class AmazingDictTreeZKM(QTreeWidget):
 
     def handle_item_other_custom(self, parent, key, value, parent_key_list, item):
 
-        if ParameterZlatko.I_can_handle_this_type(value):
+        if ParameterZlatko.i_can_handle_this_type(value):
             item.widgetz = ParameterZlatko(self.dict,
                                             parent_key_list + [key],
                                             value,

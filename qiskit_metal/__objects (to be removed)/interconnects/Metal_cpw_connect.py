@@ -38,7 +38,7 @@ DEFAULT_OPTIONS['Metal_cpw_connect'] = Dict(
     do_meander='true',
     cpw=Dict(),
     meander=Dict(),
-    _calls=['meander_between', 'connectorCPW_plotme',
+    _calls=['meander_between', 'connector_cpw_plotme',
             'draw_cpw_trace', 'basic_meander']  # usef only for debug internal refernece here
 )
 '''

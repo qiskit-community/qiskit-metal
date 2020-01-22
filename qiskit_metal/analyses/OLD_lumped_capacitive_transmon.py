@@ -41,7 +41,7 @@ import matplotlib.pyplot as plt
 from pint import UnitRegistry
 from pathlib import Path
 
-__all__ = ['jayNoscillator', 'Levels_vs_ngRealUnits',
+__all__ = ['jayNoscillator', 'levels_vs_ng_real_units',
            'load_q3d_capacitance_matrix', 'df_reorder_matrix_basis']
 
 
@@ -105,7 +105,7 @@ def jayNoscillator(capMatrix, Ic, CJ, N, fb, fr, res_L4_corr=None):
     Primary analysis function called by the user. Uses a (Maxwell) capacitance
     matrix generated from Q3D, and some additional values, to determine
     many parameters of the Hamiltonian of the system. The capMatrix
-    should have first been imported using readin_Q3D_matrix().
+    should have first been imported using readin_q3d_matrix().
 
     Inputs:
     ------------------------------
@@ -232,7 +232,7 @@ def jayNoscillator(capMatrix, Ic, CJ, N, fb, fr, res_L4_corr=None):
     LJ, EJ, Zqp, EC, wq, wq0, eps1 = transmon_props(Ic, Cq)
 
     # get numerical properties
-    fq, alpha, disp, tphi_ms = Levels_vs_ngRealUnits(Cq/1e-15, Ic/1e-9, N=51)
+    fq, alpha, disp, tphi_ms = levels_vs_ng_real_units(Cq/1e-15, Ic/1e-9, N=51)
     wq = 2*np.pi*fq*1e9
 
     # effective impedances of the coupling pads (?)
@@ -331,7 +331,7 @@ def jayNoscillator(capMatrix, Ic, CJ, N, fb, fr, res_L4_corr=None):
     return ham_dict
 
 
-def Levels_vs_ngRealUnits(Cq, IC, N=301, do_disp=0, do_plots=0):
+def levels_vs_ng_real_units(Cq, IC, N=301, do_disp=0, do_plots=0):
     """
     This numerically computes the exact transmon levels given C and IC
     as a function of the
@@ -426,22 +426,22 @@ def Levels_vs_ngRealUnits(Cq, IC, N=301, do_disp=0, do_plots=0):
     return fqubitGHz, anharMHz, disp, tphi_ms
 
 
-def GetCandIc(Cinest, ICinest, f01, f02on2):
+def get_C_and_Ic(Cin_est, Icin_est, f01, f02on2):
     """
     Get the capacitance and critical current for a transmon
     of a certain frequency and anharmonicity
     Args:
-        Cinest: Initial guess for capacitance (in fF)
-        ICinest: Initial guess for critical current (in nA)
+        Cin_est: Initial guess for capacitance (in fF)
+        Icin_est: Initial guess for critical current (in nA)
         f01: Transmon frequency (in GHz)
         f02on2: 02/2 frequency (in GHz)
     Returns:
-        [C,Ic] from Levels_vs_ngRealUnits that gives the
+        [C,Ic] from levels_vs_ng_real_units that gives the
         specified frequency and anharmonicity
     """
 
-    xrr = opt.minimize(lambda x: costomegaanddelta(x[0], x[1], f01, f02on2), [
-                       Cinest, ICinest], tol=1e-4, options={'maxiter': 100, 'disp': True})
+    xrr = opt.minimize(lambda x: cos_to_mega_and_delta(x[0], x[1], f01, f02on2), [
+                       Cin_est, Icin_est], tol=1e-4, options={'maxiter': 100, 'disp': True})
 
     return xrr.x
 
@@ -453,11 +453,11 @@ def GetCandIc(Cinest, ICinest, f01, f02on2):
 
 
 # Cost function for calculating C and IC
-# given a C and IC calculate f and f02/2 from 'Levels_vs_ngRealUnits'
+# given a C and IC calculate f and f02/2 from 'levels_vs_ng_real_units'
 # and least square with measured f01,f02on2
-def costomegaanddelta(Cin, ICin, f01, f02on2):
+def cos_to_mega_and_delta(Cin, ICin, f01, f02on2):
 
-    fqubitGHz, anharMHz, disp, tphi_ms = Levels_vs_ngRealUnits(Cin, ICin, N=51)
+    fqubitGHz, anharMHz, disp, tphi_ms = levels_vs_ng_real_units(Cin, ICin, N=51)
 
     return ((fqubitGHz-f01)**2 + (fqubitGHz+anharMHz/2./1e3-f02on2)**2)**0.5
 
@@ -468,7 +468,7 @@ def chargeline_T1(Ccharge, Cq, f01):
     return Cq/(Ccharge**2*50.*(2*np.pi*f01)**2)
 
 
-def readin_Q3D_matrix(path):
+def readin_q3d_matrix(path):
     """
     Read in the txt file created from q3d export
     and output the capacitance matrix
@@ -539,7 +539,7 @@ def load_q3d_capacitance_matrix(path, user_units='fF', _disp=True):
     Returns:
         [type] -- [description]
     """
-    df_cmat, Cunits, design_variation, df_cond = readin_Q3D_matrix(path)
+    df_cmat, Cunits, design_variation, df_cond = readin_q3d_matrix(path)
 
     # Unit convert
     ureg = UnitRegistry()

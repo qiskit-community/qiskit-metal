@@ -69,12 +69,12 @@ def is_rectangle(obj):
 
     p = get_poly_pts(obj)
     if len(p) == 4:
-        def isOrthogonal(i):
+        def is_orthogonal(i):
             v1 = p[(i+1) % 4]-p[(i+0) % 4]
             v2 = p[(i+2) % 4]-p[(i+1) % 4]
             return abs(np.dot(v1, v2)) < 1E-16
         # CHeck if all vectors are consequtivly orthogonal
-        return all(map(isOrthogonal, range(4)))
+        return all(map(is_orthogonal, range(4)))
     else:
         return False
 

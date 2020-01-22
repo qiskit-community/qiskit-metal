@@ -144,7 +144,7 @@ def draw_object_shapely(oModeler, obj, name, size_z=0., pos_z=0., hfss_options=N
 ###
 
 # @deprecated
-def do_PerfE(options, design, obj):
+def do_perf_E(options, design, obj):
     _, oModeler = design.get_modeler()
     if options.get('do_PerfE',  DEFAULT['do_PerfE']):
         oModeler.append_PerfE_assignment(

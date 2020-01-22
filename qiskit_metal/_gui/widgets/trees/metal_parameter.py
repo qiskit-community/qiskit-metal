@@ -63,8 +63,8 @@ class ParameterZlatko(QLineEdit): #Probably will need to rename class
         self.style_widget()
 
     @staticmethod
-    def I_can_handle_this_type(obj):
-        if isinstance(obj, str) or isinstance_number(obj) or isinstance(obj, list):
+    def i_can_handle_this_type(obj):
+        if isinstance(obj, str) or is_instance_number(obj) or isinstance(obj, list):
             return True
         else:
             return False
@@ -140,6 +140,6 @@ def parse_param_from_str(text):
     return value, used_ast
 
 
-def isinstance_number(obj):
+def is_instance_number(obj):
     return any(map(lambda x: isinstance(obj, x),
                    [int, float, np.int, np.float, np.int64, np.float64, np.long, np.integer]))

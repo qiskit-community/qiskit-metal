@@ -63,7 +63,7 @@ class MetalGUI(QMainWindow):
             from qiskit_metal import MetalGUI, PlanarDesign
 
             layout = PlanarDesign()
-            gui = Qiskit_MetalGUI(layout)
+            gui = MetalGUI(layout)
         '''
 
         self._setup_qApp()
@@ -92,7 +92,7 @@ class MetalGUI(QMainWindow):
         self._setup_plot()
         self._setup_tree_view()
         self._setup_tree_design_options()
-        self._setup_TreeDefaultOptions()
+        self._setup_tree_default_options()
         self._setup_window_style()
         self._setup_main_toolbar()
         self._setup_logging()
@@ -508,7 +508,7 @@ class MetalGUI(QMainWindow):
         #tree.add_toolbar_refresh(toolbar, main_window, self.imgs_path)
         #tree.add_toolbar_slider(toolbar, main_window, self.imgs_path)
 
-    def _setup_TreeDefaultOptions(self):
+    def _setup_tree_default_options(self):
 
         tree = self.tree_def_ops = TreeDefaultOptions(
             self, content_dict=self.DEFAULT_OPTIONS, gui=self)
@@ -806,7 +806,7 @@ class MetalGUI(QMainWindow):
         self.fig_draw.tight_layout()
         self.fig_draw.canvas.draw()
 
-    def getText(self, description="Select name", name='Name of new object:'):
+    def get_text(self, description="Select name", name='Name of new object:'):
         """Opens a QT dialog to get text, Utility function
 
         Keyword Arguments:
@@ -816,7 +816,7 @@ class MetalGUI(QMainWindow):
         Returns:
             [str or None] -- text from dialog or none is the test is '' or user cancels
         """
-        text, ok_pressed = QInputDialog.getText(self, description, name, QLineEdit.Normal, "")
+        text, ok_pressed = QInputDialog.get_text(self, description, name, QLineEdit.Normal, "")
         if ok_pressed and text != '':
             return text
         return None

@@ -118,7 +118,7 @@ def catch_exception_slot_pyqt(*args, catch=Exception, on_exception_emit=None):
         args = []
 
     @pyqtSlot(*args)
-    def slotdecorator(func):
+    def slot_decorator(func):
 
         @wraps(func)
         def wrapper(*args, **kwargs):  # pylint: disable=unused-argument
@@ -147,4 +147,4 @@ def catch_exception_slot_pyqt(*args, catch=Exception, on_exception_emit=None):
 
         return wrapper
 
-    return slotdecorator
+    return slot_decorator

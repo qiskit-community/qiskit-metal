@@ -177,7 +177,7 @@ def draw_cpw_trace(design,
 
 
 
-def connectorCPW_plotme(points0, points,label=None, plot_control=False,
+def connector_cpw_plotme(points0, points,label=None, plot_control=False,
                         orient_HFSS=+1, ax=None):
     '''
     Quick and  dirty utility for plotting a list of points.
@@ -315,7 +315,7 @@ def meander_between(design, points, start_idx, meander_options):
 
 
 DEFAULT_OPTIONS['easy_connect'] = Dict(
-    _calls = ['meander_between', 'connectorCPW_plotme', 'draw_cpw_trace', 'basic_meander']
+    _calls = ['meander_between', 'connector_cpw_plotme', 'draw_cpw_trace', 'basic_meander']
 )
 
 
