@@ -57,7 +57,7 @@ def is_element_table(obj):
 
 #############################################################################
 #
-# Dicitonary that specifies the structue of the elment tables
+# Dicitonary that specifies the column names of various element tables.
 #
 
 ELEMENT_COLUMNS = dict(
@@ -69,13 +69,12 @@ ELEMENT_COLUMNS = dict(
     base=dict(
         component=str,  # name of the component to which the element belongs
         name=str,  # name of the element
-        geometry=object,
-        layer=int,
-        type=str,  # metal, helper
+        geometry=object, # shapely object
+        layer=int, #  gds type of layer
         chip=str,  # is this redundant with layer?
-        subtract=bool,
-        fillet=object,
-        color=str,  # none by default, can overwrite, not used by all renderers
+        type=str,  # metal, helper
+        subtract=bool, # do we subtract from the groun place of the chip
+        color=str,  # '' by default, can overwrite, not used by all renderers
         __renderers__=dict(
             # ADD specific renderers here, all renderes must register here.
             # hfss = dict( ... ) # pick names as hfss_name
@@ -94,15 +93,19 @@ ELEMENT_COLUMNS = dict(
 
     ################################################
     # Specifies a path, such as a CPW.
+    # Ideas: chamfer
     path=dict(
         width=float,
+        fillet=object, # TODO: not decided yet how to represent this
         __renderers__=dict(
         )
     ),
 
     ################################################
     # Specifies a polygon
+    # Ideas: chamfer
     poly=dict(
+        fillet=object, # TODO: not decided yet how to represent this
         __renderers__=dict(
         )
     ),

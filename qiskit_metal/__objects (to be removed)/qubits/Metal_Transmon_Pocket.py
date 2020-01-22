@@ -202,8 +202,8 @@ class Metal_Transmon_Pocket(Metal_Qubit): # pylint: disable=invalid-name
             rect_pk=rect_pk,
         )
 
-        #rotates and translates all the objects as requested. Uses package functions in 'draw_utility' for easy
-        # rotation/translation
+        #rotates and translates all the objects as requested. Uses package functions
+        # in 'draw_utility' for easy rotation/translation
         objects = draw.rotate(
             objects,orientation, origin=(0, 0))
         objects = draw.translate(objects, pos_x, pos_y)
