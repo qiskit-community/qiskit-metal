@@ -20,6 +20,7 @@ The gui module is only loaded if PyQt5 can be found.
 Created on Tue May 14 17:13:40 2019
 @author: Zlatko
 """
+import logging
 
 # Check if PyQt5 is available for import
 try:
@@ -31,17 +32,27 @@ except (ImportError, ModuleNotFoundError):
 if __ihave_pyqt__:
 
     # Add hook for when we start the gui - Logging for QT errors
-    from .logging.handle_qt_messages import QtCore, _pyqt_message_handler
+    from ._handle_qt_messages import QtCore, _pyqt_message_handler
     QtCore.qInstallMessageHandler(_pyqt_message_handler)
     del QtCore, _pyqt_message_handler
 
     # main window
-    from .main_window import MetalGUI
+    from .main_window import MetalGUI as _MetalGUI
+    from .main_window_base import kick_start_qApp
 
+    def MetalGUI(*args, **kwargs):
+
+        qApp = kick_start_qApp()
+
+        if not qApp:
+            # Why is it none
+            logging.error("""Could not start PyQt5 event loop using QApplicaiton. """)
+
+        return _MetalGUI(*args, **kwargs)
 else:
 
     # Function as an error function for the class MetalGUI
-    def MetalGUI(*args, **kwargs): # pylint: disable=unused-argument,bad-option-value
+    def MetalGUI(*args, **kwargs): # pylint: disable=unused-argument,bad-option-value,invalid-name
         """
         ERROR: Unable to load PyQt5! Please make sure PyQt5 is installed.
         See Metal installation instrucitons and help.

@@ -30,7 +30,7 @@ __status__ = "Development"
 from . import config
 
 # Setup logging
-from .toolbox_python.logging import setup_logger
+from .toolbox_python._logging import setup_logger
 logger = setup_logger('Metal', config.log.format, config.log.datefmt)
 del setup_logger
 
@@ -51,7 +51,7 @@ from . import toolbox_python
 from . import toolbox_metal
 
 # Metal GUI
-#from ._gui import MetalGUI
+from ._gui import MetalGUI
 
 # Utility modules
 # For plotting in matplotlib;  May be superseeded by a renderer?

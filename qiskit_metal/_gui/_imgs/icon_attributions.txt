@@ -28,3 +28,18 @@ Icon credits:
    Delete: data managment 
 	https://www.flaticon.com/packs/data-management-4
 	https://www.flaticon.com/free-icon/delete_1935869
+	Icons made by <a href="https://www.flaticon.com/authors/eucalyp" title="Eucalyp">Eucalyp</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
+
+   Draw easel
+	https://www.flaticon.com/free-icon/drawing_1649174?term=draw&page=1&position=6
+	Icons made by <a href="https://www.flaticon.com/authors/eucalyp" title="Eucalyp">Eucalyp</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
+
+   Zoom, Pan, Point (signal), Painting
+	https://www.flaticon.com/free-icon/pan_1639277?term=pan&page=1&position=8
+	https://www.flaticon.com/free-icon/pan_1639277?term=pan&page=1&position=8
+	https://www.flaticon.com/free-icon/painting_1285788?term=zoom&page=1&position=14
+	Icons made by <a href="https://www.flaticon.com/authors/eucalyp" title="Eucalyp">Eucalyp</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
+
+   Connectors 
+	https://www.flaticon.com/free-icon/plug_1552808
+	

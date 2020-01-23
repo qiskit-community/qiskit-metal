@@ -96,5 +96,20 @@ log = Dict(
 )
 
 
+
+def is_using_ipython():
+    """Check if we're in IPython.
+
+    Returns:
+        bool -- True if ran in IPython
+    """
+    try:
+        __IPYTHON__  # pylint: disable=undefined-variable, pointless-statement
+        return True
+    except NameError:
+        return False
+
+_ipython = is_using_ipython()
+
 ####################################################################################
 # USER CONFIG

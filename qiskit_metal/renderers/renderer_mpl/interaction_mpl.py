@@ -60,7 +60,6 @@ import weakref
 import matplotlib.pyplot as _plt
 import numpy
 
-from matplotlib.backend_tools import ToolToggleBase # ToolBase
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QAction, QLabel
@@ -248,14 +247,17 @@ class PanAndZoom(ZoomOnWheel):
         self.options = Dict(dict(
             report_point_position=False,
         ))
+        self.logger = None
+        self._statusbar_label = None
 
-        self._get_images_path()
-        self._add_toolbar_tools()
+        #self._get_images_path()
+        #self._add_toolbar_tools()
         self._style_figure()
 
         self._ix_iy_old = (0,0)
 
     def _get_images_path(self):
+        # to be removed
         try:  # Get tool image path
             from pathlib import Path
             from ... import _gui
@@ -271,7 +273,31 @@ class PanAndZoom(ZoomOnWheel):
         return imgs_path
 
     def _add_toolbar_tools(self):
-        # TODO: subclass this
+        # TODO: Outdated - to be removed
+
+
+        from matplotlib.backend_tools import ToolToggleBase # ToolBase
+        class ToolPointPosition(ToolToggleBase):
+            '''Tools'''
+            default_keymap = 'Ctrl+p'
+            description = 'Click to get point coordinate printed'
+            default_toggled = False
+            image = None  # str(imgs_path)
+
+            def __init__(self, *args, parent=None, **kwargs):
+                super().__init__(*args, **kwargs)
+                if parent is None:
+                    raise('Pass a parent')
+                self.parent = parent
+
+            def enable(self, *args):
+                self.parent.options.report_point_position = True
+
+            def disable(self, *args):
+                self.parent.options.report_point_position = False
+
+
+
         fig = self.figure
         imgs_path = self.imgs_path
         toolbar = self.toolbar = fig.canvas.manager.toolbar
@@ -327,7 +353,7 @@ class PanAndZoom(ZoomOnWheel):
         self.figure.canvas.draw()
 
     def _style_figure(self):
-        self.figure.dpi = 150
+        #self.figure.dpi = 150
         pass
 
     @staticmethod
@@ -489,9 +515,11 @@ class PanAndZoom(ZoomOnWheel):
         self._ix_iy_old = ix, iy
 
         _text = f'(x,y) = ({ix:.4f}, {iy:.4f})  Δ last point ({ix-ix_old:.4f}, {iy-iy_old:.4f})'
-        if hasattr(self, '_status_label_2'):
-            self._status_label_2.setText(_text)
-        print(_text)
+        if self.logger:
+            self.logger.info(_text)
+        if self._statusbar_label:
+            self._statusbar_label.setText(_text)
+        #print(_text)
 
 
 def figure_pz(*args, **kwargs):
@@ -583,23 +611,3 @@ if __name__ == "__main__":
 
     plt.show()
 """
-
-
-class ToolPointPosition(ToolToggleBase):
-    '''Tools'''
-    default_keymap = 'Ctrl+p'
-    description = 'Click to get point coordinate printed'
-    default_toggled = False
-    image = None  # str(imgs_path)
-
-    def __init__(self, *args, parent=None, **kwargs):
-        super().__init__(*args, **kwargs)
-        if parent is None:
-            raise('Pass a parent')
-        self.parent = parent
-
-    def enable(self, *args):
-        self.parent.options.report_point_position = True
-
-    def disable(self, *args):
-        self.parent.options.report_point_position = False
