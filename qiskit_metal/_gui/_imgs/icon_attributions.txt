@@ -34,10 +34,11 @@ Icon credits:
 	https://www.flaticon.com/free-icon/drawing_1649174?term=draw&page=1&position=6
 	Icons made by <a href="https://www.flaticon.com/authors/eucalyp" title="Eucalyp">Eucalyp</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
 
-   Zoom, Pan, Point (signal), Painting
+   Zoom, Pan, Point (signal), Painting, Crayon
 	https://www.flaticon.com/free-icon/pan_1639277?term=pan&page=1&position=8
 	https://www.flaticon.com/free-icon/pan_1639277?term=pan&page=1&position=8
 	https://www.flaticon.com/free-icon/painting_1285788?term=zoom&page=1&position=14
+	https://www.flaticon.com/free-icon/crayon_1645965?term=draw&page=1&position=10
 	Icons made by <a href="https://www.flaticon.com/authors/eucalyp" title="Eucalyp">Eucalyp</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
 
    Connectors 

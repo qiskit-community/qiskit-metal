@@ -21,7 +21,7 @@ GUI front-end interface for Qiskit Metal in PyQt5.
 
 #import sys
 from .widgets.log_metal import LoggingHandlerForLogWidget
-from .plot_window_ui import Ui_MainWindowPlot as MainWindowPlot
+from .plot_window_ui import Ui_MainWindowPlot
 from .main_window_ui import Ui_MainWindow
 from .main_window_base import QMainWindowBaseHandler
 from .component_widget_ui import Ui_ComponentWidget
@@ -39,6 +39,7 @@ from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox, QLabel
 
+from .widgets.components_model import ComponentsTableModel
 
 class QMainWindowExtension(QMainWindow):
 
@@ -73,16 +74,17 @@ class MetalGUI(QMainWindowBaseHandler):
     def __init__(self):
 
         super().__init__()
+        self.design = None  # use set_design
 
         # UIs
         self.ui_plot = None
-        self.ui_plot_win = None
+        self.plot_win = None
 
         self._setup_component_widget()
         self._setup_plot_widget()
+        self._setup_design_components_widget()
 
         # Design
-        self.design = None  # use set_design
         self.main_window.show()
 
     def set_design(self, design: DesignBase):
@@ -92,7 +94,8 @@ class MetalGUI(QMainWindowBaseHandler):
             design ([type]): [description]
         """
         self.design = design
-        # TODO:
+        # TODO: Set for all
+        # Refresh
 
     def _ui_adjustments(self):
         """Any touchups to the loaded ui that need be done soon
@@ -110,15 +113,15 @@ class MetalGUI(QMainWindowBaseHandler):
 
         # Add a second label to the status bar
         status_bar = self.main_window.statusBar()
-        self._statusbar_label2 = QLabel(status_bar)
-        self._statusbar_label2.setText('')
-        status_bar.addWidget(self._statusbar_label2)
+        self.statusbar_label = QLabel(status_bar)
+        self.statusbar_label.setText('')
+        status_bar.addWidget(self.statusbar_label)
 
         # Elements button
         #self._set_element_tab = _set_element_tab
-        #self.ui.actionElements.toggled.connect(self._set_element_tab)
+        # self.ui.actionElements.toggled.connect(self._set_element_tab)
 
-    def _set_element_tab(self, yesno:bool):
+    def _set_element_tab(self, yesno: bool):
         if yesno:
             self.ui.tabWidget.setCurrentWidget(self.ui.tabElements)
         else:
@@ -130,47 +133,59 @@ class MetalGUI(QMainWindowBaseHandler):
 
     def _setup_plot_widget(self):
         """ Create main Window Widget Plot """
-        # Create the Widget Main Window
-        self.ui_plot_win = QMainWindow(self.main_window)
-        self.ui_plot = MainWindowPlot()
-        self.ui_plot.setupUi(self.ui_plot_win)
+        self.plot_win = QMainWindowPlot(self, self.main_window)
 
-        self.ui.mainViewTab.layout().addWidget(self.ui_plot_win)
+        # Add to the tabbed main view
+        self.ui.mainViewTab.layout().addWidget(self.plot_win)
 
-        # Add plot widget to window
-        # This should probably be a class to handle this window
-        # -- extend the window and superclass
-        self.plot_canvas = PlotCanvas(self.ui_plot_win)
-        self.ui_plot.centralwidget.layout().addWidget(self.plot_canvas)
-        self.ui_plot_win.statusBar().hide()
+    def _setup_design_components_widget(self):
+        model = ComponentsTableModel(self.design)
+        self.ui.tableComponents.setModel(model)
 
-        # Plot canvas
-        self.plot_canvas.logger = self.logger
-        self.plot_canvas.panzoom.logger = self.logger
-        self.plot_canvas.panzoom._statusbar_label = self._statusbar_label2
 
-        # Clicks
+class QMainWindowPlot(QMainWindow):
 
-        # Autoscale
-        self.ui_plot.actionAuto.triggered.connect(self.plot_canvas.auto_scale)
+    def __init__(self, gui: MetalGUI, parent_window: QMainWindowExtension):
+        # Q Main WIndow
+        super().__init__(parent_window)
 
-        # Pan
-        self.ui_plot.actionPan._clicked = lambda: QMessageBox.about(
-            self.ui_plot_win, "Pan", "Click and drag the plot screen.")
-        self.ui_plot.actionPan.triggered.connect(
-            self.ui_plot.actionPan._clicked)
+        # Parent GUI related
+        self.gui = gui
+        self.logger = gui.logger
+        self.statusbar_label = gui.statusbar_label
 
-        # Zooom
-        self.ui_plot.actionZoom._clicked = lambda: QMessageBox.about(
-            self.ui_plot_win, "Zoom", "Either use the mouse middle wheel\
+        # UI
+        self.ui = Ui_MainWindowPlot()
+        self.ui.setupUi(self)
+
+        self.statusBar().hide()
+
+        # Add MPL plot widget to window
+        self.canvas = PlotCanvas(self, logger=self.logger,
+                                 statusbar_label=self.statusbar_label)
+        self.ui.centralwidget.layout().addWidget(self.canvas)
+
+    def replot(self):
+        self.logger.info("Force replot")
+        pass
+
+    def auto_scale(self):
+        # self.ui.actionAuto.triggered.connect(self.auto_scale)
+        self.logger.info("Autoscale")
+        self.canvas.auto_scale()
+
+    def pan(self):
+        QMessageBox.about(self, "Pan", "Click and drag the plot screen.")
+
+    def zoom(self):
+        QMessageBox.about(self, "Zoom", "Either use the mouse middle wheel\
  to zoom in and out by scrolling, or use the right click and drag to select a region.")
-        self.ui_plot.actionZoom.triggered.connect(
-            self.ui_plot.actionZoom._clicked)
 
-        # Position
-        def set_pz_point_pos(yesno: bool):
-            if yesno:
-                self.logger.info("Click a point in the plot window to see its coordinate.")
-            self.plot_canvas.panzoom.options.report_point_position = yesno
-        self.set_pz_point_pos = set_pz_point_pos
-        self.ui_plot.actionCoords.toggled.connect(set_pz_point_pos)
+    def set_position_track(self, yesno: bool):
+        if yesno:
+            self.logger.info("Click a point in the plot window to see its coordinate.")
+        self.canvas.panzoom.options.report_point_position = yesno
+
+    def set_show_connectors(self,  yesno: bool):
+        self.logger.info(f"Showing connectors: {yesno}")
+        # TODO:

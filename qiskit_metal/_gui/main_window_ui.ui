@@ -352,8 +352,8 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
   <widget class="QDockWidget" name="dockDesign">
    <property name="minimumSize">
     <size>
-     <width>20</width>
-     <height>50</height>
+     <width>148</width>
+     <height>115</height>
     </size>
    </property>
    <property name="windowIcon">
@@ -498,7 +498,7 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
       </layout>
      </item>
      <item>
-      <widget class="QTableView" name="tableView">
+      <widget class="QTableView" name="tableComponents">
        <property name="alternatingRowColors">
         <bool>true</bool>
        </property>

@@ -245,7 +245,7 @@ class PanAndZoom(ZoomOnWheel):
         self._event = None  # To store reference event during interaction
 
         self.options = Dict(dict(
-            report_point_position=False,
+            report_point_position=True,
         ))
         self.logger = None
         self._statusbar_label = None
