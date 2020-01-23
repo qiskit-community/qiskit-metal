@@ -225,12 +225,21 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
     <property name="title">
      <string>View</string>
     </property>
+    <widget class="QMenu" name="menuStylesheet">
+     <property name="title">
+      <string>Theme</string>
+     </property>
+     <addaction name="actiondefault"/>
+     <addaction name="actionDark_Orange"/>
+     <addaction name="actionOpen"/>
+    </widget>
     <addaction name="actionDesign"/>
     <addaction name="actionComponent"/>
     <addaction name="actionElements"/>
     <addaction name="actionConnectors"/>
     <addaction name="actionLog"/>
     <addaction name="actionNewComponent"/>
+    <addaction name="menuStylesheet"/>
    </widget>
    <widget class="QMenu" name="menuAnalysis">
     <property name="title">
@@ -977,6 +986,21 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
    </property>
    <property name="shortcut">
     <string>C</string>
+   </property>
+  </action>
+  <action name="actionOpen">
+   <property name="text">
+    <string>Open File</string>
+   </property>
+  </action>
+  <action name="actiondefault">
+   <property name="text">
+    <string>Default</string>
+   </property>
+  </action>
+  <action name="actionDark_Orange">
+   <property name="text">
+    <string>Dark Orange</string>
    </property>
   </action>
  </widget>
