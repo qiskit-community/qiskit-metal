@@ -1,0 +1,15 @@
+addict
+docutils
+ipython
+matplotlib
+numpy
+pandas
+pint
+pyEPR @ git+https://github.com/zlatko-minev/pyEPR@master#egg=pyEPR
+Pygments
+PyQt5
+scipy
+Shapely
+
+# optional
+gdspy
