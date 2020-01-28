@@ -1,9 +1,13 @@
-# Qiskit Metal [![](https://badges.frapsoft.com/os/v1/open-source.png?v=103)](https://github.com/zlatko-minev/pyEPR) [![](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/zlatko-minev/pyEPR)
+# Qiskit Metal v0.1 [![](https://badges.frapsoft.com/os/v1/open-source.png?v=103)](https://github.com/zlatko-minev/pyEPR) [![](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/zlatko-minev/pyEPR)
 >  Quantum VLSI and Sims 
+
+
+`This is Version 0.1. THis version is stable, but depreciated. For future use, please switch to V0.2, when it is relased. Curently v0.2 is in dev mode. `
+
 
 ## Docs and how to use
 
-(Under construction)
+Please see v0.2.
 
 ## Installation notes
 
