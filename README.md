@@ -2,7 +2,7 @@
 >  Quantum VLSI and Sims 
 
 
-`This is Version 0.1. THis version is stable, but depreciated. For future use, please switch to V0.2, when it is relased. Curently v0.2 is in dev mode. `
+CAUTION: `This is version v0.1. This version is stable, but depreciated. For future use, please switch to v0.2, when it is relased. Curently v0.2 is in dev mode. `
 
 
 ## Docs and how to use
