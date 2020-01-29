@@ -98,7 +98,8 @@ class Metal_gui(QMainWindow):
         # refresh
         self.show()
         self.refresh_all()
-        self.raise_()
+
+        self.bring_to_top()
 
         self.fig_tight_layout()
 
@@ -379,7 +380,7 @@ class Metal_gui(QMainWindow):
             submodule_name = str( Path(file_path).stem )
             if not submodule_name.startswith('_') and \
                not submodule_name in GUI_CONFIG.exclude_metal_classes:
-                
+
                 self.add_metal_object(menu, module, submodule_name)
 
     def add_metal_object(self, menu, parent_module, submodule_name,
@@ -646,6 +647,36 @@ class Metal_gui(QMainWindow):
             super().closeEvent(event)
 
     ##########################################################################################
+
+    def auto_scale(self):
+        self.ax_draw.autoscale()
+
+    def bring_to_top(self):
+        """ Bring to top - Windows is not quite good about this"""
+        self.raise_()
+        self.activateWindow()
+
+
+    def get_screenshot(self, name='shot.png', type_='png', display=True, disp_ops=None):
+        """
+        of the main window
+        """
+        #self.bring_to_top()
+
+        path = Path(name).resolve()
+
+        screen = QtWidgets.QApplication.primaryScreen()
+        screenshot = screen.grabWindow( self.winId() ) # QPixelMap
+        screenshot.save(str(path), type_) # Save
+
+        if display:
+            from IPython.display import Image, display
+            #print(path)
+            _disp_ops = dict(width=500)
+            _disp_ops.update(disp_ops or {})
+            display(Image(filename = path, **_disp_ops))
+
+        QtWidgets.QApplication.clipboard().setPixmap(screenshot	) # To clipboard
 
     def re_draw_func(self, x):
         """
