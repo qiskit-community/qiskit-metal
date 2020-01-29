@@ -34,12 +34,11 @@ from ...toolbox.parsing import parse_units_user, parse_value, parse_options_user
 from ...toolbox.attribute_dictionary import Dict
 from ...config import DEFAULT, DEFAULT_OPTIONS
 from ...draw_functions import draw_objs, make_connector
-from ...backend.import_export import save_metal#, load_metal
+from ...backend.import_export import save_metal  # , load_metal
 from .Metal_Utility import is_metal_object
 
 
-
-class Metal_Design_Base(): # pylint: disable=invalid-name
+class Metal_Design_Base():  # pylint: disable=invalid-name
     '''
     Base class for design type objects in Qiskit Metal.
     All designs should be derived from this base class.
@@ -57,18 +56,20 @@ class Metal_Design_Base(): # pylint: disable=invalid-name
 
 
 #########INITIALIZATION##################################################
+
+
     def __init__(self,
-                 objects = None,
-                 connectors = None,
-                 logger = None,
-                 variables = None):
+                 objects=None,
+                 connectors=None,
+                 logger=None,
+                 variables=None):
 
         self._objects = Dict() if objects is None else objects
-        self._connectors =  Dict() if connectors is None else connectors
+        self._connectors = Dict() if connectors is None else connectors
         self._variables = Dict() if variables is None else variables
 
         # handy in saving and keeping everyting referenced in one object
-        self._DEFAULT = DEFAULT # Depricated, to be removed
+        self._DEFAULT = DEFAULT  # Depricated, to be removed
         self._DEFAULT_OPTIONS = DEFAULT_OPTIONS
 
         if logger is None:
@@ -119,9 +120,8 @@ class Metal_Design_Base(): # pylint: disable=invalid-name
         Removes the metal device
         '''
         self.reset_all_objects()
-        #self.reset_all_connectors()
+        # self.reset_all_connectors()
         return self
-
 
     clear_all_objects = reset_all_objects
 
@@ -142,10 +142,10 @@ class Metal_Design_Base(): # pylint: disable=invalid-name
         for name, conn in self.connectors.items():
             line = LineString(conn.points)
 
-            draw_objs(line, ax=ax, kw=dict(lw=2,c='r'))
+            draw_objs(line, ax=ax, kw=dict(lw=2, c='r'))
 
-            ax.annotate(name, xy=conn.middle[:2], xytext=conn.middle[:2] +\
-                        np.array(DEFAULT.annots.design_connectors_ofst),\
+            ax.annotate(name, xy=conn.middle[:2], xytext=conn.middle[:2] +
+                        np.array(DEFAULT.annots.design_connectors_ofst),
                         **DEFAULT.annots.design_connectors)
 
     def make_all_objects(self):
@@ -153,7 +153,7 @@ class Metal_Design_Base(): # pylint: disable=invalid-name
         Remakes all objects with their current parameters. Easy way
         """
         #self.logger.debug('Design: Making all objects')
-        for name, obj in self.objects.items(): # pylint: disable=unused-variable
+        for name, obj in self.objects.items():  # pylint: disable=unused-variable
             if is_metal_object(obj):
                 #self.logger.debug(f' Making {name}')
                 obj.make()
@@ -211,14 +211,61 @@ class Metal_Design_Base(): # pylint: disable=invalid-name
         """
         return parse_value(value, self.variables)
 
-    def add_connector(self, name:str,  points:list, flip=False, chip='main'):
-        """Add named connector to the design by creating a connector dicitoanry. 
-        
+    def add_connector(self, name: str,  points: list, flip=False, chip='main'):
+        """Add named connector to the design by creating a connector dicitoanry.
+
         Arguments:
-            name {[str]} -- Name of connector 
-        
+            name {[str]} -- Name of connector
+
         Keyword Arguments:
             points {[list]} --List of two points (default: {None})
             ops {[dict]} -- Optionally add options (default: {None})
         """
         self.connectors[name] = make_connector(points, flip=flip, chip=chip)
+
+    # HFSS
+
+    def set_oDesign(self, oDesign_):  # pylint: disable=invalid-name
+        '''
+        Set the HFSS design, connects the Design_Planar object to the HFSS design via the Ansys Electronic
+        Desktop API. Example using EPR package;
+                self.set_oDesign(pyEPR_HFSS().pinfo.design)
+        '''
+        self.oDesign = oDesign_  # pylint: disable=invalid-name
+        self.oModeler = None
+        if not oDesign_ is None:
+            self.oModeler = self.oDesign.modeler  # pylint: disable=invalid-name
+
+    def connect_ansys(self):
+        """"Use pyEPR to connect to HFSS"""
+        import pyEPR
+        self.epr = pyEPR.pyEPR_HFSS()
+        self.pinfo = self.epr.pinfo
+        self.set_oDesign(self.pinfo.design)
+
+    def ansys_render_components(self, name_starts_with):
+        for name, component in self.objects.items():
+            if name.startswith(name_starts_with):
+                component.hfss_draw()
+
+    def ansys_get_screenshot(self, path=None, display=True, disp_ops=None):
+        # quick muck
+        from pathlib import Path
+
+        if not path:
+            import tempfile
+            #path = (gui.imgs_path.parent/'ansys-screenshot.jpg').resolve()
+            path = (Path(tempfile.gettempdir())/'ansys-screenshot.jpg').resolve()
+
+        self.pinfo.design._modeler.ExportModelImageToFile(str(path), 0, 0,
+                                                          ["NAME:SaveImageParams",
+                                                           "ShowAxis:=", "Default",
+                                                           "ShowGrid:=", "Default",
+                                                           "ShowRuler:=", "Default"])
+
+        if display:
+            from IPython.display import Image, display
+            # print(path)
+            _disp_ops = dict(width=500)
+            _disp_ops.update(disp_ops or {})
+            display(Image(filename=path, **_disp_ops))
