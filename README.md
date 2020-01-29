@@ -5,30 +5,41 @@
 
 (Under construction)
 
-## Installation notes
+## Installation
 
-For development, the best way is to fork the repository. Then install the following required packages. Certain packages are only required if you require a particulat plugin. For example, if one does not require to export to gds, one does not need to install pygds.
+To setup a development environment, first `git clone` this repository.
 
-#### Core packages
-In the shell, assuming you are using a conda distrubiton, use 
+### Virtual environment setup
+
+To use a Python virtual environment, execute these commands in the top-level of the repository:
+
 ```
-conda install shapely
-pip install addict
-pip install pint
+python -m venv <virtual_env_path>
+source <virtual_env_path>/bin/activate
+python -m pip install -U pip
+python -m pip install -r requirements.txt -r requirements-dev.txt -e .
 ```
-If you do not have conda, you can replace use pip instead of conda. 
 
-Install [pyEPR](https://github.com/zlatko-minev/pyEPR) by following the instructions on the repository.   
- * pyEPR provides a dully automated, eigen-analysis to calculate both the Hamiltonian and dissipative parameters of a distributed circuit, based on the fraction of energy stored in the non-linear/dissipative element in a given mode of the circuit
+where `<virtual_env_path>` is where you want the Python virtual environment to be installed.
+On Windows, replace `source <virtual_env_path>/bin/activate` with `.\<virtual_env_path>\Scripts\activate`.
 
-#### Plugin: Export to GDS for mask design
+### Conda environment setup
 
-To use the GDS export plugin, please install `gdspy`. This will require you to first install Microsoft Visual C++ Build Tools, as a C++ compiler for speed is needed. This can be done with
+To use a conda environment, execute these commands in the top-level of the repository:
+
 ```
-pip install gdspy
+conda env create -n <env_name> environment.yml
+conda activate <env_name>
+python -m pip install -e .
 ```
-If you do not already have the compiler, and get `error: Microsoft Visual C++ 14.0 is required. Get it with "Microsoft Visual C++ Build Tools": https://visualstudio.microsoft.com/downloads/`, please download the build tools from the site. You can find it under `Tools for Visual Studio` entitled `Build Tools for Visual Studio 20xx`. Note, you do not need to intsll the Windows SDK.
 
+### Installation hints
+
+Here are some things to consider when setting up a development environment:
+
+1. If using a virtual environment, make sure `pip` is up to date. In initial environment testing, PyQt5 was not installable with recent (but not the latest) versions of `pip`.
+2. The `pyEPR` dependency is currently tracking a git repository. `git` must be installed before running the environment create commands above for it to install correctly. With conda, the environment will be created without pyEPR if `git` is missing. Run `conda install git` after `conda activate <env_name>` and before `python -m pip install -e .` to install `git` and let `python -m pip install -e .` pull down pyEPR.
+3. Shapely is difficult to install on Windows outside of conda. Currently, a different source than PyPI is used to specify for the location to obtain Shapely from on Windows because the wheels on PyPI did not work out of the box when tested.
 
 ## Authors and Citation
 
