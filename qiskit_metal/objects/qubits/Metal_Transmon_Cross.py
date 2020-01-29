@@ -332,7 +332,9 @@ Description:
         # JJ line and Lumped RLC
         if 1:
             rect_jj = hfss_objs['rect_jj']  # pylint: disable=invalid-name # pyEPR.hfss.Rect
-            axis = self.options.orientation.lower()
+            axis= self.options.orientation
+            axis = {90:'x',-90:'x',0:'y',180:'y'}.get(axis,axis)
+            axis = axis.lower()
             rect_jj.make_rlc_boundary(axis, l=options_hfss['Lj'],
                                       c=options_hfss['Cj'], r=options_hfss['_Rj'],
                                       name='Lj_'+name)

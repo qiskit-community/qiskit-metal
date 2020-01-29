@@ -20,6 +20,7 @@ modified: Thomas McConkey 2019/10/15
 '''
 # pylint: disable=invalid-name
 
+from copy import deepcopy
 from numpy import array
 from shapely.geometry import LineString
 
@@ -59,9 +60,12 @@ Description:
     Total length of the meander is found from;
 
 Options (Metal_cpw_connect):
-    connector1: string of the name of the starting connector point (as listed in design.connectors dictionary)
-    connector2: string of the name of the ending connector point (as listed in design.connectors dictionary)
-    connector1/2_leadin: 'buffer' length of straight CPW transmission line from the connector point
+    connector1: string of the name of the starting connector point
+                    (as listed in design.connectors dictionary)
+    connector2: string of the name of the ending connector point
+                    (as listed in design.connectors dictionary)
+    connector1/2_leadin: 'buffer' length of straight CPW transmission
+                    line from the connector point
 
     Convention: Values (unless noted) are strings with units included,
                 (e.g., '30um')
@@ -87,8 +91,8 @@ Options (Metal_cpw_connect):
             options = Dict(options)
             name = 'cpw_'+options.connector1+'_'+options.connector2
 
-        super().__init__(design, name, options=options, overwrite =overwrite,
-                    make=False)
+        super().__init__(design, name, options=options, overwrite=overwrite,
+                         make=False)
 
         self.check_connector_name()
 
@@ -96,7 +100,7 @@ Options (Metal_cpw_connect):
             self.make()
 
     def check_connector_name(self):
-        if self.options.connector1 is '' or self.options.connector1  is '[INPUT NAME HERE]':
+        if self.options.connector1 is '' or self.options.connector1 is '[INPUT NAME HERE]':
             raise Exception(
                 'ERROR: You did not provide a name for the leading connector connector1')
         if self.options.connector1 is '' or self.options.connector2 is '[INPUT NAME HERE]':

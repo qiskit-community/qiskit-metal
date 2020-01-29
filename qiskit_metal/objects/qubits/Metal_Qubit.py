@@ -69,9 +69,9 @@ class Metal_Qubit(Metal_Object):  # pylint: disable=invalid-name
     #__gui_creation_args__ = ['options_connectors']
 
     def __init__(self, design, name, options=None, options_connectors=None,
-                 _make=True):
+                 _make=True, **kwargs):
 
-        super().__init__(design, name, options=options)
+        super().__init__(design, name, options=options, **kwargs)
 
         if options_connectors:
             self.options.connectors.update(options_connectors)

@@ -38,7 +38,7 @@ DEFAULT_OPTIONS['Metal_Object'] = Dict(
 )
 
 
-class Metal_Object():  # pylint: disable=invalid-name
+class Metal_Object():
     r'''
     Base class for all Qiskit Metal objects.
 
@@ -284,16 +284,16 @@ class Metal_Object():  # pylint: disable=invalid-name
 
     def add_connector(self, two_points: list, flip=False, chip='main', name=None):
         """Add A connector to the design
-        
+
         Arguments:
-            two_points {list} -- List of the two point coordinates that deifne the start 
-                                 and end of the connector 
+            two_points {list} -- List of the two point coordinates that deifne the start
+                                 and end of the connector
             ops {None / dict} -- Options
-        
+
         Keyword Arguments:
             name {[type]} -- By default is just the object name  (default: {None})
         """
         self.design.add_connector(name=name if name else self.name,
-                                  points=two_points, 
+                                  points=two_points,
                                   chip=chip,
                                   flip=flip)
