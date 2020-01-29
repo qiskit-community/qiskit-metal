@@ -53,7 +53,8 @@ setup(
         "Pygments",
         "PyQt5",
         "scipy",
-        "Shapely",
+        'Shapely; platform_system != "Windows"',
+        'Shapely @ https://download.lfd.uci.edu/pythonlibs/q4hpdf1k/Shapely-1.6.4.post2-cp36-cp36m-win_amd64.whl ; platform_system == "Windows"',
     ],
     extras_require={"gds": ["gdspy>=1.5"]},
 )
