@@ -104,14 +104,14 @@ class Design_Planar(Metal_Design_Base):  # pylint: disable=invalid-name
         for key in design_parameters:
             self.params[key].update(design_parameters.get(key, {}))
 
-        # TODO: Remove this. Track these elsewhere in renderer maybe or 
+        # TODO: Remove this. Track these elsewhere in renderer maybe or
         self.track_objs = {
             'qubits': {},
             'cpw': {},
             'launchers': {}
         }
 
-        #TODO: Move into renderer 
+        #TODO: Move into renderer
         self._mesh_assign = Dict()  # internal dict used to append mesh ops and reassign
 
         self.variables.cpw_width = DEFAULT_OPTIONS.cpw.width
@@ -174,9 +174,9 @@ class Design_Planar(Metal_Design_Base):  # pylint: disable=invalid-name
             path = r'C:\zkm\2019-hfss\gds'
             gdspy.write_gds(path+r'\first.gds')
         '''
-        import gdspy
+        import gdspy # Needs to be highe enough version
 
-        gdspy.current_library.cell_dict.clear()
+        gdspy.current_library.cells.clear()
         device = gdspy.Cell('TOP_CELL')
         for _, obj in self.objects.items():
             if is_metal_object(obj):
@@ -186,7 +186,7 @@ class Design_Planar(Metal_Design_Base):  # pylint: disable=invalid-name
         if path:
             gdspy.write_gds(path)
 
-        return gdspy.current_library.cell_dict
+        return gdspy.current_library.cells
 
 #########HFSS_COMMANDS##################################################
 #REQUIRES EPR PACKAGE TO FUNCTION PROPERLY#
@@ -209,7 +209,7 @@ class Design_Planar(Metal_Design_Base):  # pylint: disable=invalid-name
         '''
         return (self.oDesign, self.oModeler)
 
-    def hfss_set_global_params(self, gparams=None):
+    def ansys_set_global_params(self, gparams=None):
         '''
         Set up global properties of the design.
         Updated global params.
@@ -230,14 +230,14 @@ class Design_Planar(Metal_Design_Base):  # pylint: disable=invalid-name
 
         if 1:
             modeler.set_units(units, rescale=False)
-            #pyEPR.hfss.LENGTH_UNIT = units  # HFSS seems to assume meters form a script no matter what 
+            #pyEPR.hfss.LENGTH_UNIT = units  # HFSS seems to assume meters form a script no matter what
 
 
         pyEPR.hfss.LENGTH_UNIT_ASSUMED = units  # used in parse_units
 
         return self
 
-    def update_variables(self, variables=None, do_hfss=True):
+    def ansys_update_variables(self, variables=None, do_hfss=True):
         '''
             Update variable in the design, as defined in the design object and
             applies them to the HFSS design.
@@ -273,7 +273,7 @@ class Design_Planar(Metal_Design_Base):  # pylint: disable=invalid-name
                                                                  self._mesh_assign[mesh_name],
                                                                  **kwargs)
 
-    def draw_chips(self, chips=None):
+    def ansys_render_chips(self, chips=None):
         '''
             Draw the groundplane and substrate for each chip
             Then adds the bounding box as specified by the global params.
