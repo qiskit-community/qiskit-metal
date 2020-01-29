@@ -33,7 +33,7 @@ from ...draw_hfss import draw_object_shapely
 from ...draw_functions import make_connector_props, do_cut_ground, do_PerfE, shapely_rectangle
 from ...toolbox.parsing import parse_value_hfss
 
-DEFAULT_OPTIONS['cpw_launcher'] = Dict({
+DEFAULT_OPTIONS['CPWLauncher'] = Dict({
     'chip'         : 'main',
     'base_width'   : '80um',
     'base_height'  : '80um',
@@ -58,7 +58,7 @@ DEFAULT_OPTIONS['cpw_launcher'] = Dict({
     }
 })
 
-class cpw_launcher(Metal_Object):
+class CPWLauncher(Metal_Object):
     """
     Planar CPW Launcher
 
@@ -124,7 +124,7 @@ class cpw_launcher(Metal_Object):
         ### Draw linesshapes firtst
         # Inner piece
         line_inner  = shapely.wkt.loads(f'LINESTRING (0 0, {Bw} 0, {Bw} {Bh}, {Cw} {Bh+Lh})')
-        # Outside piece which gets cut from ground plane 
+        # Outside piece which gets cut from ground plane
         line_outter = LineString(array(line_inner.coords)  + array(((0,-Bg),(+Bg,-Bg),(+Bg,0),(Cg,0))))
         #
         line_mesh = LineString(array(line_outter.coords) + array(((0,-Mg),(+Mg,-Mg),(+Mg,0),(Mg,0))))
@@ -133,20 +133,21 @@ class cpw_launcher(Metal_Object):
         poly_inner  = Polygon(flip_merge(line_inner))
         poly_outer = Polygon(flip_merge(line_outter))
         poly_mesh = Polygon(flip_merge(line_mesh))
-        
+
         poly_port = translate(shapely_rectangle(Bw*2, Bg), 0, -(Bg)/2)
-        
+
 
         # Position
         pos  = ops['position']
         if len(pos) == 3:
             # specify from edge of chip -- done poorly, do in a more user friendly way?
             chip_size = self.design.get_chip_size('main') # array of 3 numbers
-            arg = {'X':1, 'Y':0}[pos[0]]
+            arg = {'X':1, 'Y':0}[pos[0]] # is either 0 or 1
 
-            posY = pos[1]*chip_size[arg]/2. - ops['pos_gap']
+            posY = pos[1]*(chip_size[arg]/2. - ops['pos_gap'])
             pos1 = self.parse_value((pos[2], posY))
             pos1 = pos1 if pos[0] == 'X' else tuple(reversed(pos1))
+            #print(pos1, type(pos1))
 
             angle = {('X',-1):0, ('X',+1):180, ('Y',-1):-90, ('Y',+1):90}.get(tuple(pos[:2]))
 
@@ -158,7 +159,7 @@ class cpw_launcher(Metal_Object):
             raise ValueError("Cannot interpreit position of chip. Check how you specified it!! See the help of this class. ")
 
         # Move and orient
-        poly_inner, poly_outer, poly_mesh, poly_port = orient_position([poly_inner, poly_outer, 
+        poly_inner, poly_outer, poly_mesh, poly_port = orient_position([poly_inner, poly_outer,
                                                                         poly_mesh, poly_port],  angle, pos1)
 
         self.objects.update(dict(
@@ -175,20 +176,20 @@ class cpw_launcher(Metal_Object):
 
 
     def hfss_draw(self):
-            
+
         # Params
         options  = self.options._hfss
         options['chip_size'] = self.design.get_chip_size(self.options.chip)
         to_vec3D = lambda vec: to_Vec3D(self.design, options, parse_value_hfss(vec))
         name     = self.name #options['name']
-        
-        # Make shapes in user units 
+
+        # Make shapes in user units
         poly0 = self.objects['inner']
         poly1 = self.objects['outer']
         polyM = self.objects['mesh']
-        
-        if options['do_draw']: # Draw 
-            
+
+        if options['do_draw']: # Draw
+
             _, oModeler = self.design.get_modeler()
             def draw(poly, name_sup, flag=None):
                 ops = self.design.parse_value(options['kw_poly'])
@@ -197,24 +198,26 @@ class cpw_launcher(Metal_Object):
                 line = oModeler.draw_polyline(to_vec3D(get_poly_pts(poly)), closed=True, **ops)
                 line = line.rename(name + name_sup)
                 return line
-            
+
             Poly0 = draw(poly0,'',0)
             Poly1 = draw(poly1,'_cut')
             Poly2 = draw(polyM,'_mesh',1) if options['do_mesh'] else None
-            
+
             do_cut_ground(options, self.design, [str(Poly1)])
             do_PerfE(options, self.design, Poly0)
-            
+
             if options['do_mesh']:
                 pass
 
             if 1: # port
                 rect_port = draw_object_shapely(oModeler, self.objects['port'], self.name+'_port') # pyEPR.hfss.Rect
-                rect_port.make_lumped_port(angle_to_xy(self.design.parse_value(self.options.orientation), 
-                                                       self.design.logger, self.name), 
-                                            name='port_'+self.name)
-            
-            # these should be stored in the rendered or inside this  
+                if self.design.pinfo.design.solution_type == 'DrivenModal':
+                    # make a driven port for Z measure
+                    rect_port.make_lumped_port(angle_to_xy(self.design.parse_value(self.options.orientation),
+                                                        self.design.logger, self.name),
+                                                name='port_'+self.name)
+
+            # these should be stored in the rendered or inside this
             self.objects_hfss.update({
                 'inner':Poly0,
                 'outer':Poly1,
@@ -224,7 +227,7 @@ class cpw_launcher(Metal_Object):
 
 
 def angle_to_xy(angle, logger, name):
-    # a cludge - to be replaced by rotated rectangle 
+    # a cludge - to be replaced by rotated rectangle
     angle = float(angle)
     if angle in [-450.,-270.,-90.,+90.,270.,450.]:
         return 'x'
