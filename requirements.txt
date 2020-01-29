@@ -12,4 +12,4 @@ scipy
 Shapely
 
 # optional
-gdspy
+gdspy>=1.5

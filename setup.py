@@ -55,5 +55,5 @@ setup(
         "scipy",
         "Shapely",
     ],
-    extras_require={"gds": ["gdspy"]},
+    extras_require={"gds": ["gdspy>=1.5"]},
 )
