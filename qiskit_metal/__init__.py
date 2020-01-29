@@ -57,6 +57,7 @@ from .objects.base_objects.Metal_Utility import is_metal_object
 from .objects.interconnects.Metal_cpw_connect import Metal_cpw_connect
 from .objects.qubits.Metal_Transmon_Pocket import Metal_Transmon_Pocket
 from .objects.qubits.Metal_Transmon_Cross import Metal_Transmon_Cross
+from .objects.gds_import.my_gds_component import MyGDSComponent
 from .backend.import_export import save_metal, load_metal
 
 
@@ -74,3 +75,4 @@ from ._gui import Metal_gui
 #from .toolbox.mpl_interaction import figure_pz  # used for interactive figures
 
 from .toolbox.utility_functions import display_options
+from .toolbox import available_libraries, library_objects
