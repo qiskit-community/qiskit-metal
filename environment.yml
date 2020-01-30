@@ -23,4 +23,4 @@ dependencies:
 
 - pip:
   - gdspy>=1.5
-  - pyEPR @ git+https://github.com/zlatko-minev/pyEPR@master#egg=pyEPR
+  - pyEPR @ https://github.com/zlatko-minev/pyEPR/zipball/master

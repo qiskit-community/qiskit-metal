@@ -38,8 +38,7 @@ python -m pip install -e .
 Here are some things to consider when setting up a development environment:
 
 1. If using a virtual environment, make sure `pip` is up to date. In initial environment testing, PyQt5 was not installable with recent (but not the latest) versions of `pip`.
-2. The `pyEPR` dependency is currently tracking a git repository. `git` must be installed before running the environment create commands above for it to install correctly. With conda, the environment will be created without pyEPR if `git` is missing. Run `conda install git` after `conda activate <env_name>` and before `python -m pip install -e .` to install `git` and let `python -m pip install -e .` pull down pyEPR.
-3. Shapely is difficult to install on Windows outside of conda. Currently, a different source than PyPI is used to specify for the location to obtain Shapely from on Windows because the wheels on PyPI did not work out of the box when tested.
+2. Shapely is difficult to install on Windows outside of conda. Currently, a different source than PyPI is used to specify for the location to obtain Shapely from on Windows because the wheels on PyPI did not work out of the box when tested.
 
 ## Authors and Citation
 

@@ -5,7 +5,7 @@ matplotlib
 numpy
 pandas
 pint
-pyEPR @ git+https://github.com/zlatko-minev/pyEPR@master#egg=pyEPR
+pyEPR @ https://github.com/zlatko-minev/pyEPR/zipball/master
 Pygments
 PyQt5
 scipy
