@@ -10,6 +10,9 @@ here = Path(__file__).parent.absolute()
 with open(here / "README.md", encoding="utf-8") as f:
     long_description = f.read()
 
+with open(here / "requirements.txt", encoding="utf-8") as f:
+    requirements = f.read().splitlines()
+
 setup(
     name="qiskit_metal",
     version="0.2.dev0",
@@ -41,20 +44,6 @@ setup(
         "": ["*.ui", "*.qrc", "_imgs/*.png", "_imgs/*.txt"]
     },
     python_requires=">=3.5, <4",
-    install_requires=[
-        "addict",
-        "docutils",
-        "ipython",
-        "matplotlib",
-        "numpy",
-        "pandas",
-        "pint",
-        "pyEPR @ git+https://github.com/zlatko-minev/pyEPR@master#egg=pyEPR",
-        "Pygments",
-        "PyQt5",
-        "scipy",
-        'Shapely; platform_system != "Windows"',
-        'Shapely @ https://download.lfd.uci.edu/pythonlibs/q4hpdf1k/Shapely-1.6.4.post2-cp36-cp36m-win_amd64.whl ; platform_system == "Windows"',
-    ],
+    install_requires=requirements,
     extras_require={"gds": ["gdspy>=1.5"]},
 )
