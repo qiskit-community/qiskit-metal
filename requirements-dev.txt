@@ -1,2 +1,8 @@
+# Optional dependencies
+gdspy>=1.5
+
+# Dev tools
 jupyter
+
+# Build tools
 wheel

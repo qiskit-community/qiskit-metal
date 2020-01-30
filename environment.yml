@@ -1,0 +1,26 @@
+name: qiskit-metal
+channels:
+- conda-forge
+- defaults
+dependencies:
+- python=3.6
+- pip
+- addict
+- docutils
+- ipython
+- matplotlib
+- numpy
+- pandas
+- pint
+- pygments
+- pyqt
+- scipy
+- shapely
+
+- jupyter
+- wheel
+
+
+- pip:
+  - gdspy>=1.5
+  - pyEPR @ https://github.com/zlatko-minev/pyEPR/zipball/master
