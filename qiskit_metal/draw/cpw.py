@@ -419,7 +419,7 @@ def easy_wirebond(design, obj,
     for i in range(start, len(points_meander) + stop, step):
         p1, p2 = map(array, points_meander[i:i+2])
         vec_D, vec_d, vec_n = vec_unit_norm([p1, p2])
-        #print(p1, vec_n, norm(vec_D), '\n ',p1,p2, vec_n ) #render_to_mpl([Point(p1),Point(p2)])
+        #print(p1, vec_n, norm(vec_D), '\n ',p1,p2, vec_n ) #render([Point(p1),Point(p2)])
 
         if (norm(vec_D) > th) and (norm(vec_D)/2. >  ofst): # if the segment is longer than thresohld place a bond
            # make sure wirbondf doesn stick out
@@ -429,7 +429,7 @@ def easy_wirebond(design, obj,
             p = np.array(pos)
             shapes[str(i)] = dict(center=Point(pos),
                              bond = LineString([p-ori*w/2, p+ori*w/2]))
-            #render_to_mpl(shapes[i]) # draw shapely
+            #render(shapes[i]) # draw shapely
             if draw_hfss:
                 _, oModeler = design.get_modeler() ###
                 wirebond_names += [

@@ -33,7 +33,7 @@ from shapely.geometry import LineString
 from ... import Dict
 from ...toolbox_metal.parsing import parse_value, parse_params
 from ...config import DEFAULT, DEFAULT_OPTIONS
-from ...draw.utils import render_to_mpl, make_connector
+from ...draw.utils import make_connector
 from ...toolbox_metal.import_export import save_metal
 from .Metal_Utility import is_component
 

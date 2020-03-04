@@ -31,16 +31,19 @@ from ..components.base import is_component
 from .utility import get_poly_pts
 
 __all__ = ['rectangle', 'is_rectangle', 'flip_merge', 'rotate', 'rotate_position',
-           '_iter_func_geom_', 'translate', 'scale', 'buffer']
+           '_iter_func_geom_', 'translate', 'scale', 'buffer',
+           'union', 'subtract']
 
 
-def rectangle(w: float, h: float):
+def rectangle(w: float, h: float, xoff: float = 0, yoff: float = 0):
     """
     Draw a shapely rectangle of width and height
 
     Arguments:
-        w (float) --  width
-        h (float) --  height
+        w (float) :  width
+        h (float) :  height
+        xoff (float, optional) : Defaults to zero. gives the x position of the center.
+        yoff (float, optional) : Defaults to zero. gives the y position of the center.
 
     Returns:
         shapely.geometry.Polygon
@@ -53,7 +56,14 @@ def rectangle(w: float, h: float):
                         {-w/2} {+h/2},
                         {-w/2} {-h/2}))"""  # last  point has to close on self
 
-    return Polygon(shapely.wkt.loads(pad))  # My Polygon class
+    if xoff is 0 and yoff is 0:
+        return Polygon(shapely.wkt.loads(pad))  # My Polygon class
+    else:
+        return shapely.affinity.translate(
+            Polygon(shapely.wkt.loads(pad)),
+            xoff=xoff,
+            yoff=yoff
+        )
 
 
 def is_rectangle(obj):
@@ -77,6 +87,36 @@ def is_rectangle(obj):
         return all(map(is_orthogonal, range(4)))
     else:
         return False
+
+def subtract(poly_main:shapely.geometry.Polygon,
+             poly_tool:shapely.geometry.Polygon):
+    """Geometry subtract tool poly from main poly..
+
+    Args:
+        poly_main (Polygon): Main polygon from which we will carve out
+        poly_tool (Polygon or list): Poly or list of polys to subtract
+    """
+    return poly_main.difference(poly_tool)
+
+
+def union(*polys):
+    """Geometry union of two or more polys.
+
+    Areas of overlapping Polygons will get merged. LineStrings will get
+    fully dissolved and noded. Duplicate Points will get merged.
+
+    Args:
+        polys (Polygon, or list of polygons, or args of polygons):
+         Main polygon from which we will carve out
+    """
+    # union() is an expensive way to find the cumulative union of
+    # many objects.
+    # See shapely.ops.unary_union() for a more effective method.
+    if len(polys) is 2:
+        return polys[0].union(polys[1])
+    elif len(polys) is 1: # assume that it is a list
+        polys = polys[0]
+    return  shapely.ops.unary_union(polys)
 
 
 #########################################################################
@@ -153,10 +193,10 @@ def _iter_func_geom_(func, objs, *args, overwrite=False, **kwargs):
                          overwrite=overwrite, **kwargs)
         return objs
 
-    elif is_element(objs): #will need updating to new table format
-        # apply on geom of element; return element
-        func(objs.geom, *args, **kwargs)
-        return objs
+    # elif is_element(objs): #will need updating to new table format
+    #    # apply on geom of element; return element
+    #    func(objs.geom, *args, **kwargs)
+    #    return objs
 
     elif isinstance(objs, shapely.geometry.base.BaseGeometry):
         return func(objs, *args, **kwargs)
@@ -447,11 +487,11 @@ def buffer(elements,
     --------------------
         x = rectangle(1,1)
         y = buffer_flat([x,x,[x,x,{'a':x}]], 0.5)
-        render_to_mpl([x,y])
+        draw.mpl.render([x,y])
     '''
     if mitre_limit is None:
         mitre_limit = config.DEFAULT.buffer_mitre_limit
-        # TODO: mayube thius should be in the rendere for metal?
+        # TODO: maybe this should be in the renderer for metal?
         # or maybe render can set config? - yes
 
     if resolution is None:

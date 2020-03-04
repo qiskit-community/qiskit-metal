@@ -22,7 +22,7 @@ from shapely.geometry import LineString
 
 from ..renderer_base.renderer_gui_base import RendererGuiBase
 from ...config import DEFAULT, Dict
-from .toolbox_mpl import render_to_mpl
+from .toolbox_mpl import render
 
 __all__ = ['RendererMPL']
 
@@ -50,7 +50,7 @@ class RendererMPL(RendererGuiBase):
     def render_shapely(self, obj, kw=None):
         # TODO: simplify, specialize, and update this function
         # right now, this is just calling the V0.1 old style
-        render_to_mpl(obj, ax=self.ax, kw= {} or kw)
+        render(obj, ax=self.ax, kw= {} or kw)
 
 
     def render_connectors(self):

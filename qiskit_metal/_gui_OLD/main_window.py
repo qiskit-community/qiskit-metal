@@ -34,8 +34,8 @@ from PyQt5.QtWidgets import (QAction, QApplication, QDockWidget,  # , QStyle
 from .. import logger
 from ..config import GUI_CONFIG
 from ..toolbox_metal.import_export import load_metal
-from ..renderers.renderer_mpl.toolbox_mpl import (draw_all_objects, plot_simple_gui_spawn,
-                                   plot_simple_gui_style)
+from ..renderers.renderer_mpl.toolbox_mpl import (draw_all_objects, figure_spawn,
+                                   style_axis_standard)
 # removal of this import has cause a function call issue down below - line 230, 682, 688
 from . import widgets
 from ._handle_qt_messages import catch_exception_slot_pyqt
@@ -227,7 +227,7 @@ class MetalGUI(QMainWindow):
         self.menu_plot.tight = self.menu_plot.addAction(self.menu_plot.tight_action)
 
     def _setup_plot(self):
-        fig_draw, ax_draw = plot_simple_gui_spawn(dict(num=None))
+        fig_draw, ax_draw = figure_spawn(dict(num=None))
         self.fig_draw = fig_draw
         self.fig_window = self.fig_draw.canvas.window()
         self.ax_draw = ax_draw
@@ -685,7 +685,7 @@ class MetalGUI(QMainWindow):
             self.logger.error('\n\n'+traceback.format_exc())
             # Alternative:     exc_info = sys.exc_info()  traceback.print_exception(*exc_info)
 
-        plot_simple_gui_style(self.ax_draw)
+        style_axis_standard(self.ax_draw)
 
         self.fig_draw.canvas.show()
         self.fig_draw.canvas.draw()
