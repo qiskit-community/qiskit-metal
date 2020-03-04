@@ -243,8 +243,9 @@ def plot_simple_gui_spawn(fig_kw=None):
         fig_kw = {}
     fig_draw = figure_pz(**{**dict(num=1),
                             **fig_kw})
+    fig_draw.clf()
 
-    ax_draw = fig_draw.add_subplot(1, 1, 1)
+    ax_draw = fig_draw.add_subplot(1,1,1)
     # ax_draw.set_title('Layout')
     # If 'box', change the physical dimensions of the Axes. If 'datalim',
     # change the x or y data limits.

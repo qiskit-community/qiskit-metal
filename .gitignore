@@ -97,3 +97,6 @@ ENV/
 *.aedtresults/*
 *.aedtresults*
 *.aedt.lock
+qiskit_metal/_gui/shot.png
+qiskit_metal/_gui/ansys-screenshot.jpg
+qiskit_metal/_gui/shot.jpg
