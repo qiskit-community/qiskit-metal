@@ -19,17 +19,6 @@ GUI front-end interface for Qiskit Metal in PyQt5.
 
 # pylint: disable=invalid-name
 
-#import sys
-from .widgets.log_metal import LoggingHandlerForLogWidget
-from .plot_window_ui import Ui_MainWindowPlot
-from .main_window_ui import Ui_MainWindow
-from .main_window_base import QMainWindowBaseHandler
-from .component_widget_ui import Ui_ComponentWidget
-from ._handle_qt_messages import catch_exception_slot_pyqt
-from ..toolbox_python._logging import setup_logger
-from ..renderers.renderer_mpl.mpl_canvas import PlotCanvas
-from ..designs.design_base import DesignBase
-from .. import config
 import logging
 import os
 from pathlib import Path
@@ -37,13 +26,25 @@ from pathlib import Path
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox, QLabel
+from PyQt5.QtWidgets import QApplication, QLabel, QMainWindow, QMessageBox
 
+from .. import config
+from ..designs.design_base import DesignBase
+from ..renderers.renderer_mpl.mpl_canvas import PlotCanvas
+from ..toolbox_python._logging import setup_logger
+from ._handle_qt_messages import catch_exception_slot_pyqt
+from .component_widget_ui import Ui_ComponentWidget
+from .main_window_base import QMainWindowBaseHandler
+from .main_window_ui import Ui_MainWindow
+from .plot_window_ui import Ui_MainWindowPlot
 from .widgets.components_model import ComponentsTableModel
+from .widgets.log_metal import LoggingHandlerForLogWidget
+
 
 class QMainWindowExtension(QMainWindow):
 
-    def _set_element_tab(self, yesno):
+    def _set_element_tab(self,
+                         yesno):
         print(yesno)
         print("self if: ", self)
         if yesno:
