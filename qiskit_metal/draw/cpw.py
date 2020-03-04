@@ -14,10 +14,14 @@
 '''
 Function to draw CPW geometries.
 
-TODO: CREATE A PROPER PATH CLASS.
-
 @author: Zlatko K. Minev, 2019
 '''
+
+#TODO: CREATE A PROPER PATH CLASS.
+#    Control points
+#       Allow meander between
+#       Allow a way maybe on donwstream to enforce length
+#       Rounded corner
 
 import ast
 import numpy as np
@@ -95,7 +99,7 @@ def draw_cpw_trace(design,
     ### POINTS / UNITS
     # add units, parse, and  enforce numpy array
     #list_units = lambda array, unit=options['units']: np.array(list(map(lambda x: parse_entry(str(x)+unit),array)))
-    points     = parse_units(points) #list(map(list_units, points))
+    points     = design.parse_value(points) #list(map(list_units, points))
     cpw_origin = points[0]
     vec_D, vec_d, vec_n = vec_unit_norm([points[0], points[1]]) # distance vector, unit dist. vector, normal unit vector
 
