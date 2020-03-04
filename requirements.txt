@@ -5,11 +5,9 @@ matplotlib
 numpy
 pandas
 pint
-pyEPR @ git+https://github.com/zlatko-minev/pyEPR@master#egg=pyEPR
+pyEPR @ https://github.com/zlatko-minev/pyEPR/zipball/master
 Pygments
 PyQt5
 scipy
-Shapely
-
-# optional
-gdspy
+Shapely ; platform_system != "Windows"
+Shapely @ https://download.lfd.uci.edu/pythonlibs/q4hpdf1k/Shapely-1.6.4.post2-cp36-cp36m-win_amd64.whl ; platform_system == "Windows"

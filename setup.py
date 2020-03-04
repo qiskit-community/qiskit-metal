@@ -10,6 +10,9 @@ here = Path(__file__).parent.absolute()
 with open(here / "README.md", encoding="utf-8") as f:
     long_description = f.read()
 
+with open(here / "requirements.txt", encoding="utf-8") as f:
+    requirements = f.read().splitlines()
+
 setup(
     name="qiskit_metal",
     version="0.2.dev0",
@@ -37,20 +40,10 @@ setup(
     ],
     keywords="qiskit sdk quantum",
     packages=find_packages(),
+    package_data={
+        "": ["*.ui", "*.qrc", "_imgs/*.png", "_imgs/*.txt"]
+    },
     python_requires=">=3.5, <4",
-    install_requires=[
-        "addict",
-        "docutils",
-        "ipython",
-        "matplotlib",
-        "numpy",
-        "pandas",
-        "pint",
-        "pyEPR @ git+https://github.com/zlatko-minev/pyEPR@master#egg=pyEPR",
-        "Pygments",
-        "PyQt5",
-        "scipy",
-        "Shapely",
-    ],
-    extras_require={"gds": ["gdspy"]},
+    install_requires=requirements,
+    extras_require={"gds": ["gdspy>=1.5"]},
 )
