@@ -8,6 +8,19 @@
 ## Installation
 
 To setup a development environment, first `git clone` this repository.
+Then Qiskit Metal can either be installed using a [conda environment](https://docs.conda.io/en/latest/miniconda.html) or a Python virtual environment.
+
+*NOTE:* on Windows, the conda environment is strongly recommended because Shapely is difficult to install directly via pip.
+
+### Conda environment setup
+
+To use a conda environment, execute these commands in the top-level of the repository:
+
+```
+conda env create -n <env_name> environment.yml
+conda activate <env_name>
+python -m pip install -e .
+```
 
 ### Virtual environment setup
 
@@ -23,22 +36,11 @@ python -m pip install -r requirements.txt -r requirements-dev.txt -e .
 where `<virtual_env_path>` is where you want the Python virtual environment to be installed.
 On Windows, replace `source <virtual_env_path>/bin/activate` with `.\<virtual_env_path>\Scripts\activate`.
 
-### Conda environment setup
-
-To use a conda environment, execute these commands in the top-level of the repository:
-
-```
-conda env create -n <env_name> environment.yml
-conda activate <env_name>
-python -m pip install -e .
-```
-
 ### Installation hints
 
 Here are some things to consider when setting up a development environment:
 
 1. If using a virtual environment, make sure `pip` is up to date. In initial environment testing, PyQt5 was not installable with recent (but not the latest) versions of `pip`.
-2. Shapely is difficult to install on Windows outside of conda. Currently, a different source than PyPI is used to specify for the location to obtain Shapely from on Windows because the wheels on PyPI did not work out of the box when tested.
 
 ## Authors and Citation
 
