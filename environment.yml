@@ -6,6 +6,7 @@ dependencies:
 - python=3.6
 - pip
 - addict
+- descartes
 - docutils
 - ipython
 - matplotlib
