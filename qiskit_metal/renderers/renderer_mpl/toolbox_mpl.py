@@ -20,16 +20,17 @@ Created 2019
 """
 
 
-import numpy as np
+import descartes  # shapely plot
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+import numpy as np
 import shapely
-import descartes  # shapely plot
-
+from matplotlib.cbook import _OrderedSet
 from shapely.geometry import LinearRing, Polygon  # Point, LineString,
-from .interaction_mpl import figure_pz
-from ...components import is_component
+
 from ... import Dict
+from ...components import is_component
+from .interaction_mpl import figure_pz
 
 ##########################################################################################
 # Plotting subroutines
@@ -326,7 +327,7 @@ def figure_spawn(fig_kw=None):
 
 
 #######################################################################
-
+"""
 def clear_axis(ax: plt.Axes):
     '''
     Clear all plotted objects on an axis
@@ -339,3 +340,31 @@ def clear_axis(ax: plt.Axes):
         artist.remove()
     if ax.legend_:
         ax.legend_.remove()
+"""
+
+def clear_axis(ax: plt.Axes):
+    """Clear all plotted objects on an axis
+    including lines, patches, tests, tables,
+    artists, images, mouseovers, child axes, legends,
+    collections, and containers
+
+    Args:
+        ax (plt.Axes): Mpl axis to clear
+    """
+    #ax.clear()
+    ax.lines = []
+    ax.patches = []
+    ax.texts = []
+    ax.tables = []
+    ax.artists = []
+    ax.images = []
+    ax._mouseover_set = _OrderedSet()
+    ax.child_axes = []
+    ax._current_image = None  # strictly for pyplot via _sci, _gci
+    ax.legend_ = None
+    ax.collections = []  # collection.Collection instances
+    ax.containers = []
+
+    #for axis in [ax.xaxis, ax.yaxis]:
+    #    # Clear the callback registry for this axis, or it may "leak"
+    #    pass #self.callbacks = cbook.CallbackRegistry()

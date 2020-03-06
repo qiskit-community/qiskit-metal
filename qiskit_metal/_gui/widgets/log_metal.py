@@ -189,11 +189,10 @@ class LoggingWindowWidget(QTextEdit):
         # style -- move
         self.document().setDefaultStyleSheet(config.GUI_CONFIG.logger.style)
 
-    @property
     def get_all_checked(self):
         res = []
         for name, action in self.tracked_loggers.items():
-            if action.isChecked():
+            if action.isChecked(): # WARNIGN:L TODO: this can crash if deleted
                 res += [name]
         return res
 
@@ -203,12 +202,12 @@ class LoggingWindowWidget(QTextEdit):
         """
         self.clear()
         for name, record in self.logged_lines:
-            if name in self.get_all_checked:
+            if name in self.get_all_checked():
                 self.log_message(record, not (name is 'Errors'))
 
     def log_message_to(self, name, record):
         self.logged_lines.append((name, record))
-        if name in self.get_all_checked:
+        if name in self.get_all_checked():
             self.log_message(record, not (name is 'Errors'))
 
     def log_message(self, message, format_as_html=True):
@@ -249,6 +248,14 @@ class LoggingWindowWidget(QTextEdit):
         if self.actino_scroll_auto.isChecked():
             self.moveCursor(QtGui.QTextCursor.End)
         self.ensureCursorVisible()
+
+    def remove_handlers(self, logger):
+        """
+        Call on clsoe window to remove handlers from the logger
+        """
+        for handler in self.handlers:
+            if handler in logger.handlers:
+                logger.handlers.remove(handler)
 
 
 class LoggingHandlerForLogWidget(logging.Handler):

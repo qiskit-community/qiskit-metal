@@ -16,8 +16,11 @@
 GUI front-end interface for Qiskit Metal in PyQt5.
 @author: Zlatko Minev, IBM
 """
-
 # pylint: disable=invalid-name
+
+# some interesting paackages:
+# https://github.com/mfreiholz/Qt-Advanced-Docking-System
+# https://github.com/JackyDing/QtFlex5
 
 import logging
 import os
@@ -26,22 +29,38 @@ from pathlib import Path
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QApplication, QLabel, QMainWindow, QMessageBox
+from PyQt5.QtWidgets import QApplication, QLabel, QMainWindow, QMessageBox, QFileDialog
 
-from .. import config
+from .. import config, Dict
 from ..designs.design_base import DesignBase
 from ..renderers.renderer_mpl.mpl_canvas import PlotCanvas
 from ..toolbox_python._logging import setup_logger
+from ..toolbox_metal.import_export import load_metal_design
 from ._handle_qt_messages import catch_exception_slot_pyqt
 from .component_widget_ui import Ui_ComponentWidget
-from .main_window_base import QMainWindowBaseHandler
+from .main_window_base import QMainWindowBaseHandler, QMainWindowExtensionBase
 from .main_window_ui import Ui_MainWindow
 from .plot_window_ui import Ui_MainWindowPlot
 from .widgets.components_model import ComponentsTableModel
 from .widgets.log_metal import LoggingHandlerForLogWidget
 
 
-class QMainWindowExtension(QMainWindow):
+class QMainWindowExtension(QMainWindowExtensionBase):
+    """This contains all the functions tthat the gui needs
+    to call directly from the UI
+
+    Args:
+        QMainWindow ([type]): [description]
+    """
+
+    @property
+    def design(self) -> DesignBase:
+        """Return the design.
+
+        Returns:
+            DesignBase: [description]
+        """
+        return self.handler.design
 
     def _set_element_tab(self,
                          yesno):
@@ -54,6 +73,43 @@ class QMainWindowExtension(QMainWindow):
             self.ui.tabWidget.setCurrentWidget(self.ui.mainViewTab)
             self.ui.actionElements.setText("Elements")
 
+    def delete_all_components(self):
+        """Delete all components
+        """
+        ret = QMessageBox.question(self, 'Delete all components?',
+                                   "Are you sure you want to clear all Metal components?",
+                                   QMessageBox.Yes | QMessageBox.No)
+        if ret == QMessageBox.Yes:
+            self.logger.info('Delete all components.')
+            return self.design.delete_all_components()
+
+    @catch_exception_slot_pyqt()
+    def save_design(self, _):
+        """
+        Handles click on save design
+        """
+        filename = QFileDialog.getSaveFileName(None,
+                                               'Select locaiton to save Metal design to')[0]
+
+        if filename:
+            self.logger.info(f'Attempting to save design file to {filename}')
+            # Maybe try here?
+            self.design.save_design(filename)
+            self.logger.info(f'Successfully saved.')
+
+    @catch_exception_slot_pyqt()
+    def load_design(self, _):
+        """
+        Handles click on loading metal design
+        """
+        filename = QFileDialog.getOpenFileName(None,
+                                               'Select locaiton to load Metal design from')[0]
+        if filename:
+            self.logger.info(f'Attempting to load design file {filename}')
+            design = load_metal_design(filename)
+            self.logger.info(f'Successfully loaded file. Now setting design into gui.')
+            self.handler.set_design(design)
+            self.logger.info(f'Successfully set design. Loaded and done.')
 
 class MetalGUI(QMainWindowBaseHandler):
     """Qiskit Metal Main GUI.
@@ -72,7 +128,13 @@ class MetalGUI(QMainWindowBaseHandler):
         'dockLog',
         'dockNewComponent']
 
-    def __init__(self):
+    def __init__(self, design: DesignBase = None):
+        """Ini
+
+        Args:
+            design (DesignBase, optional): Pass in the design that the GUI should handle.
+                Defaults to None.
+        """
 
         super().__init__()
         self.design = None  # use set_design
@@ -85,18 +147,36 @@ class MetalGUI(QMainWindowBaseHandler):
         self._setup_plot_widget()
         self._setup_design_components_widget()
 
-        # Design
+        # Show
         self.main_window.show()
 
+        if design:
+            self.set_design(design)
+
     def set_design(self, design: DesignBase):
-        """Core function to set a new design
+        """Core function to set a new design.
 
         Args:
-            design ([type]): [description]
+            design (DesignBase): A qiskit metal design, such as a planar one.
+                The design contains all components and elements
         """
         self.design = design
         # TODO: Set for all
+
         # Refresh
+        self.refresh_design()
+
+    def refresh_design(self):
+        """Refresh design properties associated with the GUI.
+        """
+        self.update_design_name()
+
+    def update_design_name(self):
+        if self.design:
+            design_name = self.design.get_design_name()
+            self.main_window.setWindowTitle(
+                self.config.main_window.title + f' — {design_name}'
+            )
 
     def _ui_adjustments(self):
         """Any touchups to the loaded ui that need be done soon
@@ -143,7 +223,43 @@ class MetalGUI(QMainWindowBaseHandler):
         model = ComponentsTableModel(self.design)
         self.ui.tableComponents.setModel(model)
 
+    ################################################
+    # Ploting
+    def get_axes(self, num:int=None):
+        """Return access to the canvas axes.
+        If num is specified, returns the n-th axis
 
+        Args:
+            num (int, optional):f num is specified, returns the n-th axis.
+             Defaults to None.
+
+        Returns:
+            List[Axes] or Axes: of the canvas
+        """
+        axes = self.plot_win.canvas.axes
+        if num is not None:
+            axes = axes[num]
+        return axes
+
+    def get_figure(self):
+        """Return axis to the figure of the canvas
+        """
+        return self.plot_win.canvas.figure
+
+    def get_canvas(self):
+        """Get access to the canvas that handles the figure
+        and axes, and their main functions.
+
+        Returns:
+            PlotCanvas
+        """
+        return self.plot_win.canvas
+
+    ################################################
+    # ...
+
+
+# TODO: Move to its own file
 class QMainWindowPlot(QMainWindow):
 
     def __init__(self, gui: MetalGUI, parent_window: QMainWindowExtension):
@@ -179,12 +295,14 @@ class QMainWindowPlot(QMainWindow):
         QMessageBox.about(self, "Pan", "Click and drag the plot screen.")
 
     def zoom(self):
-        QMessageBox.about(self, "Zoom", "Either use the mouse middle wheel\
- to zoom in and out by scrolling, or use the right click and drag to select a region.")
+        QMessageBox.about(self, "Zoom", "Either use the mouse middle wheel'\
+            'to zoom in and out by scrolling, or use the right click and'\
+            'drag to select a region.")
 
     def set_position_track(self, yesno: bool):
         if yesno:
-            self.logger.info("Click a point in the plot window to see its coordinate.")
+            self.logger.info("Click a point in the plot window to see'\
+                'its coordinate.")
         self.canvas.panzoom.options.report_point_position = yesno
 
     def set_show_connectors(self,  yesno: bool):

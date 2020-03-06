@@ -86,7 +86,14 @@ GUI_CONFIG = Dict(
         style=".DEBUG {color: green;}\n.WARNING,.ERROR,.CRITICAL {color: red;}\n.'\
                 'ERROR,.CRITICAL {font-weight: bold;}\n",
         num_lines=500,
+        level='DEBUG',
+        stream_to_std=False, # stream to jupyter notebook
     ),
+
+    main_window = Dict(
+        title = 'Qiskit Metal — The Quantum Builder',
+        auto_size = False, # Autosize on creation of window
+    )
 
 )
 

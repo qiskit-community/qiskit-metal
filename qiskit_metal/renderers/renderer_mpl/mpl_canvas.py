@@ -32,6 +32,7 @@ from PyQt5.QtWidgets import (QApplication, QMainWindow, QMenu, QMessageBox,
                              QPushButton, QSizePolicy, QVBoxLayout, QWidget)
 
 from .interaction_mpl import MplInteraction, PanAndZoom
+from .toolbox_mpl import clear_axis
 
 from matplotlib.cbook import _OrderedSet
 
@@ -244,7 +245,8 @@ MPL_CONTEXT_DEFAULT = {
     #hatch.linewidth : 1.0
 }
 
-
+#TODO: Create an interface class for canvas based on this class
+# This class should then inherit it
 class PlotCanvas(FigureCanvas):
     """
     See https://github.com/matplotlib/matplotlib/blob/master/lib/matplotlib/backends/backend_qt5agg.py
@@ -367,24 +369,19 @@ class PlotCanvas(FigureCanvas):
         self.draw()
         self.show()
 
-    def clear_axis(self, ax):
-        #ax.clear()
-        ax.lines = []
-        ax.patches = []
-        ax.texts = []
-        ax.tables = []
-        ax.artists = []
-        ax.images = []
-        ax._mouseover_set = _OrderedSet()
-        ax.child_axes = []
-        ax._current_image = None  # strictly for pyplot via _sci, _gci
-        ax.legend_ = None
-        ax.collections = []  # collection.Collection instances
-        ax.containers = []
+    def clear_axis(self, ax:plt.Axes=None):
+        """Clear an axis or clear all axes
 
-        #for axis in [ax.xaxis, ax.yaxis]:
-        #    # Clear the callback registry for this axis, or it may "leak"
-        #    pass #self.callbacks = cbook.CallbackRegistry()
+        Args:
+            ax (plt.Axes, optional): Clear an axis, or
+                 if None, then clear all axes.
+                 Defaults to None.
+        """
+        if ax:
+            clear_axis(ax)
+        else:
+            for ax in self.axes:
+                clear_axis(ax)
 
     def refresh(self):
         """Force refresh
@@ -403,6 +400,30 @@ class PlotCanvas(FigureCanvas):
 
         ax.set_xlabel('X position (mm)')
         ax.set_ylabel('Y position (mm)')
+
+        # Zero lines
+        kw = dict(c='k', lw=1, zorder=-1, alpha=0.5)
+        ax.axhline(0, **kw)
+        ax.axvline(0, **kw)
+
+
+        # Grid
+        kw = dict(
+            color='#CCCCCC',
+            #zorder = -100,
+            #alpha = 0.8,
+            # fillstyle='left'
+            # markevery=(1,1),
+            # sketch_params=1
+        )
+        if 0:  # fix tick spacing
+            loc = mpl.ticker.MultipleLocator(base=0.1)
+            ax.xaxis.set_major_locator(loc)
+            ax.yaxis.set_major_locator(loc)
+
+        ax.grid(which='major', linestyle='--', **kw)
+        ax.grid(which='minor', linestyle=':', **kw)
+        ax.set_axisbelow(True)
 
         #[left, bottom, width, height]
         #ax.set_position([0,0,1,1])

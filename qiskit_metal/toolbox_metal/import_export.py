@@ -32,10 +32,11 @@ def save_metal(filename : str, design):
     TODO: Right now just does pickle. Need to serialize object into JSON
     or similar. Then recreate components.
     """
+    # handle errors here? such as PermissionError
     pickle.dump(design, open(filename, "wb"))
 
 
-def load_metal(filename : str, do_update=True):
+def load_metal_design(filename : str, do_update=True):
     """
     Returns the pickled design object and updates if asked the param dicts for
     defaults

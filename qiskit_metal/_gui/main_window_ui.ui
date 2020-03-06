@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1140</width>
-    <height>918</height>
+    <width>1177</width>
+    <height>800</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -181,7 +181,7 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1140</width>
+     <width>1177</width>
      <height>22</height>
     </rect>
    </property>
@@ -223,33 +223,38 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
-     <string>View</string>
+     <string>Window</string>
     </property>
     <widget class="QMenu" name="menuStylesheet">
      <property name="title">
       <string>Theme</string>
      </property>
-     <addaction name="actiondefault"/>
-     <addaction name="actionDark_Orange"/>
-     <addaction name="actionOpen"/>
+     <addaction name="actionStyleDefault"/>
+     <addaction name="actionStyleDark"/>
+     <addaction name="actionStyleOpen"/>
     </widget>
+    <addaction name="actionScreenshot"/>
+    <addaction name="separator"/>
     <addaction name="actionDesign"/>
     <addaction name="actionComponent"/>
     <addaction name="actionElements"/>
     <addaction name="actionConnectors"/>
     <addaction name="actionLog"/>
     <addaction name="actionNewComponent"/>
+    <addaction name="separator"/>
     <addaction name="menuStylesheet"/>
    </widget>
    <widget class="QMenu" name="menuAnalysis">
     <property name="title">
      <string>Analysis</string>
     </property>
+    <addaction name="separator"/>
    </widget>
    <widget class="QMenu" name="menuRender">
     <property name="title">
      <string>Render</string>
     </property>
+    <addaction name="separator"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="minimumSize">
@@ -287,10 +292,10 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
     <addaction name="actionZoom"/>
    </widget>
    <addaction name="menuDesign"/>
-   <addaction name="menuView"/>
    <addaction name="menuPlot"/>
    <addaction name="menuRender"/>
    <addaction name="menuAnalysis"/>
+   <addaction name="menuView"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -357,6 +362,8 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
    <addaction name="actionConnectors"/>
    <addaction name="actionLog"/>
    <addaction name="actionElements"/>
+   <addaction name="separator"/>
+   <addaction name="actionScreenshot"/>
   </widget>
   <widget class="QDockWidget" name="dockDesign">
    <property name="minimumSize">
@@ -681,6 +688,18 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
    </widget>
   </widget>
   <widget class="QDockWidget" name="dockLog">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>71</width>
+     <height>89</height>
+    </size>
+   </property>
    <property name="windowIcon">
     <iconset>
      <normalon>:/log</normalon>
@@ -695,6 +714,9 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
    <property name="whatsThis">
     <string>Log window</string>
    </property>
+   <property name="features">
+    <set>QDockWidget::AllDockWidgetFeatures</set>
+   </property>
    <property name="windowTitle">
     <string>Log</string>
    </property>
@@ -702,9 +724,18 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
     <number>8</number>
    </attribute>
    <widget class="QWidget" name="dockWidgetContents_4">
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
     <layout class="QVBoxLayout" name="verticalLayout_4">
      <property name="spacing">
       <number>0</number>
+     </property>
+     <property name="sizeConstraint">
+      <enum>QLayout::SetMaximumSize</enum>
      </property>
      <property name="leftMargin">
       <number>0</number>
@@ -921,10 +952,10 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
      <normaloff>:/_imgs/support.png</normaloff>:/_imgs/support.png</iconset>
    </property>
    <property name="text">
-    <string>New Compt.</string>
+    <string>Create</string>
    </property>
    <property name="toolTip">
-    <string>New Component</string>
+    <string>Create new component</string>
    </property>
   </action>
   <action name="actionDelete_All">
@@ -933,7 +964,7 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
      <normaloff>:/delete_all</normaloff>:/delete_all</iconset>
    </property>
    <property name="text">
-    <string>Delete All</string>
+    <string>Delete all</string>
    </property>
    <property name="toolTip">
     <string>Delete All Component Objects and Elements</string>
@@ -988,19 +1019,31 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
     <string>C</string>
    </property>
   </action>
-  <action name="actionOpen">
+  <action name="actionStyleOpen">
    <property name="text">
     <string>Open File</string>
    </property>
   </action>
-  <action name="actiondefault">
+  <action name="actionStyleDefault">
    <property name="text">
     <string>Default</string>
    </property>
   </action>
-  <action name="actionDark_Orange">
+  <action name="actionStyleDark">
    <property name="text">
-    <string>Dark Orange</string>
+    <string>Dark</string>
+   </property>
+  </action>
+  <action name="actionScreenshot">
+   <property name="icon">
+    <iconset resource="main_window_rc.qrc">
+     <normaloff>:/screenshot</normaloff>:/screenshot</iconset>
+   </property>
+   <property name="text">
+    <string>Screenshot</string>
+   </property>
+   <property name="toolTip">
+    <string>Take a screenshot of the window</string>
    </property>
   </action>
  </widget>
@@ -1031,9 +1074,128 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionDelete_All</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>delete_all_components()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>583</x>
+     <y>395</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionLoad</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>load_design()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>583</x>
+     <y>395</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionSave</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>save_design()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>583</x>
+     <y>395</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionStyleDark</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>load_stylesheet_dark()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>588</x>
+     <y>399</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionStyleDefault</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>load_stylesheet_default()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>588</x>
+     <y>399</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionStyleOpen</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>load_stylesheet_open()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>588</x>
+     <y>399</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionScreenshot</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>get_screenshot()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>614</x>
+     <y>367</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>588</x>
+     <y>399</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>showHelp()</slot>
   <slot>_set_element_tab(bool)</slot>
+  <slot>delete_all_components()</slot>
+  <slot>save_design()</slot>
+  <slot>load_design()</slot>
+  <slot>load_stylesheet_default()</slot>
+  <slot>load_stylesheet_dark()</slot>
+  <slot>load_stylesheet_open()</slot>
+  <slot>get_screenshot()</slot>
  </slots>
 </ui>

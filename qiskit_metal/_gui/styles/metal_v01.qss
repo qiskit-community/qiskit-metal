@@ -8,6 +8,7 @@
  *  :editor: Zlatko K. Minev
  */
 
+
 QMenuBar,
 QMenu,
 QDockWidget,
@@ -210,3 +211,34 @@ QScrollBar::handle:vertical:hover {
     border-radius: 4px;
     min-height: 15px;
   }
+
+
+
+ /*******************************************************************************/
+ QDockWidget {
+    border: 1px solid lightgray;
+    titlebar-close-icon: url(:/cancel);
+    titlebar-normal-icon: url(:/unlock);
+}
+
+QDockWidget::title {
+    text-align: left; /* align the text to the left */
+  /* background: lightgray; */
+    padding-left: 5px;
+}
+
+QDockWidget::close-button, QDockWidget::float-button {
+    border: 0px solid transparent;
+    /*background: darkgray;*/
+    padding: 1px;
+}
+
+QDockWidget::close-button:hover, QDockWidget::float-button:hover {
+    background: gray;
+}
+
+QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
+    padding: 1px -1px -1px 1px;
+}
+
+/*******************************************************************************/

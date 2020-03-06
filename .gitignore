@@ -100,3 +100,6 @@ ENV/
 qiskit_metal/_gui/shot.png
 qiskit_metal/_gui/ansys-screenshot.jpg
 qiskit_metal/_gui/shot.jpg
+_tutorials_/2. Drawing custom components/test.metal
+_tutorials_/2. Drawing custom components/shot.png
+qiskit_metal/_gui/_imgs/screenshot.png

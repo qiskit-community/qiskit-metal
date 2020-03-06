@@ -22,11 +22,12 @@ Module containing all Qiskit Metal designs.
 #>> pyreverse -o png -p desin_base design_base.py -A  -S
 
 import numpy as np
+from datetime import datetime
 
 from .. import Dict, draw, logger
 from ..components.base import is_component
 from ..config import DEFAULT, DEFAULT_OPTIONS
-from ..toolbox_metal.import_export import load_metal, save_metal
+from ..toolbox_metal.import_export import load_metal_design, save_metal
 from ..toolbox_metal.parsing import parse_params, parse_value
 
 __all__ = ['DesignBase']
@@ -35,6 +36,24 @@ class DesignBase():
     """
     DesignBase is the base class for Qiskit Metal Designs.
     A design is the most top-level object in all of Qiskit Metal.
+
+    Attributes:
+        components (Dict) : A dictionary that stores all the components of the design.
+
+        variables (Dict) : The variables of the design, which can be used in the make funciton
+                of a component.
+
+        chips (Dict) : A collection of all the chips associated with the design.
+
+        connectors (Dict) : Information on the connectors
+
+        metadata (Dict) : A dictionary of information that the user can store
+            along with the desing. This includes the name of the design,
+            the time the design was created, and other notes the user might choose to store.
+
+        default_options (dict) : Contains all the default options used for component creation and
+            other functions.
+
     """
 
     # TODO -- Break up DesignBase into several interface classes,
@@ -51,7 +70,10 @@ class DesignBase():
     # Used by `is_design` to check.
     __i_am_design__ = True
 
-    def __init__(self):
+    def __init__(self, metadata:dict=None):
+
+        # Key attributes related to physical content of the design
+        # These will be saved
         self._components = Dict()
         self._connectors = Dict()
         self._variables = Dict()
@@ -60,10 +82,34 @@ class DesignBase():
         self._defaults = DEFAULT  # Depricated, to be removed
         self._default_options = DEFAULT_OPTIONS
 
-        self.logger = logger
+        self._metadata = self._init_metadata()
+        if metadata:
+            self.update_metadata(metadata)
 
-        # Notes, etc. that the user might want to store
-        self.metadata = Dict(notes='')
+        # Software attributes
+        self.logger = logger # type: logging.Logger
+
+    def _init_metadata(self) -> Dict:
+        """Initialize default metadata dicitoanry
+
+        Returns:
+            Dict: default metadata dicitoanry
+        """
+        now = datetime.now() # current date and time
+        return Dict(
+            design_name='my_design',
+            notes='',
+            time_created = now.strftime("%m/%d/%Y, %H:%M:%S"))
+
+    def update_metadata(self, new_metadata:dict):
+        """Update the metadata dictionary of the design with a
+        a new metadata dictionary. This will overwrite only the new keys
+        that you pass in. All other keys will be unaffected.
+
+        Args:
+            new_metadata (dict): New metadatadata dict to update
+        """
+        self._metadata.update(new_metadata)
 
 #########PROPERTIES##################################################
 
@@ -106,6 +152,12 @@ class DesignBase():
         '''
         return self._default_options
 
+    @property
+    def metadata(self):
+        '''
+        Return the metadata Dict object that keeps track of all metadata in the design.
+        '''
+        return self._metadata
 
 #########Proxy properties##################################################
 
@@ -220,7 +272,7 @@ class DesignBase():
 #########I/O###############################################################
 
     @classmethod
-    def load_design(cls, path):
+    def load_design(cls, path:str):
         """Load a Metal design from a saved Metal file.
         (Class method)
 
@@ -231,17 +283,17 @@ class DesignBase():
             Loaded metal design.
             Will also update default dicitonaries.
         """
-        print("Beta feature. Not guaranteed to be fully implemented. ")
-        return load_metal(path)
+        logger.warning("Loading is a beta feature.")
+        return load_metal_design(path)
 
-    def save_design(self, path):
+    def save_design(self, path:str):
         """Save the metal design to a Metal file.
 
         Arguments:
             path {str} -- Path to save the design to.
         """
-        print("Beta feature. Not guaranteed to be fully implemented. ")
-        return save_metal(self, path)
+        self.logger.warning("Saving is a beta feature.")
+        return save_metal(path, self)
 
 #########Creating Components###############################################################
 
@@ -344,6 +396,23 @@ class DesignBase():
         # Remake components in order
         pass
 
+    def get_design_name(self)->str:
+        """Get the name of the design from the metadata.
+
+        Returns:
+            str: name of design
+        """
+        if 'design_name' not in self.metadata:
+            self.update_metadata({'design_name':'Unnamed'})
+        return self.metadata.design_name
+
+    def set_design_name(self, name:str):
+        """Set the name of the design in the metadata.
+
+        Args:
+            name (str) : Name of design
+        """
+        self.update_metadata({'design_name':name})
 
 ####################################################################################
 ###

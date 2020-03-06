@@ -44,3 +44,5 @@ Icon credits:
    Connectors 
 	https://www.flaticon.com/free-icon/plug_1552808
 	
+   Screenshot
+	https://www.flaticon.com/free-icon/browser_1829550?term=screenshot&page=1&position=15

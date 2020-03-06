@@ -28,9 +28,10 @@ def setup_logger(logger_name,
                  level_stream=logging.INFO,
                  level_base=logging.DEBUG,
                  force_set=False,
-                 capture_warnings=True,
-                 propagate=False
-                 ):
+                 capture_warnings=None,
+                 propagate=False,
+                 create_stream = True
+                 ) -> logging.Logger:
     '''
     Setup the logger to work with jupyter and command line.
 
@@ -52,30 +53,36 @@ def setup_logger(logger_name,
 
     if force_set or not len(logger.handlers):
 
+        logger.setLevel(level_base)
+
         # Used to integrate logging with the warnings module.
         # Warnings issued by the warnings module will be redirected to the logging system.
         # Specifically, a warning will be formatted using warnings.formatwarning() and the resulting
         # string logged to a logger named 'py.warnings' with a severity of WARNING.
-        logging.captureWarnings(capture_warnings)
-
-        # Sends logging output to streams such as sys.stdout, sys.stderr or any file-like object
-        c_handler = logging.StreamHandler()
+        if capture_warnings is not None:
+            logging.captureWarnings(capture_warnings)
 
         # Jupyter notebooks already has a stream handler on the default log.
         # Do not propage upstream to the root logger.
         # https://stackoverflow.com/questions/31403679/python-logging-module-duplicated-console-output-ipython-notebook-qtconsole
         logger.propagate = propagate
 
-        # Format. Unlike the root logger, a custom logger can't be configured using basicConfig().
-        c_format = logging.Formatter(log_format, datefmt=log_datefmt)
-        c_handler.setFormatter(c_format)
+        if create_stream:
+            # Sends logging output to streams such as sys.stdout,
+            # sys.stderr or any file-like object
+            c_handler = logging.StreamHandler()
 
-        # Add Hanlder with format and set level
-        logger.addHandler(c_handler)
-        logger.setLevel(level_base)
-        c_handler.setLevel(level_stream)
+            # Format. Unlike the root logger, a custom logger can't be configured
+            # using basicConfig().
+            c_format = logging.Formatter(log_format, datefmt=log_datefmt)
+            c_handler.setFormatter(c_format)
 
-        logger.zkm_c_handler = c_handler
-        logger.zkm_c_format = c_format
+            # Add Hanlder with format and set level
+            logger.addHandler(c_handler)
+            c_handler.setLevel(level_stream)
+
+            # save references for ease
+            logger.zkm_c_handler = c_handler
+            logger.zkm_c_format = c_format
 
     return logger
