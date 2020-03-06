@@ -421,7 +421,7 @@ class Ui_MainWindow(object):
         self.actionStyleDark.triggered.connect(MainWindow.load_stylesheet_dark)
         self.actionStyleDefault.triggered.connect(MainWindow.load_stylesheet_default)
         self.actionStyleOpen.triggered.connect(MainWindow.load_stylesheet_open)
-        self.actionScreenshot.triggered.connect(MainWindow.get_screenshot)
+        self.actionScreenshot.triggered.connect(MainWindow._screenshot)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):

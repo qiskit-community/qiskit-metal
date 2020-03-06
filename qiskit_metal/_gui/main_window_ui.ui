@@ -1174,7 +1174,7 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
    <sender>actionScreenshot</sender>
    <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
-   <slot>get_screenshot()</slot>
+   <slot>_screenshot()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>614</x>
@@ -1196,6 +1196,6 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
   <slot>load_stylesheet_default()</slot>
   <slot>load_stylesheet_dark()</slot>
   <slot>load_stylesheet_open()</slot>
-  <slot>get_screenshot()</slot>
+  <slot>_screenshot()</slot>
  </slots>
 </ui>

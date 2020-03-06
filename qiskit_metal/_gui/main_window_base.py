@@ -112,14 +112,17 @@ class QMainWindowExtensionBase(QMainWindow):
         save to file, and then copy to clipboard.
         """
         # self.bring_to_top()
-
+        self.logger.info('Screnshot...')
         path = Path(name).resolve()
+
+        self.logger.info(f'Screenshot: {path}')
 
         screen = QtWidgets.QApplication.primaryScreen()
         screenshot = screen.grabWindow(self.winId())  # QPixelMap
         screenshot.save(str(path), type_)  # Save
 
         QtWidgets.QApplication.clipboard().setPixmap(screenshot)  # To clipboard
+        self.logger.info('Done')
 
         if display:
             from IPython.display import Image, display
@@ -128,17 +131,24 @@ class QMainWindowExtensionBase(QMainWindow):
             _disp_ops.update(disp_ops or {})
             display(Image(filename=path, **_disp_ops))
 
-    @catch_exception_slot_pyqt
+    ##################################################################
+    #### For actions
+
+    @catch_exception_slot_pyqt()
+    def _screenshot(self, _):
+        self.get_screenshot()
+
+    @catch_exception_slot_pyqt()
     def load_stylesheet_default(self, _):
         """Used to call from action"""
         self.handler.load_stylesheet('default')
 
-    @catch_exception_slot_pyqt
+    @catch_exception_slot_pyqt()
     def load_stylesheet_dark(self, _):
         """Used to call from action"""
         self.handler.load_stylesheet('qdarkstyle')
 
-    @catch_exception_slot_pyqt
+    @catch_exception_slot_pyqt()
     def load_stylesheet_open(self, _):
         """Used to call from action"""
         filename = QFileDialog.getOpenFileName(None,
