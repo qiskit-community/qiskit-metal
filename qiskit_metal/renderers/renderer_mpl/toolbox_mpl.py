@@ -160,7 +160,7 @@ def render(components,
     # We have now a single object to draw
     obj = components
 
-    if isinstance(obj, shapely.geometry.Polygon):
+    if isinstance(obj, shapely.geometry.Polygon) or isinstance(obj, shapely.geometry.MultiPolygon):
         render_poly(obj, ax=ax, kw=kw)  # , **kwargs)
 
     else:
