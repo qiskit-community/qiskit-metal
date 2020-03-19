@@ -582,7 +582,7 @@ def unit_vector(vector):
 
     Normalizes only in the XY plane, leaves the Z plane alone
     """
-    vector = array_chop(vector)  # get rid of near zero crap
+    vector = array_chop(vector)  # get rid of near zero
     if len(vector) == 2:
         _norm = norm(vector)
         if not bool(_norm):  # zero length vector
