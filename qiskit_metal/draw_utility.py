@@ -37,10 +37,10 @@ from shapely.affinity import rotate, scale, translate
 from pyEPR.hfss import parse_units
 from pyEPR.toolbox import combinekw
 
-from . import draw_functions
-from . import logger
-from .toolbox.mpl_interaction import figure_pz
-from .toolbox.parsing import TRUE_STR
+#from . import draw_functions
+#from . import logger
+#from .toolbox.mpl_interaction import figure_pz
+#from .toolbox.parsing import TRUE_STR
 
 #########################################################################
 # Geomtry classes

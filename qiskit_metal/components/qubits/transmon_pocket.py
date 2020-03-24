@@ -40,13 +40,17 @@ converted to v0.2: Thomas McConkey 2020-03-24
 
 from copy import deepcopy
 from ... import draw_utility, draw
+from ...toolbox_python.attr_dict import Dict
+from ..._defaults import DEFAULT_OPTIONS, DEFAULT
 
 #from ... import DEFAULT, DEFAULT_OPTIONS, Dict, draw
 #from ...renderers.renderer_ansys import draw_ansys
 #from ...renderers.renderer_ansys.parse import to_ansys_units
 #from .Metal_Qubit import Metal_Qubit
 
-#FIX UP THE IMPORTS
+#NOTE:FIX UP THE IMPORTS
+#NOTE:at what level to have the renderer options pulled in? Via base component? Should it check flags
+#to see what options to include/ignore? (eg. junction inductance shouldn't be an option for CPW)
 
 DEFAULT_OPTIONS['transmon_pocket.con_lines'] = Dict(
     pad_gap='15um',
@@ -162,8 +166,9 @@ class TransmonPocket(BaseQubit): # pylint: disable=invalid-name
 
         # Pads- extracts relevant values from options dictionary
         pad_gap, inductor_width, pad_width, pad_height, pocket_width, pocket_height,\
-            pos_x, pos_y,orientation = self.design.get_option_values(options, 'pad_gap, inductor_width, pad_width,\
-                 pad_height, pocket_width, pocket_height, pos_x, pos_y, orientation')
+            pos_x, pos_y,orientation = self.design.get_option_values(options, 'pad_gap, \
+                    inductor_width, pad_width, pad_height, pocket_width, pocket_height, \
+                    pos_x, pos_y, orientation')
         # then makes the shapely polygons
         pad = draw.rectangle(pad_width, pad_height)
         pad_top = draw.translate(pad, 0, +(pad_height+pad_gap)/2.)
@@ -173,20 +178,38 @@ class TransmonPocket(BaseQubit): # pylint: disable=invalid-name
         rect_jj = draw.rectangle(inductor_width, pad_gap)
         rect_pk = draw.rectangle(pocket_width, pocket_height)
 
-        # adds the shapely polygons to this qubits object dictionary
+
+        #rotates and translates all the objects as requested. Uses package functions
+        # in 'draw_utility' for easy rotation/translation
+        #NOTE: Should modify so rotate/translate accepts elements, would allow for smoother
+        #implementation.
+
         objects = dict(
             rect_jj=rect_jj,
             pad_top=pad_top,
             pad_bot=pad_bot,
             rect_pk=rect_pk,
         )
-
-        #rotates and translates all the objects as requested. Uses package functions
-        # in 'draw_utility' for easy rotation/translation
         objects = draw.rotate(
             objects,orientation, origin=(0, 0))
         objects = draw.translate(objects, pos_x, pos_y)
 
-        self.components.update(objects)
+
+
+        for shape_names in objects:
+            self.elements[shape_names] = element_handler(self.name, shape_names,objects[shape_names],\
+                RENDER_OPTIONS)
+            
+            
+            
+           #self.elements[names] = Dict(
+           #     name = names,
+           #     shape = objects[names],
+           #     #THE RELEVANT OPTIONS GO HERE, no geometry, as that is in 'shape', but renderer
+           #     #related stuff
+           # )
+
+
+        #self.components.update(objects) v0.1 method
 
         return objects
