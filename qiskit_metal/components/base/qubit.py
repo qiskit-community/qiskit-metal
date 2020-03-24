@@ -15,6 +15,8 @@
 """
 @author: Zlatko Minev, Thomas McConekey, ... (IBM)
 @date: 2019
+
+Translated into v0.2 March 2019 - Thomas McConkey
 """
 
 from .base import BaseComponent
@@ -29,10 +31,10 @@ from ..._defaults import DEFAULT_OPTIONS, DEFAULT
 DEFAULT_OPTIONS['qubit'] = Dict(
     pos_x='0um',
     pos_y='0um',
-    connectors=Dict()
+    con_line=Dict()
 )
 
-DEFAULT_OPTIONS['qubit.connector'] = Dict()
+DEFAULT_OPTIONS['qubit.con_lines'] = Dict()
 
 class BaseQubit(BaseComponent):
     # TODO
@@ -41,15 +43,15 @@ class BaseQubit(BaseComponent):
     '''
     Qubit base class. Use to subscript, not to generate directly.
 
-    Has connectors that can be added
+    Has connection lines that can be added
 
-    options_connectors (Dict): None, provides easy way to pass connectors
-                            which merely update self.options.connectors
+    options_con_lines (Dict): None, provides easy way to pass connector lines
+                            which merely update self.options.con_lines
 
     Default Options:
     --------------------------
     DEFAULT_OPTIONS[class_name]
-    DEFAULT_OPTIONS[class_name+'.connector'] : for individual connectors
+    DEFAULT_OPTIONS[class_name+'.con_line'] : for individual connection lines
         When you define your
         custom qubit class please add a connector options default dicitonary name as
         DEFAULT_OPTIONS[class_name+'.connector'] where class_name is the the name of your
@@ -63,19 +65,32 @@ class BaseQubit(BaseComponent):
     '''
 
     _img = 'Metal_Qubit.png'
-    #__gui_creation_args__ = ['options_connectors']
+   
 
-    def __init__(self, design, name, options=None, options_connectors=None,
+    def __init__(self, design, name, options=None, options_con_lines=None,
                  _make=True):
 
         super().__init__(design, name, options=options)
 
-        if options_connectors:
-            self.options.connectors.update(options_connectors)
+        if options_con_lines:
+            self.options.con_lines.update(options_con_lines)
 
-        self._set_options_connectors()
+        self._set_options_con_lines()
 
-        self.components.connectors = Dict()
+        self.components.con_lines = Dict()
 
         if _make:
             self.make()
+
+     def _set_options_con_lines(self):
+        class_name = type(self).__name__
+        assert class_name+'.con_lines' in DEFAULT_OPTIONS, """When you define your
+        custom qubit class please add a connector lines options default dicitonary name as
+        DEFAULT_OPTIONS[class_name+'.con_lines'] where class_name is the the name of your
+        custom class. This should speciy the default creation options for the connector. """
+
+        for name in self.options.con_lines:
+            my_options_con_lines = self.options.con_lines[name]
+            self.options.con_lines[name] = deepcopy(
+                Dict(DEFAULT_OPTIONS[class_name+'.con_lines']))
+            self.options.con_lines[name].update(my_options_con_lines)
