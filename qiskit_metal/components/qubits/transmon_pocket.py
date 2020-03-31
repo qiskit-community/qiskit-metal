@@ -42,6 +42,8 @@ from copy import deepcopy
 from ... import draw_utility, draw
 from ...toolbox_python.attr_dict import Dict
 from ..._defaults import DEFAULT_OPTIONS, DEFAULT
+from ...elements.base import ElementTables
+from ..base.qubit import BaseQubit
 
 #from ... import DEFAULT, DEFAULT_OPTIONS, Dict, draw
 #from ...renderers.renderer_ansys import draw_ansys
@@ -51,6 +53,8 @@ from ..._defaults import DEFAULT_OPTIONS, DEFAULT
 #NOTE:FIX UP THE IMPORTS
 #NOTE:at what level to have the renderer options pulled in? Via base component? Should it check flags
 #to see what options to include/ignore? (eg. junction inductance shouldn't be an option for CPW)
+#or wait until point of element creation?
+
 
 DEFAULT_OPTIONS['transmon_pocket.con_lines'] = Dict(
     pad_gap='15um',
@@ -196,11 +200,13 @@ class TransmonPocket(BaseQubit): # pylint: disable=invalid-name
 
 
 
+
+        '''
         for shape_names in objects:
             self.elements[shape_names] = element_handler(self.name, shape_names,objects[shape_names],\
                 RENDER_OPTIONS)
             
-            
+        '''   
             
            #self.elements[names] = Dict(
            #     name = names,
