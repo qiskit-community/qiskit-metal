@@ -21,6 +21,7 @@ Based on https://iopscience.iop.org/article/10.1088/0953-2048/22/12/125028/meta
 
 """
 
+
 import numpy as np
 from scipy.special import ellipk
 
@@ -64,11 +65,11 @@ dielectric_constant = 11.45):
     q = 0.5*(Kk1*Kk01)/(Kk11*Kk0)
 
     #effective dielectric constant (accounting for film thickness)
-    etfSqrt = effective_dielectric_constant(s,w,h,t,q,Kk0,Kk01,eRD)
+    etfSqrt = effective_dielectric_constant(freq,s,w,h,t,q,Kk0,Kk01,eRD)
 
     lambdaG = (c0/freq)/etfSqrt
 
-    return lambdaG
+    return lambdaG, etfSqrt,q
 
 
 def lumped_cpw(freq, line_width, line_gap, substrate_thickness, film_thickness, 
@@ -101,8 +102,7 @@ dielectric_constant = 11.45, loss_tangent = 10**-5,london_penetration_depth = 30
             breakdown. 
             Defaults to 30*10**-9, for Niobium.
 
-     Returns: (see figure) Keep in mind, these are the dX values of the line. For the total lumped
-     element values, they must be multipled by the length of the transmission line. 
+     Returns: (see figure)
         Lk (float): The series kinetic inductance, in Henries.
         Lext (float): The series geometric external inductance, in Henries.
         C (float): The shunt capacitance, in Farads.
@@ -129,7 +129,7 @@ dielectric_constant = 11.45, loss_tangent = 10**-5,london_penetration_depth = 30
     G = wfreq*C*q*tanD
 
     #Effective Dielectric Constant
-    etfSqrt = effective_dielectric_constant(s,w,h,t,q,Kk0,Kk01,eRD)
+    etfSqrt = effective_dielectric_constant(freq,s,w,h,t,q,Kk0,Kk01,eRD)
 
     #External Inducatance
     Z0 = (30*np.pi/etfSqrt)*Kk01/Kk0

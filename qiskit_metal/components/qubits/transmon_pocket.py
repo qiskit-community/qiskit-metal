@@ -188,17 +188,19 @@ class TransmonPocket(BaseQubit): # pylint: disable=invalid-name
         #NOTE: Should modify so rotate/translate accepts elements, would allow for smoother
         #implementation.
 
-        objects = dict(
+        '''objects = dict(
             rect_jj=rect_jj,
             pad_top=pad_top,
             pad_bot=pad_bot,
             rect_pk=rect_pk,
-        )
-        objects = draw.rotate(
-            objects,orientation, origin=(0, 0))
-        objects = draw.translate(objects, pos_x, pos_y)
+        )'''
 
+        [rect_jj,pad_top,pad_bot,rect_pk] = draw.rotate(
+            [rect_jj,pad_top,pad_bot,rect_pk],orientation, origin=(0, 0))
+        [rect_jj,pad_top,pad_bot,rect_pk] = draw.translate(
+            [rect_jj,pad_top,pad_bot,rect_pk], pos_x, pos_y)
 
+        #at this point each shapely should be 'turned into' an element, 
 
 
         '''

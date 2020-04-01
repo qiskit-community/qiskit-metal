@@ -119,7 +119,6 @@ ELEMENT_COLUMNS = dict(
     # )
 )
 
-
 #############################################################################
 #
 # Class to create, store, and handle element tables.

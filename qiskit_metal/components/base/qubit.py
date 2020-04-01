@@ -16,7 +16,7 @@
 @author: Zlatko Minev, Thomas McConekey, ... (IBM)
 @date: 2019
 
-Translated into v0.2 March 2019 - Thomas McConkey
+converted to v0.2: Thomas McConkey 2020-03-24
 """
 
 from .base import BaseComponent
