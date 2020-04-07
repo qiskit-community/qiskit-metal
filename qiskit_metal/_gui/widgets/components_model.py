@@ -14,8 +14,9 @@
 
 # Zlatko Minev
 
+
 from PyQt5.QtCore import QAbstractTableModel
-from PyQt5 import Qt, QtCore
+from PyQt5 import Qt, QtCore,QtWidgets
 import numpy as np
 
 
@@ -29,16 +30,18 @@ class ComponentsTableModel(QAbstractTableModel):
     """
     __timer_interval = 500 # ms
 
-    def __init__(self, design, logger, parent=None):
+    def __init__(self, gui, logger, parent=None):
         super().__init__(parent=parent)
-        self.design = None
         self.logger = logger
+        self.gui = gui
         self.columns = ['Name', 'Class', 'Module']
-        #self.
-
-        self.set_design(design)
+        self._row_count = -1
 
         self._create_timer()
+
+    @property
+    def design(self):
+        return self.gui.design
 
     def _create_timer(self):
         """
@@ -46,16 +49,33 @@ class ComponentsTableModel(QAbstractTableModel):
         """
         self._timer = QtCore.QTimer(self)
         self._timer.start(self.__timer_interval)
-        self._timer.timeout.connect(self.refresh)
+        self._timer.timeout.connect(self.refresh_auto)
 
     def refresh(self):
-        """Update row count etc.
-        """
-        self.modelReset.emit() # is there a more efficient command?
+        """Force refresh.   Completly rebuild the model."""
+        self.modelReset.emit()
 
-    def set_design(self, design):
-        self.design = design
-        # TODO:
+    def refresh_auto(self):
+        """
+        Update row count etc.
+        """
+        # TODO: This should probably just be on a global timer for all changes detect
+        # and then update all accordingly
+        new_count = self.rowCount()
+
+        # if the number of rows have changed
+        if self._row_count != new_count:
+            #self.logger.info('Number of components changed')
+
+            # When a model is reset it should be considered that all
+            # information previously retrieved from it is invalid.
+            # This includes but is not limited to the rowCount() and
+            # columnCount(), flags(), data retrieved through data(), and roleNames().
+            # This will loose the current selection.
+            # TODO: This seems overkill to just change the total number of rows?
+            self.modelReset.emit()
+
+            self._row_count = new_count
 
     def rowCount(self, parent=None):  # =QtCore.QModelIndex()):
         if self.design:  # should we jsut enforce this
@@ -116,3 +136,4 @@ class ComponentsTableModel(QAbstractTableModel):
 
             elif index.column() == 2:
                 return self.design.components[component_name].__class__.__module__
+

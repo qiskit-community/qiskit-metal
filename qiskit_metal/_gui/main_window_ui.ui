@@ -368,8 +368,8 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
   <widget class="QDockWidget" name="dockDesign">
    <property name="minimumSize">
     <size>
-     <width>148</width>
-     <height>115</height>
+     <width>175</width>
+     <height>128</height>
     </size>
    </property>
    <property name="windowIcon">
@@ -514,7 +514,7 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
       </layout>
      </item>
      <item>
-      <widget class="QTableView" name="tableComponents">
+      <widget class="TableComponents" name="tableComponents">
        <property name="alternatingRowColors">
         <bool>true</bool>
        </property>
@@ -696,8 +696,8 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
    </property>
    <property name="minimumSize">
     <size>
-     <width>71</width>
-     <height>89</height>
+     <width>78</width>
+     <height>96</height>
     </size>
    </property>
    <property name="windowIcon">
@@ -1036,7 +1036,7 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
   </action>
   <action name="actionScreenshot">
    <property name="icon">
-    <iconset resource="main_window_rc.qrc">
+    <iconset>
      <normaloff>:/screenshot</normaloff>:/screenshot</iconset>
    </property>
    <property name="text">
@@ -1052,6 +1052,11 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
    <class>LoggingWindowWidget</class>
    <extends>QTextEdit</extends>
    <header>.widgets.log_metal</header>
+  </customwidget>
+  <customwidget>
+   <class>TableComponents</class>
+   <extends>QTableView</extends>
+   <header>.widgets.table_components</header>
   </customwidget>
  </customwidgets>
  <resources>
@@ -1177,8 +1182,8 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
    <slot>_screenshot()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>614</x>
-     <y>367</y>
+     <x>-1</x>
+     <y>-1</y>
     </hint>
     <hint type="destinationlabel">
      <x>588</x>

@@ -167,7 +167,7 @@ class Ui_MainWindow(object):
         self.pushButtonDeleteComps.setObjectName("pushButtonDeleteComps")
         self.horizontalLayout.addWidget(self.pushButtonDeleteComps)
         self.verticalLayout_3.addLayout(self.horizontalLayout)
-        self.tableComponents = QtWidgets.QTableView(self.dockWidgetContents)
+        self.tableComponents = TableComponents(self.dockWidgetContents)
         self.tableComponents.setAlternatingRowColors(True)
         self.tableComponents.setObjectName("tableComponents")
         self.verticalLayout_3.addWidget(self.tableComponents)
@@ -510,5 +510,6 @@ class Ui_MainWindow(object):
         self.actionScreenshot.setText(_translate("MainWindow", "Screenshot"))
         self.actionScreenshot.setToolTip(_translate("MainWindow", "Take a screenshot of the window"))
 
+from .widgets.table_components import TableComponents
 from .widgets.log_metal import LoggingWindowWidget
 from . import main_window_rc_rc

@@ -228,15 +228,22 @@ class DesignBase():
                 f'Cannot rename {component_name} to {new_component_name}. Since {new_component_name} exists')
             return -1
 
+        def is_valid_component_name(s:str):
+            return s.isidentifier()
+
         # Check that the name is a valid component name
-        if 1: #TODO: is_valid_component_name(component_name):
+        if not is_valid_component_name(component_name):
             self.logger.info(
                 f'Cannot rename {component_name} to {new_component_name}.')
             return -2
 
         # do rename
-        #TODO:
+        component = self.components[component_name]
+        component._name = new_component_name
+        self.components[new_component_name] = self.components.pop(component_name)
         self._elements.rename_component(component_name, new_component_name)
+        #TODO: handle renadming for all else: dependencies etc.
+
         return True
 
     def delete_component(self, component_name: str, force=False):
@@ -277,7 +284,7 @@ class DesignBase():
             bool -- [description]
         """
         # Remove connectors
-        connector_names = self.components[component_name].connector_names
+        connector_names = self.components[component_name].connectors
         for c_name in connector_names:
             self.connectors.pop(c_name)
 

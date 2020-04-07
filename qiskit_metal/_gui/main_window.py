@@ -162,11 +162,8 @@ class MetalGUI(QMainWindowBaseHandler):
         """
         self.design = design
 
-        # TODO: Set for all
-        self.ui.tableComponents.model().set_design(design)
-
         # Refresh
-        self.refresh_design()
+        self.refresh()
 
     def refresh_design(self):
         """Refresh design properties associated with the GUI.
@@ -222,7 +219,7 @@ class MetalGUI(QMainWindowBaseHandler):
         self.ui.mainViewTab.layout().addWidget(self.plot_win)
 
     def _setup_design_components_widget(self):
-        model = ComponentsTableModel(self.design, logger=self.logger)
+        model = ComponentsTableModel(self, logger=self.logger)
         self.ui.tableComponents.setModel(model)
 
     ################################################
@@ -256,6 +253,20 @@ class MetalGUI(QMainWindowBaseHandler):
             PlotCanvas
         """
         return self.plot_win.canvas
+
+    def refresh(self):
+        '''Refreshes everything. Overkill in general.'''
+
+        # Global level
+        self.refresh_design()
+
+        # Table models
+        self.ui.tableComponents.model().refresh()
+        # ...
+
+        # Redraw plots
+        self.plot_win.replot()
+
 
     ################################################
     # ...

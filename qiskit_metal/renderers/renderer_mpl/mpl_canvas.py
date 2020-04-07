@@ -48,8 +48,8 @@ MPL_CONTEXT_DEFAULT = {
     #figure.titleweight : normal   ## weight of the figure title
     #figure.figsize   : 6.4, 4.8   ## figure size in inches
     'figure.dpi'       : 100,        ## figure dots per inch
-    #figure.facecolor : white      ## figure facecolor
-    #figure.edgecolor : white      ## figure edgecolor
+    'figure.facecolor' : 'white',      ## figure facecolor
+    'figure.edgecolor' : 'white',      ## figure edgecolor
     #figure.frameon : True         ## enable figure frame
     #figure.max_open_warning : 20  ## The maximum number of figures to open through
                                    ## the pyplot interface before emitting a warning.
@@ -86,7 +86,7 @@ MPL_CONTEXT_DEFAULT = {
     ## default face and edge color, default tick sizes,
     ## default fontsizes for ticklabels, and so on.  See
     ## http://matplotlib.org/api/axes_api.html#module-matplotlib.axes
-    #axes.facecolor      : white   ## axes background color
+    'axes.facecolor'      : 'white',   ## axes background color
     #'axes.edgecolor'      : 'black',   ## axes edge color
     #axes.linewidth      : 0.8     ## edge linewidth
     'axes.grid'           : True,   ## display grid or not
