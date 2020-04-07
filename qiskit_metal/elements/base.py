@@ -25,7 +25,7 @@ See the docstring of BaseElement
 
 import inspect
 import pandas as pd
-from shapely.geometry.base import BaseGeometry
+from ..draw import BaseGeometry
 # from collections import OrderedDict # dict are oreder in Python 3.6+ by default, this is jsut in case for backward compatability
 
 from .. import Dict
@@ -159,9 +159,17 @@ class ElementTables():
         import qiskit_metal as metal
 
         design = metal.designs.DesignPlanar()
-        elements = metal.ElementTables(design)
+        design.elements = metal.ElementTables(design)
 
-        elements.tables['path']
+        design.elements['path'] # return the path table - give access to ..
+        design.elements.table['path']
+
+        # Define interfaces
+        design.elements.get_component(
+                component_name,
+                element_name,
+                columns=all or geom or list?) # get all elemetns for compoentns
+
         >>> component	name	geometry	layer	type	chip	subtract	fillet	color	width
 
 

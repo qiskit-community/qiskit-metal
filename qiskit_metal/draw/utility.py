@@ -32,6 +32,7 @@ from numpy import array
 from numpy.linalg import norm
 from shapely.geometry import Polygon, MultiPolygon
 
+from . import BaseGeometry
 from .. import logger
 from ..components.base import is_component
 
@@ -89,7 +90,7 @@ def get_all_geoms(obj, func=lambda x: x, root_name='components'):
     #    # is it a metal element?
     #    return {obj.name: obj.geom}  # shapely geom
 
-    elif isinstance(obj, shapely.geometry.base.BaseGeometry):
+    elif isinstance(obj, BaseGeometry):
         # Is it the shapely object? This is the bottom of the search tree, then return
         return obj
 
@@ -106,7 +107,7 @@ def get_all_geoms(obj, func=lambda x: x, root_name='components'):
                 #    RES[name] = func(obj) # allow transofmraiton of components
                 # else:
                 RES[name] = get_all_geoms(sub_obj, root_name=new_name(name))
-            elif isinstance(sub_obj, shapely.geometry.base.BaseGeometry):
+            elif isinstance(sub_obj, BaseGeometry):
                 RES[name] = func(obj)
         return RES
         '''
