@@ -391,8 +391,8 @@ class ElementTables():
         """Main interface to add names
 
         Arguments:
-            kind {str} -- Must be in get_element_types (path or poly)
-            geometry {dict} -- Doict of shapely geometyry
+            kind {str} -- Must be in get_element_types ('path', 'poly', etc.)
+            geometry {dict} -- Dict of shapely geomety
 
         Keyword Arguments:
             subtract {bool} -- [description] (default: {False})
@@ -451,6 +451,7 @@ class ElementTables():
 
         Arguments:
             name {str} -- Name of component (case sensitive)
+            table_name {str} -- Element kind ('poly', 'path', etc.)
         """
         df = self.tables[table_name]
         return df[df.component == name]
@@ -472,7 +473,19 @@ class ElementTables():
 
         Arguments:
             name {str} -- Name of component (case sensitive)
+            table_name {str} -- Element kind ('poly', 'path', etc.)
         """
-        #TODO: handle all - table_name
+        #TODO: handle  table_name=all?
+        df = self.tables[table_name]
+        return df[df.component == name].geometry
+
+    def get_component_geometry_raw(self, name: str, table_name: str):
+        """Return just the bare shapes in a list or a simple way
+
+        Arguments:
+            name {str} -- Name of component (case sensitive)
+            table_name {str} -- Element kind ('poly', 'path', etc.)
+        """
+        #TODO: handle  table_name=all?
         df = self.tables[table_name]
         return df[df.component == name].geometry

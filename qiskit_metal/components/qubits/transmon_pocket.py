@@ -41,7 +41,7 @@ converted to v0.2: Thomas McConkey 2020-03-24
 from copy import deepcopy
 from ... import draw
 from ...toolbox_python.attr_dict import Dict
-from ..._defaults import DEFAULT_OPTIONS#, DEFAULT
+from ..._defaults import DEFAULT_OPTIONS  # , DEFAULT
 from ..base.qubit import BaseQubit
 
 #from ... import DEFAULT, DEFAULT_OPTIONS, Dict, draw
@@ -70,9 +70,9 @@ DEFAULT_OPTIONS['transmon_pocket.con_lines'] = Dict(
     loc_H=+1,  # height location only +-1
 )
 
-DEFAULT_OPTIONS['transmon_pocket'] = deepcopy(
+DEFAULT_OPTIONS['TransmonPocket'] = deepcopy(
     DEFAULT_OPTIONS['qubit'])
-DEFAULT_OPTIONS['transmon_pocket'].update(Dict(
+DEFAULT_OPTIONS['TransmonPocket'].update(Dict(
     pos_x='0um',
     pos_y='0um',
     pad_gap='30um',
@@ -85,6 +85,8 @@ DEFAULT_OPTIONS['transmon_pocket'].update(Dict(
     # while 0 has dipole aligned along the +Y axis
     orientation='0',
 ))
+DEFAULT_OPTIONS['TransmonPocket.con_lines'] = deepcopy(
+    DEFAULT_OPTIONS['qubit.con_lines'])
 
 
 class TransmonPocket(BaseQubit):
@@ -165,7 +167,7 @@ class TransmonPocket(BaseQubit):
         Create the geometry from the parsed options.
         """
         self.make_pocket()
-        #self.make_con_lines() # doesnt exist
+        # self.make_con_lines() # doesnt exist
 
 #####MAKE SHAPELY POLYGONS########################################################################
     def make_pocket(self):
@@ -196,6 +198,6 @@ class TransmonPocket(BaseQubit):
         [rect_jj, pad_top, pad_bot, rect_pk] = polys
 
         # Use the geometry to create Metal elements
-        self.add_elements('poly', 'Q1', dict(pad_top=pad_top, pad_bot=pad_bot))
-        self.add_elements('poly', 'Q1', dict(rect_pk=rect_pk), subtract=True)
-        self.add_elements('poly', 'Q1', dict(rect_jj=rect_jj), helper=True)
+        self.add_elements('poly', dict(pad_top=pad_top, pad_bot=pad_bot))
+        self.add_elements('poly', dict(rect_pk=rect_pk), subtract=True)
+        self.add_elements('poly', dict(rect_jj=rect_jj), helper=True)

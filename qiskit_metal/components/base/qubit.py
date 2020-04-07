@@ -65,9 +65,9 @@ class BaseQubit(BaseComponent):
     _img = 'Metal_Qubit.png'
 
     def __init__(self, design, name, options=None, options_con_lines=None,
-                 _make=True):
+                 make=True):
 
-        super().__init__(design, name, options=options)
+        super().__init__(name, design, options=options, make=False)
 
         if options_con_lines:
             self.options.con_lines.update(options_con_lines)
@@ -77,14 +77,14 @@ class BaseQubit(BaseComponent):
         # ERROR @ Thomas: there is no self.components
         # self.components.con_lines = Dict()
 
-        if _make:
-            self.make()
+        if make:
+            self.do_make()
 
     def _set_options_con_lines(self):
         class_name = type(self).__name__
-        assert class_name+'.con_lines' in DEFAULT_OPTIONS, """When you define your
+        assert class_name+'.con_lines' in DEFAULT_OPTIONS, f"""When you define your
         custom qubit class please add a connector lines options default dicitonary name as
-        DEFAULT_OPTIONS[class_name+'.con_lines'] where class_name is the the name of your
+        DEFAULT_OPTIONS[class_name+'.con_lines'], ({class_name+'.con_lines'}) where class_name is the the name of your
         custom class. This should speciy the default creation options for the connector. """
 
         for name in self.options.con_lines:

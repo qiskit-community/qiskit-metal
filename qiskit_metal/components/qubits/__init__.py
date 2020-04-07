@@ -16,3 +16,4 @@
 @auhtor: Zlatko Minev, Thomas McConkey, ... (IBM)
 @date: 2019
 """
+from .transmon_pocket import TransmonPocket

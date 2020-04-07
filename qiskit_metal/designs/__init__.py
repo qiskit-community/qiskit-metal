@@ -20,6 +20,6 @@ Module containing all Qiskit Metal designs.
 """
 
 from .. import Dict
-from .. import is_design # done for order of imports
+from .. import is_design
 from .design_base import DesignBase
 from .design_planar import DesignPlanar
