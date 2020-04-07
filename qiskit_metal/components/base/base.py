@@ -20,11 +20,13 @@ See the docstring of BaseComponent
 @author: Zlatko Minev, Thomas McConekey, ... (IBM)
 @date: 2019
 """
-from typing import Union, List, Iterable, Any, TypeVar, Optional
+from copy import deepcopy
+from typing import Any, Iterable, List, Optional, TypeVar, Union
 
-from ...toolbox_python.attr_dict import Dict
-from ... import logger, is_design
+from ... import DEFAULT_OPTIONS, is_design, logger
 from ...draw import BaseGeometry
+from ...toolbox_python.attr_dict import Dict
+
 #from ...elements import ElementTypes
 
 __all__ = ['BaseComponent']
@@ -55,6 +57,11 @@ class BaseComponent():
         * The class define the internal representation of a componetns
         * The class provides the interfaces for the component (creator user)
     """
+
+    # Default options can inherit the options of other functions of objects
+    # in DEFAULT_OPTIONS. Give the name of the key-value pair, where the key is
+    # how you want to call the copied version of DEFAULT_OPTIONS[key]
+    _inherit_options_from = {}
 
     # Dummy private attribute used to check if an instanciated object is
     # indeed a BaseComponent class. The problem is that the `isinstance`
@@ -96,7 +103,10 @@ class BaseComponent():
         self._connector_names = set()
 
         # Geometry inner class to handle all geometric functions
-        self.geom = self._Geometry_Handler(self)
+        self.geom = _Geometry_Handler(self)
+
+        # has the component already been made
+        self._made = False
 
         # Logger
         self.logger = logger
@@ -106,13 +116,13 @@ class BaseComponent():
 
         # Make the component geometry
         if make:
-            self.make()
+            self.do_make()
 
     @property
     def name(self) -> str:
         '''Name of the component
         '''
-        return self.name
+        return self._name
 
     @name.setter
     def name(self, new_name: str):
@@ -123,7 +133,7 @@ class BaseComponent():
     @property
     def design(self) -> DesignBase:
         '''Return a reference to the parent design object'''
-        return self.design
+        return self._design
 
     @property
     def connectors(self) -> set:
@@ -145,14 +155,42 @@ class BaseComponent():
 
         The options can be extended by plugins, such as renderers.
         """
-        return Dict()
+        # Every object should posses there -- common to all
+        #options = deepcopy(DEFAULT_OPTIONS['BaseComponent'])
+
+        # Specific object default options
+        options = deepcopy(Dict(DEFAULT_OPTIONS[cls.__name__]))
+        # options.update(deepcopy(default_options))
+
+        # Specific sub-options inherited from other functions
+        for key, value in cls._inherit_options_from.items():
+            options[key] = deepcopy(
+                Dict(DEFAULT_OPTIONS[value])
+            )
+
+        return options
 
     def make(self):
         '''
-        Create shapely objects, which are used to create component  elements.
+        Overwrite in inheritnace to define user logic to convert options dictionary into
+        elements.
+        Here, one creates the shapely objects, assigns them as elements.
         This method should be overwritten by the childs make function.
+
+        This function only contains the logic, the actual call to make the element is in
+        do_make() and remake()
         '''
         raise NotImplementedError()
+
+    def do_make(self):
+        """Actually make or remake the component"""
+        if self._made:  # already made, just remaking
+            # TODO: this is probably very inefficient, design more efficient way
+            self.design.elements.delete_component(self.name)
+            self.make()
+        else:  # first time making
+            self.make()
+            self._made = True  # what if make throws an error part way?
 
     def delete(self):
         """
@@ -265,7 +303,7 @@ class BaseComponent():
 ##########################################
 # Elements
     def add_elements(self,
-                     kind:str,
+                     kind: str,
                      elements: dict,
                      subtract: bool = False,
                      helper: bool = False,
@@ -287,7 +325,8 @@ class BaseComponent():
 
 
         Arguments:
-            kind {str} -- The kind of elements, such as Path or Poly
+            kind {str} -- The kind of elements, such as 'path', 'poly', etc.
+                          All elements in the dicitonary should have the same kind
             elements {Dict[BaseGeometry]} -- Key-value pairs
 
         Keyword Arguments:
@@ -296,11 +335,11 @@ class BaseComponent():
             layer {int, str} -- TODO: The layer to which the set of elements will belong
                         (default: {0})
         """
-        assert (subtract and helper) ==False, "The object can't be a subtracted helper. Please"\
+        assert (subtract and helper) == False, "The object can't be a subtracted helper. Please"\
             " choose it to either be a helper or a a subtracted layer, but not both. Thank you."
 
-        self.design.add_elements(kind, self.name, elements, subtract=subtract, helper=helper,
-                                 layer=layer, **kwargs)
+        self.design.elements.add_elements(kind, self.name, elements, subtract=subtract,
+                                          helper=helper, layer=layer, **kwargs)
 
 
 ############################################################################
@@ -314,14 +353,18 @@ class _Geometry_Handler:
 
     def __init__(self, component: BaseComponent):
         self.parent = component
+        self.design = component.design
 
-    def get_all(self):
+    def get_all(self, element_type:str, full_table=False):
         """
         Get all shapely geometry as a dict with key being the names of the
         elements and the values as the shapely geometry.
         """
         # return {elem.full_name : elem.geom for name, elem in self.parent.elements}
-        raise NotImplementedError()
+        if full_table:
+            return self.design.elements.get_component(self.parent.name, element_type)
+        else:
+            return list(self.design.elements.get_component_geometry(self.parent.name, element_type))
 
     def get_bounds(self):
         """
@@ -329,6 +372,9 @@ class _Geometry_Handler:
         Calls get_all and finds the bounds of this collection.
         Uses the shapely methods.
         """
+        # for all element_type
+        element_type = 'poly'
+        shapes = self.get_all(element_type)
         raise NotImplementedError()
 
     # translate, rotate, etc. if possible

@@ -163,6 +163,13 @@ class DesignBase():
         '''
         return self._metadata
 
+    @property
+    def elements(self) -> ElementTables:
+        '''
+        Use for advanced users only. Access to the element tables.
+        '''
+        return self._elements
+
 #########Proxy properties##################################################
 
     def get_chip_size(self, chip_name='main'):

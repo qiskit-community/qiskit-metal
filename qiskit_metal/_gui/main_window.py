@@ -161,7 +161,9 @@ class MetalGUI(QMainWindowBaseHandler):
                 The design contains all components and elements
         """
         self.design = design
+
         # TODO: Set for all
+        self.ui.tableComponents.model().set_design(design)
 
         # Refresh
         self.refresh_design()
@@ -220,7 +222,7 @@ class MetalGUI(QMainWindowBaseHandler):
         self.ui.mainViewTab.layout().addWidget(self.plot_win)
 
     def _setup_design_components_widget(self):
-        model = ComponentsTableModel(self.design)
+        model = ComponentsTableModel(self.design, logger=self.logger)
         self.ui.tableComponents.setModel(model)
 
     ################################################

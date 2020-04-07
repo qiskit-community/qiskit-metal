@@ -37,25 +37,16 @@ converted to v0.2: Thomas McConkey 2020-03-24
 
 '''
 
-
 from copy import deepcopy
 from ... import draw
 from ...toolbox_python.attr_dict import Dict
-from ..._defaults import DEFAULT_OPTIONS#, DEFAULT
+from ..._defaults import DEFAULT_OPTIONS
 from ..base.qubit import BaseQubit
 
-#from ... import DEFAULT, DEFAULT_OPTIONS, Dict, draw
-#from ...renderers.renderer_ansys import draw_ansys
-#from ...renderers.renderer_ansys.parse import to_ansys_units
-#from .Metal_Qubit import Metal_Qubit
 
-# NOTE:FIX UP THE IMPORTS
-# NOTE:at what level to have the renderer options pulled in? Via base component? Should it check flags
-# to see what options to include/ignore? (eg. junction inductance shouldn't be an option for CPW)
-# or wait until point of element creation?
-
-
-DEFAULT_OPTIONS['transmon_pocket.con_lines'] = Dict(
+DEFAULT_OPTIONS['TransmonPocket.con_lines'] = deepcopy(
+    DEFAULT_OPTIONS['qubit.con_lines'])
+DEFAULT_OPTIONS['TransmonPocket.con_lines'].update(Dict(
     pad_gap='15um',
     pad_width='125um',
     pad_height='30um',
@@ -68,11 +59,11 @@ DEFAULT_OPTIONS['transmon_pocket.con_lines'] = Dict(
     pocket_rise='65um',
     loc_W=+1,  # width location  only +-1
     loc_H=+1,  # height location only +-1
-)
+))
 
-DEFAULT_OPTIONS['transmon_pocket'] = deepcopy(
+DEFAULT_OPTIONS['TransmonPocket'] = deepcopy(
     DEFAULT_OPTIONS['qubit'])
-DEFAULT_OPTIONS['transmon_pocket'].update(Dict(
+DEFAULT_OPTIONS['TransmonPocket'].update(Dict(
     pos_x='0um',
     pos_y='0um',
     pad_gap='30um',
@@ -165,7 +156,7 @@ class TransmonPocket(BaseQubit):
         Create the geometry from the parsed options.
         """
         self.make_pocket()
-        #self.make_con_lines() # doesnt exist
+        # self.make_con_lines() # doesnt exist
 
 #####MAKE SHAPELY POLYGONS########################################################################
     def make_pocket(self):
@@ -174,7 +165,7 @@ class TransmonPocket(BaseQubit):
         # Extract relevant numerical values from options dictionary (parse strings)
         pad_gap, inductor_width, pad_width, pad_height, pocket_width, pocket_height,\
             pos_x, pos_y, orientation = self.design.parse_options(
-                self.options, 'pad_gap, inductor_width, pad_width, pad_height, '
+                self.options, 'pad_gap, inductor_width, pad_width, pad_height, '\
                 'pocket_width, pocket_height, pos_x, pos_y, orientation')
 
         # make the pads as rectangles (shapely polygons)
@@ -196,6 +187,6 @@ class TransmonPocket(BaseQubit):
         [rect_jj, pad_top, pad_bot, rect_pk] = polys
 
         # Use the geometry to create Metal elements
-        self.add_elements('poly', 'Q1', dict(pad_top=pad_top, pad_bot=pad_bot))
-        self.add_elements('poly', 'Q1', dict(rect_pk=rect_pk), subtract=True)
-        self.add_elements('poly', 'Q1', dict(rect_jj=rect_jj), helper=True)
+        self.add_elements('poly', dict(pad_top=pad_top, pad_bot=pad_bot))
+        self.add_elements('poly', dict(rect_pk=rect_pk), subtract=True)
+        self.add_elements('poly', dict(rect_jj=rect_jj), helper=True)
