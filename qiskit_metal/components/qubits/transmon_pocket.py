@@ -39,10 +39,9 @@ converted to v0.2: Thomas McConkey 2020-03-24
 
 
 from copy import deepcopy
-from ... import draw_utility, draw
+from ... import draw
 from ...toolbox_python.attr_dict import Dict
-from ..._defaults import DEFAULT_OPTIONS, DEFAULT
-from ...elements.base import ElementTables
+from ..._defaults import DEFAULT_OPTIONS#, DEFAULT
 from ..base.qubit import BaseQubit
 
 #from ... import DEFAULT, DEFAULT_OPTIONS, Dict, draw
@@ -50,10 +49,10 @@ from ..base.qubit import BaseQubit
 #from ...renderers.renderer_ansys.parse import to_ansys_units
 #from .Metal_Qubit import Metal_Qubit
 
-#NOTE:FIX UP THE IMPORTS
-#NOTE:at what level to have the renderer options pulled in? Via base component? Should it check flags
-#to see what options to include/ignore? (eg. junction inductance shouldn't be an option for CPW)
-#or wait until point of element creation?
+# NOTE:FIX UP THE IMPORTS
+# NOTE:at what level to have the renderer options pulled in? Via base component? Should it check flags
+# to see what options to include/ignore? (eg. junction inductance shouldn't be an option for CPW)
+# or wait until point of element creation?
 
 
 DEFAULT_OPTIONS['transmon_pocket.con_lines'] = Dict(
@@ -82,12 +81,13 @@ DEFAULT_OPTIONS['transmon_pocket'].update(Dict(
     pad_height='90um',
     pocket_width='650um',
     pocket_height='650um',
-    orientation='0',  # 90 has dipole aligned along the +X axis, while 0 has dipole aligned along the +Y axis
-
+    # 90 has dipole aligned along the +X axis,
+    # while 0 has dipole aligned along the +Y axis
+    orientation='0',
 ))
 
 
-class TransmonPocket(BaseQubit): # pylint: disable=invalid-name
+class TransmonPocket(BaseQubit):
     '''
     Description:
     ----------------------------------------------------------------------------
@@ -110,7 +110,8 @@ class TransmonPocket(BaseQubit): # pylint: disable=invalid-name
     pad_gap         - the distance between the two charge islands, which is also the
                       resulting 'length' of the pseudo junction
     inductor_width  - width of the pseudo junction between the two charge islands
-                      (if in doubt, make the same as pad_gap). Really just for simulating in HFSS / other EM software
+                      (if in doubt, make the same as pad_gap). Really just for simulating
+                      in HFSS / other EM software
     pad_width       - the width (x-axis) of the charge island pads
     pad_height      - the size (y-axis) of the charge island pads
     pocket_width    - size of the pocket (cut out in ground) along x-axis
@@ -119,7 +120,8 @@ class TransmonPocket(BaseQubit): # pylint: disable=invalid-name
 
     Connector lines:
     ----------------------------------------------------------------------------
-    pad_gap        - space between the connector pad and the charge island it is nearest to
+    pad_gap        - space between the connector pad and the charge island it is
+                     nearest to
     pad_width      - width (x-axis) of the connector pad
     pad_height     - height (y-axis) of the connector pad
     pad_cpw_shift  - shift the connector pad cpw line by this much away from qubit
@@ -131,7 +133,8 @@ class TransmonPocket(BaseQubit): # pylint: disable=invalid-name
                      (into the fround plane)
     pocket_rise    - How far up or downrelative to the center of the transmon should we
                      elevate the cpw connection point on the ground plane
-    loc_W / H      - which 'quadrant' of the pocket the connector is set to, +/- 1 (check if diagram is correct)
+    loc_W / H      - which 'quadrant' of the pocket the connector is set to, +/- 1 (check
+                     if diagram is correct)
 
 
     Sketch:
@@ -158,22 +161,23 @@ class TransmonPocket(BaseQubit): # pylint: disable=invalid-name
     _img = 'transmon_pocket1.png'
 
     def make(self):
+        """
+        Create the geometry from the parsed options.
+        """
         self.make_pocket()
-        self.make_con_lines()
+        #self.make_con_lines() # doesnt exist
 
 #####MAKE SHAPELY POLYGONS########################################################################
     def make_pocket(self):
-        '''
-        Makes standard transmon in a pocket
-        '''
-        options = self.options
+        '''Makes standard transmon in a pocket.'''
 
-        # Pads- extracts relevant values from options dictionary
+        # Extract relevant numerical values from options dictionary (parse strings)
         pad_gap, inductor_width, pad_width, pad_height, pocket_width, pocket_height,\
-            pos_x, pos_y,orientation = self.design.get_option_values(options, 'pad_gap, \
-                    inductor_width, pad_width, pad_height, pocket_width, pocket_height, \
-                    pos_x, pos_y, orientation')
-        # then makes the shapely polygons
+            pos_x, pos_y, orientation = self.design.parse_options(
+                self.options, 'pad_gap, inductor_width, pad_width, pad_height, '
+                'pocket_width, pocket_height, pos_x, pos_y, orientation')
+
+        # make the pads as rectangles (shapely polygons)
         pad = draw.rectangle(pad_width, pad_height)
         pad_top = draw.translate(pad, 0, +(pad_height+pad_gap)/2.)
         pad_bot = draw.translate(pad, 0, -(pad_height+pad_gap)/2.)
@@ -182,42 +186,16 @@ class TransmonPocket(BaseQubit): # pylint: disable=invalid-name
         rect_jj = draw.rectangle(inductor_width, pad_gap)
         rect_pk = draw.rectangle(pocket_width, pocket_height)
 
+        # Rotate and translate all elements as needed.
+        # Done with utility functions in Metal 'draw_utility' for easy rotation/translation
+        # NOTE: Should modify so rotate/translate accepts elements, would allow for
+        # smoother implementation.
+        polys = [rect_jj, pad_top, pad_bot, rect_pk]
+        polys = draw.rotate(polys, orientation, origin=(0, 0))
+        polys = draw.translate(polys, pos_x, pos_y)
+        [rect_jj, pad_top, pad_bot, rect_pk] = polys
 
-        #rotates and translates all the objects as requested. Uses package functions
-        # in 'draw_utility' for easy rotation/translation
-        #NOTE: Should modify so rotate/translate accepts elements, would allow for smoother
-        #implementation.
-
-        '''objects = dict(
-            rect_jj=rect_jj,
-            pad_top=pad_top,
-            pad_bot=pad_bot,
-            rect_pk=rect_pk,
-        )'''
-
-        [rect_jj,pad_top,pad_bot,rect_pk] = draw.rotate(
-            [rect_jj,pad_top,pad_bot,rect_pk],orientation, origin=(0, 0))
-        [rect_jj,pad_top,pad_bot,rect_pk] = draw.translate(
-            [rect_jj,pad_top,pad_bot,rect_pk], pos_x, pos_y)
-
-        #at this point each shapely should be 'turned into' an element, 
-
-
-        '''
-        for shape_names in objects:
-            self.elements[shape_names] = element_handler(self.name, shape_names,objects[shape_names],\
-                RENDER_OPTIONS)
-            
-        '''   
-            
-           #self.elements[names] = Dict(
-           #     name = names,
-           #     shape = objects[names],
-           #     #THE RELEVANT OPTIONS GO HERE, no geometry, as that is in 'shape', but renderer
-           #     #related stuff
-           # )
-
-
-        #self.components.update(objects) v0.1 method
-
-        return objects
+        # Use the geometry to create Metal elements
+        self.add_elements('poly', 'Q1', dict(pad_top=pad_top, pad_bot=pad_bot))
+        self.add_elements('poly', 'Q1', dict(rect_pk=rect_pk), subtract=True)
+        self.add_elements('poly', 'Q1', dict(rect_jj=rect_jj), helper=True)

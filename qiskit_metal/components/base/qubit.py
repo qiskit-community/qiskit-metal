@@ -19,11 +19,11 @@
 converted to v0.2: Thomas McConkey 2020-03-24
 """
 
-from .base import BaseComponent
-from ...toolbox_python.attr_dict import Dict
 from copy import deepcopy
-from ..._defaults import DEFAULT_OPTIONS, DEFAULT
 
+from ..._defaults import DEFAULT_OPTIONS  # , DEFAULT
+from ...toolbox_python.attr_dict import Dict
+from .base import BaseComponent
 
 ###
 # Setup default options
@@ -31,15 +31,13 @@ from ..._defaults import DEFAULT_OPTIONS, DEFAULT
 DEFAULT_OPTIONS['qubit'] = Dict(
     pos_x='0um',
     pos_y='0um',
-    con_line=Dict()
+    con_line=Dict() # should we maybe make it connectors not con since jargony?
 )
 
 DEFAULT_OPTIONS['qubit.con_lines'] = Dict()
 
+# TODO
 class BaseQubit(BaseComponent):
-    # TODO
-    pass
-
     '''
     Qubit base class. Use to subscript, not to generate directly.
 
@@ -65,7 +63,6 @@ class BaseQubit(BaseComponent):
     '''
 
     _img = 'Metal_Qubit.png'
-   
 
     def __init__(self, design, name, options=None, options_con_lines=None,
                  _make=True):
@@ -77,12 +74,13 @@ class BaseQubit(BaseComponent):
 
         self._set_options_con_lines()
 
-        self.components.con_lines = Dict()
+        # ERROR @ Thomas: there is no self.components
+        # self.components.con_lines = Dict()
 
         if _make:
             self.make()
 
-     def _set_options_con_lines(self):
+    def _set_options_con_lines(self):
         class_name = type(self).__name__
         assert class_name+'.con_lines' in DEFAULT_OPTIONS, """When you define your
         custom qubit class please add a connector lines options default dicitonary name as

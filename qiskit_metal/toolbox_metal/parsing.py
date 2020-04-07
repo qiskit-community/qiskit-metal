@@ -375,9 +375,7 @@ def parse_value(value: str, variable_dict: dict):
     else:  # no parsing needed, it is not a string, mappable, or iterrable we can handle
         return value
 
-
-
-def parse_params(params:dict, parse_names:str, variable_dict=None):
+def parse_options(params: dict, parse_names: str, variable_dict=None):
     """
     Calls parse_value to extract from a dictionary a small subset of values.
     You can specify parse_names = 'x,y,z,cpw_width'
@@ -393,7 +391,8 @@ def parse_params(params:dict, parse_names:str, variable_dict=None):
 
         # is the name in the options at all?
         if not name in params:
-            logger.warning(f'Missing key {name} from params {params}. Skipping ...\n')
+            logger.warning(
+                f'Missing key {name} from params {params}. Skipping ...\n')
             continue
 
         # option_dict[name] should be a string

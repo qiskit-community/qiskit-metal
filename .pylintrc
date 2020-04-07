@@ -442,7 +442,8 @@ good-names=i,
            v1,
            v2,
            ax,
-           kw
+           kw,
+           df
 
 # Include a hint for the correct naming format with invalid-name.
 include-naming-hint=no
