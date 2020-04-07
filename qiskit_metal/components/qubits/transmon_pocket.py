@@ -37,25 +37,16 @@ converted to v0.2: Thomas McConkey 2020-03-24
 
 '''
 
-
 from copy import deepcopy
 from ... import draw
 from ...toolbox_python.attr_dict import Dict
-from ..._defaults import DEFAULT_OPTIONS  # , DEFAULT
+from ..._defaults import DEFAULT_OPTIONS
 from ..base.qubit import BaseQubit
 
-#from ... import DEFAULT, DEFAULT_OPTIONS, Dict, draw
-#from ...renderers.renderer_ansys import draw_ansys
-#from ...renderers.renderer_ansys.parse import to_ansys_units
-#from .Metal_Qubit import Metal_Qubit
 
-# NOTE:FIX UP THE IMPORTS
-# NOTE:at what level to have the renderer options pulled in? Via base component? Should it check flags
-# to see what options to include/ignore? (eg. junction inductance shouldn't be an option for CPW)
-# or wait until point of element creation?
-
-
-DEFAULT_OPTIONS['transmon_pocket.con_lines'] = Dict(
+DEFAULT_OPTIONS['TransmonPocket.con_lines'] = deepcopy(
+    DEFAULT_OPTIONS['qubit.con_lines'])
+DEFAULT_OPTIONS['TransmonPocket.con_lines'].update(Dict(
     pad_gap='15um',
     pad_width='125um',
     pad_height='30um',
@@ -68,7 +59,7 @@ DEFAULT_OPTIONS['transmon_pocket.con_lines'] = Dict(
     pocket_rise='65um',
     loc_W=+1,  # width location  only +-1
     loc_H=+1,  # height location only +-1
-)
+))
 
 DEFAULT_OPTIONS['TransmonPocket'] = deepcopy(
     DEFAULT_OPTIONS['qubit'])
@@ -85,8 +76,6 @@ DEFAULT_OPTIONS['TransmonPocket'].update(Dict(
     # while 0 has dipole aligned along the +Y axis
     orientation='0',
 ))
-DEFAULT_OPTIONS['TransmonPocket.con_lines'] = deepcopy(
-    DEFAULT_OPTIONS['qubit.con_lines'])
 
 
 class TransmonPocket(BaseQubit):

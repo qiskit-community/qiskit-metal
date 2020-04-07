@@ -74,9 +74,6 @@ class BaseQubit(BaseComponent):
 
         self._set_options_con_lines()
 
-        # ERROR @ Thomas: there is no self.components
-        # self.components.con_lines = Dict()
-
         if make:
             self.do_make()
 
