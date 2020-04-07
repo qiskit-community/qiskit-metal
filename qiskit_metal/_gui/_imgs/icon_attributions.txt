@@ -46,3 +46,6 @@ Icon credits:
 	
    Screenshot
 	https://www.flaticon.com/free-icon/browser_1829550?term=screenshot&page=1&position=15
+
+   Force refresh 
+	https://www.flaticon.com/free-icon/redo_1783378?term=redo&page=1&position=28

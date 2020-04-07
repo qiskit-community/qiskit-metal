@@ -125,7 +125,7 @@ class Ui_MainWindow(object):
         self.toolBarView.setObjectName("toolBarView")
         MainWindow.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBarView)
         self.dockDesign = QtWidgets.QDockWidget(MainWindow)
-        self.dockDesign.setMinimumSize(QtCore.QSize(148, 115))
+        self.dockDesign.setMinimumSize(QtCore.QSize(175, 128))
         icon3 = QtGui.QIcon()
         icon3.addPixmap(QtGui.QPixmap(":/design"), QtGui.QIcon.Normal, QtGui.QIcon.On)
         self.dockDesign.setWindowIcon(icon3)
@@ -237,7 +237,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.dockLog.sizePolicy().hasHeightForWidth())
         self.dockLog.setSizePolicy(sizePolicy)
-        self.dockLog.setMinimumSize(QtCore.QSize(71, 89))
+        self.dockLog.setMinimumSize(QtCore.QSize(78, 96))
         icon6 = QtGui.QIcon()
         icon6.addPixmap(QtGui.QPixmap(":/log"), QtGui.QIcon.Normal, QtGui.QIcon.On)
         self.dockLog.setWindowIcon(icon6)
@@ -372,6 +372,11 @@ class Ui_MainWindow(object):
         icon19.addPixmap(QtGui.QPixmap(":/screenshot"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionScreenshot.setIcon(icon19)
         self.actionScreenshot.setObjectName("actionScreenshot")
+        self.action_full_refresh = QtWidgets.QAction(MainWindow)
+        icon20 = QtGui.QIcon()
+        icon20.addPixmap(QtGui.QPixmap(":/force_refresh"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.action_full_refresh.setIcon(icon20)
+        self.action_full_refresh.setObjectName("action_full_refresh")
         self.menuDesign.addAction(self.actionSave)
         self.menuDesign.addAction(self.actionLoad)
         self.menuDesign.addSeparator()
@@ -401,6 +406,7 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuHelp.menuAction())
         self.toolBarDesign.addAction(self.actionSave)
         self.toolBarDesign.addAction(self.actionLoad)
+        self.toolBarDesign.addAction(self.action_full_refresh)
         self.toolBarDesign.addAction(self.actionDelete_All)
         self.toolBarView.addAction(self.actionDesign)
         self.toolBarView.addAction(self.actionComponent)
@@ -420,8 +426,9 @@ class Ui_MainWindow(object):
         self.actionSave.triggered.connect(MainWindow.save_design)
         self.actionStyleDark.triggered.connect(MainWindow.load_stylesheet_dark)
         self.actionStyleDefault.triggered.connect(MainWindow.load_stylesheet_default)
-        self.actionStyleOpen.triggered.connect(MainWindow.load_stylesheet_open)
         self.actionScreenshot.triggered.connect(MainWindow._screenshot)
+        self.actionStyleOpen.triggered.connect(MainWindow.load_stylesheet_open)
+        self.action_full_refresh.triggered.connect(MainWindow.full_refresh)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -509,7 +516,10 @@ class Ui_MainWindow(object):
         self.actionStyleDark.setText(_translate("MainWindow", "Dark"))
         self.actionScreenshot.setText(_translate("MainWindow", "Screenshot"))
         self.actionScreenshot.setToolTip(_translate("MainWindow", "Take a screenshot of the window"))
+        self.action_full_refresh.setText(_translate("MainWindow", "Refresh"))
+        self.action_full_refresh.setToolTip(_translate("MainWindow", "Force a full refresh of all plots and widgets"))
+        self.action_full_refresh.setShortcut(_translate("MainWindow", "Meta+R"))
 
-from .widgets.table_components import TableComponents
 from .widgets.log_metal import LoggingWindowWidget
+from .widgets.table_components import TableComponents
 from . import main_window_rc_rc

@@ -329,6 +329,7 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
    </attribute>
    <addaction name="actionSave"/>
    <addaction name="actionLoad"/>
+   <addaction name="action_full_refresh"/>
    <addaction name="actionDelete_All"/>
   </widget>
   <widget class="QToolBar" name="toolBarView">
@@ -1036,7 +1037,7 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
   </action>
   <action name="actionScreenshot">
    <property name="icon">
-    <iconset>
+    <iconset resource="main_window_rc.qrc">
      <normaloff>:/screenshot</normaloff>:/screenshot</iconset>
    </property>
    <property name="text">
@@ -1044,6 +1045,21 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
    </property>
    <property name="toolTip">
     <string>Take a screenshot of the window</string>
+   </property>
+  </action>
+  <action name="action_full_refresh">
+   <property name="icon">
+    <iconset resource="main_window_rc.qrc">
+     <normaloff>:/force_refresh</normaloff>:/force_refresh</iconset>
+   </property>
+   <property name="text">
+    <string>Refresh</string>
+   </property>
+   <property name="toolTip">
+    <string>Force a full refresh of all plots and widgets</string>
+   </property>
+   <property name="shortcut">
+    <string>Meta+R</string>
    </property>
   </action>
  </widget>
@@ -1160,6 +1176,22 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
    </hints>
   </connection>
   <connection>
+   <sender>actionScreenshot</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>_screenshot()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>588</x>
+     <y>399</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
    <sender>actionStyleOpen</sender>
    <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
@@ -1176,10 +1208,10 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
    </hints>
   </connection>
   <connection>
-   <sender>actionScreenshot</sender>
+   <sender>action_full_refresh</sender>
    <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
-   <slot>_screenshot()</slot>
+   <slot>full_refresh()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
@@ -1202,5 +1234,6 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
   <slot>load_stylesheet_dark()</slot>
   <slot>load_stylesheet_open()</slot>
   <slot>_screenshot()</slot>
+  <slot>full_refresh()</slot>
  </slots>
 </ui>

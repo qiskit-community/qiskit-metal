@@ -22,7 +22,9 @@
     <file alias="metal_logo">_imgs/metal_logo.png</file>
     <file alias="refresh">_imgs/refresh.png</file>
   </qresource>
-  <qresource prefix="ui"/>
+  <qresource>
+    <file alias="force_refresh">_imgs/force_refresh.png</file>
+  </qresource>
   <qresource prefix="plot">
     <file alias="refresh_plot">_imgs/crayon.png</file>
     <file alias="autozoom">_imgs/painting.png</file>

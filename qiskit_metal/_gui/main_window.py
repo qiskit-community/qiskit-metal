@@ -49,6 +49,9 @@ class QMainWindowExtension(QMainWindowExtensionBase):
     """This contains all the functions tthat the gui needs
     to call directly from the UI
 
+    To access the GUI HAndler above this, call:
+        self.handler
+
     Args:
         QMainWindow ([type]): [description]
     """
@@ -110,6 +113,12 @@ class QMainWindowExtension(QMainWindowExtensionBase):
             self.logger.info(f'Successfully loaded file. Now setting design into gui.')
             self.handler.set_design(design)
             self.logger.info(f'Successfully set design. Loaded and done.')
+
+    @catch_exception_slot_pyqt()
+    def full_refresh(self, _):
+        self.logger.info(f'Force refresh...')
+        self.handler.refresh()
+
 
 class MetalGUI(QMainWindowBaseHandler):
     """Qiskit Metal Main GUI.

@@ -117,7 +117,12 @@ class QMainWindowExtensionBase(QMainWindow):
 
         self.logger.info(f'Screenshot: {path}')
 
-        screen = QtWidgets.QApplication.primaryScreen()
+        #screen = QtWidgets.QApplication.primaryScreen()
+        screennum = QtWidgets.QDesktopWidget().screenNumber(self)
+        self.logger.info(f'screennum={screennum}')
+        screen = QtWidgets.QApplication.screens()[screennum]
+
+        # TODO: On mac this seems to grab the primary screen no matter what
         screenshot = screen.grabWindow(self.winId())  # QPixelMap
         screenshot.save(str(path), type_)  # Save
 
