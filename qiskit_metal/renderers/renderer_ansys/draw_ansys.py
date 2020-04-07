@@ -26,7 +26,7 @@ import shapely
 from numpy import array
 
 from ... import DEFAULT, DEFAULT_OPTIONS, logger, Dict
-from ...draw import get_poly_pts, is_rectangle, vec_add_z
+from ...draw import get_poly_pts, is_rectangle, vec_add_z, BaseGeometry
 from .parse import parse_value_hfss
 
 
@@ -66,7 +66,7 @@ def draw_objects_shapely(oModeler, components: dict, root_name: str, delimiter='
         if isinstance(obj, dict):
             res = draw_objects_shapely(
                 oModeler, obj, new_name, delimiter=delimiter, **kwargs)
-        elif isinstance(obj, shapely.geometry.base.BaseGeometry):
+        elif isinstance(obj, BaseGeometry):
             res = draw_object_shapely(oModeler, obj, new_name, **kwargs)
         else:
             logger.error("Unhandled!")

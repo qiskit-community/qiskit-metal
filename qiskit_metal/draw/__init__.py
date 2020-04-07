@@ -20,6 +20,8 @@
 import shapely
 import shapely.wkt as wkt
 
+# Base Geometry Definitions - extend here
+from shapely.geometry.base import BaseGeometry
 from shapely.geometry import Point, LineString, Polygon
 from shapely.geometry import box, shape
 from shapely.ops import cascaded_union

@@ -31,7 +31,7 @@ import numpy as np
 from shapely.geometry import LineString
 
 from ... import Dict
-from ...toolbox_metal.parsing import parse_value, parse_params
+from ...toolbox_metal.parsing import parse_value, parse_options
 from ...config import DEFAULT, DEFAULT_OPTIONS
 from ...draw.utils import make_connector
 from ...toolbox_metal.import_export import save_metal
@@ -209,7 +209,7 @@ class Metal_Design_Base():  # pylint: disable=invalid-name
         """
         return parse_value(value, self.variables)
 
-    def parse_params(self, params: dict, param_names: str):
+    def parse_options(self, params: dict, param_names: str):
         """
         Extra utility function that can call parse_value on individual options.
         Use self.parse_value to parse only some options from a params dictionary
@@ -218,7 +218,7 @@ class Metal_Design_Base():  # pylint: disable=invalid-name
             params (dict) -- Input dict to pull form
             param_names (str) -- eg, 'x,y,z,cpw_width'
         """
-        return parse_params(params, param_names, variable_dict=self.variables)
+        return parse_options(params, param_names, variable_dict=self.variables)
 
     def add_connector(self, name: str,  points: list, flip=False, chip='main'):
         """Add named connector to the design by creating a connector dicitoanry.

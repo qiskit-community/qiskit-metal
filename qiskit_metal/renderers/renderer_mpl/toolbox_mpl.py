@@ -31,6 +31,7 @@ from shapely.geometry import LinearRing, Polygon  # Point, LineString,
 from ... import Dict
 from ...components import is_component
 from .interaction_mpl import figure_pz
+from ...draw import BaseGeometry
 
 ##########################################################################################
 # Plotting subroutines
@@ -154,7 +155,7 @@ def render(components,
         #    style_axis_simple(ax, labels=labels)
         return _iteration
 
-    if not isinstance(components, shapely.geometry.base.BaseGeometry):  # obj is None
+    if not isinstance(components, BaseGeometry):  # obj is None
         return _iteration+1
 
     # We have now a single object to draw

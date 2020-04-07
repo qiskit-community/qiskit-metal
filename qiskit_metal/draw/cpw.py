@@ -416,7 +416,7 @@ def easy_wirebond(design, obj,
     # Place once per segment;  iterate each path segement
 
     start, stop, step = [options[n.strip()] for n in ('start, stop, step'.split(','))]
-    w, ofst, th, height  = design.parse_params('w,offset,threshold,height')
+    w, ofst, th, height  = design.parse_options('w,offset,threshold,height')
 
     wirebond_names = []
     shapes = {}

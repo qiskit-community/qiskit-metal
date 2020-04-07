@@ -20,20 +20,34 @@ See the docstring of BaseElement
 @author: Zlatko Minev, Thomas McConekey, ... (IBM)
 @date: 2019
 """
-
+import functools
+import logging
 #from copy import deepcopy
+from typing import Union
 
 import inspect
 import pandas as pd
-from shapely.geometry.base import BaseGeometry
+from ..draw import BaseGeometry
 # from collections import OrderedDict # dict are oreder in Python 3.6+ by default, this is jsut in case for backward compatability
 
 from .. import Dict
 from ..config import DEFAULT
-from ..components.base import BaseComponent
+#from ..components.base import BaseComponent
 from ..toolbox_python.utility_functions import data_frame_empty_typed
 
-__all__ = ['is_element_table', 'ElementTables']
+__all__ = ['is_element_table', 'ElementTables']  # , 'ElementTypes']
+
+# class ElementTypes:
+#     """
+#     Types of elements
+#         positive : Elements that are positive mask
+#         negative : Elements that will be subtracted from teh chip ground plane
+#         helper   : Elements that are only used in a helper capacity,
+#                    such as labels or mesh rectangles
+#     """
+#     positive = 0
+#     negative = 1
+#     helper   = 2
 
 
 def is_element_table(obj):
@@ -69,12 +83,13 @@ ELEMENT_COLUMNS = dict(
     base=dict(
         component=str,  # name of the component to which the element belongs
         name=str,  # name of the element
-        geometry=object, # shapely object
-        layer=int, #  gds type of layer
-        chip=str,  # is this redundant with layer?
-        type=str,  # metal, helper
-        subtract=bool, # do we subtract from the groun place of the chip
-        color=str,  # '' by default, can overwrite, not used by all renderers
+        geometry=object,  # shapely object
+        layer=int,  # gds type of layer
+        subtract=bool,  # do we subtract from the groun place of the chip
+        helper=bool,  # helper or not
+        # type=str,  # metal, helper
+        # color=str,  # '' by default, can overwrite, not used by all renderers
+        # chip=str,  # is this redundant with layer?
         __renderers__=dict(
             # ADD specific renderers here, all renderes must register here.
             # hfss = dict( ... ) # pick names as hfss_name
@@ -96,7 +111,7 @@ ELEMENT_COLUMNS = dict(
     # Ideas: chamfer
     path=dict(
         width=float,
-        fillet=object, # TODO: not decided yet how to represent this
+        fillet=object,  # TODO: not decided yet how to represent this
         __renderers__=dict(
         )
     ),
@@ -105,7 +120,7 @@ ELEMENT_COLUMNS = dict(
     # Specifies a polygon
     # Ideas: chamfer
     poly=dict(
-        fillet=object, # TODO: not decided yet how to represent this
+        fillet=object,  # TODO: not decided yet how to represent this
         __renderers__=dict(
         )
     ),
@@ -123,6 +138,7 @@ ELEMENT_COLUMNS = dict(
 #
 # Class to create, store, and handle element tables.
 #
+
 
 class ElementTables():
     """Class to create, store, and handle element tables.
@@ -158,9 +174,17 @@ class ElementTables():
         import qiskit_metal as metal
 
         design = metal.designs.DesignPlanar()
-        elements = metal.ElementTables(design)
+        design.elements = metal.ElementTables(design)
 
-        elements.tables['path']
+        design.elements['path'] # return the path table - give access to ..
+        design.elements.table['path']
+
+        # Define interfaces
+        design.elements.get_component(
+                component_name,
+                element_name,
+                columns=all or geom or list?) # get all elemetns for compoentns
+
         >>> component	name	geometry	layer	type	chip	subtract	fillet	color	width
 
 
@@ -206,6 +230,21 @@ class ElementTables():
     # For creating names of columns of renderer properties
     name_delimiter = '_'
 
+    def __init__(self, design, logger: logging.Logger = None):
+        """
+        The constructor for the `BaseElement` class.
+
+        Attributes:
+            table {Dict} -- This is a dictiomnary of the table names as keys
+                and the pandas DataFrames as values. The values get overwritten
+                very often. Do not use a fixed reference.
+        """
+        self.design = design
+        self.logger = logger or design.logger
+
+        self.tables = Dict()
+        self.create_tables()
+
     @classmethod
     def add_renderer_extension(cls, renderer_name: str, elements: dict):
         """Add renderer element extension to ELEMENT_COLUMNS.
@@ -237,6 +276,8 @@ class ElementTables():
             cls.ELEMENT_COLUMNS[element_key]['__renderers__'][renderer_name].update(
                 element_column_ext_dict)
 
+    # could use weakref memorizaiton
+    # https://stackoverflow.com/questions/33672412/python-functools-lru-cache-with-class-methods-release-object
     @classmethod
     def get_element_types(cls):
         """Return the names of the available elements to create.
@@ -249,25 +290,15 @@ class ElementTables():
         names.remove('base')
         return names
 
-    @property
-    def tables(self):
-        """Read-only dictionary of tables with keys self.get_element_types()
+    # @property
+    # def tables(self):
+    #    """Read-only dictionary of tables with keys self.get_element_types()
+    #
+        # Returns:
+        #     dict of pandas dataframes
 
-        Returns:
-            dict of pandas dataframes
-
-        """
-        return self._tables
-
-    def __init__(self, design, logger=None):
-        """The constructor for the `BaseElement` class.
-
-        """
-        self.design = design
-        self.logger = logger or design.logger
-
-        self._tables = Dict()
-        self.create_tables()
+        # """
+        # return self._tables
 
     def create_tables(self):
         """
@@ -349,101 +380,99 @@ class ElementTables():
         return {self.get_rname(renderer_key, k): v
                 for k, v in rdict.get(renderer_key, {}).items()}
 
-    # def get_
+    def add_elements(self,
+                     kind: str,
+                     component_name: str,
+                     geometry: dict,
+                     subtract: bool = False,
+                     helper: bool = False,
+                     layer: Union[int, str] = 1,  # chip will be here
+                     **other_options):
+        """Main interface to add names
 
-        # """The constructor for the `BaseElement` class.
+        Arguments:
+            kind {str} -- Must be in get_element_types (path or poly)
+            geometry {dict} -- Doict of shapely geometyry
 
-        # Arguments:
-        #     name {str} -- Name of the element used to render, if needed. A simple string.
-        #     geom {BaseGeometry} -- A 2D `shapely` geometry. `LineString` or `Polygon`.
-        #     parent {BaseComponent} -- Parent class: a Metal BaseComponent
+        Keyword Arguments:
+            subtract {bool} -- [description] (default: {False})
+            helper {bool} -- [description] (default: {False})
+            layer {Union[int, str]} -- [description] (default: {0})
+            **other_options
+        """
+        # TODO: Add unit test
 
-        # Keyword Arguments:
-        #     chip {str} -- Which chip is the element on.
-        #                   (default: {config.DEFAULT.chip, typically set to 'main'})
-        #     fillet {float, str, or tuple} -- float or string of the radius of the fillet.
-        #                   Can also pass a tuple of (raidus, [list of vertecies to fillet])
-        #                   (default: None - no fillet)
-        #     subtract {bool} -- subtract from ground plane of `chip` or not. There is one
-        #                     ground plane  per chip.
+        if not (kind in self.get_element_types()):
+            self.logger.error(f'Creator user error: Unkown element kind=`{kind}`'
+                              f'Kind must be in {list(self.tables.keys())}. This failed for component'
+                              f'name = `{component_name}`.\n'
+                              f' The call was with subtract={subtract} and helper={helper}'
+                              f' and layer={layer}, and options={other_options}')
+        options = dict(component=component_name, subtract=subtract,
+                       helper=helper, layer=layer, **other_options)
 
-        # Internal data structure:
-        #     name {str} -- Name of the element used to render, if needed. A simple string.
-        #     geom {BaseGeometry} -- Shapely BaseGeometry that defines the element properties.
-        #     parent {BaseComponent} -- Parent class: a Metal BaseComponent
-        #     chip {str} -- String name (used as pointer) to chip on which the element is rendered.
-        #                  By  default config.DEFAULT.chip, typically set to 'main'}
+        table = self.tables[kind]
 
-        # Internal data structure related to renderers:
+        # assert that all names in options are in table columns!
+        # mauybe check
+        df = pd.DataFrame.from_dict(
+            geometry, orient='index', columns=['geometry'])
+        df.index.name = 'name'
+        df = df.reset_index()
 
-        #     render_geom {Dict} -- Geometry rendered by the render that is associated with
-        #                     this element can be stored here. This is a dictonary of dictionaries.
-        #                     Each key is a renderer name. The inner dictionary contains the
-        #                     (name, object) pairs.
-        #                     Default is created by method `_create_default_render_geom`.
+        df = df.assign(**options)
 
-        #     render_params {Dict} -- Dictionary of default params used in a renderer to render
-        #                 this parameter.
-        #                 Each key is a renderer name.
-        #                 The value is a dictionary of (key, value) settings for the renderer.
-        #                 Default is created by method `_create_default_render_geom`.
-        # """
+        # Set new table. Unfortuanly, this creates a new instance.
+        self.tables[kind] = table.append(df, sort=False, ignore_index=True)
+        # pd.concat([table,df], axis=0, join='outer', ignore_index=True,sort=False,
+        #          verify_integrity=False, copy=False)
 
-        # # Type checks
-        # assert isinstance(name, str),\
-        #     "Please use only strings as names for elements."
-        # assert isinstance(geom, BaseGeometry),\
-        #     "You must pass a shapely Polygon or LineString or\
-        #      BaseGeometry objects to `geom` in oroder to create an element."
-        # assert isinstance(parent, BaseGeometry),\
-        #     "You must pass in only BaseComponent inherited objects to parent for elements."
+    def clear_all_tables(self):
+        """Clear all the internal tables and all else.
+        Use when clearing a design and starting from scratch.
+        """
+        self.tables.clear()
+        self.create_tables()  # remake all tables
 
-        # # Arguments
-        # self.name = name
-        # self.geom = geom
-        # self.parent = parent
+    def delete_component(self, name: str):
+        """Delete component by name
 
-        # # Different elements within the same components can be on different chips
-        # self.chip = DEFAULT.chip if chip is None else chip
+        Arguments:
+            name {str} -- Name of component (case sensitive)
+        """
+        # TODO: Add unit test
+        # TODO: is this the best way to do this, or is there a faster way?
+        for table_name in self.tables:
+            df = self.tables[table_name]
+            self.tables[table_name] = df[df.component != name]
 
-        # self.fillet = fillet
+    def select_component(self, name: str, table_name: str):
+        """Return the table for just a given component.
 
-        # # Subtract from ground of not. bool. one ground per chip
-        # self.subtract = subtract
+        Arguments:
+            name {str} -- Name of component (case sensitive)
+        """
+        df = self.tables[table_name]
+        return df[df.component == name]
 
-        # # Renderer related
-        # self.render_geom = self._create_default_render_geom()
-        # self.render_params = self._create_default_render_params()
+    def rename_component(self, name: str, new_name: str):
+        """Rename component by name
 
-    # @property
-    # def z_value(self):
-    #     """Return the z elevation of the chip on which the element is siting
-    #     """
-    #     return self.parent.design.get_chip_z(self.chip)
+        Arguments:
+            name {str} -- Name of component (case sensitive)
+            new_name {str} -- The new name of the component (case sensitive)
+        """
+        # TODO: is this the best way to do this, or is there a faster way?
+        for table_name in self.tables:
+            table = self.tables[table_name]
+            table.component[table.component == name] = new_name
 
-    # @property
-    # def full_name(self):
-    #     """Return full name of the object, such as Q1_connector_pad
-    #     Where the parent name is Q1 and the object name is "connector_pad"
+    def get_component_geometry(self, name: str, table_name: str):
+        """Return the table for just a given component.
 
-    #     Returns:
-    #         string
-    #     """
-    #     return self.parent.name + self.__name_delimiter + self.name
-
-    # def _create_default_render_geom(self):
-    #     """
-    #     Create the default self.render_geom from the registered renderers.
-    #     Sets up dictionary hierarchy.
-    #     """
-    #     raise NotImplementedError()
-    #     #render_geom = Dict()
-    #     # return render_geom
-
-    # def _create_default_render_params(self):
-    #     """
-    #     Create the default self.render_geom from the registered renderers.
-    #     """
-    #     raise NotImplementedError()
-    #     #render_params = Dict()
-    #     # return render_params
+        Arguments:
+            name {str} -- Name of component (case sensitive)
+        """
+        #TODO: handle all - table_name
+        df = self.tables[table_name]
+        return df[df.component == name].geometry

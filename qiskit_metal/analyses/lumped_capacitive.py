@@ -99,7 +99,8 @@ def chi(g, wr, w01, w12):
     return (chibus_1-chibus_0)/2
 
 
-def extract_transmon_coupled_Noscillator(capMatrix, Ic, CJ, N, fb, fr, res_L4_corr=None):
+def extract_transmon_coupled_Noscillator(capMatrix, Ic, CJ, N, fb, fr, res_L4_corr=None,
+            g_scale=1):
     """
     Primary analysis function called by the user. Uses a (Maxwell) capacitance
     matrix generated from Q3D, and some additional values, to determine
@@ -250,8 +251,8 @@ def extract_transmon_coupled_Noscillator(capMatrix, Ic, CJ, N, fb, fr, res_L4_co
 #    gr0 = 0.5*Cminv[0,1]/np.sqrt(Zqp*Zr1p)
 #    print('gr0 = %f [MHz]'%(gr0/2/np.pi/1e6))
 
-    # g's from the qubit
-    gqbus = 0.5*wr*bbus*np.sqrt(Zbus/Zqp)
+    # g's from the qubit -- ? why is there a one half
+    gqbus = 0.5*wr*bbus*np.sqrt(Zbus/Zqp)*g_scale
     gbus_in_MHz = gqbus/1e6/2/np.pi
 
     #gbus = bbus*wr*np.sqrt(Zbus)*e*(EJ/8/EC)**(1/4)/np.sqrt(hbar)

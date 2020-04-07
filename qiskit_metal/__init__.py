@@ -38,15 +38,19 @@ del setup_logger
 # Metal Dict
 from .toolbox_python.attr_dict import Dict
 
+# Due to order of imports
+from ._is_design import is_design, is_component
+
 # TODO: Remove the as global variables, just use in design when
 # instanciating the default params and overwriting them.
 from .config import DEFAULT, DEFAULT_OPTIONS
 
 # Core modules for user to use
-from . import designs
 from . import components
+from . import designs
 from . import draw
 from . import renderers
+from . import elements
 from . import analyses
 from . import toolbox_python
 from . import toolbox_metal

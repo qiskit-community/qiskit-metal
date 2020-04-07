@@ -29,6 +29,7 @@ from shapely.geometry import CAP_STYLE, JOIN_STYLE, Point, Polygon
 from .. import config, logger
 from ..components.base import is_component
 from .utility import get_poly_pts
+from . import BaseGeometry
 
 __all__ = ['rectangle', 'is_rectangle', 'flip_merge', 'rotate', 'rotate_position',
            '_iter_func_geom_', 'translate', 'scale', 'buffer',
@@ -198,7 +199,7 @@ def _iter_func_geom_(func, objs, *args, overwrite=False, **kwargs):
     #    func(objs.geom, *args, **kwargs)
     #    return objs
 
-    elif isinstance(objs, shapely.geometry.base.BaseGeometry):
+    elif isinstance(objs, BaseGeometry):
         return func(objs, *args, **kwargs)
 
     else:
@@ -262,7 +263,7 @@ def rotate_position(obj, angle: float, pos: list, pos_rot=(0, 0)):
         obj.geom=rotate_position_shapely(obj)
         return obj
 
-    elif isinstance(obj, shapely.geometry.base.BaseGeometry):
+    elif isinstance(obj, BaseGeometry):
         return rotate_position_shapely(obj)
 
     else:

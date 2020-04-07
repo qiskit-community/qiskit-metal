@@ -19,18 +19,21 @@ Module containing all Qiskit Metal designs.
 @author: Zlatko Minev, Thomas McConeky, ... (IBM)
 """
 # To create a basic UML diagram
-#>> pyreverse -o png -p desin_base design_base.py -A  -S
+# >> pyreverse -o png -p desin_base design_base.py -A  -S
 
 import numpy as np
+from typing import Union, List, Iterable, Any
 from datetime import datetime
 
 from .. import Dict, draw, logger
-from ..components.base import is_component
+from ..components import is_component
 from ..config import DEFAULT, DEFAULT_OPTIONS
 from ..toolbox_metal.import_export import load_metal_design, save_metal
-from ..toolbox_metal.parsing import parse_params, parse_value
+from ..toolbox_metal.parsing import parse_options, parse_value
+from ..elements import ElementTables
 
 __all__ = ['DesignBase']
+
 
 class DesignBase():
     """
@@ -56,7 +59,7 @@ class DesignBase():
 
     """
 
-    # TODO -- Break up DesignBase into several interface classes,
+    # TODO -- Idea: Break up DesignBase into several interface classes,
     # such as DesignConnectorInterface, DesignComponentInterface, etc.
     # in order to do a more Dependency Inversion Principle (DIP) style,
     # see also Dependency Injection (DI). This can also generalize nicely
@@ -70,7 +73,7 @@ class DesignBase():
     # Used by `is_design` to check.
     __i_am_design__ = True
 
-    def __init__(self, metadata:dict=None):
+    def __init__(self, metadata: dict = None):
 
         # Key attributes related to physical content of the design
         # These will be saved
@@ -86,8 +89,9 @@ class DesignBase():
         if metadata:
             self.update_metadata(metadata)
 
-        # Software attributes
-        self.logger = logger # type: logging.Logger
+        self.logger = logger  # type: logging.Logger
+
+        self._elements = ElementTables(self)
 
     def _init_metadata(self) -> Dict:
         """Initialize default metadata dicitoanry
@@ -95,13 +99,13 @@ class DesignBase():
         Returns:
             Dict: default metadata dicitoanry
         """
-        now = datetime.now() # current date and time
+        now = datetime.now()  # current date and time
         return Dict(
             design_name='my_design',
             notes='',
-            time_created = now.strftime("%m/%d/%Y, %H:%M:%S"))
+            time_created=now.strftime("%m/%d/%Y, %H:%M:%S"))
 
-    def update_metadata(self, new_metadata:dict):
+    def update_metadata(self, new_metadata: dict):
         """Update the metadata dictionary of the design with a
         a new metadata dictionary. This will overwrite only the new keys
         that you pass in. All other keys will be unaffected.
@@ -128,14 +132,14 @@ class DesignBase():
         return self._connectors
 
     @property
-    def variables(self):
+    def variables(self) -> Dict:
         '''
         Return the Dict object that keeps track of all variables in the design.
         '''
         return self._variables
 
     @property
-    def defaults(self):
+    def defaults(self) -> Dict:
         '''
         Return DEFAULT dictionary, which contains some key Metal DEFAULT params used
         in various Metal functions. These include default units, etc.
@@ -145,7 +149,7 @@ class DesignBase():
         return self._defaults
 
     @property
-    def default_options(self):
+    def default_options(self) -> Dict:
         '''
         Return handle to the dicitonary of default options used in creating Metal
         component, and in calling other drawing and key functions.
@@ -153,7 +157,7 @@ class DesignBase():
         return self._default_options
 
     @property
-    def metadata(self):
+    def metadata(self) -> Dict:
         '''
         Return the metadata Dict object that keeps track of all metadata in the design.
         '''
@@ -161,11 +165,12 @@ class DesignBase():
 
 #########Proxy properties##################################################
 
-
     def get_chip_size(self, chip_name='main'):
+        """Utility function to return the chip size"""
         raise NotImplementedError()
 
     def get_chip_z(self, chip_name='main'):
+        """Utility function to return the z value of a chip"""
         raise NotImplementedError()
 
 #########General methods###################################################
@@ -182,17 +187,20 @@ class DesignBase():
         Clear all components in the design dictionary.
         Also clears all connectors.
         '''
+        # clear all the dicitonaries and element tables.
         self._components.clear()
         self.delete_all_connectors()
-        return self._components
+        #TODO: add element tables here
+        self._elements.clear_all_tables()
+        #TODO: add dependency handling here
 
     def make_all_components(self):
         """
         Remakes all components with their current parameters.
         """
         for name, obj in self.components.items():  # pylint: disable=unused-variable
-            if is_component(obj):
-                obj.make()
+            #if is_component(obj): # assert
+            obj.make()
 
     def rename_component(self, component_name: str, new_component_name: str):
         """Rename component.
@@ -209,16 +217,19 @@ class DesignBase():
         """
         #
         if new_component_name in self.components:
-            self.logger.info(f'Cannot rename {component_name} to {new_component_name}. Since {new_component_name} exists')
+            self.logger.info(
+                f'Cannot rename {component_name} to {new_component_name}. Since {new_component_name} exists')
             return -1
 
         # Check that the name is a valid component name
-        if is_valid_component_name(component_name):
-            self.logger.info(f'Cannot rename {component_name} to {new_component_name}.')
+        if 1: #TODO: is_valid_component_name(component_name):
+            self.logger.info(
+                f'Cannot rename {component_name} to {new_component_name}.')
             return -2
 
         # do rename
-            TODO
+        #TODO:
+        self._elements.rename_component(component_name, new_component_name)
         return True
 
     def delete_component(self, component_name: str, force=False):
@@ -266,13 +277,15 @@ class DesignBase():
         # Remove from design dictionary of components
         self.components.pop(component_name, None)
 
+        self._elements.delete_component(component_name)
+
         return True
 
 
 #########I/O###############################################################
 
     @classmethod
-    def load_design(cls, path:str):
+    def load_design(cls, path: str):
         """Load a Metal design from a saved Metal file.
         (Class method)
 
@@ -286,7 +299,7 @@ class DesignBase():
         logger.warning("Loading is a beta feature.")
         return load_metal_design(path)
 
-    def save_design(self, path:str):
+    def save_design(self, path: str):
         """Save the metal design to a Metal file.
 
         Arguments:
@@ -297,7 +310,7 @@ class DesignBase():
 
 #########Creating Components###############################################################
 
-    def parse_value(self, value):
+    def parse_value(self, value: Union[Any, List, Dict, Iterable]) -> Any:
         """
         Main parsing function.
 
@@ -347,7 +360,7 @@ class DesignBase():
         """
         return parse_value(value, self.variables)
 
-    def parse_params(self, params: dict, param_names: str):
+    def parse_options(self, params: dict, param_names: str) -> dict:
         """
         Extra utility function that can call parse_value on individual options.
         Use self.parse_value to parse only some options from a params dictionary
@@ -356,7 +369,7 @@ class DesignBase():
             params (dict) -- Input dict to pull form
             param_names (str) -- eg, 'x,y,z,cpw_width'
         """
-        return parse_params(params, param_names, variable_dict=self.variables)
+        return parse_options(params, param_names, variable_dict=self.variables)
 
     def add_connector(self, name: str, points: list, parent, flip=False, chip='main'):
         """Add named connector to the design by creating a connector dicitoanry.
@@ -380,6 +393,8 @@ class DesignBase():
         self.connectors[name] = make_connector(
             points, parent, flip=flip, chip=chip)
 
+        # TODO: Add net?
+
     def update_component(self, component_name: str, dependencies=True):
         """Update the component and any dependencies it may have.
         Mediator type function to update all children.
@@ -396,23 +411,49 @@ class DesignBase():
         # Remake components in order
         pass
 
-    def get_design_name(self)->str:
+    def get_design_name(self) -> str:
         """Get the name of the design from the metadata.
 
         Returns:
             str: name of design
         """
         if 'design_name' not in self.metadata:
-            self.update_metadata({'design_name':'Unnamed'})
+            self.update_metadata({'design_name': 'Unnamed'})
         return self.metadata.design_name
 
-    def set_design_name(self, name:str):
+    def set_design_name(self, name: str):
         """Set the name of the design in the metadata.
 
         Args:
             name (str) : Name of design
         """
-        self.update_metadata({'design_name':name})
+        self.update_metadata({'design_name': name})
+
+####################################################################################
+# Dependencies
+
+    def add_dependency(self, parent: str, child: str):
+        """Add a dependency between one component and another.
+
+        Arguments:
+            parent {str} -- The component on which the child depends
+            child {str} -- The child cannot live without the parent.
+        """
+        # TODO: Should we allow bidirecitonal arrows as as flad in the graph?
+        # Easier if we keep simply one-sided arrows
+        # Note that we will have to handle renaming and deleting of components, etc.
+        # Should we make a dependancy handler?
+        # For now, let's table this, lower priority
+        pass
+
+    def remove_dependency(self, parent: str, child: str):
+        """Remove a dependency between one component and another.
+
+        Arguments:
+            parent {str} -- The component on which the child depends
+            child {str} -- The child cannot live without the parent.
+        """
+
 
 ####################################################################################
 ###

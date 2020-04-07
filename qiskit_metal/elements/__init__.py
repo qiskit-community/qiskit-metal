@@ -13,9 +13,9 @@
 # that they have been altered from the originals.
 
 """
+This modules defines and handles everything related to the elements abstraction.
+
 @auhtor: Zlatko Minev
 @date: 2019
 """
-from .base import is_element_table, ElementTables
-#from .path import PathElements
-#from .poly import PolyElements
+from .elements_handler import is_element_table, ElementTables#, ElementTypes
