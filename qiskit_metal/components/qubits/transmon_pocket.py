@@ -165,7 +165,7 @@ class TransmonPocket(BaseQubit):
         # Extract relevant numerical values from options dictionary (parse strings)
         pad_gap, inductor_width, pad_width, pad_height, pocket_width, pocket_height,\
             pos_x, pos_y, orientation = self.design.parse_options(
-                self.options, 'pad_gap, inductor_width, pad_width, pad_height, '
+                self.options, 'pad_gap, inductor_width, pad_width, pad_height, '\
                 'pocket_width, pocket_height, pos_x, pos_y, orientation')
 
         # make the pads as rectangles (shapely polygons)

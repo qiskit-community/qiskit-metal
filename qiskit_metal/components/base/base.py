@@ -325,7 +325,8 @@ class BaseComponent():
 
 
         Arguments:
-            kind {str} -- The kind of elements, such as Path or Poly
+            kind {str} -- The kind of elements, such as 'path', 'poly', etc.
+                          All elements in the dicitonary should have the same kind
             elements {Dict[BaseGeometry]} -- Key-value pairs
 
         Keyword Arguments:
@@ -352,14 +353,18 @@ class _Geometry_Handler:
 
     def __init__(self, component: BaseComponent):
         self.parent = component
+        self.design = component.design
 
-    def get_all(self):
+    def get_all(self, element_type:str, full_table=False):
         """
         Get all shapely geometry as a dict with key being the names of the
         elements and the values as the shapely geometry.
         """
         # return {elem.full_name : elem.geom for name, elem in self.parent.elements}
-        raise NotImplementedError()
+        if full_table:
+            return self.design.elements.get_component(self.parent.name, element_type)
+        else:
+            return list(self.design.elements.get_component_geometry(self.parent.name, element_type))
 
     def get_bounds(self):
         """
@@ -367,6 +372,9 @@ class _Geometry_Handler:
         Calls get_all and finds the bounds of this collection.
         Uses the shapely methods.
         """
+        # for all element_type
+        element_type = 'poly'
+        shapes = self.get_all(element_type)
         raise NotImplementedError()
 
     # translate, rotate, etc. if possible

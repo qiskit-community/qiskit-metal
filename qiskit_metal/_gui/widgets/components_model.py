@@ -34,6 +34,7 @@ class ComponentsTableModel(QAbstractTableModel):
         self.design = None
         self.logger = logger
         self.columns = ['Name', 'Class', 'Module']
+        #self.
 
         self.set_design(design)
 

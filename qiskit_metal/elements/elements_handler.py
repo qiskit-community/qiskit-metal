@@ -446,7 +446,7 @@ class ElementTables():
             df = self.tables[table_name]
             self.tables[table_name] = df[df.component != name]
 
-    def select_component(self, name: str, table_name: str):
+    def get_component(self, name: str, table_name: str):
         """Return the table for just a given component.
 
         Arguments:
