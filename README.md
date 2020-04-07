@@ -21,6 +21,7 @@ conda env create -n <env_name> environment.yml
 conda activate <env_name>
 python -m pip install -e .
 ```
+This will create a new environemnt with name <env_name>. We will then activate it. Fianlly, in it, we will install the local package.
 
 ### Virtual environment setup
 

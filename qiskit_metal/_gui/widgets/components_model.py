@@ -59,6 +59,8 @@ class ComponentsTableModel(QAbstractTableModel):
         """
         Update row count etc.
         """
+        # We could not do if the widget is hidden - TODO: speed performace?
+
         # TODO: This should probably just be on a global timer for all changes detect
         # and then update all accordingly
         new_count = self.rowCount()
