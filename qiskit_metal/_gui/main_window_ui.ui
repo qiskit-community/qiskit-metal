@@ -297,6 +297,12 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="toolBarDesign">
+   <property name="font">
+    <font>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
+   </property>
    <property name="windowTitle">
     <string>toolBar</string>
    </property>
@@ -327,6 +333,7 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
    <addaction name="actionSave"/>
    <addaction name="actionLoad"/>
    <addaction name="action_full_refresh"/>
+   <addaction name="actionRebuild"/>
    <addaction name="actionDelete_All"/>
   </widget>
   <widget class="QToolBar" name="toolBarView">
@@ -1055,7 +1062,7 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
   </action>
   <action name="action_full_refresh">
    <property name="icon">
-    <iconset>
+    <iconset resource="main_window_rc.qrc">
      <normaloff>:/force_refresh</normaloff>:/force_refresh</iconset>
    </property>
    <property name="text">
@@ -1064,8 +1071,38 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
    <property name="toolTip">
     <string>Force a full refresh of all plots and widgets</string>
    </property>
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
    <property name="shortcut">
     <string>Meta+R</string>
+   </property>
+  </action>
+  <action name="actionRebuild">
+   <property name="icon">
+    <iconset resource="main_window_rc.qrc">
+     <normaloff>:/rebuild</normaloff>:/rebuild</iconset>
+   </property>
+   <property name="text">
+    <string>Rebuild</string>
+   </property>
+   <property name="toolTip">
+    <string>Force rebuild all components</string>
+   </property>
+   <property name="statusTip">
+    <string>Force rebuild all components</string>
+   </property>
+   <property name="whatsThis">
+    <string>Force rebuild all components</string>
+   </property>
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
    </property>
   </action>
  </widget>
@@ -1229,6 +1266,22 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionRebuild</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>rebuild()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>588</x>
+     <y>399</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>showHelp()</slot>
@@ -1241,5 +1294,6 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
   <slot>load_stylesheet_open()</slot>
   <slot>_screenshot()</slot>
   <slot>full_refresh()</slot>
+  <slot>rebuild()</slot>
  </slots>
 </ui>

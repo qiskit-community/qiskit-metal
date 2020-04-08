@@ -49,3 +49,6 @@ Icon credits:
 
    Force refresh 
 	https://www.flaticon.com/free-icon/redo_1783378?term=redo&page=1&position=28
+	
+   Rebuild 
+	https://www.flaticon.com/free-icon/house-repair_1278495

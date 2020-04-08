@@ -1,5 +1,6 @@
 <RCC>
   <qresource>
+    <file alias="rebuild">_imgs/rebuild.png</file>
     <file alias="screenshot">_imgs/screenshot.png</file>
     <file alias="connectors">_imgs/plug.png</file>
     <file alias="unlock">_imgs/unlock.png</file>
