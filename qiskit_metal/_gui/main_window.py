@@ -31,19 +31,21 @@ from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QLabel, QMainWindow, QMessageBox, QFileDialog
 
-from .. import config, Dict
+
+
+#from ..toolbox_python._logging import setup_logger
+#from .. import config, Dict
 from ..designs.design_base import DesignBase
-from ..renderers.renderer_mpl.mpl_canvas import PlotCanvas
-from ..toolbox_python._logging import setup_logger
 from ..toolbox_metal.import_export import load_metal_design
 from ._handle_qt_messages import catch_exception_slot_pyqt
 from .component_widget_ui import Ui_ComponentWidget
 from .main_window_base import QMainWindowBaseHandler, QMainWindowExtensionBase
-from .main_window_ui import Ui_MainWindow
-from .plot_window_ui import Ui_MainWindowPlot
 from .widgets.components_model import ComponentsTableModel
-from .widgets.log_metal import LoggingHandlerForLogWidget
+from .plot_window import QMainWindowPlot
+from .main_window_ui import Ui_MainWindow
+from .elements_window import ElementsWindow
 
+#from .widgets.log_metal import LoggingHandlerForLogWidget
 
 class QMainWindowExtension(QMainWindowExtensionBase):
     """This contains all the functions tthat the gui needs
@@ -146,15 +148,18 @@ class MetalGUI(QMainWindowBaseHandler):
         """
 
         super().__init__()
-        self.design = None  # use set_design
+
+        # use set_design
+        self.design = None  # type: DesignBase
 
         # UIs
-        self.ui_plot = None
-        self.plot_win = None
+        self.plot_win = None # type: QMainWindowPlot
+        self.elements_win = None # type: ElementsWindow
 
         self._setup_component_widget()
         self._setup_plot_widget()
         self._setup_design_components_widget()
+        self._setup_elements_widget()
 
         # Show
         self.main_window.show()
@@ -170,6 +175,8 @@ class MetalGUI(QMainWindowBaseHandler):
                 The design contains all components and elements
         """
         self.design = design
+        self.plot_win.set_design(design)
+        self.elements_win.force_refresh()
 
         # Refresh
         self.refresh()
@@ -227,6 +234,14 @@ class MetalGUI(QMainWindowBaseHandler):
         # Add to the tabbed main view
         self.ui.mainViewTab.layout().addWidget(self.plot_win)
 
+    def _setup_elements_widget(self):
+        """ Create main Window Elemetns  Widget """
+        self.elements_win = ElementsWindow(self, self.main_window)
+
+        # Add to the tabbed main view
+        self.ui.tabElements.layout().addWidget(self.elements_win)
+
+
     def _setup_design_components_widget(self):
         model = ComponentsTableModel(self, logger=self.logger)
         self.ui.tableComponents.setModel(model)
@@ -254,7 +269,7 @@ class MetalGUI(QMainWindowBaseHandler):
         """
         return self.plot_win.canvas.figure
 
-    def get_canvas(self):
+    def get_canvas(self) -> 'PlotCanvas':
         """Get access to the canvas that handles the figure
         and axes, and their main functions.
 
@@ -275,58 +290,3 @@ class MetalGUI(QMainWindowBaseHandler):
 
         # Redraw plots
         self.plot_win.replot()
-
-
-    ################################################
-    # ...
-
-
-# TODO: Move to its own file
-class QMainWindowPlot(QMainWindow):
-
-    def __init__(self, gui: MetalGUI, parent_window: QMainWindowExtension):
-        # Q Main WIndow
-        super().__init__(parent_window)
-
-        # Parent GUI related
-        self.gui = gui
-        self.logger = gui.logger
-        self.statusbar_label = gui.statusbar_label
-
-        # UI
-        self.ui = Ui_MainWindowPlot()
-        self.ui.setupUi(self)
-
-        self.statusBar().hide()
-
-        # Add MPL plot widget to window
-        self.canvas = PlotCanvas(self, logger=self.logger,
-                                 statusbar_label=self.statusbar_label)
-        self.ui.centralwidget.layout().addWidget(self.canvas)
-
-    def replot(self):
-        self.logger.info("Force replot")
-        pass
-
-    def auto_scale(self):
-        # self.ui.actionAuto.triggered.connect(self.auto_scale)
-        self.logger.info("Autoscale")
-        self.canvas.auto_scale()
-
-    def pan(self):
-        QMessageBox.about(self, "Pan", "Click and drag the plot screen.")
-
-    def zoom(self):
-        QMessageBox.about(self, "Zoom", "Either use the mouse middle wheel'\
-            'to zoom in and out by scrolling, or use the right click and'\
-            'drag to select a region.")
-
-    def set_position_track(self, yesno: bool):
-        if yesno:
-            self.logger.info("Click a point in the plot window to see'\
-                'its coordinate.")
-        self.canvas.panzoom.options.report_point_position = yesno
-
-    def set_show_connectors(self,  yesno: bool):
-        self.logger.info(f"Showing connectors: {yesno}")
-        # TODO:

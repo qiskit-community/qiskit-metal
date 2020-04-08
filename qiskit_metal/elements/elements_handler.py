@@ -74,6 +74,9 @@ def is_element_table(obj):
 # Dicitonary that specifies the column names of various element tables.
 #
 
+#TODO: when i copy over the table and manipualt ehtmee
+# i seem to loose the assignments to bool etc.
+
 ELEMENT_COLUMNS = dict(
 
     ################################################

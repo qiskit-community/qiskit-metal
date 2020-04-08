@@ -6,5 +6,6 @@ echo $PWD
 pyuic5 main_window_ui.ui -o main_window_ui.py --import-from .
 pyuic5 component_widget_ui.ui -o component_widget_ui.py --import-from .
 pyuic5 plot_window_ui.ui -o plot_window_ui.py --import-from .
+pyuic5 elements_ui.ui -o elements_ui.py --import-from .
 
 pyrcc5 main_window_rc.qrc -o main_window_rc_rc.py

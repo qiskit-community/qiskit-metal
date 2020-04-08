@@ -31,33 +31,38 @@ class TableComponents(QTableView):
 
         self.menu._action = self.menu.exec_(self.mapToGlobal(event.pos()))
 
+    def get_name_from_event(self, event):
+        # get the selected row and column
+        row = self.rowAt(event.pos().y())
+        #col = self.columnAt(event.pos().x())
+
+        model = self.model()
+        index = model.index(row, 0)  # get the name
+        name = model.data(index)
+        return name, row
+
     # @catch_exception_slot_pyqt
     def do_menu_delete(self, event):
-
-        # get the selected row and column
-        row = self.rowAt(event.pos().y())
-        #col = self.columnAt(event.pos().x())
-
-        model = self.model()
-        index = model.index(row, 0)  # get the name
-        name = model.data(index)
+        """called when the user clicks the context menu delete"""
+        name, row = self.get_name_from_event(event)
 
         if row > -1:
-            ret = QMessageBox.question(self, '', f"Are you sure you want to delete component {name}",
+            ret = QMessageBox.question(self, '',
+                                       f"Are you sure you want to delete component {name}",
                                        QMessageBox.Yes | QMessageBox.No)
             if ret == QMessageBox.Yes:
-                self.logger.info(f'Deleting {name}')
-                self.design.delete_component(name)
+                self._do_delete(name)
+
+    def _do_delete(self, name: str):
+        """do delte a component by name"""
+        self.logger.info(f'Deleting {name}')
+        self.design.delete_component(name)
+        # replot
+        self.gui.plot_win.replot()
 
     def do_menu_rename(self, event):
-
-        # get the selected row and column
-        row = self.rowAt(event.pos().y())
-        #col = self.columnAt(event.pos().x())
-
-        model = self.model()
-        index = model.index(row, 0)  # get the name
-        name = model.data(index)
+        """called when the user clicks the context menu rename"""
+        name, row = self.get_name_from_event(event)
 
         if row > -1:
             text, okPressed = QInputDialog.getText(

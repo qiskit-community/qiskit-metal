@@ -1,50 +1,101 @@
-# -*- coding: utf-8 -*-
+"""Main module that handles the elements window inside the main window.
+@author: Zlatko Minev
+@date: 2020
+"""
 
-# This code is part of Qiskit.
-#
-# (C) Copyright IBM 2019.
-#
-# This code is licensed under the Apache License, Version 2.0. You may
-# obtain a copy of this license in the LICENSE.txt file in the root directory
-# of this source tree or at http://www.apache.org/licenses/LICENSE-2.0.
-#
-# Any modifications or derivative works of this code must retain this
-# copyright notice, and modified files need to carry a notice indicating
-# that they have been altered from the originals.
-
-# Zlatko Minev
-
-
-from PyQt5.QtCore import QAbstractTableModel
-from PyQt5 import Qt, QtCore,QtWidgets
+from PyQt5 import Qt, QtCore, QtWidgets
 import numpy as np
+from PyQt5.QtCore import QAbstractTableModel
+from PyQt5 import QtWidgets
+from PyQt5.QtWidgets import QApplication, QLabel, QMainWindow, QMessageBox, QFileDialog
+
+from .elements_ui import Ui_ElementsWindow
+
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    # https://stackoverflow.com/questions/39740632/python-type-hinting-without-cyclic-imports
+    from .main_window import MetalGUI, QMainWindowExtension
 
 
-class ComponentsTableModel(QAbstractTableModel):
+class ElementsWindow(QMainWindow):
+    """
+    This is just a handler (container) for the UI; it a child object of the main gui.
+
+    PyQt5 Signal / Slots Extensions:
+        The UI can call up to this class to execeute button clicks for instance
+        Extensiosn in qt designer on signals/slots are linked to this class
+    """
+
+    def __init__(self, gui: 'MetalGUI', parent_window: 'QMainWindowExtension'):
+        # Q Main WIndow
+        super().__init__(parent_window)
+
+        # Parent GUI related
+        self.gui = gui
+        self.logger = gui.logger
+        self.statusbar_label = gui.statusbar_label
+
+        # UI
+        self.ui = Ui_ElementsWindow()
+        self.ui.setupUi(self)
+
+        self.statusBar().hide()
+
+        self.model = ElementTableModel(gui, self)
+        self.ui.tableElements.setModel(self.model)
+
+    @property
+    def design(self):
+        return self.gui.design
+
+    def combo_element_type(self, new_type: str):
+        self.logger.info(f'Changed elemtn table type to: {new_type}')
+        self.model.set_type(new_type)
+
+    def force_refresh(self):
+        self.model.refresh()
+
+
+class ElementTableModel(QAbstractTableModel):
 
     """MVC class
     See https://doc.qt.io/qt-5/qabstracttablemodel.html
 
     Can be accessed with
-        t = gui.ui.tableComponents
+        t = gui.elements_win.tableElements
         model = t.model()
         index = model.index(1,0)
         model.data(index)
     """
-    __timer_interval = 500 # ms
+    __timer_interval = 500  # ms
 
-    def __init__(self, gui, logger, parent=None):
+    def __init__(self, gui, parent=None, element_type='poly'):
         super().__init__(parent=parent)
-        self.logger = logger
+        self.logger = gui.logger
         self.gui = gui
-        self.columns = ['Name', 'Class', 'Module']
         self._row_count = -1
+        self.type = element_type
 
         self._create_timer()
 
     @property
     def design(self):
         return self.gui.design
+
+    @property
+    def elements(self):
+        if self.design:
+            return self.design.elements
+
+    @property
+    def tables(self):
+        if self.design:
+            return self.design.elements.tables
+
+    @property
+    def table(self):
+        if self.design:
+            return self.design.elements.tables[self.type]
 
     def _create_timer(self):
         """
@@ -53,6 +104,10 @@ class ComponentsTableModel(QAbstractTableModel):
         self._timer = QtCore.QTimer(self)
         self._timer.start(self.__timer_interval)
         self._timer.timeout.connect(self.refresh_auto)
+
+    def set_type(self, element_type: str):
+        self.type = element_type
+        self.refresh()
 
     def refresh(self):
         """Force refresh.   Completly rebuild the model."""
@@ -83,23 +138,24 @@ class ComponentsTableModel(QAbstractTableModel):
             self._row_count = new_count
 
     def rowCount(self, parent=None):  # =QtCore.QModelIndex()):
-        if self.design:  # should we jsut enforce this
-            return int(len(self.design.components))
-        else:
+        if self.table is  None:
             return 0
+        return self.table.shape[0]
 
     def columnCount(self, parent=None):  # =QtCore.QModelIndex()):
-        return len(self.columns)
+        if self.table is  None:
+            return 0
+        return self.table.shape[1]
 
     def headerData(self, section, orientation, role=QtCore.Qt.DisplayRole):
         """ Set the headers to be displayed. """
 
-        if role != QtCore.Qt.DisplayRole:
+        if (role != QtCore.Qt.DisplayRole) or (self.table is None):
             return None
 
         if orientation == QtCore.Qt.Horizontal:
-            if section < len(self.columns):
-                return self.columns[section]
+            if section < self.columnCount():
+                return str(self.table.columns[section])
 
     def flags(self, index):
         """ Set the item flags at the given index. Seems like we're
@@ -112,7 +168,7 @@ class ComponentsTableModel(QAbstractTableModel):
             return QtCore.Qt.ItemIsEnabled
 
         return QtCore.Qt.ItemFlags(QAbstractTableModel.flags(self, index) |
-                            QtCore.Qt.ItemIsSelectable) # ItemIsEditable
+                                   QtCore.Qt.ItemIsSelectable)  # ItemIsEditable
 
     def data(self, index, role=QtCore.Qt.DisplayRole):
         """ Depending on the index and role given, return data. If not
@@ -125,20 +181,10 @@ class ComponentsTableModel(QAbstractTableModel):
         # if not 0 <= index.row() < self.rowCount():
         #    return None
 
-        if not self.design:
+        if self.table is None:
             return
 
         if role == QtCore.Qt.DisplayRole:
-
             row = index.row()
-            component_name = list(self.design.components.keys())[row]
-
-            if index.column() == 0:
-                return component_name
-
-            elif index.column() == 1:
-                return self.design.components[component_name].__class__.__name__
-
-            elif index.column() == 2:
-                return self.design.components[component_name].__class__.__module__
-
+            column = index.column()
+            return str(self.table.iloc[row, column])

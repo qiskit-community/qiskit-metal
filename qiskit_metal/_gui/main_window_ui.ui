@@ -151,7 +151,7 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
        <attribute name="title">
         <string>Elements</string>
        </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_2">
+       <layout class="QVBoxLayout" name="verticalLayout_10">
         <property name="spacing">
          <number>0</number>
         </property>
@@ -167,9 +167,6 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
         <property name="bottomMargin">
          <number>0</number>
         </property>
-        <item>
-         <widget class="QTableView" name="tableElements"/>
-        </item>
        </layout>
       </widget>
      </widget>
@@ -519,6 +516,15 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
        <property name="alternatingRowColors">
         <bool>true</bool>
        </property>
+       <property name="selectionBehavior">
+        <enum>QAbstractItemView::SelectRows</enum>
+       </property>
+       <property name="sortingEnabled">
+        <bool>true</bool>
+       </property>
+       <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+        <bool>false</bool>
+       </attribute>
       </widget>
      </item>
     </layout>
@@ -1049,7 +1055,7 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
   </action>
   <action name="action_full_refresh">
    <property name="icon">
-    <iconset resource="main_window_rc.qrc">
+    <iconset>
      <normaloff>:/force_refresh</normaloff>:/force_refresh</iconset>
    </property>
    <property name="text">
