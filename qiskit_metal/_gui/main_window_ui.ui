@@ -100,7 +100,7 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <property name="iconSize">
        <size>

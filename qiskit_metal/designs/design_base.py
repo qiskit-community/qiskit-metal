@@ -201,13 +201,16 @@ class DesignBase():
         self._elements.clear_all_tables()
         #TODO: add dependency handling here
 
-    def make_all_components(self):
+    def remake_all_components(self):
         """
         Remakes all components with their current parameters.
         """
+        # TODO: there are some performance tricks here, we could just clear all element tables
+        # and then skip the deletion of compoentns elements one by one
+        # first clear all the
+        # thne just make without the checks on existing 
         for name, obj in self.components.items():  # pylint: disable=unused-variable
-            #if is_component(obj): # assert
-            obj.make()
+            obj.do_make() # should we call this build?
 
     def rename_component(self, component_name: str, new_component_name: str):
         """Rename component.

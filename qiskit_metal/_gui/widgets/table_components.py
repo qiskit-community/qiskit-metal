@@ -6,6 +6,10 @@ from PyQt5.QtWidgets import (QMenu, QMessageBox)
 
 class TableComponents(QTableView):
 
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.clicked.connect(self.viewClicked)
+
     @property
     def design(self):
         return self.model().design
@@ -70,3 +74,11 @@ class TableComponents(QTableView):
             if okPressed and text != '':
                 self.logger.info(f'Renaming {name} to {text}')
                 self.design.rename_component(name, text)
+
+    def viewClicked(self, clickedIndex):
+        self.logger.info('Clicked')
+        row=clickedIndex.row()
+        model=clickedIndex.model()
+        self._row=row
+        self._model=model
+        self.logger.info(f'Clicked: {row} {model}')

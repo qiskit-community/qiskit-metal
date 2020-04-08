@@ -44,8 +44,8 @@ from .widgets.components_model import ComponentsTableModel
 from .plot_window import QMainWindowPlot
 from .main_window_ui import Ui_MainWindow
 from .elements_window import ElementsWindow
+from .component_widget import ComponentWidget
 
-#from .widgets.log_metal import LoggingHandlerForLogWidget
 
 class QMainWindowExtension(QMainWindowExtensionBase):
     """This contains all the functions tthat the gui needs
@@ -224,8 +224,10 @@ class MetalGUI(QMainWindowBaseHandler):
             self.ui.tabWidget.setCurrentWidget(self.ui.mainViewTab)
 
     def _setup_component_widget(self):
-        self.ui.component_tab.ui = Ui_ComponentWidget()
-        self.ui.component_tab.ui.setupUi(self.ui.component_tab)
+        #TODO: Make a model
+        self.component_window = ComponentWidget(self, self.ui.component_tab)
+        #self.ui.component_tab.ui = Ui_ComponentWidget()
+        #self.ui.component_tab.ui.setupUi(self.ui.component_tab)
 
     def _setup_plot_widget(self):
         """ Create main Window Widget Plot """

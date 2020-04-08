@@ -31,7 +31,6 @@ from PyQt5.QtWidgets import QApplication, QFileDialog, QMainWindow, QMessageBox
 from .. import Dict, config
 from ..toolbox_python._logging import setup_logger
 from ._handle_qt_messages import catch_exception_slot_pyqt
-from .component_widget_ui import Ui_ComponentWidget
 from .main_window_ui import Ui_MainWindow
 from .widgets.log_metal import LoggingHandlerForLogWidget
 
