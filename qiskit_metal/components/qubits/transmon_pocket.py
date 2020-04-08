@@ -156,7 +156,7 @@ class TransmonPocket(BaseQubit):
         Create the geometry from the parsed options.
         """
         self.make_pocket()
-        # self.make_con_lines() # doesnt exist
+        self.make_con_lines()
 
 #####MAKE SHAPELY POLYGONS########################################################################
     def make_pocket(self):
@@ -190,3 +190,86 @@ class TransmonPocket(BaseQubit):
         self.add_elements('poly', dict(pad_top=pad_top, pad_bot=pad_bot))
         self.add_elements('poly', dict(rect_pk=rect_pk), subtract=True)
         self.add_elements('poly', dict(rect_jj=rect_jj), helper=True)
+
+
+    def make_con_lines(self):
+        '''
+        Makes standard transmon in a pocket
+        '''
+        for name, options_con_lines in self.options.con_lines.items():
+            ops = deepcopy(DEFAULT_OPTIONS['TransmonPocket.con_lines'])
+            ops.update(options_con_lines)
+            options_con_lines.update(ops)
+            self.make_con_line(name, options_con_lines)
+
+    
+    def make_con_line(self, name, options_con_line):
+        '''
+        Makes individual connector
+
+        Args:
+        -------------
+        name (str) : Name of the connector
+        '''
+
+        # Transmon options
+        options = self.options  # for transmon
+        pad_gap, _, pad_width, pad_height, pocket_width, _, pos_x, pos_y,orientation = \
+            self.design.parse_options(options, 'pad_gap, inductor_width, pad_width, pad_height,\
+                pocket_width, pocket_height, pos_x, pos_y ,orientation')
+
+        # Connector options
+        pad_gap, pad_cwidth, pad_cheight, pad_cpw_shift, cpw_width, pocket_extent,\
+             pocket_rise, pad_cpw_extent, cpw_extend, cpw_gap = self.design.parse_options(\
+                 options_con_line, 'pad_gap, pad_width, pad_height, pad_cpw_shift,\
+                     cpw_width, pocket_extent, pocket_rise, pad_cpw_extent, cpw_extend, cpw_gap')
+
+        connector_pad = draw.rectangle(pad_cwidth, pad_cheight)
+        connector_pad = draw.translate(connector_pad, -pad_cwidth/2, pad_cheight/2)
+
+        #print(pocket_width, pad_width, cpw_extend, pad_cpw_shift, cpw_width, pocket_rise)
+        connector_wire_path = draw.wkt.loads(f"""LINESTRING (\
+                                            0 {pad_cpw_shift+cpw_width/2}, \
+                                            {pad_cpw_extent}                           {pad_cpw_shift+cpw_width/2}, \
+                                            {(pocket_width-pad_width)/2-pocket_extent} {pad_cpw_shift+cpw_width/2+pocket_rise}, \
+                                            {(pocket_width-pad_width)/2+cpw_extend}    {pad_cpw_shift+cpw_width/2+pocket_rise}\
+                                        )""")
+        connector_wire_CON = draw.buffer(connector_wire_path, cpw_width/2)
+
+        #if 1:   Shouldn't need anymore since cpw stored as linestring
+            # draw a cutout for the ground plane
+            #_points = list(map(list, connector_wire_path.coords[-2:]))
+            # extend the end of the connector by this much
+            #_points[-1][0] += cpw_gap
+            #subtract_grnd_connector = draw.LineString(_points)
+            #subtract_grnd_connector = draw.buffer(subtract_grnd_connector, cpw_width/2+cpw_gap)
+
+        objects = [connector_pad, connector_wire_CON, connector_wire_path]
+
+        assert options_con_line['loc_W'] in [-1, +1]
+        assert options_con_line['loc_H'] in [-1, +1]
+
+        objects = draw.scale(
+            objects, options_con_line['loc_W'], options_con_line['loc_H'], origin=(0, 0))
+        objects = draw.translate(objects, options_con_line['loc_W']*(pad_width)/2.,
+                                 options_con_line['loc_H']*(pad_height+pad_gap/2+pad_gap))
+        objects = draw.rotate(
+            objects, orientation, origin=(0, 0))
+        objects = Dict(draw.translate(objects, pos_x, pos_y))
+
+        [connector_pad, connector_wire_CON, connector_wire_path] = objects
+
+        self.add_elements('poly', dict(connector_pad=connector_pad))
+        self.add_elements('path', dict(connector_wire_path=connector_wire_path), width=cpw_width)
+        self.add_elements('path', dict(connector_wire_etch=connector_wire_path), 
+            width = cpw_width + 2*cpw_gap, subtract=True)
+
+
+        # add to objects
+        #self.components.connectors[name] = objects
+
+        # add connectors to design tracker
+        points = draw.get_poly_pts(objects.connector_wire_CON)
+        self.design.add_connector(self.name+'_'+name, points[2:2+2], flip=False) #TODO: chip
+        #connectors[self.name+'_'+name] = make_connector(\
+        # points[2:2+2], options, vec_normal=points[2]-points[1])
