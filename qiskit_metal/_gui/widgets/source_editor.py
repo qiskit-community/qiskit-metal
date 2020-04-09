@@ -132,6 +132,9 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         self.logger.info('Source file reloaded.')
 
     def save_file(self):
+        #TODO: warning: if the kernel is run as a differnt user, eg.., sudo,
+        # then the file persmissions will change but for that user and the file
+        # can read only for the base user.
         self.file.save()
         self.logger.info('Source file saved.')
 
@@ -140,8 +143,10 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
 
     def reload_module(self):
         if self.component_module_name:
-            self.design.reload_component(
-                self.component_module_name, self.component_class_name)
+            self.gui.design.reload_component(
+                component_module_name=self.component_module_name,
+                component_class_name=self.component_class_name)
+            self.logger.info('AHAH')
 
     def rebuild_components(self):
         self.save_file()

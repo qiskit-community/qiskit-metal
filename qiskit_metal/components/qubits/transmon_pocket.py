@@ -174,7 +174,7 @@ class TransmonPocket(BaseQubit):
                 'pocket_width, pocket_height, pos_x, pos_y, orientation')
 
         # make the pads as rectangles (shapely polygons)
-        pad = draw.rectangle(2*pad_width, pad_height)
+        pad = draw.rectangle(pad_width, pad_height)
         pad_top = draw.translate(pad, 0, +(pad_height+pad_gap)/2.)
         pad_bot = draw.translate(pad, 0, -(pad_height+pad_gap)/2.)
 

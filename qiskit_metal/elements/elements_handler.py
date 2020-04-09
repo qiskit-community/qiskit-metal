@@ -74,7 +74,8 @@ def is_element_table(obj):
 # Dicitonary that specifies the column names of various element tables.
 #
 
-#TODO: when i copy over the table and manipualt ehtmee
+# TODO: implement data types in construction of tables?
+# TODO: when i copy over the table and manipualt ehtmee
 # i seem to loose the assignments to bool etc.
 
 ELEMENT_COLUMNS = dict(
@@ -140,6 +141,7 @@ ELEMENT_COLUMNS = dict(
 #
 # Class to create, store, and handle element tables.
 #
+TRUE_BOOLS = [True, 'True', 'true', 'Yes', 'yes', '1', 1]
 
 
 class ElementTables():
@@ -389,7 +391,7 @@ class ElementTables():
                      subtract: bool = False,
                      helper: bool = False,
                      layer: Union[int, str] = 1,  # chip will be here
-                     chip:str = 'main',
+                     chip: str = 'main',
                      **other_options):
         """Main interface to add names
 
@@ -406,14 +408,22 @@ class ElementTables():
         """
         # TODO: Add unit test
 
+        # ensure correct types
+        if not isinstance(subtract, bool):
+            subtract = subtract in TRUE_BOOLS
+        if not isinstance(helper, bool):
+            helper = helper in TRUE_BOOLS
+
         if not (kind in self.get_element_types()):
             self.logger.error(f'Creator user error: Unkown element kind=`{kind}`'
                               f'Kind must be in {list(self.tables.keys())}. This failed for component'
                               f'name = `{component_name}`.\n'
                               f' The call was with subtract={subtract} and helper={helper}'
                               f' and layer={layer}, and options={other_options}')
+
+        # Create options
         options = dict(component=component_name, subtract=subtract,
-                       helper=helper, layer=layer, chip=chip, **other_options)
+                       helper=helper, layer=int(layer), chip=chip, **other_options)
 
         table = self.tables[kind]
 
@@ -479,7 +489,7 @@ class ElementTables():
             name {str} -- Name of component (case sensitive)
             table_name {str} -- Element kind ('poly', 'path', etc.)
         """
-        #TODO: handle  table_name=all?
+        # TODO: handle  table_name=all?
         df = self.tables[table_name]
         return df[df.component == name].geometry
 
@@ -490,6 +500,6 @@ class ElementTables():
             name {str} -- Name of component (case sensitive)
             table_name {str} -- Element kind ('poly', 'path', etc.)
         """
-        #TODO: handle  table_name=all?
+        # TODO: handle  table_name=all?
         df = self.tables[table_name]
         return df[df.component == name].geometry

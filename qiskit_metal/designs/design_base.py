@@ -223,19 +223,16 @@ class DesignBase():
             component_class_name {str} -- String name of the class name inside thst module,
                 such  as `TransmonPocket`
         """
-
+        self.logger.debug(f'Reloading component_class_name={component_class_name}; component_module_name={component_module_name}')
         module = importlib.import_module(component_module_name)
         module = importlib.reload(module)
         new_class = getattr(module, component_class_name)
 
         # components that need
-        cls_name = component_module_name + '.' + component_class_name
-        print(cls_name)
         for instance in filter(lambda k:
                 k.__class__.__name__ == component_class_name and
                 k.__class__.__module__ == component_module_name,
                                self.components.values()):
-            print(instance.name)
             instance.__class__ = new_class
 
         # Alternative, but reload will say not in sys.path

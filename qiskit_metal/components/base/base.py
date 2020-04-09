@@ -310,7 +310,7 @@ class BaseComponent():
                      subtract: bool = False,
                      helper: bool = False,
                      layer: Union[int, str] = 1,  # chip will be here
-                     chip:str='main',
+                     chip: str = 'main',
                      **kwargs
                      ):
                     #  subtract: Optional[bool] = False,
@@ -335,12 +335,12 @@ class BaseComponent():
         Keyword Arguments:
             subtract {bool} -- Subtract from the layer (default: {False})
             helper {bool} -- Is this a helper object. If true, subtract must be false
-            layer {int, str} -- TODO: The layer to which the set of elements will belong
+            layer {int, str} -- The layer to which the set of elements will belong
                         (default: {0})
             chip {str} -- Chip name (dafult: 'main')
         """
-        assert (subtract and helper) == False, "The object can't be a subtracted helper. Please"\
-            " choose it to either be a helper or a a subtracted layer, but not both. Thank you."
+        #assert (subtract and helper) == False, "The object can't be a subtracted helper. Please"\
+        #    " choose it to either be a helper or a a subtracted layer, but not both. Thank you."
 
         self.design.elements.add_elements(kind, self.name, elements, subtract=subtract,
                                           helper=helper, layer=layer, chip=chip, **kwargs)
@@ -359,7 +359,7 @@ class _Geometry_Handler:
         self.parent = component
         self.design = component.design
 
-    def get_all(self, element_type:str, full_table=False):
+    def get_all(self, element_type: str, full_table=False):
         """
         Get all shapely geometry as a dict with key being the names of the
         elements and the values as the shapely geometry.
