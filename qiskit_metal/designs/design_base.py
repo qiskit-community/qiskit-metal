@@ -214,9 +214,8 @@ class DesignBase():
             obj.do_make()  # should we call this build?
 
     def reload_component(self, component_module_name: str, component_class_name: str):
-        """
-        Reload the module and class of a given componetn and update
-        all class instances.
+        """Reload the module and class of a given componetn and update
+        all class instances. (Advanced function.)
 
         Arguments:
             component_module_name {str} -- String name of the module name, such as
@@ -228,10 +227,13 @@ class DesignBase():
         module = importlib.import_module(component_module_name)
         module = importlib.reload(module)
         new_class = getattr(module, component_class_name)
-        print('sgse')
+
         # components that need
         cls_name = component_module_name + '.' + component_class_name
-        for instance in filter(lambda k:k.__class__ == cls_name,
+        print(cls_name)
+        for instance in filter(lambda k:
+                k.__class__.__name__ == component_class_name and
+                k.__class__.__module__ == component_module_name,
                                self.components.values()):
             print(instance.name)
             instance.__class__ = new_class
