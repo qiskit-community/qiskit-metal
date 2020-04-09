@@ -111,7 +111,17 @@ class ComponentWidget(QTabWidget):
             return self.design.components.get(self.component_name, None)
 
     def set_component(self, name: str):
+        """
+        Main interface to set the component (by name)
+        Arguments:
+            name {str} -- if None, then clears
+        """
         self.component_name = name
+
+        if name is None:
+            # TODO: handle case when name is none: just clear all
+            self.force_refresh()
+            return
 
         component = self.component
         self.ui.labelComponentName.setText(str(component.name))

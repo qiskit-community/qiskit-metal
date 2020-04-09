@@ -72,14 +72,14 @@ class QMainWindowPlot(QMainWindow):
         QMessageBox.about(self, "Pan", "Click and drag the plot screen.")
 
     def zoom(self):
-        QMessageBox.about(self, "Zoom", "Either use the mouse middle wheel'\
-            'to zoom in and out by scrolling, or use the right click and'\
-            'drag to select a region.")
+        QMessageBox.about(self, "Zoom", "Either use the mouse middle wheel"\
+            " to zoom in and out by scrolling, or use the right click and"\
+            " drag to select a region.")
 
     def set_position_track(self, yesno: bool):
         if yesno:
-            self.logger.info("Click a point in the plot window to see'\
-                'its coordinate.")
+            self.logger.info("Click a point in the plot window to see"\
+                " its coordinate.")
         self.canvas.panzoom.options.report_point_position = yesno
 
     def set_show_connectors(self,  yesno: bool):

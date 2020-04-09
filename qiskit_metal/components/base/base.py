@@ -69,7 +69,7 @@ class BaseComponent():
     # Used by `is_component` to check.
     __i_am_component__ = True
 
-    def __init__(self, name: str, design: DesignBase, options: Dict = None,
+    def __init__(self, design: DesignBase, name: str,  options: Dict = None,
                  make=True):
         """Create a new Metal component and adds it to the design.
 
@@ -310,6 +310,7 @@ class BaseComponent():
                      subtract: bool = False,
                      helper: bool = False,
                      layer: Union[int, str] = 1,  # chip will be here
+                     chip:str='main',
                      **kwargs
                      ):
                     #  subtract: Optional[bool] = False,
@@ -336,12 +337,13 @@ class BaseComponent():
             helper {bool} -- Is this a helper object. If true, subtract must be false
             layer {int, str} -- TODO: The layer to which the set of elements will belong
                         (default: {0})
+            chip {str} -- Chip name (dafult: 'main')
         """
         assert (subtract and helper) == False, "The object can't be a subtracted helper. Please"\
             " choose it to either be a helper or a a subtracted layer, but not both. Thank you."
 
         self.design.elements.add_elements(kind, self.name, elements, subtract=subtract,
-                                          helper=helper, layer=layer, **kwargs)
+                                          helper=helper, layer=layer, chip=chip, **kwargs)
 
 
 ############################################################################

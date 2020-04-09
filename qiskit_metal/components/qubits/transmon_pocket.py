@@ -156,7 +156,12 @@ class TransmonPocket(BaseQubit):
         Create the geometry from the parsed options.
         """
         self.make_pocket()
-        # self.make_con_lines() # doesnt exist
+        #self.make_con_lines() # doesnt exist
+
+        #pad = draw.rectangle(1, 1)
+        #self.add_elements('poly', dict(thomas=pad), layer=2, subtract=True)
+        #self.add_connector('')
+
 
 #####MAKE SHAPELY POLYGONS########################################################################
     def make_pocket(self):
@@ -169,7 +174,7 @@ class TransmonPocket(BaseQubit):
                 'pocket_width, pocket_height, pos_x, pos_y, orientation')
 
         # make the pads as rectangles (shapely polygons)
-        pad = draw.rectangle(pad_width, pad_height)
+        pad = draw.rectangle(2*pad_width, pad_height)
         pad_top = draw.translate(pad, 0, +(pad_height+pad_gap)/2.)
         pad_bot = draw.translate(pad, 0, -(pad_height+pad_gap)/2.)
 

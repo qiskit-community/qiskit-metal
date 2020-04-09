@@ -67,7 +67,7 @@ class BaseQubit(BaseComponent):
     def __init__(self, design, name, options=None, options_con_lines=None,
                  make=True):
 
-        super().__init__(name, design, options=options, make=False)
+        super().__init__(design, name, options=options, make=False)
 
         if options_con_lines:
             self.options.con_lines.update(options_con_lines)

@@ -21,6 +21,7 @@ Module containing all Qiskit Metal designs.
 # To create a basic UML diagram
 # >> pyreverse -o png -p desin_base design_base.py -A  -S
 
+import importlib
 import numpy as np
 from typing import Union, List, Iterable, Any
 from datetime import datetime
@@ -197,11 +198,11 @@ class DesignBase():
         # clear all the dicitonaries and element tables.
         self._components.clear()
         self.delete_all_connectors()
-        #TODO: add element tables here
+        # TODO: add element tables here
         self._elements.clear_all_tables()
-        #TODO: add dependency handling here
+        # TODO: add dependency handling here
 
-    def rebuild(self): # remake_all_components
+    def rebuild(self):  # remake_all_components
         """
         Remakes all components with their current parameters.
         """
@@ -210,7 +211,37 @@ class DesignBase():
         # first clear all the
         # thne just make without the checks on existing
         for name, obj in self.components.items():  # pylint: disable=unused-variable
-            obj.do_make() # should we call this build?
+            obj.do_make()  # should we call this build?
+
+    def reload_component(self, component_module_name: str, component_class_name: str):
+        """
+        Reload the module and class of a given componetn and update
+        all class instances.
+
+        Arguments:
+            component_module_name {str} -- String name of the module name, such as
+                `qiskit_metal.components.qubits.transmon_pocket`
+            component_class_name {str} -- String name of the class name inside thst module,
+                such  as `TransmonPocket`
+        """
+
+        module = importlib.import_module(component_module_name)
+        module = importlib.reload(module)
+        new_class = getattr(module, component_class_name)
+        print('sgse')
+        # components that need
+        cls_name = component_module_name + '.' + component_class_name
+        for instance in filter(lambda k:k.__class__ == cls_name,
+                               self.components.values()):
+            print(instance.name)
+            instance.__class__ = new_class
+
+        # Alternative, but reload will say not in sys.path
+        # self = gui.component_window.src_widgets[-1].ui.src_editor
+        # spec = importlib.util.spec_from_file_location(self.component_module_name, self.component_module_path) # type: ModuleSpec
+        # module = importlib.util.module_from_spec(spec) # type: module e.g.,
+        # spec.loader.exec_module(module)
+        # importlib.reload(module)
 
     def rename_component(self, component_name: str, new_component_name: str):
         """Rename component.
@@ -231,7 +262,7 @@ class DesignBase():
                 f'Cannot rename {component_name} to {new_component_name}. Since {new_component_name} exists')
             return -1
 
-        def is_valid_component_name(s:str):
+        def is_valid_component_name(s: str):
             return s.isidentifier()
 
         # Check that the name is a valid component name
@@ -243,9 +274,10 @@ class DesignBase():
         # do rename
         component = self.components[component_name]
         component._name = new_component_name
-        self.components[new_component_name] = self.components.pop(component_name)
+        self.components[new_component_name] = self.components.pop(
+            component_name)
         self._elements.rename_component(component_name, new_component_name)
-        #TODO: handle renadming for all else: dependencies etc.
+        # TODO: handle renadming for all else: dependencies etc.
 
         return True
 

@@ -17,6 +17,7 @@ based on pyqode.python: https://github.com/pyQode/pyqode.python
 
 @author: Zlatko Minev 2020
 """
+import importlib
 import logging
 from typing import TYPE_CHECKING
 
@@ -37,7 +38,6 @@ except ImportError as e:
 if TYPE_CHECKING:
     from ..main_window import MetalGUI, QMainWindowExtension
 
-import importlib
 
 class MetalSourceEditor(widgets.PyCodeEditBase):
     """
@@ -70,8 +70,10 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
 
         self.gui = None  # type: MetalGUI
         self.component_class_name = None  # type: str - 'TransmonPocket'
-        self.component_module_name = None  # type: str - 'qiskit_metal.components.qubits.transmon_pocket'
-        self.component_module_path = None  # type: str - '/Users/zlatko.minev/qiskit_metal/qiskit_metal/components/qubits/transmon_pocket.py'
+        # type: str - 'qiskit_metal.components.qubits.transmon_pocket'
+        self.component_module_name = None
+        # type: str - '/Users/zlatko.minev/qiskit_metal/qiskit_metal/components/qubits/transmon_pocket.py'
+        self.component_module_path = None
 
         # starts the default pyqode.python server (which enable the jedi code
         # completion worker).
@@ -137,22 +139,9 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         self.file.open(filename)
 
     def reload_module(self):
-        if self.component_module_path:
-            module = importlib.import_module(self.component_module_name)
-            module = importlib.reload(module)
-            new_class = getattr(module, self.component_class_name)
-
-            # components that need
-            for instance in filter(lambda k: k.__class__.__name__==self.component_class_name,
-                        self.gui.design.components.values()):
-                instance.__class__ = new_class
-
-            ### Alternative, but reload will say not in sys.path
-            # self = gui.component_window.src_widgets[-1].ui.src_editor
-            # spec = importlib.util.spec_from_file_location(self.component_module_name, self.component_module_path) # type: ModuleSpec
-            # module = importlib.util.module_from_spec(spec) # type: module e.g.,
-            # spec.loader.exec_module(module)
-            # importlib.reload(module)
+        if self.component_module_name:
+            self.design.reload_component(
+                self.component_module_name, self.component_class_name)
 
     def rebuild_components(self):
         self.save_file()
@@ -167,7 +156,7 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         return self.parent()
 
     def set_component(self, class_name: str, module_name: str,
-            module_path : str):
+                      module_path: str):
         self.component_class_name = class_name
         self.component_module_name = module_name
         self.component_module_path = module_path

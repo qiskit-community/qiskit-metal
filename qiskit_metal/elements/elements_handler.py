@@ -90,9 +90,8 @@ ELEMENT_COLUMNS = dict(
         layer=int,  # gds type of layer
         subtract=bool,  # do we subtract from the groun place of the chip
         helper=bool,  # helper or not
+        chip=str,  # chip name
         # type=str,  # metal, helper
-        # color=str,  # '' by default, can overwrite, not used by all renderers
-        # chip=str,  # is this redundant with layer?
         __renderers__=dict(
             # ADD specific renderers here, all renderes must register here.
             # hfss = dict( ... ) # pick names as hfss_name
@@ -390,6 +389,7 @@ class ElementTables():
                      subtract: bool = False,
                      helper: bool = False,
                      layer: Union[int, str] = 1,  # chip will be here
+                     chip:str = 'main',
                      **other_options):
         """Main interface to add names
 
@@ -401,6 +401,7 @@ class ElementTables():
             subtract {bool} -- [description] (default: {False})
             helper {bool} -- [description] (default: {False})
             layer {Union[int, str]} -- [description] (default: {0})
+            chip {str} -- Chip name (dafult: 'main')
             **other_options
         """
         # TODO: Add unit test
@@ -412,7 +413,7 @@ class ElementTables():
                               f' The call was with subtract={subtract} and helper={helper}'
                               f' and layer={layer}, and options={other_options}')
         options = dict(component=component_name, subtract=subtract,
-                       helper=helper, layer=layer, **other_options)
+                       helper=helper, layer=layer, chip=chip, **other_options)
 
         table = self.tables[kind]
 

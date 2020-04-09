@@ -67,6 +67,10 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         """
         return self.handler.design
 
+    @property
+    def gui(self) -> 'MetalGUI':
+        return self.handler
+
     def _set_element_tab(self,
                          yesno):
         print(yesno)
@@ -86,7 +90,9 @@ class QMainWindowExtension(QMainWindowExtensionBase):
                                    QMessageBox.Yes | QMessageBox.No)
         if ret == QMessageBox.Yes:
             self.logger.info('Delete all components.')
-            return self.design.delete_all_components()
+            self.design.delete_all_components()
+            self.gui.component_window.set_component(None)
+            self.gui.refresh()
 
     @catch_exception_slot_pyqt()
     def save_design(self, _):
