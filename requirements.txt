@@ -8,6 +8,7 @@ pandas
 pint
 pyEPR @ https://github.com/zlatko-minev/pyEPR/zipball/master
 Pygments
+pyqode.python
 PyQt5
 scipy
 Shapely
