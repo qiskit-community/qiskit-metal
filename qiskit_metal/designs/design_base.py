@@ -201,14 +201,14 @@ class DesignBase():
         self._elements.clear_all_tables()
         #TODO: add dependency handling here
 
-    def remake_all_components(self):
+    def rebuild(self): # remake_all_components
         """
         Remakes all components with their current parameters.
         """
         # TODO: there are some performance tricks here, we could just clear all element tables
         # and then skip the deletion of compoentns elements one by one
         # first clear all the
-        # thne just make without the checks on existing 
+        # thne just make without the checks on existing
         for name, obj in self.components.items():  # pylint: disable=unused-variable
             obj.do_make() # should we call this build?
 

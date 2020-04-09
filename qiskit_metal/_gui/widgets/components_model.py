@@ -16,13 +16,17 @@
 
 
 from PyQt5.QtCore import QAbstractTableModel
-from PyQt5 import Qt, QtCore,QtWidgets
+from PyQt5 import Qt, QtCore, QtWidgets
 import numpy as np
 
 
 class ComponentsTableModel(QAbstractTableModel):
 
-    """MVC class
+    """
+    Design compoentns Table model that shows the names of the compoentns and
+    their class names etc.
+
+    MVC class
     See https://doc.qt.io/qt-5/qabstracttablemodel.html
 
     Can be accessed with
@@ -31,7 +35,7 @@ class ComponentsTableModel(QAbstractTableModel):
         index = model.index(1,0)
         model.data(index)
     """
-    __timer_interval = 500 # ms
+    __timer_interval = 500  # ms
 
     def __init__(self, gui, logger, parent=None):
         super().__init__(parent=parent)
@@ -112,9 +116,9 @@ class ComponentsTableModel(QAbstractTableModel):
             return QtCore.Qt.ItemIsEnabled
 
         return QtCore.Qt.ItemFlags(QAbstractTableModel.flags(self, index) |
-                            QtCore.Qt.ItemIsSelectable) # ItemIsEditable
+                                   QtCore.Qt.ItemIsSelectable)  # ItemIsEditable
 
-    def data(self, index, role=QtCore.Qt.DisplayRole):
+    def data(self, index:Qt.QModelIndex, role=QtCore.Qt.DisplayRole):
         """ Depending on the index and role given, return data. If not
             returning data, return None (PySide equivalent of QT's
             "invalid QVariant").
@@ -141,4 +145,3 @@ class ComponentsTableModel(QAbstractTableModel):
 
             elif index.column() == 2:
                 return self.design.components[component_name].__class__.__module__
-

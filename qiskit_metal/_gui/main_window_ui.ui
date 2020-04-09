@@ -100,7 +100,7 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <property name="iconSize">
        <size>
@@ -369,6 +369,7 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
    <addaction name="actionElements"/>
    <addaction name="separator"/>
    <addaction name="actionScreenshot"/>
+   <addaction name="actionFull_Screen"/>
   </widget>
   <widget class="QDockWidget" name="dockDesign">
    <property name="minimumSize">
@@ -1105,6 +1106,18 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
     </font>
    </property>
   </action>
+  <action name="actionFull_Screen">
+   <property name="icon">
+    <iconset resource="main_window_rc.qrc">
+     <normaloff>:/plot/autozoom</normaloff>:/plot/autozoom</iconset>
+   </property>
+   <property name="text">
+    <string>Full Screen</string>
+   </property>
+   <property name="toolTip">
+    <string>Go to full screen</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -1271,6 +1284,22 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
    <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
    <slot>rebuild()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>588</x>
+     <y>399</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionFull_Screen</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>showFullScreen()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>

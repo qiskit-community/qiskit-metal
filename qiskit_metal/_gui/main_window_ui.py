@@ -394,6 +394,11 @@ class Ui_MainWindow(object):
         font.setWeight(75)
         self.actionRebuild.setFont(font)
         self.actionRebuild.setObjectName("actionRebuild")
+        self.actionFull_Screen = QtWidgets.QAction(MainWindow)
+        icon22 = QtGui.QIcon()
+        icon22.addPixmap(QtGui.QPixmap(":/plot/autozoom"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionFull_Screen.setIcon(icon22)
+        self.actionFull_Screen.setObjectName("actionFull_Screen")
         self.menuDesign.addAction(self.actionSave)
         self.menuDesign.addAction(self.actionLoad)
         self.menuDesign.addSeparator()
@@ -434,9 +439,10 @@ class Ui_MainWindow(object):
         self.toolBarView.addAction(self.actionElements)
         self.toolBarView.addSeparator()
         self.toolBarView.addAction(self.actionScreenshot)
+        self.toolBarView.addAction(self.actionFull_Screen)
 
         self.retranslateUi(MainWindow)
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
         self.component_tab.setCurrentIndex(-1)
         self.actionElements.toggled['bool'].connect(MainWindow._set_element_tab)
         self.actionDelete_All.triggered.connect(MainWindow.delete_all_components)
@@ -448,6 +454,7 @@ class Ui_MainWindow(object):
         self.actionStyleOpen.triggered.connect(MainWindow.load_stylesheet_open)
         self.action_full_refresh.triggered.connect(MainWindow.full_refresh)
         self.actionRebuild.triggered.connect(MainWindow.rebuild)
+        self.actionFull_Screen.triggered.connect(MainWindow.showFullScreen)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -542,6 +549,8 @@ class Ui_MainWindow(object):
         self.actionRebuild.setToolTip(_translate("MainWindow", "Force rebuild all components"))
         self.actionRebuild.setStatusTip(_translate("MainWindow", "Force rebuild all components"))
         self.actionRebuild.setWhatsThis(_translate("MainWindow", "Force rebuild all components"))
+        self.actionFull_Screen.setText(_translate("MainWindow", "Full Screen"))
+        self.actionFull_Screen.setToolTip(_translate("MainWindow", "Go to full screen"))
 
 from .widgets.log_metal import LoggingWindowWidget
 from .widgets.table_components import TableComponents

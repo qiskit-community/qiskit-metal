@@ -192,6 +192,8 @@ class BaseComponent():
             self.make()
             self._made = True  # what if make throws an error part way?
 
+    rebuild = do_make
+
     def delete(self):
         """
         Delete the element and remove from the design.

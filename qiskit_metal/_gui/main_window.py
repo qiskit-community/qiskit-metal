@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2019.
+# (C) Copyright IBM 2019, 2020.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -52,7 +52,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
     to call directly from the UI
 
     To access the GUI HAndler above this, call:
-        self.handler
+        self.handler = gui
 
     Args:
         QMainWindow ([type]): [description]
@@ -118,8 +118,13 @@ class QMainWindowExtension(QMainWindowExtensionBase):
 
     @catch_exception_slot_pyqt()
     def full_refresh(self, _):
-        self.logger.info(f'Force refresh...')
+        self.logger.info(f'Force refresh of all widgets (does not rebuild components)...')
         self.handler.refresh()
+
+    @catch_exception_slot_pyqt()
+    def rebuild(self, _):
+        self.logger.info(f'Rebuilding all components in the model (and refreshing widgets)...')
+        self.handler.rebuild()
 
 
 class MetalGUI(QMainWindowBaseHandler):
@@ -245,6 +250,12 @@ class MetalGUI(QMainWindowBaseHandler):
 
 
     def _setup_design_components_widget(self):
+        """
+        Design components.
+
+        Table model that shows the summary of the components of a design in a table
+        with their names, classes, and modules
+        """
         model = ComponentsTableModel(self, logger=self.logger)
         self.ui.tableComponents.setModel(model)
 
@@ -280,15 +291,40 @@ class MetalGUI(QMainWindowBaseHandler):
         """
         return self.plot_win.canvas
 
+    def rebuild(self):
+        """Rebuild all components in the design from scratch and refresh the gui.
+        """
+        self.design.rebuild()
+        self.refresh()
+
     def refresh(self):
-        '''Refreshes everything. Overkill in general.'''
+        '''Refreshes everything. Overkill in general.
+        * Refreshes the design names in the gui
+        * Refreshes the table models
+        * Replots everything
+
+        Warning: This does *not* rebuild the components.
+        For that, call rebuild. rebuild will also
+        '''
 
         # Global level
         self.refresh_design()
 
         # Table models
         self.ui.tableComponents.model().refresh()
-        # ...
 
         # Redraw plots
+        self.refresh_plot()
+
+    def refresh_plot(self):
+        """Redraw only the plot window contents."""
         self.plot_win.replot()
+
+    def set_component(self, name:str):
+        """Set the component to be exmained by the compoennt widget.
+
+        Arguments:
+            name {str} -- name of component to exmaine.
+        """
+        self.ui.dockComponent.setWindowTitle(f'Component: {name}')
+        self.component_window.set_component(name)

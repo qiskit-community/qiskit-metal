@@ -1,10 +1,39 @@
+# -*- coding: utf-8 -*-
+
+# This code is part of Qiskit.
+#
+# (C) Copyright IBM 2019, 2020.
+#
+# This code is licensed under the Apache License, Version 2.0. You may
+# obtain a copy of this license in the LICENSE.txt file in the root directory
+# of this source tree or at http://www.apache.org/licenses/LICENSE-2.0.
+#
+# Any modifications or derivative works of this code must retain this
+# copyright notice, and modified files need to carry a notice indicating
+# that they have been altered from the originals.
+
+"""Ask Zlatko for help on this file"""
 from .._handle_qt_messages import catch_exception_slot_pyqt
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QTableView, QInputDialog, QLineEdit
 from PyQt5.QtWidgets import (QMenu, QMessageBox)
 
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from ..main_window import MetalGUI
+    from .components_model import ComponentsTableModel
+
 
 class TableComponents(QTableView):
+    """
+    Desing components.
+
+    Table model that shows the summary of the components of a design in a table
+    with their names, classes, and modules
+
+    Access:
+        gui.ui.tableComponents
+    """
 
     def __init__(self, parent):
         super().__init__(parent)
@@ -19,7 +48,7 @@ class TableComponents(QTableView):
         return self.model().logger
 
     @property
-    def gui(self):
+    def gui(self) -> 'MetalGUI':
         return self.model().gui
 
     # @catch_exception_slot_pyqt
@@ -75,10 +104,16 @@ class TableComponents(QTableView):
                 self.logger.info(f'Renaming {name} to {text}')
                 self.design.rename_component(name, text)
 
-    def viewClicked(self, clickedIndex):
-        self.logger.info('Clicked')
-        row=clickedIndex.row()
-        model=clickedIndex.model()
-        self._row=row
-        self._model=model
-        self.logger.info(f'Clicked: {row} {model}')
+    def viewClicked(self, clickedIndex : QtCore.QModelIndex):
+        """Select a compoent and set it in the compoient widget when you left click.
+        """
+        if self.gui is None or not clickedIndex.isValid():
+            return
+
+        # get the component name
+        #model = clickedIndex.model()  # type: ComponentsTableModel
+        c=clickedIndex
+        name = c.sibling(c.row(), 0).data()
+        self.logger.info(f'Selected component {name}')
+        self.gui.set_component(name)
+
