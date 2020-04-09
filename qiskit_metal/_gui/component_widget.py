@@ -78,7 +78,7 @@ class ComponentWidget(QTabWidget):
 
     def __init__(self, gui: 'MetalGUI', parent: QtWidgets.QWidget):
         # Q Main WIndow
-        super().__init__(parent) # gui.ui.component_tab
+        super().__init__(parent)
 
         # Parent GUI related
         self.gui = gui
@@ -88,8 +88,6 @@ class ComponentWidget(QTabWidget):
         # UI
         self.ui = Ui_ComponentWidget()
         self.ui.setupUi(self)
-        #self.ui.component_tab.ui = Ui_ComponentWidget()
-        # self.ui.component_tab.ui.setupUi(self.ui.component_tab)
 
         self.component_name = None  # type: str
 
@@ -101,7 +99,7 @@ class ComponentWidget(QTabWidget):
         self.src_doc = create_QTextDocument(
             self.ui.textSource)  # QtGui.QTextDocument
         self._html_css_lex = None  # type: pygments.formatters.html.HtmlFormatter
-        self.src_widget = None # type: QtWidgets.QWidget
+        self.src_widgets = []  # type: List[QtWidgets.QWidget]
 
     @property
     def design(self):
@@ -150,18 +148,27 @@ class ComponentWidget(QTabWidget):
 
         else:
             document.setPlainText(text)
+    # @catch_exception_slot_pyqt()
 
-
-    #@catch_exception_slot_pyqt()
-    def edit_source(self):
+    def edit_source(self, parent=None):
         """Calls the edit source window
         gui.component_window.edit_source()
         """
-        class_name = self.component.__class__.__name__
-        module_name = self.component.__class__.__module__
-        module_path = inspect.getfile(self.component.__class__)
-        self.src_widget = create_source_edit_widget(
-            self.gui, class_name, module_name, module_path)
+        if self.component is not None:
+            class_name = self.component.__class__.__name__
+            module_name = self.component.__class__.__module__
+            module_path = inspect.getfile(self.component.__class__)
+            self.src_widgets += [
+                create_source_edit_widget(
+                    self.gui, class_name, module_name, module_path, parent=parent)
+            ]
+            self.logger.info('Edit sources window created. '
+                             'Please find on your screen.')
+        else:
+            QtWidgets.QMessageBox.warning(self,
+                                          "Missing Selected Component",
+                                          "Please first select a component to edit, by clicking "
+                                          "one in the desing components menu.")
 
 
 class ComponentTableModel(QAbstractTableModel):

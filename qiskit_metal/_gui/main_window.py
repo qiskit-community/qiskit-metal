@@ -229,10 +229,8 @@ class MetalGUI(QMainWindowBaseHandler):
             self.ui.tabWidget.setCurrentWidget(self.ui.mainViewTab)
 
     def _setup_component_widget(self):
-        #TODO: Make a model
-        self.component_window = ComponentWidget(self, self.ui.component_tab)
-        #self.ui.component_tab.ui = Ui_ComponentWidget()
-        #self.ui.component_tab.ui.setupUi(self.ui.component_tab)
+        self.component_window = ComponentWidget(self, self.ui.dockComponent)
+        self.ui.dockComponent.setWidget(self.component_window)
 
     def _setup_plot_widget(self):
         """ Create main Window Widget Plot """

@@ -654,8 +654,8 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
    <attribute name="dockWidgetArea">
     <number>2</number>
    </attribute>
-   <widget class="QWidget" name="dockWidgetContents_3">
-    <layout class="QVBoxLayout" name="verticalLayout_7">
+   <widget class="QWidget" name="dockComponentCental">
+    <layout class="QVBoxLayout" name="verticalLayout_7" stretch="">
      <property name="spacing">
       <number>0</number>
      </property>
@@ -671,34 +671,6 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
      <property name="bottomMargin">
       <number>0</number>
      </property>
-     <item>
-      <widget class="QWidget" name="widget" native="true">
-       <layout class="QVBoxLayout" name="verticalLayout_8">
-        <property name="spacing">
-         <number>0</number>
-        </property>
-        <property name="leftMargin">
-         <number>0</number>
-        </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
-        <item>
-         <widget class="QTabWidget" name="component_tab">
-          <property name="currentIndex">
-           <number>-1</number>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
     </layout>
    </widget>
   </widget>

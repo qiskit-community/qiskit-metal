@@ -30,7 +30,8 @@ if TYPE_CHECKING:
 
 def create_source_edit_widget(gui: 'MetalGUI', class_name: str,
                               module_name: str,
-                              module_path: str) -> QtWidgets.QWidget:
+                              module_path: str,
+                              parent = None) -> QtWidgets.QWidget:
     """Creates teh spawned window that has the edit source
 
     Arguments:
@@ -42,10 +43,12 @@ def create_source_edit_widget(gui: 'MetalGUI', class_name: str,
     Returns:
         [QtWidgets.QWidget] -- [Ui_EditSource widget]
     """
+    if not parent:
+        parent = None #gui.component_window.ui.tabHelp
 
     gui.logger.info(f'Creating a source edit window for class_name={class_name}'
                     'from file={module_path}')
-    edit_widget = QtWidgets.QWidget(gui) # this way its style sheet is inherited
+    edit_widget = QtWidgets.QWidget(parent) # this way its style sheet is inherited
     edit_widget.ui = Ui_EditSource()
     edit_widget.ui.setupUi(edit_widget)
 
