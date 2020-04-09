@@ -3,7 +3,7 @@ channels:
 - conda-forge
 - defaults
 dependencies:
-- python=3.6
+- python>=3.6
 - pip
 - addict
 - descartes
@@ -14,6 +14,7 @@ dependencies:
 - pandas
 - pint
 - pygments
+- pyqode.python
 - pyqt
 - scipy
 - shapely
