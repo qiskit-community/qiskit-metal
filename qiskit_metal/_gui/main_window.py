@@ -29,8 +29,8 @@ from pathlib import Path
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QApplication, QLabel, QMainWindow, QMessageBox, QFileDialog
-
+from PyQt5.QtWidgets import (QApplication, QFileDialog, QLabel, QMainWindow,
+                             QMessageBox)
 
 
 #from ..toolbox_python._logging import setup_logger
@@ -38,13 +38,14 @@ from PyQt5.QtWidgets import QApplication, QLabel, QMainWindow, QMessageBox, QFil
 from ..designs.design_base import DesignBase
 from ..toolbox_metal.import_export import load_metal_design
 from ._handle_qt_messages import catch_exception_slot_pyqt
-from .component_widget_ui import Ui_ComponentWidget
-from .main_window_base import QMainWindowBaseHandler, QMainWindowExtensionBase
-from .widgets.components_model import ComponentsTableModel
-from .plot_window import QMainWindowPlot
-from .main_window_ui import Ui_MainWindow
-from .elements_window import ElementsWindow
 from .component_widget import ComponentWidget
+from .component_widget_ui import Ui_ComponentWidget
+from .elements_window import ElementsWindow
+from .main_window_base import QMainWindowBaseHandler, QMainWindowExtensionBase
+from .main_window_ui import Ui_MainWindow
+from .plot_window import QMainWindowPlot
+from .widgets.components_model import ComponentsTableModel
+from .widgets.log_metal import LoggingHandlerForLogWidget
 
 
 class QMainWindowExtension(QMainWindowExtensionBase):
@@ -118,19 +119,22 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         if filename:
             self.logger.info(f'Attempting to load design file {filename}')
             design = load_metal_design(filename)
-            self.logger.info(f'Successfully loaded file. Now setting design into gui.')
+            self.logger.info(
+                f'Successfully loaded file. Now setting design into gui.')
             self.handler.set_design(design)
             self.logger.info(f'Successfully set design. Loaded and done.')
 
     @catch_exception_slot_pyqt()
     def full_refresh(self, _):
-        self.logger.info(f'Force refresh of all widgets (does not rebuild components)...')
-        self.handler.refresh()
+        self.logger.info(
+            f'Force refresh of all widgets (does not rebuild components)...')
+        self.gui.refresh()
 
     @catch_exception_slot_pyqt()
     def rebuild(self, _):
-        self.logger.info(f'Rebuilding all components in the model (and refreshing widgets)...')
-        self.handler.rebuild()
+        self.logger.info(
+            f'Rebuilding all components in the model (and refreshing widgets)...')
+        self.gui.rebuild()
 
 
 class MetalGUI(QMainWindowBaseHandler):
@@ -164,8 +168,8 @@ class MetalGUI(QMainWindowBaseHandler):
         self.design = None  # type: DesignBase
 
         # UIs
-        self.plot_win = None # type: QMainWindowPlot
-        self.elements_win = None # type: ElementsWindow
+        self.plot_win = None  # type: QMainWindowPlot
+        self.elements_win = None  # type: ElementsWindow
 
         self._setup_component_widget()
         self._setup_plot_widget()
@@ -192,6 +196,18 @@ class MetalGUI(QMainWindowBaseHandler):
         # Refresh
         self.refresh()
 
+    def _setup_logger(self):
+        super()._setup_logger()
+
+        if 1: # add the metal logger to the gui
+            logger_name = 'metal'
+            self.ui.log_text.add_logger(logger_name)
+            self._log_handler_design = LoggingHandlerForLogWidget(
+                logger_name, self, self.ui.log_text)
+
+            logger = logging.getLogger(logger_name)
+            logger.addHandler(self._log_handler_design)
+
     def refresh_design(self):
         """Refresh design properties associated with the GUI.
         """
@@ -214,8 +230,10 @@ class MetalGUI(QMainWindowBaseHandler):
         # self.ui.log_text.wellcome_message()
 
         # tabify - left
-        self.main_window.tabifyDockWidget(self.ui.dockDesign, self.ui.dockNewComponent)
-        self.main_window.tabifyDockWidget(self.ui.dockNewComponent, self.ui.dockConnectors)
+        self.main_window.tabifyDockWidget(
+            self.ui.dockDesign, self.ui.dockNewComponent)
+        self.main_window.tabifyDockWidget(
+            self.ui.dockNewComponent, self.ui.dockConnectors)
         self.ui.dockDesign.raise_()
 
         # Add a second label to the status bar
@@ -252,7 +270,6 @@ class MetalGUI(QMainWindowBaseHandler):
         # Add to the tabbed main view
         self.ui.tabElements.layout().addWidget(self.elements_win)
 
-
     def _setup_design_components_widget(self):
         """
         Design components.
@@ -265,7 +282,7 @@ class MetalGUI(QMainWindowBaseHandler):
 
     ################################################
     # Ploting
-    def get_axes(self, num:int=None):
+    def get_axes(self, num: int = None):
         """Return access to the canvas axes.
         If num is specified, returns the n-th axis
 
@@ -324,7 +341,7 @@ class MetalGUI(QMainWindowBaseHandler):
         """Redraw only the plot window contents."""
         self.plot_win.replot()
 
-    def set_component(self, name:str):
+    def set_component(self, name: str):
         """Set the component to be exmained by the compoennt widget.
 
         Arguments:
@@ -332,3 +349,7 @@ class MetalGUI(QMainWindowBaseHandler):
         """
         self.ui.dockComponent.setWindowTitle(f'Component: {name}')
         self.component_window.set_component(name)
+
+    def autoscale(self):
+        """Shorcut to autoscale all views"""
+        self.plot_win.auto_scale()

@@ -476,6 +476,15 @@ class PlotCanvas(FigureCanvas):
             ax.autoscale()
         self.refresh()
 
+    def set_component(self, name:str):
+        """
+        Shortcut to set a component in the component widget to be examined.
+
+        Args:
+            name (str) -- name of the component in the design
+        """
+        self.component_window.set_component(name)
+
 
 to_poly_patch = np.vectorize(PolygonPatch)
 

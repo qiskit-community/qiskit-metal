@@ -31,7 +31,7 @@ from . import config
 
 # Setup logging
 from .toolbox_python._logging import setup_logger
-logger = setup_logger('Metal', config.log.format, config.log.datefmt,
+logger = setup_logger('metal', config.log.format, config.log.datefmt,
                       capture_warnings=True) # type: logging.Logger
 del setup_logger
 

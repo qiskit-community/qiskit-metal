@@ -20,6 +20,7 @@ See the docstring of BaseComponent
 @author: Zlatko Minev, Thomas McConekey, ... (IBM)
 @date: 2019
 """
+import logging, pprint
 from copy import deepcopy
 from typing import TYPE_CHECKING, Any, Iterable, List, Optional, TypeVar, Union
 
@@ -91,7 +92,7 @@ class BaseComponent():
         self._design = design  # pointer to parent
 
         # TODO: options:  should probably write a setter and getter?
-        self.options = self.create_default_options()
+        self.options = self.create_default_options(name=name, logger_=logger)
         if options:
             self.options.update(options)
 
@@ -151,7 +152,7 @@ class BaseComponent():
         self.design.components[self.name] = self
 
     @classmethod
-    def create_default_options(cls) -> Dict:
+    def create_default_options(cls, logger_:logging.Logger=None, name:str=None) -> Dict:
         """
         Creates default options for the Metal Componnet class required for the class
         to function; i.e., be created, made, and rendered. Provides the blank option
@@ -161,6 +162,11 @@ class BaseComponent():
         """
         # Every object should posses there -- common to all
         #options = deepcopy(DEFAULT_OPTIONS['BaseComponent'])
+
+        if cls.__name__ not in DEFAULT_OPTIONS:
+            if logger_:
+                logger_.error(f'ERROR in the creating component {name}!\n'\
+                    f'The default options for the component class {cls.__name__} are missing')
 
         # Specific object default options
         options = deepcopy(Dict(DEFAULT_OPTIONS[cls.__name__]))
@@ -349,6 +355,14 @@ class BaseComponent():
         self.design.elements.add_elements(kind, self.name, elements, subtract=subtract,
                                           helper=helper, layer=layer, chip=chip, **kwargs)
 
+    def __repr__(self, *args):
+        b = '\033[94m\033[1m'
+        e = '\033[0m'
+        return f"""Component {b}{self.name}{e}:
+ class  : {b}{self.__class__.__name__:<22s}{e}     at {hex(id(self))}
+ module : {b}{self.__class__.__module__}{e}
+ options: \n{pprint.pformat(self.options)}"""
+
 
 ############################################################################
 # Geometry handling
@@ -384,6 +398,7 @@ class _Geometry_Handler:
         element_type = 'poly'
         shapes = self.get_all(element_type)
         raise NotImplementedError()
+
 
     # translate, rotate, etc. if possible
 

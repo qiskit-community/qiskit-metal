@@ -162,11 +162,13 @@ class TransmonPocket(BaseQubit):
     def make_pocket(self):
         '''Makes standard transmon in a pocket.'''
 
-        # Extract relevant numerical values from options dictionary (parse strings)
-        pad_gap, inductor_width, pad_width, pad_height, pocket_width, pocket_height,\
-            pos_x, pos_y, orientation = self.design.parse_options(
-                self.options, 'pad_gap, inductor_width, pad_width, pad_height, '
-                'pocket_width, pocket_height, pos_x, pos_y, orientation')
+        # self.p allows us to directly access parsed values (string -> numbers) form the user option
+        p = self.p
+
+        # since we will reuse these options, parse them once and efine them as varaibles
+        pad_width = p.pad_width
+        pad_height = p.pad_height
+        pad_gap = p.pad_gap
 
         # make the pads as rectangles (shapely polygons)
         pad = draw.rectangle(pad_width, pad_height)
@@ -174,16 +176,16 @@ class TransmonPocket(BaseQubit):
         pad_bot = draw.translate(pad, 0, -(pad_height+pad_gap)/2.)
 
         # the draw.rectangle representing the josephson junction
-        rect_jj = draw.rectangle(inductor_width, pad_gap)
-        rect_pk = draw.rectangle(pocket_width, pocket_height)
+        rect_jj = draw.rectangle(p.inductor_width, pad_gap)
+        rect_pk = draw.rectangle(p.pocket_width, p.pocket_height)
 
         # Rotate and translate all elements as needed.
         # Done with utility functions in Metal 'draw_utility' for easy rotation/translation
         # NOTE: Should modify so rotate/translate accepts elements, would allow for
         # smoother implementation.
         polys = [rect_jj, pad_top, pad_bot, rect_pk]
-        polys = draw.rotate(polys, orientation, origin=(0, 0))
-        polys = draw.translate(polys, pos_x, pos_y)
+        polys = draw.rotate(polys, p.orientation, origin=(0, 0))
+        polys = draw.translate(polys, p.pos_x, p.pos_y)
         [rect_jj, pad_top, pad_bot, rect_pk] = polys
 
         # Use the geometry to create Metal elements
@@ -196,65 +198,65 @@ class TransmonPocket(BaseQubit):
         Makes standard transmon in a pocket
         '''
         for name, options_con_lines in self.options.con_lines.items():
+            # update the options for the connector with the defaults under them
             ops = deepcopy(DEFAULT_OPTIONS['TransmonPocket.con_lines'])
             ops.update(options_con_lines)
             options_con_lines.update(ops)
-            self.make_con_line(name, options_con_lines)
+            # make the connector
+            self.make_con_line(name)
 
-    def make_con_line(self, name:str, coptions:dict):
+    def make_con_line(self, name:str):
         '''
         Makes individual connector
 
         Args:
         -------------
             name (str) : Name of the connector
-            coptions (dict)  : connector options for making the connector
         '''
 
-        # Transmon options
-        options = self.options  # for transmon
-        pad_gap, _, pad_width, pad_height, pocket_width, _, pos_x, pos_y, orientation = \
-            self.design.parse_options(options, 'pad_gap, inductor_width, pad_width, pad_height,\
-                pocket_width, pocket_height, pos_x, pos_y ,orientation')
+        # self.p allows us to directly access parsed values (string -> numbers) form the user option
+        p = self.p
+        pc = self.p.con_lines[name] # parser on connector options
 
-        # Connector options
-        pad_gap, pad_cwidth, pad_cheight, pad_cpw_shift, cpw_width, pocket_extent,\
-            pocket_rise, pad_cpw_extent, cpw_extend, cpw_gap = self.design.parse_options(
-                coptions, 'pad_gap, pad_width, pad_height, pad_cpw_shift,\
-                     cpw_width, pocket_extent, pocket_rise, pad_cpw_extent, cpw_extend, cpw_gap')
+        # define commonly used variables once
+        cpw_width = pc.cpw_width
+        cpw_extend = pc.cpw_extend
+        pad_width = pc.pad_width
+        pad_height = pc.pad_height
+        pad_cpw_shift = pc.pad_cpw_shift
+        pad_cpw_extent = pc.pad_cpw_extent
+        pocket_rise = pc.pocket_rise
+        pocket_extent = pc.pocket_extent
 
-        connector_pad = draw.rectangle(pad_cwidth, pad_cheight)
-        connector_pad = draw.translate(
-            connector_pad, -pad_cwidth/2, pad_cheight/2)
-
-        #print(pocket_width, pad_width, cpw_extend, pad_cpw_shift, cpw_width, pocket_rise)
+        ### Define the geometry
+        # Connector pad
+        connector_pad = draw.rectangle(pad_width, pad_height, -pad_width/2, pad_height/2)
+        # Connector CPW wire
         connector_wire_path = draw.wkt.loads(f"""LINESTRING (\
-                                            0 {pad_cpw_shift+cpw_width/2}, \
-                                            {pad_cpw_extent}                           {pad_cpw_shift+cpw_width/2}, \
-                                            {(pocket_width-pad_width)/2-pocket_extent} {pad_cpw_shift+cpw_width/2+pocket_rise}, \
-                                            {(pocket_width-pad_width)/2+cpw_extend}    {pad_cpw_shift+cpw_width/2+pocket_rise}\
+            0 {pad_cpw_shift+cpw_width/2}, \
+            {pc.pad_cpw_extent}                           {pad_cpw_shift+cpw_width/2}, \
+            {(p.pocket_width-p.pad_width)/2-pocket_extent} {pad_cpw_shift+cpw_width/2+pocket_rise}, \
+            {(p.pocket_width-p.pad_width)/2+cpw_extend}    {pad_cpw_shift+cpw_width/2+pocket_rise}\
                                         )""")
-        connector_wire_CON = draw.buffer(connector_wire_path, cpw_width/2)
+        # for connector cludge
+        connector_wire_CON = draw.buffer(connector_wire_path, cpw_width/2.) # helper for the moment
 
-        objects = [connector_pad, connector_wire_CON, connector_wire_path]
-
-        assert float(coptions['loc_W']) in [-1., +1.]
-        assert float(coptions['loc_H']) in [-1., +1.]
-
-        objects = draw.scale(
-            objects, coptions['loc_W'], coptions['loc_H'], origin=(0, 0))
-        objects = draw.translate(objects, coptions['loc_W']*(pad_width)/2.,
-                                 coptions['loc_H']*(pad_height+pad_gap/2+pad_gap))
-        objects = draw.rotate(objects, orientation, origin=(0, 0))
-        objects = draw.translate(objects, pos_x, pos_y)
-
-        [connector_pad, connector_wire_CON, connector_wire_path] = objects
+        # Position the connector, rot and tranlate
+        loc_W, loc_H = float(pc.loc_W), float(pc.loc_H)
+        if float(loc_W) not in [-1., +1.] or float(loc_H) not in [-1., +1.]:
+            self.logger.info('Warning: Did you mean to define a transmon wubit with loc_W and'\
+                ' loc_H that are not +1 or -1?? Are you sure you want to do this?')
+        objects = [connector_pad, connector_wire_path, connector_wire_CON]
+        objects = draw.scale(objects, loc_W, loc_H, origin=(0, 0))
+        objects = draw.translate(objects, loc_W*(p.pad_width)/2.,
+                                 loc_H*(p.pad_height+p.pad_gap/2+p.pad_gap))
+        objects = draw.rotate_position(objects, p.orientation, [p.pos_x, p.pos_y])
+        [connector_pad, connector_wire_path, connector_wire_CON] = objects
 
         self.add_elements('poly', dict(connector_pad=connector_pad))
-        self.add_elements('path', dict(
-            connector_wire_path=connector_wire_path), width=cpw_width)
-        self.add_elements('path', dict(connector_wire_etch=connector_wire_path),
-                          width=cpw_width + 2*cpw_gap, subtract=True)
+        self.add_elements('path', {f'{name}_wire':connector_wire_path}, width=cpw_width)
+        self.add_elements('path', {f'{name}_wire_sub':connector_wire_path},
+                          width=cpw_width + 2*pc.cpw_gap, subtract=True)
 
         # add connectors to design tracker
         points = draw.get_poly_pts(connector_wire_CON)

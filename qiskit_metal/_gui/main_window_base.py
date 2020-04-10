@@ -111,26 +111,25 @@ class QMainWindowExtensionBase(QMainWindow):
         save to file, and then copy to clipboard.
         """
         # self.bring_to_top()
-        self.logger.info('Screnshot...')
+
         path = Path(name).resolve()
 
-        self.logger.info(f'Screenshot: {path}')
-
+        # This will grab the entire screen
         #screen = QtWidgets.QApplication.primaryScreen()
-        screennum = QtWidgets.QDesktopWidget().screenNumber(self)
-        self.logger.info(f'screennum={screennum}')
-        screen = QtWidgets.QApplication.screens()[screennum]
+        #screennum = QtWidgets.QDesktopWidget().screenNumber(self)
+        #self.logger.info(f'screennum={screennum}')
+        #screen = QtWidgets.QApplication.screens()[screennum]
+        #screenshot = screen.grabWindow(self.winId())  # QPixelMap
 
-        # TODO: On mac this seems to grab the primary screen no matter what
-        screenshot = screen.grabWindow(self.winId())  # QPixelMap
+        # just grab the main window
+        screenshot = self.grab() # type: QtGui.QPixelMap
         screenshot.save(str(path), type_)  # Save
 
         QtWidgets.QApplication.clipboard().setPixmap(screenshot)  # To clipboard
-        self.logger.info('Done')
+        self.logger.info(f'Screenshot copied to clipboard and saved to:\n {path}')
 
         if display:
             from IPython.display import Image, display
-            # print(path)
             _disp_ops = dict(width=500)
             _disp_ops.update(disp_ops or {})
             display(Image(filename=path, **_disp_ops))
@@ -320,14 +319,15 @@ class QMainWindowBaseHandler():
         if hasattr(self.ui, 'log_text'):
 
             self.ui.log_text.img_path = self.path_imgs
-            #self.ui.log_text.img_path = Path(self.path_imgs)
 
-            self.ui.log_text.add_logger(self._myappid)
-            self._log_handler = LoggingHandlerForLogWidget(
-                self._myappid, self, self.ui.log_text)
-            self.logger.addHandler(self._log_handler)
+            if 1:
+                log_name = 'gui' # self._myappid
+                self.ui.log_text.add_logger(log_name)
+                self._log_handler = LoggingHandlerForLogWidget(
+                    log_name, self, self.ui.log_text)
+                self.logger.addHandler(self._log_handler)
 
-            self.ui.log_text.wellcome_message()
+                self.ui.log_text.wellcome_message()
 
         else:
             self.logger.warning('UI does not have `log_text`')
@@ -418,7 +418,7 @@ class QMainWindowBaseHandler():
 
             return True
 
-    def get_screenshot(self, name='shot.png', type_='png', display=True, disp_ops=None):
+    def screenshot(self, name='shot.png', type_='png', display=True, disp_ops=None):
         """
         Grad a screenshot of the main window,
         save to file, and then copy to clipboard.

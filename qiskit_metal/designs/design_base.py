@@ -32,6 +32,7 @@ from ..config import DEFAULT, DEFAULT_OPTIONS
 from ..toolbox_metal.import_export import load_metal_design, save_metal
 from ..toolbox_metal.parsing import parse_options, parse_value
 from ..elements import ElementTables
+from ..toolbox_python.utility_functions import log_error_easy
 
 __all__ = ['DesignBase']
 
@@ -213,7 +214,11 @@ class DesignBase():
         #TODO: Handle error and print nice statemetns
         # try catch log_simple_error
         for name, obj in self.components.items():  # pylint: disable=unused-variable
-            obj.do_make()  # should we call this build?
+            try: # TODO: performace?
+                obj.do_make()  # should we call this build?
+            except:
+                print('ERORROR HEREE')
+                log_error_easy(self.logger, post_text=f'\nERROR in rebuilding component "{name}"!\n')
 
     def reload_component(self, component_module_name: str, component_class_name: str):
         """Reload the module and class of a given componetn and update
