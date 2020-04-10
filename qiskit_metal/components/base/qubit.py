@@ -31,7 +31,7 @@ from .base import BaseComponent
 DEFAULT_OPTIONS['qubit'] = Dict(
     pos_x='0um',
     pos_y='0um',
-    con_line=Dict() # should we maybe make it connectors not con since jargony?
+    con_lines=Dict() # should we maybe make it connectors not con since jargony?
 )
 
 DEFAULT_OPTIONS['qubit.con_lines'] = Dict()

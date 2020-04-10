@@ -235,6 +235,14 @@ def style_axis_simple(ax, labels=None):
         fontP.set_size('small')
         ax.legend(loc='center left', bbox_to_anchor=(1, 0.5), prop=fontP)
 
+from cycler import cycler
+rcParams = plt.matplotlib.rcParams
+def get_prop_cycle():
+    prop_cycler = rcParams['axes.prop_cycle']
+    if prop_cycler is None and 'axes.color_cycle' in rcParams:
+        clist = rcParams['axes.color_cycle']
+        prop_cycler = cycler('color', clist)
+    return prop_cycler
 
 #################################################################################
 # Top level plotting calls - PLOT FULL

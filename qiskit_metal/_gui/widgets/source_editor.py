@@ -61,6 +61,8 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
     Access with
         self = gui.component_window.src_widgets[-1].ui.src_editor
     """
+    # TODO: remember previous state, save to config like gui and recall when created
+    # save font size too
 
     def __init__(self, parent, **kwargs):
         # Foe help, see

@@ -21,19 +21,20 @@ See the docstring of BaseComponent
 @date: 2019
 """
 from copy import deepcopy
-from typing import Any, Iterable, List, Optional, TypeVar, Union
+from typing import TYPE_CHECKING, Any, Iterable, List, Optional, TypeVar, Union
 
 from ... import DEFAULT_OPTIONS, is_design, logger
 from ...draw import BaseGeometry
 from ...toolbox_python.attr_dict import Dict
-
-#from ...elements import ElementTypes
+from ._parsed_dynamic_attrs import ParsedDynamicAttributes_Component
 
 __all__ = ['BaseComponent']
 
-# I can't import DesignBase here, because I have ti first create the
-# component class, so this is a cludge
-DesignBase = TypeVar('DesignBase')
+if TYPE_CHECKING:
+    # I can't import DesignBase here, because I have ti first create the
+    # component class, so this is a cludge
+    from ...designs import DesignBase
+    from ...elements import ElementTypes
 
 
 class BaseComponent():
@@ -69,7 +70,7 @@ class BaseComponent():
     # Used by `is_component` to check.
     __i_am_component__ = True
 
-    def __init__(self, design: DesignBase, name: str,  options: Dict = None,
+    def __init__(self, design: 'DesignBase', name: str,  options: Dict = None,
                  make=True):
         """Create a new Metal component and adds it to the design.
 
@@ -111,6 +112,9 @@ class BaseComponent():
         # Logger
         self.logger = logger
 
+        # Parser for options
+        self.p = ParsedDynamicAttributes_Component(self)
+
         # Add the component to the parent design
         self._add_to_design()
 
@@ -131,7 +135,7 @@ class BaseComponent():
         return self.design.rename_component(self.name, new_name)
 
     @property
-    def design(self) -> DesignBase:
+    def design(self) -> 'DesignBase':
         '''Return a reference to the parent design object'''
         return self._design
 

@@ -143,6 +143,43 @@ def print_traceback_easy(start=26):
     print('\n'.join(map(repr, traceback.extract_stack()[start:])))
     print('\n')
 
+import logging, sys
+def log_error_easy(logger:logging.Logger, pre_text='', post_text=''):
+    """
+    Print
+
+    Arguments:
+        logger {logging.Logger} -- [description]
+    Test use:
+
+    .. code-block : python
+
+        import traceback
+        from qiskit_metal import logger
+        from qiskit_metal.toolbox_python.utility_functions import log_error_easy
+
+        def xx():
+            exc_info = sys.exc_info()
+            try:
+                raise TypeError("Oups!")
+            except Exception as err:
+                try:
+                    raise TypeError("Again !?!")
+                except:
+                    pass
+
+                #exc_type, exc_value, exc_tb = sys.exc_info()
+                #error = traceback.format_exception(exc_type, exc_value, exc_tb)
+                #logger.error('\n\n'+'\n'.join(error)+'\n')
+                log_error_easy(metal.logger)
+        xx()
+    """
+    exc_type, exc_value, exc_tb = sys.exc_info()
+    error = traceback.format_exception(exc_type, exc_value, exc_tb)
+    logger.error(f'{pre_text}\n\n'+'\n'.join(error)+f'\n{post_text}')
+
+#####################################################################################
+
 
 def monkey_patch(self, func):
     '''

@@ -21,21 +21,24 @@ See the docstring of BaseElement
 @date: 2019
 """
 import functools
-import logging
-#from copy import deepcopy
-from typing import Union
-
 import inspect
+import logging
+from typing import TYPE_CHECKING, Union
+
 import pandas as pd
-from ..draw import BaseGeometry
-# from collections import OrderedDict # dict are oreder in Python 3.6+ by default, this is jsut in case for backward compatability
 
 from .. import Dict
 from ..config import DEFAULT
-#from ..components.base import BaseComponent
+from ..draw import BaseGeometry
 from ..toolbox_python.utility_functions import data_frame_empty_typed
 
+if TYPE_CHECKING:
+    from ..components.base import BaseComponent
+
 __all__ = ['is_element_table', 'ElementTables']  # , 'ElementTypes']
+
+# from collections import OrderedDict
+# dict are oreder in Python 3.6+ by default, this is jsut in case for backward compatability
 
 # class ElementTypes:
 #     """
@@ -222,7 +225,7 @@ class ElementTables():
     """
 
     # Dummy private attribute used to check if an instanciated object is
-    # indeed a BaseComponent class. The problem is that the `isinstance`
+    # indeed a elemnt table class. The problem is that the `isinstance`
     # built-in method fails when this module is reloaded.
     # Used by `is_element` to check.
     __i_am_element_table__ = True
@@ -234,7 +237,7 @@ class ElementTables():
     # For creating names of columns of renderer properties
     name_delimiter = '_'
 
-    def __init__(self, design, logger: logging.Logger = None):
+    def __init__(self, design:'BaseComponent', logger: logging.Logger = None):
         """
         The constructor for the `BaseElement` class.
 

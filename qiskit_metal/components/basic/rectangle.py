@@ -23,8 +23,7 @@ class Rectangle(BaseComponent):
     """A single configurable square."""
 
     def make(self):
-        # parse the options dictionary to floats
-        p = self.parse_value(self.options)
+        p = self.p  # p for parsed parameters. Access to the parsed options.
 
         # create the geometry
         rect = draw.rectangle(p.width, p.height, p.pos_x, p.pos_y)

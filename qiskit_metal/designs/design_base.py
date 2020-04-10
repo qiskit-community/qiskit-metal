@@ -210,6 +210,8 @@ class DesignBase():
         # and then skip the deletion of compoentns elements one by one
         # first clear all the
         # thne just make without the checks on existing
+        #TODO: Handle error and print nice statemetns
+        # try catch log_simple_error
         for name, obj in self.components.items():  # pylint: disable=unused-variable
             obj.do_make()  # should we call this build?
 
