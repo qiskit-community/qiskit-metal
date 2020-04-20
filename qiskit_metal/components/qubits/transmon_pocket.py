@@ -253,7 +253,7 @@ class TransmonPocket(BaseQubit):
         objects = draw.rotate_position(objects, p.orientation, [p.pos_x, p.pos_y])
         [connector_pad, connector_wire_path, connector_wire_CON] = objects
 
-        self.add_elements('poly', dict(connector_pad=connector_pad))
+        self.add_elements('poly', {f'{name}_connector_pad':connector_pad})
         self.add_elements('path', {f'{name}_wire':connector_wire_path}, width=cpw_width)
         self.add_elements('path', {f'{name}_wire_sub':connector_wire_path},
                           width=cpw_width + 2*pc.cpw_gap, subtract=True)
