@@ -119,6 +119,7 @@ ELEMENT_COLUMNS = dict(
         width=float,
         fillet=object,  # TODO: not decided yet how to represent this
         __renderers__=dict(
+
         )
     ),
 
