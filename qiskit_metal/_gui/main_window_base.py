@@ -21,6 +21,7 @@ GUI front-end interface for Qiskit Metal in PyQt5.
 
 import logging
 import os
+import sys
 from pathlib import Path
 
 from PyQt5 import QtCore, QtWidgets
@@ -428,27 +429,31 @@ class QMainWindowBaseHandler():
 
 def kick_start_qApp():
 
-    qApp = QApplication.instance()
+    qApp = QtCore.QCoreApplication.instance()
 
     if qApp is None:
-        logging.error("QApplication.instance is None.")
+        qApp = QApplication(sys.argv)
 
-        if config._ipython:
-            # Pithyon has magic for loop
-            logging.error("QApplication.instance: Attempt magic IPython %%gui qt5")
-            try:
-                from IPython import get_ipython
-                ipython = get_ipython()
-                ipython.magic('gui qt5')
+        if qApp is None:
+            logging.error("QApplication.instance is None.")
 
-            except Exception as e:
-                logging.error(f"FAILED: {e}")
-                print(e)
+            if config._ipython:
+                # iPython has magic for loop
+                logging.error("QApplication.instance: Attempt magic IPython %%gui qt5")
+                try:
+                    from IPython import get_ipython
+                    ipython = get_ipython()
+                    ipython.magic('gui qt5')
 
-        else:
-            # We are not running form IPython, manually boot
-            logging.error("QApplication.instance: Attempt to manually create qt5 QApplication")
-            qApp = QtWidgets.QApplication(["qiskit-metal"])
-            qApp.lastWindowClosed.connect(qApp.quit)
+                except Exception as e:
+                    print("exception")
+                    logging.error(f"FAILED: {e}")
+                    print(e)
+
+            else:
+                # We are not running form IPython, manually boot
+                logging.error("QApplication.instance: Attempt to manually create qt5 QApplication")
+                qApp = QtWidgets.QApplication(["qiskit-metal"])
+                qApp.lastWindowClosed.connect(qApp.quit)
 
     return qApp
