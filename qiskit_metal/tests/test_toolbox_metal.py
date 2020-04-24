@@ -17,7 +17,7 @@
 """
 Qiskit Metal unit tests analyses functionality.
 
-Created on  Wed Apr 22 09:59:02 2020
+Created on Wed Apr 22 09:59:02 2020
 @author: Jeremy D. Drysdale
 """
 
@@ -48,26 +48,7 @@ class TestToolboxMetal(unittest.TestCase):
         """
         pass
 
-    def test_toolbox_metal_test_a(self):
-        """
-        Test the functionality of A (replace this with a real test)
-
-        Args: None
-
-        Returns: None
-        """
-        self.assertEqual(1, 1)
-
-    def test_toolbox_metal_test_b(self):
-        """
-        Test the functionality of B (replace this with a real test)
-
-        Args: None
-
-        Returns: None
-        """
-        self.assertEqual(2, 2)
-
+    # There is no toolbox_metal code that can be unit tested as of 4/24/20
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

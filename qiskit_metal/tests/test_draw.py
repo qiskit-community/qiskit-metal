@@ -48,26 +48,7 @@ class TestDraw(unittest.TestCase):
         """
         pass
 
-    def test_draw_test_a(self):
-        """
-        Test the functionality of A (replace this with a real test)
-
-        Args: None
-
-        Returns: None
-        """
-        self.assertEqual(1, 1)
-
-    def test_draw_test_b(self):
-        """
-        Test the functionality of B (replace this with a real test)
-
-        Args: None
-
-        Returns: None
-        """
-        self.assertEqual(2, 2)
-
+    # There is no draw code that can be unit tested as of 4/24/20
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

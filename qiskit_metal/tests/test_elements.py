@@ -48,26 +48,49 @@ class TestElements(unittest.TestCase):
         """
         pass
 
-    def test_elements_test_a(self):
+    def test_element_handler_create_tables(self):
         """
-        Test the functionality of A (replace this with a real test)
+        Test the functionality of create_tables in elements_handler.py
 
         Args: None
 
         Returns: None
         """
-        self.assertEqual(1, 1)
+        # Test general functionality
+        self.assertEqual("TEST NOT IMPLEMENTED", 1)
 
-    def test_elements_test_b(self):
+    def test_element_handler_add_elements(self):
         """
-        Test the functionality of B (replace this with a real test)
+        Test the functionality of add_elements in elements_handler.py
 
         Args: None
 
         Returns: None
         """
-        self.assertEqual(2, 2)
+        # Test general functionality
+        self.assertEqual("TEST NOT IMPLEMENTED", 1)
 
+    def test_element_handler_clear_all_tables(self):
+        """
+        Test the functionality of clear_all_tables in elements_handler.py
+
+        Args: None
+
+        Returns: None
+        """
+        # Test general functionality
+        self.assertEqual("TEST NOT IMPLEMENTED", 1)
+
+    def test_element_handler_delete_component(self):
+        """
+        Test the functionality of delete_component in elements_handler.py
+
+        Args: None
+
+        Returns: None
+        """
+        # Test general functionality
+        self.assertEqual("TEST NOT IMPLEMENTED", 1)
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
