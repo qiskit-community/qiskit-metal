@@ -124,19 +124,16 @@ def catch_exception_slot_pyqt(*args, catch=Exception, on_exception_emit=None):
         def wrapper(*args, **kwargs):  # pylint: disable=unused-argument
 
             try:
-                #do_debug(f'func={func} args = {args}')
-                #print(f'func={func} args = {args}')
                 func(*args)
 
             except catch as e:  # pylint: disable=invalid-name,broad-except
-                #import pickle
-                #pickle.dump(e, open("C:\\zkm-code\\qiskit_metal\\deleteme.p", "wb" ))
 
-                message = '\nERROR in call made by GUI function.\n'\
-                    + f"\n{' module:':12s} {wrapper.__module__}" \
-                    + f"\n{' function:':12s} {wrapper.__qualname__}" \
-                    + f"\n{' err msg:':12s} {e.__repr__()}"\
-                    + f"\n{' args|kws:':12s} {args} | {kwargs}" \
+                message = traceback.format_exc()
+                message += '\n\nERRO in gui call (see above)\n'\
+                    + f"\n{' module   :':12s} {wrapper.__module__}" \
+                    + f"\n{' function :':12s} {wrapper.__qualname__}" \
+                    + f"\n{' err msg  :':12s} {e.__repr__()}"\
+                    + f"\n{' args; kws:':12s} {args}; {kwargs}" \
 
                 do_debug(message, name='error')
 
