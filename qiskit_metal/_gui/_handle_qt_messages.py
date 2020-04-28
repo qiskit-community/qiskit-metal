@@ -21,6 +21,7 @@ This is a utility module used to handle pyqt error messages on slots and etc.
 import types
 import inspect
 import logging
+import traceback
 from functools import wraps
 from PyQt5.QtCore import pyqtSlot
 
