@@ -21,29 +21,30 @@ Draw utility functions
 
 from collections.abc import Iterable
 
-import numpy as np
-from numpy import array
-from numpy.linalg import norm
-
 import matplotlib as mpl
+import matplotlib.cbook as cbook
+import matplotlib.image as image
 import matplotlib.pyplot as plt
-
+import numpy as np
 import shapely
 import shapely.wkt
-from shapely.geometry import CAP_STYLE, JOIN_STYLE
-from shapely.geometry import Point, LinearRing, Polygon as Polygon_shapely, MultiPolygon
+from numpy import array
+from numpy.linalg import norm
 from shapely.affinity import rotate, scale, translate
+from shapely.geometry import (CAP_STYLE, JOIN_STYLE, LinearRing, MultiPolygon,
+                              Point)
+from shapely.geometry import Polygon as Polygon_shapely
 
 from pyEPR.hfss import parse_units
 from pyEPR.toolbox import combinekw
 
-from . import draw_functions
-from . import logger
+from . import draw_functions, logger
 from .toolbox.mpl_interaction import figure_pz
 from .toolbox.parsing import TRUE_STR
 
 #########################################################################
 # Geomtry classes
+
 
 def get_poly_pts(poly):
     '''Return the coordinates with the last repeating point removed'''
@@ -51,6 +52,8 @@ def get_poly_pts(poly):
     return coords[:-1]
 
 # TODO: remove / supress this - superseed. Only used fro drawing, just turn to func
+
+
 class Polygon(Polygon_shapely):
 
     """def __init__(self, *args, rectangle=False, **kwargs):
@@ -220,7 +223,8 @@ def draw_all_objects(objects, ax, func=lambda x: x, root_name='objects'):
 def get_all_objects(objects, func=lambda x: x, root_name='objects'):
     from .objects.base_objects.Metal_Utility import is_metal_object
 
-    def new_name(name): return root_name + '.' + name if not (root_name == '') else name
+    def new_name(name): return root_name + '.' + \
+        name if not (root_name == '') else name
 
     if is_metal_object(objects):
         return {objects.name: get_all_objects(objects.objects,
@@ -233,7 +237,8 @@ def get_all_objects(objects, func=lambda x: x, root_name='objects'):
         RES = {}
         for name, obj in objects.items():
             if is_metal_object(obj):
-                RES[name] = get_all_objects(obj.objects, root_name=new_name(name))
+                RES[name] = get_all_objects(
+                    obj.objects, root_name=new_name(name))
             elif isinstance(obj, dict):
                 # if name.startswith('objects'): # old school to remove eventually TODO
                 #    RES[name] = func(obj) # allow transofmraiton of objects
@@ -244,7 +249,8 @@ def get_all_objects(objects, func=lambda x: x, root_name='objects'):
         return RES
 
     else:
-        logger.debug(f'warning: {root_name} was not an object or dict or the right handle')
+        logger.debug(
+            f'warning: {root_name} was not an object or dict or the right handle')
         return None
 
 
@@ -283,8 +289,19 @@ def get_all_object_bounds(objects):
     (x_min, y_min, x_max, y_max) = MultiPolygon(objs).bounds
     return (x_min, y_min, x_max, y_max)
 
+def _axis_set_watermark_img(ax:plt.Axes, file:str, size : float = 0.25):
+    ### Load image
+    datafile = cbook.get_sample_data(str(file), asfileobj=False)
+    img = image.imread(datafile)
+    #im[:, :, -1] = 0.5  # set the alpha channel
 
-def plot_simple_gui_style(ax):
+    # ALternative: fig.figimage
+    # scale image: yscale = float(img.shape[1])/img.shape[0]
+    # extent: (left, right, bottom, top)
+    kw = dict(interpolation='gaussian', alpha=0.05, resample=True, zorder = -200)
+    ax.imshow(img, extent=(1-size,1, 1-size,1), transform=ax.transAxes, **kw)
+
+def plot_simple_gui_style(ax: plt.Axes, gui: 'Metal_gui' = None):
     #fig = ax.figure
 
     # Core lines
@@ -295,7 +312,7 @@ def plot_simple_gui_style(ax):
     # Grid
     kw = dict(
         color='#CCCCCC',
-        #zorder = -100,
+        zorder=-80,
         #alpha = 0.8,
         # fillstyle='left'
         # markevery=(1,1),
@@ -309,6 +326,20 @@ def plot_simple_gui_style(ax):
     ax.grid(which='minor', linestyle=':', **kw)
     ax.set_axisbelow(True)
 
+    if 1: # Annotate axis
+        kw = dict(fontsize=15, color='gray', ha='right',
+                va='bottom', alpha=0.18, zorder=-100)
+        ax.annotate('Qiskit Metal', xy=(0.98, 0.02),
+                    xycoords='axes fraction', **kw)
+
+        if gui:
+            file = (gui.imgs_path / 'metal_logo.png')
+            if file.is_file():
+                #print(f'Found {file} for watermark.')
+                _axis_set_watermark_img(ax, file)
+            else:
+                logger.error(f'Error could not load {file} for watermark.')
+
     # Reset color cycle
     # ax.set_prop_cycle(None)
     ax.set_prop_cycle(color=['#91aecf', '#a3bbd6', '#6e94be', '#a3bbd6'])
@@ -317,7 +348,7 @@ def plot_simple_gui_style(ax):
     # fig.canvas.flush_events()
 
 
-def plot_simple_gui_spawn(fig_kw={}):
+def plot_simple_gui_spawn(fig_kw={}, gui:'Metal_gui'=None):
     '''
     Run with
     ..code-block python
@@ -343,13 +374,13 @@ def plot_simple_gui_spawn(fig_kw={}):
     ax_draw.clear_me = clear_me
 
     def restyle(display=True):
-        plot_simple_gui_style(ax_draw)
+        plot_simple_gui_style(ax_draw,gui=gui)
         from IPython.display import display
         display(fig_draw)
 
     ax_draw.restyle_me = restyle
 
-    plot_simple_gui_style(ax_draw)
+    plot_simple_gui_style(ax_draw,gui=gui)
 
     fig_draw.tight_layout()
 
@@ -459,13 +490,15 @@ def _func_obj_dict(func, objects, *args, _override=True, **kwargs):
     '''
     if isinstance(objects, list):
         for i, obj in enumerate(objects):
-            value = _func_obj_dict(func, obj, *args, _override=_override, **kwargs)
+            value = _func_obj_dict(
+                func, obj, *args, _override=_override, **kwargs)
             if _override:
                 objects[i] = value
 
     elif isinstance(objects, dict):
         for name, obj in objects.items():
-            value = _func_obj_dict(func, obj, *args, _override=_override, **kwargs)
+            value = _func_obj_dict(
+                func, obj, *args, _override=_override, **kwargs)
             if _override:
                 objects[name] = value
     else:
@@ -664,7 +697,8 @@ def array_chop(vec, zero=0, rtol=0, machine_tol=100):
     Zlatko chop array entires clsoe to zero
     '''
     vec = np.array(vec)
-    mask = np.isclose(vec, zero, rtol=rtol, atol=machine_tol*np.finfo(float).eps)
+    mask = np.isclose(vec, zero, rtol=rtol,
+                      atol=machine_tol*np.finfo(float).eps)
     vec[mask] = 0
     return vec
 
@@ -716,6 +750,7 @@ def is_rectangle(obj):
             v1 = p[(i+1) % 4]-p[(i+0) % 4]
             v2 = p[(i+2) % 4]-p[(i+1) % 4]
             return abs(np.dot(v1, v2)) < 1E-16
-        return all(map(isOrthogonal, range(4)))  # CHeck if all vectors are consequtivly orthogonal
+        # CHeck if all vectors are consequtivly orthogonal
+        return all(map(isOrthogonal, range(4)))
     else:
         return False

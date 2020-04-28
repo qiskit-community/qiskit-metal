@@ -713,7 +713,7 @@ class Metal_gui(QMainWindow):
             self.logger.error('\n\n'+traceback.format_exc())
             # Alternative:     exc_info = sys.exc_info()  traceback.print_exception(*exc_info)
 
-        plot_simple_gui_style(self.ax_draw)
+        plot_simple_gui_style(self.ax_draw, gui=self)
 
         self.fig_draw.canvas.show()
         self.fig_draw.canvas.draw()
