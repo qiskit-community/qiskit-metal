@@ -27,9 +27,15 @@ __copyright__= 'Copyright IBM 2019-2020'
 __author__ = 'Zlatko Minev, Thomas McConkey, and them IBM Quantum Team'
 __status__ = "Development"
 
-from . import config
+# @mfacchin - Setup matplotlib to use Qt5's visualization
+# NOTE: this needs to remain in the __init__ of the library's root to prevent windows from hanging
+import matplotlib as mpl
+mpl.use("Qt5Agg")
+import matplotlib.pyplot as plt
+plt.ion()
 
 # Setup logging
+from . import config
 from .toolbox_python._logging import setup_logger
 logger = setup_logger('metal', config.log.format, config.log.datefmt,
                       capture_warnings=True) # type: logging.Logger
