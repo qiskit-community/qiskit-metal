@@ -28,7 +28,7 @@ __author__ = 'Zlatko Minev, Thomas McConkey, and them IBM Quantum Team'
 __status__ = "Development"
 
 # @mfacchin - Setup matplotlib to use Qt5's visualization
-# NOTE: this needs to remain in the __init__ of the library's root to prevent windows from hanging
+# NOTE: this needs to remain in the __init__ of the library's root to prevent Qt windows from hanging
 import matplotlib as mpl
 mpl.use("Qt5Agg")
 import matplotlib.pyplot as plt
