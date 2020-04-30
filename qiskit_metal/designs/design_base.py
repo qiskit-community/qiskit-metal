@@ -28,7 +28,7 @@ from datetime import datetime
 
 from .. import Dict, draw, logger
 from ..components import is_component
-from ..config import DEFAULT, DEFAULT_OPTIONS
+from ..config import DEFAULT, DEFAULT_OPTIONS, DefaultOptionsGeneric
 from ..toolbox_metal.import_export import load_metal_design, save_metal
 from ..toolbox_metal.parsing import parse_options, parse_value
 from ..elements import ElementTables
@@ -95,6 +95,8 @@ class DesignBase():
 
         self._elements = ElementTables(self)
 
+        self._default_generic = DefaultOptionsGeneric()
+
     def _init_metadata(self) -> Dict:
         """Initialize default metadata dicitoanry
 
@@ -149,6 +151,14 @@ class DesignBase():
         Think of these as global defaults.
         '''
         return self._defaults
+
+    @property
+    def default_generic(self) -> Dict:
+        '''
+        Return default_option dictionary, which contain default options used in creating Metal
+        component, and in calling other drawing and key functions.
+        '''
+        return self._default_generic.default_option
 
     @property
     def default_options(self) -> Dict:
@@ -211,14 +221,15 @@ class DesignBase():
         # and then skip the deletion of compoentns elements one by one
         # first clear all the
         # thne just make without the checks on existing
-        #TODO: Handle error and print nice statemetns
+        # TODO: Handle error and print nice statemetns
         # try catch log_simple_error
         for name, obj in self.components.items():  # pylint: disable=unused-variable
-            try: # TODO: performace?
+            try:  # TODO: performace?
                 obj.do_make()  # should we call this build?
             except:
                 print('ERORROR HEREE')
-                log_error_easy(self.logger, post_text=f'\nERROR in rebuilding component "{name}"!\n')
+                log_error_easy(
+                    self.logger, post_text=f'\nERROR in rebuilding component "{name}"!\n')
 
     def reload_component(self, component_module_name: str, component_class_name: str):
         """Reload the module and class of a given componetn and update
@@ -230,7 +241,8 @@ class DesignBase():
             component_class_name {str} -- String name of the class name inside thst module,
                 such  as `TransmonPocket`
         """
-        self.logger.debug(f'Reloading component_class_name={component_class_name}; component_module_name={component_module_name}')
+        self.logger.debug(
+            f'Reloading component_class_name={component_class_name}; component_module_name={component_module_name}')
         module = importlib.import_module(component_module_name)
         module = importlib.reload(module)
         new_class = getattr(module, component_class_name)

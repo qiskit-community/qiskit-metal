@@ -13,15 +13,20 @@
 # that they have been altered from the originals.
 
 """
-File contains basic dicitonaries.
+File contains basic dicitonaries. File contains a class to contain the basic dictionaries.
 
 Created 2019
 
 @author: Zlatko K. Minev
 """
 
-from .toolbox_python.attr_dict import Dict
+from copy import deepcopy
 
+# logger is not set up for the current order of operations in qiskit_metal.__init__().
+#from . import logger
+#from .toolbox_python.utility_functions import log_error_easy
+
+from .toolbox_python.attr_dict import Dict
 ################################################################################
 # Default Paramters
 
@@ -57,3 +62,66 @@ Default paramters for many basic functions:
 
 .. sectionauthor:: Zlatko K Minev <zlatko.minev@ibm.com>
 """
+
+
+class DefaultOptionsGeneric():
+    """Encapsulate generic data used throughout qiskit metal classes.
+
+
+    Arguments:
+        object {[type]} -- [description]
+    """
+    # Class Variable-
+    # Shared by all instances of the class.
+    # Defined outside of all methods.
+    # If user selects reset, need to keep track of defaults.
+
+    default_generic = Dict(
+        units='mm',
+        chip='main',
+        buffer_resolution=16,  # for shapely buffer
+        buffer_mitre_limit=5.0,
+    )
+
+    default_cpw = Dict(
+        width='10um',
+        gap='6um',
+        mesh_width='6um',
+        fillet='90um',
+    )
+
+    # Instance Variables
+    # Variables are owned by instances of the class.
+    # For each object and instance of the class.
+    # Instance variables are defined within methods.
+
+    def __init__(self,
+                 cpw: Dict = default_cpw,
+                 generic: Dict = default_generic):
+        #self.logger = logger
+
+        # Do Not edit the class variable
+        self.cpw = deepcopy(cpw)
+        self.generic = deepcopy(generic)
+
+        # custom default options
+        self.default_option = Dict(cpw=Dict(self.cpw))
+        self.default_option['generic'] = self.generic
+
+    # customize the key/value pairs
+    def update_default_option(self,
+                              cust_key: str = None,
+                              cust_value: Dict = None):
+        """[Allow instance of class to update the default_options]
+
+        Keyword Arguments:
+            cust_key {str} -- Type of component. (default: {None})
+            cust_value {Dict} --  The key/value pairs to describe component. (default: {None})
+        """
+
+        if cust_key is None:
+            print(f'ERROR: Need a key, update_default_option has {cust_key}')
+            # log_error_easy(self.logger,
+            # post_text=f'Need a key, update_default_option has {cust_key}')
+        else:
+            self.default_option[cust_key] = cust_value

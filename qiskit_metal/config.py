@@ -22,7 +22,7 @@ File contains some config definitions. Mostly internal.
 """
 
 from .toolbox_python.attr_dict import Dict
-from ._defaults import DEFAULT_OPTIONS, DEFAULT  # pylint: disable=unused-import
+from ._defaults import DEFAULT_OPTIONS, DEFAULT, DefaultOptionsGeneric  # pylint: disable=unused-import
 
 ####################################################################################
 # RENDERER CONFIG
@@ -90,9 +90,9 @@ GUI_CONFIG = Dict(
         stream_to_std=False, # stream to jupyter notebook
     ),
 
-    main_window = Dict(
-        title = 'Qiskit Metal — The Quantum Builder',
-        auto_size = False, # Autosize on creation of window
+    main_window=Dict(
+        title='Qiskit Metal — The Quantum Builder',
+        auto_size=False, # Autosize on creation of window
     )
 
 )

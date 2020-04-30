@@ -20,7 +20,8 @@ See the docstring of BaseComponent
 @author: Zlatko Minev, Thomas McConekey, ... (IBM)
 @date: 2019
 """
-import logging, pprint
+import logging
+import pprint
 from copy import deepcopy
 from typing import TYPE_CHECKING, Any, Iterable, List, Optional, TypeVar, Union
 
@@ -92,7 +93,8 @@ class BaseComponent():
         self._design = design  # pointer to parent
 
         # TODO: options:  should probably write a setter and getter?
-        self.options = self.create_default_options(name=name, logger_=logger)
+        self.options = self.create_default_options(
+            design=design, name=name, logger_=logger)
         if options:
             self.options.update(options)
 
@@ -152,7 +154,10 @@ class BaseComponent():
         self.design.components[self.name] = self
 
     @classmethod
-    def create_default_options(cls, logger_:logging.Logger=None, name:str=None) -> Dict:
+    def create_default_options(cls,
+                               design: 'DesignBase',
+                               logger_: logging.Logger = None,
+                               name: str = None) -> Dict:
         """
         Creates default options for the Metal Componnet class required for the class
         to function; i.e., be created, made, and rendered. Provides the blank option
@@ -163,19 +168,24 @@ class BaseComponent():
         # Every object should posses there -- common to all
         #options = deepcopy(DEFAULT_OPTIONS['BaseComponent'])
 
-        if cls.__name__ not in DEFAULT_OPTIONS:
+        #if cls.__name__ not in DEFAULT_OPTIONS:
+        if cls.__name__ not in design.default_generic:
             if logger_:
-                logger_.error(f'ERROR in the creating component {name}!\n'\
-                    f'The default options for the component class {cls.__name__} are missing')
+                logger_.error(f'ERROR in the creating component {name}!\n'
+                              f'The default options for the component class {cls.__name__} are missing')
 
         # Specific object default options
-        options = deepcopy(Dict(DEFAULT_OPTIONS[cls.__name__]))
+        #options = deepcopy(Dict(DEFAULT_OPTIONS[cls.__name__]))
+        options = deepcopy(Dict(design.default_generic[cls.__name__]))
         # options.update(deepcopy(default_options))
 
         # Specific sub-options inherited from other functions
         for key, value in cls._inherit_options_from.items():
+            #options[key] = deepcopy(
+            #    Dict(DEFAULT_OPTIONS[value])
+            #)
             options[key] = deepcopy(
-                Dict(DEFAULT_OPTIONS[value])
+                Dict(design.default_generic[value])
             )
 
         return options
@@ -398,7 +408,6 @@ class _Geometry_Handler:
         element_type = 'poly'
         shapes = self.get_all(element_type)
         raise NotImplementedError()
-
 
     # translate, rotate, etc. if possible
 
