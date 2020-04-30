@@ -517,7 +517,7 @@ def readin_q3d_matrix(path):
     df_cmat = pd.read_csv(pd.compat.StringIO(
         s2[0].strip()), delim_whitespace=True, skipinitialspace=True, index_col=0)
     if len(s2) > 1:
-        df_cmat = pd.read_csv(pd.compat.StringIO(
+        df_cond = pd.read_csv(pd.compat.StringIO(
             s2[1].strip()), delim_whitespace=True, skipinitialspace=True, index_col=0)
     else:
         df_cond = None
