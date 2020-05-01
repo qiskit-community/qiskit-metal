@@ -69,27 +69,19 @@ class Rectangle_fromPAS(BaseComponent):
         Keyword Arguments:
             rectangle {Dict} -- Initial key/values of Rectangle. (default: {default_rectangle})
         """
+        
+        self.rectangle = deepcopy(rectangle)
 
+        design.default_generic['Rectangle_fromPAS'] = self.rectangle
+        
         # We want to edit the design that is passed to init.
         # __init__ the BaseComponent class.
         # Specifically, choose when to execute the make method of Rectangle class
         super().__init__(design, name, make=False)
-
-        self.rectangle_name = name
-        self.rectangle = deepcopy(rectangle)
-
-        # Just for demo
-        #self.rectangle_design.default_generic['Rectangle_fromPAS'] = self.rectangle
-        design.default_generic['Rectangle_fromPAS'] = self.rectangle
-
-        #self.rectangle_design.default_generic['Rectangle'] = self.rectangle
-        design.default_generic['Rectangle'] = self.rectangle
         self.make()
 
     def make(self):
         p = self.p  # p for parsed parameters. Access to the parsed options.
-
-        print(p)
 
         # create the geometry
         rect = draw.rectangle(p.width, p.height, p.pos_x, p.pos_y)
