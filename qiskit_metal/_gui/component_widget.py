@@ -25,6 +25,7 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 from PyQt5 import Qt, QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import QFont
 from PyQt5.QtCore import QAbstractTableModel
 from PyQt5.QtWidgets import (QApplication, QFileDialog, QLabel, QMainWindow,
                              QMessageBox, QTabWidget)
@@ -51,7 +52,10 @@ except ImportError as e:
 
 
 def create_QTextDocument(doc: QtWidgets.QTextEdit) -> QtGui.QTextDocument:
-    """For source doc
+    """
+    For source doc.
+
+    Access with gui.component_window.src_doc
     """
     document = QtGui.QTextDocument()
 
@@ -61,7 +65,12 @@ def create_QTextDocument(doc: QtWidgets.QTextEdit) -> QtGui.QTextDocument:
 
     # Style documents monoscaped font
     font = document.defaultFont()
-    font.setFamily("monospace")
+    if hasattr(QFont, "Monospace"):
+        # when not available
+        font.setStyleHint(QFont.Monospace)
+    else:
+        font.setStyleHint(QFont.Courier)
+    font.setFamily("courier")
     document.setDefaultFont(font)
 
     return document

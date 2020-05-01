@@ -130,7 +130,7 @@ def catch_exception_slot_pyqt(*args, catch=Exception, on_exception_emit=None):
             except catch as e:  # pylint: disable=invalid-name,broad-except
 
                 message = traceback.format_exc()
-                message += '\n\nERRO in gui call (see above)\n'\
+                message += '\n\nERROR in call by Metal GUI (see traceback above)\n'\
                     + f"\n{' module   :':12s} {wrapper.__module__}" \
                     + f"\n{' function :':12s} {wrapper.__qualname__}" \
                     + f"\n{' err msg  :':12s} {e.__repr__()}"\

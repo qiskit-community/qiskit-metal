@@ -27,7 +27,7 @@ class ElementsWindow(QMainWindow):
     """
 
     def __init__(self, gui: 'MetalGUI', parent_window: 'QMainWindowExtension'):
-        # Q Main WIndow
+        # Q Main Window
         super().__init__(parent_window)
 
         # Parent GUI related
