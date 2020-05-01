@@ -72,7 +72,9 @@ class Rectangle_fromPAS(BaseComponent):
         
         self.rectangle = deepcopy(rectangle)
 
-        design.default_generic['Rectangle_fromPAS'] = self.rectangle
+        key = 'Rectangle_fromPAS'
+        if key not in design.default_generic:
+            design.default_generic[key] = self.rectangle
         
         # We want to edit the design that is passed to init.
         # __init__ the BaseComponent class.
