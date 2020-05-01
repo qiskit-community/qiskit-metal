@@ -88,3 +88,6 @@ from .toolbox_python.utility_functions import display_options
 
 # Import default renderers
 from .renderers import setup_renderers
+
+# Common-use
+from .components import BaseComponent

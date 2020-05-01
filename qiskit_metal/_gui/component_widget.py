@@ -129,6 +129,7 @@ class ComponentWidget(QTabWidget):
 
         if name is None:
             # TODO: handle case when name is none: just clear all
+            # TODO: handle case where the component is made in jupyter notebook
             self.force_refresh()
             return
 
