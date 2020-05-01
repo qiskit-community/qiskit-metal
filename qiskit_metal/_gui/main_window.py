@@ -181,6 +181,29 @@ class MetalGUI(QMainWindowBaseHandler):
 
         if design:
             self.set_design(design)
+        else:
+            self._set_enabled_design_widgets(False)
+
+    def _set_enabled_design_widgets(self, enabled: bool = True):
+        """make rebuild and all the other main button disabled.
+
+        Keyword Arguments:
+            enabled {bool} -- [description] (default: {True})
+        """
+        def setEnabled(parent, widgets):
+            for widgetname in widgets:
+                if hasattr(parent, widgetname):
+                    widget = getattr(parent, widgetname)  # type: QWidget
+                    widget.setEnabled(enabled)
+                else:
+                    self.logger.error(f'GUI issue: wrong name: {widgetname}')
+
+        widgets = ['actionSave', 'action_full_refresh', 'actionRebuild', 'actionDelete_All',
+                   'dockComponent', 'dockNewComponent', 'dockDesign', 'dockConnectors']
+        setEnabled(self.ui, widgets)
+
+        widgets = ['component_window', 'elements_win']
+        setEnabled(self, widgets)
 
     def set_design(self, design: DesignBase):
         """Core function to set a new design.
@@ -190,6 +213,9 @@ class MetalGUI(QMainWindowBaseHandler):
                 The design contains all components and elements
         """
         self.design = design
+
+        self._set_enabled_design_widgets(True)
+
         self.plot_win.set_design(design)
         self.elements_win.force_refresh()
 
@@ -199,7 +225,7 @@ class MetalGUI(QMainWindowBaseHandler):
     def _setup_logger(self):
         super()._setup_logger()
 
-        if 1: # add the metal logger to the gui
+        if 1:  # add the metal logger to the gui
             logger_name = 'metal'
             self.ui.log_text.add_logger(logger_name)
             self._log_handler_design = LoggingHandlerForLogWidget(
