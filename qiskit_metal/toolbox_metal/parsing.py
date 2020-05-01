@@ -182,7 +182,18 @@ __all__ = ['parse_value',  # Main function
 
 # Values that can represent True bool
 TRUE_STR = ['true', 'True', 'TRUE', '1', 't', 'y', 'Y', 'YES',
-            'yes', 'yeah', 'yup', 'certainly', 'uh-huh', True, 1]
+            'yes', 'yeah', True, 1, 1.0]
+
+def is_true(value:str) -> bool:
+    """Check if a value is true or not
+
+    Arguments:
+        value {str} -- Value to check
+
+    Returns:
+       Bool
+    """
+    return value in TRUE_STR
 
 # The unit registry stores the definitions and relationships between units.
 UREG = pint.UnitRegistry()
