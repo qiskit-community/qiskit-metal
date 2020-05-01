@@ -24,8 +24,7 @@ from ... import draw
 from ...toolbox_python.attr_dict import Dict
 from ..._defaults import DEFAULT_OPTIONS
 from ..base.qubit import BaseQubit
-import shapely
-from shapely.ops import cascaded_union
+
 
 
 # Connector default options
@@ -121,7 +120,7 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
         cross_length = p.cross_length
         cross_gap = p.cross_gap
 
-        #Creates the cross and the etch equivalent.
+        #Creates the cross and the etch equivalent. (FIX TO DRAW.LINESTRING)
         cross_line =shapely.ops.cascaded_union([shapely.geometry.LineString([(0,cross_length),(0,-cross_length)]),
             shapely.geometry.LineString([(cross_length,0),(-cross_length,0)])])
 
@@ -141,7 +140,7 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
 
         #generate elements
         self.add_elements('poly', dict(cross=cross))
-        self.add_element('poly', dict(cross_etch = cross_etch), subtract=True)
+        self.add_elements('poly', dict(cross_etch = cross_etch), subtract=True)
         self.add_elements('poly', dict(rect_jj=rect_jj), helper=True)
 
 
