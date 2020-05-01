@@ -165,7 +165,7 @@ class TransmonPocket(BaseQubit):
         # self.p allows us to directly access parsed values (string -> numbers) form the user option
         p = self.p
 
-        # since we will reuse these options, parse them once and efine them as varaibles
+        # since we will reuse these options, parse them once and define them as varaibles
         pad_width = p.pad_width
         pad_height = p.pad_height
         pad_gap = p.pad_gap
@@ -262,5 +262,4 @@ class TransmonPocket(BaseQubit):
         points = draw.get_poly_pts(connector_wire_CON)
         self.design.add_connector(
             self.name+'_'+name, points[2:2+2], self.name, flip=False)  # TODO: chip
-        # connectors[self.name+'_'+name] = make_connector(\
-        # points[2:2+2], options, vec_normal=points[2]-points[1])
+ 
