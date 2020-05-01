@@ -27,19 +27,33 @@ __copyright__= 'Copyright IBM 2019-2020'
 __author__ = 'Zlatko Minev, Thomas McConkey, and them IBM Quantum Team'
 __status__ = "Development"
 
-# @mfacchin - Setup matplotlib to use Qt5's visualization
-# NOTE: this needs to remain in the __init__ of the library's root to prevent Qt windows from hanging
-import matplotlib as mpl
-mpl.use("Qt5Agg")
-import matplotlib.pyplot as plt
-plt.ion()
+###########################################################################
+### Basic Setups
 
-# Setup logging
+## Setup Qt
+def __setup_Qt_backend():
+    """
+    # @mfacchin - Setup matplotlib to use Qt5's visualization
+    NOTE: this needs to remain in the __init__ of the library's root to prevent Qt windows from hanging
+    """
+    import matplotlib as mpl
+    mpl.use("Qt5Agg")
+    import matplotlib.pyplot as plt
+    plt.ion()
+
+__setup_Qt_backend()
+del __setup_Qt_backend
+
+## Setup logging
 from . import config
 from .toolbox_python._logging import setup_logger
 logger = setup_logger('metal', config.log.format, config.log.datefmt,
                       capture_warnings=True) # type: logging.Logger
 del setup_logger
+
+
+###########################################################################
+### User-accessible scope
 
 # Metal Dict
 from .toolbox_python.attr_dict import Dict
@@ -52,7 +66,7 @@ from ._is_design import is_design, is_component
 from .config import DEFAULT, DEFAULT_OPTIONS
 
 # Core modules for user to use
-from . import components
+from . import components #TODO: slow to import? why
 from . import designs
 from . import draw
 from . import renderers
