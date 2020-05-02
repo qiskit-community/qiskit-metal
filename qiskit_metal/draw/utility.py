@@ -463,10 +463,31 @@ class Vector:
         # unit vector along the direction of the two point
         unit_vec = distance_vec / norm(distance_vec)
         # tangent vector counter-clockwise 90 deg rotation
-        tangent_vec = Vector.rotate(unit_vec, np.pi)
+        tangent_vec = Vector.rotate(unit_vec, np.pi/2)
 
         if Vector.is_zero(distance_vec):
             logger.debug(f'Function `two_points_described` encountered a zero vector'
                          ' length. The two points should not be the same.')
 
         return distance_vec, unit_vec, tangent_vec
+
+    @staticmethod
+    def snap_unit_vector(vec_n:Vec2D, flip:bool=False) -> Vec2D:
+        """snaps to either the x or y unit vecotrs
+
+        Arguments:
+            vec_n {Vec2D} -- [description]
+
+        Keyword Arguments:
+            flip {bool} -- [description] (default: {False})
+
+        Returns:
+            Vec2D -- [description]
+        """
+        #TODO: done silly, fix up
+        m = np.argmax(abs(vec_n))
+        m = m if flip == False else int(not(m))
+        v = np.array([0,0])
+        v[m] = np.sign(vec_n[m])
+        vec_n = v
+        return vec_n
