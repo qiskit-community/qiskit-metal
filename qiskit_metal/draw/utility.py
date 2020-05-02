@@ -12,35 +12,34 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-#WILL NEED UPDATING TO NEW ELEMENT SCHEME
+# WILL NEED UPDATING TO NEW ELEMENT SCHEME
 
 """
-Main module for shapely and basic geometric utility functions used in drawing.
+Main module for basic geometric manipulation of non-shapely objects,
+but objects such as points and arrays used in drawing.
 
 
 @date: 2019
 @author: Zlatko Minev (IBM)
 """
-# pylint: disable=ungrouped-imports
 
+import math
 from collections.abc import Iterable, Mapping
+from typing import List, Tuple, Union
 
 import numpy as np
 import shapely
 import shapely.wkt
 from numpy import array
 from numpy.linalg import norm
-from shapely.geometry import Polygon, MultiPolygon
+from shapely.geometry import MultiPolygon, Polygon
 
-from . import BaseGeometry
 from .. import logger
 from ..components.base import is_component
-
-# TODO: define rotate, scale, translate to operate on shapely, element, component, and itterable, mappable
+from . import BaseGeometry
 
 __all__ = ['get_poly_pts', 'get_all_component_bounds', 'get_all_geoms', 'flatten_all_filter',
-           'remove_colinear_pts', 'array_chop', 'vec_is_same', 'vec_add_z', 'vec_unit_norm',
-           'vec_angle', 'vec_unit_planar', 'vec_norm']
+           'remove_colinear_pts', 'array_chop', 'vec_unit_planar',  'Vector']
 
 #########################################################################
 # Shapely Geometry Basic Coordinates
@@ -86,7 +85,7 @@ def get_all_geoms(obj, func=lambda x: x, root_name='components'):
         # Is it a metal component? Then traverse its components
         return obj.get_all_geom()  # dict of shapely geoms
 
-    #elif is_element(obj):
+    # elif is_element(obj):
     #    # is it a metal element?
     #    return {obj.name: obj.geom}  # shapely geom
 
@@ -186,25 +185,6 @@ def array_chop(vec, zero=0, rtol=0, machine_tol=100):
     return vec
 
 
-def vec_add_z(vec2D: np.array, z=0):
-    """
-    Turn a 2D vector into a 3D vector by adding the z coorindate.
-
-    Arguments:
-        vec2D {np.array} -- Input 2D vector.
-
-    Keyword Arguments:
-        z {int} -- Add this value to the 3rd dimension (default: {0})
-
-    Returns:
-        np.array -- 3D vector.
-    """
-    if isinstance(vec2D[0], Iterable):
-        return array([vec_add_z(vec, z=z) for vec in vec2D])
-    else:
-        return array(list(vec2D)+[z])
-
-
 def remove_colinear_pts(points):
     '''
     remove colinear points and identical consequtive points
@@ -213,9 +193,9 @@ def remove_colinear_pts(points):
     for i in range(2, len(points)):
         v1 = array(points[i-2])-array(points[i-1])
         v2 = array(points[i-1])-array(points[i-0])
-        if vec_is_same(v1, v2):
+        if Vector.are_same(v1, v2):
             remove_idx += [i-1]
-        elif vec_angle(v1, v2) == 0:
+        elif Vector.angle_between(v1, v2) == 0:
             remove_idx += [i-1]
     points = np.delete(points, remove_idx, axis=0)
 
@@ -231,17 +211,6 @@ def remove_colinear_pts(points):
 
 #########################################################################
 # Vector functions
-
-vec_norm = norm  # pylint: disable=invalid-name
-
-
-def vec_is_same(v1, v2, tol=100):
-    '''
-    Check if two vectors are within an infentesmimal distance set
-    by `tol` and machine epsilon
-    '''
-    v1, v2 = list(map(np.array, [v1, v2]))         # enforce numpy array
-    return float(norm(v1-v2)) < tol*np.finfo(float).eps
 
 
 def vec_unit_planar(vector: np.array):
@@ -278,38 +247,226 @@ def vec_unit_planar(vector: np.array):
         raise Exception('You did not give a 2 or 3 vec')
 
 
-def vec_unit_norm(points: np.array):
+Vec2D = Union[list, np.ndarray]
+
+
+class Vector:
     """
-    Get the unit and the normal vector. Assumed a 2D vector is passed in.
-
-    .. codeblock python
-        vec_D, vec_d, vec_n = vec_unit_norm(points)
-
-    Arguments:
-        points {np.array or list} -- 2D list of points
-
-    Returns:
-        vec_D, vec_d, vec_n -- Each is a vector np.array
+    Utility functions to call on 2D vectors, which can be np.ndarrays or lists.
     """
-    assert len(points) == 2
+
     normal_z = np.array([0, 0, 1])              # hardcoded
 
-    points = list(map(np.array, points))        # enforce numpy array ?
-    vec_D = points[1] - points[0]               # distance vector
+    @staticmethod
+    def rotate_around_point(xy: Vec2D, radians: float, origin=(0, 0)) -> np.ndarray:
+        r"""Rotate a point around a given point.
+        Positive angles are counter-clockwise and negative are clockwise rotations.
 
-    if not bool(norm(vec_D)):
-        logger.debug(f'vec_unit_norm: Warning: zero vector length! ')
+        .. math::
 
-    vec_d = vec_D / norm(vec_D)                 # unit dist. vector
-    vec_n = np.cross(normal_z, vec_d)           # normal unit vector
-    vec_n = vec_n[:len(vec_d)]
-    return vec_D, vec_d, vec_n
+            \begin{split}
+            x_\mathrm{off} &= x_0 - x_0 \cos{\theta} + y_0 \sin{\theta} \\
+            y_\mathrm{off} &= y_0 - x_0 \sin{\theta} - y_0 \cos{\theta}
+            \end{split}
 
+        Arguments:
+            xy {Vec2D} -- A 2D vector.
+            radians {float} -- Counter clockwise angle
 
-def vec_angle(v1, v2):
-    """
-    Returns the angle in radians between vectors 'v1' and 'v2'::
-    """
-    v1_u = vec_unit_planar(v1)
-    v2_u = vec_unit_planar(v2)
-    return np.arccos(np.clip(np.dot(v1_u, v2_u), -1.0, 1.0))
+        Keyword Arguments:
+            origin {tuple} -- point to rotate about (default: {(0, 0)})
+
+        Returns:
+            np.ndarray -- rotated point
+        """
+        # see: https://gist.github.com/LyleScott/d17e9d314fbe6fc29767d8c5c029c362
+        x, y = xy
+        offset_x, offset_y = origin
+        adjusted_x = (x - offset_x)
+        adjusted_y = (y - offset_y)
+        cos_rad = math.cos(radians)
+        sin_rad = math.sin(radians)
+        qx = offset_x + cos_rad * adjusted_x - sin_rad * adjusted_y
+        qy = offset_y + sin_rad * adjusted_x + cos_rad * adjusted_y
+        return qx, qy
+
+    @staticmethod
+    def rotate(xy: Vec2D, radians: float) -> np.ndarray:
+        """Counter-clockwise rotation of the vector in radians.
+        Positive angles are counter-clockwise and negative are clockwise rotations.
+
+        Arguments:
+            xy {Vec2D} -- A 2D vector.
+            radians {float} -- Counter clockwise angle
+
+        Returns:
+            np.ndarray -- rotated point
+        """
+        x, y = xy
+        cos_rad = math.cos(radians)
+        sin_rad = math.sin(radians)
+        qx = cos_rad * x - sin_rad * y
+        qy = sin_rad * x + cos_rad * y
+        return np.array([qx, qy])
+
+    @staticmethod
+    def angle(vector: Vec2D) -> float:
+        """
+        Return the angle in radians of a vector.
+
+        Arguments:
+            vector {Union[list, np.ndarray]} -- a 2D vector
+
+        Returns:
+            [type] -- [description]
+
+        Caution:
+            The angle is defined from the Y axis!
+
+            See https://docs.scipy.org/doc/numpy/reference/generated/numpy.arctan2.html
+            ```
+                |-> Positive direction, defined from Y axis
+                |
+            --------
+                |
+                |
+
+                x1	x2	arctan2(x1,x2)
+                +/- 0	+0	+/- 0
+                +/- 0	-0	+/- pi
+                > 0	+/-inf	+0 / +pi
+                < 0	+/-inf	-0 / -pi
+                +/-inf	+inf	+/- (pi/4)
+                +/-inf	-inf	+/- (3*pi/4)
+            ```
+            Note that +0 and -0 are distinct floating point numbers, as are +inf and -inf.
+        """
+        return np.arctan2(vector)
+
+    @staticmethod
+    def angle_between(v1: Vec2D, v2: Vec2D) -> float:
+        """Returns the angle in radians between vectors 'v1' and 'v2'
+
+        Arguments:
+            v1 {Vec2D} -- First vector
+            v2 {Vec2D} -- Second vector
+
+        Returns:
+            float -- angle in radians. The angle of the ray intersecting the unit
+            circle at the given x-coordinate in radians [0, pi]. This is a scalar.
+        """
+        v1_u = vec_unit_planar(v1)
+        v2_u = vec_unit_planar(v2)
+        return np.arccos(np.clip(np.dot(v1_u, v2_u), -1.0, 1.0))
+
+    @staticmethod
+    def add_z(vec2D: np.array, z: float = 0.):
+        """
+        Turn a 2D vector into a 3D vector by adding the z coorindate.
+
+        Arguments:
+            vec2D {np.array} -- Input 2D vector.
+
+        Keyword Arguments:
+            z {float} -- Add this value to the 3rd dimension (default: {0})
+
+        Returns:
+            np.array -- 3D vector.
+        """
+        if isinstance(vec2D[0], Iterable):
+            return array([Vector.add_z(vec, z=z) for vec in vec2D])
+        else:
+            return array(list(vec2D)+[z])
+
+    @staticmethod
+    def normed(vec: Vec2D) -> Vec2D:
+        """Return normed vector
+
+        Arguments:
+            vec {Vec2D} -- Vector
+
+        Returns:
+            Vec2D -- Unit normed version of vector
+        """
+        return Vec2D / norm(Vec2D)
+
+    @staticmethod
+    def norm(vec: Vec2D) -> float:
+        """Return the norm of a 2D vector
+
+        Arguments:
+            vec {Vec2D} -- 2D vector
+
+        Returns:
+            float -- length of vector
+        """
+        return norm(vec)
+
+    def are_same(v1: Vec2D, v2: Vec2D, tol: int = 100) -> bool:
+        """
+        Check if two vectors are within an infentesmimal distance set
+        by `tol` and machine epsilon
+
+        Arguments:
+            v1 {[type]} -- [description]
+            v2 {[type]} -- [description]
+
+        Keyword Arguments:
+            tol {int} -- How much to multiply the machine precision, np.finfo(float).eps,
+                        by as the tolerance (default: {100})
+
+        Returns:
+            bool -- same or not
+        """
+        v1, v2 = np.array(v1), np.array(v2)
+        return Vector.is_zero(v1-v2, tol=tol)
+
+    @staticmethod
+    def is_zero(vec: Vec2D, tol: int = 100) -> bool:
+        """Check if a vector is essentially zero within machine precision,
+        set by `tol` and machine epsilon
+
+        Arguments:
+            vec {Vec2D} -- [description]
+
+        Keyword Arguments:
+            tol {int} -- How much to multiply the machine precision, np.finfo(float).eps,
+                        by as the tolerance (default: {100})
+
+        Returns:
+            bool -- close to zero or not
+        """
+        return float(norm(vec)) < tol*np.finfo(float).eps
+
+    @staticmethod
+    def two_points_described(points2D: List[Vec2D]) -> Tuple[np.ndarray]:
+        """
+        For a list of exactly two given 2D points, get:
+            d: the distance vector between them
+            n: normal vector defined by d
+            t: the vector tangent to n
+
+        .. codeblock python
+            vec_D, vec_d, vec_n = Vector.difference_dnt(points)
+
+        Arguments:
+            points {np.array or list} -- 2D list of points
+
+        Returns:
+            distance_vec, dist_unit_vec, tangent_vec -- Each is a vector np.array
+        """
+        assert len(points2D) == 2
+        start = np.array(points2D[0])
+        end = np.array(points2D[0])
+
+        distance_vec = end - start                   # distance vector
+        # unit vector along the direction of the two point
+        unit_vec = distance_vec / norm(distance_vec)
+        # tangent vector counter-clockwise 90 deg rotation
+        tangent_vec = Vector.rotate(unit_vec, np.pi)
+
+        if Vector.is_zero(distance_vec):
+            logger.debug(f'Function `two_points_described` encountered a zero vector'
+                         ' length. The two points should not be the same.')
+
+        return distance_vec, unit_vec, tangent_vec

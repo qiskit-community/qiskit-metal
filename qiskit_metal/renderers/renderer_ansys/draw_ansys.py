@@ -26,7 +26,7 @@ import shapely
 from numpy import array
 
 from ... import DEFAULT, DEFAULT_OPTIONS, logger, Dict
-from ...draw import get_poly_pts, is_rectangle, vec_add_z, BaseGeometry
+from ...draw import get_poly_pts, is_rectangle, BaseGeometry, Vector
 from .parse import parse_value_hfss
 
 
@@ -104,7 +104,7 @@ def draw_object_shapely(oModeler, obj, name, size_z=0., pos_z=0., hfss_options=N
     if isinstance(obj, shapely.geometry.Polygon):
         points = get_poly_pts(obj)
         # TODO: Handle multiple chips
-        points_3d = vec_add_z(points, parse_value_hfss(pos_z))
+        points_3d = Vector.add_z(points, parse_value_hfss(pos_z))
 
         if is_rectangle(obj):  # Draw as rectangle
             logger.debug(f'Drawing a rectangle: {name}')
