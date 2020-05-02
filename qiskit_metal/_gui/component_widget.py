@@ -37,6 +37,8 @@ from ._handle_qt_messages import catch_exception_slot_pyqt
 
 if TYPE_CHECKING:
     from .main_window import MetalGUI, QMainWindowExtension
+    from ..components import BaseComponent
+    from ..designs import DesignBase
 
 try:  # For source doc
     import pygments
@@ -83,6 +85,9 @@ class ComponentWidget(QTabWidget):
     PyQt5 Signal / Slots Extensions:
         The UI can call up to this class to execeute button clicks for instance
         Extensiosn in qt designer on signals/slots are linked to this class
+
+    **Access:**
+        gui.component_window
     """
 
     def __init__(self, gui: 'MetalGUI', parent: QtWidgets.QWidget):
@@ -134,7 +139,12 @@ class ComponentWidget(QTabWidget):
             return
 
         component = self.component
-        self.ui.labelComponentName.setText(str(component.name))
+
+        # Labels
+        # ) from {component.__class__.__module__}
+        label_text = f"{component.name}   :   {component.__class__.__name__}   :   {component.__class__.__module__}"
+        self.ui.labelComponentName.setText(label_text)
+        self.ui.labelComponentName.setCursorPosition(0)  # Move to left
 
         self._set_source()
         self._set_help()

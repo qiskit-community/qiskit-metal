@@ -655,7 +655,7 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
     <number>2</number>
    </attribute>
    <widget class="QWidget" name="dockComponentCental">
-    <layout class="QVBoxLayout" name="verticalLayout_7" stretch="">
+    <layout class="QVBoxLayout" name="verticalLayout_7">
      <property name="spacing">
       <number>0</number>
      </property>
