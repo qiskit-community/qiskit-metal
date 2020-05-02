@@ -12,7 +12,15 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 """
-Main module for shapely basic drawing.
+Main module for shapely manipulation and drawing.
+
+**Manipulation:**
+    The module defines rotate, scale, translate to operate on a various set of
+    input arguments, such as shapelies or itterable/mappables or shapelies.
+
+**Creation:**
+    The module defines the creation of some basic shapely objects for convinence,
+    such as a rectangle.
 
 @date: 2019
 @author: Zlatko Minev (IBM)
@@ -205,130 +213,6 @@ def _iter_func_geom_(func, objs, *args, overwrite=False, **kwargs):
     else:
         logger.error(f'Unkown elemnet! ERROR on: {objs}')
         return objs
-
-
-"""
-#TODO:Remove
-
-def orient(obj, angle, origin='center'):
-    '''
-    Returns a rotated geometry on a 2D plane.
-
-    The angle of rotation can be specified in either degrees (default)
-    or radians by setting use_radians=True. Positive angles are
-    counter-clockwise and negative are clockwise rotations.
-
-    The point of origin can be a keyword 'center' for the
-    bounding box center (default), 'centroid' for the geometry's
-    centroid, a Point object or a coordinate tuple (x0, y0).
-
-    angle : 'X' or 'Y' or degrees
-        'X' does nothing
-        'Y' is a 90 degree clockwise rotated object
-    '''
-    if isinstance(obj, list):
-        return [orient(o, angle, origin) for o in obj]
-    else:
-        # angle = {'X': 0, 'Y': 90}.get(angle, angle)
-        obj = shapely.affinity.rotate(obj, angle, origin)
-        return obj
-
-
-
-def rotate_position(obj, angle: float, pos: list, pos_rot=(0, 0)):
-    '''
-    Orient and then place position. Just a shortcut function.
-
-    Arguments:
-        obj {[type]} -- Object to roient, shapely or metal
-        angle {[float]} -- [description]
-        pos {[list, np.array]} -- position to translate to
-
-    Keyword Arguments:
-        pos_rot {tuple} -- Rotate about this point before translating. (default: {(0, 0)})
-
-    Returns:
-        [type] -- Rotate dand translated, same as input
-    '''
-    def rotate_position_shapely(sobj):
-        pos1 = list(orient(Point(pos), angle).coords)[0]  # move to position
-        sobj = shapely.affinity.rotate((sobj, angle, pos_rot)  # rotate about pos_rot
-        return shapely.affinity.translate(sobj, *pos1)
-
-    if isinstance(obj, list):
-        return [rotate_position(o, angle, pos, pos_rot) for o in obj]
-
-    elif is_element(obj):
-        # should we do the rendered geometry?
-        obj.geom=rotate_position_shapely(obj)
-        return obj
-
-    elif isinstance(obj, BaseGeometry):
-        return rotate_position_shapely(obj)
-
-    else:
-        logger.error(f'ERROR in rotate_position: Unkown object. {obj}')
-
-
-
-def rotate(components, angle, *args, **kwargs):
-    '''
-    Returns a rotated geometry on a 2D plane.
-
-    The angle of rotation can be specified in either degrees (default)
-    or radians by setting use_radians=True. Positive angles are
-    counter-clockwise and negative are clockwise rotations.
-
-    The point of origin can be a keyword 'center' for the
-    bounding box center (default), 'centroid' for the geometry's
-    centroid, a Point object or a coordinate tuple (x0, y0).
-
-    angle : 'X' or 'Y' or degrees
-        'X' does nothing
-        'Y' is a 90 degree clockwise rotated object
-    '''
-    # Should change to also cover negative rotations and flips?
-    angle={'X': 0, 'Y': 90}.get(angle, angle)
-    if isinstance(components, list):
-        for i, obj in enumerate(components):
-            components[i]=rotate(obj, angle, *args, **kwargs)
-    elif isinstance(components, dict):
-        for name, obj in components.items():
-            components[name]=rotate(obj, angle, *args, **kwargs)
-    else:
-        if not components is None:
-            # this is now a single object
-            components=shapely.affinity.rotate(
-                components, angle, *args, **kwargs)
-    return components
-
-
-
-def _func_obj_dict(func, components, *args, _override=True, **kwargs):
-    '''
-    _override:  overrides the dictionary or list.
-    '''
-    if isinstance(components, list):
-        for i, obj in enumerate(components):
-            value = _func_obj_dict(
-                func, obj, *args, _override=_override, **kwargs)
-            if _override:
-                components[i] = value
-
-    elif isinstance(components, dict):
-        for name, obj in components.items():
-            value = _func_obj_dict(
-                func, obj, *args, _override=_override, **kwargs)
-            if _override:
-                components[name] = value
-
-    else:
-        if not components is None:
-            # this is now a single object
-            components = func(components, *args, **kwargs)
-
-    return components
-"""
 
 
 def rotate(elements, angle, origin='center', use_radians=False, overwrite=False):
