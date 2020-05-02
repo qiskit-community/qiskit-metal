@@ -260,6 +260,5 @@ class TransmonPocket(BaseQubit):
 
         # add connectors to design tracker
         points = draw.get_poly_pts(connector_wire_CON)
-        self.design.add_connector(
-            self.name+'_'+name, points[2:2+2], self.name, flip=False)  # TODO: chip
+        self.design.add_connector(name, points[2:2+2], self.name, flip=False)  # TODO: chip
  

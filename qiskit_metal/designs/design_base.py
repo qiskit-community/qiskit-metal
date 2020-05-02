@@ -443,12 +443,30 @@ class DesignBase():
             parent = parent.name
         elif parent is None:
             parent = 'none'
+        name = parent+'_'+name
+        
 
         # assert isinstance(parent, str) # could enfornce
         self.connectors[name] = make_connector(
             points, parent, flip=flip, chip=chip)
 
         # TODO: Add net?
+
+    def get_connector(self,name:str):
+        """Interface for components to get connector data
+
+        Args:
+            name (str): Name of the desired connector.
+
+        Returns:
+            (dict): Returns the data of the connector, see design_base.make_connector() for
+                what those values are.
+        """
+
+        #For after switching to pandas, something like this?
+        #return self.connectors.get(name).to_dict()
+
+        return self.connectors[name]
 
     def update_component(self, component_name: str, dependencies=True):
         """Update the component and any dependencies it may have.
