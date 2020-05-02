@@ -22,7 +22,7 @@ import inspect
 from inspect import getfile, signature
 from pathlib import Path
 from typing import TYPE_CHECKING
-
+from typing import Union
 import numpy as np
 from PyQt5 import Qt, QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QFont
@@ -51,6 +51,60 @@ except ImportError as e:
     highlight = None
     HtmlFormatter = None
     get_lexer_by_name = None
+
+# TODO: move to conifg
+textHelp_css_style = """
+body {
+  background-color: #f7f7f7;
+  color: #000000;
+}
+
+.ComponentHeader th {
+    text-align: left;
+    background-color: #EEEEEE;
+    padding-right: 10px;
+}
+
+.ComponentHeader td {
+    text-align: left;
+    padding-left: 5px;
+    color: brown;
+}
+
+.ComponentHeader {
+    font-size: 1.5em;
+    text-align: left;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding-right: 40px;
+}
+
+.h1 {
+  display: block;
+  font-size: large;
+  margin-top: 0.67em;
+  margin-bottom: 0.67em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+}
+
+.DocString {
+    font-family: monospace;
+}
+"""
+
+
+def format_docstr(doc: Union[str, None]) -> str:
+    if doc is None:
+        return ''
+    doc = doc.strip()
+    text = f"""
+<pre style="background-color: #EBECE4;">
+<code class="DocString">{doc}</code>
+</pre>
+    """
+    return text
 
 
 def create_QTextDocument(doc: QtWidgets.QTextEdit) -> QtGui.QTextDocument:
@@ -115,6 +169,10 @@ class ComponentWidget(QTabWidget):
         self._html_css_lex = None  # type: pygments.formatters.html.HtmlFormatter
         self.src_widgets = []  # type: List[QtWidgets.QWidget]
 
+        # Help stylesheet
+        document = self.ui.textHelp.document()
+        document.setDefaultStyleSheet(textHelp_css_style)
+
     @property
     def design(self):
         return self.gui.design
@@ -156,7 +214,49 @@ class ComponentWidget(QTabWidget):
 
     def _set_help(self):
         """Called when we need to set a new help"""
-        pass  # TODO:
+        # See also
+        # from IPython.core import oinspect
+        # oinspect.getdoc(SampleClass)
+        # from IPython.core.oinspect import Inspector
+        # ins = Inspector()
+        # ins.pdoc(SampleClass)
+
+        component = self.component
+        if component is None:
+            return
+
+        filepath = inspect.getfile(component.__class__)
+        doc_class = format_docstr(inspect.getdoc(component))
+        doc_init = format_docstr(inspect.getdoc(component.__init__))
+
+        text = "<body>"
+        text += f'''
+        <div class="h1">Summary:</div>
+        <table class="table ComponentHeader">
+            <tbody>
+                <tr> <th>Name</th> <td>{component.name}</td></tr>
+                <tr> <th>Class</th><td>{component.__class__.__name__}</td></tr>
+                <tr> <th>Module</th><td>{component.__class__.__module__}</td></tr>
+                <tr> <th>Path </th> <td style="text-color=#BBBBBB;"> {filepath}</td></tr>
+            </tbody>
+        </table>
+        '''
+
+        # get image
+        # if image_path:
+        #     text += f'''
+        #     <img class="ComponentImage" src="{image_path}"></img>
+        #     '''
+
+        text += f'''
+            <div class="h1">Class docstring:</div>
+            {doc_class}
+            <div class="h1">Init docstring:</div>
+            {doc_init}
+        '''
+        text += "</body>"
+
+        self.ui.textHelp.setHtml(text)
 
     def _set_source(self):
         """Called when we need to set a new help"""
