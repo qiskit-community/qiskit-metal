@@ -62,8 +62,32 @@ class TestAnalyses(unittest.TestCase):
 
         Returns: None
         """
-        # Test general functionality, edge cases, bad input, out of range
-        self.assertEqual("TEST NOT IMPLEMENTED", 1)
+        # Setup expected test results
+        test_a_expected = (0.024356252567915772, 2.4617087473867807, 0.49998001152009985)
+        test_b_expected = (0.029017096287462227, 2.459879883274635, 0.49994733413732906)
+        test_c_expected = (0.021364843468278626, 2.8063861122606597, 0.49998001152009985)
+        test_d_expected = (0.025454109889274948, 2.804206147418523, 0.49994733413732906)
+
+        # Generate actual result data
+        test_a_actual = cpw_calculations.guided_wavelength(5*10**9, 10*10**-6, 6*10**-6,
+                                                           760*10**-6, 200*10**-9)
+        test_b_actual = cpw_calculations.guided_wavelength(4.2*10**9, 9.8*10**-6, 4.8*10**-6,
+                                                           420*10**-6, 180*10**-9)
+        test_c_actual = cpw_calculations.guided_wavelength(5*10**9, 10*10**-6, 6*10**-6,
+                                                           760*10**-6, 200*10**-9,
+                                                           dielectric_constant=15.2)
+        test_d_actual = cpw_calculations.guided_wavelength(4.2*10**9, 9.8*10**-6, 4.8*10**-6,
+                                                           420*10**-6, 180*10**-9,
+                                                           dielectric_constant=15.2)
+
+        # Test all elements of the result data against expected data
+        for (actual, expected) in [(test_a_actual, test_a_expected),
+                                   (test_b_actual, test_b_expected),
+                                   (test_c_actual, test_c_expected),
+                                   (test_d_actual, test_d_expected)]:
+            self.assertEqual(len(actual), 3)
+            for x in range(3):
+                self.assertAlmostEqual(actual[x], expected[x], places=13)
 
     def test_analyses_cpw_lumped_cpw(self):
         """
@@ -106,8 +130,38 @@ class TestAnalyses(unittest.TestCase):
 
         Returns: None
         """
-        # Test general functionality, edge cases, bad input, out of range
-        self.assertEqual("TEST NOT IMPLEMENTED", 1)
+        # Setup expected test results
+        test_a_expected = 3.5771424204599436
+        test_b_expected = 3.5442491595505388
+        test_c_expected = 14.87179231388151
+
+        # Generate actual result data
+        test_a_actual = cpw_calculations.effective_dielectric_constant(5*10**9, 10*10**-6,
+                                                                       6*10**-6, 760*10**-6,
+                                                                       200*10**-9, 1.3, 0.2, 1.3)
+        test_b_actual = cpw_calculations.effective_dielectric_constant(4.8*10**9, 9.6*10**-6,
+                                                                       5.2*10**-6, 420*10**-6,
+                                                                       200*10**-9, 1.3, 0.2, 1.3)
+        test_c_actual = cpw_calculations.effective_dielectric_constant(4.8*10**9, 9.6*10**-6,
+                                                                       5.2*10**-6, 420*10**-6,
+                                                                       200*10**-9, 1.3, 0.2, 1.3,
+                                                                       eRD=200)
+
+        # Test all elements of the result data against expected data
+        for (actual, expected) in [(test_a_actual, test_a_expected),
+                                   (test_b_actual, test_b_expected),
+                                   (test_c_actual, test_c_expected)]:
+            self.assertAlmostEqual(actual, expected, places=13)
+
+        with self.assertRaises(ZeroDivisionError):
+            test_a_actual = cpw_calculations.effective_dielectric_constant(5*10**9, 10*10**-6, 0,
+                                                                           760*10**-6, 200*10**-9,
+                                                                           1.3, 0.2, 1.3)
+
+        with self.assertRaises(ZeroDivisionError):
+            test_a_actual = cpw_calculations.effective_dielectric_constant(5*10**9, 10*10**-6,
+                                                                           6*10**-6, 0, 200*10**-9,
+                                                                           1.3, 0.2, 1.3)
 
     def test_analyses_cpw_elliptic_int_constants(self):
         """
@@ -117,8 +171,25 @@ class TestAnalyses(unittest.TestCase):
 
         Returns: None
         """
-        # Test general functionality, edge cases, bad input, out of range
-        self.assertEqual("TEST NOT IMPLEMENTED", 1)
+        # Setup expected test results
+        test_a_expected = (1.8173686928723873, 2.536427762586688, 1.8173447681250923,
+                           2.5364957731769597)
+        test_b_expected = (1.8451651823831046, 2.462845861327711, 1.8451017251588104,
+                           2.4630023824949374)
+
+        # Generate actual result data
+        test_a_actual = cpw_calculations.elliptic_int_constants(10*10**-6, 6*10**-6, 760*10**-6)
+        test_b_actual = cpw_calculations.elliptic_int_constants(9.2*10**-6, 4.8*10**-6, 420*10**-6)
+
+        # Test all elements of the result data against expected data
+        for (actual, expected) in [(test_a_actual, test_a_expected),
+                                   (test_b_actual, test_b_expected)]:
+            self.assertEqual(len(actual), 4)
+            for x in range(4):
+                self.assertAlmostEqual(actual[x], expected[x], places=13)
+
+        with self.assertRaises(ZeroDivisionError):
+            cpw_calculations.elliptic_int_constants(0, 0, 0)
 
     def test_analyses_lumped_transmon_props(self):
         """

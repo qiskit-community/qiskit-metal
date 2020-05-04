@@ -18,3 +18,20 @@ Qiskit Metal main unit test functionality.
 Created on Wed Apr 22 08:55:40 2020
 @author: Jeremy D. Drysdale
 """
+
+import os, fnmatch, sys, subprocess
+
+if __name__ == '__main__':
+    listOfFiles = os.listdir('.')
+    pattern = "test*.py"
+    print("====> Running the entire test suite now...")
+    for entry in listOfFiles:
+        if fnmatch.fnmatch(entry, pattern):
+            if (entry != sys.argv[0]):
+                print("Running ", entry, " tests...")
+                cmd = 'python ' + entry
+                subprocess.call(cmd, shell=True)
+                print("")
+
+    print("All tests complete")
+    print("Scroll up to review the results")
