@@ -28,6 +28,7 @@ from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QFileDialog, QMainWindow, QMessageBox
+from PyQt5 import QtWidgets, QtCore, QtGui #pyqt stuff
 
 from .. import Dict, config
 from ..toolbox_python._logging import setup_logger
@@ -155,8 +156,10 @@ class QMainWindowExtensionBase(QMainWindow):
     @catch_exception_slot_pyqt()
     def load_stylesheet_open(self, _):
         """Used to call from action"""
-        filename = QFileDialog.getOpenFileName(None,
-                                               'Select stylesheet file')[0]
+        default_path = str(self.gui.path_stylesheets)
+        filename = QFileDialog.getOpenFileName(self,
+                                               'Select Qt stylesheet file `.qss`',
+                                               default_path)[0]
         if filename:
             self.logger.info(f'Attempting to load stylesheet file {filename}')
 
@@ -247,6 +250,11 @@ class QMainWindowBaseHandler():
         self._ui_adjustments()  # overwrite
 
         self.main_window.restore_window_settings()
+
+    @property
+    def path_stylesheets(self):
+        return Path(self.path_gui)/'styles'
+
 
     def style_window(self):
         # fusion macintosh # windows
@@ -432,6 +440,9 @@ def kick_start_qApp():
     qApp = QtCore.QCoreApplication.instance()
 
     if qApp is None:
+        # @zlatko added for some pop up warning
+        #QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
+
         qApp = QApplication(sys.argv)
 
         if qApp is None:
