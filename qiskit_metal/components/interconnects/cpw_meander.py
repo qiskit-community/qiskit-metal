@@ -3,7 +3,7 @@
 """
 
 from collections import namedtuple
-from typing import List, Tuple
+from typing import List, Tuple, Union
 
 import numpy as np
 from numpy.linalg import norm
@@ -94,23 +94,24 @@ class CpwMeanderSimple(BaseComponent):
         # Lead in to meander
         startm = start.get_leadin(lead_start)
         endm = end.get_leadin(lead_end)
-        self.startm =startm
+        self.startm = startm
 
         # Meander
         length_meander = total_length - (meander.lead_end + meander.lead_start)
-        meandered_pts = self.meander_fixed_length(startm, endm, length_meander, meander)
+        meandered_pts = self.meander_fixed_length(
+            startm, endm, length_meander, meander)
 
         # TODO: if lead_start is zero or end is , then dont add them
         self.x = [start.position, meandered_pts, end.position, startm]
         self.y = [
-                 start.position[None,:],
-                 meandered_pts,
-                 end.position[None,:]]
+            start.position[None, :],
+            meandered_pts,
+            end.position[None, :]]
         points = np.concatenate([
-                 start.position[None,:],
-                 meandered_pts,
-                 endm.position[None,:],
-                 end.position[None,:]],axis=0)
+            start.position[None, :],
+            meandered_pts,
+            endm.position[None, :],
+            end.position[None, :]], axis=0)
 
         # Make points into elements
         self.make_elements(points)
@@ -153,8 +154,8 @@ class CpwMeanderSimple(BaseComponent):
         # Parameters
         spacing = meander.spacing  # Horizontal spacing between meanders
         asymmetry_fracton = meander.asymmetry_fracton
-        snap = is_true(meander.snap) # snap to xy grid
-        #TODO: snap add 45 deg snap by chaning snap function using angls
+        snap = is_true(meander.snap)  # snap to xy grid
+        # TODO: snap add 45 deg snap by chaning snap function using angls
 
         # Coordinate system
         forward, sideways = self.get_unit_vectors(start, end, snap)
@@ -217,7 +218,7 @@ class CpwMeanderSimple(BaseComponent):
         pts[ii, :] = bot_pts[1:1+len(ii)]
         pts[-1, :] = root_pts[-2]
 
-        pts += start.position # move to start position
+        pts += start.position  # move to start position
         return pts
 
     @staticmethod
@@ -255,7 +256,7 @@ class CpwMeanderSimple(BaseComponent):
         return Connector(position=np.array([1., 0.7]),
                          direction=np.array([-1., 0.]))
 
-    def get_unit_vectors(self, start: Connector, end: Connector, snap:bool=False) -> Tuple[np.ndarray]:
+    def get_unit_vectors(self, start: Connector, end: Connector, snap: bool = False) -> Tuple[np.ndarray]:
         """Return the unit and tnaget vector in which the CPW should procees as its
         cooridnate sys.
 
