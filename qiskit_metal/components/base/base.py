@@ -156,26 +156,28 @@ class BaseComponent():
             # There is a developer agreement so the defaults will be in dict named default_options.
             if hasattr(child, 'default_options'):
                 #print(f'{child.__name__}:', child.default_options)
+                #print('child within hasattr:', child.__name__)
                 options_from_children = {
                     **options_from_children, **child.default_options}
 
         return options_from_children
 
     def get_module_name(self):
-        # Presently, the name of the file which hold the class is returned.  
-        # Going forward, this function could include the path.
+        # Presently, the full path for module name is returned.
+        # The path can be long.  We may need to agree to an abreviation of module name.
 
-        #s = inspect.stack()
-        #getmodulename_data = inspect.getmodulename(s).__name__
-        #print(getmodulename_data)
+        options_from_children = {}
+        parents = inspect.getmro(self.__class__)
+        name_full_path = parents[0].__dict__['__module__']
 
-
+        ''' This returns the name of module for base class.
         module_tuple = os.path.split(os.path.abspath(__file__))
-        #moudule_path = module_tuple[0]         # Provides the full path.
-        module_file = module_tuple[1]
+        #moudule_path = module_tuple[0]         # Provides the full path of base class.
+        module_file = module_tuple[1]           # Provides the name of module
         if module_file.strip().endswith('.py'):
             module_file = module_file[:-3]
-        return module_file
+        '''
+        return name_full_path
 
     def get_unique_module_class_name(self):
         # Could make module name more unique by using full path along with file name.
