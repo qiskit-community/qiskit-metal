@@ -21,12 +21,14 @@ GUI front-end interface for Qiskit Metal in PyQt5.
 
 import logging
 import os
+import sys
 from pathlib import Path
 
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QFileDialog, QMainWindow, QMessageBox
+from PyQt5 import QtWidgets, QtCore, QtGui #pyqt stuff
 
 from .. import Dict, config
 from ..toolbox_python._logging import setup_logger
@@ -154,8 +156,10 @@ class QMainWindowExtensionBase(QMainWindow):
     @catch_exception_slot_pyqt()
     def load_stylesheet_open(self, _):
         """Used to call from action"""
-        filename = QFileDialog.getOpenFileName(None,
-                                               'Select stylesheet file')[0]
+        default_path = str(self.gui.path_stylesheets)
+        filename = QFileDialog.getOpenFileName(self,
+                                               'Select Qt stylesheet file `.qss`',
+                                               default_path)[0]
         if filename:
             self.logger.info(f'Attempting to load stylesheet file {filename}')
 
@@ -246,6 +250,11 @@ class QMainWindowBaseHandler():
         self._ui_adjustments()  # overwrite
 
         self.main_window.restore_window_settings()
+
+    @property
+    def path_stylesheets(self):
+        return Path(self.path_gui)/'styles'
+
 
     def style_window(self):
         # fusion macintosh # windows
@@ -428,27 +437,34 @@ class QMainWindowBaseHandler():
 
 def kick_start_qApp():
 
-    qApp = QApplication.instance()
+    qApp = QtCore.QCoreApplication.instance()
 
     if qApp is None:
-        logging.error("QApplication.instance is None.")
+        # @zlatko added for some pop up warning
+        #QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
 
-        if config._ipython:
-            # Pithyon has magic for loop
-            logging.error("QApplication.instance: Attempt magic IPython %%gui qt5")
-            try:
-                from IPython import get_ipython
-                ipython = get_ipython()
-                ipython.magic('gui qt5')
+        qApp = QApplication(sys.argv)
 
-            except Exception as e:
-                logging.error(f"FAILED: {e}")
-                print(e)
+        if qApp is None:
+            logging.error("QApplication.instance is None.")
 
-        else:
-            # We are not running form IPython, manually boot
-            logging.error("QApplication.instance: Attempt to manually create qt5 QApplication")
-            qApp = QtWidgets.QApplication(["qiskit-metal"])
-            qApp.lastWindowClosed.connect(qApp.quit)
+            if config._ipython:
+                # iPython has magic for loop
+                logging.error("QApplication.instance: Attempt magic IPython %%gui qt5")
+                try:
+                    from IPython import get_ipython
+                    ipython = get_ipython()
+                    ipython.magic('gui qt5')
+
+                except Exception as e:
+                    print("exception")
+                    logging.error(f"FAILED: {e}")
+                    print(e)
+
+            else:
+                # We are not running form IPython, manually boot
+                logging.error("QApplication.instance: Attempt to manually create qt5 QApplication")
+                qApp = QtWidgets.QApplication(["qiskit-metal"])
+                qApp.lastWindowClosed.connect(qApp.quit)
 
     return qApp

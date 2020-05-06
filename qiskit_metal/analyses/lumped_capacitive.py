@@ -40,7 +40,7 @@ import matplotlib.pyplot as plt
 from pint import UnitRegistry
 from pathlib import Path
 
-__all__ = ['jayNoscillator', 'levels_vs_ng_real_units',
+__all__ = ['extract_transmon_coupled_Noscillator', 'levels_vs_ng_real_units',
            'load_q3d_capacitance_matrix', 'df_reorder_matrix_basis']
 
 
@@ -251,7 +251,7 @@ def extract_transmon_coupled_Noscillator(capMatrix, Ic, CJ, N, fb, fr, res_L4_co
 #    gr0 = 0.5*Cminv[0,1]/np.sqrt(Zqp*Zr1p)
 #    print('gr0 = %f [MHz]'%(gr0/2/np.pi/1e6))
 
-    # g's from the qubit -- ? why is there a one half
+    # g's from the qubit
     gqbus = 0.5*wr*bbus*np.sqrt(Zbus/Zqp)*g_scale
     gbus_in_MHz = gqbus/1e6/2/np.pi
 
@@ -279,7 +279,7 @@ def extract_transmon_coupled_Noscillator(capMatrix, Ic, CJ, N, fb, fr, res_L4_co
     # chi's
     #d = -EC
     d = alpha*2*np.pi*1e6
-    Chi_in_MHz = 2*chi(gqbus, wr, wq, d+wq)/2/np.pi/1e6
+    Chi_in_MHz = 2*chi(gqbus, wr, wq, d+wq) /2/np.pi/1e6
 
     # purcell due to each coupling bus
     T1bus = (wr**2-wq**2)**2/(4*kbus*gqbus**2*wq**2)
@@ -517,7 +517,7 @@ def readin_q3d_matrix(path):
     df_cmat = pd.read_csv(pd.compat.StringIO(
         s2[0].strip()), delim_whitespace=True, skipinitialspace=True, index_col=0)
     if len(s2) > 1:
-        df_cmat = pd.read_csv(pd.compat.StringIO(
+        df_cond = pd.read_csv(pd.compat.StringIO(
             s2[1].strip()), delim_whitespace=True, skipinitialspace=True, index_col=0)
     else:
         df_cond = None

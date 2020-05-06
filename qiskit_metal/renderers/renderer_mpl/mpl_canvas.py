@@ -13,7 +13,7 @@
 # that they have been altered from the originals.
 
 """
-@auhtor: Zlatko Minev, ... (IBM)
+@author: Zlatko Minev, ... (IBM)
 @date: 2019
 """
 import logging
@@ -45,8 +45,8 @@ from ...toolbox_python.utility_functions import log_error_easy
 from .interaction_mpl import MplInteraction, PanAndZoom
 from .toolbox_mpl import clear_axis, get_prop_cycle
 
-mpl.use("Qt5Agg")
-
+# @mfacchin - moved to the root __init__ to prevent windows from hanging
+# mpl.use("Qt5Agg")
 
 MPL_CONTEXT_DEFAULT = {
     'lines.linewidth': 3,
@@ -647,7 +647,7 @@ class MplRenderer():
             return
 
         # mask for all non zero width paths
-        mask = table.width == 0 #TODO: could there be a problem with float vs int here?
+        mask = (table.width == 0) | table.width.isna() #TODO: could there be a problem with float vs int here?
         #print(f'subtracted={subtracted}\n\n')
         #display(table)
         #display(imask)

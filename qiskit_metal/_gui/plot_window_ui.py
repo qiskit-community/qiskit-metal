@@ -2,11 +2,13 @@
 
 # Form implementation generated from reading ui file 'plot_window_ui.ui'
 #
-# Created by: PyQt5 UI code generator 5.9.2
+# Created by: PyQt5 UI code generator 5.14.2
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_MainWindowPlot(object):
     def setupUi(self, MainWindowPlot):
@@ -105,5 +107,4 @@ class Ui_MainWindowPlot(object):
         self.actionAuto.setShortcut(_translate("MainWindowPlot", "A"))
         self.actionReplot.setText(_translate("MainWindowPlot", "Replot"))
         self.actionReplot.setShortcut(_translate("MainWindowPlot", "Ctrl+R"))
-
 from . import main_window_rc_rc

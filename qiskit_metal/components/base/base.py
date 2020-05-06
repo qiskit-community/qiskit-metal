@@ -88,6 +88,9 @@ class BaseComponent():
         assert is_design(design), "Error you did not pass in a valid \
         Metal Design object as a parent of this component."
 
+        # TODO: handle, if the component name already exits and we want to overwrite,
+        # then we need to delete its old elements at the end of the init before the make
+
         self._name = name
         self._design = design  # pointer to parent
 

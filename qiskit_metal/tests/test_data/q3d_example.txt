@@ -1,0 +1,24 @@
+DesignVariation:$BBoxL='650um' $boxH='750um' $boxL='2mm' $QubitGap='30um' $QubitH='90um' $QubitL='450um' Lj_1='13nH'
+Setup1:LastAdaptive
+Problem Type:C
+C Units:farad, G Units:mSie
+Reduce Matrix:Original
+Frequency: 5.5E+09 Hz
+
+Capacitance Matrix
+    ground_plane	Q1_bus_Q0_connector_pad	Q1_bus_Q2_connector_pad	Q1_pad_bot	Q1_pad_top1	Q1_readout_connector_pad
+ground_plane	2.8829E-13	-3.254E-14	-3.1978E-14	-4.0063E-14	-4.3842E-14	-3.0053E-14
+Q1_bus_Q0_connector_pad	-3.254E-14	4.7257E-14	-2.2765E-16	-1.269E-14	-1.3351E-15	-1.451E-16
+Q1_bus_Q2_connector_pad	-3.1978E-14	-2.2765E-16	4.5327E-14	-1.218E-15	-1.1552E-14	-5.0414E-17
+Q1_pad_bot	-4.0063E-14	-1.269E-14	-1.218E-15	9.5831E-14	-3.2415E-14	-8.3665E-15
+Q1_pad_top1	-4.3842E-14	-1.3351E-15	-1.1552E-14	-3.2415E-14	9.132E-14	-1.0199E-15
+Q1_readout_connector_pad	-3.0053E-14	-1.451E-16	-5.0414E-17	-8.3665E-15	-1.0199E-15	3.9884E-14
+
+Conductance Matrix
+    ground_plane	Q1_bus_Q0_connector_pad	Q1_bus_Q2_connector_pad	Q1_pad_bot	Q1_pad_top1	Q1_readout_connector_pad
+ground_plane	0	0	0	0	0	0
+Q1_bus_Q0_connector_pad	0	0	0	0	0	0
+Q1_bus_Q2_connector_pad	0	0	0	0	0	0
+Q1_pad_bot	0	0	0	0	0	0
+Q1_pad_top1	0	0	0	0	0	0
+Q1_readout_connector_pad	0	0	0	0	0	0

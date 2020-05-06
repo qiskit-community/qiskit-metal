@@ -199,6 +199,7 @@ class TransmonPocket(BaseQubit):
         '''
         for name, options_con_lines in self.options.con_lines.items():
             # update the options for the connector with the defaults under them
+            # TODO: This doens tseme to work, should probably update the parent options as well anyhow
             ops = deepcopy(DEFAULT_OPTIONS['TransmonPocket.con_lines'])
             ops.update(options_con_lines)
             options_con_lines.update(ops)

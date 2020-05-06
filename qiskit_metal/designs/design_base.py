@@ -211,14 +211,15 @@ class DesignBase():
         # and then skip the deletion of compoentns elements one by one
         # first clear all the
         # thne just make without the checks on existing
-        #TODO: Handle error and print nice statemetns
+        # TODO: Handle error and print nice statemetns
         # try catch log_simple_error
         for name, obj in self.components.items():  # pylint: disable=unused-variable
-            try: # TODO: performace?
+            try:  # TODO: performace?
                 obj.do_make()  # should we call this build?
             except:
                 print('ERORROR HEREE')
-                log_error_easy(self.logger, post_text=f'\nERROR in rebuilding component "{name}"!\n')
+                log_error_easy(
+                    self.logger, post_text=f'\nERROR in rebuilding component "{name}"!\n')
 
     def reload_component(self, component_module_name: str, component_class_name: str):
         """Reload the module and class of a given componetn and update
@@ -230,15 +231,16 @@ class DesignBase():
             component_class_name {str} -- String name of the class name inside thst module,
                 such  as `TransmonPocket`
         """
-        self.logger.debug(f'Reloading component_class_name={component_class_name}; component_module_name={component_module_name}')
+        self.logger.debug(
+            f'Reloading component_class_name={component_class_name}; component_module_name={component_module_name}')
         module = importlib.import_module(component_module_name)
         module = importlib.reload(module)
         new_class = getattr(module, component_class_name)
 
         # components that need
         for instance in filter(lambda k:
-                k.__class__.__name__ == component_class_name and
-                k.__class__.__module__ == component_module_name,
+                               k.__class__.__name__ == component_class_name and
+                               k.__class__.__module__ == component_module_name,
                                self.components.values()):
             instance.__class__ = new_class
 
@@ -553,7 +555,7 @@ def make_connector(points: list, parent_name, flip=False, chip='main'):
     assert len(points) == 2
 
     # Get the direction vector, the unit direction vec, and the normal vector
-    vec_dist, vec_dist_unit, vec_normal = draw.vec_unit_norm(points)
+    vec_dist, vec_dist_unit, vec_normal = draw.Vector.two_points_described(points)
 
     if flip:
         vec_normal = -vec_normal
