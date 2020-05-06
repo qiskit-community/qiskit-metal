@@ -155,7 +155,7 @@ class BaseComponent():
         for child in parents[len(parents)-2::-1]:
             # There is a developer agreement so the defaults will be in dict named default_options.
             if hasattr(child, 'default_options'):
-                print(f'{child.__name__}:', child.default_options)
+                #print(f'{child.__name__}:', child.default_options)
                 options_from_children = {
                     **options_from_children, **child.default_options}
 
@@ -165,7 +165,7 @@ class BaseComponent():
         # Presently, the name of the file which hold the class is returned.  
         # Going forward, this function could include the path.
 
-        s = inspect.stack()
+        #s = inspect.stack()
         #getmodulename_data = inspect.getmodulename(s).__name__
         #print(getmodulename_data)
 
