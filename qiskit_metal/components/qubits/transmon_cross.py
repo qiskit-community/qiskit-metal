@@ -121,8 +121,8 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
         cross_gap = p.cross_gap
 
         #Creates the cross and the etch equivalent. (FIX TO DRAW.LINESTRING)
-        cross_line =shapely.ops.cascaded_union([shapely.geometry.LineString([(0,cross_length),(0,-cross_length)]),
-            shapely.geometry.LineString([(cross_length,0),(-cross_length,0)])])
+        cross_line =draw.shapely.ops.cascaded_union([draw.LineString([(0,cross_length),(0,-cross_length)]),
+            draw.LineString([(cross_length,0),(-cross_length,0)])])
 
         cross = cross_line.buffer(cross_width/2,cap_style=2)
         cross_etch = cross_line.buffer(cross_gap + cross_width/2, cap_style=2)
@@ -153,9 +153,9 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
             ops = deepcopy(DEFAULT_OPTIONS['TransmonCross.con_lines'])
             ops.update(options_connector)
             options_connector.update(ops)
-            self.make_con_line(name, options_connector)
+            self.make_con_line(name)
 
-    def make_con_line(self,name:str)
+    def make_con_line(self,name:str):
         '''
         Makes individual connector
 
@@ -184,9 +184,9 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
 
             claw_base = draw.box(-c_w, -(t_claw_height)/2, c_l, t_claw_height/2)
             claw_subtract = draw.box(0, -t_claw_height/2 + c_w, c_l, t_claw_height/2 - c_w)
-            claw_base = clawBase.difference(claw_subtract)
+            claw_base = claw_base.difference(claw_subtract)
 
-            connector_arm = cascaded_union([claw_base, claw_cpw])
+            connector_arm = draw.shapely.ops.cascaded_union([claw_base, claw_cpw])
             connector_etcher = draw.buffer(connector_arm, c_g)
         else:
             connector_arm = claw_cpw
@@ -199,16 +199,24 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
         # this seems more straightforward.
         port_line = draw.LineString([(-4*c_w,-c_w/2),(-4*c_w,c_w/2)])
 
+        claw_rotate = 0
+        if con_loc>135:
+            claw_rotate = 180
+        elif con_loc>45:
+            claw_rotate = -90
+
         #Rotates and translates the connector polygons (and temporary port_line)
         polys = [connector_arm, connector_etcher, port_line]
+        polys = draw.translate(polys, -(cross_length + cross_gap + g_s + c_g), 0)
+        polys = draw.rotate(polys, claw_rotate, origin=(0, 0))
         polys = draw.rotate(polys, p.orientation, origin=(0, 0))
         polys = draw.translate(polys, p.pos_x, p.pos_y)
         [connector_arm,connector_etcher,port_line] = polys
 
         #Generates elements for the connector
         self.add_elements('poly', {f'{name}_connector_arm':connector_arm})
-        self.add_element('poly', {f'{name}_connector_etcher':connector_etcher}, subtract=True)
+        self.add_elements('poly', {f'{name}_connector_etcher':connector_etcher}, subtract=True)
 
-        port_points = list(shape(objects['port_line']).coords)
+        port_points = list(draw.shapely.geometry.shape(port_line).coords)
         self.design.add_connector(name, port_points, self.name, flip=False)  # TODO: chip
 

@@ -48,9 +48,9 @@ DEFAULT_OPTIONS['TransmonPocketCL'].update(Dict(
     make_CL=True,
     cl_gap='6um',  # the cpw dielectric gap of the charge line
     cl_width='10um',  # the cpw trace width of the charge line
-    cl_length='20um',  # the length of the charge line 'arm' coupling the the qubit pocket. Measured from the base of the 90 degree bend
+    cl_length='20um',  # the length of the charge line 'arm' coupling the the qubit pocket. 
+    #Measured from the base of the 90 degree bend
     cl_ground_gap='6um',  # how much ground between the charge line and the qubit pocket
-    # the side of the qubit pocket the charge line is placed on (before any rotations)
     cl_pocket_edge='0', #-180 to +180 from the 'left edge', will round to the nearest 90.
     cl_off_center='100um',  # distance from the center axis the qubit pocket is built on
 ))
@@ -71,20 +71,31 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
     This is a child of TransmonPocket, see TransmonPocket for the variables and
     description of that class.
 
-    Options:
+        _________________
+        |               |
+        |_______________|       ^
+        ________x________       |  N
+        |               |       |
+        |_______________|
+
+
+    Args:
     ----------------------------------------------------------------------------
-    Convention: Values (unless noted) are strings with units included,
-                (e.g., '30um')
+    bob ([type]): [description]
 
     Charge Line:
     ----------------------------------------------------------------------------
-
+    make_CL (bool): If a chargeline should be included.
+    cl_gap (string): The cpw dielectric gap of the charge line.
+    cl_width (string): The cpw width of the charge line.
+    cl_length (string):  The length of the charge line 'arm' coupling the the qubit pocket. 
+        Measured from the base of the 90 degree bend.
+    cl_ground_gap (string):  How much ground is present between the charge line and the 
+        qubit pocket.
+    cl_pocket_edge (string): What side of the pocket the charge line is.
+        -180 to +180 from the 'west edge', will round to the nearest 90.
+    cl_off_center (string):  Distance from the center axis the qubit pocket is referenced to
     '''
-
-    # def __init__(self, design, name, options=None, options_connectors=None):
-    #    super().__init__(design, name, options, options_connectors)
-
-
     def make(self):
         super().make()
 
@@ -96,6 +107,8 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
 
 
     def make_charge_line(self):
+
+
         # Grab option values
         name = 'Charge_Line'
         
@@ -135,7 +148,7 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
         [cl_metal, cl_etcher, port_line] = polys
 
         # Making the design connector for 'easy connect'
-        points = draw.get_poly_pts(port_line)
+        points = list(draw.shapely.geometry.shape(port_line).coords)
         self.design.add_connector(name, points, self.name, flip=False)  # TODO: chip
 
         self.add_elements('poly', dict(cl_metal=cl_metal))
