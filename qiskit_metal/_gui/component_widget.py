@@ -21,19 +21,19 @@ import ast
 import inspect
 from inspect import getfile, signature
 from pathlib import Path
-from typing import TYPE_CHECKING
-from typing import Union
+from typing import TYPE_CHECKING, Union
+
 import numpy as np
 from PyQt5 import Qt, QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import QAbstractTableModel, QModelIndex
 from PyQt5.QtGui import QFont
-from PyQt5.QtCore import QAbstractTableModel
 from PyQt5.QtWidgets import (QApplication, QFileDialog, QLabel, QMainWindow,
                              QMessageBox, QTabWidget)
 
 from .. import logger
+from ._handle_qt_messages import catch_exception_slot_pyqt
 from .component_widget_ui import Ui_ComponentWidget
 from .widgets.source_editor_widget import create_source_edit_widget
-from ._handle_qt_messages import catch_exception_slot_pyqt
 
 if TYPE_CHECKING:
     from .main_window import MetalGUI, QMainWindowExtension
@@ -332,12 +332,12 @@ class ComponentTableModel(QAbstractTableModel):
         """Force refresh.   Completly rebuild the model."""
         self.modelReset.emit()
 
-    def rowCount(self, parent=None):  # =QtCore.QModelIndex()):
+    def rowCount(self, parent: QModelIndex = None):
         if self.component is None:
             return 0
         return len(self.component.options)  # TODO:
 
-    def columnCount(self, parent=None):  # =QtCore.QModelIndex()):
+    def columnCount(self, parent: QModelIndex = None):
         return 2
 
     def headerData(self, section, orientation, role=QtCore.Qt.DisplayRole):
@@ -350,7 +350,7 @@ class ComponentTableModel(QAbstractTableModel):
             if section < self.columnCount():
                 return self.columns[section]
 
-    def flags(self, index: QtCore.QModelIndex):
+    def flags(self, index: QModelIndex):
         """ Set the item flags at the given index. Seems like we're
             implementing this function just to see how it's done, as we
             manually adjust each tableView to have NoEditTriggers.
@@ -370,7 +370,7 @@ class ComponentTableModel(QAbstractTableModel):
         return QtCore.Qt.ItemFlags(flags)
 
     # https://doc.qt.io/qt-5/qt.html#ItemDataRole-enum
-    def data(self, index: Qt.QModelIndex, role=QtCore.Qt.DisplayRole):
+    def data(self, index: QModelIndex, role=QtCore.Qt.DisplayRole):
         """ Depending on the index and role given, return data. If not
             returning data, return None (PySide equivalent of QT's
             "invalid QVariant").
@@ -407,7 +407,8 @@ class ComponentTableModel(QAbstractTableModel):
                 font.setBold(True)
                 return font
 
-    def setData(self, index: QtCore.QModelIndex,
+    def setData(self,
+                index: QtCore.QModelIndex,
                 value: Qt.QVariant,
                 role=QtCore.Qt.EditRole):
         """Sets the role data for the item at index to value.

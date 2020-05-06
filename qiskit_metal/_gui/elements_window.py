@@ -3,15 +3,16 @@
 @date: 2020
 """
 
-from PyQt5 import Qt, QtCore, QtWidgets
+from typing import TYPE_CHECKING
+
 import numpy as np
-from PyQt5.QtCore import QAbstractTableModel
-from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QApplication, QLabel, QMainWindow, QMessageBox, QFileDialog
+from PyQt5 import Qt, QtCore, QtWidgets
+from PyQt5.QtCore import QAbstractTableModel, QModelIndex
+from PyQt5.QtWidgets import (QApplication, QFileDialog, QLabel, QMainWindow,
+                             QMessageBox)
 
 from .elements_ui import Ui_ElementsWindow
 
-from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     # https://stackoverflow.com/questions/39740632/python-type-hinting-without-cyclic-imports
     from .main_window import MetalGUI, QMainWindowExtension
@@ -137,13 +138,13 @@ class ElementTableModel(QAbstractTableModel):
 
             self._row_count = new_count
 
-    def rowCount(self, parent=None):  # =QtCore.QModelIndex()):
-        if self.table is  None:
+    def rowCount(self, parent: QModelIndex = None):
+        if self.table is None:
             return 0
         return self.table.shape[0]
 
-    def columnCount(self, parent=None):  # =QtCore.QModelIndex()):
-        if self.table is  None:
+    def columnCount(self, parent: QModelIndex = None):
+        if self.table is None:
             return 0
         return self.table.shape[1]
 
@@ -157,7 +158,7 @@ class ElementTableModel(QAbstractTableModel):
             if section < self.columnCount():
                 return str(self.table.columns[section])
 
-    def flags(self, index):
+    def flags(self, index: QModelIndex):
         """ Set the item flags at the given index. Seems like we're
             implementing this function just to see how it's done, as we
             manually adjust each tableView to have NoEditTriggers.
@@ -170,7 +171,7 @@ class ElementTableModel(QAbstractTableModel):
         return QtCore.Qt.ItemFlags(QAbstractTableModel.flags(self, index) |
                                    QtCore.Qt.ItemIsSelectable)  # ItemIsEditable
 
-    def data(self, index, role=QtCore.Qt.DisplayRole):
+    def data(self, index: QModelIndex, role=QtCore.Qt.DisplayRole):
         """ Depending on the index and role given, return data. If not
             returning data, return None (PySide equivalent of QT's
             "invalid QVariant").
