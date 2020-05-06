@@ -2,11 +2,13 @@
 
 # Form implementation generated from reading ui file 'component_widget_ui.ui'
 #
-# Created by: PyQt5 UI code generator 5.9.2
+# Created by: PyQt5 UI code generator 5.14.2
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_ComponentWidget(object):
     def setupUi(self, ComponentWidget):
@@ -23,15 +25,32 @@ class Ui_ComponentWidget(object):
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setSpacing(0)
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.labelComponentName = QtWidgets.QLabel(self.tabOptions)
+        self.labelComponentName = QtWidgets.QLineEdit(self.tabOptions)
+        font = QtGui.QFont()
+        font.setBold(True)
+        font.setWeight(75)
+        self.labelComponentName.setFont(font)
+        self.labelComponentName.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.labelComponentName.setAutoFillBackground(False)
+        self.labelComponentName.setFrame(False)
+        self.labelComponentName.setReadOnly(True)
+        self.labelComponentName.setClearButtonEnabled(False)
+        self.labelComponentName.setObjectName("labelComponentName")
+        self.horizontalLayout.addWidget(self.labelComponentName)
+        self.labelComponentName_old = QtWidgets.QLabel(self.tabOptions)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.labelComponentName_old.sizePolicy().hasHeightForWidth())
+        self.labelComponentName_old.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
         font.setPointSize(13)
         font.setBold(True)
         font.setWeight(75)
-        self.labelComponentName.setFont(font)
-        self.labelComponentName.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.labelComponentName.setObjectName("labelComponentName")
-        self.horizontalLayout.addWidget(self.labelComponentName)
+        self.labelComponentName_old.setFont(font)
+        self.labelComponentName_old.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.labelComponentName_old.setObjectName("labelComponentName_old")
+        self.horizontalLayout.addWidget(self.labelComponentName_old)
         self.verticalLayout.addLayout(self.horizontalLayout)
         self.tableView = QtWidgets.QTableView(self.tabOptions)
         self.tableView.setAlternatingRowColors(True)
@@ -93,14 +112,15 @@ class Ui_ComponentWidget(object):
         ComponentWidget.addTab(self.tabSource, icon3, "")
 
         self.retranslateUi(ComponentWidget)
-        ComponentWidget.setCurrentIndex(2)
+        ComponentWidget.setCurrentIndex(0)
         self.btn_edit_src.clicked.connect(ComponentWidget.edit_source)
         QtCore.QMetaObject.connectSlotsByName(ComponentWidget)
 
     def retranslateUi(self, ComponentWidget):
         _translate = QtCore.QCoreApplication.translate
         ComponentWidget.setWindowTitle(_translate("ComponentWidget", "TabWidget"))
-        self.labelComponentName.setText(_translate("ComponentWidget", "Component Name"))
+        self.labelComponentName.setPlaceholderText(_translate("ComponentWidget", "Select component to edit its options here"))
+        self.labelComponentName_old.setText(_translate("ComponentWidget", "Component Name"))
         ComponentWidget.setTabText(ComponentWidget.indexOf(self.tabOptions), _translate("ComponentWidget", "Options"))
         ComponentWidget.setTabToolTip(ComponentWidget.indexOf(self.tabOptions), _translate("ComponentWidget", "Edit the make options"))
         self.textHelp.setHtml(_translate("ComponentWidget", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
@@ -122,5 +142,4 @@ class Ui_ComponentWidget(object):
         self.lineSourcePath.setAccessibleDescription(_translate("ComponentWidget", "Source code file path"))
         self.lineSourcePath.setText(_translate("ComponentWidget", "Source code file path here"))
         ComponentWidget.setTabText(ComponentWidget.indexOf(self.tabSource), _translate("ComponentWidget", "Source"))
-
 from . import main_window_rc_rc

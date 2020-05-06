@@ -21,21 +21,24 @@ import ast
 import inspect
 from inspect import getfile, signature
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Union
 
 import numpy as np
 from PyQt5 import Qt, QtCore, QtGui, QtWidgets
-from PyQt5.QtCore import QAbstractTableModel
+from PyQt5.QtCore import QAbstractTableModel, QModelIndex
+from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import (QApplication, QFileDialog, QLabel, QMainWindow,
                              QMessageBox, QTabWidget)
 
 from .. import logger
+from ._handle_qt_messages import catch_exception_slot_pyqt
 from .component_widget_ui import Ui_ComponentWidget
 from .widgets.source_editor_widget import create_source_edit_widget
-from ._handle_qt_messages import catch_exception_slot_pyqt
 
 if TYPE_CHECKING:
     from .main_window import MetalGUI, QMainWindowExtension
+    from ..components import BaseComponent
+    from ..designs import DesignBase
 
 try:  # For source doc
     import pygments
@@ -49,9 +52,66 @@ except ImportError as e:
     HtmlFormatter = None
     get_lexer_by_name = None
 
+# TODO: move to conifg
+textHelp_css_style = """
+body {
+  background-color: #f7f7f7;
+  color: #000000;
+}
+
+.ComponentHeader th {
+    text-align: left;
+    background-color: #EEEEEE;
+    padding-right: 10px;
+}
+
+.ComponentHeader td {
+    text-align: left;
+    padding-left: 5px;
+    color: brown;
+}
+
+.ComponentHeader {
+    font-size: 1.5em;
+    text-align: left;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding-right: 40px;
+}
+
+.h1 {
+  display: block;
+  font-size: large;
+  margin-top: 0.67em;
+  margin-bottom: 0.67em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+}
+
+.DocString {
+    font-family: monospace;
+}
+"""
+
+
+def format_docstr(doc: Union[str, None]) -> str:
+    if doc is None:
+        return ''
+    doc = doc.strip()
+    text = f"""
+<pre style="background-color: #EBECE4;">
+<code class="DocString">{doc}</code>
+</pre>
+    """
+    return text
+
 
 def create_QTextDocument(doc: QtWidgets.QTextEdit) -> QtGui.QTextDocument:
-    """For source doc
+    """
+    For source doc.
+
+    Access with gui.component_window.src_doc
     """
     document = QtGui.QTextDocument()
 
@@ -61,7 +121,12 @@ def create_QTextDocument(doc: QtWidgets.QTextEdit) -> QtGui.QTextDocument:
 
     # Style documents monoscaped font
     font = document.defaultFont()
-    font.setFamily("monospace")
+    if hasattr(QFont, "Monospace"):
+        # when not available
+        font.setStyleHint(QFont.Monospace)
+    else:
+        font.setStyleHint(QFont.Courier)
+    font.setFamily("courier")
     document.setDefaultFont(font)
 
     return document
@@ -74,6 +139,9 @@ class ComponentWidget(QTabWidget):
     PyQt5 Signal / Slots Extensions:
         The UI can call up to this class to execeute button clicks for instance
         Extensiosn in qt designer on signals/slots are linked to this class
+
+    **Access:**
+        gui.component_window
     """
 
     def __init__(self, gui: 'MetalGUI', parent: QtWidgets.QWidget):
@@ -101,6 +169,10 @@ class ComponentWidget(QTabWidget):
         self._html_css_lex = None  # type: pygments.formatters.html.HtmlFormatter
         self.src_widgets = []  # type: List[QtWidgets.QWidget]
 
+        # Help stylesheet
+        document = self.ui.textHelp.document()
+        document.setDefaultStyleSheet(textHelp_css_style)
+
     @property
     def design(self):
         return self.gui.design
@@ -120,11 +192,17 @@ class ComponentWidget(QTabWidget):
 
         if name is None:
             # TODO: handle case when name is none: just clear all
+            # TODO: handle case where the component is made in jupyter notebook
             self.force_refresh()
             return
 
         component = self.component
-        self.ui.labelComponentName.setText(str(component.name))
+
+        # Labels
+        # ) from {component.__class__.__module__}
+        label_text = f"{component.name}   :   {component.__class__.__name__}   :   {component.__class__.__module__}"
+        self.ui.labelComponentName.setText(label_text)
+        self.ui.labelComponentName.setCursorPosition(0)  # Move to left
 
         self._set_source()
         self._set_help()
@@ -136,7 +214,49 @@ class ComponentWidget(QTabWidget):
 
     def _set_help(self):
         """Called when we need to set a new help"""
-        pass  # TODO:
+        # See also
+        # from IPython.core import oinspect
+        # oinspect.getdoc(SampleClass)
+        # from IPython.core.oinspect import Inspector
+        # ins = Inspector()
+        # ins.pdoc(SampleClass)
+
+        component = self.component
+        if component is None:
+            return
+
+        filepath = inspect.getfile(component.__class__)
+        doc_class = format_docstr(inspect.getdoc(component))
+        doc_init = format_docstr(inspect.getdoc(component.__init__))
+
+        text = "<body>"
+        text += f'''
+        <div class="h1">Summary:</div>
+        <table class="table ComponentHeader">
+            <tbody>
+                <tr> <th>Name</th> <td>{component.name}</td></tr>
+                <tr> <th>Class</th><td>{component.__class__.__name__}</td></tr>
+                <tr> <th>Module</th><td>{component.__class__.__module__}</td></tr>
+                <tr> <th>Path </th> <td style="text-color=#BBBBBB;"> {filepath}</td></tr>
+            </tbody>
+        </table>
+        '''
+
+        # get image
+        # if image_path:
+        #     text += f'''
+        #     <img class="ComponentImage" src="{image_path}"></img>
+        #     '''
+
+        text += f'''
+            <div class="h1">Class docstring:</div>
+            {doc_class}
+            <div class="h1">Init docstring:</div>
+            {doc_init}
+        '''
+        text += "</body>"
+
+        self.ui.textHelp.setHtml(text)
 
     def _set_source(self):
         """Called when we need to set a new help"""
@@ -212,12 +332,12 @@ class ComponentTableModel(QAbstractTableModel):
         """Force refresh.   Completly rebuild the model."""
         self.modelReset.emit()
 
-    def rowCount(self, parent=None):  # =QtCore.QModelIndex()):
+    def rowCount(self, parent: QModelIndex = None):
         if self.component is None:
             return 0
         return len(self.component.options)  # TODO:
 
-    def columnCount(self, parent=None):  # =QtCore.QModelIndex()):
+    def columnCount(self, parent: QModelIndex = None):
         return 2
 
     def headerData(self, section, orientation, role=QtCore.Qt.DisplayRole):
@@ -230,7 +350,7 @@ class ComponentTableModel(QAbstractTableModel):
             if section < self.columnCount():
                 return self.columns[section]
 
-    def flags(self, index: QtCore.QModelIndex):
+    def flags(self, index: QModelIndex):
         """ Set the item flags at the given index. Seems like we're
             implementing this function just to see how it's done, as we
             manually adjust each tableView to have NoEditTriggers.
@@ -250,7 +370,7 @@ class ComponentTableModel(QAbstractTableModel):
         return QtCore.Qt.ItemFlags(flags)
 
     # https://doc.qt.io/qt-5/qt.html#ItemDataRole-enum
-    def data(self, index: Qt.QModelIndex, role=QtCore.Qt.DisplayRole):
+    def data(self, index: QModelIndex, role=QtCore.Qt.DisplayRole):
         """ Depending on the index and role given, return data. If not
             returning data, return None (PySide equivalent of QT's
             "invalid QVariant").
@@ -287,7 +407,8 @@ class ComponentTableModel(QAbstractTableModel):
                 font.setBold(True)
                 return font
 
-    def setData(self, index: QtCore.QModelIndex,
+    def setData(self,
+                index: QtCore.QModelIndex,
                 value: Qt.QVariant,
                 role=QtCore.Qt.EditRole):
         """Sets the role data for the item at index to value.

@@ -20,6 +20,7 @@ Created 2019
 """
 
 
+from cycler import cycler
 import descartes  # shapely plot
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -107,11 +108,11 @@ def render_poly(poly: shapely.geometry.Polygon, ax: plt.Axes, kw=None):
 def render(components,
            ax=None,
            kw=None,
-           #plot_format=True,
+           # plot_format=True,
            labels=None,
            __depth=-1,     # how many sublists in we are
            _iteration=0):  # how many components we have plotted
-           # **kwargs):  # such as kw_hole
+    # **kwargs):  # such as kw_hole
     '''
     Main plotting function.
     Plots onto an axis.
@@ -140,8 +141,8 @@ def render(components,
             _iteration = render(objs, ax=ax, kw=kw,
                                 labels=labels, __depth=__depth,
                                 _iteration=_iteration)
-                                # plot_format=plot_format, , **kwargs)
-        #if plot_format and (__depth == 0):
+            # plot_format=plot_format, , **kwargs)
+        # if plot_format and (__depth == 0):
         #    style_axis_simple(ax, labels=labels)
         return _iteration
 
@@ -150,8 +151,8 @@ def render(components,
             _iteration = render(objs, ax=ax, kw=kw,
                                 labels=labels, __depth=__depth,
                                 _iteration=_iteration)
-                                # plot_format=plot_format,, **kwargs)
-        #if plot_format and (__depth == 0):
+            # plot_format=plot_format,, **kwargs)
+        # if plot_format and (__depth == 0):
         #    style_axis_simple(ax, labels=labels)
         return _iteration
 
@@ -176,7 +177,7 @@ def render(components,
 
         ax.plot(*zip(*list(coords)), **kw)
 
-    #if plot_format and (__depth == 0):
+    # if plot_format and (__depth == 0):
     #    style_axis_simple(ax, labels=labels)
 
     return _iteration+1
@@ -235,8 +236,10 @@ def style_axis_simple(ax, labels=None):
         fontP.set_size('small')
         ax.legend(loc='center left', bbox_to_anchor=(1, 0.5), prop=fontP)
 
-from cycler import cycler
+
 rcParams = plt.matplotlib.rcParams
+
+
 def get_prop_cycle():
     prop_cycler = rcParams['axes.prop_cycle']
     if prop_cycler is None and 'axes.color_cycle' in rcParams:
@@ -246,6 +249,7 @@ def get_prop_cycle():
 
 #################################################################################
 # Top level plotting calls - PLOT FULL
+
 
 def style_axis_standard(ax):
     #fig = ax.figure
@@ -351,6 +355,7 @@ def clear_axis(ax: plt.Axes):
         ax.legend_.remove()
 """
 
+
 def clear_axis(ax: plt.Axes):
     """Clear all plotted objects on an axis
     including lines, patches, tests, tables,
@@ -358,9 +363,9 @@ def clear_axis(ax: plt.Axes):
     collections, and containers
 
     Args:
-        ax (plt.Axes): Mpl axis to clear
+        ax (plt.Axes): MPL axis to clear
     """
-    #ax.clear()
+    # ax.clear()
     ax.lines = []
     ax.patches = []
     ax.texts = []
@@ -374,6 +379,10 @@ def clear_axis(ax: plt.Axes):
     ax.collections = []  # collection.Collection instances
     ax.containers = []
 
-    #for axis in [ax.xaxis, ax.yaxis]:
+    # reset the bounds for autoscale
+    # Could also use ax.relim()
+    ax.dataLim.set_points(np.array([[-1, -1], [1, 1]]))
+
+    # for axis in [ax.xaxis, ax.yaxis]:
     #    # Clear the callback registry for this axis, or it may "leak"
     #    pass #self.callbacks = cbook.CallbackRegistry()

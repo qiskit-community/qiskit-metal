@@ -17,6 +17,7 @@
 
 from PyQt5.QtCore import QAbstractTableModel
 from PyQt5 import Qt, QtCore, QtWidgets
+from PyQt5.QtCore import QModelIndex
 import numpy as np
 
 
@@ -86,13 +87,13 @@ class ComponentsTableModel(QAbstractTableModel):
 
             self._row_count = new_count
 
-    def rowCount(self, parent=None):  # =QtCore.QModelIndex()):
+    def rowCount(self, parent:QModelIndex=None):
         if self.design:  # should we jsut enforce this
             return int(len(self.design.components))
         else:
             return 0
 
-    def columnCount(self, parent=None):  # =QtCore.QModelIndex()):
+    def columnCount(self, parent:QModelIndex=None):
         return len(self.columns)
 
     def headerData(self, section, orientation, role=QtCore.Qt.DisplayRole):
@@ -118,7 +119,7 @@ class ComponentsTableModel(QAbstractTableModel):
         return QtCore.Qt.ItemFlags(QAbstractTableModel.flags(self, index) |
                                    QtCore.Qt.ItemIsSelectable)  # ItemIsEditable
 
-    def data(self, index:Qt.QModelIndex, role=QtCore.Qt.DisplayRole):
+    def data(self, index:QModelIndex, role=QtCore.Qt.DisplayRole):
         """ Depending on the index and role given, return data. If not
             returning data, return None (PySide equivalent of QT's
             "invalid QVariant").

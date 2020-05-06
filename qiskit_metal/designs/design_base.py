@@ -462,12 +462,30 @@ class DesignBase():
             parent = parent.name
         elif parent is None:
             parent = 'none'
+        name = parent+'_'+name
+        
 
         # assert isinstance(parent, str) # could enfornce
         self.connectors[name] = make_connector(
             points, parent, flip=flip, chip=chip)
 
         # TODO: Add net?
+
+    def get_connector(self,name:str):
+        """Interface for components to get connector data
+
+        Args:
+            name (str): Name of the desired connector.
+
+        Returns:
+            (dict): Returns the data of the connector, see design_base.make_connector() for
+                what those values are.
+        """
+
+        #For after switching to pandas, something like this?
+        #return self.connectors.get(name).to_dict()
+
+        return self.connectors[name]
 
     def update_component(self, component_name: str, dependencies=True):
         """Update the component and any dependencies it may have.
@@ -554,7 +572,7 @@ def make_connector(points: list, parent_name, flip=False, chip='main'):
     assert len(points) == 2
 
     # Get the direction vector, the unit direction vec, and the normal vector
-    vec_dist, vec_dist_unit, vec_normal = draw.vec_unit_norm(points)
+    vec_dist, vec_dist_unit, vec_normal = draw.Vector.two_points_described(points)
 
     if flip:
         vec_normal = -vec_normal

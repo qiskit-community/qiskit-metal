@@ -647,7 +647,7 @@ class MplRenderer():
             return
 
         # mask for all non zero width paths
-        mask = table.width == 0 #TODO: could there be a problem with float vs int here?
+        mask = (table.width == 0) | table.width.isna() #TODO: could there be a problem with float vs int here?
         #print(f'subtracted={subtracted}\n\n')
         #display(table)
         #display(imask)

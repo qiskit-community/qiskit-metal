@@ -165,7 +165,7 @@ class TransmonPocket(BaseQubit):
         # self.p allows us to directly access parsed values (string -> numbers) form the user option
         p = self.p
 
-        # since we will reuse these options, parse them once and efine them as varaibles
+        # since we will reuse these options, parse them once and define them as varaibles
         pad_width = p.pad_width
         pad_height = p.pad_height
         pad_gap = p.pad_gap
@@ -199,6 +199,7 @@ class TransmonPocket(BaseQubit):
         '''
         for name, options_con_lines in self.options.con_lines.items():
             # update the options for the connector with the defaults under them
+            # TODO: This doens tseme to work, should probably update the parent options as well anyhow
             ops = deepcopy(DEFAULT_OPTIONS['TransmonPocket.con_lines'])
             ops.update(options_con_lines)
             options_con_lines.update(ops)
@@ -253,14 +254,12 @@ class TransmonPocket(BaseQubit):
         objects = draw.rotate_position(objects, p.orientation, [p.pos_x, p.pos_y])
         [connector_pad, connector_wire_path, connector_wire_CON] = objects
 
-        self.add_elements('poly', dict(connector_pad=connector_pad))
+        self.add_elements('poly', {f'{name}_connector_pad':connector_pad})
         self.add_elements('path', {f'{name}_wire':connector_wire_path}, width=cpw_width)
         self.add_elements('path', {f'{name}_wire_sub':connector_wire_path},
                           width=cpw_width + 2*pc.cpw_gap, subtract=True)
 
         # add connectors to design tracker
         points = draw.get_poly_pts(connector_wire_CON)
-        self.design.add_connector(
-            self.name+'_'+name, points[2:2+2], self.name, flip=False)  # TODO: chip
-        # connectors[self.name+'_'+name] = make_connector(\
-        # points[2:2+2], options, vec_normal=points[2]-points[1])
+        self.design.add_connector(name, points[2:2+2], self.name, flip=False)  # TODO: chip
+ 
