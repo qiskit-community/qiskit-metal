@@ -22,10 +22,12 @@ See the docstring of BaseComponent
 """
 import logging
 import pprint
+import inspect
+import os
 from copy import deepcopy
 from typing import TYPE_CHECKING, Any, Iterable, List, Optional, TypeVar, Union
 
-from ... import DEFAULT_OPTIONS, is_design, logger
+from ... import is_design, logger
 from ...draw import BaseGeometry
 from ...toolbox_python.attr_dict import Dict
 from ._parsed_dynamic_attrs import ParsedDynamicAttributes_Component
@@ -61,10 +63,14 @@ class BaseComponent():
         * The class provides the interfaces for the component (creator user)
     """
 
+    ''' This is replaced by BaseComponent.gather_all_children_options and removing global variables.
+
+
     # Default options can inherit the options of other functions of objects
     # in DEFAULT_OPTIONS. Give the name of the key-value pair, where the key is
     # how you want to call the copied version of DEFAULT_OPTIONS[key]
     _inherit_options_from = {}
+    '''
 
     # Dummy private attribute used to check if an instanciated object is
     # indeed a BaseComponent class. The problem is that the `isinstance`
@@ -72,9 +78,10 @@ class BaseComponent():
     # Used by `is_component` to check.
     __i_am_component__ = True
 
-    def __init__(self, design: 'DesignBase', name: str,  options: Dict = None,
-                 make=True):
-        """Create a new Metal component and adds it to the design.
+    def __init__(self, design: 'DesignBase', name: str, options: Dict = None,
+                 make=True, component_default: Dict = None):
+                
+        """Create a new Metal component and adds it's default_options to the design.
 
         Arguments:
             name {str} -- Name of the component.
@@ -84,6 +91,7 @@ class BaseComponent():
             options {[type]} -- User options that will override the defaults. (default: {None})
             make {bool} -- Should the make function be called at the end of the init.
                     Options be used in the make funciton to create the geometry. (default: {True})
+            component_default {[type]} -- User can overwrite the template_options for the component.
         """
 
         assert is_design(design), "Error you did not pass in a valid \
@@ -92,9 +100,19 @@ class BaseComponent():
         self._name = name
         self._design = design  # pointer to parent
 
+        self.unique_dict_key = self.get_unique_module_class_name()
+        if self.unique_dict_key not in design.template_options:
+            if component_default:
+                design.template_options[self.unique_dict_key] = deepcopy(
+                    component_default)
+            else:
+                design.template_options[self.unique_dict_key] = deepcopy(
+                    self.gather_all_children_options())
+
         # TODO: options:  should probably write a setter and getter?
+        # Question: why is create_default_options a @classmethod.  Don't see the purpose after global DEFAULT_OPTIONS is removed.
         self.options = self.create_default_options(
-            design=design, name=name, logger_=logger)
+            design=design, name=name, logger_=logger, unique_key=self.unique_dict_key)
         if options:
             self.options.update(options)
 
@@ -125,6 +143,48 @@ class BaseComponent():
         if make:
             self.do_make()
 
+    def gather_all_children_options(self):
+        #From the base class of BaseComponent, traverse the child classes
+        #to gather the .default options for each child class.
+        #Note:if keys are the same for child and grandchild, grandchild will overwrite child
+
+        options_from_children = {}
+        parents = inspect.getmro(self.__class__)
+
+        # Base.py is not expected to have default_options dict to add to design class.
+        for child in parents[len(parents)-2::-1]:
+            # There is a developer agreement so the defaults will be in dict named default_options.
+            if hasattr(child, 'default_options'):
+                print(f'{child.__name__}:', child.default_options)
+                options_from_children = {
+                    **options_from_children, **child.default_options}
+
+        return options_from_children
+
+    def get_module_name(self):
+        # Presently, the name of the file which hold the class is returned.  
+        # Going forward, this function could include the path.
+
+        s = inspect.stack()
+        #getmodulename_data = inspect.getmodulename(s).__name__
+        #print(getmodulename_data)
+
+
+        module_tuple = os.path.split(os.path.abspath(__file__))
+        #moudule_path = module_tuple[0]         # Provides the full path.
+        module_file = module_tuple[1]
+        if module_file.strip().endswith('.py'):
+            module_file = module_file[:-3]
+        return module_file
+
+    def get_unique_module_class_name(self):
+        # Could make module name more unique by using full path along with file name.
+        # If use full path, the module_class_name would be VERY long.
+        module_name = self.get_module_name()
+        class_name = self.__class__.__name__
+        module_class_name = str(module_name) + '.' + str(class_name)
+        return module_class_name
+
     @property
     def name(self) -> str:
         '''Name of the component
@@ -152,41 +212,32 @@ class BaseComponent():
             Function here, in case we want to generalize later.
         '''
         self.design.components[self.name] = self
-
+    
+    # Probably don't need classmethod any more since we don't have global varaibles any more.
+    # Use instance method., then will not need unique_key in the arguments.  Can use self.unique_dict_key
+    # Not sure if other parts of the metal code need this to be a @classmethod after the global dicts are removed.
     @classmethod
     def create_default_options(cls,
                                design: 'DesignBase',
                                logger_: logging.Logger = None,
-                               name: str = None) -> Dict:
+                               name: str = None,
+                               unique_key: str = '') -> Dict:
         """
-        Creates default options for the Metal Componnet class required for the class
+        Creates template options for the Metal Componnet class required for the class
         to function; i.e., be created, made, and rendered. Provides the blank option
         structure required.
 
         The options can be extended by plugins, such as renderers.
         """
-        # Every object should posses there -- common to all
-        #options = deepcopy(DEFAULT_OPTIONS['BaseComponent'])
 
-        #if cls.__name__ not in DEFAULT_OPTIONS:
-        if cls.__name__ not in design.default_generic:
+        if unique_key not in design.template_options:
             if logger_:
-                logger_.error(f'ERROR in the creating component {name}!\n'
+                logger_.error(f'ERROR in the creating component {cls.__name__}!\n'
                               f'The default options for the component class {cls.__name__} are missing')
 
-        # Specific object default options
-        #options = deepcopy(Dict(DEFAULT_OPTIONS[cls.__name__]))
-        options = deepcopy(Dict(design.default_generic[cls.__name__]))
-        # options.update(deepcopy(default_options))
-
-        # Specific sub-options inherited from other functions
-        for key, value in cls._inherit_options_from.items():
-            #options[key] = deepcopy(
-            #    Dict(DEFAULT_OPTIONS[value])
-            #)
-            options[key] = deepcopy(
-                Dict(design.default_generic[value])
-            )
+        # Specific object template options
+        options = deepcopy(
+            Dict(design.template_options[unique_key]))
 
         return options
 
@@ -431,7 +482,6 @@ class _Geometry_Handler:
 
 #     c = Outer(5)
 #     c.inner.printme()
-
 # NOT IN USE, some code prototype
 '''
 from logging import Logger
