@@ -44,38 +44,38 @@ from ..._defaults import DEFAULT_OPTIONS
 from ..base.qubit import BaseQubit
 
 
-DEFAULT_OPTIONS['TransmonPocket.con_lines'] = deepcopy(
-    DEFAULT_OPTIONS['qubit.con_lines'])
-DEFAULT_OPTIONS['TransmonPocket.con_lines'].update(Dict(
-    pad_gap='15um',
-    pad_width='125um',
-    pad_height='30um',
-    pad_cpw_shift='5um',
-    pad_cpw_extent='25um',
-    cpw_width=DEFAULT_OPTIONS.cpw.width,
-    cpw_gap=DEFAULT_OPTIONS.cpw.gap,
-    cpw_extend='100um',  # how far into the ground to extend the CPW line from the coupling pads
-    pocket_extent='5um',
-    pocket_rise='65um',
-    loc_W='+1',  # width location  only +-1
-    loc_H='+1',  # height location only +-1
-))
+# DEFAULT_OPTIONS['TransmonPocket.con_lines'] = deepcopy(
+#     DEFAULT_OPTIONS['qubit.con_lines'])
+# DEFAULT_OPTIONS['TransmonPocket.con_lines'].update(Dict(
+#     pad_gap='15um',
+#     pad_width='125um',
+#     pad_height='30um',
+#     pad_cpw_shift='5um',
+#     pad_cpw_extent='25um',
+#     cpw_width=DEFAULT_OPTIONS.cpw.width,
+#     cpw_gap=DEFAULT_OPTIONS.cpw.gap,
+#     cpw_extend='100um',  # how far into the ground to extend the CPW line from the coupling pads
+#     pocket_extent='5um',
+#     pocket_rise='65um',
+#     loc_W='+1',  # width location  only +-1
+#     loc_H='+1',  # height location only +-1
+# ))
 
-DEFAULT_OPTIONS['TransmonPocket'] = deepcopy(
-    DEFAULT_OPTIONS['qubit'])
-DEFAULT_OPTIONS['TransmonPocket'].update(Dict(
-    pos_x='0um',
-    pos_y='0um',
-    pad_gap='30um',
-    inductor_width='20um',
-    pad_width='455um',
-    pad_height='90um',
-    pocket_width='650um',
-    pocket_height='650um',
-    # 90 has dipole aligned along the +X axis,
-    # while 0 has dipole aligned along the +Y axis
-    orientation='0',
-))
+# DEFAULT_OPTIONS['TransmonPocket'] = deepcopy(
+#     DEFAULT_OPTIONS['qubit'])
+# DEFAULT_OPTIONS['TransmonPocket'].update(Dict(
+#     pos_x='0um',
+#     pos_y='0um',
+#     pad_gap='30um',
+#     inductor_width='20um',
+#     pad_width='455um',
+#     pad_height='90um',
+#     pocket_width='650um',
+#     pocket_height='650um',
+#     # 90 has dipole aligned along the +X axis,
+#     # while 0 has dipole aligned along the +Y axis
+#     orientation='0',
+# ))
 
 
 class TransmonPocket(BaseQubit):
@@ -150,6 +150,36 @@ class TransmonPocket(BaseQubit):
     '''
 
     _img = 'transmon_pocket1.png'
+
+    default_options = Dict(
+        pos_x='0um',
+        pos_y='0um',
+        pad_gap='30um',
+        inductor_width='20um',
+        pad_width='455um',
+        pad_height='90um',
+        pocket_width='650um',
+        pocket_height='650um',
+        # 90 has dipole aligned along the +X axis,
+        # while 0 has dipole aligned along the +Y axis
+        orientation='0',
+        con_lines = Dict(
+            pad_gap='15um',
+            pad_width='125um',
+            pad_height='30um',
+            pad_cpw_shift='5um',
+            pad_cpw_extent='25um',
+            cpw_width=DEFAULT_OPTIONS.cpw.width,
+            cpw_gap=DEFAULT_OPTIONS.cpw.gap,
+            cpw_extend='100um',  # how far into the ground to extend the CPW line from the coupling pads
+            pocket_extent='5um',
+            pocket_rise='65um',
+            loc_W='+1',  # width location  only +-1
+            loc_H='+1',  # height location only +-1
+        )
+    )
+
+
 
     def make(self):
         """

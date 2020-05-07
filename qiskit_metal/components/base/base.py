@@ -38,7 +38,7 @@ if TYPE_CHECKING:
     # I can't import DesignBase here, because I have ti first create the
     # component class, so this is a cludge
     from ...designs import DesignBase
-    from ...elements import ElementTypes
+    from ...elements import ElementTypes #Why is this getting imported? Meant to be ElementTables?
 
 
 class BaseComponent():

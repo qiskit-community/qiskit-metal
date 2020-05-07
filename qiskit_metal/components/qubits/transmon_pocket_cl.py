@@ -42,18 +42,18 @@ DEFAULT_OPTIONS['TransmonPocketCL.con_lines'] = deepcopy(
     DEFAULT_OPTIONS['TransmonPocket.con_lines'])
 
 
-DEFAULT_OPTIONS['TransmonPocketCL'] = deepcopy(
-    DEFAULT_OPTIONS['TransmonPocket'])
-DEFAULT_OPTIONS['TransmonPocketCL'].update(Dict(
-    make_CL=True,
-    cl_gap='6um',  # the cpw dielectric gap of the charge line
-    cl_width='10um',  # the cpw trace width of the charge line
-    cl_length='20um',  # the length of the charge line 'arm' coupling the the qubit pocket. 
-    #Measured from the base of the 90 degree bend
-    cl_ground_gap='6um',  # how much ground between the charge line and the qubit pocket
-    cl_pocket_edge='0', #-180 to +180 from the 'left edge', will round to the nearest 90.
-    cl_off_center='100um',  # distance from the center axis the qubit pocket is built on
-))
+# DEFAULT_OPTIONS['TransmonPocketCL'] = deepcopy(
+#     DEFAULT_OPTIONS['TransmonPocket'])
+# DEFAULT_OPTIONS['TransmonPocketCL'].update(Dict(
+#     make_CL=True,
+#     cl_gap='6um',  # the cpw dielectric gap of the charge line
+#     cl_width='10um',  # the cpw trace width of the charge line
+#     cl_length='20um',  # the length of the charge line 'arm' coupling the the qubit pocket. 
+#     #Measured from the base of the 90 degree bend
+#     cl_ground_gap='6um',  # how much ground between the charge line and the qubit pocket
+#     cl_pocket_edge='0', #-180 to +180 from the 'left edge', will round to the nearest 90.
+#     cl_off_center='100um',  # distance from the center axis the qubit pocket is built on
+# ))
 
 
 class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
@@ -96,6 +96,18 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
         -180 to +180 from the 'west edge', will round to the nearest 90.
     cl_off_center (string):  Distance from the center axis the qubit pocket is referenced to
     '''
+
+    default_options = Dict(
+        make_CL=True,
+        cl_gap='6um',  # the cpw dielectric gap of the charge line
+        cl_width='10um',  # the cpw trace width of the charge line
+        cl_length='20um',  # the length of the charge line 'arm' coupling the the qubit pocket. 
+        #Measured from the base of the 90 degree bend
+        cl_ground_gap='6um',  # how much ground between the charge line and the qubit pocket
+        cl_pocket_edge='0', #-180 to +180 from the 'left edge', will round to the nearest 90.
+        cl_off_center='100um',  # distance from the center axis the qubit pocket is built on
+    )
+
     def make(self):
         super().make()
 

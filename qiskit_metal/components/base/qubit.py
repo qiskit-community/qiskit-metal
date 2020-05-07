@@ -28,13 +28,13 @@ from .base import BaseComponent
 ###
 # Setup default options
 
-DEFAULT_OPTIONS['qubit'] = Dict(
-    pos_x='0um',
-    pos_y='0um',
-    con_lines=Dict() # should we maybe make it connectors not con since jargony?
-)
+# DEFAULT_OPTIONS['qubit'] = Dict(
+#     pos_x='0um',
+#     pos_y='0um',
+#     con_lines=Dict() # should we maybe make it connectors not con since jargony?
+# )
 
-DEFAULT_OPTIONS['qubit.con_lines'] = Dict()
+# DEFAULT_OPTIONS['qubit.con_lines'] = Dict()
 
 # TODO
 class BaseQubit(BaseComponent):
@@ -63,6 +63,11 @@ class BaseQubit(BaseComponent):
     '''
 
     _img = 'Metal_Qubit.png'
+    default_options = Dict(
+        pos_x='0um',
+        pos_y='0um',
+        con_lines=Dict()
+    )
 
     def __init__(self, design, name, options=None, options_con_lines=None,
                  make=True):
@@ -79,7 +84,7 @@ class BaseQubit(BaseComponent):
 
     def _set_options_con_lines(self):
         class_name = type(self).__name__
-        assert class_name+'.con_lines' in DEFAULT_OPTIONS, f"""When you define your
+        assert 'con_lines' in default_options, f"""When you define your
         custom qubit class please add a connector lines options default dicitonary name as
         DEFAULT_OPTIONS[class_name+'.con_lines'], ({class_name+'.con_lines'}) where class_name is the the name of your
         custom class. This should speciy the default creation options for the connector. """
@@ -87,5 +92,5 @@ class BaseQubit(BaseComponent):
         for name in self.options.con_lines:
             my_options_con_lines = self.options.con_lines[name]
             self.options.con_lines[name] = deepcopy(
-                Dict(DEFAULT_OPTIONS[class_name+'.con_lines']))
+                Dict(default_options['con_lines']))
             self.options.con_lines[name].update(my_options_con_lines)

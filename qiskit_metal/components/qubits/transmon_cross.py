@@ -28,28 +28,28 @@ from ..base.qubit import BaseQubit
 
 
 # Connector default options
-DEFAULT_OPTIONS['TransmonCross.con_lines']= deepcopy(
-    DEFAULT_OPTIONS['qubit.con_lines'])
-DEFAULT_OPTIONS['TransmonCross.con_lines'] = Dict(
-    connector_type='0', #0 = Claw type, 1 = gap type
-    claw_length='30um',
-    ground_spacing='5um',
-    claw_width=DEFAULT_OPTIONS.cpw.width,
-    claw_gap=DEFAULT_OPTIONS.cpw.gap,
-    connector_location='0' #0 => 'west' arm, 90 => 'north' arm, 180 => 'east' arm
-)
+# DEFAULT_OPTIONS['TransmonCross.con_lines']= deepcopy(
+#     DEFAULT_OPTIONS['qubit.con_lines'])
+# DEFAULT_OPTIONS['TransmonCross.con_lines'] = Dict(
+#     connector_type='0', #0 = Claw type, 1 = gap type
+#     claw_length='30um',
+#     ground_spacing='5um',
+#     claw_width=DEFAULT_OPTIONS.cpw.width,
+#     claw_gap=DEFAULT_OPTIONS.cpw.gap,
+#     connector_location='0' #0 => 'west' arm, 90 => 'north' arm, 180 => 'east' arm
+# )
 
-#
-DEFAULT_OPTIONS['TransmonCross'] = deepcopy(
-    DEFAULT_OPTIONS['qubit'])
-DEFAULT_OPTIONS['TransmonCross'].update(Dict(
-    pos_x='0um',
-    pos_y='0um',
-    cross_width='20um',
-    cross_length='200um',
-    cross_gap='20um',
-    orientation='0',
-))
+# #
+# DEFAULT_OPTIONS['TransmonCross'] = deepcopy(
+#     DEFAULT_OPTIONS['qubit'])
+# DEFAULT_OPTIONS['TransmonCross'].update(Dict(
+#     pos_x='0um',
+#     pos_y='0um',
+#     cross_width='20um',
+#     cross_length='200um',
+#     cross_gap='20um',
+#     orientation='0',
+# ))
 
 
 class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
@@ -101,6 +101,22 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
 
     _img = 'Metal_Crossmon.png'
 
+    default_options = Dict(
+        pos_x='0um',
+        pos_y='0um',
+        cross_width='20um',
+        cross_length='200um',
+        cross_gap='20um',
+        orientation='0',
+        con_lines = Dict(
+            connector_type='0', #0 = Claw type, 1 = gap type
+            claw_length='30um',
+            ground_spacing='5um',
+            claw_width=DEFAULT_OPTIONS.cpw.width,
+            claw_gap=DEFAULT_OPTIONS.cpw.gap,
+            connector_location='0' #0 => 'west' arm, 90 => 'north' arm, 180 => 'east' arm
+        )
+    )
 ##############################################MAKE######################################################
     def make(self):
         self.make_pocket()
