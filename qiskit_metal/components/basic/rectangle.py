@@ -50,7 +50,7 @@ class Rectangle(BaseComponent):
         self.add_elements('poly', {'rectangle': rect}, subtract=p.subtract,
                           helper=p.helper, layer=p.layer, chip=p.chip)
 
-
+#Remove this class before pull request.  It is here just a prototype and used for testing. 
 class RectangleFromPAS(BaseComponent):
     """A single configurable square."""
 

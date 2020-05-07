@@ -12,7 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-from ..._defaults import DEFAULT_OPTIONS
 from ..base import BaseComponent
 from ... import draw
 from ...draw.basic import CAP_STYLE, JOIN_STYLE
@@ -20,6 +19,22 @@ from ...draw.basic import CAP_STYLE, JOIN_STYLE
 
 class CircleCaterpillar(BaseComponent):
     """A single configurable square."""
+
+    default_options = dict(
+        segments='5',
+        distance='1.2',
+        radius='300um',
+        pos_x='0um',
+        pos_y='0um',
+        resolution='16',
+        cap_style='round',  # round, flat, square
+        # join_style = 'round', # round, mitre, bevel
+        # General
+        subtract='False',
+        helper='False',
+        chip='main',
+        layer='1'
+    )
 
     def make(self):
         p = self.p  # p for parsed parameters. Access to the parsed options.
@@ -41,31 +56,14 @@ class CircleCaterpillar(BaseComponent):
         poly = draw.rotate(poly, angle=65)
         caterpillar = draw.subtract(caterpillar, poly)
 
-        #rect = draw.rectangle(p.radius*0.75, p.radius*0.23,
+        # rect = draw.rectangle(p.radius*0.75, p.radius*0.23,
         #                      xoff=p.pos_x+p.radius*0.3,
         #                      yoff=p.pos_y+p.radius*0.4)
         #caterpillar = draw.subtract(caterpillar, rect)
-        #print(caterpillar)
+        # print(caterpillar)
 
         # add elements
         #self.add_elements('poly', {'mount': rect})
         self.add_elements('poly', {'caterpillar': caterpillar})
         # subtract=p.subtract,
         #                   helper=p.helper, layer=p.layer, chip=p.chip)
-
-
-DEFAULT_OPTIONS['CircleCaterpillar'] = dict(
-    segments='5',
-    distance='1.2',
-    radius='300um',
-    pos_x='0um',
-    pos_y='0um',
-    resolution='16',
-    cap_style='round',  # round, flat, square
-    # join_style = 'round', # round, mitre, bevel
-    # General
-    subtract='False',
-    helper='False',
-    chip='main',
-    layer='1'
-)
