@@ -33,6 +33,7 @@ from .toolbox_python.attr_dict import Dict
 
 # When rest of metal code stops using DEFAULT_OPTIONS, delete this dict.
 # The Dict has moved to DefaultOptionsGeneric
+#############  Going forward, cpw will not be used in default options.  Will change to variables. ########
 DEFAULT_OPTIONS = Dict(
     cpw=Dict(
         width='10um',
@@ -77,10 +78,6 @@ class DefaultOptionsGeneric():
     Arguments:
         object {[type]} -- [description]
     """
-    # Class Variable-
-    # Shared by all instances of the class.
-    # Defined outside of all methods.
-    # If user selects reset, need to keep track of defaults.
 
     default_generic = Dict(
         units='mm',
@@ -89,18 +86,6 @@ class DefaultOptionsGeneric():
         buffer_mitre_limit=5.0,
     )
 
-    #If we agree use DefaultOptionsCPW, move this dict to there.
-    default_cpw = Dict(
-        width='10um',
-        gap='6um',
-        mesh_width='6um',
-        fillet='90um',
-    )
-
-    # Instance Variables
-    # Variables are owned by instances of the class.
-    # For each object and instance of the class.
-    # Instance variables are defined within methods.
 
     def __init__(self,
                  cpw: Dict = default_cpw,
@@ -142,6 +127,10 @@ class DefaultOptionsRenderer():
     Arguments:
         object {[type]} -- [description]
     """
+
+    '''
+        This class is a skeleton and is expected to be updated when the renderer is updated. 
+    '''
 
     default_bounding_box = Dict(draw_bounding_box=[
         [0, 0], [0, 0], ['0.890mm', '0.900mm']
@@ -203,54 +192,6 @@ class DefaultOptionsRenderer():
         self.default_options = {}
         self.default_options.update(self.draw_substrate)
         self.default_options.update(self.bounding_box)
-
-    # customize the key/value pairs
-    def update_default_options(self,
-                               cust_key: str = None,
-                               cust_value: Dict = None):
-        """[Allow instance of class to update the default_options]
-
-        Keyword Arguments:
-            cust_key {str} -- Type of component. (default: {None})
-            cust_value {Dict} --  The key/value pairs to describe component. (default: {None})
-        """
-
-        if cust_key is None:
-            print(f'ERROR: Need a key, update_default_options has {cust_key}')
-            # log_error_easy(self.logger,
-            # post_text=f'Need a key, update_default_option has {cust_key}')
-        else:
-            self.default_options[cust_key] = cust_value
-
-
-class DefaultOptionsCPW():
-    """Encapsulate generic data used throughout qiskit metal classes for CPW.
-
-
-    Arguments:
-        object {[type]} -- [description]
-    """
-
-    default_cpw = Dict(cpw={
-        'width':'10um',
-        'gap':'6um',
-        'mesh_width':'6um',
-        'fillet':'90um',
-    })
-
-    
-
-    def __init__(self,
-                 cpw: Dict = default_cpw,
-                ):
-        #self.logger = logger
-
-        # Do Not edit the class variable
-        self.cpw = deepcopy(cpw)
-
-        # custom default options
-        self.default_options = {}
-        self.default_options.update(self.cpw)
 
     # customize the key/value pairs
     def update_default_options(self,
