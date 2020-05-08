@@ -23,7 +23,7 @@ File contains some config definitions. Mostly internal.
 
 from .toolbox_python.attr_dict import Dict
 from ._defaults import DEFAULT_OPTIONS, DEFAULT  # pylint: disable=unused-import
-from ._defaults import DefaultOptionsGeneric
+from ._defaults import DefaultOptionsGeneric, DefaultOptionsRenderer
 
 ####################################################################################
 # RENDERER CONFIG

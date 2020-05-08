@@ -31,7 +31,7 @@ import numpy as np
 from .. import Dict, draw, logger
 from ..components import is_component
 # from ..config import DEFAULT, DEFAULT_OPTIONS, DefaultOptionsGeneric   #remove global dicts
-from ..config import DefaultOptionsGeneric
+from ..config import DefaultOptionsGeneric, DefaultOptionsRenderer
 from ..toolbox_metal.import_export import load_metal_design, save_metal
 from ..toolbox_metal.parsing import parse_options, parse_value
 from ..elements import ElementTables
@@ -100,7 +100,8 @@ class DesignBase():
 
         self._template_options = DefaultOptionsGeneric()  # use for components
 
-        self._template_renderer_options = DefaultOptionsGeneric()  # use for renderer
+        # Can't really use this until DefaultOptionsRenderer.default_draw_substrate.color_plane is resolved.
+        self._template_renderer_options = DefaultOptionsRenderer()  # use for renderer
 
     def _init_metadata(self) -> Dict:
         """Initialize default metadata dicitoanry
@@ -179,9 +180,9 @@ class DesignBase():
 
     @property
     def template_renderer_options(self) -> Dict:
-            '''Return default_renderer_options dictionary, which contain default options used in creating Metal renderer.
-            '''
-            return self._template_renderer_options.default_options
+        '''Return default_renderer_options dictionary, which contain default options used in creating Metal renderer.
+        '''
+        return self._template_renderer_options.default_options
 
     @property
     def metadata(self) -> Dict:
