@@ -89,6 +89,7 @@ class DefaultOptionsGeneric():
         buffer_mitre_limit=5.0,
     )
 
+    #If we agree use DefaultOptionsCPW, move this dict to there.
     default_cpw = Dict(
         width='10um',
         gap='6um',
@@ -133,7 +134,7 @@ class DefaultOptionsGeneric():
             self.default_options[cust_key] = cust_value
 
 
-### Can't really use this until default_draw_substrate.color_plane is resolved. 
+# Can't really use this until default_draw_substrate.color_plane is resolved.
 class DefaultOptionsRenderer():
     """Encapsulate generic data used throughout qiskit metal classes for renderers.
 
@@ -159,6 +160,36 @@ class DefaultOptionsRenderer():
         'wireframe_substrate': False
     })
 
+    '''
+    DEFAULT_OPTIONS['draw_cpw_trace'] = {
+        'func_draw': 'draw_cpw_trace',
+        'chip': 'main',
+        'name': 'CPW1',         # Name of the line
+        'trace_center_width': DEFAULT_OPTIONS.cpw.width,         # Center trace width
+        'trace_center_gap': DEFAULT_OPTIONS.cpw.gap,
+        'trace_mesh_gap': DEFAULT_OPTIONS.cpw.mesh_width,          # For mesh rectangle
+        'fillet': DEFAULT_OPTIONS.cpw.fillet,        # Fillt
+        # name of ground plane to subtract from, maybe make also automatic
+        'ground_plane': 'ground_plane',
+        'do_only_lines': 'False',        # only draw the lines
+        'do_mesh':  DEFAULT._hfss.do_mesh,  # Draw trace for meshing
+        'do_subtract_ground': 'True',         # subtract from ground plane
+        # keep_originals when perfomring subtraction
+        'do_sub_keep_original': 'False',
+        'do_assign_perfE':  True,
+        'BC_individual':  False,
+        'BC_name': 'CPW_center_traces',
+        'category': 'cpw',
+        'do_add_connectors':  True,
+        'units': 'mm',           # default units
+        # dictionary 100,120,90
+        'poly_default_options': {'transparency': 0.95, 'color': DEFAULT['col_in_cond']},
+        'mesh_name': 'cpw',
+        'mesh_kw': Dict(MaxLength='0.1mm')
+    }
+
+
+    '''
     def __init__(self,
                  draw_substrate: Dict = default_draw_substrate,
                  bounding_box: Dict = default_bounding_box):
@@ -190,3 +221,52 @@ class DefaultOptionsRenderer():
             # post_text=f'Need a key, update_default_option has {cust_key}')
         else:
             self.default_options[cust_key] = cust_value
+
+
+class DefaultOptionsCPW():
+    """Encapsulate generic data used throughout qiskit metal classes for CPW.
+
+
+    Arguments:
+        object {[type]} -- [description]
+    """
+
+    default_cpw = Dict(cpw={
+        'width':'10um',
+        'gap':'6um',
+        'mesh_width':'6um',
+        'fillet':'90um',
+    })
+
+    
+
+    def __init__(self,
+                 cpw: Dict = default_cpw,
+                ):
+        #self.logger = logger
+
+        # Do Not edit the class variable
+        self.cpw = deepcopy(cpw)
+
+        # custom default options
+        self.default_options = {}
+        self.default_options.update(self.cpw)
+
+    # customize the key/value pairs
+    def update_default_options(self,
+                               cust_key: str = None,
+                               cust_value: Dict = None):
+        """[Allow instance of class to update the default_options]
+
+        Keyword Arguments:
+            cust_key {str} -- Type of component. (default: {None})
+            cust_value {Dict} --  The key/value pairs to describe component. (default: {None})
+        """
+
+        if cust_key is None:
+            print(f'ERROR: Need a key, update_default_options has {cust_key}')
+            # log_error_easy(self.logger,
+            # post_text=f'Need a key, update_default_option has {cust_key}')
+        else:
+            self.default_options[cust_key] = cust_value
+
