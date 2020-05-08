@@ -34,12 +34,12 @@ Child of 'standard' transmon pocket
 from copy import deepcopy
 from ... import draw
 from ...toolbox_python.attr_dict import Dict
-from ..._defaults import DEFAULT_OPTIONS
+#from ..._defaults import DEFAULT_OPTIONS
 from .transmon_pocket import TransmonPocket
 
 
-DEFAULT_OPTIONS['TransmonPocketCL.con_lines'] = deepcopy(
-    DEFAULT_OPTIONS['TransmonPocket.con_lines'])
+# DEFAULT_OPTIONS['TransmonPocketCL.con_lines'] = deepcopy(
+#     DEFAULT_OPTIONS['TransmonPocket.con_lines'])
 
 
 # DEFAULT_OPTIONS['TransmonPocketCL'] = deepcopy(

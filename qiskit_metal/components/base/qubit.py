@@ -21,7 +21,7 @@ converted to v0.2: Thomas McConkey 2020-03-24
 
 from copy import deepcopy
 
-from ..._defaults import DEFAULT_OPTIONS  # , DEFAULT
+#from ..._defaults import DEFAULT_OPTIONS  # , DEFAULT
 from ...toolbox_python.attr_dict import Dict
 from .base import BaseComponent
 

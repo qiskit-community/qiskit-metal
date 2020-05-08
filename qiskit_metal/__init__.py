@@ -63,7 +63,7 @@ from ._is_design import is_design, is_component
 
 # TODO: Remove the as global variables, just use in design when
 # instanciating the default params and overwriting them.
-from .config import DEFAULT, DEFAULT_OPTIONS
+#from .config import DEFAULT, DEFAULT_OPTIONS
 
 # Core modules for user to use
 from . import components #TODO: slow to import? why

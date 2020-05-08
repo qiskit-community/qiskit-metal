@@ -22,7 +22,7 @@ converted to v0.2: Thomas McConkey 2020-04-23
 from copy import deepcopy
 from ... import draw
 from ...toolbox_python.attr_dict import Dict
-from ..._defaults import DEFAULT_OPTIONS
+#from ..._defaults import DEFAULT_OPTIONS
 from ..base.qubit import BaseQubit
 
 
@@ -112,8 +112,8 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
             connector_type='0', #0 = Claw type, 1 = gap type
             claw_length='30um',
             ground_spacing='5um',
-            claw_width=DEFAULT_OPTIONS.cpw.width,
-            claw_gap=DEFAULT_OPTIONS.cpw.gap,
+            claw_width='10um',
+            claw_gap='6um',
             connector_location='0' #0 => 'west' arm, 90 => 'north' arm, 180 => 'east' arm
         )
     )
@@ -165,8 +165,9 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
         '''
         Goes through connectors and makes each one.
         '''
-        for name, options_connector in self.options.connectors.items():
-            ops = deepcopy(DEFAULT_OPTIONS['TransmonCross.con_lines'])
+        for name, options_connector in self.options.con_lines.items():
+            ops = deepcopy(
+                self.design.template_options[self.unique_dict_key]['con_lines'])
             ops.update(options_connector)
             options_connector.update(ops)
             self.make_con_line(name)

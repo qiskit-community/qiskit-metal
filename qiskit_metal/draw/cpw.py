@@ -32,7 +32,7 @@ from numpy import sqrt, pi, array, flip
 from numpy.linalg import norm
 from shapely.geometry import Point, Polygon, LineString, CAP_STYLE, JOIN_STYLE
 
-from .. import DEFAULT, DEFAULT_OPTIONS, Dict, logger, draw
+from .. import Dict, logger, draw#,DEFAULT, DEFAULT_OPTIONS
 from ..toolbox_metal.parsing import parse_value, TRUE_STR
 from .utility import vec_unit_planar, remove_colinear_pts, Vector
 from .basic import flip_merge, rotate_position
@@ -44,18 +44,19 @@ from .utility import *  # this import out of date given new folder structure?
 # CPW BASIC DRAWING
 ###
 # NEEDS UPDATING FOR ELEMENTS AND RENDERER - bunch should be in renderer_ansys
+DEFAULT_OPTIONS = {}
 DEFAULT_OPTIONS['draw_cpw_trace'] = {
     'func_draw': 'draw_cpw_trace',
     'chip': 'main',
     'name': 'CPW1',         # Name of the line
-    'trace_center_width': DEFAULT_OPTIONS.cpw.width,         # Center trace width
-    'trace_center_gap': DEFAULT_OPTIONS.cpw.gap,
-    'trace_mesh_gap': DEFAULT_OPTIONS.cpw.mesh_width,          # For mesh rectangle
-    'fillet': DEFAULT_OPTIONS.cpw.fillet,        # Fillt
+    'trace_center_width': '10um',         # Center trace width
+    'trace_center_gap': '6um',
+    'trace_mesh_gap': '22um',          # For mesh rectangle
+    'fillet': '50um',        # Fillt
     # name of ground plane to subtract from, maybe make also automatic
     'ground_plane': 'ground_plane',
     'do_only_lines': 'False',        # only draw the lines
-    'do_mesh':  DEFAULT._hfss.do_mesh,  # Draw trace for meshing
+    'do_mesh':  'True',  # Draw trace for meshing
     'do_subtract_ground': 'True',         # subtract from ground plane
     # keep_originals when perfomring subtraction
     'do_sub_keep_original': 'False',
@@ -66,7 +67,7 @@ DEFAULT_OPTIONS['draw_cpw_trace'] = {
     'do_add_connectors':  True,
     'units': 'mm',           # default units
     # dictionary 100,120,90
-    'poly_default_options': {'transparency': 0.95, 'color': DEFAULT['col_in_cond']},
+    'poly_default_options': {'transparency': 0.95, 'color': 'blue'},
     'mesh_name': 'cpw',
     'mesh_kw': Dict(MaxLength='0.1mm')
 }

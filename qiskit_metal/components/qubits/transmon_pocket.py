@@ -40,7 +40,7 @@ converted to v0.2: Thomas McConkey 2020-03-24
 from copy import deepcopy
 from ... import draw
 from ...toolbox_python.attr_dict import Dict
-from ..._defaults import DEFAULT_OPTIONS
+#from ..._defaults import DEFAULT_OPTIONS
 from ..base.qubit import BaseQubit
 
 
@@ -169,8 +169,8 @@ class TransmonPocket(BaseQubit):
             pad_height='30um',
             pad_cpw_shift='5um',
             pad_cpw_extent='25um',
-            cpw_width=DEFAULT_OPTIONS.cpw.width,
-            cpw_gap=DEFAULT_OPTIONS.cpw.gap,
+            cpw_width='10um',
+            cpw_gap='6um',
             cpw_extend='100um',  # how far into the ground to extend the CPW line from the coupling pads
             pocket_extent='5um',
             pocket_rise='65um',
@@ -228,9 +228,9 @@ class TransmonPocket(BaseQubit):
         Makes standard transmon in a pocket
         '''
         for name, options_con_lines in self.options.con_lines.items():
-            # update the options for the connector with the defaults under them
-            # TODO: This doens tseme to work, should probably update the parent options as well anyhow
-            ops = deepcopy(DEFAULT_OPTIONS['TransmonPocket.con_lines'])
+            #Isn't this already being handled in the qubit base class?
+            ops = deepcopy(
+                self.design.template_options[self.unique_dict_key]['con_lines'])
             ops.update(options_con_lines)
             options_con_lines.update(ops)
             # make the connector

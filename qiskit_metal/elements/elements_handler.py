@@ -28,7 +28,7 @@ from typing import TYPE_CHECKING, Union
 import pandas as pd
 
 from .. import Dict
-from ..config import DEFAULT
+#from ..config import DEFAULT
 from ..draw import BaseGeometry
 from ..toolbox_python.utility_functions import data_frame_empty_typed
 

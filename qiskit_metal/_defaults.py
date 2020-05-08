@@ -34,14 +34,14 @@ from .toolbox_python.attr_dict import Dict
 # When rest of metal code stops using DEFAULT_OPTIONS, delete this dict.
 # The Dict has moved to DefaultOptionsGeneric
 #############  Going forward, cpw will not be used in default options.  Will change to variables. ########
-DEFAULT_OPTIONS = Dict(
-    cpw=Dict(
-        width='10um',
-        gap='6um',
-        mesh_width='6um',
-        fillet='90um',
-    )
-)
+# DEFAULT_OPTIONS = Dict(
+#     cpw=Dict(
+#         width='10um',
+#         gap='6um',
+#         mesh_width='6um',
+#         fillet='90um',
+#     )
+# )
 
 r"""
 DEFAULT_OPTIONS:
@@ -88,16 +88,15 @@ class DefaultOptionsGeneric():
 
 
     def __init__(self,
-                 cpw: Dict = default_cpw,
                  generic: Dict = default_generic):
         #self.logger = logger
 
         # Do Not edit the class variable
-        self.cpw = deepcopy(cpw)
+        #self.cpw = deepcopy(cpw)
         self.generic = deepcopy(generic)
 
         # custom default options
-        self.default_options = Dict(cpw=Dict(self.cpw))
+        self.default_options = Dict()
         self.default_options['generic'] = self.generic
 
     # customize the key/value pairs
