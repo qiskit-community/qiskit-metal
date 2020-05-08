@@ -98,7 +98,9 @@ class DesignBase():
 
         self._elements = ElementTables(self)
 
-        self._template_options = DefaultOptionsGeneric()
+        self._template_options = DefaultOptionsGeneric()  # use for components
+
+        self._template_renderer_options = DefaultOptionsGeneric()  # use for renderer
 
     def _init_metadata(self) -> Dict:
         """Initialize default metadata dicitoanry
@@ -174,6 +176,12 @@ class DesignBase():
         ''' '''
         return self._default_options
         '''
+
+    @property
+    def template_renderer_options(self) -> Dict:
+            '''Return default_renderer_options dictionary, which contain default options used in creating Metal renderer.
+            '''
+            return self._template_renderer_options.default_options
 
     @property
     def metadata(self) -> Dict:
@@ -463,7 +471,6 @@ class DesignBase():
         elif parent is None:
             parent = 'none'
         name = parent+'_'+name
-        
 
         # assert isinstance(parent, str) # could enfornce
         self.connectors[name] = make_connector(
@@ -471,7 +478,7 @@ class DesignBase():
 
         # TODO: Add net?
 
-    def get_connector(self,name:str):
+    def get_connector(self, name: str):
         """Interface for components to get connector data
 
         Args:
@@ -482,8 +489,8 @@ class DesignBase():
                 what those values are.
         """
 
-        #For after switching to pandas, something like this?
-        #return self.connectors.get(name).to_dict()
+        # For after switching to pandas, something like this?
+        # return self.connectors.get(name).to_dict()
 
         return self.connectors[name]
 
@@ -572,7 +579,8 @@ def make_connector(points: list, parent_name, flip=False, chip='main'):
     assert len(points) == 2
 
     # Get the direction vector, the unit direction vec, and the normal vector
-    vec_dist, vec_dist_unit, vec_normal = draw.Vector.two_points_described(points)
+    vec_dist, vec_dist_unit, vec_normal = draw.Vector.two_points_described(
+        points)
 
     if flip:
         vec_normal = -vec_normal
