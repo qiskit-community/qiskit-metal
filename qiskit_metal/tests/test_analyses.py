@@ -22,12 +22,17 @@ Created on Wed Apr 22 09:28:05 2020
 @author: Jeremy D. Drysdale
 """
 
+from pathlib import Path
 import unittest
-import pandas as pd
+
 import numpy as np
+import pandas as pd
 
 from qiskit_metal.analyses import lumped_capacitive
 from qiskit_metal.analyses import cpw_calculations
+
+
+TEST_DATA = Path(__file__).parent / "test_data"
 
 class TestAnalyses(unittest.TestCase):
     """
@@ -414,7 +419,7 @@ class TestAnalyses(unittest.TestCase):
                                                      'Q1_pad_top1', 'Q1_readout_connector_pad'])
 
         # Generate actual result data
-        generated = lumped_capacitive.readin_q3d_matrix(r'test_data\q3d_example.txt')
+        generated = lumped_capacitive.readin_q3d_matrix(TEST_DATA / 'q3d_example.txt')
         return_size_result = len(generated)
         df_cmat_result = generated[0]
         units_result = generated[1]
@@ -515,9 +520,9 @@ class TestAnalyses(unittest.TestCase):
                                                             'Q1_readout_connector_pad'])
 
         # Generate actual result data
-        test_a_result = lumped_capacitive.load_q3d_capacitance_matrix(r'test_data\q3d_example.txt',
+        test_a_result = lumped_capacitive.load_q3d_capacitance_matrix(TEST_DATA / 'q3d_example.txt',
                                                                       _disp=False)
-        test_b_result = lumped_capacitive.load_q3d_capacitance_matrix(r'test_data\q3d_example.txt',
+        test_b_result = lumped_capacitive.load_q3d_capacitance_matrix(TEST_DATA / 'q3d_example.txt',
                                                                       user_units='pF', _disp=False)
 
         test_a_return_size_result = len(test_a_result)
@@ -640,8 +645,8 @@ class TestAnalyses(unittest.TestCase):
                                                     'Q1_pad_top1', 'Q1_readout_connector_pad'])
 
         # Generate actual result data
-        df_a = lumped_capacitive.readin_q3d_matrix(r'test_data\q3d_example.txt')[0]
-        df_b = lumped_capacitive.readin_q3d_matrix(r'test_data\q3d_example.txt')[0]
+        df_a = lumped_capacitive.readin_q3d_matrix(TEST_DATA / 'q3d_example.txt')[0]
+        df_b = lumped_capacitive.readin_q3d_matrix(TEST_DATA / 'q3d_example.txt')[0]
 
         test_a_result = lumped_capacitive.df_reorder_matrix_basis(df_a, 1, 3)
         test_b_result = lumped_capacitive.df_reorder_matrix_basis(df_b, 4, 0)
