@@ -56,36 +56,36 @@ def dict_start_with(my_dict, start_with, as_=list):
         return {k: v for k, v in my_dict.items() if k.startswith(start_with)}
 
 
-def display_options(*ops_names, options=None, find_dot_keys=True, do_display=True):
-    '''
-    Print html display of options dictionary by default `DEFAULT_OPTIONS`
+# def display_options(*ops_names, options=None, find_dot_keys=True, do_display=True):
+#     '''
+#     Print html display of options dictionary by default `DEFAULT_OPTIONS`
 
-    Example use:
-    ---------------
-        display_options('make_transmon_pocket_v1', 'make_transmon_connector_v1')
+#     Example use:
+#     ---------------
+#         display_options('make_transmon_pocket_v1', 'make_transmon_connector_v1')
 
-    or
-        dfs, html = display_options(Metal_Transmon_Pocket.__name__, do_display=False)
-    '''
-    # IDEA: display also ._hfss and ._gds etc. for those that have it and add to plugins
-    if options is None:
-        from .. import DEFAULT_OPTIONS
-        options = DEFAULT_OPTIONS
+#     or
+#         dfs, html = display_options(Metal_Transmon_Pocket.__name__, do_display=False)
+#     '''
+#     # IDEA: display also ._hfss and ._gds etc. for those that have it and add to plugins
+#     if options is None:
+#         from .. import DEFAULT_OPTIONS
+#         options = DEFAULT_OPTIONS
 
-    res = []
-    for keyname in ops_names:
-        if find_dot_keys:
-            names = list(filter(lambda x, match=keyname: x is match or
-                                x.startswith(match+'.'), DEFAULT_OPTIONS.keys()))
-            names.sort()
-            for name in names:
-                res += [pd.Series(options[name], name=name).to_frame()]
-        else:
-            res += [pd.Series(options[keyname], name=keyname).to_frame()]
+#     res = []
+#     for keyname in ops_names:
+#         if find_dot_keys:
+#             names = list(filter(lambda x, match=keyname: x is match or
+#                                 x.startswith(match+'.'), DEFAULT_OPTIONS.keys()))
+#             names.sort()
+#             for name in names:
+#                 res += [pd.Series(options[name], name=name).to_frame()]
+#         else:
+#             res += [pd.Series(options[keyname], name=keyname).to_frame()]
 
-    from pyEPR.toolbox import display_dfs
-    res_html = display_dfs(*res, do_display=do_display)  #why not just directly call the function DataFrame_display_side_by_side(*args) ?
-    return res, res_html
+#     from pyEPR.toolbox import display_dfs
+#     res_html = display_dfs(*res, do_display=do_display)  #why not just directly call the function DataFrame_display_side_by_side(*args) ?
+#     return res, res_html
 
 def data_frame_empty_typed(column_types:dict):
     """Creates and empty DataFrame with dtypes for each column given
