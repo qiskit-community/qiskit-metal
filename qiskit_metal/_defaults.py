@@ -52,6 +52,7 @@ DEFAULT_OPTIONS:
     This dictionary pointer should not be overwritten. Rather, update the dictionary values.
 """
 
+'''
 # When rest of metal code stops using DEFAULT, delete this dict.
 # The Dict has moved to DefaultOptionsGeneric
 DEFAULT = Dict(
@@ -60,6 +61,7 @@ DEFAULT = Dict(
     buffer_resolution=16,  # for shapely buffer
     buffer_mitre_limit=5.0,
 )
+'''
 
 r"""
 Default paramters for many basic functions:
