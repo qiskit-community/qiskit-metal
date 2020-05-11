@@ -163,7 +163,7 @@ class TransmonPocket(BaseQubit):
         # 90 has dipole aligned along the +X axis,
         # while 0 has dipole aligned along the +Y axis
         orientation='0',
-        con_lines = Dict(
+        _default_con_lines = Dict(
             pad_gap='15um',
             pad_width='125um',
             pad_height='30um',
@@ -227,12 +227,12 @@ class TransmonPocket(BaseQubit):
         '''
         Makes standard transmon in a pocket
         '''
-        for name, options_con_lines in self.options.con_lines.items():
+        for name in self.options.con_lines.items(): #
             #Isn't this already being handled in the qubit base class?
-            ops = deepcopy(
-                self.design.template_options[self.unique_dict_key]['con_lines'])
-            ops.update(options_con_lines)
-            options_con_lines.update(ops)
+            #ops = deepcopy(
+            #    self.design.template_options[self.unique_dict_key]['con_lines']['default_con_lines'])
+            #ops.update(options_con_lines)
+            #options_con_lines.update(ops)
             # make the connector
             self.make_con_line(name)
 
