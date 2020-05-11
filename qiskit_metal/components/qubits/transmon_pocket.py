@@ -227,7 +227,7 @@ class TransmonPocket(BaseQubit):
         '''
         Makes standard transmon in a pocket
         '''
-        for name in self.options.con_lines.items(): #
+        for name in self.options.con_lines: #
             #Isn't this already being handled in the qubit base class?
             #ops = deepcopy(
             #    self.design.template_options[self.unique_dict_key]['con_lines']['default_con_lines'])

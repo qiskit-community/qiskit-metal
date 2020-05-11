@@ -108,7 +108,7 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
         cross_length='200um',
         cross_gap='20um',
         orientation='0',
-        con_lines = Dict(
+        _default_con_lines = Dict(
             connector_type='0', #0 = Claw type, 1 = gap type
             claw_length='30um',
             ground_spacing='5um',
@@ -141,7 +141,7 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
             draw.LineString([(cross_length,0),(-cross_length,0)])])
 
         cross = cross_line.buffer(cross_width/2,cap_style=2)
-        cross_etch = cross_line.buffer(cross_gap + cross_width/2, cap_style=2)
+        cross_etch = cross.buffer(cross_gap, cap_style=3, join_style=2)
 
         #The junction/SQUID
         rect_jj = draw.rectangle(cross_width, cross_gap)
@@ -165,11 +165,11 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
         '''
         Goes through connectors and makes each one.
         '''
-        for name, options_connector in self.options.con_lines.items():
-            ops = deepcopy(
-                self.design.template_options[self.unique_dict_key]['con_lines'])
-            ops.update(options_connector)
-            options_connector.update(ops)
+        for name in self.options.con_lines:
+            # ops = deepcopy(
+            #     self.design.template_options[self.unique_dict_key]['con_lines'])
+            # ops.update(options_connector)
+            # options_connector.update(ops)
             self.make_con_line(name)
 
     def make_con_line(self,name:str):
