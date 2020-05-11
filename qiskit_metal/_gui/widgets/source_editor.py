@@ -31,9 +31,12 @@ try:
     from pyqode.python.folding import PythonFoldDetector
     from pyqode.python.backend.workers import defined_names
 except ImportError as e:
-    print('Error could not load pyqode.python; Please install.\n'
+    #TODO: report in a more visible way.
+    # Maybe reaise exception.
+    # If this line fails then the GUI can't start.
+    raise ImportError('Error could not load `pyqode.python`\nPlease install. In a shell, try running: \n'
           '  >> pip install pyqode.python --upgrade \n\n'
-          'See https://github.com/pyQode/pyqode.python \n')
+          'For more, see https://github.com/pyQode/pyqode.python \n')
 
 if TYPE_CHECKING:
     from ..main_window import MetalGUI, QMainWindowExtension
