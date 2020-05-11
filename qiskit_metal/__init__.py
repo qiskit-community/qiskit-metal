@@ -84,7 +84,7 @@ from .renderers.renderer_mpl import toolbox_mpl as plt
 
 # Utility functions
 from .toolbox_python.utility_functions import copy_update
-from .toolbox_python.utility_functions import display_options
+# from .toolbox_python.utility_functions import display_options
 
 # Import default renderers
 from .renderers import setup_renderers
