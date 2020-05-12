@@ -112,6 +112,7 @@ class QMainWindowExtensionBase(QMainWindow):
         Grad a screenshot of the main window,
         save to file, and then copy to clipboard.
         """
+
         # self.bring_to_top()
 
         path = Path(name).resolve()
@@ -122,6 +123,7 @@ class QMainWindowExtensionBase(QMainWindow):
         #self.logger.info(f'screennum={screennum}')
         #screen = QtWidgets.QApplication.screens()[screennum]
         #screenshot = screen.grabWindow(self.winId())  # QPixelMap
+        # see also https://github.com/ColinDuquesnoy/QDarkStyleSheet/blob/6aef1de7e97227899c478a5634d136d80991123e/example/example.py#L292
 
         # just grab the main window
         screenshot = self.grab() # type: QtGui.QPixelMap
@@ -273,7 +275,16 @@ class QMainWindowBaseHandler():
     def _setup_qApp(self):
         """
         Only one qApp can exist at a time, so check before creating one.
-        See also https://github.com/matplotlib/matplotlib/blob/9984f9c4db7bfb02ffca53b7823acb8f8e223f6a/lib/matplotlib/backends/backend_qt5.py#L98
+
+
+        There are three classes:
+            QCoreApplication - base class. Used in command line applications.
+            QGuiApplication - base class + GUI capabilities. Used in QML applications.
+            QApplication - base class + GUI + support for widgets. Use it in QtWidgets applications.
+
+        See:
+            https://forum.qt.io/topic/94834/differences-between-qapplication-qguiappication-qcoreapplication-classes/3
+            https://github.com/matplotlib/matplotlib/blob/9984f9c4db7bfb02ffca53b7823acb8f8e223f6a/lib/matplotlib/backends/backend_qt5.py#L98
         """
 
         self.qApp = QApplication.instance()
@@ -440,8 +451,10 @@ def kick_start_qApp():
     qApp = QtCore.QCoreApplication.instance()
 
     if qApp is None:
-        # @zlatko added for some pop up warning
-        #QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
+        try:
+            QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
+        except AttributeError:  # Attribute only exists for Qt >= 5.6
+            pass
 
         qApp = QApplication(sys.argv)
 

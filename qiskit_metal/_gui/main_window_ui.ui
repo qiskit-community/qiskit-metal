@@ -63,7 +63,7 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
    <enum>Qt::ToolButtonTextUnderIcon</enum>
   </property>
   <property name="documentMode">
-   <bool>false</bool>
+   <bool>true</bool>
   </property>
   <property name="tabShape">
    <enum>QTabWidget::Rounded</enum>
@@ -72,7 +72,10 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
    <bool>true</bool>
   </property>
   <property name="dockOptions">
-   <set>QMainWindow::AllowNestedDocks|QMainWindow::AllowTabbedDocks|QMainWindow::AnimatedDocks|QMainWindow::ForceTabbedDocks</set>
+   <set>QMainWindow::AllowNestedDocks|QMainWindow::AllowTabbedDocks|QMainWindow::AnimatedDocks|QMainWindow::GroupedDragging</set>
+  </property>
+  <property name="unifiedTitleAndToolBarOnMac">
+   <bool>false</bool>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -112,7 +115,7 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
        <bool>false</bool>
       </property>
       <property name="documentMode">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="tabsClosable">
        <bool>false</bool>

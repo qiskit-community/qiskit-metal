@@ -22,14 +22,20 @@ Created on Wed Apr 22 09:28:05 2020
 @author: Jeremy D. Drysdale
 """
 
+from pathlib import Path
 import unittest
-import pandas as pd
+
 import numpy as np
+import pandas as pd
 
 from qiskit_metal.analyses import lumped_capacitive
 from qiskit_metal.analyses import cpw_calculations
+from qiskit_metal.tests.assertions import AssertionsMixin
 
-class TestAnalyses(unittest.TestCase):
+
+TEST_DATA = Path(__file__).parent / "test_data"
+
+class TestAnalyses(unittest.TestCase, AssertionsMixin):
     """
     Unit test class
     """
@@ -85,9 +91,7 @@ class TestAnalyses(unittest.TestCase):
                                    (test_b_actual, test_b_expected),
                                    (test_c_actual, test_c_expected),
                                    (test_d_actual, test_d_expected)]:
-            self.assertEqual(len(actual), 3)
-            for x in range(3):
-                self.assertAlmostEqual(actual[x], expected[x], places=13)
+            self.assertIterableAlmostEqual(actual, expected)
 
     def test_analyses_cpw_lumped_cpw(self):
         """
@@ -117,10 +121,10 @@ class TestAnalyses(unittest.TestCase):
                                                     london_penetration_depth=1*10**.7)
 
         # Test all elements of the result data against expected data
-        self.assertAlmostEqual(test_a_expected, test_a_result, places=13)
-        self.assertAlmostEqual(test_b_expected, test_b_result, places=13)
-        self.assertAlmostEqual(test_c_expected, test_c_result, places=13)
-        self.assertAlmostEqual(test_d_expected, test_d_result, places=13)
+        self.assertIterableAlmostEqual(test_a_expected, test_a_result)
+        self.assertIterableAlmostEqual(test_b_expected, test_b_result)
+        self.assertIterableAlmostEqual(test_c_expected, test_c_result)
+        self.assertIterableAlmostEqual(test_d_expected, test_d_result)
 
     def test_analyses_cpw_effective_dielectric_constant(self):
         """
@@ -184,9 +188,7 @@ class TestAnalyses(unittest.TestCase):
         # Test all elements of the result data against expected data
         for (actual, expected) in [(test_a_actual, test_a_expected),
                                    (test_b_actual, test_b_expected)]:
-            self.assertEqual(len(actual), 4)
-            for x in range(4):
-                self.assertAlmostEqual(actual[x], expected[x], places=13)
+            self.assertIterableAlmostEqual(actual, expected)
 
         with self.assertRaises(ZeroDivisionError):
             cpw_calculations.elliptic_int_constants(0, 0, 0)
@@ -222,13 +224,12 @@ class TestAnalyses(unittest.TestCase):
         test_f_result = lumped_capacitive.transmon_props(10, 10)
 
         # Test all elements of the result data against expected data
-        for i in range(7):
-            self.assertEqual(test_a_expected[i], test_a_result[i])
-            self.assertEqual(test_b_expected[i], test_b_result[i])
-            self.assertEqual(test_c_expected[i], test_c_result[i])
-            self.assertEqual(test_d_expected[i], test_d_result[i])
-            self.assertEqual(test_e_expected[i], test_e_result[i])
-            self.assertEqual(test_f_expected[i], test_f_result[i])
+        self.assertEqual(test_a_expected, test_a_result)
+        self.assertEqual(test_b_expected, test_b_result)
+        self.assertEqual(test_c_expected, test_c_result)
+        self.assertEqual(test_d_expected, test_d_result)
+        self.assertEqual(test_e_expected, test_e_result)
+        self.assertEqual(test_f_expected, test_f_result)
 
     def test_analyses_lumped_chi(self):
         """
@@ -295,8 +296,7 @@ class TestAnalyses(unittest.TestCase):
         for (i, j) in [(test_a_results, test_a_expected), (test_b_results, test_b_expected),
                        (test_c_results, test_c_expected), (test_d_results, test_d_expected),
                        (test_e_results, test_e_expected), (test_f_results, test_f_expected)]:
-            for k in range(4):
-                self.assertAlmostEqual(i[k], j[k])
+            self.assertIterableAlmostEqual(i, j, rel_tol=0.22)
 
         with self.assertRaises(IndexError):
             lumped_capacitive.levels_vs_ng_real_units(100, 100, N=0)
@@ -323,10 +323,10 @@ class TestAnalyses(unittest.TestCase):
         # Test all elements of the result data against expected data
         self.assertEqual(len(test_a_result), 2)
         self.assertEqual(len(test_b_result), 2)
-        self.assertAlmostEqual(test_a_expected[0], test_a_result[0])
-        self.assertAlmostEqual(test_a_expected[1], test_a_result[1])
-        self.assertAlmostEqual(test_b_expected[0], test_b_result[0])
-        self.assertAlmostEqual(test_b_expected[1], test_b_result[1])
+        self.assertAlmostEqualRel(test_a_expected[0], test_a_result[0], rel_tol=0.002)
+        self.assertAlmostEqualRel(test_a_expected[1], test_a_result[1], rel_tol=0.01)
+        self.assertAlmostEqualRel(test_b_expected[0], test_b_result[0], rel_tol=1e-3)
+        self.assertAlmostEqualRel(test_b_expected[1], test_b_result[1], rel_tol=1e-4)
 
     def test_analyses_lumped_cos_to_mega_and_delta(self):
         """
@@ -414,7 +414,7 @@ class TestAnalyses(unittest.TestCase):
                                                      'Q1_pad_top1', 'Q1_readout_connector_pad'])
 
         # Generate actual result data
-        generated = lumped_capacitive.readin_q3d_matrix(r'test_data\q3d_example.txt')
+        generated = lumped_capacitive.readin_q3d_matrix(TEST_DATA / 'q3d_example.txt')
         return_size_result = len(generated)
         df_cmat_result = generated[0]
         units_result = generated[1]
@@ -426,17 +426,13 @@ class TestAnalyses(unittest.TestCase):
         self.assertEqual(units_expected, units_result)
         self.assertEqual(design_variation_expected, design_variation_result)
 
-        data_points = df_cmat_expected['ground_plane'].size
-        for i in range(data_points):
-            for j in ['ground_plane', 'Q1_bus_Q0_connector_pad', 'Q1_bus_Q2_connector_pad',
-                      'Q1_pad_bot', 'Q1_pad_top1', 'Q1_readout_connector_pad']:
-                self.assertAlmostEqual(df_cmat_expected[j][i], df_cmat_result[j][i], places=12)
+        for j in ['ground_plane', 'Q1_bus_Q0_connector_pad', 'Q1_bus_Q2_connector_pad',
+                  'Q1_pad_bot', 'Q1_pad_top1', 'Q1_readout_connector_pad']:
+            self.assertIterableAlmostEqual(df_cmat_expected[j], df_cmat_result[j])
 
-        data_points = df_cond_expected['ground_plane'].size
-        for i in range(data_points):
-            for j in ['ground_plane', 'Q1_bus_Q0_connector_pad', 'Q1_bus_Q2_connector_pad',
-                      'Q1_pad_bot', 'Q1_pad_top1', 'Q1_readout_connector_pad']:
-                self.assertAlmostEqual(df_cond_expected[j][i], df_cond_result[j][i], places=12)
+        for j in ['ground_plane', 'Q1_bus_Q0_connector_pad', 'Q1_bus_Q2_connector_pad',
+                  'Q1_pad_bot', 'Q1_pad_top1', 'Q1_readout_connector_pad']:
+            self.assertIterableAlmostEqual(df_cond_expected[j], df_cond_result[j])
 
     #pylint: disable-msg=too-many-locals
     def test_analyses_lumped_load_q3d_capacitance_matrix(self):
@@ -515,9 +511,9 @@ class TestAnalyses(unittest.TestCase):
                                                             'Q1_readout_connector_pad'])
 
         # Generate actual result data
-        test_a_result = lumped_capacitive.load_q3d_capacitance_matrix(r'test_data\q3d_example.txt',
+        test_a_result = lumped_capacitive.load_q3d_capacitance_matrix(TEST_DATA / 'q3d_example.txt',
                                                                       _disp=False)
-        test_b_result = lumped_capacitive.load_q3d_capacitance_matrix(r'test_data\q3d_example.txt',
+        test_b_result = lumped_capacitive.load_q3d_capacitance_matrix(TEST_DATA / 'q3d_example.txt',
                                                                       user_units='pF', _disp=False)
 
         test_a_return_size_result = len(test_a_result)
@@ -640,24 +636,20 @@ class TestAnalyses(unittest.TestCase):
                                                     'Q1_pad_top1', 'Q1_readout_connector_pad'])
 
         # Generate actual result data
-        df_a = lumped_capacitive.readin_q3d_matrix(r'test_data\q3d_example.txt')[0]
-        df_b = lumped_capacitive.readin_q3d_matrix(r'test_data\q3d_example.txt')[0]
+        df_a = lumped_capacitive.readin_q3d_matrix(TEST_DATA / 'q3d_example.txt')[0]
+        df_b = lumped_capacitive.readin_q3d_matrix(TEST_DATA / 'q3d_example.txt')[0]
 
         test_a_result = lumped_capacitive.df_reorder_matrix_basis(df_a, 1, 3)
         test_b_result = lumped_capacitive.df_reorder_matrix_basis(df_b, 4, 0)
 
         # Test all elements of the result data against expected data
-        data_points = test_a_result['ground_plane'].size
-        for i in range(data_points):
-            for j in ['ground_plane', 'Q1_bus_Q0_connector_pad', 'Q1_bus_Q2_connector_pad',
-                      'Q1_pad_bot', 'Q1_pad_top1', 'Q1_readout_connector_pad']:
-                self.assertAlmostEqual(test_a_expected[j][i], test_a_result[j][i], places=12)
+        for j in ['ground_plane', 'Q1_bus_Q0_connector_pad', 'Q1_bus_Q2_connector_pad',
+                  'Q1_pad_bot', 'Q1_pad_top1', 'Q1_readout_connector_pad']:
+            self.assertIterableAlmostEqual(test_a_expected[j], test_a_result[j], abs_tol=1e-12)
 
-        data_points = test_b_result['ground_plane'].size
-        for i in range(data_points):
-            for j in ['ground_plane', 'Q1_bus_Q0_connector_pad', 'Q1_bus_Q2_connector_pad',
-                      'Q1_pad_bot', 'Q1_pad_top1', 'Q1_readout_connector_pad']:
-                self.assertAlmostEqual(test_b_expected[j][i], test_b_result[j][i], places=12)
+        for j in ['ground_plane', 'Q1_bus_Q0_connector_pad', 'Q1_bus_Q2_connector_pad',
+                  'Q1_pad_bot', 'Q1_pad_top1', 'Q1_readout_connector_pad']:
+            self.assertIterableAlmostEqual(test_b_expected[j], test_b_result[j], abs_tol=1e-12)
 
         with self.assertRaises(IndexError):
             test_a_result = lumped_capacitive.df_reorder_matrix_basis(df_a, 1, 35)

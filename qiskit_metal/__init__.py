@@ -90,3 +90,4 @@ from .renderers import setup_renderers
 
 # Common-use
 from .components import BaseComponent
+from .toolbox_metal.about import about  
