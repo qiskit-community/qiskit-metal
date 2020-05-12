@@ -165,27 +165,10 @@ class BaseComponent():
 
         return options_from_children
 
-    def get_module_name(self):
-        # Presently, the full path for module name is returned.
-        # The path can be long.  We may need to agree to an abreviation of module name.
-
-        options_from_children = {}
-        parents = inspect.getmro(self.__class__)
-        name_full_path = parents[0].__dict__['__module__']
-
-        ''' This returns the name of module for base class.
-        module_tuple = os.path.split(os.path.abspath(__file__))
-        #moudule_path = module_tuple[0]         # Provides the full path of base class.
-        module_file = module_tuple[1]           # Provides the name of module
-        if module_file.strip().endswith('.py'):
-            module_file = module_file[:-3]
-        '''
-        return name_full_path
-
     def get_unique_module_class_name(self):
         # Could make module name more unique by using full path along with file name.
         # If use full path, the module_class_name would be VERY long.
-        module_name = self.get_module_name()
+        module_name = self.__module__
         class_name = self.__class__.__name__
         module_class_name = str(module_name) + '.' + str(class_name)
         return module_class_name
