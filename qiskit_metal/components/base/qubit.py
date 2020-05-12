@@ -23,18 +23,6 @@ from copy import deepcopy
 from ...toolbox_python.attr_dict import Dict
 from .base import BaseComponent
 
-###
-# Setup default options
-
-# DEFAULT_OPTIONS['qubit'] = Dict(
-#     pos_x='0um',
-#     pos_y='0um',
-#     con_lines=Dict() # should we maybe make it connectors not con since jargony?
-# )
-
-# DEFAULT_OPTIONS['qubit.con_lines'] = Dict()
-
-# TODO
 class BaseQubit(BaseComponent):
     '''
     Qubit base class. Use to subscript, not to generate directly.
@@ -46,12 +34,15 @@ class BaseQubit(BaseComponent):
 
     Default Options:
     --------------------------
-    DEFAULT_OPTIONS[class_name]
-    DEFAULT_OPTIONS[class_name+'.con_line'] : for individual connection lines
-        When you define your
-        custom qubit class please add a connector options default dicitonary name as
-        DEFAULT_OPTIONS[class_name+'.connector'] where class_name is the the name of your
-        custom class. This should speciy the default creation options for the connector.
+    default_options
+    ._default_con_lines : the default values for the (if any) connection lines of the 
+        qubit. 
+    .con_lines : the dictionary which contains all active connection lines for the qubit.
+        The structure should follow the format of .con_lines = dict{name_of_con_line=dict{}, 
+        name_of_con_line2 = dict{value1 = X,value2 = Y...},...etc.}
+
+        When you define your custom qubit class please add a connector options default 
+        dicitonary names as described above.
 
 
     GUI interfaceing
@@ -83,12 +74,14 @@ class BaseQubit(BaseComponent):
 
     def _set_options_con_lines(self):
         #class_name = type(self).__name__
-        assert 'con_lines' in self.design.template_options[self.unique_dict_key], f"""When you define your
-        custom qubit class please add a connector lines options default dicitonary name as
-        default_options['con_lines']. This should speciy the default creation options for the connector. """
+        assert '_default_con_lines' in self.design.template_options[self.unique_dict_key], f"""When
+        you define your custom qubit class please add a connector lines options default 
+        dicitonary name as default_options['_default_con_lines']. This should speciy the default 
+        creation options for the connector. """
         
         del self.options._default_con_lines #Not sure if it best to remove it from options to keep
-        #the self.options cleaner or not, since the options currently copies in the template.
+        #the self.options cleaner or not, since the options currently copies in the template. This is
+        #potential source of bugs in the future
         for name in self.options.con_lines:
             my_options_con_lines = self.options.con_lines[name]
             self.options.con_lines[name] = deepcopy(

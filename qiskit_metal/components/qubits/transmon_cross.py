@@ -24,33 +24,6 @@ from ... import draw
 from ...toolbox_python.attr_dict import Dict
 from ..base.qubit import BaseQubit
 
-
-
-# Connector default options
-# DEFAULT_OPTIONS['TransmonCross.con_lines']= deepcopy(
-#     DEFAULT_OPTIONS['qubit.con_lines'])
-# DEFAULT_OPTIONS['TransmonCross.con_lines'] = Dict(
-#     connector_type='0', #0 = Claw type, 1 = gap type
-#     claw_length='30um',
-#     ground_spacing='5um',
-#     claw_width=DEFAULT_OPTIONS.cpw.width,
-#     claw_gap=DEFAULT_OPTIONS.cpw.gap,
-#     connector_location='0' #0 => 'west' arm, 90 => 'north' arm, 180 => 'east' arm
-# )
-
-# #
-# DEFAULT_OPTIONS['TransmonCross'] = deepcopy(
-#     DEFAULT_OPTIONS['qubit'])
-# DEFAULT_OPTIONS['TransmonCross'].update(Dict(
-#     pos_x='0um',
-#     pos_y='0um',
-#     cross_width='20um',
-#     cross_length='200um',
-#     cross_gap='20um',
-#     orientation='0',
-# ))
-
-
 class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
     '''
     Description:
@@ -63,7 +36,8 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
     makes up the connector. Note, DC SQUID currently represented by single
     inductance sheet
 
-    Add connectors on it using the `options_connectors` dictonary.
+    Add connectors to it using the `con_lines` dictonary. See BaseQubit for more
+    information.
 
     Options:
     ----------------------------------------------------------------------------
@@ -135,7 +109,7 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
         cross_length = p.cross_length
         cross_gap = p.cross_gap
 
-        #Creates the cross and the etch equivalent. (FIX TO DRAW.LINESTRING)
+        #Creates the cross and the etch equivalent.
         cross_line =draw.shapely.ops.cascaded_union([draw.LineString([(0,cross_length),(0,-cross_length)]),
             draw.LineString([(cross_length,0),(-cross_length,0)])])
 
@@ -165,10 +139,6 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
         Goes through connectors and makes each one.
         '''
         for name in self.options.con_lines:
-            # ops = deepcopy(
-            #     self.design.template_options[self.unique_dict_key]['con_lines'])
-            # ops.update(options_connector)
-            # options_connector.update(ops)
             self.make_con_line(name)
 
     def make_con_line(self,name:str):
@@ -213,7 +183,7 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
         # Done here so as to have the same translations and rotations as the connector. Could 
         # extract from the connector later, but since allowing different connector types, 
         # this seems more straightforward.
-        port_line = draw.LineString([(-4*c_w,-c_w/2),(-4*c_w,c_w/2)])
+        port_line = draw.LineString([(-4*c_w, -c_w/2),(-4*c_w, c_w/2)])
 
         claw_rotate = 0
         if con_loc>135:
@@ -227,7 +197,7 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
         polys = draw.rotate(polys, claw_rotate, origin=(0, 0))
         polys = draw.rotate(polys, p.orientation, origin=(0, 0))
         polys = draw.translate(polys, p.pos_x, p.pos_y)
-        [connector_arm,connector_etcher,port_line] = polys
+        [connector_arm, connector_etcher, port_line] = polys
 
         #Generates elements for the connector
         self.add_elements('poly', {f'{name}_connector_arm':connector_arm})

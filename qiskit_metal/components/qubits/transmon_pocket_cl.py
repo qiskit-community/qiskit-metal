@@ -36,25 +36,6 @@ from ... import draw
 from ...toolbox_python.attr_dict import Dict
 from .transmon_pocket import TransmonPocket
 
-
-# DEFAULT_OPTIONS['TransmonPocketCL.con_lines'] = deepcopy(
-#     DEFAULT_OPTIONS['TransmonPocket.con_lines'])
-
-
-# DEFAULT_OPTIONS['TransmonPocketCL'] = deepcopy(
-#     DEFAULT_OPTIONS['TransmonPocket'])
-# DEFAULT_OPTIONS['TransmonPocketCL'].update(Dict(
-#     make_CL=True,
-#     cl_gap='6um',  # the cpw dielectric gap of the charge line
-#     cl_width='10um',  # the cpw trace width of the charge line
-#     cl_length='20um',  # the length of the charge line 'arm' coupling the the qubit pocket. 
-#     #Measured from the base of the 90 degree bend
-#     cl_ground_gap='6um',  # how much ground between the charge line and the qubit pocket
-#     cl_pocket_edge='0', #-180 to +180 from the 'left edge', will round to the nearest 90.
-#     cl_off_center='100um',  # distance from the center axis the qubit pocket is built on
-# ))
-
-
 class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
     '''
 
@@ -63,7 +44,7 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
     Create a standard pocket transmon qubit for a ground plane,
     with two pads connectored by a junction (see drawing below).
 
-    Connector lines can be added using the `options_con_lines`
+    Connector lines can be added using the `con_lines`
     dicitonary. Each connector line has a name and a list of default
     properties.
 
@@ -118,7 +99,8 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
 
 
     def make_charge_line(self):
-
+        """Creates the charge line if the user has charge line option to TRUE
+        """
 
         # Grab option values
         name = 'Charge_Line'
@@ -163,4 +145,4 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
         self.design.add_connector(name, points, self.name, flip=False)  # TODO: chip
 
         self.add_elements('poly', dict(cl_metal=cl_metal))
-        self.add_elements('poly', dict(cl_etcher = cl_etcher), subtract=True)
+        self.add_elements('poly', dict(cl_etcher=cl_etcher), subtract=True)

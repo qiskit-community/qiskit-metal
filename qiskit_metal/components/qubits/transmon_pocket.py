@@ -42,41 +42,6 @@ from ... import draw
 from ...toolbox_python.attr_dict import Dict
 from ..base.qubit import BaseQubit
 
-
-# DEFAULT_OPTIONS['TransmonPocket.con_lines'] = deepcopy(
-#     DEFAULT_OPTIONS['qubit.con_lines'])
-# DEFAULT_OPTIONS['TransmonPocket.con_lines'].update(Dict(
-#     pad_gap='15um',
-#     pad_width='125um',
-#     pad_height='30um',
-#     pad_cpw_shift='5um',
-#     pad_cpw_extent='25um',
-#     cpw_width=DEFAULT_OPTIONS.cpw.width,
-#     cpw_gap=DEFAULT_OPTIONS.cpw.gap,
-#     cpw_extend='100um',  # how far into the ground to extend the CPW line from the coupling pads
-#     pocket_extent='5um',
-#     pocket_rise='65um',
-#     loc_W='+1',  # width location  only +-1
-#     loc_H='+1',  # height location only +-1
-# ))
-
-# DEFAULT_OPTIONS['TransmonPocket'] = deepcopy(
-#     DEFAULT_OPTIONS['qubit'])
-# DEFAULT_OPTIONS['TransmonPocket'].update(Dict(
-#     pos_x='0um',
-#     pos_y='0um',
-#     pad_gap='30um',
-#     inductor_width='20um',
-#     pad_width='455um',
-#     pad_height='90um',
-#     pocket_width='650um',
-#     pocket_height='650um',
-#     # 90 has dipole aligned along the +X axis,
-#     # while 0 has dipole aligned along the +Y axis
-#     orientation='0',
-# ))
-
-
 class TransmonPocket(BaseQubit):
     '''
     Description:
@@ -84,7 +49,7 @@ class TransmonPocket(BaseQubit):
     Create a standard pocket transmon qubit for a ground plane,
     with two pads connectored by a junction (see drawing below).
 
-    Connector lines can be added using the `options_con_lines`
+    Connector lines can be added using the `con_lines`
     dicitonary. Each connector line has a name and a list of default
     properties.
 
@@ -227,12 +192,6 @@ class TransmonPocket(BaseQubit):
         Makes standard transmon in a pocket
         '''
         for name in self.options.con_lines: #
-            #Isn't this already being handled in the qubit base class?
-            #ops = deepcopy(
-            #    self.design.template_options[self.unique_dict_key]['con_lines']['default_con_lines'])
-            #ops.update(options_con_lines)
-            #options_con_lines.update(ops)
-            # make the connector
             self.make_con_line(name)
 
     def make_con_line(self, name:str):
@@ -254,7 +213,6 @@ class TransmonPocket(BaseQubit):
         pad_width = pc.pad_width
         pad_height = pc.pad_height
         pad_cpw_shift = pc.pad_cpw_shift
-        pad_cpw_extent = pc.pad_cpw_extent
         pocket_rise = pc.pocket_rise
         pocket_extent = pc.pocket_extent
 
