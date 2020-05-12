@@ -31,14 +31,16 @@ Updates:
 @author: Jay Gambetta, Zlatko K. Minev, Thomas McConkey
 """
 
+import io
+from pathlib import Path
 import re
+
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import scipy.optimize as opt
-import matplotlib.pyplot as plt
-
 from pint import UnitRegistry
-from pathlib import Path
+import scipy.optimize as opt
+
 
 __all__ = ['extract_transmon_coupled_Noscillator', 'levels_vs_ng_real_units',
            'load_q3d_capacitance_matrix', 'df_reorder_matrix_basis']
@@ -514,10 +516,10 @@ def readin_q3d_matrix(path):
 
     s2 = s1[1].split('Conductance Matrix')
 
-    df_cmat = pd.read_csv(pd.compat.StringIO(
+    df_cmat = pd.read_csv(io.StringIO(
         s2[0].strip()), delim_whitespace=True, skipinitialspace=True, index_col=0)
     if len(s2) > 1:
-        df_cond = pd.read_csv(pd.compat.StringIO(
+        df_cond = pd.read_csv(io.StringIO(
             s2[1].strip()), delim_whitespace=True, skipinitialspace=True, index_col=0)
     else:
         df_cond = None
