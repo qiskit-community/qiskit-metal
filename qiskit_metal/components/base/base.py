@@ -38,7 +38,7 @@ if TYPE_CHECKING:
     # I can't import DesignBase here, because I have ti first create the
     # component class, so this is a cludge
     from ...designs import DesignBase
-    from ...elements import ElementTypes #Why is this getting imported? Meant to be ElementTables?
+    # from ...elements import ElementTypes #Why is this getting imported? Meant to be ElementTables?
 
 
 class BaseComponent():
@@ -80,7 +80,6 @@ class BaseComponent():
 
     def __init__(self, design: 'DesignBase', name: str, options: Dict = None,
                  make=True, component_default: Dict = None):
-                
         """Create a new Metal component and adds it's default_options to the design.
 
         Arguments:
@@ -103,19 +102,18 @@ class BaseComponent():
         self._name = name
         self._design = design  # pointer to parent
 
-        self.unique_dict_key = self.get_unique_module_class_name()
-        if self.unique_dict_key not in design.template_options:
+        self._unique_dict_key = self.get_unique_module_class_name()
+        if self._unique_dict_key not in design.template_options:
             if component_default:
-                design.template_options[self.unique_dict_key] = deepcopy(
+                design.template_options[self._unique_dict_key] = deepcopy(
                     component_default)
             else:
-                design.template_options[self.unique_dict_key] = deepcopy(
+                design.template_options[self._unique_dict_key] = deepcopy(
                     self.gather_all_children_options())
 
         # TODO: options:  should probably write a setter and getter?
-        # Question: why is create_default_options a @classmethod.  Don't see the purpose after global DEFAULT_OPTIONS is removed.
         self.options = self.create_default_options(
-            design=design, name=name, logger_=logger, unique_key=self.unique_dict_key)
+            design=design, name=name, logger_=logger, unique_key=self._unique_dict_key)
         if options:
             self.options.update(options)
 
@@ -147,9 +145,9 @@ class BaseComponent():
             self.do_make()
 
     def gather_all_children_options(self):
-        #From the base class of BaseComponent, traverse the child classes
-        #to gather the .default options for each child class.
-        #Note:if keys are the same for child and grandchild, grandchild will overwrite child
+        # From the base class of BaseComponent, traverse the child classes
+        # to gather the .default options for each child class.
+        # Note:if keys are the same for child and grandchild, grandchild will overwrite child
 
         options_from_children = {}
         parents = inspect.getmro(self.__class__)
@@ -191,6 +189,11 @@ class BaseComponent():
         return self._design
 
     @property
+    def unique_dict_key(self) -> str:
+        '''Return the module path with class name.'''
+        return self._unique_dict_key
+
+    @property
     def connectors(self) -> set:
         '''The names of the connectors'''
         return self._connector_names
@@ -200,10 +203,8 @@ class BaseComponent():
             Function here, in case we want to generalize later.
         '''
         self.design.components[self.name] = self
-    
-    # Probably don't need classmethod any more since we don't have global varaibles any more.
-    # Use instance method., then will not need unique_key in the arguments.  Can use self.unique_dict_key
-    # Not sure if other parts of the metal code need this to be a @classmethod after the global dicts are removed.
+
+
     @classmethod
     def create_default_options(cls,
                                design: 'DesignBase',

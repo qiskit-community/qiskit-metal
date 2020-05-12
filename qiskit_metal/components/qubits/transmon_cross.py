@@ -22,7 +22,6 @@ converted to v0.2: Thomas McConkey 2020-04-23
 from copy import deepcopy
 from ... import draw
 from ...toolbox_python.attr_dict import Dict
-#from ..._defaults import DEFAULT_OPTIONS
 from ..base.qubit import BaseQubit
 
 

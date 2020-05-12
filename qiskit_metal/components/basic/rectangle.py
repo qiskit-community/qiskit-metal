@@ -49,34 +49,3 @@ class Rectangle(BaseComponent):
         # add elements
         self.add_elements('poly', {'rectangle': rect}, subtract=p.subtract,
                           helper=p.helper, layer=p.layer, chip=p.chip)
-
-#Remove this class before pull request.  It is here just a prototype and used for testing. 
-class RectangleFromPAS(BaseComponent):
-    """A single configurable square."""
-
-    """The class will add default_options class Dict to BaseComponent class before calling make.
-    """
-
-    default_options = Dict(
-        width='500um',
-        height='300um',
-        pos_x='0um',
-        pos_y='0um',
-        rotation='0',
-        subtract='False',
-        helper='False',
-        chip='main',
-        layer='1',
-        FOR_TEST="Happy Days"
-    )
-
-    def make(self):
-        p = self.p  # p for parsed parameters. Access to the parsed options.
-
-        # create the geometry
-        rect = draw.rectangle(p.width, p.height, p.pos_x, p.pos_y)
-        rect = draw.rotate(rect, p.rotation)
-
-        # add elements
-        self.add_elements('poly', {'rectangle': rect}, subtract=p.subtract,
-                          helper=p.helper, layer=p.layer, chip=p.chip)

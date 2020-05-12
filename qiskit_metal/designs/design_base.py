@@ -30,7 +30,6 @@ import numpy as np
 
 from .. import Dict, draw, logger
 from ..components import is_component
-# from ..config import DEFAULT, DEFAULT_OPTIONS, DefaultOptionsGeneric   #remove global dicts
 from ..config import DefaultOptionsGeneric, DefaultOptionsRenderer
 from ..toolbox_metal.import_export import load_metal_design, save_metal
 from ..toolbox_metal.parsing import parse_options, parse_value
@@ -86,9 +85,6 @@ class DesignBase():
         self._connectors = Dict()
         self._variables = Dict()
         self._chips = Dict()
-
-        # self._defaults = DEFAULT  # Depricated, to be removed
-        # self._default_options = DEFAULT_OPTIONS    #Depreciated, to be removed`
 
         self._metadata = self._init_metadata()
         if metadata:
@@ -148,17 +144,6 @@ class DesignBase():
         '''
         return self._variables
 
-    '''     #Depreciated, removed with global dicts
-    @property
-    def defaults(self) -> Dict:
-        ''' '''
-        Return DEFAULT dictionary, which contains some key Metal DEFAULT params used
-        in various Metal functions. These include default units, etc.
-
-        Think of these as global defaults.
-        ''' '''
-        return self._defaults
-    '''
 
     @property
     def template_options(self) -> Dict:
@@ -167,16 +152,6 @@ class DesignBase():
         component, and in calling other drawing and key functions.
         '''
         return self._template_options.default_options
-
-    ''' #Depreciated, to be removed with global dicts
-    @property
-    def default_options(self) -> Dict:
-        ''' '''
-        Return handle to the dicitonary of default options used in creating Metal
-        component, and in calling other drawing and key functions.
-        ''' '''
-        return self._default_options
-        '''
 
     @property
     def template_renderer_options(self) -> Dict:

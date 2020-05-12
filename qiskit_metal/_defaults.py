@@ -30,49 +30,6 @@ from .toolbox_python.attr_dict import Dict
 ################################################################################
 # Default Paramters
 
-
-# When rest of metal code stops using DEFAULT_OPTIONS, delete this dict.
-# The Dict has moved to DefaultOptionsGeneric
-#############  Going forward, cpw will not be used in default options.  Will change to variables. ########
-# DEFAULT_OPTIONS = Dict(
-#     cpw=Dict(
-#         width='10um',
-#         gap='6um',
-#         mesh_width='6um',
-#         fillet='90um',
-#     )
-# )
-
-r"""
-DEFAULT_OPTIONS:
-------------------------
-    Dictionary of the needed options for all functions defined in this module.
-    Each options should also have a default value.
-
-    This dictionary pointer should not be overwritten. Rather, update the dictionary values.
-"""
-
-'''
-# When rest of metal code stops using DEFAULT, delete this dict.
-# The Dict has moved to DefaultOptionsGeneric
-DEFAULT = Dict(
-    units='mm',
-    chip='main',
-    buffer_resolution=16,  # for shapely buffer
-    buffer_mitre_limit=5.0,
-)
-'''
-
-r"""
-Default paramters for many basic functions:
-------------------------
-
-:chip:           Default name of chip to draw on.
-
-.. sectionauthor:: Zlatko K Minev <zlatko.minev@ibm.com>
-"""
-
-
 class DefaultOptionsGeneric():
     """Encapsulate generic data used throughout qiskit metal classes.
 
@@ -133,6 +90,9 @@ class DefaultOptionsRenderer():
         This class is a skeleton and is expected to be updated when the renderer is updated. 
     '''
 
+
+    # These are potential dicts that could be used for renderers.  
+    
     default_bounding_box = Dict(draw_bounding_box=[
         [0, 0], [0, 0], ['0.890mm', '0.900mm']
     ],)

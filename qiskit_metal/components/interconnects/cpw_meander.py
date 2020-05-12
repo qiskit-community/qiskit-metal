@@ -9,10 +9,7 @@ import numpy as np
 from numpy.linalg import norm
 
 from ... import BaseComponent, Dict, draw
-#from ... import DEFAULT_OPTIONS, BaseComponent, Dict, draw
 from ...toolbox_metal.parsing import is_true
-
-#from qiskit_metal import DEFAULT_OPTIONS, BaseComponent, Dict, draw
 #from qiskit_metal.toolbox_metal.parsing import is_true
 
 
@@ -48,26 +45,6 @@ class Connector:
 
 #from typing import Dict as Dict_
 #Dict_[str, 'np.ndarray[np.float]']
-
-''' Has moved to within the class CpwMeanderSimple
-DEFAULT_OPTIONS['CpwMeanderSimple'] = Dict(
-    connector_start='',
-    connector_end='',
-    total_length='7mm',
-    chip='main',
-    layer='1',
-    trace_width='cpw_width',
-    trace_gap='cpw_gap',
-    meander=Dict(
-        spacing='200um',
-        lead_start='0.1mm',
-        lead_end='0.1mm',
-        lead_direction_inverted='false',
-        snap='true',
-        asymmetry_fracton='0',
-    )
-)
-'''
 
 class CpwMeanderSimple(BaseComponent):
     """A meandered basic CPW.

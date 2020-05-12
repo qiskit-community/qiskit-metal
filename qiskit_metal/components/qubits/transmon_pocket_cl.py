@@ -34,7 +34,6 @@ Child of 'standard' transmon pocket
 from copy import deepcopy
 from ... import draw
 from ...toolbox_python.attr_dict import Dict
-#from ..._defaults import DEFAULT_OPTIONS
 from .transmon_pocket import TransmonPocket
 
 
