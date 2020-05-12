@@ -32,6 +32,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (QApplication, QFileDialog, QLabel, QMainWindow,
                              QMessageBox)
 
+from PyQt5.QtCore import QEventLoop
 
 #from ..toolbox_python._logging import setup_logger
 #from .. import config, Dict
@@ -146,6 +147,7 @@ class MetalGUI(QMainWindowBaseHandler):
 
     __UI__ = Ui_MainWindow
     _QMainWindowClass = QMainWindowExtension
+    _img_logo_name = 'metal_logo.png'
 
     _dock_names = [
         'dockComponent',
@@ -178,6 +180,8 @@ class MetalGUI(QMainWindowBaseHandler):
 
         # Show
         self.main_window.show()
+        self.qApp.processEvents(QEventLoop.AllEvents, 1)
+        self.main_window.raise_()
 
         if design:
             self.set_design(design)

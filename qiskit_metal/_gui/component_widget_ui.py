@@ -112,14 +112,14 @@ class Ui_ComponentWidget(object):
         ComponentWidget.addTab(self.tabSource, icon3, "")
 
         self.retranslateUi(ComponentWidget)
-        ComponentWidget.setCurrentIndex(0)
+        ComponentWidget.setCurrentIndex(1)
         self.btn_edit_src.clicked.connect(ComponentWidget.edit_source)
         QtCore.QMetaObject.connectSlotsByName(ComponentWidget)
 
     def retranslateUi(self, ComponentWidget):
         _translate = QtCore.QCoreApplication.translate
         ComponentWidget.setWindowTitle(_translate("ComponentWidget", "TabWidget"))
-        self.labelComponentName.setPlaceholderText(_translate("ComponentWidget", "Select component to edit its options here"))
+        self.labelComponentName.setPlaceholderText(_translate("ComponentWidget", "Select component from design panel to edit its options here"))
         self.labelComponentName_old.setText(_translate("ComponentWidget", "Component Name"))
         ComponentWidget.setTabText(ComponentWidget.indexOf(self.tabOptions), _translate("ComponentWidget", "Options"))
         ComponentWidget.setTabToolTip(ComponentWidget.indexOf(self.tabOptions), _translate("ComponentWidget", "Edit the make options"))
