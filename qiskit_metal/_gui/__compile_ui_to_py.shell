@@ -26,3 +26,5 @@ pyrcc5 main_window_rc.qrc     -o main_window_rc_rc.py
 #         .raise)    --->    .raise_)
 # for the whole file
 sed -i '.original' 's/.raise)/.raise_)/g'  main_window_ui.py
+ # Remove backup files
+rm  main_window_ui.py.original
