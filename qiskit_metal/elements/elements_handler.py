@@ -34,6 +34,7 @@ from ..toolbox_python.utility_functions import data_frame_empty_typed
 
 if TYPE_CHECKING:
     from ..components.base import BaseComponent
+    from ..designs import DesignBase
 
 __all__ = ['is_element_table', 'ElementTables']  # , 'ElementTypes']
 
@@ -148,7 +149,7 @@ ELEMENT_COLUMNS = dict(
 TRUE_BOOLS = [True, 'True', 'true', 'Yes', 'yes', '1', 1]
 
 
-class ElementTables():
+class ElementTables(object):
     """Class to create, store, and handle element tables.
 
     A regular user would not need to create tables themselves.
@@ -238,7 +239,7 @@ class ElementTables():
     # For creating names of columns of renderer properties
     name_delimiter = '_'
 
-    def __init__(self, design:'BaseComponent', logger: logging.Logger = None):
+    def __init__(self, design:'DesignBase'):
         """
         The constructor for the `BaseElement` class.
 
@@ -247,11 +248,19 @@ class ElementTables():
                 and the pandas DataFrames as values. The values get overwritten
                 very often. Do not use a fixed reference.
         """
-        self.design = design
-        self.logger = logger or design.logger
+        self._design = design
 
         self.tables = Dict()
         self.create_tables()
+
+    @property
+    def design(self) -> 'DesignBase':
+        '''Return a reference to the parent design object'''
+        return self._design
+
+    @property
+    def logger(self) -> logging.Logger:
+        return self._design.logger
 
     @classmethod
     def add_renderer_extension(cls, renderer_name: str, elements: dict):

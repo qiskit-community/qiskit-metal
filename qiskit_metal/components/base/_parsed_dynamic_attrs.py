@@ -18,17 +18,44 @@ Parsed dynamic attributes.
 @author: Zlatko Minev
 @date: 2020
 """
-
+import  pprint
 from typing import List
 from typing import TYPE_CHECKING
 #from ...toolbox_python.utility_functions import log_error_easy
 if TYPE_CHECKING:
     from .base import BaseComponent
 
+def is_ipython_magic(check_attribute: str) -> bool:
+    """Ignore the following checks by jupyter """
+    return check_attribute in {
+        '_ipython_canary_method_should_not_exist_',
+        '_ipython_display_',
+        '_repr_mimebundle_',
+        '_repr_html_',
+        '_repr_markdown_',
+        '_repr_svg_',
+        '_repr_png_',
+        '_repr_pdf_',
+        '_repr_jpeg_',
+        '_repr_latex_',
+        '_repr_json_',
+        '_repr_javascript_',
+        '_rapped',
+        '__wrapped__',
+        '__call__',
+    }
+
 class ParsedDynamicAttributes_Component():
     """
-    Returns parse versions of the user options.
-    Example
+    Provides a parsing view of the component options.
+
+    When accessed, returns parse versions of the user options.
+    Works with nested options too.
+
+    Example:
+        component.options = {'x':'1nm'}
+        print(component.p.x)
+            >> float(1e7)
     """
 
     """
@@ -51,7 +78,7 @@ class ParsedDynamicAttributes_Component():
         # These names must have __xx__ or else they will go to getattr instead of getattribute
 
         self.__component__ = component
-        self.__d__ = component.options
+        # self.__d__ = component.options
         self.__keylist__ = key_list or []  # lis tot get current value
 
         self.__parse__ = component.design.parse_value         # function
@@ -70,7 +97,7 @@ class ParsedDynamicAttributes_Component():
         return self.__getdict__().__str__()
 
     def __getdict__(self) -> dict:
-        return get_nested_dict_item(self.__d__, self.__keylist__)
+        return get_nested_dict_item(self.__component__.options, self.__keylist__)
 
     def __getattr__(self, name: str):
         """
@@ -100,13 +127,18 @@ class ParsedDynamicAttributes_Component():
         dic = self.__getdict__()
 
         if name not in dic:
-            # log_error_easy(self.__component__.logger, post_text=
-            xx = self.__keylist__
-            xx = ".".join(xx) + "." + name if len(xx) > 0 else name
-            self.__component__.logger.error('\nWarning: User tried to access a variable in the parse options'
-                                            f' that is not there!\n Component name = `{self.__component__.name}`\n'
-                                            f' Option name    = `{xx}`')
-            return None
+            if not is_ipython_magic(name):
+                # log_error_easy(self.__component__.logger, post_text=
+                xx = self.__keylist__
+                xx = ".".join(xx) + "." + name if len(xx) > 0 else name
+                self.__component__.logger.error('\nWarning: User tried to access a variable in the parse options'
+                                                f' that is not there!\n Component name = `{self.__component__.name}`\n'
+                                                f' Option name    = `{xx}`')
+                return None
+            else:
+                # IPython checking methods
+                # https://github.com/jupyter/notebook/issues/2014
+                raise AttributeError(name)
 
         else:
             val = dic.get(name)
@@ -116,6 +148,30 @@ class ParsedDynamicAttributes_Component():
                 return ParsedDynamicAttributes_Component(self.__component__, key_list=self.__keylist__ + [name])
             else:
                 return self.__parse__(val)
+
+    ####### SERIALIZATION
+
+    def __getstate__(self):
+        #  "I'm being pickled"
+        return self.__dict__
+
+    def __setstate__(self, d):
+        #  f"I'm being unpickled with these values: {d}"
+        self.__dict__ = d
+
+    def __repr__(self):
+        """For viewing. Just return the whole parse dictionary
+        """
+        b = '\033[94m\033[1m'
+        e = '\033[0m'
+
+        c = self.__component__
+        parsed = c.parse_value(c.options)
+        parsed_text = pprint.pformat(parsed, indent=1)
+        text = f"""{b}Current parsed *view* of options for {c.name}:{e}
+ (Units are parsed to floats in default design units.)
+ {parsed_text}"""
+        return text
 
 
 # TESTING code:

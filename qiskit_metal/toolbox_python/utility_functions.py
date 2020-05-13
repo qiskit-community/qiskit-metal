@@ -144,7 +144,7 @@ def print_traceback_easy(start=26):
     print('\n')
 
 import logging, sys
-def log_error_easy(logger:logging.Logger, pre_text='', post_text=''):
+def log_error_easy(logger:logging.Logger, pre_text='', post_text='', do_print=False):
     """
     Print
 
@@ -176,7 +176,11 @@ def log_error_easy(logger:logging.Logger, pre_text='', post_text=''):
     """
     exc_type, exc_value, exc_tb = sys.exc_info()
     error = traceback.format_exception(exc_type, exc_value, exc_tb)
-    logger.error(f'{pre_text}\n\n'+'\n'.join(error)+f'\n{post_text}')
+    text = f'{pre_text}\n\n'+'\n'.join(error)+f'\n{post_text}'
+
+    logger.error(text)
+    if do_print:
+        print(text)
 
 #####################################################################################
 

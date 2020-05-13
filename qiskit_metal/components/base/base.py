@@ -114,7 +114,7 @@ class BaseComponent():
         self._made = False
 
         # Logger
-        self.logger = logger
+        # self.logger = logger
 
         # Parser for options
         self.p = ParsedDynamicAttributes_Component(self)
@@ -142,6 +142,10 @@ class BaseComponent():
     def design(self) -> 'DesignBase':
         '''Return a reference to the parent design object'''
         return self._design
+
+    @property
+    def logger(self) -> logging.Logger:
+        return self._design.logger
 
     @property
     def connectors(self) -> set:

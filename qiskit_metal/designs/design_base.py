@@ -59,6 +59,8 @@ class DesignBase():
         default_options (dict) : Contains all the default options used for component creation and
             other functions.
 
+        save_path (str or None) : Path that the design is saved to. Set when saved or loaded
+
     """
 
     # TODO -- Idea: Break up DesignBase into several interface classes,
@@ -90,6 +92,8 @@ class DesignBase():
         self._metadata = self._init_metadata()
         if metadata:
             self.update_metadata(metadata)
+
+        self.save_path = None # type: str
 
         self.logger = logger  # type: logging.Logger
 
@@ -354,16 +358,38 @@ class DesignBase():
             Will also update default dicitonaries.
         """
         logger.warning("Loading is a beta feature.")
-        return load_metal_design(path)
+        design = load_metal_design(path)
+        return design
 
-    def save_design(self, path: str):
+    def save_design(self, path: str = None):
         """Save the metal design to a Metal file.
 
         Arguments:
-            path {str} -- Path to save the design to.
+            path {str or None} -- Path to save the design to. If none, then tried
+                                to use self.save_path if it is set. (default: None)
         """
-        self.logger.warning("Saving is a beta feature.")
-        return save_metal(path, self)
+
+        self.logger.warning("Saving is a beta feature.") # TODO:
+
+        if path is None:
+            if self.save_path is None:
+                self.logger.error('Cannot save design since you did not provide a path to'
+                'save to yet. Once you save the dewisgn to a path, the then you call save '
+                'without an argument.')
+            else:
+                path = self.save_path
+
+        self.save_path = str(path)
+
+        # Do the actual saving
+        self.logger.info(f'Saving design to {path}')
+        result = save_metal(path, self)
+        if result:
+            self.logger.info(f'Saving successful.')
+        else:
+            self.logger.error(f'Saving failed.')
+
+        return result
 
 #########Creating Components###############################################################
 

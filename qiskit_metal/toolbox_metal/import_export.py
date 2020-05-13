@@ -23,17 +23,38 @@ Saving and load metal data
 
 import pickle
 #from ..designs.base
+from ..toolbox_python.utility_functions import log_error_easy
 
 def save_metal(filename : str, design):
     """
     filename: str path
     design : design obejct Metal_Design_Base
-
-    TODO: Right now just does pickle. Need to serialize object into JSON
-    or similar. Then recreate components.
     """
-    # handle errors here? such as PermissionError
-    pickle.dump(design, open(filename, "wb"))
+    result = False
+
+    # Do not pickle the following -- THis is issue with picking
+    self = design # cludge for lazy tying
+    logger = self.logger
+    self.logger = None
+
+    # Pickle
+    # TODO: Right now just does pickle. Need to serialize object into JSON
+    # or similar. Then recreate components.
+    try:
+        pickle.dump(self, open(filename, "wb"))
+
+        result = True
+    except Exception as e:
+        # handle errors here? such as PermissionError
+        text = f'ERROR WHILE SAVING: {e}'
+        log_error_easy(logger, post_text=text)
+        # print(text)
+        # logger.error(text)
+        result = False
+
+    # restore -- also need to do in the load function
+    self.logger = logger
+    return result
 
 
 def load_metal_design(filename : str, do_update=True):
@@ -45,6 +66,11 @@ def load_metal_design(filename : str, do_update=True):
         updates DEFAULT, DEFAULT_OPTIONS with the params saved in the file
     """
     design = pickle.load(open(filename, "rb"))
+    design.save_path = str(filename) # Set the place from where we loaded the design
+
+    # Restore
+    from .. import logger
+    design.logger = logger #TODO: fix from save pikcle
 
     if do_update:
         from ..config import DEFAULT, DEFAULT_OPTIONS

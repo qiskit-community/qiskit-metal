@@ -73,8 +73,21 @@ class QMainWindowExtensionBase(QMainWindow):
         """whenever a window is closed.
             Passed an event which we can choose to accept or reject.
         """
-        self.save_window_settings()
-        super().closeEvent(event)
+        if self.ok_to_continue():
+            self.save_window_settings()
+            super().closeEvent(event)
+
+    def ok_to_continue(self):
+        if self.movies.isDirty():
+            reply = QMessageBox.question(self,
+                    "Qiskit Metal",
+                    "Save unsaved changes to design?",
+                    QMessageBox.Yes|QMessageBox.No|QMessageBox.Cancel)
+            if reply == QMessageBox.Cancel:
+                return False
+            elif reply == QMessageBox.Yes:
+                return self.handler.save_file() # TODO: in parent
+        return True
 
     def save_window_settings(self):
         # get the current size and position of the window as a byte array.
@@ -87,7 +100,9 @@ class QMainWindowExtensionBase(QMainWindow):
         Call a Qt built-in function to restore values
         from the settings file.
         """
-        if 1:
+        try:
+            self.logger.debug("Restoring window settings...")
+
             # should probably call .encode("ascii") here
             geom = self.settings.value('geometry', '')
             if isinstance(geom, str):
@@ -99,12 +114,12 @@ class QMainWindowExtensionBase(QMainWindow):
                 window_state = window_state.encode("ascii")
             self.restoreState(window_state)
 
-            # TODO: add stylesheet
             self.handler.load_stylesheet(self.settings.value('stylesheet',
                                                              self.handler._stylesheet_default))
 
-        # except Exception as e:
-            # print(f'ERROR [restore_window_settings]: {e}')
+            #TODO: Recent files
+        except Exception as e:
+            self.logger.error(f'ERROR [restore_window_settings]: {e}')
 
     def bring_to_top(self):
         """ Bring window to top.
@@ -326,15 +341,20 @@ class QMainWindowBaseHandler():
                 Reference: https://ipython.readthedocs.io/en/stable/config/eventloops.html
                 """)
 
-        # QApplication.platformName() -- on mac: 'cocoa'
-
         # for window platofrms only
+        # QApplication.platformName() -- on mac: 'cocoa'
         if os.name.startswith('nt'):
             # Arbitrary string, needed for icon in taskbar to be custom set proper
             # https://stackoverflow.com/questions/1551605/how-to-set-applications-taskbar-icon-in-windows-7
             import ctypes
             ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(
                 self._myappid)
+
+        app = self.qApp
+        if app:
+            app.setOrganizationName(r"IBM Quantum Metal")
+            app.setOrganizationDomain(r"https://www.ibm.com/quantum-computing")
+            app.setApplicationName(r"Qiskit Metal")
 
         return self.qApp
 
@@ -373,34 +393,35 @@ class QMainWindowBaseHandler():
 
     def _setup_dock_show(self):
         self._dock_raises = {}
-        for dock in self._dock_names:
+        #TODO: add a raise_ on the event of show
+        # for dock in self._dock_names:
 
-            # Function
-            @pyqtSlot(bool, name=f'raise_{dock}')
-            def raise_(state: bool, dock_name=dock):
-                #print(dock_name, state)
-                _dock = getattr(self.ui, dock_name)
-                if state:
-                    self.logger.debug(f'Raising dock {dock_name}')
-                    _dock.setVisible(True)
-                    _dock.show()
-                    _dock.raise_()
-                else:
-                    self.logger.debug(f'Hiding dock {dock_name}')
-                    _dock.setVisible(False)
+        #     # Function
+        #     @pyqtSlot(bool, name=f'raise_{dock}')
+        #     def raise_(state: bool, dock_name=dock):
+        #         #print(dock_name, state)
+        #         _dock = getattr(self.ui, dock_name)
+        #         if state:
+        #             self.logger.debug(f'Raising dock {dock_name}')
+        #             _dock.setVisible(True)
+        #             _dock.show()
+        #             _dock.raise_()
+        #         else:
+        #             self.logger.debug(f'Hiding dock {dock_name}')
+        #             _dock.setVisible(False)
 
-            self._dock_raises[dock] = raise_
+        #     self._dock_raises[dock] = raise_
 
-            # Connect to action
-            action = dock.replace('dock', 'action')
-            if hasattr(self.ui, action):
-                #self.logger.debug(f'DOCK {dock} has an action {action}')
-                _action = getattr(self.ui, action)
-                # _action.triggered.disconnect() # TypeError if none
-                _action.triggered.connect(self._dock_raises[dock])
-            else:
-                self.logger.warning(
-                    f'DOCK {dock} should have had an action {action}, but it did not!')
+        #     # Connect to action
+        #     action = dock.replace('dock', 'action')
+        #     if hasattr(self.ui, action):
+        #         #self.logger.debug(f'DOCK {dock} has an action {action}')
+        #         _action = getattr(self.ui, action)
+        #         # _action.triggered.disconnect() # TypeError if none
+        #         _action.triggered.connect(self._dock_raises[dock])
+        #     else:
+        #         self.logger.warning(
+        #             f'DOCK {dock} should have had an action {action}, but it did not!')
 
     def _setup_window_size(self):
         if self.config.main_window.auto_size:
@@ -482,6 +503,10 @@ class QMainWindowBaseHandler():
         save to file, and then copy to clipboard.
         """
         self.main_window.get_screenshot(name, type_, display, disp_ops)
+
+    def save_file(self):
+        """Save file. Called on exit"""
+        raise NotImplementedError()
 
 
 def kick_start_qApp():
