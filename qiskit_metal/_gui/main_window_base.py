@@ -242,7 +242,9 @@ class QMainWindowBaseHandler():
         self.path_imgs = Path(self.path_gui) / \
             self._img_folder_name  # Path to gui imgs folder
         if not self.path_imgs.is_dir():
-            print(f'Bad File path for images! {self.path_imgs}')
+            text = f'Bad File path for images! {self.path_imgs}'
+            print(text)
+            self.logger.error(text)
 
         # Main Window and App level
         self.main_window = self._QMainWindowClass()
@@ -424,8 +426,6 @@ class QMainWindowBaseHandler():
                 >>> pip install qdarkstyle
         """
         result = True
-        self._fuck = path
-        print(f"""{path} is 'metal_dark' = {path == 'metal_dark'}""")
         if path == 'default' or path is None:
             self._style_sheet_path = 'default'
             self.main_window.setStyleSheet('default')
@@ -444,20 +444,20 @@ class QMainWindowBaseHandler():
 
         elif path == 'metal_dark':
             path_full = self.path_stylesheets/'metal_dark'/'style.qss'
-            print(f'path_full = {path_full}')
+            # print(f'path_full = {path_full}')
             self._load_stylesheet_from_file(path_full)
 
         else:
             self._load_stylesheet_from_file(path)
 
-        if result: # Set successfuly
+        if result:  # Set successfuly
             self._stylesheet = path
             self.settings.setValue('stylesheet', self._stylesheet)
-        else: # Failed to set
+        else:  # Failed to set
             return False
 
     def _load_stylesheet_from_file(self, path: str):
-        print(f'path = {path}')
+        # print(f'path = {path}')
         try:
             path = Path(str(path))
             if path.is_file():
