@@ -1,12 +1,28 @@
 #!/bin/bash
 
+#  Set the current active path to the path where this bash file is 
 cd "$(dirname "$0")"
 echo $PWD
 
-pyuic5 main_window_ui.ui -o main_window_ui.py --import-from .
+# pyuic5
+# https://www.riverbankcomputing.com/static/Docs/PyQt5/designer.html
+#     -o : The Python code generated is written to the file <FILE>.
+#     -i : Resource modules are imported using 
+#          from <PACKAGE> import ... rather than a simple import ....
+pyuic5 main_window_ui.ui      -o main_window_ui.py      --import-from .
 pyuic5 component_widget_ui.ui -o component_widget_ui.py --import-from .
-pyuic5 plot_window_ui.ui -o plot_window_ui.py --import-from .
-pyuic5 elements_ui.ui -o elements_ui.py --import-from .
-pyuic5 edit_source_ui.ui -o edit_source_ui.py --import-from .
+pyuic5 plot_window_ui.ui      -o plot_window_ui.py      --import-from .
+pyuic5 elements_ui.ui         -o elements_ui.py         --import-from .
+pyuic5 edit_source_ui.ui      -o edit_source_ui.py      --import-from .
 
-pyrcc5 main_window_rc.qrc -o main_window_rc_rc.py
+pyrcc5 main_window_rc.qrc     -o main_window_rc_rc.py
+
+
+# Zlatko: 
+# Qt Designer doesn't seem to know that in python you cant use self.raise
+# since raise is a reserved word. 
+# Instead, the functgion is called self.raise_
+# Here i use sed on mac to replace it:
+#         .raise)    --->    .raise_)
+# for the whole file
+sed -i '.original' 's/.raise)/.raise_)/g'  main_window_ui.py
