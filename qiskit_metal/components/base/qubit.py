@@ -35,13 +35,13 @@ class BaseQubit(BaseComponent):
     Default Options:
     --------------------------
     default_options
-    ._default_con_lines : the default values for the (if any) connection lines of the 
-        qubit. 
+    ._default_con_lines : the default values for the (if any) connection lines of the
+        qubit.
     .con_lines : the dictionary which contains all active connection lines for the qubit.
-        The structure should follow the format of .con_lines = dict{name_of_con_line=dict{}, 
+        The structure should follow the format of .con_lines = dict{name_of_con_line=dict{},
         name_of_con_line2 = dict{value1 = X,value2 = Y...},...etc.}
 
-        When you define your custom qubit class please add a connector options default 
+        When you define your custom qubit class please add a connector options default
         dicitonary names as described above.
 
 
@@ -74,17 +74,17 @@ class BaseQubit(BaseComponent):
 
     def _set_options_con_lines(self):
         #class_name = type(self).__name__
-        assert '_default_con_lines' in self.design.template_options[self.unique_dict_key], f"""When
-        you define your custom qubit class please add a connector lines options default 
-        dicitonary name as default_options['_default_con_lines']. This should speciy the default 
+        assert '_default_con_lines' in self.design.template_options[self.class_name], f"""When
+        you define your custom qubit class please add a connector lines options default
+        dicitonary name as default_options['_default_con_lines']. This should speciy the default
         creation options for the connector. """
-        
+
         del self.options._default_con_lines #Not sure if it best to remove it from options to keep
         #the self.options cleaner or not, since the options currently copies in the template. This is
         #potential source of bugs in the future
         for name in self.options.con_lines:
             my_options_con_lines = self.options.con_lines[name]
             self.options.con_lines[name] = deepcopy(
-                self.design.template_options[self.unique_dict_key]['_default_con_lines'])
+                self.design.template_options[self.class_name]['_default_con_lines'])
             self.options.con_lines[name].update(my_options_con_lines)
-            
+

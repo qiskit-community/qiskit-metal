@@ -73,10 +73,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
     def gui(self) -> 'MetalGUI':
         return self.handler
 
-    def _set_element_tab(self,
-                         yesno):
-        print(yesno)
-        print("self if: ", self)
+    def _set_element_tab(self, yesno:bool):
         if yesno:
             self.ui.tabWidget.setCurrentWidget(self.ui.tabElements)
             self.ui.actionElements.setText("View")

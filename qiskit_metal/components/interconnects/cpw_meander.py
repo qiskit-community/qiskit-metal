@@ -20,9 +20,12 @@ class Connector:
 
     Attributes:
         positon (np.ndarray of 2 points) -- Center position of the connector
-        direction (np.ndarray of 2 points) -- Normal of the connector, defines which way it points outward
-        tangent (np.ndarray of 2 points) -- unit vector parallel to the connector face and a 90 deg CCW rotation from the direction units vector
+        direction (np.ndarray of 2 points) -- *Normal vector* of the connector, defines which way it points outward.
+                                              This is the normal vector to the surface on which the connector mates.
+                                              Has unit norm.
     """
+    # TODO: Maybe move this class out of here, more general.
+
 
     def __init__(self, position: np.ndarray, direction: np.ndarray):
         self.position = position
@@ -38,8 +41,12 @@ class Connector:
         return Connector(self.position + self.direction*length, self.direction)
 
     def get_coordinate_vectors(self) -> Tuple[np.ndarray]:
-        """
-        Returns vectors that define the normal and tanget
+        """Returns vectors that define the normal and tanget
+
+        Returns:
+            Tuple[np.ndarray] -- contains the parallel direction and the tangent. e.g.
+                                tangent (np.ndarray of 2 points) -- unit vector parallel to
+                                the connector face and a 90 deg CCW rotation from the direction units vector
         """
         return self.direction, draw.Vector.rotate(self.direction, np.pi/2)
 
