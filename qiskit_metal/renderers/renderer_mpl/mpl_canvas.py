@@ -48,6 +48,7 @@ from .toolbox_mpl import clear_axis, get_prop_cycle
 # @mfacchin - moved to the root __init__ to prevent windows from hanging
 # mpl.use("Qt5Agg")
 
+BACKGROUND_COLOR = '#F4F4F4'
 MPL_CONTEXT_DEFAULT = {
     'lines.linewidth': 3,
 
@@ -57,8 +58,8 @@ MPL_CONTEXT_DEFAULT = {
     # figure.titleweight : normal   ## weight of the figure title
     # figure.figsize   : 6.4, 4.8   ## figure size in inches
     'figure.dpi': 100,  # figure dots per inch
-    'figure.facecolor': 'white',  # figure facecolor
-    'figure.edgecolor': 'white',  # figure edgecolor
+    'figure.facecolor': BACKGROUND_COLOR,  # figure facecolor
+    'figure.edgecolor': BACKGROUND_COLOR,  # figure edgecolor
     # figure.frameon : True         ## enable figure frame
     # figure.max_open_warning : 20  ## The maximum number of figures to open through
     # the pyplot interface before emitting a warning.
@@ -93,7 +94,7 @@ MPL_CONTEXT_DEFAULT = {
 
     # GRIDS
     'grid.color':   'b0b0b0',  # grid color
-    # grid.linestyle   :   -         ## solid
+    'grid.linestyle': '-',         # solid
     'grid.linewidth':   0.5,  # in points
     'grid.alpha':   0.5,  # transparency, between 0.0 and 1.0
 
@@ -101,7 +102,7 @@ MPL_CONTEXT_DEFAULT = {
     # default face and edge color, default tick sizes,
     # default fontsizes for ticklabels, and so on.  See
     # http://matplotlib.org/api/axes_api.html#module-matplotlib.axes
-    'axes.facecolor': 'white',  # axes background color
+    'axes.facecolor': BACKGROUND_COLOR,  # axes background color
     # 'axes.edgecolor'      : 'black',   ## axes edge color
     # axes.linewidth      : 0.8     ## edge linewidth
     'axes.grid': True,  # display grid or not

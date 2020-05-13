@@ -28,10 +28,11 @@ if TYPE_CHECKING:
     from ..main_window import MetalGUI, QMainWindowExtension
 
 
-def create_source_edit_widget(gui: 'MetalGUI', class_name: str,
+def create_source_edit_widget(gui: 'MetalGUI',
+                              class_name: str,
                               module_name: str,
                               module_path: str,
-                              parent = None) -> QtWidgets.QWidget:
+                              parent=None) -> QtWidgets.QWidget:
     """Creates teh spawned window that has the edit source
 
     Arguments:
@@ -44,11 +45,12 @@ def create_source_edit_widget(gui: 'MetalGUI', class_name: str,
         [QtWidgets.QWidget] -- [Ui_EditSource widget]
     """
     if not parent:
-        parent = None #gui.component_window.ui.tabHelp
+        parent = gui.main_window  # gui.component_window.ui.tabHelp
 
     gui.logger.info(f'Creating a source edit window for class_name={class_name}'
                     'from file={module_path}')
-    edit_widget = QtWidgets.QWidget(parent) # this way its style sheet is inherited
+
+    edit_widget = QtWidgets.QMainWindow(parent) # use parent, so this way its style sheet is inherited
     edit_widget.ui = Ui_EditSource()
     edit_widget.ui.setupUi(edit_widget)
 
@@ -59,7 +61,7 @@ def create_source_edit_widget(gui: 'MetalGUI', class_name: str,
     edit_widget.show()
 
     # Bring window to top.
-    #QtCore.QCoreApplication().processEvents()
+    # QtCore.QCoreApplication().processEvents()
     edit_widget.raise_()
     edit_widget.activateWindow()
     return edit_widget

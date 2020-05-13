@@ -148,6 +148,7 @@ class MetalGUI(QMainWindowBaseHandler):
     __UI__ = Ui_MainWindow
     _QMainWindowClass = QMainWindowExtension
     _img_logo_name = 'metal_logo.png'
+    _stylesheet_default = 'metal_dark'
 
     _dock_names = [
         'dockComponent',

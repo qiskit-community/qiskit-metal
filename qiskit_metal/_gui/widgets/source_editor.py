@@ -41,7 +41,6 @@ except ImportError as e:
 if TYPE_CHECKING:
     from ..main_window import MetalGUI, QMainWindowExtension
 
-
 class MetalSourceEditor(widgets.PyCodeEditBase):
     """
     A source code editor based on pyQode.
@@ -61,11 +60,16 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
     Create with
         gui.component_window.edit_source()
 
-    Access with
+    Access with:
         self = gui.component_window.src_widgets[-1].ui.src_editor
+
+        Note that thtehre can be more than one edit widet open.
+        A refernec is kept to all of them in `gui.component_window.src_widgets`
     """
     # TODO: remember previous state, save to config like gui and recall when created
-    # save font size too
+    # save font size too.  remmeber window properties and zoom level
+    # TODO: Add error slot handling to all call funcitons below
+
 
     def __init__(self, parent, **kwargs):
         # Foe help, see
@@ -151,7 +155,7 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
             self.gui.design.reload_component(
                 component_module_name=self.component_module_name,
                 component_class_name=self.component_class_name)
-            self.logger.info('AHAH')
+            self.logger.info(f'Reloaded {self.component_class_name} from {self.component_module_name}')
 
     def rebuild_components(self):
         self.save_file()
@@ -163,7 +167,7 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
 
     @property
     def edit_widget(self):
-        return self.parent()
+        return self.parent().parent()
 
     def set_component(self, class_name: str, module_name: str,
                       module_path: str):

@@ -28,7 +28,7 @@ from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QFileDialog, QMainWindow, QMessageBox
-from PyQt5 import QtWidgets, QtCore, QtGui #pyqt stuff
+from PyQt5 import QtWidgets, QtCore, QtGui  # pyqt stuff
 
 from .. import Dict, config
 from ..toolbox_python._logging import setup_logger
@@ -73,20 +73,22 @@ class QMainWindowExtensionBase(QMainWindow):
         """whenever a window is closed.
             Passed an event which we can choose to accept or reject.
         """
+        self.save_window_settings()
+        super().closeEvent(event)
 
+    def save_window_settings(self):
         # get the current size and position of the window as a byte array.
         self.settings.setValue('geometry', self.saveGeometry())
         self.settings.setValue('windowState', self.saveState())
-        # TODO: add stylesheet save and load here
-        super().closeEvent(event)
+        self.settings.setValue('stylesheet', self.handler._stylesheet)
 
     def restore_window_settings(self):
         """
         Call a Qt built-in function to restore values
         from the settings file.
         """
-        try:
-            # should probably casll .encode("ascii") here
+        if 1:
+            # should probably call .encode("ascii") here
             geom = self.settings.value('geometry', '')
             if isinstance(geom, str):
                 geom = geom.encode("ascii")
@@ -97,8 +99,12 @@ class QMainWindowExtensionBase(QMainWindow):
                 window_state = window_state.encode("ascii")
             self.restoreState(window_state)
 
-        except Exception as e:
-            print(f'ERROR [restore_window_settings]: {e}')
+            # TODO: add stylesheet
+            self.handler.load_stylesheet(self.settings.value('stylesheet',
+                                                             self.handler._stylesheet_default))
+
+        # except Exception as e:
+            # print(f'ERROR [restore_window_settings]: {e}')
 
     def bring_to_top(self):
         """ Bring window to top.
@@ -120,17 +126,18 @@ class QMainWindowExtensionBase(QMainWindow):
         # This will grab the entire screen
         #screen = QtWidgets.QApplication.primaryScreen()
         #screennum = QtWidgets.QDesktopWidget().screenNumber(self)
-        #self.logger.info(f'screennum={screennum}')
+        # self.logger.info(f'screennum={screennum}')
         #screen = QtWidgets.QApplication.screens()[screennum]
-        #screenshot = screen.grabWindow(self.winId())  # QPixelMap
+        # screenshot = screen.grabWindow(self.winId())  # QPixelMap
         # see also https://github.com/ColinDuquesnoy/QDarkStyleSheet/blob/6aef1de7e97227899c478a5634d136d80991123e/example/example.py#L292
 
         # just grab the main window
-        screenshot = self.grab() # type: QtGui.QPixelMap
+        screenshot = self.grab()  # type: QtGui.QPixelMap
         screenshot.save(str(path), type_)  # Save
 
         QtWidgets.QApplication.clipboard().setPixmap(screenshot)  # To clipboard
-        self.logger.info(f'Screenshot copied to clipboard and saved to:\n {path}')
+        self.logger.info(
+            f'Screenshot copied to clipboard and saved to:\n {path}')
 
         if display:
             from IPython.display import Image, display
@@ -139,7 +146,7 @@ class QMainWindowExtensionBase(QMainWindow):
             display(Image(filename=path, **_disp_ops))
 
     ##################################################################
-    #### For actions
+    # For actions
 
     @catch_exception_slot_pyqt()
     def _screenshot(self, _):
@@ -149,6 +156,11 @@ class QMainWindowExtensionBase(QMainWindow):
     def load_stylesheet_default(self, _):
         """Used to call from action"""
         self.handler.load_stylesheet('default')
+
+    @catch_exception_slot_pyqt()
+    def load_stylesheet_metal_dark(self, _):
+        """Used to call from action"""
+        self.handler.load_stylesheet('metal_dark')
 
     @catch_exception_slot_pyqt()
     def load_stylesheet_dark(self, _):
@@ -186,6 +198,7 @@ class QMainWindowBaseHandler():
     _dock_names = []
     _QMainWindowClass = QMainWindowExtensionBase
     __gui_num__ = -1  # used to count the number of gui instances
+    _stylesheet_default = 'default'
 
     @staticmethod
     def __UI__() -> QMainWindow:  # pylint: disable=invalid-name
@@ -210,7 +223,8 @@ class QMainWindowBaseHandler():
         # Logger
         if not logger:
             logger = setup_logger(
-                f'gui{self.__class__.__gui_num__ }',  # so that they are not all the same
+                # so that they are not all the same
+                f'gui{self.__class__.__gui_num__ }',
                 self.config.format,
                 self.config.datefmt,
                 force_set=True,
@@ -221,10 +235,12 @@ class QMainWindowBaseHandler():
 
         self.logger = logger
         self._log_handler = None
+        self._stylesheet = self._stylesheet_default  # set by load_stylesheet
 
         # File paths
         self.path_gui = self._get_file_path()  # Path to gui folder
-        self.path_imgs = Path(self.path_gui)/self._img_folder_name  # Path to gui imgs folder
+        self.path_imgs = Path(self.path_gui) / \
+            self._img_folder_name  # Path to gui imgs folder
         if not self.path_imgs.is_dir():
             print(f'Bad File path for images! {self.path_imgs}')
 
@@ -256,7 +272,6 @@ class QMainWindowBaseHandler():
     @property
     def path_stylesheets(self):
         return Path(self.path_gui)/'styles'
-
 
     def style_window(self):
         # fusion macintosh # windows
@@ -309,6 +324,8 @@ class QMainWindowBaseHandler():
                 Reference: https://ipython.readthedocs.io/en/stable/config/eventloops.html
                 """)
 
+        # QApplication.platformName() -- on mac: 'cocoa'
+
         # for window platofrms only
         if os.name.startswith('nt'):
             # Arbitrary string, needed for icon in taskbar to be custom set proper
@@ -341,7 +358,7 @@ class QMainWindowBaseHandler():
             self.ui.log_text.img_path = self.path_imgs
 
             if 1:
-                log_name = 'gui' # self._myappid
+                log_name = 'gui'  # self._myappid
                 self.ui.log_text.add_logger(log_name)
                 self._log_handler = LoggingHandlerForLogWidget(
                     log_name, self, self.ui.log_text)
@@ -406,13 +423,14 @@ class QMainWindowBaseHandler():
                 `qdarkstyle` requires
                 >>> pip install qdarkstyle
         """
-
-        if path is 'default' or path is None:
+        result = True
+        self._fuck = path
+        print(f"""{path} is 'metal_dark' = {path == 'metal_dark'}""")
+        if path == 'default' or path is None:
             self._style_sheet_path = 'default'
             self.main_window.setStyleSheet('default')
-            return True
 
-        elif path is 'qdarkstyle':
+        elif path == 'qdarkstyle':
             try:
                 import qdarkstyle
             except ImportError:
@@ -423,20 +441,40 @@ class QMainWindowBaseHandler():
 
             os.environ['QT_API'] = 'pyqt5'
             self.main_window.setStyleSheet(qdarkstyle.load_stylesheet())
-            return True
+
+        elif path == 'metal_dark':
+            path_full = self.path_stylesheets/'metal_dark'/'style.qss'
+            print(f'path_full = {path_full}')
+            self._load_stylesheet_from_file(path_full)
 
         else:
-            path = Path(path)
+            self._load_stylesheet_from_file(path)
+
+        if result: # Set successfuly
+            self._stylesheet = path
+            self.settings.setValue('stylesheet', self._stylesheet)
+        else: # Failed to set
+            return False
+
+    def _load_stylesheet_from_file(self, path: str):
+        print(f'path = {path}')
+        try:
+            path = Path(str(path))
             if path.is_file():
                 self._style_sheet_path = str(path)
                 stylesheet = path.read_text()
+                stylesheet = stylesheet.replace(
+                    ':/metal-styles', str(self.path_stylesheets))
 
                 self.main_window.setStyleSheet(stylesheet)
-            else:
-                self.logger.error('Could not find the stylesheet file where expected %s', path)
-                return False
+                return True
 
-            return True
+            else:
+                self.logger.error(
+                    'Could not find the stylesheet file where expected %s', path)
+                return False
+        except Exception as e:
+            self.logger.error(f'_load_stylesheet_from_file error: {e}')
 
     def screenshot(self, name='shot.png', type_='png', display=True, disp_ops=None):
         """
@@ -452,7 +490,8 @@ def kick_start_qApp():
 
     if qApp is None:
         try:
-            QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
+            QtWidgets.QApplication.setAttribute(
+                QtCore.Qt.AA_EnableHighDpiScaling)
         except AttributeError:  # Attribute only exists for Qt >= 5.6
             pass
 
@@ -463,7 +502,8 @@ def kick_start_qApp():
 
             if config._ipython:
                 # iPython has magic for loop
-                logging.error("QApplication.instance: Attempt magic IPython %%gui qt5")
+                logging.error(
+                    "QApplication.instance: Attempt magic IPython %%gui qt5")
                 try:
                     from IPython import get_ipython
                     ipython = get_ipython()
@@ -476,7 +516,8 @@ def kick_start_qApp():
 
             else:
                 # We are not running form IPython, manually boot
-                logging.error("QApplication.instance: Attempt to manually create qt5 QApplication")
+                logging.error(
+                    "QApplication.instance: Attempt to manually create qt5 QApplication")
                 qApp = QtWidgets.QApplication(["qiskit-metal"])
                 qApp.lastWindowClosed.connect(qApp.quit)
 

@@ -1,217 +1,215 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>EditSource</class>
- <widget class="QWidget" name="EditSource">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>644</width>
-    <height>582</height>
-   </rect>
-  </property>
+ <widget class="QMainWindow" name="EditSource">
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Edit source code</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <property name="spacing">
-    <number>0</number>
-   </property>
-   <property name="leftMargin">
-    <number>0</number>
-   </property>
-   <property name="topMargin">
-    <number>6</number>
-   </property>
-   <property name="rightMargin">
-    <number>0</number>
-   </property>
-   <property name="bottomMargin">
-    <number>0</number>
-   </property>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QPushButton" name="btn_rebuild">
-       <property name="font">
-        <font>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(61, 217, 245), stop:1 rgb(240, 53, 218));
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QPushButton" name="btn_rebuild">
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(61, 217, 245), stop:1 rgb(240, 53, 218));
 border-style: solid;
 border-radius:21px;
 font-weight: bold;
 color: rgb(255, 255, 255);</string>
-       </property>
-       <property name="text">
-        <string>Rebuild Component</string>
-       </property>
-       <property name="icon">
-        <iconset resource="main_window_rc.qrc">
-         <normaloff>:/rebuild</normaloff>:/rebuild</iconset>
-       </property>
-       <property name="iconSize">
-        <size>
-         <width>20</width>
-         <height>20</height>
-        </size>
-       </property>
-       <property name="shortcut">
-        <string>Ctrl+R, Meta+R</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="Line" name="line">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="btn_save">
-       <property name="font">
-        <font>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Save File</string>
-       </property>
-       <property name="icon">
-        <iconset resource="main_window_rc.qrc">
-         <normaloff>:/save</normaloff>:/save</iconset>
-       </property>
-       <property name="iconSize">
-        <size>
-         <width>20</width>
-         <height>20</height>
-        </size>
-       </property>
-       <property name="shortcut">
-        <string>Ctrl+S, Meta+S</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="btn_reload">
-       <property name="text">
-        <string>Reload File</string>
-       </property>
-       <property name="icon">
-        <iconset resource="main_window_rc.qrc">
-         <normaloff>:/refresh</normaloff>:/refresh</iconset>
-       </property>
-       <property name="iconSize">
-        <size>
-         <width>20</width>
-         <height>20</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <widget class="MetalSourceEditor" name="src_editor">
-     <property name="plainText">
-      <string>Source comes here</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
-     <property name="spacing">
-      <number>-1</number>
-     </property>
-     <property name="leftMargin">
-      <number>0</number>
-     </property>
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <property name="bottomMargin">
-      <number>0</number>
-     </property>
-     <item>
-      <widget class="QPushButton" name="undo">
-       <property name="text">
-        <string>Undo</string>
-       </property>
-       <property name="icon">
-        <iconset resource="main_window_rc.qrc">
-         <normaloff>:/delete</normaloff>:/delete</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="zoomin">
-       <property name="text">
-        <string>Zoom in</string>
-       </property>
-       <property name="icon">
-        <iconset resource="main_window_rc.qrc">
-         <normaloff>:/plot/zoom</normaloff>:/plot/zoom</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="zoomout">
-       <property name="text">
-        <string>Zoom out</string>
-       </property>
-       <property name="icon">
-        <iconset resource="main_window_rc.qrc">
-         <normaloff>:/plot/zoom</normaloff>:/plot/zoom</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="center">
-       <property name="text">
-        <string>Center</string>
-       </property>
-       <property name="icon">
-        <iconset resource="main_window_rc.qrc">
-         <normaloff>:/options</normaloff>:/options</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="full_screen">
-       <property name="text">
-        <string>Full screen</string>
-       </property>
-       <property name="icon">
-        <iconset resource="main_window_rc.qrc">
-         <normaloff>:/plot/autozoom</normaloff>:/plot/autozoom</iconset>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_5">
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <item>
-      <widget class="QLineEdit" name="lineSrcPath">
-       <property name="text">
-        <string>Source code file path here</string>
-       </property>
-       <property name="readOnly">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-  </layout>
+        </property>
+        <property name="text">
+         <string>Rebuild Component</string>
+        </property>
+        <property name="icon">
+         <iconset resource="main_window_rc.qrc">
+          <normaloff>:/rebuild</normaloff>:/rebuild</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>20</width>
+          <height>20</height>
+         </size>
+        </property>
+        <property name="shortcut">
+         <string>Ctrl+R, Meta+R</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Line" name="line">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btn_save">
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Save File</string>
+        </property>
+        <property name="icon">
+         <iconset resource="main_window_rc.qrc">
+          <normaloff>:/save</normaloff>:/save</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>20</width>
+          <height>20</height>
+         </size>
+        </property>
+        <property name="shortcut">
+         <string>Ctrl+S, Meta+S</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btn_reload">
+        <property name="text">
+         <string>Reload File</string>
+        </property>
+        <property name="icon">
+         <iconset resource="main_window_rc.qrc">
+          <normaloff>:/refresh</normaloff>:/refresh</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>20</width>
+          <height>20</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="MetalSourceEditor" name="src_editor">
+      <property name="plainText">
+       <string>Source comes here</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <property name="spacing">
+       <number>-1</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QPushButton" name="undo">
+        <property name="text">
+         <string>Undo</string>
+        </property>
+        <property name="icon">
+         <iconset resource="main_window_rc.qrc">
+          <normaloff>:/delete</normaloff>:/delete</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="zoomin">
+        <property name="text">
+         <string>Zoom in</string>
+        </property>
+        <property name="icon">
+         <iconset resource="main_window_rc.qrc">
+          <normaloff>:/plot/zoom</normaloff>:/plot/zoom</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="zoomout">
+        <property name="text">
+         <string>Zoom out</string>
+        </property>
+        <property name="icon">
+         <iconset resource="main_window_rc.qrc">
+          <normaloff>:/plot/zoom</normaloff>:/plot/zoom</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="center">
+        <property name="text">
+         <string>Center</string>
+        </property>
+        <property name="icon">
+         <iconset resource="main_window_rc.qrc">
+          <normaloff>:/options</normaloff>:/options</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="full_screen">
+        <property name="text">
+         <string>Full screen</string>
+        </property>
+        <property name="icon">
+         <iconset resource="main_window_rc.qrc">
+          <normaloff>:/plot/autozoom</normaloff>:/plot/autozoom</iconset>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="QLineEdit" name="lineSrcPath">
+      <property name="text">
+       <string>Source code file path here</string>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>645</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
  </widget>
  <customwidgets>
   <customwidget>
@@ -230,82 +228,34 @@ color: rgb(255, 255, 255);</string>
  </resources>
  <connections>
   <connection>
-   <sender>btn_reload</sender>
-   <signal>clicked()</signal>
-   <receiver>src_editor</receiver>
-   <slot>reload_file()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>456</x>
-     <y>21</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>268</x>
-     <y>287</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>btn_save</sender>
    <signal>clicked()</signal>
    <receiver>src_editor</receiver>
    <slot>save_file()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>81</x>
-     <y>21</y>
+     <x>291</x>
+     <y>35</y>
     </hint>
     <hint type="destinationlabel">
-     <x>268</x>
-     <y>287</y>
+     <x>314</x>
+     <y>149</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>btn_rebuild</sender>
+   <sender>btn_reload</sender>
    <signal>clicked()</signal>
    <receiver>src_editor</receiver>
-   <slot>rebuild_components()</slot>
+   <slot>reload_file()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>261</x>
-     <y>21</y>
+     <x>499</x>
+     <y>38</y>
     </hint>
     <hint type="destinationlabel">
-     <x>268</x>
-     <y>287</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>zoomin</sender>
-   <signal>clicked()</signal>
-   <receiver>src_editor</receiver>
-   <slot>zoomIn()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>404</x>
-     <y>509</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>268</x>
-     <y>287</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>zoomout</sender>
-   <signal>clicked()</signal>
-   <receiver>src_editor</receiver>
-   <slot>zoomOut()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>136</x>
-     <y>509</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>268</x>
-     <y>262</y>
+     <x>498</x>
+     <y>106</y>
     </hint>
    </hints>
   </connection>
@@ -316,12 +266,44 @@ color: rgb(255, 255, 255);</string>
    <slot>undo()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>92</x>
-     <y>509</y>
+     <x>89</x>
+     <y>516</y>
     </hint>
     <hint type="destinationlabel">
-     <x>268</x>
-     <y>262</y>
+     <x>128</x>
+     <y>292</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>zoomin</sender>
+   <signal>clicked()</signal>
+   <receiver>src_editor</receiver>
+   <slot>zoomIn()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>219</x>
+     <y>516</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>241</x>
+     <y>228</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>zoomout</sender>
+   <signal>clicked()</signal>
+   <receiver>src_editor</receiver>
+   <slot>zoomOut()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>349</x>
+     <y>516</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>330</x>
+     <y>297</y>
     </hint>
    </hints>
   </connection>
@@ -332,12 +314,12 @@ color: rgb(255, 255, 255);</string>
    <slot>centerCursor()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>471</x>
-     <y>509</y>
+     <x>481</x>
+     <y>516</y>
     </hint>
     <hint type="destinationlabel">
-     <x>268</x>
-     <y>262</y>
+     <x>428</x>
+     <y>277</y>
     </hint>
    </hints>
   </connection>
@@ -348,12 +330,12 @@ color: rgb(255, 255, 255);</string>
    <slot>showFullScreen()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>580</x>
-     <y>532</y>
+     <x>619</x>
+     <y>516</y>
     </hint>
     <hint type="destinationlabel">
-     <x>321</x>
-     <y>290</y>
+     <x>518</x>
+     <y>0</y>
     </hint>
    </hints>
   </connection>

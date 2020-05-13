@@ -14,8 +14,7 @@ class Ui_ComponentWidget(object):
     def setupUi(self, ComponentWidget):
         ComponentWidget.setObjectName("ComponentWidget")
         ComponentWidget.resize(465, 420)
-        ComponentWidget.setTabShape(QtWidgets.QTabWidget.Rounded)
-        ComponentWidget.setElideMode(QtCore.Qt.ElideRight)
+        ComponentWidget.setTabPosition(QtWidgets.QTabWidget.North)
         self.tabOptions = QtWidgets.QWidget()
         self.tabOptions.setObjectName("tabOptions")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.tabOptions)
@@ -53,8 +52,11 @@ class Ui_ComponentWidget(object):
         self.horizontalLayout.addWidget(self.labelComponentName_old)
         self.verticalLayout.addLayout(self.horizontalLayout)
         self.tableView = QtWidgets.QTableView(self.tabOptions)
-        self.tableView.setAlternatingRowColors(True)
-        self.tableView.setSortingEnabled(True)
+        self.tableView.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.tableView.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.tableView.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
+        self.tableView.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
+        self.tableView.setShowGrid(False)
         self.tableView.setObjectName("tableView")
         self.verticalLayout.addWidget(self.tableView)
         icon = QtGui.QIcon()
@@ -112,13 +114,12 @@ class Ui_ComponentWidget(object):
         ComponentWidget.addTab(self.tabSource, icon3, "")
 
         self.retranslateUi(ComponentWidget)
-        ComponentWidget.setCurrentIndex(1)
         self.btn_edit_src.clicked.connect(ComponentWidget.edit_source)
         QtCore.QMetaObject.connectSlotsByName(ComponentWidget)
 
     def retranslateUi(self, ComponentWidget):
         _translate = QtCore.QCoreApplication.translate
-        ComponentWidget.setWindowTitle(_translate("ComponentWidget", "TabWidget"))
+        ComponentWidget.setWindowTitle(_translate("ComponentWidget", "Edit a component"))
         self.labelComponentName.setPlaceholderText(_translate("ComponentWidget", "Select component from design panel to edit its options here"))
         self.labelComponentName_old.setText(_translate("ComponentWidget", "Component Name"))
         ComponentWidget.setTabText(ComponentWidget.indexOf(self.tabOptions), _translate("ComponentWidget", "Options"))
