@@ -104,8 +104,7 @@ class RendererBase():
         assert is_design(design), "Erorr, for the design argument you must provide a\
                                    a child instance of Metal DesignBase class."
 
-        self.design = design
-        self.logger = self.design.logger
+        self._design = design
         self.initiated = False
 
         if initiate:
@@ -113,6 +112,15 @@ class RendererBase():
 
         # Register as an instantiated renderer.
         RendererBase.__instantiated_renderers__[self.name] = self
+
+    @property
+    def design(self) -> 'DesignBase':
+        '''Return a reference to the parent design object'''
+        return self._design
+
+    @property
+    def logger(self) -> logging.Logger:
+        return self._design.logger
 
     def initate(self, re_initiate=False):
         '''

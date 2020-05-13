@@ -11,16 +11,10 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>TabWidget</string>
+   <string>Edit a component</string>
   </property>
-  <property name="tabShape">
-   <enum>QTabWidget::Rounded</enum>
-  </property>
-  <property name="currentIndex">
-   <number>1</number>
-  </property>
-  <property name="elideMode">
-   <enum>Qt::ElideRight</enum>
+  <property name="tabPosition">
+   <enum>QTabWidget::North</enum>
   </property>
   <widget class="QWidget" name="tabOptions">
    <attribute name="icon">
@@ -110,11 +104,20 @@
     </item>
     <item>
      <widget class="QTableView" name="tableView">
-      <property name="alternatingRowColors">
-       <bool>true</bool>
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
       </property>
-      <property name="sortingEnabled">
-       <bool>true</bool>
+      <property name="frameShadow">
+       <enum>QFrame::Plain</enum>
+      </property>
+      <property name="sizeAdjustPolicy">
+       <enum>QAbstractScrollArea::AdjustToContents</enum>
+      </property>
+      <property name="selectionMode">
+       <enum>QAbstractItemView::SingleSelection</enum>
+      </property>
+      <property name="showGrid">
+       <bool>false</bool>
       </property>
      </widget>
     </item>

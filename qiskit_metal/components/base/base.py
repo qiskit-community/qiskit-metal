@@ -132,7 +132,7 @@ class BaseComponent():
         self._made = False
 
         # Logger
-        self.logger = logger
+        # self.logger = logger
 
         # Parser for options
         self.p = ParsedDynamicAttributes_Component(self)
@@ -192,6 +192,10 @@ class BaseComponent():
     def unique_dict_key(self) -> str:
         '''Return the module path with class name.'''
         return self._unique_dict_key
+
+    @property
+    def logger(self) -> logging.Logger:
+        return self._design.logger
 
     @property
     def connectors(self) -> set:

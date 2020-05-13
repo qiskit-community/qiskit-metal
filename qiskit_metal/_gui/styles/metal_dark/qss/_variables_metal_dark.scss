@@ -1,0 +1,32 @@
+// ---------------------------------------------------------------------------
+//
+//    File created programmatically
+//
+//    The definitions are in the "qdarkstyle.palette" module
+//
+//    WARNING! All changes made in this file will be lost!
+//
+//----------------------------------------------------------------------------
+$COLOR_BACKGROUND_LIGHT: #505F69;
+$COLOR_BACKGROUND_NORMAL: #32414B;
+$COLOR_BACKGROUND_DARK: #19232D;
+$COLOR_FOREGROUND_LIGHT: #F0F0F0;
+$COLOR_FOREGROUND_NORMAL: #AAAAAA;
+$COLOR_FOREGROUND_DARK: #787878;
+$COLOR_SELECTION_LIGHT: #148CD2;
+$COLOR_SELECTION_NORMAL: #1464A0;
+$COLOR_SELECTION_DARK: #14506E;
+$OPACITY_TOOLTIP: 230;
+$SIZE_BORDER_RADIUS: 4px;
+$BORDER_LIGHT: 1px solid $COLOR_BACKGROUND_LIGHT;
+$BORDER_NORMAL: 1px solid $COLOR_BACKGROUND_NORMAL;
+$BORDER_DARK: 1px solid $COLOR_BACKGROUND_DARK;
+$BORDER_SELECTION_LIGHT: 1px solid $COLOR_SELECTION_LIGHT;
+$BORDER_SELECTION_NORMAL: 1px solid $COLOR_SELECTION_NORMAL;
+$BORDER_SELECTION_DARK: 1px solid $COLOR_SELECTION_DARK;
+$W_STATUS_BAR_BACKGROUND_COLOR: #14506E;
+$PATH_RESOURCES: ':/metal-styles/metal_dark';
+// Zlatko's gradients
+$COLOR_BACKGROUND_TOOLBUTTON: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #22303F, stop: 0.4 #22303F, stop:1 rgb(129, 37, 52));
+$COLOR_BACKGROUND_QTREE: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 $COLOR_BACKGROUND_DARK, stop: 0.4 $COLOR_BACKGROUND_DARK, stop:1 #2D3F53);
+$COLOR_TABLE_ITEM_SELECTED: rgb(141, 77, 24);

@@ -6,76 +6,37 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1177</width>
-    <height>800</height>
+    <width>1073</width>
+    <height>776</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Qiskit Metal - The First &amp; Only Quantum VLSI</string>
+   <string>Qiskit Metal: Quantum Creator</string>
   </property>
   <property name="windowIcon">
    <iconset resource="main_window_rc.qrc">
     <normaloff>:/metal_logo</normaloff>:/metal_logo</iconset>
   </property>
   <property name="toolTip">
-   <string>Qiskit Metal - The First &amp; Only Quantum VLSI</string>
+   <string>Qiskit Metal: Quantum Creator</string>
   </property>
   <property name="statusTip">
-   <string>Qiskit Metal - The First &amp; Only Quantum VLSI</string>
+   <string>Qiskit Metal: Quantum Creator</string>
   </property>
   <property name="whatsThis">
-   <string>Qiskit Metal - The First &amp; Only Quantum VLSI</string>
-  </property>
-  <property name="styleSheet">
-   <string notr="true">QDockWidget {
-    border: 1px solid lightgray;
-    titlebar-close-icon: url(:/cancel);
-    titlebar-normal-icon: url(:/unlock);
-}
-
-QDockWidget::title {
-    text-align: left; /* align the text to the left */
-  /* background: lightgray; */
-    padding-left: 5px;
-}
-
-QDockWidget::close-button, QDockWidget::float-button {
-    border: 0px solid transparent;
-    /*background: darkgray;*/
-    padding: 1px;
-}
-
-QDockWidget::close-button:hover, QDockWidget::float-button:hover {
-    background: gray;
-}
-
-QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
-    padding: 1px -1px -1px 1px;
-}</string>
-  </property>
-  <property name="iconSize">
-   <size>
-    <width>30</width>
-    <height>30</height>
-   </size>
+   <string>Qiskit Metal: Quantum Creator</string>
   </property>
   <property name="toolButtonStyle">
    <enum>Qt::ToolButtonTextUnderIcon</enum>
   </property>
   <property name="documentMode">
-   <bool>true</bool>
-  </property>
-  <property name="tabShape">
-   <enum>QTabWidget::Rounded</enum>
+   <bool>false</bool>
   </property>
   <property name="dockNestingEnabled">
    <bool>true</bool>
   </property>
   <property name="dockOptions">
    <set>QMainWindow::AllowNestedDocks|QMainWindow::AllowTabbedDocks|QMainWindow::AnimatedDocks|QMainWindow::GroupedDragging</set>
-  </property>
-  <property name="unifiedTitleAndToolBarOnMac">
-   <bool>false</bool>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -96,29 +57,8 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
     </property>
     <item>
      <widget class="QTabWidget" name="tabWidget">
-      <property name="tabPosition">
-       <enum>QTabWidget::North</enum>
-      </property>
-      <property name="tabShape">
-       <enum>QTabWidget::Rounded</enum>
-      </property>
       <property name="currentIndex">
-       <number>0</number>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>16</width>
-        <height>16</height>
-       </size>
-      </property>
-      <property name="usesScrollButtons">
-       <bool>false</bool>
-      </property>
-      <property name="documentMode">
-       <bool>false</bool>
-      </property>
-      <property name="tabsClosable">
-       <bool>false</bool>
+       <number>1</number>
       </property>
       <property name="tabBarAutoHide">
        <bool>true</bool>
@@ -151,8 +91,18 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
        </layout>
       </widget>
       <widget class="QWidget" name="tabElements">
+       <attribute name="icon">
+        <iconset resource="main_window_rc.qrc">
+         <normaloff>:/elements</normaloff>:/elements</iconset>
+       </attribute>
        <attribute name="title">
         <string>Elements</string>
+       </attribute>
+       <attribute name="toolTip">
+        <string>Shoe the tables of elements of the the design</string>
+       </attribute>
+       <attribute name="whatsThis">
+        <string>Shoe the tables of elements of the the design</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_10">
         <property name="spacing">
@@ -181,7 +131,7 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1177</width>
+     <width>1073</width>
      <height>22</height>
     </rect>
    </property>
@@ -190,9 +140,6 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
      <width>0</width>
      <height>0</height>
     </size>
-   </property>
-   <property name="defaultUp">
-    <bool>false</bool>
    </property>
    <widget class="QMenu" name="menuDesign">
     <property name="toolTip">
@@ -216,8 +163,10 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
     <property name="toolTipsVisible">
      <bool>true</bool>
     </property>
-    <addaction name="actionSave"/>
     <addaction name="actionLoad"/>
+    <addaction name="separator"/>
+    <addaction name="actionSave"/>
+    <addaction name="actionSaveAs"/>
     <addaction name="separator"/>
     <addaction name="actionDelete_All"/>
    </widget>
@@ -229,8 +178,10 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
      <property name="title">
       <string>Theme</string>
      </property>
-     <addaction name="actionStyleDefault"/>
+     <addaction name="actionMetal_Dark"/>
      <addaction name="actionStyleDark"/>
+     <addaction name="separator"/>
+     <addaction name="actionStyleDefault"/>
      <addaction name="actionStyleOpen"/>
     </widget>
     <addaction name="actionScreenshot"/>
@@ -300,29 +251,17 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="toolBarDesign">
-   <property name="font">
-    <font>
-     <weight>50</weight>
-     <bold>false</bold>
-    </font>
-   </property>
    <property name="windowTitle">
-    <string>toolBar</string>
+    <string>Design toolbar</string>
    </property>
    <property name="statusTip">
-    <string>Toolbar Design</string>
+    <string>Design toolbar</string>
    </property>
    <property name="whatsThis">
-    <string>Toolbar Design</string>
+    <string>Design toolbar</string>
    </property>
    <property name="orientation">
     <enum>Qt::Horizontal</enum>
-   </property>
-   <property name="iconSize">
-    <size>
-     <width>30</width>
-     <height>30</height>
-    </size>
    </property>
    <property name="toolButtonStyle">
     <enum>Qt::ToolButtonTextUnderIcon</enum>
@@ -341,7 +280,10 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
   </widget>
   <widget class="QToolBar" name="toolBarView">
    <property name="windowTitle">
-    <string>toolBar_2</string>
+    <string>View Toolbar</string>
+   </property>
+   <property name="toolTip">
+    <string>View Toolbar</string>
    </property>
    <property name="statusTip">
     <string>View Toolbar</string>
@@ -349,24 +291,18 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
    <property name="whatsThis">
     <string>View Toolbar</string>
    </property>
-   <property name="iconSize">
-    <size>
-     <width>30</width>
-     <height>30</height>
-    </size>
-   </property>
    <property name="toolButtonStyle">
     <enum>Qt::ToolButtonTextUnderIcon</enum>
    </property>
    <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
+    <enum>LeftToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
    <addaction name="actionDesign"/>
-   <addaction name="actionComponent"/>
    <addaction name="actionNewComponent"/>
+   <addaction name="actionComponent"/>
    <addaction name="actionConnectors"/>
    <addaction name="actionLog"/>
    <addaction name="actionElements"/>
@@ -377,8 +313,8 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
   <widget class="QDockWidget" name="dockDesign">
    <property name="minimumSize">
     <size>
-     <width>175</width>
-     <height>128</height>
+     <width>310</width>
+     <height>196</height>
     </size>
    </property>
    <property name="windowIcon">
@@ -408,7 +344,7 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
     <set>QDockWidget::AllDockWidgetFeatures</set>
    </property>
    <property name="windowTitle">
-    <string>Design Dock</string>
+    <string>Components in design</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
@@ -431,92 +367,93 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
       <number>0</number>
      </property>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout">
+      <layout class="QGridLayout" name="gridLayout">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetNoConstraint</enum>
+       </property>
+       <property name="topMargin">
+        <number>2</number>
+       </property>
+       <property name="bottomMargin">
+        <number>2</number>
+       </property>
        <property name="spacing">
         <number>0</number>
        </property>
-       <item>
-        <widget class="QPlainTextEdit" name="plainTextEdit">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>10</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>22</height>
-          </size>
-         </property>
-         <property name="baseSize">
-          <size>
-           <width>0</width>
-           <height>20</height>
-          </size>
-         </property>
-         <property name="cursor" stdset="0">
-          <cursorShape>IBeamCursor</cursorShape>
-         </property>
+       <item row="0" column="3">
+        <widget class="QToolButton" name="btn_comp_zoom">
          <property name="toolTip">
-          <string>Use to filter the components</string>
+          <string>Focus on component in drawing window</string>
          </property>
          <property name="statusTip">
-          <string>Use to filter the components</string>
+          <string>Focus on component in drawing window</string>
          </property>
-         <property name="whatsThis">
-          <string>Use to filter the components</string>
+         <property name="text">
+          <string>Focus on component in drawing window</string>
          </property>
-         <property name="frameShadow">
-          <enum>QFrame::Sunken</enum>
-         </property>
-         <property name="verticalScrollBarPolicy">
-          <enum>Qt::ScrollBarAlwaysOff</enum>
-         </property>
-         <property name="horizontalScrollBarPolicy">
-          <enum>Qt::ScrollBarAlwaysOff</enum>
-         </property>
-         <property name="backgroundVisible">
-          <bool>false</bool>
-         </property>
-         <property name="placeholderText">
-          <string>Filter (press enter)</string>
+         <property name="icon">
+          <iconset resource="main_window_rc.qrc">
+           <normaloff>:/plot/point</normaloff>:/plot/point</iconset>
          </property>
         </widget>
        </item>
-       <item>
-        <widget class="QPushButton" name="pushButtonDeleteComps">
+       <item row="0" column="1">
+        <widget class="QToolButton" name="btn_comp_actions">
+         <property name="text">
+          <string>Actions</string>
+         </property>
+         <property name="icon">
+          <iconset resource="main_window_rc.qrc">
+           <normaloff>:/_imgs/support.png</normaloff>:/_imgs/support.png</iconset>
+         </property>
+         <property name="popupMode">
+          <enum>QToolButton::MenuButtonPopup</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QToolButton" name="btn_comp_del">
          <property name="toolTip">
-          <string>Delete Selected Components</string>
+          <string>Delete a selected component</string>
          </property>
          <property name="statusTip">
-          <string>Delete Selected Components</string>
+          <string>Delete a selected component</string>
          </property>
          <property name="whatsThis">
-          <string>Delete Selected Components</string>
+          <string>Delete a selected component</string>
          </property>
          <property name="text">
           <string>Delete</string>
          </property>
          <property name="icon">
-          <iconset>
-           <normalon>:/delete</normalon>
-          </iconset>
+          <iconset resource="main_window_rc.qrc">
+           <normaloff>:/delete</normaloff>:/delete</iconset>
          </property>
-         <property name="autoDefault">
-          <bool>false</bool>
+         <property name="popupMode">
+          <enum>QToolButton::DelayedPopup</enum>
          </property>
-         <property name="default">
-          <bool>false</bool>
+         <property name="toolButtonStyle">
+          <enum>Qt::ToolButtonIconOnly</enum>
          </property>
-         <property name="flat">
-          <bool>false</bool>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QLineEdit" name="filter_text_design">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="placeholderText">
+          <string>Filter</string>
+         </property>
+         <property name="clearButtonEnabled">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -548,19 +485,19 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
     </iconset>
    </property>
    <property name="toolTip">
-    <string>New Component Dock</string>
+    <string>Library of components</string>
    </property>
    <property name="statusTip">
-    <string>New Component Dock</string>
+    <string>Library design components</string>
    </property>
    <property name="whatsThis">
-    <string>New Component Dock</string>
+    <string>Library design components</string>
    </property>
    <property name="features">
     <set>QDockWidget::AllDockWidgetFeatures</set>
    </property>
    <property name="windowTitle">
-    <string>New Component</string>
+    <string>Library design components</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
@@ -588,39 +525,12 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
         <number>0</number>
        </property>
        <item>
-        <widget class="QPlainTextEdit" name="plainTextEdit_2">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>22</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="baseSize">
-          <size>
-           <width>0</width>
-           <height>22</height>
-          </size>
-         </property>
-         <property name="verticalScrollBarPolicy">
-          <enum>Qt::ScrollBarAlwaysOff</enum>
-         </property>
-         <property name="horizontalScrollBarPolicy">
-          <enum>Qt::ScrollBarAlwaysOff</enum>
-         </property>
+        <widget class="QLineEdit" name="filter_text_component">
          <property name="placeholderText">
-          <string>Filter (press enter)</string>
+          <string>Filter</string>
+         </property>
+         <property name="clearButtonEnabled">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -651,11 +561,14 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
    </widget>
   </widget>
   <widget class="QDockWidget" name="dockComponent">
+   <property name="features">
+    <set>QDockWidget::AllDockWidgetFeatures</set>
+   </property>
    <property name="windowTitle">
-    <string>Component</string>
+    <string>Edit component</string>
    </property>
    <attribute name="dockWidgetArea">
-    <number>2</number>
+    <number>1</number>
    </attribute>
    <widget class="QWidget" name="dockComponentCental">
     <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -666,7 +579,7 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
       <number>0</number>
      </property>
      <property name="topMargin">
-      <number>0</number>
+      <number>10</number>
      </property>
      <property name="rightMargin">
       <number>0</number>
@@ -686,8 +599,8 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
    </property>
    <property name="minimumSize">
     <size>
-     <width>78</width>
-     <height>96</height>
+     <width>100</width>
+     <height>15</height>
     </size>
    </property>
    <property name="windowIcon">
@@ -705,7 +618,7 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
     <string>Log window</string>
    </property>
    <property name="features">
-    <set>QDockWidget::AllDockWidgetFeatures</set>
+    <set>QDockWidget::DockWidgetFeatureMask</set>
    </property>
    <property name="windowTitle">
     <string>Log</string>
@@ -740,7 +653,14 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
       <number>0</number>
      </property>
      <item>
-      <widget class="LoggingWindowWidget" name="log_text"/>
+      <widget class="LoggingWindowWidget" name="log_text">
+       <property name="documentTitle">
+        <string>Log</string>
+       </property>
+       <property name="textInteractionFlags">
+        <set>Qt::LinksAccessibleByKeyboard|Qt::LinksAccessibleByMouse|Qt::TextBrowserInteraction|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>
@@ -780,39 +700,12 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
         <number>0</number>
        </property>
        <item>
-        <widget class="QPlainTextEdit" name="textConnectorsFilter">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>22</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="baseSize">
-          <size>
-           <width>0</width>
-           <height>22</height>
-          </size>
-         </property>
-         <property name="verticalScrollBarPolicy">
-          <enum>Qt::ScrollBarAlwaysOff</enum>
-         </property>
-         <property name="horizontalScrollBarPolicy">
-          <enum>Qt::ScrollBarAlwaysOff</enum>
-         </property>
+        <widget class="QLineEdit" name="text_filter_connectors">
          <property name="placeholderText">
-          <string>Filter (press enter)</string>
+          <string>Filter</string>
+         </property>
+         <property name="clearButtonEnabled">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -820,8 +713,11 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
      </item>
      <item>
       <widget class="QTableView" name="tableConnectors">
+       <property name="frameShadow">
+        <enum>QFrame::Plain</enum>
+       </property>
        <property name="alternatingRowColors">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
       </widget>
      </item>
@@ -869,6 +765,9 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
    <property name="shortcut">
     <string>Ctrl+O</string>
    </property>
+   <property name="autoRepeat">
+    <bool>false</bool>
+   </property>
   </action>
   <action name="actionDesign">
    <property name="checkable">
@@ -897,7 +796,16 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
      <normaloff>:/component</normaloff>:/component</iconset>
    </property>
    <property name="text">
-    <string>Component</string>
+    <string>Edit</string>
+   </property>
+   <property name="toolTip">
+    <string>Edit a cdesign component</string>
+   </property>
+   <property name="statusTip">
+    <string>Edit a cdesign component</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
    </property>
   </action>
   <action name="actionElements">
@@ -945,7 +853,13 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
     <string>Create</string>
    </property>
    <property name="toolTip">
-    <string>Create new component</string>
+    <string>Create new component: Library of new design components you can create</string>
+   </property>
+   <property name="statusTip">
+    <string>Create new component: Library of new design components you can create</string>
+   </property>
+   <property name="whatsThis">
+    <string>Create new component: Library of new design components you can create</string>
    </property>
   </action>
   <action name="actionDelete_All">
@@ -958,6 +872,15 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
    </property>
    <property name="toolTip">
     <string>Delete All Component Objects and Elements</string>
+   </property>
+   <property name="statusTip">
+    <string>Delete All Component Objects and Elements</string>
+   </property>
+   <property name="whatsThis">
+    <string>Delete All Component Objects and Elements</string>
+   </property>
+   <property name="priority">
+    <enum>QAction::LowPriority</enum>
    </property>
   </action>
   <action name="actionZoom">
@@ -1016,12 +939,12 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
   </action>
   <action name="actionStyleDefault">
    <property name="text">
-    <string>Default</string>
+    <string>System default</string>
    </property>
   </action>
   <action name="actionStyleDark">
    <property name="text">
-    <string>Dark</string>
+    <string>Q Dark</string>
    </property>
   </action>
   <action name="actionScreenshot">
@@ -1047,14 +970,23 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
    <property name="toolTip">
     <string>Force a full refresh of all plots and widgets</string>
    </property>
-   <property name="font">
-    <font>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
+   <property name="statusTip">
+    <string>Force a full refresh of all plots and widgets</string>
+   </property>
+   <property name="whatsThis">
+    <string>Force a full refresh of all plots and widgets</string>
    </property>
    <property name="shortcut">
-    <string>Meta+R</string>
+    <string>Ctrl+R</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::WidgetWithChildrenShortcut</enum>
+   </property>
+   <property name="autoRepeat">
+    <bool>false</bool>
+   </property>
+   <property name="priority">
+    <enum>QAction::HighPriority</enum>
    </property>
   </action>
   <action name="actionRebuild">
@@ -1074,11 +1006,11 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
    <property name="whatsThis">
     <string>Force rebuild all components</string>
    </property>
-   <property name="font">
-    <font>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
+   <property name="shortcut">
+    <string>Ctrl+D</string>
+   </property>
+   <property name="priority">
+    <enum>QAction::HighPriority</enum>
    </property>
   </action>
   <action name="actionFull_Screen">
@@ -1091,6 +1023,32 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
    </property>
    <property name="toolTip">
     <string>Go to full screen</string>
+   </property>
+  </action>
+  <action name="actionMetal_Dark">
+   <property name="text">
+    <string>Metal Dark</string>
+   </property>
+  </action>
+  <action name="actionSaveAs">
+   <property name="icon">
+    <iconset resource="main_window_rc.qrc">
+     <normaloff>:/save</normaloff>:/save</iconset>
+   </property>
+   <property name="text">
+    <string>Save as</string>
+   </property>
+   <property name="toolTip">
+    <string>Save design to new file</string>
+   </property>
+   <property name="statusTip">
+    <string>Save design to file</string>
+   </property>
+   <property name="whatsThis">
+    <string>Save design to file</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
    </property>
   </action>
  </widget>
@@ -1286,6 +1244,294 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionMetal_Dark</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>load_stylesheet_metal_dark()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>441</x>
+     <y>429</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>dockDesign</sender>
+   <signal>visibilityChanged(bool)</signal>
+   <receiver>actionDesign</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>154</x>
+     <y>179</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionDesign</sender>
+   <signal>triggered(bool)</signal>
+   <receiver>dockDesign</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>154</x>
+     <y>179</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionComponent</sender>
+   <signal>triggered(bool)</signal>
+   <receiver>dockComponent</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>885</x>
+     <y>320</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>dockConnectors</sender>
+   <signal>visibilityChanged(bool)</signal>
+   <receiver>actionConnectors</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>154</x>
+     <y>488</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>dockLog</sender>
+   <signal>visibilityChanged(bool)</signal>
+   <receiver>actionLog</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>458</x>
+     <y>645</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>dockComponent</sender>
+   <signal>visibilityChanged(bool)</signal>
+   <receiver>actionComponent</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>885</x>
+     <y>320</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>dockNewComponent</sender>
+   <signal>visibilityChanged(bool)</signal>
+   <receiver>actionNewComponent</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>154</x>
+     <y>347</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionNewComponent</sender>
+   <signal>triggered(bool)</signal>
+   <receiver>dockNewComponent</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>154</x>
+     <y>347</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionLog</sender>
+   <signal>triggered(bool)</signal>
+   <receiver>dockLog</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>458</x>
+     <y>645</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionConnectors</sender>
+   <signal>triggered(bool)</signal>
+   <receiver>dockConnectors</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>154</x>
+     <y>488</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionDesign</sender>
+   <signal>triggered()</signal>
+   <receiver>dockDesign</receiver>
+   <slot>raise()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>154</x>
+     <y>179</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionConnectors</sender>
+   <signal>triggered()</signal>
+   <receiver>dockConnectors</receiver>
+   <slot>raise()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>154</x>
+     <y>488</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionNewComponent</sender>
+   <signal>triggered()</signal>
+   <receiver>dockNewComponent</receiver>
+   <slot>raise()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>154</x>
+     <y>347</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionComponent</sender>
+   <signal>triggered()</signal>
+   <receiver>dockComponent</receiver>
+   <slot>raise()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>885</x>
+     <y>320</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionElements</sender>
+   <signal>triggered()</signal>
+   <receiver>tabWidget</receiver>
+   <slot>setFocus()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>582</x>
+     <y>320</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionLog</sender>
+   <signal>triggered()</signal>
+   <receiver>dockLog</receiver>
+   <slot>raise()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>458</x>
+     <y>645</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionSaveAs</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>save_design_as()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>536</x>
+     <y>387</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>showHelp()</slot>
@@ -1299,5 +1545,7 @@ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
   <slot>_screenshot()</slot>
   <slot>full_refresh()</slot>
   <slot>rebuild()</slot>
+  <slot>load_stylesheet_metal_dark()</slot>
+  <slot>save_design_as()</slot>
  </slots>
 </ui>

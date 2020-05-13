@@ -97,18 +97,28 @@ class QMainWindowExtension(QMainWindowExtensionBase):
             self.gui.refresh()
 
     @catch_exception_slot_pyqt()
-    def save_design(self, _):
+    def save_design_as(self, _=None):
+        filename = QFileDialog.getSaveFileName(None,
+                                               'Select a new locaiton to save Metal design to',
+                                               self.design.get_design_name() + '.metal',
+                                               initialFilter='*.metal')[0]
+
+        if filename:
+            self.gui.save_file(filename)
+
+    @catch_exception_slot_pyqt()
+    def save_design(self, _=None):
         """
         Handles click on save design
         """
-        filename = QFileDialog.getSaveFileName(None,
-                                               'Select locaiton to save Metal design to')[0]
-
-        if filename:
-            self.logger.info(f'Attempting to save design file to {filename}')
-            # Maybe try here?
-            self.design.save_design(filename)
-            self.logger.info(f'Successfully saved.')
+        if self.design:
+            if self.design.save_path:
+                self.gui.save_file()
+            else:
+                self.save_design_as()
+        else:
+            self.logger.info('No design present.')
+            QMessageBox.warning(self,'Warning','No design present! Can''t save')
 
     @catch_exception_slot_pyqt()
     def load_design(self, _):
@@ -116,7 +126,8 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         Handles click on loading metal design
         """
         filename = QFileDialog.getOpenFileName(None,
-                                               'Select locaiton to load Metal design from')[0]
+                                               'Select locaiton to load Metal design from',
+                                               initialFilter='*.metal')[0]
         if filename:
             self.logger.info(f'Attempting to load design file {filename}')
             design = load_metal_design(filename)
@@ -148,6 +159,7 @@ class MetalGUI(QMainWindowBaseHandler):
     __UI__ = Ui_MainWindow
     _QMainWindowClass = QMainWindowExtension
     _img_logo_name = 'metal_logo.png'
+    _stylesheet_default = 'metal_dark'
 
     _dock_names = [
         'dockComponent',
@@ -157,7 +169,7 @@ class MetalGUI(QMainWindowBaseHandler):
         'dockNewComponent']
 
     def __init__(self, design: DesignBase = None):
-        """Ini
+        """Init
 
         Args:
             design (DesignBase, optional): Pass in the design that the GUI should handle.
@@ -383,3 +395,6 @@ class MetalGUI(QMainWindowBaseHandler):
     def autoscale(self):
         """Shorcut to autoscale all views"""
         self.plot_win.auto_scale()
+
+    def save_file(self, filename:str=None):
+        self.design.save_design(filename)

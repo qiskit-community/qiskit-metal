@@ -43,11 +43,16 @@ from ... import Dict
 from ...designs import DesignBase
 from ...toolbox_python.utility_functions import log_error_easy
 from .interaction_mpl import MplInteraction, PanAndZoom
-from .toolbox_mpl import clear_axis, get_prop_cycle
+from .toolbox_mpl import clear_axis, get_prop_cycle, _axis_set_watermark_img
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ..._gui.main_window import MetalGUI
 
 # @mfacchin - moved to the root __init__ to prevent windows from hanging
 # mpl.use("Qt5Agg")
 
+BACKGROUND_COLOR = '#F4F4F4'
 MPL_CONTEXT_DEFAULT = {
     'lines.linewidth': 3,
 
@@ -57,8 +62,8 @@ MPL_CONTEXT_DEFAULT = {
     # figure.titleweight : normal   ## weight of the figure title
     # figure.figsize   : 6.4, 4.8   ## figure size in inches
     'figure.dpi': 100,  # figure dots per inch
-    'figure.facecolor': 'white',  # figure facecolor
-    'figure.edgecolor': 'white',  # figure edgecolor
+    'figure.facecolor': BACKGROUND_COLOR,  # figure facecolor
+    'figure.edgecolor': BACKGROUND_COLOR,  # figure edgecolor
     # figure.frameon : True         ## enable figure frame
     # figure.max_open_warning : 20  ## The maximum number of figures to open through
     # the pyplot interface before emitting a warning.
@@ -93,7 +98,7 @@ MPL_CONTEXT_DEFAULT = {
 
     # GRIDS
     'grid.color':   'b0b0b0',  # grid color
-    # grid.linestyle   :   -         ## solid
+    'grid.linestyle': '-',         # solid
     'grid.linewidth':   0.5,  # in points
     'grid.alpha':   0.5,  # transparency, between 0.0 and 1.0
 
@@ -101,7 +106,7 @@ MPL_CONTEXT_DEFAULT = {
     # default face and edge color, default tick sizes,
     # default fontsizes for ticklabels, and so on.  See
     # http://matplotlib.org/api/axes_api.html#module-matplotlib.axes
-    'axes.facecolor': 'white',  # axes background color
+    'axes.facecolor': BACKGROUND_COLOR,  # axes background color
     # 'axes.edgecolor'      : 'black',   ## axes edge color
     # axes.linewidth      : 0.8     ## edge linewidth
     'axes.grid': True,  # display grid or not
@@ -272,8 +277,10 @@ class PlotCanvas(FigureCanvas):
     # See https://github.com/matplotlib/matplotlib/blob/master/lib/matplotlib/backends/backend_qt5agg.py
     # Consider using pyqtgraph https://stackoverflow.com/questions/40126176/fast-live-plotting-in-matplotlib-pyplot.
 
-    def __init__(self, design: DesignBase, parent=None, logger=None,
+    def __init__(self, design: DesignBase, parent:'QMainWindowPlot'=None, logger=None,
                  statusbar_label=None):
+
+        self.gui = parent.gui # type: MetalGUI
 
         # MPL
         self.config = Dict(
@@ -381,6 +388,7 @@ class PlotCanvas(FigureCanvas):
         #ax.set_ylabel('y (mm)')
 
     def plot(self, clear=True, with_try=True):
+        #TODO: Maybe do in a thread?
         self.hide()
         ax = self.get_axis()
 
@@ -390,6 +398,7 @@ class PlotCanvas(FigureCanvas):
                 if clear:
                     self.clear_axis(ax)
                 self._plot(ax)
+                self._watermark_axis(ax)
 
         def final():
             self.draw()
@@ -410,6 +419,21 @@ class PlotCanvas(FigureCanvas):
         else:
             main_plot()
             final()
+
+    def _watermark_axis(self, ax:plt.Axes):
+        self.logger.info('WATERMARK')
+        """Add a watermark"""
+        kw = dict(fontsize=15, color='gray', ha='right',
+                va='bottom', alpha=0.18, zorder=-100)
+        ax.annotate('Qiskit Metal', xy=(0.98, 0.02),
+                    xycoords='axes fraction', **kw)
+
+        file = (self.gui.path_imgs / 'metal_logo.png')
+        if file.is_file():
+            #print(f'Found {file} for watermark.')
+            _axis_set_watermark_img(ax, file, size=0.15)
+        else:
+            logger.error(f'Error could not load {file} for watermark.')
 
     def clear_axis(self, ax: plt.Axes = None):
         """Clear an axis or clear all axes
@@ -439,8 +463,8 @@ class PlotCanvas(FigureCanvas):
         # change the x or y data limits.
         ax.set_adjustable('datalim')
 
-        ax.set_xlabel('X position (mm)')
-        ax.set_ylabel('Y position (mm)')
+        ax.set_xlabel('x position (mm)')
+        ax.set_ylabel('y position (mm)')
 
         # Zero lines
         kw = dict(c='k', lw=1, zorder=-1, alpha=0.5)
