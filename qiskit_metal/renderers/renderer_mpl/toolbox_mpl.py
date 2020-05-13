@@ -20,19 +20,21 @@ Created 2019
 """
 
 
-from cycler import cycler
 import descartes  # shapely plot
 import matplotlib as mpl
+import matplotlib.cbook as cbook
+import matplotlib.image as image
 import matplotlib.pyplot as plt
 import numpy as np
 import shapely
+from cycler import cycler
 from matplotlib.cbook import _OrderedSet
 from shapely.geometry import LinearRing, Polygon  # Point, LineString,
 
 from ... import Dict
 from ...components import is_component
-from .interaction_mpl import figure_pz
 from ...draw import BaseGeometry
+from .interaction_mpl import figure_pz
 
 ##########################################################################################
 # Plotting subroutines
@@ -338,6 +340,20 @@ def figure_spawn(fig_kw=None):
 
     return fig_draw, ax_draw
 
+
+#######################################################################
+
+def _axis_set_watermark_img(ax:plt.Axes, file:str, size : float = 0.25):
+    ### Load image
+    datafile = cbook.get_sample_data(str(file), asfileobj=False)
+    img = image.imread(datafile)
+    #im[:, :, -1] = 0.5  # set the alpha channel
+
+    # ALternative: fig.figimage
+    # scale image: yscale = float(img.shape[1])/img.shape[0]
+    # extent: (left, right, bottom, top)
+    kw = dict(interpolation='gaussian', alpha=0.05, resample=True, zorder = -200)
+    ax.imshow(img, extent=(1-size,1, 1-size, 1), transform=ax.transAxes, **kw)
 
 #######################################################################
 """
