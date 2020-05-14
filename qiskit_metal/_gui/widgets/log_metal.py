@@ -115,7 +115,7 @@ class LoggingWindowWidget(QTextEdit):
         self.addAction(self.warning)
         self.addAction(self.error)
 
-    def wellcome_message(self):
+    def welcome_message(self):
         img_txt = ''
 
         # Logo
@@ -123,16 +123,16 @@ class LoggingWindowWidget(QTextEdit):
         if img_path.is_file():
             img_txt = f'<img src="{img_path}" height=80>'
         else:
-            print('WARNING: wellcome_message could not locate img_path={img_path}')
+            print('WARNING: welcome_message could not locate img_path={img_path}')
 
         # Main message
-        self.log_message(f'''<span class="INFO">{' '*self.timestamp_len}
-
+        text = f'''<span class="INFO">{' '*self.timestamp_len}
+        <br>
         <table border="0" width="100%" ID="tableLogo" style="margin: 0px;">
             <tr>
                 <td align="center">
-                    <h3 align="center"  style="text-align: center; color:#00356B;">
-                        Wellcome to Qiskit Metal
+                    <h3 align="center"  style="text-align: center;">
+                        Welcome to Qiskit Metal!
                     </h3>
                     v{__version__}
                 </td>
@@ -140,8 +140,8 @@ class LoggingWindowWidget(QTextEdit):
             </tr>
         </table>
         </span>
-        <b>Tip: </b> {random.choice(config.GUI_CONFIG['tips'])}
-        <br>''', format_as_html=2)
+        <b>Tip: </b> {random.choice(config.GUI_CONFIG['tips'])}'''
+        self.log_message(text, format_as_html=2)
 
     def print_all_tips(self):
         """Prints all availabel tips in the log window

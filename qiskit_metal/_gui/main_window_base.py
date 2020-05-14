@@ -29,6 +29,7 @@ from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QFileDialog, QMainWindow, QMessageBox
 from PyQt5 import QtWidgets, QtCore, QtGui  # pyqt stuff
+from PyQt5.QtCore import QTimer
 
 from .. import Dict, config
 from ..toolbox_python._logging import setup_logger
@@ -90,6 +91,7 @@ class QMainWindowExtensionBase(QMainWindow):
         return True
 
     def save_window_settings(self):
+        self.logger.info('Saving window state')
         # get the current size and position of the window as a byte array.
         self.settings.setValue('geometry', self.saveGeometry())
         self.settings.setValue('windowState', self.saveState())
@@ -386,7 +388,8 @@ class QMainWindowBaseHandler():
                     log_name, self, self.ui.log_text)
                 self.logger.addHandler(self._log_handler)
 
-                self.ui.log_text.wellcome_message()
+                QTimer.singleShot(1500,
+                        self.ui.log_text.welcome_message)
 
         else:
             self.logger.warning('UI does not have `log_text`')

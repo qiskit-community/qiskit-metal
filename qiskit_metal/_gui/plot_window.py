@@ -64,8 +64,7 @@ class QMainWindowPlot(QMainWindow):
         self.canvas.plot()
 
     def auto_scale(self):
-        # self.ui.actionAuto.triggered.connect(self.auto_scale)
-        self.logger.info("Autoscale")
+        self.logger.debug("Autoscale")
         self.canvas.auto_scale()
 
     def pan(self):
