@@ -27,7 +27,7 @@ import os
 from pathlib import Path
 
 from PyQt5 import QtWidgets
-from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtCore import pyqtSlot, Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (QApplication, QFileDialog, QLabel, QMainWindow,
                              QMessageBox)
@@ -265,18 +265,8 @@ class MetalGUI(QMainWindowBaseHandler):
     def _ui_adjustments(self):
         """Any touchups to the loaded ui that need be done soon
         """
-
         # LoggingWindowWidget
         self.ui.log_text.img_path = Path(self.path_imgs)
-        # self.ui.log_text.setup_menu()
-        # self.ui.log_text.wellcome_message()
-
-        # tabify - left
-        self.main_window.tabifyDockWidget(
-            self.ui.dockDesign, self.ui.dockNewComponent)
-        self.main_window.tabifyDockWidget(
-            self.ui.dockNewComponent, self.ui.dockConnectors)
-        self.ui.dockDesign.raise_()
 
         # Add a second label to the status bar
         status_bar = self.main_window.statusBar()
@@ -284,9 +274,16 @@ class MetalGUI(QMainWindowBaseHandler):
         self.statusbar_label.setText('')
         status_bar.addWidget(self.statusbar_label)
 
-        # Elements button
-        #self._set_element_tab = _set_element_tab
-        # self.ui.actionElements.toggled.connect(self._set_element_tab)
+        ### Docks
+        # Left handside
+        self.main_window.splitDockWidget(self.ui.dockDesign, self.ui.dockComponent, Qt.Vertical)
+        self.main_window.tabifyDockWidget(self.ui.dockDesign, self.ui.dockNewComponent)
+        self.main_window.tabifyDockWidget(self.ui.dockNewComponent, self.ui.dockConnectors)
+        self.ui.dockDesign.raise_()
+        self.main_window.resizeDocks({self.ui.dockDesign}, {350}, Qt.Horizontal)
+
+        # Log
+        self.main_window.resizeDocks({self.ui.dockLog}, {120}, Qt.Vertical)
 
     def _set_element_tab(self, yesno: bool):
         if yesno:
@@ -354,11 +351,13 @@ class MetalGUI(QMainWindowBaseHandler):
         """
         return self.plot_win.canvas
 
-    def rebuild(self):
+    def rebuild(self, autoscale:bool=True):
         """Rebuild all components in the design from scratch and refresh the gui.
         """
         self.design.rebuild()
         self.refresh()
+        if autoscale:
+            self.autoscale()
 
     def refresh(self):
         '''Refreshes everything. Overkill in general.
