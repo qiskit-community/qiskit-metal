@@ -78,7 +78,7 @@ class QMainWindowExtensionBase(QMainWindow):
             super().closeEvent(event)
 
     def ok_to_continue(self):
-        if self.movies.isDirty():
+        if 1:
             reply = QMessageBox.question(self,
                     "Qiskit Metal",
                     "Save unsaved changes to design?",
