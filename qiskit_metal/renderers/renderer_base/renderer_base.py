@@ -16,7 +16,7 @@
 @auhtor: Zlatko Minev, ... (IBM)
 @date: 2019
 """
-
+import logging
 from ...designs import DesignBase, is_design
 from ...elements import ElementTables
 

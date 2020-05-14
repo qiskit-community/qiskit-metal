@@ -600,7 +600,7 @@
    <property name="minimumSize">
     <size>
      <width>100</width>
-     <height>15</height>
+     <height>93</height>
     </size>
    </property>
    <property name="windowIcon">
@@ -618,7 +618,7 @@
     <string>Log window</string>
    </property>
    <property name="features">
-    <set>QDockWidget::DockWidgetFeatureMask</set>
+    <set>QDockWidget::AllDockWidgetFeatures</set>
    </property>
    <property name="windowTitle">
     <string>Log</string>
