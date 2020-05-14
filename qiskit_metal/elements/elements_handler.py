@@ -23,7 +23,7 @@ See the docstring of BaseElement
 import functools
 import inspect
 import logging
-from typing import TYPE_CHECKING, Union
+from typing import TYPE_CHECKING, Union, List, Dict as Dict_
 
 import pandas as pd
 
@@ -250,7 +250,7 @@ class ElementTables(object):
         """
         self._design = design
 
-        self.tables = Dict()
+        self._tables = Dict()
         self.create_tables()
 
     @property
@@ -261,6 +261,16 @@ class ElementTables(object):
     @property
     def logger(self) -> logging.Logger:
         return self._design.logger
+
+    @property
+    def tables(self) -> Dict_[str, pd.DataFrame]:
+        """The dictionary of tables containing elements.
+
+        Returns:
+            Dict_[str, pd.DataFrame] -- The keys of this dictionary are
+                                        also obtained from `self.get_element_types()`
+        """
+        return self._tables
 
     @classmethod
     def add_renderer_extension(cls, renderer_name: str, elements: dict):
@@ -296,26 +306,18 @@ class ElementTables(object):
     # could use weakref memorizaiton
     # https://stackoverflow.com/questions/33672412/python-functools-lru-cache-with-class-methods-release-object
     @classmethod
-    def get_element_types(cls):
+    def get_element_types(cls) -> List[str]:
         """Return the names of the available elements to create.
         This does not include 'base', but is rather such as poly and path.
 
         Returns:
             list(str) -- list of name in self.ELEMENT_COLUMNS
         """
+        #TODO: I should probably make this a variable and memeorize, only change when elements are added and removed
+        # can be slow for perofmance to look up eahc time and recalcualte, since may call this often
         names = list(cls.ELEMENT_COLUMNS.keys())
         names.remove('base')
         return names
-
-    # @property
-    # def tables(self):
-    #    """Read-only dictionary of tables with keys self.get_element_types()
-    #
-        # Returns:
-        #     dict of pandas dataframes
-
-        # """
-        # return self._tables
 
     def create_tables(self):
         """
@@ -372,7 +374,11 @@ class ElementTables(object):
         A possible error here is if the user did not pass a valid data type
         This raises TypeError: data type '' not understood
 
-        Throws an error if not valid
+        Throws an error if not valid.
+
+        Arguments:
+            table_name {str} -- Name of element table (e.g., 'poly')
+            column_dict {dict} --
         """
         __pre = 'ERROR CREATING ELEMENT TABLE FOR DESIGN: \
             \n  ELEMENT_TABLE_NAME = {table_name}\
@@ -387,11 +393,18 @@ class ElementTables(object):
             assert inspect.isclass(v), __pre.format(**locals()) +\
                 ' Value needs to be a class!'
 
-    def get_rname(self, renderer_name: str, key: str):
-        '''
+    def get_rname(self, renderer_name: str, key: str) -> str:
+        """
         Get name for renderer property
-        '''
-        return renderer_name + self.name_delimiter + key  # self.name_delimiter +
+
+        Arguments:
+            renderer_name {str} -- Name of the renderer
+            key {str} -- [description]
+
+        Returns:
+            str -- The unique named used as a column in the table
+        """
+        return renderer_name + self.name_delimiter + key
 
     def _prepend_renderer_names(self, table_name: str, renderer_key: str, rdict: dict):
         return {self.get_rname(renderer_key, k): v
@@ -429,7 +442,7 @@ class ElementTables(object):
 
         if not (kind in self.get_element_types()):
             self.logger.error(f'Creator user error: Unkown element kind=`{kind}`'
-                              f'Kind must be in {list(self.tables.keys())}. This failed for component'
+                              f'Kind must be in {self.get_element_types()}. This failed for component'
                               f'name = `{component_name}`.\n'
                               f' The call was with subtract={subtract} and helper={helper}'
                               f' and layer={layer}, and options={other_options}')
@@ -473,7 +486,7 @@ class ElementTables(object):
             df = self.tables[table_name]
             self.tables[table_name] = df[df.component != name]
 
-    def get_component(self, name: str, table_name: str):
+    def get_component(self, name: str, table_name: str) -> pd.DataFrame:
         """Return the table for just a given component.
 
         Arguments:
@@ -495,24 +508,59 @@ class ElementTables(object):
             table = self.tables[table_name]
             table.component[table.component == name] = new_name
 
-    def get_component_geometry(self, name: str, table_name: str):
-        """Return the table for just a given component.
+    def get_component_geometry_list(self, name: str, table_name: str = 'all') -> List[BaseGeometry]:
+        """Return just the bare element geometry (shapely geometry objects) as a list, for the
+        selected component.
 
         Arguments:
             name {str} -- Name of component (case sensitive)
-            table_name {str} -- Element kind ('poly', 'path', etc.)
+            table_name {str} -- Element type ('poly', 'path', etc.).
+                                Can also be 'all' to return all. This is the default.
         """
-        # TODO: handle  table_name=all?
-        df = self.tables[table_name]
-        return df[df.component == name].geometry
+        if table_name == 'all':
+            elements = []
+            for table in self.get_element_types():
+                elements += self.get_component_geometry_list(name, table)
 
-    def get_component_geometry_raw(self, name: str, table_name: str):
-        """Return just the bare shapes in a list or a simple way
+        else:
+            table = self.tables[table_name]
+            elements = table.geometry[table.component == name].to_list()
+
+        return elements
+
+    def get_component_geometry_dict(self, name: str, table_name: str) -> List[BaseGeometry]:
+        """Return just the bare element geometry (shapely geometry objects) as a dict,
+           with key being the names of the elements and the values as the shapely geometry,
+           for the selected component.
 
         Arguments:
             name {str} -- Name of component (case sensitive)
-            table_name {str} -- Element kind ('poly', 'path', etc.)
+            table_name {str} -- Element type ('poly', 'path', etc.)
         """
         # TODO: handle  table_name=all?
-        df = self.tables[table_name]
-        return df[df.component == name].geometry
+        table = self.tables[table_name]
+
+        # mask the rows nad get only 2 columns
+        df0 = table.loc[table.component == name, ['name', 'geometry']]
+        df = df0.geometry
+        df.index = df0.name
+        return df.to_dict()
+
+    def check_element_type(self, table_name: str, log_issue:bool = True) -> bool:
+        """Check if the name `table_name` is in the element tables.
+
+        Arguments:
+            table_name {str} -- Element type ('poly', 'path', etc.)
+
+        Keyword Arguments:
+            log_issue {bool} -- Throw an erro in the log if name missing  (default: {True})
+
+        Returns:
+            bool -- True if the name is valid, else False
+        """
+        if not table_name in self.get_element_types():
+            if log_issue:
+                self.logger.error(f'Element Tables: Tried to access non-existing element table: `{table_name}`')
+            return False
+        else:
+            return True
