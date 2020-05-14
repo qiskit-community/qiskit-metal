@@ -17,12 +17,10 @@
 @date: 2019
 """
 import logging
-
 from ...designs import DesignBase, is_design
 from ...elements import ElementTables
 
 __all__ = ['RendererBase']
-
 
 class RendererBase():
     """Abstract base class for all Renderers of Metal designs and their compoinents and elements.

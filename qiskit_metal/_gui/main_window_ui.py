@@ -194,7 +194,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.dockLog.sizePolicy().hasHeightForWidth())
         self.dockLog.setSizePolicy(sizePolicy)
-        self.dockLog.setMinimumSize(QtCore.QSize(100, 100))
+        self.dockLog.setMinimumSize(QtCore.QSize(100, 93))
         icon9 = QtGui.QIcon()
         icon9.addPixmap(QtGui.QPixmap(":/log"), QtGui.QIcon.Normal, QtGui.QIcon.On)
         self.dockLog.setWindowIcon(icon9)
