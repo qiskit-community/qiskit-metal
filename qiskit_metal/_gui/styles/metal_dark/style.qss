@@ -138,7 +138,7 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qstatusbar
 
 --------------------------------------------------------------------------- */
 QStatusBar {
-  border: 1px solid #32414B;
+  border: 1px solid #19232D;
   /* Fixes Spyder #9120, #9121 */
   background: #32414B;
   /* Fixes #205, white vertical borders separating items */
@@ -150,7 +150,7 @@ QStatusBar::item {
 
 QStatusBar QToolTip {
   background-color: #148CD2;
-  border: 1px solid #19232D;
+  border: 0px solid #19232D;
   color: #19232D;
   /* Remove padding, for fix combo box tooltip */
   padding: 0px;
@@ -726,9 +726,9 @@ QSizeGrip {
 
 --------------------------------------------------------------------------- */
 QStackedWidget {
-  padding: 2px;
-  border: 1px solid #32414B;
-  border: 1px solid #19232D;
+  padding: 0px;
+  /* border: 1px solid #32414B; */
+  /* border: 1px solid #19232D; */
 }
 
 /* QToolBar ---------------------------------------------------------------
@@ -739,14 +739,18 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qtoolbar
 QToolBar {
   background-color: #32414B;
   border-bottom: 1px solid #19232D;
-  padding: 1px;
-  font-weight: bold;
+  border-right: 1px solid #19232D;
+  padding: 0px;
+  margin-bottom: 0px;
+  padding-bottom: 1px;
   spacing: 0px;
 }
 
 QToolBar QToolButton {
   background-color: #32414B;
-  border: 0px;
+  border: 2px;
+  margin-bottom: 1px;
+  font-weight: bold;
 }
 
 QToolBar QToolButton:hover {
@@ -888,7 +892,7 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qframe
 QLabel {
   background-color: #19232D;
   border: 0px solid #32414B;
-  padding: 2px;
+  padding: 1px;
   margin: 0px;
   color: #F0F0F0;
 }
@@ -1015,7 +1019,7 @@ QPushButton {
   border: 1px solid #32414B;
   color: #F0F0F0;
   border-radius: 4px;
-  padding: 3px;
+  padding: 2px;
   outline: none;
   /* Issue #194 - Special case of QPushButton inside dialogs, for better UI */
   min-width: 80px;
@@ -1553,23 +1557,23 @@ QTabBar::tab:right:!selected:disabled {
 }
 
 QTabBar::tab:top:!selected {
-  border-bottom: 2px solid #19232D;
-  margin-top: 2px;
+  border-bottom: 1px solid #19232D;
+  margin-top: 1px;
 }
 
 QTabBar::tab:bottom:!selected {
-  border-top: 2px solid #19232D;
-  margin-bottom: 3px;
+  border-top: 0px solid #19232D;
+  margin-bottom: 1px;
 }
 
 QTabBar::tab:left:!selected {
-  border-left: 2px solid #19232D;
-  margin-right: 2px;
+  border-left: 1px solid #19232D;
+  margin-right: 1px;
 }
 
 QTabBar::tab:right:!selected {
-  border-right: 2px solid #19232D;
-  margin-left: 2px;
+  border-right: 1px solid #19232D;
+  margin-left: 1px;
 }
 
 QTabBar::tab:top {
@@ -1579,11 +1583,11 @@ QTabBar::tab:top {
   padding-left: 4px;
   padding-right: 4px;
   padding-top: 2px;
-  padding-bottom: 2px;
+  padding-bottom: 1px;
   min-width: 5px;
-  border-bottom: 3px solid #32414B;
+  border-bottom: 2px solid #32414B;
   border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
+  border-top-right-radius: 10px;
 }
 
 QTabBar::tab:top:selected {
@@ -1591,12 +1595,14 @@ QTabBar::tab:top:selected {
   color: #F0F0F0;
   border-bottom: 3px solid #1464A0;
   border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
+  border-top-right-radius: 10px;
+  background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #22303F, stop: 0.4 #22303F, stop:1 rgb(129, 37, 52));
 }
 
 QTabBar::tab:top:!selected:hover {
   border: 1px solid #148CD2;
   border-bottom: 3px solid #148CD2;
+  background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #22303F, stop: 0.4 #22303F, stop:1 rgb(129, 37, 52));
   /* Fixes spyder-ide/spyder#9766 */
   padding-left: 4px;
   padding-right: 4px;
@@ -1604,13 +1610,13 @@ QTabBar::tab:top:!selected:hover {
 
 QTabBar::tab:bottom {
   color: #F0F0F0;
-  border-top: 3px solid #32414B;
+  border-top: 1px solid #32414B;
   background-color: #32414B;
   margin-left: 2px;
   padding-left: 4px;
   padding-right: 4px;
   padding-top: 2px;
-  padding-bottom: 2px;
+  padding-bottom: 1px;
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
   min-width: 5px;
@@ -1727,12 +1733,15 @@ QDockWidget {
 
 QDockWidget::title {
   /* Better size for title bar */
-  padding: 2px;
-  padding-top: 4px;
+  padding: 0px;
+  padding-top: 2px;
   padding-left: 6px;
-  spacing: 4px;
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+  spacing: 0px;
   border: none;
   background-color: #32414B;
+  font-weight: bold;
 }
 
 QDockWidget::close-button {

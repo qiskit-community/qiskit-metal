@@ -27,7 +27,7 @@ import os
 from pathlib import Path
 
 from PyQt5 import QtWidgets
-from PyQt5.QtCore import pyqtSlot, Qt
+from PyQt5.QtCore import pyqtSlot, Qt, QTimer
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (QApplication, QFileDialog, QLabel, QMainWindow,
                              QMessageBox)
@@ -190,10 +190,12 @@ class MetalGUI(QMainWindowBaseHandler):
         self._setup_design_components_widget()
         self._setup_elements_widget()
 
-        # Show
+        # Show and raise
         self.main_window.show()
-        self.qApp.processEvents(QEventLoop.AllEvents, 1)
-        self.main_window.raise_()
+        # self.qApp.processEvents(QEventLoop.AllEvents, 1)
+        # - don't think I need this here, it doesn't help to show and raise
+        # - need to call from different thread.
+        QTimer.singleShot(150, self.main_window.raise_)
 
         if design:
             self.set_design(design)
