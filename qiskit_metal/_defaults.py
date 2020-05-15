@@ -69,12 +69,17 @@ class DefaultOptionsGeneric():
             cust_value {Dict} --  The key/value pairs to describe component. (default: {None})
         """
 
+        assert(cust_key is not None), f'ERROR: Need a key, update_default_options has {cust_key}'
+        self.default_options[cust_key] = cust_value
+        
+        '''
         if cust_key is None:
-            print(f'ERROR: Need a key, update_default_options has {cust_key}')
-            # log_error_easy(self.logger,
-            # post_text=f'Need a key, update_default_option has {cust_key}')
+            #raise Exception(f'ERROR: Need a key, update_default_options has {cust_key}')
+            #print(f'ERROR: Need a key, update_default_options has {cust_key}')
         else:
             self.default_options[cust_key] = cust_value
+        '''
+        
 
 
 # Can't really use this until default_draw_substrate.color_plane is resolved.
