@@ -169,11 +169,6 @@ class DefaultOptionsRenderer():
             cust_key {str} -- Type of component. (default: {None})
             cust_value {Dict} --  The key/value pairs to describe component. (default: {None})
         """
-
-        if cust_key is None:
-            print(f'ERROR: Need a key, update_default_options has {cust_key}')
-            # log_error_easy(self.logger,
-            # post_text=f'Need a key, update_default_option has {cust_key}')
-        else:
-            self.default_options[cust_key] = cust_value
-
+        assert(cust_key is not None), f'ERROR: Need a key, update_default_options has {cust_key}'
+        self.default_options[cust_key] = cust_value
+        
