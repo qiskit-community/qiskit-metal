@@ -121,7 +121,7 @@ dielectric_constant = 11.45, loss_tangent = 10**-5,london_penetration_depth = 30
     Kk0,Kk01,Kk1,Kk11 = elliptic_int_constants(s,w,h)
 
     C = 2*e0*(eRD-1)*(Kk1/Kk11)+4*e0*(Kk0/Kk01)
-
+    
     #filling factor
     q = 0.5*(Kk1*Kk01)/(Kk11*Kk0)
 
@@ -134,6 +134,7 @@ dielectric_constant = 11.45, loss_tangent = 10**-5,london_penetration_depth = 30
     #External Inducatance
     Z0 = (30*np.pi/etfSqrt)*Kk01/Kk0
     Lext = Z0**2*C
+    Cstar = 2*e0*(etfSqrt**2-1)*(Kk1/Kk11)+4*e0*(Kk0/Kk01)
 
     #Kinetic Inductance
     A1 = (-t/np.pi)+(1/2)*np.sqrt((2*t/np.pi)**2+s**2)
@@ -148,7 +149,7 @@ dielectric_constant = 11.45, loss_tangent = 10**-5,london_penetration_depth = 30
 
     Lk = Lkin1+Lkin2
 
-    return Lk, Lext, C, G
+    return Lk, Lext, C, G,Z0, etfSqrt**2, Cstar
 
 
 def effective_dielectric_constant(freq,s,w,h,t,q,Kk0,Kk01,eRD=11.45):

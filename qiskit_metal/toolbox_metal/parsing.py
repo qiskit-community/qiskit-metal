@@ -184,7 +184,8 @@ __all__ = ['parse_value',  # Main function
 TRUE_STR = ['true', 'True', 'TRUE', '1', 't', 'y', 'Y', 'YES',
             'yes', 'yeah', True, 1, 1.0]
 
-def is_true(value:str) -> bool:
+
+def is_true(value: str) -> bool:
     """Check if a value is true or not
 
     Arguments:
@@ -194,6 +195,7 @@ def is_true(value:str) -> bool:
        Bool
     """
     return value in TRUE_STR
+
 
 # The unit registry stores the definitions and relationships between units.
 UREG = pint.UnitRegistry()
@@ -225,7 +227,8 @@ def _parse_string_to_float(expr: str):
         float -- Converted value, such as float(1e-6)
     """
     try:
-        return UREG.Quantity(expr).to(config.DEFAULT.units).magnitude
+        units = config.DefaultOptionsGeneric.default_generic.units
+        return UREG.Quantity(expr).to(units).magnitude
     except Exception:
         # DimensionalityError, UndefinedUnitError, TypeError
         try:
@@ -385,6 +388,7 @@ def parse_value(value: str, variable_dict: dict):
 
     else:  # no parsing needed, it is not a string, mappable, or iterrable we can handle
         return value
+
 
 def parse_options(params: dict, parse_names: str, variable_dict=None):
     """

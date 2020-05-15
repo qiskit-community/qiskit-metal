@@ -40,43 +40,7 @@ converted to v0.2: Thomas McConkey 2020-03-24
 from copy import deepcopy
 from ... import draw
 from ...toolbox_python.attr_dict import Dict
-from ..._defaults import DEFAULT_OPTIONS
 from ..base.qubit import BaseQubit
-
-
-DEFAULT_OPTIONS['TransmonPocket.con_lines'] = deepcopy(
-    DEFAULT_OPTIONS['qubit.con_lines'])
-DEFAULT_OPTIONS['TransmonPocket.con_lines'].update(Dict(
-    pad_gap='15um',
-    pad_width='125um',
-    pad_height='30um',
-    pad_cpw_shift='5um',
-    pad_cpw_extent='25um',
-    cpw_width=DEFAULT_OPTIONS.cpw.width,
-    cpw_gap=DEFAULT_OPTIONS.cpw.gap,
-    cpw_extend='100um',  # how far into the ground to extend the CPW line from the coupling pads
-    pocket_extent='5um',
-    pocket_rise='65um',
-    loc_W='+1',  # width location  only +-1
-    loc_H='+1',  # height location only +-1
-))
-
-DEFAULT_OPTIONS['TransmonPocket'] = deepcopy(
-    DEFAULT_OPTIONS['qubit'])
-DEFAULT_OPTIONS['TransmonPocket'].update(Dict(
-    pos_x='0um',
-    pos_y='0um',
-    pad_gap='30um',
-    inductor_width='20um',
-    pad_width='455um',
-    pad_height='90um',
-    pocket_width='650um',
-    pocket_height='650um',
-    # 90 has dipole aligned along the +X axis,
-    # while 0 has dipole aligned along the +Y axis
-    orientation='0',
-))
-
 
 class TransmonPocket(BaseQubit):
     '''
@@ -85,7 +49,7 @@ class TransmonPocket(BaseQubit):
     Create a standard pocket transmon qubit for a ground plane,
     with two pads connectored by a junction (see drawing below).
 
-    Connector lines can be added using the `options_con_lines`
+    Connector lines can be added using the `con_lines`
     dicitonary. Each connector line has a name and a list of default
     properties.
 
@@ -151,6 +115,36 @@ class TransmonPocket(BaseQubit):
 
     _img = 'transmon_pocket1.png'
 
+    default_options = Dict(
+        pos_x='0um',
+        pos_y='0um',
+        pad_gap='30um',
+        inductor_width='20um',
+        pad_width='455um',
+        pad_height='90um',
+        pocket_width='650um',
+        pocket_height='650um',
+        # 90 has dipole aligned along the +X axis,
+        # while 0 has dipole aligned along the +Y axis
+        orientation='0',
+        _default_con_lines = Dict(
+            pad_gap='15um',
+            pad_width='125um',
+            pad_height='30um',
+            pad_cpw_shift='5um',
+            pad_cpw_extent='25um',
+            cpw_width='10um',
+            cpw_gap='6um',
+            cpw_extend='100um',  # how far into the ground to extend the CPW line from the coupling pads
+            pocket_extent='5um',
+            pocket_rise='65um',
+            loc_W='+1',  # width location  only +-1
+            loc_H='+1',  # height location only +-1
+        )
+    )
+
+
+
     def make(self):
         """
         Create the geometry from the parsed options.
@@ -165,7 +159,7 @@ class TransmonPocket(BaseQubit):
         # self.p allows us to directly access parsed values (string -> numbers) form the user option
         p = self.p
 
-        # since we will reuse these options, parse them once and efine them as varaibles
+        # since we will reuse these options, parse them once and define them as varaibles
         pad_width = p.pad_width
         pad_height = p.pad_height
         pad_gap = p.pad_gap
@@ -197,13 +191,7 @@ class TransmonPocket(BaseQubit):
         '''
         Makes standard transmon in a pocket
         '''
-        for name, options_con_lines in self.options.con_lines.items():
-            # update the options for the connector with the defaults under them
-            # TODO: This doens tseme to work, should probably update the parent options as well anyhow
-            ops = deepcopy(DEFAULT_OPTIONS['TransmonPocket.con_lines'])
-            ops.update(options_con_lines)
-            options_con_lines.update(ops)
-            # make the connector
+        for name in self.options.con_lines: #
             self.make_con_line(name)
 
     def make_con_line(self, name:str):
@@ -225,7 +213,6 @@ class TransmonPocket(BaseQubit):
         pad_width = pc.pad_width
         pad_height = pc.pad_height
         pad_cpw_shift = pc.pad_cpw_shift
-        pad_cpw_extent = pc.pad_cpw_extent
         pocket_rise = pc.pocket_rise
         pocket_extent = pc.pocket_extent
 
@@ -254,14 +241,12 @@ class TransmonPocket(BaseQubit):
         objects = draw.rotate_position(objects, p.orientation, [p.pos_x, p.pos_y])
         [connector_pad, connector_wire_path, connector_wire_CON] = objects
 
-        self.add_elements('poly', dict(connector_pad=connector_pad))
+        self.add_elements('poly', {f'{name}_connector_pad':connector_pad})
         self.add_elements('path', {f'{name}_wire':connector_wire_path}, width=cpw_width)
         self.add_elements('path', {f'{name}_wire_sub':connector_wire_path},
                           width=cpw_width + 2*pc.cpw_gap, subtract=True)
 
         # add connectors to design tracker
         points = draw.get_poly_pts(connector_wire_CON)
-        self.design.add_connector(
-            self.name+'_'+name, points[2:2+2], self.name, flip=False)  # TODO: chip
-        # connectors[self.name+'_'+name] = make_connector(\
-        # points[2:2+2], options, vec_normal=points[2]-points[1])
+        self.design.add_connector(name, points[2:2+2], self.name, flip=False)  # TODO: chip
+ 

@@ -22,13 +22,15 @@ Module containing all Qiskit Metal designs.
 # >> pyreverse -o png -p desin_base design_base.py -A  -S
 
 import importlib
-import numpy as np
+
 from typing import Union, List, Iterable, Any
 from datetime import datetime
 
+import numpy as np
+
 from .. import Dict, draw, logger
 from ..components import is_component
-from ..config import DEFAULT, DEFAULT_OPTIONS
+from ..config import DefaultOptionsGeneric, DefaultOptionsRenderer
 from ..toolbox_metal.import_export import load_metal_design, save_metal
 from ..toolbox_metal.parsing import parse_options, parse_value
 from ..elements import ElementTables
@@ -86,9 +88,6 @@ class DesignBase():
         self._variables = Dict()
         self._chips = Dict()
 
-        self._defaults = DEFAULT  # Depricated, to be removed
-        self._default_options = DEFAULT_OPTIONS
-
         self._metadata = self._init_metadata()
         if metadata:
             self.update_metadata(metadata)
@@ -98,6 +97,11 @@ class DesignBase():
         self.logger = logger  # type: logging.Logger
 
         self._elements = ElementTables(self)
+
+        self._template_options = DefaultOptionsGeneric()  # use for components
+
+        # Can't really use this until DefaultOptionsRenderer.default_draw_substrate.color_plane is resolved.
+        self._template_renderer_options = DefaultOptionsRenderer()  # use for renderer
 
     def _init_metadata(self) -> Dict:
         """Initialize default metadata dicitoanry
@@ -144,23 +148,20 @@ class DesignBase():
         '''
         return self._variables
 
-    @property
-    def defaults(self) -> Dict:
-        '''
-        Return DEFAULT dictionary, which contains some key Metal DEFAULT params used
-        in various Metal functions. These include default units, etc.
-
-        Think of these as global defaults.
-        '''
-        return self._defaults
 
     @property
-    def default_options(self) -> Dict:
+    def template_options(self) -> Dict:
         '''
-        Return handle to the dicitonary of default options used in creating Metal
+        Return default_options dictionary, which contain default options used in creating Metal
         component, and in calling other drawing and key functions.
         '''
-        return self._default_options
+        return self._template_options.default_options
+
+    @property
+    def template_renderer_options(self) -> Dict:
+        '''Return default_renderer_options dictionary, which contain default options used in creating Metal renderer.
+        '''
+        return self._template_renderer_options.default_options
 
     @property
     def metadata(self) -> Dict:
@@ -471,12 +472,29 @@ class DesignBase():
             parent = parent.name
         elif parent is None:
             parent = 'none'
+        name = parent+'_'+name
 
         # assert isinstance(parent, str) # could enfornce
         self.connectors[name] = make_connector(
             points, parent, flip=flip, chip=chip)
 
         # TODO: Add net?
+
+    def get_connector(self, name: str):
+        """Interface for components to get connector data
+
+        Args:
+            name (str): Name of the desired connector.
+
+        Returns:
+            (dict): Returns the data of the connector, see design_base.make_connector() for
+                what those values are.
+        """
+
+        # For after switching to pandas, something like this?
+        # return self.connectors.get(name).to_dict()
+
+        return self.connectors[name]
 
     def update_component(self, component_name: str, dependencies=True):
         """Update the component and any dependencies it may have.
@@ -563,7 +581,8 @@ def make_connector(points: list, parent_name, flip=False, chip='main'):
     assert len(points) == 2
 
     # Get the direction vector, the unit direction vec, and the normal vector
-    vec_dist, vec_dist_unit, vec_normal = draw.Vector.two_points_described(points)
+    vec_dist, vec_dist_unit, vec_normal = draw.Vector.two_points_described(
+        points)
 
     if flip:
         vec_normal = -vec_normal

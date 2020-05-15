@@ -177,12 +177,11 @@ class ParsedDynamicAttributes_Component():
 # TESTING code:
 """
 from qiskit_metal.components.base.base import BaseComponent
-from qiskit_metal import DEFAULT_OPTIONS
 
 class Test(BaseComponent):
     def make(self):
         pass
-DEFAULT_OPTIONS['Test'] = {
+DEFAULT_OPTIONS['Test'] = {     #instead of using DEFAULT_OPTIONS, use the dicts within DesignBase class.
     'a' : '1mm',
     'b' : '1um',
     'c' : {

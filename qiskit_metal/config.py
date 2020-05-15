@@ -22,7 +22,7 @@ File contains some config definitions. Mostly internal.
 """
 
 from .toolbox_python.attr_dict import Dict
-from ._defaults import DEFAULT_OPTIONS, DEFAULT  # pylint: disable=unused-import
+from ._defaults import DefaultOptionsGeneric, DefaultOptionsRenderer
 
 ####################################################################################
 # RENDERER CONFIG
@@ -87,12 +87,12 @@ GUI_CONFIG = Dict(
                 'ERROR,.CRITICAL {font-weight: bold;}\n",
         num_lines=500,
         level='DEBUG',
-        stream_to_std=False, # stream to jupyter notebook
+        stream_to_std=False,  # stream to jupyter notebook
     ),
 
-    main_window = Dict(
-        title = 'Qiskit Metal — The Quantum Builder',
-        auto_size = False, # Autosize on creation of window
+    main_window=Dict(
+        title='Qiskit Metal — The Quantum Builder',
+        auto_size=False,  # Autosize on creation of window
     )
 
 )
@@ -101,7 +101,6 @@ log = Dict(
     format='%(asctime)s %(levelname)s [%(funcName)s]: %(message)s',
     datefmt='%I:%M%p %Ss'
 )
-
 
 
 def is_using_ipython():
@@ -115,6 +114,7 @@ def is_using_ipython():
         return True
     except NameError:
         return False
+
 
 _ipython = is_using_ipython()
 
