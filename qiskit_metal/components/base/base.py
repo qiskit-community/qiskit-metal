@@ -63,13 +63,10 @@ class BaseComponent():
         * The class provides the interfaces for the component (creator user)
     """
 
-    ''' This is replaced by BaseComponent.gather_all_children_options and removing global variables.
-    @priti: TODO: cleanup
-
-    # Default options can inherit the options of other functions of objects
-    # in DEFAULT_OPTIONS. Give the name of the key-value pair, where the key is
-    # how you want to call the copied version of DEFAULT_OPTIONS[key]
-    _inherit_options_from = {}
+    ''' BaseComponent.gather_all_children_options collects the options
+        starting with the basecomponent, and stepping through the children.
+        Each child adds it's options to the base options.  If the
+        key is the same, the option of the youngest child is used.
     '''
 
     # Dummy private attribute used to check if an instanciated object is
@@ -94,9 +91,6 @@ class BaseComponent():
                                            that will be stored in the design, in design.template, and used
                                            every time a new component is instantiated.
         """
-        # @priti: I wonder if we should allow component_template use here?
-        # This has no effect after the very first use of it.
-        # seems like it can trip up the user.
 
         assert is_design(design), "Error you did not pass in a valid \
         Metal Design object as a parent of this component."
@@ -107,7 +101,6 @@ class BaseComponent():
         self._name = name
         self._design = design  # pointer to parent
 
-        # @priti:  Give it a better name? which dict does it refer to? There are many dicts. Suggestion below
         self._class_name = self._get_unique_class_name()
 
         self.options = self.get_template_options(design=design, component_template=component_template)
@@ -146,9 +139,7 @@ class BaseComponent():
         Note: if keys are the same for child and grandchild, grandchild will overwrite child
         Init method.
         '''
-        #@priti: this is a method only used in init - never by user - make private?
-        #@priti: this method only acts on the class - -why not make it a class method. In fact we have to
-        #        because we will want to call it in get_template_options
+
         options_from_children = {}
         parents = inspect.getmro(cls)
 
@@ -182,7 +173,6 @@ class BaseComponent():
         if template_key not in design.template_options:
             if not component_template:
                 component_template = cls._gather_all_children_options()
-            # @priti: style, code resuse
             design.template_options[template_key] = deepcopy(component_template)
 
     @property
@@ -206,8 +196,6 @@ class BaseComponent():
         '''Return the full name of the class: the full module name with the class name.
         e.g., qiskit_metal.components.qubits.QubitClass
         '''
-        # @priti -- Unclear name `unique_dict_key` what dict? for what purpose?
-        # Change to something more meaningful?
         return self._class_name
 
     @property
