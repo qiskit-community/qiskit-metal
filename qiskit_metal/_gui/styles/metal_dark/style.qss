@@ -150,7 +150,7 @@ QStatusBar::item {
 
 QStatusBar QToolTip {
   background-color: #148CD2;
-  border: 0px solid #19232D;
+  border: 0;
   color: #19232D;
   /* Remove padding, for fix combo box tooltip */
   padding: 0px;
@@ -727,8 +727,6 @@ QSizeGrip {
 --------------------------------------------------------------------------- */
 QStackedWidget {
   padding: 0px;
-  /* border: 1px solid #32414B; */
-  /* border: 1px solid #19232D; */
 }
 
 /* QToolBar ---------------------------------------------------------------
@@ -741,16 +739,15 @@ QToolBar {
   border-bottom: 1px solid #19232D;
   border-right: 1px solid #19232D;
   padding: 0px;
-  margin-bottom: 0px;
-  padding-bottom: 1px;
+  font-weight: bold;
   spacing: 0px;
+  font-weight: bold;
 }
 
 QToolBar QToolButton {
   background-color: #32414B;
-  border: 2px;
+  border: 0px;
   margin-bottom: 1px;
-  font-weight: bold;
 }
 
 QToolBar QToolButton:hover {
@@ -1019,7 +1016,7 @@ QPushButton {
   border: 1px solid #32414B;
   color: #F0F0F0;
   border-radius: 4px;
-  padding: 2px;
+  padding: 3px;
   outline: none;
   /* Issue #194 - Special case of QPushButton inside dialogs, for better UI */
   min-width: 80px;
@@ -1099,7 +1096,7 @@ QToolButton {
   border: 1px solid transparent;
   border-radius: 4px;
   margin: 0px;
-  padding: 2px;
+  padding: 1px;
   /* The subcontrols below are used only in the DelayedPopup mode */
   /* The subcontrols below are used only in the MenuButtonPopup mode */
   /* The subcontrol below is used only in the InstantPopup or DelayedPopup mode */
@@ -1562,8 +1559,8 @@ QTabBar::tab:top:!selected {
 }
 
 QTabBar::tab:bottom:!selected {
-  border-top: 0px solid #19232D;
-  margin-bottom: 1px;
+  border-top: 1px solid #19232D;
+  margin-bottom: 2px;
 }
 
 QTabBar::tab:left:!selected {
@@ -1585,7 +1582,7 @@ QTabBar::tab:top {
   padding-top: 2px;
   padding-bottom: 1px;
   min-width: 5px;
-  border-bottom: 2px solid #32414B;
+  border-bottom: 3px solid #32414B;
   border-top-left-radius: 3px;
   border-top-right-radius: 10px;
 }
@@ -1596,13 +1593,13 @@ QTabBar::tab:top:selected {
   border-bottom: 3px solid #1464A0;
   border-top-left-radius: 3px;
   border-top-right-radius: 10px;
-  background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #22303F, stop: 0.4 #22303F, stop:1 rgb(129, 37, 52));
+  background: qlineargradient(x1: 0.0, y1: 0.0, x2: 1.0, y2: 1.0, stop: 0.0 rgba(34, 48, 63, 100%), stop: 0.4 rgba(34, 48, 63, 100%), stop: 1.0 rgba(129, 37, 52, 100%));
 }
 
 QTabBar::tab:top:!selected:hover {
   border: 1px solid #148CD2;
   border-bottom: 3px solid #148CD2;
-  background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #22303F, stop: 0.4 #22303F, stop:1 rgb(129, 37, 52));
+  background: qlineargradient(x1: 0.0, y1: 0.0, x2: 1.0, y2: 1.0, stop: 0.0 rgba(34, 48, 63, 100%), stop: 0.4 rgba(34, 48, 63, 100%), stop: 1.0 rgba(129, 37, 52, 100%));
   /* Fixes spyder-ide/spyder#9766 */
   padding-left: 4px;
   padding-right: 4px;
@@ -1610,7 +1607,7 @@ QTabBar::tab:top:!selected:hover {
 
 QTabBar::tab:bottom {
   color: #F0F0F0;
-  border-top: 1px solid #32414B;
+  border-top: 3px solid #32414B;
   background-color: #32414B;
   margin-left: 2px;
   padding-left: 4px;
@@ -1733,15 +1730,12 @@ QDockWidget {
 
 QDockWidget::title {
   /* Better size for title bar */
-  padding: 0px;
-  padding-top: 2px;
+  padding: 2px;
+  padding-top: 4px;
   padding-left: 6px;
-  padding-bottom: 0px;
-  margin-bottom: 0px;
-  spacing: 0px;
+  spacing: 4px;
   border: none;
   background-color: #32414B;
-  font-weight: bold;
 }
 
 QDockWidget::close-button {

@@ -97,7 +97,7 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qstatusbar
 
 --------------------------------------------------------------------------- */
 QStatusBar {
-    border: $BORDER_NORMAL;
+    border: $BORDER_DARK;
 
     /* Fixes Spyder #9120, #9121 */
     background: $COLOR_BACKGROUND_NORMAL;
@@ -109,7 +109,7 @@ QStatusBar {
 
     QToolTip {
         background-color: $COLOR_SELECTION_LIGHT;
-        border: $BORDER_DARK;
+        border: 0;//$BORDER_DARK;
         color: $COLOR_BACKGROUND_DARK;
 
         /* Remove padding, for fix combo box tooltip */
@@ -728,9 +728,9 @@ QSizeGrip {
 
 --------------------------------------------------------------------------- */
 QStackedWidget {
-    padding: 2px;
-    border: $BORDER_NORMAL;
-    border: $BORDER_DARK;
+    padding: 0px;
+    // border: $BORDER_NORMAL;
+    // border: $BORDER_DARK;
 }
 
 /* QToolBar ---------------------------------------------------------------
@@ -741,13 +741,16 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qtoolbar
 QToolBar {
     background-color: $COLOR_BACKGROUND_NORMAL;
     border-bottom: $BORDER_DARK;
-    padding: 1px; //Zlatko
+    border-right: $BORDER_DARK;
+    padding: 0px; //Zlatko
     font-weight: bold;
     spacing: 0px; //Zlatko
+    font-weight: bold;
 
     QToolButton {
         background-color: $COLOR_BACKGROUND_NORMAL;
         border: 0px; //Zlatko
+        margin-bottom: 1px; // Zlatko -- needed to have padding 0 above
 
         &:hover {
             border: $BORDER_SELECTION_LIGHT;
@@ -905,7 +908,7 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qframe
 QLabel {
     background-color: $COLOR_BACKGROUND_DARK;
     border: 0px solid $COLOR_BACKGROUND_NORMAL;
-    padding: 2px;
+    padding: 1px;
     margin: 0px;
     color: $COLOR_FOREGROUND_LIGHT;
 
@@ -1121,7 +1124,7 @@ QToolButton {
     border: 1px solid transparent;
     border-radius: $SIZE_BORDER_RADIUS;
     margin: 0px;
-    padding: 2px;
+    padding: 1px;
 
     &:checked {
         background-color: transparent;
@@ -1606,23 +1609,23 @@ QTabBar {
 
         /* selected ------------------------------------------------------- */
         &:top:!selected {
-            border-bottom: 2px solid $COLOR_BACKGROUND_DARK;
-            margin-top: 2px;
+            border-bottom: 1px solid $COLOR_BACKGROUND_DARK;
+            margin-top: 1px;
         }
 
         &:bottom:!selected {
-            border-top: 2px solid $COLOR_BACKGROUND_DARK;
-            margin-bottom: 3px;
+            border-top: 1px solid $COLOR_BACKGROUND_DARK;
+            margin-bottom: 2px;
         }
 
         &:left:!selected {
-            border-left: 2px solid $COLOR_BACKGROUND_DARK;
-            margin-right: 2px;
+            border-left: 1px solid $COLOR_BACKGROUND_DARK;
+            margin-right: 1px;
         }
 
         &:right:!selected {
-            border-right: 2px solid $COLOR_BACKGROUND_DARK;
-            margin-left: 2px;
+            border-right: 1px solid $COLOR_BACKGROUND_DARK;
+            margin-left: 1px;
         }
 
         &:top {
@@ -1632,24 +1635,25 @@ QTabBar {
             padding-left: 4px;
             padding-right: 4px;
             padding-top: 2px;
-            padding-bottom: 2px;
+            padding-bottom: 1px;
             min-width: 5px;
             border-bottom: 3px solid $COLOR_BACKGROUND_NORMAL;
             border-top-left-radius: 3px;
-            border-top-right-radius: 3px;
+            border-top-right-radius: 10px;
 
             &:selected {
                 background-color: $COLOR_BACKGROUND_LIGHT;
                 color: $COLOR_FOREGROUND_LIGHT;
                 border-bottom: 3px solid $COLOR_SELECTION_NORMAL;
                 border-top-left-radius: 3px;
-                border-top-right-radius: 3px;
+                border-top-right-radius: 10px;
+                background: $COLOR_BACKGROUND_TOOLBUTTON;
             }
 
             &:!selected:hover {
                 border: $BORDER_SELECTION_LIGHT;
                 border-bottom: 3px solid $COLOR_SELECTION_LIGHT;
-
+                background: $COLOR_BACKGROUND_TOOLBUTTON;
                 /* Fixes spyder-ide/spyder#9766 */
                 padding-left: 4px;
                 padding-right: 4px;
@@ -1664,7 +1668,7 @@ QTabBar {
             padding-left: 4px;
             padding-right: 4px;
             padding-top: 2px;
-            padding-bottom: 2px;
+            padding-bottom: 1px;
             border-bottom-left-radius: 3px;
             border-bottom-right-radius: 3px;
             min-width: 5px;
