@@ -18,4 +18,4 @@
 """
 from ...toolbox_python.attr_dict import Dict
 from .. import is_component
-from .base import BaseComponent
+from .base import QComponent

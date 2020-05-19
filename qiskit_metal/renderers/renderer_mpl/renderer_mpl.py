@@ -20,11 +20,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 from shapely.geometry import LineString
 
-from ..renderer_base.renderer_gui_base import RendererGuiBase
+from ..renderer_base.renderer_gui_base import QRendererGui
 from ...config import DEFAULT, Dict
 from .toolbox_mpl import render
 
-__all__ = ['RendererMPL']
+__all__ = ['QRendererMPL']
 
 DEFAULT['renderer_mpl'] = Dict(
     annot_conectors=Dict(
@@ -38,7 +38,7 @@ DEFAULT['renderer_mpl'] = Dict(
 )
 
 
-class RendererMPL(RendererGuiBase):
+class QRendererMPL(QRendererGui):
     """
     Renderer for matplotlib in a GUI environment.
 

@@ -21,5 +21,5 @@ Module containing all Qiskit Metal designs.
 
 from .. import Dict
 from .. import is_design
-from .design_base import DesignBase
+from .design_base import QDesign
 from .design_planar import DesignPlanar

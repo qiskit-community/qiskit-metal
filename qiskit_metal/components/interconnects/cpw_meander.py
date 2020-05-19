@@ -8,7 +8,7 @@ from typing import List, Tuple, Union
 import numpy as np
 from numpy.linalg import norm
 
-from ... import BaseComponent, Dict, draw
+from ... import QComponent, Dict, draw
 from ...toolbox_metal.parsing import is_true
 #from qiskit_metal.toolbox_metal.parsing import is_true
 
@@ -53,7 +53,7 @@ class Connector:
 #from typing import Dict as Dict_
 #Dict_[str, 'np.ndarray[np.float]']
 
-class CpwMeanderSimple(BaseComponent):
+class CpwMeanderSimple(QComponent):
     """A meandered basic CPW.
 
     **Behavior and parameters**

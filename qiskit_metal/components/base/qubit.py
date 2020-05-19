@@ -21,9 +21,9 @@ converted to v0.2: Thomas McConkey 2020-03-24
 
 from copy import deepcopy
 from ...toolbox_python.attr_dict import Dict
-from .base import BaseComponent
+from .base import QComponent
 
-class BaseQubit(BaseComponent):
+class BaseQubit(QComponent):
     '''
     Qubit base class. Use to subscript, not to generate directly.
 

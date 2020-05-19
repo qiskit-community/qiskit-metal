@@ -17,5 +17,5 @@
 @date: 2019
 """
 
-#from .renderer_mpl import  RendererMPL
+#from .renderer_mpl import  QRendererMPL
 #from . import toolbox

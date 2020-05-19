@@ -18,4 +18,4 @@ This modules defines and handles everything related to the elements abstraction.
 @auhtor: Zlatko Minev
 @date: 2019
 """
-from .elements_handler import is_element_table, ElementTables#, ElementTypes
+from .elements_handler import is_element_table, QElementTables#, ElementTypes

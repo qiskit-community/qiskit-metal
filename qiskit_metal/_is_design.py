@@ -22,7 +22,7 @@ from . import Dict
 
 def is_design(obj):
     """Check if an object is a Metal Design, i.e., an instance of
-     `DesignBase`.
+     `QDesign`.
 
     The problem is that the `isinstance` built-in method fails
     when this module is reloaded.
@@ -40,7 +40,7 @@ def is_design(obj):
 
 
 def is_component(obj):
-    """Check if an object is an instance of `BaseComponent`.
+    """Check if an object is an instance of `QComponent`.
 
     The problem is that the `isinstance` built-in method fails
     when this module is reloaded.

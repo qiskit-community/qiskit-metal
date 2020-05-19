@@ -17,21 +17,21 @@
 @date: 2019
 """
 
-from ...designs import DesignBase, is_design
-from ...elements import ElementTables
+from ...designs import QDesign, is_design
+from ...elements import QElementTables
 
-from . import RendererBase
+from . import QRenderer
 
-__all__ = ['RendererGuiBase']
+__all__ = ['QRendererGui']
 
-class RendererGuiBase(RendererBase):
-    """Abstract base class for the GUI rendering. Extends RendererBase.
+class QRendererGui(QRenderer):
+    """Abstract base class for the GUI rendering. Extends QRenderer.
     An interface class.
     """
 
     name = 'guibase'  # overwrite this!
 
-    def __init__(self, gui, design: DesignBase, initiate=True, fig=None, ax=None):
+    def __init__(self, gui, design: QDesign, initiate=True, fig=None, ax=None):
         super().__init__(design=design, initiate=initiate)
 
         self.gui=gui

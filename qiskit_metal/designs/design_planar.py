@@ -20,14 +20,14 @@ Basic Qiskit Metal Planar (2D) design for CPW type geometry.
 @author: Zlatko Minev, Thomas McConeky, ... (IBM)
 """
 
-from .design_base import DesignBase
+from .design_base import QDesign
 
 __all__ = ['DesignPlanar']
 
-class DesignPlanar(DesignBase):
+class DesignPlanar(QDesign):
     """Metal class for a planar (2D) design, consisting of a single plane chip.
     Typically assumed to have some CPW geometires.
 
-    Inherits DesignBase class.
+    Inherits QDesign class.
     """
     pass
