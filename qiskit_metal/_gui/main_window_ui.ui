@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1073</width>
-    <height>776</height>
+    <width>1300</width>
+    <height>900</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -28,9 +28,6 @@
   </property>
   <property name="toolButtonStyle">
    <enum>Qt::ToolButtonTextUnderIcon</enum>
-  </property>
-  <property name="documentMode">
-   <bool>false</bool>
   </property>
   <property name="dockNestingEnabled">
    <bool>true</bool>
@@ -58,7 +55,13 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
+      </property>
+      <property name="usesScrollButtons">
+       <bool>false</bool>
+      </property>
+      <property name="movable">
+       <bool>false</bool>
       </property>
       <property name="tabBarAutoHide">
        <bool>true</bool>
@@ -131,7 +134,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1073</width>
+     <width>1300</width>
      <height>22</height>
     </rect>
    </property>
@@ -155,7 +158,7 @@
      <bool>false</bool>
     </property>
     <property name="title">
-     <string>Design</string>
+     <string>Metal Design</string>
     </property>
     <property name="separatorsCollapsible">
      <bool>true</bool>
@@ -163,20 +166,28 @@
     <property name="toolTipsVisible">
      <bool>true</bool>
     </property>
-    <addaction name="actionLoad"/>
     <addaction name="separator"/>
+    <addaction name="actionLabelDesign"/>
+    <addaction name="actionLoad"/>
     <addaction name="actionSave"/>
     <addaction name="actionSaveAs"/>
     <addaction name="separator"/>
     <addaction name="actionDelete_All"/>
+    <addaction name="separator"/>
+    <addaction name="actionClose_window"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
-     <string>Window</string>
+     <string>Window View</string>
     </property>
     <widget class="QMenu" name="menuStylesheet">
      <property name="title">
-      <string>Theme</string>
+      <string>Color theme</string>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normalon>:/metal_logo</normalon>
+      </iconset>
      </property>
      <addaction name="actionMetal_Dark"/>
      <addaction name="actionStyleDark"/>
@@ -184,8 +195,6 @@
      <addaction name="actionStyleDefault"/>
      <addaction name="actionStyleOpen"/>
     </widget>
-    <addaction name="actionScreenshot"/>
-    <addaction name="separator"/>
     <addaction name="actionDesign"/>
     <addaction name="actionComponent"/>
     <addaction name="actionElements"/>
@@ -193,6 +202,10 @@
     <addaction name="actionLog"/>
     <addaction name="actionNewComponent"/>
     <addaction name="separator"/>
+    <addaction name="actionScreenshot"/>
+    <addaction name="separator"/>
+    <addaction name="actionMetal_Window"/>
+    <addaction name="actionSave_window_state"/>
     <addaction name="menuStylesheet"/>
    </widget>
    <widget class="QMenu" name="menuAnalysis">
@@ -272,11 +285,12 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionSave"/>
    <addaction name="actionLoad"/>
+   <addaction name="actionSave"/>
+   <addaction name="actionDelete_All"/>
+   <addaction name="separator"/>
    <addaction name="action_full_refresh"/>
    <addaction name="actionRebuild"/>
-   <addaction name="actionDelete_All"/>
   </widget>
   <widget class="QToolBar" name="toolBarView">
    <property name="windowTitle">
@@ -292,7 +306,7 @@
     <string>View Toolbar</string>
    </property>
    <property name="toolButtonStyle">
-    <enum>Qt::ToolButtonTextUnderIcon</enum>
+    <enum>Qt::ToolButtonIconOnly</enum>
    </property>
    <attribute name="toolBarArea">
     <enum>LeftToolBarArea</enum>
@@ -311,12 +325,6 @@
    <addaction name="actionFull_Screen"/>
   </widget>
   <widget class="QDockWidget" name="dockDesign">
-   <property name="minimumSize">
-    <size>
-     <width>310</width>
-     <height>196</height>
-    </size>
-   </property>
    <property name="windowIcon">
     <iconset>
      <normalon>:/design</normalon>
@@ -344,7 +352,7 @@
     <set>QDockWidget::AllDockWidgetFeatures</set>
    </property>
    <property name="windowTitle">
-    <string>Components in design</string>
+    <string>Design</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
@@ -479,6 +487,12 @@
    </widget>
   </widget>
   <widget class="QDockWidget" name="dockNewComponent">
+   <property name="minimumSize">
+    <size>
+     <width>71</width>
+     <height>116</height>
+    </size>
+   </property>
    <property name="windowIcon">
     <iconset>
      <normalon>:/component</normalon>
@@ -497,7 +511,7 @@
     <set>QDockWidget::AllDockWidgetFeatures</set>
    </property>
    <property name="windowTitle">
-    <string>Library design components</string>
+    <string>Library</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
@@ -561,6 +575,12 @@
    </widget>
   </widget>
   <widget class="QDockWidget" name="dockComponent">
+   <property name="minimumSize">
+    <size>
+     <width>62</width>
+     <height>38</height>
+    </size>
+   </property>
    <property name="features">
     <set>QDockWidget::AllDockWidgetFeatures</set>
    </property>
@@ -591,16 +611,16 @@
    </widget>
   </widget>
   <widget class="QDockWidget" name="dockLog">
-   <property name="sizePolicy">
-    <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-     <horstretch>0</horstretch>
-     <verstretch>0</verstretch>
-    </sizepolicy>
-   </property>
    <property name="minimumSize">
     <size>
-     <width>100</width>
+     <width>71</width>
      <height>93</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>524287</width>
+     <height>214</height>
     </size>
    </property>
    <property name="windowIcon">
@@ -666,13 +686,19 @@
    </widget>
   </widget>
   <widget class="QDockWidget" name="dockConnectors">
+   <property name="minimumSize">
+    <size>
+     <width>71</width>
+     <height>116</height>
+    </size>
+   </property>
    <property name="windowIcon">
     <iconset>
      <normalon>:/connectors</normalon>
     </iconset>
    </property>
    <property name="windowTitle">
-    <string>Connectors</string>
+    <string>Ports</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
@@ -1051,6 +1077,36 @@
     <string>Ctrl+Shift+S</string>
    </property>
   </action>
+  <action name="actionSave_window_state">
+   <property name="icon">
+    <iconset resource="main_window_rc.qrc">
+     <normaloff>:/save</normaloff>:/save</iconset>
+   </property>
+   <property name="text">
+    <string>Save window state</string>
+   </property>
+  </action>
+  <action name="actionLabelDesign">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Design</string>
+   </property>
+  </action>
+  <action name="actionClose_window">
+   <property name="text">
+    <string>Close window</string>
+   </property>
+  </action>
+  <action name="actionMetal_Window">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Metal Window </string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -1303,8 +1359,8 @@
      <y>-1</y>
     </hint>
     <hint type="destinationlabel">
-     <x>885</x>
-     <y>320</y>
+     <x>383</x>
+     <y>433</y>
     </hint>
    </hints>
   </connection>
@@ -1347,8 +1403,8 @@
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>885</x>
-     <y>320</y>
+     <x>383</x>
+     <y>433</y>
     </hint>
     <hint type="destinationlabel">
      <x>-1</x>
@@ -1479,8 +1535,8 @@
      <y>-1</y>
     </hint>
     <hint type="destinationlabel">
-     <x>885</x>
-     <y>320</y>
+     <x>383</x>
+     <y>433</y>
     </hint>
    </hints>
   </connection>
@@ -1532,6 +1588,38 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionClose_window</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>536</x>
+     <y>387</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionSave_window_state</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>save_window_settings()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>536</x>
+     <y>387</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>showHelp()</slot>
@@ -1547,5 +1635,6 @@
   <slot>rebuild()</slot>
   <slot>load_stylesheet_metal_dark()</slot>
   <slot>save_design_as()</slot>
+  <slot>save_window_settings()</slot>
  </slots>
 </ui>

@@ -21,7 +21,7 @@ Qiskit Metal main public functionality.
 Created on Tue May 14 17:13:40 2019
 @author: Zlatko K. Minev
 """
-__version__ = '0.2.01'
+__version__ = '0.2.02'
 __license__ = "Apache 2.0"
 __copyright__= 'Copyright IBM 2019-2020'
 __author__ = 'Zlatko Minev, Thomas McConkey, and them IBM Quantum Team'

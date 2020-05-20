@@ -20,12 +20,19 @@ See the docstring of QComponent
 @author: Zlatko Minev, Thomas McConekey, ... (IBM)
 @date: 2019
 """
+import pandas as pd
+import logging, pprint
 import logging
 import pprint
 import inspect
 import os
 from copy import deepcopy
-from typing import TYPE_CHECKING, Any, Iterable, List, Optional, TypeVar, Union
+from typing import TYPE_CHECKING, Any, Iterable, List, Optional, TypeVar, Union, Dict as Dict_
+from ... import draw
+from ... import is_design, logger
+from ...draw import BaseGeometry
+from ...toolbox_python.attr_dict import Dict
+from ._parsed_dynamic_attrs import ParsedDynamicAttributes_Component
 
 from ... import is_design, logger
 from ...draw import BaseGeometry
@@ -39,6 +46,8 @@ if TYPE_CHECKING:
     # For example, I can't import QDesign, because it requires QComponent first. We have the
     # chicken and egg issue.
     from ...designs import QDesign
+    # from ...elements import ElementTypes
+    import matplotlib
 
 
 class QComponent():
@@ -114,9 +123,6 @@ class QComponent():
         # Names of connectors associated with this components.
         # Used to rename, etc.
         self._connector_names = set()
-
-        # Geometry inner class to handle all geometric functions
-        self.geom = _Geometry_Handler(self)
 
         # has the component already been made
         self._made = False
@@ -441,131 +447,89 @@ class QComponent():
  options: \n{pprint.pformat(self.options)}"""
 
 
-############################################################################
-# Geometry handling
+    ############################################################################
+    # Geometry handling of created elements
 
-
-class _Geometry_Handler:
-    r"""Handles all puerly  geoemtric manipulations and methods for the
-    component. Just a collections of methods.
-    """
-
-    def __init__(self, component: QComponent):
-        self.parent = component
-        self.design = component.design
-
-    def get_all(self, element_type: str, full_table=False):
+    @property
+    def elements_types(self) -> List[str]:
+        """Get a list of the names of the element tables.
+        Returns:
+            List[str] -- Name of element table or type; e.g., 'poly' and 'path'
         """
-        Get all shapely geometry as a dict with key being the names of the
-        elements and the values as the shapely geometry.
-        """
-        # return {elem.full_name : elem.geom for name, elem in self.parent.elements}
-        if full_table:
-            return self.design.elements.get_component(self.parent.name, element_type)
-        else:
-            return list(self.design.elements.get_component_geometry(self.parent.name, element_type))
+        return self.design.elements.get_element_types()
 
-    def get_bounds(self):
+    def elements_dict(self, element_type: str) -> Dict_[str, BaseGeometry]:
+        """
+        Returns a dict of element geoemetry (shapely geometry) of the component
+        as a python dict, where the dict keys are the names of the elements
+        and the corresponding values are the shapely geometries.
+
+        Arguments:
+            element_type {str} -- Name of element table or type; e.g., 'poly' and 'path'
+
+        Returns:
+            List[BaseGeometry] or None -- Returns None if an error in the name of the element type (ie. table)
+        """
+        if self.design.elements.check_element_type(element_type):
+            return self.design.elements.get_component_geometry_dict(self.name, element_type)
+
+    def elements_list(self, element_type: str = 'all') -> List[BaseGeometry]:
+        """
+        Returns a list of element geoemetry (shapely geometry) of the component
+        as a python list of shapely geometries.
+
+        Arguments:
+            element_type {str} -- Name of element table or type; e.g., 'poly' and 'path'.
+                                 Can also specify all
+
+        Returns:
+            List[BaseGeometry] or None -- Returns None if an error in the name of the element type (ie. table)
+        """
+        if element_type == 'all' or self.design.elements.check_element_type(element_type):
+            return self.design.elements.get_component_geometry_list(self.name, element_type)
+
+    def elements_table(self,  element_type: str) -> pd.DataFrame:
+        """
+        Returns the entire element table for the component.
+
+        Arguments:
+            element_type {str} -- Name of element table or type; e.g., 'poly' and 'path'
+
+        Returns:
+            pd.DataFrame or None -- Element table for the component. Returns None if an error in the name of the element type (ie. table)
+        """
+        if self.design.elements.check_element_type(element_type):
+            return self.design.elements.get_component(self.name, element_type)
+
+    def elements_bounds(self):
         """
         Return the bounds of the geometry.
         Calls get_all and finds the bounds of this collection.
         Uses the shapely methods.
         """
         # for all element_type
-        element_type = 'poly'
-        shapes = self.get_all(element_type)
+        # element_type = 'poly'
+        # shapes = self.get_geometry(element_type)
         raise NotImplementedError()
 
-    # translate, rotate, etc. if possible
+    def elements_plot(self, ax:'matplotlib.axes.Axes'=None, plot_kw:dict=None) -> List:
+        """    Draw all the elements of the component (polys and path etc.)
 
-
-# For developers, example Outter-Inner class constructions:
-
-# .. code-block: python
-
-#     class Outer:
-#     def __init__(self, x):
-#         self.x=5
-#         self.inner = self.Inner(self)
-
-#     class Inner:
-
-#         def __init__(self, parent):
-#             self.parent=parent
-
-#         def printme(self):
-#             print(self.parent.x)
-
-#     c = Outer(5)
-#     c.inner.printme()
-# NOT IN USE, some code prototype
-'''
-from logging import Logger
-class NameInterface():
-
-    def __init__(self, name:str, logger:Logger):
-        """Interface class for named objects.
-        Objects can only be renamed by the method rename.
-        The user can only acces the name readonly property.
-
-        Arguments:
-            name {str} -- Name to create the object with
-            logger {Logger} -- Logger for logging errors
-        """
-
-        self.logger = logger
-
-        if not self._validate_name(name):
-            # failed validation
-            self._validate_name_failed(name)
-
-        self._name = name
-
-    @property
-    def name(self):
-        return self._name
-
-    @staticmethod
-    def _validate_name(name:str): #include check that isn't already in use?
-        """Test if the name is a valid name
-        Typically: isidentifier
-
-        Arguments:
-            name {str} -- Name of object
+        Keyword Arguments:
+            ax {[type]} --  Matplotlib axis to draw on (default: {None} -- gets the current axis)
+            plot_kw {dict} -- [description] (default: {None})
 
         Returns:
-            bool
+            List -- The list of elements draw
+
+        Example use:
+            Suppose you had a component called q1:
+
+                fig, ax = draw.mpl.figure_spawn()
+                q1.elements_plot(ax)
         """
-        return name.isidentifier()
+        elements = self.elements_list()
+        plot_kw={}
+        draw.mpl.render(elements, ax=ax, kw=plot_kw)
+        return elements
 
-    def _validate_name_failed(self, name:str):
-        """Handle the case when the name is not valid
-
-        Arguments:
-            name {str} -- name that failed
-
-        Raises:
-            NameError: [description]
-        """
-        err= 'The name {name} is not a valid name.'
-        self.logger.error(err)
-        raise NameError(err)
-
-    def rename(self, new_name:str):
-        """Rename the object. Changes the value of self.name,
-        and performs any required actions to do so.
-
-        Arguments:
-            new_name {str} -- str
-
-        Raises:
-            NameError: [description]
-        """
-
-        if not self._validate_name(new_name):
-            # failed validation
-            self._validate_name_failed(new_name)
-
-        self._name = new_name
-#class ComponentGUIinterface
-'''

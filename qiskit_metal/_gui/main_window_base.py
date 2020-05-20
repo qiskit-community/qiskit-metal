@@ -29,12 +29,14 @@ from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QFileDialog, QMainWindow, QMessageBox
 from PyQt5 import QtWidgets, QtCore, QtGui  # pyqt stuff
+from PyQt5.QtCore import QTimer
 
 from .. import Dict, config
 from ..toolbox_python._logging import setup_logger
 from ._handle_qt_messages import catch_exception_slot_pyqt
 from .main_window_ui import Ui_MainWindow
 from .widgets.log_metal import LoggingHandlerForLogWidget
+from . import __version__
 
 
 class QMainWindowExtensionBase(QMainWindow):
@@ -78,7 +80,7 @@ class QMainWindowExtensionBase(QMainWindow):
             super().closeEvent(event)
 
     def ok_to_continue(self):
-        if self.movies.isDirty():
+        if 1:
             reply = QMessageBox.question(self,
                     "Qiskit Metal",
                     "Save unsaved changes to design?",
@@ -90,7 +92,9 @@ class QMainWindowExtensionBase(QMainWindow):
         return True
 
     def save_window_settings(self):
+        self.logger.info('Saving window state')
         # get the current size and position of the window as a byte array.
+        self.settings.setValue('metal_version', __version__)
         self.settings.setValue('geometry', self.saveGeometry())
         self.settings.setValue('windowState', self.saveState())
         self.settings.setValue('stylesheet', self.handler._stylesheet)
@@ -100,6 +104,12 @@ class QMainWindowExtensionBase(QMainWindow):
         Call a Qt built-in function to restore values
         from the settings file.
         """
+
+        if __version__ < self.settings.value('metal_version', defaultValue='1000000'):
+            # Clear the settings from older versions. Will comment this out in future.
+            self.logger.debug(f"Clearing window settings [{ self.settings.value('metal_version', defaultValue='1000000')}]...")
+            self.settings.clear()
+
         try:
             self.logger.debug("Restoring window settings...")
 
@@ -386,7 +396,8 @@ class QMainWindowBaseHandler():
                     log_name, self, self.ui.log_text)
                 self.logger.addHandler(self._log_handler)
 
-                self.ui.log_text.wellcome_message()
+                QTimer.singleShot(1500,
+                        self.ui.log_text.welcome_message)
 
         else:
             self.logger.warning('UI does not have `log_text`')

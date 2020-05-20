@@ -50,8 +50,6 @@ class Connector:
         """
         return self.direction, draw.Vector.rotate(self.direction, np.pi/2)
 
-#from typing import Dict as Dict_
-#Dict_[str, 'np.ndarray[np.float]']
 
 class CpwMeanderSimple(QComponent):
     """A meandered basic CPW.

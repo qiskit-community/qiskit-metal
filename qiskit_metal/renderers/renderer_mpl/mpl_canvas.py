@@ -421,12 +421,10 @@ class PlotCanvas(FigureCanvas):
             final()
 
     def _watermark_axis(self, ax:plt.Axes):
-        self.logger.info('WATERMARK')
         """Add a watermark"""
-        kw = dict(fontsize=15, color='gray', ha='right',
-                va='bottom', alpha=0.18, zorder=-100)
-        ax.annotate('Qiskit Metal', xy=(0.98, 0.02),
-                    xycoords='axes fraction', **kw)
+        # self.logger.debug('WATERMARK')
+        kw = dict(fontsize=15, color='gray', ha='right', va='bottom', alpha=0.18, zorder=-100)
+        ax.annotate('Qiskit Metal', xy=(0.98, 0.02), xycoords='axes fraction', **kw)
 
         file = (self.gui.path_imgs / 'metal_logo.png')
         if file.is_file():
@@ -570,7 +568,7 @@ class MplRenderer():
             ax {matplotlib.axes.Axes} -- mpl axis to draw on
         """
 
-        self.logger.info('RENDER')
+        self.logger.info('Rendering element tables to plot window.')
         self.render_tables(ax)
 
     def get_mask(self, table: pd.DataFrame) -> pd.Series:
@@ -690,7 +688,6 @@ class MplRenderer():
 
             kw = self.get_style('poly', subtracted=subtracted, extra=extra_kw)
             self.render_poly(table1, ax, subtracted=subtracted, extra_kw=kw)
-            self.logger.info('here')
 
         # handle zero width
         table1 = table[mask]

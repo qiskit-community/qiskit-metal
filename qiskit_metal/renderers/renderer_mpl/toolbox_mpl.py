@@ -41,7 +41,7 @@ from .interaction_mpl import figure_pz
 
 # Todo Move - default config
 style_config = Dict(
-    poly=dict(fc='#6699cc', lw=1, ec='k', alpha=0.5)
+    poly=dict(lw=1, ec='k', alpha=0.5) # fc='#6699cc',
     # Dict(
     #exterior = dict(lw=1, edgecolors='k', alpha=0.5),
     # interior = dict(facecolors='w', lw=1, edgecolors='grey'))
@@ -114,7 +114,6 @@ def render(components,
            labels=None,
            __depth=-1,     # how many sublists in we are
            _iteration=0):  # how many components we have plotted
-    # **kwargs):  # such as kw_hole
     '''
     Main plotting function.
     Plots onto an axis.
@@ -134,6 +133,7 @@ def render(components,
 
     if labels is 'auto':
         labels = list(map(str, range(len(components))))
+
     if not labels is None:
         kw = {**dict(label=labels[_iteration]), **kw}
 
@@ -349,11 +349,17 @@ def _axis_set_watermark_img(ax:plt.Axes, file:str, size : float = 0.25):
     img = image.imread(datafile)
     #im[:, :, -1] = 0.5  # set the alpha channel
 
+    # window aspect
+    b = ax.get_window_extent()
+    b = abs(b.height/b.width)
+    # b = ax.get_tightbbox(ax.get_figure().canvas.get_renderer())
+    # b = abs(b.height/b.width)
+
     # ALternative: fig.figimage
     # scale image: yscale = float(img.shape[1])/img.shape[0]
     # extent: (left, right, bottom, top)
     kw = dict(interpolation='gaussian', alpha=0.05, resample=True, zorder = -200)
-    ax.imshow(img, extent=(1-size,1, 1-size, 1), transform=ax.transAxes, **kw)
+    ax.imshow(img, extent=(1-size*b,1, 1-size, 1), transform=ax.transAxes, **kw)
 
 #######################################################################
 """
