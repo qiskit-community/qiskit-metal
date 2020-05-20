@@ -269,25 +269,25 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
         Returns: None
         """
         # Setup expected test results
-        test_a_expected = (8.574834762837432, -204.4199285887568, 0.00017261505126953125,
-                           5869776876.184971)
-        test_b_expected = (8.753670427734068, -19.467410255551684, 0.4794178009033203,
-                           2113421.3926021964)
+        test_a_expected = (388.69198590629856, 383542.9078924127, 774759511877.3142,
+                           1.30777592387123e-06)
+        test_b_expected = (776.6068552699635, 766320.2586084654, 1548045428680.8086,
+                           6.545104023767585e-07)
         test_c_expected = (388691.64789067156, 383543414.14295447, 774809178857568.5,
                            1.3076920925450654e-09)
-        test_d_expected = (8.574834762837417, -204.41992858872464, 4.00543212890625e-05,
-                           25295943204.511417)
-        test_e_expected = (8.753670427746364, -19.467409975097922, 0.4790630340576172,
-                           2114986.472326141)
+        test_d_expected = (402.9047503275388, 340910.07369285496, 774759511877.3142,
+                           1.30777592387123e-06)
+        test_e_expected = (804.9985387148533, 681147.9428256081, 1548045428680.8086,
+                           6.545104023767585e-07)
         test_f_expected = (402900.7730357366, 340916038.71322423, 774809178857568.5,
                            1.3076920925450654e-09)
 
         # Generate actual result data
-        test_a_results = lumped_capacitive.levels_vs_ng_real_units(100, 100)
-        test_b_results = lumped_capacitive.levels_vs_ng_real_units(1000, 1000)
+        test_a_results = lumped_capacitive.levels_vs_ng_real_units(0.1, 0.1)
+        test_b_results = lumped_capacitive.levels_vs_ng_real_units(0.05005, 0.05005)
         test_c_results = lumped_capacitive.levels_vs_ng_real_units(0.0001, 0.0001)
-        test_d_results = lumped_capacitive.levels_vs_ng_real_units(100, 100, N=25)
-        test_e_results = lumped_capacitive.levels_vs_ng_real_units(1000, 1000, N=25)
+        test_d_results = lumped_capacitive.levels_vs_ng_real_units(0.1, 0.1, N=25)
+        test_e_results = lumped_capacitive.levels_vs_ng_real_units(0.05005, 0.05005, N=25)
         test_f_results = lumped_capacitive.levels_vs_ng_real_units(0.0001, 0.0001, N=25)
 
         # Test all elements of the result data against expected data
@@ -297,7 +297,7 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
         for (i, j) in [(test_a_results, test_a_expected), (test_b_results, test_b_expected),
                        (test_c_results, test_c_expected), (test_d_results, test_d_expected),
                        (test_e_results, test_e_expected), (test_f_results, test_f_expected)]:
-            self.assertIterableAlmostEqual(i, j, rel_tol=0.22)
+            self.assertIterableAlmostEqual(i, j, rel_tol=1e-6)
 
         with self.assertRaises(IndexError):
             lumped_capacitive.levels_vs_ng_real_units(100, 100, N=0)
@@ -314,20 +314,20 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
         Returns: None
         """
         # Setup expected test results
-        test_a_expected = [25639.02207938, 702.26214061]
-        test_b_expected = [2866.13506128, -190.1903427]
+        test_a_expected = [33.38125825, -0.61217795]
+        test_b_expected = [21.88640502, -0.57451259]
 
         # Generate actual result data
-        test_a_result = lumped_capacitive.get_C_and_Ic(100, 2000, 1.25, 1.75)
-        test_b_result = lumped_capacitive.get_C_and_Ic(500, 1000, 1.85, 2.65)
+        test_a_result = lumped_capacitive.get_C_and_Ic(0.1, 0.2, 1.25, 1.75)
+        test_b_result = lumped_capacitive.get_C_and_Ic(0.5, 1, 1.85, 2.65)
 
         # Test all elements of the result data against expected data
         self.assertEqual(len(test_a_result), 2)
         self.assertEqual(len(test_b_result), 2)
-        self.assertAlmostEqualRel(test_a_expected[0], test_a_result[0], rel_tol=0.002)
-        self.assertAlmostEqualRel(test_a_expected[1], test_a_result[1], rel_tol=0.01)
-        self.assertAlmostEqualRel(test_b_expected[0], test_b_result[0], rel_tol=1e-3)
-        self.assertAlmostEqualRel(test_b_expected[1], test_b_result[1], rel_tol=1e-4)
+        self.assertAlmostEqualRel(test_a_expected[0], test_a_result[0], rel_tol=1e-6)
+        self.assertAlmostEqualRel(test_a_expected[1], test_a_result[1], rel_tol=1e-6)
+        self.assertAlmostEqualRel(test_b_expected[0], test_b_result[0], rel_tol=1e-6)
+        self.assertAlmostEqualRel(test_b_expected[1], test_b_result[1], rel_tol=1e-6)
 
     def test_analyses_lumped_cos_to_mega_and_delta(self):
         """
@@ -604,37 +604,40 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
         Returns: None
         """
         # Setup expected test results
-        data = {'ground_plane':[2.882900e-13, -3.254000e-14, -3.197800e-14, -4.006300e-14,
-                                -4.384200e-14, -3.005300e-14],
-                'Q1_bus_Q2_connector_pad':[-3.197800e-14, -2.276500e-16, 4.532700e-14,
-                                           -1.218000e-15, -1.155200e-14, -5.041400e-17],
-                'Q1_pad_bot':[-4.006300e-14, -1.269000e-14, -1.218000e-15, 9.583100e-14,
-                              -3.241500e-14, -8.366500e-15],
-                'Q1_bus_Q0_connector_pad':[-3.254000e-14, 4.725700e-14, -2.276500e-16,
-                                           -1.269000e-14, -1.335100e-15, -1.451000e-16],
-                'Q1_pad_top1':[-4.384200e-14, -1.335100e-15, -1.155200e-14, -3.241500e-14,
-                               9.132000e-14, -1.019900e-15],
-                'Q1_readout_connector_pad':[-3.005300e-14, -1.451000e-16, -5.041400e-17,
-                                            -8.366500e-15, -1.019900e-15, 3.988400e-14]}
-        test_a_expected = pd.DataFrame(data, index=['ground_plane', 'Q1_bus_Q0_connector_pad',
-                                                    'Q1_bus_Q2_connector_pad', 'Q1_pad_bot',
+        data = {'ground_plane':             [2.8829E-13, -3.1978E-14, -4.0063E-14, -3.254E-14,
+                                             -4.3842E-14, -3.0053E-14],
+                'Q1_bus_Q2_connector_pad':  [-3.1978E-14, 4.5327E-14, -1.218E-15, -2.2765E-16,
+                                             -1.1552E-14, -5.0414E-17],
+                'Q1_pad_bot':               [-4.0063E-14, -1.218E-15, 9.5831E-14, -1.269E-14,
+                                             -3.2415E-14, -8.3665E-15],
+                'Q1_bus_Q0_connector_pad':  [-3.254E-14, -2.2765E-16, -1.269E-14, 4.7257E-14,
+                                             -1.3351E-15, -1.451E-16],
+                'Q1_pad_top1':              [-4.3842E-14, -1.1552E-14, -3.2415E-14, -1.3351E-15,
+                                             9.132E-14, -1.0199E-15],
+                'Q1_readout_connector_pad': [-3.0053E-14, -5.0414E-17, -8.3665E-15, -1.451E-16,
+                                             -1.0199E-15, 3.9884E-14]}
+
+        test_a_expected = pd.DataFrame(data, index=['ground_plane', 'Q1_bus_Q2_connector_pad',
+                                                    'Q1_pad_bot', 'Q1_bus_Q0_connector_pad',
                                                     'Q1_pad_top1', 'Q1_readout_connector_pad'])
 
-        data = {'Q1_pad_top1':[-4.384200e-14, -1.335100e-15, -1.155200e-14, -3.241500e-14,
-                               9.132000e-14, -1.019900e-15],
-                'ground_plane':[2.882900e-13, -3.254000e-14, -3.197800e-14, -4.006300e-14,
-                                -4.384200e-14, -3.005300e-14],
-                'Q1_bus_Q0_connector_pad':[-3.254000e-14, 4.725700e-14, -2.276500e-16,
-                                           -1.269000e-14, -1.335100e-15, -1.451000e-16],
-                'Q1_bus_Q2_connector_pad':[-3.197800e-14, -2.276500e-16, 4.532700e-14,
-                                           -1.218000e-15, -1.155200e-14, -5.041400e-17],
-                'Q1_pad_bot':[-4.006300e-14, -1.269000e-14, -1.218000e-15, 9.583100e-14,
-                              -3.241500e-14, -8.366500e-15],
-                'Q1_readout_connector_pad':[-3.005300e-14, -1.451000e-16, -5.041400e-17,
-                                            -8.366500e-15, -1.019900e-15, 3.988400e-14]}
-        test_b_expected = pd.DataFrame(data, index=['ground_plane', 'Q1_bus_Q0_connector_pad',
+        data = {'Q1_pad_top1':              [9.132E-14, -4.3842E-14, -1.3351E-15, -1.1552E-14,
+                                             -3.2415E-14, -1.0199E-15],
+                'ground_plane':             [-4.3842E-14, 2.8829E-13, -3.254E-14, -3.1978E-14,
+                                             -4.0063E-14, -3.0053E-14],
+                'Q1_bus_Q0_connector_pad':  [-1.3351E-15, -3.254E-14, 4.7257E-14, -2.2765E-16,
+                                             -1.269E-14, -1.451E-16],
+                'Q1_bus_Q2_connector_pad':  [-1.1552E-14, -3.1978E-14, -2.2765E-16, 4.5327E-14,
+                                             -1.218E-15, -5.0414E-17],
+                'Q1_pad_bot':               [-3.2415E-14, -4.0063E-14, -1.269E-14, -1.218E-15,
+                                             9.5831E-14, -8.3665E-15],
+                'Q1_readout_connector_pad': [-1.0199E-15, -3.0053E-14, -1.451E-16, -5.0414E-17,
+                                             -8.3665E-15, 3.9884E-14]}
+
+        test_b_expected = pd.DataFrame(data, index=['Q1_pad_top1', 'ground_plane',
+                                                    'Q1_bus_Q0_connector_pad',
                                                     'Q1_bus_Q2_connector_pad', 'Q1_pad_bot',
-                                                    'Q1_pad_top1', 'Q1_readout_connector_pad'])
+                                                    'Q1_readout_connector_pad'])
 
         # Generate actual result data
         df_a = lumped_capacitive.readin_q3d_matrix(TEST_DATA / 'q3d_example.txt')[0]
@@ -644,13 +647,13 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
         test_b_result = lumped_capacitive.df_reorder_matrix_basis(df_b, 4, 0)
 
         # Test all elements of the result data against expected data
-        for j in ['ground_plane', 'Q1_bus_Q0_connector_pad', 'Q1_bus_Q2_connector_pad',
-                  'Q1_pad_bot', 'Q1_pad_top1', 'Q1_readout_connector_pad']:
-            self.assertIterableAlmostEqual(test_a_expected[j], test_a_result[j], abs_tol=1e-12)
+        for j in ['ground_plane', 'Q1_bus_Q2_connector_pad', 'Q1_pad_bot',
+                  'Q1_bus_Q0_connector_pad', 'Q1_pad_top1', 'Q1_readout_connector_pad']:
+            self.assertIterableAlmostEqual(test_a_expected[j], test_a_result[j], abs_tol=1e-20)
 
         for j in ['ground_plane', 'Q1_bus_Q0_connector_pad', 'Q1_bus_Q2_connector_pad',
                   'Q1_pad_bot', 'Q1_pad_top1', 'Q1_readout_connector_pad']:
-            self.assertIterableAlmostEqual(test_b_expected[j], test_b_result[j], abs_tol=1e-12)
+            self.assertIterableAlmostEqual(test_b_expected[j], test_b_result[j], abs_tol=1e-20)
 
         with self.assertRaises(IndexError):
             test_a_result = lumped_capacitive.df_reorder_matrix_basis(df_a, 1, 35)
