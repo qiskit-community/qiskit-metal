@@ -489,8 +489,8 @@
   <widget class="QDockWidget" name="dockNewComponent">
    <property name="minimumSize">
     <size>
-     <width>71</width>
-     <height>116</height>
+     <width>78</width>
+     <height>123</height>
     </size>
    </property>
    <property name="windowIcon">
@@ -613,14 +613,8 @@
   <widget class="QDockWidget" name="dockLog">
    <property name="minimumSize">
     <size>
-     <width>71</width>
-     <height>93</height>
-    </size>
-   </property>
-   <property name="maximumSize">
-    <size>
-     <width>524287</width>
-     <height>214</height>
+     <width>20</width>
+     <height>10</height>
     </size>
    </property>
    <property name="windowIcon">
@@ -688,8 +682,8 @@
   <widget class="QDockWidget" name="dockConnectors">
    <property name="minimumSize">
     <size>
-     <width>71</width>
-     <height>116</height>
+     <width>78</width>
+     <height>123</height>
     </size>
    </property>
    <property name="windowIcon">

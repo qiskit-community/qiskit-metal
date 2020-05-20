@@ -13,12 +13,16 @@
 # that they have been altered from the originals.
 
 """Ask Zlatko for help on this file"""
-from .._handle_qt_messages import catch_exception_slot_pyqt
-from PyQt5 import QtWidgets, QtCore
-from PyQt5.QtWidgets import QTableView, QInputDialog, QLineEdit
-from PyQt5.QtWidgets import (QMenu, QMessageBox)
-
 from typing import TYPE_CHECKING
+
+from PyQt5 import QtCore, QtWidgets
+from PyQt5.QtCore import QModelIndex
+from PyQt5.QtGui import QContextMenuEvent
+from PyQt5.QtWidgets import (QInputDialog, QLineEdit, QMenu, QMessageBox,
+                             QTableView)
+
+from .._handle_qt_messages import catch_exception_slot_pyqt
+
 if TYPE_CHECKING:
     from ..main_window import MetalGUI
     from .components_model import ComponentsTableModel
@@ -32,12 +36,13 @@ class TableComponents(QTableView):
     with their names, classes, and modules
 
     Access:
-        gui.ui.tableComponents
+        table = gui.ui.tableComponents
     """
 
-    def __init__(self, parent):
+    def __init__(self, parent: QtWidgets.QWidget):
         super().__init__(parent)
         self.clicked.connect(self.viewClicked)
+        self.doubleClicked.connect(self.doDoubleClicked)
 
     @property
     def design(self):
@@ -52,9 +57,23 @@ class TableComponents(QTableView):
         return self.model().gui
 
     # @catch_exception_slot_pyqt
-    def contextMenuEvent(self, event):
+    def contextMenuEvent(self, event: QContextMenuEvent):
+        """
+        This event handler, for event event, can be reimplemented
+        in a subclass to receive widget context menu events.
+
+        The handler is called when the widget's contextMenuPolicy
+        is Qt::DefaultContextMenu.
+
+        The default implementation ignores the context event.
+        See the QContextMenuEvent documentation for more details.
+
+        Arguments:
+            event {QContextMenuEvent} -- [description]
+        """
         self._event = event  # debug
 
+        # TODO: Should we work based on slection or what we have clicked at the moment?
         self.menu = QMenu(self)
         self.menu._d = self.menu.addAction("Delete")
         self.menu._r = self.menu.addAction("Rename")
@@ -104,16 +123,38 @@ class TableComponents(QTableView):
                 self.logger.info(f'Renaming {name} to {text}')
                 self.design.rename_component(name, text)
 
-    def viewClicked(self, clickedIndex : QtCore.QModelIndex):
-        """Select a compoent and set it in the compoient widget when you left click.
+    def viewClicked(self, index : QModelIndex):
         """
-        if self.gui is None or not clickedIndex.isValid():
+        Select a component and set it in the compoient widget when you left click.
+
+        In the init, we had to connect with self.clicked.connect(self.viewClicked)
+        """
+        if self.gui is None or not index.isValid():
             return
 
         # get the component name
         #model = clickedIndex.model()  # type: ComponentsTableModel
-        c=clickedIndex
-        name = c.sibling(c.row(), 0).data()
+        name = index.sibling(index.row(), 0).data()
         self.logger.info(f'Selected component {name}')
-        self.gui.set_component(name)
 
+        gui = self.gui
+        gui.set_component(name)
+        gui.ui.dockComponent.show()
+        gui.ui.dockComponent.raise_()
+
+    def doDoubleClicked(self, index: QModelIndex):
+        """
+        SIGNAL: doubleClicked
+
+        This signal is emitted when a mouse button is double-clicked.
+        The item the mouse was double-clicked on is specified by index.
+        The signal is only emitted when the index is valid.
+
+        Note that single click will also get called.
+        """
+        if self.gui is None or not index.isValid():
+            return
+
+        # name of component
+        name = index.sibling(index.row(), 0).data()
+        self.logger.info(f'Double clicked component {name}')

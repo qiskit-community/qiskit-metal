@@ -30,7 +30,7 @@ from PyQt5 import QtWidgets
 from PyQt5.QtCore import pyqtSlot, Qt, QTimer
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (QApplication, QFileDialog, QLabel, QMainWindow,
-                             QMessageBox)
+                             QMessageBox, QDockWidget)
 
 from PyQt5.QtCore import QEventLoop
 
@@ -181,6 +181,7 @@ class MetalGUI(QMainWindowBaseHandler):
         # UIs
         self.plot_win = None  # type: QMainWindowPlot
         self.elements_win = None  # type: ElementsWindow
+        self.component_window = ComponentWidget(self, self.ui.dockComponent)
 
         self._setup_component_widget()
         self._setup_plot_widget()
@@ -282,7 +283,7 @@ class MetalGUI(QMainWindowBaseHandler):
         self.main_window.resizeDocks({self.ui.dockDesign}, {350}, Qt.Horizontal)
 
         # Log
-        self.main_window.resizeDocks({self.ui.dockLog}, {120}, Qt.Vertical)
+        self.ui.dockLog.parent().resizeDocks({self.ui.dockLog}, {120}, Qt.Vertical)
 
     def _set_element_tab(self, yesno: bool):
         if yesno:
@@ -291,7 +292,6 @@ class MetalGUI(QMainWindowBaseHandler):
             self.ui.tabWidget.setCurrentWidget(self.ui.mainViewTab)
 
     def _setup_component_widget(self):
-        self.component_window = ComponentWidget(self, self.ui.dockComponent)
         self.ui.dockComponent.setWidget(self.component_window)
 
     def _setup_plot_widget(self):
@@ -300,6 +300,19 @@ class MetalGUI(QMainWindowBaseHandler):
 
         # Add to the tabbed main view
         self.ui.mainViewTab.layout().addWidget(self.plot_win)
+
+        # Move the dock
+        self._move_dock_to_new_parent(self.ui.dockLog, self.plot_win)
+        self.ui.dockLog.parent().resizeDocks({self.ui.dockLog}, {120}, Qt.Vertical)
+
+    def _move_dock_to_new_parent(self, dock: QDockWidget,
+                                 new_parent: QMainWindow,
+                                 dock_location=Qt.BottomDockWidgetArea):
+        dock.setParent(new_parent)
+        new_parent.addDockWidget(dock_location, dock)
+        dock.setFloating(False)
+        dock.show()
+        dock.setMaximumHeight(99999)
 
     def _setup_elements_widget(self):
         """ Create main Window Elemetns  Widget """
@@ -387,7 +400,6 @@ class MetalGUI(QMainWindowBaseHandler):
         Arguments:
             name {str} -- name of component to exmaine.
         """
-        self.ui.dockComponent.setWindowTitle(f'Component: {name}')
         self.component_window.set_component(name)
 
     def autoscale(self):
