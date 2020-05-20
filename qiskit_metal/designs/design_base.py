@@ -22,24 +22,32 @@ Module containing all Qiskit Metal designs.
 # >> pyreverse -o png -p desin_base design_base.py -A  -S
 
 import importlib
-import numpy as np
-from typing import Union, List, Iterable, Any
+
+from typing import Union, List, Iterable, Any, Dict as Dict_, TYPE_CHECKING
 from datetime import datetime
+
+import numpy as np
 
 from .. import Dict, draw, logger
 from ..components import is_component
-from ..config import DEFAULT, DEFAULT_OPTIONS
+from ..config import DefaultOptionsGeneric, DefaultOptionsRenderer
 from ..toolbox_metal.import_export import load_metal_design, save_metal
 from ..toolbox_metal.parsing import parse_options, parse_value
-from ..elements import ElementTables
+from ..elements import QElementTables
 from ..toolbox_python.utility_functions import log_error_easy
 
-__all__ = ['DesignBase']
+if TYPE_CHECKING:
+    # For linting typechecking, import modules that can't be loaded here under normal conditions.
+    # For example, I can't import QDesign, because it requires QComponent first. We have the
+    # chicken and egg issue.
+    from ..components.base.base import QComponent
+
+__all__ = ['QDesign']
 
 
-class DesignBase():
+class QDesign():
     """
-    DesignBase is the base class for Qiskit Metal Designs.
+    QDesign is the base class for Qiskit Metal Designs.
     A design is the most top-level object in all of Qiskit Metal.
 
     Attributes:
@@ -63,7 +71,7 @@ class DesignBase():
 
     """
 
-    # TODO -- Idea: Break up DesignBase into several interface classes,
+    # TODO -- Idea: Break up QDesign into several interface classes,
     # such as DesignConnectorInterface, DesignComponentInterface, etc.
     # in order to do a more Dependency Inversion Principle (DIP) style,
     # see also Dependency Injection (DI). This can also generalize nicely
@@ -72,7 +80,7 @@ class DesignBase():
     # that can interface
 
     # Dummy private attribute used to check if an instanciated object is
-    # indeed a DesignBase class. The problem is that the `isinstance`
+    # indeed a QDesign class. The problem is that the `isinstance`
     # built-in method fails when this module is reloaded.
     # Used by `is_design` to check.
     __i_am_design__ = True
@@ -86,9 +94,6 @@ class DesignBase():
         self._variables = Dict()
         self._chips = Dict()
 
-        self._defaults = DEFAULT  # Depricated, to be removed
-        self._default_options = DEFAULT_OPTIONS
-
         self._metadata = self._init_metadata()
         if metadata:
             self.update_metadata(metadata)
@@ -97,7 +102,12 @@ class DesignBase():
 
         self.logger = logger  # type: logging.Logger
 
-        self._elements = ElementTables(self)
+        self._elements = QElementTables(self)
+
+        self._template_options = DefaultOptionsGeneric()  # use for components
+
+        # Can't really use this until DefaultOptionsRenderer.default_draw_substrate.color_plane is resolved.
+        self._template_renderer_options = DefaultOptionsRenderer()  # use for renderer
 
     def _init_metadata(self) -> Dict:
         """Initialize default metadata dicitoanry
@@ -124,7 +134,7 @@ class DesignBase():
 #########PROPERTIES##################################################
 
     @property
-    def components(self):
+    def components(self) -> Dict_[str, 'QComponent']:
         '''
         Returns Dict object that keeps track of all Metal components in the design
         '''
@@ -138,29 +148,26 @@ class DesignBase():
         return self._connectors
 
     @property
-    def variables(self) -> Dict:
+    def variables(self) -> Dict_[str, str]:
         '''
         Return the Dict object that keeps track of all variables in the design.
         '''
         return self._variables
 
-    @property
-    def defaults(self) -> Dict:
-        '''
-        Return DEFAULT dictionary, which contains some key Metal DEFAULT params used
-        in various Metal functions. These include default units, etc.
-
-        Think of these as global defaults.
-        '''
-        return self._defaults
 
     @property
-    def default_options(self) -> Dict:
+    def template_options(self) -> Dict:
         '''
-        Return handle to the dicitonary of default options used in creating Metal
+        Return default_options dictionary, which contain default options used in creating Metal
         component, and in calling other drawing and key functions.
         '''
-        return self._default_options
+        return self._template_options.default_options
+
+    @property
+    def template_renderer_options(self) -> Dict:
+        '''Return default_renderer_options dictionary, which contain default options used in creating Metal renderer.
+        '''
+        return self._template_renderer_options.default_options
 
     @property
     def metadata(self) -> Dict:
@@ -170,7 +177,7 @@ class DesignBase():
         return self._metadata
 
     @property
-    def elements(self) -> ElementTables:
+    def elements(self) -> QElementTables:
         '''
         Use for advanced users only. Access to the element tables.
         '''
@@ -178,11 +185,11 @@ class DesignBase():
 
 #########Proxy properties##################################################
 
-    def get_chip_size(self, chip_name='main'):
+    def get_chip_size(self, chip_name:str='main'):
         """Utility function to return the chip size"""
         raise NotImplementedError()
 
-    def get_chip_z(self, chip_name='main'):
+    def get_chip_z(self, chip_name:str='main'):
         """Utility function to return the z value of a chip"""
         raise NotImplementedError()
 
@@ -450,27 +457,37 @@ class DesignBase():
 
         Arguments:
             params (dict) -- Input dict to pull form
-            param_names (str) -- eg, 'x,y,z,cpw_width'
+            param_names (str) -- Keys of dicitonary to parse and return as a dicitonary
+                                Example value: 'x,y,z,cpw_width'
+
+        Returns:
+            Dictionary of the keys contained in `param_names` with values that are parsed.
         """
         return parse_options(params, param_names, variable_dict=self.variables)
 
-    def add_connector(self, name: str, points: list, parent, flip=False, chip='main'):
+    def add_connector(self,
+                      name: str,
+                      points: list,
+                      parent: Union[str, 'QComponent'],
+                      flip: bool = False,
+                      chip: str = 'main'):
         """Add named connector to the design by creating a connector dicitoanry.
 
         Arguments:
             name {str} -- Name of connector
-            points {list} -- list of 2 2D points
-            parent -- component or string or None. Will be converted to a string, which will
-                      the name of the component.
+            points {list} -- List of two (x,y) points that define the connector
+            parent {Union[str,} -- component or string or None. Will be converted to a
+                                 string, which will the name of the component.
 
         Keyword Arguments:
-            points {list} --List of two points (default: {None})
-            ops {dict} -- Optionally add options (default: {None})
+            flip {bool} -- [description] (default: {False})
+            chip {str} --  Optionally add options (default: {'main'})
         """
         if is_component(parent):
             parent = parent.name
         elif parent is None:
             parent = 'none'
+        name = parent+'_'+name
 
         # assert isinstance(parent, str) # could enfornce
         self.connectors[name] = make_connector(
@@ -478,7 +495,23 @@ class DesignBase():
 
         # TODO: Add net?
 
-    def update_component(self, component_name: str, dependencies=True):
+    def get_connector(self, name: str):
+        """Interface for components to get connector data
+
+        Args:
+            name (str): Name of the desired connector.
+
+        Returns:
+            (dict): Returns the data of the connector, see design_base.make_connector() for
+                what those values are.
+        """
+
+        # For after switching to pandas, something like this?
+        # return self.connectors.get(name).to_dict()
+
+        return self.connectors[name]
+
+    def update_component(self, component_name: str, dependencies:bool=True):
         """Update the component and any dependencies it may have.
         Mediator type function to update all children.
 
@@ -546,7 +579,7 @@ class DesignBase():
 #   Should we keep function here or just move into design?
 # MAKE it so it has reference to who made it
 
-def make_connector(points: list, parent_name, flip=False, chip='main'):
+def make_connector(points: list, parent_name:str, flip=False, chip='main'):
     """
     Works in user units.
 
@@ -563,7 +596,8 @@ def make_connector(points: list, parent_name, flip=False, chip='main'):
     assert len(points) == 2
 
     # Get the direction vector, the unit direction vec, and the normal vector
-    vec_dist, vec_dist_unit, vec_normal = draw.Vector.two_points_described(points)
+    vec_dist, vec_dist_unit, vec_normal = draw.Vector.two_points_described(
+        points)
 
     if flip:
         vec_normal = -vec_normal

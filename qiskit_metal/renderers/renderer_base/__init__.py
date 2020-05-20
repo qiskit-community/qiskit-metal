@@ -17,4 +17,4 @@
 @date: 2019
 """
 
-from .renderer_base import RendererBase
+from .renderer_base import QRenderer

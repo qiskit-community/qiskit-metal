@@ -21,6 +21,7 @@ Created on Tue May 14 17:13:40 2019
 @author: Zlatko
 """
 import logging
+from .. import __version__
 
 # Check if PyQt5 is available for import
 try:

@@ -40,7 +40,7 @@ from PyQt5.QtWidgets import (QApplication, QMainWindow, QMenu, QMessageBox,
 from shapely.geometry import CAP_STYLE, JOIN_STYLE, LineString
 
 from ... import Dict
-from ...designs import DesignBase
+from ...designs import QDesign
 from ...toolbox_python.utility_functions import log_error_easy
 from .interaction_mpl import MplInteraction, PanAndZoom
 from .toolbox_mpl import clear_axis, get_prop_cycle, _axis_set_watermark_img
@@ -277,7 +277,7 @@ class PlotCanvas(FigureCanvas):
     # See https://github.com/matplotlib/matplotlib/blob/master/lib/matplotlib/backends/backend_qt5agg.py
     # Consider using pyqtgraph https://stackoverflow.com/questions/40126176/fast-live-plotting-in-matplotlib-pyplot.
 
-    def __init__(self, design: DesignBase, parent:'QMainWindowPlot'=None, logger=None,
+    def __init__(self, design: QDesign, parent:'QMainWindowPlot'=None, logger=None,
                  statusbar_label=None):
 
         self.gui = parent.gui # type: MetalGUI
@@ -320,7 +320,7 @@ class PlotCanvas(FigureCanvas):
 
         # self.plot()
 
-    def set_design(self, design: DesignBase):
+    def set_design(self, design: QDesign):
         self.design = design
         self.metal_renderer.set_design(design)
 
@@ -521,7 +521,7 @@ class MplRenderer():
         self = gui.get_canvas().metal_renderer
     """
 
-    def __init__(self, canvas: PlotCanvas, design: DesignBase, logger: logging.Logger):
+    def __init__(self, canvas: PlotCanvas, design: QDesign, logger: logging.Logger):
         super().__init__()
         self.logger = logger
         self.canvas = canvas
@@ -552,7 +552,7 @@ class MplRenderer():
     def show_layer(self, name):
         self.hidden_layers.discard(name)
 
-    def set_design(self, design: DesignBase):
+    def set_design(self, design: QDesign):
         self.design = design
         self.clear_options()
         # TODO

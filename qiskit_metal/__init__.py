@@ -21,7 +21,7 @@ Qiskit Metal main public functionality.
 Created on Tue May 14 17:13:40 2019
 @author: Zlatko K. Minev
 """
-__version__ = '0.2.01'
+__version__ = '0.2.02'
 __license__ = "Apache 2.0"
 __copyright__= 'Copyright IBM 2019-2020'
 __author__ = 'Zlatko Minev, Thomas McConkey, and them IBM Quantum Team'
@@ -63,7 +63,6 @@ from ._is_design import is_design, is_component
 
 # TODO: Remove the as global variables, just use in design when
 # instanciating the default params and overwriting them.
-from .config import DEFAULT, DEFAULT_OPTIONS
 
 # Core modules for user to use
 from . import components #TODO: slow to import? why
@@ -84,11 +83,11 @@ from .renderers.renderer_mpl import toolbox_mpl as plt
 
 # Utility functions
 from .toolbox_python.utility_functions import copy_update
-from .toolbox_python.utility_functions import display_options
+# from .toolbox_python.utility_functions import display_options
 
 # Import default renderers
 from .renderers import setup_renderers
 
 # Common-use
-from .components import BaseComponent
-from .toolbox_metal.about import about  
+from .components import QComponent
+from .toolbox_metal.about import about

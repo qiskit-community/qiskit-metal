@@ -36,7 +36,7 @@ from PyQt5.QtCore import QEventLoop
 
 #from ..toolbox_python._logging import setup_logger
 #from .. import config, Dict
-from ..designs.design_base import DesignBase
+from ..designs.design_base import QDesign
 from ..toolbox_metal.import_export import load_metal_design
 from ._handle_qt_messages import catch_exception_slot_pyqt
 from .component_widget import ComponentWidget
@@ -61,11 +61,11 @@ class QMainWindowExtension(QMainWindowExtensionBase):
     """
 
     @property
-    def design(self) -> DesignBase:
+    def design(self) -> QDesign:
         """Return the design.
 
         Returns:
-            DesignBase: [description]
+            QDesign: [description]
         """
         return self.handler.design
 
@@ -73,10 +73,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
     def gui(self) -> 'MetalGUI':
         return self.handler
 
-    def _set_element_tab(self,
-                         yesno):
-        print(yesno)
-        print("self if: ", self)
+    def _set_element_tab(self, yesno:bool):
         if yesno:
             self.ui.tabWidget.setCurrentWidget(self.ui.tabElements)
             self.ui.actionElements.setText("View")
@@ -168,18 +165,18 @@ class MetalGUI(QMainWindowBaseHandler):
         'dockLog',
         'dockNewComponent']
 
-    def __init__(self, design: DesignBase = None):
+    def __init__(self, design: QDesign = None):
         """Init
 
         Args:
-            design (DesignBase, optional): Pass in the design that the GUI should handle.
+            design (QDesign, optional): Pass in the design that the GUI should handle.
                 Defaults to None.
         """
 
         super().__init__()
 
         # use set_design
-        self.design = None  # type: DesignBase
+        self.design = None  # type: QDesign
 
         # UIs
         self.plot_win = None  # type: QMainWindowPlot
@@ -223,11 +220,11 @@ class MetalGUI(QMainWindowBaseHandler):
         widgets = ['component_window', 'elements_win']
         setEnabled(self, widgets)
 
-    def set_design(self, design: DesignBase):
+    def set_design(self, design: QDesign):
         """Core function to set a new design.
 
         Args:
-            design (DesignBase): A qiskit metal design, such as a planar one.
+            design (QDesign): A qiskit metal design, such as a planar one.
                 The design contains all components and elements
         """
         self.design = design

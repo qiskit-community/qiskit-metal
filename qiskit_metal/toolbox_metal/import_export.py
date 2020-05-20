@@ -72,6 +72,7 @@ def load_metal_design(filename : str, do_update=True):
     from .. import logger
     design.logger = logger #TODO: fix from save pikcle
 
+    ''' outdated code
     if do_update:
         from ..config import DEFAULT, DEFAULT_OPTIONS
 
@@ -82,5 +83,6 @@ def load_metal_design(filename : str, do_update=True):
         # so that they are linked after
         DEFAULT.update(design._defaults)
         DEFAULT_OPTIONS.update(design._default_options)
-
+    '''
+    
     return design

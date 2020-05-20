@@ -8,10 +8,8 @@ from typing import List, Tuple, Union
 import numpy as np
 from numpy.linalg import norm
 
-from ... import DEFAULT_OPTIONS, BaseComponent, Dict, draw
+from ... import QComponent, Dict, draw
 from ...toolbox_metal.parsing import is_true
-
-#from qiskit_metal import DEFAULT_OPTIONS, BaseComponent, Dict, draw
 #from qiskit_metal.toolbox_metal.parsing import is_true
 
 
@@ -22,9 +20,12 @@ class Connector:
 
     Attributes:
         positon (np.ndarray of 2 points) -- Center position of the connector
-        direction (np.ndarray of 2 points) -- Normal of the connector, defines which way it points outward
-        tangent (np.ndarray of 2 points) -- unit vector parallel to the connector face and a 90 deg CCW rotation from the direction units vector
+        direction (np.ndarray of 2 points) -- *Normal vector* of the connector, defines which way it points outward.
+                                              This is the normal vector to the surface on which the connector mates.
+                                              Has unit norm.
     """
+    # TODO: Maybe move this class out of here, more general.
+
 
     def __init__(self, position: np.ndarray, direction: np.ndarray):
         self.position = position
@@ -40,33 +41,17 @@ class Connector:
         return Connector(self.position + self.direction*length, self.direction)
 
     def get_coordinate_vectors(self) -> Tuple[np.ndarray]:
-        """
-        Returns vectors that define the normal and tanget
+        """Returns vectors that define the normal and tanget
+
+        Returns:
+            Tuple[np.ndarray] -- contains the parallel direction and the tangent. e.g.
+                                tangent (np.ndarray of 2 points) -- unit vector parallel to
+                                the connector face and a 90 deg CCW rotation from the direction units vector
         """
         return self.direction, draw.Vector.rotate(self.direction, np.pi/2)
 
 
-
-DEFAULT_OPTIONS['CpwMeanderSimple'] = Dict(
-    connector_start='',
-    connector_end='',
-    total_length='7mm',
-    chip='main',
-    layer='1',
-    trace_width='cpw_width',
-    trace_gap='cpw_gap',
-    meander=Dict(
-        spacing='200um',
-        lead_start='0.1mm',
-        lead_end='0.1mm',
-        lead_direction_inverted='false',
-        snap='true',
-        asymmetry_fracton='0',
-    )
-)
-
-
-class CpwMeanderSimple(BaseComponent):
+class CpwMeanderSimple(QComponent):
     """A meandered basic CPW.
 
     **Behavior and parameters**
@@ -74,7 +59,23 @@ class CpwMeanderSimple(BaseComponent):
         Explain and comment on what options do?
         For example, note that lead_direction_inverted can be 'false' or 'true'
     """
-
+    default_options = Dict(
+        connector_start='',
+        connector_end='',
+        total_length='7mm',
+        chip='main',
+        layer='1',
+        trace_width='cpw_width',
+        trace_gap='cpw_gap',
+        meander=Dict(
+            spacing='200um',
+            lead_start='0.1mm',
+            lead_end='0.1mm',
+            lead_direction_inverted='false',
+            snap='true',
+            asymmetry_fracton='0',
+        )
+    )
     def make(self):
         # TODO: Later, consider performance of instantiating all these Connector classes
 

@@ -14,36 +14,45 @@
 
 """
 This is the main module that defines what a component is in Qiskit Metal.
-See the docstring of BaseComponent
-    >> ?BaseComponent
+See the docstring of QComponent
+    >> ?QComponent
 
 @author: Zlatko Minev, Thomas McConekey, ... (IBM)
 @date: 2019
 """
 import pandas as pd
 import logging, pprint
+import logging
+import pprint
+import inspect
+import os
 from copy import deepcopy
 from typing import TYPE_CHECKING, Any, Iterable, List, Optional, TypeVar, Union, Dict as Dict_
-
 from ... import draw
-from ... import DEFAULT_OPTIONS, is_design, logger
+from ... import is_design, logger
 from ...draw import BaseGeometry
 from ...toolbox_python.attr_dict import Dict
 from ._parsed_dynamic_attrs import ParsedDynamicAttributes_Component
-from ...elements import ElementTables
-__all__ = ['BaseComponent']
+
+from ... import is_design, logger
+from ...draw import BaseGeometry
+from ...toolbox_python.attr_dict import Dict
+from ._parsed_dynamic_attrs import ParsedDynamicAttributes_Component
+
+__all__ = ['QComponent']
 
 if TYPE_CHECKING:
-    # I can't import DesignBase here, because I have ti first create the
-    # component class, so this is a cludge
-    from ...designs import DesignBase
-    from ...elements import ElementTypes
+    # For linting typechecking, import modules that can't be loaded here under normal conditions.
+    # For example, I can't import QDesign, because it requires QComponent first. We have the
+    # chicken and egg issue.
+    from ...designs import QDesign
+    # from ...elements import ElementTypes
     import matplotlib
 
 
-class BaseComponent():
+class QComponent():
     """
-    `BaseComponent` is the base class for all Metal components and is the
+    `QComponent` is the base class for all Metal components and is the
     central construct from which all components in Metal are derived.
 
     The class defines the user interface for working with components.
@@ -63,29 +72,33 @@ class BaseComponent():
         * The class provides the interfaces for the component (creator user)
     """
 
-    # Default options can inherit the options of other functions of objects
-    # in DEFAULT_OPTIONS. Give the name of the key-value pair, where the key is
-    # how you want to call the copied version of DEFAULT_OPTIONS[key]
-    _inherit_options_from = {}
+    ''' QComponent.gather_all_children_options collects the options
+        starting with the basecomponent, and stepping through the children.
+        Each child adds it's options to the base options.  If the
+        key is the same, the option of the youngest child is used.
+    '''
 
     # Dummy private attribute used to check if an instanciated object is
-    # indeed a BaseComponent class. The problem is that the `isinstance`
+    # indeed a QComponent class. The problem is that the `isinstance`
     # built-in method fails when this module is reloaded.
     # Used by `is_component` to check.
     __i_am_component__ = True
 
-    def __init__(self, design: 'DesignBase', name: str,  options: Dict = None,
-                 make=True):
-        """Create a new Metal component and adds it to the design.
+    def __init__(self, design: 'QDesign', name: str, options: Dict = None,
+                 make=True, component_template: Dict = None):
+        """Create a new Metal component and adds it's default_options to the design.
 
         Arguments:
             name {str} -- Name of the component.
-            design {DesignBase} -- The parent design.
+            design {QDesign} -- The parent design.
 
         Keyword Arguments:
             options {[type]} -- User options that will override the defaults. (default: {None})
             make {bool} -- Should the make function be called at the end of the init.
                     Options be used in the make funciton to create the geometry. (default: {True})
+            component_template {[type]} -- User can overwrite the template options for the component
+                                           that will be stored in the design, in design.template, and used
+                                           every time a new component is instantiated.
         """
 
         assert is_design(design), "Error you did not pass in a valid \
@@ -97,8 +110,9 @@ class BaseComponent():
         self._name = name
         self._design = design  # pointer to parent
 
-        # TODO: options:  should probably write a setter and getter?
-        self.options = self.create_default_options(name=name, logger_=logger)
+        self._class_name = self._get_unique_class_name()
+
+        self.options = self.get_template_options(design=design, component_template=component_template)
         if options:
             self.options.update(options)
 
@@ -113,9 +127,6 @@ class BaseComponent():
         # has the component already been made
         self._made = False
 
-        # Logger
-        # self.logger = logger
-
         # Parser for options
         self.p = ParsedDynamicAttributes_Component(self)
 
@@ -126,10 +137,53 @@ class BaseComponent():
         if make:
             self.do_make()
 
+    @classmethod
+    def _gather_all_children_options(cls):
+        '''
+        From the base class of QComponent, traverse the child classes
+        to gather the .default options for each child class.
+        Note: if keys are the same for child and grandchild, grandchild will overwrite child
+        Init method.
+        '''
+
+        options_from_children = {}
+        parents = inspect.getmro(cls)
+
+        # Base.py is not expected to have default_options dict to add to design class.
+        for child in parents[len(parents)-2::-1]:
+            # There is a developer agreement so the defaults will be in dict named default_options.
+            if hasattr(child, 'default_options'):
+                options_from_children = {
+                    **options_from_children, **child.default_options}
+
+        return options_from_children
+
+    @classmethod
+    def _get_unique_class_name(cls) -> str:
+        """Returns unique class name based on the module:
+
+        Returns:
+            str -- Example: 'qiskit_metal.components.qubits.transmon_pocket.TransmonPocket'
+        """
+        return f'{cls.__module__}.{cls.__name__}'
+
+    @classmethod
+    def _register_class_with_design(cls,
+                                    design: 'QDesign',
+                                    template_key: str,
+                                    component_template: Dict):
+        """Init funciton to register a component class with the design when first instantiated.
+            Registers the design template options.
+        """
+        # do not overwrite
+        if template_key not in design.template_options:
+            if not component_template:
+                component_template = cls._gather_all_children_options()
+            design.template_options[template_key] = deepcopy(component_template)
+
     @property
     def name(self) -> str:
-        '''Name of the component
-        '''
+        '''Name of the component'''
         return self._name
 
     @name.setter
@@ -139,9 +193,16 @@ class BaseComponent():
         return self.design.rename_component(self.name, new_name)
 
     @property
-    def design(self) -> 'DesignBase':
+    def design(self) -> 'QDesign':
         '''Return a reference to the parent design object'''
         return self._design
+
+    @property
+    def class_name(self) -> str:
+        '''Return the full name of the class: the full module name with the class name.
+        e.g., qiskit_metal.components.qubits.QubitClass
+        '''
+        return self._class_name
 
     @property
     def logger(self) -> logging.Logger:
@@ -158,32 +219,47 @@ class BaseComponent():
         '''
         self.design.components[self.name] = self
 
+
     @classmethod
-    def create_default_options(cls, logger_:logging.Logger=None, name:str=None) -> Dict:
+    def get_template_options(cls,
+                               design: 'QDesign',
+                               component_template: Dict = None,
+                               logger_: logging.Logger = None,
+                               template_key: str = None) -> Dict:
         """
-        Creates default options for the Metal Componnet class required for the class
-        to function; i.e., be created, made, and rendered. Provides the blank option
+        Creates template options for the Metal Componnet class required for the class
+        to function, based on teh design template; i.e., be created, made, and rendered. Provides the blank option
         structure required.
 
         The options can be extended by plugins, such as renderers.
+
+        Arguments:
+            design {QDesign} -- Design class. Should be the class, not the instance.
+
+        Keyword Arguments:
+            logger_ {logging.Logger} -- A logger for errors. (default: {None})
+            component_template {Dict} -- Tempalte options to overwrite the class ones.
+            template_key {str} --  The template key identifier. If None, then uses
+                                    cls._get_unique_class_name() (default: {None})
+
+        Returns:
+            Dict -- dictionary of default options based on design template.
         """
-        # Every object should posses there -- common to all
-        #options = deepcopy(DEFAULT_OPTIONS['BaseComponent'])
+        # get key for tepmlates
+        if template_key is None:
+            template_key = cls._get_unique_class_name()
 
-        if cls.__name__ not in DEFAULT_OPTIONS:
+        if template_key not in design.template_options:
+            cls._register_class_with_design(design, template_key, component_template)
+
+        if template_key not in design.template_options:
+            logger_ = logger_ or design.logger
             if logger_:
-                logger_.error(f'ERROR in the creating component {name}!\n'\
-                    f'The default options for the component class {cls.__name__} are missing')
+                logger_.error(f'ERROR in the creating component {cls.__name__}!\n'
+                              f'The default options for the component class {cls.__name__} are missing')
 
-        # Specific object default options
-        options = deepcopy(Dict(DEFAULT_OPTIONS[cls.__name__]))
-        # options.update(deepcopy(default_options))
-
-        # Specific sub-options inherited from other functions
-        for key, value in cls._inherit_options_from.items():
-            options[key] = deepcopy(
-                Dict(DEFAULT_OPTIONS[value])
-            )
+        # Specific object template options
+        options = deepcopy(Dict(design.template_options[template_key]))
 
         return options
 
@@ -374,14 +450,9 @@ class BaseComponent():
     ############################################################################
     # Geometry handling of created elements
 
-    # @property
-    # def _elements(self) -> ElementTables:
-    #     return self.design.elements
-
     @property
     def elements_types(self) -> List[str]:
         """Get a list of the names of the element tables.
-
         Returns:
             List[str] -- Name of element table or type; e.g., 'poly' and 'path'
         """

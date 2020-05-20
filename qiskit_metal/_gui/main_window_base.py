@@ -36,6 +36,7 @@ from ..toolbox_python._logging import setup_logger
 from ._handle_qt_messages import catch_exception_slot_pyqt
 from .main_window_ui import Ui_MainWindow
 from .widgets.log_metal import LoggingHandlerForLogWidget
+from . import __version__
 
 
 class QMainWindowExtensionBase(QMainWindow):
@@ -93,6 +94,7 @@ class QMainWindowExtensionBase(QMainWindow):
     def save_window_settings(self):
         self.logger.info('Saving window state')
         # get the current size and position of the window as a byte array.
+        self.settings.setValue('metal_version', __version__)
         self.settings.setValue('geometry', self.saveGeometry())
         self.settings.setValue('windowState', self.saveState())
         self.settings.setValue('stylesheet', self.handler._stylesheet)
@@ -102,6 +104,12 @@ class QMainWindowExtensionBase(QMainWindow):
         Call a Qt built-in function to restore values
         from the settings file.
         """
+
+        if __version__ < self.settings.value('metal_version', defaultValue='1000000'):
+            # Clear the settings from older versions. Will comment this out in future.
+            self.logger.debug(f"Clearing window settings [{ self.settings.value('metal_version', defaultValue='1000000')}]...")
+            self.settings.clear()
+
         try:
             self.logger.debug("Restoring window settings...")
 

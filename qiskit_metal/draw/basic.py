@@ -373,14 +373,15 @@ def buffer(elements,
         x = rectangle(1,1)
         y = buffer_flat([x,x,[x,x,{'a':x}]], 0.5)
         draw.mpl.render([x,y])
+        units = config.DefaultOptionsGeneric.default_generic.units
     '''
     if mitre_limit is None:
-        mitre_limit = config.DEFAULT.buffer_mitre_limit
+        mitre_limit = config.DefaultOptionsGeneric.default_generic.buffer_mitre_limit
         # TODO: maybe this should be in the renderer for metal?
         # or maybe render can set config? - yes
 
     if resolution is None:
-        resolution = config.DEFAULT.buffer_resolution
+        resolution = config.DefaultOptionsGeneric.default_generic.buffer_resolution
 
     def buffer_me(obj, *args, **kwargs):
         return obj.buffer(*args, **kwargs)

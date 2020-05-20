@@ -12,15 +12,32 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-from ..._defaults import DEFAULT_OPTIONS
-from ..base import BaseComponent
+"""File contains dictionary for Rectangle and Rectangle_fromPAS and their make().
+"""
+
+
+from ...toolbox_python.attr_dict import Dict
+from ..base import QComponent
 from ... import draw
-#from copy import deepcopy
-#from ...toolbox_python.attr_dict import Dict
 
 
-class Rectangle(BaseComponent):
+class Rectangle(QComponent):
     """A single configurable square."""
+
+    """The class will add default_options class Dict to QComponent class before calling make.
+    """
+
+    default_options = Dict(
+        width='500um',
+        height='300um',
+        pos_x='0um',
+        pos_y='0um',
+        rotation='0',
+        subtract='False',
+        helper='False',
+        chip='main',
+        layer='1'
+    )
 
     def make(self):
         p = self.p  # p for parsed parameters. Access to the parsed options.
@@ -32,16 +49,3 @@ class Rectangle(BaseComponent):
         # add elements
         self.add_elements('poly', {'rectangle': rect}, subtract=p.subtract,
                           helper=p.helper, layer=p.layer, chip=p.chip)
-
-
-DEFAULT_OPTIONS['Rectangle'] = dict(
-    width='500um',
-    height='300um',
-    pos_x='0um',
-    pos_y='0um',
-    rotation='0',
-    subtract='False',
-    helper='False',
-    chip='main',
-    layer='1'
-)

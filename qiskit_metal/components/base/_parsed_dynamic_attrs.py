@@ -23,7 +23,7 @@ from typing import List
 from typing import TYPE_CHECKING
 #from ...toolbox_python.utility_functions import log_error_easy
 if TYPE_CHECKING:
-    from .base import BaseComponent
+    from .base import QComponent
 
 def is_ipython_magic(check_attribute: str) -> bool:
     """Ignore the following checks by jupyter """
@@ -73,7 +73,7 @@ class ParsedDynamicAttributes_Component():
         __delattr__:        Called when an attribute deletion is attempted.
     """
 
-    def __init__(self, component: 'BaseComponent', key_list: List[str] = None):
+    def __init__(self, component: 'QComponent', key_list: List[str] = None):
         #print(f'*** Created with {key_list}')
         # These names must have __xx__ or else they will go to getattr instead of getattribute
 
@@ -176,13 +176,12 @@ class ParsedDynamicAttributes_Component():
 
 # TESTING code:
 """
-from qiskit_metal.components.base.base import BaseComponent
-from qiskit_metal import DEFAULT_OPTIONS
+from qiskit_metal.components.base.base import QComponent
 
-class Test(BaseComponent):
+class Test(QComponent):
     def make(self):
         pass
-DEFAULT_OPTIONS['Test'] = {
+DEFAULT_OPTIONS['Test'] = {     #instead of using DEFAULT_OPTIONS, use the dicts within QDesign class.
     'a' : '1mm',
     'b' : '1um',
     'c' : {

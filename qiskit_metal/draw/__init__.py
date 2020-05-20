@@ -29,7 +29,7 @@ from shapely.ops import cascaded_union
 from . import basic
 from . import utility
 from . import mpl
-from . import cpw
+#from . import cpw
 
 # Useful functions
 from .utility import get_poly_pts, Vector
