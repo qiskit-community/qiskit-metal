@@ -17,12 +17,12 @@
 @date: 2019
 """
 import logging
-from ...designs import DesignBase, is_design
-from ...elements import ElementTables
+from ...designs import QDesign, is_design
+from ...elements import QElementTables
 
-__all__ = ['RendererBase']
+__all__ = ['QRenderer']
 
-class RendererBase():
+class QRenderer():
     """Abstract base class for all Renderers of Metal designs and their compoinents and elements.
 
     Handles:
@@ -55,7 +55,7 @@ class RendererBase():
         Only performed once.
 
         Once complete, the rendere is added to the class attribute
-        '__loaded_renderers__' of RendererBase
+        '__loaded_renderers__' of QRenderer
 
         Returns:
             True -- If success, otherwise throws an error.
@@ -64,20 +64,20 @@ class RendererBase():
         # Check name
         name = cls.name
 
-        if name in RendererBase.__loaded_renderers__:
+        if name in QRenderer.__loaded_renderers__:
             print(
                 f'Warning: Renderer name={name}, class={cls} already loaded. Doing nothing.')
 
         # Add elemnet extensions
-        # see docstring for RendererBase.element_extensions
-        ElementTables.add_renderer_extension(cls.name, cls.element_extensions)
+        # see docstring for QRenderer.element_extensions
+        QElementTables.add_renderer_extension(cls.name, cls.element_extensions)
 
         # Add component extensions
         # to be used in the creation of default params for component elements
         raise NotImplementedError()
 
         # Finish and register offically as ready to use.
-        RendererBase.__loaded_renderers__.add(name)
+        QRenderer.__loaded_renderers__.add(name)
 
         return True
 
@@ -88,21 +88,21 @@ class RendererBase():
         Arguments:
             name {[str]} -- [description]
         """
-        if not name in RendererBase.__loaded_renderers__:
+        if not name in QRenderer.__loaded_renderers__:
             print(
                 'ERROR: The renderer {name} has not yet been loaded. Please use the load function!')
 
-        if not name in RendererBase.__instantiated_renderers__:
+        if not name in QRenderer.__instantiated_renderers__:
             print(
                 'ERROR: The renderer {name} has not yet been instantiated. Please instantiate the class!')
 
-        return RendererBase.__instantiated_renderers__[name]
+        return QRenderer.__instantiated_renderers__[name]
 
-    def __init__(self, design: DesignBase, initiate=True):
+    def __init__(self, design: QDesign, initiate=True):
         # TODO: check that the renderer has been loaded with load_renderer
 
         assert is_design(design), "Erorr, for the design argument you must provide a\
-                                   a child instance of Metal DesignBase class."
+                                   a child instance of Metal QDesign class."
 
         self._design = design
         self.initiated = False
@@ -111,10 +111,10 @@ class RendererBase():
             self.initate()
 
         # Register as an instantiated renderer.
-        RendererBase.__instantiated_renderers__[self.name] = self
+        QRenderer.__instantiated_renderers__[self.name] = self
 
     @property
-    def design(self) -> 'DesignBase':
+    def design(self) -> 'QDesign':
         '''Return a reference to the parent design object'''
         return self._design
 

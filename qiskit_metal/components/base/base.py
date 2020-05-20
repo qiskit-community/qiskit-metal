@@ -14,8 +14,8 @@
 
 """
 This is the main module that defines what a component is in Qiskit Metal.
-See the docstring of BaseComponent
-    >> ?BaseComponent
+See the docstring of QComponent
+    >> ?QComponent
 
 @author: Zlatko Minev, Thomas McConekey, ... (IBM)
 @date: 2019
@@ -32,18 +32,18 @@ from ...draw import BaseGeometry
 from ...toolbox_python.attr_dict import Dict
 from ._parsed_dynamic_attrs import ParsedDynamicAttributes_Component
 
-__all__ = ['BaseComponent']
+__all__ = ['QComponent']
 
 if TYPE_CHECKING:
     # For linting typechecking, import modules that can't be loaded here under normal conditions.
-    # For example, I can't import DesignBase, because it requires BaseComponent first. We have the
+    # For example, I can't import QDesign, because it requires QComponent first. We have the
     # chicken and egg issue.
-    from ...designs import DesignBase
+    from ...designs import QDesign
 
 
-class BaseComponent():
+class QComponent():
     """
-    `BaseComponent` is the base class for all Metal components and is the
+    `QComponent` is the base class for all Metal components and is the
     central construct from which all components in Metal are derived.
 
     The class defines the user interface for working with components.
@@ -63,25 +63,25 @@ class BaseComponent():
         * The class provides the interfaces for the component (creator user)
     """
 
-    ''' BaseComponent.gather_all_children_options collects the options
+    ''' QComponent.gather_all_children_options collects the options
         starting with the basecomponent, and stepping through the children.
         Each child adds it's options to the base options.  If the
         key is the same, the option of the youngest child is used.
     '''
 
     # Dummy private attribute used to check if an instanciated object is
-    # indeed a BaseComponent class. The problem is that the `isinstance`
+    # indeed a QComponent class. The problem is that the `isinstance`
     # built-in method fails when this module is reloaded.
     # Used by `is_component` to check.
     __i_am_component__ = True
 
-    def __init__(self, design: 'DesignBase', name: str, options: Dict = None,
+    def __init__(self, design: 'QDesign', name: str, options: Dict = None,
                  make=True, component_template: Dict = None):
         """Create a new Metal component and adds it's default_options to the design.
 
         Arguments:
             name {str} -- Name of the component.
-            design {DesignBase} -- The parent design.
+            design {QDesign} -- The parent design.
 
         Keyword Arguments:
             options {[type]} -- User options that will override the defaults. (default: {None})
@@ -134,7 +134,7 @@ class BaseComponent():
     @classmethod
     def _gather_all_children_options(cls):
         '''
-        From the base class of BaseComponent, traverse the child classes
+        From the base class of QComponent, traverse the child classes
         to gather the .default options for each child class.
         Note: if keys are the same for child and grandchild, grandchild will overwrite child
         Init method.
@@ -163,7 +163,7 @@ class BaseComponent():
 
     @classmethod
     def _register_class_with_design(cls,
-                                    design: 'DesignBase',
+                                    design: 'QDesign',
                                     template_key: str,
                                     component_template: Dict):
         """Init funciton to register a component class with the design when first instantiated.
@@ -187,7 +187,7 @@ class BaseComponent():
         return self.design.rename_component(self.name, new_name)
 
     @property
-    def design(self) -> 'DesignBase':
+    def design(self) -> 'QDesign':
         '''Return a reference to the parent design object'''
         return self._design
 
@@ -216,7 +216,7 @@ class BaseComponent():
 
     @classmethod
     def get_template_options(cls,
-                               design: 'DesignBase',
+                               design: 'QDesign',
                                component_template: Dict = None,
                                logger_: logging.Logger = None,
                                template_key: str = None) -> Dict:
@@ -228,7 +228,7 @@ class BaseComponent():
         The options can be extended by plugins, such as renderers.
 
         Arguments:
-            design {DesignBase} -- Design class. Should be the class, not the instance.
+            design {QDesign} -- Design class. Should be the class, not the instance.
 
         Keyword Arguments:
             logger_ {logging.Logger} -- A logger for errors. (default: {None})
@@ -450,7 +450,7 @@ class _Geometry_Handler:
     component. Just a collections of methods.
     """
 
-    def __init__(self, component: BaseComponent):
+    def __init__(self, component: QComponent):
         self.parent = component
         self.design = component.design
 

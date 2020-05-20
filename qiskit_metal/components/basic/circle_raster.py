@@ -12,12 +12,12 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-from ..base import BaseComponent
+from ..base import QComponent
 from ... import draw
 from ...draw.basic import CAP_STYLE, JOIN_STYLE
 
 
-class CircleRaster(BaseComponent):
+class CircleRaster(QComponent):
     """A single configurable square."""
 
     default_options = dict(

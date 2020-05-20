@@ -37,8 +37,8 @@ from .widgets.source_editor_widget import create_source_edit_widget
 
 if TYPE_CHECKING:
     from .main_window import MetalGUI, QMainWindowExtension
-    from ..components import BaseComponent
-    from ..designs import DesignBase
+    from ..components import QComponent
+    from ..designs import QDesign
 
 try:  # For source doc
     import pygments

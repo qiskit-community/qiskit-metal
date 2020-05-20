@@ -22,8 +22,8 @@ To handle Manhatan, BFT, etc.
 @date: 2019
 """
 
-from .base import BaseComponent
+from .base import QComponent
 
-class BaseJunction(BaseComponent):
+class BaseJunction(QComponent):
     # TODO
     pass

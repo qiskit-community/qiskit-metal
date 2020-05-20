@@ -138,7 +138,7 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qstatusbar
 
 --------------------------------------------------------------------------- */
 QStatusBar {
-  border: 1px solid #32414B;
+  border: 1px solid #19232D;
   /* Fixes Spyder #9120, #9121 */
   background: #32414B;
   /* Fixes #205, white vertical borders separating items */
@@ -150,7 +150,7 @@ QStatusBar::item {
 
 QStatusBar QToolTip {
   background-color: #148CD2;
-  border: 1px solid #19232D;
+  border: 0;
   color: #19232D;
   /* Remove padding, for fix combo box tooltip */
   padding: 0px;
@@ -726,9 +726,7 @@ QSizeGrip {
 
 --------------------------------------------------------------------------- */
 QStackedWidget {
-  padding: 2px;
-  border: 1px solid #32414B;
-  border: 1px solid #19232D;
+  padding: 0px;
 }
 
 /* QToolBar ---------------------------------------------------------------
@@ -739,14 +737,17 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qtoolbar
 QToolBar {
   background-color: #32414B;
   border-bottom: 1px solid #19232D;
-  padding: 1px;
+  border-right: 1px solid #19232D;
+  padding: 0px;
   font-weight: bold;
   spacing: 0px;
+  font-weight: bold;
 }
 
 QToolBar QToolButton {
   background-color: #32414B;
   border: 0px;
+  margin-bottom: 1px;
 }
 
 QToolBar QToolButton:hover {
@@ -888,7 +889,7 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qframe
 QLabel {
   background-color: #19232D;
   border: 0px solid #32414B;
-  padding: 2px;
+  padding: 1px;
   margin: 0px;
   color: #F0F0F0;
 }
@@ -1095,7 +1096,7 @@ QToolButton {
   border: 1px solid transparent;
   border-radius: 4px;
   margin: 0px;
-  padding: 2px;
+  padding: 1px;
   /* The subcontrols below are used only in the DelayedPopup mode */
   /* The subcontrols below are used only in the MenuButtonPopup mode */
   /* The subcontrol below is used only in the InstantPopup or DelayedPopup mode */
@@ -1553,23 +1554,23 @@ QTabBar::tab:right:!selected:disabled {
 }
 
 QTabBar::tab:top:!selected {
-  border-bottom: 2px solid #19232D;
-  margin-top: 2px;
+  border-bottom: 1px solid #19232D;
+  margin-top: 1px;
 }
 
 QTabBar::tab:bottom:!selected {
-  border-top: 2px solid #19232D;
-  margin-bottom: 3px;
+  border-top: 1px solid #19232D;
+  margin-bottom: 2px;
 }
 
 QTabBar::tab:left:!selected {
-  border-left: 2px solid #19232D;
-  margin-right: 2px;
+  border-left: 1px solid #19232D;
+  margin-right: 1px;
 }
 
 QTabBar::tab:right:!selected {
-  border-right: 2px solid #19232D;
-  margin-left: 2px;
+  border-right: 1px solid #19232D;
+  margin-left: 1px;
 }
 
 QTabBar::tab:top {
@@ -1579,11 +1580,11 @@ QTabBar::tab:top {
   padding-left: 4px;
   padding-right: 4px;
   padding-top: 2px;
-  padding-bottom: 2px;
+  padding-bottom: 1px;
   min-width: 5px;
   border-bottom: 3px solid #32414B;
   border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
+  border-top-right-radius: 10px;
 }
 
 QTabBar::tab:top:selected {
@@ -1591,12 +1592,14 @@ QTabBar::tab:top:selected {
   color: #F0F0F0;
   border-bottom: 3px solid #1464A0;
   border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
+  border-top-right-radius: 10px;
+  background: qlineargradient(x1: 0.0, y1: 0.0, x2: 1.0, y2: 1.0, stop: 0.0 rgba(34, 48, 63, 100%), stop: 0.4 rgba(34, 48, 63, 100%), stop: 1.0 rgba(129, 37, 52, 100%));
 }
 
 QTabBar::tab:top:!selected:hover {
   border: 1px solid #148CD2;
   border-bottom: 3px solid #148CD2;
+  background: qlineargradient(x1: 0.0, y1: 0.0, x2: 1.0, y2: 1.0, stop: 0.0 rgba(34, 48, 63, 100%), stop: 0.4 rgba(34, 48, 63, 100%), stop: 1.0 rgba(129, 37, 52, 100%));
   /* Fixes spyder-ide/spyder#9766 */
   padding-left: 4px;
   padding-right: 4px;
@@ -1610,7 +1613,7 @@ QTabBar::tab:bottom {
   padding-left: 4px;
   padding-right: 4px;
   padding-top: 2px;
-  padding-bottom: 2px;
+  padding-bottom: 1px;
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
   min-width: 5px;

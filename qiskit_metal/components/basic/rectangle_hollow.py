@@ -12,13 +12,13 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-from ..base import BaseComponent
+from ..base import QComponent
 from ... import draw
 # from copy import deepcopy
 # from ...toolbox_python.attr_dict import Dict
 
 
-class RectangleHollow(BaseComponent):
+class RectangleHollow(QComponent):
     """A single configurable square."""
 
     default_options = dict(

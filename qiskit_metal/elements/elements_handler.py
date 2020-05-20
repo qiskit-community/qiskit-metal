@@ -33,10 +33,10 @@ from ..draw import BaseGeometry
 from ..toolbox_python.utility_functions import data_frame_empty_typed
 
 if TYPE_CHECKING:
-    from ..components.base import BaseComponent
-    from ..designs import DesignBase
+    from ..components.base import QComponent
+    from ..designs import QDesign
 
-__all__ = ['is_element_table', 'ElementTables']  # , 'ElementTypes']
+__all__ = ['is_element_table', 'QElementTables']  # , 'ElementTypes']
 
 # from collections import OrderedDict
 # dict are oreder in Python 3.6+ by default, this is jsut in case for backward compatability
@@ -56,7 +56,7 @@ __all__ = ['is_element_table', 'ElementTables']  # , 'ElementTypes']
 
 def is_element_table(obj):
     """Check if an object is a Metal BaseElementTable, i.e., an instance of
-     `ElementTables`.
+     `QElementTables`.
 
     The problem is that the `isinstance` built-in method fails
     when this module is reloaded.
@@ -149,7 +149,7 @@ ELEMENT_COLUMNS = dict(
 TRUE_BOOLS = [True, 'True', 'true', 'Yes', 'yes', '1', 1]
 
 
-class ElementTables(object):
+class QElementTables(object):
     """Class to create, store, and handle element tables.
 
     A regular user would not need to create tables themselves.
@@ -183,7 +183,7 @@ class ElementTables(object):
         import qiskit_metal as metal
 
         design = metal.designs.DesignPlanar()
-        design.elements = metal.ElementTables(design)
+        design.elements = metal.QElementTables(design)
 
         design.elements['path'] # return the path table - give access to ..
         design.elements.table['path']
@@ -203,7 +203,7 @@ class ElementTables(object):
         :linenos:
         :emphasize-lines: 1-15
 
-        metal.ElementTables.add_renderer_extension('hfss', dict(
+        metal.QElementTables.add_renderer_extension('hfss', dict(
             base=dict(
                 boundary=str,
                 perfectE=bool,
@@ -211,7 +211,7 @@ class ElementTables(object):
                 )
             ))
 
-        metal.ElementTables.add_renderer_extension('gds', dict(
+        metal.QElementTables.add_renderer_extension('gds', dict(
             path=dict(
                 color=str,
                 pcell=bool,
@@ -219,7 +219,7 @@ class ElementTables(object):
             ))
 
         design = metal.designs.DesignPlanar()
-        elements = metal.ElementTables(design)
+        elements = metal.QElementTables(design)
 
         elements.tables['path']
         >>> component	name	geometry	layer	type	chip	subtract	fillet	color	width	hfss_boundary	hfss_perfectE	hfss_material	gds_color	gds_pcell
@@ -239,7 +239,7 @@ class ElementTables(object):
     # For creating names of columns of renderer properties
     name_delimiter = '_'
 
-    def __init__(self, design:'DesignBase'):
+    def __init__(self, design:'QDesign'):
         """
         The constructor for the `BaseElement` class.
 
@@ -254,7 +254,7 @@ class ElementTables(object):
         self.create_tables()
 
     @property
-    def design(self) -> 'DesignBase':
+    def design(self) -> 'QDesign':
         '''Return a reference to the parent design object'''
         return self._design
 

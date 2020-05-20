@@ -17,14 +17,14 @@
 
 
 from ...toolbox_python.attr_dict import Dict
-from ..base import BaseComponent
+from ..base import QComponent
 from ... import draw
 
 
-class Rectangle(BaseComponent):
+class Rectangle(QComponent):
     """A single configurable square."""
 
-    """The class will add default_options class Dict to BaseComponent class before calling make.
+    """The class will add default_options class Dict to QComponent class before calling make.
     """
 
     default_options = Dict(

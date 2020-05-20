@@ -89,5 +89,5 @@ from .toolbox_python.utility_functions import copy_update
 from .renderers import setup_renderers
 
 # Common-use
-from .components import BaseComponent
-from .toolbox_metal.about import about  
+from .components import QComponent
+from .toolbox_metal.about import about
