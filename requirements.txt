@@ -13,3 +13,4 @@ pyqode.python
 PyQt5
 scipy
 Shapely
+GeoPandas

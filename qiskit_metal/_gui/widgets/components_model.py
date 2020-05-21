@@ -14,13 +14,13 @@
 
 # Zlatko Minev
 
-
-from PyQt5.QtCore import QAbstractTableModel
-from PyQt5 import Qt, QtCore, QtWidgets
-from PyQt5.QtCore import QModelIndex
 import numpy as np
-
-
+from PyQt5 import QtCore, QtWidgets
+from PyQt5.QtCore import QAbstractTableModel, QModelIndex, Qt
+from PyQt5.QtWidgets import QTableView
+from PyQt5.QtGui import QFont, QColor, QBrush, QIcon, QPixmap, QIcon
+from .._toolbox_qt import blend_colors
+from .._handle_qt_messages import catch_exception_slot_pyqt
 class ComponentsTableModel(QAbstractTableModel):
 
     """
@@ -38,11 +38,12 @@ class ComponentsTableModel(QAbstractTableModel):
     """
     __timer_interval = 500  # ms
 
-    def __init__(self, gui, logger, parent=None):
+    def __init__(self, gui, logger, parent=None, tableView: QTableView = None):
         super().__init__(parent=parent)
         self.logger = logger
         self.gui = gui
-        self.columns = ['Name', 'Class', 'Module']
+        self._tableView = tableView # the view used to preview this model, used to refresh
+        self.columns = ['Name', 'Class', 'Module', 'Build Status']
         self._row_count = -1
 
         self._create_timer()
@@ -86,25 +87,30 @@ class ComponentsTableModel(QAbstractTableModel):
             self.modelReset.emit()
 
             self._row_count = new_count
+            self._tableView.resizeColumnsToContents()
 
-    def rowCount(self, parent:QModelIndex=None):
+    def rowCount(self, parent: QModelIndex = None):
         if self.design:  # should we jsut enforce this
             return int(len(self.design.components))
         else:
             return 0
 
-    def columnCount(self, parent:QModelIndex=None):
+    def columnCount(self, parent: QModelIndex = None):
         return len(self.columns)
 
-    def headerData(self, section, orientation, role=QtCore.Qt.DisplayRole):
+    def headerData(self, section, orientation, role=Qt.DisplayRole):
         """ Set the headers to be displayed. """
 
-        if role != QtCore.Qt.DisplayRole:
-            return None
+        if role == Qt.DisplayRole:
+            if orientation == Qt.Horizontal:
+                if section < len(self.columns):
+                    return self.columns[section]
 
-        if orientation == QtCore.Qt.Horizontal:
-            if section < len(self.columns):
-                return self.columns[section]
+        elif role == Qt.FontRole:
+            if section == 0:
+                font = QFont()
+                font.setBold(True)
+                return font
 
     def flags(self, index):
         """ Set the item flags at the given index. Seems like we're
@@ -114,35 +120,56 @@ class ComponentsTableModel(QAbstractTableModel):
         # https://doc.qt.io/qt-5/qt.html#ItemFlag-enum
 
         if not index.isValid():
-            return QtCore.Qt.ItemIsEnabled
+            return Qt.ItemIsEnabled
 
-        return QtCore.Qt.ItemFlags(QAbstractTableModel.flags(self, index) |
-                                   QtCore.Qt.ItemIsSelectable)  # ItemIsEditable
+        return Qt.ItemFlags(QAbstractTableModel.flags(self, index) |
+                                   Qt.ItemIsSelectable)  # ItemIsEditable
 
-    def data(self, index:QModelIndex, role=QtCore.Qt.DisplayRole):
+    # @catch_exception_slot_pyqt()
+    def data(self, index: QModelIndex, role:int = Qt.DisplayRole):
         """ Depending on the index and role given, return data. If not
             returning data, return None (PySide equivalent of QT's
             "invalid QVariant").
         """
 
-        if not index.isValid():
-            return
-        # if not 0 <= index.row() < self.rowCount():
-        #    return None
-
-        if not self.design:
+        if not index.isValid() or not self.design:
             return
 
-        if role == QtCore.Qt.DisplayRole:
+        component_name = list(self.design.components.keys())[index.row()]
 
-            row = index.row()
-            component_name = list(self.design.components.keys())[row]
+        if role == Qt.DisplayRole:
 
             if index.column() == 0:
                 return component_name
-
             elif index.column() == 1:
                 return self.design.components[component_name].__class__.__name__
-
             elif index.column() == 2:
                 return self.design.components[component_name].__class__.__module__
+            elif index.column() == 3:
+                return self.design.components[component_name].status
+
+        # The font used for items rendered with the default delegate. (QFont)
+        elif role == Qt.FontRole:
+            if index.column() == 0:
+                font = QFont()
+                font.setBold(True)
+                return font
+
+        elif role == Qt.BackgroundRole:
+
+            component = self.design.components[component_name]
+            if component.status != 'good': # Did the component fail the build
+                #    and index.column()==0:
+                if not self._tableView:
+                    return QBrush(QColor('#FF0000'))
+                table = self._tableView
+                color = table.palette().color(table.backgroundRole())
+                color = blend_colors(color, QColor('#FF0000'), r=0.6)
+                return QBrush(color)
+
+        elif role == Qt.DecorationRole:
+
+            if index.column() == 0:
+                component = self.design.components[component_name]
+                if component.status != 'good': # Did the component fail the build
+                    return QIcon(":/basic/warning")

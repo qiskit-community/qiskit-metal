@@ -362,28 +362,12 @@ def _axis_set_watermark_img(ax:plt.Axes, file:str, size : float = 0.25):
     ax.imshow(img, extent=(1-size*b,1, 1-size, 1), transform=ax.transAxes, **kw)
 
 #######################################################################
-"""
-def clear_axis(ax: plt.Axes):
-    '''
-    Clear all plotted objects on an axis
-
-    Args:
-        ax : mapltlib axis
-    '''
-    ax = ax if not ax is None else plt.gca()
-    for artist in ax.lines + ax.collections + ax.patches + ax.images + ax.texts:
-        artist.remove()
-    if ax.legend_:
-        ax.legend_.remove()
-"""
-
 
 def clear_axis(ax: plt.Axes):
-    """Clear all plotted objects on an axis
-    including lines, patches, tests, tables,
-    artists, images, mouseovers, child axes, legends,
-    collections, and containers
-
+    """Clear all plotted objects on an axis including lines, patches, tests, tables,
+    artists, images, mouseovers, child axes, legends, collections, and containers
+    See:
+        https://github.com/matplotlib/matplotlib/blob/master/lib/matplotlib/axes/_base.py#L1040
     Args:
         ax (plt.Axes): MPL axis to clear
     """
@@ -402,8 +386,12 @@ def clear_axis(ax: plt.Axes):
     ax.containers = []
 
     # reset the bounds for autoscale
-    # Could also use ax.relim()
-    ax.dataLim.set_points(np.array([[-1, -1], [1, 1]]))
+    ax.ignore_existing_data_limits = True
+    # Alternatives that fail:
+    # ax.relim()
+    #           At present, Collection instances are not supported.
+    #           However, this is how descartes plots!
+    # ax.dataLim.set_points(np.array([[-1, -1], [1, 1]]))
 
     # for axis in [ax.xaxis, ax.yaxis]:
     #    # Clear the callback registry for this axis, or it may "leak"

@@ -13,6 +13,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_EditSource(object):
     def setupUi(self, EditSource):
         EditSource.setObjectName("EditSource")
+        EditSource.resize(567, 320)
         self.centralwidget = QtWidgets.QWidget(EditSource)
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)
@@ -102,7 +103,7 @@ class Ui_EditSource(object):
         self.verticalLayout.addWidget(self.lineSrcPath)
         EditSource.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(EditSource)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 645, 22))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 567, 22))
         self.menubar.setObjectName("menubar")
         EditSource.setMenuBar(self.menubar)
         self.statusBar = QtWidgets.QStatusBar(EditSource)

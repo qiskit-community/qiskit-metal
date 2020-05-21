@@ -19,6 +19,7 @@
 import logging
 import random
 import sys
+from typing import TYPE_CHECKING
 
 import matplotlib
 import matplotlib as mpl
@@ -28,11 +29,13 @@ import pandas as pd
 from cycler import cycler
 from descartes import PolygonPatch
 from IPython.display import display
+from matplotlib.axes import Axes
 from matplotlib.backends.backend_qt5agg import \
     FigureCanvasQTAgg as FigureCanvas
 from matplotlib.cbook import _OrderedSet
 from matplotlib.collections import LineCollection, PatchCollection
 from matplotlib.figure import Figure
+from matplotlib.transforms import Bbox
 from PyQt5 import QtCore
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QMenu, QMessageBox,
@@ -43,8 +46,7 @@ from ... import Dict
 from ...designs import QDesign
 from ...toolbox_python.utility_functions import log_error_easy
 from .interaction_mpl import MplInteraction, PanAndZoom
-from .toolbox_mpl import clear_axis, get_prop_cycle, _axis_set_watermark_img
-from typing import TYPE_CHECKING
+from .toolbox_mpl import _axis_set_watermark_img, clear_axis, get_prop_cycle
 
 if TYPE_CHECKING:
     from ..._gui.main_window import MetalGUI
@@ -273,14 +275,18 @@ MPL_CONTEXT_DEFAULT = {
 class PlotCanvas(FigureCanvas):
     """
     Main Plot canvas widget
+    Access with:
+        canvas = gui.canvas
     """
     # See https://github.com/matplotlib/matplotlib/blob/master/lib/matplotlib/backends/backend_qt5agg.py
     # Consider using pyqtgraph https://stackoverflow.com/questions/40126176/fast-live-plotting-in-matplotlib-pyplot.
 
-    def __init__(self, design: QDesign, parent:'QMainWindowPlot'=None, logger=None,
+    def __init__(self, design: QDesign,
+                 parent: 'QMainWindowPlot' = None,
+                 logger=None,
                  statusbar_label=None):
 
-        self.gui = parent.gui # type: MetalGUI
+        self.gui = parent.gui  # type: MetalGUI
 
         # MPL
         self.config = Dict(
@@ -300,6 +306,7 @@ class PlotCanvas(FigureCanvas):
         self.logger = logger
         self.statusbar_label = statusbar_label
         self.design = design
+        self._state = {}  # used to store state between drawing
 
         super().__init__(fig)
 
@@ -313,7 +320,7 @@ class PlotCanvas(FigureCanvas):
         self.panzoom.logger = self.logger
         self.panzoom._statusbar_label = self.statusbar_label
 
-        self.setup_figure()
+        self.setup_figure_and_axes()
 
         self.metal_renderer = MplRenderer(
             canvas=self, design=self.design, logger=logger)
@@ -324,7 +331,7 @@ class PlotCanvas(FigureCanvas):
         self.design = design
         self.metal_renderer.set_design(design)
 
-    def setup_figure(self):
+    def setup_figure_and_axes(self):
         """
         Main setup from scratch.
         """
@@ -342,6 +349,8 @@ class PlotCanvas(FigureCanvas):
 
             for num, ax in enumerate(self.axes):
                 self.style_axis(ax, num)
+                ax.set_xlim([-0.5, 0.5])
+                ax.set_ylim([-0.5, 0.5])
 
     def setup_rendering(self):
         """https://matplotlib.org/3.1.1/tutorials/introductory/usage.html
@@ -388,9 +397,14 @@ class PlotCanvas(FigureCanvas):
         #ax.set_ylabel('y (mm)')
 
     def plot(self, clear=True, with_try=True):
-        #TODO: Maybe do in a thread?
+        # TODO: Maybe do in a thread?
         self.hide()
         ax = self.get_axis()
+
+        def prep():
+            # Push state
+            self._state['xlim'] = ax.get_xlim()
+            self._state['ylim'] = ax.get_ylim()
 
         def main_plot():
             # for temporary style
@@ -401,17 +415,22 @@ class PlotCanvas(FigureCanvas):
                 self._watermark_axis(ax)
 
         def final():
+            # Draw
             self.draw()
+            # Restore the state
+            ax.set_xlim(self._state['xlim'])
+            ax.set_xlim(self._state['ylim'])
             self.show()
 
         if with_try:
             # speed impact?
             try:
+                prep()
                 main_plot()
 
             except Exception as e:
                 log_error_easy(self.logger,
-                    post_text=f'Plotting error: {e}')
+                               post_text=f'Plotting error: {e}')
 
             finally:
                 final()
@@ -420,11 +439,13 @@ class PlotCanvas(FigureCanvas):
             main_plot()
             final()
 
-    def _watermark_axis(self, ax:plt.Axes):
+    def _watermark_axis(self, ax: plt.Axes):
         """Add a watermark"""
         # self.logger.debug('WATERMARK')
-        kw = dict(fontsize=15, color='gray', ha='right', va='bottom', alpha=0.18, zorder=-100)
-        ax.annotate('Qiskit Metal', xy=(0.98, 0.02), xycoords='axes fraction', **kw)
+        kw = dict(fontsize=15, color='gray', ha='right',
+                  va='bottom', alpha=0.18, zorder=-100)
+        ax.annotate('Qiskit Metal', xy=(0.98, 0.02),
+                    xycoords='axes fraction', **kw)
 
         file = (self.gui.path_imgs / 'metal_logo.png')
         if file.is_file():
@@ -498,7 +519,42 @@ class PlotCanvas(FigureCanvas):
             ax.autoscale()
         self.refresh()
 
-    def set_component(self, name:str):
+    def zoom_to_rectangle(self, bounds: tuple, ax: Axes = None):
+        """[summary]
+
+        Arguments:
+            bounds {tuple} -- tuple containing `minx, miny, maxx, maxy`
+                     values for the bounds of the series as a whole.
+
+        Keyword Arguments:
+            ax {Axes} -- Does for all if none (default: {None})
+        """
+        if ax is None:
+            for ax in self.axes:
+                self.zoom_to_rectangle(bounds, ax)
+        else:
+            ax.set_xlim(bounds[0], bounds[2])
+            ax.set_ylim(bounds[1], bounds[3])
+            # ax.redraw_in_frame()
+            self.refresh()
+
+    #TODO: move to base class
+    def zoom_on_component(self, name:str, zoom:float=1.1):
+        """Zoom in on a component
+
+        Arguments:
+            name {str} -- [description]
+
+        Keyword Arguments:
+            zoom (float) -- fraction to expand the bounding vbox by
+        """
+        component = self.design.components[name]
+        bounds = component.geometry_bounds()
+        bbox = Bbox.from_extents(bounds)
+        bounds = bbox.expanded(zoom,zoom).extents
+        self.zoom_to_rectangle(bounds)
+
+    def set_component(self, name: str):
         """
         Shortcut to set a component in the component widget to be examined.
 
@@ -518,7 +574,7 @@ class MplRenderer():
     The axis is given in the function render.
 
     Access:
-        self = gui.get_canvas().metal_renderer
+        self = gui.canvas.metal_renderer
     """
 
     def __init__(self, canvas: PlotCanvas, design: QDesign, logger: logging.Logger):
@@ -615,8 +671,8 @@ class MplRenderer():
 
         key = 'subtracted' if subtracted else 'non-subtracted'
 
-        kw = {**self.styles[element_type].get('base',{}),
-              **self.styles[element_type].get(key,{}),
+        kw = {**self.styles[element_type].get('base', {}),
+              **self.styles[element_type].get(key, {}),
               **extra}
 
         # TODO: maybe pop keys that are invalid for line etc.
@@ -642,7 +698,7 @@ class MplRenderer():
             render_func = getattr(self, f'render_{element_type}')
             render_func(table1, ax, subtracted=False)
 
-    def render_poly(self, table: pd.DataFrame, ax: matplotlib.axes.Axes, subtracted:bool=False, extra_kw: dict=None):
+    def render_poly(self, table: pd.DataFrame, ax: matplotlib.axes.Axes, subtracted: bool = False, extra_kw: dict = None):
         """
         Render a table of poly geometry.
 
@@ -651,12 +707,12 @@ class MplRenderer():
             ax {matplotlib.axes.Axes} -- axis to render on
             kw {dict} -- style params
         """
-        if len(table) <1:
+        if len(table) < 1:
             return
         kw = self.get_style('poly', subtracted=subtracted, extra=extra_kw)
         self._render_poly_array(ax, table.geometry, kw)
 
-    def render_path(self, table: pd.DataFrame, ax: matplotlib.axes.Axes,  subtracted:bool=False, extra_kw: dict=None):
+    def render_path(self, table: pd.DataFrame, ax: matplotlib.axes.Axes,  subtracted: bool = False, extra_kw: dict = None):
         """
         Render a table of path geometry.
 
@@ -665,26 +721,27 @@ class MplRenderer():
             ax {matplotlib.axes.Axes} -- axis to render on
             kw {dict} -- style params
         """
-        if len(table) <1:
+        if len(table) < 1:
             return
 
         # mask for all non zero width paths
-        mask = (table.width == 0) | table.width.isna() #TODO: could there be a problem with float vs int here?
-        #print(f'subtracted={subtracted}\n\n')
-        #display(table)
-        #display(imask)
+        # TODO: could there be a problem with float vs int here?
+        mask = (table.width == 0) | table.width.isna()
+        # print(f'subtracted={subtracted}\n\n')
+        # display(table)
+        # display(imask)
 
-        ### convert to polys - handle non zero width
+        # convert to polys - handle non zero width
         table1 = table[~mask]
-        if len(table1)>0:
+        if len(table1) > 0:
             table1.geometry = table1[['geometry', 'width']].apply(lambda x:
-                                                                x[0].buffer(
-                                                                    distance=float(
-                                                                        x[1]),
-                                                                    cap_style=CAP_STYLE.flat,
-                                                                    join_style=JOIN_STYLE.mitre,
-                                                                    resolution=16
-                                                                ), axis=1)
+                                                                  x[0].buffer(
+                                                                      distance=float(
+                                                                          x[1]),
+                                                                      cap_style=CAP_STYLE.flat,
+                                                                      join_style=JOIN_STYLE.mitre,
+                                                                      resolution=16
+                                                                  ), axis=1)
 
             kw = self.get_style('poly', subtracted=subtracted, extra=extra_kw)
             self.render_poly(table1, ax, subtracted=subtracted, extra_kw=kw)

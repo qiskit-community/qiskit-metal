@@ -50,13 +50,14 @@ except ImportError as e:
         f'Error: Could not load python package \'pygments\'; Error: {e}')
     highlight = None
     HtmlFormatter = None
-    get_lexer_by_name = None
+    get_lexer_by_name    = None
 
 # TODO: move to conifg
 textHelp_css_style = """
 body {
   background-color: #f7f7f7;
   color: #000000;
+  text-color : #000000;
 }
 
 .ComponentHeader th {
@@ -89,9 +90,9 @@ body {
   font-weight: bold;
 }
 
-.DocString {
+/*.DocString {
     font-family: monospace;
-}
+}*/
 """
 
 
@@ -117,7 +118,6 @@ def create_QTextDocument(doc: QtWidgets.QTextEdit) -> QtGui.QTextDocument:
 
     # Style doc
     doc.setDocument(document)
-    doc.setStyleSheet("background-color: rgb(250, 250, 250);")
 
     # Style documents monoscaped font
     font = document.defaultFont()
@@ -159,13 +159,15 @@ class ComponentWidget(QTabWidget):
 
         self.component_name = None  # type: str
 
-        # Parametr model
+        # Parametr model and table view
         self.model = ComponentTableModel(gui, self)
         self.ui.tableView.setModel(self.model)
+        # table = self.ui.tableView
+        # table.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel);
+        # table.horizontalScrollBar().setSingleStep(1)
 
         # Source Code
-        self.src_doc = create_QTextDocument(
-            self.ui.textSource)  # QtGui.QTextDocument
+        self.src_doc = create_QTextDocument(self.ui.textSource)
         self._html_css_lex = None  # type: pygments.formatters.html.HtmlFormatter
         self.src_widgets = []  # type: List[QtWidgets.QWidget]
 
@@ -201,13 +203,16 @@ class ComponentWidget(QTabWidget):
         # Labels
         # ) from {component.__class__.__module__}
         label_text = f"{component.name}   :   {component.__class__.__name__}   :   {component.__class__.__module__}"
-        self.ui.labelComponentName.setText(label_text)
-        self.ui.labelComponentName.setCursorPosition(0)  # Move to left
+        # self.ui.labelComponentName.setText(label_text)
+        # self.ui.labelComponentName.setCursorPosition(0)  # Move to left
+        self.setWindowTitle(label_text)
+        self.parent().setWindowTitle(label_text)
 
         self._set_source()
         self._set_help()
 
         self.force_refresh()
+        self.ui.tableView.resizeColumnsToContents() # resize columns
 
     def force_refresh(self):
         self.model.refresh()

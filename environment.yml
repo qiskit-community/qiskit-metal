@@ -19,6 +19,7 @@ dependencies:
 - pyqt
 - scipy
 - shapely
+- geopandas
 
 - jupyter
 - wheel

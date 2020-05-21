@@ -44,7 +44,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>
@@ -73,13 +73,11 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionPan"/>
-   <addaction name="actionZoom"/>
    <addaction name="actionAuto"/>
    <addaction name="separator"/>
    <addaction name="actionCoords"/>
-   <addaction name="separator"/>
    <addaction name="actionConnectors"/>
-   <addaction name="actionReplot"/>
+   <addaction name="separator"/>
   </widget>
   <action name="actionPan">
    <property name="icon">
@@ -88,7 +86,7 @@
     </iconset>
    </property>
    <property name="text">
-    <string>Pan</string>
+    <string>Help</string>
    </property>
    <property name="shortcut">
     <string>P</string>
@@ -124,7 +122,7 @@
     <string>Connectors</string>
    </property>
    <property name="toolTip">
-    <string>Show connectors</string>
+    <string>Show connectors for selected components</string>
    </property>
    <property name="shortcut">
     <string>C</string>
@@ -145,7 +143,7 @@
     <string>Coords</string>
    </property>
    <property name="toolTip">
-    <string>Selection cooridinates</string>
+    <string>Click for position --- Enable this to click on the plot and log the (x,y) position</string>
    </property>
    <property name="shortcut">
     <string>P</string>
@@ -157,7 +155,7 @@
      <normaloff>:/plot/autozoom</normaloff>:/plot/autozoom</iconset>
    </property>
    <property name="text">
-    <string>Auto Zoom</string>
+    <string>Autoscale</string>
    </property>
    <property name="toolTip">
     <string>Auto Zoom</string>

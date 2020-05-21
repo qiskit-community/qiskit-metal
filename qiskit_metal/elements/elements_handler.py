@@ -26,6 +26,7 @@ import logging
 from typing import TYPE_CHECKING, Union, List, Dict as Dict_
 
 import pandas as pd
+from geopandas import GeoSeries, GeoDataFrame
 
 from .. import Dict
 #from ..config import DEFAULT
@@ -239,7 +240,7 @@ class QElementTables(object):
     # For creating names of columns of renderer properties
     name_delimiter = '_'
 
-    def __init__(self, design:'QDesign'):
+    def __init__(self, design: 'QDesign'):
         """
         The constructor for the `BaseElement` class.
 
@@ -263,11 +264,11 @@ class QElementTables(object):
         return self._design.logger
 
     @property
-    def tables(self) -> Dict_[str, pd.DataFrame]:
+    def tables(self) -> Dict_[str, GeoDataFrame]:
         """The dictionary of tables containing elements.
 
         Returns:
-            Dict_[str, pd.DataFrame] -- The keys of this dictionary are
+            Dict_[str, GeoDataFrame] -- The keys of this dictionary are
                                         also obtained from `self.get_element_types()`
         """
         return self._tables
@@ -313,7 +314,7 @@ class QElementTables(object):
         Returns:
             list(str) -- list of name in self.ELEMENT_COLUMNS
         """
-        #TODO: I should probably make this a variable and memeorize, only change when elements are added and removed
+        # TODO: I should probably make this a variable and memeorize, only change when elements are added and removed
         # can be slow for perofmance to look up eahc time and recalcualte, since may call this often
         names = list(cls.ELEMENT_COLUMNS.keys())
         names.remove('base')
@@ -321,7 +322,7 @@ class QElementTables(object):
 
     def create_tables(self):
         """
-        Creates the default tables once. Populates the dict 'tables' of DataFrames,
+        Creates the default tables once. Populates the dict 'tables' of GeoDataFrame,
         each with columns corresponding to the types of elements defined in ELEMENT_COLUMNS.
 
         Should only be done once when a new design is created.
@@ -329,7 +330,7 @@ class QElementTables(object):
         self.logger.debug('Creating Element Tables.')
 
         for table_name in self.get_element_types():
-            # Create dataframe with correct columns and d types
+            # Create GeoDataFrame with correct columns and d types
             assert isinstance(table_name, str)
             assert table_name.isidentifier()
 
@@ -363,7 +364,7 @@ class QElementTables(object):
             self._validate_column_dictionary(table_name, columns)
 
             # Create df with correct column names
-            table = data_frame_empty_typed(columns)
+            table = GeoDataFrame(data_frame_empty_typed(columns))
             table.name = table_name  # not used elsewhere
 
             # Assign
@@ -455,7 +456,7 @@ class QElementTables(object):
 
         # assert that all names in options are in table columns!
         # mauybe check
-        df = pd.DataFrame.from_dict(
+        df = GeoDataFrame.from_dict(
             geometry, orient='index', columns=['geometry'])
         df.index.name = 'name'
         df = df.reset_index()
@@ -464,7 +465,7 @@ class QElementTables(object):
 
         # Set new table. Unfortuanly, this creates a new instance.
         self.tables[kind] = table.append(df, sort=False, ignore_index=True)
-        # pd.concat([table,df], axis=0, join='outer', ignore_index=True,sort=False,
+        # concat([table,df], axis=0, join='outer', ignore_index=True,sort=False,
         #          verify_integrity=False, copy=False)
 
     def clear_all_tables(self):
@@ -486,15 +487,40 @@ class QElementTables(object):
             df = self.tables[table_name]
             self.tables[table_name] = df[df.component != name]
 
-    def get_component(self, name: str, table_name: str) -> pd.DataFrame:
+    def get_component(self, name: str, table_name: str = 'all') -> Union[GeoDataFrame, Dict_[str, GeoDataFrame]]:
         """Return the table for just a given component.
+        If all, returns a dictionary with kets as table names and tables of components as values.
 
         Arguments:
-            name {str} -- Name of component (case sensitive)
-            table_name {str} -- Element kind ('poly', 'path', etc.)
+            name {str} -- Name of component (case sensitive) (default: 'all')
+
+        Keyword Arguments:
+            table_name {str} -- Element table name ('poly', 'path', etc.) (default: {'all'})
+
+        Returns:
+            Union[GeoDataFrame, Dict_[str, GeoDataFrame]] -- Either a GeoDataFrame or a dict or GeoDataFrame.
+
+        Example use:
+            table = pd.concat(elements.get_component('Q1')) # , axis=0
         """
-        df = self.tables[table_name]
-        return df[df.component == name]
+        if table_name == 'all':
+            tables = {}
+            for table_name in self.get_element_types():
+                tables[table_name] = self.get_component(name, table_name)
+            return tables
+        else:
+            df = self.tables[table_name]
+            return df[df.component == name]
+
+    def get_component_bounds(self, name:str):
+        """Returns a tuple containing minx, miny, maxx, maxy values
+        for the bounds of the component as a whole.
+
+        Arguments:
+            name {str} -- component name
+        """
+        return self.get_component_geometry(name).total_bounds
+
 
     def rename_component(self, name: str, new_name: str):
         """Rename component by name
@@ -528,7 +554,21 @@ class QElementTables(object):
 
         return elements
 
-    def get_component_geometry_dict(self, name: str, table_name: str) -> List[BaseGeometry]:
+    def get_component_geometry(self, name:str) -> GeoSeries:
+        """
+        Arguments:
+            name {str} -- Name of component (case sensitive)
+
+        Returns:
+            GeoSeries -- [description]
+        """
+        elements = {}
+        for table_name in self.get_element_types():
+            table = self.tables[table_name]
+            elements[table_name] = table.geometry[table.component == name]
+        return pd.concat(elements)
+
+    def get_component_geometry_dict(self, name: str, table_name: str='all') -> List[BaseGeometry]:
         """Return just the bare element geometry (shapely geometry objects) as a dict,
            with key being the names of the elements and the values as the shapely geometry,
            for the selected component.
@@ -537,20 +577,26 @@ class QElementTables(object):
             name {str} -- Name of component (case sensitive)
             table_name {str} -- Element type ('poly', 'path', etc.)
         """
-        # TODO: handle  table_name=all?
-        table = self.tables[table_name]
+        if table_name == 'all':
+            elements = []
+            for table in self.get_element_types():
+                elements[table] = self.get_component_geometry_list(name, table)
+            return elements # return pd.concat(elements, axis=0)
 
-        # mask the rows nad get only 2 columns
-        df0 = table.loc[table.component == name, ['name', 'geometry']]
-        df = df0.geometry
-        df.index = df0.name
-        return df.to_dict()
+        else:
+            table = self.tables[table_name]
 
-    def check_element_type(self, table_name: str, log_issue:bool = True) -> bool:
+            # mask the rows nad get only 2 columns
+            df0 = table.loc[table.component == name, ['name', 'geometry']]
+            df = df0.geometry
+            df.index = df0.name
+            return df.to_dict()
+
+    def check_element_type(self, table_name: str, log_issue: bool = True) -> bool:
         """Check if the name `table_name` is in the element tables.
 
         Arguments:
-            table_name {str} -- Element type ('poly', 'path', etc.)
+            table_name {str} -- Element type ('poly', 'path', etc.) or 'all'
 
         Keyword Arguments:
             log_issue {bool} -- Throw an erro in the log if name missing  (default: {True})
@@ -558,9 +604,10 @@ class QElementTables(object):
         Returns:
             bool -- True if the name is valid, else False
         """
-        if not table_name in self.get_element_types():
+        if not table_name in self.get_element_types() or table_name in 'all':
             if log_issue:
-                self.logger.error(f'Element Tables: Tried to access non-existing element table: `{table_name}`')
+                self.logger.error(
+                    f'Element Tables: Tried to access non-existing element table: `{table_name}`')
             return False
         else:
             return True

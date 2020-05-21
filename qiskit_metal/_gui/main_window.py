@@ -30,7 +30,7 @@ from PyQt5 import QtWidgets
 from PyQt5.QtCore import pyqtSlot, Qt, QTimer
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (QApplication, QFileDialog, QLabel, QMainWindow,
-                             QMessageBox)
+                             QMessageBox, QDockWidget)
 
 from PyQt5.QtCore import QEventLoop
 
@@ -47,7 +47,7 @@ from .main_window_ui import Ui_MainWindow
 from .plot_window import QMainWindowPlot
 from .widgets.components_model import ComponentsTableModel
 from .widgets.log_metal import LoggingHandlerForLogWidget
-
+from typing import List
 
 class QMainWindowExtension(QMainWindowExtensionBase):
     """This contains all the functions tthat the gui needs
@@ -181,6 +181,7 @@ class MetalGUI(QMainWindowBaseHandler):
         # UIs
         self.plot_win = None  # type: QMainWindowPlot
         self.elements_win = None  # type: ElementsWindow
+        self.component_window = ComponentWidget(self, self.ui.dockComponent)
 
         self._setup_component_widget()
         self._setup_plot_widget()
@@ -282,7 +283,7 @@ class MetalGUI(QMainWindowBaseHandler):
         self.main_window.resizeDocks({self.ui.dockDesign}, {350}, Qt.Horizontal)
 
         # Log
-        self.main_window.resizeDocks({self.ui.dockLog}, {120}, Qt.Vertical)
+        self.ui.dockLog.parent().resizeDocks({self.ui.dockLog}, {120}, Qt.Vertical)
 
     def _set_element_tab(self, yesno: bool):
         if yesno:
@@ -291,7 +292,6 @@ class MetalGUI(QMainWindowBaseHandler):
             self.ui.tabWidget.setCurrentWidget(self.ui.mainViewTab)
 
     def _setup_component_widget(self):
-        self.component_window = ComponentWidget(self, self.ui.dockComponent)
         self.ui.dockComponent.setWidget(self.component_window)
 
     def _setup_plot_widget(self):
@@ -300,6 +300,19 @@ class MetalGUI(QMainWindowBaseHandler):
 
         # Add to the tabbed main view
         self.ui.mainViewTab.layout().addWidget(self.plot_win)
+
+        # Move the dock
+        self._move_dock_to_new_parent(self.ui.dockLog, self.plot_win)
+        self.ui.dockLog.parent().resizeDocks({self.ui.dockLog}, {120}, Qt.Vertical)
+
+    def _move_dock_to_new_parent(self, dock: QDockWidget,
+                                 new_parent: QMainWindow,
+                                 dock_location=Qt.BottomDockWidgetArea):
+        dock.setParent(new_parent)
+        new_parent.addDockWidget(dock_location, dock)
+        dock.setFloating(False)
+        dock.show()
+        dock.setMaximumHeight(99999)
 
     def _setup_elements_widget(self):
         """ Create main Window Elemetns  Widget """
@@ -315,7 +328,8 @@ class MetalGUI(QMainWindowBaseHandler):
         Table model that shows the summary of the components of a design in a table
         with their names, classes, and modules
         """
-        model = ComponentsTableModel(self, logger=self.logger)
+        model = ComponentsTableModel(self, logger=self.logger,
+                 tableView = self.ui.tableComponents)
         self.ui.tableComponents.setModel(model)
 
     ################################################
@@ -336,12 +350,18 @@ class MetalGUI(QMainWindowBaseHandler):
             axes = axes[num]
         return axes
 
-    def get_figure(self):
+    @property
+    def axes(self)-> List['Axes']:
+        return self.plot_win.canvas.axes
+
+    @property
+    def figure(self):
         """Return axis to the figure of the canvas
         """
         return self.plot_win.canvas.figure
 
-    def get_canvas(self) -> 'PlotCanvas':
+    @property
+    def canvas(self) -> 'PlotCanvas':
         """Get access to the canvas that handles the figure
         and axes, and their main functions.
 
@@ -350,7 +370,7 @@ class MetalGUI(QMainWindowBaseHandler):
         """
         return self.plot_win.canvas
 
-    def rebuild(self, autoscale:bool=True):
+    def rebuild(self, autoscale:bool=False):
         """Rebuild all components in the design from scratch and refresh the gui.
         """
         self.design.rebuild()
@@ -359,10 +379,11 @@ class MetalGUI(QMainWindowBaseHandler):
             self.autoscale()
 
     def refresh(self):
-        '''Refreshes everything. Overkill in general.
-        * Refreshes the design names in the gui
-        * Refreshes the table models
-        * Replots everything
+        '''
+        Refreshes everything. Overkill in general.
+            * Refreshes the design names in the gui
+            * Refreshes the table models
+            * Replots everything
 
         Warning: This does *not* rebuild the components.
         For that, call rebuild. rebuild will also
@@ -387,7 +408,6 @@ class MetalGUI(QMainWindowBaseHandler):
         Arguments:
             name {str} -- name of component to exmaine.
         """
-        self.ui.dockComponent.setWindowTitle(f'Component: {name}')
         self.component_window.set_component(name)
 
     def autoscale(self):

@@ -52,3 +52,6 @@ Icon credits:
 	
    Rebuild 
 	https://www.flaticon.com/free-icon/house-repair_1278495
+
+   Icons/failed
+	https://www.flaticon.com/free-icon/warning_595067

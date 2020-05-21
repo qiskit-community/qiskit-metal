@@ -191,9 +191,19 @@ class LoggingWindowWidget(QTextEdit):
 
     def get_all_checked(self):
         res = []
+        failed_keys = []
+
         for name, action in self.tracked_loggers.items():
-            if action.isChecked(): # WARNIGN:L TODO: this can crash if deleted
-                res += [name]
+            try: # ugly fix for delteed QAction
+                if action.isChecked(): # WARNIGN: TODO: this can crash if QObj deleted
+                    res += [name]
+            except:
+                # RuntimeError: wrapped C/C++ object of type QAction has been deleted
+                failed_keys += [name]
+
+        for name in failed_keys:
+            self.tracked_loggers.pop(name)
+
         return res
 
     def report_all_messages(self):
