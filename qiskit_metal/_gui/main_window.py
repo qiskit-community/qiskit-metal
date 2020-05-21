@@ -47,7 +47,7 @@ from .main_window_ui import Ui_MainWindow
 from .plot_window import QMainWindowPlot
 from .widgets.components_model import ComponentsTableModel
 from .widgets.log_metal import LoggingHandlerForLogWidget
-
+from typing import List
 
 class QMainWindowExtension(QMainWindowExtensionBase):
     """This contains all the functions tthat the gui needs
@@ -350,12 +350,18 @@ class MetalGUI(QMainWindowBaseHandler):
             axes = axes[num]
         return axes
 
-    def get_figure(self):
+    @property
+    def axes(self)-> List['Axes']:
+        return self.plot_win.canvas.axes
+
+    @property
+    def figure(self):
         """Return axis to the figure of the canvas
         """
         return self.plot_win.canvas.figure
 
-    def get_canvas(self) -> 'PlotCanvas':
+    @property
+    def canvas(self) -> 'PlotCanvas':
         """Get access to the canvas that handles the figure
         and axes, and their main functions.
 
@@ -364,7 +370,7 @@ class MetalGUI(QMainWindowBaseHandler):
         """
         return self.plot_win.canvas
 
-    def rebuild(self, autoscale:bool=True):
+    def rebuild(self, autoscale:bool=False):
         """Rebuild all components in the design from scratch and refresh the gui.
         """
         self.design.rebuild()
@@ -373,10 +379,11 @@ class MetalGUI(QMainWindowBaseHandler):
             self.autoscale()
 
     def refresh(self):
-        '''Refreshes everything. Overkill in general.
-        * Refreshes the design names in the gui
-        * Refreshes the table models
-        * Replots everything
+        '''
+        Refreshes everything. Overkill in general.
+            * Refreshes the design names in the gui
+            * Refreshes the table models
+            * Replots everything
 
         Warning: This does *not* rebuild the components.
         For that, call rebuild. rebuild will also

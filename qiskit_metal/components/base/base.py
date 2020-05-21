@@ -508,16 +508,12 @@ class QComponent():
         if self.design.elements.check_element_type(element_type):
             return self.design.elements.get_component(self.name, element_type)
 
-    def elements_bounds(self):
+    def geometry_bounds(self):
         """
         Return the bounds of the geometry.
-        Calls get_all and finds the bounds of this collection.
-        Uses the shapely methods.
         """
-        # for all element_type
-        # element_type = 'poly'
-        # shapes = self.get_geometry(element_type)
-        raise NotImplementedError()
+        bounds = self.design.elements.get_component_bounds(self.name)
+        return bounds
 
     def elements_plot(self, ax:'matplotlib.axes.Axes'=None, plot_kw:dict=None) -> List:
         """    Draw all the elements of the component (polys and path etc.)

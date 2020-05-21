@@ -318,12 +318,13 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionDesign"/>
-   <addaction name="actionNewComponent"/>
    <addaction name="actionComponent"/>
+   <addaction name="actionNewComponent"/>
+   <addaction name="separator"/>
    <addaction name="actionConnectors"/>
    <addaction name="actionLog"/>
-   <addaction name="actionElements"/>
    <addaction name="separator"/>
+   <addaction name="actionViewDummyLabel"/>
    <addaction name="actionScreenshot"/>
    <addaction name="actionFull_Screen"/>
   </widget>
@@ -404,18 +405,14 @@
          </property>
          <property name="icon">
           <iconset resource="main_window_rc.qrc">
-           <normaloff>:/plot/point</normaloff>:/plot/point</iconset>
+           <normaloff>:/fullscreen</normaloff>:/fullscreen</iconset>
          </property>
         </widget>
        </item>
        <item row="0" column="1">
         <widget class="QToolButton" name="btn_comp_actions">
          <property name="text">
-          <string>Actions</string>
-         </property>
-         <property name="icon">
-          <iconset resource="main_window_rc.qrc">
-           <normaloff>:/_imgs/support.png</normaloff>:/_imgs/support.png</iconset>
+          <string>Do</string>
          </property>
          <property name="popupMode">
           <enum>QToolButton::MenuButtonPopup</enum>
@@ -815,6 +812,12 @@
    <property name="text">
     <string>Design</string>
    </property>
+   <property name="toolTip">
+    <string>Show design window -- select components (show/hide)</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+D</string>
+   </property>
   </action>
   <action name="actionComponent">
    <property name="checkable">
@@ -828,16 +831,16 @@
      <normaloff>:/component</normaloff>:/component</iconset>
    </property>
    <property name="text">
-    <string>Edit</string>
+    <string>Edit component</string>
    </property>
    <property name="toolTip">
-    <string>Edit a cdesign component</string>
+    <string>Edit a component of the design (show/hide)</string>
    </property>
    <property name="statusTip">
-    <string>Edit a cdesign component</string>
+    <string>Edit a design component</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+N</string>
+    <string>Ctrl+E</string>
    </property>
   </action>
   <action name="actionElements">
@@ -854,6 +857,9 @@
    <property name="text">
     <string>Elements</string>
    </property>
+   <property name="toolTip">
+    <string>Show/hide elements table</string>
+   </property>
   </action>
   <action name="actionLog">
    <property name="checkable">
@@ -869,6 +875,12 @@
    <property name="text">
     <string>Log</string>
    </property>
+   <property name="toolTip">
+    <string>Show/hide log window</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+L</string>
+   </property>
   </action>
   <action name="actionNewComponent">
    <property name="checkable">
@@ -879,7 +891,7 @@
    </property>
    <property name="icon">
     <iconset resource="main_window_rc.qrc">
-     <normaloff>:/_imgs/support.png</normaloff>:/_imgs/support.png</iconset>
+     <normaloff>:/component-library</normaloff>:/component-library</iconset>
    </property>
    <property name="text">
     <string>Create</string>
@@ -892,6 +904,9 @@
    </property>
    <property name="whatsThis">
     <string>Create new component: Library of new design components you can create</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
    </property>
   </action>
   <action name="actionDelete_All">
@@ -1048,7 +1063,7 @@
   <action name="actionFull_Screen">
    <property name="icon">
     <iconset resource="main_window_rc.qrc">
-     <normaloff>:/plot/autozoom</normaloff>:/plot/autozoom</iconset>
+     <normaloff>:/fullscreen</normaloff>:/fullscreen</iconset>
    </property>
    <property name="text">
     <string>Full Screen</string>
@@ -1111,6 +1126,11 @@
    </property>
    <property name="text">
     <string>Metal Window </string>
+   </property>
+  </action>
+  <action name="actionViewDummyLabel">
+   <property name="text">
+    <string>View</string>
    </property>
   </action>
  </widget>

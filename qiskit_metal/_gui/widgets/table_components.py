@@ -135,7 +135,7 @@ class TableComponents(QTableView):
         # get the component name
         #model = clickedIndex.model()  # type: ComponentsTableModel
         name = index.sibling(index.row(), 0).data()
-        self.logger.info(f'Selected component {name}')
+        self.logger.debug(f'Selected component {name}')
 
         gui = self.gui
         gui.set_component(name)
@@ -157,4 +157,5 @@ class TableComponents(QTableView):
 
         # name of component
         name = index.sibling(index.row(), 0).data()
-        self.logger.info(f'Double clicked component {name}')
+        self.gui.canvas.zoom_on_component(name)
+        # self.logger.info(f'Double clicked component {name}')

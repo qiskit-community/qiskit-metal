@@ -68,7 +68,16 @@ class QMainWindowPlot(QMainWindow):
         self.canvas.auto_scale()
 
     def pan(self):
-        QMessageBox.about(self, "Pan", "Click and drag the plot screen.")
+        QMessageBox.about(self, "Pan", """Navigation help:
+
+Pan:
+(click and drag)
+Click and drag the plot screen.
+
+Zoom:
+(scroll, or right click and drag)
+Either use the mouse middle wheel to zoom in and out by scrolling,
+or use the right click and drag to select a region.""")
 
     def zoom(self):
         QMessageBox.about(self, "Zoom", "Either use the mouse middle wheel"\
