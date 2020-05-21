@@ -29,6 +29,9 @@
   <property name="toolButtonStyle">
    <enum>Qt::ToolButtonTextUnderIcon</enum>
   </property>
+  <property name="tabShape">
+   <enum>QTabWidget::Rounded</enum>
+  </property>
   <property name="dockNestingEnabled">
    <bool>true</bool>
   </property>
@@ -469,6 +472,9 @@
      </item>
      <item>
       <widget class="TableComponents" name="tableComponents">
+       <property name="sizeAdjustPolicy">
+        <enum>QAbstractScrollArea::AdjustToContents</enum>
+       </property>
        <property name="alternatingRowColors">
         <bool>true</bool>
        </property>
@@ -552,6 +558,9 @@
      </item>
      <item>
       <widget class="QTreeWidget" name="treeWidget">
+       <property name="sizeAdjustPolicy">
+        <enum>QAbstractScrollArea::AdjustToContents</enum>
+       </property>
        <property name="editTriggers">
         <set>QAbstractItemView::DoubleClicked</set>
        </property>
@@ -735,6 +744,9 @@
       <widget class="QTableView" name="tableConnectors">
        <property name="frameShadow">
         <enum>QFrame::Plain</enum>
+       </property>
+       <property name="sizeAdjustPolicy">
+        <enum>QAbstractScrollArea::AdjustToContents</enum>
        </property>
        <property name="alternatingRowColors">
         <bool>false</bool>

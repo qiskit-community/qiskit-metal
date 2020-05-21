@@ -71,6 +71,9 @@
       <property name="sizeAdjustPolicy">
        <enum>QAbstractScrollArea::AdjustToContents</enum>
       </property>
+      <property name="showDropIndicator" stdset="0">
+       <bool>false</bool>
+      </property>
       <property name="selectionMode">
        <enum>QAbstractItemView::SingleSelection</enum>
       </property>
@@ -161,7 +164,7 @@ font-weight: bold;
 color: rgb(255, 255, 255);</string>
       </property>
       <property name="text">
-       <string>Edit Source</string>
+       <string>Click to Edit Source</string>
       </property>
       <property name="icon">
        <iconset resource="main_window_rc.qrc">

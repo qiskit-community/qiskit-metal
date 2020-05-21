@@ -14,11 +14,10 @@
 
 # Zlatko Minev
 
-
-from PyQt5.QtCore import QAbstractTableModel
-from PyQt5 import Qt, QtCore, QtWidgets
-from PyQt5.QtCore import QModelIndex
 import numpy as np
+from PyQt5 import Qt, QtCore, QtWidgets
+from PyQt5.QtCore import QAbstractTableModel, QModelIndex
+from PyQt5.QtWidgets import QTableView
 
 
 class ComponentsTableModel(QAbstractTableModel):
@@ -38,10 +37,11 @@ class ComponentsTableModel(QAbstractTableModel):
     """
     __timer_interval = 500  # ms
 
-    def __init__(self, gui, logger, parent=None):
+    def __init__(self, gui, logger, parent=None, tableView: QTableView = None):
         super().__init__(parent=parent)
         self.logger = logger
         self.gui = gui
+        self._tableView = tableView # the view used to preview this model, used to refresh
         self.columns = ['Name', 'Class', 'Module']
         self._row_count = -1
 
@@ -86,14 +86,15 @@ class ComponentsTableModel(QAbstractTableModel):
             self.modelReset.emit()
 
             self._row_count = new_count
+            self._tableView.resizeColumnsToContents()
 
-    def rowCount(self, parent:QModelIndex=None):
+    def rowCount(self, parent: QModelIndex = None):
         if self.design:  # should we jsut enforce this
             return int(len(self.design.components))
         else:
             return 0
 
-    def columnCount(self, parent:QModelIndex=None):
+    def columnCount(self, parent: QModelIndex = None):
         return len(self.columns)
 
     def headerData(self, section, orientation, role=QtCore.Qt.DisplayRole):
@@ -119,7 +120,7 @@ class ComponentsTableModel(QAbstractTableModel):
         return QtCore.Qt.ItemFlags(QAbstractTableModel.flags(self, index) |
                                    QtCore.Qt.ItemIsSelectable)  # ItemIsEditable
 
-    def data(self, index:QModelIndex, role=QtCore.Qt.DisplayRole):
+    def data(self, index: QModelIndex, role=QtCore.Qt.DisplayRole):
         """ Depending on the index and role given, return data. If not
             returning data, return None (PySide equivalent of QT's
             "invalid QVariant").

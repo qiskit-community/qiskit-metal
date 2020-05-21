@@ -159,9 +159,12 @@ class ComponentWidget(QTabWidget):
 
         self.component_name = None  # type: str
 
-        # Parametr model
+        # Parametr model and table view
         self.model = ComponentTableModel(gui, self)
         self.ui.tableView.setModel(self.model)
+        # table = self.ui.tableView
+        # table.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel);
+        # table.horizontalScrollBar().setSingleStep(1)
 
         # Source Code
         self.src_doc = create_QTextDocument(self.ui.textSource)
@@ -209,6 +212,7 @@ class ComponentWidget(QTabWidget):
         self._set_help()
 
         self.force_refresh()
+        self.ui.tableView.resizeColumnsToContents() # resize columns
 
     def force_refresh(self):
         self.model.refresh()

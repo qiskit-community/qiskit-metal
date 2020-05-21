@@ -328,7 +328,8 @@ class MetalGUI(QMainWindowBaseHandler):
         Table model that shows the summary of the components of a design in a table
         with their names, classes, and modules
         """
-        model = ComponentsTableModel(self, logger=self.logger)
+        model = ComponentsTableModel(self, logger=self.logger,
+                 tableView = self.ui.tableComponents)
         self.ui.tableComponents.setModel(model)
 
     ################################################
