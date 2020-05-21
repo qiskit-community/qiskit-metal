@@ -23,6 +23,9 @@
     <file alias="metal_logo">_imgs/metal_logo.png</file>
     <file alias="refresh">_imgs/refresh.png</file>
   </qresource>
+  <qresource prefix="basic">
+    <file alias="warning">_imgs/icons/warning.png</file>
+  </qresource>
   <qresource>
     <file alias="force_refresh">_imgs/force_refresh.png</file>
   </qresource>

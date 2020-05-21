@@ -31,6 +31,7 @@ class Ui_ComponentWidget(object):
         self.tableView.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.tableView.setFrameShadow(QtWidgets.QFrame.Plain)
         self.tableView.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
+        self.tableView.setProperty("showDropIndicator", False)
         self.tableView.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
         self.tableView.setShowGrid(False)
         self.tableView.setObjectName("tableView")

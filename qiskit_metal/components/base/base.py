@@ -120,6 +120,9 @@ class QComponent():
         # analysis results
         self.metadata = Dict()
 
+        # Status: usedd to handle building of a compoentn and checking if it succeedded or failed.
+        self.status = 'not built'
+
         # Names of connectors associated with this components.
         # Used to rename, etc.
         self._connector_names = set()
@@ -275,8 +278,11 @@ class QComponent():
         '''
         raise NotImplementedError()
 
+    #TODO: Maybe call this function build
+    #TODO: Capture error here and save to log as the latest error
     def do_make(self):
         """Actually make or remake the component"""
+        self.status='failed'
         if self._made:  # already made, just remaking
             # TODO: this is probably very inefficient, design more efficient way
             self.design.elements.delete_component(self.name)
@@ -284,6 +290,7 @@ class QComponent():
         else:  # first time making
             self.make()
             self._made = True  # what if make throws an error part way?
+        self.status='good'
 
     rebuild = do_make
 
