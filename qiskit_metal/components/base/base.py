@@ -217,6 +217,11 @@ class QComponent():
         '''The names of the connectors'''
         return self._connector_names
 
+    @property
+    def component_id(self) -> int:
+        '''The unique id of component within a design.'''
+        return self._component_id
+
     def _add_to_design(self):
         ''' Add self to design objects dictionary.
             Function here, in case we want to generalize later.

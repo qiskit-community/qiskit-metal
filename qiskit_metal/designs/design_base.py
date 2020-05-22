@@ -222,8 +222,8 @@ class QDesign():
 
     def get_new_QComp_id(self):
         ''' Give new id that QComp can use.'''
-        self.instance_counter += 1
-        return self.instance_counter
+        self._instance_counter += 1
+        return self._instance_counter
 
 
 
