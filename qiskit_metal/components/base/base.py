@@ -109,6 +109,7 @@ class QComponent():
 
         self._name = name
         self._design = design  # pointer to parent
+        self._component_id = 0
 
         self._class_name = self._get_unique_class_name()
 
@@ -220,6 +221,7 @@ class QComponent():
         ''' Add self to design objects dictionary.
             Function here, in case we want to generalize later.
         '''
+        self._component_id = self.design.get_new_QComp_id()
         self.design.components[self.name] = self
 
 

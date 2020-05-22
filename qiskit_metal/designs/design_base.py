@@ -89,6 +89,7 @@ class QDesign():
 
         # Key attributes related to physical content of the design
         # These will be saved
+        self._instance_counter = 0
         self._components = Dict()
         self._connectors = Dict()
         self._variables = Dict()
@@ -183,6 +184,11 @@ class QDesign():
         '''
         return self._elements
 
+    @property 
+    def instance_counter(self) -> int:
+        '''Return unique number for each instance.'''
+        return self._instance_counter
+
 #########Proxy properties##################################################
 
     def get_chip_size(self, chip_name:str='main'):
@@ -213,6 +219,13 @@ class QDesign():
         # TODO: add element tables here
         self._elements.clear_all_tables()
         # TODO: add dependency handling here
+
+    def get_new_QComp_id(self):
+        ''' Give new id that QComp can use.'''
+        self.instance_counter += 1
+        return self.instance_counter
+
+
 
     def rebuild(self):  # remake_all_components
         """
