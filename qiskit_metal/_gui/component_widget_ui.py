@@ -91,7 +91,7 @@ class Ui_ComponentWidget(object):
         ComponentWidget.addTab(self.tabSource, icon3, "")
 
         self.retranslateUi(ComponentWidget)
-        ComponentWidget.setCurrentIndex(0)
+        ComponentWidget.setCurrentIndex(2)
         self.btn_edit_src.clicked.connect(ComponentWidget.edit_source)
         QtCore.QMetaObject.connectSlotsByName(ComponentWidget)
 

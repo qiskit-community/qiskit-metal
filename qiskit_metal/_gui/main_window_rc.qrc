@@ -1,5 +1,6 @@
 <RCC>
   <qresource>
+    <file alias="variables">_imgs/v2-flat/formula.png</file>
     <file alias="component-library">_imgs/v2-flat/book.png</file>
     <file alias="------rebuild">_imgs/rebuild.png</file>
     <file alias="rebuild">_imgs/v2-flat/wrench2.png</file>

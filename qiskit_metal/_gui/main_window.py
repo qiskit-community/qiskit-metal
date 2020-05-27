@@ -47,6 +47,7 @@ from .main_window_ui import Ui_MainWindow
 from .plot_window import QMainWindowPlot
 from .widgets.components_model import ComponentsTableModel
 from .widgets.log_metal import LogHandler_for_QTextLog
+from .widgets.variable_table import PropertyTableWidget
 from typing import List
 
 class QMainWindowExtension(QMainWindowExtensionBase):
@@ -182,11 +183,13 @@ class MetalGUI(QMainWindowBaseHandler):
         self.plot_win = None  # type: QMainWindowPlot
         self.elements_win = None  # type: ElementsWindow
         self.component_window = ComponentWidget(self, self.ui.dockComponent)
+        self.variables_window = PropertyTableWidget(self, gui = self)
 
         self._setup_component_widget()
         self._setup_plot_widget()
         self._setup_design_components_widget()
         self._setup_elements_widget()
+        self._setup_variables_widget()
 
         # Show and raise
         self.main_window.show()
@@ -235,6 +238,8 @@ class MetalGUI(QMainWindowBaseHandler):
         self.plot_win.set_design(design)
         self.elements_win.force_refresh()
 
+        self.variables_window.set_design(design)
+
         # Refresh
         self.refresh()
 
@@ -280,6 +285,7 @@ class MetalGUI(QMainWindowBaseHandler):
         self.main_window.splitDockWidget(self.ui.dockDesign, self.ui.dockComponent, Qt.Vertical)
         self.main_window.tabifyDockWidget(self.ui.dockDesign, self.ui.dockNewComponent)
         self.main_window.tabifyDockWidget(self.ui.dockNewComponent, self.ui.dockConnectors)
+        self.main_window.tabifyDockWidget(self.ui.dockConnectors, self.ui.dockVariables)
         self.ui.dockDesign.raise_()
         self.main_window.resizeDocks({self.ui.dockDesign}, {350}, Qt.Horizontal)
 
@@ -294,6 +300,9 @@ class MetalGUI(QMainWindowBaseHandler):
 
     def _setup_component_widget(self):
         self.ui.dockComponent.setWidget(self.component_window)
+
+    def _setup_variables_widget(self):
+        self.ui.dockVariables.setWidget(self.variables_window)
 
     def _setup_plot_widget(self):
         """ Create main Window Widget Plot """

@@ -58,7 +58,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <property name="usesScrollButtons">
        <bool>false</bool>
@@ -320,6 +320,7 @@
    <addaction name="actionDesign"/>
    <addaction name="actionComponent"/>
    <addaction name="actionNewComponent"/>
+   <addaction name="actionVariables"/>
    <addaction name="separator"/>
    <addaction name="actionConnectors"/>
    <addaction name="actionLog"/>
@@ -753,6 +754,33 @@
     </layout>
    </widget>
   </widget>
+  <widget class="QDockWidget" name="dockVariables">
+   <property name="windowTitle">
+    <string>Variables</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockVariablesContents">
+    <layout class="QVBoxLayout" name="vlayoutVariables">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+    </layout>
+   </widget>
+  </widget>
   <action name="actionSave">
    <property name="icon">
     <iconset resource="main_window_rc.qrc">
@@ -1131,6 +1159,27 @@
   <action name="actionViewDummyLabel">
    <property name="text">
     <string>View</string>
+   </property>
+  </action>
+  <action name="actionVariables">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="main_window_rc.qrc">
+     <normaloff>:/variables</normaloff>:/variables</iconset>
+   </property>
+   <property name="text">
+    <string>Variables</string>
+   </property>
+   <property name="toolTip">
+    <string>Edit design variables</string>
+   </property>
+   <property name="shortcut">
+    <string>Meta+V</string>
    </property>
   </action>
  </widget>
@@ -1643,6 +1692,38 @@
     <hint type="destinationlabel">
      <x>536</x>
      <y>387</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionVariables</sender>
+   <signal>triggered(bool)</signal>
+   <receiver>dockVariables</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>144</x>
+     <y>632</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionVariables</sender>
+   <signal>triggered()</signal>
+   <receiver>dockVariables</receiver>
+   <slot>raise()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>144</x>
+     <y>632</y>
     </hint>
    </hints>
   </connection>

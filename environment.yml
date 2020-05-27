@@ -8,6 +8,7 @@ dependencies:
 - addict
 - descartes
 - docutils
+- geopandas
 - ipython
 - matplotlib
 - numpy
@@ -16,6 +17,7 @@ dependencies:
 - pygments
 - pyqode.python
 - pyqt
+- qutip
 - scipy
 - shapely
 - geopandas
