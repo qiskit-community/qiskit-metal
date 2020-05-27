@@ -21,7 +21,6 @@ See the docstring of QComponent
 @date: 2019
 """
 import pandas as pd
-import logging, pprint
 import logging
 import pprint
 import inspect
@@ -109,11 +108,13 @@ class QComponent():
 
         self._name = name
         self._design = design  # pointer to parent
+
         self._component_id = 0
 
         self._class_name = self._get_unique_class_name()
 
-        self.options = self.get_template_options(design=design, component_template=component_template)
+        self.options = self.get_template_options(
+            design=design, component_template=component_template)
         if options:
             self.options.update(options)
 
@@ -183,7 +184,8 @@ class QComponent():
         if template_key not in design.template_options:
             if not component_template:
                 component_template = cls._gather_all_children_options()
-            design.template_options[template_key] = deepcopy(component_template)
+            design.template_options[template_key] = deepcopy(
+                component_template)
 
     @property
     def name(self) -> str:
@@ -224,18 +226,17 @@ class QComponent():
 
     def _add_to_design(self):
         ''' Add self to design objects dictionary.
-            Function here, in case we want to generalize later.
+            Method will obtain an unique id for the component within a design, THEN add itself to design.
         '''
-        self._component_id = self.design._get_new_QComp_id()
+        self._component_id = self.design._get_new_qcomponent_id()
         self.design.components[self.name] = self
-
 
     @classmethod
     def get_template_options(cls,
-                               design: 'QDesign',
-                               component_template: Dict = None,
-                               logger_: logging.Logger = None,
-                               template_key: str = None) -> Dict:
+                             design: 'QDesign',
+                             component_template: Dict = None,
+                             logger_: logging.Logger = None,
+                             template_key: str = None) -> Dict:
         """
         Creates template options for the Metal Componnet class required for the class
         to function, based on teh design template; i.e., be created, made, and rendered. Provides the blank option
@@ -260,7 +261,8 @@ class QComponent():
             template_key = cls._get_unique_class_name()
 
         if template_key not in design.template_options:
-            cls._register_class_with_design(design, template_key, component_template)
+            cls._register_class_with_design(
+                design, template_key, component_template)
 
         if template_key not in design.template_options:
             logger_ = logger_ or design.logger
@@ -285,11 +287,11 @@ class QComponent():
         '''
         raise NotImplementedError()
 
-    #TODO: Maybe call this function build
-    #TODO: Capture error here and save to log as the latest error
+    # TODO: Maybe call this function build
+    # TODO: Capture error here and save to log as the latest error
     def do_make(self):
         """Actually make or remake the component"""
-        self.status='failed'
+        self.status = 'failed'
         if self._made:  # already made, just remaking
             # TODO: this is probably very inefficient, design more efficient way
             self.design.elements.delete_component(self.name)
@@ -297,7 +299,7 @@ class QComponent():
         else:  # first time making
             self.make()
             self._made = True  # what if make throws an error part way?
-        self.status='good'
+        self.status = 'good'
 
     rebuild = do_make
 
@@ -460,7 +462,6 @@ class QComponent():
  module : {b}{self.__class__.__module__}{e}
  options: \n{pprint.pformat(self.options)}"""
 
-
     ############################################################################
     # Geometry handling of created elements
 
@@ -522,7 +523,7 @@ class QComponent():
         bounds = self.design.elements.get_component_bounds(self.name)
         return bounds
 
-    def elements_plot(self, ax:'matplotlib.axes.Axes'=None, plot_kw:dict=None) -> List:
+    def elements_plot(self, ax: 'matplotlib.axes.Axes' = None, plot_kw: dict = None) -> List:
         """    Draw all the elements of the component (polys and path etc.)
 
         Keyword Arguments:
@@ -539,7 +540,6 @@ class QComponent():
                 q1.elements_plot(ax)
         """
         elements = self.elements_list()
-        plot_kw={}
+        plot_kw = {}
         draw.mpl.render(elements, ax=ax, kw=plot_kw)
         return elements
-
