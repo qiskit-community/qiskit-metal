@@ -190,10 +190,12 @@ class QDesign():
         '''
         return self._elements
 
-    #For user of the design class to know the lastest id assigned to QComponent.
     @property
     def qcomponent_latest_assigned_id(self) -> int:
-        '''Return unique number for each instance.'''
+        '''
+        Return unique number for each instance.
+        For user of the design class to know the lastest id assigned to QComponent.
+        '''
         return self._qcomponent_latest_assigned_id
 
 #########Proxy properties##################################################
