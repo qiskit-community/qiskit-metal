@@ -226,7 +226,7 @@ class QComponent():
         ''' Add self to design objects dictionary.
             Function here, in case we want to generalize later.
         '''
-        self._component_id = self.design.get_new_QComp_id()
+        self._component_id = self.design._get_new_QComp_id()
         self.design.components[self.name] = self
 
 

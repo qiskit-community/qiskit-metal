@@ -220,7 +220,7 @@ class QDesign():
         self._elements.clear_all_tables()
         # TODO: add dependency handling here
 
-    def get_new_QComp_id(self):
+    def _get_new_QComp_id(self):
         ''' Give new id that QComp can use.'''
         self._instance_counter += 1
         return self._instance_counter
