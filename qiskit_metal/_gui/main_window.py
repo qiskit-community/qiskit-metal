@@ -46,7 +46,7 @@ from .main_window_base import QMainWindowBaseHandler, QMainWindowExtensionBase
 from .main_window_ui import Ui_MainWindow
 from .plot_window import QMainWindowPlot
 from .widgets.components_model import ComponentsTableModel
-from .widgets.log_metal import LoggingHandlerForLogWidget
+from .widgets.log_metal import LogHandler_for_QTextLog
 from typing import List
 
 class QMainWindowExtension(QMainWindowExtensionBase):
@@ -240,12 +240,12 @@ class MetalGUI(QMainWindowBaseHandler):
 
     def _setup_logger(self):
         super()._setup_logger()
-
         if 1:  # add the metal logger to the gui
             logger_name = 'metal'
-            self.ui.log_text.add_logger(logger_name)
-            self._log_handler_design = LoggingHandlerForLogWidget(
-                logger_name, self, self.ui.log_text)
+            # self.ui.log_text.add_logger(logger_name) # done inside LogHandler_for_QTextLog
+            self._log_handler_design = LogHandler_for_QTextLog(
+                logger_name, self, self.ui.log_text,
+                level = self.logger.level)
 
             logger = logging.getLogger(logger_name)
             logger.addHandler(self._log_handler_design)
@@ -265,8 +265,9 @@ class MetalGUI(QMainWindowBaseHandler):
     def _ui_adjustments(self):
         """Any touchups to the loaded ui that need be done soon
         """
-        # LoggingWindowWidget
+        # QTextEditLogger
         self.ui.log_text.img_path = Path(self.path_imgs)
+        self.ui.log_text.dock_window = self.ui.dockLog
 
         # Add a second label to the status bar
         status_bar = self.main_window.statusBar()

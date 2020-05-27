@@ -212,7 +212,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_4.setSpacing(0)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
-        self.log_text = LoggingWindowWidget(self.dockWidgetContents_4)
+        self.log_text = QTextEditLogger(self.dockWidgetContents_4)
         self.log_text.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByKeyboard|QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextBrowserInteraction|QtCore.Qt.TextSelectableByKeyboard|QtCore.Qt.TextSelectableByMouse)
         self.log_text.setObjectName("log_text")
         self.verticalLayout_4.addWidget(self.log_text)
@@ -572,6 +572,6 @@ class Ui_MainWindow(object):
         self.actionClose_window.setText(_translate("MainWindow", "Close window"))
         self.actionMetal_Window.setText(_translate("MainWindow", "Metal Window "))
         self.actionViewDummyLabel.setText(_translate("MainWindow", "View"))
-from .widgets.log_metal import LoggingWindowWidget
+from .widgets.log_metal import QTextEditLogger
 from .widgets.table_components import TableComponents
 from . import main_window_rc_rc

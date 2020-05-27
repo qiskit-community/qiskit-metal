@@ -673,7 +673,7 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="LoggingWindowWidget" name="log_text">
+      <widget class="QTextEditLogger" name="log_text">
        <property name="documentTitle">
         <string>Log</string>
        </property>
@@ -1136,7 +1136,7 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>LoggingWindowWidget</class>
+   <class>QTextEditLogger</class>
    <extends>QTextEdit</extends>
    <header>.widgets.log_metal</header>
   </customwidget>

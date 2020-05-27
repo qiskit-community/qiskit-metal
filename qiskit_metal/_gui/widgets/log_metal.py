@@ -16,104 +16,100 @@ import collections
 from pathlib import Path
 from PyQt5 import QtGui
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QTextEdit, QAction
+from PyQt5.QtWidgets import QTextEdit, QAction, QDockWidget
 
-from ... import config, __version__
+from ... import config, __version__, Dict
 from .._handle_qt_messages import catch_exception_slot_pyqt
+from ...toolbox_python.utility_functions import clean_name, monkey_patch
+__all__ = ['QTextEditLogger', 'LogHandler_for_QTextLog']
 
-__all__ = ['LoggingWindowWidget', 'LoggingHandlerForLogWidget']
 
-
-class LoggingWindowWidget(QTextEdit):
+class QTextEditLogger(QTextEdit):
 
     timestamp_len = 19
     _logo = 'metal_logo.png'
 
-    def __init__(self, img_path='/'):
+    def __init__(self, img_path='/', dock_window:QDockWidget=None):
         """
         Widget to handle logging. Based on QTextEdit, an advanced WYSIWYG viewer/editor
         supporting rich text formatting using HTML-style tags. It is optimized to handle
         large documents and to respond quickly to user input.
+
+        Get as:
+            gui.ui.log_text
         """
         super().__init__()
 
         self.img_path = img_path
+        self.dock_window = dock_window
 
-        # handles for hte loggers
-        self.handlers = []
+        # handles the loggers
+        self.tracked_loggers = Dict() # dict for what loggers we track and if we should show or not
+        self.handlers = Dict()
+        self._actions = Dict() # menu actions. Must be an ordered Dict!
+        self._auto_scroll = True # autoscroll to end or not
+        self._show_timestamps = False
+        self._level_name = ''
 
         # Props of the Widget
         self.setTextInteractionFlags(Qt.TextSelectableByMouse | Qt.TextSelectableByKeyboard)
         self.text_format = QtGui.QTextCharFormat()
         self.text_format.setFontFamily('Consolas')
 
-        # props
-        self.tracked_loggers = {}
         self.logged_lines = collections.deque([], config.GUI_CONFIG.logger.num_lines)
-
-        # Menu - setup_menu
-        self.debug = None
-        self.info = None
-        self.warning = None
-        self.error = None
-        self.separator0 = None
-        self.action_show_times = None
-        self.actino_scroll_auto = None
-        self.action_print_tips = None
-        self.separator = None
 
         self.setup_menu()
 
+    def toggle_autoscroll(self, checked: bool):
+        self._auto_scroll = bool(checked)
+
+    def toggle_timestamps(self, checked: bool):
+        self._show_timestamps = bool(checked)
+        self.show_all_messages()
+
     def setup_menu(self):
 
-        # the widget displays its QWidget::actions() as context menu.
-        # i.e., local context menu
+        # Behaviour for menu: the widget displays its QWidget::actions() as context menu.
+        # i.e., a local context menu
         self.setContextMenuPolicy(Qt.ActionsContextMenu)
 
-        # Debug
-        self.debug = QAction('Filter level:  Debug', self)
-        self.info = QAction('Filter level:  Info', self)
-        self.warning = QAction('Filter level:  Warning', self)
-        self.error = QAction('Filter level:  Error', self)
+        ###################
+        ### Click actions
+        actions = self._actions
 
-        # Debug: Calls
-        def make_f(lvl):
+        actions.clear_log = QAction('&Clear log', self, triggered=self.clear)
+        actions.print_tips = QAction('&Show tips ', self, triggered=self.print_all_tips)
+
+        actions.separator = QAction(self)
+        actions.separator.setSeparator(True)
+
+        ###################
+        ### Toggle actions
+        self.actino_scroll_auto = QAction('&Autoscroll', self, checkable=True, checked=True,
+            toggled=self.toggle_autoscroll)
+
+        self.action_show_times = QAction('&Show timestamps', self, checkable=True, checked=False,
+            toggled=self.toggle_timestamps)
+
+        ###################
+        ### Filter level actions
+        def make_trg(lvl):
             name = f'set_level_{lvl}'
             setattr(self, name, lambda: self.set_level(lvl))  # self.set_level(lvl)
             func = getattr(self, name)
             return func
+        actions.debug = QAction('Set filter level:  Debug', self, triggered=make_trg(logging.DEBUG))
+        actions.info = QAction('Set filter level:  Info', self, triggered=make_trg(logging.INFO))
+        actions.warning = QAction('Set filter level:  Warning', self, triggered=make_trg(logging.WARNING))
+        actions.error = QAction('Set filter level:  Error', self, triggered=make_trg(logging.ERROR))
 
-        self.debug.triggered.connect(make_f(logging.DEBUG))  # make_f(logging.DEBUG))
-        self.info.triggered.connect(make_f(logging.INFO))
-        self.warning.triggered.connect(make_f(logging.WARNING))
-        self.error.triggered.connect(make_f(logging.ERROR))
+        actions.separator2 = QAction(self)
+        actions.separator2.setSeparator(True)
 
-        #self.separator0 = QAction('----------------', self)
-        #self.separator0.setEnabled(False)
-        #self.addAction(self.separator0)
+        actions.loggers = QAction('Show/hide messages for logger:', self, enabled=False)
 
-        # Other menu buttons
-        self.action_show_times = QAction('Display timestamps', self)
-        self.action_show_times.setCheckable(True)
-        self.action_show_times.setChecked(False)
-        self.action_show_times.triggered.connect(self.report_all_messages)
-
-
-        self.actino_scroll_auto = QAction('Autoscroll', self)
-        self.actino_scroll_auto.setCheckable(True)
-        self.actino_scroll_auto.setChecked(True)
-
-        self.action_print_tips = QAction('Print all tips', self)
-        self.action_print_tips.triggered.connect(self.print_all_tips)
-
-        # Add actions to menu
-        self.addAction(self.action_print_tips)
-        self.addAction(self.action_show_times)
-        self.addAction(self.actino_scroll_auto)
-        self.addAction(self.debug)
-        self.addAction(self.info)
-        self.addAction(self.warning)
-        self.addAction(self.error)
+        # Add actions to actin context menu
+        self.addActions(list(actions.values()))
 
     def welcome_message(self):
         img_txt = ''
@@ -147,68 +143,93 @@ class LoggingWindowWidget(QTextEdit):
         """Prints all availabel tips in the log window
         """
         for tip in config.GUI_CONFIG['tips']:
-            self.log_message(f'''<span class="INFO">{' '*self.timestamp_len} \u2022 {tip} </span>''')
+            self.log_message(f'''<br><span class="INFO">{' '*self.timestamp_len} \u2022 {tip} </span>''')
 
-    def set_level(self, level):
+    def set_level(self, level:int):
         """Set level on all handelrs
 
         Arguments:
             level {[logging.level]} -- [eg.., logging.ERROR]
         """
-        #print(f'Setting level: {level}')
-        if self.handlers:
-            for handler in self.handlers:
-                handler.setLevel(level)
+        print(f'Setting level: {level}')
+        self.set_window_title_level(level)
+        for name, handler in self.handlers.items():
+            handler.setLevel(level)
 
-    def add_logger(self, name):
-        """Adds a logger name to the widget.
-        Does not actully take in the logger itself.
+    def set_window_title_level(self, level:int):
+        self._level_name = logging.getLevelName(level).lower()
+        if self._level_name not in ['']:
+            self.dock_window.setWindowTitle(f'Log  ({self._level_name})')
+        else:
+            self.dock_window.setWindowTitle(f'Log (right click log for options)')
+        return self._level_name
 
-            - adds name to tracked_loggers, as QAction
-            - adds an action to the menu
+    def add_logger(self, name: str, handler: logging.Handler):
+        """
+        Adds a logger to the widget.
 
-        Logger is added with
+            - adds `true bool`   to self.tracked_loggers for on/off to show
+            - adds `the handler` in self.handlers
+            - adds an action to the menu for the self.traceked_loggers
+
+        For example, a logger handler is added with
             gui.logger.addHandler(self._log_handler)
         where
-            _log_handler is LoggingHandlerForLogWidget
+            _log_handler is LogHandler_for_QTextLog
 
         Arguments:
             name {string} -- Name of logger to be added
+            handler {logging.Handler} -- handler
         """
         if name in self.tracked_loggers:
             return
 
+        self.tracked_loggers[name] = True
+        self.handlers[name] = handler # can this be a problem if handler has multiple names?
+
+        #############################################
+        # Monkey patch add function
+        func_name = f'toggle_{clean_name(name)}'
+        def toggle_show_log(self2, val:bool):
+            """Toggle the value of the
+
+            Arguments:
+                self2 {QTextEdit} -- self
+                val {bool} -- T/F
+
+            Example:
+                <bound method QTextEditLogger.add_logger.<locals>.toggle_show_log
+                of <qiskit_metal._gui.widgets.log_metal.QTextEditLogger object at 0x7fce3a500c18>>
+            """
+            self2.tracked_loggers[name] = bool(val)
+
+        monkey_patch(self, toggle_show_log, func_name=func_name)
+        #############################################
+
         # Add action
-        self.tracked_loggers[name] = QAction('View ' + name, self)
-        action = self.tracked_loggers[name]
-        action.setCheckable(True)
-        action.setChecked(True)  # show the logging messages
-        action.triggered.connect(self.report_all_messages)
+        action =  QAction(f' - {name}', self,
+                    checkable = True, checked=True,
+                    triggered = getattr(self, func_name))
+        self._actions[f'logger_{name}'] = action
         self.addAction(action)
 
-        # style -- move
+        # style TODO: move
         self.document().setDefaultStyleSheet(config.GUI_CONFIG.logger.style)
+
+        # is this the first logger we added
+        if len(self.tracked_loggers) == 1:
+            self.set_window_title_level(handler.level)
 
     def get_all_checked(self):
         res = []
-        failed_keys = []
-
-        for name, action in self.tracked_loggers.items():
-            try: # ugly fix for delteed QAction
-                if action.isChecked(): # WARNIGN: TODO: this can crash if QObj deleted
-                    res += [name]
-            except:
-                # RuntimeError: wrapped C/C++ object of type QAction has been deleted
-                failed_keys += [name]
-
-        for name in failed_keys:
-            self.tracked_loggers.pop(name)
-
+        for name, isChecked in self.tracked_loggers.items():
+            if isChecked:
+                res += [name]
         return res
 
-    def report_all_messages(self):
+    def show_all_messages(self):
         """
-        Report all lines form scratch
+        Clear and reprint all log lines, thus refreshing toggles for timestamp, etc.
         """
         self.clear()
         for name, record in self.logged_lines:
@@ -239,7 +260,7 @@ class LoggingWindowWidget(QTextEdit):
 
             if not self.action_show_times.isChecked():
                 # remove the timestamp -- assumes that this has been formatted
-                # with pre tag by LoggingHandlerForLogWidget
+                # with pre tag by LogHandler_for_QTextLog
                 res = message.split('<pre>', 1)
                 if len(res) == 2:
                     message = res[0] + '<pre>' + res[1][1+self.timestamp_len:]
@@ -263,15 +284,16 @@ class LoggingWindowWidget(QTextEdit):
         """
         Call on clsoe window to remove handlers from the logger
         """
-        for handler in self.handlers:
+        for name, handler in self.handlers.items():
             if handler in logger.handlers:
                 logger.handlers.remove(handler)
 
 
-class LoggingHandlerForLogWidget(logging.Handler):
+class LogHandler_for_QTextLog(logging.Handler):
 
     def __init__(self, name, parent,
-                 log_panel: LoggingWindowWidget, log_string=None):
+                 log_qtextedit: QTextEditLogger, log_string=None,
+                 level:int=logging.NOTSET):
         """
         Class to handle GUI logging.
         Handler instances dispatch logging events to specific destinations.
@@ -285,21 +307,20 @@ class LoggingHandlerForLogWidget(logging.Handler):
         """
         super().__init__()
 
-        # Params
         self.name = name
-        self.log_panel = parent.ui.log_text
+        self.log_qtextedit = log_qtextedit
+        self.setLevel(int(level))
 
         # Formatter
         if isinstance(log_string, str):
             self._log_string = log_string
         else:
-            self._log_string = f'%(asctime).{LoggingWindowWidget.timestamp_len}s %(name)s: %(message)s [%(module)s.%(funcName)s]'
+            self._log_string = f'%(asctime).{QTextEditLogger.timestamp_len}s %(name)s: %(message)s [%(module)s.%(funcName)s]'
         self._log_formatter = logging.Formatter(self._log_string)
         self.setFormatter(self._log_formatter)
 
-        # Add formatter
-        self.log_panel.add_logger(name)
-        self.log_panel.handlers += [self]
+        # Add formatter to
+        self.log_qtextedit.add_logger(name, self)
 
     def emit(self, record):
         """
@@ -310,10 +331,10 @@ class LoggingHandlerForLogWidget(logging.Handler):
             record {[LogRecord]} -- [description]
         """
         #print(record)
-        #self.log_panel.record = record
-        #self.log_panel.zz = self
+        #self.log_qtextedit.record = record
+        #self.log_qtextedit.zz = self
 
         html_record = html.escape(self.format(record))
         html_log_message = '<span class="%s"><pre>%s</pre></span>' % (
             record.levelname, html_record)
-        self.log_panel.log_message_to(self.name, html_log_message)
+        self.log_qtextedit.log_message_to(self.name, html_log_message)
