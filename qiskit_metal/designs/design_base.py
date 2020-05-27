@@ -86,14 +86,14 @@ class QDesign():
     __i_am_design__ = True
 
     def __init__(self, metadata: dict = None):
-        """_instance_counter -- Used to keep a tally and ID of all components within an instanziation of a design.  
+        """_counter_qcomponents -- Used to keep a tally and ID of all components within an instanziation of a design.  
                                 A component is added to a design by base._add_to_design with init of a comoponent.
                                 During init of component, design class provides an unique id for each instance of 
                                 component being added to design.  Note, if a component is removed from the design, 
                                 the ID of removed component should not be used again.  However, if a component is 
                                 renamed, then the ID should continute to be used. 
         """
-        self._instance_counter = 0
+        self._counter_qcomponents = 0
 
         # Key attributes related to physical content of the design
         # These will be saved
@@ -193,7 +193,7 @@ class QDesign():
     @property
     def instance_counter(self) -> int:
         '''Return unique number for each instance.'''
-        return self._instance_counter
+        return self._counter_qcomponents
 
 #########Proxy properties##################################################
 
@@ -228,8 +228,8 @@ class QDesign():
 
     def _get_new_qcomponent_id(self):
         ''' Give new id that QComponent can use.'''
-        self._instance_counter += 1
-        return self._instance_counter
+        self._counter_qcomponents += 1
+        return self._counter_qcomponents
 
     def rebuild(self):  # remake_all_components
         """
