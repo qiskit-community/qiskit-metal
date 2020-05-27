@@ -86,14 +86,14 @@ class QDesign():
     __i_am_design__ = True
 
     def __init__(self, metadata: dict = None):
-        """_counter_qcomponents -- Used to keep a tally and ID of all components within an instanziation of a design.  
+        """_qcomponent_latest_assigned_id -- Used to keep a tally and ID of all components within an instanziation of a design.  
                                 A component is added to a design by base._add_to_design with init of a comoponent.
                                 During init of component, design class provides an unique id for each instance of 
                                 component being added to design.  Note, if a component is removed from the design, 
                                 the ID of removed component should not be used again.  However, if a component is 
                                 renamed, then the ID should continute to be used. 
         """
-        self._counter_qcomponents = 0
+        self._qcomponent_latest_assigned_id = 0
 
         # Key attributes related to physical content of the design
         # These will be saved
@@ -190,10 +190,11 @@ class QDesign():
         '''
         return self._elements
 
+    #For user of the design class to know the lastest id assigned to QComponent.
     @property
-    def instance_counter(self) -> int:
+    def qcomponent_latest_assigned_id(self) -> int:
         '''Return unique number for each instance.'''
-        return self._counter_qcomponents
+        return self._qcomponent_latest_assigned_id
 
 #########Proxy properties##################################################
 
@@ -228,8 +229,8 @@ class QDesign():
 
     def _get_new_qcomponent_id(self):
         ''' Give new id that QComponent can use.'''
-        self._counter_qcomponents += 1
-        return self._counter_qcomponents
+        self._qcomponent_latest_assigned_id += 1
+        return self._qcomponent_latest_assigned_id
 
     def rebuild(self):  # remake_all_components
         """
