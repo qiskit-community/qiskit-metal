@@ -159,7 +159,7 @@ class QTextEditLogger(QTextEdit):
     def set_window_title_level(self, level:int):
         self._level_name = logging.getLevelName(level).lower()
         if self._level_name not in ['']:
-            self.dock_window.setWindowTitle(f'Log  ({self._level_name})')
+            self.dock_window.setWindowTitle(f'Log  (filter >= {self._level_name})')
         else:
             self.dock_window.setWindowTitle(f'Log (right click log for options)')
         return self._level_name
