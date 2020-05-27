@@ -195,6 +195,21 @@ class QDesign():
 
 #########General methods###################################################
 
+    def rename_variable(self, old_key: str, new_key: str):
+        """
+        Renames a variable in the variables dictionary.
+        Preserves order
+
+        Arguments:
+            old_key {str} -- previous variable name
+            new_key {str} -- new variable name
+        """
+        keys = list(self._variables.keys())
+        values = list(self._variables.values())
+
+        keys[keys.index(old_key)] = new_key
+        self._variables = Dict(zip(keys, values))
+
     def delete_all_connectors(self):
         '''
         Clear all connectors in the design.

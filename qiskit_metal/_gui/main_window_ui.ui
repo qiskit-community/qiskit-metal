@@ -320,6 +320,7 @@
    <addaction name="actionDesign"/>
    <addaction name="actionComponent"/>
    <addaction name="actionNewComponent"/>
+   <addaction name="actionVariables"/>
    <addaction name="separator"/>
    <addaction name="actionConnectors"/>
    <addaction name="actionLog"/>
@@ -619,8 +620,8 @@
   <widget class="QDockWidget" name="dockLog">
    <property name="minimumSize">
     <size>
-     <width>20</width>
-     <height>10</height>
+     <width>78</width>
+     <height>100</height>
     </size>
    </property>
    <property name="windowIcon">
@@ -750,6 +751,33 @@
        </property>
       </widget>
      </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="dockVariables">
+   <property name="windowTitle">
+    <string>Variables</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockVariablesContents">
+    <layout class="QVBoxLayout" name="vlayoutVariables">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
     </layout>
    </widget>
   </widget>
@@ -1131,6 +1159,18 @@
   <action name="actionViewDummyLabel">
    <property name="text">
     <string>View</string>
+   </property>
+  </action>
+  <action name="actionVariables">
+   <property name="icon">
+    <iconset resource="main_window_rc.qrc">
+     <normaloff>:/_imgs/lightbulb.png</normaloff>:/_imgs/lightbulb.png</iconset>
+   </property>
+   <property name="text">
+    <string>Variables</string>
+   </property>
+   <property name="toolTip">
+    <string>Edit design variables</string>
    </property>
   </action>
  </widget>
@@ -1643,6 +1683,38 @@
     <hint type="destinationlabel">
      <x>536</x>
      <y>387</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionVariables</sender>
+   <signal>triggered(bool)</signal>
+   <receiver>dockVariables</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>144</x>
+     <y>632</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionVariables</sender>
+   <signal>triggered()</signal>
+   <receiver>dockVariables</receiver>
+   <slot>raise()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>144</x>
+     <y>632</y>
     </hint>
    </hints>
   </connection>

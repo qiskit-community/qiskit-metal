@@ -1,0 +1,1 @@
+from .prop_val_table_gui import PropertyTableWidget

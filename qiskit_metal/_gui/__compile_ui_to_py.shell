@@ -15,6 +15,9 @@ pyuic5 plot_window_ui.ui      -o plot_window_ui.py      --import-from .
 pyuic5 elements_ui.ui         -o elements_ui.py         --import-from .
 pyuic5 edit_source_ui.ui      -o edit_source_ui.py      --import-from .
 
+pyuic5 widgets/variable_table/dialog_popup.ui -o widgets/variable_table/dialog_popup.py --import-from .
+pyuic5 widgets/variable_table/add_delete_table.ui -o widgets/variable_table/add_delete_table.py --import-from .
+
 pyrcc5 main_window_rc.qrc     -o main_window_rc_rc.py
 
 
