@@ -123,7 +123,7 @@ class ComponentsTableModel(QAbstractTableModel):
             return Qt.ItemIsEnabled
 
         return Qt.ItemFlags(QAbstractTableModel.flags(self, index) |
-                                   Qt.ItemIsSelectable)  # ItemIsEditable
+                                   Qt.ItemIsSelectable )#| Qt.ToolTip)  # ItemIsEditable
 
     # @catch_exception_slot_pyqt()
     def data(self, index: QModelIndex, role:int = Qt.DisplayRole):
@@ -173,3 +173,8 @@ class ComponentsTableModel(QAbstractTableModel):
                 component = self.design.components[component_name]
                 if component.status != 'good': # Did the component fail the build
                     return QIcon(":/basic/warning")
+
+        elif role == Qt.ToolTipRole or role == Qt.StatusTipRole:
+            component = self.design.components[component_name]
+            text = f"""Component name= "{component.name}" instance of class "{component.__class__.__name__}" from module "{component.__class__.__module__}" """
+            return text
