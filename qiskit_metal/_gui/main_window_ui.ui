@@ -619,8 +619,8 @@
   <widget class="QDockWidget" name="dockLog">
    <property name="minimumSize">
     <size>
-     <width>20</width>
-     <height>10</height>
+     <width>78</width>
+     <height>100</height>
     </size>
    </property>
    <property name="windowIcon">
@@ -1012,10 +1012,10 @@
      <normaloff>:/force_refresh</normaloff>:/force_refresh</iconset>
    </property>
    <property name="text">
-    <string>Refresh</string>
+    <string>Replot</string>
    </property>
    <property name="toolTip">
-    <string>Force a full refresh of all plots and widgets</string>
+    <string>Replot all components (and refresh all gui widgets). Does NOT REBUILD</string>
    </property>
    <property name="statusTip">
     <string>Force a full refresh of all plots and widgets</string>
