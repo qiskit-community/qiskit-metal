@@ -109,7 +109,7 @@ class QComponent():
         self._name = name
         self._design = design  # pointer to parent
 
-        self._component_id = 0
+        self._id = 0
 
         self._class_name = self._get_unique_class_name()
 
@@ -220,15 +220,15 @@ class QComponent():
         return self._connector_names
 
     @property
-    def component_id(self) -> int:
+    def id(self) -> int:
         '''The unique id of component within a design.'''
-        return self._component_id
+        return self._id
 
     def _add_to_design(self):
         ''' Add self to design objects dictionary.
             Method will obtain an unique id for the component within a design, THEN add itself to design.
         '''
-        self._component_id = self.design._get_new_qcomponent_id()
+        self._id = self.design._get_new_qcomponent_id()
         self.design.components[self.name] = self
 
     @classmethod
