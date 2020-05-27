@@ -20,13 +20,13 @@ Then Qiskit Metal can either be installed using a [conda environment](https://do
 
 To use a conda environment, assuming [you have conda installed](https://docs.conda.io/projects/conda/en/latest/user-guide/install/), we will install the qiskit_metal package locally. 
 
-2 .`Simple way.` For convinience, you can try to install directly in your `base` environement, if it is relativly up to date. In the top-level of the repository:
+2. `Option 1: The simple way.` For convinience, you can try to install directly in your `base` environement, if it is relativly up to date. In the top-level of the repository:
 ```
 python -m pip install -e .
 ```
 The -e flag install qiskit_metal in [editable mode](https://pip.pypa.io/en/stable/reference/pip_install/#cmdoption-e).
 
-2. `Fool-proof way.` It is possible that you can run into version issues in the above. Instead, to avoid this, you 
+2. `Option 2: THe fool-proof way.` It is possible that you can run into version issues in the above. Instead, to avoid this, you 
 can rather create a new conda environemtn to avoid this issue. Execute these commands in the top-level of the repository:
 ```
 conda env create -n <env_name> environment.yml
@@ -35,7 +35,7 @@ python -m pip install -e .
 ```
 This will create a new environemnt with name `<env_name>`, which you can choose as `metal`. We will then activate it. Fianlly, in it, we will install the local package. If you follow this approach, each time you want to use the package, or launch a jupyter notebook, you MUST first run `conda activate <env_name>`. See what a [conda environment is](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html)
 
-### Virtual environment setup
+### No conda: Virtual environment setup
 
 2. To use a Python virtual environment, execute these commands in the top-level of the repository:
 
