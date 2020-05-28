@@ -23,3 +23,4 @@ from .. import Dict
 from .. import is_design
 from .design_base import QDesign
 from .design_planar import DesignPlanar
+#from .net_info import QNet

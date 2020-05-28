@@ -86,6 +86,14 @@ class QDesign():
     __i_am_design__ = True
 
     def __init__(self, metadata: dict = None):
+        """_qcomponent_latest_assigned_id -- Used to keep a tally and ID of all components within an instanziation of a design.  
+                                A component is added to a design by base._add_to_design with init of a comoponent.
+                                During init of component, design class provides an unique id for each instance of 
+                                component being added to design.  Note, if a component is removed from the design, 
+                                the ID of removed component should not be used again.  However, if a component is 
+                                renamed, then the ID should continute to be used. 
+        """
+        self._qcomponent_latest_assigned_id = 0
 
         # Key attributes related to physical content of the design
         # These will be saved
@@ -98,7 +106,7 @@ class QDesign():
         if metadata:
             self.update_metadata(metadata)
 
-        self.save_path = None # type: str
+        self.save_path = None  # type: str
 
         self.logger = logger  # type: logging.Logger
 
@@ -154,7 +162,6 @@ class QDesign():
         '''
         return self._variables
 
-
     @property
     def template_options(self) -> Dict:
         '''
@@ -183,13 +190,21 @@ class QDesign():
         '''
         return self._elements
 
+    @property
+    def qcomponent_latest_assigned_id(self) -> int:
+        '''
+        Return unique number for each instance.
+        For user of the design class to know the lastest id assigned to QComponent.
+        '''
+        return self._qcomponent_latest_assigned_id
+
 #########Proxy properties##################################################
 
-    def get_chip_size(self, chip_name:str='main'):
+    def get_chip_size(self, chip_name: str = 'main'):
         """Utility function to return the chip size"""
         raise NotImplementedError()
 
-    def get_chip_z(self, chip_name:str='main'):
+    def get_chip_z(self, chip_name: str = 'main'):
         """Utility function to return the z value of a chip"""
         raise NotImplementedError()
 
@@ -228,6 +243,11 @@ class QDesign():
         # TODO: add element tables here
         self._elements.clear_all_tables()
         # TODO: add dependency handling here
+
+    def _get_new_qcomponent_id(self):
+        ''' Give new id that QComponent can use.'''
+        self._qcomponent_latest_assigned_id += 1
+        return self._qcomponent_latest_assigned_id
 
     def rebuild(self):  # remake_all_components
         """
@@ -391,13 +411,13 @@ class QDesign():
                                 to use self.save_path if it is set. (default: None)
         """
 
-        self.logger.warning("Saving is a beta feature.") # TODO:
+        self.logger.warning("Saving is a beta feature.")  # TODO:
 
         if path is None:
             if self.save_path is None:
                 self.logger.error('Cannot save design since you did not provide a path to'
-                'save to yet. Once you save the dewisgn to a path, the then you call save '
-                'without an argument.')
+                                  'save to yet. Once you save the dewisgn to a path, the then you call save '
+                                  'without an argument.')
             else:
                 path = self.save_path
 
@@ -526,7 +546,7 @@ class QDesign():
 
         return self.connectors[name]
 
-    def update_component(self, component_name: str, dependencies:bool=True):
+    def update_component(self, component_name: str, dependencies: bool = True):
         """Update the component and any dependencies it may have.
         Mediator type function to update all children.
 
@@ -594,7 +614,7 @@ class QDesign():
 #   Should we keep function here or just move into design?
 # MAKE it so it has reference to who made it
 
-def make_connector(points: list, parent_name:str, flip=False, chip='main'):
+def make_connector(points: list, parent_name: str, flip=False, chip='main'):
     """
     Works in user units.
 
