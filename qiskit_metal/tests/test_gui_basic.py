@@ -70,7 +70,7 @@ class TestGUIBasic(unittest.TestCase):
     def test_step1(self):
         #TODO ...
         print('Step 1')
-        self.gui.autoscale()
+        #self.gui.autoscale()
 
     def test_step2(self):
         #TODO ...
