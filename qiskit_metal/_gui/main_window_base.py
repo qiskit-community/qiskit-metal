@@ -380,25 +380,23 @@ class QMainWindowBaseHandler():
             self._icon_tray.show()
             self.qApp.setWindowIcon(icon)
 
+    def create_log_handler(self, name_toshow:str, logger:logging.Logger):
+        return LogHandler_for_QTextLog(name_toshow, self, self.ui.log_text, logger)
+
     @catch_exception_slot_pyqt()
     def _setup_logger(self):
         """
-        Setup logging UI
+        Setup logging UI.
+
+        Show wellcome message
         """
         if hasattr(self.ui, 'log_text'):
 
             self.ui.log_text.img_path = self.path_imgs
 
-            if 1:
-                log_name = 'gui'  # self._myappid
-                # self.ui.log_text.add_logger(log_name) # done inside LogHandler_for_QTextLog
-                self._log_handler = LogHandler_for_QTextLog(log_name, self, self.ui.log_text,
-                                    level =self.logger.level)
-                # self._log_handler.setLevel(self.logger.level)
-                self.logger.addHandler(self._log_handler)
+            self._log_handler = self.create_log_handler('GUI', self.logger)
 
-                QTimer.singleShot(1500,
-                        self.ui.log_text.welcome_message)
+            QTimer.singleShot(1500, self.ui.log_text.welcome_message)
 
         else:
             self.logger.warning('UI does not have `log_text`')
