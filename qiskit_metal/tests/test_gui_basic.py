@@ -46,14 +46,14 @@ class TestGUIBasic(unittest.TestCase):
         """
         print('Setup')
         # Create an example design
-        self.design = designs.DesignPlanar()
+        #self.design = designs.DesignPlanar()
 
-        self.q1 = TransmonPocket(self.design, 'Q1', options = dict(pos_x='-1.5mm', pos_y='+0.0mm'))
-        self.q2 = TransmonPocket(self.design, 'Q2', options = dict(pos_x='+1.5mm', pos_y='+0.0mm'))
-        self.q3 = TransmonPocket(self.design, 'Q3', options = dict(pos_x='+0.0mm', pos_y='+1.0mm'))
+        #self.q1 = TransmonPocket(self.design, 'Q1', options = dict(pos_x='-1.5mm', pos_y='+0.0mm'))
+        #self.q2 = TransmonPocket(self.design, 'Q2', options = dict(pos_x='+1.5mm', pos_y='+0.0mm'))
+        #self.q3 = TransmonPocket(self.design, 'Q3', options = dict(pos_x='+0.0mm', pos_y='+1.0mm'))
 
         # Launch GUI
-        self.gui = MetalGUI(self.design)
+        #self.gui = MetalGUI(self.design)
         #TODO: handle check to make sure we set the design correctly
 
 
