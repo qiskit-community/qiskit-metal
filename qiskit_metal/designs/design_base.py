@@ -35,7 +35,7 @@ from ..toolbox_metal.import_export import load_metal_design, save_metal
 from ..toolbox_metal.parsing import parse_options, parse_value
 from ..elements import QElementTables
 from ..toolbox_python.utility_functions import log_error_easy
-from .net_info import *
+from .net_info import QNet
 
 
 if TYPE_CHECKING:
