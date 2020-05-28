@@ -29,6 +29,7 @@ from PyQt5.QtCore import QAbstractTableModel, QModelIndex
 from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import (QApplication, QFileDialog, QLabel, QMainWindow,
                              QMessageBox, QTabWidget)
+from PyQt5.QtWidgets import QAbstractItemView
 
 from .. import logger
 from ._handle_qt_messages import catch_exception_slot_pyqt
@@ -162,9 +163,8 @@ class ComponentWidget(QTabWidget):
         # Parametr model and table view
         self.model = ComponentTableModel(gui, self)
         self.ui.tableView.setModel(self.model)
-        # table = self.ui.tableView
-        # table.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel);
-        # table.horizontalScrollBar().setSingleStep(1)
+        self.ui.tableView.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
+        self.ui.tableView.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
 
         # Source Code
         self.src_doc = create_QTextDocument(self.ui.textSource)
