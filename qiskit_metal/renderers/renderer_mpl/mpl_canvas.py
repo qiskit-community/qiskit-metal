@@ -405,6 +405,7 @@ class PlotCanvas(FigureCanvas):
             # Push state
             self._state['xlim'] = ax.get_xlim()
             self._state['ylim'] = ax.get_ylim()
+            print(self._state)
 
         def main_plot():
             # for temporary style
@@ -419,7 +420,7 @@ class PlotCanvas(FigureCanvas):
             self.draw()
             # Restore the state
             ax.set_xlim(self._state['xlim'])
-            ax.set_xlim(self._state['ylim'])
+            ax.set_ylim(self._state['ylim'])
             self.show()
 
         if with_try:
@@ -624,7 +625,7 @@ class MplRenderer():
             ax {matplotlib.axes.Axes} -- mpl axis to draw on
         """
 
-        self.logger.info('Rendering element tables to plot window.')
+        self.logger.debug('Rendering element tables to plot window.')
         self.render_tables(ax)
 
     def get_mask(self, table: pd.DataFrame) -> pd.Series:
