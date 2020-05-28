@@ -26,6 +26,8 @@ class Ui_MainWindow(object):
         self.gridLayout_3.setSpacing(0)
         self.gridLayout_3.setObjectName("gridLayout_3")
         self.tableView = RightClickView(self.centralwidget)
+        self.tableView.setVerticalScrollMode(QtWidgets.QAbstractItemView.ScrollPerPixel)
+        self.tableView.setHorizontalScrollMode(QtWidgets.QAbstractItemView.ScrollPerPixel)
         self.tableView.setObjectName("tableView")
         self.gridLayout_3.addWidget(self.tableView, 0, 0, 1, 1)
         self.gridLayout = QtWidgets.QGridLayout()
