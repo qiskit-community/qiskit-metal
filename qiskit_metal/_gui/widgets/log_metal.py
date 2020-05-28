@@ -292,8 +292,9 @@ class QTextEditLogger(QTextEdit):
 class LogHandler_for_QTextLog(logging.Handler):
 
     def __init__(self, name, parent,
-                 log_qtextedit: QTextEditLogger, log_string=None,
-                 level:int=logging.NOTSET):
+                 log_qtextedit: QTextEditLogger,
+                 logger :logging.Logger,
+                 log_string = None):
         """
         Class to handle GUI logging.
         Handler instances dispatch logging events to specific destinations.
@@ -309,7 +310,8 @@ class LogHandler_for_QTextLog(logging.Handler):
 
         self.name = name
         self.log_qtextedit = log_qtextedit
-        self.setLevel(int(level))
+        self.setLevel(int(logger.level))
+        self._logger = logger # not sure if good idea to do this
 
         # Formatter
         if isinstance(log_string, str):
@@ -321,6 +323,8 @@ class LogHandler_for_QTextLog(logging.Handler):
 
         # Add formatter to
         self.log_qtextedit.add_logger(name, self)
+
+        self._logger.addHandler(self) # ADD HANDLER!
 
     def emit(self, record):
         """
@@ -337,4 +341,10 @@ class LogHandler_for_QTextLog(logging.Handler):
         html_record = html.escape(self.format(record))
         html_log_message = '<span class="%s"><pre>%s</pre></span>' % (
             record.levelname, html_record)
-        self.log_qtextedit.log_message_to(self.name, html_log_message)
+        try:
+            self.log_qtextedit.log_message_to(self.name, html_log_message)
+        except RuntimeError as e:
+            # trying to catch
+            #  RuntimeError('wrapped C/C++ object of type QTextEditLogger has been deleted',)
+            print(f'Logger issue: {e}')
+            self._logger.handlers.remove(self)
