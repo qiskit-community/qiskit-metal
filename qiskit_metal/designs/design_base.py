@@ -86,12 +86,12 @@ class QDesign():
     __i_am_design__ = True
 
     def __init__(self, metadata: dict = None):
-        """_qcomponent_latest_assigned_id -- Used to keep a tally and ID of all components within an instanziation of a design.  
+        """_qcomponent_latest_assigned_id -- Used to keep a tally and ID of all components within an instanziation of a design.
                                 A component is added to a design by base._add_to_design with init of a comoponent.
-                                During init of component, design class provides an unique id for each instance of 
-                                component being added to design.  Note, if a component is removed from the design, 
-                                the ID of removed component should not be used again.  However, if a component is 
-                                renamed, then the ID should continute to be used. 
+                                During init of component, design class provides an unique id for each instance of
+                                component being added to design.  Note, if a component is removed from the design,
+                                the ID of removed component should not be used again.  However, if a component is
+                                renamed, then the ID should continute to be used.
         """
         self._qcomponent_latest_assigned_id = 0
 
@@ -263,7 +263,7 @@ class QDesign():
             try:  # TODO: performace?
                 obj.do_make()  # should we call this build?
             except:
-                print('ERORROR HEREE')
+                print(f'ERORROR in building {name}')
                 log_error_easy(
                     self.logger, post_text=f'\nERROR in rebuilding component "{name}"!\n')
 

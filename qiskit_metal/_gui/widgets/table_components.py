@@ -44,6 +44,10 @@ class TableComponents(QTableView):
         self.clicked.connect(self.viewClicked)
         self.doubleClicked.connect(self.doDoubleClicked)
 
+        # Do in the ui file
+        self.horizontalHeader().hide()
+        self.verticalHeader().show()
+
     @property
     def design(self):
         return self.model().design

@@ -159,12 +159,14 @@ class MetalGUI(QMainWindowBaseHandler):
     _img_logo_name = 'metal_logo.png'
     _stylesheet_default = 'metal_dark'
 
+    # This is somewhat outdated
     _dock_names = [
         'dockComponent',
         'dockConnectors',
         'dockDesign',
         'dockLog',
-        'dockNewComponent']
+        'dockNewComponent',
+        'dockVariables']
 
     def __init__(self, design: QDesign = None):
         """Init
@@ -190,6 +192,7 @@ class MetalGUI(QMainWindowBaseHandler):
         self._setup_design_components_widget()
         self._setup_elements_widget()
         self._setup_variables_widget()
+        self._ui_adjustments_final()
 
         # Show and raise
         self.main_window.show()
@@ -245,15 +248,9 @@ class MetalGUI(QMainWindowBaseHandler):
 
     def _setup_logger(self):
         super()._setup_logger()
-        if 1:  # add the metal logger to the gui
-            logger_name = 'metal'
-            # self.ui.log_text.add_logger(logger_name) # done inside LogHandler_for_QTextLog
-            self._log_handler_design = LogHandler_for_QTextLog(
-                logger_name, self, self.ui.log_text,
-                level = self.logger.level)
 
-            logger = logging.getLogger(logger_name)
-            logger.addHandler(self._log_handler_design)
+        logger = logging.getLogger('metal')
+        self._log_handler_design = self.create_log_handler('metal', logger)
 
     def refresh_design(self):
         """Refresh design properties associated with the GUI.
@@ -291,6 +288,14 @@ class MetalGUI(QMainWindowBaseHandler):
 
         # Log
         self.ui.dockLog.parent().resizeDocks({self.ui.dockLog}, {120}, Qt.Vertical)
+
+        # Tab positions
+        self.ui.tabWidget.setCurrentIndex(0)
+
+    def _ui_adjustments_final(self):
+        """Any touchups to the loaded ui that need be done after all the base and main ui is loaded"""
+        self.component_window.setCurrentIndex(0)
+
 
     def _set_element_tab(self, yesno: bool):
         if yesno:

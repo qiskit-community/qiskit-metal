@@ -60,7 +60,7 @@ class QMainWindowPlot(QMainWindow):
         return self.gui.design
 
     def replot(self):
-        self.logger.info("Force replot")
+        # self.logger.debug("Force replot")
         self.canvas.plot()
 
     def auto_scale(self):

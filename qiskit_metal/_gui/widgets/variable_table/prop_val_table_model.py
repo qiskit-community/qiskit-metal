@@ -16,10 +16,11 @@ class PropValTable(QAbstractTableModel):
 
     __refreshtime = 500 # 0.5 second refresh time
 
-    def __init__(self, design=None, gui=None):
+    def __init__(self, design=None, gui=None, view=None):
         super().__init__()
         self._design = design
         self._gui = gui
+        self._view = None
         # self._data = data
         self._rowCount = -1
         self._start_timer()
@@ -52,7 +53,7 @@ class PropValTable(QAbstractTableModel):
         if self._rowCount != newRowCount:
             self.modelReset.emit()
             self._rowCount = newRowCount
-            self.resizeColumnsToContents()
+            self._view.resizeColumnsToContents()
 
     def rowCount(self, index: QModelIndex) -> int:
         if self._design:
@@ -137,4 +138,4 @@ class PropValTable(QAbstractTableModel):
 
     def add_row(self, key: str, val: str):
         self._data[key] = val
-        self.resizeColumnsToContents()
+        self._view.resizeColumnsToContents()

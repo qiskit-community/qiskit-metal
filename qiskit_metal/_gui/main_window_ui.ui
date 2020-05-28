@@ -295,7 +295,13 @@
    <addaction name="action_full_refresh"/>
    <addaction name="actionRebuild"/>
   </widget>
-  <widget class="QToolBar" name="toolBarView">
+  <widget class="QToolBarExpanding" name="toolBarView">
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
    <property name="windowTitle">
     <string>View Toolbar</string>
    </property>
@@ -317,6 +323,7 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionViewDummyLabel"/>
    <addaction name="actionDesign"/>
    <addaction name="actionComponent"/>
    <addaction name="actionNewComponent"/>
@@ -325,7 +332,6 @@
    <addaction name="actionConnectors"/>
    <addaction name="actionLog"/>
    <addaction name="separator"/>
-   <addaction name="actionViewDummyLabel"/>
    <addaction name="actionScreenshot"/>
    <addaction name="actionFull_Screen"/>
   </widget>
@@ -482,6 +488,9 @@
        <property name="sortingEnabled">
         <bool>true</bool>
        </property>
+       <attribute name="horizontalHeaderVisible">
+        <bool>false</bool>
+       </attribute>
        <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
         <bool>false</bool>
        </attribute>
@@ -749,6 +758,9 @@
        <property name="alternatingRowColors">
         <bool>false</bool>
        </property>
+       <attribute name="horizontalHeaderVisible">
+        <bool>false</bool>
+       </attribute>
       </widget>
      </item>
     </layout>
@@ -838,7 +850,7 @@
      <normaloff>:/design</normaloff>:/design</iconset>
    </property>
    <property name="text">
-    <string>Design</string>
+    <string>Select component</string>
    </property>
    <property name="toolTip">
     <string>Show design window -- select components (show/hide)</string>
@@ -998,10 +1010,10 @@
      <normaloff>:/connectors</normaloff>:/connectors</iconset>
    </property>
    <property name="text">
-    <string>Connectors</string>
+    <string>Pins</string>
    </property>
    <property name="toolTip">
-    <string>Show connectors</string>
+    <string>Show connector pins of qcomponents</string>
    </property>
    <property name="shortcut">
     <string>C</string>
@@ -1173,10 +1185,10 @@
      <normaloff>:/variables</normaloff>:/variables</iconset>
    </property>
    <property name="text">
-    <string>Variables</string>
+    <string>Design variables</string>
    </property>
    <property name="toolTip">
-    <string>Edit design variables</string>
+    <string>Edit variables of the QDesign</string>
    </property>
    <property name="shortcut">
     <string>Meta+V</string>
@@ -1184,6 +1196,11 @@
   </action>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>QToolBarExpanding</class>
+   <extends>QToolBar</extends>
+   <header>.widgets.expanding_toolbar</header>
+  </customwidget>
   <customwidget>
    <class>QTextEditLogger</class>
    <extends>QTextEdit</extends>
