@@ -53,7 +53,7 @@
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QToolBar" name="toolBar">
+  <widget class="QToolBarExpanding" name="toolBar">
    <property name="windowTitle">
     <string>toolBar</string>
    </property>
@@ -119,10 +119,10 @@
      <normaloff>:/connectors</normaloff>:/connectors</iconset>
    </property>
    <property name="text">
-    <string>Connectors</string>
+    <string>Pins</string>
    </property>
    <property name="toolTip">
-    <string>Show connectors for selected components</string>
+    <string>Show connectors pins for selected qcomponents</string>
    </property>
    <property name="shortcut">
     <string>C</string>
@@ -140,7 +140,7 @@
      <normaloff>:/plot/point</normaloff>:/plot/point</iconset>
    </property>
    <property name="text">
-    <string>Coords</string>
+    <string>Get point</string>
    </property>
    <property name="toolTip">
     <string>Click for position --- Enable this to click on the plot and log the (x,y) position</string>
@@ -177,6 +177,13 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QToolBarExpanding</class>
+   <extends>QToolBar</extends>
+   <header>.widgets.expanding_toolbar</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="main_window_rc.qrc"/>
  </resources>

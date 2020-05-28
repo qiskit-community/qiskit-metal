@@ -30,7 +30,7 @@ class Ui_MainWindowPlot(object):
         self.statusbar.setEnabled(True)
         self.statusbar.setObjectName("statusbar")
         MainWindowPlot.setStatusBar(self.statusbar)
-        self.toolBar = QtWidgets.QToolBar(MainWindowPlot)
+        self.toolBar = QToolBarExpanding(MainWindowPlot)
         self.toolBar.setIconSize(QtCore.QSize(20, 20))
         self.toolBar.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
         self.toolBar.setObjectName("toolBar")
@@ -94,10 +94,10 @@ class Ui_MainWindowPlot(object):
         self.actionZoom.setText(_translate("MainWindowPlot", "Zoom"))
         self.actionZoom.setToolTip(_translate("MainWindowPlot", "Zoom control"))
         self.actionZoom.setShortcut(_translate("MainWindowPlot", "Z"))
-        self.actionConnectors.setText(_translate("MainWindowPlot", "Connectors"))
-        self.actionConnectors.setToolTip(_translate("MainWindowPlot", "Show connectors for selected components"))
+        self.actionConnectors.setText(_translate("MainWindowPlot", "Pins"))
+        self.actionConnectors.setToolTip(_translate("MainWindowPlot", "Show connectors pins for selected qcomponents"))
         self.actionConnectors.setShortcut(_translate("MainWindowPlot", "C"))
-        self.actionCoords.setText(_translate("MainWindowPlot", "Coords"))
+        self.actionCoords.setText(_translate("MainWindowPlot", "Get point"))
         self.actionCoords.setToolTip(_translate("MainWindowPlot", "Click for position --- Enable this to click on the plot and log the (x,y) position"))
         self.actionCoords.setShortcut(_translate("MainWindowPlot", "P"))
         self.actionAuto.setText(_translate("MainWindowPlot", "Autoscale"))
@@ -105,4 +105,5 @@ class Ui_MainWindowPlot(object):
         self.actionAuto.setShortcut(_translate("MainWindowPlot", "A"))
         self.actionReplot.setText(_translate("MainWindowPlot", "Replot"))
         self.actionReplot.setShortcut(_translate("MainWindowPlot", "Ctrl+R"))
+from .widgets.expanding_toolbar import QToolBarExpanding
 from . import main_window_rc_rc
