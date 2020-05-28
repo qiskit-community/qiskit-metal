@@ -102,6 +102,20 @@ def data_frame_empty_typed(column_types:dict):
         df[name] = pd.Series(dtype=dtype)
     return df
 
+import re
+def clean_name(text:str):
+    """Clean a string to a proper variable name in python
+
+    Arguments:
+        text {str} -- [description]
+
+    *Example*
+        >>clean_name('32v2 g #Gmw845h$W b53wi ')
+        ->'_32v2_g__Gmw845h_W_b53wi_'
+
+    See https://stackoverflow.com/questions/3303312/how-do-i-convert-a-string-to-a-valid-variable-name-in-python
+    """
+    return re.sub('\W|^(?=\d)','_', text)
 
 ####################################################################################
 # Tracebacks
@@ -185,8 +199,16 @@ def log_error_easy(logger:logging.Logger, pre_text='', post_text='', do_print=Fa
 #####################################################################################
 
 
-def monkey_patch(self, func):
+def monkey_patch(self, func, func_name=None):
     '''
-    Debug function
+    Monkey patch a method into a class at runtime
+
+    Use descriptor protocol when adding method as an attribute.
+    For a method on a class, when you do a.some_method, python actually does:
+         a.some_method.__get__(a, type(a))
+    so we're just reproducing that call sequence here explicitly.
+    See: https://stackoverflow.com/questions/38485123/monkey-patching-bound-methods-in-python
     '''
-    setattr(self, func.__name__, func.__get__(self, self.__class__))
+    func_name = func_name or func.__name__
+    setattr(self, func_name, func.__get__(self, self.__class__))
+    # what happens if we reload the class or swap in real time?

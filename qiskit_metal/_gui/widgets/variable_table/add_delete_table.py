@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'add_delete_table.ui'
+# Form implementation generated from reading ui file 'widgets/variable_table/add_delete_table.ui'
 #
 # Created by: PyQt5 UI code generator 5.14.2
 #
@@ -8,7 +8,6 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from .right_click_table_view import RightClickView
 
 
 class Ui_MainWindow(object):
@@ -75,13 +74,4 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.deleteButton.setText(_translate("MainWindow", "Delete Row"))
         self.addButton.setText(_translate("MainWindow", "Add Row"))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec_())
+from .right_click_table_view import RightClickView

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'dialog_popup.ui'
+# Form implementation generated from reading ui file 'widgets/variable_table/dialog_popup.ui'
 #
 # Created by: PyQt5 UI code generator 5.14.2
 #
@@ -52,13 +52,3 @@ class Ui_Dialog(object):
         Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
         self.label.setText(_translate("Dialog", "Property"))
         self.label_2.setText(_translate("Dialog", "Value"))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    Dialog = QtWidgets.QDialog()
-    ui = Ui_Dialog()
-    ui.setupUi(Dialog)
-    Dialog.show()
-    sys.exit(app.exec_())

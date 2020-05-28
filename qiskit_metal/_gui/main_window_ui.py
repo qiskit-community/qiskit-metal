@@ -212,7 +212,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_4.setSpacing(0)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
-        self.log_text = LoggingWindowWidget(self.dockWidgetContents_4)
+        self.log_text = QTextEditLogger(self.dockWidgetContents_4)
         self.log_text.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByKeyboard|QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextBrowserInteraction|QtCore.Qt.TextSelectableByKeyboard|QtCore.Qt.TextSelectableByMouse)
         self.log_text.setObjectName("log_text")
         self.verticalLayout_4.addWidget(self.log_text)
@@ -370,8 +370,10 @@ class Ui_MainWindow(object):
         self.actionViewDummyLabel = QtWidgets.QAction(MainWindow)
         self.actionViewDummyLabel.setObjectName("actionViewDummyLabel")
         self.actionVariables = QtWidgets.QAction(MainWindow)
+        self.actionVariables.setCheckable(True)
+        self.actionVariables.setChecked(True)
         icon24 = QtGui.QIcon()
-        icon24.addPixmap(QtGui.QPixmap(":/_imgs/lightbulb.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon24.addPixmap(QtGui.QPixmap(":/variables"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionVariables.setIcon(icon24)
         self.actionVariables.setObjectName("actionVariables")
         self.menuDesign.addSeparator()
@@ -429,7 +431,7 @@ class Ui_MainWindow(object):
         self.toolBarView.addAction(self.actionFull_Screen)
 
         self.retranslateUi(MainWindow)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
         self.actionElements.toggled['bool'].connect(MainWindow._set_element_tab)
         self.actionDelete_All.triggered.connect(MainWindow.delete_all_components)
         self.actionLoad.triggered.connect(MainWindow.load_design)
@@ -568,8 +570,8 @@ class Ui_MainWindow(object):
         self.actionStyleDark.setText(_translate("MainWindow", "Q Dark"))
         self.actionScreenshot.setText(_translate("MainWindow", "Screenshot"))
         self.actionScreenshot.setToolTip(_translate("MainWindow", "Take a screenshot of the window"))
-        self.action_full_refresh.setText(_translate("MainWindow", "Refresh"))
-        self.action_full_refresh.setToolTip(_translate("MainWindow", "Force a full refresh of all plots and widgets"))
+        self.action_full_refresh.setText(_translate("MainWindow", "Replot"))
+        self.action_full_refresh.setToolTip(_translate("MainWindow", "Replot all components (and refresh all gui widgets). Does NOT REBUILD"))
         self.action_full_refresh.setStatusTip(_translate("MainWindow", "Force a full refresh of all plots and widgets"))
         self.action_full_refresh.setWhatsThis(_translate("MainWindow", "Force a full refresh of all plots and widgets"))
         self.action_full_refresh.setShortcut(_translate("MainWindow", "Ctrl+R"))
@@ -593,6 +595,7 @@ class Ui_MainWindow(object):
         self.actionViewDummyLabel.setText(_translate("MainWindow", "View"))
         self.actionVariables.setText(_translate("MainWindow", "Variables"))
         self.actionVariables.setToolTip(_translate("MainWindow", "Edit design variables"))
-from .widgets.log_metal import LoggingWindowWidget
+        self.actionVariables.setShortcut(_translate("MainWindow", "Meta+V"))
+from .widgets.log_metal import QTextEditLogger
 from .widgets.table_components import TableComponents
 from . import main_window_rc_rc

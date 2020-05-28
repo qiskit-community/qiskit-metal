@@ -58,7 +58,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <property name="usesScrollButtons">
        <bool>false</bool>
@@ -674,7 +674,7 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="LoggingWindowWidget" name="log_text">
+      <widget class="QTextEditLogger" name="log_text">
        <property name="documentTitle">
         <string>Log</string>
        </property>
@@ -1040,10 +1040,10 @@
      <normaloff>:/force_refresh</normaloff>:/force_refresh</iconset>
    </property>
    <property name="text">
-    <string>Refresh</string>
+    <string>Replot</string>
    </property>
    <property name="toolTip">
-    <string>Force a full refresh of all plots and widgets</string>
+    <string>Replot all components (and refresh all gui widgets). Does NOT REBUILD</string>
    </property>
    <property name="statusTip">
     <string>Force a full refresh of all plots and widgets</string>
@@ -1162,9 +1162,15 @@
    </property>
   </action>
   <action name="actionVariables">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="main_window_rc.qrc">
-     <normaloff>:/_imgs/lightbulb.png</normaloff>:/_imgs/lightbulb.png</iconset>
+     <normaloff>:/variables</normaloff>:/variables</iconset>
    </property>
    <property name="text">
     <string>Variables</string>
@@ -1172,11 +1178,14 @@
    <property name="toolTip">
     <string>Edit design variables</string>
    </property>
+   <property name="shortcut">
+    <string>Meta+V</string>
+   </property>
   </action>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>LoggingWindowWidget</class>
+   <class>QTextEditLogger</class>
    <extends>QTextEdit</extends>
    <header>.widgets.log_metal</header>
   </customwidget>

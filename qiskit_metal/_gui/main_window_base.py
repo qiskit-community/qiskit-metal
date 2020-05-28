@@ -31,11 +31,13 @@ from PyQt5.QtWidgets import QApplication, QFileDialog, QMainWindow, QMessageBox
 from PyQt5 import QtWidgets, QtCore, QtGui  # pyqt stuff
 from PyQt5.QtCore import QTimer
 
+from copy import deepcopy
+
 from .. import Dict, config
 from ..toolbox_python._logging import setup_logger
 from ._handle_qt_messages import catch_exception_slot_pyqt
 from .main_window_ui import Ui_MainWindow
-from .widgets.log_metal import LoggingHandlerForLogWidget
+from .widgets.log_metal import LogHandler_for_QTextLog
 from . import __version__
 
 
@@ -242,24 +244,25 @@ class QMainWindowBaseHandler():
         """
         self.__class__.__gui_num__ += 1  # used to give a unique identifier
 
-        self.config = config.GUI_CONFIG
+        self.config = deepcopy(config.GUI_CONFIG)
         self.settings = QtCore.QSettings(self._myappid, 'MainWindow')
 
         # Logger
         if not logger:
+            # print('Setting up logger')
             logger = setup_logger(
                 # so that they are not all the same
                 f'gui{self.__class__.__gui_num__ }',
-                self.config.format,
-                self.config.datefmt,
+                config.log.format,
+                config.log.datefmt,
                 force_set=True,
                 create_stream=self.config.stream_to_std,
             )
-            logger.setLevel(getattr(logging,
-                                    self.config.log.get('level', 'DEBUG')))
+            log_level = int(getattr(logging, self.config.logger.get('level', 'DEBUG')))
+            logger.setLevel(log_level)
 
         self.logger = logger
-        self._log_handler = None
+        self._log_handler = None # defined in self._setup_logger
         self._stylesheet = self._stylesheet_default  # set by load_stylesheet
 
         # File paths
@@ -286,11 +289,9 @@ class QMainWindowBaseHandler():
         self.ui.setupUi(self.main_window)
         self.main_window.ui = self.ui
 
+        self.ui.log_text.dock_window = self.ui.dockLog
         self._setup_logger()
         self._setup_window_size()
-
-        self._dock_raises = None
-        self._setup_dock_show()
 
         self._ui_adjustments()  # overwrite
 
@@ -384,16 +385,16 @@ class QMainWindowBaseHandler():
         """
         Setup logging UI
         """
-
         if hasattr(self.ui, 'log_text'):
 
             self.ui.log_text.img_path = self.path_imgs
 
             if 1:
                 log_name = 'gui'  # self._myappid
-                self.ui.log_text.add_logger(log_name)
-                self._log_handler = LoggingHandlerForLogWidget(
-                    log_name, self, self.ui.log_text)
+                # self.ui.log_text.add_logger(log_name) # done inside LogHandler_for_QTextLog
+                self._log_handler = LogHandler_for_QTextLog(log_name, self, self.ui.log_text,
+                                    level =self.logger.level)
+                # self._log_handler.setLevel(self.logger.level)
                 self.logger.addHandler(self._log_handler)
 
                 QTimer.singleShot(1500,
@@ -401,38 +402,6 @@ class QMainWindowBaseHandler():
 
         else:
             self.logger.warning('UI does not have `log_text`')
-
-    def _setup_dock_show(self):
-        self._dock_raises = {}
-        #TODO: add a raise_ on the event of show
-        # for dock in self._dock_names:
-
-        #     # Function
-        #     @pyqtSlot(bool, name=f'raise_{dock}')
-        #     def raise_(state: bool, dock_name=dock):
-        #         #print(dock_name, state)
-        #         _dock = getattr(self.ui, dock_name)
-        #         if state:
-        #             self.logger.debug(f'Raising dock {dock_name}')
-        #             _dock.setVisible(True)
-        #             _dock.show()
-        #             _dock.raise_()
-        #         else:
-        #             self.logger.debug(f'Hiding dock {dock_name}')
-        #             _dock.setVisible(False)
-
-        #     self._dock_raises[dock] = raise_
-
-        #     # Connect to action
-        #     action = dock.replace('dock', 'action')
-        #     if hasattr(self.ui, action):
-        #         #self.logger.debug(f'DOCK {dock} has an action {action}')
-        #         _action = getattr(self.ui, action)
-        #         # _action.triggered.disconnect() # TypeError if none
-        #         _action.triggered.connect(self._dock_raises[dock])
-        #     else:
-        #         self.logger.warning(
-        #             f'DOCK {dock} should have had an action {action}, but it did not!')
 
     def _setup_window_size(self):
         if self.config.main_window.auto_size:
