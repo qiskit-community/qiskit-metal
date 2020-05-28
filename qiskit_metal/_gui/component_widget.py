@@ -24,12 +24,14 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Union
 
 import numpy as np
-from PyQt5 import Qt, QtCore, QtGui, QtWidgets
+import PyQt5
+from PyQt5 import  QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QAbstractTableModel, QModelIndex
 from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import (QApplication, QFileDialog, QLabel, QMainWindow,
                              QMessageBox, QTabWidget)
 from PyQt5.QtWidgets import QAbstractItemView
+from PyQt5.QtCore import Qt
 
 from .. import logger
 from ._handle_qt_messages import catch_exception_slot_pyqt
@@ -323,7 +325,7 @@ class ComponentTableModel(QAbstractTableModel):
         self._row_count = -1
 
         # self._create_timer()
-        self.columns = ['Name', 'Value']
+        self.columns = ['Name', 'Value', 'Parsed value']
 
     @property
     def design(self):
@@ -345,15 +347,22 @@ class ComponentTableModel(QAbstractTableModel):
     def columnCount(self, parent: QModelIndex = None):
         return 2
 
-    def headerData(self, section, orientation, role=QtCore.Qt.DisplayRole):
+    def headerData(self, section, orientation, role=Qt.DisplayRole):
         """ Set the headers to be displayed. """
 
-        if (role != QtCore.Qt.DisplayRole) or (self.component is None):
+        if self.component is None:
             return None
 
-        if orientation == QtCore.Qt.Horizontal:
-            if section < self.columnCount():
-                return self.columns[section]
+        if role == Qt.DisplayRole:
+            if orientation == Qt.Horizontal:
+                if section < self.columnCount():
+                    return self.columns[section]
+
+        elif role == Qt.Font:
+            if section == 0:
+                font = QFont()
+                font.setBold(True)
+                return font
 
     def flags(self, index: QModelIndex):
         """ Set the item flags at the given index. Seems like we're
@@ -363,19 +372,19 @@ class ComponentTableModel(QAbstractTableModel):
         # https://doc.qt.io/qt-5/qt.html#ItemFlag-enum
 
         if not index.isValid():
-            return QtCore.Qt.ItemIsEnabled
+            return Qt.ItemIsEnabled
 
         # Returns the item flags for the given index.
         # The base class implementation returns a combination of flags that enables
         # the item (ItemIsEnabled) and allows it to be selected (ItemIsSelectable).
         flags = QAbstractTableModel.flags(self, index)
         if index.column() == 1:
-            flags |= QtCore.Qt.ItemIsEditable
+            flags |= Qt.ItemIsEditable
 
-        return QtCore.Qt.ItemFlags(flags)
+        return Qt.ItemFlags(flags)
 
     # https://doc.qt.io/qt-5/qt.html#ItemDataRole-enum
-    def data(self, index: QModelIndex, role=QtCore.Qt.DisplayRole):
+    def data(self, index: QModelIndex, role=Qt.DisplayRole):
         """ Depending on the index and role given, return data. If not
             returning data, return None (PySide equivalent of QT's
             "invalid QVariant").
@@ -390,23 +399,28 @@ class ComponentTableModel(QAbstractTableModel):
             return
 
         # The key data to be rendered in the form of text. (QString)
-        if role == QtCore.Qt.DisplayRole:
+        if role == Qt.DisplayRole:
             row = index.row()
             column = index.column()
             data = self.component.options
             # There's probably a better way to access the data here
             if column == 0:
                 data = list(data.keys())
-            elif column == 1:
+            elif column in [1, 2]:
                 data = list(data.values())
-            return str(data[row])
+
+            data = data[row]
+            if column == 2:
+                return str(self.design.parse_value(data))
+            else:
+                return str(data)
 
         # The data in a form suitable for editing in an editor.  (QString)
-        elif role == QtCore.Qt.EditRole:
+        elif role == Qt.EditRole:
             return self.data(index, QtCore.Qt.DisplayRole)
 
         # The font used for items rendered with the default delegate. (QFont)
-        elif role == QtCore.Qt.FontRole:
+        elif role == Qt.FontRole:
             if index.column() == 0:
                 font = QtGui.QFont()
                 font.setBold(True)
@@ -414,7 +428,7 @@ class ComponentTableModel(QAbstractTableModel):
 
     def setData(self,
                 index: QtCore.QModelIndex,
-                value: Qt.QVariant,
+                value: QtCore.QVariant,
                 role=QtCore.Qt.EditRole):
         """Sets the role data for the item at index to value.
         Returns true if successful; otherwise returns false.

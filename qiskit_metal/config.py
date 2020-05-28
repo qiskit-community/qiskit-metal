@@ -79,7 +79,12 @@ GUI_CONFIG = Dict(
         'variables from the python interperter.',
 
         'Changed some object parameters? Click the <b>Remake</b> button in the main'
-        'toolbar to recreate the polygons.'
+        'toolbar to recreate the polygons.',
+
+        """<b>Log widget:</b> Right click the logger window to be able to change the log level and the
+        loggers that are shown / hidden.""",
+
+        """<b>All component widget:</b> Double click a component to zoom into it!""",
     ],
 
     logger=Dict(

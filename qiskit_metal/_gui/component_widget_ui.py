@@ -35,6 +35,7 @@ class Ui_ComponentWidget(object):
         self.tableView.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
         self.tableView.setShowGrid(False)
         self.tableView.setObjectName("tableView")
+        self.tableView.horizontalHeader().setVisible(False)
         self.verticalLayout.addWidget(self.tableView)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/options"), QtGui.QIcon.Normal, QtGui.QIcon.On)

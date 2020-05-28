@@ -405,7 +405,6 @@ class PlotCanvas(FigureCanvas):
             # Push state
             self._state['xlim'] = ax.get_xlim()
             self._state['ylim'] = ax.get_ylim()
-            print(self._state)
 
         def main_plot():
             # for temporary style

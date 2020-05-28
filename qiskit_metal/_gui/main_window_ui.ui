@@ -488,6 +488,9 @@
        <property name="sortingEnabled">
         <bool>true</bool>
        </property>
+       <attribute name="horizontalHeaderVisible">
+        <bool>false</bool>
+       </attribute>
        <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
         <bool>false</bool>
        </attribute>
@@ -755,6 +758,9 @@
        <property name="alternatingRowColors">
         <bool>false</bool>
        </property>
+       <attribute name="horizontalHeaderVisible">
+        <bool>false</bool>
+       </attribute>
       </widget>
      </item>
     </layout>

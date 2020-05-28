@@ -43,7 +43,7 @@ class ComponentsTableModel(QAbstractTableModel):
         self.logger = logger
         self.gui = gui
         self._tableView = tableView # the view used to preview this model, used to refresh
-        self.columns = ['Name', 'Class', 'Module', 'Build Status']
+        self.columns = ['Name', 'QComponent class', 'QComponent module', 'Build status']
         self._row_count = -1
 
         self._create_timer()

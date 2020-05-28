@@ -28,7 +28,7 @@ class PropertyTableWidget(QMainWindow):
         self.table.verticalHeader().setVisible(True)
 
         # Table Model:
-        self.model = PropValTable(design, gui)
+        self.model = PropValTable(design, gui, self.table)
         self.table.setModel(self.model)
 
         # Display:
