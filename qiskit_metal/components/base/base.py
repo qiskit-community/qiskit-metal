@@ -140,6 +140,9 @@ class QComponent():
         if make:
             self.do_make()
 
+        # Create an empty dict, which will populated by component designer.
+        self.pins = dict()
+
     @classmethod
     def _gather_all_children_options(cls):
         '''
