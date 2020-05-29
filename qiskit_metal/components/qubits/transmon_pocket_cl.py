@@ -142,7 +142,7 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
 
         # Making the design connector for 'easy connect'
         points = list(draw.shapely.geometry.shape(port_line).coords)
-        self.design.add_connector(name, points, self.name, flip=False)  # TODO: chip
+        self.design.add_connector(name, points, self.id, flip=False)  # TODO: chip
 
         self.add_elements('poly', dict(cl_metal=cl_metal))
         self.add_elements('poly', dict(cl_etcher=cl_etcher), subtract=True)

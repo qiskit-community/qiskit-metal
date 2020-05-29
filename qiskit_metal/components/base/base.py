@@ -126,7 +126,7 @@ class QComponent():
         self.status = 'not built'
 
         # Names of connectors associated with this components.
-        # Used to rename, etc.
+        # Used to rename, etc.  CHANGE TO PINS?
         self._connector_names = set()
 
         # has the component already been made
@@ -229,7 +229,7 @@ class QComponent():
             Method will obtain an unique id for the component within a design, THEN add itself to design.
         '''
         self._id = self.design._get_new_qcomponent_id()
-        self.design.components[self.name] = self
+        self.design.components[self.id] = self
 
     @classmethod
     def get_template_options(cls,
@@ -294,7 +294,7 @@ class QComponent():
         self.status = 'failed'
         if self._made:  # already made, just remaking
             # TODO: this is probably very inefficient, design more efficient way
-            self.design.elements.delete_component(self.name)
+            self.design.elements.delete_component(self.id)
             self.make()
         else:  # first time making
             self.make()
@@ -378,28 +378,30 @@ class QComponent():
 
         return self.design.parse_options(options if options else self.options)
 
-    def add_connector(self, name, points: list, flip=False, chip=None):
-        """Register a connector with the design.
 
-        Arguments:
-            two_points {list} -- List of the two point coordinates that deifne the start
-                                 and end of the connector
-            ops {None / dict} -- Options
+#BEING MOVED TO DIFFERENT CLASS?
+    # def add_connector(self, id, points: list, flip=False, chip=None):
+    #     """Register a connector with the design.
 
-        Keyword Arguments:
-            name {string or None} -- By default is just the object name  (default: {None})
-            chip {string or None} -- chip name or defaults to DEFAULT.chip
-        """
-        if name is None:
-            name = self.name
+    #     Arguments:
+    #         two_points {list} -- List of the two point coordinates that deifne the start
+    #                              and end of the connector
+    #         ops {None / dict} -- Options
 
-        self._connector_names.add(name)
+    #     Keyword Arguments:
+    #         name {string or None} -- By default is just the object name  (default: {None})
+    #         chip {string or None} -- chip name or defaults to DEFAULT.chip
+    #     """
+    #     if id is None:
+    #         id = self.id
 
-        self.design.add_connector(name=name,
-                                  points=points,
-                                  parent=self,
-                                  chip=chip,
-                                  flip=flip)
+    #     self._connector_names.add(name)
+
+    #     self.design.add_connector(name=name,
+    #                               points=points,
+    #                               parent=self,
+    #                               chip=chip,
+    #                               flip=flip)
 
     def add_dependency(self, parent: str, child: str):
         """Add a dependency between one component and another.
@@ -451,7 +453,7 @@ class QComponent():
         #assert (subtract and helper) == False, "The object can't be a subtracted helper. Please"\
         #    " choose it to either be a helper or a a subtracted layer, but not both. Thank you."
 
-        self.design.elements.add_elements(kind, self.name, elements, subtract=subtract,
+        self.design.elements.add_elements(kind, self.id, elements, subtract=subtract,
                                           helper=helper, layer=layer, chip=chip, **kwargs)
 
     def __repr__(self, *args):
@@ -486,7 +488,7 @@ class QComponent():
             List[BaseGeometry] or None -- Returns None if an error in the name of the element type (ie. table)
         """
         if self.design.elements.check_element_type(element_type):
-            return self.design.elements.get_component_geometry_dict(self.name, element_type)
+            return self.design.elements.get_component_geometry_dict(self.id, element_type)
 
     def elements_list(self, element_type: str = 'all') -> List[BaseGeometry]:
         """
@@ -501,7 +503,7 @@ class QComponent():
             List[BaseGeometry] or None -- Returns None if an error in the name of the element type (ie. table)
         """
         if element_type == 'all' or self.design.elements.check_element_type(element_type):
-            return self.design.elements.get_component_geometry_list(self.name, element_type)
+            return self.design.elements.get_component_geometry_list(self.id, element_type)
 
     def elements_table(self,  element_type: str) -> pd.DataFrame:
         """
@@ -514,13 +516,13 @@ class QComponent():
             pd.DataFrame or None -- Element table for the component. Returns None if an error in the name of the element type (ie. table)
         """
         if self.design.elements.check_element_type(element_type):
-            return self.design.elements.get_component(self.name, element_type)
+            return self.design.elements.get_component(self.id, element_type)
 
     def geometry_bounds(self):
         """
         Return the bounds of the geometry.
         """
-        bounds = self.design.elements.get_component_bounds(self.name)
+        bounds = self.design.elements.get_component_bounds(self.id)
         return bounds
 
     def elements_plot(self, ax: 'matplotlib.axes.Axes' = None, plot_kw: dict = None) -> List:

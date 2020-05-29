@@ -237,7 +237,7 @@ class TransmonPocket(BaseQubit):
         objects = [connector_pad, connector_wire_path, connector_wire_CON]
         objects = draw.scale(objects, loc_W, loc_H, origin=(0, 0))
         objects = draw.translate(objects, loc_W*(p.pad_width)/2.,
-                                 loc_H*(p.pad_height+p.pad_gap/2+p.pad_gap))
+                                 loc_H*(p.pad_height+p.pad_gap/2+pc.pad_gap))
         objects = draw.rotate_position(objects, p.orientation, [p.pos_x, p.pos_y])
         [connector_pad, connector_wire_path, connector_wire_CON] = objects
 
@@ -248,5 +248,5 @@ class TransmonPocket(BaseQubit):
 
         # add connectors to design tracker
         points = draw.get_poly_pts(connector_wire_CON)
-        self.design.add_connector(name, points[2:2+2], self.name, flip=False)  # TODO: chip
+        self.design.add_connector(name, points[2:2+2], self.id, flip=False)  # TODO: chip
 

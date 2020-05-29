@@ -519,10 +519,10 @@ class QDesign():
             chip {str} --  Optionally add options (default: {'main'})
         """
         if is_component(parent):
-            parent = parent.name
+            parent = parent.id
         elif parent is None:
             parent = 'none'
-        name = parent+'_'+name
+        name = str(parent)+'_'+name
 
         # assert isinstance(parent, str) # could enfornce
         self.connectors[name] = make_connector(
