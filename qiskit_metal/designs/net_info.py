@@ -39,34 +39,23 @@ class QNet():
 
     @property
     def qnet_latest_assigned_id(self) -> int:
-        '''
-        Return unique number for each net in table.
-        For user of the design class to know the lastest id added to _net_info.
-        '''
+        """Return unique number for each net in table.
+       
+        Returns:
+            int -- For user of the design class to know the lastest id added to _net_info.
+        """
         return self._qnet_latest_assigned_id
 
-    def add_for_test(self):
-        # for testing, need values in net_table to test.
-        id_local = self._get_new_qnet_id()
-        self._net_info = self._net_info.append(
-            pd.Series([id_local, 1, 'qubit'], index=self._net_info.columns), ignore_index=True)
-        self._net_info = self._net_info.append(
-            pd.Series([id_local, 3, 'qstart'], index=self._net_info.columns), ignore_index=True)
+    @property
+    def net_info(self) -> pd.DataFrame:
+        """[summary]
 
-        id_local = self._get_new_qnet_id()
-        self._net_info = self._net_info.append(
-            pd.Series([id_local, 1, 'bus1'], index=self._net_info.columns), ignore_index=True)
-        self._net_info = self._net_info.append(
-            pd.Series([id_local, 4, 'qstart'], index=self._net_info.columns), ignore_index=True)
+        Returns:
+            [type] -- [description]
+        """
+        return self._net_info
 
-        id_local = self._get_new_qnet_id()
-        self._net_info = self._net_info.append(
-            pd.Series([id_local, 2, 'bus2'], index=self._net_info.columns), ignore_index=True)
-        self._net_info = self._net_info.append(
-            pd.Series([id_local, 5, 'qend'], index=self._net_info.columns), ignore_index=True)
-        print(self._net_info)
-        pass
-
+   
     def add_to_net_table(self, comp1_id: int, pin1_name: str, comp2_id: int, pin2_name: str) -> int:
         """Add two entries into the _net_info table.
 
@@ -89,9 +78,21 @@ class QNet():
         assert isinstance(pin2_name, str), self.logger.error(
             f'Expected a string, but have {pin2_name}.')
 
-
-
         net_id = 0   # Zero mean false, the pin was not added to _net_info
+
+        # Confirm the component-pin combonation is NOT in _net_info, before adding them.
+        
+        
+        #for netID, component_id, pin_name in self._net_info.iterrows():
+        for index, row in self._net_info.iterrows():
+            netID, component_id, pin_name = row
+            if ((component_id == comp1_id) and (pin_name == pin1_name)):
+                self.logger.warning(f'Component: {comp1_id} and pin: {pin1_name} are already in net_info with net_id {netID}')
+                return net_id
+            if ((component_id == comp2_id) and (pin_name == pin2_name)):
+                self.logger.warning(f'Component: {comp2_id} and pin: {pin2_name} are already in net_info with net_id {netID}')
+                return net_id
+
         net_id = self._get_new_qnet_id()
 
         entry1 = [net_id, comp1_id, pin1_name]
@@ -100,7 +101,7 @@ class QNet():
 
         self._net_info = self._net_info.append(temp_df)
 
-        print(self._net_info)
+        #print(self._net_info)
         return net_id
 
     def delete_net_table(self, item: tuple) -> bool:
@@ -115,15 +116,36 @@ class QNet():
 
         return confirm
 
-    def is_Qomponent_pin_connected(self, component_name: str, port_name: str) -> Tuple[bool, tuple]:
-        confirm = False
-        aconnector = tuple()
-        # comp_1 = ""
-        # pin_1 = ""
-        # comp_2 = ""
-        # pin_2 = ""
-        # for item in self._net_table:
-        #     print (item)
-        #     pass
+    # def is_Qomponent_pin_connected(self, component_name: str, port_name: str) -> Tuple[bool, tuple]:
+    #     confirm = False
+    #     aconnector = tuple()
+    #     # comp_1 = ""
+    #     # pin_1 = ""
+    #     # comp_2 = ""
+    #     # pin_2 = ""
+    #     # for item in self._net_table:
+    #     #     print (item)
+    #     #     pass
+    #     return (confirm, aconnector)
 
-        return (confirm, aconnector)
+    def add_for_test(self):
+        # for testing, need values in net_table to test.
+        id_local = self._get_new_qnet_id()
+        self._net_info = self._net_info.append(
+            pd.Series([id_local, 1, 'qubit'], index=self._net_info.columns), ignore_index=True)
+        self._net_info = self._net_info.append(
+            pd.Series([id_local, 3, 'qstart'], index=self._net_info.columns), ignore_index=True)
+
+        id_local = self._get_new_qnet_id()
+        self._net_info = self._net_info.append(
+            pd.Series([id_local, 1, 'bus1'], index=self._net_info.columns), ignore_index=True)
+        self._net_info = self._net_info.append(
+            pd.Series([id_local, 4, 'qstart'], index=self._net_info.columns), ignore_index=True)
+
+        id_local = self._get_new_qnet_id()
+        self._net_info = self._net_info.append(
+            pd.Series([id_local, 2, 'bus2'], index=self._net_info.columns), ignore_index=True)
+        self._net_info = self._net_info.append(
+            pd.Series([id_local, 5, 'qend'], index=self._net_info.columns), ignore_index=True)
+        print(self._net_info)
+        pass
