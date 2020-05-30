@@ -81,18 +81,14 @@ class QNet():
         net_id = 0   # Zero mean false, the pin was not added to _net_info
 
         # Confirm the component-pin combonation is NOT in _net_info, before adding them.
-        
-        
-        #for netID, component_id, pin_name in self._net_info.iterrows():
-        for index, row in self._net_info.iterrows():
-            netID, component_id, pin_name = row
+        for (netID, component_id, pin_name) in self._net_info.itertuples(index=False):
             if ((component_id == comp1_id) and (pin_name == pin1_name)):
                 self.logger.warning(f'Component: {comp1_id} and pin: {pin1_name} are already in net_info with net_id {netID}')
                 return net_id
             if ((component_id == comp2_id) and (pin_name == pin2_name)):
                 self.logger.warning(f'Component: {comp2_id} and pin: {pin2_name} are already in net_info with net_id {netID}')
                 return net_id
-
+ 
         net_id = self._get_new_qnet_id()
 
         entry1 = [net_id, comp1_id, pin1_name]
@@ -104,29 +100,18 @@ class QNet():
         #print(self._net_info)
         return net_id
 
-    def delete_net_table(self, item: tuple) -> bool:
-        confirm = False
+        
+    def delete_net_table(self, net_id_to_remove: int):
+        """[summary]
 
-        # (s1, s2, s3, s4) = item
-        # equal_item = (s3, s4, s1, s2)
+        Arguments:
+            net_id_to_remove {int} -- [description]
 
-        # self._net_table.discard(equal_item)
-        # self._net_table.discard(item)
-        # confirm = True
+        """
 
-        return confirm
-
-    # def is_Qomponent_pin_connected(self, component_name: str, port_name: str) -> Tuple[bool, tuple]:
-    #     confirm = False
-    #     aconnector = tuple()
-    #     # comp_1 = ""
-    #     # pin_1 = ""
-    #     # comp_2 = ""
-    #     # pin_2 = ""
-    #     # for item in self._net_table:
-    #     #     print (item)
-    #     #     pass
-    #     return (confirm, aconnector)
+        self._net_info.drop(
+            self._net_info.index[self._net_info['net_id'] == net_id_to_remove], inplace=True)
+        return
 
     def add_for_test(self):
         # for testing, need values in net_table to test.
@@ -147,5 +132,4 @@ class QNet():
             pd.Series([id_local, 2, 'bus2'], index=self._net_info.columns), ignore_index=True)
         self._net_info = self._net_info.append(
             pd.Series([id_local, 5, 'qend'], index=self._net_info.columns), ignore_index=True)
-        print(self._net_info)
-        pass
+        #print(self._net_info)
