@@ -36,7 +36,7 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
     makes up the connector. Note, DC SQUID currently represented by single
     inductance sheet
 
-    Add connectors to it using the `con_lines` dictonary. See BaseQubit for more
+    Add connectors to it using the `connection_pads` dictonary. See BaseQubit for more
     information.
 
     Options:
@@ -81,7 +81,7 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
         cross_length='200um',
         cross_gap='20um',
         orientation='0',
-        _default_con_lines = Dict(
+        _default_connection_pads = Dict(
             connector_type='0', #0 = Claw type, 1 = gap type
             claw_length='30um',
             ground_spacing='5um',
@@ -93,7 +93,7 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
 ##############################################MAKE######################################################
     def make(self):
         self.make_pocket()
-        self.make_con_lines()
+        self.make_connection_pads()
 
 
 ###################################TRANSMON#############################################################
@@ -134,14 +134,14 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
 
 
 ############################CONNECTORS##################################################################################################
-    def make_con_lines(self):
+    def make_connection_pads(self):
         '''
         Goes through connectors and makes each one.
         '''
-        for name in self.options.con_lines:
-            self.make_con_line(name)
+        for name in self.options.connection_pads:
+            self.make_connection_pad(name)
 
-    def make_con_line(self,name:str):
+    def make_connection_pad(self,name:str):
         '''
         Makes individual connector
 
@@ -156,7 +156,7 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
         cross_length = p.cross_length
         cross_gap = p.cross_gap
 
-        pc = self.p.con_lines[name] # parser on connector options
+        pc = self.p.connection_pads[name] # parser on connector options
         c_g = pc.claw_gap
         c_l = pc.claw_length
         c_w = pc.claw_width

@@ -49,7 +49,7 @@ class TransmonPocket(BaseQubit):
     Create a standard pocket transmon qubit for a ground plane,
     with two pads connectored by a junction (see drawing below).
 
-    Connector lines can be added using the `con_lines`
+    Connector lines can be added using the `connection_pads`
     dicitonary. Each connector line has a name and a list of default
     properties.
 
@@ -127,7 +127,7 @@ class TransmonPocket(BaseQubit):
         # 90 has dipole aligned along the +X axis,
         # while 0 has dipole aligned along the +Y axis
         orientation='0',
-        _default_con_lines = Dict(
+        _default_connection_pads = Dict(
             pad_gap='15um',
             pad_width='125um',
             pad_height='30um',
@@ -150,7 +150,7 @@ class TransmonPocket(BaseQubit):
         Create the geometry from the parsed options.
         """
         self.make_pocket()
-        self.make_con_lines()
+        self.make_connection_pads()
 
 #####MAKE SHAPELY POLYGONS########################################################################
     def make_pocket(self):
@@ -187,14 +187,14 @@ class TransmonPocket(BaseQubit):
         self.add_elements('poly', dict(rect_pk=rect_pk), subtract=True)
         self.add_elements('poly', dict(rect_jj=rect_jj), helper=True)
 
-    def make_con_lines(self):
+    def make_connection_pads(self):
         '''
         Makes standard transmon in a pocket
         '''
-        for name in self.options.con_lines: #
-            self.make_con_line(name)
+        for name in self.options.connection_pads: #
+            self.make_connection_pad(name)
 
-    def make_con_line(self, name:str):
+    def make_connection_pad(self, name:str):
         '''
         Makes individual connector
 
@@ -205,7 +205,7 @@ class TransmonPocket(BaseQubit):
 
         # self.p allows us to directly access parsed values (string -> numbers) form the user option
         p = self.p
-        pc = self.p.con_lines[name] # parser on connector options
+        pc = self.p.connection_pads[name] # parser on connector options
 
         # define commonly used variables once
         cpw_width = pc.cpw_width

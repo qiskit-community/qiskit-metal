@@ -44,7 +44,7 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
     Create a standard pocket transmon qubit for a ground plane,
     with two pads connectored by a junction (see drawing below).
 
-    Connector lines can be added using the `con_lines`
+    Connector lines can be added using the `connection_pads`
     dicitonary. Each connector line has a name and a list of default
     properties.
 
