@@ -23,7 +23,8 @@ from .. import logger
 
 
 class QNet():
-    """[summary]
+    """Use DataFrame to hold Net Information about the connected pins of a design.   
+    There is one uniqe net_id for each connected pin.
     """
 
     def __init__(self):
@@ -33,14 +34,19 @@ class QNet():
         self._qnet_latest_assigned_id = 0
         self.logger = logger  # type: logging.Logger
 
-    def _get_new_qnet_id(self) -> int:
+    def _get_new_net_id(self) -> int:
+        """ Provide uniqe new qnet_id
+
+        Returns:
+            int -- ID to use for storing a new net within _net_info.
+        """
         self._qnet_latest_assigned_id += 1
         return self._qnet_latest_assigned_id
 
     @property
     def qnet_latest_assigned_id(self) -> int:
         """Return unique number for each net in table.
-       
+
         Returns:
             int -- For user of the design class to know the lastest id added to _net_info.
         """
@@ -48,22 +54,22 @@ class QNet():
 
     @property
     def net_info(self) -> pd.DataFrame:
-        """[summary]
+        """Provide table of all nets within the design.
 
         Returns:
-            [type] -- [description]
+            pd.DataFrame -- Table of the net of pins within design.
         """
         return self._net_info
 
-   
     def add_pins_to_table(self, comp1_id: int, pin1_name: str, comp2_id: int, pin2_name: str) -> int:
-        """Add two entries into the _net_info table.
+        """Add two entries into the _net_info table. If either component/pin is already in net_info,
+        the connection will NOT be added to the net_info.
 
         Arguments:
-            comp1_id {int} -- [description]
-            pin1_name {str} -- [description]
-            comp2_id {int} -- [description]
-            pint2 {str} -- [description]
+            comp1_id {int} -- Name of component 1. 
+            pin1_name {str} -- Corresponding pin name for component1.
+            comp2_id {int} -- Name of component 2.
+            pint2 {str} -- Corresponding pin name for component2.
 
         Returns:
             int -- 0 if not added to list, otherwise the netid
@@ -83,13 +89,15 @@ class QNet():
         # Confirm the component-pin combonation is NOT in _net_info, before adding them.
         for (netID, component_id, pin_name) in self._net_info.itertuples(index=False):
             if ((component_id == comp1_id) and (pin_name == pin1_name)):
-                self.logger.warning(f'Component: {comp1_id} and pin: {pin1_name} are already in net_info with net_id {netID}')
+                self.logger.warning(
+                    f'Component: {comp1_id} and pin: {pin1_name} are already in net_info with net_id {netID}')
                 return net_id
             if ((component_id == comp2_id) and (pin_name == pin2_name)):
-                self.logger.warning(f'Component: {comp2_id} and pin: {pin2_name} are already in net_info with net_id {netID}')
+                self.logger.warning(
+                    f'Component: {comp2_id} and pin: {pin2_name} are already in net_info with net_id {netID}')
                 return net_id
- 
-        net_id = self._get_new_qnet_id()
+
+        net_id = self._get_new_net_id()
 
         entry1 = [net_id, comp1_id, pin1_name]
         entry2 = [net_id, comp2_id, pin2_name]
@@ -97,66 +105,27 @@ class QNet():
 
         self._net_info = self._net_info.append(temp_df, ignore_index=True)
 
-        #print(self._net_info)
+        # print(self._net_info)
         return net_id
 
-        
     def delete_net_id(self, net_id_to_remove: int):
-        """[summary]
+        """Will remove the two entries with net_id_to_remove.
 
         Arguments:
-            net_id_to_remove {int} -- [description]
+            net_id_to_remove {int} -- If id is in _net_info, the entry will be removed.
 
         """
-
+        
         self._net_info.drop(
             self._net_info.index[self._net_info['net_id'] == net_id_to_remove], inplace=True)
         return
 
-    def delete_all_pins_for_component(self, component_id_to_remove: int):
+    def delete_all_pins_for_component(self, component_id_to_remove: int) -> set:
         all_net_id_deleted = set()
 
         for (netID, component_id, pin_name) in self._net_info.itertuples(index=False):
             if (component_id == component_id_to_remove):
                 all_net_id_deleted.add(netID)
-                
-        
-        for netID in all_net_id_deleted:
-            self.delete_net_id(netID)
+                self.delete_net_id(netID)
 
-        #self._net_info.drop(
-        #    self._net_info.index[self._net_info['component_id'] == component_id_to_remove], inplace=True)
-        return
-
-    def add_for_test(self):
-        # for testing, need values in net_table to test.
-       
-        self.add_pins_to_table(1,'qubit',  3, 'qstart')
-        self.add_pins_to_table(1, 'bus1',  3, 'qstartother')
-        self.add_pins_to_table(2, 'bus2',  5, 'qend')
-        self.add_pins_to_table(1, 'qubitextra', 3, 'qrunning')
-
-        # id_local = self._get_new_qnet_id()
-        # self._net_info = self._net_info.append(
-        #     pd.Series([id_local, 1, 'qubit'], index=self._net_info.columns), ignore_index=True)
-        # self._net_info = self._net_info.append(
-        #     pd.Series([id_local, 3, 'qstart'], index=self._net_info.columns), ignore_index=True)
-
-        # id_local = self._get_new_qnet_id()
-        # self._net_info = self._net_info.append(
-        #     pd.Series([id_local, 1, 'bus1'], index=self._net_info.columns), ignore_index=True)
-        # self._net_info = self._net_info.append(
-        #     pd.Series([id_local, 4, 'qstart'], index=self._net_info.columns), ignore_index=True)
-
-        # id_local = self._get_new_qnet_id()
-        # self._net_info = self._net_info.append(
-        #     pd.Series([id_local, 2, 'bus2'], index=self._net_info.columns), ignore_index=True)
-        # self._net_info = self._net_info.append(
-        #     pd.Series([id_local, 5, 'qend'], index=self._net_info.columns), ignore_index=True)
-
-        # id_local = self._get_new_qnet_id()
-        # self._net_info = self._net_info.append(
-        #     pd.Series([id_local, 1, 'qubitextra'], index=self._net_info.columns), ignore_index=True)
-        # self._net_info = self._net_info.append(
-        #     pd.Series([id_local, 3, 'qrunning'], index=self._net_info.columns), ignore_index=True)
-        #print(self._net_info)
+        return all_net_id_deleted
