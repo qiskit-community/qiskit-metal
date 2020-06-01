@@ -56,7 +56,7 @@ class QNet():
         return self._net_info
 
    
-    def add_to_net_table(self, comp1_id: int, pin1_name: str, comp2_id: int, pin2_name: str) -> int:
+    def add_pins_to_table(self, comp1_id: int, pin1_name: str, comp2_id: int, pin2_name: str) -> int:
         """Add two entries into the _net_info table.
 
         Arguments:
@@ -95,13 +95,13 @@ class QNet():
         entry2 = [net_id, comp2_id, pin2_name]
         temp_df = pd.DataFrame([entry1, entry2], columns=self.column_names)
 
-        self._net_info = self._net_info.append(temp_df)
+        self._net_info = self._net_info.append(temp_df, ignore_index=True)
 
         #print(self._net_info)
         return net_id
 
         
-    def delete_net_table(self, net_id_to_remove: int):
+    def delete_net_id(self, net_id_to_remove: int):
         """[summary]
 
         Arguments:
@@ -113,23 +113,50 @@ class QNet():
             self._net_info.index[self._net_info['net_id'] == net_id_to_remove], inplace=True)
         return
 
+    def delete_all_pins_for_component(self, component_id_to_remove: int):
+        all_net_id_deleted = set()
+
+        for (netID, component_id, pin_name) in self._net_info.itertuples(index=False):
+            if (component_id == component_id_to_remove):
+                all_net_id_deleted.add(netID)
+                
+        
+        for netID in all_net_id_deleted:
+            self.delete_net_id(netID)
+
+        #self._net_info.drop(
+        #    self._net_info.index[self._net_info['component_id'] == component_id_to_remove], inplace=True)
+        return
+
     def add_for_test(self):
         # for testing, need values in net_table to test.
-        id_local = self._get_new_qnet_id()
-        self._net_info = self._net_info.append(
-            pd.Series([id_local, 1, 'qubit'], index=self._net_info.columns), ignore_index=True)
-        self._net_info = self._net_info.append(
-            pd.Series([id_local, 3, 'qstart'], index=self._net_info.columns), ignore_index=True)
+       
+        self.add_pins_to_table(1,'qubit',  3, 'qstart')
+        self.add_pins_to_table(1, 'bus1',  3, 'qstartother')
+        self.add_pins_to_table(2, 'bus2',  5, 'qend')
+        self.add_pins_to_table(1, 'qubitextra', 3, 'qrunning')
 
-        id_local = self._get_new_qnet_id()
-        self._net_info = self._net_info.append(
-            pd.Series([id_local, 1, 'bus1'], index=self._net_info.columns), ignore_index=True)
-        self._net_info = self._net_info.append(
-            pd.Series([id_local, 4, 'qstart'], index=self._net_info.columns), ignore_index=True)
+        # id_local = self._get_new_qnet_id()
+        # self._net_info = self._net_info.append(
+        #     pd.Series([id_local, 1, 'qubit'], index=self._net_info.columns), ignore_index=True)
+        # self._net_info = self._net_info.append(
+        #     pd.Series([id_local, 3, 'qstart'], index=self._net_info.columns), ignore_index=True)
 
-        id_local = self._get_new_qnet_id()
-        self._net_info = self._net_info.append(
-            pd.Series([id_local, 2, 'bus2'], index=self._net_info.columns), ignore_index=True)
-        self._net_info = self._net_info.append(
-            pd.Series([id_local, 5, 'qend'], index=self._net_info.columns), ignore_index=True)
+        # id_local = self._get_new_qnet_id()
+        # self._net_info = self._net_info.append(
+        #     pd.Series([id_local, 1, 'bus1'], index=self._net_info.columns), ignore_index=True)
+        # self._net_info = self._net_info.append(
+        #     pd.Series([id_local, 4, 'qstart'], index=self._net_info.columns), ignore_index=True)
+
+        # id_local = self._get_new_qnet_id()
+        # self._net_info = self._net_info.append(
+        #     pd.Series([id_local, 2, 'bus2'], index=self._net_info.columns), ignore_index=True)
+        # self._net_info = self._net_info.append(
+        #     pd.Series([id_local, 5, 'qend'], index=self._net_info.columns), ignore_index=True)
+
+        # id_local = self._get_new_qnet_id()
+        # self._net_info = self._net_info.append(
+        #     pd.Series([id_local, 1, 'qubitextra'], index=self._net_info.columns), ignore_index=True)
+        # self._net_info = self._net_info.append(
+        #     pd.Series([id_local, 3, 'qrunning'], index=self._net_info.columns), ignore_index=True)
         #print(self._net_info)
