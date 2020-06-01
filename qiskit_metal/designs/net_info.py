@@ -74,17 +74,26 @@ class QNet():
         Returns:
             int -- 0 if not added to list, otherwise the netid
         """
-
-        assert isinstance(comp1_id, int), self.logger.error(
-            f'Expected an int, but have {comp1_id}.')
-        assert isinstance(comp2_id, int), self.logger.error(
-            f'Expected an int, but have {comp2_id}.')
-        assert isinstance(pin1_name, str), self.logger.error(
-            f'Expected a string, but have {pin1_name}.')
-        assert isinstance(pin2_name, str), self.logger.error(
-            f'Expected a string, but have {pin2_name}.')
-
         net_id = 0   # Zero mean false, the pin was not added to _net_info
+
+        if not isinstance(comp1_id, int):
+            self.logger.warning(
+            f'Expected an int, but have {comp1_id}. The pins are were not entered to the net_info table.')
+            return net_id
+        if not isinstance(comp2_id, int):
+            self.logger.warning(
+            f'Expected an int, but have {comp2_id}. The pins are were not entered to the net_info table.')
+            return net_id
+        if not isinstance(pin1_name, str): 
+            self.logger.warning(
+            f'Expected a string, but have {pin1_name}. The pins are were not entered to the net_info table.')
+            return net_id
+        if not isinstance(pin2_name, str): 
+            self.logger.warning(
+            f'Expected a string, but have {pin2_name}. The pins are were not entered to the net_info table.')
+            return net_id
+
+       
 
         # Confirm the component-pin combonation is NOT in _net_info, before adding them.
         for (netID, component_id, pin_name) in self._net_info.itertuples(index=False):
