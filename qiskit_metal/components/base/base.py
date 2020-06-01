@@ -132,6 +132,9 @@ class QComponent():
 
         # Parser for options
         self.p = ParsedDynamicAttributes_Component(self)
+        
+        # Create an empty dict, which will populated by component designer.
+        self.pins = dict()
 
         # Add the component to the parent design
         self._add_to_design()
@@ -140,9 +143,7 @@ class QComponent():
         if make:
             self.do_make()
 
-        # Create an empty dict, which will populated by component designer.
-        self.pins = dict()
-
+       
     @classmethod
     def _gather_all_children_options(cls):
         '''
