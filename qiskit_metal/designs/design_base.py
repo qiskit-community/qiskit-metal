@@ -35,6 +35,8 @@ from ..toolbox_metal.import_export import load_metal_design, save_metal
 from ..toolbox_metal.parsing import parse_options, parse_value
 from ..elements import QElementTables
 from ..toolbox_python.utility_functions import log_error_easy
+from .net_info import QNet
+
 
 if TYPE_CHECKING:
     # For linting typechecking, import modules that can't be loaded here under normal conditions.
@@ -116,6 +118,7 @@ class QDesign():
 
         # Can't really use this until DefaultOptionsRenderer.default_draw_substrate.color_plane is resolved.
         self._template_renderer_options = DefaultOptionsRenderer()  # use for renderer
+        self._net_info = QNet()
 
     def _init_metadata(self) -> Dict:
         """Initialize default metadata dicitoanry

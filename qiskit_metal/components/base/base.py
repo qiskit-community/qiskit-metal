@@ -20,7 +20,7 @@ See the docstring of QComponent
 @author: Zlatko Minev, Thomas McConekey, ... (IBM)
 @date: 2019
 """
-import pandas as pd
+
 import logging
 import pprint
 import inspect
@@ -28,16 +28,13 @@ import os
 import numpy as np
 from copy import deepcopy
 from typing import TYPE_CHECKING, Any, Iterable, List, Optional, TypeVar, Union, Dict as Dict_
+import pandas as pd
 from ... import draw
 from ... import is_design, logger
 from ...draw import BaseGeometry
 from ...toolbox_python.attr_dict import Dict
 from ._parsed_dynamic_attrs import ParsedDynamicAttributes_Component
 
-from ... import is_design, logger
-from ...draw import BaseGeometry
-from ...toolbox_python.attr_dict import Dict
-from ._parsed_dynamic_attrs import ParsedDynamicAttributes_Component
 
 __all__ = ['QComponent']
 
@@ -136,7 +133,7 @@ class QComponent():
         # Parser for options
         self.p = ParsedDynamicAttributes_Component(self)
         
-        #Generate empty dict for pins
+        # Create an empty dict, which will populated by component designer.
         self.pins = dict()
 
         # Add the component to the parent design
@@ -146,6 +143,7 @@ class QComponent():
         if make:
             self.do_make()
 
+       
     @classmethod
     def _gather_all_children_options(cls):
         '''
