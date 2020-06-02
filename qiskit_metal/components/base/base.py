@@ -421,7 +421,8 @@ class QComponent():
             tangent=vec_dist_unit,
             width=np.linalg.norm(vec_dist),
             chip=chip,
-            parent_name=parent_name
+            parent_name=parent_name,
+            net_id = 0
         )
 
     def get_pin(self, name: str):
@@ -466,7 +467,7 @@ class QComponent():
         # name = str(parent)+'_'+name
 
         # assert isinstance(parent, str) # could enfornce
-        self.pins[name] = make_pin(
+        self.pins[name] = self.make_pin(
             points, parent, flip=flip, chip=chip)
 
         # TODO: Add net?
