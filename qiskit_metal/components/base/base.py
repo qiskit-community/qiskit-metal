@@ -448,7 +448,7 @@ class QComponent():
         """Add named connector to the design by creating a connector dicitoanry.
 
         Arguments:
-            name {str} -- Name of connector
+            name {str} -- Name of pin
             points {list} -- List of two (x,y) points that define the connector
             parent {Union[str,} -- component or string or None. Will be converted to a
                                  string, which will the name of the component.
@@ -457,42 +457,13 @@ class QComponent():
             flip {bool} -- [description] (default: {False})
             chip {str} --  Optionally add options (default: {'main'})
         """
-        ##THIS SEEMS REDUNDANT IF THE function is part of the component class?
-        # if is_component(parent):
-        #     parent = parent.id
-        # elif parent is None:
-        #     parent = 'none'
-        # name = str(parent)+'_'+name
 
-        # assert isinstance(parent, str) # could enfornce
         self.pins[name] = self.make_pin(
             points, parent, flip=flip, chip=chip)
 
         # TODO: Add net?
 
-#BEING MOVED TO DIFFERENT CLASS?
-    # def add_connector(self, id, points: list, flip=False, chip=None):
-    #     """Register a connector with the design.
-
-    #     Arguments:
-    #         two_points {list} -- List of the two point coordinates that deifne the start
-    #                              and end of the connector
-    #         ops {None / dict} -- Options
-
-    #     Keyword Arguments:
-    #         name {string or None} -- By default is just the object name  (default: {None})
-    #         chip {string or None} -- chip name or defaults to DEFAULT.chip
-    #     """
-    #     if id is None:
-    #         id = self.id
-
-    #     self._connector_names.add(name)
-
-    #     self.design.add_connector(name=name,
-    #                               points=points,
-    #                               parent=self,
-    #                               chip=chip,
-    #                               flip=flip)
+########################################################################
 
     def add_dependency(self, parent: str, child: str):
         """Add a dependency between one component and another.

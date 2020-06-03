@@ -16,3 +16,5 @@
 @auhtor: Zlatko Minev, Thomas McConkey, ... (IBM)
 @date: 2019
 """
+
+from .fake_cpw import FakeCPW

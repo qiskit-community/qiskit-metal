@@ -503,52 +503,7 @@ class QDesign():
         """
         return parse_options(params, param_names, variable_dict=self.variables)
 
-    def add_connector(self,
-                      name: str,
-                      points: list,
-                      parent: Union[str, 'QComponent'],
-                      flip: bool = False,
-                      chip: str = 'main'):
-        """Add named connector to the design by creating a connector dicitoanry.
-
-        Arguments:
-            name {str} -- Name of connector
-            points {list} -- List of two (x,y) points that define the connector
-            parent {Union[str,} -- component or string or None. Will be converted to a
-                                 string, which will the name of the component.
-
-        Keyword Arguments:
-            flip {bool} -- [description] (default: {False})
-            chip {str} --  Optionally add options (default: {'main'})
-        """
-        if is_component(parent):
-            parent = parent.id
-        elif parent is None:
-            parent = 'none'
-        name = str(parent)+'_'+name
-
-        # assert isinstance(parent, str) # could enfornce
-        self.connectors[name] = make_connector(
-            points, parent, flip=flip, chip=chip)
-
-        # TODO: Add net?
-
-    def get_connector(self, name: str):
-        """Interface for components to get connector data
-
-        Args:
-            name (str): Name of the desired connector.
-
-        Returns:
-            (dict): Returns the data of the connector, see design_base.make_connector() for
-                what those values are.
-        """
-
-        # For after switching to pandas, something like this?
-        # return self.connectors.get(name).to_dict()
-
-        return self.connectors[name]
-
+    
     def update_component(self, component_name: str, dependencies: bool = True):
         """Update the component and any dependencies it may have.
         Mediator type function to update all children.
@@ -609,43 +564,4 @@ class QDesign():
         """
 
 
-####################################################################################
-###
-# Connector
-# TODO: Decide how to handle this.
-#   Should this be a class?
-#   Should we keep function here or just move into design?
-# MAKE it so it has reference to who made it
 
-def make_connector(points: list, parent_name: str, flip=False, chip='main'):
-    """
-    Works in user units.
-
-    Arguments:
-        points {[list of coordinates]} -- Two points that define the connector
-
-    Keyword Arguments:
-        flip {bool} -- Flip the normal or not  (default: {False})
-        chip {str} -- Name of the chip the connector sits on (default: {'main'})
-
-    Returns:
-        [type] -- [description]
-    """
-    assert len(points) == 2
-
-    # Get the direction vector, the unit direction vec, and the normal vector
-    vec_dist, vec_dist_unit, vec_normal = draw.Vector.two_points_described(
-        points)
-
-    if flip:
-        vec_normal = -vec_normal
-
-    return Dict(
-        points=points,
-        middle=np.sum(points, axis=0)/2.,
-        normal=vec_normal,
-        tangent=vec_dist_unit,
-        width=np.linalg.norm(vec_dist),
-        chip=chip,
-        parent_name=parent_name
-    )

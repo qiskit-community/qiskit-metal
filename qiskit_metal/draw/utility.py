@@ -457,13 +457,13 @@ class Vector:
         """
         assert len(points2D) == 2
         start = np.array(points2D[0])
-        end = np.array(points2D[0])
+        end = np.array(points2D[1])
 
         distance_vec = end - start                   # distance vector
         # unit vector along the direction of the two point
         unit_vec = distance_vec / norm(distance_vec)
         # tangent vector counter-clockwise 90 deg rotation
-        tangent_vec = Vector.rotate(unit_vec, np.pi/2)
+        tangent_vec = np.round(Vector.rotate(unit_vec, np.pi/2),decimals=11)
 
         if Vector.is_zero(distance_vec):
             logger.debug(f'Function `two_points_described` encountered a zero vector'
