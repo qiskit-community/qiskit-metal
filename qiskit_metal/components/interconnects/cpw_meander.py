@@ -11,7 +11,13 @@ from numpy.linalg import norm
 from ... import QComponent, Dict, draw
 from ...toolbox_metal.parsing import is_true
 #from qiskit_metal.toolbox_metal.parsing import is_true
-
+options = Dict(pin_start_name='Q1_a',
+               pin_end_name='Q2_b',
+               meander=Dict(
+                   lead_start='0.1mm',
+                   lead_end='0.1mm',
+                   asymmetry='0 um')
+               )
 
 class Connector:
     r"""A simple class to define a connector as a 2D point
@@ -60,20 +66,21 @@ class CpwMeanderSimple(QComponent):
         For example, note that lead_direction_inverted can be 'false' or 'true'
     """
     default_options = Dict(
-        connector_start='',
-        connector_end='',
+        pin_start_name='',
+        pin_end_name='',
         total_length='7mm',
         chip='main',
         layer='1',
         trace_width='cpw_width',
         trace_gap='cpw_gap',
+
         meander=Dict(
             spacing='200um',
             lead_start='0.1mm',
             lead_end='0.1mm',
             lead_direction_inverted='false',
             snap='true',
-            asymmetry_fracton='0',
+            asymmetry='0 um',
         )
     )
     def make(self):
@@ -82,6 +89,7 @@ class CpwMeanderSimple(QComponent):
         # parsed options
         p = self.p
         meander = self.parse_value(self.options.meander)  # type: Dict
+        snap = is_true(meander.snap)
         total_length = p.total_length
         lead_start = meander.lead_start
         lead_end = meander.lead_end
@@ -97,6 +105,10 @@ class CpwMeanderSimple(QComponent):
 
         # Meander
         length_meander = total_length - (meander.lead_end + meander.lead_start)
+        if snap:
+            # handle y distance
+            length_meander -= 0#(end.position - endm.position)[1]
+
         meandered_pts = self.meander_fixed_length(
             startm, endm, length_meander, meander)
 
@@ -115,7 +127,8 @@ class CpwMeanderSimple(QComponent):
         # Make points into elements
         self.make_elements(points)
 
-    def meander_fixed_length(self, start: Connector, end: Connector, length: str,
+    def meander_fixed_length(self, start: Connector, end: Connector,
+                             length: float,
                              meander: dict) -> np.ndarray:
         """
         Meanders using a fixed length and fixed spacing.
@@ -124,9 +137,9 @@ class CpwMeanderSimple(QComponent):
             * If it cannot meander just returns the initial start point
 
         Arguments:
-            start {Connector} -- [description]
+            start {Connector} -- Connector of the start
             end {Connector} -- [description]
-            length {str} -- [description]
+            length {str} --  Total length of the meander whole CPW segment (defined by user, after you subtract lead lengths
             meander {dict} -- meander options (parsed)
 
         Returns:
@@ -152,9 +165,9 @@ class CpwMeanderSimple(QComponent):
 
         # Parameters
         spacing = meander.spacing  # Horizontal spacing between meanders
-        asymmetry_fracton = meander.asymmetry_fracton
+        asymmetry = meander.asymmetry
         snap = is_true(meander.snap)  # snap to xy grid
-        # TODO: snap add 45 deg snap by chaning snap function using angls
+        # TODO: snap add 45 deg snap by chaning snap function using angles
 
         # Coordinate system
         forward, sideways = self.get_unit_vectors(start, end, snap)
@@ -162,16 +175,35 @@ class CpwMeanderSimple(QComponent):
             sideways *= -1
 
         # Calculate lengths and menader number
-        length_direct = norm(start.position - end.position)
-        meander_number = np.ceil(length_direct/spacing) - \
-            1  # Brekaup into sections
+        dist = start.position - end.position
+        if snap:
+            # TODO: Not general, depends on the outside (to fix)
+            length_direct = abs(norm(np.dot(dist,forward)))
+            length_excess = abs(norm(np.dot(dist,sideways))) # in the vertical direction
+            # print(length_excess)
+        else:
+            length_direct = norm(dist)
+            length_y = 0
+
+        # Brekaup into sections
+        meander_number = np.ceil(length_direct/spacing) - 1
         if meander_number < 1:
             self.logger.info(f'Zero meanders for {self.name}')
             return start.position
 
-        # length of segemnet between two root points
-        length_segment = length / meander_number
+        # length of segmnet between two root points
+        length_segment = (length - length_excess -
+                          (length_direct - meander_number*spacing) # the last little bit
+                          - 2*asymmetry
+                          ) / meander_number
         length_perp = (length_segment - spacing) / 2.  # perpendicular length
+
+        # TODO: BUG fix when assymetry is large and negative
+        if asymmetry < 0:
+            if abs(asymmetry) > length_perp:
+                print('Trouble')
+                length_segment -= (abs(asymmetry) - length_perp)/2
+                length_perp = (length_segment - spacing) / 2.  # perpendicular length
 
         # USES ROW Vectors
         # const vec. of unit normals
@@ -197,8 +229,9 @@ class CpwMeanderSimple(QComponent):
                                    end.position[None, :]],  # convert to row vectors
                                   axis=0)
         side_shift_vecs = np.array([sideways*length_perp]*len(root_pts))
-        top_pts = root_pts + (1+asymmetry_fracton)*side_shift_vecs
-        bot_pts = root_pts - (1-asymmetry_fracton)*side_shift_vecs
+        asymmetry_vecs = np.array([sideways*asymmetry]*len(root_pts))
+        top_pts = root_pts + side_shift_vecs + asymmetry_vecs
+        bot_pts = root_pts - side_shift_vecs + asymmetry_vecs
 
         ################################################################
         # Combine points
@@ -218,6 +251,20 @@ class CpwMeanderSimple(QComponent):
         pts[-1, :] = root_pts[-2]
 
         pts += start.position  # move to start position
+
+        # add the snap point end - for example if the meander moves left to right
+        # but the qubit is higher up in y, then we dont want an angled connection, but
+        # need to add one more findal point to the meander, located below the leading in
+        # qubit connector.
+        if snap:
+            meander_end = np.dot(end.position, forward)*forward +\
+                np.dot(pts[-1], sideways)*sideways
+            pts = np.vstack([pts, meander_end])
+
+        self.pts = pts
+        self.forward = forward
+        self.sideways = sideways
+        self.end = end.position
         return pts
 
     @staticmethod
@@ -240,9 +287,9 @@ class CpwMeanderSimple(QComponent):
             A dictionary with keys `point` and `direction`.
             The values are numpy arrays with two float points each.
         """
-        # TODO: Change to connector
-        return Connector(position=np.array([-0.5, 0.5]),
-                         direction=np.array([1., 0.]))
+        connector = self.design.connectors[self.options.pin_start_name]
+        return Connector(position=connector['middle'],
+                         direction=connector['normal'])
 
     def get_end(self) -> Connector:
         """Return the start point and normal direction vector
@@ -251,9 +298,9 @@ class CpwMeanderSimple(QComponent):
             A dictionary with keys `point` and `direction`.
             The values are numpy arrays with two float points each.
         """
-        # TODO: Change to connector
-        return Connector(position=np.array([1., 0.7]),
-                         direction=np.array([-1., 0.]))
+        connector = self.design.connectors[self.options.pin_end_name]
+        return Connector(position=connector['middle'],
+                         direction=connector['normal'])
 
     def get_unit_vectors(self, start: Connector, end: Connector, snap: bool = False) -> Tuple[np.ndarray]:
         """Return the unit and tnaget vector in which the CPW should procees as its
@@ -281,6 +328,7 @@ class CpwMeanderSimple(QComponent):
         line = draw.LineString(pts)
         layer = p.layer
         width = p.trace_width
+        self.options._actual_length = str(line.length) + ' ' +self.design.get_units()
         self.add_elements('path',
                           {'trace': line},
                           width=width,

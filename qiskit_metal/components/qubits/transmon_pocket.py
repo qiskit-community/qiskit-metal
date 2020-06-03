@@ -41,7 +41,7 @@ from copy import deepcopy
 from ... import draw
 from ...toolbox_python.attr_dict import Dict
 from ..base.qubit import BaseQubit
-
+import numpy as np
 class TransmonPocket(BaseQubit):
     '''
     Description:
@@ -246,7 +246,14 @@ class TransmonPocket(BaseQubit):
         self.add_elements('path', {f'{name}_wire_sub':connector_wire_path},
                           width=cpw_width + 2*pc.cpw_gap, subtract=True)
 
+        ############################################################
+
         # add connectors to design tracker
-        points = draw.get_poly_pts(connector_wire_CON)
-        self.design.add_connector(name, points[2:2+2], self.name, flip=False)  # TODO: chip
+        points = np.array(connector_wire_path.coords)
+
+        self.design.add_connector_as_normal(name,
+            start = points[-2],
+            end = points[-1],
+            width = cpw_width, parent = self.name,  flip=False)
+        # self.design.add_connector(name, points[2:2+2], self.name, flip=False)  # TODO: chip
 

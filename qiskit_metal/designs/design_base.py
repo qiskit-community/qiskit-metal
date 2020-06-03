@@ -27,6 +27,8 @@ from typing import Union, List, Iterable, Any, Dict as Dict_, TYPE_CHECKING
 from datetime import datetime
 
 import numpy as np
+from numpy.linalg import norm
+from ..draw import Vector
 
 from .. import Dict, draw, logger
 from ..components import is_component
@@ -503,6 +505,47 @@ class QDesign():
         """
         return parse_options(params, param_names, variable_dict=self.variables)
 
+    def add_connector_as_normal(self,
+                      name: str,
+                      start : np.ndarray,
+                      end : np.ndarray,
+                      width:float,
+                      parent: Union[str, 'QComponent'],
+                      flip: bool = False,
+                      chip: str = 'main'):
+        """Give the path points
+
+        Arguments:
+            name {str} -- [description]
+            points {list} -- [description]
+            parent {Union[str,} -- [description]
+
+        Keyword Arguments:
+            flip {bool} -- [description] (default: {False})
+            chip {str} -- [description] (default: {'main'})
+        """
+
+        if is_component(parent):
+            parent = parent.name
+        elif parent is None:
+            parent = 'none'
+        name = parent+'_'+name
+
+        vec_normal = end - start
+        vec_normal /= norm(vec_normal)
+        if flip:
+            vec_normal = -vec_normal
+
+        self.connectors[name] = Dict(
+            points=[], # TODO
+            middle=end,
+            normal=vec_normal,
+            tangent=Vector.rotate(vec_normal, np.pi/2), #TODO: rotate other way sometimes?
+            width=width,
+            chip=chip,
+            parent_name=parent
+        )
+
     def add_connector(self,
                       name: str,
                       points: list,
@@ -527,7 +570,6 @@ class QDesign():
             parent = 'none'
         name = parent+'_'+name
 
-        # assert isinstance(parent, str) # could enfornce
         self.connectors[name] = make_connector(
             points, parent, flip=flip, chip=chip)
 
@@ -582,6 +624,9 @@ class QDesign():
             name (str) : Name of design
         """
         self.update_metadata({'design_name': name})
+
+    def get_units(self):
+        return self.template_options.generic.units
 
 ####################################################################################
 # Dependencies
