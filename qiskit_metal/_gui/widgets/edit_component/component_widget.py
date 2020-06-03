@@ -34,14 +34,15 @@ from PyQt5.QtWidgets import QAbstractItemView
 from PyQt5.QtCore import Qt
 
 from .. import logger
-from ._handle_qt_messages import catch_exception_slot_pyqt
-from .component_widget_ui import Ui_ComponentWidget
-from .widgets.source_editor_widget import create_source_edit_widget
+from ...utility._handle_qt_messages import catch_exception_slot_pyqt
+from ...component_widget_ui import Ui_ComponentWidget
+from ..source_editor_widget import create_source_edit_widget
+from ..bases.QWidget_PlaceholderText import QWidget_PlaceholderText
 
 if TYPE_CHECKING:
-    from .main_window import MetalGUI, QMainWindowExtension
-    from ..components import QComponent
-    from ..designs import QDesign
+    from ...main_window import MetalGUI, QMainWindowExtension
+    from ....components import QComponent
+    from ....designs import QDesign
 
 try:  # For source doc
     import pygments
@@ -159,6 +160,7 @@ class ComponentWidget(QTabWidget):
         # UI
         self.ui = Ui_ComponentWidget()
         self.ui.setupUi(self)
+        QWidget_PlaceholderText.__init__(self.ui.tableView,  "To edit a QComponent, select one from the QComponents window.")
 
         self.component_name = None  # type: str
 

@@ -144,8 +144,9 @@ class Ui_MainWindow(object):
         self.filter_text_design.setObjectName("filter_text_design")
         self.horizontalLayout.addWidget(self.filter_text_design)
         self.verticalLayout_3.addLayout(self.horizontalLayout)
-        self.tableComponents = TableComponents(self.dockWidgetContents)
+        self.tableComponents = QTableView_AllComponents(self.dockWidgetContents)
         self.tableComponents.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
+        self.tableComponents.setAutoScroll(False)
         self.tableComponents.setAlternatingRowColors(True)
         self.tableComponents.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
         self.tableComponents.setSortingEnabled(True)
@@ -178,6 +179,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_5.addLayout(self.horizontalLayout_2)
         self.treeWidget = QtWidgets.QTreeWidget(self.dockWidgetContents_2)
         self.treeWidget.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
+        self.treeWidget.setAutoScroll(False)
         self.treeWidget.setEditTriggers(QtWidgets.QAbstractItemView.DoubleClicked)
         self.treeWidget.setAlternatingRowColors(True)
         self.treeWidget.setAnimated(True)
@@ -246,6 +248,7 @@ class Ui_MainWindow(object):
         self.tableConnectors = QtWidgets.QTableView(self.dockWidgetContents_5)
         self.tableConnectors.setFrameShadow(QtWidgets.QFrame.Plain)
         self.tableConnectors.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
+        self.tableConnectors.setAutoScroll(False)
         self.tableConnectors.setAlternatingRowColors(False)
         self.tableConnectors.setObjectName("tableConnectors")
         self.tableConnectors.horizontalHeader().setVisible(False)
@@ -507,7 +510,7 @@ class Ui_MainWindow(object):
         self.dockDesign.setWhatsThis(_translate("MainWindow", "Design Dock"))
         self.dockDesign.setAccessibleName(_translate("MainWindow", "Design Dock"))
         self.dockDesign.setAccessibleDescription(_translate("MainWindow", "Design Dock"))
-        self.dockDesign.setWindowTitle(_translate("MainWindow", "Design"))
+        self.dockDesign.setWindowTitle(_translate("MainWindow", "QComponents"))
         self.btn_comp_zoom.setToolTip(_translate("MainWindow", "Focus on component in drawing window"))
         self.btn_comp_zoom.setStatusTip(_translate("MainWindow", "Focus on component in drawing window"))
         self.btn_comp_zoom.setText(_translate("MainWindow", "Focus on component in drawing window"))
@@ -529,7 +532,7 @@ class Ui_MainWindow(object):
         self.dockLog.setWhatsThis(_translate("MainWindow", "Log window"))
         self.dockLog.setWindowTitle(_translate("MainWindow", "Log"))
         self.log_text.setDocumentTitle(_translate("MainWindow", "Log"))
-        self.dockConnectors.setWindowTitle(_translate("MainWindow", "Ports"))
+        self.dockConnectors.setWindowTitle(_translate("MainWindow", "Pins"))
         self.text_filter_connectors.setPlaceholderText(_translate("MainWindow", "Filter"))
         self.dockVariables.setWindowTitle(_translate("MainWindow", "Variables"))
         self.actionSave.setText(_translate("MainWindow", "Save"))
@@ -602,7 +605,7 @@ class Ui_MainWindow(object):
         self.actionVariables.setText(_translate("MainWindow", "Design variables"))
         self.actionVariables.setToolTip(_translate("MainWindow", "Edit variables of the QDesign"))
         self.actionVariables.setShortcut(_translate("MainWindow", "Meta+V"))
-from .widgets.expanding_toolbar import QToolBarExpanding
-from .widgets.log_metal import QTextEditLogger
-from .widgets.table_components import TableComponents
+from .widgets.all_components.table_view_all_components import QTableView_AllComponents
+from .widgets.bases.expanding_toolbar import QToolBarExpanding
+from .widgets.log_widget.log_metal import QTextEditLogger
 from . import main_window_rc_rc

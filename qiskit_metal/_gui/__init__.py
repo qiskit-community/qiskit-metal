@@ -33,7 +33,7 @@ except (ImportError, ModuleNotFoundError):
 if __ihave_pyqt__:
 
     # Add hook for when we start the gui - Logging for QT errors
-    from ._handle_qt_messages import QtCore, _pyqt_message_handler
+    from .utility._handle_qt_messages import QtCore, _pyqt_message_handler
     QtCore.qInstallMessageHandler(_pyqt_message_handler)
     del QtCore, _pyqt_message_handler
 

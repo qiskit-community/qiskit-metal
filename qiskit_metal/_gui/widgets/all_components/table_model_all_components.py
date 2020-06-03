@@ -17,11 +17,14 @@
 import numpy as np
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtCore import QAbstractTableModel, QModelIndex, Qt
+from PyQt5.QtGui import QBrush, QColor, QFont, QIcon, QPixmap
 from PyQt5.QtWidgets import QTableView
-from PyQt5.QtGui import QFont, QColor, QBrush, QIcon, QPixmap, QIcon
-from .._toolbox_qt import blend_colors
-from .._handle_qt_messages import catch_exception_slot_pyqt
-class ComponentsTableModel(QAbstractTableModel):
+
+from ...utility._handle_qt_messages import catch_exception_slot_pyqt
+from ...utility._toolbox_qt import blend_colors
+
+
+class QTableModel_AllComponents(QAbstractTableModel):
 
     """
     Design compoentns Table model that shows the names of the compoentns and
@@ -42,8 +45,9 @@ class ComponentsTableModel(QAbstractTableModel):
         super().__init__(parent=parent)
         self.logger = logger
         self.gui = gui
-        self._tableView = tableView # the view used to preview this model, used to refresh
-        self.columns = ['Name', 'QComponent class', 'QComponent module', 'Build status']
+        self._tableView = tableView  # the view used to preview this model, used to refresh
+        self.columns = ['Name', 'QComponent class',
+                        'QComponent module', 'Build status']
         self._row_count = -1
 
         self._create_timer()
@@ -91,8 +95,14 @@ class ComponentsTableModel(QAbstractTableModel):
 
     def rowCount(self, parent: QModelIndex = None):
         if self.design:  # should we jsut enforce this
-            return int(len(self.design.components))
+            num = int(len(self.design.components))
+            if num == 0:
+                self._tableView.show_placeholder_text()
+            else:
+                self._tableView.hide_placeholder_text()
+            return num
         else:
+            self._tableView.show_placeholder_text()
             return 0
 
     def columnCount(self, parent: QModelIndex = None):
@@ -123,10 +133,10 @@ class ComponentsTableModel(QAbstractTableModel):
             return Qt.ItemIsEnabled
 
         return Qt.ItemFlags(QAbstractTableModel.flags(self, index) |
-                                   Qt.ItemIsSelectable )#| Qt.ToolTip)  # ItemIsEditable
+                            Qt.ItemIsSelectable)  # | Qt.ToolTip)  # ItemIsEditable
 
     # @catch_exception_slot_pyqt()
-    def data(self, index: QModelIndex, role:int = Qt.DisplayRole):
+    def data(self, index: QModelIndex, role: int = Qt.DisplayRole):
         """ Depending on the index and role given, return data. If not
             returning data, return None (PySide equivalent of QT's
             "invalid QVariant").
@@ -158,7 +168,7 @@ class ComponentsTableModel(QAbstractTableModel):
         elif role == Qt.BackgroundRole:
 
             component = self.design.components[component_name]
-            if component.status != 'good': # Did the component fail the build
+            if component.status != 'good':  # Did the component fail the build
                 #    and index.column()==0:
                 if not self._tableView:
                     return QBrush(QColor('#FF0000'))
@@ -171,7 +181,7 @@ class ComponentsTableModel(QAbstractTableModel):
 
             if index.column() == 0:
                 component = self.design.components[component_name]
-                if component.status != 'good': # Did the component fail the build
+                if component.status != 'good':  # Did the component fail the build
                     return QIcon(":/basic/warning")
 
         elif role == Qt.ToolTipRole or role == Qt.StatusTipRole:

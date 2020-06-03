@@ -36,8 +36,9 @@ from shapely.geometry import CAP_STYLE, JOIN_STYLE, Point, Polygon
 
 from .. import config, logger
 from ..components.base import is_component
-from .utility import get_poly_pts
+from ..config import DefaultMetalOptions
 from . import BaseGeometry
+from .utility import get_poly_pts
 
 __all__ = ['rectangle', 'is_rectangle', 'flip_merge', 'rotate', 'rotate_position',
            '_iter_func_geom_', 'translate', 'scale', 'buffer',
@@ -373,15 +374,16 @@ def buffer(elements,
         x = rectangle(1,1)
         y = buffer_flat([x,x,[x,x,{'a':x}]], 0.5)
         draw.mpl.render([x,y])
-        units = config.DefaultOptionsGeneric.default_generic.units
+        units = config.DefaultMetalOptions.default_generic.units
     '''
     if mitre_limit is None:
-        mitre_limit = config.DefaultOptionsGeneric.default_generic.buffer_mitre_limit
+        mitre_limit = DefaultMetalOptions.default_generic.geometry.buffer_mitre_limit
         # TODO: maybe this should be in the renderer for metal?
         # or maybe render can set config? - yes
+        #TODO: should really be design.template_options.units
 
     if resolution is None:
-        resolution = config.DefaultOptionsGeneric.default_generic.buffer_resolution
+        resolution = DefaultMetalOptions.default_generic.geometry.buffer_resolution
 
     def buffer_me(obj, *args, **kwargs):
         return obj.buffer(*args, **kwargs)

@@ -17,28 +17,25 @@ GUI front-end interface for Qiskit Metal in PyQt5.
 @author: Zlatko Minev, IBM
 """
 
-# pylint: disable=invalid-name
+### # pylint: disable=invalid-name
 
 import logging
 import os
 import sys
+from copy import deepcopy
 from pathlib import Path
 
-from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtCore import pyqtSlot
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import QTimer, pyqtSlot
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QFileDialog, QMainWindow, QMessageBox
-from PyQt5 import QtWidgets, QtCore, QtGui  # pyqt stuff
-from PyQt5.QtCore import QTimer
-
-from copy import deepcopy
 
 from .. import Dict, config
 from ..toolbox_python._logging import setup_logger
-from ._handle_qt_messages import catch_exception_slot_pyqt
-from .main_window_ui import Ui_MainWindow
-from .widgets.log_metal import LogHandler_for_QTextLog
 from . import __version__
+from .main_window_ui import Ui_MainWindow
+from .utility._handle_qt_messages import catch_exception_slot_pyqt
+from .widgets.log_widget.log_metal import LogHandler_for_QTextLog
 
 
 class QMainWindowExtensionBase(QMainWindow):
@@ -84,13 +81,13 @@ class QMainWindowExtensionBase(QMainWindow):
     def ok_to_continue(self):
         if 1:
             reply = QMessageBox.question(self,
-                    "Qiskit Metal",
-                    "Save unsaved changes to design?",
-                    QMessageBox.Yes|QMessageBox.No|QMessageBox.Cancel)
+                                         "Qiskit Metal",
+                                         "Save unsaved changes to design?",
+                                         QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
             if reply == QMessageBox.Cancel:
                 return False
             elif reply == QMessageBox.Yes:
-                return self.handler.save_file() # TODO: in parent
+                return self.handler.save_file()  # TODO: in parent
         return True
 
     def save_window_settings(self):
@@ -109,7 +106,8 @@ class QMainWindowExtensionBase(QMainWindow):
 
         if __version__ < self.settings.value('metal_version', defaultValue='1000000'):
             # Clear the settings from older versions. Will comment this out in future.
-            self.logger.debug(f"Clearing window settings [{ self.settings.value('metal_version', defaultValue='1000000')}]...")
+            self.logger.debug(
+                f"Clearing window settings [{ self.settings.value('metal_version', defaultValue='1000000')}]...")
             self.settings.clear()
 
         try:
@@ -129,7 +127,7 @@ class QMainWindowExtensionBase(QMainWindow):
             self.handler.load_stylesheet(self.settings.value('stylesheet',
                                                              self.handler._stylesheet_default))
 
-            #TODO: Recent files
+            # TODO: Recent files
         except Exception as e:
             self.logger.error(f'ERROR [restore_window_settings]: {e}')
 
@@ -258,11 +256,12 @@ class QMainWindowBaseHandler():
                 force_set=True,
                 create_stream=self.config.stream_to_std,
             )
-            log_level = int(getattr(logging, self.config.logger.get('level', 'DEBUG')))
+            log_level = int(
+                getattr(logging, self.config.logger.get('level', 'DEBUG')))
             logger.setLevel(log_level)
 
         self.logger = logger
-        self._log_handler = None # defined in self._setup_logger
+        self._log_handler = None  # defined in self._setup_logger
         self._stylesheet = self._stylesheet_default  # set by load_stylesheet
 
         # File paths
@@ -380,7 +379,7 @@ class QMainWindowBaseHandler():
             self._icon_tray.show()
             self.qApp.setWindowIcon(icon)
 
-    def create_log_handler(self, name_toshow:str, logger:logging.Logger):
+    def create_log_handler(self, name_toshow: str, logger: logging.Logger):
         return LogHandler_for_QTextLog(name_toshow, self, self.ui.log_text, logger)
 
     @catch_exception_slot_pyqt()

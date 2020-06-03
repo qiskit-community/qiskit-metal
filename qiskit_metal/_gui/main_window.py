@@ -38,15 +38,15 @@ from PyQt5.QtCore import QEventLoop
 #from .. import config, Dict
 from ..designs.design_base import QDesign
 from ..toolbox_metal.import_export import load_metal_design
-from ._handle_qt_messages import catch_exception_slot_pyqt
-from .component_widget import ComponentWidget
+from .utility._handle_qt_messages import catch_exception_slot_pyqt
+from .widgets.component_widget import ComponentWidget
 from .component_widget_ui import Ui_ComponentWidget
 from .elements_window import ElementsWindow
 from .main_window_base import QMainWindowBaseHandler, QMainWindowExtensionBase
 from .main_window_ui import Ui_MainWindow
 from .plot_window import QMainWindowPlot
-from .widgets.components_model import ComponentsTableModel
-from .widgets.log_metal import LogHandler_for_QTextLog
+from .widgets.all_components.table_model_all_components import QTableModel_AllComponents
+from .widgets.log_widget.log_metal import LogHandler_for_QTextLog
 from .widgets.variable_table import PropertyTableWidget
 from typing import List
 
@@ -343,7 +343,7 @@ class MetalGUI(QMainWindowBaseHandler):
         Table model that shows the summary of the components of a design in a table
         with their names, classes, and modules
         """
-        model = ComponentsTableModel(self, logger=self.logger,
+        model = QTableModel_AllComponents(self, logger=self.logger,
                  tableView = self.ui.tableComponents)
         self.ui.tableComponents.setModel(model)
 

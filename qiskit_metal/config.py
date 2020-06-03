@@ -22,7 +22,7 @@ File contains some config definitions. Mostly internal.
 """
 
 from .toolbox_python.attr_dict import Dict
-from ._defaults import DefaultOptionsGeneric, DefaultOptionsRenderer
+from ._defaults import DefaultMetalOptions, DefaultOptionsRenderer
 
 ####################################################################################
 # RENDERER CONFIG

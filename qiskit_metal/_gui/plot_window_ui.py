@@ -105,5 +105,5 @@ class Ui_MainWindowPlot(object):
         self.actionAuto.setShortcut(_translate("MainWindowPlot", "A"))
         self.actionReplot.setText(_translate("MainWindowPlot", "Replot"))
         self.actionReplot.setShortcut(_translate("MainWindowPlot", "Ctrl+R"))
-from .widgets.expanding_toolbar import QToolBarExpanding
+from .widgets.bases.expanding_toolbar import QToolBarExpanding
 from . import main_window_rc_rc

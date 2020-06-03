@@ -363,7 +363,7 @@
     <set>QDockWidget::AllDockWidgetFeatures</set>
    </property>
    <property name="windowTitle">
-    <string>Design</string>
+    <string>QComponents</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
@@ -475,9 +475,12 @@
       </layout>
      </item>
      <item>
-      <widget class="TableComponents" name="tableComponents">
+      <widget class="QTableView_AllComponents" name="tableComponents">
        <property name="sizeAdjustPolicy">
         <enum>QAbstractScrollArea::AdjustToContents</enum>
+       </property>
+       <property name="autoScroll">
+        <bool>false</bool>
        </property>
        <property name="alternatingRowColors">
         <bool>true</bool>
@@ -567,6 +570,9 @@
       <widget class="QTreeWidget" name="treeWidget">
        <property name="sizeAdjustPolicy">
         <enum>QAbstractScrollArea::AdjustToContents</enum>
+       </property>
+       <property name="autoScroll">
+        <bool>false</bool>
        </property>
        <property name="editTriggers">
         <set>QAbstractItemView::DoubleClicked</set>
@@ -708,7 +714,7 @@
     </iconset>
    </property>
    <property name="windowTitle">
-    <string>Ports</string>
+    <string>Pins</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
@@ -754,6 +760,9 @@
        </property>
        <property name="sizeAdjustPolicy">
         <enum>QAbstractScrollArea::AdjustToContents</enum>
+       </property>
+       <property name="autoScroll">
+        <bool>false</bool>
        </property>
        <property name="alternatingRowColors">
         <bool>false</bool>
@@ -1199,17 +1208,17 @@
   <customwidget>
    <class>QToolBarExpanding</class>
    <extends>QToolBar</extends>
-   <header>.widgets.expanding_toolbar</header>
+   <header>.widgets.bases.expanding_toolbar</header>
   </customwidget>
   <customwidget>
    <class>QTextEditLogger</class>
    <extends>QTextEdit</extends>
-   <header>.widgets.log_metal</header>
+   <header>.widgets.log_widget.log_metal</header>
   </customwidget>
   <customwidget>
-   <class>TableComponents</class>
+   <class>QTableView_AllComponents</class>
    <extends>QTableView</extends>
-   <header>.widgets.table_components</header>
+   <header>.widgets.all_components.table_view_all_components</header>
   </customwidget>
  </customwidgets>
  <resources>
