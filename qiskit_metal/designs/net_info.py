@@ -17,7 +17,7 @@
     Returns:
         [type] -- [description]
 """
-from typing import Tuple
+#from typing import Tuple
 import pandas as pd
 from .. import logger
 
@@ -138,3 +138,15 @@ class QNet():
                 self.delete_net_id(netID)
 
         return all_net_id_deleted
+
+    def get_components_and_pins_for_netid(self, net_id_search: int) -> pd.core.frame.DataFrame:
+        """Search with a net_id to get component id and pin name.
+
+        Arguments:
+            net_id_search {int} -- Unique net id which connects two pins within a design.
+
+        Returns:
+            pandas.DataFrame -- Two rows of the net_info which have the same net_id_search.
+        """
+        df = self._net_info[(self._net_info['net_id']==net_id_search)]
+        return df

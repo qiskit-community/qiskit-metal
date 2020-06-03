@@ -133,6 +133,7 @@ class QComponent():
         # Parser for options
         self.p = ParsedDynamicAttributes_Component(self)
         
+        # TGM If you are not using self.pins, lets remove this.
         # Create an empty dict, which will populated by component designer.
         self.pins = dict()
 
