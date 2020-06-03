@@ -228,6 +228,7 @@ def _parse_string_to_float(expr: str):
     """
     try:
         return UREG.Quantity(expr).to(units).magnitude
+
     except Exception:
         # DimensionalityError, UndefinedUnitError, TypeError
         try:

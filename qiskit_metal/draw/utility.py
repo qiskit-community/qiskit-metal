@@ -457,7 +457,7 @@ class Vector:
         """
         assert len(points2D) == 2
         start = np.array(points2D[0])
-        end = np.array(points2D[0])
+        end = np.array(points2D[1])
 
         distance_vec = end - start                   # distance vector
         # unit vector along the direction of the two point
