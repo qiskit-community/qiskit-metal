@@ -145,7 +145,7 @@ class QDesign():
 #########PROPERTIES##################################################
 
     @property
-    def components(self) -> Dict_[str, 'QComponent']:
+    def components(self) -> Dict_[int, 'QComponent']:
         '''
         Returns Dict object that keeps track of all Metal components in the design
         '''
@@ -232,6 +232,15 @@ class QDesign():
         '''
         Clear all connectors in the design.
         '''
+        # TGM, How do we tell each component, they are no longer connected to anything?
+        # TGM, How about the below?
+        # OR.... has this moved to somewhere else and this method is depreciated?
+        for component_id, a_qcomponent in self._components.items():
+            self._net_info.delete_net_id(component_id)
+            for net_id, value in a_qcomponent.pins.items():
+                df = self._net_info.get_components_and_pins_for_netid(net_id)
+                ## TGM Can we switch the pin to be 0 instead of an id here?   
+
         self.connectors.clear()
         return self.connectors
 
