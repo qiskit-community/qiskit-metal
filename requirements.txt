@@ -1,16 +1,15 @@
 addict
 descartes
 docutils
-geopandas
+GeoPandas
 ipython
 matplotlib
 numpy
 pandas
 pint
-pyEPR @ https://github.com/zlatko-minev/pyEPR/zipball/master
+pyEPR-quantum
 Pygments
 pyqode.python
 PyQt5
 scipy
 Shapely
-GeoPandas
