@@ -19,7 +19,7 @@ install:
 
   - conda env create --file environment.yml --name testenv
   - conda activate testenv
-  - pip install -e .
+  - pip install -e . --no-deps
 
   # Dump environment to console for easy debugging
   - conda env export
