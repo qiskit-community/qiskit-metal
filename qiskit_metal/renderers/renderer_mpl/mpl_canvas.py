@@ -455,7 +455,7 @@ class PlotCanvas(FigureCanvas):
             #print(f'Found {file} for watermark.')
             _axis_set_watermark_img(ax, file, size=0.15)
         else:
-            logger.error(f'Error could not load {file} for watermark.')
+            logger.error(f'Error could not load {file} for watermark.') #import error?
 
     def clear_axis(self, ax: plt.Axes = None):
         """Clear an axis or clear all axes
@@ -611,38 +611,39 @@ class PlotCanvas(FigureCanvas):
                     for ax in self.axes:
                         ax.add_patch(rect)
 
-                if 1: # Draw the connectors
+                if 1: # Draw the pins
 
-                    for connector_name in component.connectors:
+                    for component_id in self.design.components.keys():
+                        for pin_name in self.design.components[component_id].pins.keys():
 
-                        connector = self.design.connectors[connector_name]
-                        m = connector['middle']
-                        n = connector['normal']
-                        # print(m, n)
+                            pin = self.design.component_id[component_id].pins[pin_name]
+                            m = pin['middle']
+                            n = pin['normal']
+                            # print(m, n)
 
-                        if 1: # draw the arrows
-                            kw = dict(color='r', mutation_scale=15, alpha = 0.75, capstyle='butt', ec='k',
-                                      lw=0.5, zorder=100, clip_on=True)
-                            arrow = patches.FancyArrowPatch(m, m+n*0.05, **kw)
-                            self._annotations['patch'] += [arrow]
+                            if 1: # draw the arrows
+                                kw = dict(color='r', mutation_scale=15, alpha = 0.75, capstyle='butt', ec='k',
+                                        lw=0.5, zorder=100, clip_on=True)
+                                arrow = patches.FancyArrowPatch(m, m+n*0.05, **kw)
+                                self._annotations['patch'] += [arrow]
 
-                            """A fancy arrow patch. It draws an arrow using the ArrowStyle.
-                            The head and tail positions are fixed at the specified start and end points of the arrow,
-                            but the size and shape (in display coordinates) of the arrow does not change when the axis
-                            is moved or zoomed.
-                            """
-                            for ax in self.axes:
-                                ax.add_patch(arrow)
+                                """A fancy arrow patch. It draws an arrow using the ArrowStyle.
+                                The head and tail positions are fixed at the specified start and end points of the arrow,
+                                but the size and shape (in display coordinates) of the arrow does not change when the axis
+                                is moved or zoomed.
+                                """
+                                for ax in self.axes:
+                                    ax.add_patch(arrow)
 
-                        if 1: # draw names of connectors
-                            dist = 0.05
-                            kw = dict(color='r',alpha=0.75, verticalalignment='center',
-                                      horizontalalignment='left' if n[0]>=0 else 'right',
-                                      clip_on=True, zorder=99, fontweight='bold')
-                            text = ax.text(*(m+dist*n), connector_name, **kw)
-                            text.set_bbox(dict(facecolor='#FFFFFF', alpha=0.75, edgecolor='#F0F0F0'))
+                            if 1: # draw names of pins
+                                dist = 0.05
+                                kw = dict(color='r',alpha=0.75, verticalalignment='center',
+                                        horizontalalignment='left' if n[0]>=0 else 'right',
+                                        clip_on=True, zorder=99, fontweight='bold')
+                                text = ax.text(*(m+dist*n), pin_name, **kw)
+                                text.set_bbox(dict(facecolor='#FFFFFF', alpha=0.75, edgecolor='#F0F0F0'))
 
-                            self._annotations['text'] += [text]
+                                self._annotations['text'] += [text]
 
         self.refresh()
 

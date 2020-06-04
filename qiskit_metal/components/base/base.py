@@ -123,7 +123,8 @@ class QComponent():
 
         # Status: usedd to handle building of a compoentn and checking if it succeedded or failed.
         self.status = 'not built'
-
+        # Create an empty dict, which will populated by component designer.
+        self.pins = dict()
         self._made = False
 
         # Parser for options
