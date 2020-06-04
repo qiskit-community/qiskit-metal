@@ -19,10 +19,11 @@
 import logging
 import random
 import sys
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, List
 
 import matplotlib
 import matplotlib as mpl
+import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -308,6 +309,7 @@ class PlotCanvas(FigureCanvas):
         self.statusbar_label = statusbar_label
         self.design = design
         self._state = {}  # used to store state between drawing
+        self._annotations = {'text':[],'patch':[]} # used to keep track of what we will need to delete
 
         super().__init__(fig)
 
@@ -563,6 +565,87 @@ class PlotCanvas(FigureCanvas):
             name (str) -- name of the component in the design
         """
         self.component_window.set_component(name)
+
+    def clear_annotation(self):
+        try:
+            for ax in self.axes:
+                for patch in self._annotations['patch']:
+                    # ax.patches.remove(patch)
+                    # print(patch)
+                    patch.remove()
+                for text in self._annotations['text']:
+                    # ax.texts.remove(patch)
+                    text.remove()
+        except Exception as e:
+            self.logger.error(f'While canvas clear_annotation: {e}')
+        finally:
+            self._annotations['patch'] =[]
+            self._annotations['text'] =[]
+
+    def highlight_components(self, component_names:List[str]):
+        """Hihglight a list of components
+
+        Args:
+            component_names (List[str]): [description]
+        """
+        self.clear_annotation()
+
+        for name in component_names:
+
+            if name in self.design.components:
+                component = self.design.components[name]
+
+                if 1: # highlight bounding box
+
+                    bounds = component.geometry_bounds()
+                    # bbox = Bbox.from_extents(bounds)
+
+                    # Create a Rectangle patch TODO: move to settings
+                    kw = dict(linewidth=1, edgecolor='r', facecolor=(1,0,0,0.05), zorder=100,ls='--')
+                    rect = patches.Rectangle((0,0),0,0, **kw)
+
+                    lbwh = [bounds[0],bounds[1], bounds[2]-bounds[0], bounds[3]-bounds[1]]
+                    rect.set_bounds(*lbwh)
+                    self._annotations['patch'] += [rect]
+
+                    for ax in self.axes:
+                        ax.add_patch(rect)
+
+                if 1: # Draw the connectors
+
+                    for connector_name in component.connectors:
+
+                        connector = self.design.connectors[connector_name]
+                        m = connector['middle']
+                        n = connector['normal']
+                        # print(m, n)
+
+                        if 1: # draw the arrows
+                            kw = dict(color='r', mutation_scale=15, alpha = 0.75, capstyle='butt', ec='k',
+                                      lw=0.5, zorder=100, clip_on=True)
+                            arrow = patches.FancyArrowPatch(m, m+n*0.05, **kw)
+                            self._annotations['patch'] += [arrow]
+
+                            """A fancy arrow patch. It draws an arrow using the ArrowStyle.
+                            The head and tail positions are fixed at the specified start and end points of the arrow,
+                            but the size and shape (in display coordinates) of the arrow does not change when the axis
+                            is moved or zoomed.
+                            """
+                            for ax in self.axes:
+                                ax.add_patch(arrow)
+
+                        if 1: # draw names of connectors
+                            dist = 0.05
+                            kw = dict(color='r',alpha=0.75, verticalalignment='center',
+                                      horizontalalignment='left' if n[0]>=0 else 'right',
+                                      clip_on=True, zorder=99, fontweight='bold')
+                            text = ax.text(*(m+dist*n), connector_name, **kw)
+                            text.set_bbox(dict(facecolor='#FFFFFF', alpha=0.75, edgecolor='#F0F0F0'))
+
+                            self._annotations['text'] += [text]
+
+        self.refresh()
+
 
 
 to_poly_patch = np.vectorize(PolygonPatch)

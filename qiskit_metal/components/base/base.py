@@ -124,7 +124,6 @@ class QComponent():
         # Status: usedd to handle building of a compoentn and checking if it succeedded or failed.
         self.status = 'not built'
 
-        # has the component already been made
         self._made = False
 
         # Parser for options
@@ -132,16 +131,7 @@ class QComponent():
         
         # TGM If you are not using self.pins, lets remove this.
         # Create an empty dict, which will populated by component designer.
-        self.pins = dict()
 
-        # Add the component to the parent design
-        self._add_to_design()
-
-        # Make the component geometry
-        if make:
-            self.do_make()
-
-       
     @classmethod
     def _gather_all_children_options(cls):
         '''
@@ -291,6 +281,8 @@ class QComponent():
     # TODO: Capture error here and save to log as the latest error
     def do_make(self):
         """Actually make or remake the component"""
+
+        # Begin by setting the status to failed, we will change this if we succed
         self.status = 'failed'
         if self._made:  # already made, just remaking
             # TODO: this is probably very inefficient, design more efficient way
@@ -626,7 +618,11 @@ class QComponent():
 
     def geometry_bounds(self):
         """
-        Return the bounds of the geometry.
+        Returns a tuple containing (minx, miny, maxx, maxy) bound values
+        for the bounds of the component as a whole.
+
+        Uses:
+            design.elements.get_component_bounds
         """
         bounds = self.design.elements.get_component_bounds(self.id)
         return bounds

@@ -26,7 +26,7 @@ python -m pip install -e .
 ```
 The -e flag install qiskit_metal in [editable mode](https://pip.pypa.io/en/stable/reference/pip_install/#cmdoption-e).
 
-2. `Option 2: THe fool-proof way.` It is possible that you can run into version issues in the above. Instead, to avoid this, you 
+2. `Option 2: The fool-proof way.` It is possible that you can run into version issues in the above. Instead, to avoid this, you 
 can rather create a new conda environemtn to avoid this issue. Execute these commands in the top-level of the repository:
 ```
 conda env create -n <env_name> environment.yml

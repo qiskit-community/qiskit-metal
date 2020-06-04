@@ -10,6 +10,6 @@ pint
 pyEPR-quantum
 Pygments
 pyqode.python
-PyQt5
+PyQt5>=5.12
 scipy
 Shapely

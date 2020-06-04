@@ -11,6 +11,9 @@ class PropValTable(QAbstractTableModel):
     """
     Design variables table model that shows variable name and dimension,
     both with and without units.
+
+    Access:
+        gui.variables_window.model
     """
 
     __refreshtime = 500  # 0.5 second refresh time
@@ -68,25 +71,28 @@ class PropValTable(QAbstractTableModel):
         """
         Return data for corresponding index and role.
         """
-        r = index.row()
-        c = index.column()
+        self._index = index
+        row = index.row()
+        column = index.column()
+
         if role == Qt.DisplayRole:
-            if c == 0:
-                return str(list(self._data.keys())[r])
-            if c == 1:
-                return str(self._data[list(self._data.keys())[r]])
-            return str(self.design.parse_value(self._data[list(self._data.keys())[r]]))
+            if column == 0:
+                return str(list(self._data.keys())[row])
+            elif column == 1:
+                return str(self._data[list(self._data.keys())[row]])
+            elif column == 2:
+                return str(self.design.parse_value(self._data[list(self._data.keys())[row]]))
 
         # double clicking
         elif role == Qt.EditRole:
             return self.data(index, Qt.DisplayRole)
 
-        elif (role == Qt.FontRole) and (c == 0):
+        elif (role == Qt.FontRole) and (column == 0):
             font = QFont()
             font.setBold(True)
             return font
 
-    def setData(self, index: QModelIndex, value: str, role: Qt.ItemDataRole = Qt.EditRole):
+    def setData(self, index: QModelIndex, value: str, role: Qt.ItemDataRole = Qt.EditRole)  -> bool:
         """
         Modify either key or value (Property or Value) of dictionary depending on what
         the user selected manually on the table.

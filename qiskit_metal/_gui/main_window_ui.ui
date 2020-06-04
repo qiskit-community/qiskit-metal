@@ -205,6 +205,8 @@
     <addaction name="actionLog"/>
     <addaction name="actionNewComponent"/>
     <addaction name="separator"/>
+    <addaction name="actionToggleDocks"/>
+    <addaction name="actionFull_Screen"/>
     <addaction name="actionScreenshot"/>
     <addaction name="separator"/>
     <addaction name="actionMetal_Window"/>
@@ -332,8 +334,8 @@
    <addaction name="actionConnectors"/>
    <addaction name="actionLog"/>
    <addaction name="separator"/>
+   <addaction name="actionToggleDocks"/>
    <addaction name="actionScreenshot"/>
-   <addaction name="actionFull_Screen"/>
   </widget>
   <widget class="QDockWidget" name="dockDesign">
    <property name="windowIcon">
@@ -641,8 +643,8 @@
   <widget class="QDockWidget" name="dockLog">
    <property name="minimumSize">
     <size>
-     <width>78</width>
-     <height>100</height>
+     <width>0</width>
+     <height>50</height>
     </size>
    </property>
    <property name="windowIcon">
@@ -1118,7 +1120,7 @@
   <action name="actionFull_Screen">
    <property name="icon">
     <iconset resource="main_window_rc.qrc">
-     <normaloff>:/fullscreen</normaloff>:/fullscreen</iconset>
+     <normaloff>:/plot/----autozoom</normaloff>:/plot/----autozoom</iconset>
    </property>
    <property name="text">
     <string>Full Screen</string>
@@ -1207,6 +1209,21 @@
    </property>
    <property name="shortcut">
     <string>Meta+V</string>
+   </property>
+  </action>
+  <action name="actionToggleDocks">
+   <property name="icon">
+    <iconset resource="main_window_rc.qrc">
+     <normaloff>:/fullscreen</normaloff>:/fullscreen</iconset>
+   </property>
+   <property name="text">
+    <string>Toggle view</string>
+   </property>
+   <property name="toolTip">
+    <string>ToggleDocks</string>
+   </property>
+   <property name="shortcut">
+    <string>Meta+F, Ctrl+F</string>
    </property>
   </action>
  </widget>
@@ -1759,6 +1776,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionToggleDocks</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>toggle_all_docks()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>649</x>
+     <y>449</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>showHelp()</slot>
@@ -1775,5 +1808,6 @@
   <slot>load_stylesheet_metal_dark()</slot>
   <slot>save_design_as()</slot>
   <slot>save_window_settings()</slot>
+  <slot>toggle_all_docks()</slot>
  </slots>
 </ui>
