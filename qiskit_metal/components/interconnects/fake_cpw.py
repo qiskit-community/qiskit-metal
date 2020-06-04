@@ -17,6 +17,8 @@ from ... import draw
 from ...toolbox_python.attr_dict import Dict
 from ..base import QComponent
 
+from ...toolbox_python.utility_functions import log_error_easy
+
 class FakeCPW(QComponent):
     """A fake cpw just to test pin generation and netlist functionality
 
@@ -36,22 +38,27 @@ class FakeCPW(QComponent):
     )
 
     def make(self):
-        #NOTE: This code could be moved to a parent class specifically handling components
-        #which take pins as inputs, eg. QInterconnect
-        #
-        """ if self.design.components['component_start'].pins['pin_start'].net_id:
-            logger.warning(f'Given pin {component_start} {pin_start} already in use. Component
-            not created.')
-            return
-        if self.design.components['component_end'].pins['pin_end'].net_id:
-            logger.warning(f'Given pin {component_end} {pin_end} already in use. Component
-            not created.')
-            return """
-        #########################################################
         component_start = self.options['component_start']
         pin_start = self.options['pin_start']
         component_end = self.options['component_end']
         pin_end = self.options['pin_end']
+
+        #NOTE: This code could be moved to a parent class specifically handling components
+        #which take pins as inputs, eg. QInterconnect
+        #Should the check be in the init such that the component isn't made if non-viable
+        #pins are passed in?
+        #
+        if self.design.components[component_start].pins[pin_start].net_id:
+            print(f'Given pin {component_start} {pin_start} already in use. Component not created.')
+            log_error_easy(self.logger, post_text=f'\nERROR in building component "{self.name}"!' 
+            'Inelligeable pin passed to function.\n')
+            return
+        if self.design.components[component_end].pins[pin_end].net_id:
+            print(f'Given pin {component_end} {pin_end} already in use. Component not created.')
+            log_error_easy(self.logger, post_text=f'\nERROR in building component "{self.name}"!' 
+            'Inelligeable pin passed to function.\n')
+            return
+        #########################################################
 
         starting_pin_dic = self.design.components[component_start].pins[pin_start]
         ending_pin_dic = self.design.components[component_end].pins[pin_end]
