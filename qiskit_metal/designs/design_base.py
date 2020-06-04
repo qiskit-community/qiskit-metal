@@ -27,7 +27,9 @@ from typing import Union, List, Iterable, Any, Dict as Dict_, TYPE_CHECKING
 from datetime import datetime
 
 import numpy as np
+import pandas as pd
 from numpy.linalg import norm
+
 from ..draw import Vector
 
 from .. import Dict, draw, logger
@@ -118,7 +120,7 @@ class QDesign():
 
         # Can't really use this until DefaultOptionsRenderer.default_draw_substrate.color_plane is resolved.
         self._template_renderer_options = DefaultOptionsRenderer()  # use for renderer
-        self._net_info = QNet()
+        self._qnet = QNet()
 
     def _init_metadata(self) -> Dict:
         """Initialize default metadata dicitoanry
@@ -228,21 +230,30 @@ class QDesign():
         keys[keys.index(old_key)] = new_key
         self._variables = Dict(zip(keys, values))
 
-    """ def delete_all_pins(self):
+   
+    def delete_all_pins(self) -> pd.core.frame.DataFrame:
         '''
-        Clear all pins in the design.
+        Clear all pins in the net_Info and update the pins in components.
         '''
-        # TGM, How do we tell each component, they are no longer connected to anything?
-        # TGM, How about the below?
-        # OR.... has this moved to somewhere else and this method is depreciated?
-        for component_id, a_qcomponent in self._components.items():
-            self._net_info.delete_net_id(component_id)
-            for net_id, value in a_qcomponent.pins.items():
-                df = self._net_info.get_components_and_pins_for_netid(net_id)
-                ## TGM Can we switch the pin to be 0 instead of an id here?   
-
+        df = self._qnet._net_info
+        for (index, netID, comp_id, pin_name) in df.itertuples():
+            self.components[comp_id].pins[pin_name].net_id = 0
         
-        return  """
+        self._qnet._net_info = self._qnet._net_info.iloc[0:0]    #remove rows, but save column names
+        return self._qnet
+
+    def generate_net_id_and_update_component(self, comp1_id: int, pin1_name: str, comp2_id: int, pin2_name: str) -> int:
+        net_id = 0
+        net_id = self._qnet.add_pins_to_table(
+            comp1_id, pin1_name, comp2_id, pin2_name)
+        if net_id:
+            # update the components to hold net_id
+            self.components[comp1_id].pins[pin1_name].net_id = net_id
+            self.components[comp2_id].pins[pin2_name].net_id = net_id
+        else:
+            logger.warning(
+                f'NetId was not added for {comp1_id}, {pin1_name}, {comp2_id}, {pin2_name} and will not be added to components.')
+        return net_id
 
     def delete_all_components(self):
         '''
@@ -250,8 +261,9 @@ class QDesign():
         Also clears all pins and netlist.
         '''
         # clear all the dicitonaries and element tables.
+
+        self.delete_all_pins()  #Need to remove pin connections before clearing the components.
         self._components.clear()
-        #TODO: NEED TO ADD THE DELETE NETLIST FUNCTION HERE
         # TODO: add element tables here
         self._elements.clear_all_tables()
         # TODO: add dependency handling here
@@ -510,8 +522,6 @@ class QDesign():
         """
         return parse_options(params, param_names, variable_dict=self.variables)
 
-    
-
     def update_component(self, component_name: str, dependencies: bool = True):
         """Update the component and any dependencies it may have.
         Mediator type function to update all children.
@@ -573,6 +583,3 @@ class QDesign():
             parent {str} -- The component on which the child depends
             child {str} -- The child cannot live without the parent.
         """
-
-
-
