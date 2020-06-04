@@ -23,23 +23,24 @@ from typing import TYPE_CHECKING
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-
 try:
     from pyqode.python.backend import server
     from pyqode.core import api, modes, panels
     from pyqode.python import modes as pymodes, panels as pypanels, widgets
     from pyqode.python.folding import PythonFoldDetector
     from pyqode.python.backend.workers import defined_names
+
 except ImportError as e:
-    #TODO: report in a more visible way.
+    # TODO: report in a more visible way.
     # Maybe reaise exception.
     # If this line fails then the GUI can't start.
     raise ImportError('Error could not load `pyqode.python`\nPlease install. In a shell, try running: \n'
-          '  >> pip install pyqode.python --upgrade \n\n'
-          'For more, see https://github.com/pyQode/pyqode.python \n')
+                      '  >> pip install pyqode.python --upgrade \n\n'
+                      'For more, see https://github.com/pyQode/pyqode.python \n')
 
 if TYPE_CHECKING:
     from ...main_window import MetalGUI, QMainWindowExtension
+
 
 class MetalSourceEditor(widgets.PyCodeEditBase):
     """
@@ -65,11 +66,24 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
 
         Note that thtehre can be more than one edit widet open.
         A refernec is kept to all of them in `gui.component_window.src_widgets`
+
+    MRO:
+        qiskit_metal._gui.widgets.edit_component.source_editor.MetalSourceEditor,
+        pyqode.python.widgets.code_edit.PyCodeEditBase,
+        pyqode.core.api.code_edit.CodeEdit,
+        PyQt5.QtWidgets.QPlainTextEdit,
+        PyQt5.QtWidgets.QAbstractScrollArea,
+        PyQt5.QtWidgets.QFrame,
+        PyQt5.QtWidgets.QWidget,
+        PyQt5.QtCore.QObject,
+        sip.wrapper,
+        PyQt5.QtGui.QPaintDevice,
+        sip.simplewrapper,
+        object
     """
     # TODO: remember previous state, save to config like gui and recall when created
     # save font size too.  remmeber window properties and zoom level
     # TODO: Add error slot handling to all call funcitons below
-
 
     def __init__(self, parent, **kwargs):
         # Foe help, see
@@ -131,6 +145,15 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         # --- handle modifed text in other application
         # self.textChanged.connect(self.check_modified) # user function
 
+        self.style_me()
+
+    def style_me(self):
+        self.setStyleSheet("""
+    background-color: #f9f9f9;
+    color: #000000;
+            """)
+        self.zoomIn(5)
+
     @property
     def logger(self) -> logging.Logger:
         return self.gui.logger
@@ -141,7 +164,7 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         self.logger.info('Source file reloaded.')
 
     def save_file(self):
-        #TODO: warning: if the kernel is run as a differnt user, eg.., sudo,
+        # TODO: warning: if the kernel is run as a differnt user, eg.., sudo,
         # then the file persmissions will change but for that user and the file
         # can read only for the base user.
         self.file.save()
@@ -155,7 +178,8 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
             self.gui.design.reload_component(
                 component_module_name=self.component_module_name,
                 component_class_name=self.component_class_name)
-            self.logger.info(f'Reloaded {self.component_class_name} from {self.component_module_name}')
+            self.logger.info(
+                f'Reloaded {self.component_class_name} from {self.component_module_name}')
 
     def rebuild_components(self):
         self.save_file()

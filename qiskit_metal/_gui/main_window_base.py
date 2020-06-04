@@ -28,7 +28,7 @@ from pathlib import Path
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QTimer, pyqtSlot
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QApplication, QFileDialog, QMainWindow, QMessageBox
+from PyQt5.QtWidgets import QApplication, QFileDialog, QMainWindow, QMessageBox, QDockWidget
 
 from .. import Dict, config
 from ..toolbox_python._logging import setup_logger
@@ -58,6 +58,10 @@ class QMainWindowExtensionBase(QMainWindow):
     @property
     def settings(self) -> QtCore.QSettings:
         return self.handler.settings
+
+    @property
+    def gui(self) -> 'QMainWindowBaseHandler':
+        self.handler
 
     def _remove_log_handlers(self):
         if hasattr(self, 'log_text'):
@@ -169,6 +173,21 @@ class QMainWindowExtensionBase(QMainWindow):
             _disp_ops = dict(width=500)
             _disp_ops.update(disp_ops or {})
             display(Image(filename=path, **_disp_ops))
+
+    def toggle_all_docks(self):
+        """Show or hide all docks.
+        """
+        docks = [widget for widget in self.children() if isinstance(widget, QDockWidget)]
+        docks += [widget for widget in self.gui.plot_win.children() if isinstance(widget, QDockWidget)] # specific
+        dock_states = {dock: dock.isVisible() for dock in docks}
+
+        do_hide = any(dock_states.values()) # if any are visible then hide all
+        for dock in docks:
+            if do_hide:
+                dock.hide()
+            else:
+                dock.show()
+        # TODO: small -- fix, changes which dock is on top or now
 
     ##################################################################
     # For actions
