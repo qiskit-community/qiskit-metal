@@ -16,19 +16,20 @@
 from typing import TYPE_CHECKING
 
 from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtCore import QModelIndex
+from PyQt5.QtCore import QModelIndex, Qt
 from PyQt5.QtGui import QContextMenuEvent
-from PyQt5.QtWidgets import (QInputDialog, QLineEdit, QMenu, QMessageBox,
-                             QTableView)
+from PyQt5.QtWidgets import (QInputDialog, QLabel, QLineEdit, QMenu,
+                             QMessageBox, QTableView, QVBoxLayout)
 
-from .._handle_qt_messages import catch_exception_slot_pyqt
+from ...utility._handle_qt_messages import catch_exception_slot_pyqt
+from ..bases.QWidget_PlaceholderText import QWidget_PlaceholderText
 
 if TYPE_CHECKING:
-    from ..main_window import MetalGUI
-    from .components_model import ComponentsTableModel
+    from ...main_window import MetalGUI
+    from .table_model_all_components import QTableModel_AllComponents
 
 
-class TableComponents(QTableView):
+class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
     """
     Desing components.
 
@@ -40,7 +41,9 @@ class TableComponents(QTableView):
     """
 
     def __init__(self, parent: QtWidgets.QWidget):
-        super().__init__(parent)
+        QTableView.__init__(self, parent)
+        QWidget_PlaceholderText.__init__(
+            self,  "No QComponents to show.\n\nCreate components from the QLibrary.")
         self.clicked.connect(self.viewClicked)
         self.doubleClicked.connect(self.doDoubleClicked)
 
@@ -127,7 +130,7 @@ class TableComponents(QTableView):
                 self.logger.info(f'Renaming {name} to {text}')
                 self.design.rename_component(name, text)
 
-    def viewClicked(self, index : QModelIndex):
+    def viewClicked(self, index: QModelIndex):
         """
         Select a component and set it in the compoient widget when you left click.
 
@@ -137,7 +140,7 @@ class TableComponents(QTableView):
             return
 
         # get the component name
-        #model = clickedIndex.model()  # type: ComponentsTableModel
+        # model = clickedIndex.model()  # type: QTableModel_AllComponents
         name = index.sibling(index.row(), 0).data()
         self.logger.debug(f'Selected component {name}')
 

@@ -14,13 +14,13 @@ dependencies:
 - numpy
 - pandas
 - pint
+- pyepr-quantum
 - pygments
 - pyqode.python
 - pyqt
 - qutip
 - scipy
 - shapely
-- geopandas
 
 - jupyter
 - wheel
@@ -28,4 +28,3 @@ dependencies:
 
 - pip:
   - gdspy>=1.5
-  - pyEPR @ https://github.com/zlatko-minev/pyEPR/zipball/master

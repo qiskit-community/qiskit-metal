@@ -38,12 +38,24 @@
     </property>
     <item row="0" column="0">
      <widget class="RightClickView" name="tableView">
+      <property name="autoScroll">
+       <bool>false</bool>
+      </property>
       <property name="verticalScrollMode">
        <enum>QAbstractItemView::ScrollPerPixel</enum>
       </property>
       <property name="horizontalScrollMode">
        <enum>QAbstractItemView::ScrollPerPixel</enum>
       </property>
+      <attribute name="horizontalHeaderVisible">
+       <bool>true</bool>
+      </attribute>
+      <attribute name="horizontalHeaderStretchLastSection">
+       <bool>true</bool>
+      </attribute>
+      <attribute name="verticalHeaderVisible">
+       <bool>false</bool>
+      </attribute>
      </widget>
     </item>
     <item row="1" column="0">
@@ -65,13 +77,8 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="font">
-         <font>
-          <pointsize>16</pointsize>
-         </font>
-        </property>
         <property name="text">
-         <string>Delete Row</string>
+         <string>Delete variable</string>
         </property>
        </widget>
       </item>
@@ -83,13 +90,8 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="font">
-         <font>
-          <pointsize>16</pointsize>
-         </font>
-        </property>
         <property name="text">
-         <string>Add Row</string>
+         <string>Add variable</string>
         </property>
        </widget>
       </item>

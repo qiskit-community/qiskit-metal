@@ -181,7 +181,7 @@
   <customwidget>
    <class>QToolBarExpanding</class>
    <extends>QToolBar</extends>
-   <header>.widgets.expanding_toolbar</header>
+   <header>.widgets.bases.expanding_toolbar</header>
   </customwidget>
  </customwidgets>
  <resources>

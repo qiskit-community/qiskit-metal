@@ -203,7 +203,7 @@ UREG = pint.UnitRegistry()
 #########################################################################
 # Basic string to number
 
-
+units = config.DefaultMetalOptions.default_generic.units
 def _parse_string_to_float(expr: str):
     """Extract the value of a string.
 
@@ -227,8 +227,8 @@ def _parse_string_to_float(expr: str):
         float -- Converted value, such as float(1e-6)
     """
     try:
-        units = config.DefaultOptionsGeneric.default_generic.units
         return UREG.Quantity(expr).to(units).magnitude
+
     except Exception:
         # DimensionalityError, UndefinedUnitError, TypeError
         try:

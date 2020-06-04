@@ -1,8 +1,8 @@
 import numpy as np
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtCore import QAbstractTableModel, QModelIndex, Qt
+from PyQt5.QtGui import QColor, QFont
 from PyQt5.QtWidgets import QTableView
-from PyQt5.QtGui import QFont, QColor
 
 
 def blend_colors(color1: QColor, color2: QColor, r: float = 0.2, alpha=255) -> QColor:

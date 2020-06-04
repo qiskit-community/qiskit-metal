@@ -27,10 +27,12 @@ from typing import Union, List, Iterable, Any, Dict as Dict_, TYPE_CHECKING
 from datetime import datetime
 
 import numpy as np
+from numpy.linalg import norm
+from ..draw import Vector
 
 from .. import Dict, draw, logger
 from ..components import is_component
-from ..config import DefaultOptionsGeneric, DefaultOptionsRenderer
+from ..config import DefaultMetalOptions, DefaultOptionsRenderer
 from ..toolbox_metal.import_export import load_metal_design, save_metal
 from ..toolbox_metal.parsing import parse_options, parse_value
 from ..elements import QElementTables
@@ -114,7 +116,8 @@ class QDesign():
 
         self._elements = QElementTables(self)
 
-        self._template_options = DefaultOptionsGeneric()  # use for components
+        self._template_options = DefaultMetalOptions()  # used for components
+        self.variables.update(self.template_options.qdesign.variables)
 
         # Can't really use this until DefaultOptionsRenderer.default_draw_substrate.color_plane is resolved.
         self._template_renderer_options = DefaultOptionsRenderer()  # use for renderer
@@ -171,7 +174,7 @@ class QDesign():
         Return default_options dictionary, which contain default options used in creating Metal
         component, and in calling other drawing and key functions.
         '''
-        return self._template_options.default_options
+        return self._template_options
 
     @property
     def template_renderer_options(self) -> Dict:
@@ -512,7 +515,92 @@ class QDesign():
         """
         return parse_options(params, param_names, variable_dict=self.variables)
 
-    
+    def add_connector_as_normal(self,
+                      name: str,
+                      start : np.ndarray,
+                      end : np.ndarray,
+                      width:float,
+                      parent: Union[str, 'QComponent'],
+                      flip: bool = False,
+                      chip: str = 'main'):
+        """Give the path points
+
+        Arguments:
+            name {str} -- [description]
+            points {list} -- [description]
+            parent {Union[str,} -- [description]
+
+        Keyword Arguments:
+            flip {bool} -- [description] (default: {False})
+            chip {str} -- [description] (default: {'main'})
+        """
+
+        if is_component(parent):
+            parent = parent.name
+        elif parent is None:
+            parent = 'none'
+        name = parent+'_'+name
+
+        vec_normal = end - start
+        vec_normal /= norm(vec_normal)
+        if flip:
+            vec_normal = -vec_normal
+
+        self.connectors[name] = Dict(
+            points=[], # TODO
+            middle=end,
+            normal=vec_normal,
+            tangent=Vector.rotate(vec_normal, np.pi/2), #TODO: rotate other way sometimes?
+            width=width,
+            chip=chip,
+            parent_name=parent
+        )
+
+    def add_connector(self,
+                      name: str,
+                      points: list,
+                      parent: Union[str, 'QComponent'],
+                      flip: bool = False,
+                      chip: str = 'main'):
+        """Add named connector to the design by creating a connector dicitoanry.
+
+        Arguments:
+            name {str} -- Name of connector
+            points {list} -- List of two (x,y) points that define the connector
+            parent {Union[str,} -- component or string or None. Will be converted to a
+                                 string, which will the name of the component.
+
+        Keyword Arguments:
+            flip {bool} -- [description] (default: {False})
+            chip {str} --  Optionally add options (default: {'main'})
+        """
+        if is_component(parent):
+            parent = parent.name
+        elif parent is None:
+            parent = 'none'
+        name = parent+'_'+name
+
+        self.connectors[name] = make_connector(
+            points, parent, flip=flip, chip=chip)
+
+        # TODO: Add net?
+
+    def get_connector(self, name: str):
+        """Interface for components to get connector data
+
+        Args:
+            name (str): Name of the desired connector.
+
+        Returns:
+            (dict): Returns the data of the connector, see design_base.make_connector() for
+                what those values are.
+        """
+
+        # For after switching to pandas, something like this?
+        # return self.connectors.get(name).to_dict()
+
+        return self.connectors[name]
+
     def update_component(self, component_name: str, dependencies: bool = True):
         """Update the component and any dependencies it may have.
         Mediator type function to update all children.
@@ -546,6 +634,9 @@ class QDesign():
             name (str) : Name of design
         """
         self.update_metadata({'design_name': name})
+
+    def get_units(self):
+        return self.template_options.units
 
 ####################################################################################
 # Dependencies
