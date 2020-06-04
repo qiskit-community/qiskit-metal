@@ -147,7 +147,8 @@ class ComponentWidget(QTabWidget):
     """
 
     def __init__(self, gui: 'MetalGUI', parent: QtWidgets.QWidget):
-        # Q Main WIndow
+        # Parent is usually a dock component
+
         super().__init__(parent)
 
         # Parent GUI related
@@ -301,10 +302,13 @@ class ComponentWidget(QTabWidget):
         textEdit.ensureCursorVisible()
     # @catch_exception_slot_pyqt()
 
-    def edit_source(self, parent=None):
+    def edit_source(self, *args, parent=None):
         """Calls the edit source window
         gui.component_window.edit_source()
         """
+
+        self.logger.debug(f"edit_source: {args}")
+
         if self.component is not None:
             class_name = self.component.__class__.__name__
             module_name = self.component.__class__.__module__
