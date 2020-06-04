@@ -269,7 +269,7 @@ class QDesign():
         '''
         # clear all the dicitonaries and element tables.
 
-        self.delete_all_pins()
+        self.delete_all_pins()  #Need to remove pin connections before clearing the components.
         self._components.clear()
         # TODO: add element tables here
         self._elements.clear_all_tables()
