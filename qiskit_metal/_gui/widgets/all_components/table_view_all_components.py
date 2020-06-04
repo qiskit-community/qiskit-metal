@@ -14,12 +14,13 @@
 
 """Ask Zlatko for help on this file"""
 from typing import TYPE_CHECKING
+from typing import List
 
 from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtCore import QModelIndex, Qt
+from PyQt5.QtCore import QModelIndex, Qt, QTimer
 from PyQt5.QtGui import QContextMenuEvent
 from PyQt5.QtWidgets import (QInputDialog, QLabel, QLineEdit, QMenu,
-                             QMessageBox, QTableView, QVBoxLayout)
+                             QMessageBox, QTableView, QVBoxLayout, QAbstractItemView)
 
 from ...utility._handle_qt_messages import catch_exception_slot_pyqt
 from ..bases.QWidget_PlaceholderText import QWidget_PlaceholderText
@@ -47,9 +48,19 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         self.clicked.connect(self.viewClicked)
         self.doubleClicked.connect(self.doDoubleClicked)
 
+        # Handling selection dynamically
+        self.setSelectionMode(QAbstractItemView.ExtendedSelection)
+        self.setSelectionBehavior(QTableView.SelectRows)
+
         # Do in the ui file
         self.horizontalHeader().hide()
         self.verticalHeader().show()
+
+        QTimer.singleShot(100, self.style2)
+
+    def style2(self):
+        selection_model = self.selectionModel()
+        selection_model.selectionChanged.connect(self.selection_changed)
 
     @property
     def design(self):
@@ -166,3 +177,15 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         name = index.sibling(index.row(), 0).data()
         self.gui.canvas.zoom_on_component(name)
         # self.logger.info(f'Double clicked component {name}')
+
+    def rows_to_names(self, rows:List[int]):
+        get_name = lambda row: self.model().data(self.model().index(row, 0))  # get the name
+        selected_names = [ get_name(row) for row in rows]
+        return selected_names
+
+    def selection_changed(self, *args):
+        rows = set([idx.row() for idx in self.selectedIndexes()])
+        selected_names = self.rows_to_names(rows)
+
+        self.logger.debug(f'Highlighting {selected_names}')
+        self.gui.highlight_components(selected_names)
