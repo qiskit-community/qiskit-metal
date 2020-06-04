@@ -55,20 +55,21 @@ class QRendererMPL(QRendererGui):
 
     def render_pins(self):
         '''
-        Plots all connectors on the active axes. Draws the 1D line that
-        represents the "port" of a connector point. These are referenced for smart placement
+        Plots all pins on the active axes. Draws the 1D line that
+        represents the "port" of a pin point. These are referenced for smart placement
             of Metal components, such as when using functions like Metal_CPW_Connect.
 
         TODO: add some filter for sense of what components are visibile?
-              or on what chip the connectors are
+              or on what chip the pins are
         '''
+        #can this be just one loop?
+        for component_id in self.design.components.keys():
+            for pin_name in self.design.components[component_id].pins.keys():
+            
+                line = LineString(self.design.components[component_id].pins[pin_name].points)
 
-        for name, conn in self.design.connectors.items():
+                self.render_shapely(line, kw=DEFAULT.annot_conectors.line_kw) #what is annot_conectors?
 
-            line = LineString(conn.points)
-
-            self.render_shapely(line, kw=DEFAULT.annot_conectors.line_kw)
-
-            self.ax.annotate(name, xy=conn.middle[:2], xytext=conn.middle +
+                self.ax.annotate(name, xy=conn.middle[:2], xytext=conn.middle +
                              np.array(DEFAULT.annot_conectors.ofst),
                              **DEFAULT.annot_conectors.annotate_kw)

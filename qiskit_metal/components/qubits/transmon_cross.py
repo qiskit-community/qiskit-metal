@@ -136,18 +136,18 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
 ############################CONNECTORS##################################################################################################
     def make_connection_pads(self):
         '''
-        Goes through connectors and makes each one.
+        Goes through connector pads and makes each one.
         '''
         for name in self.options.connection_pads:
             self.make_connection_pad(name)
 
     def make_connection_pad(self,name:str):
         '''
-        Makes individual connector
+        Makes individual connector pad
 
         Args:
         -------------
-        name (str) : Name of the connector
+        name (str) : Name of the connector pad
         '''
 
         # self.p allows us to directly access parsed values (string -> numbers) form the user option
@@ -179,7 +179,7 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
             connector_etcher = draw.buffer(connector_arm, c_g)
         
         
-        #Making the connector 'port' for design.connector tracking (for easy connect functions). 
+        #Making the pin for  tracking (for easy connect functions). 
         # Done here so as to have the same translations and rotations as the connector. Could 
         # extract from the connector later, but since allowing different connector types, 
         # this seems more straightforward.
@@ -199,7 +199,7 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
         polys = draw.translate(polys, p.pos_x, p.pos_y)
         [connector_arm, connector_etcher, port_line] = polys
 
-        #Generates elements for the connector
+        #Generates elements for the connector pads
         self.add_elements('poly', {f'{name}_connector_arm':connector_arm})
         self.add_elements('poly', {f'{name}_connector_etcher':connector_etcher}, subtract=True)
 

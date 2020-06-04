@@ -62,8 +62,6 @@ class QDesign():
 
         chips (Dict) : A collection of all the chips associated with the design.
 
-        connectors (Dict) : Information on the connectors
-
         metadata (Dict) : A dictionary of information that the user can store
             along with the desing. This includes the name of the design,
             the time the design was created, and other notes the user might choose to store.
@@ -80,7 +78,7 @@ class QDesign():
     # in order to do a more Dependency Inversion Principle (DIP) style,
     # see also Dependency Injection (DI). This can also generalize nicely
     # to special flip chips, etc. to handle complexity!
-    # Technically, components, connectors, variables, etc. are all separate entities
+    # Technically, components, variables, etc. are all separate entities
     # that can interface
 
     # Dummy private attribute used to check if an instanciated object is
@@ -102,7 +100,6 @@ class QDesign():
         # Key attributes related to physical content of the design
         # These will be saved
         self._components = Dict()
-        self._connectors = Dict()
         self._variables = Dict()
         self._chips = Dict()
 
@@ -154,13 +151,13 @@ class QDesign():
         '''
         return self._components
 
-    @property
-    def connectors(self):
+"""     @property
+    def pins(self):
         '''
-        Return the Dict object that keeps track of all connectors in the design.
+        Return the Dict object that keeps track of all pins in the design.
         '''
-        return self._connectors
-
+        return
+ """
     @property
     def variables(self) -> Dict_[str, str]:
         '''
@@ -231,9 +228,9 @@ class QDesign():
         keys[keys.index(old_key)] = new_key
         self._variables = Dict(zip(keys, values))
 
-    def delete_all_connectors(self):
+    """ def delete_all_pins(self):
         '''
-        Clear all connectors in the design.
+        Clear all pins in the design.
         '''
         # TGM, How do we tell each component, they are no longer connected to anything?
         # TGM, How about the below?
@@ -244,17 +241,17 @@ class QDesign():
                 df = self._net_info.get_components_and_pins_for_netid(net_id)
                 ## TGM Can we switch the pin to be 0 instead of an id here?   
 
-        self.connectors.clear()
-        return self.connectors
+        
+        return  """
 
     def delete_all_components(self):
         '''
         Clear all components in the design dictionary.
-        Also clears all connectors.
+        Also clears all pins and netlist.
         '''
         # clear all the dicitonaries and element tables.
         self._components.clear()
-        self.delete_all_connectors()
+        #TODO: NEED TO ADD THE DELETE NETLIST FUNCTION HERE
         # TODO: add element tables here
         self._elements.clear_all_tables()
         # TODO: add dependency handling here
@@ -351,7 +348,7 @@ class QDesign():
         return True
 
     def delete_component(self, component_name: str, force=False):
-        """Deletes component and connectors attached to said component.
+        """Deletes component and pins attached to said component.
         If no component by that name is present, then just return True
         If component has dependencices return false and do not delete,
         unless force=True.
@@ -387,16 +384,14 @@ class QDesign():
         Returns:
             bool -- [description]
         """
-        # Remove connectors
-        connector_names = self.components[component_name].connectors
-        for c_name in connector_names:
-            self.connectors.pop(c_name)
+        # Remove pins - done inherently from deleting the component, though needs checking
+        #if is on the net list or not
 
         # Remove from design dictionary of components
         self.components.pop(component_name, None)
 
         self._elements.delete_component(component_name)
-
+        #ADD THE DELETE NETLIST FUNCTION FOR A COMPONENT
         return True
 
 

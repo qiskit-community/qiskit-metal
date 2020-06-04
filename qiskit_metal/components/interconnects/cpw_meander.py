@@ -19,7 +19,7 @@ options = Dict(pin_start_name='Q1_a',
                    asymmetry='0 um')
                )
 
-class Connector:
+class Connector: #Shouldn't this class be in the connector folder?
     r"""A simple class to define a connector as a 2D point
     with a 2D direction in the XY plane.
     All values stored as np.ndarray of parsed floats.

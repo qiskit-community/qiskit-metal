@@ -90,6 +90,6 @@ or use the right click and drag to select a region.""")
                 " its coordinate.")
         self.canvas.panzoom.options.report_point_position = yesno
 
-    def set_show_connectors(self,  yesno: bool):
-        self.logger.info(f"Showing connectors: {yesno}")
+    def set_show_connectors(self,  yesno: bool): #set_show_pins?
+        self.logger.info(f"Showing pins: {yesno}")
         # TODO:

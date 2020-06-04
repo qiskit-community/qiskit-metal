@@ -42,7 +42,7 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
     Description:
     ----------------------------------------------------------------------------
     Create a standard pocket transmon qubit for a ground plane,
-    with two pads connectored by a junction (see drawing below).
+    with two pads connected by a junction (see drawing below).
 
     Connector lines can be added using the `connection_pads`
     dicitonary. Each connector line has a name and a list of default
@@ -140,9 +140,10 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
 
         [cl_metal, cl_etcher, port_line] = polys
 
-        # Making the design connector for 'easy connect'
+        # Generating pins
         points = list(draw.shapely.geometry.shape(port_line).coords)
         self.add_pin(name, points, self.id, flip=False)  # TODO: chip
 
+        #Adding to element table
         self.add_elements('poly', dict(cl_metal=cl_metal))
         self.add_elements('poly', dict(cl_etcher=cl_etcher), subtract=True)

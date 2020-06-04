@@ -489,11 +489,11 @@ class QComponent():
                       parent: Union[str, 'QComponent'],
                       flip: bool = False,
                       chip: str = 'main'):
-        """Add named connector to the design by creating a connector dicitoanry.
+        """Add named pin to the design by creating a pin dicitoanry.
 
         Arguments:
             name {str} -- Name of pin
-            points {list} -- List of two (x,y) points that define the connector
+            points {list} -- List of two (x,y) points that define the pin
             parent {Union[str,} -- component or string or None. Will be converted to a
                                  string, which will the name of the component.
 

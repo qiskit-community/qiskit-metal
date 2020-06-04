@@ -47,10 +47,10 @@ class TransmonPocket(BaseQubit):
     Description:
     ----------------------------------------------------------------------------
     Create a standard pocket transmon qubit for a ground plane,
-    with two pads connectored by a junction (see drawing below).
+    with two pads connected by a junction (see drawing below).
 
     Connector lines can be added using the `connection_pads`
-    dicitonary. Each connector line has a name and a list of default
+    dicitonary. Each connector pad has a name and a list of default
     properties.
 
     Options:
@@ -248,12 +248,11 @@ class TransmonPocket(BaseQubit):
 
         ############################################################
 
-        # add connectors to design tracker
+        # add pins
         points = np.array(connector_wire_path.coords)
 
         self.add_pin_as_normal(name,
             start = points[-2],
             end = points[-1],
             width = cpw_width, parent = self.name,  flip=False)
-        # self.design.add_connector(name, points[2:2+2], self.name, flip=False)  # TODO: chip
 
