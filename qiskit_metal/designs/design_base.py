@@ -153,13 +153,13 @@ class QDesign():
         '''
         return self._components
 
-"""     @property
+    """     @property
     def pins(self):
         '''
         Return the Dict object that keeps track of all pins in the design.
         '''
         return
- """
+    """
     @property
     def variables(self) -> Dict_[str, str]:
         '''
