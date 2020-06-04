@@ -127,12 +127,9 @@ class QComponent():
         # Used to rename, etc.
         self._connector_names = set()
 
-        # has the component already been made
-        self._made = False
-
         # Parser for options
         self.p = ParsedDynamicAttributes_Component(self)
-        
+
         # Create an empty dict, which will populated by component designer.
         self.pins = dict()
 
@@ -143,7 +140,7 @@ class QComponent():
         if make:
             self.do_make()
 
-       
+
     @classmethod
     def _gather_all_children_options(cls):
         '''
@@ -293,14 +290,17 @@ class QComponent():
     # TODO: Capture error here and save to log as the latest error
     def do_make(self):
         """Actually make or remake the component"""
+
+        # Begin by setting the status to failed, we will change this if we succed
         self.status = 'failed'
-        if self._made:  # already made, just remaking
-            # TODO: this is probably very inefficient, design more efficient way
-            self.design.elements.delete_component(self.name)
-            self.make()
-        else:  # first time making
-            self.make()
-            self._made = True  # what if make throws an error part way?
+
+        # TODO: this is probably very inefficient, design more efficient way
+        # Clear everything related to the component
+        self.connectors.clear()
+        self.design.elements.delete_component(self.name)
+        self.make()
+
+        # Succeeded in buidling component
         self.status = 'good'
 
     rebuild = do_make
@@ -395,7 +395,7 @@ class QComponent():
         if name is None:
             name = self.name
 
-        self._connector_names.add(name)
+        # self._connector_names.add(name) # done in deisng
 
         self.design.add_connector(name=name,
                                   points=points,
@@ -520,7 +520,11 @@ class QComponent():
 
     def geometry_bounds(self):
         """
-        Return the bounds of the geometry.
+        Returns a tuple containing (minx, miny, maxx, maxy) bound values
+        for the bounds of the component as a whole.
+
+        Uses:
+            design.elements.get_component_bounds
         """
         bounds = self.design.elements.get_component_bounds(self.name)
         return bounds

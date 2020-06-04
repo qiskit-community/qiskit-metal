@@ -255,5 +255,5 @@ class TransmonPocket(BaseQubit):
             start = points[-2],
             end = points[-1],
             width = cpw_width, parent = self.name,  flip=False)
-        # self.design.add_connector(name, points[2:2+2], self.name, flip=False)  # TODO: chip
+        # self.add_connector(name, points[2:2+2], self.name, flip=False)  # TODO: chip
 
