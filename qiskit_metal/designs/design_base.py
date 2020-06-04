@@ -233,7 +233,7 @@ class QDesign():
         keys[keys.index(old_key)] = new_key
         self._variables = Dict(zip(keys, values))
 
-    # def delete_all_connectors(self):
+   
     def delete_all_pins(self) -> pd.core.frame.DataFrame:
         '''
         Clear all pins in the net_Info and update the pins in components.
@@ -243,9 +243,6 @@ class QDesign():
             self.components[comp_id].pins[pin_name].net_id = 0
         
         self._qnet._net_info = self._qnet._net_info.iloc[0:0]    #remove rows, but save column names
-
-        # self.connectors.clear()
-        # return self.connectors
         return self._qnet
 
     def generate_net_id_and_update_component(self, comp1_id: int, pin1_name: str, comp2_id: int, pin2_name: str) -> int:
@@ -254,7 +251,6 @@ class QDesign():
             comp1_id, pin1_name, comp2_id, pin2_name)
         if net_id:
             # update the components to hold net_id
-            # design.components[component_1].pins[pin_1].net_id
             self.components[comp1_id].pins[pin1_name].net_id = net_id
             self.components[comp2_id].pins[pin2_name].net_id = net_id
         else:
