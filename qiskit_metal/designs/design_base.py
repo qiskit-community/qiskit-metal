@@ -627,7 +627,7 @@ class QDesign():
         self.update_metadata({'design_name': name})
 
     def get_units(self):
-        return self.template_options.generic.units
+        return self.template_options.units
 
 ####################################################################################
 # Dependencies

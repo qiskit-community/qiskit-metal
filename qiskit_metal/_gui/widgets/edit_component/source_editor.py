@@ -39,7 +39,7 @@ except ImportError as e:
           'For more, see https://github.com/pyQode/pyqode.python \n')
 
 if TYPE_CHECKING:
-    from ..main_window import MetalGUI, QMainWindowExtension
+    from ...main_window import MetalGUI, QMainWindowExtension
 
 class MetalSourceEditor(widgets.PyCodeEditBase):
     """

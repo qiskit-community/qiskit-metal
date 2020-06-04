@@ -25,30 +25,28 @@ GUI front-end interface for Qiskit Metal in PyQt5.
 import logging
 import os
 from pathlib import Path
+from typing import List
 
 from PyQt5 import QtWidgets
-from PyQt5.QtCore import pyqtSlot, Qt, QTimer
+from PyQt5.QtCore import QEventLoop, Qt, QTimer, pyqtSlot
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import (QApplication, QFileDialog, QLabel, QMainWindow,
-                             QMessageBox, QDockWidget)
+from PyQt5.QtWidgets import (QApplication, QDockWidget, QFileDialog, QLabel,
+                             QMainWindow, QMessageBox)
 
-from PyQt5.QtCore import QEventLoop
-
-#from ..toolbox_python._logging import setup_logger
-#from .. import config, Dict
 from ..designs.design_base import QDesign
 from ..toolbox_metal.import_export import load_metal_design
-from .utility._handle_qt_messages import catch_exception_slot_pyqt
-from .widgets.component_widget import ComponentWidget
 from .component_widget_ui import Ui_ComponentWidget
 from .elements_window import ElementsWindow
 from .main_window_base import QMainWindowBaseHandler, QMainWindowExtensionBase
 from .main_window_ui import Ui_MainWindow
-from .plot_window import QMainWindowPlot
-from .widgets.all_components.table_model_all_components import QTableModel_AllComponents
+from .widgets.plot_widget.plot_window import QMainWindowPlot
+from .utility._handle_qt_messages import catch_exception_slot_pyqt
+from .widgets.all_components.table_model_all_components import \
+    QTableModel_AllComponents
+from .widgets.edit_component.component_widget import ComponentWidget
 from .widgets.log_widget.log_metal import LogHandler_for_QTextLog
 from .widgets.variable_table import PropertyTableWidget
-from typing import List
+
 
 class QMainWindowExtension(QMainWindowExtensionBase):
     """This contains all the functions tthat the gui needs

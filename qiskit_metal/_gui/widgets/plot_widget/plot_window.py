@@ -11,12 +11,12 @@ from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import (QApplication, QFileDialog, QLabel, QMainWindow,
                              QMessageBox)
 
-from ..renderers.renderer_mpl.mpl_canvas import PlotCanvas
-from .plot_window_ui import Ui_MainWindowPlot
+from ....renderers.renderer_mpl.mpl_canvas import PlotCanvas
+from ...plot_window_ui import Ui_MainWindowPlot
 
 if TYPE_CHECKING:
     # https://stackoverflow.com/questions/39740632/python-type-hinting-without-cyclic-imports
-    from .main_window import MetalGUI, QMainWindowExtension
+    from ...main_window import MetalGUI, QMainWindowExtension
 
 class QMainWindowPlot(QMainWindow):
     """

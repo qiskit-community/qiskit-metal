@@ -22,10 +22,10 @@ from typing import TYPE_CHECKING
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-from ..edit_source_ui import Ui_EditSource
+from ...edit_source_ui import Ui_EditSource
 
 if TYPE_CHECKING:
-    from ..main_window import MetalGUI, QMainWindowExtension
+    from ...main_window import MetalGUI, QMainWindowExtension
 
 
 def create_source_edit_widget(gui: 'MetalGUI',

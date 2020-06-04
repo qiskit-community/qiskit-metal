@@ -19,7 +19,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QAction, QDockWidget, QTextEdit
 
 from ....toolbox_python.utility_functions import clean_name, monkey_patch
-from ... import Dict, __version__, config
+from .... import Dict, __version__, config
 from ...utility._handle_qt_messages import catch_exception_slot_pyqt
 
 __all__ = ['QTextEditLogger', 'LogHandler_for_QTextLog']

@@ -26,7 +26,7 @@ from ..bases.QWidget_PlaceholderText import QWidget_PlaceholderText
 
 if TYPE_CHECKING:
     from ...main_window import MetalGUI
-    from .components_model import QTableModel_AllComponents
+    from .table_model_all_components import QTableModel_AllComponents
 
 
 class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):

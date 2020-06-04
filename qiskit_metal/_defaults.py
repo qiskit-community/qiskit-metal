@@ -27,6 +27,7 @@ from .toolbox_python.attr_dict import Dict
 
 # TODO: @priti Write more description in docstring for class
 # TODO: @priti Write Init docstring, describe kwargs
+# TODO: Handle access to missing options - ie throw a warningor rror message
 class DefaultMetalOptions(Dict):
     """
     Container for the default options used in:

@@ -52,7 +52,8 @@ class PropValTable(QAbstractTableModel):
         if self._rowCount != newRowCount:
             self.modelReset.emit()
             self._rowCount = newRowCount
-            self._view.resizeColumnsToContents()
+            if self._view:
+                self._view.resizeColumnsToContents()
 
     def rowCount(self, index: QModelIndex) -> int:
         if self._design:
@@ -89,18 +90,28 @@ class PropValTable(QAbstractTableModel):
         """
         Modify either key or value (Property or Value) of dictionary depending on what
         the user selected manually on the table.
+
+        Returns true if successful; otherwise returns false.
         """
         r = index.row()
         c = index.column()
+
         if value:
+
             if c == 0:
                 # TODO: LRU Cache for speed?
                 oldkey = list(self._data.keys())[r]
                 if value != oldkey:
                     self.design.rename_variable(oldkey, value)
+                    self._gui.rebuild()
+                    return True
+
             elif c == 1:
                 self._data[list(self._data.keys())[r]] = value
-            self._gui.rebuild()
+                self._gui.rebuild()
+                return True
+
+        return False
 
     def headerData(self, section: int, orientation: Qt.Orientation, role: Qt.ItemDataRole = Qt.DisplayRole) -> str:
         """
@@ -113,10 +124,10 @@ class PropValTable(QAbstractTableModel):
                 elif section == 1:
                     return 'Value'
                 else:
+                    units = config.DefaultMetalOptions.default_generic.units
                     if self.design:
-                        units = self.design.template_options.units
-                    else:
-                        units = config.DefaultMetalOptions.default_generic.units
+                        if hasattr(self.design, '_template_options'):
+                            units = self.design.template_options.units
                     return f'Parsed value (in {units})'
             return str(section + 1)
 

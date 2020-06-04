@@ -70,3 +70,5 @@ class QWidget_PlaceholderText(QWidget):
 
     def hide_placeholder_text(self):
         self._placeholder_label.hide()
+
+    

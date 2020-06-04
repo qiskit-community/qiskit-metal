@@ -22,6 +22,10 @@ from PyQt5.QtWidgets import QTableView
 
 from ...utility._handle_qt_messages import catch_exception_slot_pyqt
 from ...utility._toolbox_qt import blend_colors
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from .table_view_all_components import QTableView_AllComponents
 
 
 class QTableModel_AllComponents(QAbstractTableModel):
@@ -41,7 +45,7 @@ class QTableModel_AllComponents(QAbstractTableModel):
     """
     __timer_interval = 500  # ms
 
-    def __init__(self, gui, logger, parent=None, tableView: QTableView = None):
+    def __init__(self, gui, logger, parent=None, tableView: 'QTableView_AllComponents' = None):
         super().__init__(parent=parent)
         self.logger = logger
         self.gui = gui
@@ -91,6 +95,10 @@ class QTableModel_AllComponents(QAbstractTableModel):
             self.modelReset.emit()
 
             self._row_count = new_count
+            self.update_view()
+
+    def update_view(self):
+        if self._tableView:
             self._tableView.resizeColumnsToContents()
 
     def rowCount(self, parent: QModelIndex = None):

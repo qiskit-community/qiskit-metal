@@ -31,6 +31,7 @@ class Ui_MainWindow(object):
         self.tableView.setHorizontalScrollMode(QtWidgets.QAbstractItemView.ScrollPerPixel)
         self.tableView.setObjectName("tableView")
         self.tableView.horizontalHeader().setVisible(True)
+        self.tableView.horizontalHeader().setStretchLastSection(True)
         self.tableView.verticalHeader().setVisible(False)
         self.gridLayout_3.addWidget(self.tableView, 0, 0, 1, 1)
         self.gridLayout = QtWidgets.QGridLayout()

@@ -27,7 +27,7 @@ class Ui_ComponentWidget(object):
         self.horizontalLayout.setSpacing(0)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.verticalLayout.addLayout(self.horizontalLayout)
-        self.tableView = QtWidgets.QTableView(self.tabOptions)
+        self.tableView = QTableView_Options(self.tabOptions)
         self.tableView.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.tableView.setFrameShadow(QtWidgets.QFrame.Plain)
         self.tableView.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
@@ -35,7 +35,9 @@ class Ui_ComponentWidget(object):
         self.tableView.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
         self.tableView.setShowGrid(False)
         self.tableView.setObjectName("tableView")
-        self.tableView.horizontalHeader().setVisible(False)
+        self.tableView.horizontalHeader().setVisible(True)
+        self.tableView.horizontalHeader().setStretchLastSection(True)
+        self.tableView.verticalHeader().setVisible(False)
         self.verticalLayout.addWidget(self.tableView)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/options"), QtGui.QIcon.Normal, QtGui.QIcon.On)
@@ -120,4 +122,5 @@ class Ui_ComponentWidget(object):
         self.lineSourcePath.setAccessibleDescription(_translate("ComponentWidget", "Source code file path"))
         self.lineSourcePath.setText(_translate("ComponentWidget", "Source code file path here"))
         ComponentWidget.setTabText(ComponentWidget.indexOf(self.tabSource), _translate("ComponentWidget", "Source"))
+from .widgets.edit_component.table_view_options import QTableView_Options
 from . import main_window_rc_rc

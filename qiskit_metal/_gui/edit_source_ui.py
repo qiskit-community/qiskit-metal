@@ -135,5 +135,5 @@ class Ui_EditSource(object):
         self.center.setText(_translate("EditSource", "Center"))
         self.full_screen.setText(_translate("EditSource", "Full screen"))
         self.lineSrcPath.setText(_translate("EditSource", "Source code file path here"))
-from .widgets.source_editor import MetalSourceEditor
+from .widgets.edit_component.source_editor import MetalSourceEditor
 from . import main_window_rc_rc
