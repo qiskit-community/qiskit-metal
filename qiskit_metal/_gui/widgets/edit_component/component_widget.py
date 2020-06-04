@@ -27,7 +27,7 @@ import numpy as np
 import PyQt5
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QAbstractTableModel, QModelIndex, Qt
-from PyQt5.QtGui import QFont
+from PyQt5.QtGui import QFont, QColor
 from PyQt5.QtWidgets import (QAbstractItemView, QApplication, QFileDialog,
                              QLabel, QMainWindow, QMessageBox, QTabWidget)
 
@@ -169,7 +169,16 @@ class ComponentWidget(QTabWidget):
         self.ui.tableView.setHorizontalScrollMode(
             QAbstractItemView.ScrollPerPixel)
 
+
         # Source Code
+        # palette = self.ui.textSource.palette()
+        # palette.color(palette.Text).name()
+        # palette.setColor(palette.Text, QColor('#000000'))
+        # palette.setColor(palette.WindowText, QColor('#000000'))
+        # self.ui.textSource.setPalette(palette)
+        self.ui.textSource.setStyleSheet("""
+    color: #000000;
+            """)
         self.src_doc = create_QTextDocument(self.ui.textSource)
         self._html_css_lex = None  # type: pygments.formatters.html.HtmlFormatter
         self.src_widgets = []  # type: List[QtWidgets.QWidget]
@@ -286,6 +295,10 @@ class ComponentWidget(QTabWidget):
 
         else:
             document.setPlainText(text)
+
+        textEdit = self.ui.textSource
+        textEdit.moveCursor(QtGui.QTextCursor.Start)
+        textEdit.ensureCursorVisible()
     # @catch_exception_slot_pyqt()
 
     def edit_source(self, parent=None):

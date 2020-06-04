@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>567</width>
-    <height>320</height>
+    <width>687</width>
+    <height>556</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -139,7 +139,7 @@ color: rgb(255, 255, 255);</string>
        <number>0</number>
       </property>
       <item>
-       <widget class="QPushButton" name="undo">
+       <widget class="QToolButton" name="undo">
         <property name="text">
          <string>Undo</string>
         </property>
@@ -147,10 +147,13 @@ color: rgb(255, 255, 255);</string>
          <iconset resource="main_window_rc.qrc">
           <normaloff>:/delete</normaloff>:/delete</iconset>
         </property>
+        <property name="toolButtonStyle">
+         <enum>Qt::ToolButtonTextBesideIcon</enum>
+        </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="zoomin">
+       <widget class="QToolButton" name="zoomin">
         <property name="text">
          <string>Zoom in</string>
         </property>
@@ -158,10 +161,13 @@ color: rgb(255, 255, 255);</string>
          <iconset resource="main_window_rc.qrc">
           <normaloff>:/plot/zoom</normaloff>:/plot/zoom</iconset>
         </property>
+        <property name="toolButtonStyle">
+         <enum>Qt::ToolButtonTextBesideIcon</enum>
+        </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="zoomout">
+       <widget class="QToolButton" name="zoomout">
         <property name="text">
          <string>Zoom out</string>
         </property>
@@ -169,10 +175,13 @@ color: rgb(255, 255, 255);</string>
          <iconset resource="main_window_rc.qrc">
           <normaloff>:/plot/zoom</normaloff>:/plot/zoom</iconset>
         </property>
+        <property name="toolButtonStyle">
+         <enum>Qt::ToolButtonTextBesideIcon</enum>
+        </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="center">
+       <widget class="QToolButton" name="center">
         <property name="text">
          <string>Center</string>
         </property>
@@ -180,16 +189,22 @@ color: rgb(255, 255, 255);</string>
          <iconset resource="main_window_rc.qrc">
           <normaloff>:/options</normaloff>:/options</iconset>
         </property>
+        <property name="toolButtonStyle">
+         <enum>Qt::ToolButtonTextBesideIcon</enum>
+        </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="full_screen">
+       <widget class="QToolButton" name="full_screen">
         <property name="text">
          <string>Full screen</string>
         </property>
         <property name="icon">
          <iconset resource="main_window_rc.qrc">
           <normaloff>:/plot/autozoom</normaloff>:/plot/autozoom</iconset>
+        </property>
+        <property name="toolButtonStyle">
+         <enum>Qt::ToolButtonTextBesideIcon</enum>
         </property>
        </widget>
       </item>
@@ -212,7 +227,7 @@ color: rgb(255, 255, 255);</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>567</width>
+     <width>687</width>
      <height>22</height>
     </rect>
    </property>
@@ -264,86 +279,6 @@ color: rgb(255, 255, 255);</string>
     <hint type="destinationlabel">
      <x>498</x>
      <y>106</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>undo</sender>
-   <signal>clicked()</signal>
-   <receiver>src_editor</receiver>
-   <slot>undo()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>89</x>
-     <y>516</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>128</x>
-     <y>292</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>zoomin</sender>
-   <signal>clicked()</signal>
-   <receiver>src_editor</receiver>
-   <slot>zoomIn()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>219</x>
-     <y>516</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>241</x>
-     <y>228</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>zoomout</sender>
-   <signal>clicked()</signal>
-   <receiver>src_editor</receiver>
-   <slot>zoomOut()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>349</x>
-     <y>516</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>330</x>
-     <y>297</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>center</sender>
-   <signal>clicked()</signal>
-   <receiver>src_editor</receiver>
-   <slot>centerCursor()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>481</x>
-     <y>516</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>428</x>
-     <y>277</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>full_screen</sender>
-   <signal>clicked()</signal>
-   <receiver>EditSource</receiver>
-   <slot>showFullScreen()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>619</x>
-     <y>516</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>518</x>
-     <y>0</y>
     </hint>
    </hints>
   </connection>

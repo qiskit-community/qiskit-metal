@@ -429,3 +429,11 @@ class MetalGUI(QMainWindowBaseHandler):
 
     def save_file(self, filename:str=None):
         self.design.save_design(filename)
+
+    def highlight_components(self, component_names:List[str]):
+        """Hihglight a list of components
+
+        Args:
+            component_names (List[str]): [description]
+        """
+        self.canvas.highlight_components(component_names)

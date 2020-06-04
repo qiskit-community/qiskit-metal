@@ -60,7 +60,7 @@ class QWidget_PlaceholderText(QWidget):
 
         # color PlaceholderText
         palette = self.palette()
-        color = palette.color(palette.PlaceholderText)
+        color = palette.color(palette.PlaceholderText) # This enum value has been introduced in Qt 5.12
         palette.setColor(palette.Text, color)
         palette.setColor(palette.Text, color)
         label.setPalette(palette)
@@ -71,4 +71,3 @@ class QWidget_PlaceholderText(QWidget):
     def hide_placeholder_text(self):
         self._placeholder_label.hide()
 
-    

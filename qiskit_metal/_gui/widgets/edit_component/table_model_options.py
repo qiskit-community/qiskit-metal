@@ -51,7 +51,7 @@ class QTableModel_Options(QAbstractTableModel):
     """
     # __timer_interval = 500  # ms
 
-    def __init__(self, gui: 'MetalGUI', parent: 'ComponentWidget' = None, view = None):
+    def __init__(self, gui: 'MetalGUI', parent: 'ComponentWidget' = None, view=None):
         super().__init__(parent=parent)
         self.logger = gui.logger
         self.gui = gui
@@ -170,7 +170,7 @@ class QTableModel_Options(QAbstractTableModel):
     def setData(self,
                 index: QtCore.QModelIndex,
                 value: QtCore.QVariant,
-                role=QtCore.Qt.EditRole):
+                role=QtCore.Qt.EditRole) -> bool:
         """Sets the role data for the item at index to value.
         Returns true if successful; otherwise returns false.
         The dataChanged() signal should be emitted if the data was successfully set.

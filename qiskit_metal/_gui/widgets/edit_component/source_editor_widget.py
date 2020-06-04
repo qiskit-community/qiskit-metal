@@ -43,6 +43,9 @@ def create_source_edit_widget(gui: 'MetalGUI',
 
     Returns:
         [QtWidgets.QWidget] -- [Ui_EditSource widget]
+
+    Access:
+        gui.component_window.src_widgets[-1]
     """
     if not parent:
         parent = gui.main_window  # gui.component_window.ui.tabHelp
@@ -53,6 +56,7 @@ def create_source_edit_widget(gui: 'MetalGUI',
     edit_widget = QtWidgets.QMainWindow(parent) # use parent, so this way its style sheet is inherited
     edit_widget.ui = Ui_EditSource()
     edit_widget.ui.setupUi(edit_widget)
+    edit_widget.resize(900, 800)
 
     edit_widget.ui.src_editor.gui = gui
     edit_widget.ui.src_editor.set_component(

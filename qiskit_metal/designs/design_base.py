@@ -532,6 +532,9 @@ class QDesign():
             parent = 'none'
         name = parent+'_'+name
 
+        if not parent is 'none':
+            self.components[parent].connectors.add(name)
+
         vec_normal = end - start
         vec_normal /= norm(vec_normal)
         if flip:
@@ -570,6 +573,9 @@ class QDesign():
         elif parent is None:
             parent = 'none'
         name = parent+'_'+name
+
+        if not parent is 'none':
+            self.components[parent].connectors.add(name)
 
         self.connectors[name] = make_connector(
             points, parent, flip=flip, chip=chip)
