@@ -86,7 +86,7 @@ class PropValTable(QAbstractTableModel):
             font.setBold(True)
             return font
 
-    def setData(self, index: QModelIndex, value: str, role: Qt.ItemDataRole = Qt.EditRole):
+    def setData(self, index: QModelIndex, value: str, role: Qt.ItemDataRole = Qt.EditRole)  -> bool:
         """
         Modify either key or value (Property or Value) of dictionary depending on what
         the user selected manually on the table.
