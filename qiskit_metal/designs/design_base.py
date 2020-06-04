@@ -238,8 +238,8 @@ class QDesign():
         '''
         Clear all pins in the net_Info and update the pins in components.
         '''
-
-        for netID, comp_id, pin_name in self._qnet._net_info.itertuple():
+    
+        for (netID, comp_id, pin_name) in self._qnet._net_info.itertuples():
             self.components[comp_id].pins[pin_name].net_id = 0
         
         self._qnet._net_info = self._qnet._net_info.iloc[0:0]    #remove rows, but save column names
@@ -290,6 +290,7 @@ class QDesign():
         # thne just make without the checks on existing
         # TODO: Handle error and print nice statemetns
         # try catch log_simple_error
+
         for name, obj in self.components.items():  # pylint: disable=unused-variable
             try:  # TODO: performace?
                 obj.do_make()  # should we call this build?
