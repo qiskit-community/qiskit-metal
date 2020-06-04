@@ -223,7 +223,7 @@ color: rgb(255, 255, 255);</string>
   <customwidget>
    <class>MetalSourceEditor</class>
    <extends>QPlainTextEdit</extends>
-   <header>.widgets.source_editor</header>
+   <header>.widgets.edit_component.source_editor</header>
    <slots>
     <slot>save_file()</slot>
     <slot>reload_file()</slot>

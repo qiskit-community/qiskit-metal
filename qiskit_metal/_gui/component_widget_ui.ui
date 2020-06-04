@@ -61,7 +61,7 @@
      </layout>
     </item>
     <item>
-     <widget class="QTableView" name="tableView">
+     <widget class="QTableView_Options" name="tableView">
       <property name="frameShape">
        <enum>QFrame::NoFrame</enum>
       </property>
@@ -81,6 +81,12 @@
        <bool>false</bool>
       </property>
       <attribute name="horizontalHeaderVisible">
+       <bool>true</bool>
+      </attribute>
+      <attribute name="horizontalHeaderStretchLastSection">
+       <bool>true</bool>
+      </attribute>
+      <attribute name="verticalHeaderVisible">
        <bool>false</bool>
       </attribute>
      </widget>
@@ -235,6 +241,13 @@ p, li { white-space: pre-wrap; }
    </layout>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QTableView_Options</class>
+   <extends>QTableView</extends>
+   <header>.widgets.edit_component.table_view_options</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="main_window_rc.qrc"/>
  </resources>

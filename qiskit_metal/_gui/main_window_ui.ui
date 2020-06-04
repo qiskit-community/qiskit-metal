@@ -363,7 +363,7 @@
     <set>QDockWidget::AllDockWidgetFeatures</set>
    </property>
    <property name="windowTitle">
-    <string>Design</string>
+    <string>QComponents</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
@@ -475,9 +475,12 @@
       </layout>
      </item>
      <item>
-      <widget class="TableComponents" name="tableComponents">
+      <widget class="QTableView_AllComponents" name="tableComponents">
        <property name="sizeAdjustPolicy">
         <enum>QAbstractScrollArea::AdjustToContents</enum>
+       </property>
+       <property name="autoScroll">
+        <bool>false</bool>
        </property>
        <property name="alternatingRowColors">
         <bool>true</bool>
@@ -489,9 +492,15 @@
         <bool>true</bool>
        </property>
        <attribute name="horizontalHeaderVisible">
-        <bool>false</bool>
+        <bool>true</bool>
        </attribute>
        <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+        <bool>false</bool>
+       </attribute>
+       <attribute name="horizontalHeaderStretchLastSection">
+        <bool>true</bool>
+       </attribute>
+       <attribute name="verticalHeaderVisible">
         <bool>false</bool>
        </attribute>
       </widget>
@@ -567,6 +576,9 @@
       <widget class="QTreeWidget" name="treeWidget">
        <property name="sizeAdjustPolicy">
         <enum>QAbstractScrollArea::AdjustToContents</enum>
+       </property>
+       <property name="autoScroll">
+        <bool>false</bool>
        </property>
        <property name="editTriggers">
         <set>QAbstractItemView::DoubleClicked</set>
@@ -708,7 +720,7 @@
     </iconset>
    </property>
    <property name="windowTitle">
-    <string>Ports</string>
+    <string>Pins</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
@@ -754,6 +766,9 @@
        </property>
        <property name="sizeAdjustPolicy">
         <enum>QAbstractScrollArea::AdjustToContents</enum>
+       </property>
+       <property name="autoScroll">
+        <bool>false</bool>
        </property>
        <property name="alternatingRowColors">
         <bool>false</bool>
@@ -927,7 +942,7 @@
     <bool>true</bool>
    </property>
    <property name="checked">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="icon">
     <iconset resource="main_window_rc.qrc">
@@ -1003,7 +1018,7 @@
     <bool>true</bool>
    </property>
    <property name="checked">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="icon">
     <iconset resource="main_window_rc.qrc">
@@ -1178,7 +1193,7 @@
     <bool>true</bool>
    </property>
    <property name="checked">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="icon">
     <iconset resource="main_window_rc.qrc">
@@ -1199,17 +1214,17 @@
   <customwidget>
    <class>QToolBarExpanding</class>
    <extends>QToolBar</extends>
-   <header>.widgets.expanding_toolbar</header>
+   <header>.widgets.bases.expanding_toolbar</header>
   </customwidget>
   <customwidget>
    <class>QTextEditLogger</class>
    <extends>QTextEdit</extends>
-   <header>.widgets.log_metal</header>
+   <header>.widgets.log_widget.log_metal</header>
   </customwidget>
   <customwidget>
-   <class>TableComponents</class>
+   <class>QTableView_AllComponents</class>
    <extends>QTableView</extends>
-   <header>.widgets.table_components</header>
+   <header>.widgets.all_components.table_view_all_components</header>
   </customwidget>
  </customwidgets>
  <resources>
@@ -1428,7 +1443,7 @@
    <sender>actionDesign</sender>
    <signal>triggered(bool)</signal>
    <receiver>dockDesign</receiver>
-   <slot>setVisible(bool)</slot>
+   <slot>show()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
@@ -1442,9 +1457,9 @@
   </connection>
   <connection>
    <sender>actionComponent</sender>
-   <signal>triggered(bool)</signal>
+   <signal>triggered()</signal>
    <receiver>dockComponent</receiver>
-   <slot>setVisible(bool)</slot>
+   <slot>show()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
@@ -1524,7 +1539,7 @@
    <sender>actionNewComponent</sender>
    <signal>triggered(bool)</signal>
    <receiver>dockNewComponent</receiver>
-   <slot>setVisible(bool)</slot>
+   <slot>show()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
@@ -1540,7 +1555,7 @@
    <sender>actionLog</sender>
    <signal>triggered(bool)</signal>
    <receiver>dockLog</receiver>
-   <slot>setVisible(bool)</slot>
+   <slot>show()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
@@ -1556,7 +1571,7 @@
    <sender>actionConnectors</sender>
    <signal>triggered(bool)</signal>
    <receiver>dockConnectors</receiver>
-   <slot>setVisible(bool)</slot>
+   <slot>show()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
@@ -1716,7 +1731,7 @@
    <sender>actionVariables</sender>
    <signal>triggered(bool)</signal>
    <receiver>dockVariables</receiver>
-   <slot>setVisible(bool)</slot>
+   <slot>show()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>

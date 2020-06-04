@@ -32,7 +32,7 @@ from ..draw import Vector
 
 from .. import Dict, draw, logger
 from ..components import is_component
-from ..config import DefaultOptionsGeneric, DefaultOptionsRenderer
+from ..config import DefaultMetalOptions, DefaultOptionsRenderer
 from ..toolbox_metal.import_export import load_metal_design, save_metal
 from ..toolbox_metal.parsing import parse_options, parse_value
 from ..elements import QElementTables
@@ -116,7 +116,8 @@ class QDesign():
 
         self._elements = QElementTables(self)
 
-        self._template_options = DefaultOptionsGeneric()  # use for components
+        self._template_options = DefaultMetalOptions()  # used for components
+        self.variables.update(self.template_options.qdesign.variables)
 
         # Can't really use this until DefaultOptionsRenderer.default_draw_substrate.color_plane is resolved.
         self._template_renderer_options = DefaultOptionsRenderer()  # use for renderer
@@ -173,7 +174,7 @@ class QDesign():
         Return default_options dictionary, which contain default options used in creating Metal
         component, and in calling other drawing and key functions.
         '''
-        return self._template_options.default_options
+        return self._template_options
 
     @property
     def template_renderer_options(self) -> Dict:
@@ -626,7 +627,7 @@ class QDesign():
         self.update_metadata({'design_name': name})
 
     def get_units(self):
-        return self.template_options.generic.units
+        return self.template_options.units
 
 ####################################################################################
 # Dependencies

@@ -50,7 +50,7 @@ class QToolBarExpanding(QToolBar):
         # print('-> Enter')
         self.expand_me()
 
-        super(self).enterEvent(evt)
+        super().enterEvent(evt)
 
     def leaveEvent(self, evt: QtCore.QEvent) -> None:
         """leaveEvent() is called when the mouse leaves the widget's screen space.
@@ -61,4 +61,4 @@ class QToolBarExpanding(QToolBar):
         """
         # print('<- EXIT')
         self.contract_me()
-        super(self).leaveEvent(evt)
+        super().leaveEvent(evt)

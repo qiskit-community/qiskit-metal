@@ -18,15 +18,16 @@ This is a utility module used to handle pyqt error messages on slots and etc.
 @author: Zlatko K. Minev
 """
 
-import types
 import inspect
 import logging
 import traceback
+import types
 from functools import wraps
-from PyQt5.QtCore import pyqtSlot
 
 from PyQt5 import QtCore
-from .. import logger
+from PyQt5.QtCore import pyqtSlot
+
+from ... import logger
 
 #######################################################################################
 # Core handler

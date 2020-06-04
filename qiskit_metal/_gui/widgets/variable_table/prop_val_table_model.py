@@ -2,7 +2,6 @@ from PyQt5 import Qt, QtCore, QtGui
 from PyQt5.QtCore import QAbstractTableModel, QModelIndex, Qt
 from PyQt5.QtGui import QFont
 
-
 from .... import config
 from .add_delete_table import Ui_MainWindow
 
@@ -14,7 +13,7 @@ class PropValTable(QAbstractTableModel):
     both with and without units.
     """
 
-    __refreshtime = 500 # 0.5 second refresh time
+    __refreshtime = 500  # 0.5 second refresh time
 
     def __init__(self, design=None, gui=None, view=None):
         super().__init__()
@@ -28,14 +27,14 @@ class PropValTable(QAbstractTableModel):
     def set_design(self, design):
         self._design = design
         self.modelReset.emit()
-        #refresh table or something if needed
+        # refresh table or something if needed
 
     @property
     def design(self):
         return self._design
 
     @property
-    def _data(self)->dict:
+    def _data(self) -> dict:
         if self._design:
             return self._design.variables
 
@@ -53,7 +52,8 @@ class PropValTable(QAbstractTableModel):
         if self._rowCount != newRowCount:
             self.modelReset.emit()
             self._rowCount = newRowCount
-            self._view.resizeColumnsToContents()
+            if self._view:
+                self._view.resizeColumnsToContents()
 
     def rowCount(self, index: QModelIndex) -> int:
         if self._design:
@@ -90,18 +90,28 @@ class PropValTable(QAbstractTableModel):
         """
         Modify either key or value (Property or Value) of dictionary depending on what
         the user selected manually on the table.
+
+        Returns true if successful; otherwise returns false.
         """
         r = index.row()
         c = index.column()
+
         if value:
+
             if c == 0:
                 # TODO: LRU Cache for speed?
                 oldkey = list(self._data.keys())[r]
                 if value != oldkey:
                     self.design.rename_variable(oldkey, value)
+                    self._gui.rebuild()
+                    return True
+
             elif c == 1:
                 self._data[list(self._data.keys())[r]] = value
-            self._gui.rebuild()
+                self._gui.rebuild()
+                return True
+
+        return False
 
     def headerData(self, section: int, orientation: Qt.Orientation, role: Qt.ItemDataRole = Qt.DisplayRole) -> str:
         """
@@ -114,11 +124,14 @@ class PropValTable(QAbstractTableModel):
                 elif section == 1:
                     return 'Value'
                 else:
-                    units = config.DefaultOptionsGeneric.default_generic.units
+                    units = config.DefaultMetalOptions.default_generic.units
+                    if self.design:
+                        if hasattr(self.design, '_template_options'):
+                            units = self.design.template_options.units
                     return f'Parsed value (in {units})'
             return str(section + 1)
 
-    def removeRows(self, row: int, count: int = 1, parent = QModelIndex()):
+    def removeRows(self, row: int, count: int = 1, parent=QModelIndex()):
         """
         Delete highlighted rows.
         """
