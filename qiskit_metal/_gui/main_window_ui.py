@@ -230,7 +230,7 @@ class Ui_MainWindow(object):
         self.dockConnectors = QtWidgets.QDockWidget(MainWindow)
         self.dockConnectors.setMinimumSize(QtCore.QSize(78, 123))
         icon10 = QtGui.QIcon()
-        icon10.addPixmap(QtGui.QPixmap(":/connectors"), QtGui.QIcon.Normal, QtGui.QIcon.On)
+        icon10.addPixmap(QtGui.QPixmap(":/connectors"), QtGui.QIcon.Normal, QtGui.QIcon.On) #Unclear if this is for 'Connectors' or 'pins'
         self.dockConnectors.setWindowIcon(icon10)
         self.dockConnectors.setObjectName("dockConnectors")
         self.dockWidgetContents_5 = QtWidgets.QWidget()
@@ -242,10 +242,10 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_3.setSpacing(0)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        self.text_filter_connectors = QtWidgets.QLineEdit(self.dockWidgetContents_5)
-        self.text_filter_connectors.setClearButtonEnabled(True)
-        self.text_filter_connectors.setObjectName("text_filter_connectors")
-        self.horizontalLayout_3.addWidget(self.text_filter_connectors)
+        self.text_filter_connectors = QtWidgets.QLineEdit(self.dockWidgetContents_5) # pins or connectors?
+        self.text_filter_connectors.setClearButtonEnabled(True) #  pins or connectors?
+        self.text_filter_connectors.setObjectName("text_filter_connectors") #  pins or connectors?
+        self.horizontalLayout_3.addWidget(self.text_filter_connectors)  #pins or connectors?
         self.verticalLayout_6.addLayout(self.horizontalLayout_3)
         self.tableConnectors = QtWidgets.QTableView(self.dockWidgetContents_5)
         self.tableConnectors.setFrameShadow(QtWidgets.QFrame.Plain)
@@ -331,7 +331,7 @@ class Ui_MainWindow(object):
         self.actionConnectors.setCheckable(True)
         self.actionConnectors.setChecked(False)
         icon20 = QtGui.QIcon()
-        icon20.addPixmap(QtGui.QPixmap(":/connectors"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon20.addPixmap(QtGui.QPixmap(":/connectors"), QtGui.QIcon.Normal, QtGui.QIcon.Off)  #pins or connectors?
         self.actionConnectors.setIcon(icon20)
         self.actionConnectors.setObjectName("actionConnectors")
         self.actionStyleOpen = QtWidgets.QAction(MainWindow)
@@ -573,7 +573,7 @@ class Ui_MainWindow(object):
         self.actionZoom.setShortcut(_translate("MainWindow", "Z"))
         self.actionPan.setText(_translate("MainWindow", "Pan"))
         self.actionPan.setShortcut(_translate("MainWindow", "P"))
-        self.actionConnectors.setText(_translate("MainWindow", "Pins"))
+        self.actionConnectors.setText(_translate("MainWindow", "Pins")) #Does this need to change to actionPins ?
         self.actionConnectors.setToolTip(_translate("MainWindow", "Show connector pins of qcomponents"))
         self.actionConnectors.setShortcut(_translate("MainWindow", "C"))
         self.actionStyleOpen.setText(_translate("MainWindow", "Open File"))

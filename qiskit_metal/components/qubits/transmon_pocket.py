@@ -251,7 +251,7 @@ class TransmonPocket(BaseQubit):
         # add connectors to design tracker
         points = np.array(connector_wire_path.coords)
 
-        self.design.add_connector_as_normal(name,
+        self.add_pin_as_normal(name,
             start = points[-2],
             end = points[-1],
             width = cpw_width, parent = self.name,  flip=False)

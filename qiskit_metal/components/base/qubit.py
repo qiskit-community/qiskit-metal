@@ -29,7 +29,7 @@ class BaseQubit(QComponent):
 
     Has connection lines that can be added
 
-    options_connection_pads (Dict): None, provides easy way to pass connector lines
+    options_connection_pads (Dict): None, provides easy way to pass connection pads
                             which merely update self.options.connection_pads
 
     Default Options:
@@ -41,7 +41,7 @@ class BaseQubit(QComponent):
         The structure should follow the format of .connection_pads = dict{name_of_connection_pad=dict{},
         name_of_connection_pad2 = dict{value1 = X,value2 = Y...},...etc.}
 
-        When you define your custom qubit class please add a connector options default
+        When you define your custom qubit class please add a _default_connection_pads
         dicitonary names as described above.
 
 
@@ -75,9 +75,9 @@ class BaseQubit(QComponent):
     def _set_options_connection_pads(self):
         #class_name = type(self).__name__
         assert '_default_connection_pads' in self.design.template_options[self.class_name], f"""When
-        you define your custom qubit class please add a connector lines options default
-        dicitonary name as default_options['_default_connection_pads']. This should speciy the default
-        creation options for the connector. """
+        you define your custom qubit class please add a _default_connection_pads
+        dicitonary name as default_options['_default_connection_pads']. This should specify the default
+        creation options for the connection. """
 
         del self.options._default_connection_pads #Not sure if it best to remove it from options to keep
         #the self.options cleaner or not, since the options currently copies in the template. This is

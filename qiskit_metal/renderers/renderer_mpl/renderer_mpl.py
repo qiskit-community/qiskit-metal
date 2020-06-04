@@ -53,7 +53,7 @@ class QRendererMPL(QRendererGui):
         render(obj, ax=self.ax, kw= {} or kw)
 
 
-    def render_connectors(self):
+    def render_pins(self):
         '''
         Plots all connectors on the active axes. Draws the 1D line that
         represents the "port" of a connector point. These are referenced for smart placement
