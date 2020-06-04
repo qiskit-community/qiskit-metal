@@ -17,7 +17,7 @@ dependencies:
 - pyepr-quantum
 - pygments
 - pyqode.python
-- pyqt
+- pyqt>=5.12
 - qutip
 - scipy
 - shapely
