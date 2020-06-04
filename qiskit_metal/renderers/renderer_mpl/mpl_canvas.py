@@ -542,7 +542,7 @@ class PlotCanvas(FigureCanvas):
             self.refresh()
 
     #TODO: move to base class
-    def zoom_on_component(self, name:str, zoom:float=1.1):
+    def zoom_on_component(self, name:str, zoom:float=1.2):
         """Zoom in on a component
 
         Arguments:
@@ -554,7 +554,7 @@ class PlotCanvas(FigureCanvas):
         component = self.design.components[name]
         bounds = component.geometry_bounds()
         bbox = Bbox.from_extents(bounds)
-        bounds = bbox.expanded(zoom,zoom).extents
+        bounds = bbox.expanded(zoom, zoom).extents
         self.zoom_to_rectangle(bounds)
 
     def set_component(self, name: str):
