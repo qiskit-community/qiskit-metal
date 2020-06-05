@@ -79,12 +79,11 @@ from ._gui import MetalGUI
 
 # Utility modules
 # For plotting in matplotlib;  May be superseeded by a renderer?
-from .renderers.renderer_mpl import toolbox_mpl as plt
+from .renderers.renderer_mpl import mpl_toolbox as plt
 
 # Utility functions
 from .toolbox_python.utility_functions import copy_update
 from .toolbox_python.display import Headings
-# from .toolbox_python.utility_functions import display_options
 
 # Import default renderers
 from .renderers import setup_renderers

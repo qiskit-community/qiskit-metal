@@ -21,7 +21,6 @@ import random
 import sys
 from typing import TYPE_CHECKING, List
 
-import matplotlib
 import matplotlib as mpl
 import matplotlib.patches as patches
 import matplotlib.pyplot as plt
@@ -46,8 +45,10 @@ from shapely.geometry import CAP_STYLE, JOIN_STYLE, LineString
 from ... import Dict
 from ...designs import QDesign
 from ...toolbox_python.utility_functions import log_error_easy
-from .interaction_mpl import MplInteraction, PanAndZoom
-from .toolbox_mpl import _axis_set_watermark_img, clear_axis, get_prop_cycle
+from .mpl_interaction import MplInteraction, PanAndZoom
+from .mpl_renderer import QMplRenderer
+from .mpl_toolbox import _axis_set_watermark_img, clear_axis, get_prop_cycle
+from .extensions.animated_text import AnimatedText
 
 if TYPE_CHECKING:
     from ..._gui.main_window import MetalGUI
@@ -309,7 +310,8 @@ class PlotCanvas(FigureCanvas):
         self.statusbar_label = statusbar_label
         self.design = design
         self._state = {}  # used to store state between drawing
-        self._annotations = {'text':[],'patch':[]} # used to keep track of what we will need to delete
+        # used to keep track of what we will need to delete
+        self._annotations = {'text': [], 'patch': []}
 
         super().__init__(fig)
 
@@ -325,10 +327,11 @@ class PlotCanvas(FigureCanvas):
 
         self.setup_figure_and_axes()
 
-        self.metal_renderer = MplRenderer(
+        self.metal_renderer = QMplRenderer(
             canvas=self, design=self.design, logger=logger)
 
         # self.plot()
+        self.welcome_message()
 
     def set_design(self, design: QDesign):
         self.design = design
@@ -522,6 +525,10 @@ class PlotCanvas(FigureCanvas):
             ax.autoscale()
         self.refresh()
 
+    def welcome_message(self):
+        self._welcome_text = AnimatedText(self.axes[0], "Welcome to Qiskit Metal", self,
+                                          start=True)
+
     def zoom_to_rectangle(self, bounds: tuple, ax: Axes = None):
         """[summary]
 
@@ -541,8 +548,8 @@ class PlotCanvas(FigureCanvas):
             # ax.redraw_in_frame()
             self.refresh()
 
-    #TODO: move to base class
-    def zoom_on_component(self, name:str, zoom:float=1.2):
+    # TODO: move to base class
+    def zoom_on_component(self, name: str, zoom: float = 1.2):
         """Zoom in on a component
 
         Arguments:
@@ -579,10 +586,10 @@ class PlotCanvas(FigureCanvas):
         except Exception as e:
             self.logger.error(f'While canvas clear_annotation: {e}')
         finally:
-            self._annotations['patch'] =[]
-            self._annotations['text'] =[]
+            self._annotations['patch'] = []
+            self._annotations['text'] = []
 
-    def highlight_components(self, component_names:List[str]):
+    def highlight_components(self, component_names: List[str]):
         """Hihglight a list of components
 
         Args:
@@ -595,23 +602,25 @@ class PlotCanvas(FigureCanvas):
             if name in self.design.components:
                 component = self.design.components[name]
 
-                if 1: # highlight bounding box
+                if 1:  # highlight bounding box
 
                     bounds = component.geometry_bounds()
                     # bbox = Bbox.from_extents(bounds)
 
                     # Create a Rectangle patch TODO: move to settings
-                    kw = dict(linewidth=1, edgecolor='r', facecolor=(1,0,0,0.05), zorder=100,ls='--')
-                    rect = patches.Rectangle((0,0),0,0, **kw)
+                    kw = dict(linewidth=1, edgecolor='r', facecolor=(
+                        1, 0, 0, 0.05), zorder=100, ls='--')
+                    rect = patches.Rectangle((0, 0), 0, 0, **kw)
 
-                    lbwh = [bounds[0],bounds[1], bounds[2]-bounds[0], bounds[3]-bounds[1]]
+                    lbwh = [bounds[0], bounds[1], bounds[2] -
+                            bounds[0], bounds[3]-bounds[1]]
                     rect.set_bounds(*lbwh)
                     self._annotations['patch'] += [rect]
 
                     for ax in self.axes:
                         ax.add_patch(rect)
 
-                if 1: # Draw the connectors
+                if 1:  # Draw the connectors
 
                     for connector_name in component.connectors:
 
@@ -620,8 +629,8 @@ class PlotCanvas(FigureCanvas):
                         n = connector['normal']
                         # print(m, n)
 
-                        if 1: # draw the arrows
-                            kw = dict(color='r', mutation_scale=15, alpha = 0.75, capstyle='butt', ec='k',
+                        if 1:  # draw the arrows
+                            kw = dict(color='r', mutation_scale=15, alpha=0.75, capstyle='butt', ec='k',
                                       lw=0.5, zorder=100, clip_on=True)
                             arrow = patches.FancyArrowPatch(m, m+n*0.05, **kw)
                             self._annotations['patch'] += [arrow]
@@ -634,207 +643,15 @@ class PlotCanvas(FigureCanvas):
                             for ax in self.axes:
                                 ax.add_patch(arrow)
 
-                        if 1: # draw names of connectors
+                        if 1:  # draw names of connectors
                             dist = 0.05
-                            kw = dict(color='r',alpha=0.75, verticalalignment='center',
-                                      horizontalalignment='left' if n[0]>=0 else 'right',
+                            kw = dict(color='r', alpha=0.75, verticalalignment='center',
+                                      horizontalalignment='left' if n[0] >= 0 else 'right',
                                       clip_on=True, zorder=99, fontweight='bold')
                             text = ax.text(*(m+dist*n), connector_name, **kw)
-                            text.set_bbox(dict(facecolor='#FFFFFF', alpha=0.75, edgecolor='#F0F0F0'))
+                            text.set_bbox(
+                                dict(facecolor='#FFFFFF', alpha=0.75, edgecolor='#F0F0F0'))
 
                             self._annotations['text'] += [text]
 
         self.refresh()
-
-
-
-to_poly_patch = np.vectorize(PolygonPatch)
-
-
-class MplRenderer():
-    """
-    Matplotlib handle all rendering of an axis.
-
-    The axis is given in the function render.
-
-    Access:
-        self = gui.canvas.metal_renderer
-    """
-
-    def __init__(self, canvas: PlotCanvas, design: QDesign, logger: logging.Logger):
-        super().__init__()
-        self.logger = logger
-        self.canvas = canvas
-        self.ax = None
-        self.design = design
-
-        # Filter view options
-        self.hidden_layers = set()
-        self.hidden_components = set()
-
-        self.colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728',
-                       '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf']
-
-        self.set_design(design)
-
-    def get_color_num(self, num: int) -> str:
-        return self.colors[num % len(self.colors)]
-
-    def hide_component(self, name):
-        self.hidden_components.add(name)
-
-    def show_component(self, name):
-        self.hidden_components.discard(name)
-
-    def hide_layer(self, name):
-        self.hidden_layers.add(name)
-
-    def show_layer(self, name):
-        self.hidden_layers.discard(name)
-
-    def set_design(self, design: QDesign):
-        self.design = design
-        self.clear_options()
-        # TODO
-
-    def clear_options(self):
-        self.hidden_components.clear()
-        self.hidden_layers.clear()
-
-    def render(self, ax: matplotlib.axes.Axes):
-        """Assumes that the axis has been cleared already and so on.
-
-        Arguments:
-            ax {matplotlib.axes.Axes} -- mpl axis to draw on
-        """
-
-        self.logger.debug('Rendering element tables to plot window.')
-        self.render_tables(ax)
-
-    def get_mask(self, table: pd.DataFrame) -> pd.Series:
-        '''
-        return pandas index series with boolen mask
-        - i.e., which are not hidden or otherwise
-        '''
-
-        # TODO: Ideally these should be replaced with interface functions,
-        # not direct access to undelying internal representation
-
-        mask = table.layer.isin(self.hidden_layers)
-        mask = table.component.isin(self.hidden_components)
-
-        return ~mask  # not
-
-    def _render_poly_array(self, ax: matplotlib.axes.Axes, poly_array: np.array,
-                           mpl_kw: dict):
-        if len(poly_array) > 0:
-            poly_array = to_poly_patch(poly_array)
-            ax.add_collection(PatchCollection(poly_array, **mpl_kw))
-
-    @property
-    def elements(self) -> 'ElementHandler':
-        return self.design.elements
-
-    # TODO: move to some config and user input also make widget
-    styles = {
-        'path': {
-            'base': dict(linewidth=2, alpha=0.5),
-            'subtracted': dict(),  # linestyle='--', edgecolors='k', color='gray'),
-            'non-subtracted': dict()
-        },
-        'poly': {
-            'base': dict(linewidth=1, alpha=0.5, edgecolors='k'),
-            'subtracted': dict(linestyle='--', color='gray'),
-            'non-subtracted': dict()
-        }
-    }
-
-    def get_style(self, element_type: str, subtracted=False, layer=None, extra=None):
-        # element_type - poly path
-        extra = extra or {}
-
-        key = 'subtracted' if subtracted else 'non-subtracted'
-
-        kw = {**self.styles[element_type].get('base', {}),
-              **self.styles[element_type].get(key, {}),
-              **extra}
-
-        # TODO: maybe pop keys that are invalid for line etc.
-        # we could have a validation flag to validate for specific poly / path
-
-        return kw
-
-    def render_tables(self, ax: matplotlib.axes.Axes):
-
-        for element_type, table in self.elements.tables.items():
-            # Mask the table
-            table = table[self.get_mask(table)]
-
-            # subtracted
-            mask = table['subtract'] == True
-            render_func = getattr(self, f'render_{element_type}')
-            render_func(table[mask], ax,  subtracted=True)
-
-            # non-subtracted
-            table1 = table[~mask]
-            # TODO: do by layer and color
-            # self.get_color_num()
-            render_func = getattr(self, f'render_{element_type}')
-            render_func(table1, ax, subtracted=False)
-
-    def render_poly(self, table: pd.DataFrame, ax: matplotlib.axes.Axes, subtracted: bool = False, extra_kw: dict = None):
-        """
-        Render a table of poly geometry.
-
-        Arguments:
-            table {DataFrame} -- element table
-            ax {matplotlib.axes.Axes} -- axis to render on
-            kw {dict} -- style params
-        """
-        if len(table) < 1:
-            return
-        kw = self.get_style('poly', subtracted=subtracted, extra=extra_kw)
-        self._render_poly_array(ax, table.geometry, kw)
-
-    def render_path(self, table: pd.DataFrame, ax: matplotlib.axes.Axes,  subtracted: bool = False, extra_kw: dict = None):
-        """
-        Render a table of path geometry.
-
-        Arguments:
-            table {DataFrame} -- element table
-            ax {matplotlib.axes.Axes} -- axis to render on
-            kw {dict} -- style params
-        """
-        if len(table) < 1:
-            return
-
-        # mask for all non zero width paths
-        # TODO: could there be a problem with float vs int here?
-        mask = (table.width == 0) | table.width.isna()
-        # print(f'subtracted={subtracted}\n\n')
-        # display(table)
-        # display(imask)
-
-        # convert to polys - handle non zero width
-        table1 = table[~mask]
-        if len(table1) > 0:
-            table1.geometry = table1[['geometry', 'width']].apply(lambda x:
-                                                                  x[0].buffer(
-                                                                      distance=float(
-                                                                          x[1]),
-                                                                      cap_style=CAP_STYLE.flat,
-                                                                      join_style=JOIN_STYLE.mitre,
-                                                                      resolution=16
-                                                                  ), axis=1)
-
-            kw = self.get_style('poly', subtracted=subtracted, extra=extra_kw)
-            self.render_poly(table1, ax, subtracted=subtracted, extra_kw=kw)
-
-        # handle zero width
-        table1 = table[mask]
-        # best way to plot?
-        # TODO: speed and vectorize?
-        if len(table1) > 0:
-            kw = self.get_style('path', subtracted=subtracted, extra=extra_kw)
-            line_segments = LineCollection(table1.geometry)
-            ax.add_collection(line_segments)
