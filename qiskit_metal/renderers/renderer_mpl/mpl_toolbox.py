@@ -34,7 +34,7 @@ from shapely.geometry import LinearRing, Polygon  # Point, LineString,
 from ... import Dict
 from ...components import is_component
 from ...draw import BaseGeometry
-from .interaction_mpl import figure_pz
+from .mpl_interaction import figure_pz
 
 ##########################################################################################
 # Plotting subroutines

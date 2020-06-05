@@ -19,9 +19,11 @@ based on pyqode.python: https://github.com/pyQode/pyqode.python
 """
 import importlib
 import logging
+import re
 from typing import TYPE_CHECKING
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import QTextCursor
 
 try:
     from pyqode.python.backend import server
@@ -29,6 +31,9 @@ try:
     from pyqode.python import modes as pymodes, panels as pypanels, widgets
     from pyqode.python.folding import PythonFoldDetector
     from pyqode.python.backend.workers import defined_names
+    # The above uses jedi
+    import jedi
+    import os
 
 except ImportError as e:
     # TODO: report in a more visible way.
@@ -65,25 +70,25 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         self = gui.component_window.src_widgets[-1].ui.src_editor
 
         Note that thtehre can be more than one edit widet open.
-        A refernec is kept to all of them in `gui.component_window.src_widgets`
-
-    MRO:
-        qiskit_metal._gui.widgets.edit_component.source_editor.MetalSourceEditor,
-        pyqode.python.widgets.code_edit.PyCodeEditBase,
-        pyqode.core.api.code_edit.CodeEdit,
-        PyQt5.QtWidgets.QPlainTextEdit,
-        PyQt5.QtWidgets.QAbstractScrollArea,
-        PyQt5.QtWidgets.QFrame,
-        PyQt5.QtWidgets.QWidget,
-        PyQt5.QtCore.QObject,
-        sip.wrapper,
-        PyQt5.QtGui.QPaintDevice,
-        sip.simplewrapper,
-        object
+        A refernece is kept to all of them in `gui.component_window.src_widgets`
     """
     # TODO: remember previous state, save to config like gui and recall when created
     # save font size too.  remmeber window properties and zoom level
     # TODO: Add error slot handling to all call funcitons below
+
+    # MRO:
+    # qiskit_metal._gui.widgets.edit_component.source_editor.MetalSourceEditor,
+    # pyqode.python.widgets.code_edit.PyCodeEditBase,
+    # pyqode.core.api.code_edit.CodeEdit,
+    # PyQt5.QtWidgets.QPlainTextEdit,
+    # PyQt5.QtWidgets.QAbstractScrollArea,
+    # PyQt5.QtWidgets.QFrame,
+    # PyQt5.QtWidgets.QWidget,
+    # PyQt5.QtCore.QObject,
+    # sip.wrapper,
+    # PyQt5.QtGui.QPaintDevice,
+    # sip.simplewrapper,
+    # object
 
     def __init__(self, parent, **kwargs):
         # Foe help, see
@@ -145,6 +150,9 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         # --- handle modifed text in other application
         # self.textChanged.connect(self.check_modified) # user function
 
+        # Options
+        # self.file.safe_save  = False
+
         self.style_me()
 
     def style_me(self):
@@ -159,6 +167,8 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         return self.gui.logger
 
     def reload_file(self):
+        encoding = self.file.encoding
+        self.file.reload(encoding)
         self.file.reload()
         # self.update()
         self.logger.info('Source file reloaded.')
@@ -171,7 +181,42 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         self.logger.info('Source file saved.')
 
     def open_file(self, filename: str):
-        self.file.open(filename)
+        """Open a file
+
+        Args:
+            filename (str): [description]
+
+        **Troubleshooting**
+
+            If you get a strange permission error when opening hte file, but it otherwsie sems to more or less work fine
+            it is because you probably opened in sudo before and now are not running in sudo.
+
+            If the error is about Jedi:
+                PermissionError: [Errno 13] Permission denied: '/Users/zlatko.minevibm.com/Library/Caches/Jedi/CPython-36-33/...
+
+            Then there is an issue with the cache of self.file.
+            The solution is to go in manuaally and delete the bad folder.
+            I.e., in my case delete this Jedi folder:
+                /Users/zlatko.minevibm.com/Library/Caches/Jedi/
+
+            This can be also fixed using:
+                import jedi
+                jedi.settings.cache_directory
+
+            I have tried to fix this using the permisison code below
+        """
+
+        ####################
+        # Handle JEDI cache fridge bug: zkm
+        # handle firdge possible error with permission of cache folder
+        # TODO: may need to test more
+        jedipath = jedi.settings.cache_directory
+        if os.path.isdir(jedipath):  # dir already exists
+            if not os.access(jedipath, os.W_OK):  # check that we have wrtite privs
+                jedi.settings.cache_directory += '1'
+        ######
+
+        self.file.open(filename)  # , use_cached_encoding=False)
 
     def reload_module(self):
         if self.component_module_name:
@@ -182,11 +227,15 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
                 f'Reloaded {self.component_class_name} from {self.component_module_name}')
 
     def rebuild_components(self):
+        self.logger.debug('Source file rebuild started.')
         self.save_file()
+        print('saved')
         self.reload_module()
+        print('reloaded')
         # TODO: only rebuild those that have this type
         # for right now i will do all of tehm just for ease
         self.gui.rebuild()
+        print('rebuild')
         self.logger.info('Source file executed rebuild.')
 
     @property
@@ -195,12 +244,37 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
 
     def set_component(self, class_name: str, module_name: str,
                       module_path: str):
+        """Main function that set the components to be edited.
+
+        Args:
+            class_name (str): [description]
+            module_name (str): [description]
+            module_path (str): [description]
+        """
         self.component_class_name = class_name
         self.component_module_name = module_name
         self.component_module_path = module_path
 
+        self.logger.debug(f'Opening file {module_path}')
         self.open_file(module_path)
 
         edit_widget = self.edit_widget
         edit_widget.ui.lineSrcPath.setText(module_path)
         edit_widget.setWindowTitle(f'{class_name}: Edit Source')
+
+        self.scroll_to()
+
+    def scroll_to(self, text: str = 'def make('):
+        """Scroll to the matched string
+        """
+        text = self.toPlainText()
+        # index = text.find('def make(')
+        index = re.search('def\s+make\(', text).start()
+
+        if index:
+            cursor = self.textCursor()
+            cursor.setPosition(index)
+            cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.MoveAnchor)
+            self.setTextCursor(cursor)
+            # self.ensureCursorVisible()
+            self.centerCursor()
