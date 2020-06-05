@@ -72,7 +72,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
     def gui(self) -> 'MetalGUI':
         return self.handler
 
-    def _set_element_tab(self, yesno:bool):
+    def _set_element_tab(self, yesno: bool):
         if yesno:
             self.ui.tabWidget.setCurrentWidget(self.ui.tabElements)
             self.ui.actionElements.setText("View")
@@ -114,7 +114,8 @@ class QMainWindowExtension(QMainWindowExtensionBase):
                 self.save_design_as()
         else:
             self.logger.info('No design present.')
-            QMessageBox.warning(self,'Warning','No design present! Can''t save')
+            QMessageBox.warning(
+                self, 'Warning', 'No design present! Can''t save')
 
     @catch_exception_slot_pyqt()
     def load_design(self, _):
@@ -147,6 +148,9 @@ class QMainWindowExtension(QMainWindowExtensionBase):
 
 class MetalGUI(QMainWindowBaseHandler):
     """Qiskit Metal Main GUI.
+
+    The GUI can be controled by the user using the mouse and keyboard or
+    API for full control.
 
     Args:
         QMainWindowBase ([type]): [description]
@@ -183,7 +187,7 @@ class MetalGUI(QMainWindowBaseHandler):
         self.plot_win = None  # type: QMainWindowPlot
         self.elements_win = None  # type: ElementsWindow
         self.component_window = ComponentWidget(self, self.ui.dockComponent)
-        self.variables_window = PropertyTableWidget(self, gui = self)
+        self.variables_window = PropertyTableWidget(self, gui=self)
 
         self._setup_component_widget()
         self._setup_plot_widget()
@@ -275,17 +279,23 @@ class MetalGUI(QMainWindowBaseHandler):
         self.statusbar_label.setText('')
         status_bar.addWidget(self.statusbar_label)
 
-        ### Docks
+        # Docks
         # Left handside
-        self.main_window.splitDockWidget(self.ui.dockDesign, self.ui.dockComponent, Qt.Vertical)
-        self.main_window.tabifyDockWidget(self.ui.dockDesign, self.ui.dockNewComponent)
-        self.main_window.tabifyDockWidget(self.ui.dockNewComponent, self.ui.dockConnectors)
-        self.main_window.tabifyDockWidget(self.ui.dockConnectors, self.ui.dockVariables)
+        self.main_window.splitDockWidget(
+            self.ui.dockDesign, self.ui.dockComponent, Qt.Vertical)
+        self.main_window.tabifyDockWidget(
+            self.ui.dockDesign, self.ui.dockNewComponent)
+        self.main_window.tabifyDockWidget(
+            self.ui.dockNewComponent, self.ui.dockConnectors)
+        self.main_window.tabifyDockWidget(
+            self.ui.dockConnectors, self.ui.dockVariables)
         self.ui.dockDesign.raise_()
-        self.main_window.resizeDocks({self.ui.dockDesign}, {350}, Qt.Horizontal)
+        self.main_window.resizeDocks(
+            {self.ui.dockDesign}, {350}, Qt.Horizontal)
 
         # Log
-        self.ui.dockLog.parent().resizeDocks({self.ui.dockLog}, {120}, Qt.Vertical)
+        self.ui.dockLog.parent().resizeDocks(
+            {self.ui.dockLog}, {120}, Qt.Vertical)
 
         # Tab positions
         self.ui.tabWidget.setCurrentIndex(0)
@@ -293,7 +303,6 @@ class MetalGUI(QMainWindowBaseHandler):
     def _ui_adjustments_final(self):
         """Any touchups to the loaded ui that need be done after all the base and main ui is loaded"""
         self.component_window.setCurrentIndex(0)
-
 
     def _set_element_tab(self, yesno: bool):
         if yesno:
@@ -316,7 +325,8 @@ class MetalGUI(QMainWindowBaseHandler):
 
         # Move the dock
         self._move_dock_to_new_parent(self.ui.dockLog, self.plot_win)
-        self.ui.dockLog.parent().resizeDocks({self.ui.dockLog}, {120}, Qt.Vertical)
+        self.ui.dockLog.parent().resizeDocks(
+            {self.ui.dockLog}, {120}, Qt.Vertical)
 
     def _move_dock_to_new_parent(self, dock: QDockWidget,
                                  new_parent: QMainWindow,
@@ -342,7 +352,7 @@ class MetalGUI(QMainWindowBaseHandler):
         with their names, classes, and modules
         """
         model = QTableModel_AllComponents(self, logger=self.logger,
-                 tableView = self.ui.tableComponents)
+                                          tableView=self.ui.tableComponents)
         self.ui.tableComponents.setModel(model)
 
     ################################################
@@ -364,7 +374,7 @@ class MetalGUI(QMainWindowBaseHandler):
         return axes
 
     @property
-    def axes(self)-> List['Axes']:
+    def axes(self) -> List['Axes']:
         return self.plot_win.canvas.axes
 
     @property
@@ -383,8 +393,9 @@ class MetalGUI(QMainWindowBaseHandler):
         """
         return self.plot_win.canvas
 
-    def rebuild(self, autoscale:bool=False):
-        """Rebuild all components in the design from scratch and refresh the gui.
+    def rebuild(self, autoscale: bool = False):
+        """
+        Rebuild all components in the design from scratch and refresh the gui.
         """
         self.design.rebuild()
         self.refresh()
@@ -415,25 +426,43 @@ class MetalGUI(QMainWindowBaseHandler):
         """Redraw only the plot window contents."""
         self.plot_win.replot()
 
-    def set_component(self, name: str):
-        """Set the component to be exmained by the compoennt widget.
+    def autoscale(self):
+        """Shorcut to autoscale all views"""
+        self.plot_win.auto_scale()
+
+    #########################################################
+    # Design level
+    def save_file(self, filename: str = None):
+        self.design.save_design(filename)
+
+    #########################################################
+    # COMPONENT FUNCTIONS
+    def edit_component(self, name: str):
+        """Set the component to be examined by the component widget.
 
         Arguments:
             name {str} -- name of component to exmaine.
         """
         self.component_window.set_component(name)
 
-    def autoscale(self):
-        """Shorcut to autoscale all views"""
-        self.plot_win.auto_scale()
+    def edit_component_source(self, name: str):
+        """For the selected component in the edit component widet (see gui.edit_component)
+        open up the source editor.
 
-    def save_file(self, filename:str=None):
-        self.design.save_design(filename)
+        Arguments:
+            name {str} -- name of component to exmaine.
+        """
+        self.component_window.edit_source()
 
-    def highlight_components(self, component_names:List[str]):
+    def highlight_components(self, component_names: List[str]):
         """Hihglight a list of components
 
         Args:
             component_names (List[str]): [description]
         """
         self.canvas.highlight_components(component_names)
+
+    def zoom_on_components(self, components: List[str]):
+        # TODO: support more than 1 on zo   om
+        assert len(components) == 1, "More than 1 is not yet supported "
+        self.canvas.zoom_on_component(components[0])
