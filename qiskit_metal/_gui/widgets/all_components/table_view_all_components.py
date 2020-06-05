@@ -52,13 +52,16 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         self.setSelectionMode(QAbstractItemView.ExtendedSelection)
         self.setSelectionBehavior(QTableView.SelectRows)
 
+        QTimer.singleShot(100, self.style2)
+
+    def style2(self):
         # Do in the ui file
         self.horizontalHeader().hide()
         self.verticalHeader().show()
 
-        QTimer.singleShot(100, self.style2)
+        self.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
+        self.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
 
-    def style2(self):
         selection_model = self.selectionModel()
         selection_model.selectionChanged.connect(self.selection_changed)
 
