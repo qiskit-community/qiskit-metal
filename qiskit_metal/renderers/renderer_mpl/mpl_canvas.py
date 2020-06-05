@@ -37,6 +37,7 @@ from matplotlib.collections import LineCollection, PatchCollection
 from matplotlib.figure import Figure
 from matplotlib.transforms import Bbox
 from PyQt5 import QtCore
+from PyQt5.QtCore import QTimer
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QMenu, QMessageBox,
                              QPushButton, QSizePolicy, QVBoxLayout, QWidget)
@@ -527,7 +528,13 @@ class PlotCanvas(FigureCanvas):
 
     def welcome_message(self):
         self._welcome_text = AnimatedText(self.axes[0], "Welcome to Qiskit Metal", self,
-                                          start=True)
+                                          start=False)
+        self._welcome_start_timer = QTimer.singleShot(250, self._welcome_message_start)
+
+    def _welcome_message_start(self):
+        self._welcome_text.start()
+        self._welcome_start_timer.deleteLater()
+        # del self._welcome_start_timer
 
     def zoom_to_rectangle(self, bounds: tuple, ax: Axes = None):
         """[summary]
@@ -559,7 +566,7 @@ class PlotCanvas(FigureCanvas):
             zoom (float) -- fraction to expand the bounding vbox by
         """
         component = self.design.components[name]
-        bounds = component.geometry_bounds()
+        bounds = component.qgeometry_bounds()
         bbox = Bbox.from_extents(bounds)
         bounds = bbox.expanded(zoom, zoom).extents
         self.zoom_to_rectangle(bounds)
@@ -604,7 +611,7 @@ class PlotCanvas(FigureCanvas):
 
                 if 1:  # highlight bounding box
 
-                    bounds = component.geometry_bounds()
+                    bounds = component.qgeometry_bounds()
                     # bbox = Bbox.from_extents(bounds)
 
                     # Create a Rectangle patch TODO: move to settings

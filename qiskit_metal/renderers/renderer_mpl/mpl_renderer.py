@@ -108,7 +108,7 @@ class QMplRenderer():
         self.hidden_components.clear()
         self.hidden_layers.clear()
 
-    def render(self, ax: matplotlib.axes.Axes):
+    def render(self, ax: Axes):
         """Assumes that the axis has been cleared already and so on.
 
         Arguments:
@@ -132,7 +132,7 @@ class QMplRenderer():
 
         return ~mask  # not
 
-    def _render_poly_array(self, ax: matplotlib.axes.Axes, poly_array: np.array,
+    def _render_poly_array(self, ax: Axes, poly_array: np.array,
                            mpl_kw: dict):
         if len(poly_array) > 0:
             poly_array = to_poly_patch(poly_array)
@@ -171,7 +171,7 @@ class QMplRenderer():
 
         return kw
 
-    def render_tables(self, ax: matplotlib.axes.Axes):
+    def render_tables(self, ax: Axes):
 
         for element_type, table in self.elements.tables.items():
             # Mask the table
@@ -189,7 +189,7 @@ class QMplRenderer():
             render_func = getattr(self, f'render_{element_type}')
             render_func(table1, ax, subtracted=False)
 
-    def render_poly(self, table: pd.DataFrame, ax: matplotlib.axes.Axes, subtracted: bool = False, extra_kw: dict = None):
+    def render_poly(self, table: pd.DataFrame, ax: Axes, subtracted: bool = False, extra_kw: dict = None):
         """
         Render a table of poly geometry.
 
@@ -203,7 +203,7 @@ class QMplRenderer():
         kw = self.get_style('poly', subtracted=subtracted, extra=extra_kw)
         self._render_poly_array(ax, table.geometry, kw)
 
-    def render_path(self, table: pd.DataFrame, ax: matplotlib.axes.Axes,  subtracted: bool = False, extra_kw: dict = None):
+    def render_path(self, table: pd.DataFrame, ax: Axes,  subtracted: bool = False, extra_kw: dict = None):
         """
         Render a table of path geometry.
 

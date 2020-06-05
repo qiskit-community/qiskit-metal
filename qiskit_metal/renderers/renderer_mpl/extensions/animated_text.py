@@ -45,7 +45,7 @@ class AnimatedText():
         # MPL text
         # Create the text
         kw = {**dict(fontsize=35, fontweight='bold', va='center', ha='center', alpha=anim_start,
-                     transform=ax.transAxes, color='#00356B'),
+                     transform=ax.transAxes, color='#00356B', zorder=200),
               **(kw if kw else {})}
 
         self.text = ax.text(*loc, text, **kw)
@@ -72,11 +72,26 @@ class AnimatedText():
 
         if self.anim_value >= self.anim_stop:  # one sided
             self.text.set_alpha(self.anim_value)
+            if self.text not in self.ax.texts:
+                # if the axis is cleared and redrawn
+                self.ax.texts.append(self.text)
             self.canvas.refresh()  # refresht the canvas
 
         else:
-            self.text.remove()  # remove text from axis
-            self.canvas.refresh()  # refresht the canvas
-
             self.timer.stop()
             self.timer.deleteLater()
+
+            # Remove artist
+            self.text.figure = self.ax.figure
+            if self.text in self.ax.texts:
+                self.ax.texts.remove(self.text)
+
+            if self.text.axes:
+                try:
+                    # remove text from axis
+                    self.text.remove()
+                except ValueError as e:
+                    # could raise ValueError: list.remove(x): x not in list
+                    pass
+
+            self.canvas.refresh()  # refresht the canvas
