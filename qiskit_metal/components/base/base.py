@@ -34,6 +34,7 @@ from ... import is_design, logger
 from ...draw import BaseGeometry
 from ...toolbox_python.attr_dict import Dict
 from ._parsed_dynamic_attrs import ParsedDynamicAttributes_Component
+from ...toolbox_python.display import format_dict_ala_z
 
 
 __all__ = ['QComponent']
@@ -458,11 +459,19 @@ class QComponent():
 
     def __repr__(self, *args):
         b = '\033[94m\033[1m'
+        b1 = '\033[95m\033[1m'
         e = '\033[0m'
-        return f"""Component {b}{self.name}{e}:
- class  : {b}{self.__class__.__name__:<22s}{e}     at {hex(id(self))}
- module : {b}{self.__class__.__module__}{e}
- options: \n{pprint.pformat(self.options)}"""
+
+        # id = {hex(id(self))}
+        # options = pprint.pformat(self.options)
+
+        options = format_dict_ala_z(self.options)
+        return f"""
+ {b}name:    {b1}{self.name}{e}
+ {b}class:   {b1}{self.__class__.__name__:<22s}{e}
+ {b}options: {e}\n{options}
+ {b}module:  {b1}{self.__class__.__module__}{e}
+ {b}id:      {b1}{self.id}{e}"""
 
     ############################################################################
     # Geometry handling of created elements

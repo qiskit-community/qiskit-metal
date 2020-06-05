@@ -49,3 +49,27 @@ def get_screenshot(self:QMainWindow, name='shot.png', type_='png', do_display=Tr
         _disp_ops = dict(width=500)
         _disp_ops.update(disp_ops or {})
         display(Image(filename=path, **_disp_ops))
+
+
+def format_dict_ala_z(dic, indent=0, key_width=20, do_repr=True, indent_all:int=2, indent_keys=5):
+
+    indent_all_full = indent_all + indent*indent_keys
+
+    text = ''
+    for k, v in dic.items():
+        if isinstance(v, dict):
+            if do_repr:
+                k = repr(k)
+            text += f"{'':{indent_all_full}s}{k:<{key_width}s}:"+ " { \n"
+            text += format_dict_ala_z(v, indent+1, key_width=key_width,do_repr=do_repr,indent_all=indent_all)
+            text += f"{'':{indent_all_full+key_width}s}" + "  }" +(',' if do_repr else '') +"\n"
+        else:
+            if do_repr:
+                k = repr(k)
+                v = repr(v)+','
+            text += f"{'':{indent_all_full}s}{k:<{key_width}s}: {str(v):<30s}\n"
+
+    if indent == 0:
+        if len(text) > 1:
+            text = text[:-1]
+    return text
