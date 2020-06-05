@@ -46,6 +46,9 @@ except ImportError as e:
 if TYPE_CHECKING:
     from ...main_window import MetalGUI, QMainWindowExtension
 
+import warnings
+warnings.filterwarnings("ignore", 'pyqode')
+
 
 class MetalSourceEditor(widgets.PyCodeEditBase):
     """
@@ -229,13 +232,13 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
     def rebuild_components(self):
         self.logger.debug('Source file rebuild started.')
         self.save_file()
-        print('saved')
+        # print('saved')
         self.reload_module()
-        print('reloaded')
+        # print('reloaded')
         # TODO: only rebuild those that have this type
         # for right now i will do all of tehm just for ease
         self.gui.rebuild()
-        print('rebuild')
+        # print('rebuild')
         self.logger.info('Source file executed rebuild.')
 
     @property
