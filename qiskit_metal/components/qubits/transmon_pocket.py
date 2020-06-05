@@ -146,13 +146,10 @@ class TransmonPocket(BaseQubit):
 
 
     def make(self):
-        """
-        Create the geometry from the parsed options.
-        """
+        """Define the way the options are turned into QGeometry."""
         self.make_pocket()
         self.make_con_lines()
 
-#####MAKE SHAPELY POLYGONS########################################################################
     def make_pocket(self):
         '''Makes standard transmon in a pocket.'''
 
@@ -188,15 +185,13 @@ class TransmonPocket(BaseQubit):
         self.add_elements('poly', dict(rect_jj=rect_jj), helper=True)
 
     def make_con_lines(self):
-        '''
-        Makes standard transmon in a pocket
-        '''
-        for name in self.options.con_lines: #
+        """For each connector dictionary, create the standard connector line"""
+        for name in self.options.con_lines:
             self.make_con_line(name)
 
     def make_con_line(self, name:str):
         '''
-        Makes individual connector
+        Makes n individual connector
 
         Args:
         -------------
@@ -256,4 +251,3 @@ class TransmonPocket(BaseQubit):
             end = points[-1],
             width = cpw_width, parent = self.name,  flip=False)
         # self.add_connector(name, points[2:2+2], self.name, flip=False)  # TODO: chip
-
