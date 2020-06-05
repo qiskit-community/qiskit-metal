@@ -130,8 +130,13 @@ class QComponent():
         # Parser for options
         self.p = ParsedDynamicAttributes_Component(self)
         
-        # TGM If you are not using self.pins, lets remove this.
-        # Create an empty dict, which will populated by component designer.
+        # Add the component to the parent design
+        self._add_to_design() #Do this after the pin checking?
+
+        # Make the component geometry
+        if make:
+           self.do_make()
+
 
     @classmethod
     def _gather_all_children_options(cls):
