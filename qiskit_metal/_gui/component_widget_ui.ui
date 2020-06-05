@@ -278,40 +278,7 @@ p, li { white-space: pre-wrap; }
  <resources>
   <include location="main_window_rc.qrc"/>
  </resources>
- <connections>
-  <connection>
-   <sender>btn_edit_src</sender>
-   <signal>clicked()</signal>
-   <receiver>ComponentWidget</receiver>
-   <slot>edit_source()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>232</x>
-     <y>35</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>232</x>
-     <y>209</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButtonEditSource</sender>
-   <signal>clicked()</signal>
-   <receiver>ComponentWidget</receiver>
-   <slot>showMaximized()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>243</x>
-     <y>408</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>232</x>
-     <y>209</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
  <slots>
   <slot>edit_source()</slot>
  </slots>

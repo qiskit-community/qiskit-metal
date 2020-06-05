@@ -188,6 +188,29 @@ class ComponentWidget(QTabWidget):
         document = self.ui.textHelp.document()
         document.setDefaultStyleSheet(textHelp_css_style)
 
+        self.fixup_ui()
+
+    def fixup_ui(self):
+        """For some reasonthe following i couldnt do in the ui successfully, so doing here.
+        """
+        # Clicked
+        # This signal is emitted when the button is activated (i.e., pressed down then released
+        # while the mouse cursor is inside the button), when the shortcut key is typed, or when
+        # click() or animateClick() is called. Notably, this signal is not emitted if you call
+        #  setDown(), setChecked() or toggle().
+
+        # for some reason i need to clear the stylsheet. must be a bug inthis pyqt versino
+        s1=self.ui.btn_edit_src.styleSheet()
+        s2=self.ui.pushButtonEditSource.styleSheet()
+        self.ui.btn_edit_src.setStyleSheet('')
+        self.ui.pushButtonEditSource.setStyleSheet('')
+        # connect
+        self.ui.btn_edit_src.clicked.connect(self.edit_source)
+        self.ui.pushButtonEditSource.clicked.connect(self.edit_source)
+        # restore stylsheet
+        self.ui.btn_edit_src.setStyleSheet(s1)
+        self.ui.pushButtonEditSource.setStyleSheet(s2)
+
     @property
     def design(self):
         return self.gui.design

@@ -106,8 +106,6 @@ class Ui_ComponentWidget(object):
 
         self.retranslateUi(ComponentWidget)
         ComponentWidget.setCurrentIndex(2)
-        self.btn_edit_src.clicked.connect(ComponentWidget.edit_source)
-        self.pushButtonEditSource.clicked.connect(ComponentWidget.showMaximized)
         QtCore.QMetaObject.connectSlotsByName(ComponentWidget)
 
     def retranslateUi(self, ComponentWidget):
