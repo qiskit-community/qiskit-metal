@@ -156,7 +156,7 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         self.logger.debug(f'Selected component {name}')
 
         gui = self.gui
-        gui.set_component(name)
+        gui.edit_component(name)
         gui.ui.dockComponent.show()
         gui.ui.dockComponent.raise_()
 
