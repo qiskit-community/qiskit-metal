@@ -163,7 +163,7 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
     background-color: #f9f9f9;
     color: #000000;
             """)
-        self.zoomIn(5)
+        self.zoomIn(3)
 
     @property
     def logger(self) -> logging.Logger:

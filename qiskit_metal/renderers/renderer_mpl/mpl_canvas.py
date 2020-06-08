@@ -533,8 +533,7 @@ class PlotCanvas(FigureCanvas):
 
     def _welcome_message_start(self):
         self._welcome_text.start()
-        self._welcome_start_timer.deleteLater()
-        # del self._welcome_start_timer
+        # self._welcome_start_timer.deleteLater()
 
     def zoom_to_rectangle(self, bounds: tuple, ax: Axes = None):
         """[summary]
