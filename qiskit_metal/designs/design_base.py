@@ -359,14 +359,14 @@ class QDesign():
 
         return True
 
-    def delete_component(self, component_name: str, force=False):
+    def delete_component(self, component_id: int, force=False) -> bool:
         """Deletes component and pins attached to said component.
         If no component by that name is present, then just return True
         If component has dependencices return false and do not delete,
         unless force=True.
 
         Arguments:
-            component_name {str} -- Name of component to delete
+            component_id {int} -- ID of component to delete
 
         Keyword Arguments:
             force {bool} -- force delete component even if it has children (default: {False})
@@ -376,8 +376,8 @@ class QDesign():
         """
 
         # Nothing to delete if name not in components
-        if not component_name in self.components:
-            self.logger.info('Called delete component {component_name}, but such a \
+        if not component_id in self.components:
+            self.logger.info('Called delete_component {component_id}, but such a \
                              component is not in the design dicitonary of components.')
             return True
 
@@ -388,23 +388,42 @@ class QDesign():
         #   if it does not then delete
 
         # Do delete component ruthelessly
-        return self._delete_component(component_name)
+        return self._delete_component(component_id)
 
-    def _delete_component(self, component_name: str):
+    def _delete_component(self, component_id: int) -> bool:
         """Delete component without doing any checks.
 
         Returns:
-            bool -- [description]
+            bool -- True if component_id not in design.
         """
         # Remove pins - done inherently from deleting the component, though needs checking
         #if is on the net list or not
 
-        # Remove from design dictionary of components
-        self.components.pop(component_name, None)
+        ''' copied from above.
+          self.delete_all_pins()  #Need to remove pin connections before clearing the components.
+    
+        # TODO: add element tables here
+        self._elements.clear_all_tables()
+        '''
+        return_response = False
+        if component_id in self.components:
+            #id in components dict
+            self._qnet.delete_all_pins_for_component(component_id) #Need to remove pins before popping component.
+            
+            #TODO remove from elements table, The elements class has to be updated to use int vs string
+            #self._elements.delete_component(component_id)    
+            # Next line is depreciated since we use component_id as int, vs  string name.
+            # self._elements.delete_component(component_name)
 
-        self._elements.delete_component(component_name)
-        #ADD THE DELETE NETLIST FUNCTION FOR A COMPONENT
-        return True
+            # remove from design dict of components
+            self.components.pop(component_id, None)
+        else:
+            #if not in components dict
+            logger.warning(f'Called _delete_complete, component_id: {component_id}, but component is not in design.components dictionary.')
+            return_response = True
+            return return_response
+
+        return return_response
 
 
 #########I/O###############################################################
