@@ -75,7 +75,7 @@ class TestGUIBasic(unittest.TestCase):
 
     #pylint: disable-msg=broad-except
     #pylint: disable-msg=unused-variable
-    def test_gui_refresh_design(self):
+    def test_gui_refresh(self):
         """
         Test the functionality of refrshing the GUI
 
@@ -91,7 +91,7 @@ class TestGUIBasic(unittest.TestCase):
             q_3 = TransmonPocket(design, 'Q3', options=dict(pos_x='+0.0mm', pos_y='+1.0mm'))
             gui = MetalGUI(design)
             gui.autoscale()
-            #gui.refresh_design()
+            gui.refresh()
         except Exception:
             my_name = inspect.stack()[0][3]
             self.fail(my_name + " threw an exception.  GUI failure")
