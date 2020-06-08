@@ -129,14 +129,13 @@ class QComponent():
 
         # Parser for options
         self.p = ParsedDynamicAttributes_Component(self)
-        
+
         # Add the component to the parent design
-        self._add_to_design() #Do this after the pin checking?
+        self._add_to_design()  # Do this after the pin checking?
 
         # Make the component geometry
         if make:
-           self.do_make()
-
+            self.do_make()
 
     @classmethod
     def _gather_all_children_options(cls):
@@ -305,7 +304,7 @@ class QComponent():
         """
         Delete the element and remove from the design.
         Removes also all of its connectors.
-        """#See function added in design_base by Priti which should do this
+        """  # See function added in design_base by Priti which should do this
         raise NotImplementedError()
 
     def parse_value(self, value: Union[Any, List, Dict, Iterable]):
@@ -378,24 +377,26 @@ class QComponent():
 
 
 ####################################################################################
-### Functions for handling of pins
-# 
+# Functions for handling of pins
+#
 # TODO: Decide how to handle this.
 #   Should this be a class?
 #   Should we keep function here or just move into design?
 # MAKE it so it has reference to who made it
-    #This doesn't really need to be here, could shift to toolbox
+    # This doesn't really need to be here, could shift to toolbox
 
-#We can probably combine the functions into one, have an input set if its from vector or
-#orthogonal points? Or a simpler consistent approach? What info is needed really?
+# We can probably combine the functions into one, have an input set if its from vector or
+# orthogonal points? Or a simpler consistent approach? What info is needed really?
+
+
     def add_pin_as_normal(self,
-                      name: str,
-                      start : np.ndarray,
-                      end : np.ndarray,
-                      width:float,
-                      parent: Union[str, 'QComponent'],
-                      flip: bool = False,
-                      chip: str = 'main'):
+                          name: str,
+                          start: np.ndarray,
+                          end: np.ndarray,
+                          width: float,
+                          parent: Union[str, 'QComponent'],
+                          flip: bool = False,
+                          chip: str = 'main'):
         """Give the path points
 
         Arguments:
@@ -407,7 +408,7 @@ class QComponent():
             flip {bool} -- [description] (default: {False})
             chip {str} -- [description] (default: {'main'})
         """
-        #Doesn't seem to be needed if is a method of component class
+        # Doesn't seem to be needed if is a method of component class
         """if is_component(parent):
             parent = parent.name
         elif parent is None:
@@ -419,21 +420,22 @@ class QComponent():
         if flip:
             vec_normal = -vec_normal
 
-        s_point = np.round(Vector.rotate(vec_normal,(np.pi/2))) * width/2 + end
-        e_point = np.round(Vector.rotate(vec_normal,-(np.pi/2))) * width/2 + end
-
+        s_point = np.round(Vector.rotate(
+            vec_normal, (np.pi/2))) * width/2 + end
+        e_point = np.round(Vector.rotate(
+            vec_normal, -(np.pi/2))) * width/2 + end
 
         self.pins[name] = Dict(
-            points=[s_point,e_point], # TODO
+            points=[s_point, e_point],  # TODO
             middle=end,
             normal=vec_normal,
-            tangent=Vector.rotate(vec_normal, np.pi/2), #TODO: rotate other way sometimes? 
+            # TODO: rotate other way sometimes?
+            tangent=Vector.rotate(vec_normal, np.pi/2),
             width=width,
             chip=chip,
             parent_name=parent
         )
 
-       
     def make_pin(self, points: list, parent_name: str, flip=False, chip='main'):
         """
         Works in user units.
@@ -465,7 +467,7 @@ class QComponent():
             width=np.linalg.norm(vec_dist),
             chip=chip,
             parent_name=parent_name,
-            net_id = 0
+            net_id=0
         )
 
     def get_pin(self, name: str):
@@ -482,11 +484,11 @@ class QComponent():
         return self.pins[name]
 
     def add_pin(self,
-                      name: str,
-                      points: list,
-                      parent: Union[str, 'QComponent'],
-                      flip: bool = False,
-                      chip: str = 'main'):
+                name: str,
+                points: list,
+                parent: Union[str, 'QComponent'],
+                flip: bool = False,
+                chip: str = 'main'):
         """Add named pin to the design by creating a pin dicitoanry.
 
         Arguments:
@@ -504,6 +506,42 @@ class QComponent():
             points, parent, flip=flip, chip=chip)
 
         # TODO: Add net?
+    def connect_components_already_in_design(self, pin_name_self: str, comp2_id: int, pin2_name: str) -> int:
+        """ WARNING: Do NOT use this method during generation of component instance.
+        This method is expecting self to be added to design.components dict.  More importantly,
+        the unique id of self component needs to be in design.components dict.
+        """
+        net_id_rtn = 0
+
+        if self.id not in self.design._components:
+            # Component not in design.
+            logger.warning(
+                f'No connection made. Component_id {self.id} not in design.')
+            return net_id_rtn
+
+        if comp2_id not in self.design._components:
+            # Component not in design.
+            logger.warning(
+                f'No connection made. Component_id {self.comp2_id} not in design.')
+            return net_id_rtn
+
+        if self.design._components[self._id].pins[pin_name_self].net_id:
+            # Pin already in use.
+            logger.warning(
+                f'Component_id {self._id} not connected.  The pin {pin_name_self} is already connected to something else.')
+            return net_id_rtn
+
+        if self.design._components[self.comp2_id].pins[pin2_name].net_id:
+            # Pin already in use.
+            logger.warning(
+                f'Component_id {comp2_id} not connected.  The pin {pin2_name} is already connected to something else.')
+            return net_id_rtn
+
+        # generate_net_id_and_update_component(self, comp1_id: int, pin1_name: str, comp2_id: int, pin2_name: str) -> int:
+        net_id_rtn = self.design.generate_net_id_and_update_component(
+            self.id, pin_name_self, comp2_id, pin2_name)
+
+        return net_id_rtn
 
 ########################################################################
 
