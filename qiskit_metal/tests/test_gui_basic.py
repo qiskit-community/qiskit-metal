@@ -20,16 +20,15 @@ Qiskit Metal unit tests analyses functionality.
 Test a planar deisgn and launching the GUI.
 
 Created on  2020
-@author: Zlatko K. Minev
+@author: Zlatko K. Minev, Jeremy D. Drysdale
 """
 
 import unittest
+import inspect
 
 from qiskit_metal import designs
 from qiskit_metal import MetalGUI
 from qiskit_metal.components.qubits.transmon_pocket import TransmonPocket
-
-
 
 class TestGUIBasic(unittest.TestCase):
     """
@@ -44,18 +43,7 @@ class TestGUIBasic(unittest.TestCase):
 
         Returns: None
         """
-        print('Setup')
-        # Create an example design
-        #self.design = designs.DesignPlanar()
-
-        #self.q1 = TransmonPocket(self.design, 'Q1', options = dict(pos_x='-1.5mm', pos_y='+0.0mm'))
-        #self.q2 = TransmonPocket(self.design, 'Q2', options = dict(pos_x='+1.5mm', pos_y='+0.0mm'))
-        #self.q3 = TransmonPocket(self.design, 'Q3', options = dict(pos_x='+0.0mm', pos_y='+1.0mm'))
-
-        # Launch GUI
-        #self.gui = MetalGUI(self.design)
-        #TODO: handle check to make sure we set the design correctly
-
+        pass
 
     def tearDown(self):
         """
@@ -67,15 +55,32 @@ class TestGUIBasic(unittest.TestCase):
         """
         pass
 
-    def test_step1(self):
-        #TODO ...
-        print('Step 1')
-        #self.gui.autoscale()
+    #pylint: disable-msg=broad-except
+    #pylint: disable-msg=unused-variable
+    def test_gui_01_launch(self):
+        """
+        Test the functionality of launching the GUI
+        01 added to the test name so it is the first GUI to launch
+        Single function used for all GUI stuff with general catch-all so
+          a. multiple GUI windows causing problems in CI
+          b. we can catch any errors
 
-    def test_step2(self):
-        #TODO ...
-        print('Step 2')
+        Args: None
 
+        Returns: None
+        """
+        try:
+            design = designs.DesignPlanar()
+            q_1 = TransmonPocket(design, 'Q1', options=dict(pos_x='-1.5mm', pos_y='+0.0mm'))
+            q_2 = TransmonPocket(design, 'Q2', options=dict(pos_x='+1.5mm', pos_y='+0.0mm'))
+            q_3 = TransmonPocket(design, 'Q3', options=dict(pos_x='+0.0mm', pos_y='+1.0mm'))
+            gui = MetalGUI(design)
+            gui.autoscale()
+            gui.refresh()
+            gui.rebuild()
+        except Exception:
+            my_name = inspect.stack()[0][3]
+            self.fail(my_name + " threw an exception.  GUI failure")
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
