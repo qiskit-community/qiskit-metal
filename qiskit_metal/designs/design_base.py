@@ -395,7 +395,8 @@ class QDesign():
             #id in components dict
             self._qnet.delete_all_pins_for_component(component_id) #Need to remove pins before popping component.
             
-            self._elements.delete_component(str(component_id))    
+            #Even though the elements table has string for component_id, dataframe is storing as an integer.
+            self._elements.delete_component_id(component_id)  
             
             # remove from design dict of components
             self.components.pop(component_id, None)
