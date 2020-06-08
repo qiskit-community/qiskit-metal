@@ -321,42 +321,33 @@ class QDesign():
         # spec.loader.exec_module(module)
         # importlib.reload(module)
 
-    def rename_component(self, component_name: str, new_component_name: str):
+    def rename_component(self, component_id: int, new_component_name: str):
         """Rename component.
 
         Arguments:
-            component_name {str} -- Old name
+            component_id {int} -- id of component within design
             new_component_name {str} -- New name
 
         Returns:
             int -- Results:
-                1: True name is changed.
+                1: True name is changed. (True)
                 -1: Failed, new component name exists.
                 -2: Failed, invalid new name
+                -3: Failed, component_id does not exist.
         """
-        #
-        if new_component_name in self.components:
-            self.logger.info(
-                f'Cannot rename {component_name} to {new_component_name}. Since {new_component_name} exists')
-            return -1
+        # Since we are using component_id, 
+        # and assuming id is created as being unique, 
+        # we don't care about the string (name) being unique.
 
-        def is_valid_component_name(s: str):
-            return s.isidentifier()
-
-        # Check that the name is a valid component name
-        if not is_valid_component_name(component_name):
-            self.logger.info(
-                f'Cannot rename {component_name} to {new_component_name}.')
-            return -2
-
-        # do rename
-        component = self.components[component_name]
-        component._name = new_component_name
-        self.components[new_component_name] = self.components.pop(
-            component_name)
-        self._elements.rename_component(component_name, new_component_name)
-        # TODO: handle renadming for all else: dependencies etc.
-
+        if component_id in self.components:
+            # do rename
+            self.components[component_id]._name = new_component_name
+            #Don't need to to this, using id now.  self._elements.rename_component(str(component_id), new_component_name)
+            return True
+        else:
+            logger.warning(f'Called rename_component, component_id({component_id}), but component_id is not in design.components dictionary.')
+            return -3
+       
         return True
 
     def delete_component(self, component_id: int, force=False) -> bool:
@@ -399,27 +390,18 @@ class QDesign():
         # Remove pins - done inherently from deleting the component, though needs checking
         #if is on the net list or not
 
-        ''' copied from above.
-          self.delete_all_pins()  #Need to remove pin connections before clearing the components.
-    
-        # TODO: add element tables here
-        self._elements.clear_all_tables()
-        '''
         return_response = False
         if component_id in self.components:
             #id in components dict
             self._qnet.delete_all_pins_for_component(component_id) #Need to remove pins before popping component.
             
-            #TODO remove from elements table, The elements class has to be updated to use int vs string
-            #self._elements.delete_component(component_id)    
-            # Next line is depreciated since we use component_id as int, vs  string name.
-            # self._elements.delete_component(component_name)
-
+            self._elements.delete_component(str(component_id))    
+            
             # remove from design dict of components
             self.components.pop(component_id, None)
         else:
             #if not in components dict
-            logger.warning(f'Called _delete_complete, component_id: {component_id}, but component is not in design.components dictionary.')
+            logger.warning(f'Called _delete_complete, component_id: {component_id}, but component_id is not in design.components dictionary.')
             return_response = True
             return return_response
 

@@ -90,7 +90,7 @@ ELEMENT_COLUMNS = dict(
     # This is for Metal API use only.
     # To add a new element type, add a new key below.
     base=dict(
-        component=str,  # name of the component to which the element belongs
+        component=str,  # Unique ID of the component to which the element belongs
         name=str,  # name of the element
         geometry=object,  # shapely object
         layer=int,  # gds type of layer
@@ -523,7 +523,7 @@ class QElementTables(object):
 
 
     def rename_component(self, name: str, new_name: str):
-        """Rename component by name
+        """Rename component by ID (integer) cast to string format.
 
         Arguments:
             name {str} -- Name of component (case sensitive)
