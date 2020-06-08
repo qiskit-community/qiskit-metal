@@ -43,10 +43,7 @@ class TestGUIBasic(unittest.TestCase):
 
         Returns: None
         """
-        self.design = designs.DesignPlanar()
-        self.q_1 = TransmonPocket(self.design, 'Q1', options=dict(pos_x='-1.5mm', pos_y='+0.0mm'))
-        self.q_2 = TransmonPocket(self.design, 'Q2', options=dict(pos_x='+1.5mm', pos_y='+0.0mm'))
-        self.q_3 = TransmonPocket(self.design, 'Q3', options=dict(pos_x='+0.0mm', pos_y='+1.0mm'))
+        pass
 
     def tearDown(self):
         """
@@ -59,7 +56,7 @@ class TestGUIBasic(unittest.TestCase):
         pass
 
     #pylint: disable-msg=broad-except
-    def test_gui_01_launch_autoscale(self):
+    def test_gui_01_launch(self):
         """
         Test the functionality of launching the GUI
         01 added to the test name so it is the first GUI to launch
@@ -69,61 +66,67 @@ class TestGUIBasic(unittest.TestCase):
         Returns: None
         """
         try:
-            gui = MetalGUI(self.design)
+            design = designs.DesignPlanar()
+            q_1 = TransmonPocket(design, 'Q1', options=dict(pos_x='-1.5mm', pos_y='+0.0mm'))
+            q_2 = TransmonPocket(design, 'Q2', options=dict(pos_x='+1.5mm', pos_y='+0.0mm'))
+            q_3 = TransmonPocket(design, 'Q3', options=dict(pos_x='+0.0mm', pos_y='+1.0mm'))
+            gui = MetalGUI(design)
             gui.autoscale()
-        except Exception:
-            my_name = inspect.stack()[0][3]
-            self.fail(my_name + " threw an exception.  GUI failure")
-
-    #pylint: disable-msg=broad-except
-    #pylint: disable-msg=unused-variable
-    def test_gui_refresh(self):
-        """
-        Test the functionality of refrshing the GUI
-
-        Args: None
-
-        Returns: None
-        """
-        try:
-            gui = MetalGUI(self.design)
-            gui.autoscale()
-            #design = designs.DesignPlanar()
-            #q_1 = TransmonPocket(design, 'Q1', options=dict(pos_x='-1.5mm', pos_y='+0.0mm'))
-            #q_2 = TransmonPocket(design, 'Q2', options=dict(pos_x='+1.5mm', pos_y='+0.0mm'))
-            #q_3 = TransmonPocket(design, 'Q3', options=dict(pos_x='+0.0mm', pos_y='+1.0mm'))
-            #gui = MetalGUI(design)
-            #gui.autoscale()
             gui.refresh()
-            #pass
+            gui.rebuild()
         except Exception:
             my_name = inspect.stack()[0][3]
             self.fail(my_name + " threw an exception.  GUI failure")
 
     #pylint: disable-msg=broad-except
     #pylint: disable-msg=unused-variable
-    def test_gui_rebuild(self):
-        """
-        Test the functionality of rebuilding the GUI
+    #def test_gui_refresh(self):
+        #"""
+        #Test the functionality of refrshing the GUI
 
-        Args: None
+        #Args: None
 
-        Returns: None
-        """
-        try:
-            gui = MetalGUI(self.design)
-            gui.autoscale()
+        #Returns: None
+        #"""
+        #try:
+            #gui = MetalGUI(self.design)
+            #gui.autoscale()
             #design = designs.DesignPlanar()
             #q_1 = TransmonPocket(design, 'Q1', options=dict(pos_x='-1.5mm', pos_y='+0.0mm'))
             #q_2 = TransmonPocket(design, 'Q2', options=dict(pos_x='+1.5mm', pos_y='+0.0mm'))
             #q_3 = TransmonPocket(design, 'Q3', options=dict(pos_x='+0.0mm', pos_y='+1.0mm'))
             #gui = MetalGUI(design)
             #gui.autoscale()
-            gui.rebuild()
+            #gui.refresh()
+            #pass
+        #except Exception:
+            #my_name = inspect.stack()[0][3]
+            #self.fail(my_name + " threw an exception.  GUI failure")
+
+    #pylint: disable-msg=broad-except
+    #pylint: disable-msg=unused-variable
+    #def test_gui_rebuild(self):
+        #"""
+        #Test the functionality of rebuilding the GUI
+
+        #Args: None
+
+        #Returns: None
+        #"""
+        #try:
+            #gui = MetalGUI(self.design)
+            #gui.autoscale()
+            #design = designs.DesignPlanar()
+            #q_1 = TransmonPocket(design, 'Q1', options=dict(pos_x='-1.5mm', pos_y='+0.0mm'))
+            #q_2 = TransmonPocket(design, 'Q2', options=dict(pos_x='+1.5mm', pos_y='+0.0mm'))
+            #q_3 = TransmonPocket(design, 'Q3', options=dict(pos_x='+0.0mm', pos_y='+1.0mm'))
+            #gui = MetalGUI(design)
+            #gui.autoscale()
+            #gui.rebuild()
             #gui.rebuild(True)
-        except Exception:
-            my_name = inspect.stack()[0][3]
-            self.fail(my_name + " threw an exception.  GUI failure")
+        #except Exception:
+            #my_name = inspect.stack()[0][3]
+            #self.fail(my_name + " threw an exception.  GUI failure")
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
