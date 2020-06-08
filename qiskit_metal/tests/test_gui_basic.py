@@ -112,7 +112,7 @@ class TestGUIBasic(unittest.TestCase):
             q_3 = TransmonPocket(design, 'Q3', options=dict(pos_x='+0.0mm', pos_y='+1.0mm'))
             gui = MetalGUI(design)
             gui.autoscale()
-            gui.rebuild(False)
+            #gui.rebuild(False)
             #gui.rebuild(True)
         except Exception:
             my_name = inspect.stack()[0][3]
