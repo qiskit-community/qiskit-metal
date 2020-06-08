@@ -108,10 +108,10 @@ class QMainWindowExtensionBase(QMainWindow):
         from the settings file.
         """
 
-        if __version__ < self.settings.value('metal_version', defaultValue='1000000'):
-            # Clear the settings from older versions. Will comment this out in future.
+        version_settings = self.settings.value('metal_version', defaultValue='0')
+        if __version__ > version_settings:
             self.logger.debug(
-                f"Clearing window settings [{ self.settings.value('metal_version', defaultValue='1000000')}]...")
+                f"Clearing window settings [{version_settings}]...")
             self.settings.clear()
 
         try:
@@ -511,8 +511,8 @@ def kick_start_qApp():
 
     if qApp is None:
         try:
-            QtWidgets.QApplication.setAttribute(
-                QtCore.Qt.AA_EnableHighDpiScaling)
+            # TODO: See
+            QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
         except AttributeError:  # Attribute only exists for Qt >= 5.6
             pass
 

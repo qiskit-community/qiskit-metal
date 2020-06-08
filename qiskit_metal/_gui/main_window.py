@@ -201,12 +201,20 @@ class MetalGUI(QMainWindowBaseHandler):
         # self.qApp.processEvents(QEventLoop.AllEvents, 1)
         # - don't think I need this here, it doesn't help to show and raise
         # - need to call from different thread.
-        QTimer.singleShot(150, self.main_window.raise_)
+        QTimer.singleShot(150, self._raise)
 
         if design:
             self.set_design(design)
         else:
             self._set_enabled_design_widgets(False)
+
+    def _raise(self):
+        self.main_window.raise_()
+
+        # Give keyboard focus.
+        # On Windows, will change the color of the taskbar entry to indicate that the
+        # window has changed in some way.
+        self.main_window.activateWindow()
 
     def _set_enabled_design_widgets(self, enabled: bool = True):
         """make rebuild and all the other main button disabled.
