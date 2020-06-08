@@ -113,7 +113,7 @@ class TestGUIBasic(unittest.TestCase):
             gui = MetalGUI(design)
             gui.autoscale()
             gui.rebuild(False)
-            gui.rebuild(True)
+            #gui.rebuild(True)
         except Exception:
             my_name = inspect.stack()[0][3]
             self.fail(my_name + " threw an exception.  GUI failure")
