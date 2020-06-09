@@ -255,6 +255,17 @@ class QDesign():
                 f'NetId was not added for {comp1_id}, {pin1_name}, {comp2_id}, {pin2_name} and will not be added to components.')
         return net_id
 
+    def delete_all_pins_for_component(self, comp_id:int)->set:
+        #remove component from self._qnet._net_info
+        all_net_id_removed = self._qnet.delete_all_pins_for_component(comp_id)
+        
+        #reset all pins to be 0 (zero), 
+        pins_dict = self.components[comp_id].pins
+        for (key, value) in pins_dict.items():
+            self.components[comp_id].pins[key].net_id = 0
+
+        return all_net_id_removed
+
     def delete_all_components(self):
         '''
         Clear all components in the design dictionary.

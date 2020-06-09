@@ -531,13 +531,12 @@ class QComponent():
                 f'Component_id {self._id} not connected.  The pin {pin_name_self} is already connected to something else.')
             return net_id_rtn
 
-        if self.design._components[self.comp2_id].pins[pin2_name].net_id:
+        if self.design._components[comp2_id].pins[pin2_name].net_id:
             # Pin already in use.
             logger.warning(
                 f'Component_id {comp2_id} not connected.  The pin {pin2_name} is already connected to something else.')
             return net_id_rtn
 
-        # generate_net_id_and_update_component(self, comp1_id: int, pin1_name: str, comp2_id: int, pin2_name: str) -> int:
         net_id_rtn = self.design.generate_net_id_and_update_component(
             self.id, pin_name_self, comp2_id, pin2_name)
 
