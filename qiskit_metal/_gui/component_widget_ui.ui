@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>465</width>
-    <height>420</height>
+    <width>539</width>
+    <height>475</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,7 @@
    <enum>QTabWidget::Triangular</enum>
   </property>
   <property name="currentIndex">
-   <number>2</number>
+   <number>0</number>
   </property>
   <property name="movable">
    <bool>true</bool>
@@ -64,7 +64,7 @@
      </layout>
     </item>
     <item>
-     <widget class="QTableView_Options" name="tableView">
+     <widget class="QTreeView_Options" name="treeView">
       <property name="frameShape">
        <enum>QFrame::NoFrame</enum>
       </property>
@@ -77,21 +77,6 @@
       <property name="showDropIndicator" stdset="0">
        <bool>false</bool>
       </property>
-      <property name="selectionMode">
-       <enum>QAbstractItemView::SingleSelection</enum>
-      </property>
-      <property name="showGrid">
-       <bool>false</bool>
-      </property>
-      <attribute name="horizontalHeaderVisible">
-       <bool>false</bool>
-      </attribute>
-      <attribute name="horizontalHeaderStretchLastSection">
-       <bool>true</bool>
-      </attribute>
-      <attribute name="verticalHeaderVisible">
-       <bool>false</bool>
-      </attribute>
      </widget>
     </item>
     <item>
@@ -270,9 +255,9 @@ p, li { white-space: pre-wrap; }
  </widget>
  <customwidgets>
   <customwidget>
-   <class>QTableView_Options</class>
-   <extends>QTableView</extends>
-   <header>.widgets.edit_component.table_view_options</header>
+   <class>QTreeView_Options</class>
+   <extends>QTreeView</extends>
+   <header>.widgets.edit_component.tree_view_options</header>
   </customwidget>
  </customwidgets>
  <resources>

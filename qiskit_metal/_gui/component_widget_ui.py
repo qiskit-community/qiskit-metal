@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_ComponentWidget(object):
     def setupUi(self, ComponentWidget):
         ComponentWidget.setObjectName("ComponentWidget")
-        ComponentWidget.resize(465, 420)
+        ComponentWidget.resize(539, 475)
         ComponentWidget.setTabPosition(QtWidgets.QTabWidget.West)
         ComponentWidget.setTabShape(QtWidgets.QTabWidget.Triangular)
         ComponentWidget.setMovable(True)
@@ -29,18 +29,13 @@ class Ui_ComponentWidget(object):
         self.horizontalLayout.setSpacing(0)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.verticalLayout.addLayout(self.horizontalLayout)
-        self.tableView = QTableView_Options(self.tabOptions)
-        self.tableView.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.tableView.setFrameShadow(QtWidgets.QFrame.Plain)
-        self.tableView.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
-        self.tableView.setProperty("showDropIndicator", False)
-        self.tableView.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
-        self.tableView.setShowGrid(False)
-        self.tableView.setObjectName("tableView")
-        self.tableView.horizontalHeader().setVisible(False)
-        self.tableView.horizontalHeader().setStretchLastSection(True)
-        self.tableView.verticalHeader().setVisible(False)
-        self.verticalLayout.addWidget(self.tableView)
+        self.treeView = QTreeView_Options(self.tabOptions)
+        self.treeView.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.treeView.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.treeView.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
+        self.treeView.setProperty("showDropIndicator", False)
+        self.treeView.setObjectName("treeView")
+        self.verticalLayout.addWidget(self.treeView)
         self.pushButtonEditSource = QtWidgets.QPushButton(self.tabOptions)
         self.pushButtonEditSource.setStyleSheet("background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(61, 217, 245,0.8), stop:1 rgba(240, 53, 218,0.8));\n"
 "border-style: solid;\n"
@@ -105,7 +100,7 @@ class Ui_ComponentWidget(object):
         ComponentWidget.addTab(self.tabSource, icon3, "")
 
         self.retranslateUi(ComponentWidget)
-        ComponentWidget.setCurrentIndex(2)
+        ComponentWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(ComponentWidget)
 
     def retranslateUi(self, ComponentWidget):
@@ -135,5 +130,5 @@ class Ui_ComponentWidget(object):
         self.lineSourcePath.setAccessibleDescription(_translate("ComponentWidget", "Source code file path"))
         self.lineSourcePath.setText(_translate("ComponentWidget", "Source code file path here"))
         ComponentWidget.setTabText(ComponentWidget.indexOf(self.tabSource), _translate("ComponentWidget", "Source"))
-from .widgets.edit_component.table_view_options import QTableView_Options
+from .widgets.edit_component.tree_view_options import QTreeView_Options
 from . import main_window_rc_rc
