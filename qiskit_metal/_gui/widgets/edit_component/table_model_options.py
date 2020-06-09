@@ -62,7 +62,7 @@ class QTableModel_Options(QAbstractTableModel):
         self.columns = ['Name', 'Value', 'Parsed value']
 
     @property
-    def design(self):
+    def design(self) -> 'QDesign':
         return self.gui.design
 
     @property
@@ -104,9 +104,8 @@ class QTableModel_Options(QAbstractTableModel):
 
     def flags(self, index: QModelIndex):
         """ Set the item flags at the given index. Seems like we're
-            implementing this function just to see how it's done, as we
-            manually adjust each tableView to have NoEditTriggers.
-        """
+        implementing this function just to see how it's done, as we
+        manually adjust each treeView to have NoEditTriggers."""
         # https://doc.qt.io/qt-5/qt.html#ItemFlag-enum
 
         if not index.isValid():
@@ -124,9 +123,8 @@ class QTableModel_Options(QAbstractTableModel):
     # https://doc.qt.io/qt-5/qt.html#ItemDataRole-enum
     def data(self, index: QModelIndex, role=Qt.DisplayRole):
         """ Depending on the index and role given, return data. If not
-            returning data, return None (PySide equivalent of QT's
-            "invalid QVariant").
-        """
+        returning data, return None (PySide equivalent of QT's
+        "invalid QVariant")."""
 
         if not index.isValid():
             return

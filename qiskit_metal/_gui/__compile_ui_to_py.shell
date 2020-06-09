@@ -1,8 +1,10 @@
 #!/bin/bash
 
+RED='\033[1;34m'
+NC='\033[0m' # No Color
 #  Set the current active path to the path where this bash file is 
 cd "$(dirname "$0")"
-echo $PWD
+echo -e "Present working directory: ${RED}${PWD}${NC}"
 
 # pyuic5
 # https://www.riverbankcomputing.com/static/Docs/PyQt5/designer.html

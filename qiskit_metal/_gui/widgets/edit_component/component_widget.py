@@ -35,7 +35,8 @@ from .... import logger
 from ...component_widget_ui import Ui_ComponentWidget
 from ...utility._handle_qt_messages import catch_exception_slot_pyqt
 from .source_editor_widget import create_source_edit_widget
-from .table_model_options import QTableModel_Options
+# from .table_model_options import QTableModel_Options
+from .tree_model_options import QTreeModel_Options
 
 if TYPE_CHECKING:
     from ...main_window import MetalGUI, QMainWindowExtension
@@ -162,14 +163,13 @@ class ComponentWidget(QTabWidget):
 
         self.component_name = None  # type: str
 
-        # Parametr model and table view
-        self.model = QTableModel_Options(gui, self, view = self.ui.tableView)
-        self.ui.tableView.setModel(self.model)
-        self.ui.tableView.setVerticalScrollMode(
+        # Parameter model and table view
+        self.model = QTreeModel_Options(self, gui, self.ui.treeView)
+        self.ui.treeView.setModel(self.model)
+        self.ui.treeView.setVerticalScrollMode(
             QAbstractItemView.ScrollPerPixel)
-        self.ui.tableView.setHorizontalScrollMode(
+        self.ui.treeView.setHorizontalScrollMode(
             QAbstractItemView.ScrollPerPixel)
-
 
         # Source Code
         # palette = self.ui.textSource.palette()
@@ -200,8 +200,8 @@ class ComponentWidget(QTabWidget):
         #  setDown(), setChecked() or toggle().
 
         # for some reason i need to clear the stylsheet. must be a bug inthis pyqt versino
-        s1=self.ui.btn_edit_src.styleSheet()
-        s2=self.ui.pushButtonEditSource.styleSheet()
+        s1 = self.ui.btn_edit_src.styleSheet()
+        s2 = self.ui.pushButtonEditSource.styleSheet()
         self.ui.btn_edit_src.setStyleSheet('')
         self.ui.pushButtonEditSource.setStyleSheet('')
         # connect
@@ -248,7 +248,7 @@ class ComponentWidget(QTabWidget):
         self._set_help()
 
         self.force_refresh()
-        self.ui.tableView.autoresize_columns()  # resize columns
+        self.ui.treeView.autoresize_columns()  # resize columns
 
     def force_refresh(self):
         self.model.refresh()
