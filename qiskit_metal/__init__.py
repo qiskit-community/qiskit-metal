@@ -121,8 +121,8 @@ from ._gui import MetalGUI
 from .renderers.renderer_mpl import mpl_toolbox as plt
 
 # Utility functions
-from .toolbox_python.utility_functions import copy_update
 from .toolbox_python.display import Headings
+from .toolbox_metal.parsing import is_true
 
 # Import default renderers
 from .renderers import setup_renderers

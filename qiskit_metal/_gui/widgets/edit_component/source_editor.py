@@ -128,7 +128,8 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         # --- python specific panels
         self.panels.append(pypanels.QuickDocPanel(), api.Panel.Position.BOTTOM)
 
-        # --- core modes
+        ############################################################################
+        #### core modes
         self.modes.append(modes.CaretLineHighlighterMode())
         self.modes.append(modes.CodeCompletionMode())
         self.modes.append(modes.ExtendedSelectionMode())
@@ -140,8 +141,17 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         self.modes.append(modes.ZoomMode())
 
         # ---  python specific modes
+        # Help: https://pythonhosted.org/pyqode.python/pyqode.python.modes.html
+
+        # Comments/uncomments a set of lines using Ctrl+/.
         self.modes.append(pymodes.CommentsMode())
-        self.modes.append(pymodes.CalltipsMode())
+
+        # Shows function calltips.
+        # This mode shows function/method call tips in a QToolTip using jedi.Script.call_signatures().
+        # https://pythonhosted.org/pyqode.python/pyqode.python.modes.html#calltipsmode
+        self.calltips_mode = pymodes.CalltipsMode()
+        self.modes.append(self.calltip_mode)
+
         self.modes.append(pymodes.PyFlakesChecker())
         # self.modes.append(pymodes.PEP8CheckerMode())
         self.modes.append(pymodes.PyAutoCompleteMode())

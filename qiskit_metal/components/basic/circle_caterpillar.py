@@ -12,9 +12,9 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-from ..base import QComponent
-from ... import draw
-from ...draw.basic import CAP_STYLE, JOIN_STYLE
+from qiskit_metal import draw, Dict, QComponent
+from qiskit_metal import is_true
+from qiskit_metal.draw import CAP_STYLE, JOIN_STYLE
 
 
 class CircleCaterpillar(QComponent):

@@ -8,8 +8,10 @@ from typing import List, Tuple, Union
 import numpy as np
 from numpy.linalg import norm
 
-from ... import QComponent, Dict, draw
-from ...toolbox_metal.parsing import is_true
+import numpy as np
+from qiskit_metal import draw, Dict, QComponent
+from qiskit_metal import is_true
+
 #from qiskit_metal.toolbox_metal.parsing import is_true
 options = Dict(pin_start_name='Q1_a',
                pin_end_name='Q2_b',
