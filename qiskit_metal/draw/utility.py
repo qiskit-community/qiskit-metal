@@ -307,7 +307,7 @@ class Vector:
         sin_rad = math.sin(radians)
         qx = cos_rad * x - sin_rad * y
         qy = sin_rad * x + cos_rad * y
-        return np.array([qx, qy])
+        return np.array([qx, qy]) #ADD ARRAY CHOP - draw_utility
 
     @staticmethod
     def angle(vector: Vec2D) -> float:

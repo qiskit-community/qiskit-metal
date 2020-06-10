@@ -589,9 +589,9 @@ class PlotCanvas(FigureCanvas):
             component_names (List[str]): [description]
         """
         self.clear_annotation()
-
         for name in component_names:
-
+            name = int(name)
+            #self.logger.debug(f'Component {name}')
             if name in self.design.components:
                 component = self.design.components[name]
 
@@ -613,37 +613,38 @@ class PlotCanvas(FigureCanvas):
 
                 if 1: # Draw the pins
 
-                    for component_id in self.design.components.keys():
-                        for pin_name in self.design.components[component_id].pins.keys():
+                    #for component_id in self.design.components.keys():
+                    for pin_name in component.pins.keys():
+                        #self.logger.debug(f'Pin {pin_name}')
+                        pin = component.pins[pin_name]
+                        m = pin['middle']
+                        n = pin['normal']
+                        print(m, n)
+                        print(pin_name)
 
-                            pin = self.design.component_id[component_id].pins[pin_name]
-                            m = pin['middle']
-                            n = pin['normal']
-                            # print(m, n)
+                        if 1: # draw the arrows
+                            kw = dict(color='r', mutation_scale=15, alpha = 0.75, capstyle='butt', ec='k',
+                                    lw=0.5, zorder=100, clip_on=True)
+                            arrow = patches.FancyArrowPatch(m, m+n*0.05, **kw)
+                            self._annotations['patch'] += [arrow]
 
-                            if 1: # draw the arrows
-                                kw = dict(color='r', mutation_scale=15, alpha = 0.75, capstyle='butt', ec='k',
-                                        lw=0.5, zorder=100, clip_on=True)
-                                arrow = patches.FancyArrowPatch(m, m+n*0.05, **kw)
-                                self._annotations['patch'] += [arrow]
+                            """A fancy arrow patch. It draws an arrow using the ArrowStyle.
+                            The head and tail positions are fixed at the specified start and end points of the arrow,
+                            but the size and shape (in display coordinates) of the arrow does not change when the axis
+                            is moved or zoomed.
+                            """
+                            for ax in self.axes:
+                                ax.add_patch(arrow)
 
-                                """A fancy arrow patch. It draws an arrow using the ArrowStyle.
-                                The head and tail positions are fixed at the specified start and end points of the arrow,
-                                but the size and shape (in display coordinates) of the arrow does not change when the axis
-                                is moved or zoomed.
-                                """
-                                for ax in self.axes:
-                                    ax.add_patch(arrow)
+                        if 1: # draw names of pins
+                            dist = 0.05
+                            kw = dict(color='r',alpha=0.75, verticalalignment='center',
+                                    horizontalalignment='left' if n[0]>=0 else 'right',
+                                    clip_on=True, zorder=99, fontweight='bold')
+                            text = ax.text(*(m+dist*n), pin_name, **kw)
+                            text.set_bbox(dict(facecolor='#FFFFFF', alpha=0.75, edgecolor='#F0F0F0'))
 
-                            if 1: # draw names of pins
-                                dist = 0.05
-                                kw = dict(color='r',alpha=0.75, verticalalignment='center',
-                                        horizontalalignment='left' if n[0]>=0 else 'right',
-                                        clip_on=True, zorder=99, fontweight='bold')
-                                text = ax.text(*(m+dist*n), pin_name, **kw)
-                                text.set_bbox(dict(facecolor='#FFFFFF', alpha=0.75, edgecolor='#F0F0F0'))
-
-                                self._annotations['text'] += [text]
+                            self._annotations['text'] += [text]
 
         self.refresh()
 
