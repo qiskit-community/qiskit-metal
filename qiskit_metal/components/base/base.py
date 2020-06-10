@@ -124,7 +124,7 @@ class QComponent():
         # Status: usedd to handle building of a compoentn and checking if it succeedded or failed.
         self.status = 'not built'
         # Create an empty dict, which will populated by component designer.
-        self.pins = dict()
+        self.pins = Dict()
         self._made = False
 
         # Parser for options
@@ -537,7 +537,7 @@ class QComponent():
                 f'Component_id {comp2_id} not connected.  The pin {pin2_name} is already connected to something else.')
             return net_id_rtn
 
-        net_id_rtn = self.design.generate_net_id_and_update_component(
+        net_id_rtn = self.design.connect_pins(
             self.id, pin_name_self, comp2_id, pin2_name)
 
         return net_id_rtn

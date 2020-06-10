@@ -230,7 +230,7 @@ class QDesign():
         keys[keys.index(old_key)] = new_key
         self._variables = Dict(zip(keys, values))
 
-   
+
     def delete_all_pins(self) -> pd.core.frame.DataFrame:
         '''
         Clear all pins in the net_Info and update the pins in components.
@@ -238,11 +238,23 @@ class QDesign():
         df = self._qnet._net_info
         for (index, netID, comp_id, pin_name) in df.itertuples():
             self.components[comp_id].pins[pin_name].net_id = 0
-        
+
         self._qnet._net_info = self._qnet._net_info.iloc[0:0]    #remove rows, but save column names
         return self._qnet
 
-    def generate_net_id_and_update_component(self, comp1_id: int, pin1_name: str, comp2_id: int, pin2_name: str) -> int:
+    # TODO: rename to something like connect_pins and add docstring
+    def connect_pins(self, comp1_id: int, pin1_name: str, comp2_id: int, pin2_name: str) -> int:
+        """[summary]
+
+        Args:
+            comp1_id (int): [description]
+            pin1_name (str): [description]
+            comp2_id (int): [description]
+            pin2_name (str): [description]
+
+        Returns:
+            int: [description]
+        """
         net_id = 0
         net_id = self._qnet.add_pins_to_table(
             comp1_id, pin1_name, comp2_id, pin2_name)
@@ -258,8 +270,8 @@ class QDesign():
     def delete_all_pins_for_component(self, comp_id:int)->set:
         #remove component from self._qnet._net_info
         all_net_id_removed = self._qnet.delete_all_pins_for_component(comp_id)
-        
-        #reset all pins to be 0 (zero), 
+
+        #reset all pins to be 0 (zero),
         pins_dict = self.components[comp_id].pins
         for (key, value) in pins_dict.items():
             self.components[comp_id].pins[key].net_id = 0
@@ -346,8 +358,8 @@ class QDesign():
                 -2: Failed, invalid new name
                 -3: Failed, component_id does not exist.
         """
-        # Since we are using component_id, 
-        # and assuming id is created as being unique, 
+        # Since we are using component_id,
+        # and assuming id is created as being unique,
         # we don't care about the string (name) being unique.
 
         if component_id in self.components:
@@ -358,7 +370,7 @@ class QDesign():
         else:
             logger.warning(f'Called rename_component, component_id({component_id}), but component_id is not in design.components dictionary.')
             return -3
-       
+
         return True
 
     def delete_component(self, component_id: int, force=False) -> bool:
@@ -405,10 +417,10 @@ class QDesign():
         if component_id in self.components:
             #id in components dict
             self._qnet.delete_all_pins_for_component(component_id) #Need to remove pins before popping component.
-            
+
             #Even though the elements table has string for component_id, dataframe is storing as an integer.
-            self._elements.delete_component_id(component_id)  
-            
+            self._elements.delete_component_id(component_id)
+
             # remove from design dict of components
             self.components.pop(component_id, None)
         else:
