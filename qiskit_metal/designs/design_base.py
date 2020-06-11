@@ -230,7 +230,6 @@ class QDesign():
         keys[keys.index(old_key)] = new_key
         self._variables = Dict(zip(keys, values))
 
-
     def delete_all_pins(self) -> pd.core.frame.DataFrame:
         '''
         Clear all pins in the net_Info and update the pins in components.
@@ -239,21 +238,25 @@ class QDesign():
         for (index, netID, comp_id, pin_name) in df.itertuples():
             self.components[comp_id].pins[pin_name].net_id = 0
 
-        self._qnet._net_info = self._qnet._net_info.iloc[0:0]    #remove rows, but save column names
+        # remove rows, but save column names
+        self._qnet._net_info = self._qnet._net_info.iloc[0:0]
         return self._qnet
 
-    # TODO: rename to something like connect_pins and add docstring
     def connect_pins(self, comp1_id: int, pin1_name: str, comp2_id: int, pin2_name: str) -> int:
-        """[summary]
+        """1. Will generate an unique net_id and placed in a net_info table.
+           2. Udate the components.pin_name with the net_id.
+
+           Component's pin will know if pin is connected to another component, if there is a non-zero net_id.
 
         Args:
-            comp1_id (int): [description]
-            pin1_name (str): [description]
-            comp2_id (int): [description]
-            pin2_name (str): [description]
+            comp1_id (int):  Unique id of component used for pin1_name.
+            pin1_name (str): Name of pin in comp1_id.
+            comp2_id (int): Unique id of component used for pin2_name.
+            pin2_name (str): Name of pin in comp2_id.
 
         Returns:
-            int: [description]
+            int: Unique net_id of connection used in the netlist.  
+                If not added to netlist, the net_id will be 0 (zero).
         """
         net_id = 0
         net_id = self._qnet.add_pins_to_table(
@@ -267,11 +270,11 @@ class QDesign():
                 f'NetId was not added for {comp1_id}, {pin1_name}, {comp2_id}, {pin2_name} and will not be added to components.')
         return net_id
 
-    def delete_all_pins_for_component(self, comp_id:int)->set:
-        #remove component from self._qnet._net_info
+    def delete_all_pins_for_component(self, comp_id: int) -> set:
+        # remove component from self._qnet._net_info
         all_net_id_removed = self._qnet.delete_all_pins_for_component(comp_id)
 
-        #reset all pins to be 0 (zero),
+        # reset all pins to be 0 (zero),
         pins_dict = self.components[comp_id].pins
         for (key, value) in pins_dict.items():
             self.components[comp_id].pins[key].net_id = 0
@@ -285,7 +288,8 @@ class QDesign():
         '''
         # clear all the dicitonaries and element tables.
 
-        self.delete_all_pins()  #Need to remove pin connections before clearing the components.
+        # Need to remove pin connections before clearing the components.
+        self.delete_all_pins()
         self._components.clear()
         # TODO: add element tables here
         self._elements.clear_all_tables()
@@ -365,10 +369,11 @@ class QDesign():
         if component_id in self.components:
             # do rename
             self.components[component_id]._name = new_component_name
-            #Don't need to to this, using id now.  self._elements.rename_component(str(component_id), new_component_name)
+            # Don't need to to this, using id now.  self._elements.rename_component(str(component_id), new_component_name)
             return True
         else:
-            logger.warning(f'Called rename_component, component_id({component_id}), but component_id is not in design.components dictionary.')
+            logger.warning(
+                f'Called rename_component, component_id({component_id}), but component_id is not in design.components dictionary.')
             return -3
 
         return True
@@ -411,21 +416,23 @@ class QDesign():
             bool -- True if component_id not in design.
         """
         # Remove pins - done inherently from deleting the component, though needs checking
-        #if is on the net list or not
+        # if is on the net list or not
 
         return_response = False
         if component_id in self.components:
-            #id in components dict
-            self._qnet.delete_all_pins_for_component(component_id) #Need to remove pins before popping component.
+            # id in components dict
+            # Need to remove pins before popping component.
+            self._qnet.delete_all_pins_for_component(component_id)
 
-            #Even though the elements table has string for component_id, dataframe is storing as an integer.
+            # Even though the elements table has string for component_id, dataframe is storing as an integer.
             self._elements.delete_component_id(component_id)
 
             # remove from design dict of components
             self.components.pop(component_id, None)
         else:
-            #if not in components dict
-            logger.warning(f'Called _delete_complete, component_id: {component_id}, but component_id is not in design.components dictionary.')
+            # if not in components dict
+            logger.warning(
+                f'Called _delete_complete, component_id: {component_id}, but component_id is not in design.components dictionary.')
             return_response = True
             return return_response
 
