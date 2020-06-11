@@ -19,10 +19,10 @@
 converted to v0.2: Thomas McConkey 2020-04-23
 '''
 
-from copy import deepcopy
-from ... import draw
-from ...toolbox_python.attr_dict import Dict
-from ..base.qubit import BaseQubit
+import numpy as np
+from qiskit_metal import draw, Dict
+from qiskit_metal import is_true
+from qiskit_metal.components.base.qubit import BaseQubit
 
 class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
     '''
@@ -177,11 +177,11 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
         else:
             connector_arm = claw_cpw
             connector_etcher = draw.buffer(connector_arm, c_g)
-        
-        
-        #Making the connector 'port' for design.connector tracking (for easy connect functions). 
-        # Done here so as to have the same translations and rotations as the connector. Could 
-        # extract from the connector later, but since allowing different connector types, 
+
+
+        #Making the connector 'port' for design.connector tracking (for easy connect functions).
+        # Done here so as to have the same translations and rotations as the connector. Could
+        # extract from the connector later, but since allowing different connector types,
         # this seems more straightforward.
         port_line = draw.LineString([(-4*c_w, -c_w/2),(-4*c_w, c_w/2)])
 

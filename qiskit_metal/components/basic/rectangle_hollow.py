@@ -12,16 +12,14 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-from ..base import QComponent
-from ... import draw
-# from copy import deepcopy
-# from ...toolbox_python.attr_dict import Dict
+from qiskit_metal import draw, Dict, QComponent
+from qiskit_metal import is_true
 
 
 class RectangleHollow(QComponent):
     """A single configurable square."""
 
-    default_options = dict(
+    default_options = Dict(
         width='500um',
         height='300um',
         pos_x='0um',

@@ -19,7 +19,3 @@
 
 from .. import is_component
 from .base import QComponent
-
-from . import qubits
-from . import connectors
-from . import junctions

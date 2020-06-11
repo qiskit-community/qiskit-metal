@@ -21,6 +21,8 @@ based on pyqode.python: https://github.com/pyQode/pyqode.python
 from typing import TYPE_CHECKING
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QDockWidget
 
 from ...edit_source_ui import Ui_EditSource
 
@@ -50,22 +52,44 @@ def create_source_edit_widget(gui: 'MetalGUI',
     if not parent:
         parent = gui.main_window  # gui.component_window.ui.tabHelp
 
-    gui.logger.info(f'Creating a source edit window for class_name={class_name}'
-                    'from file={module_path}')
+    gui.logger.info(f'Creating a source edit window for\n  class_name={class_name}\n'
+                    f'  file={module_path}')
 
     edit_widget = QtWidgets.QMainWindow(parent) # use parent, so this way its style sheet is inherited
-    edit_widget.ui = Ui_EditSource()
-    edit_widget.ui.setupUi(edit_widget)
-    edit_widget.resize(900, 800)
+    self = edit_widget
+    self.ui = Ui_EditSource()
+    self.ui.setupUi(edit_widget)
+    self.dock = dockify(self, gui)
 
-    edit_widget.ui.src_editor.gui = gui
-    edit_widget.ui.src_editor.set_component(
-        class_name, module_name, module_path)
+    # UI adjustments and customization
+    self.ui.src_editor.gui = gui
+    self.ui.src_editor.set_component(class_name, module_name, module_path)
+    self.statusBar().hide()
 
-    edit_widget.show()
+    self.ui.textEditHelp.setStyleSheet("""
+    background-color: #f9f9f9;
+    color: #000000;
+            """)
 
-    # Bring window to top.
-    # QtCore.QCoreApplication().processEvents()
-    edit_widget.raise_()
-    edit_widget.activateWindow()
+    self.dock.show()
+    self.dock.raise_()
+    self.dock.activateWindow()
+
     return edit_widget
+
+
+def dockify(self, gui):
+    ### Dockify
+    self.dock_widget = QDockWidget('Edit Source', gui.main_window)
+    dock = self.dock_widget
+    dock.setWidget(self)
+
+    dock.setAllowedAreas(Qt.RightDockWidgetArea)
+    dock.setFloating(True)
+    dock.resize(1200, 700)
+
+    # Doesnt work
+    # dock_gui = self.dock_widget
+    # dock_gui.setWindowFlags(dock_gui.windowFlags() & ~QtCore.Qt.WindowStaysOnTopHint)
+
+    return dock
