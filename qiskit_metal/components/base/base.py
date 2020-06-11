@@ -522,7 +522,7 @@ class QComponent():
         if comp2_id not in self.design._components:
             # Component not in design.
             logger.warning(
-                f'No connection made. Component_id {self.comp2_id} not in design.')
+                f'No connection made. Component_id {comp2_id} not in design.')
             return net_id_rtn
 
         if self.design._components[self._id].pins[pin_name_self].net_id:
