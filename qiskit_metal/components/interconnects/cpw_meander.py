@@ -66,8 +66,10 @@ class CpwMeanderSimple(QComponent):
         For example, note that lead_direction_inverted can be 'false' or 'true'
     """
     default_options = Dict(
-        pin_start_name='',
-        pin_end_name='',
+        start_name = '',
+        end_name = '',
+        start_pin_name='',
+        end_pin_name='',
         total_length='7mm',
         chip='main',
         layer='1',
@@ -287,7 +289,12 @@ class CpwMeanderSimple(QComponent):
             A dictionary with keys `point` and `direction`.
             The values are numpy arrays with two float points each.
         """
-        connector = self.design.connectors[self.options.pin_start_name]
+        # TODO: fix
+        # component = self.design.components[self.options.start_name]
+        component = [component for id_, component in self.design.components.items() if component.name == self.options.start_name][0]
+
+        connector = self.component.pins[self.options.start_pin_name]
+
         return Connector(position=connector['middle'],
                          direction=connector['normal'])
 
@@ -298,7 +305,10 @@ class CpwMeanderSimple(QComponent):
             A dictionary with keys `point` and `direction`.
             The values are numpy arrays with two float points each.
         """
-        connector = self.design.connectors[self.options.pin_end_name]
+        component = [component for id_, component in self.design.components.items() if component.name == self.options.end_name][0]
+
+        connector = self.component.pins[self.options.end_pin_name]
+
         return Connector(position=connector['middle'],
                          direction=connector['normal'])
 
