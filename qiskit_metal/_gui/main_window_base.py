@@ -178,6 +178,8 @@ class QMainWindowExtensionBase(QMainWindow):
         """Show or hide all docks.
         """
         docks = [widget for widget in self.children() if isinstance(widget, QDockWidget)]
+        docks = list(filter(lambda x:  not x.windowTitle().lower().startswith('edit source'), docks))
+        # print(docks)
         docks += [widget for widget in self.gui.plot_win.children() if isinstance(widget, QDockWidget)] # specific
         dock_states = {dock: dock.isVisible() for dock in docks}
 
