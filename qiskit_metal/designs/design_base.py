@@ -270,6 +270,41 @@ class QDesign():
                 f'NetId was not added for {comp1_id}, {pin1_name}, {comp2_id}, {pin2_name} and will not be added to components.')
         return net_id
 
+    def get_component(self, search_name: str) -> 'QComponent':
+        """The design contains a dict of all the components, which is correlated to a net_list connections,
+           and elements table. The key of the components dict are unique integers.  This method will search 
+           through the dict to find the component with search_name.
+
+        Returns:
+            QComponent: A component within design with the name search_name.
+        """
+        alist = [(value.name, key)
+                 for (key, value) in self._components.items() if value.name == search_name]
+
+        length = len(alist)
+        if length == 1:
+            rtn = self._components[alist[0][1]]
+        elif length == 0:
+            self.logger.warning(
+                f'Name of component:{search_name} not found. Returned None')
+            rtn = None
+        else:
+            self.logger.warning(
+                f'Component:{search_name} is used multiple times, return the first component in list: (name, component_id) {str(alist)}')
+            rtn = self._components[alist[0][1]]
+
+        return rtn
+
+    def all_component_names_id(self):
+        """Get the text names and corresponding unique ID  of each component within this design.
+
+        Returns:
+            list[tuples]: Each tuple has the text name of component and UNIQUE integer ID for component.
+        """
+        alist = [(value.name, key)
+                 for (key, value) in self._components.items()]
+        return alist
+
     def delete_all_pins_for_component(self, comp_id: int) -> set:
         # remove component from self._qnet._net_info
         all_net_id_removed = self._qnet.delete_all_pins_for_component(comp_id)
