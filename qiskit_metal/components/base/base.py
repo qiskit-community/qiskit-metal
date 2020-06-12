@@ -163,7 +163,7 @@ class QComponent():
         """Returns unique class name based on the module:
 
         Returns:
-            str -- Example: 'qiskit_metal.components.qubits.transmon_pocket.TransmonPocket'
+            str -- Example: 'qiskit_metal._components.qubits.transmon_pocket.TransmonPocket'
         """
         return f'{cls.__module__}.{cls.__name__}'
 
@@ -201,7 +201,7 @@ class QComponent():
     @property
     def class_name(self) -> str:
         '''Return the full name of the class: the full module name with the class name.
-        e.g., qiskit_metal.components.qubits.QubitClass
+        e.g., qiskit_metal._components.qubits.QubitClass
         '''
         return self._class_name
 
@@ -224,7 +224,7 @@ class QComponent():
             Method will obtain an unique id for the component within a design, THEN add itself to design.
         '''
         self._id = self.design._get_new_qcomponent_id()
-        self.design.components[self.id] = self
+        self.design._components[self.id] = self
 
     @classmethod
     def get_template_options(cls,
@@ -508,8 +508,8 @@ class QComponent():
         # TODO: Add net?
     def connect_components_already_in_design(self, pin_name_self: str, comp2_id: int, pin2_name: str) -> int:
         """ WARNING: Do NOT use this method during generation of component instance.
-        This method is expecting self to be added to design.components dict.  More importantly,
-        the unique id of self component needs to be in design.components dict.
+        This method is expecting self to be added to design._components dict.  More importantly,
+        the unique id of self component needs to be in design._components dict.
         """
         net_id_rtn = 0
 
@@ -565,11 +565,11 @@ class QComponent():
                      chip: str = 'main',
                      **kwargs
                      ):
-                    #  subtract: Optional[bool] = False,
-                    #  layer: Optional[Union[int, str]] = 0,
-                    #  type: Optional[ElementTypes] = ElementTypes.positive,
-                    #  chip: Optional[str] = 'main',
-                    #  **kwargs):
+        #  subtract: Optional[bool] = False,
+        #  layer: Optional[Union[int, str]] = 0,
+        #  type: Optional[ElementTypes] = ElementTypes.positive,
+        #  chip: Optional[str] = 'main',
+        #  **kwargs):
         r"""Add elements.
 
         Takes any additional options in options.

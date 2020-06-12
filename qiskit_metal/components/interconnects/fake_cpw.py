@@ -48,13 +48,13 @@ class FakeCPW(QComponent):
         # Should the check be in the init such that the component isn't made if non-viable
         # pins are passed in?
         #
-        if self.design.components[component_start].pins[pin_start].net_id:
+        if self.design._components[component_start].pins[pin_start].net_id:
             print(
                 f'Given pin {component_start} {pin_start} already in use. Component not created.')
             log_error_easy(self.logger, post_text=f'\nERROR in building component "{self.name}"!'
                            'Inelligeable pin passed to function.\n')
             return
-        if self.design.components[component_end].pins[pin_end].net_id:
+        if self.design._components[component_end].pins[pin_end].net_id:
             print(
                 f'Given pin {component_end} {pin_end} already in use. Component not created.')
             log_error_easy(self.logger, post_text=f'\nERROR in building component "{self.name}"!'
@@ -62,8 +62,8 @@ class FakeCPW(QComponent):
             return
         #########################################################
 
-        starting_pin_dic = self.design.components[component_start].pins[pin_start]
-        ending_pin_dic = self.design.components[component_end].pins[pin_end]
+        starting_pin_dic = self.design._components[component_start].pins[pin_start]
+        ending_pin_dic = self.design._components[component_end].pins[pin_end]
 
         fake_cpw_line = draw.LineString(
             [starting_pin_dic['middle'], ending_pin_dic['middle']])

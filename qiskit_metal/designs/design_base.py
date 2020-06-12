@@ -145,13 +145,14 @@ class QDesign():
         self._metadata.update(new_metadata)
 
 #########PROPERTIES##################################################
-
-    @property
-    def components(self) -> Dict_[int, 'QComponent']:
-        '''
-        Returns Dict object that keeps track of all Metal components in the design
-        '''
-        return self._components
+    # User should not access _components directly
+    # TODO make interface with __getattr__ etc, magic methods
+    # @property
+    # def components(self) -> Dict_[int, 'QComponent']:
+    #     '''
+    #     Returns Dict object that keeps track of all Metal components in the design
+    #     '''
+    #     return self._components
 
     """     @property
     def pins(self):
@@ -236,7 +237,7 @@ class QDesign():
         '''
         df = self._qnet._net_info
         for (index, netID, comp_id, pin_name) in df.itertuples():
-            self.components[comp_id].pins[pin_name].net_id = 0
+            self._components[comp_id].pins[pin_name].net_id = 0
 
         # remove rows, but save column names
         self._qnet._net_info = self._qnet._net_info.iloc[0:0]
@@ -263,8 +264,8 @@ class QDesign():
             comp1_id, pin1_name, comp2_id, pin2_name)
         if net_id:
             # update the components to hold net_id
-            self.components[comp1_id].pins[pin1_name].net_id = net_id
-            self.components[comp2_id].pins[pin2_name].net_id = net_id
+            self._components[comp1_id].pins[pin1_name].net_id = net_id
+            self._components[comp2_id].pins[pin2_name].net_id = net_id
         else:
             logger.warning(
                 f'NetId was not added for {comp1_id}, {pin1_name}, {comp2_id}, {pin2_name} and will not be added to components.')
@@ -310,9 +311,9 @@ class QDesign():
         all_net_id_removed = self._qnet.delete_all_pins_for_component(comp_id)
 
         # reset all pins to be 0 (zero),
-        pins_dict = self.components[comp_id].pins
+        pins_dict = self._components[comp_id].pins
         for (key, value) in pins_dict.items():
-            self.components[comp_id].pins[key].net_id = 0
+            self._components[comp_id].pins[key].net_id = 0
 
         return all_net_id_removed
 
@@ -345,7 +346,7 @@ class QDesign():
         # thne just make without the checks on existing
         # TODO: Handle error and print nice statemetns
         # try catch log_simple_error
-        for name, obj in self.components.items():  # pylint: disable=unused-variable
+        for name, obj in self._components.items():  # pylint: disable=unused-variable
             try:  # TODO: performace?
                 obj.do_make()  # should we call this build?
             except:
@@ -373,7 +374,7 @@ class QDesign():
         for instance in filter(lambda k:
                                k.__class__.__name__ == component_class_name and
                                k.__class__.__module__ == component_module_name,
-                               self.components.values()):
+                               self._components.values()):
             instance.__class__ = new_class
 
         # Alternative, but reload will say not in sys.path
@@ -401,9 +402,9 @@ class QDesign():
         # and assuming id is created as being unique,
         # we don't care about the string (name) being unique.
 
-        if component_id in self.components:
+        if component_id in self._components:
             # do rename
-            self.components[component_id]._name = new_component_name
+            self._components[component_id]._name = new_component_name
             # Don't need to to this, using id now.  self._elements.rename_component(str(component_id), new_component_name)
             return True
         else:
@@ -430,7 +431,7 @@ class QDesign():
         """
 
         # Nothing to delete if name not in components
-        if not component_id in self.components:
+        if not component_id in self._components:
             self.logger.info('Called delete_component {component_id}, but such a \
                              component is not in the design dicitonary of components.')
             return True
@@ -454,7 +455,7 @@ class QDesign():
         # if is on the net list or not
 
         return_response = False
-        if component_id in self.components:
+        if component_id in self._components:
             # id in components dict
             # Need to remove pins before popping component.
             self._qnet.delete_all_pins_for_component(component_id)
@@ -463,7 +464,7 @@ class QDesign():
             self._elements.delete_component_id(component_id)
 
             # remove from design dict of components
-            self.components.pop(component_id, None)
+            self._components.pop(component_id, None)
         else:
             # if not in components dict
             logger.warning(
