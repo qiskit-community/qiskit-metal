@@ -485,6 +485,10 @@ class QMainWindowBaseHandler():
                 stylesheet = stylesheet.replace(
                     ':/metal-styles', str(self.path_stylesheets))
 
+                # if windows, double the slashes in the paths
+                if os.name.startswith('nt'):
+                    stylesheet = stylesheet.replace("\\", "\\\\")
+
                 self.main_window.setStyleSheet(stylesheet)
                 return True
 
