@@ -21,17 +21,21 @@ GUI front-end interface for Qiskit Metal in PyQt5.
 # some interesting paackages:
 # https://github.com/mfreiholz/Qt-Advanced-Docking-System
 # https://github.com/JackyDing/QtFlex5
-
+import shutil
+from pathlib import Path
 import logging
 import os
 from pathlib import Path
 from typing import List
+import importlib
+import importlib.util
+import sys
 
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import QEventLoop, Qt, QTimer, pyqtSlot
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (QApplication, QDockWidget, QFileDialog, QLabel,
-                             QMainWindow, QMessageBox)
+                             QMainWindow, QMessageBox, QInputDialog, QLineEdit)
 
 from ..designs.design_base import QDesign
 from ..toolbox_metal.import_export import load_metal_design
@@ -134,16 +138,33 @@ class QMainWindowExtension(QMainWindowExtensionBase):
             self.logger.info(f'Successfully set design. Loaded and done.')
 
     @catch_exception_slot_pyqt()
-    def full_refresh(self, _):
+    def full_refresh(self, _=None):
         self.logger.info(
             f'Force refresh of all widgets (does not rebuild components)...')
         self.gui.refresh()
 
     @catch_exception_slot_pyqt()
-    def rebuild(self, _):
+    def rebuild(self, _=None):
         self.logger.info(
             f'Rebuilding all components in the model (and refreshing widgets)...')
         self.gui.rebuild()
+
+    @catch_exception_slot_pyqt()
+    def new_qcomponent(self, _=None):
+        path = str(Path(self.gui.path_gui).parent /
+                   'components'/'user_components'/'my_qcomponent.py')
+        filename = QFileDialog.getSaveFileName(parent = None,
+                                               caption='Select a locaiton to save QComponent python file to',
+                                               directory=path,
+                                               initialFilter='*.py')[0]
+        if filename:
+            text, okPressed = QInputDialog.getText(
+                self, "Name your QComponent class", "Name your QComponent class:", QLineEdit.Normal, "MyQComponent")
+            if okPressed and text != '':
+                text_inst, okPressed = QInputDialog.getText(
+                    self, "Give a name to your instance of the class", "Name of instance:", QLineEdit.Normal, "qcomp1")
+                if okPressed and text_inst != '':
+                    self.gui.new_qcomponent_file(filename, text, text_inst)
 
 
 class MetalGUI(QMainWindowBaseHandler):
@@ -453,13 +474,16 @@ class MetalGUI(QMainWindowBaseHandler):
         """
         self.component_window.set_component(name)
 
-    def edit_component_source(self, name: str):
+    def edit_component_source(self, name: str = None):
         """For the selected component in the edit component widet (see gui.edit_component)
         open up the source editor.
 
         Arguments:
-            name {str} -- name of component to exmaine.
+            name {str} -- name of component to examine.
+            If none, just uses the currently selected component if there is one.
         """
+        if name:
+            self.edit_component(name)
         self.component_window.edit_source()
 
     def highlight_components(self, component_names: List[str]):
@@ -474,3 +498,52 @@ class MetalGUI(QMainWindowBaseHandler):
         # TODO: support more than 1 on zo   om
         assert len(components) == 1, "More than 1 is not yet supported "
         self.canvas.zoom_on_component(components[0])
+
+    def new_qcomponent_file(self, new_path: str, class_name: str, name_instance: str):
+        """Create a new qcomponent file based on template.
+        The template is stored in components/_template.py
+
+        Args:
+            path (str): the path to the file to save to
+            class_name (str): how you wnat ot call the class
+            name_instance (str): name of the instance of hte component to be created
+        """
+
+        # Copy template file
+        tpath = Path(self.path_gui)
+        tpath = tpath.parent/'components'/'_template.py'
+        shutil.copy(str(tpath), str(new_path))
+
+        # Rename the class name
+        path = Path(new_path)
+        text = path.read_text()
+        text = text.replace('MyQComponent', class_name)
+        # Open the file pointed to in text mode, write data to it, and close the file:
+        # An existing file of the same name is overwritten.
+        path.write_text(text)
+
+        ### Load module and class and create instance # TODO: make a function
+
+        # Add name
+        if not (path.parent is sys.path):
+            sys.path.insert(0, path.parent)
+
+        module = importlib.import_module(path.stem)
+
+        # # spec for module and give it name
+        # module_name = f"user_components.{path.stem}"
+        # spec_file = importlib.util.spec_from_file_location(module_name, str(path))
+        # spec_module = importlib.util.module_from_spec(spec_file) # module
+        # spec_file.loader.exec_module(spec_module) # Actual load module
+        # if 1: # add moudle info
+        #     # https://stackoverflow.com/questions/41215729/source-info-missing-from-python-classes-loaded-with-module-from-spec
+        #     sys.modules[module_name] = spec_file
+
+        cls = getattr(module, class_name) # get class from module
+        qcomp = cls(self.design, name_instance) # create instance
+
+        ### GUI
+        self.refresh_plot()
+        self.highlight_components([name_instance])
+        self.zoom_on_components([name_instance])
+        self.edit_component_source(name_instance)

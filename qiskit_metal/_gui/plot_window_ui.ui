@@ -78,6 +78,7 @@
    <addaction name="actionCoords"/>
    <addaction name="actionConnectors"/>
    <addaction name="separator"/>
+   <addaction name="actionRuler"/>
   </widget>
   <action name="actionPan">
    <property name="icon">
@@ -174,6 +175,18 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+R</string>
+   </property>
+  </action>
+  <action name="actionRuler">
+   <property name="icon">
+    <iconset resource="main_window_rc.qrc">
+     <normaloff>:/plot/ruler</normaloff>:/plot/ruler</iconset>
+   </property>
+   <property name="text">
+    <string>Ruler</string>
+   </property>
+   <property name="toolTip">
+    <string>Activate the ruler</string>
    </property>
   </action>
  </widget>

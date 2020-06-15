@@ -308,8 +308,7 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         self.scroll_to()
 
     def scroll_to(self, text: str = 'def make('):
-        """Scroll to the matched string
-        """
+        """Scroll to the matched string"""
         text = self.toPlainText()
         # index = text.find('def make(')
         index = re.search('def\s+make\(', text).start()

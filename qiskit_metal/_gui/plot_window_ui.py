@@ -70,12 +70,18 @@ class Ui_MainWindowPlot(object):
         icon5.addPixmap(QtGui.QPixmap(":/plot/refresh_plot"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionReplot.setIcon(icon5)
         self.actionReplot.setObjectName("actionReplot")
+        self.actionRuler = QtWidgets.QAction(MainWindowPlot)
+        icon6 = QtGui.QIcon()
+        icon6.addPixmap(QtGui.QPixmap(":/plot/ruler"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionRuler.setIcon(icon6)
+        self.actionRuler.setObjectName("actionRuler")
         self.toolBar.addAction(self.actionPan)
         self.toolBar.addAction(self.actionAuto)
         self.toolBar.addSeparator()
         self.toolBar.addAction(self.actionCoords)
         self.toolBar.addAction(self.actionConnectors)
         self.toolBar.addSeparator()
+        self.toolBar.addAction(self.actionRuler)
 
         self.retranslateUi(MainWindowPlot)
         self.actionAuto.triggered.connect(MainWindowPlot.auto_scale)
@@ -106,5 +112,7 @@ class Ui_MainWindowPlot(object):
         self.actionAuto.setShortcut(_translate("MainWindowPlot", "A"))
         self.actionReplot.setText(_translate("MainWindowPlot", "Replot"))
         self.actionReplot.setShortcut(_translate("MainWindowPlot", "Ctrl+R"))
+        self.actionRuler.setText(_translate("MainWindowPlot", "Ruler"))
+        self.actionRuler.setToolTip(_translate("MainWindowPlot", "Activate the ruler"))
 from .widgets.bases.expanding_toolbar import QToolBarExpanding
 from . import main_window_rc_rc

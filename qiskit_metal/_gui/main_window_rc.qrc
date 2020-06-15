@@ -1,5 +1,6 @@
 <RCC>
   <qresource>
+    <file alias="add">_imgs/v2-flat/add.png</file>
     <file alias="variables">_imgs/v2-flat/formula.png</file>
     <file alias="component-library">_imgs/v2-flat/book.png</file>
     <file alias="------rebuild">_imgs/rebuild.png</file>
@@ -40,6 +41,7 @@
   <qresource prefix="plot">
     <file alias="refresh_plot">_imgs/crayon.png</file>
     <file alias="----autozoom">_imgs/painting.png</file>
+    <file alias="ruler">_imgs/v2-flat/geometry.png</file>
     <file alias="autozoom">_imgs/v2-flat/expand.png</file>
     <file alias="----point">_imgs/signal.png</file>
     <file alias="point">_imgs/v2-flat/pin.png</file>

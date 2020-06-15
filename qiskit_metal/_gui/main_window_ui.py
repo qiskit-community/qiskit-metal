@@ -204,7 +204,7 @@ class Ui_MainWindow(object):
         self.dockComponent.setWidget(self.dockComponentCental)
         MainWindow.addDockWidget(QtCore.Qt.DockWidgetArea(1), self.dockComponent)
         self.dockLog = QtWidgets.QDockWidget(MainWindow)
-        self.dockLog.setMinimumSize(QtCore.QSize(0, 50))
+        self.dockLog.setMinimumSize(QtCore.QSize(78, 100))
         icon9 = QtGui.QIcon()
         icon9.addPixmap(QtGui.QPixmap(":/log"), QtGui.QIcon.Normal, QtGui.QIcon.On)
         self.dockLog.setWindowIcon(icon9)
@@ -393,6 +393,11 @@ class Ui_MainWindow(object):
         self.actionToggleDocks = QtWidgets.QAction(MainWindow)
         self.actionToggleDocks.setIcon(icon6)
         self.actionToggleDocks.setObjectName("actionToggleDocks")
+        self.actionNew_QComponent = QtWidgets.QAction(MainWindow)
+        icon26 = QtGui.QIcon()
+        icon26.addPixmap(QtGui.QPixmap(":/add"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionNew_QComponent.setIcon(icon26)
+        self.actionNew_QComponent.setObjectName("actionNew_QComponent")
         self.menuDesign.addSeparator()
         self.menuDesign.addAction(self.actionLabelDesign)
         self.menuDesign.addAction(self.actionLoad)
@@ -437,6 +442,8 @@ class Ui_MainWindow(object):
         self.toolBarDesign.addSeparator()
         self.toolBarDesign.addAction(self.action_full_refresh)
         self.toolBarDesign.addAction(self.actionRebuild)
+        self.toolBarDesign.addSeparator()
+        self.toolBarDesign.addAction(self.actionNew_QComponent)
         self.toolBarView.addAction(self.actionViewDummyLabel)
         self.toolBarView.addAction(self.actionDesign)
         self.toolBarView.addAction(self.actionComponent)
@@ -485,6 +492,7 @@ class Ui_MainWindow(object):
         self.actionVariables.triggered['bool'].connect(self.dockVariables.show)
         self.actionVariables.triggered.connect(self.dockVariables.raise_)
         self.actionToggleDocks.triggered.connect(MainWindow.toggle_all_docks)
+        self.actionNew_QComponent.triggered.connect(MainWindow.new_qcomponent)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -619,6 +627,9 @@ class Ui_MainWindow(object):
         self.actionToggleDocks.setText(_translate("MainWindow", "Toggle view"))
         self.actionToggleDocks.setToolTip(_translate("MainWindow", "ToggleDocks"))
         self.actionToggleDocks.setShortcut(_translate("MainWindow", "Meta+F, Ctrl+F"))
+        self.actionNew_QComponent.setText(_translate("MainWindow", "New QComponent"))
+        self.actionNew_QComponent.setToolTip(_translate("MainWindow", "Create a new QComponent file"))
+        self.actionNew_QComponent.setShortcut(_translate("MainWindow", "Ctrl+N, Meta+N"))
 from .widgets.all_components.table_view_all_components import QTableView_AllComponents
 from .widgets.bases.expanding_toolbar import QToolBarExpanding
 from .widgets.log_widget.log_metal import QTextEditLogger
