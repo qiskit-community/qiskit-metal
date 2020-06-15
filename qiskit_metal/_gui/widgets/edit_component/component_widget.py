@@ -128,7 +128,7 @@ def create_QTextDocument(doc: QtWidgets.QTextEdit) -> QtGui.QTextDocument:
         font.setStyleHint(QFont.Monospace)
     else:
         font.setStyleHint(QFont.Courier)
-    font.setFamily("courier")
+    font.setFamily("Courier")
     document.setDefaultFont(font)
 
     return document
