@@ -90,7 +90,7 @@ ELEMENT_COLUMNS = dict(
     # This is for Metal API use only.
     # To add a new element type, add a new key below.
     base=dict(
-        component=str,  # name of the component to which the element belongs
+        component=str,  # Unique ID of the component to which the element belongs
         name=str,  # name of the element
         geometry=object,  # shapely object
         layer=int,  # gds type of layer
@@ -485,7 +485,19 @@ class QElementTables(object):
         # TODO: is this the best way to do this, or is there a faster way?
         for table_name in self.tables:
             df = self.tables[table_name]
-            self.tables[table_name] = df[df.component != name]
+            self.tables[table_name] = df[df['component'] != name]
+            
+    def delete_component_id(self, component_id: int):
+        """Drop the components within the elements.tables
+
+        Args:
+            component_id (int): Unique number to describe the component.
+        """
+        for table_name in self.tables:
+            df = self.tables[table_name]
+            #self.tables[table_name] = df.drop(df[df['component'] == component_id].index)
+            self.tables[table_name] = df[df['component'] != component_id]
+
 
     def get_component(self, name: str, table_name: str = 'all') -> Union[GeoDataFrame, Dict_[str, GeoDataFrame]]:
         """Return the table for just a given component.
@@ -523,7 +535,7 @@ class QElementTables(object):
 
 
     def rename_component(self, name: str, new_name: str):
-        """Rename component by name
+        """Rename component by ID (integer) cast to string format.
 
         Arguments:
             name {str} -- Name of component (case sensitive)

@@ -48,13 +48,13 @@ class FakeCPW(QComponent):
         # Should the check be in the init such that the component isn't made if non-viable
         # pins are passed in?
         #
-        if self.design.components[component_start].pins[pin_start].net_id:
+        if self.design._components[component_start].pins[pin_start].net_id:
             print(
                 f'Given pin {component_start} {pin_start} already in use. Component not created.')
             log_error_easy(self.logger, post_text=f'\nERROR in building component "{self.name}"!'
                            'Inelligeable pin passed to function.\n')
             return
-        if self.design.components[component_end].pins[pin_end].net_id:
+        if self.design._components[component_end].pins[pin_end].net_id:
             print(
                 f'Given pin {component_end} {pin_end} already in use. Component not created.')
             log_error_easy(self.logger, post_text=f'\nERROR in building component "{self.name}"!'
@@ -62,8 +62,8 @@ class FakeCPW(QComponent):
             return
         #########################################################
 
-        starting_pin_dic = self.design.components[component_start].pins[pin_start]
-        ending_pin_dic = self.design.components[component_end].pins[pin_end]
+        starting_pin_dic = self.design._components[component_start].pins[pin_start]
+        ending_pin_dic = self.design._components[component_end].pins[pin_end]
 
         fake_cpw_line = draw.LineString(
             [starting_pin_dic['middle'], ending_pin_dic['middle']])
@@ -75,9 +75,9 @@ class FakeCPW(QComponent):
         self.add_pin('fake_cpw_end', ending_pin_dic.points, self.id, flip=True)
 
         # THEN ADD TO NETLIST - THIS SHOULD PROBABLY BE LARGELY HANDLED BY A DESIGN METHOD
-        self.design.generate_net_id_and_update_component(
+        self.design.connect_pins(
             component_start, pin_start, self.id, 'fake_cpw_start')
-        self.design.generate_net_id_and_update_component(
+        self.design.connect_pins(
             component_end, pin_end, self.id, 'fake_cpw_end')
 
         #start_netID = self.design._net_info.add_pins_to_table(component_start,pin_start,self.id,'fake_cpw_start')

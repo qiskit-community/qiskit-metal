@@ -584,7 +584,6 @@ class PlotCanvas(FigureCanvas):
 
     def highlight_components(self, component_names:List[str]):
         """Hihglight a list of components
-
         Args:
             component_names (List[str]): [description]
         """
@@ -594,25 +593,18 @@ class PlotCanvas(FigureCanvas):
             #self.logger.debug(f'Component {name}')
             if name in self.design.components:
                 component = self.design.components[name]
-
                 if 1: # highlight bounding box
-
                     bounds = component.geometry_bounds()
                     # bbox = Bbox.from_extents(bounds)
-
                     # Create a Rectangle patch TODO: move to settings
                     kw = dict(linewidth=1, edgecolor='r', facecolor=(1,0,0,0.05), zorder=100,ls='--')
                     rect = patches.Rectangle((0,0),0,0, **kw)
-
                     lbwh = [bounds[0],bounds[1], bounds[2]-bounds[0], bounds[3]-bounds[1]]
                     rect.set_bounds(*lbwh)
                     self._annotations['patch'] += [rect]
-
                     for ax in self.axes:
                         ax.add_patch(rect)
-
                 if 1: # Draw the pins
-
                     #for component_id in self.design.components.keys():
                     for pin_name in component.pins.keys():
                         #self.logger.debug(f'Pin {pin_name}')
@@ -621,13 +613,11 @@ class PlotCanvas(FigureCanvas):
                         n = pin['normal']
                         print(m, n)
                         print(pin_name)
-
                         if 1: # draw the arrows
                             kw = dict(color='r', mutation_scale=15, alpha = 0.75, capstyle='butt', ec='k',
                                     lw=0.5, zorder=100, clip_on=True)
                             arrow = patches.FancyArrowPatch(m, m+n*0.05, **kw)
                             self._annotations['patch'] += [arrow]
-
                             """A fancy arrow patch. It draws an arrow using the ArrowStyle.
                             The head and tail positions are fixed at the specified start and end points of the arrow,
                             but the size and shape (in display coordinates) of the arrow does not change when the axis
@@ -635,7 +625,6 @@ class PlotCanvas(FigureCanvas):
                             """
                             for ax in self.axes:
                                 ax.add_patch(arrow)
-
                         if 1: # draw names of pins
                             dist = 0.05
                             kw = dict(color='r',alpha=0.75, verticalalignment='center',
@@ -643,11 +632,8 @@ class PlotCanvas(FigureCanvas):
                                     clip_on=True, zorder=99, fontweight='bold')
                             text = ax.text(*(m+dist*n), pin_name, **kw)
                             text.set_bbox(dict(facecolor='#FFFFFF', alpha=0.75, edgecolor='#F0F0F0'))
-
                             self._annotations['text'] += [text]
-
         self.refresh()
-
 
 
 to_poly_patch = np.vectorize(PolygonPatch)
