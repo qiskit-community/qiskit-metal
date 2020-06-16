@@ -24,10 +24,10 @@ See the docstring of QComponent
 import logging
 import pprint
 import inspect
-#import os
+# import os
 from copy import deepcopy
 from typing import TYPE_CHECKING, Any, Iterable, List, Union, Dict as Dict_
-#from typing import Optional, TypeVar
+# from typing import Optional, TypeVar
 
 import pandas as pd
 import numpy as np
@@ -107,6 +107,8 @@ class QComponent():
         # TODO: handle, if the component name already exits and we want to overwrite,
         # then we need to delete its old elements at the end of the init before the make
 
+        self._design = design  # pointer to parent
+
         answer = self._is_name_used(name)
         if (answer):
             logger.warning(
@@ -114,8 +116,6 @@ class QComponent():
             return
         else:
             self._name = name
-
-        self._design = design  # pointer to parent
 
         self._id = 0
 
@@ -145,33 +145,6 @@ class QComponent():
         # Make the component geometry
         if make:
             self.do_make()
-
-    def _is_name_used(self, check_name: str) -> int:
-        """Used to check if name of component already exists.
-
-        Args:
-            check_name (str):  Name which user requested to apply to current component.
-
-        Raises:
-            Warning: If user has used this text version of the component name already, warning will be given to user.
-
-        Returns:
-            int: 0 if does not exist
-                component-id of component which is already using the name.
-
-        """
-        all_names = self._design.all_component_names_id()
-
-        search_result = [
-            item for item in all_names if check_name == item[0]]
-
-        # name is already being used.
-        if (len(search_result) == 0):
-            return 0
-        else:
-            logger.warning(
-                f'Called _is_name_used, component_id({search_result[0][0]}, id={search_result[0][1]}) is already using "{check-name}".')
-            return search_result[0][1]
 
     @classmethod
     def _gather_all_children_options(cls):
@@ -415,7 +388,32 @@ class QComponent():
 
         return self.design.parse_options(options if options else self.options)
 
+    def _is_name_used(self, check_name: str) -> int:
+        """Used to check if name of component already exists.
 
+        Args:
+            check_name (str):  Name which user requested to apply to current component.
+
+        Raises:
+            Warning: If user has used this text version of the component name already, warning will be given to user.
+
+        Returns:
+            int: 0 if does not exist
+                component-id of component which is already using the name.
+
+        """
+        all_names = self._design.all_component_names_id()
+
+        search_result = [
+            item for item in all_names if check_name == item[0]]
+
+        # name is already being used.
+        if (len(search_result) == 0):
+            return 0
+        else:
+            logger.warning(
+                f'Called _is_name_used, component_id({search_result[0][0]}, id={search_result[0][1]}) is already using "{check-name}".')
+            return search_result[0][1]
 ####################################################################################
 # Functions for handling of pins
 #
@@ -427,7 +425,6 @@ class QComponent():
 
 # We can probably combine the functions into one, have an input set if its from vector or
 # orthogonal points? Or a simpler consistent approach? What info is needed really?
-
 
     def add_pin_as_normal(self,
                           name: str,

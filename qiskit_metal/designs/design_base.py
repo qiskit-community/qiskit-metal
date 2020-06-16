@@ -40,6 +40,7 @@ from ..toolbox_metal.parsing import parse_options, parse_value
 from ..elements import QElementTables
 from ..toolbox_python.utility_functions import log_error_easy
 from .net_info import QNet
+from .interface_components import Components
 
 
 if TYPE_CHECKING:
@@ -122,8 +123,8 @@ class QDesign():
         self._template_renderer_options = DefaultOptionsRenderer()  # use for renderer
         self._qnet = QNet()
 
-        # Interface for user to view and edit some keys of self._components
-        #self.components = Components()
+        # Interface for user to view components by using name(text) for components, vs id.
+        self.components = Components(self._components)
 
     def _init_metadata(self) -> Dict:
         """Initialize default metadata dicitoanry
@@ -228,6 +229,8 @@ class QDesign():
             old_key {str} -- previous variable name
             new_key {str} -- new variable name
         """
+
+        # TODO: Change this use components with both id and name.
         keys = list(self._variables.keys())
         values = list(self._variables.values())
 
@@ -414,7 +417,7 @@ class QDesign():
             # name is already being used.
             if (len(search_result) != 0):
                 logger.warning(
-                    f'Called rename_component, component_id({search_result[0][0]}, id={search_result[0][1]}) is already using new-component-name.')
+                    f'Called design.rename_component, component_id({search_result[0][0]}, id={search_result[0][1]}) is already using {new_component_name}.')
                 return -2
 
             # do rename
