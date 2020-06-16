@@ -24,11 +24,13 @@ See the docstring of QComponent
 import logging
 import pprint
 import inspect
-import os
-import numpy as np
+#import os
 from copy import deepcopy
-from typing import TYPE_CHECKING, Any, Iterable, List, Optional, TypeVar, Union, Dict as Dict_
+from typing import TYPE_CHECKING, Any, Iterable, List, Union, Dict as Dict_
+#from typing import Optional, TypeVar
+
 import pandas as pd
+import numpy as np
 from ... import draw
 from ... import is_design, logger
 from ...draw import BaseGeometry
@@ -105,7 +107,7 @@ class QComponent():
         # TODO: handle, if the component name already exits and we want to overwrite,
         # then we need to delete its old elements at the end of the init before the make
 
-        answer = _is_name_used(name)
+        answer = self._is_name_used(name)
         if (answer):
             logger.warning(
                 f'The name {name} is used in component id={answer}.  Component was not made, nor added to design.')
@@ -158,7 +160,7 @@ class QComponent():
                 component-id of component which is already using the name.
 
         """
-        all_names = self.design.all_component_names_id()
+        all_names = self._design.all_component_names_id()
 
         search_result = [
             item for item in all_names if check_name == item[0]]
@@ -425,6 +427,7 @@ class QComponent():
 
 # We can probably combine the functions into one, have an input set if its from vector or
 # orthogonal points? Or a simpler consistent approach? What info is needed really?
+
 
     def add_pin_as_normal(self,
                           name: str,
