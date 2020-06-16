@@ -105,7 +105,14 @@ class QComponent():
         # TODO: handle, if the component name already exits and we want to overwrite,
         # then we need to delete its old elements at the end of the init before the make
 
-        self._name = name
+        answer = _is_name_used(name)
+        if (answer):
+            logger.warning(
+                f'The name {name} is used in component id={answer}.  Component was not made, nor added to design.')
+            return
+        else:
+            self._name = name
+
         self._design = design  # pointer to parent
 
         self._id = 0
@@ -136,6 +143,33 @@ class QComponent():
         # Make the component geometry
         if make:
             self.do_make()
+
+    def _is_name_used(self, check_name: str) -> int:
+        """Used to check if name of component already exists.
+
+        Args:
+            check_name (str):  Name which user requested to apply to current component.
+
+        Raises:
+            Warning: If user has used this text version of the component name already, warning will be given to user.
+
+        Returns:
+            int: 0 if does not exist
+                component-id of component which is already using the name.
+
+        """
+        all_names = self.design.all_component_names_id()
+
+        search_result = [
+            item for item in all_names if check_name == item[0]]
+
+        # name is already being used.
+        if (len(search_result) == 0):
+            return 0
+        else:
+            logger.warning(
+                f'Called _is_name_used, component_id({search_result[0][0]}, id={search_result[0][1]}) is already using "{check-name}".')
+            return search_result[0][1]
 
     @classmethod
     def _gather_all_children_options(cls):
@@ -191,7 +225,11 @@ class QComponent():
     def name(self, new_name: str):
         '''Rename the component. Change the design dictioanries as well.
         handle components. Delete and remake.'''
-        return self.design.rename_component(self.name, new_name)
+        return_code = self.design.rename_component(self.id, new_name)
+        if return_code != True:
+            logger.warning(
+                f'In design_base.name, the new_name={new_name} was not set. ')
+        return return_code
 
     @property
     def design(self) -> 'QDesign':
@@ -387,7 +425,6 @@ class QComponent():
 
 # We can probably combine the functions into one, have an input set if its from vector or
 # orthogonal points? Or a simpler consistent approach? What info is needed really?
-
 
     def add_pin_as_normal(self,
                           name: str,
@@ -591,7 +628,7 @@ class QComponent():
                         (default: {0})
             chip {str} -- Chip name (dafult: 'main')
         """
-        #assert (subtract and helper) == False, "The object can't be a subtracted helper. Please"\
+        # assert (subtract and helper) == False, "The object can't be a subtracted helper. Please"\
         #    " choose it to either be a helper or a a subtracted layer, but not both. Thank you."
 
         self.design.elements.add_elements(kind, self.id, elements, subtract=subtract,

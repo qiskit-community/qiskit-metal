@@ -95,7 +95,7 @@ class QDesign():
                                 During init of component, design class provides an unique id for each instance of
                                 component being added to design.  Note, if a component is removed from the design,
                                 the ID of removed component should not be used again.  However, if a component is
-                                renamed, then the ID should continute to be used.
+                                renamed with an unique name, then the ID should continute to be used.
         """
         self._qcomponent_latest_assigned_id = 0
 
@@ -121,6 +121,9 @@ class QDesign():
         # Can't really use this until DefaultOptionsRenderer.default_draw_substrate.color_plane is resolved.
         self._template_renderer_options = DefaultOptionsRenderer()  # use for renderer
         self._qnet = QNet()
+
+        # Interface for user to view and edit some keys of self._components
+        #self.components = Components()
 
     def _init_metadata(self) -> Dict:
         """Initialize default metadata dicitoanry
@@ -296,7 +299,7 @@ class QDesign():
 
         return rtn
 
-    def all_component_names_id(self):
+    def all_component_names_id(self) -> list:
         """Get the text names and corresponding unique ID  of each component within this design.
 
         Returns:
@@ -307,7 +310,7 @@ class QDesign():
         return alist
 
     def delete_all_pins_for_component(self, comp_id: int) -> set:
-        # remove component from self._qnet._net_info
+        """Remove component from self._qnet._net_info."""
         all_net_id_removed = self._qnet.delete_all_pins_for_component(comp_id)
 
         # reset all pins to be 0 (zero),
@@ -395,17 +398,29 @@ class QDesign():
             int -- Results:
                 1: True name is changed. (True)
                 -1: Failed, new component name exists.
-                -2: Failed, invalid new name
+                -2: Failed, invalid new name; it is already being used by another component.
                 -3: Failed, component_id does not exist.
         """
-        # Since we are using component_id,
-        # and assuming id is created as being unique,
-        # we don't care about the string (name) being unique.
+        # We are using component_id,
+        # and assuming id is created as being unique.
+        # We also want the string (name) to be unique.
 
         if component_id in self._components:
+            all_names = self.all_component_names_id()
+
+            search_result = [
+                item for item in all_names if new_component_name == item[0]]
+
+            # name is already being used.
+            if (len(search_result) != 0):
+                logger.warning(
+                    f'Called rename_component, component_id({search_result[0][0]}, id={search_result[0][1]}) is already using new-component-name.')
+                return -2
+
             # do rename
             self._components[component_id]._name = new_component_name
-            # Don't need to to this, using id now.  self._elements.rename_component(str(component_id), new_component_name)
+            self._elements.rename_component(
+                str(component_id), new_component_name)
             return True
         else:
             logger.warning(
