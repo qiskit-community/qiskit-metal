@@ -34,7 +34,7 @@ Child of 'standard' transmon pocket
 import numpy as np
 from qiskit_metal import draw, Dict
 from qiskit_metal import is_true
-from qiskit_metal.components.base.qubit import BaseQubit
+from qiskit_metal.components.qubits.transmon_pocket import TransmonPocket
 
 class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
     '''

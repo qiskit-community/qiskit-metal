@@ -14,7 +14,7 @@
 
 from qiskit_metal import draw, Dict, QComponent
 from qiskit_metal import is_true
-from qiskit_metal.draw import CAP_STYLE, JOIN_STYLE
+from shapely.geometry import CAP_STYLE, JOIN_STYLE
 
 
 class CircleRaster(QComponent):
