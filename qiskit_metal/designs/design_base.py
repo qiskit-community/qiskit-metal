@@ -124,7 +124,7 @@ class QDesign():
         self._qnet = QNet()
 
         # Interface for user to view components by using name(text) for components, vs id.
-        self.components = Components(self._components)
+        self.components = Components(self)
 
     def _init_metadata(self) -> Dict:
         """Initialize default metadata dicitoanry

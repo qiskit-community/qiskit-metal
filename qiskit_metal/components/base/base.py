@@ -130,7 +130,7 @@ class QComponent():
         # analysis results
         self.metadata = Dict()
 
-        # Status: usedd to handle building of a compoentn and checking if it succeedded or failed.
+        # Status: used to handle building of a component and checking if it succeedded or failed.
         self.status = 'not built'
         # Create an empty dict, which will populated by component designer.
         self.pins = Dict()
@@ -399,7 +399,7 @@ class QComponent():
 
         Returns:
             int: 0 if does not exist
-                component-id of component which is already using the name.
+            component-id of component which is already using the name.
 
         """
         all_names = self._design.all_component_names_id()
