@@ -143,13 +143,6 @@ color: rgb(255, 255, 255);</string>
          </layout>
         </item>
         <item>
-         <widget class="MetalSourceEditor" name="src_editor">
-          <property name="plainText">
-           <string>Source comes here</string>
-          </property>
-         </widget>
-        </item>
-        <item>
          <layout class="QHBoxLayout" name="horizontalLayout">
           <property name="bottomMargin">
            <number>0</number>
@@ -198,18 +191,14 @@ color: rgb(255, 255, 255);</string>
             </property>
            </widget>
           </item>
-          <item>
-           <widget class="QPushButton" name="full_screen">
-            <property name="text">
-             <string>Full screen</string>
-            </property>
-            <property name="icon">
-             <iconset resource="main_window_rc.qrc">
-              <normaloff>:/plot/autozoom</normaloff>:/plot/autozoom</iconset>
-            </property>
-           </widget>
-          </item>
          </layout>
+        </item>
+        <item>
+         <widget class="MetalSourceEditor" name="src_editor">
+          <property name="plainText">
+           <string>Source comes here</string>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QLineEdit" name="lineSrcPath">
@@ -400,22 +389,6 @@ p, li { white-space: pre-wrap; }
     <hint type="destinationlabel">
      <x>428</x>
      <y>277</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>full_screen</sender>
-   <signal>clicked()</signal>
-   <receiver>EditSource</receiver>
-   <slot>showFullScreen()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>619</x>
-     <y>516</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>518</x>
-     <y>0</y>
     </hint>
    </hints>
   </connection>
