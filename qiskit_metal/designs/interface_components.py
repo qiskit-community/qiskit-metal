@@ -204,46 +204,21 @@ class Components:
         """Give iterator for design._components
 
         Returns:
-            iter: for design._components , the keys are unique intergers, value is QComponent.
+            iter: for design._components , the keys are names of the components.
         """
-        # return iter(self._design._components)
-        self.name_list = [(value.name, key)
-                          for (key, value) in self.components.items()]
-        self.name_list_idx = 0
-        return iter(self._design._components)
+        for value in self._design._components.values():
+            new_key = value.name
+            yield new_key
 
-    def __next__(self):
-        if (len(self.components) == 0):
-            raise StopIteration
-
-        rtn_key = self.name_list[self.name_list_idx][0]  # string
-
-        true_key = self.name_list[self.name_list_idx][1]  # int
-        rtn_value = self._design._components[true_key]  # QComponent
-        self.name_list_idx += 1
-        return (rtn_key, rtn_value)
-
-    #     pass
-
-        #     #     def __iter__(self):
-        #     #         """
-        #     #         This method is called when an iterator is required for a container.
-        #     #         This method should return a new iterator object that can iterate over
-        #     #         all the objects in the container. For mappings, it should iterate over
-        #     #         the keys of the container.
-        #     #         Iterator objects also need to implement this method; they are required
-        #     #         to return themselves. For more information on iterator objects, see
-        #     #         Iterator Types.
-        #     #         """
-        #     # #     #### Down the line for serializaton and pickling. Skip for now
-        #     # #     def __getstate__(self):
-        #     # #         """
-        #     # #         Serialize the object.
-        #     # #         """
-        #     # #         # something like
-        #     # #         return self.__actual_place_I_store_components__.__getstate__()
-        #     # #     def __setstate__(self, state):
-        #     # #         """
-        #     # #         Deserialize the object.
-        #     # #         """
-        #     # #         pass
+        #     #### Down the line for serializaton and pickling. Skip for now
+        #     def __getstate__(self):
+        #         """
+        #         Serialize the object.
+        #         """
+        #         # something like
+        #         return self.__actual_place_I_store_components__.__getstate__()
+        #     def __setstate__(self, state):
+        #         """
+        #         Deserialize the object.
+        #         """
+        #         pass
