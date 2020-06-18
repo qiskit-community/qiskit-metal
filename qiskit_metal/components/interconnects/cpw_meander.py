@@ -19,7 +19,8 @@ options = Dict(pin_start_name='Q1_a',
                    asymmetry='0 um')
                )
 
-class Connector: #Shouldn't this class be in the connector folder?
+
+class Connector:  # Shouldn't this class be in the connector folder?
     r"""A simple class to define a connector as a 2D point
     with a 2D direction in the XY plane.
     All values stored as np.ndarray of parsed floats.
@@ -31,7 +32,6 @@ class Connector: #Shouldn't this class be in the connector folder?
                                               Has unit norm.
     """
     # TODO: Maybe move this class out of here, more general.
-
 
     def __init__(self, position: np.ndarray, direction: np.ndarray):
         self.position = position
@@ -66,10 +66,12 @@ class CpwMeanderSimple(QComponent):
         For example, note that lead_direction_inverted can be 'false' or 'true'
     """
     default_options = Dict(
-        start_name = '',
-        end_name = '',
-        start_pin_name='',
-        end_pin_name='',
+        start_name='',  # component name connected to start pin
+        end_name='',  # component name conencted to end pin
+        start_pin_name='',  # Name of pin connected to start_name
+        end_pin_name='',  # Name of pin connected to end_name
+        pin_start=0,  # If not connected, zero, otherwise holds the net_id.
+        pint_end=0,  # If not connected, zero, otherwise holds the net_id.
         total_length='7mm',
         chip='main',
         layer='1',
@@ -85,6 +87,7 @@ class CpwMeanderSimple(QComponent):
             asymmetry='0 um',
         )
     )
+
     def make(self):
         # TODO: Later, consider performance of instantiating all these Connector classes
 
@@ -109,7 +112,7 @@ class CpwMeanderSimple(QComponent):
         length_meander = total_length - (meander.lead_end + meander.lead_start)
         if snap:
             # handle y distance
-            length_meander -= 0#(end.position - endm.position)[1]
+            length_meander -= 0  # (end.position - endm.position)[1]
 
         meandered_pts = self.meander_fixed_length(
             startm, endm, length_meander, meander)
@@ -180,8 +183,9 @@ class CpwMeanderSimple(QComponent):
         dist = start.position - end.position
         if snap:
             # TODO: Not general, depends on the outside (to fix)
-            length_direct = abs(norm(np.dot(dist,forward)))
-            length_excess = abs(norm(np.dot(dist,sideways))) # in the vertical direction
+            length_direct = abs(norm(np.dot(dist, forward)))
+            # in the vertical direction
+            length_excess = abs(norm(np.dot(dist, sideways)))
             # print(length_excess)
         else:
             length_direct = norm(dist)
@@ -195,7 +199,8 @@ class CpwMeanderSimple(QComponent):
 
         # length of segmnet between two root points
         length_segment = (length - length_excess -
-                          (length_direct - meander_number*spacing) # the last little bit
+                          # the last little bit
+                          (length_direct - meander_number*spacing)
                           - 2*asymmetry
                           ) / meander_number
         length_perp = (length_segment - spacing) / 2.  # perpendicular length
@@ -205,7 +210,8 @@ class CpwMeanderSimple(QComponent):
             if abs(asymmetry) > length_perp:
                 print('Trouble')
                 length_segment -= (abs(asymmetry) - length_perp)/2
-                length_perp = (length_segment - spacing) / 2.  # perpendicular length
+                length_perp = (length_segment - spacing) / \
+                    2.  # perpendicular length
 
         # USES ROW Vectors
         # const vec. of unit normals
@@ -291,7 +297,8 @@ class CpwMeanderSimple(QComponent):
         """
         # TODO: fix
         # component = self.design.components[self.options.start_name]
-        component = [component for id_, component in self.design.components.items() if component.name == self.options.start_name][0]
+        component = [component for id_, component in self.design.components.items(
+        ) if component.name == self.options.start_name][0]
 
         connector = self.component.pins[self.options.start_pin_name]
 
@@ -305,7 +312,8 @@ class CpwMeanderSimple(QComponent):
             A dictionary with keys `point` and `direction`.
             The values are numpy arrays with two float points each.
         """
-        component = [component for id_, component in self.design.components.items() if component.name == self.options.end_name][0]
+        component = [component for id_, component in self.design.components.items(
+        ) if component.name == self.options.end_name][0]
 
         connector = self.component.pins[self.options.end_pin_name]
 
@@ -338,7 +346,8 @@ class CpwMeanderSimple(QComponent):
         line = draw.LineString(pts)
         layer = p.layer
         width = p.trace_width
-        self.options._actual_length = str(line.length) + ' ' +self.design.get_units()
+        self.options._actual_length = str(
+            line.length) + ' ' + self.design.get_units()
         self.add_elements('path',
                           {'trace': line},
                           width=width,
