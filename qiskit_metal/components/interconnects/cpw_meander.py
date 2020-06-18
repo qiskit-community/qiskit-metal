@@ -66,12 +66,14 @@ class CpwMeanderSimple(QComponent):
         For example, note that lead_direction_inverted can be 'false' or 'true'
     """
     default_options = Dict(
-        start_name='',  # component name connected to start pin
-        end_name='',  # component name conencted to end pin
-        start_pin_name='',  # Name of pin connected to start_name
-        end_pin_name='',  # Name of pin connected to end_name
+        start_name='',
+        end_name='',
+        start_pin_name='',  # Name of pin used for pin_start
+        end_pin_name='',  # Name of pin used for pin_end
+        component_start=0,  # If not connected, zero, otherwise component_id
+        component_end=0,  # If not connected, zero, otherwise component_id
         pin_start=0,  # If not connected, zero, otherwise holds the net_id.
-        pint_end=0,  # If not connected, zero, otherwise holds the net_id.
+        pin_end=0,  # If not connected, zero, otherwise holds the net_id.
         total_length='7mm',
         chip='main',
         layer='1',
