@@ -210,6 +210,16 @@ class Components:
             new_key = value.name
             yield new_key
 
+    def items(self) -> list:
+        """Make the class behave "like" a dict.
+
+        Returns:
+            list: [description]
+        """
+        all_items = [(value.name, value)
+                     for (key, value) in self.components.items()]
+        return all_items
+
         #     #### Down the line for serializaton and pickling. Skip for now
         #     def __getstate__(self):
         #         """
