@@ -230,6 +230,16 @@ class Components:
 
         return all_items
 
+    def key(self) -> list:
+        """Make a class behave "like" a dict.
+
+        Returns:
+            list: List of just the keys.
+        """
+        all_items = [value.name for (key, value) in self.components.items()]
+
+        return all_items
+
         #     #### Down the line for serializaton and pickling. Skip for now
         #     def __getstate__(self):
         #         """
