@@ -37,6 +37,7 @@ from ...draw import BaseGeometry
 from ...toolbox_python.attr_dict import Dict
 from ._parsed_dynamic_attrs import ParsedDynamicAttributes_Component
 from ...draw import Vector
+from ...toolbox_python.display import format_dict_ala_z
 
 
 __all__ = ['QComponent']
@@ -386,7 +387,7 @@ class QComponent():
         See `self.parse_value` for more infomation.
         """
 
-        return self.design.parse_options(options if options else self.options)
+        return self.design.parse_value(options if options else self.options)
 
     def _is_name_used(self, check_name: str) -> int:
         """Used to check if name of component already exists.
@@ -636,11 +637,19 @@ class QComponent():
 
     def __repr__(self, *args):
         b = '\033[94m\033[1m'
+        b1 = '\033[95m\033[1m'
         e = '\033[0m'
-        return f"""Component {b}{self.name}{e}:
- class  : {b}{self.__class__.__name__:<22s}{e}     at {hex(id(self))}
- module : {b}{self.__class__.__module__}{e}
- options: \n{pprint.pformat(self.options)}"""
+
+        # id = {hex(id(self))}
+        # options = pprint.pformat(self.options)
+
+        options = format_dict_ala_z(self.options)
+        return f"""
+ {b}name:    {b1}{self.name}{e}
+ {b}class:   {b1}{self.__class__.__name__:<22s}{e}
+ {b}options: {e}\n{options}
+ {b}module:  {b1}{self.__class__.__module__}{e}
+ {b}id:      {b1}{self.id}{e}"""
 
     ############################################################################
     # Geometry handling of created elements
@@ -653,7 +662,7 @@ class QComponent():
         """
         return self.design.elements.get_element_types()
 
-    def elements_dict(self, element_type: str) -> Dict_[str, BaseGeometry]:
+    def qgeometry_dict(self, element_type: str) -> Dict_[str, BaseGeometry]:
         """
         Returns a dict of element geoemetry (shapely geometry) of the component
         as a python dict, where the dict keys are the names of the elements
@@ -665,10 +674,10 @@ class QComponent():
         Returns:
             List[BaseGeometry] or None -- Returns None if an error in the name of the element type (ie. table)
         """
-        if self.design.elements.check_element_type(element_type):
-            return self.design.elements.get_component_geometry_dict(self.id, element_type)
+        if element_type == 'all' or self.design.elements.check_element_type(element_type):
+            return self.design.elements.get_component_geometry_dict(self.name, element_type)
 
-    def elements_list(self, element_type: str = 'all') -> List[BaseGeometry]:
+    def qgeometry_list(self, element_type: str = 'all') -> List[BaseGeometry]:
         """
         Returns a list of element geoemetry (shapely geometry) of the component
         as a python list of shapely geometries.
@@ -683,7 +692,7 @@ class QComponent():
         if element_type == 'all' or self.design.elements.check_element_type(element_type):
             return self.design.elements.get_component_geometry_list(self.id, element_type)
 
-    def elements_table(self,  element_type: str) -> pd.DataFrame:
+    def qgeometry_table(self,  element_type: str) -> pd.DataFrame:
         """
         Returns the entire element table for the component.
 
@@ -693,10 +702,10 @@ class QComponent():
         Returns:
             pd.DataFrame or None -- Element table for the component. Returns None if an error in the name of the element type (ie. table)
         """
-        if self.design.elements.check_element_type(element_type):
-            return self.design.elements.get_component(self.id, element_type)
+        if element_type == 'all' or self.design.elements.check_element_type(element_type):
+            return self.design.elements.get_component(self.name, element_type)
 
-    def geometry_bounds(self):
+    def qgeometry_bounds(self):
         """
         Returns a tuple containing (minx, miny, maxx, maxy) bound values
         for the bounds of the component as a whole.
@@ -707,7 +716,7 @@ class QComponent():
         bounds = self.design.elements.get_component_bounds(self.id)
         return bounds
 
-    def elements_plot(self, ax: 'matplotlib.axes.Axes' = None, plot_kw: dict = None) -> List:
+    def qgeometry_plot(self, ax: 'matplotlib.axes.Axes' = None, plot_kw: dict = None) -> List:
         """    Draw all the elements of the component (polys and path etc.)
 
         Keyword Arguments:
@@ -721,9 +730,9 @@ class QComponent():
             Suppose you had a component called q1:
 
                 fig, ax = draw.mpl.figure_spawn()
-                q1.elements_plot(ax)
+                q1.qgeometry_plot(ax)
         """
-        elements = self.elements_list()
+        elements = self.qgeometry_list()
         plot_kw = {}
         draw.mpl.render(elements, ax=ax, kw=plot_kw)
         return elements

@@ -22,4 +22,4 @@ Matplotlib draw utility functions for shapely objects, for elements, and for com
 # pylint: disable=ungrouped-imports
 
 # allow full access to all functions and code in the toolbox
-from ..renderers.renderer_mpl.toolbox_mpl import *
+from ..renderers.renderer_mpl.mpl_toolbox import *

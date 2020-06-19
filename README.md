@@ -1,11 +1,7 @@
 [![Build Status](https://travis.ibm.com/IBM-Q-Restricted-Research/qiskit-metal.svg?token=p3Ak3Pz4fK3rsU99vhd2&branch=master)](https://travis.ibm.com/IBM-Q-Restricted-Research/qiskit-metal)
 
 # Qiskit Metal [![](https://badges.frapsoft.com/os/v1/open-source.png?v=103)](https://github.com/zlatko-minev/pyEPR) [![](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/zlatko-minev/pyEPR)
->  Quantum VLSI and Sims 
-
-## Docs and how to use
-
-(Under construction)
+>  Quantum Creator: VLSI and Sims 
 
 ## Installation
 
@@ -16,7 +12,7 @@ Then Qiskit Metal can either be installed using a [conda environment](https://do
 
 *NOTE:* on Windows, the conda environment is strongly recommended because Shapely is difficult to install directly via pip.
 
-### Conda environment setup (preffered)
+### Conda environment setup (preferred setup)
 
 To use a conda environment, assuming [you have conda installed](https://docs.conda.io/projects/conda/en/latest/user-guide/install/), we will install the qiskit_metal package locally. 
 
@@ -35,7 +31,7 @@ python -m pip install -e .
 ```
 This will create a new environemnt with name `<env_name>`, which you can choose as `metal`. We will then activate it. Fianlly, in it, we will install the local package. If you follow this approach, each time you want to use the package, or launch a jupyter notebook, you MUST first run `conda activate <env_name>`. See what a [conda environment is](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html)
 
-### No conda: Virtual environment setup
+### Without conda: Virtual environment setup (alternative setup)
 
 2. To use a Python virtual environment, execute these commands in the top-level of the repository:
 
@@ -54,6 +50,10 @@ On Windows, replace `source <virtual_env_path>/bin/activate` with `.\<virtual_en
 Here are some things to consider when setting up a development environment:
 
 1. If using a virtual environment, make sure `pip` is up to date. In initial environment testing, PyQt5 was not installable with recent (but not the latest) versions of `pip`.
+
+## Docs and how to use
+
+(Under construction)
 
 ## Authors and Citation
 

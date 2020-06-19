@@ -20,3 +20,4 @@ Created on Tue May 14 17:13:40 2019
 """
 
 from .attr_dict import Dict
+from .display import format_dict_ala_z, Headings

@@ -19,10 +19,10 @@
 converted to v0.2: Thomas McConkey 2020-04-23
 '''
 
-from copy import deepcopy
-from ... import draw
-from ...toolbox_python.attr_dict import Dict
-from ..base.qubit import BaseQubit
+import numpy as np
+from qiskit_metal import draw, Dict
+from qiskit_metal import is_true
+from qiskit_metal.components.base.qubit import BaseQubit
 
 class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
     '''

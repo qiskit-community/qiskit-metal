@@ -35,7 +35,8 @@ from .... import logger
 from ...component_widget_ui import Ui_ComponentWidget
 from ...utility._handle_qt_messages import catch_exception_slot_pyqt
 from .source_editor_widget import create_source_edit_widget
-from .table_model_options import QTableModel_Options
+# from .table_model_options import QTableModel_Options
+from .tree_model_options import QTreeModel_Options
 
 if TYPE_CHECKING:
     from ...main_window import MetalGUI, QMainWindowExtension
@@ -128,7 +129,7 @@ def create_QTextDocument(doc: QtWidgets.QTextEdit) -> QtGui.QTextDocument:
         font.setStyleHint(QFont.Monospace)
     else:
         font.setStyleHint(QFont.Courier)
-    font.setFamily("courier")
+    font.setFamily("Courier")
     document.setDefaultFont(font)
 
     return document
@@ -147,7 +148,8 @@ class ComponentWidget(QTabWidget):
     """
 
     def __init__(self, gui: 'MetalGUI', parent: QtWidgets.QWidget):
-        # Q Main WIndow
+        # Parent is usually a dock component
+
         super().__init__(parent)
 
         # Parent GUI related
@@ -161,14 +163,13 @@ class ComponentWidget(QTabWidget):
 
         self.component_name = None  # type: str
 
-        # Parametr model and table view
-        self.model = QTableModel_Options(gui, self, view = self.ui.tableView)
-        self.ui.tableView.setModel(self.model)
-        self.ui.tableView.setVerticalScrollMode(
+        # Parameter model and table view
+        self.model = QTreeModel_Options(self, gui, self.ui.treeView)
+        self.ui.treeView.setModel(self.model)
+        self.ui.treeView.setVerticalScrollMode(
             QAbstractItemView.ScrollPerPixel)
-        self.ui.tableView.setHorizontalScrollMode(
+        self.ui.treeView.setHorizontalScrollMode(
             QAbstractItemView.ScrollPerPixel)
-
 
         # Source Code
         # palette = self.ui.textSource.palette()
@@ -183,9 +184,33 @@ class ComponentWidget(QTabWidget):
         self._html_css_lex = None  # type: pygments.formatters.html.HtmlFormatter
         self.src_widgets = []  # type: List[QtWidgets.QWidget]
 
+
         # Help stylesheet
         document = self.ui.textHelp.document()
         document.setDefaultStyleSheet(textHelp_css_style)
+
+        self.fixup_ui()
+
+    def fixup_ui(self):
+        """For some reasonthe following i couldnt do in the ui successfully, so doing here.
+        """
+        # Clicked
+        # This signal is emitted when the button is activated (i.e., pressed down then released
+        # while the mouse cursor is inside the button), when the shortcut key is typed, or when
+        # click() or animateClick() is called. Notably, this signal is not emitted if you call
+        #  setDown(), setChecked() or toggle().
+
+        # for some reason i need to clear the stylsheet. must be a bug inthis pyqt versino
+        s1 = self.ui.btn_edit_src.styleSheet()
+        s2 = self.ui.pushButtonEditSource.styleSheet()
+        self.ui.btn_edit_src.setStyleSheet('')
+        self.ui.pushButtonEditSource.setStyleSheet('')
+        # connect
+        self.ui.btn_edit_src.clicked.connect(self.edit_source)
+        self.ui.pushButtonEditSource.clicked.connect(self.edit_source)
+        # restore stylsheet
+        self.ui.btn_edit_src.setStyleSheet(s1)
+        self.ui.pushButtonEditSource.setStyleSheet(s2)
 
     @property
     def design(self):
@@ -224,7 +249,7 @@ class ComponentWidget(QTabWidget):
         self._set_help()
 
         self.force_refresh()
-        self.ui.tableView.autoresize_columns()  # resize columns
+        self.ui.treeView.autoresize_columns()  # resize columns
 
     def force_refresh(self):
         self.model.refresh()
@@ -301,10 +326,13 @@ class ComponentWidget(QTabWidget):
         textEdit.ensureCursorVisible()
     # @catch_exception_slot_pyqt()
 
-    def edit_source(self, parent=None):
+    def edit_source(self, *args, parent=None):
         """Calls the edit source window
         gui.component_window.edit_source()
         """
+
+        self.logger.debug(f"edit_source: {args}")
+
         if self.component is not None:
             class_name = self.component.__class__.__name__
             module_name = self.component.__class__.__module__

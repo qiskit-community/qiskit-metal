@@ -18,10 +18,21 @@ based on pyqode.python: https://github.com/pyQode/pyqode.python
 @author: Zlatko Minev 2020
 """
 import importlib
+import inspect
 import logging
-from typing import TYPE_CHECKING
+import pydoc
+import re
+import warnings
+from typing import TYPE_CHECKING, List, Tuple, Union
 
+import pygments
+import PyQt5
+from pygments import highlight
+from pygments.formatters import HtmlFormatter
+from pygments.lexers import get_lexer_by_name
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import QTextCursor
+from PyQt5.QtWidgets import QTextEdit
 
 try:
     from pyqode.python.backend import server
@@ -29,6 +40,10 @@ try:
     from pyqode.python import modes as pymodes, panels as pypanels, widgets
     from pyqode.python.folding import PythonFoldDetector
     from pyqode.python.backend.workers import defined_names
+    from pyqode.core.api import TextHelper
+    # The above uses jedi
+    import jedi
+    import os
 
 except ImportError as e:
     # TODO: report in a more visible way.
@@ -40,6 +55,8 @@ except ImportError as e:
 
 if TYPE_CHECKING:
     from ...main_window import MetalGUI, QMainWindowExtension
+
+warnings.filterwarnings("ignore", 'pyqode')
 
 
 class MetalSourceEditor(widgets.PyCodeEditBase):
@@ -65,25 +82,25 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         self = gui.component_window.src_widgets[-1].ui.src_editor
 
         Note that thtehre can be more than one edit widet open.
-        A refernec is kept to all of them in `gui.component_window.src_widgets`
-
-    MRO:
-        qiskit_metal._gui.widgets.edit_component.source_editor.MetalSourceEditor,
-        pyqode.python.widgets.code_edit.PyCodeEditBase,
-        pyqode.core.api.code_edit.CodeEdit,
-        PyQt5.QtWidgets.QPlainTextEdit,
-        PyQt5.QtWidgets.QAbstractScrollArea,
-        PyQt5.QtWidgets.QFrame,
-        PyQt5.QtWidgets.QWidget,
-        PyQt5.QtCore.QObject,
-        sip.wrapper,
-        PyQt5.QtGui.QPaintDevice,
-        sip.simplewrapper,
-        object
+        A refernece is kept to all of them in `gui.component_window.src_widgets`
     """
     # TODO: remember previous state, save to config like gui and recall when created
     # save font size too.  remmeber window properties and zoom level
     # TODO: Add error slot handling to all call funcitons below
+
+    # MRO:
+    # qiskit_metal._gui.widgets.edit_component.source_editor.MetalSourceEditor,
+    # pyqode.python.widgets.code_edit.PyCodeEditBase,
+    # pyqode.core.api.code_edit.CodeEdit,
+    # PyQt5.QtWidgets.QPlainTextEdit,
+    # PyQt5.QtWidgets.QAbstractScrollArea,
+    # PyQt5.QtWidgets.QFrame,
+    # PyQt5.QtWidgets.QWidget,
+    # PyQt5.QtCore.QObject,
+    # sip.wrapper,
+    # PyQt5.QtGui.QPaintDevice,
+    # sip.simplewrapper,
+    # object
 
     def __init__(self, parent, **kwargs):
         # Foe help, see
@@ -118,11 +135,14 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         self.add_separator()
 
         # --- python specific panels
-        self.panels.append(pypanels.QuickDocPanel(), api.Panel.Position.BOTTOM)
+        self.quick_doc_panel = pypanels.QuickDocPanel()
+        self.panels.append(self.quick_doc_panel, api.Panel.Position.BOTTOM)
 
-        # --- core modes
+        ############################################################################
+        # core modes
         self.modes.append(modes.CaretLineHighlighterMode())
-        self.modes.append(modes.CodeCompletionMode())
+        self.code_completion_mode = modes.CodeCompletionMode()
+        self.modes.append(self.code_completion_mode)
         self.modes.append(modes.ExtendedSelectionMode())
         self.modes.append(modes.FileWatcherMode())
         self.modes.append(modes.OccurrencesHighlighterMode())
@@ -132,11 +152,22 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         self.modes.append(modes.ZoomMode())
 
         # ---  python specific modes
+        # Help: https://pythonhosted.org/pyqode.python/pyqode.python.modes.html
+
+        # Comments/uncomments a set of lines using Ctrl+/.
         self.modes.append(pymodes.CommentsMode())
-        self.modes.append(pymodes.CalltipsMode())
+
+        # Shows function calltips.
+        # This mode shows function/method call tips in a QToolTip using jedi.Script.call_signatures().
+        # https://pythonhosted.org/pyqode.python/pyqode.python.modes.html#calltipsmode
+        self.calltips_mode = pymodes.CalltipsMode()
+        self.calltips_mode.tooltipDisplayRequested.connect(self.calltip_called)
+        self.modes.append(self.calltips_mode)
+
         self.modes.append(pymodes.PyFlakesChecker())
         # self.modes.append(pymodes.PEP8CheckerMode())
-        self.modes.append(pymodes.PyAutoCompleteMode())
+        self.auto_complete_mode = pymodes.PyAutoCompleteMode()
+        self.modes.append(self.auto_complete_mode)
         self.modes.append(pymodes.PyAutoIndentMode())
         self.modes.append(pymodes.PyIndenterMode())
         self.modes.append(pymodes.PythonSH(self.document()))
@@ -145,6 +176,11 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         # --- handle modifed text in other application
         # self.textChanged.connect(self.check_modified) # user function
 
+        # Options
+        # self.file.safe_save  = False
+
+        self.script = jedi.Script('')  # get overwritten in set
+
         self.style_me()
 
     def style_me(self):
@@ -152,13 +188,15 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
     background-color: #f9f9f9;
     color: #000000;
             """)
-        self.zoomIn(5)
+        self.zoomIn(3)
 
     @property
     def logger(self) -> logging.Logger:
         return self.gui.logger
 
     def reload_file(self):
+        encoding = self.file.encoding
+        self.file.reload(encoding)
         self.file.reload()
         # self.update()
         self.logger.info('Source file reloaded.')
@@ -171,7 +209,42 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         self.logger.info('Source file saved.')
 
     def open_file(self, filename: str):
-        self.file.open(filename)
+        """Open a file
+
+        Args:
+            filename (str): [description]
+
+        **Troubleshooting**
+
+            If you get a strange permission error when opening hte file, but it otherwsie sems to more or less work fine
+            it is because you probably opened in sudo before and now are not running in sudo.
+
+            If the error is about Jedi:
+                PermissionError: [Errno 13] Permission denied: '/Users/zlatko.minevibm.com/Library/Caches/Jedi/CPython-36-33/...
+
+            Then there is an issue with the cache of self.file.
+            The solution is to go in manuaally and delete the bad folder.
+            I.e., in my case delete this Jedi folder:
+                /Users/zlatko.minevibm.com/Library/Caches/Jedi/
+
+            This can be also fixed using:
+                import jedi
+                jedi.settings.cache_directory
+
+            I have tried to fix this using the permisison code below
+        """
+
+        ####################
+        # Handle JEDI cache fridge bug: zkm
+        # handle firdge possible error with permission of cache folder
+        # TODO: may need to test more
+        jedipath = jedi.settings.cache_directory
+        if os.path.isdir(jedipath):  # dir already exists
+            if not os.access(jedipath, os.W_OK):  # check that we have wrtite privs
+                jedi.settings.cache_directory += '1'
+        ######
+
+        self.file.open(filename)  # , use_cached_encoding=False)
 
     def reload_module(self):
         if self.component_module_name:
@@ -182,25 +255,337 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
                 f'Reloaded {self.component_class_name} from {self.component_module_name}')
 
     def rebuild_components(self):
+        self.logger.debug('Source file rebuild started.')
         self.save_file()
+        # print('saved')
         self.reload_module()
+        # print('reloaded')
         # TODO: only rebuild those that have this type
         # for right now i will do all of tehm just for ease
         self.gui.rebuild()
+        # print('rebuild')
         self.logger.info('Source file executed rebuild.')
+
+    def hide_help(self):
+        """Hide the RHS sideebdar"""
+        splitter = self.edit_widget.ui.splitter
+
+        sizes = splitter.sizes()
+        total = sum(sizes)
+        splitter.setSizes([total, 0]) # hide the right side
 
     @property
     def edit_widget(self):
-        return self.parent().parent()
+        return self.parent().parent().parent().parent()
 
     def set_component(self, class_name: str, module_name: str,
                       module_path: str):
+        """Main function that set the components to be edited.
+
+        Args:
+            class_name (str): [description]
+            module_name (str): [description]
+            module_path (str): [description]
+        """
         self.component_class_name = class_name
         self.component_module_name = module_name
         self.component_module_path = module_path
 
+        self.logger.debug(f'Opening file {module_path}')
         self.open_file(module_path)
 
         edit_widget = self.edit_widget
-        edit_widget.ui.lineSrcPath.setText(module_path)
-        edit_widget.setWindowTitle(f'{class_name}: Edit Source')
+        win_title = f'Edit Source: {class_name}'
+        edit_widget.setWindowTitle(win_title)
+        edit_widget.dock_widget.setWindowTitle(win_title)
+        edit_widget.ui.lineSrcPath.hide()  # wasted space
+        edit_widget.statusBar().showMessage(str(module_path))
+        # edit_widget.ui.lineSrcPath.setText(module_path)
+
+        # Must be utf-8
+        self.script = jedi.Script(self.toPlainText(), path=self.file.path)
+
+        self.scroll_to()
+
+    def scroll_to(self, text: str = 'def make('):
+        """Scroll to the matched string
+        """
+        text = self.toPlainText()
+        # index = text.find('def make(')
+        index = re.search('def\s+make\(', text).start()
+
+        if index:
+            cursor = self.textCursor()
+            cursor.setPosition(index)
+            cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.MoveAnchor)
+            self.setTextCursor(cursor)
+            # self.ensureCursorVisible()
+            self.centerCursor()
+
+    def get_word_under_cursor(self) -> Tuple[PyQt5.QtGui.QTextCursor, dict]:
+        """Returns the cursor to select word udner it and info
+
+        Returns:
+            [type]: [description]
+        """
+        tc = TextHelper(self).word_under_cursor(
+            select_whole_word=True)  # type: PyQt5.QtGui.QTextCursor
+        word_info = {
+            'code': self.toPlainText(),
+            'line': tc.blockNumber(),
+            'column': tc.columnNumber(),
+            'path': self.file.path,
+            'encoding': self.file.encoding
+        }
+        # print(word_info)
+        return tc, word_info
+
+    def get_definitions_under_cursor(self, offset=0) -> List['jedi.api.classes.Definition']:
+        """Get jedi
+
+        Args:
+            offset (int, optional): Columns offset, such as -1. Defaults to 0.
+        Returns:
+            A possibly empty list
+        """
+        _, word_info = self.get_word_under_cursor()
+        p = word_info
+
+        self.script = jedi.Script(p['code'],
+                                  line=1+p['line'],
+                                  column=p['column']+offset,
+                                  path=p['path'], encoding=p['encoding'])
+
+        try:
+            name_defns = self.script.infer(
+                line=1+word_info['line'], column=word_info['column']+offset)
+        except ValueError:
+            print('Jedi did not find')
+            name_defns = []
+
+        return name_defns
+
+    def set_help_doc(self, definitions: List['jedi.api.classes.Definition']):
+        if len(definitions) < 1:
+            return
+
+        if len(definitions) > 2: # just take the first 2
+            definitions = definitions[:2]
+
+        csss = []
+        text = ''
+        for defn in definitions:
+            # can check is .in_builtin_module() == True and not do
+            if defn.full_name not in ['builtins.NoneType']:
+                # For each found definition give the full docs.
+                newtext, css = definition_generate_html(defn)
+                text += newtext+'<br><br>'
+                csss += [css]
+
+        if len(csss) > 0:
+            textEdit = self.edit_widget.ui.textEditHelp  # type: QTextEdit
+            textEdit.document().setDefaultStyleSheet(csss[0])
+            textEdit.setHtml(text)
+            textEdit.moveCursor(QtGui.QTextCursor.Start)
+
+    def set_doc_from_word_under_cursor(self, offset=0):
+        self.definitions = self.get_definitions_under_cursor(offset=offset)
+        self.set_help_doc(self.definitions)
+
+    def mouseDoubleClickEvent(self, event: QtGui.QMouseEvent):
+        """Double click leads to jedi inspection"""
+        if event.button() == QtCore.Qt.LeftButton:
+            self.set_doc_from_word_under_cursor(offset=0)
+
+    def calltip_called(self, info: dict):
+        """When a call tip is request
+        Args:
+            info (dict): Example:
+            {'call.module.name': 'shapely.geometry.geo',
+             'call.call_name': 'box',
+             'call.params': ['param minx', 'param miny', 'param maxx', 'param maxy', 'param ccw=True'],
+             'call.index': 0,
+             'call.bracket_start': [115, 12]}
+        """
+        self.set_doc_from_word_under_cursor(offset=-1)
+
+        # Old method, before jedi
+        #     # Get the object form the info dict
+        #     obj = doc_get_object_from_info(info)
+        #     text = doc_generate_html(obj)
+
+css_base = """
+  p {
+      line-height: 1em;   /* within paragraph */
+      margin-bottom: 1em; /* between paragraphs */
+      padding-left: 0.25em;
+  }
+  .docstring{
+    padding-left: 0.25em;
+  }
+  .myheading{
+      font-weight:bold;
+      color:#038000;
+  }
+  """
+
+def definition_generate_html(defn: 'jedi.api.classes.Definition'):
+    signatures = defn.get_signatures()
+    doc_text = defn.docstring()
+    doc_text = doc_text.replace(defn.name, f'<span style="color: #0900ff">{defn.name}</span>', 1)
+
+    source_code, source_html, html_css_lex = definition_get_source(defn)
+
+    css = css_base + html_css_lex
+
+    text = \
+f"""
+<h4 class="myheading">Documentation</h4>
+<pre class="docstring">{doc_text}</pre>
+
+<hr>
+<h4 class="myheading">About</h4>
+<p><span class="myheading">Full name:</span> {defn.full_name} &nbsp; (<span class="myheading">Type:</span> {defn.type})</p>
+<p><span class="myheading">Module name:</span> {defn.module_name}</p>
+<p><span class="myheading">Module path:</span> {defn.module_path}</p>
+
+<hr>
+<h4 class="myheading">Source</h4>
+{source_html}
+"""
+
+    return text, css
+
+
+def definition_get_source(defn: 'jedi.api.classes.Definition', formatter:HtmlFormatter=None):
+
+    # only in  > 0.17
+    if hasattr(defn, 'get_definition_end_position'):
+        end = defn.get_definition_end_position()
+        start = defn.get_definition_start_position()
+    else:
+        end = get_definition_end_position(defn)
+        start = get_definition_start_position(defn)
+
+    if end is None or start is None:
+        return '', '', ''
+
+    num_lines = end[0] - start[0]
+
+    #### HIGHOGH SOURCE
+    lexer = get_lexer_by_name("python", stripall=True)
+    if not formatter:
+        formatter = HtmlFormatter(linenos='inline')
+    html_css_lex = formatter.get_style_defs('.highlight')
+
+    source_code = defn.get_line_code(0, num_lines)
+    source_html = highlight(source_code, lexer, formatter)
+
+    return source_code, source_html, html_css_lex
+
+
+
+
+def get_definition_end_position(self):
+    """
+    The (row, column) of the end of the definition range. Rows start with
+    1, columns start with 0.
+    :rtype: Optional[Tuple[int, int]]
+    """
+    if self._name.tree_name is None:
+        return None
+    definition = self._name.tree_name.get_definition()
+    if definition is None:
+        return self._name.tree_name.end_pos
+    if self.type in ("function", "class"):
+        last_leaf = definition.get_last_leaf()
+        if last_leaf.type == "newline":
+            return last_leaf.get_previous_leaf().end_pos
+        return last_leaf.end_pos
+    return definition.end_pos
+
+def get_definition_start_position(self):
+    """
+    The (row, column) of the start of the definition range. Rows start with
+    1, columns start with 0.
+    :rtype: Optional[Tuple[int, int]]
+    """
+    if self._name.tree_name is None:
+        return None
+    definition = self._name.tree_name.get_definition()
+    if definition is None:
+        return self._name.start_pos
+    return definition.start_pos
+
+
+
+
+
+
+################################################################################################################################
+# UNUSED
+def doc_generate_html(obj) -> str:
+    # Generate formatted fdoc
+    # Get docstring
+    # doc = inspect.getdoc(obj)
+    # if doc:
+    #     doc = inspect.cleandoc(doc)
+    doc = pydoc.HTMLDoc()
+    doc_text = doc.docroutine(obj)
+
+    # Get file
+    try:
+        file = inspect.getfile(obj)
+    except TypeError:
+        file = ''
+
+    # Get signature
+    try:
+        signature = inspect.signature(obj)
+        signature_full = str(signature)
+    except (ValueError, TypeError):
+        signature_full = ''
+
+    objtype = str(type(obj))
+
+    source = inspect.getsource(obj)  # TODO: format
+
+    text = """
+<style type="text/css">
+  p {
+  line-height: 1em;   /* within paragraph */
+  margin-bottom: 1em; /* between paragraphs */
+  }
+  .signature_type {
+    color:#AA2b01;
+    font-weight:bold;
+  }
+  .myheading{
+      font-weight:bold;
+      color:#AA2b01;
+  }
+</style>
+"""+f"""
+{doc_text}
+
+<p><span class="signature_type"> file:</span> {file}</p>
+
+<hr>
+<h5 class="myheading">Source code:</h5>
+<p>
+{source}
+</p>
+"""
+
+    return text
+
+
+def doc_get_object_from_info(info: dict) -> object:
+
+    module_name = info['call.module.name']
+    functi_name = info['call.call_name']
+
+    module = importlib.import_module(module_name)
+    obj = getattr(module, functi_name)
+
+    return obj

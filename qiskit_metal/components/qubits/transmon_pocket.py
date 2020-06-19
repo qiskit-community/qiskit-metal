@@ -37,11 +37,11 @@ converted to v0.2: Thomas McConkey 2020-03-24
 
 '''
 
-from copy import deepcopy
-from ... import draw
-from ...toolbox_python.attr_dict import Dict
-from ..base.qubit import BaseQubit
 import numpy as np
+from qiskit_metal import draw, Dict
+from qiskit_metal import is_true
+from qiskit_metal.components.base.qubit import BaseQubit
+
 class TransmonPocket(BaseQubit):
     '''
     Description:
@@ -146,13 +146,10 @@ class TransmonPocket(BaseQubit):
 
 
     def make(self):
-        """
-        Create the geometry from the parsed options.
-        """
+        """Define the way the options are turned into QGeometry."""
         self.make_pocket()
         self.make_connection_pads()
 
-#####MAKE SHAPELY POLYGONS########################################################################
     def make_pocket(self):
         '''Makes standard transmon in a pocket.'''
 
@@ -196,7 +193,7 @@ class TransmonPocket(BaseQubit):
 
     def make_connection_pad(self, name:str):
         '''
-        Makes individual connector
+        Makes n individual connector
 
         Args:
         -------------
@@ -255,4 +252,3 @@ class TransmonPocket(BaseQubit):
             start = points[-2],
             end = points[-1],
             width = cpw_width, parent = self.name,  flip=False)
-

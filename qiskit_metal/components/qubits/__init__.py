@@ -16,6 +16,3 @@
 @auhtor: Zlatko Minev, Thomas McConkey, ... (IBM)
 @date: 2019
 """
-from .transmon_pocket import TransmonPocket
-from .transmon_pocket_cl import TransmonPocketCL
-from .transmon_cross import TransmonCross

@@ -15,11 +15,8 @@
 """File contains dictionary for Rectangle and Rectangle_fromPAS and their make().
 """
 
-
-from ...toolbox_python.attr_dict import Dict
-from ..base import QComponent
-from ... import draw
-
+from qiskit_metal import draw, Dict, QComponent
+from qiskit_metal import is_true
 
 class Rectangle(QComponent):
     """A single configurable square."""

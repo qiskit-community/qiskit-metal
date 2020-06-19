@@ -19,19 +19,30 @@ Created on Wed Apr 22 08:55:40 2020
 @author: Jeremy D. Drysdale
 """
 
-import os, fnmatch, sys, subprocess
+import os
+import fnmatch
+import sys
+import subprocess
 
 if __name__ == '__main__':
-    listOfFiles = os.listdir('.')
-    pattern = "test*.py"
+    LIST_OF_FILES = os.listdir('.')
+    PATTERN = "test*.py"
     print("====> Running the entire test suite now...")
-    for entry in listOfFiles:
-        if fnmatch.fnmatch(entry, pattern):
-            if (entry != sys.argv[0]):
+    ERRORS_EXIST = 0
+    for entry in LIST_OF_FILES:
+        if fnmatch.fnmatch(entry, PATTERN):
+            if entry != sys.argv[0]:
                 print("Running ", entry, " tests...")
                 cmd = 'python ' + entry
-                subprocess.call(cmd, shell=True)
+                error_back = subprocess.call(cmd, shell=True)
+                if error_back != 3221225477: # access violation
+                    ERRORS_EXIST += error_back
                 print("")
 
     print("All tests complete")
-    print("Scroll up to review the results")
+    if ERRORS_EXIST == 0:
+        print("Congratulations, all the tests PASSED!")
+        print("Have a nice day...")
+    else:
+        print("One or more tests have FAILED!")
+        print("Scroll up to review the results")
