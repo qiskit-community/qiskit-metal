@@ -214,10 +214,20 @@ class Components:
         """Make the class behave "like" a dict.
 
         Returns:
-            list: [description]
+            list: List of (key, value) pairs.
         """
         all_items = [(value.name, value)
                      for (key, value) in self.components.items()]
+        return all_items
+
+    def value(self) -> list:
+        """Make a class behave "like" a dict.
+
+        Returns:
+            list: List of just the values.
+        """
+        all_items = [value for (key, value) in self.components.items()]
+
         return all_items
 
         #     #### Down the line for serializaton and pickling. Skip for now
