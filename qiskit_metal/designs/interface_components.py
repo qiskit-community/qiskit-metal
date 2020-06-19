@@ -230,7 +230,7 @@ class Components:
 
         return all_items
 
-    def key(self) -> list:
+    def keys(self) -> list:
         """Make a class behave "like" a dict.
 
         Returns:
