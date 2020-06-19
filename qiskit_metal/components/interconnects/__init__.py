@@ -17,5 +17,4 @@
 @date: 2019
 """
 
-from .fake_cpw import FakeCPW
-from .cpw_meander import CpwMeanderSimple
+
