@@ -412,8 +412,8 @@ class QComponent():
         if (len(search_result) == 0):
             return 0
         else:
-            logger.warning(
-                f'Called _is_name_used, component_id({search_result[0][0]}, id={search_result[0][1]}) is already using "{check-name}".')
+            logger.error(
+                f'Called _is_name_used, component_id({search_result[0][0]}, id={search_result[0][1]}) is already using "{check_name}".')
             return search_result[0][1]
 ####################################################################################
 # Functions for handling of pins
