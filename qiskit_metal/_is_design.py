@@ -26,17 +26,17 @@ File contains utility functions for check for object types.
 from . import Dict
 
 def is_design(obj):
-    """Check if an object is a Metal Design, i.e., an instance of
-     `QDesign`.
+    """
+    Check if an object is a Metal Design, i.e., an instance of `QDesign`.
 
     The problem is that the `isinstance` built-in method fails
     when this module is reloaded.
 
     Arguments:
-        obj {[object]} -- Test this object
+        obj (object) -- Test this object
 
     Returns:
-        [bool] -- True if is a Metal design
+        bool (bool) -- True if is a Metal design
     """
     if isinstance(obj, Dict):
         return False
@@ -45,16 +45,17 @@ def is_design(obj):
 
 
 def is_component(obj):
-    """Check if an object is an instance of `QComponent`.
+    """
+    Check if an object is an instance of `QComponent`.
 
     The problem is that the `isinstance` built-in method fails
     when this module is reloaded.
 
     Arguments:
-        obj {[object]} -- Test this object
+        obj (object) -- Test this object
 
     Returns:
-        [bool] -- True if is a Metal object
+        bool (bool) -- True if is a Metal object
     """
     if isinstance(obj, Dict):
         return False
