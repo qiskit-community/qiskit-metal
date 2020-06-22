@@ -32,11 +32,11 @@ def is_design(obj):
     The problem is that the `isinstance` built-in method fails
     when this module is reloaded.
 
-    Arguments:
-        obj (object) -- Test this object
+    Args:
+        obj (object): Test this object
 
     Returns:
-        bool (bool) -- True if is a Metal design
+        bool (bool): True if is a Metal design
     """
     if isinstance(obj, Dict):
         return False
@@ -51,11 +51,11 @@ def is_component(obj):
     The problem is that the `isinstance` built-in method fails
     when this module is reloaded.
 
-    Arguments:
-        obj (object) -- Test this object
+    Args:
+        obj (object): Test this object
 
     Returns:
-        bool (bool) -- True if is a Metal object
+        bool (bool): True if is a Metal object
     """
     if isinstance(obj, Dict):
         return False
