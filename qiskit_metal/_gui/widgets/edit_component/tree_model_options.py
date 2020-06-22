@@ -155,7 +155,7 @@ class QTreeModel_Options(QAbstractItemModel):
 
     # NOTE: __init__ takes in design as extra parameter compared to table_model_options!
 
-    def __init__(self, parent: 'ComponentWidget', gui: 'MetalGUI', view:QTreeView):
+    def __init__(self, parent: 'ComponentWidget', gui: 'MetalGUI', view: QTreeView):
         super().__init__(parent=parent)
         self._component_widget = parent
         self.logger = gui.logger
@@ -186,7 +186,7 @@ class QTreeModel_Options(QAbstractItemModel):
     # TODO: Check if new nodes have been added. If so, rebuild model.
 
     def auto_refresh(self):
-        return #TODO:
+        return  # TODO:
         newRowCount = self.rowCount(self.createIndex(0, 0))
         if self._rowCount != newRowCount:
             self.modelReset.emit()
@@ -363,7 +363,8 @@ class QTreeModel_Options(QAbstractItemModel):
                         # These days we tend to have all options be strings, so not so releavnt, but keep here for now
                         # to allow extended use in te future
                         if not isinstance(old_value, str):
-                            processed_value, used_ast = parse_param_from_str(value)
+                            processed_value, used_ast = parse_param_from_str(
+                                value)
                             self.logger.info(f'  Used paring:  Old value type={type(old_value)}; '
                                              f'New value type={type(processed_value)};  New value={processed_value};'
                                              f'; Used ast={used_ast}')
