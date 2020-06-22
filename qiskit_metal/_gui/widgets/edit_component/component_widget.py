@@ -184,7 +184,6 @@ class ComponentWidget(QTabWidget):
         self._html_css_lex = None  # type: pygments.formatters.html.HtmlFormatter
         self.src_widgets = []  # type: List[QtWidgets.QWidget]
 
-
         # Help stylesheet
         document = self.ui.textHelp.document()
         document.setDefaultStyleSheet(textHelp_css_style)
@@ -219,7 +218,8 @@ class ComponentWidget(QTabWidget):
     @property
     def component(self):
         if self.design:
-            return self.design.components.get(self.component_name, None)
+            return self.design.components[self.component_name]
+            # return self.design.components.get(self.component_name, None)
 
     def set_component(self, name: str):
         """
