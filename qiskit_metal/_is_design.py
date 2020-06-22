@@ -16,8 +16,13 @@
 # pylint: disable=wrong-import-position
 
 """
-Done for order of imports
+Created 2019
+
+File contains utility functions for check for object types.
+
+@author: Zlatko K. Minev
 """
+
 from . import Dict
 
 def is_design(obj):
