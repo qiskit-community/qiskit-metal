@@ -433,14 +433,14 @@ class QDesign():
 
         return True
 
-    def delete_component(self, component_id: int, force=False) -> bool:
+    def delete_component(self, component_name: str, force=False) -> bool:
         """Deletes component and pins attached to said component.
         If no component by that name is present, then just return True
         If component has dependencices return false and do not delete,
         unless force=True.
 
         Arguments:
-            component_id {int} -- ID of component to delete
+            component_name {str} -- Name of component to delete
 
         Keyword Arguments:
             force {bool} -- force delete component even if it has children (default: {False})
@@ -450,6 +450,7 @@ class QDesign():
         """
 
         # Nothing to delete if name not in components
+        component_id = self.components[component_name].id
         if not component_id in self._components:
             self.logger.info('Called delete_component {component_id}, but such a \
                              component is not in the design dicitonary of components.')
