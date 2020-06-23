@@ -359,7 +359,7 @@ class QDesign():
             except:
                 print(f'ERORROR in building {name}')
                 log_error_easy(
-                    self.logger, post_text=f'\nERROR in rebuilding component "{name}"!\n')
+                    self.logger, post_text=f'\nERROR in rebuilding component "{name}={obj.name}"!\n')
 
     def reload_component(self, component_module_name: str, component_class_name: str):
         """Reload the module and class of a given componetn and update

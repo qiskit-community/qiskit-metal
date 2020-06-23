@@ -43,6 +43,17 @@ class FakeCPW(QComponent):
         component_end = self.options['component_end']
         pin_end = self.options['pin_end']
 
+        # Check if component was deleted from design.
+        if component_end not in self.design._components:
+            self.logger.warning(
+                f'Key={component_end, } not a key in design._components. {self.name} NOT built.')
+            return
+
+        if component_start not in self.design._components:
+            self.logger.warning(
+                f'Key={component_start} not a key in design._components. {self.name} NOT built.')
+            return
+
         # NOTE: This code could be moved to a parent class specifically handling components
         # which take pins as inputs, eg. QInterconnect
         # Should the check be in the init such that the component isn't made if non-viable
