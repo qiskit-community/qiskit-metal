@@ -26,7 +26,7 @@ A bunch of top level stuff.
 
 
 Default Metal Options
----------------
+---------------------
 
 .. autosummary::
     :toctree: ../stubs/
@@ -35,7 +35,7 @@ Default Metal Options
 
 
 Default Options Renderer
----------------
+------------------------
 
 .. autosummary::
     :toctree: ../stubs/

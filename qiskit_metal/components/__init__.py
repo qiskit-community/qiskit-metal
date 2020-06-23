@@ -21,6 +21,8 @@ Component (:mod:`qiskit_metal.components`)
 
 A bunch of components.
 
+UNDER CONSTRUCTION
+
 
 Base Components
 ---------------
