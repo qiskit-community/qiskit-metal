@@ -19,7 +19,11 @@ Component (:mod:`qiskit_metal.components`)
 
 .. currentmodule:: qiskit_metal.components
 
-A bunch of components.
+Module containing all Qiskit Metal components.
+
+@date: 2019
+
+@author: Zlatko Minev (IBM)
 
 UNDER CONSTRUCTION
 
