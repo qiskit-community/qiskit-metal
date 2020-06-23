@@ -14,7 +14,7 @@
 
 """
 =================================================
-Quantum Circuits (:mod:`qiskit_metal.components`)
+Component (:mod:`qiskit_metal.components`)
 =================================================
 
 .. currentmodule:: qiskit_metal.components
