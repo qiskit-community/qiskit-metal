@@ -13,14 +13,6 @@
 # that they have been altered from the originals.
 
 """
-==============================================================
-Junction components (:mod:`qiskit_metal.components.junctions`)
-==============================================================
-
-.. currentmodule:: qiskit_metal.components.junctions
-
-Sadly this is empty.
-
+@auhtor: Zlatko Minev
+@date: 2019
 """
-
-#from ..base.junction import BaseJunction
