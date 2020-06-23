@@ -13,8 +13,32 @@
 # that they have been altered from the originals.
 
 """
-@auhtor: Zlatko Minev
-@date: 2019
+=================================================
+Component (:mod:`qiskit_metal.components`)
+=================================================
+
+.. currentmodule:: qiskit_metal.components
+
+A bunch of components.
+
+
+Base Components
+---------------
+
+.. autosummary::
+    :toctree: ../stubs/
+
+    QComponent
+
+
+Submodules
+----------
+
+.. autosummary::
+    :toctree:
+
+    junctions
+
 """
 
 from .. import is_component

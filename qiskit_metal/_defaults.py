@@ -30,9 +30,9 @@ from .toolbox_python.attr_dict import Dict
 # TODO: Handle access to missing options - ie throw a warningor rror message
 class DefaultMetalOptions(Dict):
     """
-    Container for the default options used in:
+    `DefaultMetalOptions` is the container for the default options used in:
         1. Components - each time a new component is registered (instantiated).
-        2. The metal code codebase, in functions such as drawing and in qdesign base
+        2. The metal code codebase, in functions such as drawing and in qdesign base  
 
     Args:
         generic (Dict): Dictionary of options (default: None)
@@ -88,7 +88,7 @@ class DefaultMetalOptions(Dict):
 # Can't really use this until default_draw_substrate.color_plane is resolved.
 class DefaultOptionsRenderer():
     """
-    Encapsulate generic data used throughout qiskit metal classes for renderers.
+    `DefaultOptionsRenderer` is the class that  encapsulate generic data used throughout qiskit metal classes for renderers.
 
     This class is a skeleton and is expected to be updated when the renderer is updated.
 

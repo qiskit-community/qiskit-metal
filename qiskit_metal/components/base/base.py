@@ -68,6 +68,7 @@ class QComponent():
         * The creator user implements the `make` function (see above)
         * The class define the internal representation of a componetns
         * The class provides the interfaces for the component (creator user)
+        
     """
 
     ''' QComponent.gather_all_children_options collects the options
