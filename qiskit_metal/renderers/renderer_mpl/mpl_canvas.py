@@ -603,8 +603,9 @@ class PlotCanvas(FigureCanvas):
             component_names (List[str]): [description]
         """
         self.clear_annotation()
-        component_id_list = [self.design.components.find_id(
-            item) for item in component_names]
+
+        component_id_list = self.design.components.get_list_ints(
+            component_names)
 
         for component_id in component_id_list:
             component_id = int(component_id)

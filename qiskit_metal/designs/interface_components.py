@@ -32,6 +32,11 @@ class Components:
         """
         return len(self.components)
 
+    def get_list_ints(self, component_names: List[str]) -> List[int]:
+        component_ints = [self.find_id(
+            item) for item in component_names]
+        return component_ints
+
     def find_id(self, name: str) -> int:
         """Find id of component.  The id is the key for a dict which holds all of the components within design.
             Assume the name is not used multiple times. If it is, the first search result will be used.
