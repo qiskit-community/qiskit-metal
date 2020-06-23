@@ -181,9 +181,10 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         self.gui.canvas.zoom_on_component(name)
         # self.logger.info(f'Double clicked component {name}')
 
-    def rows_to_names(self, rows:List[int]):
-        get_name = lambda row: self.model().data(self.model().index(row, 0))  # get the name
-        selected_names = [ get_name(row) for row in rows]
+    def rows_to_names(self, rows: List[int]):
+        def get_name(row): return self.model().data(
+            self.model().index(row, 0))  # get the name
+        selected_names = [get_name(row) for row in rows]
         return selected_names
 
     def selection_changed(self, *args):

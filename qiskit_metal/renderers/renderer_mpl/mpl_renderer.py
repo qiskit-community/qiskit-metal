@@ -51,13 +51,14 @@ if TYPE_CHECKING:
     from .mpl_canvas import PlotCanvas
 
 
-
 __all__ = ['QMplRenderer']
 
 
 to_poly_patch = np.vectorize(PolygonPatch)
 
 # TODO: subclass from QRendererGui - define QRendererGui from this class as interface class
+
+
 class QMplRenderer():
     """
     Matplotlib handle all rendering of an axis.
@@ -77,7 +78,9 @@ class QMplRenderer():
 
         # Filter view options
         self.hidden_layers = set()
-        self.hidden_components = set()
+
+        # Set of component ids which are integers.
+        self._hidden_components = set()
 
         self.colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728',
                        '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf']
@@ -88,10 +91,12 @@ class QMplRenderer():
         return self.colors[num % len(self.colors)]
 
     def hide_component(self, name):
-        self.hidden_components.add(name)
+        comp_id = self.design.components[name].id
+        self._hidden_components.add(comp_id)
 
     def show_component(self, name):
-        self.hidden_components.discard(name)
+        comp_id = self.design.components[name].id
+        self._hidden_components.discard(name)
 
     def hide_layer(self, name):
         self.hidden_layers.add(name)
@@ -105,7 +110,7 @@ class QMplRenderer():
         # TODO
 
     def clear_options(self):
-        self.hidden_components.clear()
+        self._hidden_components.clear()
         self.hidden_layers.clear()
 
     def render(self, ax: Axes):
@@ -128,7 +133,7 @@ class QMplRenderer():
         # not direct access to undelying internal representation
 
         mask = table.layer.isin(self.hidden_layers)
-        mask = table.component.isin(self.hidden_components)
+        mask = table.component.isin(self._hidden_components)
 
         return ~mask  # not
 

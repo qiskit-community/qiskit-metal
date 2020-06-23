@@ -312,7 +312,7 @@ class QDesign():
                  for (key, value) in self._components.items()]
         return alist
 
-    def delete_all_pins_for_component(self, comp_id: int) -> set:
+    def _delete_all_pins_for_component(self, comp_id: int) -> set:
         """Remove component from self._qnet._net_info."""
         all_net_id_removed = self._qnet.delete_all_pins_for_component(comp_id)
 
@@ -352,9 +352,10 @@ class QDesign():
         # thne just make without the checks on existing
         # TODO: Handle error and print nice statemetns
         # try catch log_simple_error
+
         for name, obj in self._components.items():  # pylint: disable=unused-variable
             try:  # TODO: performace?
-                obj.do_make()  # should we call this build?
+                obj.rebuild()  # should we call this build?
             except:
                 print(f'ERORROR in building {name}')
                 log_error_easy(

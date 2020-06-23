@@ -145,7 +145,7 @@ class QComponent():
 
         # Make the component geometry
         if make:
-            self.do_make()
+            self.rebuild()
 
     @classmethod
     def _gather_all_children_options(cls):
@@ -292,27 +292,27 @@ class QComponent():
         This method should be overwritten by the childs make function.
 
         This function only contains the logic, the actual call to make the element is in
-        do_make() and remake()
+        rebuild() and remake()
         '''
         raise NotImplementedError()
 
     # TODO: Maybe call this function build
     # TODO: Capture error here and save to log as the latest error
-    def do_make(self):
+    def rebuild(self):
         """Actually make or remake the component"""
 
         # Begin by setting the status to failed, we will change this if we succed
         self.status = 'failed'
         if self._made:  # already made, just remaking
             # TODO: this is probably very inefficient, design more efficient way
-            self.design.elements.delete_component(self.id)
+            self.design.elements.delete_component_id(self.id)
+            self.design._delete_all_pins_for_component(self.id)
+
             self.make()
         else:  # first time making
             self.make()
             self._made = True  # what if make throws an error part way?
         self.status = 'good'
-
-    rebuild = do_make
 
     def delete(self):
         """
@@ -713,7 +713,7 @@ class QComponent():
         Uses:
             design.elements.get_component_bounds
         """
-        bounds = self.design.elements.get_component_bounds(self.id)
+        bounds = self.design.elements.get_component_bounds(self.name)
         return bounds
 
     def qgeometry_plot(self, ax: 'matplotlib.axes.Axes' = None, plot_kw: dict = None) -> List:

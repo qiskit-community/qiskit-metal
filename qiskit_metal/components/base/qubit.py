@@ -23,6 +23,7 @@ from copy import deepcopy
 from ...toolbox_python.attr_dict import Dict
 from .base import QComponent
 
+
 class BaseQubit(QComponent):
     '''
     Qubit base class. Use to subscript, not to generate directly.
@@ -70,7 +71,7 @@ class BaseQubit(QComponent):
         self._set_options_connection_pads()
 
         if make:
-            self.do_make()
+            self.rebuild()
 
     def _set_options_connection_pads(self):
         #class_name = type(self).__name__
@@ -79,12 +80,13 @@ class BaseQubit(QComponent):
         dicitonary name as default_options['_default_connection_pads']. This should specify the default
         creation options for the connection. """
 
-        del self.options._default_connection_pads #Not sure if it best to remove it from options to keep
-        #the self.options cleaner or not, since the options currently copies in the template. This is
-        #potential source of bugs in the future
+        # Not sure if it best to remove it from options to keep
+        del self.options._default_connection_pads
+        # the self.options cleaner or not, since the options currently copies in the template. This is
+        # potential source of bugs in the future
         for name in self.options.connection_pads:
             my_options_connection_pads = self.options.connection_pads[name]
             self.options.connection_pads[name] = deepcopy(
                 self.design.template_options[self.class_name]['_default_connection_pads'])
-            self.options.connection_pads[name].update(my_options_connection_pads)
-
+            self.options.connection_pads[name].update(
+                my_options_connection_pads)

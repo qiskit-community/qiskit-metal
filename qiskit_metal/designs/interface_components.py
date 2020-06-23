@@ -158,7 +158,7 @@ class Components:
                  int which can be used as key for design._components[]
         """
         if not isinstance(item, str):
-            self.logger.warning(f'Search with string in this object.')
+            self.logger.warning(f'Search with string in __contains__ {item}.')
             return 0
 
         return self.find_id(item)
