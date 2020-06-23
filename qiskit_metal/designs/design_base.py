@@ -16,6 +16,7 @@
 Module containing all Qiskit Metal designs.
 
 @date: 2019
+
 @author: Zlatko Minev, Thomas McConeky, ... (IBM)
 """
 # To create a basic UML diagram
@@ -48,11 +49,14 @@ if TYPE_CHECKING:
 
 __all__ = ['QDesign']
 
-
+#:ivar var1: initial value: par2
 class QDesign():
     """
     QDesign is the base class for Qiskit Metal Designs.
+
     A design is the most top-level object in all of Qiskit Metal.
+
+    
 
     Attributes:
         components (Dict) : A dictionary that stores all the components of the design.
