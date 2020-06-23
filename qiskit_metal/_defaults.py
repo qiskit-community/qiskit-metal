@@ -80,22 +80,23 @@ class DefaultMetalOptions(Dict):
 
 # Can't really use this until default_draw_substrate.color_plane is resolved.
 class DefaultOptionsRenderer():
-    """Encapsulate generic data used throughout qiskit metal classes for renderers.
+    """
+    Encapsulate generic data used throughout qiskit metal classes for renderers.
 
-
-    Arguments:
-        object {[type]} -- [description]
+    This class is a skeleton and is expected to be updated when the renderer is updated.
+    
+    Args:
+        draw_substrate (Dict): This is the dictionary defining the draw substrate parameters.
+        bounding_box (Dict): This is the dictionary defining the bounding box parameters.
     """
 
-    '''
-        This class is a skeleton and is expected to be updated when the renderer is updated.
-    '''
-
     # These are potential dicts that could be used for renderers.
-
     default_bounding_box = Dict(draw_bounding_box=[
         [0, 0], [0, 0], ['0.890mm', '0.900mm']
-    ],)
+    ])
+    """
+    Define the default bounding box
+    """
 
     default_draw_substrate = Dict(draw_substrate={
         'pos_xy': "['0um', '0um']",
@@ -109,10 +110,16 @@ class DefaultOptionsRenderer():
         'transparency_substrate': 0,
         'wireframe_substrate': False
     })
+    """
+    Define the default draw substrate
+    """
 
     def __init__(self,
                  draw_substrate: Dict = default_draw_substrate,
                  bounding_box: Dict = default_bounding_box):
+        """
+        The constructor for the `DefaultOptionsRenderer` class.
+        """
         #self.logger = logger
 
         # Do Not edit the class variable
@@ -128,11 +135,15 @@ class DefaultOptionsRenderer():
     def update_default_options(self,
                                cust_key: str = None,
                                cust_value: Dict = None):
-        """[Allow instance of class to update the default_options]
+        """
+        Allow instance of class to update the default_options
 
-        Keyword Arguments:
-            cust_key {str} -- Type of component. (default: {None})
-            cust_value {Dict} --  The key/value pairs to describe component. (default: {None})
+        Args:
+            cust_key (str): Type of component. (default: None)
+            cust_value (Dict): The key/value pairs to describe component. (default: None)
+
+        Returns:
+            The return value. True for success, False otherwise.
         """
         assert(
             cust_key is not None), f'ERROR: Need a key, update_default_options has {cust_key}'
