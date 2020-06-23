@@ -33,6 +33,9 @@ class DefaultMetalOptions(Dict):
     Container for the default options used in:
         1. Components - each time a new component is registered (instantiated).
         2. The metal code codebase, in functions such as drawing and in qdesign base
+
+    Args:
+        generic (Dict): Dictionary of options (default: None)
     """
 
     #TODO: not sure what example genetic means? can we find a better name
@@ -49,15 +52,20 @@ class DefaultMetalOptions(Dict):
         ),
 
         # Geometric
-        geometry = Dict(
+        geometry=Dict(
             buffer_resolution=16,  # for shapely buffer
             buffer_mitre_limit=5.0,
         )
     )
+    """
+    Define the default generic properties
+    """
 
     def __init__(self,
                  generic: Dict = None):
-
+        """
+        The constructor for the `DefaultMetalOptions` class.
+        """
         if not generic:
             generic = deepcopy(self.default_generic)
 
@@ -67,13 +75,12 @@ class DefaultMetalOptions(Dict):
 
     def update_default_options(self,
                                cust_key: str,
-                               cust_value = None):
+                               cust_value=None):
         """Allow instance of class to update the default_options
 
-        Arguments:
-            cust_key {str} -- Type of component
-        Keyword Arguments:
-            cust_value --  The key/value pairs to describe component. (default: {None})
+        Args:
+            cust_key (str): Type of component
+            cust_value (object): Value for the given key.  (default: None)
         """
         self[cust_key] = cust_value
 
@@ -84,7 +91,7 @@ class DefaultOptionsRenderer():
     Encapsulate generic data used throughout qiskit metal classes for renderers.
 
     This class is a skeleton and is expected to be updated when the renderer is updated.
-    
+
     Args:
         draw_substrate (Dict): This is the dictionary defining the draw substrate parameters.
         bounding_box (Dict): This is the dictionary defining the bounding box parameters.
