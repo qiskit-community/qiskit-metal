@@ -205,3 +205,4 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
 
         self.logger.debug(f'Highlighting {selected_names}')
         self.gui.highlight_components(selected_names)
+
