@@ -488,8 +488,7 @@ class QDesign():
                     Some basic arithmatic is possible, see below.
                 Strings of variables 'variable1'.
                     Variable interpertation will use string method
-                    isidentifier `'variable1'.isidentifier()
-                Strings of
+                    isidentifier 'variable1'.isidentifier()
 
             Dictionaries:
                 Returns ordered `Dict` with same key-value mappings, where the values have
