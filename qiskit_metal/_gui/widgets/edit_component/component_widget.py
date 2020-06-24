@@ -216,7 +216,12 @@ class ComponentWidget(QTabWidget):
         return self.gui.design
 
     @property
-    def component(self):
+    def component(self) -> 'QComponent':
+        """Use the interface to components dict to return a QComponent.
+
+        Returns:
+            QComponent: The QComponent in design class which has name of self.component_name.
+        """
         if self.design:
             if self.component_name:
                 return self.design.components[self.component_name]
