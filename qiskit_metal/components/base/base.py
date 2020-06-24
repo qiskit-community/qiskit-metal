@@ -418,40 +418,51 @@ class QComponent():
 ####################################################################################
 # Functions for handling of pins
 #
-# TODO: Decide how to handle this.
-#   Should this be a class?
-#   Should we keep function here or just move into design?
-# MAKE it so it has reference to who made it
-    # This doesn't really need to be here, could shift to toolbox
+# TODO: Combine the two pin generation functions into one.
+#   Simplify the data types
+#   Stress test the results
+#   Component name vs. id issues?
+#   
+#   What information is truly necessary for the pins? Should they have a z-direction component?
+#   Will they operate properly with non-planar designs?
 
-# We can probably combine the functions into one, have an input set if its from vector or
-# orthogonal points? Or a simpler consistent approach? What info is needed really?
 
     def add_pin_as_normal(self,
                           name: str,
                           start: np.ndarray,
                           end: np.ndarray,
                           width: float,
-                          parent: Union[str, 'QComponent'],
+                          parent: Union[int, 'QComponent'],
                           flip: bool = False,
                           chip: str = 'main'):
-        """Give the path points
+        """Generates a pin from two points which are normal to the intended plane of the pin.
+        The normal should 'point' in the direction of intended connection. Adds dictionary to 
+        parent component :
+        [Dict]: A dictionary containing a collection of information about the pin, 
+            necessary for use in Metal.
+                points (list) - two (x,y) points which represent the edge of the pin for
+                    another component to attach to (eg. the edge of a CPW TL)
+                middle (numpy.ndarray) - an (x,y) which represents the middle of the points above,
+                    where the pin is represented.
+                normal (numpy.ndarray) - the normal vector of the pin, pointing in direction of intended
+                    connection
+                tangent (numpy.ndarray) - 90 degree rotation of normal vector
+                width (float) - the width of the pin
+                chip (str) - the chip the pin is on
+                parent_name - the id of the parent component
+                net_id - net_id of the pin if connected to another pin (default 0, indicates not connected))
 
         Arguments:
-            name {str} -- [description]
-            points {list} -- [description]
-            parent {Union[str,} -- [description]
+            name (str) - Name of the pin
+            start (numpy.ndarray)- [x,y] coordinate of the start of the normal
+            end (numpy.ndarray)- [x,y] coordinate of the end of the normal
+            width (float) - the width of the intended connection (eg. qubit bus pad arm)
+            parent (Union[int,]) - The id of the parent component
 
         Keyword Arguments:
-            flip {bool} -- [description] (default: {False})
-            chip {str} -- [description] (default: {'main'})
+            flip (bool) - to change the direction of intended connection (True causes a 180, default False)
+            chip (str) - the name of the chip the pin is located on, default 'main'
         """
-        # Doesn't seem to be needed if is a method of component class
-        """if is_component(parent):
-            parent = parent.name
-        elif parent is None:
-            parent = 'none'
-        name = parent+'_'+name """
 
         vec_normal = end - start
         vec_normal /= np.linalg.norm(vec_normal)
@@ -475,18 +486,28 @@ class QComponent():
         )
 
     def make_pin(self, points: list, parent_name: str, flip=False, chip='main'):
-        """
-        Works in user units.
+        """Called by add_pin, does the math for the pin generation.
 
-        Arguments:
-            points {[list of coordinates]} -- Two points that define the pin
-
-        Keyword Arguments:
-            flip {bool} -- Flip the normal or not  (default: {False})
-            chip {str} -- Name of the chip the pin sits on (default: {'main'})
+        Args:
+            points (list): [description]
+            parent_name (str): [description]
+            flip (bool, optional): [description]. Defaults to False.
+            chip (str, optional): [description]. Defaults to 'main'.
 
         Returns:
-            [type] -- [description]
+            [Dict]: A dictionary containing a collection of information about the pin, 
+            necessary for use in Metal.
+                points (list) - two (x,y) points which represent the edge of the pin for
+                    another component to attach to (eg. the edge of a CPW TL)
+                middle (numpy.ndarray) - an (x,y) which represents the middle of the points above,
+                    where the pin is represented.
+                normal (numpy.ndarray) - the normal vector of the pin, pointing in direction of intended
+                    connection
+                tangent (numpy.ndarray) - 90 degree rotation of normal vector
+                width (float) - the width of the pin
+                chip (str) - the chip the pin is on
+                parent_name - the id of the parent component
+                net_id - net_id of the pin if connected to another pin (default 0, indicates not connected)
         """
         assert len(points) == 2
 
@@ -527,7 +548,7 @@ class QComponent():
                 parent: Union[str, 'QComponent'],
                 flip: bool = False,
                 chip: str = 'main'):
-        """Add named pin to the design by creating a pin dicitoanry.
+        """Add the named pin to the respective component's pins subdictionary
 
         Arguments:
             name {str} -- Name of pin
