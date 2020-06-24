@@ -120,7 +120,7 @@ class CpwMeanderSimple(QComponent):
         length_meander = total_length - (meander.lead_end + meander.lead_start)
         if snap:
             # handle y distance
-            length_meander -= 0  # (end.position - endm.position)[1]
+            length_meander -= (end.position - endm.position)[1]
 
         meandered_pts = self.meander_fixed_length(
             startm, endm, length_meander, meander)
