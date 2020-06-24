@@ -18,6 +18,11 @@ class Components:
     """
 
     def __init__(self, design: 'QDesign'):
+        """ Set up variables and logger which are used to emulate a dict which is referencing design._components.
+
+        Args:
+            design (QDesign): Need to have a Qdesign class so this class can reference design._components.
+        """
         self._design = design
         self.logger = logger  # type: logging.Logger
         self.components = design._components
