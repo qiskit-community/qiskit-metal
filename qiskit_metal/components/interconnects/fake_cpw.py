@@ -38,6 +38,8 @@ class FakeCPW(QComponent):
     )
 
     def make(self):
+        """ This is executed by the user to generate the elements for the component.
+        """
         component_start = self.options['component_start']
         pin_start = self.options['pin_start']
         component_end = self.options['component_end']
