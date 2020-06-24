@@ -69,14 +69,14 @@ class CpwMeanderSimple(QComponent):
         For example, note that lead_direction_inverted can be 'false' or 'true'
     """
     default_options = Dict(
-        #start_name='',
-        #end_name='',
+        # start_name='',
+        # end_name='',
         pin_start_name='',  # Name of pin used for pin_start
         pin_end_name='',  # Name of pin used for pin_end
         component_start_name='',  # If not connected, zero, otherwise component_id
         component_end_name='',  # If not connected, zero, otherwise component_id
-        #pin_start=0,  # If not connected, zero, otherwise holds the net_id.
-        #pin_end=0,  # If not connected, zero, otherwise holds the net_id.
+        # pin_start=0,  # If not connected, zero, otherwise holds the net_id.
+        # pin_end=0,  # If not connected, zero, otherwise holds the net_id.
         total_length='7mm',
         chip='main',
         layer='1',
@@ -94,8 +94,10 @@ class CpwMeanderSimple(QComponent):
     )
 
     def make(self):
+        """ Will generate a simple meander for two components.
+        """
         # TODO: Later, consider performance of instantiating all these Connector classes
-        #TODO: Have the cpw make it's own pins at the start/end as well (see fake_cpw.py for guide)
+        # TODO: Have the cpw make it's own pins at the start/end as well (see fake_cpw.py for guide)
 
         # parsed options
         p = self.p
@@ -302,14 +304,13 @@ class CpwMeanderSimple(QComponent):
             The values are numpy arrays with two float points each.
         """
         start_pin = self.design.components[self.options.component_start_name].pins[self.options.pin_start_name]
-        
+
         if start_pin.net_id:
             print(
                 f'Given pin {self.options.component_start_name} {self.options.pin_start_name} already in use. Component not created.')
             logger.warning(self.logger, post_text=f'\nERROR in building component "{self.name}"!'
                            'Inelligeable pin passed to function.\n')
             return
-
 
         return Connector(position=start_pin['middle'],
                          direction=start_pin['normal'])
@@ -322,14 +323,13 @@ class CpwMeanderSimple(QComponent):
             The values are numpy arrays with two float points each.
         """
         end_pin = self.design.components[self.options.component_end_name].pins[self.options.pin_end_name]
-        
+
         if end_pin.net_id:
             print(
                 f'Given pin {self.options.component_end_name} {self.options.pin_end_name} already in use. Component not created.')
             logger.warning(self.logger, post_text=f'\nERROR in building component "{self.name}"!'
                            'Inelligeable pin passed to function.\n')
             return
-
 
         return Connector(position=end_pin['middle'],
                          direction=end_pin['normal'])
