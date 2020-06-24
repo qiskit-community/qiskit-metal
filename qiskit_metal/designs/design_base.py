@@ -241,8 +241,8 @@ class QDesign():
         '''
         Clear all pins in the net_Info and update the pins in components.
         '''
-        df = self._qnet._net_info
-        for (index, netID, comp_id, pin_name) in df.itertuples():
+        df_net_info = self._qnet._net_info
+        for (index, netID, comp_id, pin_name) in df_net_info.itertuples():
             self._components[comp_id].pins[pin_name].net_id = 0
 
         # remove rows, but save column names
