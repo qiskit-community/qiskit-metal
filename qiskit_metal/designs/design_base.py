@@ -284,23 +284,25 @@ class QDesign():
 
         Returns:
             QComponent: A component within design with the name search_name.
+            None: If the compnent is not found. A warning through logger.warning().
+            QComponent: If multiple components have the same name, the first component found in the search will be returned, ALONG with logger.warning().
         """
         alist = [(value.name, key)
                  for (key, value) in self._components.items() if value.name == search_name]
 
         length = len(alist)
         if length == 1:
-            rtn = self._components[alist[0][1]]
+            return_component = self._components[alist[0][1]]
         elif length == 0:
             self.logger.warning(
                 f'Name of component:{search_name} not found. Returned None')
-            rtn = None
+            return_component = None
         else:
             self.logger.warning(
                 f'Component:{search_name} is used multiple times, return the first component in list: (name, component_id) {str(alist)}')
-            rtn = self._components[alist[0][1]]
+            return_component = self._components[alist[0][1]]
 
-        return rtn
+        return return_component
 
     def all_component_names_id(self) -> list:
         """Get the text names and corresponding unique ID  of each component within this design.
