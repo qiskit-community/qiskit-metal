@@ -13,10 +13,47 @@
 # that they have been altered from the originals.
 
 """
+=================================================
+Designs (:mod:`qiskit_metal.designs`)
+=================================================
+
+.. currentmodule:: qiskit_metal.designs
+
 Module containing all Qiskit Metal designs.
 
 @date: 2019
+
 @author: Zlatko Minev (IBM)
+
+UNDER CONSTRUCTION
+
+
+QDesign
+---------------
+
+.. autosummary::
+    :toctree: ../stubs/
+
+    QDesign
+
+
+DesignPlanar
+---------------
+
+.. autosummary::
+    :toctree: ../stubs/
+
+    DesignPlanar
+
+
+QNet
+---------------
+
+.. autosummary::
+    :toctree: ../stubs/
+
+    QNet
+
 """
 
 from .. import Dict
