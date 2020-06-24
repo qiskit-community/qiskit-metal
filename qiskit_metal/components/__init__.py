@@ -16,6 +16,6 @@
 @auhtor: Zlatko Minev
 @date: 2019
 """
-
 from .. import is_component
 from .base import QComponent
+
