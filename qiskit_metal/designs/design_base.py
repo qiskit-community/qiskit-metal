@@ -53,8 +53,7 @@ __all__ = ['QDesign']
 
 
 class QDesign():
-    """
-    QDesign is the base class for Qiskit Metal Designs.
+    """ QDesign is the base class for Qiskit Metal Designs.
     A design is the most top-level object in all of Qiskit Metal.
 
     Attributes:
@@ -74,6 +73,7 @@ class QDesign():
 
         save_path (str or None) : Path that the design is saved to. Set when saved or loaded
 
+
     """
 
     # TODO -- Idea: Break up QDesign into several interface classes,
@@ -91,13 +91,20 @@ class QDesign():
     __i_am_design__ = True
 
     def __init__(self, metadata: dict = None):
-        """_qcomponent_latest_assigned_id -- Used to keep a tally and ID of all components within an instanziation of a design.
-                                A component is added to a design by base._add_to_design with init of a comoponent.
-                                During init of component, design class provides an unique id for each instance of
-                                component being added to design.  Note, if a component is removed from the design,
-                                the ID of removed component should not be used again.  However, if a component is
-                                renamed with an unique name, then the ID should continute to be used.
+        """Create a new Metal QDesign.
+
+        Arguments:
+            metadata (Dict): Dictionary of metadata (default: None).
+
         """
+
+        # _qcomponent_latest_assigned_id -- Used to keep a tally and ID of all components within an instanziation of a design.
+        #                         A component is added to a design by base._add_to_design with init of a comoponent.
+        #                         During init of component, design class provides an unique id for each instance of
+        #                         component being added to design.  Note, if a component is removed from the design,
+        #                         the ID of removed component should not be used again.  However, if a component is
+        #                         renamed with an unique name, then the ID should continute to be used.
+
         self._qcomponent_latest_assigned_id = 0
 
         # Key attributes related to physical content of the design
@@ -238,9 +245,8 @@ class QDesign():
         self._variables = Dict(zip(keys, values))
 
     def delete_all_pins(self) -> pd.core.frame.DataFrame:
-        '''
-        Clear all pins in the net_Info and update the pins in components.
-        '''
+        """Clear all pins in the net_Info and update the pins in components.
+        """
         df_net_info = self._qnet._net_info
         for (index, netID, comp_id, pin_name) in df_net_info.itertuples():
             self._components[comp_id].pins[pin_name].net_id = 0
