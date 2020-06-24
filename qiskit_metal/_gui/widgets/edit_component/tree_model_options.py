@@ -156,6 +156,16 @@ class QTreeModel_Options(QAbstractItemModel):
     # NOTE: __init__ takes in design as extra parameter compared to table_model_options!
 
     def __init__(self, parent: 'ComponentWidget', gui: 'MetalGUI', view: QTreeView):
+        """
+        Editable table with drop-down rows for the options of a given component.
+        Organized as a tree model where child nodes are more specific properties
+        of a given parent node.
+
+        Args:
+            parent (ComponentWidget): Component selected by user
+            gui (MetalGUI): User interface
+            view (QTreeView): View corresponding to a tree structure
+        """
         super().__init__(parent=parent)
         self._component_widget = parent
         self.logger = gui.logger
@@ -186,7 +196,10 @@ class QTreeModel_Options(QAbstractItemModel):
     # TODO: Check if new nodes have been added. If so, rebuild model.
 
     def auto_refresh(self):
-        return  # TODO:
+        """
+        Check to see if the total number of rows has been changed. If so,
+        completely rebuild the model and tree.
+        """
         newRowCount = self.rowCount(self.createIndex(0, 0))
         if self._rowCount != newRowCount:
             self.modelReset.emit()
@@ -208,7 +221,7 @@ class QTreeModel_Options(QAbstractItemModel):
         return self.component.options
 
     def refresh(self):
-        """Force refresh. Completly rebuild the model and tree."""
+        """Force refresh. Completely rebuild the model and tree."""
         self.load()  # rebuild the tree
         self.modelReset.emit()
 
