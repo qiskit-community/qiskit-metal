@@ -495,9 +495,10 @@ class QElementTables(object):
             component_id (int): Unique number to describe the component.
         """
         for table_name in self.tables:
-            df = self.tables[table_name]
-            #self.tables[table_name] = df.drop(df[df['component'] == component_id].index)
-            self.tables[table_name] = df[df['component'] != component_id]
+            df_table_name = self.tables[table_name]
+            #self.tables[table_name] = df_table_name.drop(df_table_name[df_table_name['component'] == component_id].index)
+            self.tables[table_name] = df_table_name[df_table_name['component']
+                                                    != component_id]
 
     def get_component(self, name: str, table_name: str = 'all') -> Union[GeoDataFrame, Dict_[str, GeoDataFrame]]:
         """Return the table for just a given component.
@@ -604,10 +605,11 @@ class QElementTables(object):
 
             # mask the rows nad get only 2 columns
             comp_id = self.design.components[name].id
-            df0 = table.loc[table.component == comp_id, ['name', 'geometry']]
-            df = df0.geometry
-            df.index = df0.name
-            return df.to_dict()
+            df_comp_id = table.loc[table.component ==
+                                   comp_id, ['name', 'geometry']]
+            df_geometry = df_comp_id.geometry
+            df_geometry.index = df_comp_id.name
+            return df_geometry.to_dict()
 
     def check_element_type(self, table_name: str, log_issue: bool = True) -> bool:
         """Check if the name `table_name` is in the element tables.
