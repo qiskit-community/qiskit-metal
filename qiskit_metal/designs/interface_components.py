@@ -38,6 +38,14 @@ class Components:
         return len(self.components)
 
     def get_list_ints(self, component_names: List[str]) -> List[int]:
+        """Provide corresponding ints to be used as keys for dict: design._components, when list of names is provided.
+
+        Args:
+            component_names (List[str]): Names of components which user wants to know the int to be used as a key.
+
+        Returns:
+            List[int]: Corresponding ints that user can use as keys into design._components
+        """
         component_ints = [self.find_id(
             item) for item in component_names]
         return component_ints
