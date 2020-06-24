@@ -25,8 +25,6 @@ Module containing all Qiskit Metal designs.
 
 @author: Zlatko Minev (IBM)
 
-UNDER CONSTRUCTION
-
 
 QDesign
 ---------------

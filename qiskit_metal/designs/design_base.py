@@ -54,29 +54,7 @@ class QDesign():
     """
     QDesign is the base class for Qiskit Metal Designs.
 
-    A design is the most top-level object in all of Qiskit Metal.
-
-    
-
-    Attributes:
-        components (Dict) : A dictionary that stores all the components of the design.
-
-        variables (Dict) : The variables of the design, which can be used in the make funciton
-                of a component.
-
-        chips (Dict) : A collection of all the chips associated with the design.
-
-        connectors (Dict) : Information on the connectors
-
-        metadata (Dict) : A dictionary of information that the user can store
-            along with the desing. This includes the name of the design,
-            the time the design was created, and other notes the user might choose to store.
-
-        default_options (dict) : Contains all the default options used for component creation and
-            other functions.
-
-        save_path (str or None) : Path that the design is saved to. Set when saved or loaded
-
+    A design is the most top-level object in all of Qiskit Metal.   
     """
 
     # TODO -- Idea: Break up QDesign into several interface classes,
@@ -94,13 +72,21 @@ class QDesign():
     __i_am_design__ = True
 
     def __init__(self, metadata: dict = None):
-        """_qcomponent_latest_assigned_id -- Used to keep a tally and ID of all components within an instanziation of a design.
-                                A component is added to a design by base._add_to_design with init of a comoponent.
-                                During init of component, design class provides an unique id for each instance of
-                                component being added to design.  Note, if a component is removed from the design,
-                                the ID of removed component should not be used again.  However, if a component is
-                                renamed, then the ID should continute to be used.
+        """Create a new Metal QDesign.
+
+        Arguments:
+            metadata (Dict): Dictionary of metadata (default: None).
         """
+
+        # _qcomponent_latest_assigned_id -- Used to keep a tally and ID of all components within an
+        #                                   instanziation of a design. A component is added to a
+        #                                   design by base._add_to_design with init of a
+        #                                   comoponent. During init of component, design class
+        #                                   provides an unique id for each instance of component
+        #                                   being added to design.  Note, if a component is removed
+        #                                   from the design, the ID of removed component should not
+        #                                   be used again.  However, if a component is renamed,
+        #                                   then the ID should continute to be used.
         self._qcomponent_latest_assigned_id = 0
 
         # Key attributes related to physical content of the design
@@ -196,7 +182,7 @@ class QDesign():
     @property
     def elements(self) -> QElementTables:
         '''
-        Use for advanced users only. Access to the element tables.
+        Returns the element tables (Use for advanced users only)
         '''
         return self._elements
 
@@ -211,11 +197,27 @@ class QDesign():
 #########Proxy properties##################################################
 
     def get_chip_size(self, chip_name: str = 'main'):
-        """Utility function to return the chip size"""
+        """
+        Utility function to return the chip size
+
+        Args:
+            chip_name (str): Returns the size of the given chip (Default: main)
+
+        Raises:
+            NotImplementedError: Code not written yet
+        """
         raise NotImplementedError()
 
     def get_chip_z(self, chip_name: str = 'main'):
-        """Utility function to return the z value of a chip"""
+        """
+        Utility function to return the z value of a chip
+
+        Args:
+            chip_name (str): Returns the size of the given chip (Default: main)
+
+        Raises:
+            NotImplementedError: Code not written yet
+        """
         raise NotImplementedError()
 
 #########General methods###################################################
@@ -223,11 +225,11 @@ class QDesign():
     def rename_variable(self, old_key: str, new_key: str):
         """
         Renames a variable in the variables dictionary.
-        Preserves order
+        Preserves order.
 
-        Arguments:
-            old_key {str} -- previous variable name
-            new_key {str} -- new variable name
+        Args:
+            old_key (str): previous variable name
+            new_key (str): new variable name
         """
         keys = list(self._variables.keys())
         values = list(self._variables.values())
@@ -238,6 +240,9 @@ class QDesign():
     def delete_all_connectors(self):
         '''
         Clear all connectors in the design.
+
+        Returns:
+            Dict: Dictionary of connectors, which is now empty
         '''
         self.connectors.clear()
         return self.connectors
@@ -255,7 +260,12 @@ class QDesign():
         # TODO: add dependency handling here
 
     def _get_new_qcomponent_id(self):
-        ''' Give new id that QComponent can use.'''
+        '''
+        Give new id that QComponent can use.
+
+        Returns:
+            int: ID of the qcomponent
+        '''
         self._qcomponent_latest_assigned_id += 1
         return self._qcomponent_latest_assigned_id
 
@@ -278,13 +288,14 @@ class QDesign():
                     self.logger, post_text=f'\nERROR in rebuilding component "{name}"!\n')
 
     def reload_component(self, component_module_name: str, component_class_name: str):
-        """Reload the module and class of a given componetn and update
+        """
+        Reload the module and class of a given component and update
         all class instances. (Advanced function.)
 
         Arguments:
-            component_module_name {str} -- String name of the module name, such as
+            component_module_name (str): String name of the module name, such as
                 `qiskit_metal.components.qubits.transmon_pocket`
-            component_class_name {str} -- String name of the class name inside thst module,
+            component_class_name (str): String name of the class name inside thst module,
                 such  as `TransmonPocket`
         """
         self.logger.debug(
@@ -308,17 +319,20 @@ class QDesign():
         # importlib.reload(module)
 
     def rename_component(self, component_name: str, new_component_name: str):
-        """Rename component.
+        """
+        Rename component.
 
         Arguments:
-            component_name {str} -- Old name
-            new_component_name {str} -- New name
+            component_name (str): Old name
+            new_component_name (str): New name
 
         Returns:
-            int -- Results:
-                1: True name is changed.
-                -1: Failed, new component name exists.
-                -2: Failed, invalid new name
+            int: Results
+        
+        Return values:
+            * 1: True name is changed.
+            * -1: Failed, new component name exists.
+            * -2: Failed, invalid new name
         """
         #
         if new_component_name in self.components:
@@ -346,19 +360,18 @@ class QDesign():
         return True
 
     def delete_component(self, component_name: str, force=False):
-        """Deletes component and connectors attached to said component.
+        """
+        Deletes component and connectors attached to said component.
         If no component by that name is present, then just return True
         If component has dependencices return false and do not delete,
         unless force=True.
 
         Arguments:
-            component_name {str} -- Name of component to delete
-
-        Keyword Arguments:
-            force {bool} -- force delete component even if it has children (default: {False})
+            component_name (str): Name of component to delete
+            force (bool): force delete component even if it has children (Default: False)
 
         Returns:
-            bool -- is there no such component
+            bool: is there no such component
         """
 
         # Nothing to delete if name not in components
@@ -377,10 +390,14 @@ class QDesign():
         return self._delete_component(component_name)
 
     def _delete_component(self, component_name: str):
-        """Delete component without doing any checks.
+        """
+        Delete component without doing any checks.
+
+        Arguments:
+            component_name (str): Name of component to delete
 
         Returns:
-            bool -- [description]
+            bool: is there no such component
         """
         # Remove connectors
         connector_names = self.components[component_name].connectors
@@ -399,26 +416,31 @@ class QDesign():
 
     @classmethod
     def load_design(cls, path: str):
-        """Load a Metal design from a saved Metal file.
+        """
+        Load a Metal design from a saved Metal file.
+        Will also update default dicitonaries.
         (Class method)
 
         Arguments:
-            path {str} -- Path to saved Metal design.
+            path (str): Path to saved Metal design.
 
         Returns:
-            Loaded metal design.
-            Will also update default dicitonaries.
+            QDesign: Loaded metal design.
         """
         logger.warning("Loading is a beta feature.")
         design = load_metal_design(path)
         return design
 
     def save_design(self, path: str = None):
-        """Save the metal design to a Metal file.
+        """
+        Save the metal design to a Metal file.
+        If no path is given, then tried to use self.save_pathif it is set.
 
         Arguments:
-            path {str or None} -- Path to save the design to. If none, then tried
-                                to use self.save_path if it is set. (default: None)
+            path (str): Path to save the design to.  (Default: None)
+
+        Returns:
+            bool: True = success; False = failure
         """
 
         self.logger.warning("Saving is a beta feature.")  # TODO:
@@ -448,10 +470,15 @@ class QDesign():
     def parse_value(self, value: Union[Any, List, Dict, Iterable]) -> Any:
         """
         Main parsing function.
-
         Parse a string, mappable (dict, Dict), iterrable (list, tuple) to account for
         units conversion, some basic arithmetic, and design variables.
-        This is the main parsing function of Qiskit Metal.
+
+        Arguments:
+            value (str): string to parse *or*
+            variable_dict (dict): dict pointer of variables
+
+        Return:
+            str, float, list, tuple, or ast eval: Parsed value
 
         Handled Inputs:
 
@@ -461,8 +488,7 @@ class QDesign():
                     Some basic arithmatic is possible, see below.
                 Strings of variables 'variable1'.
                     Variable interpertation will use string method
-                    isidentifier `'variable1'.isidentifier()
-                Strings of
+                    isidentifier 'variable1'.isidentifier()
 
             Dictionaries:
                 Returns ordered `Dict` with same key-value mappings, where the values have
@@ -484,29 +510,22 @@ class QDesign():
 
         Examples:
             See the docstring for this module.
-                >> ?qiskit_metal.toolbox_metal.parsing
-
-        Arguments:
-            value {[str]} -- string to parse
-            variable_dict {[dict]} -- dict pointer of variables
-
-        Return:
-            Parse value: str, float, list, tuple, or ast eval
+                qiskit_metal.toolbox_metal.parsing
         """
         return parse_value(value, self.variables)
 
     def parse_options(self, params: dict, param_names: str) -> dict:
         """
         Extra utility function that can call parse_value on individual options.
-        Use self.parse_value to parse only some options from a params dictionary
+        Use self.parse_value to parse only some options from a params dictionary.
 
         Arguments:
-            params (dict) -- Input dict to pull form
-            param_names (str) -- Keys of dicitonary to parse and return as a dicitonary
-                                Example value: 'x,y,z,cpw_width'
+            params (dict): Input dict to pull form
+            param_names (str): Keys of dicitonary to parse and return as a dicitonary.
+                               Example value: 'x,y,z,cpw_width'
 
         Returns:
-            Dictionary of the keys contained in `param_names` with values that are parsed.
+            dict: Dictionary of the keys contained in `param_names` with values that are parsed.
         """
         return parse_options(params, param_names, variable_dict=self.variables)
 
@@ -518,16 +537,17 @@ class QDesign():
                       parent: Union[str, 'QComponent'],
                       flip: bool = False,
                       chip: str = 'main'):
-        """Give the path points
+        """
+        Give the path points
 
         Arguments:
-            name {str} -- [description]
-            points {list} -- [description]
-            parent {Union[str,} -- [description]
-
-        Keyword Arguments:
-            flip {bool} -- [description] (default: {False})
-            chip {str} -- [description] (default: {'main'})
+            name (str): connector name
+            start (np.ndarray): connector starting point
+            end (np.ndarray): connector end point
+            width (float): connector width
+            parent (Union[str, QComponent]): connector parent
+            flip (bool): true to flip the connector (Default: False)
+            chip (str): the chip (Default: main)
         """
 
         if is_component(parent):
@@ -560,17 +580,16 @@ class QDesign():
                       parent: Union[str, 'QComponent'],
                       flip: bool = False,
                       chip: str = 'main'):
-        """Add named connector to the design by creating a connector dicitoanry.
+        """
+        Add named connector to the design by creating a connector dicitoanry.
 
         Arguments:
-            name {str} -- Name of connector
-            points {list} -- List of two (x,y) points that define the connector
-            parent {Union[str,} -- component or string or None. Will be converted to a
-                                 string, which will the name of the component.
-
-        Keyword Arguments:
-            flip {bool} -- [description] (default: {False})
-            chip {str} --  Optionally add options (default: {'main'})
+            name (str): Name of connector
+            points (list): List of two (x,y) points that define the connector
+            parent (Union[str, QComponent): component or string or None. Will be converted to a
+                                            string, which will the name of the component.
+            flip (bool): true to flip the connector (Default: False)
+            chip (str): the chip (Default: main)
         """
         if is_component(parent):
             parent = parent.name
@@ -587,14 +606,15 @@ class QDesign():
         # TODO: Add net?
 
     def get_connector(self, name: str):
-        """Interface for components to get connector data
+        """
+        Interface for components to get connector data
 
         Args:
             name (str): Name of the desired connector.
 
         Returns:
-            (dict): Returns the data of the connector, see design_base.make_connector() for
-                what those values are.
+            dict: Returns the data of the connector, see `design_base.make_connector()` for what
+            those values are.
         """
 
         # For after switching to pandas, something like this?
@@ -603,14 +623,13 @@ class QDesign():
         return self.connectors[name]
 
     def update_component(self, component_name: str, dependencies: bool = True):
-        """Update the component and any dependencies it may have.
+        """
+        Update the component and any dependencies it may have.
         Mediator type function to update all children.
 
         Arguments:
-            component_name {str} -- [description]
-
-        Keyword Arguments:
-            dependencies {bool} -- Do update all dependencies (default: {True})
+            component_name (str): Component name to update
+            dependencies (bool): True to update all dependencies (Default: True)
         """
 
         # Get dependency graph
@@ -619,7 +638,8 @@ class QDesign():
         pass
 
     def get_design_name(self) -> str:
-        """Get the name of the design from the metadata.
+        """
+        Get the name of the design from the metadata.
 
         Returns:
             str: name of design
@@ -629,7 +649,8 @@ class QDesign():
         return self.metadata.design_name
 
     def set_design_name(self, name: str):
-        """Set the name of the design in the metadata.
+        """
+        Set the name of the design in the metadata.
 
         Args:
             name (str) : Name of design
@@ -637,17 +658,24 @@ class QDesign():
         self.update_metadata({'design_name': name})
 
     def get_units(self):
+        """
+        Gets the units of the design
+
+        Returns:
+            str: units
+        """
         return self.template_options.units
 
 ####################################################################################
 # Dependencies
 
     def add_dependency(self, parent: str, child: str):
-        """Add a dependency between one component and another.
+        """
+        Add a dependency between one component and another.
 
         Arguments:
-            parent {str} -- The component on which the child depends
-            child {str} -- The child cannot live without the parent.
+            parent (str): The component on which the child depends.
+            child (str): The child cannot live without the parent.
         """
         # TODO: Should we allow bidirecitonal arrows as as flad in the graph?
         # Easier if we keep simply one-sided arrows
@@ -657,13 +685,14 @@ class QDesign():
         pass
 
     def remove_dependency(self, parent: str, child: str):
-        """Remove a dependency between one component and another.
+        """
+        Remove a dependency between one component and another.
 
         Arguments:
-            parent {str} -- The component on which the child depends
-            child {str} -- The child cannot live without the parent.
+            parent (str): The component on which the child depends.
+            child (str): The child cannot live without the parent.
         """
-
+        pass
 
 ####################################################################################
 ###
@@ -678,14 +707,12 @@ def make_connector(points: list, parent_name: str, flip=False, chip='main'):
     Works in user units.
 
     Arguments:
-        points {[list of coordinates]} -- Two points that define the connector
-
-    Keyword Arguments:
-        flip {bool} -- Flip the normal or not  (default: {False})
-        chip {str} -- Name of the chip the connector sits on (default: {'main'})
+        points (list): Two points (coordinates) that define the connector
+        flip (bool): Flip the normal or not  (Default: False)
+        chip (str): Name of the chip the connector sits on (Default: 'main')
 
     Returns:
-        [type] -- [description]
+        dict: connector
     """
     assert len(points) == 2
 
