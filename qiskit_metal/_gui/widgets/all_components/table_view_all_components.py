@@ -172,6 +172,7 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         The signal is only emitted when the index is valid.
 
         Note that single click will also get called.
+
         """
         if self.gui is None or not index.isValid():
             return
