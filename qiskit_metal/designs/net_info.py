@@ -146,5 +146,6 @@ class QNet():
         Returns:
             pandas.DataFrame -- Two rows of the net_info which have the same net_id_search.
         """
-        df = self._net_info[(self._net_info['net_id'] == net_id_search)]
-        return df
+        df_subset_based_on_net_id = self._net_info[(
+            self._net_info['net_id'] == net_id_search)]
+        return df_subset_based_on_net_id
