@@ -46,6 +46,6 @@ Submodules
     junctions
 
 """
-
 from .. import is_component
 from .base import QComponent
+

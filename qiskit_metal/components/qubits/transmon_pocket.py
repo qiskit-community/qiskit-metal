@@ -47,10 +47,10 @@ class TransmonPocket(BaseQubit):
     Description:
     ----------------------------------------------------------------------------
     Create a standard pocket transmon qubit for a ground plane,
-    with two pads connectored by a junction (see drawing below).
+    with two pads connected by a junction (see drawing below).
 
-    Connector lines can be added using the `con_lines`
-    dicitonary. Each connector line has a name and a list of default
+    Connector lines can be added using the `connection_pads`
+    dicitonary. Each connector pad has a name and a list of default
     properties.
 
     Options:
@@ -127,7 +127,7 @@ class TransmonPocket(BaseQubit):
         # 90 has dipole aligned along the +X axis,
         # while 0 has dipole aligned along the +Y axis
         orientation='0',
-        _default_con_lines = Dict(
+        _default_connection_pads = Dict(
             pad_gap='15um',
             pad_width='125um',
             pad_height='30um',
@@ -148,7 +148,7 @@ class TransmonPocket(BaseQubit):
     def make(self):
         """Define the way the options are turned into QGeometry."""
         self.make_pocket()
-        self.make_con_lines()
+        self.make_connection_pads()
 
     def make_pocket(self):
         '''Makes standard transmon in a pocket.'''
@@ -184,12 +184,14 @@ class TransmonPocket(BaseQubit):
         self.add_elements('poly', dict(rect_pk=rect_pk), subtract=True)
         self.add_elements('poly', dict(rect_jj=rect_jj), helper=True)
 
-    def make_con_lines(self):
-        """For each connector dictionary, create the standard connector line"""
-        for name in self.options.con_lines:
-            self.make_con_line(name)
+    def make_connection_pads(self):
+        '''
+        Makes standard transmon in a pocket
+        '''
+        for name in self.options.connection_pads: #
+            self.make_connection_pad(name)
 
-    def make_con_line(self, name:str):
+    def make_connection_pad(self, name:str):
         '''
         Makes n individual connector
 
@@ -200,7 +202,7 @@ class TransmonPocket(BaseQubit):
 
         # self.p allows us to directly access parsed values (string -> numbers) form the user option
         p = self.p
-        pc = self.p.con_lines[name] # parser on connector options
+        pc = self.p.connection_pads[name] # parser on connector options
 
         # define commonly used variables once
         cpw_width = pc.cpw_width
@@ -243,11 +245,10 @@ class TransmonPocket(BaseQubit):
 
         ############################################################
 
-        # add connectors to design tracker
+        # add pins
         points = np.array(connector_wire_path.coords)
 
-        self.design.add_connector_as_normal(name,
+        self.add_pin_as_normal(name,
             start = points[-2],
             end = points[-1],
-            width = cpw_width, parent = self.name,  flip=False)
-        # self.add_connector(name, points[2:2+2], self.name, flip=False)  # TODO: chip
+            width = cpw_width, parent = self.id,  flip=False)

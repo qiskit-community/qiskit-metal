@@ -18,6 +18,7 @@ if TYPE_CHECKING:
     # https://stackoverflow.com/questions/39740632/python-type-hinting-without-cyclic-imports
     from ...main_window import MetalGUI, QMainWindowExtension
 
+
 class QMainWindowPlot(QMainWindow):
     """
     This is just a handler (container) for the UI; it a child object of the main gui.
@@ -80,16 +81,16 @@ Either use the mouse middle wheel to zoom in and out by scrolling,
 or use the right click and drag to select a region.""")
 
     def zoom(self):
-        QMessageBox.about(self, "Zoom", "Either use the mouse middle wheel"\
-            " to zoom in and out by scrolling, or use the right click and"\
-            " drag to select a region.")
+        QMessageBox.about(self, "Zoom", "Either use the mouse middle wheel"
+                          " to zoom in and out by scrolling, or use the right click and"
+                          " drag to select a region.")
 
     def set_position_track(self, yesno: bool):
         if yesno:
-            self.logger.info("Click a point in the plot window to see"\
-                " its coordinate.")
+            self.logger.info("Click a point in the plot window to see"
+                             " its coordinate.")
         self.canvas.panzoom.options.report_point_position = yesno
 
-    def set_show_connectors(self,  yesno: bool):
-        self.logger.info(f"Showing connectors: {yesno}")
+    def set_show_pins(self,  yesno: bool):
+        self.logger.info(f"Showing pins: {yesno}")
         # TODO:
