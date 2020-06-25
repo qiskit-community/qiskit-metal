@@ -56,26 +56,6 @@ __all__ = ['QDesign']
 class QDesign():
     """ QDesign is the base class for Qiskit Metal Designs.
     A design is the most top-level object in all of Qiskit Metal.
-
-    Attributes:
-        components (Dict) : A dictionary that stores all the components of the design.
-
-        variables (Dict) : The variables of the design, which can be used in the make funciton
-                of a component.
-
-        chips (Dict) : A collection of all the chips associated with the design.
-
-        metadata (Dict) : A dictionary of information that the user can store
-            along with the desing. This includes the name of the design,
-            the time the design was created, and other notes the user might choose to store.
-
-        default_options (dict) : Contains all the default options used for component creation and
-            other functions.
-
-        save_path (str or None) : Path that the design is saved to. Set when saved or loaded
-
-
-
     """
 
     # TODO -- Idea: Break up QDesign into several interface classes,
@@ -149,7 +129,7 @@ class QDesign():
 
     def update_metadata(self, new_metadata: dict):
         """Update the metadata dictionary of the design with a
-        a new metadata dictionary. This will overwrite only the new keys
+        new metadata dictionary. This will overwrite only the new keys
         that you pass in. All other keys will be unaffected.
 
         Args:
@@ -263,7 +243,11 @@ class QDesign():
         self._variables = Dict(zip(keys, values))
 
     def delete_all_pins(self) -> pd.core.frame.DataFrame:
-        """Clear all pins in the net_Info and update the pins in components.
+        """
+        Clear all pins in the net_Info and update the pins in components.
+
+        Returns:
+            QNet: QNet with all pins removed
         """
         df_net_info = self._qnet._net_info
         for (index, netID, comp_id, pin_name) in df_net_info.itertuples():
@@ -274,10 +258,11 @@ class QDesign():
         return self._qnet
 
     def connect_pins(self, comp1_id: int, pin1_name: str, comp2_id: int, pin2_name: str) -> int:
-        """1. Will generate an unique net_id and placed in a net_info table.
-           2. Udate the components.pin_name with the net_id.
+        """
+        Will generate an unique net_id and placed in a net_info table.
+        Update the components.pin_name with the net_id.
 
-           Component's pin will know if pin is connected to another component, if there is a non-zero net_id.
+        Component's pin will know if pin is connected to another component, if there is a non-zero net_id.
 
         Args:
             comp1_id (int):  Unique id of component used for pin1_name.
@@ -287,7 +272,8 @@ class QDesign():
 
         Returns:
             int: Unique net_id of connection used in the netlist.  
-                If not added to netlist, the net_id will be 0 (zero).
+        
+        Note: If not added to netlist, the net_id will be 0 (zero).
         """
         net_id = 0
         net_id = self._qnet.add_pins_to_table(
@@ -306,10 +292,15 @@ class QDesign():
            and elements table. The key of the components dict are unique integers.  This method will search 
            through the dict to find the component with search_name.
 
+        Args:
+            search_name (str): Name of the component
+
         Returns:
             QComponent: A component within design with the name search_name.
-            None: If the compnent is not found. A warning through logger.warning().
-            QComponent: If multiple components have the same name, the first component found in the search will be returned, ALONG with logger.warning().
+        
+        Note: If None is returned the component wass not found. A warning through logger.warning().
+        
+        Note: If multiple components have the same name, only the first component found in the search will be returned, ALONG with logger.warning().
         """
         alist = [(value.name, key)
                  for (key, value) in self._components.items() if value.name == search_name]
@@ -339,7 +330,15 @@ class QDesign():
         return alist
 
     def _delete_all_pins_for_component(self, comp_id: int) -> set:
-        """Remove component from self._qnet._net_info."""
+        """
+        Remove component from self._qnet._net_info.
+
+        Args:
+            comp_id (int): Component ID for which pins are to be removed
+
+        Returns:
+            Set: Set of net IDs removed
+        """
         all_net_id_removed = self._qnet.delete_all_pins_for_component(comp_id)
 
         # reset all pins to be 0 (zero),
@@ -428,16 +427,20 @@ class QDesign():
         """Rename component.
 
         Arguments:
-            component_id {int} -- id of component within design
-            new_component_name {str} -- New name
+            component_id (int): id of component within design
+            new_component_name (str): New name
 
         Returns:
-            int -- Results:
-                1: True name is changed. (True)
-                -1: Failed, new component name exists.
-                -2: Failed, invalid new name; it is already being used by another component.
-                -3: Failed, component_id does not exist.
+            int: Results
 
+        Results:
+            1: True name is changed. (True)
+
+            -1: Failed, new component name exists.
+
+            -2: Failed, invalid new name; it is already being used by another component.
+
+            -3: Failed, component_id does not exist.
         """
         # We are using component_id,
         # and assuming id is created as being unique.
@@ -501,9 +504,11 @@ class QDesign():
     def _delete_component(self, component_id: int) -> bool:
         """Delete component without doing any checks.
 
-        Returns:
-            bool -- True if component_id not in design.
+        Args:
+            component_id (int): ID of component to delete
 
+        Returns:
+            bool: True if component_id not in design.
         """
         # Remove pins - done inherently from deleting the component, though needs checking
         # if is on the net list or not
