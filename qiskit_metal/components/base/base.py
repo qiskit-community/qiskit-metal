@@ -735,8 +735,11 @@ class QComponent():
 
     def qgeometry_bounds(self):
         """
-        Returns a tuple containing (minx, miny, maxx, maxy) bound values
-        for the bounds of the component as a whole.
+        Fetched the component bound dict_value
+
+        Returns:
+            tuple: containing (minx, miny, maxx, maxy) bound values for the bounds of the
+            component as a whole.
 
         Uses:
             design.elements.get_component_bounds
@@ -747,9 +750,9 @@ class QComponent():
     def qgeometry_plot(self, ax: 'matplotlib.axes.Axes' = None, plot_kw: dict = None) -> List:
         """    Draw all the elements of the component (polys and path etc.)
 
-        Keyword Arguments:
-            ax {[type]} --  Matplotlib axis to draw on (default: {None} -- gets the current axis)
-            plot_kw {dict} -- [description] (default: {None})
+        Arguments:
+            ax (matplotlib.axes.Axes):  Matplotlib axis to draw on (Default: None -- gets the current axis)
+            plot_kw (dict): Parameters dictionary
 
         Returns:
             List -- The list of elements draw
