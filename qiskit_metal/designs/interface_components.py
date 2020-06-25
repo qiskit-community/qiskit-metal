@@ -43,7 +43,7 @@ class Components:
 
         Args:
             design (QDesign): Need to have a Qdesign class so this class can
-            reference design._components.
+                              reference design._components.
         """
         self._design = design
         self.logger = logger  # type: logging.Logger
@@ -61,11 +61,11 @@ class Components:
 
     def get_list_ints(self, component_names: List[str]) -> List[int]:
         """Provide corresponding ints to be used as keys for dict: design._components,
-        when list of names is provided.
+           when list of names is provided.
 
         Args:
             component_names (List[str]): Names of components which user wants to know
-            the int to be used as a key.
+                                         the int to be used as a key.
 
         Returns:
             List[int]: Corresponding ints that user can use as keys into design._components
