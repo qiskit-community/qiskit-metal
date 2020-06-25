@@ -37,13 +37,15 @@ Base Components
     QComponent
 
 
-Submodules
+Qubits
 ----------
 
 .. autosummary::
     :toctree:
 
-    junctions
+    TransmonCross--TBD
+    TransmonPocket-TBD
+    TransmonPocketCL-TBD
 
 """
 from .. import is_component
