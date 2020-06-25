@@ -564,17 +564,19 @@ class QComponent():
             points, parent, flip=flip, chip=chip)
 
     def connect_components_already_in_design(self, pin_name_self: str, comp2_id: int, pin2_name: str) -> int:
-        """ WARNING: Do NOT use this method during generation of component instance.
-        This method is expecting self to be added to design._components dict.  More importantly,
-        the unique id of self component needs to be in design._components dict.
+        """WARNING: Do NOT use this method during generation of component instance.
+            This method is expecting self to be added to design._components dict.  More importantly,
+            the unique id of self component needs to be in design._components dict.
 
-        Arguments:
-            name {str} -- Name of pin
-            points {list} -- List of two (x,y) points that define the pin
-            parent {Union[str,} -- component or string or None. Will be converted to a
-                                 string, which will the name of the component.
+        Args:
+            pin_name_self (str): Name of pin within the component.
+            comp2_id (int): Component within design, but not self.
+            pin2_name (str): The pin of comp2_id that pin_name_self will connect to.
 
+        Returns:
+            int: A unique net_id for the connection.
         """
+
         net_id_rtn = 0
 
         if self.id not in self.design._components:
