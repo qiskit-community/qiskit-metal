@@ -60,7 +60,7 @@ class QComponent():
 
     For front-end user:
         * Manipulates the dictionary of options (stored as string-string key-value
-         pairs) to change the geometry and properties of the component.
+          pairs) to change the geometry and properties of the component.
         * The options of the class are stored in an options dicitonary. These
           include the geometric sizes, such as width='10um' or height='5mm', etc.
         * The `make` function parses these strings and implements the logic required
@@ -71,6 +71,7 @@ class QComponent():
         * The creator user implements the `make` function (see above)
         * The class define the internal representation of a componetns
         * The class provides the interfaces for the component (creator user)
+        
     """
 
     ''' QComponent.gather_all_children_options collects the options
@@ -94,7 +95,7 @@ class QComponent():
             design {QDesign} -- The parent design.
 
         Keyword Arguments:
-            options {[type]} -- User options that will override the defaults. (default: {None})
+            options {dict} -- User options that will override the defaults. (default: {None})
             make {bool} -- Should the make function be called at the end of the init.
                     Options be used in the make funciton to create the geometry. (default: {True})
             component_template {[type]} -- User can overwrite the template options for the component
@@ -145,7 +146,7 @@ class QComponent():
 
         # Make the component geometry
         if make:
-            self.do_make()
+            self.rebuild()
 
     @classmethod
     def _gather_all_children_options(cls):
@@ -292,27 +293,27 @@ class QComponent():
         This method should be overwritten by the childs make function.
 
         This function only contains the logic, the actual call to make the element is in
-        do_make() and remake()
+        rebuild() and remake()
         '''
         raise NotImplementedError()
 
     # TODO: Maybe call this function build
     # TODO: Capture error here and save to log as the latest error
-    def do_make(self):
+    def rebuild(self):
         """Actually make or remake the component"""
 
         # Begin by setting the status to failed, we will change this if we succed
         self.status = 'failed'
         if self._made:  # already made, just remaking
             # TODO: this is probably very inefficient, design more efficient way
-            self.design.elements.delete_component(self.id)
+            self.design.elements.delete_component_id(self.id)
+            self.design._delete_all_pins_for_component(self.id)
+
             self.make()
         else:  # first time making
             self.make()
             self._made = True  # what if make throws an error part way?
         self.status = 'good'
-
-    rebuild = do_make
 
     def delete(self):
         """
@@ -338,8 +339,7 @@ class QComponent():
                     Some basic arithmatic is possible, see below.
                 Strings of variables 'variable1'.
                     Variable interpertation will use string method
-                    isidentifier `'variable1'.isidentifier()
-                Strings of
+                    isidentifier `'variable1'.isidentifier()`
 
             Dictionaries:
                 Returns ordered `Dict` with same key-value mappings, where the values have
@@ -418,40 +418,50 @@ class QComponent():
 ####################################################################################
 # Functions for handling of pins
 #
-# TODO: Decide how to handle this.
-#   Should this be a class?
-#   Should we keep function here or just move into design?
-# MAKE it so it has reference to who made it
-    # This doesn't really need to be here, could shift to toolbox
-
-# We can probably combine the functions into one, have an input set if its from vector or
-# orthogonal points? Or a simpler consistent approach? What info is needed really?
+# TODO: Combine the two pin generation functions into one.
+#   Simplify the data types
+#   Stress test the results
+#   Component name vs. id issues?
+#
+#   What information is truly necessary for the pins? Should they have a z-direction component?
+#   Will they operate properly with non-planar designs?
 
     def add_pin_as_normal(self,
                           name: str,
                           start: np.ndarray,
                           end: np.ndarray,
                           width: float,
-                          parent: Union[str, 'QComponent'],
+                          parent: Union[int, 'QComponent'],
                           flip: bool = False,
                           chip: str = 'main'):
-        """Give the path points
+        """Generates a pin from two points which are normal to the intended plane of the pin.
+        The normal should 'point' in the direction of intended connection. Adds dictionary to 
+        parent component :
+        [Dict]: A dictionary containing a collection of information about the pin, 
+            necessary for use in Metal.
+                points (list) - two (x,y) points which represent the edge of the pin for
+                    another component to attach to (eg. the edge of a CPW TL)
+                middle (numpy.ndarray) - an (x,y) which represents the middle of the points above,
+                    where the pin is represented.
+                normal (numpy.ndarray) - the normal vector of the pin, pointing in direction of intended
+                    connection
+                tangent (numpy.ndarray) - 90 degree rotation of normal vector
+                width (float) - the width of the pin
+                chip (str) - the chip the pin is on
+                parent_name - the id of the parent component
+                net_id - net_id of the pin if connected to another pin (default 0, indicates not connected))
 
         Arguments:
-            name {str} -- [description]
-            points {list} -- [description]
-            parent {Union[str,} -- [description]
+            name (str) - Name of the pin
+            start (numpy.ndarray)- [x,y] coordinate of the start of the normal
+            end (numpy.ndarray)- [x,y] coordinate of the end of the normal
+            width (float) - the width of the intended connection (eg. qubit bus pad arm)
+            parent (Union[int,]) - The id of the parent component
 
         Keyword Arguments:
-            flip {bool} -- [description] (default: {False})
-            chip {str} -- [description] (default: {'main'})
+            flip (bool) - to change the direction of intended connection (True causes a 180, default False)
+            chip (str) - the name of the chip the pin is located on, default 'main'
         """
-        # Doesn't seem to be needed if is a method of component class
-        """if is_component(parent):
-            parent = parent.name
-        elif parent is None:
-            parent = 'none'
-        name = parent+'_'+name """
 
         vec_normal = end - start
         vec_normal /= np.linalg.norm(vec_normal)
@@ -475,18 +485,28 @@ class QComponent():
         )
 
     def make_pin(self, points: list, parent_name: str, flip=False, chip='main'):
-        """
-        Works in user units.
+        """Called by add_pin, does the math for the pin generation.
 
-        Arguments:
-            points {[list of coordinates]} -- Two points that define the pin
-
-        Keyword Arguments:
-            flip {bool} -- Flip the normal or not  (default: {False})
-            chip {str} -- Name of the chip the pin sits on (default: {'main'})
+        Args:
+            points (list): [description]
+            parent_name (str): [description]
+            flip (bool, optional): [description]. Defaults to False.
+            chip (str, optional): [description]. Defaults to 'main'.
 
         Returns:
-            [type] -- [description]
+            [Dict]: A dictionary containing a collection of information about the pin, 
+            necessary for use in Metal.
+                points (list) - two (x,y) points which represent the edge of the pin for
+                    another component to attach to (eg. the edge of a CPW TL)
+                middle (numpy.ndarray) - an (x,y) which represents the middle of the points above,
+                    where the pin is represented.
+                normal (numpy.ndarray) - the normal vector of the pin, pointing in direction of intended
+                    connection
+                tangent (numpy.ndarray) - 90 degree rotation of normal vector
+                width (float) - the width of the pin
+                chip (str) - the chip the pin is on
+                parent_name - the id of the parent component
+                net_id - net_id of the pin if connected to another pin (default 0, indicates not connected)
         """
         assert len(points) == 2
 
@@ -515,7 +535,7 @@ class QComponent():
             name (str): Name of the desired pin.
 
         Returns:
-            (dict): Returns the data of the pin, make_pin() for
+            (dict): Returns the data of the pin, see make_pin() for
                 what those values are.
         """
 
@@ -527,7 +547,7 @@ class QComponent():
                 parent: Union[str, 'QComponent'],
                 flip: bool = False,
                 chip: str = 'main'):
-        """Add named pin to the design by creating a pin dicitoanry.
+        """Add the named pin to the respective component's pins subdictionary
 
         Arguments:
             name {str} -- Name of pin
@@ -543,12 +563,20 @@ class QComponent():
         self.pins[name] = self.make_pin(
             points, parent, flip=flip, chip=chip)
 
-        # TODO: Add net?
     def connect_components_already_in_design(self, pin_name_self: str, comp2_id: int, pin2_name: str) -> int:
-        """ WARNING: Do NOT use this method during generation of component instance.
-        This method is expecting self to be added to design._components dict.  More importantly,
-        the unique id of self component needs to be in design._components dict.
+        """WARNING: Do NOT use this method during generation of component instance.
+            This method is expecting self to be added to design._components dict.  More importantly,
+            the unique id of self component needs to be in design._components dict.
+
+        Args:
+            pin_name_self (str): Name of pin within the component.
+            comp2_id (int): Component within design, but not self.
+            pin2_name (str): The pin of comp2_id that pin_name_self will connect to.
+
+        Returns:
+            int: A unique net_id for the connection.
         """
+
         net_id_rtn = 0
 
         if self.id not in self.design._components:
@@ -614,7 +642,7 @@ class QComponent():
 
         Assumptions:
             * Assumes all elements in the elements are homogeneous in kind;
-             i.e., all lines or polys etc.
+              i.e., all lines or polys etc.
 
 
         Arguments:
@@ -713,7 +741,7 @@ class QComponent():
         Uses:
             design.elements.get_component_bounds
         """
-        bounds = self.design.elements.get_component_bounds(self.id)
+        bounds = self.design.elements.get_component_bounds(self.name)
         return bounds
 
     def qgeometry_plot(self, ax: 'matplotlib.axes.Axes' = None, plot_kw: dict = None) -> List:

@@ -483,10 +483,11 @@ class QElementTables(object):
         """
         # TODO: Add unit test
         # TODO: is this the best way to do this, or is there a faster way?
+        comp_id = self.design.components[name].id
         for table_name in self.tables:
             df = self.tables[table_name]
-            self.tables[table_name] = df[df['component'] != name]
-            
+            self.tables[table_name] = df[df['component'] != comp_id]
+
     def delete_component_id(self, component_id: int):
         """Drop the components within the elements.tables
 
@@ -494,10 +495,10 @@ class QElementTables(object):
             component_id (int): Unique number to describe the component.
         """
         for table_name in self.tables:
-            df = self.tables[table_name]
-            #self.tables[table_name] = df.drop(df[df['component'] == component_id].index)
-            self.tables[table_name] = df[df['component'] != component_id]
-
+            df_table_name = self.tables[table_name]
+            #self.tables[table_name] = df_table_name.drop(df_table_name[df_table_name['component'] == component_id].index)
+            self.tables[table_name] = df_table_name[df_table_name['component']
+                                                    != component_id]
 
     def get_component(self, name: str, table_name: str = 'all') -> Union[GeoDataFrame, Dict_[str, GeoDataFrame]]:
         """Return the table for just a given component.
@@ -515,6 +516,7 @@ class QElementTables(object):
         Example use:
             table = pd.concat(elements.get_component('Q1')) # , axis=0
         """
+
         if table_name == 'all':
             tables = {}
             for table_name in self.get_element_types():
@@ -522,9 +524,10 @@ class QElementTables(object):
             return tables
         else:
             df = self.tables[table_name]
-            return df[df.component == name]
+            comp_id = self.design.components[name].id
+            return df[df.component == comp_id]
 
-    def get_component_bounds(self, name:str):
+    def get_component_bounds(self, name: str):
         """Returns a tuple containing minx, miny, maxx, maxy values
         for the bounds of the component as a whole.
 
@@ -533,7 +536,6 @@ class QElementTables(object):
         """
         return self.get_component_geometry(name).total_bounds
 
-
     def rename_component(self, name: str, new_name: str):
         """Rename component by ID (integer) cast to string format.
 
@@ -541,10 +543,11 @@ class QElementTables(object):
             name {str} -- Name of component (case sensitive)
             new_name {str} -- The new name of the component (case sensitive)
         """
+        comp_id = self.design.components[name].id
         # TODO: is this the best way to do this, or is there a faster way?
         for table_name in self.tables:
             table = self.tables[table_name]
-            table.component[table.component == name] = new_name
+            table.component[table.component == comp_id] = new_name
 
     def get_component_geometry_list(self, name: str, table_name: str = 'all') -> List[BaseGeometry]:
         """Return just the bare element geometry (shapely geometry objects) as a list, for the
@@ -562,11 +565,12 @@ class QElementTables(object):
 
         else:
             table = self.tables[table_name]
-            elements = table.geometry[table.component == name].to_list()
+            comp_id = self.design.components[name].id
+            elements = table.geometry[table.component == comp_id].to_list()
 
         return elements
 
-    def get_component_geometry(self, name:str) -> GeoSeries:
+    def get_component_geometry(self, name: str) -> GeoSeries:
         """
         Arguments:
             name {str} -- Name of component (case sensitive)
@@ -574,13 +578,14 @@ class QElementTables(object):
         Returns:
             GeoSeries -- [description]
         """
+        comp_id = self.design.components[name].id
         elements = {}
         for table_name in self.get_element_types():
             table = self.tables[table_name]
-            elements[table_name] = table.geometry[table.component == name]
+            elements[table_name] = table.geometry[table.component == comp_id]
         return pd.concat(elements)
 
-    def get_component_geometry_dict(self, name: str, table_name: str='all') -> List[BaseGeometry]:
+    def get_component_geometry_dict(self, name: str, table_name: str = 'all') -> List[BaseGeometry]:
         """Return just the bare element geometry (shapely geometry objects) as a dict,
            with key being the names of the elements and the values as the shapely geometry,
            for the selected component.
@@ -590,19 +595,21 @@ class QElementTables(object):
             table_name {str} -- Element type ('poly', 'path', etc.)
         """
         if table_name == 'all':
-            elements = []
+            elements = Dict()
             for table in self.get_element_types():
                 elements[table] = self.get_component_geometry_list(name, table)
-            return elements # return pd.concat(elements, axis=0)
+            return elements  # return pd.concat(elements, axis=0)
 
         else:
             table = self.tables[table_name]
 
             # mask the rows nad get only 2 columns
-            df0 = table.loc[table.component == name, ['name', 'geometry']]
-            df = df0.geometry
-            df.index = df0.name
-            return df.to_dict()
+            comp_id = self.design.components[name].id
+            df_comp_id = table.loc[table.component ==
+                                   comp_id, ['name', 'geometry']]
+            df_geometry = df_comp_id.geometry
+            df_geometry.index = df_comp_id.name
+            return df_geometry.to_dict()
 
     def check_element_type(self, table_name: str, log_issue: bool = True) -> bool:
         """Check if the name `table_name` is in the element tables.

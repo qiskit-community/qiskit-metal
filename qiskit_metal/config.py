@@ -12,6 +12,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 # pylint: disable=invalid-name
+# pylint: disable=unused-import
 
 """
 Created 2019
@@ -24,38 +25,15 @@ File contains some config definitions. Mostly internal.
 from .toolbox_python.attr_dict import Dict
 from ._defaults import DefaultMetalOptions, DefaultOptionsRenderer
 
-####################################################################################
-# RENDERER CONFIG
-
-# Define the renderes to load. Just provide the module names here.
-# The renderes will be loaded at ...
 renderers_to_load = Dict(
     metal='qiskit_metal.renderers.metal',
     ansys='qiskit_metal.renderers.ansys',
     gds='qiskit_metal.renderers.gds'
 )
-
-####################################################################################
-# GUI CONFIG
-
 """
-GUI_CONFIG
-
-    load_metal_modules
-    ---------------------------
-    Name of class folders that contain modules that will be available to be
-    created in the GUI
-
-    Conventions:
-    Assumes that the module file name is the same as the class name contained in it.
-    For example, provided `qiskit_metal.qubits` has `Metal_Transmon_Pocket.py`, the
-    gui will do
-        `from qiskit_metal.qubits.Metal_Transmon_Pocket import Metal_Transmon_Pocket`
-
-    tips
-    ---------------------------
-    Tips that the user can define to show in the gui. These rotate each time the gui is started.
+Define the renderes to load. Just provide the module names here.
 """
+
 GUI_CONFIG = Dict(
 
     load_metal_modules=Dict(
@@ -81,8 +59,8 @@ GUI_CONFIG = Dict(
         'Changed some object parameters? Click the <b>Remake</b> button in the main'
         'toolbar to recreate the polygons.',
 
-        """<b>Log widget:</b> Right click the logger window to be able to change the log level and the
-        loggers that are shown / hidden.""",
+        """<b>Log widget:</b> Right click the logger window to be able to change the log level and
+        the loggers that are shown / hidden.""",
 
         """<b>All component widget:</b> Double click a component to zoom into it!""",
     ],
@@ -101,12 +79,47 @@ GUI_CONFIG = Dict(
     )
 
 )
+"""
+GUI_CONFIG
+
+**load_metal_modules**
+
+---------------------------
+Name of class folders that contain modules that will be available to be
+created in the GUI
+
+Conventions:
+Assumes that the module file name is the same as the class name contained in it.
+For example, provided `qiskit_metal.qubits` has `Metal_Transmon_Pocket.py`, the
+gui will do
+    `from qiskit_metal.qubits.Metal_Transmon_Pocket import Metal_Transmon_Pocket`
+
+
+**tips**
+
+---------------------------
+Tips that the user can define to show in the gui. These rotate each time the gui is started.
+
+
+**logger**
+
+---------------------------
+Logger settings
+
+
+**main_window**
+
+---------------------------
+Main window defaults
+"""
 
 log = Dict(
     format='%(asctime)s %(levelname)s [%(funcName)s]: %(message)s',
     datefmt='%I:%M%p %Ss'
 )
-
+"""
+A dictionary containing the log format for standard text and date/time
+"""
 
 def is_using_ipython():
     """Check if we're in IPython.

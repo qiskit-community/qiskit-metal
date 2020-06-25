@@ -13,10 +13,10 @@
 # that they have been altered from the originals.
 
 """
-Basic Qiskit Metal Planar (2D) design for CPW type geometry.
-
+Module containing Basic Qiskit Metal Planar (2D) design for CPW type geometry.
 
 @date: 2019
+
 @author: Zlatko Minev, Thomas McConeky, ... (IBM)
 """
 

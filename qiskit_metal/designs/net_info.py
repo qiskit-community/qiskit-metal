@@ -12,10 +12,12 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""[summary]
+"""
+Module containing Net information storage.
 
-    Returns:
-        [type] -- [description]
+@date: 2020
+
+@author: Priti Shah, ... (IBM)
 """
 #from typing import Tuple
 import pandas as pd
@@ -23,7 +25,8 @@ from .. import logger
 
 
 class QNet():
-    """Use DataFrame to hold Net Information about the connected pins of a design.   
+    """
+    Use DataFrame to hold Net Information about the connected pins of a design.   
     There is one uniqe net_id for each connected pin.
     """
 
@@ -38,7 +41,7 @@ class QNet():
         """ Provide uniqe new qnet_id
 
         Returns:
-            int -- ID to use for storing a new net within _net_info.
+            int: ID to use for storing a new net within _net_info.
         """
         self._qnet_latest_assigned_id += 1
         return self._qnet_latest_assigned_id
@@ -48,7 +51,7 @@ class QNet():
         """Return unique number for each net in table.
 
         Returns:
-            int -- For user of the design class to know the lastest id added to _net_info.
+            int: For user of the design class to know the lastest id added to _net_info.
         """
         return self._qnet_latest_assigned_id
 
@@ -57,7 +60,7 @@ class QNet():
         """Provide table of all nets within the design.
 
         Returns:
-            pd.DataFrame -- Table of the net of pins within design.
+            pd.DataFrame: Table of the net of pins within design.
         """
         return self._net_info
 
@@ -66,13 +69,13 @@ class QNet():
         the connection will NOT be added to the net_info.
 
         Arguments:
-            comp1_id {int} -- Name of component 1. 
-            pin1_name {str} -- Corresponding pin name for component1.
-            comp2_id {int} -- Name of component 2.
-            pint2 {str} -- Corresponding pin name for component2.
+            comp1_id (int): Name of component 1. 
+            pin1_name (str): Corresponding pin name for component1.
+            comp2_id (int): Name of component 2.
+            pint2 (str): Corresponding pin name for component2.
 
         Returns:
-            int -- 0 if not added to list, otherwise the netid
+            int: 0 if not added to list, otherwise the netid
         """
         net_id = 0   # Zero mean false, the pin was not added to _net_info
 
@@ -116,11 +119,12 @@ class QNet():
         return net_id
 
     def delete_net_id(self, net_id_to_remove: int):
-        """Will remove the two entries with net_id_to_remove.
+        """
+        Removes the two entries with net_id_to_remove.
+        If id is in _net_info, the entry will be removed.
 
         Arguments:
-            net_id_to_remove {int} -- If id is in _net_info, the entry will be removed.
-
+            net_id_to_remove (int): The id to remove.
         """
 
         self._net_info.drop(
@@ -128,6 +132,15 @@ class QNet():
         return
 
     def delete_all_pins_for_component(self, component_id_to_remove: int) -> set:
+        """
+        Delete all the pins for a given component id
+
+        Args:
+            component_id_to_remove (int): Component ID to remove
+
+        Returns:
+            set: All deleted ids
+        """
         all_net_id_deleted = set()
 
         for (netID, component_id, pin_name) in self._net_info.itertuples(index=False):
@@ -141,10 +154,11 @@ class QNet():
         """Search with a net_id to get component id and pin name.
 
         Arguments:
-            net_id_search {int} -- Unique net id which connects two pins within a design.
+            net_id_search (int): Unique net id which connects two pins within a design.
 
         Returns:
-            pandas.DataFrame -- Two rows of the net_info which have the same net_id_search.
+            pandas.DataFrame: Two rows of the net_info which have the same net_id_search.
         """
-        df = self._net_info[(self._net_info['net_id'] == net_id_search)]
-        return df
+        df_subset_based_on_net_id = self._net_info[(
+            self._net_info['net_id'] == net_id_search)]
+        return df_subset_based_on_net_id

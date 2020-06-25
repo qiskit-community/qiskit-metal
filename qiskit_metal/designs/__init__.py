@@ -13,10 +13,53 @@
 # that they have been altered from the originals.
 
 """
+=================================================
+Designs (:mod:`qiskit_metal.designs`)
+=================================================
+
+.. currentmodule:: qiskit_metal.designs
+
 Module containing all Qiskit Metal designs.
 
 @date: 2019
+
 @author: Zlatko Minev (IBM)
+
+
+QDesign
+---------------
+
+.. autosummary::
+    :toctree: ../stubs/
+
+    QDesign
+
+
+DesignPlanar
+---------------
+
+.. autosummary::
+    :toctree: ../stubs/
+
+    DesignPlanar
+
+
+QNet
+---------------
+
+.. autosummary::
+    :toctree: ../stubs/
+
+    QNet
+
+
+InterfaceComponents
+-------------------
+
+.. autosummary::
+    :toctree: ../stubs/
+
+    Components
 """
 
 from .. import Dict
@@ -24,4 +67,4 @@ from .. import is_design
 from .design_base import QDesign
 from .design_planar import DesignPlanar
 from .net_info import QNet
-#from .interface_components import Components
+from .interface_components import Components

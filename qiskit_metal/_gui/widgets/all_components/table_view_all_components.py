@@ -172,6 +172,7 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         The signal is only emitted when the index is valid.
 
         Note that single click will also get called.
+
         """
         if self.gui is None or not index.isValid():
             return
@@ -181,14 +182,27 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         self.gui.canvas.zoom_on_component(name)
         # self.logger.info(f'Double clicked component {name}')
 
-    def rows_to_names(self, rows:List[int]):
-        get_name = lambda row: self.model().data(self.model().index(row, 0))  # get the name
-        selected_names = [ get_name(row) for row in rows]
+    def rows_to_names(self, rows: List[int]) -> List[str]:
+        """Based on user highlighting  rows of components in GUI, return the name of components.
+
+        Args:
+            rows (List[int]): User highlighted rows.
+
+        Returns:
+            List[str]: List of components that user highlighted.
+        """
+
+        def get_name(row): return self.model().data(
+            self.model().index(row, 0))  # get the name
+        selected_names = [get_name(row) for row in rows]
         return selected_names
 
     def selection_changed(self, *args):
+        """Update by highlighting, the rows which the user selected. 
+        """
         rows = set([idx.row() for idx in self.selectedIndexes()])
         selected_names = self.rows_to_names(rows)
 
         self.logger.debug(f'Highlighting {selected_names}')
         self.gui.highlight_components(selected_names)
+

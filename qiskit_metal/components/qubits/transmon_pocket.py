@@ -251,4 +251,4 @@ class TransmonPocket(BaseQubit):
         self.add_pin_as_normal(name,
             start = points[-2],
             end = points[-1],
-            width = cpw_width, parent = self.name,  flip=False)
+            width = cpw_width, parent = self.id,  flip=False)
