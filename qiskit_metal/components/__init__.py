@@ -35,7 +35,51 @@ Base Components
     :toctree: ../stubs/
 
     QComponent
+    BaseJunction-TBD
+    BaseQubit-TBD
+    ParsedDynamicAttributes_Component-TBD
+    MyQComponent-TBD
 
+
+Basic
+-----
+
+.. autosummary::
+    :toctree:
+
+    CircleCaterpillar-TBD
+    CircleRaster-TBD
+    Rectangle-TBD
+    RectangleHollow-TBD
+
+
+Connectors
+----------
+
+.. autosummary::
+    :toctree:
+
+    connectors
+
+
+Interconnects
+-------------
+
+.. autosummary::
+    :toctree:
+
+    Connector-TBD
+    CpwMeanderSimple-TBD
+    FakeCPW-TBD
+
+
+Junctions
+---------
+
+.. autosummary::
+    :toctree:
+
+    junctions
 
 Qubits
 ----------
