@@ -28,7 +28,9 @@ from typing import Union, List, Iterable, Any, Dict as Dict_, TYPE_CHECKING
 from datetime import datetime
 
 import numpy as np
+import pandas as pd
 from numpy.linalg import norm
+
 from ..draw import Vector
 
 from .. import Dict, draw, logger
@@ -39,6 +41,7 @@ from ..toolbox_metal.parsing import parse_options, parse_value
 from ..elements import QElementTables
 from ..toolbox_python.utility_functions import log_error_easy
 from .net_info import QNet
+from .interface_components import Components
 
 
 if TYPE_CHECKING:
@@ -51,10 +54,28 @@ __all__ = ['QDesign']
 
 #:ivar var1: initial value: par2
 class QDesign():
-    """
-    QDesign is the base class for Qiskit Metal Designs.
+    """ QDesign is the base class for Qiskit Metal Designs.
+    A design is the most top-level object in all of Qiskit Metal.
 
-    A design is the most top-level object in all of Qiskit Metal.   
+    Attributes:
+        components (Dict) : A dictionary that stores all the components of the design.
+
+        variables (Dict) : The variables of the design, which can be used in the make funciton
+                of a component.
+
+        chips (Dict) : A collection of all the chips associated with the design.
+
+        metadata (Dict) : A dictionary of information that the user can store
+            along with the desing. This includes the name of the design,
+            the time the design was created, and other notes the user might choose to store.
+
+        default_options (dict) : Contains all the default options used for component creation and
+            other functions.
+
+        save_path (str or None) : Path that the design is saved to. Set when saved or loaded
+
+
+
     """
 
     # TODO -- Idea: Break up QDesign into several interface classes,
@@ -62,7 +83,7 @@ class QDesign():
     # in order to do a more Dependency Inversion Principle (DIP) style,
     # see also Dependency Injection (DI). This can also generalize nicely
     # to special flip chips, etc. to handle complexity!
-    # Technically, components, connectors, variables, etc. are all separate entities
+    # Technically, components, variables, etc. are all separate entities
     # that can interface
 
     # Dummy private attribute used to check if an instanciated object is
@@ -76,23 +97,21 @@ class QDesign():
 
         Arguments:
             metadata (Dict): Dictionary of metadata (default: None).
+
         """
 
-        # _qcomponent_latest_assigned_id -- Used to keep a tally and ID of all components within an
-        #                                   instanziation of a design. A component is added to a
-        #                                   design by base._add_to_design with init of a
-        #                                   comoponent. During init of component, design class
-        #                                   provides an unique id for each instance of component
-        #                                   being added to design.  Note, if a component is removed
-        #                                   from the design, the ID of removed component should not
-        #                                   be used again.  However, if a component is renamed,
-        #                                   then the ID should continute to be used.
+        # _qcomponent_latest_assigned_id -- Used to keep a tally and ID of all components within an instanziation of a design.
+        #                         A component is added to a design by base._add_to_design with init of a comoponent.
+        #                         During init of component, design class provides an unique id for each instance of
+        #                         component being added to design.  Note, if a component is removed from the design,
+        #                         the ID of removed component should not be used again.  However, if a component is
+        #                         renamed with an unique name, then the ID should continute to be used.
+
         self._qcomponent_latest_assigned_id = 0
 
         # Key attributes related to physical content of the design
         # These will be saved
         self._components = Dict()
-        self._connectors = Dict()
         self._variables = Dict()
         self._chips = Dict()
 
@@ -111,7 +130,10 @@ class QDesign():
 
         # Can't really use this until DefaultOptionsRenderer.default_draw_substrate.color_plane is resolved.
         self._template_renderer_options = DefaultOptionsRenderer()  # use for renderer
-        self._net_info = QNet()
+        self._qnet = QNet()
+
+        # Interface for user to view components by using name(text) for components, vs id.
+        self.components = Components(self)
 
     def _init_metadata(self) -> Dict:
         """Initialize default metadata dicitoanry
@@ -136,21 +158,22 @@ class QDesign():
         self._metadata.update(new_metadata)
 
 #########PROPERTIES##################################################
+    # User should not access _components directly
+    # TODO make interface with __getattr__ etc, magic methods
+    # @property
+    # def components(self) -> Dict_[int, 'QComponent']:
+    #     '''
+    #     Returns Dict object that keeps track of all Metal components in the design
+    #     '''
+    #     return self._components
 
-    @property
-    def components(self) -> Dict_[str, 'QComponent']:
+    """     @property
+    def pins(self):
         '''
-        Returns Dict object that keeps track of all Metal components in the design
+        Return the Dict object that keeps track of all pins in the design.
         '''
-        return self._components
-
-    @property
-    def connectors(self):
-        '''
-        Return the Dict object that keeps track of all connectors in the design.
-        '''
-        return self._connectors
-
+        return
+    """
     @property
     def variables(self) -> Dict_[str, str]:
         '''
@@ -231,30 +254,112 @@ class QDesign():
             old_key (str): previous variable name
             new_key (str): new variable name
         """
+
+        # TODO: Change this use components with both id and name.
         keys = list(self._variables.keys())
         values = list(self._variables.values())
 
         keys[keys.index(old_key)] = new_key
         self._variables = Dict(zip(keys, values))
 
-    def delete_all_connectors(self):
-        '''
-        Clear all connectors in the design.
+    def delete_all_pins(self) -> pd.core.frame.DataFrame:
+        """Clear all pins in the net_Info and update the pins in components.
+        """
+        df_net_info = self._qnet._net_info
+        for (index, netID, comp_id, pin_name) in df_net_info.itertuples():
+            self._components[comp_id].pins[pin_name].net_id = 0
+
+        # remove rows, but save column names
+        self._qnet._net_info = self._qnet._net_info.iloc[0:0]
+        return self._qnet
+
+    def connect_pins(self, comp1_id: int, pin1_name: str, comp2_id: int, pin2_name: str) -> int:
+        """1. Will generate an unique net_id and placed in a net_info table.
+           2. Udate the components.pin_name with the net_id.
+
+           Component's pin will know if pin is connected to another component, if there is a non-zero net_id.
+
+        Args:
+            comp1_id (int):  Unique id of component used for pin1_name.
+            pin1_name (str): Name of pin in comp1_id.
+            comp2_id (int): Unique id of component used for pin2_name.
+            pin2_name (str): Name of pin in comp2_id.
 
         Returns:
-            Dict: Dictionary of connectors, which is now empty
-        '''
-        self.connectors.clear()
-        return self.connectors
+            int: Unique net_id of connection used in the netlist.  
+                If not added to netlist, the net_id will be 0 (zero).
+        """
+        net_id = 0
+        net_id = self._qnet.add_pins_to_table(
+            comp1_id, pin1_name, comp2_id, pin2_name)
+        if net_id:
+            # update the components to hold net_id
+            self._components[comp1_id].pins[pin1_name].net_id = net_id
+            self._components[comp2_id].pins[pin2_name].net_id = net_id
+        else:
+            logger.warning(
+                f'NetId was not added for {comp1_id}, {pin1_name}, {comp2_id}, {pin2_name} and will not be added to components.')
+        return net_id
+
+    def get_component(self, search_name: str) -> 'QComponent':
+        """The design contains a dict of all the components, which is correlated to a net_list connections,
+           and elements table. The key of the components dict are unique integers.  This method will search 
+           through the dict to find the component with search_name.
+
+        Returns:
+            QComponent: A component within design with the name search_name.
+            None: If the compnent is not found. A warning through logger.warning().
+            QComponent: If multiple components have the same name, the first component found in the search will be returned, ALONG with logger.warning().
+        """
+        alist = [(value.name, key)
+                 for (key, value) in self._components.items() if value.name == search_name]
+
+        length = len(alist)
+        if length == 1:
+            return_component = self._components[alist[0][1]]
+        elif length == 0:
+            self.logger.warning(
+                f'Name of component:{search_name} not found. Returned None')
+            return_component = None
+        else:
+            self.logger.warning(
+                f'Component:{search_name} is used multiple times, return the first component in list: (name, component_id) {str(alist)}')
+            return_component = self._components[alist[0][1]]
+
+        return return_component
+
+    def all_component_names_id(self) -> list:
+        """Get the text names and corresponding unique ID  of each component within this design.
+
+        Returns:
+            list[tuples]: Each tuple has the text name of component and UNIQUE integer ID for component.
+        """
+        alist = [(value.name, key)
+                 for (key, value) in self._components.items()]
+        return alist
+
+    def _delete_all_pins_for_component(self, comp_id: int) -> set:
+        """Remove component from self._qnet._net_info."""
+        all_net_id_removed = self._qnet.delete_all_pins_for_component(comp_id)
+
+        # reset all pins to be 0 (zero),
+        pins_dict = self._components[comp_id].pins
+        for (key, value) in pins_dict.items():
+            self._components[comp_id].pins[key].net_id = 0
+
+        return all_net_id_removed
+
 
     def delete_all_components(self):
         '''
         Clear all components in the design dictionary.
-        Also clears all connectors.
+        Also clears all pins and netlist.
         '''
         # clear all the dicitonaries and element tables.
+
+        # Need to remove pin connections before clearing the components.
+        self.delete_all_pins()
         self._components.clear()
-        self.delete_all_connectors()
         # TODO: add element tables here
         self._elements.clear_all_tables()
         # TODO: add dependency handling here
@@ -279,13 +384,14 @@ class QDesign():
         # thne just make without the checks on existing
         # TODO: Handle error and print nice statemetns
         # try catch log_simple_error
-        for name, obj in self.components.items():  # pylint: disable=unused-variable
+
+        for name, obj in self._components.items():  # pylint: disable=unused-variable
             try:  # TODO: performace?
-                obj.do_make()  # should we call this build?
+                obj.rebuild()  # should we call this build?
             except:
                 print(f'ERORROR in building {name}')
                 log_error_easy(
-                    self.logger, post_text=f'\nERROR in rebuilding component "{name}"!\n')
+                    self.logger, post_text=f'\nERROR in rebuilding component "{name}={obj.name}"!\n')
 
     def reload_component(self, component_module_name: str, component_class_name: str):
         """
@@ -308,7 +414,7 @@ class QDesign():
         for instance in filter(lambda k:
                                k.__class__.__name__ == component_class_name and
                                k.__class__.__module__ == component_module_name,
-                               self.components.values()):
+                               self._components.values()):
             instance.__class__ = new_class
 
         # Alternative, but reload will say not in sys.path
@@ -318,50 +424,52 @@ class QDesign():
         # spec.loader.exec_module(module)
         # importlib.reload(module)
 
-    def rename_component(self, component_name: str, new_component_name: str):
-        """
-        Rename component.
+    def rename_component(self, component_id: int, new_component_name: str):
+        """Rename component.
 
         Arguments:
-            component_name (str): Old name
-            new_component_name (str): New name
+            component_id {int} -- id of component within design
+            new_component_name {str} -- New name
 
         Returns:
-            int: Results
-        
-        Return values:
-            * 1: True name is changed.
-            * -1: Failed, new component name exists.
-            * -2: Failed, invalid new name
+            int -- Results:
+                1: True name is changed. (True)
+                -1: Failed, new component name exists.
+                -2: Failed, invalid new name; it is already being used by another component.
+                -3: Failed, component_id does not exist.
+
         """
-        #
-        if new_component_name in self.components:
-            self.logger.info(
-                f'Cannot rename {component_name} to {new_component_name}. Since {new_component_name} exists')
-            return -1
+        # We are using component_id,
+        # and assuming id is created as being unique.
+        # We also want the string (name) to be unique.
 
-        def is_valid_component_name(s: str):
-            return s.isidentifier()
+        if component_id in self._components:
+            all_names = self.all_component_names_id()
 
-        # Check that the name is a valid component name
-        if not is_valid_component_name(component_name):
-            self.logger.info(
-                f'Cannot rename {component_name} to {new_component_name}.')
-            return -2
+            search_result = [
+                item for item in all_names if new_component_name == item[0]]
 
-        # do rename
-        component = self.components[component_name]
-        component._name = new_component_name
-        self.components[new_component_name] = self.components.pop(
-            component_name)
-        self._elements.rename_component(component_name, new_component_name)
-        # TODO: handle renadming for all else: dependencies etc.
+            # name is already being used.
+            if (len(search_result) != 0):
+                logger.warning(
+                    f'Called design.rename_component, component_id({search_result[0][0]}, id={search_result[0][1]}) is already using {new_component_name}.')
+                return -2
+
+            # do rename
+            self._components[component_id]._name = new_component_name
+            self._elements.rename_component(
+                str(component_id), new_component_name)
+            return True
+        else:
+            logger.warning(
+                f'Called rename_component, component_id({component_id}), but component_id is not in design.components dictionary.')
+            return -3
 
         return True
 
-    def delete_component(self, component_name: str, force=False):
-        """
-        Deletes component and connectors attached to said component.
+    def delete_component(self, component_name: str, force=False) -> bool:
+        """Deletes component and pins attached to said component.
+
         If no component by that name is present, then just return True
         If component has dependencices return false and do not delete,
         unless force=True.
@@ -375,8 +483,9 @@ class QDesign():
         """
 
         # Nothing to delete if name not in components
-        if not component_name in self.components:
-            self.logger.info('Called delete component {component_name}, but such a \
+        component_id = self.components[component_name].id
+        if not component_id in self._components:
+            self.logger.info('Called delete_component {component_id}, but such a \
                              component is not in the design dicitonary of components.')
             return True
 
@@ -387,29 +496,37 @@ class QDesign():
         #   if it does not then delete
 
         # Do delete component ruthelessly
-        return self._delete_component(component_name)
+        return self._delete_component(component_id)
 
-    def _delete_component(self, component_name: str):
-        """
-        Delete component without doing any checks.
-
-        Arguments:
-            component_name (str): Name of component to delete
+    def _delete_component(self, component_id: int) -> bool:
+        """Delete component without doing any checks.
 
         Returns:
-            bool: is there no such component
+            bool -- True if component_id not in design.
+
         """
-        # Remove connectors
-        connector_names = self.components[component_name].connectors
-        for c_name in connector_names:
-            self.connectors.pop(c_name)
+        # Remove pins - done inherently from deleting the component, though needs checking
+        # if is on the net list or not
 
-        # Remove from design dictionary of components
-        self.components.pop(component_name, None)
+        return_response = False
+        if component_id in self._components:
+            # id in components dict
+            # Need to remove pins before popping component.
+            self._qnet.delete_all_pins_for_component(component_id)
 
-        self._elements.delete_component(component_name)
+            # Even though the elements table has string for component_id, dataframe is storing as an integer.
+            self._elements.delete_component_id(component_id)
 
-        return True
+            # remove from design dict of components
+            self._components.pop(component_id, None)
+        else:
+            # if not in components dict
+            logger.warning(
+                f'Called _delete_complete, component_id: {component_id}, but component_id is not in design.components dictionary.')
+            return_response = True
+            return return_response
+
+        return return_response
 
 
 #########I/O###############################################################
@@ -529,99 +646,6 @@ class QDesign():
         """
         return parse_options(params, param_names, variable_dict=self.variables)
 
-    def add_connector_as_normal(self,
-                      name: str,
-                      start : np.ndarray,
-                      end : np.ndarray,
-                      width:float,
-                      parent: Union[str, 'QComponent'],
-                      flip: bool = False,
-                      chip: str = 'main'):
-        """
-        Give the path points
-
-        Arguments:
-            name (str): connector name
-            start (np.ndarray): connector starting point
-            end (np.ndarray): connector end point
-            width (float): connector width
-            parent (Union[str, QComponent]): connector parent
-            flip (bool): true to flip the connector (Default: False)
-            chip (str): the chip (Default: main)
-        """
-
-        if is_component(parent):
-            parent = parent.name
-        elif parent is None:
-            parent = 'none'
-        name = parent+'_'+name
-
-        if not parent is 'none':
-            self.components[parent].connectors.add(name)
-
-        vec_normal = end - start
-        vec_normal /= norm(vec_normal)
-        if flip:
-            vec_normal = -vec_normal
-
-        self.connectors[name] = Dict(
-            points=[], # TODO
-            middle=end,
-            normal=vec_normal,
-            tangent=Vector.rotate(vec_normal, np.pi/2), #TODO: rotate other way sometimes?
-            width=width,
-            chip=chip,
-            parent_name=parent
-        )
-
-    def add_connector(self,
-                      name: str,
-                      points: list,
-                      parent: Union[str, 'QComponent'],
-                      flip: bool = False,
-                      chip: str = 'main'):
-        """
-        Add named connector to the design by creating a connector dicitoanry.
-
-        Arguments:
-            name (str): Name of connector
-            points (list): List of two (x,y) points that define the connector
-            parent (Union[str, QComponent): component or string or None. Will be converted to a
-                                            string, which will the name of the component.
-            flip (bool): true to flip the connector (Default: False)
-            chip (str): the chip (Default: main)
-        """
-        if is_component(parent):
-            parent = parent.name
-        elif parent is None:
-            parent = 'none'
-        name = parent+'_'+name
-
-        if not parent is 'none':
-            self.components[parent].connectors.add(name)
-
-        self.connectors[name] = make_connector(
-            points, parent, flip=flip, chip=chip)
-
-        # TODO: Add net?
-
-    def get_connector(self, name: str):
-        """
-        Interface for components to get connector data
-
-        Args:
-            name (str): Name of the desired connector.
-
-        Returns:
-            dict: Returns the data of the connector, see `design_base.make_connector()` for what
-            those values are.
-        """
-
-        # For after switching to pandas, something like this?
-        # return self.connectors.get(name).to_dict()
-
-        return self.connectors[name]
-
     def update_component(self, component_name: str, dependencies: bool = True):
         """
         Update the component and any dependencies it may have.
@@ -692,43 +716,4 @@ class QDesign():
             parent (str): The component on which the child depends.
             child (str): The child cannot live without the parent.
         """
-        pass
 
-####################################################################################
-###
-# Connector
-# TODO: Decide how to handle this.
-#   Should this be a class?
-#   Should we keep function here or just move into design?
-# MAKE it so it has reference to who made it
-
-def make_connector(points: list, parent_name: str, flip=False, chip='main'):
-    """
-    Works in user units.
-
-    Arguments:
-        points (list): Two points (coordinates) that define the connector
-        flip (bool): Flip the normal or not  (Default: False)
-        chip (str): Name of the chip the connector sits on (Default: 'main')
-
-    Returns:
-        dict: connector
-    """
-    assert len(points) == 2
-
-    # Get the direction vector, the unit direction vec, and the normal vector
-    vec_dist, vec_dist_unit, vec_normal = draw.Vector.two_points_described(
-        points)
-
-    if flip:
-        vec_normal = -vec_normal
-
-    return Dict(
-        points=points,
-        middle=np.sum(points, axis=0)/2.,
-        normal=vec_normal,
-        tangent=vec_dist_unit,
-        width=np.linalg.norm(vec_dist),
-        chip=chip,
-        parent_name=parent_name
-    )

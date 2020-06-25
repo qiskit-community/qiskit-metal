@@ -19,7 +19,7 @@ Module containing Net information storage.
 
 @author: Priti Shah, ... (IBM)
 """
-from typing import Tuple
+#from typing import Tuple
 import pandas as pd
 from .. import logger
 
@@ -81,22 +81,20 @@ class QNet():
 
         if not isinstance(comp1_id, int):
             self.logger.warning(
-            f'Expected an int, but have {comp1_id}. The pins are were not entered to the net_info table.')
+                f'Expected an int, but have {comp1_id}. The pins are were not entered to the net_info table.')
             return net_id
         if not isinstance(comp2_id, int):
             self.logger.warning(
-            f'Expected an int, but have {comp2_id}. The pins are were not entered to the net_info table.')
+                f'Expected an int, but have {comp2_id}. The pins are were not entered to the net_info table.')
             return net_id
-        if not isinstance(pin1_name, str): 
+        if not isinstance(pin1_name, str):
             self.logger.warning(
-            f'Expected a string, but have {pin1_name}. The pins are were not entered to the net_info table.')
+                f'Expected a string, but have {pin1_name}. The pins are were not entered to the net_info table.')
             return net_id
-        if not isinstance(pin2_name, str): 
+        if not isinstance(pin2_name, str):
             self.logger.warning(
-            f'Expected a string, but have {pin2_name}. The pins are were not entered to the net_info table.')
+                f'Expected a string, but have {pin2_name}. The pins are were not entered to the net_info table.')
             return net_id
-
-       
 
         # Confirm the component-pin combonation is NOT in _net_info, before adding them.
         for (netID, component_id, pin_name) in self._net_info.itertuples(index=False):
@@ -128,7 +126,7 @@ class QNet():
         Arguments:
             net_id_to_remove (int): The id to remove.
         """
-        
+
         self._net_info.drop(
             self._net_info.index[self._net_info['net_id'] == net_id_to_remove], inplace=True)
         return
@@ -151,3 +149,16 @@ class QNet():
                 self.delete_net_id(netID)
 
         return all_net_id_deleted
+
+    def get_components_and_pins_for_netid(self, net_id_search: int) -> pd.core.frame.DataFrame:
+        """Search with a net_id to get component id and pin name.
+
+        Arguments:
+            net_id_search {int} -- Unique net id which connects two pins within a design.
+
+        Returns:
+            pandas.DataFrame -- Two rows of the net_info which have the same net_id_search.
+        """
+        df_subset_based_on_net_id = self._net_info[(
+            self._net_info['net_id'] == net_id_search)]
+        return df_subset_based_on_net_id

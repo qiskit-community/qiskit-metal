@@ -186,7 +186,7 @@ class QTableModel_Options(QAbstractTableModel):
 
         # TODO: handle nested dicitonaries
         # See v0.1: get_nested_dict_item, pop_nested_dict_item
-        # TODO: ability to add dictionary such as to add connectors
+        # TODO: ability to add dictionary such as to add pins
         if not index.isValid():
             return False
 

@@ -37,6 +37,7 @@ class Rectangle(QComponent):
     )
 
     def make(self):
+
         p = self.p  # p for parsed parameters. Access to the parsed options.
 
         # create the geometry

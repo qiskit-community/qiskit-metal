@@ -23,25 +23,26 @@ from copy import deepcopy
 from ...toolbox_python.attr_dict import Dict
 from .base import QComponent
 
+
 class BaseQubit(QComponent):
     '''
     Qubit base class. Use to subscript, not to generate directly.
 
     Has connection lines that can be added
 
-    options_con_lines (Dict): None, provides easy way to pass connector lines
-                            which merely update self.options.con_lines
+    options_connection_pads (Dict): None, provides easy way to pass connection pads
+                            which merely update self.options.connection_pads
 
     Default Options:
     --------------------------
     default_options
-    ._default_con_lines : the default values for the (if any) connection lines of the
+    ._default_connection_pads : the default values for the (if any) connection lines of the
         qubit.
-    .con_lines : the dictionary which contains all active connection lines for the qubit.
-        The structure should follow the format of .con_lines = dict{name_of_con_line=dict{},
-        name_of_con_line2 = dict{value1 = X,value2 = Y...},...etc.}
+    .connection_pads : the dictionary which contains all active connection lines for the qubit.
+        The structure should follow the format of .connection_pads = dict{name_of_connection_pad=dict{},
+        name_of_connection_pad2 = dict{value1 = X,value2 = Y...},...etc.}
 
-        When you define your custom qubit class please add a connector options default
+        When you define your custom qubit class please add a _default_connection_pads
         dicitonary names as described above.
 
 
@@ -55,36 +56,37 @@ class BaseQubit(QComponent):
     default_options = Dict(
         pos_x='0um',
         pos_y='0um',
-        con_lines=Dict(),
-        _default_con_lines=Dict()
+        connection_pads=Dict(),
+        _default_connection_pads=Dict()
     )
 
-    def __init__(self, design, name, options=None, options_con_lines=None,
+    def __init__(self, design, name, options=None, options_connection_pads=None,
                  make=True):
 
         super().__init__(design, name, options=options, make=False)
 
-        if options_con_lines:
-            self.options.con_lines.update(options_con_lines)
+        if options_connection_pads:
+            self.options.connection_pads.update(options_connection_pads)
 
-        self._set_options_con_lines()
+        self._set_options_connection_pads()
 
         if make:
-            self.do_make()
+            self.rebuild()
 
-    def _set_options_con_lines(self):
+    def _set_options_connection_pads(self):
         #class_name = type(self).__name__
-        assert '_default_con_lines' in self.design.template_options[self.class_name], f"""When
-        you define your custom qubit class please add a connector lines options default
-        dicitonary name as default_options['_default_con_lines']. This should speciy the default
-        creation options for the connector. """
+        assert '_default_connection_pads' in self.design.template_options[self.class_name], f"""When
+        you define your custom qubit class please add a _default_connection_pads
+        dicitonary name as default_options['_default_connection_pads']. This should specify the default
+        creation options for the connection. """
 
-        del self.options._default_con_lines #Not sure if it best to remove it from options to keep
-        #the self.options cleaner or not, since the options currently copies in the template. This is
-        #potential source of bugs in the future
-        for name in self.options.con_lines:
-            my_options_con_lines = self.options.con_lines[name]
-            self.options.con_lines[name] = deepcopy(
-                self.design.template_options[self.class_name]['_default_con_lines'])
-            self.options.con_lines[name].update(my_options_con_lines)
-
+        # Not sure if it best to remove it from options to keep
+        del self.options._default_connection_pads
+        # the self.options cleaner or not, since the options currently copies in the template. This is
+        # potential source of bugs in the future
+        for name in self.options.connection_pads:
+            my_options_connection_pads = self.options.connection_pads[name]
+            self.options.connection_pads[name] = deepcopy(
+                self.design.template_options[self.class_name]['_default_connection_pads'])
+            self.options.connection_pads[name].update(
+                my_options_connection_pads)
