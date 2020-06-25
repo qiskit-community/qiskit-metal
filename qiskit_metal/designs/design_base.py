@@ -85,8 +85,14 @@ class QDesign():
         #                   renamed with an unique name, then the ID should continute to be used.
         self._qcomponent_latest_assigned_id = 0
 
-        # Key attributes related to physical content of the design. These will be saved
+        ### Key attributes related to physical content of the design. These will be saved
+
+        # Where components are actaully stored.
         self._components = Dict()
+        # User-facing interface for user to view components by using name (str) for key access to
+        # QComponents, isntead of id (int).
+        self.components = Components(self)
+
         self._variables = Dict()
         self._chips = Dict()
 
@@ -107,9 +113,6 @@ class QDesign():
         # is resolved.
         self._template_renderer_options = DefaultOptionsRenderer()  # use for renderer
         self._qnet = QNet()
-
-        # Interface for user to view components by using name(text) for components, vs id.
-        self.components = Components(self)
 
     def _init_metadata(self) -> Dict:
         """Initialize default metadata dicitoanry

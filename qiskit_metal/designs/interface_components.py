@@ -20,7 +20,6 @@ Module containing Design interface components.
 @author: Priti Shah, ... (IBM)
 """
 
-import importlib
 from copy import deepcopy
 from typing import TYPE_CHECKING, Any, Iterable, List, Optional, TypeVar, Union, Dict as Dict_
 from .. import logger
@@ -35,14 +34,16 @@ if TYPE_CHECKING:
 
 class Components:
     """This is a user interface for the design._components dict.  The keys are unique integers,
-    however, this interface allows user to treat the keys as strings. 
+    however, this interface allows user to treat the keys as strings.
     """
 
     def __init__(self, design: 'QDesign'):
-        """ Set up variables and logger which are used to emulate a dict which is referencing design._components.
+        """ Set up variables and logger which are used to emulate a dict which is
+        referencing design._components.
 
         Args:
-            design (QDesign): Need to have a Qdesign class so this class can reference design._components.
+            design (QDesign): Need to have a Qdesign class so this class can
+            reference design._components.
         """
         self._design = design
         self.logger = logger  # type: logging.Logger
@@ -59,10 +60,12 @@ class Components:
         return len(self.components)
 
     def get_list_ints(self, component_names: List[str]) -> List[int]:
-        """Provide corresponding ints to be used as keys for dict: design._components, when list of names is provided.
+        """Provide corresponding ints to be used as keys for dict: design._components,
+        when list of names is provided.
 
         Args:
-            component_names (List[str]): Names of components which user wants to know the int to be used as a key.
+            component_names (List[str]): Names of components which user wants to know
+            the int to be used as a key.
 
         Returns:
             List[int]: Corresponding ints that user can use as keys into design._components
@@ -84,21 +87,24 @@ class Components:
 
         If 0 is returned it means the name is not in dict.
         """
+
+        # TODO:  all_names creation -> seems very slow way to do?
         all_names = [(value.name, key)
                      for (key, value) in self.components.items()]
         search_result = [
             item for item in all_names if name == item[0]]
+
         length = len(search_result)
-        if (length == 1):
+        if length == 1:
             # Good, we found a single component match.
             return search_result[0][1]
-        elif (length == 0):
+        elif length == 0:
             # Name not in dict.
             self.logger.warning(
                 f'In Components.find_id(), the name={name} is not used in design._components ')
             return 0
 
-        elif (length > 1):
+        elif length > 1:
             # Really unfortunate, the dict has multiple coponents with same name, use the first search result.
             self.logger.warning(
                 f'In Components.find_id(), the name={name} is used multiple times in design._components.  Returning the key, for QComponent, with lowest id.')
@@ -107,11 +113,11 @@ class Components:
     # def is_name_used(self, new_name: str) -> int:
     #     """Check to see if name being used in components.
 
-    #      Args:      
+    #      Args:
     #          new_name (str): name to check
     #
     #      Returns:
-    #          int: If the name does not exist, 0 is returned, otherwise the 
+    #          int: If the name does not exist, 0 is returned, otherwise the
     #          component-id of component which is already using the name.
     #     """
 
@@ -149,8 +155,9 @@ class Components:
         the net_info table and elements tables.
 
         Args:
-            name (str): Name of QComponent.  If not in design._components, then will be added to dict.
-                                             If in dict, the value(QComponent) will replace existing QComponent.
+            name (str): Name of QComponent.  If not in design._components,
+                        then will be added to dict.
+                        If in dict, the value(QComponent) will replace existing QComponent.
             value (QComponent): QComponent to add under the given name
         """
         if not isinstance(value, QComponent):
