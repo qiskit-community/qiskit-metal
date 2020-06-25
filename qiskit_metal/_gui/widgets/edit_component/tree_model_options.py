@@ -170,7 +170,7 @@ class QTreeModel_Options(QAbstractItemModel):
         self._component_widget = parent
         self.logger = gui.logger
         self._gui = gui
-        self._row_count = -1
+        self._rowCount = -1
         self._view = view
 
         self.root = BranchNode('')
@@ -205,7 +205,7 @@ class QTreeModel_Options(QAbstractItemModel):
             self.modelReset.emit()
             self._rowCount = newRowCount
             if self._view:
-                self._view.resizeColumnsToContents()
+                self._view.autoresize_columns()
 
     @property
     def design(self) -> 'QDesign':
