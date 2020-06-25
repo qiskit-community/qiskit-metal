@@ -28,7 +28,7 @@ class BaseJunction(QComponent):
     """
     Create a new Metal junction and adds it's default_options to the design.
 
-    Inherits QComponent class
+    Inherits components.QComponent class
     """
     # TODO
     pass
