@@ -13,8 +13,9 @@
 # that they have been altered from the originals.
 
 """
-This is the main module that defines what a component is in Qiskit Metal.
-See the docstring of QComponent
+This is the main module that defines what a QComponent is in Qiskit Metal.
+
+To see the docstring of QComponent, use:
     >> ?QComponent
 
 @author: Zlatko Minev, Thomas McConekey, ... (IBM)
@@ -22,12 +23,9 @@ See the docstring of QComponent
 """
 
 import logging
-import pprint
 import inspect
-# import os
 from copy import deepcopy
 from typing import TYPE_CHECKING, Any, Iterable, List, Union, Dict as Dict_
-# from typing import Optional, TypeVar
 
 import pandas as pd
 import numpy as np
@@ -71,7 +69,7 @@ class QComponent():
         * The creator user implements the `make` function (see above)
         * The class define the internal representation of a componetns
         * The class provides the interfaces for the component (creator user)
-        
+
     """
 
     ''' QComponent.gather_all_children_options collects the options
@@ -99,49 +97,46 @@ class QComponent():
             make {bool} -- Should the make function be called at the end of the init.
                     Options be used in the make funciton to create the geometry. (default: {True})
             component_template {[type]} -- User can overwrite the template options for the component
-                                           that will be stored in the design, in design.template, and used
-                                           every time a new component is instantiated.
+                                           that will be stored in the design, in design.template,
+                                           and used every time a new component is instantiated.
         """
 
-        assert is_design(design), "Error you did not pass in a valid \
-        Metal Design object as a parent of this component."
+        if not is_design(design):
+            raise ValueError(
+                "Error you did not pass in a valid Metal QDesign object as a parent of this QComponent.")
 
-        # TODO: handle, if the component name already exits and we want to overwrite,
-        # then we need to delete its old elements at the end of the init before the make
-
-        self._design = design  # pointer to parent
+        self._design = design  # reference to parent
 
         answer = self._is_name_used(name)
-        if (answer):
-            logger.warning(
-                f'The name {name} is used in component id={answer}.  Component was not made, nor added to design.')
+        if answer: #TODO: Resolve -> Maybe overwrite component!? Issue #193
+            logger.warning(f'The name {name} is used in component id={answer}. '
+                           'Component was not made, nor added to design.')
             return
-        else:
-            self._name = name
 
-        self._id = 0
+        self._name = name
+        self._class_name = self._get_unique_class_name() # Full class name
 
-        self._class_name = self._get_unique_class_name()
-
-        self.options = self.get_template_options(
-            design=design, component_template=component_template)
+        ### Options
+        self.options = self.get_template_options(design=design,
+                                                 component_template=component_template)
         if options:
             self.options.update(options)
-
-        # In case someone wants to store extra information or
-        # analysis results
-        self.metadata = Dict()
-
-        # Status: used to handle building of a component and checking if it succeedded or failed.
-        self.status = 'not built'
-        # Create an empty dict, which will populated by component designer.
-        self.pins = Dict()
-        self._made = False
 
         # Parser for options
         self.p = ParsedDynamicAttributes_Component(self)
 
+        ### Build and component internals
+        # Status: used to handle building of a component and checking if it succeedded or failed.
+        self.status = 'not built'
+        # Create an empty dict, which will populated by component designer.
+        self.pins = Dict() # TODO: should this be private?
+        self._made = False
+
+        # In case someone wants to store extra information or analysis results
+        self.metadata = Dict()
+
         # Add the component to the parent design
+        self._id = self.design._get_new_qcomponent_id()  # Create the unique id
         self._add_to_design()  # Do this after the pin checking?
 
         # Make the component geometry
@@ -153,6 +148,7 @@ class QComponent():
         '''
         From the base class of QComponent, traverse the child classes
         to gather the .default options for each child class.
+
         Note: if keys are the same for child and grandchild, grandchild will overwrite child
         Init method.
         '''
@@ -222,6 +218,11 @@ class QComponent():
 
     @property
     def logger(self) -> logging.Logger:
+        """The Qiskit Metal Logger
+
+        Returns:
+            logging.Logger: [description]
+        """
         return self._design.logger
 
     @property
@@ -235,10 +236,9 @@ class QComponent():
         return self._id
 
     def _add_to_design(self):
-        ''' Add self to design objects dictionary.
-            Method will obtain an unique id for the component within a design, THEN add itself to design.
+        ''' Add self to design objects dictionary. Method will obtain an unique id
+        for the component within a design, THEN add itself to design.
         '''
-        self._id = self.design._get_new_qcomponent_id()
         self.design._components[self.id] = self
 
     @classmethod
@@ -249,8 +249,8 @@ class QComponent():
                              template_key: str = None) -> Dict:
         """
         Creates template options for the Metal Componnet class required for the class
-        to function, based on teh design template; i.e., be created, made, and rendered. Provides the blank option
-        structure required.
+        to function, based on teh design template; i.e., be created, made, and rendered.
+        Provides the blank option structure required.
 
         The options can be extended by plugins, such as renderers.
 
@@ -277,8 +277,8 @@ class QComponent():
         if template_key not in design.template_options:
             logger_ = logger_ or design.logger
             if logger_:
-                logger_.error(f'ERROR in the creating component {cls.__name__}!\n'
-                              f'The default options for the component class {cls.__name__} are missing')
+                logger_.error(f'ERROR in the creating component {cls.__name__}!\nThe default '
+                              f'options for the component class {cls.__name__} are missing')
 
         # Specific object template options
         options = deepcopy(Dict(design.template_options[template_key]))
@@ -300,7 +300,21 @@ class QComponent():
     # TODO: Maybe call this function build
     # TODO: Capture error here and save to log as the latest error
     def rebuild(self):
-        """Actually make or remake the component"""
+        """Builds the QComponent.
+        This is the main action function of a QComponent, call it qc.
+        It converts the qc.options into QGeometry with all of the required options, such as
+        the geometry points, layer number, materials, etc. needed to render.
+
+        The build clears the exisitng QGeometry and QPins and then calls the qc.make function,
+        which is writen by the component developer to implement the logic (using the metal.
+        draw module) to convert the qc.options into the QGeometry.
+
+        *Build status:*
+        The funciton also sets the build status of the component.
+        It sets to `failed` when the component is created, and then it sets to `good` when it is
+        done with no errors. The user can also set other statuses, which can appear if the code fails
+        to reach the final line of the build, where the build status is set to `good`.
+        """
 
         # Begin by setting the status to failed, we will change this if we succed
         self.status = 'failed'
@@ -317,15 +331,15 @@ class QComponent():
 
     def delete(self):
         """
-        Delete the element and remove from the design.
-        Removes also all of its connectors.
-        """  # See function added in design_base by Priti which should do this
-        raise NotImplementedError()
+        Delete the QComponent.
+        Removes QGeometry, QPins, etc. from the design.
+        """
+        self.design.delete_component(self.name)
 
-    def parse_value(self, value: Union[Any, List, Dict, Iterable]):
-        # Maybe still should be fine as any values will be in component options still?
-        # Though the data table approach and rendering directly via shapely could lead to problem
-        # with variable use
+    # Maybe still should be fine as any values will be in component options still?
+    # Though the data table approach and rendering directly via shapely could lead to problem
+    # with variable use
+    def parse_value(self, value: Union[Any, List, Dict, Iterable]) -> Union[Any, List, Dict, Iterable]:
         """
         Parse a string, mappable (dict, Dict), iterrable (list, tuple) to account for
         units conversion, some basic arithmetic, and design variables.
@@ -396,7 +410,8 @@ class QComponent():
             check_name (str):  Name which user requested to apply to current component.
 
         Raises:
-            Warning: If user has used this text version of the component name already, warning will be given to user.
+            Warning: If user has used this text version of the component name already,
+            warning will be given to user.
 
         Returns:
             int: 0 if does not exist
@@ -405,16 +420,17 @@ class QComponent():
         """
         all_names = self._design.all_component_names_id()
 
-        search_result = [
-            item for item in all_names if check_name == item[0]]
+        # TODO: this seems like it can be optimized using `in`
+        search_result = [item for item in all_names if check_name == item[0]]
 
         # name is already being used.
-        if (len(search_result) == 0):
+        if len(search_result) == 0:
             return 0
         else:
-            logger.error(
-                f'Called _is_name_used, component_id({search_result[0][0]}, id={search_result[0][1]}) is already using "{check_name}".')
+            logger.error(f"Called _is_name_used, component_id({search_result[0][0]}, id={search_result[0][1]})"
+                         " is already using \"{check_name}\".")
             return search_result[0][1]
+
 ####################################################################################
 # Functions for handling of pins
 #
@@ -435,21 +451,22 @@ class QComponent():
                           flip: bool = False,
                           chip: str = 'main'):
         """Generates a pin from two points which are normal to the intended plane of the pin.
-        The normal should 'point' in the direction of intended connection. Adds dictionary to 
+        The normal should 'point' in the direction of intended connection. Adds dictionary to
         parent component :
-        [Dict]: A dictionary containing a collection of information about the pin, 
+        [Dict]: A dictionary containing a collection of information about the pin,
             necessary for use in Metal.
                 points (list) - two (x,y) points which represent the edge of the pin for
                     another component to attach to (eg. the edge of a CPW TL)
                 middle (numpy.ndarray) - an (x,y) which represents the middle of the points above,
                     where the pin is represented.
-                normal (numpy.ndarray) - the normal vector of the pin, pointing in direction of intended
-                    connection
+                normal (numpy.ndarray) - the normal vector of the pin, pointing in direction of
+                    intended connection
                 tangent (numpy.ndarray) - 90 degree rotation of normal vector
                 width (float) - the width of the pin
                 chip (str) - the chip the pin is on
                 parent_name - the id of the parent component
-                net_id - net_id of the pin if connected to another pin (default 0, indicates not connected))
+                net_id - net_id of the pin if connected to another pin (default 0, indicates
+                         not connected))
 
         Arguments:
             name (str) - Name of the pin
@@ -494,14 +511,14 @@ class QComponent():
             chip (str, optional): [description]. Defaults to 'main'.
 
         Returns:
-            [Dict]: A dictionary containing a collection of information about the pin, 
+            [Dict]: A dictionary containing a collection of information about the pin,
             necessary for use in Metal.
                 points (list) - two (x,y) points which represent the edge of the pin for
                     another component to attach to (eg. the edge of a CPW TL)
                 middle (numpy.ndarray) - an (x,y) which represents the middle of the points above,
                     where the pin is represented.
-                normal (numpy.ndarray) - the normal vector of the pin, pointing in direction of intended
-                    connection
+                normal (numpy.ndarray) - the normal vector of the pin, pointing in direction of
+                    intended connection
                 tangent (numpy.ndarray) - 90 degree rotation of normal vector
                 width (float) - the width of the pin
                 chip (str) - the chip the pin is on
@@ -541,6 +558,7 @@ class QComponent():
 
         return self.pins[name]
 
+    # TODO: Maybe rename to add_pin_as_tangent? @priti
     def add_pin(self,
                 name: str,
                 points: list,
@@ -679,8 +697,8 @@ class QComponent():
  {b}module:  {b1}{self.__class__.__module__}{e}
  {b}id:      {b1}{self.id}{e}"""
 
-    ############################################################################
-    # Geometry handling of created elements
+############################################################################
+# Geometry handling of created elements
 
     @property
     def elements_types(self) -> List[str]:
