@@ -35,7 +35,7 @@ Base Components
     :toctree: ../stubs/
 
     QComponent
-    BaseJunction-TBD
+    BaseJunction
     BaseQubit-TBD
     ParsedDynamicAttributes_Component-TBD
     MyQComponent-TBD
@@ -94,4 +94,4 @@ Qubits
 """
 from .. import is_component
 from .base import QComponent
-
+from .base.junction import BaseJunction

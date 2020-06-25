@@ -25,5 +25,10 @@ To handle Manhatan, BFT, etc.
 from .base import QComponent
 
 class BaseJunction(QComponent):
+    """
+    Create a new Metal junction and adds it's default_options to the design.
+
+    Inherits QComponent class
+    """
     # TODO
     pass
