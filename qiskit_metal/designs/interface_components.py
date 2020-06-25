@@ -1,3 +1,24 @@
+# -*- coding: utf-8 -*-
+
+# This code is part of Qiskit.
+#
+# (C) Copyright IBM 2020.
+#
+# This code is licensed under the Apache License, Version 2.0. You may
+# obtain a copy of this license in the LICENSE.txt file in the root directory
+# of this source tree or at http://www.apache.org/licenses/LICENSE-2.0.
+#
+# Any modifications or derivative works of this code must retain this
+# copyright notice, and modified files need to carry a notice indicating
+# that they have been altered from the originals.
+
+"""
+Module containing Design interface components.
+
+@date: 2020
+
+@author: Priti Shah, ... (IBM)
+"""
 
 import importlib
 from copy import deepcopy
@@ -51,15 +72,17 @@ class Components:
         return component_ints
 
     def find_id(self, name: str) -> int:
-        """Find id of component.  The id is the key for a dict which holds all of the components within design.
-            Assume the name is not used multiple times. If it is, the first search result will be used.
+        """
+        Find id of component.  The id is the key for a dict which holds all of the components within design.
+        Assume the name is not used multiple times. If it is, the first search result will be used.
 
         Args:
             name (str): Text name of compnent.  The name is assumed to be unique.
 
         Returns:
             int: key to use in  _components
-                 0 means the name is not in dict
+
+        If 0 is returned it means the name is not in dict.
         """
         all_names = [(value.name, key)
                      for (key, value) in self.components.items()]
@@ -84,11 +107,12 @@ class Components:
     # def is_name_used(self, new_name: str) -> int:
     #     """Check to see if name being used in components.
 
+    #      Args:      
+    #          new_name (str): name to check
+    #
     #      Returns:
-    #          int -- Results:
-    #      Returns:
-    #         int: 0 if does not exist
-    #         component-id of component which is already using the name.
+    #          int: If the name does not exist, 0 is returned, otherwise the 
+    #          component-id of component which is already using the name.
     #     """
 
     #     all_names = [(value.name, key)
@@ -127,7 +151,7 @@ class Components:
         Args:
             name (str): Name of QComponent.  If not in design._components, then will be added to dict.
                                              If in dict, the value(QComponent) will replace existing QComponent.
-            value (QComponent): [description]
+            value (QComponent): QComponent to add under the given name
         """
         if not isinstance(value, QComponent):
             self.logger.warning(
@@ -172,8 +196,8 @@ class Components:
             item (str): Name in the value of design._components.
 
         Returns:
-            int: 0 if item is not in design._components.name
-                 int which can be used as key for design._components[]
+            int: 0 if item is not in design._components.name otherwise an int which can be used as
+            key for design._components[]
         """
         if not isinstance(item, str):
             self.logger.warning(f'Search with string in __contains__ {item}.')
@@ -229,7 +253,7 @@ class Components:
             yield new_key
 
     def items(self) -> list:
-        """Make the class behave "like" a dict.
+        """Get a list of all the items.
 
         Returns:
             list: List of (key, value) pairs.
@@ -239,7 +263,7 @@ class Components:
         return all_items
 
     def value(self) -> list:
-        """Make a class behave "like" a dict.
+        """Get the list of all the values.
 
         Returns:
             list: List of just the values.
@@ -249,7 +273,7 @@ class Components:
         return all_items
 
     def keys(self) -> list:
-        """Make a class behave "like" a dict.
+        """Get the list of all the keys.
 
         Returns:
             list: List of just the keys.
