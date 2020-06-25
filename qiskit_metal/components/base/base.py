@@ -60,7 +60,7 @@ class QComponent():
 
     For front-end user:
         * Manipulates the dictionary of options (stored as string-string key-value
-         pairs) to change the geometry and properties of the component.
+          pairs) to change the geometry and properties of the component.
         * The options of the class are stored in an options dicitonary. These
           include the geometric sizes, such as width='10um' or height='5mm', etc.
         * The `make` function parses these strings and implements the logic required
@@ -71,6 +71,7 @@ class QComponent():
         * The creator user implements the `make` function (see above)
         * The class define the internal representation of a componetns
         * The class provides the interfaces for the component (creator user)
+        
     """
 
     ''' QComponent.gather_all_children_options collects the options
@@ -338,8 +339,7 @@ class QComponent():
                     Some basic arithmatic is possible, see below.
                 Strings of variables 'variable1'.
                     Variable interpertation will use string method
-                    isidentifier `'variable1'.isidentifier()
-                Strings of
+                    isidentifier `'variable1'.isidentifier()`
 
             Dictionaries:
                 Returns ordered `Dict` with same key-value mappings, where the values have
@@ -642,7 +642,7 @@ class QComponent():
 
         Assumptions:
             * Assumes all elements in the elements are homogeneous in kind;
-             i.e., all lines or polys etc.
+              i.e., all lines or polys etc.
 
 
         Arguments:

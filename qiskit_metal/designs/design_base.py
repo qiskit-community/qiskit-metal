@@ -16,6 +16,7 @@
 Module containing all Qiskit Metal designs.
 
 @date: 2019
+
 @author: Zlatko Minev, Thomas McConeky, ... (IBM)
 """
 # To create a basic UML diagram
@@ -51,7 +52,7 @@ if TYPE_CHECKING:
 
 __all__ = ['QDesign']
 
-
+#:ivar var1: initial value: par2
 class QDesign():
     """ QDesign is the base class for Qiskit Metal Designs.
     A design is the most top-level object in all of Qiskit Metal.
@@ -72,6 +73,7 @@ class QDesign():
             other functions.
 
         save_path (str or None) : Path that the design is saved to. Set when saved or loaded
+
 
 
     """
@@ -203,7 +205,7 @@ class QDesign():
     @property
     def elements(self) -> QElementTables:
         '''
-        Use for advanced users only. Access to the element tables.
+        Returns the element tables (Use for advanced users only)
         '''
         return self._elements
 
@@ -218,11 +220,27 @@ class QDesign():
 #########Proxy properties##################################################
 
     def get_chip_size(self, chip_name: str = 'main'):
-        """Utility function to return the chip size"""
+        """
+        Utility function to return the chip size
+
+        Args:
+            chip_name (str): Returns the size of the given chip (Default: main)
+
+        Raises:
+            NotImplementedError: Code not written yet
+        """
         raise NotImplementedError()
 
     def get_chip_z(self, chip_name: str = 'main'):
-        """Utility function to return the z value of a chip"""
+        """
+        Utility function to return the z value of a chip
+
+        Args:
+            chip_name (str): Returns the size of the given chip (Default: main)
+
+        Raises:
+            NotImplementedError: Code not written yet
+        """
         raise NotImplementedError()
 
 #########General methods###################################################
@@ -230,11 +248,11 @@ class QDesign():
     def rename_variable(self, old_key: str, new_key: str):
         """
         Renames a variable in the variables dictionary.
-        Preserves order
+        Preserves order.
 
-        Arguments:
-            old_key {str} -- previous variable name
-            new_key {str} -- new variable name
+        Args:
+            old_key (str): previous variable name
+            new_key (str): new variable name
         """
 
         # TODO: Change this use components with both id and name.
@@ -331,6 +349,7 @@ class QDesign():
 
         return all_net_id_removed
 
+
     def delete_all_components(self):
         '''
         Clear all components in the design dictionary.
@@ -346,7 +365,12 @@ class QDesign():
         # TODO: add dependency handling here
 
     def _get_new_qcomponent_id(self):
-        ''' Give new id that QComponent can use.'''
+        '''
+        Give new id that QComponent can use.
+
+        Returns:
+            int: ID of the qcomponent
+        '''
         self._qcomponent_latest_assigned_id += 1
         return self._qcomponent_latest_assigned_id
 
@@ -370,13 +394,14 @@ class QDesign():
                     self.logger, post_text=f'\nERROR in rebuilding component "{name}={obj.name}"!\n')
 
     def reload_component(self, component_module_name: str, component_class_name: str):
-        """Reload the module and class of a given componetn and update
+        """
+        Reload the module and class of a given component and update
         all class instances. (Advanced function.)
 
         Arguments:
-            component_module_name {str} -- String name of the module name, such as
+            component_module_name (str): String name of the module name, such as
                 `qiskit_metal.components.qubits.transmon_pocket`
-            component_class_name {str} -- String name of the class name inside thst module,
+            component_class_name (str): String name of the class name inside thst module,
                 such  as `TransmonPocket`
         """
         self.logger.debug(
@@ -412,6 +437,7 @@ class QDesign():
                 -1: Failed, new component name exists.
                 -2: Failed, invalid new name; it is already being used by another component.
                 -3: Failed, component_id does not exist.
+
         """
         # We are using component_id,
         # and assuming id is created as being unique.
@@ -443,18 +469,17 @@ class QDesign():
 
     def delete_component(self, component_name: str, force=False) -> bool:
         """Deletes component and pins attached to said component.
+
         If no component by that name is present, then just return True
         If component has dependencices return false and do not delete,
         unless force=True.
 
         Arguments:
-            component_name {str} -- Name of component to delete
-
-        Keyword Arguments:
-            force {bool} -- force delete component even if it has children (default: {False})
+            component_name (str): Name of component to delete
+            force (bool): force delete component even if it has children (Default: False)
 
         Returns:
-            bool -- is there no such component
+            bool: is there no such component
         """
 
         # Nothing to delete if name not in components
@@ -478,6 +503,7 @@ class QDesign():
 
         Returns:
             bool -- True if component_id not in design.
+
         """
         # Remove pins - done inherently from deleting the component, though needs checking
         # if is on the net list or not
@@ -507,26 +533,31 @@ class QDesign():
 
     @classmethod
     def load_design(cls, path: str):
-        """Load a Metal design from a saved Metal file.
+        """
+        Load a Metal design from a saved Metal file.
+        Will also update default dicitonaries.
         (Class method)
 
         Arguments:
-            path {str} -- Path to saved Metal design.
+            path (str): Path to saved Metal design.
 
         Returns:
-            Loaded metal design.
-            Will also update default dicitonaries.
+            QDesign: Loaded metal design.
         """
         logger.warning("Loading is a beta feature.")
         design = load_metal_design(path)
         return design
 
     def save_design(self, path: str = None):
-        """Save the metal design to a Metal file.
+        """
+        Save the metal design to a Metal file.
+        If no path is given, then tried to use self.save_pathif it is set.
 
         Arguments:
-            path {str or None} -- Path to save the design to. If none, then tried
-                                to use self.save_path if it is set. (default: None)
+            path (str): Path to save the design to.  (Default: None)
+
+        Returns:
+            bool: True = success; False = failure
         """
 
         self.logger.warning("Saving is a beta feature.")  # TODO:
@@ -556,10 +587,15 @@ class QDesign():
     def parse_value(self, value: Union[Any, List, Dict, Iterable]) -> Any:
         """
         Main parsing function.
-
         Parse a string, mappable (dict, Dict), iterrable (list, tuple) to account for
         units conversion, some basic arithmetic, and design variables.
-        This is the main parsing function of Qiskit Metal.
+
+        Arguments:
+            value (str): string to parse *or*
+            variable_dict (dict): dict pointer of variables
+
+        Return:
+            str, float, list, tuple, or ast eval: Parsed value
 
         Handled Inputs:
 
@@ -569,8 +605,7 @@ class QDesign():
                     Some basic arithmatic is possible, see below.
                 Strings of variables 'variable1'.
                     Variable interpertation will use string method
-                    isidentifier `'variable1'.isidentifier()
-                Strings of
+                    isidentifier 'variable1'.isidentifier()
 
             Dictionaries:
                 Returns ordered `Dict` with same key-value mappings, where the values have
@@ -592,41 +627,33 @@ class QDesign():
 
         Examples:
             See the docstring for this module.
-                >> ?qiskit_metal.toolbox_metal.parsing
-
-        Arguments:
-            value {[str]} -- string to parse
-            variable_dict {[dict]} -- dict pointer of variables
-
-        Return:
-            Parse value: str, float, list, tuple, or ast eval
+                qiskit_metal.toolbox_metal.parsing
         """
         return parse_value(value, self.variables)
 
     def parse_options(self, params: dict, param_names: str) -> dict:
         """
         Extra utility function that can call parse_value on individual options.
-        Use self.parse_value to parse only some options from a params dictionary
+        Use self.parse_value to parse only some options from a params dictionary.
 
         Arguments:
-            params (dict) -- Input dict to pull form
-            param_names (str) -- Keys of dicitonary to parse and return as a dicitonary
-                                Example value: 'x,y,z,cpw_width'
+            params (dict): Input dict to pull form
+            param_names (str): Keys of dicitonary to parse and return as a dicitonary.
+                               Example value: 'x,y,z,cpw_width'
 
         Returns:
-            Dictionary of the keys contained in `param_names` with values that are parsed.
+            dict: Dictionary of the keys contained in `param_names` with values that are parsed.
         """
         return parse_options(params, param_names, variable_dict=self.variables)
 
     def update_component(self, component_name: str, dependencies: bool = True):
-        """Update the component and any dependencies it may have.
+        """
+        Update the component and any dependencies it may have.
         Mediator type function to update all children.
 
         Arguments:
-            component_name {str} -- [description]
-
-        Keyword Arguments:
-            dependencies {bool} -- Do update all dependencies (default: {True})
+            component_name (str): Component name to update
+            dependencies (bool): True to update all dependencies (Default: True)
         """
 
         # Get dependency graph
@@ -635,7 +662,8 @@ class QDesign():
         pass
 
     def get_design_name(self) -> str:
-        """Get the name of the design from the metadata.
+        """
+        Get the name of the design from the metadata.
 
         Returns:
             str: name of design
@@ -645,7 +673,8 @@ class QDesign():
         return self.metadata.design_name
 
     def set_design_name(self, name: str):
-        """Set the name of the design in the metadata.
+        """
+        Set the name of the design in the metadata.
 
         Args:
             name (str) : Name of design
@@ -653,17 +682,24 @@ class QDesign():
         self.update_metadata({'design_name': name})
 
     def get_units(self):
+        """
+        Gets the units of the design
+
+        Returns:
+            str: units
+        """
         return self.template_options.units
 
 ####################################################################################
 # Dependencies
 
     def add_dependency(self, parent: str, child: str):
-        """Add a dependency between one component and another.
+        """
+        Add a dependency between one component and another.
 
         Arguments:
-            parent {str} -- The component on which the child depends
-            child {str} -- The child cannot live without the parent.
+            parent (str): The component on which the child depends.
+            child (str): The child cannot live without the parent.
         """
         # TODO: Should we allow bidirecitonal arrows as as flad in the graph?
         # Easier if we keep simply one-sided arrows
@@ -673,9 +709,11 @@ class QDesign():
         pass
 
     def remove_dependency(self, parent: str, child: str):
-        """Remove a dependency between one component and another.
+        """
+        Remove a dependency between one component and another.
 
         Arguments:
-            parent {str} -- The component on which the child depends
-            child {str} -- The child cannot live without the parent.
+            parent (str): The component on which the child depends.
+            child (str): The child cannot live without the parent.
         """
+
