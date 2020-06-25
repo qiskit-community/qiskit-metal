@@ -422,10 +422,9 @@ class QComponent():
 #   Simplify the data types
 #   Stress test the results
 #   Component name vs. id issues?
-#   
+#
 #   What information is truly necessary for the pins? Should they have a z-direction component?
 #   Will they operate properly with non-planar designs?
-
 
     def add_pin_as_normal(self,
                           name: str,
@@ -564,8 +563,6 @@ class QComponent():
         self.pins[name] = self.make_pin(
             points, parent, flip=flip, chip=chip)
 
-        # TODO: Add net?
-        # It seems this function isn't being used anywhere? Was this not replaced by design.connect_pins?
     def connect_components_already_in_design(self, pin_name_self: str, comp2_id: int, pin2_name: str) -> int:
         """ WARNING: Do NOT use this method during generation of component instance.
         This method is expecting self to be added to design._components dict.  More importantly,
