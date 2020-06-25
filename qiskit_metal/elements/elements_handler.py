@@ -536,18 +536,18 @@ class QElementTables(object):
         """
         return self.get_component_geometry(name).total_bounds
 
-    def rename_component(self, name: str, new_name: str):
+    def rename_component(self, component_id: int, new_name: str):
         """Rename component by ID (integer) cast to string format.
 
         Arguments:
-            name {str} -- Name of component (case sensitive)
-            new_name {str} -- The new name of the component (case sensitive)
+            name (str) -- Name of component (case sensitive)
+            new_name (str) -- The new name of the component (case sensitive)
         """
-        comp_id = self.design.components[name].id
+        component_int_id = int(component_id)
         # TODO: is this the best way to do this, or is there a faster way?
         for table_name in self.tables:
             table = self.tables[table_name]
-            table.component[table.component == comp_id] = new_name
+            table.component[table.component == component_int_id] = new_name
 
     def get_component_geometry_list(self, name: str, table_name: str = 'all') -> List[BaseGeometry]:
         """Return just the bare element geometry (shapely geometry objects) as a list, for the
