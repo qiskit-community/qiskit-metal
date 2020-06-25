@@ -89,16 +89,18 @@ class QComponent():
         """Create a new Metal component and adds it's default_options to the design.
 
         Arguments:
-            name {str} -- Name of the component.
-            design {QDesign} -- The parent design.
+            design (QDesign): The parent design.
+            name (str): Name of the component.
+            options (dict): User options that will override the defaults. (default: None)
+            make (bool): True if the make function should be called at the end of the init.
+                    Options be used in the make funciton to create the geometry. (default: True)
+            component_template (dict): User can overwrite the template options for the component
+                                       that will be stored in the design, in design.template,
+                                       and used every time a new component is instantiated.
+                                       (default: None)
 
-        Keyword Arguments:
-            options {dict} -- User options that will override the defaults. (default: {None})
-            make {bool} -- Should the make function be called at the end of the init.
-                    Options be used in the make funciton to create the geometry. (default: {True})
-            component_template {[type]} -- User can overwrite the template options for the component
-                                           that will be stored in the design, in design.template,
-                                           and used every time a new component is instantiated.
+        Raises:
+            ValueError: User supplied design isn't a QDesign
         """
 
         if not is_design(design):
@@ -151,6 +153,9 @@ class QComponent():
 
         Note: if keys are the same for child and grandchild, grandchild will overwrite child
         Init method.
+
+        Returns:
+            dict: options from all children
         '''
 
         options_from_children = {}
@@ -167,10 +172,10 @@ class QComponent():
 
     @classmethod
     def _get_unique_class_name(cls) -> str:
-        """Returns unique class name based on the module:
+        """Returns unique class name based on the module
 
         Returns:
-            str -- Example: 'qiskit_metal._components.qubits.transmon_pocket.TransmonPocket'
+            str: Example: 'qiskit_metal._components.qubits.transmon_pocket.TransmonPocket'
         """
         return f'{cls.__module__}.{cls.__name__}'
 
@@ -181,6 +186,11 @@ class QComponent():
                                     component_template: Dict):
         """Init funciton to register a component class with the design when first instantiated.
             Registers the design template options.
+
+            Arguments:
+                design (QDesign): The parent design
+                template_key (str): Key to use
+                component_template (dict): template of components to copy
         """
         # do not overwrite
         if template_key not in design.template_options:
@@ -197,7 +207,11 @@ class QComponent():
     @name.setter
     def name(self, new_name: str):
         '''Rename the component. Change the design dictioanries as well.
-        handle components. Delete and remake.'''
+        handle components. Delete and remake.
+
+        Returns:
+            bool: True is successful, otherwise failure code
+        '''
         return_code = self.design.rename_component(self.id, new_name)
         if return_code != True:
             logger.warning(
@@ -206,13 +220,20 @@ class QComponent():
 
     @property
     def design(self) -> 'QDesign':
-        '''Return a reference to the parent design object'''
+        '''Return a reference to the parent design object
+
+        Returns:
+            QDesign: design
+        '''
         return self._design
 
     @property
     def class_name(self) -> str:
         '''Return the full name of the class: the full module name with the class name.
         e.g., qiskit_metal._components.qubits.QubitClass
+
+        Returns:
+            str: class name
         '''
         return self._class_name
 
@@ -221,18 +242,26 @@ class QComponent():
         """The Qiskit Metal Logger
 
         Returns:
-            logging.Logger: [description]
+            logging.Logger: logger
         """
         return self._design.logger
 
     @property
     def pin_names(self) -> set:
-        '''The names of the pins'''
+        '''The names of the pins
+
+        Returns:
+            set: set of pin names
+        '''
         return set(self.pins.keys())
 
     @property
     def id(self) -> int:
-        '''The unique id of component within a design.'''
+        '''The unique id of component within a design.
+
+        Returns:
+            int: component id
+        '''
         return self._id
 
     def _add_to_design(self):
@@ -255,16 +284,14 @@ class QComponent():
         The options can be extended by plugins, such as renderers.
 
         Arguments:
-            design {QDesign} -- Design class. Should be the class, not the instance.
-
-        Keyword Arguments:
-            logger_ {logging.Logger} -- A logger for errors. (default: {None})
-            component_template {Dict} -- Tempalte options to overwrite the class ones.
-            template_key {str} --  The template key identifier. If None, then uses
-                                    cls._get_unique_class_name() (default: {None})
+            design (QDesign): Design class. Should be the class, not the instance.
+            component_template (Dict): Tempalte options to overwrite the class ones (default: None)
+            logger_ (logging.Logger): A logger for errors. (default: None)
+            template_key (str): The template key identifier. If None, then uses
+                                cls._get_unique_class_name() (default: None)
 
         Returns:
-            Dict -- dictionary of default options based on design template.
+            Dict: dictionary of default options based on design template.
         """
         # get key for tepmlates
         if template_key is None:
@@ -294,6 +321,9 @@ class QComponent():
 
         This function only contains the logic, the actual call to make the element is in
         rebuild() and remake()
+
+        Raises:
+            NotImplementedError: Code isn't written yet
         '''
         raise NotImplementedError()
 
@@ -345,15 +375,21 @@ class QComponent():
         units conversion, some basic arithmetic, and design variables.
         This is the main parsing function of Qiskit Metal.
 
-        Handled Inputs:
+        Arguments:
+            value (str): string to parse *or*
+            variable_dict (dict): dict pointer of variables
 
+        Return:
+            str, float, list, tuple, or ast eval: Parse value
+
+        Handled Inputs:
             Strings:
                 Strings of numbers, numbers with units; e.g., '1', '1nm', '1 um'
                     Converts to int or float.
                     Some basic arithmatic is possible, see below.
                 Strings of variables 'variable1'.
                     Variable interpertation will use string method
-                    isidentifier `'variable1'.isidentifier()`
+                    isidentifier 'variable1'.isidentifier()`
 
             Dictionaries:
                 Returns ordered `Dict` with same key-value mappings, where the values have
@@ -377,12 +413,7 @@ class QComponent():
             See the docstring for this module.
                 >> ?qiskit_metal.toolbox_metal.parsing
 
-        Arguments:
-            value {[str]} -- string to parse
-            variable_dict {[dict]} -- dict pointer of variables
-
-        Return:
-            Parse value: str, float, list, tuple, or ast eval
+        
         """
         return self.design.parse_value(value)
 
@@ -392,9 +423,12 @@ class QComponent():
         Parses units, variables, strings, lists, and dicitonaries.
         Explained by example below.
 
-        Options Arguments:
+        Arguments:
             options (dict) : default is None. If left None,
                              then self.options is used
+
+            Returns:
+                dict: Parsed value
 
         Calls `self.design.parse_options`.
 
@@ -408,14 +442,13 @@ class QComponent():
 
         Args:
             check_name (str):  Name which user requested to apply to current component.
-
-        Raises:
-            Warning: If user has used this text version of the component name already,
-            warning will be given to user.
-
+        
         Returns:
-            int: 0 if does not exist
-            component-id of component which is already using the name.
+            int: 0 if does not exist, otherwise 
+              component-id of component which is already using the name.
+
+        Warning: If user has used this text version of the component name already,
+        warning will be given to user.
 
         """
         all_names = self._design.all_component_names_id()
@@ -450,34 +483,34 @@ class QComponent():
                           parent: Union[int, 'QComponent'],
                           flip: bool = False,
                           chip: str = 'main'):
-        """Generates a pin from two points which are normal to the intended plane of the pin.
+        """
+        Generates a pin from two points which are normal to the intended plane of the pin.
         The normal should 'point' in the direction of intended connection. Adds dictionary to
-        parent component :
-        [Dict]: A dictionary containing a collection of information about the pin,
-            necessary for use in Metal.
-                points (list) - two (x,y) points which represent the edge of the pin for
-                    another component to attach to (eg. the edge of a CPW TL)
-                middle (numpy.ndarray) - an (x,y) which represents the middle of the points above,
-                    where the pin is represented.
-                normal (numpy.ndarray) - the normal vector of the pin, pointing in direction of
-                    intended connection
-                tangent (numpy.ndarray) - 90 degree rotation of normal vector
-                width (float) - the width of the pin
-                chip (str) - the chip the pin is on
-                parent_name - the id of the parent component
-                net_id - net_id of the pin if connected to another pin (default 0, indicates
-                         not connected))
+        parent component.
 
         Arguments:
-            name (str) - Name of the pin
-            start (numpy.ndarray)- [x,y] coordinate of the start of the normal
-            end (numpy.ndarray)- [x,y] coordinate of the end of the normal
-            width (float) - the width of the intended connection (eg. qubit bus pad arm)
-            parent (Union[int,]) - The id of the parent component
+            name (str): Name of the pin
+            start (numpy.ndarray): [x,y] coordinate of the start of the normal
+            end (numpy.ndarray): [x,y] coordinate of the end of the normal
+            width (float): the width of the intended connection (eg. qubit bus pad arm)
+            parent (Union[int,]): The id of the parent component
+            flip (bool): to change the direction of intended connection (True causes a 180, default False)
+            chip (str): the name of the chip the pin is located on, default 'main'
 
-        Keyword Arguments:
-            flip (bool) - to change the direction of intended connection (True causes a 180, default False)
-            chip (str) - the name of the chip the pin is located on, default 'main'
+        A dictionary containing a collection of information about the pin, necessary for use in Metal:
+            * points (list) - two (x,y) points which represent the edge of the pin for
+              another component to attach to (eg. the edge of a CPW TL)
+            * middle (numpy.ndarray) - an (x,y) which represents the middle of the points above,
+              where the pin is represented.
+            * normal (numpy.ndarray) - the normal vector of the pin, pointing in direction of
+              intended connection
+            * tangent (numpy.ndarray) - 90 degree rotation of normal vector
+            * width (float) - the width of the pin
+            * chip (str) - the chip the pin is on
+            * parent_name - the id of the parent component
+            * net_id - net_id of the pin if connected to another pin (default 0, indicates
+              not connected))
+
         """
 
         vec_normal = end - start
@@ -505,25 +538,30 @@ class QComponent():
         """Called by add_pin, does the math for the pin generation.
 
         Args:
-            points (list): [description]
-            parent_name (str): [description]
-            flip (bool, optional): [description]. Defaults to False.
-            chip (str, optional): [description]. Defaults to 'main'.
+            points (list): list of two (x,y) points which represent the edge of the pin for
+                    another component to attach to (eg. the edge of a CPW TL)
+            parent_name (str): name of the parent
+            flip (bool): True to flip (Default: False)
+            chip (str): the chip the pin is on (Default: 'main')
 
         Returns:
-            [Dict]: A dictionary containing a collection of information about the pin,
-            necessary for use in Metal.
-                points (list) - two (x,y) points which represent the edge of the pin for
-                    another component to attach to (eg. the edge of a CPW TL)
-                middle (numpy.ndarray) - an (x,y) which represents the middle of the points above,
-                    where the pin is represented.
-                normal (numpy.ndarray) - the normal vector of the pin, pointing in direction of
-                    intended connection
-                tangent (numpy.ndarray) - 90 degree rotation of normal vector
-                width (float) - the width of the pin
-                chip (str) - the chip the pin is on
-                parent_name - the id of the parent component
-                net_id - net_id of the pin if connected to another pin (default 0, indicates not connected)
+            Dict: A dictionary containing a collection of information about the pin, necessary
+            for use in Metal.
+
+        Dictionar Contents:
+            * points (list) - two (x,y) points which represent the edge of the pin for another
+              component to attach to (eg. the edge of a CPW TL)
+            * middle (numpy.ndarray) - an (x,y) which represents the middle of the points above,
+              where the pin is represented.
+            * normal (numpy.ndarray) - the normal vector of the pin, pointing in direction of
+              intended connection
+            * tangent (numpy.ndarray) - 90 degree rotation of normal vector
+            * width (float) - the width of the pin
+            * chip (str) - the chip the pin is on
+            * parent_name - the id of the parent component
+            * net_id - net_id of the pin if connected to another pin (default 0, indicates not
+              connected) 
+
         """
         assert len(points) == 2
 
@@ -552,7 +590,7 @@ class QComponent():
             name (str): Name of the desired pin.
 
         Returns:
-            (dict): Returns the data of the pin, see make_pin() for
+            dict: Returns the data of the pin, see make_pin() for
                 what those values are.
         """
 
@@ -568,14 +606,12 @@ class QComponent():
         """Add the named pin to the respective component's pins subdictionary
 
         Arguments:
-            name {str} -- Name of pin
-            points {list} -- List of two (x,y) points that define the pin
-            parent {Union[str,} -- component or string or None. Will be converted to a
+            name (str): Name of pin
+            points (list): List of two (x,y) points that define the pin
+            parent (Union[str,): component or string or None. Will be converted to a
                                  string, which will the name of the component.
-
-        Keyword Arguments:
-            flip {bool} -- [description] (default: {False})
-            chip {str} --  Optionally add options (default: {'main'})
+            flip (bool): True to flip (Default: False)
+            chip (str): the chip the pin is on (Default: 'main')
         """
 
         self.pins[name] = self.make_pin(
@@ -633,8 +669,8 @@ class QComponent():
         Calls parent design.
 
         Arguments:
-            parent {str} -- The component on which the child depends
-            child {str} -- The child cannot live without the parent.
+            parent (str): The component on which the child depends
+            child (str): The child cannot live without the parent.
         """
         self.design.add_dependency(parent, child)
 
@@ -658,22 +694,21 @@ class QComponent():
 
         Takes any additional options in options.
 
+        Arguments:
+            kind (str): The kind of elements, such as 'path', 'poly', etc.
+                        All elements in the dicitonary should have the same kind
+            elements (Dict[BaseGeometry]): Key-value pairs
+            subtract (bool): Subtract from the layer (default: False)
+            helper (bool): Is this a helper object. If true, subtract must be false
+                           (default: False)
+            layer (int, str): The layer to which the set of elements will belong
+                              (default: 1)
+            chip (str): Chip name (default: 'main')
+            kwargs (dict): Parameters dictionary
+
         Assumptions:
             * Assumes all elements in the elements are homogeneous in kind;
               i.e., all lines or polys etc.
-
-
-        Arguments:
-            kind {str} -- The kind of elements, such as 'path', 'poly', etc.
-                          All elements in the dicitonary should have the same kind
-            elements {Dict[BaseGeometry]} -- Key-value pairs
-
-        Keyword Arguments:
-            subtract {bool} -- Subtract from the layer (default: {False})
-            helper {bool} -- Is this a helper object. If true, subtract must be false
-            layer {int, str} -- The layer to which the set of elements will belong
-                        (default: {0})
-            chip {str} -- Chip name (dafult: 'main')
         """
         # assert (subtract and helper) == False, "The object can't be a subtracted helper. Please"\
         #    " choose it to either be a helper or a a subtracted layer, but not both. Thank you."
@@ -703,8 +738,9 @@ class QComponent():
     @property
     def elements_types(self) -> List[str]:
         """Get a list of the names of the element tables.
+
         Returns:
-            List[str] -- Name of element table or type; e.g., 'poly' and 'path'
+            List[str]: Name of element table or type; e.g., 'poly' and 'path'
         """
         return self.design.elements.get_element_types()
 
@@ -715,10 +751,11 @@ class QComponent():
         and the corresponding values are the shapely geometries.
 
         Arguments:
-            element_type {str} -- Name of element table or type; e.g., 'poly' and 'path'
+            element_type (str): Name of element table or type; e.g., 'poly' and 'path'
 
         Returns:
-            List[BaseGeometry] or None -- Returns None if an error in the name of the element type (ie. table)
+            List[BaseGeometry]: Geometry diction or None if an error in the name of the element
+                                type (ie. table)
         """
         if element_type == 'all' or self.design.elements.check_element_type(element_type):
             return self.design.elements.get_component_geometry_dict(self.name, element_type)
@@ -729,11 +766,12 @@ class QComponent():
         as a python list of shapely geometries.
 
         Arguments:
-            element_type {str} -- Name of element table or type; e.g., 'poly' and 'path'.
-                                 Can also specify all
+            element_type (str): Name of element table or type; e.g., 'poly' and 'path'.
+                                Can also specify all
 
         Returns:
-            List[BaseGeometry] or None -- Returns None if an error in the name of the element type (ie. table)
+            List[BaseGeometry]: Geometry list or None if an error in the name of the element type
+                                (ie. table)
         """
         if element_type == 'all' or self.design.elements.check_element_type(element_type):
             return self.design.elements.get_component_geometry_list(self.id, element_type)
@@ -743,18 +781,22 @@ class QComponent():
         Returns the entire element table for the component.
 
         Arguments:
-            element_type {str} -- Name of element table or type; e.g., 'poly' and 'path'
+            element_type (str): Name of element table or type; e.g., 'poly' and 'path'
 
         Returns:
-            pd.DataFrame or None -- Element table for the component. Returns None if an error in the name of the element type (ie. table)
+            pd.DataFrame: Element table for the component or None if an error in the name of
+                          the element type (ie. table)
         """
         if element_type == 'all' or self.design.elements.check_element_type(element_type):
             return self.design.elements.get_component(self.name, element_type)
 
     def qgeometry_bounds(self):
         """
-        Returns a tuple containing (minx, miny, maxx, maxy) bound values
-        for the bounds of the component as a whole.
+        Fetched the component bound dict_value
+
+        Returns:
+            tuple: containing (minx, miny, maxx, maxy) bound values for the bounds of the
+              component as a whole.
 
         Uses:
             design.elements.get_component_bounds
@@ -765,12 +807,12 @@ class QComponent():
     def qgeometry_plot(self, ax: 'matplotlib.axes.Axes' = None, plot_kw: dict = None) -> List:
         """    Draw all the elements of the component (polys and path etc.)
 
-        Keyword Arguments:
-            ax {[type]} --  Matplotlib axis to draw on (default: {None} -- gets the current axis)
-            plot_kw {dict} -- [description] (default: {None})
+        Arguments:
+            ax (matplotlib.axes.Axes):  Matplotlib axis to draw on (Default: None -- gets the current axis)
+            plot_kw (dict): Parameters dictionary
 
         Returns:
-            List -- The list of elements draw
+            List: The list of elements draw
 
         Example use:
             Suppose you had a component called q1:

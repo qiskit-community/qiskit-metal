@@ -35,17 +35,63 @@ Base Components
     :toctree: ../stubs/
 
     QComponent
+    BaseJunction
+    BaseQubit-TBD
+    ParsedDynamicAttributes_Component-TBD
+    MyQComponent-TBD
 
 
-Submodules
+Basic
+-----
+
+.. autosummary::
+    :toctree:
+
+    CircleCaterpillar-TBD
+    CircleRaster-TBD
+    Rectangle-TBD
+    RectangleHollow-TBD
+
+
+Connectors
 ----------
+
+.. autosummary::
+    :toctree:
+
+    connectors
+
+
+Interconnects
+-------------
+
+.. autosummary::
+    :toctree:
+
+    Connector-TBD
+    CpwMeanderSimple-TBD
+    FakeCPW-TBD
+
+
+Junctions
+---------
 
 .. autosummary::
     :toctree:
 
     junctions
 
+Qubits
+----------
+
+.. autosummary::
+    :toctree:
+
+    TransmonCross--TBD
+    TransmonPocket-TBD
+    TransmonPocketCL-TBD
+
 """
 from .. import is_component
 from .base import QComponent
-
+from .base.junction import BaseJunction
