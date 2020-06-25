@@ -94,7 +94,7 @@ class QComponent():
             design {QDesign} -- The parent design.
 
         Keyword Arguments:
-            options {[type]} -- User options that will override the defaults. (default: {None})
+            options {dict} -- User options that will override the defaults. (default: {None})
             make {bool} -- Should the make function be called at the end of the init.
                     Options be used in the make funciton to create the geometry. (default: {True})
             component_template {[type]} -- User can overwrite the template options for the component
@@ -536,7 +536,7 @@ class QComponent():
             name (str): Name of the desired pin.
 
         Returns:
-            (dict): Returns the data of the pin, make_pin() for
+            (dict): Returns the data of the pin, see make_pin() for
                 what those values are.
         """
 
@@ -565,10 +565,18 @@ class QComponent():
             points, parent, flip=flip, chip=chip)
 
         # TODO: Add net?
+        # It seems this function isn't being used anywhere? Was this not replaced by design.connect_pins?
     def connect_components_already_in_design(self, pin_name_self: str, comp2_id: int, pin2_name: str) -> int:
         """ WARNING: Do NOT use this method during generation of component instance.
         This method is expecting self to be added to design._components dict.  More importantly,
         the unique id of self component needs to be in design._components dict.
+
+        Arguments:
+            name {str} -- Name of pin
+            points {list} -- List of two (x,y) points that define the pin
+            parent {Union[str,} -- component or string or None. Will be converted to a
+                                 string, which will the name of the component.
+
         """
         net_id_rtn = 0
 
