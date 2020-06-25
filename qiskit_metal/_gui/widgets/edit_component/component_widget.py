@@ -183,7 +183,6 @@ class ComponentWidget(QTabWidget):
         self._html_css_lex = None  # type: pygments.formatters.html.HtmlFormatter
         self.src_widgets = []  # type: List[QtWidgets.QWidget]
 
-
         # Help stylesheet
         document = self.ui.textHelp.document()
         document.setDefaultStyleSheet(textHelp_css_style)
@@ -216,9 +215,19 @@ class ComponentWidget(QTabWidget):
         return self.gui.design
 
     @property
-    def component(self):
+    def component(self) -> 'QComponent':
+        """Use the interface to components dict to return a QComponent.
+
+        Returns:
+            QComponent: The QComponent in design class which has name of self.component_name.
+            None:   If the name is not in design._components. Also warning will be posted through logger.warning().
+            QComponent: If there are multiple usages of component_name within design._components, 
+                        the first component using it will be returned, along with a logger.warning() message.
+        """
         if self.design:
-            return self.design.components.get(self.component_name, None)
+            if self.component_name:
+                return self.design.components[self.component_name]
+        return None
 
     def set_component(self, name: str):
         """

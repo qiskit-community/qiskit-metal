@@ -459,6 +459,7 @@ class PlotCanvas(FigureCanvas):
             #print(f'Found {file} for watermark.')
             _axis_set_watermark_img(ax, file, size=0.15)
         else:
+            # import error?
             logger.error(f'Error could not load {file} for watermark.')
 
     def clear_axis(self, ax: plt.Axes = None):
@@ -527,9 +528,12 @@ class PlotCanvas(FigureCanvas):
         self.refresh()
 
     def welcome_message(self):
+        """The GUI displays a message to let users know they are using Qiskit Metal.
+        """
         self._welcome_text = AnimatedText(self.axes[0], "Welcome to Qiskit Metal", self,
                                           start=False)
-        self._welcome_start_timer = QTimer.singleShot(250, self._welcome_message_start)
+        self._welcome_start_timer = QTimer.singleShot(
+            250, self._welcome_message_start)
 
     def _welcome_message_start(self):
         self._welcome_text.start()
@@ -597,22 +601,22 @@ class PlotCanvas(FigureCanvas):
 
     def highlight_components(self, component_names: List[str]):
         """Hihglight a list of components
-
         Args:
             component_names (List[str]): [description]
         """
         self.clear_annotation()
 
-        for name in component_names:
+        component_id_list = self.design.components.get_list_ints(
+            component_names)
 
-            if name in self.design.components:
-                component = self.design.components[name]
-
+        for component_id in component_id_list:
+            component_id = int(component_id)
+            #self.logger.debug(f'Component {name}')
+            if component_id in self.design._components:
+                component = self.design._components[component_id]
                 if 1:  # highlight bounding box
-
                     bounds = component.qgeometry_bounds()
                     # bbox = Bbox.from_extents(bounds)
-
                     # Create a Rectangle patch TODO: move to settings
                     kw = dict(linewidth=1, edgecolor='r', facecolor=(
                         1, 0, 0, 0.05), zorder=100, ls='--')
@@ -622,25 +626,21 @@ class PlotCanvas(FigureCanvas):
                             bounds[0], bounds[3]-bounds[1]]
                     rect.set_bounds(*lbwh)
                     self._annotations['patch'] += [rect]
-
                     for ax in self.axes:
                         ax.add_patch(rect)
-
-                if 1:  # Draw the connectors
-
-                    for connector_name in component.connectors:
-
-                        connector = self.design.connectors[connector_name]
-                        m = connector['middle']
-                        n = connector['normal']
-                        # print(m, n)
+                if 1:  # Draw the pins
+                    # for component_id in self.design.components.keys():
+                    for pin_name in component.pins.keys():
+                        #self.logger.debug(f'Pin {pin_name}')
+                        pin = component.pins[pin_name]
+                        m = pin['middle']
+                        n = pin['normal']
 
                         if 1:  # draw the arrows
                             kw = dict(color='r', mutation_scale=15, alpha=0.75, capstyle='butt', ec='k',
                                       lw=0.5, zorder=100, clip_on=True)
                             arrow = patches.FancyArrowPatch(m, m+n*0.05, **kw)
                             self._annotations['patch'] += [arrow]
-
                             """A fancy arrow patch. It draws an arrow using the ArrowStyle.
                             The head and tail positions are fixed at the specified start and end points of the arrow,
                             but the size and shape (in display coordinates) of the arrow does not change when the axis
@@ -648,16 +648,13 @@ class PlotCanvas(FigureCanvas):
                             """
                             for ax in self.axes:
                                 ax.add_patch(arrow)
-
-                        if 1:  # draw names of connectors
+                        if 1:  # draw names of pins
                             dist = 0.05
                             kw = dict(color='r', alpha=0.75, verticalalignment='center',
                                       horizontalalignment='left' if n[0] >= 0 else 'right',
                                       clip_on=True, zorder=99, fontweight='bold')
-                            text = ax.text(*(m+dist*n), connector_name, **kw)
+                            text = ax.text(*(m+dist*n), pin_name, **kw)
                             text.set_bbox(
                                 dict(facecolor='#FFFFFF', alpha=0.75, edgecolor='#F0F0F0'))
-
                             self._annotations['text'] += [text]
-
         self.refresh()

@@ -61,7 +61,7 @@ class QRendererGui(QRenderer):
     def render_shapely(self):
         raise NotImplementedError()
 
-    def render_connectors(self):
+    def render_connectors(self): #alredy covered via other code?
         raise NotImplementedError()
 
     def clear_axis(self):

@@ -307,7 +307,7 @@ class Vector:
         sin_rad = math.sin(radians)
         qx = cos_rad * x - sin_rad * y
         qy = sin_rad * x + cos_rad * y
-        return np.array([qx, qy])
+        return np.array([qx, qy]) #ADD ARRAY CHOP - draw_utility
 
     @staticmethod
     def angle(vector: Vec2D) -> float:
@@ -463,7 +463,7 @@ class Vector:
         # unit vector along the direction of the two point
         unit_vec = distance_vec / norm(distance_vec)
         # tangent vector counter-clockwise 90 deg rotation
-        tangent_vec = Vector.rotate(unit_vec, np.pi/2)
+        tangent_vec = np.round(Vector.rotate(unit_vec, np.pi/2),decimals=11)
 
         if Vector.is_zero(distance_vec):
             logger.debug(f'Function `two_points_described` encountered a zero vector'
