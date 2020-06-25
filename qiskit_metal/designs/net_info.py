@@ -120,7 +120,7 @@ class QNet():
 
     def delete_net_id(self, net_id_to_remove: int):
         """
-        Will remove the two entries with net_id_to_remove.
+        Removes the two entries with net_id_to_remove.
         If id is in _net_info, the entry will be removed.
 
         Arguments:
@@ -154,10 +154,10 @@ class QNet():
         """Search with a net_id to get component id and pin name.
 
         Arguments:
-            net_id_search {int} -- Unique net id which connects two pins within a design.
+            net_id_search (int): Unique net id which connects two pins within a design.
 
         Returns:
-            pandas.DataFrame -- Two rows of the net_info which have the same net_id_search.
+            pandas.DataFrame: Two rows of the net_info which have the same net_id_search.
         """
         df_subset_based_on_net_id = self._net_info[(
             self._net_info['net_id'] == net_id_search)]
