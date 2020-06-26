@@ -29,7 +29,7 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
     """
     The base `TransmonCross` class
 
-    Inherits BaseQubit class
+    Inherits `BaseQubit` class
 
     Description:
         Simple Metal Transmon Cross object. Creates the A cross-shaped island,

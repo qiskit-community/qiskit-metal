@@ -88,7 +88,7 @@ Qubits
     :toctree:
 
     TransmonCross
-    TransmonPocket-TBD
+    TransmonPocket
     TransmonPocketCL-TBD
 
 """
@@ -106,3 +106,4 @@ from .interconnects.cpw_meander import Connector
 from .interconnects.cpw_meander import CpwMeanderSimple
 from .interconnects.fake_cpw import FakeCPW
 from .qubits.transmon_cross import TransmonCross
+from .qubits.transmon_pocket import TransmonPocket
