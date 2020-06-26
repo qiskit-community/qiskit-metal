@@ -270,7 +270,7 @@ class Components:
                      for (key, value) in self.components.items()]
         return all_items
 
-    def value(self) -> list:
+    def values(self) -> list:
         """Get the list of all the values.
 
         Returns:
