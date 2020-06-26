@@ -69,7 +69,7 @@ Interconnects
     :toctree:
 
     Connector
-    CpwMeanderSimple-TBD
+    CpwMeanderSimple
     FakeCPW-TBD
 
 
@@ -103,3 +103,4 @@ from .basic.circle_raster import CircleRaster
 from .basic.rectangle import Rectangle
 from .basic.rectangle_hollow import RectangleHollow
 from .interconnects.cpw_meander import Connector
+from .interconnects.cpw_meander import CpwMeanderSimple

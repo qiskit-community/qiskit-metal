@@ -69,6 +69,8 @@ class Connector:  # Shouldn't this class be in the connector folder?
 class CpwMeanderSimple(QComponent):
     """A meandered basic CPW.
 
+    Inherits QComponent class
+
     **Behavior and parameters**
         #TODO: @john_blair / @marco
         Explain and comment on what options do?
@@ -98,6 +100,7 @@ class CpwMeanderSimple(QComponent):
             asymmetry='0 um',
         )
     )
+    """Default drawing options"""
 
     def make(self):
         """ Will generate a simple meander for two components.
@@ -151,18 +154,20 @@ class CpwMeanderSimple(QComponent):
                              meander: dict) -> np.ndarray:
         """
         Meanders using a fixed length and fixed spacing.
+
+        Arguments:
+            start (Connector): Connector of the start
+            end (Connector): Connector of the end
+            length (float):  Total length of the meander whole CPW segment (defined by user,
+                after you subtract lead lengths
+            meander (dict): meander options (parsed)
+
+        Returns:
+            np.ndarray: Array of points
+
         Adjusts the width of the meander
             * Includes the start but not the given end point
             * If it cannot meander just returns the initial start point
-
-        Arguments:
-            start {Connector} -- Connector of the start
-            end {Connector} -- [description]
-            length {str} --  Total length of the meander whole CPW segment (defined by user, after you subtract lead lengths
-            meander {dict} -- meander options (parsed)
-
-        Returns:
-            np.ndarray -- [description]
         """
 
         """ To prototype, you can use code here:
@@ -291,6 +296,15 @@ class CpwMeanderSimple(QComponent):
 
     @staticmethod
     def get_indecies(root_pts: list):
+        """
+        Get the indecies
+
+        Args:
+            root_pts (list): List of points
+
+        Returns:
+            tuple: Tuple of indecies
+        """
         num_2pts, odd = divmod(len(root_pts), 2)
         if odd:
             num_2pts += 1
@@ -306,7 +320,7 @@ class CpwMeanderSimple(QComponent):
         """Return the start point and normal direction vector
 
         Returns:
-            A dictionary with keys `point` and `direction`.
+            dict: A dictionary with keys `point` and `direction`.
             The values are numpy arrays with two float points each.
         """
         start_pin = self.design.components[self.options.component_start_name].pins[self.options.pin_start_name]
@@ -325,7 +339,7 @@ class CpwMeanderSimple(QComponent):
         """Return the start point and normal direction vector
 
         Returns:
-            A dictionary with keys `point` and `direction`.
+            dict: A dictionary with keys `point` and `direction`.
             The values are numpy arrays with two float points each.
         """
         end_pin = self.design.components[self.options.component_end_name].pins[self.options.pin_end_name]
@@ -345,11 +359,12 @@ class CpwMeanderSimple(QComponent):
         cooridnate sys.
 
         Arguments:
-            start {Connector} -- [description]
-            end {Connector} -- [description]
+            start (Connector): Connector at start
+            end (Connector): Connector and end
+            snap (bool): True to snap to grid (Default: False)
 
         Returns:
-            straight and 90 deg CCW rotated vecs 2D
+            array: straight and 90 deg CCW rotated vecs 2D
             (array([1., 0.]), array([0., 1.]))
         """
         # handle chase when star tnad end are same?
@@ -361,7 +376,11 @@ class CpwMeanderSimple(QComponent):
         return direction, normal
 
     def make_elements(self, pts: np.ndarray):
-        """Turns points into elements"""
+        """Turns points into elements
+
+        Arguments:
+            pts (np.ndarray): Array of points
+        """
         p = self.p
         line = draw.LineString(pts)
         layer = p.layer
