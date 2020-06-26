@@ -74,13 +74,15 @@ class Components:
             item) for item in component_names]
         return component_ints
 
-    def find_id(self, name: str) -> int:
+    def find_id(self, name: str, quite: bool = False) -> int:
         """
-        Find id of component.  The id is the key for a dict which holds all of the components within design.
-        Assume the name is not used multiple times. If it is, the first search result will be used.
+        Find id of component.  The id is the key for a dict which holds all of the components 
+        within design.  Assume the name is not used multiple times. If it is, 
+        the first search result will be used.
 
         Args:
             name (str): Text name of compnent.  The name is assumed to be unique.
+            quite (bool): Allow warning messages to be generated.
 
         Returns:
             int: key to use in  _components
@@ -100,14 +102,16 @@ class Components:
             return search_result[0][1]
         elif length == 0:
             # Name not in dict.
-            self.logger.warning(
-                f'In Components.find_id(), the name={name} is not used in design._components ')
+            if not quite:
+                self.logger.warning(
+                    f'In Components.find_id(), the name={name} is not used in design._components ')
             return 0
 
         elif length > 1:
             # Really unfortunate, the dict has multiple coponents with same name, use the first search result.
-            self.logger.warning(
-                f'In Components.find_id(), the name={name} is used multiple times in design._components.  Returning the key, for QComponent, with lowest id.')
+            if not quite:
+                self.logger.warning(
+                    f'In Components.find_id(), the name={name} is used multiple times in design._components.  Returning the key, for QComponent, with lowest id.')
             return search_result[0][1]
 
     # def is_name_used(self, new_name: str) -> int:
@@ -207,10 +211,10 @@ class Components:
             key for design._components[]
         """
         if not isinstance(item, str):
-            self.logger.warning(f'Search with string in __contains__ {item}.')
+            #self.logger.debug(f'Search with string in __contains__ {item}.')
             return 0
-
-        return self.find_id(item)
+        quite = True
+        return self.find_id(item, quite)
 
     # def __delitem__(self, name: str):
     #     """Will delete component from design class along with deleting the net_info and element tables.
