@@ -540,7 +540,7 @@ class QElementTables(object):
         """Rename component by ID (integer) cast to string format.
 
         Arguments:
-            name (str) -- Name of component (case sensitive)
+            name (int) -- Name of component (case sensitive)
             new_name (str) -- The new name of the component (case sensitive)
         """
         component_int_id = int(component_id)
