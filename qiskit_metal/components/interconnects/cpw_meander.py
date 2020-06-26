@@ -10,8 +10,9 @@ from numpy.linalg import norm
 from ...toolbox_python.utility_functions import log_error_easy
 
 import numpy as np
-from qiskit_metal import draw, Dict, QComponent
-from qiskit_metal import is_true
+from qiskit_metal import draw, Dict#, QComponent
+from qiskit_metal.components import QComponent
+#from qiskit_metal import is_true
 
 #from qiskit_metal.toolbox_metal.parsing import is_true
 options = Dict(pin_start_name='Q1_a',
@@ -27,16 +28,18 @@ class Connector:  # Shouldn't this class be in the connector folder?
     r"""A simple class to define a connector as a 2D point
     with a 2D direction in the XY plane.
     All values stored as np.ndarray of parsed floats.
-
-    Attributes:
-        positon (np.ndarray of 2 points) -- Center position of the connector
-        direction (np.ndarray of 2 points) -- *Normal vector* of the connector, defines which way it points outward.
-                                              This is the normal vector to the surface on which the connector mates.
-                                              Has unit norm.
     """
     # TODO: Maybe move this class out of here, more general.
 
     def __init__(self, position: np.ndarray, direction: np.ndarray):
+        """
+        Args:
+            positon (np.ndarray of 2 points): Center position of the connector
+            direction (np.ndarray of 2 points): *Normal vector* of the connector, defines which way it
+                points outward.
+                This is the normal vector to the surface on which the connector mates.
+                Has unit norm.
+        """
         self.position = position
         self.direction = direction / norm(direction)
 
@@ -46,6 +49,9 @@ class Connector:  # Shouldn't this class be in the connector folder?
 
         Args:
             length (float) : how much to lead in by
+
+        Returns:
+            Connector: Connector with leadin
         """
         return Connector(self.position + self.direction*length, self.direction)
 
@@ -53,9 +59,9 @@ class Connector:  # Shouldn't this class be in the connector folder?
         """Returns vectors that define the normal and tanget
 
         Returns:
-            Tuple[np.ndarray] -- contains the parallel direction and the tangent. e.g.
-                                tangent (np.ndarray of 2 points) -- unit vector parallel to
-                                the connector face and a 90 deg CCW rotation from the direction units vector
+            Tuple[np.ndarray]: contains the parallel direction and the tangent. e.g.
+            tangent (np.ndarray of 2 points) -- unit vector parallel to
+            the connector face and a 90 deg CCW rotation from the direction units vector
         """
         return self.direction, draw.Vector.rotate(self.direction, np.pi/2)
 
