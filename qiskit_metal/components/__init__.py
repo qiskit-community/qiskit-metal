@@ -89,7 +89,7 @@ Qubits
 
     TransmonCross
     TransmonPocket
-    TransmonPocketCL-TBD
+    TransmonPocketCL
 
 """
 from .. import is_component
@@ -107,3 +107,4 @@ from .interconnects.cpw_meander import CpwMeanderSimple
 from .interconnects.fake_cpw import FakeCPW
 from .qubits.transmon_cross import TransmonCross
 from .qubits.transmon_pocket import TransmonPocket
+from .qubits.transmon_pocket_cl import TransmonPocketCL
