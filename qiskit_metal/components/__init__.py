@@ -70,7 +70,7 @@ Interconnects
 
     Connector
     CpwMeanderSimple
-    FakeCPW-TBD
+    FakeCPW
 
 
 Junctions
@@ -104,3 +104,4 @@ from .basic.rectangle import Rectangle
 from .basic.rectangle_hollow import RectangleHollow
 from .interconnects.cpw_meander import Connector
 from .interconnects.cpw_meander import CpwMeanderSimple
+from .interconnects.fake_cpw import FakeCPW
