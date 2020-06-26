@@ -55,7 +55,8 @@ class ParsedDynamicAttributes_Component():
     Example:
         component.options = {'x':'1nm'}
         print(component.p.x)
-            >> float(1e7)
+
+        >> `float(1e7)`
     """
 
     """
@@ -74,6 +75,11 @@ class ParsedDynamicAttributes_Component():
     """
 
     def __init__(self, component: 'QComponent', key_list: List[str] = None):
+        """
+        Args:
+            component (QComponent): Componenet to get options from
+            key_list (List[str]): List of keys (Default: None).
+        """
         #print(f'*** Created with {key_list}')
         # These names must have __xx__ or else they will go to getattr instead of getattribute
 
@@ -121,6 +127,18 @@ class ParsedDynamicAttributes_Component():
         return self.__getitem__(name)
 
     def __getitem__(self, name: str):
+        """
+        Get the item associated with the given name
+
+        Args:
+            name (str): Name of the item
+
+        Return:
+            str, float, list, tuple, or ast eval: Parse value
+
+        Raises:
+            AttributeError: The given name is a magic method not in the dictionary
+        """
 
         # print('__getitem__')
 

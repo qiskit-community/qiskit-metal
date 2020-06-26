@@ -13,36 +13,30 @@
 # that they have been altered from the originals.
 
 """
-Module containing all Qiskit Metal designs.
+The base class of all QDesigns in Qiskit Metal.
 
 @date: 2019
-
 @author: Zlatko Minev, Thomas McConeky, ... (IBM)
 """
 # To create a basic UML diagram
 # >> pyreverse -o png -p desin_base design_base.py -A  -S
 
 import importlib
-
-from typing import Union, List, Iterable, Any, Dict as Dict_, TYPE_CHECKING
 from datetime import datetime
+from typing import TYPE_CHECKING, Any
+from typing import Dict as Dict_
+from typing import Iterable, List, Union
 
-import numpy as np
 import pandas as pd
-from numpy.linalg import norm
 
-from ..draw import Vector
-
-from .. import Dict, draw, logger
-from ..components import is_component
+from .. import Dict, logger
 from ..config import DefaultMetalOptions, DefaultOptionsRenderer
+from ..elements import QElementTables
 from ..toolbox_metal.import_export import load_metal_design, save_metal
 from ..toolbox_metal.parsing import parse_options, parse_value
-from ..elements import QElementTables
 from ..toolbox_python.utility_functions import log_error_easy
-from .net_info import QNet
 from .interface_components import Components
-
+from .net_info import QNet
 
 if TYPE_CHECKING:
     # For linting typechecking, import modules that can't be loaded here under normal conditions.
@@ -82,18 +76,23 @@ class QDesign():
 
         """
 
-        # _qcomponent_latest_assigned_id -- Used to keep a tally and ID of all components within an instanziation of a design.
-        #                         A component is added to a design by base._add_to_design with init of a comoponent.
-        #                         During init of component, design class provides an unique id for each instance of
-        #                         component being added to design.  Note, if a component is removed from the design,
-        #                         the ID of removed component should not be used again.  However, if a component is
-        #                         renamed with an unique name, then the ID should continute to be used.
-
+        # _qcomponent_latest_assigned_id -- Used to keep a tally and ID of all components within an
+        #                   instanziation of a design.
+        #                   A component is added to a design by base._add_to_design with init of a comoponent.
+        #                   During init of component, design class provides an unique id for each instance of
+        #                   component being added to design.  Note, if a component is removed from the design,
+        #                   the ID of removed component should not be used again.  However, if a component is
+        #                   renamed with an unique name, then the ID should continute to be used.
         self._qcomponent_latest_assigned_id = 0
 
-        # Key attributes related to physical content of the design
-        # These will be saved
+        # Key attributes related to physical content of the design. These will be saved
+
+        # Where components are actaully stored.
         self._components = Dict()
+        # User-facing interface for user to view components by using name (str) for key access to
+        # QComponents, isntead of id (int).
+        self.components = Components(self)
+
         self._variables = Dict()
         self._chips = Dict()
 
@@ -110,12 +109,10 @@ class QDesign():
         self._template_options = DefaultMetalOptions()  # used for components
         self.variables.update(self.template_options.qdesign.variables)
 
-        # Can't really use this until DefaultOptionsRenderer.default_draw_substrate.color_plane is resolved.
+        # Can't really use this until DefaultOptionsRenderer.default_draw_substrate.color_plane
+        # is resolved.
         self._template_renderer_options = DefaultOptionsRenderer()  # use for renderer
         self._qnet = QNet()
-
-        # Interface for user to view components by using name(text) for components, vs id.
-        self.components = Components(self)
 
     def _init_metadata(self) -> Dict:
         """Initialize default metadata dicitoanry
@@ -264,7 +261,8 @@ class QDesign():
         Will generate an unique net_id and placed in a net_info table.
         Update the components.pin_name with the net_id.
 
-        Component's pin will know if pin is connected to another component, if there is a non-zero net_id.
+        Component's pin will know if pin is connected to another component,
+        if there is a non-zero net_id.
 
         Args:
             comp1_id (int):  Unique id of component used for pin1_name.
@@ -273,7 +271,7 @@ class QDesign():
             pin2_name (str): Name of pin in comp2_id.
 
         Returns:
-            int: Unique net_id of connection used in the netlist.  
+            int: Unique net_id of connection used in the netlist.
 
         Note: If not added to netlist, the net_id will be 0 (zero).
         """
@@ -290,9 +288,9 @@ class QDesign():
         return net_id
 
     def get_component(self, search_name: str) -> 'QComponent':
-        """The design contains a dict of all the components, which is correlated to a net_list connections,
-           and elements table. The key of the components dict are unique integers.  This method will search 
-           through the dict to find the component with search_name.
+        """The design contains a dict of all the components, which is correlated to
+        a net_list connections, and elements table. The key of the components dict are
+        unique integers.  This method will search through the dict to find the component with search_name.
 
         Args:
             search_name (str): Name of the component
@@ -300,12 +298,13 @@ class QDesign():
         Returns:
             QComponent: A component within design with the name search_name.
 
-        Note: If None is returned the component was not found. A warning through logger.warning().
+        *Note:* If None is returned the component wass not found. A warning through logger.warning().
 
-        Note: If multiple components have the same name, only the first component found in the search will be returned, ALONG with logger.warning().
+        *Note:* If multiple components have the same name, only the first component found in the search
+        will be returned, ALONG with logger.warning().
         """
         alist = [(value.name, key)
-                 for (key, value) in self._components.items() if value.name == search_name]
+                 for key, value in self._components.items() if value.name == search_name]
 
         length = len(alist)
         if length == 1:
@@ -327,8 +326,9 @@ class QDesign():
         Returns:
             list[tuples]: Each tuple has the text name of component and UNIQUE integer ID for component.
         """
+        # TODO: This seems slow to build new list, use builtin and /or map?
         alist = [(value.name, key)
-                 for (key, value) in self._components.items()]
+                 for key, value in self._components.items()]
         return alist
 
     def _delete_all_pins_for_component(self, comp_id: int) -> set:
@@ -345,7 +345,7 @@ class QDesign():
 
         # reset all pins to be 0 (zero),
         pins_dict = self._components[comp_id].pins
-        for (key, value) in pins_dict.items():
+        for key, value in pins_dict.items():
             self._components[comp_id].pins[key].net_id = 0
 
         return all_net_id_removed
@@ -425,8 +425,8 @@ class QDesign():
         # importlib.reload(module)
 
     def rename_component(self, component_id: int, new_component_name: str):
-        """Rename component.  The component_id is expected.  However, if user 
-        passes a string for component_id, the method assumes the component_name 
+        """Rename component.  The component_id is expected.  However, if user
+        passes a string for component_id, the method assumes the component_name
         was passed.  Then will look for the id using the component_name.
 
         Arguments:
@@ -461,9 +461,9 @@ class QDesign():
                 item for item in all_names if new_component_name == item[0]]
 
             # name is already being used.
-            if (len(search_result) != 0):
-                logger.warning(
-                    f'Called design.rename_component, component_id({search_result[0][0]}, id={search_result[0][1]}) is already using {new_component_name}.')
+            if len(search_result) != 0:
+                logger.warning(f'Called design.rename_component, component_id({search_result[0][0]}'
+                               ', id={search_result[0][1]}) is already using {new_component_name}.')
                 return -2
 
             # do rename
@@ -472,8 +472,8 @@ class QDesign():
                 str(component_id), new_component_name)
             return True
         else:
-            logger.warning(
-                f'Called rename_component, component_id({component_id}), but component_id is not in design.components dictionary.')
+            logger.warning(f'Called rename_component, component_id({component_id}), but component_id'
+                           ' is not in design.components dictionary.')
             return -3
 
         return True
@@ -522,20 +522,22 @@ class QDesign():
         # if is on the net list or not
 
         return_response = False
+
         if component_id in self._components:
             # id in components dict
             # Need to remove pins before popping component.
             self._qnet.delete_all_pins_for_component(component_id)
 
-            # Even though the elements table has string for component_id, dataframe is storing as an integer.
+            # Even though the elements table has string for component_id, dataframe is
+            # storing as an integer.
             self._elements.delete_component_id(component_id)
 
             # remove from design dict of components
             self._components.pop(component_id, None)
         else:
             # if not in components dict
-            logger.warning(
-                f'Called _delete_complete, component_id: {component_id}, but component_id is not in design.components dictionary.')
+            logger.warning(f'Called _delete_complete, component_id: {component_id}, '
+                           'but component_id is not in design.components dictionary.')
             return_response = True
             return return_response
 
@@ -659,21 +661,6 @@ class QDesign():
         """
         return parse_options(params, param_names, variable_dict=self.variables)
 
-    def update_component(self, component_name: str, dependencies: bool = True):
-        """
-        Update the component and any dependencies it may have.
-        Mediator type function to update all children.
-
-        Arguments:
-            component_name (str): Component name to update
-            dependencies (bool): True to update all dependencies (Default: True)
-        """
-
-        # Get dependency graph
-
-        # Remake components in order
-        pass
-
     def get_design_name(self) -> str:
         """
         Get the name of the design from the metadata.
@@ -704,7 +691,7 @@ class QDesign():
         return self.template_options.units
 
 ####################################################################################
-# Dependencies
+# TODO: Dependencies
 
     def add_dependency(self, parent: str, child: str):
         """
@@ -714,7 +701,7 @@ class QDesign():
             parent (str): The component on which the child depends.
             child (str): The child cannot live without the parent.
         """
-        # TODO: Should we allow bidirecitonal arrows as as flad in the graph?
+        # TODO: add_dependency Should we allow bidirecitonal arrows as as flad in the graph?
         # Easier if we keep simply one-sided arrows
         # Note that we will have to handle renaming and deleting of components, etc.
         # Should we make a dependancy handler?
@@ -729,3 +716,21 @@ class QDesign():
             parent (str): The component on which the child depends.
             child (str): The child cannot live without the parent.
         """
+
+        # TODO: remove_dependency
+        pass
+
+    def update_component(self, component_name: str, dependencies: bool = True):
+        """
+        Update the component and any dependencies it may have.
+        Mediator type function to update all children.
+
+        Arguments:
+            component_name (str): Component name to update
+            dependencies (bool): True to update all dependencies (Default: True)
+        """
+
+        # TODO: Get dependency graph
+
+        # Remake components in order
+        pass
