@@ -13,10 +13,28 @@
 # that they have been altered from the originals.
 
 """
-This folder contains code that is more speicifc to Metal.
+=================================================
+Toolbox_metal (:mod:`qiskit_metal.toolbox_metal`)
+=================================================
+
+.. currentmodule:: qiskit_metal.toolbox_metal
+
+This folder contains code that is more speicific to Metal.
 
 Created on Tue May 14 17:13:40 2019
+
 @author: Zlatko Minev
+
+UNDER CONSTRUCTION
+
+UNDER-CONSTRUCTION
+---------------
+
+.. autosummary::
+    :toctree: ../stubs/
+
+    UNDER-CONSTRUCTION
+
 """
 
 from .parsing import parse_value
