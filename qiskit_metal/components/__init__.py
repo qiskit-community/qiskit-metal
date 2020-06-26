@@ -38,7 +38,7 @@ Base Components
     BaseJunction
     BaseQubit
     ParsedDynamicAttributes_Component
-    MyQComponent-TBD
+    MyQComponent
 
 
 Basic
@@ -97,3 +97,4 @@ from .base import QComponent
 from .base.qubit import BaseQubit
 from .base.junction import BaseJunction
 from .base._parsed_dynamic_attrs import ParsedDynamicAttributes_Component
+from .base._template import MyQComponent
