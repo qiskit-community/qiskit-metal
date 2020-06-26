@@ -107,11 +107,11 @@ class Components:
     # def is_name_used(self, new_name: str) -> int:
     #     """Check to see if name being used in components.
 
-    #      Args:      
+    #      Args:
     #          new_name (str): name to check
     #
     #      Returns:
-    #          int: If the name does not exist, 0 is returned, otherwise the 
+    #          int: If the name does not exist, 0 is returned, otherwise the
     #          component-id of component which is already using the name.
     #     """
 
@@ -139,8 +139,9 @@ class Components:
         if component_id:
             return self.components[component_id]
         else:
-            self.logger.warning(
-                f'In Components.__getitem__, name={name} is not registered in the design class. Return None for QComponent.')
+            # Getting duplicate warnings is annoying.
+            # self.logger.warning(
+            #    f'In Components.__getitem__, name={name} is not registered in the design class. Return None for QComponent.')
             return None
 
     def __setitem__(self, name: str, value: 'QComponent'):
