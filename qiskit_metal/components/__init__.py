@@ -47,10 +47,10 @@ Basic
 .. autosummary::
     :toctree:
 
-    CircleCaterpillar-TBD
-    CircleRaster-TBD
-    Rectangle-TBD
-    RectangleHollow-TBD
+    CircleCaterpillar
+    CircleRaster
+    Rectangle
+    RectangleHollow
 
 
 Connectors
@@ -98,3 +98,7 @@ from .base.qubit import BaseQubit
 from .base.junction import BaseJunction
 from .base._parsed_dynamic_attrs import ParsedDynamicAttributes_Component
 from .base._template import MyQComponent
+from .basic.circle_caterpillar import CircleCaterpillar
+from .basic.circle_raster import CircleRaster
+from .basic.rectangle import Rectangle
+from .basic.rectangle_hollow import RectangleHollow
