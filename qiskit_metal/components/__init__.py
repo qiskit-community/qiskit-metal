@@ -87,7 +87,7 @@ Qubits
 .. autosummary::
     :toctree:
 
-    TransmonCross--TBD
+    TransmonCross
     TransmonPocket-TBD
     TransmonPocketCL-TBD
 
@@ -105,3 +105,4 @@ from .basic.rectangle_hollow import RectangleHollow
 from .interconnects.cpw_meander import Connector
 from .interconnects.cpw_meander import CpwMeanderSimple
 from .interconnects.fake_cpw import FakeCPW
+from .qubits.transmon_cross import TransmonCross

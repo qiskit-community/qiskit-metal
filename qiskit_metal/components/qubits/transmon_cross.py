@@ -21,40 +21,39 @@ converted to v0.2: Thomas McConkey 2020-04-23
 
 import numpy as np
 from qiskit_metal import draw, Dict
-from qiskit_metal import is_true
+#from qiskit_metal import is_true
 from qiskit_metal.components.base.qubit import BaseQubit
 
 
 class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
-    '''
+    """
+    The base `TransmonCross` class
+
+    Inherits BaseQubit class
+
     Description:
-    ----------------------------------------------------------------------------
-    Simple Metal Transmon Cross object. Creates the A cross-shaped island,
-    the "junction" on the south end, and up to 3 connectors on the remaining arms
-    (claw or gap).
+        Simple Metal Transmon Cross object. Creates the A cross-shaped island,
+        the "junction" on the south end, and up to 3 connectors on the remaining arms
+        (claw or gap).
 
-    'claw_width' and 'claw_gap' define the width/gap of the CPW line that
-    makes up the connector. Note, DC SQUID currently represented by single
-    inductance sheet
+        'claw_width' and 'claw_gap' define the width/gap of the CPW line that
+        makes up the connector. Note, DC SQUID currently represented by single
+        inductance sheet
 
-    Add connectors to it using the `connection_pads` dictonary. See BaseQubit for more
-    information.
+        Add connectors to it using the `connection_pads` dictonary. See BaseQubit for more
+        information.
 
     Options:
-    ----------------------------------------------------------------------------
-    Convention: Values (unless noted) are strings with units included,
-                (e.g., '30um')
+        Convention: Values (unless noted) are strings with units included, (e.g., '30um')
 
-    Main Body
-    ----------------------------------------------------------------------------
+    Main Body:
         pos_x / pos_y - where the center of the Crossmon should be located on chip
         cross_width - width of the CPW center trace making up the Crossmon
         cross_length - length of one Crossmon arm (from center)
         cross_gap - width of the CPW gap making up the Crossmon
         orientation - how to orient the qubit and connectors in the end (where the +X vector should point, '+X', '-X','+Y','-Y')
 
-    Connectors
-    ----------------------------------------------------------------------------
+    Connectors:
         connectorType - string of 'Claw' or 'Gap' to define which type of connector is used.
         claw_length - length of the claw 'arms', measured from the connector center trace
         ground_spacing - amount of ground plane between the connector and Crossmon arm (minimum should be based on fabrication capabilities)
@@ -62,16 +61,19 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
         claw_gap - the gap of the CPW center trace making up the claw/gap connector
         connector_location - string of 'W', 'N', or 'E', which of the three arms where a given connector should be (South is for the junction)
 
-    Sketch
-    ----------------------------------------------------------------------------
-                        claw_length
-    Claw:       _________                    Gap:
-                |   ________________             _________    ____________
-          ______|  |                             _________|  |____________
-                |  |________________
-                |_________
+    Sketch:
+        Below is a sketch of the qubit
+        ::
 
-    '''
+                                        claw_length
+            Claw:       _________                    Gap:
+                        |   ________________             _________    ____________
+                  ______|  |                             _________|  |____________
+                        |  |________________
+                        |_________
+
+    
+    """
 
     _img = 'Metal_Crossmon.png'
 
@@ -91,6 +93,7 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
             connector_location='0'  # 0 => 'west' arm, 90 => 'north' arm, 180 => 'east' arm
         )
     )
+    """Default drawing options"""
 ##############################################MAKE######################################################
 
     def make(self):
@@ -154,8 +157,7 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
         Makes individual connector pad
 
         Args:
-        -------------
-        name (str) : Name of the connector pad
+            name (str) : Name of the connector pad
         '''
 
         # self.p allows us to directly access parsed values (string -> numbers) form the user option
