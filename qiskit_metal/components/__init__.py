@@ -25,9 +25,6 @@ Module containing all Qiskit Metal components.
 
 @author: Zlatko Minev (IBM)
 
-UNDER CONSTRUCTION
-
-
 Base Components
 ---------------
 
