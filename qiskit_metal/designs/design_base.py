@@ -425,10 +425,12 @@ class QDesign():
         # importlib.reload(module)
 
     def rename_component(self, component_id: int, new_component_name: str):
-        """Rename component.
+        """Rename component.  The component_id is expected.  However, if user 
+        passes a string for component_id, the method assumes the component_name 
+        was passed.  Then will look for the id using the component_name.
 
         Arguments:
-            component_id (int): id of component within design
+            component_id (int): id of component within design, can pass a string for component_name
             new_component_name (str): New name
 
         Returns:
@@ -446,6 +448,11 @@ class QDesign():
         # We are using component_id,
         # and assuming id is created as being unique.
         # We also want the string (name) to be unique.
+
+        if not isinstance(component_id, int):
+            # assume string
+            component_name = str(component_id)
+            component_id = self.components[component_name].id
 
         if component_id in self._components:
             all_names = self.all_component_names_id()
