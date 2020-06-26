@@ -30,15 +30,15 @@ class BaseQubit(QComponent):
 
     Has connection lines that can be added
 
+    Inherits components.QComponent class
+
     options_connection_pads (Dict): None, provides easy way to pass connection pads
                             which merely update self.options.connection_pads
 
     Default Options:
-    --------------------------
-    default_options
-    ._default_connection_pads : the default values for the (if any) connection lines of the
-        qubit.
-    .connection_pads : the dictionary which contains all active connection lines for the qubit.
+        ._default_connection_pads : the default values for the (if any) connection lines of the qubit.
+
+        .connection_pads : the dictionary which contains all active connection lines for the qubit.
         The structure should follow the format of .connection_pads = dict{name_of_connection_pad=dict{},
         name_of_connection_pad2 = dict{value1 = X,value2 = Y...},...etc.}
 
@@ -47,9 +47,8 @@ class BaseQubit(QComponent):
 
 
     GUI interfaceing
-    ---------------------------
         _img : set the name of the file such as 'Metal_Object.png'. YOu must place this
-                file in the qiskit_metal._gui._imgs diretory
+        file in the qiskit_metal._gui._imgs diretory
     '''
 
     _img = 'Metal_Qubit.png'
@@ -59,9 +58,22 @@ class BaseQubit(QComponent):
         connection_pads=Dict(),
         _default_connection_pads=Dict()
     )
+    """Default drawing options"""
 
     def __init__(self, design, name, options=None, options_connection_pads=None,
                  make=True):
+        """
+        Args:
+            design (QDesign): The parent design.
+            name (str): Name of the component.
+            options (dict): User options that will override the defaults. (default: None)
+            component_template (dict): User can overwrite the template options for the component
+                                       that will be stored in the design, in design.template,
+                                       and used every time a new component is instantiated.
+                                       (default: None)
+            make (bool): True if the make function should be called at the end of the init.
+                    Options be used in the make funciton to create the geometry. (default: True)
+        """
 
         super().__init__(design, name, options=options, make=False)
 
@@ -74,6 +86,9 @@ class BaseQubit(QComponent):
             self.rebuild()
 
     def _set_options_connection_pads(self):
+        """
+        Applies the default options
+        """
         #class_name = type(self).__name__
         assert '_default_connection_pads' in self.design.template_options[self.class_name], f"""When
         you define your custom qubit class please add a _default_connection_pads
