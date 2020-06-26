@@ -53,6 +53,8 @@ if TYPE_CHECKING:
 __all__ = ['QDesign']
 
 #:ivar var1: initial value: par2
+
+
 class QDesign():
     """ QDesign is the base class for Qiskit Metal Designs.
     A design is the most top-level object in all of Qiskit Metal.
@@ -272,7 +274,7 @@ class QDesign():
 
         Returns:
             int: Unique net_id of connection used in the netlist.  
-        
+
         Note: If not added to netlist, the net_id will be 0 (zero).
         """
         net_id = 0
@@ -297,9 +299,9 @@ class QDesign():
 
         Returns:
             QComponent: A component within design with the name search_name.
-        
-        Note: If None is returned the component wass not found. A warning through logger.warning().
-        
+
+        Note: If None is returned the component was not found. A warning through logger.warning().
+
         Note: If multiple components have the same name, only the first component found in the search will be returned, ALONG with logger.warning().
         """
         alist = [(value.name, key)
@@ -347,7 +349,6 @@ class QDesign():
             self._components[comp_id].pins[key].net_id = 0
 
         return all_net_id_removed
-
 
     def delete_all_components(self):
         '''
@@ -721,4 +722,3 @@ class QDesign():
             parent (str): The component on which the child depends.
             child (str): The child cannot live without the parent.
         """
-
