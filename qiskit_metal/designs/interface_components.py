@@ -146,7 +146,7 @@ class Components:
         Returns:
             QComponent: Class which describes the component.
         """
-        component_id = self.find_id(name, quite)
+        component_id = int(self.find_id(name))
         if component_id:
             return self._design._components[component_id]
             # return self.components[component_id]

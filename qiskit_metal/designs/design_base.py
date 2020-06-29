@@ -85,7 +85,7 @@ class QDesign():
         #                   renamed with an unique name, then the ID should continute to be used.
         self._qcomponent_latest_assigned_id = 0
 
-        ### Key attributes related to physical content of the design. These will be saved
+        # Key attributes related to physical content of the design. These will be saved
 
         # Where components are actaully stored.
         self._components = Dict()
@@ -424,11 +424,13 @@ class QDesign():
         # spec.loader.exec_module(module)
         # importlib.reload(module)
 
-    def rename_component(self, component_id: int, new_component_name: str) -> Union[bool, int]:
-        """Rename component.
+    def rename_component(self, component_id: int, new_component_name: str):
+        """Rename component.  The component_id is expected.  However, if user
+        passes a string for component_id, the method assumes the component_name
+        was passed.  Then will look for the id using the component_name.
 
         Arguments:
-            component_id (int): id of component within design
+            component_id (int): id of component within design, can pass a string for component_name
             new_component_name (str): New name
 
         Returns:
@@ -446,6 +448,15 @@ class QDesign():
         # We are using component_id,
         # and assuming id is created as being unique.
         # We also want the string (name) to be unique.
+
+        if not isinstance(component_id, int):
+            # assume string
+            component_name = str(component_id)
+            a_component = self.components[component_name]
+            if a_component is None:
+                return -3
+            else:
+                component_id = a_component.id
 
         if component_id in self._components:
             all_names = self.all_component_names_id()
@@ -709,6 +720,7 @@ class QDesign():
             parent (str): The component on which the child depends.
             child (str): The child cannot live without the parent.
         """
+
         # TODO: remove_dependency
         pass
 
