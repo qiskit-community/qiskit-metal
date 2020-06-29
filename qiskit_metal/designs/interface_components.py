@@ -136,21 +136,24 @@ class Components:
     #     else:
     #         return 0
 
-    def __getitem__(self, name: str) -> 'QComponent':
+    def __getitem__(self, name: str, quite: bool = False) -> 'QComponent':
         """Get the QComponent based on string name vs the unique id of QComponent.
 
         Args:
             name (str): Name of component.
+            quite (bool): Allow warning messages to be generated.
 
         Returns:
             QComponent: Class which describes the component.
         """
-        component_id = self.find_id(name)
+        component_id = self.find_id(name, quite)
         if component_id:
-            return self.components[component_id]
+            return self._design._components[component_id]
+            # return self.components[component_id]
         else:
-            self.logger.warning(
-                f'In Components.__getitem__, name={name} is not registered in the design class. Return None for QComponent.')
+            if not quite:
+                self.logger.warning(
+                    f'In Components.__getitem__, name={name} is not registered in the design class. Return None for QComponent.')
             return None
 
     def __setitem__(self, name: str, value: 'QComponent'):
@@ -180,15 +183,18 @@ class Components:
             value.name = name
             value._add_to_design()
 
-    # def __getattr__(self, name: str) -> 'QComponent':
-    #     """Provide same behavior as __getitem__.
+    def __getattr__(self, name: str) -> 'QComponent':
+        """Provide same behavior as __getitem__.
 
-    #     Args:
-    #         name (str): Name of component used to find the QComponent in desing._components dict, vs using unique int id.
-    #     """
+        Args:
+            name (str): Name of component used to find the QComponent in desing._components dict, vs using unique int id.
 
-    #     pass
-    #     # self.__getitem__(name)
+        Returns:
+            QComponent: Class which describes the component.
+            None: If name not found.
+        """
+        quite = True
+        return self.__getitem__(name, quite)
 
     # def __setattr__(self, name: str, value: 'QComponent'):
     #     """Provide same behavior as __setitem__.
@@ -273,7 +279,7 @@ class Components:
                      for (key, value) in self.components.items()]
         return all_items
 
-    def value(self) -> list:
+    def values(self) -> list:
         """Get the list of all the values.
 
         Returns:
