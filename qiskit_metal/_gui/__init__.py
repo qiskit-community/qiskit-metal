@@ -13,13 +13,32 @@
 # that they have been altered from the originals.
 
 """
+=================================================
+GUI (:mod:`qiskit_metal._gui`)
+=================================================
+
+.. currentmodule:: qiskit_metal._gui
+
 GUI module, handles user interface.
 
 The gui module is only loaded if PyQt5 can be found.
 
 Created on Tue May 14 17:13:40 2019
 @author: Zlatko
+
+
+UNDER CONSTRUCTION
+
+UNDER-CONSTRUCTION
+---------------
+
+.. autosummary::
+    :toctree: ../stubs/
+
+    UNDER-CONSTRUCTION
+
 """
+
 import logging
 from .. import __version__
 

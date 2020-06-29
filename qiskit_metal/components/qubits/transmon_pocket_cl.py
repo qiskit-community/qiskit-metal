@@ -33,23 +33,27 @@ Child of 'standard' transmon pocket
 
 import numpy as np
 from qiskit_metal import draw, Dict
-from qiskit_metal import is_true
+#from qiskit_metal import is_true
 from qiskit_metal.components.qubits.transmon_pocket import TransmonPocket
 
 class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
-    '''
+    """
+    The base `TransmonPocketCL` class
+
+    Inherits `TransmonPocket` class
 
     Description:
-    ----------------------------------------------------------------------------
-    Create a standard pocket transmon qubit for a ground plane,
-    with two pads connected by a junction (see drawing below).
+        Create a standard pocket transmon qubit for a ground plane,
+        with two pads connected by a junction (see drawing below).
 
-    Connector lines can be added using the `connection_pads`
-    dicitonary. Each connector line has a name and a list of default
-    properties.
+        Connector lines can be added using the `connection_pads`
+        dicitonary. Each connector line has a name and a list of default
+        properties.
 
-    This is a child of TransmonPocket, see TransmonPocket for the variables and
-    description of that class.
+        This is a child of TransmonPocket, see TransmonPocket for the variables and
+        description of that class.
+
+    ::
 
         _________________
         |               |
@@ -59,23 +63,18 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
         |_______________|
 
 
-    Args:
-    ----------------------------------------------------------------------------
-    bob ([type]): [description]
-
     Charge Line:
-    ----------------------------------------------------------------------------
-    make_CL (bool): If a chargeline should be included.
-    cl_gap (string): The cpw dielectric gap of the charge line.
-    cl_width (string): The cpw width of the charge line.
-    cl_length (string):  The length of the charge line 'arm' coupling the the qubit pocket.
-        Measured from the base of the 90 degree bend.
-    cl_ground_gap (string):  How much ground is present between the charge line and the
-        qubit pocket.
-    cl_pocket_edge (string): What side of the pocket the charge line is.
-        -180 to +180 from the 'west edge', will round to the nearest 90.
-    cl_off_center (string):  Distance from the center axis the qubit pocket is referenced to
-    '''
+        * make_CL (bool): If a chargeline should be included.
+        * cl_gap (string): The cpw dielectric gap of the charge line.
+        * cl_width (string): The cpw width of the charge line.
+        * cl_length (string):  The length of the charge line 'arm' coupling the the qubit pocket.
+          Measured from the base of the 90 degree bend.
+        * cl_ground_gap (string):  How much ground is present between the charge line and the
+          qubit pocket.
+        * cl_pocket_edge (string): What side of the pocket the charge line is.
+          -180 to +180 from the 'west edge', will round to the nearest 90.
+        * cl_off_center (string):  Distance from the center axis the qubit pocket is referenced to
+    """
 
     default_options = Dict(
         make_CL=True,
@@ -87,8 +86,10 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
         cl_pocket_edge='0', #-180 to +180 from the 'left edge', will round to the nearest 90.
         cl_off_center='100um',  # distance from the center axis the qubit pocket is built on
     )
+    """Default drawing options"""
 
     def make(self):
+        """Define the way the options are turned into QGeometry."""
         super().make()
 
         if self.options.make_CL == True:

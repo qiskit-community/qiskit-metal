@@ -22,8 +22,7 @@ from ...toolbox_python.utility_functions import log_error_easy
 class FakeCPW(QComponent):
     """A fake cpw just to test pin generation and netlist functionality
 
-    Args:
-        QComponent ([type]): [description]
+    Inherits QComponent class
     """
     default_options = Dict(
         line_width='10um',
@@ -36,6 +35,7 @@ class FakeCPW(QComponent):
         # #could instead be just the pin and component id.
         # pin_end = dict()
     )
+    """Default drawing options"""
 
     def make(self):
         """ This is executed by the user to generate the elements for the component.

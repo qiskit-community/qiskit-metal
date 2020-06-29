@@ -25,9 +25,6 @@ Module containing all Qiskit Metal components.
 
 @author: Zlatko Minev (IBM)
 
-UNDER CONSTRUCTION
-
-
 Base Components
 ---------------
 
@@ -35,17 +32,76 @@ Base Components
     :toctree: ../stubs/
 
     QComponent
+    BaseJunction
+    BaseQubit
+    ParsedDynamicAttributes_Component
+    MyQComponent
 
 
-Submodules
+Basic
+-----
+
+.. autosummary::
+    :toctree:
+
+    CircleCaterpillar
+    CircleRaster
+    Rectangle
+    RectangleHollow
+
+
+Connectors
 ----------
+
+.. autosummary::
+    :toctree:
+
+    connectors
+
+
+Interconnects
+-------------
+
+.. autosummary::
+    :toctree:
+
+    Connector
+    CpwMeanderSimple
+    FakeCPW
+
+
+Junctions
+---------
 
 .. autosummary::
     :toctree:
 
     junctions
 
+Qubits
+----------
+
+.. autosummary::
+    :toctree:
+
+    TransmonCross
+    TransmonPocket
+    TransmonPocketCL
+
 """
 from .. import is_component
 from .base import QComponent
-
+from .base.qubit import BaseQubit
+from .base.junction import BaseJunction
+from .base._parsed_dynamic_attrs import ParsedDynamicAttributes_Component
+from .base._template import MyQComponent
+from .basic.circle_caterpillar import CircleCaterpillar
+from .basic.circle_raster import CircleRaster
+from .basic.rectangle import Rectangle
+from .basic.rectangle_hollow import RectangleHollow
+from .interconnects.cpw_meander import Connector
+from .interconnects.cpw_meander import CpwMeanderSimple
+from .interconnects.fake_cpw import FakeCPW
+from .qubits.transmon_cross import TransmonCross
+from .qubits.transmon_pocket import TransmonPocket
+from .qubits.transmon_pocket_cl import TransmonPocketCL
