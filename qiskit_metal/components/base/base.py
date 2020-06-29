@@ -477,9 +477,9 @@ class QComponent():
 
     def add_pin(self,
                 name: str, # this should be static based on component designer's code
-                points: list,
-                width:float,
-                parent: Union[str, 'QComponent'],
+                points: np.ndarray,
+                width: float,
+                parent: Union[str, 'QComponent'], #input of name or id or either?
                 input_as_norm: bool = False,
                 flip: bool = False,
                 chip: str = 'main'):
@@ -505,30 +505,29 @@ class QComponent():
         ..........|       
 
         Arguments:
-            name {str} -- Name of pin
-            points {list} -- List of two (x,y) points that define the pin
-            parent {Union[str,} -- component or string or None. Will be converted to a
+            name (str) -- Name of pin
+            points (numpy.ndarray) -- Two (x,y) points that define the pin
+            parent (Union[str,) -- component or string or None. Will be converted to a
                                  string, which will the name of the component.
-            width {float} -- width of the pin connection
+            width (float) -- width of the pin connection
 
         Keyword Arguments:
-            input_as_norm {bool} -- If the input is a normal vector (eg. from a cpw path), or
+            input_as_norm (bool) -- If the input is a normal vector (eg. from a cpw path), or
                 a 'tangent' vector (eg. from a poly) (default: {False})
-            flip {bool} -- [description] (default: {False})
-            chip {str} --  Optionally add options (default: {'main'})
+            flip (bool) -- [description] (default: {False})
+            chip (str) --  Optionally add options (default: {'main'})
         """
         if input_as_norm:
             self.pins[name] = self.make_pin_as_normal(
-                points, parent, width, parent,flip=flip, chip= chip)
+                points, width, parent, flip, chip)
         else:
             self.pins[name] = self.make_pin(
                 points, parent, flip=flip, chip=chip)
-
-
+        
 
 
     def make_pin_as_normal(self,
-                          points: list,
+                          points: np.ndarray,
                           width: float,
                           parent: Union[int, 'QComponent'],
                           flip: bool = False,
@@ -540,15 +539,14 @@ class QComponent():
 
         Arguments:
             name (str) - Name of the pin
-            points (numpy.ndarray)- [x,y] coordinate of the start of the normal
-            end (numpy.ndarray)- [x,y] coordinate of the end of the normal
+            points (numpy.ndarray)- [[x1,y1],[x2,y2]] for the normal line
             width (float) - the width of the intended connection (eg. qubit bus pad arm)
             parent (Union[int,]) - The id of the parent component
             flip (bool): to change the direction of intended connection (True causes a 180, default False)
             chip (str): the name of the chip the pin is located on, default 'main'
 
         A dictionary containing a collection of information about the pin, necessary for use in Metal:
-            * points (list) - two (x,y) points which represent the edge of the pin for
+            * points (numpy.ndarray) - two (x,y) points which represent the edge of the pin for
               another component to attach to (eg. the edge of a CPW TL)
             * middle (numpy.ndarray) - an (x,y) which represents the middle of the points above,
               where the pin is represented.
@@ -562,19 +560,19 @@ class QComponent():
               not connected))
         """
 
-        vec_normal = end - start
+        vec_normal = points[1]-points[0]
         vec_normal /= np.linalg.norm(vec_normal)
         if flip:
             vec_normal = -vec_normal
 
         s_point = np.round(Vector.rotate(
-            vec_normal, (np.pi/2))) * width/2 + end
+            vec_normal, (np.pi/2))) * width/2 + points[1]
         e_point = np.round(Vector.rotate(
-            vec_normal, -(np.pi/2))) * width/2 + end
+            vec_normal, -(np.pi/2))) * width/2 + points[1]
 
         return Dict(
             points=[s_point, e_point],  # TODO
-            middle=end,
+            middle=points[1],
             normal=vec_normal,
             # TODO: rotate other way sometimes?
             tangent=Vector.rotate(vec_normal, np.pi/2),
@@ -584,11 +582,11 @@ class QComponent():
             net_id = 0
         )
 
-    def make_pin(self, points: list, parent_name: str, flip=False, chip='main'):
+    def make_pin(self, points: np.ndarray, parent_name: str, flip=False, chip='main'):
         """Called by add_pin, does the math for the pin generation.
 
         Args:
-            points (list): list of two (x,y) points which represent the edge of the pin for
+            points (numpy.ndarray): list of two (x,y) points which represent the edge of the pin for
                     another component to attach to (eg. the edge of a CPW TL)
             parent_name (str): name of the parent
             flip (bool): True to flip (Default: False)
@@ -599,7 +597,7 @@ class QComponent():
             for use in Metal.
 
         Dictionary Contents:
-            * points (list) - two (x,y) points which represent the edge of the pin for another
+            * points (numpy.ndarray) - two (x,y) points which represent the edge of the pin for another
               component to attach to (eg. the edge of a CPW TL)
             * middle (numpy.ndarray) - an (x,y) which represents the middle of the points above,
               where the pin is represented.

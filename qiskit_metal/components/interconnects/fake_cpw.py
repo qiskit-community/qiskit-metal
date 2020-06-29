@@ -83,9 +83,10 @@ class FakeCPW(QComponent):
         self.add_elements(
             'path', {f'{self.name}_cpw_line': fake_cpw_line}, width=self.p.line_width)
 
-        self.add_pin('fake_cpw_start', starting_pin_dic.points,
+        self.add_pin('fake_cpw_start', starting_pin_dic.points, self.p.line_width,
                      self.id, flip=True)
-        self.add_pin('fake_cpw_end', ending_pin_dic.points, self.id, flip=True)
+        self.add_pin('fake_cpw_end', ending_pin_dic.points, self.p.line_width,
+                    self.id, flip=True)
 
         # THEN ADD TO NETLIST - THIS SHOULD PROBABLY BE LARGELY HANDLED BY A DESIGN METHOD
         self.design.connect_pins(
