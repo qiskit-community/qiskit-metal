@@ -452,7 +452,11 @@ class QDesign():
         if not isinstance(component_id, int):
             # assume string
             component_name = str(component_id)
-            component_id = self.components[component_name].id
+            a_component = self.components[component_name]
+            if a_component is None:
+                return -3
+            else:
+                component_id = a_component.id
 
         if component_id in self._components:
             all_names = self.all_component_names_id()
