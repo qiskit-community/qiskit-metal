@@ -426,10 +426,60 @@ class QComponent():
 #   What information is truly necessary for the pins? Should they have a z-direction component?
 #   Will they operate properly with non-planar designs?
 
-    def add_pin_as_normal(self,
-                          name: str,
-                          start: np.ndarray,
-                          end: np.ndarray,
+    def add_pin(self,
+                name: str, # this should be static based on component designer's code
+                points: list,
+                width:float,
+                parent: Union[str, 'QComponent'],
+                input_as_norm: bool = False,
+                flip: bool = False,
+                chip: str = 'main'):
+        """Add the named pin to the respective component's pins subdictionary
+
+        * = pin
+        . = outline of component                 
+        ---> = the list being passed in as 'points' [[x1,y1],[x2,y2]]
+
+
+        normal vector
+        ..........
+                 .
+        --------->*
+                 .
+        ..........
+
+        tangent vector
+        ..........^
+                 .|
+                 .*
+                 .|
+        ..........|       
+
+        Arguments:
+            name {str} -- Name of pin
+            points {list} -- List of two (x,y) points that define the pin
+            parent {Union[str,} -- component or string or None. Will be converted to a
+                                 string, which will the name of the component.
+            width {float} -- width of the pin connection
+
+        Keyword Arguments:
+            input_as_norm {bool} -- If the input is a normal vector (eg. from a cpw path), or
+                a 'tangent' vector (eg. from a poly) (default: {False})
+            flip {bool} -- [description] (default: {False})
+            chip {str} --  Optionally add options (default: {'main'})
+        """
+        if input_as_norm:
+            self.pins[name] = self.make_pin_as_normal(
+                points, parent, width, parent,flip=flip, chip= chip)
+        else:
+            self.pins[name] = self.make_pin(
+                points, parent, flip=flip, chip=chip)
+
+
+
+
+    def make_pin_as_normal(self,
+                          points: list,
                           width: float,
                           parent: Union[int, 'QComponent'],
                           flip: bool = False,
@@ -453,7 +503,7 @@ class QComponent():
 
         Arguments:
             name (str) - Name of the pin
-            start (numpy.ndarray)- [x,y] coordinate of the start of the normal
+            points (numpy.ndarray)- [x,y] coordinate of the start of the normal
             end (numpy.ndarray)- [x,y] coordinate of the end of the normal
             width (float) - the width of the intended connection (eg. qubit bus pad arm)
             parent (Union[int,]) - The id of the parent component
@@ -473,7 +523,7 @@ class QComponent():
         e_point = np.round(Vector.rotate(
             vec_normal, -(np.pi/2))) * width/2 + end
 
-        self.pins[name] = Dict(
+        return Dict(
             points=[s_point, e_point],  # TODO
             middle=end,
             normal=vec_normal,
@@ -481,7 +531,8 @@ class QComponent():
             tangent=Vector.rotate(vec_normal, np.pi/2),
             width=width,
             chip=chip,
-            parent_name=parent
+            parent_name=parent,
+            net_id = 0
         )
 
     def make_pin(self, points: list, parent_name: str, flip=False, chip='main'):
@@ -541,27 +592,7 @@ class QComponent():
 
         return self.pins[name]
 
-    def add_pin(self,
-                name: str,
-                points: list,
-                parent: Union[str, 'QComponent'],
-                flip: bool = False,
-                chip: str = 'main'):
-        """Add the named pin to the respective component's pins subdictionary
-
-        Arguments:
-            name {str} -- Name of pin
-            points {list} -- List of two (x,y) points that define the pin
-            parent {Union[str,} -- component or string or None. Will be converted to a
-                                 string, which will the name of the component.
-
-        Keyword Arguments:
-            flip {bool} -- [description] (default: {False})
-            chip {str} --  Optionally add options (default: {'main'})
-        """
-
-        self.pins[name] = self.make_pin(
-            points, parent, flip=flip, chip=chip)
+    
 
     def connect_components_already_in_design(self, pin_name_self: str, comp2_id: int, pin2_name: str) -> int:
         """WARNING: Do NOT use this method during generation of component instance.

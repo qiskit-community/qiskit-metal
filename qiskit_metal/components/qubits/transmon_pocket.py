@@ -247,8 +247,8 @@ class TransmonPocket(BaseQubit):
 
         # add pins
         points = np.array(connector_wire_path.coords)
-
-        self.add_pin_as_normal(name,
+        #FIX POINTS, 
+        self.add_pin(name,
             start = points[-2],
             end = points[-1],
-            width = cpw_width, parent = self.id,  flip=False)
+            width = cpw_width, parent = self.id, input_as_norm=True,  flip=False)
