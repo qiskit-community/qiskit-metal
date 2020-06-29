@@ -232,7 +232,7 @@ class Components:
             str : String to print design._component dict.
         """
 
-        return str(self._design._components.__repr__(self))
+        return str(self._design._components.__repr__())
 
     #     #     def __repr__(slef):
     #     #         # make sure to define repreentation for print purpose
