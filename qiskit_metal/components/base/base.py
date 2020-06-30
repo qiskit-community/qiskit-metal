@@ -103,6 +103,9 @@ class QComponent():
             ValueError: User supplied design isn't a QDesign
         """
 
+        # Make the id be zero, which means it hasn't been added to design yet.
+        self._id = 0
+
         if not is_design(design):
             raise ValueError(
                 "Error you did not pass in a valid Metal QDesign object as a parent of this QComponent.")
@@ -113,7 +116,7 @@ class QComponent():
         if answer:  # TODO: Resolve -> Maybe overwrite component!? Issue #193
             logger.warning(f'The name {name} is used in component id={answer}. '
                            'Component was not made, nor added to design.')
-            return
+            return 'NameInUse'
 
         self._name = name
         self._class_name = self._get_unique_class_name()  # Full class name
