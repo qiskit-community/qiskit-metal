@@ -477,7 +477,7 @@ class QDesign():
             return True
         else:
             logger.warning(f'Called rename_component, component_id({component_id}), but component_id'
-                           ' is not in design.components dictionary.')
+                           f' is not in design.components dictionary.')
             return -3
 
         return True
