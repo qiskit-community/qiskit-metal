@@ -103,6 +103,9 @@ class QComponent():
             ValueError: User supplied design isn't a QDesign
         """
 
+        # Make the id be zero, which means it hasn't been added to design yet.
+        self._id = 0
+
         if not is_design(design):
             raise ValueError(
                 "Error you did not pass in a valid Metal QDesign object as a parent of this QComponent.")
@@ -110,15 +113,15 @@ class QComponent():
         self._design = design  # reference to parent
 
         answer = self._is_name_used(name)
-        if answer: #TODO: Resolve -> Maybe overwrite component!? Issue #193
+        if answer:  # TODO: Resolve -> Maybe overwrite component!? Issue #193
             logger.warning(f'The name {name} is used in component id={answer}. '
                            'Component was not made, nor added to design.')
-            return
+            return 'NameInUse'
 
         self._name = name
-        self._class_name = self._get_unique_class_name() # Full class name
+        self._class_name = self._get_unique_class_name()  # Full class name
 
-        ### Options
+        # Options
         self.options = self.get_template_options(design=design,
                                                  component_template=component_template)
         if options:
@@ -127,11 +130,11 @@ class QComponent():
         # Parser for options
         self.p = ParsedDynamicAttributes_Component(self)
 
-        ### Build and component internals
+        # Build and component internals
         # Status: used to handle building of a component and checking if it succeedded or failed.
         self.status = 'not built'
         # Create an empty dict, which will populated by component designer.
-        self.pins = Dict() # TODO: should this be private?
+        self.pins = Dict()  # TODO: should this be private?
         self._made = False
 
         # In case someone wants to store extra information or analysis results
@@ -413,7 +416,7 @@ class QComponent():
             See the docstring for this module.
                 >> ?qiskit_metal.toolbox_metal.parsing
 
-        
+
         """
         return self.design.parse_value(value)
 
@@ -442,7 +445,7 @@ class QComponent():
 
         Args:
             check_name (str):  Name which user requested to apply to current component.
-        
+
         Returns:
             int: 0 if does not exist, otherwise 
               component-id of component which is already using the name.

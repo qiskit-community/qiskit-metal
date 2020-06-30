@@ -467,7 +467,7 @@ class QDesign():
             # name is already being used.
             if len(search_result) != 0:
                 logger.warning(f'Called design.rename_component, component_id({search_result[0][0]}'
-                               ', id={search_result[0][1]}) is already using {new_component_name}.')
+                               f', id={search_result[0][1]}) is already using {new_component_name}.')
                 return -2
 
             # do rename
@@ -477,7 +477,7 @@ class QDesign():
             return True
         else:
             logger.warning(f'Called rename_component, component_id({component_id}), but component_id'
-                           ' is not in design.components dictionary.')
+                           f' is not in design.components dictionary.')
             return -3
 
         return True
