@@ -77,8 +77,7 @@ class Components:
     def find_id(self, name: str, quite: bool = False) -> int:
         """
         Find id of component.  The id is the key for a dict which holds all of the components 
-        within design.  Assume the name is not used multiple times. If it is, 
-        the first search result will be used.
+        within design.
 
         Args:
             name (str): Text name of compnent.  The name is assumed to be unique.
@@ -90,29 +89,56 @@ class Components:
         If 0 is returned it means the name is not in dict.
         """
 
-        # TODO:  all_names creation -> seems very slow way to do?
-        all_names = [(value.name, key)
-                     for (key, value) in self.components.items()]
-        search_result = [
-            item for item in all_names if name == item[0]]
-
-        length = len(search_result)
-        if length == 1:
-            # Good, we found a single component match.
-            return search_result[0][1]
-        elif length == 0:
-            # Name not in dict.
+        if name in self._design.name_to_id:
+            component_id = self._design.name_to_id[name]
+            return component_id
+        else:
+            # Name not registered, not in cache for components' names.
             if not quite:
                 self.logger.warning(
-                    f'In Components.find_id(), the name={name} is not used in design._components ')
+                    f'In Components.find_id(), the name={name} is not used in design._components. '
+                    f'The name={name} is not a key in design.name_to_id dict.')
             return 0
 
-        elif length > 1:
-            # Really unfortunate, the dict has multiple coponents with same name, use the first search result.
-            if not quite:
-                self.logger.warning(
-                    f'In Components.find_id(), the name={name} is used multiple times in design._components.  Returning the key, for QComponent, with lowest id.')
-            return search_result[0][1]
+    # def find_id(self, name: str, quite: bool = False) -> int:
+    #     """
+    #     Find id of component.  The id is the key for a dict which holds all of the components
+    #     within design.  Assume the name is not used multiple times. If it is,
+    #     the first search result will be used.
+
+    #     Args:
+    #         name (str): Text name of compnent.  The name is assumed to be unique.
+    #         quite (bool): Allow warning messages to be generated.
+
+    #     Returns:
+    #         int: key to use in  _components
+
+    #     If 0 is returned it means the name is not in dict.
+    #     """
+
+    #     # TODO:  all_names creation -> seems very slow way to do?
+    #     all_names = [(value.name, key)
+    #                  for (key, value) in self.components.items()]
+    #     search_result = [
+    #         item for item in all_names if name == item[0]]
+
+    #     length = len(search_result)
+    #     if length == 1:
+    #         # Good, we found a single component match.
+    #         return search_result[0][1]
+    #     elif length == 0:
+    #         # Name not in dict.
+    #         if not quite:
+    #             self.logger.warning(
+    #                 f'In Components.find_id(), the name={name} is not used in design._components ')
+    #         return 0
+
+    #     elif length > 1:
+    #         # Really unfortunate, the dict has multiple coponents with same name, use the first search result.
+    #         if not quite:
+    #             self.logger.warning(
+    #                 f'In Components.find_id(), the name={name} is used multiple times in design._components.  Returning the key, for QComponent, with lowest id.')
+    #         return search_result[0][1]
 
     # def is_name_used(self, new_name: str) -> int:
     #     """Check to see if name being used in components.
