@@ -113,7 +113,7 @@ class QComponent():
         if answer: #TODO: Resolve -> Maybe overwrite component!? Issue #193
             logger.warning(f'The name {name} is used in component id={answer}. '
                            'Component was not made, nor added to design.')
-            return
+            return 'NameInUse'
 
         self._name = name
         self._class_name = self._get_unique_class_name() # Full class name

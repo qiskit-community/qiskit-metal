@@ -75,13 +75,13 @@ class BaseQubit(QComponent):
                     Options be used in the make funciton to create the geometry. (default: True)
         """
 
-        super().__init__(design, name, options=options, make=False)
+        #super().__init__(design, name, options=options, make=False)
 
-        if self.id is None:
+        if super().__init__(design, name, options=options, make=False) is 'NameInUse':
             # Component is not registered in design.
             # This qubit was not added to design.
-            self.logger.warning(
-                'In BaseQubit.__init(), the qubit has not been added to design. The component is exiting with None.')
+            #self.logger.warning(
+                #'In BaseQubit.__init(), the qubit has not been added to design. The component is exiting with None.')
             return None
 
         if options_connection_pads:
