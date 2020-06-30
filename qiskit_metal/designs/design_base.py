@@ -455,93 +455,94 @@ class QDesign():
         if not isinstance(component_id, int):
             # assume string
             component_name = str(component_id)
-            a_component = self.components[component_name]
-            if a_component is None:
+            a_component_id = self.name_to_id[component_name]
+            if a_component_id is None:
                 return -3
-            else:
-                component_id = a_component.id
+        else:
+            a_component_id = component_id
 
-        if component_id in self._components:
-            all_names = self.all_component_names_id()
-
-            search_result = [
-                item for item in all_names if new_component_name == item[0]]
-
-            # name is already being used.
-            if len(search_result) != 0:
-                logger.warning(f'Called design.rename_component, component_id({search_result[0][0]}'
-                               ', id={search_result[0][1]}) is already using {new_component_name}.')
+        if a_component_id in self._components:
+            # Check if name is already being used.
+            if new_component_name in self.name_to_id:
+                logger.warning(f'Called design.rename_component, component_id({self.name_to_id[new_component_name]}'
+                               f',  is already using {new_component_name}.')
                 return -2
 
-            # do rename
-            self._components[component_id]._name = new_component_name
+            # Do rename
+            a_component = self._components[a_component_id]
+
+            # Remove old name from cache, add new name
+            self.name_to_id.pop(a_component.name, None)
+            self.name_to_id[new_component_name] = a_component.id
+
+            self._components[a_component_id]._name = new_component_name
             self._elements.rename_component(
                 str(component_id), new_component_name)
             return True
         else:
             logger.warning(f'Called rename_component, component_id({component_id}), but component_id'
-                           ' is not in design.components dictionary.')
+                           f' is not in design.components dictionary.')
             return -3
 
         return True
 
-    def rename_component(self, component_id: int, new_component_name: str):
-        """Rename component.  The component_id is expected.  However, if user
-        passes a string for component_id, the method assumes the component_name
-        was passed.  Then will look for the id using the component_name.
+    # def rename_component(self, component_id: int, new_component_name: str):
+    #     """Rename component.  The component_id is expected.  However, if user
+    #     passes a string for component_id, the method assumes the component_name
+    #     was passed.  Then will look for the id using the component_name.
 
-        Arguments:
-            component_id (int): id of component within design, can pass a string for component_name
-            new_component_name (str): New name
+    #     Arguments:
+    #         component_id (int): id of component within design, can pass a string for component_name
+    #         new_component_name (str): New name
 
-        Returns:
-            int: Results
+    #     Returns:
+    #         int: Results
 
-        Results:
-            1: True name is changed. (True)
+    #     Results:
+    #         1: True name is changed. (True)
 
-            -1: Failed, new component name exists.
+    #         -1: Failed, new component name exists.
 
-            -2: Failed, invalid new name; it is already being used by another component.
+    #         -2: Failed, invalid new name; it is already being used by another component.
 
-            -3: Failed, component_id does not exist.
-        """
-        # We are using component_id,
-        # and assuming id is created as being unique.
-        # We also want the string (name) to be unique.
+    #         -3: Failed, component_id does not exist.
+    #     """
+    #     # We are using component_id,
+    #     # and assuming id is created as being unique.
+    #     # We also want the string (name) to be unique.
 
-        if not isinstance(component_id, int):
-            # assume string
-            component_name = str(component_id)
-            a_component = self.components[component_name]
-            if a_component is None:
-                return -3
-            else:
-                component_id = a_component.id
+    #     if not isinstance(component_id, int):
+    #         # assume string
+    #         component_name = str(component_id)
+    #         a_component = self.components[component_name]
+    #         if a_component is None:
+    #             return -3
+    #         else:
+    #             component_id = a_component.id
 
-        if component_id in self._components:
-            all_names = self.all_component_names_id()
+    #     if component_id in self._components:
+    #         all_names = self.all_component_names_id()
 
-            search_result = [
-                item for item in all_names if new_component_name == item[0]]
+    #         search_result = [
+    #             item for item in all_names if new_component_name == item[0]]
 
-            # name is already being used.
-            if len(search_result) != 0:
-                logger.warning(f'Called design.rename_component, component_id({search_result[0][0]}'
-                               ', id={search_result[0][1]}) is already using {new_component_name}.')
-                return -2
+    #         # name is already being used.
+    #         if len(search_result) != 0:
+    #             logger.warning(f'Called design.rename_component, component_id({search_result[0][0]}'
+    #                            ', id={search_result[0][1]}) is already using {new_component_name}.')
+    #             return -2
 
-            # do rename
-            self._components[component_id]._name = new_component_name
-            self._elements.rename_component(
-                str(component_id), new_component_name)
-            return True
-        else:
-            logger.warning(f'Called rename_component, component_id({component_id}), but component_id'
-                           ' is not in design.components dictionary.')
-            return -3
+    #         # do rename
+    #         self._components[component_id]._name = new_component_name
+    #         self._elements.rename_component(
+    #             str(component_id), new_component_name)
+    #         return True
+    #     else:
+    #         logger.warning(f'Called rename_component, component_id({component_id}), but component_id'
+    #                        ' is not in design.components dictionary.')
+    #         return -3
 
-        return True
+    #     return True
 
     def delete_component(self, component_name: str, force=False) -> bool:
         """Deletes component and pins attached to said component.
