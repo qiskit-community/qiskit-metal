@@ -563,8 +563,7 @@ class QElementTables(object):
                 table = self.tables[table_name]
                 table.component[table.component == a_comp.id] = new_name
 
-
-   def get_component_geometry_list(self, name: str, table_name: str = 'all') -> List[BaseGeometry]:
+    def get_component_geometry_list(self, name: str, table_name: str = 'all') -> List[BaseGeometry]:
         """Return just the bare element geometry (shapely geometry objects) as a list, for the
         selected component.
 
