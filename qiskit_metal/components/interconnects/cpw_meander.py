@@ -21,42 +21,101 @@ options = Dict(pin_start_name='Q1_a',
                    asymmetry='0 um')
                )
 
-class Connector:
-    r"""A simple class to define a connector as a 2D point
-    with a 2D direction in the XY plane.
+
+class Oriented_2D_Array:
+    r"""A simple class to define a 2D Oriented_Point,
+    with a 2D position and a 2D direction (XY plane).
     All values stored as np.ndarray of parsed floats.
 
     Attributes:
-        positon (np.ndarray of 2 points) -- Center position of the connector
-        direction (np.ndarray of 2 points) -- *Normal vector* of the connector, defines which way it points outward.
-                                              This is the normal vector to the surface on which the connector mates.
+        positon (np.ndarray of 2 points) -- Position of the Oriented_Point
+        direction (np.ndarray of 2 points) -- *Normal vector* of the Oriented_Point, defines which way it points outward.
+                                              This is the normal vector to the surface on which the Oriented_Point mates.
                                               Has unit norm.
     """
     # TODO: Maybe move this class out of here, more general.
 
 
     def __init__(self, position: np.ndarray, direction: np.ndarray):
-        self.position = position
-        self.direction = direction / norm(direction)
+        self.positions = np.expand_dims(position, axis=0)
+        self.directions = np.expand_dims((direction / norm(direction)), axis=0)
 
-    def get_leadin(self, length: float) -> 'Connector':
-        """A leadin in a straight line from a connector point,
-        using with normal direction
+    def go_straigh(self, length: float):
+        """Add a point ot 'lenght' distance in the same direction
 
         Args:
-            length (float) : how much to lead in by
+            length (float) : how much to move by
         """
-        return Connector(self.position + self.direction*length, self.direction)
+        np.append(self.directions, [self.directions[-1]], axis=0)
+        np.append(self.positions, [self.positions[-1] + self.directions[-1]*length], axis=0)
 
-    def get_coordinate_vectors(self) -> Tuple[np.ndarray]:
-        """Returns vectors that define the normal and tanget
+    def go_left(self, length: float):
+        """Straight line 90deg counter-clock-wise direction w.r.t. Oriented_Point
+
+        Args:
+            length (float) : how much to move by
+        """
+        np.append(self.directions, [draw.Vector.rotate(self.direction, np.pi/2)], axis=0)
+        np.append(self.positions, [self.positions[-1] + self.directions[-1]*length], axis=0)
+
+    def go_right(self, length: float):
+        """Straight line 90deg clock-wise direction w.r.t. Oriented_Point
+
+        Args:
+            length (float) : how much to move by
+        """
+        np.append(self.directions, [draw.Vector.rotate(self.direction, -1*np.pi/2)], axis=0)
+        np.append(self.positions, [self.positions[-1] + self.directions[-1]*length], axis=0)
+
+    def align_start_end(self, concurrent_array):
+        """
+        In this code, meanders need to face each-other to connect.
+        Adjusts the orientation of the meander, adding yet a new point
+            * Includes the start but not the given end point
+            * If it cannot meander just returns the initial start point
+
+        Arguments:
+            start {Oriented_Point} -- Oriented_Point of the start
+            end {Oriented_Point} -- [description]
+            length {str} --  Total length of the meander whole CPW segment (defined by user, after you subtract lead lengths
+            meander {dict} -- meander options (parsed)
 
         Returns:
-            Tuple[np.ndarray] -- contains the parallel direction and the tangent. e.g.
-                                tangent (np.ndarray of 2 points) -- unit vector parallel to
-                                the connector face and a 90 deg CCW rotation from the direction units vector
+            np.ndarray -- [description]
         """
-        return self.direction, draw.Vector.rotate(self.direction, np.pi/2)
+
+        """ To prototype, you can use code here:
+            ax = plt.gca()
+            ax.cla()
+            draw.mpl.render([
+                draw.LineString(root_pts),
+                draw.LineString(bot_pts),
+                draw.LineString(top_pts),
+            ], kw=dict(lw=0, alpha=0.5, marker='o'), ax=ax)
+
+            draw.mpl.render([
+                draw.LineString(pts)
+            ], kw=dict(lw=2, alpha=0.5, marker='x'), ax=ax)
+        """
+
+
+class Oriented_Point:
+    r"""A simple class to define a 2D Oriented_Point,
+    with a 2D position and a 2D direction (XY plane).
+    All values stored as np.ndarray of parsed floats.
+
+    Attributes:
+        positon (np.ndarray of 2 points) -- Position of the Oriented_Point
+        direction (np.ndarray of 2 points) -- *Normal vector* of the Oriented_Point, defines which way it points outward.
+                                              This is the normal vector to the surface on which the Oriented_Point mates.
+                                              Has unit norm.
+    """
+    # TODO: Maybe move this class out of here, more general.
+
+
+    def __init__(self, array:Oriented_2D_Array):
+        self.position = array.positions[-1]
+        self.direction = array.directions[-1]
 
 
 class CpwMeanderSimple(QComponent):
@@ -86,50 +145,54 @@ class CpwMeanderSimple(QComponent):
         )
     )
     def make(self):
-        # TODO: Later, consider performance of instantiating all these Connector classes
+        # TODO: Later, consider performance of instantiating all these Oriented_Point classes
 
         # parsed options
+        #p = self.parse_value(self.options)  # type: Dict
         p = self.p
-        meander = self.parse_value(self.options.meander)  # type: Dict
-        snap = is_true(meander.snap)
+        snap = is_true(p.meander.snap)
         total_length = p.total_length
-        lead_start = meander.lead_start
-        lead_end = meander.lead_end
+        lead_start = p.meander.lead_start
+        lead_end = p.meander.lead_end
 
-        # Connector start and end
-        start = self.get_start()
-        end = self.get_end()
+        # Oriented_Point start and end
+        start_points = Oriented_2D_Array(*self.get_start())
+        end_points = Oriented_2D_Array(*self.get_end())
 
         # Lead in to meander
-        startm = start.get_leadin(lead_start)
-        endm = end.get_leadin(lead_end)
-        self.startm = startm
+        start_points.go_straigh(lead_start)
+        end_points.go_straigh(lead_end)
+        #self.align_start_end(start_points, end_points)
 
         # Meander
-        length_meander = total_length - (meander.lead_end + meander.lead_start)
+        length_meander = total_length - (p.meander.lead_end + p.meander.lead_start)
         if snap:
             # handle y distance
             length_meander -= 0#(end.position - endm.position)[1]
 
         meandered_pts = self.meander_fixed_length(
-            startm, endm, length_meander, meander)
+            start_points, end_points, length_meander, p.meander)
 
         # TODO: if lead_start is zero or end is , then dont add them
-        self.x = [start.position, meandered_pts, end.position, startm]
-        self.y = [
-            start.position[None, :],
-            meandered_pts,
-            end.position[None, :]]
+        # points = np.concatenate([
+        #     start_pts,
+        #     meandered_pts,
+        #     end_pts], axis=0)
+		
         points = np.concatenate([
-            start.position[None, :],
+            start_points.positions,
             meandered_pts,
-            endm.position[None, :],
-            end.position[None, :]], axis=0)
+            end_points.positions], axis=0)
+
+#        points = np.concatenate([
+#            start_points.positions[None, :],
+#            meandered_pts,
+#            end_points.positions[None, :]], axis=0)
 
         # Make points into elements
         self.make_elements(points)
 
-    def meander_fixed_length(self, start: Connector, end: Connector,
+    def meander_fixed_length(self, start_array: Oriented_2D_Array, end_array: Oriented_2D_Array,
                              length: float,
                              meander: dict) -> np.ndarray:
         """
@@ -139,8 +202,8 @@ class CpwMeanderSimple(QComponent):
             * If it cannot meander just returns the initial start point
 
         Arguments:
-            start {Connector} -- Connector of the start
-            end {Connector} -- [description]
+            start {Oriented_Point} -- Oriented_Point of the start
+            end {Oriented_Point} -- [description]
             length {str} --  Total length of the meander whole CPW segment (defined by user, after you subtract lead lengths
             meander {dict} -- meander options (parsed)
 
@@ -171,23 +234,26 @@ class CpwMeanderSimple(QComponent):
         snap = is_true(meander.snap)  # snap to xy grid
         # TODO: snap add 45 deg snap by chaning snap function using angles
 
-        # Coordinate system
+        # TODO: remove adapter below, incorporate new class in the data
+        start = Oriented_Point(start_array)
+        end = Oriented_Point(end_array)
+
+        # Coordinate system (example: x to the right => sideways up)
         forward, sideways = self.get_unit_vectors(start, end, snap)
         if is_true(meander.lead_direction_inverted):
             sideways *= -1
 
-        # Calculate lengths and menader number
-        dist = start.position - end.position
+        # Calculate lengths and meander number
+        dist = end.position - start.position
         if snap:
             # TODO: Not general, depends on the outside (to fix)
             length_direct = abs(norm(np.dot(dist,forward)))
             length_excess = abs(norm(np.dot(dist,sideways))) # in the vertical direction
-            # print(length_excess)
         else:
             length_direct = norm(dist)
-            length_y = 0
+            length_excess = 0
 
-        # Brekaup into sections
+        # Breakup into sections
         meander_number = np.ceil(length_direct/spacing) - 1
         if meander_number < 1:
             self.logger.info(f'Zero meanders for {self.name}')
@@ -257,7 +323,7 @@ class CpwMeanderSimple(QComponent):
         # add the snap point end - for example if the meander moves left to right
         # but the qubit is higher up in y, then we dont want an angled connection, but
         # need to add one more findal point to the meander, located below the leading in
-        # qubit connector.
+        # qubit pin.
         if snap:
             meander_end = np.dot(end.position, forward)*forward +\
                 np.dot(pts[-1], sideways)*sideways
@@ -282,35 +348,37 @@ class CpwMeanderSimple(QComponent):
         z[1::2] = x+1
         return z, odd
 
-    def get_start(self) -> Connector:
+    def get_start(self) -> List:
         """Return the start point and normal direction vector
 
         Returns:
             A dictionary with keys `point` and `direction`.
             The values are numpy arrays with two float points each.
         """
-        connector = self.design.connectors[self.options.pin_start_name]
-        return Connector(position=connector['middle'],
-                         direction=connector['normal'])
+        pin = self.design.connectors[self.options.pin_start_name]
+        position=pin['middle']
+        direction=pin['normal']
+        return position, direction
 
-    def get_end(self) -> Connector:
+    def get_end(self) -> List:
         """Return the start point and normal direction vector
 
         Returns:
             A dictionary with keys `point` and `direction`.
             The values are numpy arrays with two float points each.
         """
-        connector = self.design.connectors[self.options.pin_end_name]
-        return Connector(position=connector['middle'],
-                         direction=connector['normal'])
+        pin = self.design.connectors[self.options.pin_end_name]
+        position=pin['middle']
+        direction=pin['normal']
+        return position, direction
 
-    def get_unit_vectors(self, start: Connector, end: Connector, snap: bool = False) -> Tuple[np.ndarray]:
-        """Return the unit and tnaget vector in which the CPW should procees as its
+    def get_unit_vectors(self, start: Oriented_Point, end: Oriented_Point, snap: bool = False) -> Tuple[np.ndarray]:
+        """Return the unit and target vector in which the CPW should procees as its
         cooridnate sys.
 
         Arguments:
-            start {Connector} -- [description]
-            end {Connector} -- [description]
+            start {Oriented_Point} -- [description]
+            end {Oriented_Point} -- [description]
 
         Returns:
             straight and 90 deg CCW rotated vecs 2D
