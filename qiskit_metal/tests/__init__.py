@@ -13,8 +13,26 @@
 # that they have been altered from the originals.
 
 """
+=================================================
+Tests (:mod:`qiskit_metal.tests`)
+=================================================
+
+.. currentmodule:: qiskit_metal.tests
+
 Qiskit Metal main unit test functionality.
 
 Created on Wed Apr 22 08:55:40 2020
+
 @author: Jeremy D. Drysdale
+
+UNDER CONSTRUCTION
+
+UNDER-CONSTRUCTION
+---------------
+
+.. autosummary::
+    :toctree: ../stubs/
+
+    UNDER-CONSTRUCTION
+
 """

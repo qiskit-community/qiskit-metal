@@ -13,9 +13,26 @@
 # that they have been altered from the originals.
 
 """
+=================================================
+Renderers (:mod:`qiskit_metal.renderers`)
+=================================================
+
+.. currentmodule:: qiskit_metal.renderers
+
 Created on Tue May 14 17:13:40 2019
 
 @author: Zlatko
+
+UNDER CONSTRUCTION
+
+UNDER-CONSTRUCTION
+---------------
+
+.. autosummary::
+    :toctree: ../stubs/
+
+    UNDER-CONSTRUCTION
+
 """
 
 from .setup_default import setup_renderers

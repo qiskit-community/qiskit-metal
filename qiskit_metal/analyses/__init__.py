@@ -13,7 +13,26 @@
 # that they have been altered from the originals.
 
 """
-Created on Tue May 14 17:13:40 2019
+=================================================
+Analyses (:mod:`qiskit_metal.analyses`)
+=================================================
 
-@author: Zlatko
+.. currentmodule:: qiskit_metal.analyses
+
+Module containing all Qiskit Metal analyses.
+
+@date: 2019
+
+@author: Zlatko Minev (IBM)
+
+UNDER CONSTRUCTION
+
+UNDER-CONSTRUCTION
+---------------
+
+.. autosummary::
+    :toctree: ../stubs/
+
+    UNDER-CONSTRUCTION
+
 """

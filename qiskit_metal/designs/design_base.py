@@ -452,14 +452,19 @@ class QDesign():
         # and assuming id is created as being unique.
         # We also want the string (name) to be unique.
 
-        if not isinstance(component_id, int):
-            # assume string
+        if isinstance(component_id, int):
+            pass  # The id is already an int type.
+        elif isinstance(component_id, str):
             component_name = str(component_id)
             a_component_id = self.name_to_id[component_name]
             if a_component_id is None:
                 return -3
+            else:
+                component_id = a_component.id
         else:
-            a_component_id = component_id
+            logger.warning(f'Called rename_component, component_id={component_id}, but component_id'
+                           f' is not an integer, nor a string.')
+            return -3
 
         if a_component_id in self._components:
             # Check if name is already being used.
@@ -475,12 +480,12 @@ class QDesign():
             self.name_to_id.pop(a_component.name, None)
             self.name_to_id[new_component_name] = a_component.id
 
-            self._components[a_component_id]._name = new_component_name
-            self._elements.rename_component(
-                str(component_id), new_component_name)
+            # do rename
+            self._components[component_id]._name = new_component_name
+
             return True
         else:
-            logger.warning(f'Called rename_component, component_id({component_id}), but component_id'
+            logger.warning(f'Called rename_component, component_id={component_id}, but component_id'
                            f' is not in design.components dictionary.')
             return -3
 

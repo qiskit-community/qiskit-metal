@@ -13,9 +13,27 @@
 # that they have been altered from the originals.
 
 """
+=================================================
+Elements (:mod:`qiskit_metal.elements`)
+=================================================
+
+.. currentmodule:: qiskit_metal.elements
+
 This modules defines and handles everything related to the elements abstraction.
 
-@auhtor: Zlatko Minev
 @date: 2019
+
+@author: Zlatko Minev (IBM)
+
+UNDER CONSTRUCTION
+
+UNDER-CONSTRUCTION
+---------------
+
+.. autosummary::
+    :toctree: ../stubs/
+
+    UNDER-CONSTRUCTION
+
 """
 from .elements_handler import is_element_table, QElementTables#, ElementTypes
