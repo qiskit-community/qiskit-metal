@@ -77,7 +77,10 @@ class QComponent():
         Each child adds it's options to the base options.  If the
         key is the same, the option of the youngest child is used.
     '''
-
+    default_options = Dict(
+        pin_inputs = [],
+        _pin_inputs_size = 0
+    )
     # Dummy private attribute used to check if an instanciated object is
     # indeed a QComponent class. The problem is that the `isinstance`
     # built-in method fails when this module is reloaded.
@@ -126,6 +129,11 @@ class QComponent():
 
         # Parser for options
         self.p = ParsedDynamicAttributes_Component(self)
+
+        if len(self.options.pin_inputs)!=self.options._pin_inputs_size:
+            logger.warning(f'The number of pins inputed does not match that required for this component. '
+                           'Please input the correct number of pins for component creation.')
+            return
 
         ### Build and component internals
         # Status: used to handle building of a component and checking if it succeedded or failed.
