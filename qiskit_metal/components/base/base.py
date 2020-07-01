@@ -103,8 +103,8 @@ class QComponent():
             ValueError: User supplied design isn't a QDesign
         """
 
-        # Make the id be zero, which means it hasn't been added to design yet.
-        self._id = 0
+        # Make the id be None, which means it hasn't been added to design yet.
+        self._id = None
 
         if not is_design(design):
             raise ValueError(

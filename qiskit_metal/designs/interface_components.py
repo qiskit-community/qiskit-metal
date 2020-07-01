@@ -145,7 +145,6 @@ class Components:
         if component_id:
             return self.components[component_id]
         else:
-            # Getting duplicate warnings is annoying.
             # self.logger.warning(
             #    f'In Components.__getitem__, name={name} is not registered in the design class. Return None for QComponent.')
             return None
