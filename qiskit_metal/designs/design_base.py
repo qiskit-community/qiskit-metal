@@ -449,7 +449,9 @@ class QDesign():
         # and assuming id is created as being unique.
         # We also want the string (name) to be unique.
 
-        if not isinstance(component_id, int):
+        if isinstance(component_id, int):
+            pass  # The id is already in int format.
+        else:
             # assume string
             component_name = str(component_id)
             a_component = self.components[component_name]
