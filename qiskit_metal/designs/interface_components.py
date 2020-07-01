@@ -141,12 +141,12 @@ class Components:
         Returns:
             QComponent: Class which describes the component.
         """
-        component_id = self.find_id(name)
+        component_id = int(self.find_id(name))
         if component_id:
             return self.components[component_id]
         else:
-            self.logger.warning(
-                f'In Components.__getitem__, name={name} is not registered in the design class. Return None for QComponent.')
+            # self.logger.warning(
+            #    f'In Components.__getitem__, name={name} is not registered in the design class. Return None for QComponent.')
             return None
 
     def __setitem__(self, name: str, value: 'QComponent'):
@@ -228,7 +228,7 @@ class Components:
             str : String to print design._component dict.
         """
 
-        return str(self._design._components.__repr__(self))
+        return str(self._design._components.__repr__())
 
     #     #     def __repr__(slef):
     #     #         # make sure to define repreentation for print purpose
@@ -269,7 +269,7 @@ class Components:
                      for (key, value) in self.components.items()]
         return all_items
 
-    def value(self) -> list:
+    def values(self) -> list:
         """Get the list of all the values.
 
         Returns:

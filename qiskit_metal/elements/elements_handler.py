@@ -63,10 +63,10 @@ def is_element_table(obj):
     when this module is reloaded.
 
     Arguments:
-        obj {[object]} -- Test this object
+        obj {[object]} : Test this object
 
     Returns:
-        [bool] -- True if is a Metal element
+        [bool] : True if is a Metal element
     """
     if isinstance(obj, Dict):
         return False
@@ -157,7 +157,7 @@ class QElementTables(object):
     This is handled automatically by the design creation and plugins.
 
     Structure
-    --------
+    ------
     A component, such as a qubit, is a collection of elements.
     For example, an element includes a rectangle, a cpw path, or a more general polygon.
 
@@ -245,7 +245,7 @@ class QElementTables(object):
         The constructor for the `BaseElement` class.
 
         Attributes:
-            table {Dict} -- This is a dictiomnary of the table names as keys
+            table {Dict} : This is a dictiomnary of the table names as keys
                 and the pandas DataFrames as values. The values get overwritten
                 very often. Do not use a fixed reference.
         """
@@ -268,7 +268,7 @@ class QElementTables(object):
         """The dictionary of tables containing elements.
 
         Returns:
-            Dict_[str, GeoDataFrame] -- The keys of this dictionary are
+            Dict_[str, GeoDataFrame] : The keys of this dictionary are
                                         also obtained from `self.get_element_types()`
         """
         return self._tables
@@ -279,8 +279,8 @@ class QElementTables(object):
         Called when the load function of a renderer is called.
 
         Arguments:
-            renderer_name {str} -- name of renderer
-            elements {dict} --  dict of dict. keys give element type names,
+            renderer_name {str} : name of renderer
+            elements {dict} :  dict of dict. keys give element type names,
                                 such as base, poly, path, etc.
         """
 
@@ -312,7 +312,7 @@ class QElementTables(object):
         This does not include 'base', but is rather such as poly and path.
 
         Returns:
-            list(str) -- list of name in self.ELEMENT_COLUMNS
+            list(str) : list of name in self.ELEMENT_COLUMNS
         """
         # TODO: I should probably make this a variable and memeorize, only change when elements are added and removed
         # can be slow for perofmance to look up eahc time and recalcualte, since may call this often
@@ -378,8 +378,8 @@ class QElementTables(object):
         Throws an error if not valid.
 
         Arguments:
-            table_name {str} -- Name of element table (e.g., 'poly')
-            column_dict {dict} --
+            table_name {str} : Name of element table (e.g., 'poly')
+            column_dict {dict} :
         """
         __pre = 'ERROR CREATING ELEMENT TABLE FOR DESIGN: \
             \n  ELEMENT_TABLE_NAME = {table_name}\
@@ -399,11 +399,11 @@ class QElementTables(object):
         Get name for renderer property
 
         Arguments:
-            renderer_name {str} -- Name of the renderer
-            key {str} -- [description]
+            renderer_name {str} : Name of the renderer
+            key {str} : [description]
 
         Returns:
-            str -- The unique named used as a column in the table
+            str : The unique named used as a column in the table
         """
         return renderer_name + self.name_delimiter + key
 
@@ -423,14 +423,14 @@ class QElementTables(object):
         """Main interface to add names
 
         Arguments:
-            kind {str} -- Must be in get_element_types ('path', 'poly', etc.)
-            geometry {dict} -- Dict of shapely geomety
+            kind {str} : Must be in get_element_types ('path', 'poly', etc.)
+            geometry {dict} : Dict of shapely geomety
 
         Keyword Arguments:
-            subtract {bool} -- [description] (default: {False})
-            helper {bool} -- [description] (default: {False})
-            layer {Union[int, str]} -- [description] (default: {0})
-            chip {str} -- Chip name (dafult: 'main')
+            subtract {bool} : [description] (default: {False})
+            helper {bool} : [description] (default: {False})
+            layer {Union[int, str]} : [description] (default: {0})
+            chip {str} : Chip name (dafult: 'main')
             **other_options
         """
         # TODO: Add unit test
@@ -479,7 +479,7 @@ class QElementTables(object):
         """Delete component by name
 
         Arguments:
-            name {str} -- Name of component (case sensitive)
+            name {str} : Name of component (case sensitive)
         """
         # TODO: Add unit test
         # TODO: is this the best way to do this, or is there a faster way?
@@ -505,13 +505,13 @@ class QElementTables(object):
         If all, returns a dictionary with kets as table names and tables of components as values.
 
         Arguments:
-            name {str} -- Name of component (case sensitive) (default: 'all')
+            name {str} : Name of component (case sensitive) (default: 'all')
 
         Keyword Arguments:
-            table_name {str} -- Element table name ('poly', 'path', etc.) (default: {'all'})
+            table_name {str} : Element table name ('poly', 'path', etc.) (default: {'all'})
 
         Returns:
-            Union[GeoDataFrame, Dict_[str, GeoDataFrame]] -- Either a GeoDataFrame or a dict or GeoDataFrame.
+            Union[GeoDataFrame, Dict_[str, GeoDataFrame]] : Either a GeoDataFrame or a dict or GeoDataFrame.
 
         Example use:
             table = pd.concat(elements.get_component('Q1')) # , axis=0
@@ -532,30 +532,30 @@ class QElementTables(object):
         for the bounds of the component as a whole.
 
         Arguments:
-            name {str} -- component name
+            name {str} : component name
         """
         return self.get_component_geometry(name).total_bounds
 
-    def rename_component(self, name: str, new_name: str):
+    def rename_component(self, component_id: int, new_name: str):
         """Rename component by ID (integer) cast to string format.
 
         Arguments:
-            name {str} -- Name of component (case sensitive)
-            new_name {str} -- The new name of the component (case sensitive)
+            component_id (int) : Name of component (case sensitive)
+            new_name (str) : The new name of the component (case sensitive)
         """
-        comp_id = self.design.components[name].id
+        component_int_id = int(component_id)
         # TODO: is this the best way to do this, or is there a faster way?
         for table_name in self.tables:
             table = self.tables[table_name]
-            table.component[table.component == comp_id] = new_name
+            table.component[table.component == component_int_id] = new_name
 
     def get_component_geometry_list(self, name: str, table_name: str = 'all') -> List[BaseGeometry]:
         """Return just the bare element geometry (shapely geometry objects) as a list, for the
         selected component.
 
         Arguments:
-            name {str} -- Name of component (case sensitive)
-            table_name {str} -- Element type ('poly', 'path', etc.).
+            name {str} : Name of component (case sensitive)
+            table_name {str} : Element type ('poly', 'path', etc.).
                                 Can also be 'all' to return all. This is the default.
         """
         if table_name == 'all':
@@ -573,10 +573,10 @@ class QElementTables(object):
     def get_component_geometry(self, name: str) -> GeoSeries:
         """
         Arguments:
-            name {str} -- Name of component (case sensitive)
+            name {str} : Name of component (case sensitive)
 
         Returns:
-            GeoSeries -- [description]
+            GeoSeries : [description]
         """
         comp_id = self.design.components[name].id
         elements = {}
@@ -591,8 +591,8 @@ class QElementTables(object):
            for the selected component.
 
         Arguments:
-            name {str} -- Name of component (case sensitive)
-            table_name {str} -- Element type ('poly', 'path', etc.)
+            name {str} : Name of component (case sensitive)
+            table_name {str} : Element type ('poly', 'path', etc.)
         """
         if table_name == 'all':
             elements = Dict()
@@ -615,13 +615,13 @@ class QElementTables(object):
         """Check if the name `table_name` is in the element tables.
 
         Arguments:
-            table_name {str} -- Element type ('poly', 'path', etc.) or 'all'
+            table_name {str} : Element type ('poly', 'path', etc.) or 'all'
 
         Keyword Arguments:
-            log_issue {bool} -- Throw an erro in the log if name missing  (default: {True})
+            log_issue {bool} : Throw an erro in the log if name missing  (default: {True})
 
         Returns:
-            bool -- True if the name is valid, else False
+            bool : True if the name is valid, else False
         """
         if not table_name in self.get_element_types() or table_name in 'all':
             if log_issue:
