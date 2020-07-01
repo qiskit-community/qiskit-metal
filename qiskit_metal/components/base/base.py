@@ -99,6 +99,10 @@ class QComponent():
                                        and used every time a new component is instantiated.
                                        (default: None)
 
+        Returns:
+            None: If init completes as expected.
+            'NameInUse': If user requests name for new component which is already being used within the design.
+
         Raises:
             ValueError: User supplied design isn't a QDesign
         """
