@@ -67,6 +67,18 @@ class Oriented_2D_Array:
         self.directions = np.append(self.directions, [draw.Vector.rotate(self.directions, -1 * np.pi / 2)], axis=0)
         self.positions = np.append(self.positions, [self.positions[-1] + self.directions[-1] * length], axis=0)
 
+    @property
+    def get_length(self):
+        """Sum of all segments length
+
+        Return:
+            length (float) -- [full point_array length]
+        """
+        length = 0
+        for x in range(len(self.positions)-1):
+            length += abs(norm(self.positions[x] - self.positions[x+1]))
+            return length
+
     def align_to(self, concurrent_array):
         """
         In this code, meanders need to face each-other to connect.
@@ -200,7 +212,7 @@ class CpwMeanderSimple(QComponent):
             pass
 
         # Meander
-        length_meander = total_length - (lead_in + lead_out)
+        length_meander = total_length - (start_points.get_length + end_points.get_length)
         if snap:
             # handle y distance
             length_meander -= 0  # (end.position - endm.position)[1]
@@ -263,7 +275,6 @@ class CpwMeanderSimple(QComponent):
         snap = is_true(meander_opt.snap)  # snap to xy grid
         # TODO: snap add 45 deg snap by changing snap function using angles
 
-        # TODO: remove adapter below, incorporate new class in the data
         start = Oriented_Point(start_array)
         end = Oriented_Point(end_array)
 
@@ -275,12 +286,11 @@ class CpwMeanderSimple(QComponent):
         # Calculate lengths and meander number
         dist = end.position - start.position
         if snap:
-            # TODO: Not general, depends on the outside (to fix)
             length_direct = abs(norm(np.dot(dist, forward)))
-            length_excess = abs(norm(np.dot(dist, sideways)))  # in the vertical direction
+            length_sideways = abs(norm(np.dot(dist, sideways)))  # in the orthogonal direction
         else:
             length_direct = norm(dist)
-            length_excess = 0
+            length_sideways = 0
 
         # Breakup into sections
         meander_number = np.floor(length_direct / spacing)
@@ -312,20 +322,12 @@ class CpwMeanderSimple(QComponent):
                 # either direction is fine, so let's just pick one
                 first_meander_sideways = True
 
-        # TODO: does this go with below TODO?
-        # length of segment between two root points
-        length_segment = (length - length_excess -
-                          (length_direct - meander_number * spacing)  # the last little bit
-                          - 2 * asymmetry
-                          ) / meander_number
-        length_perp = (length_segment - spacing) / 2.  # perpendicular length
-
-        # TODO: BUG fix when assymmetry is large and negative
-        if asymmetry < 0:
-            if abs(asymmetry) > length_perp:
-                print('Trouble')
-                length_segment -= (abs(asymmetry) - length_perp) / 2
-                length_perp = (length_segment - spacing) / 2.  # perpendicular length
+        # TODO: this does not seem right. asymmetry has no role unless all meander top/bot points
+        #  surpass the line (aligned with 'forward') of either the left or right root points.
+        # length to distribute among the root points
+        length_excess = (length - length_direct - 2 * abs(asymmetry))
+        # length of meander jotting out (perpendicular length)
+        length_perp = max(0, length_excess / (meander_number * 2.))
 
         # USES ROW Vectors
         # const vec. of unit normals
@@ -378,6 +380,7 @@ class CpwMeanderSimple(QComponent):
 
         pts += start.position  # move to start position
 
+        # TODO: the below, changes the CPW total length. Need to account for this earlier
         if snap:
             # the right-most root_pts need to be aligned with the end.position point
             pts[-1, abs(forward[0])] = end.position[abs(forward[0])]
