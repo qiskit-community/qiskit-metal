@@ -477,8 +477,8 @@ class QDesign():
 
             # do rename
             self._components[component_id]._name = new_component_name
-            self._elements.rename_component(
-                str(component_id), new_component_name)
+            # self._elements.rename_component(
+            #    str(component_id), new_component_name)
             return True
         else:
             logger.warning(f'Called rename_component, component_id={component_id}, but component_id'
