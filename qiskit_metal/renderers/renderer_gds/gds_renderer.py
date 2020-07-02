@@ -38,7 +38,7 @@ class GDSRender(QRenderer):
         # From jupyter notebook.
         # self.
 
-    def to_gds(element: pd.Series):
+    def to_gds(self, element: pd.Series):
         """Convert the design.elements table to format used by GDS renderer.
 
         :param element: Expect a shapley object.
