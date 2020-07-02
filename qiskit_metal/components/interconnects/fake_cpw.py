@@ -44,6 +44,7 @@ class FakeCPW(QComponent):
         pin_end = self.options.pin_inputs[1][1]
 
         # Check if component was deleted from design.
+        # TODO: These checks should be happening in base now
         if component_end not in self.design._components:
             self.logger.warning(
                 f'Key={component_end, } not a key in design._components. {self.name} NOT built.')
