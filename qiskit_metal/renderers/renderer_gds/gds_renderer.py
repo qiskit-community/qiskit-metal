@@ -39,7 +39,16 @@ class GDSRender(QRenderer):
         # self.
 
     def to_gds(element: pd.Series):
+        """Convert the design.elements table to format used by GDS renderer.
+
+        :param element: Expect a shapley object.
+        :type element: pd.Series
+        :return: GDS format on the input pd.Series.
+        :rtype: gdspy.polygon
         """
+
+        """
+        *NOTE:*
         GDS:
             points (array-like[N][2]) – Coordinates of the vertices of the polygon.
             layer (integer) – The GDSII layer number for this element.
@@ -60,3 +69,4 @@ class GDSRender(QRenderer):
         else:
             #TODO: Handle
             print(geom)
+            return None
