@@ -50,6 +50,7 @@ class Oriented_2D_Array:
         self.positions = np.append(self.positions, [self.positions[-1] + self.directions[-1] * length], axis=0)
 
     def go_left(self, length: float):
+        # THIS METHOD IS NOT USED AT THIS TIME (7/2/20)
         """Straight line 90deg counter-clock-wise direction w.r.t. Oriented_Point
 
         Args:
@@ -59,6 +60,7 @@ class Oriented_2D_Array:
         self.positions = np.append(self.positions, [self.positions[-1] + self.directions[-1] * length], axis=0)
 
     def go_right(self, length: float):
+        # THIS METHOD IS NOT USED AT THIS TIME (7/2/20)
         """Straight line 90deg clock-wise direction w.r.t. Oriented_Point
 
         Args:
@@ -80,6 +82,7 @@ class Oriented_2D_Array:
             return length
 
     def align_to(self, concurrent_array):
+        # THIS METHOD IS NOT USED AT THIS TIME (7/2/20)
         """
         In this code, meanders need to face each-other to connect.
         TODO: Make sure the two points align on one of the axes, adding a new point
@@ -187,8 +190,6 @@ class CpwMeanderSimple(QComponent):
     )
 
     def make(self):
-        # TODO: Later, consider performance of instantiating all these Oriented_Point classes
-
         # parsed options
         # p = self.parse_value(self.options)  # type: Dict
         p = self.p
@@ -219,12 +220,6 @@ class CpwMeanderSimple(QComponent):
 
         meandered_pts = self.meander_fixed_length(
             start_points, end_points, length_meander, p.meander)
-
-        # TODO: if lead_start is zero or end is , then dont add them
-        # points = np.concatenate([
-        #     start_pts,
-        #     meandered_pts,
-        #     end_pts], axis=0)
 
         points = np.concatenate([
             start_points.positions,
@@ -299,7 +294,10 @@ class CpwMeanderSimple(QComponent):
             # TODO: test if this should return empty instead
             return start.position
 
-        # Adjust meander_number w.r.t. what the roots "directionality" allows
+        #print(meander_number)
+        # The start and end points can have 4 directions each. Depending on the direction
+        # there might be not enough space for all the meanders, thus here we adjust
+        # meander_number w.r.t. what the start and end points "directionality" allows
         if round(np.dot(start.direction, sideways) * np.dot(end.direction, sideways)) > 0 and (meander_number % 2) == 0:
             # even meander_number is no good if roots have same orientation (w.r.t sideway)
             meander_number -= 1
@@ -307,26 +305,34 @@ class CpwMeanderSimple(QComponent):
                 meander_number % 2) == 1:
             # odd meander_number is no good if roots have opposite orientation (w.r.t sideway)
             meander_number -= 1
+        #print(meander_number)
 
         # should the first meander go sideways or counter sideways?
-        if round(np.dot(start.direction, sideways), 10) > 0:
-            first_meander_sideways = True  # sideway direction
-        elif round(np.dot(start.direction, sideways), 10) < 0:
-            first_meander_sideways = False  # opposite to sideway direction
+        start_meander_direction = round(np.dot(start.direction, sideways), 10)
+        end_meander_direction = round(np.dot(end.direction, sideways), 10)
+        if start_meander_direction > 0:   # sideway direction
+            first_meander_sideways = True
+            #print("1-> ", ((meander_number % 2) == 0))
+        elif start_meander_direction < 0:  # opposite to sideway direction
+            first_meander_sideways = False
+            #print("2-> ", ((meander_number % 2) == 0))
         else:
-            if round(np.dot(end.direction, sideways), 10) > 0:
-                first_meander_sideways = ((meander_number % 2) == 1)  # sideway direction
-            elif round(np.dot(end.direction, sideways), 10) < 0:
-                first_meander_sideways = ((meander_number % 2) == 0)  # opposite to sideway direction
+            if end_meander_direction > 0:  # sideway direction
+                first_meander_sideways = ((meander_number % 2) == 1)
+                #print("3-> ", ((meander_number % 2) == 0))
+            elif end_meander_direction < 0:  # opposite to sideway direction
+                first_meander_sideways = ((meander_number % 2) == 0)
+                #print("4-> ", ((meander_number % 2) == 0))
             else:
                 # either direction is fine, so let's just pick one
                 first_meander_sideways = True
+                #print("5-> ", ((meander_number % 2) == 0))
 
         # TODO: this does not seem right. asymmetry has no role unless all meander top/bot points
         #  surpass the line (aligned with 'forward') of either the left or right root points.
-        # length to distribute among the root points
+        # length to distribute on the meanders (excess w.r.t a straight line between start and end)
         length_excess = (length - length_direct - 2 * abs(asymmetry))
-        # length of meander jotting out (perpendicular length)
+        # how much meander offset from center-line is needed to accommodate the length_excess (perpendicular length)
         length_perp = max(0, length_excess / (meander_number * 2.))
 
         # USES ROW Vectors
@@ -352,22 +358,24 @@ class CpwMeanderSimple(QComponent):
         # root_pts = np.concatenate([middle_points,
         #                            end.position[None, :]],  # convert to row vectors
         #                           axis=0)
-        root_pts = middle_points
-        side_shift_vecs = np.array([sideways * length_perp] * len(root_pts))
-        asymmetry_vecs = np.array([sideways * asymmetry] * len(root_pts))
-        top_pts = root_pts + side_shift_vecs + asymmetry_vecs
-        bot_pts = root_pts - side_shift_vecs + asymmetry_vecs
+        side_shift_vecs = np.array([sideways * length_perp] * len(middle_points))
+        asymmetry_vecs = np.array([sideways * asymmetry] * len(middle_points))
+        root_pts = middle_points + asymmetry_vecs
+        top_pts = root_pts + side_shift_vecs
+        bot_pts = root_pts - side_shift_vecs
+        # TODO: add here length_sideways to root_pts[-1, :]?
 
+        #print("MDL->", root_pts, "\nTOP->", top_pts, "\nBOT->", bot_pts)
         ################################################################
         # Combine points
         # Meanest part of the meander
 
         # Add 2 for the lead and end points in the cpw from
         # pts will have to store properly alternated top_pts and bot_pts
-        # it will also store left-most and right-most root_pts (start-end) after adjustment
+        # it will also store right-most root_pts (end)
         # 2 points from top_pts and bot_pts will be dropped for a complete meander
-        pts = np.zeros((len(top_pts) + len(bot_pts) + 2 - 2, 2))
-        pts[0, :] = root_pts[0, :]
+        pts = np.zeros((len(top_pts) + len(bot_pts) + 1 - 2, 2))
+        #need to add the last root_pts in, because there could be a left-over non-meandered segment
         pts[-1, :] = root_pts[-1, :]
         idx_side1_meander, odd = self.get_index_for_side1_meander(len(root_pts))
         idx_side2_meander = 2 + idx_side1_meander[:None if odd else -2]
@@ -378,12 +386,23 @@ class CpwMeanderSimple(QComponent):
             pts[idx_side1_meander, :] = bot_pts[:-1 if odd else None]
             pts[idx_side2_meander, :] = top_pts[1:None if odd else -1]
 
+        #print("PTS->", pts)
+
         pts += start.position  # move to start position
 
         # TODO: the below, changes the CPW total length. Need to account for this earlier
         if snap:
             # the right-most root_pts need to be aligned with the end.position point
             pts[-1, abs(forward[0])] = end.position[abs(forward[0])]
+        if abs(asymmetry) > abs(length_perp):
+            if start_meander_direction * asymmetry < 0:  # sideway direction
+                pts[0, abs(forward[0])] = start.position[abs(forward[0])]
+                pts[1, abs(forward[0])] = start.position[abs(forward[0])]
+            if end_meander_direction * asymmetry < 0:  # sideway direction
+                pts[-2, abs(forward[0])] = end.position[abs(forward[0])]
+                pts[-3, abs(forward[0])] = end.position[abs(forward[0])]
+
+        #print("PTS->", pts)
 
         self.pts = pts
         self.forward = forward
@@ -399,7 +418,7 @@ class CpwMeanderSimple(QComponent):
         z = np.zeros(num_2pts * 2, dtype=int)
         z[::2] = x
         z[1::2] = x + 1
-        z += 1
+        z
         return z, odd
 
     def get_start(self) -> List:
