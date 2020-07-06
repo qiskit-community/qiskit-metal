@@ -25,7 +25,7 @@ To see the docstring of QComponent, use:
 import logging
 import inspect
 from copy import deepcopy
-from typing import TYPE_CHECKING, Any, Iterable, List, Union, Optional,  Dict as Dict_
+from typing import TYPE_CHECKING, Any, Iterable, List, Union, Optional, Dict as Dict_
 
 import pandas as pd
 import numpy as np
@@ -85,7 +85,7 @@ class QComponent():
     __i_am_component__ = True
 
     def __init__(self, design: 'QDesign', name: str, options: Dict = None,
-                 make=True, component_template: Dict = None) -> Optional[None, str]:
+                 make=True, component_template: Dict = None) -> Union[None, str]:
         """Create a new Metal component and adds it's default_options to the design.
 
         Arguments:

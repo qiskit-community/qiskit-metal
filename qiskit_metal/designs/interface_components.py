@@ -142,7 +142,7 @@ class Components:
     #     else:
     #         return 0
 
-    def __getitem__(self, name: str, quiet: bool = False) -> 'QComponent':
+    def __getitem__(self, name: str, quiet: bool = False) -> Union[None, 'QComponent']:
         """Get the QComponent based on string name vs the unique id of QComponent.
 
         Args:
@@ -151,6 +151,7 @@ class Components:
 
         Returns:
             QComponent: Class which describes the component.
+            None: If name not found in design._components.
 
         Raises:
             AttributeError: The given name is a magic method not in the dictionary
@@ -198,11 +199,11 @@ class Components:
             value.name = name
             value._add_to_design()
 
-    def __getattr__(self, name: str) -> 'QComponent':
+    def __getattr__(self, name: str) -> Union['QComponent', None]:
         """Provide same behavior as __getitem__.
 
         Args:
-            name (str): Name of component used to find the QComponent in desing._components dict, vs using unique int id.
+            name (str): Name of component used to find the QComponent in design._components dict, vs using unique int id.
 
         Returns:
             QComponent: Class which describes the component.
@@ -229,7 +230,7 @@ class Components:
 
         Returns:
             int: 0 if item is not in design._components.name otherwise an int which can be used as
-            key for design._components[]
+                 key for design._components[]
         """
         if not isinstance(item, str):
             #self.logger.debug(f'Search with string in __contains__ {item}.')
