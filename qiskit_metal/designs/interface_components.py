@@ -93,17 +93,17 @@ class Components:
         if name in self._design.name_to_id:
             component_id = self._design.name_to_id[name]
             return component_id
-        elif:
+        elif not is_ipython_magic(name):
             # Name not registered, not in cache for components' names.
             # IPython checking methods
             # https://github.com/jupyter/notebook/issues/2014
-            if not is_ipython_magic(name):
-                if not quiet:
-                    self.logger.warning(
-                        f'In Components.find_id(), the name={name} is not used in design._components ')
+            if not quiet:
+                self.logger.warning(
+                    f'In Components.find_id(), the name={name} is not used in design._components ')
             return 0
         else:
             raise AttributeError(name)
+            return 0
 
     # def find_id(self, name: str, quite: bool = False) -> int:
     #     """
@@ -145,29 +145,29 @@ class Components:
     #                 f'In Components.find_id(), the name={name} is used multiple times in design._components.  Returning the key, for QComponent, with lowest id.')
     #         return search_result[0][1]
 
-   # def is_name_used(self, new_name: str) -> int:
-   #     """Check to see if name being used in components.
+    # def is_name_used(self, new_name: str) -> int:
+    #     """Check to see if name being used in components.
 
-   #      Args:
-   #          new_name (str): name to check
-   #
-   #      Returns:
-   #          int: If the name does not exist, 0 is returned, otherwise the
-   #          component-id of component which is already using the name.
-   #     """
+    #      Args:
+    #          new_name (str): name to check
+    #
+    #      Returns:
+    #          int: If the name does not exist, 0 is returned, otherwise the
+    #          component-id of component which is already using the name.
+    #     """
 
-   #     all_names = [(value.name, key)
-   #                  for (key, value) in self.components.items()]
-   #     search_result = [
-   #         item for item in all_names if new_name == item[0]]
-   #     if len(search_result) != 0:
-   #         self.logger.warning(
-   #             f'Called interface_components, component_id({search_result[0][0]}, id={search_result[0][1]}) is already using name={new_name}.')
-   #         return search_result[0][1]
-   #     else:
-   #         return 0
+    #     all_names = [(value.name, key)
+    #                  for (key, value) in self.components.items()]
+    #     search_result = [
+    #         item for item in all_names if new_name == item[0]]
+    #     if len(search_result) != 0:
+    #         self.logger.warning(
+    #             f'Called interface_components, component_id({search_result[0][0]}, id={search_result[0][1]}) is already using name={new_name}.')
+    #         return search_result[0][1]
+    #     else:
+    #         return 0
 
-   def __getitem__(self, name: str, quiet: bool = False) -> Union[None, 'QComponent']:
+    def __getitem__(self, name: str, quiet: bool = False) -> Union[None, 'QComponent']:
         """Get the QComponent based on string name vs the unique id of QComponent.
 
         Args:
