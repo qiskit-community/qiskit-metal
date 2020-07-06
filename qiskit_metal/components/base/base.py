@@ -25,7 +25,7 @@ To see the docstring of QComponent, use:
 import logging
 import inspect
 from copy import deepcopy
-from typing import TYPE_CHECKING, Any, Iterable, List, Union, Dict as Dict_
+from typing import TYPE_CHECKING, Any, Iterable, List, Union, Optional, Dict as Dict_
 
 import pandas as pd
 import numpy as np
@@ -88,7 +88,7 @@ class QComponent():
     __i_am_component__ = True
 
     def __init__(self, design: 'QDesign', name: str, options: Dict = None,
-                 make=True, component_template: Dict = None):
+                 make=True, component_template: Dict = None) -> Union[None, str]:
         """Create a new Metal component and adds it's default_options to the design.
 
         Arguments:
@@ -102,9 +102,16 @@ class QComponent():
                                        and used every time a new component is instantiated.
                                        (default: None)
 
+        Returns:
+            str: 'NameInUse' is retruned if user requests name for new component
+                 which is already being used within the design.  None if init completes as expected.
+
         Raises:
             ValueError: User supplied design isn't a QDesign
         """
+
+        # Make the id be None, which means it hasn't been added to design yet.
+        self._id = None
 
         if not is_design(design):
             raise ValueError(
@@ -113,15 +120,15 @@ class QComponent():
         self._design = design  # reference to parent
 
         answer = self._is_name_used(name)
-        if answer: #TODO: Resolve -> Maybe overwrite component!? Issue #193
+        if answer:  # TODO: Resolve -> Maybe overwrite component!? Issue #193
             logger.warning(f'The name {name} is used in component id={answer}. '
                            'Component was not made, nor added to design.')
-            return
+            return 'NameInUse'
 
         self._name = name
-        self._class_name = self._get_unique_class_name() # Full class name
+        self._class_name = self._get_unique_class_name()  # Full class name
 
-        ### Options
+        # Options
         self.options = self.get_template_options(design=design,
                                                  component_template=component_template)
         if options:
@@ -139,7 +146,7 @@ class QComponent():
         # Status: used to handle building of a component and checking if it succeedded or failed.
         self.status = 'not built'
         # Create an empty dict, which will populated by component designer.
-        self.pins = Dict() # TODO: should this be private?
+        self.pins = Dict()  # TODO: should this be private?
         self._made = False
 
         # In case someone wants to store extra information or analysis results
@@ -152,6 +159,8 @@ class QComponent():
         # Make the component geometry
         if make:
             self.rebuild()
+
+        return None
 
     @classmethod
     def _gather_all_children_options(cls):
@@ -421,7 +430,7 @@ class QComponent():
             See the docstring for this module.
                 >> ?qiskit_metal.toolbox_metal.parsing
 
-        
+
         """
         return self.design.parse_value(value)
 
@@ -450,7 +459,7 @@ class QComponent():
 
         Args:
             check_name (str):  Name which user requested to apply to current component.
-        
+
         Returns:
             int: 0 if does not exist, otherwise 
               component-id of component which is already using the name.

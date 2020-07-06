@@ -24,6 +24,7 @@ from copy import deepcopy
 from typing import TYPE_CHECKING, Any, Iterable, List, Optional, TypeVar, Union, Dict as Dict_
 from .. import logger
 from ..components.base.base import QComponent
+from ..components.base._parsed_dynamic_attrs import is_ipython_magic
 
 if TYPE_CHECKING:
     # For linting typechecking, import modules that can't be loaded here under normal conditions.
@@ -74,13 +75,15 @@ class Components:
             item) for item in component_names]
         return component_ints
 
-    def find_id(self, name: str) -> int:
+    def find_id(self, name: str, quiet: bool = False) -> int:
         """
-        Find id of component.  The id is the key for a dict which holds all of the components within design.
-        Assume the name is not used multiple times. If it is, the first search result will be used.
+        Find id of component.  The id is the key for a dict which holds all of the components 
+        within design.  Assume the name is not used multiple times. If it is, 
+        the first search result will be used.
 
         Args:
             name (str): Text name of compnent.  The name is assumed to be unique.
+            quiet (bool): Allow warning messages to be generated.
 
         Returns:
             int: key to use in  _components
@@ -100,14 +103,21 @@ class Components:
             return search_result[0][1]
         elif length == 0:
             # Name not in dict.
-            self.logger.warning(
-                f'In Components.find_id(), the name={name} is not used in design._components ')
-            return 0
+            # IPython checking methods
+            # https://github.com/jupyter/notebook/issues/2014
+            if not is_ipython_magic(name):
+                if not quiet:
+                    self.logger.warning(
+                        f'In Components.find_id(), the name={name} is not used in design._components ')
+                return 0
+            else:
+                raise AttributeError(name)
 
         elif length > 1:
             # Really unfortunate, the dict has multiple coponents with same name, use the first search result.
-            self.logger.warning(
-                f'In Components.find_id(), the name={name} is used multiple times in design._components.  Returning the key, for QComponent, with lowest id.')
+            if not quiet:
+                self.logger.warning(
+                    f'In Components.find_id(), the name={name} is used multiple times in design._components.  Returning the key, for QComponent, with lowest id.')
             return search_result[0][1]
 
     # def is_name_used(self, new_name: str) -> int:
@@ -132,21 +142,34 @@ class Components:
     #     else:
     #         return 0
 
-    def __getitem__(self, name: str) -> 'QComponent':
+    def __getitem__(self, name: str, quiet: bool = False) -> Union[None, 'QComponent']:
         """Get the QComponent based on string name vs the unique id of QComponent.
 
         Args:
             name (str): Name of component.
+            quiet (bool): Allow warning messages to be generated.
 
         Returns:
-            QComponent: Class which describes the component.
+            QComponent: Class which describes the component.  None if 
+                        name not found in design._components.
+
+        Raises:
+            AttributeError: The given name is a magic method not in the dictionary
         """
-        component_id = self.find_id(name)
+        component_id = int(self.find_id(name))
         if component_id:
-            return self.components[component_id]
+            return self._design._components[component_id]
+            # return self.components[component_id]
         else:
-            self.logger.warning(
-                f'In Components.__getitem__, name={name} is not registered in the design class. Return None for QComponent.')
+            # IPython checking methods
+            # https://github.com/jupyter/notebook/issues/2014
+            if not is_ipython_magic(name):
+                if not quiet:
+                    self.logger.warning(
+                        f'In Components.__getitem__, name={name} is not registered in the design class. Return None for QComponent.')
+                return None
+            else:
+                raise AttributeError(name)
             return None
 
     def __setitem__(self, name: str, value: 'QComponent'):
@@ -176,15 +199,18 @@ class Components:
             value.name = name
             value._add_to_design()
 
-    # def __getattr__(self, name: str) -> 'QComponent':
-    #     """Provide same behavior as __getitem__.
+    def __getattr__(self, name: str) -> Union['QComponent', None]:
+        """Provide same behavior as __getitem__.
 
-    #     Args:
-    #         name (str): Name of component used to find the QComponent in desing._components dict, vs using unique int id.
-    #     """
+        Args:
+            name (str): Name of component used to find the QComponent in design._components dict, vs using unique int id.
 
-    #     pass
-    #     # self.__getitem__(name)
+        Returns:
+            QComponent: Class which describes the component. None if 
+                        name not found in design._components.
+        """
+        quiet = True
+        return self.__getitem__(name, quiet)
 
     # def __setattr__(self, name: str, value: 'QComponent'):
     #     """Provide same behavior as __setitem__.
@@ -204,13 +230,13 @@ class Components:
 
         Returns:
             int: 0 if item is not in design._components.name otherwise an int which can be used as
-            key for design._components[]
+                 key for design._components[]
         """
         if not isinstance(item, str):
-            self.logger.warning(f'Search with string in __contains__ {item}.')
+            #self.logger.debug(f'Search with string in __contains__ {item}.')
             return 0
-
-        return self.find_id(item)
+        quiet = True
+        return self.find_id(item, quiet)
 
     # def __delitem__(self, name: str):
     #     """Will delete component from design class along with deleting the net_info and element tables.
@@ -228,7 +254,7 @@ class Components:
             str : String to print design._component dict.
         """
 
-        return str(self._design._components.__repr__(self))
+        return str(self._design._components.__repr__())
 
     #     #     def __repr__(slef):
     #     #         # make sure to define repreentation for print purpose
@@ -269,7 +295,7 @@ class Components:
                      for (key, value) in self.components.items()]
         return all_items
 
-    def value(self) -> list:
+    def values(self) -> list:
         """Get the list of all the values.
 
         Returns:
