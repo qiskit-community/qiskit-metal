@@ -100,9 +100,8 @@ class QComponent():
                                        (default: None)
 
         Returns:
-            None: If init completes as expected.
-            str: NameInUse is returned, if user requests a name for new component,
-                 which is already being used within the design.
+            str: 'NameInUse' is retruned if user requests name for new component
+                 which is already being used within the design.  None if init completes as expected.
 
         Raises:
             ValueError: User supplied design isn't a QDesign

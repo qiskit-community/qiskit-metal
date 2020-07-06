@@ -150,8 +150,8 @@ class Components:
             quiet (bool): Allow warning messages to be generated.
 
         Returns:
-            QComponent: Class which describes the component.
-            None: If name not found in design._components.
+            QComponent: Class which describes the component.  None if 
+                        name not found in design._components.
 
         Raises:
             AttributeError: The given name is a magic method not in the dictionary
@@ -206,8 +206,8 @@ class Components:
             name (str): Name of component used to find the QComponent in design._components dict, vs using unique int id.
 
         Returns:
-            QComponent: Class which describes the component.
-            None: If name not found.
+            QComponent: Class which describes the component. None if 
+                        name not found in design._components.
         """
         quiet = True
         return self.__getitem__(name, quiet)
