@@ -85,9 +85,11 @@ class Components:
             quiet (bool): Allow warning messages to be generated.
 
         Returns:
-            int: key to use in  _components
+            int: key to use in  _components.  
+                 If 0 is returned it means the name is not in dict.
 
-        If 0 is returned it means the name is not in dict.
+        Raises:
+            AttributeError: The given name is a magic method not in the dictionary
         """
 
         if name in self._design.name_to_id:
@@ -105,7 +107,6 @@ class Components:
             raise AttributeError(name)
             return 0
 
-    
     # def is_name_used(self, new_name: str) -> int:
     #     """Check to see if name being used in components.
 
