@@ -108,10 +108,10 @@ class QMainWindowExtensionBase(QMainWindow):
         from the settings file.
         """
 
-        if __version__ < self.settings.value('metal_version', defaultValue='1000000'):
-            # Clear the settings from older versions. Will comment this out in future.
+        version_settings = self.settings.value('metal_version', defaultValue='0')
+        if __version__ > version_settings:
             self.logger.debug(
-                f"Clearing window settings [{ self.settings.value('metal_version', defaultValue='1000000')}]...")
+                f"Clearing window settings [{version_settings}]...")
             self.settings.clear()
 
         try:
@@ -178,6 +178,8 @@ class QMainWindowExtensionBase(QMainWindow):
         """Show or hide all docks.
         """
         docks = [widget for widget in self.children() if isinstance(widget, QDockWidget)]
+        docks = list(filter(lambda x:  not x.windowTitle().lower().startswith('edit source'), docks))
+        # print(docks)
         docks += [widget for widget in self.gui.plot_win.children() if isinstance(widget, QDockWidget)] # specific
         dock_states = {dock: dock.isVisible() for dock in docks}
 
@@ -483,6 +485,10 @@ class QMainWindowBaseHandler():
                 stylesheet = stylesheet.replace(
                     ':/metal-styles', str(self.path_stylesheets))
 
+                # if windows, double the slashes in the paths
+                if os.name.startswith('nt'):
+                    stylesheet = stylesheet.replace("\\", "\\\\")
+
                 self.main_window.setStyleSheet(stylesheet)
                 return True
 
@@ -511,8 +517,8 @@ def kick_start_qApp():
 
     if qApp is None:
         try:
-            QtWidgets.QApplication.setAttribute(
-                QtCore.Qt.AA_EnableHighDpiScaling)
+            # TODO: See
+            QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
         except AttributeError:  # Attribute only exists for Qt >= 5.6
             pass
 

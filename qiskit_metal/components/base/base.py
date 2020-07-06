@@ -379,7 +379,7 @@ class QComponent():
         See `self.parse_value` for more infomation.
         """
 
-        return self.design.parse_options(options if options else self.options)
+        return self.design.parse_value(options if options else self.options)
 
     def add_connector(self, name, points: list, flip=False, chip=None):
         """Register a connector with the design.

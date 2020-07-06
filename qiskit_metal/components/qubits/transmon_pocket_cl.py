@@ -31,10 +31,10 @@ Child of 'standard' transmon pocket
 # pylint: disable=invalid-name
 # Modification of Transmon Pocket Object to include a charge line (would be better to just make as a child)
 
-from copy import deepcopy
-from ... import draw
-from ...toolbox_python.attr_dict import Dict
-from .transmon_pocket import TransmonPocket
+import numpy as np
+from qiskit_metal import draw, Dict
+from qiskit_metal import is_true
+from qiskit_metal.components.qubits.transmon_pocket import TransmonPocket
 
 class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
     '''
@@ -68,9 +68,9 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
     make_CL (bool): If a chargeline should be included.
     cl_gap (string): The cpw dielectric gap of the charge line.
     cl_width (string): The cpw width of the charge line.
-    cl_length (string):  The length of the charge line 'arm' coupling the the qubit pocket. 
+    cl_length (string):  The length of the charge line 'arm' coupling the the qubit pocket.
         Measured from the base of the 90 degree bend.
-    cl_ground_gap (string):  How much ground is present between the charge line and the 
+    cl_ground_gap (string):  How much ground is present between the charge line and the
         qubit pocket.
     cl_pocket_edge (string): What side of the pocket the charge line is.
         -180 to +180 from the 'west edge', will round to the nearest 90.
@@ -81,7 +81,7 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
         make_CL=True,
         cl_gap='6um',  # the cpw dielectric gap of the charge line
         cl_width='10um',  # the cpw trace width of the charge line
-        cl_length='20um',  # the length of the charge line 'arm' coupling the the qubit pocket. 
+        cl_length='20um',  # the length of the charge line 'arm' coupling the the qubit pocket.
         #Measured from the base of the 90 degree bend
         cl_ground_gap='6um',  # how much ground between the charge line and the qubit pocket
         cl_pocket_edge='0', #-180 to +180 from the 'left edge', will round to the nearest 90.
@@ -104,7 +104,7 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
 
         # Grab option values
         name = 'Charge_Line'
-        
+
         p = self.p
 
         cl_arm = draw.box(0, 0, -p.cl_width, p.cl_length)
