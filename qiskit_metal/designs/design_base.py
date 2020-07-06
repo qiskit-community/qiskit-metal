@@ -88,11 +88,14 @@ class QDesign():
         # Key attributes related to physical content of the design. These will be saved
 
         # Where components are actaully stored.
+        # i.e.  key=id and part of value (_components[id].name)
         self._components = Dict()
+
         # User-facing interface for user to view components by using name (str) for key access to
-        # QComponents, isntead of id (int).
+        # QComponents, instead of id (int).
         self.components = Components(self)
-        # Cache for component ids.  Hold the reverse of _components dict, i.e.  key=id and part of value (_components[id].name)
+
+        # Cache for component ids.  Hold the reverse of _components dict,
         self.name_to_id = Dict()
 
         self._variables = Dict()
