@@ -29,7 +29,7 @@ import pandas as pd
 from geopandas import GeoSeries, GeoDataFrame
 
 from .. import Dict
-#from ..config import DEFAULT
+# from ..config import DEFAULT
 from ..draw import BaseGeometry
 from ..toolbox_python.utility_functions import data_frame_empty_typed
 
@@ -483,10 +483,11 @@ class QElementTables(object):
         """
         # TODO: Add unit test
         # TODO: is this the best way to do this, or is there a faster way?
-        comp_id = self.design.components[name].id
-        for table_name in self.tables:
-            df = self.tables[table_name]
-            self.tables[table_name] = df[df['component'] != comp_id]
+        a_comp = self.design.components[name]
+        if a_comp is not None:
+            for table_name in self.tables:
+                df = self.tables[table_name]
+                self.tables[table_name] = df[df['component'] != a_comp.id]
 
     def delete_component_id(self, component_id: int):
         """Drop the components within the elements.tables
@@ -496,7 +497,7 @@ class QElementTables(object):
         """
         for table_name in self.tables:
             df_table_name = self.tables[table_name]
-            #self.tables[table_name] = df_table_name.drop(df_table_name[df_table_name['component'] == component_id].index)
+            # self.tables[table_name] = df_table_name.drop(df_table_name[df_table_name['component'] == component_id].index)
             self.tables[table_name] = df_table_name[df_table_name['component']
                                                     != component_id]
 
@@ -524,8 +525,15 @@ class QElementTables(object):
             return tables
         else:
             df = self.tables[table_name]
-            comp_id = self.design.components[name].id
-            return df[df.component == comp_id]
+            a_comp = self.design.components[name]
+            if a_comp is None:
+                # Component not found.
+                return None
+            else:
+                return df[df.component == a_comp.id]
+
+            # comp_id = self.design.components[name].id
+            # return df[df.component == comp_id]
 
     def get_component_bounds(self, name: str):
         """Returns a tuple containing minx, miny, maxx, maxy values
@@ -540,14 +548,20 @@ class QElementTables(object):
         """Rename component by ID (integer) cast to string format.
 
         Arguments:
-            component_id (int) : Name of component (case sensitive)
+            component_id (int) : ID of component (case sensitive)
             new_name (str) : The new name of the component (case sensitive)
         """
+
+        # comp_id = self.design.components[name].id
         component_int_id = int(component_id)
-        # TODO: is this the best way to do this, or is there a faster way?
-        for table_name in self.tables:
-            table = self.tables[table_name]
-            table.component[table.component == component_int_id] = new_name
+        a_comp = self.design._components[component_int_id]
+        if a_comp is None:
+            return None
+        else:
+            # TODO: is this the best way to do this, or is there a faster way?
+            for table_name in self.tables:
+                table = self.tables[table_name]
+                table.component[table.component == a_comp.id] = new_name
 
     def get_component_geometry_list(self, name: str, table_name: str = 'all') -> List[BaseGeometry]:
         """Return just the bare element geometry (shapely geometry objects) as a list, for the
