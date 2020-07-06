@@ -584,37 +584,6 @@ class QDesign():
         # Do delete component ruthelessly
         return self._delete_component(component_id)
 
-    # def delete_component(self, component_name: str, force=False) -> bool:
-    #     """Deletes component and pins attached to said component.
-
-    #     If no component by that name is present, then just return True
-    #     If component has dependencices return false and do not delete,
-    #     unless force=True.
-
-    #     Arguments:
-    #         component_name (str): Name of component to delete
-    #         force (bool): force delete component even if it has children (Default: False)
-
-    #     Returns:
-    #         bool: is there no such component
-    #     """
-
-    #     # Nothing to delete if name not in components
-    #     component_id = self.components[component_name].id
-    #     if not component_id in self._components:
-    #         self.logger.info('Called delete_component {component_id}, but such a \
-    #                          component is not in the design dicitonary of components.')
-    #         return True
-
-    #     # check if components has dependencies
-    #     #   if it does, then do not delete, unless force=true
-    #     #       logger.error('Cannot delete component{component_name}. It has dependencies. ')
-    #     #          return false
-    #     #   if it does not then delete
-
-    #     # Do delete component ruthelessly
-    #     return self._delete_component(component_id)
-
     def _delete_component(self, component_id: int) -> bool:
         """Delete component without doing any checks.
 
