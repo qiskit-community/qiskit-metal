@@ -278,6 +278,7 @@ class QComponent():
         for the component within a design, THEN add itself to design.
         '''
         self.design._components[self.id] = self
+        self.design.name_to_id[self.name] = self._id
 
     @classmethod
     def get_template_options(cls,
