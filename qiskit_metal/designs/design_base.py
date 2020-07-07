@@ -88,11 +88,14 @@ class QDesign():
         # Key attributes related to physical content of the design. These will be saved
 
         # Where components are actaully stored.
+        # i.e.  key=id and part of value (_components[id].name)
         self._components = Dict()
+
         # User-facing interface for user to view components by using name (str) for key access to
-        # QComponents, isntead of id (int).
+        # QComponents, instead of id (int).
         self.components = Components(self)
-        # Cache for component ids.  Hold the reverse of _components dict, i.e.  key=id and part of value (_components[id].name)
+
+        # Cache for component ids.  Hold the reverse of _components dict,
         self.name_to_id = Dict()
 
         self._variables = Dict()
@@ -491,64 +494,6 @@ class QDesign():
 
         return True
 
-    # def rename_component(self, component_id: int, new_component_name: str):
-    #     """Rename component.  The component_id is expected.  However, if user
-    #     passes a string for component_id, the method assumes the component_name
-    #     was passed.  Then will look for the id using the component_name.
-
-    #     Arguments:
-    #         component_id (int): id of component within design, can pass a string for component_name
-    #         new_component_name (str): New name
-
-    #     Returns:
-    #         int: Results
-
-    #     Results:
-    #         1: True name is changed. (True)
-
-    #         -1: Failed, new component name exists.
-
-    #         -2: Failed, invalid new name; it is already being used by another component.
-
-    #         -3: Failed, component_id does not exist.
-    #     """
-    #     # We are using component_id,
-    #     # and assuming id is created as being unique.
-    #     # We also want the string (name) to be unique.
-
-    #     if not isinstance(component_id, int):
-    #         # assume string
-    #         component_name = str(component_id)
-    #         a_component = self.components[component_name]
-    #         if a_component is None:
-    #             return -3
-    #         else:
-    #             component_id = a_component.id
-
-    #     if component_id in self._components:
-    #         all_names = self.all_component_names_id()
-
-    #         search_result = [
-    #             item for item in all_names if new_component_name == item[0]]
-
-    #         # name is already being used.
-    #         if len(search_result) != 0:
-    #             logger.warning(f'Called design.rename_component, component_id({search_result[0][0]}'
-    #                            ', id={search_result[0][1]}) is already using {new_component_name}.')
-    #             return -2
-
-    #         # do rename
-    #         self._components[component_id]._name = new_component_name
-    #         self._elements.rename_component(
-    #             str(component_id), new_component_name)
-    #         return True
-    #     else:
-    #         logger.warning(f'Called rename_component, component_id({component_id}), but component_id'
-    #                        ' is not in design.components dictionary.')
-    #         return -3
-
-    #     return True
-
     def delete_component(self, component_name: str, force=False) -> bool:
         """Deletes component and pins attached to said component.
 
@@ -580,37 +525,6 @@ class QDesign():
 
         # Do delete component ruthelessly
         return self._delete_component(component_id)
-
-    # def delete_component(self, component_name: str, force=False) -> bool:
-    #     """Deletes component and pins attached to said component.
-
-    #     If no component by that name is present, then just return True
-    #     If component has dependencices return false and do not delete,
-    #     unless force=True.
-
-    #     Arguments:
-    #         component_name (str): Name of component to delete
-    #         force (bool): force delete component even if it has children (Default: False)
-
-    #     Returns:
-    #         bool: is there no such component
-    #     """
-
-    #     # Nothing to delete if name not in components
-    #     component_id = self.components[component_name].id
-    #     if not component_id in self._components:
-    #         self.logger.info('Called delete_component {component_id}, but such a \
-    #                          component is not in the design dicitonary of components.')
-    #         return True
-
-    #     # check if components has dependencies
-    #     #   if it does, then do not delete, unless force=true
-    #     #       logger.error('Cannot delete component{component_name}. It has dependencies. ')
-    #     #          return false
-    #     #   if it does not then delete
-
-    #     # Do delete component ruthelessly
-    #     return self._delete_component(component_id)
 
     def _delete_component(self, component_id: int) -> bool:
         """Delete component without doing any checks.
