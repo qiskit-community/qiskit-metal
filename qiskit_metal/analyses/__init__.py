@@ -27,12 +27,16 @@ Module containing all Qiskit Metal analyses.
 
 UNDER CONSTRUCTION
 
-UNDER-CONSTRUCTION
----------------
+Submodules
+----------
 
 .. autosummary::
-    :toctree: ../stubs/
+    :toctree:
 
-    UNDER-CONSTRUCTION
-
+    cpw_calculations
+    lumped_capacitive
+    ZMethod-TBD
 """
+
+from . import cpw_calculations
+from . import lumped_capacitive
