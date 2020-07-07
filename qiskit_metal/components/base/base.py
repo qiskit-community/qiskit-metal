@@ -85,7 +85,8 @@ class QComponent():
     __i_am_component__ = True
 
     def __init__(self, design: 'QDesign', name: str, options: Dict = None,
-                 make=True, component_template: Dict = None) -> Union[None, str]:
+                 make=True, component_template: Dict = None,
+                 overwrite_flag: bool = False) -> Union[None, str]:
         """Create a new Metal component and adds it's default_options to the design.
 
         Arguments:
@@ -98,6 +99,17 @@ class QComponent():
                                        that will be stored in the design, in design.template,
                                        and used every time a new component is instantiated.
                                        (default: None)
+            overwrite_flag (bool): When True - If the string name, used for component, already
+                                    exists in the design, the existing component will be 
+                                    deleted from design, and new one will be generated with the same name, 
+                                    and then added to design. 
+                                   When False - If the string name, used for component, already
+                                    exists in the design, the existing component will be 
+                                    kept in the design, and current component will not be generated,
+                                    nor will be added to the design. The 'NameInUse' will be returned.
+                                   Either True or False - If string name, used for component, is NOT being used 
+                                    in the design, a component will be generated and added to design 
+                                    using the name.
 
         Returns:
             str: 'NameInUse' is retruned if user requests name for new component
@@ -109,6 +121,7 @@ class QComponent():
 
         # Make the id be None, which means it hasn't been added to design yet.
         self._id = None
+        self._overwrite_flag = overwrite_flag
 
         if not is_design(design):
             raise ValueError(
@@ -116,10 +129,7 @@ class QComponent():
 
         self._design = design  # reference to parent
 
-        answer = self._is_name_used(name)
-        if answer:  # TODO: Resolve -> Maybe overwrite component!? Issue #193
-            logger.warning(f'The name {name} is used in component id={answer}. '
-                           'Component was not made, nor added to design.')
+        if self.overwrite_evaluation(name) is 'NameInUse':
             return 'NameInUse'
 
         self._name = name
@@ -322,6 +332,26 @@ class QComponent():
 
         return options
 
+    def overwrite_evaluation(self, check_name: str = None):
+        """Allows user to delete an existing component within the design 
+           if the name is being used.
+
+        Args:
+            check_name (str, optional): Name of new component. Defaults to None.
+
+        Returns:
+            string: Return 'NameInUse' if overwrite flag is False and 
+                    check_name is used within design. Otherwise return None.
+        """
+        answer = self._is_name_used(check_name)
+        if self._overwrite_flag and answer:
+            self._design.delete_component(check_name)
+        elif answer:
+            logger.warning(f'The name {check_name} is used in component id={answer}. '
+                           'Component was not made, nor added to design.')
+            return 'NameInUse'
+        return None
+
     def make(self):
         '''
         Overwrite in inheritnace to define user logic to convert options dictionary into
@@ -454,25 +484,23 @@ class QComponent():
             check_name (str):  Name which user requested to apply to current component.
 
         Returns:
-            int: 0 if does not exist, otherwise 
+            int: 0 if does not exist, otherwise
               component-id of component which is already using the name.
 
         Warning: If user has used this text version of the component name already,
         warning will be given to user.
 
         """
-        all_names = self._design.all_component_names_id()
 
-        # TODO: this seems like it can be optimized using `in`
-        search_result = [item for item in all_names if check_name == item[0]]
-
-        # name is already being used.
-        if len(search_result) == 0:
-            return 0
+        if check_name in self._design.name_to_id:
+            component_id = self._design.name_to_id[check_name]
+            if not self._overwrite_flag:
+                logger.error(f"Called _is_name_used, component_id({check_name}, id={component_id})"
+                             " is already being used in design.")
+            return component_id
         else:
-            logger.error(f"Called _is_name_used, component_id({search_result[0][0]}, id={search_result[0][1]})"
-                         " is already using \"{check_name}\".")
-            return search_result[0][1]
+            return 0
+
 
 ####################################################################################
 # Functions for handling of pins
