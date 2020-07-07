@@ -21,12 +21,14 @@ using the Duffing model. Typical input is the capacitance matrix calculated from
 Each function prints out the parameters and outputs a dictionary
 
 Updates:
-* 2017 or earlier: Jay Gambetta
-* 2019-04-02 - Zlatko Minev
-    Aded import funcitons for Q3D import, and calculation of units, swap indexs, ...
-* Update 2019-07-23 - Thomas McConkey
-    modified function 'jayNoscillator' to allow for bus frequencies to have different
-    values (fb input can be a vector)
+    * 2017 or earlier: Jay Gambetta
+
+    * 2019-04-02 - Zlatko Minev
+      Aded import funcitons for Q3D import, and calculation of units, swap indexs, ...
+
+    * Update 2019-07-23 - Thomas McConkey
+      modified function 'jayNoscillator' to allow for bus frequencies to have different
+      values (fb input can be a vector)
 
 @author: Jay Gambetta, Zlatko K. Minev, Thomas McConkey
 """
@@ -42,8 +44,10 @@ from pint import UnitRegistry
 import scipy.optimize as opt
 
 
-__all__ = ['extract_transmon_coupled_Noscillator', 'levels_vs_ng_real_units',
-           'load_q3d_capacitance_matrix', 'df_reorder_matrix_basis']
+__all__ = ['chargeline_T1', 'extract_transmon_coupled_Noscillator', 'levels_vs_ng_real_units',
+           'load_q3d_capacitance_matrix', 'df_reorder_matrix_basis', 'chi', 'cos_to_mega_and_delta',
+           'df_cmat_style_print', 'get_C_and_Ic', 'move_index_to', 'readin_q3d_matrix',
+           'transmon_props']
 
 
 # define constants
@@ -56,14 +60,15 @@ e = 1.60217657e-19
 def transmon_props(Ic, Cq):
     """
     Properties of a transmon qubit
+
     Calculate LJ,EJ,EC,wq,eps from Ic,Cq
 
     Arguments:
-        Ic {[type]} -- [units SI]
-        Cq {[type]} -- [units SI]
+        Ic (float): junction Ic (in A)
+        Cq (float): junction capacitance (in F)
 
     Returns:
-        [LJ, EJ, Zqp, EC, wq, wq0, eps1] -- [INductange ]
+        tuple: [LJ, EJ, Zqp, EC, wq, wq0, eps1] -- [INductange ]
     """
 
     LJ = (phinot/2/np.pi)*(Ic**-1)
@@ -83,13 +88,17 @@ def transmon_props(Ic, Cq):
 def chi(g, wr, w01, w12):
     """
     calculate the chi (2*chi is the |0> --> |1> splitting)
+
     these need to be in the same units
 
     Arguments:
-        g {[type]} -- [Coupling]
-        wr {[type]} -- [description]
-        w01 {[type]} -- [description]
-        w12 {[type]} -- [description]
+        g (float): Coupling
+        wr (float): wr
+        w01 (float): w01
+        w12 (float): w12
+
+    Returns:
+        float: calculated chi value
     """
 
     # shift of the zero state
@@ -109,27 +118,30 @@ def extract_transmon_coupled_Noscillator(capMatrix, Ic, CJ, N, fb, fr, res_L4_co
     many parameters of the Hamiltonian of the system. The capMatrix
     should have first been imported using readin_q3d_matrix().
 
-    Inputs:
-    ------------------------------
-    capMatrix: order of the capacitance matrix must be
-    bus1...busN-1, ground, Qubit_pad1, Qubit_pad2, readout. (in F)
-    If not in the correct order, use df_reorder_matrix_basis() to put
-    it in the proper order. It is advised that the user follow a naming scheme
-    in QiskitMetal or Q3D which results in the necessary order by default (eg. alphabetical)
-
-    N: coupling pads (1 readout, N-1 bus)
-    Ic: junction Ic (in A)
-    Cj: junction capacitance (in F)
-    fb, fr: coupling bus and readout frequencies (in GHz). fb can be a list with the order
-    the order they appear in the capMatrix.
-
-    res_L4_corr: correction factor is the resonators are L/4
-    if none it ignores, otherwise this is a list of length N
-    in the form [1,0,1,...]
+    Args:
+        capMatrix (float): order of the capacitance matrix must be
+          bus1...busN-1, ground, Qubit_pad1, Qubit_pad2, readout. (in F)
+          If not in the correct order, use df_reorder_matrix_basis() to put
+          it in the proper order. It is advised that the user follow a naming scheme
+          in QiskitMetal or Q3D which results in the necessary order by default (eg. alphabetical)
+        Ic (float): junction Ic (in A)
+        Cj (float): junction capacitance (in F)
+        N (float): coupling pads (1 readout, N-1 bus)
+        fb (float): coupling bus and readout frequencies (in GHz). fb can be a list with the order
+          the order they appear in the capMatrix.
+        fr (float): coupling bus and readout frequencies (in GHz). fb can be a list with the order
+          the order they appear in the capMatrix.
+        res_L4_corr (list): correction factor is the resonators are L/4
+          if none it ignores, otherwise this is a list of length N
+          in the form [1,0,1,...] (Default: None)
+        g_scale (float): scale factor
 
     Returns:
-    ------------------------------
-    ham_dict: A dictionary of all the calculated values
+        dict: ham_dict is a dictionary of all the calculated values
+
+    Raises:
+        ValueError: If N is not positive
+        ValueError: If the capacitance matrix is the wrong size
 
     calculate the χ The full dispersive splitting using analytical
     approximations, i.e., return the |0> --> |1> splitting
@@ -336,14 +348,21 @@ def extract_transmon_coupled_Noscillator(capMatrix, Ic, CJ, N, fb, fr, res_L4_co
 def levels_vs_ng_real_units(Cq, IC, N=301, do_disp=0, do_plots=0):
     """
     This numerically computes the exact transmon levels given C and IC
-    as a function of the
-     ng ration -- it subtracts the vaccuum flucations so that the groud
-     state is set to zero energy.
-    C in fF
-    Ic in nA
-    N: number of charge values to use (needs to be odd)
-    do_disp will print out the values
-    do_plots will plot the data
+    as a function of the ng ration -- it subtracts the vaccuum flucations so that the groud
+    state is set to zero energy.
+
+    Args:
+        C (float): in fF
+        Ic (float): in nA
+        N (int): number of charge values to use (needs to be odd)
+        do_disp (int): will print out the values
+        do_plots (int): will plot the data
+
+    Returns:
+        tuple: fqubitGHz, anharMHz, disp, tphi_ms
+
+    Raises:
+        ValueError: If the matrix is not Hermitian
     """
     C = Cq*1e-15
     IC = IC*1e-9
@@ -432,13 +451,15 @@ def get_C_and_Ic(Cin_est, Icin_est, f01, f02on2):
     """
     Get the capacitance and critical current for a transmon
     of a certain frequency and anharmonicity
+
     Args:
-        Cin_est: Initial guess for capacitance (in fF)
-        Icin_est: Initial guess for critical current (in nA)
-        f01: Transmon frequency (in GHz)
-        f02on2: 02/2 frequency (in GHz)
+        Cin_est (float): Initial guess for capacitance (in fF)
+        Icin_est (float): Initial guess for critical current (in nA)
+        f01 (float): Transmon frequency (in GHz)
+        f02on2 (float): 02/2 frequency (in GHz)
+
     Returns:
-        [C,Ic] from levels_vs_ng_real_units that gives the
+        tuple: [C,Ic] from levels_vs_ng_real_units that gives the
         specified frequency and anharmonicity
     """
 
@@ -458,14 +479,35 @@ def get_C_and_Ic(Cin_est, Icin_est, f01, f02on2):
 # given a C and IC calculate f and f02/2 from 'levels_vs_ng_real_units'
 # and least square with measured f01,f02on2
 def cos_to_mega_and_delta(Cin, ICin, f01, f02on2):
+    """Cost function for calculating C and IC
+    given a C and IC calculate f and f02/2 from 'levels_vs_ng_real_units'
+    and least square with measured f01,f02on2
 
+    Args:
+        Cin (float): Cin
+        ICin (float): ICin
+        f01 (float): f01
+        f02on2 (float): f02on2
+
+    Returns:
+        float: calculated value
+    """
     fqubitGHz, anharMHz, disp, tphi_ms = levels_vs_ng_real_units(Cin, ICin, N=51)
 
     return ((fqubitGHz-f01)**2 + (fqubitGHz+anharMHz/2./1e3-f02on2)**2)**0.5
 
 
 def chargeline_T1(Ccharge, Cq, f01):
-    """ calculate the charge line T1 """
+    """ calculate the charge line T1 
+
+    Args:
+        Cchare (float): Ccharge
+        Cq (float): Cq
+        f01 (float): f01
+
+    Returns:
+        float: calculated chargeline T1
+    """
 
     return Cq/(Ccharge**2*50.*(2*np.pi*f01)**2)
 
@@ -478,35 +520,40 @@ def readin_q3d_matrix(path):
     When exporting pick "save as type: data table"
     ZKM: 2019-04-02
 
-    RETURNS: Dataframe
+    Args:
+        path (str): Path to file
+
+    Returns:
+        tupe: df_cmat, units, design_variation, df_cond
 
     Example file:
-    ```
-    DesignVariation:$BBoxL='650um' $boxH='750um' $boxL='2mm' $QubitGap='30um' $QubitH='90um' $QubitL='450um' Lj_1='13nH'
-    Setup1:LastAdaptive
-    Problem Type:C
-    C Units:farad, G Units:mSie
-    Reduce Matrix:Original
-    Frequency: 5.5E+09 Hz
+    
+    ::
 
-    Capacitance Matrix
-        ground_plane	Q1_bus_Q0_connector_pad	Q1_bus_Q2_connector_pad	Q1_pad_bot	Q1_pad_top1	Q1_readout_connector_pad
-    ground_plane	2.8829E-13	-3.254E-14	-3.1978E-14	-4.0063E-14	-4.3842E-14	-3.0053E-14
-    Q1_bus_Q0_connector_pad	-3.254E-14	4.7257E-14	-2.2765E-16	-1.269E-14	-1.3351E-15	-1.451E-16
-    Q1_bus_Q2_connector_pad	-3.1978E-14	-2.2765E-16	4.5327E-14	-1.218E-15	-1.1552E-14	-5.0414E-17
-    Q1_pad_bot	-4.0063E-14	-1.269E-14	-1.218E-15	9.5831E-14	-3.2415E-14	-8.3665E-15
-    Q1_pad_top1	-4.3842E-14	-1.3351E-15	-1.1552E-14	-3.2415E-14	9.132E-14	-1.0199E-15
-    Q1_readout_connector_pad	-3.0053E-14	-1.451E-16	-5.0414E-17	-8.3665E-15	-1.0199E-15	3.9884E-14
+        DesignVariation:$BBoxL='650um' $boxH='750um' $boxL='2mm' $QubitGap='30um' $QubitH='90um' $QubitL='450um' Lj_1='13nH'
+        Setup1:LastAdaptive
+        Problem Type:C
+        C Units:farad, G Units:mSie
+        Reduce Matrix:Original
+        Frequency: 5.5E+09 Hz
 
-    Conductance Matrix
-        ground_plane	Q1_bus_Q0_connector_pad	Q1_bus_Q2_connector_pad	Q1_pad_bot	Q1_pad_top1	Q1_readout_connector_pad
-    ground_plane	0	0	0	0	0	0
-    Q1_bus_Q0_connector_pad	0	0	0	0	0	0
-    Q1_bus_Q2_connector_pad	0	0	0	0	0	0
-    Q1_pad_bot	0	0	0	0	0	0
-    Q1_pad_top1	0	0	0	0	0	0
-    Q1_readout_connector_pad	0	0	0	0	0	0
-    ```
+        Capacitance Matrix
+            ground_plane	Q1_bus_Q0_connector_pad	Q1_bus_Q2_connector_pad	Q1_pad_bot	Q1_pad_top1	Q1_readout_connector_pad
+        ground_plane	2.8829E-13	-3.254E-14	-3.1978E-14	-4.0063E-14	-4.3842E-14	-3.0053E-14
+        Q1_bus_Q0_connector_pad	-3.254E-14	4.7257E-14	-2.2765E-16	-1.269E-14	-1.3351E-15	-1.451E-16
+        Q1_bus_Q2_connector_pad	-3.1978E-14	-2.2765E-16	4.5327E-14	-1.218E-15	-1.1552E-14	-5.0414E-17
+        Q1_pad_bot	-4.0063E-14	-1.269E-14	-1.218E-15	9.5831E-14	-3.2415E-14	-8.3665E-15
+        Q1_pad_top1	-4.3842E-14	-1.3351E-15	-1.1552E-14	-3.2415E-14	9.132E-14	-1.0199E-15
+        Q1_readout_connector_pad	-3.0053E-14	-1.451E-16	-5.0414E-17	-8.3665E-15	-1.0199E-15	3.9884E-14
+
+        Conductance Matrix
+            ground_plane	Q1_bus_Q0_connector_pad	Q1_bus_Q2_connector_pad	Q1_pad_bot	Q1_pad_top1	Q1_readout_connector_pad
+        ground_plane	0	0	0	0	0	0
+        Q1_bus_Q0_connector_pad	0	0	0	0	0	0
+        Q1_bus_Q2_connector_pad	0	0	0	0	0	0
+        Q1_pad_bot	0	0	0	0	0	0
+        Q1_pad_top1	0	0	0	0	0	0
+        Q1_readout_connector_pad	0	0	0	0	0	0
     """
 
     text = Path(path).read_text()
@@ -536,10 +583,12 @@ def load_q3d_capacitance_matrix(path, user_units='fF', _disp=True):
     Units are read in automatically and converted to user units.
 
     Arguments:
-        path {[type]} -- [description]
+        path (str): Path to file
+        user_units (str): units (Default: 'fF')
+        _disp (bool): whehter or not to display messages (Default: True)
 
     Returns:
-        [type] -- [description]
+        tupe: df_cmat, user_units, design_variation, df_cond
     """
     df_cmat, Cunits, design_variation, df_cond = readin_q3d_matrix(path)
 
@@ -558,6 +607,11 @@ def load_q3d_capacitance_matrix(path, user_units='fF', _disp=True):
 
 
 def df_cmat_style_print(df_cmat):
+    """Display the dataframe in the cmat style
+
+    Args:
+        df_cmat (dataframe): Dataframe to display
+    """
     from IPython.display import display
     display(df_cmat.style.format("{:.2f}").bar(color='#5fba7d', width=100))
 
@@ -570,12 +624,12 @@ def move_index_to(i_from, i_to, len_):
     Utility function to swap index
 
     Arguments:
-        i_from {[type]} -- Data frame to swap index
-        i_to {[type]} -- Data frame to index
-        len_ {[type]} --length of array
+        i_from (int): Data frame to swap index
+        i_to (int): Data frame to index
+        len_ (int): --length of array
 
     Returns:
-        list of indecies, such as  array([1, 2, 3, 4, 0, 5])
+        list: list of indecies, such as  array([1, 2, 3, 4, 0, 5])
     """
     idxs = np.arange(0, len_)
     idxs = np.delete(idxs, i_from)
@@ -587,12 +641,12 @@ def df_reorder_matrix_basis(df, i_from, i_to):
     Data frame handle reording of matrix basis
 
     Arguments:
-        df {[DataFrame]} -- Data frame to swap
-        i_from {[int]} -- index # to move from
-        i_to {[int]} -- index # to move to
+        df (DataFrame): Data frame to swap
+        i_from (int): index # to move from
+        i_to (int): index # to move to
 
     Returns:
-        [DataFrame] --The changed index DataFrame
+        DataFrame: The changed index DataFrame
     """
     arr = df.values
     idx = move_index_to(i_from, i_to, len(arr))
