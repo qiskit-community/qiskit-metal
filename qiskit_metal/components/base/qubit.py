@@ -61,7 +61,7 @@ class BaseQubit(QComponent):
     """Default drawing options"""
 
     def __init__(self, design, name, options=None, options_connection_pads=None,
-                 make=True):
+                 make=True, force_delete=False):
         """
         Args:
             design (QDesign): The parent design.
@@ -77,11 +77,11 @@ class BaseQubit(QComponent):
 
         #super().__init__(design, name, options=options, make=False)
 
-        if super().__init__(design, name, options=options, make=False) is 'NameInUse':
+        if super().__init__(design, name, options=options, make=False, force_delete=force_delete) is 'NameInUse':
             # Component is not registered in design.
             # This qubit was not added to design.
-            #self.logger.warning(
-                #'In BaseQubit.__init(), the qubit has not been added to design. The component is exiting with None.')
+            # self.logger.warning(
+            # 'In BaseQubit.__init(), the qubit has not been added to design. The component is exiting with None.')
             return None
 
         if options_connection_pads:
