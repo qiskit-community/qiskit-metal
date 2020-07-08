@@ -90,14 +90,18 @@ class QComponent():
 
         Arguments:
             design (QDesign): The parent design.
+
             name (str): Name of the component.
+
             options (dict): User options that will override the defaults. (default: None)
+
             make (bool): True if the make function should be called at the end of the init.
-                    Options be used in the make funciton to create the geometry. (default: True)
+            Options be used in the make funciton to create the geometry. (default: True)
+
             component_template (dict): User can overwrite the template options for the component
-                                       that will be stored in the design, in design.template,
-                                       and used every time a new component is instantiated.
-                                       (default: None)
+            that will be stored in the design, in design.template,
+            and used every time a new component is instantiated.
+            (default: None)
 
 
         Returns:
@@ -314,10 +318,13 @@ class QComponent():
 
         Arguments:
             design (QDesign): Design class. Should be the class, not the instance.
+
             component_template (Dict): Tempalte options to overwrite the class ones (default: None)
+
             logger_ (logging.Logger): A logger for errors. (default: None)
+
             template_key (str): The template key identifier. If None, then uses
-                                cls._get_unique_class_name() (default: None)
+            cls._get_unique_class_name() (default: None)
 
         Returns:
             Dict: dictionary of default options based on design template.
@@ -437,6 +444,7 @@ class QComponent():
                 Strings of numbers, numbers with units; e.g., '1', '1nm', '1 um'
                     Converts to int or float.
                     Some basic arithmatic is possible, see below.
+
                 Strings of variables 'variable1'.
                     Variable interpertation will use string method
                     isidentifier 'variable1'.isidentifier()`
@@ -495,7 +503,7 @@ class QComponent():
 
         Returns:
             int: 0 if does not exist, otherwise
-              component-id of component which is already using the name.
+            component-id of component which is already using the name.
 
         Warning: If user has used this text version of the component name already,
         warning will be given to user.
