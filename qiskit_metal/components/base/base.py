@@ -107,22 +107,26 @@ class QComponent():
         Raises:
             ValueError: User supplied design isn't a QDesign
 
-        Note:
-            Information copied from QDesign class.
-            self._design.overwrite_enabled (bool): 
-                When True - If the string name, used for component, already
-                    exists in the design, the existing component will be 
-                    deleted from design, and new component will be generated 
-                    with the same name and newly generated component_id, 
-                    and then added to design. 
-                When False - If the string name, used for component, already
-                    exists in the design, the existing component will be 
-                    kept in the design, and current component will not be generated,
-                    nor will be added to the design. The 'NameInUse' will be returned 
-                    during component generation.
-                Either True or False - If string name, used for component, is NOT 
-                    being used in the design, a component will be generated and 
-                    added to design using the name.
+
+
+        Note:  Information copied from QDesign class.
+
+        self._design.overwrite_enabled (bool): 
+        When True - If the string name, used for component, already
+        exists in the design, the existing component will be 
+        deleted from design, and new component will be generated 
+        with the same name and newly generated component_id, 
+        and then added to design. 
+
+        When False - If the string name, used for component, already
+        exists in the design, the existing component will be 
+        kept in the design, and current component will not be generated,
+        nor will be added to the design. The 'NameInUse' will be returned 
+        during component generation.
+
+        Either True or False - If string name, used for component, is NOT 
+        being used in the design, a component will be generated and 
+        added to design using the name.
         """
 
         # Make the id be None, which means it hasn't been added to design yet.
