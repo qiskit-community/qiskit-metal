@@ -28,7 +28,7 @@ class Oriented_2D_Array:
     All values stored as np.ndarray of parsed floats.
 
     Attributes:
-        positon (np.ndarray of 2 points) -- Position of the Oriented_Point
+        position (np.ndarray of 2 points) -- Position of the Oriented_Point
         direction (np.ndarray of 2 points) -- *Normal vector* of the Oriented_Point, defines which way it points outward.
                                               This is the normal vector to the surface on which the Oriented_Point mates.
                                               Has unit norm.
