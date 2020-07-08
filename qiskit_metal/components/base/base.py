@@ -341,7 +341,8 @@ class QComponent():
 
         Returns:
             string: Return 'NameInUse' if overwrite flag is False and 
-                    check_name is used within design. Otherwise return None.
+                    check_name is already being used within design. 
+                    Otherwise return None.
         """
         answer = self._is_name_used(check_name)
         if self._overwrite_flag and answer:
