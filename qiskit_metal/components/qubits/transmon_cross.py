@@ -219,4 +219,4 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
             'poly', {f'{name}_connector_etcher': connector_etcher}, subtract=True)
 
         port_points = list(draw.shapely.geometry.shape(port_line).coords)
-        self.add_pin(name, port_points, self.id, flip=False)  # TODO: chip
+        self.add_pin(name, port_points, c_w, self.id)  # TODO: chip

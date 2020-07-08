@@ -27,7 +27,8 @@ class FakeCPW(QComponent):
     default_options = Dict(
         line_width='10um',
         line_gap='6um',
-        _pin_inputs_size = 2
+        _pin_inputs_size = 2,
+        pin_inputs = Dict(start_pin='',end_pin='')
 
         # pin_start = dict(), #for now assuming the dictionary of the pin is passed, it
         # #could instead be just the pin and component id.

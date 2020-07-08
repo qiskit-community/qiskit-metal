@@ -17,8 +17,9 @@
 from qiskit_metal import draw, Dict#, QComponent
 from qiskit_metal.components.base import QComponent
 #from qiskit_metal import is_true
+import numpy as np
 
-class Rectangle(QComponent):
+class NGon(QComponent):
     """A single configurable square.
 
         Inherits QComponent class
@@ -27,8 +28,8 @@ class Rectangle(QComponent):
     """
 
     default_options = Dict(
-        width='500um',
-        height='300um',
+        n = '3',
+        radius = '30um',
         pos_x='0um',
         pos_y='0um',
         rotation='0',
@@ -42,11 +43,17 @@ class Rectangle(QComponent):
     def make(self):
         """Build the component"""
         p = self.p  # p for parsed parameters. Access to the parsed options.
+        n = int(p.n)
+        #Create the geometry
+        #Generates a list of points
+        n_polygon = [(p.radius*np.cos(2*np.pi*x/n),p.radius*np.sin(2*np.pi*x/n)) for x in range(n)]
+        #Converts said list into a shapely polygon
+        n_polygon = draw.Polygon(n_polygon)
 
-        # create the geometry
-        rect = draw.rectangle(p.width, p.height, p.pos_x, p.pos_y)
-        rect = draw.rotate(rect, p.rotation)
+        n_polygon = draw.rotate(n_polygon, p.rotation, origin=(0, 0))
+        n_polygon = draw.translate(n_polygon, p.pos_x, p.pos_y)
+
         ##############################################
         # add elements
-        self.add_elements('poly', {'rectangle': rect}, subtract=p.subtract,
+        self.add_elements('poly', {'n_polygon': n_polygon}, subtract=p.subtract,
                           helper=p.helper, layer=p.layer, chip=p.chip)

@@ -496,7 +496,7 @@ class QComponent():
                 name: str, # this should be static based on component designer's code
                 points: np.ndarray,
                 width: float,
-                parent: Union[str, 'QComponent'], #input of name or id or either?
+                parent: Union[int, 'QComponent'], #input of name or id or either?
                 input_as_norm: bool = False,
                 flip: bool = False,
                 chip: str = 'main'):
