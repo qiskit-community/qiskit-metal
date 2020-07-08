@@ -88,10 +88,15 @@ class QDesign():
         # Key attributes related to physical content of the design. These will be saved
 
         # Where components are actaully stored.
+        # i.e.  key=id and part of value (_components[id].name)
         self._components = Dict()
+
         # User-facing interface for user to view components by using name (str) for key access to
-        # QComponents, isntead of id (int).
+        # QComponents, instead of id (int).
         self.components = Components(self)
+
+        # Cache for component ids.  Hold the reverse of _components dict,
+        self.name_to_id = Dict()
 
         self._variables = Dict()
         self._chips = Dict()
@@ -287,38 +292,40 @@ class QDesign():
                 f'NetId was not added for {comp1_id}, {pin1_name}, {comp2_id}, {pin2_name} and will not be added to components.')
         return net_id
 
-    def get_component(self, search_name: str) -> 'QComponent':
-        """The design contains a dict of all the components, which is correlated to
-        a net_list connections, and elements table. The key of the components dict are
-        unique integers.  This method will search through the dict to find the component with search_name.
+    # NOTE: Think nothing is using this. Remove this if no-one complains.
+    #       This is replaced by design.components.find_id()
+    # def get_component(self, search_name: str) -> 'QComponent':
+    #     """The design contains a dict of all the components, which is correlated to
+    #     a net_list connections, and elements table. The key of the components dict are
+    #     unique integers.  This method will search through the dict to find the component with search_name.
 
-        Args:
-            search_name (str): Name of the component
+    #     Args:
+    #         search_name (str): Name of the component
 
-        Returns:
-            QComponent: A component within design with the name search_name.
+    #     Returns:
+    #         QComponent: A component within design with the name search_name.
 
-        *Note:* If None is returned the component wass not found. A warning through logger.warning().
+    #     *Note:* If None is returned the component wass not found. A warning through logger.warning().
 
-        *Note:* If multiple components have the same name, only the first component found in the search
-        will be returned, ALONG with logger.warning().
-        """
-        alist = [(value.name, key)
-                 for key, value in self._components.items() if value.name == search_name]
+    #     *Note:* If multiple components have the same name, only the first component found in the search
+    #     will be returned, ALONG with logger.warning().
+    #     """
+    #     alist = [(value.name, key)
+    #              for key, value in self._components.items() if value.name == search_name]
 
-        length = len(alist)
-        if length == 1:
-            return_component = self._components[alist[0][1]]
-        elif length == 0:
-            self.logger.warning(
-                f'Name of component:{search_name} not found. Returned None')
-            return_component = None
-        else:
-            self.logger.warning(
-                f'Component:{search_name} is used multiple times, return the first component in list: (name, component_id) {str(alist)}')
-            return_component = self._components[alist[0][1]]
+    #     length = len(alist)
+    #     if length == 1:
+    #         return_component = self._components[alist[0][1]]
+    #     elif length == 0:
+    #         self.logger.warning(
+    #             f'Name of component:{search_name} not found. Returned None')
+    #         return_component = None
+    #     else:
+    #         self.logger.warning(
+    #             f'Component:{search_name} is used multiple times, return the first component in list: (name, component_id) {str(alist)}')
+    #         return_component = self._components[alist[0][1]]
 
-        return return_component
+    #     return return_component
 
     def all_component_names_id(self) -> list:
         """Get the text names and corresponding unique ID  of each component within this design.
@@ -359,6 +366,7 @@ class QDesign():
 
         # Need to remove pin connections before clearing the components.
         self.delete_all_pins()
+        self.name_to_id.clear()
         self._components.clear()
         # TODO: add element tables here
         self._elements.clear_all_tables()
@@ -450,35 +458,34 @@ class QDesign():
         # We also want the string (name) to be unique.
 
         if isinstance(component_id, int):
-            pass  # The id is already an int type.
+            a_component_id = component_id
         elif isinstance(component_id, str):
             component_name = str(component_id)
-            a_component = self.components[component_name]
-            if a_component is None:
+            a_component_id = self.name_to_id[component_name]
+            if a_component_id is None:
                 return -3
-            else:
-                component_id = a_component.id
         else:
             logger.warning(f'Called rename_component, component_id={component_id}, but component_id'
                            f' is not an integer, nor a string.')
             return -3
 
-        if component_id in self._components:
-            all_names = self.all_component_names_id()
-
-            search_result = [
-                item for item in all_names if new_component_name == item[0]]
-
-            # name is already being used.
-            if len(search_result) != 0:
-                logger.warning(f'Called design.rename_component, component_id({search_result[0][0]}'
-                               f', id={search_result[0][1]}) is already using {new_component_name}.')
+        if a_component_id in self._components:
+            # Check if name is already being used.
+            if new_component_name in self.name_to_id:
+                logger.warning(f'Called design.rename_component, component_id({self.name_to_id[new_component_name]}'
+                               f',  is already using {new_component_name}.')
                 return -2
+
+            # Do rename
+            a_component = self._components[a_component_id]
+
+            # Remove old name from cache, add new name
+            self.name_to_id.pop(a_component.name, None)
+            self.name_to_id[new_component_name] = a_component.id
 
             # do rename
             self._components[component_id]._name = new_component_name
-            # self._elements.rename_component(
-            #    str(component_id), new_component_name)
+
             return True
         else:
             logger.warning(f'Called rename_component, component_id={component_id}, but component_id'
@@ -503,11 +510,12 @@ class QDesign():
         """
 
         # Nothing to delete if name not in components
-        component_id = self.components[component_name].id
-        if not component_id in self._components:
-            self.logger.info('Called delete_component {component_id}, but such a \
-                             component is not in the design dicitonary of components.')
+        if component_name not in self.name_to_id:
+            self.logger.info('Called delete_component {component_name}, but such a \
+                             component is not in the design cache dicitonary of components.')
             return True
+        else:
+            component_id = self.name_to_id[component_name]
 
         # check if components has dependencies
         #   if it does, then do not delete, unless force=true
@@ -540,6 +548,10 @@ class QDesign():
             # Even though the elements table has string for component_id, dataframe is
             # storing as an integer.
             self._elements.delete_component_id(component_id)
+
+            # Before poping component from design registry, remove name from cache
+            component_name = self._components[component_id].name
+            self.name_to_id.pop(component_name, None)
 
             # remove from design dict of components
             self._components.pop(component_id, None)

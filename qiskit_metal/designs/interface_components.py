@@ -77,48 +77,35 @@ class Components:
 
     def find_id(self, name: str, quiet: bool = False) -> int:
         """
-        Find id of component.  The id is the key for a dict which holds all of the components 
-        within design.  Assume the name is not used multiple times. If it is, 
-        the first search result will be used.
+        Find id of component.  The id is the key for a dict which holds all of the components
+        within design.
 
         Args:
             name (str): Text name of compnent.  The name is assumed to be unique.
             quiet (bool): Allow warning messages to be generated.
 
         Returns:
-            int: key to use in  _components
+            int: key to use in  _components.  
+                 If 0 is returned it means the name is not in dict.
 
-        If 0 is returned it means the name is not in dict.
+        Raises:
+            AttributeError: The given name is a magic method not in the dictionary
         """
 
-        # TODO:  all_names creation -> seems very slow way to do?
-        all_names = [(value.name, key)
-                     for (key, value) in self.components.items()]
-        search_result = [
-            item for item in all_names if name == item[0]]
-
-        length = len(search_result)
-        if length == 1:
-            # Good, we found a single component match.
-            return search_result[0][1]
-        elif length == 0:
-            # Name not in dict.
+        if name in self._design.name_to_id:
+            component_id = self._design.name_to_id[name]
+            return component_id
+        elif not is_ipython_magic(name):
+            # Name not registered, not in cache for components' names.
             # IPython checking methods
             # https://github.com/jupyter/notebook/issues/2014
-            if not is_ipython_magic(name):
-                if not quiet:
-                    self.logger.warning(
-                        f'In Components.find_id(), the name={name} is not used in design._components ')
-                return 0
-            else:
-                raise AttributeError(name)
-
-        elif length > 1:
-            # Really unfortunate, the dict has multiple coponents with same name, use the first search result.
             if not quiet:
                 self.logger.warning(
-                    f'In Components.find_id(), the name={name} is used multiple times in design._components.  Returning the key, for QComponent, with lowest id.')
-            return search_result[0][1]
+                    f'In Components.find_id(), the name={name} is not used in design._components ')
+            return 0
+        else:
+            raise AttributeError(name)
+            return 0
 
     # def is_name_used(self, new_name: str) -> int:
     #     """Check to see if name being used in components.
@@ -150,7 +137,7 @@ class Components:
             quiet (bool): Allow warning messages to be generated.
 
         Returns:
-            QComponent: Class which describes the component.  None if 
+            QComponent: Class which describes the component.  None if
                         name not found in design._components.
 
         Raises:
@@ -159,7 +146,6 @@ class Components:
         component_id = int(self.find_id(name))
         if component_id:
             return self._design._components[component_id]
-            # return self.components[component_id]
         else:
             # IPython checking methods
             # https://github.com/jupyter/notebook/issues/2014
@@ -233,7 +219,7 @@ class Components:
                  key for design._components[]
         """
         if not isinstance(item, str):
-            #self.logger.debug(f'Search with string in __contains__ {item}.')
+            # self.logger.debug(f'Search with string in __contains__ {item}.')
             return 0
         quiet = True
         return self.find_id(item, quiet)
