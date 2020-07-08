@@ -25,8 +25,6 @@ Module containing all Qiskit Metal analyses.
 
 @author: Zlatko Minev (IBM)
 
-UNDER CONSTRUCTION
-
 Submodules
 ----------
 
@@ -35,7 +33,6 @@ Submodules
 
     cpw_calculations
     lumped_capacitive
-    ZMethod-TBD
 """
 
 from . import cpw_calculations

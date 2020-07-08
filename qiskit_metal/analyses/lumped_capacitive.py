@@ -524,7 +524,7 @@ def readin_q3d_matrix(path):
         path (str): Path to file
 
     Returns:
-        tupe: df_cmat, units, design_variation, df_cond
+        tuple: df_cmat, units, design_variation, df_cond
 
     Example file:
     
