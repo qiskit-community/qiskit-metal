@@ -101,15 +101,16 @@ class QComponent():
                                        (default: None)
             overwrite_flag (bool): When True - If the string name, used for component, already
                                     exists in the design, the existing component will be 
-                                    deleted from design, and new one will be generated with the same name, 
+                                    deleted from design, and new component will be generated 
+                                    with the same name and newly generated component_id, 
                                     and then added to design. 
                                    When False - If the string name, used for component, already
                                     exists in the design, the existing component will be 
                                     kept in the design, and current component will not be generated,
                                     nor will be added to the design. The 'NameInUse' will be returned.
-                                   Either True or False - If string name, used for component, is NOT being used 
-                                    in the design, a component will be generated and added to design 
-                                    using the name.
+                                   Either True or False - If string name, used for component, is NOT 
+                                    being used in the design, a component will be generated and 
+                                    added to design using the name.
 
         Returns:
             str: 'NameInUse' is retruned if user requests name for new component
@@ -495,9 +496,9 @@ class QComponent():
 
         if check_name in self._design.name_to_id:
             component_id = self._design.name_to_id[check_name]
-            if not self._overwrite_flag:
-                logger.error(f"Called _is_name_used, component_id({check_name}, id={component_id})"
-                             " is already being used in design.")
+            # if not self._overwrite_flag:
+            #    logger.warning(f"Called _is_name_used, component_id({check_name}, id={component_id})"
+            #                   " is already being used in design.")
             return component_id
         else:
             return 0
@@ -513,6 +514,7 @@ class QComponent():
 #
 #   What information is truly necessary for the pins? Should they have a z-direction component?
 #   Will they operate properly with non-planar designs?
+
 
     def add_pin_as_normal(self,
                           name: str,
