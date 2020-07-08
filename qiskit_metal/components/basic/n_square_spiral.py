@@ -19,18 +19,26 @@ from qiskit_metal.components.base import QComponent
 #from qiskit_metal import is_true
 import numpy as np
 
-class NGon(QComponent):
+class NSquareSpiral(QComponent):
     """Inherits QComponent class
 
     Description:
-        A n-gon polygon. Eg. n = 3 : triangle, n = infinity : circle
+        A n count square spiral.
+        ____________
+        |   _____   |
+        |  |     |  |
+        |  |     |  |
+        |  |________|
+        |
 
     Options:
         Convention: Values (unless noted) are strings with units included,
         (e.g., '30um')
 
-        n           - number of sides of the polygon
-        radius      - the radius of the circle given n=infinity
+        n           - number of turns of the spiral
+        width       - the width of the line of the spiral
+        radius      - the 'radius' of the inner portion of the spiral
+        gap         - the distance between each layer of the spiral
         pos_x/_y    - the x/y position of the ground termination.
         rotation    - the direction of the termination. 0 degrees is +x, following a 
                     counter-clockwise rotation (eg. 90 is +y)
@@ -40,7 +48,9 @@ class NGon(QComponent):
 
     default_options = Dict(
         n = '3',
-        radius = '30um',
+        width = '1um',
+        radius = '40um',
+        gap='4um',
         pos_x='0um',
         pos_y='0um',
         rotation='0',
@@ -56,15 +66,24 @@ class NGon(QComponent):
         p = self.p  # p for parsed parameters. Access to the parsed options.
         n = int(p.n)
         #Create the geometry
-        #Generates a list of points
-        n_polygon = [(p.radius*np.cos(2*np.pi*x/n),p.radius*np.sin(2*np.pi*x/n)) for x in range(n)]
-        #Converts said list into a shapely polygon
-        n_polygon = draw.Polygon(n_polygon)
+        
+        spiral_list = []
 
-        n_polygon = draw.rotate(n_polygon, p.rotation, origin=(0, 0))
-        n_polygon = draw.translate(n_polygon, p.pos_x, p.pos_y)
+        for step in range(n):
+            point_value = p.radius/2 + step*(p.width+p.gap)
+            spiral_list.append((-point_value,-point_value))
+            spiral_list.append((point_value,-point_value))
+            spiral_list.append((point_value,point_value))
+            spiral_list.append((-point_value-(p.width+p.gap),point_value))
+
+        point_value = p.radius/2 + (step+1)*(p.width+p.gap)
+        spiral_list.append((-point_value,-point_value))
+        spiral_list = draw.LineString(spiral_list)
+
+        spiral_list = draw.rotate(spiral_list, p.rotation, origin=(0, 0))
+        spiral_list = draw.translate(spiral_list, p.pos_x, p.pos_y)
 
         ##############################################
         # add elements
-        self.add_elements('poly', {'n_polygon': n_polygon}, subtract=p.subtract,
+        self.add_elements('path', {'n_spiral': spiral_list}, width=p.width/2, subtract=p.subtract,
                           helper=p.helper, layer=p.layer, chip=p.chip)
