@@ -93,11 +93,12 @@ class QComponent():
             name (str): Name of the component.
             options (dict): User options that will override the defaults. (default: None)
             make (bool): True if the make function should be called at the end of the init.
-                    Options be used in the make funciton to create the geometry. (default: True)
+                Options be used in the make funciton to create the geometry. (default: True)
             component_template (dict): User can overwrite the template options for the component
-                                       that will be stored in the design, in design.template,
-                                       and used every time a new component is instantiated.
-                                       (default: None)
+                that will be stored in the design, in design.template,
+                and used every time a new component is instantiated.
+                (default: None)
+
 
         Returns:
             str: 'NameInUse' is retruned if user requests name for new component
@@ -105,6 +106,26 @@ class QComponent():
 
         Raises:
             ValueError: User supplied design isn't a QDesign
+
+
+
+        Note:  Information copied from QDesign class.
+            self._design.overwrite_enabled (bool): 
+            When True - If the string name, used for component, already
+            exists in the design, the existing component will be 
+            deleted from design, and new component will be generated 
+            with the same name and newly generated component_id, 
+            and then added to design. 
+
+            When False - If the string name, used for component, already
+            exists in the design, the existing component will be 
+            kept in the design, and current component will not be generated,
+            nor will be added to the design. The 'NameInUse' will be returned 
+            during component generation.
+
+            Either True or False - If string name, used for component, is NOT 
+            being used in the design, a component will be generated and 
+            added to design using the name.
         """
 
         # Make the id be None, which means it hasn't been added to design yet.
@@ -116,10 +137,7 @@ class QComponent():
 
         self._design = design  # reference to parent
 
-        answer = self._is_name_used(name)
-        if answer:  # TODO: Resolve -> Maybe overwrite component!? Issue #193
-            logger.warning(f'The name {name} is used in component id={answer}. '
-                           'Component was not made, nor added to design.')
+        if self._delete_evaluation(name) is 'NameInUse':
             return 'NameInUse'
 
         self._name = name
@@ -298,7 +316,7 @@ class QComponent():
             component_template (Dict): Tempalte options to overwrite the class ones (default: None)
             logger_ (logging.Logger): A logger for errors. (default: None)
             template_key (str): The template key identifier. If None, then uses
-                                cls._get_unique_class_name() (default: None)
+                cls._get_unique_class_name() (default: None)
 
         Returns:
             Dict: dictionary of default options based on design template.
@@ -321,6 +339,27 @@ class QComponent():
         options = deepcopy(Dict(design.template_options[template_key]))
 
         return options
+
+    def _delete_evaluation(self, check_name: str = None):
+        """design.overwrite_enabled allows user to delete an existing component within 
+        the design if the name is being used.
+
+        Args:
+            check_name (str, optional): Name of new component. (Defaults: None)
+
+        Returns:
+            string: Return 'NameInUse' if overwrite flag is False and 
+            check_name is already being used within design. 
+            Otherwise return None.
+        """
+        answer = self._is_name_used(check_name)
+        if self._design.overwrite_enabled and answer:
+            self._design.delete_component(check_name)
+        elif answer:
+            logger.warning(f'The name {check_name} is used in component id={answer}. '
+                           'Component was not made, nor added to design.')
+            return 'NameInUse'
+        return None
 
     def make(self):
         '''
@@ -397,6 +436,7 @@ class QComponent():
                 Strings of numbers, numbers with units; e.g., '1', '1nm', '1 um'
                     Converts to int or float.
                     Some basic arithmatic is possible, see below.
+
                 Strings of variables 'variable1'.
                     Variable interpertation will use string method
                     isidentifier 'variable1'.isidentifier()`
@@ -454,25 +494,23 @@ class QComponent():
             check_name (str):  Name which user requested to apply to current component.
 
         Returns:
-            int: 0 if does not exist, otherwise 
-              component-id of component which is already using the name.
+            int: 0 if does not exist, otherwise
+            component-id of component which is already using the name.
 
         Warning: If user has used this text version of the component name already,
         warning will be given to user.
 
         """
-        all_names = self._design.all_component_names_id()
 
-        # TODO: this seems like it can be optimized using `in`
-        search_result = [item for item in all_names if check_name == item[0]]
-
-        # name is already being used.
-        if len(search_result) == 0:
-            return 0
+        if check_name in self._design.name_to_id:
+            component_id = self._design.name_to_id[check_name]
+            # if not self._overwrite_flag:
+            #    logger.warning(f"Called _is_name_used, component_id({check_name}, id={component_id})"
+            #                   " is already being used in design.")
+            return component_id
         else:
-            logger.error(f"Called _is_name_used, component_id({search_result[0][0]}, id={search_result[0][1]})"
-                         " is already using \"{check_name}\".")
-            return search_result[0][1]
+            return 0
+
 
 ####################################################################################
 # Functions for handling of pins
@@ -484,6 +522,7 @@ class QComponent():
 #
 #   What information is truly necessary for the pins? Should they have a z-direction component?
 #   Will they operate properly with non-planar designs?
+
 
     def add_pin_as_normal(self,
                           name: str,
