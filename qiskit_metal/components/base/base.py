@@ -90,18 +90,14 @@ class QComponent():
 
         Arguments:
             design (QDesign): The parent design.
-
             name (str): Name of the component.
-
             options (dict): User options that will override the defaults. (default: None)
-
             make (bool): True if the make function should be called at the end of the init.
-            Options be used in the make funciton to create the geometry. (default: True)
-
+                Options be used in the make funciton to create the geometry. (default: True)
             component_template (dict): User can overwrite the template options for the component
-            that will be stored in the design, in design.template,
-            and used every time a new component is instantiated.
-            (default: None)
+                that will be stored in the design, in design.template,
+                and used every time a new component is instantiated.
+                (default: None)
 
 
         Returns:
@@ -114,23 +110,22 @@ class QComponent():
 
 
         Note:  Information copied from QDesign class.
+            self._design.overwrite_enabled (bool): 
+            When True - If the string name, used for component, already
+            exists in the design, the existing component will be 
+            deleted from design, and new component will be generated 
+            with the same name and newly generated component_id, 
+            and then added to design. 
 
-        self._design.overwrite_enabled (bool): 
-        When True - If the string name, used for component, already
-        exists in the design, the existing component will be 
-        deleted from design, and new component will be generated 
-        with the same name and newly generated component_id, 
-        and then added to design. 
+            When False - If the string name, used for component, already
+            exists in the design, the existing component will be 
+            kept in the design, and current component will not be generated,
+            nor will be added to the design. The 'NameInUse' will be returned 
+            during component generation.
 
-        When False - If the string name, used for component, already
-        exists in the design, the existing component will be 
-        kept in the design, and current component will not be generated,
-        nor will be added to the design. The 'NameInUse' will be returned 
-        during component generation.
-
-        Either True or False - If string name, used for component, is NOT 
-        being used in the design, a component will be generated and 
-        added to design using the name.
+            Either True or False - If string name, used for component, is NOT 
+            being used in the design, a component will be generated and 
+            added to design using the name.
         """
 
         # Make the id be None, which means it hasn't been added to design yet.
@@ -318,13 +313,10 @@ class QComponent():
 
         Arguments:
             design (QDesign): Design class. Should be the class, not the instance.
-
             component_template (Dict): Tempalte options to overwrite the class ones (default: None)
-
             logger_ (logging.Logger): A logger for errors. (default: None)
-
             template_key (str): The template key identifier. If None, then uses
-            cls._get_unique_class_name() (default: None)
+                cls._get_unique_class_name() (default: None)
 
         Returns:
             Dict: dictionary of default options based on design template.
@@ -353,7 +345,7 @@ class QComponent():
         the design if the name is being used.
 
         Args:
-            check_name (str, optional): Name of new component. Defaults to None.
+            check_name (str, optional): Name of new component. (Defaults: None)
 
         Returns:
             string: Return 'NameInUse' if overwrite flag is False and 
