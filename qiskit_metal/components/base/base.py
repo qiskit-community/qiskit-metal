@@ -101,7 +101,7 @@ class QComponent():
 
         Returns:
             str: 'NameInUse' is retruned if user requests name for new component
-                 which is already being used within the design.  None if init completes as expected.
+            which is already being used within the design.  None if init completes as expected.
 
         Raises:
             ValueError: User supplied design isn't a QDesign
@@ -437,8 +437,8 @@ class QComponent():
             options (dict) : default is None. If left None,
                              then self.options is used
 
-            Returns:
-                dict: Parsed value
+        Returns:
+            dict: Parsed value
 
         Calls `self.design.parse_options`.
 
@@ -600,8 +600,7 @@ class QComponent():
             name (str): Name of the desired pin.
 
         Returns:
-            dict: Returns the data of the pin, see make_pin() for
-                what those values are.
+            dict: Returns the data of the pin, see make_pin() for what those values are.
         """
 
         return self.pins[name]
@@ -765,7 +764,7 @@ class QComponent():
 
         Returns:
             List[BaseGeometry]: Geometry diction or None if an error in the name of the element
-                                type (ie. table)
+            type (ie. table)
         """
         if element_type == 'all' or self.design.elements.check_element_type(element_type):
             return self.design.elements.get_component_geometry_dict(self.name, element_type)
@@ -781,7 +780,7 @@ class QComponent():
 
         Returns:
             List[BaseGeometry]: Geometry list or None if an error in the name of the element type
-                                (ie. table)
+            (ie. table)
         """
         if element_type == 'all' or self.design.elements.check_element_type(element_type):
             return self.design.elements.get_component_geometry_list(self.id, element_type)
@@ -795,7 +794,7 @@ class QComponent():
 
         Returns:
             pd.DataFrame: Element table for the component or None if an error in the name of
-                          the element type (ie. table)
+            the element type (ie. table)
         """
         if element_type == 'all' or self.design.elements.check_element_type(element_type):
             return self.design.elements.get_component(self.name, element_type)
@@ -806,7 +805,7 @@ class QComponent():
 
         Returns:
             tuple: containing (minx, miny, maxx, maxy) bound values for the bounds of the
-              component as a whole.
+            component as a whole.
 
         Uses:
             design.elements.get_component_bounds
