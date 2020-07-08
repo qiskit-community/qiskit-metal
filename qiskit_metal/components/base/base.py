@@ -85,8 +85,7 @@ class QComponent():
     __i_am_component__ = True
 
     def __init__(self, design: 'QDesign', name: str, options: Dict = None,
-                 make=True, component_template: Dict = None,
-                 force_delete: bool = False) -> Union[None, str]:
+                 make=True, component_template: Dict = None) -> Union[None, str]:
         """Create a new Metal component and adds it's default_options to the design.
 
         Arguments:
@@ -99,18 +98,7 @@ class QComponent():
                                        that will be stored in the design, in design.template,
                                        and used every time a new component is instantiated.
                                        (default: None)
-            force_delete (bool): When True - If the string name, used for component, already
-                                    exists in the design, the existing component will be 
-                                    deleted from design, and new component will be generated 
-                                    with the same name and newly generated component_id, 
-                                    and then added to design. 
-                                   When False - If the string name, used for component, already
-                                    exists in the design, the existing component will be 
-                                    kept in the design, and current component will not be generated,
-                                    nor will be added to the design. The 'NameInUse' will be returned.
-                                   Either True or False - If string name, used for component, is NOT 
-                                    being used in the design, a component will be generated and 
-                                    added to design using the name.
+
 
         Returns:
             str: 'NameInUse' is retruned if user requests name for new component
@@ -118,6 +106,23 @@ class QComponent():
 
         Raises:
             ValueError: User supplied design isn't a QDesign
+
+        Note:
+            Information copied from QDesign class.
+            self._design.overwrite_enabled (bool): 
+                When True - If the string name, used for component, already
+                    exists in the design, the existing component will be 
+                    deleted from design, and new component will be generated 
+                    with the same name and newly generated component_id, 
+                    and then added to design. 
+                When False - If the string name, used for component, already
+                    exists in the design, the existing component will be 
+                    kept in the design, and current component will not be generated,
+                    nor will be added to the design. The 'NameInUse' will be returned 
+                    during component generation.
+                Either True or False - If string name, used for component, is NOT 
+                    being used in the design, a component will be generated and 
+                    added to design using the name.
         """
 
         # Make the id be None, which means it hasn't been added to design yet.
@@ -129,7 +134,7 @@ class QComponent():
 
         self._design = design  # reference to parent
 
-        if self.delete_evaluation(force_delete, name) is 'NameInUse':
+        if self._delete_evaluation(name) is 'NameInUse':
             return 'NameInUse'
 
         self._name = name
@@ -332,9 +337,9 @@ class QComponent():
 
         return options
 
-    def delete_evaluation(self,  force_delete: bool, check_name: str = None):
-        """Allows user to delete an existing component within the design 
-           if the name is being used.
+    def _delete_evaluation(self, check_name: str = None):
+        """design.overwrite_enabled allows user to delete an existing component within 
+        the design if the name is being used.
 
         Args:
             check_name (str, optional): Name of new component. Defaults to None.
@@ -345,7 +350,7 @@ class QComponent():
                     Otherwise return None.
         """
         answer = self._is_name_used(check_name)
-        if force_delete and answer:
+        if self._design.overwrite_enabled and answer:
             self._design.delete_component(check_name)
         elif answer:
             logger.warning(f'The name {check_name} is used in component id={answer}. '

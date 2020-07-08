@@ -61,7 +61,7 @@ class BaseQubit(QComponent):
     """Default drawing options"""
 
     def __init__(self, design, name, options=None, options_connection_pads=None,
-                 make=True, force_delete=False):
+                 make=True):
         """
         Args:
             design (QDesign): The parent design.
@@ -75,9 +75,7 @@ class BaseQubit(QComponent):
                     Options be used in the make funciton to create the geometry. (default: True)
         """
 
-        #super().__init__(design, name, options=options, make=False)
-
-        if super().__init__(design, name, options=options, make=False, force_delete=force_delete) is 'NameInUse':
+        if super().__init__(design, name, options=options, make=False) is 'NameInUse':
             # Component is not registered in design.
             # This qubit was not added to design.
             # self.logger.warning(
