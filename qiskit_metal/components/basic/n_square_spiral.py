@@ -17,7 +17,6 @@
 from qiskit_metal import draw, Dict#, QComponent
 from qiskit_metal.components.base import QComponent
 #from qiskit_metal import is_true
-import numpy as np
 
 class NSquareSpiral(QComponent):
     """Inherits QComponent class

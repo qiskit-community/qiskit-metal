@@ -56,7 +56,7 @@ class OpenToGround(QComponent):
         p = self.p  # p for parsed parameters. Access to the parsed options.
 
         port_line = draw.LineString([(0, -p.width/2), (0, p.width/2)])
-        open_termination = shapely.geometry.box(0,-(p.width/2+p.gap),p.termination_gap,(p.width/2+p.gap))
+        open_termination = draw.box(0,-(p.width/2+p.gap),p.termination_gap,(p.width/2+p.gap))
         # Rotates and translates the connector polygons (and temporary port_line)
         polys = [open_termination, port_line]
         polys = draw.rotate(polys, p.rotation, origin=(0, 0))
@@ -64,6 +64,6 @@ class OpenToGround(QComponent):
         [open_termination, port_line] = polys
 
         self.add_elements('poly', {'open_to_ground': open_termination}, subtract=True)
-        port_points = list(draw.shapely.geometry.shape(port_line).coords)
+        port_points = port_line.coords
         self.add_pin('open', port_points, p.width, self.id, flip=False)  # TODO: chip
         #HOW TO ADD A 0 volume element to a table for the GUI? Or not even needed?
