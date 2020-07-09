@@ -72,7 +72,7 @@ Widgets
     QTextEditLogger-TBD
     LogHandler_for_QTextLog-TBD
     QMainWindowPlot
-    PropertyTableWidget-TBD
+    PropertyTableWidget
     PropValTable-TBD
     RightClickView-TBD
 
@@ -146,3 +146,4 @@ else:
 from qiskit_metal._gui.main_window_base import QMainWindowExtensionBase
 from qiskit_metal._gui.elements_window import ElementsWindow
 from qiskit_metal._gui.widgets.plot_widget.plot_window import QMainWindowPlot
+from qiskit_metal._gui.widgets.variable_table.prop_val_table_gui import PropertyTableWidget
