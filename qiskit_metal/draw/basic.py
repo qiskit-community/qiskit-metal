@@ -52,11 +52,11 @@ def rectangle(w: float, h: float, xoff: float = 0, yoff: float = 0):
     Arguments:
         w (float) :  width
         h (float) :  height
-        xoff (float, optional) : Defaults to zero. gives the x position of the center.
-        yoff (float, optional) : Defaults to zero. gives the y position of the center.
+        xoff (float, optional) : Gives the x position of the center (Default: 0).
+        yoff (float, optional) : Gives the y position of the center (Default: 0).
 
     Returns:
-        shapely.geometry.Polygon
+        shapely.geometry.Polygon: Shapely rectangle
     """
 
     w, h = float(w), float(h)
@@ -83,6 +83,12 @@ def is_rectangle(obj):
     If there are 4 ext cooridnate then
     check if consequtive vectors are orhtogonal
     Assumes that the last point is not repeating
+
+    Args:
+        obj (object): object to test
+
+    Returns:
+        bool: True is object is a rectangle, false otherwise
     '''
     if not isinstance(obj, shapely.geometry.Polygon):
         return False
@@ -105,6 +111,9 @@ def subtract(poly_main:shapely.geometry.Polygon,
     Args:
         poly_main (Polygon): Main polygon from which we will carve out
         poly_tool (Polygon or list): Poly or list of polys to subtract
+
+    Returns:
+        Polygon: Difference between the given Polygons
     """
     return poly_main.difference(poly_tool)
 
@@ -118,6 +127,9 @@ def union(*polys):
     Args:
         polys (Polygon, or list of polygons, or args of polygons):
          Main polygon from which we will carve out
+
+    Returns:
+        Polygon: Union of the input polygons
     """
     # union() is an expensive way to find the cumulative union of
     # many objects.
@@ -140,15 +152,22 @@ def flip_merge(line: shapely.geometry.LineString,
     '''
     Mirror type of drawing command on LineString.
 
-    Returns the coorindates that can be used to construct a polygon, by flipping a linestring
-    over an axis and mirroring it.
-
     Calls shapely.affinity.scale(geom, xfact=xfact, yfact=yfact, zfact=1.0, origin=origin)
 
     The point of origin can be a keyword 'center' for the 2D bounding
     box center (default), 'centroid' for the geometry's 2D centroid,
     a Point object or a coordinate tuple (x0, y0, z0).
     Negative scale factors will mirror or reflect coordinates.
+
+    Args:
+        line (shapely.geometry.LineString): geometry
+        xfact (double): x-scale factor (Default: -1)
+        yfact (double): y-scale factor (Default: 1)
+        orign (tuple): coordinates of the origin
+    
+    Returns:
+        list: the coorindates that can be used to construct a polygon, by flipping a linestring
+        over an axis and mirroring it.
     '''
     line_flip = shapely.affinity.scale(
         line, xfact=xfact, yfact=yfact, origin=origin)
@@ -171,10 +190,14 @@ def _iter_func_geom_(func, objs, *args, overwrite=False, **kwargs):
             to each element
 
     Arguments:
-        func {[function]} -- [description]
-        objs {[type]} -- [description]
-        overwrite -- overwrite the parent dict or not. This applies to component elements dictionary.
-                    Maybe remove in future?
+        func (function): Function the apply
+        objs (Dict, List, Tuple or BaseGeometry): Set of objects
+        overwrite (bool): overwrite the parent dict or not. This applies to component elements dictionary.
+            Maybe remove in future? (Default: False)
+        kwargs (dict): Parameters dictionary
+
+    Returns:
+        list: List of objects
     """
 
     if isinstance(objs, Mapping):  # dict, Dict
@@ -218,12 +241,6 @@ def _iter_func_geom_(func, objs, *args, overwrite=False, **kwargs):
 
 def rotate(elements, angle, origin='center', use_radians=False, overwrite=False):
     r"""
-    Calls: shapely.affinity.rotate(
-        geom, angle, origin='center', use_radians=False)
-
-    Docstring:
-    Returns a rotated geometry on a 2D plane.
-
     The angle of rotation can be specified in either degrees (default) or
     radians by setting ``use_radians=True``. Positive angles are
     counter-clockwise and negative are clockwise rotations.
@@ -232,13 +249,28 @@ def rotate(elements, angle, origin='center', use_radians=False, overwrite=False)
     center (default), 'centroid' for the geometry's centroid, a Point object
     or a coordinate tuple (x0, y0).
 
-    The affine transformation matrix for 2D rotation is:
+    Calls: shapely.affinity.rotate(
+        geom, angle, origin='center', use_radians=False)
+    
+    Args:
+        elements (Dict, List, Tuple or BaseGeometry): Set of objects
+        angle (double): rotation angle
+        origin (tuple or str): origin point (Default: 'center')
+        use_radians (bool): true to use radians (Default: False)
+        overwrite (bool): true to overwrite (Default: False)
 
-    / cos(r) -sin(r) xoff \
-    | sin(r)  cos(r) yoff |
-    \   0       0      1  /
+    Returns:
+        geometry: A rotated geometry on a 2D plane.
+
+    The affine transformation matrix for 2D rotation is:
+    ::
+
+        / cos(r) -sin(r) xoff \
+        | sin(r)  cos(r) yoff |
+        \   0       0      1  /
 
     where the offsets are calculated from the origin Point(x0, y0):
+    ::
 
         xoff = x0 - x0 * cos(r) + y0 * sin(r)
         yoff = y0 - x0 * sin(r) - y0 * cos(r)
@@ -248,13 +280,19 @@ def rotate(elements, angle, origin='center', use_radians=False, overwrite=False)
 
 
 def translate(elements, xoff=0.0, yoff=0.0, zoff=0.0, overwrite=False):
-    r'''
-    translate(geom, xoff=0.0, yoff=0.0, zoff=0.0)
+    r'''Shifts the geometry by the given offset
+    Args:
+        elements (Dict, List, Tuple or BaseGeometry): Set of objects
+        xoff (double): x-direction offset (Default: 0.0)
+        yoff (double): y-direction offset (Default: 0.0)
+        zoff (double): z-direction offset (Default: 0.0)
+        overwrite (bool): True to overwrite (Default: False)
 
-    Docstring:
-    Returns a translated geometry shifted by offsets along each dimension.
+    Returns:
+        geometry: A translated geometry shifted by offsets along each dimension.
 
     The general 3D affine transformation matrix for translation is:
+    ::
 
         / 1  0  0 xoff \
         | 0  1  0 yoff |
@@ -269,9 +307,16 @@ def scale(elements, xfact=1.0, yfact=1.0, zfact=1.0, origin='center', overwrite=
     r'''
     Operatos on a list or Dict of components.
 
-    Signature: scale(geom, xfact=1.0, yfact=1.0, zfact=1.0, origin='center')
+    Args:
+        elements (Dict, List, Tuple or BaseGeometry): Set of objects
+        xfact: x-direction scale factor (Default: 1.0)
+        yfact: y-direction scale factor (Default: 1.0)
+        zfact: z-direction scale factor (Default: 1.0)
+        origin (tuple or str): origin point (Default: 'center')
+        overwrite (bool): True to overwrite (Default: False)
 
-    Returns a scaled geometry, scaled by factors along each dimension.
+    Returns:
+        geometry: A scaled geometry, scaled by factors along each dimension.
 
     The point of origin can be a keyword 'center' for the 2D bounding box
     center (default), 'centroid' for the geometry's 2D centroid, a Point
@@ -280,6 +325,7 @@ def scale(elements, xfact=1.0, yfact=1.0, zfact=1.0, origin='center', overwrite=
     Negative scale factors will mirror or reflect coordinates.
 
     The general 3D affine transformation matrix for scaling is:
+    ::
 
         / xfact  0    0   xoff \
         |   0  yfact  0   yoff |
@@ -287,6 +333,7 @@ def scale(elements, xfact=1.0, yfact=1.0, zfact=1.0, origin='center', overwrite=
         \   0    0    0     1  /
 
     where the offsets are calculated from the origin Point(x0, y0, z0):
+    ::
 
         xoff = x0 - x0 * xfact
         yoff = y0 - y0 * yfact
@@ -301,15 +348,13 @@ def rotate_position(elements, angle: float, pos: list, pos_rot=(0, 0), overwrite
     Orient and then place position. Just a shortcut function.
 
     Arguments:
-        obj {[type]} -- Object to roient, shapely or metal
-        angle {[float]} -- [description]
-        pos {[list, np.array]} -- position to translate to
-
-    Keyword Arguments:
-        pos_rot {tuple} -- Rotate about this point before translating. (default: {(0, 0)})
+        elements (Dict, List, Tuple or BaseGeometry): Set of objects
+        angle (float): Rotation angle
+        pos (list, np.array): position to translate to
+        pos_rot (tuple): Rotate about this point before translating. (default: {(0, 0)})
 
     Returns:
-        [type] -- Rotate dand translated, same as input
+        geometry: Rotate dand translated, same as input
     '''
 
     def rotate_position_shapely(sobj):
@@ -335,20 +380,17 @@ def buffer(elements,
         cap_style=CAP_STYLE.flat
         join_style=JOIN_STYLE.mitre
 
+    Args:
+        elements (Dict, List, Tuple or BaseGeometry): Set of objects
+        distance (float): distance
+        resolution (int): how many points (Default: None)
+        cap_style (shapely.geometry.CAP_STYLE): cap style (Default: CAP_STYLE.falt)
+        join_style (shapely.geometry.JOIN_STYLE): join style (Default JOIN_STYLE.mitre)
+        mitre_limit (double): mitre limit (Default: None)
+        overwrite (bool): True to overwrite (Default: False)
 
-    Signature:
-    line.buffer(
-        distance,
-        resolution=None, # will use config.DEFAULT.buffer_resolution  16
-        quadsegs=None,
-        cap_style=1,
-        join_style=1,
-        mitre_limit=None, # will use config.DEFAULT.buffer_mitre_limit 5.0
-    )
-
-    Docstring:
-    Returns a geometry with an envelope at a distance from the object's
-    envelope
+    Returns:
+        geometry: A geometry with an envelope at a distance from the object's envelope
 
     A negative distance has a "shrink" effect. A zero distance may be used
     to "tidy" a polygon. The resolution of the buffer around each vertex of
@@ -370,7 +412,8 @@ def buffer(elements,
     beveled.
 
     Example use:
-    --------------------
+    ::
+
         x = rectangle(1,1)
         y = buffer_flat([x,x,[x,x,{'a':x}]], 0.5)
         draw.mpl.render([x,y])
