@@ -246,16 +246,18 @@ class QMainWindowExtensionBase(QMainWindow):
 
 
 class QMainWindowBaseHandler():
-    """Abstract Class to wrap and handle main window .
+    """Abstract Class to wrap and handle main window.
 
-    Assumes a UI that has
-        log_text : a QText for logging
+    Assumes a UI that has:
+        * log_text: a QText for logging
 
     Assumes we have functions:
-        setup_logger
+        * setup_logger
 
-    Assumes we have objects
-         config.log.format, config.log.datefmt,config._ipython
+    Assumes we have objects:
+         * config.log.format
+         * config.log.datefmt
+         * config._ipython
     """
     _myappid = 'QiskitMetal'
     _img_logo_name = 'my_logo.png'
@@ -275,8 +277,12 @@ class QMainWindowBaseHandler():
         """
         Can pass in logger
 
+        Args:
+            logger (logging.Logger): the logger (Default: None)
+            handler (bool): Not used (Default: False)
+
         Attributes:
-            _settings :        Used to save the state of the window
+            _settings: Used to save the state of the window
                 This information is often stored in the system
                 registry on Windows, and in property list files on macOS and iOS.
         """
@@ -338,9 +344,11 @@ class QMainWindowBaseHandler():
 
     @property
     def path_stylesheets(self):
+        """Returns the path to teh stylesheet"""
         return Path(self.path_gui)/'styles'
 
     def style_window(self):
+        """Styles the window"""
         # fusion macintosh # windows
         self.main_window.setStyle(QtWidgets.QStyleFactory.create("fusion"))
         # TODO; add stlyesheet to load here - maybe pull form settings
@@ -358,15 +366,17 @@ class QMainWindowBaseHandler():
         """
         Only one qApp can exist at a time, so check before creating one.
 
+        Returns:
+            QApplication: a setup QApplication
 
         There are three classes:
-            QCoreApplication - base class. Used in command line applications.
-            QGuiApplication - base class + GUI capabilities. Used in QML applications.
-            QApplication - base class + GUI + support for widgets. Use it in QtWidgets applications.
+            * QCoreApplication - base class. Used in command line applications.
+            * QGuiApplication - base class + GUI capabilities. Used in QML applications.
+            * QApplication - base class + GUI + support for widgets. Use it in QtWidgets applications.
 
         See:
-            https://forum.qt.io/topic/94834/differences-between-qapplication-qguiappication-qcoreapplication-classes/3
-            https://github.com/matplotlib/matplotlib/blob/9984f9c4db7bfb02ffca53b7823acb8f8e223f6a/lib/matplotlib/backends/backend_qt5.py#L98
+            * https://forum.qt.io/topic/94834/differences-between-qapplication-qguiappication-qcoreapplication-classes/3
+            * https://github.com/matplotlib/matplotlib/blob/9984f9c4db7bfb02ffca53b7823acb8f8e223f6a/lib/matplotlib/backends/backend_qt5.py#L98
         """
 
         self.qApp = QApplication.instance()
@@ -409,6 +419,7 @@ class QMainWindowBaseHandler():
         return self.qApp
 
     def _setup_main_window_tray(self):
+        """Sets up the main window tray"""
 
         if self.path_imgs.is_dir():
             icon = QIcon(str(self.path_imgs/self._img_logo_name))
@@ -420,6 +431,15 @@ class QMainWindowBaseHandler():
             self.qApp.setWindowIcon(icon)
 
     def create_log_handler(self, name_toshow: str, logger: logging.Logger):
+        """Creates a log handler
+
+        Args:
+            name_toshow (str): Display name
+            logger (logging.Logger): the logger
+
+        Returns:
+            LogHandler_for_QTextLog: a LogHandler_for_QTextLog
+        """
         return LogHandler_for_QTextLog(name_toshow, self, self.ui.log_text, logger)
 
     @catch_exception_slot_pyqt()
@@ -441,6 +461,7 @@ class QMainWindowBaseHandler():
             self.logger.warning('UI does not have `log_text`')
 
     def _setup_window_size(self):
+        """Setup the window size"""
         if self.config.main_window.auto_size:
             screen = self.qApp.primaryScreen()
             # screen.name()
@@ -456,12 +477,17 @@ class QMainWindowBaseHandler():
         """
         Load and set stylesheet for the main gui.
 
-
-        Keyword Arguments:
+        Arguments:
             path (str) : Path to stylesheet or its name.
                 Can be: 'default', 'qdarkstyle' or None.
                 `qdarkstyle` requires
                 >>> pip install qdarkstyle
+
+        Returns:
+            bool: False if failure, otherwise nothing
+
+        Raises:
+            ImportError: Import failure
         """
         result = True
         if path == 'default' or path is None:
@@ -495,6 +521,17 @@ class QMainWindowBaseHandler():
             return False
 
     def _load_stylesheet_from_file(self, path: str):
+        """Load the sylesheet from a file
+
+        Args:
+            path (str): Path to file
+
+        Returns:
+            bool: False if failure, otherwise nothing
+
+        Raises:
+            Exception: Stylesheet load failure
+        """
         # print(f'path = {path}')
         try:
             path = Path(str(path))
@@ -526,7 +563,11 @@ class QMainWindowBaseHandler():
         self.main_window.get_screenshot(name, type_, display, disp_ops)
 
     def save_file(self):
-        """Save file. Called on exit"""
+        """Save file. Called on exit
+
+        Raises:
+            NotImplementedError: Function not written 
+        """
         raise NotImplementedError()
 
 
