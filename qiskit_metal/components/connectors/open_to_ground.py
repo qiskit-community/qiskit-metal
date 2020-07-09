@@ -64,6 +64,5 @@ class OpenToGround(QComponent):
         [open_termination, port_line] = polys
 
         self.add_elements('poly', {'open_to_ground': open_termination}, subtract=True)
-        port_points = port_line.coords
-        self.add_pin('open', port_points, p.width, self.id, flip=False)  # TODO: chip
+        self.add_pin('open', port_line.coords, p.width, self.id, flip=False)  # TODO: chip
         #HOW TO ADD A 0 volume element to a table for the GUI? Or not even needed?

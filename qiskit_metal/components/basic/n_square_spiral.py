@@ -17,6 +17,7 @@
 from qiskit_metal import draw, Dict#, QComponent
 from qiskit_metal.components.base import QComponent
 #from qiskit_metal import is_true
+import numpy as np
 
 class NSquareSpiral(QComponent):
     """Inherits QComponent class
@@ -86,3 +87,9 @@ class NSquareSpiral(QComponent):
         # add elements
         self.add_elements('path', {'n_spiral': spiral_list}, width=p.width/2, subtract=p.subtract,
                           helper=p.helper, layer=p.layer, chip=p.chip)
+
+        points = np.array(spiral_list.coords)
+        #FIX POINTS, 
+        self.add_pin('spiralPin',
+            points = points[-2:],
+            width = p.width/2, parent = self.id, input_as_norm=True,  flip=False)
