@@ -18,8 +18,8 @@
 Main module for basic geometric manipulation of non-shapely objects,
 but objects such as points and arrays used in drawing.
 
-
 @date: 2019
+
 @author: Zlatko Minev (IBM)
 """
 
@@ -50,10 +50,10 @@ def get_poly_pts(poly: Polygon):
     Return the coordinates of a Shapely polygon with the last repeating point removed
 
     Arguments:
-        poly {[shapely.Polygon]} -- Shapely polygin
+        poly (shapely.Polygon): Shapely polygin
 
     Returns:
-        [np.array] -- Sequence of coorindates.
+        np.array: Sequence of coorindates.
     """
     return np.array(poly.exterior.coords)[:-1]
 
@@ -64,14 +64,12 @@ def get_all_geoms(obj, func=lambda x: x, root_name='components'):
     Used to compute the bounding box.
 
     Arguments:
-        components {[dict,list,element,component]} --
-
-    Keyword Arguments:
-        func {[function]} -- [description] (default: {lambdax:x})
-        root_name {str} -- Name to prepend in the flattening (default: {'components'})
+        obj (dict, list, element, component): Object to get from
+        func (function): Function to use if mapping (Default: (lambda x: x)
+        root_name (str): Name to prepend in the flattening (Default: 'components')
 
     Returns:
-        [dict] -- [description]
+        dict: Dictonary of geometries
     """
 
     # Prelim
@@ -121,10 +119,11 @@ def flatten_all_filter(components: dict, filter_obj=None):
     """Internal function to flatten a dict of shapely objects.
 
     Arguments:
-        components {dict} -- [description]
+        components (dict): dictionary of components
+        filter_obj (class): Filter based on this class (Default: None)
 
-    Keyword Arguments:
-        filter_obj {[class]} -- Filter based on this calss (default: {None})
+    Returns:
+        array: flattened dictionary
     """
     assert isinstance(components, dict)
 
@@ -149,12 +148,12 @@ def get_all_component_bounds(components: dict, filter_obj=Polygon):
     Pass in a dict of components to calcualte the total bounding box.
 
     Arguments:
-        components {dict} -- [description]
-        filter_obj {Polygon} -- only use instances of this object to
-                             calcualte the bounds
+        components (dict): Dictionary of components
+        filter_obj (Polygon): only use instances of this object to
+                              calcualte the bounds
 
     Returns:
-        (x_min, y_min, x_max, y_max)
+        tuple: (x_min, y_min, x_max, y_max)
     """
     assert isinstance(components, dict)
 
@@ -170,6 +169,14 @@ def get_all_component_bounds(components: dict, filter_obj=Polygon):
 # POINT LIST FUNCTIONS
 
 def check_duplicate_list(your_list):
+    """Check if the list contains duplicates
+
+    Args:
+        your_list (list): List to check
+
+    Returns:
+        bool: True if there are duplicates, False otherwise
+    """
     return len(your_list) != len(set(your_list))
 
 
@@ -177,6 +184,15 @@ def array_chop(vec, zero=0, rtol=0, machine_tol=100):
     '''
     Chop array entries close to zero.
     Zlatko quick solution.
+
+    Args:
+        vec (array): Array to chop
+        zero (double): Value to check against (Default: 0)
+        rtol (double): Relative tolerance (Default: 0)
+        machine_tol (double): Machine tolerance (Default: 100)
+
+    Returns:
+        array: Chopped arary
     '''
     vec = np.array(vec)
     mask = np.isclose(vec, zero, rtol=rtol,
@@ -188,6 +204,12 @@ def array_chop(vec, zero=0, rtol=0, machine_tol=100):
 def remove_colinear_pts(points):
     '''
     remove colinear points and identical consequtive points
+
+    Args:
+        points (array): Array of points
+
+    Returns:
+        ndarray: A copy of the input array without colinear points
     '''
     remove_idx = []
     for i in range(2, len(points)):
@@ -220,13 +242,13 @@ def vec_unit_planar(vector: np.array):
     I.e., Normalizes only in the XY plane, leaves the Z plane alone.
 
     Arguments:
-        vector {np.array} -- input 2D or 3D
-
-    Raises:
-        Exception: [description]
+        vector (np.array): input 2D or 3D
 
     Returns:
-        np.array -- Same dimension 2D or 3D
+        np.array: Same dimension 2D or 3D
+    
+    Raises:
+        Exception: The input was not a 2 or 3 vector
     """
     vector = array_chop(vector)  # get rid of near zero crap
 

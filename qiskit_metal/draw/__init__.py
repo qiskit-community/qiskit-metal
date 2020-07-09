@@ -42,7 +42,7 @@ Submodules
     :toctree:
 
     basic
-    utility-TBD
+    utility
 
 """
 
