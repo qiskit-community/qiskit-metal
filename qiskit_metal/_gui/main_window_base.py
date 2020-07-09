@@ -42,10 +42,11 @@ class QMainWindowExtensionBase(QMainWindow):
     """This contains all the functions tthat the gui needs
     to call directly from the UI
 
-    Based on QMainWindow
+    Extends the `QMainWindow` class
     """
 
     def __init__(self):
+        """  """
         super().__init__()
         # Set manually
         self.handler = None  # type: QMainWindowBaseHandler
@@ -57,32 +58,45 @@ class QMainWindowExtensionBase(QMainWindow):
 
     @property
     def settings(self) -> QtCore.QSettings:
+        """Get the settings"""
         return self.handler.settings
 
     @property
     def gui(self) -> 'QMainWindowBaseHandler':
+        """Get the GUI"""
         self.handler
 
     def _remove_log_handlers(self):
+        """Remove the log handlers"""
         if hasattr(self, 'log_text'):
             self.log_text.remove_handlers(self.logger)
 
     def destroy(self, destroyWindow: bool = True, destroySubWindows: bool = True):
         """
         When the window is cleaned up from memory.
+
+        Args:
+            destroyWindow (bool): Whether or not to destroy the window (Default: True)
+            destroySubWindows (bool): Whether or not to destroy sub windows (Default: True)
         """
         self._remove_log_handlers()
         super().destroy(destroyWindow=destroyWindow, destroySubWindows=destroySubWindows)
 
     def closeEvent(self, event):
         """whenever a window is closed.
-            Passed an event which we can choose to accept or reject.
+        Passed an event which we can choose to accept or reject.
         """
         if self.ok_to_continue():
             self.save_window_settings()
             super().closeEvent(event)
 
     def ok_to_continue(self):
+        """
+        Determine if it ok to continue
+
+        Returns:
+            bool: True to continue, False otherwise
+        """
         if 1:
             reply = QMessageBox.question(self,
                                          "Qiskit Metal",
@@ -95,6 +109,7 @@ class QMainWindowExtensionBase(QMainWindow):
         return True
 
     def save_window_settings(self):
+        """Save the window settings"""
         self.logger.info('Saving window state')
         # get the current size and position of the window as a byte array.
         self.settings.setValue('metal_version', __version__)
@@ -106,6 +121,9 @@ class QMainWindowExtensionBase(QMainWindow):
         """
         Call a Qt built-in function to restore values
         from the settings file.
+
+        Raises:
+            Exception: Error in restoration
         """
 
         version_settings = self.settings.value('metal_version', defaultValue='0')
@@ -137,8 +155,8 @@ class QMainWindowExtensionBase(QMainWindow):
 
     def bring_to_top(self):
         """ Bring window to top.
-         Note that on Windows, this doesn't always work quite well
-         """
+        Note that on Windows, this doesn't always work quite well
+        """
         self.raise_()
         self.activateWindow()
 
@@ -196,6 +214,7 @@ class QMainWindowExtensionBase(QMainWindow):
 
     @catch_exception_slot_pyqt()
     def _screenshot(self, _):
+        """Used to call from action"""
         self.get_screenshot()
 
     @catch_exception_slot_pyqt()

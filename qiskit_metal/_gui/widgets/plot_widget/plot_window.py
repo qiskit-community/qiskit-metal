@@ -23,6 +23,8 @@ class QMainWindowPlot(QMainWindow):
     """
     This is just a handler (container) for the UI; it a child object of the main gui.
 
+    Extends the `QMainWindow` class
+ 
     PyQt5 Signal / Slots Extensions:
         The UI can call up to this class to execeute button clicks for instance
         Extensiosn in qt designer on signals/slots are linked to this class
@@ -32,6 +34,11 @@ class QMainWindowPlot(QMainWindow):
     """
 
     def __init__(self, gui: 'MetalGUI', parent_window: 'QMainWindowExtension'):
+        """
+        Args:
+            gui (MetalGUI): The GUI
+            parent_window (QMainWindowExtension): Parent window
+        """
         # Q Main WIndow
         super().__init__(parent_window)
 
@@ -54,21 +61,30 @@ class QMainWindowPlot(QMainWindow):
         self.ui.centralwidget.layout().addWidget(self.canvas)
 
     def set_design(self, design):
+        """Set the design
+
+        Args:
+            design (QDesign): Design to set the canvas to
+        """
         self.canvas.set_design(design)
 
     @property
     def design(self):
+        """Returns the design"""
         return self.gui.design
 
     def replot(self):
+        """Tells the canvas to replot"""
         # self.logger.debug("Force replot")
         self.canvas.plot()
 
     def auto_scale(self):
+        """Tells the canvas to perform an automatic scale"""
         self.logger.debug("Autoscale")
         self.canvas.auto_scale()
 
     def pan(self):
+        """Displays a message about how to pan"""
         QMessageBox.about(self, "Pan", """Navigation help:
 
 Pan:
@@ -81,16 +97,27 @@ Either use the mouse middle wheel to zoom in and out by scrolling,
 or use the right click and drag to select a region.""")
 
     def zoom(self):
+        """Displays a message about how to zoom"""
         QMessageBox.about(self, "Zoom", "Either use the mouse middle wheel"
                           " to zoom in and out by scrolling, or use the right click and"
                           " drag to select a region.")
 
     def set_position_track(self, yesno: bool):
+        """Set the position tracker
+
+        Args:
+            yesno (bool): Whether or not to display instructions
+        """
         if yesno:
             self.logger.info("Click a point in the plot window to see"
                              " its coordinate.")
         self.canvas.panzoom.options.report_point_position = yesno
 
     def set_show_pins(self,  yesno: bool):
+        """Displays on the logger whether or not pins are showing
+
+        Args:
+            yesno (bool): Whether or not to show pins
+        """
         self.logger.info(f"Showing pins: {yesno}")
         # TODO:

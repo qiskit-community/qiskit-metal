@@ -29,13 +29,68 @@ Created on Tue May 14 17:13:40 2019
 
 UNDER CONSTRUCTION
 
-UNDER-CONSTRUCTION
+Main Window
 ---------------
 
 .. autosummary::
     :toctree: ../stubs/
 
-    UNDER-CONSTRUCTION
+    QMainWindowExtensionBase
+    QMainWindowBaseHandler-TBD
+    QMainWindowExtension-TBD
+    MetalGUI-TBD
+
+
+Elements Window
+---------------
+
+.. autosummary::
+    :toctree: ../stubs/
+
+    ElementsWindow
+    ElementTableModel-TBD
+
+
+Widgets
+---------------
+
+.. autosummary::
+    :toctree: ../stubs/
+
+    QTableView_AllComponents-TBD
+    QTableModel_AllComponents-TBD
+    QToolBarExpanding-TBD
+    QWidget_PlaceholderText-TBD
+    ComponentWidget-TBD
+    MetalSourceEditor-TBD
+    QTableModel_Options-TBD
+    QTableView_Options-TBD
+    BranchNode-TBD
+    LeafNode-TBD
+    QTreeModel_Options-TBD
+    QTreeView_Options-TBD
+    QTextEditLogger-TBD
+    LogHandler_for_QTextLog-TBD
+    QMainWindowPlot
+    PropertyTableWidget-TBD
+    PropValTable-TBD
+    RightClickView-TBD
+
+
+Submodules
+----------
+
+.. autosummary::
+    :toctree:
+
+    main_window_base-TBD
+    _handle_qt_messages-TBD
+    _toolbox_qt-TBD
+    component_widget-TBD
+    source_editor-TBD
+    source_editor_widget-TBD
+    table_model_options-TBD
+    tree_model_options-TBD
 
 """
 
@@ -87,3 +142,7 @@ else:
         print(_error_msg)
 
         raise Exception(_error_msg)
+
+from qiskit_metal._gui.main_window_base import QMainWindowExtensionBase
+from qiskit_metal._gui.elements_window import ElementsWindow
+from qiskit_metal._gui.widgets.plot_widget.plot_window import QMainWindowPlot

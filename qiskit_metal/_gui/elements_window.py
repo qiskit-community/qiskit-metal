@@ -22,12 +22,19 @@ class ElementsWindow(QMainWindow):
     """
     This is just a handler (container) for the UI; it a child object of the main gui.
 
+    Extends the `QMainWindow` class
+
     PyQt5 Signal / Slots Extensions:
         The UI can call up to this class to execeute button clicks for instance
         Extensiosn in qt designer on signals/slots are linked to this class
     """
 
     def __init__(self, gui: 'MetalGUI', parent_window: 'QMainWindowExtension'):
+        """
+        Args:
+            gui (MetalGUI): the GUI
+            parent_window (QMainWindowExtension): Parent window
+        """
         # Q Main Window
         super().__init__(parent_window)
 
@@ -47,13 +54,20 @@ class ElementsWindow(QMainWindow):
 
     @property
     def design(self):
+        """Returns the design"""
         return self.gui.design
 
     def combo_element_type(self, new_type: str):
+        """Change to the given type
+
+        Args:
+            new_type (str): Type to change to
+        """
         self.logger.info(f'Changed elemtn table type to: {new_type}')
         self.model.set_type(new_type)
 
     def force_refresh(self):
+        """Force a refresh"""
         self.model.refresh()
 
 
