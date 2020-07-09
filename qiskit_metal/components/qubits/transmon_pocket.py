@@ -112,9 +112,12 @@ class TransmonPocket(BaseQubit):
                 |_______|______|                 |
                 |________________________________|   +1
                                             +1
+
+    .. image::
+        Component_Qubit_Transmon_Pocket.png
     """
 
-    _img = 'transmon_pocket1.png'
+    #_img = 'transmon_pocket1.png'
 
     default_options = Dict(
         pos_x='0um',

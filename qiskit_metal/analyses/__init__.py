@@ -25,14 +25,15 @@ Module containing all Qiskit Metal analyses.
 
 @author: Zlatko Minev (IBM)
 
-UNDER CONSTRUCTION
-
-UNDER-CONSTRUCTION
----------------
+Submodules
+----------
 
 .. autosummary::
-    :toctree: ../stubs/
+    :toctree:
 
-    UNDER-CONSTRUCTION
-
+    cpw_calculations
+    lumped_capacitive
 """
+
+from . import cpw_calculations
+from . import lumped_capacitive
