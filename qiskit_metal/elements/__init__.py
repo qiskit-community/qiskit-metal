@@ -27,13 +27,22 @@ This modules defines and handles everything related to the elements abstraction.
 
 UNDER CONSTRUCTION
 
-UNDER-CONSTRUCTION
+QElementTables
 ---------------
 
 .. autosummary::
     :toctree: ../stubs/
 
-    UNDER-CONSTRUCTION
+    QElementTables
+
+
+Submodules
+----------
+
+.. autosummary::
+    :toctree:
+
+    element_handler-TBD
 
 """
 from .elements_handler import is_element_table, QElementTables#, ElementTypes
