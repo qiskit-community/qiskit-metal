@@ -27,13 +27,22 @@ Module containing all Qiskit Metal draw code.
 
 UNDER CONSTRUCTION
 
-UNDER-CONSTRUCTION
+Vector
 ---------------
 
 .. autosummary::
     :toctree: ../stubs/
 
-    UNDER-CONSTRUCTION
+    Vector-TBD
+
+Submodules
+----------
+
+.. autosummary::
+    :toctree:
+
+    basic
+    utility-TBD
 
 """
 
