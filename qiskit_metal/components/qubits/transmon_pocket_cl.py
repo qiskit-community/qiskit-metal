@@ -63,6 +63,10 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
         |_______________|
 
 
+    .. image::
+        Component_Qubit_Transmon_Pocket_CL.png
+
+
     Charge Line:
         * make_CL (bool): If a chargeline should be included.
         * cl_gap (string): The cpw dielectric gap of the charge line.
