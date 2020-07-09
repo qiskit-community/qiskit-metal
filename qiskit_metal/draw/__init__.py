@@ -25,8 +25,6 @@ Module containing all Qiskit Metal draw code.
 
 @author: Zlatko Minev (IBM)
 
-UNDER CONSTRUCTION
-
 Vector
 ---------------
 

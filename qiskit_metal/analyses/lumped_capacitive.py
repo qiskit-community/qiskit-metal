@@ -87,7 +87,7 @@ def transmon_props(Ic, Cq):
 
 def chi(g, wr, w01, w12):
     """
-    calculate the chi (2*chi is the |0> --> |1> splitting)
+    calculate the chi (2*chi is the `|0> --> |1>` splitting)
 
     these need to be in the same units
 
@@ -144,7 +144,7 @@ def extract_transmon_coupled_Noscillator(capMatrix, Ic, CJ, N, fb, fr, res_L4_co
         ValueError: If the capacitance matrix is the wrong size
 
     calculate the χ The full dispersive splitting using analytical
-    approximations, i.e., return the |0> --> |1> splitting
+    approximations, i.e., return the `|0> --> |1>` splitting
     """
 
     # Error checks
@@ -498,7 +498,8 @@ def cos_to_mega_and_delta(Cin, ICin, f01, f02on2):
 
 
 def chargeline_T1(Ccharge, Cq, f01):
-    """ calculate the charge line T1 
+    """
+    Calculate the charge line `T1`
 
     Args:
         Cchare (float): Ccharge
