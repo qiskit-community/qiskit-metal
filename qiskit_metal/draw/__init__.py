@@ -25,15 +25,22 @@ Module containing all Qiskit Metal draw code.
 
 @author: Zlatko Minev (IBM)
 
-UNDER CONSTRUCTION
-
-UNDER-CONSTRUCTION
+Vector
 ---------------
 
 .. autosummary::
     :toctree: ../stubs/
 
-    UNDER-CONSTRUCTION
+    Vector
+
+Submodules
+----------
+
+.. autosummary::
+    :toctree:
+
+    basic
+    utility
 
 """
 
