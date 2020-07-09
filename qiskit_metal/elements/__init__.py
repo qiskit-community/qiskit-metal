@@ -25,8 +25,6 @@ This modules defines and handles everything related to the elements abstraction.
 
 @author: Zlatko Minev (IBM)
 
-UNDER CONSTRUCTION
-
 QElementTables
 ---------------
 
@@ -42,7 +40,7 @@ Submodules
 .. autosummary::
     :toctree:
 
-    element_handler-TBD
+    elements_handler
 
 """
 from .elements_handler import is_element_table, QElementTables#, ElementTypes

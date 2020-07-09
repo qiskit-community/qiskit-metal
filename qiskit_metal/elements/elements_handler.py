@@ -14,10 +14,10 @@
 
 """
 This is the main module that defines what an element is in Qiskit Metal.
-See the docstring of BaseElement
-    >> ?BaseElement
+See the docstring of `QElementTables`
 
 @author: Zlatko Minev, Thomas McConekey, ... (IBM)
+
 @date: 2019
 """
 import functools
@@ -57,16 +57,16 @@ __all__ = ['is_element_table', 'QElementTables']  # , 'ElementTypes']
 
 def is_element_table(obj):
     """Check if an object is a Metal BaseElementTable, i.e., an instance of
-     `QElementTables`.
+    `QElementTables`.
 
     The problem is that the `isinstance` built-in method fails
     when this module is reloaded.
 
     Arguments:
-        obj {[object]} : Test this object
+        obj (object) : Test this object
 
     Returns:
-        [bool] : True if is a Metal element
+        bool: True if is a Metal element
     """
     if isinstance(obj, Dict):
         return False
@@ -157,24 +157,22 @@ class QElementTables(object):
     A regular user would not need to create tables themselves.
     This is handled automatically by the design creation and plugins.
 
-    Structure
-    ---------
-    A component, such as a qubit, is a collection of elements.
-    For example, an element includes a rectangle, a cpw path, or a more general polygon.
+    Structure:
+        A component, such as a qubit, is a collection of elements.
+        For example, an element includes a rectangle, a cpw path, or a more general polygon.
 
-    An element is a row in a table.
+        An element is a row in a table.
 
-    All elements of a type (Path or Polygon, or otherwise) are stored in a
-    single table of their element type.
+        All elements of a type (Path or Polygon, or otherwise) are stored in a
+        single table of their element type.
 
-    All elements of the same kind are stored in a table.
-    A renderer has to know how to handle all types of elements in order to render them.
+        All elements of the same kind are stored in a table.
+        A renderer has to know how to handle all types of elements in order to render them.
 
-    For plugin developers
-    ---------------------
-    In the followin, we provide an example that illustrates for plugin developers how
-    to add custom elements and custom element properties. For example, we will add, for a renderer
-    called hfss, a string property called 'boundary', a bool property called 'perfectE', and a property called 'material'.
+    For plugin developers:
+        In the followin, we provide an example that illustrates for plugin developers how
+        to add custom elements and custom element properties. For example, we will add, for a renderer
+        called hfss, a string property called 'boundary', a bool property called 'perfectE', and a property called 'material'.
 
     For plugin developers, example use:
 
@@ -194,7 +192,7 @@ class QElementTables(object):
             design.elements.get_component(
                     component_name,
                     element_name,
-                    columns=all or geom or list?) # get all elemetns for compoentns
+                    columns=all or geom or list) # get all elemetns for compoentns
 
             >>> component	name	geometry	layer	type	chip	subtract	fillet	color	width
 
