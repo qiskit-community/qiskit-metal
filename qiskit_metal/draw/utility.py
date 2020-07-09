@@ -277,7 +277,8 @@ class Vector:
     Utility functions to call on 2D vectors, which can be np.ndarrays or lists.
     """
 
-    normal_z = np.array([0, 0, 1])              # hardcoded
+    normal_z = np.array([0, 0, 1])  
+    """ Noraml Z array """
 
     @staticmethod
     def rotate_around_point(xy: Vec2D, radians: float, origin=(0, 0)) -> np.ndarray:
@@ -292,14 +293,12 @@ class Vector:
             \end{split}
 
         Arguments:
-            xy {Vec2D} -- A 2D vector.
-            radians {float} -- Counter clockwise angle
-
-        Keyword Arguments:
-            origin {tuple} -- point to rotate about (default: {(0, 0)})
+            xy (Vec2D): A 2D vector.
+            radians (float): Counter clockwise angle
+            origin (tuple): point to rotate about (Default: (0, 0)
 
         Returns:
-            np.ndarray -- rotated point
+            np.ndarray: rotated point
         """
         # see: https://gist.github.com/LyleScott/d17e9d314fbe6fc29767d8c5c029c362
         x, y = xy
@@ -318,11 +317,11 @@ class Vector:
         Positive angles are counter-clockwise and negative are clockwise rotations.
 
         Arguments:
-            xy {Vec2D} -- A 2D vector.
-            radians {float} -- Counter clockwise angle
+            xy (Vec2D): A 2D vector.
+            radians (float): Counter clockwise angle
 
         Returns:
-            np.ndarray -- rotated point
+            np.ndarray: rotated point
         """
         x, y = xy
         cos_rad = math.cos(radians)
@@ -337,30 +336,31 @@ class Vector:
         Return the angle in radians of a vector.
 
         Arguments:
-            vector {Union[list, np.ndarray]} -- a 2D vector
+            vector (Union[list, np.ndarray): a 2D vector
 
         Returns:
-            [type] -- [description]
+            float: Angle in radians
 
         Caution:
             The angle is defined from the Y axis!
 
             See https://docs.scipy.org/doc/numpy/reference/generated/numpy.arctan2.html
-            ```
-                |-> Positive direction, defined from Y axis
-                |
-            --------
-                |
-                |
+            ::
 
-                x1	x2	arctan2(x1,x2)
-                +/- 0	+0	+/- 0
-                +/- 0	-0	+/- pi
-                > 0	+/-inf	+0 / +pi
-                < 0	+/-inf	-0 / -pi
-                +/-inf	+inf	+/- (pi/4)
-                +/-inf	-inf	+/- (3*pi/4)
-            ```
+                    |-> Positive direction, defined from Y axis
+                    |
+                --------
+                    |
+                    |
+
+                    x1	x2	arctan2(x1,x2)
+                    +/- 0	+0	+/- 0
+                    +/- 0	-0	+/- pi
+                    > 0	+/-inf	+0 / +pi
+                    < 0	+/-inf	-0 / -pi
+                    +/-inf	+inf	+/- (pi/4)
+                    +/-inf	-inf	+/- (3*pi/4)
+            
             Note that +0 and -0 are distinct floating point numbers, as are +inf and -inf.
         """
         return np.arctan2(vector)
@@ -370,11 +370,11 @@ class Vector:
         """Returns the angle in radians between vectors 'v1' and 'v2'
 
         Arguments:
-            v1 {Vec2D} -- First vector
-            v2 {Vec2D} -- Second vector
+            v1 (Vec2D): First vector
+            v2 (Vec2D): Second vector
 
         Returns:
-            float -- angle in radians. The angle of the ray intersecting the unit
+            float: Angle in radians. The angle of the ray intersecting the unit
             circle at the given x-coordinate in radians [0, pi]. This is a scalar.
         """
         v1_u = vec_unit_planar(v1)
@@ -387,13 +387,11 @@ class Vector:
         Turn a 2D vector into a 3D vector by adding the z coorindate.
 
         Arguments:
-            vec2D {np.array} -- Input 2D vector.
-
-        Keyword Arguments:
-            z {float} -- Add this value to the 3rd dimension (default: {0})
+            vec2D (np.array): Input 2D vector.
+            z (float): Add this value to the 3rd dimension (default: {0})
 
         Returns:
-            np.array -- 3D vector.
+            np.array: 3D vector.
         """
         if isinstance(vec2D[0], Iterable):
             return array([Vector.add_z(vec, z=z) for vec in vec2D])
@@ -405,10 +403,10 @@ class Vector:
         """Return normed vector
 
         Arguments:
-            vec {Vec2D} -- Vector
+            vec (Vec2D): Vector
 
         Returns:
-            Vec2D -- Unit normed version of vector
+            vector: Vec2D -- Unit normed version of vector
         """
         return Vec2D / norm(Vec2D)
 
@@ -417,10 +415,10 @@ class Vector:
         """Return the norm of a 2D vector
 
         Arguments:
-            vec {Vec2D} -- 2D vector
+            vec (Vec2D): 2D vector
 
         Returns:
-            float -- length of vector
+            float: length of vector
         """
         return norm(vec)
 
@@ -430,15 +428,13 @@ class Vector:
         by `tol` and machine epsilon
 
         Arguments:
-            v1 {[type]} -- [description]
-            v2 {[type]} -- [description]
-
-        Keyword Arguments:
-            tol {int} -- How much to multiply the machine precision, np.finfo(float).eps,
-                        by as the tolerance (default: {100})
+            v1 (Vec2D): first vector to check
+            v2 (Vec2D): second vector to check
+            tol (int): How much to multiply the machine precision, np.finfo(float).eps,
+                       by as the tolerance (Default: 100)
 
         Returns:
-            bool -- same or not
+            bool: Same or not
         """
         v1, v2 = np.array(v1), np.array(v2)
         return Vector.is_zero(v1-v2, tol=tol)
@@ -449,33 +445,34 @@ class Vector:
         set by `tol` and machine epsilon
 
         Arguments:
-            vec {Vec2D} -- [description]
-
-        Keyword Arguments:
-            tol {int} -- How much to multiply the machine precision, np.finfo(float).eps,
-                        by as the tolerance (default: {100})
+            vec (Vec2D): Vector to check
+            tol (int): How much to multiply the machine precision, np.finfo(float).eps,
+                       by as the tolerance (Default: 100)
 
         Returns:
-            bool -- close to zero or not
+            bool: Close to zero or not
         """
         return float(norm(vec)) < tol*np.finfo(float).eps
 
     @staticmethod
     def two_points_described(points2D: List[Vec2D]) -> Tuple[np.ndarray]:
         """
-        For a list of exactly two given 2D points, get:
-            d: the distance vector between them
-            n: normal vector defined by d
-            t: the vector tangent to n
-
-        .. codeblock python
-            vec_D, vec_d, vec_n = Vector.difference_dnt(points)
-
+        Get the distance, units and tagents
         Arguments:
-            points {np.array or list} -- 2D list of points
+            points (np.array or list): 2D list of points
 
         Returns:
-            distance_vec, dist_unit_vec, tangent_vec -- Each is a vector np.array
+            tuple: (distance_vec, dist_unit_vec, tangent_vec) -- Each is a vector np.array
+
+        For a list of exactly two given 2D points, get:
+            * d: the distance vector between them
+            * n: normal vector defined by d
+            * t: the vector tangent to n
+
+        .. code-block:: python
+
+            vec_D, vec_d, vec_n = Vector.difference_dnt(points)
+
         """
         assert len(points2D) == 2
         start = np.array(points2D[0])
@@ -498,13 +495,11 @@ class Vector:
         """snaps to either the x or y unit vecotrs
 
         Arguments:
-            vec_n {Vec2D} -- [description]
-
-        Keyword Arguments:
-            flip {bool} -- [description] (default: {False})
+            vec_n (Vec2D): 2D vector
+            flip (bool): True to flip (Default: False)
 
         Returns:
-            Vec2D -- [description]
+            Vec2D: snapped vector
         """
         #TODO: done silly, fix up
         m = np.argmax(abs(vec_n))

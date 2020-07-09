@@ -33,7 +33,7 @@ Vector
 .. autosummary::
     :toctree: ../stubs/
 
-    Vector-TBD
+    Vector
 
 Submodules
 ----------
