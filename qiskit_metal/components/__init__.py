@@ -99,7 +99,6 @@ from .basic.circle_caterpillar import CircleCaterpillar
 from .basic.circle_raster import CircleRaster
 from .basic.rectangle import Rectangle
 from .basic.rectangle_hollow import RectangleHollow
-from .interconnects.cpw_meander import Connector
 from .interconnects.cpw_meander import CpwMeanderSimple
 from .interconnects.fake_cpw import FakeCPW
 from .qubits.transmon_cross import TransmonCross

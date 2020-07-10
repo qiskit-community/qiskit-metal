@@ -13,8 +13,8 @@ import numpy as np
 from qiskit_metal import draw, Dict#, QComponent
 from qiskit_metal.components import QComponent
 #from qiskit_metal import is_true
+from qiskit_metal.toolbox_metal.parsing import is_true
 
-# from qiskit_metal.toolbox_metal.parsing import is_true
 options = Dict(pin_start_name='Q1_a',
                pin_end_name='Q2_b',
                meander=Dict(
@@ -47,6 +47,7 @@ class Oriented_2D_Array:
                 This is the normal vector to the surface on which the connector mates.
                 Has unit norm.
         """
+        print(position)
         self.positions = np.expand_dims(position, axis=0)
         self.directions = np.expand_dims(vec_unit_planar(direction), axis=0)
 
@@ -450,26 +451,26 @@ class CpwMeanderSimple(QComponent):
         z
         return z, odd
 
-    def get_start(self) -> List:
+    def get_start(self) -> Tuple:
         """Return the start point and normal direction vector
 
         Returns:
             dict: A dictionary with keys `point` and `direction`.
             The values are numpy arrays with two float points each.
         """
-        pin = self.design.connectors[self.options.pin_start_name]
+        pin = self.design.components[self.options.component_start_name].pins[self.options.pin_start_name]
         position = pin['middle']
         direction = pin['normal']
         return position, direction
 
-    def get_end(self) -> List:
+    def get_end(self) -> Tuple:
         """Return the start point and normal direction vector
 
         Returns:
             dict: A dictionary with keys `point` and `direction`.
             The values are numpy arrays with two float points each.
         """
-        pin = self.design.connectors[self.options.pin_end_name]
+        pin = self.design.components[self.options.component_end_name].pins[self.options.pin_end_name]
         position = pin['middle']
         direction = pin['normal']
         return position, direction
