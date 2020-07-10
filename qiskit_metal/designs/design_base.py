@@ -262,7 +262,7 @@ class QDesign():
         keys[keys.index(old_key)] = new_key
         self._variables = Dict(zip(keys, values))
 
-    def delete_all_pins(self) -> pd.core.frame.DataFrame:
+    def delete_all_pins(self) -> 'QNet':
         """
         Clear all pins in the net_Info and update the pins in components.
 
@@ -276,6 +276,16 @@ class QDesign():
         # remove rows, but save column names
         self._qnet._net_info = self._qnet._net_info.iloc[0:0]
         return self._qnet
+
+    def get_copy_net_info_table(self) -> pd.core.frame.DataFrame:
+        """Copy of net_info table which hold all the connections of pins within a design.
+        An advanced user can directly edit the table at design._qnet._net_info. Otherwise 
+        and advanced user can also use methods within the class of design._qnet.
+
+        Returns:
+            pd.core.frame.DataFrame: copy of net_info table.  
+        """
+        return self._qnet._net_info.copy(deep=True)
 
     def connect_pins(self, comp1_id: int, pin1_name: str, comp2_id: int, pin2_name: str) -> int:
         """
