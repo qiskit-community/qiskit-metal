@@ -557,7 +557,7 @@ class QMainWindowBaseHandler():
 
     def screenshot(self, name='shot.png', type_='png', display=True, disp_ops=None):
         """
-        Grad a screenshot of the main window,
+        Grab a screenshot of the main window,
         save to file, and then copy to clipboard.
         """
         self.main_window.get_screenshot(name, type_, display, disp_ops)
