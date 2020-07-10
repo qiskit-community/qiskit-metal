@@ -79,8 +79,8 @@ class QComponent():
     '''
 
     default_options = Dict(
-        #Intended for future use, for components that do not normally take pins as inputs
-        #to be able to have an input pin and be moved/rotated based on said input.
+        # Intended for future use, for components that do not normally take pins as inputs
+        # to be able to have an input pin and be moved/rotated based on said input.
         #pin_inputs = Dict()
     )
 
@@ -576,8 +576,6 @@ class QComponent():
             self.pins[name] = self.make_pin(
                 points, chip=chip)
 
-
-
     def make_pin_as_normal(self,
                            points: np.ndarray,
                            width: float,
@@ -628,9 +626,10 @@ class QComponent():
             width=width,
             chip=chip,
             parent_name=self.id,
-            net_id = 0,
-            length = 0  #Place holder value for potential future property (auto-routing cpw with
-                        # length limit)
+            net_id=0,
+            # Place holder value for potential future property (auto-routing cpw with
+            length=0
+            # length limit)
         )
 
     def make_pin(self,
@@ -842,7 +841,7 @@ class QComponent():
         #    " choose it to either be a helper or a a subtracted layer, but not both. Thank you."
 
         self.design.elements.add_qgeometry(kind, self.id, geometry, subtract=subtract,
-                                          helper=helper, layer=layer, chip=chip, **kwargs)
+                                           helper=helper, layer=layer, chip=chip, **kwargs)
 
     def __repr__(self, *args):
         b = '\033[94m\033[1m'

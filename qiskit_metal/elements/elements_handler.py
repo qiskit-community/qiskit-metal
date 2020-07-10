@@ -20,13 +20,15 @@ See the docstring of `QElementTables`
 
 @date: 2019
 """
-import functools
+
 import inspect
 import logging
-from typing import TYPE_CHECKING, Union, List, Dict as Dict_, Tuple
+from typing import TYPE_CHECKING
+from typing import Dict as Dict_
+from typing import List, Tuple, Union
 
 import pandas as pd
-from geopandas import GeoSeries, GeoDataFrame
+from geopandas import GeoDataFrame, GeoSeries
 
 from .. import Dict
 # from ..config import DEFAULT
@@ -238,7 +240,6 @@ class QElementTables(object):
     this dict should be updated by renderers.
     """
 
-
     # For creating names of columns of renderer properties
     name_delimiter = '_'
     """ Delimiter to use when creating names of columns of renderer properties """
@@ -431,14 +432,14 @@ class QElementTables(object):
                 for k, v in rdict.get(renderer_key, {}).items()}
 
     def add_qgeometry(self,
-                     kind: str,
-                     component_name: str,
-                     geometry: dict,
-                     subtract: bool = False,
-                     helper: bool = False,
-                     layer: Union[int, str] = 1,  # chip will be here
-                     chip: str = 'main',
-                     **other_options):
+                      kind: str,
+                      component_name: str,
+                      geometry: dict,
+                      subtract: bool = False,
+                      helper: bool = False,
+                      layer: Union[int, str] = 1,  # chip will be here
+                      chip: str = 'main',
+                      **other_options):
         """Main interface to add names
 
         Arguments:
@@ -561,9 +562,9 @@ class QElementTables(object):
         Returns:
             Geometry: Bare element geometry
         """
-        gs = self.get_component_geometry(name) # Pandas GeoSeries
+        gs = self.get_component_geometry(name)  # Pandas GeoSeries
         if len(gs) == 0:
-            return (0,0,0,0)
+            return (0, 0, 0, 0)
         else:
             return gs.total_bounds
 
