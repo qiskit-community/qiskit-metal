@@ -62,7 +62,7 @@ Widgets
     QToolBarExpanding
     QWidget_PlaceholderText
     ComponentWidget
-    MetalSourceEditor-TBD
+    MetalSourceEditor
     QTableModel_Options-TBD
     QTableView_Options-TBD
     BranchNode-TBD
@@ -155,5 +155,6 @@ from qiskit_metal._gui.widgets.all_components.table_model_all_components import 
 from qiskit_metal._gui.widgets.bases.expanding_toolbar import QToolBarExpanding
 from qiskit_metal._gui.widgets.bases.QWidget_PlaceholderText import QWidget_PlaceholderText
 from qiskit_metal._gui.widgets.edit_component.component_widget import ComponentWidget
+from qiskit_metal._gui.widgets.edit_component.source_editor import MetalSourceEditor
 from qiskit_metal._gui.widgets.plot_widget.plot_window import QMainWindowPlot
 from qiskit_metal._gui.widgets.variable_table.prop_val_table_gui import PropertyTableWidget
