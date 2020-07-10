@@ -157,12 +157,10 @@ class QComponent():
         # Parser for options
         self.p = ParsedDynamicAttributes_Component(self)
 
-        
-        
-        if len(self.options.pin_inputs)!=self.options._pin_inputs_size:
-            logger.warning(f'The number of pins inputed does not match that required for this component. '
-                           'Please input the correct number of pins for component creation.')
-            return
+        self._error_message = ''
+        if self._check_pin_inputs():
+            self.logger.warning(self._error_message)
+            return 'Pin Input Errors'
 
         ### Build and component internals
         # Status: used to handle building of a component and checking if it succeedded or failed.
@@ -714,7 +712,53 @@ class QComponent():
 
         return self.pins[name]
 
-    
+    def _check_pin_inputs(self):
+        """Checks that the pin_inputs are valid, sets an error message indicating what the 
+        error is if the inputs are not valid.
+        Checks regardless of user passing the compnent name or component id (probably a smoother way
+        to do this check)
+        3 Error cases:
+        - Component does not exist
+        - Pin does not exist
+        - Pin is already attached to something
+        """
+        #Add check for if user inputs nonsense?
+        false_component = False
+        false_pin = False
+        pin_in_use = False
+        for pin_check in self.options.pin_inputs.values():
+            component = pin_check['component']
+            pin = pin_check['pin']
+            if isinstance(component,str):
+                if component not in self.design.components:
+                    false_component = True
+                if pin not in self.design.components[component].pins:
+                    false_pin = True
+                if self.design.components[component].pins[pin].net_id:
+                    pin_in_use = True
+            elif isinstance(component,int):
+                if component not in self.design._components:
+                    false_component = True
+                if pin not in self.design._components[component].pins:
+                    false_pin = True
+                if self.design._components[component].pins[pin].net_id:
+                    pin_in_use = True
+
+            if false_component:
+                self._error_message = f'Component {component} does not exist. {self.name} has not been built. Please check your pin_input values.'
+                return 'Component Does Not Exist'
+            if false_pin:
+                self._error_message = f'Pin {pin} does not exist in component {component}. {self.name} has not been built. Please check your pin_input values.'
+                return 'Pin Does Not Exist'
+            if pin_in_use:
+                self._error_message = f'Pin {pin} of component {component} is already in use. {self.name} has not been built. Please check your pin_input values.'
+                return 'Pin In Use'
+        return None
+
+
+
+
+
 
     def connect_components_already_in_design(self, pin_name_self: str, comp2_id: int, pin2_name: str) -> int:
         """WARNING: Do NOT use this method during generation of component instance.

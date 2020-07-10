@@ -27,68 +27,43 @@ class FakeCPW(QComponent):
     default_options = Dict(
         line_width='10um',
         line_gap='6um',
-        pin_inputs = Dict(start_pin='',end_pin='')
-
-        # pin_start = dict(), #for now assuming the dictionary of the pin is passed, it
-        # #could instead be just the pin and component id.
-        # pin_end = dict()
+        pin_inputs = Dict(start_pin=Dict(component='',pin=''),
+                        end_pin=Dict(component ='',pin=''))
     )
     """Default drawing options"""
 
     def make(self):
         """ This is executed by the user to generate the elements for the component.
         """
-
-        
-        # Check if component was deleted from design.
-        # TODO: These checks should be happening in base now
-        if component_end not in self.design._components:
-            self.logger.warning(
-                f'Key={component_end, } not a key in design._components. {self.name} NOT built.')
-            return
-
-        if component_start not in self.design._components:
-            self.logger.warning(
-                f'Key={component_start} not a key in design._components. {self.name} NOT built.')
-            return
-
-        # NOTE: This code could be moved to a parent class specifically handling components
-        # which take pins as inputs, eg. QInterconnect
-        # Should the check be in the init such that the component isn't made if non-viable
-        # pins are passed in?
-        #
-        if self.design._components[component_start].pins[pin_start].net_id:
-            print(
-                f'Given pin {component_start} {pin_start} already in use. Component not created.')
-            log_error_easy(self.logger, post_text=f'\nERROR in building component "{self.name}"!'
-                           'Inelligeable pin passed to function.\n')
-            return
-        if self.design._components[component_end].pins[pin_end].net_id:
-            print(
-                f'Given pin {component_end} {pin_end} already in use. Component not created.')
-            log_error_easy(self.logger, post_text=f'\nERROR in building component "{self.name}"!'
-                           'Inelligeable pin passed to function.\n')
-            return
+        p = self.p
         #########################################################
+        component_start = p.pin_inputs['start_pin']['component']
+        pin_start = p.pin_inputs['start_pin']['pin']
+        component_end = p.pin_inputs['end_pin']['component']
+        pin_end = p.pin_inputs['end_pin']['pin']
 
-        starting_pin_dic = self.design._components[component_start].pins[pin_start]
-        ending_pin_dic = self.design._components[component_end].pins[pin_end]
+        starting_pin_dic = self.design.components[component_start].pins[pin_start]
+        ending_pin_dic = self.design.components[component_end].pins[pin_end]
+        #Add check if component_end is int? Better to do that check in base? Though that would
+        #overwrite the option value, possibly confuse the user?
 
+        #Creates the CPW geometry
         fake_cpw_line = draw.LineString(
             [starting_pin_dic['middle'], ending_pin_dic['middle']])
+        #Adds the CPW to the elements table
         self.add_elements(
-            'path', {f'{self.name}_cpw_line': fake_cpw_line}, width=self.p.line_width)
+            'path', {f'{self.name}_cpw_line': fake_cpw_line}, width=p.line_width)
 
-        self.add_pin('fake_cpw_start', starting_pin_dic.points, self.p.line_width,
-                     self.id, flip=True)
-        self.add_pin('fake_cpw_end', ending_pin_dic.points, self.p.line_width,
-                    self.id, flip=True)
+        #Generates its own pins based on the inputs
+        #Note: Need to flip the points so resulting normal vector is correct.
+        self.add_pin('fake_cpw_start', starting_pin_dic.points[::-1], p.line_width,
+                     self.id)
+        self.add_pin('fake_cpw_end', ending_pin_dic.points[::-1], p.line_width,
+                    self.id)
 
-        # THEN ADD TO NETLIST - THIS SHOULD PROBABLY BE LARGELY HANDLED BY A DESIGN METHOD
+        # THEN ADD TO NETLIST - Note: Thoughts on how to have this be automated so the component designer
+        #doesn't need to write this code?
         self.design.connect_pins(
-            component_start, pin_start, self.id, 'fake_cpw_start')
+            self.design.components[component_start].id, pin_start, self.id, 'fake_cpw_start')
         self.design.connect_pins(
-            component_end, pin_end, self.id, 'fake_cpw_end')
-
-        #start_netID = self.design._net_info.add_pins_to_table(component_start,pin_start,self.id,'fake_cpw_start')
-        #end_netID = self.design._net_info.add_pins_to_table(component_end,pin_end,self.id,'fake_cpw_end')
+            self.design.components[component_end].id, pin_end, self.id, 'fake_cpw_end')
