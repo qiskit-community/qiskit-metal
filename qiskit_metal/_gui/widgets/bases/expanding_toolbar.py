@@ -9,14 +9,18 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QToolBar
 
 class QToolBarExpanding(QToolBar):
-    """Example:
-        toolbar = gui.ui.toolBarView
+    """
+    `QToolBarExpanding` class extends the `QToolBar` class.
+
+    Example:
+        ```toolbar = gui.ui.toolBarView```
 
     Arguments:
-        QToolbar {[type]} -- [description]
+        QToolbar (QToolbar): QToolbar
     """
 
     def expand_me(self):
+        """Expand the toolbar"""
         if self.orientation() == Qt.Vertical:
             tool_style =  Qt.ToolButtonTextBesideIcon
             align = Qt.AlignLeft|Qt.AlignVCenter
@@ -37,6 +41,7 @@ class QToolBarExpanding(QToolBar):
             # https://doc.qt.io/qt-5/qlayoutitem.html#setAlignment
 
     def contract_me(self):
+        """Contract the toolbar"""
         self.setToolButtonStyle(Qt.ToolButtonIconOnly)
 
     def enterEvent(self, evt: QtCore.QEvent) -> None:
@@ -44,7 +49,7 @@ class QToolBarExpanding(QToolBar):
          (This excludes screen space owned by any of the widget's children.)
 
         Arguments:
-            evt {QtCore.QEvent} -- [description]
+            evt (QtCore.QEvent): QtCore event
         """
         # should ideally have a timeout thread
         # print('-> Enter')
@@ -57,7 +62,7 @@ class QToolBarExpanding(QToolBar):
         If the mouse enters a child widget it will not cause a leaveEvent().
 
         Arguments:
-            evt {QtCore.QEvent} -- [description]
+            evt (QtCore.QEvent): QtCore event
         """
         # print('<- EXIT')
         self.contract_me()
