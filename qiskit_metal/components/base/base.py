@@ -135,7 +135,8 @@ class QComponent():
 
         # Make the id be None, which means it hasn't been added to design yet.
         self._id = None
-
+        # Status: used to handle building of a component and checking if it succeedded or failed.
+        self.status = 'Not Built'
         if not is_design(design):
             raise ValueError(
                 "Error you did not pass in a valid Metal QDesign object as a parent of this QComponent.")
@@ -143,7 +144,7 @@ class QComponent():
         self._design = design  # reference to parent
 
         if self._delete_evaluation(name) is 'NameInUse':
-            return 'NameInUse'
+            return
 
         self._name = name
         self._class_name = self._get_unique_class_name()  # Full class name
@@ -157,14 +158,13 @@ class QComponent():
         # Parser for options
         self.p = ParsedDynamicAttributes_Component(self)
 
-        self._error_message = ''
+        self._error_message = '' #Should put this earlier so could pass in other error messages?
         if self._check_pin_inputs():
             self.logger.warning(self._error_message)
-            return 'Pin Input Errors'
+            return
 
         ### Build and component internals
-        # Status: used to handle building of a component and checking if it succeedded or failed.
-        self.status = 'not built'
+        
         # Create an empty dict, which will populated by component designer.
         self.pins = Dict()  # TODO: should this be private?
         self._made = False
@@ -175,7 +175,7 @@ class QComponent():
         # Add the component to the parent design
         self._id = self.design._get_new_qcomponent_id()  # Create the unique id
         self._add_to_design()  # Do this after the pin checking?
-
+        self.status = 'Initialization Successful'
         # Make the component geometry
         if make:
             self.rebuild()
@@ -729,19 +729,19 @@ class QComponent():
         for pin_check in self.options.pin_inputs.values():
             component = pin_check['component']
             pin = pin_check['pin']
-            if isinstance(component,str):
+            if isinstance(component, str):
                 if component not in self.design.components:
                     false_component = True
-                if pin not in self.design.components[component].pins:
+                elif pin not in self.design.components[component].pins:
                     false_pin = True
-                if self.design.components[component].pins[pin].net_id:
+                elif self.design.components[component].pins[pin].net_id:
                     pin_in_use = True
-            elif isinstance(component,int):
+            elif isinstance(component, int):
                 if component not in self.design._components:
                     false_component = True
-                if pin not in self.design._components[component].pins:
+                elif pin not in self.design._components[component].pins:
                     false_pin = True
-                if self.design._components[component].pins[pin].net_id:
+                elif self.design._components[component].pins[pin].net_id:
                     pin_in_use = True
 
             if false_component:
