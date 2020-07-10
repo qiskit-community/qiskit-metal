@@ -60,5 +60,5 @@ class CircleRaster(QComponent):
                                                      )
 
         # add elements
-        self.add_elements('poly', {'circle': circle}, subtract=p.subtract,
+        self.add_qgeometry('poly', {'circle': circle}, subtract=p.subtract,
                           helper=p.helper, layer=p.layer, chip=p.chip)

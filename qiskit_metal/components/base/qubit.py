@@ -20,7 +20,7 @@ converted to v0.2: Thomas McConkey 2020-03-24
 """
 
 from copy import deepcopy
-from ...toolbox_python.attr_dict import Dict
+from qiskit_metal.toolbox_python.attr_dict import Dict
 from .base import QComponent
 
 
@@ -74,8 +74,9 @@ class BaseQubit(QComponent):
             make (bool): True if the make function should be called at the end of the init.
                     Options be used in the make funciton to create the geometry. (default: True)
         """
+        super().__init__(design, name, options=options, make=False)
 
-        if super().__init__(design, name, options=options, make=False) is 'NameInUse':
+        if  self.status == 'Not Built':
             # Component is not registered in design.
             # This qubit was not added to design.
             # self.logger.warning(
