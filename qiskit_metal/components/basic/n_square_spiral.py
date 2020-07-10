@@ -92,4 +92,4 @@ class NSquareSpiral(QComponent):
         #FIX POINTS, 
         self.add_pin('spiralPin',
             points = points[-2:],
-            width = p.width/2, parent = self.id, input_as_norm=True,  flip=False)
+            width = p.width/2, parent = self.id, input_as_norm=True)
