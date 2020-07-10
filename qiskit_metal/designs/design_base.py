@@ -217,6 +217,17 @@ class QDesign():
         '''
         return self._qcomponent_latest_assigned_id
 
+    @property
+    def net_info(self) -> pd.core.frame.DataFrame:
+        """Provides a copy of net_info table which holds all the connections, of pins, within a design.
+        An advanced user can use methods within the class of design._qnet.
+        Also, an advanced user can also directly edit the table at design._qnet._net_info. 
+
+        Returns:
+            pd.core.frame.DataFrame: copy of net_info table.  
+        """
+        return self._qnet._net_info.copy(deep=True)
+
 #########Proxy properties##################################################
 
     def get_chip_size(self, chip_name: str = 'main'):
@@ -276,16 +287,6 @@ class QDesign():
         # remove rows, but save column names
         self._qnet._net_info = self._qnet._net_info.iloc[0:0]
         return self._qnet
-
-    def get_copy_net_info_table(self) -> pd.core.frame.DataFrame:
-        """Copy of net_info table which hold all the connections of pins within a design.
-        An advanced user can directly edit the table at design._qnet._net_info. Otherwise 
-        and advanced user can also use methods within the class of design._qnet.
-
-        Returns:
-            pd.core.frame.DataFrame: copy of net_info table.  
-        """
-        return self._qnet._net_info.copy(deep=True)
 
     def connect_pins(self, comp1_id: int, pin1_name: str, comp2_id: int, pin2_name: str) -> int:
         """
