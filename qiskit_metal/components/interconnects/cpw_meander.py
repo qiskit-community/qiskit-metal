@@ -7,10 +7,12 @@ from typing import List, Tuple, Union
 
 from numpy.linalg import norm
 from qiskit_metal.draw.utility import vec_unit_planar
+from ...toolbox_python.utility_functions import log_error_easy
 
 import numpy as np
-from qiskit_metal import draw, Dict, QComponent
-from qiskit_metal import is_true
+from qiskit_metal import draw, Dict#, QComponent
+from qiskit_metal.components import QComponent
+#from qiskit_metal import is_true
 
 # from qiskit_metal.toolbox_metal.parsing import is_true
 options = Dict(pin_start_name='Q1_a',
@@ -37,6 +39,14 @@ class Oriented_2D_Array:
     # TODO: Maybe move this class out of here, more general.
 
     def __init__(self, position: np.ndarray, direction: np.ndarray):
+        """
+        Args:
+            positon (np.ndarray of 2 points): Center position of the connector
+            direction (np.ndarray of 2 points): *Normal vector* of the connector, defines which way it
+                points outward.
+                This is the normal vector to the surface on which the connector mates.
+                Has unit norm.
+        """
         self.positions = np.expand_dims(position, axis=0)
         self.directions = np.expand_dims(vec_unit_planar(direction), axis=0)
 
@@ -165,14 +175,22 @@ class Oriented_Point:
 class CpwMeanderSimple(QComponent):
     """A meandered basic CPW.
 
+    Inherits QComponent class
+
     **Behavior and parameters**
         #TODO: @john_blair / @marco
         Explain and comment on what options do?
         For example, note that lead_direction_inverted can be 'false' or 'true'
     """
     default_options = Dict(
-        pin_start_name='',
-        pin_end_name='',
+        # start_name='',
+        # end_name='',
+        pin_start_name='',  # Name of pin used for pin_start
+        pin_end_name='',  # Name of pin used for pin_end
+        component_start_name='',  # If not connected, zero, otherwise component_id
+        component_end_name='',  # If not connected, zero, otherwise component_id
+        # pin_start=0,  # If not connected, zero, otherwise holds the net_id.
+        # pin_end=0,  # If not connected, zero, otherwise holds the net_id.
         total_length='7mm',
         chip='main',
         layer='1',
@@ -233,9 +251,6 @@ class CpwMeanderSimple(QComponent):
                              length: float, meander_opt: dict) -> np.ndarray:
         """
         Meanders using a fixed length and fixed spacing.
-        Adjusts the width of the meander
-            * Includes the start but not the given end point
-            * If it cannot meander just returns the initial start point
 
         Arguments:
             start {Oriented_Point} -- Oriented_Point of the start
@@ -244,7 +259,11 @@ class CpwMeanderSimple(QComponent):
             meander {dict} -- meander options (parsed)
 
         Returns:
-            np.ndarray -- [description]
+            np.ndarray: Array of points
+
+        Adjusts the width of the meander
+            * Includes the start but not the given end point
+            * If it cannot meander just returns the initial start point
         """
 
         """ To prototype, you can use code here:
@@ -281,7 +300,8 @@ class CpwMeanderSimple(QComponent):
         # Calculate lengths and meander number
         dist = end.position - start.position
         if snap:
-            length_direct = abs(norm(np.dot(dist, forward)))
+            # TODO: Not general, depends on the outside (to fix)
+            length_direct = abs(norm(np.dot(dist, forward)))     # in the vertical direction
             length_sideways = abs(norm(np.dot(dist, sideways)))  # in the orthogonal direction
         else:
             length_direct = norm(dist)
@@ -412,6 +432,15 @@ class CpwMeanderSimple(QComponent):
 
     @staticmethod
     def get_index_for_side1_meander(num_root_pts: int):
+        """
+        Get the indecies
+
+        Args:
+            root_pts (list): List of points
+
+        Returns:
+            tuple: Tuple of indecies
+        """
         num_2pts, odd = divmod(num_root_pts, 2)
 
         x = np.array(range(num_2pts), dtype=int) * 4
@@ -425,7 +454,7 @@ class CpwMeanderSimple(QComponent):
         """Return the start point and normal direction vector
 
         Returns:
-            A dictionary with keys `point` and `direction`.
+            dict: A dictionary with keys `point` and `direction`.
             The values are numpy arrays with two float points each.
         """
         pin = self.design.connectors[self.options.pin_start_name]
@@ -437,7 +466,7 @@ class CpwMeanderSimple(QComponent):
         """Return the start point and normal direction vector
 
         Returns:
-            A dictionary with keys `point` and `direction`.
+            dict: A dictionary with keys `point` and `direction`.
             The values are numpy arrays with two float points each.
         """
         pin = self.design.connectors[self.options.pin_end_name]
@@ -452,9 +481,10 @@ class CpwMeanderSimple(QComponent):
         Arguments:
             start {Oriented_Point} -- [description]
             end {Oriented_Point} -- [description]
+            snap (bool): True to snap to grid (Default: False)
 
         Returns:
-            straight and 90 deg CCW rotated vecs 2D
+            array: straight and 90 deg CCW rotated vecs 2D
             (array([1., 0.]), array([0., 1.]))
         """
         # handle chase when star tnad end are same?
@@ -466,7 +496,11 @@ class CpwMeanderSimple(QComponent):
         return direction, normal
 
     def make_elements(self, pts: np.ndarray):
-        """Turns points into elements"""
+        """Turns points into elements
+
+        Arguments:
+            pts (np.ndarray): Array of points
+        """
         p = self.p
         line = draw.LineString(pts)
         layer = p.layer

@@ -208,7 +208,7 @@
    <sender>actionConnectors</sender>
    <signal>triggered(bool)</signal>
    <receiver>MainWindowPlot</receiver>
-   <slot>set_show_connectors(bool)</slot>
+   <slot>set_show_pins(bool)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
@@ -291,6 +291,6 @@
   <slot>pan()</slot>
   <slot>zoom()</slot>
   <slot>set_position_track(bool)</slot>
-  <slot>set_show_connectors(bool)</slot>
+  <slot>set_show_pins(bool)</slot>
  </slots>
 </ui>

@@ -13,7 +13,27 @@
 # that they have been altered from the originals.
 
 """
-Created on Tue May 14 17:13:40 2019
+=================================================
+Analyses (:mod:`qiskit_metal.analyses`)
+=================================================
 
-@author: Zlatko
+.. currentmodule:: qiskit_metal.analyses
+
+Module containing all Qiskit Metal analyses.
+
+@date: 2019
+
+@author: Zlatko Minev (IBM)
+
+Submodules
+----------
+
+.. autosummary::
+    :toctree:
+
+    cpw_calculations
+    lumped_capacitive
 """
+
+from . import cpw_calculations
+from . import lumped_capacitive

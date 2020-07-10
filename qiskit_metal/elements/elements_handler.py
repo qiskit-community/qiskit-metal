@@ -14,10 +14,10 @@
 
 """
 This is the main module that defines what an element is in Qiskit Metal.
-See the docstring of BaseElement
-    >> ?BaseElement
+See the docstring of `QElementTables`
 
 @author: Zlatko Minev, Thomas McConekey, ... (IBM)
+
 @date: 2019
 """
 import functools
@@ -29,7 +29,7 @@ import pandas as pd
 from geopandas import GeoSeries, GeoDataFrame
 
 from .. import Dict
-#from ..config import DEFAULT
+# from ..config import DEFAULT
 from ..draw import BaseGeometry
 from ..toolbox_python.utility_functions import data_frame_empty_typed
 
@@ -57,16 +57,16 @@ __all__ = ['is_element_table', 'QElementTables']  # , 'ElementTypes']
 
 def is_element_table(obj):
     """Check if an object is a Metal BaseElementTable, i.e., an instance of
-     `QElementTables`.
+    `QElementTables`.
 
     The problem is that the `isinstance` built-in method fails
     when this module is reloaded.
 
     Arguments:
-        obj {[object]} -- Test this object
+        obj (object) : Test this object
 
     Returns:
-        [bool] -- True if is a Metal element
+        bool: True if is a Metal element
     """
     if isinstance(obj, Dict):
         return False
@@ -90,7 +90,7 @@ ELEMENT_COLUMNS = dict(
     # This is for Metal API use only.
     # To add a new element type, add a new key below.
     base=dict(
-        component=str,  # name of the component to which the element belongs
+        component=str,  # Unique ID of the component to which the element belongs
         name=str,  # name of the element
         geometry=object,  # shapely object
         layer=int,  # gds type of layer
@@ -142,6 +142,7 @@ ELEMENT_COLUMNS = dict(
     # )
     # )
 )
+"""Dicitonary that specifies the column names of various element tables."""
 
 #############################################################################
 #
@@ -156,24 +157,22 @@ class QElementTables(object):
     A regular user would not need to create tables themselves.
     This is handled automatically by the design creation and plugins.
 
-    Structure
-    --------
-    A component, such as a qubit, is a collection of elements.
-    For example, an element includes a rectangle, a cpw path, or a more general polygon.
+    Structure:
+        A component, such as a qubit, is a collection of elements.
+        For example, an element includes a rectangle, a cpw path, or a more general polygon.
 
-    An element is a row in a table.
+        An element is a row in a table.
 
-    All elements of a type (Path or Polygon, or otherwise) are stored in a
-    single table of their element type.
+        All elements of a type (Path or Polygon, or otherwise) are stored in a
+        single table of their element type.
 
-    All elements of the same kind are stored in a table.
-    A renderer has to know how to handle all types of elements in order to render them.
+        All elements of the same kind are stored in a table.
+        A renderer has to know how to handle all types of elements in order to render them.
 
-    For plugin developers
-    --------
-    In the followin, we provide an example that illustrates for plugin developers how
-    to add custom elements and custom element properties. For example, we will add, for a renderer
-    called hfss, a string property called 'boundary', a bool property called 'perfectE', and a property called 'material'.
+    For plugin developers:
+        In the followin, we provide an example that illustrates for plugin developers how
+        to add custom elements and custom element properties. For example, we will add, for a renderer
+        called hfss, a string property called 'boundary', a bool property called 'perfectE', and a property called 'material'.
 
     For plugin developers, example use:
 
@@ -181,49 +180,49 @@ class QElementTables(object):
             :linenos:
             :emphasize-lines: 4,6
 
-        import qiskit_metal as metal
+            import qiskit_metal as metal
 
-        design = metal.designs.DesignPlanar()
-        design.elements = metal.QElementTables(design)
+            design = metal.designs.DesignPlanar()
+            design.elements = metal.QElementTables(design)
 
-        design.elements['path'] # return the path table - give access to ..
-        design.elements.table['path']
+            design.elements['path'] # return the path table - give access to ..
+            design.elements.table['path']
 
-        # Define interfaces
-        design.elements.get_component(
-                component_name,
-                element_name,
-                columns=all or geom or list?) # get all elemetns for compoentns
+            # Define interfaces
+            design.elements.get_component(
+                    component_name,
+                    element_name,
+                    columns=all or geom or list) # get all elemetns for compoentns
 
-        >>> component	name	geometry	layer	type	chip	subtract	fillet	color	width
+            >>> component	name	geometry	layer	type	chip	subtract	fillet	color	width
 
 
     Now, if we want to add custom elements through two fake renderers called hfss and gds:
 
-    .. code-block:: python
-        :linenos:
-        :emphasize-lines: 1-15
+        .. code-block:: python
+            :linenos:
+            :emphasize-lines: 1-15
 
-        metal.QElementTables.add_renderer_extension('hfss', dict(
-            base=dict(
-                boundary=str,
-                perfectE=bool,
-                material=str,
-                )
-            ))
+            metal.QElementTables.add_renderer_extension('hfss', dict(
+                base=dict(
+                    boundary=str,
+                    perfectE=bool,
+                    material=str,
+                    )
+                ))
 
-        metal.QElementTables.add_renderer_extension('gds', dict(
-            path=dict(
-                color=str,
-                pcell=bool,
-                )
-            ))
+            metal.QElementTables.add_renderer_extension('gds', dict(
+                path=dict(
+                    color=str,
+                    pcell=bool,
+                    )
+                ))
 
-        design = metal.designs.DesignPlanar()
-        elements = metal.QElementTables(design)
+            design = metal.designs.DesignPlanar()
+            elements = metal.QElementTables(design)
 
-        elements.tables['path']
-        >>> component	name	geometry	layer	type	chip	subtract	fillet	color	width	hfss_boundary	hfss_perfectE	hfss_material	gds_color	gds_pcell
+            elements.tables['path']
+            >>> component	name	geometry	layer	type	chip	subtract	fillet	color	width	hfss_boundary	hfss_perfectE	hfss_material	gds_color	gds_pcell
 
     """
 
@@ -233,21 +232,23 @@ class QElementTables(object):
     # Used by `is_element` to check.
     __i_am_element_table__ = True
 
-    # Table column names to use to create.
-    # this dict should be updated by renderers.
     ELEMENT_COLUMNS = ELEMENT_COLUMNS
+    """
+    Table column names to use to create.
+    this dict should be updated by renderers.
+    """
+    
 
     # For creating names of columns of renderer properties
     name_delimiter = '_'
+    """ Delimiter to use when creating names of columns of renderer properties """
 
     def __init__(self, design: 'QDesign'):
         """
-        The constructor for the `BaseElement` class.
+        The constructor for the `QElementTables` class.
 
-        Attributes:
-            table {Dict} -- This is a dictiomnary of the table names as keys
-                and the pandas DataFrames as values. The values get overwritten
-                very often. Do not use a fixed reference.
+        Arguments:
+            design: Design in use
         """
         self._design = design
 
@@ -261,6 +262,9 @@ class QElementTables(object):
 
     @property
     def logger(self) -> logging.Logger:
+        """
+        Return the logger
+        """
         return self._design.logger
 
     @property
@@ -268,8 +272,8 @@ class QElementTables(object):
         """The dictionary of tables containing elements.
 
         Returns:
-            Dict_[str, GeoDataFrame] -- The keys of this dictionary are
-                                        also obtained from `self.get_element_types()`
+            Dict_[str, GeoDataFrame]: The keys of this dictionary are
+            also obtained from `self.get_element_types()`
         """
         return self._tables
 
@@ -279,9 +283,9 @@ class QElementTables(object):
         Called when the load function of a renderer is called.
 
         Arguments:
-            renderer_name {str} -- name of renderer
-            elements {dict} --  dict of dict. keys give element type names,
-                                such as base, poly, path, etc.
+            renderer_name (str): name of renderer
+            elements (dict):  dict of dict. keys give element type names,
+                              such as base, poly, path, etc.
         """
 
         # Make sure that the base and all other element kinds have this renderer registerd
@@ -312,7 +316,7 @@ class QElementTables(object):
         This does not include 'base', but is rather such as poly and path.
 
         Returns:
-            list(str) -- list of name in self.ELEMENT_COLUMNS
+            list(str) : list of name in self.ELEMENT_COLUMNS
         """
         # TODO: I should probably make this a variable and memeorize, only change when elements are added and removed
         # can be slow for perofmance to look up eahc time and recalcualte, since may call this often
@@ -373,13 +377,15 @@ class QElementTables(object):
     def _validate_column_dictionary(self, table_name: str,  column_dict: dict):
         """Validate
         A possible error here is if the user did not pass a valid data type
-        This raises TypeError: data type '' not understood
 
         Throws an error if not valid.
 
         Arguments:
-            table_name {str} -- Name of element table (e.g., 'poly')
-            column_dict {dict} --
+            table_name (str): Name of element table (e.g., 'poly')
+            column_dict (dict): Dictionary to check
+
+        Raises:
+            TypeError: data type '' not understood
         """
         __pre = 'ERROR CREATING ELEMENT TABLE FOR DESIGN: \
             \n  ELEMENT_TABLE_NAME = {table_name}\
@@ -399,15 +405,28 @@ class QElementTables(object):
         Get name for renderer property
 
         Arguments:
-            renderer_name {str} -- Name of the renderer
-            key {str} -- [description]
+            renderer_name (str): Name of the renderer
+            key (str): key to get the name for
 
         Returns:
-            str -- The unique named used as a column in the table
+            str: The unique named used as a column in the table
         """
         return renderer_name + self.name_delimiter + key
 
     def _prepend_renderer_names(self, table_name: str, renderer_key: str, rdict: dict):
+        """Prepare all the renderer names
+
+        Args:
+            table_name (str): Unused
+            renderer_key (str): Key to check for
+            rdict (dict): Renderer dictionary
+
+        Returns:
+            dict: Prepared dictionary
+
+        TODO:
+            This function has arguments that are used, fix the function or ditch the unused args
+        """
         return {self.get_rname(renderer_key, k): v
                 for k, v in rdict.get(renderer_key, {}).items()}
 
@@ -423,15 +442,14 @@ class QElementTables(object):
         """Main interface to add names
 
         Arguments:
-            kind {str} -- Must be in get_element_types ('path', 'poly', etc.)
-            geometry {dict} -- Dict of shapely geomety
-
-        Keyword Arguments:
-            subtract {bool} -- [description] (default: {False})
-            helper {bool} -- [description] (default: {False})
-            layer {Union[int, str]} -- [description] (default: {0})
-            chip {str} -- Chip name (dafult: 'main')
-            **other_options
+            kind (str): Must be in get_element_types ('path', 'poly', etc.)
+            component_name (str): Component name
+            geometry (dict): Dict of shapely geomety
+            subtract (bool) : Substract - passed through (Default: False)
+            helper (bool) : helper - passed through (Default: False)
+            layer (Union[int, str]) : Layer - passed through (default: 1)
+            chip (str) : Chip name - passed through (Default: 'main')
+            **other_options (object): Other_options - passed through
         """
         # TODO: Add unit test
 
@@ -479,30 +497,43 @@ class QElementTables(object):
         """Delete component by name
 
         Arguments:
-            name {str} -- Name of component (case sensitive)
+            name (str): Name of component (case sensitive)
         """
         # TODO: Add unit test
         # TODO: is this the best way to do this, or is there a faster way?
+        a_comp = self.design.components[name]
+        if a_comp is not None:
+            for table_name in self.tables:
+                df = self.tables[table_name]
+                self.tables[table_name] = df[df['component'] != a_comp.id]
+
+    def delete_component_id(self, component_id: int):
+        """Drop the components within the elements.tables
+
+        Args:
+            component_id (int): Unique number to describe the component.
+        """
         for table_name in self.tables:
-            df = self.tables[table_name]
-            self.tables[table_name] = df[df.component != name]
+            df_table_name = self.tables[table_name]
+            # self.tables[table_name] = df_table_name.drop(df_table_name[df_table_name['component'] == component_id].index)
+            self.tables[table_name] = df_table_name[df_table_name['component']
+                                                    != component_id]
 
     def get_component(self, name: str, table_name: str = 'all') -> Union[GeoDataFrame, Dict_[str, GeoDataFrame]]:
         """Return the table for just a given component.
         If all, returns a dictionary with kets as table names and tables of components as values.
 
         Arguments:
-            name {str} -- Name of component (case sensitive) (default: 'all')
-
-        Keyword Arguments:
-            table_name {str} -- Element table name ('poly', 'path', etc.) (default: {'all'})
+            name (str): Name of component (case sensitive) (default: 'all')
+            table_name (str): Element table name ('poly', 'path', etc.) (default: {'all'})
 
         Returns:
-            Union[GeoDataFrame, Dict_[str, GeoDataFrame]] -- Either a GeoDataFrame or a dict or GeoDataFrame.
+            Union[GeoDataFrame, Dict_[str, GeoDataFrame]] : Either a GeoDataFrame or a dict or GeoDataFrame.
 
         Example use:
-            table = pd.concat(elements.get_component('Q1')) # , axis=0
+            ```table = pd.concat(elements.get_component('Q1')) # , axis=0```
         """
+
         if table_name == 'all':
             tables = {}
             for table_name in self.get_element_types():
@@ -510,38 +541,58 @@ class QElementTables(object):
             return tables
         else:
             df = self.tables[table_name]
-            return df[df.component == name]
+            a_comp = self.design.components[name]
+            if a_comp is None:
+                # Component not found.
+                return None
+            else:
+                return df[df.component == a_comp.id]
 
-    def get_component_bounds(self, name:str):
+            # comp_id = self.design.components[name].id
+            # return df[df.component == comp_id]
+
+    def get_component_bounds(self, name: str):
         """Returns a tuple containing minx, miny, maxx, maxy values
         for the bounds of the component as a whole.
 
         Arguments:
-            name {str} -- component name
+            name (str): component name
+
+        Returns:
+            Geometry: Bare element geometry
         """
         return self.get_component_geometry(name).total_bounds
 
-
-    def rename_component(self, name: str, new_name: str):
-        """Rename component by name
+    def rename_component(self, component_id: int, new_name: str):
+        """Rename component by ID (integer) cast to string format.
 
         Arguments:
-            name {str} -- Name of component (case sensitive)
-            new_name {str} -- The new name of the component (case sensitive)
+            component_id (int) : ID of component (case sensitive)
+            new_name (str) : The new name of the component (case sensitive)
         """
-        # TODO: is this the best way to do this, or is there a faster way?
-        for table_name in self.tables:
-            table = self.tables[table_name]
-            table.component[table.component == name] = new_name
+
+        # comp_id = self.design.components[name].id
+        component_int_id = int(component_id)
+        a_comp = self.design._components[component_int_id]
+        if a_comp is None:
+            return None
+        else:
+            # TODO: is this the best way to do this, or is there a faster way?
+            for table_name in self.tables:
+                table = self.tables[table_name]
+                table.component[table.component == a_comp.id] = new_name
 
     def get_component_geometry_list(self, name: str, table_name: str = 'all') -> List[BaseGeometry]:
         """Return just the bare element geometry (shapely geometry objects) as a list, for the
         selected component.
 
         Arguments:
-            name {str} -- Name of component (case sensitive)
-            table_name {str} -- Element type ('poly', 'path', etc.).
-                                Can also be 'all' to return all. This is the default.
+            name (str) : Name of component (case sensitive)
+            table_name (str) : Element type ('poly', 'path', etc.).
+                               Can also be 'all' to return all. This is the default.
+
+        Returns:
+            list: List of shapley.geometry objects
         """
         if table_name == 'all':
             elements = []
@@ -550,59 +601,66 @@ class QElementTables(object):
 
         else:
             table = self.tables[table_name]
-            elements = table.geometry[table.component == name].to_list()
+            comp_id = self.design.components[name].id
+            elements = table.geometry[table.component == comp_id].to_list()
 
         return elements
 
-    def get_component_geometry(self, name:str) -> GeoSeries:
+    def get_component_geometry(self, name: str) -> GeoSeries:
         """
+        Returns geometry of a given component
+
         Arguments:
-            name {str} -- Name of component (case sensitive)
+            name (str) : Name of component (case sensitive)
 
         Returns:
-            GeoSeries -- [description]
+            GeoSeries : Geometry of the component
         """
+        comp_id = self.design.components[name].id
         elements = {}
         for table_name in self.get_element_types():
             table = self.tables[table_name]
-            elements[table_name] = table.geometry[table.component == name]
+            elements[table_name] = table.geometry[table.component == comp_id]
         return pd.concat(elements)
 
-    def get_component_geometry_dict(self, name: str, table_name: str='all') -> List[BaseGeometry]:
+    def get_component_geometry_dict(self, name: str, table_name: str = 'all') -> List[BaseGeometry]:
         """Return just the bare element geometry (shapely geometry objects) as a dict,
-           with key being the names of the elements and the values as the shapely geometry,
-           for the selected component.
+        with key being the names of the elements and the values as the shapely geometry,
+        for the selected component.
 
         Arguments:
-            name {str} -- Name of component (case sensitive)
-            table_name {str} -- Element type ('poly', 'path', etc.)
+            name (str) : Name of component (case sensitive)
+            table_name (str) : Element type ('poly', 'path', etc.) (Default: 'all')
+
+        Returns:
+            dict: Bare element geometry
         """
         if table_name == 'all':
-            elements = []
+            elements = Dict()
             for table in self.get_element_types():
                 elements[table] = self.get_component_geometry_list(name, table)
-            return elements # return pd.concat(elements, axis=0)
+            return elements  # return pd.concat(elements, axis=0)
 
         else:
             table = self.tables[table_name]
 
             # mask the rows nad get only 2 columns
-            df0 = table.loc[table.component == name, ['name', 'geometry']]
-            df = df0.geometry
-            df.index = df0.name
-            return df.to_dict()
+            comp_id = self.design.components[name].id
+            df_comp_id = table.loc[table.component ==
+                                   comp_id, ['name', 'geometry']]
+            df_geometry = df_comp_id.geometry
+            df_geometry.index = df_comp_id.name
+            return df_geometry.to_dict()
 
     def check_element_type(self, table_name: str, log_issue: bool = True) -> bool:
         """Check if the name `table_name` is in the element tables.
 
         Arguments:
-            table_name {str} -- Element type ('poly', 'path', etc.) or 'all'
-
-        Keyword Arguments:
-            log_issue {bool} -- Throw an erro in the log if name missing  (default: {True})
+            table_name (str) : Element type ('poly', 'path', etc.) or 'all'
+            log_issue (bool) : Throw an erro in the log if name missing  (Default: True)
 
         Returns:
-            bool -- True if the name is valid, else False
+            bool : True if the name is valid, else False
         """
         if not table_name in self.get_element_types() or table_name in 'all':
             if log_issue:

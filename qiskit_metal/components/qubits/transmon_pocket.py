@@ -39,81 +39,85 @@ converted to v0.2: Thomas McConkey 2020-03-24
 
 import numpy as np
 from qiskit_metal import draw, Dict
-from qiskit_metal import is_true
+#from qiskit_metal import is_true
 from qiskit_metal.components.base.qubit import BaseQubit
 
 class TransmonPocket(BaseQubit):
-    '''
-    Description:
-    ----------------------------------------------------------------------------
-    Create a standard pocket transmon qubit for a ground plane,
-    with two pads connectored by a junction (see drawing below).
+    """
+    The base `TransmonPocket` class
 
-    Connector lines can be added using the `con_lines`
-    dicitonary. Each connector line has a name and a list of default
-    properties.
+    Inherits `BaseQubit` class
+
+    Description:
+        Create a standard pocket transmon qubit for a ground plane,
+        with two pads connected by a junction (see drawing below).
+
+        Connector lines can be added using the `connection_pads`
+        dicitonary. Each connector pad has a name and a list of default
+        properties.
 
     Options:
-    ----------------------------------------------------------------------------
-    Convention: Values (unless noted) are strings with units included,
-                (e.g., '30um')
+        Convention: Values (unless noted) are strings with units included,
+        (e.g., '30um')
 
     Pocket:
-    ----------------------------------------------------------------------------
-    pos_x / pos_y   - where the center of the pocket should be located on chip
-                      (where the 'junction' is)
-    pad_gap         - the distance between the two charge islands, which is also the
-                      resulting 'length' of the pseudo junction
-    inductor_width  - width of the pseudo junction between the two charge islands
-                      (if in doubt, make the same as pad_gap). Really just for simulating
-                      in HFSS / other EM software
-    pad_width       - the width (x-axis) of the charge island pads
-    pad_height      - the size (y-axis) of the charge island pads
-    pocket_width    - size of the pocket (cut out in ground) along x-axis
-    pocket_height   - size of the pocket (cut out in ground) along y-axis
-    orientation     - degree of qubit rotation
+        * pos_x / pos_y   - where the center of the pocket should be located on chip
+          (where the 'junction' is)
+        * pad_gap         - the distance between the two charge islands, which is also the
+          resulting 'length' of the pseudo junction
+        * inductor_width  - width of the pseudo junction between the two charge islands
+          (if in doubt, make the same as pad_gap). Really just for simulating
+          in HFSS / other EM software
+        * pad_width       - the width (x-axis) of the charge island pads
+        * pad_height      - the size (y-axis) of the charge island pads
+        * pocket_width    - size of the pocket (cut out in ground) along x-axis
+        * pocket_height   - size of the pocket (cut out in ground) along y-axis
+        * orientation     - degree of qubit rotation
 
     Connector lines:
-    ----------------------------------------------------------------------------
-    pad_gap        - space between the connector pad and the charge island it is
-                     nearest to
-    pad_width      - width (x-axis) of the connector pad
-    pad_height     - height (y-axis) of the connector pad
-    pad_cpw_shift  - shift the connector pad cpw line by this much away from qubit
-    pad_cpw_extent - how long should the pad be - edge that is parallel to pocket
-    cpw_width      - center trace width of the CPW line
-    cpw_gap        - dielectric gap width of the CPW line
-    cpw_extend     - depth the connector line extense into ground (past the pocket edge)
-    pocket_extent  - How deep into the pocket should we penetrate with the cpw connector
-                     (into the fround plane)
-    pocket_rise    - How far up or downrelative to the center of the transmon should we
-                     elevate the cpw connection point on the ground plane
-    loc_W / H      - which 'quadrant' of the pocket the connector is set to, +/- 1 (check
-                     if diagram is correct)
+        * pad_gap        - space between the connector pad and the charge island it is
+          nearest to
+        * pad_width      - width (x-axis) of the connector pad
+        * pad_height     - height (y-axis) of the connector pad
+        * pad_cpw_shift  - shift the connector pad cpw line by this much away from qubit
+        * pad_cpw_extent - how long should the pad be - edge that is parallel to pocket
+        * cpw_width      - center trace width of the CPW line
+        * cpw_gap        - dielectric gap width of the CPW line
+        * cpw_extend     - depth the connector line extense into ground (past the pocket edge)
+        * pocket_extent  - How deep into the pocket should we penetrate with the cpw connector
+          (into the fround plane)
+        * pocket_rise    - How far up or downrelative to the center of the transmon should we
+          elevate the cpw connection point on the ground plane
+        * loc_W / H      - which 'quadrant' of the pocket the connector is set to, +/- 1 (check
+          if diagram is correct)
 
 
     Sketch:
-    ----------------------------------------------------------------------------
+        Below is a sketch of the qubit
+        ::
 
-     -1
-     ________________________________
--1  |______ ____           __________|          Y
-    |      |____|         |____|     |          ^
-    |        __________________      |          |
-    |       |     island       |     |          |----->  X
-    |       |__________________|     |
-    |                 |              |
-    |  pocket         x              |
-    |        _________|________      |
-    |       |                  |     |
-    |       |__________________|     |
-    |        ______                  |
-    |_______|______|                 |
-    |________________________________|   +1
-                                +1
-    '''
+                 -1
+                ________________________________
+            -1  |______ ____           __________|          Y
+                |      |____|         |____|     |          ^
+                |        __________________      |          |
+                |       |     island       |     |          |----->  X
+                |       |__________________|     |
+                |                 |              |
+                |  pocket         x              |
+                |        _________|________      |
+                |       |                  |     |
+                |       |__________________|     |
+                |        ______                  |
+                |_______|______|                 |
+                |________________________________|   +1
+                                            +1
 
-    _img = 'transmon_pocket1.png'
+    .. image::
+        Component_Qubit_Transmon_Pocket.png
+    """
+
+    #_img = 'transmon_pocket1.png'
 
     default_options = Dict(
         pos_x='0um',
@@ -127,7 +131,7 @@ class TransmonPocket(BaseQubit):
         # 90 has dipole aligned along the +X axis,
         # while 0 has dipole aligned along the +Y axis
         orientation='0',
-        _default_con_lines = Dict(
+        _default_connection_pads = Dict(
             pad_gap='15um',
             pad_width='125um',
             pad_height='30um',
@@ -142,13 +146,13 @@ class TransmonPocket(BaseQubit):
             loc_H='+1',  # height location only +-1
         )
     )
-
+    """Default drawing options"""
 
 
     def make(self):
         """Define the way the options are turned into QGeometry."""
         self.make_pocket()
-        self.make_con_lines()
+        self.make_connection_pads()
 
     def make_pocket(self):
         '''Makes standard transmon in a pocket.'''
@@ -184,23 +188,24 @@ class TransmonPocket(BaseQubit):
         self.add_elements('poly', dict(rect_pk=rect_pk), subtract=True)
         self.add_elements('poly', dict(rect_jj=rect_jj), helper=True)
 
-    def make_con_lines(self):
-        """For each connector dictionary, create the standard connector line"""
-        for name in self.options.con_lines:
-            self.make_con_line(name)
+    def make_connection_pads(self):
+        '''
+        Makes standard transmon in a pocket
+        '''
+        for name in self.options.connection_pads: #
+            self.make_connection_pad(name)
 
-    def make_con_line(self, name:str):
+    def make_connection_pad(self, name:str):
         '''
         Makes n individual connector
 
         Args:
-        -------------
             name (str) : Name of the connector
         '''
 
         # self.p allows us to directly access parsed values (string -> numbers) form the user option
         p = self.p
-        pc = self.p.con_lines[name] # parser on connector options
+        pc = self.p.connection_pads[name] # parser on connector options
 
         # define commonly used variables once
         cpw_width = pc.cpw_width
@@ -243,11 +248,10 @@ class TransmonPocket(BaseQubit):
 
         ############################################################
 
-        # add connectors to design tracker
+        # add pins
         points = np.array(connector_wire_path.coords)
 
-        self.design.add_connector_as_normal(name,
+        self.add_pin_as_normal(name,
             start = points[-2],
             end = points[-1],
-            width = cpw_width, parent = self.name,  flip=False)
-        # self.add_connector(name, points[2:2+2], self.name, flip=False)  # TODO: chip
+            width = cpw_width, parent = self.id,  flip=False)
