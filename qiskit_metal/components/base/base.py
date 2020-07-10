@@ -368,8 +368,11 @@ class QComponent():
         if self._design.overwrite_enabled and answer:
             self._design.delete_component(check_name)
         elif answer:
-            logger.warning(f'The name {check_name} is used in component id={answer}. '
-                           'Component was not made, nor added to design.')
+            logger.warning(f'The QComponent name `{check_name}` is already in use, '
+                           f'by a component (with QComponent id={answer}).\n'
+                           f'QComponent NOT made, nor added to the design. \n'
+                            'To force overwrite a QComponent with an existing name '
+                            'use the flag:\n`design.overwrite_enabled = True`.')
             return 'NameInUse'
         return None
 
