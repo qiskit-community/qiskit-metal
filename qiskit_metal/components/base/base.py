@@ -82,6 +82,7 @@ class QComponent():
     default_options = Dict(
         pin_inputs = Dict()
     )
+    """Default pin options"""
 
     # Dummy private attribute used to check if an instanciated object is
     # indeed a QComponent class. The problem is that the `isinstance`
@@ -548,29 +549,33 @@ class QComponent():
 
 
         normal vector
-        ..........
-                 .
-        --------->*
-                 .
-        ..........
+
+        ::
+
+            ..........
+                    .
+            --------->*
+                    .
+            ..........
 
         tangent vector
-        ..........^
-                 .|
-                 .*
-                 .|
-        ..........|       
+
+        ::
+
+            ..........^
+                    .|
+                    .*
+                    .|
+            ..........|       
 
         Arguments:
-            name (str) - Name of pin
-            points (numpy.ndarray) - Two (x,y) points that define the pin
-            parent (Union[int,) - id number of the parent component (from self.id).
-            width (float) - width of the pin connection
-
-        Keyword Arguments:
-            input_as_norm (bool) -- If the input is a normal vector (eg. from a cpw path), or
+            name (str): Name of pin
+            points (numpy.ndarray): Two (x,y) points that define the pin
+            parent (Union[int,): id number of the parent component (from self.id).
+            width (float): width of the pin connection
+            input_as_norm (bool): If the input is a normal vector (eg. from a cpw path), or
                 a 'tangent' vector (eg. from a poly) (default: {False})
-            chip (str) -  Optionally add options (default: {'main'})
+            chip (str): Optionally add options (default: {'main'})
         """
         if input_as_norm:
             self.pins[name] = self.make_pin_as_normal(
@@ -592,11 +597,13 @@ class QComponent():
         parent component.
 
         Arguments:
-            name (str) - Name of the pin
-            points (numpy.ndarray)- [[x1,y1],[x2,y2]] for the normal line
-            width (float) - the width of the intended connection (eg. qubit bus pad arm)
-            parent (Union[int,]) - The id of the parent component
+            points (numpy.ndarray): [[x1,y1],[x2,y2]] for the normal line
+            width (float): the width of the intended connection (eg. qubit bus pad arm)
+            parent (Union[int,]): The id of the parent component
             chip (str): the name of the chip the pin is located on, default 'main'
+
+        Returns:
+            Dict: A dictionary containing a collection of information about the pin
 
         A dictionary containing a collection of information about the pin, necessary for use in Metal:
             * points (numpy.ndarray) - two (x,y) points which represent the edge of the pin for
@@ -715,6 +722,9 @@ class QComponent():
         - Component does not exist
         - Pin does not exist
         - Pin is already attached to something
+
+        Returns:
+            str: Status test, or None
         """
         #Add check for if user inputs nonsense?
         false_component = False
