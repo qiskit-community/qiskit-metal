@@ -219,7 +219,7 @@ class QDesign():
 
     @property
     def net_info(self) -> pd.core.frame.DataFrame:
-        """Provides a copy of net_info table which hold all the connections of pins within a design.
+        """Provides a copy of net_info table which holds all the connections, of pins, within a design.
         An advanced user can use methods within the class of design._qnet.
         Also, an advanced user can also directly edit the table at design._qnet._net_info. 
 
