@@ -139,6 +139,8 @@ class ComponentWidget(QTabWidget):
     """
     This is just a handler (container) for the UI; it a child object of the main gui.
 
+    This class extends the `QTabWidget` class.
+
     PyQt5 Signal / Slots Extensions:
         The UI can call up to this class to execeute button clicks for instance
         Extensiosn in qt designer on signals/slots are linked to this class
@@ -148,6 +150,11 @@ class ComponentWidget(QTabWidget):
     """
 
     def __init__(self, gui: 'MetalGUI', parent: QtWidgets.QWidget):
+        """
+        Args:
+            gui: (MetalGUI): the GUI
+            parent (QWidget): Parent widget
+        """
         # Parent is usually a dock component
 
         super().__init__(parent)
@@ -213,17 +220,18 @@ class ComponentWidget(QTabWidget):
 
     @property
     def design(self):
+        """Returns the design"""
         return self.gui.design
 
     @property
     def component(self) -> 'QComponent':
         """Use the interface to components dict to return a QComponent.
 
-        Returns:
-            QComponent: The QComponent in design class which has name of self.component_name.
-            None:   If the name is not in design._components. Also warning will be posted through logger.warning().
-            QComponent: If there are multiple usages of component_name within design._components, 
-                        the first component using it will be returned, along with a logger.warning() message.
+        Returns one of the following:
+            * QComponent: The QComponent in design class which has name of self.component_name.
+            * None:   If the name is not in design._components. Also warning will be posted through logger.warning().
+            * QComponent: If there are multiple usages of component_name within design._components, 
+                          the first component using it will be returned, along with a logger.warning() message.
         """
         if self.design:
             if self.component_name:
@@ -236,8 +244,9 @@ class ComponentWidget(QTabWidget):
     def set_component(self, name: str):
         """
         Main interface to set the component (by name)
+
         Arguments:
-            name {str} -- if None, then clears
+            name (str): Set the component name, if None then clears
         """
         self.component_name = name
 
@@ -264,6 +273,7 @@ class ComponentWidget(QTabWidget):
         self.ui.treeView.autoresize_columns()  # resize columns
 
     def force_refresh(self):
+        """Force refresh"""
         self.model.refresh()
 
     def _set_help(self):
@@ -340,7 +350,7 @@ class ComponentWidget(QTabWidget):
 
     def edit_source(self, *args, parent=None):
         """Calls the edit source window
-        gui.component_window.edit_source()
+        ```gui.component_window.edit_source()```
         """
 
         self.logger.debug(f"edit_source: {args}")
