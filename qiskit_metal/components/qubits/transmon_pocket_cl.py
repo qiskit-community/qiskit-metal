@@ -147,7 +147,7 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
 
         # Generating pins
         points = list(draw.shapely.geometry.shape(port_line).coords)
-        self.add_pin(name, points, self.id)  # TODO: chip
+        self.add_pin(name, points, p.cl_width, self.id)  # TODO: chip
 
         #Adding to element table
         self.add_elements('poly', dict(cl_metal=cl_metal))

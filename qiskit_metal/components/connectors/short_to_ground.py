@@ -60,5 +60,5 @@ class ShortToGround(QComponent):
         port_line = draw.translate(port_line, p.pos_x, p.pos_y)
 
         port_points = list(draw.shapely.geometry.shape(port_line).coords)
-        self.add_pin('short', port_points, p.width, self.id, flip=False)  # TODO: chip
+        self.add_pin('short', port_points, p.width, self.id)  # TODO: chip
         #HOW TO ADD A 0 volume element to a table for the GUI? Or not even needed?
