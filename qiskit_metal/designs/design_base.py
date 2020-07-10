@@ -277,7 +277,7 @@ class QDesign():
         self._qnet._net_info = self._qnet._net_info.iloc[0:0]
         return self._qnet
 
-    def get_copy_net_info_table() -> pd.core.frame.DataFrame:
+    def get_copy_net_info_table(self) -> pd.core.frame.DataFrame:
         """Copy of net_info table which hold all the connections of pins within a design.
         An advanced user can directly edit the table at design._qnet._net_info. Otherwise 
         and advanced user can also use methods within the class of design._qnet.
