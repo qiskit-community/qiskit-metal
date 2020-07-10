@@ -18,7 +18,6 @@
 
 from qiskit_metal import draw, Dict
 from qiskit_metal.components.base import QComponent
-import shapely
 
 class OpenToGround(QComponent):
     """Inherits QComponent class
@@ -64,5 +63,4 @@ class OpenToGround(QComponent):
         [open_termination, port_line] = polys
 
         self.add_qgeometry('poly', {'open_to_ground': open_termination}, subtract=True)
-        self.add_pin('open', port_line.coords, p.width, self.id)  # TODO: chip
-        #HOW TO ADD A 0 volume element to a table for the GUI? Or not even needed?
+        self.add_pin('open', port_line.coords, p.width)

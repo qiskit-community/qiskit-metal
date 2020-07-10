@@ -21,7 +21,6 @@ converted to v0.2: Thomas McConkey 2020-04-23
 
 import numpy as np
 from qiskit_metal import draw, Dict
-#from qiskit_metal import is_true
 from qiskit_metal.components.base.qubit import BaseQubit
 
 
@@ -220,4 +219,4 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
         self.add_qgeometry(
             'poly', {f'{name}_connector_etcher': connector_etcher}, subtract=True)
 
-        self.add_pin(name, port_line.coords, c_w, self.id)  # TODO: chip
+        self.add_pin(name, port_line.coords, c_w)  # TODO: chip

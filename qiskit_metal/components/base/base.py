@@ -77,12 +77,12 @@ class QComponent():
         Each child adds it's options to the base options.  If the
         key is the same, the option of the youngest child is used.
     '''
-    # Intended for future use, for components that do not normally take pins as inputs
-    # to be able to have an input pin and be moved/rotated based on said input.
+
     default_options = Dict(
-        pin_inputs=Dict()
+        #Intended for future use, for components that do not normally take pins as inputs
+        #to be able to have an input pin and be moved/rotated based on said input.
+        #pin_inputs = Dict()
     )
-    """Default pin options"""
 
     # Dummy private attribute used to check if an instanciated object is
     # indeed a QComponent class. The problem is that the `isinstance`
@@ -539,7 +539,6 @@ class QComponent():
                 name: str,  # this should be static based on component designer's code
                 points: np.ndarray,
                 width: float,
-                parent: Union[int, 'QComponent'],
                 input_as_norm: bool = False,
                 chip: str = 'main'):
         """Add the named pin to the respective component's pins subdictionary
@@ -554,9 +553,9 @@ class QComponent():
         ::
 
             ..........
-                    .
+                     .
             --------->*
-                    .
+                     .
             ..........
 
         tangent vector
@@ -564,31 +563,24 @@ class QComponent():
         ::
 
             ..........^
-                    .|
-                    .*
-                    .|
+                     .*
+                     .|
             ..........|
 
-        Arguments:
-            name (str): Name of pin
-            points (numpy.ndarray): Two (x,y) points that define the pin
-            parent (Union[int,): id number of the parent component (from self.id).
-            width (float): width of the pin connection
-            input_as_norm (bool): If the input is a normal vector (eg. from a cpw path), or
-                a 'tangent' vector (eg. from a poly) (default: {False})
             chip (str): Optionally add options (default: {'main'})
         """
         if input_as_norm:
             self.pins[name] = self.make_pin_as_normal(
-                points, width, parent, chip)
+                points, width, chip)
         else:
             self.pins[name] = self.make_pin(
-                points, parent, chip=chip)
+                points, chip=chip)
+
+
 
     def make_pin_as_normal(self,
                            points: np.ndarray,
                            width: float,
-                           parent: Union[int, 'QComponent'],
                            chip: str = 'main'):
         """
         Generates a pin from two points which are normal to the intended plane of the pin.
@@ -621,8 +613,6 @@ class QComponent():
 
         vec_normal = points[1]-points[0]
         vec_normal /= np.linalg.norm(vec_normal)
-       # if flip:
-        # vec_normal = -vec_normal
 
         s_point = np.round(Vector.rotate(
             vec_normal, (np.pi/2))) * width/2 + points[1]
@@ -637,16 +627,14 @@ class QComponent():
             tangent=Vector.rotate(vec_normal, np.pi/2),
             width=width,
             chip=chip,
-            parent_name=parent,
-            net_id=0,
-            # Place holder value for potential future property (auto-routing cpw with
-            length=0
-            # length limit)
+            parent_name=self.id,
+            net_id = 0,
+            length = 0  #Place holder value for potential future property (auto-routing cpw with
+                        # length limit)
         )
 
     def make_pin(self,
                  points: np.ndarray,
-                 parent_name: Union[int, 'QComponent'],
                  chip='main'):
         """Called by add_pin, does the math for the pin generation.
         Generates a pin from two points which are tangent to the intended plane of the pin.
@@ -694,7 +682,7 @@ class QComponent():
             tangent=vec_dist_unit,
             width=np.linalg.norm(vec_dist),
             chip=chip,
-            parent_name=parent_name,
+            parent_name=self.id,
             net_id=0,
             # Place holder value for potential future property (auto-routing cpw with
             length=0

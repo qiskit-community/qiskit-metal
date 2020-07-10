@@ -39,7 +39,6 @@ converted to v0.2: Thomas McConkey 2020-03-24
 
 import numpy as np
 from qiskit_metal import draw, Dict
-#from qiskit_metal import is_true
 from qiskit_metal.components.base.qubit import BaseQubit
 
 class TransmonPocket(BaseQubit):
@@ -119,6 +118,7 @@ class TransmonPocket(BaseQubit):
 
     #_img = 'transmon_pocket1.png'
 
+    # Default drawing options
     default_options = Dict(
         pos_x='0um',
         pos_y='0um',
@@ -139,14 +139,13 @@ class TransmonPocket(BaseQubit):
             pad_cpw_extent='25um',
             cpw_width='10um',
             cpw_gap='6um',
-            cpw_extend='100um',  # how far into the ground to extend the CPW line from the coupling pads
+            cpw_extend='100um', # how far into the ground to extend the CPW line from the coupling pads
             pocket_extent='5um',
             pocket_rise='65um',
             loc_W='+1',  # width location  only +-1
             loc_H='+1',  # height location only +-1
         )
     )
-    """Default drawing options"""
 
 
     def make(self):
@@ -251,6 +250,4 @@ class TransmonPocket(BaseQubit):
         # add pins
         points = np.array(connector_wire_path.coords)
         #FIX POINTS,
-        self.add_pin(name,
-            points = points[-2:],
-            width = cpw_width, parent = self.id, input_as_norm=True)
+        self.add_pin(name,points = points[-2:], width = cpw_width, input_as_norm=True)
