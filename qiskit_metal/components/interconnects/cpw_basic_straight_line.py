@@ -16,6 +16,9 @@ class CpwStraightLine(QComponent):
 
     Example use:
 
+    .. code-block:: python
+        :linenos:
+
         if '__main__.CpwStraightLine' in design.template_options:
         design.template_options.pop('__main__.CpwStraightLine')
 
