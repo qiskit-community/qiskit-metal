@@ -253,4 +253,4 @@ class TransmonPocket(BaseQubit):
         #FIX POINTS, 
         self.add_pin(name,
             points = points[-2:],
-            width = cpw_width, parent = self.id, input_as_norm=True,  flip=False)
+            width = cpw_width, parent = self.id, input_as_norm=True)

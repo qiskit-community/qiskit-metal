@@ -27,7 +27,6 @@ class FakeCPW(QComponent):
     default_options = Dict(
         line_width='10um',
         line_gap='6um',
-        _pin_inputs_size = 2,
         pin_inputs = Dict(start_pin='',end_pin='')
 
         # pin_start = dict(), #for now assuming the dictionary of the pin is passed, it
@@ -39,11 +38,8 @@ class FakeCPW(QComponent):
     def make(self):
         """ This is executed by the user to generate the elements for the component.
         """
-        component_start = self.options.pin_inputs[0][0]
-        pin_start = self.options.pin_inputs[0][1]
-        component_end = self.options.pin_inputs[1][0]
-        pin_end = self.options.pin_inputs[1][1]
 
+        
         # Check if component was deleted from design.
         # TODO: These checks should be happening in base now
         if component_end not in self.design._components:

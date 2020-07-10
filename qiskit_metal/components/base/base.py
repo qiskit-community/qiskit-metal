@@ -77,10 +77,12 @@ class QComponent():
         Each child adds it's options to the base options.  If the
         key is the same, the option of the youngest child is used.
     '''
+    #Intended for future use, for components that do not normally take pins as inputs
+    #to be able to have an input pin and be moved/rotated based on said input.
     default_options = Dict(
-        pin_inputs = [],
-        _pin_inputs_size = 0
+        pin_inputs = Dict()
     )
+
     # Dummy private attribute used to check if an instanciated object is
     # indeed a QComponent class. The problem is that the `isinstance`
     # built-in method fails when this module is reloaded.
@@ -155,6 +157,8 @@ class QComponent():
         # Parser for options
         self.p = ParsedDynamicAttributes_Component(self)
 
+        
+        
         if len(self.options.pin_inputs)!=self.options._pin_inputs_size:
             logger.warning(f'The number of pins inputed does not match that required for this component. '
                            'Please input the correct number of pins for component creation.')
@@ -535,9 +539,9 @@ class QComponent():
                 name: str, # this should be static based on component designer's code
                 points: np.ndarray,
                 width: float,
-                parent: Union[int, 'QComponent'], #input of name or id or either?
+                parent: Union[int, 'QComponent'],
                 input_as_norm: bool = False,
-                flip: bool = False,
+                #flip: bool = False,
                 chip: str = 'main'):
         """Add the named pin to the respective component's pins subdictionary
 
@@ -561,24 +565,23 @@ class QComponent():
         ..........|       
 
         Arguments:
-            name (str) -- Name of pin
-            points (numpy.ndarray) -- Two (x,y) points that define the pin
-            parent (Union[str,) -- component or string or None. Will be converted to a
-                                 string, which will the name of the component.
-            width (float) -- width of the pin connection
+            name (str) - Name of pin
+            points (numpy.ndarray) - Two (x,y) points that define the pin
+            parent (Union[int,) - id number of the parent component (from self.id).
+            width (float) - width of the pin connection
 
         Keyword Arguments:
             input_as_norm (bool) -- If the input is a normal vector (eg. from a cpw path), or
                 a 'tangent' vector (eg. from a poly) (default: {False})
-            flip (bool) -- [description] (default: {False})
-            chip (str) --  Optionally add options (default: {'main'})
+            flip (bool) - flips the generated normal vector. TEMP REMOVED
+            chip (str) -  Optionally add options (default: {'main'})
         """
         if input_as_norm:
             self.pins[name] = self.make_pin_as_normal(
-                points, width, parent, flip, chip)
+                points, width, parent, chip)
         else:
             self.pins[name] = self.make_pin(
-                points, parent, flip=flip, chip=chip)
+                points, parent, chip=chip)
         
 
 
@@ -586,7 +589,7 @@ class QComponent():
                           points: np.ndarray,
                           width: float,
                           parent: Union[int, 'QComponent'],
-                          flip: bool = False,
+                          #flip: bool = False,
                           chip: str = 'main'):
         """
         Generates a pin from two points which are normal to the intended plane of the pin.
@@ -598,7 +601,7 @@ class QComponent():
             points (numpy.ndarray)- [[x1,y1],[x2,y2]] for the normal line
             width (float) - the width of the intended connection (eg. qubit bus pad arm)
             parent (Union[int,]) - The id of the parent component
-            flip (bool): to change the direction of intended connection (True causes a 180, default False)
+            flip (bool): To change the direction of intended connection (True causes a 180, default False)
             chip (str): the name of the chip the pin is located on, default 'main'
 
         A dictionary containing a collection of information about the pin, necessary for use in Metal:
@@ -618,8 +621,8 @@ class QComponent():
 
         vec_normal = points[1]-points[0]
         vec_normal /= np.linalg.norm(vec_normal)
-        if flip:
-            vec_normal = -vec_normal
+       #if flip:
+           # vec_normal = -vec_normal
 
         s_point = np.round(Vector.rotate(
             vec_normal, (np.pi/2))) * width/2 + points[1]
@@ -635,11 +638,21 @@ class QComponent():
             width=width,
             chip=chip,
             parent_name=parent,
-            net_id = 0
+            net_id = 0,
+            length = 0  #Place holder value for potential future property (auto-routing cpw with
+                        # length limit)
         )
 
-    def make_pin(self, points: np.ndarray, parent_name: str, flip=False, chip='main'):
+    def make_pin(self,
+                points: np.ndarray, 
+                parent_name: str, 
+                #flip=False, 
+                chip='main'):
         """Called by add_pin, does the math for the pin generation.
+        Generates a pin from two points which are tangent to the intended plane of the pin.
+        The tangent should 'point' in the direction such that 'two_points_described'
+        returns a normal vector pointing in the intended direction of connection. 
+        Adds dictionary to parent component.
 
         Args:
             points (numpy.ndarray): list of two (x,y) points which represent the edge of the pin for
@@ -673,8 +686,8 @@ class QComponent():
         vec_dist, vec_dist_unit, vec_normal = draw.Vector.two_points_described(
             points)
 
-        if flip:
-            vec_normal = -vec_normal
+       # if flip:
+        #    vec_normal = -vec_normal
 
         return Dict(
             points=points,
@@ -684,7 +697,9 @@ class QComponent():
             width=np.linalg.norm(vec_dist),
             chip=chip,
             parent_name=parent_name,
-            net_id=0
+            net_id=0,
+            length = 0  #Place holder value for potential future property (auto-routing cpw with
+                        # length limit)
         )
 
     def get_pin(self, name: str):
