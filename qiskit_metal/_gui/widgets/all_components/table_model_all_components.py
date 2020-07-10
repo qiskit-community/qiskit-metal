@@ -168,8 +168,8 @@ class QTableModel_AllComponents(QAbstractTableModel):
 
     def flags(self, index):
         """ Set the item flags at the given index. Seems like we're
-            implementing this function just to see how it's done, as we
-            manually adjust each tableView to have NoEditTriggers.
+        implementing this function just to see how it's done, as we
+        manually adjust each tableView to have NoEditTriggers.
         
         Args:
             index (QModelIndex): the index
@@ -188,8 +188,8 @@ class QTableModel_AllComponents(QAbstractTableModel):
     # @catch_exception_slot_pyqt()
     def data(self, index: QModelIndex, role: int = Qt.DisplayRole):
         """ Depending on the index and role given, return data. If not
-            returning data, return None (PySide equivalent of QT's
-            "invalid QVariant").
+        returning data, return None (PySide equivalent of QT's
+        "invalid QVariant").
         
         Returns:
             str: data
