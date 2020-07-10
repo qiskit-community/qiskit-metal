@@ -48,7 +48,7 @@ Elements Window
     :toctree: ../stubs/
 
     ElementsWindow
-    ElementTableModel-TBD
+    ElementTableModel
 
 
 Widgets
@@ -96,8 +96,6 @@ Submodules
 
 import logging
 from .. import __version__
-
-from qiskit_metal._gui.main_window import MetalGUI # for docstrings
 
 # Check if PyQt5 is available for import
 try:
@@ -151,5 +149,6 @@ from qiskit_metal._gui.main_window_base import QMainWindowBaseHandler
 from qiskit_metal._gui.main_window import QMainWindowExtension
 #from qiskit_metal._gui.main_window import MetalGUI # for docstrings
 from qiskit_metal._gui.elements_window import ElementsWindow
+from qiskit_metal._gui.elements_window import ElementTableModel
 from qiskit_metal._gui.widgets.plot_widget.plot_window import QMainWindowPlot
 from qiskit_metal._gui.widgets.variable_table.prop_val_table_gui import PropertyTableWidget

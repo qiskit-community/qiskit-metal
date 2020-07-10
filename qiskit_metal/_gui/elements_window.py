@@ -76,16 +76,27 @@ class ElementTableModel(QAbstractTableModel):
     """MVC class
     See https://doc.qt.io/qt-5/qabstracttablemodel.html
 
-    Can be accessed with
-        t = gui.elements_win.tableElements
-        model = t.model()
-        index = model.index(1,0)
-        model.data(index)
+    The class extends the `QAbstractTableModel` class.
+
+    Can be accessed with:
+        .. code-block:: python
+
+            t = gui.elements_win.tableElements
+            model = t.model()
+            index = model.index(1,0)
+            model.data(index)
+
     """
     __timer_interval = 500  # ms
 
     def __init__(self, gui, parent=None, element_type='poly'):
         super().__init__(parent=parent)
+        """
+        Args:
+            gui (MetalGUI): The GUI
+            parent (QMainWindowExtension): Parent window (Default: None)
+            element_type (str): the elment type (Default: 'poly')
+        """
         self.logger = gui.logger
         self.gui = gui
         self._row_count = -1
@@ -95,20 +106,24 @@ class ElementTableModel(QAbstractTableModel):
 
     @property
     def design(self):
+        """Returns the design"""
         return self.gui.design
 
     @property
     def elements(self):
+        """Returns the elements"""
         if self.design:
             return self.design.elements
 
     @property
     def tables(self):
+        """Returns all the tables"""
         if self.design:
             return self.design.elements.tables
 
     @property
     def table(self):
+        """Returns all the tables of the type specified in the constructor"""
         if self.design:
             return self.design.elements.tables[self.type]
 
@@ -153,17 +168,42 @@ class ElementTableModel(QAbstractTableModel):
             self._row_count = new_count
 
     def rowCount(self, parent: QModelIndex = None):
+        """Counts all the rows
+
+        Args:
+            parent (QModelIndex): Unused (Default: None)
+
+        Returns:
+            int: the number of rows
+        """
         if self.table is None:
             return 0
         return self.table.shape[0]
 
     def columnCount(self, parent: QModelIndex = None):
+        """Counts all the columns
+
+        Args:
+            parent (QModelIndex): Unused (Default: None)
+
+        Returns:
+            int: the number of columns
+        """
         if self.table is None:
             return 0
         return self.table.shape[1]
 
     def headerData(self, section, orientation, role=QtCore.Qt.DisplayRole):
-        """ Set the headers to be displayed. """
+        """ Set the headers to be displayed.
+
+        Args:
+            section (int): section number
+            orientation (Qt orientation): section orientation
+            role (Qt display role): display role (Default: DisplayRole)
+
+        Returns:
+            str: the header data, or None if not found
+        """
 
         if (role != QtCore.Qt.DisplayRole) or (self.table is None):
             return None
@@ -174,8 +214,14 @@ class ElementTableModel(QAbstractTableModel):
 
     def flags(self, index: QModelIndex):
         """ Set the item flags at the given index. Seems like we're
-            implementing this function just to see how it's done, as we
-            manually adjust each tableView to have NoEditTriggers.
+        implementing this function just to see how it's done, as we
+        manually adjust each tableView to have NoEditTriggers.
+
+        Args:
+            index (QModelIndex): the index
+
+        Returns:
+            Qt flags: Flags from Qt
         """
         # https://doc.qt.io/qt-5/qt.html#ItemFlag-enum
 
@@ -187,8 +233,11 @@ class ElementTableModel(QAbstractTableModel):
 
     def data(self, index: QModelIndex, role=QtCore.Qt.DisplayRole):
         """ Depending on the index and role given, return data. If not
-            returning data, return None (PySide equivalent of QT's
-            "invalid QVariant").
+        returning data, return None (PySide equivalent of QT's
+        "invalid QVariant").
+
+        Returns:
+            str: data
         """
 
         if not index.isValid():
