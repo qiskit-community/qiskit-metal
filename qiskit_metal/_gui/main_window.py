@@ -52,11 +52,13 @@ class QMainWindowExtension(QMainWindowExtensionBase):
     """This contains all the functions tthat the gui needs
     to call directly from the UI
 
+    This class extends the `QMainWindowExtensionBase` class.
+
     To access the GUI HAndler above this, call:
         self.handler = gui
 
     Args:
-        QMainWindow ([type]): [description]
+        QMainWindow (QMainWindow): Main window
     """
 
     @property
@@ -64,15 +66,22 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         """Return the design.
 
         Returns:
-            QDesign: [description]
+            QDesign: The design
         """
         return self.handler.design
 
     @property
     def gui(self) -> 'MetalGUI':
+        """Returns the MetalGUI"""
         return self.handler
 
     def _set_element_tab(self, yesno: bool):
+        """Set which part of the element table is in use
+
+        Args:
+            yesno (bool): True for View, False for Elements
+        """
+
         if yesno:
             self.ui.tabWidget.setCurrentWidget(self.ui.tabElements)
             self.ui.actionElements.setText("View")
@@ -94,6 +103,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
 
     @catch_exception_slot_pyqt()
     def save_design_as(self, _=None):
+        """Handles click on Save Design As"""
         filename = QFileDialog.getSaveFileName(None,
                                                'Select a new locaiton to save Metal design to',
                                                self.design.get_design_name() + '.metal',
@@ -135,12 +145,14 @@ class QMainWindowExtension(QMainWindowExtensionBase):
 
     @catch_exception_slot_pyqt()
     def full_refresh(self, _):
+        """Handles click on Refresh"""
         self.logger.info(
             f'Force refresh of all widgets (does not rebuild components)...')
         self.gui.refresh()
 
     @catch_exception_slot_pyqt()
     def rebuild(self, _):
+        """Handels click on Rebuild"""
         self.logger.info(
             f'Rebuilding all components in the model (and refreshing widgets)...')
         self.gui.rebuild()
