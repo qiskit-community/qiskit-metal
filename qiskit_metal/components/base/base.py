@@ -77,10 +77,10 @@ class QComponent():
         Each child adds it's options to the base options.  If the
         key is the same, the option of the youngest child is used.
     '''
-    #Intended for future use, for components that do not normally take pins as inputs
-    #to be able to have an input pin and be moved/rotated based on said input.
+    # Intended for future use, for components that do not normally take pins as inputs
+    # to be able to have an input pin and be moved/rotated based on said input.
     default_options = Dict(
-        pin_inputs = Dict()
+        pin_inputs=Dict()
     )
     """Default pin options"""
 
@@ -116,21 +116,21 @@ class QComponent():
 
 
         Note:  Information copied from QDesign class.
-            self._design.overwrite_enabled (bool): 
+            self._design.overwrite_enabled (bool):
             When True - If the string name, used for component, already
-            exists in the design, the existing component will be 
-            deleted from design, and new component will be generated 
-            with the same name and newly generated component_id, 
-            and then added to design. 
+            exists in the design, the existing component will be
+            deleted from design, and new component will be generated
+            with the same name and newly generated component_id,
+            and then added to design.
 
             When False - If the string name, used for component, already
-            exists in the design, the existing component will be 
+            exists in the design, the existing component will be
             kept in the design, and current component will not be generated,
-            nor will be added to the design. The 'NameInUse' will be returned 
+            nor will be added to the design. The 'NameInUse' will be returned
             during component generation.
 
-            Either True or False - If string name, used for component, is NOT 
-            being used in the design, a component will be generated and 
+            Either True or False - If string name, used for component, is NOT
+            being used in the design, a component will be generated and
             added to design using the name.
         """
 
@@ -159,13 +159,14 @@ class QComponent():
         # Parser for options
         self.p = ParsedDynamicAttributes_Component(self)
 
-        self._error_message = '' #Should put this earlier so could pass in other error messages?
+        # Should put this earlier so could pass in other error messages?
+        self._error_message = ''
         if self._check_pin_inputs():
             self.logger.warning(self._error_message)
             return
 
-        ### Build and component internals
-        
+        # Build and component internals
+
         # Create an empty dict, which will populated by component designer.
         self.pins = Dict()  # TODO: should this be private?
         self._made = False
@@ -352,15 +353,15 @@ class QComponent():
         return options
 
     def _delete_evaluation(self, check_name: str = None):
-        """design.overwrite_enabled allows user to delete an existing component within 
+        """design.overwrite_enabled allows user to delete an existing component within
         the design if the name is being used.
 
         Args:
             check_name (str, optional): Name of new component. (Defaults: None)
 
         Returns:
-            string: Return 'NameInUse' if overwrite flag is False and 
-            check_name is already being used within design. 
+            string: Return 'NameInUse' if overwrite flag is False and
+            check_name is already being used within design.
             Otherwise return None.
         """
         answer = self._is_name_used(check_name)
@@ -535,7 +536,7 @@ class QComponent():
 #   Will they operate properly with non-planar designs?
 
     def add_pin(self,
-                name: str, # this should be static based on component designer's code
+                name: str,  # this should be static based on component designer's code
                 points: np.ndarray,
                 width: float,
                 parent: Union[int, 'QComponent'],
@@ -544,7 +545,7 @@ class QComponent():
         """Add the named pin to the respective component's pins subdictionary
 
         * = pin
-        . = outline of component                 
+        . = outline of component
         ---> = the list being passed in as 'points' [[x1,y1],[x2,y2]]
 
 
@@ -566,7 +567,7 @@ class QComponent():
                     .|
                     .*
                     .|
-            ..........|       
+            ..........|
 
         Arguments:
             name (str): Name of pin
@@ -583,14 +584,12 @@ class QComponent():
         else:
             self.pins[name] = self.make_pin(
                 points, parent, chip=chip)
-        
-
 
     def make_pin_as_normal(self,
-                          points: np.ndarray,
-                          width: float,
-                          parent: Union[int, 'QComponent'],
-                          chip: str = 'main'):
+                           points: np.ndarray,
+                           width: float,
+                           parent: Union[int, 'QComponent'],
+                           chip: str = 'main'):
         """
         Generates a pin from two points which are normal to the intended plane of the pin.
         The normal should 'point' in the direction of intended connection. Adds dictionary to
@@ -622,8 +621,8 @@ class QComponent():
 
         vec_normal = points[1]-points[0]
         vec_normal /= np.linalg.norm(vec_normal)
-       #if flip:
-           # vec_normal = -vec_normal
+       # if flip:
+        # vec_normal = -vec_normal
 
         s_point = np.round(Vector.rotate(
             vec_normal, (np.pi/2))) * width/2 + points[1]
@@ -639,19 +638,20 @@ class QComponent():
             width=width,
             chip=chip,
             parent_name=parent,
-            net_id = 0,
-            length = 0  #Place holder value for potential future property (auto-routing cpw with
-                        # length limit)
+            net_id=0,
+            # Place holder value for potential future property (auto-routing cpw with
+            length=0
+            # length limit)
         )
 
     def make_pin(self,
-                points: np.ndarray, 
-                parent_name: Union[int, 'QComponent'], 
-                chip='main'):
+                 points: np.ndarray,
+                 parent_name: Union[int, 'QComponent'],
+                 chip='main'):
         """Called by add_pin, does the math for the pin generation.
         Generates a pin from two points which are tangent to the intended plane of the pin.
         The tangent should 'point' in the direction such that 'two_points_described'
-        returns a normal vector pointing in the intended direction of connection. 
+        returns a normal vector pointing in the intended direction of connection.
         Adds dictionary to parent component.
 
         Args:
@@ -676,7 +676,9 @@ class QComponent():
             * chip (str) - the chip the pin is on
             * parent_name - the id of the parent component
             * net_id - net_id of the pin if connected to another pin (default 0, indicates not
-              connected) 
+              connected)
+            * length - Place holder value for potential future property (auto-routing cpw with
+              length limit
 
         """
         assert len(points) == 2
@@ -684,9 +686,6 @@ class QComponent():
         # Get the direction vector, the unit direction vec, and the normal vector
         vec_dist, vec_dist_unit, vec_normal = draw.Vector.two_points_described(
             points)
-
-       # if flip:
-        #    vec_normal = -vec_normal
 
         return Dict(
             points=points,
@@ -697,8 +696,9 @@ class QComponent():
             chip=chip,
             parent_name=parent_name,
             net_id=0,
-            length = 0  #Place holder value for potential future property (auto-routing cpw with
-                        # length limit)
+            # Place holder value for potential future property (auto-routing cpw with
+            length=0
+            # length limit)
         )
 
     def get_pin(self, name: str):
@@ -714,7 +714,7 @@ class QComponent():
         return self.pins[name]
 
     def _check_pin_inputs(self):
-        """Checks that the pin_inputs are valid, sets an error message indicating what the 
+        """Checks that the pin_inputs are valid, sets an error message indicating what the
         error is if the inputs are not valid.
         Checks regardless of user passing the compnent name or component id (probably a smoother way
         to do this check)
@@ -726,7 +726,7 @@ class QComponent():
         Returns:
             str: Status test, or None
         """
-        #Add check for if user inputs nonsense?
+        # Add check for if user inputs nonsense?
         false_component = False
         false_pin = False
         pin_in_use = False
@@ -758,11 +758,6 @@ class QComponent():
                 self._error_message = f'Pin {pin} of component {component} is already in use. {self.name} has not been built. Please check your pin_input values.'
                 return 'Pin In Use'
         return None
-
-
-
-
-
 
     def connect_components_already_in_design(self, pin_name_self: str, comp2_id: int, pin2_name: str) -> int:
         """WARNING: Do NOT use this method during generation of component instance.
@@ -822,45 +817,43 @@ class QComponent():
         self.design.add_dependency(parent, child)
 
 ##########################################
-# Elements
-    def add_elements(self,
-                     kind: str,
-                     elements: dict,
-                     subtract: bool = False,
-                     helper: bool = False,
-                     layer: Union[int, str] = 1,  # chip will be here
-                     chip: str = 'main',
-                     **kwargs
-                     ):
-        #  subtract: Optional[bool] = False,
-        #  layer: Optional[Union[int, str]] = 0,
-        #  type: Optional[ElementTypes] = ElementTypes.positive,
-        #  chip: Optional[str] = 'main',
-        #  **kwargs):
-        r"""Add elements.
+# QGeometry
+    def add_qgeometry(self,
+                      kind: str,
+                      geometry: dict,
+                      subtract: bool = False,
+                      helper: bool = False,
+                      layer: Union[int, str] = 1,  # chip will be here
+                      chip: str = 'main',
+                      **kwargs
+                      ):
+        r"""Add QGeometry.
 
         Takes any additional options in options.
 
         Arguments:
-            kind (str): The kind of elements, such as 'path', 'poly', etc.
-                        All elements in the dicitonary should have the same kind
-            elements (Dict[BaseGeometry]): Key-value pairs
+            kind (str): The kind of QGeometry, such as 'path', 'poly', etc.
+                        All geometry in the dictionary should have the same kind,
+                        such as Polygon or LineString.
+            geoemetry (Dict[BaseGeometry]): Key-value pairs of name of the geometry
+                you want to add and the value should be a shapely geometry object, such
+                as a Polygon or a LineString.
             subtract (bool): Subtract from the layer (default: False)
             helper (bool): Is this a helper object. If true, subtract must be false
                            (default: False)
-            layer (int, str): The layer to which the set of elements will belong
+            layer (int, str): The layer to which the set of QGeometry will belong
                               (default: 1)
             chip (str): Chip name (default: 'main')
             kwargs (dict): Parameters dictionary
 
         Assumptions:
-            * Assumes all elements in the elements are homogeneous in kind;
+            * Assumes all geometry in the `geometry` argument are homogeneous in kind;
               i.e., all lines or polys etc.
         """
         # assert (subtract and helper) == False, "The object can't be a subtracted helper. Please"\
         #    " choose it to either be a helper or a a subtracted layer, but not both. Thank you."
 
-        self.design.elements.add_elements(kind, self.id, elements, subtract=subtract,
+        self.design.elements.add_qgeometry(kind, self.id, geometry, subtract=subtract,
                                           helper=helper, layer=layer, chip=chip, **kwargs)
 
     def __repr__(self, *args):

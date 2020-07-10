@@ -23,7 +23,7 @@ See the docstring of `QElementTables`
 import functools
 import inspect
 import logging
-from typing import TYPE_CHECKING, Union, List, Dict as Dict_
+from typing import TYPE_CHECKING, Union, List, Dict as Dict_, Tuple
 
 import pandas as pd
 from geopandas import GeoSeries, GeoDataFrame
@@ -237,7 +237,7 @@ class QElementTables(object):
     Table column names to use to create.
     this dict should be updated by renderers.
     """
-    
+
 
     # For creating names of columns of renderer properties
     name_delimiter = '_'
@@ -430,7 +430,7 @@ class QElementTables(object):
         return {self.get_rname(renderer_key, k): v
                 for k, v in rdict.get(renderer_key, {}).items()}
 
-    def add_elements(self,
+    def add_qgeometry(self,
                      kind: str,
                      component_name: str,
                      geometry: dict,
@@ -551,7 +551,7 @@ class QElementTables(object):
             # comp_id = self.design.components[name].id
             # return df[df.component == comp_id]
 
-    def get_component_bounds(self, name: str):
+    def get_component_bounds(self, name: str) -> Tuple[float, float, float, float]:
         """Returns a tuple containing minx, miny, maxx, maxy values
         for the bounds of the component as a whole.
 
@@ -561,7 +561,11 @@ class QElementTables(object):
         Returns:
             Geometry: Bare element geometry
         """
-        return self.get_component_geometry(name).total_bounds
+        gs = self.get_component_geometry(name) # Pandas GeoSeries
+        if len(gs) == 0:
+            return (0,0,0,0)
+        else:
+            return gs.total_bounds
 
     def rename_component(self, component_id: int, new_name: str):
         """Rename component by ID (integer) cast to string format.
@@ -621,7 +625,13 @@ class QElementTables(object):
         for table_name in self.get_element_types():
             table = self.tables[table_name]
             elements[table_name] = table.geometry[table.component == comp_id]
-        return pd.concat(elements)
+        elements = pd.concat(elements)
+
+        # when concatinating empty GeoSeries, returns Series (ugly fix)
+        if not isinstance(elements, GeoSeries):
+            elements = GeoSeries(elements)
+
+        return elements
 
     def get_component_geometry_dict(self, name: str, table_name: str = 'all') -> List[BaseGeometry]:
         """Return just the bare element geometry (shapely geometry objects) as a dict,
