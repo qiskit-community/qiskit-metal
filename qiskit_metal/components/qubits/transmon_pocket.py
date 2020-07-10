@@ -39,7 +39,6 @@ converted to v0.2: Thomas McConkey 2020-03-24
 
 import numpy as np
 from qiskit_metal import draw, Dict
-#from qiskit_metal import is_true
 from qiskit_metal.components.base.qubit import BaseQubit
 
 class TransmonPocket(BaseQubit):
@@ -251,6 +250,4 @@ class TransmonPocket(BaseQubit):
         # add pins
         points = np.array(connector_wire_path.coords)
         #FIX POINTS, 
-        self.add_pin(name,
-            points = points[-2:],
-            width = cpw_width, parent = self.id, input_as_norm=True)
+        self.add_pin(name,points = points[-2:], width = cpw_width, input_as_norm=True)

@@ -14,9 +14,8 @@
 
 """File contains dictionary for Rectangle and the make()."""
 
-from qiskit_metal import draw, Dict#, QComponent
+from qiskit_metal import draw, Dict
 from qiskit_metal.components.base import QComponent
-#from qiskit_metal import is_true
 import numpy as np
 
 class NSquareSpiral(QComponent):
@@ -92,4 +91,4 @@ class NSquareSpiral(QComponent):
         #FIX POINTS, 
         self.add_pin('spiralPin',
             points = points[-2:],
-            width = p.width/2, parent = self.id, input_as_norm=True)
+            width = p.width/2, input_as_norm=True)

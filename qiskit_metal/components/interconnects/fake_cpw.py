@@ -12,11 +12,10 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-from ... import draw
-from ...toolbox_python.attr_dict import Dict
-from ..base import QComponent
-
-from ...toolbox_python.utility_functions import log_error_easy
+from qiskit_metal import draw
+from qiskit_metal.toolbox_python.attr_dict import Dict
+from qiskit_metal.components.base.base import QComponent
+from qiskit_metal.toolbox_python.utility_functions import log_error_easy
 
 
 class FakeCPW(QComponent):
@@ -56,10 +55,8 @@ class FakeCPW(QComponent):
 
         #Generates its own pins based on the inputs
         #Note: Need to flip the points so resulting normal vector is correct.
-        self.add_pin('fake_cpw_start', starting_pin_dic.points[::-1], p.line_width,
-                     self.id)
-        self.add_pin('fake_cpw_end', ending_pin_dic.points[::-1], p.line_width,
-                    self.id)
+        self.add_pin('fake_cpw_start', starting_pin_dic.points[::-1], p.line_width)
+        self.add_pin('fake_cpw_end', ending_pin_dic.points[::-1], p.line_width)
 
         # THEN ADD TO NETLIST - Note: Thoughts on how to have this be automated so the component designer
         #doesn't need to write this code?

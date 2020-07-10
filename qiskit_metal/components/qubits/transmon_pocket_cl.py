@@ -33,7 +33,6 @@ Child of 'standard' transmon pocket
 
 import numpy as np
 from qiskit_metal import draw, Dict
-#from qiskit_metal import is_true
 from qiskit_metal.components.qubits.transmon_pocket import TransmonPocket
 
 class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
@@ -147,7 +146,7 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
 
         # Generating pins
         points = list(draw.shapely.geometry.shape(port_line).coords)
-        self.add_pin(name, points, p.cl_width, self.id)  # TODO: chip
+        self.add_pin(name, points, p.cl_width)  # TODO: chip
 
         #Adding to element table
         self.add_elements('poly', dict(cl_metal=cl_metal))

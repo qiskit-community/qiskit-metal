@@ -20,7 +20,7 @@ converted to v0.2: Thomas McConkey 2020-03-24
 """
 
 from copy import deepcopy
-from ...toolbox_python.attr_dict import Dict
+from qiskit_metal.toolbox_python.attr_dict import Dict
 from .base import QComponent
 
 

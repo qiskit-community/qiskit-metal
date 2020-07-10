@@ -7,7 +7,7 @@ from typing import List, Tuple, Union
 
 import numpy as np
 from numpy.linalg import norm
-from ...toolbox_python.utility_functions import log_error_easy
+from qiskit_metal.toolbox_python.utility_functions import log_error_easy
 
 import numpy as np
 from qiskit_metal import draw, Dict#, QComponent
