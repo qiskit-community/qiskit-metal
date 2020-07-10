@@ -58,7 +58,7 @@ Widgets
     :toctree: ../stubs/
 
     QTableView_AllComponents
-    QTableModel_AllComponents-TBD
+    QTableModel_AllComponents
     QToolBarExpanding-TBD
     QWidget_PlaceholderText-TBD
     ComponentWidget-TBD
@@ -151,5 +151,6 @@ from qiskit_metal._gui.main_window import QMainWindowExtension
 from qiskit_metal._gui.elements_window import ElementsWindow
 from qiskit_metal._gui.elements_window import ElementTableModel
 from qiskit_metal._gui.widgets.all_components.table_view_all_components import QTableView_AllComponents
+from qiskit_metal._gui.widgets.all_components.table_model_all_components import QTableModel_AllComponents
 from qiskit_metal._gui.widgets.plot_widget.plot_window import QMainWindowPlot
 from qiskit_metal._gui.widgets.variable_table.prop_val_table_gui import PropertyTableWidget
