@@ -85,7 +85,7 @@ class Components:
             quiet (bool): Allow warning messages to be generated.
 
         Returns:
-            int: key to use in  _components.  
+            int: key to use in  _components.
             If 0 is returned it means the name is not in dict.
 
         Raises:
@@ -101,11 +101,10 @@ class Components:
             # https://github.com/jupyter/notebook/issues/2014
             if not quiet:
                 self.logger.warning(
-                    f'In Components.find_id(), the name={name} is not used in design._components ')
+                    f'In Components.find_id(), the name={name} is not used in design._components')
             return 0
         else:
             raise AttributeError(name)
-            return 0
 
     # def is_name_used(self, new_name: str) -> int:
     #     """Check to see if name being used in components.
@@ -192,7 +191,7 @@ class Components:
             name (str): Name of component used to find the QComponent in design._components dict, vs using unique int id.
 
         Returns:
-            QComponent: Class which describes the component. None if 
+            QComponent: Class which describes the component. None if
                         name not found in design._components.
         """
         quiet = True
