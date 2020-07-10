@@ -184,9 +184,9 @@ class TransmonPocket(BaseQubit):
         [rect_jj, pad_top, pad_bot, rect_pk] = polys
 
         # Use the geometry to create Metal elements
-        self.add_elements('poly', dict(pad_top=pad_top, pad_bot=pad_bot))
-        self.add_elements('poly', dict(rect_pk=rect_pk), subtract=True)
-        self.add_elements('poly', dict(rect_jj=rect_jj), helper=True)
+        self.add_qgeometry('poly', dict(pad_top=pad_top, pad_bot=pad_bot))
+        self.add_qgeometry('poly', dict(rect_pk=rect_pk), subtract=True)
+        self.add_qgeometry('poly', dict(rect_jj=rect_jj), helper=True)
 
     def make_connection_pads(self):
         '''
@@ -241,16 +241,16 @@ class TransmonPocket(BaseQubit):
         objects = draw.rotate_position(objects, p.orientation, [p.pos_x, p.pos_y])
         [connector_pad, connector_wire_path, connector_wire_CON] = objects
 
-        self.add_elements('poly', {f'{name}_connector_pad':connector_pad})
-        self.add_elements('path', {f'{name}_wire':connector_wire_path}, width=cpw_width)
-        self.add_elements('path', {f'{name}_wire_sub':connector_wire_path},
+        self.add_qgeometry('poly', {f'{name}_connector_pad':connector_pad})
+        self.add_qgeometry('path', {f'{name}_wire':connector_wire_path}, width=cpw_width)
+        self.add_qgeometry('path', {f'{name}_wire_sub':connector_wire_path},
                           width=cpw_width + 2*pc.cpw_gap, subtract=True)
 
         ############################################################
 
         # add pins
         points = np.array(connector_wire_path.coords)
-        #FIX POINTS, 
+        #FIX POINTS,
         self.add_pin(name,
             points = points[-2:],
             width = cpw_width, parent = self.id, input_as_norm=True)

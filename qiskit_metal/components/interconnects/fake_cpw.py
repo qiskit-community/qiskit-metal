@@ -51,7 +51,7 @@ class FakeCPW(QComponent):
         fake_cpw_line = draw.LineString(
             [starting_pin_dic['middle'], ending_pin_dic['middle']])
         #Adds the CPW to the elements table
-        self.add_elements(
+        self.add_qgeometry(
             'path', {f'{self.name}_cpw_line': fake_cpw_line}, width=p.line_width)
 
         #Generates its own pins based on the inputs

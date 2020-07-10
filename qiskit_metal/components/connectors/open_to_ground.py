@@ -33,7 +33,7 @@ class OpenToGround(QComponent):
         width       - the width of the 'cpw' terminating to ground (this is merely
                     for the purpose of generating a value to pass to the pin)
         pos_x/_y    - the x/y position of the ground termination.
-        rotation    - the direction of the termination. 0 degrees is +x, following a 
+        rotation    - the direction of the termination. 0 degrees is +x, following a
                     counter-clockwise rotation (eg. 90 is +y)
         chip        - the chip the pin should be on.
         layer       - layer the pin is on. Does not have any practical impact to the short.
@@ -63,6 +63,6 @@ class OpenToGround(QComponent):
         polys = draw.translate(polys, p.pos_x, p.pos_y)
         [open_termination, port_line] = polys
 
-        self.add_elements('poly', {'open_to_ground': open_termination}, subtract=True)
+        self.add_qgeometry('poly', {'open_to_ground': open_termination}, subtract=True)
         self.add_pin('open', port_line.coords, p.width, self.id)  # TODO: chip
         #HOW TO ADD A 0 volume element to a table for the GUI? Or not even needed?

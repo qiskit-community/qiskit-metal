@@ -40,7 +40,7 @@ class NSquareSpiral(QComponent):
         radius      - the 'radius' of the inner portion of the spiral
         gap         - the distance between each layer of the spiral
         pos_x/_y    - the x/y position of the ground termination.
-        rotation    - the direction of the termination. 0 degrees is +x, following a 
+        rotation    - the direction of the termination. 0 degrees is +x, following a
                     counter-clockwise rotation (eg. 90 is +y)
         chip        - the chip the pin should be on.
         layer       - layer the pin is on. Does not have any practical impact to the short.
@@ -66,7 +66,7 @@ class NSquareSpiral(QComponent):
         p = self.p  # p for parsed parameters. Access to the parsed options.
         n = int(p.n)
         #Create the geometry
-        
+
         spiral_list = []
 
         for step in range(n):
@@ -85,11 +85,11 @@ class NSquareSpiral(QComponent):
 
         ##############################################
         # add elements
-        self.add_elements('path', {'n_spiral': spiral_list}, width=p.width/2, subtract=p.subtract,
+        self.add_qgeometry('path', {'n_spiral': spiral_list}, width=p.width/2, subtract=p.subtract,
                           helper=p.helper, layer=p.layer, chip=p.chip)
 
         points = np.array(spiral_list.coords)
-        #FIX POINTS, 
+        #FIX POINTS,
         self.add_pin('spiralPin',
             points = points[-2:],
             width = p.width/2, parent = self.id, input_as_norm=True)

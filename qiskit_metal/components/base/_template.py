@@ -59,4 +59,4 @@ class MyQComponent(QComponent):
         rect = draw.rotate(rect, p.rotation)
         # Create QGeometry from a polygon
         geom = {'my_polygon': rect}
-        self.add_elements('poly', geom, layer=p.layer, subtract=False)
+        self.add_qgeometry('poly', geom, layer=p.layer, subtract=False)

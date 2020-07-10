@@ -32,7 +32,7 @@ class NGon(QComponent):
         n           - number of sides of the polygon
         radius      - the radius of the circle given n=infinity
         pos_x/_y    - the x/y position of the ground termination.
-        rotation    - the direction of the termination. 0 degrees is +x, following a 
+        rotation    - the direction of the termination. 0 degrees is +x, following a
                     counter-clockwise rotation (eg. 90 is +y)
         chip        - the chip the pin should be on.
         layer       - layer the pin is on. Does not have any practical impact to the short.
@@ -66,5 +66,5 @@ class NGon(QComponent):
 
         ##############################################
         # add elements
-        self.add_elements('poly', {'n_polygon': n_polygon}, subtract=p.subtract,
+        self.add_qgeometry('poly', {'n_polygon': n_polygon}, subtract=p.subtract,
                           helper=p.helper, layer=p.layer, chip=p.chip)

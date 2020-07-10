@@ -75,7 +75,7 @@ class CircleCaterpillar(QComponent):
         # print(caterpillar)
 
         # add elements
-        #self.add_elements('poly', {'mount': rect})
-        self.add_elements('poly', {'caterpillar': caterpillar})
+        #self.add_qgeometry('poly', {'mount': rect})
+        self.add_qgeometry('poly', {'caterpillar': caterpillar})
         # subtract=p.subtract,
         #                   helper=p.helper, layer=p.layer, chip=p.chip)

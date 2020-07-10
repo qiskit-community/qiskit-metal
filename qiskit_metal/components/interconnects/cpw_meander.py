@@ -367,11 +367,11 @@ class CpwMeanderSimple(QComponent):
         width = p.trace_width
         self.options._actual_length = str(
             line.length) + ' ' + self.design.get_units()
-        self.add_elements('path',
+        self.add_qgeometry('path',
                           {'trace': line},
                           width=width,
                           layer=layer)
-        self.add_elements('path',
+        self.add_qgeometry('path',
                           {'cut': line},
                           width=width + p.trace_gap,
                           layer=layer,

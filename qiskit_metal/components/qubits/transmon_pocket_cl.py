@@ -150,5 +150,5 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
         self.add_pin(name, points, p.cl_width, self.id)  # TODO: chip
 
         #Adding to element table
-        self.add_elements('poly', dict(cl_metal=cl_metal))
-        self.add_elements('poly', dict(cl_etcher=cl_etcher), subtract=True)
+        self.add_qgeometry('poly', dict(cl_metal=cl_metal))
+        self.add_qgeometry('poly', dict(cl_etcher=cl_etcher), subtract=True)

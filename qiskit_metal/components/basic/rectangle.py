@@ -48,5 +48,5 @@ class Rectangle(QComponent):
         rect = draw.rotate(rect, p.rotation)
         ##############################################
         # add elements
-        self.add_elements('poly', {'rectangle': rect}, subtract=p.subtract,
+        self.add_qgeometry('poly', {'rectangle': rect}, subtract=p.subtract,
                           helper=p.helper, layer=p.layer, chip=p.chip)
