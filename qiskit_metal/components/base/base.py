@@ -539,7 +539,6 @@ class QComponent():
                 width: float,
                 parent: Union[int, 'QComponent'],
                 input_as_norm: bool = False,
-                #flip: bool = False,
                 chip: str = 'main'):
         """Add the named pin to the respective component's pins subdictionary
 
@@ -571,7 +570,6 @@ class QComponent():
         Keyword Arguments:
             input_as_norm (bool) -- If the input is a normal vector (eg. from a cpw path), or
                 a 'tangent' vector (eg. from a poly) (default: {False})
-            flip (bool) - flips the generated normal vector. TEMP REMOVED
             chip (str) -  Optionally add options (default: {'main'})
         """
         if input_as_norm:
@@ -587,7 +585,6 @@ class QComponent():
                           points: np.ndarray,
                           width: float,
                           parent: Union[int, 'QComponent'],
-                          #flip: bool = False,
                           chip: str = 'main'):
         """
         Generates a pin from two points which are normal to the intended plane of the pin.
@@ -599,7 +596,6 @@ class QComponent():
             points (numpy.ndarray)- [[x1,y1],[x2,y2]] for the normal line
             width (float) - the width of the intended connection (eg. qubit bus pad arm)
             parent (Union[int,]) - The id of the parent component
-            flip (bool): To change the direction of intended connection (True causes a 180, default False)
             chip (str): the name of the chip the pin is located on, default 'main'
 
         A dictionary containing a collection of information about the pin, necessary for use in Metal:
@@ -643,8 +639,7 @@ class QComponent():
 
     def make_pin(self,
                 points: np.ndarray, 
-                parent_name: str, 
-                #flip=False, 
+                parent_name: Union[int, 'QComponent'], 
                 chip='main'):
         """Called by add_pin, does the math for the pin generation.
         Generates a pin from two points which are tangent to the intended plane of the pin.
@@ -656,7 +651,6 @@ class QComponent():
             points (numpy.ndarray): list of two (x,y) points which represent the edge of the pin for
                     another component to attach to (eg. the edge of a CPW TL)
             parent_name (str): name of the parent
-            flip (bool): True to flip (Default: False)
             chip (str): the chip the pin is on (Default: 'main')
 
         Returns:
