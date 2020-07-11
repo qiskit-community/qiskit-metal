@@ -56,5 +56,5 @@ class RectangleHollow(QComponent):
         rect = draw.rotate(rect, p.rotation)
 
         # add elements
-        self.add_elements('poly', {'rect': rect}, subtract=p.subtract,
+        self.add_qgeometry('poly', {'rect': rect}, subtract=p.subtract,
                           helper=p.helper, layer=p.layer, chip=p.chip)
