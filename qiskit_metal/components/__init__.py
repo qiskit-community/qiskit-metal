@@ -89,3 +89,8 @@ Qubits
     TransmonPocketCL
 
 """
+
+from .. import is_component
+from .base import QComponent
+from .base.qubit import BaseQubit
+from .base.junction import BaseJunction
