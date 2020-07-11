@@ -12,13 +12,23 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-from qiskit_metal import draw, Dict, QComponent
-from qiskit_metal import is_true
-from shapely.geometry import CAP_STYLE, JOIN_STYLE
+"""
+This is the CircleCaterpillar module.
 
+@author: Zlatko Minev, Thomas McConekey, ... (IBM)
+@date: 2019
+"""
+
+from shapely.geometry import CAP_STYLE, JOIN_STYLE
+from qiskit_metal import draw#, Dict
+from qiskit_metal.components.base import QComponent
+#from qiskit_metal import is_true
 
 class CircleCaterpillar(QComponent):
-    """A single configurable square."""
+    """A single configurable circle.
+
+    Inherits QComponent class
+    """
 
     default_options = dict(
         segments='5',
@@ -35,8 +45,10 @@ class CircleCaterpillar(QComponent):
         chip='main',
         layer='1'
     )
+    """Default drawing options"""
 
     def make(self):
+        """Build the component"""
         p = self.p  # p for parsed parameters. Access to the parsed options.
 
         # create the geometry
@@ -63,7 +75,7 @@ class CircleCaterpillar(QComponent):
         # print(caterpillar)
 
         # add elements
-        #self.add_elements('poly', {'mount': rect})
-        self.add_elements('poly', {'caterpillar': caterpillar})
+        #self.add_qgeometry('poly', {'mount': rect})
+        self.add_qgeometry('poly', {'caterpillar': caterpillar})
         # subtract=p.subtract,
         #                   helper=p.helper, layer=p.layer, chip=p.chip)

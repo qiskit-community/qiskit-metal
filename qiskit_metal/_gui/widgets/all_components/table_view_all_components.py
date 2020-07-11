@@ -142,7 +142,8 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
                 self, f"Rename component {name}", f"Rename {name} to:", QLineEdit.Normal, "")
             if okPressed and text != '':
                 self.logger.info(f'Renaming {name} to {text}')
-                self.design.rename_component(name, text)
+                comp_id = self.design.components[name].id
+                self.design.rename_component(comp_id, text)
 
     def viewClicked(self, index: QModelIndex):
         """
@@ -205,4 +206,3 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
 
         self.logger.debug(f'Highlighting {selected_names}')
         self.gui.highlight_components(selected_names)
-

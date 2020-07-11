@@ -226,7 +226,10 @@ class ComponentWidget(QTabWidget):
         """
         if self.design:
             if self.component_name:
-                return self.design.components[self.component_name]
+                a_component = self.design.components[self.component_name]
+                if a_component is None:
+                    self.set_component(None)
+                return a_component
         return None
 
     def set_component(self, name: str):

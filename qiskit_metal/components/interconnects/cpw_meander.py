@@ -7,36 +7,39 @@ from typing import List, Tuple, Union
 
 import numpy as np
 from numpy.linalg import norm
-from ...toolbox_python.utility_functions import log_error_easy
+from qiskit_metal.toolbox_python.utility_functions import log_error_easy
 
 import numpy as np
-from qiskit_metal import draw, Dict, QComponent
-from qiskit_metal import is_true
+from qiskit_metal import draw, Dict#, QComponent
+from qiskit_metal.components import QComponent
+#from qiskit_metal import is_true
 
 #from qiskit_metal.toolbox_metal.parsing import is_true
-options = Dict(pin_start_name='Q1_a',
-               pin_end_name='Q2_b',
-               meander=Dict(
-                   lead_start='0.1mm',
-                   lead_end='0.1mm',
-                   asymmetry='0 um')
-               )
+# options = Dict(pin_start_name='Q1_a',
+#                pin_end_name='Q2_b',
+#                meander=Dict(
+#                    lead_start='0.1mm',
+#                    lead_end='0.1mm',
+#                    asymmetry='0 um')
+#                )
 
 
 class Connector:  # Shouldn't this class be in the connector folder?
     r"""A simple class to define a connector as a 2D point
     with a 2D direction in the XY plane.
     All values stored as np.ndarray of parsed floats.
-
-    Attributes:
-        positon (np.ndarray of 2 points) -- Center position of the connector
-        direction (np.ndarray of 2 points) -- *Normal vector* of the connector, defines which way it points outward.
-                                              This is the normal vector to the surface on which the connector mates.
-                                              Has unit norm.
     """
     # TODO: Maybe move this class out of here, more general.
 
     def __init__(self, position: np.ndarray, direction: np.ndarray):
+        """
+        Args:
+            positon (np.ndarray of 2 points): Center position of the connector
+            direction (np.ndarray of 2 points): *Normal vector* of the connector, defines which way it
+                points outward.
+                This is the normal vector to the surface on which the connector mates.
+                Has unit norm.
+        """
         self.position = position
         self.direction = direction / norm(direction)
 
@@ -46,6 +49,9 @@ class Connector:  # Shouldn't this class be in the connector folder?
 
         Args:
             length (float) : how much to lead in by
+
+        Returns:
+            Connector: Connector with leadin
         """
         return Connector(self.position + self.direction*length, self.direction)
 
@@ -53,9 +59,9 @@ class Connector:  # Shouldn't this class be in the connector folder?
         """Returns vectors that define the normal and tanget
 
         Returns:
-            Tuple[np.ndarray] -- contains the parallel direction and the tangent. e.g.
-                                tangent (np.ndarray of 2 points) -- unit vector parallel to
-                                the connector face and a 90 deg CCW rotation from the direction units vector
+            Tuple[np.ndarray]: contains the parallel direction and the tangent. e.g.
+            tangent (np.ndarray of 2 points) -- unit vector parallel to
+            the connector face and a 90 deg CCW rotation from the direction units vector
         """
         return self.direction, draw.Vector.rotate(self.direction, np.pi/2)
 
@@ -63,25 +69,21 @@ class Connector:  # Shouldn't this class be in the connector folder?
 class CpwMeanderSimple(QComponent):
     """A meandered basic CPW.
 
+    Inherits QComponent class
+
     **Behavior and parameters**
         #TODO: @john_blair / @marco
         Explain and comment on what options do?
         For example, note that lead_direction_inverted can be 'false' or 'true'
     """
     default_options = Dict(
-        # start_name='',
-        # end_name='',
-        pin_start_name='',  # Name of pin used for pin_start
-        pin_end_name='',  # Name of pin used for pin_end
-        component_start_name='',  # If not connected, zero, otherwise component_id
-        component_end_name='',  # If not connected, zero, otherwise component_id
-        # pin_start=0,  # If not connected, zero, otherwise holds the net_id.
-        # pin_end=0,  # If not connected, zero, otherwise holds the net_id.
         total_length='7mm',
         chip='main',
         layer='1',
         trace_width='cpw_width',
         trace_gap='cpw_gap',
+        pin_inputs = Dict(start_pin=Dict(component='',pin=''),
+                        end_pin=Dict(component ='',pin='')),
 
         meander=Dict(
             spacing='200um',
@@ -92,6 +94,7 @@ class CpwMeanderSimple(QComponent):
             asymmetry='0 um',
         )
     )
+    """Default drawing options"""
 
     def make(self):
         """ Will generate a simple meander for two components.
@@ -145,18 +148,20 @@ class CpwMeanderSimple(QComponent):
                              meander: dict) -> np.ndarray:
         """
         Meanders using a fixed length and fixed spacing.
+
+        Arguments:
+            start (Connector): Connector of the start
+            end (Connector): Connector of the end
+            length (float):  Total length of the meander whole CPW segment (defined by user,
+                after you subtract lead lengths
+            meander (dict): meander options (parsed)
+
+        Returns:
+            np.ndarray: Array of points
+
         Adjusts the width of the meander
             * Includes the start but not the given end point
             * If it cannot meander just returns the initial start point
-
-        Arguments:
-            start {Connector} -- Connector of the start
-            end {Connector} -- [description]
-            length {str} --  Total length of the meander whole CPW segment (defined by user, after you subtract lead lengths
-            meander {dict} -- meander options (parsed)
-
-        Returns:
-            np.ndarray -- [description]
         """
 
         """ To prototype, you can use code here:
@@ -285,6 +290,15 @@ class CpwMeanderSimple(QComponent):
 
     @staticmethod
     def get_indecies(root_pts: list):
+        """
+        Get the indecies
+
+        Args:
+            root_pts (list): List of points
+
+        Returns:
+            tuple: Tuple of indecies
+        """
         num_2pts, odd = divmod(len(root_pts), 2)
         if odd:
             num_2pts += 1
@@ -300,17 +314,10 @@ class CpwMeanderSimple(QComponent):
         """Return the start point and normal direction vector
 
         Returns:
-            A dictionary with keys `point` and `direction`.
+            dict: A dictionary with keys `point` and `direction`.
             The values are numpy arrays with two float points each.
         """
-        start_pin = self.design.components[self.options.component_start_name].pins[self.options.pin_start_name]
-
-        if start_pin.net_id:
-            print(
-                f'Given pin {self.options.component_start_name} {self.options.pin_start_name} already in use. Component not created.')
-            logger.warning(self.logger, post_text=f'\nERROR in building component "{self.name}"!'
-                           'Inelligeable pin passed to function.\n')
-            return
+        start_pin = self.design.components[self.options.pin_inputs['start_pin']['component']].pins[self.options.pin_inputs['start_pin']['pin']]
 
         return Connector(position=start_pin['middle'],
                          direction=start_pin['normal'])
@@ -319,17 +326,10 @@ class CpwMeanderSimple(QComponent):
         """Return the start point and normal direction vector
 
         Returns:
-            A dictionary with keys `point` and `direction`.
+            dict: A dictionary with keys `point` and `direction`.
             The values are numpy arrays with two float points each.
         """
-        end_pin = self.design.components[self.options.component_end_name].pins[self.options.pin_end_name]
-
-        if end_pin.net_id:
-            print(
-                f'Given pin {self.options.component_end_name} {self.options.pin_end_name} already in use. Component not created.')
-            logger.warning(self.logger, post_text=f'\nERROR in building component "{self.name}"!'
-                           'Inelligeable pin passed to function.\n')
-            return
+        end_pin = self.design.components[self.options.pin_inputs['end_pin']['component']].pins[self.options.pin_inputs['end_pin']['pin']]
 
         return Connector(position=end_pin['middle'],
                          direction=end_pin['normal'])
@@ -339,11 +339,12 @@ class CpwMeanderSimple(QComponent):
         cooridnate sys.
 
         Arguments:
-            start {Connector} -- [description]
-            end {Connector} -- [description]
+            start (Connector): Connector at start
+            end (Connector): Connector and end
+            snap (bool): True to snap to grid (Default: False)
 
         Returns:
-            straight and 90 deg CCW rotated vecs 2D
+            array: straight and 90 deg CCW rotated vecs 2D
             (array([1., 0.]), array([0., 1.]))
         """
         # handle chase when star tnad end are same?
@@ -355,18 +356,22 @@ class CpwMeanderSimple(QComponent):
         return direction, normal
 
     def make_elements(self, pts: np.ndarray):
-        """Turns points into elements"""
+        """Turns points into elements
+
+        Arguments:
+            pts (np.ndarray): Array of points
+        """
         p = self.p
         line = draw.LineString(pts)
         layer = p.layer
         width = p.trace_width
         self.options._actual_length = str(
             line.length) + ' ' + self.design.get_units()
-        self.add_elements('path',
+        self.add_qgeometry('path',
                           {'trace': line},
                           width=width,
                           layer=layer)
-        self.add_elements('path',
+        self.add_qgeometry('path',
                           {'cut': line},
                           width=width + p.trace_gap,
                           layer=layer,

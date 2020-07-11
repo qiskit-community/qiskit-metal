@@ -13,12 +13,13 @@
 # that they have been altered from the originals.
 
 """
+For calculations of CPW parameters. Referenced primarily as a tool for some components.
+
 @author: Thomas McConkey 
+
 @date: 2020-03-24
 
-For calculations of CPW parameters. Referenced primarily as a tool for some components.
 Based on https://iopscience.iop.org/article/10.1088/0953-2048/22/12/125028/meta
-
 """
 
 
@@ -41,15 +42,17 @@ dielectric_constant = 11.45):
         line_gap (float): The width of the CPW gap (dielectric space), in meters (eg. 6*10**-6).
         substrate_thickness (float): thickness of the dielectric substrate, in meters (eg. 760*10**-6).
         film_thickness (float): thickness of the thin film, in meters (eg. 200*10**-9).
-
         dielectric_constant (float): the relative permitivity of the substrate. 
-            Defaults to 11.45, the value for Silicon at cryogenic temperatures.
+            (Default: 11.45, the value for Silicon at cryogenic temperatures).
 
     Returns:
-        lambdaG (float): The guided wavelength of the CPW based on the input parameters, in meters.
-            This value is for a full wavelength. Divide by 2 for a lambda/2 resonator, 4 for a lambda/4.
+        tuple: contents outlined below
 
-
+    Tuple contents:
+        * lambdaG: The guided wavelength of the CPW based on the input parameters, in meters.
+          This value is for a full wavelength. Divide by 2 for a lambda/2 resonator, 4 for a lambda/4.
+        * etfSqrt: effective dielectric constant (accounting for film thickness)
+        * q: filling factor
     """
     
     s = line_width
@@ -69,7 +72,7 @@ dielectric_constant = 11.45):
 
     lambdaG = (c0/freq)/etfSqrt
 
-    return lambdaG, etfSqrt,q
+    return lambdaG, etfSqrt, q
 
 
 def lumped_cpw(freq, line_width, line_gap, substrate_thickness, film_thickness, 
@@ -78,35 +81,41 @@ dielectric_constant = 11.45, loss_tangent = 10**-5,london_penetration_depth = 30
     A simple calculator to determine the lumped element equivalent of a CPW transmission line.
     Assumes a lossless superconductor. The internal geometric series inductance is ignored.
 
-
-        -----Lext + Lk--+---+---
-                        |   |
-                        C   G
-                        |   |
-        ----------------+---+---
-
     Args:
         freq (float): The frequency of interest, in Hz (eg. 5*10**9).
         line_width (float): The width of the CPW trace (center) line, in meters (eg. 10*10**-6).
         line_gap (float): The width of the CPW gap (dielectric space), in meters (eg. 6*10**-6).
         substrate_thickness (float): Thickness of the dielectric substrate, in meters (eg. 760*10**-6).
         film_thickness (float): Thickness of the thin film, in meters (eg. 200*10**-9).
-
         dielectric_constant (float, optional): the relative permitivity of the substrate. 
-            Defaults to 11.45, the value for silicon at cryogenic temperatures.
+            (Default: 11.45, the value for silicon at cryogenic temperatures).
         loss_tangent (float, optional): The loss tangent of the dielectric. 
-            Defaults to 10**-6, reasonable quality silicon.
+            (Default: 10**-6, reasonable quality silicon).
         london_penetration_depth (float, optional): The superconducting london penetration depth, in meters.
             It is advised to use the temperature and film thickness dependent value. If circuit
             geometries are on the scale of the Pearl Length, the kinetic inductance formulas
             breakdown. 
-            Defaults to 30*10**-9, for Niobium.
+            (Default: 30*10**-9, for Niobium).
 
-     Returns: (see figure)
-        Lk (float): The series kinetic inductance, in Henries.
-        Lext (float): The series geometric external inductance, in Henries.
-        C (float): The shunt capacitance, in Farads.
-        G (float): The shunt admitance, in Siemens. #NOTE:double check if right units
+    Returns:
+        tuple: contents outlined below
+
+    Tuple contents:
+        * Lk (float): The series kinetic inductance, in Henries.
+        * Lext (float): The series geometric external inductance, in Henries.
+        * C (float): The shunt capacitance, in Farads.
+        * G (float): The shunt admitance, in Siemens. #NOTE:double check if right units
+        * Z0 (float): sqrt(L / C)
+        * etfSqrt**2: Effective Dielectric Constant
+        * Cstar: External Inducatance
+
+    ::
+
+        -----Lext + Lk--+---+---
+                        |   |
+                        C   G
+                        |   |
+        ----------------+---+---
 
     """
     s = line_width
@@ -166,10 +175,10 @@ def effective_dielectric_constant(freq,s,w,h,t,q,Kk0,Kk01,eRD=11.45):
         q (float): Filling factor of the CPW in question
         Kk0 (float): The complete elliptic integral for k0
         Kk01 (float): The complete elliptic integral for k01
-        eRD (float, optional): The relative permitivity of the substrate. Defaults to 11.45.
+        eRD (float, optional): The relative permitivity of the substrate. (Default: 11.45).
     
     Returns:
-        etfSqrt (float): The effective permitivity for a CPW transmission line, considering
+        float: etfSqrt is the effective permitivity for a CPW transmission line, considering
         film and substrate thickness.
     """
 
@@ -199,10 +208,13 @@ def elliptic_int_constants(s,w,h):
         h (float): thickness of the dielectric substrate, in meters (eg. 760*10**-6).
     
     Returns:
-        ellipk(k0) (float): The complete elliptic integral for k0
-        ellipk(k01) (float): The complete elliptic integral for k01
-        ellipk(k1) (float): The complete elliptic integral for k1
-        ellipk(k11) (float): The complete elliptic integral for k11
+        tuple: contents outlined below
+
+    Tuple contents:
+        * ellipk(k0) (float): The complete elliptic integral for k0
+        * ellipk(k01) (float): The complete elliptic integral for k01
+        * ellipk(k1) (float): The complete elliptic integral for k1
+        * ellipk(k11) (float): The complete elliptic integral for k11
     """
     #elliptical integral constants
     k0 = s/(s+2*w)

@@ -13,8 +13,35 @@
 # that they have been altered from the originals.
 
 """
-@auhtor: Zlatko Minev
+=================================================
+Draw (:mod:`qiskit_metal.draw`)
+=================================================
+
+.. currentmodule:: qiskit_metal.draw
+
+Module containing all Qiskit Metal draw code.
+
 @date: 2019
+
+@author: Zlatko Minev (IBM)
+
+Vector
+---------------
+
+.. autosummary::
+    :toctree: ../stubs/
+
+    Vector
+
+Submodules
+----------
+
+.. autosummary::
+    :toctree:
+
+    basic
+    utility
+
 """
 
 import shapely

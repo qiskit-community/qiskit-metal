@@ -12,12 +12,16 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-from qiskit_metal import draw, Dict, QComponent
-from qiskit_metal import is_true
+from qiskit_metal import draw, Dict#, QComponent
+from qiskit_metal.components.base import QComponent
+#from qiskit_metal import is_true
 
 
 class RectangleHollow(QComponent):
-    """A single configurable square."""
+    """A single configurable square.
+
+    Inherits QComponent class
+    """
 
     default_options = Dict(
         width='500um',
@@ -37,8 +41,10 @@ class RectangleHollow(QComponent):
             rotation='15'
         )
     )
+    """Default drawing options"""
 
     def make(self):
+        """Build the component"""
         p = self.p  # p for parsed parameters. Access to the parsed options.
 
         # create the geometry
@@ -50,5 +56,5 @@ class RectangleHollow(QComponent):
         rect = draw.rotate(rect, p.rotation)
 
         # add elements
-        self.add_elements('poly', {'rect': rect}, subtract=p.subtract,
+        self.add_qgeometry('poly', {'rect': rect}, subtract=p.subtract,
                           helper=p.helper, layer=p.layer, chip=p.chip)

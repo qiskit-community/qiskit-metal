@@ -12,16 +12,18 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""File contains dictionary for Rectangle and Rectangle_fromPAS and their make().
-"""
+"""File contains dictionary for Rectangle and the make()."""
 
-from qiskit_metal import draw, Dict, QComponent
-from qiskit_metal import is_true
+from qiskit_metal import draw, Dict#, QComponent
+from qiskit_metal.components.base import QComponent
+#from qiskit_metal import is_true
 
 class Rectangle(QComponent):
-    """A single configurable square."""
+    """A single configurable square.
 
-    """The class will add default_options class Dict to QComponent class before calling make.
+        Inherits QComponent class
+
+        The class will add default_options class Dict to QComponent class before calling make.
     """
 
     default_options = Dict(
@@ -35,15 +37,16 @@ class Rectangle(QComponent):
         chip='main',
         layer='1'
     )
+    """Default drawing options"""
 
     def make(self):
-
+        """Build the component"""
         p = self.p  # p for parsed parameters. Access to the parsed options.
 
         # create the geometry
         rect = draw.rectangle(p.width, p.height, p.pos_x, p.pos_y)
         rect = draw.rotate(rect, p.rotation)
-
+        ##############################################
         # add elements
-        self.add_elements('poly', {'rectangle': rect}, subtract=p.subtract,
+        self.add_qgeometry('poly', {'rectangle': rect}, subtract=p.subtract,
                           helper=p.helper, layer=p.layer, chip=p.chip)
