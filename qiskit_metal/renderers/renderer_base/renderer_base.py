@@ -58,7 +58,10 @@ class QRenderer():
         '__loaded_renderers__' of QRenderer
 
         Returns:
-            True -- If success, otherwise throws an error.
+            bool: True if success, otherwise throws an error.
+
+        Raises:
+            NotImplementedError: Function not written yet
         """
 
         # Check name
@@ -86,7 +89,10 @@ class QRenderer():
         """Returns an already loaded and instantiated renderer.
 
         Arguments:
-            name {[str]} -- [description]
+            name (str): rendering name
+
+        Returns:
+            QRenderer: Renderer with the given name
         """
         if not name in QRenderer.__loaded_renderers__:
             print(
@@ -99,6 +105,11 @@ class QRenderer():
         return QRenderer.__instantiated_renderers__[name]
 
     def __init__(self, design: QDesign, initiate=True):
+        """
+        Args:
+            design (QDesign): The design
+            initiate (bool): True to initiate the renderer (Default: True)
+        """
         # TODO: check that the renderer has been loaded with load_renderer
 
         assert is_design(design), "Erorr, for the design argument you must provide a\
@@ -120,6 +131,7 @@ class QRenderer():
 
     @property
     def logger(self) -> logging.Logger:
+        """Returns the logger"""
         return self._design.logger
 
     def initate(self, re_initiate=False):
@@ -129,14 +141,12 @@ class QRenderer():
 
         Overwrite `initate_renderer`
 
-        Optional Arguments:
-        ------------------
+        Arguments:
             re_initiate (bool) : If False will only apply this function once.
-                                 If True, will re-apply (default: False)
+                                 If True, will re-apply (Default: False)
 
         Returns:
-        -------------------
-            bool : was a re_initiation applied or not
+            bool: was a re_initiation applied or not
         '''
 
         if not re_initiate:
@@ -153,6 +163,9 @@ class QRenderer():
         '''
         Call any initiations steps required to be performed a single time before rendering,
         such as conneting to some API or COM, or importing the correct material libraries, etc.
+
+        Returns:
+            bool: Always returns True
         '''
         return True
 
@@ -174,23 +187,56 @@ class QRenderer():
         '''
         Render all chips of the design.
         Calls render_chip for each chip.
+
+        Raises:
+            NotImplementedError: Function not written yet
         '''
         raise NotImplementedError()
 
     def render_chip(self, name):
+        """Render the given chip
+
+        Args:
+            name (str): chip to render
+
+        Raises:
+            NotImplementedError: Function not written yet
+        """
         raise NotImplementedError()
 
     def render_components(self, selection=None):
         '''
         Render all components of the design.
         If selection is none, then render all components.
+
+        Args:
+            selection (QComponent): component to render
+
+        Raises:
+            NotImplementedError: Function not written yet
         '''
         raise NotImplementedError()
 
     def render_component(self, component):
+        """Render the specified component
+
+        Args:
+            component (QComponent): Component to render
+
+        Raises:
+            NotImplementedError: Function not written yet
+        """
         raise NotImplementedError()
 
     def render_element(self, element):
+        """Render the specified element
+
+        Args:
+            element (Element): element to render
+
+        Raises:
+            NotImplementedError: Function not written yet
+        """
         raise NotImplementedError()
         # if isinstance(element, path):
         #    self.render_element_path(element)
@@ -202,7 +248,23 @@ class QRenderer():
         #    self.logger.error('RENDERER ERROR: Unkown element {element}')
 
     def render_element_path(self, path):
+        """Render an element path
+
+        Args:
+            path (str): Path to render
+
+        Raises:
+            NotImplementedError: Function not written yet
+        """
         raise NotImplementedError()
 
     def render_element_poly(self, poly):
+        """Render an element poly
+
+        Args:
+            poly (Poly): Poly to render
+
+        Raises:
+            NotImplementedError: Function not written yet
+        """
         raise NotImplementedError()
