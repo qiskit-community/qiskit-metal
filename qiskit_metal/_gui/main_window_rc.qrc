@@ -23,7 +23,7 @@
     <file alias="delete">_imgs/v2-flat/trash.png</file>
     <file alias="load">_imgs/stack.png</file>
     <file alias="connectors">_imgs/v2-flat/plug.png</file>
-    <file alias="save">_imgs/pencil.png</file>
+    <file alias="save">_imgs/v2-flat/save.png</file>
     <file>_imgs/search.png</file>
     <file alias="help">_imgs/sos.png</file>
     <file alias="fullscreen">_imgs/v2-flat/fullscreen.png</file>
@@ -33,6 +33,7 @@
     <file alias="refresh">_imgs/refresh.png</file>
   </qresource>
   <qresource prefix="basic">
+    <file alias="info_help">_imgs/v2-flat/info.png</file>
     <file alias="warning">_imgs/icons/warning.png</file>
   </qresource>
   <qresource>
@@ -40,12 +41,14 @@
   </qresource>
   <qresource prefix="plot">
     <file alias="refresh_plot">_imgs/crayon.png</file>
+    <file alias="zoom_out">_imgs/v2-flat/minus.png</file>
     <file alias="----autozoom">_imgs/painting.png</file>
     <file alias="ruler">_imgs/v2-flat/geometry.png</file>
     <file alias="autozoom">_imgs/v2-flat/expand.png</file>
     <file alias="----point">_imgs/signal.png</file>
+    <file alias="zoom_target">_imgs/v2-flat/target.png</file>
     <file alias="point">_imgs/v2-flat/pin.png</file>
     <file alias="pan">_imgs/pan.png</file>
-    <file alias="zoom">_imgs/inspection.png</file>
+    <file alias="zoom">_imgs/v2-flat/zoom.png</file>
   </qresource>
 </RCC>

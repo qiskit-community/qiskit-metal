@@ -526,9 +526,20 @@ class MetalGUI(QMainWindowBaseHandler):
 
         # Add name
         if not (path.parent is sys.path):
-            sys.path.insert(0, path.parent)
+            sys.path.insert(0, str(path.parent))
 
+
+        # TODO: try    except ImportError:
         module = importlib.import_module(path.stem)
+
+        ### Potential Warning
+        # If you are dynamically importing a module that was created since the interpreter
+        # began execution (e.g., created a Python source file), you may need to call
+        #               invalidate_caches()
+        # in order for the new module to be noticed by the import system.
+
+        ### Do NOT work:
+        # importlib.import_module(path.stem, str(path.parent))
 
         # # spec for module and give it name
         # module_name = f"user_components.{path.stem}"

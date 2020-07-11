@@ -140,6 +140,23 @@ color: rgb(255, 255, 255);</string>
             </property>
            </widget>
           </item>
+          <item>
+           <widget class="QPushButton" name="pushButtonHideHelp">
+            <property name="text">
+             <string>Help</string>
+            </property>
+            <property name="icon">
+             <iconset resource="main_window_rc.qrc">
+              <normaloff>:/basic/info_help</normaloff>:/basic/info_help</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>20</width>
+              <height>20</height>
+             </size>
+            </property>
+           </widget>
+          </item>
          </layout>
         </item>
         <item>
@@ -176,7 +193,7 @@ color: rgb(255, 255, 255);</string>
             </property>
             <property name="icon">
              <iconset resource="main_window_rc.qrc">
-              <normaloff>:/plot/zoom</normaloff>:/plot/zoom</iconset>
+              <normaloff>:/plot/zoom_out</normaloff>:/plot/zoom_out</iconset>
             </property>
            </widget>
           </item>
@@ -187,7 +204,7 @@ color: rgb(255, 255, 255);</string>
             </property>
             <property name="icon">
              <iconset resource="main_window_rc.qrc">
-              <normaloff>:/options</normaloff>:/options</iconset>
+              <normaloff>:/plot/zoom_target</normaloff>:/plot/zoom_target</iconset>
             </property>
            </widget>
           </item>
@@ -226,13 +243,6 @@ color: rgb(255, 255, 255);</string>
         <property name="bottomMargin">
          <number>0</number>
         </property>
-        <item>
-         <widget class="QPushButton" name="pushButtonHideHelp">
-          <property name="text">
-           <string>Hide Help</string>
-          </property>
-         </widget>
-        </item>
         <item>
          <widget class="QTextEdit" name="textEditHelp">
           <property name="documentTitle">

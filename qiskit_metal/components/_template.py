@@ -1,7 +1,4 @@
-from qiskit_metal import Dict
-from qiskit_metal import draw
-from .base import QComponent
-from qiskit_metal.toolbox_metal.parsing import is_true
+from qiskit_metal import QComponent, draw, Dict, is_true
 
 class MyQComponent(QComponent):
     """

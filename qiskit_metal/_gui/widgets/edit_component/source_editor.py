@@ -272,7 +272,18 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
 
         sizes = splitter.sizes()
         total = sum(sizes)
-        splitter.setSizes([total, 0]) # hide the right side
+
+        if sizes[-1] < 1: # hidden, now show
+            # restore size
+            spliter_size = self.__last_splitter_size if \
+                            hasattr(self, '__last_splitter_size') else 400
+            if total < spliter_size+50:
+                spliter_size = int(total / 2)
+            splitter.setSizes([total - spliter_size, spliter_size]) # hide the right side
+
+        else:
+            self.__last_splitter_size = sizes[-1] # save for toggle
+            splitter.setSizes([total, 0]) # hide the right side
 
     @property
     def edit_widget(self):
