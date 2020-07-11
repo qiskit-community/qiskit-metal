@@ -66,6 +66,7 @@ Interconnects
     :toctree:
 
     Connector
+    CpwStraightLine
     CpwMeanderSimple
     FakeCPW
 
@@ -100,6 +101,7 @@ from .basic.circle_raster import CircleRaster
 from .basic.rectangle import Rectangle
 from .basic.rectangle_hollow import RectangleHollow
 from .interconnects.cpw_meander import Connector
+from .interconnects.cpw_basic_straight_line import CpwStraightLine
 from .interconnects.cpw_meander import CpwMeanderSimple
 from .interconnects.fake_cpw import FakeCPW
 from .qubits.transmon_cross import TransmonCross
