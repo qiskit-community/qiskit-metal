@@ -20,9 +20,10 @@ This is the CircleCaterpillar module.
 """
 
 from shapely.geometry import CAP_STYLE, JOIN_STYLE
-from qiskit_metal import draw#, Dict
+from qiskit_metal import draw  # , Dict
 from qiskit_metal.components.base import QComponent
 #from qiskit_metal import is_true
+
 
 class CircleCaterpillar(QComponent):
     """A single configurable circle.

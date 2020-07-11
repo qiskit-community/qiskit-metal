@@ -31,8 +31,8 @@ class CpwStraightLine(QComponent):
     """
 
     default_options = Dict(
-        pin_start_name='',
-        pin_end_name='',
+        pin_start=Dict(component='', pin=''), # make sure these are Dicts not dicts
+        pin_end=Dict(component='', pin=''),
         cpw_width='cpw_width',
         cpw_gap='cpw_gap',
         layer='1',
@@ -43,16 +43,15 @@ class CpwStraightLine(QComponent):
     )
 
     def make(self):
-        p = self.parse_options()  # parsed options
+        p = self.p  # parsed options
 
-        connectors = self.design.connectors
-        connector1 = connectors[p.pin_start_name]
-        connector2 = connectors[p.pin_end_name]
+        pin1 = self.design.components[self.options.pin_start.component].pins[self.options.pin_start.pin]
+        pin2 = self.design.components[self.options.pin_end.component].pins[self.options.pin_end.pin]
 
-        pts = [connector1.middle,
-               connector1.middle + connector1.normal * (p.cpw_width / 2 + p.leadin.start),
-               connector2.middle + connector2.normal * (p.cpw_width / 2 + p.leadin.end),
-               connector2.middle]
+        pts = [pin1.middle,
+               pin1.middle + pin1.normal * (p.cpw_width / 2 + p.leadin.start),
+               pin2.middle + pin2.normal * (p.cpw_width / 2 + p.leadin.end),
+               pin2.middle]
 
         line = draw.LineString(pts)
 
