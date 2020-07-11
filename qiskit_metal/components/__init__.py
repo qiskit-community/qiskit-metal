@@ -46,6 +46,8 @@ Basic
 
     CircleCaterpillar
     CircleRaster
+    NGon
+    NSquareSpiral
     Rectangle
     RectangleHollow
 
@@ -97,6 +99,8 @@ from .base._parsed_dynamic_attrs import ParsedDynamicAttributes_Component
 from .base._template import MyQComponent
 from .basic.circle_caterpillar import CircleCaterpillar
 from .basic.circle_raster import CircleRaster
+from .basic.n_gon import NGon
+from .basic.n_square_spiral import NSquareSpiral
 from .basic.rectangle import Rectangle
 from .basic.rectangle_hollow import RectangleHollow
 from .interconnects.cpw_meander import Connector
