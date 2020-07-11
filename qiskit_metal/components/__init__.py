@@ -58,7 +58,8 @@ Connectors
 .. autosummary::
     :toctree:
 
-    connectors
+    OpenToGround
+    ShortToGround
 
 
 Interconnects
@@ -103,6 +104,8 @@ from .basic.n_gon import NGon
 from .basic.n_square_spiral import NSquareSpiral
 from .basic.rectangle import Rectangle
 from .basic.rectangle_hollow import RectangleHollow
+from .connectors.open_to_ground import OpenToGround
+from .connectors.short_to_ground import ShortToGround
 from .interconnects.cpw_meander import Connector
 from .interconnects.cpw_meander import CpwMeanderSimple
 from .interconnects.fake_cpw import FakeCPW

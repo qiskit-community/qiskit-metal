@@ -21,10 +21,9 @@ from qiskit_metal.components.base import QComponent
 import numpy as np
 
 class ShortToGround(QComponent):
-    """Inherits QComponent class
+    """A basic short to ground termination. Functions as a pin for auto CPW drawing.
 
-    Description:
-        A basic short to ground termination. Functions as a pin for auto CPW drawing.
+    Inherits `QComponent` class   
 
     Options:
         Convention: Values (unless noted) are strings with units included,
@@ -47,7 +46,7 @@ class ShortToGround(QComponent):
         chip='main',
         layer='1'
     )
-
+    """Default connector options"""
 
     def make(self):
         """Build the component"""
