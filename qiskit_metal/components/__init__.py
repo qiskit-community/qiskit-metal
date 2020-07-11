@@ -94,7 +94,6 @@ from .base import QComponent
 from .base.qubit import BaseQubit
 from .base.junction import BaseJunction
 from .base._parsed_dynamic_attrs import ParsedDynamicAttributes_Component
-from .base._template import MyQComponent
 from .basic.circle_caterpillar import CircleCaterpillar
 from .basic.circle_raster import CircleRaster
 from .basic.rectangle import Rectangle
