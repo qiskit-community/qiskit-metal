@@ -21,10 +21,9 @@ from qiskit_metal.components.base import QComponent
 
 
 class OpenToGround(QComponent):
-    """Inherits QComponent class
+    """A basic short to ground termination. Functions as a pin for auto CPW drawing.
 
-    Description:
-        A basic short to ground termination. Functions as a pin for auto CPW drawing.
+    Inherits `QComponent` class
 
     Options:
         Convention: Values (unless noted) are strings with units included,
@@ -49,6 +48,7 @@ class OpenToGround(QComponent):
         chip='main',
         layer='1'
     )
+    """Default connector options"""
 
     def make(self):
         """Build the component"""

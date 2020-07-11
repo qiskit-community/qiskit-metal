@@ -11,18 +11,3 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
-"""
-==============================================================
-Connectors (:mod:`qiskit_metal.components.connectors`)
-==============================================================
-
-@auhtor: Zlatko Minev, Thomas McConkey, ... (IBM)
-
-@date: 2019
-
-.. currentmodule:: qiskit_metal.components.connectors
-
-Sadly this is empty.
-
-"""

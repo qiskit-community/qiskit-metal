@@ -29,13 +29,68 @@ Created on Tue May 14 17:13:40 2019
 
 UNDER CONSTRUCTION
 
-UNDER-CONSTRUCTION
+Main Window
 ---------------
 
 .. autosummary::
     :toctree: ../stubs/
 
-    UNDER-CONSTRUCTION
+    QMainWindowExtensionBase
+    QMainWindowBaseHandler
+    QMainWindowExtension
+    MetalGUI-TBD
+
+
+Elements Window
+---------------
+
+.. autosummary::
+    :toctree: ../stubs/
+
+    ElementsWindow
+    ElementTableModel
+
+
+Widgets
+---------------
+
+.. autosummary::
+    :toctree: ../stubs/
+
+    QTableView_AllComponents
+    QTableModel_AllComponents
+    QToolBarExpanding
+    QWidget_PlaceholderText
+    ComponentWidget
+    MetalSourceEditor
+    QTableModel_Options
+    QTableView_Options
+    BranchNode
+    LeafNode
+    QTreeModel_Options
+    QTreeView_Options-TBD
+    QTextEditLogger-TBD
+    LogHandler_for_QTextLog-TBD
+    QMainWindowPlot
+    PropertyTableWidget
+    PropValTable-TBD
+    RightClickView-TBD
+
+
+Submodules
+----------
+
+.. autosummary::
+    :toctree:
+
+    main_window_base-TBD
+    _handle_qt_messages-TBD
+    _toolbox_qt-TBD
+    component_widget-TBD
+    source_editor-TBD
+    source_editor_widget-TBD
+    table_model_options-TBD
+    tree_model_options-TBD
 
 """
 
@@ -87,3 +142,24 @@ else:
         print(_error_msg)
 
         raise Exception(_error_msg)
+
+# imported here for the docstrings
+from qiskit_metal._gui.main_window_base import QMainWindowExtensionBase
+from qiskit_metal._gui.main_window_base import QMainWindowBaseHandler
+from qiskit_metal._gui.main_window import QMainWindowExtension
+#from qiskit_metal._gui.main_window import MetalGUI # for docstrings
+from qiskit_metal._gui.elements_window import ElementsWindow
+from qiskit_metal._gui.elements_window import ElementTableModel
+from qiskit_metal._gui.widgets.all_components.table_view_all_components import QTableView_AllComponents
+from qiskit_metal._gui.widgets.all_components.table_model_all_components import QTableModel_AllComponents
+from qiskit_metal._gui.widgets.bases.expanding_toolbar import QToolBarExpanding
+from qiskit_metal._gui.widgets.bases.QWidget_PlaceholderText import QWidget_PlaceholderText
+from qiskit_metal._gui.widgets.edit_component.component_widget import ComponentWidget
+from qiskit_metal._gui.widgets.edit_component.source_editor import MetalSourceEditor
+from qiskit_metal._gui.widgets.edit_component.table_model_options import QTableModel_Options
+from qiskit_metal._gui.widgets.edit_component.table_view_options import QTableView_Options
+from qiskit_metal._gui.widgets.edit_component.tree_model_options import BranchNode
+from qiskit_metal._gui.widgets.edit_component.tree_model_options import LeafNode
+from qiskit_metal._gui.widgets.edit_component.tree_model_options import QTreeModel_Options
+from qiskit_metal._gui.widgets.plot_widget.plot_window import QMainWindowPlot
+from qiskit_metal._gui.widgets.variable_table.prop_val_table_gui import PropertyTableWidget
