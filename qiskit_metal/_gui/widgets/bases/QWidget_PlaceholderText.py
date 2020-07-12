@@ -23,11 +23,18 @@ from PyQt5.QtWidgets import (QInputDialog, QLineEdit, QMenu, QMessageBox,
 
 
 class QWidget_PlaceholderText(QWidget):
-    """QTableView or Tree with palceholder text if empty.
+    """
+    QTableView or Tree with palceholder text if empty.
+
+    This class extends the `QWidget` class.
     """
     __placeholder_text = "The table is empty."
 
     def __init__(self, placeholder_text :str = None):
+        """
+        Args:
+            placeholder_text (str): placeholder text (Default: None).
+        """
         self._placeholder_text = placeholder_text if placeholder_text else self.__placeholder_text
 
         self._placeholder_label =  QLabel(self._placeholder_text, self)
@@ -44,6 +51,11 @@ class QWidget_PlaceholderText(QWidget):
         self.layout().addWidget(self._placeholder_label)
 
     def update_placeholder_text(self, text = None):
+        """Update the placeholder text to the given string
+
+        Args:
+            text (str): new placeholder text (Default: None)
+        """
         if text:
             self._placeholder_text = text
 
@@ -66,8 +78,10 @@ class QWidget_PlaceholderText(QWidget):
         label.setPalette(palette)
 
     def show_placeholder_text(self):
+        """Show the placeholder text"""
         self._placeholder_label.show()
 
     def hide_placeholder_text(self):
+        """Hide the placeholder text"""
         self._placeholder_label.hide()
 

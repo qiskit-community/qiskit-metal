@@ -3,7 +3,8 @@ Zlatko & Dennis component to draw a straight
 CPW with correct initial corner.
 """
 
-from qiskit_metal import Dict, QComponent, draw
+from qiskit_metal import draw, Dict#, QComponent
+from qiskit_metal.components import QComponent
 from qiskit_metal.toolbox_metal.parsing import is_true
 
 
@@ -41,6 +42,7 @@ class CpwStraightLine(QComponent):
             end='0um'
         )
     )
+    """Default drawing options"""
 
     def make(self):
         """

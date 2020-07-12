@@ -19,10 +19,9 @@ import numpy as np
 
 
 class NGon(QComponent):
-    """Inherits QComponent class
+    """A n-gon polygon. Eg. n = 3 : triangle, n = infinity : circle
 
-    Description:
-        A n-gon polygon. Eg. n = 3 : triangle, n = infinity : circle
+    Inherits `QComponent` class
 
     Options:
         Convention: Values (unless noted) are strings with units included,

@@ -20,16 +20,20 @@ import numpy as np
 
 
 class NSquareSpiral(QComponent):
-    """Inherits QComponent class
+    """A n count square spiral.
+
+    Inherits `QComponent` class
 
     Description:
         A n count square spiral.
-        ____________
-        |   _____   |
-        |  |     |  |
-        |  |     |  |
-        |  |________|
-        |
+        ::
+
+            ____________
+            |   _____   |
+            |  |     |  |
+            |  |     |  |
+            |  |________|
+            |
 
     Options:
         Convention: Values (unless noted) are strings with units included,

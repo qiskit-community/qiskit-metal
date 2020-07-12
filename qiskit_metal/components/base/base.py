@@ -550,8 +550,11 @@ class QComponent():
                 chip: str = 'main'):
         """Add the named pin to the respective component's pins subdictionary
 
-        * = pin
-        . = outline of component
+        ::
+
+            * = pin
+            . = outline of component
+
         ---> = the list being passed in as 'points' [[x1,y1],[x2,y2]]
 
 
