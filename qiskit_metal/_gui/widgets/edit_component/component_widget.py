@@ -221,7 +221,7 @@ class ComponentWidget(QTabWidget):
         Returns:
             QComponent: The QComponent in design class which has name of self.component_name.
             None:   If the name is not in design._components. Also warning will be posted through logger.warning().
-            QComponent: If there are multiple usages of component_name within design._components, 
+            QComponent: If there are multiple usages of component_name within design._components,
                         the first component using it will be returned, along with a logger.warning() message.
         """
         if self.design:
@@ -313,6 +313,8 @@ class ComponentWidget(QTabWidget):
 
     @property
     def qcomponent_file_path(self):
+        """Get file path to qcomponent
+        """
         component = self.component
         module = inspect.getmodule(component)
         filepath = inspect.getfile(module)

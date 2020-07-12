@@ -602,6 +602,7 @@ class PlotCanvas(FigureCanvas):
             self._force_clear_annotations()
 
     def _force_clear_annotations(self):
+        """Clear annotation dicts."""
         self._annotations['patch'] = []
         self._annotations['text'] = []
 

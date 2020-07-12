@@ -377,18 +377,22 @@ class QComponent():
         return None
 
     def make(self):
-        '''
-        Overwrite in inheritnace to define user logic to convert options dictionary into
-        elements.
-        Here, one creates the shapely objects, assigns them as elements.
-        This method should be overwritten by the childs make function.
+        """
+        The make function implements the logic that creates the geoemtry
+        (poly, path, etc.) from the qcomponent.options dictionary of parameters,
+        and the adds them to the design, using qcomponent.add_qgeometry(...),
+        adding in extra needed information, such as layer, subtract, etc.
 
-        This function only contains the logic, the actual call to make the element is in
-        rebuild() and remake()
+        Use the qiskit_metal.draw module to create the geoemtry.
+
+        **Note:**
+            * This method should be overwritten by the childs make function.
+            * This function only contains the logic, the actual call to make the element is in
+              rebuild() and remake()
 
         Raises:
-            NotImplementedError: Code isn't written yet
-        '''
+            NotImplementedError: Overwrite this function by subclassing.
+        """
         raise NotImplementedError()
 
     # TODO: Maybe call this function build

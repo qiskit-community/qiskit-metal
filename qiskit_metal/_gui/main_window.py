@@ -151,6 +151,8 @@ class QMainWindowExtension(QMainWindowExtensionBase):
 
     @catch_exception_slot_pyqt()
     def new_qcomponent(self, _=None):
+        """Create a new qcomponent call by button
+        """
         path = str(Path(self.gui.path_gui).parent /
                    'components'/'user_components'/'my_qcomponent.py')
         filename = QFileDialog.getSaveFileName(parent = None,
@@ -480,7 +482,7 @@ class MetalGUI(QMainWindowBaseHandler):
 
         Arguments:
             name {str} -- name of component to examine.
-            If none, just uses the currently selected component if there is one.
+                If none, just uses the currently selected component if there is one.
         """
         if name:
             self.edit_component(name)

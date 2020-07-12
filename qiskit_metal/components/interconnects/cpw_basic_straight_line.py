@@ -43,6 +43,12 @@ class CpwStraightLine(QComponent):
     )
 
     def make(self):
+        """
+        The make function implements the logic that creates the geoemtry
+        (poly, path, etc.) from the qcomponent.options dictionary of parameters,
+        and the adds them to the design, using qcomponent.add_qgeometry(...),
+        adding in extra needed information, such as layer, subtract, etc.
+        """
         p = self.p  # parsed options
 
         pin1 = self.design.components[self.options.pin_start.component].pins[self.options.pin_start.pin]

@@ -149,7 +149,12 @@ class TransmonPocket(BaseQubit):
     )
 
     def make(self):
-        """Define the way the options are turned into QGeometry."""
+        """Define the way the options are turned into QGeometry.
+        The make function implements the logic that creates the geoemtry
+        (poly, path, etc.) from the qcomponent.options dictionary of parameters,
+        and the adds them to the design, using qcomponent.add_qgeometry(...),
+        adding in extra needed information, such as layer, subtract, etc.
+        """
         self.make_pocket()
         self.make_connection_pads()
 
