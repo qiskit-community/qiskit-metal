@@ -98,19 +98,21 @@ from .. import is_component
 from .base import QComponent
 from .base.qubit import BaseQubit
 from .base.junction import BaseJunction
-from .base._parsed_dynamic_attrs import ParsedDynamicAttributes_Component
-from .basic.circle_caterpillar import CircleCaterpillar
-from .basic.circle_raster import CircleRaster
-from .basic.n_gon import NGon
-from .basic.n_square_spiral import NSquareSpiral
-from .basic.rectangle import Rectangle
-from .basic.rectangle_hollow import RectangleHollow
-from .connectors.open_to_ground import OpenToGround
-from .connectors.short_to_ground import ShortToGround
-from .interconnects.cpw_meander import Connector
-from .interconnects.cpw_basic_straight_line import CpwStraightLine
-from .interconnects.cpw_meander import CpwMeanderSimple
-from .interconnects.fake_cpw import FakeCPW
-from .qubits.transmon_cross import TransmonCross
-from .qubits.transmon_pocket import TransmonPocket
-from .qubits.transmon_pocket_cl import TransmonPocketCL
+
+if 'METAL_DOC_BUILD' in globals():
+    from .base._parsed_dynamic_attrs import ParsedDynamicAttributes_Component
+    from .basic.circle_caterpillar import CircleCaterpillar
+    from .basic.circle_raster import CircleRaster
+    from .basic.n_gon import NGon
+    from .basic.n_square_spiral import NSquareSpiral
+    from .basic.rectangle import Rectangle
+    from .basic.rectangle_hollow import RectangleHollow
+    from .connectors.open_to_ground import OpenToGround
+    from .connectors.short_to_ground import ShortToGround
+    from .interconnects.cpw_basic_straight_line import CpwStraightLine
+    from .interconnects.cpw_meander import Connector
+    from .interconnects.cpw_meander import CpwMeanderSimple
+    from .interconnects.fake_cpw import FakeCPW
+    from .qubits.transmon_cross import TransmonCross
+    from .qubits.transmon_pocket import TransmonPocket
+    from .qubits.transmon_pocket_cl import TransmonPocketCL
