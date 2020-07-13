@@ -99,7 +99,8 @@ from .base import QComponent
 from .base.qubit import BaseQubit
 from .base.junction import BaseJunction
 
-if 'METAL_DOC_BUILD' in globals():
+from .. import config
+if config.is_building_docs():
     from .base._parsed_dynamic_attrs import ParsedDynamicAttributes_Component
     from .basic.circle_caterpillar import CircleCaterpillar
     from .basic.circle_raster import CircleRaster

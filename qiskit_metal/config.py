@@ -133,6 +133,16 @@ def is_using_ipython():
     except NameError:
         return False
 
+def is_building_docs():
+    """Checks for the existance of the .buildingdocs file which is only present when
+    building the docs
+
+    Returns:
+        bool: True if .buildingdocs exists
+    """
+    from pathlib import Path
+    build_docs_file = Path(__file__).parent.parent / "docs" / ".buildingdocs"
+    return Path.exists(build_docs_file)
 
 _ipython = is_using_ipython()
 
