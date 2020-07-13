@@ -517,12 +517,8 @@ class MetalGUI(QMainWindowBaseHandler):
         open up the source editor.
 
         Arguments:
-<<<<<<< HEAD
-            name {str} -- name of component to examine.
-                If none, just uses the currently selected component if there is one.
-=======
             name (str): Name of component to exmaine.
->>>>>>> e48cc7aaac278fbfd307f003da433abc16cae5f2
+                If none, just uses the currently selected component if there is one.
         """
         if name:
             self.edit_component(name)
@@ -553,7 +549,7 @@ class MetalGUI(QMainWindowBaseHandler):
         Args:
             path (str): the path to the file to save to
             class_name (str): how you wnat ot call the class
-            name_instance (str): name of the instance of hte component to be created
+            name_instance (str): name of the instance of the component to be created
         """
 
         # Copy template file
