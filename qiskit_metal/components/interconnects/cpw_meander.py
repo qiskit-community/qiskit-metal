@@ -1,27 +1,17 @@
 """
+Test class for CPW meander.
+
 @author: Marco Facchini, John Blair, Zlatko Minev
 """
 
-from collections import namedtuple
 from typing import List, Tuple, Union
 
 import numpy as np
 from numpy.linalg import norm
-from qiskit_metal.toolbox_python.utility_functions import log_error_easy
 
-import numpy as np
-from qiskit_metal import draw, Dict#, QComponent
+from qiskit_metal import Dict, draw, is_true
 from qiskit_metal.components import QComponent
-#from qiskit_metal import is_true
-
-#from qiskit_metal.toolbox_metal.parsing import is_true
-# options = Dict(pin_start_name='Q1_a',
-#                pin_end_name='Q2_b',
-#                meander=Dict(
-#                    lead_start='0.1mm',
-#                    lead_end='0.1mm',
-#                    asymmetry='0 um')
-#                )
+from qiskit_metal.toolbox_python.utility_functions import log_error_easy
 
 
 class Connector:  # Shouldn't this class be in the connector folder?
@@ -82,8 +72,8 @@ class CpwMeanderSimple(QComponent):
         layer='1',
         trace_width='cpw_width',
         trace_gap='cpw_gap',
-        pin_inputs = Dict(start_pin=Dict(component='',pin=''),
-                        end_pin=Dict(component ='',pin='')),
+        pin_inputs=Dict(start_pin=Dict(component='', pin=''),
+                        end_pin=Dict(component='', pin='')),
 
         meander=Dict(
             spacing='200um',
@@ -317,7 +307,8 @@ class CpwMeanderSimple(QComponent):
             dict: A dictionary with keys `point` and `direction`.
             The values are numpy arrays with two float points each.
         """
-        start_pin = self.design.components[self.options.pin_inputs['start_pin']['component']].pins[self.options.pin_inputs['start_pin']['pin']]
+        start_pin = self.design.components[self.options.pin_inputs['start_pin']
+                                           ['component']].pins[self.options.pin_inputs['start_pin']['pin']]
 
         return Connector(position=start_pin['middle'],
                          direction=start_pin['normal'])
@@ -329,7 +320,8 @@ class CpwMeanderSimple(QComponent):
             dict: A dictionary with keys `point` and `direction`.
             The values are numpy arrays with two float points each.
         """
-        end_pin = self.design.components[self.options.pin_inputs['end_pin']['component']].pins[self.options.pin_inputs['end_pin']['pin']]
+        end_pin = self.design.components[self.options.pin_inputs['end_pin']
+                                         ['component']].pins[self.options.pin_inputs['end_pin']['pin']]
 
         return Connector(position=end_pin['middle'],
                          direction=end_pin['normal'])
@@ -368,11 +360,11 @@ class CpwMeanderSimple(QComponent):
         self.options._actual_length = str(
             line.length) + ' ' + self.design.get_units()
         self.add_qgeometry('path',
-                          {'trace': line},
-                          width=width,
-                          layer=layer)
+                           {'trace': line},
+                           width=width,
+                           layer=layer)
         self.add_qgeometry('path',
-                          {'cut': line},
-                          width=width + p.trace_gap,
-                          layer=layer,
-                          subtract=True)
+                           {'cut': line},
+                           width=width + 2*p.trace_gap,
+                           layer=layer,
+                           subtract=True)

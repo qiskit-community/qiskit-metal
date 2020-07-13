@@ -60,7 +60,7 @@ class QTableModel_AllComponents(QAbstractTableModel):
         self.gui = gui
         self._tableView = tableView  # the view used to preview this model, used to refresh
         self.columns = ['Name', 'QComponent class',
-                        'QComponent module', 'Build status']
+                        'QComponent module', 'Build status', 'id']
         self._row_count = -1
 
         self._create_timer()
@@ -104,6 +104,9 @@ class QTableModel_AllComponents(QAbstractTableModel):
             # TODO: This seems overkill to just change the total number of rows?
             self.modelReset.emit()
 
+            # for some reason the horozontal header is hidden even if i call this in init
+            self._tableView.horizontalHeader().show()
+
             self._row_count = new_count
             self.update_view()
 
@@ -143,7 +146,7 @@ class QTableModel_AllComponents(QAbstractTableModel):
         """
         return len(self.columns)
 
-    def headerData(self, section, orientation, role=Qt.DisplayRole):
+    def headerData(self, section, orientation: Qt.Orientation, role=Qt.DisplayRole):
         """ Set the headers to be displayed.
 
         Args:
@@ -158,6 +161,7 @@ class QTableModel_AllComponents(QAbstractTableModel):
         if role == Qt.DisplayRole:
             if orientation == Qt.Horizontal:
                 if section < len(self.columns):
+                    # print(self.columns[section])
                     return self.columns[section]
 
         elif role == Qt.FontRole:
@@ -170,7 +174,7 @@ class QTableModel_AllComponents(QAbstractTableModel):
         """ Set the item flags at the given index. Seems like we're
         implementing this function just to see how it's done, as we
         manually adjust each tableView to have NoEditTriggers.
-        
+
         Args:
             index (QModelIndex): the index
 
@@ -190,7 +194,7 @@ class QTableModel_AllComponents(QAbstractTableModel):
         """ Depending on the index and role given, return data. If not
         returning data, return None (PySide equivalent of QT's
         "invalid QVariant").
-        
+
         Returns:
             str: data
         """
@@ -203,13 +207,15 @@ class QTableModel_AllComponents(QAbstractTableModel):
         if role == Qt.DisplayRole:
 
             if index.column() == 0:
-                return component_name
+                return str(component_name)
             elif index.column() == 1:
-                return self.design.components[component_name].__class__.__name__
+                return str(self.design.components[component_name].__class__.__name__)
             elif index.column() == 2:
-                return self.design.components[component_name].__class__.__module__
+                return str(self.design.components[component_name].__class__.__module__)
             elif index.column() == 3:
-                return self.design.components[component_name].status
+                return str(self.design.components[component_name].status)
+            elif index.column() == 4:
+                return str(self.design.components[component_name].id)
 
         # The font used for items rendered with the default delegate. (QFont)
         elif role == Qt.FontRole:

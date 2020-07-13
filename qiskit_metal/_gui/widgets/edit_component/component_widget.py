@@ -19,7 +19,6 @@
 
 import ast
 import inspect
-from inspect import getfile, signature
 from pathlib import Path
 from typing import TYPE_CHECKING, Union
 
@@ -227,11 +226,11 @@ class ComponentWidget(QTabWidget):
     def component(self) -> 'QComponent':
         """Use the interface to components dict to return a QComponent.
 
-        Returns one of the following:
-            * QComponent: The QComponent in design class which has name of self.component_name.
-            * None:   If the name is not in design._components. Also warning will be posted through logger.warning().
-            * QComponent: If there are multiple usages of component_name within design._components, 
-                          the first component using it will be returned, along with a logger.warning() message.
+        Returns:
+            QComponent: The QComponent in design class which has name of self.component_name.
+            None:   If the name is not in design._components. Also warning will be posted through logger.warning().
+            QComponent: If there are multiple usages of component_name within design._components,
+                        the first component using it will be returned, along with a logger.warning() message.
         """
         if self.design:
             if self.component_name:
@@ -289,7 +288,7 @@ class ComponentWidget(QTabWidget):
         if component is None:
             return
 
-        filepath = inspect.getfile(component.__class__)
+        filepath = self.qcomponent_file_path
         doc_class = format_docstr(inspect.getdoc(component))
         doc_init = format_docstr(inspect.getdoc(component.__init__))
 
@@ -322,9 +321,20 @@ class ComponentWidget(QTabWidget):
 
         self.ui.textHelp.setHtml(text)
 
+    @property
+    def qcomponent_file_path(self):
+        """Get file path to qcomponent
+        """
+        component = self.component
+        module = inspect.getmodule(component)
+        filepath = inspect.getfile(module)
+        # TypeError
+        return filepath
+
     def _set_source(self):
         """Called when we need to set a new help"""
-        filepath = getfile(self.component.__class__)
+        filepath = self.qcomponent_file_path
+
         self.ui.lineSourcePath.setText(filepath)
 
         document = self.src_doc
@@ -358,7 +368,7 @@ class ComponentWidget(QTabWidget):
         if self.component is not None:
             class_name = self.component.__class__.__name__
             module_name = self.component.__class__.__module__
-            module_path = inspect.getfile(self.component.__class__)
+            module_path = self.qcomponent_file_path
             self.src_widgets += [
                 create_source_edit_widget(
                     self.gui, class_name, module_name, module_path, parent=parent)

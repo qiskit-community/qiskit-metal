@@ -101,13 +101,14 @@ from .base.junction import BaseJunction
 
 if 'METAL_DOC_BUILD' in globals():
     from .base._parsed_dynamic_attrs import ParsedDynamicAttributes_Component
-    from .base._template import MyQComponent
     from .basic.circle_caterpillar import CircleCaterpillar
     from .basic.circle_raster import CircleRaster
     from .basic.n_gon import NGon
     from .basic.n_square_spiral import NSquareSpiral
     from .basic.rectangle import Rectangle
     from .basic.rectangle_hollow import RectangleHollow
+    from .connectors.open_to_ground import OpenToGround
+    from .connectors.short_to_ground import ShortToGround
     from .interconnects.cpw_basic_straight_line import CpwStraightLine
     from .interconnects.cpw_meander import Connector
     from .interconnects.cpw_meander import CpwMeanderSimple

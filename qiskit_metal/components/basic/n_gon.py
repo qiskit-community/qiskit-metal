@@ -17,6 +17,7 @@ from qiskit_metal import draw, Dict
 from qiskit_metal.components.base import QComponent
 import numpy as np
 
+
 class NGon(QComponent):
     """A n-gon polygon. Eg. n = 3 : triangle, n = infinity : circle
 
@@ -36,8 +37,8 @@ class NGon(QComponent):
     """
 
     default_options = Dict(
-        n = '3',
-        radius = '30um',
+        n='3',
+        radius='30um',
         pos_x='0um',
         pos_y='0um',
         rotation='0',
@@ -49,13 +50,19 @@ class NGon(QComponent):
     """Default drawing options"""
 
     def make(self):
-        """Build the component"""
+        """
+        The make function implements the logic that creates the geoemtry
+        (poly, path, etc.) from the qcomponent.options dictionary of parameters,
+        and the adds them to the design, using qcomponent.add_qgeometry(...),
+        adding in extra needed information, such as layer, subtract, etc.
+        """
         p = self.p  # p for parsed parameters. Access to the parsed options.
         n = int(p.n)
-        #Create the geometry
-        #Generates a list of points
-        n_polygon = [(p.radius*np.cos(2*np.pi*x/n),p.radius*np.sin(2*np.pi*x/n)) for x in range(n)]
-        #Converts said list into a shapely polygon
+        # Create the geometry
+        # Generates a list of points
+        n_polygon = [(p.radius*np.cos(2*np.pi*x/n), p.radius *
+                      np.sin(2*np.pi*x/n)) for x in range(n)]
+        # Converts said list into a shapely polygon
         n_polygon = draw.Polygon(n_polygon)
 
         n_polygon = draw.rotate(n_polygon, p.rotation, origin=(0, 0))
@@ -64,4 +71,4 @@ class NGon(QComponent):
         ##############################################
         # add elements
         self.add_qgeometry('poly', {'n_polygon': n_polygon}, subtract=p.subtract,
-                          helper=p.helper, layer=p.layer, chip=p.chip)
+                           helper=p.helper, layer=p.layer, chip=p.chip)

@@ -30,12 +30,13 @@ if TYPE_CHECKING:
     from ...main_window import MetalGUI, QMainWindowExtension
 
 
+
 def create_source_edit_widget(gui: 'MetalGUI',
                               class_name: str,
                               module_name: str,
                               module_path: str,
                               parent=None) -> QtWidgets.QWidget:
-    """Creates teh spawned window that has the edit source
+    """Creates the spawned window that has the edit source
 
     Arguments:
         gui {MetalGUI} -- [description]
@@ -55,6 +56,7 @@ def create_source_edit_widget(gui: 'MetalGUI',
     gui.logger.info(f'Creating a source edit window for\n  class_name={class_name}\n'
                     f'  file={module_path}')
 
+    # TODO: should probably turn the following into a QMainWindow subclass
     edit_widget = QtWidgets.QMainWindow(parent) # use parent, so this way its style sheet is inherited
     self = edit_widget
     self.ui = Ui_EditSource()

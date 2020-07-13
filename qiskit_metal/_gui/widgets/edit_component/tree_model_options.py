@@ -432,6 +432,7 @@ class QTreeModel_Options(QAbstractItemModel):
                 elif index.column() == 1:
                     return str(node.value)  # value
                 elif index.column() == 2:
+                    # TODO: If the parser fails, this can throw an error
                     return str(self.design.parse_value(node.value))
                 else:
                     return QVariant()
