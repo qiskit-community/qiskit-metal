@@ -210,7 +210,6 @@ class CpwMeanderSimple(QComponent):
 
     def make(self):
         # parsed options
-        # p = self.parse_value(self.options)  # type: Dict
         p = self.p
         snap = is_true(p.meander.snap)
         total_length = p.total_length
