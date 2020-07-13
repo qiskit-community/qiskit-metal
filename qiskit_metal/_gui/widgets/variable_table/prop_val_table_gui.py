@@ -8,12 +8,19 @@ from PyQt5.QtCore import QModelIndex
 from PyQt5.QtWidgets import QMainWindow, QTableView, QDialog
 
 class PropertyTableWidget(QMainWindow):
-
     """
     GUI for variables table with 3 columns: Property, Value, Number
+
+    Extends the `QMainWindow` class
     """
 
     def __init__(self, parent, design=None, gui=None):
+        """
+        Args:
+            parent (QMainWindowExtension): Parent window
+            design (QDesign): design (Default: None)
+            gui (MetalGUI): the GUI (Default: None)
+        """
         super().__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
@@ -35,16 +42,22 @@ class PropertyTableWidget(QMainWindow):
         self.show()
 
     def set_design(self, design):
-        """Swap out reference to design, which changes the reference to the dictionary. """
+        """Swap out reference to design, which changes the reference to the dictionary.
+
+        Args:
+            design (QDesign): The design
+        """
         self._design = design
         self.model.set_design(design)
 
     @property
     def design(self):
+        """Returns the design"""
         return self._design
 
     @property
     def _data(self)->dict:
+        """Returns the variables"""
         if self._design:
             return self._design.variables
 

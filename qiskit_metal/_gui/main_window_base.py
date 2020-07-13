@@ -42,10 +42,11 @@ class QMainWindowExtensionBase(QMainWindow):
     """This contains all the functions tthat the gui needs
     to call directly from the UI
 
-    Based on QMainWindow
+    Extends the `QMainWindow` class
     """
 
     def __init__(self):
+        """  """
         super().__init__()
         # Set manually
         self.handler = None  # type: QMainWindowBaseHandler
@@ -57,32 +58,45 @@ class QMainWindowExtensionBase(QMainWindow):
 
     @property
     def settings(self) -> QtCore.QSettings:
+        """Get the settings"""
         return self.handler.settings
 
     @property
     def gui(self) -> 'QMainWindowBaseHandler':
+        """Get the GUI"""
         self.handler
 
     def _remove_log_handlers(self):
+        """Remove the log handlers"""
         if hasattr(self, 'log_text'):
             self.log_text.remove_handlers(self.logger)
 
     def destroy(self, destroyWindow: bool = True, destroySubWindows: bool = True):
         """
         When the window is cleaned up from memory.
+
+        Args:
+            destroyWindow (bool): Whether or not to destroy the window (Default: True)
+            destroySubWindows (bool): Whether or not to destroy sub windows (Default: True)
         """
         self._remove_log_handlers()
         super().destroy(destroyWindow=destroyWindow, destroySubWindows=destroySubWindows)
 
     def closeEvent(self, event):
         """whenever a window is closed.
-            Passed an event which we can choose to accept or reject.
+        Passed an event which we can choose to accept or reject.
         """
         if self.ok_to_continue():
             self.save_window_settings()
             super().closeEvent(event)
 
     def ok_to_continue(self):
+        """
+        Determine if it ok to continue
+
+        Returns:
+            bool: True to continue, False otherwise
+        """
         if 1:
             reply = QMessageBox.question(self,
                                          "Qiskit Metal",
@@ -95,6 +109,7 @@ class QMainWindowExtensionBase(QMainWindow):
         return True
 
     def save_window_settings(self):
+        """Save the window settings"""
         self.logger.info('Saving window state')
         # get the current size and position of the window as a byte array.
         self.settings.setValue('metal_version', __version__)
@@ -106,6 +121,9 @@ class QMainWindowExtensionBase(QMainWindow):
         """
         Call a Qt built-in function to restore values
         from the settings file.
+
+        Raises:
+            Exception: Error in restoration
         """
 
         version_settings = self.settings.value('metal_version', defaultValue='0')
@@ -137,8 +155,8 @@ class QMainWindowExtensionBase(QMainWindow):
 
     def bring_to_top(self):
         """ Bring window to top.
-         Note that on Windows, this doesn't always work quite well
-         """
+        Note that on Windows, this doesn't always work quite well
+        """
         self.raise_()
         self.activateWindow()
 
@@ -196,6 +214,7 @@ class QMainWindowExtensionBase(QMainWindow):
 
     @catch_exception_slot_pyqt()
     def _screenshot(self, _):
+        """Used to call from action"""
         self.get_screenshot()
 
     @catch_exception_slot_pyqt()
@@ -227,16 +246,18 @@ class QMainWindowExtensionBase(QMainWindow):
 
 
 class QMainWindowBaseHandler():
-    """Abstract Class to wrap and handle main window .
+    """Abstract Class to wrap and handle main window.
 
-    Assumes a UI that has
-        log_text : a QText for logging
+    Assumes a UI that has:
+        * log_text: a QText for logging
 
     Assumes we have functions:
-        setup_logger
+        * setup_logger
 
-    Assumes we have objects
-         config.log.format, config.log.datefmt,config._ipython
+    Assumes we have objects:
+         * config.log.format
+         * config.log.datefmt
+         * config._ipython
     """
     _myappid = 'QiskitMetal'
     _img_logo_name = 'my_logo.png'
@@ -256,8 +277,12 @@ class QMainWindowBaseHandler():
         """
         Can pass in logger
 
+        Args:
+            logger (logging.Logger): the logger (Default: None)
+            handler (bool): Not used (Default: False)
+
         Attributes:
-            _settings :        Used to save the state of the window
+            _settings: Used to save the state of the window
                 This information is often stored in the system
                 registry on Windows, and in property list files on macOS and iOS.
         """
@@ -319,9 +344,11 @@ class QMainWindowBaseHandler():
 
     @property
     def path_stylesheets(self):
+        """Returns the path to teh stylesheet"""
         return Path(self.path_gui)/'styles'
 
     def style_window(self):
+        """Styles the window"""
         # fusion macintosh # windows
         self.main_window.setStyle(QtWidgets.QStyleFactory.create("fusion"))
         # TODO; add stlyesheet to load here - maybe pull form settings
@@ -339,15 +366,17 @@ class QMainWindowBaseHandler():
         """
         Only one qApp can exist at a time, so check before creating one.
 
+        Returns:
+            QApplication: a setup QApplication
 
         There are three classes:
-            QCoreApplication - base class. Used in command line applications.
-            QGuiApplication - base class + GUI capabilities. Used in QML applications.
-            QApplication - base class + GUI + support for widgets. Use it in QtWidgets applications.
+            * QCoreApplication - base class. Used in command line applications.
+            * QGuiApplication - base class + GUI capabilities. Used in QML applications.
+            * QApplication - base class + GUI + support for widgets. Use it in QtWidgets applications.
 
         See:
-            https://forum.qt.io/topic/94834/differences-between-qapplication-qguiappication-qcoreapplication-classes/3
-            https://github.com/matplotlib/matplotlib/blob/9984f9c4db7bfb02ffca53b7823acb8f8e223f6a/lib/matplotlib/backends/backend_qt5.py#L98
+            * https://forum.qt.io/topic/94834/differences-between-qapplication-qguiappication-qcoreapplication-classes/3
+            * https://github.com/matplotlib/matplotlib/blob/9984f9c4db7bfb02ffca53b7823acb8f8e223f6a/lib/matplotlib/backends/backend_qt5.py#L98
         """
 
         self.qApp = QApplication.instance()
@@ -390,6 +419,7 @@ class QMainWindowBaseHandler():
         return self.qApp
 
     def _setup_main_window_tray(self):
+        """Sets up the main window tray"""
 
         if self.path_imgs.is_dir():
             icon = QIcon(str(self.path_imgs/self._img_logo_name))
@@ -401,6 +431,15 @@ class QMainWindowBaseHandler():
             self.qApp.setWindowIcon(icon)
 
     def create_log_handler(self, name_toshow: str, logger: logging.Logger):
+        """Creates a log handler
+
+        Args:
+            name_toshow (str): Display name
+            logger (logging.Logger): the logger
+
+        Returns:
+            LogHandler_for_QTextLog: a LogHandler_for_QTextLog
+        """
         return LogHandler_for_QTextLog(name_toshow, self, self.ui.log_text, logger)
 
     @catch_exception_slot_pyqt()
@@ -422,6 +461,7 @@ class QMainWindowBaseHandler():
             self.logger.warning('UI does not have `log_text`')
 
     def _setup_window_size(self):
+        """Setup the window size"""
         if self.config.main_window.auto_size:
             screen = self.qApp.primaryScreen()
             # screen.name()
@@ -437,12 +477,17 @@ class QMainWindowBaseHandler():
         """
         Load and set stylesheet for the main gui.
 
-
-        Keyword Arguments:
+        Arguments:
             path (str) : Path to stylesheet or its name.
                 Can be: 'default', 'qdarkstyle' or None.
                 `qdarkstyle` requires
                 >>> pip install qdarkstyle
+
+        Returns:
+            bool: False if failure, otherwise nothing
+
+        Raises:
+            ImportError: Import failure
         """
         result = True
         if path == 'default' or path is None:
@@ -476,6 +521,17 @@ class QMainWindowBaseHandler():
             return False
 
     def _load_stylesheet_from_file(self, path: str):
+        """Load the sylesheet from a file
+
+        Args:
+            path (str): Path to file
+
+        Returns:
+            bool: False if failure, otherwise nothing
+
+        Raises:
+            Exception: Stylesheet load failure
+        """
         # print(f'path = {path}')
         try:
             path = Path(str(path))
@@ -501,13 +557,17 @@ class QMainWindowBaseHandler():
 
     def screenshot(self, name='shot.png', type_='png', display=True, disp_ops=None):
         """
-        Grad a screenshot of the main window,
+        Grab a screenshot of the main window,
         save to file, and then copy to clipboard.
         """
         self.main_window.get_screenshot(name, type_, display, disp_ops)
 
     def save_file(self):
-        """Save file. Called on exit"""
+        """Save file. Called on exit
+
+        Raises:
+            NotImplementedError: Function not written 
+        """
         raise NotImplementedError()
 
 
