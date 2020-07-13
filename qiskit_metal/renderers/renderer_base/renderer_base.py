@@ -24,12 +24,12 @@ __all__ = ['QRenderer']
 
 
 class QRenderer():
-    """Abstract base class for all Renderers of Metal designs and their compoinents and elements.
+    """Abstract base class for all Renderers of Metal designs and their components and qgeometry.
 
     Handles:
         designs
             components
-                elements
+                qgeometry
                     paths
                     polys
             chips
@@ -78,7 +78,7 @@ class QRenderer():
             cls.name, cls.element_extensions)
 
         # Add component extensions
-        # to be used in the creation of default params for component elements
+        # to be used in the creation of default params for component qgeometry
         raise NotImplementedError()
 
         # Finish and register offically as ready to use.
