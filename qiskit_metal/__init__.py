@@ -127,6 +127,7 @@ from ._is_design import is_design, is_component
 # instanciating the default params and overwriting them.
 
 # Core modules for user to use
+from .toolbox_metal.parsing import is_true
 from . import components #TODO: slow to import? why
 from . import designs
 from . import draw
@@ -145,7 +146,6 @@ from .renderers.renderer_mpl import mpl_toolbox as plt
 
 # Utility functions
 from .toolbox_python.display import Headings
-from .toolbox_metal.parsing import is_true
 
 # Import default renderers
 from .renderers import setup_renderers

@@ -233,7 +233,7 @@ class QMplRenderer():
             table1.geometry = table1[['geometry', 'width']].apply(lambda x:
                                                                   x[0].buffer(
                                                                       distance=float(
-                                                                          x[1]),
+                                                                          x[1])/2.,
                                                                       cap_style=CAP_STYLE.flat,
                                                                       join_style=JOIN_STYLE.mitre,
                                                                       resolution=16

@@ -39,8 +39,8 @@ converted to v0.2: Thomas McConkey 2020-03-24
 
 import numpy as np
 from qiskit_metal import draw, Dict
-#from qiskit_metal import is_true
 from qiskit_metal.components.base.qubit import BaseQubit
+
 
 class TransmonPocket(BaseQubit):
     """
@@ -119,6 +119,7 @@ class TransmonPocket(BaseQubit):
 
     #_img = 'transmon_pocket1.png'
 
+    # Default drawing options
     default_options = Dict(
         pos_x='0um',
         pos_y='0um',
@@ -131,7 +132,7 @@ class TransmonPocket(BaseQubit):
         # 90 has dipole aligned along the +X axis,
         # while 0 has dipole aligned along the +Y axis
         orientation='0',
-        _default_connection_pads = Dict(
+        _default_connection_pads=Dict(
             pad_gap='15um',
             pad_width='125um',
             pad_height='30um',
@@ -146,11 +147,14 @@ class TransmonPocket(BaseQubit):
             loc_H='+1',  # height location only +-1
         )
     )
-    """Default drawing options"""
-
 
     def make(self):
-        """Define the way the options are turned into QGeometry."""
+        """Define the way the options are turned into QGeometry.
+        The make function implements the logic that creates the geoemtry
+        (poly, path, etc.) from the qcomponent.options dictionary of parameters,
+        and the adds them to the design, using qcomponent.add_qgeometry(...),
+        adding in extra needed information, such as layer, subtract, etc.
+        """
         self.make_pocket()
         self.make_connection_pads()
 
@@ -184,18 +188,18 @@ class TransmonPocket(BaseQubit):
         [rect_jj, pad_top, pad_bot, rect_pk] = polys
 
         # Use the geometry to create Metal elements
-        self.add_elements('poly', dict(pad_top=pad_top, pad_bot=pad_bot))
-        self.add_elements('poly', dict(rect_pk=rect_pk), subtract=True)
-        self.add_elements('poly', dict(rect_jj=rect_jj), helper=True)
+        self.add_qgeometry('poly', dict(pad_top=pad_top, pad_bot=pad_bot))
+        self.add_qgeometry('poly', dict(rect_pk=rect_pk), subtract=True)
+        self.add_qgeometry('poly', dict(rect_jj=rect_jj), helper=True)
 
     def make_connection_pads(self):
         '''
         Makes standard transmon in a pocket
         '''
-        for name in self.options.connection_pads: #
+        for name in self.options.connection_pads:
             self.make_connection_pad(name)
 
-    def make_connection_pad(self, name:str):
+    def make_connection_pad(self, name: str):
         '''
         Makes n individual connector
 
@@ -205,7 +209,7 @@ class TransmonPocket(BaseQubit):
 
         # self.p allows us to directly access parsed values (string -> numbers) form the user option
         p = self.p
-        pc = self.p.connection_pads[name] # parser on connector options
+        pc = self.p.connection_pads[name]  # parser on connector options
 
         # define commonly used variables once
         cpw_width = pc.cpw_width
@@ -216,9 +220,10 @@ class TransmonPocket(BaseQubit):
         pocket_rise = pc.pocket_rise
         pocket_extent = pc.pocket_extent
 
-        ### Define the geometry
+        # Define the geometry
         # Connector pad
-        connector_pad = draw.rectangle(pad_width, pad_height, -pad_width/2, pad_height/2)
+        connector_pad = draw.rectangle(
+            pad_width, pad_height, -pad_width/2, pad_height/2)
         # Connector CPW wire
         connector_wire_path = draw.wkt.loads(f"""LINESTRING (\
             0 {pad_cpw_shift+cpw_width/2}, \
@@ -227,31 +232,32 @@ class TransmonPocket(BaseQubit):
             {(p.pocket_width-p.pad_width)/2+cpw_extend}    {pad_cpw_shift+cpw_width/2+pocket_rise}\
                                         )""")
         # for connector cludge
-        connector_wire_CON = draw.buffer(connector_wire_path, cpw_width/2.) # helper for the moment
+        connector_wire_CON = draw.buffer(
+            connector_wire_path, cpw_width/2.)  # helper for the moment
 
         # Position the connector, rot and tranlate
         loc_W, loc_H = float(pc.loc_W), float(pc.loc_H)
         if float(loc_W) not in [-1., +1.] or float(loc_H) not in [-1., +1.]:
-            self.logger.info('Warning: Did you mean to define a transmon wubit with loc_W and'\
-                ' loc_H that are not +1 or -1?? Are you sure you want to do this?')
+            self.logger.info('Warning: Did you mean to define a transmon wubit with loc_W and'
+                             ' loc_H that are not +1 or -1?? Are you sure you want to do this?')
         objects = [connector_pad, connector_wire_path, connector_wire_CON]
         objects = draw.scale(objects, loc_W, loc_H, origin=(0, 0))
         objects = draw.translate(objects, loc_W*(p.pad_width)/2.,
                                  loc_H*(p.pad_height+p.pad_gap/2+pc.pad_gap))
-        objects = draw.rotate_position(objects, p.orientation, [p.pos_x, p.pos_y])
+        objects = draw.rotate_position(
+            objects, p.orientation, [p.pos_x, p.pos_y])
         [connector_pad, connector_wire_path, connector_wire_CON] = objects
 
-        self.add_elements('poly', {f'{name}_connector_pad':connector_pad})
-        self.add_elements('path', {f'{name}_wire':connector_wire_path}, width=cpw_width)
-        self.add_elements('path', {f'{name}_wire_sub':connector_wire_path},
-                          width=cpw_width + 2*pc.cpw_gap, subtract=True)
+        self.add_qgeometry('poly', {f'{name}_connector_pad': connector_pad})
+        self.add_qgeometry(
+            'path', {f'{name}_wire': connector_wire_path}, width=cpw_width)
+        self.add_qgeometry('path', {f'{name}_wire_sub': connector_wire_path},
+                           width=cpw_width + 2*pc.cpw_gap, subtract=True)
 
         ############################################################
 
         # add pins
         points = np.array(connector_wire_path.coords)
-
-        self.add_pin_as_normal(name,
-            start = points[-2],
-            end = points[-1],
-            width = cpw_width, parent = self.id,  flip=False)
+        # FIX POINTS,
+        self.add_pin(name, points=points[-2:],
+                     width=cpw_width, input_as_norm=True)

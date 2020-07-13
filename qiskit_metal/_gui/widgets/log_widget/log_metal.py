@@ -295,6 +295,7 @@ class QTextEditLogger(QTextEdit):
         # make sure that the message is visible and scrolled ot
         if self.actino_scroll_auto.isChecked():
             self.moveCursor(QtGui.QTextCursor.End)
+            self.moveCursor(QtGui.QTextCursor.StartOfLine)
         self.ensureCursorVisible()
 
     def remove_handlers(self, logger):

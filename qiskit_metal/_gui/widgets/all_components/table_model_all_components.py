@@ -34,6 +34,8 @@ class QTableModel_AllComponents(QAbstractTableModel):
     Design compoentns Table model that shows the names of the compoentns and
     their class names etc.
 
+    This class extends the `QAbstractTableModel` class.
+
     MVC class
     See https://doc.qt.io/qt-5/qabstracttablemodel.html
 
@@ -46,18 +48,26 @@ class QTableModel_AllComponents(QAbstractTableModel):
     __timer_interval = 500  # ms
 
     def __init__(self, gui, logger, parent=None, tableView: 'QTableView_AllComponents' = None):
+        """
+        Args:
+            gui (MetalGUI): the GUI (Default: None)
+            logger (logger): the logger
+            parent (QWidget): Parent widget (Default: None).
+            tableView (QTableView_AllComponents): the table view (Default: None).
+        """
         super().__init__(parent=parent)
         self.logger = logger
         self.gui = gui
         self._tableView = tableView  # the view used to preview this model, used to refresh
         self.columns = ['Name', 'QComponent class',
-                        'QComponent module', 'Build status']
+                        'QComponent module', 'Build status', 'id']
         self._row_count = -1
 
         self._create_timer()
 
     @property
     def design(self):
+        """Retrusn the design"""
         return self.gui.design
 
     def _create_timer(self):
@@ -94,14 +104,26 @@ class QTableModel_AllComponents(QAbstractTableModel):
             # TODO: This seems overkill to just change the total number of rows?
             self.modelReset.emit()
 
+            # for some reason the horozontal header is hidden even if i call this in init
+            self._tableView.horizontalHeader().show()
+
             self._row_count = new_count
             self.update_view()
 
     def update_view(self):
+        """Updates the view"""
         if self._tableView:
             self._tableView.resizeColumnsToContents()
 
     def rowCount(self, parent: QModelIndex = None):
+        """Returns the number of rows
+
+        Args:
+            parent (QModelIndex): Unused (Default: None).
+
+        Returns:
+            int: the number of rows
+        """
         if self.design:  # should we jsut enforce this
             num = int(len(self.design.components))
             if num == 0:
@@ -114,14 +136,32 @@ class QTableModel_AllComponents(QAbstractTableModel):
             return 0
 
     def columnCount(self, parent: QModelIndex = None):
+        """Returns the number of columns
+
+        Args:
+            parent (QModelIndex): Unused (Default: None).
+
+        Returns:
+            int: the number of columns
+        """
         return len(self.columns)
 
-    def headerData(self, section, orientation, role=Qt.DisplayRole):
-        """ Set the headers to be displayed. """
+    def headerData(self, section, orientation: Qt.Orientation, role=Qt.DisplayRole):
+        """ Set the headers to be displayed.
+
+        Args:
+            section (int): section number
+            orientation (Qt orientation): section orientation
+            role (Qt display role): display role (Default: DisplayRole)
+
+        Returns:
+            str: the header data, or None if not found
+        """
 
         if role == Qt.DisplayRole:
             if orientation == Qt.Horizontal:
                 if section < len(self.columns):
+                    # print(self.columns[section])
                     return self.columns[section]
 
         elif role == Qt.FontRole:
@@ -132,8 +172,14 @@ class QTableModel_AllComponents(QAbstractTableModel):
 
     def flags(self, index):
         """ Set the item flags at the given index. Seems like we're
-            implementing this function just to see how it's done, as we
-            manually adjust each tableView to have NoEditTriggers.
+        implementing this function just to see how it's done, as we
+        manually adjust each tableView to have NoEditTriggers.
+
+        Args:
+            index (QModelIndex): the index
+
+        Returns:
+            Qt flags: Flags from Qt
         """
         # https://doc.qt.io/qt-5/qt.html#ItemFlag-enum
 
@@ -146,8 +192,11 @@ class QTableModel_AllComponents(QAbstractTableModel):
     # @catch_exception_slot_pyqt()
     def data(self, index: QModelIndex, role: int = Qt.DisplayRole):
         """ Depending on the index and role given, return data. If not
-            returning data, return None (PySide equivalent of QT's
-            "invalid QVariant").
+        returning data, return None (PySide equivalent of QT's
+        "invalid QVariant").
+
+        Returns:
+            str: data
         """
 
         if not index.isValid() or not self.design:
@@ -158,13 +207,15 @@ class QTableModel_AllComponents(QAbstractTableModel):
         if role == Qt.DisplayRole:
 
             if index.column() == 0:
-                return component_name
+                return str(component_name)
             elif index.column() == 1:
-                return self.design.components[component_name].__class__.__name__
+                return str(self.design.components[component_name].__class__.__name__)
             elif index.column() == 2:
-                return self.design.components[component_name].__class__.__module__
+                return str(self.design.components[component_name].__class__.__module__)
             elif index.column() == 3:
-                return self.design.components[component_name].status
+                return str(self.design.components[component_name].status)
+            elif index.column() == 4:
+                return str(self.design.components[component_name].id)
 
         # The font used for items rendered with the default delegate. (QFont)
         elif role == Qt.FontRole:

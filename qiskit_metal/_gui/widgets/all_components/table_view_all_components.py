@@ -34,6 +34,8 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
     """
     Desing components.
 
+    The class extends the `QTableView` and `QWidget_PlaceholderText` classes.
+
     Table model that shows the summary of the components of a design in a table
     with their names, classes, and modules
 
@@ -42,6 +44,10 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
     """
 
     def __init__(self, parent: QtWidgets.QWidget):
+        """
+        Args:
+            parent (QWidget): Parent widget
+        """
         QTableView.__init__(self, parent)
         QWidget_PlaceholderText.__init__(
             self,  "No QComponents to show.\n\nCreate components from the QLibrary.")
@@ -55,6 +61,7 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         QTimer.singleShot(100, self.style2)
 
     def style2(self):
+        """Style the widget"""
         # Do in the ui file
         self.horizontalHeader().hide()
         self.verticalHeader().show()
@@ -67,14 +74,17 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
 
     @property
     def design(self):
+        """Returns the design"""
         return self.model().design
 
     @property
     def logger(self):
+        """Returns the logger"""
         return self.model().logger
 
     @property
     def gui(self) -> 'MetalGUI':
+        """Returns the GUI"""
         return self.model().gui
 
     # @catch_exception_slot_pyqt
@@ -90,7 +100,7 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         See the QContextMenuEvent documentation for more details.
 
         Arguments:
-            event {QContextMenuEvent} -- [description]
+            event (QContextMenuEvent): the event
         """
         self._event = event  # debug
 
@@ -105,6 +115,14 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         self.menu._action = self.menu.exec_(self.mapToGlobal(event.pos()))
 
     def get_name_from_event(self, event):
+        """Get the event name
+
+        Args:
+            event (QContextMenuEvent): the event
+
+        Returns:
+            tuple: event name, row the event is on
+        """
         # get the selected row and column
         row = self.rowAt(event.pos().y())
         #col = self.columnAt(event.pos().x())
@@ -116,7 +134,11 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
 
     # @catch_exception_slot_pyqt
     def do_menu_delete(self, event):
-        """called when the user clicks the context menu delete"""
+        """called when the user clicks the context menu delete
+
+        Args:
+            event (QContextMenuEvent): the event
+        """
         name, row = self.get_name_from_event(event)
 
         if row > -1:
@@ -127,14 +149,22 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
                 self._do_delete(name)
 
     def _do_delete(self, name: str):
-        """do delte a component by name"""
+        """do delte a component by name
+
+        Args:
+            name (str): name of the component to delete
+        """
         self.logger.info(f'Deleting {name}')
         self.design.delete_component(name)
         # replot
         self.gui.plot_win.replot()
 
     def do_menu_rename(self, event):
-        """called when the user clicks the context menu rename"""
+        """called when the user clicks the context menu rename
+
+        Args:
+            event (QContextMenuEvent): the event
+        """
         name, row = self.get_name_from_event(event)
 
         if row > -1:
@@ -150,6 +180,9 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         Select a component and set it in the compoient widget when you left click.
 
         In the init, we had to connect with self.clicked.connect(self.viewClicked)
+
+        Args:
+            index (QModelIndex): the index
         """
         if self.gui is None or not index.isValid():
             return
@@ -174,6 +207,8 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
 
         Note that single click will also get called.
 
+        Args:
+            index (QModelIndex): the index
         """
         if self.gui is None or not index.isValid():
             return

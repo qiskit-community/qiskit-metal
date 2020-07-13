@@ -76,6 +76,12 @@ class BranchNode:
     """
 
     def __init__(self, name: str, parent=None, data: dict = None):
+        """
+        Args:
+            name (str): Name of this branch
+            parent ([type]): The parent (Default: None)
+            data (dict): Node data (Default: None)
+        """
         super(BranchNode, self).__init__()
         self.name = name
         self.parent = parent
@@ -83,32 +89,80 @@ class BranchNode:
         self._data = data  # dictionary containing the actual data
 
     def __len__(self):
+        """
+        Gets the number of children
+
+        Returns:
+            int: the number of children this node has
+        """
         return len(self.children)
 
     def provideName(self):
+        """
+        Gets the name
+
+        Returns:
+            str: the nodes name
+        """
         return self.name  # identifier for BranchNode
 
     def childAtRow(self, row: int):
+        """Gets the child at the given row
+
+        Args:
+            row (int): the row
+
+        Returns:
+            Node: The node at the row
+        """
         if 0 <= row < len(self.children):
             return self.children[row][NODE]
 
     def rowOfChild(self, child):
+        """Gets the row of the given child
+
+        Args:
+            child (Node): the child
+
+        Returns:
+            int: Row of the given child.  -1 is returned if the child is not found.
+        """
         for i, (_, childnode) in enumerate(self.children):
             if child == childnode:
                 return i
         return -1
 
     def childWithKey(self, key):
+        """Gets the child with the given key
+
+        Args:
+            key (str): the key
+
+        Returns:
+            Node: The child with the same name as the given key.
+            None is returned if the child is not found
+        """
         for childname, childnode in self.children:
             if key == childname:
                 return childnode
         return None
 
     def insertChild(self, child):
+        """
+        Insert the given child
+
+        Args:
+            child (Node): the child
+        """
         child.parent = self
         self.children.append((child.provideName(), child))
 
     def hasLeaves(self):
+        """Do I have leaves?
+
+        Returns:
+            bool: True is I have leaves, False otherwise
+        """
         if not self.children:
             return False
         return isinstance(self.children[KEY][NODE], LeafNode)
@@ -125,6 +179,12 @@ class LeafNode:
     """
 
     def __init__(self, label: str, parent=None, path=None):
+        """
+        Args:
+            label (str): Label for the leaf node
+            parent (Node): The parent (Default: None)
+            path (list): Node path (Default: None)
+        """
         super(LeafNode, self).__init__()
         self.path = path or []
         self.parent = parent
@@ -132,6 +192,7 @@ class LeafNode:
 
     @property
     def value(self):
+        """Returns the value"""
         return get_nested_dict_item(self.parent._data, self.path)
 
     # @value.setter
@@ -139,6 +200,12 @@ class LeafNode:
     #     self._value = newvalue
 
     def provideName(self):
+        """
+        Get the label
+
+        Returns:
+            str: the lable of the leaf node - this is *not* the value.
+        """
         return self.label  # identifier for LeafNode (note: NOT value!)
 
 
@@ -146,6 +213,8 @@ class QTreeModel_Options(QAbstractItemModel):
 
     """
     Tree model for the options of a given component.
+
+    This class extends the `QAbstractItemModel` class.
 
     MVC class
     See https://doc.qt.io/qt-5/qabstractitemmodel.html
@@ -182,6 +251,7 @@ class QTreeModel_Options(QAbstractItemModel):
 
     @property
     def gui(self):
+        """Returns the GUI"""
         return self._gui
 
     def _start_timer(self):
@@ -209,10 +279,12 @@ class QTreeModel_Options(QAbstractItemModel):
 
     @property
     def design(self) -> 'QDesign':
+        """Returns the QDesign"""
         return self._gui.design
 
     @property
     def component(self) -> 'QComponent':
+        """Returns the component"""
         return self._component_widget.component
 
     @property
@@ -276,7 +348,14 @@ class QTreeModel_Options(QAbstractItemModel):
         self.endResetModel()
 
     def rowCount(self, parent: QModelIndex):
+        """Get the number of rows
 
+        Args:
+            parent (QModelIndex): the parent
+
+        Returns:
+            int: The number of rows
+        """
         # If there is no component, then show placeholder text
         if self.component is None:
             if self._view:
@@ -298,10 +377,26 @@ class QTreeModel_Options(QAbstractItemModel):
             return len(node)
 
     def columnCount(self, parent):
+        """Get the number of columns
+
+        Args:
+            parent (QModelIndex): the parent
+
+        Returns:
+            int: the number of columns
+        """
         return len(self.headers)
 
     def data(self, index: QModelIndex, role: Qt.ItemDataRole = Qt.DisplayRole):
+        """Gets the node data
 
+        Args:
+            index (QModelIndex): index to get data for
+            role (Qt.ItemDataRole): the role (Default: Qt.DisplayRole)
+
+        Returns:
+            object: fetched data
+        """
         if not index.isValid():
             return QVariant()
 
@@ -337,6 +432,7 @@ class QTreeModel_Options(QAbstractItemModel):
                 elif index.column() == 1:
                     return str(node.value)  # value
                 elif index.column() == 2:
+                    # TODO: If the parser fails, this can throw an error
                     return str(self.design.parse_value(node.value))
                 else:
                     return QVariant()
@@ -346,7 +442,16 @@ class QTreeModel_Options(QAbstractItemModel):
     def setData(self, index: QModelIndex, value: QVariant, role: Qt.ItemDataRole = Qt.EditRole) -> bool:
         """Set the LeafNode value and corresponding data entry to value.
         Returns true if successful; otherwise returns false.
-        The dataChanged() signal should be emitted if the data was successfully set."""
+        The dataChanged() signal should be emitted if the data was successfully set.
+
+        Args:
+            index (QModelIndex): the index
+            value (QVariant): the value
+            role (Qt.ItemDataRole): the role of the data (Default: Qt.EditRole)
+
+        Returns:
+            bool: True if successful, False otherwise
+        """
 
         if not index.isValid():
             return False
@@ -397,7 +502,16 @@ class QTreeModel_Options(QAbstractItemModel):
         return False
 
     def headerData(self, section: int, orientation: Qt.Orientation, role: Qt.ItemDataRole):
-        """ Set the headers to be displayed. """
+        """ Set the headers to be displayed.
+
+        Args:
+            section (int): section number
+            orientation (Qt.Orientation): the orientation
+            role (Qt.ItemDataRole): the role
+
+        Returns:
+            object: header data
+        """
         if orientation == Qt.Horizontal:
             if role == Qt.DisplayRole:
                 if 0 <= section < len(self.headers):
@@ -411,6 +525,16 @@ class QTreeModel_Options(QAbstractItemModel):
         return QVariant()
 
     def index(self, row: int, column: int, parent: QModelIndex):
+        """What is my index?
+
+        Args:
+            row (int): the row
+            column (int): the column
+            parent (QModelIndex): the parent
+
+        Returns:
+            int: internal index
+        """
         assert self.root
         branch = self.nodeFromIndex(parent)
         assert branch is not None
@@ -418,6 +542,14 @@ class QTreeModel_Options(QAbstractItemModel):
         return self.createIndex(row, column, branch.childAtRow(row))
 
     def parent(self, child):
+        """Gets the parent index of the given node
+
+        Args:
+            child (node): the child
+
+        Returns:
+            int: the index
+        """
         node = self.nodeFromIndex(child)
         if node is None:
             return QModelIndex()
@@ -449,6 +581,9 @@ class QTreeModel_Options(QAbstractItemModel):
     def flags(self, index: QModelIndex):
         """
         Determine how user may interact with each cell in the table.
+
+        Returns:
+            list: flags
         """
         flags = Qt.ItemIsSelectable | Qt.ItemIsEnabled
         if index.column() == 1:
