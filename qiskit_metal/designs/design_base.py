@@ -31,7 +31,7 @@ import pandas as pd
 
 from .. import Dict, logger
 from ..config import DefaultMetalOptions, DefaultOptionsRenderer
-from ..elements import QElementTables
+from ..elements import QGeometryTables
 from ..toolbox_metal.import_export import load_metal_design, save_metal
 from ..toolbox_metal.parsing import parse_options, parse_value
 from ..toolbox_python.utility_functions import log_error_easy
@@ -125,7 +125,7 @@ class QDesign():
 
         self.logger = logger  # type: logging.Logger
 
-        self._elements = QElementTables(self)
+        self._elements = QGeometryTables(self)
 
         self._template_options = DefaultMetalOptions()  # used for components
         self.variables.update(self.template_options.qdesign.variables)
@@ -203,7 +203,7 @@ class QDesign():
         return self._metadata
 
     @property
-    def elements(self) -> QElementTables:
+    def elements(self) -> QGeometryTables:
         '''
         Returns the element tables (Use for advanced users only)
         '''

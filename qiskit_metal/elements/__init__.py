@@ -25,13 +25,13 @@ This modules defines and handles everything related to the elements abstraction.
 
 @author: Zlatko Minev (IBM)
 
-QElementTables
+QGeometryTables
 ---------------
 
 .. autosummary::
     :toctree: ../stubs/
 
-    QElementTables
+    QGeometryTables
 
 
 Submodules
@@ -43,4 +43,4 @@ Submodules
     elements_handler
 
 """
-from .elements_handler import is_element_table, QElementTables#, ElementTypes
+from .elements_handler import is_element_table, QGeometryTables  # , ElementTypes

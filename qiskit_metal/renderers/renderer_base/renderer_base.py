@@ -18,9 +18,10 @@
 """
 import logging
 from ...designs import QDesign, is_design
-from ...elements import QElementTables
+from ...elements import QGeometryTables
 
 __all__ = ['QRenderer']
+
 
 class QRenderer():
     """Abstract base class for all Renderers of Metal designs and their compoinents and elements.
@@ -73,7 +74,8 @@ class QRenderer():
 
         # Add elemnet extensions
         # see docstring for QRenderer.element_extensions
-        QElementTables.add_renderer_extension(cls.name, cls.element_extensions)
+        QGeometryTables.add_renderer_extension(
+            cls.name, cls.element_extensions)
 
         # Add component extensions
         # to be used in the creation of default params for component elements

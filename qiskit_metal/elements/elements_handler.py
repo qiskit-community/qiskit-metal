@@ -14,7 +14,7 @@
 
 """
 This is the main module that defines what an element is in Qiskit Metal.
-See the docstring of `QElementTables`
+See the docstring of `QGeometryTables`
 
 @author: Zlatko Minev, Thomas McConekey, ... (IBM)
 
@@ -39,7 +39,7 @@ if TYPE_CHECKING:
     from ..components.base import QComponent
     from ..designs import QDesign
 
-__all__ = ['is_element_table', 'QElementTables']  # , 'ElementTypes']
+__all__ = ['is_element_table', 'QGeometryTables']  # , 'ElementTypes']
 
 # from collections import OrderedDict
 # dict are oreder in Python 3.6+ by default, this is jsut in case for backward compatability
@@ -59,7 +59,7 @@ __all__ = ['is_element_table', 'QElementTables']  # , 'ElementTypes']
 
 def is_element_table(obj):
     """Check if an object is a Metal BaseElementTable, i.e., an instance of
-    `QElementTables`.
+    `QGeometryTables`.
 
     The problem is that the `isinstance` built-in method fails
     when this module is reloaded.
@@ -153,7 +153,7 @@ ELEMENT_COLUMNS = dict(
 TRUE_BOOLS = [True, 'True', 'true', 'Yes', 'yes', '1', 1]
 
 
-class QElementTables(object):
+class QGeometryTables(object):
     """Class to create, store, and handle element tables.
 
     A regular user would not need to create tables themselves.
@@ -185,7 +185,7 @@ class QElementTables(object):
             import qiskit_metal as metal
 
             design = metal.designs.DesignPlanar()
-            design.elements = metal.QElementTables(design)
+            design.elements = metal.QGeometryTables(design)
 
             design.elements['path'] # return the path table - give access to ..
             design.elements.table['path']
@@ -205,7 +205,7 @@ class QElementTables(object):
             :linenos:
             :emphasize-lines: 1-15
 
-            metal.QElementTables.add_renderer_extension('hfss', dict(
+            metal.QGeometryTables.add_renderer_extension('hfss', dict(
                 base=dict(
                     boundary=str,
                     perfectE=bool,
@@ -213,7 +213,7 @@ class QElementTables(object):
                     )
                 ))
 
-            metal.QElementTables.add_renderer_extension('gds', dict(
+            metal.QGeometryTables.add_renderer_extension('gds', dict(
                 path=dict(
                     color=str,
                     pcell=bool,
@@ -221,7 +221,7 @@ class QElementTables(object):
                 ))
 
             design = metal.designs.DesignPlanar()
-            elements = metal.QElementTables(design)
+            elements = metal.QGeometryTables(design)
 
             elements.tables['path']
             >>> component	name	geometry	layer	type	chip	subtract	fillet	color	width	hfss_boundary	hfss_perfectE	hfss_material	gds_color	gds_pcell
@@ -246,7 +246,7 @@ class QElementTables(object):
 
     def __init__(self, design: 'QDesign'):
         """
-        The constructor for the `QElementTables` class.
+        The constructor for the `QGeometryTables` class.
 
         Arguments:
             design: Design in use
