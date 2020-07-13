@@ -105,15 +105,8 @@ class QComponent():
                 and used every time a new component is instantiated.
                 (default: None)
 
-
-        Returns:
-            str: 'NameInUse' is retruned if user requests name for new component
-            which is already being used within the design.  None if init completes as expected.
-
         Raises:
             ValueError: User supplied design isn't a QDesign
-
-
 
         Note:  Information copied from QDesign class.
             self._design.overwrite_enabled (bool):
@@ -126,8 +119,8 @@ class QComponent():
             When False - If the string name, used for component, already
             exists in the design, the existing component will be
             kept in the design, and current component will not be generated,
-            nor will be added to the design. The 'NameInUse' will be returned
-            during component generation.
+            nor will be added to the design. The variable design.self.status 
+            will still be NotBuilt, as opposed to Initalization Successful.
 
             Either True or False - If string name, used for component, is NOT
             being used in the design, a component will be generated and
@@ -371,8 +364,8 @@ class QComponent():
             logger.warning(f'The QComponent name `{check_name}` is already in use, '
                            f'by a component (with QComponent id={answer}).\n'
                            f'QComponent NOT made, nor added to the design. \n'
-                            'To force overwrite a QComponent with an existing name '
-                            'use the flag:\n`design.overwrite_enabled = True`.')
+                           'To force overwrite a QComponent with an existing name '
+                           'use the flag:\n`design.overwrite_enabled = True`.')
             return 'NameInUse'
         return None
 
