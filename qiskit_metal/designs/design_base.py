@@ -31,7 +31,7 @@ import pandas as pd
 
 from .. import Dict, logger
 from ..config import DefaultMetalOptions, DefaultOptionsRenderer
-from ..elements import QElementTables
+from ..elements import QGeometryTables
 from ..toolbox_metal.import_export import load_metal_design, save_metal
 from ..toolbox_metal.parsing import parse_options, parse_value
 from ..toolbox_python.utility_functions import log_error_easy
@@ -125,7 +125,7 @@ class QDesign():
 
         self.logger = logger  # type: logging.Logger
 
-        self._elements = QElementTables(self)
+        self._qgeometry = QGeometryTables(self)
 
         self._template_options = DefaultMetalOptions()  # used for components
         self.variables.update(self.template_options.qdesign.variables)
@@ -203,11 +203,11 @@ class QDesign():
         return self._metadata
 
     @property
-    def elements(self) -> QElementTables:
+    def qgeometry(self) -> QGeometryTables:
         '''
-        Returns the element tables (Use for advanced users only)
+        Returns the QGeometryTables (Use for advanced users only)
         '''
-        return self._elements
+        return self._qgeometry
 
     @property
     def qcomponent_latest_assigned_id(self) -> int:
@@ -323,7 +323,7 @@ class QDesign():
     #       This is replaced by design.components.find_id()
     # def get_component(self, search_name: str) -> 'QComponent':
     #     """The design contains a dict of all the components, which is correlated to
-    #     a net_list connections, and elements table. The key of the components dict are
+    #     a net_list connections, and qgeometry table. The key of the components dict are
     #     unique integers.  This method will search through the dict to find the component with search_name.
 
     #     Args:
@@ -396,7 +396,7 @@ class QDesign():
         self.name_to_id.clear()
         self._components.clear()
         # TODO: add element tables here
-        self._elements.clear_all_tables()
+        self._qgeometry.clear_all_tables()
         # TODO: add dependency handling here
 
     def _get_new_qcomponent_id(self):
@@ -414,7 +414,7 @@ class QDesign():
         Remakes all components with their current parameters.
         """
         # TODO: there are some performance tricks here, we could just clear all element tables
-        # and then skip the deletion of compoentns elements one by one
+        # and then skip the deletion of components qgeometry one by one
         # first clear all the
         # thne just make without the checks on existing
         # TODO: Handle error and print nice statemetns
@@ -572,9 +572,9 @@ class QDesign():
             # Need to remove pins before popping component.
             self._qnet.delete_all_pins_for_component(component_id)
 
-            # Even though the elements table has string for component_id, dataframe is
+            # Even though the qgeometry table has string for component_id, dataframe is
             # storing as an integer.
-            self._elements.delete_component_id(component_id)
+            self._qgeometry.delete_component_id(component_id)
 
             # Before poping component from design registry, remove name from cache
             component_name = self._components[component_id].name

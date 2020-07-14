@@ -14,7 +14,7 @@
 """
 Created 2019
 
-Matplotlib draw utility functions for shapely objects, for elements, and for components.
+Matplotlib draw utility functions for shapely objects, for qgeometry, and for components.
 
 @date: 2019
 @author: Zlatko Minev

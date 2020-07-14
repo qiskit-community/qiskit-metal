@@ -43,7 +43,7 @@
 # ###
 # # CPW BASIC DRAWING
 # ###
-# # NEEDS UPDATING FOR ELEMENTS AND RENDERER - bunch should be in renderer_ansys
+# # NEEDS UPDATING FOR QGEOMETRY AND RENDERER - bunch should be in renderer_ansys
 # DEFAULT_OPTIONS = {}
 # DEFAULT_OPTIONS['draw_cpw_trace'] = {
 #     'func_draw': 'draw_cpw_trace',
@@ -229,7 +229,6 @@
 #         plt.plot(points[:, 0], points[:, 1], marker='o', ms=3, alpha=0.6)
 
 
-
 # ##############################################################################
 # ###
 # # MEANDER
@@ -374,7 +373,6 @@
 #     Assumes zero elevation for chip. Not flip chip
 
 #     Units: User units
-
 
 
 #     OLD raw use:
