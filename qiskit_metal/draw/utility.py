@@ -232,6 +232,63 @@ def remove_colinear_pts(points):
 
 
 #########################################################################
+# Points, Lines and Areas functions
+def intersect(p1x, p1y, p2x, p2y, x0, y0):
+    """ @John Mamin
+    intersect segment defined by p1 and p2 with ray coming out of x0,y0
+    ray can be horizontal y=y0  x=x0+dx , want dx>0
+
+    Arguments:
+        p1x (float): x coordinate of point 1 of segment
+        p1y (float): y coordinate of point 1 of segment
+        p2x (float): x coordinate of point 2 of segment
+        p2y (float): y coordinate of point 2 of segment
+        x0 (float): x coordinate anchoring the intersection ray
+        y0 (float): y coordinate anchoring the intersection ray
+
+    Returns:
+        boolean int: (1) if intersecting, (0) if not intersecting
+
+    """
+    if p1x != p2x and p1y != p2y:
+        m = (p2y - p1y) / (p2x - p1x)
+        x_inter = (y0 - p1y) / m + p1x
+        if x_inter >= x0 and np.min([p1y, p2y]) <= y0 <= np.max([p1y, p2y]):
+            ans = 1
+        else:
+            ans = 0
+    else:
+        if p1x == p2x:  # vertical segment
+            if x0 <= p1x and np.min([p1y, p2y]) <= y0 <= np.max([p1y, p2y]):
+                ans = 1
+            else:
+                ans = 0
+        if p1y == p2y:  # horizontal segment
+            if y0 == p1y:
+                ans = 1
+            else:
+                ans = 0
+    return ans
+
+
+def in_or_out(xs, ys, x0, y0):
+    """ @John Mamin
+    count up how many times a ray intersects the polygon, even or odd
+    tells you whether inside (odd) or outside (even)
+    Parameters
+    """
+    crossings = 0
+    for i in range(len(xs)-1):
+        p1x = xs[i]
+        p2x = xs[i+1]
+        p1y = ys[i]
+        p2y = ys[i+1]
+        cross = intersect(p1x, p1y, p2x, p2y, x0, y0)
+        # print('i = ', i, 'cross = ', cross)
+        crossings += cross
+    return crossings
+
+#########################################################################
 # Vector functions
 
 
@@ -491,8 +548,8 @@ class Vector:
         return distance_vec, unit_vec, tangent_vec
 
     @staticmethod
-    def snap_unit_vector(vec_n:Vec2D, flip:bool=False) -> Vec2D:
-        """snaps to either the x or y unit vecotrs
+    def snap_unit_vector(vec_n: Vec2D, flip: bool = False) -> Vec2D:
+        """snaps to either the x or y unit vectors
 
         Arguments:
             vec_n (Vec2D): 2D vector
@@ -503,8 +560,8 @@ class Vector:
         """
         #TODO: done silly, fix up
         m = np.argmax(abs(vec_n))
-        m = m if flip == False else int(not(m))
-        v = np.array([0,0])
+        m = m if flip is False else int(not m)
+        v = np.array([0, 0])
         v[m] = np.sign(vec_n[m])
         vec_n = v
         return vec_n
