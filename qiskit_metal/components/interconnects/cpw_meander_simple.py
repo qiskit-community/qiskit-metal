@@ -28,12 +28,6 @@ class Oriented_2D_Array:
     r"""A simple class to define a 2D Oriented_Point,
     with a 2D position and a 2D direction (XY plane).
     All values stored as np.ndarray of parsed floats.
-
-    Attributes:
-        position (np.ndarray of 2 points) -- Position of the Oriented_Point
-        direction (np.ndarray of 2 points) -- *Normal vector* of the Oriented_Point, defines which way it points outward.
-                                              This is the normal vector to the surface on which the Oriented_Point mates.
-                                              Has unit norm.
     """
 
     # TODO: Maybe move this class out of here, more general.
@@ -65,7 +59,7 @@ class Oriented_2D_Array:
         """Straight line 90deg counter-clock-wise direction w.r.t. Oriented_Point
 
         Args:
-            length (float) : how much to move by
+            length (float): how much to move by
         """
         self.directions = np.append(self.directions, [draw.Vector.rotate(self.directions, np.pi / 2)], axis=0)
         self.positions = np.append(self.positions, [self.positions[-1] + self.directions[-1] * length], axis=0)
@@ -75,7 +69,7 @@ class Oriented_2D_Array:
         """Straight line 90deg clock-wise direction w.r.t. Oriented_Point
 
         Args:
-            length (float) : how much to move by
+            length (float): how much to move by
         """
         self.directions = np.append(self.directions, [draw.Vector.rotate(self.directions, -1 * np.pi / 2)], axis=0)
         self.positions = np.append(self.positions, [self.positions[-1] + self.directions[-1] * length], axis=0)
@@ -85,7 +79,7 @@ class Oriented_2D_Array:
         """Sum of all segments length
 
         Return:
-            length (float) -- [full point_array length]
+            length (float): full point_array length
         """
         length = 0
         for x in range(len(self.positions)-1):
@@ -96,13 +90,15 @@ class Oriented_2D_Array:
         # THIS METHOD IS NOT USED AT THIS TIME (7/2/20)
         """
         In this code, meanders need to face each-other to connect.
+
         TODO: Make sure the two points align on one of the axes, adding a new point
-        TODO: Adjusts the orientation of the meander, adding yet a new point
+
+        TODO: Adjusts the orientation of the meander, adding yet a new point:
             * Includes the start but not the given end point
             * If it cannot meander just returns the initial start point
 
         Arguments:
-            concurrent_array {Oriented_2D_Array} -- Other end of the CPW
+            concurrent_array (Oriented_2D_Array): Other end of the CPW
         """
         # print(self.positions[-1])
         # print(concurrent_array.positions[-1])
@@ -158,17 +154,15 @@ class Oriented_Point:
     r"""A simple class to define a 2D Oriented_Point,
     with a 2D position and a 2D direction (XY plane).
     All values stored as np.ndarray of parsed floats.
-
-    Attributes:
-        positon (np.ndarray of 2 points) -- Position of the Oriented_Point
-        direction (np.ndarray of 2 points) -- *Normal vector* of the Oriented_Point, defines which way it points outward.
-                                              This is the normal vector to the surface on which the Oriented_Point mates.
-                                              Has unit norm.
     """
 
     # TODO: Maybe move this class out of here, more general.
 
     def __init__(self, array: Oriented_2D_Array):
+        """
+        Arguments:
+            array (Oriented_2D_Array): 2D array
+        """
         self.position = array.positions[-1]
         self.direction = array.directions[-1]
 
@@ -178,10 +172,10 @@ class CpwMeanderSimple(QComponent):
 
     Inherits QComponent class
 
-    **Behavior and parameters**
-        #TODO: @john_blair / @marco
-        Explain and comment on what options do?
-        For example, note that lead_direction_inverted can be 'false' or 'true'
+    **Behavior and parameters**:
+        * #TODO: @john_blair / @marco
+        * Explain and comment on what options do?
+        * For example, note that lead_direction_inverted can be 'false' or 'true'
     """
     default_options = Dict(
         # start_name='',
@@ -207,8 +201,15 @@ class CpwMeanderSimple(QComponent):
             asymmetry='0 um',
         )
     )
+    """Default options"""
 
     def make(self):
+        """
+        The make function implements the logic that creates the geoemtry
+        (poly, path, etc.) from the qcomponent.options dictionary of parameters,
+        and the adds them to the design, using qcomponent.add_qgeometry(...),
+        adding in extra needed information, such as layer, subtract, etc.
+        """
         # parsed options
         p = self.p
         snap = is_true(p.meander.snap)
@@ -253,15 +254,15 @@ class CpwMeanderSimple(QComponent):
         Meanders using a fixed length and fixed spacing.
 
         Arguments:
-            start {Oriented_Point} -- Oriented_Point of the start
-            end {Oriented_Point} -- [description]
-            length {str} --  Total length of the meander whole CPW segment (defined by user, after you subtract lead lengths
-            meander {dict} -- meander options (parsed)
+            start (Oriented_Point): Oriented_Point of the start
+            end (Oriented_Point): Oriented_Point of the end
+            length (str): Total length of the meander whole CPW segment (defined by user, after you subtract lead lengths
+            meander (dict): meander options (parsed)
 
         Returns:
             np.ndarray: Array of points
 
-        Adjusts the width of the meander
+        Adjusts the width of the meander:
             * Includes the start but not the given end point
             * If it cannot meander just returns the initial start point
         """
@@ -479,8 +480,8 @@ class CpwMeanderSimple(QComponent):
         cooridnate sys.
 
         Arguments:
-            start {Oriented_Point} -- [description]
-            end {Oriented_Point} -- [description]
+            start (Oriented_Point): [description]
+            end (Oriented_Point): [description]
             snap (bool): True to snap to grid (Default: False)
 
         Returns:

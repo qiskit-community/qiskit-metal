@@ -8,19 +8,22 @@ class Qroute:
     r"""A simple class to define a generic route, using an array of planar points (x,y coordinates)
     and the direction of the pins that start and end the array
     Values stored as np.ndarray of parsed floats or np.array float pair
-
-    Attributes:
-        points (np.ndarray of x,y points) -- all points along the route
-        pin_start (pin object) -- reference to the connecting pin
-        pin_end (pin object) -- reference to the connecting pin
-        head_direction (2x1 np.ndarray - 1 vector) -- *Normal vector* defining which way the head is pointing.
-                                This is the normal vector to the surface of the head line-end.
     """
 
     def __init__(self, pin_start, pin_end=None):
+        """
+        Arguments:
+            pin_start (pin object): reference to the connecting pin
+            pin_end (pin object): reference to the connecting pin
+
+        
+        """
         self.points = np.expand_dims(pin_start.position, axis=0)
         self.pin_start = pin_start
         self.pin_end = pin_end
+        
+        # head_direction (2x1 np.ndarray - 1 vector): *Normal vector* defining which way the head
+        # is pointing.  This is the normal vector to the surface of the head line-end.
         self.head_direction = vec_unit_planar(pin_start.direction)
         position: np.ndarray, direction: np.ndarray
 
@@ -28,7 +31,7 @@ class Qroute:
         """Return the start point and normal direction vector
 
         Returns:
-            A dictionary with keys `point` and `direction`.
+            List: A dictionary with keys `point` and `direction`.
             The values are numpy arrays with two float points each.
         """
         pin = self.design.connectors[self.options.pin_start_name]
@@ -50,7 +53,7 @@ class Qroute:
         """Straight line 90deg counter-clock-wise direction w.r.t. Oriented_Point
 
         Args:
-            length (float) : how much to move by
+            length (float): how much to move by
         """
         self.head_direction = draw.Vector.rotate(self.head_direction, np.pi / 2)
         self.points = np.append(self.points, [self.points[-1] + self.head_direction * length], axis=0)
@@ -60,7 +63,7 @@ class Qroute:
         """Straight line 90deg clock-wise direction w.r.t. Oriented_Point
 
         Args:
-            length (float) : how much to move by
+            length (float): how much to move by
         """
         self.head_direction = draw.Vector.rotate(self.head_direction, -1 * np.pi / 2)
         self.points = np.append(self.points, [self.points[-1] + self.head_direction * length], axis=0)
@@ -70,7 +73,7 @@ class Qroute:
         """Sum of all segments length, including the head
 
         Return:
-            length (float) -- [full point_array length]
+            length (float): full point_array length
         """
         length = 0
         for x in range(len(self.points)-1):
@@ -84,8 +87,10 @@ class Qroute:
         # THIS METHOD IS NOT USED AT THIS TIME (7/2/20)
         """
         In this code, meanders need to face each-other to connect.
+
         TODO: Make sure the two points align on one of the axes, adding a new point
-        TODO: Adjusts the orientation of the meander, adding yet a new point
+
+        TODO: Adjusts the orientation of the meander, adding yet a new point:
             * Includes the start but not the given end point
             * If it cannot meander just returns the initial start point
 
