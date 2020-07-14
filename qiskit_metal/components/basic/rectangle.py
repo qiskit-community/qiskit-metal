@@ -14,9 +14,10 @@
 
 """File contains dictionary for Rectangle and the make()."""
 
-from qiskit_metal import draw, Dict#, QComponent
+from qiskit_metal import draw, Dict  # , QComponent
 from qiskit_metal.components.base import QComponent
 #from qiskit_metal import is_true
+
 
 class Rectangle(QComponent):
     """A single configurable square.
@@ -52,6 +53,6 @@ class Rectangle(QComponent):
         rect = draw.rectangle(p.width, p.height, p.pos_x, p.pos_y)
         rect = draw.rotate(rect, p.rotation)
         ##############################################
-        # add elements
+        # add qgeometry
         self.add_qgeometry('poly', {'rectangle': rect}, subtract=p.subtract,
-                          helper=p.helper, layer=p.layer, chip=p.chip)
+                           helper=p.helper, layer=p.layer, chip=p.chip)

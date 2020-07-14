@@ -19,7 +19,7 @@ This is the CircleCaterpillar module.
 @date: 2019
 """
 
-from qiskit_metal import draw, Dict#, QComponent
+from qiskit_metal import draw, Dict  # , QComponent
 from qiskit_metal.components.base import QComponent
 #from qiskit_metal import is_true
 from shapely.geometry import CAP_STYLE, JOIN_STYLE
@@ -64,6 +64,6 @@ class CircleRaster(QComponent):
                                                      #join_style = getattr(JOIN_STYLE, p.join_style)
                                                      )
 
-        # add elements
+        # add qgeometry
         self.add_qgeometry('poly', {'circle': circle}, subtract=p.subtract,
-                          helper=p.helper, layer=p.layer, chip=p.chip)
+                           helper=p.helper, layer=p.layer, chip=p.chip)

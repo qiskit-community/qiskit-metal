@@ -26,13 +26,13 @@ class FakeCPW(QComponent):
     default_options = Dict(
         line_width='10um',
         line_gap='6um',
-        pin_inputs = Dict(start_pin=Dict(component='',pin=''),
-                        end_pin=Dict(component ='',pin=''))
+        pin_inputs=Dict(start_pin=Dict(component='', pin=''),
+                        end_pin=Dict(component='', pin=''))
     )
     """Default drawing options"""
 
     def make(self):
-        """ This is executed by the user to generate the elements for the component.
+        """ This is executed by the user to generate the qgeometry for the component.
         """
         p = self.p
         #########################################################
@@ -43,23 +43,24 @@ class FakeCPW(QComponent):
 
         starting_pin_dic = self.design.components[component_start].pins[pin_start]
         ending_pin_dic = self.design.components[component_end].pins[pin_end]
-        #Add check if component_end is int? Better to do that check in base? Though that would
-        #overwrite the option value, possibly confuse the user?
+        # Add check if component_end is int? Better to do that check in base? Though that would
+        # overwrite the option value, possibly confuse the user?
 
-        #Creates the CPW geometry
+        # Creates the CPW geometry
         fake_cpw_line = draw.LineString(
             [starting_pin_dic['middle'], ending_pin_dic['middle']])
-        #Adds the CPW to the elements table
+        # Adds the CPW to the qgeometry table
         self.add_qgeometry(
             'path', {f'{self.name}_cpw_line': fake_cpw_line}, width=p.line_width)
 
-        #Generates its own pins based on the inputs
-        #Note: Need to flip the points so resulting normal vector is correct.
-        self.add_pin('fake_cpw_start', starting_pin_dic.points[::-1], p.line_width)
+        # Generates its own pins based on the inputs
+        # Note: Need to flip the points so resulting normal vector is correct.
+        self.add_pin('fake_cpw_start',
+                     starting_pin_dic.points[::-1], p.line_width)
         self.add_pin('fake_cpw_end', ending_pin_dic.points[::-1], p.line_width)
 
         # THEN ADD TO NETLIST - Note: Thoughts on how to have this be automated so the component designer
-        #doesn't need to write this code?
+        # doesn't need to write this code?
         self.design.connect_pins(
             self.design.components[component_start].id, pin_start, self.id, 'fake_cpw_start')
         self.design.connect_pins(

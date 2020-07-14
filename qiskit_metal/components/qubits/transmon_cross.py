@@ -98,7 +98,7 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
 ##############################################MAKE######################################################
 
     def make(self):
-        """ This is executed by the GUI/user to generate the elements for the component.
+        """ This is executed by the GUI/user to generate the qgeometry for the component.
         """
         self.make_pocket()
         self.make_connection_pads()
@@ -137,7 +137,7 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
 
         [cross, cross_etch, rect_jj] = polys
 
-        # generate elements
+        # generate qgeometry
         self.add_qgeometry('poly', dict(cross=cross))
         self.add_qgeometry('poly', dict(cross_etch=cross_etch), subtract=True)
         self.add_qgeometry('poly', dict(rect_jj=rect_jj), helper=True)
@@ -214,7 +214,7 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
         polys = draw.translate(polys, p.pos_x, p.pos_y)
         [connector_arm, connector_etcher, port_line] = polys
 
-        # Generates elements for the connector pads
+        # Generates qgeometry for the connector pads
         self.add_qgeometry('poly', {f'{name}_connector_arm': connector_arm})
         self.add_qgeometry(
             'poly', {f'{name}_connector_etcher': connector_etcher}, subtract=True)

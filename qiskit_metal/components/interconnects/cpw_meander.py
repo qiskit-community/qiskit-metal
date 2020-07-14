@@ -130,8 +130,8 @@ class CpwMeanderSimple(QComponent):
             endm.position[None, :],
             end.position[None, :]], axis=0)
 
-        # Make points into elements
-        self.make_elements(points)
+        # Make points into qgeometry
+        self.make_qgeometry(points)
 
     def meander_fixed_length(self, start: Connector, end: Connector,
                              length: float,
@@ -347,8 +347,8 @@ class CpwMeanderSimple(QComponent):
         normal = draw.Vector.rotate(direction, np.pi/2)
         return direction, normal
 
-    def make_elements(self, pts: np.ndarray):
-        """Turns points into elements
+    def make_qgeometry(self, pts: np.ndarray):
+        """Turns points into qgeometry
 
         Arguments:
             pts (np.ndarray): Array of points

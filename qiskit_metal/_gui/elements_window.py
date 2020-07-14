@@ -110,22 +110,22 @@ class ElementTableModel(QAbstractTableModel):
         return self.gui.design
 
     @property
-    def elements(self):
-        """Returns the elements"""
+    def qgeometry(self):
+        """Returns the qgeometry"""
         if self.design:
-            return self.design.elements
+            return self.design.qgeometry
 
     @property
     def tables(self):
         """Returns all the tables"""
         if self.design:
-            return self.design.elements.tables
+            return self.design.qgeometry.tables
 
     @property
     def table(self):
         """Returns all the tables of the type specified in the constructor"""
         if self.design:
-            return self.design.elements.tables[self.type]
+            return self.design.qgeometry.tables[self.type]
 
     def _create_timer(self):
         """

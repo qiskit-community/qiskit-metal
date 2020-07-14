@@ -14,7 +14,7 @@
 
 """
 This is the main module that defines what an element is in Qiskit Metal.
-See the docstring of `QElementTables`
+See the docstring of `QGeometryTables`
 
 @author: Zlatko Minev, Thomas McConekey, ... (IBM)
 
@@ -39,17 +39,17 @@ if TYPE_CHECKING:
     from ..components.base import QComponent
     from ..designs import QDesign
 
-__all__ = ['is_element_table', 'QElementTables']  # , 'ElementTypes']
+__all__ = ['is_element_table', 'QGeometryTables']  # , 'ElementTypes']
 
 # from collections import OrderedDict
 # dict are oreder in Python 3.6+ by default, this is jsut in case for backward compatability
 
 # class ElementTypes:
 #     """
-#     Types of elements
-#         positive : Elements that are positive mask
-#         negative : Elements that will be subtracted from teh chip ground plane
-#         helper   : Elements that are only used in a helper capacity,
+#     Types of qgeometry
+#         positive : qgeometry that are positive mask
+#         negative : qgeometry that will be subtracted from the chip ground plane
+#         helper   : qgeometry that are only used in a helper capacity,
 #                    such as labels or mesh rectangles
 #     """
 #     positive = 0
@@ -59,7 +59,7 @@ __all__ = ['is_element_table', 'QElementTables']  # , 'ElementTypes']
 
 def is_element_table(obj):
     """Check if an object is a Metal BaseElementTable, i.e., an instance of
-    `QElementTables`.
+    `QGeometryTables`.
 
     The problem is that the `isinstance` built-in method fails
     when this module is reloaded.
@@ -153,27 +153,27 @@ ELEMENT_COLUMNS = dict(
 TRUE_BOOLS = [True, 'True', 'true', 'Yes', 'yes', '1', 1]
 
 
-class QElementTables(object):
+class QGeometryTables(object):
     """Class to create, store, and handle element tables.
 
     A regular user would not need to create tables themselves.
     This is handled automatically by the design creation and plugins.
 
     Structure:
-        A component, such as a qubit, is a collection of elements.
+        A component, such as a qubit, is a collection of qgeometry.
         For example, an element includes a rectangle, a cpw path, or a more general polygon.
 
         An element is a row in a table.
 
-        All elements of a type (Path or Polygon, or otherwise) are stored in a
+        All qgeometry of a type (Path or Polygon, or otherwise) are stored in a
         single table of their element type.
 
-        All elements of the same kind are stored in a table.
-        A renderer has to know how to handle all types of elements in order to render them.
+        All qgeometry of the same kind are stored in a table.
+        A renderer has to know how to handle all types of qgeometry in order to render them.
 
     For plugin developers:
-        In the followin, we provide an example that illustrates for plugin developers how
-        to add custom elements and custom element properties. For example, we will add, for a renderer
+        In the following, we provide an example that illustrates for plugin developers how
+        to add custom qgeometry and custom element properties. For example, we will add, for a renderer
         called hfss, a string property called 'boundary', a bool property called 'perfectE', and a property called 'material'.
 
     For plugin developers, example use:
@@ -185,13 +185,13 @@ class QElementTables(object):
             import qiskit_metal as metal
 
             design = metal.designs.DesignPlanar()
-            design.elements = metal.QElementTables(design)
+            design.qgeometry = metal.QGeometryTables(design)
 
-            design.elements['path'] # return the path table - give access to ..
-            design.elements.table['path']
+            design.qgeometry['path'] # return the path table - give access to ..
+            design.qgeometry.table['path']
 
             # Define interfaces
-            design.elements.get_component(
+            design.qgeometry.get_component(
                     component_name,
                     element_name,
                     columns=all or geom or list) # get all elemetns for compoentns
@@ -199,13 +199,13 @@ class QElementTables(object):
             >>> component	name	geometry	layer	type	chip	subtract	fillet	color	width
 
 
-    Now, if we want to add custom elements through two fake renderers called hfss and gds:
+    Now, if we want to add custom qgeometry through two fake renderers called hfss and gds:
 
         .. code-block:: python
             :linenos:
             :emphasize-lines: 1-15
 
-            metal.QElementTables.add_renderer_extension('hfss', dict(
+            metal.QGeometryTables.add_renderer_extension('hfss', dict(
                 base=dict(
                     boundary=str,
                     perfectE=bool,
@@ -213,7 +213,7 @@ class QElementTables(object):
                     )
                 ))
 
-            metal.QElementTables.add_renderer_extension('gds', dict(
+            metal.QGeometryTables.add_renderer_extension('gds', dict(
                 path=dict(
                     color=str,
                     pcell=bool,
@@ -221,9 +221,9 @@ class QElementTables(object):
                 ))
 
             design = metal.designs.DesignPlanar()
-            elements = metal.QElementTables(design)
+            qgeometry = metal.QGeometryTables(design)
 
-            elements.tables['path']
+            qgeometry.tables['path']
             >>> component	name	geometry	layer	type	chip	subtract	fillet	color	width	hfss_boundary	hfss_perfectE	hfss_material	gds_color	gds_pcell
 
     """
@@ -246,7 +246,7 @@ class QElementTables(object):
 
     def __init__(self, design: 'QDesign'):
         """
-        The constructor for the `QElementTables` class.
+        The constructor for the `QGeometryTables` class.
 
         Arguments:
             design: Design in use
@@ -270,7 +270,7 @@ class QElementTables(object):
 
     @property
     def tables(self) -> Dict_[str, GeoDataFrame]:
-        """The dictionary of tables containing elements.
+        """The dictionary of tables containing qgeometry.
 
         Returns:
             Dict_[str, GeoDataFrame]: The keys of this dictionary are
@@ -279,13 +279,13 @@ class QElementTables(object):
         return self._tables
 
     @classmethod
-    def add_renderer_extension(cls, renderer_name: str, elements: dict):
+    def add_renderer_extension(cls, renderer_name: str, qgeometry: dict):
         """Add renderer element extension to ELEMENT_COLUMNS.
         Called when the load function of a renderer is called.
 
         Arguments:
             renderer_name (str): name of renderer
-            elements (dict):  dict of dict. keys give element type names,
+            qgeometry (dict):  dict of dict. keys give element type names,
                               such as base, poly, path, etc.
         """
 
@@ -295,17 +295,17 @@ class QElementTables(object):
                 cls.ELEMENT_COLUMNS[element_key]['__renderers__'][renderer_name] = dict(
                 )
 
-        # Now update the dicitonaries with all elements that the renderer may have
-        for element_key, element_column_ext_dict in elements.items():
+        # Now update the dicitonaries with all qgeometry that the renderer may have
+        for element_key, element_column_ext_dict in qgeometry.items():
 
-            # The element the render is specifying is not in the specified elements;
+            # The element the render is specifying is not in the specified qgeometry;
             # then add it. This shouldn't really happen.
             # The rest of the renderer dict keys in __renderers__  are missing for
             # the created type. Avoid doing, else hope it works.
             if not element_key in cls.ELEMENT_COLUMNS:
                 cls.ELEMENT_COLUMNS[element_key] = dict(__renderers__=dict())
 
-            # Now add elements
+            # Now add qgeometry
             cls.ELEMENT_COLUMNS[element_key]['__renderers__'][renderer_name].update(
                 element_column_ext_dict)
 
@@ -313,13 +313,13 @@ class QElementTables(object):
     # https://stackoverflow.com/questions/33672412/python-functools-lru-cache-with-class-methods-release-object
     @classmethod
     def get_element_types(cls) -> List[str]:
-        """Return the names of the available elements to create.
+        """Return the names of the available qgeometry to create.
         This does not include 'base', but is rather such as poly and path.
 
         Returns:
             list(str) : list of name in self.ELEMENT_COLUMNS
         """
-        # TODO: I should probably make this a variable and memeorize, only change when elements are added and removed
+        # TODO: I should probably make this a variable and memeorize, only change when qgeometry are added and removed
         # can be slow for perofmance to look up eahc time and recalcualte, since may call this often
         names = list(cls.ELEMENT_COLUMNS.keys())
         names.remove('base')
@@ -328,7 +328,7 @@ class QElementTables(object):
     def create_tables(self):
         """
         Creates the default tables once. Populates the dict 'tables' of GeoDataFrame,
-        each with columns corresponding to the types of elements defined in ELEMENT_COLUMNS.
+        each with columns corresponding to the types of qgeometry defined in ELEMENT_COLUMNS.
 
         Should only be done once when a new design is created.
         """
@@ -352,7 +352,7 @@ class QElementTables(object):
 
             assert isinstance(columns_base_renderers, dict) and\
                 isinstance(columns_concrete_renderer, dict),\
-                "Please make sure that all elements types have __renderers__\
+                "Please make sure that all qgeometry types have __renderers__\
                      which is a dictionary."
 
             # Combine all base names and renderer names
@@ -509,7 +509,7 @@ class QElementTables(object):
                 self.tables[table_name] = df[df['component'] != a_comp.id]
 
     def delete_component_id(self, component_id: int):
-        """Drop the components within the elements.tables
+        """Drop the components within the qgeometry.tables
 
         Args:
             component_id (int): Unique number to describe the component.
@@ -532,7 +532,7 @@ class QElementTables(object):
             Union[GeoDataFrame, Dict_[str, GeoDataFrame]] : Either a GeoDataFrame or a dict or GeoDataFrame.
 
         Example use:
-            ```table = pd.concat(elements.get_component('Q1')) # , axis=0```
+            ```table = pd.concat(qgeometry.get_component('Q1')) # , axis=0```
         """
 
         if table_name == 'all':
@@ -600,16 +600,16 @@ class QElementTables(object):
             list: List of shapley.geometry objects
         """
         if table_name == 'all':
-            elements = []
+            qgeometry = []
             for table in self.get_element_types():
-                elements += self.get_component_geometry_list(name, table)
+                qgeometry += self.get_component_geometry_list(name, table)
 
         else:
             table = self.tables[table_name]
             comp_id = self.design.components[name].id
-            elements = table.geometry[table.component == comp_id].to_list()
+            qgeometry = table.geometry[table.component == comp_id].to_list()
 
-        return elements
+        return qgeometry
 
     def get_component_geometry(self, name: str) -> GeoSeries:
         """
@@ -622,21 +622,21 @@ class QElementTables(object):
             GeoSeries : Geometry of the component
         """
         comp_id = self.design.components[name].id
-        elements = {}
+        qgeometry = {}
         for table_name in self.get_element_types():
             table = self.tables[table_name]
-            elements[table_name] = table.geometry[table.component == comp_id]
-        elements = pd.concat(elements)
+            qgeometry[table_name] = table.geometry[table.component == comp_id]
+        qgeometry = pd.concat(qgeometry)
 
         # when concatinating empty GeoSeries, returns Series (ugly fix)
-        if not isinstance(elements, GeoSeries):
-            elements = GeoSeries(elements)
+        if not isinstance(qgeometry, GeoSeries):
+            qgeometry = GeoSeries(qgeometry)
 
-        return elements
+        return qgeometry
 
     def get_component_geometry_dict(self, name: str, table_name: str = 'all') -> List[BaseGeometry]:
         """Return just the bare element geometry (shapely geometry objects) as a dict,
-        with key being the names of the elements and the values as the shapely geometry,
+        with key being the names of the qgeometry and the values as the shapely geometry,
         for the selected component.
 
         Arguments:
@@ -647,10 +647,11 @@ class QElementTables(object):
             dict: Bare element geometry
         """
         if table_name == 'all':
-            elements = Dict()
+            qgeometry = Dict()
             for table in self.get_element_types():
-                elements[table] = self.get_component_geometry_list(name, table)
-            return elements  # return pd.concat(elements, axis=0)
+                qgeometry[table] = self.get_component_geometry_list(
+                    name, table)
+            return qgeometry  # return pd.concat(qgeometry, axis=0)
 
         else:
             table = self.tables[table_name]

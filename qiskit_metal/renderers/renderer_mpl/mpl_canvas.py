@@ -92,7 +92,7 @@ MPL_CONTEXT_DEFAULT = {
     # parameters to make the plot fit the figure
     # using `tight_layout`
     'figure.constrained_layout.use': True,  # When True, automatically make plot
-    # elements fit on the figure. (Not compatible
+    # qgeometry fit on the figure. (Not compatible
     # with `autolayout`, above).
     # Padding around axes objects. Float representing
     'figure.constrained_layout.h_pad': 2./72.,
@@ -407,7 +407,8 @@ class PlotCanvas(FigureCanvas):
     def plot(self, clear=True, with_try=True):
         # TODO: Maybe do in a thread?
         self.hide()
-        self._force_clear_annotations() # the artist will be removed by the clear axis.
+        # the artist will be removed by the clear axis.
+        self._force_clear_annotations()
 
         ax = self.get_axis()
 
@@ -655,7 +656,7 @@ class PlotCanvas(FigureCanvas):
                             str(component.name),
                             **{**text_kw, **dict(fontsize=13)})
                         text.set_bbox({**text_bbox_kw,
-                                       **dict(edgecolor=None)}) # dict(facecolor=(1, 0, 0, 0.25)))
+                                       **dict(edgecolor=None)})  # dict(facecolor=(1, 0, 0, 0.25)))
                         for ax in self.axes:
                             ax.add_artist(text)
                         self._annotations['text'] += [text]

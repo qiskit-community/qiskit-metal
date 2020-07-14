@@ -104,8 +104,9 @@ def is_rectangle(obj):
     else:
         return False
 
-def subtract(poly_main:shapely.geometry.Polygon,
-             poly_tool:shapely.geometry.Polygon):
+
+def subtract(poly_main: shapely.geometry.Polygon,
+             poly_tool: shapely.geometry.Polygon):
     """Geometry subtract tool poly from main poly..
 
     Args:
@@ -136,9 +137,9 @@ def union(*polys):
     # See shapely.ops.unary_union() for a more effective method.
     if len(polys) is 2:
         return polys[0].union(polys[1])
-    elif len(polys) is 1: # assume that it is a list
+    elif len(polys) is 1:  # assume that it is a list
         polys = polys[0]
-    return  shapely.ops.unary_union(polys)
+    return shapely.ops.unary_union(polys)
 
 
 #########################################################################
@@ -164,7 +165,7 @@ def flip_merge(line: shapely.geometry.LineString,
         xfact (double): x-scale factor (Default: -1)
         yfact (double): y-scale factor (Default: 1)
         orign (tuple): coordinates of the origin
-    
+
     Returns:
         list: the coorindates that can be used to construct a polygon, by flipping a linestring
         over an axis and mirroring it.
@@ -180,10 +181,10 @@ def _iter_func_geom_(func, objs, *args, overwrite=False, **kwargs):
 
     Applied to on:
         For components:
-            objs.elements
-        For elements:
-            elements.geom
-            # not for now: elements.geom_rendred.metal
+            objs.qgeometry
+        For qgeometry:
+            qgeometry.geom
+            # not for now: qgeometry.geom_rendred.metal
         For dict:
             to each value
         For list:
@@ -192,7 +193,7 @@ def _iter_func_geom_(func, objs, *args, overwrite=False, **kwargs):
     Arguments:
         func (function): Function the apply
         objs (Dict, List, Tuple or BaseGeometry): Set of objects
-        overwrite (bool): overwrite the parent dict or not. This applies to component elements dictionary.
+        overwrite (bool): overwrite the parent dict or not. This applies to component qgeometry dictionary.
             Maybe remove in future? (Default: False)
         kwargs (dict): Parameters dictionary
 
@@ -220,9 +221,9 @@ def _iter_func_geom_(func, objs, *args, overwrite=False, **kwargs):
             return type(objs)([_iter_func_geom_(func, val, *args, overwrite=overwrite, **kwargs) for val in objs])
 
     elif is_component(objs):
-        # apply on geom of component's elements; return component
+        # apply on geom of component's qgeometry; return component
         # below: returns a dict with the shifted components, we will not use this
-        _iter_func_geom_(func, objs.elements, *args,
+        _iter_func_geom_(func, objs.qgeometry, *args,
                          overwrite=overwrite, **kwargs)
         return objs
 
@@ -239,7 +240,7 @@ def _iter_func_geom_(func, objs, *args, overwrite=False, **kwargs):
         return objs
 
 
-def rotate(elements, angle, origin='center', use_radians=False, overwrite=False):
+def rotate(qgeometry, angle, origin='center', use_radians=False, overwrite=False):
     r"""
     The angle of rotation can be specified in either degrees (default) or
     radians by setting ``use_radians=True``. Positive angles are
@@ -251,9 +252,9 @@ def rotate(elements, angle, origin='center', use_radians=False, overwrite=False)
 
     Calls: shapely.affinity.rotate(
         geom, angle, origin='center', use_radians=False)
-    
+
     Args:
-        elements (Dict, List, Tuple or BaseGeometry): Set of objects
+        qgeometry (Dict, List, Tuple or BaseGeometry): Set of objects
         angle (double): rotation angle
         origin (tuple or str): origin point (Default: 'center')
         use_radians (bool): true to use radians (Default: False)
@@ -275,14 +276,14 @@ def rotate(elements, angle, origin='center', use_radians=False, overwrite=False)
         xoff = x0 - x0 * cos(r) + y0 * sin(r)
         yoff = y0 - x0 * sin(r) - y0 * cos(r)
     """
-    return _iter_func_geom_(shapely.affinity.rotate, elements,
+    return _iter_func_geom_(shapely.affinity.rotate, qgeometry,
                             angle, origin=origin, use_radians=use_radians, overwrite=overwrite)
 
 
-def translate(elements, xoff=0.0, yoff=0.0, zoff=0.0, overwrite=False):
+def translate(qgeometry, xoff=0.0, yoff=0.0, zoff=0.0, overwrite=False):
     r'''Shifts the geometry by the given offset
     Args:
-        elements (Dict, List, Tuple or BaseGeometry): Set of objects
+        qgeometry (Dict, List, Tuple or BaseGeometry): Set of objects
         xoff (double): x-direction offset (Default: 0.0)
         yoff (double): y-direction offset (Default: 0.0)
         zoff (double): z-direction offset (Default: 0.0)
@@ -299,16 +300,16 @@ def translate(elements, xoff=0.0, yoff=0.0, zoff=0.0, overwrite=False):
         | 0  0  1 zoff |
         \ 0  0  0   1  /
     '''
-    return _iter_func_geom_(shapely.affinity.translate, elements,
+    return _iter_func_geom_(shapely.affinity.translate, qgeometry,
                             xoff=xoff, yoff=yoff, zoff=zoff, overwrite=overwrite)
 
 
-def scale(elements, xfact=1.0, yfact=1.0, zfact=1.0, origin='center', overwrite=False):
+def scale(qgeometry, xfact=1.0, yfact=1.0, zfact=1.0, origin='center', overwrite=False):
     r'''
     Operatos on a list or Dict of components.
 
     Args:
-        elements (Dict, List, Tuple or BaseGeometry): Set of objects
+        qgeometry (Dict, List, Tuple or BaseGeometry): Set of objects
         xfact: x-direction scale factor (Default: 1.0)
         yfact: y-direction scale factor (Default: 1.0)
         zfact: z-direction scale factor (Default: 1.0)
@@ -339,16 +340,16 @@ def scale(elements, xfact=1.0, yfact=1.0, zfact=1.0, origin='center', overwrite=
         yoff = y0 - y0 * yfact
         zoff = z0 - z0 * zfact
     '''
-    return _iter_func_geom_(shapely.affinity.scale, elements,
+    return _iter_func_geom_(shapely.affinity.scale, qgeometry,
                             xfact=xfact, yfact=yfact, zfact=zfact, origin=origin, overwrite=overwrite)
 
 
-def rotate_position(elements, angle: float, pos: list, pos_rot=(0, 0), overwrite=False):
+def rotate_position(qgeometry, angle: float, pos: list, pos_rot=(0, 0), overwrite=False):
     '''
     Orient and then place position. Just a shortcut function.
 
     Arguments:
-        elements (Dict, List, Tuple or BaseGeometry): Set of objects
+        qgeometry (Dict, List, Tuple or BaseGeometry): Set of objects
         angle (float): Rotation angle
         pos (list, np.array): position to translate to
         pos_rot (tuple): Rotate about this point before translating. (default: {(0, 0)})
@@ -363,10 +364,10 @@ def rotate_position(elements, angle: float, pos: list, pos_rot=(0, 0), overwrite
             sobj, angle, pos_rot)  # rotate about pos_rot
         return shapely.affinity.translate(sobj, *pos1)  # move to position
 
-    return _iter_func_geom_(rotate_position_shapely, elements, overwrite=overwrite)
+    return _iter_func_geom_(rotate_position_shapely, qgeometry, overwrite=overwrite)
 
 
-def buffer(elements,
+def buffer(qgeometry,
            distance: float,
            resolution=None,
            cap_style=CAP_STYLE.flat,
@@ -381,7 +382,7 @@ def buffer(elements,
         join_style=JOIN_STYLE.mitre
 
     Args:
-        elements (Dict, List, Tuple or BaseGeometry): Set of objects
+        qgeometry (Dict, List, Tuple or BaseGeometry): Set of objects
         distance (float): distance
         resolution (int): how many points (Default: None)
         cap_style (shapely.geometry.CAP_STYLE): cap style (Default: CAP_STYLE.falt)
@@ -423,7 +424,7 @@ def buffer(elements,
         mitre_limit = DefaultMetalOptions.default_generic.geometry.buffer_mitre_limit
         # TODO: maybe this should be in the renderer for metal?
         # or maybe render can set config? - yes
-        #TODO: should really be design.template_options.units
+        # TODO: should really be design.template_options.units
 
     if resolution is None:
         resolution = DefaultMetalOptions.default_generic.geometry.buffer_resolution
@@ -431,7 +432,7 @@ def buffer(elements,
     def buffer_me(obj, *args, **kwargs):
         return obj.buffer(*args, **kwargs)
 
-    return _iter_func_geom_(buffer_me, elements, distance,
+    return _iter_func_geom_(buffer_me, qgeometry, distance,
                             resolution=resolution,
                             cap_style=cap_style,
                             join_style=join_style,

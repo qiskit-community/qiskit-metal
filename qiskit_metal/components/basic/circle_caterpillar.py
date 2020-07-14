@@ -80,7 +80,7 @@ class CircleCaterpillar(QComponent):
         #caterpillar = draw.subtract(caterpillar, rect)
         # print(caterpillar)
 
-        # add elements
+        # add qgeometry
         #self.add_qgeometry('poly', {'mount': rect})
         self.add_qgeometry('poly', {'caterpillar': caterpillar})
         # subtract=p.subtract,

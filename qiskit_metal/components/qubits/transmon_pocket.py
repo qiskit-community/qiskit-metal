@@ -178,16 +178,16 @@ class TransmonPocket(BaseQubit):
         rect_jj = draw.rectangle(p.inductor_width, pad_gap)
         rect_pk = draw.rectangle(p.pocket_width, p.pocket_height)
 
-        # Rotate and translate all elements as needed.
+        # Rotate and translate all qgeometry as needed.
         # Done with utility functions in Metal 'draw_utility' for easy rotation/translation
-        # NOTE: Should modify so rotate/translate accepts elements, would allow for
+        # NOTE: Should modify so rotate/translate accepts qgeometry, would allow for
         # smoother implementation.
         polys = [rect_jj, pad_top, pad_bot, rect_pk]
         polys = draw.rotate(polys, p.orientation, origin=(0, 0))
         polys = draw.translate(polys, p.pos_x, p.pos_y)
         [rect_jj, pad_top, pad_bot, rect_pk] = polys
 
-        # Use the geometry to create Metal elements
+        # Use the geometry to create Metal qgeometry
         self.add_qgeometry('poly', dict(pad_top=pad_top, pad_bot=pad_bot))
         self.add_qgeometry('poly', dict(rect_pk=rect_pk), subtract=True)
         self.add_qgeometry('poly', dict(rect_jj=rect_jj), helper=True)

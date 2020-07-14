@@ -160,7 +160,7 @@ class Components:
     def __setitem__(self, name: str, value: 'QComponent'):
         """Replace QComponent for an existing name. Use this at your own risk.
         There are netids used for pins within a component.  The netids are used in
-        the net_info table and elements tables.
+        the net_info table and qgeometry tables.
 
         Args:
             name (str): Name of QComponent.  If not in design._components,
