@@ -1,4 +1,5 @@
-from qiskit_metal import QComponent, draw, Dict, is_true
+from qiskit_metal import draw, Dict, is_true
+from qiskit_metal.components.base.base import QComponent
 
 class MyQComponent(QComponent):
     """
@@ -15,6 +16,7 @@ class MyQComponent(QComponent):
         rotation='0',
         layer='1'
     )
+    """Default drawing options"""
 
     def make(self):
         """Convert self.options into QGeometry."""

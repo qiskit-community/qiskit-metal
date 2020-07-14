@@ -35,7 +35,6 @@ Base Components
     BaseJunction
     BaseQubit
     ParsedDynamicAttributes_Component
-    MyQComponent
 
 
 Basic
@@ -82,6 +81,7 @@ Junctions
 
     junctions
 
+
 Qubits
 ----------
 
@@ -92,6 +92,15 @@ Qubits
     TransmonPocket
     TransmonPocketCL
 
+
+User Components
+---------------
+
+.. autosummary::
+    :toctree:
+
+    MyQComponent
+
 """
 
 from .. import is_component
@@ -99,7 +108,8 @@ from .base import QComponent
 from .base.qubit import BaseQubit
 from .base.junction import BaseJunction
 
-if 'METAL_DOC_BUILD' in globals():
+from .. import config
+if config.is_building_docs():
     from .base._parsed_dynamic_attrs import ParsedDynamicAttributes_Component
     from .basic.circle_caterpillar import CircleCaterpillar
     from .basic.circle_raster import CircleRaster
@@ -116,3 +126,4 @@ if 'METAL_DOC_BUILD' in globals():
     from .qubits.transmon_cross import TransmonCross
     from .qubits.transmon_pocket import TransmonPocket
     from .qubits.transmon_pocket_cl import TransmonPocketCL
+    from .user_components.my_qcomponent import MyQComponent
