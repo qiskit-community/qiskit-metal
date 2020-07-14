@@ -65,11 +65,12 @@ class Oriented_2D_Array:
         self.positions = np.append(self.positions, [self.positions[-1] + self.directions[-1] * length], axis=0)
 
     def go_right(self, length: float):
-        # THIS METHOD IS NOT USED AT THIS TIME (7/2/20)
         """Straight line 90deg clock-wise direction w.r.t. Oriented_Point
 
         Args:
             length (float): how much to move by
+
+        THIS METHOD IS NOT USED AT THIS TIME (7/2/20)
         """
         self.directions = np.append(self.directions, [draw.Vector.rotate(self.directions, -1 * np.pi / 2)], axis=0)
         self.positions = np.append(self.positions, [self.positions[-1] + self.directions[-1] * length], axis=0)

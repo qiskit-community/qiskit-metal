@@ -67,10 +67,13 @@ Interconnects
 .. autosummary::
     :toctree:
 
-    Connector
+    CpwAutoStraightLine
     CpwStraightLine
+    Oriented_2D_Array
+    Oriented_Point
     CpwMeanderSimple
     FakeCPW
+    Qroute
 
 
 Junctions
@@ -119,10 +122,13 @@ if config.is_building_docs():
     from .basic.rectangle_hollow import RectangleHollow
     from .connectors.open_to_ground import OpenToGround
     from .connectors.short_to_ground import ShortToGround
+    from .interconnects.cpw_autostraightline import CpwAutoStraightLine
     from .interconnects.cpw_basic_straight_line import CpwStraightLine
-    from .interconnects.cpw_meander import Connector
-    from .interconnects.cpw_meander import CpwMeanderSimple
+    from .interconnects.cpw_meander_simple import CpwMeanderSimple
+    from .interconnects.cpw_meander_simple import Oriented_2D_Array
+    from .interconnects.cpw_meander_simple import Oriented_Point
     from .interconnects.fake_cpw import FakeCPW
+    from .interconnects.Qroute import Qroute
     from .qubits.transmon_cross import TransmonCross
     from .qubits.transmon_pocket import TransmonPocket
     from .qubits.transmon_pocket_cl import TransmonPocketCL
