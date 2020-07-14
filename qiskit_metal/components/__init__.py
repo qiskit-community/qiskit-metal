@@ -35,7 +35,6 @@ Base Components
     BaseJunction
     BaseQubit
     ParsedDynamicAttributes_Component
-    MyQComponent
 
 
 Basic
@@ -82,6 +81,7 @@ Junctions
 
     junctions
 
+
 Qubits
 ----------
 
@@ -91,6 +91,15 @@ Qubits
     TransmonCross
     TransmonPocket
     TransmonPocketCL
+
+
+User Components
+---------------
+
+.. autosummary::
+    :toctree:
+
+    MyQComponent
 
 """
 
@@ -117,3 +126,4 @@ if config.is_building_docs():
     from .qubits.transmon_cross import TransmonCross
     from .qubits.transmon_pocket import TransmonPocket
     from .qubits.transmon_pocket_cl import TransmonPocketCL
+    from .user_components.my_qcomponent import MyQComponent
