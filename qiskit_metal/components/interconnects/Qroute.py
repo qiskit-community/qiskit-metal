@@ -4,6 +4,7 @@ from qiskit_metal import draw, QComponent
 from numpy.linalg import norm
 from typing import List, Tuple, Union
 
+
 class Qroute:
     r"""A simple class to define a generic route, using an array of planar points (x,y coordinates)
     and the direction of the pins that start and end the array
@@ -25,20 +26,18 @@ class Qroute:
         # head_direction (2x1 np.ndarray - 1 vector): *Normal vector* defining which way the head
         # is pointing.  This is the normal vector to the surface of the head line-end.
         self.head_direction = vec_unit_planar(pin_start.direction)
-        position: np.ndarray, direction: np.ndarray
 
-    def get_start(self) -> List:
+    def get_start(self) -> Tuple:
         """Return the start point and normal direction vector
 
         Returns:
-            List: A dictionary with keys `point` and `direction`.
+            Tuple: Initializes the Qroute start point and and returns `position` and `direction`.
             The values are numpy arrays with two float points each.
         """
         pin = self.design.connectors[self.options.pin_start_name]
         position = pin['middle']
         direction = pin['normal']
         return position, direction
-
 
     def go_straight(self, length: float):
         """Add a point ot 'length' distance in the same direction
@@ -49,7 +48,7 @@ class Qroute:
         self.points = np.append(self.points, [self.points[-1] + self.head_direction * length], axis=0)
 
     def go_left(self, length: float):
-        # THIS METHOD IS NOT USED AT THIS TIME (7/2/20)
+        # THIS METHOD IS NOT USED AT THIS TIME (7/2/20). PLAN TO USE
         """Straight line 90deg counter-clock-wise direction w.r.t. Oriented_Point
 
         Args:
@@ -59,7 +58,7 @@ class Qroute:
         self.points = np.append(self.points, [self.points[-1] + self.head_direction * length], axis=0)
 
     def go_right(self, length: float):
-        # THIS METHOD IS NOT USED AT THIS TIME (7/2/20)
+        # THIS METHOD IS NOT USED AT THIS TIME (7/2/20). PLAN TO USE
         """Straight line 90deg clock-wise direction w.r.t. Oriented_Point
 
         Args:
@@ -84,18 +83,19 @@ class Qroute:
             return length + abs(norm(self.points[x] - self.pin_end.position))
 
     def route_to_align(self, concurrent_array):
-        # THIS METHOD IS NOT USED AT THIS TIME (7/2/20)
+        # THIS METHOD IS NOT USED AT THIS TIME (7/2/20). RE_EVALUATE BASED ON NEED.
         """
-        In this code, meanders need to face each-other to connect.
+        In this code, meanders are aligned to face each-other. So they are easier to connect.
 
-        TODO: Make sure the two points align on one of the axes, adding a new point
+
+        TODO: Make sure the two points align on one of the axes, by adding a new point
 
         TODO: Adjusts the orientation of the meander, adding yet a new point:
             * Includes the start but not the given end point
             * If it cannot meander just returns the initial start point
 
         Arguments:
-            concurrent_array {Oriented_2D_Array} -- Other end of the CPW
+            concurrent_array {Oriented_2D_Array}: Other end of the CPW
         """
         print(self.points[-1])
         print(concurrent_array.positions[-1])

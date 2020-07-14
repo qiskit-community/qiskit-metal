@@ -236,7 +236,18 @@ def remove_colinear_pts(points):
 def intersect(p1x, p1y, p2x, p2y, x0, y0):
     """ @John Mamin
     intersect segment defined by p1 and p2 with ray coming out of x0,y0
-    ray can be horizontal y=y0  x=x0+dx , want dx>0 say
+    ray can be horizontal y=y0  x=x0+dx , want dx>0
+
+    Arguments:
+        p1x (float): x coordinate of point 1 of segment
+        p1y (float): y coordinate of point 1 of segment
+        p2x (float): x coordinate of point 2 of segment
+        p2y (float): y coordinate of point 2 of segment
+        x0 (float): x coordinate anchoring the intersection ray
+        y0 (float): y coordinate anchoring the intersection ray
+
+    Returns:
+        boolean int: (1) if intersecting, (0) if not intersecting
 
     """
     if p1x != p2x and p1y != p2y:
