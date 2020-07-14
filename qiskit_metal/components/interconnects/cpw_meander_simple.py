@@ -47,7 +47,7 @@ class Oriented_2D_Array:
                 This is the normal vector to the surface on which the connector mates.
                 Has unit norm.
         """
-        print(position)
+        # print(position)
         self.positions = np.expand_dims(position, axis=0)
         self.directions = np.expand_dims(vec_unit_planar(direction), axis=0)
 
@@ -104,8 +104,8 @@ class Oriented_2D_Array:
         Arguments:
             concurrent_array {Oriented_2D_Array} -- Other end of the CPW
         """
-        print(self.positions[-1])
-        print(concurrent_array.positions[-1])
+        # print(self.positions[-1])
+        # print(concurrent_array.positions[-1])
 
         # determine relative position
         concurrent_position = ""
