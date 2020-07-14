@@ -31,14 +31,23 @@ if TYPE_CHECKING:
 
 
 class QTableView_Options(QTableView, QWidget_PlaceholderText):
+    """The class for QTableView_Options
+
+    This class inhertis the `QTableView` and `QWidget_PlaceholderText` classes.
+    """
 
     def __init__(self, parent: QtWidgets.QWidget):
+        """
+        Args:
+            parent (QtWidgets.QWidget): parent widget
+        """
         QTableView.__init__(self, parent)
         QWidget_PlaceholderText.__init__(
             self,  "Select a QComponent to edit\n\nfrom the QComponents window")
         QTimer.singleShot(200, self.style_me) # not sure whu the ui isnt unpdating these here.
 
     def style_me(self):
+        """Style the widget"""
         # Also can do in the ui file, but doesn't always transalte for me for some reason
         self.horizontalHeader().show()
         self.verticalHeader().hide()
@@ -51,7 +60,7 @@ class QTableView_Options(QTableView, QWidget_PlaceholderText):
         """Rezie columsn to contents with maximim
 
         Args:
-            max (int, optional): [description]. Defaults to 200.
+            max (int): automatically resize the columns to the given size (Default: 200)
         """
         self.resizeColumnsToContents()
         columns = self.model().columnCount()

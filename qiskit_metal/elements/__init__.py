@@ -14,12 +14,12 @@
 
 """
 =================================================
-Elements (:mod:`qiskit_metal.elements`)
+QGeometryTables (:mod:`qiskit_metal.qgeometry`)
 =================================================
 
-.. currentmodule:: qiskit_metal.elements
+.. currentmodule:: qiskit_metal.qgeometry
 
-This modules defines and handles everything related to the elements abstraction.
+This modules defines and handles everything related to the qgeometry abstraction.
 
 @date: 2019
 
@@ -43,4 +43,4 @@ Submodules
     elements_handler
 
 """
-from .elements_handler import is_element_table, QElementTables#, ElementTypes
+from .elements_handler import is_element_table, QGeometryTables  # , ElementTypes

@@ -1,27 +1,17 @@
 """
+Test class for CPW meander.
+
 @author: Marco Facchini, John Blair, Zlatko Minev
 """
 
-from collections import namedtuple
 from typing import List, Tuple, Union
 
 import numpy as np
 from numpy.linalg import norm
-from ...toolbox_python.utility_functions import log_error_easy
 
-import numpy as np
-from qiskit_metal import draw, Dict#, QComponent
+from qiskit_metal import Dict, draw, is_true
 from qiskit_metal.components import QComponent
-#from qiskit_metal import is_true
-
-#from qiskit_metal.toolbox_metal.parsing import is_true
-options = Dict(pin_start_name='Q1_a',
-               pin_end_name='Q2_b',
-               meander=Dict(
-                   lead_start='0.1mm',
-                   lead_end='0.1mm',
-                   asymmetry='0 um')
-               )
+from qiskit_metal.toolbox_python.utility_functions import log_error_easy
 
 
 class Connector:  # Shouldn't this class be in the connector folder?
@@ -77,19 +67,13 @@ class CpwMeanderSimple(QComponent):
         For example, note that lead_direction_inverted can be 'false' or 'true'
     """
     default_options = Dict(
-        # start_name='',
-        # end_name='',
-        pin_start_name='',  # Name of pin used for pin_start
-        pin_end_name='',  # Name of pin used for pin_end
-        component_start_name='',  # If not connected, zero, otherwise component_id
-        component_end_name='',  # If not connected, zero, otherwise component_id
-        # pin_start=0,  # If not connected, zero, otherwise holds the net_id.
-        # pin_end=0,  # If not connected, zero, otherwise holds the net_id.
         total_length='7mm',
         chip='main',
         layer='1',
         trace_width='cpw_width',
         trace_gap='cpw_gap',
+        pin_inputs=Dict(start_pin=Dict(component='', pin=''),
+                        end_pin=Dict(component='', pin='')),
 
         meander=Dict(
             spacing='200um',
@@ -146,8 +130,8 @@ class CpwMeanderSimple(QComponent):
             endm.position[None, :],
             end.position[None, :]], axis=0)
 
-        # Make points into elements
-        self.make_elements(points)
+        # Make points into qgeometry
+        self.make_qgeometry(points)
 
     def meander_fixed_length(self, start: Connector, end: Connector,
                              length: float,
@@ -323,14 +307,8 @@ class CpwMeanderSimple(QComponent):
             dict: A dictionary with keys `point` and `direction`.
             The values are numpy arrays with two float points each.
         """
-        start_pin = self.design.components[self.options.component_start_name].pins[self.options.pin_start_name]
-
-        if start_pin.net_id:
-            print(
-                f'Given pin {self.options.component_start_name} {self.options.pin_start_name} already in use. Component not created.')
-            logger.warning(self.logger, post_text=f'\nERROR in building component "{self.name}"!'
-                           'Inelligeable pin passed to function.\n')
-            return
+        start_pin = self.design.components[self.options.pin_inputs['start_pin']
+                                           ['component']].pins[self.options.pin_inputs['start_pin']['pin']]
 
         return Connector(position=start_pin['middle'],
                          direction=start_pin['normal'])
@@ -342,14 +320,8 @@ class CpwMeanderSimple(QComponent):
             dict: A dictionary with keys `point` and `direction`.
             The values are numpy arrays with two float points each.
         """
-        end_pin = self.design.components[self.options.component_end_name].pins[self.options.pin_end_name]
-
-        if end_pin.net_id:
-            print(
-                f'Given pin {self.options.component_end_name} {self.options.pin_end_name} already in use. Component not created.')
-            logger.warning(self.logger, post_text=f'\nERROR in building component "{self.name}"!'
-                           'Inelligeable pin passed to function.\n')
-            return
+        end_pin = self.design.components[self.options.pin_inputs['end_pin']
+                                         ['component']].pins[self.options.pin_inputs['end_pin']['pin']]
 
         return Connector(position=end_pin['middle'],
                          direction=end_pin['normal'])
@@ -375,8 +347,8 @@ class CpwMeanderSimple(QComponent):
         normal = draw.Vector.rotate(direction, np.pi/2)
         return direction, normal
 
-    def make_elements(self, pts: np.ndarray):
-        """Turns points into elements
+    def make_qgeometry(self, pts: np.ndarray):
+        """Turns points into qgeometry
 
         Arguments:
             pts (np.ndarray): Array of points
@@ -387,12 +359,12 @@ class CpwMeanderSimple(QComponent):
         width = p.trace_width
         self.options._actual_length = str(
             line.length) + ' ' + self.design.get_units()
-        self.add_elements('path',
-                          {'trace': line},
-                          width=width,
-                          layer=layer)
-        self.add_elements('path',
-                          {'cut': line},
-                          width=width + p.trace_gap,
-                          layer=layer,
-                          subtract=True)
+        self.add_qgeometry('path',
+                           {'trace': line},
+                           width=width,
+                           layer=layer)
+        self.add_qgeometry('path',
+                           {'cut': line},
+                           width=width + 2*p.trace_gap,
+                           layer=layer,
+                           subtract=True)

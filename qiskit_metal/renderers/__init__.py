@@ -25,13 +25,48 @@ Created on Tue May 14 17:13:40 2019
 
 UNDER CONSTRUCTION
 
-UNDER-CONSTRUCTION
+Renderer Base
 ---------------
 
 .. autosummary::
     :toctree: ../stubs/
 
-    UNDER-CONSTRUCTION
+    QRenderer-TBD
+    QRendererGui-TBD
+
+
+MPL Renderer
+---------------
+
+.. autosummary::
+    :toctree: ../stubs/
+
+    PlotCanvas-TBD
+    MplInteraction-TBD
+    ZoomOnWheel-TBD
+    PanAndZoom-TBD
+    QMplRenderer-TBD
+
+
+MPL Submodules
+---------------
+
+.. autosummary::
+    :toctree: ../stubs/
+
+    mpl_interaction-TBD
+    mpl_toolbox-TBD
+
+
+Ansys Submodules
+----------------
+
+.. autosummary::
+    :toctree: ../stubs/
+
+    config-TBD
+    parse-TBD
+
 
 """
 

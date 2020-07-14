@@ -21,6 +21,7 @@ import random
 import sys
 from typing import TYPE_CHECKING, List
 
+import matplotlib
 import matplotlib as mpl
 import matplotlib.patches as patches
 import matplotlib.pyplot as plt
@@ -91,7 +92,7 @@ MPL_CONTEXT_DEFAULT = {
     # parameters to make the plot fit the figure
     # using `tight_layout`
     'figure.constrained_layout.use': True,  # When True, automatically make plot
-    # elements fit on the figure. (Not compatible
+    # qgeometry fit on the figure. (Not compatible
     # with `autolayout`, above).
     # Padding around axes objects. Float representing
     'figure.constrained_layout.h_pad': 2./72.,
@@ -406,6 +407,9 @@ class PlotCanvas(FigureCanvas):
     def plot(self, clear=True, with_try=True):
         # TODO: Maybe do in a thread?
         self.hide()
+        # the artist will be removed by the clear axis.
+        self._force_clear_annotations()
+
         ax = self.get_axis()
 
         def prep():
@@ -460,7 +464,7 @@ class PlotCanvas(FigureCanvas):
             _axis_set_watermark_img(ax, file, size=0.15)
         else:
             # import error?
-            logger.error(f'Error could not load {file} for watermark.')
+            self.logger.error(f'Error could not load {file} for watermark.')
 
     def clear_axis(self, ax: plt.Axes = None):
         """Clear an axis or clear all axes
@@ -569,7 +573,7 @@ class PlotCanvas(FigureCanvas):
             zoom (float) -- fraction to expand the bounding vbox by
         """
         component = self.design.components[name]
-        bounds = component.qgeometry_bounds()
+        bounds = component.qgeometry_bounds()  # return (minx, miny, maxx, maxy)
         bbox = Bbox.from_extents(bounds)
         bounds = bbox.expanded(zoom, zoom).extents
         self.zoom_to_rectangle(bounds)
@@ -596,14 +600,29 @@ class PlotCanvas(FigureCanvas):
         except Exception as e:
             self.logger.error(f'While canvas clear_annotation: {e}')
         finally:
-            self._annotations['patch'] = []
-            self._annotations['text'] = []
+            self._force_clear_annotations()
+
+    def _force_clear_annotations(self):
+        """Clear annotation dicts."""
+        self._annotations['patch'] = []
+        self._annotations['text'] = []
 
     def highlight_components(self, component_names: List[str]):
         """Hihglight a list of components
         Args:
             component_names (List[str]): [description]
         """
+        # Defaults - todo eventually move to some option place where can be changed
+        text_kw = dict(
+            color='r', alpha=0.75, verticalalignment='center',
+            horizontalalignment='center',
+            clip_on=True, zorder=99, fontweight='bold'
+        )
+        text_bbox_kw = dict(
+            facecolor='#FFFFFF', alpha=0.75, edgecolor='#F0F0F0'
+        )
+
+        # Functionality
         self.clear_annotation()
 
         component_id_list = self.design.components.get_list_ints(
@@ -611,11 +630,13 @@ class PlotCanvas(FigureCanvas):
 
         for component_id in component_id_list:
             component_id = int(component_id)
-            #self.logger.debug(f'Component {name}')
+
             if component_id in self.design._components:
+                # type: QComponent
                 component = self.design._components[component_id]
+
                 if 1:  # highlight bounding box
-                    bounds = component.qgeometry_bounds()
+                    bounds = component.qgeometry_bounds()  # returns (minx, miny, maxx, maxy)
                     # bbox = Bbox.from_extents(bounds)
                     # Create a Rectangle patch TODO: move to settings
                     kw = dict(linewidth=1, edgecolor='r', facecolor=(
@@ -628,6 +649,18 @@ class PlotCanvas(FigureCanvas):
                     self._annotations['patch'] += [rect]
                     for ax in self.axes:
                         ax.add_patch(rect)
+
+                    if 1:  # Draw name as text of QComponent
+                        text = matplotlib.text.Text(
+                            (bounds[0]+bounds[2])/2., (bounds[1]+bounds[3])/2.,
+                            str(component.name),
+                            **{**text_kw, **dict(fontsize=13)})
+                        text.set_bbox({**text_bbox_kw,
+                                       **dict(edgecolor=None)})  # dict(facecolor=(1, 0, 0, 0.25)))
+                        for ax in self.axes:
+                            ax.add_artist(text)
+                        self._annotations['text'] += [text]
+
                 if 1:  # Draw the pins
                     # for component_id in self.design.components.keys():
                     for pin_name in component.pins.keys():
@@ -648,13 +681,14 @@ class PlotCanvas(FigureCanvas):
                             """
                             for ax in self.axes:
                                 ax.add_patch(arrow)
+
                         if 1:  # draw names of pins
                             dist = 0.05
-                            kw = dict(color='r', alpha=0.75, verticalalignment='center',
-                                      horizontalalignment='left' if n[0] >= 0 else 'right',
-                                      clip_on=True, zorder=99, fontweight='bold')
+                            kw = {**text_kw,
+                                  **dict(horizontalalignment='left' if n[0] >= 0 else 'right')}
+                            # type: matplotlib.text.Text
                             text = ax.text(*(m+dist*n), pin_name, **kw)
-                            text.set_bbox(
-                                dict(facecolor='#FFFFFF', alpha=0.75, edgecolor='#F0F0F0'))
+                            text.set_bbox(text_bbox_kw)
                             self._annotations['text'] += [text]
+
         self.refresh()

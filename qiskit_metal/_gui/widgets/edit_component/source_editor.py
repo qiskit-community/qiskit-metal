@@ -63,6 +63,8 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
     """
     A source code editor based on pyQode.
 
+    This class inherits from the `widgets.PyCodeEditBase` class.
+
     Editor features:
         - syntax highlighting
         - code completion (using jedi)
@@ -103,6 +105,10 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
     # object
 
     def __init__(self, parent, **kwargs):
+        """
+        Args:
+            parent (QWidget): Parent widget
+        """
         # Foe help, see
         # https://github.com/pyQode/pyqode.python/blob/master/examples/custom.py
 
@@ -184,6 +190,7 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         self.style_me()
 
     def style_me(self):
+        """Style the editor"""
         self.setStyleSheet("""
     background-color: #f9f9f9;
     color: #000000;
@@ -192,9 +199,11 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
 
     @property
     def logger(self) -> logging.Logger:
+        """Returns the logger"""
         return self.gui.logger
 
     def reload_file(self):
+        """Reload the file"""
         encoding = self.file.encoding
         self.file.reload(encoding)
         self.file.reload()
@@ -202,6 +211,7 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         self.logger.info('Source file reloaded.')
 
     def save_file(self):
+        """Save teh file"""
         # TODO: warning: if the kernel is run as a differnt user, eg.., sudo,
         # then the file persmissions will change but for that user and the file
         # can read only for the base user.
@@ -212,7 +222,7 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         """Open a file
 
         Args:
-            filename (str): [description]
+            filename (str): file to open
 
         **Troubleshooting**
 
@@ -247,6 +257,7 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         self.file.open(filename)  # , use_cached_encoding=False)
 
     def reload_module(self):
+        """Reload the module"""
         if self.component_module_name:
             self.gui.design.reload_component(
                 component_module_name=self.component_module_name,
@@ -255,6 +266,7 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
                 f'Reloaded {self.component_class_name} from {self.component_module_name}')
 
     def rebuild_components(self):
+        """Rebuild teh component"""
         self.logger.debug('Source file rebuild started.')
         self.save_file()
         # print('saved')
@@ -272,10 +284,22 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
 
         sizes = splitter.sizes()
         total = sum(sizes)
-        splitter.setSizes([total, 0]) # hide the right side
+
+        if sizes[-1] < 1: # hidden, now show
+            # restore size
+            spliter_size = self.__last_splitter_size if \
+                            hasattr(self, '__last_splitter_size') else 400
+            if total < spliter_size+50:
+                spliter_size = int(total / 2)
+            splitter.setSizes([total - spliter_size, spliter_size]) # hide the right side
+
+        else:
+            self.__last_splitter_size = sizes[-1] # save for toggle
+            splitter.setSizes([total, 0]) # hide the right side
 
     @property
     def edit_widget(self):
+        """Returns the great-great-grandparent of the widget"""
         return self.parent().parent().parent().parent()
 
     def set_component(self, class_name: str, module_name: str,
@@ -283,9 +307,9 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         """Main function that set the components to be edited.
 
         Args:
-            class_name (str): [description]
-            module_name (str): [description]
-            module_path (str): [description]
+            class_name (str): the name of the class
+            module_name (str): the name of the module
+            module_path (str): the path to the module
         """
         self.component_class_name = class_name
         self.component_module_name = module_name
@@ -309,6 +333,9 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
 
     def scroll_to(self, text: str = 'def make('):
         """Scroll to the matched string
+
+        Args:
+            text (str): test to scroll to (Default: 'def make(')
         """
         text = self.toPlainText()
         # index = text.find('def make(')
@@ -326,7 +353,7 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         """Returns the cursor to select word udner it and info
 
         Returns:
-            [type]: [description]
+            tuple: PyQt5.QtGui.QTextCursor, dict
         """
         tc = TextHelper(self).word_under_cursor(
             select_whole_word=True)  # type: PyQt5.QtGui.QTextCursor
@@ -344,9 +371,13 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         """Get jedi
 
         Args:
-            offset (int, optional): Columns offset, such as -1. Defaults to 0.
+            offset (int): Columns offset, such as -1. (Default: 0).
+
         Returns:
-            A possibly empty list
+            list: definitions under the cursor, or an empty list
+
+        Raises:
+            ValueError: Jedi couldn't find it
         """
         _, word_info = self.get_word_under_cursor()
         p = word_info
@@ -366,6 +397,11 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         return name_defns
 
     def set_help_doc(self, definitions: List['jedi.api.classes.Definition']):
+        """Sets the help docs
+
+        Args:
+            definitions (List['jedi.api.classes.Definition']): help defintions
+        """
         if len(definitions) < 1:
             return
 
@@ -389,6 +425,11 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
             textEdit.moveCursor(QtGui.QTextCursor.Start)
 
     def set_doc_from_word_under_cursor(self, offset=0):
+        """Set the doc based on the word under the cursor
+
+        Args:
+            offset (int): the offset (Default: 0)
+        """
         self.definitions = self.get_definitions_under_cursor(offset=offset)
         self.set_help_doc(self.definitions)
 
@@ -398,14 +439,21 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
             self.set_doc_from_word_under_cursor(offset=0)
 
     def calltip_called(self, info: dict):
-        """When a call tip is request
+        """When a call tip is requested
+
         Args:
-            info (dict): Example:
-            {'call.module.name': 'shapely.geometry.geo',
-             'call.call_name': 'box',
-             'call.params': ['param minx', 'param miny', 'param maxx', 'param maxy', 'param ccw=True'],
-             'call.index': 0,
-             'call.bracket_start': [115, 12]}
+            info (dict): Dictionary of information
+
+        Example Dictionary:
+
+            .. code-block:: python
+
+                {'call.module.name': 'shapely.geometry.geo',
+                'call.call_name': 'box',
+                'call.params': ['param minx', 'param miny', 'param maxx', 'param maxy', 'param ccw=True'],
+                'call.index': 0,
+                'call.bracket_start': [115, 12]}
+
         """
         self.set_doc_from_word_under_cursor(offset=-1)
 

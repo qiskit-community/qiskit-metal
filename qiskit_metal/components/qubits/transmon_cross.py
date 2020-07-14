@@ -21,7 +21,6 @@ converted to v0.2: Thomas McConkey 2020-04-23
 
 import numpy as np
 from qiskit_metal import draw, Dict
-#from qiskit_metal import is_true
 from qiskit_metal.components.base.qubit import BaseQubit
 
 
@@ -99,7 +98,7 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
 ##############################################MAKE######################################################
 
     def make(self):
-        """ This is executed by the GUI/user to generate the elements for the component.
+        """ This is executed by the GUI/user to generate the qgeometry for the component.
         """
         self.make_pocket()
         self.make_connection_pads()
@@ -138,10 +137,10 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
 
         [cross, cross_etch, rect_jj] = polys
 
-        # generate elements
-        self.add_elements('poly', dict(cross=cross))
-        self.add_elements('poly', dict(cross_etch=cross_etch), subtract=True)
-        self.add_elements('poly', dict(rect_jj=rect_jj), helper=True)
+        # generate qgeometry
+        self.add_qgeometry('poly', dict(cross=cross))
+        self.add_qgeometry('poly', dict(cross_etch=cross_etch), subtract=True)
+        self.add_qgeometry('poly', dict(rect_jj=rect_jj), helper=True)
 
 
 ############################CONNECTORS##################################################################################################
@@ -215,10 +214,9 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
         polys = draw.translate(polys, p.pos_x, p.pos_y)
         [connector_arm, connector_etcher, port_line] = polys
 
-        # Generates elements for the connector pads
-        self.add_elements('poly', {f'{name}_connector_arm': connector_arm})
-        self.add_elements(
+        # Generates qgeometry for the connector pads
+        self.add_qgeometry('poly', {f'{name}_connector_arm': connector_arm})
+        self.add_qgeometry(
             'poly', {f'{name}_connector_etcher': connector_etcher}, subtract=True)
 
-        port_points = list(draw.shapely.geometry.shape(port_line).coords)
-        self.add_pin(name, port_points, self.id, flip=False)  # TODO: chip
+        self.add_pin(name, port_line.coords, c_w)  # TODO: chip

@@ -296,6 +296,8 @@
    <addaction name="separator"/>
    <addaction name="action_full_refresh"/>
    <addaction name="actionRebuild"/>
+   <addaction name="separator"/>
+   <addaction name="actionNew_QComponent"/>
   </widget>
   <widget class="QToolBarExpanding" name="toolBarView">
    <property name="font">
@@ -643,8 +645,8 @@
   <widget class="QDockWidget" name="dockLog">
    <property name="minimumSize">
     <size>
-     <width>0</width>
-     <height>50</height>
+     <width>78</width>
+     <height>100</height>
     </size>
    </property>
    <property name="windowIcon">
@@ -1226,6 +1228,21 @@
     <string>Meta+F, Ctrl+F</string>
    </property>
   </action>
+  <action name="actionNew_QComponent">
+   <property name="icon">
+    <iconset resource="main_window_rc.qrc">
+     <normaloff>:/add</normaloff>:/add</iconset>
+   </property>
+   <property name="text">
+    <string>New QComponent</string>
+   </property>
+   <property name="toolTip">
+    <string>Create a new QComponent file</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N, Meta+N</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -1792,6 +1809,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionNew_QComponent</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>new_qcomponent()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>649</x>
+     <y>449</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>showHelp()</slot>
@@ -1809,5 +1842,6 @@
   <slot>save_design_as()</slot>
   <slot>save_window_settings()</slot>
   <slot>toggle_all_docks()</slot>
+  <slot>new_qcomponent()</slot>
  </slots>
 </ui>

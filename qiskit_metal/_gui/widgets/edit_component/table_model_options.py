@@ -46,12 +46,20 @@ class QTableModel_Options(QAbstractTableModel):
     """
     Table model for the options of a given component.
 
+    This class inherits from the `QAbstractTableModel` class
+
     MVC class
     See https://doc.qt.io/qt-5/qabstracttablemodel.html
     """
     # __timer_interval = 500  # ms
 
     def __init__(self, gui: 'MetalGUI', parent: 'ComponentWidget' = None, view=None):
+        """
+        Args:
+            gui (MetalGUI): the GUI
+            parent (ComponentWidget): the parent ComponentWidget (Default: None)
+            view (object): the view (Default: None)
+        """
         super().__init__(parent=parent)
         self.logger = gui.logger
         self.gui = gui
@@ -63,10 +71,12 @@ class QTableModel_Options(QAbstractTableModel):
 
     @property
     def design(self) -> 'QDesign':
+        """Returns the QDesign"""
         return self.gui.design
 
     @property
     def component(self):
+        """Returns the component"""
         return self.parent().component
 
     def refresh(self):
@@ -74,6 +84,14 @@ class QTableModel_Options(QAbstractTableModel):
         self.modelReset.emit()
 
     def rowCount(self, parent: QModelIndex = None):
+        """Returns the number of rows
+
+        Args:
+            parent (QModelIndex): Unused (Default: None).
+
+        Returns:
+            int: the number of rows
+        """
         if self.component is None:
             if self._view:
                 self._view.show_placeholder_text()
@@ -83,10 +101,27 @@ class QTableModel_Options(QAbstractTableModel):
         return len(self.component.options)
 
     def columnCount(self, parent: QModelIndex = None):
+        """Returns the number of columns
+
+        Args:
+            parent (QModelIndex): Unused (Default: None).
+
+        Returns:
+            int: the number of columns
+        """
         return 3
 
     def headerData(self, section, orientation, role=Qt.DisplayRole):
-        """ Set the headers to be displayed. """
+        """ Set the headers to be displayed.
+
+        Args:
+            section (int): section number
+            orientation (Qt orientation): section orientation
+            role (Qt display role): display role (Default: DisplayRole)
+
+        Returns:
+            str: the header data, or None if not found
+        """
 
         if self.component is None:
             return None
@@ -105,7 +140,14 @@ class QTableModel_Options(QAbstractTableModel):
     def flags(self, index: QModelIndex):
         """ Set the item flags at the given index. Seems like we're
         implementing this function just to see how it's done, as we
-        manually adjust each treeView to have NoEditTriggers."""
+        manually adjust each treeView to have NoEditTriggers.
+
+        Args:
+            index (QModelIndex): the index
+
+        Returns:
+            Qt flags: Flags from Qt
+        """
         # https://doc.qt.io/qt-5/qt.html#ItemFlag-enum
 
         if not index.isValid():
@@ -124,7 +166,11 @@ class QTableModel_Options(QAbstractTableModel):
     def data(self, index: QModelIndex, role=Qt.DisplayRole):
         """ Depending on the index and role given, return data. If not
         returning data, return None (PySide equivalent of QT's
-        "invalid QVariant")."""
+        "invalid QVariant").
+        
+        Returns:
+            str: data
+        """
 
         if not index.isValid():
             return
@@ -170,18 +216,15 @@ class QTableModel_Options(QAbstractTableModel):
                 value: QtCore.QVariant,
                 role=QtCore.Qt.EditRole) -> bool:
         """Sets the role data for the item at index to value.
-        Returns true if successful; otherwise returns false.
         The dataChanged() signal should be emitted if the data was successfully set.
 
         Arguments:
-            index {QtCore.QModelIndex} -- [description]
-            value {str} -- [description]
-
-        Keyword Arguments:
-            role {[type]} -- [description] (default: {Qt.EditRole})
+            index (QtCore.QModelIndex): the index
+            value (str): the value
+            role (QtCore.Qt.EditRole): the edit role
 
         Returns:
-            [type] -- [description]
+            bool: Returns true if successful; otherwise returns false.
         """
 
         # TODO: handle nested dicitonaries
