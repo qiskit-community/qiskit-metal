@@ -234,6 +234,7 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
 
             Then there is an issue with the cache of self.file.
             The solution is to go in manuaally and delete the bad folder.
+
             I.e., in my case delete this Jedi folder:
                 /Users/zlatko.minevibm.com/Library/Caches/Jedi/
 
