@@ -29,6 +29,8 @@ from PyQt5.QtCore import pyqtSlot
 
 from ... import logger
 
+__all__ = ['catch_exception_slot_pyqt', 'do_debug']
+
 #######################################################################################
 # Core handler
 ###
@@ -49,6 +51,11 @@ def _pyqt_message_handler(mode, context, message):
     aborts immediately.
 
     For more info, see https://doc.qt.io/qt-5/qtglobal.html#qInstallMessageHandler
+
+    Args:
+        mode (QtCore mode): the mode
+        context (context): the context
+        message (str): the message
     '''
 
     if message.startswith('QSocketNotifier: Multiple socket notifiers for same socket'):
@@ -79,10 +86,8 @@ def do_debug(msg, name='info'):
     A bit of a cludge
 
     Arguments:
-        msg {[str]} -- [Message to print or log to user]
-
-    Keyword Arguments:
-        name {str} -- [info wran, debug, etc. ] (default: {'info'})
+        msg (str): Message to print or log to user
+        name (str): info wran, debug, etc. (Default: 'info')
     """
 
     if 0:
@@ -111,9 +116,9 @@ def catch_exception_slot_pyqt(*args, catch=Exception, on_exception_emit=None):
         https://stackoverflow.com/questions/18740884/preventing-pyqt-to-silence-exceptions-occurring-in-slots
 
     Arguments:
-        args :  any valid types for the pyqtSlot
-        catch :  Type of the exception to catch, defaults to any exception
-        on_exception_emit :  name of a pyqtSignal to be emitted
+        args (arguments):  any valid types for the pyqtSlot
+        catch (Exception):  Type of the exception to catch, (Default: Exception)
+        on_exception_emit (str):  name of a pyqtSignal to be emitted
     """
 
     if len(args) == 0 or isinstance(args[0], types.FunctionType):

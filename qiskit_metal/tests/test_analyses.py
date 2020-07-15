@@ -43,30 +43,18 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
     def setUp(self):
         """
         Setup unit test
-
-        Args: None
-
-        Returns: None
         """
         pass
 
     def tearDown(self):
         """
         Tie any loose ends
-
-        Args: None
-
-        Returns: None
         """
         pass
 
     def test_analyses_cpw_guided_wavelength(self):
         """
         Test the functionality of guided_wavelength in cpw_calculations.py
-
-        Args: None
-
-        Returns: None
         """
         # Setup expected test results
         test_a_expected = (0.024356252567915772, 2.4617087473867807, 0.49998001152009985)
@@ -96,10 +84,6 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
     def test_analyses_cpw_lumped_cpw(self):
         """
         Test the functionality of lumped_cpw in cpw_calculations.py
-
-        Args: None
-
-        Returns: None
         """
         # Setup expected test results
         test_a_expected = (1.0800538577735159e-13, 3.8582810449211895e-07, 2.887792953700545e-11,
@@ -130,10 +114,6 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
     def test_analyses_cpw_effective_dielectric_constant(self):
         """
         Test the functionality of effective_dielectric_constant in cpw_calculations.py
-
-        Args: None
-
-        Returns: None
         """
         # Setup expected test results
         test_a_expected = 3.5771424204599436
@@ -171,10 +151,6 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
     def test_analyses_cpw_elliptic_int_constants(self):
         """
         Test the functionality of elliptic_int_constants in cpw_calculations.py
-
-        Args: None
-
-        Returns: None
         """
         # Setup expected test results
         test_a_expected = (1.8173686928723873, 2.536427762586688, 1.8173447681250923,
@@ -197,10 +173,6 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
     def test_analyses_lumped_transmon_props(self):
         """
         Test the functionality of lumped_transmon_props in lumped_capacitives.py
-
-        Args: None
-
-        Returns: None
         """
         # Setup expected test results
         test_a_expected = (3.2897326737094774e-12, 311949615351887.6, 0.00018137620223473302,
@@ -235,10 +207,6 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
     def test_analyses_lumped_chi(self):
         """
         Test the functionality of chi in lumped_capacitives.py
-
-        Args: None
-
-        Returns: None
         """
         # Setup expected test results
         test_a_expected = -137.5
@@ -263,10 +231,6 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
     def test_analyses_lumped_levels_vs_ng_real_units(self):
         """
         Test the functionality of levels_vs_ng_real_units in lumped_capacitives.py
-
-        Args: None
-
-        Returns: None
         """
         # Setup expected test results
         test_a_expected = (388.69198590629856, 383542.9078924127, 774759511877.3142,
@@ -308,10 +272,6 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
     def test_analyses_lumped_get_C_and_Ic(self):
         """
         Test the functionality of get_C_and_Ic in lumped_capacitives.py
-
-        Args: None
-
-        Returns: None
         """
         # Setup expected test results
         test_a_expected = [33.38125825, -0.61217795]
@@ -332,10 +292,6 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
     def test_analyses_lumped_cos_to_mega_and_delta(self):
         """
         Test the functionality of cos_to_mega_and_delta in lumped_capacitives.py
-
-        Args: None
-
-        Returns: None
         """
         # Setup expected test results
         test_a_expected = 278.9538182848156
@@ -355,10 +311,6 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
     def test_analyses_lumped_chargeline_T1(self):
         """
         Test the functionality of chargeline_T1 in lumped_capacitives.py
-
-        Args: None
-
-        Returns: None
         """
         # Setup expected test results
         test_a_expected = 1.1257909293593088e-09
@@ -378,10 +330,6 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
     def test_analyses_lumped_readin_q3d_matrix(self):
         """
         Test the functionality of readin_q3d_matrix in lumped_capacitives.py
-
-        Args: None
-
-        Returns: None
         """
         # Setup expected test results
         units_expected = 'farad'
@@ -439,10 +387,6 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
     def test_analyses_lumped_load_q3d_capacitance_matrix(self):
         """
         Test the functionality of load_q3d_capacitance_matrix in lumped_capacitives.py
-
-        Args: None
-
-        Returns: None
         """
         # Setup expected test results
         test_a_return_size_expected = 4
@@ -569,10 +513,6 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
     def test_analyses_lumped_move_index_to(self):
         """
         Test the functionality of move_index_to in lumped_capacitives.py
-
-        Args: None
-
-        Returns: None
         """
         # Setup expected test results
         test_a_expected = [0, 2, 3, 1, 4]
@@ -598,10 +538,6 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
     def test_analyses_lumped_df_reorder_matrix_basis(self):
         """
         Test the functionality of df_reorder_matrix_basis in lumped_capacitives.py
-
-        Args: None
-
-        Returns: None
         """
         # Setup expected test results
         data = {'ground_plane':             [2.8829E-13, -3.1978E-14, -4.0063E-14, -3.254E-14,

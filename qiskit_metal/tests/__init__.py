@@ -25,14 +25,44 @@ Created on Wed Apr 22 08:55:40 2020
 
 @author: Jeremy D. Drysdale
 
-UNDER CONSTRUCTION
-
-UNDER-CONSTRUCTION
+Tests
 ---------------
 
 .. autosummary::
     :toctree: ../stubs/
 
-    UNDER-CONSTRUCTION
+    TestAnalyses
+    TestComponents
+    TestDefautOptions
+    TestDesign
+    TestDraw
+    TestElements
+    TestGUIBasic
+    TestRenderers
+    TestToolboxMetal
+    TestToolboxPthon
+
+
+Support
+---------------
+
+.. autosummary::
+    :toctree: ../stubs/
+
+    AssertionsMixin
 
 """
+
+from .. import config
+if config.is_building_docs():
+    from .assertions import AssertionsMixin
+    from .test_analyses import TestAnalyses
+    from .test_components import TestComponents
+    from .test_default_options import TestDefautOptions
+    from .test_designs import TestDesign
+    from .test_draw import TestDraw
+    from .test_elements import TestElements
+    from .test_gui_basic import TestGUIBasic
+    from .test_renderers import TestRenderers
+    from .test_toolbox_metal import TestToolboxMetal
+    from .test_toolbox_python import TestToolboxPthon

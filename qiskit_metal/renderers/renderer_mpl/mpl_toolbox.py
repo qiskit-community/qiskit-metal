@@ -36,6 +36,9 @@ from ...components import is_component
 from ...draw import BaseGeometry
 from .mpl_interaction import figure_pz
 
+__all__ = ['_render_poly_zkm', 'render_poly', 'render', 'style_axis_simple', 'get_prop_cycle',
+           'style_axis_standard', 'figure_spawn', '_axis_set_watermark_img', 'clear_axis']
+
 ##########################################################################################
 # Plotting subroutines
 
@@ -47,6 +50,7 @@ style_config = Dict(
     # interior = dict(facecolors='w', lw=1, edgecolors='grey'))
 
 )
+"""style configuraiton"""
 
 
 def _render_poly_zkm(poly: Polygon,
@@ -55,6 +59,12 @@ def _render_poly_zkm(poly: Polygon,
                      kw_hole=None):
     '''
     Style and draw a shapely polygon using MPL.
+
+    Args:
+        poly (Polygon): the polygon
+        ax (plt.Axes):  Matplotlib axis to render to
+        kw (dict): Dictionary of kwargs for the plotting (Default: None).
+        kw_hold (kw_hole): kw_hole (Default: None)
     '''
     if kw_hole is None:
         kw_hole = {}
@@ -94,11 +104,10 @@ def render_poly(poly: shapely.geometry.Polygon, ax: plt.Axes, kw=None):
     Args:
         poly (shapely.geometry.Polygon): Poly or multipoly to render
         ax (plt.Axes):  Matplotlib axis to render to
-        kw (dict, optional): Dictionary of kwargs for the plotting.
-                    Defaults to None.
+        kw (dict): Dictionary of kwargs for the plotting (Default: None).
 
     Returns:
-        ax.add_patch result
+        patch: ax.add_patch result
     """
     # TODO: maybe if done in batch we can speed this up?
     kw = kw or {}
@@ -119,8 +128,15 @@ def render(components,
     Plots onto an axis.
 
     Args:
-         components : a list, dict, tuple, itterable, or shapely object
+        components: a list, dict, tuple, itterable, or shapely object
+        ax (plt.Axes):  Matplotlib axis to render to (Default: None)
+        kw (dict): Dictionary of kwargs for the plotting (Default: None).
+        labels (str): labels (Default: None)
+        __depth (int): how many sublists in we are (Default: -1)
+        _interation (int) how many components we have plotted (Default: 0)
 
+    Return:
+        int: interation
     '''
     # TODO: Update to handle plotting argumetn with *args and **kwargs
     # but this needs the .draw functions to be updated
@@ -222,6 +238,10 @@ def draw_all_objects(components, ax, func=lambda x: x, root_name='components'):
 def style_axis_simple(ax, labels=None):
     '''
     Style function for axis called by `render`
+
+    Args:
+        ax (plt.Axes):  Matplotlib axis to render to (Default: None)
+        labels (str): label
     '''
     if ax is None:
         ax = plt.gca()
@@ -243,6 +263,7 @@ rcParams = plt.matplotlib.rcParams
 
 
 def get_prop_cycle():
+    """Get the prop cycle"""
     prop_cycler = rcParams['axes.prop_cycle']
     if prop_cycler is None and 'axes.color_cycle' in rcParams:
         clist = rcParams['axes.color_cycle']
@@ -254,6 +275,11 @@ def get_prop_cycle():
 
 
 def style_axis_standard(ax):
+    """Style the axis standardly
+
+    Args:
+        ax (plt.Axes):  Matplotlib axis to render to (Default: None)
+    """
     #fig = ax.figure
 
     # Core lines
@@ -301,6 +327,9 @@ def figure_spawn(fig_kw=None):
         %matplotlib qt
         fig_draw, ax_draw = figure_spawn()
 
+    Args:
+        fig_kw (fig_kw): fig_kw (Default: None)
+
     Returns:
         (fig_draw, ax_draw)
     '''
@@ -344,6 +373,13 @@ def figure_spawn(fig_kw=None):
 #######################################################################
 
 def _axis_set_watermark_img(ax:plt.Axes, file:str, size : float = 0.25):
+    """Burn the axis watermark into the image
+
+    Args:
+        ax (plt.Axes):  Matplotlib axis to render to (Default: None)
+        file (str): the file
+        size (float): the size (Default: 0.25)
+    """
     ### Load image
     datafile = cbook.get_sample_data(str(file), asfileobj=False)
     img = image.imread(datafile)
@@ -366,8 +402,8 @@ def _axis_set_watermark_img(ax:plt.Axes, file:str, size : float = 0.25):
 def clear_axis(ax: plt.Axes):
     """Clear all plotted objects on an axis including lines, patches, tests, tables,
     artists, images, mouseovers, child axes, legends, collections, and containers
-    See:
-        https://github.com/matplotlib/matplotlib/blob/master/lib/matplotlib/axes/_base.py#L1040
+    See: https://github.com/matplotlib/matplotlib/blob/master/lib/matplotlib/axes/_base.py#L1040
+    
     Args:
         ax (plt.Axes): MPL axis to clear
     """

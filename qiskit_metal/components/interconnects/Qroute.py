@@ -1,6 +1,7 @@
 import numpy as np
 from qiskit_metal.draw.utility import vec_unit_planar
-from qiskit_metal import draw, QComponent
+from qiskit_metal import draw#, QComponent
+from qiskit_metal.components import QComponent
 from numpy.linalg import norm
 from typing import List, Tuple, Union
 
@@ -15,9 +16,7 @@ class Qroute:
         """
         Arguments:
             pin_start (pin object): reference to the connecting pin
-            pin_end (pin object): reference to the connecting pin
-
-        
+            pin_end (pin object): reference to the connecting pin      
         """
         self.points = np.expand_dims(pin_start.position, axis=0)
         self.pin_start = pin_start
@@ -48,21 +47,23 @@ class Qroute:
         self.points = np.append(self.points, [self.points[-1] + self.head_direction * length], axis=0)
 
     def go_left(self, length: float):
-        # THIS METHOD IS NOT USED AT THIS TIME (7/2/20). PLAN TO USE
         """Straight line 90deg counter-clock-wise direction w.r.t. Oriented_Point
 
         Args:
             length (float): how much to move by
+
+        THIS METHOD IS NOT USED AT THIS TIME (7/2/20). PLAN TO USE
         """
         self.head_direction = draw.Vector.rotate(self.head_direction, np.pi / 2)
         self.points = np.append(self.points, [self.points[-1] + self.head_direction * length], axis=0)
 
     def go_right(self, length: float):
-        # THIS METHOD IS NOT USED AT THIS TIME (7/2/20). PLAN TO USE
         """Straight line 90deg clock-wise direction w.r.t. Oriented_Point
 
         Args:
             length (float): how much to move by
+
+        THIS METHOD IS NOT USED AT THIS TIME (7/2/20). PLAN TO USE
         """
         self.head_direction = draw.Vector.rotate(self.head_direction, -1 * np.pi / 2)
         self.points = np.append(self.points, [self.points[-1] + self.head_direction * length], axis=0)
@@ -83,7 +84,6 @@ class Qroute:
             return length + abs(norm(self.points[x] - self.pin_end.position))
 
     def route_to_align(self, concurrent_array):
-        # THIS METHOD IS NOT USED AT THIS TIME (7/2/20). RE_EVALUATE BASED ON NEED.
         """
         In this code, meanders are aligned to face each-other. So they are easier to connect.
 
@@ -95,7 +95,9 @@ class Qroute:
             * If it cannot meander just returns the initial start point
 
         Arguments:
-            concurrent_array {Oriented_2D_Array}: Other end of the CPW
+            concurrent_array (Oriented_2D_Array): Other end of the CPW
+
+        THIS METHOD IS NOT USED AT THIS TIME (7/2/20). PLAN TO USE
         """
         print(self.points[-1])
         print(concurrent_array.positions[-1])

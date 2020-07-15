@@ -1,12 +1,15 @@
 import numpy as np
 from numpy.linalg import norm
-from qiskit_metal import draw, Dict, QComponent
+from qiskit_metal import draw, Dict#, QComponent
+from qiskit_metal.components import QComponent
 
 class CpwAutoStraightLine(QComponent):
 
     """
     A non-meandered basic CPW that is auto-generated between 2 components.
     Designed to avoid self-collisions and collisions with components it is attached to.
+
+    This class extends the `QComponent` class.
 
     Assumptions:
 
@@ -29,6 +32,7 @@ class CpwAutoStraightLine(QComponent):
             end='22um'
         )
     )
+    """Default options"""
     
     def getpts(self, startpin: str, endpin: str, width: float, segments: int, leadstart: float, leadend: float, constaxis=0, constval=0) -> list:
         """

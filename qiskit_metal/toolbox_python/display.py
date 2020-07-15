@@ -6,9 +6,12 @@ Utility display functions used in the tutorials.
 
 from IPython.display import display, HTML, Image
 
+__all__ = ['get_screenshot', 'format_dict_ala_z']
+
 ################################################################
 
 class Headings:
+    """Headings class"""
     __h1__ = """
     <h1 style="
         background-color: #d4418e;
@@ -24,6 +27,7 @@ class Headings:
 
     @classmethod
     def h1(cls, text):
+        """Display the HTML"""
         display(HTML(cls.__h1__.replace('!!!!', text)))
 
 
@@ -34,6 +38,13 @@ def get_screenshot(self:QMainWindow, name='shot.png', type_='png', do_display=Tr
     """
     Grad a screenshot of the main window,
     save to file, and then copy to clipboard.
+
+    Args:
+        self (QMainWindow): window to take the screenshot of
+        name (str): file to save the screenshot to (Default: 'shot.png')
+        type (str): type of file to save (Default: 'png')
+        do_display (bool): True to display the file (Default: True)
+        disp_ops (dict): disctionary of options (Default: None)
     """
 
     path = Path(name).resolve()
@@ -52,7 +63,19 @@ def get_screenshot(self:QMainWindow, name='shot.png', type_='png', do_display=Tr
 
 
 def format_dict_ala_z(dic, indent=0, key_width=20, do_repr=True, indent_all:int=2, indent_keys=5):
+    """Format the dictionary
 
+    Args:
+        dic (dict): Dictionary to format
+        indent (int): indentation spaces (Default: 0)
+        key_width (int): width of the key (Default: 20)
+        do_repr (bool): True to do the cononical string representation (Default: True)
+        indent_all (int): indentation for everything (Default: 2)
+        indent_keys (int): indentation for the keys (Default: 5)
+
+    Returns:
+        str: string repesentation of the dictionary
+    """
     indent_all_full = indent_all + indent*indent_keys
 
     text = ''

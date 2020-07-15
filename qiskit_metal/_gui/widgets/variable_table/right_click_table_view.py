@@ -10,6 +10,8 @@ class RightClickView(QTableView):
     Standard QTableView with drop-down context menu upon right-clicking.
     Menu allows for row deletion and renaming a cell.
 
+    This class extends the `QTableView` class.
+
     Access:
         gui.variables_window.ui.tableView
     """
@@ -24,6 +26,7 @@ class RightClickView(QTableView):
         QTimer.singleShot(200, self.style_me) # not sure whu the ui isnt unpdating these here.
 
     def style_me(self):
+        """Style this widget"""
         # Also can do in the ui file, but doesn't always transalte for me for some reason
         self.horizontalHeader().show()
         self.verticalHeader().hide()
@@ -34,6 +37,9 @@ class RightClickView(QTableView):
     def contextMenuEvent(self, event: QContextMenuEvent):
         """
         Create options for drop-down context menu.
+
+        Args:
+            event (QContextMenuEvent): the event
         """
         self.right_click_menu = QMenu(self)
         self.right_click_menu._d = self.right_click_menu.addAction('Delete')
@@ -46,6 +52,12 @@ class RightClickView(QTableView):
     def getPosition(self, clickedIndex: QPoint):
         """
         Obtain location of clicked cell in form of row name and number.
+
+        Args:
+            clickedIndex (QPoint): the QPoint of the click
+
+        Returns:
+            tuple: name, index
         """
         index = self.indexAt(clickedIndex)
         name = list(self.gui.model._data.keys())[index.row()]
@@ -56,6 +68,10 @@ class RightClickView(QTableView):
     def deleteRow(self, row_name: str, row_number: int):
         """
         Create message box to confirm row deletion.
+
+        Args:
+            row_name (str): name of the row to delete
+            row_number (int): number of the row being deleted
         """
         if row_number > -1:
             choice = QMessageBox.question(self, '', f'Are you sure you want to delete {row_name}?',
@@ -67,6 +83,10 @@ class RightClickView(QTableView):
     def renameRow(self, row_name: str, index: QModelIndex):
         """
         Create message box to confirm row renaming and new name.
+
+        Args:
+            row_name (str): name of the row to rename
+            index (QModelIndex): index of the row to rename
         """
         if index.row() > -1:
             text, okPressed = QInputDialog.getText(
