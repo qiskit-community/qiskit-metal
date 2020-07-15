@@ -27,12 +27,14 @@ class QRenderer():
     """Abstract base class for all Renderers of Metal designs and their components and qgeometry.
 
     Handles:
+        ```
         designs
             components
                 qgeometry
                     paths
                     polys
             chips
+        ```
     """
 
     name = 'base'  # overwrite this!
