@@ -23,33 +23,47 @@
 # THE SOFTWARE.
 #
 # ###########################################################################*/
-"""Pan and zoom interaction to plug on a matplotlib Figure.
+"""
+Pan and zoom interaction to plug on a matplotlib Figure.
+
 Interaction:
-- Zoom in/out with the mouse wheel
-- Pan figures by dragging the mouse with left button pressed
-- Select a zoom-in area by dragging the mouse with right button pressed
+    - Zoom in/out with the mouse wheel
+    - Pan figures by dragging the mouse with left button pressed
+    - Select a zoom-in area by dragging the mouse with right button pressed
+
 It provides a figure_pz function to create a Figure with interaction.
+
 Example:
->>> import matplotlib.pyplot as plt
->>> from mpl_interaction import figure_pz
->>> fig = figure_pz()
->>> ax = fig.add_subplot(1, 1, 1)
->>> ax.plot((1, 2, 1))
->>> plt.show()
+
+.. code-block:: python
+
+    import matplotlib.pyplot as plt
+    from mpl_interaction import figure_pz
+    fig = figure_pz()
+    ax = fig.add_subplot(1, 1, 1)
+    ax.plot((1, 2, 1))
+    plt.show()
+
 The :class:`PanAndZoom` class can be used to add interaction
 to an existing Figure.
+
 Example:
->>> import matplotlib.pyplot as plt
->>> from mpl_interaction import PanAndZoom
->>> fig = plt.figure()
->>> pan_zoom = PanAndZoom(fig)  # Add support for pan and zoom
->>> ax = fig.add_subplot(1, 1, 1)
->>> ax.plot((1, 2, 1))
->>> plt.show()
+
+.. code-block:: python
+
+    import matplotlib.pyplot as plt
+    from mpl_interaction import PanAndZoom
+    fig = plt.figure()
+    pan_zoom = PanAndZoom(fig)  # Add support for pan and zoom
+    ax = fig.add_subplot(1, 1, 1)
+    ax.plot((1, 2, 1))
+    plt.show()
+
 Known limitations:
-- Only support linear and log scale axes.
-- Zoom area not working well with keep aspect ratio.
-- Interfere with matplotlib toolbar.
+    - Only support linear and log scale axes.
+    - Zoom area not working well with keep aspect ratio.
+    - Interfere with matplotlib toolbar.
+
 """
 
 import logging

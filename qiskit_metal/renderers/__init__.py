@@ -53,18 +53,8 @@ MPL Submodules
 .. autosummary::
     :toctree: ../stubs/
 
-    mpl_interaction-TBD
-    mpl_toolbox-TBD
-
-
-Ansys Submodules
-----------------
-
-.. autosummary::
-    :toctree: ../stubs/
-
-    config-TBD
-    parse-TBD
+    mpl_interaction
+    mpl_toolbox
 
 
 """
@@ -81,3 +71,6 @@ if config.is_building_docs():
     from .renderer_mpl.mpl_interaction import PanAndZoom
     from .renderer_mpl.mpl_renderer import QMplRenderer
     from .renderer_mpl.extensions.animated_text import AnimatedText
+
+    from .renderer_mpl import mpl_interaction
+    from .renderer_mpl import mpl_toolbox

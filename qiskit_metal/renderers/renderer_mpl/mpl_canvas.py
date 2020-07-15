@@ -282,6 +282,7 @@ class PlotCanvas(FigureCanvas):
     Main Plot canvas widget
 
     This class extends the `FigureCanvas` class.
+
     Access with:
         `canvas = gui.canvas`
     """
