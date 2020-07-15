@@ -68,9 +68,9 @@ Widgets
     BranchNode
     LeafNode
     QTreeModel_Options
-    QTreeView_Options-TBD
-    QTextEditLogger-TBD
-    LogHandler_for_QTextLog-TBD
+    QTreeView_Options
+    QTextEditLogger
+    LogHandler_for_QTextLog
     QMainWindowPlot
     PropertyTableWidget
     PropValTable-TBD
@@ -117,6 +117,9 @@ if config.is_building_docs():
     from qiskit_metal._gui.widgets.edit_component.tree_model_options import BranchNode
     from qiskit_metal._gui.widgets.edit_component.tree_model_options import LeafNode
     from qiskit_metal._gui.widgets.edit_component.tree_model_options import QTreeModel_Options
+    from qiskit_metal._gui.widgets.edit_component.tree_view_options import QTreeView_Options
+    from qiskit_metal._gui.widgets.log_widget.log_metal import QTextEditLogger
+    from qiskit_metal._gui.widgets.log_widget.log_metal import LogHandler_for_QTextLog
     from qiskit_metal._gui.widgets.plot_widget.plot_window import QMainWindowPlot
     from qiskit_metal._gui.widgets.variable_table.prop_val_table_gui import PropertyTableWidget
 
