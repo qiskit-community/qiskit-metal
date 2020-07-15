@@ -22,6 +22,8 @@ File contains some config definitions. Mostly internal.
 
 import logging
 
+__all__ = ['setup_logger']
+
 def setup_logger(logger_name,
                  log_format,
                  log_datefmt,
@@ -41,12 +43,28 @@ def setup_logger(logger_name,
 
     Integrates logging with the warnings module.
 
+    Args:
+        logger_name (str): name of the log
+        log_format (format): format of the log
+        log_datefmt (format): format of the date
+        level_stream (log level): log level of the stream (Default: logging.INFO)
+        level_base (log level): log level of the base (Default: logging.DEBUG)
+        force_set (bool): True to force (Default: False)
+        capture_warnings (bool): True to capture warnings (Default: None)
+        propagate (bool): True to propagate (Default: False)
+        create_stream (bool): True to create the stream (Default: True)
+
+    Returns:
+        logging.Logger: the logger
+
     To see the logging levels you can use:
-    ```
+
+    .. code-block:: python
+
         print(logger)
         print(logger.zkm_c_handler)
         print(gui._log_handler)
-    ```
+
     '''
 
     logger = logging.getLogger(logger_name)  # singleton

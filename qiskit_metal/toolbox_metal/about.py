@@ -13,6 +13,8 @@
 # that they have been altered from the originals.
 
 """
+Reports a summary of information on Qiskit Metal and dependencies
+
 @author: Zlatko Minev
 @date: 2020
 """
@@ -27,6 +29,9 @@ __all__ = ['about']
 def about():
     """
     Reports a summary of information on Qiskit Metal and dependencies.
+
+    Returns:
+        str: About message
     """
     import qiskit_metal
 

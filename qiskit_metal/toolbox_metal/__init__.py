@@ -25,18 +25,24 @@ Created on Tue May 14 17:13:40 2019
 
 @author: Zlatko Minev
 
-UNDER CONSTRUCTION
-
-UNDER-CONSTRUCTION
+Submodules
 ---------------
 
 .. autosummary::
     :toctree: ../stubs/
 
-    UNDER-CONSTRUCTION
+    about
+    import_export
+    parsing
 
 """
 
 from .parsing import parse_value
 from .parsing import is_variable_name
 from .parsing import is_numeric_possible
+
+from .. import config
+if config.is_building_docs():
+    from . import about
+    from . import import_export
+    from . import parse_value

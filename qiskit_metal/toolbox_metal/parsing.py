@@ -20,7 +20,7 @@ and how it is handled. Some basic arithemetic can be handled as well,
 such as `'-2 * 1e5 nm'` will yield float(-0.2) when the default units are set to `mm`.
 
 Example parsing values test:
-------------------
+----------------------------
     .. code-block:: python
 
         from qiskit_metal.toolbox_metal.parsing import *
@@ -35,7 +35,8 @@ Example parsing values test:
 
         vars_ = Dict({'x':5.0, 'y':'5um', 'cpw_width':'10um'})
 
-        print('------------------------------------------------\nString: Basics')
+        print('------------------------------------------------')
+        print('String: Basics')
         test(1, vars_)
         test(1., vars_)
         test('1', vars_)
@@ -65,24 +66,28 @@ Example parsing values test:
         test(' + 1. ', vars_)
         test('1 .', vars_)
 
-        print('------------------------------------------------\nString: Arithmetic')
+        print('------------------------------------------------')
+        print('String: Arithmetic')
         test('2*1', vars_)
         test('2*10mm', vars_)
         test('-2 * 1e5 nm', vars_)
 
-        print('------------------------------------------------\nString: Variable')
+        print('------------------------------------------------')
+        print('String: Variable')
         test('x', vars_)
         test('y', vars_)
         test('z', vars_)
         test('x1', vars_)
         test('2*y', vars_)
 
-        print('------------------------------------------------\nString: convert list and dict')
+        print('------------------------------------------------')
+        print('String: convert list and dict')
         test2(' [1,2,3.,4., "5um", " -0.1e6 nm"  ] ', vars_)
         test2(' {3:2, 4: " -0.1e6 nm"  } ', vars_)
 
-
-        print('\n\n------------------------------------------------\nDict: convert list and dict\n')
+        print('')
+        print('------------------------------------------------')
+        print('Dict: convert list and dict')
         my_dict = Dict(
             string1 = '1m',
             string2 = '1mm',
@@ -161,6 +166,7 @@ Returns:
         'dict1': {'key1': 4e-06, '2mm': 0.1}}
 
 @date: 2019
+
 @author: Zlatko K. Minev, Thomas McConkey (IBM)
 '''
 
@@ -175,7 +181,7 @@ from .. import Dict, config, logger
 
 __all__ = ['parse_value',  # Main function
            'is_variable_name',  # extra helpers
-           'is_numeric_possible']
+           'is_numeric_possible', 'is_for_ast_eval', 'is_true', 'parse_options']
 
 #########################################################################
 # Constants
@@ -189,10 +195,10 @@ def is_true(value: str) -> bool:
     """Check if a value is true or not
 
     Arguments:
-        value {str} -- Value to check
+        value (str): Value to check
 
     Returns:
-       Bool
+       bool: Is the string a true
     """
     return value in TRUE_STR
 
@@ -217,14 +223,17 @@ def _parse_string_to_float(expr: str):
     Original code: pyEPR.hfss - see file.
 
     Arguments:
-        expr {str} -- String expression such as '1nm'.
+        expr (str): String expression such as '1nm'.
 
     Internal:
-        to_units {str} -- Units to conver the value to, such as 'mm'.
-                            Hardcoded to  config.DEFAULT.units
+        to_units (str): Units to conver the value to, such as 'mm'.
+                        Hardcoded to  config.DEFAULT.units
 
     Returns:
-        float -- Converted value, such as float(1e-6)
+        float: Converted value, such as float(1e-6)
+
+    Raises:
+        Exception: Errors in parsing
     """
     try:
         return UREG.Quantity(expr).to(units).magnitude
@@ -245,10 +254,10 @@ def is_variable_name(test_str: str):
     """Is the test string a valid name for a variable or not?
 
     Arguments:
-        test_str {str} -- test string
+        test_str (str): test string
 
     Returns:
-        bool
+        bool: is str a variable name
     """
     return test_str.isidentifier()
 
@@ -259,10 +268,10 @@ def is_for_ast_eval(test_str: str):
     such as "[1, 2]", that can be evaluated by ast eval
 
     Arguments:
-        test_str {str} -- test string
+        test_str (str): test string
 
     Returns:
-        bool
+        bool: is test_str a valid list of dict strings
     """
     return ('[' in test_str and ']' in test_str) or \
            ('{' in test_str and '}' in test_str)
@@ -273,10 +282,10 @@ def is_numeric_possible(test_str: str):
     Is the test string a valid possible numerical with /or w/o units.
 
     Arguments:
-        test_str {str} -- test string
+        test_str (str): test string
 
     Returns:
-        bool
+        bool: is the test string a valid possible numerical
     """
     return test_str[0].isdigit() or test_str[0] in ['+', '-', '.']
     # look into pyparsing
@@ -290,25 +299,20 @@ def parse_value(value: str, variable_dict: dict):
 
     Handled Inputs:
 
-        Strings:
-            Strings of numbers, numbers with units; e.g., '1', '1nm', '1 um'
-                Converts to int or float.
-                Some basic arithmatic is possible, see below.
-            Strings of variables 'variable1'.
-                Variable interpertation will use string method
-                isidentifier `'variable1'.isidentifier()
-            Strings of
-
-        Dictionaries:
+        Strings of numbers, numbers with units; e.g., '1', '1nm', '1 um'
+            Converts to int or float.
+            Some basic arithmatic is possible, see below.
+        Strings of variables 'variable1'.
+            Variable interpertation will use string method
+            isidentifier 'variable1'.isidentifier()
+        Strings of Dictionaries:
             Returns ordered `Dict` with same key-value mappings, where the values have
             been subjected to parse_value.
-
-        Itterables(list, tuple, ...):
+        Strings of Itterables(list, tuple, ...):
             Returns same kind and calls itself `parse_value` on each elemnt.
 
         Numbers:
             Returns the number as is. Int to int, etc.
-
 
     Arithemetic:
         Some basic arithemetic can be handled as well, such as `'-2 * 1e5 nm'`
@@ -322,11 +326,11 @@ def parse_value(value: str, variable_dict: dict):
             >> ?qiskit_metal.toolbox_metal.parsing
 
     Arguments:
-        value {[str]} -- string to parse
-        variable_dict {[dict]} -- dict pointer of variables
+        value (str): string to parse
+        variable_dict (dict): dict pointer of variables
 
     Return:
-        Parse value: str, float, list, tuple, or ast eval
+        str, float, list, tuple, or ast eval: Parsed value
     """
 
     if isinstance(value, str):
@@ -394,6 +398,11 @@ def parse_options(params: dict, parse_names: str, variable_dict=None):
     """
     Calls parse_value to extract from a dictionary a small subset of values.
     You can specify parse_names = 'x,y,z,cpw_width'
+
+    Args:
+        params (dict): dictionary of params
+        parse_names (str): name to parse
+        variable_dict (dict): dictionary of variables (Default: None)
     """
 
     # Prep args
