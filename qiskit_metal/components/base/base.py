@@ -411,7 +411,7 @@ class QComponent():
         self.status = 'failed'
         if self._made:  # already made, just remaking
             # TODO: this is probably very inefficient, design more efficient way
-            self.design.elements.delete_component_id(self.id)
+            self.design.qgeometry.delete_component_id(self.id)
             self.design._delete_all_pins_for_component(self.id)
 
             self.make()
@@ -843,8 +843,8 @@ class QComponent():
         # assert (subtract and helper) == False, "The object can't be a subtracted helper. Please"\
         #    " choose it to either be a helper or a a subtracted layer, but not both. Thank you."
 
-        self.design.elements.add_qgeometry(kind, self.id, geometry, subtract=subtract,
-                                           helper=helper, layer=layer, chip=chip, **kwargs)
+        self.design.qgeometry.add_qgeometry(kind, self.id, geometry, subtract=subtract,
+                                            helper=helper, layer=layer, chip=chip, **kwargs)
 
     def __repr__(self, *args):
         b = '\033[94m\033[1m'
@@ -863,21 +863,21 @@ class QComponent():
  {b}id:      {b1}{self.id}{e}"""
 
 ############################################################################
-# Geometry handling of created elements
+# Geometry handling of created qgeometry
 
     @property
-    def elements_types(self) -> List[str]:
+    def qgeometry_types(self) -> List[str]:
         """Get a list of the names of the element tables.
 
         Returns:
             List[str]: Name of element table or type; e.g., 'poly' and 'path'
         """
-        return self.design.elements.get_element_types()
+        return self.design.qgeometry.get_element_types()
 
     def qgeometry_dict(self, element_type: str) -> Dict_[str, BaseGeometry]:
         """
         Returns a dict of element geoemetry (shapely geometry) of the component
-        as a python dict, where the dict keys are the names of the elements
+        as a python dict, where the dict keys are the names of the qgeometry
         and the corresponding values are the shapely geometries.
 
         Arguments:
@@ -887,8 +887,8 @@ class QComponent():
             List[BaseGeometry]: Geometry diction or None if an error in the name of the element
             type (ie. table)
         """
-        if element_type == 'all' or self.design.elements.check_element_type(element_type):
-            return self.design.elements.get_component_geometry_dict(self.name, element_type)
+        if element_type == 'all' or self.design.qgeometry.check_element_type(element_type):
+            return self.design.qgeometry.get_component_geometry_dict(self.name, element_type)
 
     def qgeometry_list(self, element_type: str = 'all') -> List[BaseGeometry]:
         """
@@ -903,8 +903,8 @@ class QComponent():
             List[BaseGeometry]: Geometry list or None if an error in the name of the element type
             (ie. table)
         """
-        if element_type == 'all' or self.design.elements.check_element_type(element_type):
-            return self.design.elements.get_component_geometry_list(self.id, element_type)
+        if element_type == 'all' or self.design.qgeometry.check_element_type(element_type):
+            return self.design.qgeometry.get_component_geometry_list(self.id, element_type)
 
     def qgeometry_table(self,  element_type: str) -> pd.DataFrame:
         """
@@ -917,8 +917,8 @@ class QComponent():
             pd.DataFrame: Element table for the component or None if an error in the name of
             the element type (ie. table)
         """
-        if element_type == 'all' or self.design.elements.check_element_type(element_type):
-            return self.design.elements.get_component(self.name, element_type)
+        if element_type == 'all' or self.design.qgeometry.check_element_type(element_type):
+            return self.design.qgeometry.get_component(self.name, element_type)
 
     def qgeometry_bounds(self):
         """
@@ -929,20 +929,20 @@ class QComponent():
             component as a whole.
 
         Uses:
-            design.elements.get_component_bounds
+            design.qgeometry.get_component_bounds
         """
-        bounds = self.design.elements.get_component_bounds(self.name)
+        bounds = self.design.qgeometry.get_component_bounds(self.name)
         return bounds
 
     def qgeometry_plot(self, ax: 'matplotlib.axes.Axes' = None, plot_kw: dict = None) -> List:
-        """    Draw all the elements of the component (polys and path etc.)
+        """    Draw all the qgeometry of the component (polys and path etc.)
 
         Arguments:
             ax (matplotlib.axes.Axes):  Matplotlib axis to draw on (Default: None -- gets the current axis)
             plot_kw (dict): Parameters dictionary
 
         Returns:
-            List: The list of elements draw
+            List: The list of qgeometry draw
 
         Example use:
             Suppose you had a component called q1:
@@ -950,7 +950,7 @@ class QComponent():
                 fig, ax = draw.mpl.figure_spawn()
                 q1.qgeometry_plot(ax)
         """
-        elements = self.qgeometry_list()
+        qgeometry = self.qgeometry_list()
         plot_kw = {}
-        draw.mpl.render(elements, ax=ax, kw=plot_kw)
-        return elements
+        draw.mpl.render(qgeometry, ax=ax, kw=plot_kw)
+        return qgeometry

@@ -144,8 +144,8 @@ class QMplRenderer():
             ax.add_collection(PatchCollection(poly_array, **mpl_kw))
 
     @property
-    def elements(self) -> 'ElementHandler':
-        return self.design.elements
+    def qgeometry(self) -> 'QGeometryTables':
+        return self.design.qgeometry
 
     # TODO: move to some config and user input also make widget
     styles = {
@@ -178,7 +178,7 @@ class QMplRenderer():
 
     def render_tables(self, ax: Axes):
 
-        for element_type, table in self.elements.tables.items():
+        for element_type, table in self.qgeometry.tables.items():
             # Mask the table
             table = table[self.get_mask(table)]
 

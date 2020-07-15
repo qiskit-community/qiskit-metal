@@ -69,6 +69,6 @@ class NGon(QComponent):
         n_polygon = draw.translate(n_polygon, p.pos_x, p.pos_y)
 
         ##############################################
-        # add elements
+        # add qgeometry
         self.add_qgeometry('poly', {'n_polygon': n_polygon}, subtract=p.subtract,
                            helper=p.helper, layer=p.layer, chip=p.chip)

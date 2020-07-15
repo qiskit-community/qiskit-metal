@@ -12,7 +12,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-from qiskit_metal import draw, Dict#, QComponent
+from qiskit_metal import draw, Dict  # , QComponent
 from qiskit_metal.components.base import QComponent
 #from qiskit_metal import is_true
 
@@ -60,6 +60,6 @@ class RectangleHollow(QComponent):
         rect = draw.subtract(rect, rec1)
         rect = draw.rotate(rect, p.rotation)
 
-        # add elements
+        # add qgeometry
         self.add_qgeometry('poly', {'rect': rect}, subtract=p.subtract,
-                          helper=p.helper, layer=p.layer, chip=p.chip)
+                           helper=p.helper, layer=p.layer, chip=p.chip)

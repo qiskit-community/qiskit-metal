@@ -93,7 +93,7 @@ class NSquareSpiral(QComponent):
         spiral_list = draw.translate(spiral_list, p.pos_x, p.pos_y)
 
         ##############################################
-        # add elements
+        # add qgeometry
         self.add_qgeometry('path', {'n_spiral': spiral_list}, width=p.width, subtract=p.subtract,
                            helper=p.helper, layer=p.layer, chip=p.chip)
 

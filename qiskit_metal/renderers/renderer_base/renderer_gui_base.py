@@ -18,11 +18,12 @@
 """
 
 from ...designs import QDesign, is_design
-from ...elements import QElementTables
+from ...elements import QGeometryTables
 
 from . import QRenderer
 
 __all__ = ['QRendererGui']
+
 
 class QRendererGui(QRenderer):
     """Abstract base class for the GUI rendering. Extends `QRenderer`.
@@ -42,9 +43,9 @@ class QRendererGui(QRenderer):
         """
         super().__init__(design=design, initiate=initiate)
 
-        self.gui=gui
-        self.fig=None # current figure
-        self.ax=None # current ax
+        self.gui = gui
+        self.fig = None  # current figure
+        self.ax = None  # current ax
 
     def set_fig(self, fig):
         """Set the given figure
@@ -52,15 +53,15 @@ class QRendererGui(QRenderer):
         Args:
             fig (figure): figure to set
         """
-        self.fig=fig
+        self.fig = fig
 
-    def set_ax(self,ax):
+    def set_ax(self, ax):
         """Set the given ax
 
         Args:
             ax (ax): ax to set
         """
-        self.ax=ax
+        self.ax = ax
 
     def setup_fig(self, fig):
         """Setup the given figure
@@ -90,7 +91,7 @@ class QRendererGui(QRenderer):
         Args:
             selection (selection): Not used
         """
-        #TOOD: handle selection
+        # TOOD: handle selection
         for _, component in self.design.components.items():
             self.render_component(component)
 
@@ -113,7 +114,7 @@ class QRendererGui(QRenderer):
         """
         raise NotImplementedError()
 
-    def render_connectors(self): #alredy covered via other code?
+    def render_connectors(self):  # alredy covered via other code?
         """Render connectors
 
         Raises:

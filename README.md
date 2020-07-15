@@ -8,7 +8,7 @@
 To setup a development environment, first `git clone` this repository.
 1. On your computer, clone the repository from [qiskit-metal/dev-0.2](https://github.ibm.com/IBM-Q-Restricted-Research/qiskit-metal/edit/v0.2-dev/). (If you don't have git installed, you can download and use [GitHub Desktop GUI](https://desktop.github.com/) and see these [notes](https://help.github.com/en/desktop/contributing-to-projects/cloning-a-repository-from-github-to-github-desktop).
 
-Then Qiskit Metal can either be installed using a [conda environment](https://docs.conda.io/en/latest/miniconda.html) or a Python virtual environment, as described below. We recomend conda. 
+Then Qiskit Metal can either be installed using a [conda environment](https://docs.conda.io/en/latest/miniconda.html) or a Python virtual environment, as described below. We recommend conda. 
 
 *NOTE:* on Windows, the conda environment is strongly recommended because Shapely is difficult to install directly via pip.
 
@@ -16,20 +16,29 @@ Then Qiskit Metal can either be installed using a [conda environment](https://do
 
 To use a conda environment, assuming [you have conda installed](https://docs.conda.io/projects/conda/en/latest/user-guide/install/), we will install the qiskit_metal package locally. 
 
-2. `Option 1: The simple way.` For convinience, you can try to install directly in your `base` environement, if it is relativly up to date. In the top-level of the repository:
+2. `Option 1: The simple way.` For convenience, you can try to install directly in your `base` environment, if it is relatively up to date. In the top-level of the repository:
 ```
 python -m pip install -e .
 ```
 The -e flag install qiskit_metal in [editable mode](https://pip.pypa.io/en/stable/reference/pip_install/#cmdoption-e).
 
-2. `Option 2: The fool-proof way.` It is possible that you can run into version issues in the above. Instead, to avoid this, you 
-can rather create a new conda environemtn to avoid this issue. Execute these commands in the top-level of the repository:
+2. `Option 2: The fool-proof way.` It is possible that you may run into version issues in the above. To prevent this, you may want to create a new conda environment instead. To do so, execute these commands in the top-level of the repository:
 ```
 conda env create -n <env_name> environment.yml
 conda activate <env_name>
 python -m pip install -e .
 ```
-This will create a new environemnt with name `<env_name>`, which you can choose as `metal`. We will then activate it. Fianlly, in it, we will install the local package. If you follow this approach, each time you want to use the package, or launch a jupyter notebook, you MUST first run `conda activate <env_name>`. See what a [conda environment is](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html)
+This will first create a new environment with name `<env_name>`, which you can choose to name `metal` for example. Then we activate the new environment. Finally, we install the local package inside that environment.
+
+Important: Everytime you intend to develop code using this environment, you MUST first run the command: `conda activate <env_name>`. See what a [conda environment is](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html)
+
+To use the new environment inside jupyter lab. You will need to follow these additional steps right after the above:
+```
+conda install ipykernel
+ipython kernel install --user --name=<any_name_for_kernel>
+```
+This will create a kernel based on the environment that is "active" at the moment and you will be able to select that kernel inside jupyter lab
+
 
 ### Without conda: Virtual environment setup (alternative setup)
 
@@ -57,7 +66,7 @@ Here are some things to consider when setting up a development environment:
 
 ## Authors and Citation
 
-Qiskit Metal is the work of [many people](https://github.com/Qiskit/qiskit-terra/graphs/contributors) who contribute to the project at different levels. Metal was concieved of and developed by Zlatko Minev at IBM, then co-led with Thomas McConkey. If you use Qiskit, please cite as per the included [BibTeX file](TODO).For icon attributions, see [here](\qiskit_metal\_gui\_imgs\icon_attributions.txt).
+Qiskit Metal is the work of [many people](https://github.com/Qiskit/qiskit-terra/graphs/contributors) who contribute to the project at different levels. Metal was conceived and developed by Zlatko Minev at IBM, then co-led with Thomas McConkey. If you use Qiskit, please cite as per the included [BibTeX file](TODO).For icon attributions, see [here](\qiskit_metal\_gui\_imgs\icon_attributions.txt).
 
 
 ## License

@@ -91,7 +91,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
             self.ui.actionElements.setText("View")
         else:
             self.ui.tabWidget.setCurrentWidget(self.ui.mainViewTab)
-            self.ui.actionElements.setText("Elements")
+            self.ui.actionElements.setText("QGeometry")
 
     def delete_all_components(self):
         """Delete all components
@@ -167,7 +167,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         """
         path = str(Path(self.gui.path_gui).parent /
                    'components'/'user_components'/'my_qcomponent.py')
-        filename = QFileDialog.getSaveFileName(parent = None,
+        filename = QFileDialog.getSaveFileName(parent=None,
                                                caption='Select a locaiton to save QComponent python file to',
                                                directory=path,
                                                initialFilter='*.py')[0]
@@ -565,23 +565,22 @@ class MetalGUI(QMainWindowBaseHandler):
         # An existing file of the same name is overwritten.
         path.write_text(text)
 
-        ### Load module and class and create instance # TODO: make a function
+        # Load module and class and create instance # TODO: make a function
 
         # Add name
         if not (path.parent is sys.path):
             sys.path.insert(0, str(path.parent))
 
-
         # TODO: try    except ImportError:
         module = importlib.import_module(path.stem)
 
-        ### Potential Warning
+        # Potential Warning
         # If you are dynamically importing a module that was created since the interpreter
         # began execution (e.g., created a Python source file), you may need to call
         #               invalidate_caches()
         # in order for the new module to be noticed by the import system.
 
-        ### Do NOT work:
+        # Do NOT work:
         # importlib.import_module(path.stem, str(path.parent))
 
         # # spec for module and give it name
@@ -593,10 +592,10 @@ class MetalGUI(QMainWindowBaseHandler):
         #     # https://stackoverflow.com/questions/41215729/source-info-missing-from-python-classes-loaded-with-module-from-spec
         #     sys.modules[module_name] = spec_file
 
-        cls = getattr(module, class_name) # get class from module
-        qcomp = cls(self.design, name_instance) # create instance
+        cls = getattr(module, class_name)  # get class from module
+        qcomp = cls(self.design, name_instance)  # create instance
 
-        ### GUI
+        # GUI
         self.refresh_plot()
         self.highlight_components([name_instance])
         self.zoom_on_components([name_instance])
