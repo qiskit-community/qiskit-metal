@@ -73,8 +73,8 @@ Widgets
     LogHandler_for_QTextLog
     QMainWindowPlot
     PropertyTableWidget
-    PropValTable-TBD
-    RightClickView-TBD
+    PropValTable
+    RightClickView
 
 
 Submodules
@@ -122,6 +122,8 @@ if config.is_building_docs():
     from qiskit_metal._gui.widgets.log_widget.log_metal import LogHandler_for_QTextLog
     from qiskit_metal._gui.widgets.plot_widget.plot_window import QMainWindowPlot
     from qiskit_metal._gui.widgets.variable_table.prop_val_table_gui import PropertyTableWidget
+    from qiskit_metal._gui.widgets.variable_table.prop_val_table_model import PropValTable
+    from qiskit_metal._gui.widgets.variable_table.right_click_table_view import RightClickView
 
 else:
     # Main GUI load
