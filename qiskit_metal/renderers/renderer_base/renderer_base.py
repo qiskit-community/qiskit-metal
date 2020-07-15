@@ -27,17 +27,19 @@ class QRenderer():
     """Abstract base class for all Renderers of Metal designs and their components and qgeometry.
 
     Handles:
-        ```
-        designs
-            components
-                qgeometry
-                    paths
-                    polys
-            chips
-        ```
+        ::
+
+            designs
+                components
+                    qgeometry
+                        paths
+                        polys
+                chips
+
     """
 
     name = 'base'  # overwrite this!
+    """name"""
 
     __loaded_renderers__ = set()
     __instantiated_renderers__ = dict()
@@ -49,6 +51,7 @@ class QRenderer():
     #            path=dict(thickness=float, material=str, perfectE=bool),
     #            poly=dict(thickness=float, material=str), )
     element_extensions = dict()
+    """element extentions dictionary"""
 
     # TODO: To add: default parameters for the renderer for component element values.
 

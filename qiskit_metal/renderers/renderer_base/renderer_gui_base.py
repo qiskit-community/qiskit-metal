@@ -31,6 +31,7 @@ class QRendererGui(QRenderer):
     """
 
     name = 'guibase'  # overwrite this!
+    """name"""
 
     def __init__(self, gui, design: QDesign, initiate=True, fig=None, ax=None):
         """

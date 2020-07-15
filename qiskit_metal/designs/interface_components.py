@@ -23,7 +23,12 @@ Module containing Design interface components.
 from copy import deepcopy
 from typing import TYPE_CHECKING, Any, Iterable, List, Optional, TypeVar, Union, Dict as Dict_
 from .. import logger
-from ..components.base.base import QComponent
+
+from .. import config
+if not config.is_building_docs():
+    # Only import QComponent if the docs are NOT being built
+    from ..components.base.base import QComponent
+
 from ..components.base._parsed_dynamic_attrs import is_ipython_magic
 
 if TYPE_CHECKING:
