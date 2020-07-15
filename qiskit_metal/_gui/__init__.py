@@ -83,14 +83,14 @@ Submodules
 .. autosummary::
     :toctree:
 
-    main_window_base-TBD
-    _handle_qt_messages-TBD
-    _toolbox_qt-TBD
-    component_widget-TBD
-    source_editor-TBD
-    source_editor_widget-TBD
-    table_model_options-TBD
-    tree_model_options-TBD
+    main_window_base
+    _handle_qt_messages
+    _toolbox_qt
+    component_widget
+    source_editor
+    source_editor_widget
+    table_model_options
+    tree_model_options
 
 """
 
@@ -124,6 +124,14 @@ if config.is_building_docs():
     from qiskit_metal._gui.widgets.variable_table.prop_val_table_gui import PropertyTableWidget
     from qiskit_metal._gui.widgets.variable_table.prop_val_table_model import PropValTable
     from qiskit_metal._gui.widgets.variable_table.right_click_table_view import RightClickView
+
+    from qiskit_metal._gui.utility import _handle_qt_messages
+    from qiskit_metal._gui.utility import _toolbox_qt
+    from qiskit_metal._gui.widgets.edit_component import component_widget
+    from qiskit_metal._gui.widgets.edit_component import source_editor
+    from qiskit_metal._gui.widgets.edit_component import source_editor_widget
+    from qiskit_metal._gui.widgets.edit_component import table_model_options
+    from qiskit_metal._gui.widgets.edit_component import tree_model_options
 
 else:
     # Main GUI load

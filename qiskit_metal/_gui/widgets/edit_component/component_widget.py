@@ -37,6 +37,8 @@ from .source_editor_widget import create_source_edit_widget
 # from .table_model_options import QTableModel_Options
 from .tree_model_options import QTreeModel_Options
 
+__all__ = ['create_QTextDocument', 'format_docstr']
+
 if TYPE_CHECKING:
     from ...main_window import MetalGUI, QMainWindowExtension
     from ....components import QComponent
@@ -99,6 +101,15 @@ body {
 
 
 def format_docstr(doc: Union[str, None]) -> str:
+    """Format a docstring
+
+    Args:
+        doc (Union[str, None]): string to format
+
+    Returns:
+        str: formatted string
+    """
+    
     if doc is None:
         return ''
     doc = doc.strip()
@@ -115,6 +126,12 @@ def create_QTextDocument(doc: QtWidgets.QTextEdit) -> QtGui.QTextDocument:
     For source doc.
 
     Access with gui.component_window.src_doc
+
+    Args:
+        doc (QtWidget.QTextEdit): text edit widget
+
+    Returns:
+        QtGui.QTextDocument: the document
     """
     document = QtGui.QTextDocument()
 
@@ -228,9 +245,10 @@ class ComponentWidget(QTabWidget):
 
         Returns:
             QComponent: The QComponent in design class which has name of self.component_name.
-            None:   If the name is not in design._components. Also warning will be posted through logger.warning().
-            QComponent: If there are multiple usages of component_name within design._components,
-                        the first component using it will be returned, along with a logger.warning() message.
+            If there are multiple usages of component_name within design._components,
+            the first component using it will be returned, along with a logger.warning() message.
+            None is returned if the name is not in design._components. Also warning will be posted
+            through logger.warning().
         """
         if self.design:
             if self.component_name:

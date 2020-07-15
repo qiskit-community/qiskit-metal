@@ -34,6 +34,10 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QTextCursor
 from PyQt5.QtWidgets import QTextEdit
 
+__all__ = ['definition_generate_html', 'definition_get_source', 'doc_generate_html',
+           'doc_get_object_from_info', 'get_definition_end_position',
+           'get_definition_start_position']
+
 try:
     from pyqode.python.backend import server
     from pyqode.core import api, modes, panels
@@ -479,6 +483,14 @@ css_base = """
   """
 
 def definition_generate_html(defn: 'jedi.api.classes.Definition'):
+    """Generate HTML definition
+
+    Args:
+        defn (jedi.api.classes.Definition): the jedit definition
+
+    Returns:
+        tuple: test, css
+    """
     signatures = defn.get_signatures()
     doc_text = defn.docstring()
     doc_text = doc_text.replace(defn.name, f'<span style="color: #0900ff">{defn.name}</span>', 1)
@@ -507,7 +519,15 @@ f"""
 
 
 def definition_get_source(defn: 'jedi.api.classes.Definition', formatter:HtmlFormatter=None):
+    """Get the source code from definition
 
+    Args:
+        defn (jedi.api.classes.Definition): the jedit definition
+        formatter (HtmlFormatter): the formatter (Default: None)
+
+    Returns:
+        tuple: source_code, source_html, html_css_lex
+    """
     # only in  > 0.17
     if hasattr(defn, 'get_definition_end_position'):
         end = defn.get_definition_end_position()
@@ -540,6 +560,9 @@ def get_definition_end_position(self):
     The (row, column) of the end of the definition range. Rows start with
     1, columns start with 0.
     :rtype: Optional[Tuple[int, int]]
+
+    Returns:
+        int: the end position
     """
     if self._name.tree_name is None:
         return None
@@ -558,6 +581,9 @@ def get_definition_start_position(self):
     The (row, column) of the start of the definition range. Rows start with
     1, columns start with 0.
     :rtype: Optional[Tuple[int, int]]
+
+    Returns:
+        int: the start position
     """
     if self._name.tree_name is None:
         return None
@@ -574,6 +600,18 @@ def get_definition_start_position(self):
 ################################################################################################################################
 # UNUSED
 def doc_generate_html(obj) -> str:
+    """Generate formatted fdoc -- UNUSED
+
+    Args:
+        obj (object): the object
+
+    Returns:
+        str: html
+
+    Raises:
+        TypeError: objcet is the wrong type
+        ValueError: inspectoin failed
+    """
     # Generate formatted fdoc
     # Get docstring
     # doc = inspect.getdoc(obj)
@@ -630,6 +668,14 @@ def doc_generate_html(obj) -> str:
 
 
 def doc_get_object_from_info(info: dict) -> object:
+    """Get objects from given info
+
+    Args:
+        info (dict): the dictionary
+
+    Returns:
+        object: the retrieved object
+    """
 
     module_name = info['call.module.name']
     functi_name = info['call.call_name']

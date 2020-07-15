@@ -572,7 +572,15 @@ class QMainWindowBaseHandler():
 
 
 def kick_start_qApp():
+    """Kick start the application
 
+    Returns:
+        QtCore.QCoreApplication: the application
+
+    Raises:
+        AttributeError: Attribute only exists for Qt >= 5.6
+        Exception: Magic method failure
+    """
     qApp = QtCore.QCoreApplication.instance()
 
     if qApp is None:
