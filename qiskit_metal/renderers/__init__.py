@@ -23,8 +23,6 @@ Created on Tue May 14 17:13:40 2019
 
 @author: Zlatko
 
-UNDER CONSTRUCTION
-
 Renderer Base
 ---------------
 
@@ -41,11 +39,12 @@ MPL Renderer
 .. autosummary::
     :toctree: ../stubs/
 
-    PlotCanvas-TBD
-    MplInteraction-TBD
-    ZoomOnWheel-TBD
-    PanAndZoom-TBD
-    QMplRenderer-TBD
+    PlotCanvas
+    MplInteraction
+    ZoomOnWheel
+    PanAndZoom
+    QMplRenderer
+    AnimatedText
 
 
 MPL Submodules
@@ -76,3 +75,9 @@ from .. import config
 if config.is_building_docs():
     from .renderer_base.renderer_base import QRenderer
     from .renderer_base.renderer_gui_base import QRendererGui
+    from .renderer_mpl.mpl_canvas import PlotCanvas
+    from .renderer_mpl.mpl_interaction import MplInteraction
+    from .renderer_mpl.mpl_interaction import ZoomOnWheel
+    from .renderer_mpl.mpl_interaction import PanAndZoom
+    from .renderer_mpl.mpl_renderer import QMplRenderer
+    from .renderer_mpl.extensions.animated_text import AnimatedText
