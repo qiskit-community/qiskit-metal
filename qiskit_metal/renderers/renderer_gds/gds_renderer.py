@@ -3,6 +3,7 @@ import sys
 import pandas as pd
 import shapely
 import gdspy
+import os
 from typing import TYPE_CHECKING, List
 
 from ... import Dict
@@ -35,19 +36,34 @@ class GDSRender(QRenderer):
         # Create a new GDS library file. It can contains multiple cells.
         gdspy.current_library.cells.clear()
 
-    def path_and_poly_to_gds(self, file_name_and_path: str) -> int:
+    def can_write_to_path(self, file: str) -> int:
+        """Check if can write file.
+
+        Args:
+            file (str): Has the path and/or just the file name. 
+
+        Returns:
+            int: True if access is allowed, else returns False.
+        """
+        directory_name = os.path.dirname(os.path.abspath(file))
+        return os.access(directory_name, os.W_OK)
+
+    def path_and_poly_to_gds(self, file_name: str) -> int:
         '''
         return codes:
-            file has been written
-            path not there
+            0 file_name_and_path can not be written
+            1 file has been written
         '''
 
-        poly_table = design.qgeometry.tables['poly']
+        if not self.can_write_to_path(file_name):
+            return 0
+
+        poly_table = self.design.qgeometry.tables['poly']
         print('design.qgeometry.tables[poly]')
         print(poly_table)
         print(' ')
 
-        path_table = design.qgeometry.tables['path']
+        path_table = self.design.qgeometry.tables['path']
         print('design.qgeometry.tables[path]')
         print(path_table)
         print('')
@@ -55,13 +71,9 @@ class GDSRender(QRenderer):
         poly_geometry = list(poly_table.geometry)
         path_geometry = list(path_table.geometry)
 
-        a_gds = GDSRender(design)
-
         # polys is a gdspy.Polygon
-        polys = poly_table.apply(a_gds.to_gds, axis=1)
-
-        # paths in a gdspy.?
-        #paths = path_table.apply(a_gds.to_gds, axis=1)
+        polys = poly_table.apply(self.qgeometry_to_gds, axis=1)
+        paths = path_table.apply(self.qgeometry_to_gds, axis=1)
 
         # Create a new GDS library file. It can contains multiple cells.
         gdspy.current_library.cells.clear()
@@ -71,10 +83,10 @@ class GDSRender(QRenderer):
         # New cell
         cell = lib.new_cell('TOP', overwrite_duplicate=True)
         cell.add(polys)
-        # cell.add(paths)
+        cell.add(paths)
 
         # Save the library in a file.
-        lib.write_gds('Pins_Example.gds')
+        lib.write_gds(file_name)
 
     def qgeometry_to_gds(self, element: pd.Series):
         """Convert the design.qgeometry table to format used by GDS renderer.
@@ -107,10 +119,11 @@ class GDSRender(QRenderer):
                                  datatype=10,
                                  )
         elif isinstance(geom, shapely.geometry.LineString):
-
-            to_return = gdspy.Polygon(list(geom.coords),
-                                      layer=element.layer if not element['subtract'] else 0,
-                                      datatype=11)
+            width = element.width
+            to_return = gdspy.FlexPath(list(geom.coords),
+                                       width=element.width,
+                                       layer=element.layer if not element['subtract'] else 0,
+                                       datatype=11)
             return to_return
         else:
             #TODO: Handle
