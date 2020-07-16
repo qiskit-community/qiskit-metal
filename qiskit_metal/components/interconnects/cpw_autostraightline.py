@@ -24,6 +24,14 @@ class CpwAutoStraightLine(QComponent):
     """
 
     default_options = Dict(
+        pin_inputs=Dict(
+            start_pin=Dict(
+                component='', # Name of component to start from, which has a pin
+                pin=''), # Name of pin used for pin_start
+            end_pin=Dict(
+                component='', # Name of component to end on, which has a pin
+                pin='') # Name of pin used for pin_end
+                ),
         cpw_width='cpw_width',
         cpw_gap='cpw_gap',
         layer='1',
