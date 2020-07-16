@@ -28,12 +28,18 @@ import qiskit_metal as metal
 class GDSRender(QRenderer):
 
     def __init__(self, design: QDesign, initiate=True):
+        """[summary]
+
+        Args:
+            design (QDesign): Use QGeometry within QDesign  to obtain elements for GDS file. 
+            initiate (bool, optional): True to initiate the renderer. Defaults to True.
+        """
         super().__init__(design=design, initiate=initiate)
         gds_unit = .000001
         self.lib = gdspy.GdsLibrary(units=gds_unit)
 
     def clear_library(self):
-        # Create a new GDS library file. It can contains multiple cells.
+        """Create a new GDS library file. It can contains multiple cells."""
         gdspy.current_library.cells.clear()
 
     def can_write_to_path(self, file: str) -> int:
@@ -46,27 +52,36 @@ class GDSRender(QRenderer):
             int: True if access is allowed, else returns False.
         """
         directory_name = os.path.dirname(os.path.abspath(file))
-        return os.access(directory_name, os.W_OK)
+        if os.access(directory_name, os.W_OK):
+            return True
+        else:
+            self.design.logger.warning(
+                f'Not able to write to directory. File not written.: {directory_name}')
+            return False
 
     def path_and_poly_to_gds(self, file_name: str) -> int:
-        '''
-        return codes:
-            0 file_name_and_path can not be written
-            1 file has been written
-        '''
+        """Use the design which was used to initialize this class.  
+        The QGeometry element types of both "path" and "poly", will  
+        be used, to convert QGeometry to GDS formatted file. 
+
+        Args:
+            file_name (str): File name which can also include directory path.
+
+        Returns:
+            int: 0=file_name can not be written, otherwise 1=file_name has been written
+        """
 
         if not self.can_write_to_path(file_name):
             return 0
 
         poly_table = self.design.qgeometry.tables['poly']
-        print('design.qgeometry.tables[poly]')
-        print(poly_table)
-        print(' ')
+        # print('design.qgeometry.tables[poly]')
+        # print(poly_table)
+        # print(' ')
 
         path_table = self.design.qgeometry.tables['path']
-        print('design.qgeometry.tables[path]')
-        print(path_table)
-        print('')
+        # print('design.qgeometry.tables[path]')
+        # print(path_table)
 
         poly_geometry = list(poly_table.geometry)
         path_geometry = list(path_table.geometry)
@@ -88,7 +103,9 @@ class GDSRender(QRenderer):
         # Save the library in a file.
         lib.write_gds(file_name)
 
-    def qgeometry_to_gds(self, element: pd.Series):
+        return 1
+
+    def qgeometry_to_gds(self, element: pd.Series) -> 'gdspy.polygon':
         """Convert the design.qgeometry table to format used by GDS renderer.
 
         :param element: Expect a shapley object.
