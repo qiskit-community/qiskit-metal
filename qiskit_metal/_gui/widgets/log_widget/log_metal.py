@@ -26,7 +26,10 @@ __all__ = ['QTextEditLogger', 'LogHandler_for_QTextLog']
 
 
 class QTextEditLogger(QTextEdit):
+    """A text edit logger class
 
+    This class extends the `QTextEdit` class
+    """
     timestamp_len = 19
     _logo = 'metal_logo.png'
 
@@ -38,6 +41,10 @@ class QTextEditLogger(QTextEdit):
 
         Get as:
             gui.ui.log_text
+
+        Args:
+            img_path (str): Path to images (Default: '/')
+            dock_window (QDockWidget): the dock window widget (Default: None)
         """
         super().__init__()
 
@@ -65,14 +72,24 @@ class QTextEditLogger(QTextEdit):
         self.setup_menu()
 
     def toggle_autoscroll(self, checked: bool):
+        """Toggle the autoscroll
+
+        Args:
+            checked (bool): True to toggle on, False otherwise
+        """
         self._auto_scroll = bool(checked)
 
     def toggle_timestamps(self, checked: bool):
+        """Toggle the timestamp
+
+        Args:
+            checked (bool): True to toggle on, False otherwise
+        """
         self._show_timestamps = bool(checked)
         self.show_all_messages()
 
     def setup_menu(self):
-
+        """Setup the menu"""
         # Behaviour for menu: the widget displays its QWidget::actions() as context menu.
         # i.e., a local context menu
         self.setContextMenuPolicy(Qt.ActionsContextMenu)
@@ -123,6 +140,7 @@ class QTextEditLogger(QTextEdit):
         self.addActions(list(actions.values()))
 
     def welcome_message(self):
+        """Display the welcome message"""
         img_txt = ''
 
         # Logo
@@ -162,7 +180,7 @@ class QTextEditLogger(QTextEdit):
         """Set level on all handelrs
 
         Arguments:
-            level {[logging.level]} -- [eg.., logging.ERROR]
+            level (logging.level): The level of logging, eg.., logging.ERROR
         """
         print(f'Setting level: {level}')
         self.set_window_title_level(level)
@@ -170,6 +188,11 @@ class QTextEditLogger(QTextEdit):
             handler.setLevel(level)
 
     def set_window_title_level(self, level: int):
+        """Set the window title level
+
+        Args:
+            level (int): the level
+        """
         self._level_name = logging.getLevelName(level).lower()
         if self._level_name not in ['']:
             self.dock_window.setWindowTitle(
@@ -188,13 +211,13 @@ class QTextEditLogger(QTextEdit):
             - adds an action to the menu for the self.traceked_loggers
 
         For example, a logger handler is added with
-            gui.logger.addHandler(self._log_handler)
+            `gui.logger.addHandler(self._log_handler)`
         where
-            _log_handler is LogHandler_for_QTextLog
+            `_log_handler is LogHandler_for_QTextLog`
 
         Arguments:
-            name {string} -- Name of logger to be added
-            handler {logging.Handler} -- handler
+            name (string): Name of logger to be added
+            handler (logging.Handler): handler
         """
         if name in self.tracked_loggers:
             return
@@ -211,8 +234,8 @@ class QTextEditLogger(QTextEdit):
             """Toggle the value of the
 
             Arguments:
-                self2 {QTextEdit} -- self
-                val {bool} -- T/F
+                self2 (QTextEdit): self
+                val (bool): T/F
 
             Example:
                 <bound method QTextEditLogger.add_logger.<locals>.toggle_show_log
@@ -238,6 +261,11 @@ class QTextEditLogger(QTextEdit):
             self.set_window_title_level(handler.level)
 
     def get_all_checked(self):
+        """Get all the checked items
+
+        Returns:
+            list: list of checked items
+        """
         res = []
         for name, isChecked in self.tracked_loggers.items():
             if isChecked:
@@ -254,6 +282,12 @@ class QTextEditLogger(QTextEdit):
                 self.log_message(record, not (name is 'Errors'))
 
     def log_message_to(self, name, record):
+        """Set where to log messages to
+
+        Args:
+            name (str): the name
+            record (bool): True to records, False otherwise
+        """
         self.logged_lines.append((name, record))
         if name in self.get_all_checked():
             self.log_message(record, not (name is 'Errors'))
@@ -262,10 +296,8 @@ class QTextEditLogger(QTextEdit):
         """Do the actial logging
 
         Arguments:
-            message {[type]} -- [description]
-
-        Keyword Arguments:
-            format_as_html {bool} -- [Do format as html or not] (default: {True})
+            message (str): the message to log
+            format_as_html (bool): True to format as HTML, False otherwise (Default: True)
         """
         # set the write positon
         cursor = self.textCursor()
@@ -308,21 +340,26 @@ class QTextEditLogger(QTextEdit):
 
 
 class LogHandler_for_QTextLog(logging.Handler):
+    """Class to handle GUI logging.
+    Handler instances dispatch logging events to specific destinations.
 
+    For formatting:
+        https://docs.python.org/3/library/logging.html#logrecord-attributes
+        _log_string = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')     # create formatter and add it to the handlers
+
+    This class extends the `logging.Handler` class
+    """
     def __init__(self, name, parent,
                  log_qtextedit: QTextEditLogger,
                  logger: logging.Logger,
                  log_string=None):
         """
-        Class to handle GUI logging.
-        Handler instances dispatch logging events to specific destinations.
-        For formatting
-            https://docs.python.org/3/library/logging.html#logrecord-attributes
-            _log_string = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')     # create formatter and add it to the handlers
-
         Arguments:
-            name {[str]} -- [description]
-            window {[QWidget]} -- [description]
+            name (str): the name
+            parent (logger): the parent logger
+            log_qtextedit (QTextEditLogger): text edit logger
+            logger (logging.Logger): the logger
+            log_string (str): th elog string (Default: None)
         """
         super().__init__()
 
@@ -349,8 +386,9 @@ class LogHandler_for_QTextLog(logging.Handler):
         Do whatever it takes to actually log the specified logging record.
         Converts the characters '&', '<' and '>' in string s to HTML-safe sequences.
         Used to display text that might contain such characters in HTML.
+
         Arguments:
-            record {[LogRecord]} -- [description]
+            record (LogRecord): the log recorder
         """
         # print(record)
         #self.log_qtextedit.record = record

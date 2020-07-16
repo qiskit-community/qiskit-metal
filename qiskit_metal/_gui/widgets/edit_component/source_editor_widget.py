@@ -26,6 +26,8 @@ from PyQt5.QtWidgets import QDockWidget
 
 from ...edit_source_ui import Ui_EditSource
 
+__all__ = ['create_source_edit_widget', 'dockify']
+
 if TYPE_CHECKING:
     from ...main_window import MetalGUI, QMainWindowExtension
 
@@ -39,16 +41,17 @@ def create_source_edit_widget(gui: 'MetalGUI',
     """Creates the spawned window that has the edit source
 
     Arguments:
-        gui {MetalGUI} -- [description]
-        class_name {str} -- [description]
-        module_name {str}
-        module_path {str} -- [description]
+        gui (MetalGUI): the GUI
+        class_name (str): the name of the class
+        module_name (str): the name of the module
+        module_path (str): the path to the module
+        parent (object): the parent
 
     Returns:
-        [QtWidgets.QWidget] -- [Ui_EditSource widget]
+        QtWidgets.QWidget: Ui_EditSource widget
 
     Access:
-        gui.component_window.src_widgets[-1]
+        `gui.component_window.src_widgets[-1]`
     """
     if not parent:
         parent = gui.main_window  # gui.component_window.ui.tabHelp
@@ -81,6 +84,14 @@ def create_source_edit_widget(gui: 'MetalGUI',
 
 
 def dockify(self, gui):
+    """Dockify the given GUI
+
+    Args:
+        gui (MetalGUI): the GUI
+
+    Returns:
+        QDockWidget: the widget
+    """
     ### Dockify
     self.dock_widget = QDockWidget('Edit Source', gui.main_window)
     dock = self.dock_widget

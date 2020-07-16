@@ -11,7 +11,11 @@ from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import (QApplication, QFileDialog, QLabel, QMainWindow,
                              QMessageBox)
 
-from ....renderers.renderer_mpl.mpl_canvas import PlotCanvas
+from ... import config
+if not config.is_building_docs():
+    # Only import PlotCanvas if the docs are NOT being built
+    from ....renderers.renderer_mpl.mpl_canvas import PlotCanvas
+
 from ...plot_window_ui import Ui_MainWindowPlot
 
 if TYPE_CHECKING:

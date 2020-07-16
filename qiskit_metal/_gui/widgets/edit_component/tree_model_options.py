@@ -37,6 +37,8 @@ from ...component_widget_ui import Ui_ComponentWidget
 from ...utility._handle_qt_messages import catch_exception_slot_pyqt
 from .source_editor_widget import create_source_edit_widget
 
+__all__ = ['get_nested_dict_item', 'parse_param_from_str']
+
 if TYPE_CHECKING:
     from .component_widget import ComponentWidget
 
@@ -48,13 +50,25 @@ KEY, NODE = range(2)
 
 def get_nested_dict_item(dic: dict, key_list: list, level=0):
     """
-    EXAMPLE USE
-    ---------------------
-    myDict = Dict(aa=Dict(x1={'dda':34},y1='Y',z='10um'),
-          bb=Dict(x2=5,y2='YYYsdg',z='100um'))
-    key_list = ['aa', 'x1', 'dda']
-    [get_dict_item](myDict, key_list)
-    returns 34
+    Get a nested dictionary item
+
+    Args:
+        dic (dict): dictionary of items
+        key_list (list): list of keys
+        level (int): the level to get (Default: 0)
+
+    Returns:
+        dict: nested dictionary
+
+    .. code-block:: python
+        :linenos:
+
+        myDict = Dict(aa=Dict(x1={'dda':34},y1='Y',z='10um'),
+            bb=Dict(x2=5,y2='YYYsdg',z='100um'))
+        key_list = ['aa', 'x1', 'dda']
+        [get_dict_item](myDict, key_list)
+        returns 34
+
     """
     if not key_list:  # get the root
         return dic
@@ -595,7 +609,17 @@ class QTreeModel_Options(QAbstractItemModel):
 
 
 def parse_param_from_str(text):
-    """Attempt to parse a value from a string using ast"""
+    """Attempt to parse a value from a string using ast
+
+    Args:
+        text (str): string to parse
+
+    Return:
+        tuple: value, used_ast
+
+    Raises:
+        Exception: an error occurred
+    """
     text = str(text).strip()
     value = text
     used_ast = False

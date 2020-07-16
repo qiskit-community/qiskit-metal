@@ -26,6 +26,10 @@ from copy import deepcopy
 
 import pandas as pd
 
+__all__ = ['copy_update', 'dict_start_with', 'data_frame_empty_typed', 'clean_name',
+           'enable_warning_traceback', 'get_traceback', 'print_traceback_easy', 'log_error_easy',
+           'monkey_patch']
+
 ####################################################################################
 # Dictionary related
 
@@ -33,6 +37,14 @@ import pandas as pd
 def copy_update(options, *args, deep_copy=True, **kwargs):
     '''
     Utility funciton to merge two dictionaries
+
+    Args:
+        options (object): options
+        deep_copy (bool): True to do a deep copy
+        kwargs (dict): dictionary of parameters
+
+    Returns:
+        dict: merged dictionary
     '''
     if deep_copy:
         options = deepcopy(options)
@@ -45,9 +57,21 @@ def copy_update(options, *args, deep_copy=True, **kwargs):
 
 def dict_start_with(my_dict, start_with, as_=list):
     ''' Case sensitive
-        https://stackoverflow.com/questions/17106819/accessing-python-dict-values-with-the-key-start-characters
-    my_dict = {'name': 'Klauss', 'age': 26, 'Date of birth': '15th july'}
-    dict_start_with(my_dict, 'Date')
+    https://stackoverflow.com/questions/17106819/accessing-python-dict-values-with-the-key-start-characters
+
+    Args:
+        my_dict (dict): the dictionary
+        starts_with (str): string to check of
+        as_ (type): list of dict (Default: list)
+
+    Returns:
+        list or dict: parts of the dictionary with keys starting with the given text
+
+    .. code-block:: python
+
+        my_dict = {'name': 'Klauss', 'age': 26, 'Date of birth': '15th july'}
+        dict_start_with(my_dict, 'Date')
+
     '''
     if as_ == list:
         # start_with in k]
@@ -92,10 +116,10 @@ def data_frame_empty_typed(column_types:dict):
     by the dicitonary,
 
     Arguments:
-        column_types {dict} -- key, dtype pairs
+        column_types (dict): key, dtype pairs
 
     Returns:
-        DataFrame
+        DataFrame: empty dataframe with the typed columns
     """
     df = pd.DataFrame()
     for name, dtype in column_types.items():
@@ -107,11 +131,17 @@ def clean_name(text:str):
     """Clean a string to a proper variable name in python
 
     Arguments:
-        text {str} -- [description]
+        text (str): original string
 
-    *Example*
-        >>clean_name('32v2 g #Gmw845h$W b53wi ')
-        ->'_32v2_g__Gmw845h_W_b53wi_'
+    Returns:
+        str: corrected string
+
+    .. code-block:: python
+
+        clean_name('32v2 g #Gmw845h$W b53wi ')
+    
+    *Output*
+        `'_32v2_g__Gmw845h_W_b53wi_'`
 
     See https://stackoverflow.com/questions/3303312/how-do-i-convert-a-string-to-a-valid-variable-name-in-python
     """
@@ -143,7 +173,10 @@ def enable_warning_traceback():
 
 def get_traceback():
     '''
-    Returns tracekback string
+    Returns traceback string
+
+    Returns:
+        str: traceback string
     '''
     tb = traceback.extract_stack()
     return "".join(traceback.format_list(tb)[:-1])
@@ -152,6 +185,9 @@ def get_traceback():
 def print_traceback_easy(start=26):
     '''
     Utility funciton to print traceback for debug
+
+    Args:
+        start (int): starting position
     '''
     print(f"\n")
     print('\n'.join(map(repr, traceback.extract_stack()[start:])))
@@ -163,10 +199,13 @@ def log_error_easy(logger:logging.Logger, pre_text='', post_text='', do_print=Fa
     Print
 
     Arguments:
-        logger {logging.Logger} -- [description]
+        logger (logging.Logger): the logger
+        pre_text (str): initial text to write (Default: '')
+        post_text (str): end text to write (Default: '')
+        do_print (bool): True to do the printing, False otherwise (Default: False)
     Test use:
 
-    .. code-block : python
+    .. code-block:: python
 
         import traceback
         from qiskit_metal import logger
@@ -184,9 +223,10 @@ def log_error_easy(logger:logging.Logger, pre_text='', post_text='', do_print=Fa
 
                 #exc_type, exc_value, exc_tb = sys.exc_info()
                 #error = traceback.format_exception(exc_type, exc_value, exc_tb)
-                #logger.error('\n\n'+'\n'.join(error)+'\n')
+                #logger.error('\\n\\n'+'\\n'.join(error)+'\\n')
                 log_error_easy(metal.logger)
         xx()
+
     """
     exc_type, exc_value, exc_tb = sys.exc_info()
     error = traceback.format_exception(exc_type, exc_value, exc_tb)
@@ -204,10 +244,17 @@ def monkey_patch(self, func, func_name=None):
     Monkey patch a method into a class at runtime
 
     Use descriptor protocol when adding method as an attribute.
+
     For a method on a class, when you do a.some_method, python actually does:
          a.some_method.__get__(a, type(a))
+
     so we're just reproducing that call sequence here explicitly.
+
     See: https://stackoverflow.com/questions/38485123/monkey-patching-bound-methods-in-python
+
+    Args:
+        func (function): function
+        func_name (str): name of the function (Default: None)
     '''
     func_name = func_name or func.__name__
     setattr(self, func_name, func.__get__(self, self.__class__))

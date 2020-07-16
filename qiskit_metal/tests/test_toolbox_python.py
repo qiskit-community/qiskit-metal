@@ -31,20 +31,12 @@ class TestToolboxPthon(unittest.TestCase):
     def setUp(self):
         """
         Setup unit test
-
-        Args: None
-
-        Returns: None
         """
         pass
 
     def tearDown(self):
         """
         Tie any loose ends
-
-        Args: None
-
-        Returns: None
         """
         pass
 

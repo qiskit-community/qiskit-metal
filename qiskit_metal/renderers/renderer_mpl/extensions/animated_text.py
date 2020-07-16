@@ -24,6 +24,7 @@ from ...._gui.utility._handle_qt_messages import catch_exception_slot_pyqt
 
 
 class AnimatedText():
+    """Class that animates text"""
     def __init__(self, ax: plt.Axes, text: str, canvas, kw: dict = None,
                  anim_start=0.9,
                  anim_dt_ms=25,
@@ -32,6 +33,20 @@ class AnimatedText():
                  anim_accel=-0.0005,
                  start=True,
                  loc=[0.5, 0.5]):
+        """
+        Args:
+            ax (plt.Axes): the axis
+            text (str): text to animate
+            canvas (canvas): the canvas
+            kw (dict): the parameters (Default: None).
+            anim_start (float): animation start (Default: 0.9).
+            anim_dt_ms (int): animation dt in miliseconds (Default: 25).
+            anim_delta (float): animation delta (Default: -0.0005).
+            anim_stop (int): animation stop (Default: 0).
+            anim_accel (float): animation acceleration (Default: -0.0005).
+            start (bool): whether or not to start. (Default: True).
+            loc (list): location. (Default: [0.5, 0.5]).
+        """
 
         self.canvas = canvas
         self.ax = ax
@@ -58,13 +73,16 @@ class AnimatedText():
             self.start()
 
     def start(self):
+        """Start the timer"""
         self.timer.start(self.anim_dt_ms)
 
     def stop(self):
+        """Stop the timer"""
         self.timer.start()
 
     @catch_exception_slot_pyqt()
     def timer_tick(self):
+        """Tick the timer"""
         # Update anim position value
         self.anim_veloc += self.anim_accel  # acceleration on vellcoity update
         self.anim_value += self.anim_delta + self.anim_veloc  # update position

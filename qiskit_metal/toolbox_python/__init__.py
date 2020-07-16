@@ -13,9 +13,9 @@
 # that they have been altered from the originals.
 
 """
-=================================================
+===================================================
 Toolbox_python (:mod:`qiskit_metal.toolbox_python`)
-=================================================
+===================================================
 
 .. currentmodule:: qiskit_metal.toolbox_python
 
@@ -25,17 +25,32 @@ Created on Tue May 14 17:13:40 2019
 
 @author: Zlatko Minev (IBM)
 
-UNDER CONSTRUCTION
-
-UNDER-CONSTRUCTION
+Headings
 ---------------
 
 .. autosummary::
     :toctree: ../stubs/
 
-    UNDER-CONSTRUCTION
+    Headings
+
+
+Submodules
+---------------
+
+.. autosummary::
+    :toctree: ../stubs/
+
+    _logging
+    display
+    utility_functions
 
 """
 
 from .attr_dict import Dict
 from .display import format_dict_ala_z, Headings
+
+#from .. import config
+#if config.is_building_docs():
+#    from . import _logging
+#    from . import display
+#    from . import utility_functions

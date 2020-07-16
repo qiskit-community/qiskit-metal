@@ -25,10 +25,21 @@ import pickle
 #from ..designs.base
 from ..toolbox_python.utility_functions import log_error_easy
 
+__all__ = ['save_metal', 'load_metal_design']
+
 def save_metal(filename : str, design):
     """
-    filename: str path
-    design : design obejct Metal_Design_Base
+    Save metal
+
+    Args:
+        filename (str): file path
+        design (QDesign): design obejct Metal_Design_Base
+
+    Returns:
+        bool: True is sucessful, False otherwise
+
+    Raises:
+        Exception: Save error
     """
     result = False
 
@@ -59,11 +70,14 @@ def save_metal(filename : str, design):
 
 def load_metal_design(filename : str, do_update=True):
     """
-    Returns the pickled design object and updates if asked the param dicts for
-    defaults
+    Load metal design
 
-    do_update: True
-        updates DEFAULT, DEFAULT_OPTIONS with the params saved in the file
+    Args:
+        filename (str): file path
+        do_update (bool): True to update, False otherwsie (Default: True)
+
+    Returns:
+        picked QDesign: the pickled design object and updates if asked the param dicts for defaults
     """
     design = pickle.load(open(filename, "rb"))
     design.save_path = str(filename) # Set the place from where we loaded the design
