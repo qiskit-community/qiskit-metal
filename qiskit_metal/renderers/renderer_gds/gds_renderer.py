@@ -35,7 +35,48 @@ class GDSRender(QRenderer):
         # Create a new GDS library file. It can contains multiple cells.
         gdspy.current_library.cells.clear()
 
-    def to_gds(self, element: pd.Series):
+    def path_and_poly_to_gds(self, file_name_and_path: str) -> int:
+        '''
+        return codes:
+            file has been written
+            path not there
+        '''
+
+        poly_table = design.qgeometry.tables['poly']
+        print('design.qgeometry.tables[poly]')
+        print(poly_table)
+        print(' ')
+
+        path_table = design.qgeometry.tables['path']
+        print('design.qgeometry.tables[path]')
+        print(path_table)
+        print('')
+
+        poly_geometry = list(poly_table.geometry)
+        path_geometry = list(path_table.geometry)
+
+        a_gds = GDSRender(design)
+
+        # polys is a gdspy.Polygon
+        polys = poly_table.apply(a_gds.to_gds, axis=1)
+
+        # paths in a gdspy.?
+        #paths = path_table.apply(a_gds.to_gds, axis=1)
+
+        # Create a new GDS library file. It can contains multiple cells.
+        gdspy.current_library.cells.clear()
+
+        lib = gdspy.GdsLibrary()
+
+        # New cell
+        cell = lib.new_cell('TOP', overwrite_duplicate=True)
+        cell.add(polys)
+        # cell.add(paths)
+
+        # Save the library in a file.
+        lib.write_gds('Pins_Example.gds')
+
+    def qgeometry_to_gds(self, element: pd.Series):
         """Convert the design.qgeometry table to format used by GDS renderer.
 
         :param element: Expect a shapley object.
