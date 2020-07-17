@@ -531,8 +531,8 @@ class CpwMeanderSimple(QComponent):
         connector2 = self.design.components[component_end].pins[pin_end]
 
         #add pins and to netlist
-        self.add_pin('cpw_start', connector1.points[::-1], p.cpw_width)
-        self.add_pin('cpw_end', connector2.points[::-1], p.cpw_width)
+        self.add_pin('cpw_start', connector1.points[::-1], p.trace_width)
+        self.add_pin('cpw_end', connector2.points[::-1], p.trace_width)
 
         self.design.connect_pins(
             self.design.components[component_start].id, pin_start, self.id, 'cpw_start')
