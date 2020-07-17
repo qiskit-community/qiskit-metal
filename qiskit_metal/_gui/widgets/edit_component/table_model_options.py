@@ -37,6 +37,8 @@ from ...component_widget_ui import Ui_ComponentWidget
 from ...utility._handle_qt_messages import catch_exception_slot_pyqt
 from .source_editor_widget import create_source_edit_widget
 
+__all__ = ['parse_param_from_str']
+
 if TYPE_CHECKING:
     from .component_widget import ComponentWidget
 
@@ -278,7 +280,17 @@ class QTableModel_Options(QAbstractTableModel):
 
 
 def parse_param_from_str(text):
-    """Attempt to parse a value from a string using ast"""
+    """Attempt to parse a value from a string using ast
+
+    Args:
+        text (str): string to parse
+
+    Return:
+        tuple: value, used_ast
+
+    Raises:
+        Exception: an error occurred
+    """
     text = str(text).strip()
     value = text
     used_ast = False

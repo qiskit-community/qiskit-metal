@@ -38,20 +38,12 @@ class TestGUIBasic(unittest.TestCase):
     def setUp(self):
         """
         Setup unit test
-
-        Args: None
-
-        Returns: None
         """
         pass
 
     def tearDown(self):
         """
         Tie any loose ends
-
-        Args: None
-
-        Returns: None
         """
         pass
 
@@ -59,15 +51,15 @@ class TestGUIBasic(unittest.TestCase):
     #pylint: disable-msg=unused-variable
     def test_gui_01_launch(self):
         """
-        Test the functionality of launching the GUI
+        Test the functionality of launching the GUI.
         01 added to the test name so it is the first GUI to launch
-        Single function used for all GUI stuff with general catch-all so
+
+        Single function used for all GUI stuff with general catch-all so:
           a. multiple GUI windows causing problems in CI
           b. we can catch any errors
 
-        Args: None
-
-        Returns: None
+        Raises:
+            Exception: Any exceptions raised during attempted launch
         """
         try:
             design = designs.DesignPlanar()

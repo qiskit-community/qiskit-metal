@@ -280,8 +280,11 @@ MPL_CONTEXT_DEFAULT = {
 class PlotCanvas(FigureCanvas):
     """
     Main Plot canvas widget
+
+    This class extends the `FigureCanvas` class.
+
     Access with:
-        canvas = gui.canvas
+        `canvas = gui.canvas`
     """
     # See https://github.com/matplotlib/matplotlib/blob/master/lib/matplotlib/backends/backend_qt5agg.py
     # Consider using pyqtgraph https://stackoverflow.com/questions/40126176/fast-live-plotting-in-matplotlib-pyplot.
@@ -290,6 +293,13 @@ class PlotCanvas(FigureCanvas):
                  parent: 'QMainWindowPlot' = None,
                  logger=None,
                  statusbar_label=None):
+        """
+        Args:
+            design (QDesign): the design
+            parent (QMainWindowPlot): the main window (Default: None)
+            logger (logger): the logger (Default: None)
+            statusbar_label (str): statusbar label (Default: None)
+        """
 
         self.gui = parent.gui  # type: MetalGUI
 
@@ -336,6 +346,11 @@ class PlotCanvas(FigureCanvas):
         self.welcome_message()
 
     def set_design(self, design: QDesign):
+        """Set the design
+
+        Args:
+            design (QDesign): the design
+        """
         self.design = design
         self.metal_renderer.set_design(design)
 
@@ -400,11 +415,25 @@ class PlotCanvas(FigureCanvas):
         return self.axes[self.current_axis]
 
     def _plot(self, ax):
+        """Set the axes
+
+        Args:
+            ax (matplotlib.axes.Axes): axes
+        """
         self.metal_renderer.render(ax)
         #ax.set_xlabel('X (mm)')
         #ax.set_ylabel('y (mm)')
 
     def plot(self, clear=True, with_try=True):
+        """Render the plot
+
+        Args:
+            clear (bool): True to clear everything first (Default: True)
+            with_try (bool): True to execute in a try-catch block (Default: True)
+
+        Raises:
+            Exception: Plotting error
+        """
         # TODO: Maybe do in a thread?
         self.hide()
         # the artist will be removed by the clear axis.
@@ -451,7 +480,11 @@ class PlotCanvas(FigureCanvas):
             final()
 
     def _watermark_axis(self, ax: plt.Axes):
-        """Add a watermark"""
+        """Add a watermark
+
+        Args:
+            ax (plt.Axes): axes
+        """
         # self.logger.debug('WATERMARK')
         kw = dict(fontsize=15, color='gray', ha='right',
                   va='bottom', alpha=0.18, zorder=-100)
@@ -470,9 +503,9 @@ class PlotCanvas(FigureCanvas):
         """Clear an axis or clear all axes
 
         Args:
-            ax (plt.Axes, optional): Clear an axis, or
+            ax (plt.Axes): Clear an axis, or
                  if None, then clear all axes.
-                 Defaults to None.
+                 (Default: None)
         """
         if ax:
             clear_axis(ax)
@@ -487,7 +520,12 @@ class PlotCanvas(FigureCanvas):
         self.draw()
 
     def style_axis(self, ax, num: int):
+        """Style the axis
 
+        Args:
+            ax (axis): the axis
+            num (int): not used
+        """
         ax.set_aspect(1)
 
         # If 'box', change the physical dimensions of the Axes. If 'datalim',
@@ -524,9 +562,11 @@ class PlotCanvas(FigureCanvas):
         # ax.set_position([0,0,1,1])
 
     def style_figure(self):
+        """Style a figure"""
         pass  # self.figure.tight_layout()
 
     def auto_scale(self):
+        """Automaticlaly scale"""
         for ax in self.figure.axes:
             ax.autoscale()
         self.refresh()
@@ -540,18 +580,17 @@ class PlotCanvas(FigureCanvas):
             250, self._welcome_message_start)
 
     def _welcome_message_start(self):
+        """Start the welcome message"""
         self._welcome_text.start()
         # self._welcome_start_timer.deleteLater()
 
     def zoom_to_rectangle(self, bounds: tuple, ax: Axes = None):
-        """[summary]
+        """Zoom to the specified rectangle
 
         Arguments:
-            bounds {tuple} -- tuple containing `minx, miny, maxx, maxy`
+            bounds (tuple): tuple containing `minx, miny, maxx, maxy`
                      values for the bounds of the series as a whole.
-
-        Keyword Arguments:
-            ax {Axes} -- Does for all if none (default: {None})
+            ax (Axes): Does for all if none (default: {None})
         """
         if ax is None:
             for ax in self.axes:
@@ -567,10 +606,8 @@ class PlotCanvas(FigureCanvas):
         """Zoom in on a component
 
         Arguments:
-            name {str} -- [description]
-
-        Keyword Arguments:
-            zoom (float) -- fraction to expand the bounding vbox by
+            name (str): component name
+            zoom (float): fraction to expand the bounding vbox by
         """
         component = self.design.components[name]
         bounds = component.qgeometry_bounds()  # return (minx, miny, maxx, maxy)
@@ -583,11 +620,16 @@ class PlotCanvas(FigureCanvas):
         Shortcut to set a component in the component widget to be examined.
 
         Args:
-            name (str) -- name of the component in the design
+            name (str): name of the component in the design
         """
         self.component_window.set_component(name)
 
     def clear_annotation(self):
+        """Clear the annotations
+
+        Raises:
+            Exception: Error while clearning the annotations
+        """
         try:
             for ax in self.axes:
                 for patch in self._annotations['patch']:
@@ -608,9 +650,10 @@ class PlotCanvas(FigureCanvas):
         self._annotations['text'] = []
 
     def highlight_components(self, component_names: List[str]):
-        """Hihglight a list of components
+        """Higjlight a list of components
+
         Args:
-            component_names (List[str]): [description]
+            component_names (List[str]): list of component names
         """
         # Defaults - todo eventually move to some option place where can be changed
         text_kw = dict(

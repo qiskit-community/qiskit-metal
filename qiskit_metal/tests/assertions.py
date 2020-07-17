@@ -40,11 +40,14 @@ class AssertionsMixin:
         """Assert tested almost equals expected
 
         Args:
-            expected: expected value to compare to
-            tested: value to compare to expected
-            msg: custom message to show on failure
-            rel_tol: relative tolerance to accept
-            abs_tol: absolute tolerance to accept
+            expected (float): expected value to compare to
+            tested (float): value to compare to expected
+            msg (Optional[str]): custom message to show on failure (Default: None)
+            rel_tol (float): relative tolerance to accept (Default: 1e-7)
+            abs_tol (float): absolute tolerance to accept (Default: 0.0)
+
+        Return:
+            Exception: Failure exception, or nothing
         """
         if expected == tested:
             return
@@ -82,11 +85,14 @@ class AssertionsMixin:
         """Assert all entries in two iterables are almost equal
 
         Args:
-            expected: first iterable to compare
-            tested: second iterable to compare
-            msg: custom message to show for failure
-            rel_tol: relative tolerance to accept
-            abs_tol: absolute tolerance to accept
+            expected (Iterable[float]): first iterable to compare
+            tested (Iterable[float]): second iterable to compare
+            msg (Optional[str]): custom message to show for failure (Default: None)
+            rel_tol (float): relative tolerance to accept (Default: 1e-7)
+            abs_tol (float): absolute tolerance to accept (Default: 0.0)
+
+        Return:
+            Exception: Failure exception, or nothing
         """
         sentinel = object()
         for index, (item1, item2) in enumerate(zip_longest(expected, tested, fillvalue=sentinel)):

@@ -35,30 +35,18 @@ class TestDefautOptions(unittest.TestCase):
     def setUp(self):
         """
         Setup unit test
-
-        Args: None
-
-        Returns: None
         """
         pass
 
     def tearDown(self):
         """
         Tie any loose ends
-
-        Args: None
-
-        Returns: None
         """
         pass
 
     def test_default_options_create(self):
         """
         Test the functionality of initializing default_options in _defaults.py
-
-        Args: None
-
-        Returns: None
         """
         # Setup expected test results
         _options = DefaultMetalOptions()
@@ -83,10 +71,6 @@ class TestDefautOptions(unittest.TestCase):
     def test_default_options_update(self):
         """
         Test the functionality of updating default_options in _defaults.py
-
-        Args: None
-
-        Returns: None
         """
         # Setup expected test results
         _options = DefaultMetalOptions()
@@ -109,10 +93,6 @@ class TestDefautOptions(unittest.TestCase):
     def test_default_options_renderer_create(self):
         """
         Test the functionality of initializing default_options_renderer in _defaults.py
-
-        Args: None
-
-        Returns: None
         """
         # Setup expected test results
         _options = DefaultOptionsRenderer()
@@ -141,10 +121,6 @@ class TestDefautOptions(unittest.TestCase):
     def test_default_options_renderer_update(self):
         """
         Test the functionality of updating default_options_renderer in _defaults.py
-
-        Args: None
-
-        Returns: None
         """
         # Setup expected test results
         _options = DefaultOptionsRenderer()

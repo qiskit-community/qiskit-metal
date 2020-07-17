@@ -65,11 +65,12 @@ class Oriented_2D_Array:
         self.positions = np.append(self.positions, [self.positions[-1] + self.directions[-1] * length], axis=0)
 
     def go_right(self, length: float):
-        # THIS METHOD IS NOT USED AT THIS TIME (7/2/20)
         """Straight line 90deg clock-wise direction w.r.t. Oriented_Point
 
         Args:
             length (float): how much to move by
+
+        THIS METHOD IS NOT USED AT THIS TIME (7/2/20)
         """
         self.directions = np.append(self.directions, [draw.Vector.rotate(self.directions, -1 * np.pi / 2)], axis=0)
         self.positions = np.append(self.positions, [self.positions[-1] + self.directions[-1] * length], axis=0)
@@ -178,14 +179,14 @@ class CpwMeanderSimple(QComponent):
         * For example, note that lead_direction_inverted can be 'false' or 'true'
     """
     default_options = Dict(
-        # start_name='',
-        # end_name='',
-        pin_start_name='',  # Name of pin used for pin_start
-        pin_end_name='',  # Name of pin used for pin_end
-        component_start_name='',  # If not connected, zero, otherwise component_id
-        component_end_name='',  # If not connected, zero, otherwise component_id
-        # pin_start=0,  # If not connected, zero, otherwise holds the net_id.
-        # pin_end=0,  # If not connected, zero, otherwise holds the net_id.
+        pin_inputs=Dict(
+            start_pin=Dict(
+                component='', # Name of component to start from, which has a pin
+                pin=''), # Name of pin used for pin_start
+            end_pin=Dict(
+                component='', # Name of component to end on, which has a pin
+                pin='') # Name of pin used for pin_end
+                ),
         total_length='7mm',
         chip='main',
         layer='1',
@@ -458,7 +459,9 @@ class CpwMeanderSimple(QComponent):
             dict: A dictionary with keys `point` and `direction`.
             The values are numpy arrays with two float points each.
         """
-        pin = self.design.components[self.options.component_start_name].pins[self.options.pin_start_name]
+        pin_options = self.options.pin_inputs.start_pin
+        qcomponent = self.design.components[pin_options.component]
+        pin = qcomponent.pins[pin_options.pin]
         position = pin['middle']
         direction = pin['normal']
         return position, direction
@@ -470,7 +473,9 @@ class CpwMeanderSimple(QComponent):
             dict: A dictionary with keys `point` and `direction`.
             The values are numpy arrays with two float points each.
         """
-        pin = self.design.components[self.options.component_end_name].pins[self.options.pin_end_name]
+        pin_options = self.options.pin_inputs.end_pin
+        qcomponent = self.design.components[pin_options.component]
+        pin = qcomponent.pins[pin_options.pin]
         position = pin['middle']
         direction = pin['normal']
         return position, direction

@@ -14,10 +14,10 @@
 
 """
 =================================================
-QGeometryTables (:mod:`qiskit_metal.qgeometry`)
+QGeometryTables (:mod:`qiskit_metal.elements`)
 =================================================
 
-.. currentmodule:: qiskit_metal.qgeometry
+.. currentmodule:: qiskit_metal.elements
 
 This modules defines and handles everything related to the qgeometry abstraction.
 
@@ -25,13 +25,13 @@ This modules defines and handles everything related to the qgeometry abstraction
 
 @author: Zlatko Minev (IBM)
 
-QElementTables
+QGeometryTables
 ---------------
 
 .. autosummary::
     :toctree: ../stubs/
 
-    QElementTables
+    QGeometryTables
 
 
 Submodules

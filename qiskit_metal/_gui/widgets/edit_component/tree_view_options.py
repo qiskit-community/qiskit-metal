@@ -31,8 +31,15 @@ if TYPE_CHECKING:
 
 
 class QTreeView_Options(QTreeView, QWidget_PlaceholderText):
+    """Handles editing a QComponent
 
+    This class extends the `QTreeView` and `QWidget_PlaceholderText` classes
+    """
     def __init__(self, parent: QtWidgets.QWidget):
+        """
+        Args:
+            parent (QtWidgets.QWidget): the widget
+        """
         QTreeView.__init__(self, parent)
         QWidget_PlaceholderText.__init__(
             self,  "Select a QComponent to edit\n\nfrom the QComponents window")
@@ -40,6 +47,7 @@ class QTreeView_Options(QTreeView, QWidget_PlaceholderText):
         self.expanded.connect(self.resize_on_expand)
 
     def style_me(self):
+        """Style this widget"""
         # Also can do in the ui file, but doesn't always transalte for me for some reason
         self.header().show()
         self.setAutoScroll(False)
@@ -55,7 +63,7 @@ QTreeView::branch {  border-image: url(none.png); }
         """Rezie columsn to contents with maximim
 
         Args:
-            max (int, optional): [description]. Defaults to 200.
+            max (int): Maximum window width (Default: 200)
         """
         # For TreeView: resizeColumnToContents
         # For TableView: resizeColumnsToContents
@@ -68,4 +76,5 @@ QTreeView::branch {  border-image: url(none.png); }
                 self.setColumnWidth(i, max_width)
 
     def resize_on_expand(self):
+        """Resize when exposed"""
         self.resizeColumnToContents(0)
