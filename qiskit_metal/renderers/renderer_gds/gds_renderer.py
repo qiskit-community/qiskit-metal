@@ -58,6 +58,34 @@ class GDSRender(QRenderer):
             self.design.logger.warning(
                 f'Not able to write to directory. File not written.: {directory_name}')
             return False
+# def get_component_bounds(self, name: str) -> Tuple[float, float, float, float]:
+#     """Returns a tuple containing minx, miny, maxx, maxy values
+#     for the bounds of the component as a whole.
+
+#     Arguments:
+#         name (str): component name
+
+#     Returns:
+#         Geometry: Bare element geometry
+#     """
+#     gs = self.get_component_geometry(name)  # Pandas GeoSeries
+#     if len(gs) == 0:
+#         return (0, 0, 0, 0)
+#     else:
+#         return gs.total_bounds
+    def get_bounds(self, gs_table: pandas.GeoSeries) -> Tuple[float, float, float, float]:
+        """Get the bounds for all of the elements in gs_table.
+
+        Args:
+            gs_table (pandas.GeoSeries): A pandas GeoSeries used to describe components in a design.
+
+        Returns:
+            Tuple[float, float, float, float]: The bounds of all of the elements in this table.
+        """
+        if len(gs_table) == 0:
+            return(0, 0, 0, 0)
+        else:
+            return gs_table.total_bounds
 
     def path_and_poly_to_gds(self, file_name: str) -> int:
         """Use the design which was used to initialize this class.  
@@ -83,11 +111,17 @@ class GDSRender(QRenderer):
         # print('design.qgeometry.tables[path]')
         # print(path_table)
 
+        # Determine bound box and return scalar larger than size.
+        poly_bounds = self.get_bounds(poly_table)
+        path_bounds = self.get_bounds(path_table)
+        list_bounds = [poly_bounds, path_bounds]
+
         poly_geometry = list(poly_table.geometry)
         path_geometry = list(path_table.geometry)
 
         # polys is a gdspy.Polygon
         polys = poly_table.apply(self.qgeometry_to_gds, axis=1)
+        # paths is a gdspy.LineString
         paths = path_table.apply(self.qgeometry_to_gds, axis=1)
 
         # Create a new GDS library file. It can contains multiple cells.
