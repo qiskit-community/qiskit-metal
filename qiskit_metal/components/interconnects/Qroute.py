@@ -33,9 +33,8 @@ class Qroute:
             Tuple: Initializes the Qroute start point and and returns `position` and `direction`.
             The values are numpy arrays with two float points each.
         """
-        pin = self.design.connectors[self.options.pin_start_name]
-        position = pin['middle']
-        direction = pin['normal']
+        position = self.pin_start.middle
+        direction = self.pin_start.normal
         return position, direction
 
     def go_straight(self, length: float):
@@ -75,13 +74,10 @@ class Qroute:
         Return:
             length (float): full point_array length
         """
-        length = 0
-        for x in range(len(self.points)-1):
-            length += abs(norm(self.points[x] - self.points[x+1]))
-        if self.pin_end is None:
-            return length
-        else:
-            return length + abs(norm(self.points[x] - self.pin_end.position))
+        length = sum(norm(self.points[i + 1] - self.points[i]) for i in range(len(self.points) - 1))
+        if self.pin_end:
+            return length + norm(self.points[-1] - self.pin_end.position)
+        return length
 
     def route_to_align(self, concurrent_array):
         """
@@ -105,18 +101,12 @@ class Qroute:
         # determine relative position
         concurrent_position = ""
         oriented_distance = concurrent_array.positions[-1] - self.points[-1]
-        if oriented_distance[1] > 0:
-            concurrent_position = "N"
-        elif oriented_distance[1] < 0:
-            concurrent_position = "S"
+        if oriented_distance[1] != 0: # vertical displacement
+            concurrent_position += ["N", "S"][oriented_distance[1] < 0]
+        if oriented_distance[0] != 0: # horizontal displacement
+            concurrent_position += ["E", "W"][oriented_distance[0] < 0]
         else:
-            return  # points already aligned
-        if oriented_distance[0] > 0:
-            concurrent_position += "E"
-        elif oriented_distance[1] < 0:
-            concurrent_position += "W"
-        else:
-            return  # points already aligned
+            return # points already aligned
 
         # TODO implement vertical alignment. Only using horizontal alignment for now
         # if oriented_distance[0] > oriented_distance[1]:
