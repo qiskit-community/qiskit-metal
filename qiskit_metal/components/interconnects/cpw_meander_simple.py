@@ -15,6 +15,7 @@ from qiskit_metal.components import QComponent
 #from qiskit_metal import is_true
 from qiskit_metal.toolbox_metal.parsing import is_true
 
+#This should be removed
 options = Dict(pin_start_name='Q1_a',
                pin_end_name='Q2_b',
                meander=Dict(
@@ -518,6 +519,33 @@ class CpwMeanderSimple(QComponent):
                           layer=layer)
         self.add_qgeometry('path',
                           {'cut': line},
-                          width=width + p.trace_gap,
+                          width=width + 2*p.trace_gap,
                           layer=layer,
                           subtract=True)
+        
+        component_start = p.pin_inputs.start_pin.component
+        pin_start = p.pin_inputs.start_pin.pin
+        component_end = p.pin_inputs.end_pin.component
+        pin_end = p.pin_inputs.end_pin.pin
+        connector1 = self.design.components[component_start].pins[pin_start]
+        connector2 = self.design.components[component_end].pins[pin_end]
+
+        #add pins and to netlist
+        self.add_pin('cpw_start', connector1.points[::-1], p.trace_width)
+        self.add_pin('cpw_end', connector2.points[::-1], p.trace_width)
+
+        self.design.connect_pins(
+            self.design.components[component_start].id, pin_start, self.id, 'cpw_start')
+        self.design.connect_pins(
+            self.design.components[component_end].id, pin_end, self.id, 'cpw_end')
+        
+
+
+pin_inputs=Dict(
+            start_pin=Dict(
+                component='', # Name of component to start from, which has a pin
+                pin=''), # Name of pin used for pin_start
+            end_pin=Dict(
+                component='', # Name of component to end on, which has a pin
+                pin='') # Name of pin used for pin_end
+                ),
