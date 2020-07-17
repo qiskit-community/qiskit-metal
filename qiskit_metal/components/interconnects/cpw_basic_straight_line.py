@@ -32,8 +32,14 @@ class CpwStraightLine(QComponent):
     """
 
     default_options = Dict(
-        pin_start=Dict(component='', pin=''), # make sure these are Dicts not dicts
-        pin_end=Dict(component='', pin=''),
+        pin_inputs=Dict(
+            start_pin=Dict(
+                component='', # Name of component to start from, which has a pin
+                pin=''), # Name of pin used for pin_start
+            end_pin=Dict(
+                component='', # Name of component to end on, which has a pin
+                pin='') # Name of pin used for pin_end
+                ),        
         cpw_width='cpw_width',
         cpw_gap='cpw_gap',
         layer='1',
@@ -53,8 +59,8 @@ class CpwStraightLine(QComponent):
         """
         p = self.p  # parsed options
 
-        pin1 = self.design.components[self.options.pin_start.component].pins[self.options.pin_start.pin]
-        pin2 = self.design.components[self.options.pin_end.component].pins[self.options.pin_end.pin]
+        pin1 = self.design.components[self.options.pin_inputs.start_pin.component].pins[self.options.pin_inputs.start_pin.pin]
+        pin2 = self.design.components[self.options.pin_inputs.end_pin.component].pins[self.options.pin_inputs.end_pin.pin]
 
         pts = [pin1.middle,
                pin1.middle + pin1.normal * (p.cpw_width / 2 + p.leadin.start),
@@ -67,3 +73,17 @@ class CpwStraightLine(QComponent):
                            width=p.cpw_width, layer=p.layer)
         self.add_qgeometry('path', {'gnd_cut': line},
                            width=p.cpw_width+2*p.cpw_gap, subtract=True)
+
+        # Generates its own pins based on the inputs
+        # Note: Need to flip the points so resulting normal vector is correct.
+        self.add_pin('start_pin',
+                     pin1.points[::-1], p.cpw_width)
+        self.add_pin('end_pin', pin2.points[::-1], p.cpw_width)
+        # THEN ADD TO NETLIST - Note: Thoughts on how to have this be automated so the component designer
+        # doesn't need to write this code?
+        self.design.connect_pins(
+            self.design.components[self.options.pin_inputs.start_pin.component].id, 
+            self.options.pin_inputs.start_pin.pin, self.id, 'start_pin')
+        self.design.connect_pins(
+            self.design.components[self.options.pin_inputs.end_pin.component].id, 
+            self.options.pin_inputs.end_pin.pin, self.id, 'end_pin')
