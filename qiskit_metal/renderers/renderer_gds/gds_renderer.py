@@ -31,10 +31,12 @@ import qiskit_metal as metal
 
 
 class GDSRender(QRenderer):
+    """Extends QRenderer to export GDS formatted files. The methods which a user will need for GDS export 
+    should be found within this class.
+    """
 
     def __init__(self, design: QDesign, initiate=True):
-        """[summary]
-
+        """
         Args:
             design (QDesign): Use QGeometry within QDesign  to obtain elements for GDS file. 
             initiate (bool, optional): True to initiate the renderer. Defaults to True.
@@ -54,15 +56,15 @@ class GDSRender(QRenderer):
             file (str): Has the path and/or just the file name. 
 
         Returns:
-            int: True if access is allowed, else returns False.
+            int: 1 if access is allowed. Else returns 0, if access not given.
         """
         directory_name = os.path.dirname(os.path.abspath(file))
         if os.access(directory_name, os.W_OK):
-            return True
+            return 1
         else:
             self.design.logger.warning(
                 f'Not able to write to directory. File not written.: {directory_name}')
-            return False
+            return 0
 
     def get_bounds(self, gs_table: geopandas.GeoSeries) -> Tuple[float, float, float, float]:
         """Get the bounds for all of the elements in gs_table.
@@ -133,10 +135,11 @@ class GDSRender(QRenderer):
     def qgeometry_to_gds(self, element: pd.Series) -> 'gdspy.polygon':
         """Convert the design.qgeometry table to format used by GDS renderer.
 
-        :param element: Expect a shapley object.
-        :type element: pd.Series
-        :return: GDS format on the input pd.Series.
-        :rtype: gdspy.polygon
+        Args:
+            element (pd.Series): Expect a shapley object.
+
+        Returns:
+            'gdspy.polygon': GDS format on the input pd.Series.
         """
 
         """
@@ -145,7 +148,7 @@ class GDSRender(QRenderer):
             points (array-like[N][2]) – Coordinates of the vertices of the polygon.
             layer (integer) – The GDSII layer number for this element.
             datatype (integer) – The GDSII datatype for this element (between 0 and 255).
-                                  datatype=10 or 11 means only that they are from a 
+                                  datatype=10 or 11 means only that they are from a
                                   Polygon vs. LineString.  This can be changed.
         See:
             https://gdspy.readthedocs.io/en/stable/reference.html#polygon
