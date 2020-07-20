@@ -11,10 +11,12 @@ from typing import TYPE_CHECKING
 from typing import Dict as Dict_
 from typing import List, Tuple, Union
 
+from operator import itemgetter
+
 from ... import Dict
 from ...designs import QDesign
 from ...toolbox_python.utility_functions import log_error_easy
-#from ..renderer_base.renderer_gui_base import QRendererGui
+# from ..renderer_base.renderer_gui_base import QRendererGui
 
 
 from qiskit_metal.renderers.renderer_base import QRenderer
@@ -31,14 +33,14 @@ import qiskit_metal as metal
 
 
 class GDSRender(QRenderer):
-    """Extends QRenderer to export GDS formatted files. The methods which a user will need for GDS export 
+    """Extends QRenderer to export GDS formatted files. The methods which a user will need for GDS export
     should be found within this class.
     """
 
     def __init__(self, design: QDesign, initiate=True):
         """
         Args:
-            design (QDesign): Use QGeometry within QDesign  to obtain elements for GDS file. 
+            design (QDesign): Use QGeometry within QDesign  to obtain elements for GDS file.
             initiate (bool, optional): True to initiate the renderer. Defaults to True.
         """
         super().__init__(design=design, initiate=initiate)
@@ -53,7 +55,7 @@ class GDSRender(QRenderer):
         """Check if can write file.
 
         Args:
-            file (str): Has the path and/or just the file name. 
+            file (str): Has the path and/or just the file name.
 
         Returns:
             int: 1 if access is allowed. Else returns 0, if access not given.
@@ -80,6 +82,29 @@ class GDSRender(QRenderer):
         else:
             return gs_table.total_bounds
 
+    def inclusive_bound(self, all_bounds: list) -> tuple:
+        """Given a list of tuples which describe corners of a box, i.e. (minx, miny, maxx, maxy).
+        This will find the box will include all boxes.  So the smallest minx and miny;
+        and the largest maxx and maxy.
+
+        Args:
+            all_bounds (list): List of bounds. Each tuple corresponds to a box.
+
+        Returns:
+            tuple: Describe a box which includes the area of each box in all_bounds.
+        """
+
+        # If given an empty list.
+        if len(all_bounds) == 0:
+            return (0.0, 0.0, 0.0, 0.0)
+        else:
+            return_tuple = min(all_bounds, key=itemgetter(0)),
+            min(all_bounds, key=itemgetter(1)),
+            max(all_bounds, key=itemgetter(2)),
+            max(all_bounds, key=itemgetter(3))
+
+            return return_tuple
+
     def path_and_poly_to_gds(self, file_name: str) -> int:
         """Use the design which was used to initialize this class.
         The QGeometry element types of both "path" and "poly", will
@@ -105,9 +130,10 @@ class GDSRender(QRenderer):
         # print(path_table)
 
         # # Determine bound box and return scalar larger than size.
-        poly_bounds = self.get_bounds(poly_table)
-        path_bounds = self.get_bounds(path_table)
+        poly_bounds = tuple(self.get_bounds(poly_table))
+        path_bounds = tuple(self.get_bounds(path_table))
         list_bounds = [poly_bounds, path_bounds]
+        bound_QGeometry = self.inclusive_bound(list_bounds)
 
         poly_geometry = list(poly_table.geometry)
         path_geometry = list(path_table.geometry)
@@ -171,6 +197,6 @@ class GDSRender(QRenderer):
                                        datatype=11)
             return to_return
         else:
-            #TODO: Handle
+            # TODO: Handle
             print(geom)
             return None
