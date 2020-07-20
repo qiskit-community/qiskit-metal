@@ -38,11 +38,11 @@ class GDSRender(QRenderer):
         gds_unit = .000001
         self.lib = gdspy.GdsLibrary(units=gds_unit)
 
-    def clear_library(self):
+    def _clear_library(self):
         """Create a new GDS library file. It can contains multiple cells."""
         gdspy.current_library.cells.clear()
 
-    def can_write_to_path(self, file: str) -> int:
+    def _can_write_to_path(self, file: str) -> int:
         """Check if can write file.
 
         Args:
@@ -58,39 +58,26 @@ class GDSRender(QRenderer):
             self.design.logger.warning(
                 f'Not able to write to directory. File not written.: {directory_name}')
             return False
-# def get_component_bounds(self, name: str) -> Tuple[float, float, float, float]:
-#     """Returns a tuple containing minx, miny, maxx, maxy values
-#     for the bounds of the component as a whole.
 
-#     Arguments:
-#         name (str): component name
+    # For Next feature
+    # def get_bounds(self, gs_table: pandas.GeoSeries) -> Tuple[float, float, float, float]:
+    #     """Get the bounds for all of the elements in gs_table.
 
-#     Returns:
-#         Geometry: Bare element geometry
-#     """
-#     gs = self.get_component_geometry(name)  # Pandas GeoSeries
-#     if len(gs) == 0:
-#         return (0, 0, 0, 0)
-#     else:
-#         return gs.total_bounds
-    def get_bounds(self, gs_table: pandas.GeoSeries) -> Tuple[float, float, float, float]:
-        """Get the bounds for all of the elements in gs_table.
+    #     Args:
+    #         gs_table (pandas.GeoSeries): A pandas GeoSeries used to describe components in a design.
 
-        Args:
-            gs_table (pandas.GeoSeries): A pandas GeoSeries used to describe components in a design.
-
-        Returns:
-            Tuple[float, float, float, float]: The bounds of all of the elements in this table.
-        """
-        if len(gs_table) == 0:
-            return(0, 0, 0, 0)
-        else:
-            return gs_table.total_bounds
+    #     Returns:
+    #         Tuple[float, float, float, float]: The bounds of all of the elements in this table.
+    #     """
+    #     if len(gs_table) == 0:
+    #         return(0, 0, 0, 0)
+    #     else:
+    #         return gs_table.total_bounds
 
     def path_and_poly_to_gds(self, file_name: str) -> int:
-        """Use the design which was used to initialize this class.  
-        The QGeometry element types of both "path" and "poly", will  
-        be used, to convert QGeometry to GDS formatted file. 
+        """Use the design which was used to initialize this class.
+        The QGeometry element types of both "path" and "poly", will
+        be used, to convert QGeometry to GDS formatted file.
 
         Args:
             file_name (str): File name which can also include directory path.
@@ -99,7 +86,7 @@ class GDSRender(QRenderer):
             int: 0=file_name can not be written, otherwise 1=file_name has been written
         """
 
-        if not self.can_write_to_path(file_name):
+        if not self._can_write_to_path(file_name):
             return 0
 
         poly_table = self.design.qgeometry.tables['poly']
@@ -111,10 +98,10 @@ class GDSRender(QRenderer):
         # print('design.qgeometry.tables[path]')
         # print(path_table)
 
-        # Determine bound box and return scalar larger than size.
-        poly_bounds = self.get_bounds(poly_table)
-        path_bounds = self.get_bounds(path_table)
-        list_bounds = [poly_bounds, path_bounds]
+        # # Determine bound box and return scalar larger than size.
+        # poly_bounds = self.get_bounds(poly_table)
+        # path_bounds = self.get_bounds(path_table)
+        # list_bounds = [poly_bounds, path_bounds]
 
         poly_geometry = list(poly_table.geometry)
         path_geometry = list(path_table.geometry)
