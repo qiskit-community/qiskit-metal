@@ -1,10 +1,15 @@
 import logging
 import sys
+import pandas
+import geopandas
 import pandas as pd
 import shapely
 import gdspy
 import os
-from typing import TYPE_CHECKING, List
+
+from typing import TYPE_CHECKING
+from typing import Dict as Dict_
+from typing import List, Tuple, Union
 
 from ... import Dict
 from ...designs import QDesign
@@ -59,20 +64,19 @@ class GDSRender(QRenderer):
                 f'Not able to write to directory. File not written.: {directory_name}')
             return False
 
-    # For Next feature
-    # def get_bounds(self, gs_table: pandas.GeoSeries) -> Tuple[float, float, float, float]:
-    #     """Get the bounds for all of the elements in gs_table.
+    def get_bounds(self, gs_table: geopandas.GeoSeries) -> Tuple[float, float, float, float]:
+        """Get the bounds for all of the elements in gs_table.
 
-    #     Args:
-    #         gs_table (pandas.GeoSeries): A pandas GeoSeries used to describe components in a design.
+        Args:
+            gs_table (pandas.GeoSeries): A pandas GeoSeries used to describe components in a design.
 
-    #     Returns:
-    #         Tuple[float, float, float, float]: The bounds of all of the elements in this table.
-    #     """
-    #     if len(gs_table) == 0:
-    #         return(0, 0, 0, 0)
-    #     else:
-    #         return gs_table.total_bounds
+        Returns:
+            Tuple[float, float, float, float]: The bounds of all of the elements in this table. [minx, miny, maxx, maxy]
+        """
+        if len(gs_table) == 0:
+            return(0, 0, 0, 0)
+        else:
+            return gs_table.total_bounds
 
     def path_and_poly_to_gds(self, file_name: str) -> int:
         """Use the design which was used to initialize this class.
@@ -99,9 +103,9 @@ class GDSRender(QRenderer):
         # print(path_table)
 
         # # Determine bound box and return scalar larger than size.
-        # poly_bounds = self.get_bounds(poly_table)
-        # path_bounds = self.get_bounds(path_table)
-        # list_bounds = [poly_bounds, path_bounds]
+        poly_bounds = self.get_bounds(poly_table)
+        path_bounds = self.get_bounds(path_table)
+        list_bounds = [poly_bounds, path_bounds]
 
         poly_geometry = list(poly_table.geometry)
         path_geometry = list(path_table.geometry)
