@@ -262,6 +262,8 @@ class QMplRenderer():
             table1 = table[~mask]
             # TODO: do by layer and color
             # self.get_color_num()
+
+            # TODO: Check that the function exists
             render_func = getattr(self, f'render_{element_type}')
             render_func(table1, ax, subtracted=False)
 
