@@ -16,8 +16,6 @@ from operator import itemgetter
 from ... import Dict
 from ...designs import QDesign
 from ...toolbox_python.utility_functions import log_error_easy
-# from ..renderer_base.renderer_gui_base import QRendererGui
-
 
 from qiskit_metal.renderers.renderer_base import QRenderer
 
@@ -33,15 +31,25 @@ class GDSRender(QRenderer):
     should be found within this class.
     """
 
-    def __init__(self, design: QDesign, initiate=True):
+    def __init__(self, design: QDesign, initiate=True, bounding_box_scale: float = 1.2):
         """
         Args:
             design (QDesign): Use QGeometry within QDesign  to obtain elements for GDS file.
             initiate (bool, optional): True to initiate the renderer. Defaults to True.
+            bounding_box_scale (float, optional): Scale box of components to render. Should be greater than 1.0. 
         """
         super().__init__(design=design, initiate=initiate)
         gds_unit = .000001
         self.lib = gdspy.GdsLibrary(units=gds_unit)
+
+        if isinstance(bounding_box_scale, float) and bounding_box_scale >= 1.0:
+            self.bounding_box_scale = bounding_box_scale
+        elif isinstance(bounding_box_scale, int) and bounding_box_scale >= 1:
+            self.bounding_box_scale = float(bounding_box_scale)
+        else:
+            self.design.logger.warning(
+                f'Expected float and number greater than or equal to 1.0 for bounding_box_scale. \
+                User provided bounding_box_scale = {bounding_box_scale}, using default of 1.2. .')
 
     def _clear_library(self):
         """Create a new GDS library file. It can contains multiple cells."""
@@ -78,9 +86,42 @@ class GDSRender(QRenderer):
         else:
             return gs_table.total_bounds
 
+    def scale_max_bounds(self, all_bounds: list) -> tuple:
+        """Given the list of tuples to represent all of the bounds for path, poly, etc. 
+        This will return the scalar, self.bounding_box_scale, of the max bounds of the tuples provided. 
+
+        Args:
+            all_bounds (list): Each tuple=(minx, miny, maxx, maxy) in list represents bounding box for poly, path, etc. 
+
+        Returns:
+            tuple: A scaled bounding box which includes all paths, polys, etc.
+        """
+
+        # If given an empty list.
+        if len(all_bounds) == 0:
+            return (0.0, 0.0, 0.0, 0.0)
+        else:
+            # Get an inclusive bounding box to contain all of the tuples provided.
+            minx, miny, maxx, maxy = self.inclusive_bound(all_bounds)
+
+            # Center of inclusive bounding box
+            center_x = (minx + maxx) / 2
+            center_y = (miny + maxy) / 2
+
+            scaled_width = (maxx - minx) * self.bounding_box_scale
+            scaled_height = (maxy - miny) * self.bounding_box_scale
+
+            # Scaled inclusive bounding box by self.bounding_box_scale.
+            scaled_box = (center_x - (.5 * scaled_width),
+                          center_y - (.5 * scaled_height),
+                          center_x + (.5 * scaled_width),
+                          center_y + (.5 * scaled_height))
+
+            return scaled_box
+
     def inclusive_bound(self, all_bounds: list) -> tuple:
         """Given a list of tuples which describe corners of a box, i.e. (minx, miny, maxx, maxy).
-        This will find the box will include all boxes.  So the smallest minx and miny;
+        This method will find the box, which will include all boxes.  In another words, the smallest minx and miny;
         and the largest maxx and maxy.
 
         Args:
@@ -94,12 +135,11 @@ class GDSRender(QRenderer):
         if len(all_bounds) == 0:
             return (0.0, 0.0, 0.0, 0.0)
         else:
-            return_tuple = min(all_bounds, key=itemgetter(0)),
-            min(all_bounds, key=itemgetter(1)),
-            max(all_bounds, key=itemgetter(2)),
-            max(all_bounds, key=itemgetter(3))
-
-            return return_tuple
+            inclusive_tuple = (min(all_bounds, key=itemgetter(0))[0],
+                               min(all_bounds, key=itemgetter(1))[1],
+                               max(all_bounds, key=itemgetter(2))[2],
+                               max(all_bounds, key=itemgetter(3))[3])
+            return inclusive_tuple
 
     def path_and_poly_to_gds(self, file_name: str) -> int:
         """Use the design which was used to initialize this class.
@@ -112,6 +152,8 @@ class GDSRender(QRenderer):
         Returns:
             int: 0=file_name can not be written, otherwise 1=file_name has been written
         """
+
+        # TODO: User provide list of QComponent names to render, instead of entire design.
 
         if not self._can_write_to_path(file_name):
             return 0
@@ -129,7 +171,7 @@ class GDSRender(QRenderer):
         poly_bounds = tuple(self.get_bounds(poly_table))
         path_bounds = tuple(self.get_bounds(path_table))
         list_bounds = [poly_bounds, path_bounds]
-        bound_QGeometry = self.inclusive_bound(list_bounds)
+        scaled_max_bound = self.scale_max_bounds(list_bounds)
 
         poly_geometry = list(poly_table.geometry)
         path_geometry = list(path_table.geometry)
