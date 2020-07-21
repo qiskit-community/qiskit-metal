@@ -1,30 +1,29 @@
 name: qiskit-metal
 channels:
-- conda-forge
-- defaults
+  - conda-forge
+  - defaults
 dependencies:
-- python>=3.6
-- pip
-- addict
-- descartes
-- docutils
-- geopandas
-- ipython
-- matplotlib
-- numpy
-- pandas
-- pint
-- pyepr-quantum
-- pygments
-- pyqode.python
-- pyqt>=5.12
-- qutip
-- scipy
-- shapely
+  - python>=3.6
+  - pip
+  - addict
+  - descartes
+  - docutils
+  - geopandas
+  - ipython
+  - matplotlib
+  - numpy
+  - pandas
+  - pint
+  - pyepr-quantum
+  - pygments
+  - pyqode.python
+  - pyqt>=5.12
+  - qutip
+  - scipy
+  - shapely
 
-- jupyter
-- wheel
+  - jupyter
+  - wheel
 
-
-- pip:
-  - gdspy>=1.5
+  - pip:
+      - gdspy>=1.5.2
