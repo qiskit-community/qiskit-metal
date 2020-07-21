@@ -5,156 +5,14 @@
 from typing import List, Tuple, Union
 
 from numpy.linalg import norm
-from qiskit_metal.draw.utility import vec_unit_planar
 
 import numpy as np
 from qiskit_metal import draw, Dict
-from qiskit_metal.components import QComponent
 from qiskit_metal.toolbox_metal.parsing import is_true
+from qiskit_metal.components.interconnects.qroute_base import QRoute, QRouteLead, QRoutePoint
 
 
-class Oriented_2D_Array:
-    r"""A simple class to define a 2D Oriented_Point,
-    with a 2D position and a 2D direction (XY plane).
-    All values stored as np.ndarray of parsed floats.
-    """
-
-    # TODO: Maybe move this class out of here, more general.
-
-    def __init__(self, position: np.ndarray, direction: np.ndarray):
-        """
-        Args:
-            positon (np.ndarray of 2 points): Center position of the connector
-            direction (np.ndarray of 2 points): *Normal vector* of the connector, defines which way it
-                points outward.
-                This is the normal vector to the surface on which the connector mates.
-                Has unit norm.
-        """
-        self.positions = np.expand_dims(position, axis=0)
-        self.directions = np.expand_dims(vec_unit_planar(direction), axis=0)
-
-    def go_straight(self, length: float):
-        """Add a point ot 'lenght' distance in the same direction
-
-        Args:
-            length (float) : how much to move by
-        """
-        self.directions = np.append(self.directions, [self.directions[-1]], axis=0)
-        self.positions = np.append(self.positions, [self.positions[-1] + self.directions[-1] * length], axis=0)
-
-    def go_left(self, length: float):
-        # THIS METHOD IS NOT USED AT THIS TIME (7/2/20)
-        """Straight line 90deg counter-clock-wise direction w.r.t. Oriented_Point
-
-        Args:
-            length (float): how much to move by
-        """
-        self.directions = np.append(self.directions, [draw.Vector.rotate(self.directions, np.pi / 2)], axis=0)
-        self.positions = np.append(self.positions, [self.positions[-1] + self.directions[-1] * length], axis=0)
-
-    def go_right(self, length: float):
-        """Straight line 90deg clock-wise direction w.r.t. Oriented_Point
-
-        Args:
-            length (float): how much to move by
-
-        THIS METHOD IS NOT USED AT THIS TIME (7/2/20)
-        """
-        self.directions = np.append(self.directions, [draw.Vector.rotate(self.directions, -1 * np.pi / 2)], axis=0)
-        self.positions = np.append(self.positions, [self.positions[-1] + self.directions[-1] * length], axis=0)
-
-    @property
-    def get_length(self):
-        """Sum of all segments length
-
-        Return:
-            length (float): full point_array length
-        """
-        length = 0
-        for x in range(len(self.positions) - 1):
-            length += abs(norm(self.positions[x] - self.positions[x + 1]))
-            return length
-
-    def align_to(self, concurrent_array):
-        # THIS METHOD IS NOT USED AT THIS TIME (7/2/20)
-        """
-        In this code, meanders need to face each-other to connect.
-
-        TODO: Make sure the two points align on one of the axes, adding a new point
-
-        TODO: Adjusts the orientation of the meander, adding yet a new point:
-            * Includes the start but not the given end point
-            * If it cannot meander just returns the initial start point
-
-        Arguments:
-            concurrent_array (Oriented_2D_Array): Other end of the CPW
-        """
-
-        # determine relative position
-        concurrent_position = ""
-        oriented_distance = concurrent_array.positions[-1] - self.positions[-1]
-        if oriented_distance[1] > 0:
-            concurrent_position = "N"
-        elif oriented_distance[1] < 0:
-            concurrent_position = "S"
-        else:
-            return  # points already aligned
-        if oriented_distance[0] > 0:
-            concurrent_position += "E"
-        elif oriented_distance[1] < 0:
-            concurrent_position += "W"
-        else:
-            return  # points already aligned
-
-        # TODO implement vertical alignment. Only using horizontal alignment for now
-        # if oriented_distance[0] > oriented_distance[1]:
-        #     # Vertical alignment
-        #     pass
-        # else:
-        #     # horizontal alignment
-        #     pass # code below
-
-        if np.dot(self.directions[-1], concurrent_array.directions[-1]) == -1:
-            # points are facing each other or opposing each other
-            if (("E" in concurrent_position and self.directions[-1][0] > 0)
-                    or ("N" in concurrent_position and self.directions[-1][1] > 0)):
-                # facing each other
-                pass
-            else:
-                # opposing each other
-                pass
-        elif np.dot(self.directions[-1], concurrent_array.directions[-1]) == 1:
-            # points are facing the same direction
-            if (("E" in concurrent_position and self.directions[-1][0] > 0)
-                    or ("N" in concurrent_position and self.directions[-1][1] > 0)):
-                # facing each other
-                pass
-            else:
-                # opposing each other
-                pass
-        else:
-            # points are orthogonal to ach other
-            pass
-
-
-class Oriented_Point:
-    r"""A simple class to define a 2D Oriented_Point,
-    with a 2D position and a 2D direction (XY plane).
-    All values stored as np.ndarray of parsed floats.
-    """
-
-    # TODO: Maybe move this class out of here, more general.
-
-    def __init__(self, array: Oriented_2D_Array):
-        """
-        Arguments:
-            array (Oriented_2D_Array): 2D array
-        """
-        self.position = array.positions[-1]
-        self.direction = array.directions[-1]
-
-
-class CpwMeanderSimple(QComponent):
+class CpwMeanderSimple(QRoute):
     """A meandered basic CPW.
 
     Inherits QComponent class
@@ -205,8 +63,8 @@ class CpwMeanderSimple(QComponent):
         lead_end = p.meander.lead_end
 
         # Set the CPW pins and add the points/directions to the lead-in/out arrays
-        start_points = Oriented_2D_Array(*self.set_pin("start"))
-        end_points = Oriented_2D_Array(*self.set_pin("end"))
+        start_points = QRouteLead(*self.set_pin("start"))
+        end_points = QRouteLead(*self.set_pin("end"))
 
         # Align the lead-in/out to the input options set from the user
         lead_in = max(lead_start, p.trace_width / 2)  # minimum lead, to be able to jog correctly
@@ -236,14 +94,14 @@ class CpwMeanderSimple(QComponent):
         # Make points into elements
         self.make_elements(points)
 
-    def meander_fixed_length(self, start_array: Oriented_2D_Array, end_array: Oriented_2D_Array,
+    def meander_fixed_length(self, start_array: QRouteLead, end_array: QRouteLead,
                              length: float, meander_opt: dict) -> np.ndarray:
         """
         Meanders using a fixed length and fixed spacing.
 
         Arguments:
-            start (Oriented_Point): Oriented_Point of the start
-            end (Oriented_Point): Oriented_Point of the end
+            start (QRoutePoint): QRoutePoint of the start
+            end (QRoutePoint): QRoutePoint of the end
             length (str): Total length of the meander whole CPW segment (defined by user, after you subtract lead lengths
             meander (dict): meander options (parsed)
 
@@ -278,8 +136,8 @@ class CpwMeanderSimple(QComponent):
         snap = is_true(meander_opt.snap)  # snap to xy grid
         # TODO: snap add 45 deg snap by changing snap function using angles
 
-        start = Oriented_Point(start_array)
-        end = Oriented_Point(end_array)
+        start = QRoutePoint(start_array)
+        end = QRoutePoint(end_array)
 
         # Coordinate system (example: x to the right => sideways up)
         forward, sideways = self.get_unit_vectors(start, end, snap)
@@ -437,43 +295,13 @@ class CpwMeanderSimple(QComponent):
         z
         return z, odd
 
-    def set_pin(self, name) -> Tuple:
-        """Defines the CPW pins and returns the pin coordinates and normal direction vector
-
-        Args:
-            name: string (supported pin names are: start, end)
-
-        Returns:
-            tuple: `coordinate`, `direction`.
-            The values are numpy arrays with two float points each.
-        """
-        if name == "start":
-            options_pin = self.options.pin_inputs.start_pin
-        elif name == "end":
-            options_pin = self.options.pin_inputs.end_pin
-        else:
-            raise Exception("Pin name \"" + name + "\" is not supported for this CPW." +
-                            " The only supported pins are: start, end." +
-                            " to change that, edit set_pin(self, name)")
-
-        pin = self.design.components[options_pin.component].pins[options_pin.pin]
-
-        # add pins and document the connections in the netlist
-        self.add_pin(name, pin.points[::-1], self.options.trace_width)
-        self.design.connect_pins(
-            self.design.components[options_pin.component].id, options_pin.pin, self.id, name)
-
-        position = pin['middle']
-        direction = pin['normal']
-        return position, direction
-
-    def get_unit_vectors(self, start: Oriented_Point, end: Oriented_Point, snap: bool = False) -> Tuple[np.ndarray]:
+    def get_unit_vectors(self, start: QRoutePoint, end: QRoutePoint, snap: bool = False) -> Tuple[np.ndarray]:
         """Return the unit and target vector in which the CPW should procees as its
         cooridnate sys.
 
         Arguments:
-            start (Oriented_Point): [description]
-            end (Oriented_Point): [description]
+            start (QRoutePoint): [description]
+            end (QRoutePoint): [description]
             snap (bool): True to snap to grid (Default: False)
 
         Returns:

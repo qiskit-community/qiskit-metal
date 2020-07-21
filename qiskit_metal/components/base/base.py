@@ -59,7 +59,7 @@ class QComponent():
     For front-end user:
         * Manipulates the dictionary of options (stored as string-string key-value
           pairs) to change the geometry and properties of the component.
-        * The options of the class are stored in an options dicitonary. These
+        * The options of the class are stored in an options dictionary. These
           include the geometric sizes, such as width='10um' or height='5mm', etc.
         * The `make` function parses these strings and implements the logic required
           to transform the dictionary of options (stored as strings) into shapes
@@ -67,7 +67,7 @@ class QComponent():
 
     For creator user:
         * The creator user implements the `make` function (see above)
-        * The class define the internal representation of a componetns
+        * The class define the internal representation of a components
         * The class provides the interfaces for the component (creator user)
 
     """
@@ -81,10 +81,10 @@ class QComponent():
     default_options = Dict(
         # Intended for future use, for components that do not normally take pins as inputs
         # to be able to have an input pin and be moved/rotated based on said input.
-        #pin_inputs = Dict()
+        # pin_inputs = Dict()
     )
 
-    # Dummy private attribute used to check if an instanciated object is
+    # Dummy private attribute used to check if an instantiated object is
     # indeed a QComponent class. The problem is that the `isinstance`
     # built-in method fails when this module is reloaded.
     # Used by `is_component` to check.
@@ -99,7 +99,7 @@ class QComponent():
             name (str): Name of the component.
             options (dict): User options that will override the defaults. (default: None)
             make (bool): True if the make function should be called at the end of the init.
-                Options be used in the make funciton to create the geometry. (default: True)
+                Options be used in the make function to create the geometry. (default: True)
             component_template (dict): User can overwrite the template options for the component
                 that will be stored in the design, in design.template,
                 and used every time a new component is instantiated.
@@ -120,7 +120,7 @@ class QComponent():
             exists in the design, the existing component will be
             kept in the design, and current component will not be generated,
             nor will be added to the design. The variable design.self.status 
-            will still be NotBuilt, as opposed to Initalization Successful.
+            will still be NotBuilt, as opposed to Initialization Successful.
 
             Either True or False - If string name, used for component, is NOT
             being used in the design, a component will be generated and
@@ -129,7 +129,7 @@ class QComponent():
 
         # Make the id be None, which means it hasn't been added to design yet.
         self._id = None
-        # Status: used to handle building of a component and checking if it succeedded or failed.
+        # Status: used to handle building of a component and checking if it succeeded or failed.
         self.status = 'Not Built'
         if not is_design(design):
             raise ValueError(
@@ -175,8 +175,6 @@ class QComponent():
         if make:
             self.rebuild()
 
-        return None
-
     @classmethod
     def _gather_all_children_options(cls):
         '''
@@ -216,7 +214,7 @@ class QComponent():
                                     design: 'QDesign',
                                     template_key: str,
                                     component_template: Dict):
-        """Init funciton to register a component class with the design when first instantiated.
+        """Init function to register a component class with the design when first instantiated.
             Registers the design template options.
 
             Arguments:
@@ -238,7 +236,7 @@ class QComponent():
 
     @name.setter
     def name(self, new_name: str):
-        '''Rename the component. Change the design dictioanries as well.
+        '''Rename the component. Change the design dictionaries as well.
         handle components. Delete and remake.
 
         Returns:
@@ -310,7 +308,7 @@ class QComponent():
                              logger_: logging.Logger = None,
                              template_key: str = None) -> Dict:
         """
-        Creates template options for the Metal Componnet class required for the class
+        Creates template options for the Metal Component class required for the class
         to function, based on teh design template; i.e., be created, made, and rendered.
         Provides the blank option structure required.
 
@@ -318,7 +316,7 @@ class QComponent():
 
         Arguments:
             design (QDesign): Design class. Should be the class, not the instance.
-            component_template (Dict): Tempalte options to overwrite the class ones (default: None)
+            component_template (Dict): Template options to overwrite the class ones (default: None)
             logger_ (logging.Logger): A logger for errors. (default: None)
             template_key (str): The template key identifier. If None, then uses
                 cls._get_unique_class_name() (default: None)
@@ -326,7 +324,7 @@ class QComponent():
         Returns:
             Dict: dictionary of default options based on design template.
         """
-        # get key for tepmlates
+        # get key for templates
         if template_key is None:
             template_key = cls._get_unique_class_name()
 
@@ -371,15 +369,15 @@ class QComponent():
 
     def make(self):
         """
-        The make function implements the logic that creates the geoemtry
+        The make function implements the logic that creates the geometry
         (poly, path, etc.) from the qcomponent.options dictionary of parameters,
         and the adds them to the design, using qcomponent.add_qgeometry(...),
         adding in extra needed information, such as layer, subtract, etc.
 
-        Use the qiskit_metal.draw module to create the geoemtry.
+        Use the qiskit_metal.draw module to create the geometry.
 
         **Note:**
-            * This method should be overwritten by the childs make function.
+            * This method should be overwritten by the children make function.
             * This function only contains the logic, the actual call to make the element is in
               rebuild() and remake()
 
@@ -396,18 +394,18 @@ class QComponent():
         It converts the qc.options into QGeometry with all of the required options, such as
         the geometry points, layer number, materials, etc. needed to render.
 
-        The build clears the exisitng QGeometry and QPins and then calls the qc.make function,
+        The build clears the existing QGeometry and QPins and then calls the qc.make function,
         which is writen by the component developer to implement the logic (using the metal.
         draw module) to convert the qc.options into the QGeometry.
 
         *Build status:*
-        The funciton also sets the build status of the component.
+        The function also sets the build status of the component.
         It sets to `failed` when the component is created, and then it sets to `good` when it is
         done with no errors. The user can also set other statuses, which can appear if the code fails
         to reach the final line of the build, where the build status is set to `good`.
         """
 
-        # Begin by setting the status to failed, we will change this if we succed
+        # Begin by setting the status to failed, we will change this if we succeed
         self.status = 'failed'
         if self._made:  # already made, just remaking
             # TODO: this is probably very inefficient, design more efficient way
@@ -432,7 +430,7 @@ class QComponent():
     # with variable use
     def parse_value(self, value: Union[Any, List, Dict, Iterable]) -> Union[Any, List, Dict, Iterable]:
         """
-        Parse a string, mappable (dict, Dict), iterrable (list, tuple) to account for
+        Parse a string, mappable (dict, Dict), iterable (list, tuple) to account for
         units conversion, some basic arithmetic, and design variables.
         This is the main parsing function of Qiskit Metal.
 
@@ -447,10 +445,10 @@ class QComponent():
             Strings:
                 Strings of numbers, numbers with units; e.g., '1', '1nm', '1 um'
                     Converts to int or float.
-                    Some basic arithmatic is possible, see below.
+                    Some basic arithmetic is possible, see below.
 
                 Strings of variables 'variable1'.
-                    Variable interpertation will use string method
+                    Variable interpretation will use string method
                     isidentifier 'variable1'.isidentifier()`
 
             Dictionaries:
@@ -458,14 +456,14 @@ class QComponent():
                 been subjected to parse_value.
 
             Itterables(list, tuple, ...):
-                Returns same kind and calls itself `parse_value` on each elemnt.
+                Returns same kind and calls itself `parse_value` on each element.
 
             Numbers:
                 Returns the number as is. Int to int, etc.
 
 
         Arithemetic:
-            Some basic arithemetic can be handled as well, such as `'-2 * 1e5 nm'`
+            Some basic arithmetic can be handled as well, such as `'-2 * 1e5 nm'`
             will yield float(-0.2) when the default units are set to `mm`.
 
         Default units:
@@ -482,7 +480,7 @@ class QComponent():
     def parse_options(self, options: Dict = None) -> Dict:
         """
         Parse the options, converting string into interpreted values.
-        Parses units, variables, strings, lists, and dicitonaries.
+        Parses units, variables, strings, lists, and dictionaries.
         Explained by example below.
 
         Arguments:
@@ -494,7 +492,7 @@ class QComponent():
 
         Calls `self.design.parse_options`.
 
-        See `self.parse_value` for more infomation.
+        See `self.parse_value` for more information.
         """
 
         return self.design.parse_value(options if options else self.options)
@@ -706,7 +704,7 @@ class QComponent():
     def _check_pin_inputs(self):
         """Checks that the pin_inputs are valid, sets an error message indicating what the
         error is if the inputs are not valid.
-        Checks regardless of user passing the compnent name or component id (probably a smoother way
+        Checks regardless of user passing the component name or component id (probably a smoother way
         to do this check)
         3 Error cases:
         - Component does not exist
@@ -825,7 +823,7 @@ class QComponent():
             kind (str): The kind of QGeometry, such as 'path', 'poly', etc.
                         All geometry in the dictionary should have the same kind,
                         such as Polygon or LineString.
-            geoemetry (Dict[BaseGeometry]): Key-value pairs of name of the geometry
+            geometry (Dict[BaseGeometry]): Key-value pairs of name of the geometry
                 you want to add and the value should be a shapely geometry object, such
                 as a Polygon or a LineString.
             subtract (bool): Subtract from the layer (default: False)
@@ -876,7 +874,7 @@ class QComponent():
 
     def qgeometry_dict(self, element_type: str) -> Dict_[str, BaseGeometry]:
         """
-        Returns a dict of element geoemetry (shapely geometry) of the component
+        Returns a dict of element qgeometry (shapely geometry) of the component
         as a python dict, where the dict keys are the names of the qgeometry
         and the corresponding values are the shapely geometries.
 
@@ -892,7 +890,7 @@ class QComponent():
 
     def qgeometry_list(self, element_type: str = 'all') -> List[BaseGeometry]:
         """
-        Returns a list of element geoemetry (shapely geometry) of the component
+        Returns a list of element qgeometry (shapely geometry) of the component
         as a python list of shapely geometries.
 
         Arguments:

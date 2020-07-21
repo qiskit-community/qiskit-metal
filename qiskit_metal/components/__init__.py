@@ -69,11 +69,11 @@ Interconnects
 
     CpwAutoStraightLine
     CpwStraightLine
-    Oriented_2D_Array
-    Oriented_Point
     CpwMeanderSimple
     FakeCPW
-    Qroute
+    QRoute
+    QRouteLead
+    QRoutePoint
 
 
 Junctions
@@ -125,10 +125,8 @@ if config.is_building_docs():
     from .interconnects.cpw_autostraightline import CpwAutoStraightLine
     from .interconnects.cpw_basic_straight_line import CpwStraightLine
     from .interconnects.cpw_meander_simple import CpwMeanderSimple
-    from .interconnects.cpw_meander_simple import Oriented_2D_Array
-    from .interconnects.cpw_meander_simple import Oriented_Point
+    from .interconnects.qroute_base import QRoute, QRouteLead, QRoutePoint
     from .interconnects.fake_cpw import FakeCPW
-    from .interconnects.Qroute import Qroute
     from .qubits.transmon_cross import TransmonCross
     from .qubits.transmon_pocket import TransmonPocket
     from .qubits.transmon_pocket_cl import TransmonPocketCL
