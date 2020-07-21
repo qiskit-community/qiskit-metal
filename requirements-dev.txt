@@ -1,5 +1,5 @@
 # Optional dependencies
-gdspy>=1.5
+gdspy>=1.5.2
 
 # Dev tools
 jupyter

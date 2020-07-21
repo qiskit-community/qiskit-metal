@@ -13,3 +13,4 @@ pyqode.python
 PyQt5>=5.12
 scipy
 Shapely
+gdspy>=1.5.2
