@@ -39,9 +39,14 @@ class GDSRender(QRenderer):
             bounding_box_scale (float, optional): Scale box of components to render. Should be greater than 1.0. 
         """
         super().__init__(design=design, initiate=initiate)
-        gds_unit = .000001
-        self.lib = gdspy.GdsLibrary(units=gds_unit)
+        self.gds_unit = self.design.get_units()
 
+        self.lib = gdspy.GdsLibrary(units=self.gds_unit)
+
+        self.polys = None  # polys is a gdspy.Polygon
+        self.paths = None  # path is a gdspy.Polygon
+
+        # bounding_box_scale will need to be migrated to some form of default_options
         if isinstance(bounding_box_scale, float) and bounding_box_scale >= 1.0:
             self.bounding_box_scale = bounding_box_scale
         elif isinstance(bounding_box_scale, int) and bounding_box_scale >= 1:
@@ -52,7 +57,7 @@ class GDSRender(QRenderer):
                 User provided bounding_box_scale = {bounding_box_scale}, using default of 1.2. .')
 
     def _clear_library(self):
-        """Create a new GDS library file. It can contains multiple cells."""
+        """Clear current library."""
         gdspy.current_library.cells.clear()
 
     def _can_write_to_path(self, file: str) -> int:
@@ -69,7 +74,7 @@ class GDSRender(QRenderer):
             return 1
         else:
             self.design.logger.warning(
-                f'Not able to write to directory. File not written.: {directory_name}')
+                f'Not able to write to directory. File not written: {directory_name}.')
             return 0
 
     def get_bounds(self, gs_table: geopandas.GeoSeries) -> Tuple[float, float, float, float]:
@@ -141,23 +146,7 @@ class GDSRender(QRenderer):
                                max(all_bounds, key=itemgetter(3))[3])
             return inclusive_tuple
 
-    def path_and_poly_to_gds(self, file_name: str) -> int:
-        """Use the design which was used to initialize this class.
-        The QGeometry element types of both "path" and "poly", will
-        be used, to convert QGeometry to GDS formatted file.
-
-        Args:
-            file_name (str): File name which can also include directory path.
-
-        Returns:
-            int: 0=file_name can not be written, otherwise 1=file_name has been written
-        """
-
-        # TODO: User provide list of QComponent names to render, instead of entire design.
-
-        if not self._can_write_to_path(file_name):
-            return 0
-
+    def create_poly_path_for_gds(self):
         poly_table = self.design.qgeometry.tables['poly']
         # print('design.qgeometry.tables[poly]')
         # print(poly_table)
@@ -177,22 +166,46 @@ class GDSRender(QRenderer):
         path_geometry = list(path_table.geometry)
 
         # polys is a gdspy.Polygon
-        polys = poly_table.apply(self.qgeometry_to_gds, axis=1)
+        self.polys = poly_table.apply(self.qgeometry_to_gds, axis=1)
         # paths is a gdspy.LineString
-        paths = path_table.apply(self.qgeometry_to_gds, axis=1)
+        self.paths = path_table.apply(self.qgeometry_to_gds, axis=1)
 
+    def write_poly_path_to_file(self, file_name: str):
         # Create a new GDS library file. It can contains multiple cells.
-        gdspy.current_library.cells.clear()
+        self._clear_library()
 
         lib = gdspy.GdsLibrary()
 
         # New cell
         cell = lib.new_cell('TOP', overwrite_duplicate=True)
-        cell.add(polys)
-        cell.add(paths)
+        cell.add(self.polys)
+        cell.add(self.paths)
 
         # Save the library in a file.
         lib.write_gds(file_name)
+
+    def path_and_poly_to_gds(self, file_name: str, highlight_qcomponents: list = []) -> int:
+        """Use the design which was used to initialize this class.
+        The QGeometry element types of both "path" and "poly", will
+        be used, to convert QGeometry to GDS formatted file.
+
+        Args:
+            file_name (str): File name which can also include directory path.
+            highlight_qcomponents (list): List of strings which denote the QComponents to render. 
+                                        If empty, render all comonents in design.
+
+        Returns:
+            int: 0=file_name can not be written, otherwise 1=file_name has been written
+        """
+
+        # TODO: User provide list of QComponent names to render, instead of entire design.
+
+        if not self._can_write_to_path(file_name):
+            return 0
+
+        self.create_poly_path_for_gds()
+
+        self.write_poly_path_to_file(file_name)
 
         return 1
 
