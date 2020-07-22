@@ -133,8 +133,10 @@ gui.autoscale()
 # print(design.components)
 a_gds = GDSRender(design)
 
+# Export GDS file for all components in design.
 a_gds.path_and_poly_to_gds("../../GDS_files/StartHere.gds")
 
+# Export a GDS file which contains only few components.
 a_gds.path_and_poly_to_gds("../../GDS_files/four_qcomponents.gds",
                            highlight_qcomponents=['cpw1', 'cpw4', 'Q1', 'Q3'])
 
