@@ -36,7 +36,7 @@ class GDSRender(QRenderer):
         Args:
             design (QDesign): Use QGeometry within QDesign  to obtain elements for GDS file.
             initiate (bool, optional): True to initiate the renderer. Defaults to True.
-            bounding_box_scale (float, optional): Scale box of components to render. Should be greater than 1.0. 
+            bounding_box_scale (float, optional): Scale box of components to render. Should be greater than 1.0.
         """
         super().__init__(design=design, initiate=initiate)
         self.gds_unit = self.design.get_units()
@@ -92,11 +92,11 @@ class GDSRender(QRenderer):
             return gs_table.total_bounds
 
     def scale_max_bounds(self, all_bounds: list) -> tuple:
-        """Given the list of tuples to represent all of the bounds for path, poly, etc. 
-        This will return the scalar, self.bounding_box_scale, of the max bounds of the tuples provided. 
+        """Given the list of tuples to represent all of the bounds for path, poly, etc.
+        This will return the scalar, self.bounding_box_scale, of the max bounds of the tuples provided.
 
         Args:
-            all_bounds (list): Each tuple=(minx, miny, maxx, maxy) in list represents bounding box for poly, path, etc. 
+            all_bounds (list): Each tuple=(minx, miny, maxx, maxy) in list represents bounding box for poly, path, etc.
 
         Returns:
             tuple: A scaled bounding box which includes all paths, polys, etc.
@@ -146,17 +146,30 @@ class GDSRender(QRenderer):
                                max(all_bounds, key=itemgetter(3))[3])
             return inclusive_tuple
 
-    def create_poly_path_for_gds(self):
+    def create_poly_path_for_gds(self, highlight_qcomponents: list = []) -> None:
+        """Using self.design, gather the QGeometries to be used to write to file.
+
+        Args:
+            highlight_qcomponents (list): List of strings which denote the name of QComponents to render.
+                                        If empty, render all comonents in design.
+
+        """
 
         for table_name in self.design.qgeometry.get_element_types():
-            table = self.design.qgeometry.tables[table_name]
+
+            # design.qgeometry.tables is a dict.
+            # key=table_name, value=geopandas.GeoDataFrame
+            if len(highlight_qcomponents) == 0:
+                table = self.design.qgeometry.tables[table_name]
+            else:
+
+                table = self.design.qgeometry.tables[table_name]
+                highlight_id = [self.design.name_to_id[a_qcomponent]
+                                for a_qcomponent in highlight_qcomponents]
+
+                table = table[table['component'].isin(highlight_id)]
+
             setattr(self, f'{table_name}_table', table)
-
-            # Determine bound box and return scalar larger than size.
-            bounds = tuple(self.get_bounds(table))
-            # Add the bounds of each table to list.
-            self.list_bounds.append(bounds)
-
             setattr(self, f'{table_name}_geometry', list(table.geometry))
 
             q_geometries = table.apply(self.qgeometry_to_gds, axis=1)
@@ -164,9 +177,20 @@ class GDSRender(QRenderer):
             # paths is gdspy.LineString
             setattr(self, f'{table_name}s', q_geometries)
 
+            # Determine bound box and return scalar larger than size.
+            bounds = tuple(self.get_bounds(table))
+            # Add the bounds of each table to list.
+            self.list_bounds.append(bounds)
+
         self.scaled_max_bound = self.scale_max_bounds(self.list_bounds)
 
-    def write_poly_path_to_file(self, file_name: str):
+    def write_poly_path_to_file(self, file_name: str) -> None:
+        """Using the geometries for each table name, write to a GDS file.
+
+        Args:
+            file_name (str): The path and file name to write the gds file.
+                             Name needs to include desired extention, i.e. ".gds".
+        """
 
         # Create a new GDS library file. It can contains multiple cells.
         self._clear_library()
@@ -179,7 +203,7 @@ class GDSRender(QRenderer):
         for table_name in self.design.qgeometry.get_element_types():
             self.q_geometries = getattr(self, f'{table_name}s')
             if self.q_geometries is None:
-                #self.design.logger(f'There are no {table_name} to write.')
+                # self.design.logger(f'There are no {table_name} to write.')
                 pass
             else:
                 cell.add(self.q_geometries)
@@ -194,7 +218,7 @@ class GDSRender(QRenderer):
 
         Args:
             file_name (str): File name which can also include directory path.
-            highlight_qcomponents (list): List of strings which denote the QComponents to render. 
+            highlight_qcomponents (list): List of strings which denote the name of QComponents to render.
                                         If empty, render all comonents in design.
 
         Returns:
@@ -206,7 +230,7 @@ class GDSRender(QRenderer):
         if not self._can_write_to_path(file_name):
             return 0
 
-        self.create_poly_path_for_gds()
+        self.create_poly_path_for_gds(highlight_qcomponents)
 
         self.write_poly_path_to_file(file_name)
 
