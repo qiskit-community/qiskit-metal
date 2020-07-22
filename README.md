@@ -37,8 +37,9 @@ To use the new environment inside jupyter lab. You will need to follow these add
 conda install ipykernel
 ipython kernel install --user --name=<any_name_for_kernel>
 ```
-This will create a kernel based on the environment that is "active" at the moment and you will be able to select that kernel inside jupyter lab
+This will create a kernel based on the environment that is "active" at the moment and you will be able to select that kernel inside jupyter lab.
 
+NOTE: When installing `gdspy` you may be prompted that you are missing Visual C++ 14.0.  You must install this first.  You can do this by downloing and intsalling the [C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/)
 
 ### Without conda: Virtual environment setup (alternative setup)
 
