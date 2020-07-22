@@ -43,8 +43,8 @@ class GDSRender(QRenderer):
 
         self.lib = gdspy.GdsLibrary(units=self.gds_unit)
 
-        self.polys = None  # polys is a gdspy.Polygon
-        self.paths = None  # path is a gdspy.Polygon
+        self.list_bounds = list()
+        self.scaled_max_bound = tuple()
 
         # bounding_box_scale will need to be migrated to some form of default_options
         if isinstance(bounding_box_scale, float) and bounding_box_scale >= 1.0:
@@ -147,30 +147,27 @@ class GDSRender(QRenderer):
             return inclusive_tuple
 
     def create_poly_path_for_gds(self):
-        poly_table = self.design.qgeometry.tables['poly']
-        # print('design.qgeometry.tables[poly]')
-        # print(poly_table)
-        # print(' ')
 
-        path_table = self.design.qgeometry.tables['path']
-        # print('design.qgeometry.tables[path]')
-        # print(path_table)
+        for table_name in self.design.qgeometry.get_element_types():
+            table = self.design.qgeometry.tables[table_name]
+            setattr(self, f'{table_name}_table', table)
 
-        # # Determine bound box and return scalar larger than size.
-        poly_bounds = tuple(self.get_bounds(poly_table))
-        path_bounds = tuple(self.get_bounds(path_table))
-        list_bounds = [poly_bounds, path_bounds]
-        scaled_max_bound = self.scale_max_bounds(list_bounds)
+            # Determine bound box and return scalar larger than size.
+            bounds = tuple(self.get_bounds(table))
+            # Add the bounds of each table to list.
+            self.list_bounds.append(bounds)
 
-        poly_geometry = list(poly_table.geometry)
-        path_geometry = list(path_table.geometry)
+            setattr(self, f'{table_name}_geometry', list(table.geometry))
 
-        # polys is a gdspy.Polygon
-        self.polys = poly_table.apply(self.qgeometry_to_gds, axis=1)
-        # paths is a gdspy.LineString
-        self.paths = path_table.apply(self.qgeometry_to_gds, axis=1)
+            q_geometries = table.apply(self.qgeometry_to_gds, axis=1)
+            # polys is gdspy.Polygon
+            # paths is gdspy.LineString
+            setattr(self, f'{table_name}s', q_geometries)
+
+        self.scaled_max_bound = self.scale_max_bounds(self.list_bounds)
 
     def write_poly_path_to_file(self, file_name: str):
+
         # Create a new GDS library file. It can contains multiple cells.
         self._clear_library()
 
@@ -178,8 +175,14 @@ class GDSRender(QRenderer):
 
         # New cell
         cell = lib.new_cell('TOP', overwrite_duplicate=True)
-        cell.add(self.polys)
-        cell.add(self.paths)
+
+        for table_name in self.design.qgeometry.get_element_types():
+            self.q_geometries = getattr(self, f'{table_name}s')
+            if self.q_geometries is None:
+                #self.design.logger(f'There are no {table_name} to write.')
+                pass
+            else:
+                cell.add(self.q_geometries)
 
         # Save the library in a file.
         lib.write_gds(file_name)
