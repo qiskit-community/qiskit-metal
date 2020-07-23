@@ -26,17 +26,17 @@ class OpenToGround(QComponent):
     Inherits `QComponent` class
 
     Options:
-        Convention: Values (unless noted) are strings with units included,
-        (e.g., '30um')
+        * width: the width of the 'cpw' terminating to ground (this is merely
+          for the purpose of generating a value to pass to the pin)
+        * gap: the gap of the 'cpw'
+        * termination_gap: the length of dielectric from the end of the cpw center trace to the ground.
+        * pos_x/_y: the x/y position of the ground termination.
+        * rotation: the direction of the termination. 0 degrees is +x, following a
+          counter-clockwise rotation (eg. 90 is +y)
+        * chip: the chip the pin should be on.
+        * layer: layer the pin is on. Does not have any practical impact to the short.
 
-        width           - the width of the 'cpw' terminating to ground.
-        gap             - the gap of the 'cpw'
-        termination_gap - the length of dielectric from the end of the cpw center trace to the ground.
-        pos_x/_y        - the x/y position of the ground termination.
-        rotation        - the direction of the termination. 0 degrees is +x, following a
-                        counter-clockwise rotation (eg. 90 is +y)
-        chip            - the chip the pin should be on.
-        layer           - layer the pin is on. Does not have any practical impact to the short.
+    Values (unless noted) are strings with units included, (e.g., '30um')
     """
 
     default_options = Dict(
