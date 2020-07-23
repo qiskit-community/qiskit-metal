@@ -166,7 +166,9 @@ class GDSRender(QRenderer):
 
         Need bounding box from #256.
 
-        Basically would want to do something like.-> Generate a rectangle that is the size of the chip on layer Y
+        Basically would want to do something like.-> Generate a rectangle 
+        that is the size of the chip on layer Y (layer number 200)
+
         -> put all the 'subtract' shapes on layer X
         -> Boolean subtract X from Y and put that on Z
         -> add all the non-subtract shapes to Z as well.
@@ -180,11 +182,13 @@ class GDSRender(QRenderer):
         chip_rectangle = gdspy.Rectangle((self.scaled_max_bound[0], self.scaled_max_bound[1]),
                                          (self.scaled_max_bound[2],
                                           self.scaled_max_bound[3]),
+                                         layer=200,
                                          datatype=12)
 
-    def create_poly_path_for_gds(self, highlight_qcomponents: list = []) -> None:
+    def create_poly_path_for_gds(self, highlight_qcomponents: list = []) -> int:
         """Using self.design, this method does the following: 
         1. Gather the QGeometries to be used to write to file.
+           Duplicate names in hightlight_qcomponents will be removed without warning.
         2. Populate self.list_bounds, which contains the maximum bound for all elements to render.
         3. Calculate scaled bounding box to emulate size of chip using self.scaled_max_bound 
         and place into self.scaled_max_bound.
@@ -194,12 +198,21 @@ class GDSRender(QRenderer):
                                         If empty, render all comonents in design.
                                         If QComponent names are dupliated, duplicates will be ignored.
 
+        Returns:
+            int: 0 if all ended well. Otherwise, 1 if QComponent name not in design.
+
         """
-        # Remove identical Q_Components.
+        # Remove identical QComponent names.
         unique_qcomponents = list(set(highlight_qcomponents))
 
-        for table_name in self.design.qgeometry.get_element_types():
+        # Confirm all QComponent are in design.
+        for qcomp in unique_qcomponents:
+            if qcomp not in self.design.name_to_id:
+                self.design.logger.warning(
+                    f'The component={qcomp} in highlight_qcompoents not in QDesign. The GDS data not generated.')
+                return 1
 
+        for table_name in self.design.qgeometry.get_element_types():
             # design.qgeometry.tables is a dict.
             # key=table_name, value=geopandas.GeoDataFrame
             if len(unique_qcomponents) == 0:
@@ -225,6 +238,7 @@ class GDSRender(QRenderer):
             setattr(self, f'{table_name}s', q_geometries)
 
         self.scaled_max_bound = self.scale_max_bounds(self.list_bounds)
+        return 0
 
     def write_poly_path_to_file(self, file_name: str) -> None:
         """Using the geometries for each table name, write to a GDS file.
@@ -278,11 +292,11 @@ class GDSRender(QRenderer):
         if not self._can_write_to_path(file_name):
             return 0
 
-        self.create_poly_path_for_gds(highlight_qcomponents)
-
-        self.write_poly_path_to_file(file_name)
-
-        return 1
+        if (self.create_poly_path_for_gds(highlight_qcomponents) == 0):
+            self.write_poly_path_to_file(file_name)
+            return 1
+        else:
+            return 0
 
     def qgeometry_to_gds(self, element: pd.Series) -> 'gdspy.polygon':
         """Convert the design.qgeometry table to format used by GDS renderer.
