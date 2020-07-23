@@ -37,14 +37,9 @@ class GDSRender(QRenderer):
     def __init__(self, design: QDesign, initiate=True, bounding_box_scale: float = 1.2):
         """
         Args:
-<<<<<<< HEAD
-            design (QDesign): Use QGeometry within QDesign  to obtain elements for GDS file.
-            initiate (bool, optional): True to initiate the renderer. Defaults to True.
-            bounding_box_scale (float, optional): Scale box of components to render. Should be greater than 1.0.
-=======
             design (QDesign): Use QGeometry within QDesign  to obtain elements for GDS file. 
             initiate (bool): True to initiate the renderer. Defaults to True.
->>>>>>> v0.2-dev
+            bounding_box_scale (float): Scale box of components to render. Should be greater than 1.0.
         """
         super().__init__(design=design, initiate=initiate)
         self.gds_unit = self.design.get_units()
