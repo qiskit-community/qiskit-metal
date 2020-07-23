@@ -92,8 +92,8 @@ class GDSRender(QRenderer):
         """
         if len(gs_table) == 0:
             return(0, 0, 0, 0)
-        else:
-            return gs_table.total_bounds
+
+        return gs_table.total_bounds
 
     def scale_max_bounds(self, all_bounds: list) -> tuple:
         """Given the list of tuples to represent all of the bounds for path, poly, etc.
@@ -109,24 +109,24 @@ class GDSRender(QRenderer):
         # If given an empty list.
         if len(all_bounds) == 0:
             return (0.0, 0.0, 0.0, 0.0)
-        else:
-            # Get an inclusive bounding box to contain all of the tuples provided.
-            minx, miny, maxx, maxy = self.inclusive_bound(all_bounds)
 
-            # Center of inclusive bounding box
-            center_x = (minx + maxx) / 2
-            center_y = (miny + maxy) / 2
+        # Get an inclusive bounding box to contain all of the tuples provided.
+        minx, miny, maxx, maxy = self.inclusive_bound(all_bounds)
 
-            scaled_width = (maxx - minx) * self.bounding_box_scale
-            scaled_height = (maxy - miny) * self.bounding_box_scale
+        # Center of inclusive bounding box
+        center_x = (minx + maxx) / 2
+        center_y = (miny + maxy) / 2
 
-            # Scaled inclusive bounding box by self.bounding_box_scale.
-            scaled_box = (center_x - (.5 * scaled_width),
-                          center_y - (.5 * scaled_height),
-                          center_x + (.5 * scaled_width),
-                          center_y + (.5 * scaled_height))
+        scaled_width = (maxx - minx) * self.bounding_box_scale
+        scaled_height = (maxy - miny) * self.bounding_box_scale
 
-            return scaled_box
+        # Scaled inclusive bounding box by self.bounding_box_scale.
+        scaled_box = (center_x - (.5 * scaled_width),
+                      center_y - (.5 * scaled_height),
+                      center_x + (.5 * scaled_width),
+                      center_y + (.5 * scaled_height))
+
+        return scaled_box
 
     def inclusive_bound(self, all_bounds: list) -> tuple:
         """Given a list of tuples which describe corners of a box, i.e. (minx, miny, maxx, maxy).
@@ -143,12 +143,12 @@ class GDSRender(QRenderer):
         # If given an empty list.
         if len(all_bounds) == 0:
             return (0.0, 0.0, 0.0, 0.0)
-        else:
-            inclusive_tuple = (min(all_bounds, key=itemgetter(0))[0],
-                               min(all_bounds, key=itemgetter(1))[1],
-                               max(all_bounds, key=itemgetter(2))[2],
-                               max(all_bounds, key=itemgetter(3))[3])
-            return inclusive_tuple
+
+        inclusive_tuple = (min(all_bounds, key=itemgetter(0))[0],
+                           min(all_bounds, key=itemgetter(1))[1],
+                           max(all_bounds, key=itemgetter(2))[2],
+                           max(all_bounds, key=itemgetter(3))[3])
+        return inclusive_tuple
 
     def create_poly_path_for_gds(self, highlight_qcomponents: list = []) -> None:
         """Using self.design, this method does the following: 
