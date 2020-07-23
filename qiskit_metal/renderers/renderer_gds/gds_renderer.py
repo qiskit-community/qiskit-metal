@@ -1,3 +1,6 @@
+import qiskit_metal as metal
+from qiskit_metal import designs, components, draw
+from qiskit_metal import components as qlibrary
 import logging
 import sys
 import pandas
@@ -6,6 +9,7 @@ import pandas as pd
 import shapely
 import gdspy
 import os
+import pathlib
 
 from typing import TYPE_CHECKING
 from typing import Dict as Dict_
@@ -24,9 +28,6 @@ from qiskit_metal.renderers.renderer_base import QRenderer
 from .. import config
 if not config.is_building_docs():
     from qiskit_metal import MetalGUI, Dict, Headings
-from qiskit_metal import components as qlibrary
-from qiskit_metal import designs, components, draw
-import qiskit_metal as metal
 
 
 class GDSRender(QRenderer):
@@ -37,14 +38,9 @@ class GDSRender(QRenderer):
     def __init__(self, design: QDesign, initiate=True, bounding_box_scale: float = 1.2):
         """
         Args:
-<<<<<<< HEAD
             design (QDesign): Use QGeometry within QDesign  to obtain elements for GDS file.
             initiate (bool, optional): True to initiate the renderer. Defaults to True.
             bounding_box_scale (float, optional): Scale box of components to render. Should be greater than 1.0.
-=======
-            design (QDesign): Use QGeometry within QDesign  to obtain elements for GDS file. 
-            initiate (bool): True to initiate the renderer. Defaults to True.
->>>>>>> v0.2-dev
         """
         super().__init__(design=design, initiate=initiate)
         self.gds_unit = self.design.get_units()
@@ -82,7 +78,7 @@ class GDSRender(QRenderer):
             return 1
         else:
             self.design.logger.warning(
-                f'Not able to write to directory. File not written: {directory_name}.')
+                f'Not able to write to directory. File:"{file}" not written. Checked directory:"{directory_name}".')
             return 0
 
     def get_bounds(self, gs_table: geopandas.GeoSeries) -> Tuple[float, float, float, float]:
