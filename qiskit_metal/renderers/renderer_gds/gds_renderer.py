@@ -33,6 +33,11 @@ if not config.is_building_docs():
 class GDSRender(QRenderer):
     """Extends QRenderer to export GDS formatted files. The methods which a user will need for GDS export
     should be found within this class.
+
+    datatype:
+        10 Polygon
+        11 Flexpath
+        12 Emulated Chip size based on self.scaled_max_bound * max_bounds of elements on chip.
     """
 
     def __init__(self, design: QDesign, initiate=True, bounding_box_scale: float = 1.2):
@@ -150,6 +155,33 @@ class GDSRender(QRenderer):
                            max(all_bounds, key=itemgetter(3))[3])
         return inclusive_tuple
 
+    def q_geometries_for_ground(self) -> None:
+        '''
+        I think practically, one would want to have all 'subtract' geometry on the same layer, 
+        and all non-subtract geometry on a different layer.
+
+        The 'helper' could be a third layer for now (that would be the jospehson junction 
+        which will be its own weird thing in the end).
+        Data types are likely something we will make use of soon so good that you can easily modify those.
+
+        Need bounding box from #256.
+
+        Basically would want to do something like.-> Generate a rectangle that is the size of the chip on layer Y
+        -> put all the 'subtract' shapes on layer X
+        -> Boolean subtract X from Y and put that on Z
+        -> add all the non-subtract shapes to Z as well.
+        '''
+
+        # Create the geometry (a single rectangle) and add it to the cell.
+        #rect = gdspy.Rectangle((0, 0), (2, 1))
+        # cell.add(rect)
+
+        # create rectangle
+        chip_rectangle = gdspy.Rectangle((self.scaled_max_bound[0], self.scaled_max_bound[1]),
+                                         (self.scaled_max_bound[2],
+                                          self.scaled_max_bound[3]),
+                                         datatype=12)
+
     def create_poly_path_for_gds(self, highlight_qcomponents: list = []) -> None:
         """Using self.design, this method does the following: 
         1. Gather the QGeometries to be used to write to file.
@@ -160,22 +192,29 @@ class GDSRender(QRenderer):
         Args:
             highlight_qcomponents (list): List of strings which denote the name of QComponents to render.
                                         If empty, render all comonents in design.
+                                        If QComponent names are dupliated, duplicates will be ignored.
 
         """
+        # Remove identical Q_Components.
+        unique_qcomponents = list(set(highlight_qcomponents))
 
         for table_name in self.design.qgeometry.get_element_types():
 
             # design.qgeometry.tables is a dict.
             # key=table_name, value=geopandas.GeoDataFrame
-            if len(highlight_qcomponents) == 0:
+            if len(unique_qcomponents) == 0:
                 table = self.design.qgeometry.tables[table_name]
             else:
-
                 table = self.design.qgeometry.tables[table_name]
                 highlight_id = [self.design.name_to_id[a_qcomponent]
-                                for a_qcomponent in highlight_qcomponents]
+                                for a_qcomponent in unique_qcomponents]
 
                 table = table[table['component'].isin(highlight_id)]
+
+            # Determine bound box and return scalar larger than size.
+            bounds = tuple(self.get_bounds(table))
+            # Add the bounds of each table to list.
+            self.list_bounds.append(bounds)
 
             setattr(self, f'{table_name}_table', table)
             setattr(self, f'{table_name}_geometry', list(table.geometry))
@@ -184,11 +223,6 @@ class GDSRender(QRenderer):
             # polys is gdspy.Polygon
             # paths is gdspy.LineString
             setattr(self, f'{table_name}s', q_geometries)
-
-            # Determine bound box and return scalar larger than size.
-            bounds = tuple(self.get_bounds(table))
-            # Add the bounds of each table to list.
-            self.list_bounds.append(bounds)
 
         self.scaled_max_bound = self.scale_max_bounds(self.list_bounds)
 
@@ -208,6 +242,11 @@ class GDSRender(QRenderer):
         # New cell
         cell = lib.new_cell('TOP', overwrite_duplicate=True)
 
+        # For now, say true, needs to come from options. #issue #255.
+        self.ground_plane = True
+        if self.ground_plane:
+            self.q_geometries_for_ground()
+
         for table_name in self.design.qgeometry.get_element_types():
             self.q_geometries = getattr(self, f'{table_name}s')
             if self.q_geometries is None:
@@ -225,7 +264,8 @@ class GDSRender(QRenderer):
         be used, to convert QGeometry to GDS formatted file.
 
         Args:
-            file_name (str): File name which can also include directory path.
+            file_name (str): File name which can also include directory path.  
+                             If the file exists, it will be overwritten.
             highlight_qcomponents (list): List of strings which denote the name of QComponents to render.
                                         If empty, render all comonents in design.
 
