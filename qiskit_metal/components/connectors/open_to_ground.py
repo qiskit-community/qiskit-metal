@@ -49,7 +49,6 @@ class OpenToGround(QComponent):
         chip='main',
         layer='1'
     )
-    """Default connector options"""
 
     def make(self):
         """Build the component"""
