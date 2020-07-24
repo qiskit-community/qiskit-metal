@@ -161,15 +161,53 @@ class TestDesign(unittest.TestCase):
         self.assertEqual('my_name-1' in design.name_to_id, False)
         self.assertEqual('my_name-2' in design.name_to_id, False)
 
-    #_get_new_qcomponent_id(self):
-    #rebuild(self):  # remake_all_components
-    #load_design(cls, path: str):
-    #save_design(self, path: str = None):
-    #parse_value(self, value: Union[Any, List, Dict, Iterable]) -> Any:
-    #parse_options(self, params: dict, param_names: str) -> dict:
-    #get_design_name(self) -> str:
-    #set_design_name(self, name: str):
-    #get_units(self):
+    def test_design_get_and_set_design_name(self):
+        """
+        Test getting the design name in design_base.py
+        """
+        design = DesignPlanar(metadata={})
+        self.assertEqual(design.get_design_name(), 'my_design')
+
+        design.set_design_name('new-name')
+        self.assertEqual(design.get_design_name(), 'new-name')
+
+    def test_design_get_units(self):
+        """
+        Test get units in design_base.py
+        """
+        design = DesignPlanar(metadata={})
+        self.assertEqual(design.get_units(), 'mm')
+
+    def test_design_get_list_ints(self):
+        """
+        Test geting the list ints in interface_components.py
+        """
+        design = DesignPlanar(metadata={})
+        QComponent(design, 'my_name-1', make=False)
+        QComponent(design, 'my_name-2', make=False)
+        components = Components(design)
+
+        self.assertListEqual(components.get_list_ints(['my_name-1']), [1])
+        self.assertListEqual(components.get_list_ints(['my_name-1', 'my_name-2']), [1, 2])
+        self.assertListEqual(components.get_list_ints(['my_name-1', 'my_name-2', 'nope']), [1, 2, 0])
+
+    def test_design_find_id(self):
+        """
+        Test finding the id from the name
+        """
+        design = DesignPlanar(metadata={})
+        QComponent(design, 'my_name-1', make=False)
+        QComponent(design, 'my_name-2', make=False)
+        components = Components(design)
+
+        self.assertEqual(components.find_id('my_name-1'), 1)
+        self.assertEqual(components.find_id('my_name-2'), 2)
+        self.assertEqual(components.find_id('my_name-3'), 0)
+
+
+
+
+
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
