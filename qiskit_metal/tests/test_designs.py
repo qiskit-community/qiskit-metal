@@ -13,6 +13,8 @@
 # that they have been altered from the originals.
 
 #pylint: disable-msg=unnecessary-pass
+#pylint: disable-msg=pointless-statement
+#pylint: disable-msg=too-many-public-methods
 
 """
 Qiskit Metal unit tests analyses functionality.
@@ -49,7 +51,7 @@ class TestDesign(unittest.TestCase):
         pass
 
     @staticmethod
-    def test_design_instantiate_QDesign():
+    def test_design_instantiate_qdesign():
         """
         Test the instantiation of QDesign
         """
@@ -94,7 +96,7 @@ class TestDesign(unittest.TestCase):
         self.assertEqual(data['notes'], '')
         self.assertEqual(data['time_created'], '07/23/2020, 17:00:00')
         self.assertEqual(data['new-key'], 'new-value')
-        
+
     def test_design_get_chip_size(self):
         """
         Test getting chip size in design_base.py
@@ -117,12 +119,12 @@ class TestDesign(unittest.TestCase):
         """
         design = DesignPlanar(metadata={})
         design.rename_variable('cpw_gap', 'new-name')
-        
+
         with self.assertRaises(ValueError):
             design.rename_variable('i-do-not-exist', 'uh-oh')
 
-        self.assertEqual('new-name' in design._variables.keys(), True)
-        self.assertEqual('cpw_gap' in design._variables.keys(), False)
+        self.assertEqual('new-name' in design.variables.keys(), True)
+        self.assertEqual('cpw_gap' in design.variables.keys(), False)
 
     def test_design_rename_component(self):
         """
@@ -190,7 +192,8 @@ class TestDesign(unittest.TestCase):
 
         self.assertListEqual(components.get_list_ints(['my_name-1']), [1])
         self.assertListEqual(components.get_list_ints(['my_name-1', 'my_name-2']), [1, 2])
-        self.assertListEqual(components.get_list_ints(['my_name-1', 'my_name-2', 'nope']), [1, 2, 0])
+        self.assertListEqual(components.get_list_ints(['my_name-1', 'my_name-2', 'nope']),
+                             [1, 2, 0])
 
     def test_design_interface_components_find_id(self):
         """
@@ -212,7 +215,7 @@ class TestDesign(unittest.TestCase):
         design = DesignPlanar(metadata={})
         QComponent(design, 'my_name-1', make=False)
         QComponent(design, 'my_name-2', make=False)
-        components = Components(design)
+        Components(design)
         qnet = QNet()
 
         qnet.add_pins_to_table(1, 'my_name-1', 2, 'my_name-2')
@@ -221,7 +224,7 @@ class TestDesign(unittest.TestCase):
         data = {'net_id':[1, 1],
                 'component_id':[1, 2],
                 'pin_name':['my_name-1', 'my_name-2']}
-        df_expected = pd.DataFrame(data, index=[0, 1]);
+        df_expected = pd.DataFrame(data, index=[0, 1])
 
         self.assertEqual(len(df), len(df_expected))
         data_points = df_expected['net_id'].size
@@ -236,38 +239,37 @@ class TestDesign(unittest.TestCase):
         design = DesignPlanar(metadata={})
         QComponent(design, 'my_name-1', make=False)
         QComponent(design, 'my_name-2', make=False)
-        components = Components(design)
+        Components(design)
         qnet = QNet()
 
         net_id = qnet.add_pins_to_table(1, 'my_name-1', 2, 'my_name-2')
         qnet.delete_net_id(net_id)
-        df = qnet._net_info
+        df = qnet.net_info
         self.assertEqual(df.empty, True)
 
-    def test_design_qnet_delete_net_id(self):
+    def test_design_qnet_delete_all_pins_for_component_id(self):
         """
-        Test delete a given net id in net_info.py
+        Test delete all pins for a given component id in net_info.py
         """
         design = DesignPlanar(metadata={})
         QComponent(design, 'my_name-1', make=False)
         QComponent(design, 'my_name-2', make=False)
         QComponent(design, 'my_name-3', make=False)
         QComponent(design, 'my_name-4', make=False)
-        components = Components(design)
+        Components(design)
         qnet = QNet()
 
         qnet.add_pins_to_table(1, 'my_name-1', 2, 'my_name-2')
         qnet.add_pins_to_table(3, 'my_name-3', 4, 'my_name-4')
         qnet.delete_all_pins_for_component(2)
-        df = qnet._net_info
-        
+        df = qnet.net_info
+
         data = {'net_id':[2, 2],
                 'component_id':[3, 4],
                 'pin_name':['my_name-3', 'my_name-4']}
-        df_expected = pd.DataFrame(data, index=[2, 3]);
+        df_expected = pd.DataFrame(data, index=[2, 3])
 
         self.assertEqual(len(df), len(df_expected))
-        data_points = df_expected['net_id'].size
         for i in [2, 3]:
             for j in ['net_id', 'component_id', 'pin_name']:
                 self.assertEqual(df_expected[j][i], df[j][i])
@@ -281,7 +283,7 @@ class TestDesign(unittest.TestCase):
         QComponent(design, 'my_name-2', make=False)
         QComponent(design, 'my_name-3', make=False)
         QComponent(design, 'my_name-4', make=False)
-        components = Components(design)
+        Components(design)
         qnet = QNet()
 
         net_id_1 = qnet.add_pins_to_table(1, 'my_name-1', 2, 'my_name-2')
@@ -290,12 +292,12 @@ class TestDesign(unittest.TestCase):
         data = {'net_id':[1, 1],
                 'component_id':[1, 2],
                 'pin_name':['my_name-1', 'my_name-2']}
-        df_expected_1 = pd.DataFrame(data, index=[0, 1]);
+        df_expected_1 = pd.DataFrame(data, index=[0, 1])
 
         data = {'net_id':[2, 2],
                 'component_id':[3, 4],
                 'pin_name':['my_name-3', 'my_name-4']}
-        df_expected_2 = pd.DataFrame(data, index=[2, 3]);
+        df_expected_2 = pd.DataFrame(data, index=[2, 3])
 
         df = qnet.get_components_and_pins_for_netid(net_id_1)
         self.assertEqual(len(df), len(df_expected_1))
@@ -306,7 +308,6 @@ class TestDesign(unittest.TestCase):
 
         df = qnet.get_components_and_pins_for_netid(net_id_2)
         self.assertEqual(len(df), len(df_expected_2))
-        data_points = df_expected_2['net_id'].size
         for i in [2, 3]:
             for j in ['net_id', 'component_id', 'pin_name']:
                 self.assertEqual(df_expected_2[j][i], df[j][i])
