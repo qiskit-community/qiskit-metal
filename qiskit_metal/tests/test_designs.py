@@ -231,7 +231,7 @@ class TestDesign(unittest.TestCase):
 
     def test_design_qnet_delete_net_id(self):
         """
-        Test delete a given net id
+        Test delete a given net id in net_info.py
         """
         design = DesignPlanar(metadata={})
         QComponent(design, 'my_name-1', make=False)
@@ -244,9 +244,72 @@ class TestDesign(unittest.TestCase):
         df = qnet._net_info
         self.assertEqual(df.empty, True)
 
+    def test_design_qnet_delete_net_id(self):
+        """
+        Test delete a given net id in net_info.py
+        """
+        design = DesignPlanar(metadata={})
+        QComponent(design, 'my_name-1', make=False)
+        QComponent(design, 'my_name-2', make=False)
+        QComponent(design, 'my_name-3', make=False)
+        QComponent(design, 'my_name-4', make=False)
+        components = Components(design)
+        qnet = QNet()
 
-    #delete_all_pins_for_component(self, component_id_to_remove: int) -> set:
-    #get_components_and_pins_for_netid(self, net_id_search: int) -> pd.core.frame.DataFrame:
+        qnet.add_pins_to_table(1, 'my_name-1', 2, 'my_name-2')
+        qnet.add_pins_to_table(3, 'my_name-3', 4, 'my_name-4')
+        qnet.delete_all_pins_for_component(2)
+        df = qnet._net_info
+        
+        data = {'net_id':[2, 2],
+                'component_id':[3, 4],
+                'pin_name':['my_name-3', 'my_name-4']}
+        df_expected = pd.DataFrame(data, index=[2, 3]);
+
+        self.assertEqual(len(df), len(df_expected))
+        data_points = df_expected['net_id'].size
+        for i in [2, 3]:
+            for j in ['net_id', 'component_id', 'pin_name']:
+                self.assertEqual(df_expected[j][i], df[j][i])
+
+    def test_design_qnet_get_components_and_pins_for_netid(self):
+        """
+        Test get_components_Sand_pins_for_netid in net_info.py
+        """
+        design = DesignPlanar(metadata={})
+        QComponent(design, 'my_name-1', make=False)
+        QComponent(design, 'my_name-2', make=False)
+        QComponent(design, 'my_name-3', make=False)
+        QComponent(design, 'my_name-4', make=False)
+        components = Components(design)
+        qnet = QNet()
+
+        net_id_1 = qnet.add_pins_to_table(1, 'my_name-1', 2, 'my_name-2')
+        net_id_2 = qnet.add_pins_to_table(3, 'my_name-3', 4, 'my_name-4')
+
+        data = {'net_id':[1, 1],
+                'component_id':[1, 2],
+                'pin_name':['my_name-1', 'my_name-2']}
+        df_expected_1 = pd.DataFrame(data, index=[0, 1]);
+
+        data = {'net_id':[2, 2],
+                'component_id':[3, 4],
+                'pin_name':['my_name-3', 'my_name-4']}
+        df_expected_2 = pd.DataFrame(data, index=[2, 3]);
+
+        df = qnet.get_components_and_pins_for_netid(net_id_1)
+        self.assertEqual(len(df), len(df_expected_1))
+        data_points = df_expected_1['net_id'].size
+        for i in range(data_points):
+            for j in ['net_id', 'component_id', 'pin_name']:
+                self.assertEqual(df_expected_1[j][i], df[j][i])
+
+        df = qnet.get_components_and_pins_for_netid(net_id_2)
+        self.assertEqual(len(df), len(df_expected_2))
+        data_points = df_expected_2['net_id'].size
+        for i in [2, 3]:
+            for j in ['net_id', 'component_id', 'pin_name']:
+                self.assertEqual(df_expected_2[j][i], df[j][i])
 
 
 if __name__ == '__main__':
