@@ -151,16 +151,18 @@ class GDSRender(QRenderer):
         return inclusive_tuple
 
     def create_poly_path_for_gds(self, highlight_qcomponents: list = []) -> None:
-        """Using self.design, this method does the following: 
+        """Using self.design, this method does the following:
+
         1. Gather the QGeometries to be used to write to file.
+
         2. Populate self.list_bounds, which contains the maximum bound for all elements to render.
-        3. Calculate scaled bounding box to emulate size of chip using self.scaled_max_bound 
-        and place into self.scaled_max_bound.
+
+        3. Calculate scaled bounding box to emulate size of chip using self.scaled_max_bound
+           and place into self.scaled_max_bound.
 
         Args:
             highlight_qcomponents (list): List of strings which denote the name of QComponents to render.
-                                        If empty, render all comonents in design.
-
+                                          If empty, render all comonents in design.
         """
 
         for table_name in self.design.qgeometry.get_element_types():
