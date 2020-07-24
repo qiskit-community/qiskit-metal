@@ -282,6 +282,7 @@ class GDSRender(QRenderer):
             q_subtract_true = self.all_subtract_true.apply(
                 self.qgeometry_to_gds, axis=1)
             setattr(self, 'q_subtract_true', q_subtract_true)
+
             q_subtract_false = self.all_subtract_false.apply(
                 self.qgeometry_to_gds, axis=1)
             setattr(self, 'q_subtract_false', q_subtract_false)
@@ -324,9 +325,12 @@ class GDSRender(QRenderer):
         if self.ground_plane:
             # For ground plane.
             ground_cell = lib.new_cell('GROUND', overwrite_duplicate=True)
-
+            subtract_cell = lib.new_cell('SUBTRACT', overwrite_duplicate=True)
+            subtract_cell.add(self.q_subtract_true)
+            chip_cell = lib.new_cell('PLANE CHIP', overwrite_duplicate=True)
+            chip_cell.add(self.scaled_chip_rectangle)
             diff_geometry = gdspy.boolean(
-                self.scaled_chip_rectangle, self.q_subtract_true, 'not', layer=202)
+                chip_cell, subtract_cell, 'not', layer=202)
 
             if diff_geometry is None:
                 self.design.logger.warning(
