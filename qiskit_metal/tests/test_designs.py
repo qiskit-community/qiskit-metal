@@ -22,6 +22,7 @@ Created on Wed Apr 22 10:03:35 2020
 """
 
 import unittest
+import pandas as pd
 
 from qiskit_metal.designs.design_base import QDesign
 from qiskit_metal.designs.design_planar import DesignPlanar
@@ -178,7 +179,7 @@ class TestDesign(unittest.TestCase):
         design = DesignPlanar(metadata={})
         self.assertEqual(design.get_units(), 'mm')
 
-    def test_design_get_list_ints(self):
+    def test_design_interface_components_get_list_ints(self):
         """
         Test geting the list ints in interface_components.py
         """
@@ -191,9 +192,9 @@ class TestDesign(unittest.TestCase):
         self.assertListEqual(components.get_list_ints(['my_name-1', 'my_name-2']), [1, 2])
         self.assertListEqual(components.get_list_ints(['my_name-1', 'my_name-2', 'nope']), [1, 2, 0])
 
-    def test_design_find_id(self):
+    def test_design_interface_components_find_id(self):
         """
-        Test finding the id from the name
+        Test finding the id from the name in interface_components.py
         """
         design = DesignPlanar(metadata={})
         QComponent(design, 'my_name-1', make=False)
@@ -204,9 +205,48 @@ class TestDesign(unittest.TestCase):
         self.assertEqual(components.find_id('my_name-2'), 2)
         self.assertEqual(components.find_id('my_name-3'), 0)
 
+    def test_design_qnet_add_pins_to_table(self):
+        """
+        Test add_pins_to_table in net_info.py
+        """
+        design = DesignPlanar(metadata={})
+        QComponent(design, 'my_name-1', make=False)
+        QComponent(design, 'my_name-2', make=False)
+        components = Components(design)
+        qnet = QNet()
+
+        qnet.add_pins_to_table(1, 'my_name-1', 2, 'my_name-2')
+        df = qnet.net_info
+
+        data = {'net_id':[1, 1],
+                'component_id':[1, 2],
+                'pin_name':['my_name-1', 'my_name-2']}
+        df_expected = pd.DataFrame(data, index=[0, 1]);
+
+        self.assertEqual(len(df), len(df_expected))
+        data_points = df_expected['net_id'].size
+        for i in range(data_points):
+            for j in ['net_id', 'component_id', 'pin_name']:
+                self.assertEqual(df_expected[j][i], df[j][i])
+
+    def test_design_qnet_delete_net_id(self):
+        """
+        Test delete a given net id
+        """
+        design = DesignPlanar(metadata={})
+        QComponent(design, 'my_name-1', make=False)
+        QComponent(design, 'my_name-2', make=False)
+        components = Components(design)
+        qnet = QNet()
+
+        net_id = qnet.add_pins_to_table(1, 'my_name-1', 2, 'my_name-2')
+        qnet.delete_net_id(net_id)
+        df = qnet._net_info
+        self.assertEqual(df.empty, True)
 
 
-
+    #delete_all_pins_for_component(self, component_id_to_remove: int) -> set:
+    #get_components_and_pins_for_netid(self, net_id_search: int) -> pd.core.frame.DataFrame:
 
 
 if __name__ == '__main__':
