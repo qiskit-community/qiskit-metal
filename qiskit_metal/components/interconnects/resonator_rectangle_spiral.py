@@ -105,9 +105,11 @@ class ResonatorRectangleSpiral(QComponent):
         spiral_list.append((-x_point, -y_point))
         spiral_list = draw.LineString(spiral_list)
 
-        spiral_etch = draw.shapely.geometry.box(-(x_point+p.line_width/2+p.gap),-y_point, x_point-p.line_width/2, y_point)
-        #MAKE THIS A LINE STRING AND PASS FOR ROTATE/TRANSLATE
-        points = draw.LineString([(-x_point+p.line_width/2, -y_point+p.coupler_distance), (-x_point-p.line_width/2, -y_point+p.coupler_distance)])
+        spiral_etch = draw.shapely.geometry.box(-(x_point+p.line_width/2+p.gap),-y_point, 
+            x_point-p.line_width/2, y_point)
+        #Generates a linestring to track port location
+        points = draw.LineString([(-x_point+p.line_width/2, -y_point+p.coupler_distance), 
+            (-x_point-p.line_width/2, -y_point+p.coupler_distance)])
 
         c_items = [spiral_list, spiral_etch,points]
         c_items = draw.rotate(c_items, p.rotation, origin=(0, 0))
