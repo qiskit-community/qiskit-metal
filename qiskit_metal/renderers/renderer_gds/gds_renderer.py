@@ -62,6 +62,9 @@ class GDSRender(QRenderer):
         self.all_subtract_true = geopandas.GeoDataFrame()
         self.all_subtract_false = geopandas.GeoDataFrame()
 
+        # gdspy.polygon.PolygonSet is the base class.
+        self.scaled_chip_poly = gdspy.Polygon([])
+
         # bounding_box_scale will need to be migrated to some form of default_options
         if isinstance(bounding_box_scale, float) and bounding_box_scale >= 1.0:
             self.bounding_box_scale = bounding_box_scale
@@ -202,12 +205,19 @@ class GDSRender(QRenderer):
         # create rectangle for layer Y issue #
         ld_chip = {"layer": 200, "datatype": 10}
 
-        chip_rectangle = gdspy.Rectangle((self.max_bound[0], self.max_bound[1]),
-                                         (self.max_bound[2],
-                                          self.max_bound[3]),
-                                         **ld_chip)
-        self.scaled_chip_rectangle = chip_rectangle.scale(
+        rectangle_points = [(self.max_bound[0], self.max_bound[1]),
+                            (self.max_bound[2], self.max_bound[1]),
+                            (self.max_bound[2], self.max_bound[3]),
+                            (self.max_bound[0], self.max_bound[3])]
+        chip_poly = gdspy.Polygon(rectangle_points, **ld_chip)
+
+        # chip_rectangle = gdspy.Rectangle((self.max_bound[0], self.max_bound[1]),
+        #                                  (self.max_bound[2],
+        #                                   self.max_bound[3]),
+        #                                  **ld_chip)
+        self.scaled_chip_poly = chip_poly.scale(
             scalex=self.bounding_box_scale, scaley=self.bounding_box_scale)
+        pass  # for breakpoint
 
     def create_poly_path_for_gds(self, highlight_qcomponents: list = []) -> int:
         """Using self.design, this method does the following:
@@ -274,18 +284,19 @@ class GDSRender(QRenderer):
 
         if self.ground_plane:
             self.rect_for_ground()
+
             self.all_subtract_true = geopandas.GeoDataFrame(
                 pd.concat(all_subtracts, ignore_index=False))
             self.all_subtract_false = geopandas.GeoDataFrame(
                 pd.concat(all_no_subtracts, ignore_index=False))
 
-            q_subtract_true = self.all_subtract_true.apply(
+            self.q_subtract_true = self.all_subtract_true.apply(
                 self.qgeometry_to_gds, axis=1)
-            setattr(self, 'q_subtract_true', q_subtract_true)
+            #setattr(self, 'q_subtract_true', q_subtract_true)
 
-            q_subtract_false = self.all_subtract_false.apply(
+            self.q_subtract_false = self.all_subtract_false.apply(
                 self.qgeometry_to_gds, axis=1)
-            setattr(self, 'q_subtract_false', q_subtract_false)
+            #setattr(self, 'q_subtract_false', q_subtract_false)
 
         return 0
 
@@ -302,35 +313,39 @@ class GDSRender(QRenderer):
         -> Boolean subtract X from Y and put that on Z
         -> add all the non-subtract shapes to Z as well.
 
-        (Y = layer number 200) self.scaled_chip_rectangle
-        (X = layer number 201) self.q_subtract_true
-        (Z = layer number 202) self.q_subtract_false
+        (Y = layer number 200) self.scaled_chip_rectangle, Deprecated:cell=PLANE CHIP 
+        (X = layer number 201) self.q_subtract_true , cell=SUBTRACT
+        (Z = layer number 202) self.q_subtract_false, cell=GROUND
         '''
         # Create a new GDS library file. It can contains multiple cells.
         self._clear_library()
 
         lib = gdspy.GdsLibrary()
 
-        # New cell
-        cell = lib.new_cell('TOP', overwrite_duplicate=True)
+        # cell = lib.new_cell('OLD_TOP', overwrite_duplicate=True)
 
-        for table_name in self.design.qgeometry.get_element_types():
-            q_geometries = getattr(self, f'{table_name}s')
-            if q_geometries is None:
-                self.design.logger.warning(
-                    f'There are no {table_name}s to write.')
-            else:
-                cell.add(q_geometries)
+        # for table_name in self.design.qgeometry.get_element_types():
+        #     q_geometries = getattr(self, f'{table_name}s')
+        #     if q_geometries is None:
+        #         self.design.logger.warning(
+        #             f'There are no {table_name}s to write.')
+        #     else:
+        #         cell.add(q_geometries)
+
+        #     if q_geometries is None:
+        #         self.design.logger.warning(
+        #             f'There is no table named "{table_name}s" to write.')
+        #     else:
+        #         cell.add(q_geometries)
 
         if self.ground_plane:
-            # For ground plane.
-            ground_cell = lib.new_cell('GROUND', overwrite_duplicate=True)
+            # # For ground plane.
+            ground_cell = lib.new_cell('TOP', overwrite_duplicate=True)
             subtract_cell = lib.new_cell('SUBTRACT', overwrite_duplicate=True)
             subtract_cell.add(self.q_subtract_true)
-            chip_cell = lib.new_cell('PLANE CHIP', overwrite_duplicate=True)
-            chip_cell.add(self.scaled_chip_rectangle)
             diff_geometry = gdspy.boolean(
-                chip_cell, subtract_cell, 'not', layer=202)
+                self.scaled_chip_poly, subtract_cell.get_polygonsets(), 'not', layer=202)
+            lib.remove(subtract_cell)
 
             if diff_geometry is None:
                 self.design.logger.warning(
@@ -338,13 +353,14 @@ class GDSRender(QRenderer):
             else:
                 ground_cell.add(diff_geometry)
 
-            if self.all_subtract_false is None:
+            if self.q_subtract_false is None:
                 self.design.logger.warning(
-                    f'There is no table named self.all_subtract_false to write.')
+                    f'There is no table named self.q_subtract_false to write.')
             else:
-                ground_cell.add(self.all_subtract_false)
+                ground_cell.add(self.q_subtract_false)
 
-        # Save the library in a file.
+            # Save the library in a file.
+            pass
         lib.write_gds(file_name)
 
     def path_and_poly_to_gds(self, file_name: str, highlight_qcomponents: list = []) -> int:
@@ -377,13 +393,15 @@ class GDSRender(QRenderer):
             return 0
 
     def qgeometry_to_gds(self, element: pd.Series) -> 'gdspy.polygon':
-        """Convert the design.qgeometry table to format used by GDS renderer.
+        """Convert the design.qgeometry table to format used by GDS renderer. 
+        Convert the class to a series of GDSII elements.
 
         Args:
             element (pd.Series): Expect a shapley object.
 
         Returns:
-            'gdspy.polygon': GDS format on the input pd.Series.
+            'gdspy.polygon' or 'gdspy.FlexPath': Convert the class to a series of GDSII 
+                                                 format on the input pd.Series.
         """
 
         """
@@ -404,18 +422,21 @@ class GDSRender(QRenderer):
 
             # TODO: Handle  list(polygon.interiors)
             return gdspy.Polygon(list(geom.exterior.coords),
-                                 # layer=element.layer if not element['subtract'] else 0,
-                                 layer=element.layer,
+                                 layer=element.layer if not element['subtract'] else 0,
+                                 # layer=element.layer,
                                  datatype=10,
                                  )
         elif isinstance(geom, shapely.geometry.LineString):
             to_return = gdspy.FlexPath(list(geom.coords),
                                        width=element.width,
-                                       # layer=element.layer if not element['subtract'] else 0,
-                                       layer=element.layer,
+                                       layer=element.layer if not element['subtract'] else 0,
+                                       # layer=element.layer,
                                        datatype=11)
             return to_return
         else:
             # TODO: Handle
-            print(geom)
+            self.design.logger.warning(
+                f'Unexpected shapely object geometry.'
+                f'The variable element is {data(geom)}, method can handle Polygon and LineString.')
+            # print(geom)
             return None
