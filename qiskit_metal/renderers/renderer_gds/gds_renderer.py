@@ -1,3 +1,7 @@
+from .. import config
+from qiskit_metal.renderers.renderer_base import QRenderer
+from ...toolbox_python.utility_functions import log_error_easy
+from ...designs import QDesign
 import qiskit_metal as metal
 from qiskit_metal import designs, components, draw
 from qiskit_metal import components as qlibrary
@@ -18,12 +22,8 @@ from typing import List, Tuple, Union
 from operator import itemgetter
 
 from ... import Dict
-from ...designs import QDesign
-from ...toolbox_python.utility_functions import log_error_easy
 
-from qiskit_metal.renderers.renderer_base import QRenderer
 
-from .. import config
 if not config.is_building_docs():
     from qiskit_metal import MetalGUI, Dict, Headings
 
@@ -54,9 +54,10 @@ class GDSRender(QRenderer):
             bounding_box_scale (float): Scale box of components to render. Should be greater than 1.0.
         """
         super().__init__(design=design, initiate=initiate)
-        self.gds_unit = self.design.get_units()
+        #self.gds_unit = self.design.get_units()
+        self.gds_unit = .001
 
-        self.lib = gdspy.GdsLibrary(units=self.gds_unit)
+        self.lib = gdspy.GdsLibrary(unit=self.gds_unit)
 
         self.list_bounds = list()
         self.scaled_max_bound = tuple()
@@ -344,7 +345,7 @@ class GDSRender(QRenderer):
             The memory is freed up then.
             '''
             diff_geometry = gdspy.boolean(
-                self.scaled_chip_poly, subtract_cell.get_polygonsets(), 'not', layer=202)
+                self.scaled_chip_poly, subtract_cell.get_polygons(), 'not', layer=202)
 
             lib.remove(subtract_cell)
 
@@ -423,11 +424,27 @@ class GDSRender(QRenderer):
                                  datatype=10,
                                  )
         elif isinstance(geom, shapely.geometry.LineString):
+            '''
+            class gdspy.FlexPath(points, width, offset=0, corners='natural', ends='flush', 
+            bend_radius=None, tolerance=0.01, precision=0.001, max_points=199, 
+            gdsii_path=False, width_transform=True, layer=0, datatype=0)
+            '''
+
+            bend_radius = 20
+
             to_return = gdspy.FlexPath(list(geom.coords),
                                        width=element.width,
                                        layer=element.layer if not element['subtract'] else 0,
                                        # layer=element.layer,
                                        datatype=11)
+
+            # to_return = gdspy.FlexPath(list(geom.coords),
+            #                            width=element.width,
+            #                            layer=element.layer if not element['subtract'] else 0,
+            #                            # layer=element.layer,
+            #                            bend_radius=bend_radius,
+            #                            corners='circular bend',
+            #                            datatype=11)
             return to_return
         else:
             # TODO: Handle
