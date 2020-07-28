@@ -46,7 +46,18 @@ class GDSRender(QRenderer):
         11 Flexpath
     """
 
-    def __init__(self, design: QDesign, initiate=True, bounding_box_scale: float = 1.2):
+    # These options can be over-written by passing dict to gds_options.
+    default_options = Dict(
+        # (float): Scale box of components to render. Should be greater than 1.0.
+        bounding_box_scale=1.2,
+        ground_plane=True,
+        # layer and data numbers, needs to come from default options i.e. self.ld_subtract = {"layer": 201, "data": 12}.
+        ld_subtract={"layer": 201},
+        ld_no_subtract={"layer": 202},
+        ld_chip={"layer": 200, "datatype": 10}
+    )
+
+    def __init__(self, design: QDesign, initiate=True, gds_options: Dict = None):
         """
         Args:
             design (QDesign): Use QGeometry within QDesign  to obtain elements for GDS file.
@@ -54,9 +65,14 @@ class GDSRender(QRenderer):
             bounding_box_scale (float): Scale box of components to render. Should be greater than 1.0.
         """
         super().__init__(design=design, initiate=initiate)
-        self.gds_unit = self.design.get_units()
 
-        self.lib = gdspy.GdsLibrary(units=self.gds_unit)
+        self.options = GDSRender.default_options
+        if gds_options:
+            self.options.update(gds_options)
+
+        self.options['gds_unit'] = self.design.get_units()
+
+        self.lib = gdspy.GdsLibrary(units=self.options.gds_unit)
 
         self.list_bounds = list()
         self.scaled_max_bound = tuple()
@@ -67,26 +83,28 @@ class GDSRender(QRenderer):
         # gdspy.polygon.PolygonSet is the base class.
         self.scaled_chip_poly = gdspy.Polygon([])
 
+        # bounding_box_scale will need to be migrated to some form of default_options
+        if isinstance(self.options.bounding_box_scale, float) and self.options.bounding_box_scale >= 1.0:
+            pass  # All is good.
+        elif isinstance(self.options.bounding_box_scale, int) and self.options.bounding_box_scale >= 1:
+            self.options.bounding_box_scale = float(
+                self.options.bounding_box_scale)
+        else:
+            self.options['bounding_box_scale'] = GDSRender.default_options.bounding_box_scale
+            self.design.logger.warning(
+                f'Expected float and number greater than or equal to 1.0 for bounding_box_scale. \
+                User provided bounding_box_scale = {self.options.bounding_box_scale}, using default_options.bounding_box.')
+
         # For now, say true, needs to come from options. #issue #255.
-        self.ground_plane = True
+        #self.ground_plane = True
 
         # layer and data numbers, needs to come from default options.
         # Example: self.ld_subtract = {"layer": 201, "data": 12}
-        self.ld_subtract = {"layer": 201}
-        self.ld_no_subtract = {"layer": 202}
+        # self.ld_subtract = {"layer": 201}
+        # self.ld_no_subtract = {"layer": 202}
 
         # create rectangle for layer , needs to come from default options.
-        self. ld_chip = {"layer": 200, "datatype": 10}
-
-        # bounding_box_scale will need to be migrated to some form of default_options
-        if isinstance(bounding_box_scale, float) and bounding_box_scale >= 1.0:
-            self.bounding_box_scale = bounding_box_scale
-        elif isinstance(bounding_box_scale, int) and bounding_box_scale >= 1:
-            self.bounding_box_scale = float(bounding_box_scale)
-        else:
-            self.design.logger.warning(
-                f'Expected float and number greater than or equal to 1.0 for bounding_box_scale. \
-                User provided bounding_box_scale = {bounding_box_scale}, using default of 1.2. .')
+        # self. ld_chip = {"layer": 200, "datatype": 10}
 
     def _clear_library(self):
         """Clear current library."""
@@ -262,7 +280,7 @@ class GDSRender(QRenderer):
             # Add the bounds of each table to list.
             self.list_bounds.append(bounds)
 
-            if self.ground_plane:
+            if self.options.ground_plane:
                 self.seperate_subtract_shapes(table_name, table)
                 all_subtracts.append(
                     getattr(self, f'{table_name}_subtract_true'))
@@ -276,7 +294,7 @@ class GDSRender(QRenderer):
         self.scaled_max_bound, self.max_bound = self.scale_max_bounds(
             self.list_bounds)
 
-        if self.ground_plane:
+        if self.options.ground_plane:
             self.rect_for_ground()
 
             self.all_subtract_true = geopandas.GeoDataFrame(
@@ -330,7 +348,7 @@ class GDSRender(QRenderer):
             else:
                 cell.add(q_geometries)
 
-        if self.ground_plane:
+        if self.options.ground_plane:
             # # For ground plane.
             ground_cell = lib.new_cell('TOP', overwrite_duplicate=True)
             subtract_cell = lib.new_cell('SUBTRACT', overwrite_duplicate=True)
