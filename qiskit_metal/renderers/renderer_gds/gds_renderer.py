@@ -23,8 +23,6 @@ from ...toolbox_python.utility_functions import log_error_easy
 
 from qiskit_metal.renderers.renderer_base import QRenderer
 
-# from qiskit_metal.components.qubits.transmon_pocket import TransmonPocket
-
 from .. import config
 if not config.is_building_docs():
     from qiskit_metal import MetalGUI, Dict, Headings
@@ -35,9 +33,13 @@ class GDSRender(QRenderer):
     should be found within this class.
 
     layers:
-        200 Emulated Chip size based on self.scaled_max_bound * max_bounds of elements on chip.
-        201
-        202
+        200 Emulated Chip size based on self.scaled_max_bound * max_bounds of elements on chip. 
+            self.scaled_chip_poly
+        201 Holds all of the qgeometries, in a cell, which have subtract as True. 
+            After gdspy.boolean(), The cell is removed from lib. 
+            self.q_subtract_true, cell=SUBTRACT
+        202 Holds all of the qgeometries which have subtract as False.  
+            self.q_subtract_false, cell=TOP
 
     datatype:
         10 Polygon
@@ -64,6 +66,17 @@ class GDSRender(QRenderer):
 
         # gdspy.polygon.PolygonSet is the base class.
         self.scaled_chip_poly = gdspy.Polygon([])
+
+        # For now, say true, needs to come from options. #issue #255.
+        self.ground_plane = True
+
+        # layer and data numbers, needs to come from default options.
+        # Example: self.ld_subtract = {"layer": 201, "data": 12}
+        self.ld_subtract = {"layer": 201}
+        self.ld_no_subtract = {"layer": 202}
+
+        # create rectangle for layer , needs to come from default options.
+        self. ld_chip = {"layer": 200, "datatype": 10}
 
         # bounding_box_scale will need to be migrated to some form of default_options
         if isinstance(bounding_box_scale, float) and bounding_box_scale >= 1.0:
@@ -97,15 +110,18 @@ class GDSRender(QRenderer):
             return 0
 
     def seperate_subtract_shapes(self, table_name: str, table: geopandas.GeoSeries) -> None:
-        # datatype is just for example.  Not meaningful.
-        ld_subtract = {"layer": 201}
-        ld_no_subtract = {"layer": 202}
+        """For each table, separate them by subtract being either True or False.
+
+        Args:
+            table_name (str): Name for "table".  Example is "poly", and "path".
+            table (geopandas.GeoSeries): Table with similar qgeometries.
+        """
 
         subtract_true = table[table['subtract'] == True]
-        subtract_true['layer'] = ld_subtract['layer']
+        subtract_true['layer'] = self.ld_subtract['layer']
 
         subtract_false = table[table['subtract'] == False]
-        subtract_false['layer'] = ld_no_subtract['layer']
+        subtract_false['layer'] = self.ld_no_subtract['layer']
 
         setattr(self, f'{table_name}_subtract_true', subtract_true)
         setattr(self, f'{table_name}_subtract_false', subtract_false)
@@ -181,40 +197,16 @@ class GDSRender(QRenderer):
         return inclusive_tuple
 
     def rect_for_ground(self) -> None:
-        '''
-        I think practically, one would want to have all 'subtract' geometry on the same layer,
-        and all non-subtract geometry on a different layer.
-
-        The 'helper' could be a third layer for now (that would be the jospehson junction
-        which will be its own weird thing in the end).
-        Data types (sub layer) are likely something we will make use of soon so good that you can easily modify those.
-
-        Basically would want to do something like.-> Generate a rectangle
-        that is the size of the chip on layer Y. (Done with self.scaled_chip_rectangle.)
-
-        -> rectangle on Y
-        -> put all the 'subtract' shapes on layer X
-        -> Boolean subtract X from Y and put that on Z
-        -> add all the non-subtract shapes to Z as well.
-
-        (Y = layer number 200)
-        (X = layer number 201)
-        (Z = layer number 202)
-        '''
-
-        # create rectangle for layer Y issue #
-        ld_chip = {"layer": 200, "datatype": 10}
+        """Use the maximum bounds for all qgeometry on chip.  Scale the size of chip.
+           Use gdspy.Polygon() because gdspy.boolean() requires it.
+        """
 
         rectangle_points = [(self.max_bound[0], self.max_bound[1]),
                             (self.max_bound[2], self.max_bound[1]),
                             (self.max_bound[2], self.max_bound[3]),
                             (self.max_bound[0], self.max_bound[3])]
-        chip_poly = gdspy.Polygon(rectangle_points, **ld_chip)
+        chip_poly = gdspy.Polygon(rectangle_points, **self.ld_chip)
 
-        # chip_rectangle = gdspy.Rectangle((self.max_bound[0], self.max_bound[1]),
-        #                                  (self.max_bound[2],
-        #                                   self.max_bound[3]),
-        #                                  **ld_chip)
         self.scaled_chip_poly = chip_poly.scale(
             scalex=self.bounding_box_scale, scaley=self.bounding_box_scale)
         pass  # for breakpoint
@@ -226,6 +218,7 @@ class GDSRender(QRenderer):
         2. Populate self.list_bounds, which contains the maximum bound for all elements to render.
         3. Calculate scaled bounding box to emulate size of chip using self.scaled_max_bound
         and place into self.scaled_max_bound.
+        4. Gather Geometries to export to GDS format.
 
         Args:
             highlight_qcomponents (list): List of strings which denote the name of QComponents to render.
@@ -292,51 +285,49 @@ class GDSRender(QRenderer):
 
             self.q_subtract_true = self.all_subtract_true.apply(
                 self.qgeometry_to_gds, axis=1)
-            #setattr(self, 'q_subtract_true', q_subtract_true)
 
             self.q_subtract_false = self.all_subtract_false.apply(
                 self.qgeometry_to_gds, axis=1)
-            #setattr(self, 'q_subtract_false', q_subtract_false)
 
         return 0
 
     def write_poly_path_to_file(self, file_name: str) -> None:
         """Using the geometries for each table name, write to a GDS file.
 
-        Args:
-            file_name (str): The path and file name to write the gds file.
-                             Name needs to include desired extention, i.e. ".gds".
-        """
-        '''
         -> rectangle on Y
         -> put all the 'subtract' shapes on layer X
         -> Boolean subtract X from Y and put that on Z
         -> add all the non-subtract shapes to Z as well.
 
-        (Y = layer number 200) self.scaled_chip_rectangle, Deprecated:cell=PLANE CHIP 
+        (Y = layer number 200) self.scaled_chip_poly
         (X = layer number 201) self.q_subtract_true , cell=SUBTRACT
-        (Z = layer number 202) self.q_subtract_false, cell=GROUND
-        '''
+        (Z = layer number 202) self.q_subtract_false, cell=TOP
+
+        Args:
+            file_name (str): The path and file name to write the gds file.
+                             Name needs to include desired extention, i.e. "a_path_and_name.gds".
+        """
+
         # Create a new GDS library file. It can contains multiple cells.
         self._clear_library()
 
         lib = gdspy.GdsLibrary()
 
-        # cell = lib.new_cell('OLD_TOP', overwrite_duplicate=True)
+        cell = lib.new_cell('NO_EDITS', overwrite_duplicate=True)
 
-        # for table_name in self.design.qgeometry.get_element_types():
-        #     q_geometries = getattr(self, f'{table_name}s')
-        #     if q_geometries is None:
-        #         self.design.logger.warning(
-        #             f'There are no {table_name}s to write.')
-        #     else:
-        #         cell.add(q_geometries)
+        for table_name in self.design.qgeometry.get_element_types():
+            q_geometries = getattr(self, f'{table_name}s')
+            if q_geometries is None:
+                self.design.logger.warning(
+                    f'There are no {table_name}s to write.')
+            else:
+                cell.add(q_geometries)
 
-        #     if q_geometries is None:
-        #         self.design.logger.warning(
-        #             f'There is no table named "{table_name}s" to write.')
-        #     else:
-        #         cell.add(q_geometries)
+            if q_geometries is None:
+                self.design.logger.warning(
+                    f'There is no table named "{table_name}s" to write.')
+            else:
+                cell.add(q_geometries)
 
         if self.ground_plane:
             # # For ground plane.
@@ -345,6 +336,7 @@ class GDSRender(QRenderer):
             subtract_cell.add(self.q_subtract_true)
             diff_geometry = gdspy.boolean(
                 self.scaled_chip_poly, subtract_cell.get_polygonsets(), 'not', layer=202)
+
             lib.remove(subtract_cell)
 
             if diff_geometry is None:
@@ -359,8 +351,6 @@ class GDSRender(QRenderer):
             else:
                 ground_cell.add(self.q_subtract_false)
 
-            # Save the library in a file.
-            pass
         lib.write_gds(file_name)
 
     def path_and_poly_to_gds(self, file_name: str, highlight_qcomponents: list = []) -> int:
@@ -382,9 +372,6 @@ class GDSRender(QRenderer):
 
         if not self._can_write_to_path(file_name):
             return 0
-
-        # For now, say true, needs to come from options. #issue #255.
-        self.ground_plane = True
 
         if (self.create_poly_path_for_gds(highlight_qcomponents) == 0):
             self.write_poly_path_to_file(file_name)
