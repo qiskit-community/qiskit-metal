@@ -196,6 +196,7 @@ class GDSRender(QRenderer):
                            max(all_bounds, key=itemgetter(3))[3])
         return inclusive_tuple
 
+    def rect_for_ground(self) -> None:
         """Use the maximum bounds for all qgeometry on chip.  Scale the size of chip.
            Use gdspy.Polygon() because gdspy.boolean() requires it.
         """
@@ -227,6 +228,22 @@ class GDSRender(QRenderer):
         Returns:
             int: 0 if all ended well. Otherwise, 1 if QComponent name not in design.
         """
+        # Remove identical QComponent names.
+        unique_qcomponents = list(set(highlight_qcomponents))
+
+        # Confirm all QComponent are in design.
+        for qcomp in unique_qcomponents:
+            if qcomp not in self.design.name_to_id:
+                self.design.logger.warning(
+                    f'The component={qcomp} in highlight_qcompoents not in QDesign. The GDS data not generated.')
+                return 1
+
+        # put the QGeomtry into GDS format.
+        self.list_bounds.clear()
+
+        all_subtracts = []
+        all_no_subtracts = []
+
         for table_name in self.design.qgeometry.get_element_types():
             # self.design.qgeometry.tables is a dict. key=table_name, value=geopandas.GeoDataFrame
             if len(unique_qcomponents) == 0:
