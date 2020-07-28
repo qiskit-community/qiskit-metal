@@ -334,6 +334,14 @@ class GDSRender(QRenderer):
             ground_cell = lib.new_cell('TOP', overwrite_duplicate=True)
             subtract_cell = lib.new_cell('SUBTRACT', overwrite_duplicate=True)
             subtract_cell.add(self.q_subtract_true)
+
+            '''gdspy.boolean is not documented clearly.  
+            If there are multiple elements to subtract (both poly and path), 
+            the way I could make it work is to put them into a cell, within lib.  
+            I used the method cell_name.get_polygonsets(), which appears to convert all elements within the cell to poly.
+            After the boolean(), I deleted the cell from lib.
+            The memory is freed up then.
+            '''
             diff_geometry = gdspy.boolean(
                 self.scaled_chip_poly, subtract_cell.get_polygonsets(), 'not', layer=202)
 
