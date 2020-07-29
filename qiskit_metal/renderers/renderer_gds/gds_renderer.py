@@ -14,6 +14,7 @@ import shapely
 import gdspy
 import os
 import pathlib
+import math
 
 from typing import TYPE_CHECKING
 from typing import Dict as Dict_
@@ -54,9 +55,8 @@ class GDSRender(QRenderer):
             bounding_box_scale (float): Scale box of components to render. Should be greater than 1.0.
         """
         super().__init__(design=design, initiate=initiate)
-        #self.gds_unit = self.design.get_units()
-        self.gds_unit = .001
 
+        self.gds_unit = 1.0 / self.design.parse_value('1 meter')
         self.lib = gdspy.GdsLibrary(unit=self.gds_unit)
 
         self.list_bounds = list()
@@ -77,7 +77,12 @@ class GDSRender(QRenderer):
         self.ld_no_subtract = {"layer": 202}
 
         # create rectangle for layer , needs to come from default options.
-        self. ld_chip = {"layer": 200, "datatype": 10}
+        self.ld_chip = {"layer": 200, "datatype": 10}
+
+        # needs to come from default_options, used for fillet in FlexPath
+        self.bend_radius_num = 0.05
+        self.corners = 'circular bend'
+        self.tolerance = 0.001
 
         # bounding_box_scale will need to be migrated to some form of default_options
         if isinstance(bounding_box_scale, float) and bounding_box_scale >= 1.0:
@@ -212,7 +217,7 @@ class GDSRender(QRenderer):
             scalex=self.bounding_box_scale, scaley=self.bounding_box_scale)
         pass  # for breakpoint
 
-    def create_poly_path_for_gds(self, highlight_qcomponents: list = []) -> int:
+    def create_qgeometry_for_gds(self, highlight_qcomponents: list = []) -> int:
         """Using self.design, this method does the following:
         1. Gather the QGeometries to be used to write to file.
            Duplicate names in hightlight_qcomponents will be removed without warning.
@@ -313,7 +318,7 @@ class GDSRender(QRenderer):
         # Create a new GDS library file. It can contains multiple cells.
         self._clear_library()
 
-        lib = gdspy.GdsLibrary()
+        lib = gdspy.GdsLibrary(unit=self.gds_unit)
 
         cell = lib.new_cell('NO_EDITS', overwrite_duplicate=True)
 
@@ -363,7 +368,7 @@ class GDSRender(QRenderer):
 
         lib.write_gds(file_name)
 
-    def path_and_poly_to_gds(self, file_name: str, highlight_qcomponents: list = []) -> int:
+    def export_to_gds(self, file_name: str, highlight_qcomponents: list = []) -> int:
         """Use the design which was used to initialize this class.
         The QGeometry element types of both "path" and "poly", will
         be used, to convert QGeometry to GDS formatted file.
@@ -383,7 +388,7 @@ class GDSRender(QRenderer):
         if not self._can_write_to_path(file_name):
             return 0
 
-        if (self.create_poly_path_for_gds(highlight_qcomponents) == 0):
+        if (self.create_qgeometry_for_gds(highlight_qcomponents) == 0):
             self.write_poly_path_to_file(file_name)
             return 1
         else:
@@ -428,23 +433,25 @@ class GDSRender(QRenderer):
             class gdspy.FlexPath(points, width, offset=0, corners='natural', ends='flush', 
             bend_radius=None, tolerance=0.01, precision=0.001, max_points=199, 
             gdsii_path=False, width_transform=True, layer=0, datatype=0)
+
+            Only fillet, if number is greater than zero.
             '''
-
-            bend_radius = 20
-
-            to_return = gdspy.FlexPath(list(geom.coords),
-                                       width=element.width,
-                                       layer=element.layer if not element['subtract'] else 0,
-                                       # layer=element.layer,
-                                       datatype=11)
-
-            # to_return = gdspy.FlexPath(list(geom.coords),
-            #                            width=element.width,
-            #                            layer=element.layer if not element['subtract'] else 0,
-            #                            # layer=element.layer,
-            #                            bend_radius=bend_radius,
-            #                            corners='circular bend',
-            #                            datatype=11)
+            if math.isnan(element.fillet) or element.fillet <= 0:
+                to_return = gdspy.FlexPath(list(geom.coords),
+                                           width=element.width,
+                                           layer=element.layer if not element['subtract'] else 0,
+                                           # layer=element.layer,
+                                           datatype=11)
+            else:
+                to_return = gdspy.FlexPath(list(geom.coords),
+                                           width=element.width,
+                                           layer=element.layer if not element['subtract'] else 0,
+                                           # layer=element.layer,
+                                           datatype=11,
+                                           corners=self.corners,
+                                           bend_radius=self.bend_radius_num,
+                                           tolerance=self.tolerance
+                                           )
             return to_return
         else:
             # TODO: Handle
