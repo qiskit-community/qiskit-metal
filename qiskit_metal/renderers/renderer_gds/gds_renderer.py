@@ -457,6 +457,6 @@ class GDSRender(QRenderer):
             # TODO: Handle
             self.design.logger.warning(
                 f'Unexpected shapely object geometry.'
-                f'The variable element is {data(geom)}, method can handle Polygon and LineString.')
+                f'The variable element is {data(geom)}, method can currently handle Polygon and FlexPath.')
             # print(geom)
             return None
