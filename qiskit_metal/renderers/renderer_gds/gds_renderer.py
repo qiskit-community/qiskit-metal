@@ -1,3 +1,7 @@
+from .. import config
+from qiskit_metal.renderers.renderer_base import QRenderer
+from ...toolbox_python.utility_functions import log_error_easy
+from ...designs import QDesign
 import qiskit_metal as metal
 from qiskit_metal import designs, components, draw
 from qiskit_metal import components as qlibrary
@@ -10,6 +14,7 @@ import shapely
 import gdspy
 import os
 import pathlib
+import math
 
 from typing import TYPE_CHECKING
 from typing import Dict as Dict_
@@ -18,12 +23,8 @@ from typing import List, Tuple, Union
 from operator import itemgetter
 
 from ... import Dict
-from ...designs import QDesign
-from ...toolbox_python.utility_functions import log_error_easy
 
-from qiskit_metal.renderers.renderer_base import QRenderer
 
-from .. import config
 if not config.is_building_docs():
     from qiskit_metal import MetalGUI, Dict, Headings
 
@@ -33,12 +34,12 @@ class GDSRender(QRenderer):
     should be found within this class.
 
     layers:
-        200 Emulated Chip size based on self.scaled_max_bound * max_bounds of elements on chip. 
+        200 Emulated Chip size based on self.scaled_max_bound * max_bounds of elements on chip.
             self.scaled_chip_poly
-        201 Holds all of the qgeometries, in a cell, which have subtract as True. 
-            After gdspy.boolean(), The cell is removed from lib. 
+        201 Holds all of the qgeometries, in a cell, which have subtract as True.
+            After gdspy.boolean(), The cell is removed from lib.
             self.q_subtract_true, cell=SUBTRACT
-        202 Holds all of the qgeometries which have subtract as False.  
+        202 Holds all of the qgeometries which have subtract as False.
             self.q_subtract_false, cell=TOP
 
     datatype:
@@ -66,47 +67,52 @@ class GDSRender(QRenderer):
         """
         super().__init__(design=design, initiate=initiate)
 
-        self.options = GDSRender.default_options
-        if gds_options:
-            self.options.update(gds_options)
+    self.options = GDSRender.default_options
+    if gds_options:
+        self.options.update(gds_options)
 
-        self.options['gds_unit'] = self.design.get_units()
+    self.options['gds_unit'] = 1.0 / self.design.parse_value('1 meter')
+    self.lib = gdspy.GdsLibrary(unit=self.options.gds_unit)
 
-        self.lib = gdspy.GdsLibrary(units=self.options.gds_unit)
+    self.list_bounds = list()
+    self.scaled_max_bound = tuple()
 
-        self.list_bounds = list()
-        self.scaled_max_bound = tuple()
+    self.all_subtract_true = geopandas.GeoDataFrame()
+    self.all_subtract_false = geopandas.GeoDataFrame()
 
-        self.all_subtract_true = geopandas.GeoDataFrame()
-        self.all_subtract_false = geopandas.GeoDataFrame()
+    # gdspy.polygon.PolygonSet is the base class.
+    self.scaled_chip_poly = gdspy.Polygon([])
 
-        # gdspy.polygon.PolygonSet is the base class.
-        self.scaled_chip_poly = gdspy.Polygon([])
-
-        # bounding_box_scale will need to be migrated to some form of default_options
-        if isinstance(self.options.bounding_box_scale, float) and self.options.bounding_box_scale >= 1.0:
-            pass  # All is good.
-        elif isinstance(self.options.bounding_box_scale, int) and self.options.bounding_box_scale >= 1:
-            self.options.bounding_box_scale = float(
-                self.options.bounding_box_scale)
-        else:
-            self.options['bounding_box_scale'] = GDSRender.default_options.bounding_box_scale
-            self.design.logger.warning(
-                f'Expected float and number greater than or equal to 1.0 for bounding_box_scale. \
+    # bounding_box_scale will need to be migrated to some form of default_options
+    if isinstance(self.options.bounding_box_scale, float) and self.options.bounding_box_scale >= 1.0:
+        pass  # All is good.
+    elif isinstance(self.options.bounding_box_scale, int) and self.options.bounding_box_scale >= 1:
+        self.options.bounding_box_scale = float(
+            self.options.bounding_box_scale)
+    else:
+        self.options['bounding_box_scale'] = GDSRender.default_options.bounding_box_scale
+        self.design.logger.warning(
+            f'Expected float and number greater than or equal to 1.0 for bounding_box_scale. \
                 User provided bounding_box_scale = {self.options.bounding_box_scale}, using default_options.bounding_box.')
 
-        # For now, say true, needs to come from options. #issue #255.
-        #self.ground_plane = True
+    # For now, say true, needs to come from options. #issue #255.
+    # self.ground_plane = True
 
-        # layer and data numbers, needs to come from default options.
-        # Example: self.ld_subtract = {"layer": 201, "data": 12}
-        # self.ld_subtract = {"layer": 201}
-        # self.ld_no_subtract = {"layer": 202}
+    # layer and data numbers, needs to come from default options.
+    # Example: self.ld_subtract = {"layer": 201, "data": 12}
+    # self.ld_subtract = {"layer": 201}
+    # self.ld_no_subtract = {"layer": 202}
 
-        # create rectangle for layer , needs to come from default options.
-        # self. ld_chip = {"layer": 200, "datatype": 10}
+    # create rectangle for layer , needs to come from default options.
 
-    def _clear_library(self):
+   self.ld_chip = {"layer": 200, "datatype": 10}
+
+    # needs to come from default_options, used for fillet in FlexPath
+    self.bend_radius_num = 0.05
+    self.corners = 'circular bend'
+    self.tolerance = 0.001
+
+   def _clear_library(self):
         """Clear current library."""
         gdspy.current_library.cells.clear()
 
@@ -229,7 +235,7 @@ class GDSRender(QRenderer):
             scalex=self.bounding_box_scale, scaley=self.bounding_box_scale)
         pass  # for breakpoint
 
-    def create_poly_path_for_gds(self, highlight_qcomponents: list = []) -> int:
+    def create_qgeometry_for_gds(self, highlight_qcomponents: list = []) -> int:
         """Using self.design, this method does the following:
         1. Gather the QGeometries to be used to write to file.
            Duplicate names in hightlight_qcomponents will be removed without warning.
@@ -330,7 +336,7 @@ class GDSRender(QRenderer):
         # Create a new GDS library file. It can contains multiple cells.
         self._clear_library()
 
-        lib = gdspy.GdsLibrary()
+        lib = gdspy.GdsLibrary(unit=self.gds_unit)
 
         cell = lib.new_cell('NO_EDITS', overwrite_duplicate=True)
 
@@ -362,7 +368,7 @@ class GDSRender(QRenderer):
             The memory is freed up then.
             '''
             diff_geometry = gdspy.boolean(
-                self.scaled_chip_poly, subtract_cell.get_polygonsets(), 'not', layer=202)
+                self.scaled_chip_poly, subtract_cell.get_polygons(), 'not', layer=202)
 
             lib.remove(subtract_cell)
 
@@ -380,7 +386,7 @@ class GDSRender(QRenderer):
 
         lib.write_gds(file_name)
 
-    def path_and_poly_to_gds(self, file_name: str, highlight_qcomponents: list = []) -> int:
+    def export_to_gds(self, file_name: str, highlight_qcomponents: list = []) -> int:
         """Use the design which was used to initialize this class.
         The QGeometry element types of both "path" and "poly", will
         be used, to convert QGeometry to GDS formatted file.
@@ -400,7 +406,7 @@ class GDSRender(QRenderer):
         if not self._can_write_to_path(file_name):
             return 0
 
-        if (self.create_poly_path_for_gds(highlight_qcomponents) == 0):
+        if (self.create_qgeometry_for_gds(highlight_qcomponents) == 0):
             self.write_poly_path_to_file(file_name)
             return 1
         else:
@@ -441,16 +447,34 @@ class GDSRender(QRenderer):
                                  datatype=10,
                                  )
         elif isinstance(geom, shapely.geometry.LineString):
-            to_return = gdspy.FlexPath(list(geom.coords),
-                                       width=element.width,
-                                       layer=element.layer if not element['subtract'] else 0,
-                                       # layer=element.layer,
-                                       datatype=11)
+            '''
+            class gdspy.FlexPath(points, width, offset=0, corners='natural', ends='flush', 
+            bend_radius=None, tolerance=0.01, precision=0.001, max_points=199, 
+            gdsii_path=False, width_transform=True, layer=0, datatype=0)
+
+            Only fillet, if number is greater than zero.
+            '''
+            if math.isnan(element.fillet) or element.fillet <= 0:
+                to_return = gdspy.FlexPath(list(geom.coords),
+                                           width=element.width,
+                                           layer=element.layer if not element['subtract'] else 0,
+                                           # layer=element.layer,
+                                           datatype=11)
+            else:
+                to_return = gdspy.FlexPath(list(geom.coords),
+                                           width=element.width,
+                                           layer=element.layer if not element['subtract'] else 0,
+                                           # layer=element.layer,
+                                           datatype=11,
+                                           corners=self.corners,
+                                           bend_radius=self.bend_radius_num,
+                                           tolerance=self.tolerance
+                                           )
             return to_return
         else:
             # TODO: Handle
             self.design.logger.warning(
                 f'Unexpected shapely object geometry.'
-                f'The variable element is {data(geom)}, method can handle Polygon and LineString.')
+                f'The variable element is {data(geom)}, method can currently handle Polygon and FlexPath.')
             # print(geom)
             return None
