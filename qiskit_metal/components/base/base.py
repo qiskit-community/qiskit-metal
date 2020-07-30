@@ -193,7 +193,7 @@ class QComponent():
         options_from_children = {}
         parents = inspect.getmro(cls)
 
-        # Base.py is not expected to have default_options dict to add to design class.
+        # base.py is not expected to have default_options dict to add to design class.
         for child in parents[len(parents)-2::-1]:
             # There is a developer agreement so the defaults will be in dict named default_options.
             if hasattr(child, 'default_options'):

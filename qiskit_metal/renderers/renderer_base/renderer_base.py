@@ -17,6 +17,10 @@
 @date: 2019
 """
 import logging
+from typing import TYPE_CHECKING
+from typing import Dict as Dict_
+from typing import List, Tuple, Union
+from ... import Dict
 from ...designs import QDesign, is_design
 from ...elements import QGeometryTables
 
@@ -111,13 +115,15 @@ class QRenderer():
 
         return QRenderer.__instantiated_renderers__[name]
 
-    def __init__(self, design: QDesign, initiate=True):
+    def __init__(self, design: QDesign, initiate=True,  render_template: Dict = None, options: Dict = None):
         """
         Args:
             design (QDesign): The design
             initiate (bool): True to initiate the renderer (Default: True)
         """
         # TODO: check that the renderer has been loaded with load_renderer
+
+        self.status = 'Not Init'
 
         assert is_design(design), "Erorr, for the design argument you must provide a\
                                    a child instance of Metal QDesign class."
@@ -131,6 +137,10 @@ class QRenderer():
         # Register as an instantiated renderer.
         QRenderer.__instantiated_renderers__[self.name] = self
 
+        # Options
+        self.options = self.gather_options(self, options, render_template)
+        self.status = 'Init Completed'
+
     @property
     def design(self) -> 'QDesign':
         '''Return a reference to the parent design object'''
@@ -140,6 +150,41 @@ class QRenderer():
     def logger(self) -> logging.Logger:
         """Returns the logger"""
         return self._design.logger
+
+    @classmethod
+    def _gather_all_children_default_options(cls) -> Dict:
+        """From the base class of QRenderer, traverse the child classes
+        to gather the .default_options for each child class.
+
+        Note: If keys are the same for a child and grandchild, the grandchild will 
+        overwrite the child init method.
+
+        Returns:
+            Dict: Options from all children.
+        """
+        options_from_children = Dict{}
+        parents = inspect.getmro(cls)
+
+        # QRenderer is not expected to have default_options dict to add to QRenderer class.
+        for child in parents[len(parents)-2::-1]:
+            # There is a developer agreement so the defaults for a renderer will be in a dict named default_options.
+            if hasattr(child, 'default_options'):
+                options_from_children = {
+                    **options_from_children, **child.default_options}
+        return options_from_children
+
+    def gather_options(self, options: Dict = None, render_template: Dict = None) -> Dict:
+        options = Dict()
+        if cls.default_options:
+            options.update(cls.default_options)
+
+        if render_template:
+            self.options.update(render_template)
+
+        if options:
+            self.options.update(options)
+
+        return options
 
     def initate(self, re_initiate=False):
         '''

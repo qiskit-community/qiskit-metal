@@ -19,10 +19,9 @@ import math
 from typing import TYPE_CHECKING
 from typing import Dict as Dict_
 from typing import List, Tuple, Union
+from ... import Dict
 
 from operator import itemgetter
-
-from ... import Dict
 
 
 if not config.is_building_docs():
@@ -58,61 +57,49 @@ class GDSRender(QRenderer):
         ld_chip={"layer": 200, "datatype": 10}
     )
 
-    def __init__(self, design: QDesign, initiate=True, gds_options: Dict = None):
+    def __init__(self, design: QDesign, initiate=True, gds_options: Dict = None, gds_template: Dict = None):
         """
         Args:
             design (QDesign): Use QGeometry within QDesign  to obtain elements for GDS file.
             initiate (bool): True to initiate the renderer. Defaults to True.
-            bounding_box_scale (float): Scale box of components to render. Should be greater than 1.0.
         """
-        super().__init__(design=design, initiate=initiate)
+        super().__init__(design=design, initiate=initiate, gds_options: Dict=None, gds_template: Dict=None)
 
-    self.options = GDSRender.default_options
-    if gds_options:
-        self.options.update(gds_options)
+        # Move to parent during init.
+        # self.options.update(GDSRender.default_options)
+        # if gds_options:
+        #     self.options.update(gds_options)
 
-    self.options['gds_unit'] = 1.0 / self.design.parse_value('1 meter')
-    self.lib = gdspy.GdsLibrary(unit=self.options.gds_unit)
+        self.options['gds_unit'] = 1.0 / self.design.parse_value('1 meter')
+        self.lib = gdspy.GdsLibrary(unit=self.options.gds_unit)
 
-    self.list_bounds = list()
-    self.scaled_max_bound = tuple()
+        self.list_bounds = list()
+        self.scaled_max_bound = tuple()
 
-    self.all_subtract_true = geopandas.GeoDataFrame()
-    self.all_subtract_false = geopandas.GeoDataFrame()
+        self.all_subtract_true = geopandas.GeoDataFrame()
+        self.all_subtract_false = geopandas.GeoDataFrame()
 
-    # gdspy.polygon.PolygonSet is the base class.
-    self.scaled_chip_poly = gdspy.Polygon([])
+        # gdspy.polygon.PolygonSet is the base class.
+        self.scaled_chip_poly = gdspy.Polygon([])
 
-    # bounding_box_scale will need to be migrated to some form of default_options
-    if isinstance(self.options.bounding_box_scale, float) and self.options.bounding_box_scale >= 1.0:
-        pass  # All is good.
-    elif isinstance(self.options.bounding_box_scale, int) and self.options.bounding_box_scale >= 1:
-        self.options.bounding_box_scale = float(
-            self.options.bounding_box_scale)
-    else:
-        self.options['bounding_box_scale'] = GDSRender.default_options.bounding_box_scale
-        self.design.logger.warning(
-            f'Expected float and number greater than or equal to 1.0 for bounding_box_scale. \
-                User provided bounding_box_scale = {self.options.bounding_box_scale}, using default_options.bounding_box.')
+        # bounding_box_scale will need to be migrated to some form of default_options
+        if isinstance(self.options.bounding_box_scale, float) and self.options.bounding_box_scale >= 1.0:
+            pass  # All is good.
+        elif isinstance(self.options.bounding_box_scale, int) and self.options.bounding_box_scale >= 1:
+            self.options.bounding_box_scale = float(
+                self.options.bounding_box_scale)
+        else:
+            self.options['bounding_box_scale'] = GDSRender.default_options.bounding_box_scale
+            self.design.logger.warning(
+                f'Expected float and number greater than or equal to 1.0 for bounding_box_scale. \
+                    User provided bounding_box_scale = {self.options.bounding_box_scale}, using default_options.bounding_box.')
 
-    # For now, say true, needs to come from options. #issue #255.
-    # self.ground_plane = True
+        # needs to come from default_options, used for fillet in FlexPath
+        self.bend_radius_num = 0.05
+        self.corners = 'circular bend'
+        self.tolerance = 0.001
 
-    # layer and data numbers, needs to come from default options.
-    # Example: self.ld_subtract = {"layer": 201, "data": 12}
-    # self.ld_subtract = {"layer": 201}
-    # self.ld_no_subtract = {"layer": 202}
-
-    # create rectangle for layer , needs to come from default options.
-
-   self.ld_chip = {"layer": 200, "datatype": 10}
-
-    # needs to come from default_options, used for fillet in FlexPath
-    self.bend_radius_num = 0.05
-    self.corners = 'circular bend'
-    self.tolerance = 0.001
-
-   def _clear_library(self):
+    def _clear_library(self):
         """Clear current library."""
         gdspy.current_library.cells.clear()
 
@@ -142,10 +129,10 @@ class GDSRender(QRenderer):
         """
 
         subtract_true = table[table['subtract'] == True]
-        subtract_true['layer'] = self.ld_subtract['layer']
+        subtract_true['layer'] = self.options.ld_subtract['layer']
 
         subtract_false = table[table['subtract'] == False]
-        subtract_false['layer'] = self.ld_no_subtract['layer']
+        subtract_false['layer'] = self.options.ld_no_subtract['layer']
 
         setattr(self, f'{table_name}_subtract_true', subtract_true)
         setattr(self, f'{table_name}_subtract_false', subtract_false)
@@ -187,10 +174,10 @@ class GDSRender(QRenderer):
         center_x = (minx + maxx) / 2
         center_y = (miny + maxy) / 2
 
-        scaled_width = (maxx - minx) * self.bounding_box_scale
-        scaled_height = (maxy - miny) * self.bounding_box_scale
+        scaled_width = (maxx - minx) * self.options.bounding_box_scale
+        scaled_height = (maxy - miny) * self.options.bounding_box_scale
 
-        # Scaled inclusive bounding box by self.bounding_box_scale.
+        # Scaled inclusive bounding box by self.options.bounding_box_scale.
         scaled_box = (center_x - (.5 * scaled_width),
                       center_y - (.5 * scaled_height),
                       center_x + (.5 * scaled_width),
@@ -229,10 +216,10 @@ class GDSRender(QRenderer):
                             (self.max_bound[2], self.max_bound[1]),
                             (self.max_bound[2], self.max_bound[3]),
                             (self.max_bound[0], self.max_bound[3])]
-        chip_poly = gdspy.Polygon(rectangle_points, **self.ld_chip)
+        chip_poly = gdspy.Polygon(rectangle_points, **self.options.ld_chip)
 
         self.scaled_chip_poly = chip_poly.scale(
-            scalex=self.bounding_box_scale, scaley=self.bounding_box_scale)
+            scalex=self.options.bounding_box_scale, scaley=self.options.bounding_box_scale)
         pass  # for breakpoint
 
     def create_qgeometry_for_gds(self, highlight_qcomponents: list = []) -> int:
@@ -336,7 +323,7 @@ class GDSRender(QRenderer):
         # Create a new GDS library file. It can contains multiple cells.
         self._clear_library()
 
-        lib = gdspy.GdsLibrary(unit=self.gds_unit)
+        lib = gdspy.GdsLibrary(unit=self.options.gds_unit)
 
         cell = lib.new_cell('NO_EDITS', overwrite_duplicate=True)
 
