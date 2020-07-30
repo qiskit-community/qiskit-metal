@@ -241,7 +241,7 @@ class GDSRender(QRenderer):
         for qcomp in unique_qcomponents:
             if qcomp not in self.design.name_to_id:
                 self.design.logger.warning(
-                    f'The component={qcomp} in highlight_qcompoents not in QDesign. The GDS data not generated.')
+                    f'The component={qcomp} in highlight_qcomponents not in QDesign. The GDS data not generated.')
                 return 1
 
         # put the QGeomtry into GDS format.
