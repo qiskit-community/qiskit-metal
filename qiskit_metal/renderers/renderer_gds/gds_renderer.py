@@ -43,8 +43,8 @@ class GDSRender(QRenderer):
             self.q_subtract_false, cell=TOP
 
     datatype:
-        10 Polygon
-        11 Flexpath
+        * 10 Polygon
+        * 11 Flexpath
     """
 
     def __init__(self, design: QDesign, initiate=True, bounding_box_scale: float = 1.2):
@@ -154,8 +154,9 @@ class GDSRender(QRenderer):
             all_bounds (list): Each tuple=(minx, miny, maxx, maxy) in list represents bounding box for poly, path, etc.
 
         Returns:
-            tuple: A scaled bounding box which includes all paths, polys, etc.
-            tuple: A  bounding box which includes all paths, polys, etc.
+            tuple[tuple, tuple]: 
+            first tuple: A scaled bounding box which includes all paths, polys, etc.;
+            second tuple: A  bounding box which includes all paths, polys, etc.
         """
 
         # If given an empty list.
@@ -219,11 +220,15 @@ class GDSRender(QRenderer):
 
     def create_qgeometry_for_gds(self, highlight_qcomponents: list = []) -> int:
         """Using self.design, this method does the following:
+
         1. Gather the QGeometries to be used to write to file.
            Duplicate names in hightlight_qcomponents will be removed without warning.
+
         2. Populate self.list_bounds, which contains the maximum bound for all elements to render.
+
         3. Calculate scaled bounding box to emulate size of chip using self.scaled_max_bound
-        and place into self.scaled_max_bound.
+           and place into self.scaled_max_bound.
+
         4. Gather Geometries to export to GDS format.
 
         Args:
@@ -302,12 +307,17 @@ class GDSRender(QRenderer):
         """Using the geometries for each table name, write to a GDS file.
 
         -> rectangle on Y
+
         -> put all the 'subtract' shapes on layer X
+
         -> Boolean subtract X from Y and put that on Z
+
         -> add all the non-subtract shapes to Z as well.
 
         (Y = layer number 200) self.scaled_chip_poly
+
         (X = layer number 201) self.q_subtract_true , cell=SUBTRACT
+
         (Z = layer number 202) self.q_subtract_false, cell=TOP
 
         Args:
@@ -403,7 +413,7 @@ class GDSRender(QRenderer):
 
         Returns:
             'gdspy.polygon' or 'gdspy.FlexPath': Convert the class to a series of GDSII 
-                                                 format on the input pd.Series.
+            format on the input pd.Series.
         """
 
         """
