@@ -132,7 +132,8 @@ class GDSRender(QRenderer):
         setattr(self, f'{table_name}_subtract_true', subtract_true)
         setattr(self, f'{table_name}_subtract_false', subtract_false)
 
-    def get_bounds(self, gs_table: geopandas.GeoSeries) -> Tuple[float, float, float, float]:
+    @staticmethod
+    def get_bounds(gs_table: geopandas.GeoSeries) -> Tuple[float, float, float, float]:
         """Get the bounds for all of the elements in gs_table.
 
         Args:
