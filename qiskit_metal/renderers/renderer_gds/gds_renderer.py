@@ -204,7 +204,7 @@ class GDSRender(QRenderer):
                            max(all_bounds, key=itemgetter(3))[3])
         return inclusive_tuple
 
-    def rect_for_ground(self) -> None:
+    def render_chip(self) -> None:
         """Use the maximum bounds for all qgeometry on chip.  Scale the size of chip.
            Use gdspy.Polygon() because gdspy.boolean() requires it.
         """
@@ -217,7 +217,6 @@ class GDSRender(QRenderer):
 
         self.scaled_chip_poly = chip_poly.scale(
             scalex=self.bounding_box_scale, scaley=self.bounding_box_scale)
-        pass  # for breakpoint
 
     def create_qgeometry_for_gds(self, highlight_qcomponents: list = []) -> int:
         """Using self.design, this method does the following:
@@ -289,7 +288,7 @@ class GDSRender(QRenderer):
             self.list_bounds)
 
         if self.ground_plane:
-            self.rect_for_ground()
+            self.render_chip()
 
             self.all_subtract_true = geopandas.GeoDataFrame(
                 pd.concat(all_subtracts, ignore_index=False))
