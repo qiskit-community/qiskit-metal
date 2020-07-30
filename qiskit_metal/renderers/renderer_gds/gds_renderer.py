@@ -332,22 +332,6 @@ class GDSRender(QRenderer):
 
         lib = gdspy.GdsLibrary(unit=self.gds_unit)
 
-        cell = lib.new_cell('NO_EDITS', overwrite_duplicate=True)
-
-        for table_name in self.design.qgeometry.get_element_types():
-            q_geometries = getattr(self, f'{table_name}s')
-            if q_geometries is None:
-                self.design.logger.warning(
-                    f'There are no {table_name}s to write.')
-            else:
-                cell.add(q_geometries)
-
-            if q_geometries is None:
-                self.design.logger.warning(
-                    f'There is no table named "{table_name}s" to write.')
-            else:
-                cell.add(q_geometries)
-
         if self.ground_plane:
             # # For ground plane.
             ground_cell = lib.new_cell('TOP', overwrite_duplicate=True)
