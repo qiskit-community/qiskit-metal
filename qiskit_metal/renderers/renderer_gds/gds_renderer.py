@@ -115,7 +115,7 @@ class GDSRender(QRenderer):
                 f'Not able to write to directory. File:"{file}" not written. Checked directory:"{directory_name}".')
             return 0
 
-    def seperate_subtract_shapes(self, table_name: str, table: geopandas.GeoSeries) -> None:
+    def separate_subtract_qgeometry(self, table_name: str, table: geopandas.GeoSeries) -> None:
         """For each table, separate them by subtract being either True or False.
 
         Args:
@@ -274,7 +274,7 @@ class GDSRender(QRenderer):
             self.list_bounds.append(bounds)
 
             if self.ground_plane:
-                self.seperate_subtract_shapes(table_name, table)
+                self.separate_subtract_qgeometry(table_name, table)
                 all_subtracts.append(
                     getattr(self, f'{table_name}_subtract_true'))
                 all_no_subtracts.append(
