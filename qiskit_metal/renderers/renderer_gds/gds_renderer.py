@@ -209,6 +209,8 @@ class GDSRender(QRenderer):
            Use gdspy.Polygon() because gdspy.boolean() requires it.
         """
 
+        # change format to use gdspy.Pologon().
+        # [minx, miny, maxx, maxy] to [(minx,miny),(maxx,miny),(maxx,maxy),(minx,maxy)]
         rectangle_points = [(self.max_bound[0], self.max_bound[1]),
                             (self.max_bound[2], self.max_bound[1]),
                             (self.max_bound[2], self.max_bound[3]),
