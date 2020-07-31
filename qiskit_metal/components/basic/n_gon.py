@@ -27,13 +27,14 @@ class NGon(QComponent):
         Convention: Values (unless noted) are strings with units included,
         (e.g., '30um')
 
-        n           - number of sides of the polygon
-        radius      - the radius of the circle given n=infinity
-        pos_x/_y    - the x/y position of the ground termination.
-        rotation    - the direction of the termination. 0 degrees is +x, following a
-                    counter-clockwise rotation (eg. 90 is +y)
-        chip        - the chip the pin should be on.
-        layer       - layer the pin is on. Does not have any practical impact to the short.
+        * n           : number of sides of the polygon
+        * radius      : the radius of the circle given n=infinity
+        * pos_x/_y    : the x/y position of the ground termination.
+        * rotation    : the direction of the termination. 0 degrees is +x, following a
+          counter-clockwise rotation (eg. 90 is +y)
+        * chip        : the chip the pin should be on.
+        * layer       : layer the pin is on. Does not have any practical impact to the short.
+
     """
 
     default_options = Dict(
