@@ -162,7 +162,7 @@ class QRenderer():
         Returns:
             Dict: Options from all children.
         """
-        options_from_children = Dict{}
+        options_from_children = Dict()
         parents = inspect.getmro(cls)
 
         # QRenderer is not expected to have default_options dict to add to QRenderer class.
