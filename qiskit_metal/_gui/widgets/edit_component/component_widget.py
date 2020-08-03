@@ -95,7 +95,7 @@ body {
 }
 
 /*.DocString {
-    font-family: monospace;
+    font-family: Arial;
 }*/
 """
 
@@ -140,9 +140,9 @@ def create_QTextDocument(doc: QtWidgets.QTextEdit) -> QtGui.QTextDocument:
 
     # Style documents monoscaped font
     font = document.defaultFont()
-    if hasattr(QFont, "Monospace"):
+    if hasattr(QFont, "Arial"):
         # when not available
-        font.setStyleHint(QFont.Monospace)
+        font.setStyleHint(QFont.Arial)
     else:
         font.setStyleHint(QFont.Courier)
     font.setFamily("Courier")
