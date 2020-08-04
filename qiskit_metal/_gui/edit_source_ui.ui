@@ -10,6 +10,11 @@
     <height>680</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <family>Arial</family>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>Edit source code</string>
   </property>
@@ -61,6 +66,7 @@
            <widget class="QPushButton" name="btn_rebuild">
             <property name="font">
              <font>
+              <family>Arial</family>
               <weight>75</weight>
               <bold>true</bold>
              </font>
@@ -101,6 +107,7 @@ color: rgb(255, 255, 255);</string>
            <widget class="QPushButton" name="btn_save">
             <property name="font">
              <font>
+              <family>Arial</family>
               <weight>75</weight>
               <bold>true</bold>
              </font>
@@ -258,16 +265,16 @@ color: rgb(255, 255, 255);</string>
            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;title&gt;Help&lt;/title&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'.SF NS Text'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; background-color:#ffffff;&quot;&gt;&lt;span style=&quot; font-family:'Lucida Grande,Arial,sans-serif'; font-size:16px; font-weight:600; color:#797a7a; background-color:#ffffff;&quot;&gt;Help me?&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; background-color:#ffffff;&quot;&gt;&lt;span style=&quot; font-family:'Lucida Grande,Arial,sans-serif'; font-size:16px; font-style:italic; color:#797a7a; background-color:#ffffff;&quot;&gt;Double click &lt;/span&gt;&lt;span style=&quot; font-family:'Lucida Grande,Arial,sans-serif'; font-size:16px; color:#797a7a; background-color:#ffffff;&quot;&gt;any function or class in the source code to view its documentation. &lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; background-color:#ffffff;&quot;&gt;&lt;span style=&quot; font-family:'Lucida Grande,Arial,sans-serif'; font-size:16px; color:#797a7a; background-color:#ffffff;&quot;&gt;Documentation is also shown anytime one types&lt;/span&gt;&lt;span style=&quot; font-family:'Lucida Grande,Arial,sans-serif'; font-size:16px; color:#797a7a;&quot;&gt; a bracket &lt;/span&gt;&lt;span style=&quot; font-family:'Monaco'; font-size:16px; color:#797a7a;&quot;&gt;(&lt;/span&gt;&lt;span style=&quot; font-family:'Lucida Grande,Arial,sans-serif'; font-size:16px; color:#797a7a;&quot;&gt; after the name of a function. &lt;/span&gt;&lt;span style=&quot; font-family:'Lucida Grande,Arial,sans-serif'; font-size:16px; color:#797a7a; background-color:#ffffff;&quot;&gt;For example, enter&lt;/span&gt;&lt;span style=&quot; font-family:'Lucida Grande,Arial,sans-serif'; font-size:16px; color:#797a7a;&quot;&gt; &lt;/span&gt;&lt;span style=&quot; font-family:'monospace,sans-serif'; font-size:16px; color:#797a7a; background-color:#ecf0f3;&quot;&gt;draw.rectangle(&lt;/span&gt;&lt;span style=&quot; font-family:'Lucida Grande,Arial,sans-serif'; font-size:16px; color:#797a7a;&quot;&gt;, and a  calltip will appear here.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; font-family:'Lucida Grande,Arial,sans-serif'; font-size:16px; color:#797a7a; background-color:#ffffff;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; background-color:#ffffff;&quot;&gt;&lt;span style=&quot; font-family:'Lucida Grande,Arial,sans-serif'; font-size:16px; font-weight:600; color:#797a7a;&quot;&gt;Hide help panel? &lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; background-color:#ffffff;&quot;&gt;&lt;span style=&quot; font-family:'Lucida Grande,Arial,sans-serif'; font-size:16px; color:#797a7a;&quot;&gt;Drag the slider in the middle all the way to the right. &lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; font-family:'Lucida Grande,Arial,sans-serif'; font-size:16px; color:#797a7a; background-color:#ffffff;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; background-color:#ffffff;&quot;&gt;&lt;span style=&quot; font-family:'Lucida Grande,Arial,sans-serif'; font-size:16px; font-weight:600; color:#797a7a;&quot;&gt;Search, replace, and more?&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; background-color:#ffffff;&quot;&gt;&lt;span style=&quot; font-family:'Lucida Grande,Arial,sans-serif'; font-size:16px; color:#797a7a;&quot;&gt;Right click the source code to view more.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Arial'; font-size:8.1pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; background-color:#ffffff;&quot;&gt;&lt;span style=&quot; font-family:'Arial'; font-size:13pt; font-weight:600; color:#797a7a; background-color:#ffffff;&quot;&gt;Help me?&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; background-color:#ffffff;&quot;&gt;&lt;span style=&quot; font-family:'Arial'; font-size:13pt; font-style:italic; color:#797a7a; background-color:#ffffff;&quot;&gt;Double click &lt;/span&gt;&lt;span style=&quot; font-family:'Arial'; font-size:13pt; color:#797a7a; background-color:#ffffff;&quot;&gt;any function or class in the source code to view its documentation. &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; background-color:#ffffff;&quot;&gt;&lt;span style=&quot; font-family:'Arial'; font-size:13pt; color:#797a7a; background-color:#ffffff;&quot;&gt;Documentation is also shown anytime one types&lt;/span&gt;&lt;span style=&quot; font-family:'Arial'; font-size:13pt; color:#797a7a;&quot;&gt; a bracket &lt;/span&gt;&lt;span style=&quot; font-family:'Monaco'; font-size:13pt; color:#797a7a;&quot;&gt;(&lt;/span&gt;&lt;span style=&quot; font-family:'Arial'; font-size:13pt; color:#797a7a;&quot;&gt; after the name of a function. &lt;/span&gt;&lt;span style=&quot; font-family:'Arial'; font-size:13pt; color:#797a7a; background-color:#ffffff;&quot;&gt;For example, enter&lt;/span&gt;&lt;span style=&quot; font-family:'Arial'; font-size:13pt; color:#797a7a;&quot;&gt; &lt;/span&gt;&lt;span style=&quot; font-family:'Arial'; font-size:13pt; color:#797a7a; background-color:#ecf0f3;&quot;&gt;draw.rectangle(&lt;/span&gt;&lt;span style=&quot; font-family:'Arial'; font-size:13pt; color:#797a7a;&quot;&gt;, and a  calltip will appear here.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; font-family:'Arial'; font-size:13pt; color:#797a7a; background-color:#ffffff;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; background-color:#ffffff;&quot;&gt;&lt;span style=&quot; font-family:'Arial'; font-size:13pt; font-weight:600; color:#797a7a;&quot;&gt;Hide help panel? &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; background-color:#ffffff;&quot;&gt;&lt;span style=&quot; font-family:'Arial'; font-size:13pt; color:#797a7a;&quot;&gt;Drag the slider in the middle all the way to the right. &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; font-family:'Arial'; font-size:13pt; color:#797a7a; background-color:#ffffff;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; background-color:#ffffff;&quot;&gt;&lt;span style=&quot; font-family:'Arial'; font-size:13pt; font-weight:600; color:#797a7a;&quot;&gt;Search, replace, and more?&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; background-color:#ffffff;&quot;&gt;&lt;span style=&quot; font-family:'Arial'; font-size:13pt; color:#797a7a;&quot;&gt;Right click the source code to view more.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
         </item>
@@ -283,7 +290,7 @@ p, li { white-space: pre-wrap; }
      <x>0</x>
      <y>0</y>
      <width>1161</width>
-     <height>22</height>
+     <height>20</height>
     </rect>
    </property>
   </widget>
