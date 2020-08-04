@@ -9,7 +9,7 @@ from numpy.linalg import norm
 import numpy as np
 from qiskit_metal import draw, Dict
 from qiskit_metal.toolbox_metal.parsing import is_true
-from qiskit_metal.components.interconnects.qroute_base import QRoute, QRouteLead, QRoutePoint
+from qiskit_metal.components.interconnects.qroute_base import QRoute, QRoutePoint
 
 
 class CpwMeanderSimple(QRoute):
@@ -59,18 +59,14 @@ class CpwMeanderSimple(QRoute):
         p = self.p
         snap = is_true(p.meander.snap)
         total_length = p.total_length
-        lead_start = p.meander.lead_start
-        lead_end = p.meander.lead_end
 
         # Set the CPW pins and add the points/directions to the lead-in/out arrays
-        start_points = QRouteLead(*self.set_pin("start"))
-        end_points = QRouteLead(*self.set_pin("end"))
+        self.set_pin("start")
+        self.set_pin("end")
 
         # Align the lead-in/out to the input options set from the user
-        lead_in = max(lead_start, p.trace_width / 2)  # minimum lead, to be able to jog correctly
-        lead_out = max(lead_end, p.trace_width / 2)  # minimum lead, to be able to jog correctly
-        start_points.go_straight(lead_in)
-        end_points.go_straight(lead_out)
+        meander_start_point = self.set_lead("start")
+        meander_end_point = self.set_lead("end")
 
         if snap:
             # TODO: adjust the terminations to be sure the meander connects well on both ends
@@ -78,24 +74,21 @@ class CpwMeanderSimple(QRoute):
             pass
 
         # Meander
-        length_meander = total_length - (start_points.get_length + end_points.get_length)
+        length_meander = total_length - (self.length_head + self.length_tail)
         if snap:
             # handle y distance
             length_meander -= 0  # (end.position - endm.position)[1]
 
-        meandered_pts = self.meander_fixed_length(
-            start_points, end_points, length_meander, p.meander)
+        meandered_pts = self.meander_fixed_length(meander_start_point,
+                                                  meander_end_point, length_meander)
 
-        self.points = np.concatenate([
-            start_points.positions,
-            meandered_pts,
-            end_points.positions[::-1]], axis=0)
+        self.intermediate_pts = meandered_pts
 
         # Make points into elements
-        self.make_elements(self.points)
+        self.make_elements(self.get_points())
 
-    def meander_fixed_length(self, start_array: QRouteLead, end_array: QRouteLead,
-                             length: float, meander_opt: dict) -> np.ndarray:
+    def meander_fixed_length(self, start: QRoutePoint, end: QRoutePoint,
+                             length: float) -> np.ndarray:
         """
         Meanders using a fixed length and fixed spacing.
 
@@ -131,13 +124,11 @@ class CpwMeanderSimple(QRoute):
         # Setup
 
         # Parameters
+        meander_opt = self.p.meander
         spacing = meander_opt.spacing  # Horizontal spacing between meanders
         asymmetry = meander_opt.asymmetry
         snap = is_true(meander_opt.snap)  # snap to xy grid
         # TODO: snap add 45 deg snap by changing snap function using angles
-
-        start = QRoutePoint(start_array)
-        end = QRoutePoint(end_array)
 
         # Coordinate system (example: x to the right => sideways up)
         forward, sideways = self.get_unit_vectors(start, end, snap)
@@ -269,10 +260,6 @@ class CpwMeanderSimple(QRoute):
 
         # print("PTS->", pts)
 
-        self.pts = pts
-        self.forward = forward
-        self.sideways = sideways
-
         return pts
 
     @staticmethod
@@ -292,29 +279,7 @@ class CpwMeanderSimple(QRoute):
         z = np.zeros(num_2pts * 2, dtype=int)
         z[::2] = x
         z[1::2] = x + 1
-        z
         return z, odd
-
-    def get_unit_vectors(self, start: QRoutePoint, end: QRoutePoint, snap: bool = False) -> Tuple[np.ndarray]:
-        """Return the unit and target vector in which the CPW should procees as its
-        cooridnate sys.
-
-        Arguments:
-            start (QRoutePoint): [description]
-            end (QRoutePoint): [description]
-            snap (bool): True to snap to grid (Default: False)
-
-        Returns:
-            array: straight and 90 deg CCW rotated vecs 2D
-            (array([1., 0.]), array([0., 1.]))
-        """
-        # handle chase when star tnad end are same?
-        v = end.position - start.position
-        direction = v / norm(v)
-        if snap:
-            direction = draw.Vector.snap_unit_vector(direction, flip=False)
-        normal = draw.Vector.rotate(direction, np.pi / 2)
-        return direction, normal
 
     def make_elements(self, pts: np.ndarray):
         """Turns the CPW points into design elements, and add them to the design object

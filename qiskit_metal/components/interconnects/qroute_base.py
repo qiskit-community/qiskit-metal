@@ -9,6 +9,22 @@ from numpy.linalg import norm
 from typing import List, Tuple, Union, Dict
 
 
+class QRoutePoint:
+    r"""A simple class to define a 2D Oriented_Point,
+    with a 2D position and a 2D direction (XY plane).
+    All values stored as np.ndarray of parsed floats.
+    """
+
+    def __init__(self, position: np.array, direction: np.array):
+        """
+        Arguments:
+            position: np.array 2X1
+            direction: np.array 2X1
+        """
+        self.position = position
+        self.direction = direction
+
+
 class QRoute(QComponent):
     r"""A simple class to define a generic route, using an array of planar points (x,y coordinates)
     and the direction of the pins that start and end the array
@@ -17,13 +33,14 @@ class QRoute(QComponent):
 
     def __init__(self, *args, **kwargs):
         """Calls the QComponent __init__() to create a new Metal component
-        Then adds to that the variables to support routing
+        Before that, it the variables that are needed to support routing
         """
         # keep track of the most recent point direction
         self.head_direction = None  # will be numpy 2x1
         self.tail_direction = None  # will be numpy 2x1
         # keep track of all points so far in the route from both ends
         self.head_pts = None  # will be numpy 2xN
+        self.intermediate_pts = None  # will be numpy 2xN
         self.tail_pts = None  # will be numpy 2xN
         # supported pin names (constants)
         self.start_pin_name = "start"
@@ -77,7 +94,7 @@ class QRoute(QComponent):
         """
         raise NotImplementedError()
 
-    def set_pin(self, name: str) -> Tuple:
+    def set_pin(self, name: str) -> QRoutePoint:
         """Defines the CPW pins and returns the pin coordinates and normal direction vector
 
         Args:
@@ -93,28 +110,45 @@ class QRoute(QComponent):
             options_pin = self.options.pin_inputs.end_pin
         else:
             raise Exception("Pin name \"" + name + "\" is not supported for this CPW." +
-                            " The only supported pins are: start, end." +
-                            " to change that, edit set_pin(self, name)")
+                            " The only supported pins are: start, end.")
 
         pin = self.design.components[options_pin.component].pins[options_pin.pin]
 
         # add pins and document the connections in the netlist
-        self.add_pin(name, pin.points[::-1], self.options.trace_width)
+        self.add_pin(name, pin.points[::-1], self.p.trace_width)
         self.design.connect_pins(
             self.design.components[options_pin.component].id, options_pin.pin, self.id, name)
 
         position = pin['middle']
         direction = pin['normal']
 
-        if name == "start":
+        if name == self.start_pin_name:
             self.head_direction = direction
             self.head_pts = [position]
-        if name == "end":
+        if name == self.end_pin_name:
             self.tail_direction = direction
             self.tail_pts = [position]
-        return position, direction
+        return QRoutePoint(position, direction)
 
-    def get_points(self, intermediate_pts=None) -> np.ndarray:
+    def set_lead(self, name: str) -> QRoutePoint:
+        if name == self.start_pin_name:
+            lead_in = max(self.p.meander.lead_start,
+                          self.p.trace_width / 2)  # minimum lead, to be able to jog correctly
+            self.go_straight(lead_in, head=True)
+        elif name == self.end_pin_name:
+            lead_out = max(self.p.meander.lead_end,
+                           self.p.trace_width / 2)  # minimum lead, to be able to jog correctly
+            self.go_straight(lead_out, head=False)
+        else:
+            raise Exception("Pin name \"" + name + "\" is not supported for this CPW." +
+                            " The only supported pins are: start, end.")
+
+        if name == self.start_pin_name:
+            return QRoutePoint(self.head_pts[-1], self.head_direction)
+        if name == self.end_pin_name:
+            return QRoutePoint(self.tail_pts[-1], self.tail_direction)
+
+    def get_points(self) -> np.ndarray:
         """Assembles the list of points for the route by concatenating:
         head_pts + intermediate_pts, tail_pts
 
@@ -124,14 +158,41 @@ class QRoute(QComponent):
         Returns:
             np.ndarray: (2x(H+N+T))
         """
-        if intermediate_pts:
-            return np.concatenate([
+        # cover case where only the lead-in is defined point by point
+        if self.intermediate_pts is not None:
+            beginning = np.concatenate([
                 self.head_pts,
-                intermediate_pts,
+                self.intermediate_pts], axis=0)
+        else:
+            beginning = self.head_pts
+
+        # cover case where only the head is defined, with a single pin
+        if self.tail_pts is not None:
+            return np.concatenate([
+                beginning,
                 self.tail_pts[::-1]], axis=0)
-        return np.concatenate([
-            self.head_pts,
-            self.tail_pts[::-1]], axis=0)
+        return beginning
+
+    def get_unit_vectors(self, start: QRoutePoint, end: QRoutePoint, snap: bool = False) -> Tuple:
+        """Return the unit and target vector in which the CPW should procees as its
+        cooridnate sys.
+
+        Arguments:
+            start (QRoutePoint): [description]
+            end (QRoutePoint): [description]
+            snap (bool): True to snap to grid (Default: False)
+
+        Returns:
+            array: straight and 90 deg CCW rotated vecs 2D
+            (array([1., 0.]), array([0., 1.]))
+        """
+        # handle chase when star tnad end are same?
+        v = end.position - start.position
+        direction = v / norm(v)
+        if snap:
+            direction = draw.Vector.snap_unit_vector(direction, flip=False)
+        normal = draw.Vector.rotate(direction, np.pi / 2)
+        return direction, normal
 
     def go_straight(self, length: float, head=True):
         """Add a point ot 'length' distance in the same direction
@@ -161,7 +222,6 @@ class QRoute(QComponent):
             self.tail_direction = draw.Vector.rotate(self.tail_direction, np.pi / 2)
             self.tail_pts = np.append(self.tail_pts, [self.tail_pts[-1] + self.tail_direction * length], axis=0)
 
-
     def go_right(self, length: float, head=True):
         """Straight line 90deg clock-wise direction w.r.t. Oriented_Point
 
@@ -185,10 +245,28 @@ class QRoute(QComponent):
         Return:
             length (float): full point_array length
         """
-        length = sum(norm(self.points[i + 1] - self.points[i]) for i in range(len(self.points) - 1))
-        if self.pin_end:
-            return length + norm(self.points[-1] - self.pin_end.position)
-        return length
+        points = self.get_points()
+        return sum(norm(points[i + 1] - points[i]) for i in range(len(points) - 1))
+
+    @property
+    def length_head(self):
+        """Sum of all segments length, including the head
+
+        Return:
+            length (float): full point_array length
+        """
+        points = self.head_pts
+        return sum(norm(points[i + 1] - points[i]) for i in range(len(points) - 1))
+
+    @property
+    def length_tail(self):
+        """Sum of all segments length, including the head
+
+        Return:
+            length (float): full point_array length
+        """
+        points = self.tail_pts
+        return sum(norm(points[i + 1] - points[i]) for i in range(len(points) - 1))
 
     def route_to_align(self, concurrent_array):
         """
@@ -373,20 +451,3 @@ class QRouteLead:
         else:
             # points are orthogonal to ach other
             pass
-
-
-class QRoutePoint:
-    r"""A simple class to define a 2D Oriented_Point,
-    with a 2D position and a 2D direction (XY plane).
-    All values stored as np.ndarray of parsed floats.
-    """
-
-    # TODO: Maybe move this class out of here, more general.
-
-    def __init__(self, array: QRouteLead):
-        """
-        Arguments:
-            array (QRouteLead): 2D array
-        """
-        self.position = array.positions[-1]
-        self.direction = array.directions[-1]
