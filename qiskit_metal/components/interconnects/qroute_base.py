@@ -6,7 +6,7 @@ from qiskit_metal.draw.utility import vec_unit_planar
 from qiskit_metal import draw
 from qiskit_metal.components import QComponent
 from numpy.linalg import norm
-from typing import List, Tuple, Union
+from typing import List, Tuple, Union, Dict
 
 
 class QRoute(QComponent):
@@ -15,24 +15,69 @@ class QRoute(QComponent):
     Values stored as np.ndarray of parsed floats or np.array float pair
     """
 
-    # TODO: revisit the idea of an init with a global self.points array as well as the pins
-    # # parent -> def __init__(self, design: 'QDesign', name: str, options: Dict = None,
-    # #              make=True, component_template: Dict = None) -> Union[None, str]:
-    #
-    # def __init__(self, pin_start, design: 'QDesign', name: str, pin_end=None):
-    #     """
-    #     Arguments:
-    #         pin_start (pin object): reference to the connecting pin
-    #         pin_end (pin object): reference to the connecting pin
-    #     """
-    #     super().__init__(design, name)
-    #     self.points = np.expand_dims(pin_start.position, axis=0)
-    #
-    #     # head_direction (2x1 np.ndarray - 1 vector): *Normal vector* defining which way the head
-    #     # is pointing.  This is the normal vector to the surface of the head line-end.
-    #     self.head_direction = vec_unit_planar(pin_start.direction)
+    def __init__(self, *args, **kwargs):
+        """Calls the QComponent __init__() to create a new Metal component
+        Then adds to that the variables to support routing
+        """
+        # keep track of the most recent point direction
+        self.head_direction = None  # will be numpy 2x1
+        self.tail_direction = None  # will be numpy 2x1
+        # keep track of all points so far in the route from both ends
+        self.head_pts = None  # will be numpy 2xN
+        self.tail_pts = None  # will be numpy 2xN
+        # supported pin names (constants)
+        self.start_pin_name = "start"
+        self.end_pin_name = "end"
+        super().__init__(*args, **kwargs)
 
-    def set_pin(self, name) -> Tuple:
+        """Create a new Metal component and adds it's default_options to the design.
+
+        Arguments:
+            design (QDesign): The parent design.
+            name (str): Name of the component.
+            options (dict): User options that will override the defaults. (default: None)
+            make (bool): True if the make function should be called at the end of the init.
+                Options be used in the make function to create the geometry. (default: True)
+            component_template (dict): User can overwrite the template options for the component
+                that will be stored in the design, in design.template,
+                and used every time a new component is instantiated.
+                (default: None)
+
+        Raises:
+            ValueError: User supplied design isn't a QDesign
+
+        Note:  Information copied from QDesign class.
+            self._design.overwrite_enabled (bool):
+            When True - If the string name, used for component, already
+            exists in the design, the existing component will be
+            deleted from design, and new component will be generated
+            with the same name and newly generated component_id,
+            and then added to design.
+
+            When False - If the string name, used for component, already
+            exists in the design, the existing component will be
+            kept in the design, and current component will not be generated,
+            nor will be added to the design. The variable design.self.status 
+            will still be NotBuilt, as opposed to Initialization Successful.
+
+            Either True or False - If string name, used for component, is NOT
+            being used in the design, a component will be generated and
+            added to design using the name.
+        """
+
+    def make(self):
+        """
+        Implements QComponent method.
+
+        **Note:**
+            * This method should be overwritten by the children make function.
+
+        Raises:
+            NotImplementedError: Overwrite this function by subclassing.
+        """
+        raise NotImplementedError()
+
+    def set_pin(self, name: str) -> Tuple:
         """Defines the CPW pins and returns the pin coordinates and normal direction vector
 
         Args:
@@ -42,9 +87,9 @@ class QRoute(QComponent):
             tuple: `coordinate`, `direction`.
             The values are numpy arrays with two float points each.
         """
-        if name == "start":
+        if name == self.start_pin_name:
             options_pin = self.options.pin_inputs.start_pin
-        elif name == "end":
+        elif name == self.end_pin_name:
             options_pin = self.options.pin_inputs.end_pin
         else:
             raise Exception("Pin name \"" + name + "\" is not supported for this CPW." +
@@ -60,37 +105,78 @@ class QRoute(QComponent):
 
         position = pin['middle']
         direction = pin['normal']
+
+        if name == "start":
+            self.head_direction = direction
+            self.head_pts = [position]
+        if name == "end":
+            self.tail_direction = direction
+            self.tail_pts = [position]
         return position, direction
 
-    def go_straight(self, length: float):
+    def get_points(self, intermediate_pts=None) -> np.ndarray:
+        """Assembles the list of points for the route by concatenating:
+        head_pts + intermediate_pts, tail_pts
+
+        Args:
+            intermediate_pts: np.ndarray (2xN) array of point coordinates
+
+        Returns:
+            np.ndarray: (2x(H+N+T))
+        """
+        if intermediate_pts:
+            return np.concatenate([
+                self.head_pts,
+                intermediate_pts,
+                self.tail_pts[::-1]], axis=0)
+        return np.concatenate([
+            self.head_pts,
+            self.tail_pts[::-1]], axis=0)
+
+    def go_straight(self, length: float, head=True):
         """Add a point ot 'length' distance in the same direction
 
         Args:
             length (float) : how much to move by
+            head (boolean) : default True. If set to False, it will move the tail
         """
-        self.points = np.append(self.points, [self.points[-1] + self.head_direction * length], axis=0)
+        if head:
+            self.head_pts = np.append(self.head_pts, [self.head_pts[-1] + self.head_direction * length], axis=0)
+        else:
+            self.tail_pts = np.append(self.tail_pts, [self.tail_pts[-1] + self.tail_direction * length], axis=0)
 
-    def go_left(self, length: float):
+    def go_left(self, length: float, head=True):
         """Straight line 90deg counter-clock-wise direction w.r.t. Oriented_Point
 
         Args:
             length (float): how much to move by
+            head (boolean) : default True. If set to False, it will move the tail
 
         THIS METHOD IS NOT USED AT THIS TIME (7/2/20). PLAN TO USE
         """
-        self.head_direction = draw.Vector.rotate(self.head_direction, np.pi / 2)
-        self.points = np.append(self.points, [self.points[-1] + self.head_direction * length], axis=0)
+        if head:
+            self.head_direction = draw.Vector.rotate(self.head_direction, np.pi / 2)
+            self.head_pts = np.append(self.head_pts, [self.head_pts[-1] + self.head_direction * length], axis=0)
+        else:
+            self.tail_direction = draw.Vector.rotate(self.tail_direction, np.pi / 2)
+            self.tail_pts = np.append(self.tail_pts, [self.tail_pts[-1] + self.tail_direction * length], axis=0)
 
-    def go_right(self, length: float):
+
+    def go_right(self, length: float, head=True):
         """Straight line 90deg clock-wise direction w.r.t. Oriented_Point
 
         Args:
             length (float): how much to move by
+            head (boolean) : default True. If set to False, it will move the tail
 
         THIS METHOD IS NOT USED AT THIS TIME (7/2/20). PLAN TO USE
         """
-        self.head_direction = draw.Vector.rotate(self.head_direction, -1 * np.pi / 2)
-        self.points = np.append(self.points, [self.points[-1] + self.head_direction * length], axis=0)
+        if head:
+            self.head_direction = draw.Vector.rotate(self.head_direction, -1 * np.pi / 2)
+            self.head_pts = np.append(self.head_pts, [self.head_pts[-1] + self.head_direction * length], axis=0)
+        else:
+            self.tail_direction = draw.Vector.rotate(self.tail_direction, -1 * np.pi / 2)
+            self.tail_pts = np.append(self.tail_pts, [self.tail_pts[-1] + self.tail_direction * length], axis=0)
 
     @property
     def length(self):

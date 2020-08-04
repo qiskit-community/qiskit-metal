@@ -86,13 +86,13 @@ class CpwMeanderSimple(QRoute):
         meandered_pts = self.meander_fixed_length(
             start_points, end_points, length_meander, p.meander)
 
-        points = np.concatenate([
+        self.points = np.concatenate([
             start_points.positions,
             meandered_pts,
             end_points.positions[::-1]], axis=0)
 
         # Make points into elements
-        self.make_elements(points)
+        self.make_elements(self.points)
 
     def meander_fixed_length(self, start_array: QRouteLead, end_array: QRouteLead,
                              length: float, meander_opt: dict) -> np.ndarray:
