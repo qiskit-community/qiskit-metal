@@ -18,8 +18,11 @@ class QRoutePoint:
     def __init__(self, position: np.array, direction: np.array):
         """
         Arguments:
-            position: np.array 2X1
-            direction: np.array 2X1
+            position (np.ndarray of 2 points): Center point of the pin
+            direction (np.ndarray of 2 points): *Normal vector* of the connector,
+                defines which way it points outward.
+                This is the normal vector to the surface on which the pin mates.
+                Has unit norm.
         """
         self.position = position
         self.direction = direction
@@ -35,13 +38,12 @@ class QRoute(QComponent):
         """Calls the QComponent __init__() to create a new Metal component
         Before that, it the variables that are needed to support routing
         """
-        # keep track of the most recent point direction
-        self.head_direction = None  # will be numpy 2x1
-        self.tail_direction = None  # will be numpy 2x1
+        self.head = QRouteLead()
+        self.tail = QRouteLead()
+
         # keep track of all points so far in the route from both ends
-        self.head_pts = None  # will be numpy 2xN
         self.intermediate_pts = None  # will be numpy 2xN
-        self.tail_pts = None  # will be numpy 2xN
+
         # supported pin names (constants)
         self.start_pin_name = "start"
         self.end_pin_name = "end"
@@ -94,88 +96,92 @@ class QRoute(QComponent):
         """
         raise NotImplementedError()
 
+    def get_pin(self, pin_data: Dict):
+        """Recovers a pin from the dictionary
+
+        Args:
+            pin_data: dict {component: string, pin: string}
+
+        Returns:
+            the actual pin object.
+        """
+        return self.design.components[pin_data.component].pins[pin_data.pin]
+
     def set_pin(self, name: str) -> QRoutePoint:
         """Defines the CPW pins and returns the pin coordinates and normal direction vector
 
         Args:
             name: string (supported pin names are: start, end)
 
-        Returns:
-            tuple: `coordinate`, `direction`.
-            The values are numpy arrays with two float points each.
+        Return:
+            QRoutePoint: last point (for now the single point) in the QRouteLead
         """
+        # First define which pin/lead you intend to initialize
         if name == self.start_pin_name:
             options_pin = self.options.pin_inputs.start_pin
+            lead = self.head
         elif name == self.end_pin_name:
             options_pin = self.options.pin_inputs.end_pin
+            lead = self.tail
         else:
             raise Exception("Pin name \"" + name + "\" is not supported for this CPW." +
                             " The only supported pins are: start, end.")
 
-        pin = self.design.components[options_pin.component].pins[options_pin.pin]
+        # grab the reference component pin
+        reference_pin = self.get_pin(options_pin)
 
-        # add pins and document the connections in the netlist
-        self.add_pin(name, pin.points[::-1], self.p.trace_width)
+        # create the cpw pin and document the connections to the reference_pin in the netlist
+        self.add_pin(name, reference_pin.points[::-1], self.p.trace_width)
         self.design.connect_pins(
             self.design.components[options_pin.component].id, options_pin.pin, self.id, name)
 
-        position = pin['middle']
-        direction = pin['normal']
-
-        if name == self.start_pin_name:
-            self.head_direction = direction
-            self.head_pts = [position]
-        if name == self.end_pin_name:
-            self.tail_direction = direction
-            self.tail_pts = [position]
-        return QRoutePoint(position, direction)
+        # anchor the correct lead to the pin and return its position and direction
+        return lead.seed_from_pin(reference_pin)
 
     def set_lead(self, name: str) -> QRoutePoint:
+        # First define which lead you intend to modify
         if name == self.start_pin_name:
-            lead_in = max(self.p.meander.lead_start,
-                          self.p.trace_width / 2)  # minimum lead, to be able to jog correctly
-            self.go_straight(lead_in, head=True)
+            options_lead = self.p.meander.lead_start
+            lead = self.head
         elif name == self.end_pin_name:
-            lead_out = max(self.p.meander.lead_end,
-                           self.p.trace_width / 2)  # minimum lead, to be able to jog correctly
-            self.go_straight(lead_out, head=False)
+            options_lead = self.p.meander.lead_end
+            lead = self.tail
         else:
             raise Exception("Pin name \"" + name + "\" is not supported for this CPW." +
                             " The only supported pins are: start, end.")
 
-        if name == self.start_pin_name:
-            return QRoutePoint(self.head_pts[-1], self.head_direction)
-        if name == self.end_pin_name:
-            return QRoutePoint(self.tail_pts[-1], self.tail_direction)
+        # then change the lead by adding a point in the same direction of the seed pin
+        lead_length = max(options_lead, self.p.trace_width / 2)  # minimum lead, to be able to jog correctly
+        lead.go_straight(lead_length)
+
+        # return the last QRoutePoint of the lead
+        return lead.get_tip()
 
     def get_points(self) -> np.ndarray:
         """Assembles the list of points for the route by concatenating:
         head_pts + intermediate_pts, tail_pts
 
-        Args:
-            intermediate_pts: np.ndarray (2xN) array of point coordinates
-
         Returns:
-            np.ndarray: (2x(H+N+T))
+            np.ndarray: (2x(H+N+T)) all points (x,y) of the CPW
         """
-        # cover case where only the lead-in is defined point by point
-        if self.intermediate_pts is not None:
-            beginning = np.concatenate([
-                self.head_pts,
-                self.intermediate_pts], axis=0)
+        # cover case where there is no intermediate points (straight connection between lead ends)
+        if self.intermediate_pts is None:
+            beginning = self.head.pts
         else:
-            beginning = self.head_pts
+            beginning = np.concatenate([
+                self.head.pts,
+                self.intermediate_pts], axis=0)
 
-        # cover case where only the head is defined, with a single pin
-        if self.tail_pts is not None:
-            return np.concatenate([
-                beginning,
-                self.tail_pts[::-1]], axis=0)
-        return beginning
+        # cover case where there is no tail defined (floating end)
+        if self.tail is None:
+            return beginning
+        return np.concatenate([
+            beginning,
+            self.tail.pts[::-1]], axis=0)
 
     def get_unit_vectors(self, start: QRoutePoint, end: QRoutePoint, snap: bool = False) -> Tuple:
-        """Return the unit and target vector in which the CPW should procees as its
-        cooridnate sys.
+        """Return the unit and target vector in which the CPW should process as its
+        coordinate sys.
 
         Arguments:
             start (QRoutePoint): [description]
@@ -194,50 +200,6 @@ class QRoute(QComponent):
         normal = draw.Vector.rotate(direction, np.pi / 2)
         return direction, normal
 
-    def go_straight(self, length: float, head=True):
-        """Add a point ot 'length' distance in the same direction
-
-        Args:
-            length (float) : how much to move by
-            head (boolean) : default True. If set to False, it will move the tail
-        """
-        if head:
-            self.head_pts = np.append(self.head_pts, [self.head_pts[-1] + self.head_direction * length], axis=0)
-        else:
-            self.tail_pts = np.append(self.tail_pts, [self.tail_pts[-1] + self.tail_direction * length], axis=0)
-
-    def go_left(self, length: float, head=True):
-        """Straight line 90deg counter-clock-wise direction w.r.t. Oriented_Point
-
-        Args:
-            length (float): how much to move by
-            head (boolean) : default True. If set to False, it will move the tail
-
-        THIS METHOD IS NOT USED AT THIS TIME (7/2/20). PLAN TO USE
-        """
-        if head:
-            self.head_direction = draw.Vector.rotate(self.head_direction, np.pi / 2)
-            self.head_pts = np.append(self.head_pts, [self.head_pts[-1] + self.head_direction * length], axis=0)
-        else:
-            self.tail_direction = draw.Vector.rotate(self.tail_direction, np.pi / 2)
-            self.tail_pts = np.append(self.tail_pts, [self.tail_pts[-1] + self.tail_direction * length], axis=0)
-
-    def go_right(self, length: float, head=True):
-        """Straight line 90deg clock-wise direction w.r.t. Oriented_Point
-
-        Args:
-            length (float): how much to move by
-            head (boolean) : default True. If set to False, it will move the tail
-
-        THIS METHOD IS NOT USED AT THIS TIME (7/2/20). PLAN TO USE
-        """
-        if head:
-            self.head_direction = draw.Vector.rotate(self.head_direction, -1 * np.pi / 2)
-            self.head_pts = np.append(self.head_pts, [self.head_pts[-1] + self.head_direction * length], axis=0)
-        else:
-            self.tail_direction = draw.Vector.rotate(self.tail_direction, -1 * np.pi / 2)
-            self.tail_pts = np.append(self.tail_pts, [self.tail_pts[-1] + self.tail_direction * length], axis=0)
-
     @property
     def length(self):
         """Sum of all segments length, including the head
@@ -248,41 +210,14 @@ class QRoute(QComponent):
         points = self.get_points()
         return sum(norm(points[i + 1] - points[i]) for i in range(len(points) - 1))
 
-    @property
-    def length_head(self):
-        """Sum of all segments length, including the head
-
-        Return:
-            length (float): full point_array length
-        """
-        points = self.head_pts
-        return sum(norm(points[i + 1] - points[i]) for i in range(len(points) - 1))
-
-    @property
-    def length_tail(self):
-        """Sum of all segments length, including the head
-
-        Return:
-            length (float): full point_array length
-        """
-        points = self.tail_pts
-        return sum(norm(points[i + 1] - points[i]) for i in range(len(points) - 1))
-
     def route_to_align(self, concurrent_array):
         """
-        In this code, meanders are aligned to face each-other. So they are easier to connect.
+        THIS METHOD IS OUTDATED AND THUS NOT FUNCTIONING
 
-
-        TODO: Make sure the two points align on one of the axes, by adding a new point
-
+        TODO: Develop code to make sure the tip of the leads align on one of the axes
         TODO: Adjusts the orientation of the meander, adding yet a new point:
             * Includes the start but not the given end point
             * If it cannot meander just returns the initial start point
-
-        Arguments:
-            concurrent_array (Oriented_2D_Array): Other end of the CPW
-
-        THIS METHOD IS NOT USED AT THIS TIME (7/2/20). PLAN TO USE
         """
         print(self.points[-1])
         print(concurrent_array.positions[-1])
@@ -328,82 +263,93 @@ class QRoute(QComponent):
             pass
 
 
-
 class QRouteLead:
-    r"""A simple class to define a 2D Oriented_Point,
-    with a 2D position and a 2D direction (XY plane).
+    """A simple class to define a an array of points with some properties,
+    defines 2D positions and some of the 2D directions (XY plane).
     All values stored as np.ndarray of parsed floats.
     """
 
-    # TODO: Maybe move this class out of here, more general.
+    def __init__(self):
+        """QRouteLead basic content
+        """
+        # keep track of all points so far in the route from both ends
+        self.pts = None  # will be numpy 2xN
+        # keep track of the direction of the tip of the lead (last point)
+        self.direction = None  # will be numpy 2x1
 
-    def __init__(self, position: np.ndarray, direction: np.ndarray):
-        """
+    def seed_from_pin(self, pin: Dict) -> QRoutePoint:
+        """Initialize the QRouteLead by giving it a starting point and a direction
+
         Args:
-            positon (np.ndarray of 2 points): Center position of the connector
-            direction (np.ndarray of 2 points): *Normal vector* of the connector, defines which way it
-                points outward.
-                This is the normal vector to the surface on which the connector mates.
-                Has unit norm.
+            pin: object describing the "reference_pin" (not cpw_pin) this is attached to.
+                this is currently (8/4/2020) a dictionary
+
+        Return:
+            QRoutePoint: last point (for now the single point) in the QRouteLead
+            The values are numpy arrays with two float points each.
         """
-        self.positions = np.expand_dims(position, axis=0)
-        self.directions = np.expand_dims(vec_unit_planar(direction), axis=0)
+        # TODO: widely repeated code. Transform pin into class and add method
+        #  pin.get_locale()->position,direction, to execute below.
+        position = pin['middle']
+        direction = pin['normal']
+
+        self.direction = direction
+        self.pts = np.array([position])
+
+        return QRoutePoint(position, direction)
 
     def go_straight(self, length: float):
-        """Add a point ot 'lenght' distance in the same direction
+        """Add a point ot 'length' distance in the same direction
 
         Args:
             length (float) : how much to move by
         """
-        self.directions = np.append(self.directions, [self.directions[-1]], axis=0)
-        self.positions = np.append(self.positions, [self.positions[-1] + self.directions[-1] * length], axis=0)
+        self.pts = np.append(self.pts, [self.pts[-1] + self.direction * length], axis=0)
 
     def go_left(self, length: float):
-        # THIS METHOD IS NOT USED AT THIS TIME (7/2/20)
-        """Straight line 90deg counter-clock-wise direction w.r.t. Oriented_Point
+        """Straight line 90deg counter-clock-wise direction w.r.t. lead tip direction
 
         Args:
             length (float): how much to move by
         """
-        self.directions = np.append(self.directions, [draw.Vector.rotate(self.directions, np.pi / 2)], axis=0)
-        self.positions = np.append(self.positions, [self.positions[-1] + self.directions[-1] * length], axis=0)
+        self.direction = draw.Vector.rotate(self.direction, np.pi / 2)
+        self.pts = np.append(self.pts, [self.pts[-1] + self.direction * length], axis=0)
 
     def go_right(self, length: float):
-        """Straight line 90deg clock-wise direction w.r.t. Oriented_Point
+        """Straight line 90deg clock-wise direction w.r.t. lead tip direction
 
         Args:
             length (float): how much to move by
-
-        THIS METHOD IS NOT USED AT THIS TIME (7/2/20)
         """
-        self.directions = np.append(self.directions, [draw.Vector.rotate(self.directions, -1 * np.pi / 2)], axis=0)
-        self.positions = np.append(self.positions, [self.positions[-1] + self.directions[-1] * length], axis=0)
+        self.direction = draw.Vector.rotate(self.direction, -1 * np.pi / 2)
+        self.pts = np.append(self.pts, [self.pts[-1] + self.direction * length], axis=0)
 
     @property
-    def get_length(self):
-        """Sum of all segments length
+    def length(self):
+        """Sum of all segments length, including the head
 
         Return:
             length (float): full point_array length
         """
-        length = 0
-        for x in range(len(self.positions) - 1):
-            length += abs(norm(self.positions[x] - self.positions[x + 1]))
-            return length
+        return sum(norm(self.pts[i + 1] - self.pts[i]) for i in range(len(self.pts) - 1))
+
+    def get_tip(self) -> QRoutePoint:
+        """Access the last element in the QRouteLead
+
+        Return:
+            QRoutePoint: last point in the QRouteLead
+            The values are numpy arrays with two float points each.
+        """
+        return QRoutePoint(self.pts[-1], self.direction)
 
     def align_to(self, concurrent_array):
-        # THIS METHOD IS NOT USED AT THIS TIME (7/2/20)
         """
-        In this code, meanders need to face each-other to connect.
+        THIS METHOD IS OUTDATED AND THUS NOT FUNCTIONING
 
-        TODO: Make sure the two points align on one of the axes, adding a new point
-
+        TODO: Develop code to make sure the tip of the leads align on one of the axes
         TODO: Adjusts the orientation of the meander, adding yet a new point:
             * Includes the start but not the given end point
             * If it cannot meander just returns the initial start point
-
-        Arguments:
-            concurrent_array (QRouteLead): Other end of the CPW
         """
 
         # determine relative position

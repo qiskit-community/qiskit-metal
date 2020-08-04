@@ -74,7 +74,7 @@ class CpwMeanderSimple(QRoute):
             pass
 
         # Meander
-        length_meander = total_length - (self.length_head + self.length_tail)
+        length_meander = total_length - (self.head.length + self.tail.length)
         if snap:
             # handle y distance
             length_meander -= 0  # (end.position - endm.position)[1]
