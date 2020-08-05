@@ -117,7 +117,7 @@ class QRenderer():
 
         return QRenderer.__instantiated_renderers__[name]
 
-    def __init__(self, design: QDesign, initiate=True,  render_template: Dict = None, render_options: Dict = None):
+    def __init__(self, design: QDesign, initiate=True, render_template: Dict = None, render_options: Dict = None):
         """
         Args:
             design (QDesign): The design
@@ -139,9 +139,12 @@ class QRenderer():
         # Register as an instantiated renderer.
         QRenderer.__instantiated_renderers__[self.name] = self
 
+        # Register the renderer in self.design
+        # TODO
+
         # Options
         self.options = Dict()
-        self.update_options(self, options=render_options,
+        self.update_options(render_options=render_options,
                             render_template=render_template)
 
         self.status = 'Init Completed'
@@ -161,7 +164,7 @@ class QRenderer():
         """From the base class of QRenderer, traverse the child classes
         to gather the .default_options for each child class.
 
-        Note: If keys are the same for a child and grandchild, the grandchild will 
+        Note: If keys are the same for a child and grandchild, the grandchild will
         overwrite the child init method.
 
         Returns:
@@ -185,8 +188,9 @@ class QRenderer():
         Returns:
             str: Example: 'qiskit_metal.renders.renderer_gds.gds_renderer.GDSRender'
         """
+
+        pass
         return f'{cls.__module__}.{cls.__name__}'
-    pass
 
     @classmethod
     def _register_class_with_design(cls,
@@ -250,15 +254,23 @@ class QRenderer():
 
         return options
 
-    def update_options(self, options: Dict = None, render_template: Dict = None):
+    def update_options(self, render_options: Dict = None, render_template: Dict = None):
+        """If template options has not been set for this renderer,
+        then gather all the default options for children and add to design.  The GUI
+        would use this to store the template options.
 
-        self.options.update(QRenderer.get_template_options(
-            self.design, render_template=render_template))
+        Then give the template options to render
+        to store in self.options.  Then user can over-ride the render_options.
 
-        if options:
-            self.options.update(options)
+        Args:
+            render_options (Dict, optional): If user wants to over-ride the template options. Defaults to None.
+            render_template (Dict, optional): All the template options for each child. Defaults to None.
+        """
+        self.options = self.get_template_options(
+            self.design, render_template=render_template)
 
-        return
+        if render_options:
+            self.options.update(render_options)
 
     def initate(self, re_initiate=False):
         '''
