@@ -17,6 +17,8 @@
 @date: 2019
 """
 import logging
+import inspect
+from copy import deepcopy
 from typing import TYPE_CHECKING
 from typing import Dict as Dict_
 from typing import List, Tuple, Union
@@ -81,7 +83,7 @@ class QRenderer():
             print(
                 f'Warning: Renderer name={name}, class={cls} already loaded. Doing nothing.')
 
-        # Add elemnet extensions
+        # Add element extensions
         # see docstring for QRenderer.element_extensions
         QGeometryTables.add_renderer_extension(
             cls.name, cls.element_extensions)
@@ -115,7 +117,7 @@ class QRenderer():
 
         return QRenderer.__instantiated_renderers__[name]
 
-    def __init__(self, design: QDesign, initiate=True,  render_template: Dict = None, options: Dict = None):
+    def __init__(self, design: QDesign, initiate=True,  render_template: Dict = None, render_options: Dict = None):
         """
         Args:
             design (QDesign): The design
@@ -138,7 +140,10 @@ class QRenderer():
         QRenderer.__instantiated_renderers__[self.name] = self
 
         # Options
-        self.options = self.gather_options(self, options, render_template)
+        self.options = Dict()
+        self.update_options(self, options=render_options,
+                            render_template=render_template)
+
         self.status = 'Init Completed'
 
     @property
@@ -173,18 +178,87 @@ class QRenderer():
                     **options_from_children, **child.default_options}
         return options_from_children
 
-    def gather_options(self, options: Dict = None, render_template: Dict = None) -> Dict:
-        options = Dict()
-        if cls.default_options:
-            options.update(cls.default_options)
+    @classmethod
+    def _get_unique_class_name(cls) -> str:
+        """Returns unique class name based on the module
 
-        if render_template:
-            self.options.update(render_template)
+        Returns:
+            str: Example: 'qiskit_metal.renders.renderer_gds.gds_renderer.GDSRender'
+        """
+        return f'{cls.__module__}.{cls.__name__}'
+    pass
+
+    @classmethod
+    def _register_class_with_design(cls,
+                                    design: 'QDesign',
+                                    template_key: str,
+                                    render_template: Dict):
+        """Init funciton to register a renderer class with the design when first instantiated.
+            Registers the renderer template options.
+
+            Arguments:
+                design (QDesign): The parent design
+                template_key (str): Key to use
+                render_template (dict): template of render to copy
+        """
+        # do not overwrite
+        if template_key not in design.template_options:
+            if not render_template:
+                render_template = cls._gather_all_children_default_options()
+            design.template_options[template_key] = deepcopy(
+                render_template)
+
+    @classmethod
+    def get_template_options(cls,
+                             design: 'QDesign',
+                             render_template: Dict = None,
+                             logger_: logging.Logger = None,
+                             template_key: str = None) -> Dict:
+        """Creates template options for the Metal QRenderer class required for the class
+        to function, based on the design template; i.e., be created, made, and rendered.
+        Provides the blank option structure required.
+
+        The options can be extended by plugins, such as renderers.
+
+        Args:
+            design (QDesign): A design class.
+            render_template (Dict, optional): Template options to overwrite the class ones. Defaults to None.
+            logger_ (logging.Logger, optional): A logger for errors. Defaults to None.
+            template_key (str, optional): The design.template_options key identifier. If None, then use
+                _get_unique_class_name(). Defaults to None.
+
+        Returns:
+            Dict: Dictionary of renderer's default options based on design.template_options.
+        """
+
+        # get key for tepmlates
+        if template_key is None:
+            template_key = cls._get_unique_class_name()
+
+        if template_key not in design.template_options:
+            cls._register_class_with_design(
+                design, template_key, render_template)
+
+        if template_key not in design.template_options:
+            logger_ = logger_ or design.logger
+            if logger_:
+                logger_.error(f'ERROR in creating renderer {cls.__name__}!\nThe default '
+                              f'options for the renderer class {cls.__name__} are missing')
+
+        # Specific object render template options
+        options = deepcopy(Dict(design.template_options[template_key]))
+
+        return options
+
+    def update_options(self, options: Dict = None, render_template: Dict = None):
+
+        self.options.update(QRenderer.get_template_options(
+            self.design, render_template=render_template))
 
         if options:
             self.options.update(options)
 
-        return options
+        return
 
     def initate(self, re_initiate=False):
         '''

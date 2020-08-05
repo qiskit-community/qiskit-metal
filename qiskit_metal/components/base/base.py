@@ -79,6 +79,7 @@ class QComponent():
     '''
 
     default_options = Dict(
+        # Note: If something is added here, _gather_all_children_options(cls) needs to be changed.
         # Intended for future use, for components that do not normally take pins as inputs
         # to be able to have an input pin and be moved/rotated based on said input.
         #pin_inputs = Dict()
@@ -311,14 +312,14 @@ class QComponent():
                              template_key: str = None) -> Dict:
         """
         Creates template options for the Metal Componnet class required for the class
-        to function, based on teh design template; i.e., be created, made, and rendered.
+        to function, based on the design template; i.e., be created, made, and rendered.
         Provides the blank option structure required.
 
         The options can be extended by plugins, such as renderers.
 
         Arguments:
             design (QDesign): Design class. Should be the class, not the instance.
-            component_template (Dict): Tempalte options to overwrite the class ones (default: None)
+            component_template (Dict): Template options to overwrite the class ones (default: None)
             logger_ (logging.Logger): A logger for errors. (default: None)
             template_key (str): The template key identifier. If None, then uses
                 cls._get_unique_class_name() (default: None)
@@ -534,6 +535,7 @@ class QComponent():
 #
 #   What information is truly necessary for the pins? Should they have a z-direction component?
 #   Will they operate properly with non-planar designs?
+
 
     def add_pin(self,
                 name: str,  # this should be static based on component designer's code

@@ -63,13 +63,16 @@ class GDSRender(QRenderer):
             design (QDesign): Use QGeometry within QDesign  to obtain elements for GDS file.
             initiate (bool): True to initiate the renderer. Defaults to True.
         """
-        super().__init__(design=design, initiate=initiate, gds_options: Dict=None, gds_template: Dict=None)
+
+        super().__init__(design=design, initiate=initiate,
+                         render_template=gds_template, render_options=gds_options)
 
         # Move to parent during init.
         # self.options.update(GDSRender.default_options)
         # if gds_options:
         #     self.options.update(gds_options)
 
+        # Assume metal is using units smaller than 1 meter.
         self.options['gds_unit'] = 1.0 / self.design.parse_value('1 meter')
         self.lib = gdspy.GdsLibrary(unit=self.options.gds_unit)
 
@@ -97,7 +100,8 @@ class GDSRender(QRenderer):
         # needs to come from default_options, used for fillet in FlexPath
         self.bend_radius_num = 0.05
         self.corners = 'circular bend'
-        self.tolerance = 0.001
+        self.tolerance = 0.01
+        self.precision = 0.00001
 
     def _clear_library(self):
         """Clear current library."""
@@ -355,7 +359,7 @@ class GDSRender(QRenderer):
             The memory is freed up then.
             '''
             diff_geometry = gdspy.boolean(
-                self.scaled_chip_poly, subtract_cell.get_polygons(), 'not', layer=202)
+                self.scaled_chip_poly, subtract_cell.get_polygons(), 'not', precision=self.precision, layer=202)
 
             lib.remove(subtract_cell)
 
@@ -455,7 +459,8 @@ class GDSRender(QRenderer):
                                            datatype=11,
                                            corners=self.corners,
                                            bend_radius=self.bend_radius_num,
-                                           tolerance=self.tolerance
+                                           tolerance=self.tolerance,
+                                           precision=self.precision
                                            )
             return to_return
         else:
