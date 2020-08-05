@@ -13,7 +13,6 @@
 # that they have been altered from the originals.
 
 #pylint: disable-msg=unnecessary-pass
-#pylint: disable-msg=invalid-name
 
 """
 Qiskit Metal unit tests analyses functionality.
@@ -115,11 +114,6 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
         """
         Test the functionality of effective_dielectric_constant in cpw_calculations.py
         """
-        # Setup expected test results
-        test_a_expected = 3.5771424204599436
-        test_b_expected = 3.5442491595505388
-        test_c_expected = 14.87179231388151
-
         # Generate actual result data
         test_a_actual = cpw_calculations.effective_dielectric_constant(5*10**9, 10*10**-6,
                                                                        6*10**-6, 760*10**-6,
@@ -133,9 +127,9 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
                                                                        eRD=200)
 
         # Test all elements of the result data against expected data
-        for (actual, expected) in [(test_a_actual, test_a_expected),
-                                   (test_b_actual, test_b_expected),
-                                   (test_c_actual, test_c_expected)]:
+        for (actual, expected) in [(test_a_actual, 3.5771424204599436),
+                                   (test_b_actual, 3.5442491595505388),
+                                   (test_c_actual, 14.87179231388151)]:
             self.assertAlmostEqual(actual, expected, places=13)
 
         with self.assertRaises(ZeroDivisionError):
@@ -208,17 +202,13 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
         """
         Test the functionality of chi in lumped_capacitives.py
         """
-        # Setup expected test results
-        test_a_expected = -137.5
-        test_b_expected = -275.0
-
         # Generate actual result data
         test_a_result = lumped_capacitive.chi(50, 30, 20, 10)
         test_b_result = lumped_capacitive.chi(100, 60, 40, 20)
 
         # Test all elements of the result data against expected data
-        self.assertEqual(test_a_expected, test_a_result)
-        self.assertEqual(test_b_expected, test_b_result)
+        self.assertEqual(-137.5, test_a_result)
+        self.assertEqual(-275.0, test_b_result)
 
         # need separate with's because if one works the with will bail
         with self.assertRaises(ZeroDivisionError):
@@ -269,60 +259,47 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
         with self.assertRaises(ValueError):
             lumped_capacitive.levels_vs_ng_real_units(100, 100, N=-10)
 
-    def test_analyses_lumped_get_C_and_Ic(self):
+    def test_analyses_lumped_get_c_and_ic(self):
         """
         Test the functionality of get_C_and_Ic in lumped_capacitives.py
         """
         # Setup expected test results
         test_a_expected = [33.38125825, -0.61217795]
-        test_b_expected = [21.88640502, -0.57451259]
 
         # Generate actual result data
         test_a_result = lumped_capacitive.get_C_and_Ic(0.1, 0.2, 1.25, 1.75)
-        test_b_result = lumped_capacitive.get_C_and_Ic(0.5, 1, 1.85, 2.65)
 
         # Test all elements of the result data against expected data
         self.assertEqual(len(test_a_result), 2)
-        self.assertEqual(len(test_b_result), 2)
         self.assertAlmostEqualRel(test_a_expected[0], test_a_result[0], rel_tol=1e-6)
         self.assertAlmostEqualRel(test_a_expected[1], test_a_result[1], rel_tol=1e-6)
-        self.assertAlmostEqualRel(test_b_expected[0], test_b_result[0], rel_tol=1e-6)
-        self.assertAlmostEqualRel(test_b_expected[1], test_b_result[1], rel_tol=1e-6)
 
     def test_analyses_lumped_cos_to_mega_and_delta(self):
         """
         Test the functionality of cos_to_mega_and_delta in lumped_capacitives.py
         """
-        # Setup expected test results
-        test_a_expected = 278.9538182848156
-        test_b_expected = 197.27085868098266
-
         # Generate actual result data
         test_a_result = lumped_capacitive.cos_to_mega_and_delta(1000, 100, 200, 200)
         test_b_result = lumped_capacitive.cos_to_mega_and_delta(1000, -100, 0.258, 200)
 
         # Test all elements of the result data against expected data
-        self.assertAlmostEqual(test_a_expected, test_a_result)
-        self.assertAlmostEqual(test_b_expected, test_b_result)
+        self.assertAlmostEqual(278.9538182848156, test_a_result)
+        self.assertAlmostEqual(197.27085868098266, test_b_result)
 
         with self.assertRaises(ZeroDivisionError):
             test_a_result = lumped_capacitive.cos_to_mega_and_delta(0, 100, 200, 200)
 
-    def test_analyses_lumped_chargeline_T1(self):
+    def test_analyses_lumped_chargeline_t1(self):
         """
         Test the functionality of chargeline_T1 in lumped_capacitives.py
         """
-        # Setup expected test results
-        test_a_expected = 1.1257909293593088e-09
-        test_b_expected = 0.00012178026880088676
-
         # Generate actual result data
         test_a_result = lumped_capacitive.chargeline_T1(100, 20, 30)
         test_b_result = lumped_capacitive.chargeline_T1(13, 104, 1.6)
 
         # Test all elements of the result data against expected data
-        self.assertAlmostEqual(test_a_expected, test_a_result, places=13)
-        self.assertAlmostEqual(test_b_expected, test_b_result, places=13)
+        self.assertAlmostEqual(1.1257909293593088e-09, test_a_result, places=13)
+        self.assertAlmostEqual(0.00012178026880088676, test_b_result, places=13)
 
         with self.assertRaises(ZeroDivisionError):
             lumped_capacitive.chargeline_T1(1, 55, 0)
@@ -389,14 +366,10 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
         Test the functionality of load_q3d_capacitance_matrix in lumped_capacitives.py
         """
         # Setup expected test results
-        test_a_return_size_expected = 4
-        test_a_user_units_expected = 'fF'
         test_a_design_variation_expected = ("$BBoxL='650um' $boxH='750um' $boxL='2mm' " +
                                             "$QubitGap='30um' $QubitH='90um' $QubitL='450um' " +
                                             "Lj_1='13nH'")
 
-        test_b_return_size_expected = 4
-        test_b_user_units_expected = 'pF'
         test_b_design_variation_expected = ("$BBoxL='650um' $boxH='750um' $boxL='2mm' " +
                                             "$QubitGap='30um' $QubitH='90um' $QubitL='450um' " +
                                             "Lj_1='13nH'")
@@ -474,12 +447,12 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
         test_b_df_cond_result = test_b_result[3]
 
         # Test all elements of the result data against expected data
-        self.assertEqual(test_a_return_size_expected, test_a_return_size_result)
-        self.assertEqual(test_a_user_units_expected, test_a_user_units_result)
+        self.assertEqual(4, test_a_return_size_result)
+        self.assertEqual('fF', test_a_user_units_result)
         self.assertEqual(test_a_design_variation_expected, test_a_design_variation_result)
 
-        self.assertEqual(test_b_return_size_expected, test_b_return_size_result)
-        self.assertEqual(test_b_user_units_expected, test_b_user_units_result)
+        self.assertEqual(4, test_b_return_size_result)
+        self.assertEqual('pF', test_b_user_units_result)
         self.assertEqual(test_b_design_variation_expected, test_b_design_variation_result)
 
         data_points = test_a_df_cmat_expected['ground_plane'].size
