@@ -28,7 +28,7 @@ class QMainWindowPlot(QMainWindow):
     This is just a handler (container) for the UI; it a child object of the main gui.
 
     Extends the `QMainWindow` class
- 
+
     PyQt5 Signal / Slots Extensions:
         The UI can call up to this class to execeute button clicks for instance
         Extensiosn in qt designer on signals/slots are linked to this class
@@ -78,7 +78,7 @@ class QMainWindowPlot(QMainWindow):
         return self.gui.design
 
     def replot(self):
-        """Tells the canvas to replot"""
+        """Tells the canvas to replot."""
         # self.logger.debug("Force replot")
         self.canvas.plot()
 
