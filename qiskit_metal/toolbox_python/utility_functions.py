@@ -155,9 +155,7 @@ def clean_name(text: str):
 ####################################################################################
 # Tracebacks
 
-
 _old_warn = None
-
 
 def enable_warning_traceback():
     """
