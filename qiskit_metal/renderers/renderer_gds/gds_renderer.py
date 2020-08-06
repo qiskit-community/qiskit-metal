@@ -1,7 +1,7 @@
 from .. import config
 from qiskit_metal.renderers.renderer_base import QRenderer
 from ...toolbox_python.utility_functions import log_error_easy
-from ...designs import QDesign
+#from ...designs import QDesign
 import qiskit_metal as metal
 from qiskit_metal import designs, components, draw
 from qiskit_metal import components as qlibrary
@@ -22,6 +22,12 @@ from typing import List, Tuple, Union
 from ... import Dict
 
 from operator import itemgetter
+
+if TYPE_CHECKING:
+    # For linting typechecking, import modules that can't be loaded here under normal conditions.
+    # For example, I can't import QDesign, because it requires Qrenderer first. We have the
+    # chicken and egg issue.
+    from qiskit_metal.designs import QDesign
 
 
 if not config.is_building_docs():

@@ -811,4 +811,4 @@ class QDesign():
         unique_name = a_gds._get_unique_class_name
 
         # register renderers here.
-        self.renderers[unique_name] = a_gds
+        self.renderers['gds'] = a_gds
