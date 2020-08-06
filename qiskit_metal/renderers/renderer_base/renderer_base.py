@@ -22,11 +22,10 @@ from copy import deepcopy
 from typing import TYPE_CHECKING
 from typing import Dict as Dict_
 from typing import List, Tuple, Union
-from typing import Dict
-#from qiskit_metal.designs import QDesign, is_design
-#from qiskit_metal.designs import QDesign
+
 from qiskit_metal.designs import is_design
 from qiskit_metal.elements import QGeometryTables
+from ... import Dict
 
 __all__ = ['QRenderer']
 
@@ -125,7 +124,7 @@ class QRenderer():
 
         return QRenderer.__instantiated_renderers__[name]
 
-    def __init__(self, design: QDesign, initiate=True, render_template: Dict = None, render_options: Dict = None):
+    def __init__(self, design: 'QDesign', initiate=True, render_template: Dict = None, render_options: Dict = None):
         """
         Args:
             design (QDesign): The design

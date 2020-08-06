@@ -5,9 +5,6 @@ from ...toolbox_python.utility_functions import log_error_easy
 import qiskit_metal as metal
 from qiskit_metal import designs, components, draw
 from qiskit_metal import components as qlibrary
-import logging
-import sys
-import pandas
 import geopandas
 import pandas as pd
 import shapely
@@ -28,10 +25,6 @@ if TYPE_CHECKING:
     # For example, I can't import QDesign, because it requires Qrenderer first. We have the
     # chicken and egg issue.
     from qiskit_metal.designs import QDesign
-
-
-if not config.is_building_docs():
-    from qiskit_metal import MetalGUI, Dict, Headings
 
 
 class GDSRender(QRenderer):
@@ -79,7 +72,7 @@ class GDSRender(QRenderer):
         precision=0.000000001
     )
 
-    def __init__(self, design: QDesign, initiate=True, gds_options: Dict = None, gds_template: Dict = None):
+    def __init__(self, design: 'QDesign', initiate=True, gds_options: Dict = None, gds_template: Dict = None):
         """
         Args:
             design (QDesign): Use QGeometry within QDesign  to obtain elements for GDS file.
