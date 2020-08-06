@@ -177,18 +177,13 @@ class TestElements(unittest.TestCase):
 
         self.assertEqual(actual['path'].dtypes['component'], object)
         self.assertEqual(actual['path'].dtypes['name'], object)
-        self.assertEqual(actual['path'].dtypes['geometry'], 'geometry')
-        self.assertEqual(actual['path'].dtypes['layer'], 'int32')
         self.assertEqual(actual['path'].dtypes['subtract'], bool)
         self.assertEqual(actual['path'].dtypes['helper'], bool)
         self.assertEqual(actual['path'].dtypes['chip'], object)
-        self.assertEqual(actual['path'].dtypes['width'], 'float64')
         self.assertEqual(actual['path'].dtypes['fillet'], object)
 
         self.assertEqual(actual['poly'].dtypes['component'], object)
         self.assertEqual(actual['poly'].dtypes['name'], object)
-        self.assertEqual(actual['poly'].dtypes['geometry'], 'geometry')
-        self.assertEqual(actual['poly'].dtypes['layer'], 'int32')
         self.assertEqual(actual['poly'].dtypes['subtract'], bool)
         self.assertEqual(actual['poly'].dtypes['helper'], bool)
         self.assertEqual(actual['poly'].dtypes['chip'], object)
