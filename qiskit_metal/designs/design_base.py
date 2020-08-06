@@ -39,7 +39,7 @@ from ..toolbox_python.utility_functions import log_error_easy
 from .interface_components import Components
 from .net_info import QNet
 #from qiskit_metal.renderers.renderer_base import QRenderer
-from qiskit_metal.renderers.renderer_gds.gds_renderer import GDSRender
+#from qiskit_metal.renderers.renderer_gds.gds_renderer import GDSRender
 
 
 if TYPE_CHECKING:
@@ -47,7 +47,8 @@ if TYPE_CHECKING:
     # For example, I can't import QDesign, because it requires QComponent first. We have the
     # chicken and egg issue.
     from ..components.base.base import QComponent
-    from ..renderer.renderer_gds import GDSRender
+    from ..renderers.renderer_base import QRenderer
+    from ..renderers.renderer_gds.gds_renderer import GDSRender
 
 
 __all__ = ['QDesign']
