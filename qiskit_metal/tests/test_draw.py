@@ -13,7 +13,7 @@
 # that they have been altered from the originals.
 
 #pylint: disable-msg=unnecessary-pass
-#pylint: disable-msg=broad-exception
+#pylint: disable-msg=broad-except
 #pylint: disable-msg=too-many-public-methods
 
 """
@@ -74,7 +74,8 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
         Test rectangle in basic.py
         """
         polygon_actual = basic.rectangle(0.5, 1.5, 2.1, 3.2)
-        polygon_expected = Polygon([[1.85, 2.45], [2.35, 2.45], [2.35, 3.95], [1.85, 3.95], [1.85, 2.45]])
+        polygon_expected = Polygon([[1.85, 2.45], [2.35, 2.45], [2.35, 3.95], [1.85, 3.95],
+                                    [1.85, 2.45]])
 
         coords_actual = list(polygon_actual.exterior.coords)
         coords_expected = list(polygon_expected.exterior.coords)
@@ -103,7 +104,8 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
 
         subtract_results = basic.subtract(first, second)
         actual_subtract = list(subtract_results.exterior.coords)
-        expected_subtract = [(1.85, 2.85), (1.85, 3.95), (2.35, 3.95), (2.35, 2.45), (1.95, 2.45), (1.95, 2.85), (1.85, 2.85)]
+        expected_subtract = [(1.85, 2.85), (1.85, 3.95), (2.35, 3.95), (2.35, 2.45), (1.95, 2.45),
+                             (1.95, 2.85), (1.85, 2.85)]
 
         self.assertEqual(len(actual_subtract), len(expected_subtract))
         my_range = len(actual_subtract)
@@ -119,7 +121,8 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
         second = basic.rectangle(0.1, 1.3, 1.9, 2.2)
 
         expected = [[(1.85, 2.45), (2.35, 2.45), (2.35, 3.95), (1.85, 3.95), (1.85, 2.45)],
-                    [(1.85, 2.85), (1.85, 3.95), (2.35, 3.95), (2.35, 2.45), (1.95, 2.45), (1.95, 1.55), (1.85, 1.55), (1.85, 2.85), (1.85, 2.85)]]
+                    [(1.85, 2.85), (1.85, 3.95), (2.35, 3.95), (2.35, 2.45), (1.95, 2.45),
+                     (1.95, 1.55), (1.85, 1.55), (1.85, 2.85), (1.85, 2.85)]]
 
         union_results_1 = basic.union(first)
         union_results_2 = basic.union(first, second)
@@ -136,10 +139,12 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
         """
         Test flip_merge in basic.py
         """
-        my_line_string = LineString([(0, 0), (1, 1), (1,2), (2,2)])
+        my_line_string = LineString([(0, 0), (1, 1), (1, 2), (2, 2)])
 
-        expected = [[(0.0, 0.0), (1.0, 1.0), (1.0, 2.0), (2.0, 2.0), (-2.0, 2.0), (-1.0, 2.0), (-1.0, 1.0), (0.0, 0.0)],
-                    [(0.0, 0.0), (1.0, 1.0), (1.0, 2.0), (2.0, 2.0), (2.0, 2.0), (7.0, 2.0), (7.0, -3.0), (12.0, -8.0)]]
+        expected = [[(0.0, 0.0), (1.0, 1.0), (1.0, 2.0), (2.0, 2.0), (-2.0, 2.0), (-1.0, 2.0),
+                     (-1.0, 1.0), (0.0, 0.0)],
+                    [(0.0, 0.0), (1.0, 1.0), (1.0, 2.0), (2.0, 2.0), (2.0, 2.0), (7.0, 2.0),
+                     (7.0, -3.0), (12.0, -8.0)]]
 
         flip_results_1 = basic.flip_merge(my_line_string)
         flip_results_2 = basic.flip_merge(my_line_string, xfact=-5, yfact=5, origin=(2, 2))
@@ -157,15 +162,25 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
         """
         poly = Polygon([(0, 0), (0.5, 0), (0.25, 0.5)])
 
-        expected = [[(0.3709223813239876, -0.08223151219433734), (0.5822315121943373, 0.37092238132398764), (0.023423053240837488, 0.3556545654351749), (0.3709223813239876, -0.08223151219433734)],
-                    [(0.2953967324042668, -0.13034665704927906), (0.5067058632746165, 0.3228072364690459), (-0.05210259567888331, 0.30753942058023315), (0.2953967324042668, -0.13034665704927906)],
-                    [(0.5284182427245603, 0.053701805333836145), (0.24719131710547426, 0.4671161450788879), (-0.025609559830034434, -0.020817950412724023), (0.5284182427245603, 0.053701805333836145)]]
+        expected = [[(0.3709223813239876, -0.08223151219433734),
+                     (0.5822315121943373, 0.37092238132398764),
+                     (0.023423053240837488, 0.3556545654351749),
+                     (0.3709223813239876, -0.08223151219433734)],
+                    [(0.2953967324042668, -0.13034665704927906),
+                     (0.5067058632746165, 0.3228072364690459),
+                     (-0.05210259567888331, 0.30753942058023315),
+                     (0.2953967324042668, -0.13034665704927906)],
+                    [(0.5284182427245603, 0.053701805333836145),
+                     (0.24719131710547426, 0.4671161450788879),
+                     (-0.025609559830034434, -0.020817950412724023),
+                     (0.5284182427245603, 0.053701805333836145)]]
 
         poly_1 = basic.rotate(poly, angle=65)
         poly_2 = basic.rotate(poly, angle=65, origin='centroid')
         poly_3 = basic.rotate(poly, angle=65, origin='centroid', use_radians=True)
 
-        actual = [list(poly_1.exterior.coords), list(poly_2.exterior.coords), list(poly_3.exterior.coords)]
+        actual = [list(poly_1.exterior.coords), list(poly_2.exterior.coords),
+                  list(poly_3.exterior.coords)]
 
         for x in range(3):
             self.assertEqual(len(actual[x]), len(expected[x]))
@@ -191,7 +206,9 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
         poly_4 = basic.translate(poly, xoff=1.1, yoff=2.2, zoff=3.3)
         poly_5 = basic.translate(poly, xoff=1.1, yoff=2.2, zoff=3.3, overwrite=True)
 
-        actual = [list(poly_1.exterior.coords), list(poly_2.exterior.coords), list(poly_3.exterior.coords), list(poly_4.exterior.coords), list(poly_5.exterior.coords)]
+        actual = [list(poly_1.exterior.coords), list(poly_2.exterior.coords),
+                  list(poly_3.exterior.coords), list(poly_4.exterior.coords),
+                  list(poly_5.exterior.coords)]
 
         for x in range(5):
             self.assertEqual(len(actual[x]), len(expected[x]))
@@ -205,7 +222,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
         """
         poly = Polygon([(0, 0), (0.5, 0), (0.25, 0.5)])
 
-        expected = [[(0.0, 0.0), (0.5, 0.0), (0.25, 0.5), (0.0, 0.0)], 
+        expected = [[(0.0, 0.0), (0.5, 0.0), (0.25, 0.5), (0.0, 0.0)],
                     [(-0.025, 0.0), (0.525, 0.0), (0.25, 0.5), (-0.025, 0.0)],
                     [(-0.025, -0.3), (0.525, -0.3), (0.25, 0.8), (-0.025, -0.3)],
                     [(-0.025, -0.3), (0.525, -0.3), (0.25, 0.8), (-0.025, -0.3)],
@@ -217,7 +234,9 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
         poly_4 = basic.scale(poly, xfact=1.1, yfact=2.2, zfact=3.3)
         poly_5 = basic.scale(poly, xfact=1.1, yfact=2.2, zfact=3.3, overwrite=True)
 
-        actual = [list(poly_1.exterior.coords), list(poly_2.exterior.coords), list(poly_3.exterior.coords), list(poly_4.exterior.coords), list(poly_5.exterior.coords)]
+        actual = [list(poly_1.exterior.coords), list(poly_2.exterior.coords),
+                  list(poly_3.exterior.coords), list(poly_4.exterior.coords),
+                  list(poly_5.exterior.coords)]
 
         for x in range(5):
             self.assertEqual(len(actual[x]), len(expected[x]))
@@ -231,15 +250,21 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
         """
         poly = Polygon([(0, 0), (0.5, 0), (0.25, 0.5)])
 
-        expected = [[(2.0, 5.0), (2.433012701892219, 5.25), (1.9665063509461098, 5.55801270189222), (2.0, 5.0)],
-                    [(10.839745962155611, 2.00961894323342), (11.27275866404783, 2.25961894323342), (10.806252313101721, 2.567631645125639), (10.839745962155611, 2.00961894323342)],
-                    [(10.839745962155611, 2.00961894323342), (11.27275866404783, 2.25961894323342), (10.806252313101721, 2.567631645125639), (10.839745962155611, 2.00961894323342)]]
+        expected = [[(2.0, 5.0), (2.433012701892219, 5.25), (1.9665063509461098, 5.55801270189222),
+                     (2.0, 5.0)],
+                    [(10.839745962155611, 2.00961894323342), (11.27275866404783, 2.25961894323342),
+                     (10.806252313101721, 2.567631645125639),
+                     (10.839745962155611, 2.00961894323342)],
+                    [(10.839745962155611, 2.00961894323342), (11.27275866404783, 2.25961894323342),
+                     (10.806252313101721, 2.567631645125639),
+                     (10.839745962155611, 2.00961894323342)]]
 
-        poly_1 = basic.rotate_position(poly, 30, (2,5))
-        poly_2 = basic.rotate_position(poly, 30, (2,5), pos_rot=(10, 15))
-        poly_3 = basic.rotate_position(poly, 30, (2,5), pos_rot=(10, 15), overwrite=True)
+        poly_1 = basic.rotate_position(poly, 30, (2, 5))
+        poly_2 = basic.rotate_position(poly, 30, (2, 5), pos_rot=(10, 15))
+        poly_3 = basic.rotate_position(poly, 30, (2, 5), pos_rot=(10, 15), overwrite=True)
 
-        actual = [list(poly_1.exterior.coords), list(poly_2.exterior.coords), list(poly_3.exterior.coords)]
+        actual = [list(poly_1.exterior.coords), list(poly_2.exterior.coords),
+                  list(poly_3.exterior.coords)]
 
         for x in range(2):
             self.assertEqual(len(actual[x]), len(expected[x]))
@@ -253,19 +278,35 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
         """
         poly = Polygon([(0, 0), (0.5, 0), (0.25, 0.5)])
 
-        expected = [[(-0.16180339887498948, -0.1), (0.25, 0.7236067977499789), (0.6618033988749895, -0.1), (-0.16180339887498948, -0.1)],
-                    [(-0.16180339887498948, -0.1), (0.25, 0.7236067977499789), (0.6618033988749895, -0.1), (-0.16180339887498948, -0.1)],
-                    [(-0.16180339887498948, -0.1), (0.25, 0.7236067977499789), (0.6618033988749895, -0.1), (-0.16180339887498948, -0.1)],
-                    [(-0.08944271909999159, 0.044721359549995794), (0.16055728090000843, 0.5447213595499958), (0.3394427190999916, 0.5447213595499958), (0.5894427190999916, 0.044721359549995794), (0.5, -0.1), (0.0, -0.1), (-0.08944271909999159, 0.044721359549995794)],
-                    [(-0.06980083939497377, 0.05587673960663148), (0.16341640786499884, 0.5300000000000004), (0.3365835921350014, 0.5299999999999997), (0.5698008393949741, 0.05587673960663103), (0.4812382091061482, -0.08742060633377921), (0.018761790893851275, -0.08742060633377935), (-0.06980083939497377, 0.05587673960663148)]]
+        expected = [[(-0.16180339887498948, -0.1), (0.25, 0.7236067977499789),
+                     (0.6618033988749895, -0.1), (-0.16180339887498948, -0.1)],
+                    [(-0.16180339887498948, -0.1), (0.25, 0.7236067977499789),
+                     (0.6618033988749895, -0.1), (-0.16180339887498948, -0.1)],
+                    [(-0.16180339887498948, -0.1), (0.25, 0.7236067977499789),
+                     (0.6618033988749895, -0.1), (-0.16180339887498948, -0.1)],
+                    [(-0.08944271909999159, 0.044721359549995794),
+                     (0.16055728090000843, 0.5447213595499958),
+                     (0.3394427190999916, 0.5447213595499958),
+                     (0.5894427190999916, 0.044721359549995794),
+                     (0.5, -0.1), (0.0, -0.1), (-0.08944271909999159, 0.044721359549995794)],
+                    [(-0.06980083939497377, 0.05587673960663148),
+                     (0.16341640786499884, 0.5300000000000004),
+                     (0.3365835921350014, 0.5299999999999997),
+                     (0.5698008393949741, 0.05587673960663103),
+                     (0.4812382091061482, -0.08742060633377921),
+                     (0.018761790893851275, -0.08742060633377935),
+                     (-0.06980083939497377, 0.05587673960663148)]]
 
         poly_1 = basic.buffer(poly, 0.1)
         poly_2 = basic.buffer(poly, 0.1, resolution=2)
         poly_3 = basic.buffer(poly, 0.1, resolution=2, cap_style=CAP_STYLE.round)
-        poly_4 = basic.buffer(poly, 0.1, resolution=2, cap_style=CAP_STYLE.round, join_style=JOIN_STYLE.bevel)
+        poly_4 = basic.buffer(poly, 0.1, resolution=2, cap_style=CAP_STYLE.round,
+                              join_style=JOIN_STYLE.bevel)
         poly_5 = basic.buffer(poly, 0.1, resolution=2, mitre_limit=0.3)
 
-        actual = [list(poly_1.exterior.coords), list(poly_2.exterior.coords), list(poly_3.exterior.coords), list(poly_4.exterior.coords), list(poly_5.exterior.coords)]
+        actual = [list(poly_1.exterior.coords), list(poly_2.exterior.coords),
+                  list(poly_3.exterior.coords), list(poly_4.exterior.coords),
+                  list(poly_5.exterior.coords)]
 
         for x in range(5):
             self.assertEqual(len(actual[x]), len(expected[x]))
@@ -285,7 +326,6 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
         actual = utility.get_poly_pts(poly)
 
         self.assertEqual(len(actual), len(expected))
-        my_range = len(actual)
         for i in range(3):
             for j in range(2):
                 self.assertAlmostEqualRel(actual[i][j], expected[i][j], rel_tol=1e-3)
@@ -361,7 +401,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
         """
         Test remove_colinear_pts in utility.py
         """
-        points_list = [[0, 0], [1, 1,], [1, 1,], [1.5, 1.5 ], [2, 2]]
+        points_list = [[0, 0], [1, 1,], [1, 1,], [1.5, 1.5], [2, 2]]
         points = np.array(points_list)
 
         expected_list = [[0, 0], [1, 1], [2, 2]]
@@ -433,7 +473,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
         Test rotate_around_point in the Vector class in utility.py
         """
         vector = Vector()
-        
+
         expected = [(2.130314698073308, -0.6795287243176937),
                     (-1.1764850602505073, 1.9015475021695778),
                     (1.5611824021515244, 6.655591972503418),
@@ -455,7 +495,8 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
         """
         vector = Vector()
 
-        expected = [(2.130314698073308, -0.6795287243176937), (-1.1764850602505073, 1.9015475021695778)]
+        expected = [(2.130314698073308, -0.6795287243176937),
+                    (-1.1764850602505073, 1.9015475021695778)]
 
         actual = []
         actual.append(vector.rotate_around_point([1, 2], radians=30))
@@ -537,7 +578,8 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
         """
         vector = Vector()
 
-        expected = ([-8.0, 15.0], [-0.47058823529411764, 0.8823529411764706], [-0.88235294118, -0.47058823529])
+        expected = ([-8.0, 15.0], [-0.47058823529411764, 0.8823529411764706],
+                    [-0.88235294118, -0.47058823529])
 
         points_list_1 = [10., 15.]
         points_list_2 = [2, 30]
