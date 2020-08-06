@@ -1,4 +1,20 @@
+# -*- coding: utf-8 -*-
+
+# This code is part of Qiskit.
+#
+# (C) Copyright IBM 2019.
+#
+# This code is licensed under the Apache License, Version 2.0. You may
+# obtain a copy of this license in the LICENSE.txt file in the root directory
+# of this source tree or at http://www.apache.org/licenses/LICENSE-2.0.
+#
+# Any modifications or derivative works of this code must retain this
+# copyright notice, and modified files need to carry a notice indicating
+# that they have been altered from the originals.
+
+
 """
+@date: 2020/08/25
 @author: Marco Facchini, John Blair, Zlatko Minev
 """
 
@@ -288,12 +304,17 @@ class CpwMeanderSimple(QRoute):
             pts (np.ndarray): Array of points
         """
         p = self.p
+        # prepare the routing track
         line = draw.LineString(pts)
+        # TODO: show up the actual length, which is now different from the initial length
         self.options._actual_length = str(line.length) + ' ' + self.design.get_units()
+        # expand the routing track to form the substrate core of the cpw
         self.add_qgeometry('path',
                            {'trace': line},
                            width=p.trace_width,
                            layer=p.layer)
+        # expand the routing track to form the two gaps in the substrate
+        # final gap will be form by this minus the trace above
         self.add_qgeometry('path',
                            {'cut': line},
                            width=p.trace_width + 2 * p.trace_gap,

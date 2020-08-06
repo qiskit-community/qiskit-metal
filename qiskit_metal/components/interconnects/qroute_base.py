@@ -1,4 +1,20 @@
+# -*- coding: utf-8 -*-
+
+# This code is part of Qiskit.
+#
+# (C) Copyright IBM 2019.
+#
+# This code is licensed under the Apache License, Version 2.0. You may
+# obtain a copy of this license in the LICENSE.txt file in the root directory
+# of this source tree or at http://www.apache.org/licenses/LICENSE-2.0.
+#
+# Any modifications or derivative works of this code must retain this
+# copyright notice, and modified files need to carry a notice indicating
+# that they have been altered from the originals.
+
+
 """
+@date: 2020/08/06
 @author: Marco Facchini
 """
 import numpy as np
@@ -36,7 +52,7 @@ class QRoute(QComponent):
 
     def __init__(self, *args, **kwargs):
         """Calls the QComponent __init__() to create a new Metal component
-        Before that, it the variables that are needed to support routing
+        Before that, it adds the variables that are needed to support routing
         """
         self.head = QRouteLead()
         self.tail = QRouteLead()
@@ -48,41 +64,6 @@ class QRoute(QComponent):
         self.start_pin_name = "start"
         self.end_pin_name = "end"
         super().__init__(*args, **kwargs)
-
-        """Create a new Metal component and adds it's default_options to the design.
-
-        Arguments:
-            design (QDesign): The parent design.
-            name (str): Name of the component.
-            options (dict): User options that will override the defaults. (default: None)
-            make (bool): True if the make function should be called at the end of the init.
-                Options be used in the make function to create the geometry. (default: True)
-            component_template (dict): User can overwrite the template options for the component
-                that will be stored in the design, in design.template,
-                and used every time a new component is instantiated.
-                (default: None)
-
-        Raises:
-            ValueError: User supplied design isn't a QDesign
-
-        Note:  Information copied from QDesign class.
-            self._design.overwrite_enabled (bool):
-            When True - If the string name, used for component, already
-            exists in the design, the existing component will be
-            deleted from design, and new component will be generated
-            with the same name and newly generated component_id,
-            and then added to design.
-
-            When False - If the string name, used for component, already
-            exists in the design, the existing component will be
-            kept in the design, and current component will not be generated,
-            nor will be added to the design. The variable design.self.status 
-            will still be NotBuilt, as opposed to Initialization Successful.
-
-            Either True or False - If string name, used for component, is NOT
-            being used in the design, a component will be generated and
-            added to design using the name.
-        """
 
     def make(self):
         """
