@@ -20,9 +20,12 @@ Simply utility functions to improve QOL of QM developers and QM users
 @modified: Thomas McConkey 2019/10/16
 '''
 
+import logging
+import re
+import sys
 import traceback
 import warnings
-from copy import deepcopy
+import logging, sys
 
 import pandas as pd
 
@@ -126,7 +129,6 @@ def data_frame_empty_typed(column_types:dict):
         df[name] = pd.Series(dtype=dtype)
     return df
 
-import re
 def clean_name(text:str):
     """Clean a string to a proper variable name in python
 
@@ -139,7 +141,7 @@ def clean_name(text:str):
     .. code-block:: python
 
         clean_name('32v2 g #Gmw845h$W b53wi ')
-    
+
     *Output*
         `'_32v2_g__Gmw845h_W_b53wi_'`
 
@@ -193,7 +195,7 @@ def print_traceback_easy(start=26):
     print('\n'.join(map(repr, traceback.extract_stack()[start:])))
     print('\n')
 
-import logging, sys
+
 def log_error_easy(logger:logging.Logger, pre_text='', post_text='', do_print=False):
     """
     Print
