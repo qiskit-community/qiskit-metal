@@ -179,21 +179,24 @@ def enable_warning_traceback():
 
 def get_traceback():
     '''
-    Returns traceback string
+    Returns traceback string. Format each frame in the traceback as a string.
 
     Returns:
         str: traceback string
     '''
-    tb = traceback.extract_stack()
-    return "".join(traceback.format_list(tb)[:-1])
+    trace_back = traceback.extract_stack()
+    return "".join(traceback.format_list(trace_back)[:-1])
 
 
 def print_traceback_easy(start=26):
     '''
-    Utility funciton to print traceback for debug
+    Utility funciton to print traceback for debug.
+    Will report in series the string version of the frames that we are currently in.
 
     Args:
-        start (int): starting position
+        start (int): Starting position of the traceback frame.
+                     Default: 26. Assumes runs from Jupyter notebooks.
+                     In general set to zero.
     '''
     print(f"\n")
     print('\n'.join(map(repr, traceback.extract_stack()[start:])))
