@@ -22,11 +22,18 @@ from copy import deepcopy
 from typing import TYPE_CHECKING
 from typing import Dict as Dict_
 from typing import List, Tuple, Union
-from ... import Dict
-from ...designs import QDesign, is_design
-from ...elements import QGeometryTables
+from typing import Dict
+#from qiskit_metal.designs import QDesign, is_design
+from qiskit_metal.designs import is_design
+from qiskit_metal.elements import QGeometryTables
 
 __all__ = ['QRenderer']
+
+if TYPE_CHECKING:
+    # For linting typechecking, import modules that can't be loaded here under normal conditions.
+    # For example, I can't import QDesign, because it requires Qrenderer first. We have the
+    # chicken and egg issue.
+    from qiskit_metal.designs import QDesign
 
 
 class QRenderer():

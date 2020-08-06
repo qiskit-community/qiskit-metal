@@ -48,13 +48,29 @@ class GDSRender(QRenderer):
 
     # These options can be over-written by passing dict to gds_options.
     default_options = Dict(
+        # gdspy unit is 1 meter
+        gds_unit=1,
+
         # (float): Scale box of components to render. Should be greater than 1.0.
         bounding_box_scale=1.2,
         ground_plane=True,
-        # layer and data numbers, needs to come from default options i.e. self.ld_subtract = {"layer": 201, "data": 12}.
+
+        # layer and data numbers, needs to come from default options
+        # i.e. self.options.ld_subtract = {"layer": 201, "data": 12}.
         ld_subtract={"layer": 201},
         ld_no_subtract={"layer": 202},
-        ld_chip={"layer": 200, "datatype": 10}
+        ld_chip={"layer": 200, "datatype": 10},
+
+        # used for fillet in gdspy.FlexPath() and gdspy.boolean()
+        bend_radius_num=0.05,
+        corners='circular bend',
+        tolerance=0.000001,                 # 1.0 um
+
+        # With input from fab people, any of the weird artifacts (like unwanted gaps)
+        # that are less than 1nm in size can be ignored.
+        # They don't even show up in the fabricated masks.
+        # So, the precision of e-9 (so 1 nm) should be good as a default.
+        precision=0.000000001
     )
 
     def __init__(self, design: QDesign, initiate=True, gds_options: Dict = None, gds_template: Dict = None):
@@ -66,11 +82,6 @@ class GDSRender(QRenderer):
 
         super().__init__(design=design, initiate=initiate,
                          render_template=gds_template, render_options=gds_options)
-
-        # Move to parent during init.
-        # self.options.update(GDSRender.default_options)
-        # if gds_options:
-        #     self.options.update(gds_options)
 
         # Assume metal is using units smaller than 1 meter.
         self.options['gds_unit'] = 1.0 / self.design.parse_value('1 meter')
@@ -96,12 +107,6 @@ class GDSRender(QRenderer):
             self.design.logger.warning(
                 f'Expected float and number greater than or equal to 1.0 for bounding_box_scale. \
                     User provided bounding_box_scale = {self.options.bounding_box_scale}, using default_options.bounding_box.')
-
-        # needs to come from default_options, used for fillet in FlexPath
-        self.bend_radius_num = 0.05
-        self.corners = 'circular bend'
-        self.tolerance = 0.01
-        self.precision = 0.00001
 
     def _clear_library(self):
         """Clear current library."""
@@ -354,12 +359,13 @@ class GDSRender(QRenderer):
             '''gdspy.boolean is not documented clearly.  
             If there are multiple elements to subtract (both poly and path), 
             the way I could make it work is to put them into a cell, within lib.  
-            I used the method cell_name.get_polygonsets(), which appears to convert all elements within the cell to poly.
+            I used the method cell_name.get_polygonsets(),
+            which appears to convert all elements within the cell to poly.
             After the boolean(), I deleted the cell from lib.
             The memory is freed up then.
             '''
             diff_geometry = gdspy.boolean(
-                self.scaled_chip_poly, subtract_cell.get_polygons(), 'not', precision=self.precision, layer=202)
+                self.scaled_chip_poly, subtract_cell.get_polygons(), 'not', precision=self.options.precision, layer=202)
 
             lib.remove(subtract_cell)
 
@@ -457,10 +463,10 @@ class GDSRender(QRenderer):
                                            layer=element.layer if not element['subtract'] else 0,
                                            # layer=element.layer,
                                            datatype=11,
-                                           corners=self.corners,
-                                           bend_radius=self.bend_radius_num,
-                                           tolerance=self.tolerance,
-                                           precision=self.precision
+                                           corners=self.options.corners,
+                                           bend_radius=self.options.bend_radius_num,
+                                           tolerance=self.options.tolerance,
+                                           precision=self.options.precision
                                            )
             return to_return
         else:

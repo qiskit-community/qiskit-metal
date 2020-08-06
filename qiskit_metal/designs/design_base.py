@@ -21,6 +21,7 @@ The base class of all QDesigns in Qiskit Metal.
 # To create a basic UML diagram
 # >> pyreverse -o png -p desin_base design_base.py -A  -S
 
+
 import importlib
 from datetime import datetime
 from typing import TYPE_CHECKING, Any
@@ -37,12 +38,17 @@ from ..toolbox_metal.parsing import parse_options, parse_value
 from ..toolbox_python.utility_functions import log_error_easy
 from .interface_components import Components
 from .net_info import QNet
+#from qiskit_metal.renderers.renderer_base import QRenderer
+#from qiskit_metal.renderers.renderer_gds.gds_renderer import GDSRender
+
 
 if TYPE_CHECKING:
     # For linting typechecking, import modules that can't be loaded here under normal conditions.
     # For example, I can't import QDesign, because it requires QComponent first. We have the
     # chicken and egg issue.
     from ..components.base.base import QComponent
+    from ..renderer.renderer_gds import GDSRender
+
 
 __all__ = ['QDesign']
 
@@ -132,8 +138,16 @@ class QDesign():
 
         # Can't really use this until DefaultOptionsRenderer.default_draw_substrate.color_plane
         # is resolved.
+        # Presently, self._template_options holds the templates_options for each renderers.
+        # key is the unique name of renderer.
+        # Also, renderer_base.options holds the latest options for each instance of renderer.
         self._template_renderer_options = DefaultOptionsRenderer()  # use for renderer
+
         self._qnet = QNet()
+
+        # Instantiate and register renderers to Qdesign.renderers
+        self.renderers = Dict()
+        self._start_renderers()
 
     def _init_metadata(self) -> Dict:
         """Initialize default metadata dicitoanry
@@ -594,6 +608,7 @@ class QDesign():
 
 #########I/O###############################################################
 
+
     @classmethod
     def load_design(cls, path: str):
         """
@@ -782,3 +797,18 @@ class QDesign():
 
         # Remake components in order
         pass
+
+
+######### Renderers ###############################################################
+
+
+    def _start_renderers(self):
+
+        # GDS Renderer using base class QRender
+        a_gds = GDSRender(self, initiate=True)
+
+        # Every renderer using QRender as base class will have method to get unique name.
+        unique_name = a_gds._get_unique_class_name
+
+        # register renderers here.
+        self.renderers[unique_name] = a_gds
