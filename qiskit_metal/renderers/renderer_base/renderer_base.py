@@ -24,6 +24,7 @@ from typing import Dict as Dict_
 from typing import List, Tuple, Union
 from typing import Dict
 #from qiskit_metal.designs import QDesign, is_design
+#from qiskit_metal.designs import QDesign
 from qiskit_metal.designs import is_design
 from qiskit_metal.elements import QGeometryTables
 
