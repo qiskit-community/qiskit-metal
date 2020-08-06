@@ -24,20 +24,22 @@ Created on  Wed Apr 22 10:02:06 2020
 
 # Note - these functions are untested (unclear, seems unused or under development):
 # element_handler/delete_component
-# element_handler/get_component
 # element_handler/rename_component
+
 # element_handler/get_component_geometry_list
 # element_handler/get_component_geometry_dict
-# element_handler/check_element_type
 
 import unittest
 import numpy as np
 
 from qiskit_metal import designs
+from qiskit_metal import draw
 
 from qiskit_metal.elements import elements_handler
 from qiskit_metal.elements.elements_handler import QGeometryTables
 from qiskit_metal.components.qubits.transmon_pocket import TransmonPocket
+
+from geopandas import GeoDataFrame
 
 class TestElements(unittest.TestCase):
     """
@@ -253,6 +255,55 @@ class TestElements(unittest.TestCase):
 
         self.assertEqual(len(qgt.tables['path']), 0)
         self.assertEqual(len(qgt.tables['poly']), 0)
+
+    def test_element_get_component_bounds(self):
+        """
+        Test get_component_bounds in QGeometryTables class in element_handler.py
+        """
+        design = designs.DesignPlanar()
+        qgt = QGeometryTables(design)
+        transmon_pocket = TransmonPocket(design, 'my_id')
+
+        four_zeros = qgt.get_component_bounds('my_id')
+        self.assertEqual(len(four_zeros), 4)
+        for i in range(4):
+            self.assertEqual(four_zeros[i], 0)
+
+    def test_element_check_element_type(self):
+        """
+        Test check_element_type in QGeometryTables class in element_handler.py
+        """
+        design = designs.DesignPlanar()
+        qgt = QGeometryTables(design)
+        transmon_pocket = TransmonPocket(design, 'my_id')
+
+        self.assertTrue(qgt.check_element_type('path', log_issue=False))
+        self.assertFalse(qgt.check_element_type('not-there', log_issue=False))
+
+    def test_element_get_component(self):
+        """
+        Test get_component in QGeometryTables class in element_handler.py
+        """
+        design = designs.DesignPlanar()
+        qgt = QGeometryTables(design)
+        q1 = TransmonPocket(design, 'Q1')
+
+        rect = draw.rectangle(500, 300, 0, 0)
+        geom = {'my_polygon': rect}
+        qgt.add_qgeometry('poly', 'Q1', geom)
+
+        # sucess results
+        actual = qgt.get_component('Q1')
+        self.assertEqual(len(actual), 2)
+        self.assertTrue(type(actual['path']) is GeoDataFrame)
+        self.assertTrue(type(actual['poly']) is GeoDataFrame)
+
+        # failure results
+        actual = qgt.get_component('not-real')
+        self.assertEqual(len(actual), 2)
+        self.assertEqual(actual['path'], None)
+        self.assertEqual(actual['poly'], None)
+        
 
 
 
