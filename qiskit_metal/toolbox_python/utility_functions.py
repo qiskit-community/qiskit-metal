@@ -25,9 +25,11 @@ import re
 import sys
 import traceback
 import warnings
-import logging, sys
-
+import logging
+import sys
 import pandas as pd
+
+from copy import deepcopy
 
 __all__ = ['copy_update', 'dict_start_with', 'data_frame_empty_typed', 'clean_name',
            'enable_warning_traceback', 'get_traceback', 'print_traceback_easy', 'log_error_easy',
@@ -114,7 +116,7 @@ def dict_start_with(my_dict, start_with, as_=list):
 #     res_html = display_dfs(*res, do_display=do_display)  #why not just directly call the function DataFrame_display_side_by_side(*args) ?
 #     return res, res_html
 
-def data_frame_empty_typed(column_types:dict):
+def data_frame_empty_typed(column_types: dict):
     """Creates and empty DataFrame with dtypes for each column given
     by the dicitonary,
 
@@ -129,7 +131,8 @@ def data_frame_empty_typed(column_types:dict):
         df[name] = pd.Series(dtype=dtype)
     return df
 
-def clean_name(text:str):
+
+def clean_name(text: str):
     """Clean a string to a proper variable name in python
 
     Arguments:
@@ -147,10 +150,11 @@ def clean_name(text:str):
 
     See https://stackoverflow.com/questions/3303312/how-do-i-convert-a-string-to-a-valid-variable-name-in-python
     """
-    return re.sub('\W|^(?=\d)','_', text)
+    return re.sub('\W|^(?=\d)', '_', text)
 
 ####################################################################################
 # Tracebacks
+
 
 _old_warn = None
 
@@ -196,7 +200,7 @@ def print_traceback_easy(start=26):
     print('\n')
 
 
-def log_error_easy(logger:logging.Logger, pre_text='', post_text='', do_print=False):
+def log_error_easy(logger: logging.Logger, pre_text='', post_text='', do_print=False):
     """
     Print
 
