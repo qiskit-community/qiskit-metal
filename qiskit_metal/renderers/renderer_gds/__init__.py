@@ -17,8 +17,6 @@
 @date: 2019
 """
 
-from .gds_renderer import GDSRender
-
 
 def gds_draw_all(self, path=None):
     r'''
