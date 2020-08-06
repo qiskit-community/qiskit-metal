@@ -64,7 +64,7 @@ class GDSRender(QRenderer):
         # used for fillet in gdspy.FlexPath() and gdspy.boolean()
         bend_radius_num=0.05,
         corners='circular bend',
-        tolerance=0.000001,                 # 1.0 um
+        tolerance=0.00001,                 # 10.0 um
 
         # With input from fab people, any of the weird artifacts (like unwanted gaps)
         # that are less than 1nm in size can be ignored.
