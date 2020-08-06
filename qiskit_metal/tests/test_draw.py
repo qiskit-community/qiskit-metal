@@ -13,6 +13,8 @@
 # that they have been altered from the originals.
 
 #pylint: disable-msg=unnecessary-pass
+#pylint: disable-msg=broad-exception
+#pylint: disable-msg=too-many-public-methods
 
 """
 Qiskit Metal unit tests analyses functionality.
@@ -32,7 +34,6 @@ import unittest
 import numpy as np
 
 from shapely.geometry import Polygon
-from shapely.geometry.multipolygon import MultiPolygon
 from shapely.geometry import LineString
 from shapely.geometry import CAP_STYLE
 from shapely.geometry import JOIN_STYLE
@@ -78,7 +79,8 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
         coords_actual = list(polygon_actual.exterior.coords)
         coords_expected = list(polygon_expected.exterior.coords)
         self.assertEqual(len(coords_actual), len(coords_expected))
-        for i in range(len(coords_actual)):
+        my_range = len(coords_actual)
+        for i in range(my_range):
             for j in range(2):
                 self.assertEqual(coords_actual[i][j], coords_expected[i][j])
 
@@ -104,7 +106,8 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
         expected_subtract = [(1.85, 2.85), (1.85, 3.95), (2.35, 3.95), (2.35, 2.45), (1.95, 2.45), (1.95, 2.85), (1.85, 2.85)]
 
         self.assertEqual(len(actual_subtract), len(expected_subtract))
-        for i in range(len(actual_subtract)):
+        my_range = len(actual_subtract)
+        for i in range(my_range):
             for j in range(2):
                 self.assertEqual(actual_subtract[i][j], expected_subtract[i][j])
 
@@ -114,7 +117,6 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
         """
         first = basic.rectangle(0.5, 1.5, 2.1, 3.2)
         second = basic.rectangle(0.1, 1.3, 1.9, 2.2)
-        third = basic.rectangle(1, 1.4, 2.1, 6)
 
         expected = [[(1.85, 2.45), (2.35, 2.45), (2.35, 3.95), (1.85, 3.95), (1.85, 2.45)],
                     [(1.85, 2.85), (1.85, 3.95), (2.35, 3.95), (2.35, 2.45), (1.95, 2.45), (1.95, 1.55), (1.85, 1.55), (1.85, 2.85), (1.85, 2.85)]]
@@ -283,7 +285,8 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
         actual = utility.get_poly_pts(poly)
 
         self.assertEqual(len(actual), len(expected))
-        for i in range(len(actual)):
+        my_range = len(actual)
+        for i in range(3):
             for j in range(2):
                 self.assertAlmostEqualRel(actual[i][j], expected[i][j], rel_tol=1e-3)
 
