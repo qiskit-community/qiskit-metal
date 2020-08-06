@@ -150,20 +150,25 @@ class QRenderer():
         # TODO
 
         # Options
-        self.options = Dict()
+        self._options = Dict()
         self.update_options(render_options=render_options,
                             render_template=render_template)
 
         self.status = 'Init Completed'
 
     @property
+    def options(self) -> Dict:
+        "Options for the QRenderer."
+        return self._options
+
+    @property
     def design(self) -> 'QDesign':
-        '''Return a reference to the parent design object'''
+        '''Return a reference to the parent design object.'''
         return self._design
 
     @property
     def logger(self) -> logging.Logger:
-        """Returns the logger"""
+        """Returns the logger."""
         return self._design.logger
 
     @classmethod
@@ -270,11 +275,13 @@ class QRenderer():
         to store in self.options.  Then user can over-ride the render_options.
 
         Args:
-            render_options (Dict, optional): If user wants to over-ride the template options. Defaults to None.
-            render_template (Dict, optional): All the template options for each child. Defaults to None.
+            render_options (Dict, optional): If user wants to over-ride the template
+                                             options. Defaults to None.
+            render_template (Dict, optional): All the template options for each child.
+                                             Defaults to None.
         """
-        self.options = self.get_template_options(
-            self.design, render_template=render_template)
+        self.options.update(self.get_template_options(
+            self.design, render_template=render_template))
 
         if render_options:
             self.options.update(render_options)
