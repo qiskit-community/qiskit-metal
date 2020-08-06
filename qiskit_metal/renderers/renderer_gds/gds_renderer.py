@@ -45,46 +45,50 @@ class GDSRender(QRenderer):
         11 Flexpath
     """
 
-    # These options can be over-written by passing dict to gds_options.
+    # These options can be over-written by passing dict to render_options.
     default_options = Dict(
         # gdspy unit is 1 meter
+        # Note that this will be overwritten by the design units.
+        # WARNING: this cannot be changed. since it is only used in the init once.
+        # TODO: Maybe revise to update units
         gds_unit=1,
 
         # (float): Scale box of components to render. Should be greater than 1.0.
-        bounding_box_scale=1.2,
+        bounding_box_scale=1.2, #TODO: Make X and Y
         ground_plane=True,
 
         # layer and data numbers, needs to come from default options
         # i.e. self.options.ld_subtract = {"layer": 201, "data": 12}.
         ld_subtract={"layer": 201},
         ld_no_subtract={"layer": 202},
-        ld_chip={"layer": 200, "datatype": 10},
+        ld_chip={"layer": 200, "datatype": 10}, #TODO: CHANGE
 
         # used for fillet in gdspy.FlexPath() and gdspy.boolean()
         bend_radius_num=0.05,
         corners='circular bend',
-        tolerance=0.00001,                 # 10.0 um
+        tolerance=0.00001,                 # 10.0 um # What units is this in, specify
 
         # With input from fab people, any of the weird artifacts (like unwanted gaps)
         # that are less than 1nm in size can be ignored.
         # They don't even show up in the fabricated masks.
         # So, the precision of e-9 (so 1 nm) should be good as a default.
-        precision=0.000000001
+        precision=0.000000001 #TODO: Is this in meters absolute or in design units?
     )
 
-    def __init__(self, design: 'QDesign', initiate=True, gds_options: Dict = None, gds_template: Dict = None):
+    def __init__(self, design: 'QDesign', initiate=True, render_template: Dict = None, render_options: Dict = Nones):
         """
+        Create a QRenderer for GDS interface: export and import.
+
         Args:
             design (QDesign): Use QGeometry within QDesign  to obtain elements for GDS file.
             initiate (bool): True to initiate the renderer. Defaults to True.
         """
 
         super().__init__(design=design, initiate=initiate,
-                         render_template=gds_template, render_options=gds_options)
+                         render_template=render_template, render_options=render_options)
 
-        # Assume metal is using units smaller than 1 meter.
-        self.options['gds_unit'] = 1.0 / self.design.parse_value('1 meter')
-        self.lib = gdspy.GdsLibrary(unit=self.options.gds_unit)
+        self.lib = None # type: gdspy.GdsLibrary
+        self.new_gds_library()
 
         self.list_bounds = list()
         self.scaled_max_bound = tuple()
@@ -127,6 +131,11 @@ class GDSRender(QRenderer):
             self.design.logger.warning(
                 f'Not able to write to directory. File:"{file}" not written. Checked directory:"{directory_name}".')
             return 0
+
+    def update_units(self):
+        """Update the options in the units. DOES NOT CHANGE THE CURRENT LIB"""
+        # Assume metal is using units smaller than 1 meter.
+        self.options['gds_unit'] = 1.0 / self.design.parse_value('1 meter')
 
     def seperate_subtract_shapes(self, table_name: str, table: geopandas.GeoSeries) -> None:
         """For each table, separate them by subtract being either True or False.
@@ -311,6 +320,22 @@ class GDSRender(QRenderer):
 
         return 0
 
+    def new_gds_library(self) -> gdspy.GdsLibrary:
+        """Creates a new GDS Library. Deletes the old.
+           Create a new GDS library file. It can contains multiple cells.
+        """
+
+        self.update_units()
+
+        if self.lib:
+            self._clear_library()
+
+        # Create a new GDS library file. It can contains multiple cells.
+        self.lib = gdspy.GdsLibrary(unit=self.options.gds_unit)
+
+        return self.lib
+
+
     def write_poly_path_to_file(self, file_name: str) -> None:
         """Using the geometries for each table name, write to a GDS file.
 
@@ -328,10 +353,7 @@ class GDSRender(QRenderer):
                              Name needs to include desired extention, i.e. "a_path_and_name.gds".
         """
 
-        # Create a new GDS library file. It can contains multiple cells.
-        self._clear_library()
-
-        lib = gdspy.GdsLibrary(unit=self.options.gds_unit)
+        lib = self.new_gds_library()
 
         cell = lib.new_cell('NO_EDITS', overwrite_duplicate=True)
 
@@ -350,21 +372,24 @@ class GDSRender(QRenderer):
                 cell.add(q_geometries)
 
         if self.options.ground_plane:
+            chip_name = 'main' #TODO:
             # # For ground plane.
             ground_cell = lib.new_cell('TOP', overwrite_duplicate=True)
             subtract_cell = lib.new_cell('SUBTRACT', overwrite_duplicate=True)
             subtract_cell.add(self.q_subtract_true)
 
-            '''gdspy.boolean is not documented clearly.  
-            If there are multiple elements to subtract (both poly and path), 
-            the way I could make it work is to put them into a cell, within lib.  
+            '''gdspy.boolean is not documented clearly.
+            If there are multiple elements to subtract (both poly and path),
+            the way I could make it work is to put them into a cell, within lib.
             I used the method cell_name.get_polygonsets(),
             which appears to convert all elements within the cell to poly.
             After the boolean(), I deleted the cell from lib.
             The memory is freed up then.
             '''
             diff_geometry = gdspy.boolean(
-                self.scaled_chip_poly, subtract_cell.get_polygons(), 'not', precision=self.options.precision, layer=202)
+                self.scaled_chip_poly, subtract_cell.get_polygons(),
+                'not', precision=self.options.precision,
+                layer=self.design.q(chip_name))
 
             lib.remove(subtract_cell)
 
@@ -409,14 +434,14 @@ class GDSRender(QRenderer):
             return 0
 
     def qgeometry_to_gds(self, element: pd.Series) -> 'gdspy.polygon':
-        """Convert the design.qgeometry table to format used by GDS renderer. 
+        """Convert the design.qgeometry table to format used by GDS renderer.
         Convert the class to a series of GDSII elements.
 
         Args:
             element (pd.Series): Expect a shapley object.
 
         Returns:
-            'gdspy.polygon' or 'gdspy.FlexPath': Convert the class to a series of GDSII 
+            'gdspy.polygon' or 'gdspy.FlexPath': Convert the class to a series of GDSII
                                                  format on the input pd.Series.
         """
 
@@ -444,8 +469,8 @@ class GDSRender(QRenderer):
                                  )
         elif isinstance(geom, shapely.geometry.LineString):
             '''
-            class gdspy.FlexPath(points, width, offset=0, corners='natural', ends='flush', 
-            bend_radius=None, tolerance=0.01, precision=0.001, max_points=199, 
+            class gdspy.FlexPath(points, width, offset=0, corners='natural', ends='flush',
+            bend_radius=None, tolerance=0.01, precision=0.001, max_points=199,
             gdsii_path=False, width_transform=True, layer=0, datatype=0)
 
             Only fillet, if number is greater than zero.
