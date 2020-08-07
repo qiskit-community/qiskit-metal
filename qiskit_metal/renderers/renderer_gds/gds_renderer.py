@@ -253,6 +253,21 @@ class GDSRender(QRenderer):
             scalex=self.options.bounding_box_scale, scaley=self.options.bounding_box_scale)
         pass  # for breakpoint
 
+    def rect_for_ground(self) -> None:
+        """Use the maximum bounds for all qgeometry on chip.  Scale the size of chip.
+           Use gdspy.Polygon() because gdspy.boolean() requires it.
+        """
+
+        rectangle_points = [(self.max_bound[0], self.max_bound[1]),
+                            (self.max_bound[2], self.max_bound[1]),
+                            (self.max_bound[2], self.max_bound[3]),
+                            (self.max_bound[0], self.max_bound[3])]
+        chip_poly = gdspy.Polygon(rectangle_points, **self.options.ld_chip)
+
+        self.scaled_chip_poly = chip_poly.scale(
+            scalex=self.options.bounding_box_scale, scaley=self.options.bounding_box_scale)
+        pass  # for breakpoint
+
     def create_qgeometry_for_gds(self, highlight_qcomponents: list = []) -> int:
         """Using self.design, this method does the following:
 
