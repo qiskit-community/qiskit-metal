@@ -23,6 +23,7 @@ Module containing Design interface components.
 from copy import deepcopy
 from typing import TYPE_CHECKING, Any, Iterable, List, Optional, TypeVar, Union, Dict as Dict_
 from .. import logger
+from ..toolbox_python.utility_functions import get_traceback, print_traceback_easy
 
 from .. import config
 if not config.is_building_docs():
@@ -105,6 +106,7 @@ class Components:
             # IPython checking methods
             # https://github.com/jupyter/notebook/issues/2014
             if not quiet:
+                # print_traceback_easy(start=0)
                 self.logger.warning(
                     f'In Components.find_id(), the name={name} is not used in design._components')
             return 0
