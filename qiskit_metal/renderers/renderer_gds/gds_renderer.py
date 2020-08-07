@@ -1,24 +1,19 @@
-from .. import config
-from qiskit_metal.renderers.renderer_base import QRenderer
-from ...toolbox_python.utility_functions import log_error_easy
-#from ...designs import QDesign
-import qiskit_metal as metal
-from qiskit_metal import designs, components, draw
-from qiskit_metal import components as qlibrary
-import geopandas
-import pandas as pd
-import shapely
-import gdspy
 import os
 import pathlib
 import math
-
+from operator import itemgetter
 from typing import TYPE_CHECKING
 from typing import Dict as Dict_
 from typing import List, Tuple, Union
+import shapely
+import gdspy
+import geopandas
+import pandas as pd
+
+from qiskit_metal.renderers.renderer_base import QRenderer
+
 from ... import Dict
 
-from operator import itemgetter
 
 if TYPE_CHECKING:
     # For linting typechecking, import modules that can't be loaded here under normal conditions.
@@ -30,6 +25,8 @@ if TYPE_CHECKING:
 class GDSRender(QRenderer):
     """Extends QRenderer to export GDS formatted files. The methods which a user will need for GDS export
     should be found within this class.
+
+
 
     layers:
         200 Emulated Chip size based on self.scaled_max_bound * max_bounds of elements on chip.
@@ -47,47 +44,59 @@ class GDSRender(QRenderer):
 
     # These options can be over-written by passing dict to render_options.
     default_options = Dict(
-        # gdspy unit is 1 meter
-        # Note that this will be overwritten by the design units.
-        # WARNING: this cannot be changed. since it is only used in the init once.
-        # TODO: Maybe revise to update units
-        gds_unit=1,
+        # gdspy unit is 1 meter.  gds_units appear to ONLY be used during write_gds().
+        # Note that gds_unit will be overwritten from the design units, during init().
+        # WARNING: this cannot be changed. since it is only used during the init once.
+        gds_unit=1,  # 1m
 
         # (float): Scale box of components to render. Should be greater than 1.0.
-        bounding_box_scale=1.2, #TODO: Make X and Y
+        # TODO: Make X and Y
+        bounding_box_scale=1.2,
         ground_plane=True,
 
         # layer and data numbers, needs to come from default options
         # i.e. self.options.ld_subtract = {"layer": 201, "data": 12}.
         ld_subtract={"layer": 201},
         ld_no_subtract={"layer": 202},
-        ld_chip={"layer": 200, "datatype": 10}, #TODO: CHANGE
+
+        # TODO: CHANGE
+        ld_chip={"layer": 200, "datatype": 10},
 
         # used for fillet in gdspy.FlexPath() and gdspy.boolean()
         bend_radius_num=0.05,
         corners='circular bend',
-        tolerance=0.00001,                 # 10.0 um # What units is this in, specify
+
+        # tolerance > precision
+        # Precision used for gds lib, boolean operations and FlexPath should likely be kept the same.
+        # They can be different, but increases odds of weird artifacts or misalignment.
+        # Some of this occours regardless (might be related to offset of a curve when done as a boolean vs. rendered),
+        # but they are <<1nm, which isn't even picked up by any fab equipment (so can be ignored)
+        # Numerical errors start to pop up if set precision too fine,
+        # but 1nm seems to be the finest precision we use anyhow.
+        tolerance=0.00001,  # 10.0 um
 
         # With input from fab people, any of the weird artifacts (like unwanted gaps)
         # that are less than 1nm in size can be ignored.
         # They don't even show up in the fabricated masks.
         # So, the precision of e-9 (so 1 nm) should be good as a default.
-        precision=0.000000001 #TODO: Is this in meters absolute or in design units?
+        # TODO: Is this in meters absolute or in design units?
+        precision=0.000000001   # 1.0 nm
     )
 
-    def __init__(self, design: 'QDesign', initiate=True, render_template: Dict = None, render_options: Dict = Nones):
-        """
-        Create a QRenderer for GDS interface: export and import.
+    def __init__(self, design: 'QDesign', initiate=True, render_template: Dict = None, render_options: Dict = None):
+        """Create a QRenderer for GDS interface: export and import.
 
         Args:
             design (QDesign): Use QGeometry within QDesign  to obtain elements for GDS file.
-            initiate (bool): True to initiate the renderer. Defaults to True.
+            initiate (bool, optional): True to initiate the renderer. Defaults to True.
+            render_template (Dict, optional): Typically used by GUI for template options for GDS. Defaults to None.
+            render_options (Dict, optional):  Used to overide all options. Defaults to None.
         """
 
         super().__init__(design=design, initiate=initiate,
                          render_template=render_template, render_options=render_options)
 
-        self.lib = None # type: gdspy.GdsLibrary
+        self.lib = None  # type: gdspy.GdsLibrary
         self.new_gds_library()
 
         self.list_bounds = list()
@@ -335,7 +344,6 @@ class GDSRender(QRenderer):
 
         return self.lib
 
-
     def write_poly_path_to_file(self, file_name: str) -> None:
         """Using the geometries for each table name, write to a GDS file.
 
@@ -372,7 +380,7 @@ class GDSRender(QRenderer):
                 cell.add(q_geometries)
 
         if self.options.ground_plane:
-            chip_name = 'main' #TODO:
+            chip_name = 'main'  # TODO:
             # # For ground plane.
             ground_cell = lib.new_cell('TOP', overwrite_duplicate=True)
             subtract_cell = lib.new_cell('SUBTRACT', overwrite_duplicate=True)
@@ -461,7 +469,7 @@ class GDSRender(QRenderer):
 
         if isinstance(geom, shapely.geometry.Polygon):
 
-            # TODO: Handle  list(polygon.interiors)
+            # Handle  list(polygon.interiors) TODO:
             return gdspy.Polygon(list(geom.exterior.coords),
                                  layer=element.layer if not element['subtract'] else 0,
                                  # layer=element.layer,
