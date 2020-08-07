@@ -28,13 +28,15 @@ class CPWHangerT(QComponent):
 
     Inherits QComponent class.
 
-    +----------------------------+
-    ------------------------------
-    |
-    |
-    |
-    |
-    +
+    ::
+
+        +----------------------------+
+        ------------------------------
+        |
+        |
+        |
+        |
+        +
 
     Options:
         * prime_width: the width of the trace of the two pin CPW transmission line
@@ -43,13 +45,13 @@ class CPWHangerT(QComponent):
         * second_gap: the dielectric gap of the one pin CPW transmission line
         * coupling_space: the amound of ground plane between the two transmission lines
         * coupling_length: the length of parallel between the two transmission lines 
-            note: this includes the distance of the curved second of the second line
+          note: this includes the distance of the curved second of the second line
         * pos_x/_y: the x/y position of the ground termination.
         * rotation: the direction of the termination. 0 degrees is +x, following a
           counter-clockwise rotation (eg. 90 is +y)
         * mirror: flips the hanger around the y-axis
         * open_termination: sets if the termination of the second line at the coupling side
-            is an open to ground or short to ground
+          is an open to ground or short to ground
         * chip: the chip the pin should be on.
         * layer: layer the pin is on. Does not have any practical impact to the short.
     """

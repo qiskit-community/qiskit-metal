@@ -29,6 +29,7 @@ class ResonatorRectangleSpiral(QComponent):
         A rectangular spiral resonator. The width of the spiral is modified based on inputted values
         and given total length of the spiral.
         ::
+
             <--------X-------->
             __________________
             |   ___________   |
@@ -49,7 +50,7 @@ class ResonatorRectangleSpiral(QComponent):
         * coupler_distance: the pin position from the grounded termination of the spiral
         * pos_x/_y: the x/y position of the ground termination.
         * rotation: the direction of the termination. 0 degrees is +x, following a
-            counter-clockwise rotation (eg. 90 is +y)
+          counter-clockwise rotation (eg. 90 is +y)
         * chip: the chip the pin should be on.
         * layer: layer the pin is on. Does not have any practical impact to the short.
     """
