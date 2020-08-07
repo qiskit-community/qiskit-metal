@@ -25,12 +25,14 @@ Created on  Wed Apr 22 10:02:06 2020
 # Note - these functions are untested (unclear, seems unused or under development):
 # element_handler/delete_component
 # element_handler/rename_component
-
 # element_handler/get_component_geometry_list
 # element_handler/get_component_geometry_dict
 
 import unittest
 import numpy as np
+
+from geopandas import GeoDataFrame
+
 
 from qiskit_metal import designs
 from qiskit_metal import draw
@@ -38,8 +40,6 @@ from qiskit_metal import draw
 from qiskit_metal.elements import elements_handler
 from qiskit_metal.elements.elements_handler import QGeometryTables
 from qiskit_metal.components.qubits.transmon_pocket import TransmonPocket
-
-from geopandas import GeoDataFrame
 
 class TestElements(unittest.TestCase):
     """
@@ -262,7 +262,7 @@ class TestElements(unittest.TestCase):
         """
         design = designs.DesignPlanar()
         qgt = QGeometryTables(design)
-        transmon_pocket = TransmonPocket(design, 'my_id')
+        TransmonPocket(design, 'my_id')
 
         four_zeros = qgt.get_component_bounds('my_id')
         self.assertEqual(len(four_zeros), 4)
@@ -275,7 +275,7 @@ class TestElements(unittest.TestCase):
         """
         design = designs.DesignPlanar()
         qgt = QGeometryTables(design)
-        transmon_pocket = TransmonPocket(design, 'my_id')
+        TransmonPocket(design, 'my_id')
 
         self.assertTrue(qgt.check_element_type('path', log_issue=False))
         self.assertFalse(qgt.check_element_type('not-there', log_issue=False))
@@ -286,7 +286,7 @@ class TestElements(unittest.TestCase):
         """
         design = designs.DesignPlanar()
         qgt = QGeometryTables(design)
-        q1 = TransmonPocket(design, 'Q1')
+        TransmonPocket(design, 'Q1')
 
         rect = draw.rectangle(500, 300, 0, 0)
         geom = {'my_polygon': rect}
@@ -295,18 +295,14 @@ class TestElements(unittest.TestCase):
         # sucess results
         actual = qgt.get_component('Q1')
         self.assertEqual(len(actual), 2)
-        self.assertTrue(type(actual['path']) is GeoDataFrame)
-        self.assertTrue(type(actual['poly']) is GeoDataFrame)
+        self.assertTrue(isinstance(actual['path'], GeoDataFrame))
+        self.assertTrue(isinstance(actual['poly'], GeoDataFrame))
 
         # failure results
         actual = qgt.get_component('not-real')
         self.assertEqual(len(actual), 2)
         self.assertEqual(actual['path'], None)
         self.assertEqual(actual['poly'], None)
-        
-
-
-
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
