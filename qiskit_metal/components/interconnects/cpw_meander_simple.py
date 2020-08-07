@@ -538,14 +538,3 @@ class CpwMeanderSimple(QComponent):
             self.design.components[component_start].id, pin_start, self.id, 'cpw_start')
         self.design.connect_pins(
             self.design.components[component_end].id, pin_end, self.id, 'cpw_end')
-        
-
-
-pin_inputs=Dict(
-            start_pin=Dict(
-                component='', # Name of component to start from, which has a pin
-                pin=''), # Name of pin used for pin_start
-            end_pin=Dict(
-                component='', # Name of component to end on, which has a pin
-                pin='') # Name of pin used for pin_end
-                ),

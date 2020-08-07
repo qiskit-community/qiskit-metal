@@ -95,7 +95,7 @@ body {
 }
 
 /*.DocString {
-    font-family: monospace;
+    font-family: Arial;
 }*/
 """
 
@@ -109,7 +109,7 @@ def format_docstr(doc: Union[str, None]) -> str:
     Returns:
         str: formatted string
     """
-    
+
     if doc is None:
         return ''
     doc = doc.strip()
@@ -140,9 +140,9 @@ def create_QTextDocument(doc: QtWidgets.QTextEdit) -> QtGui.QTextDocument:
 
     # Style documents monoscaped font
     font = document.defaultFont()
-    if hasattr(QFont, "Monospace"):
+    if hasattr(QFont, "Arial"):
         # when not available
-        font.setStyleHint(QFont.Monospace)
+        font.setStyleHint(QFont.Arial)
     else:
         font.setStyleHint(QFont.Courier)
     font.setFamily("Courier")
@@ -252,10 +252,11 @@ class ComponentWidget(QTabWidget):
         """
         if self.design:
             if self.component_name:
-                a_component = self.design.components[self.component_name]
-                if a_component is None:
-                    self.set_component(None)
-                return a_component
+                if self.component_name in self.design.components:
+                    a_component = self.design.components[self.component_name]
+                    if a_component is None:
+                        self.set_component(None)
+                    return a_component
         return None
 
     def set_component(self, name: str):

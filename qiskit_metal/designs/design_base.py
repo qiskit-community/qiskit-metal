@@ -583,8 +583,8 @@ class QDesign():
 
         # Nothing to delete if name not in components
         if component_name not in self.name_to_id:
-            self.logger.info('Called delete_component {component_name}, but such a \
-                             component is not in the design cache dicitonary of components.')
+            self.logger.info(f'Called delete_component {component_name}, but such a '\
+                              'component is not in the design cache dicitonary of components.')
             return True
         else:
             component_id = self.name_to_id[component_name]

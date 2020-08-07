@@ -36,8 +36,8 @@ class GDSRender(QRenderer):
             self.q_subtract_false, cell=TOP
 
     datatype:
-        10 Polygon
-        11 Flexpath
+        * 10 Polygon
+        * 11 Flexpath
     """
 
     # These options can be over-written by passing dict to render_options.
@@ -164,7 +164,8 @@ class GDSRender(QRenderer):
         setattr(self, f'{table_name}_subtract_true', subtract_true)
         setattr(self, f'{table_name}_subtract_false', subtract_false)
 
-    def get_bounds(self, gs_table: geopandas.GeoSeries) -> Tuple[float, float, float, float]:
+    @staticmethod
+    def get_bounds(gs_table: geopandas.GeoSeries) -> Tuple[float, float, float, float]:
         """Get the bounds for all of the elements in gs_table.
 
         Args:
@@ -186,8 +187,9 @@ class GDSRender(QRenderer):
             all_bounds (list): Each tuple=(minx, miny, maxx, maxy) in list represents bounding box for poly, path, etc.
 
         Returns:
-            tuple: A scaled bounding box which includes all paths, polys, etc.
-            tuple: A  bounding box which includes all paths, polys, etc.
+            tuple[tuple, tuple]:
+            first tuple: A scaled bounding box which includes all paths, polys, etc.;
+            second tuple: A  bounding box which includes all paths, polys, etc.
         """
 
         # If given an empty list.
@@ -234,11 +236,13 @@ class GDSRender(QRenderer):
                            max(all_bounds, key=itemgetter(3))[3])
         return inclusive_tuple
 
-    def rect_for_ground(self) -> None:
+    def render_chip(self) -> None:
         """Use the maximum bounds for all qgeometry on chip.  Scale the size of chip.
            Use gdspy.Polygon() because gdspy.boolean() requires it.
         """
 
+        # change format to use gdspy.Pologon().
+        # [minx, miny, maxx, maxy] to [(minx,miny),(maxx,miny),(maxx,maxy),(minx,maxy)]
         rectangle_points = [(self.max_bound[0], self.max_bound[1]),
                             (self.max_bound[2], self.max_bound[1]),
                             (self.max_bound[2], self.max_bound[3]),
@@ -251,11 +255,15 @@ class GDSRender(QRenderer):
 
     def create_qgeometry_for_gds(self, highlight_qcomponents: list = []) -> int:
         """Using self.design, this method does the following:
+
         1. Gather the QGeometries to be used to write to file.
            Duplicate names in hightlight_qcomponents will be removed without warning.
+
         2. Populate self.list_bounds, which contains the maximum bound for all elements to render.
+
         3. Calculate scaled bounding box to emulate size of chip using self.scaled_max_bound
-        and place into self.scaled_max_bound.
+           and place into self.scaled_max_bound.
+
         4. Gather Geometries to export to GDS format.
 
         Args:
@@ -273,7 +281,7 @@ class GDSRender(QRenderer):
         for qcomp in unique_qcomponents:
             if qcomp not in self.design.name_to_id:
                 self.design.logger.warning(
-                    f'The component={qcomp} in highlight_qcompoents not in QDesign. The GDS data not generated.')
+                    f'The component={qcomp} in highlight_qcomponents not in QDesign. The GDS data not generated.')
                 return 1
 
         # put the QGeomtry into GDS format.
@@ -302,6 +310,7 @@ class GDSRender(QRenderer):
 
             if self.options.ground_plane:
                 self.seperate_subtract_shapes(table_name, table)
+
                 all_subtracts.append(
                     getattr(self, f'{table_name}_subtract_true'))
                 all_no_subtracts.append(
@@ -349,12 +358,17 @@ class GDSRender(QRenderer):
         """Using the geometries for each table name, write to a GDS file.
 
         -> rectangle on Y
+
         -> put all the 'subtract' shapes on layer X
+
         -> Boolean subtract X from Y and put that on Z
+
         -> add all the non-subtract shapes to Z as well.
 
         (Y = layer number 200) self.scaled_chip_poly
+
         (X = layer number 201) self.q_subtract_true , cell=SUBTRACT
+
         (Z = layer number 202) self.q_subtract_false, cell=TOP
 
         Args:

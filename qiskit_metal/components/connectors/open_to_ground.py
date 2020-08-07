@@ -21,13 +21,15 @@ from qiskit_metal.components.base import QComponent
 
 
 class OpenToGround(QComponent):
-    """A basic short to ground termination. Functions as a pin for auto CPW drawing.
+    """A basic open to ground termination. Functions as a pin for auto CPW drawing.
 
     Inherits `QComponent` class
 
     Options:
         * width: the width of the 'cpw' terminating to ground (this is merely
           for the purpose of generating a value to pass to the pin)
+        * gap: the gap of the 'cpw'
+        * termination_gap: the length of dielectric from the end of the cpw center trace to the ground.
         * pos_x/_y: the x/y position of the ground termination.
         * rotation: the direction of the termination. 0 degrees is +x, following a
           counter-clockwise rotation (eg. 90 is +y)
