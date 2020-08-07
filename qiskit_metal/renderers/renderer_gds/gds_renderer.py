@@ -26,8 +26,6 @@ class GDSRender(QRenderer):
     """Extends QRenderer to export GDS formatted files. The methods which a user will need for GDS export
     should be found within this class.
 
-
-
     layers:
         200 Emulated Chip size based on self.scaled_max_bound * max_bounds of elements on chip.
             self.scaled_chip_poly
@@ -52,14 +50,17 @@ class GDSRender(QRenderer):
         # (float): Scale box of components to render. Should be greater than 1.0.
         # TODO: Make X and Y
         bounding_box_scale=1.2,
+
+        # Implement creating a ground plane which is scaled from largest bounding box,
+        # then QGeometry which is marked as subtract will be removed from ground_plane.
+        # Then the balance of QGeometry will be placed placed in same layer as ground_plane.
         ground_plane=True,
 
+        # TODO: layer numbers come from QGeometry and QDesign
         # layer and data numbers, needs to come from default options
         # i.e. self.options.ld_subtract = {"layer": 201, "data": 12}.
         ld_subtract={"layer": 201},
         ld_no_subtract={"layer": 202},
-
-        # TODO: CHANGE
         ld_chip={"layer": 200, "datatype": 10},
 
         # used for fillet in gdspy.FlexPath() and gdspy.boolean()
@@ -363,41 +364,49 @@ class GDSRender(QRenderer):
 
         lib = self.new_gds_library()
 
-        cell = lib.new_cell('NO_EDITS', overwrite_duplicate=True)
+        # The NO_EDITS cell is for testing of development code.
+        # cell = lib.new_cell('NO_EDITS', overwrite_duplicate=True)
 
-        for table_name in self.design.qgeometry.get_element_types():
-            q_geometries = getattr(self, f'{table_name}s')
-            if q_geometries is None:
-                self.design.logger.warning(
-                    f'There are no {table_name}s to write.')
-            else:
-                cell.add(q_geometries)
+        # for table_name in self.design.qgeometry.get_element_types():
+        #     q_geometries = getattr(self, f'{table_name}s')
+        #     if q_geometries is None:
+        #         self.design.logger.warning(
+        #             f'There are no {table_name}s to write.')
+        #     else:
+        #         cell.add(q_geometries)
 
-            if q_geometries is None:
-                self.design.logger.warning(
-                    f'There is no table named "{table_name}s" to write.')
-            else:
-                cell.add(q_geometries)
+        #     if q_geometries is None:
+        #         self.design.logger.warning(
+        #             f'There is no table named "{table_name}s" to write.')
+        #     else:
+        #        cell.add(q_geometries)
 
         if self.options.ground_plane:
-            chip_name = 'main'  # TODO:
+            # TODO: Note For get_chip_layer(), default is 'main'.
+            chip_name = 'main'
+
             # # For ground plane.
             ground_cell = lib.new_cell('TOP', overwrite_duplicate=True)
             subtract_cell = lib.new_cell('SUBTRACT', overwrite_duplicate=True)
             subtract_cell.add(self.q_subtract_true)
 
-            '''gdspy.boolean is not documented clearly.
+            '''gdspy.boolean() is not documented clearly.
             If there are multiple elements to subtract (both poly and path),
             the way I could make it work is to put them into a cell, within lib.
-            I used the method cell_name.get_polygonsets(),
+            I used the method cell_name.get_polygons(),
             which appears to convert all elements within the cell to poly.
             After the boolean(), I deleted the cell from lib.
             The memory is freed up then.
             '''
             diff_geometry = gdspy.boolean(
-                self.scaled_chip_poly, subtract_cell.get_polygons(),
-                'not', precision=self.options.precision,
-                layer=self.design.q(chip_name))
+                self.scaled_chip_poly,
+                subtract_cell.get_polygons(),
+                'not',
+                precision=self.options.precision,
+                layer=self.options.ld_chip.layer)
+
+            # When getting layer from design and QGeometry.
+            # layer=self.design.get_chip_layer(chip_name))
 
             lib.remove(subtract_cell)
 
@@ -429,8 +438,6 @@ class GDSRender(QRenderer):
         Returns:
             int: 0=file_name can not be written, otherwise 1=file_name has been written
         """
-
-        # TODO: User provide list of QComponent names to render, instead of entire design.
 
         if not self._can_write_to_path(file_name):
             return 0
@@ -505,6 +512,6 @@ class GDSRender(QRenderer):
             # TODO: Handle
             self.design.logger.warning(
                 f'Unexpected shapely object geometry.'
-                f'The variable element is {data(geom)}, method can currently handle Polygon and FlexPath.')
+                f'The variable element is {type(geom)}, method can currently handle Polygon and FlexPath.')
             # print(geom)
             return None

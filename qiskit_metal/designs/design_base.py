@@ -75,7 +75,7 @@ class QDesign():
     # Used by `is_design` to check.
     __i_am_design__ = True
 
-    def __init__(self, metadata: dict = None, overwrite_enabled: bool = False):
+    def __init__(self, metadata: dict = None, overwrite_enabled: bool = False, enable_renderers: bool = True):
         """Create a new Metal QDesign.
 
         Arguments:
@@ -94,6 +94,11 @@ class QDesign():
                         Either True or False - If string name, used for component, is NOT
                             being used in the design, a component will be generated and
                             added to design using the name.
+
+            enable_renderers: Enable the renderers during the init() of design.
+                        For now, gds is enabled within design. 
+                        TODO:Use the list in config.renderers_to_load() to determine 
+                        which renderers to enable. 
 
         """
 
@@ -147,8 +152,8 @@ class QDesign():
         self._qnet = QNet()
 
         # Instantiate and register renderers to Qdesign.renderers
-        self.renderers = Dict() #TODO: _ private
-        if 1: # TODO: have a flag in the init weather or not to do this
+        self._renderers = Dict()
+        if enable_renderers:
             self._start_renderers()
 
     def _init_metadata(self) -> Dict:
@@ -206,8 +211,17 @@ class QDesign():
         return self._template_options
 
     @property
+    def renderers(self) -> Dict:
+        '''
+        Return a Dict of all the renderers registered within QDesign. 
+        '''
+
+        return self._renderers
+
+    @property
     def template_renderer_options(self) -> Dict:
-        '''Return default_renderer_options dictionary, which contain default options used in creating Metal renderer.
+        '''
+        Return default_renderer_options dictionary, which contain default options used in creating Metal renderer.
         '''
         return self._template_renderer_options.default_options
 
@@ -277,12 +291,12 @@ class QDesign():
             chip_name (str, optional): [description]. Defaults to 'main'.
 
         Returns:
-            int: [description]
+            int: layer of ground plane
         """
-        #TODO: Maybe return tuple for layer, datatype   
-        if 'chip_name' in self.chips:
+        # TODO: Maybe return tuple for layer, datatype
+        if chip_name in self.chips:
             if 'layer_ground_plane' in self.chips:
-                return int(self.chips['layer'])
+                return int(self.chips['layer_ground_plane'])
         return 0
 
 #########General methods###################################################
@@ -820,13 +834,15 @@ class QDesign():
 
 
     def _start_renderers(self):
-        """TODO:
-        """
+        """ For now, load only GDS.  However, will need to determine 
+        if mpl needs to be loaded, because it is conencted to GUI.
 
-        # TODO: renderers_to_load  from config.py
+
+        # TODO: Use config.renderers_to_load()
         # Determine how to load exactly.
         # Zkm: i don't think we should load all by default. Just MPL and GDS.
-        # Not everyone needs HFSS. Should load that separatly. s
+        # Not everyone needs HFSS. Should load that separatly.
+        """
 
         # GDS Renderer using base class QRender
         a_gds = GDSRender(self, initiate=True)
@@ -835,4 +851,4 @@ class QDesign():
         unique_name = a_gds._get_unique_class_name
 
         # register renderers here.
-        self.renderers['gds'] = a_gds
+        self._renderers['gds'] = a_gds
