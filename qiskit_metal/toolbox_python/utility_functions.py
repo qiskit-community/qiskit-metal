@@ -20,16 +20,11 @@ Simply utility functions to improve QOL of QM developers and QM users
 @modified: Thomas McConkey 2019/10/16
 '''
 
-import logging
-import re
-import sys
 import traceback
 import warnings
-import logging
-import sys
-import pandas as pd
-
 from copy import deepcopy
+
+import pandas as pd
 
 __all__ = ['copy_update', 'dict_start_with', 'data_frame_empty_typed', 'clean_name',
            'enable_warning_traceback', 'get_traceback', 'print_traceback_easy', 'log_error_easy',
@@ -116,7 +111,7 @@ def dict_start_with(my_dict, start_with, as_=list):
 #     res_html = display_dfs(*res, do_display=do_display)  #why not just directly call the function DataFrame_display_side_by_side(*args) ?
 #     return res, res_html
 
-def data_frame_empty_typed(column_types: dict):
+def data_frame_empty_typed(column_types:dict):
     """Creates and empty DataFrame with dtypes for each column given
     by the dicitonary,
 
@@ -131,8 +126,8 @@ def data_frame_empty_typed(column_types: dict):
         df[name] = pd.Series(dtype=dtype)
     return df
 
-
-def clean_name(text: str):
+import re
+def clean_name(text:str):
     """Clean a string to a proper variable name in python
 
     Arguments:
@@ -144,18 +139,19 @@ def clean_name(text: str):
     .. code-block:: python
 
         clean_name('32v2 g #Gmw845h$W b53wi ')
-
+    
     *Output*
         `'_32v2_g__Gmw845h_W_b53wi_'`
 
     See https://stackoverflow.com/questions/3303312/how-do-i-convert-a-string-to-a-valid-variable-name-in-python
     """
-    return re.sub('\W|^(?=\d)', '_', text)
+    return re.sub('\W|^(?=\d)','_', text)
 
 ####################################################################################
 # Tracebacks
 
 _old_warn = None
+
 
 def enable_warning_traceback():
     """
@@ -177,31 +173,28 @@ def enable_warning_traceback():
 
 def get_traceback():
     '''
-    Returns traceback string. Format each frame in the traceback as a string.
+    Returns traceback string
 
     Returns:
         str: traceback string
     '''
-    trace_back = traceback.extract_stack()
-    return "".join(traceback.format_list(trace_back)[:-1])
+    tb = traceback.extract_stack()
+    return "".join(traceback.format_list(tb)[:-1])
 
 
 def print_traceback_easy(start=26):
     '''
-    Utility funciton to print traceback for debug.
-    Will report in series the string version of the frames that we are currently in.
+    Utility funciton to print traceback for debug
 
     Args:
-        start (int): Starting position of the traceback frame.
-                     Default: 26. Assumes runs from Jupyter notebooks.
-                     In general set to zero.
+        start (int): starting position
     '''
     print(f"\n")
     print('\n'.join(map(repr, traceback.extract_stack()[start:])))
     print('\n')
 
-
-def log_error_easy(logger: logging.Logger, pre_text='', post_text='', do_print=False):
+import logging, sys
+def log_error_easy(logger:logging.Logger, pre_text='', post_text='', do_print=False):
     """
     Print
 

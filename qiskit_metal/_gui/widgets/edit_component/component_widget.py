@@ -109,7 +109,7 @@ def format_docstr(doc: Union[str, None]) -> str:
     Returns:
         str: formatted string
     """
-
+    
     if doc is None:
         return ''
     doc = doc.strip()
@@ -252,11 +252,10 @@ class ComponentWidget(QTabWidget):
         """
         if self.design:
             if self.component_name:
-                if self.component_name in self.design.components:
-                    a_component = self.design.components[self.component_name]
-                    if a_component is None:
-                        self.set_component(None)
-                    return a_component
+                a_component = self.design.components[self.component_name]
+                if a_component is None:
+                    self.set_component(None)
+                return a_component
         return None
 
     def set_component(self, name: str):

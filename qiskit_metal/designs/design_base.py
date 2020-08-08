@@ -75,17 +75,17 @@ class QDesign():
             metadata (Dict): Dictionary of metadata (default: None).
 
             overwrite_enabled (bool): When True - If the string name, used for component, already
-                            exists in the design, the existing component will be
-                            deleted from design, and new component will be generated
-                            with the same name and newly generated component_id,
-                            and then added to design.
+                            exists in the design, the existing component will be 
+                            deleted from design, and new component will be generated 
+                            with the same name and newly generated component_id, 
+                            and then added to design. 
                         When False - If the string name, used for component, already
-                            exists in the design, the existing component will be
+                            exists in the design, the existing component will be 
                             kept in the design, and current component will not be generated,
-                            nor will be added to the design. The 'NameInUse' will be returned
+                            nor will be added to the design. The 'NameInUse' will be returned 
                             during component generation.
-                        Either True or False - If string name, used for component, is NOT
-                            being used in the design, a component will be generated and
+                        Either True or False - If string name, used for component, is NOT 
+                            being used in the design, a component will be generated and 
                             added to design using the name.
 
         """
@@ -221,10 +221,10 @@ class QDesign():
     def net_info(self) -> pd.core.frame.DataFrame:
         """Provides a copy of net_info table which holds all the connections, of pins, within a design.
         An advanced user can use methods within the class of design._qnet.
-        Also, an advanced user can also directly edit the table at design._qnet._net_info.
+        Also, an advanced user can also directly edit the table at design._qnet._net_info. 
 
         Returns:
-            pd.core.frame.DataFrame: copy of net_info table.
+            pd.core.frame.DataFrame: copy of net_info table.  
         """
         return self._qnet._net_info.copy(deep=True)
 
@@ -538,8 +538,8 @@ class QDesign():
 
         # Nothing to delete if name not in components
         if component_name not in self.name_to_id:
-            self.logger.info(f'Called delete_component {component_name}, but such a '\
-                              'component is not in the design cache dicitonary of components.')
+            self.logger.info('Called delete_component {component_name}, but such a \
+                             component is not in the design cache dicitonary of components.')
             return True
         else:
             component_id = self.name_to_id[component_name]

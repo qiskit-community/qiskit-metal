@@ -134,7 +134,7 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
 
     # @catch_exception_slot_pyqt
     def do_menu_delete(self, event):
-        """Called when the user clicks the context menu delete.
+        """called when the user clicks the context menu delete
 
         Args:
             event (QContextMenuEvent): the event
@@ -149,7 +149,7 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
                 self._do_delete(name)
 
     def _do_delete(self, name: str):
-        """Do delte a component by name.
+        """do delte a component by name
 
         Args:
             name (str): name of the component to delete
@@ -160,7 +160,7 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         self.gui.plot_win.replot()
 
     def do_menu_rename(self, event):
-        """Called when the user clicks the context menu rename.
+        """called when the user clicks the context menu rename
 
         Args:
             event (QContextMenuEvent): the event
@@ -234,7 +234,7 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         return selected_names
 
     def selection_changed(self, *args):
-        """Update by highlighting, the rows which the user selected.
+        """Update by highlighting, the rows which the user selected. 
         """
         rows = set([idx.row() for idx in self.selectedIndexes()])
         selected_names = self.rows_to_names(rows)

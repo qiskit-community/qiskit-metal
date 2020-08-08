@@ -15,7 +15,6 @@
 #pylint: disable-msg=unnecessary-pass
 #pylint: disable-msg=pointless-statement
 #pylint: disable-msg=too-many-public-methods
-#pylint: disable-msg=broad-except
 
 """
 Qiskit Metal unit tests analyses functionality.
@@ -51,62 +50,35 @@ class TestDesign(unittest.TestCase):
         """
         pass
 
-    def test_design_instantiate_qdesign(self):
+    @staticmethod
+    def test_design_instantiate_qdesign():
         """
         Test the instantiation of QDesign
         """
-        try:
-            QDesign
-        except Exception:
-            self.fail("QDesign failed")
+        QDesign
+        QDesign(metadata={})
+        QDesign(metadata={}, overwrite_enabled=True)
 
-        try:
-            QDesign(metadata={})
-        except Exception:
-            self.fail("QDesign(metadata={}) failed")
-
-        try:
-            QDesign(metadata={}, overwrite_enabled=True)
-        except Exception:
-            self.fail("QDesign(metadata={}, overwrite_enabled=True) failed")
-
-    def test_design_instantiate_design_planar(self):
+    @staticmethod
+    def test_design_instantiate_design_planar():
         """
         Test the instantiation of DesignPlanar
         """
-        try:
-            DesignPlanar
-        except Exception:
-            self.fail("DesignPlanar failed")
+        DesignPlanar
 
-        try:
-            DesignPlanar(metadata={})
-        except Exception:
-            self.fail("DesignPlanar(metadata={}) failed")
-
-        try:
-            DesignPlanar(metadata={}, overwrite_enabled=True)
-        except Exception:
-            self.fail("DesignPlanar(metadata={}, overwrite_enabled=True) failed")
-
-    def test_design_instantiate_design_components(self):
+    @staticmethod
+    def test_design_instantiate_design_components():
         """
         Test the instantiation of Components
         """
-        design = QDesign()
-        try:
-            Components(design)
-        except Exception:
-            self.fail("Components(design) failed")
+        Components
 
-    def test_design_instantiate_qnet(self):
+    @staticmethod
+    def test_design_instantiate_qnet():
         """
         Test the instantiation of QNet
         """
-        try:
-            QNet
-        except Exception:
-            self.fail("QNet failed")
+        QNet
 
     def test_design_update_metadata(self):
         """

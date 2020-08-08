@@ -190,7 +190,7 @@ class QMainWindowExtensionBase(QMainWindow):
             from IPython.display import Image, display
             _disp_ops = dict(width=500)
             _disp_ops.update(disp_ops or {})
-            display(Image(filename=str(path), **_disp_ops))
+            display(Image(filename=path, **_disp_ops))
 
     def toggle_all_docks(self):
         """Show or hide all docks.
@@ -566,7 +566,7 @@ class QMainWindowBaseHandler():
         """Save file. Called on exit
 
         Raises:
-            NotImplementedError: Function not written
+            NotImplementedError: Function not written 
         """
         raise NotImplementedError()
 

@@ -425,7 +425,7 @@ class PlotCanvas(FigureCanvas):
         #ax.set_ylabel('y (mm)')
 
     def plot(self, clear=True, with_try=True):
-        """Render the plot.
+        """Render the plot
 
         Args:
             clear (bool): True to clear everything first (Default: True)
