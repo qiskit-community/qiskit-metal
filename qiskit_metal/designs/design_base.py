@@ -583,8 +583,8 @@ class QDesign():
 
         # Nothing to delete if name not in components
         if component_name not in self.name_to_id:
-            self.logger.info(f'Called delete_component {component_name}, but such a '\
-                              'component is not in the design cache dicitonary of components.')
+            self.logger.info(f'Called delete_component {component_name}, but such a '
+                             'component is not in the design cache dicitonary of components.')
             return True
         else:
             component_id = self.name_to_id[component_name]
@@ -638,7 +638,6 @@ class QDesign():
 
 
 #########I/O###############################################################
-
 
     @classmethod
     def load_design(cls, path: str):
@@ -832,13 +831,12 @@ class QDesign():
 
 ######### Renderers ###############################################################
 
-
     def _start_renderers(self):
         """ For now, load only GDS.  However, will need to determine 
         if mpl needs to be loaded, because it is conencted to GUI.
 
 
-        # TODO: Use config.renderers_to_load()
+        # TODO: Use Dict() from config.renderers_to_load.
         # Determine how to load exactly.
         # Zkm: i don't think we should load all by default. Just MPL and GDS.
         # Not everyone needs HFSS. Should load that separatly.
