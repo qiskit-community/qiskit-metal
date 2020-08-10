@@ -193,6 +193,7 @@ class CpwMeanderSimple(QComponent):
         layer='1',
         trace_width='cpw_width',
         trace_gap='cpw_gap',
+        fillet = '50um',
 
         meander=Dict(
             spacing='200um',
@@ -516,12 +517,12 @@ class CpwMeanderSimple(QComponent):
         self.add_qgeometry('path',
                           {'trace': line},
                           width=width,
-                          layer=layer)
+                          layer=layer, fillet = p.fillet)
         self.add_qgeometry('path',
                           {'cut': line},
                           width=width + 2*p.trace_gap,
                           layer=layer,
-                          subtract=True)
+                          subtract=True, fillet = p.fillet)
         
         component_start = p.pin_inputs.start_pin.component
         pin_start = p.pin_inputs.start_pin.pin
