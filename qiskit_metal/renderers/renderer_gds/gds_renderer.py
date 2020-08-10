@@ -90,8 +90,8 @@ class GDSRender(QRenderer):
         Args:
             design (QDesign): Use QGeometry within QDesign  to obtain elements for GDS file.
             initiate (bool, optional): True to initiate the renderer. Defaults to True.
-            render_template (Dict, optional): Typically used by GUI for template options for GDS. Defaults to None.
-            render_options (Dict, optional):  Used to overide all options. Defaults to None.
+            render_template (Dict, optional): Typically used by GUI for template options for GDS.  Defaults to None.
+            render_options (Dict, optional):  Used to overide all options. Defaults to None. 
         """
 
         super().__init__(design=design, initiate=initiate,
@@ -486,7 +486,7 @@ class GDSRender(QRenderer):
 
         Returns:
             'gdspy.polygon' or 'gdspy.FlexPath': Convert the class to a series of GDSII
-                                                 format on the input pd.Series.
+            format on the input pd.Series.
         """
 
         """
