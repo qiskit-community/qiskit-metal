@@ -582,12 +582,14 @@ class QDesign():
                 delete_this_pin = df_subset_based_on_net_id[(
                     df_subset_based_on_net_id['component_id'] != component_id)]
 
-                edit_component = list(delete_this_pin['component_id'])[0]
-                edit_pin = list(delete_this_pin['pin_name'])[0]
+                # If Component is connected to anything, meaning it is part of net_info table.
+                if not delete_this_pin.empty:
+                    edit_component = list(delete_this_pin['component_id'])[0]
+                    edit_pin = list(delete_this_pin['pin_name'])[0]
 
-                if self._components[edit_component]:
-                    if self._components[edit_component].pins[edit_pin]:
-                        self._components[edit_component].pins[edit_pin].net_id = 0
+                    if self._components[edit_component]:
+                        if self._components[edit_component].pins[edit_pin]:
+                            self._components[edit_component].pins[edit_pin].net_id = 0
 
             # pins of component to delete.
             self._qnet.delete_all_pins_for_component(component_id)
