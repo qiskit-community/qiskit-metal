@@ -158,12 +158,12 @@ class QRenderer():
 
     @property
     def options(self) -> Dict:
-        "Options for the QRenderer."
+        """Options for the QRenderer."""
         return self._options
 
     @property
     def design(self) -> 'QDesign':
-        '''Return a reference to the parent design object.'''
+        """Return a reference to the parent design object."""
         return self._design
 
     @property
@@ -200,8 +200,6 @@ class QRenderer():
         Returns:
             str: Example: 'qiskit_metal.renders.renderer_gds.gds_renderer.GDSRender'
         """
-
-        pass
         return f'{cls.__module__}.{cls.__name__}'
 
     @classmethod
