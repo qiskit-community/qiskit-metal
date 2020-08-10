@@ -538,8 +538,8 @@ class QDesign():
 
         # Nothing to delete if name not in components
         if component_name not in self.name_to_id:
-            self.logger.info(f'Called delete_component {component_name}, but such a '\
-                              'component is not in the design cache dicitonary of components.')
+            self.logger.info(f'Called delete_component {component_name}, but such a '
+                             f'component is not in the design cache dicitonary of components.')
             return True
         else:
             component_id = self.name_to_id[component_name]
@@ -570,6 +570,26 @@ class QDesign():
         if component_id in self._components:
             # id in components dict
             # Need to remove pins before popping component.
+
+            # For components to delete, which  connected to any other component,
+            # need to set the net_id to zero of OTHER component
+            #  before deleting from net_id table.
+            for pin_name in self._components[component_id].pins:
+                # make net_id be zero for every component which is connected to it.
+                net_id_search = self._components[component_id].pins[pin_name].net_id
+                df_subset_based_on_net_id = self.net_info[(
+                    self.net_info['net_id'] == net_id_search)]
+                delete_this_pin = df_subset_based_on_net_id[(
+                    df_subset_based_on_net_id['component_id'] != component_id)]
+
+                edit_component = list(delete_this_pin['component_id'])[0]
+                edit_pin = list(delete_this_pin['pin_name'])[0]
+
+                if self._components[edit_component]:
+                    if self._components[edit_component].pins[edit_pin]:
+                        self._components[edit_component].pins[edit_pin].net_id = 0
+
+            # pins of component to delete.
             self._qnet.delete_all_pins_for_component(component_id)
 
             # Even though the qgeometry table has string for component_id, dataframe is
@@ -593,6 +613,7 @@ class QDesign():
 
 
 #########I/O###############################################################
+
 
     @classmethod
     def load_design(cls, path: str):
