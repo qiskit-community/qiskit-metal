@@ -208,7 +208,7 @@ class QRenderer():
                                     template_key: str,
                                     render_template: Dict):
         """Init funciton to register a renderer class with the design when first instantiated.
-            Registers the renderer template options.
+            Registers the renderer's template options.
 
             Arguments:
                 design (QDesign): The parent design
@@ -250,9 +250,11 @@ class QRenderer():
             template_key = cls._get_unique_class_name()
 
         if template_key not in design.template_options:
+            # Registers the renderer's template options.
             cls._register_class_with_design(
                 design, template_key, render_template)
 
+        # Only log warning, if template_key not registered within design.
         if template_key not in design.template_options:
             logger_ = logger_ or design.logger
             if logger_:
