@@ -86,7 +86,7 @@ class HybridPathfinder(QComponent):
         cpw_width='cpw_width',
         cpw_gap='cpw_gap',
 
-        anchors=OrderedDict() # Intermediate anchors only; doesn't include endpoints
+#         anchors=OrderedDict() # Intermediate anchors only; doesn't include endpoints
         # startpin -> startpin + leadin -> anchors -> endpin + leadout -> endpin
     )
 
@@ -182,7 +182,7 @@ class HybridPathfinder(QComponent):
         # 4. The y coordinate of the latest point
 
         while h and not path:
-            print('h: ', h)
+#             print('h: ', h)
             length_travelled, remaining_dist, x, y = heapq.heappop(h)
             current_path = pathmapper[(length_travelled, remaining_dist, x, y)]
             # Look in forward, left, and right directions a fixed distance away.
@@ -221,9 +221,9 @@ class HybridPathfinder(QComponent):
                             new_path = current_path + [neighbor]
                     else:
                         new_path = current_path + [neighbor]
-                    if not new_remaining_dist:
+                    if new_remaining_dist < 10 ** -8:
                         # Destination has been reached
-                        return new_path
+                        return new_path[:-1] + [end]
                     heapq.heappush(h, (new_length_travelled, new_remaining_dist, neighbor[0], neighbor[1]))
                     pathmapper[(new_length_travelled, new_remaining_dist, neighbor[0], neighbor[1])] = new_path
                     visited.add(tuple(neighbor))
@@ -235,7 +235,7 @@ class HybridPathfinder(QComponent):
         leadend = p.leadin.end
         w = p.cpw_width
 
-        anchors = p.anchors
+#         anchors = p.anchors
 
         # print('anchors: ', anchors)
 
@@ -256,7 +256,7 @@ class HybridPathfinder(QComponent):
 
         self._pts = [m1, m1 + n1 * (w / 2 + leadstart)] # Initialize list of vertices with startpin
 
-        for coord in list(anchors) + [m2 + n2 * (w / 2 + leadend)]:
+        for coord in [m2 + n2 * (w / 2 + leadend)]:
             # Process startpin + leadin, anchors, and endpin + leadout
             # Note: This assumes the user chooses a good final anchor
             easypath = self.getpts_simple(coord - self._pts[-1], self._pts[-1], coord)
