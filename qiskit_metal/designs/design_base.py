@@ -219,6 +219,13 @@ class QDesign():
         return self._renderers
 
     @property
+    def chips(self) -> Dict:
+        '''
+        Return a Dict of information regarding chip.
+        '''
+        return self._chips
+
+    @property
     def template_renderer_options(self) -> Dict:
         '''
         Return default_renderer_options dictionary, which contain default options used in creating Metal renderer.
@@ -288,7 +295,7 @@ class QDesign():
         """Return the chip layer number for the ground plane.
 
         Args:
-            chip_name (str, optional): [description]. Defaults to 'main'.
+            chip_name (str, optional): User can overwrite name of chip. Defaults to 'main'.
 
         Returns:
             int: layer of ground plane
