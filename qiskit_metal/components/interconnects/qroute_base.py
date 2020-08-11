@@ -18,11 +18,10 @@
 @author: Marco Facchini
 """
 import numpy as np
-from qiskit_metal.draw.utility import vec_unit_planar
-from qiskit_metal import draw
+from qiskit_metal import draw, Dict
 from qiskit_metal.components import QComponent
 from numpy.linalg import norm
-from typing import List, Tuple, Union, Dict
+from typing import List, Tuple, Union
 
 
 class QRoutePoint:
@@ -49,6 +48,29 @@ class QRoute(QComponent):
     and the direction of the pins that start and end the array
     Values stored as np.ndarray of parsed floats or np.array float pair
     """
+
+    default_options = Dict(
+        pin_inputs=Dict(
+            start_pin=Dict(  # Qroute supports single pin routes
+                component='',  # Name of component to start from, which has a pin
+                pin=''),  # Name of pin used for pin_start
+            end_pin=Dict(
+                component='',  # Name of component to end on, which has a pin
+                pin='')  # Name of pin used for pin_end
+        ),
+        snap='true',
+        lead=Dict(
+            start_straight='0.1mm',
+            end_straight='0.1mm',
+            start_jogged_extension='test1',
+            end_jogged_extension='test2',
+        ),
+        total_length='7mm',
+        chip='main',
+        layer='1',
+        trace_width='cpw_width',
+        trace_gap='cpw_gap',
+    )
 
     def __init__(self, *args, **kwargs):
         """Calls the QComponent __init__() to create a new Metal component
@@ -122,10 +144,10 @@ class QRoute(QComponent):
     def set_lead(self, name: str) -> QRoutePoint:
         # First define which lead you intend to modify
         if name == self.start_pin_name:
-            options_lead = self.p.meander.lead_start
+            options_lead = self.p.lead.start_straight
             lead = self.head
         elif name == self.end_pin_name:
-            options_lead = self.p.meander.lead_end
+            options_lead = self.p.lead.end_straight
             lead = self.tail
         else:
             raise Exception("Pin name \"" + name + "\" is not supported for this CPW." +
@@ -173,7 +195,7 @@ class QRoute(QComponent):
             array: straight and 90 deg CCW rotated vecs 2D
             (array([1., 0.]), array([0., 1.]))
         """
-        # handle chase when star tnad end are same?
+        # handle chase when start and end are same?
         v = end.position - start.position
         direction = v / norm(v)
         if snap:
@@ -196,9 +218,6 @@ class QRoute(QComponent):
         THIS METHOD IS OUTDATED AND THUS NOT FUNCTIONING
 
         TODO: Develop code to make sure the tip of the leads align on one of the axes
-        TODO: Adjusts the orientation of the meander, adding yet a new point:
-            * Includes the start but not the given end point
-            * If it cannot meander just returns the initial start point
         """
         print(self.points[-1])
         print(concurrent_array.positions[-1])
@@ -328,9 +347,6 @@ class QRouteLead:
         THIS METHOD IS OUTDATED AND THUS NOT FUNCTIONING
 
         TODO: Develop code to make sure the tip of the leads align on one of the axes
-        TODO: Adjusts the orientation of the meander, adding yet a new point:
-            * Includes the start but not the given end point
-            * If it cannot meander just returns the initial start point
         """
 
         # determine relative position
