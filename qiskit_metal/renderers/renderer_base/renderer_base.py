@@ -129,7 +129,10 @@ class QRenderer():
         Args:
             design (QDesign): The design
             initiate (bool): True to initiate the renderer (Default: True)
+            render_template (Dict, optional): Typically used by GUI for template options for GDS.  Defaults to None.
+            render_options (Dict, optional):  Used to overide all options. Defaults to None.
         """
+
         # TODO: check that the renderer has been loaded with load_renderer
 
         self.status = 'Not Init'
