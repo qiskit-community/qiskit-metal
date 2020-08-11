@@ -10,12 +10,12 @@ from qiskit_metal.draw.utility import vec_unit_planar
 from ...toolbox_python.utility_functions import log_error_easy
 
 import numpy as np
-from qiskit_metal import draw, Dict#, QComponent
+from qiskit_metal import draw, Dict  # , QComponent
 from qiskit_metal.components import QComponent
 #from qiskit_metal import is_true
 from qiskit_metal.toolbox_metal.parsing import is_true
 
-#This should be removed
+# This should be removed
 options = Dict(pin_start_name='Q1_a',
                pin_end_name='Q2_b',
                meander=Dict(
@@ -52,8 +52,10 @@ class Oriented_2D_Array:
         Args:
             length (float) : how much to move by
         """
-        self.directions = np.append(self.directions, [self.directions[-1]], axis=0)
-        self.positions = np.append(self.positions, [self.positions[-1] + self.directions[-1] * length], axis=0)
+        self.directions = np.append(
+            self.directions, [self.directions[-1]], axis=0)
+        self.positions = np.append(
+            self.positions, [self.positions[-1] + self.directions[-1] * length], axis=0)
 
     def go_left(self, length: float):
         # THIS METHOD IS NOT USED AT THIS TIME (7/2/20)
@@ -62,8 +64,10 @@ class Oriented_2D_Array:
         Args:
             length (float): how much to move by
         """
-        self.directions = np.append(self.directions, [draw.Vector.rotate(self.directions, np.pi / 2)], axis=0)
-        self.positions = np.append(self.positions, [self.positions[-1] + self.directions[-1] * length], axis=0)
+        self.directions = np.append(
+            self.directions, [draw.Vector.rotate(self.directions, np.pi / 2)], axis=0)
+        self.positions = np.append(
+            self.positions, [self.positions[-1] + self.directions[-1] * length], axis=0)
 
     def go_right(self, length: float):
         """Straight line 90deg clock-wise direction w.r.t. Oriented_Point
@@ -73,8 +77,10 @@ class Oriented_2D_Array:
 
         THIS METHOD IS NOT USED AT THIS TIME (7/2/20)
         """
-        self.directions = np.append(self.directions, [draw.Vector.rotate(self.directions, -1 * np.pi / 2)], axis=0)
-        self.positions = np.append(self.positions, [self.positions[-1] + self.directions[-1] * length], axis=0)
+        self.directions = np.append(
+            self.directions, [draw.Vector.rotate(self.directions, -1 * np.pi / 2)], axis=0)
+        self.positions = np.append(
+            self.positions, [self.positions[-1] + self.directions[-1] * length], axis=0)
 
     @property
     def get_length(self):
@@ -182,17 +188,19 @@ class CpwMeanderSimple(QComponent):
     default_options = Dict(
         pin_inputs=Dict(
             start_pin=Dict(
-                component='', # Name of component to start from, which has a pin
-                pin=''), # Name of pin used for pin_start
+                component='',  # Name of component to start from, which has a pin
+                pin=''),  # Name of pin used for pin_start
             end_pin=Dict(
-                component='', # Name of component to end on, which has a pin
-                pin='') # Name of pin used for pin_end
-                ),
+                component='',  # Name of component to end on, which has a pin
+                pin='')  # Name of pin used for pin_end
+        ),
         total_length='7mm',
         chip='main',
         layer='1',
         trace_width='cpw_width',
         trace_gap='cpw_gap',
+
+        fillet='50um',
 
         meander=Dict(
             spacing='200um',
@@ -234,7 +242,8 @@ class CpwMeanderSimple(QComponent):
             pass
 
         # Meander
-        length_meander = total_length - (start_points.get_length + end_points.get_length)
+        length_meander = total_length - \
+            (start_points.get_length + end_points.get_length)
         if snap:
             # handle y distance
             length_meander -= 0  # (end.position - endm.position)[1]
@@ -304,8 +313,10 @@ class CpwMeanderSimple(QComponent):
         dist = end.position - start.position
         if snap:
             # TODO: Not general, depends on the outside (to fix)
-            length_direct = abs(norm(np.dot(dist, forward)))     # in the vertical direction
-            length_sideways = abs(norm(np.dot(dist, sideways)))  # in the orthogonal direction
+            # in the vertical direction
+            length_direct = abs(norm(np.dot(dist, forward)))
+            # in the orthogonal direction
+            length_sideways = abs(norm(np.dot(dist, sideways)))
         else:
             length_direct = norm(dist)
             length_sideways = 0
@@ -317,7 +328,7 @@ class CpwMeanderSimple(QComponent):
             # TODO: test if this should return empty instead
             return start.position
 
-        #print(meander_number)
+        # print(meander_number)
         # The start and end points can have 4 directions each. Depending on the direction
         # there might be not enough space for all the meanders, thus here we adjust
         # meander_number w.r.t. what the start and end points "directionality" allows
@@ -328,7 +339,7 @@ class CpwMeanderSimple(QComponent):
                 meander_number % 2) == 1:
             # odd meander_number is no good if roots have opposite orientation (w.r.t sideway)
             meander_number -= 1
-        #print(meander_number)
+        # print(meander_number)
 
         # should the first meander go sideways or counter sideways?
         start_meander_direction = round(np.dot(start.direction, sideways), 10)
@@ -381,7 +392,8 @@ class CpwMeanderSimple(QComponent):
         # root_pts = np.concatenate([middle_points,
         #                            end.position[None, :]],  # convert to row vectors
         #                           axis=0)
-        side_shift_vecs = np.array([sideways * length_perp] * len(middle_points))
+        side_shift_vecs = np.array(
+            [sideways * length_perp] * len(middle_points))
         asymmetry_vecs = np.array([sideways * asymmetry] * len(middle_points))
         root_pts = middle_points + asymmetry_vecs
         top_pts = root_pts + side_shift_vecs
@@ -398,9 +410,10 @@ class CpwMeanderSimple(QComponent):
         # it will also store right-most root_pts (end)
         # 2 points from top_pts and bot_pts will be dropped for a complete meander
         pts = np.zeros((len(top_pts) + len(bot_pts) + 1 - 2, 2))
-        #need to add the last root_pts in, because there could be a left-over non-meandered segment
+        # need to add the last root_pts in, because there could be a left-over non-meandered segment
         pts[-1, :] = root_pts[-1, :]
-        idx_side1_meander, odd = self.get_index_for_side1_meander(len(root_pts))
+        idx_side1_meander, odd = self.get_index_for_side1_meander(
+            len(root_pts))
         idx_side2_meander = 2 + idx_side1_meander[:None if odd else -2]
         if first_meander_sideways:
             pts[idx_side1_meander, :] = top_pts[:-1 if odd else None]
@@ -511,18 +524,22 @@ class CpwMeanderSimple(QComponent):
         p = self.p
         line = draw.LineString(pts)
         layer = p.layer
+        fillet = p.fillet
         width = p.trace_width
-        self.options._actual_length = str(line.length) + ' ' + self.design.get_units()
+        self.options._actual_length = str(
+            line.length) + ' ' + self.design.get_units()
         self.add_qgeometry('path',
-                          {'trace': line},
-                          width=width,
-                          layer=layer)
+                           {'trace': line},
+                           width=width,
+                           layer=layer,
+                           fillet=fillet)
         self.add_qgeometry('path',
-                          {'cut': line},
-                          width=width + 2*p.trace_gap,
-                          layer=layer,
-                          subtract=True)
-        
+                           {'cut': line},
+                           width=width + 2*p.trace_gap,
+                           layer=layer,
+                           subtract=True,
+                           fillet=fillet)
+
         component_start = p.pin_inputs.start_pin.component
         pin_start = p.pin_inputs.start_pin.pin
         component_end = p.pin_inputs.end_pin.component
@@ -530,7 +547,7 @@ class CpwMeanderSimple(QComponent):
         connector1 = self.design.components[component_start].pins[pin_start]
         connector2 = self.design.components[component_end].pins[pin_end]
 
-        #add pins and to netlist
+        # add pins and to netlist
         self.add_pin('cpw_start', connector1.points[::-1], p.trace_width)
         self.add_pin('cpw_end', connector2.points[::-1], p.trace_width)
 

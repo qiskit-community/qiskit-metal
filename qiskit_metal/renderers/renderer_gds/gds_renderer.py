@@ -522,7 +522,7 @@ class GDSRender(QRenderer):
 
             Only fillet, if number is greater than zero.
             '''
-            if math.isnan(element.fillet) or element.fillet <= 0:
+            if math.isnan(element.fillet) or element.fillet <= 0 or element.fillet < element.width:
                 to_return = gdspy.FlexPath(list(geom.coords),
                                            width=element.width,
                                            layer=element.layer if not element['subtract'] else 0,
@@ -535,7 +535,8 @@ class GDSRender(QRenderer):
                                            # layer=element.layer,
                                            datatype=11,
                                            corners=self.options.corners,
-                                           bend_radius=self.options.bend_radius_num,
+                                           bend_radius=element.fillet,
+                                           # bend_radius=self.options.bend_radius_num,
                                            tolerance=self.options.tolerance,
                                            precision=self.options.precision
                                            )
