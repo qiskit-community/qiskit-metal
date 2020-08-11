@@ -357,6 +357,9 @@ class GDSRender(QRenderer):
     def new_gds_library(self) -> gdspy.GdsLibrary:
         """Creates a new GDS Library. Deletes the old.
            Create a new GDS library file. It can contains multiple cells.
+
+           Returns:
+            gdspy.GdsLibrary: GDS library which can contain multiple celles.
         """
 
         self.update_units()
