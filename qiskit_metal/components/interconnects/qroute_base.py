@@ -25,7 +25,7 @@ from typing import List, Tuple, Union
 
 
 class QRoutePoint:
-    r"""A simple class to define a 2D Oriented_Point,
+    """A convenience wrapper class to define an point with orientation,
     with a 2D position and a 2D direction (XY plane).
     All values stored as np.ndarray of parsed floats.
     """
@@ -44,14 +44,41 @@ class QRoutePoint:
 
 
 class QRoute(QComponent):
-    r"""A simple class to define a generic route, using an array of planar points (x,y coordinates)
-    and the direction of the pins that start and end the array
-    Values stored as np.ndarray of parsed floats or np.array float pair
+    """
+    The super-class `QRoute`
+
+    Inherits `QComponent` class
+
+    Description:
+        Super-class implementing routing methods that are valid irrespective of
+        the number of pins (>=1). The route is stored in a n array of planar points
+        (x,y coordinates) and one direction, which is that of the last point in the array
+        Values are stored as np.ndarray of parsed floats or np.array float pair
+
+    Options:
+
+    Pins:
+        * start_pin       - component and pin string pair. Define which pin to start from
+        * end_pin         - (optional) component and pin string pair. Define which pin to end at
+
+    Leads:
+        * start_straight  - lead-in, defined as the straight segment extension from start_pin (default: 0.1um)
+        * end_straight    - (optional) lead-out, defined as the straight segment extension from end_pin (default: 0.1um)
+        * start_jogged_extension   - (optional) lead-in, jogged extension of lead-in. Described as list of tuples
+        * end_jogged_extension     - (optional) lead-in, jogged extension of lead-out. Described as list of tuples
+
+    Others:
+        * snap            - true/false, defines if snapping on Manhattan routing or any direction (default: 'true')
+        * total_length    - target length of the overall route (default: '7mm')
+        * chip            - which chip is this component attached to (default: 'main')
+        * layer           - which layer this component should be rendered on (default: '1')
+        * trace_width     - defines the width of the line (default: 'cpw_width')
+
     """
 
     default_options = Dict(
         pin_inputs=Dict(
-            start_pin=Dict(  # Qroute supports single pin routes
+            start_pin=Dict(  # QRoute also supports single pin routes
                 component='',  # Name of component to start from, which has a pin
                 pin=''),  # Name of pin used for pin_start
             end_pin=Dict(
@@ -62,14 +89,13 @@ class QRoute(QComponent):
         lead=Dict(
             start_straight='0.1mm',
             end_straight='0.1mm',
-            start_jogged_extension='test1',
-            end_jogged_extension='test2',
+            start_jogged_extension='',
+            end_jogged_extension='',
         ),
         total_length='7mm',
         chip='main',
         layer='1',
         trace_width='cpw_width',
-        trace_gap='cpw_gap',
     )
 
     def __init__(self, *args, **kwargs):

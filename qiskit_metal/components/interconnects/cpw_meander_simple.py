@@ -29,25 +29,39 @@ from qiskit_metal.components.interconnects.qroute_base import QRoute, QRoutePoin
 
 
 class CpwMeanderSimple(QRoute):
-    """A meandered basic CPW.
-
-    Inherits QComponent class
-
-    **Behavior and parameters**:
-        * #TODO: @john_blair / @marco
-        * Explain and comment on what options do?
     """
+    The base `CPW meandered` class
+
+    Inherits `QRoute` class
+
+    Description:
+        Implements a simple CPW, with a single meander
+
+    Options:
+
+    Meander:
+        * spacing         - minimum spacing between adjacent meander curves (default: 200um)
+        * asymmetry       - offset between the center-line of the meander and the center-line
+                            that stretches from the tip of lead-in to the x (or y) coordinate
+                            of the tip of the lead-out (default: '0um')
+
+    Others:
+        * trace_gap       - defines the gap between the route wire and the plane (default: 'cpw_gap')
+
+    """
+
     default_options = Dict(
+        trace_gap='cpw_gap',
         meander=Dict(
             spacing='200um',
-            asymmetry='0 um'
-        )
+            asymmetry='0um'
+        ),
     )
     """Default options"""
 
     def make(self):
         """
-        The make function implements the logic that creates the geoemtry
+        The make function implements the logic that creates the geometry
         (poly, path, etc.) from the qcomponent.options dictionary of parameters,
         and the adds them to the design, using qcomponent.add_qgeometry(...),
         adding in extra needed information, such as layer, subtract, etc.
