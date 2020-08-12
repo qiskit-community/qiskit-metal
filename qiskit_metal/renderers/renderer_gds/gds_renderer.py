@@ -48,8 +48,8 @@ class GDSRender(QRenderer):
         gds_unit=1,  # 1m
 
         # (float): Scale box of components to render. Should be greater than 1.0.
-        # TODO: Make X and Y
-        bounding_box_scale=1.2,
+        bounding_box_scale_x=1.2,
+        bounding_box_scale_y=1.2,
 
         # Implement creating a ground plane which is scaled from largest bounding box,
         # then QGeometry which is marked as subtract will be removed from ground_plane.
@@ -65,6 +65,12 @@ class GDSRender(QRenderer):
 
         # used for fillet in gdspy.FlexPath() and gdspy.boolean()
         bend_radius_num=0.05,
+
+        # corners ('natural', 'miter', 'bevel', 'round', 'smooth', 'circular bend', callable, list)
+        # Type of joins. A callable must receive 6 arguments
+        # (vertex and direction vector from both segments being joined, the center and width of the path)
+        # and return a list of vertices that make the join.
+        # A list can be used to define the join for each parallel path.
         corners='circular bend',
 
         # tolerance > precision
@@ -109,17 +115,36 @@ class GDSRender(QRenderer):
         # gdspy.polygon.PolygonSet is the base class.
         self.scaled_chip_poly = gdspy.Polygon([])
 
-        # bounding_box_scale will need to be migrated to some form of default_options
-        if isinstance(self.options.bounding_box_scale, float) and self.options.bounding_box_scale >= 1.0:
+        # check the scale
+        self.check_bounding_box_scale()
+
+    def check_bounding_box_scale(self):
+        """Some error checking for bounding_box_scale_x and bounding_box_scale_y numbers.
+        """
+
+        # Check x
+        if isinstance(self.options.bounding_box_scale_x, float) and self.options.bounding_box_scale_x >= 1.0:
             pass  # All is good.
-        elif isinstance(self.options.bounding_box_scale, int) and self.options.bounding_box_scale >= 1:
-            self.options.bounding_box_scale = float(
-                self.options.bounding_box_scale)
+        elif isinstance(self.options.bounding_box_scale_x, int) and self.options.bounding_box_scale_x >= 1:
+            self.options.bounding_box_scale_x = float(
+                self.options.bounding_box_scale_x)
         else:
-            self.options['bounding_box_scale'] = GDSRender.default_options.bounding_box_scale
+            self.options['bounding_box_scale_x'] = GDSRender.default_options.bounding_box_scale_x
             self.design.logger.warning(
-                f'Expected float and number greater than or equal to 1.0 for bounding_box_scale. \
-                    User provided bounding_box_scale = {self.options.bounding_box_scale}, using default_options.bounding_box.')
+                f'Expected float and number greater than or equal to 1.0 for bounding_box_scale_x. \
+                    User provided bounding_box_scale_x = {self.options.bounding_box_scale_x}, using default_options.bounding_box_scale_x.')
+
+        # Check y
+        if isinstance(self.options.bounding_box_scale_y, float) and self.options.bounding_box_scale_y >= 1.0:
+            pass  # All is good.
+        elif isinstance(self.options.bounding_box_scale_y, int) and self.options.bounding_box_scale_y >= 1:
+            self.options.bounding_box_scale_y = float(
+                self.options.bounding_box_scale_y)
+        else:
+            self.options['bounding_box_scale_y'] = GDSRender.default_options.bounding_box_scale_y
+            self.design.logger.warning(
+                f'Expected float and number greater than or equal to 1.0 for bounding_box_scale_y. \
+                    User provided bounding_box_scale_y = {self.options.bounding_box_scale_y}, using default_options.bounding_box_scale_y.')
 
     def _clear_library(self):
         """Clear current library."""
@@ -181,7 +206,7 @@ class GDSRender(QRenderer):
 
     def scale_max_bounds(self, all_bounds: list) -> Tuple[tuple, tuple]:
         """Given the list of tuples to represent all of the bounds for path, poly, etc.
-        This will return the scaled using self.bounding_box_scale, and  the max bounds of the tuples provided.
+        This will return the scaled using self.bounding_box_scale_x and self.bounding_box_scale_y, and  the max bounds of the tuples provided.
 
         Args:
             all_bounds (list): Each tuple=(minx, miny, maxx, maxy) in list represents bounding box for poly, path, etc.
@@ -203,10 +228,10 @@ class GDSRender(QRenderer):
         center_x = (minx + maxx) / 2
         center_y = (miny + maxy) / 2
 
-        scaled_width = (maxx - minx) * self.options.bounding_box_scale
-        scaled_height = (maxy - miny) * self.options.bounding_box_scale
+        scaled_width = (maxx - minx) * self.options.bounding_box_scale_x
+        scaled_height = (maxy - miny) * self.options.bounding_box_scale_y
 
-        # Scaled inclusive bounding box by self.options.bounding_box_scale.
+        # Scaled inclusive bounding box by self.options.bounding_box_scale_x and self.options.bounding_box_scale_y.
         scaled_box = (center_x - (.5 * scaled_width),
                       center_y - (.5 * scaled_height),
                       center_x + (.5 * scaled_width),
@@ -250,7 +275,7 @@ class GDSRender(QRenderer):
         chip_poly = gdspy.Polygon(rectangle_points, **self.options.ld_chip)
 
         self.scaled_chip_poly = chip_poly.scale(
-            scalex=self.options.bounding_box_scale, scaley=self.options.bounding_box_scale)
+            scalex=self.options.bounding_box_scale_x, scaley=self.options.bounding_box_scale_y)
         pass  # for breakpoint
 
     def rect_for_ground(self) -> None:
@@ -265,7 +290,7 @@ class GDSRender(QRenderer):
         chip_poly = gdspy.Polygon(rectangle_points, **self.options.ld_chip)
 
         self.scaled_chip_poly = chip_poly.scale(
-            scalex=self.options.bounding_box_scale, scaley=self.options.bounding_box_scale)
+            scalex=self.options.bounding_box_scale_x, scaley=self.options.bounding_box_scale_y)
         pass  # for breakpoint
 
     def create_qgeometry_for_gds(self, highlight_qcomponents: list = []) -> int:
