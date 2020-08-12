@@ -200,6 +200,8 @@ class CpwMeanderSimple(QComponent):
         trace_width='cpw_width',
         trace_gap='cpw_gap',
 
+        # For no fillet, use 0.
+        # If fillet is not larger than trace_width, the fillet will not be implemented.
         fillet='50um',
 
         meander=Dict(
