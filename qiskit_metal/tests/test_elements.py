@@ -22,9 +22,10 @@ Created on  Wed Apr 22 10:02:06 2020
 @author: Jeremy D. Drysdale
 """
 
-# Note - these functions are untested (unclear, seems unused or under development):
+# Note - Tests not written for these functions:
 # element_handler/delete_component
 # element_handler/rename_component
+# element_handler/get_component_geometry
 # element_handler/get_component_geometry_list
 # element_handler/get_component_geometry_dict
 
@@ -149,7 +150,7 @@ class TestElements(unittest.TestCase):
         self.assertEqual(e_c['path']['__renderers__']['new_name']['thickness'], float)
         self.assertEqual(e_c['poly']['__renderers__']['new_name']['material'], str)
 
-    def test_element_get_element_types(self):
+    def test_element_q_element_get_element_types(self):
         """
         Test get_element_types in QGeometryTables class in element_handler.py
         """
@@ -163,7 +164,7 @@ class TestElements(unittest.TestCase):
         for i in range(2):
             self.assertEqual(expected[i], actual[i])
 
-    def test_element_create_tables(self):
+    def test_element_q_element_create_tables(self):
         """
         Test create_tables in QGeometryTables class in element_handler.py
         """
@@ -191,7 +192,7 @@ class TestElements(unittest.TestCase):
         self.assertEqual(actual['poly'].dtypes['chip'], object)
         self.assertEqual(actual['poly'].dtypes['fillet'], object)
 
-    def test_element_get_rname(self):
+    def test_element_q_element_get_rname(self):
         """
         Test get_rname in QGeometryTables class in element_handler.py
         """
@@ -202,7 +203,7 @@ class TestElements(unittest.TestCase):
 
         self.assertEqual(actual, 'some_name_aloha')
 
-    def test_element_add_qgeometry(self):
+    def test_element_q_element_add_qgeometry(self):
         """
         Test add_qgeometry in QGeometryTables class in element_handler.py
         """
@@ -222,7 +223,7 @@ class TestElements(unittest.TestCase):
         self.assertEqual(table['poly']['chip'][0], 'main')
         self.assertEqual(str(table['poly']['fillet'][0]), str(np.nan))
 
-    def test_element_clear_all_tables(self):
+    def test_element_q_element_clear_all_tables(self):
         """
         Test clear_all_tables in QGeometryTables class in element_handler.py
         """
@@ -235,7 +236,7 @@ class TestElements(unittest.TestCase):
         qgt.clear_all_tables()
         self.assertEqual(len(qgt.tables['poly'].geometry), 0)
 
-    def test_element_delete_component_id(self):
+    def test_element_q_element_delete_component_id(self):
         """
         Test delete_component_id in QGeometryTables class in element_handler.py
         """
@@ -256,7 +257,7 @@ class TestElements(unittest.TestCase):
         self.assertEqual(len(qgt.tables['path']), 0)
         self.assertEqual(len(qgt.tables['poly']), 0)
 
-    def test_element_get_component_bounds(self):
+    def test_element_q_element_get_component_bounds(self):
         """
         Test get_component_bounds in QGeometryTables class in element_handler.py
         """
@@ -269,7 +270,7 @@ class TestElements(unittest.TestCase):
         for i in range(4):
             self.assertEqual(four_zeros[i], 0)
 
-    def test_element_check_element_type(self):
+    def test_element_q_element_check_element_type(self):
         """
         Test check_element_type in QGeometryTables class in element_handler.py
         """
@@ -280,7 +281,7 @@ class TestElements(unittest.TestCase):
         self.assertTrue(qgt.check_element_type('path', log_issue=False))
         self.assertFalse(qgt.check_element_type('not-there', log_issue=False))
 
-    def test_element_get_component(self):
+    def test_element_q_element_get_component(self):
         """
         Test get_component in QGeometryTables class in element_handler.py
         """
