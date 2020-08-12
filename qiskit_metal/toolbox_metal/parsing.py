@@ -171,6 +171,7 @@ Returns:
 '''
 
 import ast
+import numpy as np
 from collections.abc import Iterable
 from collections.abc import Mapping
 from numbers import Number
@@ -384,7 +385,7 @@ def parse_value(value: str, variable_dict: dict):
 
     elif isinstance(value, Iterable):
         # list, tuple, ... Return the same type
-        return type(value)([parse_value(val, variable_dict) for val in value])
+        return {np.ndarray: np.array}.get(type(value), type(value))([parse_value(val, variable_dict) for val in value])
 
     elif isinstance(value, Number):
         # If it is an int it will return an int, not a float, etc.
