@@ -112,6 +112,9 @@ class GDSRender(QRenderer):
         self.all_subtract_true = geopandas.GeoDataFrame()
         self.all_subtract_false = geopandas.GeoDataFrame()
 
+        # Updated each time export_to_gds() is called.
+        self.chip_names = list()
+
         # gdspy.polygon.PolygonSet is the base class.
         self.scaled_chip_poly = gdspy.Polygon([])
 
@@ -498,6 +501,12 @@ class GDSRender(QRenderer):
 
         if not self._can_write_to_path(file_name):
             return 0
+
+        self.chip_names.clear()
+        self.chip_names.append(self.design.qgeometry.get_chip_names())
+        # For now, work with only one chip.
+        # TODO: Make a loop to handle every chip in QGeometry.
+        # i.e. for chip in self.chip_names
 
         if (self.create_qgeometry_for_gds(highlight_qcomponents) == 0):
             self.write_poly_path_to_file(file_name)

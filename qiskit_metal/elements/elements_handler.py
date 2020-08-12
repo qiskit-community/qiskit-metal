@@ -96,10 +96,10 @@ ELEMENT_COLUMNS = dict(
         name=str,  # name of the element
         geometry=object,  # shapely object
         layer=int,  # gds type of layer
-        subtract=bool,  # do we subtract from the groun place of the chip
+        subtract=bool,  # do we subtract from the ground place of the chip
         helper=bool,  # helper or not
         chip=str,  # chip name
-        # type=str,  # metal, helper
+        # type=str,  # metal, helper.   poly=10 or path=11
         __renderers__=dict(
             # ADD specific renderers here, all renderes must register here.
             # hfss = dict( ... ) # pick names as hfss_name
@@ -681,3 +681,19 @@ class QGeometryTables(object):
             return False
         else:
             return True
+
+    def get_chip_names(self) -> list:
+        """Return a list of unique chip names for ALL tables within QGeometry.  
+        In another words, for every "path", "poly", etc table, search for unique 
+        chip names and return a list of unique chip names within QGeometry table.
+
+        Returns:
+            list: [description]
+        """
+        chip_names = list()
+        for table_name in self.design.qgeometry.get_element_types():
+            table = self.design.qgeometry.tables[table_name]
+            names = table['chip'].unique().tolist()
+            chip_names += names
+
+        return list(set(chip_names))
