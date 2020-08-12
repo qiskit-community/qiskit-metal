@@ -97,7 +97,7 @@ class GDSRender(QRenderer):
             design (QDesign): Use QGeometry within QDesign  to obtain elements for GDS file.
             initiate (bool, optional): True to initiate the renderer. Defaults to True.
             render_template (Dict, optional): Typically used by GUI for template options for GDS.  Defaults to None.
-            render_options (Dict, optional):  Used to overide all options. Defaults to None. 
+            render_options (Dict, optional):  Used to overide all options. Defaults to None.
         """
 
         super().__init__(design=design, initiate=initiate,
@@ -503,7 +503,7 @@ class GDSRender(QRenderer):
             return 0
 
         self.chip_names.clear()
-        self.chip_names.append(self.design.qgeometry.get_chip_names())
+        self.chip_names += self.design.qgeometry.get_chip_names()
         # For now, work with only one chip.
         # TODO: Make a loop to handle every chip in QGeometry.
         # i.e. for chip in self.chip_names
