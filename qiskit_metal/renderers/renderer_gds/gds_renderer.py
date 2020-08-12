@@ -279,7 +279,6 @@ class GDSRender(QRenderer):
 
         self.scaled_chip_poly = chip_poly.scale(
             scalex=self.options.bounding_box_scale_x, scaley=self.options.bounding_box_scale_y)
-        pass  # for breakpoint
 
     def rect_for_ground(self) -> None:
         """Use the maximum bounds for all qgeometry on chip.  Scale the size of chip.
@@ -294,7 +293,31 @@ class GDSRender(QRenderer):
 
         self.scaled_chip_poly = chip_poly.scale(
             scalex=self.options.bounding_box_scale_x, scaley=self.options.bounding_box_scale_y)
-        pass  # for breakpoint
+
+    def check_qcomps(self, highlight_qcomponents: list = []) -> Tuple[list, int]:
+        """Confirm the list doesn't have names of componentes repeated.  
+        Comfirm that the name of component exists in QDesign.
+
+        Args:
+            highlight_qcomponents (list, optional): List of strings which denote the name of QComponents to render.
+                                                     Defaults to []. Empty list means to render entire design.
+
+        Returns:
+            Tuple[list, int]: 
+            list: Unique list of QComponents to render.
+            int: 0 if all ended well. Otherwise, 1 if QComponent name not in design.
+        """
+        # Remove identical QComponent names.
+        unique_qcomponents = list(set(highlight_qcomponents))
+
+        # Confirm all QComponent are in design.
+        for qcomp in unique_qcomponents:
+            if qcomp not in self.design.name_to_id:
+                self.design.logger.warning(
+                    f'The component={qcomp} in highlight_qcomponents not in QDesign. The GDS data not generated.')
+                return unique_qcomponents, 1
+
+        return unique_qcomponents, 0
 
     def create_qgeometry_for_gds(self, highlight_qcomponents: list = []) -> int:
         """Using self.design, this method does the following:
@@ -317,22 +340,15 @@ class GDSRender(QRenderer):
         Returns:
             int: 0 if all ended well. Otherwise, 1 if QComponent name not in design.
         """
-        # Remove identical QComponent names.
-        unique_qcomponents = list(set(highlight_qcomponents))
+        unique_qcomponents, status = self.check_qcomps(highlight_qcomponents)
+        if status == 1:
+            return 1
 
-        # Confirm all QComponent are in design.
-        for qcomp in unique_qcomponents:
-            if qcomp not in self.design.name_to_id:
-                self.design.logger.warning(
-                    f'The component={qcomp} in highlight_qcomponents not in QDesign. The GDS data not generated.')
-                return 1
-
-        # put the QGeomtry into GDS format.
         self.list_bounds.clear()
-
         all_subtracts = []
         all_no_subtracts = []
 
+        # put the QGeomtry into GDS format.
         for table_name in self.design.qgeometry.get_element_types():
             # self.design.qgeometry.tables is a dict. key=table_name, value=geopandas.GeoDataFrame
             if len(unique_qcomponents) == 0:
@@ -363,6 +379,8 @@ class GDSRender(QRenderer):
             q_geometries = table.apply(self.qgeometry_to_gds, axis=1)
             setattr(self, f'{table_name}s', q_geometries)
 
+        # If list of QComponents provided, used the scaled_max_bound,
+        # otherwise use self._chips
         self.scaled_max_bound, self.max_bound = self.scale_max_bounds(
             self.list_bounds)
 
