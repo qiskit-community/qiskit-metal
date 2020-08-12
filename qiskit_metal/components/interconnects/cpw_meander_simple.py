@@ -14,7 +14,7 @@
 
 
 """
-@date: 2020/08/25
+@date: 2020/07/25
 @author: Marco Facchini, John Blair, Zlatko Minev
 """
 
@@ -29,51 +29,46 @@ from qiskit_metal.components.interconnects.qroute_base import QRoute, QRoutePoin
 
 
 class CpwMeanderSimple(QRoute):
-    """A meandered basic CPW.
-
-    Inherits QComponent class
-
-    **Behavior and parameters**:
-        * #TODO: @john_blair / @marco
-        * Explain and comment on what options do?
-        * For example, note that lead_direction_inverted can be 'false' or 'true'
     """
-    default_options = Dict(
-        pin_inputs=Dict(
-            start_pin=Dict(
-                component='',  # Name of component to start from, which has a pin
-                pin=''),  # Name of pin used for pin_start
-            end_pin=Dict(
-                component='',  # Name of component to end on, which has a pin
-                pin='')  # Name of pin used for pin_end
-        ),
-        total_length='7mm',
-        chip='main',
-        layer='1',
-        trace_width='cpw_width',
-        trace_gap='cpw_gap',
+    The base `CPW meandered` class
 
+    Inherits `QRoute` class
+
+    Description:
+        Implements a simple CPW, with a single meander
+
+    Options:
+
+    Meander:
+        * spacing         - minimum spacing between adjacent meander curves (default: 200um)
+        * asymmetry       - offset between the center-line of the meander and the center-line
+                            that stretches from the tip of lead-in to the x (or y) coordinate
+                            of the tip of the lead-out (default: '0um')
+
+    Others:
+        * trace_gap       - defines the gap between the route wire and the plane (default: 'cpw_gap')
+
+    """
+
+    default_options = Dict(
+        trace_gap='cpw_gap',
         meander=Dict(
             spacing='200um',
-            lead_start='0.1mm',
-            lead_end='0.1mm',
-            lead_direction_inverted='false',
-            snap='true',
-            asymmetry='0 um',
-        )
+            asymmetry='0um'
+        ),
     )
     """Default options"""
 
     def make(self):
         """
-        The make function implements the logic that creates the geoemtry
+        The make function implements the logic that creates the geometry
         (poly, path, etc.) from the qcomponent.options dictionary of parameters,
         and the adds them to the design, using qcomponent.add_qgeometry(...),
         adding in extra needed information, such as layer, subtract, etc.
         """
         # parsed options
         p = self.p
-        snap = is_true(p.meander.snap)
+        snap = is_true(p.snap)
         total_length = p.total_length
 
         # Set the CPW pins and add the points/directions to the lead-in/out arrays
@@ -112,7 +107,6 @@ class CpwMeanderSimple(QRoute):
             start (QRoutePoint): QRoutePoint of the start
             end (QRoutePoint): QRoutePoint of the end
             length (str): Total length of the meander whole CPW segment (defined by user, after you subtract lead lengths
-            meander (dict): meander options (parsed)
 
         Returns:
             np.ndarray: Array of points
@@ -143,13 +137,14 @@ class CpwMeanderSimple(QRoute):
         meander_opt = self.p.meander
         spacing = meander_opt.spacing  # Horizontal spacing between meanders
         asymmetry = meander_opt.asymmetry
-        snap = is_true(meander_opt.snap)  # snap to xy grid
+        snap = is_true(self.p.snap)  # snap to xy grid
         # TODO: snap add 45 deg snap by changing snap function using angles
 
         # Coordinate system (example: x to the right => sideways up)
         forward, sideways = self.get_unit_vectors(start, end, snap)
-        if is_true(meander_opt.lead_direction_inverted):
-            sideways *= -1
+        # TODO: consider whether to support lead direction inverted, rather than just inverting options value
+        # if is_true(meander_opt.lead_direction_inverted):
+        #     sideways *= -1
 
         # Calculate lengths and meander number
         dist = end.position - start.position

@@ -18,15 +18,14 @@
 @author: Marco Facchini
 """
 import numpy as np
-from qiskit_metal.draw.utility import vec_unit_planar
-from qiskit_metal import draw
+from qiskit_metal import draw, Dict
 from qiskit_metal.components import QComponent
 from numpy.linalg import norm
-from typing import List, Tuple, Union, Dict
+from typing import List, Tuple, Union
 
 
 class QRoutePoint:
-    r"""A simple class to define a 2D Oriented_Point,
+    """A convenience wrapper class to define an point with orientation,
     with a 2D position and a 2D direction (XY plane).
     All values stored as np.ndarray of parsed floats.
     """
@@ -45,10 +44,59 @@ class QRoutePoint:
 
 
 class QRoute(QComponent):
-    r"""A simple class to define a generic route, using an array of planar points (x,y coordinates)
-    and the direction of the pins that start and end the array
-    Values stored as np.ndarray of parsed floats or np.array float pair
     """
+    The super-class `QRoute`
+
+    Inherits `QComponent` class
+
+    Description:
+        Super-class implementing routing methods that are valid irrespective of
+        the number of pins (>=1). The route is stored in a n array of planar points
+        (x,y coordinates) and one direction, which is that of the last point in the array
+        Values are stored as np.ndarray of parsed floats or np.array float pair
+
+    Options:
+
+    Pins:
+        * start_pin       - component and pin string pair. Define which pin to start from
+        * end_pin         - (optional) component and pin string pair. Define which pin to end at
+
+    Leads:
+        * start_straight  - lead-in, defined as the straight segment extension from start_pin (default: 0.1um)
+        * end_straight    - (optional) lead-out, defined as the straight segment extension from end_pin (default: 0.1um)
+        * start_jogged_extension   - (optional) lead-in, jogged extension of lead-in. Described as list of tuples
+        * end_jogged_extension     - (optional) lead-in, jogged extension of lead-out. Described as list of tuples
+
+    Others:
+        * snap            - true/false, defines if snapping on Manhattan routing or any direction (default: 'true')
+        * total_length    - target length of the overall route (default: '7mm')
+        * chip            - which chip is this component attached to (default: 'main')
+        * layer           - which layer this component should be rendered on (default: '1')
+        * trace_width     - defines the width of the line (default: 'cpw_width')
+
+    """
+
+    default_options = Dict(
+        pin_inputs=Dict(
+            start_pin=Dict(  # QRoute also supports single pin routes
+                component='',  # Name of component to start from, which has a pin
+                pin=''),  # Name of pin used for pin_start
+            end_pin=Dict(
+                component='',  # Name of component to end on, which has a pin
+                pin='')  # Name of pin used for pin_end
+        ),
+        snap='true',
+        lead=Dict(
+            start_straight='0.1mm',
+            end_straight='0.1mm',
+            start_jogged_extension='',
+            end_jogged_extension='',
+        ),
+        total_length='7mm',
+        chip='main',
+        layer='1',
+        trace_width='cpw_width',
+    )
 
     def __init__(self, *args, **kwargs):
         """Calls the QComponent __init__() to create a new Metal component
@@ -122,10 +170,10 @@ class QRoute(QComponent):
     def set_lead(self, name: str) -> QRoutePoint:
         # First define which lead you intend to modify
         if name == self.start_pin_name:
-            options_lead = self.p.meander.lead_start
+            options_lead = self.p.lead.start_straight
             lead = self.head
         elif name == self.end_pin_name:
-            options_lead = self.p.meander.lead_end
+            options_lead = self.p.lead.end_straight
             lead = self.tail
         else:
             raise Exception("Pin name \"" + name + "\" is not supported for this CPW." +
@@ -173,7 +221,7 @@ class QRoute(QComponent):
             array: straight and 90 deg CCW rotated vecs 2D
             (array([1., 0.]), array([0., 1.]))
         """
-        # handle chase when star tnad end are same?
+        # handle chase when start and end are same?
         v = end.position - start.position
         direction = v / norm(v)
         if snap:
@@ -196,9 +244,6 @@ class QRoute(QComponent):
         THIS METHOD IS OUTDATED AND THUS NOT FUNCTIONING
 
         TODO: Develop code to make sure the tip of the leads align on one of the axes
-        TODO: Adjusts the orientation of the meander, adding yet a new point:
-            * Includes the start but not the given end point
-            * If it cannot meander just returns the initial start point
         """
         print(self.points[-1])
         print(concurrent_array.positions[-1])
@@ -328,9 +373,6 @@ class QRouteLead:
         THIS METHOD IS OUTDATED AND THUS NOT FUNCTIONING
 
         TODO: Develop code to make sure the tip of the leads align on one of the axes
-        TODO: Adjusts the orientation of the meander, adding yet a new point:
-            * Includes the start but not the given end point
-            * If it cannot meander just returns the initial start point
         """
 
         # determine relative position
