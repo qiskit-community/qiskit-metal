@@ -45,6 +45,10 @@ class CpwMeanderSimple(QRoute):
                             that stretches from the tip of lead-in to the x (or y) coordinate
                             of the tip of the lead-out (default: '0um')
 
+    Leads:
+        * start_jogged_extension   - (optional) lead-in, jogged extension of lead-in. Described as list of tuples
+        * end_jogged_extension     - (optional) lead-in, jogged extension of lead-out. Described as list of tuples
+
     Others:
         * trace_gap       - defines the gap between the route wire and the plane (default: 'cpw_gap')
 
@@ -56,8 +60,11 @@ class CpwMeanderSimple(QRoute):
             spacing='200um',
             asymmetry='0um'
         ),
+        lead=Dict(
+            start_jogged_extension='',
+            end_jogged_extension='',
+        ),
     )
-    """Default options"""
 
     def make(self):
         """
@@ -67,9 +74,8 @@ class CpwMeanderSimple(QRoute):
         adding in extra needed information, such as layer, subtract, etc.
         """
         # parsed options
-        p = self.p
-        snap = is_true(p.snap)
-        total_length = p.total_length
+        snap = is_true(self.p.snap)
+        total_length = self.p.total_length
 
         # Set the CPW pins and add the points/directions to the lead-in/out arrays
         self.set_pin("start")
@@ -78,6 +84,10 @@ class CpwMeanderSimple(QRoute):
         # Align the lead-in/out to the input options set from the user
         meander_start_point = self.set_lead("start")
         meander_end_point = self.set_lead("end")
+        if self.p.lead.start_jogged_extension:
+            meander_start_point = self.set_lead_extension("start")  # consider merging with set_lead
+        if self.p.lead.end_jogged_extension:
+            meander_end_point = self.set_lead_extension("end")      # consider merging with set_lead
 
         if snap:
             # TODO: adjust the terminations to be sure the meander connects well on both ends
@@ -97,6 +107,38 @@ class CpwMeanderSimple(QRoute):
 
         # Make points into elements
         self.make_elements(self.get_points())
+
+    def set_lead_extension(self, name: str) -> QRoutePoint:
+        # TODO: consider merging with set_lead, if useful globally
+
+        # TODO: jira case #300 should remove the need for this line, and only use self.p
+        p = self.parse_options()
+        # First define which lead you intend to modify
+        if name == self.start_pin_name:
+            options_lead = p.lead.start_jogged_extension
+            lead = self.head
+        elif name == self.end_pin_name:
+            options_lead = p.lead.end_jogged_extension
+            lead = self.tail
+        else:
+            raise Exception("Pin name \"" + name + "\" is not supported for this CPW." +
+                            " The only supported pins are: start, end.")
+
+        # then change the lead by adding points
+        for turn, length in options_lead.values():
+            if turn in ("left", "L"):
+                lead.go_left(length)
+            elif turn in ("right", "R"):
+                lead.go_right(length)
+            elif turn in ("straight", "D", "S"):
+                lead.go_straight(length)
+            else:
+                raise Exception("the first term needs to represent a direction in english, " +
+                                "the second term should be a string indicating the length" +
+                                "the pair that caused this error is" + turn + ":" + length)
+
+        # return the last QRoutePoint of the lead
+        return lead.get_tip()
 
     def meander_fixed_length(self, start: QRoutePoint, end: QRoutePoint,
                              length: float) -> np.ndarray:
@@ -149,7 +191,6 @@ class CpwMeanderSimple(QRoute):
         # Calculate lengths and meander number
         dist = end.position - start.position
         if snap:
-            # TODO: Not general, depends on the outside (to fix)
             length_direct = abs(norm(np.dot(dist, forward)))  # in the vertical direction
             length_sideways = abs(norm(np.dot(dist, sideways)))  # in the orthogonal direction
         else:
