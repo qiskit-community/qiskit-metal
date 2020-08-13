@@ -35,17 +35,26 @@ class DesignPlanar(QDesign):
     Inherits QDesign class.
     """
 
-    def __init__(self):
-        super(DesignPlanar, self).__init__()
+    def __init__(self, metadata: dict = None, overwrite_enabled: bool = False, enable_renderers: bool = True):
+        """Pass metadata to QDesign.
+
+        Args:
+            metadata (dict, optional): Pass to QDesign. Defaults to {}.
+        """
+        super().__init__(metadata=metadata, overwrite_enabled=overwrite_enabled,
+                         enable_renderers=enable_renderers)
         self.add_chip_info()
 
     def add_chip_info(self):
-        # TODO How to get the values into self.chip. Will need to set up parser for "self.p" for design base.
-        # For now, just hard code in something.
-        self._chips['main'] = {}
+        """TODO How to get the values into self.chip. Will need to set up parser for "self.p" for design base.
+        For now, just hard code in something.
+
         # GDSPY is using numbers based on 1 meter unit.
         # When the gds file is exported, data is converted to "user-selected" units.
         # centered at (0,0) and 5 mm by 5 mm size.
+        """
+        self._chips['main'] = {}
+
         self._chips['main']['size'] = {
             'center_x': 0.0, 'center_y': 0.0, 'size_x': 0.005, 'size_y': 0.005}
 
