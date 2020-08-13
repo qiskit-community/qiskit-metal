@@ -86,12 +86,12 @@ class QRoute(QComponent):
         snap='true',
         lead=Dict(
             start_straight='0.1mm',
-            end_straight='0.1mm',
+            end_straight='0.1mm'
         ),
         total_length='7mm',
         chip='main',
         layer='1',
-        trace_width='cpw_width',
+        trace_width='cpw_width'
     )
 
     def __init__(self, *args, **kwargs):
@@ -164,12 +164,16 @@ class QRoute(QComponent):
         return lead.seed_from_pin(reference_pin)
 
     def set_lead(self, name: str) -> QRoutePoint:
+
+        # TODO: jira case #300 should remove the need for this line, and only use self.p
+        p = self.parse_options()
+
         # First define which lead you intend to modify
         if name == self.start_pin_name:
-            options_lead = self.p.lead.start_straight
+            options_lead = p.lead.start_straight
             lead = self.head
         elif name == self.end_pin_name:
-            options_lead = self.p.lead.end_straight
+            options_lead = p.lead.end_straight
             lead = self.tail
         else:
             raise Exception("Pin name \"" + name + "\" is not supported for this CPW." +

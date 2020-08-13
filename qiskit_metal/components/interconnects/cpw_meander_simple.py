@@ -61,8 +61,10 @@ class CpwMeanderSimple(QRoute):
             asymmetry='0um'
         ),
         lead=Dict(
+            start_straight='0.1mm',
+            end_straight='0.1mm',
             start_jogged_extension='',
-            end_jogged_extension='',
+            end_jogged_extension=''
         ),
     )
 
