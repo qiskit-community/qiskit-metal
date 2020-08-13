@@ -63,8 +63,9 @@ class GDSRender(QRenderer):
         ld_no_subtract={"layer": 202},
         ld_chip={"layer": 200, "datatype": 10},
 
+        # DEPRECATED since using from QGeometry table now.
         # used for fillet in gdspy.FlexPath() and gdspy.boolean()
-        bend_radius_num=0.05,
+        # bend_radius_num=0.05,
 
         # corners ('natural', 'miter', 'bevel', 'round', 'smooth', 'circular bend', callable, list)
         # Type of joins. A callable must receive 6 arguments
@@ -348,57 +349,82 @@ class GDSRender(QRenderer):
         all_subtracts = []
         all_no_subtracts = []
 
-        # put the QGeomtry into GDS format.
-        for table_name in self.design.qgeometry.get_element_types():
-            # self.design.qgeometry.tables is a dict. key=table_name, value=geopandas.GeoDataFrame
-            if len(unique_qcomponents) == 0:
-                table = self.design.qgeometry.tables[table_name]
-            else:
-                table = self.design.qgeometry.tables[table_name]
-                # Convert string QComponent.name  to QComponent.id
-                highlight_id = [self.design.name_to_id[a_qcomponent]
-                                for a_qcomponent in unique_qcomponents]
+        for chip_name in self.chip_names:
+            # put the QGeometry into GDS format.
+            for table_name in self.design.qgeometry.get_element_types():
+                table = self.get_table(table_name, unique_qcomponents)
 
-                # Remove QComponents which are not requested.
-                table = table[table['component'].isin(highlight_id)]
+                self.gather_subtract_elements_and_bounds(chip_name,
+                                                         table_name, table, all_subtracts, all_no_subtracts)
 
-            # Determine bound box and return scalar larger than size.
-            bounds = tuple(self.get_bounds(table))
-            # Add the bounds of each table to list.
-            self.list_bounds.append(bounds)
+            # If list of QComponents provided, use the scaled_max_bound,
+            # otherwise use self._chips
+            self.scaled_max_bound, self.max_bound = self.scale_max_bounds(
+                self.list_bounds)
 
             if self.options.ground_plane:
-                self.seperate_subtract_shapes(table_name, table)
+                self.rect_for_ground()
 
-                all_subtracts.append(
-                    getattr(self, f'{table_name}_subtract_true'))
-                all_no_subtracts.append(
-                    getattr(self, f'{table_name}_subtract_false'))
+                self.all_subtract_true = geopandas.GeoDataFrame(
+                    pd.concat(all_subtracts, ignore_index=False))
+                self.all_subtract_false = geopandas.GeoDataFrame(
+                    pd.concat(all_no_subtracts, ignore_index=False))
 
-            # polys is gdspy.Polygon;    paths is gdspy.LineString
-            q_geometries = table.apply(self.qgeometry_to_gds, axis=1)
-            setattr(self, f'{table_name}s', q_geometries)
+                self.q_subtract_true = self.all_subtract_true.apply(
+                    self.qgeometry_to_gds, axis=1)
 
-        # If list of QComponents provided, used the scaled_max_bound,
-        # otherwise use self._chips
-        self.scaled_max_bound, self.max_bound = self.scale_max_bounds(
-            self.list_bounds)
-
-        if self.options.ground_plane:
-            self.rect_for_ground()
-
-            self.all_subtract_true = geopandas.GeoDataFrame(
-                pd.concat(all_subtracts, ignore_index=False))
-            self.all_subtract_false = geopandas.GeoDataFrame(
-                pd.concat(all_no_subtracts, ignore_index=False))
-
-            self.q_subtract_true = self.all_subtract_true.apply(
-                self.qgeometry_to_gds, axis=1)
-
-            self.q_subtract_false = self.all_subtract_false.apply(
-                self.qgeometry_to_gds, axis=1)
+                self.q_subtract_false = self.all_subtract_false.apply(
+                    self.qgeometry_to_gds, axis=1)
 
         return 0
+
+    def gather_subtract_elements_and_bounds(self, chip_name: str, table_name: str, table: geopandas.GeoDataFrame,
+                                            all_subtracts: list, all_no_subtracts: list):
+
+        # assume that self._chips has been populated before entering here.
+
+        # Determine bound box and return scalar larger than size.
+        bounds = tuple(self.get_bounds(table))
+        # Add the bounds of each table to list.
+        self.list_bounds.append(bounds)
+
+        if self.options.ground_plane:
+            self.seperate_subtract_shapes(table_name, table)
+
+            all_subtracts.append(
+                getattr(self, f'{table_name}_subtract_true'))
+            all_no_subtracts.append(
+                getattr(self, f'{table_name}_subtract_false'))
+
+        # polys is gdspy.Polygon;    paths is gdspy.LineString
+        q_geometries = table.apply(self.qgeometry_to_gds, axis=1)
+        setattr(self, f'{table_name}s', q_geometries)
+
+    def get_table(self, table_name: str, unique_qcomponents: list) -> geopandas.GeoDataFrame:
+        """If unique_qcomponents list is empty, get table using table_name from QGeometry tables 
+            for all elements with table_name.  Otherwise, return a table with fewer elements, for just the 
+            qcomponents within the unique_qcomponents list. 
+
+        Args:
+            table_name (str): Can be "path", "poly", etc. from the QGeometry tables.
+            unique_qcomponents (list): User requested list of component names to export to GDS file.
+
+        Returns:
+            geopandas.GeoDataFrame: Table of elements within the QGeometry.
+        """
+        # self.design.qgeometry.tables is a dict. key=table_name, value=geopandas.GeoDataFrame
+        if len(unique_qcomponents) == 0:
+            table = self.design.qgeometry.tables[table_name]
+        else:
+            table = self.design.qgeometry.tables[table_name]
+            # Convert string QComponent.name  to QComponent.id
+            highlight_id = [self.design.name_to_id[a_qcomponent]
+                            for a_qcomponent in unique_qcomponents]
+
+            # Remove QComponents which are not requested.
+            table = table[table['component'].isin(highlight_id)]
+
+        return table
 
     def new_gds_library(self) -> gdspy.GdsLibrary:
         """Creates a new GDS Library. Deletes the old.
@@ -520,11 +546,9 @@ class GDSRender(QRenderer):
         if not self._can_write_to_path(file_name):
             return 0
 
+        # There can be more than one chip in QGeometry.  They all export to one gds file.
         self.chip_names.clear()
         self.chip_names += self.design.qgeometry.get_chip_names()
-        # For now, work with only one chip.
-        # TODO: Make a loop to handle every chip in QGeometry.
-        # i.e. for chip in self.chip_names
 
         if (self.create_qgeometry_for_gds(highlight_qcomponents) == 0):
             self.write_poly_path_to_file(file_name)
@@ -577,18 +601,17 @@ class GDSRender(QRenderer):
             if math.isnan(element.fillet) or element.fillet <= 0 or element.fillet < element.width:
                 to_return = gdspy.FlexPath(list(geom.coords),
                                            width=element.width,
-                                           layer=element.layer if not element['subtract'] else 0,
-                                           # layer=element.layer,
+                                           # layer=element.layer if not element['subtract'] else 0,
+                                           layer=element.layer,
                                            datatype=11)
             else:
                 to_return = gdspy.FlexPath(list(geom.coords),
                                            width=element.width,
-                                           layer=element.layer if not element['subtract'] else 0,
-                                           # layer=element.layer,
+                                           # layer=element.layer if not element['subtract'] else 0,
+                                           layer=element.layer,
                                            datatype=11,
                                            corners=self.options.corners,
                                            bend_radius=element.fillet,
-                                           # bend_radius=self.options.bend_radius_num,
                                            tolerance=self.options.tolerance,
                                            precision=self.options.precision
                                            )

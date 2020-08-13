@@ -21,6 +21,9 @@ Module containing Basic Qiskit Metal Planar (2D) design for CPW type geometry.
 """
 
 from .design_base import QDesign
+from typing import TYPE_CHECKING
+from typing import Dict as Dict_
+from typing import List, Tuple, Union
 
 __all__ = ['DesignPlanar']
 
@@ -32,18 +35,63 @@ class DesignPlanar(QDesign):
     Inherits QDesign class.
     """
 
-    # TODO How to get the values into self.chip.
-    # For now, just hard code in something.
     def __init__(self):
         super(DesignPlanar, self).__init__()
-        self._chips['minx'] = '0'
-        self._chips['miny'] = '0'
-        self._chips['maxx'] = '1234'  # ?????? and which units
-        self._chips['maxy'] = '4567'  # ?????? and which units
+        self.add_chip_info()
 
-        # or something like below.
-        size_tuple = (0, 0, 1234, 4567)    # tuple=(minx, miny, maxx, maxy)
-        self._chips['main'] = size_tuple
+    def add_chip_info(self):
+        # TODO How to get the values into self.chip. Will need to set up parser for "self.p" for design base.
+        # For now, just hard code in something.
+        self._chips['main'] = {}
+        # GDSPY is using numbers based on 1 meter unit.
+        # When the gds file is exported, data is converted to "user-selected" units.
+        # centered at (0,0) and 5 mm by 5 mm size.
+        self._chips['main']['size'] = {
+            'center_x': 0.0, 'center_y': 0.0, 'size_x': 0.005, 'size_y': 0.005}
 
-        # I think this is short and sweet, there is only one chip based on doc-string above.
-        self._chips['size'] = size_tuple
+    def get_x_y_for_chip(self, chip_name: str) -> Tuple[tuple, int]:
+        """If the chip_name is in self.chips, along with entry for size information
+        then return a tuple=(minx, miny, maxx, maxy). Used for subtraction while exporting design.
+
+        Args:
+            chip_name (str): Name of chip that you want the size of.
+
+        Returns:
+            Tuple[tuple, int]:
+            tuple: The exact placement on rectangle coordinate (minx, miny, maxx, maxy).
+            int: 0=all is good, 1=chip_name not in self._chips, 2=size information missing or no good
+        """
+        x_y_location = tuple()
+
+        if chip_name in self._chips:
+            if 'size' in self._chips[chip_name]:
+                size = self.chips[chip_name]['size']
+                if 'center_x' in size and 'center_y' in size and 'size_x' in size and 'size_y' in size:
+                    if (isinstance(size.center_x, int) or isinstance(size.center_x, float)) and \
+                       (isinstance(size.center_y, int) or isinstance(size.center_y, float)) and \
+                       (isinstance(size.size_x, int) or isinstance(size.size_x, float)) and \
+                       (isinstance(size.size_y, int) or isinstance(size.size_y, float)):
+                        x_y_location = (
+                            size.center_x - (size.size_x / 2.0),
+                            size.center_y - (size.size_y / 2.0),
+                            size.center_x + (size.size_x / 2.0),
+                            size.center_y + (size.size_y / 2.0)
+                        )
+                        return x_y_location, 0
+                    else:
+                        self.logger.warning(
+                            f'Size information within self.chips[{chip_name}]["size"] is NOT an int or float.')
+                        return x_y_location, 2
+                else:
+                    self.logger.warning(
+                        f'center_x or center_y or size_x or size_y NOT in self._chips[{chip_name}]["size"]')
+                    return x_y_location, 2
+            else:
+                self.logger.warning(
+                    f'Information for size in NOT in self._chips[{chip_name}] dict. Return "None" in tuple.')
+                return x_y_location, 2
+
+        else:
+            self.logger.warning(
+                f'Chip name "{chip_name}" is not in self._chips dict. Return "None" in tuple.')
+            return x_y_location, 1

@@ -682,18 +682,22 @@ class QGeometryTables(object):
         else:
             return True
 
-    def get_chip_names(self) -> list:
-        """Return a list of unique chip names for ALL tables within QGeometry.  
-        In another words, for every "path", "poly", etc table, search for unique 
-        chip names and return a list of unique chip names within QGeometry table.
+    def get_chip_names(self) -> Dict:
+        """Return a dict of unique chip names for ALL tables within QGeometry.  
+        In another words, for every "path" table, "poly" table ... etc, this method will search for unique 
+        chip names and return a dict of unique chip names from QGeometry table.  
 
         Returns:
-            list: [description]
+            Dict: dict with key of chip names and value of empty dict to hold things for renderers.
         """
-        chip_names = list()
+        chip_names = Dict()
         for table_name in self.design.qgeometry.get_element_types():
             table = self.design.qgeometry.tables[table_name]
             names = table['chip'].unique().tolist()
             chip_names += names
+        unique_list = list(set(chip_names))
 
-        return list(set(chip_names))
+        unique_dict = Dict()
+        for chip in unique_list:
+            unique_dict[chip] = Dict()
+        return unique_dict
