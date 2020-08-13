@@ -15,6 +15,7 @@
 #pylint: disable-msg=unnecessary-pass
 #pylint: disable-msg=pointless-statement
 #pylint: disable-msg=too-many-public-methods
+#pylint: disable-msg=broad-except
 
 """
 Qiskit Metal unit tests analyses functionality.
@@ -22,6 +23,15 @@ Qiskit Metal unit tests analyses functionality.
 Created on Wed Apr 22 10:03:35 2020
 @author: Jeremy D. Drysdale
 """
+
+# Note - Tests not written for these functions:
+# design_base/delete_all_pins
+# design_base/connect_pins
+# design_base/all_component_names_id
+# design_base/_delete_all_pins_for_component
+# design_base/get_new_qcomponent_id
+# design_base/load_design
+# design_base/save_design
 
 import unittest
 import pandas as pd
@@ -50,35 +60,62 @@ class TestDesign(unittest.TestCase):
         """
         pass
 
-    @staticmethod
-    def test_design_instantiate_qdesign():
+    def test_design_instantiate_qdesign(self):
         """
         Test the instantiation of QDesign
         """
-        QDesign
-        QDesign(metadata={})
-        QDesign(metadata={}, overwrite_enabled=True)
+        try:
+            QDesign
+        except Exception:
+            self.fail("QDesign failed")
 
-    @staticmethod
-    def test_design_instantiate_design_planar():
+        try:
+            QDesign(metadata={})
+        except Exception:
+            self.fail("QDesign(metadata={}) failed")
+
+        try:
+            QDesign(metadata={}, overwrite_enabled=True)
+        except Exception:
+            self.fail("QDesign(metadata={}, overwrite_enabled=True) failed")
+
+    def test_design_instantiate_design_planar(self):
         """
         Test the instantiation of DesignPlanar
         """
-        DesignPlanar
+        try:
+            DesignPlanar
+        except Exception:
+            self.fail("DesignPlanar failed")
 
-    @staticmethod
-    def test_design_instantiate_design_components():
+        try:
+            DesignPlanar(metadata={})
+        except Exception:
+            self.fail("DesignPlanar(metadata={}) failed")
+
+        try:
+            DesignPlanar(metadata={}, overwrite_enabled=True)
+        except Exception:
+            self.fail("DesignPlanar(metadata={}, overwrite_enabled=True) failed")
+
+    def test_design_instantiate_design_components(self):
         """
         Test the instantiation of Components
         """
-        Components
+        design = QDesign()
+        try:
+            Components(design)
+        except Exception:
+            self.fail("Components(design) failed")
 
-    @staticmethod
-    def test_design_instantiate_qnet():
+    def test_design_instantiate_qnet(self):
         """
         Test the instantiation of QNet
         """
-        QNet
+        try:
+            QNet
+        except Exception:
+            self.fail("QNet failed")
 
     def test_design_update_metadata(self):
         """

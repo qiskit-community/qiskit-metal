@@ -1,32 +1,25 @@
-from .. import config
-from qiskit_metal.renderers.renderer_base import QRenderer
-from ...toolbox_python.utility_functions import log_error_easy
-from ...designs import QDesign
-import qiskit_metal as metal
-from qiskit_metal import designs, components, draw
-from qiskit_metal import components as qlibrary
-import logging
-import sys
-import pandas
-import geopandas
-import pandas as pd
-import shapely
-import gdspy
 import os
 import pathlib
 import math
-
+from operator import itemgetter
 from typing import TYPE_CHECKING
 from typing import Dict as Dict_
 from typing import List, Tuple, Union
+import shapely
+import gdspy
+import geopandas
+import pandas as pd
 
-from operator import itemgetter
+from qiskit_metal.renderers.renderer_base import QRenderer
 
 from ... import Dict
 
 
-if not config.is_building_docs():
-    from qiskit_metal import MetalGUI, Dict, Headings
+if TYPE_CHECKING:
+    # For linting typechecking, import modules that can't be loaded here under normal conditions.
+    # For example, I can't import QDesign, because it requires Qrenderer first. We have the
+    # chicken and egg issue.
+    from qiskit_metal.designs import QDesign
 
 
 class GDSRender(QRenderer):
@@ -34,12 +27,12 @@ class GDSRender(QRenderer):
     should be found within this class.
 
     layers:
-        200 Emulated Chip size based on self.scaled_max_bound * max_bounds of elements on chip. 
+        200 Emulated Chip size based on self.scaled_max_bound * max_bounds of elements on chip.
             self.scaled_chip_poly
-        201 Holds all of the qgeometries, in a cell, which have subtract as True. 
-            After gdspy.boolean(), The cell is removed from lib. 
+        201 Holds all of the qgeometries, in a cell, which have subtract as True.
+            After gdspy.boolean(), The cell is removed from lib.
             self.q_subtract_true, cell=SUBTRACT
-        202 Holds all of the qgeometries which have subtract as False.  
+        202 Holds all of the qgeometries which have subtract as False.
             self.q_subtract_false, cell=TOP
 
     datatype:
@@ -47,17 +40,71 @@ class GDSRender(QRenderer):
         * 11 Flexpath
     """
 
-    def __init__(self, design: QDesign, initiate=True, bounding_box_scale: float = 1.2):
-        """
+    # These options can be over-written by passing dict to render_options.
+    default_options = Dict(
+        # gdspy unit is 1 meter.  gds_units appear to ONLY be used during write_gds().
+        # Note that gds_unit will be overwritten from the design units, during init().
+        # WARNING: this cannot be changed. since it is only used during the init once.
+        gds_unit=1,  # 1m
+
+        # (float): Scale box of components to render. Should be greater than 1.0.
+        bounding_box_scale_x=1.2,
+        bounding_box_scale_y=1.2,
+
+        # Implement creating a ground plane which is scaled from largest bounding box,
+        # then QGeometry which is marked as subtract will be removed from ground_plane.
+        # Then the balance of QGeometry will be placed placed in same layer as ground_plane.
+        ground_plane=True,
+
+        # TODO: layer numbers come from QGeometry and QDesign
+        # layer and data numbers, needs to come from default options
+        # i.e. self.options.ld_subtract = {"layer": 201, "data": 12}.
+        ld_subtract={"layer": 201},
+        ld_no_subtract={"layer": 202},
+        ld_chip={"layer": 200, "datatype": 10},
+
+        # used for fillet in gdspy.FlexPath() and gdspy.boolean()
+        bend_radius_num=0.05,
+
+        # corners ('natural', 'miter', 'bevel', 'round', 'smooth', 'circular bend', callable, list)
+        # Type of joins. A callable must receive 6 arguments
+        # (vertex and direction vector from both segments being joined, the center and width of the path)
+        # and return a list of vertices that make the join.
+        # A list can be used to define the join for each parallel path.
+        corners='circular bend',
+
+        # tolerance > precision
+        # Precision used for gds lib, boolean operations and FlexPath should likely be kept the same.
+        # They can be different, but increases odds of weird artifacts or misalignment.
+        # Some of this occours regardless (might be related to offset of a curve when done as a boolean vs. rendered),
+        # but they are <<1nm, which isn't even picked up by any fab equipment (so can be ignored)
+        # Numerical errors start to pop up if set precision too fine,
+        # but 1nm seems to be the finest precision we use anyhow.
+        tolerance=0.00001,  # 10.0 um
+
+        # With input from fab people, any of the weird artifacts (like unwanted gaps)
+        # that are less than 1nm in size can be ignored.
+        # They don't even show up in the fabricated masks.
+        # So, the precision of e-9 (so 1 nm) should be good as a default.
+        # TODO: Is this in meters absolute or in design units?
+        precision=0.000000001   # 1.0 nm
+    )
+
+    def __init__(self, design: 'QDesign', initiate=True, render_template: Dict = None, render_options: Dict = None):
+        """Create a QRenderer for GDS interface: export and import.
+
         Args:
             design (QDesign): Use QGeometry within QDesign  to obtain elements for GDS file.
-            initiate (bool): True to initiate the renderer. Defaults to True.
-            bounding_box_scale (float): Scale box of components to render. Should be greater than 1.0.
+            initiate (bool, optional): True to initiate the renderer. Defaults to True.
+            render_template (Dict, optional): Typically used by GUI for template options for GDS.  Defaults to None.
+            render_options (Dict, optional):  Used to overide all options. Defaults to None. 
         """
-        super().__init__(design=design, initiate=initiate)
 
-        self.gds_unit = 1.0 / self.design.parse_value('1 meter')
-        self.lib = gdspy.GdsLibrary(unit=self.gds_unit)
+        super().__init__(design=design, initiate=initiate,
+                         render_template=render_template, render_options=render_options)
+
+        self.lib = None  # type: gdspy.GdsLibrary
+        self.new_gds_library()
 
         self.list_bounds = list()
         self.scaled_max_bound = tuple()
@@ -68,31 +115,36 @@ class GDSRender(QRenderer):
         # gdspy.polygon.PolygonSet is the base class.
         self.scaled_chip_poly = gdspy.Polygon([])
 
-        # For now, say true, needs to come from options. #issue #255.
-        self.ground_plane = True
+        # check the scale
+        self.check_bounding_box_scale()
 
-        # layer and data numbers, needs to come from default options.
-        # Example: self.ld_subtract = {"layer": 201, "data": 12}
-        self.ld_subtract = {"layer": 201}
-        self.ld_no_subtract = {"layer": 202}
+    def check_bounding_box_scale(self):
+        """Some error checking for bounding_box_scale_x and bounding_box_scale_y numbers.
+        """
 
-        # create rectangle for layer , needs to come from default options.
-        self.ld_chip = {"layer": 200, "datatype": 10}
-
-        # needs to come from default_options, used for fillet in FlexPath
-        self.bend_radius_num = 0.05
-        self.corners = 'circular bend'
-        self.tolerance = 0.001
-
-        # bounding_box_scale will need to be migrated to some form of default_options
-        if isinstance(bounding_box_scale, float) and bounding_box_scale >= 1.0:
-            self.bounding_box_scale = bounding_box_scale
-        elif isinstance(bounding_box_scale, int) and bounding_box_scale >= 1:
-            self.bounding_box_scale = float(bounding_box_scale)
+        # Check x
+        if isinstance(self.options.bounding_box_scale_x, float) and self.options.bounding_box_scale_x >= 1.0:
+            pass  # All is good.
+        elif isinstance(self.options.bounding_box_scale_x, int) and self.options.bounding_box_scale_x >= 1:
+            self.options.bounding_box_scale_x = float(
+                self.options.bounding_box_scale_x)
         else:
+            self.options['bounding_box_scale_x'] = GDSRender.default_options.bounding_box_scale_x
             self.design.logger.warning(
-                f'Expected float and number greater than or equal to 1.0 for bounding_box_scale. \
-                User provided bounding_box_scale = {bounding_box_scale}, using default of 1.2. .')
+                f'Expected float and number greater than or equal to 1.0 for bounding_box_scale_x. \
+                    User provided bounding_box_scale_x = {self.options.bounding_box_scale_x}, using default_options.bounding_box_scale_x.')
+
+        # Check y
+        if isinstance(self.options.bounding_box_scale_y, float) and self.options.bounding_box_scale_y >= 1.0:
+            pass  # All is good.
+        elif isinstance(self.options.bounding_box_scale_y, int) and self.options.bounding_box_scale_y >= 1:
+            self.options.bounding_box_scale_y = float(
+                self.options.bounding_box_scale_y)
+        else:
+            self.options['bounding_box_scale_y'] = GDSRender.default_options.bounding_box_scale_y
+            self.design.logger.warning(
+                f'Expected float and number greater than or equal to 1.0 for bounding_box_scale_y. \
+                    User provided bounding_box_scale_y = {self.options.bounding_box_scale_y}, using default_options.bounding_box_scale_y.')
 
     def _clear_library(self):
         """Clear current library."""
@@ -115,7 +167,12 @@ class GDSRender(QRenderer):
                 f'Not able to write to directory. File:"{file}" not written. Checked directory:"{directory_name}".')
             return 0
 
-    def separate_subtract_qgeometry(self, table_name: str, table: geopandas.GeoSeries) -> None:
+    def update_units(self):
+        """Update the options in the units. DOES NOT CHANGE THE CURRENT LIB"""
+        # Assume metal is using units smaller than 1 meter.
+        self.options['gds_unit'] = 1.0 / self.design.parse_value('1 meter')
+
+    def seperate_subtract_shapes(self, table_name: str, table: geopandas.GeoSeries) -> None:
         """For each table, separate them by subtract being either True or False.
 
         Args:
@@ -124,10 +181,10 @@ class GDSRender(QRenderer):
         """
 
         subtract_true = table[table['subtract'] == True]
-        subtract_true['layer'] = self.ld_subtract['layer']
+        subtract_true['layer'] = self.options.ld_subtract['layer']
 
         subtract_false = table[table['subtract'] == False]
-        subtract_false['layer'] = self.ld_no_subtract['layer']
+        subtract_false['layer'] = self.options.ld_no_subtract['layer']
 
         setattr(self, f'{table_name}_subtract_true', subtract_true)
         setattr(self, f'{table_name}_subtract_false', subtract_false)
@@ -149,13 +206,13 @@ class GDSRender(QRenderer):
 
     def scale_max_bounds(self, all_bounds: list) -> Tuple[tuple, tuple]:
         """Given the list of tuples to represent all of the bounds for path, poly, etc.
-        This will return the scaled using self.bounding_box_scale, and  the max bounds of the tuples provided.
+        This will return the scaled using self.bounding_box_scale_x and self.bounding_box_scale_y, and  the max bounds of the tuples provided.
 
         Args:
             all_bounds (list): Each tuple=(minx, miny, maxx, maxy) in list represents bounding box for poly, path, etc.
 
         Returns:
-            tuple[tuple, tuple]: 
+            tuple[tuple, tuple]:
             first tuple: A scaled bounding box which includes all paths, polys, etc.;
             second tuple: A  bounding box which includes all paths, polys, etc.
         """
@@ -171,10 +228,10 @@ class GDSRender(QRenderer):
         center_x = (minx + maxx) / 2
         center_y = (miny + maxy) / 2
 
-        scaled_width = (maxx - minx) * self.bounding_box_scale
-        scaled_height = (maxy - miny) * self.bounding_box_scale
+        scaled_width = (maxx - minx) * self.options.bounding_box_scale_x
+        scaled_height = (maxy - miny) * self.options.bounding_box_scale_y
 
-        # Scaled inclusive bounding box by self.bounding_box_scale.
+        # Scaled inclusive bounding box by self.options.bounding_box_scale_x and self.options.bounding_box_scale_y.
         scaled_box = (center_x - (.5 * scaled_width),
                       center_y - (.5 * scaled_height),
                       center_x + (.5 * scaled_width),
@@ -215,10 +272,26 @@ class GDSRender(QRenderer):
                             (self.max_bound[2], self.max_bound[1]),
                             (self.max_bound[2], self.max_bound[3]),
                             (self.max_bound[0], self.max_bound[3])]
-        chip_poly = gdspy.Polygon(rectangle_points, **self.ld_chip)
+        chip_poly = gdspy.Polygon(rectangle_points, **self.options.ld_chip)
 
         self.scaled_chip_poly = chip_poly.scale(
-            scalex=self.bounding_box_scale, scaley=self.bounding_box_scale)
+            scalex=self.options.bounding_box_scale_x, scaley=self.options.bounding_box_scale_y)
+        pass  # for breakpoint
+
+    def rect_for_ground(self) -> None:
+        """Use the maximum bounds for all qgeometry on chip.  Scale the size of chip.
+           Use gdspy.Polygon() because gdspy.boolean() requires it.
+        """
+
+        rectangle_points = [(self.max_bound[0], self.max_bound[1]),
+                            (self.max_bound[2], self.max_bound[1]),
+                            (self.max_bound[2], self.max_bound[3]),
+                            (self.max_bound[0], self.max_bound[3])]
+        chip_poly = gdspy.Polygon(rectangle_points, **self.options.ld_chip)
+
+        self.scaled_chip_poly = chip_poly.scale(
+            scalex=self.options.bounding_box_scale_x, scaley=self.options.bounding_box_scale_y)
+        pass  # for breakpoint
 
     def create_qgeometry_for_gds(self, highlight_qcomponents: list = []) -> int:
         """Using self.design, this method does the following:
@@ -275,8 +348,9 @@ class GDSRender(QRenderer):
             # Add the bounds of each table to list.
             self.list_bounds.append(bounds)
 
-            if self.ground_plane:
-                self.separate_subtract_qgeometry(table_name, table)
+            if self.options.ground_plane:
+                self.seperate_subtract_shapes(table_name, table)
+
                 all_subtracts.append(
                     getattr(self, f'{table_name}_subtract_true'))
                 all_no_subtracts.append(
@@ -289,8 +363,8 @@ class GDSRender(QRenderer):
         self.scaled_max_bound, self.max_bound = self.scale_max_bounds(
             self.list_bounds)
 
-        if self.ground_plane:
-            self.render_chip()
+        if self.options.ground_plane:
+            self.rect_for_ground()
 
             self.all_subtract_true = geopandas.GeoDataFrame(
                 pd.concat(all_subtracts, ignore_index=False))
@@ -304,6 +378,24 @@ class GDSRender(QRenderer):
                 self.qgeometry_to_gds, axis=1)
 
         return 0
+
+    def new_gds_library(self) -> gdspy.GdsLibrary:
+        """Creates a new GDS Library. Deletes the old.
+           Create a new GDS library file. It can contains multiple cells.
+
+           Returns:
+            gdspy.GdsLibrary: GDS library which can contain multiple celles.
+        """
+
+        self.update_units()
+
+        if self.lib:
+            self._clear_library()
+
+        # Create a new GDS library file. It can contains multiple cells.
+        self.lib = gdspy.GdsLibrary(unit=self.options.gds_unit)
+
+        return self.lib
 
     def write_poly_path_to_file(self, file_name: str) -> None:
         """Using the geometries for each table name, write to a GDS file.
@@ -327,26 +419,51 @@ class GDSRender(QRenderer):
                              Name needs to include desired extention, i.e. "a_path_and_name.gds".
         """
 
-        # Create a new GDS library file. It can contains multiple cells.
-        self._clear_library()
+        lib = self.new_gds_library()
 
-        lib = gdspy.GdsLibrary(unit=self.gds_unit)
+        # The NO_EDITS cell is for testing of development code.
+        # cell = lib.new_cell('NO_EDITS', overwrite_duplicate=True)
 
-        if self.ground_plane:
+        # for table_name in self.design.qgeometry.get_element_types():
+        #     q_geometries = getattr(self, f'{table_name}s')
+        #     if q_geometries is None:
+        #         self.design.logger.warning(
+        #             f'There are no {table_name}s to write.')
+        #     else:
+        #         cell.add(q_geometries)
+
+        #     if q_geometries is None:
+        #         self.design.logger.warning(
+        #             f'There is no table named "{table_name}s" to write.')
+        #     else:
+        #        cell.add(q_geometries)
+
+        if self.options.ground_plane:
+            # TODO: Note For get_chip_layer(), default is 'main'.
+            chip_name = 'main'
+
             # # For ground plane.
             ground_cell = lib.new_cell('TOP', overwrite_duplicate=True)
             subtract_cell = lib.new_cell('SUBTRACT', overwrite_duplicate=True)
             subtract_cell.add(self.q_subtract_true)
 
-            '''gdspy.boolean is not documented clearly.  
-            If there are multiple elements to subtract (both poly and path), 
-            the way I could make it work is to put them into a cell, within lib.  
-            I used the method cell_name.get_polygonsets(), which appears to convert all elements within the cell to poly.
+            '''gdspy.boolean() is not documented clearly.
+            If there are multiple elements to subtract (both poly and path),
+            the way I could make it work is to put them into a cell, within lib.
+            I used the method cell_name.get_polygons(),
+            which appears to convert all elements within the cell to poly.
             After the boolean(), I deleted the cell from lib.
             The memory is freed up then.
             '''
             diff_geometry = gdspy.boolean(
-                self.scaled_chip_poly, subtract_cell.get_polygons(), 'not', layer=202)
+                self.scaled_chip_poly,
+                subtract_cell.get_polygons(),
+                'not',
+                precision=self.options.precision,
+                layer=self.options.ld_chip.layer)
+
+            # When getting layer from design and QGeometry.
+            # layer=self.design.get_chip_layer(chip_name))
 
             lib.remove(subtract_cell)
 
@@ -379,8 +496,6 @@ class GDSRender(QRenderer):
             int: 0=file_name can not be written, otherwise 1=file_name has been written
         """
 
-        # TODO: User provide list of QComponent names to render, instead of entire design.
-
         if not self._can_write_to_path(file_name):
             return 0
 
@@ -391,14 +506,14 @@ class GDSRender(QRenderer):
             return 0
 
     def qgeometry_to_gds(self, element: pd.Series) -> 'gdspy.polygon':
-        """Convert the design.qgeometry table to format used by GDS renderer. 
+        """Convert the design.qgeometry table to format used by GDS renderer.
         Convert the class to a series of GDSII elements.
 
         Args:
             element (pd.Series): Expect a shapley object.
 
         Returns:
-            'gdspy.polygon' or 'gdspy.FlexPath': Convert the class to a series of GDSII 
+            'gdspy.polygon' or 'gdspy.FlexPath': Convert the class to a series of GDSII
             format on the input pd.Series.
         """
 
@@ -418,7 +533,7 @@ class GDSRender(QRenderer):
 
         if isinstance(geom, shapely.geometry.Polygon):
 
-            # TODO: Handle  list(polygon.interiors)
+            # Handle  list(polygon.interiors) TODO:
             return gdspy.Polygon(list(geom.exterior.coords),
                                  layer=element.layer if not element['subtract'] else 0,
                                  # layer=element.layer,
@@ -426,13 +541,13 @@ class GDSRender(QRenderer):
                                  )
         elif isinstance(geom, shapely.geometry.LineString):
             '''
-            class gdspy.FlexPath(points, width, offset=0, corners='natural', ends='flush', 
-            bend_radius=None, tolerance=0.01, precision=0.001, max_points=199, 
+            class gdspy.FlexPath(points, width, offset=0, corners='natural', ends='flush',
+            bend_radius=None, tolerance=0.01, precision=0.001, max_points=199,
             gdsii_path=False, width_transform=True, layer=0, datatype=0)
 
             Only fillet, if number is greater than zero.
             '''
-            if math.isnan(element.fillet) or element.fillet <= 0:
+            if math.isnan(element.fillet) or element.fillet <= 0 or element.fillet < element.width:
                 to_return = gdspy.FlexPath(list(geom.coords),
                                            width=element.width,
                                            layer=element.layer if not element['subtract'] else 0,
@@ -444,15 +559,17 @@ class GDSRender(QRenderer):
                                            layer=element.layer if not element['subtract'] else 0,
                                            # layer=element.layer,
                                            datatype=11,
-                                           corners=self.corners,
-                                           bend_radius=self.bend_radius_num,
-                                           tolerance=self.tolerance
+                                           corners=self.options.corners,
+                                           bend_radius=element.fillet,
+                                           # bend_radius=self.options.bend_radius_num,
+                                           tolerance=self.options.tolerance,
+                                           precision=self.options.precision
                                            )
             return to_return
         else:
             # TODO: Handle
             self.design.logger.warning(
                 f'Unexpected shapely object geometry.'
-                f'The variable element is {data(geom)}, method can currently handle Polygon and FlexPath.')
+                f'The variable element is {type(geom)}, method can currently handle Polygon and FlexPath.')
             # print(geom)
             return None
