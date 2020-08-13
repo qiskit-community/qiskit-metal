@@ -152,6 +152,7 @@ class ConnectTheDots(QComponent):
         # Treat endpin + leadout as an edge case since CPW cannot overlap with it, in which case we must specify an end direction
         penultimate_pt = m2 + n2 * (w / 2 + leadend) # penultimate_pt = endpin + leadout
         # n2 originates from m2 and points towards penultimate_pt
+
         self._pts += self.getpts_simple(self._pts[-1] - self._pts[-2], self._pts[-1], penultimate_pt, n2)[1:]
         self._pts += [m2] # Add endpin
 
