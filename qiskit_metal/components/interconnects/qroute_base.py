@@ -164,7 +164,14 @@ class QRoute(QComponent):
         return lead.seed_from_pin(reference_pin)
 
     def set_lead(self, name: str) -> QRoutePoint:
+        """Defines the lead_extension by adding a point to the self.head/tail
 
+        Args:
+            name: string (supported pin names are: start, end)
+
+        Return:
+            QRoutePoint: last point in the QRouteLead (self.head/tail)
+        """
         # TODO: jira case #300 should remove the need for this line, and only use self.p
         p = self.parse_options()
 

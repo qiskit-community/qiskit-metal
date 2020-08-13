@@ -111,6 +111,14 @@ class CpwMeanderSimple(QRoute):
         self.make_elements(self.get_points())
 
     def set_lead_extension(self, name: str) -> QRoutePoint:
+        """Defines the jogged lead_extension by adding a series of turns to the self.head/tail
+
+        Args:
+            name: string (supported pin names are: start, end)
+
+        Return:
+            QRoutePoint: last point in the QRouteLead (self.head/tail)
+        """
         # TODO: consider merging with set_lead, if useful globally
 
         # TODO: jira case #300 should remove the need for this line, and only use self.p
