@@ -21,6 +21,13 @@ Created on Wed Apr 22 09:59:02 2020
 @author: Jeremy D. Drysdale
 """
 
+<<<<<<< HEAD
+=======
+# Note - Tests not written for these functions:
+# import_export/save_metal
+# import_export/load_metal_design
+
+>>>>>>> 0e27bf3d454ac73e743b74c76c3c39db5cb501c6
 import unittest
 
 class TestToolboxMetal(unittest.TestCase):

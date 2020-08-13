@@ -22,6 +22,9 @@ Created on Wed June 17 06:08:27 2020
 @author: Jeremy D. Drysdale
 """
 
+# Note - Tests not written for these functions:
+# None
+
 import unittest
 
 from qiskit_metal._defaults import DefaultMetalOptions

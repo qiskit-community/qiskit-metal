@@ -74,6 +74,7 @@ Interconnects
     QRoute
     QRouteLead
     QRoutePoint
+    ResonatorRectangleSpiral
 
 
 Junctions
@@ -127,6 +128,7 @@ if config.is_building_docs():
     from .interconnects.cpw_meander_simple import CpwMeanderSimple
     from .interconnects.qroute_base import QRoute, QRouteLead, QRoutePoint
     from .interconnects.fake_cpw import FakeCPW
+    from .interconnects.resonator_rectangle_spiral import ResonatorRectangleSpiral
     from .qubits.transmon_cross import TransmonCross
     from .qubits.transmon_pocket import TransmonPocket
     from .qubits.transmon_pocket_cl import TransmonPocketCL

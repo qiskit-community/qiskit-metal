@@ -64,8 +64,6 @@ class QRoute(QComponent):
     Leads:
         * start_straight  - lead-in, defined as the straight segment extension from start_pin (default: 0.1um)
         * end_straight    - (optional) lead-out, defined as the straight segment extension from end_pin (default: 0.1um)
-        * start_jogged_extension   - (optional) lead-in, jogged extension of lead-in. Described as list of tuples
-        * end_jogged_extension     - (optional) lead-in, jogged extension of lead-out. Described as list of tuples
 
     Others:
         * snap            - true/false, defines if snapping on Manhattan routing or any direction (default: 'true')
@@ -89,8 +87,6 @@ class QRoute(QComponent):
         lead=Dict(
             start_straight='0.1mm',
             end_straight='0.1mm',
-            start_jogged_extension='',
-            end_jogged_extension='',
         ),
         total_length='7mm',
         chip='main',
@@ -239,54 +235,54 @@ class QRoute(QComponent):
         points = self.get_points()
         return sum(norm(points[i + 1] - points[i]) for i in range(len(points) - 1))
 
-    def route_to_align(self, concurrent_array):
-        """
-        THIS METHOD IS OUTDATED AND THUS NOT FUNCTIONING
-
-        TODO: Develop code to make sure the tip of the leads align on one of the axes
-        """
-        print(self.points[-1])
-        print(concurrent_array.positions[-1])
-
-        # determine relative position
-        concurrent_position = ""
-        oriented_distance = concurrent_array.positions[-1] - self.points[-1]
-        if oriented_distance[1] != 0: # vertical displacement
-            concurrent_position += ["N", "S"][oriented_distance[1] < 0]
-        if oriented_distance[0] != 0: # horizontal displacement
-            concurrent_position += ["E", "W"][oriented_distance[0] < 0]
-        else:
-            return # points already aligned
-
-        # TODO implement vertical alignment. Only using horizontal alignment for now
-        # if oriented_distance[0] > oriented_distance[1]:
-        #     # Vertical alignment
-        #     pass
-        # else:
-        #     # horizontal alignment
-        #     pass # code below
-
-        if np.dot(self.head_direction, concurrent_array.directions[-1]) == -1:
-            # points are facing each other or opposing each other
-            if (("E" in concurrent_position and self.head_direction[0] > 0)
-                    or ("N" in concurrent_position and self.head_direction[1] > 0)):
-                # facing each other
-                pass
-            else:
-                # opposing each other
-                pass
-        elif np.dot(self.head_direction, concurrent_array.directions[-1]) == 1:
-            # points are facing the same direction
-            if (("E" in concurrent_position and self.head_direction[0] > 0)
-                    or ("N" in concurrent_position and self.head_direction[1] > 0)):
-                # facing each other
-                pass
-            else:
-                # opposing each other
-                pass
-        else:
-            # points are orthogonal to ach other
-            pass
+    # def route_to_align(self, concurrent_array):
+    #     """
+    #     THIS METHOD IS OUTDATED AND THUS NOT FUNCTIONING
+    #
+    #     TODO: Develop code to make sure the tip of the leads align on one of the axes
+    #     """
+    #     print(self.points[-1])
+    #     print(concurrent_array.positions[-1])
+    #
+    #     # determine relative position
+    #     concurrent_position = ""
+    #     oriented_distance = concurrent_array.positions[-1] - self.points[-1]
+    #     if oriented_distance[1] != 0: # vertical displacement
+    #         concurrent_position += ["N", "S"][oriented_distance[1] < 0]
+    #     if oriented_distance[0] != 0: # horizontal displacement
+    #         concurrent_position += ["E", "W"][oriented_distance[0] < 0]
+    #     else:
+    #         return # points already aligned
+    #
+    #     # TODO implement vertical alignment. Only using horizontal alignment for now
+    #     # if oriented_distance[0] > oriented_distance[1]:
+    #     #     # Vertical alignment
+    #     #     pass
+    #     # else:
+    #     #     # horizontal alignment
+    #     #     pass # code below
+    #
+    #     if np.dot(self.head_direction, concurrent_array.directions[-1]) == -1:
+    #         # points are facing each other or opposing each other
+    #         if (("E" in concurrent_position and self.head_direction[0] > 0)
+    #                 or ("N" in concurrent_position and self.head_direction[1] > 0)):
+    #             # facing each other
+    #             pass
+    #         else:
+    #             # opposing each other
+    #             pass
+    #     elif np.dot(self.head_direction, concurrent_array.directions[-1]) == 1:
+    #         # points are facing the same direction
+    #         if (("E" in concurrent_position and self.head_direction[0] > 0)
+    #                 or ("N" in concurrent_position and self.head_direction[1] > 0)):
+    #             # facing each other
+    #             pass
+    #         else:
+    #             # opposing each other
+    #             pass
+    #     else:
+    #         # points are orthogonal to ach other
+    #         pass
 
 
 class QRouteLead:
@@ -368,55 +364,55 @@ class QRouteLead:
         """
         return QRoutePoint(self.pts[-1], self.direction)
 
-    def align_to(self, concurrent_array):
-        """
-        THIS METHOD IS OUTDATED AND THUS NOT FUNCTIONING
-
-        TODO: Develop code to make sure the tip of the leads align on one of the axes
-        """
-
-        # determine relative position
-        concurrent_position = ""
-        oriented_distance = concurrent_array.positions[-1] - self.positions[-1]
-        if oriented_distance[1] > 0:
-            concurrent_position = "N"
-        elif oriented_distance[1] < 0:
-            concurrent_position = "S"
-        else:
-            return  # points already aligned
-        if oriented_distance[0] > 0:
-            concurrent_position += "E"
-        elif oriented_distance[1] < 0:
-            concurrent_position += "W"
-        else:
-            return  # points already aligned
-
-        # TODO implement vertical alignment. Only using horizontal alignment for now
-        # if oriented_distance[0] > oriented_distance[1]:
-        #     # Vertical alignment
-        #     pass
-        # else:
-        #     # horizontal alignment
-        #     pass # code below
-
-        if np.dot(self.directions[-1], concurrent_array.directions[-1]) == -1:
-            # points are facing each other or opposing each other
-            if (("E" in concurrent_position and self.directions[-1][0] > 0)
-                    or ("N" in concurrent_position and self.directions[-1][1] > 0)):
-                # facing each other
-                pass
-            else:
-                # opposing each other
-                pass
-        elif np.dot(self.directions[-1], concurrent_array.directions[-1]) == 1:
-            # points are facing the same direction
-            if (("E" in concurrent_position and self.directions[-1][0] > 0)
-                    or ("N" in concurrent_position and self.directions[-1][1] > 0)):
-                # facing each other
-                pass
-            else:
-                # opposing each other
-                pass
-        else:
-            # points are orthogonal to ach other
-            pass
+    # def align_to(self, concurrent_array):
+    #     """
+    #     THIS METHOD IS OUTDATED AND THUS NOT FUNCTIONING
+    #
+    #     TODO: Develop code to make sure the tip of the leads align on one of the axes
+    #     """
+    #
+    #     # determine relative position
+    #     concurrent_position = ""
+    #     oriented_distance = concurrent_array.positions[-1] - self.positions[-1]
+    #     if oriented_distance[1] > 0:
+    #         concurrent_position = "N"
+    #     elif oriented_distance[1] < 0:
+    #         concurrent_position = "S"
+    #     else:
+    #         return  # points already aligned
+    #     if oriented_distance[0] > 0:
+    #         concurrent_position += "E"
+    #     elif oriented_distance[1] < 0:
+    #         concurrent_position += "W"
+    #     else:
+    #         return  # points already aligned
+    #
+    #     # TODO implement vertical alignment. Only using horizontal alignment for now
+    #     # if oriented_distance[0] > oriented_distance[1]:
+    #     #     # Vertical alignment
+    #     #     pass
+    #     # else:
+    #     #     # horizontal alignment
+    #     #     pass # code below
+    #
+    #     if np.dot(self.directions[-1], concurrent_array.directions[-1]) == -1:
+    #         # points are facing each other or opposing each other
+    #         if (("E" in concurrent_position and self.directions[-1][0] > 0)
+    #                 or ("N" in concurrent_position and self.directions[-1][1] > 0)):
+    #             # facing each other
+    #             pass
+    #         else:
+    #             # opposing each other
+    #             pass
+    #     elif np.dot(self.directions[-1], concurrent_array.directions[-1]) == 1:
+    #         # points are facing the same direction
+    #         if (("E" in concurrent_position and self.directions[-1][0] > 0)
+    #                 or ("N" in concurrent_position and self.directions[-1][1] > 0)):
+    #             # facing each other
+    #             pass
+    #         else:
+    #             # opposing each other
+    #             pass
+    #     else:
+    #         # points are orthogonal to ach other
+    #         pass
