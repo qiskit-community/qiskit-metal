@@ -32,16 +32,15 @@ from qiskit_metal.components.base.base import QComponent
 
 
 class Capacitor3Fingers(QComponent):
-    """    Inherits QComponent class"""
+    """    Inherits QComponent class
 
-    '''
     Description:
     ----------------------------------------------------------------------------
     Create a three finger planar capacitor with a ground pocket cuttout.  The width of
     the fingers is determined by the CPW width.
 
     Connectors can be added using the `options_connectors`
-    dicitonary. Each connectors has a name and a list of default
+    dictionary. Each connectors has a name and a list of default
     properties.
 
     Options:
@@ -71,7 +70,7 @@ class Capacitor3Fingers(QComponent):
     Sketch:  TODO
     ----------------------------------------------------------------------------
 
-    '''
+    """
 
    #  TODO _img = 'CapThreeFinger.png'
 
