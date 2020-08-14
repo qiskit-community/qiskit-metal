@@ -123,6 +123,9 @@ class ConnectTheDots(QComponent):
                     return [start, corner5, corner6, end]
 
     def make(self):
+        """
+        Generates path from start pin to end pin.
+        """
         p = self.parse_options()
         leadstart = p.leadin.start
         leadend = p.leadin.end
@@ -170,3 +173,4 @@ class ConnectTheDots(QComponent):
         # Add to netlist
         self.design.connect_pins(self.design.components[component_start].id, pin_start, self.id, 'simple_start')
         self.design.connect_pins(self.design.components[component_end].id, pin_end, self.id, 'simple_end')
+        

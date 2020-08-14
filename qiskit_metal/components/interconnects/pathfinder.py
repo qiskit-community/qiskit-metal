@@ -6,10 +6,23 @@ import heapq
 
 class State:
 
+    """
+    Records information pertaining to the step immediately preceding the current point, 
+    as well as its possible neighboring points.
+    """
     # TODO: import design
     # TODO: Find a good way of determining step size (fast runtime + no overshooting)
     
-    def __init__(self, direction, coord, origin, step_size=1):
+    def __init__(self, direction: np.array, coord: np.array, origin: np.array, step_size=1):
+        """
+        Each state is completely determined by the following parameters.
+
+        Args:
+            direction (np.array): Direction of the current path.
+            coord (np.array): Coordinates of the current point.
+            origin (np.array): Coordinates of the point right before the current one.
+            step_size (int, optional): Distance between current point and potential neighbors. Defaults to 1.
+        """
         self.neighbors = []
         self.step_size = step_size
         self.direction = direction
@@ -32,10 +45,13 @@ class State:
             self.path = [coord]
 
     def get_neighbors(self):
-        # Look in forward, left, and right directions a fixed distance away.
-        # If the lines segment connecting the current point and this next one does
-        # not collide with any bounding boxes in design.components, add it to the
-        # list of neighbors.
+        """
+        Look in forward, left, and right directions a fixed distance away.
+        If the lines segment connecting the current point and this next one does
+        not collide with any bounding boxes in design.components, add it to the
+        list of neighbors.
+        """
+
         # The dot product between direction and the vector connecting the current
         # point and a potential neighbor must be non-negative to avoid retracing.
         for disp in [np.array([0, 1]), np.array([0, -1]), np.array([1, 0]), np.array([-1, 0])]:
@@ -61,8 +77,20 @@ class State:
                 if suitable:
                     self.neighbors.append(nextpt)
     
-    def overlapping(self, a, b, c, d):
-        # Returns whether segment ab intersects or overlaps with segment cd, where a, b, c, and d are all coordinates
+    def overlapping(self, a: np.array, b: np.array, c: np.array, d: np.array):
+        """
+        Returns whether segment ab intersects or overlaps with segment cd.
+
+        Args:
+            a (np.array): x, y coordinates of one end of segment ab.
+            b (np.array): x, y coordinates of other end of segment ab.
+            c (np.array): x, y coordinates of one end of segment cd.
+            d (np.array): x, y coordinates of other end of segment cd.
+
+        Returns:
+            bool: Whether or not segment ab intersects or overlaps with segment cd.
+        """
+        
         x0_start, y0_start = a
         x0_end, y0_end = b
         x1_start, y1_start = c
@@ -115,7 +143,21 @@ class State:
 
 class AStarSolver:
 
-    def __init__(self, start_direction, start, end, step_size):
+    """
+    Generates potential paths from start to end.
+    """
+
+    def __init__(self, start_direction: np.array, start: np.array, end: np.array, step_size=1):
+        """
+        Initialize search with the following parameters.
+
+        Args:
+            start_direction (np.array): Direction of starting pin normal.
+            start (np.array): x, y coordinates of starting pin.
+            end (np.array): x, y coordinates of ending pin.
+            step_size (int, optional): Distance between each point and its neighbors. Defaults to 1.
+        """
+
         self.path = [] # final answer
         self.visited = set([(start[0], start[1])]) # record of points we've already visited
         self.statemapper = {} # maps tuple(remaining_dist, length_travelled, coordx, coordy) to State object
@@ -126,6 +168,12 @@ class AStarSolver:
         self.step_size = step_size
 
     def solve(self):
+        """
+        Solver method using A* algorithm.
+
+        Returns:
+            List(np.array): List of x, y coordinates representing vertices in the CPW connecting start and end.
+        """
         startState = State(self.start_direction, self.start, None, self.step_size)
         starting_dist, xi, yi = sum(abs(self.start - self.end)), startState.coord[0], startState.coord[1]
         self.statemapper[(0, starting_dist, xi, yi)] = startState
@@ -153,3 +201,4 @@ class AStarSolver:
                     self.statemapper[(new_length_travelled, new_remaining_dist, nx, ny)] = newState
                     self.visited.add((nx, ny))
         return self.path
+        

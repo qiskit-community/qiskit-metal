@@ -75,13 +75,9 @@ class ParsedDynamicAttributes_Component():
     """
 
     def __init__(self, component: 'QComponent', key_list: List[str] = None):
-
-        #print('instantiated ParsedDynamicAttributes_Component')
-        #print('key_list: ', key_list)
-
         """
         Args:
-            component (QComponent): Componenet to get options from
+            component (QComponent): Component to get options from
             key_list (List[str]): List of keys (Default: None).
         """
         #print(f'*** Created with {key_list}')
@@ -116,6 +112,10 @@ class ParsedDynamicAttributes_Component():
         return self.__getdict__().__iter__()
 
     def items(self):
+        """
+        Produces tuples consisting of keys and respective parsed
+        values for iterating over a dictionary.
+        """
         for key in self: # calls __iter__
             yield (key, self.__getitem__(key))
 

@@ -230,6 +230,9 @@ class HybridPathfinder(QComponent):
         return [] # Shouldn't actually reach here - if it fails, there's a convergence issue
     
     def make(self):
+        """
+        Generates path from start pin to end pin.
+        """
         p = self.p
         leadstart = p.leadin.start
         leadend = p.leadin.end
@@ -283,3 +286,4 @@ class HybridPathfinder(QComponent):
             self.design.components[component_start].id, pin_start, self.id, 'hybrid_start')
         self.design.connect_pins(
             self.design.components[component_end].id, pin_end, self.id, 'hybrid_end')
+            
