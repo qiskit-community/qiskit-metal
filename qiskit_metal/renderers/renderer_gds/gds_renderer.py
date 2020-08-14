@@ -89,6 +89,13 @@ class GDSRender(QRenderer):
         # TODO: Is this in meters absolute or in design units?
         precision=0.000000001   # 1.0 nm
     )
+    """Default options"""
+
+    name = 'gds'
+    """name"""
+
+    element_extensions = dict()
+    """element extentions dictionary"""
 
     def __init__(self, design: 'QDesign', initiate=True, render_template: Dict = None, render_options: Dict = None):
         """Create a QRenderer for GDS interface: export and import.
