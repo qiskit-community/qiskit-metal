@@ -5,6 +5,7 @@ from operator import itemgetter
 from typing import TYPE_CHECKING
 from typing import Dict as Dict_
 from typing import List, Tuple, Union
+from copy import deepcopy
 import shapely
 import gdspy
 import geopandas
@@ -27,8 +28,7 @@ class GDSRender(QRenderer):
     should be found within this class.
 
     layers:
-        200 Emulated Chip size based on self.scaled_max_bound * max_bounds of elements on chip.
-            self.scaled_chip_poly
+        200 Emulated Chip size is self.scaled_max_bound = bounding_box_scale (x and y) * max_bounds of elements on chip.
         201 Holds all of the qgeometries, in a cell, which have subtract as True.
             After gdspy.boolean(), The cell is removed from lib.
             self.q_subtract_true, cell=SUBTRACT
@@ -107,14 +107,17 @@ class GDSRender(QRenderer):
         self.lib = None  # type: gdspy.GdsLibrary
         self.new_gds_library()
 
-        self.list_bounds = list()
-        self.scaled_max_bound = tuple()
+        # depreciated
+        # self.list_bounds = list()
+        # key is chip_name, value is list
+        self.dict_bounds = Dict()
+        # self.scaled_max_bound = tuple()
 
-        self.all_subtract_true = geopandas.GeoDataFrame()
-        self.all_subtract_false = geopandas.GeoDataFrame()
+        # self.all_subtract_true = geopandas.GeoDataFrame()
+        # self.all_subtract_false = geopandas.GeoDataFrame()
 
         # Updated each time export_to_gds() is called.
-        self.chip_names = list()
+        self.chip_info = dict()
 
         # gdspy.polygon.PolygonSet is the base class.
         self.scaled_chip_poly = gdspy.Polygon([])
@@ -176,24 +179,25 @@ class GDSRender(QRenderer):
         # Assume metal is using units smaller than 1 meter.
         self.options['gds_unit'] = 1.0 / self.design.parse_value('1 meter')
 
-    def seperate_subtract_shapes(self, table_name: str, table: geopandas.GeoSeries) -> None:
-        """For each table, separate them by subtract being either True or False.
-
+    def seperate_subtract_shapes(self, chip_name: str, table_name: str, table: geopandas.GeoSeries) -> None:
+        """For each chip and table, separate them by subtract being either True or False.
+           Names of chip and table should be same as the QGeometry tables.
         Args:
+            chip_name (str): Name of "chip".  Example is "main".
             table_name (str): Name for "table".  Example is "poly", and "path".
             table (geopandas.GeoSeries): Table with similar qgeometries.
         """
 
         subtract_true = table[table['subtract'] == True]
-        subtract_true['layer'] = self.options.ld_subtract['layer']
 
         subtract_false = table[table['subtract'] == False]
-        subtract_false['layer'] = self.options.ld_no_subtract['layer']
 
-        setattr(self, f'{table_name}_subtract_true', subtract_true)
-        setattr(self, f'{table_name}_subtract_false', subtract_false)
+        setattr(
+            self, f'{chip_name}_{table_name}_subtract_true', subtract_true)
+        setattr(
+            self, f'{chip_name}_{table_name}_subtract_false', subtract_false)
 
-    @staticmethod
+    @ staticmethod
     def get_bounds(gs_table: geopandas.GeoSeries) -> Tuple[float, float, float, float]:
         """Get the bounds for all of the elements in gs_table.
 
@@ -208,7 +212,7 @@ class GDSRender(QRenderer):
 
         return gs_table.total_bounds
 
-    def scale_max_bounds(self, all_bounds: list) -> Tuple[tuple, tuple]:
+    def scale_max_bounds(self, chip_name: str, dict_bounds: list) -> Tuple[tuple, tuple]:
         """Given the list of tuples to represent all of the bounds for path, poly, etc.
         This will return the scaled using self.bounding_box_scale_x and self.bounding_box_scale_y, and  the max bounds of the tuples provided.
 
@@ -220,10 +224,10 @@ class GDSRender(QRenderer):
             first tuple: A scaled bounding box which includes all paths, polys, etc.;
             second tuple: A  bounding box which includes all paths, polys, etc.
         """
-
+        all_bounds = dict_bounds[chip_name]
         # If given an empty list.
         if len(all_bounds) == 0:
-            return (0.0, 0.0, 0.0, 0.0)
+            return (0.0, 0.0, 0.0, 0.0), (0.0, 0.0, 0.0, 0.0)
 
         # Get an inclusive bounding box to contain all of the tuples provided.
         minx, miny, maxx, maxy = self.inclusive_bound(all_bounds)
@@ -240,6 +244,9 @@ class GDSRender(QRenderer):
                       center_y - (.5 * scaled_height),
                       center_x + (.5 * scaled_width),
                       center_y + (.5 * scaled_height))
+
+        self.dict_bounds[chip_name]['scaled_box'] = scaled_box
+        self.dict_bounds[chip_name]['inclusive_box'] = (minx, miny, maxx, maxy)
 
         return scaled_box, (minx, miny, maxx, maxy)
 
@@ -296,7 +303,7 @@ class GDSRender(QRenderer):
             scalex=self.options.bounding_box_scale_x, scaley=self.options.bounding_box_scale_y)
 
     def check_qcomps(self, highlight_qcomponents: list = []) -> Tuple[list, int]:
-        """Confirm the list doesn't have names of componentes repeated.  
+        """Confirm the list doesn't have names of componentes repeated.
         Comfirm that the name of component exists in QDesign.
 
         Args:
@@ -304,7 +311,7 @@ class GDSRender(QRenderer):
                                                      Defaults to []. Empty list means to render entire design.
 
         Returns:
-            Tuple[list, int]: 
+            Tuple[list, int]:
             list: Unique list of QComponents to render.
             int: 0 if all ended well. Otherwise, 1 if QComponent name not in design.
         """
@@ -326,9 +333,9 @@ class GDSRender(QRenderer):
         1. Gather the QGeometries to be used to write to file.
            Duplicate names in hightlight_qcomponents will be removed without warning.
 
-        2. Populate self.list_bounds, which contains the maximum bound for all elements to render.
+        2. Populate self.dict_bounds, for each chip, contains the maximum bound for all elements to render.
 
-        3. Calculate scaled bounding box to emulate size of chip using self.scaled_max_bound
+        3. Calculate scaled bounding box to emulate size of chip using self.bounding_box_scale(x and y)
            and place into self.scaled_max_bound.
 
         4. Gather Geometries to export to GDS format.
@@ -344,66 +351,89 @@ class GDSRender(QRenderer):
         unique_qcomponents, status = self.check_qcomps(highlight_qcomponents)
         if status == 1:
             return 1
+        self.dict_bounds.clear()
 
-        self.list_bounds.clear()
-        all_subtracts = []
-        all_no_subtracts = []
-
-        for chip_name in self.chip_names:
+        for chip_name in self.chip_info:
             # put the QGeometry into GDS format.
+            # There can be more than one chip in QGeometry.  They all export to one gds file.
+
+            self.dict_bounds[chip_name] = []
+            self.chip_info[chip_name]['all_subtract'] = []
+            self.chip_info[chip_name]['all_no_subtract'] = []
+
             for table_name in self.design.qgeometry.get_element_types():
-                table = self.get_table(table_name, unique_qcomponents)
+                # Get table for chip and table_name, and reduce to keep just the list of unique_qcomponents.
+                table = self.get_table(
+                    table_name, unique_qcomponents, chip_name)
 
-                self.gather_subtract_elements_and_bounds(chip_name,
-                                                         table_name, table, all_subtracts, all_no_subtracts)
+                # For every chip, and layer, separate the "subtract" and "no_subtract" elements and gather bounds.
+                # dict_bounds[chip_name] = list_bounds
+                self.gather_subtract_elements_and_bounds(
+                    chip_name, table_name, table)
 
-            # If list of QComponents provided, use the scaled_max_bound,
+            # If list of QComponents provided, use the bounding_box_scale(x and y),
             # otherwise use self._chips
-            self.scaled_max_bound, self.max_bound = self.scale_max_bounds(
-                self.list_bounds)
-
+            scaled_max_bound, max_bound = self.scale_max_bounds(chip_name,
+                                                                self.dict_bounds)
+            if highlight_qcomponents:
+                self.dict_bounds[chip_name]['for_subtract'] = scaled_max_bound
+            else:
+                chip_box, status = self.design.get_x_y_for_chip()
+                if status == 0:
+                    self.dict_bounds[chip_name]['for_subtract'] = chip_box
+                else:
+                    self.dict_bounds[chip_name]['for_subtract'] = max_bound
             if self.options.ground_plane:
-                self.rect_for_ground()
-
-                self.all_subtract_true = geopandas.GeoDataFrame(
-                    pd.concat(all_subtracts, ignore_index=False))
-                self.all_subtract_false = geopandas.GeoDataFrame(
-                    pd.concat(all_no_subtracts, ignore_index=False))
-
-                self.q_subtract_true = self.all_subtract_true.apply(
-                    self.qgeometry_to_gds, axis=1)
-
-                self.q_subtract_false = self.all_subtract_false.apply(
-                    self.qgeometry_to_gds, axis=1)
+                self.handle_ground_plane(all_subtracts, all_no_subtracts)
 
         return 0
 
-    def gather_subtract_elements_and_bounds(self, chip_name: str, table_name: str, table: geopandas.GeoDataFrame,
-                                            all_subtracts: list, all_no_subtracts: list):
+    def handle_ground_plane(self, all_subtracts: list, all_no_subtracts: list):
+        self.rect_for_ground()
+
+        self.all_subtract_true = geopandas.GeoDataFrame(
+            pd.concat(all_subtracts, ignore_index=False))
+        self.all_subtract_false = geopandas.GeoDataFrame(
+            pd.concat(all_no_subtracts, ignore_index=False))
+
+        self.q_subtract_true = self.all_subtract_true.apply(
+            self.qgeometry_to_gds, axis=1)
+
+        self.q_subtract_false = self.all_subtract_false.apply(
+            self.qgeometry_to_gds, axis=1)
+
+    def gather_subtract_elements_and_bounds(self, chip_name: str, table_name: str, table: geopandas.GeoDataFrame):
+        #
+        # all_subtracts: list, all_no_subtracts: list):
+
+        # For every chip, and layer, separate the "subtract" and "no_subtract" elements and gather bounds.
+        # f'{chip_name}_{table_name}_subtract_true'
+        # f'{chip_name}_{table_name}_subtract_false'
+        # dict_bounds[chip_name]
 
         # assume that self._chips has been populated before entering here.
 
         # Determine bound box and return scalar larger than size.
         bounds = tuple(self.get_bounds(table))
         # Add the bounds of each table to list.
-        self.list_bounds.append(bounds)
+        self.dict_bounds[chip_name].append(bounds)
 
         if self.options.ground_plane:
-            self.seperate_subtract_shapes(table_name, table)
+            self.seperate_subtract_shapes(chip_name, table_name, table)
 
-            all_subtracts.append(
-                getattr(self, f'{table_name}_subtract_true'))
-            all_no_subtracts.append(
-                getattr(self, f'{table_name}_subtract_false'))
+            self.chip_info[chip_name]['all_subtract'].append(
+                getattr(self, f'{chip_name}_{table_name}_subtract_true'))
+            self.chip_info[chip_name]['all_no_subtract'].append(
+                getattr(self, f'{chip_name}_{table_name}_subtract_false'))
 
-        # polys is gdspy.Polygon;    paths is gdspy.LineString
+        # polys use gdspy.Polygon;    paths use gdspy.LineString
         q_geometries = table.apply(self.qgeometry_to_gds, axis=1)
-        setattr(self, f'{table_name}s', q_geometries)
+        setattr(self, f'{chip_name}_{table_name}s', q_geometries)
 
-    def get_table(self, table_name: str, unique_qcomponents: list) -> geopandas.GeoDataFrame:
-        """If unique_qcomponents list is empty, get table using table_name from QGeometry tables 
-            for all elements with table_name.  Otherwise, return a table with fewer elements, for just the 
-            qcomponents within the unique_qcomponents list. 
+    def get_table(self, table_name: str, unique_qcomponents: list, chip_name: str) -> geopandas.GeoDataFrame:
+        """If unique_qcomponents list is empty, get table using table_name from QGeometry tables
+            for all elements with table_name.  Otherwise, return a table with fewer elements, for just the
+            qcomponents within the unique_qcomponents list.
 
         Args:
             table_name (str): Can be "path", "poly", etc. from the QGeometry tables.
@@ -412,6 +442,7 @@ class GDSRender(QRenderer):
         Returns:
             geopandas.GeoDataFrame: Table of elements within the QGeometry.
         """
+
         # self.design.qgeometry.tables is a dict. key=table_name, value=geopandas.GeoDataFrame
         if len(unique_qcomponents) == 0:
             table = self.design.qgeometry.tables[table_name]
@@ -423,6 +454,8 @@ class GDSRender(QRenderer):
 
             # Remove QComponents which are not requested.
             table = table[table['component'].isin(highlight_id)]
+
+        table = table[table['chip'] == chip_name]
 
         return table
 
@@ -547,8 +580,12 @@ class GDSRender(QRenderer):
             return 0
 
         # There can be more than one chip in QGeometry.  They all export to one gds file.
-        self.chip_names.clear()
-        self.chip_names += self.design.qgeometry.get_chip_names()
+        # Each chip will hold the rectangle for subtract for each layer so:
+        # chip_info[chip_name][subtract_box][(min_x,min_y,max_x,max_y)]
+        # chip_info[chip_name][layer_number][all_subtract_elements]
+        # chip_info[chip_name][layer_number][all_no_subtract_elements]
+        self.chip_info.clear()
+        self.chip_info.update(self.design.qgeometry.get_chip_names())
 
         if (self.create_qgeometry_for_gds(highlight_qcomponents) == 0):
             self.write_poly_path_to_file(file_name)
