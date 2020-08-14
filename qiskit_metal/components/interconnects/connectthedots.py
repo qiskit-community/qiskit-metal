@@ -24,7 +24,12 @@ from qiskit_metal.components import QComponent
 
 class ConnectTheDots(QComponent):
 
-    """Creates and connects a series of anchors through which the CPW passes."""
+    """
+    08/14/20: Used only for reproduction of non-meandered CPWs on BlueJay.
+    Creates and connects a series of anchors through which the CPW passes.
+    This class is basically pathfinder.py with no built-in collision
+    avoidance and no A* algorithm.
+    """
 
     default_options = Dict(
         pin_inputs=Dict(
