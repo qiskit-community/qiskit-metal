@@ -233,6 +233,9 @@ class HybridPathfinderNew(QComponent):
         return [] # Shouldn't actually reach here - if it fails, there's a convergence issue
     
     def make(self):
+        """
+        Generates path from start pin to end pin.
+        """
         p = self.parse_options()
         leadstart = p.leadin.start
         leadend = p.leadin.end
