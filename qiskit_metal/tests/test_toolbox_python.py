@@ -31,7 +31,7 @@ import unittest
 from qiskit_metal.toolbox_python.display import Headings
 from qiskit_metal.toolbox_python import utility_functions
 
-class TestToolboxPthon(unittest.TestCase):
+class TestToolboxPython(unittest.TestCase):
     """
     Unit test class
     """
