@@ -13,6 +13,7 @@
 # that they have been altered from the originals.
 
 #pylint: disable-msg=unnecessary-pass
+#pylint: disable-msg=broad-except
 
 """
 Qiskit Metal unit tests analyses functionality.
@@ -21,8 +22,6 @@ Created on  Wed Apr 22 10:02:06 2020
 @author: Jeremy D. Drysdale
 """
 
-<<<<<<< HEAD
-=======
 # Note - Tests not written for these functions:
 # element_handler/delete_component
 # element_handler/rename_component
@@ -30,8 +29,18 @@ Created on  Wed Apr 22 10:02:06 2020
 # element_handler/get_component_geometry_list
 # element_handler/get_component_geometry_dict
 
->>>>>>> 0e27bf3d454ac73e743b74c76c3c39db5cb501c6
 import unittest
+import numpy as np
+
+from geopandas import GeoDataFrame
+
+
+from qiskit_metal import designs
+from qiskit_metal import draw
+
+from qiskit_metal.elements import elements_handler
+from qiskit_metal.elements.elements_handler import QGeometryTables
+from qiskit_metal.components.qubits.transmon_pocket import TransmonPocket
 
 class TestElements(unittest.TestCase):
     """
@@ -50,9 +59,6 @@ class TestElements(unittest.TestCase):
         """
         pass
 
-<<<<<<< HEAD
-    # There is no components code that can be unit tested as of 4/24/20
-=======
     def test_element_instantiate_q_geometry_tables(self):
         """
         Test instantiation of QGeometryTables
@@ -298,7 +304,6 @@ class TestElements(unittest.TestCase):
         self.assertEqual(len(actual), 2)
         self.assertEqual(actual['path'], None)
         self.assertEqual(actual['poly'], None)
->>>>>>> 0e27bf3d454ac73e743b74c76c3c39db5cb501c6
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
