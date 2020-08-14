@@ -39,7 +39,10 @@ from ..toolbox_python.utility_functions import log_error_easy
 from .interface_components import Components
 from .net_info import QNet
 #from qiskit_metal.renderers.renderer_base import QRenderer
-from qiskit_metal.renderers.renderer_gds.gds_renderer import GDSRender
+
+from .. import config
+if not config.is_building_docs():
+    from qiskit_metal.renderers.renderer_gds.gds_renderer import GDSRender
 
 
 if TYPE_CHECKING:
