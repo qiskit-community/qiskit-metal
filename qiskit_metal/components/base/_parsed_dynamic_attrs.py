@@ -112,6 +112,10 @@ class ParsedDynamicAttributes_Component():
         return self.__getdict__().__iter__()
 
     def items(self):
+        """
+        Produces tuples consisting of keys and respective parsed
+        values for iterating over a dictionary.
+        """
         for key in self: # calls __iter__
             yield (key, self.__getitem__(key))
 
