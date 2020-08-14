@@ -40,7 +40,7 @@ Tests
     TestGUIBasic
     TestRenderers
     TestToolboxMetal
-    TestToolboxPthon
+    TestToolboxPython
 
 
 Support
@@ -65,4 +65,4 @@ if config.is_building_docs():
     from .test_gui_basic import TestGUIBasic
     from .test_renderers import TestRenderers
     from .test_toolbox_metal import TestToolboxMetal
-    from .test_toolbox_python import TestToolboxPthon
+    from .test_toolbox_python import TestToolboxPython
