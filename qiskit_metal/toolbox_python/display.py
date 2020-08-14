@@ -59,7 +59,7 @@ def get_screenshot(self:QMainWindow, name='shot.png', type_='png', do_display=Tr
     if do_display:
         _disp_ops = dict(width=500)
         _disp_ops.update(disp_ops or {})
-        display(Image(filename=path, **_disp_ops))
+        display(Image(filename=str(path), **_disp_ops))
 
 
 def format_dict_ala_z(dic, indent=0, key_width=20, do_repr=True, indent_all:int=2, indent_keys=5):

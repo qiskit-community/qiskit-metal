@@ -25,10 +25,12 @@ File contains some config definitions. Mostly internal.
 from .toolbox_python.attr_dict import Dict
 from ._defaults import DefaultMetalOptions, DefaultOptionsRenderer
 
+
 renderers_to_load = Dict(
     metal='qiskit_metal.renderers.metal',
     ansys='qiskit_metal.renderers.ansys',
     gds='qiskit_metal.renderers.gds'
+    # gds='qiskit_metal.renderers.renderer_gds.gds_renderer'
 )
 """
 Define the renderes to load. Just provide the module names here.
@@ -121,6 +123,7 @@ log = Dict(
 A dictionary containing the log format for standard text and date/time
 """
 
+
 def is_using_ipython():
     """Check if we're in IPython.
 
@@ -133,6 +136,7 @@ def is_using_ipython():
     except NameError:
         return False
 
+
 def is_building_docs():
     """Checks for the existance of the .buildingdocs file which is only present when
     building the docs
@@ -143,6 +147,7 @@ def is_building_docs():
     from pathlib import Path
     build_docs_file = Path(__file__).parent.parent / "docs" / ".buildingdocs"
     return Path.exists(build_docs_file)
+
 
 _ipython = is_using_ipython()
 

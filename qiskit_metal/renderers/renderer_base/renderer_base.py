@@ -17,10 +17,23 @@
 @date: 2019
 """
 import logging
-from ...designs import QDesign, is_design
-from ...elements import QGeometryTables
+import inspect
+from copy import deepcopy
+from typing import TYPE_CHECKING
+from typing import Dict as Dict_
+from typing import List, Tuple, Union
+
+from qiskit_metal.designs import is_design
+from qiskit_metal.elements import QGeometryTables
+from ... import Dict
 
 __all__ = ['QRenderer']
+
+if TYPE_CHECKING:
+    # For linting typechecking, import modules that can't be loaded here under normal conditions.
+    # For example, I can't import QDesign, because it requires Qrenderer first. We have the
+    # chicken and egg issue.
+    from qiskit_metal.designs import QDesign
 
 
 class QRenderer():
@@ -77,7 +90,7 @@ class QRenderer():
             print(
                 f'Warning: Renderer name={name}, class={cls} already loaded. Doing nothing.')
 
-        # Add elemnet extensions
+        # Add element extensions
         # see docstring for QRenderer.element_extensions
         QGeometryTables.add_renderer_extension(
             cls.name, cls.element_extensions)
@@ -111,13 +124,18 @@ class QRenderer():
 
         return QRenderer.__instantiated_renderers__[name]
 
-    def __init__(self, design: QDesign, initiate=True):
+    def __init__(self, design: 'QDesign', initiate=True, render_template: Dict = None, render_options: Dict = None):
         """
         Args:
             design (QDesign): The design
             initiate (bool): True to initiate the renderer (Default: True)
+            render_template (Dict, optional): Typically used by GUI for template options for GDS.  Defaults to None.
+            render_options (Dict, optional):  Used to overide all options. Defaults to None.
         """
+
         # TODO: check that the renderer has been loaded with load_renderer
+
+        self.status = 'Not Init'
 
         assert is_design(design), "Erorr, for the design argument you must provide a\
                                    a child instance of Metal QDesign class."
@@ -131,15 +149,145 @@ class QRenderer():
         # Register as an instantiated renderer.
         QRenderer.__instantiated_renderers__[self.name] = self
 
+        # Register the renderer in self.design
+        # TODO
+
+        # Options
+        self._options = Dict()
+        self.update_options(render_options=render_options,
+                            render_template=render_template)
+
+        self.status = 'Init Completed'
+
+    @property
+    def options(self) -> Dict:
+        """Options for the QRenderer."""
+        return self._options
+
     @property
     def design(self) -> 'QDesign':
-        '''Return a reference to the parent design object'''
+        """Return a reference to the parent design object."""
         return self._design
 
     @property
     def logger(self) -> logging.Logger:
-        """Returns the logger"""
+        """Returns the logger."""
         return self._design.logger
+
+    @classmethod
+    def _gather_all_children_default_options(cls) -> Dict:
+        """From the base class of QRenderer, traverse the child classes
+        to gather the .default_options for each child class.
+
+        Note: If keys are the same for a child and grandchild, the grandchild will
+        overwrite the child init method.
+
+        Returns:
+            Dict: Options from all children.
+        """
+        options_from_children = Dict()
+        parents = inspect.getmro(cls)
+
+        # QRenderer is not expected to have default_options dict to add to QRenderer class.
+        for child in parents[len(parents)-2::-1]:
+            # There is a developer agreement so the defaults for a renderer will be in a dict named default_options.
+            if hasattr(child, 'default_options'):
+                options_from_children = {
+                    **options_from_children, **child.default_options}
+        return options_from_children
+
+    @classmethod
+    def _get_unique_class_name(cls) -> str:
+        """Returns unique class name based on the module
+
+        Returns:
+            str: Example: 'qiskit_metal.renders.renderer_gds.gds_renderer.GDSRender'
+        """
+        return f'{cls.__module__}.{cls.__name__}'
+
+    @classmethod
+    def _register_class_with_design(cls,
+                                    design: 'QDesign',
+                                    template_key: str,
+                                    render_template: Dict):
+        """Init funciton to register a renderer class with the design when first instantiated.
+            Registers the renderer's template options.
+
+            Arguments:
+                design (QDesign): The parent design
+                template_key (str): Key to use
+                render_template (dict): template of render to copy
+        """
+        # do not overwrite
+        if template_key not in design.template_options:
+            if not render_template:
+                render_template = cls._gather_all_children_default_options()
+            design.template_options[template_key] = deepcopy(
+                render_template)
+
+    @classmethod
+    def get_template_options(cls,
+                             design: 'QDesign',
+                             render_template: Dict = None,
+                             logger_: logging.Logger = None,
+                             template_key: str = None) -> Dict:
+        """Creates template options for the Metal QRenderer class required for the class
+        to function, based on the design template; i.e., be created, made, and rendered.
+        Provides the blank option structure required.
+
+        The options can be extended by plugins, such as renderers.
+
+        Args:
+            design (QDesign): A design class.
+            render_template (Dict, optional): Template options to overwrite the class ones. Defaults to None.
+            logger_ (logging.Logger, optional): A logger for errors. Defaults to None.
+            template_key (str, optional): The design.template_options key identifier. If None, then use
+                _get_unique_class_name(). Defaults to None.
+
+        Returns:
+            Dict: Dictionary of renderer's default options based on design.template_options.
+        """
+
+        # get key for tepmlates
+        if template_key is None:
+            template_key = cls._get_unique_class_name()
+
+        if template_key not in design.template_options:
+            # Registers the renderer's template options.
+            cls._register_class_with_design(
+                design, template_key, render_template)
+
+        # Only log warning, if template_key not registered within design.
+        if template_key not in design.template_options:
+            logger_ = logger_ or design.logger
+            if logger_:
+                logger_.error(f'ERROR in creating renderer {cls.__name__}!\nThe default '
+                              f'options for the renderer class {cls.__name__} are missing')
+
+        # Specific object render template options
+        options = deepcopy(Dict(design.template_options[template_key]))
+
+        return options
+
+    def update_options(self, render_options: Dict = None, render_template: Dict = None):
+        """If template options has not been set for this renderer,
+        then gather all the default options for children and add to design.  The GUI
+        would use this to store the template options.
+
+        Then give the template options to render
+        to store in self.options.  Then user can over-ride the render_options.
+
+        Args:
+            render_options (Dict, optional): If user wants to over-ride the template
+                                             options. Defaults to None.
+            render_template (Dict, optional): All the template options for each child.
+                                             Defaults to None.
+        """
+        self.options.update(self.get_template_options(
+            self.design, render_template=render_template))
+
+        if render_options:
+            self.options.update(render_options)
 
     def initate(self, re_initiate=False):
         '''

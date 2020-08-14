@@ -57,6 +57,8 @@ Connectors
 .. autosummary::
     :toctree:
 
+    BumpPad
+    CPWHangerT
     OpenToGround
     ShortToGround
 
@@ -74,6 +76,7 @@ Interconnects
     CpwMeanderSimple
     FakeCPW
     Qroute
+    ResonatorRectangleSpiral
 
 
 Junctions
@@ -120,6 +123,8 @@ if config.is_building_docs():
     from .basic.n_square_spiral import NSquareSpiral
     from .basic.rectangle import Rectangle
     from .basic.rectangle_hollow import RectangleHollow
+    from .connectors.bump_pad import BumpPad
+    from .connectors.cpw_hanger_t import CPWHangerT
     from .connectors.open_to_ground import OpenToGround
     from .connectors.short_to_ground import ShortToGround
     from .interconnects.cpw_autostraightline import CpwAutoStraightLine
@@ -129,6 +134,7 @@ if config.is_building_docs():
     from .interconnects.cpw_meander_simple import Oriented_Point
     from .interconnects.fake_cpw import FakeCPW
     from .interconnects.Qroute import Qroute
+    from .interconnects.resonator_rectangle_spiral import ResonatorRectangleSpiral
     from .qubits.transmon_cross import TransmonCross
     from .qubits.transmon_pocket import TransmonPocket
     from .qubits.transmon_pocket_cl import TransmonPocketCL
