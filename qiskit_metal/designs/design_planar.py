@@ -76,15 +76,15 @@ class DesignPlanar(QDesign):
             if 'size' in self._chips[chip_name]:
                 size = self.chips[chip_name]['size']
                 if 'center_x' in size and 'center_y' in size and 'size_x' in size and 'size_y' in size:
-                    if (isinstance(size.center_x, int) or isinstance(size.center_x, float)) and \
-                       (isinstance(size.center_y, int) or isinstance(size.center_y, float)) and \
-                       (isinstance(size.size_x, int) or isinstance(size.size_x, float)) and \
-                       (isinstance(size.size_y, int) or isinstance(size.size_y, float)):
+                    if (isinstance(size['center_x'], int) or isinstance(size['center_x'], float)) and \
+                       (isinstance(size['center_y'], int) or isinstance(size['center_y'], float)) and \
+                       (isinstance(size['size_x'], int) or isinstance(size['size_x'], float)) and \
+                       (isinstance(size['size_y'], int) or isinstance(size['size_y'], float)):
                         x_y_location = (
-                            size.center_x - (size.size_x / 2.0),
-                            size.center_y - (size.size_y / 2.0),
-                            size.center_x + (size.size_x / 2.0),
-                            size.center_y + (size.size_y / 2.0)
+                            size['center_x'] - (size['size_x'] / 2.0),
+                            size['center_y'] - (size['size_y'] / 2.0),
+                            size['center_x'] + (size['size_x'] / 2.0),
+                            size['center_y'] + (size['size_y'] / 2.0)
                         )
                         return x_y_location, 0
                     else:

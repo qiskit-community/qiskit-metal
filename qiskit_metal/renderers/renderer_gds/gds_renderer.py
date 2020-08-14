@@ -59,8 +59,8 @@ class GDSRender(QRenderer):
         # TODO: layer numbers come from QGeometry and QDesign
         # layer and data numbers, needs to come from default options
         # i.e. self.options.ld_subtract = {"layer": 201, "data": 12}.
-        ld_subtract={"layer": 201},
-        ld_no_subtract={"layer": 202},
+        #ld_subtract={"layer": 201},
+        #ld_no_subtract={"layer": 202},
         ld_chip={"layer": 200, "datatype": 10},
 
         # DEPRECATED since using from QGeometry table now.
@@ -212,7 +212,46 @@ class GDSRender(QRenderer):
 
         return gs_table.total_bounds
 
-    def scale_max_bounds(self, chip_name: str, dict_bounds: list) -> Tuple[tuple, tuple]:
+    def inclusive_bound(self, all_bounds: list) -> tuple:
+        """Given a list of tuples which describe corners of a box, i.e. (minx, miny, maxx, maxy).
+        This method will find the box, which will include all boxes.  In another words, the smallest minx and miny;
+        and the largest maxx and maxy.
+
+        Args:
+            all_bounds (list): List of bounds. Each tuple corresponds to a box.
+
+        Returns:
+            tuple: Describe a box which includes the area of each box in all_bounds.
+        """
+
+        # If given an empty list.
+        if len(all_bounds) == 0:
+            return (0.0, 0.0, 0.0, 0.0)
+
+        inclusive_tuple = (min(all_bounds, key=itemgetter(0))[0],
+                           min(all_bounds, key=itemgetter(1))[1],
+                           max(all_bounds, key=itemgetter(2))[2],
+                           max(all_bounds, key=itemgetter(3))[3])
+        return inclusive_tuple
+
+    # Probalby not being used and Depreciated.
+    # def render_chip(self) -> None:
+    #     """Use the maximum bounds for all qgeometry on chip.  Scale the size of chip.
+    #        Use gdspy.Polygon() because gdspy.boolean() requires it.
+    #     """
+
+    #     # change format to use gdspy.Pologon().
+    #     # [minx, miny, maxx, maxy] to [(minx,miny),(maxx,miny),(maxx,maxy),(minx,maxy)]
+    #     rectangle_points = [(self.max_bound[0], self.max_bound[1]),
+    #                         (self.max_bound[2], self.max_bound[1]),
+    #                         (self.max_bound[2], self.max_bound[3]),
+    #                         (self.max_bound[0], self.max_bound[3])]
+    #     chip_poly = gdspy.Polygon(rectangle_points, **self.options.ld_chip)
+
+    #     self.scaled_chip_poly = chip_poly.scale(
+    #         scalex=self.options.bounding_box_scale_x, scaley=self.options.bounding_box_scale_y)
+
+    def scale_max_bounds(self, chip_name: str, all_bounds: list) -> Tuple[tuple, tuple]:
         """Given the list of tuples to represent all of the bounds for path, poly, etc.
         This will return the scaled using self.bounding_box_scale_x and self.bounding_box_scale_y, and  the max bounds of the tuples provided.
 
@@ -224,7 +263,6 @@ class GDSRender(QRenderer):
             first tuple: A scaled bounding box which includes all paths, polys, etc.;
             second tuple: A  bounding box which includes all paths, polys, etc.
         """
-        all_bounds = dict_bounds[chip_name]
         # If given an empty list.
         if len(all_bounds) == 0:
             return (0.0, 0.0, 0.0, 0.0), (0.0, 0.0, 0.0, 0.0)
@@ -250,57 +288,23 @@ class GDSRender(QRenderer):
 
         return scaled_box, (minx, miny, maxx, maxy)
 
-    def inclusive_bound(self, all_bounds: list) -> tuple:
-        """Given a list of tuples which describe corners of a box, i.e. (minx, miny, maxx, maxy).
-        This method will find the box, which will include all boxes.  In another words, the smallest minx and miny;
-        and the largest maxx and maxy.
+    # Will soon be deprecated
+    # def rect_for_ground(self, chip_name: str) -> None:
+    #     """Use the maximum bounds for all qgeometry on chip.  Scale the size of chip.
+    #        Use gdspy.Polygon() because gdspy.boolean() requires it.
 
-        Args:
-            all_bounds (list): List of bounds. Each tuple corresponds to a box.
+    #     Args:
+    #         chip_name (str): Name of chip where the rectangle for ground plane is being generated.
+    #     """
 
-        Returns:
-            tuple: Describe a box which includes the area of each box in all_bounds.
-        """
+    #     rectangle_points = [(self.max_bound[0], self.max_bound[1]),
+    #                         (self.max_bound[2], self.max_bound[1]),
+    #                         (self.max_bound[2], self.max_bound[3]),
+    #                         (self.max_bound[0], self.max_bound[3])]
+    #     chip_poly = gdspy.Polygon(rectangle_points, **self.options.ld_chip)
 
-        # If given an empty list.
-        if len(all_bounds) == 0:
-            return (0.0, 0.0, 0.0, 0.0)
-
-        inclusive_tuple = (min(all_bounds, key=itemgetter(0))[0],
-                           min(all_bounds, key=itemgetter(1))[1],
-                           max(all_bounds, key=itemgetter(2))[2],
-                           max(all_bounds, key=itemgetter(3))[3])
-        return inclusive_tuple
-
-    def render_chip(self) -> None:
-        """Use the maximum bounds for all qgeometry on chip.  Scale the size of chip.
-           Use gdspy.Polygon() because gdspy.boolean() requires it.
-        """
-
-        # change format to use gdspy.Pologon().
-        # [minx, miny, maxx, maxy] to [(minx,miny),(maxx,miny),(maxx,maxy),(minx,maxy)]
-        rectangle_points = [(self.max_bound[0], self.max_bound[1]),
-                            (self.max_bound[2], self.max_bound[1]),
-                            (self.max_bound[2], self.max_bound[3]),
-                            (self.max_bound[0], self.max_bound[3])]
-        chip_poly = gdspy.Polygon(rectangle_points, **self.options.ld_chip)
-
-        self.scaled_chip_poly = chip_poly.scale(
-            scalex=self.options.bounding_box_scale_x, scaley=self.options.bounding_box_scale_y)
-
-    def rect_for_ground(self) -> None:
-        """Use the maximum bounds for all qgeometry on chip.  Scale the size of chip.
-           Use gdspy.Polygon() because gdspy.boolean() requires it.
-        """
-
-        rectangle_points = [(self.max_bound[0], self.max_bound[1]),
-                            (self.max_bound[2], self.max_bound[1]),
-                            (self.max_bound[2], self.max_bound[3]),
-                            (self.max_bound[0], self.max_bound[3])]
-        chip_poly = gdspy.Polygon(rectangle_points, **self.options.ld_chip)
-
-        self.scaled_chip_poly = chip_poly.scale(
-            scalex=self.options.bounding_box_scale_x, scaley=self.options.bounding_box_scale_y)
+    #     self.scaled_chip_poly = chip_poly.scale(
+    #         scalex=self.options.bounding_box_scale_x, scaley=self.options.bounding_box_scale_y)
 
     def check_qcomps(self, highlight_qcomponents: list = []) -> Tuple[list, int]:
         """Confirm the list doesn't have names of componentes repeated.
@@ -357,11 +361,16 @@ class GDSRender(QRenderer):
             # put the QGeometry into GDS format.
             # There can be more than one chip in QGeometry.  They all export to one gds file.
 
-            self.dict_bounds[chip_name] = []
             self.chip_info[chip_name]['all_subtract'] = []
             self.chip_info[chip_name]['all_no_subtract'] = []
+            self.dict_bounds[chip_name] = Dict()
+            self.dict_bounds[chip_name]['gather'] = []
+            self.dict_bounds[chip_name]['for_subtract'] = tuple()
+            all_table_subtracts = []
+            all_table_no_subtracts = []
 
             for table_name in self.design.qgeometry.get_element_types():
+
                 # Get table for chip and table_name, and reduce to keep just the list of unique_qcomponents.
                 table = self.get_table(
                     table_name, unique_qcomponents, chip_name)
@@ -369,42 +378,53 @@ class GDSRender(QRenderer):
                 # For every chip, and layer, separate the "subtract" and "no_subtract" elements and gather bounds.
                 # dict_bounds[chip_name] = list_bounds
                 self.gather_subtract_elements_and_bounds(
-                    chip_name, table_name, table)
+                    chip_name, table_name, table, all_table_subtracts, all_table_no_subtracts)
 
             # If list of QComponents provided, use the bounding_box_scale(x and y),
             # otherwise use self._chips
             scaled_max_bound, max_bound = self.scale_max_bounds(chip_name,
-                                                                self.dict_bounds)
+                                                                self.dict_bounds[chip_name]['gather'])
             if highlight_qcomponents:
                 self.dict_bounds[chip_name]['for_subtract'] = scaled_max_bound
             else:
-                chip_box, status = self.design.get_x_y_for_chip()
+                chip_box, status = self.design.get_x_y_for_chip(chip_name)
                 if status == 0:
                     self.dict_bounds[chip_name]['for_subtract'] = chip_box
                 else:
                     self.dict_bounds[chip_name]['for_subtract'] = max_bound
+                    self.logger.warning(
+                        f'design.get_x_y_for_chip() did NOT return a good code for chip={chip_name},'
+                        f'for ground subtraction-box using the size calculated from QGeometry, ({max_bound}) will be used. ')
             if self.options.ground_plane:
-                self.handle_ground_plane(all_subtracts, all_no_subtracts)
+                self.handle_ground_plane(chip_name,
+                                         all_table_subtracts, all_table_no_subtracts)
 
         return 0
 
-    def handle_ground_plane(self, all_subtracts: list, all_no_subtracts: list):
-        self.rect_for_ground()
+    def handle_ground_plane(self, chip_name: str, all_table_subtracts: list, all_table_no_subtracts: list):
 
-        self.all_subtract_true = geopandas.GeoDataFrame(
-            pd.concat(all_subtracts, ignore_index=False))
-        self.all_subtract_false = geopandas.GeoDataFrame(
-            pd.concat(all_no_subtracts, ignore_index=False))
+        minx, miny, maxx, maxy = self.dict_bounds[chip_name]['for_subtract']
 
-        self.q_subtract_true = self.all_subtract_true.apply(
+        rectangle_points = [(minx, miny), (maxx, miny),
+                            (maxx, maxy), (minx, maxy)]
+
+        # While within a chip, need to to have just one rectangle for ground plane.
+        self.chip_info[chip_name]['subtract_poly'] = gdspy.Polygon(
+            rectangle_points, **self.options.ld_chip)
+
+        self.chip_info[chip_name]['all_subtract_true'] = geopandas.GeoDataFrame(
+            pd.concat(all_table_subtracts, ignore_index=False))
+        self.chip_info[chip_name]['all_subtract_false'] = geopandas.GeoDataFrame(
+            pd.concat(all_table_no_subtracts, ignore_index=False))
+
+        self.chip_info[chip_name]['q_subtract_true'] = self.chip_info[chip_name]['all_subtract_true'].apply(
             self.qgeometry_to_gds, axis=1)
 
-        self.q_subtract_false = self.all_subtract_false.apply(
+        self.chip_info[chip_name]['q_subtract_false'] = self.chip_info[chip_name]['all_subtract_false'].apply(
             self.qgeometry_to_gds, axis=1)
 
-    def gather_subtract_elements_and_bounds(self, chip_name: str, table_name: str, table: geopandas.GeoDataFrame):
-        #
-        # all_subtracts: list, all_no_subtracts: list):
+    def gather_subtract_elements_and_bounds(self, chip_name: str, table_name: str, table: geopandas.GeoDataFrame,
+                                            all_subtracts: list, all_no_subtracts: list):
 
         # For every chip, and layer, separate the "subtract" and "no_subtract" elements and gather bounds.
         # f'{chip_name}_{table_name}_subtract_true'
@@ -416,14 +436,14 @@ class GDSRender(QRenderer):
         # Determine bound box and return scalar larger than size.
         bounds = tuple(self.get_bounds(table))
         # Add the bounds of each table to list.
-        self.dict_bounds[chip_name].append(bounds)
+        self.dict_bounds[chip_name]['gather'].append(bounds)
 
         if self.options.ground_plane:
             self.seperate_subtract_shapes(chip_name, table_name, table)
 
-            self.chip_info[chip_name]['all_subtract'].append(
+            all_subtracts.append(
                 getattr(self, f'{chip_name}_{table_name}_subtract_true'))
-            self.chip_info[chip_name]['all_no_subtract'].append(
+            all_no_subtracts.append(
                 getattr(self, f'{chip_name}_{table_name}_subtract_false'))
 
         # polys use gdspy.Polygon;    paths use gdspy.LineString
