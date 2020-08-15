@@ -59,8 +59,8 @@ class GDSRender(QRenderer):
         # TODO: layer numbers come from QGeometry and QDesign
         # layer and data numbers, needs to come from default options
         # i.e. self.options.ld_subtract = {"layer": 201, "data": 12}.
-        #ld_subtract={"layer": 201},
-        #ld_no_subtract={"layer": 202},
+        # ld_subtract={"layer": 201},
+        # ld_no_subtract={"layer": 202},
         ld_chip={"layer": 200, "datatype": 10},
 
         # DEPRECATED since using from QGeometry table now.
@@ -552,55 +552,51 @@ class GDSRender(QRenderer):
                 # There can be more than one chip in QGeometry.
                 # All chips export to one gds file.
                 # Each chip uses its own subtract rectangle.
+                df = self.chip_info[chip_name]['all_subtract_true']
+                layers_in_chip = list(df['layer'].unique())
 
-                # When getting layer from design and QGeometry.
-                # layer=self.design.get_chip_layer(chip_name))
-                # need loop for layers within a chip,
-                # For now, hard code the layer.
-                chip_layer = 1  # used by subtract_poly rectange.
+                for chip_layer in layers_in_chip:
+                    minx, miny, maxx, maxy = self.dict_bounds[chip_name]['for_subtract']
+                    rectangle_points = [(minx, miny), (maxx, miny),
+                                        (maxx, maxy), (minx, maxy)]
+                    self.chip_info[chip_name]['subtract_poly'] = gdspy.Polygon(
+                        rectangle_points, chip_layer)
 
-                minx, miny, maxx, maxy = self.dict_bounds[chip_name]['for_subtract']
+                    ground_cell = lib.new_cell('TOP', overwrite_duplicate=True)
+                    subtract_cell = lib.new_cell(
+                        'SUBTRACT', overwrite_duplicate=True)
+                    subtract_cell.add(
+                        self.chip_info[chip_name]['q_subtract_true'])
 
-                rectangle_points = [(minx, miny), (maxx, miny),
-                                    (maxx, maxy), (minx, maxy)]
+                    '''gdspy.boolean() is not documented clearly.
+                    If there are multiple elements to subtract (both poly and path),
+                    the way I could make it work is to put them into a cell, within lib.
+                    I used the method cell_name.get_polygons(),
+                    which appears to convert all elements within the cell to poly.
+                    After the boolean(), I deleted the cell from lib.
+                    The memory is freed up then.
+                    '''
+                    diff_geometry = gdspy.boolean(
+                        self.chip_info[chip_name]['subtract_poly'],
+                        subtract_cell.get_polygons(),
+                        'not',
+                        precision=self.options.precision,
+                        layer=chip_layer)
 
-                self.chip_info[chip_name]['subtract_poly'] = gdspy.Polygon(
-                    rectangle_points, chip_layer)
+                    lib.remove(subtract_cell)
 
-                ground_cell = lib.new_cell('TOP', overwrite_duplicate=True)
-                subtract_cell = lib.new_cell(
-                    'SUBTRACT', overwrite_duplicate=True)
-                subtract_cell.add(self.chip_info[chip_name]['q_subtract_true'])
+                    if diff_geometry is None:
+                        self.design.logger.warning(
+                            f'There is no table named diff_geometry to write.')
+                    else:
+                        ground_cell.add(diff_geometry)
 
-                '''gdspy.boolean() is not documented clearly.
-                If there are multiple elements to subtract (both poly and path),
-                the way I could make it work is to put them into a cell, within lib.
-                I used the method cell_name.get_polygons(),
-                which appears to convert all elements within the cell to poly.
-                After the boolean(), I deleted the cell from lib.
-                The memory is freed up then.
-                '''
-                diff_geometry = gdspy.boolean(
-                    self.chip_info[chip_name]['subtract_poly'],
-                    subtract_cell.get_polygons(),
-                    'not',
-                    precision=self.options.precision,
-                    layer=chip_layer)
-
-                lib.remove(subtract_cell)
-
-                if diff_geometry is None:
-                    self.design.logger.warning(
-                        f'There is no table named diff_geometry to write.')
-                else:
-                    ground_cell.add(diff_geometry)
-
-                if self.chip_info[chip_name]['q_subtract_false'] is None:
-                    self.design.logger.warning(
-                        f'There is no table named self.chip_info[{chip_name}][q_subtract_false] to write.')
-                else:
-                    ground_cell.add(
-                        self.chip_info[chip_name]['q_subtract_false'])
+                    if self.chip_info[chip_name]['q_subtract_false'] is None:
+                        self.design.logger.warning(
+                            f'There is no table named self.chip_info[{chip_name}][q_subtract_false] to write.')
+                    else:
+                        ground_cell.add(
+                            self.chip_info[chip_name]['q_subtract_false'])
 
         lib.write_gds(file_name)
 
@@ -666,8 +662,8 @@ class GDSRender(QRenderer):
 
             # Handle  list(polygon.interiors) TODO:
             return gdspy.Polygon(list(geom.exterior.coords),
-                                 layer=element.layer if not element['subtract'] else 0,
-                                 # layer=element.layer,
+                                 # layer=element.layer if not element['subtract'] else 0,
+                                 layer=element.layer,
                                  datatype=10,
                                  )
         elif isinstance(geom, shapely.geometry.LineString):

@@ -56,7 +56,7 @@ class DesignPlanar(QDesign):
         self._chips['main'] = {}
 
         self._chips['main']['size'] = {
-            'center_x': 0.0, 'center_y': 0.0, 'size_x': 0.005, 'size_y': 0.005}
+            'center_x': 0.0, 'center_y': 0.0, 'size_x': 9, 'size_y': 6}
 
     def get_x_y_for_chip(self, chip_name: str) -> Tuple[tuple, int]:
         """If the chip_name is in self.chips, along with entry for size information
