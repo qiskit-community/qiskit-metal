@@ -112,7 +112,7 @@ class TransmonPocket(BaseQubit):
                 |_______|______|                 |
                 |________________________________|   +1
                                             +1
-    
+
     .. image::
         Component_Qubit_Transmon_Pocket.png
     """
@@ -260,4 +260,3 @@ class TransmonPocket(BaseQubit):
         points = np.array(connector_wire_path.coords)
         self.add_pin(name, points=points[-2:],
                      width=cpw_width, input_as_norm=True)
-                     

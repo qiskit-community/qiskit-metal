@@ -249,7 +249,7 @@ def log_error_easy(logger: logging.Logger, pre_text='', post_text='', do_print=F
 def monkey_patch(self, func, func_name=None):
     '''
     Monkey patch a method into a class at runtime
-    
+
     Use descriptor protocol when adding method as an attribute.
 
     For a method on a class, when you do a.some_method, python actually does:
@@ -258,7 +258,7 @@ def monkey_patch(self, func, func_name=None):
     so we're just reproducing that call sequence here explicitly.
 
     See: https://stackoverflow.com/questions/38485123/monkey-patching-bound-methods-in-python
-    
+
     Args:
         func (function): function
         func_name (str): name of the function (Default: None)

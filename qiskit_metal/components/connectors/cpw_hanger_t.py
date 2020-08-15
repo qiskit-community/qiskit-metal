@@ -25,8 +25,11 @@ class CPWHangerT(QComponent):
     and a secondary one pin neigbouring CPW transmission line that is capacitively/inductively
     coupled to the primary. Such a structure can be used, as an example, for generating
     CPW resonator hangars off of a transmission line.
+
     Inherits QComponent class.
+
     ::
+
         +----------------------------+
         ------------------------------
         |
@@ -34,6 +37,7 @@ class CPWHangerT(QComponent):
         |
         |
         +
+
     Options:
         * prime_width: the width of the trace of the two pin CPW transmission line
         * prime_gap: the dielectric gap of the two pin CPW transmission line
