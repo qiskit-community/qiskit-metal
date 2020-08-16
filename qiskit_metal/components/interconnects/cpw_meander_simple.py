@@ -30,6 +30,9 @@ class Oriented_2D_Array:
     with a 2D position and a 2D direction (XY plane).
     All values stored as np.ndarray of parsed floats.
     """
+    component_metadata = Dict(
+        component_type='cpw'
+        )
 
     # TODO: Maybe move this class out of here, more general.
 

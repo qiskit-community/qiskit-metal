@@ -23,20 +23,23 @@ import numpy as np
 class ShortToGround(QComponent):
     """A basic short to ground termination. Functions as a pin for auto CPW drawing.
 
-    Inherits `QComponent` class   
+    Inherits `QComponent` class
 
-    
+
     Options:
         * width: the width of the 'cpw' terminating to ground (this is merely for the purpose of
           generating a value to pass to the pin)
         * pos_x/_y: the x/y position of the ground termination.
-        * rotation: the direction of the termination. 0 degrees is +x, following a 
+        * rotation: the direction of the termination. 0 degrees is +x, following a
           counter-clockwise rotation (eg. 90 is +y)
         * chip: the chip the pin should be on.
         * layer: layer the pin is on. Does not have any practical impact to the short.
 
     Values (unless noted) are strings with units included, (e.g., '30um')
     """
+    component_metadata = Dict(
+        component_type='term'
+        )
 
     default_options = Dict(
         width='10um',
@@ -59,5 +62,5 @@ class ShortToGround(QComponent):
         port_line = draw.translate(port_line, p.pos_x, p.pos_y)
 
         port_points = list(draw.shapely.geometry.shape(port_line).coords)
-        self.add_pin('short', port_points, p.width) 
+        self.add_pin('short', port_points, p.width)
         #HOW TO ADD A 0 volume element to a table for the GUI? Or not even needed?

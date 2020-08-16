@@ -54,6 +54,9 @@ class ResonatorRectangleSpiral(QComponent):
         * chip: the chip the pin should be on.
         * layer: layer the pin is on. Does not have any practical impact to the short.
     """
+    component_metadata = Dict(
+        component_type='res'
+        )
 
     default_options = Dict(
         n='3',

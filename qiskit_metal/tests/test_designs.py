@@ -34,6 +34,9 @@ from qiskit_metal.designs.net_info import QNet
 
 from qiskit_metal.components.base.base import QComponent
 
+from qiskit_metal.components.qubits.transmon_pocket import TransmonPocket
+from qiskit_metal.components.interconnects.resonator_rectangle_spiral import ResonatorRectangleSpiral
+
 class TestDesign(unittest.TestCase):
     """
     Unit test class
@@ -167,6 +170,26 @@ class TestDesign(unittest.TestCase):
         self.assertEqual('new-name' in design.name_to_id, True)
         self.assertEqual('my_name-1' in design.name_to_id, False)
         self.assertEqual('my_name-2' in design.name_to_id, True)
+
+    def test_design_default_component_name(self):
+        """
+        Test automatic naming of components
+        """
+        design = DesignPlanar(metadata={})
+
+        ResonatorRectangleSpiral(design, make=False)
+        self.assertEqual('res-1' in design.components, True)
+        ResonatorRectangleSpiral(design, make=False)
+        self.assertEqual('res-2' in design.components, True)
+        # Manually add the next automatic name to check it doesn't get repeated
+        ResonatorRectangleSpiral(design, 'res-3', make=False)
+        ResonatorRectangleSpiral(design, make=False)
+        self.assertEqual('res-3' in design.components, True)
+        self.assertEqual('res-4' in design.components, True)
+        # Add a different component
+        TransmonPocket(design, make=False)
+        self.assertEqual('Q-1' in design.components, True)
+        print(design.components)
 
     def test_design_delete_component(self):
         """

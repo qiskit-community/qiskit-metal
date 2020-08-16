@@ -38,6 +38,9 @@ class OpenToGround(QComponent):
 
     Values (unless noted) are strings with units included, (e.g., '30um')
     """
+    component_metadata = Dict(
+        component_type='term'
+        )
 
     default_options = Dict(
         width='10um',
