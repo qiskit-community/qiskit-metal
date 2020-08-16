@@ -181,15 +181,20 @@ class TestDesign(unittest.TestCase):
         self.assertEqual('res-1' in design.components, True)
         ResonatorRectangleSpiral(design, make=False)
         self.assertEqual('res-2' in design.components, True)
+
         # Manually add the next automatic name to check it doesn't get repeated
         ResonatorRectangleSpiral(design, 'res-3', make=False)
         ResonatorRectangleSpiral(design, make=False)
         self.assertEqual('res-3' in design.components, True)
         self.assertEqual('res-4' in design.components, True)
+
         # Add a different component
         TransmonPocket(design, make=False)
         self.assertEqual('Q-1' in design.components, True)
-        print(design.components)
+
+        # Add a component with no predefined prefix
+        QComponent(design, make=False)
+        self.assertEqual('component-1' in design.components, True)
 
     def test_design_delete_component(self):
         """
