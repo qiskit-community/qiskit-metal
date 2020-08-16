@@ -75,9 +75,6 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
     .. image::
         Component_Qubit_Transmon_Crossmon.png
     """
-    component_metadata = Dict(
-        component_type='Q'
-        )
 
     #_img = 'Metal_Crossmon.png'
 
