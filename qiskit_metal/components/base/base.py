@@ -121,7 +121,7 @@ class QComponent():
             When False - If the string name, used for component, already
             exists in the design, the existing component will be
             kept in the design, and current component will not be generated,
-            nor will be added to the design. The variable design.self.status 
+            nor will be added to the design. The variable design.self.status
             will still be NotBuilt, as opposed to Initalization Successful.
 
             Either True or False - If string name, used for component, is NOT
@@ -184,7 +184,7 @@ class QComponent():
                 component_type = prefix['component_type']
             name_id = self.design._get_new_qcomponent_name_id(component_type)
             # rename loop to make sure that no components manually named by the user conflicts
-            while self.design.rename_component(self._id, component_type + "-" + str(name_id)) != 1:
+            while self.design.rename_component(self._id, component_type + "_" + str(name_id)) != 1:
                 name_id = self.design._get_new_qcomponent_name_id(component_type)
 
         # Make the component geometry
