@@ -373,16 +373,33 @@ class GDSRender(QRenderer):
             all_table_no_subtracts (list): [description]
         """
 
-        self.chip_info[chip_name]['all_subtract_true'] = geopandas.GeoDataFrame(
-            pd.concat(all_table_subtracts, ignore_index=False))
-        self.chip_info[chip_name]['all_subtract_false'] = geopandas.GeoDataFrame(
-            pd.concat(all_table_no_subtracts, ignore_index=False))
+        all_layers = self.design.qgeometry.get_all_unique_layers(chip_name)
 
-        self.chip_info[chip_name]['q_subtract_true'] = self.chip_info[chip_name]['all_subtract_true'].apply(
-            self.qgeometry_to_gds, axis=1)
+        for chip_layer in all_layers:
+            copy_subtract = []
+            copy_no_subtract = []
+            copy_subtract = deepcopy(all_table_subtracts)
+            copy_no_subtract = deepcopy(all_table_no_subtracts)
 
-        self.chip_info[chip_name]['q_subtract_false'] = self.chip_info[chip_name]['all_subtract_false'].apply(
-            self.qgeometry_to_gds, axis=1)
+            for item in copy_subtract:
+                item.drop(item.index[item['layer'] !=
+                                     chip_layer], inplace=True)
+
+            for item_no in copy_no_subtract:
+                item_no.drop(item_no.index[item_no['layer'] !=
+                                           chip_layer], inplace=True)
+
+            self.chip_info[chip_name][chip_layer]['all_subtract_true'] = geopandas.GeoDataFrame(
+                pd.concat(copy_subtract, ignore_index=False))
+
+            self.chip_info[chip_name][chip_layer]['all_subtract_false'] = geopandas.GeoDataFrame(
+                pd.concat(copy_no_subtract, ignore_index=False))
+
+            self.chip_info[chip_name][chip_layer]['q_subtract_true'] = self.chip_info[chip_name][chip_layer]['all_subtract_true'].apply(
+                self.qgeometry_to_gds, axis=1)
+
+            self.chip_info[chip_name][chip_layer]['q_subtract_false'] = self.chip_info[chip_name][chip_layer]['all_subtract_false'].apply(
+                self.qgeometry_to_gds, axis=1)
 
     def gather_subtract_elements_and_bounds(self, chip_name: str, table_name: str, table: geopandas.GeoDataFrame,
                                             all_subtracts: list, all_no_subtracts: list):
@@ -497,12 +514,19 @@ class GDSRender(QRenderer):
         #        cell.add(q_geometries)
 
         if self.options.ground_plane:
+            all_chips_top_name = 'TOP'
+            all_chips_top = lib.new_cell(
+                all_chips_top_name, overwrite_duplicate=True)
             for chip_name in self.chip_info:
+                chip_only_top_name = f'TOP_{chip_name}'
+                chip_only_top = lib.new_cell(
+                    chip_only_top_name, overwrite_duplicate=True)
+
                 # There can be more than one chip in QGeometry.
                 # All chips export to one gds file.
                 # Each chip uses its own subtract rectangle.
-                df = self.chip_info[chip_name]['all_subtract_true']
-                layers_in_chip = list(df['layer'].unique())
+                layers_in_chip = self.design.qgeometry.get_all_unique_layers(
+                    chip_name)
 
                 minx, miny, maxx, maxy = self.dict_bounds[chip_name]['for_subtract']
                 rectangle_points = [(minx, miny), (maxx, miny),
@@ -520,7 +544,7 @@ class GDSRender(QRenderer):
                     subtract_cell = lib.new_cell(
                         subtract_cell_name, overwrite_duplicate=True)
                     subtract_cell.add(
-                        self.chip_info[chip_name]['q_subtract_true'])
+                        self.chip_info[chip_name][chip_layer]['q_subtract_true'])
 
                     '''gdspy.boolean() is not documented clearly.
                     If there are multiple elements to subtract (both poly and path),
@@ -545,12 +569,18 @@ class GDSRender(QRenderer):
                     else:
                         ground_cell.add(diff_geometry)
 
-                    if self.chip_info[chip_name]['q_subtract_false'] is None:
+                    if self.chip_info[chip_name][chip_layer]['q_subtract_false'] is None:
                         self.design.logger.warning(
                             f'There is no table named self.chip_info[{chip_name}][q_subtract_false] to write.')
                     else:
                         ground_cell.add(
-                            self.chip_info[chip_name]['q_subtract_false'])
+                            self.chip_info[chip_name][chip_layer]['q_subtract_false'])
+                    # put all cells into TOP_chipname
+                    # cell_Top.add(gdspy.CellReference(cell_A))
+                    chip_only_top.add(gdspy.CellReference(ground_cell))
+
+                # put all chips into TOP
+                all_chips_top.add(gdspy.CellReference(chip_only_top))
 
         lib.write_gds(file_name)
 

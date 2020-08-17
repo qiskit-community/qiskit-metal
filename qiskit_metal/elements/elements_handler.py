@@ -701,3 +701,14 @@ class QGeometryTables(object):
         for chip in unique_list:
             unique_dict[chip] = Dict()
         return unique_dict
+
+    def get_all_unique_layers(self, chip_name: str) -> list:
+        unique_layers = list()
+        for table_name in self.design.qgeometry.get_element_types():
+            table = self.design.qgeometry.tables[table_name]
+            temp = table[table['chip'] == chip_name]
+            layers = temp['layer'].unique().tolist()
+            unique_layers += layers
+        unique_layers = list(set(unique_layers))
+
+        return unique_layers
