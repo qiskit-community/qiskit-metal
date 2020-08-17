@@ -562,11 +562,11 @@ class GDSRender(QRenderer):
                     self.chip_info[chip_name]['subtract_poly'] = gdspy.Polygon(
                         rectangle_points, chip_layer)
 
-                    ground_cell_name = f'TOP_{chip_layer}'
+                    ground_cell_name = f'TOP_{chip_name}_{chip_layer}'
                     ground_cell = lib.new_cell(
                         ground_cell_name, overwrite_duplicate=True)
 
-                    subtract_cell_name = f'SUBTRACT_{chip_layer}'
+                    subtract_cell_name = f'SUBTRACT_{chip_name}_{chip_layer}'
                     subtract_cell = lib.new_cell(
                         subtract_cell_name, overwrite_duplicate=True)
                     subtract_cell.add(
