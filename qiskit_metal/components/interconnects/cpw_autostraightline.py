@@ -1,6 +1,6 @@
 import numpy as np
 from numpy.linalg import norm
-from qiskit_metal import draw, Dict#, QComponent
+from qiskit_metal import draw, Dict
 from qiskit_metal.components import QComponent
 
 class CpwAutoStraightLine(QComponent):

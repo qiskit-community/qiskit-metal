@@ -21,6 +21,7 @@ The base class of all QDesigns in Qiskit Metal.
 # To create a basic UML diagram
 # >> pyreverse -o png -p desin_base design_base.py -A  -S
 
+
 import importlib
 from datetime import datetime
 from typing import TYPE_CHECKING, Any
@@ -37,12 +38,21 @@ from ..toolbox_metal.parsing import parse_options, parse_value
 from ..toolbox_python.utility_functions import log_error_easy
 from .interface_components import Components
 from .net_info import QNet
+#from qiskit_metal.renderers.renderer_base import QRenderer
+
+from .. import config
+if not config.is_building_docs():
+    from qiskit_metal.renderers.renderer_gds.gds_renderer import GDSRender
+
 
 if TYPE_CHECKING:
     # For linting typechecking, import modules that can't be loaded here under normal conditions.
     # For example, I can't import QDesign, because it requires QComponent first. We have the
     # chicken and egg issue.
     from ..components.base.base import QComponent
+    from ..renderers.renderer_base import QRenderer
+    from ..renderers.renderer_gds.gds_renderer import GDSRender
+
 
 __all__ = ['QDesign']
 
@@ -68,25 +78,30 @@ class QDesign():
     # Used by `is_design` to check.
     __i_am_design__ = True
 
-    def __init__(self, metadata: dict = None, overwrite_enabled: bool = False):
+    def __init__(self, metadata: dict = None, overwrite_enabled: bool = False, enable_renderers: bool = True):
         """Create a new Metal QDesign.
 
         Arguments:
             metadata (Dict): Dictionary of metadata (default: None).
 
             overwrite_enabled (bool): When True - If the string name, used for component, already
-                            exists in the design, the existing component will be
-                            deleted from design, and new component will be generated
-                            with the same name and newly generated component_id,
-                            and then added to design.
+                            exists in the design, the existing component will be 
+                            deleted from design, and new component will be generated 
+                            with the same name and newly generated component_id, 
+                            and then added to design. 
                         When False - If the string name, used for component, already
-                            exists in the design, the existing component will be
+                            exists in the design, the existing component will be 
                             kept in the design, and current component will not be generated,
-                            nor will be added to the design. The 'NameInUse' will be returned
+                            nor will be added to the design. The 'NameInUse' will be returned 
                             during component generation.
-                        Either True or False - If string name, used for component, is NOT
-                            being used in the design, a component will be generated and
+                        Either True or False - If string name, used for component, is NOT 
+                            being used in the design, a component will be generated and 
                             added to design using the name.
+
+            enable_renderers: Enable the renderers during the init() of design.
+                        For now, gds is enabled within design. 
+                        TODO:Use the list in config.renderers_to_load() to determine 
+                        which renderers to enable. 
 
         """
 
@@ -135,8 +150,17 @@ class QDesign():
 
         # Can't really use this until DefaultOptionsRenderer.default_draw_substrate.color_plane
         # is resolved.
+        # Presently, self._template_options holds the templates_options for each renderers.
+        # key is the unique name of renderer.
+        # Also, renderer_base.options holds the latest options for each instance of renderer.
         self._template_renderer_options = DefaultOptionsRenderer()  # use for renderer
+
         self._qnet = QNet()
+
+        # Instantiate and register renderers to Qdesign.renderers
+        self._renderers = Dict()
+        if enable_renderers:
+            self._start_renderers()
 
     def _init_metadata(self) -> Dict:
         """Initialize default metadata dicitoanry
@@ -193,8 +217,24 @@ class QDesign():
         return self._template_options
 
     @property
+    def renderers(self) -> Dict:
+        '''
+        Return a Dict of all the renderers registered within QDesign. 
+        '''
+
+        return self._renderers
+
+    @property
+    def chips(self) -> Dict:
+        '''
+        Return a Dict of information regarding chip.
+        '''
+        return self._chips
+
+    @property
     def template_renderer_options(self) -> Dict:
-        '''Return default_renderer_options dictionary, which contain default options used in creating Metal renderer.
+        '''
+        Return default_renderer_options dictionary, which contain default options used in creating Metal renderer.
         '''
         return self._template_renderer_options.default_options
 
@@ -224,10 +264,10 @@ class QDesign():
     def net_info(self) -> pd.core.frame.DataFrame:
         """Provides a copy of net_info table which holds all the connections, of pins, within a design.
         An advanced user can use methods within the class of design._qnet.
-        Also, an advanced user can also directly edit the table at design._qnet._net_info.
+        Also, an advanced user can also directly edit the table at design._qnet._net_info. 
 
         Returns:
-            pd.core.frame.DataFrame: copy of net_info table.
+            pd.core.frame.DataFrame: copy of net_info table.  
         """
         return self._qnet._net_info.copy(deep=True)
 
@@ -256,6 +296,21 @@ class QDesign():
             NotImplementedError: Code not written yet
         """
         raise NotImplementedError()
+
+    def get_chip_layer(self, chip_name: str = 'main') -> int:
+        """Return the chip layer number for the ground plane.
+
+        Args:
+            chip_name (str, optional): User can overwrite name of chip. Defaults to 'main'.
+
+        Returns:
+            int: layer of ground plane
+        """
+        # TODO: Maybe return tuple for layer, datatype
+        if chip_name in self.chips:
+            if 'layer_ground_plane' in self.chips:
+                return int(self.chips['layer_ground_plane'])
+        return 0
 
 #########General methods###################################################
 
@@ -557,8 +612,8 @@ class QDesign():
 
         # Nothing to delete if name not in components
         if component_name not in self.name_to_id:
-            self.logger.info(f'Called delete_component {component_name}, but such a '\
-                              'component is not in the design cache dicitonary of components.')
+            self.logger.info(f'Called delete_component {component_name}, but such a '
+                             f'component is not in the design cache dicitonary of components.')
             return True
         else:
             component_id = self.name_to_id[component_name]
@@ -589,6 +644,28 @@ class QDesign():
         if component_id in self._components:
             # id in components dict
             # Need to remove pins before popping component.
+
+            # For components to delete, which  connected to any other component,
+            # need to set the net_id to zero of OTHER component
+            #  before deleting from net_id table.
+            for pin_name in self._components[component_id].pins:
+                # make net_id be zero for every component which is connected to it.
+                net_id_search = self._components[component_id].pins[pin_name].net_id
+                df_subset_based_on_net_id = self.net_info[(
+                    self.net_info['net_id'] == net_id_search)]
+                delete_this_pin = df_subset_based_on_net_id[(
+                    df_subset_based_on_net_id['component_id'] != component_id)]
+
+                # If Component is connected to anything, meaning it is part of net_info table.
+                if not delete_this_pin.empty:
+                    edit_component = list(delete_this_pin['component_id'])[0]
+                    edit_pin = list(delete_this_pin['pin_name'])[0]
+
+                    if self._components[edit_component]:
+                        if self._components[edit_component].pins[edit_pin]:
+                            self._components[edit_component].pins[edit_pin].net_id = 0
+
+            # pins of component to delete.
             self._qnet.delete_all_pins_for_component(component_id)
 
             # Even though the qgeometry table has string for component_id, dataframe is
@@ -612,6 +689,7 @@ class QDesign():
 
 
 #########I/O###############################################################
+
 
     @classmethod
     def load_design(cls, path: str):
@@ -801,3 +879,26 @@ class QDesign():
 
         # Remake components in order
         pass
+
+
+######### Renderers ###############################################################
+
+    def _start_renderers(self):
+        """ For now, load only GDS.  However, will need to determine 
+        if mpl needs to be loaded, because it is conencted to GUI.
+
+
+        # TODO: Use Dict() from config.renderers_to_load.
+        # Determine how to load exactly.
+        # Zkm: i don't think we should load all by default. Just MPL and GDS.
+        # Not everyone needs HFSS. Should load that separatly.
+        """
+
+        # GDS Renderer using base class QRender
+        a_gds = GDSRender(self, initiate=True)
+
+        # Every renderer using QRender as base class will have method to get unique name.
+        unique_name = a_gds._get_unique_class_name
+
+        # register renderers here.
+        self._renderers['gds'] = a_gds
