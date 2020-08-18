@@ -189,7 +189,7 @@ class QRoute(QComponent):
 
         # then change the lead by adding a point in the same direction of the seed pin
         # minimum lead, to be able to jog correctly
-        lead_length = max(options_lead, self.p.trace_width / 2)
+        lead_length = max(options_lead, self.p.trace_width / 2.0)
         lead.go_straight(lead_length)
 
         # return the last QRoutePoint of the lead
