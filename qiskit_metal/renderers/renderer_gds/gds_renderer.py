@@ -608,7 +608,7 @@ class GDSRender(QRenderer):
         # chip_info[chip_name][layer_number][all_subtract_elements]
         # chip_info[chip_name][layer_number][all_no_subtract_elements]
         self.chip_info.clear()
-        self.chip_info.update(self.design.qgeometry.get_chip_names())
+        self.chip_info.update(self.get_chip_names())
 
         if (self.create_qgeometry_for_gds(highlight_qcomponents) == 0):
             self.write_poly_path_to_file(file_name)
@@ -683,3 +683,23 @@ class GDSRender(QRenderer):
                 f'The variable element is {type(geom)}, method can currently handle Polygon and FlexPath.')
             # print(geom)
             return None
+
+    def get_chip_names(self) -> Dict:
+        """Return a dict of unique chip names for ALL tables within QGeometry.  
+        In another words, for every "path" table, "poly" table ... etc, this method will search for unique 
+        chip names and return a dict of unique chip names from QGeometry table.  
+
+        Returns:
+            Dict: dict with key of chip names and value of empty dict to hold things for renderers.
+        """
+        chip_names = Dict()
+        for table_name in self.design.qgeometry.get_element_types():
+            table = self.design.qgeometry.tables[table_name]
+            names = table['chip'].unique().tolist()
+            chip_names += names
+        unique_list = list(set(chip_names))
+
+        unique_dict = Dict()
+        for chip in unique_list:
+            unique_dict[chip] = Dict()
+        return unique_dict
