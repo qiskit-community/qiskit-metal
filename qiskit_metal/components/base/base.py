@@ -177,11 +177,13 @@ class QComponent():
         # Auto naming - add id to component based on type
         if name is None:
             prefix = self._gather_all_children_metadata()
-            # if no prefix, use generic component
+            # limit names to 24 characters
+            name_trunc = 24
+            # if no prefix, use class name
             if "component_type" not in prefix:
-                component_type = "component"
+                component_type = self.__class__.__name__[:name_trunc]
             else:
-                component_type = prefix['component_type']
+                component_type = prefix['component_type'][:name_trunc]
             name_id = self.design._get_new_qcomponent_name_id(component_type)
             # rename loop to make sure that no components manually named by the user conflicts
             while self.design.rename_component(self._id, component_type + "_" + str(name_id)) != 1:

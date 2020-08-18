@@ -194,7 +194,7 @@ class TestDesign(unittest.TestCase):
 
         # Add a component with no predefined prefix
         QComponent(design, make=False)
-        self.assertEqual('component_1' in design.components, True)
+        self.assertEqual('QComponent_1' in design.components, True)
 
     def test_design_delete_component(self):
         """
