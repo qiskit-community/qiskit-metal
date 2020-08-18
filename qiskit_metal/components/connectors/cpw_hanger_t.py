@@ -56,7 +56,7 @@ class CPWHangerT(QComponent):
         * layer: layer the pin is on. Does not have any practical impact to the short.
     """
     component_metadata = Dict(
-        component_type='cpw'
+        short_name='cpw'
         )
 
     #Currently setting the primary CPW length based on the coupling_length

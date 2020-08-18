@@ -59,7 +59,7 @@ class BaseQubit(QComponent):
         _default_connection_pads=Dict()
     )
     component_metadata = Dict(
-        component_type='Q'
+        short_name='Q'
         )
     """Default drawing options"""
 

@@ -19,7 +19,7 @@ class MyQComponent(QComponent):
 
     # Name prefix of component, if user doesn't provide name
     component_metadata = Dict(
-        component_type='component'
+        short_name='component'
         )
     """Default drawing options"""
 

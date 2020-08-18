@@ -31,7 +31,7 @@ class CpwStraightLine(QComponent):
         gui.rebuild()
     """
     component_metadata = Dict(
-        component_type='cpw'
+        short_name='cpw'
         )
         
     default_options = Dict(

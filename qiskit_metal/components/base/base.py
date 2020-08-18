@@ -181,14 +181,14 @@ class QComponent():
             # limit names to 24 characters
             name_trunc = 24
             # if no prefix, use class name
-            if "component_type" not in prefix:
-                component_type = self.__class__.__name__[:name_trunc]
+            if "short_name" not in prefix:
+                short_name = self.__class__.__name__[:name_trunc]
             else:
-                component_type = prefix['component_type'][:name_trunc]
-            name_id = self.design._get_new_qcomponent_name_id(component_type)
+                short_name = prefix['short_name'][:name_trunc]
+            name_id = self.design._get_new_qcomponent_name_id(short_name)
             # rename loop to make sure that no components manually named by the user conflicts
-            while self.design.rename_component(self._id, component_type + "_" + str(name_id)) != 1:
-                name_id = self.design._get_new_qcomponent_name_id(component_type)
+            while self.design.rename_component(self._id, short_name + "_" + str(name_id)) != 1:
+                name_id = self.design._get_new_qcomponent_name_id(short_name)
 
         # Make the component geometry
         if make:

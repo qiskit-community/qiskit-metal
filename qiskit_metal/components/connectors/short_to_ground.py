@@ -38,7 +38,7 @@ class ShortToGround(QComponent):
     Values (unless noted) are strings with units included, (e.g., '30um')
     """
     component_metadata = Dict(
-        component_type='term'
+        short_name='term'
         )
 
     default_options = Dict(

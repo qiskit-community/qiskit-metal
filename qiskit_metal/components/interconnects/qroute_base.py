@@ -95,7 +95,7 @@ class QRoute(QComponent):
     )
 
     component_metadata = Dict(
-        component_type='cpw'
+        short_name='cpw'
         )
 
     def __init__(self, *args, **kwargs):

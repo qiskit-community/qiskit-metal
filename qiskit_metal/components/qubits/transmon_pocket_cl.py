@@ -79,7 +79,7 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
         * cl_off_center (string):  Distance from the center axis the qubit pocket is referenced to
     """
     component_metadata = Dict(
-        component_type='Q'
+        short_name='Q'
         )
 
     default_options = Dict(

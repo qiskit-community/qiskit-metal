@@ -23,7 +23,7 @@ class CpwAutoStraightLine(QComponent):
     5. CPWs must be attached to protruding leads via connectors head-on, not from the sides.
     """
     component_metadata = Dict(
-        component_type='cpw'
+        short_name='cpw'
         )
 
     default_options = Dict(
