@@ -68,10 +68,6 @@ class CpwMeanderSimple(QRoute):
         ),
     )
     
-    component_metadata = Dict(
-        component_type='cpw'
-        )
-
     def make(self):
         """
         The make function implements the logic that creates the geometry

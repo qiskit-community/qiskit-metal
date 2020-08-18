@@ -94,6 +94,10 @@ class QRoute(QComponent):
         trace_width='cpw_width'
     )
 
+    component_metadata = Dict(
+        component_type='cpw'
+        )
+
     def __init__(self, *args, **kwargs):
         """Calls the QComponent __init__() to create a new Metal component
         Before that, it adds the variables that are needed to support routing
