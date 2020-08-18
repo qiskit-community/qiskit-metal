@@ -578,7 +578,6 @@ class QComponent():
 #   What information is truly necessary for the pins? Should they have a z-direction component?
 #   Will they operate properly with non-planar designs?
 
-
     def add_pin(self,
                 name: str,  # this should be static based on component designer's code
                 points: np.ndarray,

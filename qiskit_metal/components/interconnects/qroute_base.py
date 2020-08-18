@@ -84,6 +84,7 @@ class QRoute(QComponent):
                 pin='')  # Name of pin used for pin_end
         ),
         snap='true',
+        fillet='0',
         lead=Dict(
             start_straight='0.1mm',
             end_straight='0.1mm'
@@ -191,7 +192,8 @@ class QRoute(QComponent):
                             " The only supported pins are: start, end.")
 
         # then change the lead by adding a point in the same direction of the seed pin
-        lead_length = max(options_lead, self.p.trace_width / 2)  # minimum lead, to be able to jog correctly
+        # minimum lead, to be able to jog correctly
+        lead_length = max(options_lead, self.p.trace_width / 2.0)
         lead.go_straight(lead_length)
 
         # return the last QRoutePoint of the lead
@@ -341,7 +343,8 @@ class QRouteLead:
         Args:
             length (float) : how much to move by
         """
-        self.pts = np.append(self.pts, [self.pts[-1] + self.direction * length], axis=0)
+        self.pts = np.append(
+            self.pts, [self.pts[-1] + self.direction * length], axis=0)
 
     def go_left(self, length: float):
         """Straight line 90deg counter-clock-wise direction w.r.t. lead tip direction
@@ -350,7 +353,8 @@ class QRouteLead:
             length (float): how much to move by
         """
         self.direction = draw.Vector.rotate(self.direction, np.pi / 2)
-        self.pts = np.append(self.pts, [self.pts[-1] + self.direction * length], axis=0)
+        self.pts = np.append(
+            self.pts, [self.pts[-1] + self.direction * length], axis=0)
 
     def go_right(self, length: float):
         """Straight line 90deg clock-wise direction w.r.t. lead tip direction
@@ -359,7 +363,8 @@ class QRouteLead:
             length (float): how much to move by
         """
         self.direction = draw.Vector.rotate(self.direction, -1 * np.pi / 2)
-        self.pts = np.append(self.pts, [self.pts[-1] + self.direction * length], axis=0)
+        self.pts = np.append(
+            self.pts, [self.pts[-1] + self.direction * length], axis=0)
 
     @property
     def length(self):

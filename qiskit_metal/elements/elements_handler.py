@@ -96,10 +96,10 @@ ELEMENT_COLUMNS = dict(
         name=str,  # name of the element
         geometry=object,  # shapely object
         layer=int,  # gds type of layer
-        subtract=bool,  # do we subtract from the groun place of the chip
+        subtract=bool,  # do we subtract from the ground place of the chip
         helper=bool,  # helper or not
         chip=str,  # chip name
-        # type=str,  # metal, helper
+        # type=str,  # metal, helper.   poly=10 or path=11
         __renderers__=dict(
             # ADD specific renderers here, all renderes must register here.
             # hfss = dict( ... ) # pick names as hfss_name
@@ -681,3 +681,22 @@ class QGeometryTables(object):
             return False
         else:
             return True
+
+    def get_all_unique_layers(self, chip_name: str) -> list:
+        """Returns a lit of unique layers for the given chip names
+
+        Args:
+            chip_name (str): name of the chip
+
+        Returns:
+            list: List of unique layers
+        """
+        unique_layers = list()
+        for table_name in self.design.qgeometry.get_element_types():
+            table = self.design.qgeometry.tables[table_name]
+            temp = table[table['chip'] == chip_name]
+            layers = temp['layer'].unique().tolist()
+            unique_layers += layers
+        unique_layers = list(set(unique_layers))
+
+        return unique_layers
