@@ -635,6 +635,11 @@ def doc_generate_html(obj) -> str:
 
     objtype = str(type(obj))
 
+    ### Get the souruce code
+    import linecache
+    linecache.clearcache()
+    # Clear the cache. Use this function if you no longer need lines from
+    # files previously read using getline().
     source = inspect.getsource(obj)  # TODO: format
 
     text = """
