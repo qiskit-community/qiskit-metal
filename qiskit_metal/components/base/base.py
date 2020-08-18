@@ -92,7 +92,7 @@ class QComponent():
     __i_am_component__ = True
 
     def __init__(self, design: 'QDesign', name: str, options: Dict = None,
-                 make=True, component_template: Dict = None) -> Union[None, str]:
+                 make=True, component_template: Dict = None):
         """Create a new Metal component and adds it's default_options to the design.
 
         Arguments:
@@ -533,7 +533,6 @@ class QComponent():
 #
 #   What information is truly necessary for the pins? Should they have a z-direction component?
 #   Will they operate properly with non-planar designs?
-
 
     def add_pin(self,
                 name: str,  # this should be static based on component designer's code

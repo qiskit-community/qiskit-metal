@@ -142,7 +142,9 @@ class QDesign():
 
         self._qgeometry = QGeometryTables(self)
 
-        self._template_options = DefaultMetalOptions()  # used for components
+        # used for components, and renderers, TODO for QDesign
+        self._template_options = DefaultMetalOptions()
+
         self.variables.update(self.template_options.qdesign.variables)
 
         # Can't really use this until DefaultOptionsRenderer.default_draw_substrate.color_plane
@@ -671,7 +673,6 @@ class QDesign():
 
 #########I/O###############################################################
 
-
     @classmethod
     def load_design(cls, path: str):
         """
@@ -863,6 +864,7 @@ class QDesign():
 
 
 ######### Renderers ###############################################################
+
 
     def _start_renderers(self):
         """ For now, load only GDS.  However, will need to determine 
