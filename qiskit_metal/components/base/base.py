@@ -25,7 +25,7 @@ To see the docstring of QComponent, use:
 import logging
 import inspect
 from copy import deepcopy
-from typing import TYPE_CHECKING, Any, Iterable, List, Union, Optional, Dict as Dict_
+from typing import TYPE_CHECKING, Any, Iterable, List, Union, Dict as Dict_
 
 import pandas as pd
 import numpy as np
@@ -45,7 +45,6 @@ if TYPE_CHECKING:
     # For example, I can't import QDesign, because it requires QComponent first. We have the
     # chicken and egg issue.
     from ...designs import QDesign
-    # from ...elements import ElementTypes
     import matplotlib
 
 
@@ -72,12 +71,6 @@ class QComponent():
 
     """
 
-    ''' QComponent.gather_all_children_options collects the options
-        starting with the basecomponent, and stepping through the children.
-        Each child adds it's options to the base options.  If the
-        key is the same, the option of the youngest child is used.
-    '''
-
     default_options = Dict(
         # Note: If something is added here, _gather_all_children_options(cls) needs to be changed.
         # Intended for future use, for components that do not normally take pins as inputs
@@ -92,7 +85,7 @@ class QComponent():
     __i_am_component__ = True
 
     def __init__(self, design: 'QDesign', name: str, options: Dict = None,
-                 make=True, component_template: Dict = None) -> Union[None, str]:
+                 make=True, component_template: Dict = None):
         """Create a new Metal component and adds it's default_options to the design.
 
         Arguments:
@@ -120,7 +113,7 @@ class QComponent():
             When False - If the string name, used for component, already
             exists in the design, the existing component will be
             kept in the design, and current component will not be generated,
-            nor will be added to the design. The variable design.self.status 
+            nor will be added to the design. The variable design.self.status
             will still be NotBuilt, as opposed to Initialization Successful.
 
             Either True or False - If string name, used for component, is NOT
@@ -134,7 +127,8 @@ class QComponent():
         self.status = 'Not Built'
         if not is_design(design):
             raise ValueError(
-                "Error you did not pass in a valid Metal QDesign object as a parent of this QComponent.")
+                "Error you did not pass in a valid Metal QDesign object as a '\
+                'parent of this QComponent.")
 
         self._design = design  # reference to parent
 
@@ -182,7 +176,14 @@ class QComponent():
         From the base class of QComponent, traverse the child classes
         to gather the .default options for each child class.
 
-        Note: if keys are the same for child and grandchild, grandchild will overwrite child
+        Collects the options
+        starting with the basecomponent, and stepping through the children.
+        Each child adds it's options to the base options.  If the
+        key is the same, the option of the youngest child is used.
+
+        Note: if keys are the same for child and grandchild,
+        grandchild will overwrite child
+
         Init method.
 
         Returns:
