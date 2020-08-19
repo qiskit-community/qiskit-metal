@@ -16,6 +16,12 @@ class MyQComponent(QComponent):
         rotation='0',
         layer='1'
     )
+
+    # Name prefix of component, if user doesn't provide name
+    component_metadata = Dict(
+        short_name='component'
+        )
+            
     """Default drawing options"""
 
     def make(self):

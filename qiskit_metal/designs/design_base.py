@@ -102,6 +102,9 @@ class QDesign():
         #                   renamed with an unique name, then the ID should continute to be used.
         self._qcomponent_latest_assigned_id = 0
 
+        # Dictionary that keeps the latest ID for each unique type of component
+        self._qcomponent_latest_name_id = Dict()
+
         # Key attributes related to physical content of the design. These will be saved
 
         # Where components are actaully stored.
@@ -453,6 +456,22 @@ class QDesign():
         '''
         self._qcomponent_latest_assigned_id += 1
         return self._qcomponent_latest_assigned_id
+
+    def _get_new_qcomponent_name_id(self, prefix):
+        '''
+        Give new id that an auto-named QComponent can use
+        based on the type of the component.
+
+        Returns:
+            int: ID of the qcomponent
+        '''
+        if prefix in self._qcomponent_latest_name_id:
+            self._qcomponent_latest_name_id[prefix] += 1
+        else:
+            self._qcomponent_latest_name_id[prefix] = 1
+
+        return self._qcomponent_latest_name_id[prefix]
+
 
     def rebuild(self):  # remake_all_components
         """

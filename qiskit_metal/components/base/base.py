@@ -78,19 +78,21 @@ class QComponent():
         # pin_inputs = Dict()
     )
 
-    # Dummy private attribute used to check if an instantiated object is
+    component_metadata = Dict()
+
+    # Dummy private attribute used to check if an instanciated object is
     # indeed a QComponent class. The problem is that the `isinstance`
     # built-in method fails when this module is reloaded.
     # Used by `is_component` to check.
     __i_am_component__ = True
 
-    def __init__(self, design: 'QDesign', name: str, options: Dict = None,
-                 make=True, component_template: Dict = None):
+    def __init__(self, design: 'QDesign', name: str = None, options: Dict = None,
+                 make=True, component_template: Dict = None) -> Union[None, str]:
         """Create a new Metal component and adds it's default_options to the design.
 
         Arguments:
             design (QDesign): The parent design.
-            name (str): Name of the component.
+            name (str): Name of the component. Auto-named if possible.
             options (dict): User options that will override the defaults. (default: None)
             make (bool): True if the make function should be called at the end of the init.
                 Options be used in the make function to create the geometry. (default: True)
@@ -166,6 +168,22 @@ class QComponent():
         self._id = self.design._get_new_qcomponent_id()  # Create the unique id
         self._add_to_design()  # Do this after the pin checking?
         self.status = 'Initialization Successful'
+
+        # Auto naming - add id to component based on type
+        if name is None:
+            prefix = self._gather_all_children_metadata()
+            # limit names to 24 characters
+            name_trunc = 24
+            # if no prefix, use class name
+            if "short_name" not in prefix:
+                short_name = self.__class__.__name__[:name_trunc]
+            else:
+                short_name = prefix['short_name'][:name_trunc]
+            name_id = self.design._get_new_qcomponent_name_id(short_name)
+            # rename loop to make sure that no components manually named by the user conflicts
+            while self.design.rename_component(self._id, short_name + "_" + str(name_id)) != 1:
+                name_id = self.design._get_new_qcomponent_name_id(short_name)
+
         # Make the component geometry
         if make:
             self.rebuild()
@@ -201,6 +219,32 @@ class QComponent():
                     **options_from_children, **child.default_options}
 
         return options_from_children
+
+
+    @classmethod
+    def _gather_all_children_metadata(cls):
+        '''
+        From the base class of QComponent, traverse the child classes
+        to gather the .default options for each child class.
+
+        Note: if keys are the same for child and grandchild, grandchild will overwrite child
+        Init method.
+
+        Returns:
+            dict: options from all children
+        '''
+
+        options_from_children = {}
+        parents = inspect.getmro(cls)
+        # Base.py is not expected to have default_options dict to add to design class.
+        for child in parents[len(parents)-2::-1]:
+            # There is a developer agreement so the defaults will be in dict named default_options.
+            if hasattr(child, 'component_metadata'):
+                options_from_children = {
+                    **options_from_children, **child.component_metadata}
+
+        return options_from_children
+
 
     @classmethod
     def _get_unique_class_name(cls) -> str:

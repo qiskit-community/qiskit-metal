@@ -22,6 +22,9 @@ class CpwAutoStraightLine(QComponent):
     4. Components may not share an edge; a nonzero gap must be present between 2 adjacent qubits.
     5. CPWs must be attached to protruding leads via connectors head-on, not from the sides.
     """
+    component_metadata = Dict(
+        short_name='cpw'
+        )
 
     default_options = Dict(
         pin_inputs=Dict(
@@ -41,7 +44,7 @@ class CpwAutoStraightLine(QComponent):
         )
     )
     """Default options"""
-    
+
     def getpts(self, startpin: str, endpin: str, width: float, segments: int, leadstart: float, leadend: float, constaxis=0, constval=0) -> list:
         """
         Generate the list of 2D coordinates comprising a CPW between startpin and endpin.
@@ -66,9 +69,9 @@ class CpwAutoStraightLine(QComponent):
             midcoords = []
         elif segments == 2:
             # Choose between 2 diagonally opposing corners so that CPW doesn't trace back on itself
-            corner1 = np.array([(startpin.middle + startpin.normal * (width / 2 + leadstart))[0], 
+            corner1 = np.array([(startpin.middle + startpin.normal * (width / 2 + leadstart))[0],
                                 (endpin.middle + endpin.normal * (width / 2 + leadend))[1]])
-            corner2 = np.array([(endpin.middle + endpin.normal * (width / 2 + leadend))[0], 
+            corner2 = np.array([(endpin.middle + endpin.normal * (width / 2 + leadend))[0],
                                 (startpin.middle + startpin.normal * (width / 2 + leadstart))[1]])
             startc1 = np.dot(corner1 - (startpin.middle + startpin.normal * (width / 2 + leadstart)), startpin.normal)
             endc1 = np.dot(corner1 - (endpin.middle + endpin.normal * (width / 2 + leadend)), endpin.normal)
@@ -102,7 +105,7 @@ class CpwAutoStraightLine(QComponent):
     def totlength(self, pts: list) -> float:
         """Get total length of all line segments in a given CPW."""
         return sum(norm(pts[i] - pts[i - 1]) for i in range(1, len(pts)))
-    
+
     def make(self):
         """
         Use user-specified parameters and geometric orientation of components to determine whether the CPW connecting
@@ -112,7 +115,7 @@ class CpwAutoStraightLine(QComponent):
         Keepout region along x and y directions specified for CPWs that wrap around outer perimeter of overall bounding
         box of both components.
         """
-        
+
         self.__pts = [] # list of 2D numpy arrays containing vertex locations
 
         p = self.p # parsed options

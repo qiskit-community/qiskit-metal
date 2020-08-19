@@ -67,7 +67,7 @@ class CpwMeanderSimple(QRoute):
             end_jogged_extension=''
         ),
     )
-
+    
     def make(self):
         """
         The make function implements the logic that creates the geometry
