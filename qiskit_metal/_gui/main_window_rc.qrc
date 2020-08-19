@@ -32,6 +32,9 @@
     <file alias="metal_logo">_imgs/metal_logo.png</file>
     <file alias="refresh">_imgs/refresh.png</file>
   </qresource>
+  <qresource prefix="renderer">
+    <file>_imgs/renderers/GDS.png</file>
+  </qresource>
   <qresource prefix="basic">
     <file alias="info_help">_imgs/v2-flat/info.png</file>
     <file alias="warning">_imgs/icons/warning.png</file>

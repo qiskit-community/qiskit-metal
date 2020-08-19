@@ -93,6 +93,17 @@ class QMainWindowExtension(QMainWindowExtensionBase):
             self.ui.tabWidget.setCurrentWidget(self.ui.mainViewTab)
             self.ui.actionElements.setText("QGeometry")
 
+    def show_renderer_gds(self):
+        """Handles click on GDS Renderer action"""
+        filename = QFileDialog.getSaveFileName(None,
+                                               'Select file destination for GDS ',
+                                               self.design.get_design_name() + '.gds',
+                                               initialFilter='*.metal')[0]
+        a_gds = self.design.renderers.gds
+        if filename:
+            a_gds.export_to_gds(filename)
+        print('Dennis !!')
+
     def delete_all_components(self):
         """Delete all components
         """
@@ -109,7 +120,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
     def save_design_as(self, _=None):
         """Handles click on Save Design As"""
         filename = QFileDialog.getSaveFileName(None,
-                                               'Select a new locaiton to save Metal design to',
+                                               'Select a new location to save Metal design to',
                                                self.design.get_design_name() + '.metal',
                                                initialFilter='*.metal')[0]
 
