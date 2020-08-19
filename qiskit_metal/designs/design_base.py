@@ -18,9 +18,6 @@ The base class of all QDesigns in Qiskit Metal.
 @date: 2019
 @author: Zlatko Minev, Thomas McConeky, ... (IBM)
 """
-# To create a basic UML diagram
-# >> pyreverse -o png -p desin_base design_base.py -A  -S
-
 
 import importlib
 from datetime import datetime
@@ -38,7 +35,6 @@ from ..toolbox_metal.parsing import parse_options, parse_value
 from ..toolbox_python.utility_functions import log_error_easy
 from .interface_components import Components
 from .net_info import QNet
-#from qiskit_metal.renderers.renderer_base import QRenderer
 
 from .. import config
 if not config.is_building_docs():
@@ -46,9 +42,7 @@ if not config.is_building_docs():
 
 
 if TYPE_CHECKING:
-    # For linting typechecking, import modules that can't be loaded here under normal conditions.
-    # For example, I can't import QDesign, because it requires QComponent first. We have the
-    # chicken and egg issue.
+    # For linting, avoids circular imports.
     from ..components.base.base import QComponent
     from ..renderers.renderer_base import QRenderer
     from ..renderers.renderer_gds.gds_renderer import GDSRender
@@ -64,44 +58,38 @@ class QDesign():
     A design is the most top-level object in all of Qiskit Metal.
     """
 
-    # TODO -- Idea: Break up QDesign into several interface classes,
-    # such as DesignConnectorInterface, DesignComponentInterface, etc.
-    # in order to do a more Dependency Inversion Principle (DIP) style,
-    # see also Dependency Injection (DI). This can also generalize nicely
-    # to special flip chips, etc. to handle complexity!
-    # Technically, components, variables, etc. are all separate entities
-    # that can interface
-
     # Dummy private attribute used to check if an instanciated object is
     # indeed a QDesign class. The problem is that the `isinstance`
     # built-in method fails when this module is reloaded.
     # Used by `is_design` to check.
     __i_am_design__ = True
 
-    def __init__(self, metadata: dict = None, overwrite_enabled: bool = False, enable_renderers: bool = True):
+    def __init__(self, metadata: dict = None,
+                 overwrite_enabled: bool = False,
+                 enable_renderers: bool = True):
         """Create a new Metal QDesign.
 
         Arguments:
             metadata (Dict): Dictionary of metadata (default: None).
 
             overwrite_enabled (bool): When True - If the string name, used for component, already
-                            exists in the design, the existing component will be 
-                            deleted from design, and new component will be generated 
-                            with the same name and newly generated component_id, 
-                            and then added to design. 
+                            exists in the design, the existing component will be
+                            deleted from design, and new component will be generated
+                            with the same name and newly generated component_id,
+                            and then added to design.
                         When False - If the string name, used for component, already
-                            exists in the design, the existing component will be 
+                            exists in the design, the existing component will be
                             kept in the design, and current component will not be generated,
-                            nor will be added to the design. The 'NameInUse' will be returned 
+                            nor will be added to the design. The 'NameInUse' will be returned
                             during component generation.
-                        Either True or False - If string name, used for component, is NOT 
-                            being used in the design, a component will be generated and 
+                        Either True or False - If string name, used for component, is NOT
+                            being used in the design, a component will be generated and
                             added to design using the name.
 
             enable_renderers: Enable the renderers during the init() of design.
-                        For now, gds is enabled within design. 
-                        TODO:Use the list in config.renderers_to_load() to determine 
-                        which renderers to enable. 
+                        For now, gds is enabled within design.
+                        TODO:Use the list in config.renderers_to_load() to determine
+                        which renderers to enable.
 
         """
 
@@ -221,7 +209,7 @@ class QDesign():
     @property
     def renderers(self) -> Dict:
         '''
-        Return a Dict of all the renderers registered within QDesign. 
+        Return a Dict of all the renderers registered within QDesign.
         '''
 
         return self._renderers
@@ -266,10 +254,10 @@ class QDesign():
     def net_info(self) -> pd.core.frame.DataFrame:
         """Provides a copy of net_info table which holds all the connections, of pins, within a design.
         An advanced user can use methods within the class of design._qnet.
-        Also, an advanced user can also directly edit the table at design._qnet._net_info. 
+        Also, an advanced user can also directly edit the table at design._qnet._net_info.
 
         Returns:
-            pd.core.frame.DataFrame: copy of net_info table.  
+            pd.core.frame.DataFrame: copy of net_info table.
         """
         return self._qnet._net_info.copy(deep=True)
 
@@ -886,7 +874,7 @@ class QDesign():
 
 
     def _start_renderers(self):
-        """ For now, load only GDS.  However, will need to determine 
+        """ For now, load only GDS.  However, will need to determine
         if mpl needs to be loaded, because it is conencted to GUI.
 
 
