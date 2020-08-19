@@ -542,7 +542,8 @@ class QComponent():
                 points: np.ndarray,
                 width: float,
                 input_as_norm: bool = False,
-                chip: str = 'main'):
+                chip: str = 'main',
+                gap: float = None):
         """Add the named pin to the respective component's pins subdictionary
 
         ::
@@ -574,13 +575,17 @@ class QComponent():
 
             chip (str): Optionally add options (default: {'main'})
         """
+        if gap == None:
+            gap = width * 0.6
+
         if input_as_norm:
             self.pins[name] = self.make_pin_as_normal(
                 points, width, chip)
         else:
-            self.pins[name] = self.make_pin(
+            self.pins[name] = self.make_pin_as_tangent(
                 points, chip=chip)
 
+    
     def make_pin_as_normal(self,
                            points: np.ndarray,
                            width: float,
@@ -637,7 +642,7 @@ class QComponent():
             # length limit)
         )
 
-    def make_pin(self,
+    def make_pin_as_tangent(self,
                  points: np.ndarray,
                  chip='main'):
         """Called by add_pin, does the math for the pin generation.
