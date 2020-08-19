@@ -78,6 +78,9 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
           -180 to +180 from the 'west edge', will round to the nearest 90.
         * cl_off_center (string):  Distance from the center axis the qubit pocket is referenced to
     """
+    component_metadata = Dict(
+        short_name='Q'
+        )
 
     default_options = Dict(
         make_CL=True,
