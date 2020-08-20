@@ -77,8 +77,10 @@ class QComponent():
         # to be able to have an input pin and be moved/rotated based on said input.
         # pin_inputs = Dict()
     )
+    """Default drawing options"""
 
     component_metadata = Dict()
+    """Component metadata"""
 
     # Dummy private attribute used to check if an instanciated object is
     # indeed a QComponent class. The problem is that the `isinstance`

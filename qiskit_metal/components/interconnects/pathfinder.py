@@ -13,6 +13,8 @@
 # that they have been altered from the originals.
 
 '''
+Main differences with pathfinder_tweaked:
+
 @date: 2020
 @author: Dennis Wang
 '''
@@ -34,8 +36,18 @@ from qiskit_metal.components import QComponent
 # TODO: Stopping condition for A* in case it doesn't converge (time limit or user-provided exploration area?)
 
 def intersecting(a: np.array, b: np.array, c: np.array, d: np.array) -> bool:
+    """Returns whether segment ab intersects or overlaps with segment cd, where a, b, c, and d are
+    all coordinates
 
-    """Returns whether segment ab intersects or overlaps with segment cd, where a, b, c, and d are all coordinates"""
+    Args:
+        a (np.array): coordinate
+        b (np.array): coordinate
+        c (np.array): coordinate
+        d (np.array): coordinate
+
+    Returns:
+        bool: True if intersecting, False otherwise
+    """
 
     x0_start, y0_start = a
     x0_end, y0_end = b
@@ -83,7 +95,6 @@ def intersecting(a: np.array, b: np.array, c: np.array, d: np.array) -> bool:
             return False
 
 class HybridPathfinder(QComponent):
-
     """
     Non-meandered CPW class that combines A* pathfinding algorithm with
     simple 1-, 2-, or S-shaped segment checks and user-specified anchor
@@ -111,6 +122,7 @@ class HybridPathfinder(QComponent):
         # Example: {1: np.array([x1, y1]), 2: np.array([x2, y2])}
         # startpin -> startpin + leadin -> anchors -> endpin + leadout -> endpin
     )
+    """Default connector options"""
 
     def no_obstacles(self, segment: list) -> bool:
 
@@ -119,6 +131,9 @@ class HybridPathfinder(QComponent):
         
         Args:
             segment (list): List comprised of vertex coordinates of the form [np.array([x0, y0]), np.array([x1, y1])]
+
+        Returns:
+            bool: True is no obstacles
         """
 
         # TODO: Non-rectangular bounding boxes?

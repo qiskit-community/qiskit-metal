@@ -26,6 +26,7 @@ class FakeCPW(QComponent):
     component_metadata = Dict(
         short_name='cpw'
         )
+    """Component metadata"""
 
     default_options = Dict(
         line_width='10um',
