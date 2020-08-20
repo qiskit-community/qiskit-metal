@@ -24,6 +24,15 @@ Created on Wed Apr 22 10:03:35 2020
 @author: Jeremy D. Drysdale
 """
 
+# Note - Tests not written for these functions:
+# design_base/delete_all_pins
+# design_base/connect_pins
+# design_base/all_component_names_id
+# design_base/_delete_all_pins_for_component
+# design_base/get_new_qcomponent_id
+# design_base/load_design
+# design_base/save_design
+
 import unittest
 import pandas as pd
 
@@ -33,6 +42,9 @@ from qiskit_metal.designs.interface_components import Components
 from qiskit_metal.designs.net_info import QNet
 
 from qiskit_metal.components.base.base import QComponent
+
+from qiskit_metal.components.qubits.transmon_pocket import TransmonPocket
+from qiskit_metal.components.interconnects.resonator_rectangle_spiral import ResonatorRectangleSpiral
 
 class TestDesign(unittest.TestCase):
     """
@@ -167,6 +179,31 @@ class TestDesign(unittest.TestCase):
         self.assertEqual('new-name' in design.name_to_id, True)
         self.assertEqual('my_name-1' in design.name_to_id, False)
         self.assertEqual('my_name-2' in design.name_to_id, True)
+
+    def test_design_default_component_name(self):
+        """
+        Test automatic naming of components
+        """
+        design = DesignPlanar(metadata={})
+
+        ResonatorRectangleSpiral(design, make=False)
+        self.assertEqual('res_1' in design.components, True)
+        ResonatorRectangleSpiral(design, make=False)
+        self.assertEqual('res_2' in design.components, True)
+
+        # Manually add the next automatic name to check it doesn't get repeated
+        ResonatorRectangleSpiral(design, 'res_3', make=False)
+        ResonatorRectangleSpiral(design, make=False)
+        self.assertEqual('res_3' in design.components, True)
+        self.assertEqual('res_4' in design.components, True)
+
+        # Add a different component
+        TransmonPocket(design, make=False)
+        self.assertEqual('Q_1' in design.components, True)
+
+        # Add a component with no predefined prefix
+        QComponent(design, make=False)
+        self.assertEqual('QComponent_1' in design.components, True)
 
     def test_design_delete_component(self):
         """

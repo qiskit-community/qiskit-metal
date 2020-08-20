@@ -44,7 +44,7 @@ class CPWHangerT(QComponent):
         * second_width: the width of the trace of the one pin CPW transmission line
         * second_gap: the dielectric gap of the one pin CPW transmission line
         * coupling_space: the amound of ground plane between the two transmission lines
-        * coupling_length: the length of parallel between the two transmission lines 
+        * coupling_length: the length of parallel between the two transmission lines
           note: this includes the distance of the curved second of the second line
         * pos_x/_y: the x/y position of the ground termination.
         * rotation: the direction of the termination. 0 degrees is +x, following a
@@ -55,6 +55,11 @@ class CPWHangerT(QComponent):
         * chip: the chip the pin should be on.
         * layer: layer the pin is on. Does not have any practical impact to the short.
     """
+    component_metadata = Dict(
+        short_name='cpw'
+        )
+    """Component metadata"""
+
     #Currently setting the primary CPW length based on the coupling_length
     #May want it to be it's own value that the user can control?
     default_options = Dict(
@@ -68,7 +73,7 @@ class CPWHangerT(QComponent):
         pos_y='0um',
         rotation='0',
         mirror=False,
-        open_termination=True, #Better way to decide this? 
+        open_termination=True, #Better way to decide this?
         chip='main',
         layer='1'
     )
@@ -91,7 +96,7 @@ class CPWHangerT(QComponent):
         second_cpw = draw.LineString([[second_flip*(-p.coupling_length/2), second_y],
                                         [second_flip*(p.coupling_length/2), second_y],
                                         [second_flip*(p.coupling_length/2), second_y-second_down_length]])
-        
+
         second_termination = 0
         if p.open_termination: second_termination = p.second_gap
 
@@ -107,10 +112,10 @@ class CPWHangerT(QComponent):
 
         #Add to qgeometry tables
         self.add_qgeometry('path', {'prime_cpw': prime_cpw}, width=p.prime_width)
-        self.add_qgeometry('path', {'prime_cpw_sub': prime_cpw}, 
+        self.add_qgeometry('path', {'prime_cpw_sub': prime_cpw},
             width=p.prime_width+2*p.prime_gap,subtract=True)
         self.add_qgeometry('path', {'second_cpw': second_cpw}, width=p.second_width)
-        self.add_qgeometry('path', {'second_cpw_sub': second_cpw_etch}, 
+        self.add_qgeometry('path', {'second_cpw_sub': second_cpw_etch},
             width=p.second_width+2*p.second_gap,subtract=True)
 
         #Add pins

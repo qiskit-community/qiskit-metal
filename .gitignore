@@ -52,11 +52,13 @@ local_settings.py
 instance/
 .webassets-cache
 
-# Scrapy stuff:
+# Sandboxes:
 .scrapy
+_sandbox_/
 
 # Sphinx documentation
 docs/_build/
+docs/.buildingdocs
 
 # PyBuilder
 target/
@@ -94,6 +96,11 @@ ENV/
 # mkdocs documentation
 /site
 
+# temporary
+shot.png
+shot.jpg
+*.gds
+
 # mypy
 .mypy_cache/
 .~lock.*
@@ -103,18 +110,8 @@ ENV/
 settings.json
 Qiskit-Metal.code-workspace
 qiskit_metal/.pylintrc
-qiskit_metal/_gui/shot.png
 qiskit_metal/_gui/ansys-screenshot.jpg
-qiskit_metal/_gui/shot.jpg
-_tutorials_/2. Drawing custom components/test.metal
-_tutorials_/2. Drawing custom components/shot.png
-_tutorials_/__dev__/2019-11 For Karthik - cpw.ipynb
-_tutorials_/__dev__/2019-11 For Karthik.ipynb
-_tutorials_/__dev__/2020-01-07.ipynb
-shot.png
 launch.json
 qiskit_metal/.idea/workspace.xml
 main_window_ui.py.original
-first.gds
-
 stubs

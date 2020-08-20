@@ -30,7 +30,11 @@ class CpwStraightLine(QComponent):
         qc = CpwStraightLine(design, 'myline', options)
         gui.rebuild()
     """
-
+    component_metadata = Dict(
+        short_name='cpw'
+        )
+    """Component metadata"""
+        
     default_options = Dict(
         pin_inputs=Dict(
             start_pin=Dict(
@@ -39,7 +43,7 @@ class CpwStraightLine(QComponent):
             end_pin=Dict(
                 component='', # Name of component to end on, which has a pin
                 pin='') # Name of pin used for pin_end
-                ),        
+                ),
         cpw_width='cpw_width',
         cpw_gap='cpw_gap',
         layer='1',
@@ -82,8 +86,8 @@ class CpwStraightLine(QComponent):
         # THEN ADD TO NETLIST - Note: Thoughts on how to have this be automated so the component designer
         # doesn't need to write this code?
         self.design.connect_pins(
-            self.design.components[self.options.pin_inputs.start_pin.component].id, 
+            self.design.components[self.options.pin_inputs.start_pin.component].id,
             self.options.pin_inputs.start_pin.pin, self.id, 'start_pin')
         self.design.connect_pins(
-            self.design.components[self.options.pin_inputs.end_pin.component].id, 
+            self.design.components[self.options.pin_inputs.end_pin.component].id,
             self.options.pin_inputs.end_pin.pin, self.id, 'end_pin')

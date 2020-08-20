@@ -16,7 +16,7 @@
 Parsing module Qiskit Metal.
 
 The main function in this module is `parse_value`, and it explains what
-and how it is handled. Some basic arithemetic can be handled as well,
+and how it is handled. Some basic arithmetic can be handled as well,
 such as `'-2 * 1e5 nm'` will yield float(-0.2) when the default units are set to `mm`.
 
 Example parsing values test:
@@ -171,6 +171,7 @@ Returns:
 '''
 
 import ast
+import numpy as np
 from collections.abc import Iterable
 from collections.abc import Mapping
 from numbers import Number
@@ -226,7 +227,7 @@ def _parse_string_to_float(expr: str):
         expr (str): String expression such as '1nm'.
 
     Internal:
-        to_units (str): Units to conver the value to, such as 'mm'.
+        to_units (str): Units to convert the value to, such as 'mm'.
                         Hardcoded to  config.DEFAULT.units
 
     Returns:
@@ -293,7 +294,7 @@ def is_numeric_possible(test_str: str):
 
 def parse_value(value: str, variable_dict: dict):
     """
-    Parse a string, mappable (dict, Dict), iterrable (list, tuple) to account for units conversion,
+    Parse a string, mappable (dict, Dict), iterable (list, tuple) to account for units conversion,
     some basic arithmetic, and design variables.
     This is the main parsing function of Qiskit Metal.
 
@@ -301,21 +302,21 @@ def parse_value(value: str, variable_dict: dict):
 
         Strings of numbers, numbers with units; e.g., '1', '1nm', '1 um'
             Converts to int or float.
-            Some basic arithmatic is possible, see below.
+            Some basic arithmetic is possible, see below.
         Strings of variables 'variable1'.
-            Variable interpertation will use string method
+            Variable interpretation will use string method
             isidentifier 'variable1'.isidentifier()
         Strings of Dictionaries:
             Returns ordered `Dict` with same key-value mappings, where the values have
             been subjected to parse_value.
-        Strings of Itterables(list, tuple, ...):
+        Strings of Iterables(list, tuple, ...):
             Returns same kind and calls itself `parse_value` on each elemnt.
 
         Numbers:
             Returns the number as is. Int to int, etc.
 
-    Arithemetic:
-        Some basic arithemetic can be handled as well, such as `'-2 * 1e5 nm'`
+    Arithmetic:
+        Some basic arithmetic can be handled as well, such as `'-2 * 1e5 nm'`
         will yield float(-0.2) when the default units are set to `mm`.
 
     Default units:
@@ -338,42 +339,40 @@ def parse_value(value: str, variable_dict: dict):
         # remove trailing and leading white spaces in the name
         val = str(value).strip()
 
-        if is_variable_name(val):
-            # we have a string that could be interpreted as a variable
-            # check if there is such a variable name, else return as string
-            # logger.warning(f'Missing variable {opts[name]} from variable list.\n')
+        if val:
+            if is_variable_name(val):
+                # we have a string that could be interpreted as a variable
+                # check if there is such a variable name, else return as string
+                # logger.warning(f'Missing variable {opts[name]} from variable list.\n')
 
-            if val in variable_dict:
-                # Parse the returned value
-                return parse_value(variable_dict[val], variable_dict)
-            else:
-                # Assume it is a string and just return it
-                # CAUTION: This could cause issues for the user, if they meant to pass a variable
-                # but mistyped it or didn't define it. But they might also want to pass a string
-                # that is variable name compatible, such as pec.
-                # This is basically about type checking, which we can get back to later.
-                return val
+                if val in variable_dict:
+                    # Parse the returned value
+                    return parse_value(variable_dict[val], variable_dict)
+                else:
+                    # Assume it is a string and just return it
+                    # CAUTION: This could cause issues for the user, if they meant to pass a variable
+                    # but mistyped it or didn't define it. But they might also want to pass a string
+                    # that is variable name compatible, such as pec.
+                    # This is basically about type checking, which we can get back to later.
+                    return val
 
-        elif is_for_ast_eval(val):
-            # If it is a list or dict, this will do a literal eval, so string have
-            # to be in "" else [5um , 4um ] wont work, but ["5um", "0.4 um"] will
-            evaluated = ast.literal_eval(val)
-            if isinstance(evaluated, list):
-                # check if list, parse each element of the list
-                return [parse_value(element, variable_dict) for element in evaluated]
-            elif isinstance(evaluated, dict):
-                return Dict({key: parse_value(element, variable_dict)
-                             for key, element in evaluated.items()})
-            else:
-                logger.error(
-                    f'Unkown error in `is_for_ast_eval`\nval={val}\nevaluated={evaluated}')
-                return evaluated
+            elif is_for_ast_eval(val):
+                # If it is a list or dict, this will do a literal eval, so string have
+                # to be in "" else [5um , 4um ] wont work, but ["5um", "0.4 um"] will
+                evaluated = ast.literal_eval(val)
+                if isinstance(evaluated, list):
+                    # check if list, parse each element of the list
+                    return [parse_value(element, variable_dict) for element in evaluated]
+                elif isinstance(evaluated, dict):
+                    return Dict({key: parse_value(element, variable_dict)
+                                 for key, element in evaluated.items()})
+                else:
+                    logger.error(
+                        f'Unknown error in `is_for_ast_eval`\nval={val}\nevaluated={evaluated}')
+                    return evaluated
 
-        elif is_numeric_possible(val):
-            return _parse_string_to_float(value)
-
-        else:  # assume it is just a string (not intended to be parsed)
-            return value
+            elif is_numeric_possible(val):
+                return _parse_string_to_float(value)
 
     elif isinstance(value, Mapping):
         # If the value is a dictionary (dict,Dict,...),
@@ -384,14 +383,14 @@ def parse_value(value: str, variable_dict: dict):
 
     elif isinstance(value, Iterable):
         # list, tuple, ... Return the same type
-        return type(value)([parse_value(val, variable_dict) for val in value])
+        return {np.ndarray: np.array}.get(type(value), type(value))([parse_value(val, variable_dict) for val in value])
 
     elif isinstance(value, Number):
         # If it is an int it will return an int, not a float, etc.
         return value
 
-    else:  # no parsing needed, it is not a string, mappable, or iterrable we can handle
-        return value
+    # else no parsing needed, it is not data that we can handle
+    return value
 
 
 def parse_options(params: dict, parse_names: str, variable_dict=None):

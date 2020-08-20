@@ -1,17 +1,55 @@
 """
 Utility display functions used in the tutorials.
+
 @author: Zlatko K. Minev
 @date: 2020
 """
 
-from IPython.display import display, HTML, Image
+from pathlib import Path
+from typing import Dict as Dict_
+
+from IPython import get_ipython
+from IPython.core.magic import Magics, line_magic, magics_class
+from IPython.display import HTML, Image, display
+from PyQt5.QtWidgets import QApplication, QMainWindow
 
 __all__ = ['get_screenshot', 'format_dict_ala_z']
 
-################################################################
+
+@magics_class
+class MetalTutorialMagics(Magics):
+    """A class of status magic functions."""
+    @line_magic
+    def metal_print(self, line='', cell=None): # pylint: disable=unused-argument
+        """
+        Print an HTML formatted message.
+        """
+        return display(HTML(f"""
+    <div style="
+        padding-top:10px;
+        padding-bottom:10px;
+        font-weight: bold;
+        font-size: large;
+        text-align: center;
+        color: white;
+        background: #12c2e9;  /* fallback for old browsers */
+        background: -webkit-linear-gradient(to right, #f64f59, #c471ed, #12c2e9);  /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to right, #f64f59, #c471ed, #12c2e9); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    ">
+        {line}
+    </div>
+        """))
+
+
+_IP = get_ipython()
+if _IP is not None:
+    _IP.register_magics(MetalTutorialMagics)
+
 
 class Headings:
-    """Headings class"""
+    """Headings class for printing HTML-styled heading
+       for the tutorials.
+    """
     __h1__ = """
     <h1 style="
         background-color: #d4418e;
@@ -31,10 +69,8 @@ class Headings:
         display(HTML(cls.__h1__.replace('!!!!', text)))
 
 
-### For gui programming
-from PyQt5.QtWidgets import QMainWindow, QApplication
-from pathlib import Path
-def get_screenshot(self:QMainWindow, name='shot.png', type_='png', do_display=True, disp_ops=None):
+# For gui programming
+def get_screenshot(self: QMainWindow, name='shot.png', type_='png', do_display=True, disp_ops=None):
     """
     Grad a screenshot of the main window,
     save to file, and then copy to clipboard.
@@ -50,7 +86,7 @@ def get_screenshot(self:QMainWindow, name='shot.png', type_='png', do_display=Tr
     path = Path(name).resolve()
 
     # just grab the main window
-    screenshot = self.grab() # type: QtGui.QPixelMap
+    screenshot = self.grab()  # type: QtGui.QPixelMap
     screenshot.save(str(path), type_)  # Save
 
     QApplication.clipboard().setPixmap(screenshot)  # To clipboard
@@ -62,7 +98,8 @@ def get_screenshot(self:QMainWindow, name='shot.png', type_='png', do_display=Tr
         display(Image(filename=str(path), **_disp_ops))
 
 
-def format_dict_ala_z(dic, indent=0, key_width=20, do_repr=True, indent_all:int=2, indent_keys=5):
+def format_dict_ala_z(dic: Dict_, indent=0, key_width=20, do_repr=True,
+                      indent_all: int = 2, indent_keys=5):
     """Format the dictionary
 
     Args:
@@ -83,9 +120,11 @@ def format_dict_ala_z(dic, indent=0, key_width=20, do_repr=True, indent_all:int=
         if isinstance(v, dict):
             if do_repr:
                 k = repr(k)
-            text += f"{'':{indent_all_full}s}{k:<{key_width}s}:"+ " { \n"
-            text += format_dict_ala_z(v, indent+1, key_width=key_width,do_repr=do_repr,indent_all=indent_all)
-            text += f"{'':{indent_all_full+key_width}s}" + "  }" +(',' if do_repr else '') +"\n"
+            text += f"{'':{indent_all_full}s}{k:<{key_width}s}:" + " { \n"
+            text += format_dict_ala_z(v, indent+1, key_width=key_width,
+                                      do_repr=do_repr, indent_all=indent_all)
+            text += f"{'':{indent_all_full+key_width}s}" + \
+                "  }" + (',' if do_repr else '') + "\n"
         else:
             if do_repr:
                 k = repr(k)

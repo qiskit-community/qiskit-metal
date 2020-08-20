@@ -69,13 +69,15 @@ Interconnects
 .. autosummary::
     :toctree:
 
+    ConnectTheDots
     CpwAutoStraightLine
     CpwStraightLine
-    Oriented_2D_Array
-    Oriented_Point
     CpwMeanderSimple
     FakeCPW
-    Qroute
+    HybridPathfinder
+    QRoute
+    QRouteLead
+    QRoutePoint
     ResonatorRectangleSpiral
 
 
@@ -86,6 +88,15 @@ Junctions
     :toctree:
 
     junctions
+
+
+Passives
+--------
+
+.. autosummary::
+    :toctree:
+
+    Capacitor3Fingers
 
 
 Qubits
@@ -107,6 +118,15 @@ User Components
 
     MyQComponent
 
+
+Submodules
+----------
+
+.. autosummary::
+    :toctree:
+
+    pathfinder
+
 """
 
 from .. import is_component
@@ -127,15 +147,18 @@ if config.is_building_docs():
     from .connectors.cpw_hanger_t import CPWHangerT
     from .connectors.open_to_ground import OpenToGround
     from .connectors.short_to_ground import ShortToGround
+    from .interconnects.connectthedots import ConnectTheDots
     from .interconnects.cpw_autostraightline import CpwAutoStraightLine
     from .interconnects.cpw_basic_straight_line import CpwStraightLine
     from .interconnects.cpw_meander_simple import CpwMeanderSimple
-    from .interconnects.cpw_meander_simple import Oriented_2D_Array
-    from .interconnects.cpw_meander_simple import Oriented_Point
+    from .interconnects.qroute_base import QRoute, QRouteLead, QRoutePoint
     from .interconnects.fake_cpw import FakeCPW
-    from .interconnects.Qroute import Qroute
+    from .interconnects.pathfinder import HybridPathfinder
     from .interconnects.resonator_rectangle_spiral import ResonatorRectangleSpiral
+    from .passives.capacitor_three_fingers import Capacitor3Fingers
     from .qubits.transmon_cross import TransmonCross
     from .qubits.transmon_pocket import TransmonPocket
     from .qubits.transmon_pocket_cl import TransmonPocketCL
     from .user_components.my_qcomponent import MyQComponent
+
+    from .interconnects import pathfinder

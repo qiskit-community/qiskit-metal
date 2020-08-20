@@ -53,8 +53,10 @@ class ParsedDynamicAttributes_Component():
     Works with nested options too.
 
     Example:
-        component.options = {'x':'1nm'}
-        print(component.p.x)
+        .. code-block:: python
+
+            component.options = {'x':'1nm'}
+            print(component.p.x)
 
         >> `float(1e7)`
     """
@@ -77,7 +79,7 @@ class ParsedDynamicAttributes_Component():
     def __init__(self, component: 'QComponent', key_list: List[str] = None):
         """
         Args:
-            component (QComponent): Componenet to get options from
+            component (QComponent): Component to get options from
             key_list (List[str]): List of keys (Default: None).
         """
         #print(f'*** Created with {key_list}')
@@ -91,7 +93,7 @@ class ParsedDynamicAttributes_Component():
 
     def __dir__(self):
         # For autocompletion
-        return list(self.__get_dict__().keys())
+        return list(self.__getdict__().keys())
 
     def __repr__(self):
         return self.__getdict__().__repr__()
@@ -102,8 +104,23 @@ class ParsedDynamicAttributes_Component():
     def __str__(self):
         return self.__getdict__().__str__()
 
+    def __len__(self):
+        """Return the length"""
+        return len(self.__getdict__())
+
     def __getdict__(self) -> dict:
         return get_nested_dict_item(self.__component__.options, self.__keylist__)
+
+    def __iter__(self):
+        return self.__getdict__().__iter__()
+
+    def items(self):
+        """
+        Produces tuples consisting of keys and respective parsed
+        values for iterating over a dictionary.
+        """
+        for key in self: # calls __iter__
+            yield (key, self.__getitem__(key))
 
     def __getattr__(self, name: str):
         """
@@ -124,6 +141,7 @@ class ParsedDynamicAttributes_Component():
         #    return
 
         #print(f'__getattr__ NAME = {name};  dict=',self.__getdict__())
+
         return self.__getitem__(name)
 
     def __getitem__(self, name: str):
@@ -140,15 +158,12 @@ class ParsedDynamicAttributes_Component():
             AttributeError: The given name is a magic method not in the dictionary
         """
 
-        # print('__getitem__')
-
         dic = self.__getdict__()
-
         if name not in dic:
             if not is_ipython_magic(name):
                 # log_error_easy(self.__component__.logger, post_text=
                 xx = self.__keylist__
-                xx = ".".join(xx) + "." + name if len(xx) > 0 else name
+                xx = ".".join(xx) + "." + str(name) if len(xx) > 0 else name
                 self.__component__.logger.error('\nWarning: User tried to access a variable in the parse options'
                                                 f' that is not there!\n Component name = `{self.__component__.name}`\n'
                                                 f' Option name    = `{xx}`')
@@ -248,6 +263,7 @@ def get_nested_dict_item(dic: dict, key_list: list, level=0):
             >> 100nm
             >> 34fF
     """
+
     if not key_list:  # get the root
         return dic
 
