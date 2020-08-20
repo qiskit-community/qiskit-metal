@@ -32,44 +32,36 @@ from qiskit_metal.components.base.base import QComponent
 
 
 class Capacitor3Fingers(QComponent):
-    """    Inherits QComponent class
-
-    Description:
-    ----------------------------------------------------------------------------
-    Create a three finger planar capacitor with a ground pocket cuttout.  The width of
+    """Create a three finger planar capacitor with a ground pocket cuttout.  The width of
     the fingers is determined by the CPW width.
 
     Connectors can be added using the `options_connectors`
     dictionary. Each connectors has a name and a list of default
     properties.
 
-    Options:
-    ----------------------------------------------------------------------------
-    Convention: Values (unless noted) are strings with units included,
-                (e.g., '30um')
+    Inherits `QComponent` class
+
+    Convention:
+        Values (unless noted) are strings with units included, (e.g., '30um')
 
     Capacitor Metal Geometry and Ground Cuttout Pocket:
-    ----------------------------------------------------------------------------
-    cpw_width      - center trace width of the CPW lead line and cap fingers
-    finger length  - length of each finger
-    pocket_buffer_width_x - sets size of pocket in +-x direction, added to cap size
-    pocket_buffer_width_y - sets size of pocket in +-y direction, added to cap size
-                            this also determines the lead in line lengths   
-                            pocket is a negative shape that is cut out of the ground plane
-    pos_x / pos_y   - where the center of the pocket should be located on chip
-    orientation     - degree of qubit rotation
+        * cpw_width      - center trace width of the CPW lead line and cap fingers
+        * finger length  - length of each finger
+        * pocket_buffer_width_x - sets size of pocket in +-x direction, added to cap size
+        * pocket_buffer_width_y - sets size of pocket in +-y direction, added to cap size
+          this also determines the lead in line lengths   
+          pocket is a negative shape that is cut out of the ground plane
+        * pos_x / pos_y   - where the center of the pocket should be located on chip
+        * orientation     - degree of qubit rotation
 
     Connectors:
-    ----------------------------------------------------------------------------
-    There are two connectors on the capacitor at either end
-    The connector attaches directly to the built in lead length and only needs a width defined
-    cpw_width      - center trace width of the CPW line where the connector is placed
-    
-    
+        * There are two connectors on the capacitor at either end
+        * The connector attaches directly to the built in lead length and only needs a width defined
+        * cpw_width      - center trace width of the CPW line where the connector is placed
 
-    Sketch:  TODO
-    ----------------------------------------------------------------------------
-
+    Sketch:
+        TODO
+    
     """
 
    #  TODO _img = 'CapThreeFinger.png'
@@ -89,6 +81,7 @@ class Capacitor3Fingers(QComponent):
         position_y='100um',
         orientation='90', #90 for 90 degree turn
     )
+    """Default drawing options"""
 
     def make(self):
         """ This is executed by the user to generate the qgeometry for the component.

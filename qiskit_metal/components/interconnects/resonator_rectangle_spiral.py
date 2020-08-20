@@ -57,6 +57,7 @@ class ResonatorRectangleSpiral(QComponent):
     component_metadata = Dict(
         short_name='res'
         )
+    """Component metadata"""
 
     default_options = Dict(
         n='3',

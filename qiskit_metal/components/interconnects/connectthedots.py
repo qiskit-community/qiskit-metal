@@ -23,12 +23,12 @@ from qiskit_metal import draw, Dict
 from qiskit_metal.components import QComponent
 
 class ConnectTheDots(QComponent):
-
     """
-    08/14/20: Used only for reproduction of non-meandered CPWs on BlueJay.
     Creates and connects a series of anchors through which the CPW passes.
     This class is basically pathfinder.py with no built-in collision
     avoidance and no A* algorithm.
+
+    08/14/20: Used only for reproduction of non-meandered CPWs on BlueJay.
     """
 
     default_options = Dict(
@@ -51,6 +51,7 @@ class ConnectTheDots(QComponent):
         # Example: {1: np.array([x1, y1]), 2: np.array([x2, y2])}
         # startpin -> startpin + leadin -> anchors -> endpin + leadout -> endpin
     )
+    """Default connector options"""
 
     def getpts_simple(self, start_direction: np.array, start: np.array, end: np.array, end_direction=None) -> list:
 
