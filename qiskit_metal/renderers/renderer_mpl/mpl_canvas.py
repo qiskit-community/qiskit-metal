@@ -602,14 +602,17 @@ class PlotCanvas(FigureCanvas):
             self.refresh()
 
     def find_component_bounds(self, components: List[str], zoom: float = 1.2):
-        """Zoom in on a component
+        """Find bounds of a set of components
 
         Arguments:
-            name (str): component name
+            components (List[str]): list of component names
             zoom (float): fraction to expand the bounding vbox by
+
+        Returns:
+            List: List of x,y coordinates defining the bounding box
         """
         if len(components) == 0:
-            assert "At least one component must be provided."
+            self.logger.error('At least one component must be provided.')
 
         # initialize bounds
         bounds = [float("inf"), float("inf"), float("-inf"), float("-inf")]
