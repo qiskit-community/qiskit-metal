@@ -16,6 +16,7 @@ pyuic5 component_widget_ui.ui -o component_widget_ui.py --import-from .
 pyuic5 plot_window_ui.ui      -o plot_window_ui.py      --import-from .
 pyuic5 elements_ui.ui         -o elements_ui.py         --import-from .
 pyuic5 edit_source_ui.ui      -o edit_source_ui.py      --import-from .
+pyuic5 gds_renderer_ui.ui     -o gds_renderer_ui.py     --import-from .
 
 pyuic5 widgets/variable_table/dialog_popup.ui -o widgets/variable_table/dialog_popup.py --import-from .
 pyuic5 widgets/variable_table/add_delete_table.ui -o widgets/variable_table/add_delete_table.py --import-from .

@@ -10,11 +10,11 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_MainWindow(object):
-    def setupUi(self, MainWindow):
-        MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(707, 581)
-        self.centralwidget = QtWidgets.QWidget(MainWindow)
+class Ui_GDS_Renderer_Window(object):
+    def setupUi(self, GDS_Renderer_Window):
+        GDS_Renderer_Window.setObjectName("GDS_Renderer_Window")
+        GDS_Renderer_Window.resize(707, 581)
+        self.centralwidget = QtWidgets.QWidget(GDS_Renderer_Window)
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.centralwidget)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
@@ -29,17 +29,17 @@ class Ui_MainWindow(object):
         self.lineEdit = QtWidgets.QLineEdit(self.tab)
         self.lineEdit.setObjectName("lineEdit")
         self.horizontalLayout.addWidget(self.lineEdit)
-        self.toolButton = QtWidgets.QToolButton(self.tab)
+        self.browseButton = QtWidgets.QToolButton(self.tab)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/_imgs/search.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.toolButton.setIcon(icon)
-        self.toolButton.setToolButtonStyle(QtCore.Qt.ToolButtonTextBesideIcon)
-        self.toolButton.setAutoRaise(False)
-        self.toolButton.setObjectName("toolButton")
-        self.horizontalLayout.addWidget(self.toolButton)
-        self.pushButton = QtWidgets.QPushButton(self.tab)
-        self.pushButton.setObjectName("pushButton")
-        self.horizontalLayout.addWidget(self.pushButton)
+        self.browseButton.setIcon(icon)
+        self.browseButton.setToolButtonStyle(QtCore.Qt.ToolButtonTextBesideIcon)
+        self.browseButton.setAutoRaise(False)
+        self.browseButton.setObjectName("browseButton")
+        self.horizontalLayout.addWidget(self.browseButton)
+        self.exportButton = QtWidgets.QPushButton(self.tab)
+        self.exportButton.setObjectName("exportButton")
+        self.horizontalLayout.addWidget(self.exportButton)
         self.gridLayout.addLayout(self.horizontalLayout, 1, 0, 1, 1)
         self.tabWidget.addTab(self.tab, "")
         self.tab_2 = QtWidgets.QWidget()
@@ -52,35 +52,27 @@ class Ui_MainWindow(object):
         self.verticalLayout.addWidget(self.treeView)
         self.tabWidget.addTab(self.tab_2, "")
         self.verticalLayout_2.addWidget(self.tabWidget)
-        MainWindow.setCentralWidget(self.centralwidget)
-        self.menubar = QtWidgets.QMenuBar(MainWindow)
+        GDS_Renderer_Window.setCentralWidget(self.centralwidget)
+        self.menubar = QtWidgets.QMenuBar(GDS_Renderer_Window)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 707, 22))
         self.menubar.setObjectName("menubar")
-        MainWindow.setMenuBar(self.menubar)
-        self.statusbar = QtWidgets.QStatusBar(MainWindow)
+        GDS_Renderer_Window.setMenuBar(self.menubar)
+        self.statusbar = QtWidgets.QStatusBar(GDS_Renderer_Window)
         self.statusbar.setObjectName("statusbar")
-        MainWindow.setStatusBar(self.statusbar)
+        GDS_Renderer_Window.setStatusBar(self.statusbar)
 
-        self.retranslateUi(MainWindow)
+        self.retranslateUi(GDS_Renderer_Window)
         self.tabWidget.setCurrentIndex(0)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        self.browseButton.clicked.connect(GDS_Renderer_Window.browse_files)
+        self.exportButton.clicked.connect(GDS_Renderer_Window.export_file)
+        QtCore.QMetaObject.connectSlotsByName(GDS_Renderer_Window)
 
-    def retranslateUi(self, MainWindow):
+    def retranslateUi(self, GDS_Renderer_Window):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "GDS_Renderer"))
-        self.lineEdit.setPlaceholderText(_translate("MainWindow", "File path to export GDS to. "))
-        self.toolButton.setText(_translate("MainWindow", "Browse"))
-        self.pushButton.setText(_translate("MainWindow", "Export"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Actions"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "Options"))
+        GDS_Renderer_Window.setWindowTitle(_translate("GDS_Renderer_Window", "GDS_Renderer"))
+        self.lineEdit.setPlaceholderText(_translate("GDS_Renderer_Window", "Export GDS to the following location... "))
+        self.browseButton.setText(_translate("GDS_Renderer_Window", "Browse"))
+        self.exportButton.setText(_translate("GDS_Renderer_Window", "Export"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("GDS_Renderer_Window", "Actions"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("GDS_Renderer_Window", "Options"))
 from . import main_window_rc_rc
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec_())

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>GDS_Renderer_Window</class>
+ <widget class="QMainWindow" name="GDS_Renderer_Window">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -30,12 +30,12 @@
           <item>
            <widget class="QLineEdit" name="lineEdit">
             <property name="placeholderText">
-             <string>File path to export GDS to. </string>
+             <string>Export GDS to the following location... </string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QToolButton" name="toolButton">
+           <widget class="QToolButton" name="browseButton">
             <property name="text">
              <string>Browse</string>
             </property>
@@ -52,7 +52,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton">
+           <widget class="QPushButton" name="exportButton">
             <property name="text">
              <string>Export</string>
             </property>
@@ -103,5 +103,42 @@
  <resources>
   <include location="main_window_rc.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>browseButton</sender>
+   <signal>clicked()</signal>
+   <receiver>GDS_Renderer_Window</receiver>
+   <slot>browse_files()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>545</x>
+     <y>292</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>353</x>
+     <y>290</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>exportButton</sender>
+   <signal>clicked()</signal>
+   <receiver>GDS_Renderer_Window</receiver>
+   <slot>export_file()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>630</x>
+     <y>294</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>353</x>
+     <y>290</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>browse_files()</slot>
+  <slot>export_file()</slot>
+ </slots>
 </ui>
