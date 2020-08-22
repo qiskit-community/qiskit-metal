@@ -96,6 +96,7 @@ class QRoute(QComponent):
         layer='1',
         trace_width='cpw_width'
     )
+    """Default drawing options"""
 
     # def __init__(self, design, name=None, options=None, type: str = "CPW", **kwargs):
     def __init__(self, *args, **kwargs):
@@ -146,7 +147,7 @@ class QRoute(QComponent):
     #             options["options"] = cpw_options
     #
     #     return options
-    #
+
     def _get_pin_from_connected(self, pin_data: Dict):
         """Recovers a pin from the dictionary
 

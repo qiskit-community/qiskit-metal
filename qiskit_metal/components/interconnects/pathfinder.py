@@ -13,6 +13,8 @@
 # that they have been altered from the originals.
 
 '''
+Main differences with pathfinder_tweaked:
+
 @date: 2020
 @author: Dennis Wang, Marco Facchini
 '''
@@ -35,8 +37,18 @@ from .connectthedots import ConnectTheDots
 # TODO: Stopping condition for A* in case it doesn't converge (time limit or user-provided exploration area?)
 
 def intersecting(a: np.array, b: np.array, c: np.array, d: np.array) -> bool:
+    """Returns whether segment ab intersects or overlaps with segment cd, where a, b, c, and d are
+    all coordinates
 
-    """Returns whether segment ab intersects or overlaps with segment cd, where a, b, c, and d are all coordinates"""
+    Args:
+        a (np.array): coordinate
+        b (np.array): coordinate
+        c (np.array): coordinate
+        d (np.array): coordinate
+
+    Returns:
+        bool: True if intersecting, False otherwise
+    """
 
     x0_start, y0_start = a
     x0_end, y0_end = b
@@ -103,6 +115,7 @@ class HybridPathfinder(ConnectTheDots):
         # Example: {1: np.array([x1, y1]), 2: np.array([x2, y2])}
         # startpin -> startpin + leadin -> anchors -> endpin + leadout -> endpin
     )
+    """Default connector options"""
 
     def no_obstacles(self, segment: list) -> bool:
 
@@ -111,6 +124,9 @@ class HybridPathfinder(ConnectTheDots):
         
         Args:
             segment (list): List comprised of vertex coordinates of the form [np.array([x0, y0]), np.array([x1, y1])]
+
+        Returns:
+            bool: True is no obstacles
         """
 
         # TODO: Non-rectangular bounding boxes?
