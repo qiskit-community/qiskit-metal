@@ -70,6 +70,8 @@ class QRoute(QComponent):
         * chip            - which chip is this component attached to (default: 'main')
         * layer           - which layer this component should be rendered on (default: '1')
         * trace_width     - defines the width of the line (default: 'cpw_width')
+        * trace_gap       - (only exists for type="CPW") defines the gap between the route wire
+                            and the ground plane (default: 'cpw_gap')
 
     """
 
@@ -98,22 +100,21 @@ class QRoute(QComponent):
     )
     """Default drawing options"""
 
-    # def __init__(self, design, name=None, options=None, type: str = "CPW", **kwargs):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, design, name=None, options=None, type: str = "CPW", **kwargs):
         """Initializes all Routes
 
         Calls the QComponent __init__() to create a new Metal component
         Before that, it adds the variables that are needed to support routing
 
         Arguments:
-            type (string): (default: "CPW") currently any other string will generate a simple route
+            type (string): Supports Route (single layer trace) and CPW (adds the gap around it) (default: "CPW")
 
         Attributes:
-            head (QRouteLead()): store sequential points to start the route
-            tail (QRouteLead()): (optional) store sequential points to terminate the route
-            intermediate_pts (numpy Nx2): (default:None) sequence of points between and other than head and tail
-            start_pin_name (string): (default: "start") head pin name
-            end_pin_name (string): (default: "end") tail pin name
+            head (QRouteLead()): Stores sequential points to start the route
+            tail (QRouteLead()): (optional) Stores sequential points to terminate the route
+            intermediate_pts (numpy Nx2): Sequence of points between and other than head and tail (default:None)
+            start_pin_name (string): Head pin name (default: "start")
+            end_pin_name (string): Tail pin name (default: "end")
         """
         self.head = QRouteLead()
         self.tail = QRouteLead()
@@ -125,30 +126,43 @@ class QRoute(QComponent):
         self.start_pin_name = "start"
         self.end_pin_name = "end"
 
-        # self.type = type.capitalize()
+        self.type = type.upper().strip()
 
         # # add default_options that are QRoute type specific:
-        # options = self._add_route_specific_options(options)
+        options = self._add_route_specific_options(options)
 
         # regular QComponent boot, including the run of make()
-        # super().__init__(design, name, options, **kwargs)
-        super().__init__(*args, **kwargs)
+        super().__init__(design, name, options, **kwargs)
 
-    # def _add_route_specific_options(self, options):
-    #     # add the default cpw options if not provided
-    #     if self.type is "CPW":
-    #
-    #         cpw_options = Dict(trace_gap='cpw_gap')
-    #
-    #         if options:
-    #             if "trace_gap" not in options:
-    #                 options.update(cpw_options)
-    #         else:
-    #             options["options"] = cpw_options
-    #
-    #     return options
+    def _add_route_specific_options(self, options):
+        """Enriches the default_options to support different types of route styles
 
-    def _get_pin_from_connected(self, pin_data: Dict):
+        Args:
+            options (dict): User options that will override the defaults
+
+        Return:
+            a modified options dictionary
+        """
+        if self.type == "ROUTE":
+            # all the defaults are fine as-is
+            None
+        elif self.type == "CPW":
+            # add the variable to define the space between the route and the ground plane
+            cpw_options = Dict(trace_gap='cpw_gap')
+            if options:
+                if "trace_gap" not in options:
+                    # user did not pass the trace_gap, so add it
+                    options.update(cpw_options)
+            else:
+                # user did not pass custom options, so create it to add trace_gap
+                options["options"] = cpw_options
+        else:
+            raise Exception("Unsupported Route type: " + self.type +
+                            " The only supported types are CPW and route")
+
+        return options
+
+    def _get_connected_pin(self, pin_data: Dict):
         """Recovers a pin from the dictionary
 
         Args:
@@ -180,7 +194,7 @@ class QRoute(QComponent):
                             " The only supported pins are: start, end.")
 
         # grab the reference component pin
-        reference_pin = self._get_pin_from_connected(options_pin)
+        reference_pin = self._get_connected_pin(options_pin)
 
         # create the cpw pin and document the connections to the reference_pin in the netlist
         self.add_pin(name, reference_pin.points[::-1], self.p.trace_width)
@@ -266,7 +280,7 @@ class QRoute(QComponent):
         Arguments:
             start (QRoutePoint): [description]
             end (QRoutePoint): [description]
-            snap (bool): True to snap to grid (Default: False)
+            snap (bool): True to snap to grid (default: False)
 
         Returns:
             array: straight and 90 deg CCW rotated vecs 2D
@@ -307,15 +321,15 @@ class QRoute(QComponent):
                            width=p.trace_width,
                            fillet=p.fillet,
                            layer=p.layer)
-        # if self.type is "CPW":
-        # expand the routing track to form the two gaps in the substrate
-        # final gap will be form by this minus the trace above
-        self.add_qgeometry('path',
-                           {'cut': line},
-                           width=p.trace_width + 2 * p.trace_gap,
-                           fillet=p.fillet,
-                           layer=p.layer,
-                           subtract=True)
+        if self.type == "CPW":
+            # expand the routing track to form the two gaps in the substrate
+            # final gap will be form by this minus the trace above
+            self.add_qgeometry('path',
+                               {'cut': line},
+                               width=p.trace_width + 2 * p.trace_gap,
+                               fillet=p.fillet,
+                               layer=p.layer,
+                               subtract=True)
 
     # def route_to_align(self, concurrent_array):
     #     """
@@ -380,8 +394,8 @@ class QRouteLead:
         Before that, it adds the variables that are needed to support routing
 
         Attributes:
-            pts (numpy Nx2): (default:None) sequence of points
-            direction (numpy 2x1): (default: None) normal from the last point of the array
+            pts (numpy Nx2): Sequence of points (default: None)
+            direction (numpy 2x1): Normal from the last point of the array (default: None)
         """
         # keep track of all points so far in the route from both ends
         self.pts = None  # will be numpy Nx2

@@ -24,7 +24,7 @@ import numpy as np
 from collections import OrderedDict
 from qiskit_metal import draw, Dict
 from qiskit_metal.components.base import QRoutePoint
-from .connectthedots import ConnectTheDots
+from .connect_the_dots import ConnectTheDots
 
 # Main differences with pathfinder_tweaked:
 
@@ -104,18 +104,9 @@ class HybridPathfinder(ConnectTheDots):
     points.
     """
 
-    component_metadata = Dict(
-        short_name='cpw'
-        )
-
     default_options = Dict(
-        trace_gap='cpw_gap',
         step_size='0.25mm',
-        anchors=OrderedDict() # Intermediate anchors only; doesn't include endpoints
-        # Example: {1: np.array([x1, y1]), 2: np.array([x2, y2])}
-        # startpin -> startpin + leadin -> anchors -> endpin + leadout -> endpin
     )
-    """Default connector options"""
 
     def no_obstacles(self, segment: list) -> bool:
 

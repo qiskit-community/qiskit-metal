@@ -49,9 +49,6 @@ class CpwMeanderSimple(QRoute):
         * start_jogged_extension   - (optional) lead-in, jogged extension of lead-in. Described as list of tuples
         * end_jogged_extension     - (optional) lead-in, jogged extension of lead-out. Described as list of tuples
 
-    Others:
-        * trace_gap       - defines the gap between the route wire and the plane (default: 'cpw_gap')
-
     """
 
     component_metadata = Dict(
@@ -59,7 +56,6 @@ class CpwMeanderSimple(QRoute):
         )
 
     default_options = Dict(
-        trace_gap='cpw_gap',
         meander=Dict(
             spacing='200um',
             asymmetry='0um'

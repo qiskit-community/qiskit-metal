@@ -33,12 +33,10 @@ class ConnectTheDots(QRoute):
     """
 
     default_options = Dict(
-        trace_gap='cpw_gap',
         anchors=OrderedDict()  # Intermediate anchors only; doesn't include endpoints
         # Example: {1: np.array([x1, y1]), 2: np.array([x2, y2])}
         # startpin -> startpin + leadin -> anchors -> endpin + leadout -> endpin
     )
-    """Default connector options"""
 
     component_metadata = Dict(
         short_name='cpw'

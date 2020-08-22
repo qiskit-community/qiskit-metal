@@ -25,11 +25,6 @@ class CpwAutoStraightLine(QRoute):
     component_metadata = Dict(
         short_name='cpw'
         )
-    """Component metadata"""
-
-    default_options = Dict(
-        trace_gap='cpw_gap',
-    )
 
     def getpts(self, startpin: str, endpin: str, width: float, segments: int, leadstart: float, leadend: float, constaxis=0, constval=0) -> list:
         """
