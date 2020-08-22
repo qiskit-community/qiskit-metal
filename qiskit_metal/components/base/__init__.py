@@ -12,11 +12,9 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""
-@auhtor: Zlatko Minev
-@date: 2019
-"""
 from ...toolbox_python.attr_dict import Dict
 from .. import is_component
 from .base import QComponent
 from .qubit import BaseQubit
+from .qroute import QRoute, QRoutePoint
+from .junction import BaseJunction

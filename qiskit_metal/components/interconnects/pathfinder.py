@@ -13,15 +13,18 @@
 # that they have been altered from the originals.
 
 '''
+Main differences with pathfinder_tweaked:
+
 @date: 2020
-@author: Dennis Wang
+@author: Dennis Wang, Marco Facchini
 '''
 
 import heapq
 import numpy as np
 from collections import OrderedDict
 from qiskit_metal import draw, Dict
-from qiskit_metal.components import QComponent
+from qiskit_metal.components.base import QRoutePoint
+from .connectthedots import ConnectTheDots
 
 # Main differences with pathfinder_tweaked:
 
@@ -34,8 +37,18 @@ from qiskit_metal.components import QComponent
 # TODO: Stopping condition for A* in case it doesn't converge (time limit or user-provided exploration area?)
 
 def intersecting(a: np.array, b: np.array, c: np.array, d: np.array) -> bool:
+    """Returns whether segment ab intersects or overlaps with segment cd, where a, b, c, and d are
+    all coordinates
 
-    """Returns whether segment ab intersects or overlaps with segment cd, where a, b, c, and d are all coordinates"""
+    Args:
+        a (np.array): coordinate
+        b (np.array): coordinate
+        c (np.array): coordinate
+        d (np.array): coordinate
+
+    Returns:
+        bool: True if intersecting, False otherwise
+    """
 
     x0_start, y0_start = a
     x0_end, y0_end = b
@@ -82,7 +95,8 @@ def intersecting(a: np.array, b: np.array, c: np.array, d: np.array) -> bool:
                     return True
             return False
 
-class HybridPathfinder(QComponent):
+
+class HybridPathfinder(ConnectTheDots):
 
     """
     Non-meandered CPW class that combines A* pathfinding algorithm with
@@ -90,27 +104,18 @@ class HybridPathfinder(QComponent):
     points.
     """
 
+    component_metadata = Dict(
+        short_name='cpw'
+        )
+
     default_options = Dict(
-        pin_inputs=Dict(
-            start_pin=Dict(
-                component='', # Name of component to start from, which has a pin
-                pin=''), # Name of pin used for pin_start
-            end_pin=Dict(
-                component='', # Name of component to end on, which has a pin
-                pin='') # Name of pin used for pin_end
-                ),
-        chip='main',
-        layer='1',
-        leadin=Dict(
-            start='22um',
-            end='22um'),
-        cpw_width='cpw_width',
-        cpw_gap='cpw_gap',
+        trace_gap='cpw_gap',
         step_size='0.25mm',
         anchors=OrderedDict() # Intermediate anchors only; doesn't include endpoints
         # Example: {1: np.array([x1, y1]), 2: np.array([x2, y2])}
         # startpin -> startpin + leadin -> anchors -> endpin + leadout -> endpin
     )
+    """Default connector options"""
 
     def no_obstacles(self, segment: list) -> bool:
 
@@ -119,6 +124,9 @@ class HybridPathfinder(QComponent):
         
         Args:
             segment (list): List comprised of vertex coordinates of the form [np.array([x0, y0]), np.array([x1, y1])]
+
+        Returns:
+            bool: True is no obstacles
         """
 
         # TODO: Non-rectangular bounding boxes?
@@ -136,87 +144,7 @@ class HybridPathfinder(QComponent):
         # All clear, no intersections
         return True
     
-    def getpts_simple(self, start_direction: np.array, start: np.array, end: np.array, end_direction) -> list:
-
-        """
-        Try connecting start and end with single or 2-segment/S-shaped CPWs if possible.
-        
-        Args:
-            start_direction (np.array): Vector indicating direction of starting point
-            start (np.array): 2-D coordinates of first anchor
-            end (np.array): 2-D coordinates of second anchor
-
-        Returns:
-            List of vertices of a CPW going from start to end
-        """
-
-        # end_direction originates strictly from endpoint + leadout (NOT intermediate stopping anchors)
-        # stop_direction aligned with longer rectangle edge regardless of nature of 2nd anchor
-
-        offsetx = abs(end[0] - start[0]) # Absolute value of displacement between start and end in x direction
-        offsety = abs(end[1] - start[1]) # Absolute value of displacement between start and end in y direction
-        if offsetx >= offsety: # "Wide" rectangle -> end_arrow points along x
-            stop_direction = np.array([end[0] - start[0], 0])
-        else: # "Tall" rectangle -> end_arrow points along y
-            stop_direction = np.array([0, end[1] - start[1]])
-
-        if (start[0] == end[0]) or (start[1] == end[1]):
-            # Matching x or y coordinates -> check if endpoints can be connected with a single segment
-            if (np.dot(start_direction, end - start) >= 0) and self.no_obstacles([start, end]):
-                # Start direction and end - start for CPW must not be anti-aligned
-                if (end_direction is None) or (np.dot(end - start, end_direction) <= 0):
-                    # If leadout + end has been reached, the single segment CPW must not be aligned with its direction
-                    return [start, end]
-        else:
-            # If the endpoints don't share a common x or y value, designate them as 2 corners of an axis aligned rectangle
-            # and check if both start and end directions are aligned with the displacement vectors between start/end and
-            # either of the 2 remaining corners ("perfect alignment").
-            corner1 = np.array([start[0], end[1]]) # x coordinate matches with start
-            corner2 = np.array([end[0], start[1]]) # x coordinate matches with end
-            # Check for collisions at the outset to avoid repeat work
-            startc1end = bool(self.no_obstacles([start, corner1]) and self.no_obstacles([corner1, end]))
-            startc2end = bool(self.no_obstacles([start, corner2]) and self.no_obstacles([corner2, end]))
-            if (np.dot(start_direction, corner1 - start) > 0) and startc1end:
-                if (end_direction is None) or (np.dot(end_direction, corner1 - end) > 0):
-                    return [start, corner1, end]
-            elif (np.dot(start_direction, corner2 - start) > 0) and startc1end:
-                if (end_direction is None) or (np.dot(end_direction, corner2 - end) > 0):
-                    return [start, corner2, end]
-            # In notation below, corners 3 and 4 correspond to the ends of the segment bisecting the longer rectangle formed by start and end
-            # while the segment formed by corners 5 and 6 bisect the shorter rectangle
-            if stop_direction[0]: # "Wide" rectangle -> vertical middle segment is more natural
-                corner3 = np.array([(start[0] + end[0]) / 2, start[1]])
-                corner4 = np.array([(start[0] + end[0]) / 2, end[1]])
-                corner5 = np.array([start[0], (start[1] + end[1]) / 2])
-                corner6 = np.array([end[0], (start[1] + end[1]) / 2])
-            else: # "Tall" rectangle -> horizontal middle segment is more natural
-                corner3 = np.array([start[0], (start[1] + end[1]) / 2])
-                corner4 = np.array([end[0], (start[1] + end[1]) / 2])
-                corner5 = np.array([(start[0] + end[0]) / 2, start[1]])
-                corner6 = np.array([(start[0] + end[0]) / 2, end[1]])
-            startc3c4end = bool(self.no_obstacles([start, corner3]) and self.no_obstacles([corner3, corner4]) and self.no_obstacles([corner4, end]))
-            startc5c6end = bool(self.no_obstacles([start, corner5]) and self.no_obstacles([corner5, corner6]) and self.no_obstacles([corner6, end]))
-            if (np.dot(start_direction, stop_direction) < 0) and (np.dot(start_direction, corner3 - start) > 0) and startc3c4end:
-                if (end_direction is None) or (np.dot(end_direction, corner4 - end) > 0):
-                    # Perfectly aligned S-shaped CPW
-                    return [start, corner3, corner4, end]
-            # Relax constraints and check if imperfect 2-segment or S-segment works, where "imperfect" means 1 or more dot products of directions
-            # between successive segments is 0; otherwise return an empty list
-            if (np.dot(start_direction, corner1 - start) >= 0) and startc1end:
-                if (end_direction is None) or (np.dot(end_direction, corner1 - end) >= 0):
-                    return [start, corner1, end]
-            if (np.dot(start_direction, corner2 - start) >= 0) and startc2end:
-                if (end_direction is None) or (np.dot(end_direction, corner2 - end) >= 0):
-                    return [start, corner2, end]
-            if (np.dot(start_direction, corner3 - start) >= 0) and startc3c4end:
-                if (end_direction is None) or (np.dot(end_direction, corner4 - end) >= 0):
-                    return [start, corner3, corner4, end]
-            if (np.dot(start_direction, corner5 - start) >= 0) and startc5c6end:
-                if (end_direction is None) or (np.dot(end_direction, corner6 - end) >= 0):
-                    return [start, corner5, corner6, end]
-        return []
-        
-    def getpts_astar(self, start_direction: np.array, start: np.array, end: np.array, step_size: float = 0.25, end_direction=None) -> list:
+    def getpts_astar(self, start_pt: QRoutePoint, end_pt: QRoutePoint, step_size: float = 0.25) -> list:
         
         """
         Connect start and end via A* algo if getpts_simple doesn't work
@@ -230,6 +158,11 @@ class HybridPathfinder(QComponent):
         Returns:
             List of vertices of a CPW going from start to end
         """
+
+        start_direction = start_pt.direction
+        start = start_pt.position
+        end_direction = end_pt.direction
+        end = end_pt.position
 
         starting_dist = sum(abs(end - start)) # Manhattan distance between start and end
         pathmapper = {(starting_dist, start[0], start[1]): [starting_dist, [start]]}
@@ -260,7 +193,7 @@ class HybridPathfinder(QComponent):
             # point and a potential neighbor must be non-negative to avoid retracing.
             
             # Check if getpts_simple works at each iteration of A*
-            simple_path = self.getpts_simple(direction, np.array([x, y]), end, end_direction)
+            simple_path = self.getpts_simple(QRoutePoint(np.array([x, y]), direction), QRoutePoint(end, end_direction))
             if simple_path:
                 if len(current_path) > 1:
                     # Concatenate collinear line segments (joined at a point and have identical slopes)
@@ -303,57 +236,39 @@ class HybridPathfinder(QComponent):
                     heapq.heappush(h, (new_length_travelled + new_remaining_dist, neighbor[0], neighbor[1]))
                     pathmapper[(new_length_travelled + new_remaining_dist, neighbor[0], neighbor[1])] = [new_length_travelled, new_path]
                     visited.add(tuple(neighbor))
-        return [] # Shouldn't actually reach here - if it fails, there's a convergence issue
+        return []  # Shouldn't actually reach here - if it fails, there's a convergence issue
     
     def make(self):
         """
         Generates path from start pin to end pin.
         """
         p = self.parse_options()
-        leadstart = p.leadin.start
-        leadend = p.leadin.end
-        w = p.cpw_width
         anchors = p.anchors
         step_size = p.step_size
 
-        component_start = p.pin_inputs['start_pin']['component']
-        pin_start = p.pin_inputs['start_pin']['pin']
-        component_end = p.pin_inputs['end_pin']['component']
-        pin_end = p.pin_inputs['end_pin']['pin']
+        # Set the CPW pins and add the points/directions to the lead-in/out arrays
+        self.set_pin("start")
+        self.set_pin("end")
 
-        # Starting and ending pin (connector) dictionaries
-        connector1 = self.design.components[component_start].pins[pin_start] # startpin
-        connector2 = self.design.components[component_end].pins[pin_end] # endpin
+        # Align the lead-in/out to the input options set from the user
+        meander_start_point = self.set_lead("start")
+        meander_end_point = self.set_lead("end")
 
-        n1 = connector1.normal
-        n2 = connector2.normal
-
-        m1 = connector1.middle
-        m2 = connector2.middle
-
-        self._pts = [m1, m1 + n1 * (w / 2 + leadstart)] # Initialize list of vertices with startpin
+        # TODO: find out why the make runs twice for every component and stop it.
+        #  Should only run once. The line below is just a patch to work around it.
+        self.intermediate_pts = None
 
         for coord in list(anchors.values()):
-            # Process startpin + leadin, anchors, and endpin + leadout
-            self._pts += self.getpts_astar(self._pts[-1] - self._pts[-2], self._pts[-1], coord, step_size)[1:]
-        # Treat endpin + leadout as an edge case since CPW cannot overlap with it, in which case we must specify an end direction
-        penultimate_pt = m2 + n2 * (w / 2 + leadend) # penultimate_pt = endpin + leadout
-        # n2 originates from m2 and points towards penultimate_pt
-        self._pts += self.getpts_astar(self._pts[-1] - self._pts[-2], self._pts[-1], penultimate_pt, step_size, n2)[1:]
-        self._pts += [m2] # Add endpin
+            if not self.intermediate_pts:
+                self.intermediate_pts = self.getpts_astar(meander_start_point, QRoutePoint(coord), step_size)[1:]
+            else:
+                self.intermediate_pts += self.getpts_astar(self.get_tip(), QRoutePoint(coord), step_size)[1:]
 
-        # Create CPW geometry using list of vertices
-        line = draw.LineString(self._pts)
+        last_pt = self.getpts_astar(self.get_tip(), meander_end_point, step_size)[1:]
+        if self.intermediate_pts:
+            self.intermediate_pts += last_pt
+        else:
+            self.intermediate_pts = last_pt
 
-        # Add CPW to elements table
-        self.add_qgeometry('path', {'center_trace': line}, width=p.cpw_width, layer=p.layer)
-        self.add_qgeometry('path', {'gnd_cut': line}, width=p.cpw_width+2*p.cpw_gap, subtract=True)
-
-        # Create new pins for the CPW itself
-        self.add_pin('hybrid_start', connector1.points[::-1], p.cpw_width)
-        self.add_pin('hybrid_end', connector2.points[::-1], p.cpw_width)
-
-        # Add to netlist
-        self.design.connect_pins(self.design.components[component_start].id, pin_start, self.id, 'hybrid_start')
-        self.design.connect_pins(self.design.components[component_end].id, pin_end, self.id, 'hybrid_end')
-        
+        # Make points into elements
+        self.make_elements(self.get_points())

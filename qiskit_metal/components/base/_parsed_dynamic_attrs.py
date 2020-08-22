@@ -53,8 +53,10 @@ class ParsedDynamicAttributes_Component():
     Works with nested options too.
 
     Example:
-        component.options = {'x':'1nm'}
-        print(component.p.x)
+        .. code-block:: python
+
+            component.options = {'x':'1nm'}
+            print(component.p.x)
 
         >> `float(1e7)`
     """
@@ -103,6 +105,7 @@ class ParsedDynamicAttributes_Component():
         return self.__getdict__().__str__()
 
     def __len__(self):
+        """Return the length"""
         return len(self.__getdict__())
 
     def __getdict__(self) -> dict:

@@ -1,9 +1,9 @@
 import numpy as np
 from numpy.linalg import norm
 from qiskit_metal import draw, Dict
-from qiskit_metal.components import QComponent
+from qiskit_metal.components.base import QRoute
 
-class CpwAutoStraightLine(QComponent):
+class CpwAutoStraightLine(QRoute):
 
     """
     A non-meandered basic CPW that is auto-generated between 2 components.
@@ -12,38 +12,24 @@ class CpwAutoStraightLine(QComponent):
     This class extends the `QComponent` class.
 
     Assumptions:
-
-    1. Components are situated along xy axes in 2 dimensions. No rotation is allowed (yet). Their bounding boxes may
-        not overlap, though they may be situated at arbitrary x and y provided these conditions are met.
-    2. Pins point normal to qubits ("directly outward") and either in the x or y directions. They must not protrude
-        from the exact corner of a component. [This last assumption has implications for 2-segment connections.]
-    3. Intersection of CPWs with themselves or the qubits they stem from is prohibited. Intersection with other
-        components/CPWs has not yet been considered.
-    4. Components may not share an edge; a nonzero gap must be present between 2 adjacent qubits.
-    5. CPWs must be attached to protruding leads via connectors head-on, not from the sides.
+        1. Components are situated along xy axes in 2 dimensions. No rotation is allowed (yet). Their bounding boxes may
+           not overlap, though they may be situated at arbitrary x and y provided these conditions are met.
+        2. Pins point normal to qubits ("directly outward") and either in the x or y directions. They must not protrude
+           from the exact corner of a component. [This last assumption has implications for 2-segment connections.]
+        3. Intersection of CPWs with themselves or the qubits they stem from is prohibited. Intersection with other
+           components/CPWs has not yet been considered.
+        4. Components may not share an edge; a nonzero gap must be present between 2 adjacent qubits.
+        5. CPWs must be attached to protruding leads via connectors head-on, not from the sides.
     """
+
     component_metadata = Dict(
         short_name='cpw'
         )
+    """Component metadata"""
 
     default_options = Dict(
-        pin_inputs=Dict(
-            start_pin=Dict(
-                component='', # Name of component to start from, which has a pin
-                pin=''), # Name of pin used for pin_start
-            end_pin=Dict(
-                component='', # Name of component to end on, which has a pin
-                pin='') # Name of pin used for pin_end
-                ),
-        cpw_width='cpw_width',
-        cpw_gap='cpw_gap',
-        layer='1',
-        leadin=Dict(
-            start='22um',
-            end='22um'
-        )
+        trace_gap='cpw_gap',
     )
-    """Default options"""
 
     def getpts(self, startpin: str, endpin: str, width: float, segments: int, leadstart: float, leadend: float, constaxis=0, constval=0) -> list:
         """
@@ -120,11 +106,27 @@ class CpwAutoStraightLine(QComponent):
 
         p = self.p # parsed options
 
-        w = p.cpw_width
-        leadstart = p.leadin.start
-        leadend = p.leadin.end
+        w = p.trace_width
+        leadstart = p.lead.start_straight
+        leadend = p.lead.end_straight
         keepoutx = 0.2
         keepouty = 0.2
+
+
+        # Set the CPW pins and add the points/directions to the lead-in/out arrays
+        self.set_pin("start")
+        self.set_pin("end")
+
+        # Align the lead-in/out to the input options set from the user
+        meander_start_point = self.set_lead("start")
+        meander_end_point = self.set_lead("end")
+
+        n1 = meander_start_point.direction
+        n2 = meander_end_point.direction
+
+        m1 = meander_start_point.position
+        m2 = meander_end_point.position
+
 
         component_start = p.pin_inputs['start_pin']['component']
         pin_start = p.pin_inputs['start_pin']['pin']
@@ -134,12 +136,6 @@ class CpwAutoStraightLine(QComponent):
         # Starting and ending pin (connector) dictionaries
         connector1 = self.design.components[component_start].pins[pin_start]
         connector2 = self.design.components[component_end].pins[pin_end]
-
-        n1 = connector1.normal
-        n2 = connector2.normal
-
-        m1 = connector1.middle
-        m2 = connector2.middle
 
         # Coordinates of bounding box for each individual component
         minx1, miny1, maxx1, maxy1 = self.design.components[component_start].qgeometry_bounds()
@@ -328,19 +324,7 @@ class CpwAutoStraightLine(QComponent):
                     else:
                         self.__pts = pts_right
 
-        # Create CPW geometry using list of vertices
-        line = draw.LineString(self.__pts)
+        self.intermediate_pts = self.__pts
 
-        # Add CPW to elements table
-        self.add_qgeometry('path', {'center_trace': line}, width=p.cpw_width, layer=p.layer)
-        self.add_qgeometry('path', {'gnd_cut': line}, width=p.cpw_width+2*p.cpw_gap, subtract = True)
-
-        # Create new pins for the CPW itself
-        self.add_pin('auto_cpw_start', connector1.points[::-1], p.cpw_width)
-        self.add_pin('auto_cpw_end', connector2.points[::-1], p.cpw_width)
-
-        # Add to netlist
-        self.design.connect_pins(
-            self.design.components[component_start].id, pin_start, self.id, 'auto_cpw_start')
-        self.design.connect_pins(
-            self.design.components[component_end].id, pin_end, self.id, 'auto_cpw_end')
+        # Make points into elements
+        self.make_elements(self.get_points())
