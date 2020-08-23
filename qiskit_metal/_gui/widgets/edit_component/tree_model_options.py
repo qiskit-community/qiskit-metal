@@ -224,14 +224,14 @@ class LeafNode:
 
 
 class QTreeModel_Options(QAbstractItemModel):
-
     """
     Tree model for the options of a given component.
 
     This class extends the `QAbstractItemModel` class.
+    It is part of the model-view-controller (MVC) architecture; see
+     https://doc.qt.io/qt-5/qabstractitemmodel.html
 
-    MVC class
-    See https://doc.qt.io/qt-5/qabstractitemmodel.html
+    Access using ``gui.component_window.model``.
     """
 
     __refreshtime = 500  # 0.5 second refresh time
@@ -268,29 +268,6 @@ class QTreeModel_Options(QAbstractItemModel):
         """Returns the GUI"""
         return self._gui
 
-    def _start_timer(self):
-        """
-        Start and continuously refresh timer in background to keep
-        the total number of rows up to date.
-        """
-        self.timer = QTimer(self)
-        self.timer.start(self.__refreshtime)
-        self.timer.timeout.connect(self.auto_refresh)
-
-    # TODO: Check if new nodes have been added. If so, rebuild model.
-
-    def auto_refresh(self):
-        """
-        Check to see if the total number of rows has been changed. If so,
-        completely rebuild the model and tree.
-        """
-        newRowCount = self.rowCount(self.createIndex(0, 0))
-        if self._rowCount != newRowCount:
-            self.modelReset.emit()
-            self._rowCount = newRowCount
-            if self._view:
-                self._view.autoresize_columns()
-
     @property
     def design(self) -> 'QDesign':
         """Returns the QDesign"""
@@ -305,6 +282,28 @@ class QTreeModel_Options(QAbstractItemModel):
     def data_dict(self) -> dict:
         """ Return a reference to the component options (nested) dictionary."""
         return self.component.options
+
+    def _start_timer(self):
+        """
+        Start and continuously refresh timer in background to keep
+        the total number of rows up to date.
+        """
+        self.timer = QTimer(self)
+        self.timer.start(self.__refreshtime)
+        self.timer.timeout.connect(self.auto_refresh)
+
+    def auto_refresh(self):
+        """
+        Check to see if the total number of rows has been changed. If so,
+        completely rebuild the model and tree.
+        """
+        # TODO: Check if new nodes have been added; if so, rebuild model.
+        newRowCount = self.rowCount(self.createIndex(0, 0))
+        if self._rowCount != newRowCount:
+            self.modelReset.emit()
+            self._rowCount = newRowCount
+            if self._view:
+                self._view.autoresize_columns()
 
     def refresh(self):
         """Force refresh. Completely rebuild the model and tree."""
@@ -339,7 +338,8 @@ class QTreeModel_Options(QAbstractItemModel):
         for path in self.paths:
             root = self.root
             branch = None
-            # Combine final label and value for leaf node, so stop at 2nd to last element of each path
+            # Combine final label and value for leaf node,
+            # so stop at 2nd to last element of each path
             for key in path[:-2]:
                 # Look for childnode with the name 'key'. If it's not found, create a new branch.
                 branch = root.childWithKey(key)
@@ -358,7 +358,8 @@ class QTreeModel_Options(QAbstractItemModel):
                 branch.insertChild(
                     LeafNode(path[-2], branch, path=path[:-1]))
 
-        # Emit a signal since the model's internal state (e.g. persistent model indexes) has been invalidated.
+        # Emit a signal since the model's internal state
+        # (e.g. persistent model indexes) has been invalidated.
         self.endResetModel()
 
     def rowCount(self, parent: QModelIndex):
