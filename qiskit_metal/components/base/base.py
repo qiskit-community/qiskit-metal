@@ -69,6 +69,41 @@ class QComponent():
         * The class define the internal representation of a components
         * The class provides the interfaces for the component (creator user)
 
+    Default options:
+        Nested default options can be overwritten with the update function.
+        The following code demonstrates how the update works.
+
+        .. code-block:: python
+            :linenos:
+
+            from qiskit_metal import Dict
+            default = Dict(
+                a=1,
+                b=2,
+                c=Dict(
+                    d=3,
+                    e=4,
+                    f=Dict(
+                        g=6,
+                        h=7
+                    )
+                )
+            )
+            overwrite = Dict(
+                a=10,
+                b=20,
+                c=Dict(
+                    d=30,
+                    f=Dict(
+                        h=70
+                    )
+                ),
+                z=33
+            )
+            default.update(overwrite)
+            default
+
+        >> {'a': 10, 'b': 20, 'c': {'d': 30, 'e': 4, 'f': {'g': 6, 'h': 70}}, 'z': 33}
     """
 
     default_options = Dict(
@@ -189,13 +224,13 @@ class QComponent():
             self.rebuild()
 
     @classmethod
-    def _gather_all_children_options(cls):
+    def _gather_all_children_options(cls) -> dict:
         '''
         From the base class of QComponent, traverse the child classes
         to gather the .default options for each child class.
 
-        Collects the options
-        starting with the basecomponent, and stepping through the children.
+        Collects the options starting with the basecomponent,
+        and stepping through the children.
         Each child adds it's options to the base options.  If the
         key is the same, the option of the youngest child is used.
 
@@ -211,9 +246,9 @@ class QComponent():
         options_from_children = {}
         parents = inspect.getmro(cls)
 
-        # base.py is not expected to have default_options dict to add to design class.
+        # len-2: base.py is not expected to have default_options dict to add to design class.
         for child in parents[len(parents)-2::-1]:
-            # There is a developer agreement so the defaults will be in dict named default_options.
+            # The template default options are in a class dict attribute `default_options`.
             if hasattr(child, 'default_options'):
                 options_from_children = {
                     **options_from_children, **child.default_options}
