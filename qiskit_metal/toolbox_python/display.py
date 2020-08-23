@@ -118,9 +118,34 @@ def get_screenshot(self: QMainWindow, name='shot.png', type_='png', do_display=T
         display(Image(filename=str(path), **_disp_ops))
 
 
+##########################################################################
+# Shell print
+
+class Color:
+    """
+    Shell/terminal color and style definitions for the cursor.
+
+    This will work on *NIX, MacOS, and Windows (provided you enable ansi.sys).
+    The class attributes are various ANSI codes for setting the color and style of the cursor.
+
+    In general, `termcolor` is more stable across platforms. See `termcolor`
+    """
+    purple = '\033[95m'
+    cyan = '\033[96m'
+    darkcyan = '\033[36m'
+    blue = '\033[94m'
+    green = '\033[92m'
+    yellow = '\033[93m'
+    red = '\033[91m'
+    bold = '\033[1m'
+    BOLD = '\033[1m'
+    underline = '\033[4m'
+    end = '\033[0m'
+    END = '\033[0m'
+
 def format_dict_ala_z(dic: Dict_, indent=0, key_width=20, do_repr=True,
-                      indent_all: int = 2, indent_keys=5):
-    """Format a nested dictionary with indentations for printing.
+                      indent_all: int = 2, indent_keys=5, style_dicts=True):
+    """Format the dictionary
 
     Args:
         dic (dict): Dictionary to format
@@ -135,12 +160,15 @@ def format_dict_ala_z(dic: Dict_, indent=0, key_width=20, do_repr=True,
     """
     indent_all_full = indent_all + indent*indent_keys
 
+    if style_dicts:
+        sty1a, sty1b = Color.BOLD, Color.END
+
     text = ''
     for k, v in dic.items():
         if isinstance(v, dict):
             if do_repr:
                 k = repr(k)
-            text += f"{'':{indent_all_full}s}{k:<{key_width}s}:" + " { \n"
+            text += f"{'':{indent_all_full}s}{sty1a}{k:<{key_width}s}{sty1b}: {{\n"
             text += format_dict_ala_z(v, indent+1, key_width=key_width,
                                       do_repr=do_repr, indent_all=indent_all)
             text += f"{'':{indent_all_full+key_width}s}" + \
