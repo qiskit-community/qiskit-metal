@@ -177,7 +177,9 @@ class QComponent():
         self._name = name
         self._class_name = self._get_unique_class_name()  # Full class name
 
-        # Options
+        #: A dictionary of the component-desinger-defined options.
+        #: These options are used in the make function to create the QGeometry and QPins.
+        #: All options should have string keys and preferrable string values.
         self.options = self.get_template_options(design=design,
                                                  component_template=component_template)
         if options:
@@ -194,16 +196,19 @@ class QComponent():
 
         # Build and component internals
 
-        # Create an empty dict, which will populated by component designer.
+        #: Dictionary of pins. Populated by component designer in make function using `add_pin`.
         self.pins = Dict()  # TODO: should this be private?
         self._made = False
 
-        # In case someone wants to store extra information or analysis results
+        #: Metadata allows a designer to store extra information or analysis results.
         self.metadata = Dict()
 
         # Add the component to the parent design
         self._id = self.design._get_new_qcomponent_id()  # Create the unique id
         self._add_to_design()  # Do this after the pin checking?
+
+        #: Stores the latest status of the component. Values include:
+        #: ``Initialization Successful``, ``Build Failed``, etc.
         self.status = 'Initialization Successful'
 
         # Auto naming - add id to component based on type
