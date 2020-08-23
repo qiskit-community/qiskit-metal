@@ -58,6 +58,7 @@ _sandbox_/
 
 # Sphinx documentation
 docs/_build/
+docs/.buildingdocs
 
 # PyBuilder
 target/

@@ -33,6 +33,7 @@ class CpwStraightLine(QComponent):
     component_metadata = Dict(
         short_name='cpw'
         )
+    """Component metadata"""
         
     default_options = Dict(
         pin_inputs=Dict(

@@ -58,6 +58,7 @@ class CPWHangerT(QComponent):
     component_metadata = Dict(
         short_name='cpw'
         )
+    """Component metadata"""
 
     #Currently setting the primary CPW length based on the coupling_length
     #May want it to be it's own value that the user can control?

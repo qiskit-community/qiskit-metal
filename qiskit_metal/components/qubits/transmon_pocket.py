@@ -147,6 +147,7 @@ class TransmonPocket(BaseQubit):
             loc_H='+1',  # height location only +-1
         )
     )
+    """Default drawing options"""
 
     def make(self):
         """Define the way the options are turned into QGeometry.

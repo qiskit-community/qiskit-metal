@@ -28,6 +28,7 @@ Created on  Wed Apr 22 10:02:06 2020
 # element_handler/get_component_geometry
 # element_handler/get_component_geometry_list
 # element_handler/get_component_geometry_dict
+# element_handler/get_all_unique_layers
 
 import unittest
 import numpy as np

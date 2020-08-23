@@ -81,6 +81,7 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
     component_metadata = Dict(
         short_name='Q'
         )
+    """Component metadata"""
 
     default_options = Dict(
         make_CL=True,
