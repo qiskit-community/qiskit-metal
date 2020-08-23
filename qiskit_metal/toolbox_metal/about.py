@@ -101,7 +101,7 @@ def open_docs(page='index.html'):
     filepath = get_module_doc_page(module, page=page)
     if filepath.is_file():
         webbrowser.open(f"file://{filepath}", new=1)
-        print(f'Opened {module.__name__} docs in a new webbrowser page.')
+        print(f'Opened {module.__name__} docs in a new web browser page.')
     else:
         print(f'Error: Could not find the doc file {filepath}.'
               'Check the folder path.')
