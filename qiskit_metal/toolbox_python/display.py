@@ -128,6 +128,9 @@ class Color:
     This will work on *NIX, MacOS, and Windows (provided you enable ansi.sys).
     The class attributes are various ANSI codes for setting the color and style of the cursor.
 
+    The following attributes use octal string representations.
+    See https://www.saic.it/bach-color-linux/
+
     In general, `termcolor` is more stable across platforms. See `termcolor`
     """
     purple = '\033[95m'
@@ -145,7 +148,7 @@ class Color:
 
 def format_dict_ala_z(dic: Dict_, indent=0, key_width=20, do_repr=True,
                       indent_all: int = 2, indent_keys=5, style_dicts=True):
-    """Format the dictionary
+    """Format a nested dictionary.
 
     Args:
         dic (dict): Dictionary to format
