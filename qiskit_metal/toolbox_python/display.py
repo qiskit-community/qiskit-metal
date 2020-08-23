@@ -20,7 +20,7 @@ __all__ = ['get_screenshot', 'format_dict_ala_z']
 class MetalTutorialMagics(Magics):
     """A class of status magic functions."""
     @line_magic
-    def metal_print(self, line='', cell=None): # pylint: disable=unused-argument
+    def metal_print(self, line='', cell=None):  # pylint: disable=unused-argument
         """
         Print an HTML formatted message.
         """
@@ -40,6 +40,25 @@ class MetalTutorialMagics(Magics):
     </div>
         """))
 
+    @line_magic
+    def metal_heading(self, line='', cell=None):  # pylint: disable=unused-argument
+        """
+        Print an HTML formatted message.
+        """
+        return display(HTML(f"""
+    <h1 style="
+        background: #12c2e9;  /* fallback for old browsers */
+        background: -webkit-linear-gradient(to right, #d4418e 0%, #0652c5 74%);  /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(315deg, #d4418e 0%, #0652c5 74%); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        margin-top: 50px;
+        border-style: outset;
+        padding-top:100px;
+        padding-bottom:50px;
+        padding-left:25px;
+        color: white;
+    "> {line} <h1>
+        """))
+
 
 _IP = get_ipython()
 if _IP is not None:
@@ -47,8 +66,9 @@ if _IP is not None:
 
 
 class Headings:
-    """Headings class for printing HTML-styled heading
-       for the tutorials.
+    """Headings class for printing HTML-styled heading for the tutorials.
+
+    Legcay code. Use cell magics. See: ``MetalTutorialMagics``.
     """
     __h1__ = """
     <h1 style="
@@ -69,7 +89,7 @@ class Headings:
         display(HTML(cls.__h1__.replace('!!!!', text)))
 
 
-# For gui programming
+# For GUI programming
 def get_screenshot(self: QMainWindow, name='shot.png', type_='png', do_display=True, disp_ops=None):
     """
     Grad a screenshot of the main window,
@@ -100,7 +120,7 @@ def get_screenshot(self: QMainWindow, name='shot.png', type_='png', do_display=T
 
 def format_dict_ala_z(dic: Dict_, indent=0, key_width=20, do_repr=True,
                       indent_all: int = 2, indent_keys=5):
-    """Format the dictionary
+    """Format a nested dictionary with indentations for printing.
 
     Args:
         dic (dict): Dictionary to format
