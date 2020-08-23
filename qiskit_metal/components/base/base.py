@@ -933,20 +933,21 @@ class QComponent():
                                             helper=helper, layer=layer, chip=chip, **kwargs)
 
     def __repr__(self, *args):
-        b = '\033[94m\033[1m'
-        b1 = '\033[95m\033[1m'
+        b = '\033[95m\033[1m'
+        b1 = '\033[94m\033[1m'
         e = '\033[0m'
 
         # id = {hex(id(self))}
         # options = pprint.pformat(self.options)
 
         options = format_dict_ala_z(self.options)
-        return f"""
- {b}name:    {b1}{self.name}{e}
- {b}class:   {b1}{self.__class__.__name__:<22s}{e}
- {b}options: {e}\n{options}
- {b}module:  {b1}{self.__class__.__module__}{e}
- {b}id:      {b1}{self.id}{e}"""
+        text = \
+            f"{b}name:    {b1}{self.name}{e}\n"\
+            f"{b}class:   {b1}{self.__class__.__name__:<22s}{e}\n"\
+            f"{b}options: {e}\n{options}\n"\
+            f"{b}module:  {b1}{self.__class__.__module__}{e}\n"\
+            f"{b}id:      {b1}{self.id}{e}\n"
+        return text
 
 ############################################################################
 # Geometry handling of created qgeometry
