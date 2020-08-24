@@ -54,6 +54,7 @@ class CpwMeanderSimple(QRoute):
     component_metadata = Dict(
         short_name='cpw'
         )
+    """Component metadata"""
 
     default_options = Dict(
         meander=Dict(
@@ -68,6 +69,7 @@ class CpwMeanderSimple(QRoute):
             end_jogged_extension=''
         ),
     )
+    """Default options"""
 
     def make(self):
         """

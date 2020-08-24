@@ -78,6 +78,7 @@ class QRoute(QComponent):
     component_metadata = Dict(
         short_name='route'
         )
+    """Component metadata"""
 
     default_options = Dict(
         pin_inputs=Dict(
@@ -98,7 +99,7 @@ class QRoute(QComponent):
         layer='1',
         trace_width='cpw_width'
     )
-    """Default drawing options"""
+    """Default options"""
 
     def __init__(self, design, name=None, options=None, type: str = "CPW", **kwargs):
         """Initializes all Routes

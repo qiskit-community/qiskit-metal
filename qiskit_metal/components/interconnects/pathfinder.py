@@ -107,6 +107,7 @@ class HybridPathfinder(ConnectTheDots):
     default_options = Dict(
         step_size='0.25mm',
     )
+    """Default options"""
 
     def no_obstacles(self, segment: list) -> bool:
 

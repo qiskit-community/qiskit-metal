@@ -32,15 +32,17 @@ class ConnectTheDots(QRoute):
     08/14/20: Used only for reproduction of non-meandered CPWs on BlueJay.
     """
 
+    component_metadata = Dict(
+        short_name='cpw'
+        )
+    """Component metadata"""
+
     default_options = Dict(
         anchors=OrderedDict()  # Intermediate anchors only; doesn't include endpoints
         # Example: {1: np.array([x1, y1]), 2: np.array([x2, y2])}
         # startpin -> startpin + leadin -> anchors -> endpin + leadout -> endpin
     )
-
-    component_metadata = Dict(
-        short_name='cpw'
-        )
+    """Default options"""
 
     def getpts_simple(self, start_pt: QRoutePoint, end_pt: QRoutePoint, avoid_collision: bool = True) -> list:
 
