@@ -5,6 +5,7 @@ Utility display functions used in the tutorials.
 @date: 2020
 """
 
+import re
 from pathlib import Path
 from typing import Dict as Dict_
 
@@ -145,6 +146,19 @@ class Color:
     underline = '\033[4m'
     end = '\033[0m'
     END = '\033[0m'
+
+
+def style_colon_list(text: str,
+                     sty1a='', sty1b='',
+                     sty2a=Color.blue, sty2b=Color.END) -> str:
+    """
+    Color on the left and right sides of single :
+    """
+    text = re.sub(
+        '(.*?):(.*)', f'{sty1a}\g<1>{sty1b}:{sty2a}\g<2>{sty2b}',
+        text)  # *? is non-greedy
+    return text
+
 
 def format_dict_ala_z(dic: Dict_, indent=0, key_width=20, do_repr=True,
                       indent_all: int = 2, indent_keys=5, style_dicts=True):
