@@ -13,7 +13,10 @@
 # that they have been altered from the originals.
 
 """
-Reports a summary of information on Qiskit Metal and dependencies
+Reports a summary of information on Qiskit Metal and dependencies.
+
+Contain functions to report more detailed information to orient a user,
+used for debug purposes.
 
 @author: Zlatko Minev
 @date: 2020
@@ -22,12 +25,17 @@ Reports a summary of information on Qiskit Metal and dependencies
 import os
 import sys
 import numpy
+import getpass
 import inspect
+import platform
 import webbrowser
+
 from pathlib import Path
+from qiskit_metal.toolbox_python.display import Color, style_colon_list
+from typing import Union
 
 
-__all__ = ['about']
+__all__ = ['about', 'open_docs', 'orient_me']
 
 
 def about():
@@ -84,6 +92,9 @@ IBM Quantum Team"""
     return text
 
 
+######################################################################################
+# DOCS
+
 def get_module_doc_page(module, folder=r'../docs/build/html', page='index.html'):
     """
     Get the file path to a module doc folder assumed to be inside the package.
@@ -105,3 +116,65 @@ def open_docs(page='index.html'):
     else:
         print(f'Error: Could not find the doc file {filepath}.'
               'Check the folder path.')
+
+######################################################################################
+# More detailed information to orient a user.
+# For debug purposes.
+# Main function: ``orient_me```
+
+def orient_me(do_print: bool = True) -> Union[None, str]:
+    """Full system, python, user, and environemnt information.
+
+    Args:
+        do_print(bool) : Return the string if True, else format and print.
+    """
+
+    text = get_platform_info()
+    text += \
+        f" User and directories:\n\n"\
+        f"    User              : {getpass.getuser()}\n"\
+        f"    User home dirctry : {Path.home()}\n"\
+        f"    Current directory : {Path.cwd()}\n\n"\
+        f"    Conda default env : {os.environ.get('CONDA_DEFAULT_ENV', 'N/A')}\n"\
+        f"    Conda current env : {os.environ.get('CONDA_PREFIX', 'N/A')}\n"\
+        f"    Python executable : {sys.executable}\n"\
+
+    if do_print:
+        text = style_colon_list(text, Color.BOLD, Color.END)
+        print(text)
+        return None
+    else:
+        return text
+
+
+def get_platform_info() -> str:
+    """Returns a string with the platform information."""
+
+    return '''
+
+ System platform information:
+
+    system   : %s
+    node     : %s
+    release  : %s
+    machine  : %s
+    processor: %s
+    summary  : %s
+    version  : %s
+
+ Python platform information:
+
+    version  : %s (implem: %s)
+    compiler : %s
+
+''' % (
+        platform.system(),
+        platform.node(),
+        platform.release(),
+        platform.machine(),
+        platform.processor(),
+        platform.platform(),
+        platform.version(),
+        platform.python_version(), platform.python_implementation(),
+        platform.python_compiler())
+
