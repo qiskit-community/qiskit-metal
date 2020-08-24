@@ -23,8 +23,12 @@ import os
 import sys
 import numpy
 import inspect
+import webbrowser
+from pathlib import Path
+
 
 __all__ = ['about']
+
 
 def about():
     """
@@ -78,3 +82,26 @@ IBM Quantum Team"""
     print(text)
 
     return text
+
+
+def get_module_doc_page(module, folder=r'../docs/build/html', page='index.html'):
+    """
+    Get the file path to a module doc folder assumed to be inside the package.
+    """
+    return Path(os.path.dirname(module.__file__)) / folder / page
+
+
+def open_docs(page='index.html'):
+    """
+    Open the qiskit_metal documentation in HTML. Open the URL in new window,
+    raising the window if possible.
+    """
+    import qiskit_metal
+    module = qiskit_metal
+    filepath = get_module_doc_page(module, page=page)
+    if filepath.is_file():
+        webbrowser.open(f"file://{filepath}", new=1)
+        print(f'Opened {module.__name__} docs in a new web browser page.')
+    else:
+        print(f'Error: Could not find the doc file {filepath}.'
+              'Check the folder path.')
