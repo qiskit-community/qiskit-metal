@@ -69,6 +69,41 @@ class QComponent():
         * The class define the internal representation of a components
         * The class provides the interfaces for the component (creator user)
 
+    Default options:
+        Nested default options can be overwritten with the update function.
+        The following code demonstrates how the update works.
+
+        .. code-block:: python
+            :linenos:
+
+            from qiskit_metal import Dict
+            default = Dict(
+                a=1,
+                b=2,
+                c=Dict(
+                    d=3,
+                    e=4,
+                    f=Dict(
+                        g=6,
+                        h=7
+                    )
+                )
+            )
+            overwrite = Dict(
+                a=10,
+                b=20,
+                c=Dict(
+                    d=30,
+                    f=Dict(
+                        h=70
+                    )
+                ),
+                z=33
+            )
+            default.update(overwrite)
+            default
+
+        >> {'a': 10, 'b': 20, 'c': {'d': 30, 'e': 4, 'f': {'g': 6, 'h': 70}}, 'z': 33}
     """
 
     default_options = Dict(
@@ -77,20 +112,24 @@ class QComponent():
         # to be able to have an input pin and be moved/rotated based on said input.
         # pin_inputs = Dict()
     )
+    """Default drawing options"""
 
-    # Dummy private attribute used to check if an instantiated object is
+    component_metadata = Dict()
+    """Component metadata"""
+
+    # Dummy private attribute used to check if an instanciated object is
     # indeed a QComponent class. The problem is that the `isinstance`
     # built-in method fails when this module is reloaded.
     # Used by `is_component` to check.
     __i_am_component__ = True
 
-    def __init__(self, design: 'QDesign', name: str, options: Dict = None,
-                 make=True, component_template: Dict = None):
+    def __init__(self, design: 'QDesign', name: str = None, options: Dict = None,
+                 make=True, component_template: Dict = None) -> Union[None, str]:
         """Create a new Metal component and adds it's default_options to the design.
 
         Arguments:
             design (QDesign): The parent design.
-            name (str): Name of the component.
+            name (str): Name of the component. Auto-named if possible.
             options (dict): User options that will override the defaults. (default: None)
             make (bool): True if the make function should be called at the end of the init.
                 Options be used in the make function to create the geometry. (default: True)
@@ -138,7 +177,9 @@ class QComponent():
         self._name = name
         self._class_name = self._get_unique_class_name()  # Full class name
 
-        # Options
+        #: A dictionary of the component-desinger-defined options.
+        #: These options are used in the make function to create the QGeometry and QPins.
+        #: All options should have string keys and preferrable string values.
         self.options = self.get_template_options(design=design,
                                                  component_template=component_template)
         if options:
@@ -155,29 +196,48 @@ class QComponent():
 
         # Build and component internals
 
-        # Create an empty dict, which will populated by component designer.
+        #: Dictionary of pins. Populated by component designer in make function using `add_pin`.
         self.pins = Dict()  # TODO: should this be private?
         self._made = False
 
-        # In case someone wants to store extra information or analysis results
+        #: Metadata allows a designer to store extra information or analysis results.
         self.metadata = Dict()
 
         # Add the component to the parent design
         self._id = self.design._get_new_qcomponent_id()  # Create the unique id
         self._add_to_design()  # Do this after the pin checking?
+
+        #: Stores the latest status of the component. Values include:
+        #: ``Initialization Successful``, ``Build Failed``, etc.
         self.status = 'Initialization Successful'
+
+        # Auto naming - add id to component based on type
+        if name is None:
+            prefix = self._gather_all_children_metadata()
+            # limit names to 24 characters
+            name_trunc = 24
+            # if no prefix, use class name
+            if "short_name" not in prefix:
+                short_name = self.__class__.__name__[:name_trunc]
+            else:
+                short_name = prefix['short_name'][:name_trunc]
+            name_id = self.design._get_new_qcomponent_name_id(short_name)
+            # rename loop to make sure that no components manually named by the user conflicts
+            while self.design.rename_component(self._id, short_name + "_" + str(name_id)) != 1:
+                name_id = self.design._get_new_qcomponent_name_id(short_name)
+
         # Make the component geometry
         if make:
             self.rebuild()
 
     @classmethod
-    def _gather_all_children_options(cls):
+    def _gather_all_children_options(cls) -> dict:
         '''
         From the base class of QComponent, traverse the child classes
         to gather the .default options for each child class.
 
-        Collects the options
-        starting with the basecomponent, and stepping through the children.
+        Collects the options starting with the basecomponent,
+        and stepping through the children.
         Each child adds it's options to the base options.  If the
         key is the same, the option of the youngest child is used.
 
@@ -193,14 +253,40 @@ class QComponent():
         options_from_children = {}
         parents = inspect.getmro(cls)
 
-        # base.py is not expected to have default_options dict to add to design class.
+        # len-2: base.py is not expected to have default_options dict to add to design class.
         for child in parents[len(parents)-2::-1]:
-            # There is a developer agreement so the defaults will be in dict named default_options.
+            # The template default options are in a class dict attribute `default_options`.
             if hasattr(child, 'default_options'):
                 options_from_children = {
                     **options_from_children, **child.default_options}
 
         return options_from_children
+
+
+    @classmethod
+    def _gather_all_children_metadata(cls):
+        '''
+        From the base class of QComponent, traverse the child classes
+        to gather the .default options for each child class.
+
+        Note: if keys are the same for child and grandchild, grandchild will overwrite child
+        Init method.
+
+        Returns:
+            dict: options from all children
+        '''
+
+        options_from_children = {}
+        parents = inspect.getmro(cls)
+        # Base.py is not expected to have default_options dict to add to design class.
+        for child in parents[len(parents)-2::-1]:
+            # There is a developer agreement so the defaults will be in dict named default_options.
+            if hasattr(child, 'component_metadata'):
+                options_from_children = {
+                    **options_from_children, **child.component_metadata}
+
+        return options_from_children
+
 
     @classmethod
     def _get_unique_class_name(cls) -> str:
@@ -852,20 +938,21 @@ class QComponent():
                                             helper=helper, layer=layer, chip=chip, **kwargs)
 
     def __repr__(self, *args):
-        b = '\033[94m\033[1m'
-        b1 = '\033[95m\033[1m'
+        b = '\033[95m\033[1m'
+        b1 = '\033[94m\033[1m'
         e = '\033[0m'
 
         # id = {hex(id(self))}
         # options = pprint.pformat(self.options)
 
         options = format_dict_ala_z(self.options)
-        return f"""
- {b}name:    {b1}{self.name}{e}
- {b}class:   {b1}{self.__class__.__name__:<22s}{e}
- {b}options: {e}\n{options}
- {b}module:  {b1}{self.__class__.__module__}{e}
- {b}id:      {b1}{self.id}{e}"""
+        text = \
+            f"{b}name:    {b1}{self.name}{e}\n"\
+            f"{b}class:   {b1}{self.__class__.__name__:<22s}{e}\n"\
+            f"{b}options: {e}\n{options}\n"\
+            f"{b}module:  {b1}{self.__class__.__module__}{e}\n"\
+            f"{b}id:      {b1}{self.id}{e}\n"
+        return text
 
 ############################################################################
 # Geometry handling of created qgeometry

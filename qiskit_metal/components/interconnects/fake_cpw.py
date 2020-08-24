@@ -23,6 +23,11 @@ class FakeCPW(QComponent):
 
     Inherits QComponent class
     """
+    component_metadata = Dict(
+        short_name='cpw'
+        )
+    """Component metadata"""
+
     default_options = Dict(
         line_width='10um',
         line_gap='6um',

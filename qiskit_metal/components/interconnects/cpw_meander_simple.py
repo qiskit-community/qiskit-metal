@@ -42,8 +42,8 @@ class CpwMeanderSimple(QRoute):
     Meander:
         * spacing         - minimum spacing between adjacent meander curves (default: 200um)
         * asymmetry       - offset between the center-line of the meander and the center-line
-                            that stretches from the tip of lead-in to the x (or y) coordinate
-                            of the tip of the lead-out (default: '0um')
+          that stretches from the tip of lead-in to the x (or y) coordinate
+          of the tip of the lead-out (default: '0um')
 
     Leads:
         * start_jogged_extension   - (optional) lead-in, jogged extension of lead-in. Described as list of tuples
@@ -67,7 +67,8 @@ class CpwMeanderSimple(QRoute):
             end_jogged_extension=''
         ),
     )
-
+    """Default options"""
+    
     def make(self):
         """
         The make function implements the logic that creates the geometry

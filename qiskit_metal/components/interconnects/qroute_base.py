@@ -94,6 +94,12 @@ class QRoute(QComponent):
         layer='1',
         trace_width='cpw_width'
     )
+    """Default drawing options"""
+
+    component_metadata = Dict(
+        short_name='cpw'
+        )
+    """Component metadata"""
 
     def __init__(self, *args, **kwargs):
         """Calls the QComponent __init__() to create a new Metal component
