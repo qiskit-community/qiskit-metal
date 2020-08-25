@@ -27,10 +27,6 @@ class CpwAutoStraightLine(QRoute):
         )
     """Component metadata"""
 
-    default_options = Dict(
-        trace_gap='cpw_gap',
-    )
-
     def getpts(self, startpin: str, endpin: str, width: float, segments: int, leadstart: float, leadend: float, constaxis=0, constval=0) -> list:
         """
         Generate the list of 2D coordinates comprising a CPW between startpin and endpin.
