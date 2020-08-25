@@ -40,10 +40,7 @@ from PyQt5.QtWidgets import (QApplication, QDockWidget, QFileDialog, QLabel,
 from ..designs.design_base import QDesign
 from ..toolbox_metal.import_export import load_metal_design
 from .component_widget_ui import Ui_ComponentWidget
-
-# from .gds_renderer_ui import Ui_GDS_Renderer_Window
-from .gds_renderer_gui import GDSRendererWidget
-
+from .renderer_gds_gui import RendererGDSWidget
 from .elements_window import ElementsWindow
 from .main_window_base import QMainWindowBaseHandler, QMainWindowExtensionBase
 from .main_window_ui import Ui_MainWindow
@@ -99,13 +96,8 @@ class QMainWindowExtension(QMainWindowExtensionBase):
     
     def show_renderer_gds(self):
         """Handles click on GDS Renderer action"""
-        self.gds_gui = GDSRendererWidget(self.design)
+        self.gds_gui = RendererGDSWidget(self.design)
         self.gds_gui.show()
-        # self.renderer_window = QMainWindow()
-        # self.renderer_window = GDSWindowBase(self.design)
-        # self.renderer_ui = Ui_GDS_Renderer_Window()
-        # self.renderer_ui.setupUi(self.renderer_window)
-        # self.renderer_window.show()
 
     def delete_all_components(self):
         """Delete all components
