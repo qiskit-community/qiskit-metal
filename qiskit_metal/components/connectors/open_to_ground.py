@@ -41,6 +41,7 @@ class OpenToGround(QComponent):
     component_metadata = Dict(
         short_name='term'
         )
+    """Component metadata"""
 
     default_options = Dict(
         width='10um',

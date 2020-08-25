@@ -58,10 +58,12 @@ class BaseQubit(QComponent):
         connection_pads=Dict(),
         _default_connection_pads=Dict()
     )
+    """Default drawing options"""
+
     component_metadata = Dict(
         short_name='Q'
         )
-    """Default drawing options"""
+    """Component metadata"""
 
     def __init__(self, design, name=None, options=None, options_connection_pads=None,
                  make=True):

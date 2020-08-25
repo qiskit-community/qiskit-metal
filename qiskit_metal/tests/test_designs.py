@@ -13,6 +13,7 @@
 # that they have been altered from the originals.
 
 #pylint: disable-msg=unnecessary-pass
+#pylint: disable-msg=protected-access
 #pylint: disable-msg=pointless-statement
 #pylint: disable-msg=too-many-public-methods
 #pylint: disable-msg=broad-except
@@ -40,10 +41,10 @@ from qiskit_metal.designs.design_base import QDesign
 from qiskit_metal.designs.design_planar import DesignPlanar
 from qiskit_metal.designs.interface_components import Components
 from qiskit_metal.designs.net_info import QNet
-
 from qiskit_metal.components.base.base import QComponent
-
 from qiskit_metal.components.qubits.transmon_pocket import TransmonPocket
+
+#pylint: disable-msg=line-too-long
 from qiskit_metal.components.interconnects.resonator_rectangle_spiral import ResonatorRectangleSpiral
 
 class TestDesign(unittest.TestCase):
@@ -246,6 +247,35 @@ class TestDesign(unittest.TestCase):
         design = DesignPlanar(metadata={})
         self.assertEqual(design.get_units(), 'mm')
 
+    def test_design_get_new_qcomponent_name_id(self):
+        """
+        Test _get_new_qcomponent_name_id in design_base.py
+        """
+        design = DesignPlanar(metadata={})
+        QComponent(design, make=False)
+        QComponent(design, make=False)
+
+        self.assertEqual(design._get_new_qcomponent_name_id('QComponent'), 3)
+        self.assertEqual(design._get_new_qcomponent_name_id('Not-there'), 1)
+
+    def test_design_planar_get_x_y_for_chip(self):
+        """
+        Test get_x_y_for_chip in design_planar.py
+        """
+        design = DesignPlanar(metadata={})
+        QComponent(design, make=False)
+        QComponent(design, make=False)
+
+        expected = ((-4.5, -3.0, 4.5, 3.0), 0)
+        actual = design.get_x_y_for_chip('main')
+
+        self.assertEqual(len(expected), len(actual))
+        self.assertEqual(len(expected[0]), len(actual[0]))
+        for i in range(4):
+            self.assertEqual(expected[0][i], actual[0][i])
+
+        self.assertEqual(expected[1], actual[1])
+
     def test_design_interface_components_get_list_ints(self):
         """
         Test geting the list ints in interface_components.py
@@ -376,7 +406,6 @@ class TestDesign(unittest.TestCase):
         for i in [2, 3]:
             for j in ['net_id', 'component_id', 'pin_name']:
                 self.assertEqual(df_expected_2[j][i], df[j][i])
-
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
