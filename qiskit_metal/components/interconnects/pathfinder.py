@@ -13,133 +13,45 @@
 # that they have been altered from the originals.
 
 '''
-Main differences with pathfinder_tweaked:
-
-@date: 2020
+@date: Aug-2020
 @author: Dennis Wang, Marco Facchini
 '''
 
 import heapq
 import numpy as np
-from collections import OrderedDict
-from qiskit_metal import draw, Dict
+from qiskit_metal import Dict
 from qiskit_metal.components.base import QRoutePoint
-from .connect_the_dots import ConnectTheDots
+from .anchored_path import RouteAnchors
 
-# Main differences with pathfinder_tweaked:
-
-# 1. Contains anchors.
-# 2. Modified heap property - prioritizes paths with shortest length_travelled + Manhattan distance to destination.
-# 3. Checks if getpts_simple is valid each time we pop from the heap. If so, use it, otherwise proceed with A*.
-# 4. Tweaks getpts_simple to account for end anchor direction in determining which CPW (elbow or S-segment) to use.
-
-# TODO: Use minimum bounding boxes and alter bounding box method for CPWs.
 # TODO: Stopping condition for A* in case it doesn't converge (time limit or user-provided exploration area?)
 
-def intersecting(a: np.array, b: np.array, c: np.array, d: np.array) -> bool:
-    """Returns whether segment ab intersects or overlaps with segment cd, where a, b, c, and d are
-    all coordinates
 
-    Args:
-        a (np.array): coordinate
-        b (np.array): coordinate
-        c (np.array): coordinate
-        d (np.array): coordinate
-
-    Returns:
-        bool: True if intersecting, False otherwise
-    """
-
-    x0_start, y0_start = a
-    x0_end, y0_end = b
-    x1_start, y1_start = c
-    x1_end, y1_end = d
-    if (x0_start == x0_end) and (x1_start == x1_end):
-        # 2 vertical lines intersect only if they completely overlap at some point(s)
-        if x0_end == x1_start:
-            # Same x-intercept -> potential overlap, so check y coordinate
-            # Distinct, non-overlapping segments if and only if min y coord of one is above max y coord of the other
-            return not ((min(y0_start, y0_end) > max(y1_start, y1_end)) or (min(y1_start, y1_end) > max(y0_start, y0_end)))
-        return False # Parallel lines with different x-intercepts don't overlap
-    elif (x0_start == x0_end) or (x1_start == x1_end):
-        # One segment is vertical, the other is not
-        # Express non-vertical line in the form of y = mx + b and check y value
-        if x1_start == x1_end:
-            # Exchange names; the analysis below assumes that line 0 is the vertical one
-            x0_start, x0_end, x1_start, x1_end = x1_start, x1_end, x0_start, x0_end
-            y0_start, y0_end, y1_start, y1_end = y1_start, y1_end, y0_start, y0_end
-        m = (y1_end - y1_start) / (x1_end - x1_start)
-        b = (x1_end * y1_start - x1_start * y1_end) / (x1_end - x1_start)
-        if min(x1_start, x1_end) <= x0_start <= max(x1_start, x1_end):
-            if min(y0_start, y0_end) <= m * x0_start + b <= max(y0_start, y0_end):
-                return True
-        return False
-    else:
-        # Neither line is vertical; check slopes and y-intercepts
-        b0 = (y0_start * x0_end - y0_end * x0_start) / (x0_end - x0_start) # y-intercept of line 0
-        b1 = (y1_start * x1_end - y1_end * x1_start) / (x1_end - x1_start) # y-intercept of line 1
-        if (x1_end - x1_start) * (y0_end - y0_start) == (x0_end - x0_start) * (y1_end - y1_start):
-            # Lines have identical slopes
-            if b0 == b1:
-                # Same y-intercept -> potential overlap, so check x coordinate
-                # Distinct, non-overlapping segments if and only if min x coord of one exceeds max x coord of the other
-                return not ((min(x0_start, x0_end) > max(x1_start, x1_end)) or (min(x1_start, x1_end) > max(x0_start, x0_end)))
-            return False # Parallel lines with different y-intercepts don't overlap
-        else:
-            # Lines not parallel so must intersect somewhere -> examine slopes m0 and m1
-            m0 = (y0_end - y0_start) / (x0_end - x0_start) # slope of line 0
-            m1 = (y1_end - y1_start) / (x1_end - x1_start) # slope of line 1
-            x_intersect = (b1 - b0) / (m0 - m1) # x coordinate of intersection point
-            if min(x0_start, x0_end) <= x_intersect <= max(x0_start, x0_end):
-                if min(x1_start, x1_end) <= x_intersect <= max(x1_start, x1_end):
-                    return True
-            return False
-
-
-class HybridPathfinder(ConnectTheDots):
-
+class RoutePathfinder(RouteAnchors):
     """
     Non-meandered CPW class that combines A* pathfinding algorithm with
-    simple 1-, 2-, or S-shaped segment checks and user-specified anchor
-    points.
+    simple 1-, 2-, or S-shaped segment checks and user-specified anchor points.
+    1. A* heap modified to prioritize paths with shortest length_travelled + Manhattan distance to destination.
+    2. Checks if connect_simple is valid each time we pop from the heap. If so, use it, otherwise proceed with A*.
+    3. Tweaks connect_simple to account for end anchor direction in determining which CPW (elbow or S-segment) to use.
+
+    Options:
+        * step_size - length of the step for the A* pathfinding algorithm
+
+    Advanced Options:
+        * avoid_collision - true/false, defines if the route needs to avoid collisions (default: 'true')
+
     """
 
     default_options = Dict(
         step_size='0.25mm',
+        advanced=Dict(
+            avoid_collision='true')
     )
     """Default options"""
 
-    def no_obstacles(self, segment: list) -> bool:
-
+    def connect_astar_or_simple(self, start_pt: QRoutePoint, end_pt: QRoutePoint, step_size: float = 0.25) -> list:
         """
-        Check that no component's bounding box in self.design intersects or overlaps a given segment.
-        
-        Args:
-            segment (list): List comprised of vertex coordinates of the form [np.array([x0, y0]), np.array([x1, y1])]
-
-        Returns:
-            bool: True is no obstacles
-        """
-
-        # TODO: Non-rectangular bounding boxes?
-
-        for component in self.design.components:
-            xmin, ymin, xmax, ymax = self.design.components[component].qgeometry_bounds()
-            # p, q, r, s are corner coordinates of each bounding box
-            p, q, r, s = [np.array([xmin, ymin]), 
-                        np.array([xmin, ymax]), 
-                        np.array([xmax, ymin]), 
-                        np.array([xmax, ymax])]
-            if any(intersecting(segment[0], segment[1], k, l) for k, l in [(p, q), (p, r), (r, s), (q, s)]):
-                # At least 1 intersection present; do not proceed!
-                return False
-        # All clear, no intersections
-        return True
-    
-    def getpts_astar(self, start_pt: QRoutePoint, end_pt: QRoutePoint, step_size: float = 0.25) -> list:
-        
-        """
-        Connect start and end via A* algo if getpts_simple doesn't work
+        Connect start and end via A* algo if connect_simple doesn't work
         
         Args:
             start_direction (np.array): Vector indicating direction of starting point
@@ -184,8 +96,8 @@ class HybridPathfinder(ConnectTheDots):
             # The dot product between direction and the vector connecting the current
             # point and a potential neighbor must be non-negative to avoid retracing.
             
-            # Check if getpts_simple works at each iteration of A*
-            simple_path = self.getpts_simple(QRoutePoint(np.array([x, y]), direction), QRoutePoint(end, end_direction))
+            # Check if connect_simple works at each iteration of A*
+            simple_path = self.connect_simple(QRoutePoint(np.array([x, y]), direction), QRoutePoint(end, end_direction))
             if simple_path:
                 if len(current_path) > 1:
                     # Concatenate collinear line segments (joined at a point and have identical slopes)
@@ -205,7 +117,7 @@ class HybridPathfinder(ConnectTheDots):
                     # Ignore backward direction
                     curpt = current_path[-1]
                     nextpt = curpt + step_size * disp
-                    if self.no_obstacles([curpt, nextpt]):
+                    if self.unobstructed([curpt, nextpt]):
                         neighbors.append(nextpt)
             for neighbor in neighbors:
                 if tuple(neighbor) not in visited:
@@ -252,11 +164,11 @@ class HybridPathfinder(ConnectTheDots):
 
         for coord in list(anchors.values()):
             if not self.intermediate_pts:
-                self.intermediate_pts = self.getpts_astar(meander_start_point, QRoutePoint(coord), step_size)[1:]
+                self.intermediate_pts = self.connect_astar_or_simple(meander_start_point, QRoutePoint(coord), step_size)[1:]
             else:
-                self.intermediate_pts += self.getpts_astar(self.get_tip(), QRoutePoint(coord), step_size)[1:]
+                self.intermediate_pts += self.connect_astar_or_simple(self.get_tip(), QRoutePoint(coord), step_size)[1:]
 
-        last_pt = self.getpts_astar(self.get_tip(), meander_end_point, step_size)[1:]
+        last_pt = self.connect_astar_or_simple(self.get_tip(), meander_end_point, step_size)[1:]
         if self.intermediate_pts:
             self.intermediate_pts += last_pt
         else:
