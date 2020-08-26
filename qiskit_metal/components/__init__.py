@@ -35,6 +35,9 @@ Base Components
     BaseJunction
     BaseQubit
     ParsedDynamicAttributes_Component
+    QRoute
+    QRouteLead
+    QRoutePoint
 
 
 Basic
@@ -69,15 +72,12 @@ Interconnects
 .. autosummary::
     :toctree:
 
-    ConnectTheDots
-    CpwAutoStraightLine
     CpwStraightLine
+    CpwAutoStraightLine
     CpwMeanderSimple
-    FakeCPW
+    ConnectTheDots
     HybridPathfinder
-    QRoute
-    QRouteLead
-    QRoutePoint
+    FakeCPW
     ResonatorRectangleSpiral
 
 
@@ -131,8 +131,9 @@ Submodules
 
 from .. import is_component
 from .base import QComponent
-from .base.qubit import BaseQubit
-from .base.junction import BaseJunction
+from .base import QRoute
+from .base import BaseQubit
+from .base import BaseJunction
 
 from .. import config
 if config.is_building_docs():
@@ -147,11 +148,10 @@ if config.is_building_docs():
     from .connectors.cpw_hanger_t import CPWHangerT
     from .connectors.open_to_ground import OpenToGround
     from .connectors.short_to_ground import ShortToGround
-    from .interconnects.connectthedots import ConnectTheDots
+    from .interconnects.connect_the_dots import ConnectTheDots
     from .interconnects.cpw_autostraightline import CpwAutoStraightLine
     from .interconnects.cpw_basic_straight_line import CpwStraightLine
     from .interconnects.cpw_meander_simple import CpwMeanderSimple
-    from .interconnects.qroute_base import QRoute, QRouteLead, QRoutePoint
     from .interconnects.fake_cpw import FakeCPW
     from .interconnects.pathfinder import HybridPathfinder
     from .interconnects.resonator_rectangle_spiral import ResonatorRectangleSpiral
