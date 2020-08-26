@@ -95,9 +95,6 @@ class ParsedDynamicAttributes_Component():
         # For autocompletion
         return list(self.__getdict__().keys())
 
-    def __repr__(self):
-        return self.__getdict__().__repr__()
-
     # def _repr_html_(self):
     #    return self.__d__._repr_html_()
 
@@ -192,10 +189,13 @@ class ParsedDynamicAttributes_Component():
         #  f"I'm being unpickled with these values: {d}"
         self.__dict__ = d
 
+    # def __repr__(self):
+    #     return self.__getdict__().__repr__()
+
     def __repr__(self):
         """For viewing. Just return the whole parse dictionary
         """
-        b = '\033[94m\033[1m'
+        b = '\033[95m\033[1m'
         e = '\033[0m'
 
         c = self.__component__
