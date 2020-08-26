@@ -14,6 +14,7 @@
 
 '''
 @date: Aug-2020
+@author: Zlatko Minev, Dennis Wang, Marco Facchini
 '''
 
 from qiskit_metal import Dict
