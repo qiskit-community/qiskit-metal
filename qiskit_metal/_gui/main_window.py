@@ -550,9 +550,8 @@ class MetalGUI(QMainWindowBaseHandler):
         Args:
             components (List[str]): List of components to zoom to
         """
-        # TODO: support more than 1 on zo   om
-        assert len(components) == 1, "More than 1 is not yet supported "
-        self.canvas.zoom_on_component(components[0])
+        bounds = self.canvas.find_component_bounds(components)
+        self.canvas.zoom_to_rectangle(bounds)
 
     def new_qcomponent_file(self, new_path: str, class_name: str, name_instance: str):
         """Create a new qcomponent file based on template.

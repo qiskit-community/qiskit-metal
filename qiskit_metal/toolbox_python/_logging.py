@@ -24,6 +24,7 @@ import logging
 
 __all__ = ['setup_logger']
 
+
 def setup_logger(logger_name,
                  log_format,
                  log_datefmt,
@@ -32,7 +33,7 @@ def setup_logger(logger_name,
                  force_set=False,
                  capture_warnings=None,
                  propagate=False,
-                 create_stream = True
+                 create_stream=True
                  ) -> logging.Logger:
     '''
     Setup the logger to work with jupyter and command line.

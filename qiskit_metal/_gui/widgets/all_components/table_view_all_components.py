@@ -215,7 +215,7 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
 
         # name of component
         name = index.sibling(index.row(), 0).data()
-        self.gui.canvas.zoom_on_component(name)
+        self.gui.canvas.zoom_on_components([name])
         # self.logger.info(f'Double clicked component {name}')
 
     def rows_to_names(self, rows: List[int]) -> List[str]:
