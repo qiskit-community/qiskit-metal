@@ -22,15 +22,17 @@ from PyQt5.QtGui import QStandardItem, QStandardItemModel
 from PyQt5.QtWidgets import QMainWindow, QFileDialog, QListView
 from .renderer_gds_ui import Ui_MainWindow
 
+from .list_model_base import DynamicList
+
 class RendererGDSWidget(QMainWindow):
     """Contains methods associated with GDS Renderer button."""
 
-    def __init__(self, design):
+    def __init__(self, design: 'QDesign', parent: 'QMainWindow'):
         """
         Get access to design, which has the components.
         Then set up the model and view.
         """
-        super().__init__()
+        super().__init__(parent)
 
         # Access design:
         self._design = design
@@ -40,26 +42,28 @@ class RendererGDSWidget(QMainWindow):
         self.ui.setupUi(self)
 
         # Set up a simple model and list:
-        self.model = QStandardItemModel()
         self.listView = self.ui.listView
-
-        # Populate list:
-        self.populate_list()
+        self.model = DynamicList(self.design)
         self.listView.setModel(self.model)
 
+    def set_design(self, new_design):
+        """Swap out reference to design, which changes the reference to the dictionary."""
+        self._design = new_design
+        self.model.update_src(self.design)
+    
     @property
     def design(self):
         """Returns the design."""
         return self._design
     
-    def populate_list(self):
-        """Fills in list with design components."""
-        for component in self.design.components:
-            item = QStandardItem(component)
-            item.setCheckable(True)
-            # Export all components by default.
-            item.setCheckState(QtCore.Qt.Checked)
-            self.model.appendRow(item)
+    # def populate_list(self):
+    #     """Fills in list with design components."""
+    #     for component in self.design.components:
+    #         item = QStandardItem(component)
+    #         item.setCheckable(True)
+    #         # Export all components by default.
+    #         item.setCheckState(QtCore.Qt.Checked)
+    #         self.model.appendRow(item)
 
     def select_all(self):
         """Shortcut to mark all components for export."""

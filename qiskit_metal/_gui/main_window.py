@@ -65,6 +65,9 @@ class QMainWindowExtension(QMainWindowExtensionBase):
     Args:
         QMainWindow (QMainWindow): Main window
     """
+    def __init__(self):
+        super().__init__()
+        self.gds_gui = None # type: RendererGDSWidget
 
     @property
     def design(self) -> QDesign:
@@ -96,7 +99,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
     
     def show_renderer_gds(self):
         """Handles click on GDS Renderer action"""
-        self.gds_gui = RendererGDSWidget(self.design)
+        self.gds_gui = RendererGDSWidget(self.design, self)
         self.gds_gui.show()
 
     def delete_all_components(self):
@@ -293,6 +296,9 @@ class MetalGUI(QMainWindowBaseHandler):
 
         self.plot_win.set_design(design)
         self.elements_win.force_refresh()
+
+        if self.main_window.gds_gui:
+            self.main_window.gds_gui.set_design(design)
 
         self.variables_window.set_design(design)
 
