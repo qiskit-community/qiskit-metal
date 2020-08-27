@@ -211,7 +211,7 @@ class QTreeModel_Base(QAbstractItemModel):
 
     __refreshtime = 500  # 0.5 second refresh time
 
-    def __init__(self, data: dict, view: QTreeView):
+    def __init__(self, parent: 'ParentWidget', design: 'QDesign', view: QTreeView):
         """
         Editable table with expandable drop-down rows.
         Organized as a tree model where child nodes are more specific properties
@@ -219,10 +219,11 @@ class QTreeModel_Base(QAbstractItemModel):
 
         Args:
             parent (ParentWidget): Widget on which corresponding view will be displayed
+            design (QDesign): QDesign
             view (QTreeView): View corresponding to a tree structure
         """
-        super().__init__()
-        self._data = data
+        super().__init__(parent=parent)
+        self._design = design
         self._rowCount = -1
         self._view = view
 
@@ -233,6 +234,16 @@ class QTreeModel_Base(QAbstractItemModel):
         self._start_timer()
         self.load()
 
+    @property
+    def design(self) -> 'QDesign':
+        """Return the QDesign."""
+        return self._design
+
+    @property
+    def data_dict(self) -> dict:
+        """ Return a reference to the (nested) dictionary containing the data."""
+        return self.design.renderers.gds.options
+    
     def _start_timer(self):
         """
         Start and continuously refresh timer in background to keep
@@ -254,11 +265,6 @@ class QTreeModel_Base(QAbstractItemModel):
             if self._view:
                 self._view.autoresize_columns()
 
-    @property
-    def data_dict(self) -> dict:
-        """ Return a reference to the (nested) dictionary containing the data."""
-        return self._data
-
     def refresh(self):
         """Force refresh. Completely rebuild the model and tree."""
         self.load()  # rebuild the tree
@@ -274,8 +280,6 @@ class QTreeModel_Base(QAbstractItemModel):
 
     def load(self):
         """Builds a tree from a dictionary (self.data_dict)"""
-        if not self.component:
-            return
         self.beginResetModel()
 
         # Set the data dict reference of the root node. The root node doesn't have a name.
@@ -351,9 +355,6 @@ class QTreeModel_Base(QAbstractItemModel):
             object: fetched data
         """
         if not index.isValid():
-            return QVariant()
-
-        if self.component is None:
             return QVariant()
 
         # The data in a form suitable for editing in an editor. (QString)

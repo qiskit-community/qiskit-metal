@@ -19,10 +19,12 @@
 
 from PyQt5 import QtCore
 from PyQt5.QtGui import QStandardItem, QStandardItemModel
-from PyQt5.QtWidgets import QMainWindow, QFileDialog, QListView
+from PyQt5.QtWidgets import (QMainWindow, QFileDialog, QListView,
+                             QAbstractItemView)
 from .renderer_gds_ui import Ui_MainWindow
 
 from .list_model_base import DynamicList
+from .tree_model_base import QTreeModel_Base
 
 class RendererGDSWidget(QMainWindow):
     """Contains methods associated with GDS Renderer button."""
@@ -41,50 +43,42 @@ class RendererGDSWidget(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
-        # Set up a simple model and list:
+        # Set up a models for component list and options tree:
         self.listView = self.ui.listView
-        self.model = DynamicList(self.design)
-        self.listView.setModel(self.model)
+        self.list_model = DynamicList(self.design)
+        self.listView.setModel(self.list_model)
+        self.tree_model = QTreeModel_Base(self, design, self.ui.treeView)
+        self.ui.treeView.setModel(self.tree_model)
+        self.ui.treeView.setVerticalScrollMode(
+            QAbstractItemView.ScrollPerPixel)
+        self.ui.treeView.setHorizontalScrollMode(
+            QAbstractItemView.ScrollPerPixel)
 
     def set_design(self, new_design):
-        """Swap out reference to design, which changes the reference to the dictionary."""
+        """Swaps out reference to design, which changes the reference to the dictionary."""
         self._design = new_design
-        self.model.update_src(self.design)
+        self.list_model.update_src(self.design)
     
     @property
     def design(self):
         """Returns the design."""
         return self._design
     
-    # def populate_list(self):
-    #     """Fills in list with design components."""
-    #     for component in self.design.components:
-    #         item = QStandardItem(component)
-    #         item.setCheckable(True)
-    #         # Export all components by default.
-    #         item.setCheckState(QtCore.Qt.Checked)
-    #         self.model.appendRow(item)
+    def refresh(self):
+        """Refreshes list of components."""
+        self.list_model.populate_list()
 
     def select_all(self):
-        """Shortcut to mark all components for export."""
-        for i in range(self.model.rowCount()):
-            item = self.model.item(i)
-            item.setCheckState(QtCore.Qt.Checked)
+        """Marks all components for export."""
+        self.list_model.select_all()
     
     def deselect_all(self):
-        """Shortcut to empty list of components for export."""
-        for i in range(self.model.rowCount()):
-            item = self.model.item(i)
-            item.setCheckState(QtCore.Qt.Unchecked)
+        """Empties list of components to export."""
+        self.list_model.deselect_all()
 
-    def get_checked(self):
+    def get_checked(self) -> list:
         """Gets list of all selected components to export."""
-        components_to_export = []
-        for i in range(self.model.rowCount()):
-            component = self.model.item(i)
-            if component.checkState() == QtCore.Qt.Checked:
-                components_to_export.append(component.text())
-        return components_to_export
+        return self.list_model.get_checked()
     
     def browse_folders(self):
         """Browses available folders in system."""

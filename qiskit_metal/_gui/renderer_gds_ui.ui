@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>GDS Renderer</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QWidget" name="horizontalLayoutWidget">
@@ -20,7 +20,7 @@
       <x>10</x>
       <y>500</y>
       <width>631</width>
-      <height>31</height>
+      <height>38</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,0">
@@ -79,13 +79,20 @@
    <widget class="QWidget" name="horizontalLayoutWidget_2">
     <property name="geometry">
      <rect>
-      <x>160</x>
+      <x>10</x>
       <y>470</y>
-      <width>331</width>
+      <width>301</width>
       <height>32</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <item>
+      <widget class="QPushButton" name="refreshButton">
+       <property name="text">
+        <string>Refresh List</string>
+       </property>
+      </widget>
+     </item>
      <item>
       <widget class="QPushButton" name="selectAllButton">
        <property name="text">
@@ -107,9 +114,35 @@
      <rect>
       <x>10</x>
       <y>31</y>
-      <width>631</width>
+      <width>301</width>
       <height>431</height>
      </rect>
+    </property>
+   </widget>
+   <widget class="QTreeView_Base" name="treeView">
+    <property name="geometry">
+     <rect>
+      <x>325</x>
+      <y>30</y>
+      <width>311</width>
+      <height>461</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="instructionsLabel_2">
+    <property name="geometry">
+     <rect>
+      <x>380</x>
+      <y>10</y>
+      <width>201</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Renderer options</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
   </widget>
@@ -125,6 +158,13 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QTreeView_Base</class>
+   <extends>QTreeView</extends>
+   <header>.tree_view_base</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="main_window_rc.qrc"/>
  </resources>
@@ -193,11 +233,28 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>refreshButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>refresh()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>89</x>
+     <y>507</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>325</x>
+     <y>290</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>export_file()</slot>
   <slot>browse_folders()</slot>
   <slot>select_all()</slot>
   <slot>deselect_all()</slot>
+  <slot>refresh()</slot>
  </slots>
 </ui>

@@ -18,9 +18,8 @@
 '''
 
 from PyQt5 import Qt, QtCore, QtGui
-from PyQt5.QtWidgets import QMainWindow, QFileDialog, QListView
-from PyQt5.QtCore import QAbstractTableModel, QModelIndex, QTimer, Qt
-from PyQt5.QtGui import QStandardItem, QStandardItemModel, QFont
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QStandardItem, QStandardItemModel
 
 class DynamicList(QStandardItemModel):
 
@@ -30,7 +29,6 @@ class DynamicList(QStandardItemModel):
         super().__init__()
         self._design = orig_design
         self.populate_list()
-        self._start_timer()
 
     @property
     def datasrc(self):
@@ -47,21 +45,12 @@ class DynamicList(QStandardItemModel):
             new_list (list): The new data source
         """
         self._design = new_design
-    
-    def _start_timer(self):
-        """
-        Start and continuously refresh timer in the background to 
-        periodically and dynamically update elements in the model
-        to match those in orig_list.
-        """
-        self.timer = QTimer(self)
-        self.timer.start(self.__refreshTime)
-        self.timer.timeout.connect(self.populate_list)
-    
+
     def populate_list(self):
         """
         Clear model and (re)populate it with the latest elements.
         """
+        # TODO: Generalize this to beyond components.
         self.clear()
         for element in self.datasrc.components:
             item = QStandardItem(element)
@@ -69,3 +58,22 @@ class DynamicList(QStandardItemModel):
             item.setCheckState(QtCore.Qt.Checked)
             item.setFlags(Qt.ItemIsUserCheckable| Qt.ItemIsEnabled)
             self.appendRow(item)
+
+    def select_all(self):
+        """Select everything in the list."""
+        for i in range(self.rowCount()):
+            self.item(i).setCheckState(QtCore.Qt.Checked)
+
+    def deselect_all(self):
+        """Deselect everything in the list."""
+        for i in range(self.rowCount()):
+            self.item(i).setCheckState(QtCore.Qt.Unchecked)
+    
+    def get_checked(self):
+        """Get list of all selected items."""
+        selected_items = []
+        for i in range(self.rowCount()):
+            entry = self.item(i)
+            if entry.checkState() == QtCore.Qt.Checked:
+                selected_items.append(entry.text())
+        return selected_items
