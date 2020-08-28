@@ -72,12 +72,11 @@ Interconnects
 .. autosummary::
     :toctree:
 
-    CpwStraightLine
-    CpwAutoStraightLine
-    CpwMeanderSimple
-    ConnectTheDots
-    HybridPathfinder
-    FakeCPW
+    RouteStraight
+    RouteFramePath
+    RouteMeander
+    RouteAnchors
+    RoutePathfinder
     ResonatorRectangleSpiral
 
 
@@ -125,7 +124,7 @@ Submodules
 .. autosummary::
     :toctree:
 
-    pathfinder
+    anchored_path
 
 """
 
@@ -148,12 +147,11 @@ if config.is_building_docs():
     from .connectors.cpw_hanger_t import CPWHangerT
     from .connectors.open_to_ground import OpenToGround
     from .connectors.short_to_ground import ShortToGround
-    from .interconnects.connect_the_dots import ConnectTheDots
-    from .interconnects.cpw_autostraightline import CpwAutoStraightLine
-    from .interconnects.cpw_basic_straight_line import CpwStraightLine
-    from .interconnects.cpw_meander_simple import CpwMeanderSimple
-    from .interconnects.fake_cpw import FakeCPW
-    from .interconnects.pathfinder import HybridPathfinder
+    from .interconnects.straight_path import RouteStraight
+    from .interconnects.frame_path import RouteFramePath
+    from .interconnects.meandered import RouteMeander
+    from .interconnects.anchored_path import RouteAnchors
+    from .interconnects.pathfinder import RoutePathfinder
     from .interconnects.resonator_rectangle_spiral import ResonatorRectangleSpiral
     from .passives.capacitor_three_fingers import Capacitor3Fingers
     from .qubits.transmon_cross import TransmonCross
@@ -161,4 +159,4 @@ if config.is_building_docs():
     from .qubits.transmon_pocket_cl import TransmonPocketCL
     from .user_components.my_qcomponent import MyQComponent
 
-    from .interconnects import pathfinder
+    from .interconnects import anchored_path
