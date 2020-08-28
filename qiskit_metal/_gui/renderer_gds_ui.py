@@ -64,6 +64,7 @@ class Ui_MainWindow(object):
         self.listView.setObjectName("listView")
         self.treeView = QTreeView_Base(self.centralwidget)
         self.treeView.setGeometry(QtCore.QRect(325, 30, 311, 461))
+        self.treeView.setRootIsDecorated(False)
         self.treeView.setObjectName("treeView")
         self.instructionsLabel_2 = QtWidgets.QLabel(self.centralwidget)
         self.instructionsLabel_2.setGeometry(QtCore.QRect(380, 10, 201, 16))

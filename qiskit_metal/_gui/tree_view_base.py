@@ -38,15 +38,11 @@ class QTreeView_Base(QTreeView):
 
     def style_me(self):
         """Style this widget"""
-        # Also can do in the ui file, but doesn't always transalte for me for some reason
+        # Can also do in the ui file, but doesn't always translate for some reason
         self.header().show()
         self.setAutoScroll(False)
         self.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
         self.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
-
-        self.setStyleSheet("""
-QTreeView::branch {  border-image: url(none.png); }
-        """)
 
     def autoresize_columns(self, max_width: int = 200):
         """
