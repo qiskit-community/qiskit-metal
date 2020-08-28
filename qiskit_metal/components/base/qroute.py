@@ -91,8 +91,8 @@ class QRoute(QComponent):
         ),
         fillet='0',
         lead=Dict(
-            start_straight='0.1mm',
-            end_straight='0.1mm'
+            start_straight='0mm',
+            end_straight='0mm'
         ),
         total_length='7mm',
         chip='main',

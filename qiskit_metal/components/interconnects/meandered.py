@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2019.
+# (C) Copyright IBM 2020.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -12,23 +12,22 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-
-"""
-@date: 2020/07/25
+'''
+@date: Aug-2020
 @author: Marco Facchini, John Blair, Zlatko Minev
-"""
+'''
 
 from typing import List, Tuple, Union
 
 from numpy.linalg import norm
 
 import numpy as np
-from qiskit_metal import draw, Dict
+from qiskit_metal import Dict
 from qiskit_metal.toolbox_metal.parsing import is_true
 from qiskit_metal.components.base import QRoute, QRoutePoint
 
 
-class CpwMeanderSimple(QRoute):
+class RouteMeander(QRoute):
     """
     The base `CPW meandered` class
 
