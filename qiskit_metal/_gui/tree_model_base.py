@@ -413,8 +413,9 @@ class QTreeModel_Base(QAbstractItemModel):
                 node = self.nodeFromIndex(index)
 
                 if isinstance(node, LeafNode):
-                    value = str(value)  # new value
+                    # value = str(value)  # new value
                     old_value = node.value  # option value
+                    value = type(old_value)(value) # Set new value type to be old value type
 
                     if old_value == value:
                         return False
@@ -432,7 +433,7 @@ class QTreeModel_Base(QAbstractItemModel):
                             dic[lbl] = value
                         return True
         return False
-
+    
     def headerData(self, section: int, orientation: Qt.Orientation, role: Qt.ItemDataRole):
         """ Set the headers to be displayed.
 
