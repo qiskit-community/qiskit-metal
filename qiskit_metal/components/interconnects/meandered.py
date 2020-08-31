@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2019.
+# (C) Copyright IBM 2020.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -12,23 +12,22 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-
-"""
-@date: 2020/07/25
+'''
+@date: Aug-2020
 @author: Marco Facchini, John Blair, Zlatko Minev
-"""
+'''
 
 from typing import List, Tuple, Union
 
 from numpy.linalg import norm
 
 import numpy as np
-from qiskit_metal import draw, Dict
+from qiskit_metal import Dict
 from qiskit_metal.toolbox_metal.parsing import is_true
-from qiskit_metal.components.interconnects.qroute_base import QRoute, QRoutePoint
+from qiskit_metal.components.base import QRoute, QRoutePoint
 
 
-class CpwMeanderSimple(QRoute):
+class RouteMeander(QRoute):
     """
     The base `CPW meandered` class
 
@@ -49,17 +48,19 @@ class CpwMeanderSimple(QRoute):
         * start_jogged_extension   - (optional) lead-in, jogged extension of lead-in. Described as list of tuples
         * end_jogged_extension     - (optional) lead-in, jogged extension of lead-out. Described as list of tuples
 
-    Others:
-        * trace_gap       - defines the gap between the route wire and the plane (default: 'cpw_gap')
-
     """
 
+    component_metadata = Dict(
+        short_name='cpw'
+        )
+    """Component metadata"""
+
     default_options = Dict(
-        trace_gap='cpw_gap',
         meander=Dict(
             spacing='200um',
             asymmetry='0um'
         ),
+        snap='true',
         lead=Dict(
             start_straight='0.1mm',
             end_straight='0.1mm',
@@ -68,7 +69,7 @@ class CpwMeanderSimple(QRoute):
         ),
     )
     """Default options"""
-    
+
     def make(self):
         """
         The make function implements the logic that creates the geometry
@@ -88,11 +89,9 @@ class CpwMeanderSimple(QRoute):
         meander_start_point = self.set_lead("start")
         meander_end_point = self.set_lead("end")
         if self.p.lead.start_jogged_extension:
-            meander_start_point = self.set_lead_extension(
-                "start")  # consider merging with set_lead
+            meander_start_point = self.set_lead_extension("start")  # consider merging with set_lead
         if self.p.lead.end_jogged_extension:
-            meander_end_point = self.set_lead_extension(
-                "end")      # consider merging with set_lead
+            meander_end_point = self.set_lead_extension("end")      # consider merging with set_lead
 
         if snap:
             # TODO: adjust the terminations to be sure the meander connects well on both ends
@@ -158,7 +157,7 @@ class CpwMeanderSimple(QRoute):
         """
         Meanders using a fixed length and fixed spacing.
 
-        Arguments:
+        Args:
             start (QRoutePoint): QRoutePoint of the start
             end (QRoutePoint): QRoutePoint of the end
             length (str): Total length of the meander whole CPW segment (defined by user, after you subtract lead lengths
@@ -204,10 +203,8 @@ class CpwMeanderSimple(QRoute):
         # Calculate lengths and meander number
         dist = end.position - start.position
         if snap:
-            # in the vertical direction
-            length_direct = abs(norm(np.dot(dist, forward)))
-            # in the orthogonal direction
-            length_sideways = abs(norm(np.dot(dist, sideways)))
+            length_direct = abs(norm(np.dot(dist, forward)))  # in the vertical direction
+            length_sideways = abs(norm(np.dot(dist, sideways)))  # in the orthogonal direction
         else:
             length_direct = norm(dist)
             length_sideways = 0
@@ -281,8 +278,7 @@ class CpwMeanderSimple(QRoute):
         # root_pts = np.concatenate([middle_points,
         #                            end.position[None, :]],  # convert to row vectors
         #                           axis=0)
-        side_shift_vecs = np.array(
-            [sideways * length_perp] * len(middle_points))
+        side_shift_vecs = np.array([sideways * length_perp] * len(middle_points))
         asymmetry_vecs = np.array([sideways * asymmetry] * len(middle_points))
         root_pts = middle_points + asymmetry_vecs
         top_pts = root_pts + side_shift_vecs
@@ -301,8 +297,7 @@ class CpwMeanderSimple(QRoute):
         pts = np.zeros((len(top_pts) + len(bot_pts) + 1 - 2, 2))
         # need to add the last root_pts in, because there could be a left-over non-meandered segment
         pts[-1, :] = root_pts[-1, :]
-        idx_side1_meander, odd = self.get_index_for_side1_meander(
-            len(root_pts))
+        idx_side1_meander, odd = self.get_index_for_side1_meander(len(root_pts))
         idx_side2_meander = 2 + idx_side1_meander[:None if odd else -2]
         if first_meander_sideways:
             pts[idx_side1_meander, :] = top_pts[:-1 if odd else None]
@@ -334,13 +329,13 @@ class CpwMeanderSimple(QRoute):
     @staticmethod
     def get_index_for_side1_meander(num_root_pts: int):
         """
-        Get the indecies
+        Get the indices
 
         Args:
             root_pts (list): List of points
 
         Returns:
-            tuple: Tuple of indecies
+            tuple: Tuple of indices
         """
         num_2pts, odd = divmod(num_root_pts, 2)
 
@@ -349,30 +344,3 @@ class CpwMeanderSimple(QRoute):
         z[::2] = x
         z[1::2] = x + 1
         return z, odd
-
-    def make_elements(self, pts: np.ndarray):
-        """Turns the CPW points into design elements, and add them to the design object
-
-        Arguments:
-            pts (np.ndarray): Array of points
-        """
-        p = self.p
-        # prepare the routing track
-        line = draw.LineString(pts)
-        # TODO: show up the actual length, which is now different from the initial length
-        self.options._actual_length = str(
-            line.length) + ' ' + self.design.get_units()
-        # expand the routing track to form the substrate core of the cpw
-        self.add_qgeometry('path',
-                           {'trace': line},
-                           width=p.trace_width,
-                           fillet=p.fillet,
-                           layer=p.layer)
-        # expand the routing track to form the two gaps in the substrate
-        # final gap will be form by this minus the trace above
-        self.add_qgeometry('path',
-                           {'cut': line},
-                           width=p.trace_width + 2 * p.trace_gap,
-                           layer=p.layer,
-                           fillet=p.fillet,
-                           subtract=True)

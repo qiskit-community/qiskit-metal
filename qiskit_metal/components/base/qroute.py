@@ -14,14 +14,14 @@
 
 
 """
-@date: 2020/08/06
 @author: Marco Facchini
+@date: 2020/08/06
 """
 import numpy as np
 from qiskit_metal import draw, Dict
-from qiskit_metal.components import QComponent
+from .base import QComponent
 from numpy.linalg import norm
-from typing import List, Tuple, Union
+from typing import List, Tuple, Union, AnyStr
 
 
 class QRoutePoint:
@@ -30,14 +30,13 @@ class QRoutePoint:
     All values stored as np.ndarray of parsed floats.
     """
 
-    def __init__(self, position: np.array, direction: np.array):
+    def __init__(self, position: np.array, direction: np.array = None):
         """
         Arguments:
             position (np.ndarray of 2 points): Center point of the pin
-            direction (np.ndarray of 2 points): *Normal vector* of the connector,
-                defines which way it points outward.
+            direction (np.ndarray of 2 points): (default: None) *Normal vector*
                 This is the normal vector to the surface on which the pin mates.
-                Has unit norm.
+                Defines which way it points outward. Has unit norm.
         """
         self.position = position
         self.direction = direction
@@ -71,8 +70,15 @@ class QRoute(QComponent):
         * chip            - which chip is this component attached to (default: 'main')
         * layer           - which layer this component should be rendered on (default: '1')
         * trace_width     - defines the width of the line (default: 'cpw_width')
+        * trace_gap       - (only exists for type="CPW") defines the gap between the route wire
+                            and the ground plane (default: 'cpw_gap')
 
     """
+
+    component_metadata = Dict(
+        short_name='route'
+        )
+    """Component metadata"""
 
     default_options = Dict(
         pin_inputs=Dict(
@@ -83,58 +89,87 @@ class QRoute(QComponent):
                 component='',  # Name of component to end on, which has a pin
                 pin='')  # Name of pin used for pin_end
         ),
-        snap='true',
         fillet='0',
         lead=Dict(
-            start_straight='0.1mm',
-            end_straight='0.1mm'
+            start_straight='0mm',
+            end_straight='0mm'
         ),
         total_length='7mm',
         chip='main',
         layer='1',
         trace_width='cpw_width'
     )
-    """Default drawing options"""
+    """Default options"""
 
-    component_metadata = Dict(
-        short_name='cpw'
-        )
-    """Component metadata"""
+    def __init__(self, design, name=None, options=None, type: str = "CPW", **kwargs):
+        """Initializes all Routes
 
-    def __init__(self, *args, **kwargs):
-        """Calls the QComponent __init__() to create a new Metal component
+        Calls the QComponent __init__() to create a new Metal component
         Before that, it adds the variables that are needed to support routing
+
+        Arguments:
+            type (string): Supports Route (single layer trace) and CPW (adds the gap around it) (default: "CPW")
+
+        Attributes:
+            head (QRouteLead()): Stores sequential points to start the route
+            tail (QRouteLead()): (optional) Stores sequential points to terminate the route
+            intermediate_pts (numpy Nx2): Sequence of points between and other than head and tail (default:None)
+            start_pin_name (string): Head pin name (default: "start")
+            end_pin_name (string): Tail pin name (default: "end")
         """
         self.head = QRouteLead()
         self.tail = QRouteLead()
 
         # keep track of all points so far in the route from both ends
-        self.intermediate_pts = None  # will be numpy 2xN
+        self.intermediate_pts = None  # will be numpy Nx2
 
         # supported pin names (constants)
         self.start_pin_name = "start"
         self.end_pin_name = "end"
-        super().__init__(*args, **kwargs)
 
-    def make(self):
+        self.type = type.upper().strip()
+
+        # # add default_options that are QRoute type specific:
+        options = self._add_route_specific_options(options)
+
+        # regular QComponent boot, including the run of make()
+        super().__init__(design, name, options, **kwargs)
+
+    def _add_route_specific_options(self, options):
+        """Enriches the default_options to support different types of route styles
+
+        Args:
+            options (dict): User options that will override the defaults
+
+        Return:
+            a modified options dictionary
         """
-        Implements QComponent method.
+        if self.type == "ROUTE":
+            # all the defaults are fine as-is
+            None
+        elif self.type == "CPW":
+            # add the variable to define the space between the route and the ground plane
+            cpw_options = Dict(trace_gap='cpw_gap')
+            if options:
+                if "trace_gap" not in options:
+                    # user did not pass the trace_gap, so add it
+                    options.update(cpw_options)
+            else:
+                # user did not pass custom options, so create it to add trace_gap
+                options["options"] = cpw_options
+        else:
+            raise Exception("Unsupported Route type: " + self.type +
+                            " The only supported types are CPW and route")
 
-        **Note:**
-            * This method should be overwritten by the children make function.
+        return options
 
-        Raises:
-            NotImplementedError: Overwrite this function by subclassing.
-        """
-        raise NotImplementedError()
-
-    def get_pin(self, pin_data: Dict):
+    def _get_connected_pin(self, pin_data: Dict):
         """Recovers a pin from the dictionary
 
         Args:
             pin_data: dict {component: string, pin: string}
 
-        Returns:
+        Return:
             the actual pin object.
         """
         return self.design.components[pin_data.component].pins[pin_data.pin]
@@ -160,7 +195,7 @@ class QRoute(QComponent):
                             " The only supported pins are: start, end.")
 
         # grab the reference component pin
-        reference_pin = self.get_pin(options_pin)
+        reference_pin = self._get_connected_pin(options_pin)
 
         # create the cpw pin and document the connections to the reference_pin in the netlist
         self.add_pin(name, reference_pin.points[::-1], self.p.trace_width)
@@ -201,12 +236,28 @@ class QRoute(QComponent):
         # return the last QRoutePoint of the lead
         return lead.get_tip()
 
+    def get_tip(self) -> QRoutePoint:
+        """Access the last element in the QRouteLead
+
+        Return:
+            QRoutePoint: last point in the QRouteLead
+            The values are numpy arrays with two float points each.
+        """
+        if not self.intermediate_pts:
+            return self.head.get_tip()
+        elif len(self.intermediate_pts) == 1:
+            return QRoutePoint(self.intermediate_pts[-1],
+                               self.intermediate_pts[-1] - self.head.get_tip().position)
+        else:
+            return QRoutePoint(self.intermediate_pts[-1],
+                               self.intermediate_pts[-1] - self.intermediate_pts[-2])
+
     def get_points(self) -> np.ndarray:
         """Assembles the list of points for the route by concatenating:
         head_pts + intermediate_pts, tail_pts
 
         Returns:
-            np.ndarray: (2x(H+N+T)) all points (x,y) of the CPW
+            np.ndarray: ((H+N+T)x2) all points (x,y) of the CPW
         """
         # cover case where there is no intermediate points (straight connection between lead ends)
         if self.intermediate_pts is None:
@@ -230,7 +281,7 @@ class QRoute(QComponent):
         Arguments:
             start (QRoutePoint): [description]
             end (QRoutePoint): [description]
-            snap (bool): True to snap to grid (Default: False)
+            snap (bool): True to snap to grid (default: False)
 
         Returns:
             array: straight and 90 deg CCW rotated vecs 2D
@@ -253,6 +304,33 @@ class QRoute(QComponent):
         """
         points = self.get_points()
         return sum(norm(points[i + 1] - points[i]) for i in range(len(points) - 1))
+
+    def make_elements(self, pts: np.ndarray):
+        """Turns the CPW points into design elements, and add them to the design object
+
+        Arguments:
+            pts (np.ndarray): Array of points
+        """
+        p = self.p
+        # prepare the routing track
+        line = draw.LineString(pts)
+        # TODO: show up the actual length, which is now different from the initial length
+        self.options._actual_length = str(line.length) + ' ' + self.design.get_units()
+        # expand the routing track to form the substrate core of the cpw
+        self.add_qgeometry('path',
+                           {'trace': line},
+                           width=p.trace_width,
+                           fillet=p.fillet,
+                           layer=p.layer)
+        if self.type == "CPW":
+            # expand the routing track to form the two gaps in the substrate
+            # final gap will be form by this minus the trace above
+            self.add_qgeometry('path',
+                               {'cut': line},
+                               width=p.trace_width + 2 * p.trace_gap,
+                               fillet=p.fillet,
+                               layer=p.layer,
+                               subtract=True)
 
     # def route_to_align(self, concurrent_array):
     #     """
@@ -310,11 +388,18 @@ class QRouteLead:
     All values stored as np.ndarray of parsed floats.
     """
 
-    def __init__(self):
-        """QRouteLead basic content
+    def __init__(self, *args, **kwargs):
+        """QRouteLead is a simple sequence of points
+
+        Used to accurately control one of the QRoute termination points
+        Before that, it adds the variables that are needed to support routing
+
+        Attributes:
+            pts (numpy Nx2): Sequence of points (default: None)
+            direction (numpy 2x1): Normal from the last point of the array (default: None)
         """
         # keep track of all points so far in the route from both ends
-        self.pts = None  # will be numpy 2xN
+        self.pts = None  # will be numpy Nx2
         # keep track of the direction of the tip of the lead (last point)
         self.direction = None  # will be numpy 2x1
 

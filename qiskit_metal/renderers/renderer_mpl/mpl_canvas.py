@@ -376,9 +376,7 @@ class PlotCanvas(FigureCanvas):
                 ax.set_ylim([-0.5, 0.5])
 
     def setup_rendering(self):
-        """https://matplotlib.org/3.1.1/tutorials/introductory/usage.html
-
-        Line segment simplificatio:
+        """Line segment simplificatio:
         For plots that have line segments (e.g. typical line plots, outlines of
         polygons, etc.), rendering performance can be controlled by the path.simplify
         and path.simplify_threshold
@@ -401,6 +399,7 @@ class PlotCanvas(FigureCanvas):
                 A value of 20000 is probably a good
                 starting point.
 
+        https://matplotlib.org/3.1.1/tutorials/introductory/usage.html
         """
         plt.style.use('fast')
 
