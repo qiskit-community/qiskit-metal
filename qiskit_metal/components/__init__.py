@@ -72,11 +72,11 @@ Interconnects
 .. autosummary::
     :toctree:
 
-    RouteAnchors
+    RouteStraight
     RouteFramePath
     RouteMeander
+    RouteAnchors
     RoutePathfinder
-    RouteStraight
     ResonatorRectangleSpiral
 
 
@@ -136,8 +136,6 @@ from .base import BaseJunction
 
 from .. import config
 if config.is_building_docs():
-    from .base.qroute import QRouteLead
-    from .base.qroute import QRoutePoint
     from .base._parsed_dynamic_attrs import ParsedDynamicAttributes_Component
     from .basic.circle_caterpillar import CircleCaterpillar
     from .basic.circle_raster import CircleRaster

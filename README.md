@@ -18,13 +18,12 @@ Notes:
 
 * For your own sanity, it is recommended to read this document in its entirety before proceeding.
 * On Windows, the conda environment is strongly recommended because Shapely is difficult to install directly via pip.
+* It is recommended that you first install `Visual C++ 14.0`, it is required for a successful install of `gdspy`.  If you do not have `Visual C++ 14.0` installed you will be notified to install it when `gdspy` attempts to install.  You can do this by downloading and installing [C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/)
+
 
 ### Conda environment setup (preferred setup)
 
 To use a conda environment, assuming [you have conda installed](https://docs.conda.io/projects/conda/en/latest/user-guide/install/), we will install the qiskit_metal package locally. 
-
-**Do this first:** It is recommended that you first install `Visual C++ 14.0`, it is required for a successful install of `gdspy`.  If you do not have `Visual C++ 14.0` installed you will be notified to install it when `gdspy` attempts to install.  You can do this by downloading and installing [C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/)
-
 
 ##### Option 1: The simple way
 
