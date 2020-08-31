@@ -280,7 +280,7 @@ class QTreeModel_Options(QAbstractItemModel):
 
     @property
     def data_dict(self) -> dict:
-        """ Return a reference to the component options (nested) dictionary."""
+        """Return a reference to the component options (nested) dictionary."""
         return self.component.options
 
     def _start_timer(self):
@@ -391,7 +391,7 @@ class QTreeModel_Options(QAbstractItemModel):
                 return 0
             return len(node)
 
-    def columnCount(self, parent):
+    def columnCount(self, parent: QModelIndex):
         """Get the number of columns
 
         Args:
@@ -498,8 +498,9 @@ class QTreeModel_Options(QAbstractItemModel):
                         if not isinstance(old_value, str):
                             processed_value, used_ast = parse_param_from_str(
                                 value)
-                            self.logger.info(f'  Used paring:  Old value type={type(old_value)}; '
-                                             f'New value type={type(processed_value)};  New value={processed_value};'
+                            self.logger.info(f'  Used paring:  Old value type={type(old_value)}; '\
+                                             f'New value type={type(processed_value)};'\
+                                             f'  New value={processed_value};'\
                                              f'; Used ast={used_ast}')
                             value = processed_value
                         #################################################

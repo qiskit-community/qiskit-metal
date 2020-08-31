@@ -1,19 +1,20 @@
-import os
 import math
+import os
+from copy import deepcopy
 from operator import itemgetter
 from typing import TYPE_CHECKING
 from typing import Dict as Dict_
 from typing import List, Tuple, Union
-from copy import deepcopy
-import shapely
+
 import gdspy
 import geopandas
 import pandas as pd
+import shapely
 
 from qiskit_metal.renderers.renderer_base import QRenderer
+from qiskit_metal.toolbox_metal.parsing import is_true
 
 from ... import Dict
-
 
 if TYPE_CHECKING:
     # For linting typechecking, import modules that can't be loaded here under normal conditions.
@@ -27,8 +28,8 @@ class GDSRender(QRenderer):
     should be found within this class.
 
     All chips within design should be exported to one gds file. For the "subtraction box":
-    1. If user wants to export the entire design, AND if the base class of QDesign._chips[chip_name]['size'] 
-    has dict following below example: 
+    1. If user wants to export the entire design, AND if the base class of QDesign._chips[chip_name]['size']
+    has dict following below example:
     {'center_x': 0.0, 'center_y': 0.0, 'size_x': 9, 'size_y': 6}
     then this box will be used for every layer within a chip.
 
@@ -45,21 +46,25 @@ class GDSRender(QRenderer):
         * 11 Flexpath
     """
 
-    # These options can be over-written by passing dict to render_options.
+    #: Default options, over-written by passing ``options` dict to render_options.
+    #: Type: Dict[str, str]
     default_options = Dict(
+
+        # DO NOT MODIFY `gds_unit`. Gets overwritten by ``set_units``.
         # gdspy unit is 1 meter.  gds_units appear to ONLY be used during write_gds().
         # Note that gds_unit will be overwritten from the design units, during init().
         # WARNING: this cannot be changed. since it is only used during the init once.
-        gds_unit=1,  # 1m
+        # TODO: Maybe hide form user and document use of this function: what is the effect?
+        gds_unit='1',  # 1m
 
         # (float): Scale box of components to render. Should be greater than 1.0.
-        bounding_box_scale_x=1.2,
-        bounding_box_scale_y=1.2,
+        bounding_box_scale_x='1.2',
+        bounding_box_scale_y='1.2',
 
         # Implement creating a ground plane which is scaled from largest bounding box,
         # then QGeometry which is marked as subtract will be removed from ground_plane.
         # Then the balance of QGeometry will be placed placed in same layer as ground_plane.
-        ground_plane=True,
+        ground_plane='True',
 
         # corners ('natural', 'miter', 'bevel', 'round', 'smooth', 'circular bend', callable, list)
         # Type of joins. A callable must receive 6 arguments
@@ -75,14 +80,15 @@ class GDSRender(QRenderer):
         # but they are <<1nm, which isn't even picked up by any fab equipment (so can be ignored)
         # Numerical errors start to pop up if set precision too fine,
         # but 1nm seems to be the finest precision we use anyhow.
-        tolerance=0.00001,  # 10.0 um
+        # FOR NOW SPECIFY IN METERS. # TODO: Add parsing of actual units here
+        tolerance='0.00001',  # 10.0 um
 
         # With input from fab people, any of the weird artifacts (like unwanted gaps)
         # that are less than 1nm in size can be ignored.
         # They don't even show up in the fabricated masks.
         # So, the precision of e-9 (so 1 nm) should be good as a default.
-        # TODO: Is this in meters absolute or in design units?
-        precision=0.000000001   # 1.0 nm
+        # FOR NOW SPECIFY IN METERS. # TODO: Add parsing of actual units here
+        precision='0.000000001'   # 1.0 nm
     )
     """Default options"""
 
@@ -116,38 +122,41 @@ class GDSRender(QRenderer):
         # check the scale
         self.check_bounding_box_scale()
 
-    def check_bounding_box_scale(self):
-        """Some error checking for bounding_box_scale_x and bounding_box_scale_y numbers.
+    def parse_value(self, value: 'Anything') -> 'Anything':
+        """Same as design.parse_value. See design for help.
+
+        Returns:
+            Parsed value of input.
         """
+        return self.design.parse_value(value)
 
-        # Check x
-        if isinstance(self.options.bounding_box_scale_x, float) and self.options.bounding_box_scale_x >= 1.0:
-            pass  # All is good.
-        elif isinstance(self.options.bounding_box_scale_x, int) and self.options.bounding_box_scale_x >= 1:
-            self.options.bounding_box_scale_x = float(
-                self.options.bounding_box_scale_x)
-        else:
+    def check_bounding_box_scale(self):
+        """
+        Some error checking for bounding_box_scale_x and bounding_box_scale_y numbers.
+        """
+        p = self.options
+        bounding_box_scale_x = self.parse_value(p.bounding_box_scale_x)
+        bounding_box_scale_y = self.parse_value(p.bounding_box_scale_y)
+
+        if bounding_box_scale_x < 1:
             self.options['bounding_box_scale_x'] = GDSRender.default_options.bounding_box_scale_x
-            self.design.logger.warning(
-                f'Expected float and number greater than or equal to 1.0 for bounding_box_scale_x. \
-                    User provided bounding_box_scale_x = {self.options.bounding_box_scale_x}, using default_options.bounding_box_scale_x.')
+            self.logger.warning('Expected float and number greater than or equal to'
+                                ' 1.0 for bounding_box_scale_x. User'
+                                f'provided bounding_box_scale_x = {bounding_box_scale_x}'
+                                ', using default_options.bounding_box_scale_x.')
 
-        # Check y
-        if isinstance(self.options.bounding_box_scale_y, float) and self.options.bounding_box_scale_y >= 1.0:
-            pass  # All is good.
-        elif isinstance(self.options.bounding_box_scale_y, int) and self.options.bounding_box_scale_y >= 1:
-            self.options.bounding_box_scale_y = float(
-                self.options.bounding_box_scale_y)
-        else:
+        if bounding_box_scale_y < 1:
             self.options['bounding_box_scale_y'] = GDSRender.default_options.bounding_box_scale_y
-            self.design.logger.warning(
-                f'Expected float and number greater than or equal to 1.0 for bounding_box_scale_y. \
-                    User provided bounding_box_scale_y = {self.options.bounding_box_scale_y}, using default_options.bounding_box_scale_y.')
+            self.logger.warning(
+                f'Expected float and number greater than or equal to 1.0 for bounding_box_scale_y.'
+                'User provided bounding_box_scale_y = {bounding_box_scale_y}, '
+                'using default_options.bounding_box_scale_y.')
 
     def _clear_library(self):
         """Clear current library."""
         gdspy.current_library.cells.clear()
 
+    # TODO: Move to toolbox_python utility and call there
     def _can_write_to_path(self, file: str) -> int:
         """Check if can write file.
 
@@ -163,18 +172,22 @@ class GDSRender(QRenderer):
         if os.access(directory_name, os.W_OK):
             return 1
         else:
-            self.design.logger.warning(
-                f'Not able to write to directory. File:"{file}" not written. Checked directory:"{directory_name}".')
+            self.logger.warning(f'Not able to write to directory.'
+                                f'File:"{file}" not written.'
+                                f' Checked directory:"{directory_name}".')
             return 0
 
     def update_units(self):
-        """Update the options in the units. DOES NOT CHANGE THE CURRENT LIB"""
-        # Assume metal is using units smaller than 1 meter.
+        """Update the options in the units.
+        Warning: DOES NOT CHANGE THE CURRENT LIB
+        """
         self.options['gds_unit'] = 1.0 / self.design.parse_value('1 meter')
 
-    def seperate_subtract_shapes(self, chip_name: str, table_name: str, table: geopandas.GeoSeries) -> None:
+    def separate_subtract_shapes(self, chip_name: str, table_name: str,
+                                 table: geopandas.GeoSeries) -> None:
         """For each chip and table, separate them by subtract being either True or False.
            Names of chip and table should be same as the QGeometry tables.
+
         Args:
             chip_name (str): Name of "chip".  Example is "main".
             table_name (str): Name for "table".  Example is "poly", and "path".
@@ -190,7 +203,7 @@ class GDSRender(QRenderer):
         setattr(
             self, f'{chip_name}_{table_name}_subtract_false', subtract_false)
 
-    @ staticmethod
+    @staticmethod
     def get_bounds(gs_table: geopandas.GeoSeries) -> Tuple[float, float, float, float]:
         """Get the bounds for all of the elements in gs_table.
 
@@ -205,6 +218,7 @@ class GDSRender(QRenderer):
 
         return gs_table.total_bounds
 
+    # TODO: Make static or move to utils
     def inclusive_bound(self, all_bounds: list) -> tuple:
         """Given a list of tuples which describe corners of a box, i.e. (minx, miny, maxx, maxy).
         This method will find the box, which will include all boxes.  In another words, the smallest minx and miny;
@@ -229,7 +243,8 @@ class GDSRender(QRenderer):
 
     def scale_max_bounds(self, chip_name: str, all_bounds: list) -> Tuple[tuple, tuple]:
         """Given the list of tuples to represent all of the bounds for path, poly, etc.
-        This will return the scaled using self.bounding_box_scale_x and self.bounding_box_scale_y, and  the max bounds of the tuples provided.
+        This will return the scaled using self.bounding_box_scale_x and self.bounding_box_scale_y,
+        and the max bounds of the tuples provided.
 
         Args:
             chip_name (str): Name of chip.
@@ -251,8 +266,10 @@ class GDSRender(QRenderer):
         center_x = (minx + maxx) / 2
         center_y = (miny + maxy) / 2
 
-        scaled_width = (maxx - minx) * self.options.bounding_box_scale_x
-        scaled_height = (maxy - miny) * self.options.bounding_box_scale_y
+        scaled_width = (maxx - minx) * \
+            self.parse_value(self.options.bounding_box_scale_x)
+        scaled_height = (maxy - miny) * \
+            self.parse_value(self.options.bounding_box_scale_y)
 
         # Scaled inclusive bounding box by self.options.bounding_box_scale_x and self.options.bounding_box_scale_y.
         scaled_box = (center_x - (.5 * scaled_width),
@@ -284,8 +301,8 @@ class GDSRender(QRenderer):
         # Confirm all QComponent are in design.
         for qcomp in unique_qcomponents:
             if qcomp not in self.design.name_to_id:
-                self.design.logger.warning(
-                    f'The component={qcomp} in highlight_qcomponents not in QDesign. The GDS data not generated.')
+                self.logger.warning(f'The component={qcomp} in highlight_qcomponents not'
+                                    ' in QDesign. The GDS data not generated.')
                 return unique_qcomponents, 1
 
         return unique_qcomponents, 0
@@ -356,7 +373,7 @@ class GDSRender(QRenderer):
                     self.logger.warning(
                         f'design.get_x_y_for_chip() did NOT return a good code for chip={chip_name},'
                         f'for ground subtraction-box using the size calculated from QGeometry, ({max_bound}) will be used. ')
-            if self.options.ground_plane:
+            if is_true(self.options.ground_plane):
                 self.handle_ground_plane(chip_name,
                                          all_table_subtracts, all_table_no_subtracts)
 
@@ -369,7 +386,7 @@ class GDSRender(QRenderer):
 
         Args:
             chip_name (str): Chip_name that is being processed.
-            all_table_subtracts (list): 
+            all_table_subtracts (list):
             all_table_no_subtracts (list): [description]
         """
 
@@ -403,7 +420,7 @@ class GDSRender(QRenderer):
 
     def gather_subtract_elements_and_bounds(self, chip_name: str, table_name: str, table: geopandas.GeoDataFrame,
                                             all_subtracts: list, all_no_subtracts: list):
-        """For every chip, and layer, separate the "subtract" and "no_subtract" elements 
+        """For every chip, and layer, separate the "subtract" and "no_subtract" elements
         and gather bounds for all the elements in qgeometries..
         Use format: f'{chip_name}_{table_name}s'
 
@@ -422,8 +439,8 @@ class GDSRender(QRenderer):
         # Add the bounds of each table to list.
         self.dict_bounds[chip_name]['gather'].append(bounds)
 
-        if self.options.ground_plane:
-            self.seperate_subtract_shapes(chip_name, table_name, table)
+        if is_true(self.options.ground_plane):
+            self.separate_subtract_shapes(chip_name, table_name, table)
 
             all_subtracts.append(
                 getattr(self, f'{chip_name}_{table_name}_subtract_true'))
@@ -477,14 +494,15 @@ class GDSRender(QRenderer):
             self._clear_library()
 
         # Create a new GDS library file. It can contains multiple cells.
-        self.lib = gdspy.GdsLibrary(unit=self.options.gds_unit)
+        self.lib = gdspy.GdsLibrary(unit=float(
+            self.parse_value(self.options.gds_unit)))
 
         return self.lib
 
     def write_poly_path_to_file(self, file_name: str) -> None:
         """Using the geometries for each table name in QGeometry, write to a GDS file.
 
-        For every layer within a chip, use the same "subtraction box" for the elements that 
+        For every layer within a chip, use the same "subtraction box" for the elements that
         have subtract as true.  Every layer within a chip will have cell named:
         f'TOP_{chip_name}_{chip_layer}'.
 
@@ -492,6 +510,8 @@ class GDSRender(QRenderer):
             file_name (str): The path and file name to write the gds file.
                              Name needs to include desired extention, i.e. "a_path_and_name.gds".
         """
+
+        precision = float(self.parse_value(self.options.precision))
 
         lib = self.new_gds_library()
 
@@ -502,18 +522,18 @@ class GDSRender(QRenderer):
         # for table_name in self.design.qgeometry.get_element_types():
         #     q_geometries = getattr(self, f'{table_name}s')
         #     if q_geometries is None:
-        #         self.design.logger.warning(
+        #         self.logger.warning(
         #             f'There are no {table_name}s to write.')
         #     else:
         #         cell.add(q_geometries)
 
         #     if q_geometries is None:
-        #         self.design.logger.warning(
+        #         self.logger.warning(
         #             f'There is no table named "{table_name}s" to write.')
         #     else:
         #        cell.add(q_geometries)
 
-        if self.options.ground_plane:
+        if is_true(self.options.ground_plane):
             all_chips_top_name = 'TOP'
             all_chips_top = lib.new_cell(
                 all_chips_top_name, overwrite_duplicate=True)
@@ -558,19 +578,19 @@ class GDSRender(QRenderer):
                         self.chip_info[chip_name]['subtract_poly'],
                         subtract_cell.get_polygons(),
                         'not',
-                        precision=self.options.precision,
+                        precision=precision,
                         layer=chip_layer)
 
                     lib.remove(subtract_cell)
 
                     if diff_geometry is None:
-                        self.design.logger.warning(
+                        self.logger.warning(
                             f'There is no table named diff_geometry to write.')
                     else:
                         ground_cell.add(diff_geometry)
 
                     if self.chip_info[chip_name][chip_layer]['q_subtract_false'] is None:
-                        self.design.logger.warning(
+                        self.logger.warning(
                             f'There is no table named self.chip_info[{chip_name}][q_subtract_false] to write.')
                     else:
                         ground_cell.add(
@@ -640,6 +660,12 @@ class GDSRender(QRenderer):
             https://gdspy.readthedocs.io/en/stable/reference.html#polygon
         """
 
+        corners = self.options.corners
+        # TODO: change to actual parsing and unit conversion
+        tolerance = float(self.options.tolerance)
+        # TODO: Check it works as desired
+        precision = float(self.options.precision)
+
         geom = element.geometry  # type: shapely.geometry.base.BaseGeometry
 
         if isinstance(geom, shapely.geometry.Polygon):
@@ -670,24 +696,24 @@ class GDSRender(QRenderer):
                                            # layer=element.layer if not element['subtract'] else 0,
                                            layer=element.layer,
                                            datatype=11,
-                                           corners=self.options.corners,
+                                           corners=corners,
                                            bend_radius=element.fillet,
-                                           tolerance=self.options.tolerance,
-                                           precision=self.options.precision
+                                           tolerance=tolerance,
+                                           precision=precision
                                            )
             return to_return
         else:
             # TODO: Handle
-            self.design.logger.warning(
+            self.logger.warning(
                 f'Unexpected shapely object geometry.'
                 f'The variable element is {type(geom)}, method can currently handle Polygon and FlexPath.')
             # print(geom)
             return None
 
     def get_chip_names(self) -> Dict:
-        """Return a dict of unique chip names for ALL tables within QGeometry.  
-        In another words, for every "path" table, "poly" table ... etc, this method will search for unique 
-        chip names and return a dict of unique chip names from QGeometry table.  
+        """Return a dict of unique chip names for ALL tables within QGeometry.
+        In another words, for every "path" table, "poly" table ... etc, this method will search for unique
+        chip names and return a dict of unique chip names from QGeometry table.
 
         Returns:
             Dict: dict with key of chip names and value of empty dict to hold things for renderers.
