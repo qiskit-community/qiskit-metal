@@ -175,7 +175,7 @@ import numpy as np
 from collections.abc import Iterable
 from collections.abc import Mapping
 from numbers import Number
-
+from typing import Union
 import pint
 
 from .. import Dict, config, logger
@@ -188,11 +188,11 @@ __all__ = ['parse_value',  # Main function
 # Constants
 
 # Values that can represent True bool
-TRUE_STR = ['true', 'True', 'TRUE', '1', 't', 'y', 'Y', 'YES',
-            'yes', 'yeah', True, 1, 1.0]
+TRUE_STR = ['true', 'True', 'TRUE', True, '1', 't', 'y', 'Y', 'YES',
+            'yes', 'yeah', 1, 1.0]
 
 
-def is_true(value: str) -> bool:
+def is_true(value: Union[str, int, bool, float]) -> bool:
     """Check if a value is true or not
 
     Arguments:
@@ -201,7 +201,7 @@ def is_true(value: str) -> bool:
     Returns:
        bool: Is the string a true
     """
-    return value in TRUE_STR
+    return value in TRUE_STR # membership test operator
 
 
 # The unit registry stores the definitions and relationships between units.
