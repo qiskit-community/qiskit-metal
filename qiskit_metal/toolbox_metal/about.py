@@ -35,7 +35,7 @@ from qiskit_metal.toolbox_python.display import Color, style_colon_list
 from typing import Union
 
 
-__all__ = ['about', 'open_docs', 'orient_me']
+__all__ = ['about', 'open_docs', 'orient_me', 'get_platform_info', 'get_module_doc_page']
 
 
 def about():

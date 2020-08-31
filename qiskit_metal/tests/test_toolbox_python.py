@@ -24,11 +24,14 @@ Created on Wed Apr 22 10:00:29 2020
 """
 
 # Note - Tests not written for these functions:
-# display/test_display_format_dict_ala_z
-# utility_functions/copy_update
+# display.py - format_dict_ala_z
+# utility_functions.py - copy_update
 
 import unittest
 from qiskit_metal.toolbox_python.display import Headings
+from qiskit_metal.toolbox_python.display import Color
+from qiskit_metal.toolbox_python.display import MetalTutorialMagics
+from qiskit_metal.toolbox_python import display
 from qiskit_metal.toolbox_python import utility_functions
 
 class TestToolboxPython(unittest.TestCase):
@@ -56,6 +59,33 @@ class TestToolboxPython(unittest.TestCase):
             Headings
         except Exception:
             self.fail("Headings failed")
+
+    def test_instantiate_metal_tutorial_magics(self):
+        """
+        Test instantiation of MetalTutorialMagics class
+        """
+        try:
+            MetalTutorialMagics
+        except Exception:
+            self.fail("MetalTutorialMagics failed")
+
+    def test_instantiate_color(self):
+        """
+        Test instantiation of Color class
+        """
+        try:
+            Color
+        except Exception:
+            self.fail("Color failed")
+
+    def test_display_style_colon_list(self):
+        """
+        Test style_colon_list in display.py
+        """
+        actual = display.style_colon_list("text:more:still")
+        expected = "text:\033[94mmore:still\033[0m"
+
+        self.assertEqual(actual, expected)
 
     def test_utility_defaults(self):
         """
