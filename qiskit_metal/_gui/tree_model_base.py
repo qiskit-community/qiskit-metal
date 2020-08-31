@@ -413,9 +413,7 @@ class QTreeModel_Base(QAbstractItemModel):
                 node = self.nodeFromIndex(index)
 
                 if isinstance(node, LeafNode):
-                    # value = str(value)  # new value
                     old_value = node.value  # option value
-                    value = type(old_value)(value) # Set new value type to be old value type
 
                     if old_value == value:
                         return False
