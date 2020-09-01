@@ -613,8 +613,7 @@ class QComponent():
 ####################################################################################
 # Functions for handling of pins
 #
-# TODO: Combine the two pin generation functions into one.
-#   Simplify the data types
+# TODO: Simplify the data types
 #   Stress test the results
 #   Component name vs. id issues?
 #
@@ -622,13 +621,41 @@ class QComponent():
 #   Will they operate properly with non-planar designs?
 
     def add_pin(self,
-                name: str,  # this should be static based on component designer's code
+                name: str,  #Should be static based on component designer's choice
                 points: np.ndarray,
                 width: float,
                 input_as_norm: bool = False,
-                chip: str = 'main'):
-        """Add the named pin to the respective component's pins subdictionary
+                chip: str = 'main',
+                gap: float = None): #gap defaults to 0.6 * width
+        """
+        Adds a pin from two points which are normal/tangent to the intended plane of the pin.
+        The normal should 'point' in the direction of intended connection. Adds the 
+        new pin as a subdictionary to parent component's pins dictionary.
 
+        Arguments:
+            * name (str): name of the pin 
+            * points (numpy.ndarray): [[x1,y1],[x2,y2]] for the normal/tangent line
+            * width (float): the width of the intended connection (eg. qubit bus pad arm)
+            * input_as_norm (bool): Indicates if the points are tangent or normal to the pin plane.
+                Default = False. Make True for normal.
+            * parent (Union[int,]): The id of the parent component
+            * chip (str): the name of the chip the pin is located on, default 'main'
+            * gap (float): the dielectric gap of the pin for the purpose of representing as a port
+                for simulations. Default = None which is converted to 0.6 * width.
+
+        A dictionary containing a collection of information about the pin, necessary for use in Metal:
+            * points (numpy.ndarray) - two (x,y) points which represent the edge of the pin for
+              another component to attach to (eg. the edge of a CPW TL)
+            * middle (numpy.ndarray) - an (x,y) which represents the middle of the points above,
+              where the pin is represented.
+            * normal (numpy.ndarray) - the normal vector of the pin, pointing in direction of
+              intended connection
+            * tangent (numpy.ndarray) - 90 degree rotation of normal vector
+            * width (float) - the width of the pin
+            * chip (str) - the chip the pin is on
+            * parent_name - the id of the parent component
+            * net_id - net_id of the pin if connected to another pin (default 0, indicates
+              not connected))
         ::
 
             * = pin
@@ -652,130 +679,55 @@ class QComponent():
         ::
 
             ..........^
+                     .|
                      .*
                      .|
             ..........|
-
-            chip (str): Optionally add options (default: {'main'})
-        """
-        if input_as_norm:
-            self.pins[name] = self.make_pin_as_normal(
-                points, width, chip)
-        else:
-            self.pins[name] = self.make_pin(
-                points, chip=chip)
-
-    def make_pin_as_normal(self,
-                           points: np.ndarray,
-                           width: float,
-                           chip: str = 'main'):
-        """
-        Generates a pin from two points which are normal to the intended plane of the pin.
-        The normal should 'point' in the direction of intended connection. Adds dictionary to
-        parent component.
-
-        Arguments:
-            points (numpy.ndarray): [[x1,y1],[x2,y2]] for the normal line
-            width (float): the width of the intended connection (eg. qubit bus pad arm)
-            parent (Union[int,]): The id of the parent component
-            chip (str): the name of the chip the pin is located on, default 'main'
-
-        Returns:
-            Dict: A dictionary containing a collection of information about the pin
-
-        A dictionary containing a collection of information about the pin, necessary for use in Metal:
-            * points (numpy.ndarray) - two (x,y) points which represent the edge of the pin for
-              another component to attach to (eg. the edge of a CPW TL)
-            * middle (numpy.ndarray) - an (x,y) which represents the middle of the points above,
-              where the pin is represented.
-            * normal (numpy.ndarray) - the normal vector of the pin, pointing in direction of
-              intended connection
-            * tangent (numpy.ndarray) - 90 degree rotation of normal vector
-            * width (float) - the width of the pin
-            * chip (str) - the chip the pin is on
-            * parent_name - the id of the parent component
-            * net_id - net_id of the pin if connected to another pin (default 0, indicates
-              not connected))
-        """
-
-        vec_normal = points[1]-points[0]
-        vec_normal /= np.linalg.norm(vec_normal)
-
-        s_point = np.round(Vector.rotate(
-            vec_normal, (np.pi/2))) * width/2 + points[1]
-        e_point = np.round(Vector.rotate(
-            vec_normal, -(np.pi/2))) * width/2 + points[1]
-
-        return Dict(
-            points=[s_point, e_point],  # TODO
-            middle=points[1],
-            normal=vec_normal,
-            # TODO: rotate other way sometimes?
-            tangent=Vector.rotate(vec_normal, np.pi/2),
-            width=width,
-            chip=chip,
-            parent_name=self.id,
-            net_id=0,
-            # Place holder value for potential future property (auto-routing cpw with
-            length=0
-            # length limit)
-        )
-
-    def make_pin(self,
-                 points: np.ndarray,
-                 chip='main'):
-        """Called by add_pin, does the math for the pin generation.
-        Generates a pin from two points which are tangent to the intended plane of the pin.
-        The tangent should 'point' in the direction such that 'two_points_described'
-        returns a normal vector pointing in the intended direction of connection.
-        Adds dictionary to parent component.
-
-        Args:
-            points (numpy.ndarray): list of two (x,y) points which represent the edge of the pin for
-                    another component to attach to (eg. the edge of a CPW TL)
-            parent_name (str): name of the parent
-            chip (str): the chip the pin is on (Default: 'main')
-
-        Returns:
-            Dict: A dictionary containing a collection of information about the pin, necessary
-            for use in Metal.
-
-        Dictionary Contents:
-            * points (numpy.ndarray) - two (x,y) points which represent the edge of the pin for another
-              component to attach to (eg. the edge of a CPW TL)
-            * middle (numpy.ndarray) - an (x,y) which represents the middle of the points above,
-              where the pin is represented.
-            * normal (numpy.ndarray) - the normal vector of the pin, pointing in direction of
-              intended connection
-            * tangent (numpy.ndarray) - 90 degree rotation of normal vector
-            * width (float) - the width of the pin
-            * chip (str) - the chip the pin is on
-            * parent_name - the id of the parent component
-            * net_id - net_id of the pin if connected to another pin (default 0, indicates not
-              connected)
-            * length - Place holder value for potential future property (auto-routing cpw with
-              length limit
-
         """
         assert len(points) == 2
+        
+        if gap is None:
+            gap = width * 0.6
 
-        # Get the direction vector, the unit direction vec, and the normal vector
-        vec_dist, vec_dist_unit, vec_normal = draw.Vector.two_points_described(
+        if input_as_norm:
+            middle_point = points[1]
+            vec_normal = points[1]-points[0]
+            vec_normal /= np.linalg.norm(vec_normal)
+
+            s_point = np.round(Vector.rotate(
+                vec_normal, (np.pi/2))) * width/2 + points[1]
+            e_point = np.round(Vector.rotate(
+                vec_normal, -(np.pi/2))) * width/2 + points[1]
+            points = [s_point, e_point]
+            tangent_vector = Vector.rotate(vec_normal, np.pi/2)
+            
+            
+           # self.pins[name] = self.make_pin_as_normal(
+              #  points, width, chip)
+        else:
+            vec_dist, tangent_vector, vec_normal = draw.Vector.two_points_described(
             points)
+            middle_point = np.sum(points, axis=0)/2.
+            width = np.linalg.norm(vec_dist)
 
-        return Dict(
+
+        pin_dict = Dict(
             points=points,
-            middle=np.sum(points, axis=0)/2.,
+            middle=middle_point,
             normal=vec_normal,
-            tangent=vec_dist_unit,
-            width=np.linalg.norm(vec_dist),
+            tangent=tangent_vector,
+            width=width,
+            gap=gap,
             chip=chip,
             parent_name=self.id,
             net_id=0,
             # Place holder value for potential future property (auto-routing cpw with
+            #length limit)
             length=0
-            # length limit)
         )
+
+        self.pins[name] = pin_dict
+
 
     def get_pin(self, name: str):
         """Interface for components to get pin data
@@ -823,7 +775,7 @@ class QComponent():
                     false_pin = True
                 elif self.design._components[component].pins[pin].net_id:
                     pin_in_use = True
-
+            #Should modify to allow for multiple error messages to be returned.
             if false_component:
                 self._error_message = f'Component {component} does not exist. {self.name} has not been built. Please check your pin_input values.'
                 return 'Component Does Not Exist'
@@ -835,6 +787,7 @@ class QComponent():
                 return 'Pin In Use'
         return None
 
+    #This method does not appear to be being used anywhere. 
     def connect_components_already_in_design(self, pin_name_self: str, comp2_id: int, pin2_name: str) -> int:
         """WARNING: Do NOT use this method during generation of component instance.
             This method is expecting self to be added to design._components dict.  More importantly,
