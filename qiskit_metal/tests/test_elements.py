@@ -83,7 +83,7 @@ class TestElements(unittest.TestCase):
         """
         e_c = elements_handler.ELEMENT_COLUMNS
 
-        self.assertEqual(len(e_c), 3)
+        self.assertEqual(len(e_c), 4)
 
         self.assertEqual(len(e_c['base']), 8)
         self.assertEqual(e_c['base']['component'], str)
@@ -106,6 +106,10 @@ class TestElements(unittest.TestCase):
         self.assertEqual(e_c['poly']['fillet'], object)
         self.assertEqual(e_c['poly']['__renderers__'], dict())
         self.assertEqual(len(e_c['poly']['__renderers__']), 0)
+
+        self.assertEqual(len(e_c['junction']), 2)
+        self.assertEqual(e_c['junction']['width'], float)
+        self.assertEqual(e_c['junction']['__renderers__'], dict())
 
     def test_element_true_bools(self):
         """
@@ -158,11 +162,11 @@ class TestElements(unittest.TestCase):
         design = designs.DesignPlanar()
         qgt = QGeometryTables(design)
 
-        expected = ['path', 'poly']
+        expected = ['path', 'poly', 'junction']
         actual = qgt.get_element_types()
 
         self.assertEqual(len(expected), len(actual))
-        for i in range(2):
+        for i in range(3):
             self.assertEqual(expected[i], actual[i])
 
     def test_element_q_element_create_tables(self):
@@ -175,9 +179,10 @@ class TestElements(unittest.TestCase):
 
         actual = qgt.tables
 
-        self.assertEqual(len(actual), 2)
+        self.assertEqual(len(actual), 3)
         self.assertTrue('path' in actual)
         self.assertTrue('poly' in actual)
+        self.assertTrue('junction' in actual)
 
         self.assertEqual(actual['path'].dtypes['component'], object)
         self.assertEqual(actual['path'].dtypes['name'], object)
@@ -192,6 +197,13 @@ class TestElements(unittest.TestCase):
         self.assertEqual(actual['poly'].dtypes['helper'], bool)
         self.assertEqual(actual['poly'].dtypes['chip'], object)
         self.assertEqual(actual['poly'].dtypes['fillet'], object)
+
+        self.assertEqual(actual['junction'].dtypes['component'], object)
+        self.assertEqual(actual['junction'].dtypes['name'], object)
+        self.assertEqual(actual['junction'].dtypes['subtract'], bool)
+        self.assertEqual(actual['junction'].dtypes['helper'], bool)
+        self.assertEqual(actual['junction'].dtypes['chip'], object)
+        self.assertEqual(actual['junction'].dtypes['width'], float)
 
     def test_element_q_element_get_rname(self):
         """
@@ -296,15 +308,17 @@ class TestElements(unittest.TestCase):
 
         # sucess results
         actual = qgt.get_component('Q1')
-        self.assertEqual(len(actual), 2)
+        self.assertEqual(len(actual), 3)
         self.assertTrue(isinstance(actual['path'], GeoDataFrame))
         self.assertTrue(isinstance(actual['poly'], GeoDataFrame))
+        self.assertTrue(isinstance(actual['junction'], GeoDataFrame))
 
         # failure results
         actual = qgt.get_component('not-real')
-        self.assertEqual(len(actual), 2)
+        self.assertEqual(len(actual), 3)
         self.assertEqual(actual['path'], None)
         self.assertEqual(actual['poly'], None)
+        self.assertEqual(actual['junction'], None)
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
