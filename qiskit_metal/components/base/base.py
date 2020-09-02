@@ -117,6 +117,12 @@ class QComponent():
     component_metadata = Dict()
     """Component metadata"""
 
+    options = {}
+    """A dictionary of the component-desinger-defined options.
+    These options are used in the make function to create the QGeometry and QPins.
+    All options should have string keys and preferrable string values.
+    """
+
     # Dummy private attribute used to check if an instanciated object is
     # indeed a QComponent class. The problem is that the `isinstance`
     # built-in method fails when this module is reloaded.
