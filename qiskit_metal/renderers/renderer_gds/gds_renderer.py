@@ -288,6 +288,14 @@ class GDSRender(QRenderer):
                     f'The component={qcomp} in highlight_qcomponents not in QDesign. The GDS data not generated.')
                 return unique_qcomponents, 1
 
+        # For Subtraction bounding box.
+        # If list passed to export is the whole chip, then want to use the bounding box from design planar.
+        # If list is subset of chip, then caluclate a custom bounding box and scale it.
+
+        if len(unique_qcomponents) == len(self.design._components):
+            # Since user wants all of the chip to be rendered, use the design.planar bounding box.
+            unique_qcomponents[:] = []
+
         return unique_qcomponents, 0
 
     def create_qgeometry_for_gds(self, highlight_qcomponents: list = []) -> int:
