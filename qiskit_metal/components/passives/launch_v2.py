@@ -144,9 +144,6 @@ class LaunchV2(QComponent):
         # Subtracts out ground plane on the layer its on
         self.add_qgeometry('poly', dict(pocket=pocket), subtract=True, layer=p.layer)
 
-        # Add pin extensions
-        self.add_qgeometry('path', {'a': main_pin_line}, width=0, layer=p.layer)
-
         # Generates the pins
         self.add_pin('a', main_pin_line.coords, p.cpw_width)
                 

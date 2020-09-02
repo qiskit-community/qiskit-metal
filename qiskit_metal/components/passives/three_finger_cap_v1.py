@@ -54,8 +54,8 @@ class ThreeFingerCapV1(QComponent):
         *orientation     - degree of qubit rotation
 
     Pins:
-        There are two connectors on the capacitor at either end
-        The connector attaches directly to the built in lead length and only needs a width defined
+        There are two pins on the capacitor at either end
+        The pins attach directly to the built in lead length and only needs a width defined
         *cpw_width - center trace width of the CPW lead line and cap fingers
         *cpw_gap        - gap of the cpw line
 
@@ -83,8 +83,8 @@ class ThreeFingerCapV1(QComponent):
         finger_length='65um',
         pocket_buffer_width_x='10um',
         pocket_buffer_width_y='30um',
-        position_x='100um',
-        position_y='100um',
+        pos_x='100um',
+        pos_y='100um',
         orientation='0')
 
     """Default drawing options"""
@@ -134,7 +134,7 @@ class ThreeFingerCapV1(QComponent):
         # Rotates and translates all the objects as requested. Uses package functions
         # in 'draw_utility' for easyrotation/translation
         polys1 = draw.rotate(polys1, p.orientation, origin=(0, 0))
-        polys1 = draw.translate(polys1, xoff=p.position_x, yoff=p.position_y)
+        polys1 = draw.translate(polys1, xoff=p.pos_x, yoff=p.pos_y)
         [top_pin_line, bot_pin_line, pad_top, pad_bot, cent_finger, left_finger,
          right_finger, pocket, cpw_top, cpw_bot] = polys1
 
@@ -145,9 +145,6 @@ class ThreeFingerCapV1(QComponent):
 
         #subtracts out ground plane on the layer its on
         self.add_qgeometry('poly', dict(pocket=pocket), subtract=True, layer=p.layer)
-
-        # add pin extensions
-        self.add_qgeometry('path', {'a': top_pin_line, 'b': bot_pin_line}, width=0, layer=p.layer)
 
         # Generates its own pins
         self.add_pin('a', top_pin_line.coords, p.cpw_width)
