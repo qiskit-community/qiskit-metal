@@ -23,9 +23,18 @@ from PyQt5.QtGui import QStandardItem, QStandardItemModel
 
 class DynamicList(QStandardItemModel):
 
-    __refreshTime = 5000 # 10 s refresh time
+    """
+    Create a dynamic checklist that gets updated when the
+    data source is modified or a new one is introduced.
+    """
 
     def __init__(self, orig_design: 'QDesign'):
+        """
+        Set the original design source and populate list. 
+
+        Args:
+            orig_design (QDesign): The design
+        """
         super().__init__()
         self._design = orig_design
         self.populate_list()
@@ -38,11 +47,9 @@ class DynamicList(QStandardItemModel):
     def update_src(self, new_design: 'QDesign'):
         """
         Change the data source to a new one.
-        Note that there is no need to explicitly update the elements
-        in the model here because of the background timer.
 
         Args:
-            new_list (list): The new data source
+            new_design (QDesign): The new data source
         """
         self._design = new_design
 
@@ -69,8 +76,13 @@ class DynamicList(QStandardItemModel):
         for i in range(self.rowCount()):
             self.item(i).setCheckState(QtCore.Qt.Unchecked)
     
-    def get_checked(self):
-        """Get list of all selected items."""
+    def get_checked(self) -> list:
+        """
+        Get list of all selected items.
+
+        Returns:
+            list: List of selected (checked) items
+        """
         selected_items = []
         for i in range(self.rowCount()):
             entry = self.item(i)

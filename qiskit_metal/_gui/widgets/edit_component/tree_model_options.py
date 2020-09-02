@@ -48,14 +48,14 @@ KEY, NODE = range(2)
 # Where childname_i corresponds to KEY and childnode_i corresponds to NODE
 
 
-def get_nested_dict_item(dic: dict, key_list: list, level=0):
+def get_nested_dict_item(dic: dict, key_list: list):
     """
-    Get a nested dictionary item
+    Get a nested dictionary item.
+    If key_list is empty, return dic itself.
 
     Args:
         dic (dict): dictionary of items
         key_list (list): list of keys
-        level (int): the level to get (Default: 0)
 
     Returns:
         dict: nested dictionary
@@ -70,11 +70,10 @@ def get_nested_dict_item(dic: dict, key_list: list, level=0):
         returns 34
 
     """
-    if not key_list:  # get the root
-        return dic
-    if level < len(key_list) - 1:
-        return get_nested_dict_item(dic[key_list[level]], key_list, level + 1)
-    return dic[key_list[level]]
+    if key_list:
+        for k in key_list:
+            dic = dic[k]
+    return dic
 
 
 class BranchNode:

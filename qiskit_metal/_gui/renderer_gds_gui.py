@@ -33,6 +33,10 @@ class RendererGDSWidget(QMainWindow):
         """
         Get access to design, which has the components.
         Then set up the model and view.
+
+        Args:
+            design (QDesign): The design
+            parent (QMainWindow): The parent window
         """
         super().__init__(parent)
 
@@ -54,8 +58,13 @@ class RendererGDSWidget(QMainWindow):
         self.ui.treeView.setHorizontalScrollMode(
             QAbstractItemView.ScrollPerPixel)
 
-    def set_design(self, new_design):
-        """Swaps out reference to design, which changes the reference to the dictionary."""
+    def set_design(self, new_design: 'QDesign'):
+        """
+        Swaps out reference to design, which changes the reference to the dictionary.
+
+        Args:
+            new_design (QDesign): The design
+        """
         self._design = new_design
         self.list_model.update_src(self.design)
     
@@ -77,7 +86,12 @@ class RendererGDSWidget(QMainWindow):
         self.list_model.deselect_all()
 
     def get_checked(self) -> list:
-        """Gets list of all selected components to export."""
+        """
+        Gets list of all selected components to export.
+
+        Returns:
+            list: List of selected components
+        """
         return self.list_model.get_checked()
     
     def browse_folders(self):
@@ -86,10 +100,18 @@ class RendererGDSWidget(QMainWindow):
         self.ui.lineEdit.setText(destination_folder)
     
     def export_file(self):
-        """Exports all selected components in the file."""
+        """
+        Renders a subset or all of the components in design and exports it.
+        If the list of components to export is smaller than the total number
+        of components, highlight_qcomponents is included as an argument.
+        Otherwise it is not.
+        """
         filename = self.ui.lineEdit.text()
         components_to_export = self.get_checked()
         a_gds = self.design.renderers.gds
         if filename and components_to_export:
-            a_gds.export_to_gds(filename, highlight_qcomponents=components_to_export)
+            if len(components_to_export) == len(self.design.components):
+                a_gds.export_to_gds(filename)
+            else:
+                a_gds.export_to_gds(filename, highlight_qcomponents=components_to_export)
         self.close()
