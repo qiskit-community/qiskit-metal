@@ -31,15 +31,12 @@ from qiskit_metal.components.base.base import QComponent
 # Define class and options for the launch geometry
 
 class LaunchV2(QComponent):
-
     """
+    Create a 50 ohm launch with a ground pocket cuttout.  Geometry is hardcoded set of
+    polygon points for now. The (0,0) point is the center of the end of the launch.  This
+    launch has an inductive coupler section that is currently fixed (can be changed later).
 
     Inherits 'QComponent' class
-
-    Description:
-        Create a 50 ohm launch with a ground pocket cuttout.  Geometry is hardcoded set of
-        polygon points for now. The (0,0) point is the center of the end of the launch.  This
-        launch has an inductive coupler section that is currently fixed (can be changed later).
 
     Options:
         Convention: Values (unless noted) are strings with units included,
@@ -49,14 +46,16 @@ class LaunchV2(QComponent):
         Pocket and lauch pad geometry are currently fixed.
         (0,0) point is the midpoint of the end of the pad.
         Pocket is a negative shape that is cut out of the ground plane
-        *pos_x / pos_y   - where the center of the pocket should be located on chip
-        *orientation     - degree of qubit rotation
+
+        * pos_x / pos_y   - where the center of the pocket should be located on chip
+        * orientation     - degree of qubit rotation
 
     Pins:
         The pin attaches directly to the built in lead length at its midpoint
-        *cpw_width      - center trace width of the CPW line where the connector is placed
-        *cpw_gap        - gap of the cpw line
-        *leadin_length  - length of the cpw line attached to the end of the launch
+
+        * cpw_width      - center trace width of the CPW line where the connector is placed
+        * cpw_gap        - gap of the cpw line
+        * leadin_length  - length of the cpw line attached to the end of the launch
 
     Sketch:
         Below is a sketch of the launch
