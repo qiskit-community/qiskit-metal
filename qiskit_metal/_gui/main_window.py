@@ -40,6 +40,7 @@ from PyQt5.QtWidgets import (QApplication, QDockWidget, QFileDialog, QLabel,
 from ..designs.design_base import QDesign
 from ..toolbox_metal.import_export import load_metal_design
 from .component_widget_ui import Ui_ComponentWidget
+from .renderer_gds_gui import RendererGDSWidget
 from .elements_window import ElementsWindow
 from .main_window_base import QMainWindowBaseHandler, QMainWindowExtensionBase
 from .main_window_ui import Ui_MainWindow
@@ -64,6 +65,9 @@ class QMainWindowExtension(QMainWindowExtensionBase):
     Args:
         QMainWindow (QMainWindow): Main window
     """
+    def __init__(self):
+        super().__init__()
+        self.gds_gui = None # type: RendererGDSWidget
 
     @property
     def design(self) -> QDesign:
@@ -92,6 +96,11 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         else:
             self.ui.tabWidget.setCurrentWidget(self.ui.mainViewTab)
             self.ui.actionElements.setText("QGeometry")
+    
+    def show_renderer_gds(self):
+        """Handles click on GDS Renderer action"""
+        self.gds_gui = RendererGDSWidget(self.design, self)
+        self.gds_gui.show()
 
     def delete_all_components(self):
         """Delete all components
@@ -109,7 +118,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
     def save_design_as(self, _=None):
         """Handles click on Save Design As"""
         filename = QFileDialog.getSaveFileName(None,
-                                               'Select a new locaiton to save Metal design to',
+                                               'Select a new location to save Metal design to',
                                                self.design.get_design_name() + '.metal',
                                                initialFilter='*.metal')[0]
 
@@ -287,6 +296,9 @@ class MetalGUI(QMainWindowBaseHandler):
 
         self.plot_win.set_design(design)
         self.elements_win.force_refresh()
+
+        if self.main_window.gds_gui:
+            self.main_window.gds_gui.set_design(design)
 
         self.variables_window.set_design(design)
 
