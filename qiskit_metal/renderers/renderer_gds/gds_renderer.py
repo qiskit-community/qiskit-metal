@@ -57,10 +57,6 @@ class GDSRender(QRenderer):
         # TODO: Maybe hide form user and document use of this function: what is the effect?
         gds_unit='1',  # 1m
 
-        # (float): Scale box of components to render. Should be greater than 1.0.
-        bounding_box_scale_x='1.2',
-        bounding_box_scale_y='1.2',
-
         # Implement creating a ground plane which is scaled from largest bounding box,
         # then QGeometry which is marked as subtract will be removed from ground_plane.
         # Then the balance of QGeometry will be placed placed in same layer as ground_plane.
@@ -88,7 +84,11 @@ class GDSRender(QRenderer):
         # They don't even show up in the fabricated masks.
         # So, the precision of e-9 (so 1 nm) should be good as a default.
         # FOR NOW SPECIFY IN METERS. # TODO: Add parsing of actual units here
-        precision='0.000000001'   # 1.0 nm
+        precision='0.000000001',   # 1.0 nm
+
+        # (float): Scale box of components to render. Should be greater than 1.0.
+        bounding_box_scale_x='1.2',
+        bounding_box_scale_y='1.2',
     )
     """Default options"""
 
@@ -613,7 +613,7 @@ class GDSRender(QRenderer):
             file_name (str): File name which can also include directory path.
                              If the file exists, it will be overwritten.
             highlight_qcomponents (list): List of strings which denote the name of QComponents to render.
-                                        If empty, render all comonents in design.
+                                        If empty, render all components in design.
 
         Returns:
             int: 0=file_name can not be written, otherwise 1=file_name has been written
