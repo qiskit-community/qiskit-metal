@@ -59,6 +59,8 @@ _sandbox_/
 # Sphinx documentation
 docs/_build/
 docs/.buildingdocs
+docs/stubs
+docs/build/doctrees
 
 # PyBuilder
 target/
@@ -114,4 +116,3 @@ qiskit_metal/_gui/ansys-screenshot.jpg
 launch.json
 qiskit_metal/.idea/workspace.xml
 main_window_ui.py.original
-/docs/stubs
