@@ -35,15 +35,17 @@ class QTreeView_Options(QTreeView, QWidget_PlaceholderText):
 
     This class extends the `QTreeView` and `QWidget_PlaceholderText` classes
     """
+
     def __init__(self, parent: QtWidgets.QWidget):
         """
         Args:
             parent (QtWidgets.QWidget): the widget
         """
         QTreeView.__init__(self, parent)
-        QWidget_PlaceholderText.__init__(
-            self,  "Select a QComponent to edit\n\nfrom the QComponents window")
-        QTimer.singleShot(200, self.style_me) # not sure whu the ui isnt unpdating these here.
+        QWidget_PlaceholderText.__init__(self,  "Select a QComponent to edit'\
+                '\n\nfrom the QComponents window")
+        # not sure whu the ui isnt unpdating these here.
+        QTimer.singleShot(200, self.style_me)
         self.expanded.connect(self.resize_on_expand)
 
     def style_me(self):
@@ -58,7 +60,7 @@ class QTreeView_Options(QTreeView, QWidget_PlaceholderText):
 QTreeView::branch {  border-image: url(none.png); }
         """)
 
-    #TODO: Maybe move to base class of utilty, along with the show template message
+    # TODO: Maybe move to base class of utilty, along with the show template message
     def autoresize_columns(self, max_width: int = 200):
         """Rezie columsn to contents with maximim
 
