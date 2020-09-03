@@ -60,6 +60,7 @@ class LaunchV1(QComponent):
     Sketch:
         Below is a sketch of the launch
         ::
+
             ----------------
             |               \
             |      ---------\\
