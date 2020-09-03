@@ -812,6 +812,18 @@
     </layout>
    </widget>
   </widget>
+  <widget class="QToolBar" name="toolbar_renderers">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionGDS"/>
+  </widget>
   <action name="actionSave">
    <property name="icon">
     <iconset resource="main_window_rc.qrc">
@@ -1241,6 +1253,18 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+N, Meta+N</string>
+   </property>
+  </action>
+  <action name="actionGDS">
+   <property name="icon">
+    <iconset resource="main_window_rc.qrc">
+     <normaloff>:/renderer/_imgs/renderers/GDS.png</normaloff>:/renderer/_imgs/renderers/GDS.png</iconset>
+   </property>
+   <property name="text">
+    <string>GDS</string>
+   </property>
+   <property name="toolTip">
+    <string>Open the GDS renderer.</string>
    </property>
   </action>
  </widget>
@@ -1825,6 +1849,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionGDS</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>show_renderer_gds()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>649</x>
+     <y>449</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>showHelp()</slot>
@@ -1843,5 +1883,6 @@
   <slot>save_window_settings()</slot>
   <slot>toggle_all_docks()</slot>
   <slot>new_qcomponent()</slot>
+  <slot>show_renderer_gds()</slot>
  </slots>
 </ui>
