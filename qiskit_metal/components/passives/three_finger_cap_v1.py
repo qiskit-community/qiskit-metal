@@ -31,37 +31,35 @@ from qiskit_metal.components.base.base import QComponent
 # Define class and options for the capacitor geometry
 
 class ThreeFingerCapV1(QComponent):
-
     """
+    Create a three finger planar capacitor with a ground pocket cuttout.  The width of
+    the fingers is determined by the CPW width.
 
     Inherits QComponent class
-
-    Description:
-        Create a three finger planar capacitor with a ground pocket cuttout.  The width of
-        the fingers is determined by the CPW width.
 
     Options:
         Convention: Values (unless noted) are strings with units included,
         (e.g., '30um')
 
     Capacitor Metal Geometry and Ground Cuttout Pocket:
-        *finger length  - length of each finger
-        *pocket_buffer_width_x - sets size of pocket in +-x direction, added to cap size
-        *pocket_buffer_width_y - sets size of pocket in +-y direction, added to cap size
-                                 this also determines the lead in line lengths
-                                 pocket is a negative shape that is cut out of the ground plane
-        *pos_x / pos_y   - where the center of the pocket should be located on chip
-        *orientation     - degree of qubit rotation
+        * finger length  - length of each finger
+        * pocket_buffer_width_x - sets size of pocket in +-x direction, added to cap size
+        * pocket_buffer_width_y - sets size of pocket in +-y direction, added to cap size
+          this also determines the lead in line lengths
+          pocket is a negative shape that is cut out of the ground plane
+        * pos_x / pos_y   - where the center of the pocket should be located on chip
+        * orientation     - degree of qubit rotation
 
     Pins:
         There are two pins on the capacitor at either end
         The pins attach directly to the built in lead length and only needs a width defined
-        *cpw_width - center trace width of the CPW lead line and cap fingers
-        *cpw_gap        - gap of the cpw line
+        * cpw_width - center trace width of the CPW lead line and cap fingers
+        * cpw_gap        - gap of the cpw line
 
     Sketch:
         Below is a sketch of the capacitor
         ::
+
             TODO
 
             y
