@@ -18,6 +18,8 @@
 @date: 2020
 """
 
+import ast
+from pathlib import Path
 from typing import Union
 
 import numpy as np
@@ -27,41 +29,220 @@ from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QVariant, QTimer, Qt
 from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import (QAbstractItemView, QApplication, QFileDialog, QTreeView,
                              QLabel, QMainWindow, QMessageBox, QTabWidget)
-from .widgets.edit_component.tree_model_options import LeafNode, BranchNode
 
-__all__ = ['get_nested_dict_item']
+from .... import logger
+
+__all__ = ['get_nested_dict_item', 'parse_param_from_str']
 
 KEY, NODE = range(2)
 
 # List of children given as [(childname_0, childnode_0), (childname_1, childnode_1), ...]
 # Where childname_i corresponds to KEY and childnode_i corresponds to NODE
 
-class QTreeModel_Base(QAbstractItemModel):
 
+def get_nested_dict_item(dic: dict, key_list: list):
+    """
+    Get a nested dictionary item.
+    If key_list is empty, return dic itself.
+
+    Args:
+        dic (dict): dictionary of items
+        key_list (list): list of keys
+
+    Returns:
+        dict: nested dictionary
+
+    .. code-block:: python
+        :linenos:
+
+        myDict = Dict(aa=Dict(x1={'dda':34},y1='Y',z='10um'),
+            bb=Dict(x2=5,y2='YYYsdg',z='100um'))
+        key_list = ['aa', 'x1', 'dda']
+        [get_dict_item](myDict, key_list)
+        returns 34
+
+    """
+    if key_list:
+        for k in key_list:
+            dic = dic[k]
+    return dic
+
+
+class BranchNode:
+
+    """
+    A BranchNode object has a nonzero number of child nodes.
+    These child nodes can be either BranchNodes or LeafNodes.
+
+    It is uniquely defined by its name, parent node, and list of children.
+    The list of children consists of tuple pairs of the form (nodename_i, node_i),
+    where the former is the name of the child node and the latter is the child node itself.
+    KEY (=0) and NODE (=1) identify their respective positions within each tuple pair.
+    """
+
+    def __init__(self, name: str, parent=None, data: dict = None):
+        """
+        Args:
+            name (str): Name of this branch
+            parent ([type]): The parent (Default: None)
+            data (dict): Node data (Default: None)
+        """
+        super(BranchNode, self).__init__()
+        self.name = name
+        self.parent = parent
+        self.children = []
+        self._data = data  # dictionary containing the actual data
+
+    def __len__(self):
+        """
+        Gets the number of children
+
+        Returns:
+            int: the number of children this node has
+        """
+        return len(self.children)
+
+    def provideName(self):
+        """
+        Gets the name
+
+        Returns:
+            str: the nodes name
+        """
+        return self.name  # identifier for BranchNode
+
+    def childAtRow(self, row: int):
+        """Gets the child at the given row
+
+        Args:
+            row (int): the row
+
+        Returns:
+            Node: The node at the row
+        """
+        if 0 <= row < len(self.children):
+            return self.children[row][NODE]
+
+    def rowOfChild(self, child):
+        """Gets the row of the given child
+
+        Args:
+            child (Node): the child
+
+        Returns:
+            int: Row of the given child.  -1 is returned if the child is not found.
+        """
+        for i, (_, childnode) in enumerate(self.children):
+            if child == childnode:
+                return i
+        return -1
+
+    def childWithKey(self, key):
+        """Gets the child with the given key
+
+        Args:
+            key (str): the key
+
+        Returns:
+            Node: The child with the same name as the given key.
+            None is returned if the child is not found
+        """
+        for childname, childnode in self.children:
+            if key == childname:
+                return childnode
+        return None
+
+    def insertChild(self, child):
+        """
+        Insert the given child
+
+        Args:
+            child (Node): the child
+        """
+        child.parent = self
+        self.children.append((child.provideName(), child))
+
+    def hasLeaves(self):
+        """Do I have leaves?
+
+        Returns:
+            bool: True is I have leaves, False otherwise
+        """
+        if not self.children:
+            return False
+        return isinstance(self.children[KEY][NODE], LeafNode)
+
+
+class LeafNode:
+
+    """
+    A LeafNode object has no children but consists of a key-value pair, denoted by
+    label and value, respectively.
+
+    It is uniquely identified by its root-to-leaf path, which is a list of keys
+    whose positions denote their nesting depth (shallow to deep).
+    """
+
+    def __init__(self, label: str, parent=None, path=None):
+        """
+        Args:
+            label (str): Label for the leaf node
+            parent (Node): The parent (Default: None)
+            path (list): Node path (Default: None)
+        """
+        super(LeafNode, self).__init__()
+        self.path = path or []
+        self.parent = parent
+        self.label = label
+
+    @property
+    def value(self):
+        """Returns the value"""
+        return get_nested_dict_item(self.parent._data, self.path)
+
+    # @value.setter
+    # def value(self, newvalue):
+    #     self._value = newvalue
+
+    def provideName(self):
+        """
+        Get the label
+
+        Returns:
+            str: the lable of the leaf node - this is *not* the value.
+        """
+        return self.label  # identifier for LeafNode (note: NOT value!)
+
+
+class QTreeModel_Base(QAbstractItemModel):
     """
     Tree model for a general hierarchical dataset.
 
     This class extends the `QAbstractItemModel` class.
+    It is part of the model-view-controller (MVC) architecture; see
+     https://doc.qt.io/qt-5/qabstractitemmodel.html
 
-    MVC class
-    See https://doc.qt.io/qt-5/qabstractitemmodel.html
+    Access using ``gui.component_window.model``.
     """
 
     __refreshtime = 500  # 0.5 second refresh time
 
-    def __init__(self, parent: 'ParentWidget', design: 'QDesign', view: QTreeView):
+    # NOTE: __init__ takes in design as extra parameter compared to table_model_options!
+
+    def __init__(self, parent: 'ParentWidget', gui: 'MetalGUI', view: QTreeView):
         """
-        Editable table with expandable drop-down rows.
+        Editable table with drop-down rows for a generic options dictionary.
         Organized as a tree model where child nodes are more specific properties
         of a given parent node.
 
         Args:
-            parent (ParentWidget): Widget on which corresponding view will be displayed
-            design (QDesign): QDesign
+            parent (ParentWidget): The parent widget
+            gui (MetalGUI): The main user interface
             view (QTreeView): View corresponding to a tree structure
         """
         super().__init__(parent=parent)
-        self._design = design
+        self.logger = gui.logger
+        self._gui = gui
         self._rowCount = -1
         self._view = view
 
@@ -73,15 +254,15 @@ class QTreeModel_Base(QAbstractItemModel):
         self.load()
 
     @property
-    def design(self) -> 'QDesign':
-        """Return the QDesign."""
-        return self._design
+    def gui(self):
+        """Returns the GUI"""
+        return self._gui
 
     @property
-    def data_dict(self) -> dict:
-        """ Return a reference to the (nested) dictionary containing the data."""
-        return self.design.renderers.gds.options
-    
+    def design(self) -> 'QDesign':
+        """Returns the QDesign"""
+        return self._gui.design
+
     def _start_timer(self):
         """
         Start and continuously refresh timer in background to keep
@@ -96,6 +277,7 @@ class QTreeModel_Base(QAbstractItemModel):
         Check to see if the total number of rows has been changed. If so,
         completely rebuild the model and tree.
         """
+        # TODO: Check if new nodes have been added; if so, rebuild model.
         newRowCount = self.rowCount(self.createIndex(0, 0))
         if self._rowCount != newRowCount:
             self.modelReset.emit()
@@ -118,6 +300,7 @@ class QTreeModel_Base(QAbstractItemModel):
 
     def load(self):
         """Builds a tree from a dictionary (self.data_dict)"""
+
         self.beginResetModel()
 
         # Set the data dict reference of the root node. The root node doesn't have a name.
@@ -133,7 +316,8 @@ class QTreeModel_Base(QAbstractItemModel):
         for path in self.paths:
             root = self.root
             branch = None
-            # Combine final label and value for leaf node, so stop at 2nd to last element of each path
+            # Combine final label and value for leaf node,
+            # so stop at 2nd to last element of each path
             for key in path[:-2]:
                 # Look for childnode with the name 'key'. If it's not found, create a new branch.
                 branch = root.childWithKey(key)
@@ -152,12 +336,12 @@ class QTreeModel_Base(QAbstractItemModel):
                 branch.insertChild(
                     LeafNode(path[-2], branch, path=path[:-1]))
 
-        # Emit a signal since the model's internal state (e.g. persistent model indexes) has been invalidated.
+        # Emit a signal since the model's internal state
+        # (e.g. persistent model indexes) has been invalidated.
         self.endResetModel()
 
     def rowCount(self, parent: QModelIndex):
-        """
-        Get the number of rows.
+        """Get the number of rows
 
         Args:
             parent (QModelIndex): the parent
@@ -171,7 +355,7 @@ class QTreeModel_Base(QAbstractItemModel):
             return 0
         return len(node)
 
-    def columnCount(self, parent):
+    def columnCount(self, parent: QModelIndex):
         """Get the number of columns
 
         Args:
@@ -251,6 +435,7 @@ class QTreeModel_Base(QAbstractItemModel):
                 node = self.nodeFromIndex(index)
 
                 if isinstance(node, LeafNode):
+                    value = str(value)  # new value
                     old_value = node.value  # option value
 
                     if old_value == value:
@@ -261,6 +446,23 @@ class QTreeModel_Base(QAbstractItemModel):
                         dic = self.data_dict  # option dict
                         lbl = node.label  # option key
 
+                        self.logger.info(
+                            f'Setting {self.optionstype} option {lbl:>10s}: old value={old_value}; new value={value};')
+
+                        ##### Parse value if not str ##############################
+                        # Somewhat legacy code for extended handling of non string options
+                        # These days we tend to have all options be strings, so not so releavnt, but keep here for now
+                        # to allow extended use in te future
+                        if not isinstance(old_value, str):
+                            processed_value, used_ast = parse_param_from_str(
+                                value)
+                            self.logger.info(f'  Used paring:  Old value type={type(old_value)}; '\
+                                             f'New value type={type(processed_value)};'\
+                                             f'  New value={processed_value};'\
+                                             f'; Used ast={used_ast}')
+                            value = processed_value
+                        #################################################
+
                         if node.path:  # if nested option
                             for x in node.path[:-1]:
                                 dic = dic[x]
@@ -269,7 +471,7 @@ class QTreeModel_Base(QAbstractItemModel):
                             dic[lbl] = value
                         return True
         return False
-    
+
     def headerData(self, section: int, orientation: Qt.Orientation, role: Qt.ItemDataRole):
         """ Set the headers to be displayed.
 
@@ -361,3 +563,27 @@ class QTreeModel_Base(QAbstractItemModel):
                 return flags | Qt.ItemIsEditable
 
         return flags
+
+
+def parse_param_from_str(text):
+    """Attempt to parse a value from a string using ast
+
+    Args:
+        text (str): string to parse
+
+    Return:
+        tuple: value, used_ast
+
+    Raises:
+        Exception: an error occurred
+    """
+    text = str(text).strip()
+    value = text
+    used_ast = False
+    try:  # crude way to handle list and values
+        value = ast.literal_eval(text)
+        used_ast = True
+    except Exception as exception:
+        pass
+        # print(exception)
+    return value, used_ast

@@ -99,7 +99,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
     
     def show_renderer_gds(self):
         """Handles click on GDS Renderer action"""
-        self.gds_gui = RendererGDSWidget(self.design, self)
+        self.gds_gui = RendererGDSWidget(self.design, self, self.gui)
         self.gds_gui.show()
 
     def delete_all_components(self):
