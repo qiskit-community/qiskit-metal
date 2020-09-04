@@ -57,10 +57,6 @@ class GDSRender(QRenderer):
         # TODO: Maybe hide form user and document use of this function: what is the effect?
         gds_unit='1',  # 1m
 
-        # (float): Scale box of components to render. Should be greater than 1.0.
-        bounding_box_scale_x='1.2',
-        bounding_box_scale_y='1.2',
-
         # Implement creating a ground plane which is scaled from largest bounding box,
         # then QGeometry which is marked as subtract will be removed from ground_plane.
         # Then the balance of QGeometry will be placed placed in same layer as ground_plane.
@@ -88,7 +84,11 @@ class GDSRender(QRenderer):
         # They don't even show up in the fabricated masks.
         # So, the precision of e-9 (so 1 nm) should be good as a default.
         # FOR NOW SPECIFY IN METERS. # TODO: Add parsing of actual units here
-        precision='0.000000001'   # 1.0 nm
+        precision='0.000000001',   # 1.0 nm
+
+        # (float): Scale box of components to render. Should be greater than 1.0.
+        bounding_box_scale_x='1.2',
+        bounding_box_scale_y='1.2',
     )
     """Default options"""
 
@@ -304,6 +304,14 @@ class GDSRender(QRenderer):
                 self.logger.warning(f'The component={qcomp} in highlight_qcomponents not'
                                     ' in QDesign. The GDS data not generated.')
                 return unique_qcomponents, 1
+
+        # For Subtraction bounding box.
+        # If list passed to export is the whole chip, then want to use the bounding box from design planar.
+        # If list is subset of chip, then caluclate a custom bounding box and scale it.
+
+        if len(unique_qcomponents) == len(self.design._components):
+            # Since user wants all of the chip to be rendered, use the design.planar bounding box.
+            unique_qcomponents[:] = []
 
         return unique_qcomponents, 0
 
@@ -553,6 +561,7 @@ class GDSRender(QRenderer):
                                     (maxx, maxy), (minx, maxy)]
 
                 for chip_layer in layers_in_chip:
+
                     self.chip_info[chip_name]['subtract_poly'] = gdspy.Polygon(
                         rectangle_points, chip_layer)
 
@@ -560,47 +569,56 @@ class GDSRender(QRenderer):
                     ground_cell = lib.new_cell(
                         ground_cell_name, overwrite_duplicate=True)
 
-                    subtract_cell_name = f'SUBTRACT_{chip_name}_{chip_layer}'
-                    subtract_cell = lib.new_cell(
-                        subtract_cell_name, overwrite_duplicate=True)
-                    subtract_cell.add(
-                        self.chip_info[chip_name][chip_layer]['q_subtract_true'])
+                    if len(self.chip_info[chip_name][chip_layer]['subtract_poly']) != 0:
+                        subtract_cell_name = f'SUBTRACT_{chip_name}_{chip_layer}'
+                        subtract_cell = lib.new_cell(
+                            subtract_cell_name, overwrite_duplicate=True)
+                        subtract_cell.add(
+                            self.chip_info[chip_name][chip_layer]['q_subtract_true'])
 
-                    '''gdspy.boolean() is not documented clearly.
-                    If there are multiple elements to subtract (both poly and path),
-                    the way I could make it work is to put them into a cell, within lib.
-                    I used the method cell_name.get_polygons(),
-                    which appears to convert all elements within the cell to poly.
-                    After the boolean(), I deleted the cell from lib.
-                    The memory is freed up then.
-                    '''
-                    diff_geometry = gdspy.boolean(
-                        self.chip_info[chip_name]['subtract_poly'],
-                        subtract_cell.get_polygons(),
-                        'not',
-                        precision=precision,
-                        layer=chip_layer)
+                        '''gdspy.boolean() is not documented clearly.
+                        If there are multiple elements to subtract (both poly and path),
+                        the way I could make it work is to put them into a cell, within lib.
+                        I used the method cell_name.get_polygons(),
+                        which appears to convert all elements within the cell to poly.
+                        After the boolean(), I deleted the cell from lib.
+                        The memory is freed up then.
+                        '''
+                        diff_geometry = gdspy.boolean(
+                            self.chip_info[chip_name]['subtract_poly'],
+                            subtract_cell.get_polygons(),
+                            'not',
+                            precision=self.options.precision,
+                            layer=chip_layer)
 
-                    lib.remove(subtract_cell)
+                        lib.remove(subtract_cell)
 
-                    if diff_geometry is None:
-                        self.logger.warning(
-                            f'There is no table named diff_geometry to write.')
-                    else:
-                        ground_cell.add(diff_geometry)
+                        if diff_geometry is None:
+                            self.design.logger.warning(
+                                f'There is no table named diff_geometry to write.')
+                        else:
+                            ground_cell.add(diff_geometry)
+
 
                     if self.chip_info[chip_name][chip_layer]['q_subtract_false'] is None:
                         self.logger.warning(
                             f'There is no table named self.chip_info[{chip_name}][q_subtract_false] to write.')
                     else:
-                        ground_cell.add(
-                            self.chip_info[chip_name][chip_layer]['q_subtract_false'])
-                    # put all cells into TOP_chipname
-                    # cell_Top.add(gdspy.CellReference(cell_A))
-                    chip_only_top.add(gdspy.CellReference(ground_cell))
+                        if len(self.chip_info[chip_name][chip_layer]['q_subtract_false']) != 0:
+                            ground_cell.add(
+                                self.chip_info[chip_name][chip_layer]['q_subtract_false'])
+                    # put all cells into TOP_chipname, if not empty.
+                    # When checking for bounding box, gdspy will return None if empty.
+                    if ground_cell.get_bounding_box() is not None:
+                        chip_only_top.add(gdspy.CellReference(ground_cell))
+                    else:
+                        lib.remove(ground_cell)
 
                 # put all chips into TOP
-                all_chips_top.add(gdspy.CellReference(chip_only_top))
+                if chip_only_top.get_bounding_box() is not None:
+                    all_chips_top.add(gdspy.CellReference(chip_only_top))
+                else:
+                    lib.remove(chip_only_top)
 
         lib.write_gds(file_name)
 
