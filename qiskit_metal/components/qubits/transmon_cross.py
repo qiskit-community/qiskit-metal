@@ -127,8 +127,9 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
         cross_etch = cross.buffer(cross_gap, cap_style=3, join_style=2)
 
         # The junction/SQUID
-        rect_jj = draw.rectangle(cross_width, cross_gap)
-        rect_jj = draw.translate(rect_jj, 0, -cross_length-cross_gap/2)
+        #rect_jj = draw.rectangle(cross_width, cross_gap)
+        #rect_jj = draw.translate(rect_jj, 0, -cross_length-cross_gap/2)
+        rect_jj = draw.LineString([(0,-cross_length),(0,-cross_length-cross_gap)])
 
         #rotate and translate
         polys = [cross, cross_etch, rect_jj]
@@ -140,7 +141,7 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
         # generate qgeometry
         self.add_qgeometry('poly', dict(cross=cross))
         self.add_qgeometry('poly', dict(cross_etch=cross_etch), subtract=True)
-        self.add_qgeometry('poly', dict(rect_jj=rect_jj), helper=True)
+        self.add_qgeometry('junction', dict(rect_jj=rect_jj), width=cross_width)
 
 
 ############################CONNECTORS##################################################################################################
