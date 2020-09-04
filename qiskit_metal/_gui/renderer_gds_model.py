@@ -41,10 +41,8 @@ class RendererGDS_Model(QTreeModel_Base):
             parent (ParentWidget): The parent widget
             gui (MetalGUI): The main user interface
             view (QTreeView): View corresponding to a tree structure
-            optionstype (str): Name of options menu, in this case 'GDS renderer'
         """
-        super().__init__(parent=parent, gui=gui, view=view)
-        self.optionstype = 'GDS renderer'
+        super().__init__(parent=parent, gui=gui, view=view, child='GDS renderer')
 
     @property
     def data_dict(self) -> dict:

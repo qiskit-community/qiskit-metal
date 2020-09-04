@@ -229,9 +229,9 @@ class QTreeModel_Base(QAbstractItemModel):
 
     # NOTE: __init__ takes in design as extra parameter compared to table_model_options!
 
-    def __init__(self, parent: 'ParentWidget', gui: 'MetalGUI', view: QTreeView):
+    def __init__(self, parent: 'ParentWidget', gui: 'MetalGUI', view: QTreeView, child: str):
         """
-        Editable table with drop-down rows for a generic options dictionary.
+        Editable table with drop-down rows for a generic options menu.
         Organized as a tree model where child nodes are more specific properties
         of a given parent node.
 
@@ -239,12 +239,16 @@ class QTreeModel_Base(QAbstractItemModel):
             parent (ParentWidget): The parent widget
             gui (MetalGUI): The main user interface
             view (QTreeView): View corresponding to a tree structure
+            child (str): Name of child class, eg 'component' or 'GDS renderer'
         """
         super().__init__(parent=parent)
         self.logger = gui.logger
         self._gui = gui
         self._rowCount = -1
         self._view = view
+        self.optionstype = child
+        if self.optionstype == 'component':
+            self._component_widget = parent
 
         self.root = BranchNode('')
         self.headers = ['Name', 'Value']
@@ -262,6 +266,13 @@ class QTreeModel_Base(QAbstractItemModel):
     def design(self) -> 'QDesign':
         """Returns the QDesign"""
         return self._gui.design
+
+    @property
+    def component(self) -> 'QComponent':
+        """Returns the component if this is the components options menu"""
+        if self.optionstype == 'component':
+            return self._component_widget.component
+        return None
 
     def _start_timer(self):
         """
@@ -300,6 +311,8 @@ class QTreeModel_Base(QAbstractItemModel):
 
     def load(self):
         """Builds a tree from a dictionary (self.data_dict)"""
+        if (self.optionstype == 'component') and (not self.component):
+            return
 
         self.beginResetModel()
 
@@ -469,6 +482,9 @@ class QTreeModel_Base(QAbstractItemModel):
                             dic[node.path[-1]] = value
                         else:  # if top-level option
                             dic[lbl] = value
+                        if self.optionstype == 'component':
+                            self.component.rebuild()
+                            self.gui.refresh()
                         return True
         return False
 
