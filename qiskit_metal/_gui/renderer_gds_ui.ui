@@ -125,7 +125,7 @@
       <x>325</x>
       <y>30</y>
       <width>311</width>
-      <height>461</height>
+      <height>361</height>
      </rect>
     </property>
     <property name="rootIsDecorated">
@@ -146,6 +146,28 @@
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>400</y>
+      <width>301</width>
+      <height>91</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="text">
+     <string>Note: The user-defined bounding box scales above are only relevant when not all components are being exported. Otherwise, the bounding box for the subtraction layer is obtained from the DesignPlanar class.</string>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
     </property>
    </widget>
   </widget>

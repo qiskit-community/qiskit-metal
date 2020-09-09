@@ -631,7 +631,7 @@ class GDSRender(QRenderer):
             file_name (str): File name which can also include directory path.
                              If the file exists, it will be overwritten.
             highlight_qcomponents (list): List of strings which denote the name of QComponents to render.
-                                        If empty, render all comonents in design.
+                                        If empty, render all components in design.
 
         Returns:
             int: 0=file_name can not be written, otherwise 1=file_name has been written
