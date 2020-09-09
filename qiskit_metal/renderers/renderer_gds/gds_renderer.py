@@ -50,6 +50,7 @@ class GDSRender(QRenderer):
     #: Type: Dict[str, str]
     default_options = Dict(
 
+
         # DO NOT MODIFY `gds_unit`. Gets overwritten by ``set_units``.
         # gdspy unit is 1 meter.  gds_units appear to ONLY be used during write_gds().
         # Note that gds_unit will be overwritten from the design units, during init().
@@ -129,8 +130,8 @@ class GDSRender(QRenderer):
         #         base=dict(color=str, klayer=int),
         #         path=dict(thickness=float, material=str, perfectE=bool),
         #         poly=dict(thickness=float, material=str), )
-        element_extensions = dict(
-            junction=dict('path_file'=None))
+        element_extensions = {
+            'junction': {'path_file': None}}
 
     def parse_value(self, value: 'Anything') -> 'Anything':
         """Same as design.parse_value. See design for help.
