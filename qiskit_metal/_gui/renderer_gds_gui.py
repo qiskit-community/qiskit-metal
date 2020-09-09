@@ -37,6 +37,7 @@ class RendererGDSWidget(QMainWindow):
         Args:
             design (QDesign): The design
             parent (QMainWindow): The parent window
+            gui (MetalGUI): The metal GUI
         """
         super().__init__(parent)
 
