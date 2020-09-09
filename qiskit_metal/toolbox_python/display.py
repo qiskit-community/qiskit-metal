@@ -1,17 +1,76 @@
 """
 Utility display functions used in the tutorials.
+
 @author: Zlatko K. Minev
 @date: 2020
 """
 
-from IPython.display import display, HTML, Image
+import re
+from pathlib import Path
+from typing import Dict as Dict_
 
-__all__ = ['get_screenshot', 'format_dict_ala_z']
+from IPython import get_ipython
+from IPython.core.magic import Magics, line_magic, magics_class
+from IPython.display import HTML, Image, display
+from PyQt5.QtWidgets import QApplication, QMainWindow
 
-################################################################
+__all__ = ['get_screenshot', 'format_dict_ala_z', 'style_color_list', 'metal_heading']
+
+
+@magics_class
+class MetalTutorialMagics(Magics):
+    """A class of status magic functions."""
+    @line_magic
+    def metal_print(self, line='', cell=None):  # pylint: disable=unused-argument
+        """
+        Print an HTML formatted message.
+        """
+        return display(HTML(f"""
+    <div style="
+        padding-top:10px;
+        padding-bottom:10px;
+        font-weight: bold;
+        font-size: large;
+        text-align: center;
+        color: white;
+        background: #12c2e9;  /* fallback for old browsers */
+        background: -webkit-linear-gradient(to right, #f64f59, #c471ed, #12c2e9);  /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to right, #f64f59, #c471ed, #12c2e9); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    ">
+        {line}
+    </div>
+        """))
+
+    @line_magic
+    def metal_heading(self, line='', cell=None):  # pylint: disable=unused-argument
+        """
+        Print an HTML formatted message.
+        """
+        return display(HTML(f"""
+    <h1 style="
+        background: #12c2e9;  /* fallback for old browsers */
+        background: -webkit-linear-gradient(to right, #d4418e 0%, #0652c5 74%);  /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(315deg, #d4418e 0%, #0652c5 74%); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        margin-top: 50px;
+        border-style: outset;
+        padding-top:100px;
+        padding-bottom:50px;
+        padding-left:25px;
+        color: white;
+    "> {line} <h1>
+        """))
+
+
+_IP = get_ipython()
+if _IP is not None:
+    _IP.register_magics(MetalTutorialMagics)
+
 
 class Headings:
-    """Headings class"""
+    """Headings class for printing HTML-styled heading for the tutorials.
+
+    Legcay code. Use cell magics. See: ``MetalTutorialMagics``.
+    """
     __h1__ = """
     <h1 style="
         background-color: #d4418e;
@@ -31,10 +90,8 @@ class Headings:
         display(HTML(cls.__h1__.replace('!!!!', text)))
 
 
-### For gui programming
-from PyQt5.QtWidgets import QMainWindow, QApplication
-from pathlib import Path
-def get_screenshot(self:QMainWindow, name='shot.png', type_='png', do_display=True, disp_ops=None):
+# For GUI programming
+def get_screenshot(self: QMainWindow, name='shot.png', type_='png', do_display=True, disp_ops=None):
     """
     Grad a screenshot of the main window,
     save to file, and then copy to clipboard.
@@ -50,7 +107,7 @@ def get_screenshot(self:QMainWindow, name='shot.png', type_='png', do_display=Tr
     path = Path(name).resolve()
 
     # just grab the main window
-    screenshot = self.grab() # type: QtGui.QPixelMap
+    screenshot = self.grab()  # type: QtGui.QPixelMap
     screenshot.save(str(path), type_)  # Save
 
     QApplication.clipboard().setPixmap(screenshot)  # To clipboard
@@ -62,8 +119,50 @@ def get_screenshot(self:QMainWindow, name='shot.png', type_='png', do_display=Tr
         display(Image(filename=str(path), **_disp_ops))
 
 
-def format_dict_ala_z(dic, indent=0, key_width=20, do_repr=True, indent_all:int=2, indent_keys=5):
-    """Format the dictionary
+##########################################################################
+# Shell print
+
+class Color:
+    """
+    Shell/terminal color and style definitions for the cursor.
+
+    This will work on *NIX, MacOS, and Windows (provided you enable ansi.sys).
+    The class attributes are various ANSI codes for setting the color and style of the cursor.
+
+    The following attributes use octal string representations.
+    See https://www.saic.it/bach-color-linux/
+
+    In general, `termcolor` is more stable across platforms. See `termcolor`
+    """
+    purple = '\033[95m'
+    cyan = '\033[96m'
+    darkcyan = '\033[36m'
+    blue = '\033[94m'
+    green = '\033[92m'
+    yellow = '\033[93m'
+    red = '\033[91m'
+    bold = '\033[1m'
+    BOLD = '\033[1m'
+    underline = '\033[4m'
+    end = '\033[0m'
+    END = '\033[0m'
+
+
+def style_colon_list(text: str,
+                     sty1a='', sty1b='',
+                     sty2a=Color.blue, sty2b=Color.END) -> str:
+    """
+    Color on the left and right sides of single :
+    """
+    text = re.sub(
+        '(.*?):(.*)', f'{sty1a}\g<1>{sty1b}:{sty2a}\g<2>{sty2b}',
+        text)  # *? is non-greedy
+    return text
+
+
+def format_dict_ala_z(dic: Dict_, indent=0, key_width=20, do_repr=True,
+                      indent_all: int = 2, indent_keys=5, style_dicts=True):
+    """Format a nested dictionary.
 
     Args:
         dic (dict): Dictionary to format
@@ -78,14 +177,19 @@ def format_dict_ala_z(dic, indent=0, key_width=20, do_repr=True, indent_all:int=
     """
     indent_all_full = indent_all + indent*indent_keys
 
+    if style_dicts:
+        sty1a, sty1b = Color.BOLD, Color.END
+
     text = ''
     for k, v in dic.items():
         if isinstance(v, dict):
             if do_repr:
                 k = repr(k)
-            text += f"{'':{indent_all_full}s}{k:<{key_width}s}:"+ " { \n"
-            text += format_dict_ala_z(v, indent+1, key_width=key_width,do_repr=do_repr,indent_all=indent_all)
-            text += f"{'':{indent_all_full+key_width}s}" + "  }" +(',' if do_repr else '') +"\n"
+            text += f"{'':{indent_all_full}s}{sty1a}{k:<{key_width}s}{sty1b}: {{\n"
+            text += format_dict_ala_z(v, indent+1, key_width=key_width,
+                                      do_repr=do_repr, indent_all=indent_all)
+            text += f"{'':{indent_all_full+key_width}s}" + \
+                "  }" + (',' if do_repr else '') + "\n"
         else:
             if do_repr:
                 k = repr(k)

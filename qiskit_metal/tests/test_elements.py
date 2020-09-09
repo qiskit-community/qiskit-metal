@@ -22,11 +22,13 @@ Created on  Wed Apr 22 10:02:06 2020
 @author: Jeremy D. Drysdale
 """
 
-# Note - these functions are untested (unclear, seems unused or under development):
+# Note - Tests not written for these functions:
 # element_handler/delete_component
 # element_handler/rename_component
+# element_handler/get_component_geometry
 # element_handler/get_component_geometry_list
 # element_handler/get_component_geometry_dict
+# element_handler/get_all_unique_layers
 
 import unittest
 import numpy as np
@@ -81,7 +83,7 @@ class TestElements(unittest.TestCase):
         """
         e_c = elements_handler.ELEMENT_COLUMNS
 
-        self.assertEqual(len(e_c), 3)
+        self.assertEqual(len(e_c), 4)
 
         self.assertEqual(len(e_c['base']), 8)
         self.assertEqual(e_c['base']['component'], str)
@@ -104,6 +106,10 @@ class TestElements(unittest.TestCase):
         self.assertEqual(e_c['poly']['fillet'], object)
         self.assertEqual(e_c['poly']['__renderers__'], dict())
         self.assertEqual(len(e_c['poly']['__renderers__']), 0)
+
+        self.assertEqual(len(e_c['junction']), 2)
+        self.assertEqual(e_c['junction']['width'], float)
+        self.assertEqual(e_c['junction']['__renderers__'], dict())
 
     def test_element_true_bools(self):
         """
@@ -149,21 +155,21 @@ class TestElements(unittest.TestCase):
         self.assertEqual(e_c['path']['__renderers__']['new_name']['thickness'], float)
         self.assertEqual(e_c['poly']['__renderers__']['new_name']['material'], str)
 
-    def test_element_get_element_types(self):
+    def test_element_q_element_get_element_types(self):
         """
         Test get_element_types in QGeometryTables class in element_handler.py
         """
         design = designs.DesignPlanar()
         qgt = QGeometryTables(design)
 
-        expected = ['path', 'poly']
+        expected = ['path', 'poly', 'junction']
         actual = qgt.get_element_types()
 
         self.assertEqual(len(expected), len(actual))
-        for i in range(2):
+        for i in range(3):
             self.assertEqual(expected[i], actual[i])
 
-    def test_element_create_tables(self):
+    def test_element_q_element_create_tables(self):
         """
         Test create_tables in QGeometryTables class in element_handler.py
         """
@@ -173,9 +179,10 @@ class TestElements(unittest.TestCase):
 
         actual = qgt.tables
 
-        self.assertEqual(len(actual), 2)
+        self.assertEqual(len(actual), 3)
         self.assertTrue('path' in actual)
         self.assertTrue('poly' in actual)
+        self.assertTrue('junction' in actual)
 
         self.assertEqual(actual['path'].dtypes['component'], object)
         self.assertEqual(actual['path'].dtypes['name'], object)
@@ -191,7 +198,14 @@ class TestElements(unittest.TestCase):
         self.assertEqual(actual['poly'].dtypes['chip'], object)
         self.assertEqual(actual['poly'].dtypes['fillet'], object)
 
-    def test_element_get_rname(self):
+        self.assertEqual(actual['junction'].dtypes['component'], object)
+        self.assertEqual(actual['junction'].dtypes['name'], object)
+        self.assertEqual(actual['junction'].dtypes['subtract'], bool)
+        self.assertEqual(actual['junction'].dtypes['helper'], bool)
+        self.assertEqual(actual['junction'].dtypes['chip'], object)
+        self.assertEqual(actual['junction'].dtypes['width'], float)
+
+    def test_element_q_element_get_rname(self):
         """
         Test get_rname in QGeometryTables class in element_handler.py
         """
@@ -202,7 +216,7 @@ class TestElements(unittest.TestCase):
 
         self.assertEqual(actual, 'some_name_aloha')
 
-    def test_element_add_qgeometry(self):
+    def test_element_q_element_add_qgeometry(self):
         """
         Test add_qgeometry in QGeometryTables class in element_handler.py
         """
@@ -222,7 +236,7 @@ class TestElements(unittest.TestCase):
         self.assertEqual(table['poly']['chip'][0], 'main')
         self.assertEqual(str(table['poly']['fillet'][0]), str(np.nan))
 
-    def test_element_clear_all_tables(self):
+    def test_element_q_element_clear_all_tables(self):
         """
         Test clear_all_tables in QGeometryTables class in element_handler.py
         """
@@ -235,7 +249,7 @@ class TestElements(unittest.TestCase):
         qgt.clear_all_tables()
         self.assertEqual(len(qgt.tables['poly'].geometry), 0)
 
-    def test_element_delete_component_id(self):
+    def test_element_q_element_delete_component_id(self):
         """
         Test delete_component_id in QGeometryTables class in element_handler.py
         """
@@ -256,7 +270,7 @@ class TestElements(unittest.TestCase):
         self.assertEqual(len(qgt.tables['path']), 0)
         self.assertEqual(len(qgt.tables['poly']), 0)
 
-    def test_element_get_component_bounds(self):
+    def test_element_q_element_get_component_bounds(self):
         """
         Test get_component_bounds in QGeometryTables class in element_handler.py
         """
@@ -269,7 +283,7 @@ class TestElements(unittest.TestCase):
         for i in range(4):
             self.assertEqual(four_zeros[i], 0)
 
-    def test_element_check_element_type(self):
+    def test_element_q_element_check_element_type(self):
         """
         Test check_element_type in QGeometryTables class in element_handler.py
         """
@@ -280,7 +294,7 @@ class TestElements(unittest.TestCase):
         self.assertTrue(qgt.check_element_type('path', log_issue=False))
         self.assertFalse(qgt.check_element_type('not-there', log_issue=False))
 
-    def test_element_get_component(self):
+    def test_element_q_element_get_component(self):
         """
         Test get_component in QGeometryTables class in element_handler.py
         """
@@ -294,15 +308,17 @@ class TestElements(unittest.TestCase):
 
         # sucess results
         actual = qgt.get_component('Q1')
-        self.assertEqual(len(actual), 2)
+        self.assertEqual(len(actual), 3)
         self.assertTrue(isinstance(actual['path'], GeoDataFrame))
         self.assertTrue(isinstance(actual['poly'], GeoDataFrame))
+        self.assertTrue(isinstance(actual['junction'], GeoDataFrame))
 
         # failure results
         actual = qgt.get_component('not-real')
-        self.assertEqual(len(actual), 2)
+        self.assertEqual(len(actual), 3)
         self.assertEqual(actual['path'], None)
         self.assertEqual(actual['poly'], None)
+        self.assertEqual(actual['junction'], None)
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

@@ -31,7 +31,9 @@ Headings
 .. autosummary::
     :toctree: ../stubs/
 
+    MetalTutorialMagics
     Headings
+    Color
 
 
 Submodules
@@ -48,9 +50,5 @@ Submodules
 
 from .attr_dict import Dict
 from .display import format_dict_ala_z, Headings
-
-#from .. import config
-#if config.is_building_docs():
-#    from . import _logging
-#    from . import display
-#    from . import utility_functions
+from .display import MetalTutorialMagics
+from .display import Color

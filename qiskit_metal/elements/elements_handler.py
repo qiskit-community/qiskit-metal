@@ -96,10 +96,10 @@ ELEMENT_COLUMNS = dict(
         name=str,  # name of the element
         geometry=object,  # shapely object
         layer=int,  # gds type of layer
-        subtract=bool,  # do we subtract from the groun place of the chip
+        subtract=bool,  # do we subtract from the ground place of the chip
         helper=bool,  # helper or not
         chip=str,  # chip name
-        # type=str,  # metal, helper
+        # type=str,  # metal, helper.   poly=10 or path=11
         __renderers__=dict(
             # ADD specific renderers here, all renderes must register here.
             # hfss = dict( ... ) # pick names as hfss_name
@@ -123,7 +123,6 @@ ELEMENT_COLUMNS = dict(
         width=float,
         fillet=object,  # TODO: not decided yet how to represent this
         __renderers__=dict(
-
         )
     ),
 
@@ -135,9 +134,20 @@ ELEMENT_COLUMNS = dict(
         __renderers__=dict(
         )
     ),
-
     ################################################
-    # Specifies a curved object, such as a circle
+    # Specifies a junction as a 2 point line and width
+    # This should provide enough information so as to
+    # - render a sheet with inductance (from renderer options) + a vector for EPR
+    # - generate ports (edge ports?) for Z analysis
+    # - provice bounding box dimensions for the p-cell of ebeam junction layout
+    #       for GDS renderer
+    junction=dict(
+        width=float,
+        __renderers__=dict(
+        )                
+    ),
+    ################################################
+    # Specifies a curved object, such as a circle. Perhaps as a buffered point 
     # Not yet implemented
     # curved = dict(
     # __renderers__= dict(
@@ -370,7 +380,7 @@ class QGeometryTables(object):
 
             # Create df with correct column names
             table = GeoDataFrame(data_frame_empty_typed(columns))
-            table.name = table_name  # not used elsewhere
+            table.name = table_name  # not used elsewhere, also the name becomes "name" for some reason
 
             # Assign
             self.tables[table_name] = table
@@ -392,7 +402,7 @@ class QGeometryTables(object):
             \n  ELEMENT_TABLE_NAME = {table_name}\
             \n  KEY                = {k} \
             \n  VALUE              = {v}\n '
-
+        #Are these assertions still holding true?
         for k, v in column_dict.items():
             assert isinstance(k, str), __pre.format(**locals()) +\
                 ' Key needs to be a string!'
@@ -681,3 +691,22 @@ class QGeometryTables(object):
             return False
         else:
             return True
+
+    def get_all_unique_layers(self, chip_name: str) -> list:
+        """Returns a lit of unique layers for the given chip names
+
+        Args:
+            chip_name (str): name of the chip
+
+        Returns:
+            list: List of unique layers
+        """
+        unique_layers = list()
+        for table_name in self.design.qgeometry.get_element_types():
+            table = self.design.qgeometry.tables[table_name]
+            temp = table[table['chip'] == chip_name]
+            layers = temp['layer'].unique().tolist()
+            unique_layers += layers
+        unique_layers = list(set(unique_layers))
+
+        return unique_layers

@@ -13,6 +13,7 @@
 # that they have been altered from the originals.
 
 #pylint: disable-msg=unnecessary-pass
+#pylint: disable-msg=protected-access
 #pylint: disable-msg=pointless-statement
 #pylint: disable-msg=too-many-public-methods
 #pylint: disable-msg=broad-except
@@ -24,6 +25,15 @@ Created on Wed Apr 22 10:03:35 2020
 @author: Jeremy D. Drysdale
 """
 
+# Note - Tests not written for these functions:
+# design_base/delete_all_pins
+# design_base/connect_pins
+# design_base/all_component_names_id
+# design_base/_delete_all_pins_for_component
+# design_base/get_new_qcomponent_id
+# design_base/load_design
+# design_base/save_design
+
 import unittest
 import pandas as pd
 
@@ -31,8 +41,11 @@ from qiskit_metal.designs.design_base import QDesign
 from qiskit_metal.designs.design_planar import DesignPlanar
 from qiskit_metal.designs.interface_components import Components
 from qiskit_metal.designs.net_info import QNet
-
 from qiskit_metal.components.base.base import QComponent
+from qiskit_metal.components.qubits.transmon_pocket import TransmonPocket
+
+#pylint: disable-msg=line-too-long
+from qiskit_metal.components.interconnects.resonator_rectangle_spiral import ResonatorRectangleSpiral
 
 class TestDesign(unittest.TestCase):
     """
@@ -168,6 +181,31 @@ class TestDesign(unittest.TestCase):
         self.assertEqual('my_name-1' in design.name_to_id, False)
         self.assertEqual('my_name-2' in design.name_to_id, True)
 
+    def test_design_default_component_name(self):
+        """
+        Test automatic naming of components
+        """
+        design = DesignPlanar(metadata={})
+
+        ResonatorRectangleSpiral(design, make=False)
+        self.assertEqual('res_1' in design.components, True)
+        ResonatorRectangleSpiral(design, make=False)
+        self.assertEqual('res_2' in design.components, True)
+
+        # Manually add the next automatic name to check it doesn't get repeated
+        ResonatorRectangleSpiral(design, 'res_3', make=False)
+        ResonatorRectangleSpiral(design, make=False)
+        self.assertEqual('res_3' in design.components, True)
+        self.assertEqual('res_4' in design.components, True)
+
+        # Add a different component
+        TransmonPocket(design, make=False)
+        self.assertEqual('Q_1' in design.components, True)
+
+        # Add a component with no predefined prefix
+        QComponent(design, make=False)
+        self.assertEqual('QComponent_1' in design.components, True)
+
     def test_design_delete_component(self):
         """
         Test deleteing a component in design_base.py
@@ -208,6 +246,35 @@ class TestDesign(unittest.TestCase):
         """
         design = DesignPlanar(metadata={})
         self.assertEqual(design.get_units(), 'mm')
+
+    def test_design_get_new_qcomponent_name_id(self):
+        """
+        Test _get_new_qcomponent_name_id in design_base.py
+        """
+        design = DesignPlanar(metadata={})
+        QComponent(design, make=False)
+        QComponent(design, make=False)
+
+        self.assertEqual(design._get_new_qcomponent_name_id('QComponent'), 3)
+        self.assertEqual(design._get_new_qcomponent_name_id('Not-there'), 1)
+
+    def test_design_planar_get_x_y_for_chip(self):
+        """
+        Test get_x_y_for_chip in design_planar.py
+        """
+        design = DesignPlanar(metadata={})
+        QComponent(design, make=False)
+        QComponent(design, make=False)
+
+        expected = ((-4.5, -3.0, 4.5, 3.0), 0)
+        actual = design.get_x_y_for_chip('main')
+
+        self.assertEqual(len(expected), len(actual))
+        self.assertEqual(len(expected[0]), len(actual[0]))
+        for i in range(4):
+            self.assertEqual(expected[0][i], actual[0][i])
+
+        self.assertEqual(expected[1], actual[1])
 
     def test_design_interface_components_get_list_ints(self):
         """
@@ -339,7 +406,6 @@ class TestDesign(unittest.TestCase):
         for i in [2, 3]:
             for j in ['net_id', 'component_id', 'pin_name']:
                 self.assertEqual(df_expected_2[j][i], df[j][i])
-
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

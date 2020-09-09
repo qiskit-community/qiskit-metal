@@ -24,7 +24,7 @@ Created on Wed Apr 22 09:59:02 2020
 @author: Jeremy D. Drysdale
 """
 
-# Note - these functions are untested (unclear, seems unused or under development):
+# Note - Tests not written for these functions:
 # import_export/save_metal
 # import_export/load_metal_design
 
@@ -64,7 +64,8 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
         """
         Test that TRUE_STR in parsing.py has not accidentally changed
         """
-        expected = ['true', 'True', 'TRUE', '1', 't', 'y', 'Y', 'YES', 'yes', 'yeah', True, 1, 1.0]
+        expected = ['true', 'True', 'TRUE', True, '1', 't', 'y', 'Y', 'YES',
+            'yes', 'yeah', 1, 1.0]
         actual = parsing.TRUE_STR
 
         self.assertEqual(len(actual), len(expected))

@@ -18,6 +18,12 @@ class MyQComponent(QComponent):
     )
     """Default drawing options"""
 
+    # Name prefix of component, if user doesn't provide name
+    component_metadata = Dict(
+        short_name='component'
+        )
+    """Component metadata"""
+
     def make(self):
         """Convert self.options into QGeometry."""
 

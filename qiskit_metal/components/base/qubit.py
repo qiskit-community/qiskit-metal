@@ -60,7 +60,12 @@ class BaseQubit(QComponent):
     )
     """Default drawing options"""
 
-    def __init__(self, design, name, options=None, options_connection_pads=None,
+    component_metadata = Dict(
+        short_name='Q'
+        )
+    """Component metadata"""
+
+    def __init__(self, design, name=None, options=None, options_connection_pads=None,
                  make=True):
         """
         Args:

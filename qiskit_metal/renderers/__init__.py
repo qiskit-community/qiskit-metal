@@ -74,13 +74,14 @@ from .. import config
 if config.is_building_docs():
     from .renderer_base.renderer_base import QRenderer
     from .renderer_base.renderer_gui_base import QRendererGui
+    from .renderer_gds.gds_renderer import GDSRender
+
     from .renderer_mpl.mpl_canvas import PlotCanvas
     from .renderer_mpl.mpl_interaction import MplInteraction
     from .renderer_mpl.mpl_interaction import ZoomOnWheel
     from .renderer_mpl.mpl_interaction import PanAndZoom
     from .renderer_mpl.mpl_renderer import QMplRenderer
     from .renderer_mpl.extensions.animated_text import AnimatedText
-    from .renderer_gds.gds_renderer import GDSRender
 
     from .renderer_mpl import mpl_interaction
     from .renderer_mpl import mpl_toolbox

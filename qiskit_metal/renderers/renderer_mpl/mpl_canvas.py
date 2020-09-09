@@ -376,9 +376,7 @@ class PlotCanvas(FigureCanvas):
                 ax.set_ylim([-0.5, 0.5])
 
     def setup_rendering(self):
-        """https://matplotlib.org/3.1.1/tutorials/introductory/usage.html
-
-        Line segment simplificatio:
+        """Line segment simplificatio:
         For plots that have line segments (e.g. typical line plots, outlines of
         polygons, etc.), rendering performance can be controlled by the path.simplify
         and path.simplify_threshold
@@ -401,6 +399,7 @@ class PlotCanvas(FigureCanvas):
                 A value of 20000 is probably a good
                 starting point.
 
+        https://matplotlib.org/3.1.1/tutorials/introductory/usage.html
         """
         plt.style.use('fast')
 
@@ -455,8 +454,6 @@ class PlotCanvas(FigureCanvas):
                 self._watermark_axis(ax)
 
         def final():
-            # Draw
-            self.draw()
             # Restore the state
             ax.set_xlim(self._state['xlim'])
             ax.set_ylim(self._state['ylim'])
@@ -601,19 +598,33 @@ class PlotCanvas(FigureCanvas):
             # ax.redraw_in_frame()
             self.refresh()
 
-    # TODO: move to base class
-    def zoom_on_component(self, name: str, zoom: float = 1.2):
-        """Zoom in on a component
+    def find_component_bounds(self, components: List[str], zoom: float = 1.2):
+        """Find bounds of a set of components
 
         Arguments:
-            name (str): component name
+            components (List[str]): list of component names
             zoom (float): fraction to expand the bounding vbox by
+
+        Returns:
+            List: List of x,y coordinates defining the bounding box
         """
-        component = self.design.components[name]
-        bounds = component.qgeometry_bounds()  # return (minx, miny, maxx, maxy)
-        bbox = Bbox.from_extents(bounds)
-        bounds = bbox.expanded(zoom, zoom).extents
-        self.zoom_to_rectangle(bounds)
+        if len(components) == 0:
+            self.logger.error('At least one component must be provided.')
+
+        # initialize bounds
+        bounds = [float("inf"), float("inf"), float("-inf"), float("-inf")]
+        for name in components:
+            component = self.design.components[name]
+            # return (minx, miny, maxx, maxy)
+            newbounds = component.qgeometry_bounds()
+            bbox = Bbox.from_extents(newbounds)
+            newbounds = bbox.expanded(zoom, zoom).extents
+            # re-calculate total bounds by adding current component
+            bounds = [min(newbounds[0], bounds[0]),
+                      min(newbounds[1], bounds[1]),
+                      max(newbounds[2], bounds[2]),
+                      max(newbounds[3], bounds[3])]
+        return bounds
 
     def set_component(self, name: str):
         """

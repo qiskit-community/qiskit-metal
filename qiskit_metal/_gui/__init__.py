@@ -33,11 +33,15 @@ Main Window
 .. autosummary::
     :toctree: ../stubs/
 
+    DynamicList
+    MetalGUI
+    RendererGDSWidget
     QMainWindowExtensionBase
     QMainWindowBaseHandler
     QMainWindowExtension
-    MetalGUI
-
+    QTreeModel_Base
+    QTreeView_Base
+    
 
 Elements Window
 ---------------
@@ -55,23 +59,23 @@ Widgets
 .. autosummary::
     :toctree: ../stubs/
 
-    QTableView_AllComponents
-    QTableModel_AllComponents
-    QToolBarExpanding
-    QWidget_PlaceholderText
-    ComponentWidget
-    MetalSourceEditor
-    QTableModel_Options
-    QTableView_Options
     BranchNode
+    ComponentWidget
     LeafNode
-    QTreeModel_Options
-    QTreeView_Options
-    QTextEditLogger
     LogHandler_for_QTextLog
-    QMainWindowPlot
+    MetalSourceEditor
     PropertyTableWidget
     PropValTable
+    QMainWindowPlot
+    QTableModel_AllComponents
+    QTableModel_Options
+    QTableView_AllComponents
+    QTableView_Options
+    QTextEditLogger
+    QToolBarExpanding
+    QTreeModel_Options
+    QTreeView_Options
+    QWidget_PlaceholderText
     RightClickView
 
 
@@ -98,10 +102,14 @@ from .. import __version__
 from .. import config
 if config.is_building_docs():
     # imported here for the docstrings
+    from qiskit_metal._gui.list_model_base import DynamicList
     from qiskit_metal._gui.main_window_base import QMainWindowExtensionBase
     from qiskit_metal._gui.main_window_base import QMainWindowBaseHandler
     from qiskit_metal._gui.main_window import QMainWindowExtension
     from qiskit_metal._gui.main_window import MetalGUI
+    from qiskit_metal._gui.tree_model_base import QTreeModel_Base
+    from qiskit_metal._gui.tree_view_base import QTreeView_Base
+    from qiskit_metal._gui.renderer_gds_gui import RendererGDSWidget
     from qiskit_metal._gui.elements_window import ElementsWindow
     from qiskit_metal._gui.elements_window import ElementTableModel
     from qiskit_metal._gui.widgets.all_components.table_view_all_components import QTableView_AllComponents

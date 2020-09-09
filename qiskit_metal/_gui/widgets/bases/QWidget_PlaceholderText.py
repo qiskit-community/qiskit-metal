@@ -30,14 +30,14 @@ class QWidget_PlaceholderText(QWidget):
     """
     __placeholder_text = "The table is empty."
 
-    def __init__(self, placeholder_text :str = None):
+    def __init__(self, placeholder_text: str = None):
         """
         Args:
             placeholder_text (str): placeholder text (Default: None).
         """
         self._placeholder_text = placeholder_text if placeholder_text else self.__placeholder_text
 
-        self._placeholder_label =  QLabel(self._placeholder_text, self)
+        self._placeholder_label = QLabel(self._placeholder_text, self)
         self.setup_placeholder_label()
 
     def setup_placeholder_label(self):
@@ -50,7 +50,7 @@ class QWidget_PlaceholderText(QWidget):
 
         self.layout().addWidget(self._placeholder_label)
 
-    def update_placeholder_text(self, text = None):
+    def update_placeholder_text(self, text=None):
         """Update the placeholder text to the given string
 
         Args:
@@ -72,7 +72,8 @@ class QWidget_PlaceholderText(QWidget):
 
         # color PlaceholderText
         palette = self.palette()
-        color = palette.color(palette.PlaceholderText) # This enum value has been introduced in Qt 5.12
+        # This enum value has been introduced in Qt 5.12
+        color = palette.color(palette.PlaceholderText)
         palette.setColor(palette.Text, color)
         palette.setColor(palette.Text, color)
         label.setPalette(palette)
@@ -84,4 +85,3 @@ class QWidget_PlaceholderText(QWidget):
     def hide_placeholder_text(self):
         """Hide the placeholder text"""
         self._placeholder_label.hide()
-
