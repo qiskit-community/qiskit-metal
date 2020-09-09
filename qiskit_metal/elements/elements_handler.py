@@ -144,10 +144,10 @@ ELEMENT_COLUMNS = dict(
     junction=dict(
         width=float,
         __renderers__=dict(
-        )                
+        )
     ),
     ################################################
-    # Specifies a curved object, such as a circle. Perhaps as a buffered point 
+    # Specifies a curved object, such as a circle. Perhaps as a buffered point
     # Not yet implemented
     # curved = dict(
     # __renderers__= dict(
@@ -264,7 +264,9 @@ class QGeometryTables(object):
         self._design = design
 
         self._tables = Dict()
-        self.create_tables()
+
+        # Need to call after columns are added by add_renderer_extenstion is run by all the renderers.
+        # self.create_tables()
 
     @property
     def design(self) -> 'QDesign':
@@ -380,7 +382,8 @@ class QGeometryTables(object):
 
             # Create df with correct column names
             table = GeoDataFrame(data_frame_empty_typed(columns))
-            table.name = table_name  # not used elsewhere, also the name becomes "name" for some reason
+            # not used elsewhere, also the name becomes "name" for some reason
+            table.name = table_name
 
             # Assign
             self.tables[table_name] = table
@@ -402,7 +405,7 @@ class QGeometryTables(object):
             \n  ELEMENT_TABLE_NAME = {table_name}\
             \n  KEY                = {k} \
             \n  VALUE              = {v}\n '
-        #Are these assertions still holding true?
+        # Are these assertions still holding true?
         for k, v in column_dict.items():
             assert isinstance(k, str), __pre.format(**locals()) +\
                 ' Key needs to be a string!'
