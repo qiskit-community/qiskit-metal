@@ -904,13 +904,17 @@ class QDesign():
             renderer = str.strip(renderer)
             if renderer == 'gds':
                 # Add columns to junction table in the element handler for file path.
-                self._qgeometry.add_renderer_extension('gds', dict(
-                    junction=dict(
-                        path_filename=str
-                    )
-                ))
+                self._qgeometry.add_renderer_extension('gds', {
+                    'junction': {
+                        'path_filename': None
+                    }}
+                )
             if renderer == 'hfss':
                 # Add columns to juction talbe for inductance value.
-                pass
+                self._qgeometry.add_renderer_extension('hfss', {
+                    'junction': {
+                        'inductance': None
+                    }}
+                )
             else:
                 pass  # Not sure yes what to do.

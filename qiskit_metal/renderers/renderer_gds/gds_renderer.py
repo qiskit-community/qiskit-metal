@@ -122,6 +122,16 @@ class GDSRender(QRenderer):
         # check the scale
         self.check_bounding_box_scale()
 
+        GDSRender.load()
+
+        # When additional columns are added to QGeometry, this is the data to populate it.
+        # e.g. element_extensions = dict(
+        #         base=dict(color=str, klayer=int),
+        #         path=dict(thickness=float, material=str, perfectE=bool),
+        #         poly=dict(thickness=float, material=str), )
+        element_extensions = dict(
+            junction=dict('path_file'=None))
+
     def parse_value(self, value: 'Anything') -> 'Anything':
         """Same as design.parse_value. See design for help.
 
@@ -598,7 +608,6 @@ class GDSRender(QRenderer):
                                 f'There is no table named diff_geometry to write.')
                         else:
                             ground_cell.add(diff_geometry)
-
 
                     if self.chip_info[chip_name][chip_layer]['q_subtract_false'] is None:
                         self.logger.warning(
