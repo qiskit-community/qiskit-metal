@@ -477,14 +477,15 @@ class QGeometryTables(object):
                               f' The call was with subtract={subtract} and helper={helper}'
                               f' and layer={layer}, and options={other_options}')
 
-        # Create options
+        # Create options TODO: Might want to modify this
         options = dict(component=component_name, subtract=subtract,
                        helper=helper, layer=int(layer), chip=chip, **other_options)
 
+        #Could we just append rather than make a new table each time? This seems slow
         table = self.tables[kind]
 
-        # assert that all names in options are in table columns!
-        # mauybe check
+        # assert that all names in options are in table columns! TODO: New approach will not be wanting
+        #to do this (maybe check that all columns are in options?)
         df = GeoDataFrame.from_dict(
             geometry, orient='index', columns=['geometry'])
         df.index.name = 'name'

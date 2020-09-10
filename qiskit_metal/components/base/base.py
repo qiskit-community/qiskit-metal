@@ -888,6 +888,7 @@ class QComponent():
         # assert (subtract and helper) == False, "The object can't be a subtracted helper. Please"\
         #    " choose it to either be a helper or a a subtracted layer, but not both. Thank you."
 
+        #TODO:Will want to pass self.options or maybe self.options.renderer_options here too
         self.design.qgeometry.add_qgeometry(kind, self.id, geometry, subtract=subtract,
                                             helper=helper, layer=layer, chip=chip, **kwargs)
 
