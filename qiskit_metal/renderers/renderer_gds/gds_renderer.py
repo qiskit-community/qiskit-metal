@@ -96,9 +96,6 @@ class GDSRender(QRenderer):
     name = 'gds'
     """name"""
 
-    element_extensions = dict()
-    """element extentions dictionary"""
-
     def __init__(self, design: 'QDesign', initiate=True, render_template: Dict = None, render_options: Dict = None):
         """Create a QRenderer for GDS interface: export and import.
 
@@ -123,15 +120,17 @@ class GDSRender(QRenderer):
         # check the scale
         self.check_bounding_box_scale()
 
-        GDSRender.load()
-
         # When additional columns are added to QGeometry, this is the data to populate it.
         # e.g. element_extensions = dict(
         #         base=dict(color=str, klayer=int),
         #         path=dict(thickness=float, material=str, perfectE=bool),
         #         poly=dict(thickness=float, material=str), )
-        element_extensions = {
-            'junction': {'path_file': ''}}
+        """element extentions dictionary   element_extensions = dict() from base class"""
+
+        # Add columns to junction table in the element handler for file path.
+        self.element_extensions['junction'] = {'path_filename': ''}
+
+        GDSRender.load()
 
     def parse_value(self, value: 'Anything') -> 'Anything':
         """Same as design.parse_value. See design for help.

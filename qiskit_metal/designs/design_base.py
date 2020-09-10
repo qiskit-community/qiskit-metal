@@ -152,7 +152,7 @@ class QDesign():
         if enable_renderers:
             self._start_renderers()
 
-        # Take out of the QGeometryTables init(). Add add_renderer_extension() within _start_renderers()
+        # Take out of the QGeometryTables init(). Add add_renderer_extension() during renderer's init().
         # Need to add columns to Junction tables before create_tables().
         self._qgeometry.create_tables()
 
@@ -891,30 +891,8 @@ class QDesign():
         a_gds = GDSRender(self, initiate=True)
 
         # Every renderer using QRender as base class will have method to get unique name.
+        # Add columns to junction table in the element handler
         unique_name = a_gds._get_unique_class_name
 
         # register renderers here.
         self._renderers['gds'] = a_gds
-
-        self._add_columns_qgeometry_tables()
-
-    def _add_columns_qgeometry_tables(self):
-
-        for renderer, value in self._renderers.items():
-            renderer = str.strip(renderer)
-            if renderer == 'gds':
-                # Add columns to junction table in the element handler for file path.
-                self._qgeometry.add_renderer_extension('gds', {
-                    'junction': {
-                        'path_filename': None
-                    }}
-                )
-            if renderer == 'hfss':
-                # Add columns to juction talbe for inductance value.
-                self._qgeometry.add_renderer_extension('hfss', {
-                    'junction': {
-                        'inductance': None
-                    }}
-                )
-            else:
-                pass  # Not sure yes what to do.

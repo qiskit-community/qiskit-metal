@@ -95,7 +95,6 @@ class QRenderer():
         QGeometryTables.add_renderer_extension(
             cls.name, cls.element_extensions)
 
-        # Add component extensions
         # to be used in the creation of default params for component qgeometry
         #raise NotImplementedError()
 
