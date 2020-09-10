@@ -24,8 +24,8 @@ class TransmonConcentric(BaseQubit):
         fbl_ext = '300um', # run length of flux bias line between circular loop and edge of pocket
         pocket_w = '1500um', # transmon pocket width
         pocket_h = '1000um', # transmon pocket height
-        position_x = '5.0mm',
-        position_y = '5.0mm',
+        position_x = '2.0mm',
+        position_y = '2.0mm',
         cpw_width = '10.0um'
         )
 
@@ -74,17 +74,22 @@ class TransmonConcentric(BaseQubit):
         # Translate all
         objects = [outer_pad, inner_pad, jj_t, jj_b, pocket, rr, fbl]
         objects = draw.translate(objects, xoff=p.position_x, yoff=p.position_y)
-#        [outer_pad, inner_pad, jj_t, jj_b, pocket, rr, fbl] = objects
+        [outer_pad, inner_pad, jj_t, jj_b, pocket, rr, fbl] = objects
 
 ################################################################################################
 
         # Use the geometry to create Metal QGeometry
-        geom = {'path1': rr, 'path2': fbl}
-        geom2 = {'poly1': outer_pad, 'poly2': inner_pad} #, 'poly3': jj_t, 'poly4': jj_b}
+        geom_rr = {'path1': rr}
+        geom_fbl = {'path2': fbl}
+        geom_outer = {'poly1': outer_pad} 
+        geom_inner = {'poly2': inner_pad} 
         geom3 = {'poly3': jj_t, 'poly4': jj_b} #, 'poly3': pocket}
         geom4 = {'poly5': pocket}
-        self.add_qgeometry('path', geom, layer=1, subtract=False) #, width=p.cpw_width)
-        self.add_qgeometry('poly', geom2, layer=1, subtract=False)
+        self.add_qgeometry('path', geom_rr, layer=1, subtract=False, width=p.cpw_width)
+        self.add_qgeometry('path', geom_fbl, layer=1, subtract=False, width=p.cpw_width)
+        self.add_qgeometry('poly', geom_outer, layer=1, subtract=False)
+        self.add_qgeometry('poly', geom_inner, layer=1, subtract=False)
+#        self.add_qgeometry('poly', geom2, layer=1, subtract=False)
         self.add_qgeometry('poly', geom3, layer=1, subtract=False)
         self.add_qgeometry('poly', geom4, layer=1, subtract=True)
 
