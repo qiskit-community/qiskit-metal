@@ -131,7 +131,7 @@ class GDSRender(QRenderer):
         #         path=dict(thickness=float, material=str, perfectE=bool),
         #         poly=dict(thickness=float, material=str), )
         element_extensions = {
-            'junction': {'path_file': None}}
+            'junction': {'path_file': ''}}
 
     def parse_value(self, value: 'Anything') -> 'Anything':
         """Same as design.parse_value. See design for help.
@@ -712,24 +712,29 @@ class GDSRender(QRenderer):
 
             Only fillet, if number is greater than zero.
             '''
-            if math.isnan(element.fillet) or element.fillet <= 0 or element.fillet < element.width:
-                to_return = gdspy.FlexPath(list(geom.coords),
-                                           width=element.width,
-                                           # layer=element.layer if not element['subtract'] else 0,
-                                           layer=element.layer,
-                                           datatype=11)
+            if math.isnan(element.width):
+                self.logger.warning(
+                    f'The width for a Path is not a number. The Path is not being exported for GDS.'
+                )
             else:
-                to_return = gdspy.FlexPath(list(geom.coords),
-                                           width=element.width,
-                                           # layer=element.layer if not element['subtract'] else 0,
-                                           layer=element.layer,
-                                           datatype=11,
-                                           corners=corners,
-                                           bend_radius=element.fillet,
-                                           tolerance=tolerance,
-                                           precision=precision
-                                           )
-            return to_return
+                if math.isnan(element.fillet) or element.fillet <= 0 or element.fillet < element.width:
+                    to_return = gdspy.FlexPath(list(geom.coords),
+                                               width=element.width,
+                                               # layer=element.layer if not element['subtract'] else 0,
+                                               layer=element.layer,
+                                               datatype=11)
+                else:
+                    to_return = gdspy.FlexPath(list(geom.coords),
+                                               width=element.width,
+                                               # layer=element.layer if not element['subtract'] else 0,
+                                               layer=element.layer,
+                                               datatype=11,
+                                               corners=corners,
+                                               bend_radius=element.fillet,
+                                               tolerance=tolerance,
+                                               precision=precision
+                                               )
+                return to_return
         else:
             # TODO: Handle
             self.logger.warning(
