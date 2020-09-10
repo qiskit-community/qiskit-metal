@@ -97,7 +97,7 @@ class QRenderer():
 
         # Add component extensions
         # to be used in the creation of default params for component qgeometry
-        raise NotImplementedError()
+        #raise NotImplementedError()
 
         # Finish and register offically as ready to use.
         QRenderer.__loaded_renderers__.add(name)
