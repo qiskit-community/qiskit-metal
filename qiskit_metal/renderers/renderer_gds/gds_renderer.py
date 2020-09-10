@@ -96,6 +96,18 @@ class GDSRender(QRenderer):
     name = 'gds'
     """name"""
 
+    # When additional columns are added to QGeometry, this is the example to populate it.
+    # e.g. element_extensions = dict(
+    #         base=dict(color=str, klayer=int),
+    #         path=dict(thickness=float, material=str, perfectE=bool),
+    #         poly=dict(thickness=float, material=str), )
+    """element extentions dictionary   element_extensions = dict() from base class"""
+
+    # Add columns to junction table during GDSRender.load()
+    element_extensions = dict(
+        junction=dict(path_filename=str)
+    )
+
     def __init__(self, design: 'QDesign', initiate=True, render_template: Dict = None, render_options: Dict = None):
         """Create a QRenderer for GDS interface: export and import.
 
@@ -119,16 +131,6 @@ class GDSRender(QRenderer):
 
         # check the scale
         self.check_bounding_box_scale()
-
-        # When additional columns are added to QGeometry, this is the data to populate it.
-        # e.g. element_extensions = dict(
-        #         base=dict(color=str, klayer=int),
-        #         path=dict(thickness=float, material=str, perfectE=bool),
-        #         poly=dict(thickness=float, material=str), )
-        """element extentions dictionary   element_extensions = dict() from base class"""
-
-        # Add columns to junction table in the element handler for file path.
-        self.element_extensions['junction'] = {'path_filename': ''}
 
         GDSRender.load()
 
@@ -716,24 +718,33 @@ class GDSRender(QRenderer):
                     f'The width for a Path is not a number. The Path is not being exported for GDS.'
                 )
             else:
-                if math.isnan(element.fillet) or element.fillet <= 0 or element.fillet < element.width:
-                    to_return = gdspy.FlexPath(list(geom.coords),
-                                               width=element.width,
-                                               # layer=element.layer if not element['subtract'] else 0,
-                                               layer=element.layer,
-                                               datatype=11)
+                if 'fillet' in element:
+                    if math.isnan(element.fillet) or element.fillet <= 0 or element.fillet < element.width:
+                        to_return = gdspy.FlexPath(list(geom.coords),
+                                                   width=element.width,
+                                                   # layer=element.layer if not element['subtract'] else 0,
+                                                   layer=element.layer,
+                                                   datatype=11)
+                    else:
+                        to_return = gdspy.FlexPath(list(geom.coords),
+                                                   width=element.width,
+                                                   # layer=element.layer if not element['subtract'] else 0,
+                                                   layer=element.layer,
+                                                   datatype=11,
+                                                   corners=corners,
+                                                   bend_radius=element.fillet,
+                                                   tolerance=tolerance,
+                                                   precision=precision
+                                                   )
+                    return to_return
                 else:
-                    to_return = gdspy.FlexPath(list(geom.coords),
-                                               width=element.width,
-                                               # layer=element.layer if not element['subtract'] else 0,
-                                               layer=element.layer,
-                                               datatype=11,
-                                               corners=corners,
-                                               bend_radius=element.fillet,
-                                               tolerance=tolerance,
-                                               precision=precision
-                                               )
-                return to_return
+                    # Could be junction table with a linestring.
+                    # Look for gds_path_filename in column.
+                    self.logger.warning(
+                        f'Linestring did not have fillet in column. The element was not drawn.\n'
+                        f'The element within talbe is:\n'
+                        f'{element}'
+                    )
         else:
             # TODO: Handle
             self.logger.warning(

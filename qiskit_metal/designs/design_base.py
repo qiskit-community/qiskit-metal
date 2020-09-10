@@ -892,7 +892,7 @@ class QDesign():
 
         # Every renderer using QRender as base class will have method to get unique name.
         # Add columns to junction table in the element handler
-        unique_name = a_gds._get_unique_class_name
+        #unique_name = a_gds._get_unique_class_name()
 
         # register renderers here.
         self._renderers['gds'] = a_gds

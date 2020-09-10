@@ -268,7 +268,6 @@ class QComponent():
 
         return options_from_children
 
-
     @classmethod
     def _gather_all_children_metadata(cls):
         '''
@@ -292,7 +291,6 @@ class QComponent():
                     **options_from_children, **child.component_metadata}
 
         return options_from_children
-
 
     @classmethod
     def _get_unique_class_name(cls) -> str:
@@ -627,12 +625,12 @@ class QComponent():
 #   Will they operate properly with non-planar designs?
 
     def add_pin(self,
-                name: str,  #Should be static based on component designer's choice
+                name: str,  # Should be static based on component designer's choice
                 points: np.ndarray,
                 width: float,
                 input_as_norm: bool = False,
                 chip: str = 'main',
-                gap: float = None): #gap defaults to 0.6 * width
+                gap: float = None):  # gap defaults to 0.6 * width
         """
         Adds a pin from two points which are normal/tangent to the intended plane of the pin.
         The normal should 'point' in the direction of intended connection. Adds the 
@@ -691,7 +689,7 @@ class QComponent():
             ..........|
         """
         assert len(points) == 2
-        
+
         if gap is None:
             gap = width * 0.6
 
@@ -706,16 +704,14 @@ class QComponent():
                 vec_normal, -(np.pi/2))) * width/2 + points[1]
             points = [s_point, e_point]
             tangent_vector = Vector.rotate(vec_normal, np.pi/2)
-            
-            
+
            # self.pins[name] = self.make_pin_as_normal(
-              #  points, width, chip)
+            #  points, width, chip)
         else:
             vec_dist, tangent_vector, vec_normal = draw.Vector.two_points_described(
-            points)
+                points)
             middle_point = np.sum(points, axis=0)/2.
             width = np.linalg.norm(vec_dist)
-
 
         pin_dict = Dict(
             points=points,
@@ -728,12 +724,11 @@ class QComponent():
             parent_name=self.id,
             net_id=0,
             # Place holder value for potential future property (auto-routing cpw with
-            #length limit)
+            # length limit)
             length=0
         )
 
         self.pins[name] = pin_dict
-
 
     def get_pin(self, name: str):
         """Interface for components to get pin data
@@ -781,7 +776,7 @@ class QComponent():
                     false_pin = True
                 elif self.design._components[component].pins[pin].net_id:
                     pin_in_use = True
-            #Should modify to allow for multiple error messages to be returned.
+            # Should modify to allow for multiple error messages to be returned.
             if false_component:
                 self._error_message = f'Component {component} does not exist. {self.name} has not been built. Please check your pin_input values.'
                 return 'Component Does Not Exist'
@@ -793,7 +788,7 @@ class QComponent():
                 return 'Pin In Use'
         return None
 
-    #This method does not appear to be being used anywhere. 
+    # This method does not appear to be being used anywhere.
     def connect_components_already_in_design(self, pin_name_self: str, comp2_id: int, pin2_name: str) -> int:
         """WARNING: Do NOT use this method during generation of component instance.
             This method is expecting self to be added to design._components dict.  More importantly,
