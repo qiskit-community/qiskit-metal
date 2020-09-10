@@ -267,6 +267,11 @@ class QMplRenderer():
             render_func = getattr(self, f'render_{element_type}')
             render_func(table1, ax, subtracted=False)
 
+    def render_junction(self, table: pd.DataFrame, ax: Axes, subtracted: bool = False, extra_kw: dict = None):
+        """For Now, do nothing.  TODO:render junction tables. 
+        """
+        pass
+
     def render_poly(self, table: pd.DataFrame, ax: Axes, subtracted: bool = False, extra_kw: dict = None):
         """
         Render a table of poly geometry.
