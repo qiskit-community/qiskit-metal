@@ -24,12 +24,12 @@ from PyQt5.QtWidgets import (QMainWindow, QFileDialog, QListView,
 from .renderer_gds_ui import Ui_MainWindow
 
 from .list_model_base import DynamicList
-from .tree_model_base import QTreeModel_Base
+from .renderer_gds_model import RendererGDS_Model
 
 class RendererGDSWidget(QMainWindow):
     """Contains methods associated with GDS Renderer button."""
 
-    def __init__(self, design: 'QDesign', parent: 'QMainWindow'):
+    def __init__(self, design: 'QDesign', parent: 'QMainWindow', gui: 'MetalGUI'):
         """
         Get access to design, which has the components.
         Then set up the model and view.
@@ -37,21 +37,23 @@ class RendererGDSWidget(QMainWindow):
         Args:
             design (QDesign): The design
             parent (QMainWindow): The parent window
+            gui (MetalGUI): The metal GUI
         """
         super().__init__(parent)
 
-        # Access design:
+        # Access design and Metal GUI:
         self._design = design
 
         # Use UI template from Qt Designer:
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
-        # Set up a models for component list and options tree:
+        # Set up models for component list and options tree:
         self.listView = self.ui.listView
         self.list_model = DynamicList(self.design)
         self.listView.setModel(self.list_model)
-        self.tree_model = QTreeModel_Base(self, design, self.ui.treeView)
+
+        self.tree_model = RendererGDS_Model(self, gui, self.ui.treeView)
         self.ui.treeView.setModel(self.tree_model)
         self.ui.treeView.setVerticalScrollMode(
             QAbstractItemView.ScrollPerPixel)
