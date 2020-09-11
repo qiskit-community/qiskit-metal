@@ -132,6 +132,7 @@ class TransmonPocket(BaseQubit):
         # 90 has dipole aligned along the +X axis,
         # while 0 has dipole aligned along the +Y axis
         orientation='0',
+        table_types=['path', 'poly'],
         _default_connection_pads=Dict(
             pad_gap='15um',
             pad_width='125um',
