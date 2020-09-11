@@ -35,6 +35,7 @@ import numpy as np
 from qiskit_metal import draw, Dict
 from qiskit_metal.components.qubits.transmon_pocket import TransmonPocket
 
+
 class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
     """
     The base `TransmonPocketCL` class
@@ -80,17 +81,19 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
     """
     component_metadata = Dict(
         short_name='Q'
-        )
+    )
     """Component metadata"""
 
     default_options = Dict(
         make_CL=True,
         cl_gap='6um',  # the cpw dielectric gap of the charge line
         cl_width='10um',  # the cpw trace width of the charge line
-        cl_length='20um',  # the length of the charge line 'arm' coupling the the qubit pocket.
-        #Measured from the base of the 90 degree bend
+        # the length of the charge line 'arm' coupling the the qubit pocket.
+        cl_length='20um',
+        # Measured from the base of the 90 degree bend
         cl_ground_gap='6um',  # how much ground between the charge line and the qubit pocket
-        cl_pocket_edge='0', #-180 to +180 from the 'left edge', will round to the nearest 90.
+        # -180 to +180 from the 'left edge', will round to the nearest 90.
+        cl_pocket_edge='0',
         cl_off_center='100um',  # distance from the center axis the qubit pocket is built on
     )
     """Default drawing options"""
@@ -121,24 +124,24 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
 
         cl_etcher = draw.buffer(cl_metal, p.cl_gap)
 
-        port_line = draw.LineString([(-8*p.cl_width, 0), (-8*p.cl_width, p.cl_width)])
+        port_line = draw.LineString(
+            [(-8*p.cl_width, 0), (-8*p.cl_width, p.cl_width)])
 
         polys = [cl_metal, cl_etcher, port_line]
 
         # Move the charge line to the side user requested
         cl_rotate = 0
-        if (abs(p.cl_pocket_edge) > 135) or (abs(p.cl_pocket_edge) <45):
+        if (abs(p.cl_pocket_edge) > 135) or (abs(p.cl_pocket_edge) < 45):
             polys = draw.translate(polys, -(p.pocket_width/2 + p.cl_ground_gap + p.cl_gap),
-             -(p.pad_gap + p.pad_height)/2)
+                                   -(p.pad_gap + p.pad_height)/2)
             if (abs(p.cl_pocket_edge) > 135):
                 p.cl_rotate = 180
         else:
             polys = draw.translate(
                 polys, -(p.pocket_height/2 + p.cl_groundGap + p.cl_gap), -(p.pad_width)/2)
             cl_rotate = 90
-            if (p.cl_pocket_edge<0):
+            if (p.cl_pocket_edge < 0):
                 cl_rotate = -90
-
 
         # Rotate it to the pockets orientation
         polys = draw.rotate(polys, p.orientation + cl_rotate, origin=(0, 0))
@@ -152,6 +155,6 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
         points = list(draw.shapely.geometry.shape(port_line).coords)
         self.add_pin(name, points, p.cl_width)  # TODO: chip
 
-        #Adding to element table
+        # Adding to element table
         self.add_qgeometry('poly', dict(cl_metal=cl_metal))
         self.add_qgeometry('poly', dict(cl_etcher=cl_etcher), subtract=True)

@@ -62,8 +62,11 @@ class BaseQubit(QComponent):
 
     component_metadata = Dict(
         short_name='Q'
-        )
+    )
     """Component metadata"""
+
+    table_types = Dict(
+        poly=True)
 
     def __init__(self, design, name=None, options=None, options_connection_pads=None,
                  make=True):
@@ -81,7 +84,7 @@ class BaseQubit(QComponent):
         """
         super().__init__(design, name, options=options, make=False)
 
-        if  self.status == 'Not Built':
+        if self.status == 'Not Built':
             # Component is not registered in design.
             # This qubit was not added to design.
             # self.logger.warning(
@@ -100,7 +103,7 @@ class BaseQubit(QComponent):
         """
         Applies the default options
         """
-        #class_name = type(self).__name__
+        # class_name = type(self).__name__
         assert '_default_connection_pads' in self.design.template_options[self.class_name], f"""When
         you define your custom qubit class please add a _default_connection_pads
         dicitonary name as default_options['_default_connection_pads']. This should specify the default

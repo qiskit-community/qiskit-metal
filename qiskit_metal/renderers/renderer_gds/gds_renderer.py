@@ -50,6 +50,12 @@ class GDSRender(QRenderer):
     #: Type: Dict[str, str]
     default_options = Dict(
 
+        # To update component.options junction table
+        qgeometry_table_junction=Dict(file_path=''),
+        qgeometry_table_path=Dict(),
+        qgeometry_table_poly=Dict(),
+
+
 
         # DO NOT MODIFY `gds_unit`. Gets overwritten by ``set_units``.
         # gdspy unit is 1 meter.  gds_units appear to ONLY be used during write_gds().
