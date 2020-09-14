@@ -8,7 +8,7 @@
 To setup a development environment, first `git clone` this repository.
 
 * On your computer, clone the repository from qiskit-metal/v0.2-dev:
-`git clone https://github.ibm.com/IBM-Q-Restricted-Research/qiskit-metal.git --branch v0.2-dev`
+`git clone git@github.ibm.com:IBM-Q-Restricted-Research/qiskit-metal.git --branch v0.2-dev`
 
 * Note: If you don't have git installed, you can download and use [GitHub Desktop GUI](https://desktop.github.com/) and see these [notes](https://help.github.com/en/desktop/contributing-to-projects/cloning-a-repository-from-github-to-github-desktop).
 
