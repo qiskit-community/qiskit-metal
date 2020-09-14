@@ -152,6 +152,16 @@ class QDesign():
         if enable_renderers:
             self._start_renderers()
 
+        # Dict to populate the columns of QGeometry table i.e. path, junction, poly etc.
+        # Dict layout example:
+        #    gds is key , value is dict of keys of path, or poly or junction
+        #           junction is key, value is dict
+        #               key is filename, value is path/filename
+        #    ansys is key, value is dict of keys with  path or  poly  or jucntion
+        #           jucnction is key, value is dict
+        #               key is inductance, value is inductance_value
+        renderer_defaults_by_table = Dict()
+
         # Take out of the QGeometryTables init(). Add add_renderer_extension() during renderer's init().
         # Need to add columns to Junction tables before create_tables().
         self._qgeometry.create_tables()
@@ -683,6 +693,7 @@ class QDesign():
 
 #########I/O###############################################################
 
+
     @classmethod
     def load_design(cls, path: str):
         """
@@ -874,7 +885,6 @@ class QDesign():
 
 
 ######### Renderers ###############################################################
-
 
     def _start_renderers(self):
         """ For now, load only GDS.  However, will need to determine
