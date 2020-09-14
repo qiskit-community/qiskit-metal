@@ -454,6 +454,7 @@ class PlotCanvas(FigureCanvas):
                 self._watermark_axis(ax)
 
         def final():
+            self.draw()
             # Restore the state
             ax.set_xlim(self._state['xlim'])
             ax.set_ylim(self._state['ylim'])
