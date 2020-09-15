@@ -13,6 +13,7 @@ import shapely
 
 from qiskit_metal.renderers.renderer_base import QRenderer
 from qiskit_metal.toolbox_metal.parsing import is_true
+from qiskit_metal.toolbox_python.utility_functions import can_write_to_path
 
 from ... import Dict
 
@@ -103,13 +104,10 @@ class GDSRender(QRenderer):
     """element extentions dictionary   element_extensions = dict() from base class"""
 
     # Add columns to junction table during GDSRender.load()
-    # TO DO write a method to populate this dict by key/values from element_table_data.
+    # element_extensions  is now being populated as part of load().
+    # Determined from element_table_data.
 
-    # Depreciated. This is now being populated as part of load()
-    # element_extensions = dict(
-    #     junction=dict(path_filename=str)
-    # )
-
+    # Dict structure MUST be same as  element_extensions!!!!!!
     # This dict will be used to update QDesign during init of renderer.
     # Keeping this as a cls dict so could be edited before renderer is instantiated.
     # To update component.options junction table.
@@ -144,9 +142,6 @@ class GDSRender(QRenderer):
         # TODO use method to populate element_extentions from element_table_data.
         # Note element_extentions would be used in load()
         GDSRender.load()
-
-        # Needs to have QDesign object already instantiated.
-        self.add_table_data_to_QDesign(GDSRender.name)
 
     def parse_value(self, value: 'Anything') -> 'Anything':
         """Same as design.parse_value. See design for help.

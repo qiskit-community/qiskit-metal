@@ -25,7 +25,7 @@ from typing import List, Tuple, Union
 
 from qiskit_metal.designs import is_design
 from qiskit_metal.elements import QGeometryTables
-from qiskit_metal.toolbox_python.utility_functions import can_write_to_path
+
 from ... import Dict
 
 __all__ = ['QRenderer']
@@ -316,7 +316,7 @@ class QRenderer():
                 f'In add_table_data_to_QDesign, cls.str={QRenderer.name} is not a str.')
             return
 
-        for table, a_dict in QRenderer.element_table_data.items():
+        for table, a_dict in self.element_table_data.items():
             for col_name, col_value in a_dict.items():
                 status = self.design.add_default_data_for_qgeometry_tables(
                     table, class_name, col_name, col_value)

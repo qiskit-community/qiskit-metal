@@ -147,13 +147,13 @@ class QDesign():
 
         self._qnet = QNet()
 
+        # Dict used to populate the columns of QGeometry table i.e. path, junction, poly etc.
+        self.renderer_defaults_by_table = Dict()
+
         # Instantiate and register renderers to Qdesign.renderers
         self._renderers = Dict()
         if enable_renderers:
             self._start_renderers()
-
-        # Dict used to populate the columns of QGeometry table i.e. path, junction, poly etc.
-        self.renderer_defaults_by_table = Dict()
 
         # Take out of the QGeometryTables init(). Add add_renderer_extension() during renderer's init().
         # Need to add columns to Junction tables before create_tables().
@@ -686,6 +686,7 @@ class QDesign():
 
 #########I/O###############################################################
 
+
     @classmethod
     def load_design(cls, path: str):
         """
@@ -878,7 +879,6 @@ class QDesign():
 
 ######### Renderers ###############################################################
 
-
     def _start_renderers(self):
         """ For now, load only GDS.  However, will need to determine
         if mpl needs to be loaded, because it is conencted to GUI.
@@ -899,6 +899,9 @@ class QDesign():
 
         # register renderers here.
         self._renderers['gds'] = a_gds
+
+        for render_name, a_render in self._renderers.items():
+            a_render.add_table_data_to_QDesign(a_render.name)
 
     def add_default_data_for_qgeometry_tables(self, table_name: str, renderer_name: str, column_name: str, column_value) -> set:
         # Dict used to populate the columns of QGeometry table i.e. path, junction, poly etc.
@@ -938,15 +941,15 @@ class QDesign():
             status.add(1)
 
         if renderer_name not in self.renderer_defaults_by_table[table_name].keys():
-            self.renderer_defaults_by_table[table_name][render_name] = Dict()
+            self.renderer_defaults_by_table[table_name][renderer_name] = Dict()
             status.add(2)
 
         if column_name not in self.renderer_defaults_by_table[table_name][renderer_name].keys():
-            self.renderer_defaults_by_table[table_name][render_name][column_name] = column_value
+            self.renderer_defaults_by_table[table_name][renderer_name][column_name] = column_value
             status.add(3)
             status.add(5)
         else:
-            self.renderer_defaults_by_table[table_name][render_name][column_name] = column_value
+            self.renderer_defaults_by_table[table_name][renderer_name][column_name] = column_value
             status.add(4)
             status.add(5)
 

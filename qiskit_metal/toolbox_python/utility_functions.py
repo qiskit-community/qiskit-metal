@@ -31,10 +31,11 @@ import os
 import pandas as pd
 
 from copy import deepcopy
+from qiskit_metal import logger
 
 __all__ = ['copy_update', 'dict_start_with', 'data_frame_empty_typed', 'clean_name',
            'enable_warning_traceback', 'get_traceback', 'print_traceback_easy', 'log_error_easy',
-           'monkey_patch']
+           'monkey_patch', 'can_write_to_path']
 
 ####################################################################################
 # Dictionary related
@@ -275,7 +276,7 @@ def monkey_patch(self, func, func_name=None):
 # File checking
 
 
-def can_write_to_path(self, file: str) -> int:
+def can_write_to_path(file: str) -> int:
     """Check if can write file.
 
     Args:
@@ -284,13 +285,13 @@ def can_write_to_path(self, file: str) -> int:
     Returns:
         int: 1 if access is allowed. Else returns 0, if access not given.
     """
-
+    a_logger = logger
     # If need to use lib pathlib.
     directory_name = os.path.dirname(os.path.abspath(file))
     if os.access(directory_name, os.W_OK):
         return 1
     else:
-        self.logger.warning(f'Not able to write to directory.'
-                            f'File:"{file}" not written.'
-                            f' Checked directory:"{directory_name}".')
+        a_logger.warning(f'Not able to write to directory.'
+                         f'File:"{file}" not written.'
+                         f' Checked directory:"{directory_name}".')
         return 0
