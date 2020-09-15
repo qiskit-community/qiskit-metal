@@ -106,9 +106,9 @@ class GDSRender(QRenderer):
     # TO DO write a method to populate this dict by key/values from element_table_data.
 
     # Depreciated. This is now being populated as part of load()
-    element_extensions = dict(
-        junction=dict(path_filename=str)
-    )
+    # element_extensions = dict(
+    #     junction=dict(path_filename=str)
+    # )
 
     # This dict will be used to update QDesign during init of renderer.
     # Keeping this as a cls dict so could be edited before renderer is instantiated.

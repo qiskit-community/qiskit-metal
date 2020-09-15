@@ -92,7 +92,7 @@ class QRenderer():
             print(
                 f'Warning: Renderer name={name}, class={cls} already loaded. Doing nothing.')
 
-        # cls.populate_element_extentions()
+        cls.populate_element_extentions()
 
         # Add element extensions
         # see docstring for QRenderer.element_extensions
@@ -119,11 +119,7 @@ class QRenderer():
             cls.element_extensions[table] = dict()
             for col_name, col_value in a_dict.items():
                 # type will only tell out about the base class, won't tell you about the inhertance.
-                type_str = str(type(col_value).__name__.replace("'", ""))
-                #type_str = type(col_value)
-                cls.element_extensions[table][col_name] = type_str
-
-        pass  # to put breakpoint.
+                cls.element_extensions[table][col_name] = type(col_value)
 
     @staticmethod
     def get_renderer(name: str):
