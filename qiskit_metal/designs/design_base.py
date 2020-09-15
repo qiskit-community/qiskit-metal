@@ -152,15 +152,8 @@ class QDesign():
         if enable_renderers:
             self._start_renderers()
 
-        # Dict to populate the columns of QGeometry table i.e. path, junction, poly etc.
-        # Dict layout example:
-        #    gds is key , value is dict of keys of path, or poly or junction
-        #           junction is key, value is dict
-        #               key is filename, value is path/filename
-        #    ansys is key, value is dict of keys with  path or  poly  or jucntion
-        #           jucnction is key, value is dict
-        #               key is inductance, value is inductance_value
-        renderer_defaults_by_table = Dict()
+        # Dict used to populate the columns of QGeometry table i.e. path, junction, poly etc.
+        self.renderer_defaults_by_table = Dict()
 
         # Take out of the QGeometryTables init(). Add add_renderer_extension() during renderer's init().
         # Need to add columns to Junction tables before create_tables().
@@ -693,7 +686,6 @@ class QDesign():
 
 #########I/O###############################################################
 
-
     @classmethod
     def load_design(cls, path: str):
         """
@@ -886,6 +878,7 @@ class QDesign():
 
 ######### Renderers ###############################################################
 
+
     def _start_renderers(self):
         """ For now, load only GDS.  However, will need to determine
         if mpl needs to be loaded, because it is conencted to GUI.
@@ -906,3 +899,55 @@ class QDesign():
 
         # register renderers here.
         self._renderers['gds'] = a_gds
+
+    def add_default_data_for_qgeometry_tables(self, table_name: str, renderer_name: str, column_name: str, column_value) -> set:
+        # Dict used to populate the columns of QGeometry table i.e. path, junction, poly etc.
+
+        # Dict layout and examples within parenthesis:
+        #     key: Only if need to add data to components, for each type of table (path,poly,or junction).
+        #     value: Dict which has
+        #
+        #           keys: render_name (gds), value: Dict which has
+        #                   keys: 'filename', value: (path/filename)
+        #           keys: render_name (hfss), value: Dict which has
+        #                   keys: 'inductance', value: (inductance_value)
+
+        # return 1 - added key for table_name
+        # return 2 - added key for renderer_name
+        # return 3 - added new key for column_name
+        # return 4 - since column_name already existed, column_value replaced previous column_value
+        # return 5 - Column value added
+        # return 6 - Expected str, got something else.
+
+        status = set()  # Empty Set
+
+        if not isinstance(table_name, str):
+            status.add(6)
+            return status
+
+        if not isinstance(renderer_name, str):
+            status.add(6)
+            return status
+
+        if not isinstance(column_name, str):
+            status.add(6)
+            return status
+
+        if table_name not in self.renderer_defaults_by_table.keys():
+            self.renderer_defaults_by_table[table_name] = Dict()
+            status.add(1)
+
+        if renderer_name not in self.renderer_defaults_by_table[table_name].keys():
+            self.renderer_defaults_by_table[table_name][render_name] = Dict()
+            status.add(2)
+
+        if column_name not in self.renderer_defaults_by_table[table_name][renderer_name].keys():
+            self.renderer_defaults_by_table[table_name][render_name][column_name] = column_value
+            status.add(3)
+            status.add(5)
+        else:
+            self.renderer_defaults_by_table[table_name][render_name][column_name] = column_value
+            status.add(4)
+            status.add(5)
+
+        return status

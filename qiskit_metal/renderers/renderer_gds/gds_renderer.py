@@ -103,13 +103,19 @@ class GDSRender(QRenderer):
     """element extentions dictionary   element_extensions = dict() from base class"""
 
     # Add columns to junction table during GDSRender.load()
+    # TO DO write a method to populate this dict by key/values from element_table_data.
+
+    # Depreciated. This is now being populated as part of load()
     element_extensions = dict(
         junction=dict(path_filename=str)
     )
-    # To update component.options junction table
-    qgeometry_table_junction = Dict(file_path=''),
-    qgeometry_table_path = Dict(),
-    qgeometry_table_poly = Dict(),
+
+    # This dict will be used to update QDesign during init of renderer.
+    # Keeping this as a cls dict so could be edited before renderer is instantiated.
+    # To update component.options junction table.
+    element_table_data = dict(
+        junction=dict(path_filename='Need_a_path_and_file')
+    )
 
     def __init__(self, design: 'QDesign', initiate=True, render_template: Dict = None, render_options: Dict = None):
         """Create a QRenderer for GDS interface: export and import.
@@ -135,7 +141,12 @@ class GDSRender(QRenderer):
         # check the scale
         self.check_bounding_box_scale()
 
+        # TODO use method to populate element_extentions from element_table_data.
+        # Note element_extentions would be used in load()
         GDSRender.load()
+
+        # Needs to have QDesign object already instantiated.
+        self.add_table_data_to_QDesign(GDSRender.name)
 
     def parse_value(self, value: 'Anything') -> 'Anything':
         """Same as design.parse_value. See design for help.
@@ -171,26 +182,26 @@ class GDSRender(QRenderer):
         """Clear current library."""
         gdspy.current_library.cells.clear()
 
-    # TODO: Move to toolbox_python utility and call there
-    def _can_write_to_path(self, file: str) -> int:
-        """Check if can write file.
+    # # TODO: Move to toolbox_python utility and call there
+    # def _can_write_to_path(self, file: str) -> int:
+    #     """Check if can write file.
 
-        Args:
-            file (str): Has the path and/or just the file name.
+    #     Args:
+    #         file (str): Has the path and/or just the file name.
 
-        Returns:
-            int: 1 if access is allowed. Else returns 0, if access not given.
-        """
+    #     Returns:
+    #         int: 1 if access is allowed. Else returns 0, if access not given.
+    #     """
 
-        # If need to use lib pathlib.
-        directory_name = os.path.dirname(os.path.abspath(file))
-        if os.access(directory_name, os.W_OK):
-            return 1
-        else:
-            self.logger.warning(f'Not able to write to directory.'
-                                f'File:"{file}" not written.'
-                                f' Checked directory:"{directory_name}".')
-            return 0
+    #     # If need to use lib pathlib.
+    #     directory_name = os.path.dirname(os.path.abspath(file))
+    #     if os.access(directory_name, os.W_OK):
+    #         return 1
+    #     else:
+    #         self.logger.warning(f'Not able to write to directory.'
+    #                             f'File:"{file}" not written.'
+    #                             f' Checked directory:"{directory_name}".')
+    #         return 0
 
     def update_units(self):
         """Update the options in the units.
@@ -651,7 +662,7 @@ class GDSRender(QRenderer):
             int: 0=file_name can not be written, otherwise 1=file_name has been written
         """
 
-        if not self._can_write_to_path(file_name):
+        if not can_write_to_path(file_name):
             return 0
 
         # There can be more than one chip in QGeometry.  They all export to one gds file.

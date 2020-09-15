@@ -27,6 +27,7 @@ import traceback
 import warnings
 import logging
 import sys
+import os
 import pandas as pd
 
 from copy import deepcopy
@@ -155,7 +156,9 @@ def clean_name(text: str):
 ####################################################################################
 # Tracebacks
 
+
 _old_warn = None
+
 
 def enable_warning_traceback():
     """
@@ -266,3 +269,28 @@ def monkey_patch(self, func, func_name=None):
     func_name = func_name or func.__name__
     setattr(self, func_name, func.__get__(self, self.__class__))
     # what happens if we reload the class or swap in real time?
+
+
+#######################################################################################
+# File checking
+
+
+def can_write_to_path(self, file: str) -> int:
+    """Check if can write file.
+
+    Args:
+        file (str): Has the path and/or just the file name.
+
+    Returns:
+        int: 1 if access is allowed. Else returns 0, if access not given.
+    """
+
+    # If need to use lib pathlib.
+    directory_name = os.path.dirname(os.path.abspath(file))
+    if os.access(directory_name, os.W_OK):
+        return 1
+    else:
+        self.logger.warning(f'Not able to write to directory.'
+                            f'File:"{file}" not written.'
+                            f' Checked directory:"{directory_name}".')
+        return 0

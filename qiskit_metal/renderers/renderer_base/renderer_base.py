@@ -25,6 +25,7 @@ from typing import List, Tuple, Union
 
 from qiskit_metal.designs import is_design
 from qiskit_metal.elements import QGeometryTables
+from qiskit_metal.toolbox_python.utility_functions import can_write_to_path
 from ... import Dict
 
 __all__ = ['QRenderer']
@@ -67,6 +68,7 @@ class QRenderer():
     """element extentions dictionary"""
 
     # TODO: To add: default parameters for the renderer for component element values.
+    element_table_data = dict()
 
     @classmethod
     def load(cls):
@@ -90,6 +92,8 @@ class QRenderer():
             print(
                 f'Warning: Renderer name={name}, class={cls} already loaded. Doing nothing.')
 
+        # cls.populate_element_extentions()
+
         # Add element extensions
         # see docstring for QRenderer.element_extensions
         QGeometryTables.add_renderer_extension(
@@ -105,6 +109,21 @@ class QRenderer():
         QRenderer.__loaded_renderers__.add(name)
 
         return True
+
+    @classmethod
+    def populate_element_extentions(cls):
+        """Populate cls.element_extentions which will be used to create columns for tables in QGeometry tables.
+        The structure of cls.element_table_data should be same as cls.element_extentions. 
+        """
+        for table, a_dict in cls.element_table_data.items():
+            cls.element_extensions[table] = dict()
+            for col_name, col_value in a_dict.items():
+                # type will only tell out about the base class, won't tell you about the inhertance.
+                type_str = str(type(col_value).__name__.replace("'", ""))
+                #type_str = type(col_value)
+                cls.element_extensions[table][col_name] = type_str
+
+        pass  # to put breakpoint.
 
     @staticmethod
     def get_renderer(name: str):
@@ -290,6 +309,24 @@ class QRenderer():
 
         if render_options:
             self.options.update(render_options)
+
+    def add_table_data_to_QDesign(self, class_name: str):
+        """During init of renderer, this needs to happen. In particular,
+        each renderer needs to update custom columns and values within QDesign.
+        """
+        status = set()
+        if not isinstance(QRenderer.name, str):
+            self.logger.warning(
+                f'In add_table_data_to_QDesign, cls.str={QRenderer.name} is not a str.')
+            return
+
+        for table, a_dict in QRenderer.element_table_data.items():
+            for col_name, col_value in a_dict.items():
+                status = self.design.add_default_data_for_qgeometry_tables(
+                    table, class_name, col_name, col_value)
+                if 5 not in status:
+                    self.logger.warning(
+                        f'col_value={col_value} not added to QDesign')
 
     def initate(self, re_initiate=False):
         '''
