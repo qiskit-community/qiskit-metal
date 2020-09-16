@@ -303,7 +303,7 @@ def vec_unit_planar(vector: np.array):
 
     Returns:
         np.array: Same dimension 2D or 3D
-    
+
     Raises:
         Exception: The input was not a 2 or 3 vector
     """
@@ -326,6 +326,24 @@ def vec_unit_planar(vector: np.array):
         raise Exception('You did not give a 2 or 3 vec')
 
 
+def to_vec3D(list_of_2d_pts:List[Tuple], z=0) -> np.ndarray:
+    """
+    Adds 3rd point to list of 2D points.
+    For the given design, get the z values in HFSS UNITS!
+    Manually specify z dimension.
+
+    Args:
+        list_of_2d_pts (List[Tuple]): [description]
+        z (int, optional): [description]. Defaults to 0.
+
+    Returns:
+        np.ndarray: [description]
+    """
+    add_me = [z]
+    return np.array([list(a_2d_pt) + add_me  for a_2d_pt in list_of_2d_pts])
+
+
+
 Vec2D = Union[list, np.ndarray]
 
 
@@ -334,7 +352,7 @@ class Vector:
     Utility functions to call on 2D vectors, which can be np.ndarrays or lists.
     """
 
-    normal_z = np.array([0, 0, 1])  
+    normal_z = np.array([0, 0, 1])
     """ Noraml Z array """
 
     @staticmethod
@@ -417,7 +435,7 @@ class Vector:
                     < 0	+/-inf	-0 / -pi
                     +/-inf	+inf	+/- (pi/4)
                     +/-inf	-inf	+/- (3*pi/4)
-            
+
             Note that +0 and -0 are distinct floating point numbers, as are +inf and -inf.
         """
         return np.arctan2(vector)
