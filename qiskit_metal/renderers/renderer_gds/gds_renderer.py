@@ -686,8 +686,9 @@ class GDSRender(QRenderer):
         geom = element.geometry  # type: shapely.geometry.base.BaseGeometry
 
         if isinstance(geom, shapely.geometry.Polygon):
-
             # Handle  list(polygon.interiors) TODO:
+            with_hole = handle_interior_poly(geom)
+
             return gdspy.Polygon(list(geom.exterior.coords),
                                  # layer=element.layer if not element['subtract'] else 0,
                                  layer=element.layer,
@@ -746,3 +747,11 @@ class GDSRender(QRenderer):
         for chip in unique_list:
             unique_dict[chip] = Dict()
         return unique_dict
+
+    def handle_interior_poly(self, geom: shapely.geometry.Polygon):
+            # Exterior
+            exterior_poly = []
+
+            # Handle  list(polygon.interiors) TODO:
+            if geom.interiors
+        pass
