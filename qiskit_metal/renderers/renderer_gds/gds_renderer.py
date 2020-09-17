@@ -654,29 +654,6 @@ class GDSRender(QRenderer):
         else:
             return 0
 
-    # def handle_interior_poly(self, geom: shapely.geometry.Polygon) -> shapely.geometry.Polygon:
-    #     # Handle  list(polygon.interiors) TODO:
-
-    #     handled_holes = shapely.geometry.Polygon()
-
-    #     # # Exterior
-    #     exterior_coords = list(geom.exterior.coords)
-    #     print(f'The exterior_coords are {exterior_coords}.')
-
-    #     # # Interior
-    #     all_interiors = list()
-    #     all_interiors.clear()
-    #     for index, hole in enumerate(geom.interiors):
-    #         print(f'The index in geom is {index}.')
-    #         interior_coords = list(hole.coords)
-    #         all_interiors.append(interior_coords)
-    #         print(f'The interior_coords is {interior_coords}.')
-
-    #     if geom.interiors:
-    #         pass
-
-    #     return handled_holes
-
     def qgeometry_to_gds(self, element: pd.Series) -> 'gdspy.polygon':
         """Convert the design.qgeometry table to format used by GDS renderer.
         Convert the class to a series of GDSII elements.
