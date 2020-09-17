@@ -700,7 +700,6 @@ class GDSRender(QRenderer):
                                           )
             # If polygons have a holes, need to remove it for gdspy.
             all_interiors = list()
-            all_interiors.clear()
             if geom.interiors:
                 for hole in geom.interiors:
                     interior_coords = list(hole.coords)
@@ -728,6 +727,7 @@ class GDSRender(QRenderer):
                                            layer=element.layer,
                                            datatype=11)
             else:
+
                 to_return = gdspy.FlexPath(list(geom.coords),
                                            width=element.width,
                                            # layer=element.layer if not element['subtract'] else 0,
