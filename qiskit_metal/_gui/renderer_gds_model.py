@@ -14,6 +14,8 @@
 #
 
 """
+Tree model for GDS renderer
+
 @authors: Dennis Wang, Zlatko Minev
 @date: 2020
 """

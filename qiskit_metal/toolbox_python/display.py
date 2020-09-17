@@ -14,7 +14,7 @@ from IPython.core.magic import Magics, line_magic, magics_class
 from IPython.display import HTML, Image, display
 from PyQt5.QtWidgets import QApplication, QMainWindow
 
-__all__ = ['get_screenshot', 'format_dict_ala_z', 'style_color_list', 'metal_heading']
+__all__ = ['get_screenshot', 'format_dict_ala_z']
 
 
 @magics_class
