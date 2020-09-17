@@ -889,6 +889,10 @@ class QComponent():
         #    " choose it to either be a helper or a a subtracted layer, but not both. Thank you."
 
         #TODO:Will want to pass self.options or maybe self.options.renderer_options here too
+        #renderer_options = self.options.renderer_options
+        #self.design.qgeometry.add_qgeometry(kind, self.id, geometry, subtract=subtract,
+        #                                    helper=helper, layer=layer, chip=chip, renderer_options, **kwargs)
+        
         self.design.qgeometry.add_qgeometry(kind, self.id, geometry, subtract=subtract,
                                             helper=helper, layer=layer, chip=chip, **kwargs)
 

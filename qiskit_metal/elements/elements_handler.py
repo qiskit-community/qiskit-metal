@@ -477,9 +477,19 @@ class QGeometryTables(object):
                               f' The call was with subtract={subtract} and helper={helper}'
                               f' and layer={layer}, and options={other_options}')
 
-        # Create options TODO: Might want to modify this
+        #Checks if (any) of the geometry are MultiPolygons, and breaks them up into
+        #individual polygons
+        #
+
+        # Create options TODO: Might want to modify this (component_name -> component_id)
         options = dict(component=component_name, subtract=subtract,
                        helper=helper, layer=int(layer), chip=chip, **other_options)
+
+        #replaces line above to generate the options. 
+        #for keyC in design.qgeometry.tables[kind].columns:
+        #    if keyC != 'geometry':
+        #        options[keyC] = ???[keyC] -> alternative manner to pass options to the add_qgeometry function?
+        #                                       instead have the add_qeometry in baseComponent generate the dict?
 
         #Could we just append rather than make a new table each time? This seems slow
         table = self.tables[kind]
@@ -493,7 +503,7 @@ class QGeometryTables(object):
 
         df = df.assign(**options)
 
-        # Set new table. Unfortuanly, this creates a new instance.
+        # Set new table. Unfortuanly, this creates a new instance. Can just direct append
         self.tables[kind] = table.append(df, sort=False, ignore_index=True)
         # concat([table,df], axis=0, join='outer', ignore_index=True,sort=False,
         #          verify_integrity=False, copy=False)
