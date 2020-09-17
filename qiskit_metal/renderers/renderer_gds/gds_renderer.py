@@ -10,6 +10,7 @@ import gdspy
 import geopandas
 import pandas as pd
 import shapely
+import numpy as np
 
 from qiskit_metal.renderers.renderer_base import QRenderer
 from qiskit_metal.toolbox_metal.parsing import is_true
@@ -653,6 +654,29 @@ class GDSRender(QRenderer):
         else:
             return 0
 
+    # def handle_interior_poly(self, geom: shapely.geometry.Polygon) -> shapely.geometry.Polygon:
+    #     # Handle  list(polygon.interiors) TODO:
+
+    #     handled_holes = shapely.geometry.Polygon()
+
+    #     # # Exterior
+    #     exterior_coords = list(geom.exterior.coords)
+    #     print(f'The exterior_coords are {exterior_coords}.')
+
+    #     # # Interior
+    #     all_interiors = list()
+    #     all_interiors.clear()
+    #     for index, hole in enumerate(geom.interiors):
+    #         print(f'The index in geom is {index}.')
+    #         interior_coords = list(hole.coords)
+    #         all_interiors.append(interior_coords)
+    #         print(f'The interior_coords is {interior_coords}.')
+
+    #     if geom.interiors:
+    #         pass
+
+    #     return handled_holes
+
     def qgeometry_to_gds(self, element: pd.Series) -> 'gdspy.polygon':
         """Convert the design.qgeometry table to format used by GDS renderer.
         Convert the class to a series of GDSII elements.
@@ -686,14 +710,26 @@ class GDSRender(QRenderer):
         geom = element.geometry  # type: shapely.geometry.base.BaseGeometry
 
         if isinstance(geom, shapely.geometry.Polygon):
-            # Handle  list(polygon.interiors) TODO:
-            with_hole = handle_interior_poly(geom)
+            exterior_poly = gdspy.Polygon(list(geom.exterior.coords),
+                                          # layer=element.layer if not element['subtract'] else 0,
+                                          layer=element.layer,
+                                          datatype=10,
+                                          )
+            # If polygons have a holes, need to remove it for gdspy.
+            all_interiors = list()
+            all_interiors.clear()
+            if geom.interiors:
+                for hole in geom.interiors:
+                    interior_coords = list(hole.coords)
+                    all_interiors.append(interior_coords)
+                a_poly_set = gdspy.PolygonSet(
+                    all_interiors, layer=element.layer, datatype=10)
+                a_poly = gdspy.boolean(
+                    exterior_poly, a_poly_set, 'not', layer=element.layer, datatype=10)
+                return a_poly
+            else:
+                return exterior_poly
 
-            return gdspy.Polygon(list(geom.exterior.coords),
-                                 # layer=element.layer if not element['subtract'] else 0,
-                                 layer=element.layer,
-                                 datatype=10,
-                                 )
         elif isinstance(geom, shapely.geometry.LineString):
             '''
             class gdspy.FlexPath(points, width, offset=0, corners='natural', ends='flush',
@@ -747,11 +783,3 @@ class GDSRender(QRenderer):
         for chip in unique_list:
             unique_dict[chip] = Dict()
         return unique_dict
-
-    def handle_interior_poly(self, geom: shapely.geometry.Polygon):
-            # Exterior
-            exterior_poly = []
-
-            # Handle  list(polygon.interiors) TODO:
-            if geom.interiors
-        pass
