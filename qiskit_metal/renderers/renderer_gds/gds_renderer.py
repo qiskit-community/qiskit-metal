@@ -569,7 +569,7 @@ class GDSRender(QRenderer):
                     ground_cell = lib.new_cell(
                         ground_cell_name, overwrite_duplicate=True)
 
-                    if len(self.chip_info[chip_name][chip_layer]['subtract_poly']) != 0:
+                    if len(self.chip_info[chip_name][chip_layer]['q_subtract_true']) != 0:
                         subtract_cell_name = f'SUBTRACT_{chip_name}_{chip_layer}'
                         subtract_cell = lib.new_cell(
                             subtract_cell_name, overwrite_duplicate=True)
@@ -588,7 +588,7 @@ class GDSRender(QRenderer):
                             self.chip_info[chip_name]['subtract_poly'],
                             subtract_cell.get_polygons(),
                             'not',
-                            precision=self.options.precision,
+                            precision=precision,
                             layer=chip_layer)
 
                         lib.remove(subtract_cell)
@@ -598,7 +598,6 @@ class GDSRender(QRenderer):
                                 f'There is no table named diff_geometry to write.')
                         else:
                             ground_cell.add(diff_geometry)
-
 
                     if self.chip_info[chip_name][chip_layer]['q_subtract_false'] is None:
                         self.logger.warning(
@@ -631,7 +630,7 @@ class GDSRender(QRenderer):
             file_name (str): File name which can also include directory path.
                              If the file exists, it will be overwritten.
             highlight_qcomponents (list): List of strings which denote the name of QComponents to render.
-                                        If empty, render all comonents in design.
+                                        If empty, render all components in design.
 
         Returns:
             int: 0=file_name can not be written, otherwise 1=file_name has been written
