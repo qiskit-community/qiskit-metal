@@ -151,8 +151,9 @@ class TestDesign(unittest.TestCase):
         Test getting chip z in design_base.py
         """
         design = DesignPlanar(metadata={})
-        with self.assertRaises(NotImplementedError):
-            design.get_chip_z()
+
+        actual = design.get_chip_z()
+        self.assertEqual(actual, 0)
 
     def test_design_rename_variables(self):
         """
