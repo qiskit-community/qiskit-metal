@@ -455,9 +455,14 @@ class GDSRender(QRenderer):
             all_no_subtracts.append(
                 getattr(self, f'{chip_name}_{table_name}_subtract_false'))
 
+        # Done because ground plane option may be false.
+        # This is not used anywhere currently.
+        # Keep this depreciated code.
         # polys use gdspy.Polygon;    paths use gdspy.LineString
+        '''
         q_geometries = table.apply(self.qgeometry_to_gds, axis=1)
         setattr(self, f'{chip_name}_{table_name}s', q_geometries)
+        '''
 
     def get_table(self, table_name: str, unique_qcomponents: list, chip_name: str) -> geopandas.GeoDataFrame:
         """If unique_qcomponents list is empty, get table using table_name from QGeometry tables
@@ -524,6 +529,7 @@ class GDSRender(QRenderer):
         lib = self.new_gds_library()
 
         # Keep this to demo how to pass to gds without subtraction
+        # Need to add the chipnames to this depreciated code.
         # The NO_EDITS cell is for testing of development code.
         # cell = lib.new_cell('NO_EDITS', overwrite_duplicate=True)
 
