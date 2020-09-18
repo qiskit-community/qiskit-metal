@@ -4,6 +4,35 @@ from qiskit_metal import draw, Dict
 from qiskit_metal.components.base.qubit import BaseQubit
 
 class TransmonConcentric(BaseQubit):
+    """
+    The base 'TrasmonConcentric' class 
+    
+    Inherits 'BaseQubit' class
+    
+    Description:
+        Metal transmon object consisting of a circle surrounding by a concentric 
+        ring. There are two Josephson Junction connecting the circle to the ring; 
+        one at the south end and one at the north end. There is a readout resonator. 
+        
+    Main Body:
+        position_x / position_y = where the center of the transmon circle should be located on the chip. 
+        width = width of the transmon pocket 
+        height = height of the transmon pocket 
+        rad_o = the outer radius defining the concentric ring 
+        rad_i = the inner radius defining the concentric ring 
+        gap = the distance between the transmon circle and the concentric ring 
+        jj_w = the width of the Josephson Junction connecting the circle to the ring 
+        res_s = the space between the top edge of the concentric ring and the readout resonator 
+        res_ext = the distance which the readout resonator extends beyond the middle of the circle. 
+        fbl_rad = the radius of the loop made by the flux bias line 
+        fbl_sp = the separation between the concentric ring and the edge of the flux bias loop
+        fbl_ext = the length of the straight portion of the flux bias loop 
+        pocket_w = width of the transmon pocket containing all elements
+        pocket_h = height of the transmon pocket containing all elements 
+        rotation = degrees which the entire component is rotated by (counterclockwise)
+        cpw_width = the width of the readout resonator and flux bias loop
+        
+    """ 
 
     # default drawing options
     default_options = Dict(
@@ -24,10 +53,9 @@ class TransmonConcentric(BaseQubit):
         pocket_h = '1000um', # transmon pocket height
         position_x = '2.0mm', # translate component to be centered on this x-coordinate
         position_y = '2.0mm', # translate component to be centered on this y-coordinate
-        rotation = '45.0',   # degrees to rotate the component by
+        rotation = '0.0',   # degrees to rotate the component by
         cpw_width = '10.0um' # width of the readout resonator and flux bias line
         )
-
 
     def make(self):
         """Convert self.options into QGeometry."""
@@ -89,18 +117,13 @@ class TransmonConcentric(BaseQubit):
             x = (z[0], z[1]) 
             return x 
         
-        # translate and rotate the coordinates which define the qpins
-#        qpins = [qp1a, qp1b, a, b, h, i] 
-#        for i in range(len(qpins)):
-#            qpins[i] = qpin_rotate_translate(qpins[i]) 
-               
+        # rotate and translate the qpin coordinates        
         qp1a = qpin_rotate_translate(qp1a)
         qp1b = qpin_rotate_translate(qp1b)
         a = qpin_rotate_translate(a)
         b = qpin_rotate_translate(b)
         h = qpin_rotate_translate(h)
         i = qpin_rotate_translate(i) 
-            
 
 ################################################################################################
 
@@ -109,7 +132,6 @@ class TransmonConcentric(BaseQubit):
         geom_fbl = {'path2': fbl}
         geom_outer = {'poly1': outer_pad}
         geom_inner = {'poly2': inner_pad}
-#        geom_gap = {'poly3': gap}
         geom_jjt = {'poly4': jj_t}
         geom_jjb = {'poly5': jj_b}
         geom_pocket = {'poly6': pocket}
@@ -118,13 +140,11 @@ class TransmonConcentric(BaseQubit):
         self.add_qgeometry('path', geom_fbl, layer=1, subtract=False, width=p.cpw_width)
         self.add_qgeometry('poly', geom_outer, layer=1, subtract=False)
         self.add_qgeometry('poly', geom_inner, layer=1, subtract=False)
-#        self.add_qgeometry('poly', geom_gap, layer=1, subtract=True)
         self.add_qgeometry('poly', geom_jjt, layer=1, subtract=False)
         self.add_qgeometry('poly', geom_jjb, layer=1, subtract=False)
         self.add_qgeometry('poly', geom_pocket, layer=1, subtract=True)
 
 ##################################################################################################
-
 
         # Add Qpin connections
         self.add_pin('pin1',
