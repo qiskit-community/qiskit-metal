@@ -643,11 +643,11 @@ class QComponent():
             * points (numpy.ndarray): [[x1,y1],[x2,y2]] for the normal/tangent line
             * width (float): the width of the intended connection (eg. qubit bus pad arm)
             * input_as_norm (bool): Indicates if the points are tangent or normal to the pin plane.
-                Default = False. Make True for normal.
+              Default = False. Make True for normal.
             * parent (Union[int,]): The id of the parent component
             * chip (str): the name of the chip the pin is located on, default 'main'
             * gap (float): the dielectric gap of the pin for the purpose of representing as a port
-                for simulations. Default = None which is converted to 0.6 * width.
+              for simulations. Default = None which is converted to 0.6 * width.
 
         A dictionary containing a collection of information about the pin, necessary for use in Metal:
             * points (numpy.ndarray) - two (x,y) points which represent the edge of the pin for
@@ -662,6 +662,7 @@ class QComponent():
             * parent_name - the id of the parent component
             * net_id - net_id of the pin if connected to another pin (default 0, indicates
               not connected))
+
         ::
 
             * = pin
@@ -689,6 +690,7 @@ class QComponent():
                      .*
                      .|
             ..........|
+
         """
         assert len(points) == 2
         
