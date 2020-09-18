@@ -106,6 +106,7 @@ ENV/
 shot.png
 shot.jpg
 *.gds
+.vs
 
 # mypy
 .mypy_cache/
