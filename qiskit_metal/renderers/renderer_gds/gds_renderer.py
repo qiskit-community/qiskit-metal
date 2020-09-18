@@ -722,23 +722,35 @@ class GDSRender(QRenderer):
 
             Only fillet, if number is greater than zero.
             '''
-            if math.isnan(element.fillet) or element.fillet <= 0 or element.fillet < element.width:
-                to_return = gdspy.FlexPath(list(geom.coords),
-                                           width=element.width,
-                                           layer=element.layer,
-                                           datatype=11)
+            if math.isnan(element.width):
+                self.logger.warning(
+                    f'The width for a Path is not a number. The Path is not being exported for GDS.')
             else:
-
-                to_return = gdspy.FlexPath(list(geom.coords),
-                                           width=element.width,
-                                           layer=element.layer,
-                                           datatype=11,
-                                           corners=corners,
-                                           bend_radius=element.fillet,
-                                           tolerance=tolerance,
-                                           precision=precision
-                                           )
-            return to_return
+                if 'fillet' in element:
+                    if math.isnan(element.fillet) or element.fillet <= 0 or element.fillet < element.width:
+                        to_return = gdspy.FlexPath(list(geom.coords),
+                                                   width=element.width,
+                                                   layer=element.layer,
+                                                   datatype=11)
+                    else:
+                        to_return = gdspy.FlexPath(list(geom.coords),
+                                                   width=element.width,
+                                                   layer=element.layer,
+                                                   datatype=11,
+                                                   corners=corners,
+                                                   bend_radius=element.fillet,
+                                                   tolerance=tolerance,
+                                                   precision=precision
+                                                   )
+                    return to_return
+                else:
+                    # Could be junction table with a linestring.
+                    # Look for gds_path_filename in column.
+                    self.logger.warning(
+                        f'Linestring did not have fillet in column. The element was not drawn.\n'
+                        f'The element within talbe is:\n'
+                        f'{element}'
+                    )
         else:
             # TODO: Handle
             self.logger.warning(
@@ -748,7 +760,7 @@ class GDSRender(QRenderer):
             return None
 
     def get_chip_names(self) -> Dict:
-        """Return a dict of unique chip names for ALL tables within QGeometry.
+        """ Returns a dict of unique chip names for ALL tables within QGeometry.
         In another words, for every "path" table, "poly" table ... etc, this method will search for unique
         chip names and return a dict of unique chip names from QGeometry table.
 
