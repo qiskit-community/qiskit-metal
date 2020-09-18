@@ -56,6 +56,7 @@ class TransmonConcentric(BaseQubit):
         rotation = '0.0',   # degrees to rotate the component by
         cpw_width = '10.0um' # width of the readout resonator and flux bias line
         )
+    """Default drawing options"""
 
     def make(self):
         """Convert self.options into QGeometry."""
