@@ -35,6 +35,8 @@ from .. import Dict
 from ..draw import BaseGeometry
 from ..toolbox_python.utility_functions import data_frame_empty_typed
 
+from shapely.geometry.multipolygon import MultiPolygon #for avoiding MultiPolygons
+
 if TYPE_CHECKING:
     from ..components.base import QComponent
     from ..designs import QDesign
@@ -479,7 +481,18 @@ class QGeometryTables(object):
 
         #Checks if (any) of the geometry are MultiPolygons, and breaks them up into
         #individual polygons
-        #
+        new_dict = Dict()
+        for key, item in geometry.items():
+            if isinstance(geometry[key], MultiPolygon):
+                temp_multi = geometry[key]
+                shape_count = 0
+                for shape_temp in temp_multi.geoms:
+                    new_dict[key+'_'+str(shape_count)] = shape_temp
+                    shape_count += 1
+            else:
+                new_dict[key] = item
+
+        geometry = new_dict
 
         # Create options TODO: Might want to modify this (component_name -> component_id)
         options = dict(component=component_name, subtract=subtract,
