@@ -10,6 +10,7 @@ import gdspy
 import geopandas
 import pandas as pd
 import shapely
+import numpy as np
 
 from qiskit_metal.renderers.renderer_base import QRenderer
 from qiskit_metal.toolbox_metal.parsing import is_true
@@ -686,13 +687,25 @@ class GDSRender(QRenderer):
         geom = element.geometry  # type: shapely.geometry.base.BaseGeometry
 
         if isinstance(geom, shapely.geometry.Polygon):
+            exterior_poly = gdspy.Polygon(list(geom.exterior.coords),
+                                          # layer=element.layer if not element['subtract'] else 0,
+                                          layer=element.layer,
+                                          datatype=10,
+                                          )
+            # If polygons have a holes, need to remove it for gdspy.
+            all_interiors = list()
+            if geom.interiors:
+                for hole in geom.interiors:
+                    interior_coords = list(hole.coords)
+                    all_interiors.append(interior_coords)
+                a_poly_set = gdspy.PolygonSet(
+                    all_interiors, layer=element.layer, datatype=10)
+                a_poly = gdspy.boolean(
+                    exterior_poly, a_poly_set, 'not', layer=element.layer, datatype=10)
+                return a_poly
+            else:
+                return exterior_poly
 
-            # Handle  list(polygon.interiors) TODO:
-            return gdspy.Polygon(list(geom.exterior.coords),
-                                 # layer=element.layer if not element['subtract'] else 0,
-                                 layer=element.layer,
-                                 datatype=10,
-                                 )
         elif isinstance(geom, shapely.geometry.LineString):
             '''
             class gdspy.FlexPath(points, width, offset=0, corners='natural', ends='flush',
