@@ -1,15 +1,17 @@
 import math
 import os
+import gdspy
+import geopandas
+import shapely
+
 from copy import deepcopy
 from operator import itemgetter
 from typing import TYPE_CHECKING
 from typing import Dict as Dict_
 from typing import List, Tuple, Union
 
-import gdspy
-import geopandas
+
 import pandas as pd
-import shapely
 import numpy as np
 
 from qiskit_metal.renderers.renderer_base import QRenderer
@@ -723,14 +725,12 @@ class GDSRender(QRenderer):
             if math.isnan(element.fillet) or element.fillet <= 0 or element.fillet < element.width:
                 to_return = gdspy.FlexPath(list(geom.coords),
                                            width=element.width,
-                                           # layer=element.layer if not element['subtract'] else 0,
                                            layer=element.layer,
                                            datatype=11)
             else:
 
                 to_return = gdspy.FlexPath(list(geom.coords),
                                            width=element.width,
-                                           # layer=element.layer if not element['subtract'] else 0,
                                            layer=element.layer,
                                            datatype=11,
                                            corners=corners,
