@@ -401,9 +401,9 @@ class GDSRender(QRenderer):
     def handle_ground_plane(self, chip_name: str, all_table_subtracts: list, all_table_no_subtracts: list):
         """Place all the subtract geometries for one chip into self.chip_info[chip_name]['all_subtract_true']
 
-        For LINESTRING within table that has a value for fillet, check if any segment is shorter than fillet radius. 
+        For LINESTRING within table that has a value for fillet, check if any segment is shorter than fillet radius.
         If so, then break the LINESTRING so that shorter segments do not get fillet'ed and longer segments get fillet'ed.
-        Add the mulitiple LINESTRINGS back to table.  
+        Add the mulitiple LINESTRINGS back to table.
         Also remove "bad" LINESTRING from table.
 
         Then use qgeometry_to_gds() to convert the QGeometry elements to gdspy elements.  The gdspy elements
@@ -458,7 +458,7 @@ class GDSRender(QRenderer):
             # Save info in dict and then edit the table.
             edit_index = dict()
             for index, row in df_fillet.iterrows():
-                #the_coords = list(row['geometry'].coords)
+                # the_coords = list(row['geometry'].coords)
                 status, all_shapelys = self.check_length(
                     row.geometry, row.fillet)
                 if status > 0:
@@ -467,14 +467,20 @@ class GDSRender(QRenderer):
             for del_key, the_shapes in edit_index.items():
                 # copy row "index" into a new df status times.  Then replace the LONG shapely with all_shapleys
                 # For any entries in edit_index, edit table here.
-                num_new_rows = len(the_shapes)
-                orig_data = list()
-
-                #temp_df = pd.DataFrame(columns=df.columns, data=orig_data)
+                # num_new_rows = len(the_shapes)
+                # orig_data = list()
+                # temp_df = pd.DataFrame(columns=df.columns, data=orig_data)
                 # df.loc[del_key]
-                for new_row in the_shapes:
+                # orig_row = df.loc[del_key].copy()
 
-                    pass
+                for new_row, short_shape in the_shapes.items():
+                    orig_row = df.loc[del_key].copy()
+                    # df.loc[del_key].drop()
+                    orig_row['geometry'] = short_shape['line']
+                    # df.append(orig_row, ignore_index=True)
+                    self.chip_info[chip_name][chip_layer][all_sub_true_or_false].append(
+                        orig_row, ignore_index=False)
+                # df.drop
                 pass
 
     def check_length(self, a_shapely: shapely.geometry.LineString, a_fillet: float):
