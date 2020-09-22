@@ -458,33 +458,27 @@ class GDSRender(QRenderer):
             # Save info in dict and then edit the table.
             edit_index = dict()
             for index, row in df_fillet.iterrows():
-                # the_coords = list(row['geometry'].coords)
                 status, all_shapelys = self.check_length(
                     row.geometry, row.fillet)
                 if status > 0:
                     edit_index[index] = all_shapelys
 
+            df_copy = self.chip_info[chip_name][chip_layer][all_sub_true_or_false].copy(
+                deep=True)
             for del_key, the_shapes in edit_index.items():
-                # copy row "index" into a new df status times.  Then replace the LONG shapely with all_shapleys
+                # copy row "index" into a new df "status" times.  Then replace the LONG shapely with all_shapleys
                 # For any entries in edit_index, edit table here.
-                # num_new_rows = len(the_shapes)
-                # orig_data = list()
-                # temp_df = pd.DataFrame(columns=df.columns, data=orig_data)
-                # df.loc[del_key]
-                # orig_row = df.loc[del_key].copy()
-                df_copy = self.chip_info[chip_name][chip_layer][all_sub_true_or_false].copy(
-                    deep=True)
+                orig_row = df_copy.loc[del_key].copy(deep=True)
+                df_copy = df_copy.drop(index=del_key)
+
                 for new_row, short_shape in the_shapes.items():
-                    orig_row = df_copy.loc[del_key].copy(deep=True)
-                    # df.loc[del_key].drop()
                     orig_row['geometry'] = short_shape['line']
-                    # df.append(orig_row, ignore_index=True)
-                    # self.chip_info[chip_name][chip_layer][all_sub_true_or_false].append(
-                    #    orig_row, ignore_index=True)
-                    df_copy.append(orig_row, ignore_index=True)
-                self.chip_info[chip_name][chip_layer][all_sub_true_or_false] = df_copy
-                # df.drop
-                pass
+                    orig_row['fillet'] = short_shape['fillet']
+                    df_copy = df_copy.append(orig_row, ignore_index=True)
+
+            self.chip_info[chip_name][chip_layer][all_sub_true_or_false] = df_copy.copy(
+                deep=True)
+            pass
 
     def check_length(self, a_shapely: shapely.geometry.LineString, a_fillet: float):
         # Status
@@ -521,12 +515,12 @@ class GDSRender(QRenderer):
 
                 shorter_lines[dog_index] = dict({'line': LineString(coords[dog_index-1:dog_index+1]),
                                                  'fillet': None})
+                #    'fillet': 0.0})
 
                 if idx == (status-1):
                     # At the last sement
                     shorter_lines[len_coords-1] = dict({'line': LineString(coords[dog_index-1:dog_index+1]),
                                                         'fillet': a_fillet})
-                pass
         else:
             # no dog-legs
             shorter_lines[len_coords-1] = a_shapely
