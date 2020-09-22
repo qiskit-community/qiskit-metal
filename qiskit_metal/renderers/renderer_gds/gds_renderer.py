@@ -472,14 +472,17 @@ class GDSRender(QRenderer):
                 # temp_df = pd.DataFrame(columns=df.columns, data=orig_data)
                 # df.loc[del_key]
                 # orig_row = df.loc[del_key].copy()
-
+                df_copy = self.chip_info[chip_name][chip_layer][all_sub_true_or_false].copy(
+                    deep=True)
                 for new_row, short_shape in the_shapes.items():
-                    orig_row = df.loc[del_key].copy()
+                    orig_row = df_copy.loc[del_key].copy(deep=True)
                     # df.loc[del_key].drop()
                     orig_row['geometry'] = short_shape['line']
                     # df.append(orig_row, ignore_index=True)
-                    self.chip_info[chip_name][chip_layer][all_sub_true_or_false].append(
-                        orig_row, ignore_index=False)
+                    # self.chip_info[chip_name][chip_layer][all_sub_true_or_false].append(
+                    #    orig_row, ignore_index=True)
+                    df_copy.append(orig_row, ignore_index=True)
+                self.chip_info[chip_name][chip_layer][all_sub_true_or_false] = df_copy
                 # df.drop
                 pass
 
