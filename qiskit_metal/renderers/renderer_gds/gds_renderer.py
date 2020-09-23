@@ -57,9 +57,10 @@ class GDSRender(QRenderer):
     default_options = Dict(
 
         # Before converting LINESTRING to FlexPath for GDS, check for "dog-leg" for LINESTRINGS in QGeometry.
-        # If true, break up the LINESTRING so any length which is shorter than the fillet radius will be separated
-        # so the short segment will not be fillet'ed.
-        fix_dog_leg='True',
+        # If true, break up the LINESTRING so any segment which is shorter than the scaled-fillet
+        # by "fillet_scale_factor" will be separated so the short segment will not be fillet'ed.
+        replace_dog_leg_to_not_fillet='True',
+        check_dog_leg_by_scaling_fillet='2.0',
 
         # DO NOT MODIFY `gds_unit`. Gets overwritten by ``set_units``.
         # gdspy unit is 1 meter.  gds_units appear to ONLY be used during write_gds().
@@ -97,7 +98,11 @@ class GDSRender(QRenderer):
         # FOR NOW SPECIFY IN METERS. # TODO: Add parsing of actual units here
         precision='0.000000001',   # 1.0 nm
 
+
+
+
         # (float): Scale box of components to render. Should be greater than 1.0.
+        # For benifit of the GUI, keep this the last entry in the dict.  GUI shows a note regarding bound_box.
         bounding_box_scale_x='1.2',
         bounding_box_scale_y='1.2',
     )
@@ -168,6 +173,7 @@ class GDSRender(QRenderer):
         gdspy.current_library.cells.clear()
 
     # TODO: Move to toolbox_python utility and call there
+    # Maybe not, there is a self.logger.
     def _can_write_to_path(self, file: str) -> int:
         """Check if can write file.
 
@@ -414,7 +420,9 @@ class GDSRender(QRenderer):
             all_table_subtracts (list):
             all_table_no_subtracts (list): [description]
         """
-        fix_dog_leg = self.parse_value(self.options.fix_dog_leg)
+
+        fix_dog_leg = self.parse_value(
+            self.options.replace_dog_leg_to_not_fillet)
         all_layers = self.design.qgeometry.get_all_unique_layers(chip_name)
 
         for chip_layer in all_layers:
@@ -474,13 +482,16 @@ class GDSRender(QRenderer):
                 for new_row, short_shape in the_shapes.items():
                     orig_row['geometry'] = short_shape['line']
                     orig_row['fillet'] = short_shape['fillet']
-                    df_copy = df_copy.append(orig_row, ignore_index=True)
+                    df_copy = df_copy.append(orig_row, ignore_index=False)
 
             self.chip_info[chip_name][chip_layer][all_sub_true_or_false] = df_copy.copy(
                 deep=True)
-            pass
 
     def check_length(self, a_shapely: shapely.geometry.LineString, a_fillet: float):
+
+        fillet_scale_factor = self.parse_value(
+            self.options.check_dog_leg_by_scaling_fillet)
+
         # Status
         # -1 Means, method needs to update the return code.
         # 0 No issues, no "dog-legs" found
@@ -492,11 +503,11 @@ class GDSRender(QRenderer):
 
         # Holds all of the index of when a segment is too short.
         idx_bad_fillet = list()
-        half_fillet = a_fillet / 2
+        scaled_fillet = a_fillet * fillet_scale_factor
 
         for index, xy in enumerate(coords):
             xy_previous = coords[index-1]
-            if math.dist(xy_previous, xy) < half_fillet:
+            if math.dist(xy_previous, xy) < scaled_fillet:
                 # Need to not fillet index-1 to index line segment.
                 idx_bad_fillet.append(index)
         len_coords = len(coords)
@@ -504,22 +515,21 @@ class GDSRender(QRenderer):
         if status:
             idx_bad_fillet.sort()
             for idx, dog_index in enumerate(idx_bad_fillet):
-                if idx > 1:
-                    previous_dog_index = idx_bad_fillet[idx-1]
+                previous_dog_index = idx_bad_fillet[idx-1]
+                if idx > 1 and (dog_index-1 != idx_bad_fillet[idx-1]):
                     shorter_lines[dog_index-1] = dict({'line': LineString(coords[previous_dog_index:dog_index]),
                                                        'fillet': a_fillet})
-                else:
+                elif dog_index != 1 and (dog_index-1 != idx_bad_fillet[idx-1]):
                     # The first segment
                     shorter_lines[dog_index-1] = dict({'line': LineString(coords[0:dog_index]),
                                                        'fillet': a_fillet})
-
+                # The segment that we do not want to fillet.
                 shorter_lines[dog_index] = dict({'line': LineString(coords[dog_index-1:dog_index+1]),
-                                                 'fillet': None})
-                #    'fillet': 0.0})
+                                                 'fillet': float('NaN')})
 
-                if idx == (status-1):
+                if idx == (status-1) and (dog_index-1 != idx_bad_fillet[idx-1]):
                     # At the last sement
-                    shorter_lines[len_coords-1] = dict({'line': LineString(coords[dog_index-1:dog_index+1]),
+                    shorter_lines[len_coords-1] = dict({'line': LineString(coords[dog_index:len_coords]),
                                                         'fillet': a_fillet})
         else:
             # no dog-legs
