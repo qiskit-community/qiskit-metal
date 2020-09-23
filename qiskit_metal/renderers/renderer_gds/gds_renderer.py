@@ -235,8 +235,8 @@ class GDSRender(QRenderer):
 
         return gs_table.total_bounds
 
-    # TODO: Make static or move to utils
-    def inclusive_bound(self, all_bounds: list) -> tuple:
+    @staticmethod
+    def inclusive_bound(all_bounds: list) -> tuple:
         """Given a list of tuples which describe corners of a box, i.e. (minx, miny, maxx, maxy).
         This method will find the box, which will include all boxes.  In another words, the smallest minx and miny;
         and the largest maxx and maxy.
@@ -417,8 +417,8 @@ class GDSRender(QRenderer):
 
         Args:
             chip_name (str): Chip_name that is being processed.
-            all_table_subtracts (list):
-            all_table_no_subtracts (list): [description]
+            all_table_subtracts (list): Add to self.chip_info by layer number.
+            all_table_no_subtracts (list): Add to self.chip_info by layer number.
         """
 
         fix_dog_leg = self.parse_value(
@@ -458,6 +458,17 @@ class GDSRender(QRenderer):
                 self.qgeometry_to_gds, axis=1)
 
     def fix_dog_leg_within_table(self, chip_name: str, chip_layer: int, all_sub_true_or_false: str):
+        """Update self.chip_info geopandas.GeoDataFrame.
+
+        Will iterate through the rows to examine the LineString.  
+        Then determine if there is a segment that is shorter than the critera based on default_options.
+        If so, then remove the row, and append shorter LineString with no fillet, within the dataframe. 
+
+        Args:
+            chip_name (str): The name of chip.
+            chip_layer (int): The layer within the chip to be evaluated.
+            all_sub_true_or_false (str): To be used within self.chip_info: 'all_subtract_true' or 'all_subtract_false'.
+        """
         df = self.chip_info[chip_name][chip_layer][all_sub_true_or_false]
         df_fillet = df[-df['fillet'].isnull()]
 
@@ -482,21 +493,44 @@ class GDSRender(QRenderer):
                 for new_row, short_shape in the_shapes.items():
                     orig_row['geometry'] = short_shape['line']
                     orig_row['fillet'] = short_shape['fillet']
+                    # Keep ignore_index=False, otherwise, the other del_key will not be found.
                     df_copy = df_copy.append(orig_row, ignore_index=False)
 
             self.chip_info[chip_name][chip_layer][all_sub_true_or_false] = df_copy.copy(
                 deep=True)
 
-    def check_length(self, a_shapely: shapely.geometry.LineString, a_fillet: float):
+    def check_length(self, a_shapely: shapely.geometry.LineString, a_fillet: float) -> Tuple[int, Dict]:
+        """Determine if a_shapely has short segments based on scaled fillet value.
+
+        Use check_dog_leg_by_scaling with a_fillet to determine the critera for flagging a segment.
+        Return Tuple with flagged segments.
+
+        The "status" returned in int:
+        -1: Method needs to update the return code.
+         0: No issues, no "dog-legs" found
+         int: The number of shapelys returned. New shapeleys, should replace the ones provided in a_shapley
+
+        The "shorter_lines" returned in dict:
+        key: Using the index values from list(a_shapely.coords)
+        value: dict() for each new, shorter, LineString
+
+        The dict() 
+        key: fillet, value: can be float from before, or undefined to denote no fillet.
+        key: line, value: shorter LineString
+
+        Args:
+            a_shapely (shapely.geometry.LineString): A shapley object that needs to be evaluated.
+            a_fillet (float): From component developer.  
+
+        Returns:
+            Tuple[int, Dict]: 
+            int: Number of short segments that should not have fillet.
+            Dict: Key: index into a_shapely, Value: dict with fillet and shorter LineString
+        """
 
         fillet_scale_factor = self.parse_value(
             self.options.check_dog_leg_by_scaling_fillet)
 
-        # Status
-        # -1 Means, method needs to update the return code.
-        # 0 No issues, no "dog-legs" found
-        # OR The number of shapelys returned.
-        #  The new shapeleys should replace the ones provided in a_shapley
         status = -1  # Initalize to meaningless value.
         coords = list(a_shapely.coords)
         shorter_lines = dict()
@@ -804,7 +838,6 @@ class GDSRender(QRenderer):
 
         if isinstance(geom, shapely.geometry.Polygon):
             exterior_poly = gdspy.Polygon(list(geom.exterior.coords),
-                                          # layer=qgeometry_element.layer if not qgeometry_element['subtract'] else 0,
                                           layer=qgeometry_element.layer,
                                           datatype=10,
                                           )
