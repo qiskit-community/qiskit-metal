@@ -561,10 +561,14 @@ class GDSRender(QRenderer):
                 shorter_lines[dog_index] = dict({'line': LineString(coords[dog_index-1:dog_index+1]),
                                                  'fillet': float('NaN')})
 
+                # idx == (status-1), at the last index of the idx_bad_fillet
+                # (dog_index-1 != idx_bad_fillet[idx-1]), previous index of idx_bad_fillet is not second to last in a_shapely
+                # dog_index == len_coords-1,  there is not short segment at he last segment of a_shapely.
                 if idx == (status-1) and (dog_index-1 != idx_bad_fillet[idx-1]):
                     # At the last sement
-                    shorter_lines[len_coords-1] = dict({'line': LineString(coords[dog_index:len_coords]),
-                                                        'fillet': a_fillet})
+                    if dog_index != len_coords-1:
+                        shorter_lines[len_coords-1] = dict({'line': LineString(coords[dog_index:len_coords]),
+                                                            'fillet': a_fillet})
         else:
             # no dog-legs
             shorter_lines[len_coords-1] = a_shapely
