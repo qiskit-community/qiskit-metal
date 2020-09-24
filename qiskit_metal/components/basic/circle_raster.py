@@ -42,7 +42,8 @@ class CircleRaster(QComponent):
         subtract='False',
         helper='False',
         chip='main',
-        layer='1'
+        layer='1',
+        width='10um',
     )
     """Default drawing options"""
 
@@ -66,4 +67,4 @@ class CircleRaster(QComponent):
 
         # add qgeometry
         self.add_qgeometry('poly', {'circle': circle}, subtract=p.subtract,
-                           helper=p.helper, layer=p.layer, chip=p.chip)
+                           helper=p.helper, layer=p.layer, chip=p.chip, width=p.width)
