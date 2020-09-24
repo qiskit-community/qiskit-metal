@@ -446,6 +446,11 @@ class GDSRender(QRenderer):
             self.chip_info[chip_name][chip_layer]['all_subtract_false'] = geopandas.GeoDataFrame(
                 pd.concat(copy_no_subtract, ignore_index=False))
 
+            self.chip_info[chip_name][chip_layer]['all_subtract_true'].reset_index(
+                inplace=True)
+            self.chip_info[chip_name][chip_layer]['all_subtract_false'].reset_index(
+                inplace=True)
+
             if is_true(fix_dog_leg):
                 self.fix_dog_leg_within_table(
                     chip_name, chip_layer, 'all_subtract_true')
