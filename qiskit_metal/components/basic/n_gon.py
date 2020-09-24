@@ -47,7 +47,6 @@ class NGon(QComponent):
         helper='False',
         chip='main',
         layer='1',
-        width='10um',
     )
     """Default drawing options"""
 
@@ -73,4 +72,4 @@ class NGon(QComponent):
         ##############################################
         # add qgeometry
         self.add_qgeometry('poly', {'n_polygon': n_polygon}, subtract=p.subtract,
-                           helper=p.helper, layer=p.layer, chip=p.chip, width=p.width)
+                           helper=p.helper, layer=p.layer, chip=p.chip)
