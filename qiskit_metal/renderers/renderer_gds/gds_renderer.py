@@ -98,7 +98,8 @@ class GDSRender(QRenderer):
         # FOR NOW SPECIFY IN METERS. # TODO: Add parsing of actual units here
         precision='0.000000001',   # 1.0 nm
 
-
+        # Since Qiskit Metal GUI, does not require a width for LineString, GDS, will provide a default value.
+        width_LineString='10um',
 
 
         # (float): Scale box of components to render. Should be greater than 1.0.
@@ -477,6 +478,8 @@ class GDSRender(QRenderer):
             # Save info in dict and then edit the table.
             edit_index = dict()
             for index, row in df_fillet.iterrows():
+                # print(
+                #     f'With parse_value: {self.parse_value(row.fillet)}, row.fille: {row.fillet}')
                 status, all_shapelys = self.check_length(
                     row.geometry, row.fillet)
                 if status > 0:
@@ -540,10 +543,13 @@ class GDSRender(QRenderer):
         scaled_fillet = a_fillet * fillet_scale_factor
 
         for index, xy in enumerate(coords):
-            xy_previous = coords[index-1]
-            if math.dist(xy_previous, xy) < scaled_fillet:
-                # Need to not fillet index-1 to index line segment.
-                idx_bad_fillet.append(index)
+            if index > 0:
+                xy_previous = coords[index-1]
+                seg_length = math.dist(xy_previous, xy)
+                #print(f'index = {index},  seg_length = {seg_length}')
+                if seg_length < scaled_fillet:
+                    # Need to not fillet index-1 to index line segment.
+                    idx_bad_fillet.append(index)
         len_coords = len(coords)
         status = len(idx_bad_fillet)
         if status:
@@ -867,37 +873,48 @@ class GDSRender(QRenderer):
 
             Only fillet, if number is greater than zero.
             '''
+            use_width = self.parse_value(self.options.width_LineString)
             if math.isnan(qgeometry_element.width):
+
+                qcomponent_id = self.parse_value(qgeometry_element.component)
+                name = self.parse_value(qgeometry_element['name'])
+                layer_num = self.parse_value(qgeometry_element.layer)
+                width = self.parse_value(qgeometry_element.width)
                 self.logger.warning(
-                    f'The width for a Path is not a number. The Path is not being exported for GDS.')
+                    f'Since width:{width} for a Path is not a number, '
+                    f'it will be exported using width_LineString: {use_width}.  '
+                    f'The component_id is:{qcomponent_id}, name is:{name}, layer is: {layer_num}')
             else:
-                if 'fillet' in qgeometry_element:
-                    if math.isnan(qgeometry_element.fillet) or qgeometry_element.fillet <= 0 or qgeometry_element.fillet < qgeometry_element.width:
-                        to_return = gdspy.FlexPath(list(geom.coords),
-                                                   width=qgeometry_element.width,
-                                                   layer=qgeometry_element.layer,
-                                                   datatype=11)
-                    else:
-                        to_return = gdspy.FlexPath(list(geom.coords),
-                                                   width=qgeometry_element.width,
-                                                   layer=qgeometry_element.layer,
-                                                   datatype=11,
-                                                   corners=corners,
-                                                   bend_radius=qgeometry_element.fillet,
-                                                   tolerance=tolerance,
-                                                   precision=precision
-                                                   )
-                    return to_return
+                use_width = qgeometry_element.width
+
+            if 'fillet' in qgeometry_element:
+                if math.isnan(qgeometry_element.fillet) or qgeometry_element.fillet <= 0 or qgeometry_element.fillet < qgeometry_element.width:
+                    to_return = gdspy.FlexPath(list(geom.coords),
+                                               use_width,
+                                               layer=qgeometry_element.layer,
+                                               datatype=11)
                 else:
-                    # Could be junction table with a linestring.
-                    # Look for gds_path_filename in column.
-                    self.logger.warning(
-                        f'Linestring did not have fillet in column. The qgeometry_element was not drawn.\n'
-                        f'The qgeometry_element within table is:\n'
-                        f'{qgeometry_element}'
-                    )
+                    to_return = gdspy.FlexPath(list(geom.coords),
+                                               use_width,
+                                               layer=qgeometry_element.layer,
+                                               datatype=11,
+                                               corners=corners,
+                                               bend_radius=qgeometry_element.fillet,
+                                               tolerance=tolerance,
+                                               precision=precision
+                                               )
+                return to_return
+            else:
+                # Could be junction table with a linestring.
+                # Look for gds_path_filename in column.
+                self.logger.warning(
+                    f'Linestring did not have fillet in column. The qgeometry_element was not drawn.\n'
+                    f'The qgeometry_element within table is:\n'
+                    f'{qgeometry_element}'
+                )
         else:
             # TODO: Handle
+            pass
             self.logger.warning(
                 f'Unexpected shapely object geometry.'
                 f'The variable qgeometry_element is {type(geom)}, method can currently handle Polygon and FlexPath.')
