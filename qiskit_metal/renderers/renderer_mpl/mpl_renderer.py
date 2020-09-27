@@ -268,25 +268,84 @@ class QMplRenderer():
             render_func(table1, ax, subtracted=False)
 
     def render_junction(self, table: pd.DataFrame, ax: Axes, subtracted: bool = False, extra_kw: dict = None):
-        """For Now, do nothing.  TODO:render junction tables. 
+        """For Now, do nothing.  TODO:render junction tables.
         """
         pass
 
     def render_poly(self, table: pd.DataFrame, ax: Axes, subtracted: bool = False, extra_kw: dict = None):
         """
-        Render a table of poly geometry.
+        Render a table of poly geometry. Fillets are handled separately.
 
         Arguments:
-            table (DataFrame): element table
+            table (DataFrame): element table (without fillets)
             ax (matplotlib.axes.Axes): axis to render on
             kw (dict): style params
         """
         if len(table) < 1:
             return
+
         kw = self.get_style('poly', subtracted=subtracted, extra=extra_kw)
         self._render_poly_array(ax, table.geometry, kw)
 
-    def render_path(self, table: pd.DataFrame, ax: Axes,  subtracted: bool = False, extra_kw: dict = None):
+    def draw_fillet(self, table):
+        # print("in draw_fillet", path)
+        table[geometry]
+        newpath = np.array()
+        for start, corner, end in zip(path.coords, path.coords[1:], path.coords[2:]):
+            np.append(newpath, _calc_fillet(start, corner, end, fillet)
+        newpath = LineString(newpath)
+        #     print("coord", i)
+        #     print("\n")
+        # print("returning")
+        return path
+
+    def render_fillet(self, table: pd.DataFrame, ax: Axes, subtracted: bool = False, extra_kw: dict = None):
+        """
+        Render a table of poly geometry with fillets. The points are manually
+        calculated.
+
+        Arguments:
+            table (DataFrame): filleted element table
+            ax (matplotlib.axes.Axes): axis to render on
+            kw (dict): style params
+        """
+        if len(table) < 1:
+            return
+        print("render_fillet", table)
+        kw = self.get_style('poly', subtracted=subtracted, extra=extra_kw)
+
+        # iterate over corners
+        # calculate shape of each corner
+
+
+    def _calc_fillet(self, vertex_start, vertex_corner, vertex_end, radius, points=10):
+        """
+        Returns the filleted path based on the start, corner, and end vertices and the
+        fillet radius.
+
+        Arguments:
+            vertex_start (np.ndarray): x-y coordinates of starting vertex.
+            vertex_corner (np.ndarray): x-y coordinates of corner vertex.
+            vertex_end (np.ndarray): x-y coordinates of end vertex.
+            radius (float): fillet radius.
+        """
+        print(vertex_start, vertex_corner, vertex_end)
+        if radius > np.linalg.norm(vertex_start, vertex_corner)/2 or radius > np.linalg.norm(vertex_corner, vertex_end)/2:
+            raise Exception("Fillet radius too large for corner")
+            return False
+
+        fillet_start = radius/np.linalg.norm(vertex_start, vertex_corner)*(vertex_start-vertex_corner)+vertex_corner
+        #fillet_end = radius/np.linalg.norm(vertex_end, vertex_corner)*(vertex_end-vertex_corner)+vertex_corner
+        path = np.array(vertex_start)
+        # Calculate the angle of the corner, which is not necessarily 90 degrees
+        end_angle = np.arccos(np.dot(vertex_start - vertex_corner, vertex_end - vertex_corner) / (np.linalg.norm(vertex_start - vertex_corner) * np.linalg.norm(vertex_end - vertex_corner)))
+        # Populate the fillet corner
+        for theta in np.arange(0, end_angle, end_angle/points):
+            np.append(path, np.array(fillet_start[0]+(radius-np.cos(theta)*radius), fillet_start[1]-np.sin(theta)*radius))
+        np.append(path, vertex_end)
+        return path
+
+    def render_path(self, table: pd.DataFrame, ax: Axes, subtracted: bool = False, extra_kw: dict = None):
         """
         Render a table of path geometry.
 
@@ -318,6 +377,12 @@ class QMplRenderer():
                                                                   ), axis=1)
 
             kw = self.get_style('poly', subtracted=subtracted, extra=extra_kw)
+
+            # if any are fillet, alter the path separately
+            table1[table1.fillet.notnull()]=self.draw_fillet(table1[table1.fillet.notnull()])
+            print(table1)
+
+            # render components
             self.render_poly(table1, ax, subtracted=subtracted, extra_kw=kw)
 
         # handle zero width
