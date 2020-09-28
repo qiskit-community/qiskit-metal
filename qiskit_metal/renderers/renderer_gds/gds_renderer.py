@@ -621,7 +621,6 @@ class GDSRender(QRenderer):
                         fillet_vertices.insert(0, midpoints[stop])
                         shorter_lines[len_coords] = dict({'line': LineString(fillet_vertices),
                                                           'fillet': a_fillet})
-
                 elif idx == status-1 and stop != len_coords-1:
                     fillet_vertices = coords[at_vertex+1:start]
                     fillet_vertices.insert(0, midpoints[at_vertex])
@@ -668,21 +667,11 @@ class GDSRender(QRenderer):
                 else:
                     if seg_length < scaled_fillet:
                         end_vertex_of_bad.append((index-1, index))
-        # Eventually remove end_vertex_of_bad from dict.
-        # all_idx_bad_fillet['end_vertex_of_bad'] = end_vertex_of_bad
 
         reduced_idx = GDSRender.compress_list(end_vertex_of_bad)
         all_idx_bad_fillet['reduced_idx'] = reduced_idx
 
         midpoints = list()
-        # center = tuple()
-        # for idx, vertex2 in enumerate(coords):
-        #     if idx > 0:
-        #         center = tuple()
-        #         center = GDSRender.midpoint_xy(
-        #             coords[idx-1][0], coords[idx-1][1], vertex2[0], vertex2[1])
-        #         midpoints.append(center)
-
         midpoints = [GDSRender.midpoint_xy(coords[idx-1][0], coords[idx-1][1], vertex2[0], vertex2[1])
                      for idx, vertex2 in enumerate(coords) if idx > 0]
         all_idx_bad_fillet['midpoints'] = midpoints
