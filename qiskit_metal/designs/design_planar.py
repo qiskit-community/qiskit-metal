@@ -20,7 +20,7 @@ Module containing Basic Qiskit Metal Planar (2D) design for CPW type geometry.
 @author: Zlatko Minev, Thomas McConeky, ... (IBM)
 """
 
-from .design_base import QDesign
+from .design_base import QDesign, Dict
 from typing import TYPE_CHECKING
 from typing import Dict as Dict_
 from typing import List, Tuple, Union
@@ -58,10 +58,19 @@ class DesignPlanar(QDesign):
 
         NOTE: self._chips dict comes from QDesign base class.
         """
-        self._chips['main'] = {}
+        self._chips['main'] = Dict()
 
-        self._chips['main']['size'] = {
-            'center_x': '0.0', 'center_y': '0.0', 'size_x': '9', 'size_y': '6'}
+        self._chips['main']['size'] = Dict(
+            center_x='0.0mm',
+            center_y='0.0mm',
+            size_x='9mm',
+            size_y='6mm',
+            size_z='750um'
+        )
+        self.chips.main.material = ''
+        self.chips.main.layer_start = '0'
+        self.chips.main.layer_end = '9999999'
+
 
     def get_x_y_for_chip(self, chip_name: str) -> Tuple[tuple, int]:
         """If the chip_name is in self.chips, along with entry for size information
