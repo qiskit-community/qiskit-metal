@@ -274,10 +274,10 @@ class QMplRenderer():
 
     def render_poly(self, table: pd.DataFrame, ax: Axes, subtracted: bool = False, extra_kw: dict = None):
         """
-        Render a table of poly geometry. Fillets are handled separately.
+        Render a table of poly geometry.
 
         Arguments:
-            table (DataFrame): element table (without fillets)
+            table (DataFrame): element table
             ax (matplotlib.axes.Axes): axis to render on
             kw (dict): style params
         """
@@ -310,20 +310,23 @@ class QMplRenderer():
         Returns:
             Polygon of the new filleted path.
         """
-        if row['fillet'] == 0: # zero radius, no need to fillet
-            return row['geometry']
-        path = row['geometry'].exterior.coords
+        if row["fillet"] == 0:  # zero radius, no need to fillet
+            return row["geometry"]
+        path = row["geometry"].exterior.coords
         newpath = np.array([path[0]])
 
         # Iterate through every three-vertex corner
         for start, corner, end in zip(path, path[1:], path[2:]):
-            fillet = self._calc_fillet(np.array(start), np.array(corner), np.array(end), row['fillet'])
+            fillet = self._calc_fillet(
+                np.array(start), np.array(corner), np.array(end), row["fillet"]
+            )
             if fillet is not False:
                 newpath = np.concatenate((newpath, fillet))
-            else: # Don't need to fillet in this case, just add back in the normal vertex
+            else:  # Don't need to fillet in this case, just add back in the normal vertex
                 newpath = np.concatenate((newpath, np.array([corner])))
         newpath = np.concatenate((newpath, np.array([end])))
         return Polygon(newpath)
+
 
     def _calc_fillet(self, vertex_start, vertex_corner, vertex_end, radius, points=10):
         """
