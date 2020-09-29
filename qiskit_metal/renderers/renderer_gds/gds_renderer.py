@@ -641,8 +641,6 @@ class GDSRender(QRenderer):
                         shorter_lines[start] = dict({'line': LineString(fillet_vertices),
                                                      'fillet': a_fillet})
                 at_vertex = stop  # Need to update for every loop.
-            pass  # For breakpoint
-
         else:
             # no dog-legs
             shorter_lines[len_coords-1] = a_shapely
@@ -1043,7 +1041,6 @@ class GDSRender(QRenderer):
                 )
         else:
             # TODO: Handle
-            pass
             self.logger.warning(
                 f'Unexpected shapely object geometry.'
                 f'The variable qgeometry_element is {type(geom)}, method can currently handle Polygon and FlexPath.')
