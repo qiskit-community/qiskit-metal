@@ -1021,7 +1021,6 @@ class GDSRender(QRenderer):
 
             use_width = self.parse_value(self.options.width_LineString)
             if math.isnan(qgeometry_element.width):
-
                 qcomponent_id = self.parse_value(qgeometry_element.component)
                 name = self.parse_value(qgeometry_element['name'])
                 layer_num = self.parse_value(qgeometry_element.layer)
