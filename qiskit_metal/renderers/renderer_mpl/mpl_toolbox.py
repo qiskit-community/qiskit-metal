@@ -77,7 +77,7 @@ def _render_poly_zkm(poly: Polygon,
 
     if not poly.exterior == LinearRing():  # not empty - better check?
 
-        # Exteriror
+        # Exterior
         coords = np.array(poly.exterior.coords)
         mpl_poly = mpl.patches.Polygon(coords)
         color = ax._get_lines.get_next_color()

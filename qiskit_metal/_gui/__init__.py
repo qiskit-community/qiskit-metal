@@ -35,12 +35,12 @@ Main Window
 
     DynamicList
     MetalGUI
-    RendererGDSWidget
     QMainWindowExtensionBase
     QMainWindowBaseHandler
     QMainWindowExtension
-    QTreeModel_Base
     QTreeView_Base
+    RendererGDS_Model
+    RendererGDSWidget
     
 
 Elements Window
@@ -73,6 +73,7 @@ Widgets
     QTableView_Options
     QTextEditLogger
     QToolBarExpanding
+    QTreeModel_Base
     QTreeModel_Options
     QTreeView_Options
     QWidget_PlaceholderText
@@ -91,6 +92,7 @@ Submodules
     component_widget
     source_editor
     source_editor_widget
+    dict_tree_base
     table_model_options
     tree_model_options
 
@@ -107,21 +109,22 @@ if config.is_building_docs():
     from qiskit_metal._gui.main_window_base import QMainWindowBaseHandler
     from qiskit_metal._gui.main_window import QMainWindowExtension
     from qiskit_metal._gui.main_window import MetalGUI
-    from qiskit_metal._gui.tree_model_base import QTreeModel_Base
     from qiskit_metal._gui.tree_view_base import QTreeView_Base
     from qiskit_metal._gui.renderer_gds_gui import RendererGDSWidget
+    from qiskit_metal._gui.renderer_gds_model import RendererGDS_Model
     from qiskit_metal._gui.elements_window import ElementsWindow
     from qiskit_metal._gui.elements_window import ElementTableModel
     from qiskit_metal._gui.widgets.all_components.table_view_all_components import QTableView_AllComponents
     from qiskit_metal._gui.widgets.all_components.table_model_all_components import QTableModel_AllComponents
     from qiskit_metal._gui.widgets.bases.expanding_toolbar import QToolBarExpanding
+    from qiskit_metal._gui.widgets.bases.dict_tree_base import BranchNode
+    from qiskit_metal._gui.widgets.bases.dict_tree_base import LeafNode
+    from qiskit_metal._gui.widgets.bases.dict_tree_base import QTreeModel_Base
     from qiskit_metal._gui.widgets.bases.QWidget_PlaceholderText import QWidget_PlaceholderText
     from qiskit_metal._gui.widgets.edit_component.component_widget import ComponentWidget
     from qiskit_metal._gui.widgets.edit_component.source_editor import MetalSourceEditor
     from qiskit_metal._gui.widgets.edit_component.table_model_options import QTableModel_Options
     from qiskit_metal._gui.widgets.edit_component.table_view_options import QTableView_Options
-    from qiskit_metal._gui.widgets.edit_component.tree_model_options import BranchNode
-    from qiskit_metal._gui.widgets.edit_component.tree_model_options import LeafNode
     from qiskit_metal._gui.widgets.edit_component.tree_model_options import QTreeModel_Options
     from qiskit_metal._gui.widgets.edit_component.tree_view_options import QTreeView_Options
     from qiskit_metal._gui.widgets.log_widget.log_metal import QTextEditLogger
@@ -133,6 +136,7 @@ if config.is_building_docs():
 
     from qiskit_metal._gui.utility import _handle_qt_messages
     from qiskit_metal._gui.utility import _toolbox_qt
+    from qiskit_metal._gui.widgets.bases import dict_tree_base
     from qiskit_metal._gui.widgets.edit_component import component_widget
     from qiskit_metal._gui.widgets.edit_component import source_editor
     from qiskit_metal._gui.widgets.edit_component import source_editor_widget

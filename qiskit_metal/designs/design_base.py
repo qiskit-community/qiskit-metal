@@ -292,7 +292,9 @@ class QDesign():
         Raises:
             NotImplementedError: Code not written yet
         """
-        raise NotImplementedError()
+        #raise NotImplementedError()
+        # TODO: IMPORTANT
+        return 0
 
     def get_chip_layer(self, chip_name: str = 'main') -> int:
         """Return the chip layer number for the ground plane.
@@ -889,7 +891,7 @@ class QDesign():
         # Zkm: i don't think we should load all by default. Just MPL and GDS.
         # Not everyone needs HFSS. Should load that separatly.
         """
-
+        # TODO: CHANGE TO LOOP OVER CONFIG. DO NOT HARD CODE @priti
         # GDS Renderer using base class QRender
         a_gds = GDSRender(self, initiate=True)
 
