@@ -570,6 +570,19 @@ class QMainWindowBaseHandler():
         """
         raise NotImplementedError()
 
+    def show(self):
+        """
+        Show the main window.
+        """
+        self.main_window.show()
+
+    def clear_settings(self):
+        """
+        Clear the settings that get saved each time the main window is closed.
+        This will reset the window layout to the default.
+        """
+        self.settings.clear()
+
 
 def kick_start_qApp():
     """Kick start the application
