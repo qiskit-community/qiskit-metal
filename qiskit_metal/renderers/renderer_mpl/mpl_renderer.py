@@ -36,7 +36,7 @@ from matplotlib.cbook import _OrderedSet
 from matplotlib.collections import LineCollection, PatchCollection
 from matplotlib.figure import Figure
 from matplotlib.transforms import Bbox
-from shapely.geometry import CAP_STYLE, JOIN_STYLE, LineString
+from shapely.geometry import CAP_STYLE, JOIN_STYLE, LineString, Polygon
 
 from ... import Dict
 from ...designs import QDesign
@@ -287,36 +287,43 @@ class QMplRenderer():
         kw = self.get_style('poly', subtracted=subtracted, extra=extra_kw)
         self._render_poly_array(ax, table.geometry, kw)
 
-    def draw_fillet(self, table):
-        # print("in draw_fillet", path)
-        table[geometry]
-        newpath = np.array()
-        for start, corner, end in zip(path.coords, path.coords[1:], path.coords[2:]):
-            np.append(newpath, _calc_fillet(start, corner, end, fillet)
-        newpath = LineString(newpath)
-        #     print("coord", i)
-        #     print("\n")
-        # print("returning")
-        return path
-
-    def render_fillet(self, table: pd.DataFrame, ax: Axes, subtracted: bool = False, extra_kw: dict = None):
+    def render_fillet(self, table):
         """
-        Render a table of poly geometry with fillets. The points are manually
-        calculated.
+        Renders fillet path.
 
         Arguments:
-            table (DataFrame): filleted element table
-            ax (matplotlib.axes.Axes): axis to render on
-            kw (dict): style params
+            table (DataFrame): table of elements with fillets
+
+        Returns:
+            DataFrame table with geometry field updated with a polygon filleted path.
         """
-        if len(table) < 1:
-            return
-        print("render_fillet", table)
-        kw = self.get_style('poly', subtracted=subtracted, extra=extra_kw)
+        table['geometry'] = table.apply(self.fillet_path, axis=1)
+        return table
 
-        # iterate over corners
-        # calculate shape of each corner
+    def fillet_path(self, row):
+        """
+        Output the filleted path.
 
+        Arguments:
+            row (DataFrame): row to fillet.
+
+        Returns:
+            Polygon of the new filleted path.
+        """
+        if row['fillet'] == 0: # zero radius, no need to fillet
+            return row['geometry']
+        path = row['geometry'].exterior.coords
+        newpath = np.array([path[0]])
+
+        # Iterate through every three-vertex corner
+        for start, corner, end in zip(path, path[1:], path[2:]):
+            fillet = self._calc_fillet(np.array(start), np.array(corner), np.array(end), row['fillet'])
+            if fillet is not False:
+                newpath = np.concatenate((newpath, fillet))
+            else: # Don't need to fillet in this case, just add back in the normal vertex
+                newpath = np.concatenate((newpath, np.array([corner])))
+        newpath = np.concatenate((newpath, np.array([end])))
+        return Polygon(newpath)
 
     def _calc_fillet(self, vertex_start, vertex_corner, vertex_end, radius, points=10):
         """
@@ -327,22 +334,71 @@ class QMplRenderer():
             vertex_start (np.ndarray): x-y coordinates of starting vertex.
             vertex_corner (np.ndarray): x-y coordinates of corner vertex.
             vertex_end (np.ndarray): x-y coordinates of end vertex.
-            radius (float): fillet radius.
+            radius (float): Fillet radius.
+            points (int): Number of points to draw in the fillet corner.
         """
-        print(vertex_start, vertex_corner, vertex_end)
-        if radius > np.linalg.norm(vertex_start, vertex_corner)/2 or radius > np.linalg.norm(vertex_corner, vertex_end)/2:
-            raise Exception("Fillet radius too large for corner")
+        if np.array_equal(vertex_start, vertex_corner) or np.array_equal(
+            vertex_end, vertex_corner
+        ):
+            print("Warning: degenerate corner")
+            return False
+        if radius > np.linalg.norm(
+            vertex_start - vertex_corner
+        ) or radius > np.linalg.norm(vertex_corner - vertex_end):
+            print("Warning: fillet radius too large for corner")
             return False
 
-        fillet_start = radius/np.linalg.norm(vertex_start, vertex_corner)*(vertex_start-vertex_corner)+vertex_corner
-        #fillet_end = radius/np.linalg.norm(vertex_end, vertex_corner)*(vertex_end-vertex_corner)+vertex_corner
-        path = np.array(vertex_start)
+        fillet_start = (
+            radius
+            / np.linalg.norm(vertex_start - vertex_corner)
+            * (vertex_start - vertex_corner)
+            + vertex_corner
+        )
+        path = np.array([vertex_start])
         # Calculate the angle of the corner, which is not necessarily 90 degrees
-        end_angle = np.arccos(np.dot(vertex_start - vertex_corner, vertex_end - vertex_corner) / (np.linalg.norm(vertex_start - vertex_corner) * np.linalg.norm(vertex_end - vertex_corner)))
+        end_angle = np.arccos(
+            np.dot(vertex_start - vertex_corner, vertex_end - vertex_corner)
+            / (
+                np.linalg.norm(vertex_start - vertex_corner)
+                * np.linalg.norm(vertex_end - vertex_corner)
+            )
+        )
+        if end_angle == 0 or end_angle == np.pi:
+            print("Warning: invalid angle between start and end of fillet corner")
+            return False
+        # Determine direction so we know which way to fillet
+        # TODO - replace with generalized code accounting for different rotations
+        dir = [
+            np.argmax(abs(vertex_start - vertex_corner)),
+            1 - np.argmax(abs(vertex_start - vertex_corner)),
+        ]
+        sign = np.array(
+            [
+                np.argmax([vertex_start[dir[0]], vertex_corner[dir[0]]]),
+                np.argmax([vertex_corner[dir[1]], vertex_end[dir[1]]]),
+            ]
+        )
+        if dir[0] == 1 and sign[0] != sign[1]:
+            sign = 1 - sign
+        sign = sign * 2 - 1
+
         # Populate the fillet corner
-        for theta in np.arange(0, end_angle, end_angle/points):
-            np.append(path, np.array(fillet_start[0]+(radius-np.cos(theta)*radius), fillet_start[1]-np.sin(theta)*radius))
-        np.append(path, vertex_end)
+        for theta in np.arange(0, end_angle, end_angle / points):
+            diff = [np.sin(theta) * radius, radius - np.cos(theta) * radius]
+            path = np.concatenate(
+                (
+                    path,
+                    np.array(
+                        [
+                            [
+                                fillet_start[0] + sign[0] * diff[dir[0]],
+                                fillet_start[1] + sign[1] * diff[dir[1]],
+                            ]
+                        ]
+                    ),
+                )
+            )
+        path = np.concatenate((path, np.array([vertex_end])))
         return path
 
     def render_path(self, table: pd.DataFrame, ax: Axes, subtracted: bool = False, extra_kw: dict = None):
@@ -379,8 +435,7 @@ class QMplRenderer():
             kw = self.get_style('poly', subtracted=subtracted, extra=extra_kw)
 
             # if any are fillet, alter the path separately
-            table1[table1.fillet.notnull()]=self.draw_fillet(table1[table1.fillet.notnull()])
-            print(table1)
+            table1[table1.fillet.notnull()] = self.render_fillet(table1[table1.fillet.notnull()])
 
             # render components
             self.render_poly(table1, ax, subtracted=subtracted, extra_kw=kw)
