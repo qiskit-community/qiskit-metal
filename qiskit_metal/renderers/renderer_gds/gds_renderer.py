@@ -647,6 +647,23 @@ class GDSRender(QRenderer):
         return status, shorter_lines
 
     def identify_vertex_not_to_fillet(self, coords: list, a_fillet: float, all_idx_bad_fillet: dict, len_coords: int):
+        """Use coords to denote segments that are too short.  In particular, 
+        when fillet'd, they will cause the appearance of a dog-leg when graphed. 
+
+        Args:
+            coords (list): User provide a list of tuples.  The tuple is (x,y) location for a vertex.  
+            The list represents a LineString.
+
+            a_fillet (float): The value provided by component developer.  
+
+            all_idx_bad_fillet (dict): An empty dict which will be populated by this method.  
+            Key 'reduced_idx' will hold list of tuples.  The tuples correspond to index for list named "coords".
+            Key 'midpoints' will hold list of tuples. The index of a tuple corresponds to two index within coords.
+            For example, a index in midpoints is x, that coresponds midpoint of segment x-1 to x. 
+
+            len_coords (int): The length of list coords. 
+        """
+
         fillet_scale_factor = self.parse_value(
             self.options.check_dog_leg_by_scaling_fillet)
         precision = float(self.parse_value(self.options.precision))
@@ -658,6 +675,8 @@ class GDSRender(QRenderer):
             # Skip the first vertex.
             if index > 0:
                 xy_previous = coords[index-1]
+
+                # Use np.round to reduce rounding errors, since seg_length is used for comparison.
                 seg_length = np.round(math.dist(xy_previous, xy), for_rounding)
                 # If at first or last segment, use just the fillet value to check, otherwise, use scaled_fillet.
                 # Need to not fillet index-1 to index line segment.
