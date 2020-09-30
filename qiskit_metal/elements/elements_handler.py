@@ -513,17 +513,18 @@ class QGeometryTables(object):
                       chip: str,
                       **other_options):
 
-        fillet_scalar = 2.0
-        fillet_comparison_precision = 9  # used for np.round
-
-        if 'fillet_comparison_precision' in other_options.keys():
-            fillet_comparison_precision = self.parse_value(
-                other_options['fillet_comparison_precision'])
-
-        if 'fillet_scalar' in other_options.keys():
-            fillet_scalar = self.parse_value(other_options['fillet_scalar'])
-
         if 'fillet' in other_options.keys():
+            fillet_scalar = 2.0
+            fillet_comparison_precision = 9  # used for np.round
+
+            if 'fillet_comparison_precision' in other_options.keys():
+                fillet_comparison_precision = self.parse_value(
+                    other_options['fillet_comparison_precision'])
+
+            if 'fillet_scalar' in other_options.keys():
+                fillet_scalar = self.parse_value(
+                    other_options['fillet_scalar'])
+
             fillet = other_options['fillet']
 
             for key, geom in geometry.items():
@@ -534,7 +535,7 @@ class QGeometryTables(object):
                     if len(range_vertex_of_doglegs) > 0:
                         text_id = self.design._components[component_name]._name
                         self.logger.warning(
-                            f'For kind={kind}, component_id={component_name}, component_name={text_id}, layer{layer}, chip={chip}, key={key} in geometry,'
+                            f'For kind={kind}, component_id={component_name}, component_name={text_id}, layer={int(layer)}, chip={chip}, key={key} in geometry,'
                             f' list={range_vertex_of_doglegs} of short segments corresponds to index in geometry.')
 
     @ staticmethod
