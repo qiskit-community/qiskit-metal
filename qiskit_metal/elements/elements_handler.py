@@ -27,7 +27,10 @@ from typing import TYPE_CHECKING
 from typing import Dict as Dict_
 from typing import List, Tuple, Union
 
+import math
 import pandas as pd
+import shapely
+import numpy as np
 from geopandas import GeoDataFrame, GeoSeries
 
 from .. import Dict
@@ -144,10 +147,10 @@ ELEMENT_COLUMNS = dict(
     junction=dict(
         width=float,
         __renderers__=dict(
-        )                
+        )
     ),
     ################################################
-    # Specifies a curved object, such as a circle. Perhaps as a buffered point 
+    # Specifies a curved object, such as a circle. Perhaps as a buffered point
     # Not yet implemented
     # curved = dict(
     # __renderers__= dict(
@@ -197,7 +200,8 @@ class QGeometryTables(object):
             design = metal.designs.DesignPlanar()
             design.qgeometry = metal.QGeometryTables(design)
 
-            design.qgeometry['path'] # return the path table - give access to ..
+            # return the path table - give access to ..
+            design.qgeometry['path']
             design.qgeometry.table['path']
 
             # Define interfaces
@@ -380,7 +384,8 @@ class QGeometryTables(object):
 
             # Create df with correct column names
             table = GeoDataFrame(data_frame_empty_typed(columns))
-            table.name = table_name  # not used elsewhere, also the name becomes "name" for some reason
+            # not used elsewhere, also the name becomes "name" for some reason
+            table.name = table_name
 
             # Assign
             self.tables[table_name] = table
@@ -402,7 +407,7 @@ class QGeometryTables(object):
             \n  ELEMENT_TABLE_NAME = {table_name}\
             \n  KEY                = {k} \
             \n  VALUE              = {v}\n '
-        #Are these assertions still holding true?
+        # Are these assertions still holding true?
         for k, v in column_dict.items():
             assert isinstance(k, str), __pre.format(**locals()) +\
                 ' Key needs to be a string!'
@@ -477,6 +482,10 @@ class QGeometryTables(object):
                               f' The call was with subtract={subtract} and helper={helper}'
                               f' and layer={layer}, and options={other_options}')
 
+        # Give warning if length is to be fillet's and not long enough.
+        self.check_lengths(geometry, kind, component_name,
+                           layer, chip, **other_options)
+
         # Create options
         options = dict(component=component_name, subtract=subtract,
                        helper=helper, layer=int(layer), chip=chip, **other_options)
@@ -496,6 +505,74 @@ class QGeometryTables(object):
         self.tables[kind] = table.append(df, sort=False, ignore_index=True)
         # concat([table,df], axis=0, join='outer', ignore_index=True,sort=False,
         #          verify_integrity=False, copy=False)
+
+    def check_lengths(self, geometry: shapely.geometry.base.BaseGeometry,
+                      kind: str,
+                      component_name: str,
+                      layer: Union[int, str],
+                      chip: str,
+                      **other_options):
+
+        fillet_scalar = 2.0
+        fillet_comparison_precision = 9  # used for np.round
+
+        if 'fillet_comparison_precision' in other_options.keys():
+            fillet_comparison_precision = self.parse_value(
+                other_options['fillet_comparison_precision'])
+
+        if 'fillet_scalar' in other_options.keys():
+            fillet_scalar = self.parse_value(other_options['fillet_scalar'])
+
+        if 'fillet' in other_options.keys():
+            fillet = other_options['fillet']
+
+            for key, geom in geometry.items():
+                if isinstance(geom, shapely.geometry.LineString):
+                    coords = list(geom.coords)
+                    range_vertex_of_doglegs = QGeometryTables.is_there_potential_dogleg(
+                        coords, fillet_scalar, fillet, fillet_comparison_precision)
+                    if len(range_vertex_of_doglegs) > 0:
+                        text_id = self.design._components[component_name]._name
+                        self.logger.warning(
+                            f'For kind={kind}, component_id={component_name}, component_name={text_id}, layer{layer}, chip={chip}, key={key} in geometry,'
+                            f' list={range_vertex_of_doglegs} of short segments corresponds to index in geometry.')
+
+    @ staticmethod
+    def is_there_potential_dogleg(coords: list, fillet_scalar: float, a_fillet: float, fillet_comparison_precision: int) -> list:
+        range_vertex_of_bad = list()
+        len_coords = len(coords)
+        if len_coords <= 1:
+            return range_vertex_of_bad
+
+        scaled_fillet = a_fillet * fillet_scalar
+
+        for index, xy in enumerate(coords):
+            # Skip the first vertex.
+            if index > 0:
+                xy_previous = coords[index-1]
+
+                seg_length = np.round(
+                    math.dist(xy_previous, xy), fillet_comparison_precision)
+                #seg_length = math.dist(xy_previous, xy)
+
+                # If at first or last segment, use just the fillet value to check, otherwise, use fillet_scalar.
+                # Need to not fillet index-1 to index line segment.
+                if index == 1 or index == len_coords-1:
+                    if seg_length < a_fillet:
+                        range_vertex_of_bad.append((index-1, index))
+                else:
+                    if seg_length < scaled_fillet:
+                        range_vertex_of_bad.append((index-1, index))
+
+        return range_vertex_of_bad
+
+    def parse_value(self, value: 'Anything') -> 'Anything':
+        """Same as design.parse_value. See design for help.
+
+        Returns:
+            Parsed value of input.
+        """
+        return self.design.parse_value(value)
 
     def clear_all_tables(self):
         """Clear all the internal tables and all else.
