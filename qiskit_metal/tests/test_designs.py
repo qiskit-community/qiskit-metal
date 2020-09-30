@@ -25,15 +25,6 @@ Created on Wed Apr 22 10:03:35 2020
 @author: Jeremy D. Drysdale
 """
 
-# Note - Tests not written for these functions:
-# design_base/delete_all_pins
-# design_base/connect_pins
-# design_base/all_component_names_id
-# design_base/_delete_all_pins_for_component
-# design_base/get_new_qcomponent_id
-# design_base/load_design
-# design_base/save_design
-
 import unittest
 import pandas as pd
 

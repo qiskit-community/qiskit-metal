@@ -1,15 +1,20 @@
 import math
 import os
+import gdspy
+import geopandas
+import shapely
+
+from shapely.geometry import LineString as LineString
 from copy import deepcopy
 from operator import itemgetter
 from typing import TYPE_CHECKING
 from typing import Dict as Dict_
 from typing import List, Tuple, Union
 
-import gdspy
-import geopandas
+
 import pandas as pd
-import shapely
+from pandas.api.types import is_numeric_dtype
+
 import numpy as np
 
 from qiskit_metal.renderers.renderer_base import QRenderer
@@ -51,6 +56,12 @@ class GDSRender(QRenderer):
     #: Type: Dict[str, str]
     default_options = Dict(
 
+        # Before converting LINESTRING to FlexPath for GDS, check for "dog-leg" for LINESTRINGS in QGeometry.
+        # If true, break up the LINESTRING so any segment which is shorter than the scaled-fillet
+        # by "fillet_scale_factor" will be separated so the short segment will not be fillet'ed.
+        replace_dog_leg_to_not_fillet='True',
+        check_dog_leg_by_scaling_fillet='2.0',
+
         # DO NOT MODIFY `gds_unit`. Gets overwritten by ``set_units``.
         # gdspy unit is 1 meter.  gds_units appear to ONLY be used during write_gds().
         # Note that gds_unit will be overwritten from the design units, during init().
@@ -87,7 +98,12 @@ class GDSRender(QRenderer):
         # FOR NOW SPECIFY IN METERS. # TODO: Add parsing of actual units here
         precision='0.000000001',   # 1.0 nm
 
+        # Since Qiskit Metal GUI, does not require a width for LineString, GDS, will provide a default value.
+        width_LineString='10um',
+
+
         # (float): Scale box of components to render. Should be greater than 1.0.
+        # For benifit of the GUI, keep this the last entry in the dict.  GUI shows a note regarding bound_box.
         bounding_box_scale_x='1.2',
         bounding_box_scale_y='1.2',
     )
@@ -158,6 +174,7 @@ class GDSRender(QRenderer):
         gdspy.current_library.cells.clear()
 
     # TODO: Move to toolbox_python utility and call there
+    # Maybe not, there is a self.logger.
     def _can_write_to_path(self, file: str) -> int:
         """Check if can write file.
 
@@ -219,8 +236,8 @@ class GDSRender(QRenderer):
 
         return gs_table.total_bounds
 
-    # TODO: Make static or move to utils
-    def inclusive_bound(self, all_bounds: list) -> tuple:
+    @staticmethod
+    def inclusive_bound(all_bounds: list) -> tuple:
         """Given a list of tuples which describe corners of a box, i.e. (minx, miny, maxx, maxy).
         This method will find the box, which will include all boxes.  In another words, the smallest minx and miny;
         and the largest maxx and maxy.
@@ -241,6 +258,26 @@ class GDSRender(QRenderer):
                            max(all_bounds, key=itemgetter(2))[2],
                            max(all_bounds, key=itemgetter(3))[3])
         return inclusive_tuple
+
+    @staticmethod
+    def midpoint_xy(x1: float, y1: float, x2: float, y2: float) -> Tuple[float, float]:
+        """Calculate the center of a line segment with endpoints (x1,y1) and (x2,y2).
+
+        Args:
+            x1 (float): x of endpoint (x1,y1)
+            y1 (float): y of endpoint (x1,y1)
+            x2 (float): x of endpoint (x2,y2)
+            y2 (float): y of endpoint (x2,y2)
+
+        Returns:
+            Tuple[float, float]:
+            1st float: x for midpoint
+            2nd float: y for midpoint
+        """
+        midx = (x1+x2) / 2
+        midy = (y1+y2) / 2
+
+        return midx, midy
 
     def scale_max_bounds(self, chip_name: str, all_bounds: list) -> Tuple[tuple, tuple]:
         """Given the list of tuples to represent all of the bounds for path, poly, etc.
@@ -390,15 +427,23 @@ class GDSRender(QRenderer):
 
     def handle_ground_plane(self, chip_name: str, all_table_subtracts: list, all_table_no_subtracts: list):
         """Place all the subtract geometries for one chip into self.chip_info[chip_name]['all_subtract_true']
-        then use qgeometry_to_gds() to convert the QGeometry elements to gdspy elements.  The gdspy elements
+
+        For LINESTRING within table that has a value for fillet, check if any segment is shorter than fillet radius.
+        If so, then break the LINESTRING so that shorter segments do not get fillet'ed and longer segments get fillet'ed.
+        Add the mulitiple LINESTRINGS back to table.
+        Also remove "bad" LINESTRING from table.
+
+        Then use qgeometry_to_gds() to convert the QGeometry elements to gdspy elements.  The gdspy elements
         are place in self.chip_info[chip_name]['q_subtract_true'].
 
         Args:
             chip_name (str): Chip_name that is being processed.
-            all_table_subtracts (list):
-            all_table_no_subtracts (list): [description]
+            all_table_subtracts (list): Add to self.chip_info by layer number.
+            all_table_no_subtracts (list): Add to self.chip_info by layer number.
         """
 
+        fix_dog_leg = self.parse_value(
+            self.options.replace_dog_leg_to_not_fillet)
         all_layers = self.design.qgeometry.get_all_unique_layers(chip_name)
 
         for chip_layer in all_layers:
@@ -421,11 +466,266 @@ class GDSRender(QRenderer):
             self.chip_info[chip_name][chip_layer]['all_subtract_false'] = geopandas.GeoDataFrame(
                 pd.concat(copy_no_subtract, ignore_index=False))
 
+            self.chip_info[chip_name][chip_layer]['all_subtract_true'].reset_index(
+                inplace=True)
+            self.chip_info[chip_name][chip_layer]['all_subtract_false'].reset_index(
+                inplace=True)
+
+            if is_true(fix_dog_leg):
+                self.fix_dog_leg_within_table(
+                    chip_name, chip_layer, 'all_subtract_true')
+                self.fix_dog_leg_within_table(
+                    chip_name, chip_layer, 'all_subtract_false')
+
             self.chip_info[chip_name][chip_layer]['q_subtract_true'] = self.chip_info[chip_name][chip_layer]['all_subtract_true'].apply(
                 self.qgeometry_to_gds, axis=1)
 
             self.chip_info[chip_name][chip_layer]['q_subtract_false'] = self.chip_info[chip_name][chip_layer]['all_subtract_false'].apply(
                 self.qgeometry_to_gds, axis=1)
+
+    def fix_dog_leg_within_table(self, chip_name: str, chip_layer: int, all_sub_true_or_false: str):
+        """Update self.chip_info geopandas.GeoDataFrame.
+
+        Will iterate through the rows to examine the LineString.
+        Then determine if there is a segment that is shorter than the critera based on default_options.
+        If so, then remove the row, and append shorter LineString with no fillet, within the dataframe.
+
+        Args:
+            chip_name (str): The name of chip.
+            chip_layer (int): The layer within the chip to be evaluated.
+            all_sub_true_or_false (str): To be used within self.chip_info: 'all_subtract_true' or 'all_subtract_false'.
+        """
+        df = self.chip_info[chip_name][chip_layer][all_sub_true_or_false]
+        df_fillet = df[-df['fillet'].isnull()]
+
+        if not df_fillet.empty:
+            # Don't edit the table when iterating through the rows.
+            # Save info in dict and then edit the table.
+            edit_index = dict()
+            for index, row in df_fillet.iterrows():
+                # print(
+                #     f'With parse_value: {self.parse_value(row.fillet)}, row.fille: {row.fillet}')
+                status, all_shapelys = self.check_length(
+                    row.geometry, row.fillet)
+                if status > 0:
+                    edit_index[index] = all_shapelys
+
+            df_copy = self.chip_info[chip_name][chip_layer][all_sub_true_or_false].copy(
+                deep=True)
+            for del_key, the_shapes in edit_index.items():
+                # copy row "index" into a new df "status" times.  Then replace the LONG shapely with all_shapleys
+                # For any entries in edit_index, edit table here.
+                orig_row = df_copy.loc[del_key].copy(deep=True)
+                df_copy = df_copy.drop(index=del_key)
+
+                for new_row, short_shape in the_shapes.items():
+                    orig_row['geometry'] = short_shape['line']
+                    orig_row['fillet'] = short_shape['fillet']
+                    # Keep ignore_index=False, otherwise, the other del_key will not be found.
+                    df_copy = df_copy.append(orig_row, ignore_index=False)
+
+            self.chip_info[chip_name][chip_layer][all_sub_true_or_false] = df_copy.copy(
+                deep=True)
+
+    def check_length(self, a_shapely: shapely.geometry.LineString, a_fillet: float) -> Tuple[int, Dict]:
+        """Determine if a_shapely has short segments based on scaled fillet value.
+
+        Use check_dog_leg_by_scaling with a_fillet to determine the critera for flagging a segment.
+        Return Tuple with flagged segments.
+
+        The "status" returned in int:
+        -1: Method needs to update the return code.
+         0: No issues, no "dog-legs" found
+         int: The number of shapelys returned. New shapeleys, should replace the ones provided in a_shapley
+
+        The "shorter_lines" returned in dict:
+        key: Using the index values from list(a_shapely.coords)
+        value: dict() for each new, shorter, LineString
+
+        The dict()
+        key: fillet, value: can be float from before, or undefined to denote no fillet.
+        key: line, value: shorter LineString
+
+        Args:
+            a_shapely (shapely.geometry.LineString): A shapley object that needs to be evaluated.
+            a_fillet (float): From component developer.
+
+        Returns:
+            Tuple[int, Dict]:
+            int: Number of short segments that should not have fillet.
+            Dict: Key: index into a_shapely, Value: dict with fillet and shorter LineString
+        """
+       # Holds all of the index of when a segment is too short.
+        idx_bad_fillet = list()
+        status = -1  # Initalize to meaningless value.
+        coords = list(a_shapely.coords)
+        len_coords = len(coords)
+
+        all_idx_bad_fillet = dict()
+
+        self.identify_vertex_not_to_fillet(
+            coords, a_fillet, all_idx_bad_fillet, len_coords)
+
+        shorter_lines = dict()
+
+        idx_bad_fillet = sorted(all_idx_bad_fillet['reduced_idx'])
+        status = len(idx_bad_fillet)
+
+        if status:
+            midpoints = all_idx_bad_fillet['midpoints']
+            no_fillet_vertices = list()
+            fillet_vertices = list()
+
+            # Gather the no-fillet segments
+            for idx, (start, stop) in enumerate(idx_bad_fillet):
+                no_fillet_vertices.clear()
+                if idx == 0 and start == 0:
+                    # The first segment.
+                    no_fillet_vertices = coords[start:stop+1]
+                    no_fillet_vertices.append(midpoints[stop])
+                    shorter_lines[stop] = dict({'line': LineString(no_fillet_vertices),
+                                                'fillet': float('NaN')})
+                elif idx == status-1 and stop == len_coords-1:
+                    # The last segment
+                    no_fillet_vertices = coords[start:stop+1]
+                    no_fillet_vertices.insert(0, midpoints[start-1])
+                    shorter_lines[stop] = dict({'line': LineString(no_fillet_vertices),
+                                                'fillet': float('NaN')})
+                else:
+                    # Segment in between first and last segment.
+                    no_fillet_vertices = coords[start:stop+1]
+                    no_fillet_vertices.insert(0, midpoints[start-1])
+                    no_fillet_vertices.append(midpoints[stop])
+                    shorter_lines[stop] = dict({'line': LineString(no_fillet_vertices),
+                                                'fillet': float('NaN')})
+            # Gather the fillet segments.
+            at_vertex = 0
+            for idx, (start, stop) in enumerate(idx_bad_fillet):
+                fillet_vertices.clear()
+                if idx == 0 and start == 0:
+                    pass    # just update at_vertex
+                if idx == 0 and start == 1:
+                    init_tuple = coords[0]
+                    fillet_vertices = [init_tuple, midpoints[start-1]]
+                    shorter_lines[start] = dict({'line': LineString(fillet_vertices),
+                                                 'fillet': a_fillet})
+                if idx == 0 and start > 1:
+                    fillet_vertices = coords[0:start]
+                    fillet_vertices.append(midpoints[start-1])
+                    shorter_lines[start] = dict({'line': LineString(fillet_vertices),
+                                                 'fillet': a_fillet})
+                    if idx == status-1 and stop != len_coords-1:
+                        # Extra segment after the last no-fillet.
+                        fillet_vertices.clear()
+                        fillet_vertices = coords[stop+1:len_coords]
+                        fillet_vertices.insert(0, midpoints[stop])
+                        shorter_lines[len_coords] = dict({'line': LineString(fillet_vertices),
+                                                          'fillet': a_fillet})
+                elif idx == status-1 and stop != len_coords-1:
+                    fillet_vertices = coords[at_vertex+1:start]
+                    fillet_vertices.insert(0, midpoints[at_vertex])
+                    fillet_vertices.append(midpoints[start-1])
+                    shorter_lines[start] = dict({'line': LineString(fillet_vertices),
+                                                 'fillet': a_fillet})
+                    # Extra segment after the last no-fillet.
+                    fillet_vertices.clear()
+                    fillet_vertices = coords[stop+1:len_coords]
+                    fillet_vertices.insert(0, midpoints[stop])
+                    shorter_lines[len_coords] = dict({'line': LineString(fillet_vertices),
+                                                      'fillet': a_fillet})
+                else:
+                    if (start-at_vertex) > 1:
+                        fillet_vertices = coords[at_vertex+1:start]
+                        fillet_vertices.insert(0, midpoints[at_vertex])
+                        fillet_vertices.append(midpoints[start-1])
+                        shorter_lines[start] = dict({'line': LineString(fillet_vertices),
+                                                     'fillet': a_fillet})
+                at_vertex = stop  # Need to update for every loop.
+        else:
+            # no dog-legs
+            shorter_lines[len_coords-1] = a_shapely
+        return status, shorter_lines
+
+    def identify_vertex_not_to_fillet(self, coords: list, a_fillet: float, all_idx_bad_fillet: dict, len_coords: int):
+        """Use coords to denote segments that are too short.  In particular, 
+        when fillet'd, they will cause the appearance of a dog-leg when graphed. 
+
+        Args:
+            coords (list): User provide a list of tuples.  The tuple is (x,y) location for a vertex.  
+            The list represents a LineString.
+
+            a_fillet (float): The value provided by component developer.  
+
+            all_idx_bad_fillet (dict): An empty dict which will be populated by this method.  
+            Key 'reduced_idx' will hold list of tuples.  The tuples correspond to index for list named "coords".
+            Key 'midpoints' will hold list of tuples. The index of a tuple corresponds to two index within coords.
+            For example, a index in midpoints is x, that coresponds midpoint of segment x-1 to x. 
+
+            len_coords (int): The length of list coords. 
+        """
+
+        fillet_scale_factor = self.parse_value(
+            self.options.check_dog_leg_by_scaling_fillet)
+        precision = float(self.parse_value(self.options.precision))
+        for_rounding = int(np.abs(np.log10(precision)))
+
+        scaled_fillet = a_fillet * fillet_scale_factor
+        end_vertex_of_bad = list()
+        for index, xy in enumerate(coords):
+            # Skip the first vertex.
+            if index > 0:
+                xy_previous = coords[index-1]
+
+                # Use np.round to reduce rounding errors, since seg_length is used for comparison.
+                seg_length = np.round(math.dist(xy_previous, xy), for_rounding)
+                # If at first or last segment, use just the fillet value to check, otherwise, use scaled_fillet.
+                # Need to not fillet index-1 to index line segment.
+                if index == 1 or index == len_coords-1:
+                    if seg_length < a_fillet:
+                        end_vertex_of_bad.append((index-1, index))
+                else:
+                    if seg_length < scaled_fillet:
+                        end_vertex_of_bad.append((index-1, index))
+
+        reduced_idx = GDSRender.compress_list(end_vertex_of_bad)
+        all_idx_bad_fillet['reduced_idx'] = reduced_idx
+
+        midpoints = list()
+        midpoints = [GDSRender.midpoint_xy(coords[idx-1][0], coords[idx-1][1], vertex2[0], vertex2[1])
+                     for idx, vertex2 in enumerate(coords) if idx > 0]
+        all_idx_bad_fillet['midpoints'] = midpoints
+
+    @ staticmethod
+    def compress_list(individual_seg: list) -> list:
+        """Given a list of segments that should not be fillet'd,
+        search for adjacent segments and make them one compressed list.
+
+        Args:
+            individual_seg (list): List of tuples of two ints.  Each int refers to an index of a LineString.
+
+        Returns:
+            list: A compresses list of individual_segs.  So, it combines adjacent segments into a longer one.
+        """
+        reduced_idx = list()
+        len_compressed = len(individual_seg)
+        if len_compressed > 0:
+            last_unique_seg = (-1, -1)  # set to a non-logical tuple
+
+            for index, item in enumerate(individual_seg):
+                if index == 0:
+                    last_unique_seg = item
+                else:
+                    if min(item) == max(last_unique_seg):
+                        last_unique_seg = (min(last_unique_seg), max(item))
+                    else:
+                        reduced_idx.append(last_unique_seg)
+                        last_unique_seg = item
+                if index == len_compressed-1:
+                    reduced_idx.append(last_unique_seg)
+            return reduced_idx
+
+        else:
+            return reduced_idx
 
     def gather_subtract_elements_and_bounds(self, chip_name: str, table_name: str, table: geopandas.GeoDataFrame,
                                             all_subtracts: list, all_no_subtracts: list):
@@ -456,9 +756,14 @@ class GDSRender(QRenderer):
             all_no_subtracts.append(
                 getattr(self, f'{chip_name}_{table_name}_subtract_false'))
 
+        # Done because ground plane option may be false.
+        # This is not used anywhere currently.
+        # Keep this depreciated code.
         # polys use gdspy.Polygon;    paths use gdspy.LineString
+        '''
         q_geometries = table.apply(self.qgeometry_to_gds, axis=1)
         setattr(self, f'{chip_name}_{table_name}s', q_geometries)
+        '''
 
     def get_table(self, table_name: str, unique_qcomponents: list, chip_name: str) -> geopandas.GeoDataFrame:
         """If unique_qcomponents list is empty, get table using table_name from QGeometry tables
@@ -525,6 +830,7 @@ class GDSRender(QRenderer):
         lib = self.new_gds_library()
 
         # Keep this to demo how to pass to gds without subtraction
+        # Need to add the chipnames to this depreciated code.
         # The NO_EDITS cell is for testing of development code.
         # cell = lib.new_cell('NO_EDITS', overwrite_duplicate=True)
 
@@ -654,12 +960,12 @@ class GDSRender(QRenderer):
         else:
             return 0
 
-    def qgeometry_to_gds(self, element: pd.Series) -> 'gdspy.polygon':
+    def qgeometry_to_gds(self, qgeometry_element: pd.Series) -> 'gdspy.polygon':
         """Convert the design.qgeometry table to format used by GDS renderer.
         Convert the class to a series of GDSII elements.
 
         Args:
-            element (pd.Series): Expect a shapley object.
+            qgeometry_element (pd.Series): Expect a shapley object.
 
         Returns:
             'gdspy.polygon' or 'gdspy.FlexPath': Convert the class to a series of GDSII
@@ -670,8 +976,8 @@ class GDSRender(QRenderer):
         *NOTE:*
         GDS:
             points (array-like[N][2]) – Coordinates of the vertices of the polygon.
-            layer (integer) – The GDSII layer number for this element.
-            datatype (integer) – The GDSII datatype for this element (between 0 and 255).
+            layer (integer) – The GDSII layer number for this qgeometry_element.
+            datatype (integer) – The GDSII datatype for this qgeometry_element (between 0 and 255).
                                   datatype=10 or 11 means only that they are from a
                                   Polygon vs. LineString.  This can be changed.
         See:
@@ -684,12 +990,11 @@ class GDSRender(QRenderer):
         # TODO: Check it works as desired
         precision = float(self.options.precision)
 
-        geom = element.geometry  # type: shapely.geometry.base.BaseGeometry
+        geom = qgeometry_element.geometry  # type: shapely.geometry.base.BaseGeometry
 
         if isinstance(geom, shapely.geometry.Polygon):
             exterior_poly = gdspy.Polygon(list(geom.exterior.coords),
-                                          # layer=element.layer if not element['subtract'] else 0,
-                                          layer=element.layer,
+                                          layer=qgeometry_element.layer,
                                           datatype=10,
                                           )
             # If polygons have a holes, need to remove it for gdspy.
@@ -699,9 +1004,9 @@ class GDSRender(QRenderer):
                     interior_coords = list(hole.coords)
                     all_interiors.append(interior_coords)
                 a_poly_set = gdspy.PolygonSet(
-                    all_interiors, layer=element.layer, datatype=10)
+                    all_interiors, layer=qgeometry_element.layer, datatype=10)
                 a_poly = gdspy.boolean(
-                    exterior_poly, a_poly_set, 'not', layer=element.layer, datatype=10)
+                    exterior_poly, a_poly_set, 'not', layer=qgeometry_element.layer, datatype=10)
                 return a_poly
             else:
                 return exterior_poly
@@ -714,34 +1019,55 @@ class GDSRender(QRenderer):
 
             Only fillet, if number is greater than zero.
             '''
-            if math.isnan(element.fillet) or element.fillet <= 0 or element.fillet < element.width:
-                to_return = gdspy.FlexPath(list(geom.coords),
-                                           width=element.width,
-                                           # layer=element.layer if not element['subtract'] else 0,
-                                           layer=element.layer,
-                                           datatype=11)
+            use_width = self.parse_value(self.options.width_LineString)
+            if math.isnan(qgeometry_element.width):
+
+                qcomponent_id = self.parse_value(qgeometry_element.component)
+                name = self.parse_value(qgeometry_element['name'])
+                layer_num = self.parse_value(qgeometry_element.layer)
+                width = self.parse_value(qgeometry_element.width)
+                self.logger.warning(
+                    f'Since width:{width} for a Path is not a number, '
+                    f'it will be exported using width_LineString: {use_width}.  '
+                    f'The component_id is:{qcomponent_id}, name is:{name}, layer is: {layer_num}')
             else:
-                to_return = gdspy.FlexPath(list(geom.coords),
-                                           width=element.width,
-                                           # layer=element.layer if not element['subtract'] else 0,
-                                           layer=element.layer,
-                                           datatype=11,
-                                           corners=corners,
-                                           bend_radius=element.fillet,
-                                           tolerance=tolerance,
-                                           precision=precision
-                                           )
-            return to_return
+                use_width = qgeometry_element.width
+
+            if 'fillet' in qgeometry_element:
+                if math.isnan(qgeometry_element.fillet) or qgeometry_element.fillet <= 0 or qgeometry_element.fillet < qgeometry_element.width:
+                    to_return = gdspy.FlexPath(list(geom.coords),
+                                               use_width,
+                                               layer=qgeometry_element.layer,
+                                               datatype=11)
+                else:
+                    to_return = gdspy.FlexPath(list(geom.coords),
+                                               use_width,
+                                               layer=qgeometry_element.layer,
+                                               datatype=11,
+                                               corners=corners,
+                                               bend_radius=qgeometry_element.fillet,
+                                               tolerance=tolerance,
+                                               precision=precision
+                                               )
+                return to_return
+            else:
+                # Could be junction table with a linestring.
+                # Look for gds_path_filename in column.
+                self.logger.warning(
+                    f'Linestring did not have fillet in column. The qgeometry_element was not drawn.\n'
+                    f'The qgeometry_element within table is:\n'
+                    f'{qgeometry_element}'
+                )
         else:
             # TODO: Handle
             self.logger.warning(
                 f'Unexpected shapely object geometry.'
-                f'The variable element is {type(geom)}, method can currently handle Polygon and FlexPath.')
+                f'The variable qgeometry_element is {type(geom)}, method can currently handle Polygon and FlexPath.')
             # print(geom)
             return None
 
     def get_chip_names(self) -> Dict:
-        """Return a dict of unique chip names for ALL tables within QGeometry.
+        """ Returns a dict of unique chip names for ALL tables within QGeometry.
         In another words, for every "path" table, "poly" table ... etc, this method will search for unique
         chip names and return a dict of unique chip names from QGeometry table.
 
