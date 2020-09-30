@@ -33,10 +33,10 @@ from .meandered import RouteMeander
 from .pathfinder import RoutePathfinder
 
 
-class RouteMixed(RouteFramed, RoutePathfinder, RouteMeander):
+class RouteMixed(RoutePathfinder, RouteMeander):
     """
     The comprehensive Routing class
-    Inherits `RouteFramed, RoutePathfinder, RouteMeander` class, thus also QRoute and RouteAnchors
+    Inherits `RoutePathfinder, RouteMeander` class, thus also QRoute and RouteAnchors
 
     Description:
         Implements fully featured Routing, allowing different type of connections between anchors
@@ -53,7 +53,7 @@ class RouteMixed(RouteFramed, RoutePathfinder, RouteMeander):
 
     default_options = Dict(
         between_anchors=OrderedDict(),  # Intermediate anchors only; doesn't include endpoints
-        # Example: {1: "M", 2: "S", 3: "F", 4: "PF"}
+        # Example: {1: "M", 2: "S", 3: "PF"}
         # startpin -> startpin + leadin -> anchors -> endpin + leadout -> endpin
     )
     """Default options"""
@@ -110,8 +110,6 @@ class RouteMixed(RouteFramed, RoutePathfinder, RouteMeander):
         print(type_connect)
         if type_connect == "S":
             return self.connect_simple
-        if type_connect == "F":
-            return self.connect_frame
         if type_connect == "PF":
             return self.connect_astar_or_simple
         if type_connect == "M":
