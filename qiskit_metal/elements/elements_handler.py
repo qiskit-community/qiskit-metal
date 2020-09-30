@@ -512,6 +512,15 @@ class QGeometryTables(object):
                       layer: Union[int, str],
                       chip: str,
                       **other_options):
+        """If user wants to fillet, check the line-segments to see if it is too short for fillet.
+
+        Args:
+            geometry (shapely.geometry.base.BaseGeometry): The LineString to investigate.
+            kind (str): Name of table, i.e. 'path', 'poly', 'junction, etc
+            component_name (str): Is an integer id.
+            layer (Union[int, str]): Should be int, but getting a float, will cast to int when used.
+            chip (str): Name of chip, i.e. 'main'.
+        """
 
         if 'fillet' in other_options.keys():
             fillet_scalar = 2.0
@@ -540,6 +549,21 @@ class QGeometryTables(object):
 
     @ staticmethod
     def is_there_potential_dogleg(coords: list, fillet_scalar: float, a_fillet: float, fillet_comparison_precision: int) -> list:
+        """Iterate throught the vertex and check using critea. 
+        1. If a start or end segment, is the length smaller than a_fillet.
+        2. If segment in side of LineString, is the lenght smaller than,fillet_scalar times a_fillet.
+
+        Note, there is a rounding error issues. So when the lenght of the segment is calculated, it is rounded by using fillet_comparison_precision.
+
+        Args:
+            coords (list): [description]
+            fillet_scalar (float): [description]
+            a_fillet (float): [description]
+            fillet_comparison_precision (int): [description]
+
+        Returns:
+            list: [description]
+        """
         range_vertex_of_bad = list()
         len_coords = len(coords)
         if len_coords <= 1:
