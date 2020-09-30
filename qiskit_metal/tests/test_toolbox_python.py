@@ -23,10 +23,6 @@ Created on Wed Apr 22 10:00:29 2020
 @author: Jeremy D. Drysdale
 """
 
-# Note - Tests not written for these functions:
-# display.py - format_dict_ala_z
-# utility_functions.py - copy_update
-
 import unittest
 from qiskit_metal.toolbox_python.display import Headings
 from qiskit_metal.toolbox_python.display import Color
