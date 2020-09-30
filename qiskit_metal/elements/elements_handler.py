@@ -28,6 +28,7 @@ from typing import Dict as Dict_
 from typing import List, Tuple, Union
 
 import math
+from scipy.spatial import distance
 import pandas as pd
 import shapely
 import numpy as np
@@ -577,7 +578,7 @@ class QGeometryTables(object):
                 xy_previous = coords[index-1]
 
                 seg_length = np.round(
-                    math.dist(xy_previous, xy), fillet_comparison_precision)
+                    distance.euclidean(xy_previous, xy), fillet_comparison_precision)
                 #seg_length = math.dist(xy_previous, xy)
 
                 # If at first or last segment, use just the fillet value to check, otherwise, use fillet_scalar.

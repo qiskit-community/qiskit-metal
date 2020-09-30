@@ -1,4 +1,5 @@
 import math
+from scipy.spatial import distance
 import os
 import gdspy
 import geopandas
@@ -677,7 +678,8 @@ class GDSRender(QRenderer):
                 xy_previous = coords[index-1]
 
                 # Use np.round to reduce rounding errors, since seg_length is used for comparison.
-                seg_length = np.round(math.dist(xy_previous, xy), for_rounding)
+                seg_length = np.round(distance.euclidean(
+                    xy_previous, xy), for_rounding)
                 # If at first or last segment, use just the fillet value to check, otherwise, use scaled_fillet.
                 # Need to not fillet index-1 to index line segment.
                 if index == 1 or index == len_coords-1:
