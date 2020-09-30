@@ -34,7 +34,8 @@ class SmileyFace(QComponent):
 
     default_options = Dict(
         happy = True,
-        wink = False
+        wink = False,
+        orientation=0
     )
     """Default connector options"""
 
@@ -64,5 +65,7 @@ class SmileyFace(QComponent):
             face = draw.subtract(face,draw.shapely.geometry.LineString([(0.2,0.4),(0.6,0.4)]).buffer(0.02))
         else:
             face = draw.subtract(face,eye_r)
+
+        face = draw.rotate(face, self.p.orientation, origin=(0, 0))
 
         self.add_qgeometry('poly', {'Smiley': face})
