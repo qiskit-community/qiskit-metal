@@ -49,7 +49,7 @@ class RoutePathfinder(RouteAnchors):
     )
     """Default options"""
 
-    def connect_astar_or_simple(self, start_pt: QRoutePoint, end_pt: QRoutePoint, step_size: float = 0.25) -> list:
+    def connect_astar_or_simple(self, start_pt: QRoutePoint, end_pt: QRoutePoint) -> list:
         """
         Connect start and end via A* algo if connect_simple doesn't work
         
@@ -67,6 +67,8 @@ class RoutePathfinder(RouteAnchors):
         start = start_pt.position
         end_direction = end_pt.direction
         end = end_pt.position
+
+        step_size = self.parse_options().step_size
 
         starting_dist = sum(abs(end - start)) # Manhattan distance between start and end
         pathmapper = {(starting_dist, start[0], start[1]): [starting_dist, [start]]}
@@ -98,7 +100,7 @@ class RoutePathfinder(RouteAnchors):
             
             # Check if connect_simple works at each iteration of A*
             simple_path = self.connect_simple(QRoutePoint(np.array([x, y]), direction), QRoutePoint(end, end_direction))
-            if simple_path:
+            if simple_path is not None:
                 if len(current_path) > 1:
                     # Concatenate collinear line segments (joined at a point and have identical slopes)
                     # current_path = [..., [x_pen, y_pen], [x_end, y_end]]
@@ -109,7 +111,7 @@ class RoutePathfinder(RouteAnchors):
                     if (y_ult - y_pen) * (x_new - x_ult) == (y_new - y_ult) * (x_ult - x_pen):
                         # Concatenate collinear line segments (joined at a point and have identical slopes)
                         return current_path[:-1] + simple_path[1:]
-                return current_path[:-1] + simple_path
+                return simple_path
             
             for disp in [np.array([0, 1]), np.array([0, -1]), np.array([1, 0]), np.array([-1, 0])]:
                 # Unit displacement in 4 cardinal directions
@@ -148,7 +150,6 @@ class RoutePathfinder(RouteAnchors):
         """
         p = self.parse_options()
         anchors = p.anchors
-        step_size = p.step_size
 
         # Set the CPW pins and add the points/directions to the lead-in/out arrays
         self.set_pin("start")
@@ -164,11 +165,11 @@ class RoutePathfinder(RouteAnchors):
 
         for coord in list(anchors.values()):
             if not self.intermediate_pts:
-                self.intermediate_pts = self.connect_astar_or_simple(meander_start_point, QRoutePoint(coord), step_size)[1:]
+                self.intermediate_pts = self.connect_astar_or_simple(meander_start_point, QRoutePoint(coord))[1:]
             else:
-                self.intermediate_pts += self.connect_astar_or_simple(self.get_tip(), QRoutePoint(coord), step_size)[1:]
+                self.intermediate_pts += self.connect_astar_or_simple(self.get_tip(), QRoutePoint(coord))[1:]
 
-        last_pt = self.connect_astar_or_simple(self.get_tip(), meander_end_point, step_size)[1:]
+        last_pt = self.connect_astar_or_simple(self.get_tip(), meander_end_point)[1:]
         if self.intermediate_pts:
             self.intermediate_pts += last_pt
         else:

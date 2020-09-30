@@ -22,7 +22,7 @@ from numpy.linalg import norm
 from qiskit_metal import Dict
 from qiskit_metal.components.base import QRoute
 
-class RouteFramePath(QRoute):
+class RouteFramed(QRoute):
 
     """
     A non-meandered basic CPW that is auto-generated between 2 components.

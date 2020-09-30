@@ -22,6 +22,7 @@ from qiskit_metal import draw, Dict
 from .base import QComponent
 from numpy.linalg import norm
 from typing import List, Tuple, Union, AnyStr
+from collections.abc import Mapping
 
 
 class QRoutePoint:
@@ -63,6 +64,8 @@ class QRoute(QComponent):
     Leads:
         * start_straight  - lead-in, defined as the straight segment extension from start_pin (default: 0.1um)
         * end_straight    - (optional) lead-out, defined as the straight segment extension from end_pin (default: 0.1um)
+        * start_jogged_extension   - (optional) lead-in, jogged extension of lead-in. Described as list of tuples
+        * end_jogged_extension     - (optional) lead-out, jogged extension of lead-out. Described as list of tuples
 
     Others:
         * snap            - true/false, defines if snapping on Manhattan routing or any direction (default: 'true')
@@ -92,8 +95,10 @@ class QRoute(QComponent):
         fillet='0',
         lead=Dict(
             start_straight='0mm',
-            end_straight='0mm'
-        ),
+            end_straight='0mm',
+            start_jogged_extension='',
+            end_jogged_extension=''
+    ),
         total_length='7mm',
         chip='main',
         layer='1',
@@ -113,7 +118,8 @@ class QRoute(QComponent):
         Attributes:
             head (QRouteLead()): Stores sequential points to start the route
             tail (QRouteLead()): (optional) Stores sequential points to terminate the route
-            intermediate_pts (numpy Nx2): Sequence of points between and other than head and tail (default:None)
+            intermediate_pts: Sequence of points between and other than head and tail (default:None).
+                              Type could be either list or numpy Nx2, or dict/OrderedDict nesting lists or numpy Nx2
             start_pin_name (string): Head pin name (default: "start")
             end_pin_name (string): Tail pin name (default: "end")
         """
@@ -121,7 +127,7 @@ class QRoute(QComponent):
         self.tail = QRouteLead()
 
         # keep track of all points so far in the route from both ends
-        self.intermediate_pts = None  # will be numpy Nx2
+        self.intermediate_pts = np.empty((0, 2), float)  # will be numpy Nx2
 
         # supported pin names (constants)
         self.start_pin_name = "start"
@@ -221,9 +227,11 @@ class QRoute(QComponent):
         if name == self.start_pin_name:
             options_lead = p.lead.start_straight
             lead = self.head
+            jogged_lead = self.p.lead.start_jogged_extension
         elif name == self.end_pin_name:
             options_lead = p.lead.end_straight
             lead = self.tail
+            jogged_lead = self.p.lead.end_jogged_extension
         else:
             raise Exception("Pin name \"" + name + "\" is not supported for this CPW." +
                             " The only supported pins are: start, end.")
@@ -232,9 +240,77 @@ class QRoute(QComponent):
         # minimum lead, to be able to jog correctly
         lead_length = max(options_lead, self.p.trace_width / 2.0)
         lead.go_straight(lead_length)
+        # then add all the jogged lead information
+        if jogged_lead:
+            self.set_lead_extension(name)  # consider merging with set_lead
 
         # return the last QRoutePoint of the lead
         return lead.get_tip()
+
+    def set_lead_extension(self, name: str) -> QRoutePoint:
+        """Defines the jogged lead_extension by adding a series of turns to the self.head/tail
+
+        Args:
+            name: string (supported pin names are: start, end)
+
+        Return:
+            QRoutePoint: last point in the QRouteLead (self.head/tail)
+        """
+        # TODO: jira case #300 should remove the need for this line, and only use self.p
+        p = self.parse_options()
+        # First define which lead you intend to modify
+        if name == self.start_pin_name:
+            options_lead = p.lead.start_jogged_extension
+            lead = self.head
+        elif name == self.end_pin_name:
+            options_lead = p.lead.end_jogged_extension
+            lead = self.tail
+        else:
+            raise Exception("Pin name \"" + name + "\" is not supported for this CPW." +
+                            " The only supported pins are: start, end.")
+
+        # then change the lead by adding points
+        for turn, length in options_lead.values():
+            if turn in ("left", "L"):
+                lead.go_left(length)
+            elif turn in ("right", "R"):
+                lead.go_right(length)
+            elif turn in ("straight", "D", "S"):
+                lead.go_straight(length)
+            else:
+                raise Exception("the first term needs to represent a direction in english, " +
+                                "the second term should be a string indicating the length" +
+                                "the pair that caused this error is" + turn + ":" + length)
+
+        # return the last QRoutePoint of the lead
+        return lead.get_tip()
+
+    def _get_lead2pts_array(self, arr) -> Tuple:
+        """Return the last "diff pts" of the array.
+        If the array is one dimensional or has only identical points, return -1 for tip_pt_minus_1
+
+        Return:
+            Tuple: of two np.ndarray. the arrays could be -1 instead, if point not found
+        """
+        pt = pt_minus_1 = None
+        if len(arr) == 1:
+            # array 1,2
+            pt = arr
+        elif len(arr) > 1:
+            if not isinstance(arr, np.ndarray) and len(arr) == 2:
+                # array 2,1
+                pt = arr
+            else:
+                # array N,2
+                pt = arr[-1]
+                prev_id = -2
+                pt_minus_1 = arr[prev_id]
+                while (pt_minus_1 == pt).all() and prev_id > -len(arr):
+                    prev_id -= 1
+                    pt_minus_1 = arr[prev_id]
+                if (pt_minus_1 == pt).all():
+                    pt_minus_1 = None
+        return pt, pt_minus_1
 
     def get_tip(self) -> QRoutePoint:
         """Access the last element in the QRouteLead
@@ -243,14 +319,38 @@ class QRoute(QComponent):
             QRoutePoint: last point in the QRouteLead
             The values are numpy arrays with two float points each.
         """
-        if not self.intermediate_pts:
+        if self.intermediate_pts is None:
+            # no points in between, so just grab the last point from the lead-in
             return self.head.get_tip()
-        elif len(self.intermediate_pts) == 1:
-            return QRoutePoint(self.intermediate_pts[-1],
-                               self.intermediate_pts[-1] - self.head.get_tip().position)
+        tip_pt = tip_pt_minus_1 = None
+        if isinstance(self.intermediate_pts, list) or isinstance(self.intermediate_pts, np.ndarray):
+            tip_pt, tip_pt_minus_1 = self._get_lead2pts_array(self.intermediate_pts)
+        elif isinstance(self.intermediate_pts, Mapping):
+            # then it is either a dict or a OrderedDict
+            # this method relies on the keys to be numerical integer. Will use the last points
+            # assumes that the "value" associated with each key is some "not empty" list/array
+            sorted_keys = sorted(self.intermediate_pts.keys(), reverse=True)
+            for key in sorted_keys:
+                pt0, pt_minus1 = self._get_lead2pts_array(self.intermediate_pts[key])
+                if pt0 is None:
+                    continue
+                if tip_pt_minus_1 is None:
+                    tip_pt_minus_1 = pt0
+                if tip_pt is None:
+                    tip_pt, tip_pt_minus_1 = tip_pt_minus_1, tip_pt
+                    tip_pt_minus_1 = pt_minus1
         else:
-            return QRoutePoint(self.intermediate_pts[-1],
-                               self.intermediate_pts[-1] - self.intermediate_pts[-2])
+            print("unsupported type for self.intermediate_pts", type(self.intermediate_pts))
+            return
+        if tip_pt is None:
+            # no point in the intermediate array
+            return self.head.get_tip()
+        if tip_pt_minus_1 is None:
+            # no "previous" point in the intermediate array
+            tip_pt_minus_1 = self.head.get_tip().position
+
+        return QRoutePoint(tip_pt,
+                           tip_pt - tip_pt_minus_1)
 
     def get_points(self) -> np.ndarray:
         """Assembles the list of points for the route by concatenating:
@@ -304,6 +404,26 @@ class QRoute(QComponent):
         """
         points = self.get_points()
         return sum(norm(points[i + 1] - points[i]) for i in range(len(points) - 1))
+
+    def assign_direction_to_anchor(self, start_pt: QRoutePoint, end_pt: QRoutePoint):
+        if end_pt.direction is not None:
+            # end_pt already has a direction (not an anchor?), so do nothing
+            return
+        # TODO: is this truly the best rule to apply to determine the anchor direction?
+        # Current rule: stop_direction aligned with longer edge of the rectangle connecting start_pt and end_pt
+        start = start_pt.position
+        end = end_pt.position
+        # Absolute value of displacement between start and end in x direction
+        offsetx = abs(end[0] - start[0])
+        # Absolute value of displacement between start and end in y direction
+        offsety = abs(end[1] - start[1])
+        # TODO: make the following and the entire class able to support other orientations than [1,0][0,1]
+        if offsetx >= offsety:  # "Wide" rectangle -> end_arrow points along x
+            assigned_direction = np.array([end[0] - start[0], 0])
+        else:  # "Tall" rectangle -> end_arrow points along y
+            assigned_direction = np.array([0, end[1] - start[1]])
+            assigned_direction = assigned_direction / norm(assigned_direction)
+        end_pt.direction = assigned_direction
 
     def make_elements(self, pts: np.ndarray):
         """Turns the CPW points into design elements, and add them to the design object
@@ -469,6 +589,8 @@ class QRouteLead:
             QRoutePoint: last point in the QRouteLead
             The values are numpy arrays with two float points each.
         """
+        if self.pts.ndim == 1:
+            return QRoutePoint(self.pts, self.direction)
         return QRoutePoint(self.pts[-1], self.direction)
 
     # def align_to(self, concurrent_array):
