@@ -36,7 +36,7 @@ from matplotlib.cbook import _OrderedSet
 from matplotlib.collections import LineCollection, PatchCollection
 from matplotlib.figure import Figure
 from matplotlib.transforms import Bbox
-from shapely.geometry import CAP_STYLE, JOIN_STYLE, LineString, Polygon
+from shapely.geometry import CAP_STYLE, JOIN_STYLE, LineString
 
 from ... import Dict
 from ...designs import QDesign
@@ -81,6 +81,9 @@ class QMplRenderer():
         self.canvas = canvas
         self.ax = None
         self.design = design
+        self.options = Dict(
+            resolution='16',
+        )
 
         # Filter view options
         self.hidden_layers = set()
@@ -312,23 +315,24 @@ class QMplRenderer():
         """
         if row["fillet"] == 0:  # zero radius, no need to fillet
             return row["geometry"]
-        path = row["geometry"].exterior.coords
+        path = row["geometry"].coords
         newpath = np.array([path[0]])
 
         # Iterate through every three-vertex corner
         for start, corner, end in zip(path, path[1:], path[2:]):
             fillet = self._calc_fillet(
-                np.array(start), np.array(corner), np.array(end), row["fillet"]
+                np.array(start), np.array(corner), np.array(end), row["fillet"], int(self.options['resolution'])
             )
             if fillet is not False:
                 newpath = np.concatenate((newpath, fillet))
             else:  # Don't need to fillet in this case, just add back in the normal vertex
+                print("Warning: Could not fully fillet component %d: %s" %(row["component"], row["name"]))
                 newpath = np.concatenate((newpath, np.array([corner])))
         newpath = np.concatenate((newpath, np.array([end])))
-        return Polygon(newpath)
+        return LineString(newpath)
 
 
-    def _calc_fillet(self, vertex_start, vertex_corner, vertex_end, radius, points=10):
+    def _calc_fillet(self, vertex_start, vertex_corner, vertex_end, radius, points=16):
         """
         Returns the filleted path based on the start, corner, and end vertices and the
         fillet radius.
@@ -343,12 +347,10 @@ class QMplRenderer():
         if np.array_equal(vertex_start, vertex_corner) or np.array_equal(
             vertex_end, vertex_corner
         ):
-            print("Warning: degenerate corner")
             return False
         if radius > np.linalg.norm(
             vertex_start - vertex_corner
-        ) or radius > np.linalg.norm(vertex_corner - vertex_end):
-            print("Warning: fillet radius too large for corner")
+        )/2 or radius > np.linalg.norm(vertex_corner - vertex_end)/2:
             return False
 
         fillet_start = (
@@ -357,7 +359,7 @@ class QMplRenderer():
             * (vertex_start - vertex_corner)
             + vertex_corner
         )
-        path = np.array([vertex_start])
+        path = np.array([fillet_start])
         # Calculate the angle of the corner, which is not necessarily 90 degrees
         end_angle = np.arccos(
             np.dot(vertex_start - vertex_corner, vertex_end - vertex_corner)
@@ -367,7 +369,6 @@ class QMplRenderer():
             )
         )
         if end_angle == 0 or end_angle == np.pi:
-            print("Warning: invalid angle between start and end of fillet corner")
             return False
         # Determine direction so we know which way to fillet
         # TODO - replace with generalized code accounting for different rotations
@@ -385,8 +386,8 @@ class QMplRenderer():
             sign = 1 - sign
         sign = sign * 2 - 1
 
-        # Populate the fillet corner
-        for theta in np.arange(0, end_angle, end_angle / points):
+        # Populate the fillet corner, skipping the start point since it's already added
+        for theta in np.arange(0, end_angle, end_angle / points)[1:]:
             diff = [np.sin(theta) * radius, radius - np.cos(theta) * radius]
             path = np.concatenate(
                 (
@@ -401,7 +402,6 @@ class QMplRenderer():
                     ),
                 )
             )
-        path = np.concatenate((path, np.array([vertex_end])))
         return path
 
     def render_path(self, table: pd.DataFrame, ax: Axes, subtracted: bool = False, extra_kw: dict = None):
@@ -425,6 +425,10 @@ class QMplRenderer():
 
         # convert to polys - handle non zero width
         table1 = table[~mask]
+
+        # if any are fillet, alter the path separately
+        table1[table1.fillet.notnull()] = self.render_fillet(table1[table1.fillet.notnull()])
+
         if len(table1) > 0:
             table1.geometry = table1[['geometry', 'width']].apply(lambda x:
                                                                   x[0].buffer(
@@ -432,13 +436,12 @@ class QMplRenderer():
                                                                           x[1])/2.,
                                                                       cap_style=CAP_STYLE.flat,
                                                                       join_style=JOIN_STYLE.mitre,
-                                                                      resolution=16
+                                                                      resolution=int(self.options['resolution'])
                                                                   ), axis=1)
 
             kw = self.get_style('poly', subtracted=subtracted, extra=extra_kw)
 
-            # if any are fillet, alter the path separately
-            table1[table1.fillet.notnull()] = self.render_fillet(table1[table1.fillet.notnull()])
+
 
             # render components
             self.render_poly(table1, ax, subtracted=subtracted, extra_kw=kw)
