@@ -33,6 +33,7 @@ from .meandered import RouteMeander
 from .pathfinder import RoutePathfinder
 
 
+# class RouteMixed(RouteFramed, RoutePathfinder, RouteMeander):
 class RouteMixed(RoutePathfinder, RouteMeander):
     """
     The comprehensive Routing class
