@@ -96,7 +96,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         else:
             self.ui.tabWidget.setCurrentWidget(self.ui.mainViewTab)
             self.ui.actionElements.setText("QGeometry")
-    
+
     def show_renderer_gds(self):
         """Handles click on GDS Renderer action"""
         self.gds_gui = RendererGDSWidget(self.design, self, self.gui)
@@ -427,6 +427,17 @@ class MetalGUI(QMainWindowBaseHandler):
         model = QTableModel_AllComponents(self, logger=self.logger,
                                           tableView=self.ui.tableComponents)
         self.ui.tableComponents.setModel(model)
+
+    ################################################
+    # UI
+    def toggle_docks(self, do_hide: bool = None):
+        """Show or hide the full plot-area widget / show or hide all docks.
+
+        Args:
+            do_hide (bool): Hide or show (Default: None -- togle)
+        """
+        self.main_window.toggle_all_docks(do_hide)
+        self.qApp.processEvents() # Process all events, so that if we take screenshot next it won't be partially updated
 
     ################################################
     # Ploting
