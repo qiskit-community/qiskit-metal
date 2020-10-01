@@ -1,4 +1,8 @@
+from ... import Dict
+from qiskit_metal.toolbox_python.utility_functions import is_there_potential_dogleg, can_write_to_path
+from qiskit_metal.toolbox_python.utility_functions import can_write_to_path
 import math
+from scipy.spatial import distance
 import os
 import gdspy
 import geopandas
@@ -19,9 +23,6 @@ import numpy as np
 
 from qiskit_metal.renderers.renderer_base import QRenderer
 from qiskit_metal.toolbox_metal.parsing import is_true
-from qiskit_metal.toolbox_python.utility_functions import can_write_to_path
-
-from ... import Dict
 
 if TYPE_CHECKING:
     # For linting typechecking, import modules that can't be loaded here under normal conditions.
@@ -193,6 +194,24 @@ class GDSRender(QRenderer):
     def _clear_library(self):
         """Clear current library."""
         gdspy.current_library.cells.clear()
+
+    def _can_write_to_path(self, file: str) -> int:
+        """Check if can write file.
+
+        Args:
+            file (str): Has the path and/or just the file name.
+
+        Returns:
+            int: 1 if access is allowed. Else returns 0, if access not given.
+        """
+        status, directory_name = can_write_to_path(file)
+        if status:
+            return 1
+
+        self.logger.warning(f'Not able to write to directory.'
+                            f'File:"{file}" not written.'
+                            f' Checked directory:"{directory_name}".')
+        return 0
 
     def update_units(self):
         """Update the options in the units.
@@ -668,63 +687,13 @@ class GDSRender(QRenderer):
         precision = float(self.parse_value(self.options.precision))
         for_rounding = int(np.abs(np.log10(precision)))
 
-        scaled_fillet = a_fillet * fillet_scale_factor
-        end_vertex_of_bad = list()
-        for index, xy in enumerate(coords):
-            # Skip the first vertex.
-            if index > 0:
-                xy_previous = coords[index-1]
-
-                # Use np.round to reduce rounding errors, since seg_length is used for comparison.
-                seg_length = np.round(math.dist(xy_previous, xy), for_rounding)
-                # If at first or last segment, use just the fillet value to check, otherwise, use scaled_fillet.
-                # Need to not fillet index-1 to index line segment.
-                if index == 1 or index == len_coords-1:
-                    if seg_length < a_fillet:
-                        end_vertex_of_bad.append((index-1, index))
-                else:
-                    if seg_length < scaled_fillet:
-                        end_vertex_of_bad.append((index-1, index))
-
-        reduced_idx = GDSRender.compress_list(end_vertex_of_bad)
-        all_idx_bad_fillet['reduced_idx'] = reduced_idx
+        all_idx_bad_fillet['reduced_idx'] = is_there_potential_dogleg(
+            coords, a_fillet, fillet_scale_factor, for_rounding)
 
         midpoints = list()
         midpoints = [GDSRender.midpoint_xy(coords[idx-1][0], coords[idx-1][1], vertex2[0], vertex2[1])
                      for idx, vertex2 in enumerate(coords) if idx > 0]
         all_idx_bad_fillet['midpoints'] = midpoints
-
-    @ staticmethod
-    def compress_list(individual_seg: list) -> list:
-        """Given a list of segments that should not be fillet'd,
-        search for adjacent segments and make them one compressed list.
-
-        Args:
-            individual_seg (list): List of tuples of two ints.  Each int refers to an index of a LineString.
-
-        Returns:
-            list: A compresses list of individual_segs.  So, it combines adjacent segments into a longer one.
-        """
-        reduced_idx = list()
-        len_compressed = len(individual_seg)
-        if len_compressed > 0:
-            last_unique_seg = (-1, -1)  # set to a non-logical tuple
-
-            for index, item in enumerate(individual_seg):
-                if index == 0:
-                    last_unique_seg = item
-                else:
-                    if min(item) == max(last_unique_seg):
-                        last_unique_seg = (min(last_unique_seg), max(item))
-                    else:
-                        reduced_idx.append(last_unique_seg)
-                        last_unique_seg = item
-                if index == len_compressed-1:
-                    reduced_idx.append(last_unique_seg)
-            return reduced_idx
-
-        else:
-            return reduced_idx
 
     def gather_subtract_elements_and_bounds(self, chip_name: str, table_name: str, table: geopandas.GeoDataFrame,
                                             all_subtracts: list, all_no_subtracts: list):

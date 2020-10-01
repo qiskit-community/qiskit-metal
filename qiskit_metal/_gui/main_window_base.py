@@ -17,7 +17,7 @@ GUI front-end interface for Qiskit Metal in PyQt5.
 @author: Zlatko Minev, IBM
 """
 
-### # pylint: disable=invalid-name
+# pylint: disable=invalid-name
 
 import logging
 import os
@@ -126,7 +126,8 @@ class QMainWindowExtensionBase(QMainWindow):
             Exception: Error in restoration
         """
 
-        version_settings = self.settings.value('metal_version', defaultValue='0')
+        version_settings = self.settings.value(
+            'metal_version', defaultValue='0')
         if __version__ > version_settings:
             self.logger.debug(
                 f"Clearing window settings [{version_settings}]...")
@@ -192,21 +193,30 @@ class QMainWindowExtensionBase(QMainWindow):
             _disp_ops.update(disp_ops or {})
             display(Image(filename=str(path), **_disp_ops))
 
-    def toggle_all_docks(self):
+    def toggle_all_docks(self, do_hide: bool = None):
         """Show or hide all docks.
-        """
-        docks = [widget for widget in self.children() if isinstance(widget, QDockWidget)]
-        docks = list(filter(lambda x:  not x.windowTitle().lower().startswith('edit source'), docks))
-        # print(docks)
-        docks += [widget for widget in self.gui.plot_win.children() if isinstance(widget, QDockWidget)] # specific
-        dock_states = {dock: dock.isVisible() for dock in docks}
 
-        do_hide = any(dock_states.values()) # if any are visible then hide all
+        Args:
+            do_hide (bool): Hide or show (Default: None -- togle)
+        """
+        # Get all docks to show/hide. Ignore edit source
+        docks = [widget for widget in self.children()
+                 if isinstance(widget, QDockWidget)]
+        docks = list(filter(lambda x: not x.windowTitle(
+        ).lower().startswith('edit source'), docks))
+        docks += [widget for widget in self.gui.plot_win.children()
+                  if isinstance(widget, QDockWidget)]  # specific
+
+        if do_hide is None:
+            dock_states = {dock: dock.isVisible() for dock in docks}
+            do_hide = any(dock_states.values()) # if any are visible then hide all
+
         for dock in docks:
             if do_hide:
                 dock.hide()
             else:
                 dock.show()
+
         # TODO: small -- fix, changes which dock is on top or now
 
     ##################################################################
@@ -570,6 +580,19 @@ class QMainWindowBaseHandler():
         """
         raise NotImplementedError()
 
+    def show(self):
+        """
+        Show the main window.
+        """
+        self.main_window.show()
+
+    def clear_settings(self):
+        """
+        Clear the settings that get saved each time the main window is closed.
+        This will reset the window layout to the default.
+        """
+        self.settings.clear()
+
 
 def kick_start_qApp():
     """Kick start the application
@@ -586,7 +609,8 @@ def kick_start_qApp():
     if qApp is None:
         try:
             # TODO: See
-            QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
+            QtWidgets.QApplication.setAttribute(
+                QtCore.Qt.AA_EnableHighDpiScaling)
         except AttributeError:  # Attribute only exists for Qt >= 5.6
             pass
 
