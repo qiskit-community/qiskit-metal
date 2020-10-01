@@ -96,9 +96,11 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
     )
     """Default drawing options"""
 
-    table_types = Dict(
-        poly=True,
-        junction=True)
+    component_metadata = Dict(
+        short_name='Cross',
+        _qgeometry_table_poly='True',
+        _qgeometry_table_junction='True'
+    )
 ##############################################MAKE######################################################
 
     def make(self):
@@ -109,7 +111,6 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
 
 
 ###################################TRANSMON#############################################################
-
 
     def make_pocket(self):
         '''
@@ -151,7 +152,6 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
 
 
 ############################CONNECTORS##################################################################################################
-
 
     def make_connection_pads(self):
         '''

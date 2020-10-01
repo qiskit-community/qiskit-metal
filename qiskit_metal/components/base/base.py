@@ -37,7 +37,6 @@ from ._parsed_dynamic_attrs import ParsedDynamicAttributes_Component
 from ...draw import Vector
 from ...toolbox_python.display import format_dict_ala_z
 
-
 __all__ = ['QComponent']
 
 if TYPE_CHECKING:
@@ -298,21 +297,6 @@ class QComponent():
                     **options_from_children, **child.component_metadata}
 
         return options_from_children
-
-    @classmethod
-    def _gather_all_children_table_types(cls) -> dict:
-
-        table_types_from_children = {}
-        parents = inspect.getmro(cls)
-
-        # len-2: base.py is not expected to have default_options dict to add to design class.
-        for child in parents[len(parents)-2::-1]:
-            # The template default options are in a class dict attribute `default_options`.
-            if hasattr(child, 'table_types'):
-                table_types_from_children = {
-                    **table_types_from_children, **child.table_types}
-
-        return table_types_from_children
 
     @classmethod
     def _get_unique_class_name(cls) -> str:
@@ -645,6 +629,7 @@ class QComponent():
 #
 #   What information is truly necessary for the pins? Should they have a z-direction component?
 #   Will they operate properly with non-planar designs?
+
 
     def add_pin(self,
                 name: str,  # Should be static based on component designer's choice

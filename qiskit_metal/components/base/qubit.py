@@ -61,12 +61,10 @@ class BaseQubit(QComponent):
     """Default drawing options"""
 
     component_metadata = Dict(
-        short_name='Q'
-    )
-    """Component metadata"""
+        short_name='Q',
+        _qgeometry_table_poly='True')
 
-    table_types = Dict(
-        poly=True)
+    """Component metadata"""
 
     def __init__(self, design, name=None, options=None, options_connection_pads=None,
                  make=True):

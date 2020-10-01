@@ -30,9 +30,11 @@ import pandas as pd
 from .. import Dict, logger
 from ..config import DefaultMetalOptions, DefaultOptionsRenderer
 from ..elements import QGeometryTables
-from ..toolbox_metal.import_export import load_metal_design, save_metal
-from ..toolbox_metal.parsing import parse_options, parse_value
-from ..toolbox_python.utility_functions import log_error_easy
+from qiskit_metal.toolbox_metal.import_export import load_metal_design, save_metal
+from qiskit_metal.toolbox_metal.parsing import parse_options, parse_value
+from qiskit_metal.toolbox_metal.parsing import is_true
+from qiskit_metal.toolbox_python.utility_functions import log_error_easy
+
 from .interface_components import Components
 from .net_info import QNet
 
@@ -956,3 +958,23 @@ class QDesign():
             status.add(5)
 
         return status
+
+    def get_list_of_tables_in_metadata(self, a_metadata: dict) -> list:
+        """Look at the metadata dict to get list of tables the component uses.
+
+        Args:
+            a_metadata (dict): Use dict from gather_all_childern for metadata.
+
+        Returns:
+            list: List of tables, the component-developer, denoted as being used in metadata.
+        """
+
+        uses_table = list()
+        for table_name in self.qgeometry.get_element_types():
+            search = f'_qgeometry_table_{table_name}'
+            table_status = search in a_metadata.keys()
+            if table_status:
+                if is_true(self.parse_value(a_metadata[search])):
+                    uses_table.append(table_name)
+
+        return uses_table

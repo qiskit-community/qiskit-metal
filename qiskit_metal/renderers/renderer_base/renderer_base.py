@@ -309,6 +309,9 @@ class QRenderer():
     def add_table_data_to_QDesign(self, class_name: str):
         """During init of renderer, this needs to happen. In particular,
         each renderer needs to update custom columns and values within QDesign.
+
+        Args:
+            class_name (str): Name from cls.name for each renderer. 
         """
         status = set()
         if not isinstance(QRenderer.name, str):

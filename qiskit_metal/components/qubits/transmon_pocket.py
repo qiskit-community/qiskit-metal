@@ -149,9 +149,11 @@ class TransmonPocket(BaseQubit):
     )
     """Default drawing options"""
 
-    table_types = Dict(
-        path=True,
-        poly=True)
+    component_metadata = Dict(
+        short_name='Pocket',
+        _qgeometry_table_path='True',
+        _qgeometry_table_poly='True'
+    )
 
     def make(self):
         """Define the way the options are turned into QGeometry.
