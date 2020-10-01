@@ -107,6 +107,7 @@ Qubits
 .. autosummary::
     :toctree:
 
+    TransmonConcentric
     TransmonCross
     TransmonPocket
     TransmonPocketCL
@@ -162,6 +163,7 @@ if config.is_building_docs():
     from .passives.launch_v2 import LaunchV2
     from .passives.capacitor_three_fingers import Capacitor3Fingers
     from .passives.three_finger_cap_v1 import ThreeFingerCapV1
+    from .qubits.transmon_concentric import TransmonConcentric
     from .qubits.transmon_cross import TransmonCross
     from .qubits.transmon_pocket import TransmonPocket
     from .qubits.transmon_pocket_cl import TransmonPocketCL
