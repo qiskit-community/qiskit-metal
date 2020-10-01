@@ -20,7 +20,7 @@ import numpy as np
 
 from qiskit_metal.renderers.renderer_base import QRenderer
 from qiskit_metal.toolbox_metal.parsing import is_true
-from qiskit_metal.toolbox_python.utility_functions import is_there_potential_dogleg
+from qiskit_metal.toolbox_python.utility_functions import is_there_potential_dogleg, can_write_to_path
 from ... import Dict
 
 if TYPE_CHECKING:
@@ -174,8 +174,6 @@ class GDSRender(QRenderer):
         """Clear current library."""
         gdspy.current_library.cells.clear()
 
-    # TODO: Move to toolbox_python utility and call there
-    # Maybe not, there is a self.logger.
     def _can_write_to_path(self, file: str) -> int:
         """Check if can write file.
 
@@ -185,16 +183,14 @@ class GDSRender(QRenderer):
         Returns:
             int: 1 if access is allowed. Else returns 0, if access not given.
         """
-
-        # If need to use lib pathlib.
-        directory_name = os.path.dirname(os.path.abspath(file))
-        if os.access(directory_name, os.W_OK):
+        status, directory_name = can_write_to_path(file)
+        if status:
             return 1
-        else:
-            self.logger.warning(f'Not able to write to directory.'
-                                f'File:"{file}" not written.'
-                                f' Checked directory:"{directory_name}".')
-            return 0
+
+        self.logger.warning(f'Not able to write to directory.'
+                            f'File:"{file}" not written.'
+                            f' Checked directory:"{directory_name}".')
+        return 0
 
     def update_units(self):
         """Update the options in the units.

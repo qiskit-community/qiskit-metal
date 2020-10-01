@@ -27,15 +27,17 @@ import traceback
 import warnings
 import logging
 import sys
+import os
 import pandas as pd
 import numpy as np
 from scipy.spatial import distance
+from typing import Tuple
 
 from copy import deepcopy
 
 __all__ = ['copy_update', 'dict_start_with', 'data_frame_empty_typed', 'clean_name',
            'enable_warning_traceback', 'get_traceback', 'print_traceback_easy', 'log_error_easy',
-           'monkey_patch', 'is_there_potential_dogleg', 'compress_list']
+           'monkey_patch', 'is_there_potential_dogleg', 'compress_list', 'can_write_to_path']
 
 ####################################################################################
 # Dictionary related
@@ -354,3 +356,25 @@ def is_there_potential_dogleg(coords: list, a_fillet: float, fillet_scalar: floa
                     range_vertex_of_bad.append((index-1, index))
 
     return compress_list(range_vertex_of_bad)
+
+
+########################################################################################
+# Check to see if path exists and file can be written.
+def can_write_to_path(file: str) -> Tuple[int, str]:
+    """Check if can write file.
+
+    Args:
+        file (str): Has the path and/or just the file name.
+
+    Returns:
+        Tuple[int,str]:
+        int: 1 if access is allowed. Else returns 0, if access not given.
+        str: Full path and file which was searched for.
+    """
+
+    # If need to use lib pathlib.
+    directory_name = os.path.dirname(os.path.abspath(file))
+    if os.access(directory_name, os.W_OK):
+        return 1, directory_name
+    else:
+        return 0, directory_name
