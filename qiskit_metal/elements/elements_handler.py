@@ -23,21 +23,18 @@ See the docstring of `QGeometryTables`
 
 import inspect
 import logging
-from typing import TYPE_CHECKING
-from typing import Dict as Dict_
-from typing import List, Tuple, Union
-
-import math
-from scipy.spatial import distance
 import pandas as pd
 import shapely
-import numpy as np
+
+from typing import TYPE_CHECKING
+from qiskit_metal.toolbox_python.utility_functions import is_there_potential_dogleg, data_frame_empty_typed
+from typing import Dict as Dict_
+from typing import List, Tuple, Union
 from geopandas import GeoDataFrame, GeoSeries
 
 from .. import Dict
-# from ..config import DEFAULT
 from ..draw import BaseGeometry
-from ..toolbox_python.utility_functions import data_frame_empty_typed
+
 
 if TYPE_CHECKING:
     from ..components.base import QComponent
@@ -541,62 +538,13 @@ class QGeometryTables(object):
             for key, geom in geometry.items():
                 if isinstance(geom, shapely.geometry.LineString):
                     coords = list(geom.coords)
-                    range_vertex_of_doglegs = QGeometryTables.is_there_potential_dogleg(
-                        coords, fillet_scalar, fillet, fillet_comparison_precision)
+                    range_vertex_of_doglegs = is_there_potential_dogleg(
+                        coords, fillet, fillet_scalar,  fillet_comparison_precision)
                     if len(range_vertex_of_doglegs) > 0:
                         text_id = self.design._components[component_name]._name
                         self.logger.warning(
                             f'For kind={kind}, component_id={component_name}, component_name={text_id}, layer={int(layer)}, chip={chip}, key={key} in geometry,'
                             f' list={range_vertex_of_doglegs} of short segments corresponds to index in geometry.')
-
-    @ staticmethod
-    def is_there_potential_dogleg(coords: list, fillet_scalar: float, a_fillet: float, fillet_comparison_precision: int) -> list:
-        """Iterate throught the vertex and check using critea. 
-        1. If a start or end segment, is the length smaller than a_fillet.
-        2. If segment in side of LineString, is the lenght smaller than,fillet_scalar times a_fillet.
-
-        Note, there is a rounding error issues. So when the lenght of the segment is calculated, 
-        it is rounded by using fillet_comparison_precision.
-
-        Args:
-            coords (list): List of tuples in (x,y) format. Each tuple represents a vertex on a LineSegment.
-
-            fillet_scalar (float): When determining the critera to fillet, scale the fillet value by fillet_scalar.
-
-            a_fillet (float): The radius to fillet a vertex.
-
-            fillet_comparison_precision (int): There are rounding issues when comparing to (fillet * scalar). 
-            Use this when calculating length of line-segment.
-
-        Returns:
-            list: List of tuples.  Each tuple corresponds to a range of segments that are too short and would not fillet well.  
-            The tuple is (start_index, end_index).  The index corresponds to index in coords. 
-        """
-        range_vertex_of_bad = list()
-        len_coords = len(coords)
-        if len_coords <= 1:
-            return range_vertex_of_bad
-
-        scaled_fillet = a_fillet * fillet_scalar
-
-        for index, xy in enumerate(coords):
-            # Skip the first vertex.
-            if index > 0:
-                xy_previous = coords[index-1]
-
-                seg_length = np.round(
-                    distance.euclidean(xy_previous, xy), fillet_comparison_precision)
-
-                # If at first or last segment, use just the fillet value to check, otherwise, use fillet_scalar.
-                # Need to not fillet index-1 to index line segment.
-                if index == 1 or index == len_coords-1:
-                    if seg_length < a_fillet:
-                        range_vertex_of_bad.append((index-1, index))
-                else:
-                    if seg_length < scaled_fillet:
-                        range_vertex_of_bad.append((index-1, index))
-
-        return range_vertex_of_bad
 
     def parse_value(self, value: 'Anything') -> 'Anything':
         """Same as design.parse_value. See design for help.
