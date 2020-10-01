@@ -21,9 +21,6 @@ Created on Wed Apr 22 09:28:05 2020
 @author: Jeremy D. Drysdale
 """
 
-# Note - Tests not written for these functions:
-# lumped_capacitive/extract_transmon_coupled_Noscillator
-
 from pathlib import Path
 import unittest
 

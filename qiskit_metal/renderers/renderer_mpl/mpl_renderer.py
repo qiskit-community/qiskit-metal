@@ -326,7 +326,6 @@ class QMplRenderer():
             if fillet is not False:
                 newpath = np.concatenate((newpath, fillet))
             else:  # Don't need to fillet in this case, just add back in the normal vertex
-                print("Warning: Could not fully fillet component %d: %s" %(row["component"], row["name"]))
                 newpath = np.concatenate((newpath, np.array([corner])))
         newpath = np.concatenate((newpath, np.array([end])))
         return LineString(newpath)
@@ -344,13 +343,24 @@ class QMplRenderer():
             radius (float): Fillet radius.
             points (int): Number of points to draw in the fillet corner.
         """
+
+        # prevent segment length rounding error
+        fillet_comparison_precision = 9
+
         if np.array_equal(vertex_start, vertex_corner) or np.array_equal(
             vertex_end, vertex_corner
         ):
             return False
-        if radius > np.linalg.norm(
+
+        length1 = np.round(np.linalg.norm(
             vertex_start - vertex_corner
-        )/2 or radius > np.linalg.norm(vertex_corner - vertex_end)/2:
+        )/2, fillet_comparison_precision)
+
+        length2 = np.round(np.linalg.norm(
+            vertex_corner - vertex_end
+        )/2, fillet_comparison_precision)
+
+        if radius > length1 or radius > length2:
             return False
 
         fillet_start = (
@@ -372,17 +382,17 @@ class QMplRenderer():
             return False
         # Determine direction so we know which way to fillet
         # TODO - replace with generalized code accounting for different rotations
-        dir = [
+        direction = [
             np.argmax(abs(vertex_start - vertex_corner)),
             1 - np.argmax(abs(vertex_start - vertex_corner)),
         ]
         sign = np.array(
             [
-                np.argmax([vertex_start[dir[0]], vertex_corner[dir[0]]]),
-                np.argmax([vertex_corner[dir[1]], vertex_end[dir[1]]]),
+                np.argmax([vertex_start[direction[0]], vertex_corner[direction[0]]]),
+                np.argmax([vertex_corner[direction[1]], vertex_end[direction[1]]]),
             ]
         )
-        if dir[0] == 1 and sign[0] != sign[1]:
+        if direction[0] == 1 and sign[0] != sign[1]:
             sign = 1 - sign
         sign = sign * 2 - 1
 
@@ -395,8 +405,8 @@ class QMplRenderer():
                     np.array(
                         [
                             [
-                                fillet_start[0] + sign[0] * diff[dir[0]],
-                                fillet_start[1] + sign[1] * diff[dir[1]],
+                                fillet_start[0] + sign[0] * diff[direction[0]],
+                                fillet_start[1] + sign[1] * diff[direction[1]],
                             ]
                         ]
                     ),
