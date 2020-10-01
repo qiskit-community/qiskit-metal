@@ -528,8 +528,9 @@ class QGeometryTables(object):
             fillet_comparison_precision = 9  # used for np.round
 
             if 'fillet_comparison_precision' in other_options.keys():
-                fillet_comparison_precision = self.parse_value(
-                    other_options['fillet_comparison_precision'])
+                # The parse_value converts all ints to floats.
+                fillet_comparison_precision = int(self.parse_value(
+                    other_options['fillet_comparison_precision']))
 
             if 'fillet_scalar' in other_options.keys():
                 fillet_scalar = self.parse_value(
@@ -554,16 +555,22 @@ class QGeometryTables(object):
         1. If a start or end segment, is the length smaller than a_fillet.
         2. If segment in side of LineString, is the lenght smaller than,fillet_scalar times a_fillet.
 
-        Note, there is a rounding error issues. So when the lenght of the segment is calculated, it is rounded by using fillet_comparison_precision.
+        Note, there is a rounding error issues. So when the lenght of the segment is calculated, 
+        it is rounded by using fillet_comparison_precision.
 
         Args:
-            coords (list): [description]
-            fillet_scalar (float): [description]
-            a_fillet (float): [description]
-            fillet_comparison_precision (int): [description]
+            coords (list): List of tuples in (x,y) format. Each tuple represents a vertex on a LineSegment.
+
+            fillet_scalar (float): When determining the critera to fillet, scale the fillet value by fillet_scalar.
+
+            a_fillet (float): The radius to fillet a vertex.
+
+            fillet_comparison_precision (int): There are rounding issues when comparing to (fillet * scalar). 
+            Use this when calculating length of line-segment.
 
         Returns:
-            list: [description]
+            list: List of tuples.  Each tuple corresponds to a range of segments that are too short and would not fillet well.  
+            The tuple is (start_index, end_index).  The index corresponds to index in coords. 
         """
         range_vertex_of_bad = list()
         len_coords = len(coords)
@@ -579,7 +586,6 @@ class QGeometryTables(object):
 
                 seg_length = np.round(
                     distance.euclidean(xy_previous, xy), fillet_comparison_precision)
-                #seg_length = math.dist(xy_previous, xy)
 
                 # If at first or last segment, use just the fillet value to check, otherwise, use fillet_scalar.
                 # Need to not fillet index-1 to index line segment.
