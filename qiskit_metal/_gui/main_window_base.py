@@ -197,7 +197,7 @@ class QMainWindowExtensionBase(QMainWindow):
         """Show or hide all docks.
 
         Args:
-            do_hide (bool): Hide or show (Default: None -- togle)
+            do_hide (bool): Hide or show (Default: None -- toggle)
         """
         # Get all docks to show/hide. Ignore edit source
         docks = [widget for widget in self.children()

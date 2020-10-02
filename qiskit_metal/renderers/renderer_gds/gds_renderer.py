@@ -552,9 +552,9 @@ class GDSRender(QRenderer):
         Return Tuple with flagged segments.
 
         The "status" returned in int:
-        -1: Method needs to update the return code.
-         0: No issues, no "dog-legs" found
-         int: The number of shapelys returned. New shapeleys, should replace the ones provided in a_shapley
+            * -1: Method needs to update the return code.
+            * 0: No issues, no "dog-legs" found
+            * int: The number of shapelys returned. New shapeleys, should replace the ones provided in a_shapley
 
         The "shorter_lines" returned in dict:
         key: Using the index values from list(a_shapely.coords)

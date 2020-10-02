@@ -14,6 +14,8 @@
 #
 
 """
+Dict tree base
+
 @authors: Dennis Wang, Zlatko Minev
 @date: 2020
 """
@@ -220,7 +222,7 @@ class QTreeModel_Base(QAbstractItemModel):
 
     This class extends the `QAbstractItemModel` class.
     It is part of the model-view-controller (MVC) architecture; see
-     https://doc.qt.io/qt-5/qabstractitemmodel.html
+    https://doc.qt.io/qt-5/qabstractitemmodel.html
 
     Access using ``gui.component_window.model``.
     """
