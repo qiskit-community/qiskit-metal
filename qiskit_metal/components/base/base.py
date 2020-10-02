@@ -219,9 +219,12 @@ class QComponent():
         #: ``Initialization Successful``, ``Build Failed``, etc.
         self.status = 'Initialization Successful'
 
+        # Used for short name, and renderers adding information to tables.
+        self.a_metadata = self._gather_all_children_metadata()
+
         # Auto naming - add id to component based on type
         if name is None:
-            prefix = self._gather_all_children_metadata()
+            prefix = self.a_metadata
             # limit names to 24 characters
             name_trunc = 24
             # if no prefix, use class name
@@ -630,7 +633,6 @@ class QComponent():
 #   What information is truly necessary for the pins? Should they have a z-direction component?
 #   Will they operate properly with non-planar designs?
 
-
     def add_pin(self,
                 name: str,  # Should be static based on component designer's choice
                 points: np.ndarray,
@@ -898,9 +900,34 @@ class QComponent():
             self.logger.warning(
                 f'Component with classname={self.class_name} does not know about table name "{kind}". '
             )
-
+        renderer_key_values = self._get_table_values_from_renderers()
+        # if not alread in kwargs, add renderer information to it.
+        renderer_and_options = {**renderer_key_values, **kwargs}
         self.design.qgeometry.add_qgeometry(kind, self.id, geometry, subtract=subtract,
-                                            helper=helper, layer=layer, chip=chip, **kwargs)
+                                            helper=helper, layer=layer, chip=chip, **renderer_and_options)
+
+    def _get_table_values_from_renderers(self) -> Dict:
+        """Populate a dict to combine with options for the qcomponent.
+
+        Based on tables the component-developer denotes in the metadata, 
+        assume those qgeometry.tables are used for the component. The method 
+        will search a dict populated by all the renderers during their init.  
+
+        Returns:
+            Dict: key is column names for tables, value is data for the column. 
+        """
+        tables_list = self.design.get_list_of_tables_in_metadata(
+            self.a_metadata)
+        all_renderers_key_value = dict()
+        # design.renderer_defaults_by_table[table_name][renderer_name][column_name]
+        for table in tables_list:
+            if table in self.design.renderer_defaults_by_table:
+                for name_renderer, renderer_data in self.design.renderer_defaults_by_table[table].items():
+                    if len(renderer_data) > 0:
+                        for col_name, col_value in renderer_data.items():
+                            render_col_name = f'{name_renderer}_{col_name}'
+                            all_renderers_key_value[render_col_name] = col_value
+        return all_renderers_key_value
 
     def __repr__(self, *args):
         b = '\033[95m\033[1m'
