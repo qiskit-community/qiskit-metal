@@ -434,7 +434,7 @@ class MetalGUI(QMainWindowBaseHandler):
         """Show or hide the full plot-area widget / show or hide all docks.
 
         Args:
-            do_hide (bool): Hide or show (Default: None -- togle)
+            do_hide (bool): Hide or show (Default: None -- toggle)
         """
         self.main_window.toggle_all_docks(do_hide)
         self.qApp.processEvents() # Process all events, so that if we take screenshot next it won't be partially updated
