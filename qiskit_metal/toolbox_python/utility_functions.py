@@ -38,7 +38,8 @@ from qiskit_metal import logger
 
 __all__ = ['copy_update', 'dict_start_with', 'data_frame_empty_typed', 'clean_name',
            'enable_warning_traceback', 'get_traceback', 'print_traceback_easy', 'log_error_easy',
-           'monkey_patch', 'are_there_potential_fillet_errors', 'compress_list', 'can_write_to_path', 'can_write_to_path_with_warning']
+           'monkey_patch', 'are_there_potential_fillet_errors', 'compress_list', 'can_write_to_path', 
+           'can_write_to_path_with_warning']
 
 ####################################################################################
 # Dictionary related
@@ -311,7 +312,7 @@ def compress_list(individual_seg: list) -> list:
 
 
 def are_there_potential_fillet_errors(coords: list, a_fillet: float, fillet_scalar: float, fillet_comparison_precision: int) -> list:
-    """Iterate throught the vertex and check using critea.
+    """Iterate through the vertex and check using critea.
     1. If a start or end segment, is the length smaller than a_fillet.
     2. If segment in side of LineString, is the lenght smaller than,fillet_scalar times a_fillet.
 

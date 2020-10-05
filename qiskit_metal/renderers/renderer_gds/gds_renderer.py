@@ -58,8 +58,8 @@ class GDSRender(QRenderer):
     #: Type: Dict[str, str]
     default_options = Dict(
 
-        # Before converting LINESTRING to FlexPath for GDS, check for fillet error for LINESTRINGS
-        # in QGeometry due to short segments.
+        # Before converting LINESTRING to FlexPath for GDS, check for fillet errors
+        # for LINESTRINGS in QGeometry in QGeometry due to short segments.
         # If true, break up the LINESTRING so any segment which is shorter than the scaled-fillet
         # by "fillet_scale_factor" will be separated so the short segment will not be fillet'ed.
         short_segments_to_not_fillet='True',

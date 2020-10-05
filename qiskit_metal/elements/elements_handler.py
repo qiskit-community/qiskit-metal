@@ -526,10 +526,11 @@ class QGeometryTables(object):
             fillet_scalar = 2.0
             fillet_comparison_precision = 9  # used for np.round
 
-            if 'fillet_comparison_precision' in other_options.keys():
-                # The parse_value converts all ints to floats.
-                fillet_comparison_precision = int(self.parse_value(
-                    other_options['fillet_comparison_precision']))
+            # For now, don't let front end user edit this.
+            # if 'fillet_comparison_precision' in other_options.keys():
+            #     # The parse_value converts all ints to floats.
+            #     fillet_comparison_precision = int(self.parse_value(
+            #         other_options['fillet_comparison_precision']))
 
             if 'fillet_scalar' in other_options.keys():
                 fillet_scalar = self.parse_value(
