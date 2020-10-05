@@ -1,5 +1,5 @@
 from ... import Dict
-from qiskit_metal.toolbox_python.utility_functions import is_there_potential_dogleg, can_write_to_path
+from qiskit_metal.toolbox_python.utility_functions import are_there_potential_fillet_errors, can_write_to_path
 from qiskit_metal.toolbox_python.utility_functions import can_write_to_path
 import math
 from scipy.spatial import distance
@@ -58,11 +58,12 @@ class GDSRender(QRenderer):
     #: Type: Dict[str, str]
     default_options = Dict(
 
-        # Before converting LINESTRING to FlexPath for GDS, check for "dog-leg" for LINESTRINGS in QGeometry.
+        # Before converting LINESTRING to FlexPath for GDS, check for fillet error for LINESTRINGS
+        # in QGeometry due to short segments.
         # If true, break up the LINESTRING so any segment which is shorter than the scaled-fillet
         # by "fillet_scale_factor" will be separated so the short segment will not be fillet'ed.
-        replace_dog_leg_to_not_fillet='True',
-        check_dog_leg_by_scaling_fillet='2.0',
+        short_segments_to_not_fillet='True',
+        check_short_segments_by_scaling_fillet='2.0',
 
         # DO NOT MODIFY `gds_unit`. Gets overwritten by ``set_units``.
         # gdspy unit is 1 meter.  gds_units appear to ONLY be used during write_gds().
@@ -460,8 +461,8 @@ class GDSRender(QRenderer):
             all_table_no_subtracts (list): Add to self.chip_info by layer number.
         """
 
-        fix_dog_leg = self.parse_value(
-            self.options.replace_dog_leg_to_not_fillet)
+        fix_short_segments = self.parse_value(
+            self.options.short_segments_to_not_fillet)
         all_layers = self.design.qgeometry.get_all_unique_layers(chip_name)
 
         for chip_layer in all_layers:
@@ -489,10 +490,10 @@ class GDSRender(QRenderer):
             self.chip_info[chip_name][chip_layer]['all_subtract_false'].reset_index(
                 inplace=True)
 
-            if is_true(fix_dog_leg):
-                self.fix_dog_leg_within_table(
+            if is_true(fix_short_segments):
+                self.fix_short_segments_within_table(
                     chip_name, chip_layer, 'all_subtract_true')
-                self.fix_dog_leg_within_table(
+                self.fix_short_segments_within_table(
                     chip_name, chip_layer, 'all_subtract_false')
 
             self.chip_info[chip_name][chip_layer]['q_subtract_true'] = self.chip_info[chip_name][chip_layer]['all_subtract_true'].apply(
@@ -501,7 +502,7 @@ class GDSRender(QRenderer):
             self.chip_info[chip_name][chip_layer]['q_subtract_false'] = self.chip_info[chip_name][chip_layer]['all_subtract_false'].apply(
                 self.qgeometry_to_gds, axis=1)
 
-    def fix_dog_leg_within_table(self, chip_name: str, chip_layer: int, all_sub_true_or_false: str):
+    def fix_short_segments_within_table(self, chip_name: str, chip_layer: int, all_sub_true_or_false: str):
         """Update self.chip_info geopandas.GeoDataFrame.
 
         Will iterate through the rows to examine the LineString.
@@ -548,12 +549,12 @@ class GDSRender(QRenderer):
     def check_length(self, a_shapely: shapely.geometry.LineString, a_fillet: float) -> Tuple[int, Dict]:
         """Determine if a_shapely has short segments based on scaled fillet value.
 
-        Use check_dog_leg_by_scaling with a_fillet to determine the critera for flagging a segment.
+        Use check_short_segments_by_scaling_fillet to determine the critera for flagging a segment.
         Return Tuple with flagged segments.
 
         The "status" returned in int:
             * -1: Method needs to update the return code.
-            * 0: No issues, no "dog-legs" found
+            * 0: No issues, no short segments found
             * int: The number of shapelys returned. New shapeleys, should replace the ones provided in a_shapley
 
         The "shorter_lines" returned in dict:
@@ -660,13 +661,13 @@ class GDSRender(QRenderer):
                                                      'fillet': a_fillet})
                 at_vertex = stop  # Need to update for every loop.
         else:
-            # no dog-legs
+            # No short segments.
             shorter_lines[len_coords-1] = a_shapely
         return status, shorter_lines
 
     def identify_vertex_not_to_fillet(self, coords: list, a_fillet: float, all_idx_bad_fillet: dict, len_coords: int):
         """Use coords to denote segments that are too short.  In particular,
-        when fillet'd, they will cause the appearance of a dog-leg when graphed.
+        when fillet'd, they will cause the appearance of incorrect fillet when graphed.
 
         Args:
             coords (list): User provide a list of tuples.  The tuple is (x,y) location for a vertex.
@@ -683,11 +684,11 @@ class GDSRender(QRenderer):
         """
 
         fillet_scale_factor = self.parse_value(
-            self.options.check_dog_leg_by_scaling_fillet)
+            self.options.check_short_segments_by_scaling_fillet)
         precision = float(self.parse_value(self.options.precision))
         for_rounding = int(np.abs(np.log10(precision)))
 
-        all_idx_bad_fillet['reduced_idx'] = is_there_potential_dogleg(
+        all_idx_bad_fillet['reduced_idx'] = are_there_potential_fillet_errors(
             coords, a_fillet, fillet_scale_factor, for_rounding)
 
         midpoints = list()
