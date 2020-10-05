@@ -536,6 +536,7 @@ class GDSRender(QRenderer):
          0: No issues, no short-segments found.
          int: The number of shapelys returned. New shapeleys, should replace the ones provided in a_shapley.
 
+
         The "shorter_lines" returned in dict:
         key: Using the index values from list(a_shapely.coords)
         value: dict() for each new, shorter, LineString
