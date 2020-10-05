@@ -27,7 +27,7 @@ import pandas as pd
 import shapely
 
 from typing import TYPE_CHECKING
-from qiskit_metal.toolbox_python.utility_functions import is_there_potential_dogleg, data_frame_empty_typed
+from qiskit_metal.toolbox_python.utility_functions import are_there_potential_fillet_errors, data_frame_empty_typed
 from typing import Dict as Dict_
 from typing import List, Tuple, Union
 from geopandas import GeoDataFrame, GeoSeries
@@ -524,10 +524,11 @@ class QGeometryTables(object):
             fillet_scalar = 2.0
             fillet_comparison_precision = 9  # used for np.round
 
-            if 'fillet_comparison_precision' in other_options.keys():
-                # The parse_value converts all ints to floats.
-                fillet_comparison_precision = int(self.parse_value(
-                    other_options['fillet_comparison_precision']))
+            # For now, don't let front end user edit this.
+            # if 'fillet_comparison_precision' in other_options.keys():
+            #     # The parse_value converts all ints to floats.
+            #     fillet_comparison_precision = int(self.parse_value(
+            #         other_options['fillet_comparison_precision']))
 
             if 'fillet_scalar' in other_options.keys():
                 fillet_scalar = self.parse_value(
@@ -538,13 +539,13 @@ class QGeometryTables(object):
             for key, geom in geometry.items():
                 if isinstance(geom, shapely.geometry.LineString):
                     coords = list(geom.coords)
-                    range_vertex_of_doglegs = is_there_potential_dogleg(
+                    range_vertex_of_short_segments = are_there_potential_fillet_errors(
                         coords, fillet, fillet_scalar,  fillet_comparison_precision)
-                    if len(range_vertex_of_doglegs) > 0:
+                    if len(range_vertex_of_short_segments) > 0:
                         text_id = self.design._components[component_name]._name
                         self.logger.warning(
                             f'For kind={kind}, component_id={component_name}, component_name={text_id}, layer={int(layer)}, chip={chip}, key={key} in geometry,'
-                            f' list={range_vertex_of_doglegs} of short segments corresponds to index in geometry.')
+                            f' list={range_vertex_of_short_segments} of short segments corresponds to index in geometry.')
 
     def parse_value(self, value: 'Anything') -> 'Anything':
         """Same as design.parse_value. See design for help.
