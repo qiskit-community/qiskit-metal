@@ -85,8 +85,8 @@ class TestElements(unittest.TestCase):
         self.assertEqual(e_c['base']['subtract'], bool)
         self.assertEqual(e_c['base']['helper'], bool)
         self.assertEqual(e_c['base']['chip'], str)
-        self.assertEqual(e_c['base']['__renderers__'], dict())
-        self.assertEqual(len(e_c['base']['__renderers__']), 0)
+        #self.assertEqual(e_c['base']['__renderers__'], dict())
+        #self.assertEqual(len(e_c['base']['__renderers__']), 0)
 
         self.assertEqual(len(e_c['path']), 3)
         self.assertEqual(e_c['path']['width'], float)
