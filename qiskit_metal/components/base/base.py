@@ -321,14 +321,19 @@ class QComponent():
             Arguments:
                 design (QDesign): The parent design
                 template_key (str): Key to use
-                component_template (dict): template of components to copy
+                component_template (dict): template of components to copy, with renderer options
         """
         # do not overwrite
         if template_key not in design.template_options:
-            if not component_template:
-                component_template = cls._gather_all_children_options()
+            # if not component_template:
+            #     component_template = cls._gather_all_children_options()
+            children_options = cls._gather_all_children_options()
+            options_template_renderer = {
+                **children_options, **component_template}
+            # design.template_options[template_key] = deepcopy(
+            #     component_template)
             design.template_options[template_key] = deepcopy(
-                component_template)
+                options_template_renderer)
 
     @property
     def name(self) -> str:
@@ -429,9 +434,21 @@ class QComponent():
         if template_key is None:
             template_key = cls._get_unique_class_name()
 
+        renderer_key_values = cls._get_table_values_from_renderers(design)
+        # renderer_key_values = self._get_table_values_from_renderers()
+        # renderer_and_options = {**renderer_key_values, **kwargs}
+
+        # Think
+        if component_template is not None:
+            renderer_and_component_template = {
+                **renderer_key_values, **component_template}
+        else:
+            renderer_and_component_template = renderer_key_values
+
         if template_key not in design.template_options:
             cls._register_class_with_design(
-                design, template_key, component_template)
+                design, template_key, renderer_and_component_template)
+            # design, template_key, component_template)
 
         if template_key not in design.template_options:
             logger_ = logger_ or design.logger
@@ -440,9 +457,10 @@ class QComponent():
                               f'options for the component class {cls.__name__} are missing')
 
         # Specific object template options
-        options = deepcopy(Dict(design.template_options[template_key]))
+        template_options = deepcopy(
+            Dict(design.template_options[template_key]))
 
-        return options
+        return template_options
 
     def _delete_evaluation(self, check_name: str = None):
         """design.overwrite_enabled allows user to delete an existing component within
@@ -632,6 +650,7 @@ class QComponent():
 #
 #   What information is truly necessary for the pins? Should they have a z-direction component?
 #   Will they operate properly with non-planar designs?
+
 
     def add_pin(self,
                 name: str,  # Should be static based on component designer's choice
@@ -900,13 +919,12 @@ class QComponent():
             self.logger.warning(
                 f'Component with classname={self.class_name} does not know about table name "{kind}". '
             )
-        renderer_key_values = self._get_table_values_from_renderers()
-        # if not alread in kwargs, add renderer information to it.
-        renderer_and_options = {**renderer_key_values, **kwargs}
-        self.design.qgeometry.add_qgeometry(kind, self.id, geometry, subtract=subtract,
-                                            helper=helper, layer=layer, chip=chip, **renderer_and_options)
 
-    def _get_table_values_from_renderers(self) -> Dict:
+        self.design.qgeometry.add_qgeometry(kind, self.id, geometry, subtract=subtract,
+                                            helper=helper, layer=layer, chip=chip, **kwargs)
+
+    @classmethod
+    def _get_table_values_from_renderers(cls, design: 'QDesign') -> Dict:
         """Populate a dict to combine with options for the qcomponent.
 
         Based on tables the component-developer denotes in the metadata, 
@@ -916,13 +934,14 @@ class QComponent():
         Returns:
             Dict: key is column names for tables, value is data for the column. 
         """
-        tables_list = self.design.get_list_of_tables_in_metadata(
-            self.a_metadata)
+        metadata_dict = cls._gather_all_children_metadata()
+        tables_list = design.get_list_of_tables_in_metadata(metadata_dict)
+
         all_renderers_key_value = dict()
         # design.renderer_defaults_by_table[table_name][renderer_name][column_name]
         for table in tables_list:
-            if table in self.design.renderer_defaults_by_table:
-                for name_renderer, renderer_data in self.design.renderer_defaults_by_table[table].items():
+            if table in design.renderer_defaults_by_table:
+                for name_renderer, renderer_data in design.renderer_defaults_by_table[table].items():
                     if len(renderer_data) > 0:
                         for col_name, col_value in renderer_data.items():
                             render_col_name = f'{name_renderer}_{col_name}'
