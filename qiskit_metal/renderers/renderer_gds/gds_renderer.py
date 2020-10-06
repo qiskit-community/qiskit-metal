@@ -158,8 +158,6 @@ class GDSRender(QRenderer):
         # check the scale
         self.check_bounding_box_scale()
 
-        # TODO use method to populate element_extentions from element_table_data.
-        # Note element_extentions would be used in load()
         GDSRender.load()
 
     def parse_value(self, value: 'Anything') -> 'Anything':
