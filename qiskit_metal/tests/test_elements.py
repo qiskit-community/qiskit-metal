@@ -214,6 +214,7 @@ class TestElements(unittest.TestCase):
         """
         design = designs.DesignPlanar()
         qgt = QGeometryTables(design)
+        qgt.clear_all_tables()
 
         qgt.add_qgeometry('poly', 'my_id', dict(cl_metal='cl_metal'))
         table = qgt.tables
@@ -234,6 +235,7 @@ class TestElements(unittest.TestCase):
         """
         design = designs.DesignPlanar()
         qgt = QGeometryTables(design)
+        qgt.clear_all_tables()
 
         # add something to the tables to check for after clear
         qgt.add_qgeometry('poly', 'my_id', dict(cl_metal='cl_metal'))
@@ -247,6 +249,7 @@ class TestElements(unittest.TestCase):
         """
         design = designs.DesignPlanar()
         qgt = QGeometryTables(design)
+        qgt.clear_all_tables()
 
         transmon_pocket = TransmonPocket(design, 'my_id')
         transmon_pocket.make()
@@ -268,6 +271,7 @@ class TestElements(unittest.TestCase):
         """
         design = designs.DesignPlanar()
         qgt = QGeometryTables(design)
+        qgt.clear_all_tables()
         TransmonPocket(design, 'my_id')
 
         four_zeros = qgt.get_component_bounds('my_id')
@@ -292,6 +296,7 @@ class TestElements(unittest.TestCase):
         """
         design = designs.DesignPlanar()
         qgt = QGeometryTables(design)
+        qgt.clear_all_tables()
         TransmonPocket(design, 'Q1')
 
         rect = draw.rectangle(500, 300, 0, 0)
