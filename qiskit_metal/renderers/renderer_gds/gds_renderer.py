@@ -1,4 +1,5 @@
 import math
+from scipy.spatial import distance
 import os
 import gdspy
 import geopandas
@@ -19,7 +20,7 @@ import numpy as np
 
 from qiskit_metal.renderers.renderer_base import QRenderer
 from qiskit_metal.toolbox_metal.parsing import is_true
-
+from qiskit_metal.toolbox_python.utility_functions import are_there_potential_fillet_errors, can_write_to_path
 from ... import Dict
 
 if TYPE_CHECKING:
@@ -56,11 +57,12 @@ class GDSRender(QRenderer):
     #: Type: Dict[str, str]
     default_options = Dict(
 
-        # Before converting LINESTRING to FlexPath for GDS, check for "dog-leg" for LINESTRINGS in QGeometry.
+        # Before converting LINESTRING to FlexPath for GDS, check for fillet errors
+        # for LINESTRINGS in QGeometry in QGeometry due to short segments.
         # If true, break up the LINESTRING so any segment which is shorter than the scaled-fillet
         # by "fillet_scale_factor" will be separated so the short segment will not be fillet'ed.
-        replace_dog_leg_to_not_fillet='True',
-        check_dog_leg_by_scaling_fillet='2.0',
+        short_segments_to_not_fillet='True',
+        check_short_segments_by_scaling_fillet='2.0',
 
         # DO NOT MODIFY `gds_unit`. Gets overwritten by ``set_units``.
         # gdspy unit is 1 meter.  gds_units appear to ONLY be used during write_gds().
@@ -173,8 +175,6 @@ class GDSRender(QRenderer):
         """Clear current library."""
         gdspy.current_library.cells.clear()
 
-    # TODO: Move to toolbox_python utility and call there
-    # Maybe not, there is a self.logger.
     def _can_write_to_path(self, file: str) -> int:
         """Check if can write file.
 
@@ -184,16 +184,14 @@ class GDSRender(QRenderer):
         Returns:
             int: 1 if access is allowed. Else returns 0, if access not given.
         """
-
-        # If need to use lib pathlib.
-        directory_name = os.path.dirname(os.path.abspath(file))
-        if os.access(directory_name, os.W_OK):
+        status, directory_name = can_write_to_path(file)
+        if status:
             return 1
-        else:
-            self.logger.warning(f'Not able to write to directory.'
-                                f'File:"{file}" not written.'
-                                f' Checked directory:"{directory_name}".')
-            return 0
+
+        self.logger.warning(f'Not able to write to directory.'
+                            f'File:"{file}" not written.'
+                            f' Checked directory:"{directory_name}".')
+        return 0
 
     def update_units(self):
         """Update the options in the units.
@@ -442,8 +440,8 @@ class GDSRender(QRenderer):
             all_table_no_subtracts (list): Add to self.chip_info by layer number.
         """
 
-        fix_dog_leg = self.parse_value(
-            self.options.replace_dog_leg_to_not_fillet)
+        fix_short_segments = self.parse_value(
+            self.options.short_segments_to_not_fillet)
         all_layers = self.design.qgeometry.get_all_unique_layers(chip_name)
 
         for chip_layer in all_layers:
@@ -471,10 +469,10 @@ class GDSRender(QRenderer):
             self.chip_info[chip_name][chip_layer]['all_subtract_false'].reset_index(
                 inplace=True)
 
-            if is_true(fix_dog_leg):
-                self.fix_dog_leg_within_table(
+            if is_true(fix_short_segments):
+                self.fix_short_segments_within_table(
                     chip_name, chip_layer, 'all_subtract_true')
-                self.fix_dog_leg_within_table(
+                self.fix_short_segments_within_table(
                     chip_name, chip_layer, 'all_subtract_false')
 
             self.chip_info[chip_name][chip_layer]['q_subtract_true'] = self.chip_info[chip_name][chip_layer]['all_subtract_true'].apply(
@@ -483,7 +481,7 @@ class GDSRender(QRenderer):
             self.chip_info[chip_name][chip_layer]['q_subtract_false'] = self.chip_info[chip_name][chip_layer]['all_subtract_false'].apply(
                 self.qgeometry_to_gds, axis=1)
 
-    def fix_dog_leg_within_table(self, chip_name: str, chip_layer: int, all_sub_true_or_false: str):
+    def fix_short_segments_within_table(self, chip_name: str, chip_layer: int, all_sub_true_or_false: str):
         """Update self.chip_info geopandas.GeoDataFrame.
 
         Will iterate through the rows to examine the LineString.
@@ -530,13 +528,14 @@ class GDSRender(QRenderer):
     def check_length(self, a_shapely: shapely.geometry.LineString, a_fillet: float) -> Tuple[int, Dict]:
         """Determine if a_shapely has short segments based on scaled fillet value.
 
-        Use check_dog_leg_by_scaling with a_fillet to determine the critera for flagging a segment.
+        Use check_short_segments_by_scaling_fillet to determine the critera for flagging a segment.
         Return Tuple with flagged segments.
 
         The "status" returned in int:
-            * -1: Method needs to update the return code.
-            * 0: No issues, no "dog-legs" found
-            * int: The number of shapelys returned. New shapeleys, should replace the ones provided in a_shapley
+        -1: Method needs to update the return code.
+         0: No issues, no short-segments found.
+         int: The number of shapelys returned. New shapeleys, should replace the ones provided in a_shapley.
+
 
         The "shorter_lines" returned in dict:
         key: Using the index values from list(a_shapely.coords)
@@ -642,13 +641,13 @@ class GDSRender(QRenderer):
                                                      'fillet': a_fillet})
                 at_vertex = stop  # Need to update for every loop.
         else:
-            # no dog-legs
+            # No short segments.
             shorter_lines[len_coords-1] = a_shapely
         return status, shorter_lines
 
     def identify_vertex_not_to_fillet(self, coords: list, a_fillet: float, all_idx_bad_fillet: dict, len_coords: int):
         """Use coords to denote segments that are too short.  In particular, 
-        when fillet'd, they will cause the appearance of a dog-leg when graphed. 
+        when fillet'd, they will cause the appearance of a incorrect fillet when graphed. 
 
         Args:
             coords (list): User provide a list of tuples.  The tuple is (x,y) location for a vertex.  
@@ -665,67 +664,17 @@ class GDSRender(QRenderer):
         """
 
         fillet_scale_factor = self.parse_value(
-            self.options.check_dog_leg_by_scaling_fillet)
+            self.options.check_short_segments_by_scaling_fillet)
         precision = float(self.parse_value(self.options.precision))
         for_rounding = int(np.abs(np.log10(precision)))
 
-        scaled_fillet = a_fillet * fillet_scale_factor
-        end_vertex_of_bad = list()
-        for index, xy in enumerate(coords):
-            # Skip the first vertex.
-            if index > 0:
-                xy_previous = coords[index-1]
-
-                # Use np.round to reduce rounding errors, since seg_length is used for comparison.
-                seg_length = np.round(math.dist(xy_previous, xy), for_rounding)
-                # If at first or last segment, use just the fillet value to check, otherwise, use scaled_fillet.
-                # Need to not fillet index-1 to index line segment.
-                if index == 1 or index == len_coords-1:
-                    if seg_length < a_fillet:
-                        end_vertex_of_bad.append((index-1, index))
-                else:
-                    if seg_length < scaled_fillet:
-                        end_vertex_of_bad.append((index-1, index))
-
-        reduced_idx = GDSRender.compress_list(end_vertex_of_bad)
-        all_idx_bad_fillet['reduced_idx'] = reduced_idx
+        all_idx_bad_fillet['reduced_idx'] = are_there_potential_fillet_errors(
+            coords, a_fillet, fillet_scale_factor, for_rounding)
 
         midpoints = list()
         midpoints = [GDSRender.midpoint_xy(coords[idx-1][0], coords[idx-1][1], vertex2[0], vertex2[1])
                      for idx, vertex2 in enumerate(coords) if idx > 0]
         all_idx_bad_fillet['midpoints'] = midpoints
-
-    @ staticmethod
-    def compress_list(individual_seg: list) -> list:
-        """Given a list of segments that should not be fillet'd,
-        search for adjacent segments and make them one compressed list.
-
-        Args:
-            individual_seg (list): List of tuples of two ints.  Each int refers to an index of a LineString.
-
-        Returns:
-            list: A compresses list of individual_segs.  So, it combines adjacent segments into a longer one.
-        """
-        reduced_idx = list()
-        len_compressed = len(individual_seg)
-        if len_compressed > 0:
-            last_unique_seg = (-1, -1)  # set to a non-logical tuple
-
-            for index, item in enumerate(individual_seg):
-                if index == 0:
-                    last_unique_seg = item
-                else:
-                    if min(item) == max(last_unique_seg):
-                        last_unique_seg = (min(last_unique_seg), max(item))
-                    else:
-                        reduced_idx.append(last_unique_seg)
-                        last_unique_seg = item
-                if index == len_compressed-1:
-                    reduced_idx.append(last_unique_seg)
-            return reduced_idx
-
-        else:
-            return reduced_idx
 
     def gather_subtract_elements_and_bounds(self, chip_name: str, table_name: str, table: geopandas.GeoDataFrame,
                                             all_subtracts: list, all_no_subtracts: list):

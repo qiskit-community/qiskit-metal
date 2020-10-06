@@ -12,8 +12,8 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-#pylint: disable-msg=unnecessary-pass
-#pylint: disable-msg=broad-except
+# pylint: disable-msg=unnecessary-pass
+# pylint: disable-msg=broad-except
 
 """
 Qiskit Metal unit tests analyses functionality.
@@ -30,6 +30,7 @@ from qiskit_metal.renderers.renderer_base.renderer_base import QRenderer
 from qiskit_metal.renderers.renderer_base.renderer_gui_base import QRendererGui
 from qiskit_metal.renderers.renderer_gds.gds_renderer import GDSRender
 from qiskit_metal.renderers.renderer_mpl.mpl_interaction import MplInteraction
+
 
 class TestRenderers(unittest.TestCase):
     """
@@ -66,12 +67,14 @@ class TestRenderers(unittest.TestCase):
         try:
             QRenderer(design, initiate=False, render_template={})
         except Exception:
-            self.fail("QRenderer(design, initiate=False, render_template={}) failed")
+            self.fail(
+                "QRenderer(design, initiate=False, render_template={}) failed")
 
         try:
             QRenderer(design, initiate=False, render_options={})
         except Exception:
-            self.fail("QRenderer(design, initiate=False, render_options={}) failed")
+            self.fail(
+                "QRenderer(design, initiate=False, render_options={}) failed")
 
     def test_renderer_instantiate_qrenderer_gui(self):
         """
@@ -106,12 +109,14 @@ class TestRenderers(unittest.TestCase):
         try:
             GDSRender(design, initiate=False, render_template={})
         except Exception:
-            self.fail("GDSRender(design, initiate=False, render_template={}) failed")
+            self.fail(
+                "GDSRender(design, initiate=False, render_template={}) failed")
 
         try:
             GDSRender(design, initiate=False, render_options={})
         except Exception:
-            self.fail("GDSRender(design, initiate=False, render_options={}) failed")
+            self.fail(
+                "GDSRender(design, initiate=False, render_options={}) failed")
 
     def test_renderer_instantiate_mplinteraction(self):
         """
@@ -131,8 +136,9 @@ class TestRenderers(unittest.TestCase):
         options = renderer.default_options
 
         self.assertEqual(len(options), 10)
-        self.assertEqual(options['replace_dog_leg_to_not_fillet'], 'True')
-        self.assertEqual(options['check_dog_leg_by_scaling_fillet'], '2.0')
+        self.assertEqual(options['short_segments_to_not_fillet'], 'True')
+        self.assertEqual(
+            options['check_short_segments_by_scaling_fillet'], '2.0')
         self.assertEqual(options['gds_unit'], '1')
         self.assertEqual(options['ground_plane'], 'True')
         self.assertEqual(options['corners'], 'circular bend')
@@ -203,9 +209,9 @@ class TestRenderers(unittest.TestCase):
             self.assertEqual(my_length, len(expected[x][0]))
             self.assertEqual(actual[x][1], expected[x][1])
 
-            #note order is not guarenteed - fix this
-            #for y in range(my_length):
-                #self.assertEqual(actual[x][0][y], expected[x][0][y])
+            # note order is not guarenteed - fix this
+            # for y in range(my_length):
+            #self.assertEqual(actual[x][0][y], expected[x][0][y])
 
     def test_renderer_mpl_interaction_disconnect(self):
         """
