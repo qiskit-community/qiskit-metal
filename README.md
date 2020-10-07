@@ -67,7 +67,10 @@ This will create a kernel based on the environment that is "active" at the momen
 
 ### Without conda: Virtual environment setup (alternative setup)
 
-**Do this first:** It is recommended that you first install `Visual C++ 14.0`, it is required for a successful install of `gdspy`.  If you do not have `Visual C++ 14.0` installed you will be notified to install it when `gdspy` attempts to install.  You can do this by downloading and installing [C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/)
+**On Windows, do this first:** It is recommended that you first install `Visual C++ 14.0`, it is required for a successful install of `gdspy`.
+If you do not have `Visual C++ 14.0` installed you will be notified to install it when `gdspy` attempts to install.
+You can do this by downloading and installing [C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/).
+Be sure to select the latest versions of `MSVCv142 - VS 2019 C++ x64/x86 build tools` and `Windows 10 SDK` in the installer as suggested in [this wiki](https://wiki.python.org/moin/WindowsCompilers) referenced by the gdspy documentation.
 
 To use a Python virtual environment, execute these commands in the top-level of the repository:
 
