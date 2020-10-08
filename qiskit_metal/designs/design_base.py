@@ -933,7 +933,7 @@ class QDesign():
             table_name (str): Table used within QGeometry tables i.e. path, poly, junction.
             renderer_name (str): The name of software to export QDesign, i.e. gds, ansys.
             column_name (str): The column name within the table, i.e. filename, inductance. 
-            column_value: The type can vary based on column. The data is placed under column_name.  
+            column_value (Object): The type can vary based on column. The data is placed under column_name.  
 
         Returns:
             set: Each integer in the set has different meanings.
