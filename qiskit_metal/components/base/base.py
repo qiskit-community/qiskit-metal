@@ -113,9 +113,6 @@ class QComponent():
     )
     """Default drawing options"""
 
-    # Populated by component developer by children of this class.
-    table_types = Dict()
-
     component_metadata = Dict()
     """Component metadata"""
 
