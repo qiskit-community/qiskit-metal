@@ -428,8 +428,6 @@ class QComponent():
             template_key = cls._get_unique_class_name()
 
         renderer_key_values = cls._get_table_values_from_renderers(design)
-        # renderer_key_values = self._get_table_values_from_renderers()
-        # renderer_and_options = {**renderer_key_values, **kwargs}
 
         # Think
         if component_template is not None:
