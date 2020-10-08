@@ -690,7 +690,6 @@ class QDesign():
 
 #########I/O###############################################################
 
-
     @classmethod
     def load_design(cls, path: str):
         """
@@ -883,6 +882,7 @@ class QDesign():
 
 ######### Renderers ###############################################################
 
+
     def _start_renderers(self):
         """ For now, load only GDS.  However, will need to determine
         if mpl needs to be loaded, because it is conencted to GUI.
@@ -908,23 +908,39 @@ class QDesign():
             a_render.add_table_data_to_QDesign(a_render.name)
 
     def add_default_data_for_qgeometry_tables(self, table_name: str, renderer_name: str, column_name: str, column_value) -> set:
-        # Dict used to populate the columns of QGeometry table i.e. path, junction, poly etc.
+        """Populate the dict (self.renderer_defaults_by_table) which will hold the data until
+        a component's get_template_options(design) is executed.
 
-        # Dict layout and examples within parenthesis:
-        #     key: Only if need to add data to components, for each type of table (path,poly,or junction).
-        #     value: Dict which has
-        #
-        #           keys: render_name (gds), value: Dict which has
-        #                   keys: 'filename', value: (path/filename)
-        #           keys: render_name (hfss), value: Dict which has
-        #                   keys: 'inductance', value: (inductance_value)
+        Note that get_template_options(design) will populate the columns
+        of QGeometry table i.e. path, junction, poly etc.
 
-        # return 1 - added key for table_name
-        # return 2 - added key for renderer_name
-        # return 3 - added new key for column_name
-        # return 4 - since column_name already existed, column_value replaced previous column_value
-        # return 5 - Column value added
-        # return 6 - Expected str, got something else.
+        Example of data format is:
+        self.renderer_defaults_by_table[table_name][renderer_name][column_name] = column_value
+
+        Dict layout and examples within parenthesis:
+            key: Only if need to add data to components, for each type of table (path, poly, or junction).
+            value: Dict which has
+
+                  keys: render_name (gds), value: Dict which has
+                          keys: 'filename', value: (path/filename)
+                  keys: render_name (hfss), value: Dict which has
+                          keys: 'inductance', value: (inductance_value)
+
+        Args:
+            table_name (str): Table used within QGeometry tables i.e. path, poly, junction.
+            renderer_name (str): The name of software to export QDesign, i.e. gds, ansys.
+            column_name (str): The column name within the table, i.e. filename, inductance. 
+            column_value ([type]): 
+
+        Returns:
+            set: Each integer in the set has different meanings.
+                1 - added key for table_name
+                2 - added key for renderer_name
+                3 - added new key for column_name
+                4 - since column_name already existed, column_value replaced previous column_value
+                5 - Column value added
+                6 - Expected str, got something else.
+        """
 
         status = set()  # Empty Set
 
