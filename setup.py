@@ -45,5 +45,4 @@ setup(
     },
     python_requires=">=3.5, <4",
     install_requires=requirements,
-    extras_require={"gds": ["gdspy>=1.5.2"]},
 )
