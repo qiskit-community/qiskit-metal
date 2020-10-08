@@ -916,6 +916,9 @@ class QDesign():
 
         Example of data format is:
         self.renderer_defaults_by_table[table_name][renderer_name][column_name] = column_value
+        The type for default value placed in a table column is determined by populate_element_extenstions() on line:
+        cls.element_extensions[table][col_name] = type(col_value)
+        in renderer_base.py.
 
         Dict layout and examples within parenthesis:
             key: Only if need to add data to components, for each type of table (path, poly, or junction).
@@ -930,7 +933,7 @@ class QDesign():
             table_name (str): Table used within QGeometry tables i.e. path, poly, junction.
             renderer_name (str): The name of software to export QDesign, i.e. gds, ansys.
             column_name (str): The column name within the table, i.e. filename, inductance. 
-            column_value ([type]): 
+            column_value: The type can vary based on column. The data is placed under column_name.  
 
         Returns:
             set: Each integer in the set has different meanings.
