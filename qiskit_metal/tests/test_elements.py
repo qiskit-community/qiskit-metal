@@ -73,6 +73,8 @@ class TestElements(unittest.TestCase):
         """
         Test that ELEMENT_COLUMNS was not accidentally changed in element_handler.py
         """
+        import imp
+        imp.reload(elements_handler)
         e_c = elements_handler.ELEMENT_COLUMNS
 
         self.assertEqual(len(e_c), 4)
@@ -85,23 +87,23 @@ class TestElements(unittest.TestCase):
         self.assertEqual(e_c['base']['subtract'], bool)
         self.assertEqual(e_c['base']['helper'], bool)
         self.assertEqual(e_c['base']['chip'], str)
-        #self.assertEqual(e_c['base']['__renderers__'], dict())
-        #self.assertEqual(len(e_c['base']['__renderers__']), 0)
+        self.assertEqual(e_c['base']['__renderers__'], dict())
+        self.assertEqual(len(e_c['base']['__renderers__']), 0)
 
         self.assertEqual(len(e_c['path']), 3)
         self.assertEqual(e_c['path']['width'], float)
         self.assertEqual(e_c['path']['fillet'], object)
-        #self.assertEqual(e_c['path']['__renderers__'], dict())
-        #self.assertEqual(len(e_c['path']['__renderers__']), 0)
+        self.assertEqual(e_c['path']['__renderers__'], dict())
+        self.assertEqual(len(e_c['path']['__renderers__']), 0)
 
         self.assertEqual(len(e_c['poly']), 2)
         self.assertEqual(e_c['poly']['fillet'], object)
-        #self.assertEqual(e_c['poly']['__renderers__'], dict())
-        #self.assertEqual(len(e_c['poly']['__renderers__']), 0)
+        self.assertEqual(e_c['poly']['__renderers__'], dict())
+        self.assertEqual(len(e_c['poly']['__renderers__']), 0)
 
         self.assertEqual(len(e_c['junction']), 2)
         self.assertEqual(e_c['junction']['width'], float)
-        #self.assertEqual(e_c['junction']['__renderers__'], dict())
+        self.assertEqual(e_c['junction']['__renderers__'], dict())
 
     def test_element_true_bools(self):
         """
