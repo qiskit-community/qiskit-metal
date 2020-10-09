@@ -270,7 +270,6 @@ class Ui_MainWindow(object):
         self.toolbar_renderers = QtWidgets.QToolBar(MainWindow)
         self.toolbar_renderers.setIconSize(QtCore.QSize(32, 32))
         self.toolbar_renderers.setObjectName("toolbar_renderers")
-        self.toolbar_renderers.setStyleSheet("QToolBar{spacing: 7px}")
         MainWindow.addToolBar(QtCore.Qt.TopToolBarArea, self.toolbar_renderers)
         self.actionSave = QtWidgets.QAction(MainWindow)
         icon11 = QtGui.QIcon()
