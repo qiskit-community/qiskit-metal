@@ -937,12 +937,12 @@ class QDesign():
 
         Returns:
             set: Each integer in the set has different meanings.
-                1 - added key for table_name
-                2 - added key for renderer_name
-                3 - added new key for column_name
-                4 - since column_name already existed, column_value replaced previous column_value
-                5 - Column value added
-                6 - Expected str, got something else.
+                * 1 - added key for table_name
+                * 2 - added key for renderer_name
+                * 3 - added new key for column_name
+                * 4 - since column_name already existed, column_value replaced previous column_value
+                * 5 - Column value added
+                * 6 - Expected str, got something else.
         """
 
         status = set()  # Empty Set
