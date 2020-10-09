@@ -14,6 +14,7 @@
 
 #pylint: disable-msg=unnecessary-pass
 #pylint: disable-msg=broad-except
+#pylint: disable-msg=import-outside-toplevel
 
 """
 Qiskit Metal unit tests analyses functionality.
