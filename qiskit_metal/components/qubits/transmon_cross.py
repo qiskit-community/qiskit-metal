@@ -101,6 +101,7 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
         _qgeometry_table_poly='True',
         _qgeometry_table_junction='True'
     )
+    """Component metadata"""
 ##############################################MAKE######################################################
 
     def make(self):
