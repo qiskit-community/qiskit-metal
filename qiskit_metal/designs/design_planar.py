@@ -58,18 +58,22 @@ class DesignPlanar(QDesign):
 
         NOTE: self._chips dict comes from QDesign base class.
         """
-        self._chips['main'] = Dict()
+        self._chips['main'] = Dict(
+            material = 'cold silicon',
+            layer_start = '0',
+            layer_end = '9999999',
+        )
 
         self._chips['main']['size'] = Dict(
             center_x='0.0mm',
             center_y='0.0mm',
+            center_z='0.0mm',
             size_x='9mm',
             size_y='6mm',
-            size_z='750um'
+            size_z='-750um',
+            sample_holder_top='890um', # how tall is the vacuum above z=0
+            sample_holder_bottom='1650um' # how tall is the vacuum below z=0
         )
-        self.chips.main.material = ''
-        self.chips.main.layer_start = '0'
-        self.chips.main.layer_end = '9999999'
 
 
     def get_x_y_for_chip(self, chip_name: str) -> Tuple[tuple, int]:
