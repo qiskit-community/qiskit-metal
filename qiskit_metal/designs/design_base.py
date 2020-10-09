@@ -30,9 +30,11 @@ import pandas as pd
 from .. import Dict, logger
 from ..config import DefaultMetalOptions, DefaultOptionsRenderer
 from ..elements import QGeometryTables
-from ..toolbox_metal.import_export import load_metal_design, save_metal
-from ..toolbox_metal.parsing import parse_options, parse_value
-from ..toolbox_python.utility_functions import log_error_easy
+from qiskit_metal.toolbox_metal.import_export import load_metal_design, save_metal
+from qiskit_metal.toolbox_metal.parsing import parse_options, parse_value
+from qiskit_metal.toolbox_metal.parsing import is_true
+from qiskit_metal.toolbox_python.utility_functions import log_error_easy
+
 from .interface_components import Components
 from .net_info import QNet
 
@@ -147,10 +149,17 @@ class QDesign():
 
         self._qnet = QNet()
 
+        # Dict used to populate the columns of QGeometry table i.e. path, junction, poly etc.
+        self.renderer_defaults_by_table = Dict()
+
         # Instantiate and register renderers to Qdesign.renderers
         self._renderers = Dict()
         if enable_renderers:
             self._start_renderers()
+
+        # Take out of the QGeometryTables init(). Add add_renderer_extension() during renderer's init().
+        # Need to add columns to Junction tables before create_tables().
+        self._qgeometry.create_tables()
 
     def _init_metadata(self) -> Dict:
         """Initialize default metadata dicitoanry
@@ -473,7 +482,6 @@ class QDesign():
             self._qcomponent_latest_name_id[prefix] = 1
 
         return self._qcomponent_latest_name_id[prefix]
-
 
     def rebuild(self):  # remake_all_components
         """
@@ -890,7 +898,102 @@ class QDesign():
         a_gds = GDSRender(self, initiate=True)
 
         # Every renderer using QRender as base class will have method to get unique name.
-        unique_name = a_gds._get_unique_class_name
+        # Add columns to junction table in the element handler
+        #unique_name = a_gds._get_unique_class_name()
 
         # register renderers here.
         self._renderers['gds'] = a_gds
+
+        for render_name, a_render in self._renderers.items():
+            a_render.add_table_data_to_QDesign(a_render.name)
+
+    def add_default_data_for_qgeometry_tables(self, table_name: str, renderer_name: str, column_name: str, column_value) -> set:
+        """Populate the dict (self.renderer_defaults_by_table) which will hold the data until
+        a component's get_template_options(design) is executed.
+
+        Note that get_template_options(design) will populate the columns
+        of QGeometry table i.e. path, junction, poly etc.
+
+        Example of data format is:
+        self.renderer_defaults_by_table[table_name][renderer_name][column_name] = column_value
+        The type for default value placed in a table column is determined by populate_element_extenstions() on line:
+        cls.element_extensions[table][col_name] = type(col_value)
+        in renderer_base.py.
+
+        Dict layout and examples within parenthesis:
+            key: Only if need to add data to components, for each type of table (path, poly, or junction).
+            value: Dict which has
+
+                  keys: render_name (gds), value: Dict which has
+                          keys: 'filename', value: (path/filename)
+                  keys: render_name (hfss), value: Dict which has
+                          keys: 'inductance', value: (inductance_value)
+
+        Args:
+            table_name (str): Table used within QGeometry tables i.e. path, poly, junction.
+            renderer_name (str): The name of software to export QDesign, i.e. gds, ansys.
+            column_name (str): The column name within the table, i.e. filename, inductance. 
+            column_value (Object): The type can vary based on column. The data is placed under column_name.  
+
+        Returns:
+            set: Each integer in the set has different meanings.
+                1 - added key for table_name
+                2 - added key for renderer_name
+                3 - added new key for column_name
+                4 - since column_name already existed, column_value replaced previous column_value
+                5 - Column value added
+                6 - Expected str, got something else.
+        """
+
+        status = set()  # Empty Set
+
+        if not isinstance(table_name, str):
+            status.add(6)
+            return status
+
+        if not isinstance(renderer_name, str):
+            status.add(6)
+            return status
+
+        if not isinstance(column_name, str):
+            status.add(6)
+            return status
+
+        if table_name not in self.renderer_defaults_by_table.keys():
+            self.renderer_defaults_by_table[table_name] = Dict()
+            status.add(1)
+
+        if renderer_name not in self.renderer_defaults_by_table[table_name].keys():
+            self.renderer_defaults_by_table[table_name][renderer_name] = Dict()
+            status.add(2)
+
+        if column_name not in self.renderer_defaults_by_table[table_name][renderer_name].keys():
+            self.renderer_defaults_by_table[table_name][renderer_name][column_name] = column_value
+            status.add(3)
+            status.add(5)
+        else:
+            self.renderer_defaults_by_table[table_name][renderer_name][column_name] = column_value
+            status.add(4)
+            status.add(5)
+
+        return status
+
+    def get_list_of_tables_in_metadata(self, a_metadata: dict) -> list:
+        """Look at the metadata dict to get list of tables the component uses.
+
+        Args:
+            a_metadata (dict): Use dict from gather_all_childern for metadata.
+
+        Returns:
+            list: List of tables, the component-developer, denoted as being used in metadata.
+        """
+
+        uses_table = list()
+        for table_name in self.qgeometry.get_element_types():
+            search = f'_qgeometry_table_{table_name}'
+            table_status = search in a_metadata.keys()
+            if table_status:
+                if is_true(self.parse_value(a_metadata[search])):
+                    uses_table.append(table_name)
+
+        return uses_table

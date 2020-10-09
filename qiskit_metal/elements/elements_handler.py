@@ -266,7 +266,9 @@ class QGeometryTables(object):
         self._design = design
 
         self._tables = Dict()
-        self.create_tables()
+
+        # Need to call after columns are added by add_renderer_extenstion is run by all the renderers.
+        # self.create_tables()
 
     @property
     def design(self) -> 'QDesign':

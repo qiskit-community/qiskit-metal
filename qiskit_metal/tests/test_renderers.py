@@ -163,7 +163,10 @@ class TestRenderers(unittest.TestCase):
         renderer = GDSRender(design)
 
         self.assertEqual(renderer.name, 'gds')
-        self.assertEqual(renderer.element_extensions, {})
+        element_extensions = renderer.element_extensions
+        self.assertEqual(len(element_extensions), 1)
+        self.assertEqual(len(element_extensions['junction']), 1)
+        self.assertEqual(element_extensions['junction']['path_filename'], str)
 
     def test_renderer_gdsrenderer_update_units(self):
         """

@@ -95,6 +95,12 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
         )
     )
     """Default drawing options"""
+
+    component_metadata = Dict(
+        short_name='Cross',
+        _qgeometry_table_poly='True',
+        _qgeometry_table_junction='True'
+    )
 ##############################################MAKE######################################################
 
     def make(self):
@@ -105,7 +111,6 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
 
 
 ###################################TRANSMON#############################################################
-
 
     def make_pocket(self):
         '''
@@ -129,7 +134,8 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
         # The junction/SQUID
         #rect_jj = draw.rectangle(cross_width, cross_gap)
         #rect_jj = draw.translate(rect_jj, 0, -cross_length-cross_gap/2)
-        rect_jj = draw.LineString([(0,-cross_length),(0,-cross_length-cross_gap)])
+        rect_jj = draw.LineString(
+            [(0, -cross_length), (0, -cross_length-cross_gap)])
 
         #rotate and translate
         polys = [cross, cross_etch, rect_jj]
@@ -141,11 +147,11 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
         # generate qgeometry
         self.add_qgeometry('poly', dict(cross=cross))
         self.add_qgeometry('poly', dict(cross_etch=cross_etch), subtract=True)
-        self.add_qgeometry('junction', dict(rect_jj=rect_jj), width=cross_width)
+        self.add_qgeometry('junction', dict(
+            rect_jj=rect_jj), width=cross_width)
 
 
 ############################CONNECTORS##################################################################################################
-
 
     def make_connection_pads(self):
         '''

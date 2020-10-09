@@ -1,3 +1,6 @@
+from ... import Dict
+from qiskit_metal.toolbox_python.utility_functions import are_there_potential_fillet_errors, can_write_to_path
+from qiskit_metal.toolbox_python.utility_functions import can_write_to_path
 import math
 from scipy.spatial import distance
 import os
@@ -20,8 +23,6 @@ import numpy as np
 
 from qiskit_metal.renderers.renderer_base import QRenderer
 from qiskit_metal.toolbox_metal.parsing import is_true
-from qiskit_metal.toolbox_python.utility_functions import are_there_potential_fillet_errors, can_write_to_path
-from ... import Dict
 
 if TYPE_CHECKING:
     # For linting typechecking, import modules that can't be loaded here under normal conditions.
@@ -114,8 +115,24 @@ class GDSRender(QRenderer):
     name = 'gds'
     """name"""
 
-    element_extensions = dict()
-    """element extentions dictionary"""
+    # When additional columns are added to QGeometry, this is the example to populate it.
+    # e.g. element_extensions = dict(
+    #         base=dict(color=str, klayer=int),
+    #         path=dict(thickness=float, material=str, perfectE=bool),
+    #         poly=dict(thickness=float, material=str), )
+    """element extentions dictionary   element_extensions = dict() from base class"""
+
+    # Add columns to junction table during GDSRender.load()
+    # element_extensions  is now being populated as part of load().
+    # Determined from element_table_data.
+
+    # Dict structure MUST be same as  element_extensions!!!!!!
+    # This dict will be used to update QDesign during init of renderer.
+    # Keeping this as a cls dict so could be edited before renderer is instantiated.
+    # To update component.options junction table.
+    element_table_data = dict(
+        junction=dict(path_filename='Need_a_path_and_file')
+    )
 
     def __init__(self, design: 'QDesign', initiate=True, render_template: Dict = None, render_options: Dict = None):
         """Create a QRenderer for GDS interface: export and import.
@@ -140,6 +157,8 @@ class GDSRender(QRenderer):
 
         # check the scale
         self.check_bounding_box_scale()
+
+        GDSRender.load()
 
     def parse_value(self, value: 'Anything') -> 'Anything':
         """Same as design.parse_value. See design for help.
@@ -532,10 +551,9 @@ class GDSRender(QRenderer):
         Return Tuple with flagged segments.
 
         The "status" returned in int:
-        -1: Method needs to update the return code.
-         0: No issues, no short-segments found.
-         int: The number of shapelys returned. New shapeleys, should replace the ones provided in a_shapley.
-
+            * -1: Method needs to update the return code.
+            * 0: No issues, no short segments found
+            * int: The number of shapelys returned. New shapeleys, should replace the ones provided in a_shapley
 
         The "shorter_lines" returned in dict:
         key: Using the index values from list(a_shapely.coords)
@@ -646,21 +664,21 @@ class GDSRender(QRenderer):
         return status, shorter_lines
 
     def identify_vertex_not_to_fillet(self, coords: list, a_fillet: float, all_idx_bad_fillet: dict, len_coords: int):
-        """Use coords to denote segments that are too short.  In particular, 
-        when fillet'd, they will cause the appearance of a incorrect fillet when graphed. 
+        """Use coords to denote segments that are too short.  In particular,
+        when fillet'd, they will cause the appearance of incorrect fillet when graphed.
 
         Args:
-            coords (list): User provide a list of tuples.  The tuple is (x,y) location for a vertex.  
+            coords (list): User provide a list of tuples.  The tuple is (x,y) location for a vertex.
             The list represents a LineString.
 
-            a_fillet (float): The value provided by component developer.  
+            a_fillet (float): The value provided by component developer.
 
-            all_idx_bad_fillet (dict): An empty dict which will be populated by this method.  
+            all_idx_bad_fillet (dict): An empty dict which will be populated by this method.
             Key 'reduced_idx' will hold list of tuples.  The tuples correspond to index for list named "coords".
             Key 'midpoints' will hold list of tuples. The index of a tuple corresponds to two index within coords.
-            For example, a index in midpoints is x, that coresponds midpoint of segment x-1 to x. 
+            For example, a index in midpoints is x, that coresponds midpoint of segment x-1 to x.
 
-            len_coords (int): The length of list coords. 
+            len_coords (int): The length of list coords.
         """
 
         fillet_scale_factor = self.parse_value(
@@ -892,7 +910,7 @@ class GDSRender(QRenderer):
             int: 0=file_name can not be written, otherwise 1=file_name has been written
         """
 
-        if not self._can_write_to_path(file_name):
+        if not can_write_to_path(file_name):
             return 0
 
         # There can be more than one chip in QGeometry.  They all export to one gds file.
@@ -968,9 +986,9 @@ class GDSRender(QRenderer):
 
             Only fillet, if number is greater than zero.
             '''
+
             use_width = self.parse_value(self.options.width_LineString)
             if math.isnan(qgeometry_element.width):
-
                 qcomponent_id = self.parse_value(qgeometry_element.component)
                 name = self.parse_value(qgeometry_element['name'])
                 layer_num = self.parse_value(qgeometry_element.layer)
