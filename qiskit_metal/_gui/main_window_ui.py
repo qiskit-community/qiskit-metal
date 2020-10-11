@@ -268,6 +268,7 @@ class Ui_MainWindow(object):
         self.dockVariables.setWidget(self.dockVariablesContents)
         MainWindow.addDockWidget(QtCore.Qt.DockWidgetArea(1), self.dockVariables)
         self.toolbar_renderers = QtWidgets.QToolBar(MainWindow)
+        self.toolbar_renderers.setIconSize(QtCore.QSize(32, 32))
         self.toolbar_renderers.setObjectName("toolbar_renderers")
         MainWindow.addToolBar(QtCore.Qt.TopToolBarArea, self.toolbar_renderers)
         self.actionSave = QtWidgets.QAction(MainWindow)
@@ -405,6 +406,16 @@ class Ui_MainWindow(object):
         icon27.addPixmap(QtGui.QPixmap(":/renderer/_imgs/renderers/GDS.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionGDS.setIcon(icon27)
         self.actionGDS.setObjectName("actionGDS")
+        self.actionHFSS = QtWidgets.QAction(MainWindow)
+        icon28 = QtGui.QIcon()
+        icon28.addPixmap(QtGui.QPixmap(":/renderer/_imgs/renderers/HFSS.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionHFSS.setIcon(icon28)
+        self.actionHFSS.setObjectName("actionHFSS")
+        self.actionQ3D = QtWidgets.QAction(MainWindow)
+        icon29 = QtGui.QIcon()
+        icon29.addPixmap(QtGui.QPixmap(":/renderer/_imgs/renderers/Q3D.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionQ3D.setIcon(icon29)
+        self.actionQ3D.setObjectName("actionQ3D")
         self.menuDesign.addSeparator()
         self.menuDesign.addAction(self.actionLabelDesign)
         self.menuDesign.addAction(self.actionLoad)
@@ -463,6 +474,8 @@ class Ui_MainWindow(object):
         self.toolBarView.addAction(self.actionToggleDocks)
         self.toolBarView.addAction(self.actionScreenshot)
         self.toolbar_renderers.addAction(self.actionGDS)
+        self.toolbar_renderers.addAction(self.actionHFSS)
+        self.toolbar_renderers.addAction(self.actionQ3D)
 
         self.retranslateUi(MainWindow)
         self.tabWidget.setCurrentIndex(1)
@@ -642,6 +655,8 @@ class Ui_MainWindow(object):
         self.actionNew_QComponent.setShortcut(_translate("MainWindow", "Ctrl+N, Meta+N"))
         self.actionGDS.setText(_translate("MainWindow", "GDS"))
         self.actionGDS.setToolTip(_translate("MainWindow", "Open the GDS renderer."))
+        self.actionHFSS.setText(_translate("MainWindow", "HFSS"))
+        self.actionQ3D.setText(_translate("MainWindow", "Q3D"))
 from .widgets.all_components.table_view_all_components import QTableView_AllComponents
 from .widgets.bases.expanding_toolbar import QToolBarExpanding
 from .widgets.log_widget.log_metal import QTextEditLogger

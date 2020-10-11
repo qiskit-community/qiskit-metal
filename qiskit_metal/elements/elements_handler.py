@@ -482,6 +482,14 @@ class QGeometryTables(object):
                               f' The call was with subtract={subtract} and helper={helper}'
                               f' and layer={layer}, and options={other_options}')
 
+        # TODO Check for multiploygon here.
+
+        # TODO
+        # Add rounding for dict called geometry.  It can be poly,path,
+        # key is name of element, value is shapley geometry
+        # dict can have more than one element
+        # path can have interior and exterior linestring.
+
         # Give warning if length is to be fillet's and not long enough.
         self.check_lengths(geometry, kind, component_name,
                            layer, chip, **other_options)
@@ -545,9 +553,12 @@ class QGeometryTables(object):
                         coords, fillet, fillet_scalar,  fillet_comparison_precision)
                     if len(range_vertex_of_short_segments) > 0:
                         text_id = self.design._components[component_name]._name
-                        self.logger.warning(
-                            f'For kind={kind}, component_id={component_name}, component_name={text_id}, layer={int(layer)}, chip={chip}, key={key} in geometry,'
-                            f' list={range_vertex_of_short_segments} of short segments corresponds to index in geometry.')
+
+                        # JUST FOR IEEE movie demo, supress this warnig.
+                        # self.logger.warning(
+                        #     f'For {kind} table, component={text_id}, key={key}'
+                        #     f' has short segments. Values in {range_vertex_of_short_segments} '
+                        #     f'corresponds to index in geometry.')
 
     def parse_value(self, value: 'Anything') -> 'Anything':
         """Same as design.parse_value. See design for help.

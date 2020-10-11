@@ -20,7 +20,7 @@
 from PyQt5 import QtCore
 from PyQt5.QtGui import QStandardItem, QStandardItemModel
 from PyQt5.QtWidgets import (QMainWindow, QFileDialog, QListView,
-                             QAbstractItemView)
+                             QAbstractItemView, QMessageBox)
 from .renderer_gds_ui import Ui_MainWindow
 
 from .list_model_base import DynamicList
@@ -98,7 +98,10 @@ class RendererGDSWidget(QMainWindow):
     
     def browse_folders(self):
         """Browses available folders in system."""
-        destination_folder = QFileDialog.getExistingDirectory()
+        destination_folder = QFileDialog.getSaveFileName(None,
+                                               'Select a new location to export to',
+                                               'my_qdesign.gds',
+                                               initialFilter='*.gds')[0]
         self.ui.lineEdit.setText(destination_folder)
     
     def export_file(self):
@@ -116,4 +119,9 @@ class RendererGDSWidget(QMainWindow):
                 a_gds.export_to_gds(filename)
             else:
                 a_gds.export_to_gds(filename, highlight_qcomponents=components_to_export)
-        self.close()
+            self.close()
+        else:
+            QMessageBox.warning(self,
+                                "Error",
+                                "Please enter a valid file name and \n select at least one component.")
+                                

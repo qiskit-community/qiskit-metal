@@ -333,6 +333,10 @@ def are_there_potential_fillet_errors(coords: list, a_fillet: float, fillet_scal
         list: List of tuples.  Each tuple corresponds to a range of segments that are too short and would not fillet well.
         The tuple is (start_index, end_index).  The index corresponds to index in coords.
     """
+
+    # TODO remove fillet_scalar, and identfy if poly or path,
+    # TODO handle angles of vetexes.
+
     range_vertex_of_bad = list()
     len_coords = len(coords)
     if len_coords <= 1:
@@ -356,6 +360,8 @@ def are_there_potential_fillet_errors(coords: list, a_fillet: float, fillet_scal
             else:
                 if seg_length < scaled_fillet:
                     range_vertex_of_bad.append((index-1, index))
+
+            # TODO Change output to be list only of start and end, this will possibly change to be just single vertex.
 
     return compress_list(range_vertex_of_bad)
 
