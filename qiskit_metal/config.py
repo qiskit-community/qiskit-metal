@@ -50,15 +50,15 @@ GUI_CONFIG = Dict(
     tips=[
         'Right clicking the tree elements allows you to do neat things.',
 
-        'You can show all connector names on the plot by clicking the connector'
+        'You can show all connector names on the plot by clicking the connector '
         'icon in the plot toolbar.',
 
-        'The gui and the python code work synchronously. If you modify something'
-        'in the gui, it will be reflected in your python interperter and vice versa.'
-        'Note that the gui does not automatically refresh on all events if you update'
-        'variables from the python interperter.',
+        'The gui and the Python code work synchronously. If you modify something '
+        'in the gui, it will be reflected in your Python interpreter and vice versa. '
+        'Note that the gui does not automatically refresh on all events if you update '
+        'variables from the Python interpreter.',
 
-        'Changed some object parameters? Click the <b>Remake</b> button in the main'
+        'Changed some object parameters? Click the <b>Remake</b> button in the main '
         'toolbar to recreate the polygons.',
 
         """<b>Log widget:</b> Right click the logger window to be able to change the log level and
