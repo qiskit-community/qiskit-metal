@@ -41,6 +41,8 @@ class QRoutePoint:
         self.position = position
         self.direction = direction
 
+    def __str__(self):
+        return "position: "+str(self.position)+" : direction:"+str(self.direction)+"."
 
 class QRoute(QComponent):
     """
