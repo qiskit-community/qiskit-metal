@@ -40,14 +40,14 @@ from .net_info import QNet
 
 from .. import config
 if not config.is_building_docs():
-    from qiskit_metal.renderers.renderer_gds.gds_renderer import GDSRender
+    from qiskit_metal.renderers.renderer_gds.gds_renderer import QGDSRenderer
 
 
 if TYPE_CHECKING:
     # For linting, avoids circular imports.
     from ..components.base.base import QComponent
     from ..renderers.renderer_base import QRenderer
-    from ..renderers.renderer_gds.gds_renderer import GDSRender
+    from ..renderers.renderer_gds.gds_renderer import QGDSRenderer
 
 
 __all__ = ['QDesign']
@@ -895,7 +895,7 @@ class QDesign():
         """
         # TODO: CHANGE TO LOOP OVER CONFIG. DO NOT HARD CODE @priti
         # GDS Renderer using base class QRender
-        a_gds = GDSRender(self, initiate=True)
+        a_gds = QGDSRenderer(self, initiate=True)
 
         # Every renderer using QRender as base class will have method to get unique name.
         # Add columns to junction table in the element handler
