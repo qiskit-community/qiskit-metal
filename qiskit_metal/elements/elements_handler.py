@@ -546,8 +546,9 @@ class QGeometryTables(object):
                     if len(range_vertex_of_short_segments) > 0:
                         text_id = self.design._components[component_name]._name
                         self.logger.warning(
-                            f'For kind={kind}, component_id={component_name}, component_name={text_id}, layer={int(layer)}, chip={chip}, key={key} in geometry,'
-                            f' list={range_vertex_of_short_segments} of short segments corresponds to index in geometry.')
+                            f'For {kind} table, component={text_id}, key={key}'
+                            f' has short segments. Values in {range_vertex_of_short_segments} '
+                            f'are index(es) in shapley geometry.')
 
     def parse_value(self, value: 'Anything') -> 'Anything':
         """Same as design.parse_value. See design for help.

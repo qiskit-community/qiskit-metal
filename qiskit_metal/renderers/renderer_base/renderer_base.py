@@ -218,7 +218,7 @@ class QRenderer():
         """Returns unique class name based on the module
 
         Returns:
-            str: Example: 'qiskit_metal.renders.renderer_gds.gds_renderer.GDSRender'
+            str: Example: 'qiskit_metal.renders.renderer_gds.gds_renderer.QGDSRenderer'
         """
         return f'{cls.__module__}.{cls.__name__}'
 

@@ -31,7 +31,7 @@ if TYPE_CHECKING:
     from qiskit_metal.designs import QDesign
 
 
-class GDSRender(QRenderer):
+class QGDSRenderer(QRenderer):
     """Extends QRenderer to export GDS formatted files. The methods which a user will need for GDS export
     should be found within this class.
 
@@ -122,7 +122,7 @@ class GDSRender(QRenderer):
     #         poly=dict(thickness=float, material=str), )
     """element extentions dictionary   element_extensions = dict() from base class"""
 
-    # Add columns to junction table during GDSRender.load()
+    # Add columns to junction table during QGDSRenderer.load()
     # element_extensions  is now being populated as part of load().
     # Determined from element_table_data.
 
@@ -158,7 +158,7 @@ class GDSRender(QRenderer):
         # check the scale
         self.check_bounding_box_scale()
 
-        GDSRender.load()
+        QGDSRenderer.load()
 
     def parse_value(self, value: 'Anything') -> 'Anything':
         """Same as design.parse_value. See design for help.
@@ -177,14 +177,14 @@ class GDSRender(QRenderer):
         bounding_box_scale_y = self.parse_value(p.bounding_box_scale_y)
 
         if bounding_box_scale_x < 1:
-            self.options['bounding_box_scale_x'] = GDSRender.default_options.bounding_box_scale_x
+            self.options['bounding_box_scale_x'] = QGDSRenderer.default_options.bounding_box_scale_x
             self.logger.warning('Expected float and number greater than or equal to'
                                 ' 1.0 for bounding_box_scale_x. User'
                                 f'provided bounding_box_scale_x = {bounding_box_scale_x}'
                                 ', using default_options.bounding_box_scale_x.')
 
         if bounding_box_scale_y < 1:
-            self.options['bounding_box_scale_y'] = GDSRender.default_options.bounding_box_scale_y
+            self.options['bounding_box_scale_y'] = QGDSRenderer.default_options.bounding_box_scale_y
             self.logger.warning(
                 f'Expected float and number greater than or equal to 1.0 for bounding_box_scale_y.'
                 'User provided bounding_box_scale_y = {bounding_box_scale_y}, '
@@ -690,7 +690,7 @@ class GDSRender(QRenderer):
             coords, a_fillet, fillet_scale_factor, for_rounding)
 
         midpoints = list()
-        midpoints = [GDSRender.midpoint_xy(coords[idx-1][0], coords[idx-1][1], vertex2[0], vertex2[1])
+        midpoints = [QGDSRenderer.midpoint_xy(coords[idx-1][0], coords[idx-1][1], vertex2[0], vertex2[1])
                      for idx, vertex2 in enumerate(coords) if idx > 0]
         all_idx_bad_fillet['midpoints'] = midpoints
 
