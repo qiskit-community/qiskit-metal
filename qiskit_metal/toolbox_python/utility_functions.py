@@ -38,7 +38,7 @@ from qiskit_metal import logger
 
 __all__ = ['copy_update', 'dict_start_with', 'data_frame_empty_typed', 'clean_name',
            'enable_warning_traceback', 'get_traceback', 'print_traceback_easy', 'log_error_easy',
-           'monkey_patch', 'are_there_potential_fillet_errors', 'compress_list', 'can_write_to_path', 
+           'monkey_patch', 'are_there_potential_fillet_errors', 'compress_list', 'can_write_to_path',
            'can_write_to_path_with_warning']
 
 ####################################################################################
@@ -311,6 +311,58 @@ def compress_list(individual_seg: list) -> list:
         return reduced_idx
 
 
+def compress_vertex_list(individual_vertex: list) -> list:
+    """Given a list of vertexes that should not be fillet'd,
+    search for a range and make them one compressed list.
+
+    Args:
+        individual_seg (list): List of UNIQUE ints.  Each int refers to an index of a LineString.
+
+    Returns:
+        list: A compresses list of tuples.  So, it combines adjacent vertexes into a longer one.
+    """
+    reduced_idx = list()
+
+    sorted_vertex = sorted(individual_vertex)
+    len_vertex = len(sorted_vertex)
+
+    if len_vertex > 0:
+        # initialzie to unrealistic number.
+        start = -1
+        end = -1
+        size_of_range = 0
+
+        for index, item in enumerate(sorted_vertex):
+            if index == 0:
+                start = item
+                #     last_unique_seg = item
+            else:
+                if item == start+1:
+                    stop = item
+                    size_of_range += 1
+                else:
+                    if size_of_range == 0:
+                        # Only one vertex in range.
+                        reduced_idx.append((start, start))
+                        start = item
+                    else:
+                        # Two or more vertexes in range.
+                        reduced_idx.append((start, stop))
+                        size_of_range = 0
+                        start = item
+
+            if index == len_vertex-1:
+                if size_of_range == 0:
+                    reduced_idx.append((start, start))
+                else:
+                    reduced_idx.append((start, stop))
+
+        return reduced_idx
+
+    else:
+        return reduced_idx
+
+
 def are_there_potential_fillet_errors(coords: list, a_fillet: float, fillet_scalar: float, fillet_comparison_precision: int) -> list:
     """Iterate through the vertex and check using critea.
     1. If a start or end segment, is the length smaller than a_fillet.
@@ -359,6 +411,56 @@ def are_there_potential_fillet_errors(coords: list, a_fillet: float, fillet_scal
 
     return compress_list(range_vertex_of_bad)
 
+
+def which_vertex_has_potential_fillet_errors(coords: list, a_fillet: float, fillet_comparison_precision: int) -> list:
+    """Iterate through the vertex and check using critea.
+    1. If a start or end segment, is the length smaller than a_fillet.
+    2. If segment in side of LineString, is the lenght smaller than,FILLET_SCALAR times a_fillet.
+
+    Note, there is a rounding error issues. So when the lenght of the segment is calculated,
+    it is rounded by using fillet_comparison_precision.
+
+    Args:
+        coords (list): List of tuples in (x,y) format. Each tuple represents a vertex on a LineSegment.
+
+        a_fillet (float): The radius to fillet a vertex.
+
+        fillet_comparison_precision (int): There are rounding issues when comparing to (fillet * scalar).
+        Use this when calculating length of line-segment.
+
+    Returns:
+        list: List of idexes.  Each index corresponds to a vertex in coords, that would not fillet well.
+    """
+    vertex_of_bad = list()
+    len_coords = len(coords)
+    if len_coords <= 1:
+        return vertex_of_bad
+
+    # When determining the critera to fillet, scale the fillet value by FILLET_SCALAR.
+    FILLET_SCALAR = 2.0
+    scaled_fillet = a_fillet * FILLET_SCALAR
+
+    for index, xy in enumerate(coords):
+        # Skip the first vertex.
+        if index > 0:
+            xy_previous = coords[index-1]
+
+            seg_length = np.round(
+                distance.euclidean(xy_previous, xy), fillet_comparison_precision)
+
+            # If at first or last segment, use just the fillet value to check, otherwise, use FILLET_SCALAR.
+            # Need to not fillet index-1 to index line segment.
+            if index == 1 or index == len_coords-1:
+                if seg_length < a_fillet:
+                    vertex_of_bad.extend(index-1, index)
+            else:
+                if seg_length < scaled_fillet:
+                    vertex_of_bad.extend(index-1, index)
+
+    # As precaution, remove duplicates from list.
+    vertex_of_bad = list(set(vertex_of_bad))
+    return vertex_of_bad
+
 #######################################################################################
 # File checking
 
@@ -391,7 +493,7 @@ def can_write_to_path(file: str) -> Tuple[int, str]:
         file (str): Has the path and/or just the file name.
 
     Returns:
-        Tuple[int, str]: 
+        Tuple[int, str]:
         int: 1 if access is allowed. Else returns 0, if access not given.
         str: Full path and file which was searched for.
     """
