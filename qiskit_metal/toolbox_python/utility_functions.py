@@ -38,8 +38,9 @@ from qiskit_metal import logger
 
 __all__ = ['copy_update', 'dict_start_with', 'data_frame_empty_typed', 'clean_name',
            'enable_warning_traceback', 'get_traceback', 'print_traceback_easy', 'log_error_easy',
-           'monkey_patch', 'are_there_potential_fillet_errors', 'compress_list', 'can_write_to_path',
-           'can_write_to_path_with_warning']
+           'monkey_patch', 'which_vertex_has_potential_fillet_errors', 'compress_vertex_list',
+           'get_range_of_vertex_to_not_fillet',
+           'can_write_to_path', 'can_write_to_path_with_warning']
 
 ####################################################################################
 # Dictionary related
@@ -279,138 +280,6 @@ def monkey_patch(self, func, func_name=None):
 ####################################################################################
 # Used to detect and denote potential short segments, when fillet is used.
 
-def compress_list(individual_seg: list) -> list:
-    """Given a list of segments that should not be fillet'd,
-    search for adjacent segments and make them one compressed list.
-
-    Args:
-        individual_seg (list): List of tuples of two ints.  Each int refers to an index of a LineString.
-
-    Returns:
-        list: A compresses list of individual_segs.  So, it combines adjacent segments into a longer one.
-    """
-    reduced_idx = list()
-    len_compressed = len(individual_seg)
-    if len_compressed > 0:
-        last_unique_seg = (-1, -1)  # set to a non-logical tuple
-
-        for index, item in enumerate(individual_seg):
-            if index == 0:
-                last_unique_seg = item
-            else:
-                if min(item) == max(last_unique_seg):
-                    last_unique_seg = (min(last_unique_seg), max(item))
-                else:
-                    reduced_idx.append(last_unique_seg)
-                    last_unique_seg = item
-            if index == len_compressed-1:
-                reduced_idx.append(last_unique_seg)
-        return reduced_idx
-
-    else:
-        return reduced_idx
-
-
-def compress_vertex_list(individual_vertex: list) -> list:
-    """Given a list of vertexes that should not be fillet'd,
-    search for a range and make them one compressed list.
-
-    Args:
-        individual_seg (list): List of UNIQUE ints.  Each int refers to an index of a LineString.
-
-    Returns:
-        list: A compresses list of tuples.  So, it combines adjacent vertexes into a longer one.
-    """
-    reduced_idx = list()
-
-    sorted_vertex = sorted(individual_vertex)
-    len_vertex = len(sorted_vertex)
-
-    if len_vertex > 0:
-        # initialzie to unrealistic number.
-        start = -1
-        end = -1
-        size_of_range = 0
-
-        for index, item in enumerate(sorted_vertex):
-            if index == 0:
-                start = item
-                #     last_unique_seg = item
-            else:
-                if item == start+1:
-                    stop = item
-                    size_of_range += 1
-                else:
-                    if size_of_range == 0:
-                        # Only one vertex in range.
-                        reduced_idx.append((start, start))
-                        start = item
-                    else:
-                        # Two or more vertexes in range.
-                        reduced_idx.append((start, stop))
-                        size_of_range = 0
-                        start = item
-
-            if index == len_vertex-1:
-                if size_of_range == 0:
-                    reduced_idx.append((start, start))
-                else:
-                    reduced_idx.append((start, stop))
-
-        return reduced_idx
-
-    else:
-        return reduced_idx
-
-
-def are_there_potential_fillet_errors(coords: list, a_fillet: float, fillet_scalar: float, fillet_comparison_precision: int) -> list:
-    """Iterate through the vertex and check using critea.
-    1. If a start or end segment, is the length smaller than a_fillet.
-    2. If segment in side of LineString, is the lenght smaller than,fillet_scalar times a_fillet.
-
-    Note, there is a rounding error issues. So when the lenght of the segment is calculated,
-    it is rounded by using fillet_comparison_precision.
-
-    Args:
-        coords (list): List of tuples in (x,y) format. Each tuple represents a vertex on a LineSegment.
-
-        fillet_scalar (float): When determining the critera to fillet, scale the fillet value by fillet_scalar.
-
-        a_fillet (float): The radius to fillet a vertex.
-
-        fillet_comparison_precision (int): There are rounding issues when comparing to (fillet * scalar).
-        Use this when calculating length of line-segment.
-
-    Returns:
-        list: List of tuples.  Each tuple corresponds to a range of segments that are too short and would not fillet well.
-        The tuple is (start_index, end_index).  The index corresponds to index in coords.
-    """
-    range_vertex_of_bad = list()
-    len_coords = len(coords)
-    if len_coords <= 1:
-        return range_vertex_of_bad
-
-    scaled_fillet = a_fillet * fillet_scalar
-
-    for index, xy in enumerate(coords):
-        # Skip the first vertex.
-        if index > 0:
-            xy_previous = coords[index-1]
-
-            seg_length = np.round(
-                distance.euclidean(xy_previous, xy), fillet_comparison_precision)
-
-            # If at first or last segment, use just the fillet value to check, otherwise, use fillet_scalar.
-            # Need to not fillet index-1 to index line segment.
-            if index == 1 or index == len_coords-1:
-                if seg_length < a_fillet:
-                    range_vertex_of_bad.append((index-1, index))
-            else:
-                if seg_length < scaled_fillet:
-                    range_vertex_of_bad.append((index-1, index))
-
-    return compress_list(range_vertex_of_bad)
-
 
 def which_vertex_has_potential_fillet_errors(coords: list, a_fillet: float, fillet_comparison_precision: int) -> list:
     """Iterate through the vertex and check using critea.
@@ -452,14 +321,94 @@ def which_vertex_has_potential_fillet_errors(coords: list, a_fillet: float, fill
             # Need to not fillet index-1 to index line segment.
             if index == 1 or index == len_coords-1:
                 if seg_length < a_fillet:
-                    vertex_of_bad.extend(index-1, index)
+                    vertex_of_bad.extend([index-1, index])
             else:
                 if seg_length < scaled_fillet:
-                    vertex_of_bad.extend(index-1, index)
+                    vertex_of_bad.extend([index-1, index])
 
     # As precaution, remove duplicates from list.
     vertex_of_bad = list(set(vertex_of_bad))
     return vertex_of_bad
+
+
+def compress_vertex_list(individual_vertex: list) -> list:
+    """Given a list of vertexes that should not be fillet'd,
+    search for a range and make them one compressed list. 
+    If the vertex is a point and not linesegment, the returned tuple's 
+    start and end are the same index. 
+
+    Args:
+        individual_seg (list): List of UNIQUE ints.  Each int refers to an index of a LineString.
+
+    Returns:
+        list: A compressed list of tuples.  So, it combines adjacent vertexes into a longer one.
+
+    """
+    reduced_idx = list()
+
+    sorted_vertex = sorted(individual_vertex)
+    len_vertex = len(sorted_vertex)
+
+    if len_vertex > 0:
+        # initialzie to unrealistic number.
+        start = -1
+        end = -1
+        size_of_range = 0
+
+        for index, item in enumerate(sorted_vertex):
+            if index == 0:
+                start = item
+                end = item
+            else:
+                if item == end + 1:
+                    end = item
+                    size_of_range += 1
+                else:
+                    if size_of_range == 0:
+                        # Only one vertex in range.
+                        reduced_idx.append((start, end))
+                        start = item
+                        end = item
+                    else:
+                        # Two or more vertexes in range.
+                        reduced_idx.append((start, end))
+                        size_of_range = 0
+                        start = item
+                        end = item
+
+            if index == len_vertex-1:
+                if size_of_range == 0:
+                    reduced_idx.append((start, end))
+                else:
+                    reduced_idx.append((start, end))
+
+        return reduced_idx
+
+    else:
+        return reduced_idx
+
+
+def get_range_of_vertex_to_not_fillet(coords: list, a_fillet: float, fillet_comparison_precision: int) -> list:
+    """For a list of coords, provide a list of tuples.  Each tuple coresponds to a range of indexes within coords.
+    A range denotes vertexes that are too short to be fillet'd. 
+
+    If the range is just one point, meaning,  not a segment, the tuple will contain the same index for start and end.
+
+    Args:
+        coords (list): List of tuples in (x,y) format. Each tuple represents a vertex on a LineSegment.
+        a_fillet (float): The radius to fillet a vertex.
+        fillet_comparison_precision (int): There are rounding issues when comparing to (fillet * scalar).
+    Use this when calculating length of line-segment.
+
+
+    Returns:
+        list: A compressed list of tuples.  So, it combines adjacent vertexes into a longer one.
+    """
+    unique_vertex = which_vertex_has_potential_fillet_errors(
+        coords, a_fillet, fillet_comparison_precision)
+
+    compressed_vertex = compress_vertex_list(unique_vertex)
+    return compressed_vertex
 
 #######################################################################################
 # File checking

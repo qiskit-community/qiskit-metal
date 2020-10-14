@@ -1,5 +1,5 @@
 from ... import Dict
-from qiskit_metal.toolbox_python.utility_functions import are_there_potential_fillet_errors, can_write_to_path
+from qiskit_metal.toolbox_python.utility_functions import get_range_of_vertex_to_not_fillet, can_write_to_path
 from qiskit_metal.toolbox_python.utility_functions import can_write_to_path
 import math
 from scipy.spatial import distance
@@ -686,8 +686,8 @@ class QGDSRenderer(QRenderer):
         precision = float(self.parse_value(self.options.precision))
         for_rounding = int(np.abs(np.log10(precision)))
 
-        all_idx_bad_fillet['reduced_idx'] = are_there_potential_fillet_errors(
-            coords, a_fillet, fillet_scale_factor, for_rounding)
+        all_idx_bad_fillet['reduced_idx'] = get_range_of_vertex_to_not_fillet(
+            coords, a_fillet, for_rounding)
 
         midpoints = list()
         midpoints = [QGDSRenderer.midpoint_xy(coords[idx-1][0], coords[idx-1][1], vertex2[0], vertex2[1])

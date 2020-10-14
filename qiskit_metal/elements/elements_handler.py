@@ -27,7 +27,7 @@ import pandas as pd
 import shapely
 
 from typing import TYPE_CHECKING
-from qiskit_metal.toolbox_python.utility_functions import are_there_potential_fillet_errors, data_frame_empty_typed
+from qiskit_metal.toolbox_python.utility_functions import get_range_of_vertex_to_not_fillet, data_frame_empty_typed
 from typing import Dict as Dict_
 from typing import List, Tuple, Union
 from geopandas import GeoDataFrame, GeoSeries
@@ -541,8 +541,10 @@ class QGeometryTables(object):
             for key, geom in geometry.items():
                 if isinstance(geom, shapely.geometry.LineString):
                     coords = list(geom.coords)
-                    range_vertex_of_short_segments = are_there_potential_fillet_errors(
-                        coords, fillet, fillet_scalar,  fillet_comparison_precision)
+
+                    range_vertex_of_short_segments = get_range_of_vertex_to_not_fillet(
+                        coords, fillet, fillet_comparison_precision)
+
                     if len(range_vertex_of_short_segments) > 0:
                         text_id = self.design._components[component_name]._name
                         self.logger.warning(
