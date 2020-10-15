@@ -39,7 +39,7 @@ from qiskit_metal import logger
 __all__ = ['copy_update', 'dict_start_with', 'data_frame_empty_typed', 'clean_name',
            'enable_warning_traceback', 'get_traceback', 'print_traceback_easy', 'log_error_easy',
            'monkey_patch', 'which_vertex_has_potential_fillet_errors', 'compress_vertex_list',
-           'get_range_of_vertex_to_not_fillet',
+           'get_range_of_vertex_to_not_fillet', 'toggle_numbers', 'get_both_fillet_and_not_fillet',
            'can_write_to_path', 'can_write_to_path_with_warning']
 
 ####################################################################################
@@ -388,6 +388,23 @@ def compress_vertex_list(individual_vertex: list) -> list:
         return reduced_idx
 
 
+def toggle_numbers(numbers: list, coords_len: int = 0):
+    """Given a list of integers, return the toggle of them from zero to coords_len.
+
+    Args:
+        numbers (list): Integers in the list.
+        coords_len (int, optional): Lenght of list that toggle should happen against. Defaults to 0.
+
+    Returns:
+        [type]: The toggle of integers based on range from zero to coords_len.
+    """
+    toggled = list()
+    if (coords_len > 0):
+        toggled = sorted(set(range(coords_len)).difference(numbers))
+
+    return toggled
+
+
 def get_range_of_vertex_to_not_fillet(coords: list, a_fillet: float, fillet_comparison_precision: int) -> list:
     """For a list of coords, provide a list of tuples.  Each tuple coresponds to a range of indexes within coords.
     A range denotes vertexes that are too short to be fillet'd. 
@@ -410,8 +427,30 @@ def get_range_of_vertex_to_not_fillet(coords: list, a_fillet: float, fillet_comp
     compressed_vertex = compress_vertex_list(unique_vertex)
     return compressed_vertex
 
+
+def get_both_fillet_and_not_fillet(coords: list, a_fillet: float, fillet_comparison_precision: int) -> Tuple[list, list]:
+    """[summary]
+
+    Args:
+        coords (list): A list of tuples (x,y) that correspond to vertex.
+        a_fillet (float): The radius to fillet a vertex.
+        fillet_comparison_precision (int): There are rounding issues when comparing to (fillet * scalar).
+
+    Returns:
+        Tuple[list, list]:
+            1st list - Contains intergers that correspond to index of coords. Do NOT fillet a vertex.
+            2nd list - Contains intergers that correspond to index of coords. Do fillet a vertex.
+    """
+
+    no_fillet_vertex = which_vertex_has_potential_fillet_errors(
+        coords, a_fillet, fillet_comparison_precision)
+    last_index = len(coords)-1
+    fillet_vertex = toggle_numbers(no_fillet_vertex, last_index)
+
+    return no_fillet_vertex, fillet_vertex
+
 #######################################################################################
-# File checking
+    # File checking
 
 
 def can_write_to_path_with_warning(file: str) -> int:
