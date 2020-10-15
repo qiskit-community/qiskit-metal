@@ -444,8 +444,8 @@ def get_both_fillet_and_not_fillet(coords: list, a_fillet: float, fillet_compari
 
     no_fillet_vertex = which_vertex_has_potential_fillet_errors(
         coords, a_fillet, fillet_comparison_precision)
-    last_index = len(coords)-1
-    fillet_vertex = toggle_numbers(no_fillet_vertex, last_index)
+    coords_len = len(coords)
+    fillet_vertex = toggle_numbers(no_fillet_vertex, coords_len)
 
     return no_fillet_vertex, fillet_vertex
 
