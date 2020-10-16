@@ -35,6 +35,7 @@ from typing import Tuple
 
 from copy import deepcopy
 from qiskit_metal import logger
+from numpy.linalg import norm
 
 __all__ = ['copy_update', 'dict_start_with', 'data_frame_empty_typed', 'clean_name',
            'enable_warning_traceback', 'get_traceback', 'print_traceback_easy', 'log_error_easy',
@@ -413,6 +414,94 @@ def toggle_numbers(numbers: list, coords_len: int = 0) -> list:
     return complement
 
 
+class QCheckLength():
+    """
+    Obtain indices of vertices in a polygon/linestring that can/cannot be filleted.
+    Note: For linestrings, this assumes that all angles are at 90 degrees.
+    TODO: Generalize to arbitrary angles.
+    """
+
+    precision = 9 # Default precision, or number of digits after decimal point to round to
+
+    def __init__(self, coords: list, fradius: float):
+        """
+        Initialize list of coordinates to work with and user-specified fillet radius.
+
+        Args:
+            coords (list): Ordered list of tuples of vertex coordinates.
+            fradius (float): User-specified fillet radius from QGeometry table.
+        """
+        self.coords = coords
+        self.fradius = fradius
+        self.length = len(self.coords)
+
+    def rdist(self, j: int, k: int) -> float:
+        """
+        Simple calculation of distance between pts[j] and pts[k].
+        Rounds to precision given by class variable precision (above).
+
+        Args:
+            j (int): Index of one point in self.coords.
+            k (int): Index of second point in self.coords.
+
+        Returns:
+            float: Euclidean distance between pts[j] and pts[k] rounded to specified precision.
+        """
+        return round(abs(norm(np.array(self.coords[j]) - np.array(self.coords[k]))), self.precision)
+    
+    @property
+    def bad_fillet_idxs_linestring(self) -> list:
+        """
+        Get list of vertex indices in a linestring that cannot be filleted based on proximity to neighbors.
+
+        Returns:
+            list: List of indices of vertices too close to their neighbors to be filleted.
+        """
+        return toggle_numbers(self.good_fillet_idxs_linestring, self.length)
+        
+    @property
+    def bad_fillet_idxs_polygon(self) -> list:
+        """
+        Get list of vertex indices in a polygon that cannot be filleted based on proximity to neighbors.
+
+        Returns:
+            list: List of indices of vertices too close to their neighbors to be filleted.
+        """
+        return toggle_numbers(self.good_fillet_idxs_polygon, self.length)
+
+    @property
+    def good_fillet_idxs_linestring(self) -> list:
+        """
+        Get list of vertex indices in a linestring that can and will be filleted.
+
+        Returns:
+            list: List of fillet-able indices.
+        """
+        if self.length < 3:
+            return []
+        elif self.length == 3:
+            return [1] if min(self.rdist(0, 1), self.rdist(1, 2)) >= self.fradius else []
+        goodlist = []
+        if (self.rdist(0, 1) >= self.fradius) and (self.rdist(1, 2) >= 2 * self.fradius):
+            goodlist.append(1)
+        for i in range(2, self.length - 2):
+            if min(self.rdist(i - 1, i), self.rdist(i, i + 1)) >= 2 * self.fradius:
+                goodlist.append(i)
+        if (self.rdist(self.length - 3, self.length - 2) >= 2 * self.fradius) and (self.rdist(self.length - 2, self.length - 1) >= self.fradius):
+            goodlist.append(self.length - 2)
+        return goodlist
+
+    @property
+    def good_fillet_idxs_polygon(self) -> list:
+        """
+        Get list of vertex indices in a polygon that can and will be filleted.
+
+        Returns:
+            list: List of fillet-able indices.
+        """
+        return [i for i in range(self.length) if min(self.rdist(i - 1, i), self.rdist(i, (i + 1) % self.length)) >= 2 * self.fradius]
+
+    
 def get_range_of_vertex_to_not_fillet(coords: list, a_fillet: float, fillet_comparison_precision: int) -> list:
     """For a list of coords, provide a list of tuples.  Each tuple coresponds to a range of indexes within coords.
     A range denotes vertexes that are too short to be fillet'd. 
