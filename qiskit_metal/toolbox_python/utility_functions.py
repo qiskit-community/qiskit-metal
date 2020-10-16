@@ -388,21 +388,29 @@ def compress_vertex_list(individual_vertex: list) -> list:
         return reduced_idx
 
 
-def toggle_numbers(numbers: list, coords_len: int = 0):
+def toggle_numbers(numbers: list, coords_len: int = 0) -> list:
     """Given a list of integers, return the toggle of them from zero to coords_len.
 
     Args:
-        numbers (list): Integers in the list.
-        coords_len (int, optional): Lenght of list that toggle should happen against. Defaults to 0.
+        numbers (list): Integers in the original list, in sorted order.
+        coords_len (int, optional): Length of list that toggle should happen against. Defaults to 0.
 
     Returns:
-        [type]: The toggle of integers based on range from zero to coords_len.
+        list: A sorted list of all integers between 0 and coords_len - 1, inclusive, not found in numbers.
     """
-    toggled = list()
-    if (coords_len > 0):
-        toggled = sorted(set(range(coords_len)).difference(numbers))
-
-    return toggled
+    complement = []
+    if coords_len:
+        if not numbers:
+            return [i for i in range(coords_len)]
+        j = 0
+        for i in range(coords_len):
+            if i < numbers[j]:
+                complement.append(i)
+            else:
+                j += 1
+                if j >= len(numbers):
+                    return complement + [k for k in range(i + 1, coords_len)]
+    return complement
 
 
 def get_range_of_vertex_to_not_fillet(coords: list, a_fillet: float, fillet_comparison_precision: int) -> list:
