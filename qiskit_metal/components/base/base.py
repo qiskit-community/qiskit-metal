@@ -25,7 +25,7 @@ To see the docstring of QComponent, use:
 import logging
 import inspect
 from copy import deepcopy
-from typing import TYPE_CHECKING, Any, Iterable, List, Union, Dict as Dict_
+from typing import TYPE_CHECKING, Any, Iterable, List, Union, Tuple, Dict as Dict_
 
 import pandas as pd
 import numpy as np
@@ -36,7 +36,6 @@ from ...toolbox_python.attr_dict import Dict
 from ._parsed_dynamic_attrs import ParsedDynamicAttributes_Component
 from ...draw import Vector
 from ...toolbox_python.display import format_dict_ala_z
-
 
 __all__ = ['QComponent']
 
@@ -217,9 +216,12 @@ class QComponent():
         #: ``Initialization Successful``, ``Build Failed``, etc.
         self.status = 'Initialization Successful'
 
+        # Used for short name, and renderers adding information to tables.
+        self.a_metadata = self._gather_all_children_metadata()
+
         # Auto naming - add id to component based on type
         if name is None:
-            prefix = self._gather_all_children_metadata()
+            prefix = self.a_metadata
             # limit names to 24 characters
             name_trunc = 24
             # if no prefix, use class name
@@ -268,9 +270,8 @@ class QComponent():
 
         return options_from_children
 
-
     @classmethod
-    def _gather_all_children_metadata(cls):
+    def _gather_all_children_metadata(cls) -> dict:
         '''
         From the base class of QComponent, traverse the child classes
         to gather the .default options for each child class.
@@ -293,7 +294,6 @@ class QComponent():
 
         return options_from_children
 
-
     @classmethod
     def _get_unique_class_name(cls) -> str:
         """Returns unique class name based on the module
@@ -314,14 +314,19 @@ class QComponent():
             Arguments:
                 design (QDesign): The parent design
                 template_key (str): Key to use
-                component_template (dict): template of components to copy
+                component_template (dict): template of components to copy, with renderer options
         """
         # do not overwrite
         if template_key not in design.template_options:
-            if not component_template:
-                component_template = cls._gather_all_children_options()
+            # if not component_template:
+            #     component_template = cls._gather_all_children_options()
+            children_options = cls._gather_all_children_options()
+            options_template_renderer = {
+                **children_options, **component_template}
+            # design.template_options[template_key] = deepcopy(
+            #     component_template)
             design.template_options[template_key] = deepcopy(
-                component_template)
+                options_template_renderer)
 
     @property
     def name(self) -> str:
@@ -422,9 +427,19 @@ class QComponent():
         if template_key is None:
             template_key = cls._get_unique_class_name()
 
+        renderer_key_values = cls._get_table_values_from_renderers(design)
+
+        # Think
+        if component_template is not None:
+            renderer_and_component_template = {
+                **renderer_key_values, **component_template}
+        else:
+            renderer_and_component_template = renderer_key_values
+
         if template_key not in design.template_options:
             cls._register_class_with_design(
-                design, template_key, component_template)
+                design, template_key, renderer_and_component_template)
+            # design, template_key, component_template)
 
         if template_key not in design.template_options:
             logger_ = logger_ or design.logger
@@ -433,9 +448,10 @@ class QComponent():
                               f'options for the component class {cls.__name__} are missing')
 
         # Specific object template options
-        options = deepcopy(Dict(design.template_options[template_key]))
+        template_options = deepcopy(
+            Dict(design.template_options[template_key]))
 
-        return options
+        return template_options
 
     def _delete_evaluation(self, check_name: str = None):
         """design.overwrite_enabled allows user to delete an existing component within
@@ -627,19 +643,19 @@ class QComponent():
 #   Will they operate properly with non-planar designs?
 
     def add_pin(self,
-                name: str,  #Should be static based on component designer's choice
+                name: str,  # Should be static based on component designer's choice
                 points: np.ndarray,
                 width: float,
                 input_as_norm: bool = False,
                 chip: str = 'main',
-                gap: float = None): #gap defaults to 0.6 * width
+                gap: float = None):  # gap defaults to 0.6 * width
         """
         Adds a pin from two points which are normal/tangent to the intended plane of the pin.
-        The normal should 'point' in the direction of intended connection. Adds the 
+        The normal should 'point' in the direction of intended connection. Adds the
         new pin as a subdictionary to parent component's pins dictionary.
 
         Arguments:
-            * name (str): name of the pin 
+            * name (str): name of the pin
             * points (numpy.ndarray): [[x1,y1],[x2,y2]] for the normal/tangent line
             * width (float): the width of the intended connection (eg. qubit bus pad arm)
             * input_as_norm (bool): Indicates if the points are tangent or normal to the pin plane.
@@ -693,7 +709,7 @@ class QComponent():
 
         """
         assert len(points) == 2
-        
+
         if gap is None:
             gap = width * 0.6
 
@@ -708,16 +724,14 @@ class QComponent():
                 vec_normal, -(np.pi/2))) * width/2 + points[1]
             points = [s_point, e_point]
             tangent_vector = Vector.rotate(vec_normal, np.pi/2)
-            
-            
+
            # self.pins[name] = self.make_pin_as_normal(
-              #  points, width, chip)
+            #  points, width, chip)
         else:
             vec_dist, tangent_vector, vec_normal = draw.Vector.two_points_described(
-            points)
+                points)
             middle_point = np.sum(points, axis=0)/2.
             width = np.linalg.norm(vec_dist)
-
 
         pin_dict = Dict(
             points=points,
@@ -730,14 +744,13 @@ class QComponent():
             parent_name=self.id,
             net_id=0,
             # Place holder value for potential future property (auto-routing cpw with
-            #length limit)
+            # length limit)
             length=0
         )
 
         self.pins[name] = pin_dict
 
-
-    def get_pin(self, name: str):
+    def get_pin(self, name: str) -> Dict:
         """Interface for components to get pin data
 
         Args:
@@ -783,7 +796,7 @@ class QComponent():
                     false_pin = True
                 elif self.design._components[component].pins[pin].net_id:
                     pin_in_use = True
-            #Should modify to allow for multiple error messages to be returned.
+            # Should modify to allow for multiple error messages to be returned.
             if false_component:
                 self._error_message = f'Component {component} does not exist. {self.name} has not been built. Please check your pin_input values.'
                 return 'Component Does Not Exist'
@@ -795,7 +808,7 @@ class QComponent():
                 return 'Pin In Use'
         return None
 
-    #This method does not appear to be being used anywhere. 
+    # This method does not appear to be being used anywhere.
     def connect_components_already_in_design(self, pin_name_self: str, comp2_id: int, pin2_name: str) -> int:
         """WARNING: Do NOT use this method during generation of component instance.
             This method is expecting self to be added to design._components dict.  More importantly,
@@ -893,6 +906,31 @@ class QComponent():
         self.design.qgeometry.add_qgeometry(kind, self.id, geometry, subtract=subtract,
                                             helper=helper, layer=layer, chip=chip, **kwargs)
 
+    @classmethod
+    def _get_table_values_from_renderers(cls, design: 'QDesign') -> Dict:
+        """Populate a dict to combine with options for the qcomponent.
+
+        Based on tables the component-developer denotes in the metadata, 
+        assume those qgeometry.tables are used for the component. The method 
+        will search a dict populated by all the renderers during their init.  
+
+        Returns:
+            Dict: key is column names for tables, value is data for the column. 
+        """
+        metadata_dict = cls._gather_all_children_metadata()
+        tables_list = design.get_list_of_tables_in_metadata(metadata_dict)
+
+        all_renderers_key_value = dict()
+        # design.renderer_defaults_by_table[table_name][renderer_name][column_name]
+        for table in tables_list:
+            if table in design.renderer_defaults_by_table:
+                for name_renderer, renderer_data in design.renderer_defaults_by_table[table].items():
+                    if len(renderer_data) > 0:
+                        for col_name, col_value in renderer_data.items():
+                            render_col_name = f'{name_renderer}_{col_name}'
+                            all_renderers_key_value[render_col_name] = col_value
+        return all_renderers_key_value
+
     def __repr__(self, *args):
         b = '\033[95m\033[1m'
         b1 = '\033[94m\033[1m'
@@ -968,7 +1006,7 @@ class QComponent():
         if element_type == 'all' or self.design.qgeometry.check_element_type(element_type):
             return self.design.qgeometry.get_component(self.name, element_type)
 
-    def qgeometry_bounds(self):
+    def qgeometry_bounds(self) -> Tuple:
         """
         Fetched the component bound dict_value
 

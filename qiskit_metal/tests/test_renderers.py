@@ -28,7 +28,7 @@ from qiskit_metal import designs
 from qiskit_metal.renderers import setup_default
 from qiskit_metal.renderers.renderer_base.renderer_base import QRenderer
 from qiskit_metal.renderers.renderer_base.renderer_gui_base import QRendererGui
-from qiskit_metal.renderers.renderer_gds.gds_renderer import GDSRender
+from qiskit_metal.renderers.renderer_gds.gds_renderer import QGDSRenderer
 from qiskit_metal.renderers.renderer_mpl.mpl_interaction import MplInteraction
 
 
@@ -93,30 +93,30 @@ class TestRenderers(unittest.TestCase):
 
     def test_renderer_instantiate_gdsrender(self):
         """
-        Test instantiation of GDSRender in gds_renderer.py
+        Test instantiation of QGDSRenderer in gds_renderer.py
         """
         design = designs.DesignPlanar()
         try:
-            GDSRender(design)
+            QGDSRenderer(design)
         except Exception:
-            self.fail("GDSRender(design) failed")
+            self.fail("QGDSRenderer(design) failed")
 
         try:
-            GDSRender(design, initiate=False)
+            QGDSRenderer(design, initiate=False)
         except Exception:
-            self.fail("GDSRender(design, initiate=False) failed")
+            self.fail("QGDSRenderer(design, initiate=False) failed")
 
         try:
-            GDSRender(design, initiate=False, render_template={})
+            QGDSRenderer(design, initiate=False, render_template={})
         except Exception:
             self.fail(
-                "GDSRender(design, initiate=False, render_template={}) failed")
+                "QGDSRenderer(design, initiate=False, render_template={}) failed")
 
         try:
-            GDSRender(design, initiate=False, render_options={})
+            QGDSRenderer(design, initiate=False, render_options={})
         except Exception:
             self.fail(
-                "GDSRender(design, initiate=False, render_options={}) failed")
+                "QGDSRenderer(design, initiate=False, render_options={}) failed")
 
     def test_renderer_instantiate_mplinteraction(self):
         """
@@ -129,10 +129,10 @@ class TestRenderers(unittest.TestCase):
 
     def test_renderer_gdsrenderer_options(self):
         """
-        Test that default_options in GDSRender were not accidentally changed
+        Test that default_options in QGDSRenderer were not accidentally changed
         """
         design = designs.DesignPlanar()
-        renderer = GDSRender(design)
+        renderer = QGDSRenderer(design)
         options = renderer.default_options
 
         self.assertEqual(len(options), 10)
@@ -160,17 +160,20 @@ class TestRenderers(unittest.TestCase):
         Test that high level defaults were not accidentally changed in gds_renderer.py
         """
         design = designs.DesignPlanar()
-        renderer = GDSRender(design)
+        renderer = QGDSRenderer(design)
 
         self.assertEqual(renderer.name, 'gds')
-        self.assertEqual(renderer.element_extensions, {})
+        element_extensions = renderer.element_extensions
+        self.assertEqual(len(element_extensions), 1)
+        self.assertEqual(len(element_extensions['junction']), 1)
+        self.assertEqual(element_extensions['junction']['path_filename'], str)
 
     def test_renderer_gdsrenderer_update_units(self):
         """
         Test update_units in gds_renderer.py
         """
         design = designs.DesignPlanar()
-        renderer = GDSRender(design)
+        renderer = QGDSRenderer(design)
 
         renderer.options['gds_unit'] = 12345
         self.assertEqual(renderer.options['gds_unit'], 12345)
@@ -182,7 +185,7 @@ class TestRenderers(unittest.TestCase):
         """
         Test midpoint_xy in gds_renderer.py
         """
-        actual = GDSRender.midpoint_xy(10, 15, 20, 30)
+        actual = QGDSRenderer.midpoint_xy(10, 15, 20, 30)
         self.assertEqual(len(actual), 2)
         self.assertEqual(actual[0], 15.0)
         self.assertEqual(actual[1], 22.5)
@@ -192,7 +195,7 @@ class TestRenderers(unittest.TestCase):
         Test check_qcomps in gds_renderer.py
         """
         design = designs.DesignPlanar()
-        renderer = GDSRender(design)
+        renderer = QGDSRenderer(design)
 
         actual = []
         actual.append(renderer.check_qcomps([]))
