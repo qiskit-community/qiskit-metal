@@ -138,8 +138,8 @@ class TransmonPocket(BaseQubit):
             pad_height='30um',
             pad_cpw_shift='5um',
             pad_cpw_extent='25um',
-            cpw_width='10um',
-            cpw_gap='6um',
+            cpw_width='cpw_width',
+            cpw_gap='cpw_gap',
             cpw_extend='100um',  # how far into the ground to extend the CPW line from the coupling pads
             pocket_extent='5um',
             pocket_rise='65um',
@@ -148,6 +148,13 @@ class TransmonPocket(BaseQubit):
         )
     )
     """Default drawing options"""
+
+    component_metadata = Dict(
+        short_name='Pocket',
+        _qgeometry_table_path='True',
+        _qgeometry_table_poly='True'
+    )
+    """Component metadata"""
 
     def make(self):
         """Define the way the options are turned into QGeometry.

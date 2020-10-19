@@ -42,8 +42,8 @@ class QTableView_Options(QTableView, QWidget_PlaceholderText):
             parent (QtWidgets.QWidget): parent widget
         """
         QTableView.__init__(self, parent)
-        QWidget_PlaceholderText.__init__(
-            self,  "Select a QComponent to edit\n\nfrom the QComponents window")
+        QWidget_PlaceholderText.__init__(self, "Select a QComponent to edit'\
+            '\n\nfrom the QComponents window")
         QTimer.singleShot(200, self.style_me) # not sure whu the ui isnt unpdating these here.
 
     def style_me(self):
