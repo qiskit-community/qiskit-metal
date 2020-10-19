@@ -421,7 +421,7 @@ class QCheckLength():
     TODO: Generalize to arbitrary angles.
     """
 
-    precision = 9 # Default precision, or number of digits after decimal point to round to
+    PRECISION = 9  # Default precision, or number of digits after decimal point to round to
 
     def __init__(self, coords: list, fradius: float):
         """
@@ -438,17 +438,17 @@ class QCheckLength():
     def rdist(self, j: int, k: int) -> float:
         """
         Simple calculation of distance between pts[j] and pts[k].
-        Rounds to precision given by class variable precision (above).
+        Rounds to precision given by class variable PRECISION (above).
 
         Args:
             j (int): Index of one point in self.coords.
             k (int): Index of second point in self.coords.
 
         Returns:
-            float: Euclidean distance between pts[j] and pts[k] rounded to specified precision.
+            float: Euclidean distance between pts[j] and pts[k] rounded to specified PRECISION.
         """
-        return round(abs(norm(np.array(self.coords[j]) - np.array(self.coords[k]))), self.precision)
-    
+        return round(abs(norm(np.array(self.coords[j]) - np.array(self.coords[k]))), QCheckLength.PRECISION)
+
     @property
     def bad_fillet_idxs_linestring(self) -> list:
         """
@@ -458,7 +458,7 @@ class QCheckLength():
             list: List of indices of vertices too close to their neighbors to be filleted.
         """
         return toggle_numbers(self.good_fillet_idxs_linestring, self.length)
-        
+
     @property
     def bad_fillet_idxs_polygon(self) -> list:
         """
@@ -501,7 +501,7 @@ class QCheckLength():
         """
         return [i for i in range(self.length) if min(self.rdist(i - 1, i), self.rdist(i, (i + 1) % self.length)) >= 2 * self.fradius]
 
-    
+
 def get_range_of_vertex_to_not_fillet(coords: list, a_fillet: float, fillet_comparison_precision: int) -> list:
     """For a list of coords, provide a list of tuples.  Each tuple coresponds to a range of indexes within coords.
     A range denotes vertexes that are too short to be fillet'd. 
