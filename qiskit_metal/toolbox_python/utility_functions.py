@@ -389,31 +389,6 @@ def compress_vertex_list(individual_vertex: list) -> list:
         return reduced_idx
 
 
-def toggle_numbers(numbers: list, coords_len: int = 0) -> list:
-    """Given a list of integers, return the toggle of them from zero to coords_len.
-
-    Args:
-        numbers (list): Integers in the original list, in sorted order.
-        coords_len (int, optional): Length of list that toggle should happen against. Defaults to 0.
-
-    Returns:
-        list: A sorted list of all integers between 0 and coords_len - 1, inclusive, not found in numbers.
-    """
-    complement = []
-    if coords_len:
-        if not numbers:
-            return [i for i in range(coords_len)]
-        j = 0
-        for i in range(coords_len):
-            if i < numbers[j]:
-                complement.append(i)
-            else:
-                j += 1
-                if j >= len(numbers):
-                    return complement + [k for k in range(i + 1, coords_len)]
-    return complement
-
-
 class QCheckLength():
     """
     Obtain indices of vertices in a polygon/linestring that can/cannot be filleted.
@@ -449,15 +424,52 @@ class QCheckLength():
         """
         return round(abs(norm(np.array(self.coords[j]) - np.array(self.coords[k]))), QCheckLength.PRECISION)
 
+    def toggle_numbers(self, numbers: list) -> list:
+        """Given a list of integers, return the toggle of them from zero to self.length.
+
+        Args:
+            numbers (list): Integers in the original list, in sorted order.
+
+        Returns:
+            list: A sorted list of all integers between 0 and self.length - 1, inclusive, not found in numbers.
+        """
+        complement = []
+        if self.length:
+            if not numbers:
+                return [i for i in range(self.length)]
+            j = 0
+            for i in range(self.length):
+                if i < numbers[j]:
+                    complement.append(i)
+                else:
+                    j += 1
+                    if j >= len(numbers):
+                        return complement + [k for k in range(i + 1, self.length)]
+        return complement
+
     @property
     def bad_fillet_idxs_linestring(self) -> list:
         """
         Get list of vertex indices in a linestring that cannot be filleted based on proximity to neighbors.
+        By default, this list excludes the first and last vertices in the linestring.
 
         Returns:
             list: List of indices of vertices too close to their neighbors to be filleted.
         """
-        return toggle_numbers(self.good_fillet_idxs_linestring, self.length)
+        if self.length < 3:
+            return []
+        elif self.length == 3:
+            return [] if min(self.rdist(0, 1), self.rdist(1, 2)) >= self.fradius else [1]
+        if (self.rdist(0, 1) < self.fradius) or (self.rdist(1, 2) < 2 * self.fradius):
+            badlist = [1]
+        else:
+            badlist = []
+        for i in range(2, self.length - 2):
+            if min(self.rdist(i - 1, i), self.rdist(i, i + 1)) < 2 * self.fradius:
+                badlist.append(i)
+        if (self.rdist(self.length - 3, self.length - 2) < 2 * self.fradius) or (self.rdist(self.length - 2, self.length - 1) < self.fradius):
+            badlist.append(self.length - 2)
+        return badlist
 
     @property
     def bad_fillet_idxs_polygon(self) -> list:
@@ -467,29 +479,18 @@ class QCheckLength():
         Returns:
             list: List of indices of vertices too close to their neighbors to be filleted.
         """
-        return toggle_numbers(self.good_fillet_idxs_polygon, self.length)
+        return [i for i in range(self.length) if min(self.rdist(i - 1, i), self.rdist(i, (i + 1) % self.length)) < 2 * self.fradius]
 
     @property
     def good_fillet_idxs_linestring(self) -> list:
         """
         Get list of vertex indices in a linestring that can and will be filleted.
+        The returned list is sliced because end vertices can never be filleted.
 
         Returns:
             list: List of fillet-able indices.
         """
-        if self.length < 3:
-            return []
-        elif self.length == 3:
-            return [1] if min(self.rdist(0, 1), self.rdist(1, 2)) >= self.fradius else []
-        goodlist = []
-        if (self.rdist(0, 1) >= self.fradius) and (self.rdist(1, 2) >= 2 * self.fradius):
-            goodlist.append(1)
-        for i in range(2, self.length - 2):
-            if min(self.rdist(i - 1, i), self.rdist(i, i + 1)) >= 2 * self.fradius:
-                goodlist.append(i)
-        if (self.rdist(self.length - 3, self.length - 2) >= 2 * self.fradius) and (self.rdist(self.length - 2, self.length - 1) >= self.fradius):
-            goodlist.append(self.length - 2)
-        return goodlist
+        return self.toggle_numbers(self.bad_fillet_idxs_linestring)[1:-1]
 
     @property
     def good_fillet_idxs_polygon(self) -> list:
@@ -499,7 +500,7 @@ class QCheckLength():
         Returns:
             list: List of fillet-able indices.
         """
-        return [i for i in range(self.length) if min(self.rdist(i - 1, i), self.rdist(i, (i + 1) % self.length)) >= 2 * self.fradius]
+        return self.toggle_numbers(self.bad_fillet_idxs_polygon)
 
 
 def get_range_of_vertex_to_not_fillet(coords: list, a_fillet: float, fillet_comparison_precision: int) -> list:
