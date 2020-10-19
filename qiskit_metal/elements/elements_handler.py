@@ -552,11 +552,10 @@ class QGeometryTables(object):
                     if len(range_vertex_of_short_segments) > 0:
                         text_id = self.design._components[component_name]._name
 
-                        # JUST FOR IEEE movie demo, supress this warnig.
-                        # self.logger.warning(
-                        #     f'For {kind} table, component={text_id}, key={key}'
-                        #     f' has short segments. Values in {range_vertex_of_short_segments} '
-                        #     f'corresponds to index in geometry.')
+                        self.logger.warning(
+                            f'For {kind} table, component={text_id}, key={key}'
+                            f' has short segments. Values in {range_vertex_of_short_segments} '
+                            f'corresponds to index in geometry.')
 
     def parse_value(self, value: 'Anything') -> 'Anything':
         """Same as design.parse_value. See design for help.
