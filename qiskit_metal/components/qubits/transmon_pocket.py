@@ -149,6 +149,13 @@ class TransmonPocket(BaseQubit):
     )
     """Default drawing options"""
 
+    component_metadata = Dict(
+        short_name='Pocket',
+        _qgeometry_table_path='True',
+        _qgeometry_table_poly='True'
+    )
+    """Component metadata"""
+
     def make(self):
         """Define the way the options are turned into QGeometry.
         The make function implements the logic that creates the geoemtry

@@ -34,10 +34,12 @@ from scipy.spatial import distance
 from typing import Tuple
 
 from copy import deepcopy
+from qiskit_metal import logger
 
 __all__ = ['copy_update', 'dict_start_with', 'data_frame_empty_typed', 'clean_name',
            'enable_warning_traceback', 'get_traceback', 'print_traceback_easy', 'log_error_easy',
-           'monkey_patch', 'are_there_potential_fillet_errors', 'compress_list', 'can_write_to_path']
+           'monkey_patch', 'are_there_potential_fillet_errors', 'compress_list', 'can_write_to_path', 
+           'can_write_to_path_with_warning']
 
 ####################################################################################
 # Dictionary related
@@ -234,9 +236,9 @@ def log_error_easy(logger: logging.Logger, pre_text='', post_text='', do_print=F
                 except:
                     pass
 
-                #exc_type, exc_value, exc_tb = sys.exc_info()
-                #error = traceback.format_exception(exc_type, exc_value, exc_tb)
-                #logger.error('\\n\\n'+'\\n'.join(error)+'\\n')
+                # exc_type, exc_value, exc_tb = sys.exc_info()
+                # error = traceback.format_exception(exc_type, exc_value, exc_tb)
+                # logger.error('\\n\\n'+'\\n'.join(error)+'\\n')
                 log_error_easy(metal.logger)
         xx()
 
@@ -275,7 +277,7 @@ def monkey_patch(self, func, func_name=None):
 
 
 ####################################################################################
-# Used to detect and denote potential short segments when fillet is used.
+# Used to detect and denote potential short segments, when fillet is used.
 
 def compress_list(individual_seg: list) -> list:
     """Given a list of segments that should not be fillet'd,
@@ -310,11 +312,11 @@ def compress_list(individual_seg: list) -> list:
 
 
 def are_there_potential_fillet_errors(coords: list, a_fillet: float, fillet_scalar: float, fillet_comparison_precision: int) -> list:
-    """Iterate throught the vertex and check using critea. 
+    """Iterate through the vertex and check using critea.
     1. If a start or end segment, is the length smaller than a_fillet.
     2. If segment in side of LineString, is the lenght smaller than,fillet_scalar times a_fillet.
 
-    Note, there is a rounding error issues. So when the lenght of the segment is calculated, 
+    Note, there is a rounding error issues. So when the lenght of the segment is calculated,
     it is rounded by using fillet_comparison_precision.
 
     Args:
@@ -324,12 +326,12 @@ def are_there_potential_fillet_errors(coords: list, a_fillet: float, fillet_scal
 
         a_fillet (float): The radius to fillet a vertex.
 
-        fillet_comparison_precision (int): There are rounding issues when comparing to (fillet * scalar). 
+        fillet_comparison_precision (int): There are rounding issues when comparing to (fillet * scalar).
         Use this when calculating length of line-segment.
 
     Returns:
-        list: List of tuples.  Each tuple corresponds to a range of segments that are too short and would not fillet well.  
-        The tuple is (start_index, end_index).  The index corresponds to index in coords. 
+        list: List of tuples.  Each tuple corresponds to a range of segments that are too short and would not fillet well.
+        The tuple is (start_index, end_index).  The index corresponds to index in coords.
     """
 
     # TODO remove fillet_scalar, and identfy if poly or path,
@@ -363,21 +365,42 @@ def are_there_potential_fillet_errors(coords: list, a_fillet: float, fillet_scal
 
     return compress_list(range_vertex_of_bad)
 
+#######################################################################################
+# File checking
 
-########################################################################################
-# Check to see if path exists and file can be written.
-def can_write_to_path(file: str) -> Tuple[int, str]:
+
+def can_write_to_path_with_warning(file: str) -> int:
     """Check if can write file.
 
     Args:
         file (str): Has the path and/or just the file name.
 
     Returns:
-        Tuple[int,str]:
+        int: 1 if access is allowed. Else returns 0, if access not given.
+    """
+    a_logger = logger
+    # If need to use lib pathlib.
+    directory_name = os.path.dirname(os.path.abspath(file))
+    if os.access(directory_name, os.W_OK):
+        return 1
+    else:
+        a_logger.warning(f'Not able to write to directory.'
+                         f'File:"{file}" not written.'
+                         f' Checked directory:"{directory_name}".')
+        return 0
+
+
+def can_write_to_path(file: str) -> Tuple[int, str]:
+    """ Check to see if path exists and file can be written.
+
+    Args:
+        file (str): Has the path and/or just the file name.
+
+    Returns:
+        Tuple[int, str]: 
         int: 1 if access is allowed. Else returns 0, if access not given.
         str: Full path and file which was searched for.
     """
-
     # If need to use lib pathlib.
     directory_name = os.path.dirname(os.path.abspath(file))
     if os.access(directory_name, os.W_OK):

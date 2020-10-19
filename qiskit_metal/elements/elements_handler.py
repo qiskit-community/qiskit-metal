@@ -266,7 +266,9 @@ class QGeometryTables(object):
         self._design = design
 
         self._tables = Dict()
-        self.create_tables()
+
+        # Need to call after columns are added by add_renderer_extenstion is run by all the renderers.
+        # self.create_tables()
 
     @property
     def design(self) -> 'QDesign':
@@ -555,7 +557,7 @@ class QGeometryTables(object):
                         self.logger.warning(
                             f'For {kind} table, component={text_id}, key={key}'
                             f' has short segments. Values in {range_vertex_of_short_segments} '
-                            f'corresponds to index in geometry.')
+                            f'are index(es) in shapley geometry.')
 
     def parse_value(self, value: 'Anything') -> 'Anything':
         """Same as design.parse_value. See design for help.

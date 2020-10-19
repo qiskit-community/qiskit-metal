@@ -192,7 +192,7 @@ class TestDesign(unittest.TestCase):
 
         # Add a different component
         TransmonPocket(design, make=False)
-        self.assertEqual('Q_1' in design.components, True)
+        self.assertEqual('Q_1' in design.components, False)
 
         # Add a component with no predefined prefix
         QComponent(design, make=False)
