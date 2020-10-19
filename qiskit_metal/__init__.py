@@ -57,6 +57,15 @@ def __setup_Qt_backend():
     """
     # @mfacchin - Setup matplotlib to use Qt5's visualization
     NOTE: this needs to remain in the __init__ of the library's root to prevent Qt windows from hanging
+
+    TODO: There seems to be a bug when doing:
+
+        # import matplotlib
+        import pyEPR
+        from qiskit_metal import MetalGUI, designs
+
+        design = designs.DesignPlanar()
+        gui = MetalGUI(design)
     """
     from PyQt5 import QtCore, QtWidgets
     from PyQt5.QtCore import Qt

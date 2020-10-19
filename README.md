@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿[![Build Status](https://travis.ibm.com/IBM-Q-Restricted-Research/qiskit-metal.svg?token=p3Ak3Pz4fK3rsU99vhd2&branch=master)](https://travis.ibm.com/IBM-Q-Restricted-Research/qiskit-metal)
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿[![Build Status](https://travis.ibm.com/IBM-Q-Restricted-Research/qiskit-metal.svg?token=p3Ak3Pz4fK3rsU99vhd2&branch=v0.2-dev)](https://travis.ibm.com/IBM-Q-Restricted-Research/qiskit-metal)
 
 # Qiskit Metal [![](https://badges.frapsoft.com/os/v1/open-source.png?v=103)](https://github.com/zlatko-minev/pyEPR) [![](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/zlatko-minev/pyEPR)
 >  Quantum Creator: VLSI and Sims 
@@ -8,7 +8,7 @@
 To setup a development environment, first `git clone` this repository.
 
 * On your computer, clone the repository from qiskit-metal/v0.2-dev:
-`git clone https://github.ibm.com/IBM-Q-Restricted-Research/qiskit-metal.git --branch v0.2-dev`
+`git clone git@github.ibm.com:IBM-Q-Restricted-Research/qiskit-metal.git --branch v0.2-dev`
 
 * Note: If you don't have git installed, you can download and use [GitHub Desktop GUI](https://desktop.github.com/) and see these [notes](https://help.github.com/en/desktop/contributing-to-projects/cloning-a-repository-from-github-to-github-desktop).
 
@@ -23,22 +23,10 @@ Notes:
 
 To use a conda environment, assuming [you have conda installed](https://docs.conda.io/projects/conda/en/latest/user-guide/install/), we will install the qiskit_metal package locally. 
 
-**Do this first:** It is recommended that you first install `Visual C++ 14.0`, it is required for a successful install of `gdspy`.  If you do not have `Visual C++ 14.0` installed you will be notified to install it when `gdspy` attempts to install.  You can do this by downloading and installing [C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/)
+##### Option 1: A new environment
 
-
-##### Option 1: The simple way
-
-For convenience, you can try to install directly in your `base` environment, if it is relatively up to date.  In the top-level of the repository:
-
-```
-python -m pip install -e .
-```
-
-The -e flag install qiskit\_metal in [editable mode](https://pip.pypa.io/en/stable/reference/pip_install/#cmdoption-e).
-
-##### Option 2: The fool-proof way
-
-It is possible that you may run into version issues in the above.  To prevent this, you may want to create a new conda environment instead.  To do so, execute these commands in the top-level of the repository:
+The most reliable way to set up a qiskit_metal environment is to build one from scratch using the provided conda environment specification file `environment.yml`.
+To do so, execute these commands in the top-level of the repository:
 
 ```
 conda env create -n <env_name> environment.yml
@@ -46,7 +34,25 @@ conda activate <env_name>
 python -m pip install -e .
 ```
 
-This will first create a new environment with name `<env_name>`, which you can choose to name `metal` for example.  Then we activate the new environment.  Finally, we install the local package inside that environment.
+This will first create a new environment with name `<env_name>`, which you can choose to name `metal` for example.
+Then we activate the new environment.
+Finally, we install the local package inside that environment.
+The -e flag install qiskit\_metal in [editable mode](https://pip.pypa.io/en/stable/reference/pip_install/#cmdoption-e).
+
+##### Option 2: Install into an existing environment
+
+For convenience, you can try to install directly in an existing environment such as the `base` environment, if it is relatively up to date.
+To install qiskit_metal and its depenencies into an existing environment named `<env_name>`, execute these commands in the top-level of the repository:
+
+```
+conda env update -n <env_name> environment.yml
+conda activate <env_name>
+python -m pip install -e .
+```
+
+##### Notes on using conda
+
+It is possible that you may run into version issues in the above if previously installed packages conflict with the requirements of qiskit_metal.
 
 **Important**: Every time you intend to develop code using this environment, you MUST first run the command: `conda activate <env_name>`.  See what a [conda environment is](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html)
 
@@ -60,6 +66,11 @@ ipython kernel install --user --name=<any_name_for_kernel>
 This will create a kernel based on the environment that is "active" at the moment and you will be able to select that kernel inside jupyter lab.
 
 ### Without conda: Virtual environment setup (alternative setup)
+
+**On Windows, do this first:** It is recommended that you first install `Visual C++ 14.0`, it is required for a successful install of `gdspy`.
+If you do not have `Visual C++ 14.0` installed you will be notified to install it when `gdspy` attempts to install.
+You can do this by downloading and installing [C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/).
+Be sure to select the latest versions of `MSVCv142 - VS 2019 C++ x64/x86 build tools` and `Windows 10 SDK` in the installer as suggested in [this wiki](https://wiki.python.org/moin/WindowsCompilers) referenced by the gdspy documentation.
 
 To use a Python virtual environment, execute these commands in the top-level of the repository:
 

@@ -24,10 +24,6 @@ Created on Wed Apr 22 09:59:02 2020
 @author: Jeremy D. Drysdale
 """
 
-# Note - Tests not written for these functions:
-# import_export/save_metal
-# import_export/load_metal_design
-
 import unittest
 
 from qiskit_metal.toolbox_metal import about

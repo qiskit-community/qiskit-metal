@@ -14,6 +14,7 @@
 
 #pylint: disable-msg=unnecessary-pass
 #pylint: disable-msg=broad-except
+#pylint: disable-msg=import-outside-toplevel
 
 """
 Qiskit Metal unit tests analyses functionality.
@@ -21,14 +22,6 @@ Qiskit Metal unit tests analyses functionality.
 Created on  Wed Apr 22 10:02:06 2020
 @author: Jeremy D. Drysdale
 """
-
-# Note - Tests not written for these functions:
-# element_handler/delete_component
-# element_handler/rename_component
-# element_handler/get_component_geometry
-# element_handler/get_component_geometry_list
-# element_handler/get_component_geometry_dict
-# element_handler/get_all_unique_layers
 
 import unittest
 import numpy as np
@@ -81,6 +74,8 @@ class TestElements(unittest.TestCase):
         """
         Test that ELEMENT_COLUMNS was not accidentally changed in element_handler.py
         """
+        import imp
+        imp.reload(elements_handler)
         e_c = elements_handler.ELEMENT_COLUMNS
 
         self.assertEqual(len(e_c), 4)
@@ -222,6 +217,7 @@ class TestElements(unittest.TestCase):
         """
         design = designs.DesignPlanar()
         qgt = QGeometryTables(design)
+        qgt.clear_all_tables()
 
         qgt.add_qgeometry('poly', 'my_id', dict(cl_metal='cl_metal'))
         table = qgt.tables
@@ -242,6 +238,7 @@ class TestElements(unittest.TestCase):
         """
         design = designs.DesignPlanar()
         qgt = QGeometryTables(design)
+        qgt.clear_all_tables()
 
         # add something to the tables to check for after clear
         qgt.add_qgeometry('poly', 'my_id', dict(cl_metal='cl_metal'))
@@ -255,6 +252,7 @@ class TestElements(unittest.TestCase):
         """
         design = designs.DesignPlanar()
         qgt = QGeometryTables(design)
+        qgt.clear_all_tables()
 
         transmon_pocket = TransmonPocket(design, 'my_id')
         transmon_pocket.make()
@@ -276,6 +274,7 @@ class TestElements(unittest.TestCase):
         """
         design = designs.DesignPlanar()
         qgt = QGeometryTables(design)
+        qgt.clear_all_tables()
         TransmonPocket(design, 'my_id')
 
         four_zeros = qgt.get_component_bounds('my_id')
@@ -300,6 +299,7 @@ class TestElements(unittest.TestCase):
         """
         design = designs.DesignPlanar()
         qgt = QGeometryTables(design)
+        qgt.clear_all_tables()
         TransmonPocket(design, 'Q1')
 
         rect = draw.rectangle(500, 300, 0, 0)

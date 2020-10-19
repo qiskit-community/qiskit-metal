@@ -23,12 +23,6 @@ Created on Wed Apr 22 10:02:44 2020
 @author: Jeremy D. Drysdale
 """
 
-# Note - Tests not written for these functions:
-# utility/get_all_component_bounds
-# utility/in_or_out
-# utility/angle
-# utility/normed
-
 import unittest
 
 import numpy as np

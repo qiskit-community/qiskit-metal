@@ -63,7 +63,7 @@ GDS Renderer
 .. autosummary::
     :toctree: ../stubs/
 
-    GDSRender
+    QGDSRenderer
 
 
 """
@@ -74,7 +74,7 @@ from .. import config
 if config.is_building_docs():
     from .renderer_base.renderer_base import QRenderer
     from .renderer_base.renderer_gui_base import QRendererGui
-    from .renderer_gds.gds_renderer import GDSRender
+    from .renderer_gds.gds_renderer import QGDSRenderer
 
     from .renderer_mpl.mpl_canvas import PlotCanvas
     from .renderer_mpl.mpl_interaction import MplInteraction

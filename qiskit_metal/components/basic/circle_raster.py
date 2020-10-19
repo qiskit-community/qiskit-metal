@@ -42,7 +42,7 @@ class CircleRaster(QComponent):
         subtract='False',
         helper='False',
         chip='main',
-        layer='1'
+        layer='1',
     )
     """Default drawing options"""
 
