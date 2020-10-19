@@ -281,55 +281,55 @@ def monkey_patch(self, func, func_name=None):
 ####################################################################################
 # Used to detect and denote potential short segments, when fillet is used.
 
-# Keep this method until the class QCheckLength will be fully tested.
-def which_vertex_has_potential_fillet_errors(coords: list, a_fillet: float, fillet_comparison_precision: int) -> list:
-    """Iterate through the vertex and check using critea.
-    1. If a start or end segment, is the length smaller than a_fillet.
-    2. If segment in side of LineString, is the lenght smaller than,FILLET_SCALAR times a_fillet.
+# # Keep this method until the class QCheckLength will be fully tested.
+# def which_vertex_has_potential_fillet_errors(coords: list, a_fillet: float, fillet_comparison_precision: int) -> list:
+#     """Iterate through the vertex and check using critea.
+#     1. If a start or end segment, is the length smaller than a_fillet.
+#     2. If segment in side of LineString, is the lenght smaller than,FILLET_SCALAR times a_fillet.
 
-    Note, there is a rounding error issues. So when the lenght of the segment is calculated,
-    it is rounded by using fillet_comparison_precision.
+#     Note, there is a rounding error issues. So when the lenght of the segment is calculated,
+#     it is rounded by using fillet_comparison_precision.
 
-    Args:
-        coords (list): List of tuples in (x,y) format. Each tuple represents a vertex on a LineSegment.
+#     Args:
+#         coords (list): List of tuples in (x,y) format. Each tuple represents a vertex on a LineSegment.
 
-        a_fillet (float): The radius to fillet a vertex.
+#         a_fillet (float): The radius to fillet a vertex.
 
-        fillet_comparison_precision (int): There are rounding issues when comparing to (fillet * scalar).
-        Use this when calculating length of line-segment.
+#         fillet_comparison_precision (int): There are rounding issues when comparing to (fillet * scalar).
+#         Use this when calculating length of line-segment.
 
-    Returns:
-        list: List of idexes.  Each index corresponds to a vertex in coords, that would not fillet well.
-    """
-    vertex_of_bad = list()
-    len_coords = len(coords)
-    if len_coords <= 1:
-        return vertex_of_bad
+#     Returns:
+#         list: List of idexes.  Each index corresponds to a vertex in coords, that would not fillet well.
+#     """
+#     vertex_of_bad = list()
+#     len_coords = len(coords)
+#     if len_coords <= 1:
+#         return vertex_of_bad
 
-    # When determining the critera to fillet, scale the fillet value by FILLET_SCALAR.
-    FILLET_SCALAR = 2.0
-    scaled_fillet = a_fillet * FILLET_SCALAR
+#     # When determining the critera to fillet, scale the fillet value by FILLET_SCALAR.
+#     FILLET_SCALAR = 2.0
+#     scaled_fillet = a_fillet * FILLET_SCALAR
 
-    for index, xy in enumerate(coords):
-        # Skip the first vertex.
-        if index > 0:
-            xy_previous = coords[index-1]
+#     for index, xy in enumerate(coords):
+#         # Skip the first vertex.
+#         if index > 0:
+#             xy_previous = coords[index-1]
 
-            seg_length = np.round(
-                distance.euclidean(xy_previous, xy), fillet_comparison_precision)
+#             seg_length = np.round(
+#                 distance.euclidean(xy_previous, xy), fillet_comparison_precision)
 
-            # If at first or last segment, use just the fillet value to check, otherwise, use FILLET_SCALAR.
-            # Need to not fillet index-1 to index line segment.
-            if index == 1 or index == len_coords-1:
-                if seg_length < a_fillet:
-                    vertex_of_bad.extend([index-1, index])
-            else:
-                if seg_length < scaled_fillet:
-                    vertex_of_bad.extend([index-1, index])
+#             # If at first or last segment, use just the fillet value to check, otherwise, use FILLET_SCALAR.
+#             # Need to not fillet index-1 to index line segment.
+#             if index == 1 or index == len_coords-1:
+#                 if seg_length < a_fillet:
+#                     vertex_of_bad.extend([index-1, index])
+#             else:
+#                 if seg_length < scaled_fillet:
+#                     vertex_of_bad.extend([index-1, index])
 
-    # As precaution, remove duplicates from list.
-    vertex_of_bad = list(set(vertex_of_bad))
-    return vertex_of_bad
+#     # As precaution, remove duplicates from list.
+#     vertex_of_bad = list(set(vertex_of_bad))
+#     return vertex_of_bad
 
 
 class QCheckLength():
