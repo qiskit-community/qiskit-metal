@@ -691,7 +691,8 @@ class QGDSRenderer(QRenderer):
         user_precision = int(np.abs(np.log10(precision)))
         a_qcheck_length = QCheckLength(coords, a_fillet, user_precision)
 
-        all_idx_bad_fillet['reduced_idx'] = a_qcheck_length.get_range_of_vertex_to_not_fillet_linestring
+        all_idx_bad_fillet['reduced_idx'] = a_qcheck_length.get_range_of_vertex_to_not_fillet_linestring(
+            add_endpoints=True)
 
         midpoints = list()
         midpoints = [QGDSRenderer.midpoint_xy(coords[idx-1][0], coords[idx-1][1], vertex2[0], vertex2[1])

@@ -543,7 +543,8 @@ class QGeometryTables(object):
                 if isinstance(geom, shapely.geometry.LineString):
                     coords = list(geom.coords)
                     a_QCheckLength = QCheckLength(coords, fillet)
-                    range_vertex_of_short_segments = a_QCheckLength.get_range_of_vertex_to_not_fillet_linestring
+                    range_vertex_of_short_segments = a_QCheckLength.get_range_of_vertex_to_not_fillet_linestring(
+                        add_endpoints=False)
 
                     if len(range_vertex_of_short_segments) > 0:
                         range_string = ""

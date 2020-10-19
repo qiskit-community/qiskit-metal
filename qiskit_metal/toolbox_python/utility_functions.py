@@ -448,13 +448,16 @@ class QCheckLength():
         """
         return self.toggle_numbers(self.bad_fillet_idxs_polygon)
 
-    @property
-    def get_range_of_vertex_to_not_fillet_linestring(self) -> list:
+    def get_range_of_vertex_to_not_fillet_linestring(self, add_endpoints: bool = True) -> list:
         """For a list of integers that correspond to self.coords in init(), provide a list of tuples.
         Each tuple coresponds to a range of indexes within coords.  A range denotes vertexes that
         are too short to be fillet'd.
 
         If the range is just one point, meaning,  not a segment, the tuple will contain the same index for start and end.
+
+        Args:
+            add_endpoints(bool): If the second to endpoint is in list, add the endpoint to list.  Used for GDS,
+                not add_qgeometry. 
 
         Returns:
             list: A compressed list of tuples.  So, it combines adjacent vertexes into a longer one.
@@ -462,15 +465,16 @@ class QCheckLength():
         # which_vertex_has_potential_fillet_errors() has been replace by method below.
         unique_vertex = self.bad_fillet_idxs_linestring
 
-        # The endpoints of LineString are never fillet'd. If the second vertex or second to last vertex
-        # should not be fillet's, then don't fillet the endpoints.  This is used for warning for add_qgeometry.
-        # Also used in QGDSRenderer when breaking the LineString.
-        if 1 in unique_vertex and 0 not in unique_vertex:
-            unique_vertex.append(0)
+        if add_endpoints:
+            # The endpoints of LineString are never fillet'd. If the second vertex or second to last vertex
+            # should not be fillet's, then don't fillet the endpoints.  This is used for warning for add_qgeometry.
+            # Also used in QGDSRenderer when breaking the LineString.
+            if 1 in unique_vertex and 0 not in unique_vertex:
+                unique_vertex.append(0)
 
-        # second to last vertex in unique_vertex
-        if self.length-2 in unique_vertex and self.length-1 not in unique_vertex:
-            unique_vertex.append(self.length-1)
+            # second to last vertex in unique_vertex
+            if self.length-2 in unique_vertex and self.length-1 not in unique_vertex:
+                unique_vertex.append(self.length-1)
 
         compressed_vertex = QCheckLength.compress_vertex_list(unique_vertex)
 
