@@ -39,9 +39,9 @@ from numpy.linalg import norm
 
 __all__ = ['copy_update', 'dict_start_with', 'data_frame_empty_typed', 'clean_name',
            'enable_warning_traceback', 'get_traceback', 'print_traceback_easy', 'log_error_easy',
-           'monkey_patch', 'which_vertex_has_potential_fillet_errors', 'compress_vertex_list',
-           'get_range_of_vertex_to_not_fillet', 'toggle_numbers', 'get_both_fillet_and_not_fillet',
-           'can_write_to_path', 'can_write_to_path_with_warning']
+           'monkey_patch', 'can_write_to_path', 'can_write_to_path_with_warning',
+           'QCheckLength']
+
 
 ####################################################################################
 # Dictionary related
@@ -281,7 +281,7 @@ def monkey_patch(self, func, func_name=None):
 ####################################################################################
 # Used to detect and denote potential short segments, when fillet is used.
 
-
+# Keep this method until the class QCheckLength will be fully tested.
 def which_vertex_has_potential_fillet_errors(coords: list, a_fillet: float, fillet_comparison_precision: int) -> list:
     """Iterate through the vertex and check using critea.
     1. If a start or end segment, is the length smaller than a_fillet.
@@ -332,88 +332,6 @@ def which_vertex_has_potential_fillet_errors(coords: list, a_fillet: float, fill
     return vertex_of_bad
 
 
-def compress_vertex_list(individual_vertex: list) -> list:
-    """Given a list of vertexes that should not be fillet'd,
-    search for a range and make them one compressed list. 
-    If the vertex is a point and not linesegment, the returned tuple's 
-    start and end are the same index. 
-
-    Args:
-        individual_seg (list): List of UNIQUE ints.  Each int refers to an index of a LineString.
-
-    Returns:
-        list: A compressed list of tuples.  So, it combines adjacent vertexes into a longer one.
-
-    """
-    reduced_idx = list()
-
-    sorted_vertex = sorted(individual_vertex)
-    len_vertex = len(sorted_vertex)
-
-    if len_vertex > 0:
-        # initialzie to unrealistic number.
-        start = -1
-        end = -1
-        size_of_range = 0
-
-        for index, item in enumerate(sorted_vertex):
-            if index == 0:
-                start = item
-                end = item
-            else:
-                if item == end + 1:
-                    end = item
-                    size_of_range += 1
-                else:
-                    if size_of_range == 0:
-                        # Only one vertex in range.
-                        reduced_idx.append((start, end))
-                        start = item
-                        end = item
-                    else:
-                        # Two or more vertexes in range.
-                        reduced_idx.append((start, end))
-                        size_of_range = 0
-                        start = item
-                        end = item
-
-            if index == len_vertex-1:
-                if size_of_range == 0:
-                    reduced_idx.append((start, end))
-                else:
-                    reduced_idx.append((start, end))
-
-        return reduced_idx
-
-    else:
-        return reduced_idx
-
-
-def toggle_numbers(numbers: list, coords_len: int = 0) -> list:
-    """Given a list of integers, return the toggle of them from zero to coords_len.
-
-    Args:
-        numbers (list): Integers in the original list, in sorted order.
-        coords_len (int, optional): Length of list that toggle should happen against. Defaults to 0.
-
-    Returns:
-        list: A sorted list of all integers between 0 and coords_len - 1, inclusive, not found in numbers.
-    """
-    complement = []
-    if coords_len:
-        if not numbers:
-            return [i for i in range(coords_len)]
-        j = 0
-        for i in range(coords_len):
-            if i < numbers[j]:
-                complement.append(i)
-            else:
-                j += 1
-                if j >= len(numbers):
-                    return complement + [k for k in range(i + 1, coords_len)]
-    return complement
-
-
 class QCheckLength():
     """
     Obtain indices of vertices in a polygon/linestring that can/cannot be filleted.
@@ -423,7 +341,7 @@ class QCheckLength():
 
     PRECISION = 9  # Default precision, or number of digits after decimal point to round to
 
-    def __init__(self, coords: list, fradius: float):
+    def __init__(self, coords: list, fradius: float, precision: int = PRECISION):
         """
         Initialize list of coordinates to work with and user-specified fillet radius.
 
@@ -434,20 +352,21 @@ class QCheckLength():
         self.coords = coords
         self.fradius = fradius
         self.length = len(self.coords)
+        self.precision = precision
 
     def rdist(self, j: int, k: int) -> float:
         """
         Simple calculation of distance between pts[j] and pts[k].
-        Rounds to precision given by class variable PRECISION (above).
+        Rounds to precision given by self.precision.
 
         Args:
             j (int): Index of one point in self.coords.
             k (int): Index of second point in self.coords.
 
         Returns:
-            float: Euclidean distance between pts[j] and pts[k] rounded to specified PRECISION.
+            float: Euclidean distance between pts[j] and pts[k] rounded to specified self.precision.
         """
-        return round(abs(norm(np.array(self.coords[j]) - np.array(self.coords[k]))), QCheckLength.PRECISION)
+        return round(abs(norm(np.array(self.coords[j]) - np.array(self.coords[k]))), self.precision)
 
     @property
     def bad_fillet_idxs_linestring(self) -> list:
@@ -457,7 +376,7 @@ class QCheckLength():
         Returns:
             list: List of indices of vertices too close to their neighbors to be filleted.
         """
-        return toggle_numbers(self.good_fillet_idxs_linestring, self.length)
+        return self.toggle_numbers(self.good_fillet_idxs_linestring)
 
     @property
     def bad_fillet_idxs_polygon(self) -> list:
@@ -467,7 +386,7 @@ class QCheckLength():
         Returns:
             list: List of indices of vertices too close to their neighbors to be filleted.
         """
-        return toggle_numbers(self.good_fillet_idxs_polygon, self.length)
+        return self.toggle_numbers(self.good_fillet_idxs_polygon)
 
     @property
     def good_fillet_idxs_linestring(self) -> list:
@@ -501,50 +420,115 @@ class QCheckLength():
         """
         return [i for i in range(self.length) if min(self.rdist(i - 1, i), self.rdist(i, (i + 1) % self.length)) >= 2 * self.fradius]
 
+    def toggle_numbers(self, numbers: list) -> list:
+        """Given a list of integers, return the toggle of them from zero to coords_len.
 
-def get_range_of_vertex_to_not_fillet(coords: list, a_fillet: float, fillet_comparison_precision: int) -> list:
-    """For a list of coords, provide a list of tuples.  Each tuple coresponds to a range of indexes within coords.
-    A range denotes vertexes that are too short to be fillet'd. 
+        Args:
+            numbers (list): Integers in the original list, in sorted order.
+            coords_len (int, optional): Length of list that toggle should happen against. Defaults to 0.
 
-    If the range is just one point, meaning,  not a segment, the tuple will contain the same index for start and end.
+        Returns:
+            list: A sorted list of all integers between 0 and coords_len - 1, inclusive, not found in numbers.
+        """
+        complement = []
+        if self.length:
+            if not numbers:
+                return [i for i in range(self.length)]
+            j = 0
+            for i in range(self.length):
+                if i < numbers[j]:
+                    complement.append(i)
+                else:
+                    j += 1
+                    if j >= len(numbers):
+                        return complement + [k for k in range(i + 1, self.length)]
+        return complement
 
-    Args:
-        coords (list): List of tuples in (x,y) format. Each tuple represents a vertex on a LineSegment.
-        a_fillet (float): The radius to fillet a vertex.
-        fillet_comparison_precision (int): There are rounding issues when comparing to (fillet * scalar).
-    Use this when calculating length of line-segment.
+    @property
+    def get_range_of_vertex_to_not_fillet_linestring(self) -> list:
+        """For a list of integers that correspond to self.coords in init(), provide a list of tuples.  
+        Each tuple coresponds to a range of indexes within coords.  A range denotes vertexes that 
+        are too short to be fillet'd. 
 
+        If the range is just one point, meaning,  not a segment, the tuple will contain the same index for start and end.
 
-    Returns:
-        list: A compressed list of tuples.  So, it combines adjacent vertexes into a longer one.
-    """
-    unique_vertex = which_vertex_has_potential_fillet_errors(
-        coords, a_fillet, fillet_comparison_precision)
+        Returns:
+            list: A compressed list of tuples.  So, it combines adjacent vertexes into a longer one.
+        """
+        # which_vertex_has_potential_fillet_errors() has been replace by method below.
+        unique_vertex = self.bad_fillet_idxs_linestring
 
-    compressed_vertex = compress_vertex_list(unique_vertex)
-    return compressed_vertex
+        # The endpoints of LineString are never fillet'd. If the second vertex or second to last vertex
+        # should not be fillet's, then don't fillet the endpoints.  This is used for warning for add_qgeometry.
+        # Also used in QGDSRenderer when breaking the LineString.
+        if 1 in unique_vertex and 0 not in unique_vertex:
+            unique_vertex.append(0)
 
+        # second to last vertex in unique_vertex
+        if self.length-2 in unique_vertex and self.length-1 not in unique_vertex:
+            unique_vertex.append(self.length-1)
 
-def get_both_fillet_and_not_fillet(coords: list, a_fillet: float, fillet_comparison_precision: int) -> Tuple[list, list]:
-    """[summary]
+        compressed_vertex = QCheckLength.compress_vertex_list(unique_vertex)
 
-    Args:
-        coords (list): A list of tuples (x,y) that correspond to vertex.
-        a_fillet (float): The radius to fillet a vertex.
-        fillet_comparison_precision (int): There are rounding issues when comparing to (fillet * scalar).
+        return compressed_vertex
 
-    Returns:
-        Tuple[list, list]:
-            1st list - Contains intergers that correspond to index of coords. Do NOT fillet a vertex.
-            2nd list - Contains intergers that correspond to index of coords. Do fillet a vertex.
-    """
+    @classmethod
+    def compress_vertex_list(cls, individual_vertex: list) -> list:
+        """Given a list of vertexes that should not be fillet'd,
+        search for a range and make them one compressed list. 
+        If the vertex is a point and not linesegment, the returned tuple's 
+        start and end are the same index. 
 
-    no_fillet_vertex = which_vertex_has_potential_fillet_errors(
-        coords, a_fillet, fillet_comparison_precision)
-    coords_len = len(coords)
-    fillet_vertex = toggle_numbers(no_fillet_vertex, coords_len)
+        Args:
+            individual_seg (list): List of UNIQUE ints.  Each int refers to an index of a LineString.
 
-    return no_fillet_vertex, fillet_vertex
+        Returns:
+            list: A compressed list of tuples.  So, it combines adjacent vertexes into a longer one.
+
+        """
+        reduced_idx = list()
+
+        sorted_vertex = sorted(individual_vertex)
+        len_vertex = len(sorted_vertex)
+
+        if len_vertex > 0:
+            # initialzie to unrealistic number.
+            start = -1
+            end = -1
+            size_of_range = 0
+
+            for index, item in enumerate(sorted_vertex):
+                if index == 0:
+                    start = item
+                    end = item
+                else:
+                    if item == end + 1:
+                        end = item
+                        size_of_range += 1
+                    else:
+                        if size_of_range == 0:
+                            # Only one vertex in range.
+                            reduced_idx.append((start, end))
+                            start = item
+                            end = item
+                        else:
+                            # Two or more vertexes in range.
+                            reduced_idx.append((start, end))
+                            size_of_range = 0
+                            start = item
+                            end = item
+
+                if index == len_vertex-1:
+                    if size_of_range == 0:
+                        reduced_idx.append((start, end))
+                    else:
+                        reduced_idx.append((start, end))
+
+            return reduced_idx
+
+        else:
+            return reduced_idx
+
 
 #######################################################################################
     # File checking
