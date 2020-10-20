@@ -33,6 +33,8 @@
     <file alias="refresh">_imgs/refresh.png</file>
   </qresource>
   <qresource prefix="renderer">
+    <file>_imgs/renderers/HFSS.png</file>
+    <file>_imgs/renderers/Q3D.png</file>
     <file>_imgs/renderers/GDS.png</file>
   </qresource>
   <qresource prefix="basic">
