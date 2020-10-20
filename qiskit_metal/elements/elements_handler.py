@@ -23,17 +23,18 @@ See the docstring of `QGeometryTables`
 
 import inspect
 import logging
+import pandas as pd
+import shapely
+
 from typing import TYPE_CHECKING
+from qiskit_metal.toolbox_python.utility_functions import are_there_potential_fillet_errors, data_frame_empty_typed
 from typing import Dict as Dict_
 from typing import List, Tuple, Union
-
-import pandas as pd
 from geopandas import GeoDataFrame, GeoSeries
 
 from .. import Dict
-# from ..config import DEFAULT
 from ..draw import BaseGeometry
-from ..toolbox_python.utility_functions import data_frame_empty_typed
+
 
 from shapely.geometry.multipolygon import MultiPolygon #for avoiding MultiPolygons
 
@@ -146,10 +147,10 @@ ELEMENT_COLUMNS = dict(
     junction=dict(
         width=float,
         __renderers__=dict(
-        )                
+        )
     ),
     ################################################
-    # Specifies a curved object, such as a circle. Perhaps as a buffered point 
+    # Specifies a curved object, such as a circle. Perhaps as a buffered point
     # Not yet implemented
     # curved = dict(
     # __renderers__= dict(
@@ -199,7 +200,8 @@ class QGeometryTables(object):
             design = metal.designs.DesignPlanar()
             design.qgeometry = metal.QGeometryTables(design)
 
-            design.qgeometry['path'] # return the path table - give access to ..
+            # return the path table - give access to ..
+            design.qgeometry['path']
             design.qgeometry.table['path']
 
             # Define interfaces
@@ -266,7 +268,9 @@ class QGeometryTables(object):
         self._design = design
 
         self._tables = Dict()
-        self.create_tables()
+
+        # Need to call after columns are added by add_renderer_extenstion is run by all the renderers.
+        # self.create_tables()
 
     @property
     def design(self) -> 'QDesign':
@@ -382,7 +386,8 @@ class QGeometryTables(object):
 
             # Create df with correct column names
             table = GeoDataFrame(data_frame_empty_typed(columns))
-            table.name = table_name  # not used elsewhere, also the name becomes "name" for some reason
+            # not used elsewhere, also the name becomes "name" for some reason
+            table.name = table_name
 
             # Assign
             self.tables[table_name] = table
@@ -404,7 +409,7 @@ class QGeometryTables(object):
             \n  ELEMENT_TABLE_NAME = {table_name}\
             \n  KEY                = {k} \
             \n  VALUE              = {v}\n '
-        #Are these assertions still holding true?
+        # Are these assertions still holding true?
         for k, v in column_dict.items():
             assert isinstance(k, str), __pre.format(**locals()) +\
                 ' Key needs to be a string!'
@@ -495,6 +500,11 @@ class QGeometryTables(object):
         geometry = new_dict
 
         # Create options TODO: Might want to modify this (component_name -> component_id)
+        # Give warning if length is to be fillet's and not long enough.
+        self.check_lengths(geometry, kind, component_name,
+                           layer, chip, **other_options)
+
+        # Create options
         options = dict(component=component_name, subtract=subtract,
                        helper=helper, layer=int(layer), chip=chip, **other_options)
 
@@ -520,6 +530,58 @@ class QGeometryTables(object):
         self.tables[kind] = table.append(df, sort=False, ignore_index=True)
         # concat([table,df], axis=0, join='outer', ignore_index=True,sort=False,
         #          verify_integrity=False, copy=False)
+
+    def check_lengths(self, geometry: shapely.geometry.base.BaseGeometry,
+                      kind: str,
+                      component_name: str,
+                      layer: Union[int, str],
+                      chip: str,
+                      **other_options):
+        """If user wants to fillet, check the line-segments to see if it is too short for fillet.
+
+        Args:
+            geometry (shapely.geometry.base.BaseGeometry): The LineString to investigate.
+            kind (str): Name of table, i.e. 'path', 'poly', 'junction, etc
+            component_name (str): Is an integer id.
+            layer (Union[int, str]): Should be int, but getting a float, will cast to int when used.
+            chip (str): Name of chip, i.e. 'main'.
+        """
+
+        if 'fillet' in other_options.keys():
+            fillet_scalar = 2.0
+            fillet_comparison_precision = 9  # used for np.round
+
+            # For now, don't let front end user edit this.
+            # if 'fillet_comparison_precision' in other_options.keys():
+            #     # The parse_value converts all ints to floats.
+            #     fillet_comparison_precision = int(self.parse_value(
+            #         other_options['fillet_comparison_precision']))
+
+            if 'fillet_scalar' in other_options.keys():
+                fillet_scalar = self.parse_value(
+                    other_options['fillet_scalar'])
+
+            fillet = other_options['fillet']
+
+            for key, geom in geometry.items():
+                if isinstance(geom, shapely.geometry.LineString):
+                    coords = list(geom.coords)
+                    range_vertex_of_short_segments = are_there_potential_fillet_errors(
+                        coords, fillet, fillet_scalar,  fillet_comparison_precision)
+                    if len(range_vertex_of_short_segments) > 0:
+                        text_id = self.design._components[component_name]._name
+                        self.logger.warning(
+                            f'For {kind} table, component={text_id}, key={key}'
+                            f' has short segments. Values in {range_vertex_of_short_segments} '
+                            f'are index(es) in shapley geometry.')
+
+    def parse_value(self, value: 'Anything') -> 'Anything':
+        """Same as design.parse_value. See design for help.
+
+        Returns:
+            Parsed value of input.
+        """
+        return self.design.parse_value(value)
 
     def clear_all_tables(self):
         """Clear all the internal tables and all else.

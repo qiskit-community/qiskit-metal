@@ -1,4 +1,8 @@
+from ... import Dict
+from qiskit_metal.toolbox_python.utility_functions import are_there_potential_fillet_errors, can_write_to_path
+from qiskit_metal.toolbox_python.utility_functions import can_write_to_path
 import math
+from scipy.spatial import distance
 import os
 import gdspy
 import geopandas
@@ -20,8 +24,6 @@ import numpy as np
 from qiskit_metal.renderers.renderer_base import QRenderer
 from qiskit_metal.toolbox_metal.parsing import is_true
 
-from ... import Dict
-
 if TYPE_CHECKING:
     # For linting typechecking, import modules that can't be loaded here under normal conditions.
     # For example, I can't import QDesign, because it requires Qrenderer first. We have the
@@ -29,7 +31,7 @@ if TYPE_CHECKING:
     from qiskit_metal.designs import QDesign
 
 
-class GDSRender(QRenderer):
+class QGDSRenderer(QRenderer):
     """Extends QRenderer to export GDS formatted files. The methods which a user will need for GDS export
     should be found within this class.
 
@@ -56,11 +58,12 @@ class GDSRender(QRenderer):
     #: Type: Dict[str, str]
     default_options = Dict(
 
-        # Before converting LINESTRING to FlexPath for GDS, check for "dog-leg" for LINESTRINGS in QGeometry.
+        # Before converting LINESTRING to FlexPath for GDS, check for fillet errors
+        # for LINESTRINGS in QGeometry in QGeometry due to short segments.
         # If true, break up the LINESTRING so any segment which is shorter than the scaled-fillet
         # by "fillet_scale_factor" will be separated so the short segment will not be fillet'ed.
-        replace_dog_leg_to_not_fillet='True',
-        check_dog_leg_by_scaling_fillet='2.0',
+        short_segments_to_not_fillet='True',
+        check_short_segments_by_scaling_fillet='2.0',
 
         # DO NOT MODIFY `gds_unit`. Gets overwritten by ``set_units``.
         # gdspy unit is 1 meter.  gds_units appear to ONLY be used during write_gds().
@@ -112,8 +115,24 @@ class GDSRender(QRenderer):
     name = 'gds'
     """name"""
 
-    element_extensions = dict()
-    """element extentions dictionary"""
+    # When additional columns are added to QGeometry, this is the example to populate it.
+    # e.g. element_extensions = dict(
+    #         base=dict(color=str, klayer=int),
+    #         path=dict(thickness=float, material=str, perfectE=bool),
+    #         poly=dict(thickness=float, material=str), )
+    """element extentions dictionary   element_extensions = dict() from base class"""
+
+    # Add columns to junction table during QGDSRenderer.load()
+    # element_extensions  is now being populated as part of load().
+    # Determined from element_table_data.
+
+    # Dict structure MUST be same as  element_extensions!!!!!!
+    # This dict will be used to update QDesign during init of renderer.
+    # Keeping this as a cls dict so could be edited before renderer is instantiated.
+    # To update component.options junction table.
+    element_table_data = dict(
+        junction=dict(path_filename='Need_a_path_and_file')
+    )
 
     def __init__(self, design: 'QDesign', initiate=True, render_template: Dict = None, render_options: Dict = None):
         """Create a QRenderer for GDS interface: export and import.
@@ -139,6 +158,8 @@ class GDSRender(QRenderer):
         # check the scale
         self.check_bounding_box_scale()
 
+        QGDSRenderer.load()
+
     def parse_value(self, value: 'Anything') -> 'Anything':
         """Same as design.parse_value. See design for help.
 
@@ -156,14 +177,14 @@ class GDSRender(QRenderer):
         bounding_box_scale_y = self.parse_value(p.bounding_box_scale_y)
 
         if bounding_box_scale_x < 1:
-            self.options['bounding_box_scale_x'] = GDSRender.default_options.bounding_box_scale_x
+            self.options['bounding_box_scale_x'] = QGDSRenderer.default_options.bounding_box_scale_x
             self.logger.warning('Expected float and number greater than or equal to'
                                 ' 1.0 for bounding_box_scale_x. User'
                                 f'provided bounding_box_scale_x = {bounding_box_scale_x}'
                                 ', using default_options.bounding_box_scale_x.')
 
         if bounding_box_scale_y < 1:
-            self.options['bounding_box_scale_y'] = GDSRender.default_options.bounding_box_scale_y
+            self.options['bounding_box_scale_y'] = QGDSRenderer.default_options.bounding_box_scale_y
             self.logger.warning(
                 f'Expected float and number greater than or equal to 1.0 for bounding_box_scale_y.'
                 'User provided bounding_box_scale_y = {bounding_box_scale_y}, '
@@ -173,8 +194,6 @@ class GDSRender(QRenderer):
         """Clear current library."""
         gdspy.current_library.cells.clear()
 
-    # TODO: Move to toolbox_python utility and call there
-    # Maybe not, there is a self.logger.
     def _can_write_to_path(self, file: str) -> int:
         """Check if can write file.
 
@@ -184,16 +203,14 @@ class GDSRender(QRenderer):
         Returns:
             int: 1 if access is allowed. Else returns 0, if access not given.
         """
-
-        # If need to use lib pathlib.
-        directory_name = os.path.dirname(os.path.abspath(file))
-        if os.access(directory_name, os.W_OK):
+        status, directory_name = can_write_to_path(file)
+        if status:
             return 1
-        else:
-            self.logger.warning(f'Not able to write to directory.'
-                                f'File:"{file}" not written.'
-                                f' Checked directory:"{directory_name}".')
-            return 0
+
+        self.logger.warning(f'Not able to write to directory.'
+                            f'File:"{file}" not written.'
+                            f' Checked directory:"{directory_name}".')
+        return 0
 
     def update_units(self):
         """Update the options in the units.
@@ -442,8 +459,8 @@ class GDSRender(QRenderer):
             all_table_no_subtracts (list): Add to self.chip_info by layer number.
         """
 
-        fix_dog_leg = self.parse_value(
-            self.options.replace_dog_leg_to_not_fillet)
+        fix_short_segments = self.parse_value(
+            self.options.short_segments_to_not_fillet)
         all_layers = self.design.qgeometry.get_all_unique_layers(chip_name)
 
         for chip_layer in all_layers:
@@ -471,10 +488,10 @@ class GDSRender(QRenderer):
             self.chip_info[chip_name][chip_layer]['all_subtract_false'].reset_index(
                 inplace=True)
 
-            if is_true(fix_dog_leg):
-                self.fix_dog_leg_within_table(
+            if is_true(fix_short_segments):
+                self.fix_short_segments_within_table(
                     chip_name, chip_layer, 'all_subtract_true')
-                self.fix_dog_leg_within_table(
+                self.fix_short_segments_within_table(
                     chip_name, chip_layer, 'all_subtract_false')
 
             self.chip_info[chip_name][chip_layer]['q_subtract_true'] = self.chip_info[chip_name][chip_layer]['all_subtract_true'].apply(
@@ -483,7 +500,7 @@ class GDSRender(QRenderer):
             self.chip_info[chip_name][chip_layer]['q_subtract_false'] = self.chip_info[chip_name][chip_layer]['all_subtract_false'].apply(
                 self.qgeometry_to_gds, axis=1)
 
-    def fix_dog_leg_within_table(self, chip_name: str, chip_layer: int, all_sub_true_or_false: str):
+    def fix_short_segments_within_table(self, chip_name: str, chip_layer: int, all_sub_true_or_false: str):
         """Update self.chip_info geopandas.GeoDataFrame.
 
         Will iterate through the rows to examine the LineString.
@@ -530,13 +547,13 @@ class GDSRender(QRenderer):
     def check_length(self, a_shapely: shapely.geometry.LineString, a_fillet: float) -> Tuple[int, Dict]:
         """Determine if a_shapely has short segments based on scaled fillet value.
 
-        Use check_dog_leg_by_scaling with a_fillet to determine the critera for flagging a segment.
+        Use check_short_segments_by_scaling_fillet to determine the critera for flagging a segment.
         Return Tuple with flagged segments.
 
         The "status" returned in int:
-        -1: Method needs to update the return code.
-         0: No issues, no "dog-legs" found
-         int: The number of shapelys returned. New shapeleys, should replace the ones provided in a_shapley
+            * -1: Method needs to update the return code.
+            * 0: No issues, no short segments found
+            * int: The number of shapelys returned. New shapeleys, should replace the ones provided in a_shapley
 
         The "shorter_lines" returned in dict:
         key: Using the index values from list(a_shapely.coords)
@@ -642,90 +659,40 @@ class GDSRender(QRenderer):
                                                      'fillet': a_fillet})
                 at_vertex = stop  # Need to update for every loop.
         else:
-            # no dog-legs
+            # No short segments.
             shorter_lines[len_coords-1] = a_shapely
         return status, shorter_lines
 
     def identify_vertex_not_to_fillet(self, coords: list, a_fillet: float, all_idx_bad_fillet: dict, len_coords: int):
-        """Use coords to denote segments that are too short.  In particular, 
-        when fillet'd, they will cause the appearance of a dog-leg when graphed. 
+        """Use coords to denote segments that are too short.  In particular,
+        when fillet'd, they will cause the appearance of incorrect fillet when graphed.
 
         Args:
-            coords (list): User provide a list of tuples.  The tuple is (x,y) location for a vertex.  
+            coords (list): User provide a list of tuples.  The tuple is (x,y) location for a vertex.
             The list represents a LineString.
 
-            a_fillet (float): The value provided by component developer.  
+            a_fillet (float): The value provided by component developer.
 
-            all_idx_bad_fillet (dict): An empty dict which will be populated by this method.  
+            all_idx_bad_fillet (dict): An empty dict which will be populated by this method.
             Key 'reduced_idx' will hold list of tuples.  The tuples correspond to index for list named "coords".
             Key 'midpoints' will hold list of tuples. The index of a tuple corresponds to two index within coords.
-            For example, a index in midpoints is x, that coresponds midpoint of segment x-1 to x. 
+            For example, a index in midpoints is x, that coresponds midpoint of segment x-1 to x.
 
-            len_coords (int): The length of list coords. 
+            len_coords (int): The length of list coords.
         """
 
         fillet_scale_factor = self.parse_value(
-            self.options.check_dog_leg_by_scaling_fillet)
+            self.options.check_short_segments_by_scaling_fillet)
         precision = float(self.parse_value(self.options.precision))
         for_rounding = int(np.abs(np.log10(precision)))
 
-        scaled_fillet = a_fillet * fillet_scale_factor
-        end_vertex_of_bad = list()
-        for index, xy in enumerate(coords):
-            # Skip the first vertex.
-            if index > 0:
-                xy_previous = coords[index-1]
-
-                # Use np.round to reduce rounding errors, since seg_length is used for comparison.
-                seg_length = np.round(math.dist(xy_previous, xy), for_rounding)
-                # If at first or last segment, use just the fillet value to check, otherwise, use scaled_fillet.
-                # Need to not fillet index-1 to index line segment.
-                if index == 1 or index == len_coords-1:
-                    if seg_length < a_fillet:
-                        end_vertex_of_bad.append((index-1, index))
-                else:
-                    if seg_length < scaled_fillet:
-                        end_vertex_of_bad.append((index-1, index))
-
-        reduced_idx = GDSRender.compress_list(end_vertex_of_bad)
-        all_idx_bad_fillet['reduced_idx'] = reduced_idx
+        all_idx_bad_fillet['reduced_idx'] = are_there_potential_fillet_errors(
+            coords, a_fillet, fillet_scale_factor, for_rounding)
 
         midpoints = list()
-        midpoints = [GDSRender.midpoint_xy(coords[idx-1][0], coords[idx-1][1], vertex2[0], vertex2[1])
+        midpoints = [QGDSRenderer.midpoint_xy(coords[idx-1][0], coords[idx-1][1], vertex2[0], vertex2[1])
                      for idx, vertex2 in enumerate(coords) if idx > 0]
         all_idx_bad_fillet['midpoints'] = midpoints
-
-    @ staticmethod
-    def compress_list(individual_seg: list) -> list:
-        """Given a list of segments that should not be fillet'd,
-        search for adjacent segments and make them one compressed list.
-
-        Args:
-            individual_seg (list): List of tuples of two ints.  Each int refers to an index of a LineString.
-
-        Returns:
-            list: A compresses list of individual_segs.  So, it combines adjacent segments into a longer one.
-        """
-        reduced_idx = list()
-        len_compressed = len(individual_seg)
-        if len_compressed > 0:
-            last_unique_seg = (-1, -1)  # set to a non-logical tuple
-
-            for index, item in enumerate(individual_seg):
-                if index == 0:
-                    last_unique_seg = item
-                else:
-                    if min(item) == max(last_unique_seg):
-                        last_unique_seg = (min(last_unique_seg), max(item))
-                    else:
-                        reduced_idx.append(last_unique_seg)
-                        last_unique_seg = item
-                if index == len_compressed-1:
-                    reduced_idx.append(last_unique_seg)
-            return reduced_idx
-
-        else:
-            return reduced_idx
 
     def gather_subtract_elements_and_bounds(self, chip_name: str, table_name: str, table: geopandas.GeoDataFrame,
                                             all_subtracts: list, all_no_subtracts: list):
@@ -943,7 +910,7 @@ class GDSRender(QRenderer):
             int: 0=file_name can not be written, otherwise 1=file_name has been written
         """
 
-        if not self._can_write_to_path(file_name):
+        if not can_write_to_path(file_name):
             return 0
 
         # There can be more than one chip in QGeometry.  They all export to one gds file.
@@ -1019,9 +986,9 @@ class GDSRender(QRenderer):
 
             Only fillet, if number is greater than zero.
             '''
+
             use_width = self.parse_value(self.options.width_LineString)
             if math.isnan(qgeometry_element.width):
-
                 qcomponent_id = self.parse_value(qgeometry_element.component)
                 name = self.parse_value(qgeometry_element['name'])
                 layer_num = self.parse_value(qgeometry_element.layer)

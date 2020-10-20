@@ -27,13 +27,19 @@ import traceback
 import warnings
 import logging
 import sys
+import os
 import pandas as pd
+import numpy as np
+from scipy.spatial import distance
+from typing import Tuple
 
 from copy import deepcopy
+from qiskit_metal import logger
 
 __all__ = ['copy_update', 'dict_start_with', 'data_frame_empty_typed', 'clean_name',
            'enable_warning_traceback', 'get_traceback', 'print_traceback_easy', 'log_error_easy',
-           'monkey_patch']
+           'monkey_patch', 'are_there_potential_fillet_errors', 'compress_list', 'can_write_to_path', 
+           'can_write_to_path_with_warning']
 
 ####################################################################################
 # Dictionary related
@@ -155,7 +161,9 @@ def clean_name(text: str):
 ####################################################################################
 # Tracebacks
 
+
 _old_warn = None
+
 
 def enable_warning_traceback():
     """
@@ -228,9 +236,9 @@ def log_error_easy(logger: logging.Logger, pre_text='', post_text='', do_print=F
                 except:
                     pass
 
-                #exc_type, exc_value, exc_tb = sys.exc_info()
-                #error = traceback.format_exception(exc_type, exc_value, exc_tb)
-                #logger.error('\\n\\n'+'\\n'.join(error)+'\\n')
+                # exc_type, exc_value, exc_tb = sys.exc_info()
+                # error = traceback.format_exception(exc_type, exc_value, exc_tb)
+                # logger.error('\\n\\n'+'\\n'.join(error)+'\\n')
                 log_error_easy(metal.logger)
         xx()
 
@@ -266,3 +274,130 @@ def monkey_patch(self, func, func_name=None):
     func_name = func_name or func.__name__
     setattr(self, func_name, func.__get__(self, self.__class__))
     # what happens if we reload the class or swap in real time?
+
+
+####################################################################################
+# Used to detect and denote potential short segments, when fillet is used.
+
+def compress_list(individual_seg: list) -> list:
+    """Given a list of segments that should not be fillet'd,
+    search for adjacent segments and make them one compressed list.
+
+    Args:
+        individual_seg (list): List of tuples of two ints.  Each int refers to an index of a LineString.
+
+    Returns:
+        list: A compresses list of individual_segs.  So, it combines adjacent segments into a longer one.
+    """
+    reduced_idx = list()
+    len_compressed = len(individual_seg)
+    if len_compressed > 0:
+        last_unique_seg = (-1, -1)  # set to a non-logical tuple
+
+        for index, item in enumerate(individual_seg):
+            if index == 0:
+                last_unique_seg = item
+            else:
+                if min(item) == max(last_unique_seg):
+                    last_unique_seg = (min(last_unique_seg), max(item))
+                else:
+                    reduced_idx.append(last_unique_seg)
+                    last_unique_seg = item
+            if index == len_compressed-1:
+                reduced_idx.append(last_unique_seg)
+        return reduced_idx
+
+    else:
+        return reduced_idx
+
+
+def are_there_potential_fillet_errors(coords: list, a_fillet: float, fillet_scalar: float, fillet_comparison_precision: int) -> list:
+    """Iterate through the vertex and check using critea.
+    1. If a start or end segment, is the length smaller than a_fillet.
+    2. If segment in side of LineString, is the lenght smaller than,fillet_scalar times a_fillet.
+
+    Note, there is a rounding error issues. So when the lenght of the segment is calculated,
+    it is rounded by using fillet_comparison_precision.
+
+    Args:
+        coords (list): List of tuples in (x,y) format. Each tuple represents a vertex on a LineSegment.
+
+        fillet_scalar (float): When determining the critera to fillet, scale the fillet value by fillet_scalar.
+
+        a_fillet (float): The radius to fillet a vertex.
+
+        fillet_comparison_precision (int): There are rounding issues when comparing to (fillet * scalar).
+        Use this when calculating length of line-segment.
+
+    Returns:
+        list: List of tuples.  Each tuple corresponds to a range of segments that are too short and would not fillet well.
+        The tuple is (start_index, end_index).  The index corresponds to index in coords.
+    """
+    range_vertex_of_bad = list()
+    len_coords = len(coords)
+    if len_coords <= 1:
+        return range_vertex_of_bad
+
+    scaled_fillet = a_fillet * fillet_scalar
+
+    for index, xy in enumerate(coords):
+        # Skip the first vertex.
+        if index > 0:
+            xy_previous = coords[index-1]
+
+            seg_length = np.round(
+                distance.euclidean(xy_previous, xy), fillet_comparison_precision)
+
+            # If at first or last segment, use just the fillet value to check, otherwise, use fillet_scalar.
+            # Need to not fillet index-1 to index line segment.
+            if index == 1 or index == len_coords-1:
+                if seg_length < a_fillet:
+                    range_vertex_of_bad.append((index-1, index))
+            else:
+                if seg_length < scaled_fillet:
+                    range_vertex_of_bad.append((index-1, index))
+
+    return compress_list(range_vertex_of_bad)
+
+#######################################################################################
+# File checking
+
+
+def can_write_to_path_with_warning(file: str) -> int:
+    """Check if can write file.
+
+    Args:
+        file (str): Has the path and/or just the file name.
+
+    Returns:
+        int: 1 if access is allowed. Else returns 0, if access not given.
+    """
+    a_logger = logger
+    # If need to use lib pathlib.
+    directory_name = os.path.dirname(os.path.abspath(file))
+    if os.access(directory_name, os.W_OK):
+        return 1
+    else:
+        a_logger.warning(f'Not able to write to directory.'
+                         f'File:"{file}" not written.'
+                         f' Checked directory:"{directory_name}".')
+        return 0
+
+
+def can_write_to_path(file: str) -> Tuple[int, str]:
+    """ Check to see if path exists and file can be written.
+
+    Args:
+        file (str): Has the path and/or just the file name.
+
+    Returns:
+        Tuple[int, str]: 
+        int: 1 if access is allowed. Else returns 0, if access not given.
+        str: Full path and file which was searched for.
+    """
+    # If need to use lib pathlib.
+    directory_name = os.path.dirname(os.path.abspath(file))
+    if os.access(directory_name, os.W_OK):
+        return 1, directory_name
+    else:
+        return 0, directory_name
