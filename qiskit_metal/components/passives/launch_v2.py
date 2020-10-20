@@ -96,6 +96,10 @@ class LaunchV2(QComponent):
     def make(self):
         """ This is executed by the user to generate the qgeometry for the component.
         """
+
+        # TODO: rotation tip up and tip down cause the "pin" to be 0.140 off in the x direction.
+        #  correct behavior: rotation should keep the pin at the same x.
+
         p = self.p
         #########################################################
 
