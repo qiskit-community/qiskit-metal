@@ -331,7 +331,6 @@ def monkey_patch(self, func, func_name=None):
 #     vertex_of_bad = list(set(vertex_of_bad))
 #     return vertex_of_bad
 
-
 class QCheckLength():
     """
     Obtain indices of vertices in a polygon/linestring that can/cannot be filleted.

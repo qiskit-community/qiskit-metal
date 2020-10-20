@@ -41,6 +41,8 @@ class QRoutePoint:
         self.position = position
         self.direction = direction
 
+    def __str__(self):
+        return "position: "+str(self.position)+" : direction:"+str(self.direction)+"."
 
 class QRoute(QComponent):
     """
@@ -252,6 +254,39 @@ class QRoute(QComponent):
             return QRoutePoint(self.intermediate_pts[-1],
                                self.intermediate_pts[-1] - self.intermediate_pts[-2])
 
+    def del_colinear_points(self, inarray):
+        """Delete colinear points from the given array
+
+        Args:
+            inarray (list): List of points
+
+        Returns:
+            list: List of points without colinear points
+        """
+        if len(inarray) <= 1:
+            return
+        else:
+            outarray = list()    #outarray = np.empty(shape=[0, 2])
+            pts = [None, None, inarray[0]]
+            for idxnext in range(1, len(inarray)):
+                pts = pts[1:] + [inarray[idxnext]]
+                # delete identical points
+                if np.array_equal(*pts[1:]):
+                    pts = [None] + pts[0:2]
+                    continue
+                if pts[0] is not None:
+                    if all(i[1] == pts[0][1] for i in pts) or all(i[0] == pts[0][0] for i in pts):
+                        pts = [None] + [pts[0]] + [pts[2]]
+                if pts[0] is not None:
+                    #save the point before it gets dropped in the next cycle
+                    outarray.append(pts[0])
+            # save remainder points
+            if pts[1] is not None:
+                outarray.extend(pts[1:])
+            else:
+                outarray.append(pts[2])
+            return np.array(outarray)
+
     def get_points(self) -> np.ndarray:
         """Assembles the list of points for the route by concatenating:
         head_pts + intermediate_pts, tail_pts
@@ -269,10 +304,14 @@ class QRoute(QComponent):
 
         # cover case where there is no tail defined (floating end)
         if self.tail is None:
-            return beginning
-        return np.concatenate([
+            polished = beginning
+        polished = np.concatenate([
             beginning,
             self.tail.pts[::-1]], axis=0)
+
+        polished = self.del_colinear_points(polished)
+
+        return polished
 
     def get_unit_vectors(self, start: QRoutePoint, end: QRoutePoint, snap: bool = False) -> Tuple:
         """Return the unit and target vector in which the CPW should process as its
