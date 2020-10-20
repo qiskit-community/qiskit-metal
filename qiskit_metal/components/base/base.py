@@ -914,8 +914,13 @@ class QComponent():
                 f'Component with classname={self.class_name} does not know about table name "{kind}". '
             )
 
+        renderer_key_values = self._get_table_values_from_renderers(
+            self.design)
+        # # if not already in kwargs, add renderer information to it.
+        renderer_and_options = {**renderer_key_values, **kwargs}
+
         self.design.qgeometry.add_qgeometry(kind, self.id, geometry, subtract=subtract,
-                                            helper=helper, layer=layer, chip=chip, **kwargs)
+                                            helper=helper, layer=layer, chip=chip, **renderer_and_options)
 
     @classmethod
     def _get_table_values_from_renderers(cls, design: 'QDesign') -> Dict:
@@ -929,7 +934,8 @@ class QComponent():
             Dict: key is column names for tables, value is data for the column. 
         """
         metadata_dict = cls._gather_all_children_metadata()
-        tables_list = design.get_list_of_tables_in_metadata(metadata_dict)
+        tables_list = design.get_list_of_tables_in_metadata(
+            metadata_dict)
 
         all_renderers_key_value = dict()
         # design.renderer_defaults_by_table[table_name][renderer_name][column_name]
