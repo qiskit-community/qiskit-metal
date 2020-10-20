@@ -1,6 +1,6 @@
 from ... import Dict
-from qiskit_metal.toolbox_python.utility_functions import are_there_potential_fillet_errors, can_write_to_path
 from qiskit_metal.toolbox_python.utility_functions import can_write_to_path
+from qiskit_metal.toolbox_python.utility_functions import QCheckLength
 import math
 from scipy.spatial import distance
 import os
@@ -31,7 +31,7 @@ if TYPE_CHECKING:
     from qiskit_metal.designs import QDesign
 
 
-class GDSRender(QRenderer):
+class QGDSRenderer(QRenderer):
     """Extends QRenderer to export GDS formatted files. The methods which a user will need for GDS export
     should be found within this class.
 
@@ -122,7 +122,7 @@ class GDSRender(QRenderer):
     #         poly=dict(thickness=float, material=str), )
     """element extentions dictionary   element_extensions = dict() from base class"""
 
-    # Add columns to junction table during GDSRender.load()
+    # Add columns to junction table during QGDSRenderer.load()
     # element_extensions  is now being populated as part of load().
     # Determined from element_table_data.
 
@@ -158,7 +158,7 @@ class GDSRender(QRenderer):
         # check the scale
         self.check_bounding_box_scale()
 
-        GDSRender.load()
+        QGDSRenderer.load()
 
     def parse_value(self, value: 'Anything') -> 'Anything':
         """Same as design.parse_value. See design for help.
@@ -177,14 +177,14 @@ class GDSRender(QRenderer):
         bounding_box_scale_y = self.parse_value(p.bounding_box_scale_y)
 
         if bounding_box_scale_x < 1:
-            self.options['bounding_box_scale_x'] = GDSRender.default_options.bounding_box_scale_x
+            self.options['bounding_box_scale_x'] = QGDSRenderer.default_options.bounding_box_scale_x
             self.logger.warning('Expected float and number greater than or equal to'
                                 ' 1.0 for bounding_box_scale_x. User'
                                 f'provided bounding_box_scale_x = {bounding_box_scale_x}'
                                 ', using default_options.bounding_box_scale_x.')
 
         if bounding_box_scale_y < 1:
-            self.options['bounding_box_scale_y'] = GDSRender.default_options.bounding_box_scale_y
+            self.options['bounding_box_scale_y'] = QGDSRenderer.default_options.bounding_box_scale_y
             self.logger.warning(
                 f'Expected float and number greater than or equal to 1.0 for bounding_box_scale_y.'
                 'User provided bounding_box_scale_y = {bounding_box_scale_y}, '
@@ -581,7 +581,7 @@ class GDSRender(QRenderer):
         all_idx_bad_fillet = dict()
 
         self.identify_vertex_not_to_fillet(
-            coords, a_fillet, all_idx_bad_fillet, len_coords)
+            coords, a_fillet, all_idx_bad_fillet)
 
         shorter_lines = dict()
 
@@ -663,7 +663,7 @@ class GDSRender(QRenderer):
             shorter_lines[len_coords-1] = a_shapely
         return status, shorter_lines
 
-    def identify_vertex_not_to_fillet(self, coords: list, a_fillet: float, all_idx_bad_fillet: dict, len_coords: int):
+    def identify_vertex_not_to_fillet(self, coords: list, a_fillet: float, all_idx_bad_fillet: dict):
         """Use coords to denote segments that are too short.  In particular,
         when fillet'd, they will cause the appearance of incorrect fillet when graphed.
 
@@ -681,16 +681,21 @@ class GDSRender(QRenderer):
             len_coords (int): The length of list coords.
         """
 
-        fillet_scale_factor = self.parse_value(
-            self.options.check_short_segments_by_scaling_fillet)
-        precision = float(self.parse_value(self.options.precision))
-        for_rounding = int(np.abs(np.log10(precision)))
+        # Depreciated since there is no longer a scale factor  given to QCheckLength.
+        # fillet_scale_factor = self.parse_value(
+        #     self.options.check_short_segments_by_scaling_fillet)
 
-        all_idx_bad_fillet['reduced_idx'] = are_there_potential_fillet_errors(
-            coords, a_fillet, fillet_scale_factor, for_rounding)
+        precision = float(self.parse_value(self.options.precision))
+
+        # For now, allow the user of GDS to provide the precision.
+        user_precision = int(np.abs(np.log10(precision)))
+        a_qcheck_length = QCheckLength(coords, a_fillet, user_precision)
+
+        all_idx_bad_fillet['reduced_idx'] = a_qcheck_length.get_range_of_vertex_to_not_fillet_linestring(
+            add_endpoints=True)
 
         midpoints = list()
-        midpoints = [GDSRender.midpoint_xy(coords[idx-1][0], coords[idx-1][1], vertex2[0], vertex2[1])
+        midpoints = [QGDSRenderer.midpoint_xy(coords[idx-1][0], coords[idx-1][1], vertex2[0], vertex2[1])
                      for idx, vertex2 in enumerate(coords) if idx > 0]
         all_idx_bad_fillet['midpoints'] = midpoints
 
