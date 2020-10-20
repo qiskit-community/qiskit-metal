@@ -45,6 +45,8 @@ from ..renderer_base.renderer_gui_base import QRendererGui
 from .mpl_interaction import MplInteraction, PanAndZoom
 from .mpl_toolbox import _axis_set_watermark_img, clear_axis, get_prop_cycle
 
+from qiskit_metal.toolbox_python.utility_functions import QCheckLength
+
 if TYPE_CHECKING:
     from ..._gui.main_window import MetalGUI
     from ..._gui.widgets.plot_widget.plot_window import QMainWindowPlot
@@ -318,15 +320,23 @@ class QMplRenderer():
         path = row["geometry"].coords
         newpath = np.array([path[0]])
 
+        # Get list of vertices that can't be filleted
+        a_QCheckLength=QCheckLength(path, row["fillet"])
+        no_fillet = a_QCheckLength.get_range_of_vertex_to_not_fillet_linestring(
+                        add_endpoints=False)
+
         # Iterate through every three-vertex corner
-        for start, corner, end in zip(path, path[1:], path[2:]):
-            fillet = self._calc_fillet(
-                np.array(start), np.array(corner), np.array(end), row["fillet"], int(self.options['resolution'])
-            )
-            if fillet is not False:
-                newpath = np.concatenate((newpath, fillet))
-            else:  # Don't need to fillet in this case, just add back in the normal vertex
+        for (i, (start, corner, end)) in enumerate(zip(path, path[1:], path[2:])):
+            if any(i+1 in x for x in no_fillet): # don't fillet this corner
                 newpath = np.concatenate((newpath, np.array([corner])))
+            else:
+                fillet = self._calc_fillet(
+                    np.array(start), np.array(corner), np.array(end), row["fillet"], int(self.options['resolution'])
+                )
+                if fillet is not False:
+                    newpath = np.concatenate((newpath, fillet))
+                else:
+                    newpath = np.concatenate((newpath, np.array([corner])))
         newpath = np.concatenate((newpath, np.array([end])))
         return LineString(newpath)
 
@@ -343,24 +353,9 @@ class QMplRenderer():
             radius (float): Fillet radius.
             points (int): Number of points to draw in the fillet corner.
         """
-
-        # prevent segment length rounding error
-        fillet_comparison_precision = 9
-
         if np.array_equal(vertex_start, vertex_corner) or np.array_equal(
             vertex_end, vertex_corner
         ):
-            return False
-
-        length1 = np.round(np.linalg.norm(
-            vertex_start - vertex_corner
-        )/2, fillet_comparison_precision)
-
-        length2 = np.round(np.linalg.norm(
-            vertex_corner - vertex_end
-        )/2, fillet_comparison_precision)
-
-        if radius > length1 or radius > length2:
             return False
 
         fillet_start = (
