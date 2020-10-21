@@ -71,8 +71,8 @@ class RouteMixed(RoutePathfinder, RouteMeander):
         self.set_pin("end")
 
         # Align the lead-in/out to the input options set from the user
-        meander_start_point = self.set_lead("start")
-        meander_end_point = self.set_lead("end")
+        start_point = self.set_lead("start")
+        end_point = self.set_lead("end")
 
         # find the points to connect between each pair of anchors, or between anchors and leads
         # at first, store points "per segment" in a dictionary, so it is easier to apply length requirements
@@ -90,7 +90,7 @@ class RouteMixed(RoutePathfinder, RouteMeander):
                 self.intermediate_pts[arc_num] = np.concatenate([arc_pts, [coord]], axis=0)
         # compute last connection point to the output QRouteLead
         connect_method = self.select_connect_method(len(anchors))
-        arc_pts = connect_method(self.get_tip(), meander_end_point)
+        arc_pts = connect_method(self.get_tip(), end_point)
         if arc_pts is not None:
             self.intermediate_pts[len(anchors)] = np.array(arc_pts)
 

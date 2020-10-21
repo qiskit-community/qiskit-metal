@@ -71,24 +71,28 @@ class RoutePathfinder(RouteAnchors):
         step_size = self.parse_options().step_size
 
         starting_dist = sum(abs(end - start)) # Manhattan distance between start and end
-        pathmapper = {(starting_dist, start[0], start[1]): [starting_dist, [start]]}
+        key_starting_point = (starting_dist, start[0], start[1])
+        pathmapper = {key_starting_point: [starting_dist, [start]]}
         # pathmapper maps tuple(total length of the path from self.start + Manhattan distance to destination, coordx, coordy) to [total length of 
         # path from self.start, path]
-        visited = set([(start[0], start[1])]) # maintain record of points we've already visited to avoid self-intersections
-        h = [(starting_dist, start[0], start[1])] # priority queue (heap in Python implementation)
+        visited = set()  # maintain record of points we've already visited to avoid self-intersections
+        visited.add(tuple(start))
+        # TODO: add to visited all of the current points in the route, to prevent self intersecting
+        priority_queue = list()  # A* priority queue. Implemented as heap
+        priority_queue.append(key_starting_point)
         # Elements in the heap are ordered by the following:
         # 1. The total length of the path from self.start + Manhattan distance to destination
         # 2. The x coordinate of the latest point
         # 3. The y coordinate of the latest point
 
-        while h:
-            tot_dist, x, y = heapq.heappop(h) # tot_dist is the total length of the path from self.start + Manhattan distance to destination
+        while priority_queue:
+            tot_dist, x, y = heapq.heappop(priority_queue) # tot_dist is the total length of the path from self.start + Manhattan distance to destination
             length_travelled, current_path = pathmapper[(tot_dist, x, y)]
             # Look in forward, left, and right directions a fixed distance away.
             # If the line segment connecting the current point and this next one does
             # not collide with any bounding boxes in design.components, add it to the
             # list of neighbors.
-            neighbors = []
+            neighbors = list()
             if len(current_path) == 1:
                 # At starting point -> initial direction is start direction
                 direction = start_direction
@@ -101,17 +105,8 @@ class RoutePathfinder(RouteAnchors):
             # Check if connect_simple works at each iteration of A*
             simple_path = self.connect_simple(QRoutePoint(np.array([x, y]), direction), QRoutePoint(end, end_direction))
             if simple_path is not None:
-                if len(current_path) > 1:
-                    # Concatenate collinear line segments (joined at a point and have identical slopes)
-                    # current_path = [..., [x_pen, y_pen], [x_end, y_end]]
-                    # simple_path = [[x_end, y_end], [x_new, y_new], ...]
-                    x_pen, y_pen = current_path[-2]
-                    x_ult, y_ult = current_path[-1]
-                    x_new, y_new = simple_path[1]
-                    if (y_ult - y_pen) * (x_new - x_ult) == (y_new - y_ult) * (x_ult - x_pen):
-                        # Concatenate collinear line segments (joined at a point and have identical slopes)
-                        return current_path[:-1] + simple_path[1:]
-                return simple_path
+                current_path.extend(simple_path)
+                return current_path
             
             for disp in [np.array([0, 1]), np.array([0, -1]), np.array([1, 0]), np.array([-1, 0])]:
                 # Unit displacement in 4 cardinal directions
@@ -125,21 +120,11 @@ class RoutePathfinder(RouteAnchors):
                 if tuple(neighbor) not in visited:
                     new_remaining_dist = sum(abs(end - neighbor))
                     new_length_travelled = length_travelled + step_size
-                    if len(current_path) > 1:
-                        x_ult, y_ult = current_path[-1] # last point on origin's path
-                        x_pen, y_pen = current_path[-2] # penultimate point on origin's path
-                        x_cur, y_cur = neighbor
-                        if (y_ult - y_pen) * (x_cur - x_ult) == (y_cur - y_ult) * (x_ult - x_pen):
-                            # Concatenate collinear line segments (joined at a point and have identical slopes)
-                            new_path = current_path[:-1] + [neighbor]
-                        else:
-                            new_path = current_path + [neighbor]
-                    else:
-                        new_path = current_path + [neighbor]
+                    new_path = current_path + [neighbor]
                     if new_remaining_dist < 10 ** -8:
                         # Destination has been reached within acceptable error tolerance (errors due to rounding in Python)
                         return new_path[:-1] + [end] # Replace last element of new_path with end since they're basically the same
-                    heapq.heappush(h, (new_length_travelled + new_remaining_dist, neighbor[0], neighbor[1]))
+                    heapq.heappush(priority_queue, (new_length_travelled + new_remaining_dist, neighbor[0], neighbor[1]))
                     pathmapper[(new_length_travelled + new_remaining_dist, neighbor[0], neighbor[1])] = [new_length_travelled, new_path]
                     visited.add(tuple(neighbor))
         return []  # Shouldn't actually reach here - if it fails, there's a convergence issue

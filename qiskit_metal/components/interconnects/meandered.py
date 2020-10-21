@@ -61,6 +61,7 @@ class RouteMeander(QRoute):
             asymmetry='0um'
         ),
         snap='true',
+        prevent_short_edges='true'
     )
     """Default options"""
 
@@ -118,6 +119,7 @@ class RouteMeander(QRoute):
         spacing = meander_opt.spacing  # Horizontal spacing between meanders
         asymmetry = meander_opt.asymmetry
         snap = is_true(self.p.snap)  # snap to xy grid
+        prevent_short_edges = is_true(self.p.prevent_short_edges)
         # TODO: snap add 45 deg snap by changing snap function using angles
 
         # take care of anchors (do not have set directions)
@@ -264,7 +266,22 @@ class RouteMeander(QRoute):
                 pts[-2, abs(forward[0])] = end_pt.position[abs(forward[0])]
                 pts[-3, abs(forward[0])] = end_pt.position[abs(forward[0])]
 
-        # print("PTS_intermediate->", pts)
+        # print("PTS_intermediate->", pts, end_pt.position)
+
+        # Adjust the last meander to eliminate the terminating jog (dogleg)
+        # TODO: currently only working with snapping. Consider option without snapping
+        if prevent_short_edges:
+            x2fillet = 2 * self.p.fillet
+            if abs(round(np.dot(end_pt.direction, sideways))) > 0:
+                backwards = 0
+            else:
+                backwards = 1
+            if 0 < abs(self.tail.pts[-1, 0]-pts[-1, 0]) < x2fillet:
+                pts[-1-backwards, 0-backwards] = end_pt.position[0-backwards]
+                pts[-2-backwards, 0-backwards] = end_pt.position[0-backwards]
+            if 0 < abs(self.tail.pts[-1, 1]-pts[-1, 1]) < x2fillet:
+                pts[-1-backwards, 1-backwards] = end_pt.position[1-backwards]
+                pts[-2-backwards, 1-backwards] = end_pt.position[1-backwards]
 
         return pts
 
