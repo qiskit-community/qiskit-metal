@@ -342,12 +342,12 @@ class QCheckLength():
     PRECISION = 9  # Default precision, or number of digits after decimal point to round to
 
     def __init__(self, coords: list, fradius: float, precision: int = PRECISION):
-        """
-        Initialize list of coordinates to work with and user-specified fillet radius.
+        """Initialize list of coordinates to work with and user-specified fillet radius.
 
         Args:
             coords (list): Ordered list of tuples of vertex coordinates.
             fradius (float): User-specified fillet radius from QGeometry table.
+            precision (int): Digits of precision used for round().
         """
         self.coords = coords
         self.fradius = fradius
@@ -453,11 +453,12 @@ class QCheckLength():
         Each tuple coresponds to a range of indexes within coords.  A range denotes vertexes that
         are too short to be fillet'd.
 
-        If the range is just one point, meaning,  not a segment, the tuple will contain the same index for start and end.
+        If the range is just one point, meaning,  not a segment, the tuple will contain 
+        the same index for start and end.
 
         Args:
-            add_endpoints(bool): If the second to endpoint is in list, add the endpoint to list.  Used for GDS,
-                not add_qgeometry. 
+            add_endpoints(bool): Default is True.  If the second to endpoint is in list, 
+                add the endpoint to list.  Used for GDS, not add_qgeometry.  
 
         Returns:
             list: A compressed list of tuples.  So, it combines adjacent vertexes into a longer one.

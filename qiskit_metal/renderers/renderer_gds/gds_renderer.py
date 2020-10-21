@@ -677,8 +677,6 @@ class QGDSRenderer(QRenderer):
             Key 'reduced_idx' will hold list of tuples.  The tuples correspond to index for list named "coords".
             Key 'midpoints' will hold list of tuples. The index of a tuple corresponds to two index within coords.
             For example, a index in midpoints is x, that coresponds midpoint of segment x-1 to x.
-
-            len_coords (int): The length of list coords.
         """
 
         # Depreciated since there is no longer a scale factor  given to QCheckLength.
