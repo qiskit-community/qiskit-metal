@@ -7,6 +7,7 @@
 from PyQt5 import QtCore, QtGui
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QToolBar
+import time
 
 class QToolBarExpanding(QToolBar):
     """
@@ -65,5 +66,7 @@ class QToolBarExpanding(QToolBar):
             evt (QtCore.QEvent): QtCore event
         """
         # print('<- EXIT')
+        # this adds a 0.25sec delay before contracting the widget if mouse accidentally leaves
+        time.sleep(0.25) 
         self.contract_me()
         super().leaveEvent(evt)
