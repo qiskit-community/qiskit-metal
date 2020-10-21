@@ -270,18 +270,31 @@ class RouteMeander(QRoute):
 
         # Adjust the last meander to eliminate the terminating jog (dogleg)
         # TODO: currently only working with snapping. Consider option without snapping
+        print("prevent", start_pt.position, pts)
         if prevent_short_edges:
             x2fillet = 2 * self.p.fillet
+            # adjust the end first
             if abs(round(np.dot(end_pt.direction, sideways))) > 0:
-                backwards = 0
+                skippoint = 0
             else:
-                backwards = 1
-            if 0 < abs(self.tail.pts[-1, 0]-pts[-1, 0]) < x2fillet:
-                pts[-1-backwards, 0-backwards] = end_pt.position[0-backwards]
-                pts[-2-backwards, 0-backwards] = end_pt.position[0-backwards]
-            if 0 < abs(self.tail.pts[-1, 1]-pts[-1, 1]) < x2fillet:
-                pts[-1-backwards, 1-backwards] = end_pt.position[1-backwards]
-                pts[-2-backwards, 1-backwards] = end_pt.position[1-backwards]
+                skippoint = 1
+            if 0 < abs(end_pt.position[0]-pts[-1, 0]) < x2fillet:
+                pts[-1-skippoint, 0-skippoint] = end_pt.position[0-skippoint]
+                pts[-2-skippoint, 0-skippoint] = end_pt.position[0-skippoint]
+            if 0 < abs(end_pt.position[1]-pts[-1, 1]) < x2fillet:
+                pts[-1-skippoint, 1-skippoint] = end_pt.position[1-skippoint]
+                pts[-2-skippoint, 1-skippoint] = end_pt.position[1-skippoint]
+            # repeat for the start
+            if abs(round(np.dot(start_pt.direction, sideways))) > 0:
+                skippoint = 1
+            else:
+                skippoint = 0
+            if 0 < abs(start_pt.position[0]-pts[0, 0]) < x2fillet:
+                pts[0+skippoint, 0-skippoint] = start_pt.position[0-skippoint]
+                pts[1+skippoint, 0-skippoint] = start_pt.position[0-skippoint]
+            if 0 < abs(start_pt.position[1]-pts[0, 1]) < x2fillet:
+                pts[0+skippoint, 1-skippoint] = start_pt.position[1-skippoint]
+                pts[1+skippoint, 1-skippoint] = start_pt.position[1-skippoint]
 
         return pts
 
