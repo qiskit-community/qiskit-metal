@@ -40,6 +40,9 @@ class QRoutePoint:
                 Defines which way it points outward. Has unit norm.
         """
         self.position = position
+        if isinstance(position, list):
+            if len(position[-1]) == 2:
+                self.position = position[-1]
         self.direction = direction
 
     def __str__(self):
@@ -299,7 +302,7 @@ class QRoute(QComponent):
             # array 1,2
             pt = arr
         elif len(arr) > 1:
-            if not isinstance(arr, np.ndarray) and len(arr) == 2:
+            if not isinstance(arr, np.ndarray) and len(arr) == 2 and len(arr[0]) == 1:
                 # array 2,1
                 pt = arr
             else:

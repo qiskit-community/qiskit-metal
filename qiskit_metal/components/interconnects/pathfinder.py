@@ -153,7 +153,6 @@ class RoutePathfinder(RouteAnchors):
                 self.intermediate_pts = self.connect_astar_or_simple(meander_start_point, QRoutePoint(coord))[1:]
             else:
                 self.intermediate_pts += self.connect_astar_or_simple(self.get_tip(), QRoutePoint(coord))[1:]
-
         last_pt = self.connect_astar_or_simple(self.get_tip(), meander_end_point)[1:]
         if self.intermediate_pts:
             self.intermediate_pts += last_pt

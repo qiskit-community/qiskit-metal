@@ -262,7 +262,7 @@ class RouteMeander(QRoute):
             if start_meander_direction * asymmetry < 0:  # sideway direction
                 pts[0, abs(forward[0])] = start_pt.position[abs(forward[0])]
                 pts[1, abs(forward[0])] = start_pt.position[abs(forward[0])]
-            if end_meander_direction * asymmetry < 0:  # sideway direction
+            if end_meander_direction * asymmetry < 0:  # opposite sideway direction
                 pts[-2, abs(forward[0])] = end_pt.position[abs(forward[0])]
                 pts[-3, abs(forward[0])] = end_pt.position[abs(forward[0])]
 
@@ -270,10 +270,11 @@ class RouteMeander(QRoute):
 
         # Adjust the last meander to eliminate the terminating jog (dogleg)
         # TODO: currently only working with snapping. Consider option without snapping
-        print("prevent", start_pt.position, pts)
         if prevent_short_edges:
             x2fillet = 2 * self.p.fillet
-            # adjust the end first
+            # adjust the tail first
+            # the meander algorithm adds a final point in line with the tail, to cope with left-over
+            # this extra point needs to be moved or not, depending on the tail tip direction
             if abs(round(np.dot(end_pt.direction, sideways))) > 0:
                 skippoint = 0
             else:
@@ -284,17 +285,13 @@ class RouteMeander(QRoute):
             if 0 < abs(end_pt.position[1]-pts[-1, 1]) < x2fillet:
                 pts[-1-skippoint, 1-skippoint] = end_pt.position[1-skippoint]
                 pts[-2-skippoint, 1-skippoint] = end_pt.position[1-skippoint]
-            # repeat for the start
-            if abs(round(np.dot(start_pt.direction, sideways))) > 0:
-                skippoint = 1
-            else:
-                skippoint = 0
+            # repeat for the start. here we do not have the extra point
             if 0 < abs(start_pt.position[0]-pts[0, 0]) < x2fillet:
-                pts[0+skippoint, 0-skippoint] = start_pt.position[0-skippoint]
-                pts[1+skippoint, 0-skippoint] = start_pt.position[0-skippoint]
+                pts[0, 0] = start_pt.position[0]
+                pts[1, 0] = start_pt.position[0]
             if 0 < abs(start_pt.position[1]-pts[0, 1]) < x2fillet:
-                pts[0+skippoint, 1-skippoint] = start_pt.position[1-skippoint]
-                pts[1+skippoint, 1-skippoint] = start_pt.position[1-skippoint]
+                pts[0, 1] = start_pt.position[1]
+                pts[1, 1] = start_pt.position[1]
 
         return pts
 
