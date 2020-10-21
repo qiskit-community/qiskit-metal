@@ -255,6 +255,14 @@ class QRoute(QComponent):
                                self.intermediate_pts[-1] - self.intermediate_pts[-2])
 
     def del_colinear_points(self, inarray):
+        """Delete colinear points from the given array
+
+        Args:
+            inarray (list): List of points
+
+        Returns:
+            list: List of points without colinear points
+        """
         if len(inarray) <= 1:
             return
         else:

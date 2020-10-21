@@ -32,55 +32,10 @@ from pyEPR.ansys import parse_units # TODO: Check this works with design UNITS
 
 from qiskit_metal.draw.utility import to_vec3D
 from qiskit_metal.draw.basic import is_rectangle
-# from qiskit_metal.toolbox_metal.parsing import _parse_string_to_float as parse
 from qiskit_metal.renderers.renderer_base import QRenderer
+from qiskit_metal.toolbox_python.utility_functions import QCheckLength
 
 from ... import Dict
-
-
-def get_filletable_idxs(pts: List[Tuple], fradius: float, closed: bool) -> list:
-    """
-    Get list of indices of fillet-able vertices in pts.
-
-    Args:
-        pts (List[Tuple]): Ordered list of tuples of vertex coordinates
-        fradius (float): User-specified fillet radius from qgeometry table
-        closed (bool): Description of whether shape is open or closed
-
-    Returns:
-        list: List of indices of fillet-able vertices in pts
-    """
-    def rdist(j: int, k: int) -> float:
-        """
-        Simple calculation of distance between pts[j] and pts[k].
-        Rounds to 0.1 nm precision (10 ** -7 mm).
-
-        Args:
-            j (int): Index of one point in pts
-            k (int): Index of second point in pts
-
-        Returns:
-            float: Euclidean distance between pts[j] and pts[k] rounded to nearest 0.1 nm.
-        """
-        return round(abs(norm(np.array(pts[j]) - np.array(pts[k]))), 7)
-    n = len(pts)
-    if not closed:
-        # Cannot fillet endpoints if PolyLine is open
-        allowed = []
-        if n < 3:
-            return allowed
-        elif n == 3:
-            return [1] if min(rdist(0, 1), rdist(1, 2)) >= fradius else allowed
-        if (rdist(0, 1) >= fradius) and (rdist(1, 2) >= 2 * fradius):
-            allowed.append(1)
-        for i in range(2, n - 2):
-            if min(rdist(i - 1, i), rdist(i, i + 1)) >= 2 * fradius:
-                allowed.append(i)
-        if (rdist(n - 3, n - 2) >= 2 * fradius) and (rdist(n - 2, n - 1) >= fradius):
-            allowed.append(n - 2)
-        return allowed
-    # Can fillet all vertices if PolyLine is closed
-    return [i for i in range(n) if min(rdist(i - 1, i), rdist(i, (i + 1) % n)) >= 2 * fradius]
 
 
 class QAnsysRenderer(QRenderer):
@@ -281,7 +236,8 @@ class QAnsysRenderer(QRenderer):
 
         if qc_fillet > 0:
             qc_fillet = parse_units(qc_fillet)
-            idxs_to_fillet = get_filletable_idxs(points[:-1], qc_fillet, True)
+            checklength = QCheckLength(points, qc_fillet)
+            idxs_to_fillet = checklength.good_fillet_idxs_polygon
             if idxs_to_fillet:
                 self.modeler._fillet(qc_fillet, idxs_to_fillet, poly_ansys)
 
@@ -330,7 +286,8 @@ class QAnsysRenderer(QRenderer):
 
         if qc_fillet > 0:
             qc_fillet = parse_units(qc_fillet)
-            idxs_to_fillet = get_filletable_idxs(points, qc_fillet, False)
+            checklength = QCheckLength(points, qc_fillet)
+            idxs_to_fillet = checklength.good_fillet_idxs_linestring
             if idxs_to_fillet:
                 self.modeler._fillet(qc_fillet, idxs_to_fillet, poly_ansys)
 
