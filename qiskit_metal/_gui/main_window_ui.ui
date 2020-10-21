@@ -816,6 +816,12 @@
    <property name="windowTitle">
     <string>toolBar</string>
    </property>
+   <property name="iconSize">
+    <size>
+     <width>32</width>
+     <height>32</height>
+    </size>
+   </property>
    <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
    </attribute>
@@ -823,6 +829,8 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionGDS"/>
+   <addaction name="actionHFSS"/>
+   <addaction name="actionQ3D"/>
   </widget>
   <action name="actionSave">
    <property name="icon">
@@ -1265,6 +1273,24 @@
    </property>
    <property name="toolTip">
     <string>Open the GDS renderer.</string>
+   </property>
+  </action>
+  <action name="actionHFSS">
+   <property name="icon">
+    <iconset resource="main_window_rc.qrc">
+     <normaloff>:/renderer/_imgs/renderers/HFSS.png</normaloff>:/renderer/_imgs/renderers/HFSS.png</iconset>
+   </property>
+   <property name="text">
+    <string>HFSS</string>
+   </property>
+  </action>
+  <action name="actionQ3D">
+   <property name="icon">
+    <iconset resource="main_window_rc.qrc">
+     <normaloff>:/renderer/_imgs/renderers/Q3D.png</normaloff>:/renderer/_imgs/renderers/Q3D.png</iconset>
+   </property>
+   <property name="text">
+    <string>Q3D</string>
    </property>
   </action>
  </widget>
