@@ -22,6 +22,7 @@ import numpy as np
 from qiskit_metal import Dict
 from qiskit_metal.components.base import QRoutePoint
 from .anchored_path import RouteAnchors
+from qiskit_metal.toolbox_metal import math_and_overrides as mao
 
 # TODO: Stopping condition for A* in case it doesn't converge (time limit or user-provided exploration area?)
 
@@ -110,7 +111,7 @@ class RoutePathfinder(RouteAnchors):
             
             for disp in [np.array([0, 1]), np.array([0, -1]), np.array([1, 0]), np.array([-1, 0])]:
                 # Unit displacement in 4 cardinal directions
-                if np.dot(disp, direction) >= 0:
+                if mao.dot(disp, direction) >= 0:
                     # Ignore backward direction
                     curpt = current_path[-1]
                     nextpt = curpt + step_size * disp

@@ -25,6 +25,7 @@ from numpy.linalg import norm
 from collections import OrderedDict
 from qiskit_metal import Dict
 from qiskit_metal.components.base import QRoute, QRoutePoint
+from qiskit_metal.toolbox_metal import math_and_overrides as mao
 
 
 # TODO: Use minimum bounding boxes and alter bounding box method for CPWs.
@@ -157,7 +158,6 @@ class RouteAnchors(QRoute):
         Returns:
             List of vertices of a CPW going from start to end
         """
-
         avoid_collision = self.parse_options().advanced.avoid_collision
 
         start_direction = start_pt.direction
@@ -171,9 +171,9 @@ class RouteAnchors(QRoute):
 
         if (start[0] == end[0]) or (start[1] == end[1]):
             # Matching x or y coordinates -> check if endpoints can be connected with a single segment
-            if np.dot(start_direction, end - start) >= 0:
+            if mao.dot(start_direction, end - start) >= 0:
                 # Start direction and end - start for CPW must not be anti-aligned
-                if (end_direction is None) or (np.dot(end - start, end_direction) <= 0):
+                if (end_direction is None) or (mao.dot(end - start, end_direction) <= 0):
                     # If leadout + end has been reached, the single segment CPW must not be aligned with its direction
                     return np.empty((0, 2), float)
         else:
@@ -190,11 +190,15 @@ class RouteAnchors(QRoute):
                 startc2end = bool(self.unobstructed([start, corner2]) and self.unobstructed([corner2, end]))
             else:
                 startc1end = startc2end = True
-            if (np.dot(start_direction, corner1 - start) > 0) and startc1end:
-                if (end_direction is None) or (np.dot(end_direction, corner1 - end) > 0):
+            if (mao.dot(start_direction, corner1 - start) > 0) and startc1end:
+                # corner1 is "in front of" the start_pt
+                if (end_direction is None) or (mao.dot(end_direction, corner1 - end) >= 0):
+                    # corner1 is also "in front of" the end_pt
                     return np.expand_dims(corner1, axis=0)
-            elif (np.dot(start_direction, corner2 - start) > 0) and startc2end:
-                if (end_direction is None) or (np.dot(end_direction, corner2 - end) > 0):
+            elif (mao.dot(start_direction, corner2 - start) > 0) and startc2end:
+                # corner2 is "in front of" the start_pt
+                if (end_direction is None) or (mao.dot(end_direction, corner2 - end) >= 0):
+                    # corner2 is also "in front of" the end_pt
                     return np.expand_dims(corner2, axis=0)
             # In notation below, corners 3 and 4 correspond to
             # the ends of the segment bisecting the longer rectangle formed by start and end
@@ -218,25 +222,25 @@ class RouteAnchors(QRoute):
                         [corner6, end]))
             else:
                 startc3c4end = startc5c6end = True
-            if (np.dot(start_direction, stop_direction) < 0) and (
-                    np.dot(start_direction, corner3 - start) > 0) and startc3c4end:
-                if (end_direction is None) or (np.dot(end_direction, corner4 - end) > 0):
+            if (mao.dot(start_direction, stop_direction) < 0) and (
+                    mao.dot(start_direction, corner3 - start) > 0) and startc3c4end:
+                if (end_direction is None) or (mao.dot(end_direction, corner4 - end) > 0):
                     # Perfectly aligned S-shaped CPW
                     return np.vstack((corner3, corner4))
             # Relax constraints and check if imperfect 2-segment or S-segment works,
             # where "imperfect" means 1 or more dot products of directions
             # between successive segments is 0; otherwise return an empty list
-            if (np.dot(start_direction, corner1 - start) >= 0) and startc1end:
-                if (end_direction is None) or (np.dot(end_direction, corner1 - end) >= 0):
+            if (mao.dot(start_direction, corner1 - start) >= 0) and startc1end:
+                if (end_direction is None) or (mao.dot(end_direction, corner1 - end) >= 0):
                     return np.expand_dims(corner1, axis=0)
-            if (np.dot(start_direction, corner2 - start) >= 0) and startc2end:
-                if (end_direction is None) or (np.dot(end_direction, corner2 - end) >= 0):
+            if (mao.dot(start_direction, corner2 - start) >= 0) and startc2end:
+                if (end_direction is None) or (mao.dot(end_direction, corner2 - end) >= 0):
                     return np.expand_dims(corner2, axis=0)
-            if (np.dot(start_direction, corner3 - start) >= 0) and startc3c4end:
-                if (end_direction is None) or (np.dot(end_direction, corner4 - end) >= 0):
+            if (mao.dot(start_direction, corner3 - start) >= 0) and startc3c4end:
+                if (end_direction is None) or (mao.dot(end_direction, corner4 - end) >= 0):
                     return np.vstack((corner3, corner4))
-            if (np.dot(start_direction, corner5 - start) >= 0) and startc5c6end:
-                if (end_direction is None) or (np.dot(end_direction, corner6 - end) >= 0):
+            if (mao.dot(start_direction, corner5 - start) >= 0) and startc5c6end:
+                if (end_direction is None) or (mao.dot(end_direction, corner6 - end) >= 0):
                     return np.vstack((corner5, corner6))
         return None
 

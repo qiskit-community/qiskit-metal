@@ -108,7 +108,7 @@ class RouteMixed(RoutePathfinder, RouteMeander):
             type_connect = between_anchors[segment_num]
         else:
             type_connect = "S"
-        print(type_connect)
+        # print(type_connect)
         if type_connect == "S":
             return self.connect_simple
         if type_connect == "PF":

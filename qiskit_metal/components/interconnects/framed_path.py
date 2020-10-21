@@ -21,6 +21,7 @@ import numpy as np
 from numpy.linalg import norm
 from qiskit_metal import Dict
 from qiskit_metal.components.base import QRoute
+from qiskit_metal.toolbox_metal import math_and_overrides as mao
 
 class RouteFramed(QRoute):
 
@@ -100,14 +101,14 @@ class RouteFramed(QRoute):
         maxx, maxy = max(maxx1, maxx2), max(maxy1, maxy2)
 
         # Normdot is dot product of normal vectors
-        normdot = np.dot(n1, n2)
+        normdot = mao.dot(n1, n2)
 
         if normdot == -1:
             # Modify CPW endpoints to include mandatory w / 2 leadin plus user defined leadin
             m1ext = m1 + n1 * (w / 2 + leadstart)
             m2ext = m2 + n2 * (w / 2 + leadend)
             # Alignment is between displacement of modified positions (see above) and normal vector
-            alignment = np.dot((m2ext - m1ext) / norm(m2ext - m1ext), n1)
+            alignment = mao.dot((m2ext - m1ext) / norm(m2ext - m1ext), n1)
             if alignment == 1:
                 # Normal vectors point directly at each other; no obstacles in between
                 # Connect with single segment; generalizes to arbitrary angles with no snapping
@@ -244,7 +245,7 @@ class RouteFramed(QRoute):
                             self.__pts = self.connect_frame(connector1, connector2, w, 3, leadstart, leadend, 0, maxx + keepoutx)
         else:
             # Normal vectors pointing in same direction
-            if ((m1[0] == m2[0]) or (m1[1] == m2[1])) and (np.dot(n1, m2 - m1) == 0):
+            if ((m1[0] == m2[0]) or (m1[1] == m2[1])) and (mao.dot(n1, m2 - m1) == 0):
                 # Connect directly with 1 segment
                 self.__pts = self.connect_frame(connector1, connector2, w, 1, leadstart, leadend)
             elif n1[1] == 0:
@@ -311,10 +312,10 @@ class RouteFramed(QRoute):
                                 (endpin.middle + endpin.normal * (width / 2 + leadend))[1]])
             corner2 = np.array([(endpin.middle + endpin.normal * (width / 2 + leadend))[0],
                                 (startpin.middle + startpin.normal * (width / 2 + leadstart))[1]])
-            startc1 = np.dot(corner1 - (startpin.middle + startpin.normal * (width / 2 + leadstart)), startpin.normal)
-            endc1 = np.dot(corner1 - (endpin.middle + endpin.normal * (width / 2 + leadend)), endpin.normal)
-            startc2 = np.dot(corner2 - (startpin.middle + startpin.normal * (width / 2 + leadstart)), startpin.normal)
-            endc2 = np.dot(corner2 - (endpin.middle + endpin.normal * (width / 2 + leadend)), endpin.normal)
+            startc1 = mao.dot(corner1 - (startpin.middle + startpin.normal * (width / 2 + leadstart)), startpin.normal)
+            endc1 = mao.dot(corner1 - (endpin.middle + endpin.normal * (width / 2 + leadend)), endpin.normal)
+            startc2 = mao.dot(corner2 - (startpin.middle + startpin.normal * (width / 2 + leadstart)), startpin.normal)
+            endc2 = mao.dot(corner2 - (endpin.middle + endpin.normal * (width / 2 + leadend)), endpin.normal)
             # If both pins' normal vectors point towards one of the corners, pick that corner
             if (startc1 > 0) and (endc1 > 0):
                 midcoords = [corner1]

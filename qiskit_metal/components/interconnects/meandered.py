@@ -25,7 +25,7 @@ import numpy as np
 from qiskit_metal import Dict
 from qiskit_metal.toolbox_metal.parsing import is_true
 from qiskit_metal.components.base import QRoute, QRoutePoint
-
+from qiskit_metal.toolbox_metal import math_and_overrides as mao
 
 class RouteMeander(QRoute):
     """
@@ -148,8 +148,8 @@ class RouteMeander(QRoute):
         # Calculate lengths and meander number
         dist = end_pt.position - start_pt.position
         if snap:
-            length_direct = abs(norm(np.dot(dist, forward)))  # in the vertical direction
-            length_sideways = abs(norm(np.dot(dist, sideways)))  # in the orthogonal direction
+            length_direct = abs(norm(mao.dot(dist, forward)))  # in the vertical direction
+            length_sideways = abs(norm(mao.dot(dist, sideways)))  # in the orthogonal direction
         else:
             length_direct = norm(dist)
             length_sideways = 0
@@ -163,17 +163,17 @@ class RouteMeander(QRoute):
         # The start and end points can have 4 directions each. Depending on the direction
         # there might be not enough space for all the meanders, thus here we adjust
         # meander_number w.r.t. what the start and end points "directionality" allows
-        if round(np.dot(start_pt.direction, sideways) * np.dot(end_pt.direction, sideways)) > 0 and (meander_number % 2) == 0:
+        if round(mao.dot(start_pt.direction, sideways) * mao.dot(end_pt.direction, sideways)) > 0 and (meander_number % 2) == 0:
             # even meander_number is no good if roots have same orientation (w.r.t sideway)
             meander_number -= 1
-        elif round(np.dot(start_pt.direction, sideways) * np.dot(end_pt.direction, sideways)) < 0 and (
+        elif round(mao.dot(start_pt.direction, sideways) * mao.dot(end_pt.direction, sideways)) < 0 and (
                 meander_number % 2) == 1:
             # odd meander_number is no good if roots have opposite orientation (w.r.t sideway)
             meander_number -= 1
 
         # should the first meander go sideways or counter sideways?
-        start_meander_direction = round(np.dot(start_pt.direction, sideways), 10)
-        end_meander_direction = round(np.dot(end_pt.direction, sideways), 10)
+        start_meander_direction = mao.dot(start_pt.direction, sideways)
+        end_meander_direction = mao.dot(end_pt.direction, sideways)
         if start_meander_direction > 0:  # sideway direction
             first_meander_sideways = True
             # print("1-> ", ((meander_number % 2) == 0))
@@ -250,7 +250,7 @@ class RouteMeander(QRoute):
             pts[idx_side1_meander, :] = bot_pts[:-1 if odd else None]
             pts[idx_side2_meander, :] = top_pts[1:None if odd else -1]
 
-        # print("PTS->", pts)
+        # print("PTS_1->", pts, end_pt.position)
 
         pts += start_pt.position  # move to start position
 
@@ -266,16 +266,16 @@ class RouteMeander(QRoute):
                 pts[-2, abs(forward[0])] = end_pt.position[abs(forward[0])]
                 pts[-3, abs(forward[0])] = end_pt.position[abs(forward[0])]
 
-        # print("PTS_intermediate->", pts, end_pt.position)
+        # print("PTS_2->", pts, end_pt.position)
 
         # Adjust the last meander to eliminate the terminating jog (dogleg)
-        # TODO: currently only working with snapping. Consider option without snapping
+        # TODO: currently only working with snapping. Consider generalizing this to work without snapping
         if prevent_short_edges:
             x2fillet = 2 * self.p.fillet
             # adjust the tail first
             # the meander algorithm adds a final point in line with the tail, to cope with left-over
             # this extra point needs to be moved or not, depending on the tail tip direction
-            if abs(round(np.dot(end_pt.direction, sideways))) > 0:
+            if abs(mao.dot(end_pt.direction, sideways)) > 0:
                 skippoint = 0
             else:
                 skippoint = 1
@@ -292,6 +292,11 @@ class RouteMeander(QRoute):
             if 0 < abs(start_pt.position[1]-pts[0, 1]) < x2fillet:
                 pts[0, 1] = start_pt.position[1]
                 pts[1, 1] = start_pt.position[1]
+
+        # # Polish the points to fit to the exact length desired by the designer
+        # self.length
+
+        # print("PTS_3->", pts, end_pt.position)
 
         return pts
 
