@@ -1,6 +1,6 @@
 from ... import Dict
-from qiskit_metal.toolbox_python.utility_functions import are_there_potential_fillet_errors, can_write_to_path
 from qiskit_metal.toolbox_python.utility_functions import can_write_to_path
+from qiskit_metal.toolbox_python.utility_functions import QCheckLength
 import math
 from scipy.spatial import distance
 import os
@@ -581,7 +581,7 @@ class QGDSRenderer(QRenderer):
         all_idx_bad_fillet = dict()
 
         self.identify_vertex_not_to_fillet(
-            coords, a_fillet, all_idx_bad_fillet, len_coords)
+            coords, a_fillet, all_idx_bad_fillet)
 
         shorter_lines = dict()
 
@@ -663,7 +663,7 @@ class QGDSRenderer(QRenderer):
             shorter_lines[len_coords-1] = a_shapely
         return status, shorter_lines
 
-    def identify_vertex_not_to_fillet(self, coords: list, a_fillet: float, all_idx_bad_fillet: dict, len_coords: int):
+    def identify_vertex_not_to_fillet(self, coords: list, a_fillet: float, all_idx_bad_fillet: dict):
         """Use coords to denote segments that are too short.  In particular,
         when fillet'd, they will cause the appearance of incorrect fillet when graphed.
 
@@ -677,17 +677,20 @@ class QGDSRenderer(QRenderer):
             Key 'reduced_idx' will hold list of tuples.  The tuples correspond to index for list named "coords".
             Key 'midpoints' will hold list of tuples. The index of a tuple corresponds to two index within coords.
             For example, a index in midpoints is x, that coresponds midpoint of segment x-1 to x.
-
-            len_coords (int): The length of list coords.
         """
 
-        fillet_scale_factor = self.parse_value(
-            self.options.check_short_segments_by_scaling_fillet)
-        precision = float(self.parse_value(self.options.precision))
-        for_rounding = int(np.abs(np.log10(precision)))
+        # Depreciated since there is no longer a scale factor  given to QCheckLength.
+        # fillet_scale_factor = self.parse_value(
+        #     self.options.check_short_segments_by_scaling_fillet)
 
-        all_idx_bad_fillet['reduced_idx'] = are_there_potential_fillet_errors(
-            coords, a_fillet, fillet_scale_factor, for_rounding)
+        precision = float(self.parse_value(self.options.precision))
+
+        # For now, allow the user of GDS to provide the precision.
+        user_precision = int(np.abs(np.log10(precision)))
+        a_qcheck_length = QCheckLength(coords, a_fillet, user_precision)
+
+        all_idx_bad_fillet['reduced_idx'] = a_qcheck_length.get_range_of_vertex_to_not_fillet_linestring(
+            add_endpoints=True)
 
         midpoints = list()
         midpoints = [QGDSRenderer.midpoint_xy(coords[idx-1][0], coords[idx-1][1], vertex2[0], vertex2[1])
