@@ -65,6 +65,7 @@ class RouteMixed(RoutePathfinder, RouteMeander):
         """
         p = self.parse_options()
         anchors = p.anchors
+        between_anchors = p.between_anchors
 
         # Set the CPW pins and add the points/directions to the lead-in/out arrays
         self.set_pin("start")
@@ -73,6 +74,13 @@ class RouteMixed(RoutePathfinder, RouteMeander):
         # Align the lead-in/out to the input options set from the user
         start_point = self.set_lead("start")
         end_point = self.set_lead("end")
+
+        # approximate length needed for individual meanders
+        # the meander algorithm directly reads from self._length_segment
+        count_meanders_list = [1 if x == "M" else 0 for x in list(between_anchors.values())]
+        self._length_segment = ((self.p.total_length - (self.head.length + self.tail.length) \
+                               - self.free_manhattan_length_anchors()) / sum(count_meanders_list)) \
+                               + (self.free_manhattan_length_anchors() / len(count_meanders_list))
 
         # find the points to connect between each pair of anchors, or between anchors and leads
         # at first, store points "per segment" in a dictionary, so it is easier to apply length requirements

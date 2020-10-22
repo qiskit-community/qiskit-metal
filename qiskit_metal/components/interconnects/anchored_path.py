@@ -244,6 +244,17 @@ class RouteAnchors(QRoute):
                     return np.vstack((corner5, corner6))
         return None
 
+    def free_manhattan_length_anchors(self):
+        anchors = self.parse_options().anchors
+        reference = [self.head.get_tip().position]
+        reference.extend(list(anchors.values()))
+        reference.append(self.tail.get_tip().position)
+
+        length = 0
+        for i in range(1, len(reference)):
+            length += abs(reference[i][0]-reference[i-1][0])+abs(reference[i][1]-reference[i-1][1])
+        return length
+
     def make(self):
         """
         Generates path from start pin to end pin.

@@ -83,6 +83,9 @@ class RouteMeander(QRoute):
         meander_start_point = self.set_lead("start")
         meander_end_point = self.set_lead("end")
 
+        # approximate length needed for the meander
+        self._length_segment = self.p.total_length - (self.head.length + self.tail.length)
+
         if snap:
             # TODO: adjust the terminations to be sure the meander connects well on both ends
             # start_points.align_to(end_points)
@@ -135,7 +138,7 @@ class RouteMeander(QRoute):
         # TODO: the entire code below relies on component input leads objects and length, how to generalize?
 
         # Meander length
-        length_meander = self.p.total_length - (self.head.length + self.tail.length)
+        length_meander = self._length_segment
         if self.p.snap:
             # handle y distance
             length_meander -= 0  # (end.position - endm.position)[1]
@@ -164,10 +167,10 @@ class RouteMeander(QRoute):
         # The start and end points can have 4 directions each. Depending on the direction
         # there might be not enough space for all the meanders, thus here we adjust
         # meander_number w.r.t. what the start and end points "directionality" allows
-        if round(mao.dot(start_pt.direction, sideways) * mao.dot(end_pt.direction, sideways)) > 0 and (meander_number % 2) == 0:
+        if mao.round(mao.dot(start_pt.direction, sideways) * mao.dot(end_pt.direction, sideways)) > 0 and (meander_number % 2) == 0:
             # even meander_number is no good if roots have same orientation (w.r.t sideway)
             meander_number -= 1
-        elif round(mao.dot(start_pt.direction, sideways) * mao.dot(end_pt.direction, sideways)) < 0 and (
+        elif mao.round(mao.dot(start_pt.direction, sideways) * mao.dot(end_pt.direction, sideways)) < 0 and (
                 meander_number % 2) == 1:
             # odd meander_number is no good if roots have opposite orientation (w.r.t sideway)
             meander_number -= 1
@@ -251,16 +254,17 @@ class RouteMeander(QRoute):
             pts[idx_side1_meander, :] = bot_pts[:-1 if odd else None]
             pts[idx_side2_meander, :] = top_pts[1:None if odd else -1]
 
-        # print("PTS_1->", pts, end_pt.position)
-
         pts += start_pt.position  # move to start position
 
-        # TODO: the below, changes the CPW total length. Need to account for this earlier
+        # print("PTS_1->", start_pt.position, pts, end_pt.position)
+
         if snap:
-            # the right-most root_pts need to be aligned with the end.position point
             if mao.dot(start_pt.direction, end_pt.direction) >= 0:
+                # the right-most root_pts need to be forward aligned with the end.position point
                 pts[-1, abs(forward[0])] = end_pt.position[abs(forward[0])]
             else:
+                # the right-most root_pts need to be sideways aligned with the end.position point
+                # and forward aligned with the previous meander point
                 pts[-1, abs(forward[0])] = pts[-2, abs(forward[0])]
                 pts[-1, abs(forward[0])-1] = end_pt.position[abs(forward[0])-1]
         if abs(asymmetry) > abs(length_perp):
@@ -272,14 +276,14 @@ class RouteMeander(QRoute):
                 if end_meander_direction * asymmetry < 0:  # opposite sideway direction
                     pts[-2, abs(forward[0])] = end_pt.position[abs(forward[0])]
                     pts[-3, abs(forward[0])] = end_pt.position[abs(forward[0])]
-            else:
-                # start and end point directions are pointing in opposite direction or over 90 degrees apart
-                if start_meander_direction * asymmetry < 0:  # sideway direction
-                    pts[0, abs(forward[0])] = start_pt.position[abs(forward[0])]
-                    pts[1, abs(forward[0])] = start_pt.position[abs(forward[0])]
-                if end_meander_direction * asymmetry < 0:  # opposite sideway direction
-                    pts[-1, abs(forward[0])] = end_pt.position[abs(forward[0])]
-                    pts[-1, abs(forward[0])-1] = pts[-2, abs(forward[0])]
+            # else:
+            #     # start and end point directions are pointing in opposite direction or over 90 degrees apart
+            #     if start_meander_direction * asymmetry < 0:  # sideway direction
+            #         pts[0, abs(forward[0])] = start_pt.position[abs(forward[0])]
+            #         pts[1, abs(forward[0])] = start_pt.position[abs(forward[0])]
+            #     if end_meander_direction * asymmetry < 0:  # opposite sideway direction
+            #         pts[-1, abs(forward[0])] = end_pt.position[abs(forward[0])]
+            #         pts[-1, abs(forward[0])-1] = pts[-2, abs(forward[0])]
 
 
         # print("PTS_2->", start_pt.position, pts, end_pt.position)
@@ -309,12 +313,36 @@ class RouteMeander(QRoute):
                 pts[0, 1] = start_pt.position[1]
                 pts[1, 1] = start_pt.position[1]
 
-        # # Polish the points to fit to the exact length desired by the designer
-        # self.length
-
         # print("PTS_3->", start_pt.position, pts, end_pt.position)
 
         return pts
+
+    def adjust_length(self, delta_length, pts, start_pt: QRoutePoint, end_pt: QRoutePoint) -> np.ndarray:
+        # this method is run after the first pass to the meander, before self.pts_intermediate is finalized
+        # inputs are the points of the specific meander
+        # delta_length needs to be computed in the make function for both mixed and meandered
+
+        #recover the direction
+        snap = is_true(self.p.snap)  # snap to xy grid
+        forward, sideways = self.get_unit_vectors(start_pt, end_pt, snap)
+
+        # calculate the slack to distribute
+        length_meander = self._length_segment - self.length()
+
+        # if start_pt.position is below axes + shift - 2xfillet &  first_meander_sideways
+            # else block first mender
+        # if end_pt.position is below axes + shift - 2xfillet &  last_meander_sideways
+            # else block last mender
+        # if start_pt.position is above axes - shift + 2xfillet &  not first_meander_sideways
+            # else block first mender
+        # if end_pt.position is above axes - shift + 2xfillet &  not last_meander_sideways
+            # else block last mender
+
+        # then divide the slack amongst all points and move them sideways
+
+        # Meander length
+        length_meander = self.p.total_length - (self.head.length + self.tail.length)
+
 
     @staticmethod
     def get_index_for_side1_meander(num_root_pts: int):
