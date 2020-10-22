@@ -41,8 +41,8 @@ class GDSRendTest(QComponent):
         """Build the component"""
 
         #square donut
-        rect_base = draw.shapely.geometry.box(-0.2, -0.2, 0.2, 0.2)
-        rect_hole = draw.shapely.geometry.box(-0.1, -0.1, 0.1, 0.1)
+        rect_base = draw.shapely.geometry.box(-0.199999999999995, -0.2, 0.2, 0.2)
+        rect_hole = draw.shapely.geometry.box(-0.1, -0.1, 0.1, 0.0999999999995)
 
         square_donut = draw.subtract(rect_base, rect_hole)
 
@@ -74,10 +74,15 @@ class GDSRendTest(QComponent):
         test_cut = draw.subtract(rect_base,rect_hole_5)
         test_cut = draw.translate(test_cut,0,-1)
         
+        #linstring check
+        line_tester = draw.LineString([(0.400000000002,-0.4), (0.4, 0.4), (0.5,0.4),(0.5,0.5)])
         #Add to qgeometry
-        self.add_qgeometry('poly', {'square_donut':square_donut})
-        self.add_qgeometry('poly', {'square_donut2':square_donut_2})
+        self.add_qgeometry('path', {'line_test':line_tester}, width=0.02)
+        self.add_qgeometry('poly', {'square_donut':square_donut,'square_donut2':square_donut_2})
+
+        #self.add_qgeometry('poly', {'square_donut2':square_donut_2})
         self.add_qgeometry('poly', {'HalfMoon_L':square_donut_3L})
         self.add_qgeometry('poly', {'HalfMoon_R':square_donut_3R})
         self.add_qgeometry('poly', {'Unioned_HalfMoon':square_donut_4})
-        #self.add_qgeometry('poly', {'MultiPoly':test_cut})
+        self.add_qgeometry('poly', {'MultiPoly':test_cut})
+

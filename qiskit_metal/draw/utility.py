@@ -165,6 +165,28 @@ def get_all_component_bounds(components: dict, filter_obj=Polygon):
     return (x_min, y_min, x_max, y_max)
 
 
+def round_coordinate_sequence(geom_ref, precision):
+    """Rounds the vertices of a coordinate sequence (both interior
+    and exterior)
+
+    Arguments:
+        geometry (shapely.geometry) : A shapely geometry, should not be a MultiPoly
+        precison (int) : The decimal precision to round to (eg. 3 -> 0.001)
+    Returns:
+        shapely.geometry : A shapely geometry with rounded coordinates
+    """
+    if isinstance(geom_ref, shapely.geometry.linestring.LineString):
+        temp_line = np.around(geom_ref.coords[:], precision).tolist()
+        geom_ref.coords = temp_line
+    else:
+        temp_ext = np.around(geom_ref.exterior.coords[:], precision).tolist()
+        geom_ref.exterior.coords = temp_ext
+        for x in range(0, len(geom_ref.interiors)):
+            temp_int = np.around(geom_ref.interiors[x].coords[:], precision).tolist()
+            geom_ref.interiors[x].coords = temp_int
+
+    return geom_ref
+
 #########################################################################
 # POINT LIST FUNCTIONS
 

@@ -34,7 +34,7 @@ from geopandas import GeoDataFrame, GeoSeries
 
 from .. import Dict
 from ..draw import BaseGeometry
-
+from qiskit_metal.draw.utility import round_coordinate_sequence
 
 from shapely.geometry.multipolygon import MultiPolygon #for avoiding MultiPolygons
 
@@ -485,19 +485,25 @@ class QGeometryTables(object):
                               f' and layer={layer}, and options={other_options}')
 
         #Checks if (any) of the geometry are MultiPolygons, and breaks them up into
-        #individual polygons
+        #individual polygons. Rounds the coordinate sequences of those values to avoid
+        #numerical errors.
+        rounding_val = 9 #NOTE: Replace with the design.options.precision value or equivalent when set
         new_dict = Dict()
         for key, item in geometry.items():
             if isinstance(geometry[key], MultiPolygon):
                 temp_multi = geometry[key]
                 shape_count = 0
                 for shape_temp in temp_multi.geoms:
-                    new_dict[key+'_'+str(shape_count)] = shape_temp
+                    new_dict[key+'_'+str(shape_count)] = round_coordinate_sequence(shape_temp, rounding_val)
                     shape_count += 1
             else:
-                new_dict[key] = item
+                new_dict[key] = round_coordinate_sequence(item, rounding_val)
 
         geometry = new_dict
+
+        #Round the values of vertices to avoid numerical errors
+        #Goes through the exterior and interior vertices of the geometries to round the coordinates
+        #for 
 
         # Create options TODO: Might want to modify this (component_name -> component_id)
         # Give warning if length is to be fillet's and not long enough.
