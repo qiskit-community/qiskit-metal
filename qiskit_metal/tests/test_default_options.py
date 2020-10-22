@@ -12,9 +12,9 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-#pylint: disable-msg=unnecessary-pass
+# pylint: disable-msg=unnecessary-pass
 #pylint: disable-msg=pointless-statement
-#pylint: disable-msg=broad-except
+# pylint: disable-msg=broad-except
 
 """
 Qiskit Metal unit tests components functionality.
@@ -27,6 +27,7 @@ import unittest
 
 from qiskit_metal._defaults import DefaultMetalOptions
 from qiskit_metal._defaults import DefaultOptionsRenderer
+
 
 class TestDefautOptions(unittest.TestCase):
     """
@@ -76,8 +77,8 @@ class TestDefautOptions(unittest.TestCase):
         try:
             DefaultOptionsRenderer(draw_substrate={}, bounding_box={})
         except Exception:
-            self.fail("DefaultOptionsRenderer(draw_substrate={}, bounding_box={}) failed")
-
+            self.fail(
+                "DefaultOptionsRenderer(draw_substrate={}, bounding_box={}) failed")
 
     def test_default_options_create(self):
         """
@@ -87,7 +88,7 @@ class TestDefautOptions(unittest.TestCase):
         _options = DefaultMetalOptions()
 
         # Test all elements of the result data against expected data
-        self.assertEqual(len(_options), 4)
+        self.assertEqual(len(_options), 5)
         self.assertEqual('mm', _options['units'])
         self.assertEqual('main', _options['chip'])
 
@@ -139,7 +140,8 @@ class TestDefautOptions(unittest.TestCase):
 
         self.assertEqual(len(_draw_substrate), 9)
         self.assertEqual(_draw_substrate['pos_xy'], "['0um', '0um']")
-        self.assertEqual(_draw_substrate['size'], "['8.5mm', '6.5mm', '-0.750mm']")
+        self.assertEqual(_draw_substrate['size'],
+                         "['8.5mm', '6.5mm', '-0.750mm']")
         self.assertEqual(_draw_substrate['elevation'], 0)
         self.assertEqual(_draw_substrate['ground_plane'], 'ground_plane')
         self.assertEqual(_draw_substrate['substrate'], 'substrate')
@@ -172,6 +174,7 @@ class TestDefautOptions(unittest.TestCase):
         # Test all elements of the result data against expected data
         self.assertEqual(1234567, _options.default_options['garbage_numeric'])
         self.assertEqual('aloha', _options.default_options['garbage_textual'])
+
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
