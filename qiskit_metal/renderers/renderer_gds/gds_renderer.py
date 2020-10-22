@@ -916,26 +916,31 @@ class QGDSRenderer(QRenderer):
 
 ############
     def import_junctions_to_one_cell(self, chip_name: str, lib: gdspy.library, chip_only_top: gdspy.library.Cell):
+        """Given lib, import the gds file from default options.  Based on the cell name in QGeometry table,
+        import the cell from the gds file and place it in hierarchy of chip_only_top. In addition, the linestring
+        should be two vertexes, and denotes two things.  1. The midpoint of segment is the the center of cell. 
+        2. The angle made by second tuple - fist tuple  for delta y/ delta x is used to rotate the cell. 
 
+        Args:
+            chip_name (str): The name of chip.
+            lib (gdspy.library): The library use to export the entire QDesign
+            chip_only_top (gdspy.library.Cell):  The cell used for just chip_name. 
+        """
+        # Make sure the file exists, before trying to read it.
         status, directory_name = can_write_to_path(self.options.path_filename)
         if status:
             lib.read_gds(self.options.path_filename, units='convert')
             for row in self.chip_info[chip_name]['junction'].itertuples():
-                # Make sure the file exists, before trying to read it.
-                # row.qgeometry
-                # center = # (x,y)
-                # rotation = #degrees
-                # chip_only_top.add(gdspy.CellReference(row.cell_name, ))
                 [(minx, miny), (maxx, maxy)] = row.geometry.coords[:]
                 center = QGDSRenderer.midpoint_xy(
                     minx, miny, maxx, maxy)
 
-                # Calculate the rotation here.
+                rotation = math.degrees(math.atan2((maxy-miny), (maxx-minx)))
 
                 a_cell = lib.extract(row.gds_cell_name)
 
                 chip_only_top.add(gdspy.CellReference(
-                    a_cell, origin=center))
+                    a_cell, origin=center, rotation=rotation))
 
         else:
             self.logger.warning(f'Not able to find file:"{self.options.path_filename}".  '
