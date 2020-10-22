@@ -576,6 +576,7 @@ class QGeometryTables(object):
                         coords, fillet, fillet_scalar,  fillet_comparison_precision)
                     if len(range_vertex_of_short_segments) > 0:
                         text_id = self.design._components[component_name]._name
+
                         self.logger.warning(
                             f'For {kind} table, component={text_id}, key={key}'
                             f' has short segments. Values in {range_vertex_of_short_segments} '
