@@ -166,7 +166,7 @@ class TestRenderers(unittest.TestCase):
         element_extensions = renderer.element_extensions
         self.assertEqual(len(element_extensions), 1)
         self.assertEqual(len(element_extensions['junction']), 1)
-        self.assertEqual(element_extensions['junction']['path_filename'], str)
+        self.assertEqual(element_extensions['junction']['cell_name'], str)
 
     def test_renderer_gdsrenderer_update_units(self):
         """
