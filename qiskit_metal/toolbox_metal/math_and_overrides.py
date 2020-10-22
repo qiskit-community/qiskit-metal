@@ -32,3 +32,7 @@ def set_decimal_precision(value):
 def dot(vector_1, vector_2):
     # idea of this function is to standardize the dot precision
     return np.round(np.dot(vector_1, vector_2), decimal_precision)
+
+def round(number):
+    # idea of this function is to standardize the dot precision
+    return np.round(number, decimal_precision)

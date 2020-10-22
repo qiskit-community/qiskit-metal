@@ -408,9 +408,10 @@ class QRoute(QComponent):
         # cover case where there is no tail defined (floating end)
         if self.tail is None:
             polished = beginning
-        polished = np.concatenate([
-            beginning,
-            self.tail.pts[::-1]], axis=0)
+        else:
+            polished = np.concatenate([
+                beginning,
+                self.tail.pts[::-1]], axis=0)
 
         polished = self.del_colinear_points(polished)
 

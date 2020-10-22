@@ -113,6 +113,7 @@ class RouteMeander(QRoute):
 
         ################################################################
         # Setup
+        # print(self.name, start_pt, end_pt, self.get_points())
 
         # Parameters
         meander_opt = self.p.meander
@@ -257,16 +258,31 @@ class RouteMeander(QRoute):
         # TODO: the below, changes the CPW total length. Need to account for this earlier
         if snap:
             # the right-most root_pts need to be aligned with the end.position point
-            pts[-1, abs(forward[0])] = end_pt.position[abs(forward[0])]
+            if mao.dot(start_pt.direction, end_pt.direction) >= 0:
+                pts[-1, abs(forward[0])] = end_pt.position[abs(forward[0])]
+            else:
+                pts[-1, abs(forward[0])] = pts[-2, abs(forward[0])]
+                pts[-1, abs(forward[0])-1] = end_pt.position[abs(forward[0])-1]
         if abs(asymmetry) > abs(length_perp):
-            if start_meander_direction * asymmetry < 0:  # sideway direction
-                pts[0, abs(forward[0])] = start_pt.position[abs(forward[0])]
-                pts[1, abs(forward[0])] = start_pt.position[abs(forward[0])]
-            if end_meander_direction * asymmetry < 0:  # opposite sideway direction
-                pts[-2, abs(forward[0])] = end_pt.position[abs(forward[0])]
-                pts[-3, abs(forward[0])] = end_pt.position[abs(forward[0])]
+            if mao.dot(start_pt.direction, end_pt.direction) >= 0:
+                # start and end point directions are pointing in the same direction or up to 90 degrees apart
+                if start_meander_direction * asymmetry < 0:  # sideway direction
+                    pts[0, abs(forward[0])] = start_pt.position[abs(forward[0])]
+                    pts[1, abs(forward[0])] = start_pt.position[abs(forward[0])]
+                if end_meander_direction * asymmetry < 0:  # opposite sideway direction
+                    pts[-2, abs(forward[0])] = end_pt.position[abs(forward[0])]
+                    pts[-3, abs(forward[0])] = end_pt.position[abs(forward[0])]
+            else:
+                # start and end point directions are pointing in opposite direction or over 90 degrees apart
+                if start_meander_direction * asymmetry < 0:  # sideway direction
+                    pts[0, abs(forward[0])] = start_pt.position[abs(forward[0])]
+                    pts[1, abs(forward[0])] = start_pt.position[abs(forward[0])]
+                if end_meander_direction * asymmetry < 0:  # opposite sideway direction
+                    pts[-1, abs(forward[0])] = end_pt.position[abs(forward[0])]
+                    pts[-1, abs(forward[0])-1] = pts[-2, abs(forward[0])]
 
-        # print("PTS_2->", pts, end_pt.position)
+
+        # print("PTS_2->", start_pt.position, pts, end_pt.position)
 
         # Adjust the last meander to eliminate the terminating jog (dogleg)
         # TODO: currently only working with snapping. Consider generalizing this to work without snapping
@@ -279,24 +295,24 @@ class RouteMeander(QRoute):
                 skippoint = 0
             else:
                 skippoint = 1
-            if 0 < abs(end_pt.position[0]-pts[-1, 0]) < x2fillet:
+            if 0 < abs(mao.round(end_pt.position[0]-pts[-1, 0])) < x2fillet:
                 pts[-1-skippoint, 0-skippoint] = end_pt.position[0-skippoint]
                 pts[-2-skippoint, 0-skippoint] = end_pt.position[0-skippoint]
-            if 0 < abs(end_pt.position[1]-pts[-1, 1]) < x2fillet:
+            if 0 < abs(mao.round(end_pt.position[1]-pts[-1, 1])) < x2fillet:
                 pts[-1-skippoint, 1-skippoint] = end_pt.position[1-skippoint]
                 pts[-2-skippoint, 1-skippoint] = end_pt.position[1-skippoint]
             # repeat for the start. here we do not have the extra point
-            if 0 < abs(start_pt.position[0]-pts[0, 0]) < x2fillet:
+            if 0 < abs(mao.round(start_pt.position[0]-pts[0, 0])) < x2fillet:
                 pts[0, 0] = start_pt.position[0]
                 pts[1, 0] = start_pt.position[0]
-            if 0 < abs(start_pt.position[1]-pts[0, 1]) < x2fillet:
+            if 0 < abs(mao.round(start_pt.position[1]-pts[0, 1])) < x2fillet:
                 pts[0, 1] = start_pt.position[1]
                 pts[1, 1] = start_pt.position[1]
 
         # # Polish the points to fit to the exact length desired by the designer
         # self.length
 
-        # print("PTS_3->", pts, end_pt.position)
+        # print("PTS_3->", start_pt.position, pts, end_pt.position)
 
         return pts
 
