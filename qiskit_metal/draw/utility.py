@@ -530,7 +530,7 @@ class Vector:
         return float(norm(vec)) < tol*np.finfo(float).eps
 
     @staticmethod
-    def getdist(u: Union[tuple, list, np.ndarray], v: Union[tuple, list, np.ndarray], precision: int = 9) -> float:
+    def get_distance(u: Union[tuple, list, np.ndarray], v: Union[tuple, list, np.ndarray], precision: int = 9) -> float:
         """
         Get the Euclidean distance between points u and v to the specified precision.
 

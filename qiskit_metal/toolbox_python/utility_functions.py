@@ -370,7 +370,7 @@ def rdist(coords: list, j: int, k: int, precision: int = 9) -> float:
     Returns:
         float: Euclidean distance between coords[j] and coords[k] rounded to specified self.precision.
     """
-    return Vector.getdist(coords[j], coords[k], precision)
+    return Vector.get_distance(coords[j], coords[k], precision)
 
 def bad_fillet_idxs(coords: list, fradius: float, precision: int = 9, isclosed: bool = False) -> list:
     """
