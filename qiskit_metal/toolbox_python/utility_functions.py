@@ -41,8 +41,8 @@ from numpy.linalg import norm
 __all__ = ['copy_update', 'dict_start_with', 'data_frame_empty_typed', 'clean_name',
            'enable_warning_traceback', 'get_traceback', 'print_traceback_easy', 'log_error_easy',
            'monkey_patch', 'can_write_to_path', 'can_write_to_path_with_warning',
-           'QCheckLength']
-
+           'toggle_numbers', 'rdist', 'bad_fillet_idxs', 'compress_vertex_list',
+           'get_range_of_vertex_to_not_fillet']
 
 ####################################################################################
 # Dictionary related
@@ -123,6 +123,7 @@ def dict_start_with(my_dict, start_with, as_=list):
 #     from pyEPR.toolbox import display_dfs
 #     res_html = display_dfs(*res, do_display=do_display)  #why not just directly call the function DataFrame_display_side_by_side(*args) ?
 #     return res, res_html
+
 
 def data_frame_empty_typed(column_types: dict):
     """Creates and empty DataFrame with dtypes for each column given
@@ -356,6 +357,7 @@ def toggle_numbers(numbers: list, totlength: int) -> list:
                     return complement + [k for k in range(i + 1, totlength)]
     return complement
 
+
 def rdist(coords: list, j: int, k: int, precision: int = 9) -> float:
     """
     Simple calculation of distance between coords[j] and coords[k], where coords is a list of tuples.
@@ -371,6 +373,7 @@ def rdist(coords: list, j: int, k: int, precision: int = 9) -> float:
         float: Euclidean distance between coords[j] and coords[k] rounded to specified self.precision.
     """
     return Vector.get_distance(coords[j], coords[k], precision)
+
 
 def bad_fillet_idxs(coords: list, fradius: float, precision: int = 9, isclosed: bool = False) -> list:
     """
@@ -404,7 +407,8 @@ def bad_fillet_idxs(coords: list, fradius: float, precision: int = 9, isclosed: 
         badlist.append(length - 2)
     return badlist
 
-def get_range_of_vertex_to_not_fillet_linestring(coords: list, fradius: float, precision: int = 9, add_endpoints: bool = True) -> list:
+
+def get_range_of_vertex_to_not_fillet(coords: list, fradius: float, precision: int = 9, add_endpoints: bool = True) -> list:
     """
     Provide a list of tuples for a list of integers that correspond to coords.
     Each tuple corresponds to a range of indexes within coords.  A range denotes vertexes that
@@ -424,7 +428,8 @@ def get_range_of_vertex_to_not_fillet_linestring(coords: list, fradius: float, p
         list: A compressed list of tuples.  So, it combines adjacent vertexes into a longer one.
     """
     length = len(coords)
-    # which_vertex_has_potential_fillet_errors() has been replace by method below.
+
+    # isclosed=False is for LineString
     unique_vertex = bad_fillet_idxs(coords, fradius, precision, isclosed=False)
 
     if add_endpoints:
@@ -441,6 +446,7 @@ def get_range_of_vertex_to_not_fillet_linestring(coords: list, fradius: float, p
     compressed_vertex = compress_vertex_list(unique_vertex)
 
     return compressed_vertex
+
 
 def compress_vertex_list(individual_vertex: list) -> list:
     """
