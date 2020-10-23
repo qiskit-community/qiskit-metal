@@ -38,7 +38,7 @@ class DefaultMetalOptions(Dict):
         generic (Dict): Dictionary of options (default: None)
     """
 
-    #TODO: not sure what example genetic means? can we find a better name
+    # TODO: not sure what example genetic means? can we find a better name
     default_generic = Dict(
         units='mm',  # Units in which all dimenions are converted as floats
         chip='main',  # Default chip used thorugh codebase, wehn one is not specified
@@ -50,6 +50,9 @@ class DefaultMetalOptions(Dict):
                 cpw_gap='6 um'
             )
         ),
+
+        # Used for numpy.round()
+        PRECISION=9,
 
         # Geometric
         geometry=Dict(
