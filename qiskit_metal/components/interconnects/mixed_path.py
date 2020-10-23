@@ -113,7 +113,6 @@ class RouteMixed(RoutePathfinder, RouteMeander):
         # refine length of meanders
         total_delta_length = self.p.total_length - self.length
         individual_delta_length = total_delta_length / len(meanders)
-        print("len pre", self.length, len(meanders), individual_delta_length)
         for m in meanders:
             arc_pts = dictionary_intermediate_pts[m][:-1]
             if m == 0:
@@ -129,7 +128,6 @@ class RouteMixed(RoutePathfinder, RouteMeander):
             dictionary_intermediate_pts[m] = np.concatenate([dictionary_intermediate_pts[m], [anchors[m]]], axis=0)
         self.intermediate_pts = np.concatenate(list(dictionary_intermediate_pts.values()), axis=0)
 
-        print("len post", self.length, len(meanders), individual_delta_length)
         # Make points into elements
         self.make_elements(self.get_points())
 

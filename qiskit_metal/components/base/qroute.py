@@ -225,7 +225,6 @@ class QRoute(QComponent):
         Return:
             QRoutePoint: last point in the QRouteLead (self.head/tail)
         """
-        # TODO: jira case #300 should remove the need for this line, and only use self.p
         p = self.parse_options()
 
         # First define which lead you intend to modify
@@ -261,7 +260,6 @@ class QRoute(QComponent):
         Return:
             QRoutePoint: last point in the QRouteLead (self.head/tail)
         """
-        # TODO: jira case #300 should remove the need for this line, and only use self.p
         p = self.parse_options()
         # First define which lead you intend to modify
         if name == self.start_pin_name:
@@ -452,7 +450,6 @@ class QRoute(QComponent):
         if end_pt.direction is not None:
             # end_pt already has a direction (not an anchor?), so do nothing
             return
-        # TODO: is this truly the best rule to apply to determine the anchor direction?
         # Current rule: stop_direction aligned with longer edge of the rectangle connecting start_pt and end_pt
         start = start_pt.position
         end = end_pt.position
@@ -460,7 +457,6 @@ class QRoute(QComponent):
         offsetx = abs(end[0] - start[0])
         # Absolute value of displacement between start and end in y direction
         offsety = abs(end[1] - start[1])
-        # TODO: make the following and the entire class able to support other orientations than [1,0][0,1]
         if offsetx >= offsety:  # "Wide" rectangle -> end_arrow points along x
             assigned_direction = np.array([end[0] - start[0], 0])
         else:  # "Tall" rectangle -> end_arrow points along y
@@ -493,55 +489,6 @@ class QRoute(QComponent):
                                fillet=p.fillet,
                                layer=p.layer,
                                subtract=True)
-
-    # def route_to_align(self, concurrent_array):
-    #     """
-    #     THIS METHOD IS OUTDATED AND THUS NOT FUNCTIONING
-    #
-    #     TODO: Develop code to make sure the tip of the leads align on one of the axes
-    #     """
-    #     print(self.points[-1])
-    #     print(concurrent_array.positions[-1])
-    #
-    #     # determine relative position
-    #     concurrent_position = ""
-    #     oriented_distance = concurrent_array.positions[-1] - self.points[-1]
-    #     if oriented_distance[1] != 0: # vertical displacement
-    #         concurrent_position += ["N", "S"][oriented_distance[1] < 0]
-    #     if oriented_distance[0] != 0: # horizontal displacement
-    #         concurrent_position += ["E", "W"][oriented_distance[0] < 0]
-    #     else:
-    #         return # points already aligned
-    #
-    #     # TODO implement vertical alignment. Only using horizontal alignment for now
-    #     # if oriented_distance[0] > oriented_distance[1]:
-    #     #     # Vertical alignment
-    #     #     pass
-    #     # else:
-    #     #     # horizontal alignment
-    #     #     pass # code below
-    #
-    #     if np.dot(self.head_direction, concurrent_array.directions[-1]) == -1:
-    #         # points are facing each other or opposing each other
-    #         if (("E" in concurrent_position and self.head_direction[0] > 0)
-    #                 or ("N" in concurrent_position and self.head_direction[1] > 0)):
-    #             # facing each other
-    #             pass
-    #         else:
-    #             # opposing each other
-    #             pass
-    #     elif np.dot(self.head_direction, concurrent_array.directions[-1]) == 1:
-    #         # points are facing the same direction
-    #         if (("E" in concurrent_position and self.head_direction[0] > 0)
-    #                 or ("N" in concurrent_position and self.head_direction[1] > 0)):
-    #             # facing each other
-    #             pass
-    #         else:
-    #             # opposing each other
-    #             pass
-    #     else:
-    #         # points are orthogonal to ach other
-    #         pass
 
 
 class QRouteLead:
@@ -576,8 +523,6 @@ class QRouteLead:
             QRoutePoint: last point (for now the single point) in the QRouteLead
             The values are numpy arrays with two float points each.
         """
-        # TODO: widely repeated code. Transform pin into class and add method
-        #  pin.get_locale()->position,direction, to execute below.
         position = pin['middle']
         direction = pin['normal']
 
@@ -634,56 +579,3 @@ class QRouteLead:
         if self.pts.ndim == 1:
             return QRoutePoint(self.pts, self.direction)
         return QRoutePoint(self.pts[-1], self.direction)
-
-    # def align_to(self, concurrent_array):
-    #     """
-    #     THIS METHOD IS OUTDATED AND THUS NOT FUNCTIONING
-    #
-    #     TODO: Develop code to make sure the tip of the leads align on one of the axes
-    #     """
-    #
-    #     # determine relative position
-    #     concurrent_position = ""
-    #     oriented_distance = concurrent_array.positions[-1] - self.positions[-1]
-    #     if oriented_distance[1] > 0:
-    #         concurrent_position = "N"
-    #     elif oriented_distance[1] < 0:
-    #         concurrent_position = "S"
-    #     else:
-    #         return  # points already aligned
-    #     if oriented_distance[0] > 0:
-    #         concurrent_position += "E"
-    #     elif oriented_distance[1] < 0:
-    #         concurrent_position += "W"
-    #     else:
-    #         return  # points already aligned
-    #
-    #     # TODO implement vertical alignment. Only using horizontal alignment for now
-    #     # if oriented_distance[0] > oriented_distance[1]:
-    #     #     # Vertical alignment
-    #     #     pass
-    #     # else:
-    #     #     # horizontal alignment
-    #     #     pass # code below
-    #
-    #     if np.dot(self.directions[-1], concurrent_array.directions[-1]) == -1:
-    #         # points are facing each other or opposing each other
-    #         if (("E" in concurrent_position and self.directions[-1][0] > 0)
-    #                 or ("N" in concurrent_position and self.directions[-1][1] > 0)):
-    #             # facing each other
-    #             pass
-    #         else:
-    #             # opposing each other
-    #             pass
-    #     elif np.dot(self.directions[-1], concurrent_array.directions[-1]) == 1:
-    #         # points are facing the same direction
-    #         if (("E" in concurrent_position and self.directions[-1][0] > 0)
-    #                 or ("N" in concurrent_position and self.directions[-1][1] > 0)):
-    #             # facing each other
-    #             pass
-    #         else:
-    #             # opposing each other
-    #             pass
-    #     else:
-    #         # points are orthogonal to ach other
-    #         pass

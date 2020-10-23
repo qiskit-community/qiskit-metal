@@ -28,9 +28,6 @@ from qiskit_metal.components.base import QRoute, QRoutePoint
 from qiskit_metal.toolbox_metal import math_and_overrides as mao
 
 
-# TODO: Use minimum bounding boxes and alter bounding box method for CPWs.
-
-
 def intersecting(a: np.array, b: np.array, c: np.array, d: np.array) -> bool:
     """Returns whether segment ab intersects or overlaps with segment cd, where a, b, c, and d are
     all coordinates
@@ -132,8 +129,7 @@ class RouteAnchors(QRoute):
             bool: True is no obstacles
         """
 
-        # TODO: Non-rectangular bounding boxes?
-
+        # assumes rectangular bounding boxes
         for component in self.design.components:
             xmin, ymin, xmax, ymax = self.design.components[component].qgeometry_bounds()
             # p, q, r, s are corner coordinates of each bounding box
@@ -270,8 +266,6 @@ class RouteAnchors(QRoute):
         meander_start_point = self.set_lead("start")
         meander_end_point = self.set_lead("end")
 
-        # TODO: find out why the make runs twice for every component and stop it.
-        #  Should only run once. The line below is just a patch to work around it.
         self.intermediate_pts = None
 
         # find the points to connect between two anchors, or between anchors and leads

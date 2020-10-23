@@ -145,8 +145,6 @@ class RoutePathfinder(RouteAnchors):
         meander_start_point = self.set_lead("start")
         meander_end_point = self.set_lead("end")
 
-        # TODO: find out why the make runs twice for every component and stop it.
-        #  Should only run once. The line below is just a patch to work around it.
         self.intermediate_pts = None
 
         for coord in list(anchors.values()):
