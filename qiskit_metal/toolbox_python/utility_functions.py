@@ -41,7 +41,7 @@ from numpy.linalg import norm
 __all__ = ['copy_update', 'dict_start_with', 'data_frame_empty_typed', 'clean_name',
            'enable_warning_traceback', 'get_traceback', 'print_traceback_easy', 'log_error_easy',
            'monkey_patch', 'can_write_to_path', 'can_write_to_path_with_warning',
-           'toggle_numbers', 'rdist', 'bad_fillet_idxs', 'compress_vertex_list',
+           'toggle_numbers', 'bad_fillet_idxs', 'compress_vertex_list',
            'get_range_of_vertex_to_not_fillet']
 
 ####################################################################################
@@ -358,23 +358,6 @@ def toggle_numbers(numbers: list, totlength: int) -> list:
     return complement
 
 
-def rdist(coords: list, j: int, k: int, precision: int = 9) -> float:
-    """
-    Simple calculation of distance between coords[j] and coords[k], where coords is a list of tuples.
-    Rounds to given precision, though in practice this is specified in design._template_options.
-
-    Args:
-        coords (list): Ordered list of tuples of vertex coordinates.
-        j (int): Index of one point in self.coords.
-        k (int): Index of second point in self.coords.
-        precision (int, optional): Digits of precision used for round(). Defaults to 9.
-
-    Returns:
-        float: Euclidean distance between coords[j] and coords[k] rounded to specified self.precision.
-    """
-    return Vector.get_distance(coords[j], coords[k], precision)
-
-
 def bad_fillet_idxs(coords: list, fradius: float, precision: int = 9, isclosed: bool = False) -> list:
     """
     Get list of vertex indices in a linestring (isclosed = False) or polygon (isclosed = True) that cannot be filleted based on
@@ -390,20 +373,21 @@ def bad_fillet_idxs(coords: list, fradius: float, precision: int = 9, isclosed: 
         list: List of indices of vertices too close to their neighbors to be filleted.
     """
     length = len(coords)
+    get_dist = Vector.get_distance
     if isclosed:
-        return [i for i in range(length) if min(rdist(coords, i - 1, i, precision), rdist(coords, i, (i + 1) % length, precision)) < 2 * fradius]
+        return [i for i in range(length) if min(get_dist(coords[i - 1], coords[i], precision), get_dist(coords[i], coords[(i + 1) % length], precision)) < 2 * fradius]
     if length < 3:
         return []
-    elif length == 3:
-        return [] if min(rdist(coords, 0, 1, precision), rdist(coords, 1, 2, precision)) >= fradius else [1]
-    if (rdist(coords, 0, 1, precision) < fradius) or (rdist(coords, 1, 2, precision) < 2 * fradius):
+    if length == 3:
+        return [] if min(get_dist(coords[0], coords[1], precision), get_dist(coords[1], coords[2], precision)) >= fradius else [1]
+    if (get_dist(coords[0], coords[1], precision) < fradius) or (get_dist(coords[1], coords[2], precision) < 2 * fradius):
         badlist = [1]
     else:
         badlist = []
     for i in range(2, length - 2):
-        if min(rdist(coords, i - 1, i, precision), rdist(coords, i, i + 1, precision)) < 2 * fradius:
+        if min(get_dist(coords[i - 1], coords[i], precision), get_dist(coords[i], coords[i + 1], precision)) < 2 * fradius:
             badlist.append(i)
-    if (rdist(coords, length - 3, length - 2, precision) < 2 * fradius) or (rdist(coords, length - 2, length - 1, precision) < fradius):
+    if (get_dist(coords[length - 3], coords[length - 2], precision) < 2 * fradius) or (get_dist(coords[length - 2], coords[length - 1], precision) < fradius):
         badlist.append(length - 2)
     return badlist
 
