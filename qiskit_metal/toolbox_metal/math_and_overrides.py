@@ -21,18 +21,58 @@
 
 import numpy as np
 
-__all__ = ['dot']
+__all__ = ['set_decimal_precision', 'dot', 'cross', 'round']
 
 decimal_precision = 10
 
-def set_decimal_precision(value):
-    global decimal_precision
-    decimal_precision = value
 
-def dot(vector_1, vector_2):
-    # idea of this function is to standardize the dot precision
+def set_decimal_precision(value: int):
+    """
+    Override the decimal_precision default (10)
+
+    Args:
+        value: any integer. If present, decimal part will be truncated (flooring)
+    """
+    global decimal_precision
+    decimal_precision = int(value)
+
+
+def dot(vector_1: np.array, vector_2: np.array) -> float:
+    """
+    Numpy dot product with decimal_precision
+
+    Args:
+        vector_1 (np.array): first of the dot product vectors
+        vector_2 (np.array): second of the dot product vectors
+
+    Returns:
+        float: rounded dot product
+    """
     return np.round(np.dot(vector_1, vector_2), decimal_precision)
 
-def round(number):
-    # idea of this function is to standardize the dot precision
-    return np.round(number, decimal_precision)
+
+def round(value) -> float:
+    """
+    Numpy rounding with decimal_precision
+
+    Args:
+        value: any numerical type supported by np.round()
+
+    Returns:
+        float: rounded number
+    """
+    return np.round(value, decimal_precision)
+
+
+def cross(vector_1: np.array, vector_2: np.array) -> float:
+    """
+    Numpy cross product with decimal_precision
+
+    Args:
+        vector_1 (np.array): first of the cross product vectors
+        vector_2 (np.array): second of the cross product vectors
+
+    Returns:
+        float: rounded cross product
+    """
+    return np.round(np.cross(vector_1, vector_2), decimal_precision)

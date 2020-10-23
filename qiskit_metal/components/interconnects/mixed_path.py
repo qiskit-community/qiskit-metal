@@ -85,28 +85,51 @@ class RouteMixed(RoutePathfinder, RouteMeander):
         # find the points to connect between each pair of anchors, or between anchors and leads
         # at first, store points "per segment" in a dictionary, so it is easier to apply length requirements
         self.intermediate_pts = OrderedDict()
+        meanders = set()
         for arc_num, coord in anchors.items():
             # determine what is the connection strategy for this pair, based on user inputs
             connect_method = self.select_connect_method(arc_num)
+            if connect_method == self.connect_meandered:
+                meanders.add(arc_num)
             # compute points connecting the anchors, all but the last
             arc_pts = connect_method(self.get_tip(), QRoutePoint(coord))
             if arc_pts is None:
-                # something went wrong and the connect algorythm was unable to connect the dots
-                # TODO: determine best way to handle this. Currently just draws a straight line
                 self.intermediate_pts[arc_num] = [coord]
             else:
                 self.intermediate_pts[arc_num] = np.concatenate([arc_pts, [coord]], axis=0)
         # compute last connection point to the output QRouteLead
         connect_method = self.select_connect_method(len(anchors))
+        if connect_method == self.connect_meandered:
+            meanders.add(len(anchors))
         arc_pts = connect_method(self.get_tip(), end_point)
         if arc_pts is not None:
             self.intermediate_pts[len(anchors)] = np.array(arc_pts)
 
-        # TODO: self.adjust_length(intermediate_dict)
-
         # concatenate all points, transforming the dictionary into a single numpy array
         self.trim_pts()
+        dictionary_intermediate_pts = self.intermediate_pts
         self.intermediate_pts = np.concatenate(list(self.intermediate_pts.values()), axis=0)
+
+        # refine length of meanders
+        total_delta_length = self.p.total_length - self.length
+        individual_delta_length = total_delta_length / len(meanders)
+        print("len pre", self.length, len(meanders), individual_delta_length)
+        for m in meanders:
+            arc_pts = dictionary_intermediate_pts[m][:-1]
+            if m == 0:
+                meander_start_point = start_point
+            else:
+                meander_start_point = QRoutePoint(anchors[m-1])
+            if m == len(anchors):
+                meander_end_point = end_point
+            else:
+                meander_end_point = QRoutePoint(anchors[m])
+            dictionary_intermediate_pts[m] = self.adjust_length(individual_delta_length, arc_pts,
+                                                   meander_start_point, meander_end_point)
+            dictionary_intermediate_pts[m] = np.concatenate([dictionary_intermediate_pts[m], [anchors[m]]], axis=0)
+        self.intermediate_pts = np.concatenate(list(dictionary_intermediate_pts.values()), axis=0)
+
+        print("len post", self.length, len(meanders), individual_delta_length)
         # Make points into elements
         self.make_elements(self.get_points())
 

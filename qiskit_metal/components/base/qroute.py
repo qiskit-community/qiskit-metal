@@ -477,7 +477,6 @@ class QRoute(QComponent):
         p = self.p
         # prepare the routing track
         line = draw.LineString(pts)
-        # TODO: show up the actual length, which is now different from the initial length
         self.options._actual_length = str(line.length) + ' ' + self.design.get_units()
         # expand the routing track to form the substrate core of the cpw
         self.add_qgeometry('path',

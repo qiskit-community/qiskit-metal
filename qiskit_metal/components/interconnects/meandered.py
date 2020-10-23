@@ -95,6 +95,9 @@ class RouteMeander(QRoute):
 
         self.intermediate_pts = arc_pts
 
+        self.intermediate_pts = self.adjust_length(self.p.total_length - self.length, arc_pts,
+                                                   meander_start_point, meander_end_point)
+
         # Make points into elements
         self.make_elements(self.get_points())
 
@@ -259,17 +262,20 @@ class RouteMeander(QRoute):
         # print("PTS_1->", start_pt.position, pts, end_pt.position)
 
         if snap:
-            if mao.dot(start_pt.direction, end_pt.direction) >= 0:
-                # the right-most root_pts need to be forward aligned with the end.position point
-                pts[-1, abs(forward[0])] = end_pt.position[abs(forward[0])]
-            else:
+            if ((mao.dot(start_pt.direction, end_pt.direction) < 0)
+                    and (mao.dot(forward, start_pt.direction) <= 0)):
+                # pins are pointing opposite directions and diverging
                 # the right-most root_pts need to be sideways aligned with the end.position point
                 # and forward aligned with the previous meander point
                 pts[-1, abs(forward[0])] = pts[-2, abs(forward[0])]
                 pts[-1, abs(forward[0])-1] = end_pt.position[abs(forward[0])-1]
+            else:
+                # the right-most root_pts need to be forward aligned with the end.position point
+                pts[-1, abs(forward[0])] = end_pt.position[abs(forward[0])]
         if abs(asymmetry) > abs(length_perp):
-            if mao.dot(start_pt.direction, end_pt.direction) >= 0:
-                # start and end point directions are pointing in the same direction or up to 90 degrees apart
+            if not((mao.dot(start_pt.direction, end_pt.direction) < 0)
+                   and (mao.dot(forward, start_pt.direction) <= 0)):
+                # pins are "not" pointing opposite directions and diverging
                 if start_meander_direction * asymmetry < 0:  # sideway direction
                     pts[0, abs(forward[0])] = start_pt.position[abs(forward[0])]
                     pts[1, abs(forward[0])] = start_pt.position[abs(forward[0])]
@@ -318,31 +324,105 @@ class RouteMeander(QRoute):
         return pts
 
     def adjust_length(self, delta_length, pts, start_pt: QRoutePoint, end_pt: QRoutePoint) -> np.ndarray:
-        # this method is run after the first pass to the meander, before self.pts_intermediate is finalized
-        # inputs are the points of the specific meander
-        # delta_length needs to be computed in the make function for both mixed and meandered
+        """
+        Edits meander points to redistribute the length slacks accrued with the various local adjustments
+        It should be run after self.pts_intermediate is completely defined
+        Inputs are however specific to the one meander segment
+        Assumption is that pts is always a sequence of paired points, each corresponds to one meander 180deg curve
+        The pts is typically an odd count since the last point is typically used to anchor the left-over length,
+        therefore this code supports both odd and even cases, separately. For even it assumes all points are in paired
 
-        #recover the direction
+        Args:
+            delta_length (delta_length): slack/excess length to distribute on the pts
+            pts (np.array): intermediate points of meander. pairs, except last point (2,2,...,2,1)
+            start_pt (QRoutePoint): QRoutePoint of the start
+            end_pt (QRoutePoint): QRoutePoint of the end
+
+        Returns:
+            np.ndarray: Array of points
+        """
+        # the adjustment length has to be computed in the main or in other method
+        # considering entire route (Could include the corner fillet)
+
+        term_point = len(pts) % 2
+
+        # recompute direction
         snap = is_true(self.p.snap)  # snap to xy grid
         forward, sideways = self.get_unit_vectors(start_pt, end_pt, snap)
+        # recompute meander_sideways
+        if mao.cross(pts[1]-pts[0], pts[2]-pts[1]) < 0:
+            first_meander_sideways = True
+        else:
+            first_meander_sideways = False
+        if mao.cross(pts[-2-term_point]-pts[-1-term_point], pts[-3-term_point]-pts[-2-term_point]) < 0:
+            last_meander_sideways = False
+        else:
+            last_meander_sideways = True
 
-        # calculate the slack to distribute
-        length_meander = self._length_segment - self.length()
+        # which points need to receive the shift
+        # initialize the shift vector to 1 (1 = will receive shift)
+        adjustment_vector = np.ones(len(pts))
+        # switch shift direction depending on sideways or not
+        if first_meander_sideways:
+            adjustment_vector[2::4] *= -1
+            adjustment_vector[3::4] *= -1
+        else:
+            adjustment_vector[::4] *= -1
+            adjustment_vector[1::4] *= -1
 
+        fillet_shift = sideways * self.p.fillet
+        start_pt_adjusted_up = start_pt.position + fillet_shift
+        start_pt_adjusted_down = start_pt.position - fillet_shift
+        end_pt_adjusted_up = end_pt.position + fillet_shift
+        end_pt_adjusted_down = end_pt.position - fillet_shift
+
+        issideways = lambda p, a, b: mao.cross(p - a, b - a) < 0
         # if start_pt.position is below axes + shift - 2xfillet &  first_meander_sideways
-            # else block first mender
-        # if end_pt.position is below axes + shift - 2xfillet &  last_meander_sideways
-            # else block last mender
+        if first_meander_sideways and not issideways(start_pt_adjusted_up, pts[0], pts[1]):
+            #first meander is fair game
+            pass
         # if start_pt.position is above axes - shift + 2xfillet &  not first_meander_sideways
+        elif not first_meander_sideways and issideways(start_pt_adjusted_down, pts[0], pts[1]):
+            # first meander is fair game
+            pass
+        else:
             # else block first mender
+            adjustment_vector[:2] = [0, 0]
+        # if end_pt.position is below axes + shift - 2xfillet &  last_meander_sideways
+        if last_meander_sideways and not issideways(end_pt_adjusted_up, pts[-2-term_point], pts[-1-term_point]):
+            # first meander is fair game
+            pass
         # if end_pt.position is above axes - shift + 2xfillet &  not last_meander_sideways
+        elif not last_meander_sideways and issideways(end_pt_adjusted_down, pts[-2-term_point], pts[-1 - term_point]):
+            # first meander is fair game
+            pass
+        else:
             # else block last mender
+            adjustment_vector[-2-term_point:-term_point] = [0, 0]
 
-        # then divide the slack amongst all points and move them sideways
+        if term_point:
+            # pts count is a odd number
+            # disable shift on the termination point
+            adjustment_vector[-1] = 0
+            #....unless the last point is anchored to the last meander curve
+            if all([start_pt.direction, end_pt.direction]):
+                if ((mao.dot(start_pt.direction, end_pt.direction) < 0)
+                        and (mao.dot(forward, start_pt.direction) <= 0)):
+                    # pins are pointing opposite directions and diverging, thus keep consistency
+                    adjustment_vector[-1] = adjustment_vector[-2]
 
-        # Meander length
-        length_meander = self.p.total_length - (self.head.length + self.tail.length)
+        print("first", first_meander_sideways, "last", last_meander_sideways)
+        print("adj,vec", adjustment_vector)
+        print("before pts", len(pts), pts)
+        # then divide the slack amongst all points
+        sideways_adjustment = sideways * (delta_length / np.count_nonzero(adjustment_vector))
 
+        print(self.length, delta_length, np.count_nonzero(adjustment_vector))
+
+        pts = pts + sideways_adjustment[np.newaxis, :] * adjustment_vector[:, np.newaxis]
+        print("after pts", len(pts), pts)
+
+        return pts
 
     @staticmethod
     def get_index_for_side1_meander(num_root_pts: int):
