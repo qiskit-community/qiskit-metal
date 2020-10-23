@@ -104,8 +104,7 @@ class QGDSRenderer(QRenderer):
         # Since Qiskit Metal GUI, does not require a width for LineString, GDS, will provide a default value.
         width_LineString='10um',
 
-        path_filename='../gds-files/fake_junction_with_two_cells_copy.gds',
-
+        path_filename='../gds-files/Fake_Junctions_copy.gds',
 
         # (float): Scale box of components to render. Should be greater than 1.0.
         # For benifit of the GUI, keep this the last entry in the dict.  GUI shows a note regarding bound_box.
