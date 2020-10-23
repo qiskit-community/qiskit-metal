@@ -234,6 +234,10 @@ class QComponent():
             while self.design.rename_component(self._id, short_name + "_" + str(name_id)) != 1:
                 name_id = self.design._get_new_qcomponent_name_id(short_name)
 
+        # Add keys for each type of table.  add_qgeometry() will update bool if the table is used.
+        self.qgeometry_table_usage = Dict()
+        self.populate_to_track_table_usage()
+
         # Make the component geometry
         if make:
             self.rebuild()
@@ -903,8 +907,20 @@ class QComponent():
         # assert (subtract and helper) == False, "The object can't be a subtracted helper. Please"\
         #    " choose it to either be a helper or a a subtracted layer, but not both. Thank you."
 
+        if kind in self.qgeometry_table_usage.keys():
+            self.qgeometry_table_usage[kind] = True
+        else:
+            self.logger.warning(
+                f'Component with classname={self.class_name} does not know about table name "{kind}". '
+            )
+
+        renderer_key_values = self._get_table_values_from_renderers(
+            self.design)
+        # # if not already in kwargs, add renderer information to it.
+        renderer_and_options = {**renderer_key_values, **kwargs}
+
         self.design.qgeometry.add_qgeometry(kind, self.id, geometry, subtract=subtract,
-                                            helper=helper, layer=layer, chip=chip, **kwargs)
+                                            helper=helper, layer=layer, chip=chip, **renderer_and_options)
 
     @classmethod
     def _get_table_values_from_renderers(cls, design: 'QDesign') -> Dict:
@@ -918,7 +934,8 @@ class QComponent():
             Dict: key is column names for tables, value is data for the column. 
         """
         metadata_dict = cls._gather_all_children_metadata()
-        tables_list = design.get_list_of_tables_in_metadata(metadata_dict)
+        tables_list = design.get_list_of_tables_in_metadata(
+            metadata_dict)
 
         all_renderers_key_value = dict()
         # design.renderer_defaults_by_table[table_name][renderer_name][column_name]
@@ -1040,3 +1057,11 @@ class QComponent():
         plot_kw = {}
         draw.mpl.render(qgeometry, ax=ax, kw=plot_kw)
         return qgeometry
+
+    def populate_to_track_table_usage(self) -> None:
+        """Use the element_handler to get a list of all the table names used in QGeometry.
+        The dict qgeometry_able_usage should get updated by add_qgeometry(). This dict is used
+        to get a summary tables used for this component.
+        """
+        for table_name in self.design.qgeometry.tables.keys():
+            self.qgeometry_table_usage[table_name] = False
