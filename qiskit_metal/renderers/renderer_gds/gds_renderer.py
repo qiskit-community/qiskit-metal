@@ -931,16 +931,22 @@ class QGDSRenderer(QRenderer):
         if status:
             lib.read_gds(self.options.path_filename, units='convert')
             for row in self.chip_info[chip_name]['junction'].itertuples():
-                [(minx, miny), (maxx, maxy)] = row.geometry.coords[:]
-                center = QGDSRenderer.midpoint_xy(
-                    minx, miny, maxx, maxy)
+                if row.gds_cell_name in lib.cells.keys():
+                    [(minx, miny), (maxx, maxy)] = row.geometry.coords[:]
+                    center = QGDSRenderer.midpoint_xy(
+                        minx, miny, maxx, maxy)
 
-                rotation = math.degrees(math.atan2((maxy-miny), (maxx-minx)))
+                    rotation = math.degrees(
+                        math.atan2((maxy-miny), (maxx-minx)))
 
-                a_cell = lib.extract(row.gds_cell_name)
+                    a_cell = lib.extract(row.gds_cell_name)
 
-                chip_only_top.add(gdspy.CellReference(
-                    a_cell, origin=center, rotation=rotation))
+                    chip_only_top.add(gdspy.CellReference(
+                        a_cell, origin=center, rotation=rotation))
+                else:
+                    self.logger.warning(f'From the "junction" table, the cell named'
+                                        f' "{row.gds_cell_name}"",  is not in file: {self.options.path_filename}.'
+                                        f' The cell was not used.')
 
         else:
             self.logger.warning(f'Not able to find file:"{self.options.path_filename}".  '
