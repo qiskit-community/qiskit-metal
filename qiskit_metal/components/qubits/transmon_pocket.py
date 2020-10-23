@@ -152,7 +152,8 @@ class TransmonPocket(BaseQubit):
     component_metadata = Dict(
         short_name='Pocket',
         _qgeometry_table_path='True',
-        _qgeometry_table_poly='True'
+        _qgeometry_table_poly='True',
+        _qgeometry_table_junction='True'
     )
     """Component metadata"""
 
@@ -182,6 +183,8 @@ class TransmonPocket(BaseQubit):
         pad_top = draw.translate(pad, 0, +(pad_height+pad_gap)/2.)
         pad_bot = draw.translate(pad, 0, -(pad_height+pad_gap)/2.)
 
+        # rect_jj = draw.LineString(
+        #     [(0, -pad_gap/2), (0, +pad_gap/2)])
         # the draw.rectangle representing the josephson junction
         rect_jj = draw.rectangle(p.inductor_width, pad_gap)
         rect_pk = draw.rectangle(p.pocket_width, p.pocket_height)
@@ -198,7 +201,10 @@ class TransmonPocket(BaseQubit):
         # Use the geometry to create Metal qgeometry
         self.add_qgeometry('poly', dict(pad_top=pad_top, pad_bot=pad_bot))
         self.add_qgeometry('poly', dict(rect_pk=rect_pk), subtract=True)
-        self.add_qgeometry('poly', dict(rect_jj=rect_jj), helper=True)
+        self.add_qgeometry('poly', dict(
+            rect_jj=rect_jj), helper=True)
+        # self.add_qgeometry('junction', dict(
+        #     rect_jj=rect_jj), width=p.inductor_width)
 
     def make_connection_pads(self):
         '''

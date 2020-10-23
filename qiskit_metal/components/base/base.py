@@ -646,6 +646,7 @@ class QComponent():
 #   What information is truly necessary for the pins? Should they have a z-direction component?
 #   Will they operate properly with non-planar designs?
 
+
     def add_pin(self,
                 name: str,  # Should be static based on component designer's choice
                 points: np.ndarray,
@@ -914,24 +915,56 @@ class QComponent():
                 f'Component with classname={self.class_name} does not know about table name "{kind}". '
             )
 
-        renderer_key_values = self._get_table_values_from_renderers(
-            self.design)
+        renderer_key_values = self._get_specific_table_values_from_renderers(
+            kind)
+        for key in renderer_key_values:
+            if key in self.options:
+                renderer_key_values[key] = deepcopy(self.options[key])
+
         # # if not already in kwargs, add renderer information to it.
         renderer_and_options = {**renderer_key_values, **kwargs}
+
+        # When self.options is instantiated, the template_options are populated.
+        # renderer_and_options = {**self.options, **kwargs}
 
         self.design.qgeometry.add_qgeometry(kind, self.id, geometry, subtract=subtract,
                                             helper=helper, layer=layer, chip=chip, **renderer_and_options)
 
-    @classmethod
+    def _get_specific_table_values_from_renderers(self, kind: str) -> Dict:
+        """Populate a dict to combine with options for the qcomponent.
+
+        Based on kind, which the table name, the component-developer denotes in the metadata,
+        assume those qgeometry.tables are used for the component. The method
+        will search a dict populated by all the renderers during their init.
+
+        Args:
+            kind (str): Name of table, like juction, path, or poly.
+
+        Returns:
+            Dict: key is column names for tables, value is data for the column.
+        """
+        all_renderers_key_value = dict()
+
+        # design.renderer_defaults_by_table[table_name][renderer_name][column_name]
+        if kind in self.design.renderer_defaults_by_table:
+            for name_renderer, renderer_data in self.design.renderer_defaults_by_table[kind].items():
+                if len(renderer_data) > 0:
+                    for col_name, col_value in renderer_data.items():
+                        render_col_name = f'{name_renderer}_{col_name}'
+                        all_renderers_key_value[render_col_name] = col_value
+
+        return all_renderers_key_value
+
+    @ classmethod
     def _get_table_values_from_renderers(cls, design: 'QDesign') -> Dict:
         """Populate a dict to combine with options for the qcomponent.
 
-        Based on tables the component-developer denotes in the metadata, 
-        assume those qgeometry.tables are used for the component. The method 
-        will search a dict populated by all the renderers during their init.  
+        Based on tables the component-developer denotes in the metadata,
+        assume those qgeometry.tables are used for the component. The method
+        will search a dict populated by all the renderers during their init.
 
         Returns:
-            Dict: key is column names for tables, value is data for the column. 
+            Dict: key is column names for tables, value is data for the column.
         """
         metadata_dict = cls._gather_all_children_metadata()
         tables_list = design.get_list_of_tables_in_metadata(
@@ -948,6 +981,7 @@ class QComponent():
                             all_renderers_key_value[render_col_name] = col_value
         return all_renderers_key_value
 
+######################################
     def __repr__(self, *args):
         b = '\033[95m\033[1m'
         b1 = '\033[94m\033[1m'
@@ -957,8 +991,7 @@ class QComponent():
         # options = pprint.pformat(self.options)
 
         options = format_dict_ala_z(self.options)
-        text = \
-            f"{b}name:    {b1}{self.name}{e}\n"\
+        text = f"{b}name:    {b1}{self.name}{e}\n"\
             f"{b}class:   {b1}{self.__class__.__name__:<22s}{e}\n"\
             f"{b}options: {e}\n{options}\n"\
             f"{b}module:  {b1}{self.__class__.__module__}{e}\n"\
@@ -968,7 +1001,7 @@ class QComponent():
 ############################################################################
 # Geometry handling of created qgeometry
 
-    @property
+    @ property
     def qgeometry_types(self) -> List[str]:
         """Get a list of the names of the element tables.
 

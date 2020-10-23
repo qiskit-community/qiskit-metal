@@ -135,7 +135,7 @@ class TestRenderers(unittest.TestCase):
         renderer = QGDSRenderer(design)
         options = renderer.default_options
 
-        self.assertEqual(len(options), 10)
+        self.assertEqual(len(options), 11)
         self.assertEqual(options['short_segments_to_not_fillet'], 'True')
         self.assertEqual(
             options['check_short_segments_by_scaling_fillet'], '2.0')
@@ -166,7 +166,7 @@ class TestRenderers(unittest.TestCase):
         element_extensions = renderer.element_extensions
         self.assertEqual(len(element_extensions), 1)
         self.assertEqual(len(element_extensions['junction']), 1)
-        self.assertEqual(element_extensions['junction']['path_filename'], str)
+        self.assertEqual(element_extensions['junction']['cell_name'], str)
 
     def test_renderer_gdsrenderer_update_units(self):
         """
