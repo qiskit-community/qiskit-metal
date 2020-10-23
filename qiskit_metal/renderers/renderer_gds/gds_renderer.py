@@ -1,6 +1,6 @@
 from ... import Dict
-from qiskit_metal.toolbox_python.utility_functions import are_there_potential_fillet_errors, can_write_to_path
 from qiskit_metal.toolbox_python.utility_functions import can_write_to_path
+from qiskit_metal.toolbox_python.utility_functions import get_range_of_vertex_to_not_fillet
 import math
 from scipy.spatial import distance
 import os
@@ -104,6 +104,7 @@ class QGDSRenderer(QRenderer):
         # Since Qiskit Metal GUI, does not require a width for LineString, GDS, will provide a default value.
         width_LineString='10um',
 
+        path_filename='../gds-files/Fake_Junctions_copy.gds',
 
         # (float): Scale box of components to render. Should be greater than 1.0.
         # For benifit of the GUI, keep this the last entry in the dict.  GUI shows a note regarding bound_box.
@@ -130,8 +131,10 @@ class QGDSRenderer(QRenderer):
     # This dict will be used to update QDesign during init of renderer.
     # Keeping this as a cls dict so could be edited before renderer is instantiated.
     # To update component.options junction table.
+
     element_table_data = dict(
-        junction=dict(path_filename='Need_a_path_and_file')
+        # Cell_name must exist in gds file with: path_filename
+        junction=dict(cell_name='my_other_junction')
     )
 
     def __init__(self, design: 'QDesign', initiate=True, render_template: Dict = None, render_options: Dict = None):
@@ -399,8 +402,6 @@ class QGDSRenderer(QRenderer):
         for chip_name in self.chip_info:
             # put the QGeometry into GDS format.
             # There can be more than one chip in QGeometry.  They all export to one gds file.
-
-            # all_subtract and all_no_subtract may be depreciated in future..
             self.chip_info[chip_name]['all_subtract'] = []
             self.chip_info[chip_name]['all_no_subtract'] = []
 
@@ -416,10 +417,13 @@ class QGDSRenderer(QRenderer):
                 table = self.get_table(
                     table_name, unique_qcomponents, chip_name)
 
-                # For every chip, and layer, separate the "subtract" and "no_subtract" elements and gather bounds.
-                # dict_bounds[chip_name] = list_bounds
-                self.gather_subtract_elements_and_bounds(
-                    chip_name, table_name, table, all_table_subtracts, all_table_no_subtracts)
+                if table_name == 'junction':
+                    self.chip_info[chip_name]['junction'] = deepcopy(table)
+                else:
+                    # For every chip, and layer, separate the "subtract" and "no_subtract" elements and gather bounds.
+                    # dict_bounds[chip_name] = list_bounds
+                    self.gather_subtract_elements_and_bounds(
+                        chip_name, table_name, table, all_table_subtracts, all_table_no_subtracts)
 
             # If list of QComponents provided, use the bounding_box_scale(x and y),
             # otherwise use self._chips
@@ -499,6 +503,8 @@ class QGDSRenderer(QRenderer):
 
             self.chip_info[chip_name][chip_layer]['q_subtract_false'] = self.chip_info[chip_name][chip_layer]['all_subtract_false'].apply(
                 self.qgeometry_to_gds, axis=1)
+
+    # Handling Fillet issues.
 
     def fix_short_segments_within_table(self, chip_name: str, chip_layer: int, all_sub_true_or_false: str):
         """Update self.chip_info geopandas.GeoDataFrame.
@@ -581,7 +587,7 @@ class QGDSRenderer(QRenderer):
         all_idx_bad_fillet = dict()
 
         self.identify_vertex_not_to_fillet(
-            coords, a_fillet, all_idx_bad_fillet, len_coords)
+            coords, a_fillet, all_idx_bad_fillet)
 
         shorter_lines = dict()
 
@@ -663,7 +669,7 @@ class QGDSRenderer(QRenderer):
             shorter_lines[len_coords-1] = a_shapely
         return status, shorter_lines
 
-    def identify_vertex_not_to_fillet(self, coords: list, a_fillet: float, all_idx_bad_fillet: dict, len_coords: int):
+    def identify_vertex_not_to_fillet(self, coords: list, a_fillet: float, all_idx_bad_fillet: dict):
         """Use coords to denote segments that are too short.  In particular,
         when fillet'd, they will cause the appearance of incorrect fillet when graphed.
 
@@ -677,22 +683,28 @@ class QGDSRenderer(QRenderer):
             Key 'reduced_idx' will hold list of tuples.  The tuples correspond to index for list named "coords".
             Key 'midpoints' will hold list of tuples. The index of a tuple corresponds to two index within coords.
             For example, a index in midpoints is x, that coresponds midpoint of segment x-1 to x.
-
-            len_coords (int): The length of list coords.
         """
 
-        fillet_scale_factor = self.parse_value(
-            self.options.check_short_segments_by_scaling_fillet)
-        precision = float(self.parse_value(self.options.precision))
-        for_rounding = int(np.abs(np.log10(precision)))
+        # Depreciated since there is no longer a scale factor  given to QCheckLength.
+        # fillet_scale_factor = self.parse_value(
+        #     self.options.check_short_segments_by_scaling_fillet)
 
-        all_idx_bad_fillet['reduced_idx'] = are_there_potential_fillet_errors(
-            coords, a_fillet, fillet_scale_factor, for_rounding)
+        precision = float(self.parse_value(self.options.precision))
+
+        # For now, DO NOT allow the user of GDS to provide the precision.
+        # user_precision = int(np.abs(np.log10(precision)))
+
+        qdesign_precision = self.design.template_options.PRECISION
+
+        all_idx_bad_fillet['reduced_idx'] = get_range_of_vertex_to_not_fillet(coords, a_fillet, qdesign_precision,
+                                                                              add_endpoints=True)
 
         midpoints = list()
         midpoints = [QGDSRenderer.midpoint_xy(coords[idx-1][0], coords[idx-1][1], vertex2[0], vertex2[1])
                      for idx, vertex2 in enumerate(coords) if idx > 0]
         all_idx_bad_fillet['midpoints'] = midpoints
+
+    # Move data around to be useful for GDS
 
     def gather_subtract_elements_and_bounds(self, chip_name: str, table_name: str, table: geopandas.GeoDataFrame,
                                             all_subtracts: list, all_no_subtracts: list):
@@ -761,6 +773,8 @@ class QGDSRenderer(QRenderer):
 
         return table
 
+    # To export the data.
+
     def new_gds_library(self) -> gdspy.GdsLibrary:
         """Creates a new GDS Library. Deletes the old.
            Create a new GDS library file. It can contains multiple cells.
@@ -823,6 +837,11 @@ class QGDSRenderer(QRenderer):
                 chip_only_top_name = f'TOP_{chip_name}'
                 chip_only_top = lib.new_cell(
                     chip_only_top_name, overwrite_duplicate=True)
+
+                # If junction table, import the cell and cell to chip_only_top
+                if 'junction' in self.chip_info[chip_name]:
+                    self.import_junctions_to_one_cell(
+                        chip_name, lib, chip_only_top)
 
                 # There can be more than one chip in QGeometry.
                 # All chips export to one gds file.
@@ -894,6 +913,45 @@ class QGDSRenderer(QRenderer):
                     lib.remove(chip_only_top)
 
         lib.write_gds(file_name)
+
+############
+    def import_junctions_to_one_cell(self, chip_name: str, lib: gdspy.library, chip_only_top: gdspy.library.Cell):
+        """Given lib, import the gds file from default options.  Based on the cell name in QGeometry table,
+        import the cell from the gds file and place it in hierarchy of chip_only_top. In addition, the linestring
+        should be two vertexes, and denotes two things.  1. The midpoint of segment is the the center of cell. 
+        2. The angle made by second tuple - fist tuple  for delta y/ delta x is used to rotate the cell. 
+
+        Args:
+            chip_name (str): The name of chip.
+            lib (gdspy.library): The library use to export the entire QDesign
+            chip_only_top (gdspy.library.Cell):  The cell used for just chip_name. 
+        """
+        # Make sure the file exists, before trying to read it.
+        status, directory_name = can_write_to_path(self.options.path_filename)
+        if status:
+            lib.read_gds(self.options.path_filename, units='convert')
+            for row in self.chip_info[chip_name]['junction'].itertuples():
+                if row.gds_cell_name in lib.cells.keys():
+                    [(minx, miny), (maxx, maxy)] = row.geometry.coords[:]
+                    center = QGDSRenderer.midpoint_xy(
+                        minx, miny, maxx, maxy)
+
+                    rotation = math.degrees(
+                        math.atan2((maxy-miny), (maxx-minx)))
+
+                    a_cell = lib.extract(row.gds_cell_name)
+
+                    chip_only_top.add(gdspy.CellReference(
+                        a_cell, origin=center, rotation=rotation))
+                else:
+                    self.logger.warning(f'From the "junction" table, the cell named'
+                                        f' "{row.gds_cell_name}"",  is not in file: {self.options.path_filename}.'
+                                        f' The cell was not used.')
+
+        else:
+            self.logger.warning(f'Not able to find file:"{self.options.path_filename}".  '
+                                f'Not used to replace junction.'
+                                f' Checked directory:"{directory_name}".')
 
     def export_to_gds(self, file_name: str, highlight_qcomponents: list = []) -> int:
         """Use the design which was used to initialize this class.

@@ -27,7 +27,7 @@ import pandas as pd
 import shapely
 
 from typing import TYPE_CHECKING
-from qiskit_metal.toolbox_python.utility_functions import are_there_potential_fillet_errors, data_frame_empty_typed
+from qiskit_metal.toolbox_python.utility_functions import get_range_of_vertex_to_not_fillet, data_frame_empty_typed
 from typing import Dict as Dict_
 from typing import List, Tuple, Union
 from geopandas import GeoDataFrame, GeoSeries
@@ -531,8 +531,8 @@ class QGeometryTables(object):
         """
 
         if 'fillet' in other_options.keys():
-            fillet_scalar = 2.0
-            fillet_comparison_precision = 9  # used for np.round
+            # fillet_scalar = 2.0    #Depreciated, moved to toolbox_python.utilit_functions
+            # fillet_comparison_precision = 9  # used for np.round #Depreciated, moved to toolbox_python.utilit_functions
 
             # For now, don't let front end user edit this.
             # if 'fillet_comparison_precision' in other_options.keys():
@@ -540,23 +540,29 @@ class QGeometryTables(object):
             #     fillet_comparison_precision = int(self.parse_value(
             #         other_options['fillet_comparison_precision']))
 
-            if 'fillet_scalar' in other_options.keys():
-                fillet_scalar = self.parse_value(
-                    other_options['fillet_scalar'])
+            # Depreciated, moved to toolbox_python.utilit_functions
+            # if 'fillet_scalar' in other_options.keys():
+            #     fillet_scalar = self.parse_value(
+            #         other_options['fillet_scalar'])
 
             fillet = other_options['fillet']
 
             for key, geom in geometry.items():
                 if isinstance(geom, shapely.geometry.LineString):
                     coords = list(geom.coords)
-                    range_vertex_of_short_segments = are_there_potential_fillet_errors(
-                        coords, fillet, fillet_scalar,  fillet_comparison_precision)
+                    qdesign_precision = self.design.template_options.PRECISION
+                    range_vertex_of_short_segments = get_range_of_vertex_to_not_fillet(coords, fillet, qdesign_precision,
+                                                                                       add_endpoints=False)
+
                     if len(range_vertex_of_short_segments) > 0:
+                        range_string = ""
+                        for item in range_vertex_of_short_segments:
+                            range_string += f'({ item[0]}-{item[1]}) '
                         text_id = self.design._components[component_name]._name
 
                         self.logger.warning(
                             f'For {kind} table, component={text_id}, key={key}'
-                            f' has short segments. Values in {range_vertex_of_short_segments} '
+                            f' has short segments. Values in {range_string} '
                             f'are index(es) in shapley geometry.')
 
     def parse_value(self, value: 'Anything') -> 'Anything':
