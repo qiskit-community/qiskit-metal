@@ -91,6 +91,7 @@ class TestDefautOptions(unittest.TestCase):
         self.assertEqual(len(_options), 5)
         self.assertEqual('mm', _options['units'])
         self.assertEqual('main', _options['chip'])
+        self.assertEqual(9, _options['PRECISION'])
 
         _qdesign = _options['qdesign']
         self.assertEqual(len(_qdesign), 1)
