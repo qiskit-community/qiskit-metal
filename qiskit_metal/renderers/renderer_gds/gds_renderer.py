@@ -1,6 +1,6 @@
 from ... import Dict
 from qiskit_metal.toolbox_python.utility_functions import can_write_to_path
-from qiskit_metal.toolbox_python.utility_functions import QCheckLength
+from qiskit_metal.toolbox_python.utility_functions import get_range_of_vertex_to_not_fillet
 import math
 from scipy.spatial import distance
 import os
@@ -677,8 +677,6 @@ class QGDSRenderer(QRenderer):
             Key 'reduced_idx' will hold list of tuples.  The tuples correspond to index for list named "coords".
             Key 'midpoints' will hold list of tuples. The index of a tuple corresponds to two index within coords.
             For example, a index in midpoints is x, that coresponds midpoint of segment x-1 to x.
-
-            len_coords (int): The length of list coords.
         """
 
         # Depreciated since there is no longer a scale factor  given to QCheckLength.
@@ -687,12 +685,13 @@ class QGDSRenderer(QRenderer):
 
         precision = float(self.parse_value(self.options.precision))
 
-        # For now, allow the user of GDS to provide the precision.
-        user_precision = int(np.abs(np.log10(precision)))
-        a_qcheck_length = QCheckLength(coords, a_fillet, user_precision)
+        # For now, DO NOT allow the user of GDS to provide the precision.
+        # user_precision = int(np.abs(np.log10(precision)))
 
-        all_idx_bad_fillet['reduced_idx'] = a_qcheck_length.get_range_of_vertex_to_not_fillet_linestring(
-            add_endpoints=True)
+        qdesign_precision = self.design.template_options.PRECISION
+
+        all_idx_bad_fillet['reduced_idx'] = get_range_of_vertex_to_not_fillet(coords, a_fillet, qdesign_precision,
+                                                                              add_endpoints=True)
 
         midpoints = list()
         midpoints = [QGDSRenderer.midpoint_xy(coords[idx-1][0], coords[idx-1][1], vertex2[0], vertex2[1])

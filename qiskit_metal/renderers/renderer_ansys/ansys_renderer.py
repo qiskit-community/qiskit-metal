@@ -33,9 +33,27 @@ from pyEPR.ansys import parse_units # TODO: Check this works with design UNITS
 from qiskit_metal.draw.utility import to_vec3D
 from qiskit_metal.draw.basic import is_rectangle
 from qiskit_metal.renderers.renderer_base import QRenderer
-from qiskit_metal.toolbox_python.utility_functions import QCheckLength
+from qiskit_metal.toolbox_python.utility_functions import toggle_numbers, bad_fillet_idxs
 
 from ... import Dict
+
+def good_fillet_idxs(coords: list, fradius: float, precision: int = 9, isclosed: bool = False):
+    """
+    Get list of vertex indices in a linestring (isclosed = False) or polygon (isclosed = True) that can be filleted based on
+    proximity to neighbors.
+
+    Args:
+        coords (list): Ordered list of tuples of vertex coordinates.
+        fradius (float): User-specified fillet radius from QGeometry table.
+        precision (int, optional): Digits of precision used for round(). Defaults to 9.
+        isclosed (bool, optional): Boolean denoting whether the shape is a linestring or polygon. Defaults to False.
+
+    Returns:
+        list: List of indices of vertices that can be filleted.
+    """
+    if isclosed:
+        return toggle_numbers(bad_fillet_idxs(coords, fradius, precision, isclosed = True), len(coords))
+    return toggle_numbers(bad_fillet_idxs(coords, fradius, precision, isclosed = False), len(coords))[1:-1]
 
 
 class QAnsysRenderer(QRenderer):
@@ -236,8 +254,10 @@ class QAnsysRenderer(QRenderer):
 
         if qc_fillet > 0:
             qc_fillet = parse_units(qc_fillet)
-            checklength = QCheckLength(points, qc_fillet)
-            idxs_to_fillet = checklength.good_fillet_idxs_polygon
+            idxs_to_fillet = good_fillet_idxs(points,
+                                             qc_fillet,
+                                             precision=self.design._template_options.PRECISION,
+                                             isclosed=True)
             if idxs_to_fillet:
                 self.modeler._fillet(qc_fillet, idxs_to_fillet, poly_ansys)
 
@@ -286,8 +306,10 @@ class QAnsysRenderer(QRenderer):
 
         if qc_fillet > 0:
             qc_fillet = parse_units(qc_fillet)
-            checklength = QCheckLength(points, qc_fillet)
-            idxs_to_fillet = checklength.good_fillet_idxs_linestring
+            idxs_to_fillet = good_fillet_idxs(points,
+                                             qc_fillet,
+                                             precision=self.design._template_options.PRECISION,
+                                             isclosed=False)
             if idxs_to_fillet:
                 self.modeler._fillet(qc_fillet, idxs_to_fillet, poly_ansys)
 
