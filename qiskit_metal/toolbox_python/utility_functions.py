@@ -41,7 +41,7 @@ from numpy.linalg import norm
 __all__ = ['copy_update', 'dict_start_with', 'data_frame_empty_typed', 'clean_name',
            'enable_warning_traceback', 'get_traceback', 'print_traceback_easy', 'log_error_easy',
            'monkey_patch', 'can_write_to_path', 'can_write_to_path_with_warning',
-           'toggle_numbers', 'rdist', 'bad_fillet_idxs', 'compress_vertex_list',
+           'toggle_numbers', 'bad_fillet_idxs', 'compress_vertex_list',
            'get_range_of_vertex_to_not_fillet']
 
 ####################################################################################
