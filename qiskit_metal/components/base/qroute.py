@@ -103,7 +103,7 @@ class QRoute(QComponent):
             end_straight='0mm',
             start_jogged_extension='',
             end_jogged_extension=''
-    ),
+        ),
         total_length='7mm',
         chip='main',
         layer='1',
@@ -123,7 +123,7 @@ class QRoute(QComponent):
         Attributes:
             head (QRouteLead()): Stores sequential points to start the route
             tail (QRouteLead()): (optional) Stores sequential points to terminate the route
-            intermediate_pts: Sequence of points between and other than head and tail (default:None).
+            intermediate_pts: (list or numpy Nx2) Sequence of points between and other than head and tail (default:None).
                               Type could be either list or numpy Nx2, or dict/OrderedDict nesting lists or numpy Nx2
             start_pin_name (string): Head pin name (default: "start")
             end_pin_name (string): Tail pin name (default: "end")
@@ -154,6 +154,9 @@ class QRoute(QComponent):
 
         Return:
             a modified options dictionary
+
+        Raises:
+            Exception: Unsupported route type
         """
         if self.type == "ROUTE":
             # all the defaults are fine as-is
@@ -193,6 +196,9 @@ class QRoute(QComponent):
 
         Return:
             QRoutePoint: last point (for now the single point) in the QRouteLead
+
+        Raises:
+            Exception: Ping name is not supported
         """
         # First define which pin/lead you intend to initialize
         if name == self.start_pin_name:
@@ -224,6 +230,9 @@ class QRoute(QComponent):
 
         Return:
             QRoutePoint: last point in the QRouteLead (self.head/tail)
+
+        Raises:
+            Exception: Ping name is not supported
         """
         p = self.parse_options()
 
@@ -259,6 +268,10 @@ class QRoute(QComponent):
 
         Return:
             QRoutePoint: last point in the QRouteLead (self.head/tail)
+
+        Raises:
+            Exception: Ping name is not supported
+            Exception: Dictionary error
         """
         p = self.parse_options()
         # First define which lead you intend to modify
