@@ -106,6 +106,14 @@ class QGDSRenderer(QRenderer):
 
         path_filename='../gds-files/Fake_Junctions_copy.gds',
 
+        # Vertex limit for FlexPath
+        # max_points (integer) – If the number of points in the polygonal path boundary is greater than
+        # max_points, it will be fractured in smaller polygons with at most max_points each. If max_points
+        # is zero, no fracture will occur. GDSpy uses 199 as the default. The historical max value of vertices
+        # for a poly/path was 199 (fabrication equipment restrictions).  The hard max limit that a GDSII file
+        # can handle is 8191.
+        max_points_flexpath=8191,
+
         # (float): Scale box of components to render. Should be greater than 1.0.
         # For benifit of the GUI, keep this the last entry in the dict.  GUI shows a note regarding bound_box.
         bounding_box_scale_x='1.2',
@@ -1010,10 +1018,10 @@ class QGDSRenderer(QRenderer):
         """
 
         corners = self.options.corners
-        # TODO: change to actual parsing and unit conversion
-        tolerance = float(self.options.tolerance)
-        # TODO: Check it works as desired
-        precision = float(self.options.precision)
+        tolerance = self.parse_value(self.options.tolerance)
+        precision = self.parse_value(self.options.precision)
+        max_points_flexpath = self.parse_value(
+            self.options.max_points_flexpath)
 
         geom = qgeometry_element.geometry  # type: shapely.geometry.base.BaseGeometry
 
@@ -1063,12 +1071,14 @@ class QGDSRenderer(QRenderer):
                     to_return = gdspy.FlexPath(list(geom.coords),
                                                use_width,
                                                layer=qgeometry_element.layer,
+                                               max_points=max_points_flexpath,
                                                datatype=11)
                 else:
                     to_return = gdspy.FlexPath(list(geom.coords),
                                                use_width,
                                                layer=qgeometry_element.layer,
                                                datatype=11,
+                                               max_points=max_points_flexpath,
                                                corners=corners,
                                                bend_radius=qgeometry_element.fillet,
                                                tolerance=tolerance,
