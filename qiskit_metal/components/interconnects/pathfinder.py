@@ -58,7 +58,6 @@ class RoutePathfinder(RouteAnchors):
             start_direction (np.array): Vector indicating direction of starting point
             start (np.array): 2-D coordinates of first anchor
             end (np.array): 2-D coordinates of second anchor
-            step_size (float): Minimum distance between adjacent vertices on CPW
 
         Returns:
             List of vertices of a CPW going from start to end
