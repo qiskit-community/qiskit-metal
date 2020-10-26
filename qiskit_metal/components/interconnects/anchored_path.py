@@ -241,6 +241,13 @@ class RouteAnchors(QRoute):
         return None
 
     def free_manhattan_length_anchors(self):
+        """
+        Computes the free-flight manhattan distance between start_pt and end_pt
+        passing through all of the given anchor points.
+
+        Returns:
+            Total length (float) connecting all points in order
+        """
         anchors = self.parse_options().anchors
         reference = [self.head.get_tip().position]
         reference.extend(list(anchors.values()))

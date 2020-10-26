@@ -123,7 +123,7 @@ class QRoute(QComponent):
         Attributes:
             head (QRouteLead()): Stores sequential points to start the route
             tail (QRouteLead()): (optional) Stores sequential points to terminate the route
-            intermediate_pts: (list or numpy Nx2) Sequence of points between and other than head and tail (default:None).
+            intermediate_pts: (list or numpy Nx2 or dict) Sequence of points between and other than head and tail (default:None).
                               Type could be either list or numpy Nx2, or dict/OrderedDict nesting lists or numpy Nx2
             start_pin_name (string): Head pin name (default: "start")
             end_pin_name (string): Tail pin name (default: "end")
@@ -433,8 +433,8 @@ class QRoute(QComponent):
         coordinate sys.
 
         Arguments:
-            start (QRoutePoint): [description]
-            end (QRoutePoint): [description]
+            start (QRoutePoint): reference start point (direction from here)
+            end (QRoutePoint): reference end point (direction to here)
             snap (bool): True to snap to grid (default: False)
 
         Returns:
@@ -459,23 +459,31 @@ class QRoute(QComponent):
         points = self.get_points()
         return sum(norm(points[i + 1] - points[i]) for i in range(len(points) - 1))
 
-    def assign_direction_to_anchor(self, start_pt: QRoutePoint, end_pt: QRoutePoint):
-        if end_pt.direction is not None:
-            # end_pt already has a direction (not an anchor?), so do nothing
+    def assign_direction_to_anchor(self, ref_pt: QRoutePoint, anchor_pt: QRoutePoint):
+        """Method to assign a direction to a point. Currently assigned as the max(x,y projection)
+		of the direct path between the reference point and the anchor. Method directly modifies
+		the anchor_pt.direction, thus there is no return value
+
+        Arguments:
+            ref_pt (QRoutePoint): Reference point
+            anchor_pt (QRoutePoint): Anchor point. if it already has a direction, the method will not overwrite it
+        """
+        if anchor_pt.direction is not None:
+            # anchor_pt already has a direction (not an anchor?), so do nothing
             return
-        # Current rule: stop_direction aligned with longer edge of the rectangle connecting start_pt and end_pt
-        start = start_pt.position
-        end = end_pt.position
-        # Absolute value of displacement between start and end in x direction
-        offsetx = abs(end[0] - start[0])
-        # Absolute value of displacement between start and end in y direction
-        offsety = abs(end[1] - start[1])
-        if offsetx >= offsety:  # "Wide" rectangle -> end_arrow points along x
-            assigned_direction = np.array([end[0] - start[0], 0])
-        else:  # "Tall" rectangle -> end_arrow points along y
-            assigned_direction = np.array([0, end[1] - start[1]])
+        # Current rule: stop_direction aligned with longer edge of the rectangle connecting ref_pt and anchor_pt
+        ref = ref_pt.position
+        anchor = anchor_pt.position
+        # Absolute value of displacement between ref and anchor in x direction
+        offsetx = abs(anchor[0] - ref[0])
+        # Absolute value of displacement between ref and anchor in y direction
+        offsety = abs(anchor[1] - ref[1])
+        if offsetx >= offsety:  # "Wide" rectangle -> anchor_arrow points along x
+            assigned_direction = np.array([anchor[0] - ref[0], 0])
+        else:  # "Tall" rectangle -> anchor_arrow points along y
+            assigned_direction = np.array([0, anchor[1] - ref[1]])
             assigned_direction = assigned_direction / norm(assigned_direction)
-        end_pt.direction = assigned_direction
+        anchor_pt.direction = assigned_direction
 
     def make_elements(self, pts: np.ndarray):
         """Turns the CPW points into design elements, and add them to the design object
