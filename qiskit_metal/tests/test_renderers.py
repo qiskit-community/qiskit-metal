@@ -135,7 +135,7 @@ class TestRenderers(unittest.TestCase):
         renderer = QGDSRenderer(design)
         options = renderer.default_options
 
-        self.assertEqual(len(options), 11)
+        self.assertEqual(len(options), 12)
         self.assertEqual(options['short_segments_to_not_fillet'], 'True')
         self.assertEqual(
             options['check_short_segments_by_scaling_fillet'], '2.0')
