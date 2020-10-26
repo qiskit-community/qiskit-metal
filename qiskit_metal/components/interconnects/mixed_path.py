@@ -132,6 +132,14 @@ class RouteMixed(RoutePathfinder, RouteMeander):
         self.make_elements(self.get_points())
 
     def select_connect_method(self, segment_num):
+        """Translates the user-selected connection method into the right method to execute
+
+        Args:
+            segment_num (int): segment ID. Counts 0 as the first segment after the lead-in.
+
+        Return:
+            selected method
+        """
         between_anchors = self.parse_options().between_anchors
         if segment_num in between_anchors:
             type_connect = between_anchors[segment_num]
@@ -146,6 +154,10 @@ class RouteMixed(RoutePathfinder, RouteMeander):
             return self.connect_meandered
 
     def trim_pts(self):
+        """Crops the sequence of points to concatenate. For example, if a segment between
+        two anchors has no points, then the segment is eliminated (only anchor points will do).
+        Modified directly the self.intermediate_pts, thus nothing is returned
+        """
         if isinstance(self.intermediate_pts, Mapping):
             keys_to_delete = set()
             for key, value in self.intermediate_pts.items():
