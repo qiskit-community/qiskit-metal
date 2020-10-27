@@ -27,6 +27,7 @@ from qiskit_metal.toolbox_metal.parsing import is_true
 from qiskit_metal.components.base import QRoute, QRoutePoint
 from qiskit_metal.toolbox_metal import math_and_overrides as mao
 
+
 class RouteMeander(QRoute):
     """
     The base `CPW meandered` class

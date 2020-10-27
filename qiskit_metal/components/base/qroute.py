@@ -23,6 +23,7 @@ from .base import QComponent
 from numpy.linalg import norm
 from typing import List, Tuple, Union, AnyStr
 from collections.abc import Mapping
+from qiskit_metal.toolbox_metal import math_and_overrides as mao
 
 
 class QRoutePoint:
@@ -385,11 +386,13 @@ class QRoute(QComponent):
             for idxnext in range(1, len(inarray)):
                 pts = pts[1:] + [inarray[idxnext]]
                 # delete identical points
-                if np.array_equal(*pts[1:]):
+                print("pts", idxnext, pts, "*pts[1:]", *pts[1:])
+                if np.allclose(*pts[1:]):
                     pts = [None] + pts[0:2]
                     continue
                 if pts[0] is not None:
-                    if all(i[1] == pts[0][1] for i in pts) or all(i[0] == pts[0][0] for i in pts):
+                    if all(mao.round(i[1]) == mao.round(pts[0][1]) for i in pts) \
+                            or all(mao.round(i[0]) == mao.round(pts[0][0]) for i in pts):
                         pts = [None] + [pts[0]] + [pts[2]]
                 if pts[0] is not None:
                     #save the point before it gets dropped in the next cycle
