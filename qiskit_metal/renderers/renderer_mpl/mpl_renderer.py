@@ -45,7 +45,7 @@ from ..renderer_base.renderer_gui_base import QRendererGui
 from .mpl_interaction import MplInteraction, PanAndZoom
 from .mpl_toolbox import _axis_set_watermark_img, clear_axis, get_prop_cycle
 
-from qiskit_metal.toolbox_python.utility_functions import QCheckLength
+from qiskit_metal.toolbox_python.utility_functions import bad_fillet_idxs
 
 if TYPE_CHECKING:
     from ..._gui.main_window import MetalGUI
@@ -321,13 +321,11 @@ class QMplRenderer():
         newpath = np.array([path[0]])
 
         # Get list of vertices that can't be filleted
-        a_QCheckLength=QCheckLength(path, row["fillet"])
-        no_fillet = a_QCheckLength.get_range_of_vertex_to_not_fillet_linestring(
-                        add_endpoints=False)
+        no_fillet = bad_fillet_idxs(path, row["fillet"], self.design.template_options.PRECISION)
 
         # Iterate through every three-vertex corner
         for (i, (start, corner, end)) in enumerate(zip(path, path[1:], path[2:])):
-            if any(i+1 in x for x in no_fillet): # don't fillet this corner
+            if i+1 in no_fillet: # don't fillet this corner
                 newpath = np.concatenate((newpath, np.array([corner])))
             else:
                 fillet = self._calc_fillet(
