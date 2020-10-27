@@ -41,6 +41,7 @@ from .net_info import QNet
 from .. import config
 if not config.is_building_docs():
     from qiskit_metal.renderers.renderer_gds.gds_renderer import QGDSRenderer
+    from qiskit_metal.renderers.renderer_ansys.ansys_renderer import QAnsysRenderer
 
 
 if TYPE_CHECKING:
@@ -48,6 +49,7 @@ if TYPE_CHECKING:
     from ..components.base.base import QComponent
     from ..renderers.renderer_base import QRenderer
     from ..renderers.renderer_gds.gds_renderer import QGDSRenderer
+    from ..renderers.renderer_ansys.ansys_renderer import QAnsysRenderer
 
 
 __all__ = ['QDesign']
@@ -894,15 +896,14 @@ class QDesign():
         # Not everyone needs HFSS. Should load that separatly.
         """
         # TODO: CHANGE TO LOOP OVER CONFIG. DO NOT HARD CODE @priti
-        # GDS Renderer using base class QRender
-        a_gds = QGDSRenderer(self, initiate=True)
 
         # Every renderer using QRender as base class will have method to get unique name.
         # Add columns to junction table in the element handler
         #unique_name = a_gds._get_unique_class_name()
 
         # register renderers here.
-        self._renderers['gds'] = a_gds
+        self._renderers['gds'] = QGDSRenderer(self, initiate=True)
+        self._renderers['ansys'] = QAnsysRenderer(self, initiate=True)
 
         for render_name, a_render in self._renderers.items():
             a_render.add_table_data_to_QDesign(a_render.name)
@@ -932,8 +933,8 @@ class QDesign():
         Args:
             table_name (str): Table used within QGeometry tables i.e. path, poly, junction.
             renderer_name (str): The name of software to export QDesign, i.e. gds, ansys.
-            column_name (str): The column name within the table, i.e. filename, inductance. 
-            column_value (Object): The type can vary based on column. The data is placed under column_name.  
+            column_name (str): The column name within the table, i.e. filename, inductance.
+            column_value (Object): The type can vary based on column. The data is placed under column_name.
 
         Returns:
             set: Each integer in the set has different meanings.

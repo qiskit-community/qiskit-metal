@@ -64,6 +64,29 @@ class QAnsysRenderer(QRenderer):
 
     NAME_DELIM = r'_'
 
+    name = 'ansys'
+    """name"""
+
+    # When additional columns are added to QGeometry, this is the example to populate it.
+    # e.g. element_extensions = dict(
+    #         base=dict(color=str, klayer=int),
+    #         path=dict(thickness=float, material=str, perfectE=bool),
+    #         poly=dict(thickness=float, material=str), )
+    """element extentions dictionary   element_extensions = dict() from base class"""
+
+    # Add columns to junction table during QGDSRenderer.load()
+    # element_extensions  is now being populated as part of load().
+    # Determined from element_table_data.
+
+    # Dict structure MUST be same as  element_extensions!!!!!!
+    # This dict will be used to update QDesign during init of renderer.
+    # Keeping this as a cls dict so could be edited before renderer is instantiated.
+    # To update component.options junction table.
+
+    element_table_data = dict(
+        junction=dict(inductance=1234.567)
+    )
+
     def __init__(self, design: 'QDesign', initiate=True, render_template: Dict = None, render_options: Dict = None):
         """
         Create a QRenderer for Ansys.
@@ -76,6 +99,7 @@ class QAnsysRenderer(QRenderer):
         """
         super().__init__(design=design, initiate=initiate,
                          render_template=render_template, render_options=render_options)
+        QAnsysRenderer.load()
 
     # TODO: Create new project every time or reuse old one? If latter, pass more arguments?
     def open_ansys_design(self, project_path=None, project_name=None, design_name=None):
