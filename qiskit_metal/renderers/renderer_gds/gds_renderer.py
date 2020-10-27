@@ -1030,6 +1030,7 @@ class QGDSRenderer(QRenderer):
                                           layer=qgeometry_element.layer,
                                           datatype=10,
                                           )
+
             # If polygons have a holes, need to remove it for gdspy.
             all_interiors = list()
             if geom.interiors:
@@ -1041,8 +1042,14 @@ class QGDSRenderer(QRenderer):
                 a_poly = gdspy.boolean(
                     exterior_poly, a_poly_set, 'not', layer=qgeometry_element.layer, datatype=10)
                 return a_poly
+                # poly_fractured = a_poly.fracture(
+                #     max_points=5000, precision=precision)
+                # return poly_fractured
             else:
                 return exterior_poly
+                # poly_fractured = exterior_poly.fracture(
+                #     max_points=5000, precision=precision)
+                # return poly_fractured
 
         elif isinstance(geom, shapely.geometry.LineString):
             '''
