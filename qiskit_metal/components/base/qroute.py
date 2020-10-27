@@ -386,7 +386,6 @@ class QRoute(QComponent):
             for idxnext in range(1, len(inarray)):
                 pts = pts[1:] + [inarray[idxnext]]
                 # delete identical points
-                print("pts", idxnext, pts, "*pts[1:]", *pts[1:])
                 if np.allclose(*pts[1:]):
                     pts = [None] + pts[0:2]
                     continue
