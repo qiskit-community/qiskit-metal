@@ -690,6 +690,7 @@ class QDesign():
 
 #########I/O###############################################################
 
+
     @classmethod
     def load_design(cls, path: str):
         """
@@ -882,7 +883,6 @@ class QDesign():
 
 ######### Renderers ###############################################################
 
-
     def _start_renderers(self):
         """1. Import the renderers identifed in config.renderers_to_load.
            2. Register them into QDesign.
@@ -890,8 +890,17 @@ class QDesign():
         """
 
         for renderer_key, import_info in config.renderers_to_load.items():
-            path_name = import_info.path_name
-            class_name = import_info.class_name
+            if 'path_name' in import_info:
+                path_name = import_info.path_name
+            else:
+                self.logger.warning(f'Renderer={renderer_key} is not registered in QDesign.  '
+                                    f'Looking for key="path_name" and value in config.renderers_to_load.')
+
+            if 'class_name' in import_info:
+                class_name = import_info.class_name
+            else:
+                self.logger.warning(f'Renderer={renderer_key} is not registered in QDesign.  '
+                                    f'Looking for key="class_name" and value in config.renderers_to_load.')
 
             # check if module_name exists
             if (spec := importlib.util.find_spec(path_name)) is not None:
