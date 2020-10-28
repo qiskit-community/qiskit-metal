@@ -895,12 +895,14 @@ class QDesign():
             else:
                 self.logger.warning(f'Renderer={renderer_key} is not registered in QDesign.  '
                                     f'Looking for key="path_name" and value in config.renderers_to_load.')
+                continue
 
             if 'class_name' in import_info:
                 class_name = import_info.class_name
             else:
                 self.logger.warning(f'Renderer={renderer_key} is not registered in QDesign.  '
                                     f'Looking for key="class_name" and value in config.renderers_to_load.')
+                continue
 
             # check if module_name exists
             if (spec := importlib.util.find_spec(path_name)) is not None:
@@ -916,9 +918,11 @@ class QDesign():
                 else:
                     self.logger.warning(f'Renderer={renderer_key} is not registered in QDesign.'
                                         f'class_name={class_name} was not found.')
+                    continue
             else:
                 self.logger.warning(f'Renderer={renderer_key} is not registered in QDesign.'
                                     f'module_name={path_name} was not found.')
+                continue
 
         for render_name, a_render in self._renderers.items():
             a_render.add_table_data_to_QDesign(a_render.name)
