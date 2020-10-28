@@ -21,10 +21,9 @@ Initialize default renderers for Metal
 from .. import config
 from .. import Dict
 
+
 def setup_renderers():
     """
-    #TODO: Sets up the default renderers.
-
     Use config to set up default renderes
     """
     return Dict()
