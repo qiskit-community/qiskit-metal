@@ -248,13 +248,22 @@ class RouteMeander(QRoute):
             if ((mao.dot(start_pt.direction, end_pt.direction) < 0)
                     and (mao.dot(forward, start_pt.direction) <= 0)):
                 # pins are pointing opposite directions and diverging
-                # the right-most root_pts need to be sideways aligned with the end.position point
+                # the last root_pts need to be sideways aligned with the end.position point
                 # and forward aligned with the previous meander point
                 pts[-1, abs(forward[0])] = pts[-2, abs(forward[0])]
                 pts[-1, abs(forward[0])-1] = end_pt.position[abs(forward[0])-1]
             else:
-                # the right-most root_pts need to be forward aligned with the end.position point
+                # the last root_pts need to be forward aligned with the end.position point
                 pts[-1, abs(forward[0])] = end_pt.position[abs(forward[0])]
+                # and if the last root_pts ends outside the CPW amplitude on the side where the last meander is
+                # then the last meander needs to be locked on it as well
+                if (self.issideways(pts[-1], pts[-3], pts[-2])
+                        and self.issideways(pts[-2], root_pts[0]+start_pt.position, root_pts[-1]+start_pt.position))\
+                        or (not self.issideways(pts[-1], pts[-3], pts[-2])
+                            and not self.issideways(pts[-2], root_pts[0]+start_pt.position,
+                                                    root_pts[-1]+start_pt.position)):
+                    pts[-2, abs(forward[0])] = end_pt.position[abs(forward[0])]
+                    pts[-3, abs(forward[0])] = end_pt.position[abs(forward[0])]
         if abs(asymmetry) > abs(length_perp):
             if not((mao.dot(start_pt.direction, end_pt.direction) < 0)
                    and (mao.dot(forward, start_pt.direction) <= 0)):
@@ -266,7 +275,8 @@ class RouteMeander(QRoute):
                     pts[-2, abs(forward[0])] = end_pt.position[abs(forward[0])]
                     pts[-3, abs(forward[0])] = end_pt.position[abs(forward[0])]
 
-        # Adjust the last meander to eliminate the terminating jog (dogleg)
+
+        # Adjust the meander to eliminate the terminating jog (dogleg)
         if prevent_short_edges:
             x2fillet = 2 * self.p.fillet
             # adjust the tail first
@@ -345,24 +355,23 @@ class RouteMeander(QRoute):
         end_pt_adjusted_up = end_pt.position + fillet_shift
         end_pt_adjusted_down = end_pt.position - fillet_shift
 
-        issideways = lambda p, a, b: mao.cross(p - a, b - a) < 0
         # if start_pt.position is below axes + shift - 2xfillet &  first_meander_sideways
-        if first_meander_sideways and not issideways(start_pt_adjusted_up, pts[0], pts[1]):
+        if first_meander_sideways and not self.issideways(start_pt_adjusted_up, pts[0], pts[1]):
             #first meander is fair game
             pass
         # if start_pt.position is above axes - shift + 2xfillet &  not first_meander_sideways
-        elif not first_meander_sideways and issideways(start_pt_adjusted_down, pts[0], pts[1]):
+        elif not first_meander_sideways and self.issideways(start_pt_adjusted_down, pts[0], pts[1]):
             # first meander is fair game
             pass
         else:
             # else block first mender
             adjustment_vector[:2] = [0, 0]
         # if end_pt.position is below axes + shift - 2xfillet &  last_meander_sideways
-        if last_meander_sideways and not issideways(end_pt_adjusted_up, pts[-2-term_point], pts[-1-term_point]):
+        if last_meander_sideways and not self.issideways(end_pt_adjusted_up, pts[-2-term_point], pts[-1-term_point]):
             # first meander is fair game
             pass
         # if end_pt.position is above axes - shift + 2xfillet &  not last_meander_sideways
-        elif not last_meander_sideways and issideways(end_pt_adjusted_down, pts[-2-term_point], pts[-1 - term_point]):
+        elif not last_meander_sideways and self.issideways(end_pt_adjusted_down, pts[-2-term_point], pts[-1 - term_point]):
             # first meander is fair game
             pass
         else:
@@ -411,3 +420,6 @@ class RouteMeander(QRoute):
         z[::2] = x
         z[1::2] = x + 1
         return z, odd
+
+    def issideways(self, point, seg_point_a, seg_point_b):
+        return mao.cross(point - seg_point_a, seg_point_b - seg_point_a) < 0
