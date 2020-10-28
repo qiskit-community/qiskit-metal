@@ -27,10 +27,13 @@ from ._defaults import DefaultMetalOptions, DefaultOptionsRenderer
 
 
 renderers_to_load = Dict(
-    metal='qiskit_metal.renderers.metal',
-    ansys='qiskit_metal.renderers.ansys',
-    gds='qiskit_metal.renderers.gds'
-    # gds='qiskit_metal.renderers.renderer_gds.gds_renderer'
+    ansys=Dict(path_name='qiskit_metal.renderers.renderer_ansys.ansys_renderer',
+               class_name='QAnsysRenderer'),
+
+    gds=Dict(
+        path_name='qiskit_metal.renderers.renderer_gds.gds_renderer',
+        class_name='QGDSRenderer'),
+
 )
 """
 Define the renderes to load. Just provide the module names here.

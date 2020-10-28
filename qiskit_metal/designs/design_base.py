@@ -45,9 +45,9 @@ if not config.is_building_docs():
 
 if TYPE_CHECKING:
     # For linting, avoids circular imports.
-    from ..components.base.base import QComponent
-    from ..renderers.renderer_base import QRenderer
-    from ..renderers.renderer_gds.gds_renderer import QGDSRenderer
+    from qiskit_metal.components.base.base import QComponent
+    from qiskit_metal.renderers.renderer_base import QRenderer
+    from qiskit_metal.renderers.renderer_gds.gds_renderer import QGDSRenderer
 
 
 __all__ = ['QDesign']
@@ -690,6 +690,7 @@ class QDesign():
 
 #########I/O###############################################################
 
+
     @classmethod
     def load_design(cls, path: str):
         """
@@ -882,27 +883,46 @@ class QDesign():
 
 ######### Renderers ###############################################################
 
-
     def _start_renderers(self):
-        """ For now, load only GDS.  However, will need to determine
-        if mpl needs to be loaded, because it is conencted to GUI.
-
-
-        # TODO: Use Dict() from config.renderers_to_load.
-        # Determine how to load exactly.
-        # Zkm: i don't think we should load all by default. Just MPL and GDS.
-        # Not everyone needs HFSS. Should load that separatly.
+        """1. Import the renderers identifed in config.renderers_to_load.
+           2. Register them into QDesign.
+           3. Populate self.renderer_defaults_by_table
         """
-        # TODO: CHANGE TO LOOP OVER CONFIG. DO NOT HARD CODE @priti
-        # GDS Renderer using base class QRender
-        a_gds = QGDSRenderer(self, initiate=True)
 
-        # Every renderer using QRender as base class will have method to get unique name.
-        # Add columns to junction table in the element handler
-        #unique_name = a_gds._get_unique_class_name()
+        for renderer_key, import_info in config.renderers_to_load.items():
+            if 'path_name' in import_info:
+                path_name = import_info.path_name
+            else:
+                self.logger.warning(f'Renderer={renderer_key} is not registered in QDesign.  '
+                                    f'Looking for key="path_name" and value in config.renderers_to_load.')
+                continue
 
-        # register renderers here.
-        self._renderers['gds'] = a_gds
+            if 'class_name' in import_info:
+                class_name = import_info.class_name
+            else:
+                self.logger.warning(f'Renderer={renderer_key} is not registered in QDesign.  '
+                                    f'Looking for key="class_name" and value in config.renderers_to_load.')
+                continue
+
+            # check if module_name exists
+            if importlib.util.find_spec(path_name):
+                class_renderer = getattr(
+                    importlib.import_module(path_name), class_name, None)
+
+                # check if class_name is in module
+                if class_renderer is not None:
+                    a_renderer = class_renderer(self)
+
+                    # register renderers here.
+                    self._renderers[renderer_key] = a_renderer
+                else:
+                    self.logger.warning(f'Renderer={renderer_key} is not registered in QDesign.  '
+                                        f'The class_name={class_name} was not found.')
+                    continue
+            else:
+                self.logger.warning(f'Renderer={renderer_key} is not registered in QDesign.  '
+                                    f'The module_name={path_name} was not found.')
+                continue
 
         for render_name, a_render in self._renderers.items():
             a_render.add_table_data_to_QDesign(a_render.name)
