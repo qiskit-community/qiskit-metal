@@ -291,25 +291,23 @@ class RouteAnchors(QRoute):
         self.set_pin("end")
 
         # Align the lead-in/out to the input options set from the user
-        meander_start_point = self.set_lead("start")
-        meander_end_point = self.set_lead("end")
+        start_point = self.set_lead("start")
+        end_point = self.set_lead("end")
 
-        self.intermediate_pts = None
-
-        # find the points to connect between two anchors, or between anchors and leads
-        for coord in list(anchors.values()):
+        self.intermediate_pts = OrderedDict()
+        for arc_num, coord in anchors.items():
             arc_pts = self.connect_simple(self.get_tip(), QRoutePoint(coord))
-            if not self.intermediate_pts:
-                self.intermediate_pts = arc_pts
+            if arc_pts is None:
+                self.intermediate_pts[arc_num] = [coord]
             else:
-                self.intermediate_pts += arc_pts
+                self.intermediate_pts[arc_num] = np.concatenate([arc_pts, [coord]], axis=0)
+        arc_pts = self.connect_simple(self.get_tip(), end_point)
+        if arc_pts is not None:
+            self.intermediate_pts[len(anchors)] = np.array(arc_pts)
 
-        last_pt = self.connect_simple(self.get_tip(), meander_end_point)
-        if self.intermediate_pts:
-            self.intermediate_pts += last_pt
-        else:
-            self.intermediate_pts = last_pt
+        # concatenate all points, transforming the dictionary into a single numpy array
+        self.trim_pts()
+        self.intermediate_pts = np.concatenate(list(self.intermediate_pts.values()), axis=0)
 
         # Make points into elements
         self.make_elements(self.get_points())
-
