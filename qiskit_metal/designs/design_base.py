@@ -687,14 +687,35 @@ class QDesign():
 
         return return_response
 
-    def copy_component(self,  original_class: 'QComponent', new_component_name: str, options: dict):
-        #component_class(self, new_component_name,options)
-        class_name = original_class.class_name
+    def copy_component(self,  original_class: 'QComponent', new_component_name: str, options_superimpose: dict) -> int:
+        """Copy a coponent in QDesign and add it to QDesign._components using options_overwrite.
 
-        pass
+        Args:
+            original_class (QComponent): The QComponent to copy.
+            new_component_name (str): The name should not already be in QDesign, if it is, the copy fill fail.
+            options_superimpose (dict): Can use differnt options for copied QComponent. Will start with the options 
+                                        in original QComponent, and then superimpose with options_superimpose. An example
+                                        would be x and y locations. 
+
+        Returns:
+            int: 0 if not copied, 1 if copied
+        """
+
+        # overwrite orignal option with new options
+        options = {**original_class.options, **options_superimpose}
+        class_name = original_class.class_name
+        if new_component_name not in self.name_to_id:
+            command = f'{class_name}(self, \'{new_component_name}\', options={options})'
+
+            # The command is not working.
+            exec(command)
+            return 1
+        else:
+            return 0
 
 
 #########I/O###############################################################
+
 
     @classmethod
     def load_design(cls, path: str):
@@ -887,7 +908,6 @@ class QDesign():
 
 
 ######### Renderers ###############################################################
-
 
     def _start_renderers(self):
         """1. Import the renderers identifed in config.renderers_to_load.
