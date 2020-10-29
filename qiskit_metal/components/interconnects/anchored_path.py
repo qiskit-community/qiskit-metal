@@ -20,12 +20,12 @@ Anchored path
 '''
 
 import numpy as np
-from numpy.linalg import norm
 
 from collections import OrderedDict
 from qiskit_metal import Dict
 from qiskit_metal.components.base import QRoute, QRoutePoint
 from qiskit_metal.toolbox_metal import math_and_overrides as mao
+from collections.abc import Mapping
 
 
 def intersecting(a: np.array, b: np.array, c: np.array, d: np.array) -> bool:
@@ -257,6 +257,27 @@ class RouteAnchors(QRoute):
         for i in range(1, len(reference)):
             length += abs(reference[i][0]-reference[i-1][0])+abs(reference[i][1]-reference[i-1][1])
         return length
+
+    def trim_pts(self):
+        """Crops the sequence of points to concatenate. For example, if a segment between
+        two anchors has no points, then the segment is eliminated (only anchor points will do).
+        Modified directly the self.intermediate_pts, thus nothing is returned
+        """
+        if isinstance(self.intermediate_pts, Mapping):
+            keys_to_delete = set()
+            for key, value in self.intermediate_pts.items():
+                if value is None:
+                    keys_to_delete.add(key)
+                try:
+                    # value is a list
+                    if not value:
+                        keys_to_delete.add(key)
+                except ValueError:
+                    # value is a numpy
+                    if not value.size:
+                        keys_to_delete.add(key)
+            for key in keys_to_delete:
+                del self.intermediate_pts[key]
 
     def make(self):
         """

@@ -17,18 +17,11 @@
 @author: Marco Facchini
 '''
 
-from typing import List, Tuple, Union
-
-from numpy.linalg import norm
-
 import numpy as np
 from qiskit_metal import Dict
 from qiskit_metal.components.base import QRoutePoint
 
-from collections.abc import Mapping
-
 from collections import OrderedDict
-from .framed_path import RouteFramed
 from .meandered import RouteMeander
 from .pathfinder import RoutePathfinder
 
@@ -152,24 +145,3 @@ class RouteMixed(RoutePathfinder, RouteMeander):
             return self.connect_astar_or_simple
         if type_connect == "M":
             return self.connect_meandered
-
-    def trim_pts(self):
-        """Crops the sequence of points to concatenate. For example, if a segment between
-        two anchors has no points, then the segment is eliminated (only anchor points will do).
-        Modified directly the self.intermediate_pts, thus nothing is returned
-        """
-        if isinstance(self.intermediate_pts, Mapping):
-            keys_to_delete = set()
-            for key, value in self.intermediate_pts.items():
-                if value is None:
-                    keys_to_delete.add(key)
-                try:
-                    # value is a list
-                    if not value:
-                        keys_to_delete.add(key)
-                except ValueError:
-                    # value is a numpy
-                    if not value.size:
-                        keys_to_delete.add(key)
-            for key in keys_to_delete:
-                del self.intermediate_pts[key]
