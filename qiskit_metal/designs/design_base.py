@@ -703,19 +703,25 @@ class QDesign():
 
         # overwrite orignal option with new options
         options = {**original_class.options, **options_superimpose}
-        class_name = original_class.class_name
+        path_class_name = original_class.class_name
+        module_path = path_class_name[:path_class_name.rfind('.')]
+        class_name = path_class_name[path_class_name.rfind('.')+1:]
         if new_component_name not in self.name_to_id:
-            command = f'{class_name}(self, \'{new_component_name}\', options={options})'
+            if importlib.util.find_spec(module_path):
+                qcomponent_class = getattr(
+                    importlib.import_module(module_path), class_name, None)
+                qcomponent_class(self, new_component_name, options=options)
+                return 1
+            else:
+                # Path to QComponent not found
+                return 0
 
-            # The command is not working.
-            exec(command)
-            return 1
         else:
+            # The new name is already in QDesign.
             return 0
 
 
 #########I/O###############################################################
-
 
     @classmethod
     def load_design(cls, path: str):
@@ -908,6 +914,7 @@ class QDesign():
 
 
 ######### Renderers ###############################################################
+
 
     def _start_renderers(self):
         """1. Import the renderers identifed in config.renderers_to_load.
