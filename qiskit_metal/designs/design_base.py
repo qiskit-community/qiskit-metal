@@ -715,7 +715,6 @@ class QDesign():
             else:
                 # Path to QComponent not found
                 return 0
-
         else:
             # The new name is already in QDesign.
             return 0
