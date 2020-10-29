@@ -311,8 +311,7 @@ class QRoute(QComponent):
         """
         pt = pt_minus_1 = None
         if len(arr) == 1:
-            # array 1,2
-            pt = arr
+            pt = arr[0]
         elif len(arr) > 1:
             if not isinstance(arr, np.ndarray) and len(arr) == 2 and len(arr[0]) == 1:
                 # array 2,1
