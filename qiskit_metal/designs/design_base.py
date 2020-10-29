@@ -687,9 +687,14 @@ class QDesign():
 
         return return_response
 
+    def copy_component(self,  original_class: 'QComponent', new_component_name: str, options: dict):
+        #component_class(self, new_component_name,options)
+        class_name = original_class.class_name
+
+        pass
+
 
 #########I/O###############################################################
-
 
     @classmethod
     def load_design(cls, path: str):
@@ -882,6 +887,7 @@ class QDesign():
 
 
 ######### Renderers ###############################################################
+
 
     def _start_renderers(self):
         """1. Import the renderers identifed in config.renderers_to_load.
