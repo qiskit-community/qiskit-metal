@@ -687,7 +687,7 @@ class QDesign():
 
         return return_response
 
-    def copy_component(self,  original_class: 'QComponent', new_component_name: str, options_superimpose: dict) -> Union['QComponent', None]:
+    def copy_component(self,  original_qcomponent: 'QComponent', new_component_name: str, options_superimpose: dict) -> Union['QComponent', None]:
         """Copy a coponent in QDesign and add it to QDesign._components using options_overwrite.
 
         Args:
@@ -702,8 +702,8 @@ class QDesign():
         """
 
         # overwrite orignal option with new options
-        options = {**original_class.options, **options_superimpose}
-        path_class_name = original_class.class_name
+        options = {**original_qcomponent.options, **options_superimpose}
+        path_class_name = original_qcomponent.class_name
         module_path = path_class_name[:path_class_name.rfind('.')]
         class_name = path_class_name[path_class_name.rfind('.')+1:]
         if new_component_name not in self.name_to_id:
