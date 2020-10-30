@@ -89,10 +89,8 @@ class QDesign():
                             added to design using the name.
 
             enable_renderers: Enable the renderers during the init() of design.
-                        For now, gds is enabled within design.
-                        TODO:Use the list in config.renderers_to_load() to determine
+                       The list in config.renderers_to_load() to determine
                         which renderers to enable.
-
         """
 
         # _qcomponent_latest_assigned_id -- Used to keep a tally and ID of all components within an
