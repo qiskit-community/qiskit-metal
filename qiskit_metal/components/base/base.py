@@ -520,7 +520,6 @@ class QComponent():
         # Begin by setting the status to failed, we will change this if we succeed
         self.status = 'failed'
         if self._made:  # already made, just remaking
-            # TODO: this is probably very inefficient, design more efficient way
             self.design.qgeometry.delete_component_id(self.id)
             self.design._delete_all_pins_for_component(self.id)
 
