@@ -305,7 +305,7 @@ class QDesign():
         Returns:
             int: layer of ground plane
         """
-        # TODO: Maybe return tuple for layer, datatype
+
         if chip_name in self.chips:
             if 'layer_ground_plane' in self.chips:
                 return int(self.chips['layer_ground_plane'])
