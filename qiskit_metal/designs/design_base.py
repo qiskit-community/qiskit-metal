@@ -481,16 +481,9 @@ class QDesign():
         """
         Remakes all components with their current parameters.
         """
-        # TODO: there are some performance tricks here, we could just clear all element tables
-        # and then skip the deletion of components qgeometry one by one
-        # first clear all the
-        # thne just make without the checks on existing
-        # TODO: Handle error and print nice statemetns
-        # try catch log_simple_error
-
         for name, obj in self._components.items():  # pylint: disable=unused-variable
-            try:  # TODO: performace?
-                obj.rebuild()  # should we call this build?
+            try:
+                obj.rebuild()
             except:
                 print(f'ERORROR in building {name}')
                 log_error_easy(
@@ -684,6 +677,7 @@ class QDesign():
 
 #########I/O###############################################################
 
+
     @classmethod
     def load_design(cls, path: str):
         """
@@ -875,7 +869,6 @@ class QDesign():
 
 
 ######### Renderers ###############################################################
-
 
     def _start_renderers(self):
         """1. Import the renderers identifed in config.renderers_to_load.
