@@ -807,7 +807,7 @@ class QDesign():
         return self.template_options.units
 
 ####################################################################################
-# TODO: Dependencies
+# Dependencies
 
     def add_dependency(self, parent: str, child: str):
         """
@@ -817,11 +817,6 @@ class QDesign():
             parent (str): The component on which the child depends.
             child (str): The child cannot live without the parent.
         """
-        # TODO: add_dependency Should we allow bidirecitonal arrows as as flad in the graph?
-        # Easier if we keep simply one-sided arrows
-        # Note that we will have to handle renaming and deleting of components, etc.
-        # Should we make a dependancy handler?
-        # For now, let's table this, lower priority
         pass
 
     def remove_dependency(self, parent: str, child: str):
@@ -832,8 +827,6 @@ class QDesign():
             parent (str): The component on which the child depends.
             child (str): The child cannot live without the parent.
         """
-
-        # TODO: remove_dependency
         pass
 
     def update_component(self, component_name: str, dependencies: bool = True):
@@ -845,9 +838,7 @@ class QDesign():
             component_name (str): Component name to update
             dependencies (bool): True to update all dependencies (Default: True)
         """
-
-        # TODO: Get dependency graph
-
+        # Get dependency graph
         # Remake components in order
         pass
 
