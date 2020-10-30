@@ -91,6 +91,7 @@ class QDesign():
             enable_renderers: Enable the renderers during the init() of design.
                        The list in config.renderers_to_load() to determine
                         which renderers to enable.
+
         """
 
         # _qcomponent_latest_assigned_id -- Used to keep a tally and ID of all components within an
@@ -133,7 +134,7 @@ class QDesign():
 
         self._qgeometry = QGeometryTables(self)
 
-        # used for components, and renderers, TODO for QDesign
+        # Used for QComponents, and QRenderers
         self._template_options = DefaultMetalOptions()
 
         self.variables.update(self.template_options.qdesign.variables)
