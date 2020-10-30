@@ -635,13 +635,6 @@ class QComponent():
 
 ####################################################################################
 # Functions for handling of pins
-#
-# TODO: Simplify the data types
-#   Stress test the results
-#   Component name vs. id issues?
-#
-#   What information is truly necessary for the pins? Should they have a z-direction component?
-#   Will they operate properly with non-planar designs?
 
     def add_pin(self,
                 name: str,  # Should be static based on component designer's choice
