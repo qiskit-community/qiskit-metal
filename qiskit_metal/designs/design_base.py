@@ -454,9 +454,8 @@ class QDesign():
         self.delete_all_pins()
         self.name_to_id.clear()
         self._components.clear()
-        # TODO: add element tables here
+
         self._qgeometry.clear_all_tables()
-        # TODO: add dependency handling here
 
     def _get_new_qcomponent_id(self):
         '''
@@ -690,7 +689,6 @@ class QDesign():
 
 #########I/O###############################################################
 
-
     @classmethod
     def load_design(cls, path: str):
         """
@@ -882,6 +880,7 @@ class QDesign():
 
 
 ######### Renderers ###############################################################
+
 
     def _start_renderers(self):
         """1. Import the renderers identifed in config.renderers_to_load.
