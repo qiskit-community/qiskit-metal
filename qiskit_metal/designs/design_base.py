@@ -677,7 +677,6 @@ class QDesign():
 
 #########I/O###############################################################
 
-
     @classmethod
     def load_design(cls, path: str):
         """
@@ -707,7 +706,7 @@ class QDesign():
             bool: True = success; False = failure
         """
 
-        self.logger.warning("Saving is a beta feature.")  # TODO:
+        self.logger.warning("Saving is a beta feature.")
 
         if path is None:
             if self.save_path is None:
@@ -869,6 +868,7 @@ class QDesign():
 
 
 ######### Renderers ###############################################################
+
 
     def _start_renderers(self):
         """1. Import the renderers identifed in config.renderers_to_load.
