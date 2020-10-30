@@ -72,11 +72,11 @@ Interconnects
 .. autosummary::
     :toctree:
 
-    RouteAnchors
-    RouteFramePath
-    RouteMeander
-    RoutePathfinder
     RouteStraight
+    RouteFramed
+    RouteMeander
+    RouteAnchors
+    RoutePathfinder
     ResonatorRectangleSpiral
 
 
@@ -154,7 +154,7 @@ if config.is_building_docs():
     from .connectors.open_to_ground import OpenToGround
     from .connectors.short_to_ground import ShortToGround
     from .interconnects.straight_path import RouteStraight
-    from .interconnects.frame_path import RouteFramePath
+    from .interconnects.framed_path import RouteFramed
     from .interconnects.meandered import RouteMeander
     from .interconnects.anchored_path import RouteAnchors
     from .interconnects.pathfinder import RoutePathfinder

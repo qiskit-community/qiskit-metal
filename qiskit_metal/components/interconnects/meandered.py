@@ -25,6 +25,7 @@ import numpy as np
 from qiskit_metal import Dict
 from qiskit_metal.toolbox_metal.parsing import is_true
 from qiskit_metal.components.base import QRoute, QRoutePoint
+from qiskit_metal.toolbox_metal import math_and_overrides as mao
 
 
 class RouteMeander(QRoute):
@@ -61,12 +62,7 @@ class RouteMeander(QRoute):
             asymmetry='0um'
         ),
         snap='true',
-        lead=Dict(
-            start_straight='0.1mm',
-            end_straight='0.1mm',
-            start_jogged_extension='',
-            end_jogged_extension=''
-        ),
+        prevent_short_edges='true'
     )
     """Default options"""
 
@@ -79,7 +75,6 @@ class RouteMeander(QRoute):
         """
         # parsed options
         snap = is_true(self.p.snap)
-        total_length = self.p.total_length
 
         # Set the CPW pins and add the points/directions to the lead-in/out arrays
         self.set_pin("start")
@@ -88,79 +83,27 @@ class RouteMeander(QRoute):
         # Align the lead-in/out to the input options set from the user
         meander_start_point = self.set_lead("start")
         meander_end_point = self.set_lead("end")
-        if self.p.lead.start_jogged_extension:
-            meander_start_point = self.set_lead_extension("start")  # consider merging with set_lead
-        if self.p.lead.end_jogged_extension:
-            meander_end_point = self.set_lead_extension("end")      # consider merging with set_lead
 
-        if snap:
-            # TODO: adjust the terminations to be sure the meander connects well on both ends
-            # start_points.align_to(end_points)
-            pass
+        # approximate length needed for the meander
+        self._length_segment = self.p.total_length - (self.head.length + self.tail.length)
 
-        # Meander
-        length_meander = total_length - (self.head.length + self.tail.length)
-        if snap:
-            # handle y distance
-            length_meander -= 0  # (end.position - endm.position)[1]
+        arc_pts = self.connect_meandered(meander_start_point, meander_end_point)
 
-        meandered_pts = self.meander_fixed_length(meander_start_point,
-                                                  meander_end_point, length_meander)
+        self.intermediate_pts = arc_pts
 
-        self.intermediate_pts = meandered_pts
+        self.intermediate_pts = self.adjust_length(self.p.total_length - self.length, arc_pts,
+                                                   meander_start_point, meander_end_point)
 
         # Make points into elements
         self.make_elements(self.get_points())
 
-    def set_lead_extension(self, name: str) -> QRoutePoint:
-        """Defines the jogged lead_extension by adding a series of turns to the self.head/tail
-
-        Args:
-            name: string (supported pin names are: start, end)
-
-        Return:
-            QRoutePoint: last point in the QRouteLead (self.head/tail)
-        """
-        # TODO: consider merging with set_lead, if useful globally
-
-        # TODO: jira case #300 should remove the need for this line, and only use self.p
-        p = self.parse_options()
-        # First define which lead you intend to modify
-        if name == self.start_pin_name:
-            options_lead = p.lead.start_jogged_extension
-            lead = self.head
-        elif name == self.end_pin_name:
-            options_lead = p.lead.end_jogged_extension
-            lead = self.tail
-        else:
-            raise Exception("Pin name \"" + name + "\" is not supported for this CPW." +
-                            " The only supported pins are: start, end.")
-
-        # then change the lead by adding points
-        for turn, length in options_lead.values():
-            if turn in ("left", "L"):
-                lead.go_left(length)
-            elif turn in ("right", "R"):
-                lead.go_right(length)
-            elif turn in ("straight", "D", "S"):
-                lead.go_straight(length)
-            else:
-                raise Exception("the first term needs to represent a direction in english, " +
-                                "the second term should be a string indicating the length" +
-                                "the pair that caused this error is" + turn + ":" + length)
-
-        # return the last QRoutePoint of the lead
-        return lead.get_tip()
-
-    def meander_fixed_length(self, start: QRoutePoint, end: QRoutePoint,
-                             length: float) -> np.ndarray:
+    def connect_meandered(self, start_pt: QRoutePoint, end_pt: QRoutePoint) -> np.ndarray:
         """
         Meanders using a fixed length and fixed spacing.
 
         Args:
-            start (QRoutePoint): QRoutePoint of the start
-            end (QRoutePoint): QRoutePoint of the end
-            length (str): Total length of the meander whole CPW segment (defined by user, after you subtract lead lengths
+            start_pt (QRoutePoint): QRoutePoint of the start
+            end_pt (QRoutePoint): QRoutePoint of the end
 
         Returns:
             np.ndarray: Array of points
@@ -170,41 +113,38 @@ class RouteMeander(QRoute):
             * If it cannot meander just returns the initial start point
         """
 
-        """ To prototype, you can use code here:
-            ax = plt.gca()
-            ax.cla()
-            draw.mpl.render([
-                draw.LineString(root_pts),
-                draw.LineString(bot_pts),
-                draw.LineString(top_pts),
-            ], kw=dict(lw=0, alpha=0.5, marker='o'), ax=ax)
-
-            draw.mpl.render([
-                draw.LineString(pts)
-            ], kw=dict(lw=2, alpha=0.5, marker='x'), ax=ax)
-        """
-
         ################################################################
         # Setup
+        # print(self.name, start_pt, end_pt, self.get_points())
 
         # Parameters
         meander_opt = self.p.meander
         spacing = meander_opt.spacing  # Horizontal spacing between meanders
         asymmetry = meander_opt.asymmetry
         snap = is_true(self.p.snap)  # snap to xy grid
-        # TODO: snap add 45 deg snap by changing snap function using angles
+        prevent_short_edges = is_true(self.p.prevent_short_edges)
+
+        # take care of anchors (do not have set directions)
+        anchor_lead = 0
+        if end_pt.direction is None:
+            # end_direction originates strictly from endpoint + leadout (NOT intermediate stopping anchors)
+            self.assign_direction_to_anchor(start_pt, end_pt)
+            anchor_lead = spacing
+
+        # Meander length
+        length_meander = self._length_segment
+        if self.p.snap:
+            # handle y distance
+            length_meander -= 0  # (end.position - endm.position)[1]
 
         # Coordinate system (example: x to the right => sideways up)
-        forward, sideways = self.get_unit_vectors(start, end, snap)
-        # TODO: consider whether to support lead direction inverted, rather than just inverting options value
-        # if is_true(meander_opt.lead_direction_inverted):
-        #     sideways *= -1
+        forward, sideways = self.get_unit_vectors(start_pt, end_pt, snap)
 
         # Calculate lengths and meander number
-        dist = end.position - start.position
+        dist = end_pt.position - start_pt.position
         if snap:
-            length_direct = abs(norm(np.dot(dist, forward)))  # in the vertical direction
-            length_sideways = abs(norm(np.dot(dist, sideways)))  # in the orthogonal direction
+            length_direct = abs(norm(mao.dot(dist, forward)))  # in the vertical direction
+            length_sideways = abs(norm(mao.dot(dist, sideways)))  # in the orthogonal direction
         else:
             length_direct = norm(dist)
             length_sideways = 0
@@ -213,23 +153,22 @@ class RouteMeander(QRoute):
         meander_number = np.floor(length_direct / spacing)
         if meander_number < 1:
             self.logger.info(f'Zero meanders for {self.name}')
-            # TODO: test if this should return empty instead
-            return start.position
+            return np.empty((0, 2), float)
 
         # The start and end points can have 4 directions each. Depending on the direction
         # there might be not enough space for all the meanders, thus here we adjust
         # meander_number w.r.t. what the start and end points "directionality" allows
-        if round(np.dot(start.direction, sideways) * np.dot(end.direction, sideways)) > 0 and (meander_number % 2) == 0:
+        if mao.round(mao.dot(start_pt.direction, sideways) * mao.dot(end_pt.direction, sideways)) > 0 and (meander_number % 2) == 0:
             # even meander_number is no good if roots have same orientation (w.r.t sideway)
             meander_number -= 1
-        elif round(np.dot(start.direction, sideways) * np.dot(end.direction, sideways)) < 0 and (
+        elif mao.round(mao.dot(start_pt.direction, sideways) * mao.dot(end_pt.direction, sideways)) < 0 and (
                 meander_number % 2) == 1:
             # odd meander_number is no good if roots have opposite orientation (w.r.t sideway)
             meander_number -= 1
 
         # should the first meander go sideways or counter sideways?
-        start_meander_direction = round(np.dot(start.direction, sideways), 10)
-        end_meander_direction = round(np.dot(end.direction, sideways), 10)
+        start_meander_direction = mao.dot(start_pt.direction, sideways)
+        end_meander_direction = mao.dot(end_pt.direction, sideways)
         if start_meander_direction > 0:  # sideway direction
             first_meander_sideways = True
             # print("1-> ", ((meander_number % 2) == 0))
@@ -248,10 +187,8 @@ class RouteMeander(QRoute):
                 first_meander_sideways = True
                 # print("5-> ", ((meander_number % 2) == 0))
 
-        # TODO: this does not seem right. asymmetry has no role unless all meander top/bot points
-        #  surpass the line (aligned with 'forward') of either the left or right root points.
         # length to distribute on the meanders (excess w.r.t a straight line between start and end)
-        length_excess = (length - length_direct - 2 * abs(asymmetry))
+        length_excess = (length_meander - length_direct - 2 * abs(asymmetry))
         # how much meander offset from center-line is needed to accommodate the length_excess (perpendicular length)
         length_perp = max(0, length_excess / (meander_number * 2.))
 
@@ -283,7 +220,6 @@ class RouteMeander(QRoute):
         root_pts = middle_points + asymmetry_vecs
         top_pts = root_pts + side_shift_vecs
         bot_pts = root_pts - side_shift_vecs
-        # TODO: add here length_sideways to root_pts[-1, :]?
 
         # print("MDL->", root_pts, "\nTOP->", top_pts, "\nBOT->", bot_pts)
         ################################################################
@@ -306,23 +242,163 @@ class RouteMeander(QRoute):
             pts[idx_side1_meander, :] = bot_pts[:-1 if odd else None]
             pts[idx_side2_meander, :] = top_pts[1:None if odd else -1]
 
-        # print("PTS->", pts)
+        pts += start_pt.position  # move to start position
 
-        pts += start.position  # move to start position
-
-        # TODO: the below, changes the CPW total length. Need to account for this earlier
         if snap:
-            # the right-most root_pts need to be aligned with the end.position point
-            pts[-1, abs(forward[0])] = end.position[abs(forward[0])]
+            if ((mao.dot(start_pt.direction, end_pt.direction) < 0)
+                    and (mao.dot(forward, start_pt.direction) <= 0)):
+                # pins are pointing opposite directions and diverging
+                # the last root_pts need to be sideways aligned with the end.position point
+                # and forward aligned with the previous meander point
+                pts[-1, abs(forward[0])] = pts[-2, abs(forward[0])]
+                pts[-1, abs(forward[0])-1] = end_pt.position[abs(forward[0])-1]
+            else:
+                # the last root_pts need to be forward aligned with the end.position point
+                pts[-1, abs(forward[0])] = end_pt.position[abs(forward[0])]
+                # and if the last root_pts ends outside the CPW amplitude on the side where the last meander is
+                # then the last meander needs to be locked on it as well
+                if (self.issideways(pts[-1], pts[-3], pts[-2])
+                        and self.issideways(pts[-2], root_pts[0]+start_pt.position, root_pts[-1]+start_pt.position))\
+                        or (not self.issideways(pts[-1], pts[-3], pts[-2])
+                            and not self.issideways(pts[-2], root_pts[0]+start_pt.position,
+                                                    root_pts[-1]+start_pt.position)):
+                    pts[-2, abs(forward[0])] = end_pt.position[abs(forward[0])]
+                    pts[-3, abs(forward[0])] = end_pt.position[abs(forward[0])]
         if abs(asymmetry) > abs(length_perp):
-            if start_meander_direction * asymmetry < 0:  # sideway direction
-                pts[0, abs(forward[0])] = start.position[abs(forward[0])]
-                pts[1, abs(forward[0])] = start.position[abs(forward[0])]
-            if end_meander_direction * asymmetry < 0:  # sideway direction
-                pts[-2, abs(forward[0])] = end.position[abs(forward[0])]
-                pts[-3, abs(forward[0])] = end.position[abs(forward[0])]
+            if not((mao.dot(start_pt.direction, end_pt.direction) < 0)
+                   and (mao.dot(forward, start_pt.direction) <= 0)):
+                # pins are "not" pointing opposite directions and diverging
+                if start_meander_direction * asymmetry < 0:  # sideway direction
+                    pts[0, abs(forward[0])] = start_pt.position[abs(forward[0])]
+                    pts[1, abs(forward[0])] = start_pt.position[abs(forward[0])]
+                if end_meander_direction * asymmetry < 0:  # opposite sideway direction
+                    pts[-2, abs(forward[0])] = end_pt.position[abs(forward[0])]
+                    pts[-3, abs(forward[0])] = end_pt.position[abs(forward[0])]
 
-        # print("PTS->", pts)
+
+        # Adjust the meander to eliminate the terminating jog (dogleg)
+        if prevent_short_edges:
+            x2fillet = 2 * self.p.fillet
+            # adjust the tail first
+            # the meander algorithm adds a final point in line with the tail, to cope with left-over
+            # this extra point needs to be moved or not, depending on the tail tip direction
+            if abs(mao.dot(end_pt.direction, sideways)) > 0:
+                skippoint = 0
+            else:
+                skippoint = 1
+            if 0 < abs(mao.round(end_pt.position[0]-pts[-1, 0])) < x2fillet:
+                pts[-1-skippoint, 0-skippoint] = end_pt.position[0-skippoint]
+                pts[-2-skippoint, 0-skippoint] = end_pt.position[0-skippoint]
+            if 0 < abs(mao.round(end_pt.position[1]-pts[-1, 1])) < x2fillet:
+                pts[-1-skippoint, 1-skippoint] = end_pt.position[1-skippoint]
+                pts[-2-skippoint, 1-skippoint] = end_pt.position[1-skippoint]
+            # repeat for the start. here we do not have the extra point
+            if 0 < abs(mao.round(start_pt.position[0]-pts[0, 0])) < x2fillet:
+                pts[0, 0] = start_pt.position[0]
+                pts[1, 0] = start_pt.position[0]
+            if 0 < abs(mao.round(start_pt.position[1]-pts[0, 1])) < x2fillet:
+                pts[0, 1] = start_pt.position[1]
+                pts[1, 1] = start_pt.position[1]
+
+        return pts
+
+    def adjust_length(self, delta_length, pts, start_pt: QRoutePoint, end_pt: QRoutePoint) -> np.ndarray:
+        """
+        Edits meander points to redistribute the length slacks accrued with the various local adjustments
+        It should be run after self.pts_intermediate is completely defined
+        Inputs are however specific to the one meander segment
+        Assumption is that pts is always a sequence of paired points, each corresponds to one meander 180deg curve
+        The pts is typically an odd count since the last point is typically used to anchor the left-over length,
+        therefore this code supports both odd and even cases, separately. For even it assumes all points are in paired
+
+        Args:
+            delta_length (delta_length): slack/excess length to distribute on the pts
+            pts (np.array): intermediate points of meander. pairs, except last point (2,2,...,2,1)
+            start_pt (QRoutePoint): QRoutePoint of the start
+            end_pt (QRoutePoint): QRoutePoint of the end
+
+        Returns:
+            np.ndarray: Array of points
+        """
+        # the adjustment length has to be computed in the main or in other method
+        # considering entire route (Could include the corner fillet)
+
+        term_point = len(pts) % 2
+
+        # recompute direction
+        snap = is_true(self.p.snap)  # snap to xy grid
+        forward, sideways = self.get_unit_vectors(start_pt, end_pt, snap)
+        # recompute meander_sideways
+        if mao.cross(pts[1]-pts[0], pts[2]-pts[1]) < 0:
+            first_meander_sideways = True
+        else:
+            first_meander_sideways = False
+        if mao.cross(pts[-2-term_point]-pts[-1-term_point], pts[-3-term_point]-pts[-2-term_point]) < 0:
+            last_meander_sideways = False
+        else:
+            last_meander_sideways = True
+
+        # which points need to receive the shift
+        # initialize the shift vector to 1 (1 = will receive shift)
+        adjustment_vector = np.ones(len(pts))
+        # switch shift direction depending on sideways or not
+        if first_meander_sideways:
+            adjustment_vector[2::4] *= -1
+            adjustment_vector[3::4] *= -1
+        else:
+            adjustment_vector[::4] *= -1
+            adjustment_vector[1::4] *= -1
+
+        fillet_shift = sideways * self.p.fillet
+        start_pt_adjusted_up = start_pt.position + fillet_shift
+        start_pt_adjusted_down = start_pt.position - fillet_shift
+        end_pt_adjusted_up = end_pt.position + fillet_shift
+        end_pt_adjusted_down = end_pt.position - fillet_shift
+
+        # if start_pt.position is below axes + shift - 2xfillet &  first_meander_sideways
+        if first_meander_sideways and not self.issideways(start_pt_adjusted_up, pts[0], pts[1]):
+            #first meander is fair game
+            pass
+        # if start_pt.position is above axes - shift + 2xfillet &  not first_meander_sideways
+        elif not first_meander_sideways and self.issideways(start_pt_adjusted_down, pts[0], pts[1]):
+            # first meander is fair game
+            pass
+        else:
+            # else block first mender
+            adjustment_vector[:2] = [0, 0]
+        # if end_pt.position is below axes + shift - 2xfillet &  last_meander_sideways
+        if last_meander_sideways and not self.issideways(end_pt_adjusted_up, pts[-2-term_point], pts[-1-term_point]):
+            # first meander is fair game
+            pass
+        # if end_pt.position is above axes - shift + 2xfillet &  not last_meander_sideways
+        elif not last_meander_sideways and self.issideways(end_pt_adjusted_down, pts[-2-term_point], pts[-1 - term_point]):
+            # first meander is fair game
+            pass
+        else:
+            # else block last mender
+            adjustment_vector[-2-term_point:-term_point] = [0, 0]
+
+        if term_point:
+            # pts count is a odd number
+            # disable shift on the termination point
+            adjustment_vector[-1] = 0
+            #....unless the last point is anchored to the last meander curve
+            if start_pt.direction is not None and end_pt.direction is not None:
+                if ((mao.dot(start_pt.direction, end_pt.direction) < 0)
+                        and (mao.dot(forward, start_pt.direction) <= 0)):
+                    # pins are pointing opposite directions and diverging, thus keep consistency
+                    adjustment_vector[-1] = adjustment_vector[-2]
+
+        # print("first", first_meander_sideways, "last", last_meander_sideways)
+        # print("adj,vec", adjustment_vector)
+        # print("before pts", len(pts), pts)
+        # then divide the slack amongst all points
+        sideways_adjustment = sideways * (delta_length / np.count_nonzero(adjustment_vector))
+
+        # print(self.length, delta_length, np.count_nonzero(adjustment_vector))
+
+        pts = pts + sideways_adjustment[np.newaxis, :] * adjustment_vector[:, np.newaxis]
+        # print("after pts", len(pts), pts)
 
         return pts
 
@@ -344,3 +420,6 @@ class RouteMeander(QRoute):
         z[::2] = x
         z[1::2] = x + 1
         return z, odd
+
+    def issideways(self, point, seg_point_a, seg_point_b):
+        return mao.cross(point - seg_point_a, seg_point_b - seg_point_a) < 0

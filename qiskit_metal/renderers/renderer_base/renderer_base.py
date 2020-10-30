@@ -166,9 +166,6 @@ class QRenderer():
         # Register as an instantiated renderer.
         QRenderer.__instantiated_renderers__[self.name] = self
 
-        # Register the renderer in self.design
-        # TODO
-
         # Options
         self._options = Dict()
         self.update_options(render_options=render_options,
