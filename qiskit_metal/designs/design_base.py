@@ -687,7 +687,7 @@ class QDesign():
 
         return return_response
 
-    def copy_component(self,  original_qcomponent: 'QComponent', new_component_name: str, options_superimpose: dict = dict()) -> Union['QComponent', None]:
+    def copy_qcomponent(self,  original_qcomponent: 'QComponent', new_component_name: str, options_superimpose: dict = dict()) -> Union['QComponent', None]:
         """Copy a coponent in QDesign and add it to QDesign._components using options_overwrite.
 
         Args:
@@ -722,7 +722,6 @@ class QDesign():
 
 
 #########I/O###############################################################
-
 
     @classmethod
     def load_design(cls, path: str):
@@ -915,6 +914,7 @@ class QDesign():
 
 
 ######### Renderers ###############################################################
+
 
     def _start_renderers(self):
         """1. Import the renderers identifed in config.renderers_to_load.
