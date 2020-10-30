@@ -305,7 +305,6 @@ class QDesign():
         Returns:
             int: layer of ground plane
         """
-
         if chip_name in self.chips:
             if 'layer_ground_plane' in self.chips:
                 return int(self.chips['layer_ground_plane'])
@@ -323,7 +322,6 @@ class QDesign():
             new_key (str): new variable name
         """
 
-        # TODO: Change this use components with both id and name.
         keys = list(self._variables.keys())
         values = list(self._variables.values())
 
