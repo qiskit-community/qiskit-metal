@@ -595,7 +595,7 @@ class QDesign():
 
         return True
 
-    def delete_component(self, component_name: str, force=False) -> bool:
+    def delete_component(self, component_name: str, force: bool = False) -> bool:
         """Deletes component and pins attached to said component.
 
         If no component by that name is present, then just return True
@@ -687,7 +687,7 @@ class QDesign():
 
         return return_response
 
-    def copy_component(self,  original_qcomponent: 'QComponent', new_component_name: str, options_superimpose: dict) -> Union['QComponent', None]:
+    def copy_component(self,  original_qcomponent: 'QComponent', new_component_name: str, options_superimpose: dict = dict()) -> Union['QComponent', None]:
         """Copy a coponent in QDesign and add it to QDesign._components using options_overwrite.
 
         Args:
@@ -722,6 +722,7 @@ class QDesign():
 
 
 #########I/O###############################################################
+
 
     @classmethod
     def load_design(cls, path: str):
@@ -914,7 +915,6 @@ class QDesign():
 
 
 ######### Renderers ###############################################################
-
 
     def _start_renderers(self):
         """1. Import the renderers identifed in config.renderers_to_load.
