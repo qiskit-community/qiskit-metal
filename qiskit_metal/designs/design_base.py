@@ -415,7 +415,6 @@ class QDesign():
         Returns:
             list[tuples]: Each tuple has the text name of component and UNIQUE integer ID for component.
         """
-        # TODO: This seems slow to build new list, use builtin and /or map?
         alist = [(value.name, key)
                  for key, value in self._components.items()]
         return alist
