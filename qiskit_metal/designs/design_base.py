@@ -293,8 +293,7 @@ class QDesign():
         Raises:
             NotImplementedError: Code not written yet
         """
-        #raise NotImplementedError()
-        # TODO: IMPORTANT
+        # raise NotImplementedError() # Important
         return 0
 
     def get_chip_layer(self, chip_name: str = 'main') -> int:
