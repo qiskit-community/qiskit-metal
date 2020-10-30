@@ -274,31 +274,30 @@ class QDesign():
 
 #########Proxy properties##################################################
 
-    def get_chip_size(self, chip_name: str = 'main'):
+    def get_chip_size(self, chip_name: str = 'main') -> dict:
         """
-        Utility function to return the chip size
+        Utility function to get a dictionary containing chip dimensions (size and center).
+
+        Args:
+            chip_name (str): Name of the chip.
+
+        Returns:
+            dict: Dictionary of chip dimensions, including central coordinates and widths along x, y, and z axes.
+        """
+        return self._chips[chip_name]['size']
+
+    def get_chip_z(self, chip_name: str = 'main') -> str:
+        """
+        Utility function to return the z value of a chip.
 
         Args:
             chip_name (str): Returns the size of the given chip (Default: main)
 
-        Raises:
-            NotImplementedError: Code not written yet
+        Returns:
+            str: String representation of the chip height.
         """
-        raise NotImplementedError()
-
-    def get_chip_z(self, chip_name: str = 'main'):
-        """
-        Utility function to return the z value of a chip
-
-        Args:
-            chip_name (str): Returns the size of the given chip (Default: main)
-
-        Raises:
-            NotImplementedError: Code not written yet
-        """
-        #raise NotImplementedError()
-        # TODO: IMPORTANT
-        return 0
+        chip_info = self.get_chip_size(chip_name)
+        return chip_info['center_z']
 
     def get_chip_layer(self, chip_name: str = 'main') -> int:
         """Return the chip layer number for the ground plane.

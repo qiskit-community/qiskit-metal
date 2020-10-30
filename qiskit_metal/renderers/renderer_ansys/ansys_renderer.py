@@ -17,8 +17,9 @@
 @author: Dennis Wang, Zlatko Minev
 '''
 
-from typing import List, Tuple
+from typing import List, Tuple, Union
 
+import re
 import math
 import geopandas
 import numpy as np
@@ -35,7 +36,7 @@ from qiskit_metal.draw.basic import is_rectangle
 from qiskit_metal.renderers.renderer_base import QRenderer
 from qiskit_metal.toolbox_python.utility_functions import toggle_numbers, bad_fillet_idxs
 
-from ... import Dict
+from qiskit_metal import Dict
 
 def good_fillet_idxs(coords: list, fradius: float, precision: int = 9, isclosed: bool = False):
     """
@@ -55,12 +56,37 @@ def good_fillet_idxs(coords: list, fradius: float, precision: int = 9, isclosed:
         return toggle_numbers(bad_fillet_idxs(coords, fradius, precision, isclosed = True), len(coords))
     return toggle_numbers(bad_fillet_idxs(coords, fradius, precision, isclosed = False), len(coords))[1:-1]
 
+def get_clean_name(name: str) -> str:
+    """
+    Create a valid variable name from the given one by removing having it begin with a letter or underscore
+    followed by an unlimited string of letters, numbers, and underscores.
+
+    Args:
+        name (str): Initial, possibly unusable, string to be modified.
+
+    Returns:
+        str: Variable name consistent with Python naming conventions.
+    """
+    # Remove invalid characters
+    name = re.sub('[^0-9a-zA-Z_]', '', name)
+    # Remove leading characters until we find a letter or underscore
+    name = re.sub('^[^a-zA-Z_]+', '', name)
+    return name
 
 class QAnsysRenderer(QRenderer):
     """
     Extends QRenderer to export designs to Ansys using pyEPR.
     The methods which a user will need for Ansys export should be found within this class.
     """
+
+    #: Default options, over-written by passing ``options` dict to render_options.
+    #: Type: Dict[str, str]
+    default_options = Dict(
+        # Maximum mesh length for Josephson junction elements
+        max_mesh_length_jj='7um',
+        Lj=10, # Lj has units of nanoHenries (nH)
+        Cj=0, # Cj *must* be 0 for pyEPR analysis! Cj has units of femtofarads (fF)
+        _Rj=0) # _Rj *must* be 0 for pyEPR analysis! _Rj has units of Ohms
 
     NAME_DELIM = r'_'
 
@@ -72,9 +98,9 @@ class QAnsysRenderer(QRenderer):
     #         base=dict(color=str, klayer=int),
     #         path=dict(thickness=float, material=str, perfectE=bool),
     #         poly=dict(thickness=float, material=str), )
-    """element extentions dictionary   element_extensions = dict() from base class"""
+    """element extensions dictionary   element_extensions = dict() from base class"""
 
-    # Add columns to junction table during QGDSRenderer.load()
+    # Add columns to junction table during QAnsysRenderer.load()
     # element_extensions  is now being populated as part of load().
     # Determined from element_table_data.
 
@@ -84,7 +110,10 @@ class QAnsysRenderer(QRenderer):
     # To update component.options junction table.
 
     element_table_data = dict(
-        junction=dict(inductance=1234.567)
+        junction=dict(inductance=default_options['Lj'],
+                      capacitance=default_options['Cj'],
+                      resistance=default_options['_Rj'],
+                      mesh_kw_jj=parse_units(default_options['max_mesh_length_jj']))
     )
 
     def __init__(self, design: 'QDesign', initiate=True, render_template: Dict = None, render_options: Dict = None):
@@ -101,8 +130,8 @@ class QAnsysRenderer(QRenderer):
                          render_template=render_template, render_options=render_options)
         QAnsysRenderer.load()
 
-    # TODO: Create new project every time or reuse old one? If latter, pass more arguments?
-    def open_ansys_design(self, project_path=None, project_name=None, design_name=None):
+    @property
+    def open_ansys_design(self):
         """
         Create new project and design in Ansys.
 
@@ -111,7 +140,7 @@ class QAnsysRenderer(QRenderer):
             project_name: Project name in Ansys.
             design_name: Design name in Ansys.
         """
-        self.pinfo = epr.ProjectInfo(project_path, project_name, design_name)
+        self.pinfo = epr.ProjectInfo(project_path=None, project_name=None, design_name=None)
         self.modeler = self.pinfo.design.modeler
 
     def add_message(self, msg: str, severity: int=0):
@@ -124,69 +153,16 @@ class QAnsysRenderer(QRenderer):
         """
         self.pinfo.design.add_message(msg, severity)
 
-    # TODO: Move to base
-    def get_unique_component_ids(self, highlight_qcomponents: list = []) -> Tuple[list, int]:
-        """
-        Confirm the list doesn't have names of components repeated.
-        Confirm that the name of component exists in QDesign.
-        If QDesign doesn't contain any component, or if all components in QDesign are found
-        in highlight_qcomponents, return an empty list; otherwise return a list of unique
-        components to be sent to Ansys. The second returned item, an integer, specifies
-        which of these 3 cases applies.
-
-        Args:
-            highlight_qcomponents (list, optional): Components to render into Ansys.
-
-        Returns:
-            Tuple[list, int]: Empty or partial list of components in QDesign.
-        """
-        unique_qcomponents = set(highlight_qcomponents)
-        for qcomp in unique_qcomponents:
-            if qcomp not in self.design.name_to_id:
-                self.logger.warning(f'The component={qcomp} in highlight_qcomponents not'
-                                    ' in QDesign.')
-                return [], 2  # Invalid
-        if len(unique_qcomponents) == len(self.design.components):
-            return [], 1  # Everything selected
-        return [self.design.name_to_id[elt] for elt in unique_qcomponents], 0  # Subset selected
-
-    # Move to base
-    def get_chip_size(self, chip_name: str) -> dict:
-        """
-        Get a dictionary containing chip dimensions (size and center).
-
-        Args:
-            chip_name (str): Name of the chip.
-
-        Returns:
-            dict: Dictionary of chip dimensions, including central coordinates and widths along x, y, and z axes.
-        """
-
-        return self.design._chips[chip_name]['size']
-    # TODO: Move to base
-    def get_chip_z(self, chip_name: str) -> str:
-        """
-        Get the z coordinate (height) of a given chip.
-
-        Args:
-            chip_name (str): Name of the chip.
-
-        Returns:
-            str: String representation of the chip height.
-        """
-
-        chip_info = self.get_chip_size(chip_name)
-        return chip_info['center_z']
-
-    def render_design(self, selection: list = []):
+    def render_design(self, selection: Union[list, None] = None):
         """
         Initiate rendering of components in design contained in selection, assuming they're valid.
         Components are rendered before the chips they reside on, and subtraction of negative shapes
-        is performed at the very end. All components are rendered by default if selection is empty
-        or not specified.
+        is performed at the very end. Chip_subtract_dict consists of component names (keys) and
+        a set of all elements within each component that will be eventually be subtracted from the
+        ground plane. All components are rendered by default if selection is empty or not specified.
 
         Args:
-            selection (list, optional): List of components to render. Defaults to [].
+            selection (Union[list, None], optional): List of components to render. Defaults to None.
         """
 
         self.chip_subtract_dict = defaultdict(set) # TODO: address warning
@@ -196,27 +172,27 @@ class QAnsysRenderer(QRenderer):
         self.subtract_from_ground()
         self.metallize()
 
-    def render_tables(self, selection: list = []): #  # TODO: address warning
+    def render_tables(self, selection: Union[list, None] = None): #  # TODO: address warning
         """
         Render components in design grouped by table type (path, poly, or junction).
-        TODO: Explain chip_subtract_dict
 
         Args:
-            selection (list, optional): List of components to render. Defaults to [].
+            selection (Union[list, None], optional): List of components to render. Defaults to None.
         """
 
         for table_type in self.design.qgeometry.get_element_types():
             self.render_components(table_type, selection)
 
-    def render_components(self, table_type: str, selection: list = []): # TODO: address warning
+    def render_components(self, table_type: str, selection: Union[list, None] = None): # TODO: address warning
         """
         Render individual components by breaking them down into individual elements.
 
         Args:
             table_type (str): Table type (poly, path, or junction).
-            selection (list, optional): List of components to render. Defaults to [].
+            selection (Union[list, None], optional): List of components to render. Defaults to None.
         """
 
+        selection = selection if selection else []
         table = self.design.qgeometry.tables[table_type]
 
         if selection:
@@ -253,9 +229,9 @@ class QAnsysRenderer(QRenderer):
         ansys_options = dict(transparency=0.0)
 
         qc_name = 'Q' + str(qgeom['component']) # name of QComponent
-        qc_elt = qgeom['name'] # name of element within QGeometry table
+        qc_elt = get_clean_name(qgeom['name']) # name of element within QGeometry table
         qc_shapely = qgeom.geometry  # shapely geom
-        qc_chip_z = parse_units(self.get_chip_z(qgeom.chip))
+        qc_chip_z = parse_units(self.design.get_chip_z(qgeom.chip))
         qc_fillet = round(qgeom.fillet, 7)
 
         name = f'{qc_name}{QAnsysRenderer.NAME_DELIM}{qc_elt}'
@@ -313,9 +289,9 @@ class QAnsysRenderer(QRenderer):
         ansys_options = dict(transparency=0.0)
 
         qc_name = 'Q' + str(qgeom['component']) # name of QComponent
-        qc_elt = qgeom['name'] # name of element within QGeometry table
+        qc_elt = get_clean_name(qgeom['name']) # name of element within QGeometry table
         qc_shapely = qgeom.geometry  # shapely geom
-        qc_chip_z = parse_units(self.get_chip_z(qgeom.chip))
+        qc_chip_z = parse_units(self.design.get_chip_z(qgeom.chip))
         qc_fillet = round(qgeom.fillet, 7)
 
         name = f'{qc_name}{QAnsysRenderer.NAME_DELIM}{qc_elt}'
@@ -356,7 +332,7 @@ class QAnsysRenderer(QRenderer):
 
     def render_chips(self):
         """
-        Render chips using info from get_chip_size method.
+        Render chips using info from design.get_chip_size method.
 
         Renders the ground plane of this chip (if one is present).
         Renders the wafer of the chip.
@@ -366,7 +342,7 @@ class QAnsysRenderer(QRenderer):
 
         for chip_name in self.chip_subtract_dict:
             ops = self.design._chips[chip_name]
-            p = self.get_chip_size(chip_name)
+            p = self.design.get_chip_size(chip_name)
             origin = parse_units([p['center_x'], p['center_y'], p['center_z']])
             size = parse_units([p['size_x'], p['size_y'], p['size_z']])
             vac_height = parse_units([p['sample_holder_top'], p['sample_holder_bottom']])
@@ -401,116 +377,3 @@ class QAnsysRenderer(QRenderer):
         Assign metallic property to all shapes in self.assign_perfE list.
         """
         self.modeler.assign_perfect_E(self.assign_perfE)
-
-################## OLD HFSS EXPORT CODE FROM 9/22/20 ##################
-
-# THIS CODE WORKS BUT WAS WRITTEN PRIOR TO REFACTORING AND DOES NOT REIMPLEMENT METHODS IN RENDERER_BASE.PY!
-
-    # def export_to_hfss(self, highlight_qcomponents: list = []) -> int:
-    #     """
-    #     Use the design which was used to initialize this class.
-    #     The QGeometry element types of both "path" and "poly", will
-    #     be rendered into Ansys/HFSS.
-
-    #     Args:
-    #         highlight_qcomponents (list): List of strings which denote the name of QComponents to render.
-    #                                     If empty, render all components in design.
-
-    #     Returns:
-    #         int: 0=cannot render components, otherwise 1=rendering successful
-    #     """
-
-    #     if not highlight_qcomponents:
-    #         no_qcomp_mask = True
-    #     else:
-    #         qcomp_ids, case = self.get_unique_component_ids(highlight_qcomponents)
-    #         if case == 2:
-    #             return 0
-    #         no_qcomp_mask = bool(len(qcomp_ids) == 0)
-
-    #     DELIM = '_'
-    #     hfss_options = dict(transparency=0.0)
-
-    #     # Draw ground plane
-    #     x_width = parse_units(self.design._chips['main']['size']['size_x'])
-    #     y_width = parse_units(self.design._chips['main']['size']['size_y'])
-    #     whole_chip = self.modeler.draw_rect_center([0, 0, 0], x_size=x_width, y_size=y_width)
-
-    #     for table_type in self.design.qgeometry.get_element_types():
-
-    #         # Add or subtract polygons/lines
-    #         for issubtracted in [True, False]:
-
-    #             full_table = self.design.qgeometry.tables[table_type]
-    #             if no_qcomp_mask:
-    #                 mask = full_table['subtract'] == issubtracted
-    #             else:
-    #                 mask = (full_table['subtract'] == issubtracted) & (full_table['component'].isin(qcomp_ids))
-    #             table = full_table[mask]
-
-    #             for _, qgeom in table.iterrows():
-    #                 qc_name = f'Q{qgeom.name}' # name of QComponent
-    #                 qc_shapely = qgeom.geometry # shapely geom
-    #                 qc_chip_z = parse_units(self.design.get_chip_z(qgeom.chip)) # parsed height of chip e.g. 0.0 float
-    #                 qc_fillet = qgeom.fillet
-
-    #                 name = f'{qc_name}{DELIM}{qgeom.name}'
-
-    #                 if isinstance(qc_shapely, shapely.geometry.Polygon):
-
-    #                     points = parse_units(list(qc_shapely.exterior.coords)) # list of 2d point tuples
-    #                     points_3d = to_vec3D(points, qc_chip_z)
-
-    #                     if is_rectangle(qc_shapely):  # Draw as rectangle
-    #                         self.logger.debug(f'Drawing a rectangle: {name}')
-    #                         x_min, y_min, x_max, y_max = qc_shapely.bounds
-    #                         poly_hfss = self.modeler.draw_rect_corner(*parse_units(
-    #                             [[x_min, y_min, qc_chip_z], x_max-x_min, y_max-y_min, qc_chip_z]), **hfss_options)
-    #                         if not issubtracted: # Can only rename non-subtracted polys
-    #                             self.modeler.rename_obj(poly_hfss, name)
-    #                     else:
-    #                         # Draw general closed poly
-    #                         poly_hfss = self.modeler.draw_polyline(points_3d[:-1], closed=True, **hfss_options)
-    #                         # rename: handle bug if the name of the cut already exits and is used to make a cut
-    #                         poly_hfss = poly_hfss.rename(name)
-
-    #                     if qc_fillet > 0:
-    #                         qc_fillet = parse_units(qc_fillet)
-    #                         idxs_to_fillet = to_fillet(points[:-1], qc_fillet, True)
-    #                         if idxs_to_fillet:
-    #                             self.modeler._fillet(qc_fillet, idxs_to_fillet, poly_hfss)
-
-    #                     # Subtract interior shapes, if any
-    #                     if len(qc_shapely.interiors) > 0:
-    #                         for i, x in enumerate(qc_shapely.interiors):
-    #                             interior_points_3d = to_vec3D(parse_units(list(x.coords)), qc_chip_z)
-    #                             inner_shape = self.modeler.draw_polyline(interior_points_3d[:-1], closed=True)
-    #                             self.modeler.subtract(name, [inner_shape])
-
-    #                 elif isinstance(qc_shapely, shapely.geometry.LineString):
-    #                     qc_width = parse_units(qgeom.width)
-
-    #                     points = parse_units(list(qc_shapely.coords))
-    #                     points_3d = to_vec3D(points, qc_chip_z)
-
-    #                     poly_hfss = self.modeler.draw_polyline(points_3d, closed=False, **hfss_options)
-    #                     poly_hfss = poly_hfss.rename(name)
-
-    #                     if qc_fillet > 0:
-    #                         qc_fillet = parse_units(qc_fillet)
-    #                         idxs_to_fillet = to_fillet(points, qc_fillet, False)
-    #                         if idxs_to_fillet:
-    #                             self.modeler._fillet(qc_fillet, idxs_to_fillet, poly_hfss)
-
-    #                     if qc_width:
-    #                         x0, y0 = points[0]
-    #                         x1, y1 = points[1]
-    #                         vlen = math.sqrt((x1 - x0) ** 2 + (y1 - y0) ** 2)
-    #                         p0 = np.array([x0, y0, 0]) + qc_width / (2 * vlen) * np.array([y0 - y1, x1 - x0, 0])
-    #                         p1 = np.array([x0, y0, 0]) + qc_width / (2 * vlen) * np.array([y1 - y0, x0 - x1, 0])
-    #                         shortline = self.modeler.draw_polyline([p0, p1], closed=False) # sweepline
-    #                         self.modeler._sweep_along_path(shortline, poly_hfss)
-
-    #                 if issubtracted:
-    #                     self.modeler.subtract(whole_chip, [poly_hfss])
-    #     return 0
