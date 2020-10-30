@@ -183,22 +183,7 @@ class QDesign():
         self._metadata.update(new_metadata)
 
 #########PROPERTIES##################################################
-    # User should not access _components directly
-    # TODO make interface with __getattr__ etc, magic methods
-    # @property
-    # def components(self) -> Dict_[int, 'QComponent']:
-    #     '''
-    #     Returns Dict object that keeps track of all Metal components in the design
-    #     '''
-    #     return self._components
 
-    """     @property
-    def pins(self):
-        '''
-        Return the Dict object that keeps track of all pins in the design.
-        '''
-        return
-    """
     @property
     def variables(self) -> Dict_[str, str]:
         '''
