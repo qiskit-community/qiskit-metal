@@ -76,6 +76,7 @@ Interconnects
     RouteFramed
     RouteMeander
     RouteAnchors
+    RouteMixed
     RoutePathfinder
     ResonatorRectangleSpiral
 
@@ -157,6 +158,7 @@ if config.is_building_docs():
     from .interconnects.framed_path import RouteFramed
     from .interconnects.meandered import RouteMeander
     from .interconnects.anchored_path import RouteAnchors
+    from .interconnects.mixed_path import RouteMixed
     from .interconnects.pathfinder import RoutePathfinder
     from .interconnects.resonator_rectangle_spiral import ResonatorRectangleSpiral
     from .passives.launch_v1 import LaunchV1

@@ -33,68 +33,7 @@ Main Window
 .. autosummary::
     :toctree: ../stubs/
 
-    DynamicList
     MetalGUI
-    QMainWindowExtensionBase
-    QMainWindowBaseHandler
-    QMainWindowExtension
-    QTreeView_Base
-    RendererGDS_Model
-    RendererGDSWidget
-    
-
-Elements Window
----------------
-
-.. autosummary::
-    :toctree: ../stubs/
-
-    ElementsWindow
-    ElementTableModel
-
-
-Widgets
----------------
-
-.. autosummary::
-    :toctree: ../stubs/
-
-    BranchNode
-    ComponentWidget
-    LeafNode
-    LogHandler_for_QTextLog
-    MetalSourceEditor
-    PropertyTableWidget
-    PropValTable
-    QMainWindowPlot
-    QTableModel_AllComponents
-    QTableModel_Options
-    QTableView_AllComponents
-    QTableView_Options
-    QTextEditLogger
-    QToolBarExpanding
-    QTreeModel_Base
-    QTreeModel_Options
-    QTreeView_Options
-    QWidget_PlaceholderText
-    RightClickView
-
-
-Submodules
-----------
-
-.. autosummary::
-    :toctree:
-
-    main_window_base
-    _handle_qt_messages
-    _toolbox_qt
-    component_widget
-    source_editor
-    source_editor_widget
-    dict_tree_base
-    table_model_options
-    tree_model_options
 
 """
 
