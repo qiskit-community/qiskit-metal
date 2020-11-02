@@ -89,8 +89,7 @@ class QDesign():
                             added to design using the name.
 
             enable_renderers: Enable the renderers during the init() of design.
-                        For now, gds is enabled within design.
-                        TODO:Use the list in config.renderers_to_load() to determine
+                       The list in config.renderers_to_load() to determine
                         which renderers to enable.
 
         """
@@ -135,7 +134,7 @@ class QDesign():
 
         self._qgeometry = QGeometryTables(self)
 
-        # used for components, and renderers, TODO for QDesign
+        # Used for QComponents, and QRenderers
         self._template_options = DefaultMetalOptions()
 
         self.variables.update(self.template_options.qdesign.variables)
@@ -184,22 +183,7 @@ class QDesign():
         self._metadata.update(new_metadata)
 
 #########PROPERTIES##################################################
-    # User should not access _components directly
-    # TODO make interface with __getattr__ etc, magic methods
-    # @property
-    # def components(self) -> Dict_[int, 'QComponent']:
-    #     '''
-    #     Returns Dict object that keeps track of all Metal components in the design
-    #     '''
-    #     return self._components
 
-    """     @property
-    def pins(self):
-        '''
-        Return the Dict object that keeps track of all pins in the design.
-        '''
-        return
-    """
     @property
     def variables(self) -> Dict_[str, str]:
         '''
@@ -294,8 +278,7 @@ class QDesign():
         Raises:
             NotImplementedError: Code not written yet
         """
-        #raise NotImplementedError()
-        # TODO: IMPORTANT
+        # raise NotImplementedError() # Important
         return 0
 
     def get_chip_layer(self, chip_name: str = 'main') -> int:
@@ -307,7 +290,6 @@ class QDesign():
         Returns:
             int: layer of ground plane
         """
-        # TODO: Maybe return tuple for layer, datatype
         if chip_name in self.chips:
             if 'layer_ground_plane' in self.chips:
                 return int(self.chips['layer_ground_plane'])
@@ -325,7 +307,6 @@ class QDesign():
             new_key (str): new variable name
         """
 
-        # TODO: Change this use components with both id and name.
         keys = list(self._variables.keys())
         values = list(self._variables.values())
 
@@ -419,7 +400,6 @@ class QDesign():
         Returns:
             list[tuples]: Each tuple has the text name of component and UNIQUE integer ID for component.
         """
-        # TODO: This seems slow to build new list, use builtin and /or map?
         alist = [(value.name, key)
                  for key, value in self._components.items()]
         return alist
@@ -454,9 +434,8 @@ class QDesign():
         self.delete_all_pins()
         self.name_to_id.clear()
         self._components.clear()
-        # TODO: add element tables here
+
         self._qgeometry.clear_all_tables()
-        # TODO: add dependency handling here
 
     def _get_new_qcomponent_id(self):
         '''
@@ -487,16 +466,9 @@ class QDesign():
         """
         Remakes all components with their current parameters.
         """
-        # TODO: there are some performance tricks here, we could just clear all element tables
-        # and then skip the deletion of components qgeometry one by one
-        # first clear all the
-        # thne just make without the checks on existing
-        # TODO: Handle error and print nice statemetns
-        # try catch log_simple_error
-
         for name, obj in self._components.items():  # pylint: disable=unused-variable
-            try:  # TODO: performace?
-                obj.rebuild()  # should we call this build?
+            try:
+                obj.rebuild()
             except:
                 print(f'ERORROR in building {name}')
                 log_error_easy(
@@ -693,12 +665,12 @@ class QDesign():
         Args:
             original_class (QComponent): The QComponent to copy.
             new_component_name (str): The name should not already be in QDesign, if it is, the copy fill fail.
-            options_superimpose (dict): Can use differnt options for copied QComponent. Will start with the options 
+            options_superimpose (dict): Can use differnt options for copied QComponent. Will start with the options
                                         in original QComponent, and then superimpose with options_superimpose. An example
-                                        would be x and y locations. 
+                                        would be x and y locations.
 
         Returns:
-            union['QComponent', None]: None if not copied, otherwise, a QComponent instance. 
+            union['QComponent', None]: None if not copied, otherwise, a QComponent instance.
         """
 
         # overwrite orignal option with new options
@@ -722,6 +694,7 @@ class QDesign():
 
 
 #########I/O###############################################################
+
 
     @classmethod
     def load_design(cls, path: str):
@@ -752,7 +725,7 @@ class QDesign():
             bool: True = success; False = failure
         """
 
-        self.logger.warning("Saving is a beta feature.")  # TODO:
+        self.logger.warning("Saving is a beta feature.")
 
         if path is None:
             if self.save_path is None:
@@ -868,7 +841,7 @@ class QDesign():
         return self.template_options.units
 
 ####################################################################################
-# TODO: Dependencies
+# Dependencies
 
     def add_dependency(self, parent: str, child: str):
         """
@@ -878,11 +851,6 @@ class QDesign():
             parent (str): The component on which the child depends.
             child (str): The child cannot live without the parent.
         """
-        # TODO: add_dependency Should we allow bidirecitonal arrows as as flad in the graph?
-        # Easier if we keep simply one-sided arrows
-        # Note that we will have to handle renaming and deleting of components, etc.
-        # Should we make a dependancy handler?
-        # For now, let's table this, lower priority
         pass
 
     def remove_dependency(self, parent: str, child: str):
@@ -893,8 +861,6 @@ class QDesign():
             parent (str): The component on which the child depends.
             child (str): The child cannot live without the parent.
         """
-
-        # TODO: remove_dependency
         pass
 
     def update_component(self, component_name: str, dependencies: bool = True):
@@ -906,9 +872,7 @@ class QDesign():
             component_name (str): Component name to update
             dependencies (bool): True to update all dependencies (Default: True)
         """
-
-        # TODO: Get dependency graph
-
+        # Get dependency graph
         # Remake components in order
         pass
 
