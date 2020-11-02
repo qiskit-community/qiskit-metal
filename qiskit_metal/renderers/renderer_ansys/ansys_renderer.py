@@ -134,11 +134,6 @@ class QAnsysRenderer(QRenderer):
     def open_ansys_design(self):
         """
         Create new project and design in Ansys.
-
-        Args:
-            project_path: Project path in Ansys.
-            project_name: Project name in Ansys.
-            design_name: Design name in Ansys.
         """
         self.pinfo = epr.ProjectInfo(project_path=None, project_name=None, design_name=None)
         self.modeler = self.pinfo.design.modeler
@@ -202,21 +197,90 @@ class QAnsysRenderer(QRenderer):
                 table = table[mask]
 
         for _, qgeom in table.iterrows():
-            self.render_element(qgeom)
+            self.render_element(qgeom, bool(table_type == 'junction'))
 
-    def render_element(self, qgeom: pd.Series):
+    def render_element(self, qgeom: pd.Series, is_junction: bool):
         """
         Render an individual shape whose properties are listed in a row of QGeometry table.
+        Junction elements are handled separately from non-junction elements, as the former
+        consist of two rendered shapes, not just one.
+
+        Args:
+            qgeom (pd.Series): GeoSeries of element properties.
+            is_junction (bool): Whether or not qgeom belongs to junction table.
+        """
+
+        qc_shapely = qgeom.geometry
+        if is_junction:
+            self.render_element_junction(qgeom)
+        else:
+            if isinstance(qc_shapely, shapely.geometry.Polygon):
+                self.render_element_poly(qgeom)
+            elif isinstance(qc_shapely, shapely.geometry.LineString):
+                self.render_element_path(qgeom)
+
+    def render_element_junction(self, qgeom: pd.Series):
+        """
+        Render a Josephson junction consisting of
+        1. A rectangle of length pad_gap and width inductor_width. Defines lumped element
+           RLC boundary condition.
+        2. A line that is later used to calculate the voltage in post-processing analysis.
 
         Args:
             qgeom (pd.Series): GeoSeries of element properties.
         """
 
+        ansys_options = dict(transparency=0.0)
+
+        qc_name = 'Lj_' + str(qgeom['component'])
+        qc_elt = get_clean_name(qgeom['name'])
         qc_shapely = qgeom.geometry
-        if isinstance(qc_shapely, shapely.geometry.Polygon):
-            self.render_element_poly(qgeom)
-        elif isinstance(qc_shapely, shapely.geometry.LineString):
-            self.render_element_path(qgeom)
+        qc_chip_z = parse_units(self.design.get_chip_z(qgeom.chip))
+        qc_width = parse_units(qgeom.width)
+
+        name = f'{qc_name}{QAnsysRenderer.NAME_DELIM}{qc_elt}'
+
+        endpoints = parse_units(list(qc_shapely.coords))
+        endpoints_3d = to_vec3D(endpoints, qc_chip_z)
+        x0, y0, z0 = endpoints_3d[0]
+        x1, y1, z0 = endpoints_3d[1]
+        if abs(y1 - y0) > abs(x1 - x0):
+            # Junction runs vertically up/down
+            points_3d = np.array([[x0 - qc_width / 2, y0, z0],
+                                  [x0 - qc_width / 2, y1, z0],
+                                  [x0 + qc_width / 2, y1, z0],
+                                  [x0 + qc_width / 2, y0, z0],
+                                  [x0 - qc_width / 2, y0, z0]])
+            x_min, x_max = x0 - qc_width / 2, x0 + qc_width / 2
+            y_min, y_max = min(y0, y1), max(y0, y1)
+        else:
+            # Junction runs horizontally left/right
+            points_3d = np.array([[x0, y0 - qc_width / 2, z0],
+                                  [x0, y0 + qc_width / 2, z0],
+                                  [x1, y0 + qc_width / 2, z0],
+                                  [x1, y0 - qc_width / 2, z0],
+                                  [x0, y0 - qc_width / 2, z0]])
+            x_min, x_max = min(x0, x1), max(x0, x1)
+            y_min, y_max = y0 - qc_width / 2, y0 + qc_width / 2
+
+        # Draw rectangle
+        self.logger.debug(f'Drawing a rectangle: {name}')
+        poly_ansys = self.modeler.draw_rect_corner(
+            [x_min, y_min, qc_chip_z], x_max - x_min, y_max - y_min, qc_chip_z, **ansys_options)
+        axis = int(self.design._components[qgeom['component']].options.orientation)
+        axis = {0: 'y', 90: 'x', 180: 'y', 270: 'x'}.get(axis, axis)
+        axis = axis.lower()
+        poly_ansys.make_rlc_boundary(axis,
+                                     l=qgeom['ansys_inductance'],
+                                     c=qgeom['ansys_capacitance'],
+                                     r=qgeom['ansys_resistance'],
+                                     name='Lj_' + name)
+
+        # Draw line
+        start, end = poly_ansys.make_center_line(axis)
+        poly_jj = self.modeler.draw_polyline([start, end], closed=False, **dict(color=(128, 0, 128)))
+        poly_jj = poly_jj.rename('JJ_' + name + '_')
+        poly_jj.show_direction = True
 
     def render_element_poly(self, qgeom: pd.Series):
         """
@@ -243,7 +307,7 @@ class QAnsysRenderer(QRenderer):
             self.logger.debug(f'Drawing a rectangle: {name}')
             x_min, y_min, x_max, y_max = qc_shapely.bounds
             poly_ansys = self.modeler.draw_rect_corner(*parse_units(
-                [[x_min, y_min, qc_chip_z], x_max-x_min, y_max-y_min, qc_chip_z]), **ansys_options)
+                [[x_min, y_min, qc_chip_z], x_max - x_min, y_max - y_min, qc_chip_z]), **ansys_options)
             self.modeler.rename_obj(poly_ansys, name)
 
         else:
@@ -252,6 +316,7 @@ class QAnsysRenderer(QRenderer):
             # rename: handle bug if the name of the cut already exits and is used to make a cut
             poly_ansys = poly_ansys.rename(name)
 
+        qc_fillet = round(qgeom.fillet, 7)
         if qc_fillet > 0:
             qc_fillet = parse_units(qc_fillet)
             idxs_to_fillet = good_fillet_idxs(points,
@@ -271,11 +336,12 @@ class QAnsysRenderer(QRenderer):
         # Input chip info into self.chip_subtract_dict
         if qgeom.chip not in self.chip_subtract_dict:
             self.chip_subtract_dict[qgeom.chip] = set()
+
         if qgeom['subtract']:
             self.chip_subtract_dict[qgeom.chip].add(name)
 
         # Potentially add to list of elements to metallize
-        if (not qgeom['subtract']) and (not qgeom['helper']):
+        elif not qgeom['helper']:
             self.assign_perfE.append(name)
 
     def render_element_path(self, qgeom: pd.Series):
@@ -292,7 +358,6 @@ class QAnsysRenderer(QRenderer):
         qc_elt = get_clean_name(qgeom['name']) # name of element within QGeometry table
         qc_shapely = qgeom.geometry  # shapely geom
         qc_chip_z = parse_units(self.design.get_chip_z(qgeom.chip))
-        qc_fillet = round(qgeom.fillet, 7)
 
         name = f'{qc_name}{QAnsysRenderer.NAME_DELIM}{qc_elt}'
 
@@ -304,12 +369,13 @@ class QAnsysRenderer(QRenderer):
         poly_ansys = self.modeler.draw_polyline(points_3d, closed=False, **ansys_options)
         poly_ansys = poly_ansys.rename(name)
 
+        qc_fillet = round(qgeom.fillet, 7)
         if qc_fillet > 0:
             qc_fillet = parse_units(qc_fillet)
             idxs_to_fillet = good_fillet_idxs(points,
-                                             qc_fillet,
-                                             precision=self.design._template_options.PRECISION,
-                                             isclosed=False)
+                                            qc_fillet,
+                                            precision=self.design._template_options.PRECISION,
+                                            isclosed=False)
             if idxs_to_fillet:
                 self.modeler._fillet(qc_fillet, idxs_to_fillet, poly_ansys)
 
@@ -324,10 +390,11 @@ class QAnsysRenderer(QRenderer):
 
         if qgeom.chip not in self.chip_subtract_dict:
             self.chip_subtract_dict[qgeom.chip] = set()
+
         if qgeom['subtract']:
             self.chip_subtract_dict[qgeom.chip].add(name)
 
-        if qgeom['width'] and (not qgeom['subtract']) and (not qgeom['helper']):
+        elif qgeom['width'] and (not qgeom['helper']):
             self.assign_perfE.append(name)
 
     def render_chips(self):

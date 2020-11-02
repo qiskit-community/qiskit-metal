@@ -12,6 +12,9 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
+#### NOTE: TRANSMON_POCKET_ANSYS DIFFERS FROM TRANSMON_POCKET IN HOW JJ IS DRAWN
+#### EVERYTHING ELSE IS THE SAME
+
 '''
 @date: 2019
 @author: Zlatko K Minev
@@ -42,9 +45,9 @@ from qiskit_metal import draw, Dict
 from qiskit_metal.components.base.qubit import BaseQubit
 
 
-class TransmonPocket(BaseQubit):
+class TransmonPocketAnsys(BaseQubit):
     """
-    The base `TransmonPocket` class
+    The base `TransmonPocketAnsys` class
 
     Inherits `BaseQubit` class
 
@@ -183,10 +186,10 @@ class TransmonPocket(BaseQubit):
         pad_top = draw.translate(pad, 0, +(pad_height+pad_gap)/2.)
         pad_bot = draw.translate(pad, 0, -(pad_height+pad_gap)/2.)
 
-        # rect_jj = draw.LineString(
-        #     [(0, -pad_gap/2), (0, +pad_gap/2)])
+        rect_jj = draw.LineString(
+            [(0, -pad_gap/2), (0, +pad_gap/2)])
         # the draw.rectangle representing the josephson junction
-        rect_jj = draw.rectangle(p.inductor_width, pad_gap)
+        # rect_jj = draw.rectangle(p.inductor_width, pad_gap)
         rect_pk = draw.rectangle(p.pocket_width, p.pocket_height)
 
         # Rotate and translate all qgeometry as needed.
@@ -201,10 +204,10 @@ class TransmonPocket(BaseQubit):
         # Use the geometry to create Metal qgeometry
         self.add_qgeometry('poly', dict(pad_top=pad_top, pad_bot=pad_bot))
         self.add_qgeometry('poly', dict(rect_pk=rect_pk), subtract=True)
-        self.add_qgeometry('poly', dict(
-            rect_jj=rect_jj), helper=True)
-        # self.add_qgeometry('junction', dict(
-        #     rect_jj=rect_jj), width=p.inductor_width)
+        # self.add_qgeometry('poly', dict(
+        #     rect_jj=rect_jj), helper=True)
+        self.add_qgeometry('junction', dict(
+            rect_jj=rect_jj), width=p.inductor_width)
 
     def make_connection_pads(self):
         '''
