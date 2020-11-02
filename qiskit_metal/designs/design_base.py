@@ -567,7 +567,7 @@ class QDesign():
 
         return True
 
-    def delete_component(self, component_name: str, force=False) -> bool:
+    def delete_component(self, component_name: str, force: bool = False) -> bool:
         """Deletes component and pins attached to said component.
 
         If no component by that name is present, then just return True
@@ -659,8 +659,42 @@ class QDesign():
 
         return return_response
 
+    def copy_qcomponent(self,  original_qcomponent: 'QComponent', new_component_name: str, options_superimpose: dict = dict()) -> Union['QComponent', None]:
+        """Copy a coponent in QDesign and add it to QDesign._components using options_overwrite.
+
+        Args:
+            original_class (QComponent): The QComponent to copy.
+            new_component_name (str): The name should not already be in QDesign, if it is, the copy fill fail.
+            options_superimpose (dict): Can use differnt options for copied QComponent. Will start with the options
+                                        in original QComponent, and then superimpose with options_superimpose. An example
+                                        would be x and y locations.
+
+        Returns:
+            union['QComponent', None]: None if not copied, otherwise, a QComponent instance.
+        """
+
+        # overwrite orignal option with new options
+        options = {**original_qcomponent.options, **options_superimpose}
+        path_class_name = original_qcomponent.class_name
+        module_path = path_class_name[:path_class_name.rfind('.')]
+        class_name = path_class_name[path_class_name.rfind('.')+1:]
+        if new_component_name not in self.name_to_id:
+            if importlib.util.find_spec(module_path):
+                qcomponent_class = getattr(
+                    importlib.import_module(module_path), class_name, None)
+                a_qcomponent = qcomponent_class(
+                    self, new_component_name, options=options)
+                return a_qcomponent
+            else:
+                # Path to QComponent not found
+                return None
+        else:
+            # The new name is already in QDesign.
+            return None
+
 
 #########I/O###############################################################
+
 
     @classmethod
     def load_design(cls, path: str):
