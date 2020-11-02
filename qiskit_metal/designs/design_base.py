@@ -30,10 +30,8 @@ import pandas as pd
 from .. import Dict, logger
 from ..config import DefaultMetalOptions, DefaultOptionsRenderer
 from ..elements import QGeometryTables
-from qiskit_metal.toolbox_metal.import_export import load_metal_design, save_metal
 from qiskit_metal.toolbox_metal.parsing import parse_options, parse_value
 from qiskit_metal.toolbox_metal.parsing import is_true
-from qiskit_metal.toolbox_python.utility_functions import log_error_easy
 
 from .interface_components import Components
 from .net_info import QNet
@@ -41,7 +39,8 @@ from .net_info import QNet
 from .. import config
 if not config.is_building_docs():
     from qiskit_metal.renderers.renderer_gds.gds_renderer import QGDSRenderer
-
+    from qiskit_metal.toolbox_metal.import_export import load_metal_design, save_metal
+    from qiskit_metal.toolbox_python.utility_functions import log_error_easy
 
 if TYPE_CHECKING:
     # For linting, avoids circular imports.

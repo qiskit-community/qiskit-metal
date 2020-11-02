@@ -1,6 +1,4 @@
 from ... import Dict
-from qiskit_metal.toolbox_python.utility_functions import can_write_to_path
-from qiskit_metal.toolbox_python.utility_functions import get_range_of_vertex_to_not_fillet
 import math
 from scipy.spatial import distance
 import os
@@ -23,6 +21,11 @@ import numpy as np
 
 from qiskit_metal.renderers.renderer_base import QRenderer
 from qiskit_metal.toolbox_metal.parsing import is_true
+
+from .. import config
+if not config.is_building_docs():
+    from qiskit_metal.toolbox_python.utility_functions import can_write_to_path
+    from qiskit_metal.toolbox_python.utility_functions import get_range_of_vertex_to_not_fillet
 
 if TYPE_CHECKING:
     # For linting typechecking, import modules that can't be loaded here under normal conditions.
