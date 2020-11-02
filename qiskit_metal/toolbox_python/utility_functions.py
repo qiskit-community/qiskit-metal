@@ -127,7 +127,7 @@ def dict_start_with(my_dict, start_with, as_=list):
 
 def data_frame_empty_typed(column_types: dict):
     """Creates and empty DataFrame with dtypes for each column given
-    by the dicitonary,
+    by the dictionary,
 
     Arguments:
         column_types (dict): key, dtype pairs

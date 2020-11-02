@@ -79,7 +79,7 @@ def is_element_table(obj):
 
 #############################################################################
 #
-# Dicitonary that specifies the column names of various element tables.
+# Dictionary that specifies the column names of various element tables.
 #
 
 # TODO: implement data types in construction of tables?
@@ -89,7 +89,7 @@ def is_element_table(obj):
 ELEMENT_COLUMNS = dict(
 
     ################################################
-    # DO NOT MODIFY THE base DICITONARY.
+    # DO NOT MODIFY THE base DICTIONARY.
     # This is for Metal API use only.
     # To add a new element type, add a new key below.
     base=dict(
@@ -155,7 +155,7 @@ ELEMENT_COLUMNS = dict(
     # )
     # )
 )
-"""Dicitonary that specifies the column names of various element tables."""
+"""Dictionary that specifies the column names of various element tables."""
 
 #############################################################################
 #
@@ -309,7 +309,7 @@ class QGeometryTables(object):
                 cls.ELEMENT_COLUMNS[element_key]['__renderers__'][renderer_name] = dict(
                 )
 
-        # Now update the dicitonaries with all qgeometry that the renderer may have
+        # Now update the dictionaries with all qgeometry that the renderer may have
         for element_key, element_column_ext_dict in qgeometry.items():
 
             # The element the render is specifying is not in the specified qgeometry;
@@ -323,7 +323,7 @@ class QGeometryTables(object):
             cls.ELEMENT_COLUMNS[element_key]['__renderers__'][renderer_name].update(
                 element_column_ext_dict)
 
-    # could use weakref memorizaiton
+    # could use weakref memorization
     # https://stackoverflow.com/questions/33672412/python-functools-lru-cache-with-class-methods-release-object
     @classmethod
     def get_element_types(cls) -> List[str]:

@@ -161,10 +161,10 @@ class QDesign():
         self._qgeometry.create_tables()
 
     def _init_metadata(self) -> Dict:
-        """Initialize default metadata dicitoanry
+        """Initialize default metadata dictionary
 
         Returns:
-            Dict: default metadata dicitoanry
+            Dict: default metadata dictioanry
         """
         now = datetime.now()  # current date and time
         return Dict(
@@ -428,7 +428,7 @@ class QDesign():
         Clear all components in the design dictionary.
         Also clears all pins and netlist.
         '''
-        # clear all the dicitonaries and element tables.
+        # clear all the dictionaries and element tables.
 
         # Need to remove pin connections before clearing the components.
         self.delete_all_pins()
@@ -585,7 +585,7 @@ class QDesign():
         # Nothing to delete if name not in components
         if component_name not in self.name_to_id:
             self.logger.info(f'Called delete_component {component_name}, but such a '
-                             f'component is not in the design cache dicitonary of components.')
+                             f'component is not in the design cache dictionary of components.')
             return True
         else:
             component_id = self.name_to_id[component_name]
@@ -700,7 +700,7 @@ class QDesign():
     def load_design(cls, path: str):
         """
         Load a Metal design from a saved Metal file.
-        Will also update default dicitonaries.
+        Will also update default dictionaries.
         (Class method)
 
         Arguments:
@@ -803,7 +803,7 @@ class QDesign():
 
         Arguments:
             params (dict): Input dict to pull form
-            param_names (str): Keys of dicitonary to parse and return as a dicitonary.
+            param_names (str): Keys of dictionary to parse and return as a dictionary.
                                Example value: 'x,y,z,cpw_width'
 
         Returns:

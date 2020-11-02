@@ -53,7 +53,7 @@ class TransmonPocket(BaseQubit):
         with two pads connected by a junction (see drawing below).
 
         Connector lines can be added using the `connection_pads`
-        dicitonary. Each connector pad has a name and a list of default
+        dictionary. Each connector pad has a name and a list of default
         properties.
 
     Options:

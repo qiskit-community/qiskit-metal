@@ -43,12 +43,12 @@ class BaseQubit(QComponent):
         name_of_connection_pad2 = dict{value1 = X,value2 = Y...},...etc.}
 
         When you define your custom qubit class please add a _default_connection_pads
-        dicitonary names as described above.
+        dictionary names as described above.
 
 
     GUI interfaceing
         _img : set the name of the file such as 'Metal_Object.png'. YOu must place this
-        file in the qiskit_metal._gui._imgs diretory
+        file in the qiskit_metal._gui._imgs directory
     '''
 
     _img = 'Metal_Qubit.png'
@@ -78,7 +78,7 @@ class BaseQubit(QComponent):
                                        and used every time a new component is instantiated.
                                        (default: None)
             make (bool): True if the make function should be called at the end of the init.
-                    Options be used in the make funciton to create the geometry. (default: True)
+                    Options be used in the make function to create the geometry. (default: True)
         """
         super().__init__(design, name, options=options, make=False)
 
@@ -104,7 +104,7 @@ class BaseQubit(QComponent):
         # class_name = type(self).__name__
         assert '_default_connection_pads' in self.design.template_options[self.class_name], f"""When
         you define your custom qubit class please add a _default_connection_pads
-        dicitonary name as default_options['_default_connection_pads']. This should specify the default
+        dictionary name as default_options['_default_connection_pads']. This should specify the default
         creation options for the connection. """
 
         # Not sure if it best to remove it from options to keep

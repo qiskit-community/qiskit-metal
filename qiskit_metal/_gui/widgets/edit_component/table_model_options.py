@@ -229,7 +229,7 @@ class QTableModel_Options(QAbstractTableModel):
             bool: Returns true if successful; otherwise returns false.
         """
 
-        # TODO: handle nested dicitonaries
+        # TODO: handle nested dictionaries
         # See v0.1: get_nested_dict_item, pop_nested_dict_item
         # TODO: ability to add dictionary such as to add pins
         if not index.isValid():
@@ -245,7 +245,7 @@ class QTableModel_Options(QAbstractTableModel):
 
                 # When we do nothing
                 if isinstance(old_val, dict):
-                    self.logger.error('You selected a dicitonary this'
+                    self.logger.error('You selected a dictionary this'
                                       'cannot be edited directly edit its items.')
                     return False
 
@@ -255,10 +255,10 @@ class QTableModel_Options(QAbstractTableModel):
                 # When we do something to change the value
 
                 # try:
-                # TODO: should w etry and if eror then reset the value
+                # TODO: should retry and if error then reset the value
                 if 1:
                     self.logger.info(
-                        f'Componention options: Old value={old_val}; New value={value};')
+                        f'Component options: Old value={old_val}; New value={value};')
                     if isinstance(old_val, str):
                         data[key] = str(value)
                     else:
