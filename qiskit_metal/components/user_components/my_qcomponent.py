@@ -1,5 +1,9 @@
-from qiskit_metal import draw, Dict, is_true
+from qiskit_metal import draw, Dict
 from qiskit_metal.components.base.base import QComponent
+
+from ... import config
+if not config.is_building_docs():
+    from qiskit_metal import is_true
 
 class MyQComponent(QComponent):
     """

@@ -47,16 +47,6 @@ MPL Renderer
     AnimatedText
 
 
-MPL Submodules
----------------
-
-.. autosummary::
-    :toctree: ../stubs/
-
-    mpl_interaction
-    mpl_toolbox
-
-
 GDS Renderer
 ---------------
 
