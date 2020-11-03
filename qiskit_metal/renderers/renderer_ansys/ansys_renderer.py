@@ -84,9 +84,13 @@ class QAnsysRenderer(QRenderer):
     default_options = Dict(
         # Maximum mesh length for Josephson junction elements
         max_mesh_length_jj='7um',
-        Lj=10, # Lj has units of nanoHenries (nH)
+        Lj='10nH', # Lj has units of nanoHenries (nH)
         Cj=0, # Cj *must* be 0 for pyEPR analysis! Cj has units of femtofarads (fF)
-        _Rj=0) # _Rj *must* be 0 for pyEPR analysis! _Rj has units of Ohms
+        _Rj=0, # _Rj *must* be 0 for pyEPR analysis! _Rj has units of Ohms
+        project_path=None, # default project path
+        project_name=None, # default project name
+        design_name=None # default design name
+    )
 
     NAME_DELIM = r'_'
 
@@ -135,7 +139,9 @@ class QAnsysRenderer(QRenderer):
         """
         Create new project and design in Ansys.
         """
-        self.pinfo = epr.ProjectInfo(project_path=None, project_name=None, design_name=None)
+        self.pinfo = epr.ProjectInfo(project_path=self._options['project_path'],
+                                     project_name=self._options['project_name'],
+                                     design_name=self._options['design_name'])
         self.modeler = self.pinfo.design.modeler
 
     def add_message(self, msg: str, severity: int=0):

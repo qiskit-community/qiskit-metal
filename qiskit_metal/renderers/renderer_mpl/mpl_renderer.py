@@ -430,7 +430,7 @@ class QMplRenderer():
         table1 = table[~mask]
 
         # if any are fillet, alter the path separately
-        table1[table1.fillet.notnull()] = self.render_fillet(table1[table1.fillet.notnull()])
+        table1.loc[table1.fillet.notnull(), 'geometry'] = table1[table1.fillet.notnull()].apply(self.fillet_path, axis=1)
 
         if len(table1) > 0:
             table1.geometry = table1[['geometry', 'width']].apply(lambda x:
