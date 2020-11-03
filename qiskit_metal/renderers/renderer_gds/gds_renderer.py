@@ -115,8 +115,6 @@ class QGDSRenderer(QRenderer):
         # is zero, no fracture will occur. GDSpy uses 199 as the default. The historical max value of vertices
         # for a poly/path was 199 (fabrication equipment restrictions).  The hard max limit that a GDSII file
         # can handle is 8191.
-
-        # The original GDSII specification supports only a maximum of 199 vertices per polygon.
         max_points='8191',
 
         # (float): Scale box of components to render. Should be greater than 1.0.
@@ -820,6 +818,7 @@ class QGDSRenderer(QRenderer):
         """
 
         precision = float(self.parse_value(self.options.precision))
+        max_points = int(self.parse_value(self.options.max_points))
 
         lib = self.new_gds_library()
 
@@ -890,12 +889,12 @@ class QGDSRenderer(QRenderer):
                         After the boolean(), I deleted the cell from lib.
                         The memory is freed up then.
                         '''
-                        diff_geometry = gdspy.boolean(
-                            self.chip_info[chip_name]['subtract_poly'],
-                            subtract_cell.get_polygons(),
-                            'not',
-                            precision=precision,
-                            layer=chip_layer)
+                        diff_geometry = gdspy.boolean(self.chip_info[chip_name]['subtract_poly'],
+                                                      subtract_cell.get_polygons(),
+                                                      'not',
+                                                      max_points=max_points,
+                                                      precision=precision,
+                                                      layer=chip_layer)
 
                         lib.remove(subtract_cell)
 
@@ -1021,14 +1020,10 @@ class QGDSRenderer(QRenderer):
         See:
             https://gdspy.readthedocs.io/en/stable/reference.html#polygon
         """
-
         corners = self.options.corners
         tolerance = self.parse_value(self.options.tolerance)
         precision = self.parse_value(self.options.precision)
-        max_points_flexpath = self.parse_value(
-            self.options.max_points_flexpath)
-        max_points_poly = self.parse_value(
-            self.options.max_points_poly)
+        max_points = int(self.parse_value(self.options.max_points))
 
         geom = qgeometry_element.geometry  # type: shapely.geometry.base.BaseGeometry
 
@@ -1044,20 +1039,22 @@ class QGDSRenderer(QRenderer):
                 for hole in geom.interiors:
                     interior_coords = list(hole.coords)
                     all_interiors.append(interior_coords)
-                a_poly_set = gdspy.PolygonSet(
-                    all_interiors, layer=qgeometry_element.layer, datatype=10)
-                a_poly = gdspy.boolean(
-                    exterior_poly, a_poly_set, 'not', layer=qgeometry_element.layer, datatype=10)
+                a_poly_set = gdspy.PolygonSet(all_interiors,
+                                              layer=qgeometry_element.layer,
+                                              datatype=10)
+                # Since there is max_points in boolean, don't need to do this twice.
+                # a_poly_set = a_poly_set.fracture(max_points=max_points)
+                # exterior_poly = exterior_poly.fracture(max_points=max_points)
+                a_poly = gdspy.boolean(exterior_poly,
+                                       a_poly_set,
+                                       'not',
+                                       max_points=max_points,
+                                       layer=qgeometry_element.layer,
+                                       datatype=10)
                 return a_poly
-                # poly_fractured = a_poly.fracture(
-                #     max_points=5000, precision=precision)
-                # return poly_fractured
             else:
+                exterior_poly = exterior_poly.fracture(max_points=max_points)
                 return exterior_poly
-                # poly_fractured = exterior_poly.fracture(
-                #     max_points=5000, precision=precision)
-                # return poly_fractured
-
         elif isinstance(geom, shapely.geometry.LineString):
             '''
             class gdspy.FlexPath(points, width, offset=0, corners='natural', ends='flush',
@@ -1066,7 +1063,6 @@ class QGDSRenderer(QRenderer):
 
             Only fillet, if number is greater than zero.
             '''
-
             use_width = self.parse_value(self.options.width_LineString)
 
             if math.isnan(qgeometry_element.width):
@@ -1086,14 +1082,14 @@ class QGDSRenderer(QRenderer):
                     to_return = gdspy.FlexPath(list(geom.coords),
                                                use_width,
                                                layer=qgeometry_element.layer,
-                                               max_points=max_points_flexpath,
+                                               max_points=max_points,
                                                datatype=11)
                 else:
                     to_return = gdspy.FlexPath(list(geom.coords),
                                                use_width,
                                                layer=qgeometry_element.layer,
                                                datatype=11,
-                                               max_points=max_points_flexpath,
+                                               max_points=max_points,
                                                corners=corners,
                                                bend_radius=qgeometry_element.fillet,
                                                tolerance=tolerance,
