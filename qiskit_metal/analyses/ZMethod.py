@@ -55,8 +55,10 @@ w_i = w_Ji - (E_Ci / hbar - E_Ci/(hbar*w_Ji))
 
 
 def import_impedance_matrix(): #or might import S-matrix and change into impedance matrix?
+    pass
 
 def import_capacitance_matrix(): #same as for Jay's code
+    pass
 
 def coupling_rate_J_matrix():
     
