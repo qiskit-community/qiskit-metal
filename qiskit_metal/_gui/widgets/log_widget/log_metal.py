@@ -18,9 +18,12 @@ from PyQt5 import QtGui
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QAction, QDockWidget, QTextEdit
 
-from ....toolbox_python.utility_functions import clean_name, monkey_patch
 from .... import Dict, __version__, config
 from ...utility._handle_qt_messages import catch_exception_slot_pyqt
+
+from ... import config
+if not config.is_building_docs():
+    from ....toolbox_python.utility_functions import clean_name, monkey_patch
 
 __all__ = ['QTextEditLogger', 'LogHandler_for_QTextLog']
 

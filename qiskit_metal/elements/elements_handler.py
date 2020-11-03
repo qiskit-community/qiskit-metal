@@ -27,7 +27,6 @@ import pandas as pd
 import shapely
 
 from typing import TYPE_CHECKING
-from qiskit_metal.toolbox_python.utility_functions import get_range_of_vertex_to_not_fillet, data_frame_empty_typed
 from typing import Dict as Dict_
 from typing import List, Tuple, Union
 from geopandas import GeoDataFrame, GeoSeries
@@ -35,6 +34,9 @@ from geopandas import GeoDataFrame, GeoSeries
 from .. import Dict
 from ..draw import BaseGeometry
 
+from .. import config
+if not config.is_building_docs():
+    from qiskit_metal.toolbox_python.utility_functions import get_range_of_vertex_to_not_fillet, data_frame_empty_typed
 
 if TYPE_CHECKING:
     from ..components.base import QComponent

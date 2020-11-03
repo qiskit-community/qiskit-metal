@@ -30,10 +30,8 @@ import pandas as pd
 from .. import Dict, logger
 from ..config import DefaultMetalOptions, DefaultOptionsRenderer
 from ..elements import QGeometryTables
-from qiskit_metal.toolbox_metal.import_export import load_metal_design, save_metal
 from qiskit_metal.toolbox_metal.parsing import parse_options, parse_value
 from qiskit_metal.toolbox_metal.parsing import is_true
-from qiskit_metal.toolbox_python.utility_functions import log_error_easy
 
 from .interface_components import Components
 from .net_info import QNet
@@ -41,13 +39,14 @@ from .net_info import QNet
 from .. import config
 if not config.is_building_docs():
     from qiskit_metal.renderers.renderer_gds.gds_renderer import QGDSRenderer
-
+    from qiskit_metal.toolbox_metal.import_export import load_metal_design, save_metal
+    from qiskit_metal.toolbox_python.utility_functions import log_error_easy
 
 if TYPE_CHECKING:
     # For linting, avoids circular imports.
-    from ..components.base.base import QComponent
-    from ..renderers.renderer_base import QRenderer
-    from ..renderers.renderer_gds.gds_renderer import QGDSRenderer
+    from qiskit_metal.components.base.base import QComponent
+    from qiskit_metal.renderers.renderer_base import QRenderer
+    from qiskit_metal.renderers.renderer_gds.gds_renderer import QGDSRenderer
 
 
 __all__ = ['QDesign']
@@ -89,8 +88,7 @@ class QDesign():
                             added to design using the name.
 
             enable_renderers: Enable the renderers during the init() of design.
-                        For now, gds is enabled within design.
-                        TODO:Use the list in config.renderers_to_load() to determine
+                       The list in config.renderers_to_load() to determine
                         which renderers to enable.
 
         """
@@ -135,7 +133,7 @@ class QDesign():
 
         self._qgeometry = QGeometryTables(self)
 
-        # used for components, and renderers, TODO for QDesign
+        # Used for QComponents, and QRenderers
         self._template_options = DefaultMetalOptions()
 
         self.variables.update(self.template_options.qdesign.variables)
@@ -184,22 +182,7 @@ class QDesign():
         self._metadata.update(new_metadata)
 
 #########PROPERTIES##################################################
-    # User should not access _components directly
-    # TODO make interface with __getattr__ etc, magic methods
-    # @property
-    # def components(self) -> Dict_[int, 'QComponent']:
-    #     '''
-    #     Returns Dict object that keeps track of all Metal components in the design
-    #     '''
-    #     return self._components
 
-    """     @property
-    def pins(self):
-        '''
-        Return the Dict object that keeps track of all pins in the design.
-        '''
-        return
-    """
     @property
     def variables(self) -> Dict_[str, str]:
         '''
@@ -294,8 +277,7 @@ class QDesign():
         Raises:
             NotImplementedError: Code not written yet
         """
-        #raise NotImplementedError()
-        # TODO: IMPORTANT
+        # raise NotImplementedError() # Important
         return 0
 
     def get_chip_layer(self, chip_name: str = 'main') -> int:
@@ -307,7 +289,6 @@ class QDesign():
         Returns:
             int: layer of ground plane
         """
-        # TODO: Maybe return tuple for layer, datatype
         if chip_name in self.chips:
             if 'layer_ground_plane' in self.chips:
                 return int(self.chips['layer_ground_plane'])
@@ -325,7 +306,6 @@ class QDesign():
             new_key (str): new variable name
         """
 
-        # TODO: Change this use components with both id and name.
         keys = list(self._variables.keys())
         values = list(self._variables.values())
 
@@ -419,7 +399,6 @@ class QDesign():
         Returns:
             list[tuples]: Each tuple has the text name of component and UNIQUE integer ID for component.
         """
-        # TODO: This seems slow to build new list, use builtin and /or map?
         alist = [(value.name, key)
                  for key, value in self._components.items()]
         return alist
@@ -454,9 +433,8 @@ class QDesign():
         self.delete_all_pins()
         self.name_to_id.clear()
         self._components.clear()
-        # TODO: add element tables here
+
         self._qgeometry.clear_all_tables()
-        # TODO: add dependency handling here
 
     def _get_new_qcomponent_id(self):
         '''
@@ -487,16 +465,9 @@ class QDesign():
         """
         Remakes all components with their current parameters.
         """
-        # TODO: there are some performance tricks here, we could just clear all element tables
-        # and then skip the deletion of components qgeometry one by one
-        # first clear all the
-        # thne just make without the checks on existing
-        # TODO: Handle error and print nice statemetns
-        # try catch log_simple_error
-
         for name, obj in self._components.items():  # pylint: disable=unused-variable
-            try:  # TODO: performace?
-                obj.rebuild()  # should we call this build?
+            try:
+                obj.rebuild()
             except:
                 print(f'ERORROR in building {name}')
                 log_error_easy(
@@ -595,7 +566,7 @@ class QDesign():
 
         return True
 
-    def delete_component(self, component_name: str, force=False) -> bool:
+    def delete_component(self, component_name: str, force: bool = False) -> bool:
         """Deletes component and pins attached to said component.
 
         If no component by that name is present, then just return True
@@ -687,8 +658,83 @@ class QDesign():
 
         return return_response
 
+    def copy_multiple_qcomponents(self,  original_qcomponents: list, new_component_names: list, all_options_superimpose: list = list()) -> Dict:
+        """The lists in the arguments are all used in parallel.  If the length of original_qcomponents 
+        and new_component_names are not the same, no copies will be made and an empty Dict will be returned. 
+        The length of all_options_superimposes needs to be either empty or exactly the length of original_qcomponents, 
+        otherwise, an empty dict will be returned.  
+
+
+        Args:
+            original_qcomponents (list): Must be a list of original QComponents.
+            new_component_names (list): Must be a list of QComponent names.
+            all_options_superimpose (list, optional): Must be list of dicts with options to superimpose on options 
+                from original_qcomponents. The list can be of both populated and empty dicts. Defaults to empty list().
+
+        Returns:
+            Dict: Number of keys will be the same length of original_qcomponent.  
+                Each key will be the new_component_name. 
+                Each value will be either a QComponent or None.
+                If the copy did not happen, the value will be None, and the key will extracted from new_componet_names. 
+
+        """
+        copied_info = dict()
+        length = len(original_qcomponents)
+        if length != len(new_component_names):
+            return copied_info
+
+        num_options = len(all_options_superimpose)
+
+        if num_options > 0 and num_options != length:
+            return copied_info
+
+        for index, item in enumerate(original_qcomponents):
+            if num_options > 0:
+                a_copy = self.copy_qcomponent(
+                    item, new_component_names[index], all_options_superimpose[index])
+            else:
+                a_copy = self.copy_qcomponent(item, new_component_names[index])
+
+            copied_info[new_component_names[index]] = a_copy
+
+        return copied_info
+
+    def copy_qcomponent(self,  original_qcomponent: 'QComponent', new_component_name: str, options_superimpose: dict = dict()) -> Union['QComponent', None]:
+        """Copy a coponent in QDesign and add it to QDesign._components using options_overwrite.
+
+        Args:
+            original_class (QComponent): The QComponent to copy.
+            new_component_name (str): The name should not already be in QDesign, if it is, the copy fill fail.
+            options_superimpose (dict): Can use differnt options for copied QComponent. Will start with the options
+                                        in original QComponent, and then superimpose with options_superimpose. An example
+                                        would be x and y locations.
+
+        Returns:
+            union['QComponent', None]: None if not copied, otherwise, a QComponent instance.
+        """
+
+        # overwrite orignal option with new options
+        options = {**original_qcomponent.options, **options_superimpose}
+        path_class_name = original_qcomponent.class_name
+        module_path = path_class_name[:path_class_name.rfind('.')]
+        class_name = path_class_name[path_class_name.rfind('.')+1:]
+        if new_component_name not in self.name_to_id:
+            if importlib.util.find_spec(module_path):
+                qcomponent_class = getattr(
+                    importlib.import_module(module_path), class_name, None)
+                a_qcomponent = qcomponent_class(
+                    self, new_component_name, options=options)
+                return a_qcomponent
+            else:
+                # Path to QComponent not found
+                return None
+        else:
+            # The new name is already in QDesign.
+            return None
+
 
 #########I/O###############################################################
+
 
     @classmethod
     def load_design(cls, path: str):
@@ -719,7 +765,7 @@ class QDesign():
             bool: True = success; False = failure
         """
 
-        self.logger.warning("Saving is a beta feature.")  # TODO:
+        self.logger.warning("Saving is a beta feature.")
 
         if path is None:
             if self.save_path is None:
@@ -835,7 +881,7 @@ class QDesign():
         return self.template_options.units
 
 ####################################################################################
-# TODO: Dependencies
+# Dependencies
 
     def add_dependency(self, parent: str, child: str):
         """
@@ -845,11 +891,6 @@ class QDesign():
             parent (str): The component on which the child depends.
             child (str): The child cannot live without the parent.
         """
-        # TODO: add_dependency Should we allow bidirecitonal arrows as as flad in the graph?
-        # Easier if we keep simply one-sided arrows
-        # Note that we will have to handle renaming and deleting of components, etc.
-        # Should we make a dependancy handler?
-        # For now, let's table this, lower priority
         pass
 
     def remove_dependency(self, parent: str, child: str):
@@ -860,8 +901,6 @@ class QDesign():
             parent (str): The component on which the child depends.
             child (str): The child cannot live without the parent.
         """
-
-        # TODO: remove_dependency
         pass
 
     def update_component(self, component_name: str, dependencies: bool = True):
@@ -873,36 +912,53 @@ class QDesign():
             component_name (str): Component name to update
             dependencies (bool): True to update all dependencies (Default: True)
         """
-
-        # TODO: Get dependency graph
-
+        # Get dependency graph
         # Remake components in order
         pass
 
 
 ######### Renderers ###############################################################
 
-
     def _start_renderers(self):
-        """ For now, load only GDS.  However, will need to determine
-        if mpl needs to be loaded, because it is conencted to GUI.
-
-
-        # TODO: Use Dict() from config.renderers_to_load.
-        # Determine how to load exactly.
-        # Zkm: i don't think we should load all by default. Just MPL and GDS.
-        # Not everyone needs HFSS. Should load that separatly.
+        """1. Import the renderers identifed in config.renderers_to_load.
+           2. Register them into QDesign.
+           3. Populate self.renderer_defaults_by_table
         """
-        # TODO: CHANGE TO LOOP OVER CONFIG. DO NOT HARD CODE @priti
-        # GDS Renderer using base class QRender
-        a_gds = QGDSRenderer(self, initiate=True)
 
-        # Every renderer using QRender as base class will have method to get unique name.
-        # Add columns to junction table in the element handler
-        #unique_name = a_gds._get_unique_class_name()
+        for renderer_key, import_info in config.renderers_to_load.items():
+            if 'path_name' in import_info:
+                path_name = import_info.path_name
+            else:
+                self.logger.warning(f'Renderer={renderer_key} is not registered in QDesign.  '
+                                    f'Looking for key="path_name" and value in config.renderers_to_load.')
+                continue
 
-        # register renderers here.
-        self._renderers['gds'] = a_gds
+            if 'class_name' in import_info:
+                class_name = import_info.class_name
+            else:
+                self.logger.warning(f'Renderer={renderer_key} is not registered in QDesign.  '
+                                    f'Looking for key="class_name" and value in config.renderers_to_load.')
+                continue
+
+            # check if module_name exists
+            if importlib.util.find_spec(path_name):
+                class_renderer = getattr(
+                    importlib.import_module(path_name), class_name, None)
+
+                # check if class_name is in module
+                if class_renderer is not None:
+                    a_renderer = class_renderer(self)
+
+                    # register renderers here.
+                    self._renderers[renderer_key] = a_renderer
+                else:
+                    self.logger.warning(f'Renderer={renderer_key} is not registered in QDesign.  '
+                                        f'The class_name={class_name} was not found.')
+                    continue
+            else:
+                self.logger.warning(f'Renderer={renderer_key} is not registered in QDesign.  '
+                                    f'The module_name={path_name} was not found.')
+                continue
 
         for render_name, a_render in self._renderers.items():
             a_render.add_table_data_to_QDesign(a_render.name)

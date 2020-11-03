@@ -1,6 +1,4 @@
 from ... import Dict
-from qiskit_metal.toolbox_python.utility_functions import can_write_to_path
-from qiskit_metal.toolbox_python.utility_functions import get_range_of_vertex_to_not_fillet
 import math
 from scipy.spatial import distance
 import os
@@ -23,6 +21,11 @@ import numpy as np
 
 from qiskit_metal.renderers.renderer_base import QRenderer
 from qiskit_metal.toolbox_metal.parsing import is_true
+
+from .. import config
+if not config.is_building_docs():
+    from qiskit_metal.toolbox_python.utility_functions import can_write_to_path
+    from qiskit_metal.toolbox_python.utility_functions import get_range_of_vertex_to_not_fillet
 
 if TYPE_CHECKING:
     # For linting typechecking, import modules that can't be loaded here under normal conditions.
@@ -683,11 +686,11 @@ class QGDSRenderer(QRenderer):
 
         Args:
             coords (list): User provide a list of tuples.  The tuple is (x,y) location for a vertex.
-            The list represents a LineString.
-
+              The list represents a LineString.
             a_fillet (float): The value provided by component developer.
-
             all_idx_bad_fillet (dict): An empty dict which will be populated by this method.
+
+        Dictionary:
             Key 'reduced_idx' will hold list of tuples.  The tuples correspond to index for list named "coords".
             Key 'midpoints' will hold list of tuples. The index of a tuple corresponds to two index within coords.
             For example, a index in midpoints is x, that coresponds midpoint of segment x-1 to x.
