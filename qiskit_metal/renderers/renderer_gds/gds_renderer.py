@@ -51,6 +51,9 @@ class QGDSRenderer(QRenderer):
     3. If user wants to export a list of explicit components, the bounding box will be calculated by size of
     QComponents in the QGeometry table. Then be scaled by bounding_box_scale_x and bounding_box_scale_y.
 
+    4. Note: When using the Junction table, the cell for Junction should be "x-axis" aligned and then GDS rotates
+    based on LineString given in Juction table.
+
 
     datatype:
         * 10 Polygon
