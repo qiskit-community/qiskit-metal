@@ -698,7 +698,7 @@ class QDesign():
             original_qcomponents (list): Must be a list of original QComponents.
             new_component_names (list): Must be a list of QComponent names.
             all_options_superimpose (list, optional): Must be list of dicts with options to superimpose on options 
-            from original_qcomponents. The list can be of both populated and empty dicts. Defaults to empty list().
+                from original_qcomponents. The list can be of both populated and empty dicts. Defaults to empty list().
 
         Returns:
             Dict: Number of keys will be the same length of original_qcomponent.  
