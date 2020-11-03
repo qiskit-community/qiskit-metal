@@ -168,10 +168,13 @@ class QAnsysRenderer(QRenderer):
 
         self.chip_subtract_dict = defaultdict(set) # TODO: address warning
         self.assign_perfE = []
+        self.assign_mesh = []
+
         self.render_tables(selection)
         self.render_chips()
         self.subtract_from_ground()
         self.metallize()
+        self.add_mesh()
 
     def render_tables(self, selection: Union[list, None] = None): #  # TODO: address warning
         """
@@ -273,18 +276,19 @@ class QAnsysRenderer(QRenderer):
         self.logger.debug(f'Drawing a rectangle: {name}')
         poly_ansys = self.modeler.draw_rect_corner(
             [x_min, y_min, qc_chip_z], x_max - x_min, y_max - y_min, qc_chip_z, **ansys_options)
-        axis = int(self.design._components[qgeom['component']].options.orientation)
-        axis = {0: 'y', 90: 'x', 180: 'y', 270: 'x'}.get(axis, axis)
-        axis = axis.lower()
+        axis = 'x' if abs(x1 - x0) > abs(y1 - y0) else 'y'
         poly_ansys.make_rlc_boundary(axis,
                                      l=qgeom['ansys_inductance'],
                                      c=qgeom['ansys_capacitance'],
                                      r=qgeom['ansys_resistance'],
                                      name='Lj_' + name)
+        self.modeler.rename_obj(poly_ansys, 'JJ_rect_' + name)
+        self.assign_mesh.append('JJ_rect_' + name)
 
         # Draw line
-        start, end = poly_ansys.make_center_line(axis)
-        poly_jj = self.modeler.draw_polyline([start, end], closed=False, **dict(color=(128, 0, 128)))
+        poly_jj = self.modeler.draw_polyline([endpoints_3d[0], endpoints_3d[1]],
+                                              closed=False,
+                                              **dict(color=(128, 0, 128)))
         poly_jj = poly_jj.rename('JJ_' + name + '_')
         poly_jj.show_direction = True
 
@@ -450,3 +454,11 @@ class QAnsysRenderer(QRenderer):
         Assign metallic property to all shapes in self.assign_perfE list.
         """
         self.modeler.assign_perfect_E(self.assign_perfE)
+
+    def add_mesh(self):
+        """
+        Add mesh to all elements in self.assign_mesh.
+        """
+        self.modeler.mesh_length('small_mesh',
+                                 self.assign_mesh,
+                                 MaxLength=self._options['max_mesh_length_jj'])
