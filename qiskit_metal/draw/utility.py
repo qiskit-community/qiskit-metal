@@ -552,6 +552,22 @@ class Vector:
         return float(norm(vec)) < tol*np.finfo(float).eps
 
     @staticmethod
+    def get_distance(u: Union[tuple, list, np.ndarray], v: Union[tuple, list, np.ndarray], precision: int = 9) -> float:
+        """
+        Get the Euclidean distance between points u and v to the specified precision.
+
+        Args:
+            u (Union[tuple, list, np.ndarray]): Coordinates of a point.
+            v (Union[tuple, list, np.ndarray]): Coordinates of a second point.
+            precision (int, optional): Precision of the result. Defaults to 9.
+
+        Returns:
+            float: Distance between u anbd v.
+        """
+        u, v = np.array(u), np.array(v)
+        return round(abs(norm(u - v)), precision)
+    
+    @staticmethod
     def two_points_described(points2D: List[Vec2D]) -> Tuple[np.ndarray]:
         """
         Get the distance, units and tagents

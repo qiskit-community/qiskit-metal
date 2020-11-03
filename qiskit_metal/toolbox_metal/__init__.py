@@ -33,6 +33,7 @@ Submodules
 
     about
     import_export
+    math_and_overrides
     parsing
 
 """
@@ -46,3 +47,4 @@ if config.is_building_docs():
     from . import about
     from . import import_export
     from . import parse_value
+    from . import math_and_overrides

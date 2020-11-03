@@ -15,35 +15,6 @@
 # pylint: disable=wrong-import-order
 # pylint: disable=wrong-import-position
 
-"""
-=================================================
-Top Level (:mod:`qiskit_metal`)
-=================================================
-
-.. currentmodule:: qiskit_metal._defaults
-
-A bunch of top level stuff.
-
-
-Default Metal Options
----------------------
-
-.. autosummary::
-    :toctree: ../stubs/
-
-    DefaultMetalOptions
-
-
-Default Options Renderer
-------------------------
-
-.. autosummary::
-    :toctree: ../stubs/
-
-    DefaultOptionsRenderer
-
-"""
-
 __version__ = '0.2.03'
 __license__ = "Apache 2.0"
 __copyright__= 'Copyright IBM 2019-2020'

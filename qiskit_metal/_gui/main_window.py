@@ -38,7 +38,6 @@ from PyQt5.QtWidgets import (QApplication, QDockWidget, QFileDialog, QLabel,
                              QMainWindow, QMessageBox, QInputDialog, QLineEdit)
 
 from ..designs.design_base import QDesign
-from ..toolbox_metal.import_export import load_metal_design
 from .component_widget_ui import Ui_ComponentWidget
 from .renderer_gds_gui import RendererGDSWidget
 from .elements_window import ElementsWindow
@@ -52,6 +51,9 @@ from .widgets.edit_component.component_widget import ComponentWidget
 from .widgets.log_widget.log_metal import LogHandler_for_QTextLog
 from .widgets.variable_table import PropertyTableWidget
 
+from .. import config
+if not config.is_building_docs():
+    from ..toolbox_metal.import_export import load_metal_design
 
 class QMainWindowExtension(QMainWindowExtensionBase):
     """This contains all the functions tthat the gui needs
