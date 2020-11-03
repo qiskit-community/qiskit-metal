@@ -115,7 +115,9 @@ class QGDSRenderer(QRenderer):
         # is zero, no fracture will occur. GDSpy uses 199 as the default. The historical max value of vertices
         # for a poly/path was 199 (fabrication equipment restrictions).  The hard max limit that a GDSII file
         # can handle is 8191.
-        max_points_flexpath=8191,
+
+        # The original GDSII specification supports only a maximum of 199 vertices per polygon.
+        max_points='8191',
 
         # (float): Scale box of components to render. Should be greater than 1.0.
         # For benifit of the GUI, keep this the last entry in the dict.  GUI shows a note regarding bound_box.
@@ -1025,6 +1027,8 @@ class QGDSRenderer(QRenderer):
         precision = self.parse_value(self.options.precision)
         max_points_flexpath = self.parse_value(
             self.options.max_points_flexpath)
+        max_points_poly = self.parse_value(
+            self.options.max_points_poly)
 
         geom = qgeometry_element.geometry  # type: shapely.geometry.base.BaseGeometry
 
@@ -1064,6 +1068,7 @@ class QGDSRenderer(QRenderer):
             '''
 
             use_width = self.parse_value(self.options.width_LineString)
+
             if math.isnan(qgeometry_element.width):
                 qcomponent_id = self.parse_value(qgeometry_element.component)
                 name = self.parse_value(qgeometry_element['name'])
