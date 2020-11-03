@@ -34,8 +34,11 @@ from ... import is_design, logger
 from ...draw import BaseGeometry
 from ...toolbox_python.attr_dict import Dict
 from ._parsed_dynamic_attrs import ParsedDynamicAttributes_Component
-from ...draw import Vector
 from ...toolbox_python.display import format_dict_ala_z
+
+from ... import config
+if not config.is_building_docs():
+    from ...draw import Vector
 
 __all__ = ['QComponent']
 

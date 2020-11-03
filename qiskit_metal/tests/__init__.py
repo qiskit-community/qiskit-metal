@@ -12,49 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""
-=================================================
-Tests (:mod:`qiskit_metal.tests`)
-=================================================
-
-.. currentmodule:: qiskit_metal.tests
-
-Qiskit Metal main unit test functionality.
-
-Created on Wed Apr 22 08:55:40 2020
-
-@author: Jeremy D. Drysdale
-
-Tests
----------------
-
-.. autosummary::
-    :toctree: ../stubs/
-
-    TestAnalyses
-    TestComponentInstantiation
-    TestComponentOptions
-    TestComponentFunctionality
-    TestDefautOptions
-    TestDesign
-    TestDraw
-    TestElements
-    TestGUIBasic
-    TestRenderers
-    TestToolboxMetal
-    TestToolboxPython
-
-
-Support
----------------
-
-.. autosummary::
-    :toctree: ../stubs/
-
-    AssertionsMixin
-
-"""
-
 from .. import config
 if config.is_building_docs():
     from .assertions import AssertionsMixin
