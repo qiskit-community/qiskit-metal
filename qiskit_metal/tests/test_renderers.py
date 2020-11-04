@@ -145,6 +145,7 @@ class TestRenderers(unittest.TestCase):
         self.assertEqual(options['tolerance'], '0.00001')
         self.assertEqual(options['precision'], '0.000000001')
         self.assertEqual(options['width_LineString'], '10um')
+        self.assertEqual(options['path_filename'], '../gds-files/Fake_Junctions_copy.gds')
         self.assertEqual(options['bounding_box_scale_x'], '1.2')
         self.assertEqual(options['bounding_box_scale_y'], '1.2')
 

@@ -399,5 +399,68 @@ class TestDesign(unittest.TestCase):
             for j in ['net_id', 'component_id', 'pin_name']:
                 self.assertEqual(df_expected_2[j][i], df[j][i])
 
+    def test_design_copy_qcomponent(self):
+        """
+        Test the functionlaity of copy_qcomponent in design_base.py
+        """
+        design = DesignPlanar()
+        design.overwrite_enabled = True
+        q_1 = TransmonPocket(design, 'Q1')
+        q1_copy = design.copy_qcomponent(q_1, 'Q1_copy')
+
+        self.assertEqual(q_1.name, 'Q1')
+        self.assertEqual(q1_copy.name, 'Q1_copy')
+        self.assertEqual(q_1.id, 1)
+        self.assertEqual(q1_copy.id, 2)
+        self.assertEqual(q_1.class_name, q1_copy.class_name)
+        self.assertEqual(q_1.options['pos_x'], q1_copy.options['pos_x'])
+
+        q1_copy.options['pos_x'] = '1.0mm'
+        self.assertEqual(q_1.options['pos_x'], '0um')
+        self.assertEqual(q1_copy.options['pos_x'], '1.0mm')
+
+    def test_design_copy_multiple_qcomponents(self):
+        """
+        Test the functionality of copy_multiple_qcomponents in design_base.py
+        """
+        design = DesignPlanar()
+        design.overwrite_enabled = True
+        q_1 = TransmonPocket(design, 'Q1')
+        q_2 = TransmonPocket(design, 'Q2')
+        q_3 = TransmonPocket(design, 'Q3')
+
+        design.copy_multiple_qcomponents([q_1, q_2, q_3],
+                                         ['q1_copy', 'q2_copy', 'q3_copy'],
+                                         [dict(pos_y='-1.0mm'), dict(pos_y='-2.0mm'), dict(pos_y='-3.0mm')])
+
+        q1_copy = design._components[4]
+        q2_copy = design._components[5]
+        q3_copy = design._components[6]
+
+        self.assertEqual(q_1.name, 'Q1')
+        self.assertEqual(q_2.name, 'Q2')
+        self.assertEqual(q_3.name, 'Q3')
+        self.assertEqual(q1_copy.name, 'q1_copy')
+        self.assertEqual(q2_copy.name, 'q2_copy')
+        self.assertEqual(q3_copy.name, 'q3_copy')
+        self.assertEqual(q_1.id, 1)
+        self.assertEqual(q_2.id, 2)
+        self.assertEqual(q_3.id, 3)
+        self.assertEqual(q1_copy.id, 4)
+        self.assertEqual(q2_copy.id, 5)
+        self.assertEqual(q3_copy.id, 6)
+
+        self.assertEqual(q_1.class_name, q1_copy.class_name)
+        self.assertEqual(q_2.class_name, q2_copy.class_name)
+        self.assertEqual(q_3.class_name, q3_copy.class_name)
+        self.assertEqual(q_1.options['pos_x'], q1_copy.options['pos_x'])
+        self.assertEqual(q_2.options['pos_x'], q2_copy.options['pos_x'])
+        self.assertEqual(q_3.options['pos_x'], q3_copy.options['pos_x'])
+
+        self.assertEqual(q1_copy.options['pos_y'], '-1.0mm')
+        self.assertEqual(q2_copy.options['pos_y'], '-2.0mm')
+        self.assertEqual(q3_copy.options['pos_y'], '-3.0mm')
+
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)
