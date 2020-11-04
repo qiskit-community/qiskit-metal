@@ -929,7 +929,7 @@ class QGDSRenderer(QRenderer):
 
         Args:
             chip_name (str): The name of chip.
-            lib (gdspy.library): The library use to export the entire QDesign
+            lib (gdspy.library): The library used to export the entire QDesign.
             chip_only_top (gdspy.library.Cell):  The cell used for just chip_name. 
         """
         # Make sure the file exists, before trying to read it.
