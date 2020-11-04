@@ -30,6 +30,8 @@ from qiskit_metal.renderers.renderer_base.renderer_base import QRenderer
 from qiskit_metal.renderers.renderer_base.renderer_gui_base import QRendererGui
 from qiskit_metal.renderers.renderer_gds.gds_renderer import QGDSRenderer
 from qiskit_metal.renderers.renderer_mpl.mpl_interaction import MplInteraction
+from qiskit_metal.elements.elements_handler import QGeometryTables
+from qiskit_metal.components.qubits.transmon_pocket import TransmonPocket
 
 
 class TestRenderers(unittest.TestCase):
@@ -148,6 +150,50 @@ class TestRenderers(unittest.TestCase):
         self.assertEqual(options['path_filename'], '../gds-files/Fake_Junctions_copy.gds')
         self.assertEqual(options['bounding_box_scale_x'], '1.2')
         self.assertEqual(options['bounding_box_scale_y'], '1.2')
+
+    def test_renderer_gdsrenderer_inclusive_bound(self):
+        """
+        Test functionality of inclusive_bound in gds_renderer.py
+        """
+        design = designs.DesignPlanar()
+        renderer = QGDSRenderer(design)
+
+        my_list = []
+        my_list.append([1, 1, 2, 2])
+        my_list.append([3, 3, 5, 5])
+        my_list.append([2.2, 2.3, 4.4, 4.9])
+        self.assertEqual(renderer.inclusive_bound(my_list), (1, 1, 5, 5))
+
+    def test_renderer_scale_max_bounds(self):
+        """
+        Test functionality of scale_max_bounds in gds_renderer.py
+        """
+        design = designs.DesignPlanar()
+        renderer = QGDSRenderer(design)
+
+        actual = renderer.scale_max_bounds('main', [(1, 1, 3, 3)])
+        self.assertEqual(len(actual), 2)
+        self.assertEqual(actual[0], (0.8, 0.8, 3.2, 3.2))
+        self.assertEqual(actual[1], (1, 1, 3, 3))
+
+    def test_renderer_get_chip_names(self):
+        """
+        Test functionality of get_chip_names in gds_renderer.py
+        """
+        design = designs.DesignPlanar()
+        renderer = QGDSRenderer(design)
+
+        qgt = QGeometryTables(design)
+        qgt.clear_all_tables()
+
+        transmon_pocket = TransmonPocket(design, 'my_id')
+        transmon_pocket.make()
+        transmon_pocket.get_template_options(design)
+        qgt.add_qgeometry('path', 'my_id', {'n_sprial': 'ns'}, width=4000)
+        qgt.add_qgeometry('poly', 'my_id', {'n_spira_etch': 'nse'}, subtract=True)
+
+        result = renderer.get_chip_names()
+        self.assertEqual(result, {'main': {}})
 
     def test_renderer_setup_renderers(self):
         """
