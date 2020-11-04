@@ -17,6 +17,7 @@
 #pylint: disable-msg=pointless-statement
 #pylint: disable-msg=too-many-public-methods
 #pylint: disable-msg=broad-except
+#pylint: disable-msg=invalid-name
 
 """
 Qiskit Metal unit tests analyses functionality.
@@ -460,6 +461,62 @@ class TestDesign(unittest.TestCase):
         self.assertEqual(q1_copy.options['pos_y'], '-1.0mm')
         self.assertEqual(q2_copy.options['pos_y'], '-2.0mm')
         self.assertEqual(q3_copy.options['pos_y'], '-3.0mm')
+
+    def test_design_connect_pins(self):
+        """
+        Test connect_pins functionality in design_base.py
+        """
+        design = DesignPlanar()
+        design.overwrite_enabled = True
+
+        TransmonPocket(design, 'Q1')
+        TransmonPocket(design, 'Q2')
+
+        design.connect_pins(1, 'p1', 2, 'p2')
+        pf = design._qnet._net_info
+
+        self.assertFalse(pf.empty)
+        self.assertEqual(pf['net_id'][0], 1)
+        self.assertEqual(pf['net_id'][1], 1)
+        self.assertEqual(pf['component_id'][0], 1)
+        self.assertEqual(pf['component_id'][1], 2)
+        self.assertEqual(pf['pin_name'][0], 'p1')
+        self.assertEqual(pf['pin_name'][1], 'p2')
+
+    def test_design_delete_all_pins(self):
+        """
+        Test delete_all_pins functionality in design_base.py
+        """
+        design = DesignPlanar()
+        design.overwrite_enabled = True
+
+        TransmonPocket(design, 'Q1')
+        TransmonPocket(design, 'Q2')
+
+        design.connect_pins(1, 'p1', 2, 'p2')
+        pf = design._qnet._net_info
+        self.assertFalse(pf.empty)
+
+        design.delete_all_pins()
+        pf = design._qnet._net_info
+        self.assertTrue(pf.empty)
+
+    def test_design_all_component_names_id(self):
+        """
+        Test all_component_names_id functionality in design_base.py
+        """
+        design = DesignPlanar()
+        design.overwrite_enabled = True
+
+        TransmonPocket(design, 'Q1')
+        TransmonPocket(design, 'Q2')
+
+        expected = [('Q1', 1), ('Q2', 2)]
+        actual = design.all_component_names_id()
+
+        for i in range(2):
+            self.assertEqual(expected[i], actual[i])
+
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
