@@ -461,6 +461,5 @@ class TestDesign(unittest.TestCase):
         self.assertEqual(q2_copy.options['pos_y'], '-2.0mm')
         self.assertEqual(q3_copy.options['pos_y'], '-3.0mm')
 
-
 if __name__ == '__main__':
     unittest.main(verbosity=2)

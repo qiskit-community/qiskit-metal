@@ -610,6 +610,21 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
             for j in range(2):
                 self.assertAlmostEqualRel(actual[i][j], expected[i][j], rel_tol=1e-3)
 
+    def test_draw_get_distance(self):
+        """
+        Test the functionality of get_distance in utility.py
+        """
+        vector = Vector()
+
+        expected = [1.41, 24.187]
+
+        actual = []
+        actual.append(vector.get_distance((1, 1), (2, 2), precision=2))
+        actual.append(vector.get_distance((10, 15), (22, -6), precision=3))
+
+        for i in range(2):
+            self.assertAlmostEqualRel(actual[i], expected[i], rel_tol=1e-3)
+
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
