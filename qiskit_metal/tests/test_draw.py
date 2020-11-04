@@ -526,6 +526,16 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
             for j in range(3):
                 self.assertAlmostEqualRel(actual[i][j], expected[i][j], rel_tol=1e-3)
 
+    def test_draw_normed(self):
+        """
+        Test functionality of normed in utility.py
+        """
+        vector = Vector()
+
+        result = vector.normed([12, 16])
+        self.assertEqual(result[0], 0.6)
+        self.assertEqual(result[1], 0.8)
+
     def test_draw_vector_norm(self):
         """
         Test norm in Vector class in utility.py
