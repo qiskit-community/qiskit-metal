@@ -137,7 +137,7 @@ class TestRenderers(unittest.TestCase):
         renderer = QGDSRenderer(design)
         options = renderer.default_options
 
-        self.assertEqual(len(options), 11)
+        self.assertEqual(len(options), 12)
         self.assertEqual(options['short_segments_to_not_fillet'], 'True')
         self.assertEqual(
             options['check_short_segments_by_scaling_fillet'], '2.0')
@@ -148,6 +148,7 @@ class TestRenderers(unittest.TestCase):
         self.assertEqual(options['precision'], '0.000000001')
         self.assertEqual(options['width_LineString'], '10um')
         self.assertEqual(options['path_filename'], '../gds-files/Fake_Junctions_copy.gds')
+        self.assertEqual(options['max_points'], '8191')
         self.assertEqual(options['bounding_box_scale_x'], '1.2')
         self.assertEqual(options['bounding_box_scale_y'], '1.2')
 
