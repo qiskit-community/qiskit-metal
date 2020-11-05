@@ -483,7 +483,7 @@ class Vector:
         Returns:
             vector: Vec2D -- Unit normed version of vector
         """
-        return Vec2D / norm(Vec2D)
+        return vec / norm(vec)
 
     @staticmethod
     def norm(vec: Vec2D) -> float:

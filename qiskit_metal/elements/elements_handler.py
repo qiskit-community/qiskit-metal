@@ -559,11 +559,12 @@ class QGeometryTables(object):
                     if len(range_vertex_of_short_segments) > 0:
                         range_string = ""
                         for item in range_vertex_of_short_segments:
+
                             range_string += f'({ item[0]}-{item[1]}) '
                         text_id = self.design._components[component_name]._name
                         self.logger.warning(
                             f'For {kind} table, component={text_id}, key={key}'
-                            f' has short segments. Values in {range_string} '
+                            f' has short segments that could cause issues with fillet. Values in {range_string} '
                             f'are index(es) in shapley geometry.')
 
     def parse_value(self, value: 'Anything') -> 'Anything':

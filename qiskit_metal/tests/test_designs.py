@@ -17,6 +17,7 @@
 #pylint: disable-msg=pointless-statement
 #pylint: disable-msg=too-many-public-methods
 #pylint: disable-msg=broad-except
+#pylint: disable-msg=invalid-name
 
 """
 Qiskit Metal unit tests analyses functionality.
@@ -404,6 +405,124 @@ class TestDesign(unittest.TestCase):
         for i in [2, 3]:
             for j in ['net_id', 'component_id', 'pin_name']:
                 self.assertEqual(df_expected_2[j][i], df[j][i])
+
+    def test_design_copy_qcomponent(self):
+        """
+        Test the functionlaity of copy_qcomponent in design_base.py
+        """
+        design = DesignPlanar()
+        design.overwrite_enabled = True
+        q_1 = TransmonPocket(design, 'Q1')
+        q1_copy = design.copy_qcomponent(q_1, 'Q1_copy')
+
+        self.assertEqual(q_1.name, 'Q1')
+        self.assertEqual(q1_copy.name, 'Q1_copy')
+        self.assertEqual(q_1.id, 1)
+        self.assertEqual(q1_copy.id, 2)
+        self.assertEqual(q_1.class_name, q1_copy.class_name)
+        self.assertEqual(q_1.options['pos_x'], q1_copy.options['pos_x'])
+
+        q1_copy.options['pos_x'] = '1.0mm'
+        self.assertEqual(q_1.options['pos_x'], '0um')
+        self.assertEqual(q1_copy.options['pos_x'], '1.0mm')
+
+    def test_design_copy_multiple_qcomponents(self):
+        """
+        Test the functionality of copy_multiple_qcomponents in design_base.py
+        """
+        design = DesignPlanar()
+        design.overwrite_enabled = True
+        q_1 = TransmonPocket(design, 'Q1')
+        q_2 = TransmonPocket(design, 'Q2')
+        q_3 = TransmonPocket(design, 'Q3')
+
+        design.copy_multiple_qcomponents([q_1, q_2, q_3],
+                                         ['q1_copy', 'q2_copy', 'q3_copy'],
+                                         [dict(pos_y='-1.0mm'), dict(pos_y='-2.0mm'), dict(pos_y='-3.0mm')])
+
+        q1_copy = design._components[4]
+        q2_copy = design._components[5]
+        q3_copy = design._components[6]
+
+        self.assertEqual(q_1.name, 'Q1')
+        self.assertEqual(q_2.name, 'Q2')
+        self.assertEqual(q_3.name, 'Q3')
+        self.assertEqual(q1_copy.name, 'q1_copy')
+        self.assertEqual(q2_copy.name, 'q2_copy')
+        self.assertEqual(q3_copy.name, 'q3_copy')
+        self.assertEqual(q_1.id, 1)
+        self.assertEqual(q_2.id, 2)
+        self.assertEqual(q_3.id, 3)
+        self.assertEqual(q1_copy.id, 4)
+        self.assertEqual(q2_copy.id, 5)
+        self.assertEqual(q3_copy.id, 6)
+
+        self.assertEqual(q_1.class_name, q1_copy.class_name)
+        self.assertEqual(q_2.class_name, q2_copy.class_name)
+        self.assertEqual(q_3.class_name, q3_copy.class_name)
+        self.assertEqual(q_1.options['pos_x'], q1_copy.options['pos_x'])
+        self.assertEqual(q_2.options['pos_x'], q2_copy.options['pos_x'])
+        self.assertEqual(q_3.options['pos_x'], q3_copy.options['pos_x'])
+
+        self.assertEqual(q1_copy.options['pos_y'], '-1.0mm')
+        self.assertEqual(q2_copy.options['pos_y'], '-2.0mm')
+        self.assertEqual(q3_copy.options['pos_y'], '-3.0mm')
+
+    def test_design_connect_pins(self):
+        """
+        Test connect_pins functionality in design_base.py
+        """
+        design = DesignPlanar()
+        design.overwrite_enabled = True
+
+        TransmonPocket(design, 'Q1')
+        TransmonPocket(design, 'Q2')
+
+        design.connect_pins(1, 'p1', 2, 'p2')
+        pf = design._qnet._net_info
+
+        self.assertFalse(pf.empty)
+        self.assertEqual(pf['net_id'][0], 1)
+        self.assertEqual(pf['net_id'][1], 1)
+        self.assertEqual(pf['component_id'][0], 1)
+        self.assertEqual(pf['component_id'][1], 2)
+        self.assertEqual(pf['pin_name'][0], 'p1')
+        self.assertEqual(pf['pin_name'][1], 'p2')
+
+    def test_design_delete_all_pins(self):
+        """
+        Test delete_all_pins functionality in design_base.py
+        """
+        design = DesignPlanar()
+        design.overwrite_enabled = True
+
+        TransmonPocket(design, 'Q1')
+        TransmonPocket(design, 'Q2')
+
+        design.connect_pins(1, 'p1', 2, 'p2')
+        pf = design._qnet._net_info
+        self.assertFalse(pf.empty)
+
+        design.delete_all_pins()
+        pf = design._qnet._net_info
+        self.assertTrue(pf.empty)
+
+    def test_design_all_component_names_id(self):
+        """
+        Test all_component_names_id functionality in design_base.py
+        """
+        design = DesignPlanar()
+        design.overwrite_enabled = True
+
+        TransmonPocket(design, 'Q1')
+        TransmonPocket(design, 'Q2')
+
+        expected = [('Q1', 1), ('Q2', 2)]
+        actual = design.all_component_names_id()
+
+        for i in range(2):
+            self.assertEqual(expected[i], actual[i])
+
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
