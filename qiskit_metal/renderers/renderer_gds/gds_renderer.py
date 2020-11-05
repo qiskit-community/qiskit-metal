@@ -615,10 +615,16 @@ class QGDSRenderer(QRenderer):
                 no_fillet_vertices.clear()
                 if idx == 0 and start == 0:
                     # The first segment.
-                    no_fillet_vertices = coords[start:stop+1]
-                    no_fillet_vertices.append(midpoints[stop])
-                    shorter_lines[stop] = dict({'line': LineString(no_fillet_vertices),
-                                                'fillet': float('NaN')})
+                    if stop == len_coords-1:
+                        # Every vertex should not be fillet'd
+                        no_fillet_vertices = coords[start:len_coords]
+                        shorter_lines[stop] = dict({'line': LineString(no_fillet_vertices),
+                                                    'fillet': float('NaN')})
+                    else:
+                        no_fillet_vertices = coords[start:stop+1]
+                        no_fillet_vertices.append(midpoints[stop])
+                        shorter_lines[stop] = dict({'line': LineString(no_fillet_vertices),
+                                                    'fillet': float('NaN')})
                 elif idx == status-1 and stop == len_coords-1:
                     # The last segment
                     no_fillet_vertices = coords[start:stop+1]
@@ -655,7 +661,14 @@ class QGDSRenderer(QRenderer):
                         fillet_vertices.insert(0, midpoints[stop])
                         shorter_lines[len_coords] = dict({'line': LineString(fillet_vertices),
                                                           'fillet': a_fillet})
+                elif idx == status-1 and start == 0 and stop != len_coords-1:
+                    # At last tuple, and and start at first index, and  the stop is not last index of coords.
+                    fillet_vertices = coords[stop+1:len_coords]
+                    fillet_vertices.insert(0, midpoints[stop])
+                    shorter_lines[start] = dict({'line': LineString(fillet_vertices),
+                                                 'fillet': a_fillet})
                 elif idx == status-1 and stop != len_coords-1:
+                    # At last tuple, and the stop is not last index of coords.
                     fillet_vertices = coords[at_vertex+1:start]
                     fillet_vertices.insert(0, midpoints[at_vertex])
                     fillet_vertices.append(midpoints[start-1])
