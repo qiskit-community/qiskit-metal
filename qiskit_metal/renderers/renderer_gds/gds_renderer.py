@@ -946,7 +946,13 @@ class QGDSRenderer(QRenderer):
                         math.atan2((maxy-miny), (maxx-minx)))
 
                     a_cell = lib.extract(row.gds_cell_name)
-
+                    # a_cell_bounding_box = a_cell.get_bounding_box()
+                    # expanded_area = gdspy.Rectangle(row.geometry.coords[0],
+                    #                                 row.geometry.coords[1],
+                    #                                 layer=row.geometry.layer,
+                    #                                 datatype=10)
+                    # if a_cell_bounding_box is not None:
+                    #     expanded = gdspy.boolean(expanded_area, a_cell_bounding_box,max_points=)
                     chip_only_top.add(gdspy.CellReference(
                         a_cell, origin=center, rotation=rotation))
                 else:
