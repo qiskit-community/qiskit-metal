@@ -562,7 +562,6 @@ class QGeometryTables(object):
 
                             range_string += f'({ item[0]}-{item[1]}) '
                         text_id = self.design._components[component_name]._name
-
                         self.logger.warning(
                             f'For {kind} table, component={text_id}, key={key}'
                             f' has short segments that could cause issues with fillet. Values in {range_string} '
