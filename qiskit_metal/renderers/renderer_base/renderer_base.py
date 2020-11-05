@@ -113,7 +113,7 @@ class QRenderer():
     @classmethod
     def populate_element_extentions(cls):
         """Populate cls.element_extentions which will be used to create columns for tables in QGeometry tables.
-        The structure of cls.element_table_data should be same as cls.element_extentions. 
+        The structure of cls.element_table_data should be same as cls.element_extentions.
         """
         for table, a_dict in cls.element_table_data.items():
             cls.element_extensions[table] = dict()
@@ -165,9 +165,6 @@ class QRenderer():
 
         # Register as an instantiated renderer.
         QRenderer.__instantiated_renderers__[self.name] = self
-
-        # Register the renderer in self.design
-        # TODO
 
         # Options
         self._options = Dict()
@@ -311,7 +308,7 @@ class QRenderer():
         each renderer needs to update custom columns and values within QDesign.
 
         Args:
-            class_name (str): Name from cls.name for each renderer. 
+            class_name (str): Name from cls.name for each renderer.
         """
         status = set()
         if not isinstance(QRenderer.name, str):
@@ -351,6 +348,32 @@ class QRenderer():
         self._initate_renderer()
 
         return True
+
+    def get_unique_component_ids(self, highlight_qcomponents: Union[list, None] = None) -> Tuple[list, int]:
+        """
+        Confirm the list doesn't have names of components repeated.
+        Confirm that the name of component exists in QDesign.
+        If QDesign doesn't contain any component, or if all components in QDesign are found
+        in highlight_qcomponents, return an empty list; otherwise return a list of unique
+        components to be sent to Ansys. The second returned item, an integer, specifies
+        which of these 3 cases applies.
+
+        Args:
+            highlight_qcomponents (Union[list, None], optional): Components to render into Ansys. Defaults to None.
+
+        Returns:
+            Tuple[list, int]: Empty or partial list of components in QDesign.
+        """
+        highlight_qcomponents = highlight_qcomponents if highlight_qcomponents else []
+        unique_qcomponents = set(highlight_qcomponents)
+        for qcomp in unique_qcomponents:
+            if qcomp not in self.design.name_to_id:
+                self.logger.warning(f'The component={qcomp} in highlight_qcomponents not'
+                                    ' in QDesign.')
+                return [], 2  # Invalid
+        if len(unique_qcomponents) == len(self.design.components):
+            return [], 1  # Everything selected
+        return [self.design.name_to_id[elt] for elt in unique_qcomponents], 0  # Subset selected
 
     def _initate_renderer(self):
         '''

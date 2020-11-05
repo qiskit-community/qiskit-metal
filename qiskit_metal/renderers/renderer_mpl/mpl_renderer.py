@@ -40,12 +40,14 @@ from shapely.geometry import CAP_STYLE, JOIN_STYLE, LineString
 
 from ... import Dict
 from ...designs import QDesign
-from ...toolbox_python.utility_functions import log_error_easy
 from ..renderer_base.renderer_gui_base import QRendererGui
 from .mpl_interaction import MplInteraction, PanAndZoom
 from .mpl_toolbox import _axis_set_watermark_img, clear_axis, get_prop_cycle
 
-from qiskit_metal.toolbox_python.utility_functions import bad_fillet_idxs
+from .. import config
+if not config.is_building_docs():
+    from ...toolbox_python.utility_functions import log_error_easy
+    from qiskit_metal.toolbox_python.utility_functions import bad_fillet_idxs
 
 if TYPE_CHECKING:
     from ..._gui.main_window import MetalGUI
@@ -430,7 +432,7 @@ class QMplRenderer():
         table1 = table[~mask]
 
         # if any are fillet, alter the path separately
-        table1[table1.fillet.notnull()] = self.render_fillet(table1[table1.fillet.notnull()])
+        table1.loc[table1.fillet.notnull(), 'geometry'] = table1[table1.fillet.notnull()].apply(self.fillet_path, axis=1)
 
         if len(table1) > 0:
             table1.geometry = table1[['geometry', 'width']].apply(lambda x:

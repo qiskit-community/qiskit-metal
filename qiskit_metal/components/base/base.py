@@ -34,8 +34,11 @@ from ... import is_design, logger
 from ...draw import BaseGeometry
 from ...toolbox_python.attr_dict import Dict
 from ._parsed_dynamic_attrs import ParsedDynamicAttributes_Component
-from ...draw import Vector
 from ...toolbox_python.display import format_dict_ala_z
+
+from ... import config
+if not config.is_building_docs():
+    from ...draw import Vector
 
 __all__ = ['QComponent']
 
@@ -202,7 +205,7 @@ class QComponent():
         # Build and component internals
 
         #: Dictionary of pins. Populated by component designer in make function using `add_pin`.
-        self.pins = Dict()  # TODO: should this be private?
+        self.pins = Dict()
         self._made = False
 
         #: Metadata allows a designer to store extra information or analysis results.
@@ -500,8 +503,6 @@ class QComponent():
         """
         raise NotImplementedError()
 
-    # TODO: Maybe call this function build
-    # TODO: Capture error here and save to log as the latest error
     def rebuild(self):
         """Builds the QComponent.
         This is the main action function of a QComponent, call it qc.
@@ -522,7 +523,6 @@ class QComponent():
         # Begin by setting the status to failed, we will change this if we succeed
         self.status = 'failed'
         if self._made:  # already made, just remaking
-            # TODO: this is probably very inefficient, design more efficient way
             self.design.qgeometry.delete_component_id(self.id)
             self.design._delete_all_pins_for_component(self.id)
 
@@ -638,14 +638,6 @@ class QComponent():
 
 ####################################################################################
 # Functions for handling of pins
-#
-# TODO: Simplify the data types
-#   Stress test the results
-#   Component name vs. id issues?
-#
-#   What information is truly necessary for the pins? Should they have a z-direction component?
-#   Will they operate properly with non-planar designs?
-
 
     def add_pin(self,
                 name: str,  # Should be static based on component designer's choice

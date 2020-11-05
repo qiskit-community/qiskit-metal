@@ -22,8 +22,8 @@ import numpy as np
 from qiskit_metal import Dict
 from qiskit_metal.components.base import QRoutePoint
 from .anchored_path import RouteAnchors
-
-# TODO: Stopping condition for A* in case it doesn't converge (time limit or user-provided exploration area?)
+from qiskit_metal.toolbox_metal import math_and_overrides as mao
+from collections import OrderedDict
 
 
 class RoutePathfinder(RouteAnchors):
@@ -49,7 +49,7 @@ class RoutePathfinder(RouteAnchors):
     )
     """Default options"""
 
-    def connect_astar_or_simple(self, start_pt: QRoutePoint, end_pt: QRoutePoint, step_size: float = 0.25) -> list:
+    def connect_astar_or_simple(self, start_pt: QRoutePoint, end_pt: QRoutePoint) -> list:
         """
         Connect start and end via A* algo if connect_simple doesn't work
         
@@ -57,7 +57,6 @@ class RoutePathfinder(RouteAnchors):
             start_direction (np.array): Vector indicating direction of starting point
             start (np.array): 2-D coordinates of first anchor
             end (np.array): 2-D coordinates of second anchor
-            step_size (float): Minimum distance between adjacent vertices on CPW
 
         Returns:
             List of vertices of a CPW going from start to end
@@ -68,25 +67,31 @@ class RoutePathfinder(RouteAnchors):
         end_direction = end_pt.direction
         end = end_pt.position
 
+        step_size = self.parse_options().step_size
+
         starting_dist = sum(abs(end - start)) # Manhattan distance between start and end
-        pathmapper = {(starting_dist, start[0], start[1]): [starting_dist, [start]]}
+        key_starting_point = (starting_dist, start[0], start[1])
+        pathmapper = {key_starting_point: [starting_dist, [start]]}
         # pathmapper maps tuple(total length of the path from self.start + Manhattan distance to destination, coordx, coordy) to [total length of 
         # path from self.start, path]
-        visited = set([(start[0], start[1])]) # maintain record of points we've already visited to avoid self-intersections
-        h = [(starting_dist, start[0], start[1])] # priority queue (heap in Python implementation)
+        visited = set()  # maintain record of points we've already visited to avoid self-intersections
+        visited.add(tuple(start))
+        # TODO: add to visited all of the current points in the route, to prevent self intersecting
+        priority_queue = list()  # A* priority queue. Implemented as heap
+        priority_queue.append(key_starting_point)
         # Elements in the heap are ordered by the following:
         # 1. The total length of the path from self.start + Manhattan distance to destination
         # 2. The x coordinate of the latest point
         # 3. The y coordinate of the latest point
 
-        while h:
-            tot_dist, x, y = heapq.heappop(h) # tot_dist is the total length of the path from self.start + Manhattan distance to destination
+        while priority_queue:
+            tot_dist, x, y = heapq.heappop(priority_queue) # tot_dist is the total length of the path from self.start + Manhattan distance to destination
             length_travelled, current_path = pathmapper[(tot_dist, x, y)]
             # Look in forward, left, and right directions a fixed distance away.
             # If the line segment connecting the current point and this next one does
             # not collide with any bounding boxes in design.components, add it to the
             # list of neighbors.
-            neighbors = []
+            neighbors = list()
             if len(current_path) == 1:
                 # At starting point -> initial direction is start direction
                 direction = start_direction
@@ -98,22 +103,13 @@ class RoutePathfinder(RouteAnchors):
             
             # Check if connect_simple works at each iteration of A*
             simple_path = self.connect_simple(QRoutePoint(np.array([x, y]), direction), QRoutePoint(end, end_direction))
-            if simple_path:
-                if len(current_path) > 1:
-                    # Concatenate collinear line segments (joined at a point and have identical slopes)
-                    # current_path = [..., [x_pen, y_pen], [x_end, y_end]]
-                    # simple_path = [[x_end, y_end], [x_new, y_new], ...]
-                    x_pen, y_pen = current_path[-2]
-                    x_ult, y_ult = current_path[-1]
-                    x_new, y_new = simple_path[1]
-                    if (y_ult - y_pen) * (x_new - x_ult) == (y_new - y_ult) * (x_ult - x_pen):
-                        # Concatenate collinear line segments (joined at a point and have identical slopes)
-                        return current_path[:-1] + simple_path[1:]
-                return current_path[:-1] + simple_path
+            if simple_path is not None:
+                current_path.extend(simple_path)
+                return current_path
             
             for disp in [np.array([0, 1]), np.array([0, -1]), np.array([1, 0]), np.array([-1, 0])]:
                 # Unit displacement in 4 cardinal directions
-                if np.dot(disp, direction) >= 0:
+                if mao.dot(disp, direction) >= 0:
                     # Ignore backward direction
                     curpt = current_path[-1]
                     nextpt = curpt + step_size * disp
@@ -123,21 +119,11 @@ class RoutePathfinder(RouteAnchors):
                 if tuple(neighbor) not in visited:
                     new_remaining_dist = sum(abs(end - neighbor))
                     new_length_travelled = length_travelled + step_size
-                    if len(current_path) > 1:
-                        x_ult, y_ult = current_path[-1] # last point on origin's path
-                        x_pen, y_pen = current_path[-2] # penultimate point on origin's path
-                        x_cur, y_cur = neighbor
-                        if (y_ult - y_pen) * (x_cur - x_ult) == (y_cur - y_ult) * (x_ult - x_pen):
-                            # Concatenate collinear line segments (joined at a point and have identical slopes)
-                            new_path = current_path[:-1] + [neighbor]
-                        else:
-                            new_path = current_path + [neighbor]
-                    else:
-                        new_path = current_path + [neighbor]
+                    new_path = current_path + [neighbor]
                     if new_remaining_dist < 10 ** -8:
                         # Destination has been reached within acceptable error tolerance (errors due to rounding in Python)
                         return new_path[:-1] + [end] # Replace last element of new_path with end since they're basically the same
-                    heapq.heappush(h, (new_length_travelled + new_remaining_dist, neighbor[0], neighbor[1]))
+                    heapq.heappush(priority_queue, (new_length_travelled + new_remaining_dist, neighbor[0], neighbor[1]))
                     pathmapper[(new_length_travelled + new_remaining_dist, neighbor[0], neighbor[1])] = [new_length_travelled, new_path]
                     visited.add(tuple(neighbor))
         return []  # Shouldn't actually reach here - if it fails, there's a convergence issue
@@ -148,31 +134,29 @@ class RoutePathfinder(RouteAnchors):
         """
         p = self.parse_options()
         anchors = p.anchors
-        step_size = p.step_size
 
         # Set the CPW pins and add the points/directions to the lead-in/out arrays
         self.set_pin("start")
         self.set_pin("end")
 
         # Align the lead-in/out to the input options set from the user
-        meander_start_point = self.set_lead("start")
-        meander_end_point = self.set_lead("end")
+        start_point = self.set_lead("start")
+        end_point = self.set_lead("end")
 
-        # TODO: find out why the make runs twice for every component and stop it.
-        #  Should only run once. The line below is just a patch to work around it.
-        self.intermediate_pts = None
-
-        for coord in list(anchors.values()):
-            if not self.intermediate_pts:
-                self.intermediate_pts = self.connect_astar_or_simple(meander_start_point, QRoutePoint(coord), step_size)[1:]
+        self.intermediate_pts = OrderedDict()
+        for arc_num, coord in anchors.items():
+            arc_pts = self.connect_astar_or_simple(self.get_tip(), QRoutePoint(coord))
+            if arc_pts is None:
+                self.intermediate_pts[arc_num] = [coord]
             else:
-                self.intermediate_pts += self.connect_astar_or_simple(self.get_tip(), QRoutePoint(coord), step_size)[1:]
+                self.intermediate_pts[arc_num] = np.concatenate([arc_pts, [coord]], axis=0)
+        arc_pts = self.connect_astar_or_simple(self.get_tip(), end_point)
+        if arc_pts is not None:
+            self.intermediate_pts[len(anchors)] = np.array(arc_pts)
 
-        last_pt = self.connect_astar_or_simple(self.get_tip(), meander_end_point, step_size)[1:]
-        if self.intermediate_pts:
-            self.intermediate_pts += last_pt
-        else:
-            self.intermediate_pts = last_pt
+        # concatenate all points, transforming the dictionary into a single numpy array
+        self.trim_pts()
+        self.intermediate_pts = np.concatenate(list(self.intermediate_pts.values()), axis=0)
 
         # Make points into elements
         self.make_elements(self.get_points())

@@ -70,8 +70,8 @@ class DesignPlanar(QDesign):
             center_z='0.0mm',
             size_x='9mm',
             size_y='6mm',
-            size_z='-750um',
-            sample_holder_top='890um', # how tall is the vacuum above z=0
+            size_z='-750um', # chip extends in negative z direction by 750 um
+            sample_holder_top='890um', # how tall is the vacuum above center_z
             sample_holder_bottom='1650um' # how tall is the vacuum below z=0
         )
 

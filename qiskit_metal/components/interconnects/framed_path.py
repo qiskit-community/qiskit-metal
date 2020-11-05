@@ -21,8 +21,9 @@ import numpy as np
 from numpy.linalg import norm
 from qiskit_metal import Dict
 from qiskit_metal.components.base import QRoute
+from qiskit_metal.toolbox_metal import math_and_overrides as mao
 
-class RouteFramePath(QRoute):
+class RouteFramed(QRoute):
 
     """
     A non-meandered basic CPW that is auto-generated between 2 components.
@@ -45,67 +46,6 @@ class RouteFramePath(QRoute):
         short_name='cpw'
         )
     """Component metadata"""
-
-    def connect_frame(self, startpin: str, endpin: str, width: float, segments: int, leadstart: float, leadend: float, constaxis=0, constval=0) -> list:
-        """
-        Generate the list of 2D coordinates comprising a CPW between startpin and endpin.
-
-        Args:
-            startpin (str): Name of startpin
-            endpin (str): Name of endpin
-            width (float): Width of CPW in mm
-            segments (int): Number of segments in the CPW, not including leadin and leadout. Ranges from 1 to 3.
-            leadstart (float): Length of first CPW segment originating at startpin
-            leadend (float): Length of final CPW segment ending at endpin
-            constaxis (int, optional): In the case of 3 segment CPWs, the constant axis of the line that both
-                leadin and leadout must connect to. Example: If x = 3, the constant axis (x) is 0. Defaults to 0.
-            constval (int, optional): In the case of 3 segment CPWs, the constant numerical value of the line
-                that both leadin and leadout must connect to. Example: If x = 3, the constant value is 3. Defaults to 0.
-
-        Returns:
-            List: [np.array([x0, y0]), np.array([x1, y1]), np.array([x2, y2])] where xi, yi are vertices of CPW.
-        """
-        if segments == 1:
-            # Straight across or up and down; no additional points necessary
-            midcoords = []
-        elif segments == 2:
-            # Choose between 2 diagonally opposing corners so that CPW doesn't trace back on itself
-            corner1 = np.array([(startpin.middle + startpin.normal * (width / 2 + leadstart))[0],
-                                (endpin.middle + endpin.normal * (width / 2 + leadend))[1]])
-            corner2 = np.array([(endpin.middle + endpin.normal * (width / 2 + leadend))[0],
-                                (startpin.middle + startpin.normal * (width / 2 + leadstart))[1]])
-            startc1 = np.dot(corner1 - (startpin.middle + startpin.normal * (width / 2 + leadstart)), startpin.normal)
-            endc1 = np.dot(corner1 - (endpin.middle + endpin.normal * (width / 2 + leadend)), endpin.normal)
-            startc2 = np.dot(corner2 - (startpin.middle + startpin.normal * (width / 2 + leadstart)), startpin.normal)
-            endc2 = np.dot(corner2 - (endpin.middle + endpin.normal * (width / 2 + leadend)), endpin.normal)
-            # If both pins' normal vectors point towards one of the corners, pick that corner
-            if (startc1 > 0) and (endc1 > 0):
-                midcoords = [corner1]
-            elif (startc2 > 0) and (endc2 > 0):
-                midcoords = [corner2]
-            elif min(startc1, endc1) >= 0:
-                midcoords = [corner1]
-            else:
-                midcoords = [corner2]
-        elif segments == 3:
-            # Connect startpin and endpin to long segment at constaxis
-            # 2 additional intermediate points needed to achieve this
-            if constaxis == 0:
-                # Middle segment lies on the line x = c for some constant c
-                midcoord_start = np.array([constval, (startpin.middle + startpin.normal * (width / 2 + leadstart))[1]])
-                midcoord_end = np.array([constval, (endpin.middle + endpin.normal * (width / 2 + leadend))[1]])
-            else:
-                # Middle segment lies on the line y = d for some constant d
-                midcoord_start = np.array([(startpin.middle + startpin.normal * (width / 2 + leadstart))[0], constval])
-                midcoord_end = np.array([(endpin.middle + endpin.normal * (width / 2 + leadend))[0], constval])
-            midcoords = [midcoord_start, midcoord_end]
-        startpts = [startpin.middle, startpin.middle + startpin.normal * (width / 2 + leadstart)]
-        endpts = [endpin.middle + endpin.normal * (width / 2 + leadend), endpin.middle]
-        return startpts + midcoords + endpts
-
-    def totlength(self, pts: list) -> float:
-        """Get total length of all line segments in a given CPW."""
-        return sum(norm(pts[i] - pts[i - 1]) for i in range(1, len(pts)))
 
     def make(self):
         """
@@ -161,14 +101,14 @@ class RouteFramePath(QRoute):
         maxx, maxy = max(maxx1, maxx2), max(maxy1, maxy2)
 
         # Normdot is dot product of normal vectors
-        normdot = np.dot(n1, n2)
+        normdot = mao.dot(n1, n2)
 
         if normdot == -1:
             # Modify CPW endpoints to include mandatory w / 2 leadin plus user defined leadin
             m1ext = m1 + n1 * (w / 2 + leadstart)
             m2ext = m2 + n2 * (w / 2 + leadend)
             # Alignment is between displacement of modified positions (see above) and normal vector
-            alignment = np.dot((m2ext - m1ext) / norm(m2ext - m1ext), n1)
+            alignment = mao.dot((m2ext - m1ext) / norm(m2ext - m1ext), n1)
             if alignment == 1:
                 # Normal vectors point directly at each other; no obstacles in between
                 # Connect with single segment; generalizes to arbitrary angles with no snapping
@@ -305,7 +245,7 @@ class RouteFramePath(QRoute):
                             self.__pts = self.connect_frame(connector1, connector2, w, 3, leadstart, leadend, 0, maxx + keepoutx)
         else:
             # Normal vectors pointing in same direction
-            if ((m1[0] == m2[0]) or (m1[1] == m2[1])) and (np.dot(n1, m2 - m1) == 0):
+            if ((m1[0] == m2[0]) or (m1[1] == m2[1])) and (mao.dot(n1, m2 - m1) == 0):
                 # Connect directly with 1 segment
                 self.__pts = self.connect_frame(connector1, connector2, w, 1, leadstart, leadend)
             elif n1[1] == 0:
@@ -343,3 +283,65 @@ class RouteFramePath(QRoute):
 
         # Make points into elements
         self.make_elements(self.get_points())
+
+    def connect_frame(self, startpin: str, endpin: str, width: float, segments: int, leadstart: float, leadend: float, constaxis=0, constval=0) -> list:
+        """
+        Generate the list of 2D coordinates comprising a CPW between startpin and endpin.
+
+        Args:
+            startpin (str): Name of startpin
+            endpin (str): Name of endpin
+            width (float): Width of CPW in mm
+            segments (int): Number of segments in the CPW, not including leadin and leadout. Ranges from 1 to 3.
+            leadstart (float): Length of first CPW segment originating at startpin
+            leadend (float): Length of final CPW segment ending at endpin
+            constaxis (int, optional): In the case of 3 segment CPWs, the constant axis of the line that both
+                leadin and leadout must connect to. Example: If x = 3, the constant axis (x) is 0. Defaults to 0.
+            constval (int, optional): In the case of 3 segment CPWs, the constant numerical value of the line
+                that both leadin and leadout must connect to. Example: If x = 3, the constant value is 3. Defaults to 0.
+
+        Returns:
+            List: [np.array([x0, y0]), np.array([x1, y1]), np.array([x2, y2])] where xi, yi are vertices of CPW.
+        """
+        if segments == 1:
+            # Straight across or up and down; no additional points necessary
+            midcoords = []
+        elif segments == 2:
+            # Choose between 2 diagonally opposing corners so that CPW doesn't trace back on itself
+            corner1 = np.array([(startpin.middle + startpin.normal * (width / 2 + leadstart))[0],
+                                (endpin.middle + endpin.normal * (width / 2 + leadend))[1]])
+            corner2 = np.array([(endpin.middle + endpin.normal * (width / 2 + leadend))[0],
+                                (startpin.middle + startpin.normal * (width / 2 + leadstart))[1]])
+            startc1 = mao.dot(corner1 - (startpin.middle + startpin.normal * (width / 2 + leadstart)), startpin.normal)
+            endc1 = mao.dot(corner1 - (endpin.middle + endpin.normal * (width / 2 + leadend)), endpin.normal)
+            startc2 = mao.dot(corner2 - (startpin.middle + startpin.normal * (width / 2 + leadstart)), startpin.normal)
+            endc2 = mao.dot(corner2 - (endpin.middle + endpin.normal * (width / 2 + leadend)), endpin.normal)
+            # If both pins' normal vectors point towards one of the corners, pick that corner
+            if (startc1 > 0) and (endc1 > 0):
+                midcoords = [corner1]
+            elif (startc2 > 0) and (endc2 > 0):
+                midcoords = [corner2]
+            elif min(startc1, endc1) >= 0:
+                midcoords = [corner1]
+            else:
+                midcoords = [corner2]
+        elif segments == 3:
+            # Connect startpin and endpin to long segment at constaxis
+            # 2 additional intermediate points needed to achieve this
+            if constaxis == 0:
+                # Middle segment lies on the line x = c for some constant c
+                midcoord_start = np.array([constval, (startpin.middle + startpin.normal * (width / 2 + leadstart))[1]])
+                midcoord_end = np.array([constval, (endpin.middle + endpin.normal * (width / 2 + leadend))[1]])
+            else:
+                # Middle segment lies on the line y = d for some constant d
+                midcoord_start = np.array([(startpin.middle + startpin.normal * (width / 2 + leadstart))[0], constval])
+                midcoord_end = np.array([(endpin.middle + endpin.normal * (width / 2 + leadend))[0], constval])
+            midcoords = [midcoord_start, midcoord_end]
+        startpts = [startpin.middle, startpin.middle + startpin.normal * (width / 2 + leadstart)]
+        endpts = [endpin.middle + endpin.normal * (width / 2 + leadend), endpin.middle]
+        return startpts + midcoords + endpts
+
+    def totlength(self, pts: list) -> float:
+        """Get total length of all line segments in a given CPW."""
+        return sum(norm(pts[i] - pts[i - 1]) for i in range(1, len(pts)))
+

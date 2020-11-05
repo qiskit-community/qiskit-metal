@@ -134,8 +134,14 @@ class TestDesign(unittest.TestCase):
         Test getting chip size in design_base.py
         """
         design = DesignPlanar(metadata={})
-        with self.assertRaises(NotImplementedError):
-            design.get_chip_size()
+
+        main_expected = {'center_x': '0.0mm', 'center_y': '0.0mm', 'center_z': '0.0mm',
+                         'size_x': '9mm', 'size_y': '6mm', 'size_z': '-750um',
+                         'sample_holder_top': '890um', 'sample_holder_bottom': '1650um'}
+
+        self.assertEqual(design.get_chip_size(), main_expected)
+        self.assertEqual(design.get_chip_size('main'), main_expected)
+        self.assertEqual(design.get_chip_size('dead'), {})
 
     def test_design_get_chip_z(self):
         """
@@ -144,7 +150,7 @@ class TestDesign(unittest.TestCase):
         design = DesignPlanar(metadata={})
 
         actual = design.get_chip_z()
-        self.assertEqual(actual, 0)
+        self.assertEqual(actual, '0.0mm')
 
     def test_design_rename_variables(self):
         """
