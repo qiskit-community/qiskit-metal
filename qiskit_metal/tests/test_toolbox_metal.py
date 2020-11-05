@@ -25,9 +25,11 @@ Created on Wed Apr 22 09:59:02 2020
 """
 
 import unittest
+import numpy as np
 
 from qiskit_metal.toolbox_metal import about
 from qiskit_metal.toolbox_metal import parsing
+from qiskit_metal.toolbox_metal import math_and_overrides
 from qiskit_metal.tests.assertions import AssertionsMixin
 
 class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
@@ -45,7 +47,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
         """
         Tie any loose ends
         """
-        pass
+        math_and_overrides.set_decimal_precision(10)
 
     def test_toolbox_metal_about(self):
         """
@@ -60,8 +62,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
         """
         Test that TRUE_STR in parsing.py has not accidentally changed
         """
-        expected = ['true', 'True', 'TRUE', True, '1', 't', 'y', 'Y', 'YES',
-            'yes', 'yeah', 1, 1.0]
+        expected = ['true', 'True', 'TRUE', True, '1', 't', 'y', 'Y', 'YES', 'yes', 'yeah', 1, 1.0]
         actual = parsing.TRUE_STR
 
         self.assertEqual(len(actual), len(expected))
@@ -199,6 +200,38 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
             for i in range(my_range):
                 self.assertAlmostEqualRel(actual[x][i], expected[x][i], rel_tol=1e-3)
 
+    def test_toolbox_metal_set_decimal_precision(self):
+        """
+        Test functionality of set_decimal_precision in toolbox_metal.py
+        """
+        self.assertEqual(math_and_overrides.decimal_precision, 10)
+        math_and_overrides.set_decimal_precision(15)
+        self.assertEqual(math_and_overrides.decimal_precision, 15)
+
+    def test_toolbox_metal_dot(self):
+        """
+        Test functionality of dot in toolbox_metal.py
+        """
+        math_and_overrides.set_decimal_precision(3)
+        my_array_1 = np.array([3, 4])
+        my_array_2 = np.array([12, 14])
+        self.assertEqual(math_and_overrides.dot(my_array_1, my_array_2), 92)
+
+    def test_toolbox_metal_round(self):
+        """
+        Test functionality of round in toolbox_metal.py
+        """
+        math_and_overrides.set_decimal_precision(2)
+        self.assertEqual(math_and_overrides.round(12.349), 12.35)
+
+    def test_toolbox_metal_cross(self):
+        """
+        Test functionality of cross in toolbox_metal.py
+        """
+        math_and_overrides.set_decimal_precision(3)
+        my_array_1 = np.array([3, 4])
+        my_array_2 = np.array([12, 14])
+        self.assertEqual(math_and_overrides.cross(my_array_1, my_array_2), -6)
 
 
 

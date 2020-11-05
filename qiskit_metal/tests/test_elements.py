@@ -268,6 +268,23 @@ class TestElements(unittest.TestCase):
         self.assertEqual(len(qgt.tables['path']), 0)
         self.assertEqual(len(qgt.tables['poly']), 0)
 
+    def test_element_get_all_unique_layers(self):
+        """
+        Test get_all_unique_layers functionality in elment_handler.py
+        """
+        design = designs.DesignPlanar()
+        qgt = QGeometryTables(design)
+        qgt.clear_all_tables()
+
+        transmon_pocket = TransmonPocket(design, 'my_id')
+        transmon_pocket.make()
+        transmon_pocket.get_template_options(design)
+        qgt.add_qgeometry('path', 'my_id', {'n_sprial': 'ns'}, width=4000)
+        qgt.add_qgeometry('poly', 'my_id', {'n_spira_etch': 'nse'}, subtract=True)
+
+        self.assertEqual(qgt.get_all_unique_layers('main'), [1])
+        self.assertEqual(qgt.get_all_unique_layers('fake'), [])
+
     def test_element_q_element_get_component_bounds(self):
         """
         Test get_component_bounds in QGeometryTables class in element_handler.py
