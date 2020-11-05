@@ -17,7 +17,7 @@ Module containing Basic Qiskit Metal Planar (2D) design for CPW type geometry.
 
 @date: 2019
 
-@author: Zlatko Minev, Thomas McConeky, ... (IBM)
+@author: Zlatko Minev, Thomas McConkey, ... (IBM)
 """
 
 from .design_base import QDesign, Dict
@@ -61,7 +61,7 @@ class DesignPlanar(QDesign):
         self._chips['main'] = Dict(
             material = 'cold silicon',
             layer_start = '0',
-            layer_end = '9999999',
+            layer_end = '2048',
         )
 
         self._chips['main']['size'] = Dict(

@@ -20,6 +20,7 @@
 from typing import List, Tuple, Union
 
 import re
+from pathlib import Path
 import math
 import geopandas
 import numpy as np
@@ -29,7 +30,7 @@ from collections import defaultdict
 
 import shapely
 import pyEPR as epr
-from pyEPR.ansys import parse_units # TODO: Check this works with design UNITS
+from pyEPR.ansys import parse_units
 
 from qiskit_metal.draw.utility import to_vec3D
 from qiskit_metal.draw.basic import is_rectangle
@@ -87,9 +88,10 @@ class QAnsysRenderer(QRenderer):
         Lj='10nH', # Lj has units of nanoHenries (nH)
         Cj=0, # Cj *must* be 0 for pyEPR analysis! Cj has units of femtofarads (fF)
         _Rj=0, # _Rj *must* be 0 for pyEPR analysis! _Rj has units of Ohms
-        project_path=None, # default project path
+        project_path=None, # default project path; if None --> get active
         project_name=None, # default project name
-        design_name=None # default design name
+        design_name=None, # default design name
+        ansys_file_extension='.aedt' # Ansys file extesion for 2016 version and newer
     )
 
     NAME_DELIM = r'_'
@@ -166,7 +168,7 @@ class QAnsysRenderer(QRenderer):
             selection (Union[list, None], optional): List of components to render. Defaults to None.
         """
 
-        self.chip_subtract_dict = defaultdict(set) # TODO: address warning
+        self.chip_subtract_dict = defaultdict(set)
         self.assign_perfE = []
         self.assign_mesh = []
 
@@ -176,7 +178,7 @@ class QAnsysRenderer(QRenderer):
         self.metallize()
         self.add_mesh()
 
-    def render_tables(self, selection: Union[list, None] = None): #  # TODO: address warning
+    def render_tables(self, selection: Union[list, None] = None):
         """
         Render components in design grouped by table type (path, poly, or junction).
 
@@ -187,7 +189,7 @@ class QAnsysRenderer(QRenderer):
         for table_type in self.design.qgeometry.get_element_types():
             self.render_components(table_type, selection)
 
-    def render_components(self, table_type: str, selection: Union[list, None] = None): # TODO: address warning
+    def render_components(self, table_type: str, selection: Union[list, None] = None):
         """
         Render individual components by breaking them down into individual elements.
 
