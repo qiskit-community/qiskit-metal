@@ -148,6 +148,7 @@ class TestRenderers(unittest.TestCase):
         self.assertEqual(options['precision'], '0.000000001')
         self.assertEqual(options['width_LineString'], '10um')
         self.assertEqual(options['path_filename'], '../gds-files/Fake_Junctions_copy.gds')
+        self.assertEqual(options['max_points'], '8191')
         self.assertEqual(options['bounding_box_scale_x'], '1.2')
         self.assertEqual(options['bounding_box_scale_y'], '1.2')
 
