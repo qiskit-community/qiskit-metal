@@ -88,7 +88,7 @@ class QDesign():
                             added to design using the name.
 
             enable_renderers: Enable the renderers during the init() of design.
-                       The list in config.renderers_to_load() to determine
+                        The list in config.renderers_to_load() to determine
                         which renderers to enable.
 
         """
