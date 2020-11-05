@@ -955,10 +955,13 @@ class QGDSRenderer(QRenderer):
             chip_only_top (gdspy.library.Cell):  The cell used for just chip_name. 
         """
         # Make sure the file exists, before trying to read it.
+        max_points = int(self.parse_value(self.options.max_points))
+
         status, directory_name = can_write_to_path(self.options.path_filename)
         if status:
             lib.read_gds(self.options.path_filename, units='convert')
             for row in self.chip_info[chip_name]['junction'].itertuples():
+                layer_num = int(row.layer)
                 if row.gds_cell_name in lib.cells.keys():
                     [(minx, miny), (maxx, maxy)] = row.geometry.coords[:]
                     center = QGDSRenderer.midpoint_xy(
@@ -968,13 +971,18 @@ class QGDSRenderer(QRenderer):
                         math.atan2((maxy-miny), (maxx-minx)))
 
                     a_cell = lib.extract(row.gds_cell_name)
-                    # a_cell_bounding_box = a_cell.get_bounding_box()
-                    # expanded_area = gdspy.Rectangle(row.geometry.coords[0],
-                    #                                 row.geometry.coords[1],
-                    #                                 layer=row.geometry.layer,
-                    #                                 datatype=10)
-                    # if a_cell_bounding_box is not None:
-                    #     expanded = gdspy.boolean(expanded_area, a_cell_bounding_box,max_points=)
+                    a_cell_bounding_box = a_cell.get_bounding_box()
+                    expanded_area = gdspy.Rectangle(row.geometry.coords[0],
+                                                    row.geometry.coords[1],
+                                                    layer=layer_num,
+                                                    datatype=10)
+                    if a_cell_bounding_box is not None:
+                        expanded_cut = gdspy.boolean(expanded_area,
+                                                     a_cell_bounding_box,
+                                                     max_points=max_points,
+                                                     layer=layer_num,
+                                                     datatype=10)
+                    chip_only_top.add(expanded_cut)
                     chip_only_top.add(gdspy.CellReference(
                         a_cell, origin=center, rotation=rotation))
                 else:
