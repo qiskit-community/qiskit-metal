@@ -60,7 +60,6 @@ Connectors
 .. autosummary::
     :toctree:
 
-    BumpPad
     CPWHangerT
     OpenToGround
     ShortToGround

@@ -83,6 +83,17 @@ class TestToolboxPython(unittest.TestCase):
 
         self.assertEqual(actual, expected)
 
+    def test_display_format_dict_ala_z(self):
+        """
+        Test functionality of format_dict_ala_z in display.py
+        """
+        my_dict = {'first':1}
+        expected = "  'first'             : 1,                            "
+        actual = display.format_dict_ala_z(my_dict)
+
+        self.assertEqual(expected, actual)
+
+
     def test_utility_defaults(self):
         """
         Test defaults in utility_functions.py
@@ -123,6 +134,23 @@ class TestToolboxPython(unittest.TestCase):
         self.assertEqual(df.dtypes['col1'], bool)
         self.assertEqual(df.dtypes['col2'], object)
 
+    def test_utility_copy_update(self):
+        """
+        Test functionality of copy_update in utility_functions.py
+        """
+        self.assertEqual(utility_functions.copy_update({'a': 1}, {}), {'a': 1})
+        self.assertEqual(utility_functions.copy_update({'a': 1}, {'b': 2}), {'a': 1, 'b': 2})
+        self.assertEqual(utility_functions.copy_update({'a': 1}, {'a': 2}), {'a': 2})
+
+    def test_utility_bad_fillet_idxs(self):
+        """
+        Test functionality of bad_fillet_idxs in utility_functions.py
+        """
+        results = utility_functions.bad_fillet_idxs([(1.0, 1.0), (1.5, 1.5), (1.51, 1.5),
+                                                     (2.0, 2.0)],
+                                                    0.1)
+        self.assertEqual(results, [1, 2])
+
     def test_utility_clean_name(self):
         """
         Test clean_name in utility_function.py
@@ -130,6 +158,33 @@ class TestToolboxPython(unittest.TestCase):
         self.assertEqual(utility_functions.clean_name('32v2 g #Gmw845h$W b53wi '),
                          '_32v2_g__Gmw845h_W_b53wi_')
         self.assertEqual(utility_functions.clean_name('halestorm rulz!'), 'halestorm_rulz_')
+
+    def test_utility_toggle_numbers(self):
+        """
+        Test functionality of toggle_numbers in utility_functions.py
+        """
+        self.assertEqual(utility_functions.toggle_numbers([3, 5, 9, 1], 14),
+                         [0, 1, 2, 4, 6, 7, 8, 11, 12, 13])
+
+    def test_utility_get_range_of_vertex_to_not_fillet(self):
+        """
+        Test functionality of get_range_of_vertex_to_not_fillet in utility_functions.py
+        """
+        my_list = [(1, 1), (1, 2), (1, 2), (2, 2), (5, 5), (3, 2), (11, 11), (11, 11), (11, 21),
+                   (12, 21)]
+        result = utility_functions.get_range_of_vertex_to_not_fillet(my_list, 0.25)
+        self.assertEqual(result, [(0, 2), (6, 7)])
+
+    def test_utility_compress_vertex_list(self):
+        """
+        Test functionality of compress_vertex_list in utility_functions.py
+        """
+        my_list = [1, 2, 5, 2, 6, 7, 10, 4, 7, 1]
+        expected = [(1, 1), (1, 2), (2, 2), (4, 7), (7, 7), (10, 10)]
+        self.assertEqual(utility_functions.compress_vertex_list(my_list), expected)
+
+
+
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
