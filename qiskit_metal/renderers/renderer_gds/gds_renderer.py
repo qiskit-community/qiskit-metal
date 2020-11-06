@@ -975,6 +975,22 @@ class QGDSRenderer(QRenderer):
     def give_rotation_center_twopads(self,
                                      row: 'pandas.core.frame.Pandas',
                                      a_cell_bounding_box: 'numpy.ndarray') -> Tuple:
+        """Calculate the angle for rotation, center of LineString in row.geometry, and
+        if needed create two pads to connect the junction to qubit.
+
+        Args:
+            row (pandas.core.frame.Pandas): A row from Junction table of QGeometry.
+            a_cell_bounding_box (numpy.ndarray): Give the bounding box of cell used in row.gds_cell_name.
+
+        Returns:
+            Tuple: 
+                1st entry is float: The angle in degrees of Linestring from row.geometry.
+                2nd entry is Tuple[float,float]: The midpoint of Linestring from row.geometry in format (x,y).
+                3rd entry is gdspy.polygon.Rectangle: None if Magnitude of LineString is smaller than width 
+                        of cell from row.gds_cell_name. Otherwise the rectangle for pad on LEFT of row.gds_cell_name.
+                4th entry is gdspy.polygon.Rectangle: None if Magnitude of LineString is smaller than width 
+                        of cell from row.gds_cell_name. Otherwise the rectangle for pad on RIGHT of row.gds_cell_name.
+        """
 
         junction_pad_overlap = float(
             self.parse_value(self.options.junction_pad_overlap))
