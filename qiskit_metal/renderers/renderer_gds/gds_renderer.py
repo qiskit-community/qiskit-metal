@@ -112,6 +112,11 @@ class QGDSRenderer(QRenderer):
 
         path_filename='../gds-files/Fake_Junctions_copy.gds',
 
+        # For junction table, when cell from default_options.path_filename does not fit into linestring,
+        # QGDSRender will create two pads and add to junction to fill the location of lineString.
+        # The junction_pad_overlap is from the juction cell to the newly created pads.
+        junction_pad_overlap='5um',
+
         # Vertex limit for FlexPath
         # max_points (integer) – If the number of points in the polygonal path boundary is greater than
         # max_points, it will be fractured in smaller polygons with at most max_points each. If max_points
@@ -942,7 +947,75 @@ class QGDSRenderer(QRenderer):
 
         lib.write_gds(file_name)
 
+    def get_linestring_characteristics(self, row: 'pandas.core.frame.Pandas') -> Tuple[Tuple, float, float]:
+        """Given a row in the Junction table, give the characteristics of LineString in 
+        row.geometry.
+
+        Args:
+            row (pandas.core.frame.Pandas): A row from Junction table of QGeometry.
+
+        Returns:
+            Tuple: 
+                1st entry is Tuple[float,float]: The midpoint of Linestring from row.geometry in format (x,y).
+                2nd entry is float: The angle in degrees of Linestring from row.geometry.
+                3rd entry is float: Is the magnitude of Linestring from row.geometry. 
+        """
+        precision = float(self.parse_value(self.options.precision))
+        for_rounding = int(np.abs(np.log10(precision)))
+
+        [(minx, miny), (maxx, maxy)] = row.geometry.coords[:]
+
+        center = QGDSRenderer.midpoint_xy(minx, miny, maxx, maxy)
+        rotation = math.degrees(math.atan2((maxy-miny), (maxx-minx)))
+        magnitude = np.round(distance.euclidean(row.geometry.coords[0],
+                                                row.geometry.coords[1]), for_rounding)
+
+        return center, rotation, magnitude
+
+    def give_rotation_center_twopads(self,
+                                     row: 'pandas.core.frame.Pandas',
+                                     a_cell_bounding_box: 'numpy.ndarray') -> Tuple:
+
+        junction_pad_overlap = float(
+            self.parse_value(self.options.junction_pad_overlap))
+
+        pad_height = row.width
+        center, rotation, magnitude = self.get_linestring_characteristics(row)
+        [(jj_minx, jj_miny), (jj_maxx, jj_maxy)] = a_cell_bounding_box[0:2]
+
+        pad_left = None
+        pad_right = None
+        jj_x_width = abs(jj_maxx-jj_minx)
+        jj_y_height = abs(jj_maxy-jj_miny)
+
+        jj_center_x = (jj_x_width / 2) + jj_minx
+        jj_center_y = (jj_y_height / 2) + jj_miny
+
+        pad_height = row.width
+
+        if pad_height < jj_y_height:
+            text_id = self.design._components[row.component]._name
+            self.logger.warning(f'In junction table, component={text_id} with key={row.key} '
+                                f'has width={pad_height} smaller than cell dimension={jj_y_height}.')
+
+        if jj_x_width < magnitude:
+            pad_x_size_minus_overlap = (magnitude - jj_x_width) / 2
+            pad_miny = jj_center_y - (pad_height/2)
+            pad_left = gdspy.Rectangle(
+                (jj_minx-pad_x_size_minus_overlap, pad_miny),
+                (jj_minx+junction_pad_overlap, pad_miny+pad_height),
+                layer=int(row.layer),
+                datatype=10)
+
+            pad_right = gdspy.Rectangle(
+                (jj_maxx-junction_pad_overlap, pad_miny),
+                (jj_maxx+pad_x_size_minus_overlap, pad_miny+pad_height),
+                layer=int(row.layer),
+                datatype=10)
+
+        return rotation, center, pad_left, pad_right
 ############
+
     def import_junctions_to_one_cell(self, chip_name: str, lib: gdspy.library, chip_only_top: gdspy.library.Cell):
         """Given lib, import the gds file from default options.  Based on the cell name in QGeometry table,
         import the cell from the gds file and place it in hierarchy of chip_only_top. In addition, the linestring
@@ -963,28 +1036,26 @@ class QGDSRenderer(QRenderer):
             for row in self.chip_info[chip_name]['junction'].itertuples():
                 layer_num = int(row.layer)
                 if row.gds_cell_name in lib.cells.keys():
-                    [(minx, miny), (maxx, maxy)] = row.geometry.coords[:]
-                    center = QGDSRenderer.midpoint_xy(
-                        minx, miny, maxx, maxy)
-
-                    rotation = math.degrees(
-                        math.atan2((maxy-miny), (maxx-minx)))
-
                     a_cell = lib.extract(row.gds_cell_name)
                     a_cell_bounding_box = a_cell.get_bounding_box()
-                    expanded_area = gdspy.Rectangle(row.geometry.coords[0],
-                                                    row.geometry.coords[1],
-                                                    layer=layer_num,
-                                                    datatype=10)
-                    if a_cell_bounding_box is not None:
-                        expanded_cut = gdspy.boolean(expanded_area,
-                                                     a_cell_bounding_box,
-                                                     max_points=max_points,
-                                                     layer=layer_num,
-                                                     datatype=10)
-                    chip_only_top.add(expanded_cut)
+
+                    rotation, center, pad_left, pad_right = self.give_rotation_center_twopads(row,
+                                                                                              a_cell_bounding_box)
+
+                    # String for JJ combined with pad Right and pad Left
+                    jj_pad_RL_name = f'{row.gds_cell_name}_component{row.component}_name{row.name}'
+                    temp_cell = lib.new_cell(
+                        jj_pad_RL_name, overwrite_duplicate=True)
+                    temp_cell.add(a_cell)
+
+                    if pad_left is not None:
+                        temp_cell.add(pad_left)
+                    if pad_right is not None:
+                        temp_cell.add(pad_right)
+
                     chip_only_top.add(gdspy.CellReference(
-                        a_cell, origin=center, rotation=rotation))
+                        temp_cell, origin=center, rotation=rotation))
+                    deleteme = 5
                 else:
                     self.logger.warning(f'From the "junction" table, the cell named'
                                         f' "{row.gds_cell_name}"",  is not in file: {self.options.path_filename}.'
