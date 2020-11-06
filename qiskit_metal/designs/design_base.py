@@ -38,7 +38,6 @@ from .net_info import QNet
 
 from .. import config
 if not config.is_building_docs():
-    from qiskit_metal.renderers.renderer_gds.gds_renderer import QGDSRenderer
     from qiskit_metal.toolbox_metal.import_export import load_metal_design, save_metal
     from qiskit_metal.toolbox_python.utility_functions import log_error_easy
 
@@ -255,30 +254,30 @@ class QDesign():
 
 #########Proxy properties##################################################
 
-    def get_chip_size(self, chip_name: str = 'main'):
+    def get_chip_size(self, chip_name: str = 'main') -> dict:
         """
-        Utility function to return the chip size
+        Utility function to get a dictionary containing chip dimensions (size and center).
+
+        Args:
+            chip_name (str): Name of the chip.
+
+        Returns:
+            dict: Dictionary of chip dimensions, including central coordinates and widths along x, y, and z axes.
+        """
+        return self._chips[chip_name]['size']
+
+    def get_chip_z(self, chip_name: str = 'main') -> str:
+        """
+        Utility function to return the z value of a chip.
 
         Args:
             chip_name (str): Returns the size of the given chip (Default: main)
 
-        Raises:
-            NotImplementedError: Code not written yet
+        Returns:
+            str: String representation of the chip height.
         """
-        raise NotImplementedError()
-
-    def get_chip_z(self, chip_name: str = 'main'):
-        """
-        Utility function to return the z value of a chip
-
-        Args:
-            chip_name (str): Returns the size of the given chip (Default: main)
-
-        Raises:
-            NotImplementedError: Code not written yet
-        """
-        # raise NotImplementedError() # Important
-        return 0
+        chip_info = self.get_chip_size(chip_name)
+        return chip_info['center_z']
 
     def get_chip_layer(self, chip_name: str = 'main') -> int:
         """Return the chip layer number for the ground plane.
@@ -735,7 +734,6 @@ class QDesign():
 
 #########I/O###############################################################
 
-
     @classmethod
     def load_design(cls, path: str):
         """
@@ -919,6 +917,7 @@ class QDesign():
 
 ######### Renderers ###############################################################
 
+
     def _start_renderers(self):
         """1. Import the renderers identifed in config.renderers_to_load.
            2. Register them into QDesign.
@@ -988,8 +987,8 @@ class QDesign():
         Args:
             table_name (str): Table used within QGeometry tables i.e. path, poly, junction.
             renderer_name (str): The name of software to export QDesign, i.e. gds, ansys.
-            column_name (str): The column name within the table, i.e. filename, inductance. 
-            column_value (Object): The type can vary based on column. The data is placed under column_name.  
+            column_name (str): The column name within the table, i.e. filename, inductance.
+            column_value (Object): The type can vary based on column. The data is placed under column_name.
 
         Returns:
             set: Each integer in the set has different meanings.
