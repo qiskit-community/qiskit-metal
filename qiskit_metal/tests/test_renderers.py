@@ -137,7 +137,7 @@ class TestRenderers(unittest.TestCase):
         renderer = QGDSRenderer(design)
         options = renderer.default_options
 
-        self.assertEqual(len(options), 12)
+        self.assertEqual(len(options), 13)
         self.assertEqual(options['short_segments_to_not_fillet'], 'True')
         self.assertEqual(
             options['check_short_segments_by_scaling_fillet'], '2.0')
@@ -147,7 +147,8 @@ class TestRenderers(unittest.TestCase):
         self.assertEqual(options['tolerance'], '0.00001')
         self.assertEqual(options['precision'], '0.000000001')
         self.assertEqual(options['width_LineString'], '10um')
-        self.assertEqual(options['path_filename'], '../gds-files/Fake_Junctions_copy.gds')
+        self.assertEqual(options['path_filename'],
+                         '../gds-files/Fake_Junctions_copy.gds')
         self.assertEqual(options['max_points'], '8191')
         self.assertEqual(options['bounding_box_scale_x'], '1.2')
         self.assertEqual(options['bounding_box_scale_y'], '1.2')
@@ -191,7 +192,8 @@ class TestRenderers(unittest.TestCase):
         transmon_pocket.make()
         transmon_pocket.get_template_options(design)
         qgt.add_qgeometry('path', 'my_id', {'n_sprial': 'ns'}, width=4000)
-        qgt.add_qgeometry('poly', 'my_id', {'n_spira_etch': 'nse'}, subtract=True)
+        qgt.add_qgeometry('poly', 'my_id', {
+                          'n_spira_etch': 'nse'}, subtract=True)
 
         result = renderer.get_chip_names()
         self.assertEqual(result, {'main': {}})
