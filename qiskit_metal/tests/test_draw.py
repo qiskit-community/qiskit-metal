@@ -526,6 +526,16 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
             for j in range(3):
                 self.assertAlmostEqualRel(actual[i][j], expected[i][j], rel_tol=1e-3)
 
+    def test_draw_normed(self):
+        """
+        Test functionality of normed in utility.py
+        """
+        vector = Vector()
+
+        result = vector.normed([12, 16])
+        self.assertEqual(result[0], 0.6)
+        self.assertEqual(result[1], 0.8)
+
     def test_draw_vector_norm(self):
         """
         Test norm in Vector class in utility.py
@@ -609,6 +619,21 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
         for i in range(2):
             for j in range(2):
                 self.assertAlmostEqualRel(actual[i][j], expected[i][j], rel_tol=1e-3)
+
+    def test_draw_get_distance(self):
+        """
+        Test the functionality of get_distance in utility.py
+        """
+        vector = Vector()
+
+        expected = [1.41, 24.187]
+
+        actual = []
+        actual.append(vector.get_distance((1, 1), (2, 2), precision=2))
+        actual.append(vector.get_distance((10, 15), (22, -6), precision=3))
+
+        for i in range(2):
+            self.assertAlmostEqualRel(actual[i], expected[i], rel_tol=1e-3)
 
 
 if __name__ == '__main__':

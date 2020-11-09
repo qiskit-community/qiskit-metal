@@ -1,6 +1,4 @@
 from ... import Dict
-from qiskit_metal.toolbox_python.utility_functions import can_write_to_path
-from qiskit_metal.toolbox_python.utility_functions import get_range_of_vertex_to_not_fillet
 import math
 from scipy.spatial import distance
 import os
@@ -23,6 +21,11 @@ import numpy as np
 
 from qiskit_metal.renderers.renderer_base import QRenderer
 from qiskit_metal.toolbox_metal.parsing import is_true
+
+from .. import config
+if not config.is_building_docs():
+    from qiskit_metal.toolbox_python.utility_functions import can_write_to_path
+    from qiskit_metal.toolbox_python.utility_functions import get_range_of_vertex_to_not_fillet
 
 if TYPE_CHECKING:
     # For linting typechecking, import modules that can't be loaded here under normal conditions.
@@ -105,6 +108,14 @@ class QGDSRenderer(QRenderer):
         width_LineString='10um',
 
         path_filename='../gds-files/Fake_Junctions_copy.gds',
+
+        # Vertex limit for FlexPath
+        # max_points (integer) – If the number of points in the polygonal path boundary is greater than
+        # max_points, it will be fractured in smaller polygons with at most max_points each. If max_points
+        # is zero, no fracture will occur. GDSpy uses 199 as the default. The historical max value of vertices
+        # for a poly/path was 199 (fabrication equipment restrictions).  The hard max limit that a GDSII file
+        # can handle is 8191.
+        max_points='8191',
 
         # (float): Scale box of components to render. Should be greater than 1.0.
         # For benifit of the GUI, keep this the last entry in the dict.  GUI shows a note regarding bound_box.
@@ -604,10 +615,16 @@ class QGDSRenderer(QRenderer):
                 no_fillet_vertices.clear()
                 if idx == 0 and start == 0:
                     # The first segment.
-                    no_fillet_vertices = coords[start:stop+1]
-                    no_fillet_vertices.append(midpoints[stop])
-                    shorter_lines[stop] = dict({'line': LineString(no_fillet_vertices),
-                                                'fillet': float('NaN')})
+                    if stop == len_coords-1:
+                        # Every vertex should not be fillet'd
+                        no_fillet_vertices = coords[start:len_coords]
+                        shorter_lines[stop] = dict({'line': LineString(no_fillet_vertices),
+                                                    'fillet': float('NaN')})
+                    else:
+                        no_fillet_vertices = coords[start:stop+1]
+                        no_fillet_vertices.append(midpoints[stop])
+                        shorter_lines[stop] = dict({'line': LineString(no_fillet_vertices),
+                                                    'fillet': float('NaN')})
                 elif idx == status-1 and stop == len_coords-1:
                     # The last segment
                     no_fillet_vertices = coords[start:stop+1]
@@ -644,7 +661,14 @@ class QGDSRenderer(QRenderer):
                         fillet_vertices.insert(0, midpoints[stop])
                         shorter_lines[len_coords] = dict({'line': LineString(fillet_vertices),
                                                           'fillet': a_fillet})
+                elif idx == status-1 and start == 0 and stop != len_coords-1:
+                    # At last tuple, and and start at first index, and  the stop is not last index of coords.
+                    fillet_vertices = coords[stop+1:len_coords]
+                    fillet_vertices.insert(0, midpoints[stop])
+                    shorter_lines[start] = dict({'line': LineString(fillet_vertices),
+                                                 'fillet': a_fillet})
                 elif idx == status-1 and stop != len_coords-1:
+                    # At last tuple, and the stop is not last index of coords.
                     fillet_vertices = coords[at_vertex+1:start]
                     fillet_vertices.insert(0, midpoints[at_vertex])
                     fillet_vertices.append(midpoints[start-1])
@@ -675,11 +699,11 @@ class QGDSRenderer(QRenderer):
 
         Args:
             coords (list): User provide a list of tuples.  The tuple is (x,y) location for a vertex.
-            The list represents a LineString.
-
+              The list represents a LineString.
             a_fillet (float): The value provided by component developer.
-
             all_idx_bad_fillet (dict): An empty dict which will be populated by this method.
+
+        Dictionary:
             Key 'reduced_idx' will hold list of tuples.  The tuples correspond to index for list named "coords".
             Key 'midpoints' will hold list of tuples. The index of a tuple corresponds to two index within coords.
             For example, a index in midpoints is x, that coresponds midpoint of segment x-1 to x.
@@ -807,6 +831,7 @@ class QGDSRenderer(QRenderer):
         """
 
         precision = float(self.parse_value(self.options.precision))
+        max_points = int(self.parse_value(self.options.max_points))
 
         lib = self.new_gds_library()
 
@@ -877,12 +902,12 @@ class QGDSRenderer(QRenderer):
                         After the boolean(), I deleted the cell from lib.
                         The memory is freed up then.
                         '''
-                        diff_geometry = gdspy.boolean(
-                            self.chip_info[chip_name]['subtract_poly'],
-                            subtract_cell.get_polygons(),
-                            'not',
-                            precision=precision,
-                            layer=chip_layer)
+                        diff_geometry = gdspy.boolean(self.chip_info[chip_name]['subtract_poly'],
+                                                      subtract_cell.get_polygons(),
+                                                      'not',
+                                                      max_points=max_points,
+                                                      precision=precision,
+                                                      layer=chip_layer)
 
                         lib.remove(subtract_cell)
 
@@ -1008,12 +1033,10 @@ class QGDSRenderer(QRenderer):
         See:
             https://gdspy.readthedocs.io/en/stable/reference.html#polygon
         """
-
         corners = self.options.corners
-        # TODO: change to actual parsing and unit conversion
-        tolerance = float(self.options.tolerance)
-        # TODO: Check it works as desired
-        precision = float(self.options.precision)
+        tolerance = self.parse_value(self.options.tolerance)
+        precision = self.parse_value(self.options.precision)
+        max_points = int(self.parse_value(self.options.max_points))
 
         geom = qgeometry_element.geometry  # type: shapely.geometry.base.BaseGeometry
 
@@ -1022,20 +1045,29 @@ class QGDSRenderer(QRenderer):
                                           layer=qgeometry_element.layer,
                                           datatype=10,
                                           )
+
             # If polygons have a holes, need to remove it for gdspy.
             all_interiors = list()
             if geom.interiors:
                 for hole in geom.interiors:
                     interior_coords = list(hole.coords)
                     all_interiors.append(interior_coords)
-                a_poly_set = gdspy.PolygonSet(
-                    all_interiors, layer=qgeometry_element.layer, datatype=10)
-                a_poly = gdspy.boolean(
-                    exterior_poly, a_poly_set, 'not', layer=qgeometry_element.layer, datatype=10)
+                a_poly_set = gdspy.PolygonSet(all_interiors,
+                                              layer=qgeometry_element.layer,
+                                              datatype=10)
+                # Since there is max_points in boolean, don't need to do this twice.
+                # a_poly_set = a_poly_set.fracture(max_points=max_points)
+                # exterior_poly = exterior_poly.fracture(max_points=max_points)
+                a_poly = gdspy.boolean(exterior_poly,
+                                       a_poly_set,
+                                       'not',
+                                       max_points=max_points,
+                                       layer=qgeometry_element.layer,
+                                       datatype=10)
                 return a_poly
             else:
+                exterior_poly = exterior_poly.fracture(max_points=max_points)
                 return exterior_poly
-
         elif isinstance(geom, shapely.geometry.LineString):
             '''
             class gdspy.FlexPath(points, width, offset=0, corners='natural', ends='flush',
@@ -1044,8 +1076,8 @@ class QGDSRenderer(QRenderer):
 
             Only fillet, if number is greater than zero.
             '''
-
             use_width = self.parse_value(self.options.width_LineString)
+
             if math.isnan(qgeometry_element.width):
                 qcomponent_id = self.parse_value(qgeometry_element.component)
                 name = self.parse_value(qgeometry_element['name'])
@@ -1063,12 +1095,14 @@ class QGDSRenderer(QRenderer):
                     to_return = gdspy.FlexPath(list(geom.coords),
                                                use_width,
                                                layer=qgeometry_element.layer,
+                                               max_points=max_points,
                                                datatype=11)
                 else:
                     to_return = gdspy.FlexPath(list(geom.coords),
                                                use_width,
                                                layer=qgeometry_element.layer,
                                                datatype=11,
+                                               max_points=max_points,
                                                corners=corners,
                                                bend_radius=qgeometry_element.fillet,
                                                tolerance=tolerance,

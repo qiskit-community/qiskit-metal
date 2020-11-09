@@ -405,8 +405,8 @@ def get_range_of_vertex_to_not_fillet(coords: list, fradius: float, precision: i
         coords (list): Ordered list of tuples of vertex coordinates.
         fradius (float): User-specified fillet radius from QGeometry table.
         precision (int, optional): Digits of precision used for round(). Defaults to 9.
-        add_endpoints (bool): Default is True.  If the second to endpoint is in list, 
-            add the endpoint to list.  Used for GDS, not add_qgeometry.  
+        add_endpoints (bool): Default is True.  If the second to endpoint is in list,
+            add the endpoint to list.  Used for GDS, not add_qgeometry.
 
     Returns:
         list: A compressed list of tuples.  So, it combines adjacent vertexes into a longer one.

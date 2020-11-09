@@ -30,18 +30,16 @@ import pandas as pd
 from .. import Dict, logger
 from ..config import DefaultMetalOptions, DefaultOptionsRenderer
 from ..elements import QGeometryTables
-from qiskit_metal.toolbox_metal.import_export import load_metal_design, save_metal
 from qiskit_metal.toolbox_metal.parsing import parse_options, parse_value
 from qiskit_metal.toolbox_metal.parsing import is_true
-from qiskit_metal.toolbox_python.utility_functions import log_error_easy
 
 from .interface_components import Components
 from .net_info import QNet
 
 from .. import config
 if not config.is_building_docs():
-    from qiskit_metal.renderers.renderer_gds.gds_renderer import QGDSRenderer
-
+    from qiskit_metal.toolbox_metal.import_export import load_metal_design, save_metal
+    from qiskit_metal.toolbox_python.utility_functions import log_error_easy
 
 if TYPE_CHECKING:
     # For linting, avoids circular imports.
@@ -89,7 +87,7 @@ class QDesign():
                             added to design using the name.
 
             enable_renderers: Enable the renderers during the init() of design.
-                       The list in config.renderers_to_load() to determine
+                        The list in config.renderers_to_load() to determine
                         which renderers to enable.
 
         """
@@ -256,30 +254,30 @@ class QDesign():
 
 #########Proxy properties##################################################
 
-    def get_chip_size(self, chip_name: str = 'main'):
+    def get_chip_size(self, chip_name: str = 'main') -> dict:
         """
-        Utility function to return the chip size
+        Utility function to get a dictionary containing chip dimensions (size and center).
+
+        Args:
+            chip_name (str): Name of the chip.
+
+        Returns:
+            dict: Dictionary of chip dimensions, including central coordinates and widths along x, y, and z axes.
+        """
+        return self._chips[chip_name]['size']
+
+    def get_chip_z(self, chip_name: str = 'main') -> str:
+        """
+        Utility function to return the z value of a chip.
 
         Args:
             chip_name (str): Returns the size of the given chip (Default: main)
 
-        Raises:
-            NotImplementedError: Code not written yet
+        Returns:
+            str: String representation of the chip height.
         """
-        raise NotImplementedError()
-
-    def get_chip_z(self, chip_name: str = 'main'):
-        """
-        Utility function to return the z value of a chip
-
-        Args:
-            chip_name (str): Returns the size of the given chip (Default: main)
-
-        Raises:
-            NotImplementedError: Code not written yet
-        """
-        # raise NotImplementedError() # Important
-        return 0
+        chip_info = self.get_chip_size(chip_name)
+        return chip_info['center_z']
 
     def get_chip_layer(self, chip_name: str = 'main') -> int:
         """Return the chip layer number for the ground plane.
@@ -659,6 +657,47 @@ class QDesign():
 
         return return_response
 
+    def copy_multiple_qcomponents(self,  original_qcomponents: list, new_component_names: list, all_options_superimpose: list = list()) -> Dict:
+        """The lists in the arguments are all used in parallel.  If the length of original_qcomponents 
+        and new_component_names are not the same, no copies will be made and an empty Dict will be returned. 
+        The length of all_options_superimposes needs to be either empty or exactly the length of original_qcomponents, 
+        otherwise, an empty dict will be returned.  
+
+
+        Args:
+            original_qcomponents (list): Must be a list of original QComponents.
+            new_component_names (list): Must be a list of QComponent names.
+            all_options_superimpose (list, optional): Must be list of dicts with options to superimpose on options 
+                from original_qcomponents. The list can be of both populated and empty dicts. Defaults to empty list().
+
+        Returns:
+            Dict: Number of keys will be the same length of original_qcomponent.  
+                Each key will be the new_component_name. 
+                Each value will be either a QComponent or None.
+                If the copy did not happen, the value will be None, and the key will extracted from new_componet_names. 
+
+        """
+        copied_info = dict()
+        length = len(original_qcomponents)
+        if length != len(new_component_names):
+            return copied_info
+
+        num_options = len(all_options_superimpose)
+
+        if num_options > 0 and num_options != length:
+            return copied_info
+
+        for index, item in enumerate(original_qcomponents):
+            if num_options > 0:
+                a_copy = self.copy_qcomponent(
+                    item, new_component_names[index], all_options_superimpose[index])
+            else:
+                a_copy = self.copy_qcomponent(item, new_component_names[index])
+
+            copied_info[new_component_names[index]] = a_copy
+
+        return copied_info
+
     def copy_qcomponent(self,  original_qcomponent: 'QComponent', new_component_name: str, options_superimpose: dict = dict()) -> Union['QComponent', None]:
         """Copy a coponent in QDesign and add it to QDesign._components using options_overwrite.
 
@@ -694,7 +733,6 @@ class QDesign():
 
 
 #########I/O###############################################################
-
 
     @classmethod
     def load_design(cls, path: str):
@@ -949,8 +987,8 @@ class QDesign():
         Args:
             table_name (str): Table used within QGeometry tables i.e. path, poly, junction.
             renderer_name (str): The name of software to export QDesign, i.e. gds, ansys.
-            column_name (str): The column name within the table, i.e. filename, inductance. 
-            column_value (Object): The type can vary based on column. The data is placed under column_name.  
+            column_name (str): The column name within the table, i.e. filename, inductance.
+            column_value (Object): The type can vary based on column. The data is placed under column_name.
 
         Returns:
             set: Each integer in the set has different meanings.

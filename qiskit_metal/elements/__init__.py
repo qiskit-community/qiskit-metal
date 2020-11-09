@@ -33,14 +33,5 @@ QGeometryTables
 
     QGeometryTables
 
-
-Submodules
-----------
-
-.. autosummary::
-    :toctree:
-
-    elements_handler
-
 """
 from .elements_handler import is_element_table, QGeometryTables  # , ElementTypes

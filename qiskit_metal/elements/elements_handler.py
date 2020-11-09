@@ -27,7 +27,6 @@ import pandas as pd
 import shapely
 
 from typing import TYPE_CHECKING
-from qiskit_metal.toolbox_python.utility_functions import get_range_of_vertex_to_not_fillet, data_frame_empty_typed
 from typing import Dict as Dict_
 from typing import List, Tuple, Union
 from geopandas import GeoDataFrame, GeoSeries
@@ -35,6 +34,9 @@ from geopandas import GeoDataFrame, GeoSeries
 from .. import Dict
 from ..draw import BaseGeometry
 
+from .. import config
+if not config.is_building_docs():
+    from qiskit_metal.toolbox_python.utility_functions import get_range_of_vertex_to_not_fillet, data_frame_empty_typed
 
 if TYPE_CHECKING:
     from ..components.base import QComponent
@@ -557,12 +559,12 @@ class QGeometryTables(object):
                     if len(range_vertex_of_short_segments) > 0:
                         range_string = ""
                         for item in range_vertex_of_short_segments:
+
                             range_string += f'({ item[0]}-{item[1]}) '
                         text_id = self.design._components[component_name]._name
-
                         self.logger.warning(
                             f'For {kind} table, component={text_id}, key={key}'
-                            f' has short segments. Values in {range_string} '
+                            f' has short segments that could cause issues with fillet. Values in {range_string} '
                             f'are index(es) in shapley geometry.')
 
     def parse_value(self, value: 'Anything') -> 'Anything':
