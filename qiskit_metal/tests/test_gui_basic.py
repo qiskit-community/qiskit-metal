@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2019-2020.
+# (C) Copyright IBM 2017, 2020.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -36,7 +36,7 @@ from qiskit_metal._gui.widgets.bases.dict_tree_base import LeafNode
 from qiskit_metal.components.passives.capacitor_three_fingers import Capacitor3Fingers
 from qiskit_metal.components.passives.launch_v1 import LaunchV1
 from qiskit_metal.components.passives.launch_v2 import LaunchV2
-from qiskit_metal.components.passives.three_finger_cap_v1 import ThreeFingerCapV1
+from qiskit_metal.components.passives.three_finger_cap import ThreeFingerCapV1
 from qiskit_metal.components.qubits.transmon_concentric import TransmonConcentric
 from qiskit_metal.components.qubits.transmon_cross import TransmonCross
 from qiskit_metal.components.qubits.transmon_pocket import TransmonPocket
