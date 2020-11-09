@@ -1,5 +1,9 @@
-# Qiskit Metal
-### Quantum VLSI and Sims
+# Contributing to Qiskit Metal
+Qiskit Metal follow the overall Qiskit project contributing guidelines. These are all included in the qiskit documentation:
+
+https://qiskit.org/documentation/contributing_to_qiskit.html
+
+In addition to the general guidelines there are specific details for contributing to metal, these are documented below.
 
 ## Issue reporting
 When you encounter a problem please open an issue for it to the issue tracker.
@@ -13,10 +17,6 @@ Code review is done in the open and open to anyone. While only maintainers have 
 ## Good first contributions
 If you would like to contribute to the qiskit-terra project, but aren't sure of where to get started, the good first issue label highlights items for people new to the project to work on. These are all issues that have been reviewed by contributors and tagged as something a new contributor should be able to develop a fix for. In other words it shouldn't require intimate familiarity with qiskit-terra to develop a fix for the issue.
 
-## Documentation
-Todo
-
-
 ## Pull requests
 We use GitHub pull requests to accept contributions.
 
@@ -25,7 +25,9 @@ While not required, opening a new issue about the bug you're fixing or the featu
 If you've written some code but need help finishing it, want to get initial feedback on it prior to finishing it, or want to share it and discuss prior to finishing the implementation you can open a Work in Progress pull request. When you create the pull request prefix the title with the [WIP] tag (for Work In Progress). This will indicate to reviewers that the code in the PR isn't in it's final state and will change. It also means that we will not merge the commit until it is finished. You or a reviewer can remove the [WIP] tag when the code is ready to be fully reviewed for merging.
 
 ## Contributor License Agreement
-Before you can submit any code we need all contributors to sign a contributor license agreement. By signing a contributor license agreement (CLA) you're basically just attesting to the fact that you are the author of the contribution and that you're freely contributing it under the terms of the Apache-2.0 license.
+Before you can submit any code we need all contributors to sign a contributor license agreement. By signing a contributor license agreement (CLA) you're basically just attesting to the fact that you are the author of the contribution and that you're freely contributing it under the terms of the Apache-2.0 license. You can find the forms and informations half-way down this page:
+
+https://qiskit.org/documentation/contributing_to_qiskit.html
 
 # Setting up your coding environemnt 
 
