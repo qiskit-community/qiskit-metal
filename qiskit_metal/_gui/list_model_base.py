@@ -57,12 +57,13 @@ class DynamicList(QStandardItemModel):
         """
         # TODO: Generalize this to beyond components.
         self.clear()
-        for element in self.datasrc.components:
-            item = QStandardItem(element)
-            item.setCheckable(True)
-            item.setCheckState(QtCore.Qt.Checked)
-            item.setFlags(Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
-            self.appendRow(item)
+        if self.datasrc:
+            for element in self.datasrc.components:
+                item = QStandardItem(element)
+                item.setCheckable(True)
+                item.setCheckState(QtCore.Qt.Checked)
+                item.setFlags(Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
+                self.appendRow(item)
 
     def select_all(self):
         """Select everything in the list."""
