@@ -14,12 +14,12 @@ import logging
 import random
 from pathlib import Path
 
-from PyQt5 import QtGui
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QAction, QDockWidget, QTextEdit
+from PySide2 import QtGui
+from PySide2.QtCore import Qt
+from PySide2.QtWidgets import QAction, QDockWidget, QTextEdit
 
 from .... import Dict, __version__, config
-from ...utility._handle_qt_messages import catch_exception_slot_pyqt
+from ...utility._handle_qt_messages import slot_catch_error
 
 from ... import config
 if not config.is_building_docs():
@@ -64,8 +64,8 @@ class QTextEditLogger(QTextEdit):
         self._level_name = ''
 
         # Props of the Widget
-        self.setTextInteractionFlags(
-            Qt.TextSelectableByMouse | Qt.TextSelectableByKeyboard)
+        self.setTextInteractionFlags(Qt.TextSelectableByMouse
+                                     | Qt.TextSelectableByKeyboard)
         self.text_format = QtGui.QTextCharFormat()
         self.text_format.setFontFamily('Consolas')
 
@@ -102,19 +102,28 @@ class QTextEditLogger(QTextEdit):
         actions = self._actions
 
         actions.clear_log = QAction('&Clear log', self, triggered=self.clear)
-        actions.print_tips = QAction(
-            '&Show tips ', self, triggered=self.print_all_tips)
+        actions.print_tips = QAction('&Show tips ',
+                                     self,
+                                     triggered=self.print_all_tips)
 
         actions.separator = QAction(self)
         actions.separator.setSeparator(True)
 
         ###################
         # Toggle actions
-        self.actino_scroll_auto = QAction('&Autoscroll', self, checkable=True, checked=True,
-                                          toggled=self.toggle_autoscroll)
+        self.action_scroll_auto = QAction('&Autoscroll',
+                                          self,
+                                          checkable=True,
+                                          checked=True)
+        print('HAPPY')
+        self.action_scroll_auto.toggled.connect(self.toggle_autoscroll)
+        print('EVEN MORE HAPPY')
 
-        self.action_show_times = QAction('&Show timestamps', self, checkable=True, checked=False,
-                                         toggled=self.toggle_timestamps)
+        self.action_show_times = QAction('&Show timestamps',
+                                         self,
+                                         checkable=True,
+                                         checked=False)
+        self.action_show_times.toggled.connect(self.toggle_timestamps)
 
         ###################
         # Filter level actions
@@ -124,20 +133,26 @@ class QTextEditLogger(QTextEdit):
             setattr(self, name, lambda: self.set_level(lvl))
             func = getattr(self, name)
             return func
-        actions.debug = QAction(
-            'Set filter level:  Debug', self, triggered=make_trg(logging.DEBUG))
+
+        actions.debug = QAction('Set filter level:  Debug',
+                                self,
+                                triggered=make_trg(logging.DEBUG))
         actions.info = QAction('Set filter level:  Info',
-                               self, triggered=make_trg(logging.INFO))
-        actions.warning = QAction(
-            'Set filter level:  Warning', self, triggered=make_trg(logging.WARNING))
-        actions.error = QAction(
-            'Set filter level:  Error', self, triggered=make_trg(logging.ERROR))
+                               self,
+                               triggered=make_trg(logging.INFO))
+        actions.warning = QAction('Set filter level:  Warning',
+                                  self,
+                                  triggered=make_trg(logging.WARNING))
+        actions.error = QAction('Set filter level:  Error',
+                                self,
+                                triggered=make_trg(logging.ERROR))
 
         actions.separator2 = QAction(self)
         actions.separator2.setSeparator(True)
 
-        actions.loggers = QAction(
-            'Show/hide messages for logger:', self, enabled=False)
+        actions.loggers = QAction('Show/hide messages for logger:',
+                                  self,
+                                  enabled=False)
 
         # Add actions to actin context menu
         self.addActions(list(actions.values()))
@@ -147,12 +162,13 @@ class QTextEditLogger(QTextEdit):
         img_txt = ''
 
         # Logo
-        img_path = Path(self.img_path)/self._logo
+        img_path = Path(self.img_path) / self._logo
         if img_path.is_file():
             img_txt = f'<img src="{img_path}" height=80>'
         else:
             print(
-                'WARNING: welcome_message could not locate img_path={img_path}')
+                'WARNING: welcome_message could not locate img_path={img_path}'
+            )
 
         # Main message
         text = f'''<span class="INFO">{' '*self.timestamp_len}
@@ -177,7 +193,8 @@ class QTextEditLogger(QTextEdit):
         """
         for tip in config.GUI_CONFIG['tips']:
             self.log_message(
-                f'''<br><span class="INFO">{' '*self.timestamp_len} \u2022 {tip} </span>''')
+                f'''<br><span class="INFO">{' '*self.timestamp_len} \u2022 {tip} </span>'''
+            )
 
     def set_level(self, level: int):
         """Set level on all handelrs
@@ -250,8 +267,10 @@ class QTextEditLogger(QTextEdit):
         #############################################
 
         # Add action
-        action = QAction(f' - {name}', self,
-                         checkable=True, checked=True,
+        action = QAction(f' - {name}',
+                         self,
+                         checkable=True,
+                         checked=True,
                          triggered=getattr(self, func_name))
         self._actions[f'logger_{name}'] = action
         self.addAction(action)
@@ -305,7 +324,7 @@ class QTextEditLogger(QTextEdit):
         # set the write positon
         cursor = self.textCursor()
         cursor.movePosition(QtGui.QTextCursor.End)
-        cursor.insertBlock()   # add a new block, which makes a new line
+        cursor.insertBlock()  # add a new block, which makes a new line
 
         # add message
         if format_as_html == True:  # pylint: disable=singleton-comparison
@@ -315,7 +334,8 @@ class QTextEditLogger(QTextEdit):
                 # with pre tag by LogHandler_for_QTextLog
                 res = message.split('<pre>', 1)
                 if len(res) == 2:
-                    message = res[0] + '<pre>' + res[1][1+self.timestamp_len:]
+                    message = res[0] + '<pre>' + res[1][1 +
+                                                        self.timestamp_len:]
                 else:
                     pass  # print(f'Warning incorrect: {message}')
 
@@ -328,7 +348,7 @@ class QTextEditLogger(QTextEdit):
             cursor.insertText(message, self.text_format)
 
         # make sure that the message is visible and scrolled ot
-        if self.actino_scroll_auto.isChecked():
+        if self.action_scroll_auto.isChecked():
             self.moveCursor(QtGui.QTextCursor.End)
             self.moveCursor(QtGui.QTextCursor.StartOfLine)
         self.ensureCursorVisible()
@@ -352,7 +372,9 @@ class LogHandler_for_QTextLog(logging.Handler):
 
     This class extends the `logging.Handler` class
     """
-    def __init__(self, name, parent,
+    def __init__(self,
+                 name,
+                 parent,
                  log_qtextedit: QTextEditLogger,
                  logger: logging.Logger,
                  log_string=None):
