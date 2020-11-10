@@ -43,7 +43,7 @@ from .renderer_gds_gui import RendererGDSWidget
 from .utility._handle_qt_messages import slot_catch_error
 from .widgets.all_components.table_model_all_components import \
     QTableModel_AllComponents
-# from .widgets.edit_component.component_widget import ComponentWidget
+from .widgets.edit_component.component_widget import ComponentWidget
 from .widgets.log_widget.log_metal import LogHandler_for_QTextLog
 from .widgets.plot_widget.plot_window import QMainWindowPlot
 from .widgets.variable_table import PropertyTableWidget
@@ -237,7 +237,7 @@ class MetalGUI(QMainWindowBaseHandler):
         # UIs
         self.plot_win = None  # type: QMainWindowPlot
         self.elements_win = None  # type: ElementsWindow
-        self.component_window = None  #TODO: ZLATKO ComponentWidget(self, self.ui.dockComponent)
+        self.component_window = ComponentWidget(self, self.ui.dockComponent)
         self.variables_window = PropertyTableWidget(self, gui=self)
 
         self._setup_component_widget()
