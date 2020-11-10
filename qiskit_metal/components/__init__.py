@@ -95,10 +95,9 @@ Passives
 .. autosummary::
     :toctree:
 
-    Capacitor3Fingers
     LaunchV1
     LaunchV2
-    ThreeFingerCapV1
+    CapThreeFingers
 
 
 Qubits
@@ -162,8 +161,7 @@ if config.is_building_docs():
     from .interconnects.resonator_rectangle_spiral import ResonatorRectangleSpiral
     from .passives.launch_v1 import LaunchV1
     from .passives.launch_v2 import LaunchV2
-    from .passives.capacitor_three_fingers import Capacitor3Fingers
-    from .passives.three_finger_cap import ThreeFingerCapV1
+    from .passives.cap_three_fingers import CapThreeFingers
     from .qubits.transmon_concentric import TransmonConcentric
     from .qubits.transmon_cross import TransmonCross
     from .qubits.transmon_pocket import TransmonPocket
