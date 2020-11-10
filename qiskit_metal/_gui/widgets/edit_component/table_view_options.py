@@ -11,7 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 """Handles editing a QComponent
 
 @author: Zlatko Minev
@@ -20,9 +19,9 @@
 
 from typing import TYPE_CHECKING
 
-from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtCore import Qt, QTimer
-from PyQt5.QtWidgets import QTableView, QAbstractItemView
+from PySide2 import QtCore, QtWidgets
+from PySide2.QtCore import Qt, QTimer
+from PySide2.QtWidgets import QTableView, QAbstractItemView
 
 from ..bases.QWidget_PlaceholderText import QWidget_PlaceholderText
 
@@ -35,7 +34,6 @@ class QTableView_Options(QTableView, QWidget_PlaceholderText):
 
     This class inhertis the `QTableView` and `QWidget_PlaceholderText` classes.
     """
-
     def __init__(self, parent: QtWidgets.QWidget):
         """
         Args:
@@ -44,7 +42,9 @@ class QTableView_Options(QTableView, QWidget_PlaceholderText):
         QTableView.__init__(self, parent)
         QWidget_PlaceholderText.__init__(self, "Select a QComponent to edit"\
             "\n\nfrom the QComponents window")
-        QTimer.singleShot(200, self.style_me) # not sure whu the ui isnt unpdating these here.
+        QTimer.singleShot(
+            200,
+            self.style_me)  # not sure whu the ui isnt unpdating these here.
 
     def style_me(self):
         """Style the widget"""
