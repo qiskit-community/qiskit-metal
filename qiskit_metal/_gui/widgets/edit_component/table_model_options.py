@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2019, 2020.
+# (C) Copyright IBM 2017, 2020.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -231,7 +231,7 @@ class QTableModel_Options(QAbstractTableModel):
             bool: Returns true if successful; otherwise returns false.
         """
 
-        # TODO: handle nested dicitonaries
+        # TODO: handle nested dictionaries
         # See v0.1: get_nested_dict_item, pop_nested_dict_item
         # TODO: ability to add dictionary such as to add pins
         if not index.isValid():
@@ -258,11 +258,9 @@ class QTableModel_Options(QAbstractTableModel):
                 # When we do something to change the value
 
                 # try:
-                # TODO: should w etry and if eror then reset the value
+                # TODO: should retry and if error then reset the value
                 if 1:
-                    self.logger.info(
-                        f'Componention options: Old value={old_val}; New value={value};'
-                    )
+                    self.logger.info(f'Component options: Old value={old_val}; New value={value};')
                     if isinstance(old_val, str):
                         data[key] = str(value)
                     else:

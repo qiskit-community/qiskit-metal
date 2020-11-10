@@ -6,11 +6,13 @@ dependencies:
   - python>=3.6
   - pip
   - addict
+  - cycler
   - descartes
   - docutils
   - gdspy>=1.5.2
   - geopandas
   - ipython
+  - jedi
   - matplotlib
   - numpy
   - pandas

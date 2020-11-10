@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2019.
+# (C) Copyright IBM 2017, 2020.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -55,8 +55,10 @@ w_i = w_Ji - (E_Ci / hbar - E_Ci/(hbar*w_Ji))
 
 
 def import_impedance_matrix(): #or might import S-matrix and change into impedance matrix?
+    pass
 
 def import_capacitance_matrix(): #same as for Jay's code
+    pass
 
 def coupling_rate_J_matrix():
     

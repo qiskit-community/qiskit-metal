@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2019.
+# (C) Copyright IBM 2017, 2020.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -47,7 +47,7 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
         with two pads connected by a junction (see drawing below).
 
         Connector lines can be added using the `connection_pads`
-        dicitonary. Each connector line has a name and a list of default
+        dictionary. Each connector line has a name and a list of default
         properties.
 
         This is a child of TransmonPocket, see TransmonPocket for the variables and

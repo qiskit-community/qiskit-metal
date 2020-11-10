@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2019.
+# (C) Copyright IBM 2017, 2020.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -127,7 +127,7 @@ def dict_start_with(my_dict, start_with, as_=list):
 
 def data_frame_empty_typed(column_types: dict):
     """Creates and empty DataFrame with dtypes for each column given
-    by the dicitonary,
+    by the dictionary,
 
     Arguments:
         column_types (dict): key, dtype pairs
