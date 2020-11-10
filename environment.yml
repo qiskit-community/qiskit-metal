@@ -12,7 +12,7 @@ dependencies:
   - gdspy>=1.5.2
   - geopandas
   - ipython
-  - jedi
+  - jedi>=0.16
   - matplotlib
   - numpy
   - pandas

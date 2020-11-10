@@ -5,7 +5,7 @@ docutils
 gdspy>=1.5.2
 GeoPandas
 ipython
-jedi
+jedi>=0.16
 matplotlib
 numpy
 pandas
