@@ -95,8 +95,8 @@ Passives
 .. autosummary::
     :toctree:
 
-    LaunchV1
-    LaunchV2
+    LaunchpadWirebond
+    LaunchpadWirebondCoupled
     CapThreeFingers
 
 
@@ -159,8 +159,8 @@ if config.is_building_docs():
     from .interconnects.mixed_path import RouteMixed
     from .interconnects.pathfinder import RoutePathfinder
     from .interconnects.resonator_rectangle_spiral import ResonatorRectangleSpiral
-    from .passives.launch_v1 import LaunchV1
-    from .passives.launch_v2 import LaunchV2
+    from .passives.launchpad_wb import LaunchpadWirebond
+    from .passives.launchpad_wb_coupled import LaunchpadWirebondCoupled
     from .passives.cap_three_fingers import CapThreeFingers
     from .qubits.transmon_concentric import TransmonConcentric
     from .qubits.transmon_cross import TransmonCross

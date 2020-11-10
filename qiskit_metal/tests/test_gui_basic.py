@@ -33,8 +33,8 @@ from qiskit_metal import MetalGUI
 from qiskit_metal._gui.widgets.bases.dict_tree_base import BranchNode
 from qiskit_metal._gui.widgets.bases.dict_tree_base import LeafNode
 
-from qiskit_metal.components.passives.launch_v1 import LaunchV1
-from qiskit_metal.components.passives.launch_v2 import LaunchV2
+from qiskit_metal.components.passives.launchpad_wb import LaunchpadWirebond
+from qiskit_metal.components.passives.launchpad_wb_coupled import LaunchpadWirebondCoupled
 from qiskit_metal.components.passives.cap_three_fingers import CapThreeFingers
 from qiskit_metal.components.qubits.transmon_concentric import TransmonConcentric
 from qiskit_metal.components.qubits.transmon_cross import TransmonCross
@@ -78,8 +78,8 @@ class TestGUIBasic(unittest.TestCase):
             q_3 = TransmonPocketCL(design, 'Q3', options=dict(pos_x='+0.0mm', pos_y='+1.0mm'))
             q_4 = TransmonConcentric(design, 'Q4', options=dict(pos_x='+3.0mm', pos_y='+3.0mm'))
 
-            cap_2 = LaunchV1(design, 'C2', options=dict(pos_x='-2.0mm', pos_y='0.0mm'))
-            cap_3 = LaunchV2(design, 'C3', options=dict(pos_x='-2.0mm', pos_y='-0.5mm'))
+            cap_2 = LaunchpadWirebond(design, 'C2', options=dict(pos_x='-2.0mm', pos_y='0.0mm'))
+            cap_3 = LaunchpadWirebondCoupled(design, 'C3', options=dict(pos_x='-2.0mm', pos_y='-0.5mm'))
             cap_4 = CapThreeFingers(design, 'C4', options=dict(pos_x='-2.0mm', pos_y='-1.0mm'))
 
             gui = MetalGUI(design)

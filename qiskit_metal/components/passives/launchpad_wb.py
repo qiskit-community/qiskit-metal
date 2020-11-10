@@ -31,7 +31,7 @@ from qiskit_metal.components.base.base import QComponent
 
 # Define class and options for the launch geometry
 
-class LaunchV1(QComponent):
+class LaunchpadWirebond(QComponent):
     """
     Create a 50 ohm launch with a ground pocket cuttout.  Geometry is hardcoded set of
     polygon points for now. The (0,0) point is the center of the end of the launch.
@@ -75,7 +75,7 @@ class LaunchV1(QComponent):
             |------> x
 
     .. image::
-        LaunchV1.png
+        LaunchpadWirebond.png
 
     """
 
