@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2019, 2020.
+# (C) Copyright IBM 2017, 2020.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -11,15 +11,14 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 """Ask Zlatko for help on this file"""
 from typing import TYPE_CHECKING
 
-from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtCore import QModelIndex, Qt
-from PyQt5.QtGui import QContextMenuEvent
-from PyQt5.QtWidgets import (QInputDialog, QLineEdit, QMenu, QMessageBox,
-                             QTableView, QLabel, QVBoxLayout, QWidget)
+from PySide2 import QtCore, QtWidgets
+from PySide2.QtCore import QModelIndex, Qt
+from PySide2.QtGui import QContextMenuEvent
+from PySide2.QtWidgets import (QInputDialog, QLineEdit, QMenu, QMessageBox,
+                               QTableView, QLabel, QVBoxLayout, QWidget)
 
 
 class QWidget_PlaceholderText(QWidget):
@@ -73,7 +72,11 @@ class QWidget_PlaceholderText(QWidget):
         # color PlaceholderText
         palette = self.palette()
         # This enum value has been introduced in Qt 5.12
-        color = palette.color(palette.PlaceholderText)
+        if hasattr(palette, 'PlaceholderText'):
+            placeholder_color = palette.PlaceholderText
+        else:
+            placeholder_color = palette.WindowText
+        color = palette.color(placeholder_color)
         palette.setColor(palette.Text, color)
         palette.setColor(palette.Text, color)
         label.setPalette(palette)

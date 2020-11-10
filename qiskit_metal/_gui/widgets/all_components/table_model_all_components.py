@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2019.
+# (C) Copyright IBM 2017, 2020.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -15,12 +15,12 @@
 # Zlatko Minev
 
 import numpy as np
-from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtCore import QAbstractTableModel, QModelIndex, Qt
-from PyQt5.QtGui import QBrush, QColor, QFont, QIcon, QPixmap
-from PyQt5.QtWidgets import QTableView
+from PySide2 import QtCore, QtWidgets
+from PySide2.QtCore import QAbstractTableModel, QModelIndex, Qt
+from PySide2.QtGui import QBrush, QColor, QFont, QIcon, QPixmap
+from PySide2.QtWidgets import QTableView
 
-from ...utility._handle_qt_messages import catch_exception_slot_pyqt
+from ...utility._handle_qt_messages import slot_catch_error
 from ...utility._toolbox_qt import blend_colors
 from typing import TYPE_CHECKING
 
@@ -29,7 +29,6 @@ if TYPE_CHECKING:
 
 
 class QTableModel_AllComponents(QAbstractTableModel):
-
     """
     Design compoentns Table model that shows the names of the compoentns and
     their class names etc.
@@ -47,7 +46,11 @@ class QTableModel_AllComponents(QAbstractTableModel):
     """
     __timer_interval = 500  # ms
 
-    def __init__(self, gui, logger, parent=None, tableView: 'QTableView_AllComponents' = None):
+    def __init__(self,
+                 gui,
+                 logger,
+                 parent=None,
+                 tableView: 'QTableView_AllComponents' = None):
         """
         Args:
             gui (MetalGUI): the GUI (Default: None)
@@ -59,8 +62,10 @@ class QTableModel_AllComponents(QAbstractTableModel):
         self.logger = logger
         self.gui = gui
         self._tableView = tableView  # the view used to preview this model, used to refresh
-        self.columns = ['Name', 'QComponent class',
-                        'QComponent module', 'Build status', 'id']
+        self.columns = [
+            'Name', 'QComponent class', 'QComponent module', 'Build status',
+            'id'
+        ]
         self._row_count = -1
 
         self._create_timer()
@@ -146,7 +151,10 @@ class QTableModel_AllComponents(QAbstractTableModel):
         """
         return len(self.columns)
 
-    def headerData(self, section, orientation: Qt.Orientation, role=Qt.DisplayRole):
+    def headerData(self,
+                   section,
+                   orientation: Qt.Orientation,
+                   role=Qt.DisplayRole):
         """ Set the headers to be displayed.
 
         Args:
@@ -186,10 +194,11 @@ class QTableModel_AllComponents(QAbstractTableModel):
         if not index.isValid():
             return Qt.ItemIsEnabled
 
-        return Qt.ItemFlags(QAbstractTableModel.flags(self, index) |
-                            Qt.ItemIsSelectable)  # | Qt.ToolTip)  # ItemIsEditable
+        return Qt.ItemFlags(
+            QAbstractTableModel.flags(self, index)
+            | Qt.ItemIsSelectable)  # | Qt.ToolTip)  # ItemIsEditable
 
-    # @catch_exception_slot_pyqt()
+    # @slot_catch_error()
     def data(self, index: QModelIndex, role: int = Qt.DisplayRole):
         """ Depending on the index and role given, return data. If not
         returning data, return None (PySide equivalent of QT's
@@ -209,9 +218,11 @@ class QTableModel_AllComponents(QAbstractTableModel):
             if index.column() == 0:
                 return str(component_name)
             elif index.column() == 1:
-                return str(self.design.components[component_name].__class__.__name__)
+                return str(
+                    self.design.components[component_name].__class__.__name__)
             elif index.column() == 2:
-                return str(self.design.components[component_name].__class__.__module__)
+                return str(self.design.components[component_name].__class__.
+                           __module__)
             elif index.column() == 3:
                 return str(self.design.components[component_name].status)
             elif index.column() == 4:

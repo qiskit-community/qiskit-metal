@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2019, 2020.
+# (C) Copyright IBM 2017, 2020.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -11,18 +11,21 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
+"""
+@author:Zlatko
+"""
 
-"""Ask Zlatko for help on this file"""
 from typing import TYPE_CHECKING
 from typing import List
 
-from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtCore import QModelIndex, Qt, QTimer
-from PyQt5.QtGui import QContextMenuEvent
-from PyQt5.QtWidgets import (QInputDialog, QLabel, QLineEdit, QMenu,
-                             QMessageBox, QTableView, QVBoxLayout, QAbstractItemView)
+from PySide2 import QtCore, QtWidgets
+from PySide2.QtCore import QModelIndex, Qt, QTimer
+from PySide2.QtGui import QContextMenuEvent
+from PySide2.QtWidgets import (QInputDialog, QLabel, QLineEdit, QMenu,
+                               QMessageBox, QTableView, QVBoxLayout,
+                               QAbstractItemView)
 
-from ...utility._handle_qt_messages import catch_exception_slot_pyqt
+from ...utility._handle_qt_messages import slot_catch_error
 from ..bases.QWidget_PlaceholderText import QWidget_PlaceholderText
 
 if TYPE_CHECKING:
@@ -42,7 +45,6 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
     Access:
         table = gui.ui.tableComponents
     """
-
     def __init__(self, parent: QtWidgets.QWidget):
         """
         Args:
@@ -50,7 +52,8 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         """
         QTableView.__init__(self, parent)
         QWidget_PlaceholderText.__init__(
-            self,  "No QComponents to show.\n\nCreate components from the QLibrary.")
+            self,
+            "No QComponents to show.\n\nCreate components from the QLibrary.")
         self.clicked.connect(self.viewClicked)
         self.doubleClicked.connect(self.doDoubleClicked)
 
@@ -87,7 +90,7 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         """Returns the GUI"""
         return self.model().gui
 
-    # @catch_exception_slot_pyqt
+    # @slot_catch_error
     def contextMenuEvent(self, event: QContextMenuEvent):
         """
         This event handler, for event event, can be reimplemented
@@ -132,7 +135,7 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         name = model.data(index)
         return name, row
 
-    # @catch_exception_slot_pyqt
+    # @slot_catch_error
     def do_menu_delete(self, event):
         """Called when the user clicks the context menu delete.
 
@@ -142,9 +145,9 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         name, row = self.get_name_from_event(event)
 
         if row > -1:
-            ret = QMessageBox.question(self, '',
-                                       f"Are you sure you want to delete component {name}",
-                                       QMessageBox.Yes | QMessageBox.No)
+            ret = QMessageBox.question(
+                self, '', f"Are you sure you want to delete component {name}",
+                QMessageBox.Yes | QMessageBox.No)
             if ret == QMessageBox.Yes:
                 self._do_delete(name)
 
@@ -168,8 +171,10 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         name, row = self.get_name_from_event(event)
 
         if row > -1:
-            text, okPressed = QInputDialog.getText(
-                self, f"Rename component {name}", f"Rename {name} to:", QLineEdit.Normal, "")
+            text, okPressed = QInputDialog.getText(self,
+                                                   f"Rename component {name}",
+                                                   f"Rename {name} to:",
+                                                   QLineEdit.Normal, "")
             if okPressed and text != '':
                 self.logger.info(f'Renaming {name} to {text}')
                 comp_id = self.design.components[name].id
@@ -227,9 +232,10 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         Returns:
             List[str]: List of components that user highlighted.
         """
+        def get_name(row):
+            return self.model().data(self.model().index(row,
+                                                        0))  # get the name
 
-        def get_name(row): return self.model().data(
-            self.model().index(row, 0))  # get the name
         selected_names = [get_name(row) for row in rows]
         return selected_names
 

@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2019, 2020.
+# (C) Copyright IBM 2017, 2020.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -11,20 +11,18 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-#
-
+# Tree model for GDS renderer
 """
-Tree model for GDS renderer
-
 @authors: Dennis Wang, Zlatko Minev
 @date: 2020
 """
 
-import PyQt5
-from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QTreeView
+import PySide2
+from PySide2 import QtWidgets
+from PySide2.QtWidgets import QTreeView
 
 from .widgets.bases.dict_tree_base import QTreeModel_Base
+
 
 class RendererGDS_Model(QTreeModel_Base):
     """
@@ -33,7 +31,8 @@ class RendererGDS_Model(QTreeModel_Base):
     Args:
         QTreeModel_Base (QAbstractItemModel): Base class for nested dicts
     """
-    def __init__(self, parent: 'ParentWidget', gui: 'MetalGUI', view: QTreeView):
+    def __init__(self, parent: 'ParentWidget', gui: 'MetalGUI',
+                 view: QTreeView):
         """
         Editable table with drop-down rows for GDS renderer options.
         Organized as a tree model where child nodes are more specific properties
@@ -44,7 +43,10 @@ class RendererGDS_Model(QTreeModel_Base):
             gui (MetalGUI): The main user interface
             view (QTreeView): View corresponding to a tree structure
         """
-        super().__init__(parent=parent, gui=gui, view=view, child='GDS renderer')
+        super().__init__(parent=parent,
+                         gui=gui,
+                         view=view,
+                         child='GDS renderer')
 
     @property
     def data_dict(self) -> dict:

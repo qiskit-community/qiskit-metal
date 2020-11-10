@@ -1,7 +1,7 @@
 ﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿[![Build Status](https://travis.ibm.com/IBM-Q-Restricted-Research/qiskit-metal.svg?token=p3Ak3Pz4fK3rsU99vhd2&branch=v0.2-dev)](https://travis.ibm.com/IBM-Q-Restricted-Research/qiskit-metal)
 
 # Qiskit Metal [![](https://badges.frapsoft.com/os/v1/open-source.png?v=103)](https://github.com/zlatko-minev/pyEPR) [![](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/zlatko-minev/pyEPR)
->  Quantum Creator: VLSI and Sims 
+>  Quantum Creator: VLSI and Sims
 
 ## Installation
 
@@ -12,7 +12,7 @@ To setup a development environment, first `git clone` this repository.
 
 * Note: If you don't have git installed, you can download and use [GitHub Desktop GUI](https://desktop.github.com/) and see these [notes](https://help.github.com/en/desktop/contributing-to-projects/cloning-a-repository-from-github-to-github-desktop).
 
-Then Qiskit Metal can either be installed using a [conda environment](https://docs.conda.io/en/latest/miniconda.html) or a Python virtual environment, as described below. We recommend conda. 
+Then Qiskit Metal can either be installed using a [conda environment](https://docs.conda.io/en/latest/miniconda.html) or a Python virtual environment, as described below. We recommend conda.
 
 Notes:
 
@@ -21,7 +21,7 @@ Notes:
 
 ### Conda environment setup (preferred setup)
 
-To use a conda environment, assuming [you have conda installed](https://docs.conda.io/projects/conda/en/latest/user-guide/install/), we will install the qiskit_metal package locally. 
+To use a conda environment, assuming [you have conda installed](https://docs.conda.io/projects/conda/en/latest/user-guide/install/), we will install the qiskit_metal package locally.
 
 ##### Option 1: A new environment
 
@@ -93,7 +93,7 @@ If you are planning to develop the qiskmit metal codebase, you'll want to use th
 
 Here are some things to consider when setting up a development environment:
 
-* If using a virtual environment, make sure `pip` is up to date. In initial environment testing, PyQt5 was not installable with recent (but not the latest) versions of `pip`.
+* If using a virtual environment, make sure `pip` is up to date. In initial environment testing, PySide2 was not installable with recent (but not the latest) versions of `pip`.
 
 ## Docs and how to use
 

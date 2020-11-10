@@ -2,31 +2,34 @@
 
 RED='\033[1;34m'
 NC='\033[0m' # No Color
-#  Set the current active path to the path where this bash file is 
+#  Set the current active path to the path where this bash file is
 cd "$(dirname "$0")"
 echo -e "Present working directory: ${RED}${PWD}${NC}"
 
-# pyuic5
-# https://www.riverbankcomputing.com/static/Docs/PyQt5/designer.html
+# Define conversion
+ui_to_py=pyside2-uic
+rc_to_py=pyside2-rcc
+# pyside2-uic
 #     -o : The Python code generated is written to the file <FILE>.
-#     -i : Resource modules are imported using 
+#     -i : Resource modules are imported using
 #          from <PACKAGE> import ... rather than a simple import ....
-pyuic5 main_window_ui.ui      -o main_window_ui.py      --import-from .
-pyuic5 component_widget_ui.ui -o component_widget_ui.py --import-from .
-pyuic5 plot_window_ui.ui      -o plot_window_ui.py      --import-from .
-pyuic5 elements_ui.ui         -o elements_ui.py         --import-from .
-pyuic5 edit_source_ui.ui      -o edit_source_ui.py      --import-from .
-pyuic5 renderer_gds_ui.ui     -o renderer_gds_ui.py     --import-from .
+#      --from-imports (pyside)  --import-from (pyqt)
+"${ui_to_py}" --output=main_window_ui.py        --from-imports  main_window_ui.ui
+"${ui_to_py}" --output=component_widget_ui.py   --from-imports  component_widget_ui.ui
+"${ui_to_py}" --output=plot_window_ui.py        --from-imports  plot_window_ui.ui
+"${ui_to_py}" --output=elements_ui.py           --from-imports  elements_ui.ui
+"${ui_to_py}" --output=edit_source_ui.py        --from-imports  edit_source_ui.ui
+"${ui_to_py}" --output=renderer_gds_ui.py       --from-imports  renderer_gds_ui.ui
 
-pyuic5 widgets/variable_table/dialog_popup.ui -o widgets/variable_table/dialog_popup.py --import-from .
-pyuic5 widgets/variable_table/add_delete_table.ui -o widgets/variable_table/add_delete_table.py --import-from .
+"${ui_to_py}" --output=widgets/variable_table/dialog_popup.py       --from-imports  widgets/variable_table/dialog_popup.ui
+"${ui_to_py}" --output=widgets/variable_table/add_delete_table.py   --from-imports  widgets/variable_table/add_delete_table.ui
 
-pyrcc5 main_window_rc.qrc     -o main_window_rc_rc.py
+"${rc_to_py}" -o main_window_rc_rc.py   main_window_rc.qrc
 
 
-# Zlatko: 
+# Zlatko:
 # Qt Designer doesn't seem to know that in python you cant use self.raise
-# since raise is a reserved word. 
+# since raise is a reserved word.
 # Instead, the functgion is called self.raise_
 # Here i use sed on mac to replace it:
 #         .raise)    --->    .raise_)

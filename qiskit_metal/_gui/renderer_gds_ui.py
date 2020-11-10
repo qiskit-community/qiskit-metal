@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'renderer_gds_ui.ui'
+# Form implementation generated from reading ui file 'renderer_gds_ui.ui',
+# licensing of 'renderer_gds_ui.ui' applies.
 #
-# Created by: PyQt5 UI code generator 5.14.2
+# Created: Mon Nov  9 17:33:54 2020
+#      by: pyside2-uic  running on PySide2 5.9.0~a1
 #
 # WARNING! All changes made in this file will be lost!
 
-
-from PyQt5 import QtCore, QtGui, QtWidgets
-
+from PySide2 import QtCore, QtGui, QtWidgets
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -80,7 +80,7 @@ class Ui_MainWindow(object):
         self.label.setWordWrap(True)
         self.label.setObjectName("label")
         MainWindow.setCentralWidget(self.centralwidget)
-        self.menubar = QtWidgets.QMenuBar(MainWindow)
+        self.menubar = QtWidgets.QMenuBar()
         self.menubar.setGeometry(QtCore.QRect(0, 0, 651, 22))
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
@@ -89,24 +89,24 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
-        self.browseButton.clicked.connect(MainWindow.browse_folders)
-        self.exportButton.clicked.connect(MainWindow.export_file)
-        self.selectAllButton.clicked.connect(MainWindow.select_all)
-        self.deselectAllButton.clicked.connect(MainWindow.deselect_all)
-        self.refreshButton.clicked.connect(MainWindow.refresh)
+        QtCore.QObject.connect(self.browseButton, QtCore.SIGNAL("clicked()"), MainWindow.browse_folders)
+        QtCore.QObject.connect(self.exportButton, QtCore.SIGNAL("clicked()"), MainWindow.export_file)
+        QtCore.QObject.connect(self.selectAllButton, QtCore.SIGNAL("clicked()"), MainWindow.select_all)
+        QtCore.QObject.connect(self.deselectAllButton, QtCore.SIGNAL("clicked()"), MainWindow.deselect_all)
+        QtCore.QObject.connect(self.refreshButton, QtCore.SIGNAL("clicked()"), MainWindow.refresh)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
-        _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "GDS Renderer"))
-        self.lineEdit.setPlaceholderText(_translate("MainWindow", "Export GDS to the following location... "))
-        self.browseButton.setText(_translate("MainWindow", "Browse"))
-        self.exportButton.setText(_translate("MainWindow", "Export"))
-        self.instructionsLabel.setText(_translate("MainWindow", "Check off components to export:"))
-        self.refreshButton.setText(_translate("MainWindow", "Refresh List"))
-        self.selectAllButton.setText(_translate("MainWindow", "Select All"))
-        self.deselectAllButton.setText(_translate("MainWindow", "Deselect All"))
-        self.instructionsLabel_2.setText(_translate("MainWindow", "Renderer options"))
-        self.label.setText(_translate("MainWindow", "Note: The user-defined bounding box scales above are only relevant when not all components are being exported. Otherwise, the bounding box for the subtraction layer is obtained from the DesignPlanar class."))
+        MainWindow.setWindowTitle(QtWidgets.QApplication.translate("MainWindow", "GDS Renderer", None, -1))
+        self.lineEdit.setPlaceholderText(QtWidgets.QApplication.translate("MainWindow", "Export GDS to the following location... ", None, -1))
+        self.browseButton.setText(QtWidgets.QApplication.translate("MainWindow", "Browse", None, -1))
+        self.exportButton.setText(QtWidgets.QApplication.translate("MainWindow", "Export", None, -1))
+        self.instructionsLabel.setText(QtWidgets.QApplication.translate("MainWindow", "Check off components to export:", None, -1))
+        self.refreshButton.setText(QtWidgets.QApplication.translate("MainWindow", "Refresh List", None, -1))
+        self.selectAllButton.setText(QtWidgets.QApplication.translate("MainWindow", "Select All", None, -1))
+        self.deselectAllButton.setText(QtWidgets.QApplication.translate("MainWindow", "Deselect All", None, -1))
+        self.instructionsLabel_2.setText(QtWidgets.QApplication.translate("MainWindow", "Renderer options", None, -1))
+        self.label.setText(QtWidgets.QApplication.translate("MainWindow", "Note: The user-defined bounding box scales above are only relevant when not all components are being exported. Otherwise, the bounding box for the subtraction layer is obtained from the DesignPlanar class.", None, -1))
+
 from .tree_view_base import QTreeView_Base
 from . import main_window_rc_rc

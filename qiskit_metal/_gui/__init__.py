@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2019.
+# (C) Copyright IBM 2017, 2020.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -11,7 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 """
 =================================================
 GUI (:mod:`qiskit_metal._gui`)
@@ -21,7 +20,8 @@ GUI (:mod:`qiskit_metal._gui`)
 
 GUI module, handles user interface.
 
-The gui module is only loaded if PyQt5 can be found.
+The gui module is only loaded if right python qt module
+(such as pyside or pyqt) can be found.
 
 Created on Tue May 14 17:13:40 2019
 @author: Zlatko
@@ -36,6 +36,7 @@ Main Window
     MetalGUI
 
 """
+# pylint: disable=invalid-name
 
 import logging
 from .. import __version__
@@ -84,49 +85,48 @@ if config.is_building_docs():
 
 else:
     # Main GUI load
-    # Check if PyQt5 is available for import
+    # Check if PySide2 is available for import
     try:
-        import PyQt5
-        __ihave_pyqt__ = True
+        import PySide2
+        __ihave_qt__ = True
     except (ImportError, ModuleNotFoundError):
-        __ihave_pyqt__ = False
+        __ihave_qt__ = False
 
-    if __ihave_pyqt__:
+    if __ihave_qt__:
 
         # Add hook for when we start the gui - Logging for QT errors
-        from .utility._handle_qt_messages import QtCore, _pyqt_message_handler
-        QtCore.qInstallMessageHandler(_pyqt_message_handler)
-        del QtCore, _pyqt_message_handler
+        from .utility._handle_qt_messages import QtCore, _qt_message_handler
+        QtCore.qInstallMessageHandler(_qt_message_handler)
+        del QtCore, _qt_message_handler
 
-        # main window
-        from .main_window import MetalGUI as _MetalGUI
         from .main_window_base import kick_start_qApp
+        from .main_window import MetalGUI as _MetalGUI
 
         def MetalGUI(*args, **kwargs):
+            """Load Qiskit Metal
 
+            Returns:
+                gui instance of None
+            """
             qApp = kick_start_qApp()
-
             if not qApp:
-                # Why is it none
-                logging.error("""Could not start PyQt5 event loop using QApplicaiton. """)
-
+                logging.error(
+                    "Could not start Qt event loop using QApplicaiton.")
             return _MetalGUI(*args, **kwargs)
+
     else:
-
         # Function as an error function for the class MetalGUI
-        def MetalGUI(*args, **kwargs): # pylint: disable=unused-argument,bad-option-value,invalid-name
+        def MetalGUI(*args, **kwargs):  # pylint: disable=unused-argument,bad-option-value,invalid-name
             """
-            ERROR: Unable to load PyQt5! Please make sure PyQt5 is installed.
-            See Metal installation instrucitons and help.
+            ERROR: Unable to load PySide2! Please make sure PySide2 is installed.
+            See Qiskit Metal installation instrucitons and Qiskit Metal help.
             """
 
-            _error_msg = r'''ERROR: CANNOT START GUI because COULD NOT LOAD PyQT5;
-            Try `import PyQt5` This seems to have failed.
-            Have you installed PyQt5?
-            See install readme
-            '''
+            _error_msg = r'ERROR: CANNOT START GUI because COULD NOT LOAD PySide2'\
+                'Try `import PySide2` This seems to have failed.'\
+                'Have you installed PySide2?'\
+                'See install readme.'
 
             print(_error_msg)
 
             raise Exception(_error_msg)
-

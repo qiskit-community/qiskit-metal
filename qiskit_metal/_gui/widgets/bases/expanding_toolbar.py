@@ -1,13 +1,27 @@
+# -*- coding: utf-8 -*-
+
+# This code is part of Qiskit.
+#
+# (C) Copyright IBM 2017, 2020.
+#
+# This code is licensed under the Apache License, Version 2.0. You may
+# obtain a copy of this license in the LICENSE.txt file in the root directory
+# of this source tree or at http://www.apache.org/licenses/LICENSE-2.0.
+#
+# Any modifications or derivative works of this code must retain this
+# copyright notice, and modified files need to carry a notice indicating
+# that they have been altered from the originals.
+
 """
 @author: Zlatko Minev
 @date: 2020
 """
 
-
-from PyQt5 import QtCore, QtGui
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QToolBar
+from PySide2 import QtCore, QtGui
+from PySide2.QtCore import Qt
+from PySide2.QtWidgets import QToolBar
 import time
+
 
 class QToolBarExpanding(QToolBar):
     """
@@ -19,15 +33,14 @@ class QToolBarExpanding(QToolBar):
     Arguments:
         QToolbar (QToolbar): QToolbar
     """
-
     def expand_me(self):
         """Expand the toolbar"""
         if self.orientation() == Qt.Vertical:
-            tool_style =  Qt.ToolButtonTextBesideIcon
-            align = Qt.AlignLeft|Qt.AlignVCenter
-        else: # Qt.Horizontal
-            tool_style =  Qt.ToolButtonTextUnderIcon
-            align = Qt.AlignHCenter|Qt.AlignTop
+            tool_style = Qt.ToolButtonTextBesideIcon
+            align = Qt.AlignLeft | Qt.AlignVCenter
+        else:  # Qt.Horizontal
+            tool_style = Qt.ToolButtonTextUnderIcon
+            align = Qt.AlignHCenter | Qt.AlignTop
 
         # show icons and text
         self.setToolButtonStyle(tool_style)
@@ -67,6 +80,6 @@ class QToolBarExpanding(QToolBar):
         """
         # print('<- EXIT')
         # this adds a 0.25sec delay before contracting the widget if mouse accidentally leaves
-        time.sleep(0.25) 
+        time.sleep(0.25)
         self.contract_me()
         super().leaveEvent(evt)

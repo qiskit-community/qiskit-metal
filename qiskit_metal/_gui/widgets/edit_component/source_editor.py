@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2019, 2020.
+# (C) Copyright IBM 2017, 2020.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -11,7 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 """Main edit source code window,
 based on pyqode.python: https://github.com/pyQode/pyqode.python
 
@@ -26,17 +25,19 @@ import warnings
 from typing import TYPE_CHECKING, List, Tuple, Union
 
 import pygments
-import PyQt5
+import PySide2
 from pygments import highlight
 from pygments.formatters import HtmlFormatter
 from pygments.lexers import get_lexer_by_name
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtGui import QTextCursor
-from PyQt5.QtWidgets import QTextEdit
+from PySide2 import QtCore, QtGui, QtWidgets
+from PySide2.QtGui import QTextCursor
+from PySide2.QtWidgets import QTextEdit
 
-__all__ = ['definition_generate_html', 'definition_get_source', 'doc_generate_html',
-           'doc_get_object_from_info', 'get_definition_end_position',
-           'get_definition_start_position']
+__all__ = [
+    'definition_generate_html', 'definition_get_source', 'doc_generate_html',
+    'doc_get_object_from_info', 'get_definition_end_position',
+    'get_definition_start_position'
+]
 
 try:
     from pyqode.python.backend import server
@@ -53,9 +54,10 @@ except ImportError as e:
     # TODO: report in a more visible way.
     # Maybe reaise exception.
     # If this line fails then the GUI can't start.
-    raise ImportError('Error could not load `pyqode.python`\nPlease install. In a shell, try running: \n'
-                      '  >> pip install pyqode.python --upgrade \n\n'
-                      'For more, see https://github.com/pyQode/pyqode.python \n')
+    raise ImportError(
+        'Error could not load `pyqode.python`\nPlease install. In a shell, try running: \n'
+        '  >> pip install pyqode.python --upgrade \n\n'
+        'For more, see https://github.com/pyQode/pyqode.python \n')
 
 if TYPE_CHECKING:
     from ...main_window import MetalGUI, QMainWindowExtension
@@ -90,6 +92,7 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         Note that thtehre can be more than one edit widet open.
         A refernece is kept to all of them in `gui.component_window.src_widgets`
     """
+
     # TODO: remember previous state, save to config like gui and recall when created
     # save font size too.  remmeber window properties and zoom level
     # TODO: Add error slot handling to all call funcitons below
@@ -98,13 +101,13 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
     # qiskit_metal._gui.widgets.edit_component.source_editor.MetalSourceEditor,
     # pyqode.python.widgets.code_edit.PyCodeEditBase,
     # pyqode.core.api.code_edit.CodeEdit,
-    # PyQt5.QtWidgets.QPlainTextEdit,
-    # PyQt5.QtWidgets.QAbstractScrollArea,
-    # PyQt5.QtWidgets.QFrame,
-    # PyQt5.QtWidgets.QWidget,
-    # PyQt5.QtCore.QObject,
+    # PySide2.QtWidgets.QPlainTextEdit,
+    # PySide2.QtWidgets.QAbstractScrollArea,
+    # PySide2.QtWidgets.QFrame,
+    # PySide2.QtWidgets.QWidget,
+    # PySide2.QtCore.QObject,
     # sip.wrapper,
-    # PyQt5.QtGui.QPaintDevice,
+    # PySide2.QtGui.QPaintDevice,
     # sip.simplewrapper,
     # object
 
@@ -255,7 +258,8 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         # TODO: may need to test more
         jedipath = jedi.settings.cache_directory
         if os.path.isdir(jedipath):  # dir already exists
-            if not os.access(jedipath, os.W_OK):  # check that we have wrtite privs
+            if not os.access(jedipath,
+                             os.W_OK):  # check that we have wrtite privs
                 jedi.settings.cache_directory += '1'
         ######
 
@@ -268,7 +272,8 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
                 component_module_name=self.component_module_name,
                 component_class_name=self.component_class_name)
             self.logger.info(
-                f'Reloaded {self.component_class_name} from {self.component_module_name}')
+                f'Reloaded {self.component_class_name} from {self.component_module_name}'
+            )
 
     def rebuild_components(self):
         """Rebuild teh component"""
@@ -290,17 +295,18 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         sizes = splitter.sizes()
         total = sum(sizes)
 
-        if sizes[-1] < 1: # hidden, now show
+        if sizes[-1] < 1:  # hidden, now show
             # restore size
             spliter_size = self.__last_splitter_size if \
                             hasattr(self, '__last_splitter_size') else 400
-            if total < spliter_size+50:
+            if total < spliter_size + 50:
                 spliter_size = int(total / 2)
-            splitter.setSizes([total - spliter_size, spliter_size]) # hide the right side
+            splitter.setSizes([total - spliter_size,
+                               spliter_size])  # hide the right side
 
         else:
-            self.__last_splitter_size = sizes[-1] # save for toggle
-            splitter.setSizes([total, 0]) # hide the right side
+            self.__last_splitter_size = sizes[-1]  # save for toggle
+            splitter.setSizes([total, 0])  # hide the right side
 
     @property
     def edit_widget(self):
@@ -354,14 +360,14 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
             # self.ensureCursorVisible()
             self.centerCursor()
 
-    def get_word_under_cursor(self) -> Tuple[PyQt5.QtGui.QTextCursor, dict]:
+    def get_word_under_cursor(self) -> Tuple[PySide2.QtGui.QTextCursor, dict]:
         """Returns the cursor to select word udner it and info
 
         Returns:
-            tuple: PyQt5.QtGui.QTextCursor, dict
+            tuple: PySide2.QtGui.QTextCursor, dict
         """
         tc = TextHelper(self).word_under_cursor(
-            select_whole_word=True)  # type: PyQt5.QtGui.QTextCursor
+            select_whole_word=True)  # type: PySide2.QtGui.QTextCursor
         word_info = {
             'code': self.toPlainText(),
             'line': tc.blockNumber(),
@@ -372,7 +378,9 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         # print(word_info)
         return tc, word_info
 
-    def get_definitions_under_cursor(self, offset=0) -> List['jedi.api.classes.Definition']:
+    def get_definitions_under_cursor(self,
+                                     offset=0
+                                     ) -> List['jedi.api.classes.Definition']:
         """Get jedi
 
         Args:
@@ -388,13 +396,14 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         p = word_info
 
         self.script = jedi.Script(p['code'],
-                                  line=1+p['line'],
-                                  column=p['column']+offset,
-                                  path=p['path'], encoding=p['encoding'])
+                                  line=1 + p['line'],
+                                  column=p['column'] + offset,
+                                  path=p['path'],
+                                  encoding=p['encoding'])
 
         try:
-            name_defns = self.script.infer(
-                line=1+word_info['line'], column=word_info['column']+offset)
+            name_defns = self.script.infer(line=1 + word_info['line'],
+                                           column=word_info['column'] + offset)
         except ValueError:
             print('Jedi did not find')
             name_defns = []
@@ -410,7 +419,7 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         if len(definitions) < 1:
             return
 
-        if len(definitions) > 2: # just take the first 2
+        if len(definitions) > 2:  # just take the first 2
             definitions = definitions[:2]
 
         csss = []
@@ -420,7 +429,7 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
             if defn.full_name not in ['builtins.NoneType']:
                 # For each found definition give the full docs.
                 newtext, css = definition_generate_html(defn)
-                text += newtext+'<br><br>'
+                text += newtext + '<br><br>'
                 csss += [css]
 
         if len(csss) > 0:
@@ -467,6 +476,7 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         #     obj = doc_get_object_from_info(info)
         #     text = doc_generate_html(obj)
 
+
 css_base = """
   p {
       line-height: 1em;   /* within paragraph */
@@ -482,6 +492,7 @@ css_base = """
   }
   """
 
+
 def definition_generate_html(defn: 'jedi.api.classes.Definition'):
     """Generate HTML definition
 
@@ -493,7 +504,8 @@ def definition_generate_html(defn: 'jedi.api.classes.Definition'):
     """
     signatures = defn.get_signatures()
     doc_text = defn.docstring()
-    doc_text = doc_text.replace(defn.name, f'<span style="color: #0900ff">{defn.name}</span>', 1)
+    doc_text = doc_text.replace(
+        defn.name, f'<span style="color: #0900ff">{defn.name}</span>', 1)
 
     source_code, source_html, html_css_lex = definition_get_source(defn)
 
@@ -518,7 +530,8 @@ f"""
     return text, css
 
 
-def definition_get_source(defn: 'jedi.api.classes.Definition', formatter:HtmlFormatter=None):
+def definition_get_source(defn: 'jedi.api.classes.Definition',
+                          formatter: HtmlFormatter = None):
     """Get the source code from definition
 
     Args:
@@ -553,8 +566,6 @@ def definition_get_source(defn: 'jedi.api.classes.Definition', formatter:HtmlFor
     return source_code, source_html, html_css_lex
 
 
-
-
 def get_definition_end_position(self):
     """
     The (row, column) of the end of the definition range. Rows start with
@@ -576,6 +587,7 @@ def get_definition_end_position(self):
         return last_leaf.end_pos
     return definition.end_pos
 
+
 def get_definition_start_position(self):
     """
     The (row, column) of the start of the definition range. Rows start with
@@ -591,10 +603,6 @@ def get_definition_start_position(self):
     if definition is None:
         return self._name.start_pos
     return definition.start_pos
-
-
-
-
 
 
 ################################################################################################################################
@@ -657,7 +665,7 @@ def doc_generate_html(obj) -> str:
       color:#AA2b01;
   }
 </style>
-"""+f"""
+""" + f"""
 {doc_text}
 
 <p><span class="signature_type"> file:</span> {file}</p>

@@ -1,3 +1,17 @@
+# -*- coding: utf-8 -*-
+
+# This code is part of Qiskit.
+#
+# (C) Copyright IBM 2017, 2020.
+#
+# This code is licensed under the Apache License, Version 2.0. You may
+# obtain a copy of this license in the LICENSE.txt file in the root directory
+# of this source tree or at http://www.apache.org/licenses/LICENSE-2.0.
+#
+# Any modifications or derivative works of this code must retain this
+# copyright notice, and modified files need to carry a notice indicating
+# that they have been altered from the originals.
+
 """Main module that handles the elements window inside the main window.
 @author: Zlatko Minev
 @date: 2020
@@ -6,10 +20,9 @@
 from typing import TYPE_CHECKING
 
 import numpy as np
-from PyQt5 import Qt, QtCore, QtWidgets
-from PyQt5.QtCore import QAbstractTableModel, QModelIndex
-from PyQt5.QtWidgets import (QApplication, QFileDialog, QLabel, QMainWindow,
-                             QMessageBox)
+from PySide2 import QtCore
+from PySide2.QtCore import QAbstractTableModel, QModelIndex
+from PySide2.QtWidgets import QMainWindow
 
 from .elements_ui import Ui_ElementsWindow
 
@@ -24,11 +37,10 @@ class ElementsWindow(QMainWindow):
 
     Extends the `QMainWindow` class
 
-    PyQt5 Signal / Slots Extensions:
+    PySide2 Signal / Slots Extensions:
         The UI can call up to this class to execeute button clicks for instance
         Extensiosn in qt designer on signals/slots are linked to this class
     """
-
     def __init__(self, gui: 'MetalGUI', parent_window: 'QMainWindowExtension'):
         """
         Args:
@@ -72,7 +84,6 @@ class ElementsWindow(QMainWindow):
 
 
 class ElementTableModel(QAbstractTableModel):
-
     """MVC class
     See https://doc.qt.io/qt-5/qabstracttablemodel.html
 
@@ -228,8 +239,9 @@ class ElementTableModel(QAbstractTableModel):
         if not index.isValid():
             return QtCore.Qt.ItemIsEnabled
 
-        return QtCore.Qt.ItemFlags(QAbstractTableModel.flags(self, index) |
-                                   QtCore.Qt.ItemIsSelectable)  # ItemIsEditable
+        return QtCore.Qt.ItemFlags(
+            QAbstractTableModel.flags(self, index)
+            | QtCore.Qt.ItemIsSelectable)  # ItemIsEditable
 
     def data(self, index: QModelIndex, role=QtCore.Qt.DisplayRole):
         """ Depending on the index and role given, return data. If not

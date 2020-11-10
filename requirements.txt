@@ -1,9 +1,11 @@
 addict
+cycler
 descartes
 docutils
 gdspy>=1.5.2
 GeoPandas
 ipython
+jedi
 matplotlib
 numpy
 pandas
@@ -11,6 +13,6 @@ pint
 pyEPR-quantum
 Pygments
 pyqode.python
-PyQt5>=5.12
+PySide2>=5.8
 scipy
 Shapely

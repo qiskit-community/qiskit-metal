@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2019, 2020.
+# (C) Copyright IBM 2017, 2020.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -11,7 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 """Main module that handles a component  inside the main window.
 @author: Zlatko Minev
 @date: 2020
@@ -23,16 +22,16 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Union
 
 import numpy as np
-import PyQt5
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtCore import QAbstractTableModel, QModelIndex, Qt
-from PyQt5.QtGui import QFont, QColor
-from PyQt5.QtWidgets import (QAbstractItemView, QApplication, QFileDialog,
-                             QLabel, QMainWindow, QMessageBox, QTabWidget)
+import PySide2
+from PySide2 import QtCore, QtGui, QtWidgets
+from PySide2.QtCore import QAbstractTableModel, QModelIndex, Qt
+from PySide2.QtGui import QFont, QColor
+from PySide2.QtWidgets import (QAbstractItemView, QApplication, QFileDialog,
+                               QLabel, QMainWindow, QMessageBox, QTabWidget)
 
 from .... import logger
 from ...component_widget_ui import Ui_ComponentWidget
-from ...utility._handle_qt_messages import catch_exception_slot_pyqt
+from ...utility._handle_qt_messages import slot_catch_error
 from .source_editor_widget import create_source_edit_widget
 # from .table_model_options import QTableModel_Options
 from .tree_model_options import QTreeModel_Options
@@ -157,14 +156,13 @@ class ComponentWidget(QTabWidget):
 
     This class extends the `QTabWidget` class.
 
-    PyQt5 Signal / Slots Extensions:
+    PySide2 Signal / Slots Extensions:
         The UI can call up to this class to execeute button clicks for instance
         Extensiosn in qt designer on signals/slots are linked to this class
 
     **Access:**
         gui.component_window
     """
-
     def __init__(self, gui: 'MetalGUI', parent: QtWidgets.QWidget):
         """
         Args:
@@ -222,7 +220,7 @@ class ComponentWidget(QTabWidget):
         # click() or animateClick() is called. Notably, this signal is not emitted if you call
         #  setDown(), setChecked() or toggle().
 
-        # for some reason i need to clear the stylsheet. must be a bug inthis pyqt versino
+        # for some reason i need to clear the stylsheet. must be a bug inthis qt versino
         s1 = self.ui.btn_edit_src.styleSheet()
         s2 = self.ui.pushButtonEditSource.styleSheet()
         self.ui.btn_edit_src.setStyleSheet('')
@@ -375,7 +373,8 @@ class ComponentWidget(QTabWidget):
         textEdit = self.ui.textSource
         textEdit.moveCursor(QtGui.QTextCursor.Start)
         textEdit.ensureCursorVisible()
-    # @catch_exception_slot_pyqt()
+
+    # @slot_catch_error()
 
     def edit_source(self, *args, parent=None):
         """Calls the edit source window
@@ -389,13 +388,16 @@ class ComponentWidget(QTabWidget):
             module_name = self.component.__class__.__module__
             module_path = self.qcomponent_file_path
             self.src_widgets += [
-                create_source_edit_widget(
-                    self.gui, class_name, module_name, module_path, parent=parent)
+                create_source_edit_widget(self.gui,
+                                          class_name,
+                                          module_name,
+                                          module_path,
+                                          parent=parent)
             ]
             self.logger.info('Edit sources window created. '
                              'Please find on your screen.')
         else:
-            QtWidgets.QMessageBox.warning(self,
-                                          "Missing Selected Component",
-                                          "Please first select a component to edit, by clicking "
-                                          "one in the desing components menu.")
+            QtWidgets.QMessageBox.warning(
+                self, "Missing Selected Component",
+                "Please first select a component to edit, by clicking "
+                "one in the desing components menu.")

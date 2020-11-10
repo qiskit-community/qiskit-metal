@@ -1457,7 +1457,7 @@ QTabWidget::pane {
   border: 1px solid #32414B;
   border-radius: 4px;
   margin: 0px;
-  /* Fixes double border inside pane with pyqt5 */
+  /* Fixes double border inside pane with PySide2 */
   padding: 0px;
 }
 

@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2020.
+# (C) Copyright IBM 2017, 2020.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -11,38 +11,34 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 '''
 @date: 2020
 @author: Dennis Wang
 '''
 
-from PyQt5 import QtCore
-from PyQt5.QtGui import QStandardItem, QStandardItemModel
-from PyQt5.QtWidgets import (QMainWindow, QFileDialog, QListView,
-                             QAbstractItemView, QMessageBox)
-from .renderer_gds_ui import Ui_MainWindow
+from PySide2.QtWidgets import (QAbstractItemView, QFileDialog, QMainWindow,
+                               QMessageBox)
 
 from .list_model_base import DynamicList
 from .renderer_gds_model import RendererGDS_Model
+from .renderer_gds_ui import Ui_MainWindow
+
 
 class RendererGDSWidget(QMainWindow):
     """Contains methods associated with GDS Renderer button."""
-
-    def __init__(self, design: 'QDesign', parent: 'QMainWindow', gui: 'MetalGUI'):
+    def __init__(self, parent: 'QMainWindow', gui: 'MetalGUI'):
         """
         Get access to design, which has the components.
         Then set up the model and view.
 
         Args:
-            design (QDesign): The design
             parent (QMainWindow): The parent window
             gui (MetalGUI): The metal GUI
         """
         super().__init__(parent)
 
         # Access design and Metal GUI:
-        self._design = design
+        self._gui = gui
 
         # Use UI template from Qt Designer:
         self.ui = Ui_MainWindow()
@@ -67,14 +63,13 @@ class RendererGDSWidget(QMainWindow):
         Args:
             new_design (QDesign): The design
         """
-        self._design = new_design
         self.list_model.update_src(self.design)
-    
+
     @property
     def design(self):
         """Returns the design."""
-        return self._design
-    
+        return self._gui.design
+
     def refresh(self):
         """Refreshes list of components."""
         self.list_model.populate_list()
@@ -82,7 +77,7 @@ class RendererGDSWidget(QMainWindow):
     def select_all(self):
         """Marks all components for export."""
         self.list_model.select_all()
-    
+
     def deselect_all(self):
         """Empties list of components to export."""
         self.list_model.deselect_all()
@@ -95,15 +90,16 @@ class RendererGDSWidget(QMainWindow):
             list: List of selected components
         """
         return self.list_model.get_checked()
-    
+
     def browse_folders(self):
         """Browses available folders in system."""
-        destination_folder = QFileDialog.getSaveFileName(None,
-                                               'Select a new location to export to',
-                                               'my_qdesign.gds',
-                                               initialFilter='*.gds')[0]
+        destination_folder = QFileDialog.getSaveFileName(
+            None,
+            'Select a new location to export to',
+            'my_qdesign.gds',
+            initialFilter='*.gds')[0]
         self.ui.lineEdit.setText(destination_folder)
-    
+
     def export_file(self):
         """
         Renders a subset or all of the components in design and exports it.
@@ -118,10 +114,11 @@ class RendererGDSWidget(QMainWindow):
             if len(components_to_export) == len(self.design.components):
                 a_gds.export_to_gds(filename)
             else:
-                a_gds.export_to_gds(filename, highlight_qcomponents=components_to_export)
+                a_gds.export_to_gds(filename,
+                                    highlight_qcomponents=components_to_export)
             self.close()
         else:
-            QMessageBox.warning(self,
-                                "Error",
-                                "Please enter a valid file name and \n select at least one component.")
-                                
+            QMessageBox.warning(
+                self, "Error",
+                "Please enter a valid file name and \n select at least one component."
+            )

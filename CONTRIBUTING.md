@@ -1,5 +1,9 @@
-# Qiskit Metal
-### Quantum VLSI and Sims
+# Contributing to Qiskit Metal
+Qiskit Metal follow the overall Qiskit project contributing guidelines. These are all included in the qiskit documentation:
+
+https://qiskit.org/documentation/contributing_to_qiskit.html
+
+In addition to the general guidelines there are specific details for contributing to metal, these are documented below.
 
 ## Issue reporting
 When you encounter a problem please open an issue for it to the issue tracker.
@@ -11,35 +15,40 @@ If you have an idea for a new feature please open an Enhancement issue in the is
 Code review is done in the open and open to anyone. While only maintainers have access to merge commits, providing feedback on pull requests is very valuable and helpful. It is also a good mechanism to learn about the code base. You can view a list of all open pull requests to review any open pull requests and provide feedback on it.
 
 ## Good first contributions
-If you would like to contribute to the qiskit-terra project, but aren't sure of where to get started, the good first issue label highlights items for people new to the project to work on. These are all issues that have been reviewed by contributors and tagged as something a new contributor should be able to develop a fix for. In other words it shouldn't require intimate familiarity with qiskit-terra to develop a fix for the issue.
-
-## Documentation
-Todo
-
+If you would like to contribute to the qiskit-metal project, but aren't sure of where to get started, the good first issue label highlights items for people new to the project to work on. These are all issues that have been reviewed by contributors and tagged as something a new contributor should be able to develop a fix for. In other words it shouldn't require intimate familiarity with qiskit-metal to develop a fix for the issue.
 
 ## Pull requests
 We use GitHub pull requests to accept contributions.
 
 While not required, opening a new issue about the bug you're fixing or the feature you're working on before you open a pull request is an important step in starting a discussion with the community about your work. The issue gives us a place to talk about the idea and how we can work together to implement it in the code. It also lets the community know what you're working on and if you need help, you can use the issue to go through it with other community and team members.
 
-If you've written some code but need help finishing it, want to get initial feedback on it prior to finishing it, or want to share it and discuss prior to finishing the implementation you can open a Work in Progress pull request. When you create the pull request prefix the title with the [WIP] tag (for Work In Progress). This will indicate to reviewers that the code in the PR isn't in it's final state and will change. It also means that we will not merge the commit until it is finished. You or a reviewer can remove the [WIP] tag when the code is ready to be fully reviewed for merging.
+If you've written some code but need help finishing it, want to get initial feedback on it prior to finishing it, or want to share it and discuss prior to finishing the implementation you can open a Work in Progress pull request. When you create the pull request prefix the title with the [WIP] tag (for Work In Progress) and open it in `Draft` status. This will indicate to reviewers that the code in the PR isn't in it's final state and will change. It also means that we will not merge the commit until it is finished. You or a reviewer can remove the [WIP] tag and convert it to `Ready for review` when the code is ready to be fully reviewed for merging.
+
+## Testing
+Once you've made a code change, it is important to verify that your change does not break any existing tests and that any new tests that you've added also run successfully. Before you open a new pull request for your change, you'll want to run the test suite locally.
+
+The easiest way to do this is to execute the `run_all_tests.py` script in the `tests` directory.  It executes all test files in that directory.  You'll recieve a message informing you if the tests were successful or not.  Alternatively you may run an individual suite of tests by executing invidual `test_XYZ.py` files individually.  All test files utilize the `unittest` module - no further setup is needed.
+
+Additionally, CI will run the test suite on all pushes made to any branch in the repository.
 
 ## Contributor License Agreement
-Before you can submit any code we need all contributors to sign a contributor license agreement. By signing a contributor license agreement (CLA) you're basically just attesting to the fact that you are the author of the contribution and that you're freely contributing it under the terms of the Apache-2.0 license.
+Before you can submit any code we need all contributors to sign a contributor license agreement. By signing a contributor license agreement (CLA) you're basically just attesting to the fact that you are the author of the contribution and that you're freely contributing it under the terms of the Apache-2.0 license. You can find the forms and informations half-way down this page:
 
-# Setting up your coding environemnt 
+https://qiskit.org/documentation/contributing_to_qiskit.html
 
-Notes on what environemnt we prefer to use. If using VS Code, see the VS code section. 
+# Setting up your coding environemnt
 
-## VsCode setup 
+Notes on what environemnt we prefer to use. If using VS Code, see the VS code section.
 
-VSCode settings, make sure to add PyQt5 to linter:
+## VsCode setup
+
+VSCode settings, make sure to add PySide2 to linter:
 ```
 {
     "python.pythonPath": "D:\\ProgramData\\Anaconda3",
     "editor.fontSize": 15,
     "python.linting.pylintArgs": [
-        "--extension-pkg-whitelist=PyQt5"
+        "--extension-pkg-whitelist=PySide2"
     ],
     "files.trimTrailingWhitespace": true,
     "files.trimFinalNewlines": true
@@ -47,7 +56,7 @@ VSCode settings, make sure to add PyQt5 to linter:
 ```
 See https://donjayamanne.github.io/pythonVSCodeDocs/docs/formatting/
 
-## Immutable vs mutable 
+## Immutable vs mutable
 <!--
 https://medium.com/@meghamohan/mutable-and-immutable-side-of-python-c2145cf72747
 -->
@@ -60,7 +69,7 @@ https://medium.com/@meghamohan/mutable-and-immutable-side-of-python-c2145cf72747
     "editor.fontSize": 16,
     "python.linting.pylintEnabled": true,
     "python.linting.pylintArgs": [
-        "--extension-pkg-whitelist=PyQt5",
+        "--extension-pkg-whitelist=PySide2",
         "--disable=C0326",
         "--disable=W0125",
         "--disable=protected-access",

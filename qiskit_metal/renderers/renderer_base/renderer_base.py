@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2019.
+# (C) Copyright IBM 2017, 2020.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -11,7 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 """
 @auhtor: Zlatko Minev, ... (IBM)
 @date: 2019
@@ -89,15 +88,15 @@ class QRenderer():
         name = cls.name
 
         if name in QRenderer.__loaded_renderers__:
-            print(
-                f'Warning: Renderer name={name}, class={cls} already loaded. Doing nothing.')
+            pass
+            # print(f'Warning: Renderer name={name}, class={cls} already loaded. Doing nothing.')
 
         cls.populate_element_extentions()
 
         # Add element extensions
         # see docstring for QRenderer.element_extensions
-        QGeometryTables.add_renderer_extension(
-            cls.name, cls.element_extensions)
+        QGeometryTables.add_renderer_extension(cls.name,
+                                               cls.element_extensions)
 
         # Moved to init for each renderer.
         # Add component extensions
@@ -133,15 +132,21 @@ class QRenderer():
         """
         if not name in QRenderer.__loaded_renderers__:
             print(
-                'ERROR: The renderer {name} has not yet been loaded. Please use the load function!')
+                'ERROR: The renderer {name} has not yet been loaded. Please use the load function!'
+            )
 
         if not name in QRenderer.__instantiated_renderers__:
             print(
-                'ERROR: The renderer {name} has not yet been instantiated. Please instantiate the class!')
+                'ERROR: The renderer {name} has not yet been instantiated. Please instantiate the class!'
+            )
 
         return QRenderer.__instantiated_renderers__[name]
 
-    def __init__(self, design: 'QDesign', initiate=True, render_template: Dict = None, render_options: Dict = None):
+    def __init__(self,
+                 design: 'QDesign',
+                 initiate=True,
+                 render_template: Dict = None,
+                 render_options: Dict = None):
         """
         Args:
             design (QDesign): The design
@@ -154,7 +159,8 @@ class QRenderer():
 
         self.status = 'Not Init'
 
-        assert is_design(design), "Erorr, for the design argument you must provide a\
+        assert is_design(
+            design), "Erorr, for the design argument you must provide a\
                                    a child instance of Metal QDesign class."
 
         self._design = design
@@ -203,11 +209,13 @@ class QRenderer():
         parents = inspect.getmro(cls)
 
         # QRenderer is not expected to have default_options dict to add to QRenderer class.
-        for child in parents[len(parents)-2::-1]:
+        for child in parents[len(parents) - 2::-1]:
             # There is a developer agreement so the defaults for a renderer will be in a dict named default_options.
             if hasattr(child, 'default_options'):
                 options_from_children = {
-                    **options_from_children, **child.default_options}
+                    **options_from_children,
+                    **child.default_options
+                }
         return options_from_children
 
     @classmethod
@@ -220,9 +228,7 @@ class QRenderer():
         return f'{cls.__module__}.{cls.__name__}'
 
     @classmethod
-    def _register_class_with_design(cls,
-                                    design: 'QDesign',
-                                    template_key: str,
+    def _register_class_with_design(cls, design: 'QDesign', template_key: str,
                                     render_template: Dict):
         """Init funciton to register a renderer class with the design when first instantiated.
             Registers the renderer's template options.
@@ -236,8 +242,7 @@ class QRenderer():
         if template_key not in design.template_options:
             if not render_template:
                 render_template = cls._gather_all_children_default_options()
-            design.template_options[template_key] = deepcopy(
-                render_template)
+            design.template_options[template_key] = deepcopy(render_template)
 
     @classmethod
     def get_template_options(cls,
@@ -268,22 +273,26 @@ class QRenderer():
 
         if template_key not in design.template_options:
             # Registers the renderer's template options.
-            cls._register_class_with_design(
-                design, template_key, render_template)
+            cls._register_class_with_design(design, template_key,
+                                            render_template)
 
         # Only log warning, if template_key not registered within design.
         if template_key not in design.template_options:
             logger_ = logger_ or design.logger
             if logger_:
-                logger_.error(f'ERROR in creating renderer {cls.__name__}!\nThe default '
-                              f'options for the renderer class {cls.__name__} are missing')
+                logger_.error(
+                    f'ERROR in creating renderer {cls.__name__}!\nThe default '
+                    f'options for the renderer class {cls.__name__} are missing'
+                )
 
         # Specific object render template options
         options = deepcopy(Dict(design.template_options[template_key]))
 
         return options
 
-    def update_options(self, render_options: Dict = None, render_template: Dict = None):
+    def update_options(self,
+                       render_options: Dict = None,
+                       render_template: Dict = None):
         """If template options has not been set for this renderer,
         then gather all the default options for children and add to design.  The GUI
         would use this to store the template options.
@@ -297,8 +306,9 @@ class QRenderer():
             render_template (Dict, optional): All the template options for each child.
                                              Defaults to None.
         """
-        self.options.update(self.get_template_options(
-            self.design, render_template=render_template))
+        self.options.update(
+            self.get_template_options(self.design,
+                                      render_template=render_template))
 
         if render_options:
             self.options.update(render_options)
@@ -313,7 +323,8 @@ class QRenderer():
         status = set()
         if not isinstance(QRenderer.name, str):
             self.logger.warning(
-                f'In add_table_data_to_QDesign, cls.str={QRenderer.name} is not a str.')
+                f'In add_table_data_to_QDesign, cls.str={QRenderer.name} is not a str.'
+            )
             return
 
         for table, a_dict in self.element_table_data.items():
@@ -349,7 +360,10 @@ class QRenderer():
 
         return True
 
-    def get_unique_component_ids(self, highlight_qcomponents: Union[list, None] = None) -> Tuple[list, int]:
+    def get_unique_component_ids(
+            self,
+            highlight_qcomponents: Union[list,
+                                         None] = None) -> Tuple[list, int]:
         """
         Confirm the list doesn't have names of components repeated.
         Confirm that the name of component exists in QDesign.
@@ -368,12 +382,14 @@ class QRenderer():
         unique_qcomponents = set(highlight_qcomponents)
         for qcomp in unique_qcomponents:
             if qcomp not in self.design.name_to_id:
-                self.logger.warning(f'The component={qcomp} in highlight_qcomponents not'
-                                    ' in QDesign.')
+                self.logger.warning(
+                    f'The component={qcomp} in highlight_qcomponents not'
+                    ' in QDesign.')
                 return [], 2  # Invalid
         if len(unique_qcomponents) == len(self.design.components):
             return [], 1  # Everything selected
-        return [self.design.name_to_id[elt] for elt in unique_qcomponents], 0  # Subset selected
+        return [self.design.name_to_id[elt]
+                for elt in unique_qcomponents], 0  # Subset selected
 
     def _initate_renderer(self):
         '''
