@@ -11,7 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 """Handles editing a QComponent
 
 @author: Zlatko Minev
@@ -25,16 +24,16 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Union
 
 import numpy as np
-import PyQt5
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtCore import QAbstractTableModel, QModelIndex, Qt
-from PyQt5.QtGui import QFont
-from PyQt5.QtWidgets import (QAbstractItemView, QApplication, QFileDialog,
-                             QLabel, QMainWindow, QMessageBox, QTabWidget)
+import PySide2
+from PySide2 import QtCore, QtGui, QtWidgets
+from PySide2.QtCore import QAbstractTableModel, QModelIndex, Qt
+from PySide2.QtGui import QFont
+from PySide2.QtWidgets import (QAbstractItemView, QApplication, QFileDialog,
+                               QLabel, QMainWindow, QMessageBox, QTabWidget)
 
 from .... import logger
 from ...component_widget_ui import Ui_ComponentWidget
-from ...utility._handle_qt_messages import catch_exception_slot_pyqt
+from ...utility._handle_qt_messages import slot_catch_error
 from .source_editor_widget import create_source_edit_widget
 
 __all__ = ['parse_param_from_str']
@@ -44,7 +43,6 @@ if TYPE_CHECKING:
 
 
 class QTableModel_Options(QAbstractTableModel):
-
     """
     Table model for the options of a given component.
 
@@ -53,9 +51,13 @@ class QTableModel_Options(QAbstractTableModel):
     MVC class
     See https://doc.qt.io/qt-5/qabstracttablemodel.html
     """
+
     # __timer_interval = 500  # ms
 
-    def __init__(self, gui: 'MetalGUI', parent: 'ComponentWidget' = None, view=None):
+    def __init__(self,
+                 gui: 'MetalGUI',
+                 parent: 'ComponentWidget' = None,
+                 view=None):
         """
         Args:
             gui (MetalGUI): the GUI
@@ -169,7 +171,7 @@ class QTableModel_Options(QAbstractTableModel):
         """ Depending on the index and role given, return data. If not
         returning data, return None (PySide equivalent of QT's
         "invalid QVariant").
-        
+
         Returns:
             str: data
         """
@@ -215,7 +217,7 @@ class QTableModel_Options(QAbstractTableModel):
 
     def setData(self,
                 index: QtCore.QModelIndex,
-                value: QtCore.QVariant,
+                value,
                 role=QtCore.Qt.EditRole) -> bool:
         """Sets the role data for the item at index to value.
         The dataChanged() signal should be emitted if the data was successfully set.
@@ -245,8 +247,9 @@ class QTableModel_Options(QAbstractTableModel):
 
                 # When we do nothing
                 if isinstance(old_val, dict):
-                    self.logger.error('You selected a dictionary this'
-                                      'cannot be edited directly edit its items.')
+                    self.logger.error(
+                        'You selected a dicitonary this'
+                        'cannot be edited directly edit its items.')
                     return False
 
                 if old_val == value:
@@ -257,15 +260,15 @@ class QTableModel_Options(QAbstractTableModel):
                 # try:
                 # TODO: should retry and if error then reset the value
                 if 1:
-                    self.logger.info(
-                        f'Component options: Old value={old_val}; New value={value};')
+                    self.logger.info(f'Component options: Old value={old_val}; New value={value};')
                     if isinstance(old_val, str):
                         data[key] = str(value)
                     else:
                         processed_value, used_ast = parse_param_from_str(value)
-                        self.logger.info(f'  Used paring:  Old value type={type(old_val)}; '
-                                         f'New value type={type(processed_value)};  New value={processed_value};'
-                                         f'; Used ast={used_ast}')
+                        self.logger.info(
+                            f'  Used paring:  Old value type={type(old_val)}; '
+                            f'New value type={type(processed_value)};  New value={processed_value};'
+                            f'; Used ast={used_ast}')
                         data[key] = processed_value
 
                     self.component.rebuild()

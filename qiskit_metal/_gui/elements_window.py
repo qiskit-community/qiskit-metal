@@ -20,10 +20,9 @@
 from typing import TYPE_CHECKING
 
 import numpy as np
-from PyQt5 import Qt, QtCore, QtWidgets
-from PyQt5.QtCore import QAbstractTableModel, QModelIndex
-from PyQt5.QtWidgets import (QApplication, QFileDialog, QLabel, QMainWindow,
-                             QMessageBox)
+from PySide2 import QtCore
+from PySide2.QtCore import QAbstractTableModel, QModelIndex
+from PySide2.QtWidgets import QMainWindow
 
 from .elements_ui import Ui_ElementsWindow
 
@@ -38,11 +37,10 @@ class ElementsWindow(QMainWindow):
 
     Extends the `QMainWindow` class
 
-    PyQt5 Signal / Slots Extensions:
+    PySide2 Signal / Slots Extensions:
         The UI can call up to this class to execeute button clicks for instance
         Extensiosn in qt designer on signals/slots are linked to this class
     """
-
     def __init__(self, gui: 'MetalGUI', parent_window: 'QMainWindowExtension'):
         """
         Args:
@@ -86,7 +84,6 @@ class ElementsWindow(QMainWindow):
 
 
 class ElementTableModel(QAbstractTableModel):
-
     """MVC class
     See https://doc.qt.io/qt-5/qabstracttablemodel.html
 
@@ -242,8 +239,9 @@ class ElementTableModel(QAbstractTableModel):
         if not index.isValid():
             return QtCore.Qt.ItemIsEnabled
 
-        return QtCore.Qt.ItemFlags(QAbstractTableModel.flags(self, index) |
-                                   QtCore.Qt.ItemIsSelectable)  # ItemIsEditable
+        return QtCore.Qt.ItemFlags(
+            QAbstractTableModel.flags(self, index)
+            | QtCore.Qt.ItemIsSelectable)  # ItemIsEditable
 
     def data(self, index: QModelIndex, role=QtCore.Qt.DisplayRole):
         """ Depending on the index and role given, return data. If not

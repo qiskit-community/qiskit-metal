@@ -11,21 +11,24 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 """
 @auhtor: Zlatko K. Minev
 @date: 2020
 """
 
 import matplotlib.pyplot as plt
-from PyQt5.QtCore import QTimer
+from PySide2.QtCore import QTimer
 
-from ...._gui.utility._handle_qt_messages import catch_exception_slot_pyqt
+from ...._gui.utility._handle_qt_messages import slot_catch_error
 
 
 class AnimatedText():
     """Class that animates text"""
-    def __init__(self, ax: plt.Axes, text: str, canvas, kw: dict = None,
+    def __init__(self,
+                 ax: plt.Axes,
+                 text: str,
+                 canvas,
+                 kw: dict = None,
                  anim_start=0.9,
                  anim_dt_ms=25,
                  anim_delta=-0.0005,
@@ -59,9 +62,17 @@ class AnimatedText():
 
         # MPL text
         # Create the text
-        kw = {**dict(fontsize=35, fontweight='bold', va='center', ha='center', alpha=anim_start,
-                     transform=ax.transAxes, color='#00356B', zorder=200),
-              **(kw if kw else {})}
+        kw = {
+            **dict(fontsize=35,
+                   fontweight='bold',
+                   va='center',
+                   ha='center',
+                   alpha=anim_start,
+                   transform=ax.transAxes,
+                   color='#00356B',
+                   zorder=200),
+            **(kw if kw else {})
+        }
 
         self.text = ax.text(*loc, text, **kw)
 
@@ -80,7 +91,7 @@ class AnimatedText():
         """Stop the timer"""
         self.timer.start()
 
-    @catch_exception_slot_pyqt()
+    @slot_catch_error()
     def timer_tick(self):
         """Tick the timer"""
         # Update anim position value

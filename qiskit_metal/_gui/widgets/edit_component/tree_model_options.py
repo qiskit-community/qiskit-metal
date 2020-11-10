@@ -11,24 +11,25 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 """
 Tree model for component options menu
 
 @authors: Dennis Wang, Zlatko Minev
 @date: 2020
 """
-import numpy as np
-import PyQt5
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QVariant, QTimer, Qt
-from PyQt5.QtGui import QFont
-from PyQt5.QtWidgets import (QAbstractItemView, QApplication, QFileDialog, QTreeView,
-                             QLabel, QMainWindow, QMessageBox, QTabWidget)
+# import numpy as np
+# import PySide2
+# from PySide2 import QtCore, QtGui, QtWidgets
+from PySide2.QtCore import QModelIndex, Qt
+from PySide2.QtGui import QFont
+from PySide2.QtWidgets import QTreeView
+
+#, QLabel, QMainWindow, QMessageBox, QAbstractItemView, QApplication, QFileDialog,
 
 from .... import logger
 
 from ..bases.dict_tree_base import LeafNode, BranchNode, QTreeModel_Base, parse_param_from_str
+
 
 class QTreeModel_Options(QTreeModel_Base):
     """
@@ -39,7 +40,8 @@ class QTreeModel_Options(QTreeModel_Base):
     Args:
         QTreeModel_Base (QAbstractItemModel): Base class for nested dicts
     """
-    def __init__(self, parent: 'ParentWidget', gui: 'MetalGUI', view: QTreeView):
+    def __init__(self, parent: 'ParentWidget', gui: 'MetalGUI',
+                 view: QTreeView):
         """
         Editable table with drop-down rows for component options.
         Organized as a tree model where child nodes are more specific properties
@@ -51,7 +53,8 @@ class QTreeModel_Options(QTreeModel_Base):
             view (QTreeView): View corresponding to a tree structure
         """
         super().__init__(parent=parent, gui=gui, view=view, child='component')
-        self.headers = ['Name', 'Value', 'Parsed value'] # 3 columns instead of 2
+        self.headers = ['Name', 'Value',
+                        'Parsed value']  # 3 columns instead of 2
 
     @property
     def data_dict(self) -> dict:
@@ -98,10 +101,10 @@ class QTreeModel_Options(QTreeModel_Base):
             object: fetched data
         """
         if not index.isValid():
-            return QVariant()
+            return None
 
         if self.component is None:
-            return QVariant()
+            return None
 
         # The data in a form suitable for editing in an editor. (QString)
         if role == Qt.EditRole:
@@ -114,7 +117,7 @@ class QTreeModel_Options(QTreeModel_Base):
             return font
 
         if role == Qt.TextAlignmentRole:
-            return QVariant(int(Qt.AlignTop | Qt.AlignLeft))
+            return int(Qt.AlignTop | Qt.AlignLeft)
 
         if role == Qt.DisplayRole:
             node = self.nodeFromIndex(index)
@@ -135,6 +138,6 @@ class QTreeModel_Options(QTreeModel_Base):
                     # TODO: If the parser fails, this can throw an error
                     return str(self.design.parse_value(node.value))
                 else:
-                    return QVariant()
+                    return None
 
-        return QVariant()
+        return None

@@ -86,9 +86,9 @@ import weakref
 import matplotlib.pyplot as _plt
 import numpy
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QAction, QLabel
+from PySide2.QtCore import Qt
+from PySide2.QtGui import QIcon
+from PySide2.QtWidgets import QAction, QLabel
 
 from ... import Dict
 
@@ -97,7 +97,6 @@ __all__ = ['figure_pz', 'MplInteraction', 'PanAndZoom']
 
 class MplInteraction(object):
     """Base class for class providing interaction to a matplotlib Figure."""
-
     def __init__(self, figure):
         """Initializer
 
@@ -176,7 +175,6 @@ class ZoomOnWheel(MplInteraction):
 
     Supports subplots, twin Axes and log scales.
     """
-
     def __init__(self, figure=None, scale_factor=1.1):
         """
         Args:
@@ -215,8 +213,8 @@ class ZoomOnWheel(MplInteraction):
                 center if center > 0. else numpy.nextafter(0, 1))
             old_max = numpy.log10(max_) if max_ > 0. else 0.
         else:
-            logging.warning(
-                'Zoom on wheel not implemented for scale "%s"' % scale)
+            logging.warning('Zoom on wheel not implemented for scale "%s"' %
+                            scale)
             return begin, end
 
         offset = (center - old_min) / (old_max - old_min)
@@ -226,7 +224,7 @@ class ZoomOnWheel(MplInteraction):
 
         if scale == 'log':
             try:
-                new_min, new_max = 10. ** float(new_min), 10. ** float(new_max)
+                new_min, new_max = 10.**float(new_min), 10.**float(new_max)
             except OverflowError:  # Limit case
                 new_min, new_max = min_, max_
             if new_min <= 0. or new_max <= 0.:  # Limit case
@@ -252,15 +250,13 @@ class ZoomOnWheel(MplInteraction):
             xdata, ydata = transform.transform_point((event.x, event.y))
 
             xlim = ax.get_xlim()
-            xlim = self._zoom_range(xlim[0], xlim[1],
-                                    xdata, scale_factor,
+            xlim = self._zoom_range(xlim[0], xlim[1], xdata, scale_factor,
                                     ax.get_xscale())
             ax.set_xlim(xlim)
 
         for ax in y_axes:
             ylim = ax.get_ylim()
-            ylim = self._zoom_range(ylim[0], ylim[1],
-                                    ydata, scale_factor,
+            ylim = self._zoom_range(ylim[0], ylim[1], ydata, scale_factor,
                                     ax.get_yscale())
             ax.set_ylim(ylim)
 
@@ -275,7 +271,6 @@ class PanAndZoom(ZoomOnWheel):
 
     This class extends the `ZoomOnWheel` class
     """
-
     def __init__(self, figure=None, scale_factor=1.1):
         """
         Args:
@@ -291,9 +286,7 @@ class PanAndZoom(ZoomOnWheel):
         self._axes = None  # To store x and y axes concerned by interaction
         self._event = None  # To store reference event during interaction
 
-        self.options = Dict(dict(
-            report_point_position=True,
-        ))
+        self.options = Dict(dict(report_point_position=True, ))
         self.logger = None
         self._statusbar_label = None
 
@@ -301,7 +294,7 @@ class PanAndZoom(ZoomOnWheel):
         #self._add_toolbar_tools()
         self._style_figure()
 
-        self._ix_iy_old = (0,0)
+        self._ix_iy_old = (0, 0)
 
     def _get_images_path(self):
         """Get the path to images
@@ -316,7 +309,7 @@ class PanAndZoom(ZoomOnWheel):
         try:  # Get tool image path
             from pathlib import Path
             from ... import _gui
-            imgs_path = Path(_gui.__file__).parent/'_imgs'
+            imgs_path = Path(_gui.__file__).parent / '_imgs'
             if imgs_path.is_dir() == False:
                 print(f'Bad File path for images! {imgs_path}')
                 imgs_path = None
@@ -331,8 +324,8 @@ class PanAndZoom(ZoomOnWheel):
         """Add tools"""
         # TODO: Outdated - to be removed
 
+        from matplotlib.backend_tools import ToolToggleBase  # ToolBase
 
-        from matplotlib.backend_tools import ToolToggleBase # ToolBase
         class ToolPointPosition(ToolToggleBase):
             '''Tools'''
             default_keymap = 'Ctrl+p'
@@ -343,7 +336,7 @@ class PanAndZoom(ZoomOnWheel):
             def __init__(self, *args, parent=None, **kwargs):
                 super().__init__(*args, **kwargs)
                 if parent is None:
-                    raise('Pass a parent')
+                    raise ('Pass a parent')
                 self.parent = parent
 
             def enable(self, *args):
@@ -352,40 +345,38 @@ class PanAndZoom(ZoomOnWheel):
             def disable(self, *args):
                 self.parent.options.report_point_position = False
 
-
-
         fig = self.figure
         imgs_path = self.imgs_path
         toolbar = self.toolbar = fig.canvas.manager.toolbar
 
         # Get tool manager
 
-        # TODO: Remove use of tool manager just use pyQT5 bare as below
+        # TODO: Remove use of tool manager just use PySide2 bare as below
 
         # ToolbarQt   --- https://github.com/matplotlib/matplotlib/blob/master/lib/matplotlib/backends/backend_qt5.py
         tm = fig.canvas.manager.toolmanager
         self.tm = tm
         # Tool: Print point location
-        ToolPointPosition.image = str(imgs_path/'click.png')
+        ToolPointPosition.image = str(imgs_path / 'click.png')
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
             tm.add_tool("Point_position", ToolPointPosition, parent=self)
-        fig.canvas.manager.toolbar.add_tool(
-            tm.get_tool("Point_position"), "toolgroup")
+        fig.canvas.manager.toolbar.add_tool(tm.get_tool("Point_position"),
+                                            "toolgroup")
 
         # Tool: Copy to Clipboard
         from matplotlib.backend_tools import ToolCopyToClipboard
-        ToolCopyToClipboard.image = str(imgs_path/'copy.png')
+        ToolCopyToClipboard.image = str(imgs_path / 'copy.png')
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
             # OVvrwties Ctrl+C and issues warning
             tm.add_tool("Copy_to_clipboard", ToolCopyToClipboard)
-        fig.canvas.manager.toolbar.add_tool(
-            tm.get_tool("Copy_to_clipboard"), "toolgroup")
+        fig.canvas.manager.toolbar.add_tool(tm.get_tool("Copy_to_clipboard"),
+                                            "toolgroup")
 
         if 1:  # add QT Pieces
-            toolbar.action_ascale = QAction(QIcon(str(imgs_path/'auto_zoom.png')),
-                                            'Auto scale', toolbar)
+            toolbar.action_ascale = QAction(
+                QIcon(str(imgs_path / 'auto_zoom.png')), 'Auto scale', toolbar)
             toolbar.action_ascale.setShortcut('A')
             toolbar.action_ascale.setShortcutContext(Qt.WindowShortcut)
             toolbar.action_ascale.setStatusTip('Autoscale')
@@ -449,8 +440,10 @@ class PanAndZoom(ZoomOnWheel):
             try:
                 delta = math.log10(data[axis_id]) - \
                     math.log10(last_data[axis_id])
-                new_lim = [pow(10., (math.log10(lim[0]) - delta)),
-                           pow(10., (math.log10(lim[1]) - delta))]
+                new_lim = [
+                    pow(10., (math.log10(lim[0]) - delta)),
+                    pow(10., (math.log10(lim[1]) - delta))
+                ]
             except (ValueError, OverflowError):
                 new_lim = lim  # Keep previous limits
         else:
@@ -497,17 +490,21 @@ class PanAndZoom(ZoomOnWheel):
         """
         if event.name == 'button_press_event':  # begin drag
             self._event = event
-            self._patch = _plt.Rectangle(
-                xy=(event.xdata, event.ydata), width=0, height=0,
-                fill=False, linewidth=1., linestyle='solid', color='black')
+            self._patch = _plt.Rectangle(xy=(event.xdata, event.ydata),
+                                         width=0,
+                                         height=0,
+                                         fill=False,
+                                         linewidth=1.,
+                                         linestyle='solid',
+                                         color='black')
             self._event.inaxes.add_patch(self._patch)
 
         elif event.name == 'button_release_event':  # end drag
             self._patch.remove()
             del self._patch
 
-            if (abs(event.x - self._event.x) < 3 or
-                    abs(event.y - self._event.y) < 3):
+            if (abs(event.x - self._event.x) < 3
+                    or abs(event.y - self._event.y) < 3):
                 return  # No zoom when points are too close
 
             x_axes, y_axes = self._axes

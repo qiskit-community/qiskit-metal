@@ -11,12 +11,11 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 """
-GUI front-end interface for Qiskit Metal in PyQt5.
+GUI front-end interface for Qiskit Metal in PySide2.
+
 @author: Zlatko Minev, IBM
 """
-
 # pylint: disable=invalid-name
 
 import logging
@@ -25,16 +24,16 @@ import sys
 from copy import deepcopy
 from pathlib import Path
 
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtCore import QTimer, pyqtSlot
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QApplication, QFileDialog, QMainWindow, QMessageBox, QDockWidget
+from PySide2 import QtCore, QtGui, QtWidgets
+from PySide2.QtCore import QTimer, Slot
+from PySide2.QtGui import QIcon
+from PySide2.QtWidgets import QApplication, QFileDialog, QMainWindow, QMessageBox, QDockWidget
 
 from .. import Dict, config
 from ..toolbox_python._logging import setup_logger
 from . import __version__
 from .main_window_ui import Ui_MainWindow
-from .utility._handle_qt_messages import catch_exception_slot_pyqt
+from .utility._handle_qt_messages import slot_catch_error
 from .widgets.log_widget.log_metal import LogHandler_for_QTextLog
 
 
@@ -44,7 +43,6 @@ class QMainWindowExtensionBase(QMainWindow):
 
     Extends the `QMainWindow` class
     """
-
     def __init__(self):
         """  """
         super().__init__()
@@ -71,7 +69,9 @@ class QMainWindowExtensionBase(QMainWindow):
         if hasattr(self, 'log_text'):
             self.log_text.remove_handlers(self.logger)
 
-    def destroy(self, destroyWindow: bool = True, destroySubWindows: bool = True):
+    def destroy(self,
+                destroyWindow: bool = True,
+                destroySubWindows: bool = True):
         """
         When the window is cleaned up from memory.
 
@@ -80,7 +80,8 @@ class QMainWindowExtensionBase(QMainWindow):
             destroySubWindows (bool): Whether or not to destroy sub windows (Default: True)
         """
         self._remove_log_handlers()
-        super().destroy(destroyWindow=destroyWindow, destroySubWindows=destroySubWindows)
+        super().destroy(destroyWindow=destroyWindow,
+                        destroySubWindows=destroySubWindows)
 
     def closeEvent(self, event):
         """whenever a window is closed.
@@ -98,10 +99,9 @@ class QMainWindowExtensionBase(QMainWindow):
             bool: True to continue, False otherwise
         """
         if 1:
-            reply = QMessageBox.question(self,
-                                         "Qiskit Metal",
-                                         "Save unsaved changes to design?",
-                                         QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
+            reply = QMessageBox.question(
+                self, "Qiskit Metal", "Save unsaved changes to design?",
+                QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
             if reply == QMessageBox.Cancel:
                 return False
             elif reply == QMessageBox.Yes:
@@ -126,8 +126,8 @@ class QMainWindowExtensionBase(QMainWindow):
             Exception: Error in restoration
         """
 
-        version_settings = self.settings.value(
-            'metal_version', defaultValue='0')
+        version_settings = self.settings.value('metal_version',
+                                               defaultValue='0')
         if __version__ > version_settings:
             self.logger.debug(
                 f"Clearing window settings [{version_settings}]...")
@@ -147,8 +147,9 @@ class QMainWindowExtensionBase(QMainWindow):
                 window_state = window_state.encode("ascii")
             self.restoreState(window_state)
 
-            self.handler.load_stylesheet(self.settings.value('stylesheet',
-                                                             self.handler._stylesheet_default))
+            self.handler.load_stylesheet(
+                self.settings.value('stylesheet',
+                                    self.handler._stylesheet_default))
 
             # TODO: Recent files
         except Exception as e:
@@ -161,7 +162,11 @@ class QMainWindowExtensionBase(QMainWindow):
         self.raise_()
         self.activateWindow()
 
-    def get_screenshot(self, name='shot.png', type_='png', display=True, disp_ops=None):
+    def get_screenshot(self,
+                       name='shot.png',
+                       type_='png',
+                       display=True,
+                       disp_ops=None):
         """
         Grad a screenshot of the main window,
         save to file, and then copy to clipboard.
@@ -183,7 +188,8 @@ class QMainWindowExtensionBase(QMainWindow):
         screenshot = self.grab()  # type: QtGui.QPixelMap
         screenshot.save(str(path), type_)  # Save
 
-        QtWidgets.QApplication.clipboard().setPixmap(screenshot)  # To clipboard
+        QtWidgets.QApplication.clipboard().setPixmap(
+            screenshot)  # To clipboard
         self.logger.info(
             f'Screenshot copied to clipboard and saved to:\n {path}')
 
@@ -200,16 +206,23 @@ class QMainWindowExtensionBase(QMainWindow):
             do_hide (bool): Hide or show (Default: None -- toggle)
         """
         # Get all docks to show/hide. Ignore edit source
-        docks = [widget for widget in self.children()
-                 if isinstance(widget, QDockWidget)]
-        docks = list(filter(lambda x: not x.windowTitle(
-        ).lower().startswith('edit source'), docks))
-        docks += [widget for widget in self.gui.plot_win.children()
-                  if isinstance(widget, QDockWidget)]  # specific
+        docks = [
+            widget for widget in self.children()
+            if isinstance(widget, QDockWidget)
+        ]
+        docks = list(
+            filter(
+                lambda x: not x.windowTitle().lower().startswith('edit source'
+                                                                 ), docks))
+        docks += [
+            widget for widget in self.gui.plot_win.children()
+            if isinstance(widget, QDockWidget)
+        ]  # specific
 
         if do_hide is None:
             dock_states = {dock: dock.isVisible() for dock in docks}
-            do_hide = any(dock_states.values()) # if any are visible then hide all
+            do_hide = any(
+                dock_states.values())  # if any are visible then hide all
 
         for dock in docks:
             if do_hide:
@@ -222,33 +235,32 @@ class QMainWindowExtensionBase(QMainWindow):
     ##################################################################
     # For actions
 
-    @catch_exception_slot_pyqt()
-    def _screenshot(self, _):
+    @slot_catch_error()
+    def _screenshot(self, _=None):
         """Used to call from action"""
         self.get_screenshot()
 
-    @catch_exception_slot_pyqt()
-    def load_stylesheet_default(self, _):
+    @slot_catch_error()
+    def load_stylesheet_default(self, _=None):
         """Used to call from action"""
         self.handler.load_stylesheet('default')
 
-    @catch_exception_slot_pyqt()
-    def load_stylesheet_metal_dark(self, _):
+    @slot_catch_error()
+    def load_stylesheet_metal_dark(self, _=None):
         """Used to call from action"""
         self.handler.load_stylesheet('metal_dark')
 
-    @catch_exception_slot_pyqt()
-    def load_stylesheet_dark(self, _):
+    @slot_catch_error()
+    def load_stylesheet_dark(self, _=None):
         """Used to call from action"""
         self.handler.load_stylesheet('qdarkstyle')
 
-    @catch_exception_slot_pyqt()
-    def load_stylesheet_open(self, _):
+    @slot_catch_error()
+    def load_stylesheet_open(self, _=None):
         """Used to call from action"""
         default_path = str(self.gui.path_stylesheets)
-        filename = QFileDialog.getOpenFileName(self,
-                                               'Select Qt stylesheet file `.qss`',
-                                               default_path)[0]
+        filename = QFileDialog.getOpenFileName(
+            self, 'Select Qt stylesheet file `.qss`', default_path)[0]
         if filename:
             self.logger.info(f'Attempting to load stylesheet file {filename}')
 
@@ -256,7 +268,7 @@ class QMainWindowExtensionBase(QMainWindow):
 
 
 class QMainWindowBaseHandler():
-    """Abstract Class to wrap and handle main window.
+    """Abstract Class to wrap and handle main window (QMainWindow).
 
     Assumes a UI that has:
         * log_text: a QText for logging
@@ -282,8 +294,7 @@ class QMainWindowBaseHandler():
         """Abstract, replace with UI class"""
         return None
 
-    def __init__(self, logger: logging.Logger = None,
-                 handler=False):
+    def __init__(self, logger: logging.Logger = None, handler=False):
         """
         Can pass in logger
 
@@ -355,7 +366,7 @@ class QMainWindowBaseHandler():
     @property
     def path_stylesheets(self):
         """Returns the path to teh stylesheet"""
-        return Path(self.path_gui)/'styles'
+        return Path(self.path_gui) / 'styles'
 
     def style_window(self):
         """Styles the window"""
@@ -432,7 +443,7 @@ class QMainWindowBaseHandler():
         """Sets up the main window tray"""
 
         if self.path_imgs.is_dir():
-            icon = QIcon(str(self.path_imgs/self._img_logo_name))
+            icon = QIcon(str(self.path_imgs / self._img_logo_name))
             self.main_window.setWindowIcon(icon)
 
             # not sure if this works, but let's try
@@ -450,9 +461,10 @@ class QMainWindowBaseHandler():
         Returns:
             LogHandler_for_QTextLog: a LogHandler_for_QTextLog
         """
-        return LogHandler_for_QTextLog(name_toshow, self, self.ui.log_text, logger)
+        return LogHandler_for_QTextLog(name_toshow, self, self.ui.log_text,
+                                       logger)
 
-    @catch_exception_slot_pyqt()
+    @slot_catch_error()
     def _setup_logger(self):
         """
         Setup logging UI.
@@ -477,10 +489,10 @@ class QMainWindowBaseHandler():
             # screen.name()
 
             rect = screen.availableGeometry()
-            rect.setWidth(rect.width()*0.9)
-            rect.setHeight(rect.height()*0.9)
-            rect.setLeft(rect.left()+rect.width()*0.1)
-            rect.setTop(rect.top()+rect.height()*0.1)
+            rect.setWidth(rect.width() * 0.9)
+            rect.setHeight(rect.height() * 0.9)
+            rect.setLeft(rect.left() + rect.width() * 0.1)
+            rect.setTop(rect.top() + rect.height() * 0.1)
             self.main_window.setGeometry(rect)
 
     def load_stylesheet(self, path=None):
@@ -508,16 +520,17 @@ class QMainWindowBaseHandler():
             try:
                 import qdarkstyle
             except ImportError:
-                QMessageBox.warning(self.main_window, 'Failed.',
-                                    'Error, you did not seem to have installed qdarkstyle.\n'
-                                    'Please do so from the terminal using\n'
-                                    ' >>> pip install qdarkstyle')
+                QMessageBox.warning(
+                    self.main_window, 'Failed.',
+                    'Error, you did not seem to have installed qdarkstyle.\n'
+                    'Please do so from the terminal using\n'
+                    ' >>> pip install qdarkstyle')
 
-            os.environ['QT_API'] = 'pyqt5'
+            os.environ['QT_API'] = 'pyside2'
             self.main_window.setStyleSheet(qdarkstyle.load_stylesheet())
 
         elif path == 'metal_dark':
-            path_full = self.path_stylesheets/'metal_dark'/'style.qss'
+            path_full = self.path_stylesheets / 'metal_dark' / 'style.qss'
             # print(f'path_full = {path_full}')
             self._load_stylesheet_from_file(path_full)
 
@@ -548,8 +561,8 @@ class QMainWindowBaseHandler():
             if path.is_file():
                 self._style_sheet_path = str(path)
                 stylesheet = path.read_text()
-                stylesheet = stylesheet.replace(
-                    ':/metal-styles', str(self.path_stylesheets))
+                stylesheet = stylesheet.replace(':/metal-styles',
+                                                str(self.path_stylesheets))
 
                 # if windows, double the slashes in the paths
                 if os.name.startswith('nt'):
@@ -560,12 +573,17 @@ class QMainWindowBaseHandler():
 
             else:
                 self.logger.error(
-                    'Could not find the stylesheet file where expected %s', path)
+                    'Could not find the stylesheet file where expected %s',
+                    path)
                 return False
         except Exception as e:
             self.logger.error(f'_load_stylesheet_from_file error: {e}')
 
-    def screenshot(self, name='shot.png', type_='png', display=True, disp_ops=None):
+    def screenshot(self,
+                   name='shot.png',
+                   type_='png',
+                   display=True,
+                   disp_ops=None):
         """
         Grab a screenshot of the main window,
         save to file, and then copy to clipboard.
@@ -636,7 +654,8 @@ def kick_start_qApp():
             else:
                 # We are not running form IPython, manually boot
                 logging.error(
-                    "QApplication.instance: Attempt to manually create qt5 QApplication")
+                    "QApplication.instance: Attempt to manually create qt5 QApplication"
+                )
                 qApp = QtWidgets.QApplication(["qiskit-metal"])
                 qApp.lastWindowClosed.connect(qApp.quit)
 

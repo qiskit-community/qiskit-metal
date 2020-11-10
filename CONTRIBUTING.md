@@ -36,19 +36,19 @@ Before you can submit any code we need all contributors to sign a contributor li
 
 https://qiskit.org/documentation/contributing_to_qiskit.html
 
-# Setting up your coding environemnt 
+# Setting up your coding environemnt
 
-Notes on what environemnt we prefer to use. If using VS Code, see the VS code section. 
+Notes on what environemnt we prefer to use. If using VS Code, see the VS code section.
 
-## VsCode setup 
+## VsCode setup
 
-VSCode settings, make sure to add PyQt5 to linter:
+VSCode settings, make sure to add PySide2 to linter:
 ```
 {
     "python.pythonPath": "D:\\ProgramData\\Anaconda3",
     "editor.fontSize": 15,
     "python.linting.pylintArgs": [
-        "--extension-pkg-whitelist=PyQt5"
+        "--extension-pkg-whitelist=PySide2"
     ],
     "files.trimTrailingWhitespace": true,
     "files.trimFinalNewlines": true
@@ -56,7 +56,7 @@ VSCode settings, make sure to add PyQt5 to linter:
 ```
 See https://donjayamanne.github.io/pythonVSCodeDocs/docs/formatting/
 
-## Immutable vs mutable 
+## Immutable vs mutable
 <!--
 https://medium.com/@meghamohan/mutable-and-immutable-side-of-python-c2145cf72747
 -->
@@ -69,7 +69,7 @@ https://medium.com/@meghamohan/mutable-and-immutable-side-of-python-c2145cf72747
     "editor.fontSize": 16,
     "python.linting.pylintEnabled": true,
     "python.linting.pylintArgs": [
-        "--extension-pkg-whitelist=PyQt5",
+        "--extension-pkg-whitelist=PySide2",
         "--disable=C0326",
         "--disable=W0125",
         "--disable=protected-access",

@@ -12,9 +12,9 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-from PyQt5 import Qt, QtCore, QtGui
-from PyQt5.QtCore import QAbstractTableModel, QModelIndex, Qt
-from PyQt5.QtGui import QFont
+from PySide2 import QtCore
+from PySide2.QtCore import QAbstractTableModel, QModelIndex, Qt
+from PySide2.QtGui import QFont
 
 from .... import config
 from .add_delete_table import Ui_MainWindow
@@ -133,7 +133,9 @@ class PropValTable(QAbstractTableModel):
             elif column == 1:
                 return str(self._data[list(self._data.keys())[row]])
             elif column == 2:
-                return str(self.design.parse_value(self._data[list(self._data.keys())[row]]))
+                return str(
+                    self.design.parse_value(self._data[list(
+                        self._data.keys())[row]]))
 
         # double clicking
         elif role == Qt.EditRole:
@@ -144,7 +146,10 @@ class PropValTable(QAbstractTableModel):
             font.setBold(True)
             return font
 
-    def setData(self, index: QModelIndex, value: str, role: Qt.ItemDataRole = Qt.EditRole)  -> bool:
+    def setData(self,
+                index: QModelIndex,
+                value: str,
+                role: Qt.ItemDataRole = Qt.EditRole) -> bool:
         """
         Modify either key or value (Property or Value) of dictionary depending on what
         the user selected manually on the table.
@@ -177,7 +182,10 @@ class PropValTable(QAbstractTableModel):
 
         return False
 
-    def headerData(self, section: int, orientation: Qt.Orientation, role: Qt.ItemDataRole = Qt.DisplayRole) -> str:
+    def headerData(self,
+                   section: int,
+                   orientation: Qt.Orientation,
+                   role: Qt.ItemDataRole = Qt.DisplayRole) -> str:
         """
         Get the headers to be displayed.
 

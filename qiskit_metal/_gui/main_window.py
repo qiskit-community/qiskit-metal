@@ -11,49 +11,46 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 """
-GUI front-end interface for Qiskit Metal in PyQt5.
+GUI front-end interface for Qiskit Metal in PySide2.
 @author: Zlatko Minev, IBM
 """
 # pylint: disable=invalid-name
 
-# some interesting paackages:
-# https://github.com/mfreiholz/Qt-Advanced-Docking-System
-# https://github.com/JackyDing/QtFlex5
-import shutil
-from pathlib import Path
-import logging
-import os
-from pathlib import Path
-from typing import List
 import importlib
 import importlib.util
+import logging
+import os
+import shutil
 import sys
+from pathlib import Path
+from typing import List
 
-from PyQt5 import QtWidgets
-from PyQt5.QtCore import QEventLoop, Qt, QTimer, pyqtSlot
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import (QApplication, QDockWidget, QFileDialog, QLabel,
-                             QMainWindow, QMessageBox, QInputDialog, QLineEdit)
+from PySide2 import QtWidgets
+from PySide2.QtCore import QEventLoop, Qt, QTimer, Slot
+from PySide2.QtGui import QIcon
+from PySide2.QtWidgets import (QApplication, QDockWidget, QFileDialog,
+                               QInputDialog, QLabel, QLineEdit, QMainWindow,
+                               QMessageBox)
 
+from .. import config
 from ..designs.design_base import QDesign
 from .component_widget_ui import Ui_ComponentWidget
-from .renderer_gds_gui import RendererGDSWidget
 from .elements_window import ElementsWindow
 from .main_window_base import QMainWindowBaseHandler, QMainWindowExtensionBase
 from .main_window_ui import Ui_MainWindow
-from .widgets.plot_widget.plot_window import QMainWindowPlot
-from .utility._handle_qt_messages import catch_exception_slot_pyqt
+from .renderer_gds_gui import RendererGDSWidget
+from .utility._handle_qt_messages import slot_catch_error
 from .widgets.all_components.table_model_all_components import \
     QTableModel_AllComponents
-from .widgets.edit_component.component_widget import ComponentWidget
+# from .widgets.edit_component.component_widget import ComponentWidget
 from .widgets.log_widget.log_metal import LogHandler_for_QTextLog
+from .widgets.plot_widget.plot_window import QMainWindowPlot
 from .widgets.variable_table import PropertyTableWidget
 
-from .. import config
 if not config.is_building_docs():
     from ..toolbox_metal.import_export import load_metal_design
+
 
 class QMainWindowExtension(QMainWindowExtensionBase):
     """This contains all the functions tthat the gui needs
@@ -69,7 +66,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
     """
     def __init__(self):
         super().__init__()
-        self.gds_gui = None # type: RendererGDSWidget
+        self.gds_gui = None  # type: RendererGDSWidget
 
     @property
     def design(self) -> QDesign:
@@ -101,33 +98,36 @@ class QMainWindowExtension(QMainWindowExtensionBase):
 
     def show_renderer_gds(self):
         """Handles click on GDS Renderer action"""
-        self.gds_gui = RendererGDSWidget(self.design, self, self.gui)
+        self.gds_gui = RendererGDSWidget(self, self.gui)
         self.gds_gui.show()
 
     def delete_all_components(self):
         """Delete all components
         """
-        ret = QMessageBox.question(self, 'Delete all components?',
-                                   "Are you sure you want to clear all Metal components?",
-                                   QMessageBox.Yes | QMessageBox.No)
+        ret = QMessageBox.question(
+            self, 'Delete all components?',
+            "Are you sure you want to clear all Metal components?",
+            QMessageBox.Yes | QMessageBox.No)
         if ret == QMessageBox.Yes:
             self.logger.info('Delete all components.')
             self.design.delete_all_components()
-            self.gui.component_window.set_component(None)
+            if self.component_window:
+                self.gui.component_window.set_component(None)
             self.gui.refresh()
 
-    @catch_exception_slot_pyqt()
+    @slot_catch_error()
     def save_design_as(self, _=None):
         """Handles click on Save Design As"""
-        filename = QFileDialog.getSaveFileName(None,
-                                               'Select a new location to save Metal design to',
-                                               self.design.get_design_name() + '.metal',
-                                               initialFilter='*.metal')[0]
+        filename = QFileDialog.getSaveFileName(
+            None,
+            'Select a new location to save Metal design to',
+            self.design.get_design_name() + '.metal',
+            initialFilter='*.metal')[0]
 
         if filename:
             self.gui.save_file(filename)
 
-    @catch_exception_slot_pyqt()
+    @slot_catch_error()
     def save_design(self, _=None):
         """
         Handles click on save design
@@ -139,17 +139,18 @@ class QMainWindowExtension(QMainWindowExtensionBase):
                 self.save_design_as()
         else:
             self.logger.info('No design present.')
-            QMessageBox.warning(
-                self, 'Warning', 'No design present! Can''t save')
+            QMessageBox.warning(self, 'Warning', 'No design present! Can'
+                                't save')
 
-    @catch_exception_slot_pyqt()
+    @slot_catch_error()
     def load_design(self, _):
         """
         Handles click on loading metal design
         """
-        filename = QFileDialog.getOpenFileName(None,
-                                               'Select locaiton to load Metal design from',
-                                               initialFilter='*.metal')[0]
+        filename = QFileDialog.getOpenFileName(
+            None,
+            'Select locaiton to load Metal design from',
+            initialFilter='*.metal')[0]
         if filename:
             self.logger.info(f'Attempting to load design file {filename}')
             design = load_metal_design(filename)
@@ -158,36 +159,42 @@ class QMainWindowExtension(QMainWindowExtensionBase):
             self.handler.set_design(design)
             self.logger.info(f'Successfully set design. Loaded and done.')
 
-    @catch_exception_slot_pyqt()
+    @slot_catch_error()
     def full_refresh(self, _=None):
         """Handles click on Refresh"""
         self.logger.info(
             f'Force refresh of all widgets (does not rebuild components)...')
         self.gui.refresh()
 
-    @catch_exception_slot_pyqt()
+    @slot_catch_error()
     def rebuild(self, _=None):
         """Handels click on Rebuild"""
         self.logger.info(
-            f'Rebuilding all components in the model (and refreshing widgets)...')
+            f'Rebuilding all components in the model (and refreshing widgets)...'
+        )
         self.gui.rebuild()
 
-    @catch_exception_slot_pyqt()
+    @slot_catch_error()
     def new_qcomponent(self, _=None):
         """Create a new qcomponent call by button
         """
-        path = str(Path(self.gui.path_gui).parent /
-                   'components'/'user_components'/'my_qcomponent.py')
-        filename = QFileDialog.getSaveFileName(parent=None,
-                                               caption='Select a locaiton to save QComponent python file to',
-                                               directory=path,
-                                               initialFilter='*.py')[0]
+        path = str(
+            Path(self.gui.path_gui).parent / 'components' / 'user_components' /
+            'my_qcomponent.py')
+        filename = QFileDialog.getSaveFileName(
+            parent=None,
+            caption='Select a locaiton to save QComponent python file to',
+            directory=path,
+            initialFilter='*.py')[0]
         if filename:
             text, okPressed = QInputDialog.getText(
-                self, "Name your QComponent class", "Name your QComponent class:", QLineEdit.Normal, "MyQComponent")
+                self, "Name your QComponent class",
+                "Name your QComponent class:", QLineEdit.Normal,
+                "MyQComponent")
             if okPressed and text != '':
                 text_inst, okPressed = QInputDialog.getText(
-                    self, "Give a name to your instance of the class", "Name of instance:", QLineEdit.Normal, "qcomp1")
+                    self, "Give a name to your instance of the class",
+                    "Name of instance:", QLineEdit.Normal, "qcomp1")
                 if okPressed and text_inst != '':
                     self.gui.new_qcomponent_file(filename, text, text_inst)
 
@@ -211,12 +218,9 @@ class MetalGUI(QMainWindowBaseHandler):
 
     # This is somewhat outdated
     _dock_names = [
-        'dockComponent',
-        'dockConnectors',
-        'dockDesign',
-        'dockLog',
-        'dockNewComponent',
-        'dockVariables']
+        'dockComponent', 'dockConnectors', 'dockDesign', 'dockLog',
+        'dockNewComponent', 'dockVariables'
+    ]
 
     def __init__(self, design: QDesign = None):
         """
@@ -233,7 +237,7 @@ class MetalGUI(QMainWindowBaseHandler):
         # UIs
         self.plot_win = None  # type: QMainWindowPlot
         self.elements_win = None  # type: ElementsWindow
-        self.component_window = ComponentWidget(self, self.ui.dockComponent)
+        self.component_window = None  #TODO: ZLATKO ComponentWidget(self, self.ui.dockComponent)
         self.variables_window = PropertyTableWidget(self, gui=self)
 
         self._setup_component_widget()
@@ -274,12 +278,16 @@ class MetalGUI(QMainWindowBaseHandler):
             for widgetname in widgets:
                 if hasattr(parent, widgetname):
                     widget = getattr(parent, widgetname)  # type: QWidget
-                    widget.setEnabled(enabled)
+                    if widget:
+                        widget.setEnabled(enabled)
                 else:
                     self.logger.error(f'GUI issue: wrong name: {widgetname}')
 
-        widgets = ['actionSave', 'action_full_refresh', 'actionRebuild', 'actionDelete_All',
-                   'dockComponent', 'dockNewComponent', 'dockDesign', 'dockConnectors']
+        widgets = [
+            'actionSave', 'action_full_refresh', 'actionRebuild',
+            'actionDelete_All', 'dockComponent', 'dockNewComponent',
+            'dockDesign', 'dockConnectors'
+        ]
         setEnabled(self.ui, widgets)
 
         widgets = ['component_window', 'elements_win']
@@ -323,9 +331,8 @@ class MetalGUI(QMainWindowBaseHandler):
         """Update the design name"""
         if self.design:
             design_name = self.design.get_design_name()
-            self.main_window.setWindowTitle(
-                self.config.main_window.title + f' — {design_name}'
-            )
+            self.main_window.setWindowTitle(self.config.main_window.title +
+                                            f' — {design_name}')
 
     def _ui_adjustments(self):
         """Any touchups to the loaded ui that need be done soon
@@ -342,28 +349,29 @@ class MetalGUI(QMainWindowBaseHandler):
 
         # Docks
         # Left handside
-        self.main_window.splitDockWidget(
-            self.ui.dockDesign, self.ui.dockComponent, Qt.Vertical)
-        self.main_window.tabifyDockWidget(
-            self.ui.dockDesign, self.ui.dockNewComponent)
-        self.main_window.tabifyDockWidget(
-            self.ui.dockNewComponent, self.ui.dockConnectors)
-        self.main_window.tabifyDockWidget(
-            self.ui.dockConnectors, self.ui.dockVariables)
+        self.main_window.splitDockWidget(self.ui.dockDesign,
+                                         self.ui.dockComponent, Qt.Vertical)
+        self.main_window.tabifyDockWidget(self.ui.dockDesign,
+                                          self.ui.dockNewComponent)
+        self.main_window.tabifyDockWidget(self.ui.dockNewComponent,
+                                          self.ui.dockConnectors)
+        self.main_window.tabifyDockWidget(self.ui.dockConnectors,
+                                          self.ui.dockVariables)
         self.ui.dockDesign.raise_()
-        self.main_window.resizeDocks(
-            {self.ui.dockDesign}, {350}, Qt.Horizontal)
+        self.main_window.resizeDocks([self.ui.dockDesign], [350],
+                                     Qt.Horizontal)
 
         # Log
-        self.ui.dockLog.parent().resizeDocks(
-            {self.ui.dockLog}, {120}, Qt.Vertical)
+        self.ui.dockLog.parent().resizeDocks([self.ui.dockLog], [120],
+                                             Qt.Vertical)
 
         # Tab positions
         self.ui.tabWidget.setCurrentIndex(0)
 
     def _ui_adjustments_final(self):
         """Any touchups to the loaded ui that need be done after all the base and main ui is loaded"""
-        self.component_window.setCurrentIndex(0)
+        if self.component_window:
+            self.component_window.setCurrentIndex(0)
 
     def _set_element_tab(self, yesno: bool):
         """Set the elements tabl to Elements or View
@@ -378,7 +386,8 @@ class MetalGUI(QMainWindowBaseHandler):
 
     def _setup_component_widget(self):
         """Setup the components widget"""
-        self.ui.dockComponent.setWidget(self.component_window)
+        if self.component_window:
+            self.ui.dockComponent.setWidget(self.component_window)
 
     def _setup_variables_widget(self):
         """Setup the variables widget"""
@@ -393,10 +402,11 @@ class MetalGUI(QMainWindowBaseHandler):
 
         # Move the dock
         self._move_dock_to_new_parent(self.ui.dockLog, self.plot_win)
-        self.ui.dockLog.parent().resizeDocks(
-            {self.ui.dockLog}, {120}, Qt.Vertical)
+        self.ui.dockLog.parent().resizeDocks([self.ui.dockLog], [120],
+                                             Qt.Vertical)
 
-    def _move_dock_to_new_parent(self, dock: QDockWidget,
+    def _move_dock_to_new_parent(self,
+                                 dock: QDockWidget,
                                  new_parent: QMainWindow,
                                  dock_location=Qt.BottomDockWidgetArea):
         """The the doc to a different parent window
@@ -426,7 +436,8 @@ class MetalGUI(QMainWindowBaseHandler):
         Table model that shows the summary of the components of a design in a table
         with their names, classes, and modules
         """
-        model = QTableModel_AllComponents(self, logger=self.logger,
+        model = QTableModel_AllComponents(self,
+                                          logger=self.logger,
                                           tableView=self.ui.tableComponents)
         self.ui.tableComponents.setModel(model)
 
@@ -439,7 +450,8 @@ class MetalGUI(QMainWindowBaseHandler):
             do_hide (bool): Hide or show (Default: None -- toggle)
         """
         self.main_window.toggle_all_docks(do_hide)
-        self.qApp.processEvents() # Process all events, so that if we take screenshot next it won't be partially updated
+        self.qApp.processEvents(
+        )  # Process all events, so that if we take screenshot next it won't be partially updated
 
     ################################################
     # Ploting
@@ -535,7 +547,8 @@ class MetalGUI(QMainWindowBaseHandler):
         Arguments:
             name (str): Name of component to exmaine.
         """
-        self.component_window.set_component(name)
+        if self.component_window:
+            self.component_window.set_component(name)
 
     def edit_component_source(self, name: str = None):
         """For the selected component in the edit component widet (see gui.edit_component)
@@ -547,7 +560,8 @@ class MetalGUI(QMainWindowBaseHandler):
         """
         if name:
             self.edit_component(name)
-        self.component_window.edit_source()
+        if self.component_window:
+            self.component_window.edit_source()
 
     def highlight_components(self, component_names: List[str]):
         """Hihglight a list of components
@@ -566,7 +580,8 @@ class MetalGUI(QMainWindowBaseHandler):
         bounds = self.canvas.find_component_bounds(components)
         self.canvas.zoom_to_rectangle(bounds)
 
-    def new_qcomponent_file(self, new_path: str, class_name: str, name_instance: str):
+    def new_qcomponent_file(self, new_path: str, class_name: str,
+                            name_instance: str):
         """Create a new qcomponent file based on template.
         The template is stored in components/_template.py
 
@@ -578,7 +593,7 @@ class MetalGUI(QMainWindowBaseHandler):
 
         # Copy template file
         tpath = Path(self.path_gui)
-        tpath = tpath.parent/'components'/'_template.py'
+        tpath = tpath.parent / 'components' / '_template.py'
         shutil.copy(str(tpath), str(new_path))
 
         # Rename the class name

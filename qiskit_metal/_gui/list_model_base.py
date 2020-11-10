@@ -11,26 +11,24 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 '''
 @date: 2020
 @author: Dennis Wang
 '''
 
-from PyQt5 import Qt, QtCore, QtGui
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QStandardItem, QStandardItemModel
+from PySide2 import QtCore
+from PySide2.QtCore import Qt
+from PySide2.QtGui import QStandardItem, QStandardItemModel
+
 
 class DynamicList(QStandardItemModel):
-
     """
     Create a dynamic checklist that gets updated when the
     data source is modified or a new one is introduced.
     """
-
     def __init__(self, orig_design: 'QDesign'):
         """
-        Set the original design source and populate list. 
+        Set the original design source and populate list.
 
         Args:
             orig_design (QDesign): The design
@@ -59,12 +57,13 @@ class DynamicList(QStandardItemModel):
         """
         # TODO: Generalize this to beyond components.
         self.clear()
-        for element in self.datasrc.components:
-            item = QStandardItem(element)
-            item.setCheckable(True)
-            item.setCheckState(QtCore.Qt.Checked)
-            item.setFlags(Qt.ItemIsUserCheckable| Qt.ItemIsEnabled)
-            self.appendRow(item)
+        if self.datasrc:
+            for element in self.datasrc.components:
+                item = QStandardItem(element)
+                item.setCheckable(True)
+                item.setCheckState(QtCore.Qt.Checked)
+                item.setFlags(Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
+                self.appendRow(item)
 
     def select_all(self):
         """Select everything in the list."""
@@ -75,7 +74,7 @@ class DynamicList(QStandardItemModel):
         """Deselect everything in the list."""
         for i in range(self.rowCount()):
             self.item(i).setCheckState(QtCore.Qt.Unchecked)
-    
+
     def get_checked(self) -> list:
         """
         Get list of all selected items.

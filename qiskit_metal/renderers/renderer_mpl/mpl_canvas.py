@@ -11,7 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 """
 @author: Zlatko Minev, ... (IBM)
 @date: 2019
@@ -37,11 +36,11 @@ from matplotlib.cbook import _OrderedSet
 from matplotlib.collections import LineCollection, PatchCollection
 from matplotlib.figure import Figure
 from matplotlib.transforms import Bbox
-from PyQt5 import QtCore
-from PyQt5.QtCore import QTimer
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import (QApplication, QMainWindow, QMenu, QMessageBox,
-                             QPushButton, QSizePolicy, QVBoxLayout, QWidget)
+from PySide2 import QtCore
+from PySide2.QtCore import QTimer
+from PySide2.QtGui import QIcon
+from PySide2.QtWidgets import (QApplication, QMainWindow, QMenu, QMessageBox,
+                               QPushButton, QSizePolicy, QVBoxLayout, QWidget)
 from shapely.geometry import CAP_STYLE, JOIN_STYLE, LineString
 
 from ... import Dict
@@ -64,72 +63,99 @@ if TYPE_CHECKING:
 
 BACKGROUND_COLOR = '#F4F4F4'
 MPL_CONTEXT_DEFAULT = {
-    'lines.linewidth': 3,
+    'lines.linewidth':
+    3,
 
     # FIGURE
     # See http://matplotlib.org/api/figure_api.html#matplotlib.figure.Figure
     # figure.titlesize : large      ## size of the figure title (Figure.suptitle())
     # figure.titleweight : normal   ## weight of the figure title
     # figure.figsize   : 6.4, 4.8   ## figure size in inches
-    'figure.dpi': 100,  # figure dots per inch
-    'figure.facecolor': BACKGROUND_COLOR,  # figure facecolor
-    'figure.edgecolor': BACKGROUND_COLOR,  # figure edgecolor
+    'figure.dpi':
+    100,  # figure dots per inch
+    'figure.facecolor':
+    BACKGROUND_COLOR,  # figure facecolor
+    'figure.edgecolor':
+    BACKGROUND_COLOR,  # figure edgecolor
     # figure.frameon : True         ## enable figure frame
     # figure.max_open_warning : 20  ## The maximum number of figures to open through
     # the pyplot interface before emitting a warning.
     # If less than one this feature is disabled.
     # The figure subplot parameters.  All dimensions are a fraction of the
-    'figure.subplot.left': 0.00,  # the left side of the subplots of the figure
-    'figure.subplot.right': 1.0,  # the right side of the subplots of the figure
-    'figure.subplot.bottom': 0.00,  # the bottom of the subplots of the figure
-    'figure.subplot.top': 1.0,  # the top of the subplots of the figure
+    'figure.subplot.left':
+    0.00,  # the left side of the subplots of the figure
+    'figure.subplot.right':
+    1.0,  # the right side of the subplots of the figure
+    'figure.subplot.bottom':
+    0.00,  # the bottom of the subplots of the figure
+    'figure.subplot.top':
+    1.0,  # the top of the subplots of the figure
     # the amount of width reserved for space between subplots,
-    'figure.subplot.wspace': 0.0,
+    'figure.subplot.wspace':
+    0.0,
     # expressed as a fraction of the average axis width
     # the amount of height reserved for space between subplots,
-    'figure.subplot.hspace': 0.0,
+    'figure.subplot.hspace':
+    0.0,
     # expressed as a fraction of the average axis height
 
     # Figure layout
-    'figure.autolayout': False,  # When True, automatically adjust subplot
+    'figure.autolayout':
+    False,  # When True, automatically adjust subplot
     # parameters to make the plot fit the figure
     # using `tight_layout`
-    'figure.constrained_layout.use': True,  # When True, automatically make plot
+    'figure.constrained_layout.use':
+    True,  # When True, automatically make plot
     # qgeometry fit on the figure. (Not compatible
     # with `autolayout`, above).
     # Padding around axes objects. Float representing
-    'figure.constrained_layout.h_pad': 2./72.,
+    'figure.constrained_layout.h_pad':
+    2. / 72.,
     # inches. Default is 3./72. inches (3 pts)
-    'figure.constrained_layout.w_pad': 2./72.,
+    'figure.constrained_layout.w_pad':
+    2. / 72.,
     # Space between subplot groups. Float representing
-    'figure.constrained_layout.hspace': 0.0,
+    'figure.constrained_layout.hspace':
+    0.0,
     # a fraction of the subplot widths being separated.
-    'figure.constrained_layout.wspace': 0.0,
+    'figure.constrained_layout.wspace':
+    0.0,
 
     # GRIDS
-    'grid.color':   'b0b0b0',  # grid color
-    'grid.linestyle': '-',         # solid
-    'grid.linewidth':   0.5,  # in points
-    'grid.alpha':   0.5,  # transparency, between 0.0 and 1.0
+    'grid.color':
+    'b0b0b0',  # grid color
+    'grid.linestyle':
+    '-',  # solid
+    'grid.linewidth':
+    0.5,  # in points
+    'grid.alpha':
+    0.5,  # transparency, between 0.0 and 1.0
 
     # AXES
     # default face and edge color, default tick sizes,
     # default fontsizes for ticklabels, and so on.  See
     # http://matplotlib.org/api/axes_api.html#module-matplotlib.axes
-    'axes.facecolor': BACKGROUND_COLOR,  # axes background color
+    'axes.facecolor':
+    BACKGROUND_COLOR,  # axes background color
     # 'axes.edgecolor'      : 'black',   ## axes edge color
     # axes.linewidth      : 0.8     ## edge linewidth
-    'axes.grid': True,  # display grid or not
+    'axes.grid':
+    True,  # display grid or not
     # axes.grid.axis      : both    ## which axis the grid should apply to
     # axes.grid.which     : major   ## gridlines at major, minor or both ticks
     # axes.titlesize      : large   ## fontsize of the axes title
     # axes.titleweight    : normal  ## font weight of title
-    'axes.titlepad': 2.0,  # pad between axes and title in points
-    'axes.labelsize': 'small',  # fontsize of the x any y labels
-    'axes.labelpad': 2.0,  # space between label and axis
+    'axes.titlepad':
+    2.0,  # pad between axes and title in points
+    'axes.labelsize':
+    'small',  # fontsize of the x any y labels
+    'axes.labelpad':
+    2.0,  # space between label and axis
     # axes.labelweight    : normal  ## weight of the x and y labels
-    'axes.labelcolor': 'b0b0b0',
-    'axes.axisbelow': 'line',  # draw axis gridlines and ticks below
+    'axes.labelcolor':
+    'b0b0b0',
+    'axes.axisbelow':
+    'line',  # draw axis gridlines and ticks below
     # patches (True); above patches but below
     # lines ('line'); or above all (False)
     # axes.formatter.limits : -7, 7 ## use scientific notation if log10
@@ -153,25 +179,32 @@ MPL_CONTEXT_DEFAULT = {
     # digits from tick labels.
     # axes.spines.left   : True   ## display axis spines
     #axes.spines.bottom : True
-    'axes.spines.top': False,
-    'axes.spines.right': False,
+    'axes.spines.top':
+    False,
+    'axes.spines.right':
+    False,
     # axes.unicode_minus  : True    ## use unicode for the minus symbol
     # rather than hyphen.  See
     # http://en.wikipedia.org/wiki/Plus_and_minus_signs#Character_codes
     # ['1f77b4', 'ff7f0e', '2ca02c', 'd62728', '9467bd', '8c564b', 'e377c2', '7f7f7f', 'bcbd22', '17becf']),
-    'axes.prop_cycle': cycler('color', ['#a6cee3', '#1f78b4', '#b2df8a', '#33a02c', '#fb9a99', '#e31a1c', '#fdbf6f', '#ff7f00', '#cab2d6', '#6a3d9a', '#ffff99', '#b15928']),
+    'axes.prop_cycle':
+    cycler('color', [
+        '#a6cee3', '#1f78b4', '#b2df8a', '#33a02c', '#fb9a99', '#e31a1c',
+        '#fdbf6f', '#ff7f00', '#cab2d6', '#6a3d9a', '#ffff99', '#b15928'
+    ]),
     # color cycle for plot lines  as list of string
     # colorspecs: single letter, long name, or web-style hex
-                          # Note the use of string escapes here ('1f77b4', instead of 1f77b4)
-                          # as opposed to the rest of this file.
+    # Note the use of string escapes here ('1f77b4', instead of 1f77b4)
+    # as opposed to the rest of this file.
     # axes.autolimit_mode : data ## How to scale axes limits to the data.
     # Use "data" to use data limits, plus some margin
     # Use "round_number" move to the nearest "round" number
-    'axes.xmargin': .0,  # x margin.  See `axes.Axes.margins`
-    'axes.ymargin': .0,  # y margin See `axes.Axes.margins`
+    'axes.xmargin':
+    .0,  # x margin.  See `axes.Axes.margins`
+    'axes.ymargin':
+    .0,  # y margin See `axes.Axes.margins`
     # polaraxes.grid      : True    ## display grid on polar axes
     # axes3d.grid         : True    ## display grid on 3d axes
-
 
     # TICKS
     # see http://matplotlib.org/api/axis_api.html#matplotlib.axis.Tick
@@ -183,11 +216,14 @@ MPL_CONTEXT_DEFAULT = {
     # xtick.minor.size     : 2      ## minor tick size in points
     # xtick.major.width    : 0.8    ## major tick width in points
     # xtick.minor.width    : 0.6    ## minor tick width in points
-    'xtick.major.pad': 1.0,  # distance to major tick label in points
-    'xtick.minor.pad': 1.0,  # distance to the minor tick label in points
+    'xtick.major.pad':
+    1.0,  # distance to major tick label in points
+    'xtick.minor.pad':
+    1.0,  # distance to the minor tick label in points
     # xtick.color          : black  ## color of the tick labels
     # xtick.labelsize      : medium ## fontsize of the tick labels
-    'xtick.direction': 'inout',  # direction: in, out, or inout
+    'xtick.direction':
+    'inout',  # direction: in, out, or inout
     # xtick.minor.visible  : False  ## visibility of minor ticks on x-axis
     # xtick.major.top      : True   ## draw x axis top major ticks
     # xtick.major.bottom   : True   ## draw x axis bottom major ticks
@@ -203,11 +239,14 @@ MPL_CONTEXT_DEFAULT = {
     # ytick.minor.size     : 2      ## minor tick size in points
     # ytick.major.width    : 0.8    ## major tick width in points
     # ytick.minor.width    : 0.6    ## minor tick width in points
-    'ytick.major.pad': 1.,  # distance to major tick label in points
-    'ytick.minor.pad': 1.,  # distance to the minor tick label in points
+    'ytick.major.pad':
+    1.,  # distance to major tick label in points
+    'ytick.minor.pad':
+    1.,  # distance to the minor tick label in points
     # ytick.color          : black  ## color of the tick labels
     # ytick.labelsize      : medium ## fontsize of the tick labels
-    'ytick.direction': 'inout',  # direction: in, out, or inout
+    'ytick.direction':
+    'inout',  # direction: in, out, or inout
     # ytick.minor.visible  : False  ## visibility of minor ticks on y-axis
     # ytick.major.left     : True   ## draw y axis left major ticks
     # ytick.major.right    : True   ## draw y axis right major ticks
@@ -217,8 +256,8 @@ MPL_CONTEXT_DEFAULT = {
 
     # PATHS
     # path.simplify : True   ## When True, simplify paths by removing "invisible"
-                            # points to reduce file size and increase rendering
-                            # speed
+    # points to reduce file size and increase rendering
+    # speed
     # path.simplify_threshold : 0.111111111111  ## The threshold of similarity below which
     # vertices will be removed in the
     # simplification process
@@ -228,12 +267,11 @@ MPL_CONTEXT_DEFAULT = {
     # path.sketch : None ## May be none, or a 3-tuple of the form (scale, length,
     # randomness).
     # *scale* is the amplitude of the wiggle
-                        # perpendicular to the line (in pixels).  *length*
-                        # is the length of the wiggle along the line (in
-                        # pixels).  *randomness* is the factor by which
-                        # the length is randomly scaled.
+    # perpendicular to the line (in pixels).  *length*
+    # is the length of the wiggle along the line (in
+    # pixels).  *randomness* is the factor by which
+    # the length is randomly scaled.
     #path.effects : []  ##
-
 
     # LINES
     # See http://matplotlib.org/api/artist_api.html#module-matplotlib.lines for more
@@ -265,7 +303,8 @@ MPL_CONTEXT_DEFAULT = {
     ## circles.  See
     # http://matplotlib.org/api/artist_api.html#module-matplotlib.patches
     # information on patch properties
-    'patch.linewidth': 1,  # edge width in points.
+    'patch.linewidth':
+    1,  # edge width in points.
     #patch.facecolor        : C0
     # patch.edgecolor        : black   ## if forced, or patch is not filled
     # patch.force_edgecolor  : False   ## True to always use edgecolor
@@ -276,9 +315,9 @@ MPL_CONTEXT_DEFAULT = {
     #hatch.linewidth : 1.0
 }
 
-
 # TODO: Create an interface class for canvas based on this class
 # This class should then inherit it
+
 
 class PlotCanvas(FigureCanvas):
     """
@@ -289,10 +328,12 @@ class PlotCanvas(FigureCanvas):
     Access with:
         `canvas = gui.canvas`
     """
+
     # See https://github.com/matplotlib/matplotlib/blob/master/lib/matplotlib/backends/backend_qt5agg.py
     # Consider using pyqtgraph https://stackoverflow.com/questions/40126176/fast-live-plotting-in-matplotlib-pyplot.
 
-    def __init__(self, design: QDesign,
+    def __init__(self,
+                 design: QDesign,
                  parent: 'QMainWindowPlot' = None,
                  logger=None,
                  statusbar_label=None):
@@ -342,8 +383,9 @@ class PlotCanvas(FigureCanvas):
 
         self.setup_figure_and_axes()
 
-        self.metal_renderer = QMplRenderer(
-            canvas=self, design=self.design, logger=logger)
+        self.metal_renderer = QMplRenderer(canvas=self,
+                                           design=self.design,
+                                           logger=logger)
 
         # self.plot()
         self.welcome_message()
@@ -407,7 +449,8 @@ class PlotCanvas(FigureCanvas):
         plt.style.use('fast')
 
         mpl.rcParams['path.simplify'] = self.config.path_simplify
-        mpl.rcParams['path.simplify_threshold'] = self.config.path_simplify_threshold
+        mpl.rcParams[
+            'path.simplify_threshold'] = self.config.path_simplify_threshold
         mpl.rcParams['agg.path.chunksize'] = self.config.chunksize
 
     def get_axis(self):
@@ -470,8 +513,7 @@ class PlotCanvas(FigureCanvas):
                 main_plot()
 
             except Exception as e:
-                log_error_easy(self.logger,
-                               post_text=f'Plotting error: {e}')
+                log_error_easy(self.logger, post_text=f'Plotting error: {e}')
 
             finally:
                 final()
@@ -487,10 +529,16 @@ class PlotCanvas(FigureCanvas):
             ax (plt.Axes): axes
         """
         # self.logger.debug('WATERMARK')
-        kw = dict(fontsize=15, color='gray', ha='right',
-                  va='bottom', alpha=0.18, zorder=-100)
-        ax.annotate('Qiskit Metal', xy=(0.98, 0.02),
-                    xycoords='axes fraction', **kw)
+        kw = dict(fontsize=15,
+                  color='gray',
+                  ha='right',
+                  va='bottom',
+                  alpha=0.18,
+                  zorder=-100)
+        ax.annotate('Qiskit Metal',
+                    xy=(0.98, 0.02),
+                    xycoords='axes fraction',
+                    **kw)
 
         file = (self.gui.path_imgs / 'metal_logo.png')
         if file.is_file():
@@ -575,7 +623,9 @@ class PlotCanvas(FigureCanvas):
     def welcome_message(self):
         """The GUI displays a message to let users know they are using Qiskit Metal.
         """
-        self._welcome_text = AnimatedText(self.axes[0], "Welcome to Qiskit Metal", self,
+        self._welcome_text = AnimatedText(self.axes[0],
+                                          "Welcome to Qiskit Metal",
+                                          self,
                                           start=False)
         self._welcome_start_timer = QTimer.singleShot(
             250, self._welcome_message_start)
@@ -624,10 +674,12 @@ class PlotCanvas(FigureCanvas):
             bbox = Bbox.from_extents(newbounds)
             newbounds = bbox.expanded(zoom, zoom).extents
             # re-calculate total bounds by adding current component
-            bounds = [min(newbounds[0], bounds[0]),
-                      min(newbounds[1], bounds[1]),
-                      max(newbounds[2], bounds[2]),
-                      max(newbounds[3], bounds[3])]
+            bounds = [
+                min(newbounds[0], bounds[0]),
+                min(newbounds[1], bounds[1]),
+                max(newbounds[2], bounds[2]),
+                max(newbounds[3], bounds[3])
+            ]
         return bounds
 
     def set_component(self, name: str):
@@ -671,14 +723,16 @@ class PlotCanvas(FigureCanvas):
             component_names (List[str]): list of component names
         """
         # Defaults - todo eventually move to some option place where can be changed
-        text_kw = dict(
-            color='r', alpha=0.75, verticalalignment='center',
-            horizontalalignment='center',
-            clip_on=True, zorder=99, fontweight='bold'
-        )
-        text_bbox_kw = dict(
-            facecolor='#FFFFFF', alpha=0.75, edgecolor='#F0F0F0'
-        )
+        text_kw = dict(color='r',
+                       alpha=0.75,
+                       verticalalignment='center',
+                       horizontalalignment='center',
+                       clip_on=True,
+                       zorder=99,
+                       fontweight='bold')
+        text_bbox_kw = dict(facecolor='#FFFFFF',
+                            alpha=0.75,
+                            edgecolor='#F0F0F0')
 
         # Functionality
         self.clear_annotation()
@@ -694,15 +748,21 @@ class PlotCanvas(FigureCanvas):
                 component = self.design._components[component_id]
 
                 if 1:  # highlight bounding box
-                    bounds = component.qgeometry_bounds()  # returns (minx, miny, maxx, maxy)
+                    bounds = component.qgeometry_bounds(
+                    )  # returns (minx, miny, maxx, maxy)
                     # bbox = Bbox.from_extents(bounds)
                     # Create a Rectangle patch TODO: move to settings
-                    kw = dict(linewidth=1, edgecolor='r', facecolor=(
-                        1, 0, 0, 0.05), zorder=100, ls='--')
+                    kw = dict(linewidth=1,
+                              edgecolor='r',
+                              facecolor=(1, 0, 0, 0.05),
+                              zorder=100,
+                              ls='--')
                     rect = patches.Rectangle((0, 0), 0, 0, **kw)
 
-                    lbwh = [bounds[0], bounds[1], bounds[2] -
-                            bounds[0], bounds[3]-bounds[1]]
+                    lbwh = [
+                        bounds[0], bounds[1], bounds[2] - bounds[0],
+                        bounds[3] - bounds[1]
+                    ]
                     rect.set_bounds(*lbwh)
                     self._annotations['patch'] += [rect]
                     for ax in self.axes:
@@ -710,11 +770,16 @@ class PlotCanvas(FigureCanvas):
 
                     if 1:  # Draw name as text of QComponent
                         text = matplotlib.text.Text(
-                            (bounds[0]+bounds[2])/2., (bounds[1]+bounds[3])/2.,
-                            str(component.name),
-                            **{**text_kw, **dict(fontsize=13)})
-                        text.set_bbox({**text_bbox_kw,
-                                       **dict(edgecolor=None)})  # dict(facecolor=(1, 0, 0, 0.25)))
+                            (bounds[0] + bounds[2]) / 2.,
+                            (bounds[1] + bounds[3]) / 2., str(component.name),
+                            **{
+                                **text_kw,
+                                **dict(fontsize=13)
+                            })
+                        text.set_bbox({
+                            **text_bbox_kw,
+                            **dict(edgecolor=None)
+                        })  # dict(facecolor=(1, 0, 0, 0.25)))
                         for ax in self.axes:
                             ax.add_artist(text)
                         self._annotations['text'] += [text]
@@ -728,9 +793,16 @@ class PlotCanvas(FigureCanvas):
                         n = pin['normal']
 
                         if 1:  # draw the arrows
-                            kw = dict(color='r', mutation_scale=15, alpha=0.75, capstyle='butt', ec='k',
-                                      lw=0.5, zorder=100, clip_on=True)
-                            arrow = patches.FancyArrowPatch(m, m+n*0.05, **kw)
+                            kw = dict(color='r',
+                                      mutation_scale=15,
+                                      alpha=0.75,
+                                      capstyle='butt',
+                                      ec='k',
+                                      lw=0.5,
+                                      zorder=100,
+                                      clip_on=True)
+                            arrow = patches.FancyArrowPatch(
+                                m, m + n * 0.05, **kw)
                             self._annotations['patch'] += [arrow]
                             """A fancy arrow patch. It draws an arrow using the ArrowStyle.
                             The head and tail positions are fixed at the specified start and end points of the arrow,
@@ -742,10 +814,12 @@ class PlotCanvas(FigureCanvas):
 
                         if 1:  # draw names of pins
                             dist = 0.05
-                            kw = {**text_kw,
-                                  **dict(horizontalalignment='left' if n[0] >= 0 else 'right')}
+                            kw = {
+                                **text_kw,
+                                **dict(horizontalalignment='left' if n[0] >= 0 else 'right')
+                            }
                             # type: matplotlib.text.Text
-                            text = ax.text(*(m+dist*n), pin_name, **kw)
+                            text = ax.text(*(m + dist * n), pin_name, **kw)
                             text.set_bbox(text_bbox_kw)
                             self._annotations['text'] += [text]
 
