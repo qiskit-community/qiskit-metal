@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2019.
+# (C) Copyright IBM 2017, 2020.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -95,10 +95,9 @@ Passives
 .. autosummary::
     :toctree:
 
-    Capacitor3Fingers
-    LaunchV1
-    LaunchV2
-    ThreeFingerCapV1
+    LaunchpadWirebond
+    LaunchpadWirebondCoupled
+    CapThreeFingers
 
 
 Qubits
@@ -160,10 +159,9 @@ if config.is_building_docs():
     from .interconnects.mixed_path import RouteMixed
     from .interconnects.pathfinder import RoutePathfinder
     from .interconnects.resonator_rectangle_spiral import ResonatorRectangleSpiral
-    from .passives.launch_v1 import LaunchV1
-    from .passives.launch_v2 import LaunchV2
-    from .passives.capacitor_three_fingers import Capacitor3Fingers
-    from .passives.three_finger_cap_v1 import ThreeFingerCapV1
+    from .passives.launchpad_wb import LaunchpadWirebond
+    from .passives.launchpad_wb_coupled import LaunchpadWirebondCoupled
+    from .passives.cap_three_fingers import CapThreeFingers
     from .qubits.transmon_concentric import TransmonConcentric
     from .qubits.transmon_cross import TransmonCross
     from .qubits.transmon_pocket import TransmonPocket

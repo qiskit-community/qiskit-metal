@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2019.
+# (C) Copyright IBM 2017, 2020.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -25,7 +25,6 @@ from shapely.ops import cascaded_union
 from . import basic
 from . import utility
 from . import mpl
-#from . import cpw
 
 # Useful functions
 from .utility import get_poly_pts, Vector

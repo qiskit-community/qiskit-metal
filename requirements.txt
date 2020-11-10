@@ -1,9 +1,11 @@
 addict
+cycler
 descartes
 docutils
 gdspy>=1.5.2
 GeoPandas
 ipython
+jedi
 matplotlib
 numpy
 pandas

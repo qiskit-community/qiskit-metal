@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2019-202.
+# (C) Copyright IBM 2017, 2020.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -15,7 +15,7 @@
 # pylint: disable=wrong-import-order
 # pylint: disable=wrong-import-position
 
-__version__ = '0.2.03'
+__version__ = '0.0.1'
 __license__ = "Apache 2.0"
 __copyright__= 'Copyright IBM 2019-2020'
 __author__ = 'Zlatko Minev, Thomas McConkey, and them IBM Quantum Team'
