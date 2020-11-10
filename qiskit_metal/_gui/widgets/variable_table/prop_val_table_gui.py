@@ -2,10 +2,11 @@ from .dialog_popup import Ui_Dialog
 from .add_delete_table import Ui_MainWindow
 from .prop_val_table_model import PropValTable
 from .right_click_table_view import RightClickView
-from PyQt5 import QtWidgets, QtGui, QtCore
-from PyQt5.QtGui import QFont
-from PyQt5.QtCore import QModelIndex
-from PyQt5.QtWidgets import QMainWindow, QTableView, QDialog
+from PySide2 import QtWidgets, QtGui, QtCore
+from PySide2.QtGui import QFont
+from PySide2.QtCore import QModelIndex
+from PySide2.QtWidgets import QMainWindow, QTableView, QDialog
+
 
 class PropertyTableWidget(QMainWindow):
     """
@@ -13,7 +14,6 @@ class PropertyTableWidget(QMainWindow):
 
     Extends the `QMainWindow` class
     """
-
     def __init__(self, parent, design=None, gui=None):
         """
         Args:
@@ -56,7 +56,7 @@ class PropertyTableWidget(QMainWindow):
         return self._design
 
     @property
-    def _data(self)->dict:
+    def _data(self) -> dict:
         """Returns the variables"""
         if self._design:
             return self._design.variables
@@ -78,6 +78,7 @@ class PropertyTableWidget(QMainWindow):
         """
         Delete all rows corresponding to selected cells.
         """
-        rowidxlst = list(set(elt.row() for elt in self.table.selectedIndexes()))
-        for idx in sorted(rowidxlst, reverse = True):
+        rowidxlst = list(set(elt.row()
+                             for elt in self.table.selectedIndexes()))
+        for idx in sorted(rowidxlst, reverse=True):
             self.model.removeRows(idx, 1, QModelIndex())
