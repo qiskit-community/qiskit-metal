@@ -15,7 +15,7 @@
 """
 For calculations of CPW parameters. Referenced primarily as a tool for some components.
 
-@author: Thomas McConkey 
+@author: Thomas McConkey, as part of https://uwspace.uwaterloo.ca/handle/10012/13464
 
 @date: 2020-03-24
 

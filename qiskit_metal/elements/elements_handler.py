@@ -489,7 +489,7 @@ class QGeometryTables(object):
         #Checks if (any) of the geometry are MultiPolygons, and breaks them up into
         #individual polygons. Rounds the coordinate sequences of those values to avoid
         #numerical errors.
-        rounding_val = 9 #NOTE: Replace with the design.options.precision value or equivalent when set
+        rounding_val = self.design.template_options['PRECISION']
         new_dict = Dict()
         for key, item in geometry.items():
             if isinstance(geometry[key], MultiPolygon):
@@ -502,10 +502,6 @@ class QGeometryTables(object):
                 new_dict[key] = round_coordinate_sequence(item, rounding_val)
 
         geometry = new_dict
-
-        #Round the values of vertices to avoid numerical errors
-        #Goes through the exterior and interior vertices of the geometries to round the coordinates
-        #for 
 
         # Create options TODO: Might want to modify this (component_name -> component_id)
         # Give warning if length is to be fillet's and not long enough.
