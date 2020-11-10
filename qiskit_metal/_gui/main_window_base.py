@@ -236,27 +236,27 @@ class QMainWindowExtensionBase(QMainWindow):
     # For actions
 
     @slot_catch_error()
-    def _screenshot(self, _):
+    def _screenshot(self, _=None):
         """Used to call from action"""
         self.get_screenshot()
 
     @slot_catch_error()
-    def load_stylesheet_default(self, _):
+    def load_stylesheet_default(self, _=None):
         """Used to call from action"""
         self.handler.load_stylesheet('default')
 
     @slot_catch_error()
-    def load_stylesheet_metal_dark(self, _):
+    def load_stylesheet_metal_dark(self, _=None):
         """Used to call from action"""
         self.handler.load_stylesheet('metal_dark')
 
     @slot_catch_error()
-    def load_stylesheet_dark(self, _):
+    def load_stylesheet_dark(self, _=None):
         """Used to call from action"""
         self.handler.load_stylesheet('qdarkstyle')
 
     @slot_catch_error()
-    def load_stylesheet_open(self, _):
+    def load_stylesheet_open(self, _=None):
         """Used to call from action"""
         default_path = str(self.gui.path_stylesheets)
         filename = QFileDialog.getOpenFileName(
