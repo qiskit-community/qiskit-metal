@@ -11,7 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 """Handles editing a QComponent
 
 @author: Zlatko Minev, Dennis Wang
@@ -20,9 +19,9 @@
 
 from typing import TYPE_CHECKING
 
-from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtCore import Qt, QTimer
-from PyQt5.QtWidgets import QTreeView, QAbstractItemView
+from PySide2 import QtCore, QtWidgets
+from PySide2.QtCore import Qt, QTimer
+from PySide2.QtWidgets import QTreeView, QAbstractItemView
 
 from ..bases.QWidget_PlaceholderText import QWidget_PlaceholderText
 
@@ -35,7 +34,6 @@ class QTreeView_Options(QTreeView, QWidget_PlaceholderText):
 
     This class extends the `QTreeView` and `QWidget_PlaceholderText` classes
     """
-
     def __init__(self, parent: QtWidgets.QWidget):
         """
         Args:
