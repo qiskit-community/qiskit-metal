@@ -24,6 +24,13 @@ While not required, opening a new issue about the bug you're fixing or the featu
 
 If you've written some code but need help finishing it, want to get initial feedback on it prior to finishing it, or want to share it and discuss prior to finishing the implementation you can open a Work in Progress pull request. When you create the pull request prefix the title with the [WIP] tag (for Work In Progress) and open it in `Draft` status. This will indicate to reviewers that the code in the PR isn't in it's final state and will change. It also means that we will not merge the commit until it is finished. You or a reviewer can remove the [WIP] tag and convert it to `Ready for review` when the code is ready to be fully reviewed for merging.
 
+## Testing
+Once you've made a code change, it is important to verify that your change does not break any existing tests and that any new tests that you've added also run successfully. Before you open a new pull request for your change, you'll want to run the test suite locally.
+
+The easiest way to do this is to execute the `run_all_tests.py` script in the `tests` directory.  It executes all test files in that directory.  You'll recieve a message informing you if the tests were successful or not.  Alternatively you may run an individual suite of tests by executing invidual `test_XYZ.py` files individually.  All test files utilize the `unittest` module - no further setup is needed.
+
+Additionally, CI will run the test suite on all pushes made to any branch in the repository.
+
 ## Contributor License Agreement
 Before you can submit any code we need all contributors to sign a contributor license agreement. By signing a contributor license agreement (CLA) you're basically just attesting to the fact that you are the author of the contribution and that you're freely contributing it under the terms of the Apache-2.0 license. You can find the forms and informations half-way down this page:
 
