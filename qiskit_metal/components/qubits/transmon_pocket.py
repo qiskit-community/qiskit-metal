@@ -187,6 +187,7 @@ class TransmonPocket(BaseQubit):
             [(0, -pad_gap/2), (0, +pad_gap/2)])
         # the draw.rectangle representing the josephson junction
         # rect_jj = draw.rectangle(p.inductor_width, pad_gap)
+
         rect_pk = draw.rectangle(p.pocket_width, p.pocket_height)
 
         # Rotate and translate all qgeometry as needed.
