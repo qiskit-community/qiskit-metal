@@ -7,9 +7,9 @@ QMainWindow, so that we can have inner docking and toolbars available.
 
 from typing import TYPE_CHECKING
 
-from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import (QApplication, QFileDialog, QLabel, QMainWindow,
-                             QMessageBox)
+from PySide2 import QtWidgets
+from PySide2.QtWidgets import (QApplication, QFileDialog, QLabel, QMainWindow,
+                               QMessageBox)
 
 from ... import config
 if not config.is_building_docs():
@@ -29,14 +29,13 @@ class QMainWindowPlot(QMainWindow):
 
     Extends the `QMainWindow` class
 
-    PyQt5 Signal / Slots Extensions:
+    PySide2 Signal / Slots Extensions:
         The UI can call up to this class to execeute button clicks for instance
         Extensiosn in qt designer on signals/slots are linked to this class
 
     Core canvas plot widget:
         canvas: The core plot object. Can be mpl or any other renderer.
     """
-
     def __init__(self, gui: 'MetalGUI', parent_window: 'QMainWindowExtension'):
         """
         Args:
@@ -59,7 +58,9 @@ class QMainWindowPlot(QMainWindow):
 
         # Add MPL plot widget to window
         # Core object -- the center of this entire widget
-        self.canvas = PlotCanvas(self.design, self, logger=self.logger,
+        self.canvas = PlotCanvas(self.design,
+                                 self,
+                                 logger=self.logger,
                                  statusbar_label=self.statusbar_label)
 
         self.ui.centralwidget.layout().addWidget(self.canvas)
@@ -89,7 +90,8 @@ class QMainWindowPlot(QMainWindow):
 
     def pan(self):
         """Displays a message about how to pan"""
-        QMessageBox.about(self, "Pan", """Navigation help:
+        QMessageBox.about(
+            self, "Pan", """Navigation help:
 
 Pan:
 (click and drag)
@@ -102,9 +104,10 @@ or use the right click and drag to select a region.""")
 
     def zoom(self):
         """Displays a message about how to zoom"""
-        QMessageBox.about(self, "Zoom", "Either use the mouse middle wheel"
-                          " to zoom in and out by scrolling, or use the right click and"
-                          " drag to select a region.")
+        QMessageBox.about(
+            self, "Zoom", "Either use the mouse middle wheel"
+            " to zoom in and out by scrolling, or use the right click and"
+            " drag to select a region.")
 
     def set_position_track(self, yesno: bool):
         """Set the position tracker
@@ -117,7 +120,7 @@ or use the right click and drag to select a region.""")
                              " its coordinate.")
         self.canvas.panzoom.options.report_point_position = yesno
 
-    def set_show_pins(self,  yesno: bool):
+    def set_show_pins(self, yesno: bool):
         """Displays on the logger whether or not pins are showing
 
         Args:
