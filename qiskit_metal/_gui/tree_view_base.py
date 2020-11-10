@@ -11,7 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 """
 Handles editing a QComponent.
 
@@ -19,14 +18,13 @@ Handles editing a QComponent.
 @date: 2020
 """
 
-from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtCore import Qt, QTimer
-from PyQt5.QtWidgets import QTreeView, QAbstractItemView
+from PySide2 import QtCore, QtWidgets
+from PySide2.QtCore import Qt, QTimer
+from PySide2.QtWidgets import QTreeView, QAbstractItemView
+
 
 class QTreeView_Base(QTreeView):
-
     """This class extends the `QTreeView` class."""
-
     def __init__(self, parent: QtWidgets.QWidget):
         """
         Args:
