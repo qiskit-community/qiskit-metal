@@ -12,7 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 #
-
 """
 Dict tree base
 
@@ -25,12 +24,13 @@ from pathlib import Path
 from typing import Union
 
 import numpy as np
-import PyQt5
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtCore import QAbstractItemModel, QModelIndex, QVariant, QTimer, Qt
-from PyQt5.QtGui import QFont
-from PyQt5.QtWidgets import (QAbstractItemView, QApplication, QFileDialog, QTreeView,
-                             QLabel, QMainWindow, QMessageBox, QTabWidget)
+import PySide2
+from PySide2 import QtCore, QtGui, QtWidgets
+from PySide2.QtCore import QAbstractItemModel, QModelIndex, QTimer, Qt
+from PySide2.QtGui import QFont
+from PySide2.QtWidgets import (QAbstractItemView, QApplication, QFileDialog,
+                               QTreeView, QLabel, QMainWindow, QMessageBox,
+                               QTabWidget)
 
 from .... import logger
 
@@ -71,7 +71,6 @@ def get_nested_dict_item(dic: dict, key_list: list):
 
 
 class BranchNode:
-
     """
     A BranchNode object has a nonzero number of child nodes.
     These child nodes can be either BranchNodes or LeafNodes.
@@ -81,7 +80,6 @@ class BranchNode:
     where the former is the name of the child node and the latter is the child node itself.
     KEY (=0) and NODE (=1) identify their respective positions within each tuple pair.
     """
-
     def __init__(self, name: str, parent=None, data: dict = None):
         """
         Args:
@@ -176,7 +174,6 @@ class BranchNode:
 
 
 class LeafNode:
-
     """
     A LeafNode object has no children but consists of a key-value pair, denoted by
     label and value, respectively.
@@ -184,7 +181,6 @@ class LeafNode:
     It is uniquely identified by its root-to-leaf path, which is a list of keys
     whose positions denote their nesting depth (shallow to deep).
     """
-
     def __init__(self, label: str, parent=None, path=None):
         """
         Args:
@@ -231,7 +227,8 @@ class QTreeModel_Base(QAbstractItemModel):
 
     # NOTE: __init__ takes in design as extra parameter compared to table_model_options!
 
-    def __init__(self, parent: 'ParentWidget', gui: 'MetalGUI', view: QTreeView, child: str):
+    def __init__(self, parent: 'ParentWidget', gui: 'MetalGUI',
+                 view: QTreeView, child: str):
         """
         Editable table with drop-down rows for a generic options menu.
         Organized as a tree model where child nodes are more specific properties
@@ -345,11 +342,9 @@ class QTreeModel_Base(QAbstractItemModel):
             # In this case, add the LeafNode right below the master root.
             # Otherwise, add the LeafNode below the final branch.
             if not branch:
-                root.insertChild(
-                    LeafNode(path[-2], root, path=path[:-1]))
+                root.insertChild(LeafNode(path[-2], root, path=path[:-1]))
             else:
-                branch.insertChild(
-                    LeafNode(path[-2], branch, path=path[:-1]))
+                branch.insertChild(LeafNode(path[-2], branch, path=path[:-1]))
 
         # Emit a signal since the model's internal state
         # (e.g. persistent model indexes) has been invalidated.
@@ -392,7 +387,7 @@ class QTreeModel_Base(QAbstractItemModel):
             object: fetched data
         """
         if not index.isValid():
-            return QVariant()
+            return None
 
         # The data in a form suitable for editing in an editor. (QString)
         if role == Qt.EditRole:
@@ -405,7 +400,7 @@ class QTreeModel_Base(QAbstractItemModel):
             return font
 
         if role == Qt.TextAlignmentRole:
-            return QVariant(int(Qt.AlignTop | Qt.AlignLeft))
+            return int(Qt.AlignTop | Qt.AlignLeft)
 
         if role == Qt.DisplayRole:
             node = self.nodeFromIndex(index)
@@ -423,18 +418,21 @@ class QTreeModel_Base(QAbstractItemModel):
                 elif index.column() == 1:
                     return str(node.value)  # value
                 else:
-                    return QVariant()
+                    return None
 
-        return QVariant()
+        return None
 
-    def setData(self, index: QModelIndex, value: QVariant, role: Qt.ItemDataRole = Qt.EditRole) -> bool:
+    def setData(self,
+                index: QModelIndex,
+                value,
+                role: Qt.ItemDataRole = Qt.EditRole) -> bool:
         """Set the LeafNode value and corresponding data entry to value.
         Returns true if successful; otherwise returns false.
         The dataChanged() signal should be emitted if the data was successfully set.
 
         Args:
             index (QModelIndex): the index
-            value (QVariant): the value
+            value: the value
             role (Qt.ItemDataRole): the role of the data (Default: Qt.EditRole)
 
         Returns:
@@ -462,7 +460,8 @@ class QTreeModel_Base(QAbstractItemModel):
                         lbl = node.label  # option key
 
                         self.logger.info(
-                            f'Setting {self.optionstype} option {lbl:>10s}: old value={old_value}; new value={value};')
+                            f'Setting {self.optionstype} option {lbl:>10s}: old value={old_value}; new value={value};'
+                        )
 
                         ##### Parse value if not str ##############################
                         # Somewhat legacy code for extended handling of non string options
@@ -490,7 +489,8 @@ class QTreeModel_Base(QAbstractItemModel):
                         return True
         return False
 
-    def headerData(self, section: int, orientation: Qt.Orientation, role: Qt.ItemDataRole):
+    def headerData(self, section: int, orientation: Qt.Orientation,
+                   role: Qt.ItemDataRole):
         """ Set the headers to be displayed.
 
         Args:
@@ -511,7 +511,7 @@ class QTreeModel_Base(QAbstractItemModel):
                 font.setBold(True)
                 return font
 
-        return QVariant()
+        return None
 
     def index(self, row: int, column: int, parent: QModelIndex):
         """What is my index?
