@@ -115,9 +115,7 @@ class QTextEditLogger(QTextEdit):
                                           self,
                                           checkable=True,
                                           checked=True)
-        print('HAPPY')
         self.action_scroll_auto.toggled.connect(self.toggle_autoscroll)
-        print('EVEN MORE HAPPY')
 
         self.action_show_times = QAction('&Show timestamps',
                                          self,
