@@ -43,7 +43,7 @@ from .renderer_gds_gui import RendererGDSWidget
 from .utility._handle_qt_messages import slot_catch_error
 from .widgets.all_components.table_model_all_components import \
     QTableModel_AllComponents
-from .widgets.edit_component.component_widget import ComponentWidget
+# from .widgets.edit_component.component_widget import ComponentWidget
 from .widgets.log_widget.log_metal import LogHandler_for_QTextLog
 from .widgets.plot_widget.plot_window import QMainWindowPlot
 from .widgets.variable_table import PropertyTableWidget
@@ -98,7 +98,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
 
     def show_renderer_gds(self):
         """Handles click on GDS Renderer action"""
-        self.gds_gui = RendererGDSWidget(self.design, self, self.gui)
+        self.gds_gui = RendererGDSWidget(self, self.gui)
         self.gds_gui.show()
 
     def delete_all_components(self):
@@ -111,7 +111,8 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         if ret == QMessageBox.Yes:
             self.logger.info('Delete all components.')
             self.design.delete_all_components()
-            self.gui.component_window.set_component(None)
+            if self.component_window:
+                self.gui.component_window.set_component(None)
             self.gui.refresh()
 
     @slot_catch_error()
@@ -236,7 +237,7 @@ class MetalGUI(QMainWindowBaseHandler):
         # UIs
         self.plot_win = None  # type: QMainWindowPlot
         self.elements_win = None  # type: ElementsWindow
-        self.component_window = ComponentWidget(self, self.ui.dockComponent)
+        self.component_window = None  #TODO: ZLATKO ComponentWidget(self, self.ui.dockComponent)
         self.variables_window = PropertyTableWidget(self, gui=self)
 
         self._setup_component_widget()
@@ -277,7 +278,8 @@ class MetalGUI(QMainWindowBaseHandler):
             for widgetname in widgets:
                 if hasattr(parent, widgetname):
                     widget = getattr(parent, widgetname)  # type: QWidget
-                    widget.setEnabled(enabled)
+                    if widget:
+                        widget.setEnabled(enabled)
                 else:
                     self.logger.error(f'GUI issue: wrong name: {widgetname}')
 
@@ -360,7 +362,7 @@ class MetalGUI(QMainWindowBaseHandler):
                                      Qt.Horizontal)
 
         # Log
-        self.ui.dockLog.parent().resizeDocks({self.ui.dockLog}, {120},
+        self.ui.dockLog.parent().resizeDocks([self.ui.dockLog], [120],
                                              Qt.Vertical)
 
         # Tab positions
@@ -368,7 +370,8 @@ class MetalGUI(QMainWindowBaseHandler):
 
     def _ui_adjustments_final(self):
         """Any touchups to the loaded ui that need be done after all the base and main ui is loaded"""
-        self.component_window.setCurrentIndex(0)
+        if self.component_window:
+            self.component_window.setCurrentIndex(0)
 
     def _set_element_tab(self, yesno: bool):
         """Set the elements tabl to Elements or View
@@ -383,7 +386,8 @@ class MetalGUI(QMainWindowBaseHandler):
 
     def _setup_component_widget(self):
         """Setup the components widget"""
-        self.ui.dockComponent.setWidget(self.component_window)
+        if self.component_window:
+            self.ui.dockComponent.setWidget(self.component_window)
 
     def _setup_variables_widget(self):
         """Setup the variables widget"""
@@ -398,7 +402,7 @@ class MetalGUI(QMainWindowBaseHandler):
 
         # Move the dock
         self._move_dock_to_new_parent(self.ui.dockLog, self.plot_win)
-        self.ui.dockLog.parent().resizeDocks({self.ui.dockLog}, {120},
+        self.ui.dockLog.parent().resizeDocks([self.ui.dockLog], [120],
                                              Qt.Vertical)
 
     def _move_dock_to_new_parent(self,
@@ -543,7 +547,8 @@ class MetalGUI(QMainWindowBaseHandler):
         Arguments:
             name (str): Name of component to exmaine.
         """
-        self.component_window.set_component(name)
+        if self.component_window:
+            self.component_window.set_component(name)
 
     def edit_component_source(self, name: str = None):
         """For the selected component in the edit component widet (see gui.edit_component)
@@ -555,7 +560,8 @@ class MetalGUI(QMainWindowBaseHandler):
         """
         if name:
             self.edit_component(name)
-        self.component_window.edit_source()
+        if self.component_window:
+            self.component_window.edit_source()
 
     def highlight_components(self, component_names: List[str]):
         """Hihglight a list of components
