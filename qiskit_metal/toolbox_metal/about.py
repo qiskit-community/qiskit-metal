@@ -11,7 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 """
 Reports a summary of information on Qiskit Metal and dependencies.
 
@@ -34,8 +33,10 @@ from pathlib import Path
 from qiskit_metal.toolbox_python.display import Color, style_colon_list
 from typing import Union
 
-
-__all__ = ['about', 'open_docs', 'orient_me', 'get_platform_info', 'get_module_doc_page']
+__all__ = [
+    'about', 'open_docs', 'orient_me', 'get_platform_info',
+    'get_module_doc_page'
+]
 
 
 def about():
@@ -46,9 +47,8 @@ def about():
         str: About message
     """
     import qiskit_metal
-
-    from PyQt5.QtCore import QT_VERSION_STR
-    from PyQt5.Qt import PYQT_VERSION_STR
+    from PySide2.QtCore import __version__ as QT_VERSION_STR
+    from PySide2 import __version__ as PYSIDE_VERSION_STR
 
     try:
         import matplotlib
@@ -81,7 +81,7 @@ ____________________________________
 
 GUI
 ____________________________________
- PyQt version        {PYQT_VERSION_STR}
+ PySide2 version        {PYSIDE_VERSION_STR}
  Qt version          {QT_VERSION_STR}
  SIP version         {SIP_VERSION_STR}
 
@@ -94,7 +94,10 @@ IBM Quantum Team"""
 ######################################################################################
 # DOCS
 
-def get_module_doc_page(module, folder=r'../docs/build/html', page='index.html'):
+
+def get_module_doc_page(module,
+                        folder=r'../docs/build/html',
+                        page='index.html'):
     """
     Get the file path to a module doc folder assumed to be inside the package.
     """
@@ -116,10 +119,12 @@ def open_docs(page='index.html'):
         print(f'Error: Could not find the doc file {filepath}.'
               'Check the folder path.')
 
+
 ######################################################################################
 # More detailed information to orient a user.
 # For debug purposes.
 # Main function: ``orient_me```
+
 
 def orient_me(do_print: bool = True) -> Union[None, str]:
     """Full system, python, user, and environemnt information.
@@ -166,14 +171,7 @@ def get_platform_info() -> str:
     version  : %s (implem: %s)
     compiler : %s
 
-''' % (
-        platform.system(),
-        platform.node(),
-        platform.release(),
-        platform.machine(),
-        platform.processor(),
-        platform.platform(),
-        platform.version(),
-        platform.python_version(), platform.python_implementation(),
-        platform.python_compiler())
-
+''' % (platform.system(), platform.node(), platform.release(),
+       platform.machine(), platform.processor(), platform.platform(),
+       platform.version(), platform.python_version(),
+       platform.python_implementation(), platform.python_compiler())
