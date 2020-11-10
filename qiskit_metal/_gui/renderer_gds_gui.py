@@ -16,33 +16,29 @@
 @author: Dennis Wang
 '''
 
-from PySide2 import QtCore
-from PySide2.QtGui import QStandardItem, QStandardItemModel
-from PySide2.QtWidgets import (QMainWindow, QFileDialog, QListView,
-                               QAbstractItemView, QMessageBox)
-from .renderer_gds_ui import Ui_MainWindow
+from PySide2.QtWidgets import (QAbstractItemView, QFileDialog, QMainWindow,
+                               QMessageBox)
 
 from .list_model_base import DynamicList
 from .renderer_gds_model import RendererGDS_Model
+from .renderer_gds_ui import Ui_MainWindow
 
 
 class RendererGDSWidget(QMainWindow):
     """Contains methods associated with GDS Renderer button."""
-    def __init__(self, design: 'QDesign', parent: 'QMainWindow',
-                 gui: 'MetalGUI'):
+    def __init__(self, parent: 'QMainWindow', gui: 'MetalGUI'):
         """
         Get access to design, which has the components.
         Then set up the model and view.
 
         Args:
-            design (QDesign): The design
             parent (QMainWindow): The parent window
             gui (MetalGUI): The metal GUI
         """
         super().__init__(parent)
 
         # Access design and Metal GUI:
-        self._design = design
+        self._gui = gui
 
         # Use UI template from Qt Designer:
         self.ui = Ui_MainWindow()
@@ -67,13 +63,12 @@ class RendererGDSWidget(QMainWindow):
         Args:
             new_design (QDesign): The design
         """
-        self._design = new_design
         self.list_model.update_src(self.design)
 
     @property
     def design(self):
         """Returns the design."""
-        return self._design
+        return self._gui.design
 
     def refresh(self):
         """Refreshes list of components."""
