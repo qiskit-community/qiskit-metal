@@ -611,6 +611,17 @@ class QMainWindowBaseHandler():
         """
         self.settings.clear()
 
+    def set_font_size(self, font_size: int):
+        """Set font size of the applicaiton globally in points.
+
+        Args:
+            font_size (int): New font size
+        """
+        app = self.qApp
+        # TODO: DO not just overwrite, but append or update style sheet.
+        # Maybe allow user to edit as a whole in a widget
+        app.setStyleSheet("QWidget{font-size:" + f"{font_size}" + "pt;}")
+
 
 def kick_start_qApp():
     """Kick start the application

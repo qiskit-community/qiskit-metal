@@ -1,10 +1,13 @@
-"""A setuptools based setup module.
 """
+A setuptools based setup module.
+"""
+# pylint: disable=invalid-name
 
+import os
 from pathlib import Path
 from setuptools import setup, find_packages
 
-here = Path(__file__).parent.absolute()
+here = Path(__file__).parent.absolute()  # pylint: disable=no-member
 
 # Get the long description from the README file
 with open(here / "README.md", encoding="utf-8") as f:
@@ -19,7 +22,7 @@ setup(
     description="Quantum VLSI and Sims",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    # url="https://github.com/Qiskit/qiskit-metal",
+    url="https://github.com/Qiskit/qiskit-metal",
     author="Qiskit Development Team",
     author_email="qiskit@qiskit.org",
     license="Apache 2.0",
@@ -40,9 +43,13 @@ setup(
     ],
     keywords="qiskit sdk quantum",
     packages=find_packages(),
-    package_data={
-        "": ["*.ui", "*.qrc", "_imgs/*.png", "_imgs/*.txt"]
-    },
-    python_requires=">=3.5, <4",
+    package_data={"": ["*.ui", "*.qrc", "_imgs/*.png", "_imgs/*.txt"]},
+    python_requires=">=3.5, <=3.7.8",
     install_requires=requirements,
+)
+
+# Cludge install for `pyqode.qt`.
+# Make sure this doesnt get overwritten later by some other package
+os.system(
+    "python -m pip install -e git+https://github.com/jojurgens/pyqode.qt.git@master#egg=pyqode.qt"
 )
