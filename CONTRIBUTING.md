@@ -1,7 +1,5 @@
 # Contributing to Qiskit Metal
-Qiskit Metal follows the overall Qiskit project contributing guidelines. These are all included in the qiskit documentation:
-
-https://qiskit.org/documentation/contributing_to_qiskit.html
+Qiskit Metal follows the overall Qiskit project contributing guidelines. These are all included in the [Qiskit Documentation](https://qiskit.org/documentation/contributing_to_qiskit.html).
 
 Please read those general guidelines first. In addition, there are specific details for contributing to Metal, these are documented below.
 
@@ -10,7 +8,7 @@ Please read those general guidelines first. In addition, there are specific deta
 ### Reporting a Bug
 
 When you encounter a problem while using Metal, please open an issue in the
-issue tracker: https://github.com/Qiskit/qiskit-metal/issues
+[Issue Tracker](https://github.com/Qiskit/qiskit-metal/issues)
 
 When reporting an issue, please follow this template::
 
@@ -109,18 +107,18 @@ or `cross reference <https://www.sphinx-doc.org/en/latest/usage/restructuredtext
 to the module, which can be used for internal links
 inside the documentation, and an `automodule directive <http://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html>`__
 used to parse the
-module docstrings from a specified import path. For example, the analysis.rst
+module docstrings from a specified import path. For example, the analyses.rst
 file contains:
 
 ```
-      .. automodule:: qiskit_metal.analyses
-         :no-members:
-         :no-inherited-members:
-         :no-special-members:
+.. automodule:: qiskit_metal.analyses
+    :no-members:
+    :no-inherited-members:
+    :no-special-members:
 ```
 
    If you're adding a new ``.rst`` file for a new module's documentation, make
-   sure to add it to the `toctree <https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#table-of-contents>`__
+   sure to add it to the [toctree](https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#table-of-contents).
    in that file.
 
 #### The Module-Level Docstring
@@ -145,23 +143,23 @@ file contains:
    contents of the module docstring for ``qiskit/analyses/__init__.py`` would
    be:
 
-   ```
-      """
-      =================================================
-      Analyses (:mod:`qiskit_metal.analyses`)
-      =================================================
-      .. currentmodule:: qiskit_metal.analyses
-      Module containing all Qiskit Metal analyses.
-      @date: 2019
-      @author: Zlatko Minev (IBM)
-      Submodules
-      ----------
-      .. autosummary::
-         :toctree:
-         cpw_calculations
-         lumped_capacitive
-      """
-    ```
+```
+"""
+=================================================
+Analyses (:mod:`qiskit_metal.analyses`)
+=================================================
+.. currentmodule:: qiskit_metal.analyses
+Module containing all Qiskit Metal analyses.
+@date: 2019
+@author: Zlatko Minev (IBM)
+Submodules
+----------
+.. autosummary::
+    :toctree:
+    cpw_calculations
+    lumped_capacitive
+"""
+```
 
 The actual docstring for the elements listed in the module docstring
    You should strive to document thoroughly all the public interfaces
@@ -206,3 +204,78 @@ If you make changes to the codebase and want to rebuild the documentation,
 
 You can also use this to update the doc tree.
 
+## Building Metal from Source
+
+We highly recommend using a local Python environment rather than
+installing Qiskit Metal natively. Metal can either be installed using a
+\[conda environment\](<https://docs.conda.io/en/latest/miniconda.html>)
+or a Python virtual environment, as described below. We recommend conda.
+
+1.  Clone the Qiskit Metal repository.
+
+``` sh
+git clone https://github.com/Qiskit/qiskit-metal.git
+```
+
+2.  Cloning the repository creates a local folder called `qiskit-metal`.
+
+``` sh
+cd qiskit-metal
+```
+
+3.  Set up your local environment and instal.
+
+The most reliable way to set up a qiskit\_metal environment is to build
+one from scratch using the provided conda environment specification file
+<span class="title-ref">environment.yml</span>. To do so, execute these
+commands in the top-level of the repository:
+
+``` sh
+conda env create -n <env_name> environment.yml
+conda activate <env_name>
+python -m pip install -e .
+```
+
+For convenience, you can also try to install directly in an existing
+environment such as the <span class="title-ref">base</span> environment,
+if it is relatively up to date. To install <span
+class="title-ref">qiskit\_metal</span> and its depenencies into an
+existing environment named <span
+class="title-ref">&lt;env\_name&gt;</span>, execute these commands in
+the top-level of the repository:
+
+``` sh
+conda env update -n <env_name> environment.yml
+conda activate <env_name>
+python -m pip install -e .
+```
+
+*Notes on using conda*
+
+It is possible that you may run into version issues in the above if
+previously installed packages conflict with the requirements of
+qiskit\_metal.
+
+**Important**: Every time you intend to develop code using this
+environment, you MUST first run the command: <span
+class="title-ref">conda activate &lt;env\_name&gt;</span>. See what a
+\[conda environment
+is\](<https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html>)
+
+To use the new environment inside jupyter lab you will need to follow
+these additional steps right after the above:
+
+``` sh
+conda install ipykernel
+ipython kernel install --user --name=<any_name_for_kernel>
+```
+
+To use a Python virtual environment instead, execute these commands in
+the top-level of the repository:
+
+``` sh
+python -m venv <virtual_env_path>
+source <virtual_env_path>/bin/activate
+python -m pip install -U pip
+python -m pip install -r requirements.txt -r requirements-dev.txt -e .
+```
