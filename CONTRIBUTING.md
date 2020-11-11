@@ -45,7 +45,7 @@ If you have an idea for a new feature, please open an Enhancement issue in the i
 
 We highly recommend using a local Python environment rather than
 installing Qiskit Metal natively. Metal can either be installed using a
-\[conda environment\](<https://docs.conda.io/en/latest/miniconda.html>)
+[conda environment](<https://docs.conda.io/en/latest/miniconda.html>)
 or a Python virtual environment, as described below. We recommend conda.
 
 1.  Clone the Qiskit Metal repository.
@@ -62,9 +62,9 @@ cd qiskit-metal
 
 3.  Set up your local environment and instal.
 
-The most reliable way to set up a qiskit\_metal environment is to build
+The most reliable way to set up a Metal environment is to build
 one from scratch using the provided conda environment specification file
-<span class="title-ref">environment.yml</span>. To do so, execute these
+`environment.yml`. To do so, execute these
 commands in the top-level of the repository:
 
 ``` sh
@@ -74,11 +74,9 @@ python -m pip install -e .
 ```
 
 For convenience, you can also try to install directly in an existing
-environment such as the <span class="title-ref">base</span> environment,
-if it is relatively up to date. To install <span
-class="title-ref">qiskit\_metal</span> and its depenencies into an
-existing environment named <span
-class="title-ref">&lt;env\_name&gt;</span>, execute these commands in
+environment such as the `base` environment,
+if it is relatively up to date. To install Metal and its dependencies into an
+existing environment named `env_name` execute these commands in
 the top-level of the repository:
 
 ``` sh
@@ -87,15 +85,13 @@ conda activate <env_name>
 python -m pip install -e .
 ```
 
-*Notes on using conda*
+### Notes on Using Conda
 
 It is possible that you may run into version issues in the above if
-previously installed packages conflict with the requirements of
-qiskit\_metal.
+previously installed packages conflict with the requirements of Metal.
 
 **Important**: Every time you intend to develop code using this
-environment, you MUST first run the command: <span
-class="title-ref">conda activate &lt;env\_name&gt;</span>. More info on the [conda environment](<https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html>).
+environment, you MUST first run the command: `conda activate env_name`. More info on the [conda environment](<https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html>).
 
 To use the new environment inside jupyter lab you will need to follow
 these additional steps right after the above:
