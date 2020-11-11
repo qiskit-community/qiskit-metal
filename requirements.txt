@@ -13,6 +13,6 @@ pint
 pyEPR-quantum
 Pygments
 pyqode.python
-PySide2>=5.8
+pyside2>=5.8
 scipy
 Shapely

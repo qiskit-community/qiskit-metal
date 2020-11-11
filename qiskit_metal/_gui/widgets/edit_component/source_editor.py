@@ -55,7 +55,7 @@ except ImportError as e:
     # Maybe reaise exception.
     # If this line fails then the GUI can't start.
     raise ImportError(
-        'Error could not load `pyqode.python`\nPlease install. In a shell, try running: \n'
+        'Error could not load `pyqode`\nPlease install. In a shell, try running: \n'
         '  >> pip install pyqode.python --upgrade \n\n'
         'For more, see https://github.com/pyQode/pyqode.python \n')
 
