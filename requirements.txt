@@ -5,7 +5,7 @@ docutils
 gdspy>=1.5.2
 GeoPandas
 ipython
-jedi
+jedi>=0.17
 matplotlib
 numpy
 pandas
@@ -13,6 +13,6 @@ pint
 pyEPR-quantum
 Pygments
 pyqode.python
-PySide2>=5.8
+pyside2>=5.9, <5.14
 scipy
 Shapely

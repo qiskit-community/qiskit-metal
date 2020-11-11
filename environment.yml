@@ -3,7 +3,7 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - python>=3.6
+  - python>=3.6, <=3.7.8
   - pip
   - addict
   - cycler
@@ -12,7 +12,7 @@ dependencies:
   - gdspy>=1.5.2
   - geopandas
   - ipython
-  - jedi
+  - jedi>=0.17
   - matplotlib
   - numpy
   - pandas
@@ -20,7 +20,7 @@ dependencies:
   - pyepr-quantum
   - pygments
   - pyqode.python
-  - pyqt>=5.12
+  - pyside2>=5.9, <5.14
   - qutip
   - scipy
   - shapely

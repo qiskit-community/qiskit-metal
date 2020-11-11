@@ -1,5 +1,6 @@
 # Dev tools
 jupyter
+jupyterlab
 
 # Build tools
 wheel
