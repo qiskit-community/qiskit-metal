@@ -58,37 +58,37 @@ class TestGUIBasic(unittest.TestCase):
         """
         pass
 
-    def test_gui_01_launch(self):
-        """
-        Test the functionality of launching the GUI.
-        01 added to the test name so it is the first GUI to launch
+    # def test_gui_01_launch(self):
+    #     """
+    #     Test the functionality of launching the GUI.
+    #     01 added to the test name so it is the first GUI to launch
 
-        Single function used for all GUI stuff with general catch-all so:
-          a. multiple GUI windows causing problems in CI
-          b. we can catch any errors
+    #     Single function used for all GUI stuff with general catch-all so:
+    #       a. multiple GUI windows causing problems in CI
+    #       b. we can catch any errors
 
-        Raises:
-            Exception: Any exceptions raised during attempted launch
-        """
-        try:
-            design = designs.DesignPlanar()
+    #     Raises:
+    #         Exception: Any exceptions raised during attempted launch
+    #     """
+    #     try:
+    #         design = designs.DesignPlanar()
 
-            q_1 = TransmonCross(design, 'Q1', options=dict(pos_x='-1.5mm', pos_y='+0.0mm'))
-            q_2 = TransmonPocket(design, 'Q2', options=dict(pos_x='+1.5mm', pos_y='+0.0mm'))
-            q_3 = TransmonPocketCL(design, 'Q3', options=dict(pos_x='+0.0mm', pos_y='+1.0mm'))
-            q_4 = TransmonConcentric(design, 'Q4', options=dict(pos_x='+3.0mm', pos_y='+3.0mm'))
+    #         q_1 = TransmonCross(design, 'Q1', options=dict(pos_x='-1.5mm', pos_y='+0.0mm'))
+    #         q_2 = TransmonPocket(design, 'Q2', options=dict(pos_x='+1.5mm', pos_y='+0.0mm'))
+    #         q_3 = TransmonPocketCL(design, 'Q3', options=dict(pos_x='+0.0mm', pos_y='+1.0mm'))
+    #         q_4 = TransmonConcentric(design, 'Q4', options=dict(pos_x='+3.0mm', pos_y='+3.0mm'))
 
-            cap_2 = LaunchpadWirebond(design, 'C2', options=dict(pos_x='-2.0mm', pos_y='0.0mm'))
-            cap_3 = LaunchpadWirebondCoupled(design, 'C3', options=dict(pos_x='-2.0mm', pos_y='-0.5mm'))
-            cap_4 = CapThreeFingers(design, 'C4', options=dict(pos_x='-2.0mm', pos_y='-1.0mm'))
+    #         cap_2 = LaunchpadWirebond(design, 'C2', options=dict(pos_x='-2.0mm', pos_y='0.0mm'))
+    #         cap_3 = LaunchpadWirebondCoupled(design, 'C3', options=dict(pos_x='-2.0mm', pos_y='-0.5mm'))
+    #         cap_4 = CapThreeFingers(design, 'C4', options=dict(pos_x='-2.0mm', pos_y='-1.0mm'))
 
-            gui = MetalGUI(design)
-            gui.autoscale()
-            gui.refresh()
-            gui.rebuild()
-        except Exception:
-            my_name = inspect.stack()[0][3]
-            self.fail(my_name + " threw an exception.  GUI failure")
+    #         gui = MetalGUI(design)
+    #         gui.autoscale()
+    #         gui.refresh()
+    #         gui.rebuild()
+    #     except Exception:
+    #         my_name = inspect.stack()[0][3]
+    #         self.fail(my_name + " threw an exception.  GUI failure")
 
     def test_instantiate_branch_node(self):
         """
