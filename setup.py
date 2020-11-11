@@ -3,6 +3,7 @@ A setuptools based setup module.
 """
 # pylint: disable=invalid-name
 
+import os
 from pathlib import Path
 from setuptools import setup, find_packages
 
@@ -45,4 +46,10 @@ setup(
     package_data={"": ["*.ui", "*.qrc", "_imgs/*.png", "_imgs/*.txt"]},
     python_requires=">=3.5, <4",
     install_requires=requirements,
+)
+
+# Cludge install for `pyqode.qt`.
+# Make sure this doesnt get overwritten later by some other package
+os.system(
+    "python -m pip install -e git+https://github.com/jojurgens/pyqode.qt.git@master#egg=pyqode.qt"
 )
