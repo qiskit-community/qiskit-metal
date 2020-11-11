@@ -1,45 +1,45 @@
 # Contributing to Qiskit Metal
 Qiskit Metal follows the overall Qiskit project contributing guidelines. These are all included in the [Qiskit Documentation](https://qiskit.org/documentation/contributing_to_qiskit.html).
 
-Please read those general guidelines first. In addition, there are specific details for contributing to Metal, these are documented below.
+Please read those general guidelines first, then the specific details for contributing to Metal below.
 
 ## Adding a New Issue
 
 ### Reporting a Bug
 
 When you encounter a problem while using Metal, please open an issue in the
-[Issue Tracker](https://github.com/Qiskit/qiskit-metal/issues)
+[Issue Tracker](https://github.com/Qiskit/qiskit-metal/issues).
 
 When reporting an issue, please follow this template::
 
 ```
-   <!--- Provide a general summary of the issue in the Title above -->
+<!--- Provide a general summary of the issue in the Title above -->
 
-   ## Expected Behavior
-   <!--- Tell us what should happen -->
+## Expected Behavior
+<!--- Tell us what should happen -->
 
-   ## Current Behavior
-   <!--- Tell us what happens instead of the expected behavior -->
+## Current Behavior
+<!--- Tell us what happens instead of the expected behavior -->
 
-   ## System Settings
-   <!--- Post the results of `metal.about()` here. --->
+## System Settings
+<!--- Post the results of `metal.about()` here. --->
 
-   ## Steps to Reproduce
-   <!--- Provide a link to a live example, or an unambiguous set of steps to -->
-   <!--- reproduce this bug. Include code to reproduce, if relevant -->
-   1.
-   2.
-   3.
+## Steps to Reproduce
+<!--- Provide a link to a live example, or an unambiguous set of steps to -->
+<!--- reproduce this bug. Include code to reproduce, if relevant -->
+1.
+2.
+3.
 
-   ## Detailed Description
-   <!--- Provide a detailed description of the change or addition you are proposing -->
+## Detailed Description
+<!--- Provide a detailed description of the change or addition you are proposing -->
 
-   ## Possible Implementation
-   <!--- Not obligatory, but suggest an idea for implementing addition or change -->
+## Possible Implementation
+<!--- Not obligatory, but suggest an idea for implementing addition or change -->
 ```
 
 ### Improvement Proposal
-If you have an idea for a new feature, please open an Enhancement issue in the issue tracker. Opening an issue starts a discussion with the team about your idea, how it fits in with the project, how it can be implemented, etc.
+If you have an idea for a new feature, please open an Enhancement issue in the issue tracker. Describe your idea, what the benefits are, and your implementation proposal, if you have one. Opening an issue starts a discussion with the team about your idea, how it fits in with the project, how it can be implemented, etc.
 
 ## Contributing Code
 
@@ -90,6 +90,7 @@ To submit your contribution, make a pull request from your forked repository to 
 -  The documentation has been updated accordingly. In particular, if a
    function or class has been modified during the PR, please update the
    *docstring* accordingly. If you have added or modified a feature, please update a corresponding tutorial in the `tutorials` folder as well to show its usage. See below for documentation structure and instructions.
+- If your code does not pass the automated CI tests, please fix the problems. Your pull request cannot be merged until the tests are passed and you have obtained approval from reviewers.
 
 ## Documentation Structure
 
@@ -182,24 +183,24 @@ If you make changes to the codebase and want to rebuild the documentation,
 
 1. Install sphinx and numpydoc
 ``` 
-	 conda install sphinx numpydoc
-	 (or pip install -U Sphinx)
+conda install sphinx numpydoc
+(or pip install -U Sphinx)
 ```
 
 2. Install [read the docs theme](https://github.com/rtfd/sphinx_rtd_theme) and set in the config `html_theme = "sphinx_rtd_theme"`
 ``` 
-	pip install sphinx_rtd_theme
+pip install sphinx_rtd_theme
 ```
 
 3. Install required packages
 ``` 
-	pip install sphinx_automodapi
-	pip install jupyter_sphinx
+pip install sphinx_automodapi
+pip install jupyter_sphinx
 ```
 
 4. Make the docs.  In the `docs` directory,
 ```
-	make html
+make html
 ```
 
 You can also use this to update the doc tree.
@@ -259,8 +260,8 @@ qiskit\_metal.
 **Important**: Every time you intend to develop code using this
 environment, you MUST first run the command: <span
 class="title-ref">conda activate &lt;env\_name&gt;</span>. See what a
-\[conda environment
-is\](<https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html>)
+[conda environment
+is](<https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html>)
 
 To use the new environment inside jupyter lab you will need to follow
 these additional steps right after the above:
