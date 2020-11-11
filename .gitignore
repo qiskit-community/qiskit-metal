@@ -3,6 +3,8 @@
 *.so
 .DS_Store
 .f2py_f2cmap
+*code-workspace*
+
 
 # Packages
 *.egg
