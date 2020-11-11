@@ -91,6 +91,8 @@ Here are some things to consider when setting up a development environment:
 
 * If using a virtual environment, make sure `pip` is up to date. In initial environment testing, PySide2 was not installable with recent (but not the latest) versions of `pip`.
 
+* Add the path of your qiskit-metal folder to your PATH
+
 
 ### Additional steps for developers
 If you are planning to develop the qiskmit metal codebase, you'll want to use these instructions to [setup user environment](/docs/NEW_DEVELOPER_SETUP.md)
