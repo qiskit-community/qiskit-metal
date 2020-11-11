@@ -100,7 +100,7 @@ If you are planning to develop the qiskmit metal codebase, you'll want to use th
 
 ### Common Issues
 
-#### pycode/pyside
+#### pyqode/pyside
 Issues with pyside/pyqode may occur if handled improperly. Due to circumstances, `setup.py` installs a version of pyqode.qt then manually overwrites that pyqode installation with a new branch. This is not normal practice and the user needs be aware. If issues arise, try rerunning `python setup.py install` in order to ensure the incorrect version of pyqode.qt has been overwritten.
 
 #### qutip
