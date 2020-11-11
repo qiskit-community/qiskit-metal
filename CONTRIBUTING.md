@@ -95,9 +95,7 @@ qiskit\_metal.
 
 **Important**: Every time you intend to develop code using this
 environment, you MUST first run the command: <span
-class="title-ref">conda activate &lt;env\_name&gt;</span>. See what a
-[conda environment
-is](<https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html>)
+class="title-ref">conda activate &lt;env\_name&gt;</span>. More info on the [conda environment](<https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html>).
 
 To use the new environment inside jupyter lab you will need to follow
 these additional steps right after the above:
