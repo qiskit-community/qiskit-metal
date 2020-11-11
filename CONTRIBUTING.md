@@ -41,6 +41,82 @@ When reporting an issue, please follow this template::
 ### Improvement Proposal
 If you have an idea for a new feature, please open an Enhancement issue in the issue tracker. Describe your idea, what the benefits are, and your implementation proposal, if you have one. Opening an issue starts a discussion with the team about your idea, how it fits in with the project, how it can be implemented, etc.
 
+## Building Metal from Source
+
+We highly recommend using a local Python environment rather than
+installing Qiskit Metal natively. Metal can either be installed using a
+\[conda environment\](<https://docs.conda.io/en/latest/miniconda.html>)
+or a Python virtual environment, as described below. We recommend conda.
+
+1.  Clone the Qiskit Metal repository.
+
+``` sh
+git clone https://github.com/Qiskit/qiskit-metal.git
+```
+
+2.  Cloning the repository creates a local folder called `qiskit-metal`.
+
+``` sh
+cd qiskit-metal
+```
+
+3.  Set up your local environment and instal.
+
+The most reliable way to set up a qiskit\_metal environment is to build
+one from scratch using the provided conda environment specification file
+<span class="title-ref">environment.yml</span>. To do so, execute these
+commands in the top-level of the repository:
+
+``` sh
+conda env create -n <env_name> environment.yml
+conda activate <env_name>
+python -m pip install -e .
+```
+
+For convenience, you can also try to install directly in an existing
+environment such as the <span class="title-ref">base</span> environment,
+if it is relatively up to date. To install <span
+class="title-ref">qiskit\_metal</span> and its depenencies into an
+existing environment named <span
+class="title-ref">&lt;env\_name&gt;</span>, execute these commands in
+the top-level of the repository:
+
+``` sh
+conda env update -n <env_name> environment.yml
+conda activate <env_name>
+python -m pip install -e .
+```
+
+*Notes on using conda*
+
+It is possible that you may run into version issues in the above if
+previously installed packages conflict with the requirements of
+qiskit\_metal.
+
+**Important**: Every time you intend to develop code using this
+environment, you MUST first run the command: <span
+class="title-ref">conda activate &lt;env\_name&gt;</span>. See what a
+[conda environment
+is](<https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html>)
+
+To use the new environment inside jupyter lab you will need to follow
+these additional steps right after the above:
+
+``` sh
+conda install ipykernel
+ipython kernel install --user --name=<any_name_for_kernel>
+```
+
+To use a Python virtual environment instead, execute these commands in
+the top-level of the repository:
+
+``` sh
+python -m venv <virtual_env_path>
+source <virtual_env_path>/bin/activate
+python -m pip install -U pip
+python -m pip install -r requirements.txt -r requirements-dev.txt -e .
+```
+
 ## Contributing Code
 
 ### Code Formatting
@@ -181,18 +257,18 @@ The actual docstring for the elements listed in the module docstring
 
 If you make changes to the codebase and want to rebuild the documentation, 
 
-1. Install sphinx and numpydoc
+1. Install `sphinx` and `numpydoc`.
 ``` 
 conda install sphinx numpydoc
-(or pip install -U Sphinx)
+(or pip install -U sphinx)
 ```
 
-2. Install [read the docs theme](https://github.com/rtfd/sphinx_rtd_theme) and set in the config `html_theme = "sphinx_rtd_theme"`
+2. Install [read the docs theme](https://github.com/rtfd/sphinx_rtd_theme) and set in the config `html_theme = "sphinx_rtd_theme"`.
 ``` 
 pip install sphinx_rtd_theme
 ```
 
-3. Install required packages
+3. Install required packages.
 ``` 
 pip install sphinx_automodapi
 pip install jupyter_sphinx
@@ -205,78 +281,3 @@ make html
 
 You can also use this to update the doc tree.
 
-## Building Metal from Source
-
-We highly recommend using a local Python environment rather than
-installing Qiskit Metal natively. Metal can either be installed using a
-\[conda environment\](<https://docs.conda.io/en/latest/miniconda.html>)
-or a Python virtual environment, as described below. We recommend conda.
-
-1.  Clone the Qiskit Metal repository.
-
-``` sh
-git clone https://github.com/Qiskit/qiskit-metal.git
-```
-
-2.  Cloning the repository creates a local folder called `qiskit-metal`.
-
-``` sh
-cd qiskit-metal
-```
-
-3.  Set up your local environment and instal.
-
-The most reliable way to set up a qiskit\_metal environment is to build
-one from scratch using the provided conda environment specification file
-<span class="title-ref">environment.yml</span>. To do so, execute these
-commands in the top-level of the repository:
-
-``` sh
-conda env create -n <env_name> environment.yml
-conda activate <env_name>
-python -m pip install -e .
-```
-
-For convenience, you can also try to install directly in an existing
-environment such as the <span class="title-ref">base</span> environment,
-if it is relatively up to date. To install <span
-class="title-ref">qiskit\_metal</span> and its depenencies into an
-existing environment named <span
-class="title-ref">&lt;env\_name&gt;</span>, execute these commands in
-the top-level of the repository:
-
-``` sh
-conda env update -n <env_name> environment.yml
-conda activate <env_name>
-python -m pip install -e .
-```
-
-*Notes on using conda*
-
-It is possible that you may run into version issues in the above if
-previously installed packages conflict with the requirements of
-qiskit\_metal.
-
-**Important**: Every time you intend to develop code using this
-environment, you MUST first run the command: <span
-class="title-ref">conda activate &lt;env\_name&gt;</span>. See what a
-[conda environment
-is](<https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html>)
-
-To use the new environment inside jupyter lab you will need to follow
-these additional steps right after the above:
-
-``` sh
-conda install ipykernel
-ipython kernel install --user --name=<any_name_for_kernel>
-```
-
-To use a Python virtual environment instead, execute these commands in
-the top-level of the repository:
-
-``` sh
-python -m venv <virtual_env_path>
-source <virtual_env_path>/bin/activate
-python -m pip install -U pip
-python -m pip install -r requirements.txt -r requirements-dev.txt -e .
-```
