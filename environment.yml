@@ -20,7 +20,7 @@ dependencies:
   - pyepr-quantum
   - pygments
   - pyqode.python
-  - pyside2==5.9.0a1
+  - pyside2>=5.9, <5.14
   - qutip
   - scipy
   - shapely
