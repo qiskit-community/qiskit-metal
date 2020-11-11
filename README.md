@@ -101,8 +101,7 @@ If you are planning to develop the qiskmit metal codebase, you'll want to use th
 ### Common Issues
 
 #### pyqode/pyside
-Will get Marco's input
-
+Please be aware that the environment.xml and requirements.txt each use a different pyside version. This is done to prevent kernel crashes formerly caused by pyqode. For non-Windows users, this setup causes an older version of pyqode.qt to be overwritten with a later forked version. On Windows, the background installation process is more complicated. Because of this, Windows users may experience GUI or other issues. If such issues occur, try rerunning `python setup.py install` or create a new, pristine conda environment as per above instructions.
 #### qutip
 `qutip` may have issues finding your path if using VSCode, resulting in a `KeyError: 'physicalcpu'`. If the error occurs, please add your PATH to VSCode's settings as follows.
 
