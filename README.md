@@ -85,15 +85,51 @@ where `<virtual_env_path>` is where you want the Python virtual environment to b
 On Windows, replace `source <virtual_env_path>/bin/activate` with `.\<virtual_env_path>\Scripts\activate`.
 
 
-### Additional steps for developers
-If you are planning to develop the qiskmit metal codebase, you'll want to use these instructions to [setup user environment](/docs/NEW_DEVELOPER_SETUP.md)
-
-
-## Installation hints
+### Installation hints
 
 Here are some things to consider when setting up a development environment:
 
 * If using a virtual environment, make sure `pip` is up to date. In initial environment testing, PySide2 was not installable with recent (but not the latest) versions of `pip`.
+
+
+### Additional steps for developers
+If you are planning to develop the qiskmit metal codebase, you'll want to use these instructions to [setup user environment](/docs/NEW_DEVELOPER_SETUP.md)
+
+
+### Common Issues
+
+#### pycode/pyside
+Issues with pyside/pyqode may occur if handled improperly. Due to circumstances, `setup.py` installs a version of pyqode.qt then manually overwrites that pyqode installation with a new branch. This is not normal practice and the user needs be aware. If issues arise, try rerunning `python setup.py install` in order to ensure the incorrect version of pyqode.qt has been overwritten.
+
+#### qutip
+`qutip` may have issues finding your path if using VSCode, resulting in a `KeyError: 'physicalcpu'`. If the error occurs, please add your PATH to VSCode's settings as follows.
+
+
+ ##### Windows:
+ Open you Windows Command Prompt and type in
+ ```
+ $Env:Path
+ ```
+Copy the resulting output. Example: `"PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"`
+Then open the applicable settings.json in your VS Code. (See how to open command palette [here](https://code.visualstudio.com/docs/getstarted/tips-and-tricks). Seach "settings" and click Open Workspace Settings (JSON)). Paste:
+```
+ "terminal.integrated.env.windows": {
+        "PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+        }
+```
+
+##### MacOs:
+ Open you Windows Command Prompt and type in
+ ```
+echo $PATH
+ ```
+Copy the resulting output. Example: `"PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"`
+Then open the applicable settings.json in your VS Code. (See how to open command palette [here](https://code.visualstudio.com/docs/getstarted/tips-and-tricks). Seach "settings" and click Open Workspace Settings (JSON)). Paste:
+```
+    "terminal.integrated.env.osx": {
+        "PATH": "PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+        }
+```
 
 ## Docs and how to use
 
@@ -122,25 +158,3 @@ Qiskit Metal is the work of [many people](https://github.ibm.com/IBM-Q-Restricte
 ## License
 
 [Apache License 2.0](LICENSE.txt)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
