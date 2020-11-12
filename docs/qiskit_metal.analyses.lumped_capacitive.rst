@@ -1,0 +1,35 @@
+﻿
+
+lumped_capacitive
+=======================================
+
+.. automodule:: qiskit_metal.analyses.lumped_capacitive
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      chargeline_T1
+      chi
+      cos_to_mega_and_delta
+      df_cmat_style_print
+      df_reorder_matrix_basis
+      extract_transmon_coupled_Noscillator
+      get_C_and_Ic
+      levels_vs_ng_real_units
+      load_q3d_capacitance_matrix
+      move_index_to
+      readin_q3d_matrix
+      transmon_props
+   
+   
+
+   
+   
+   
+
+   
+   
+   

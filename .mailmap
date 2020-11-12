@@ -1,0 +1,32 @@
+# Entries in this file are made for two reasons:
+# 1) to merge multiple git commit authors that correspond to a single author
+# 2) to change the canonical name and/or email address of an author.
+#
+# Format is:
+#     Canonical Name <Canonical@email> commit name <commit@email>
+#     \--------------+---------------/ \----------+-------------/
+#                 replace                       find
+# See also: 'git shortlog --help' and 'git check-mailmap --help'.
+#
+# If you don't like the way your name is cited by qiskit, please feel free to
+# open a pull request against this file to set your preferred naming.
+#
+# Note that each qiskit element uses its own mailmap so it may be necessary to
+# propagate changes in other repos for consistency.
+#
+Dennis Wang <Dennis.Wang@ibm.com>
+Grace Harper <graceharperibm@Graces-MacBook-Pro.local>
+Helena Zhang <Helena.Zhang@ibm.com>
+Jeremy Drysdale <jdrysda@us.ibm.com>
+Jeremy Drysdale <jdrysda@us.ibm.com> <jdrysda@WIN-LM01CHKSD9E>
+John L. Blair <jlblair@us.ibm.com>
+Marco Facchini <Marco.Facchini2@ibm.com> <marco.facchini2@ibm.com>
+Nicholas A. Lanzillo <nalanzil@us.ibm.com>
+Olivia Lanes <Olivia.Lanes@ibm.com> <olivia.lanes@ibm.com>
+Paul Nation <nonhermitian@gmail.com>
+Priti A. Shah <Priti.Ashvin.Shah@ibm.com>
+Priti A. Shah <Priti.Ashvin.Shah@ibm.com> <priti.ashvin.shah@ibm.com>
+Thomas G. McConkey <Thomas.G.McConkey@ibm.com>
+William E. Shanks <willshanks@us.ibm.com>
+Zlatko K. Minev <Zlatko.Minev@ibm.com> <zlatko.minev@ibm.com>
+Zlatko K. Minev <Zlatko.Minev@ibm.com> <zminev@gmail.com>
