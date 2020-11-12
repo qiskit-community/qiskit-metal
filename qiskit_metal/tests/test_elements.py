@@ -219,13 +219,14 @@ class TestElements(unittest.TestCase):
         qgt = QGeometryTables(design)
         qgt.clear_all_tables()
 
-        qgt.add_qgeometry('poly', 'my_id', dict(cl_metal='cl_metal'))
+        a_poly = draw.rectangle(2,2,0,0)
+        qgt.add_qgeometry('poly', 'my_id', dict(cl_metal=a_poly))
         table = qgt.tables
 
         self.assertTrue('poly' in table)
         self.assertEqual(table['poly']['component'][0], 'my_id')
         self.assertEqual(table['poly']['name'][0], 'cl_metal')
-        self.assertEqual(table['poly']['geometry'][0], 'cl_metal')
+        self.assertEqual(table['poly']['geometry'][0], a_poly)
         self.assertEqual(table['poly']['layer'][0], 1)
         self.assertEqual(table['poly']['subtract'][0], False)
         self.assertEqual(table['poly']['helper'][0], False)
@@ -241,7 +242,8 @@ class TestElements(unittest.TestCase):
         qgt.clear_all_tables()
 
         # add something to the tables to check for after clear
-        qgt.add_qgeometry('poly', 'my_id', dict(cl_metal='cl_metal'))
+        a_poly = draw.rectangle(2,2,0,0)
+        qgt.add_qgeometry('poly', 'my_id', dict(cl_metal=a_poly))
 
         qgt.clear_all_tables()
         self.assertEqual(len(qgt.tables['poly'].geometry), 0)
@@ -257,8 +259,10 @@ class TestElements(unittest.TestCase):
         transmon_pocket = TransmonPocket(design, 'my_id')
         transmon_pocket.make()
         transmon_pocket.get_template_options(design)
-        qgt.add_qgeometry('path', 'my_id', {'n_sprial': 'ns'}, width=4000)
-        qgt.add_qgeometry('poly', 'my_id', {'n_spira_etch': 'nse'}, subtract=True)
+        a_linestring = draw.LineString([[0,0],[0,1]])
+        a_poly = draw.rectangle(2,2,0,0)
+        qgt.add_qgeometry('path', 'my_id', {'n_sprial': a_linestring}, width=4000)
+        qgt.add_qgeometry('poly', 'my_id', {'n_spira_etch': a_poly}, subtract=True)
 
         self.assertEqual(len(qgt.tables['path']), 1)
         self.assertEqual(len(qgt.tables['poly']), 1)
@@ -279,8 +283,10 @@ class TestElements(unittest.TestCase):
         transmon_pocket = TransmonPocket(design, 'my_id')
         transmon_pocket.make()
         transmon_pocket.get_template_options(design)
-        qgt.add_qgeometry('path', 'my_id', {'n_sprial': 'ns'}, width=4000)
-        qgt.add_qgeometry('poly', 'my_id', {'n_spira_etch': 'nse'}, subtract=True)
+        a_linestring = draw.LineString([[0,0],[0,1]])
+        a_poly = draw.rectangle(2,2,0,0)
+        qgt.add_qgeometry('path', 'my_id', {'n_sprial': a_linestring}, width=4000)
+        qgt.add_qgeometry('poly', 'my_id', {'n_spira_etch': a_poly}, subtract=True)
 
         self.assertEqual(qgt.get_all_unique_layers('main'), [1])
         self.assertEqual(qgt.get_all_unique_layers('fake'), [])
