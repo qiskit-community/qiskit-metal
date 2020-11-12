@@ -32,7 +32,6 @@ from qiskit_metal.components._template import MyQComponent
 from qiskit_metal.components.base.base import QComponent
 from qiskit_metal.components.base.qroute import QRoute
 from qiskit_metal.components.base.qubit import BaseQubit
-from qiskit_metal.components.connectors.bump_pad import BumpPad
 from qiskit_metal.components.connectors.cpw_hanger_t import CPWHangerT
 from qiskit_metal.components.connectors import open_to_ground
 from qiskit_metal.components.connectors import short_to_ground
@@ -207,13 +206,6 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
         self.assertEqual(len(metadata), 2)
         self.assertEqual(metadata['short_name'], 'Q')
         self.assertEqual(metadata['_qgeometry_table_poly'], 'True')
-
-    def test_component_bump_pad_component_metadata(self):
-        """
-        Test component_metadata in component/bump_pad.py
-        """
-        component = BumpPad
-        self.assertEqual(component.component_metadata, {'short_name': 'bump'})
 
     def test_component_cpw_hanger_t_component_metadata(self):
         """

@@ -37,7 +37,6 @@ from qiskit_metal.components.basic.rectangle import Rectangle
 from qiskit_metal.components.basic.rectangle_hollow import RectangleHollow
 from qiskit_metal.components.basic.n_gon import NGon
 from qiskit_metal.components.basic.n_square_spiral import NSquareSpiral
-from qiskit_metal.components.connectors.bump_pad import BumpPad
 from qiskit_metal.components.connectors.cpw_hanger_t import CPWHangerT
 from qiskit_metal.components.connectors.open_to_ground import OpenToGround
 from qiskit_metal.components.connectors.short_to_ground import ShortToGround
@@ -298,31 +297,6 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
             MyQComponent(design, "my_name3", options={}, make=False)
         except Exception:
             self.fail("MyQComponent(design, \"my_name3\", options={}, make=False)")
-
-    def test_component_instantiate_bump_pad(self):
-        """
-        Test the instantiation of BumpPad
-        """
-        design = designs.DesignPlanar()
-        try:
-            BumpPad
-        except Exception:
-            self.fail("BumpPad failed")
-
-        try:
-            BumpPad(design, "my_name")
-        except Exception:
-            self.fail("BumpPad(design, \"my_name\")")
-
-        try:
-            BumpPad(design, "my_name2", options={})
-        except Exception:
-            self.fail("BumpPad(design, \"my_name2\", options={})")
-
-        try:
-            BumpPad(design, "my_name3", options={}, make=False)
-        except Exception:
-            self.fail("BumpPad(design, \"my_name3\", options={}, make=False)")
 
     def test_component_instantiate_cpw_hanger_t(self):
         """
