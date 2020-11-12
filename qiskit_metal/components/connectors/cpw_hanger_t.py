@@ -70,6 +70,7 @@ class CPWHangerT(QComponent):
         second_gap='6um',
         coupling_space='3um',
         coupling_length='100um',
+        fillet='25um',
         pos_x='0um',
         pos_y='0um',
         rotation='0',
@@ -115,9 +116,9 @@ class CPWHangerT(QComponent):
         self.add_qgeometry('path', {'prime_cpw': prime_cpw}, width=p.prime_width)
         self.add_qgeometry('path', {'prime_cpw_sub': prime_cpw},
             width=p.prime_width+2*p.prime_gap,subtract=True)
-        self.add_qgeometry('path', {'second_cpw': second_cpw}, width=p.second_width)
+        self.add_qgeometry('path', {'second_cpw': second_cpw}, width=p.second_width,fillet=p.fillet)
         self.add_qgeometry('path', {'second_cpw_sub': second_cpw_etch},
-            width=p.second_width+2*p.second_gap,subtract=True)
+            width=p.second_width+2*p.second_gap,subtract=True, fillet=p.fillet)
 
         #Add pins
         prime_pin_list = prime_cpw.coords

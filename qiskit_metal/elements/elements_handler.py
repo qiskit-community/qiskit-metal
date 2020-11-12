@@ -33,7 +33,9 @@ from geopandas import GeoDataFrame, GeoSeries
 
 from .. import Dict
 from ..draw import BaseGeometry
+from qiskit_metal.draw.utility import round_coordinate_sequence
 
+from shapely.geometry.multipolygon import MultiPolygon #for avoiding MultiPolygons
 from .. import config
 if not config.is_building_docs():
     from qiskit_metal.toolbox_python.utility_functions import get_range_of_vertex_to_not_fillet, data_frame_empty_typed
@@ -484,14 +486,24 @@ class QGeometryTables(object):
                               f' The call was with subtract={subtract} and helper={helper}'
                               f' and layer={layer}, and options={other_options}')
 
-        # TODO Check for multiploygon here.
+        #Checks if (any) of the geometry are MultiPolygons, and breaks them up into
+        #individual polygons. Rounds the coordinate sequences of those values to avoid
+        #numerical errors.
+        rounding_val = self.design.template_options['PRECISION']
+        new_dict = Dict()
+        for key, item in geometry.items():
+            if isinstance(geometry[key], MultiPolygon):
+                temp_multi = geometry[key]
+                shape_count = 0
+                for shape_temp in temp_multi.geoms:
+                    new_dict[key+'_'+str(shape_count)] = round_coordinate_sequence(shape_temp, rounding_val)
+                    shape_count += 1
+            else:
+                new_dict[key] = round_coordinate_sequence(item, rounding_val)
 
-        # TODO
-        # Add rounding for dict called geometry.  It can be poly,path,
-        # key is name of element, value is shapley geometry
-        # dict can have more than one element
-        # path can have interior and exterior linestring.
+        geometry = new_dict
 
+        # Create options TODO: Might want to modify this (component_name -> component_id)
         # Give warning if length is to be fillet's and not long enough.
         self.check_lengths(geometry, kind, component_name,
                            layer, chip, **other_options)
@@ -500,10 +512,17 @@ class QGeometryTables(object):
         options = dict(component=component_name, subtract=subtract,
                        helper=helper, layer=int(layer), chip=chip, **other_options)
 
+        #replaces line above to generate the options. 
+        #for keyC in design.qgeometry.tables[kind].columns:
+        #    if keyC != 'geometry':
+        #        options[keyC] = ???[keyC] -> alternative manner to pass options to the add_qgeometry function?
+        #                                       instead have the add_qeometry in baseComponent generate the dict?
+
+        #Could we just append rather than make a new table each time? This seems slow
         table = self.tables[kind]
 
-        # assert that all names in options are in table columns!
-        # mauybe check
+        # assert that all names in options are in table columns! TODO: New approach will not be wanting
+        #to do this (maybe check that all columns are in options?)
         df = GeoDataFrame.from_dict(
             geometry, orient='index', columns=['geometry'])
         df.index.name = 'name'
@@ -511,7 +530,7 @@ class QGeometryTables(object):
 
         df = df.assign(**options)
 
-        # Set new table. Unfortuanly, this creates a new instance.
+        # Set new table. Unfortuanly, this creates a new instance. Can just direct append
         self.tables[kind] = table.append(df, sort=False, ignore_index=True)
         # concat([table,df], axis=0, join='outer', ignore_index=True,sort=False,
         #          verify_integrity=False, copy=False)

@@ -87,12 +87,12 @@ class TransmonConcentric(BaseQubit):
 
         # draw the top Josephson Junction
         jj_port_top = draw.rectangle(p.jj_w, p.gap)
-        jj_t = [jj_port_top]
+        jj_t = jj_port_top
         jj_t = draw.translate(jj_t, xoff=0.0,yoff=(p.rad_i+0.5*p.gap))
 
         # draw the bottom Josephson Junction
         jj_port_bottom = draw.rectangle(p.jj_w, p.gap)
-        jj_b = [jj_port_bottom]
+        jj_b = jj_port_bottom
         jj_b = draw.translate(jj_b, xoff=0.0, yoff=(-(p.rad_i+0.5*p.gap)))
 
         # draw the readout resonator

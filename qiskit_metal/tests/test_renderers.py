@@ -24,6 +24,7 @@ Created on Wed Apr 22 10:01:13 2020
 
 import unittest
 import matplotlib.pyplot as _plt
+
 from qiskit_metal import designs
 from qiskit_metal.renderers import setup_default
 from qiskit_metal.renderers.renderer_base.renderer_base import QRenderer
@@ -32,6 +33,7 @@ from qiskit_metal.renderers.renderer_gds.gds_renderer import QGDSRenderer
 from qiskit_metal.renderers.renderer_mpl.mpl_interaction import MplInteraction
 from qiskit_metal.elements.elements_handler import QGeometryTables
 from qiskit_metal.components.qubits.transmon_pocket import TransmonPocket
+from qiskit_metal import draw
 
 
 class TestRenderers(unittest.TestCase):
@@ -192,9 +194,12 @@ class TestRenderers(unittest.TestCase):
         transmon_pocket = TransmonPocket(design, 'my_id')
         transmon_pocket.make()
         transmon_pocket.get_template_options(design)
-        qgt.add_qgeometry('path', 'my_id', {'n_sprial': 'ns'}, width=4000)
+
+        a_linestring = draw.LineString([[0,0],[0,1]])
+        a_poly = draw.rectangle(2,2,0,0)
+        qgt.add_qgeometry('path', 'my_id', {'n_sprial': a_linestring}, width=4000)
         qgt.add_qgeometry('poly', 'my_id', {
-                          'n_spira_etch': 'nse'}, subtract=True)
+                          'n_spira_etch': a_poly}, subtract=True)
 
         result = renderer.get_chip_names()
         self.assertEqual(result, {'main': {}})

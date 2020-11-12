@@ -709,6 +709,9 @@ class QComponent():
 
         if gap is None:
             gap = width * 0.6
+        
+        rounding_val = self.design.template_options['PRECISION']
+        points = np.around(points, rounding_val) #Need points to remain as shapely geom?
 
         if input_as_norm:
             middle_point = points[1]
@@ -722,8 +725,6 @@ class QComponent():
             points = [s_point, e_point]
             tangent_vector = Vector.rotate(vec_normal, np.pi/2)
 
-           # self.pins[name] = self.make_pin_as_normal(
-            #  points, width, chip)
         else:
             vec_dist, tangent_vector, vec_normal = draw.Vector.two_points_described(
                 points)
@@ -732,11 +733,11 @@ class QComponent():
 
         pin_dict = Dict(
             points=points,
-            middle=middle_point,
-            normal=vec_normal,
-            tangent=tangent_vector,
-            width=width,
-            gap=gap,
+            middle=np.around(middle_point, rounding_val),
+            normal=np.around(vec_normal, rounding_val),
+            tangent=np.around(tangent_vector, rounding_val),
+            width=np.around(width, rounding_val),
+            gap=np.around(gap, rounding_val),
             chip=chip,
             parent_name=self.id,
             net_id=0,
