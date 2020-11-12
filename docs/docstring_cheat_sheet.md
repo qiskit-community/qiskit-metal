@@ -1,6 +1,6 @@
 # Docstring Cheat Sheet
 
-Please refer to this for docstring help.  Please contact the document owner (Jeremy Drysdale, @jdrysda, jdrysda@us.ibm.com) if you have questions, comments or suggestions.
+Please refer to this for docstring help.
 
 ## Functions
 ```
@@ -118,7 +118,7 @@ This will display mathematical expressions
 
 The code above will generate:
 
-![Missing math image](https://github.ibm.com/IBM-Q-Restricted-Research/qiskit-metal/blob/v0.2-dev/docs/images/math.jpg?raw=true "Math")
+![Missing math image](https://github.com/Qiskit/qiskit-metal/blob/main/docs/images/math.jpg?raw=true "Math")
 
 ### Source code
 Embed source code without executing it
@@ -157,7 +157,7 @@ This embeds and display the source code, executes it, and displays the results
 
 The code above with generate:
 
-![Missing code run image](https://github.ibm.com/IBM-Q-Restricted-Research/qiskit-metal/blob/v0.2-dev/docs/images/coderun.jpg?raw=true "Code run")
+![Missing code run image](https://github.com/Qiskit/qiskit-metal/blob/main/docs/images/coderun.jpg?raw=true "Code run")
 
 ### Ascii graphics (bulk verbatim)
 Dump many lines verbatim – many times used for ascii graphics
