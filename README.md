@@ -1,6 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿[![Build Status](https://travis.ibm.com/IBM-Q-Restricted-Research/qiskit-metal.svg?token=p3Ak3Pz4fK3rsU99vhd2&branch=v0.2-dev)](https://travis.ibm.com/IBM-Q-Restricted-Research/qiskit-metal)
-
-# Qiskit Metal [![](https://badges.frapsoft.com/os/v1/open-source.png?v=103)](https://github.com/zlatko-minev/pyEPR) [![](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/zlatko-minev/pyEPR)
+﻿# Qiskit Metal [![](https://badges.frapsoft.com/os/v1/open-source.png?v=103)](https://github.com/Qiskit/qiskit-metal) [![](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/Qiskit/qiskit-metal)
 >  Quantum Creator: VLSI and Sims
 
 ## Installation
