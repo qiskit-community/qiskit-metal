@@ -1,22 +1,8 @@
 ﻿# Docs for Qiskit Metal
 
-This folder contains the src and resulting doc files. We use sphinx. 
+This folder contains the doc file src. We use sphinx to build the docs.
 
-### The easy way
-
-Notes for users.
-
-1. In your local copy of the repository, navigate to /docs/build/html and open index.html in your browser
-
-That's it.
-
-### The hard way - build the docs yourself
-
-Notes for developers only.
-
-**Generally, there is no need to build these docs.  Use the prebuilt docs**
-
-Many files are changed when the docs are built, therefore a semi-regular update the docs is done by the docs owner @jdrysda.  If you feel the docs need to be updated immediately, please reach out to @jdrysda for assistance.
+### Setup your environment to build the docs
 
 1. Install sphinx and numpydoc
 ``` 
@@ -35,10 +21,11 @@ Many files are changed when the docs are built, therefore a semi-regular update 
 	pip install jupyter_sphinx
 ```
 
-4. Make the docs.  In the `docs` directory 
+### How to build the docs
+
+1. Make the docs.  In the `docs` directory 
 ```
 	make html
 ```
 
-You can also use this to update the doc tree.
-
+Congratulations!  The docs can now be found in your `docs\build\html` directory.
