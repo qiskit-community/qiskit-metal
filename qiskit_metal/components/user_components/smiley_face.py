@@ -24,7 +24,8 @@ from qiskit_metal.components.base import QComponent
 import numpy as np
 
 class SmileyFace(QComponent):
-    """TEST COMPONENT
+    """TEST COMPONENT It is for fun only.  Can view a 
+    smiley face. Can make it wink or frown.
     """
 
     component_metadata = Dict(
