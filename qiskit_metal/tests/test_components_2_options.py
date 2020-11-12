@@ -31,7 +31,6 @@ from qiskit_metal.components.basic import rectangle
 from qiskit_metal.components.basic import rectangle_hollow
 from qiskit_metal.components.basic import n_gon
 from qiskit_metal.components.basic import n_square_spiral
-from qiskit_metal.components.connectors.bump_pad import BumpPad
 from qiskit_metal.components.connectors.cpw_hanger_t import CPWHangerT
 from qiskit_metal.components.connectors import open_to_ground
 from qiskit_metal.components.connectors import short_to_ground
@@ -457,27 +456,6 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(_options['cl_ground_gap'], '6um')
         self.assertEqual(_options['cl_pocket_edge'], '0')
         self.assertEqual(_options['cl_off_center'], '100um')
-
-    def test_component_bump_pad_options(self):
-        """
-        Test that default options of BumpPad in bump_pad.py were not accidentally changed.
-        """
-        # Setup expected test results
-        design = designs.DesignPlanar()
-        bump_pad = BumpPad(design, 'my_name')
-        options = bump_pad.default_options
-
-        # Test all elements of the result data against expected data
-        self.assertEqual(len(options), 9)
-        self.assertEqual(options['radius'], '150um')
-        self.assertEqual(options['radius_gap'], '70um')
-        self.assertEqual(options['width'], '10um')
-        self.assertEqual(options['gap'], '6um')
-        self.assertEqual(options['pos_x'], '0um')
-        self.assertEqual(options['pos_y'], '0um')
-        self.assertEqual(options['rotation'], '0')
-        self.assertEqual(options['chip'], 'main')
-        self.assertEqual(options['layer'], '1')
 
     def test_component_cpw_hanger_t_options(self):
         """
