@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'component_widget_ui.ui',
 # licensing of 'component_widget_ui.ui' applies.
 #
-# Created: Mon Nov  9 17:33:53 2020
+# Created: Wed Nov 11 18:01:16 2020
 #      by: pyside2-uic  running on PySide2 5.9.0~a1
 #
 # WARNING! All changes made in this file will be lost!
