@@ -6,6 +6,12 @@ https://qiskit.org/metal/
 
 Unpolished, early-access alpha version for a first-of-its-kind, open-source project for engineers and scientists to design superconducting quantum devices with ease.
 
+#### Early Access
+Through this early-access program, we are thrilled to ask you to join this journey to revolutionize quantum devices.
+
+The early-access program will start in November and proceed through March, 2021, during which time we will work closely to develop Metal and design quantum devices with it.
+<br><br>
+
 ## Installation
 
 To setup a development environment, first `git clone` this repository.
