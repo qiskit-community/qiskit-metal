@@ -41,6 +41,15 @@ __all__ = [
 
 try:
     from pyqode.python.backend import server
+    import pyqode.qt
+except ImportError as e:
+    print("WARNING: Could not load")
+    os.system(
+        "python -m pip install -e git+https://github.com/jojurgens/pyqode.qt.git@master#egg=pyqode.qt"
+    )
+
+try:
+    from pyqode.python.backend import server
     from pyqode.core import api, modes, panels
     from pyqode.python import modes as pymodes, panels as pypanels, widgets
     from pyqode.python.folding import PythonFoldDetector
