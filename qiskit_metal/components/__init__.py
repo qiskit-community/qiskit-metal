@@ -148,7 +148,6 @@ if config.is_building_docs():
     from .basic.n_square_spiral import NSquareSpiral
     from .basic.rectangle import Rectangle
     from .basic.rectangle_hollow import RectangleHollow
-    from .connectors.bump_pad import BumpPad
     from .connectors.cpw_hanger_t import CPWHangerT
     from .connectors.open_to_ground import OpenToGround
     from .connectors.short_to_ground import ShortToGround

@@ -8,17 +8,6 @@ Designing quantum devices is the bedrock of the quantum ecosystem, but it is a d
 
 Metal is automating and streamlining this process. Our vision is to develop a community-driven universal platform capable of orchestrating quantum chip development from concept to fabrication in a simple and open framework.
 
-**Start Here**
-
-https://github.ibm.com/IBM-Q-Restricted-Research/qiskit-metal/blob/docs-trim/_tutorials_/Start%20Here.ipynb
-
-
-**Documentation Owner:**
-
-| Jeremy D. Drysdale
-| Email: jdrysda@us.ibm.com
-| Slack: @jdrysda
-
 .. toctree::
   :maxdepth: 1
   :caption: API
