@@ -59,6 +59,7 @@ instance/
 _sandbox_/
 
 # Sphinx documentation
+docs/build
 docs/_build/
 docs/.buildingdocs
 docs/stubs
