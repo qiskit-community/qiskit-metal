@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2018.
+# (C) Copyright IBM 2017, 2020.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -43,11 +43,11 @@ release = qiskit_metal.__version__
 
 rst_prolog = """
 .. |version| replace:: {0}
-""".format(version)
+""".format(release)
 
 # -- Project information -----------------------------------------------------
 project = 'Qiskit Metal {}'.format(version)
-copyright = '2020, Qiskit Metal Team'  # pylint: disable=redefined-builtin
+copyright = '2020, Qiskit Development Team'  # pylint: disable=redefined-builtin
 author = 'Qiskit Metal Development Team'
 # -- General configuration ---------------------------------------------------
 
@@ -65,8 +65,40 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.viewcode',
     'sphinx.ext.extlinks',
+    'sphinx_autodoc_typehints',
+    'sphinx_automodapi.automodapi',
+    'nbsphinx',
+    'sphinx_panels',
     'jupyter_sphinx'
 ]
+
+nbsphinx_timeout = 300
+nbsphinx_execute = os.getenv('QISKIT_DOCS_BUILD_TUTORIALS', 'never')
+nbsphinx_widgets_path = ''
+html_sourcelink_suffix = ''
+exclude_patterns = ['_build', '**.ipynb_checkpoints']
+
+
+nbsphinx_prolog = """
+{% set docname = env.doc2path(env.docname, base=None) %}
+
+.. only:: html
+    
+    .. role:: raw-html(raw)
+        :format: html
+    
+    .. note::
+        This page was generated from `{{ docname }}`__.
+
+        Run interactively by opening the file directly in the repository https://github.com/Qiskit/qiskit-metal
+
+"""
+
+panels_css_variables = {
+    "tabs-color-label-active": "rgb(138, 63, 252)",
+    "tabs-color-label-inactive": "rgb(221, 225, 230)",
+}
+
 html_static_path = ['_static']
 templates_path = ['_templates']
 html_css_files = ['theme.css', 'style.css', 'custom.css']
