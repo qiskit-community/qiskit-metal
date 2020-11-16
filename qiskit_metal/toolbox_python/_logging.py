@@ -11,7 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 """
 Created 2019
 
@@ -33,8 +32,7 @@ def setup_logger(logger_name,
                  force_set=False,
                  capture_warnings=None,
                  propagate=False,
-                 create_stream=True
-                 ) -> logging.Logger:
+                 create_stream=True) -> logging.Logger:
     '''
     Setup the logger to work with jupyter and command line.
 

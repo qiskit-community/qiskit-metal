@@ -15,7 +15,6 @@
 #pylint: disable-msg=unnecessary-pass
 #pylint: disable-msg=too-many-public-methods
 #pylint: disable-msg=broad-except
-
 """
 Qiskit Metal unit tests components functionality.
 
@@ -56,6 +55,7 @@ from qiskit_metal.tests.assertions import AssertionsMixin
 #pylint: disable-msg=line-too-long
 from qiskit_metal.components.interconnects.resonator_rectangle_spiral import ResonatorRectangleSpiral
 
+
 class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
     """
     Unit test class
@@ -92,10 +92,15 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             QComponent(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail("QComponent(design, \"my_name3\", options={}, make=False)")
+            self.fail(
+                "QComponent(design, \"my_name3\", options={}, make=False)")
 
         try:
-            QComponent(design, "my_name4", options={}, make=False, component_template={})
+            QComponent(design,
+                       "my_name4",
+                       options={},
+                       make=False,
+                       component_template={})
         except Exception:
             msg = "QComponent(design, \"my_name4\", options={}, make=False, component_template={})"
             self.fail(msg)
@@ -119,10 +124,15 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             BaseJunction(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail("BaseJunction(design, \"my_name3\", options={}, make=False)")
+            self.fail(
+                "BaseJunction(design, \"my_name3\", options={}, make=False)")
 
         try:
-            BaseJunction(design, "my_name4", options={}, make=False, component_template={})
+            BaseJunction(design,
+                         "my_name4",
+                         options={},
+                         make=False,
+                         component_template={})
         except Exception:
             msg = "BaseJunction(design, \"my_name4\", options={}, make=False, "
             msg = msg + "component_template={})"
@@ -172,7 +182,8 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             OpenToGround(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail("OpenToGround(design, \"my_name3\", options={}, make=False)")
+            self.fail(
+                "OpenToGround(design, \"my_name3\", options={}, make=False)")
 
     def test_component_instantiate_short_to_ground(self):
         """
@@ -197,7 +208,8 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             ShortToGround(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail("ShortToGround(design, \"my_name3\", options={}, make=False)")
+            self.fail(
+                "ShortToGround(design, \"my_name3\", options={}, make=False)")
 
     def test_component_instantiate_route_frame_path(self):
         """
@@ -226,7 +238,8 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             RouteStraight(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail("RouteStraight(design, \"my_name3\", options={}, make=False)")
+            self.fail(
+                "RouteStraight(design, \"my_name3\", options={}, make=False)")
 
     def test_component_instantiate_q_route_lead(self):
         """
@@ -296,7 +309,8 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             MyQComponent(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail("MyQComponent(design, \"my_name3\", options={}, make=False)")
+            self.fail(
+                "MyQComponent(design, \"my_name3\", options={}, make=False)")
 
     def test_component_instantiate_cpw_hanger_t(self):
         """
@@ -321,7 +335,8 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             CPWHangerT(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail("CPWHangerT(design, \"my_name3\", options={}, make=False)")
+            self.fail(
+                "CPWHangerT(design, \"my_name3\", options={}, make=False)")
 
     def test_component_instantiate_resonator_rectangle_spiral(self):
         """
@@ -341,12 +356,15 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             ResonatorRectangleSpiral(design, "my_name2", options={})
         except Exception:
-            self.fail("ResonatorRectangleSpiral(design, \"my_name2\", options={})")
+            self.fail(
+                "ResonatorRectangleSpiral(design, \"my_name2\", options={})")
 
         try:
             ResonatorRectangleSpiral(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail("ResonatorRectangleSpiral(design, \"my_name3\", options={}, make=False)")
+            self.fail(
+                "ResonatorRectangleSpiral(design, \"my_name3\", options={}, make=False)"
+            )
 
     def test_component_instantiate_circle_raster(self):
         """
@@ -371,7 +389,8 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             CircleRaster(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail("CircleRaster(design, \"my_name3\", options={}, make=False)")
+            self.fail(
+                "CircleRaster(design, \"my_name3\", options={}, make=False)")
 
     def test_component_instantiate_circle_caterpillar(self):
         """
@@ -396,7 +415,9 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             CircleCaterpillar(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail("CircleCaterpillar(design, \"my_name3\", options={}, make=False)")
+            self.fail(
+                "CircleCaterpillar(design, \"my_name3\", options={}, make=False)"
+            )
 
     def test_component_instantiate_n_gon(self):
         """
@@ -446,7 +467,8 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             NSquareSpiral(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail("NSquareSpiral(design, \"my_name3\", options={}, make=False)")
+            self.fail(
+                "NSquareSpiral(design, \"my_name3\", options={}, make=False)")
 
     def test_component_instantiate_rectangle(self):
         """
@@ -496,7 +518,8 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             RectangleHollow(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail("RectangleHollow(design, \"my_name3\", options={}, make=False)")
+            self.fail(
+                "RectangleHollow(design, \"my_name3\", options={}, make=False)")
 
     def test_component_instantiate_route_anchors(self):
         """
@@ -516,7 +539,8 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             RouteAnchors(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail("RouteAnchors(design, \"my_name3\", options={}, make=False)")
+            self.fail(
+                "RouteAnchors(design, \"my_name3\", options={}, make=False)")
 
     def test_component_instantiate_route_pathfinder(self):
         """
@@ -536,7 +560,8 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             RoutePathfinder(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail("RoutePathfinder(design, \"my_name3\", options={}, make=False)")
+            self.fail(
+                "RoutePathfinder(design, \"my_name3\", options={}, make=False)")
 
     def test_component_instantiate_launch_v1(self):
         """
@@ -561,7 +586,9 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             LaunchpadWirebond(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail("LaunchpadWirebond(design, \"my_name3\", options={}, make=False)")
+            self.fail(
+                "LaunchpadWirebond(design, \"my_name3\", options={}, make=False)"
+            )
 
     def test_component_instantiate_launch_v2(self):
         """
@@ -581,12 +608,15 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             LaunchpadWirebondCoupled(design, "my_name2", options={})
         except Exception:
-            self.fail("LaunchpadWirebondCoupled(design, \"my_name2\", options={})")
+            self.fail(
+                "LaunchpadWirebondCoupled(design, \"my_name2\", options={})")
 
         try:
             LaunchpadWirebondCoupled(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail("LaunchpadWirebondCoupled(design, \"my_name3\", options={}, make=False)")
+            self.fail(
+                "LaunchpadWirebondCoupled(design, \"my_name3\", options={}, make=False)"
+            )
 
     def test_component_instantiate_three_finger_cap_v1(self):
         """
@@ -611,7 +641,9 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             CapThreeFingers(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail("CapThreeFingers(design, \"my_name3\", options={}, make=False)")
+            self.fail(
+                "CapThreeFingers(design, \"my_name3\", options={}, make=False)")
+
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

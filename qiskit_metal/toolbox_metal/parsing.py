@@ -11,7 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 '''
 Parsing module Qiskit Metal.
 
@@ -180,16 +179,23 @@ import pint
 
 from .. import Dict, config, logger
 
-__all__ = ['parse_value',  # Main function
-           'is_variable_name',  # extra helpers
-           'is_numeric_possible', 'is_for_ast_eval', 'is_true', 'parse_options']
+__all__ = [
+    'parse_value',  # Main function
+    'is_variable_name',  # extra helpers
+    'is_numeric_possible',
+    'is_for_ast_eval',
+    'is_true',
+    'parse_options'
+]
 
 #########################################################################
 # Constants
 
 # Values that can represent True bool
-TRUE_STR = ['true', 'True', 'TRUE', True, '1', 't', 'y', 'Y', 'YES',
-            'yes', 'yeah', 1, 1.0]
+TRUE_STR = [
+    'true', 'True', 'TRUE', True, '1', 't', 'y', 'Y', 'YES', 'yes', 'yeah', 1,
+    1.0
+]
 
 
 def is_true(value: Union[str, int, bool, float]) -> bool:
@@ -201,7 +207,7 @@ def is_true(value: Union[str, int, bool, float]) -> bool:
     Returns:
        bool: Is the string a true
     """
-    return value in TRUE_STR # membership test operator
+    return value in TRUE_STR  # membership test operator
 
 
 # The unit registry stores the definitions and relationships between units.
@@ -211,6 +217,8 @@ UREG = pint.UnitRegistry()
 # Basic string to number
 
 units = config.DefaultMetalOptions.default_generic.units
+
+
 def _parse_string_to_float(expr: str):
     """Extract the value of a string.
 
@@ -362,13 +370,19 @@ def parse_value(value: str, variable_dict: dict):
                 evaluated = ast.literal_eval(val)
                 if isinstance(evaluated, list):
                     # check if list, parse each element of the list
-                    return [parse_value(element, variable_dict) for element in evaluated]
+                    return [
+                        parse_value(element, variable_dict)
+                        for element in evaluated
+                    ]
                 elif isinstance(evaluated, dict):
-                    return Dict({key: parse_value(element, variable_dict)
-                                 for key, element in evaluated.items()})
+                    return Dict({
+                        key: parse_value(element, variable_dict)
+                        for key, element in evaluated.items()
+                    })
                 else:
                     logger.error(
-                        f'Unknown error in `is_for_ast_eval`\nval={val}\nevaluated={evaluated}')
+                        f'Unknown error in `is_for_ast_eval`\nval={val}\nevaluated={evaluated}'
+                    )
                     return evaluated
 
             elif is_numeric_possible(val):
@@ -377,13 +391,18 @@ def parse_value(value: str, variable_dict: dict):
     elif isinstance(value, Mapping):
         # If the value is a dictionary (dict,Dict,...),
         # then parse that dictionary. return Dict
-        return Dict(map(lambda item:  # item = [key, value]
-                        [item[0], parse_value(item[1], variable_dict)],
-                        value.items()))
+        return Dict(
+            map(
+                lambda item:  # item = [key, value]
+                [item[0], parse_value(item[1], variable_dict)],
+                value.items()))
 
     elif isinstance(value, Iterable):
         # list, tuple, ... Return the same type
-        return {np.ndarray: np.array}.get(type(value), type(value))([parse_value(val, variable_dict) for val in value])
+        return {
+            np.ndarray: np.array
+        }.get(type(value),
+              type(value))([parse_value(val, variable_dict) for val in value])
 
     elif isinstance(value, Number):
         # If it is an int it will return an int, not a float, etc.
@@ -405,12 +424,13 @@ def parse_options(params: dict, parse_names: str, variable_dict=None):
     """
 
     # Prep args
-    if not variable_dict:       # If None, create an empty dict
+    if not variable_dict:  # If None, create an empty dict
         variable_dict = {}
 
     res = []
     for name in parse_names.split(','):
-        name = name.strip()  # remove trailing and leading white spaces in the name
+        name = name.strip(
+        )  # remove trailing and leading white spaces in the name
 
         # is the name in the options at all?
         if not name in params:

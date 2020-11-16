@@ -64,7 +64,7 @@ if TYPE_CHECKING:
 BACKGROUND_COLOR = '#F4F4F4'
 MPL_CONTEXT_DEFAULT = {
     'lines.linewidth':
-    3,
+        3,
 
     # FIGURE
     # See http://matplotlib.org/api/figure_api.html#matplotlib.figure.Figure
@@ -72,90 +72,90 @@ MPL_CONTEXT_DEFAULT = {
     # figure.titleweight : normal   ## weight of the figure title
     # figure.figsize   : 6.4, 4.8   ## figure size in inches
     'figure.dpi':
-    100,  # figure dots per inch
+        100,  # figure dots per inch
     'figure.facecolor':
-    BACKGROUND_COLOR,  # figure facecolor
+        BACKGROUND_COLOR,  # figure facecolor
     'figure.edgecolor':
-    BACKGROUND_COLOR,  # figure edgecolor
+        BACKGROUND_COLOR,  # figure edgecolor
     # figure.frameon : True         ## enable figure frame
     # figure.max_open_warning : 20  ## The maximum number of figures to open through
     # the pyplot interface before emitting a warning.
     # If less than one this feature is disabled.
     # The figure subplot parameters.  All dimensions are a fraction of the
     'figure.subplot.left':
-    0.00,  # the left side of the subplots of the figure
+        0.00,  # the left side of the subplots of the figure
     'figure.subplot.right':
-    1.0,  # the right side of the subplots of the figure
+        1.0,  # the right side of the subplots of the figure
     'figure.subplot.bottom':
-    0.00,  # the bottom of the subplots of the figure
+        0.00,  # the bottom of the subplots of the figure
     'figure.subplot.top':
-    1.0,  # the top of the subplots of the figure
+        1.0,  # the top of the subplots of the figure
     # the amount of width reserved for space between subplots,
     'figure.subplot.wspace':
-    0.0,
+        0.0,
     # expressed as a fraction of the average axis width
     # the amount of height reserved for space between subplots,
     'figure.subplot.hspace':
-    0.0,
+        0.0,
     # expressed as a fraction of the average axis height
 
     # Figure layout
     'figure.autolayout':
-    False,  # When True, automatically adjust subplot
+        False,  # When True, automatically adjust subplot
     # parameters to make the plot fit the figure
     # using `tight_layout`
     'figure.constrained_layout.use':
-    True,  # When True, automatically make plot
+        True,  # When True, automatically make plot
     # qgeometry fit on the figure. (Not compatible
     # with `autolayout`, above).
     # Padding around axes objects. Float representing
     'figure.constrained_layout.h_pad':
-    2. / 72.,
+        2. / 72.,
     # inches. Default is 3./72. inches (3 pts)
     'figure.constrained_layout.w_pad':
-    2. / 72.,
+        2. / 72.,
     # Space between subplot groups. Float representing
     'figure.constrained_layout.hspace':
-    0.0,
+        0.0,
     # a fraction of the subplot widths being separated.
     'figure.constrained_layout.wspace':
-    0.0,
+        0.0,
 
     # GRIDS
     'grid.color':
-    'b0b0b0',  # grid color
+        'b0b0b0',  # grid color
     'grid.linestyle':
-    '-',  # solid
+        '-',  # solid
     'grid.linewidth':
-    0.5,  # in points
+        0.5,  # in points
     'grid.alpha':
-    0.5,  # transparency, between 0.0 and 1.0
+        0.5,  # transparency, between 0.0 and 1.0
 
     # AXES
     # default face and edge color, default tick sizes,
     # default fontsizes for ticklabels, and so on.  See
     # http://matplotlib.org/api/axes_api.html#module-matplotlib.axes
     'axes.facecolor':
-    BACKGROUND_COLOR,  # axes background color
+        BACKGROUND_COLOR,  # axes background color
     # 'axes.edgecolor'      : 'black',   ## axes edge color
     # axes.linewidth      : 0.8     ## edge linewidth
     'axes.grid':
-    True,  # display grid or not
+        True,  # display grid or not
     # axes.grid.axis      : both    ## which axis the grid should apply to
     # axes.grid.which     : major   ## gridlines at major, minor or both ticks
     # axes.titlesize      : large   ## fontsize of the axes title
     # axes.titleweight    : normal  ## font weight of title
     'axes.titlepad':
-    2.0,  # pad between axes and title in points
+        2.0,  # pad between axes and title in points
     'axes.labelsize':
-    'small',  # fontsize of the x any y labels
+        'small',  # fontsize of the x any y labels
     'axes.labelpad':
-    2.0,  # space between label and axis
+        2.0,  # space between label and axis
     # axes.labelweight    : normal  ## weight of the x and y labels
     'axes.labelcolor':
-    'b0b0b0',
+        'b0b0b0',
     'axes.axisbelow':
-    'line',  # draw axis gridlines and ticks below
+        'line',  # draw axis gridlines and ticks below
     # patches (True); above patches but below
     # lines ('line'); or above all (False)
     # axes.formatter.limits : -7, 7 ## use scientific notation if log10
@@ -180,18 +180,18 @@ MPL_CONTEXT_DEFAULT = {
     # axes.spines.left   : True   ## display axis spines
     #axes.spines.bottom : True
     'axes.spines.top':
-    False,
+        False,
     'axes.spines.right':
-    False,
+        False,
     # axes.unicode_minus  : True    ## use unicode for the minus symbol
     # rather than hyphen.  See
     # http://en.wikipedia.org/wiki/Plus_and_minus_signs#Character_codes
     # ['1f77b4', 'ff7f0e', '2ca02c', 'd62728', '9467bd', '8c564b', 'e377c2', '7f7f7f', 'bcbd22', '17becf']),
     'axes.prop_cycle':
-    cycler('color', [
-        '#a6cee3', '#1f78b4', '#b2df8a', '#33a02c', '#fb9a99', '#e31a1c',
-        '#fdbf6f', '#ff7f00', '#cab2d6', '#6a3d9a', '#ffff99', '#b15928'
-    ]),
+        cycler('color', [
+            '#a6cee3', '#1f78b4', '#b2df8a', '#33a02c', '#fb9a99', '#e31a1c',
+            '#fdbf6f', '#ff7f00', '#cab2d6', '#6a3d9a', '#ffff99', '#b15928'
+        ]),
     # color cycle for plot lines  as list of string
     # colorspecs: single letter, long name, or web-style hex
     # Note the use of string escapes here ('1f77b4', instead of 1f77b4)
@@ -200,9 +200,9 @@ MPL_CONTEXT_DEFAULT = {
     # Use "data" to use data limits, plus some margin
     # Use "round_number" move to the nearest "round" number
     'axes.xmargin':
-    .0,  # x margin.  See `axes.Axes.margins`
+        .0,  # x margin.  See `axes.Axes.margins`
     'axes.ymargin':
-    .0,  # y margin See `axes.Axes.margins`
+        .0,  # y margin See `axes.Axes.margins`
     # polaraxes.grid      : True    ## display grid on polar axes
     # axes3d.grid         : True    ## display grid on 3d axes
 
@@ -217,13 +217,13 @@ MPL_CONTEXT_DEFAULT = {
     # xtick.major.width    : 0.8    ## major tick width in points
     # xtick.minor.width    : 0.6    ## minor tick width in points
     'xtick.major.pad':
-    1.0,  # distance to major tick label in points
+        1.0,  # distance to major tick label in points
     'xtick.minor.pad':
-    1.0,  # distance to the minor tick label in points
+        1.0,  # distance to the minor tick label in points
     # xtick.color          : black  ## color of the tick labels
     # xtick.labelsize      : medium ## fontsize of the tick labels
     'xtick.direction':
-    'inout',  # direction: in, out, or inout
+        'inout',  # direction: in, out, or inout
     # xtick.minor.visible  : False  ## visibility of minor ticks on x-axis
     # xtick.major.top      : True   ## draw x axis top major ticks
     # xtick.major.bottom   : True   ## draw x axis bottom major ticks
@@ -240,13 +240,13 @@ MPL_CONTEXT_DEFAULT = {
     # ytick.major.width    : 0.8    ## major tick width in points
     # ytick.minor.width    : 0.6    ## minor tick width in points
     'ytick.major.pad':
-    1.,  # distance to major tick label in points
+        1.,  # distance to major tick label in points
     'ytick.minor.pad':
-    1.,  # distance to the minor tick label in points
+        1.,  # distance to the minor tick label in points
     # ytick.color          : black  ## color of the tick labels
     # ytick.labelsize      : medium ## fontsize of the tick labels
     'ytick.direction':
-    'inout',  # direction: in, out, or inout
+        'inout',  # direction: in, out, or inout
     # ytick.minor.visible  : False  ## visibility of minor ticks on y-axis
     # ytick.major.left     : True   ## draw y axis left major ticks
     # ytick.major.right    : True   ## draw y axis right major ticks
@@ -304,7 +304,7 @@ MPL_CONTEXT_DEFAULT = {
     # http://matplotlib.org/api/artist_api.html#module-matplotlib.patches
     # information on patch properties
     'patch.linewidth':
-    1,  # edge width in points.
+        1,  # edge width in points.
     #patch.facecolor        : C0
     # patch.edgecolor        : black   ## if forced, or patch is not filled
     # patch.force_edgecolor  : False   ## True to always use edgecolor

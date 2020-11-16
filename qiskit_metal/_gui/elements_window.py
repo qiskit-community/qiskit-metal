@@ -11,7 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 """Main module that handles the elements window inside the main window.
 @author: Zlatko Minev
 @date: 2020
@@ -41,6 +40,7 @@ class ElementsWindow(QMainWindow):
         The UI can call up to this class to execeute button clicks for instance
         Extensiosn in qt designer on signals/slots are linked to this class
     """
+
     def __init__(self, gui: 'MetalGUI', parent_window: 'QMainWindowExtension'):
         """
         Args:
@@ -240,8 +240,8 @@ class ElementTableModel(QAbstractTableModel):
             return QtCore.Qt.ItemIsEnabled
 
         return QtCore.Qt.ItemFlags(
-            QAbstractTableModel.flags(self, index)
-            | QtCore.Qt.ItemIsSelectable)  # ItemIsEditable
+            QAbstractTableModel.flags(self, index) |
+            QtCore.Qt.ItemIsSelectable)  # ItemIsEditable
 
     def data(self, index: QModelIndex, role=QtCore.Qt.DisplayRole):
         """ Depending on the index and role given, return data. If not

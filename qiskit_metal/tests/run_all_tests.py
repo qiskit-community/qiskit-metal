@@ -11,7 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 """
 Qiskit Metal main unit test functionality.
 
@@ -35,7 +34,7 @@ if __name__ == '__main__':
                 print("Running ", entry, " tests...")
                 cmd = 'python ' + entry
                 error_back = subprocess.call(cmd, shell=True)
-                if error_back != 3221225477: # access violation
+                if error_back != 3221225477:  # access violation
                     ERRORS_EXIST += error_back
                 print("")
 

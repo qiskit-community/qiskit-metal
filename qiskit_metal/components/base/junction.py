@@ -11,7 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 """
 This is the main module that defines what a Base Junction, such as
 a Josephson tunnel junction is.
@@ -23,6 +22,7 @@ To handle Manhatan, BFT, etc.
 """
 
 from .base import QComponent
+
 
 class BaseJunction(QComponent):
     """

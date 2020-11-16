@@ -11,7 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 """
 This is the main module that defines what a QComponent is in Qiskit Metal.
 
@@ -131,8 +130,12 @@ class QComponent():
     # Used by `is_component` to check.
     __i_am_component__ = True
 
-    def __init__(self, design: 'QDesign', name: str = None, options: Dict = None,
-                 make=True, component_template: Dict = None) -> Union[None, str]:
+    def __init__(self,
+                 design: 'QDesign',
+                 name: str = None,
+                 options: Dict = None,
+                 make=True,
+                 component_template: Dict = None) -> Union[None, str]:
         """Create a new Metal component and adds it's default_options to the design.
 
         Arguments:
@@ -188,8 +191,8 @@ class QComponent():
         #: A dictionary of the component-desinger-defined options.
         #: These options are used in the make function to create the QGeometry and QPins.
         #: All options should have string keys and preferrable string values.
-        self.options = self.get_template_options(design=design,
-                                                 component_template=component_template)
+        self.options = self.get_template_options(
+            design=design, component_template=component_template)
         if options:
             self.options.update(options)
 
@@ -234,7 +237,8 @@ class QComponent():
                 short_name = prefix['short_name'][:name_trunc]
             name_id = self.design._get_new_qcomponent_name_id(short_name)
             # rename loop to make sure that no components manually named by the user conflicts
-            while self.design.rename_component(self._id, short_name + "_" + str(name_id)) != 1:
+            while self.design.rename_component(
+                    self._id, short_name + "_" + str(name_id)) != 1:
                 name_id = self.design._get_new_qcomponent_name_id(short_name)
 
         # Add keys for each type of table.  add_qgeometry() will update bool if the table is used.
@@ -269,11 +273,13 @@ class QComponent():
         parents = inspect.getmro(cls)
 
         # len-2: base.py is not expected to have default_options dict to add to design class.
-        for child in parents[len(parents)-2::-1]:
+        for child in parents[len(parents) - 2::-1]:
             # The template default options are in a class dict attribute `default_options`.
             if hasattr(child, 'default_options'):
                 options_from_children = {
-                    **options_from_children, **child.default_options}
+                    **options_from_children,
+                    **child.default_options
+                }
 
         return options_from_children
 
@@ -293,11 +299,13 @@ class QComponent():
         options_from_children = {}
         parents = inspect.getmro(cls)
         # Base.py is not expected to have default_options dict to add to design class.
-        for child in parents[len(parents)-2::-1]:
+        for child in parents[len(parents) - 2::-1]:
             # There is a developer agreement so the defaults will be in dict named default_options.
             if hasattr(child, 'component_metadata'):
                 options_from_children = {
-                    **options_from_children, **child.component_metadata}
+                    **options_from_children,
+                    **child.component_metadata
+                }
 
         return options_from_children
 
@@ -311,9 +319,7 @@ class QComponent():
         return f'{cls.__module__}.{cls.__name__}'
 
     @classmethod
-    def _register_class_with_design(cls,
-                                    design: 'QDesign',
-                                    template_key: str,
+    def _register_class_with_design(cls, design: 'QDesign', template_key: str,
                                     component_template: Dict):
         """Init function to register a component class with the design when first instantiated.
             Registers the design template options.
@@ -329,7 +335,9 @@ class QComponent():
             #     component_template = cls._gather_all_children_options()
             children_options = cls._gather_all_children_options()
             options_template_renderer = {
-                **children_options, **component_template}
+                **children_options,
+                **component_template
+            }
             # design.template_options[template_key] = deepcopy(
             #     component_template)
             design.template_options[template_key] = deepcopy(
@@ -439,24 +447,27 @@ class QComponent():
         # Think
         if component_template is not None:
             renderer_and_component_template = {
-                **renderer_key_values, **component_template}
+                **renderer_key_values,
+                **component_template
+            }
         else:
             renderer_and_component_template = renderer_key_values
 
         if template_key not in design.template_options:
-            cls._register_class_with_design(
-                design, template_key, renderer_and_component_template)
+            cls._register_class_with_design(design, template_key,
+                                            renderer_and_component_template)
             # design, template_key, component_template)
 
         if template_key not in design.template_options:
             logger_ = logger_ or design.logger
             if logger_:
-                logger_.error(f'ERROR in the creating component {cls.__name__}!\nThe default '
-                              f'options for the component class {cls.__name__} are missing')
+                logger_.error(
+                    f'ERROR in the creating component {cls.__name__}!\nThe default '
+                    f'options for the component class {cls.__name__} are missing'
+                )
 
         # Specific object template options
-        template_options = deepcopy(
-            Dict(design.template_options[template_key]))
+        template_options = deepcopy(Dict(design.template_options[template_key]))
 
         return template_options
 
@@ -476,11 +487,12 @@ class QComponent():
         if self._design.overwrite_enabled and answer:
             self._design.delete_component(check_name)
         elif answer:
-            logger.warning(f'The QComponent name `{check_name}` is already in use, '
-                           f'by a component (with QComponent id={answer}).\n'
-                           f'QComponent NOT made, nor added to the design. \n'
-                           'To force overwrite a QComponent with an existing name '
-                           'use the flag:\n`design.overwrite_enabled = True`.')
+            logger.warning(
+                f'The QComponent name `{check_name}` is already in use, '
+                f'by a component (with QComponent id={answer}).\n'
+                f'QComponent NOT made, nor added to the design. \n'
+                'To force overwrite a QComponent with an existing name '
+                'use the flag:\n`design.overwrite_enabled = True`.')
             return 'NameInUse'
         return None
 
@@ -542,7 +554,9 @@ class QComponent():
     # Maybe still should be fine as any values will be in component options still?
     # Though the data table approach and rendering directly via shapely could lead to problem
     # with variable use
-    def parse_value(self, value: Union[Any, List, Dict, Iterable]) -> Union[Any, List, Dict, Iterable]:
+    def parse_value(
+        self, value: Union[Any, List, Dict, Iterable]
+    ) -> Union[Any, List, Dict, Iterable]:
         """
         Parse a string, mappable (dict, Dict), iterable (list, tuple) to account for
         units conversion, some basic arithmetic, and design variables.
@@ -635,17 +649,17 @@ class QComponent():
         else:
             return 0
 
-
 ####################################################################################
 # Functions for handling of pins
 
-    def add_pin(self,
-                name: str,  # Should be static based on component designer's choice
-                points: np.ndarray,
-                width: float,
-                input_as_norm: bool = False,
-                chip: str = 'main',
-                gap: float = None):  # gap defaults to 0.6 * width
+    def add_pin(
+            self,
+            name: str,  # Should be static based on component designer's choice
+            points: np.ndarray,
+            width: float,
+            input_as_norm: bool = False,
+            chip: str = 'main',
+            gap: float = None):  # gap defaults to 0.6 * width
         """
         Adds a pin from two points which are normal/tangent to the intended plane of the pin.
         The normal should 'point' in the direction of intended connection. Adds the
@@ -709,26 +723,27 @@ class QComponent():
 
         if gap is None:
             gap = width * 0.6
-        
+
         rounding_val = self.design.template_options['PRECISION']
-        points = np.around(points, rounding_val) #Need points to remain as shapely geom?
+        points = np.around(
+            points, rounding_val)  #Need points to remain as shapely geom?
 
         if input_as_norm:
             middle_point = points[1]
-            vec_normal = points[1]-points[0]
+            vec_normal = points[1] - points[0]
             vec_normal /= np.linalg.norm(vec_normal)
 
             s_point = np.round(Vector.rotate(
-                vec_normal, (np.pi/2))) * width/2 + points[1]
+                vec_normal, (np.pi / 2))) * width / 2 + points[1]
             e_point = np.round(Vector.rotate(
-                vec_normal, -(np.pi/2))) * width/2 + points[1]
+                vec_normal, -(np.pi / 2))) * width / 2 + points[1]
             points = [s_point, e_point]
-            tangent_vector = Vector.rotate(vec_normal, np.pi/2)
+            tangent_vector = Vector.rotate(vec_normal, np.pi / 2)
 
         else:
             vec_dist, tangent_vector, vec_normal = draw.Vector.two_points_described(
                 points)
-            middle_point = np.sum(points, axis=0)/2.
+            middle_point = np.sum(points, axis=0) / 2.
             width = np.linalg.norm(vec_dist)
 
         pin_dict = Dict(
@@ -743,8 +758,7 @@ class QComponent():
             net_id=0,
             # Place holder value for potential future property (auto-routing cpw with
             # length limit)
-            length=0
-        )
+            length=0)
 
         self.pins[name] = pin_dict
 
@@ -807,7 +821,9 @@ class QComponent():
         return None
 
     # This method does not appear to be being used anywhere.
-    def connect_components_already_in_design(self, pin_name_self: str, comp2_id: int, pin2_name: str) -> int:
+    def connect_components_already_in_design(self, pin_name_self: str,
+                                             comp2_id: int,
+                                             pin2_name: str) -> int:
         """WARNING: Do NOT use this method during generation of component instance.
             This method is expecting self to be added to design._components dict.  More importantly,
             the unique id of self component needs to be in design._components dict.
@@ -838,17 +854,19 @@ class QComponent():
         if self.design._components[self._id].pins[pin_name_self].net_id:
             # Pin already in use.
             logger.warning(
-                f'Component_id {self._id} not connected.  The pin {pin_name_self} is already connected to something else.')
+                f'Component_id {self._id} not connected.  The pin {pin_name_self} is already connected to something else.'
+            )
             return net_id_rtn
 
         if self.design._components[comp2_id].pins[pin2_name].net_id:
             # Pin already in use.
             logger.warning(
-                f'Component_id {comp2_id} not connected.  The pin {pin2_name} is already connected to something else.')
+                f'Component_id {comp2_id} not connected.  The pin {pin2_name} is already connected to something else.'
+            )
             return net_id_rtn
 
-        net_id_rtn = self.design.connect_pins(
-            self.id, pin_name_self, comp2_id, pin2_name)
+        net_id_rtn = self.design.connect_pins(self.id, pin_name_self, comp2_id,
+                                              pin2_name)
 
         return net_id_rtn
 
@@ -866,15 +884,16 @@ class QComponent():
 
 ##########################################
 # QGeometry
-    def add_qgeometry(self,
-                      kind: str,
-                      geometry: dict,
-                      subtract: bool = False,
-                      helper: bool = False,
-                      layer: Union[int, str] = 1,  # chip will be here
-                      chip: str = 'main',
-                      **kwargs
-                      ):
+
+    def add_qgeometry(
+            self,
+            kind: str,
+            geometry: dict,
+            subtract: bool = False,
+            helper: bool = False,
+            layer: Union[int, str] = 1,  # chip will be here
+            chip: str = 'main',
+            **kwargs):
         r"""Add QGeometry.
 
         Takes any additional options in options.
@@ -920,8 +939,14 @@ class QComponent():
         # When self.options is instantiated, the template_options are populated.
         # renderer_and_options = {**self.options, **kwargs}
 
-        self.design.qgeometry.add_qgeometry(kind, self.id, geometry, subtract=subtract,
-                                            helper=helper, layer=layer, chip=chip, **renderer_and_options)
+        self.design.qgeometry.add_qgeometry(kind,
+                                            self.id,
+                                            geometry,
+                                            subtract=subtract,
+                                            helper=helper,
+                                            layer=layer,
+                                            chip=chip,
+                                            **renderer_and_options)
 
     def _get_specific_table_values_from_renderers(self, kind: str) -> Dict:
         """Populate a dict to combine with options for the qcomponent.
@@ -940,7 +965,8 @@ class QComponent():
 
         # design.renderer_defaults_by_table[table_name][renderer_name][column_name]
         if kind in self.design.renderer_defaults_by_table:
-            for name_renderer, renderer_data in self.design.renderer_defaults_by_table[kind].items():
+            for name_renderer, renderer_data in self.design.renderer_defaults_by_table[
+                    kind].items():
                 if len(renderer_data) > 0:
                     for col_name, col_value in renderer_data.items():
                         render_col_name = f'{name_renderer}_{col_name}'
@@ -948,7 +974,7 @@ class QComponent():
 
         return all_renderers_key_value
 
-    @ classmethod
+    @classmethod
     def _get_table_values_from_renderers(cls, design: 'QDesign') -> Dict:
         """Populate a dict to combine with options for the qcomponent.
 
@@ -960,14 +986,14 @@ class QComponent():
             Dict: key is column names for tables, value is data for the column.
         """
         metadata_dict = cls._gather_all_children_metadata()
-        tables_list = design.get_list_of_tables_in_metadata(
-            metadata_dict)
+        tables_list = design.get_list_of_tables_in_metadata(metadata_dict)
 
         all_renderers_key_value = dict()
         # design.renderer_defaults_by_table[table_name][renderer_name][column_name]
         for table in tables_list:
             if table in design.renderer_defaults_by_table:
-                for name_renderer, renderer_data in design.renderer_defaults_by_table[table].items():
+                for name_renderer, renderer_data in design.renderer_defaults_by_table[
+                        table].items():
                     if len(renderer_data) > 0:
                         for col_name, col_value in renderer_data.items():
                             render_col_name = f'{name_renderer}_{col_name}'
@@ -975,6 +1001,7 @@ class QComponent():
         return all_renderers_key_value
 
 ######################################
+
     def __repr__(self, *args):
         b = '\033[95m\033[1m'
         b1 = '\033[94m\033[1m'
@@ -991,10 +1018,11 @@ class QComponent():
             f"{b}id:      {b1}{self.id}{e}\n"
         return text
 
+
 ############################################################################
 # Geometry handling of created qgeometry
 
-    @ property
+    @property
     def qgeometry_types(self) -> List[str]:
         """Get a list of the names of the element tables.
 
@@ -1016,8 +1044,10 @@ class QComponent():
             List[BaseGeometry]: Geometry diction or None if an error in the name of the element
             type (ie. table)
         """
-        if element_type == 'all' or self.design.qgeometry.check_element_type(element_type):
-            return self.design.qgeometry.get_component_geometry_dict(self.name, element_type)
+        if element_type == 'all' or self.design.qgeometry.check_element_type(
+                element_type):
+            return self.design.qgeometry.get_component_geometry_dict(
+                self.name, element_type)
 
     def qgeometry_list(self, element_type: str = 'all') -> List[BaseGeometry]:
         """
@@ -1032,10 +1062,12 @@ class QComponent():
             List[BaseGeometry]: Geometry list or None if an error in the name of the element type
             (ie. table)
         """
-        if element_type == 'all' or self.design.qgeometry.check_element_type(element_type):
-            return self.design.qgeometry.get_component_geometry_list(self.id, element_type)
+        if element_type == 'all' or self.design.qgeometry.check_element_type(
+                element_type):
+            return self.design.qgeometry.get_component_geometry_list(
+                self.id, element_type)
 
-    def qgeometry_table(self,  element_type: str) -> pd.DataFrame:
+    def qgeometry_table(self, element_type: str) -> pd.DataFrame:
         """
         Returns the entire element table for the component.
 
@@ -1046,7 +1078,8 @@ class QComponent():
             pd.DataFrame: Element table for the component or None if an error in the name of
             the element type (ie. table)
         """
-        if element_type == 'all' or self.design.qgeometry.check_element_type(element_type):
+        if element_type == 'all' or self.design.qgeometry.check_element_type(
+                element_type):
             return self.design.qgeometry.get_component(self.name, element_type)
 
     def qgeometry_bounds(self) -> Tuple:
@@ -1063,7 +1096,9 @@ class QComponent():
         bounds = self.design.qgeometry.get_component_bounds(self.name)
         return bounds
 
-    def qgeometry_plot(self, ax: 'matplotlib.axes.Axes' = None, plot_kw: dict = None) -> List:
+    def qgeometry_plot(self,
+                       ax: 'matplotlib.axes.Axes' = None,
+                       plot_kw: dict = None) -> List:
         """    Draw all the qgeometry of the component (polys and path etc.)
 
         Arguments:

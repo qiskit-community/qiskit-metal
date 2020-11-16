@@ -11,14 +11,12 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 """
 Plotting functions for shapely components using mpl.
 
 Created 2019
 @author: Zlatko Minev (IBM)
 """
-
 
 import descartes  # shapely plot
 import matplotlib as mpl
@@ -36,27 +34,26 @@ from ...components import is_component
 from ...draw import BaseGeometry
 from .mpl_interaction import figure_pz
 
-__all__ = ['_render_poly_zkm', 'render_poly', 'render', 'style_axis_simple', 'get_prop_cycle',
-           'style_axis_standard', 'figure_spawn', '_axis_set_watermark_img', 'clear_axis']
+__all__ = [
+    '_render_poly_zkm', 'render_poly', 'render', 'style_axis_simple',
+    'get_prop_cycle', 'style_axis_standard', 'figure_spawn',
+    '_axis_set_watermark_img', 'clear_axis'
+]
 
 ##########################################################################################
 # Plotting subroutines
 
 # Todo Move - default config
 style_config = Dict(
-    poly=dict(lw=1, ec='k', alpha=0.5) # fc='#6699cc',
+    poly=dict(lw=1, ec='k', alpha=0.5)  # fc='#6699cc',
     # Dict(
     #exterior = dict(lw=1, edgecolors='k', alpha=0.5),
     # interior = dict(facecolors='w', lw=1, edgecolors='grey'))
-
 )
 """style configuraiton"""
 
 
-def _render_poly_zkm(poly: Polygon,
-                     ax,
-                     kw=None,
-                     kw_hole=None):
+def _render_poly_zkm(poly: Polygon, ax, kw=None, kw_hole=None):
     '''
     Style and draw a shapely polygon using MPL.
 
@@ -82,9 +79,12 @@ def _render_poly_zkm(poly: Polygon,
         mpl_poly = mpl.patches.Polygon(coords)
         color = ax._get_lines.get_next_color()
         ax.add_collection(
-            mpl.collections.PatchCollection([mpl_poly],
-                                            **{**{'facecolor': color}, **kw})
-        )
+            mpl.collections.PatchCollection([mpl_poly], **{
+                **{
+                    'facecolor': color
+                },
+                **kw
+            }))
 
         # Interior (i.e., holes)
         polys = []
@@ -92,9 +92,7 @@ def _render_poly_zkm(poly: Polygon,
             coords = tuple(hole.coords)
             poly = mpl.patches.Polygon(coords)
             polys.append(poly)
-        ax.add_collection(
-            mpl.collections.PatchCollection(polys, **kw_hole)
-        )
+        ax.add_collection(mpl.collections.PatchCollection(polys, **kw_hole))
 
 
 def render_poly(poly: shapely.geometry.Polygon, ax: plt.Axes, kw=None):
@@ -112,17 +110,20 @@ def render_poly(poly: shapely.geometry.Polygon, ax: plt.Axes, kw=None):
     # TODO: maybe if done in batch we can speed this up?
     kw = kw or {}
     return ax.add_patch(
-        descartes.PolygonPatch(poly, **{**style_config.poly, **kw})
-    )
+        descartes.PolygonPatch(poly, **{
+            **style_config.poly,
+            **kw
+        }))
 
 
-def render(components,
-           ax=None,
-           kw=None,
-           # plot_format=True,
-           labels=None,
-           __depth=-1,     # how many sublists in we are
-           _iteration=0):  # how many components we have plotted
+def render(
+    components,
+    ax=None,
+    kw=None,
+    # plot_format=True,
+    labels=None,
+    __depth=-1,  # how many sublists in we are
+    _iteration=0):  # how many components we have plotted
     '''
     Main plotting function.
     Plots onto an axis.
@@ -156,8 +157,11 @@ def render(components,
     # Handle itterables
     if isinstance(components, dict):
         for _, objs in components.items():
-            _iteration = render(objs, ax=ax, kw=kw,
-                                labels=labels, __depth=__depth,
+            _iteration = render(objs,
+                                ax=ax,
+                                kw=kw,
+                                labels=labels,
+                                __depth=__depth,
                                 _iteration=_iteration)
             # plot_format=plot_format, , **kwargs)
         # if plot_format and (__depth == 0):
@@ -166,8 +170,11 @@ def render(components,
 
     elif isinstance(components, list):
         for objs in components:
-            _iteration = render(objs, ax=ax, kw=kw,
-                                labels=labels, __depth=__depth,
+            _iteration = render(objs,
+                                ax=ax,
+                                kw=kw,
+                                labels=labels,
+                                __depth=__depth,
                                 _iteration=_iteration)
             # plot_format=plot_format,, **kwargs)
         # if plot_format and (__depth == 0):
@@ -175,12 +182,13 @@ def render(components,
         return _iteration
 
     if not isinstance(components, BaseGeometry):  # obj is None
-        return _iteration+1
+        return _iteration + 1
 
     # We have now a single object to draw
     obj = components
 
-    if isinstance(obj, shapely.geometry.Polygon) or isinstance(obj, shapely.geometry.MultiPolygon):
+    if isinstance(obj, shapely.geometry.Polygon) or isinstance(
+            obj, shapely.geometry.MultiPolygon):
         render_poly(obj, ax=ax, kw=kw)  # , **kwargs)
 
     else:
@@ -198,7 +206,7 @@ def render(components,
     # if plot_format and (__depth == 0):
     #    style_axis_simple(ax, labels=labels)
 
-    return _iteration+1
+    return _iteration + 1
 
 
 '''
@@ -270,6 +278,7 @@ def get_prop_cycle():
         prop_cycler = cycler('color', clist)
     return prop_cycler
 
+
 #################################################################################
 # Top level plotting calls - PLOT FULL
 
@@ -335,8 +344,7 @@ def figure_spawn(fig_kw=None):
     '''
     if not fig_kw:
         fig_kw = {}
-    fig_draw = figure_pz(**{**dict(num=1),
-                            **fig_kw})
+    fig_draw = figure_pz(**{**dict(num=1), **fig_kw})
     fig_draw.clf()
 
     ax_draw = fig_draw.add_subplot(1, 1, 1)
@@ -372,7 +380,8 @@ def figure_spawn(fig_kw=None):
 
 #######################################################################
 
-def _axis_set_watermark_img(ax:plt.Axes, file:str, size : float = 0.25):
+
+def _axis_set_watermark_img(ax: plt.Axes, file: str, size: float = 0.25):
     """Burn the axis watermark into the image
 
     Args:
@@ -387,17 +396,22 @@ def _axis_set_watermark_img(ax:plt.Axes, file:str, size : float = 0.25):
 
     # window aspect
     b = ax.get_window_extent()
-    b = abs(b.height/b.width)
+    b = abs(b.height / b.width)
     # b = ax.get_tightbbox(ax.get_figure().canvas.get_renderer())
     # b = abs(b.height/b.width)
 
     # ALternative: fig.figimage
     # scale image: yscale = float(img.shape[1])/img.shape[0]
     # extent: (left, right, bottom, top)
-    kw = dict(interpolation='gaussian', alpha=0.05, resample=True, zorder = -200)
-    ax.imshow(img, extent=(1-size*b,1, 1-size, 1), transform=ax.transAxes, **kw)
+    kw = dict(interpolation='gaussian', alpha=0.05, resample=True, zorder=-200)
+    ax.imshow(img,
+              extent=(1 - size * b, 1, 1 - size, 1),
+              transform=ax.transAxes,
+              **kw)
+
 
 #######################################################################
+
 
 def clear_axis(ax: plt.Axes):
     """Clear all plotted objects on an axis including lines, patches, tests, tables,

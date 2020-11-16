@@ -11,7 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 '''
 Simply utility functions to improve QOL of QM developers and QM users
 
@@ -38,11 +37,13 @@ from qiskit_metal import logger
 from qiskit_metal.draw import Vector
 from numpy.linalg import norm
 
-__all__ = ['copy_update', 'dict_start_with', 'data_frame_empty_typed', 'clean_name',
-           'enable_warning_traceback', 'get_traceback', 'print_traceback_easy', 'log_error_easy',
-           'monkey_patch', 'can_write_to_path', 'can_write_to_path_with_warning',
-           'toggle_numbers', 'bad_fillet_idxs', 'compress_vertex_list',
-           'get_range_of_vertex_to_not_fillet']
+__all__ = [
+    'copy_update', 'dict_start_with', 'data_frame_empty_typed', 'clean_name',
+    'enable_warning_traceback', 'get_traceback', 'print_traceback_easy',
+    'log_error_easy', 'monkey_patch', 'can_write_to_path',
+    'can_write_to_path_with_warning', 'toggle_numbers', 'bad_fillet_idxs',
+    'compress_vertex_list', 'get_range_of_vertex_to_not_fillet'
+]
 
 ####################################################################################
 # Dictionary related
@@ -92,6 +93,7 @@ def dict_start_with(my_dict, start_with, as_=list):
         return [v for k, v in my_dict.items() if k.startswith(start_with)]
     elif as_ == dict:
         return {k: v for k, v in my_dict.items() if k.startswith(start_with)}
+
 
 # def display_options(*ops_names, options=None, find_dot_keys=True, do_display=True):
 #     '''
@@ -161,9 +163,9 @@ def clean_name(text: str):
     """
     return re.sub('\W|^(?=\d)', '_', text)
 
+
 ####################################################################################
 # Tracebacks
-
 
 _old_warn = None
 
@@ -183,6 +185,7 @@ def enable_warning_traceback():
         tb = traceback.extract_stack()
         _old_warn(*args, **kwargs)
         print("".join(traceback.format_list(tb)[:-1]))
+
     warnings.warn = warn
 
 
@@ -212,7 +215,10 @@ def print_traceback_easy(start=26):
     print('\n')
 
 
-def log_error_easy(logger: logging.Logger, pre_text='', post_text='', do_print=False):
+def log_error_easy(logger: logging.Logger,
+                   pre_text='',
+                   post_text='',
+                   do_print=False):
     """
     Print
 
@@ -248,11 +254,12 @@ def log_error_easy(logger: logging.Logger, pre_text='', post_text='', do_print=F
     """
     exc_type, exc_value, exc_tb = sys.exc_info()
     error = traceback.format_exception(exc_type, exc_value, exc_tb)
-    text = f'{pre_text}\n\n'+'\n'.join(error)+f'\n{post_text}'
+    text = f'{pre_text}\n\n' + '\n'.join(error) + f'\n{post_text}'
 
     logger.error(text)
     if do_print:
         print(text)
+
 
 #####################################################################################
 
@@ -332,6 +339,7 @@ def monkey_patch(self, func, func_name=None):
 #     vertex_of_bad = list(set(vertex_of_bad))
 #     return vertex_of_bad
 
+
 def toggle_numbers(numbers: list, totlength: int) -> list:
     """
     Given a list of integers called 'numbers', return the toggle of them from zero to totlength - 1.
@@ -358,7 +366,10 @@ def toggle_numbers(numbers: list, totlength: int) -> list:
     return complement
 
 
-def bad_fillet_idxs(coords: list, fradius: float, precision: int = 9, isclosed: bool = False) -> list:
+def bad_fillet_idxs(coords: list,
+                    fradius: float,
+                    precision: int = 9,
+                    isclosed: bool = False) -> list:
     """
     Get list of vertex indices in a linestring (isclosed = False) or polygon (isclosed = True) that cannot be filleted based on
      proximity to neighbors. By default, this list excludes the first and last vertices if the shape is a linestring.
@@ -375,24 +386,38 @@ def bad_fillet_idxs(coords: list, fradius: float, precision: int = 9, isclosed: 
     length = len(coords)
     get_dist = Vector.get_distance
     if isclosed:
-        return [i for i in range(length) if min(get_dist(coords[i - 1], coords[i], precision), get_dist(coords[i], coords[(i + 1) % length], precision)) < 2 * fradius]
+        return [
+            i for i in range(length)
+            if min(get_dist(coords[i - 1], coords[i], precision),
+                   get_dist(coords[i], coords[(i + 1) %
+                                              length], precision)) < 2 * fradius
+        ]
     if length < 3:
         return []
     if length == 3:
-        return [] if min(get_dist(coords[0], coords[1], precision), get_dist(coords[1], coords[2], precision)) >= fradius else [1]
-    if (get_dist(coords[0], coords[1], precision) < fradius) or (get_dist(coords[1], coords[2], precision) < 2 * fradius):
+        return [] if min(get_dist(coords[0], coords[1], precision),
+                         get_dist(coords[1], coords[2],
+                                  precision)) >= fradius else [1]
+    if (get_dist(coords[0], coords[1], precision) < fradius) or (get_dist(
+            coords[1], coords[2], precision) < 2 * fradius):
         badlist = [1]
     else:
         badlist = []
     for i in range(2, length - 2):
-        if min(get_dist(coords[i - 1], coords[i], precision), get_dist(coords[i], coords[i + 1], precision)) < 2 * fradius:
+        if min(get_dist(coords[i - 1], coords[i], precision),
+               get_dist(coords[i], coords[i + 1], precision)) < 2 * fradius:
             badlist.append(i)
-    if (get_dist(coords[length - 3], coords[length - 2], precision) < 2 * fradius) or (get_dist(coords[length - 2], coords[length - 1], precision) < fradius):
+    if (get_dist(coords[length - 3], coords[length - 2], precision) <
+            2 * fradius) or (get_dist(coords[length - 2], coords[length - 1],
+                                      precision) < fradius):
         badlist.append(length - 2)
     return badlist
 
 
-def get_range_of_vertex_to_not_fillet(coords: list, fradius: float, precision: int = 9, add_endpoints: bool = True) -> list:
+def get_range_of_vertex_to_not_fillet(coords: list,
+                                      fradius: float,
+                                      precision: int = 9,
+                                      add_endpoints: bool = True) -> list:
     """
     Provide a list of tuples for a list of integers that correspond to coords.
     Each tuple corresponds to a range of indexes within coords.  A range denotes vertexes that
@@ -478,7 +503,7 @@ def compress_vertex_list(individual_vertex: list) -> list:
                         start = item
                         end = item
 
-            if index == len_vertex-1:
+            if index == len_vertex - 1:
                 if size_of_range == 0:
                     reduced_idx.append((start, end))
                 else:
@@ -489,7 +514,7 @@ def compress_vertex_list(individual_vertex: list) -> list:
 
 
 #######################################################################################
-    # File checking
+# File checking
 
 
 def can_write_to_path_with_warning(file: str) -> int:

@@ -126,6 +126,7 @@ def slot_catch_error(*args, catch=Exception, on_exception_emit=None):
 
     @Slot(*args)
     def slot_decorator(func):
+
         @wraps(func)
         def wrapper(*args, **kwargs):  # pylint: disable=unused-argument
 

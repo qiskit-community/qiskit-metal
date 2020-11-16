@@ -26,6 +26,7 @@ from .renderer_gds_ui import Ui_MainWindow
 
 class RendererGDSWidget(QMainWindow):
     """Contains methods associated with GDS Renderer button."""
+
     def __init__(self, parent: 'QMainWindow', gui: 'MetalGUI'):
         """
         Get access to design, which has the components.
@@ -51,8 +52,7 @@ class RendererGDSWidget(QMainWindow):
 
         self.tree_model = RendererGDS_Model(self, gui, self.ui.treeView)
         self.ui.treeView.setModel(self.tree_model)
-        self.ui.treeView.setVerticalScrollMode(
-            QAbstractItemView.ScrollPerPixel)
+        self.ui.treeView.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
         self.ui.treeView.setHorizontalScrollMode(
             QAbstractItemView.ScrollPerPixel)
 

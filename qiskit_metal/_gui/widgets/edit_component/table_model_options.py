@@ -260,7 +260,9 @@ class QTableModel_Options(QAbstractTableModel):
                 # try:
                 # TODO: should retry and if error then reset the value
                 if 1:
-                    self.logger.info(f'Component options: Old value={old_val}; New value={value};')
+                    self.logger.info(
+                        f'Component options: Old value={old_val}; New value={value};'
+                    )
                     if isinstance(old_val, str):
                         data[key] = str(value)
                     else:

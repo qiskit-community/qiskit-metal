@@ -28,6 +28,7 @@ class PropertyTableWidget(QMainWindow):
 
     Extends the `QMainWindow` class
     """
+
     def __init__(self, parent, design=None, gui=None):
         """
         Args:
@@ -92,7 +93,6 @@ class PropertyTableWidget(QMainWindow):
         """
         Delete all rows corresponding to selected cells.
         """
-        rowidxlst = list(set(elt.row()
-                             for elt in self.table.selectedIndexes()))
+        rowidxlst = list(set(elt.row() for elt in self.table.selectedIndexes()))
         for idx in sorted(rowidxlst, reverse=True):
             self.model.removeRows(idx, 1, QModelIndex())

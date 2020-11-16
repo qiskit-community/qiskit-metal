@@ -95,8 +95,7 @@ class QRenderer():
 
         # Add element extensions
         # see docstring for QRenderer.element_extensions
-        QGeometryTables.add_renderer_extension(cls.name,
-                                               cls.element_extensions)
+        QGeometryTables.add_renderer_extension(cls.name, cls.element_extensions)
 
         # Moved to init for each renderer.
         # Add component extensions
@@ -388,8 +387,8 @@ class QRenderer():
                 return [], 2  # Invalid
         if len(unique_qcomponents) == len(self.design.components):
             return [], 1  # Everything selected
-        return [self.design.name_to_id[elt]
-                for elt in unique_qcomponents], 0  # Subset selected
+        return [self.design.name_to_id[elt] for elt in unique_qcomponents
+               ], 0  # Subset selected
 
     def _initate_renderer(self):
         '''

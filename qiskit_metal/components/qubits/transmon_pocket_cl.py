@@ -11,7 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 '''
 @date: 2019
 @author: Zlatko K Minev
@@ -79,10 +78,7 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
           -180 to +180 from the 'west edge', will round to the nearest 90.
         * cl_off_center (string):  Distance from the center axis the qubit pocket is referenced to
     """
-    component_metadata = Dict(
-        short_name='Q',
-        _qgeometry_table_poly='True'
-    )
+    component_metadata = Dict(short_name='Q', _qgeometry_table_poly='True')
     """Component metadata"""
 
     default_options = Dict(
@@ -92,10 +88,12 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
         # the length of the charge line 'arm' coupling the the qubit pocket.
         cl_length='20um',
         # Measured from the base of the 90 degree bend
-        cl_ground_gap='6um',  # how much ground between the charge line and the qubit pocket
+        cl_ground_gap=
+        '6um',  # how much ground between the charge line and the qubit pocket
         # -180 to +180 from the 'left edge', will round to the nearest 90.
         cl_pocket_edge='0',
-        cl_off_center='100um',  # distance from the center axis the qubit pocket is built on
+        cl_off_center=
+        '100um',  # distance from the center axis the qubit pocket is built on
     )
     """Default drawing options"""
 
@@ -109,7 +107,6 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
 
 #####################################################################
 
-
     def make_charge_line(self):
         """Creates the charge line if the user has charge line option to TRUE
         """
@@ -120,26 +117,28 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
         p = self.p
 
         cl_arm = draw.box(0, 0, -p.cl_width, p.cl_length)
-        cl_cpw = draw.box(0, 0, -8*p.cl_width, p.cl_width)
+        cl_cpw = draw.box(0, 0, -8 * p.cl_width, p.cl_width)
         cl_metal = draw.cascaded_union([cl_arm, cl_cpw])
 
         cl_etcher = draw.buffer(cl_metal, p.cl_gap)
 
-        port_line = draw.LineString(
-            [(-8*p.cl_width, 0), (-8*p.cl_width, p.cl_width)])
+        port_line = draw.LineString([(-8 * p.cl_width, 0),
+                                     (-8 * p.cl_width, p.cl_width)])
 
         polys = [cl_metal, cl_etcher, port_line]
 
         # Move the charge line to the side user requested
         cl_rotate = 0
         if (abs(p.cl_pocket_edge) > 135) or (abs(p.cl_pocket_edge) < 45):
-            polys = draw.translate(polys, -(p.pocket_width/2 + p.cl_ground_gap + p.cl_gap),
-                                   -(p.pad_gap + p.pad_height)/2)
+            polys = draw.translate(
+                polys, -(p.pocket_width / 2 + p.cl_ground_gap + p.cl_gap),
+                -(p.pad_gap + p.pad_height) / 2)
             if (abs(p.cl_pocket_edge) > 135):
                 p.cl_rotate = 180
         else:
             polys = draw.translate(
-                polys, -(p.pocket_height/2 + p.cl_groundGap + p.cl_gap), -(p.pad_width)/2)
+                polys, -(p.pocket_height / 2 + p.cl_groundGap + p.cl_gap),
+                -(p.pad_width) / 2)
             cl_rotate = 90
             if (p.cl_pocket_edge < 0):
                 cl_rotate = -90

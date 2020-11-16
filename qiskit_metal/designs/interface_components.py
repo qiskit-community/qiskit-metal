@@ -11,7 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 """
 Module containing Design interface components.
 
@@ -76,8 +75,7 @@ class Components:
         Returns:
             List[int]: Corresponding ints that user can use as keys into design._components
         """
-        component_ints = [self.find_id(
-            item) for item in component_names]
+        component_ints = [self.find_id(item) for item in component_names]
         return component_ints
 
     def find_id(self, name: str, quiet: bool = False) -> int:
@@ -106,7 +104,8 @@ class Components:
             # https://github.com/jupyter/notebook/issues/2014
             if not quiet:
                 self.logger.warning(
-                    f'In Components.find_id(), the name={name} is not used in design._components')
+                    f'In Components.find_id(), the name={name} is not used in design._components'
+                )
             return 0
         else:
             raise AttributeError(name)
@@ -133,7 +132,9 @@ class Components:
     #     else:
     #         return 0
 
-    def __getitem__(self, name: str, quiet: bool = False) -> Union[None, 'QComponent']:
+    def __getitem__(self,
+                    name: str,
+                    quiet: bool = False) -> Union[None, 'QComponent']:
         """Get the QComponent based on string name vs the unique id of QComponent.
 
         Args:
@@ -156,7 +157,8 @@ class Components:
             if not is_ipython_magic(name):
                 if not quiet:
                     self.logger.warning(
-                        f'In Components.__getitem__, name={name} is not registered in the design class. Return None for QComponent.')
+                        f'In Components.__getitem__, name={name} is not registered in the design class. Return None for QComponent.'
+                    )
                 return None
             else:
                 raise AttributeError(name)
@@ -175,17 +177,20 @@ class Components:
         """
         if not isinstance(value, QComponent):
             self.logger.warning(
-                f'The value is NOT a QComponent.  Nothing has been assigned to name={name}')
+                f'The value is NOT a QComponent.  Nothing has been assigned to name={name}'
+            )
             return
 
         component_id = self.find_id(name)
         if component_id:
             self.logger.debug(
-                f'The name={name} already exists in design._components.  A component_id={component_id} will be replaced.')
+                f'The name={name} already exists in design._components.  A component_id={component_id} will be replaced.'
+            )
             self.components[component_id] = deepcopy(value)
         else:
             self.logger.warning(
-                f'Usualy new components are added to design during init.  The name={name} is not in design._components, and added as a new component.')
+                f'Usualy new components are added to design during init.  The name={name} is not in design._components, and added as a new component.'
+            )
             value.name = name
             value._add_to_design()
 
@@ -257,8 +262,7 @@ class Components:
         Returns:
             list: List of all the names used in design._components.
         """
-        all_names = [(value.name)
-                     for (key, value) in self.components.items()]
+        all_names = [(value.name) for (key, value) in self.components.items()]
         return all_names
 
         #     def __dir__(self):
@@ -281,8 +285,9 @@ class Components:
         Returns:
             list: List of (key, value) pairs.
         """
-        all_items = [(value.name, value)
-                     for (key, value) in self.components.items()]
+        all_items = [
+            (value.name, value) for (key, value) in self.components.items()
+        ]
         return all_items
 
     def values(self) -> list:

@@ -11,19 +11,19 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 """
 Parsed dynamic attributes.
 
 @author: Zlatko Minev
 @date: 2020
 """
-import  pprint
+import pprint
 from typing import List
 from typing import TYPE_CHECKING
 #from ...toolbox_python.utility_functions import log_error_easy
 if TYPE_CHECKING:
     from .base import QComponent
+
 
 def is_ipython_magic(check_attribute: str) -> bool:
     """Ignore the following checks by jupyter """
@@ -45,6 +45,7 @@ def is_ipython_magic(check_attribute: str) -> bool:
         '__call__',
     }
 
+
 class ParsedDynamicAttributes_Component():
     """
     Provides a parsing view of the component options.
@@ -60,7 +61,6 @@ class ParsedDynamicAttributes_Component():
 
         >> `float(1e7)`
     """
-
     """
     Ask Zlatko for explanation.
     Special method names:
@@ -89,7 +89,7 @@ class ParsedDynamicAttributes_Component():
         # self.__d__ = component.options
         self.__keylist__ = key_list or []  # lis tot get current value
 
-        self.__parse__ = component.design.parse_value         # function
+        self.__parse__ = component.design.parse_value  # function
 
     def __dir__(self):
         # For autocompletion
@@ -106,7 +106,8 @@ class ParsedDynamicAttributes_Component():
         return len(self.__getdict__())
 
     def __getdict__(self) -> dict:
-        return get_nested_dict_item(self.__component__.options, self.__keylist__)
+        return get_nested_dict_item(self.__component__.options,
+                                    self.__keylist__)
 
     def __iter__(self):
         return self.__getdict__().__iter__()
@@ -116,7 +117,7 @@ class ParsedDynamicAttributes_Component():
         Produces tuples consisting of keys and respective parsed
         values for iterating over a dictionary.
         """
-        for key in self: # calls __iter__
+        for key in self:  # calls __iter__
             yield (key, self.__getitem__(key))
 
     def __getattr__(self, name: str):
@@ -161,9 +162,10 @@ class ParsedDynamicAttributes_Component():
                 # log_error_easy(self.__component__.logger, post_text=
                 xx = self.__keylist__
                 xx = ".".join(xx) + "." + str(name) if len(xx) > 0 else name
-                self.__component__.logger.error('\nWarning: User tried to access a variable in the parse options'
-                                                f' that is not there!\n Component name = `{self.__component__.name}`\n'
-                                                f' Option name    = `{xx}`')
+                self.__component__.logger.error(
+                    '\nWarning: User tried to access a variable in the parse options'
+                    f' that is not there!\n Component name = `{self.__component__.name}`\n'
+                    f' Option name    = `{xx}`')
                 return None
             else:
                 # IPython checking methods
@@ -175,7 +177,8 @@ class ParsedDynamicAttributes_Component():
             #print(f'val = {val}')
             if isinstance(val, dict):
                 #print(f'  -> Going to create a new {self.__keylist__ + [name]}')
-                return ParsedDynamicAttributes_Component(self.__component__, key_list=self.__keylist__ + [name])
+                return ParsedDynamicAttributes_Component(
+                    self.__component__, key_list=self.__keylist__ + [name])
             else:
                 return self.__parse__(val)
 
@@ -267,8 +270,8 @@ def get_nested_dict_item(dic: dict, key_list: list, level=0):
     if not key_list:  # get the root
         return dic
 
-    if level < len(key_list)-1:
-        return get_nested_dict_item(dic[key_list[level]], key_list, level+1)
+    if level < len(key_list) - 1:
+        return get_nested_dict_item(dic[key_list[level]], key_list, level + 1)
     else:
         return dic[key_list[level]]
 

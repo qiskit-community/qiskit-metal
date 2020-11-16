@@ -29,6 +29,7 @@ class RightClickView(QTableView):
     Access:
         gui.variables_window.ui.tableView
     """
+
     def __init__(self, parent):
         """
         Provide access to GUI QMainWindow via parent.

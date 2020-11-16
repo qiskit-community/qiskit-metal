@@ -389,7 +389,7 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
 
     def get_definitions_under_cursor(self,
                                      offset=0
-                                     ) -> List['jedi.api.classes.Definition']:
+                                    ) -> List['jedi.api.classes.Definition']:
         """Get jedi
 
         Args:

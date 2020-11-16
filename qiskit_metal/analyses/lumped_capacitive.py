@@ -11,7 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 """
 Handles the capacitive simulation of a transmon pocket model.
 
@@ -43,17 +42,18 @@ import pandas as pd
 from pint import UnitRegistry
 import scipy.optimize as opt
 
-
-__all__ = ['chargeline_T1', 'extract_transmon_coupled_Noscillator', 'levels_vs_ng_real_units',
-           'load_q3d_capacitance_matrix', 'df_reorder_matrix_basis', 'chi', 'cos_to_mega_and_delta',
-           'df_cmat_style_print', 'get_C_and_Ic', 'move_index_to', 'readin_q3d_matrix',
-           'transmon_props']
-
+__all__ = [
+    'chargeline_T1', 'extract_transmon_coupled_Noscillator',
+    'levels_vs_ng_real_units', 'load_q3d_capacitance_matrix',
+    'df_reorder_matrix_basis', 'chi', 'cos_to_mega_and_delta',
+    'df_cmat_style_print', 'get_C_and_Ic', 'move_index_to', 'readin_q3d_matrix',
+    'transmon_props'
+]
 
 # define constants
 h = 6.62606957e-34
 hbar = 1.0545718E-34
-phinot = 2.067*1E-15
+phinot = 2.067 * 1E-15
 e = 1.60217657e-19
 
 
@@ -71,12 +71,12 @@ def transmon_props(Ic, Cq):
         tuple: [LJ, EJ, Zqp, EC, wq, wq0, eps1] -- [INductange ]
     """
 
-    LJ = (phinot/2/np.pi)*(Ic**-1)
-    EJ = (phinot/2/np.pi)**2 / LJ / hbar
-    Zqp = np.sqrt(LJ/Cq)
-    EC = e**2/2/Cq/hbar
-    wq0 = 1/np.sqrt(LJ*Cq)
-    wq = 1/np.sqrt(LJ*Cq)-EC
+    LJ = (phinot / 2 / np.pi) * (Ic**-1)
+    EJ = (phinot / 2 / np.pi)**2 / LJ / hbar
+    Zqp = np.sqrt(LJ / Cq)
+    EC = e**2 / 2 / Cq / hbar
+    wq0 = 1 / np.sqrt(LJ * Cq)
+    wq = 1 / np.sqrt(LJ * Cq) - EC
 
     # charge dispersion
     eps1 = EC * 2**9 * (2/np.sqrt(np.pi)) * \
@@ -102,16 +102,23 @@ def chi(g, wr, w01, w12):
     """
 
     # shift of the zero state
-    chibus_0 = -2*g**2*w01/(w01**2-wr**2)
+    chibus_0 = -2 * g**2 * w01 / (w01**2 - wr**2)
 
     # shift of the 1 state
-    chibus_1 = g**2*(1/(w01-wr)-2/(w12-wr)+1/(w01+wr)-2/(w12+wr))
+    chibus_1 = g**2 * (1 / (w01 - wr) - 2 / (w12 - wr) + 1 / (w01 + wr) - 2 /
+                       (w12 + wr))
 
-    return (chibus_1-chibus_0)/2
+    return (chibus_1 - chibus_0) / 2
 
 
-def extract_transmon_coupled_Noscillator(capMatrix, Ic, CJ, N, fb, fr, res_L4_corr=None,
-            g_scale=1):
+def extract_transmon_coupled_Noscillator(capMatrix,
+                                         Ic,
+                                         CJ,
+                                         N,
+                                         fb,
+                                         fr,
+                                         res_L4_corr=None,
+                                         g_scale=1):
     """
     Primary analysis function called by the user. Uses a (Maxwell) capacitance
     matrix generated from Q3D, and some additional values, to determine
@@ -151,23 +158,23 @@ def extract_transmon_coupled_Noscillator(capMatrix, Ic, CJ, N, fb, fr, res_L4_co
     if N < 0:
         raise ValueError('N must positive')
 
-    if len(capMatrix) != (N+3):
+    if len(capMatrix) != (N + 3):
         raise ValueError('Capacitance matrix is not the right size')
 
     wr = np.zeros(N)
     for ii in range(N):
         if ii == 0:
-            wr[ii] = 2*np.pi*fr*1e9
+            wr[ii] = 2 * np.pi * fr * 1e9
         else:
             if isinstance(fb, (int, float)):
-                wr[ii] = 2*np.pi*fb*1e9
+                wr[ii] = 2 * np.pi * fb * 1e9
             else:
-                wr[ii] = 2*np.pi*fb[ii-1]*1e9
+                wr[ii] = 2 * np.pi * fb[ii - 1] * 1e9
 
     # Initial values
     Zbus = 50
-    Cr = 0.5*np.pi/(wr*Zbus)
-    Lr = 1/wr**2/Cr
+    Cr = 0.5 * np.pi / (wr * Zbus)
+    Lr = 1 / wr**2 / Cr
 
     # L/4 resonators have an effective capacitance that is
     # half the L/2 case (and likewise the Lr is twice) at the
@@ -179,20 +186,22 @@ def extract_transmon_coupled_Noscillator(capMatrix, Ic, CJ, N, fb, fr, res_L4_co
                 Cr[i] /= 2.0
                 Lr[i] *= 2.0
 
-    ground_index = max([0, N-1])
-    qubit_index = [ground_index+1, ground_index+2]
+    ground_index = max([0, N - 1])
+    qubit_index = [ground_index + 1, ground_index + 2]
     bus_index = np.zeros(N, dtype=int)
     for ii in range(N):
         if ii == 0:
-            bus_index[ii] = len(capMatrix)-1
+            bus_index[ii] = len(capMatrix) - 1
         else:
-            bus_index[ii] = ii-1
+            bus_index[ii] = ii - 1
 
     print(qubit_index, bus_index)
 
     # Cg list of qubit pads to ground
-    Cg = [-capMatrix.iat[qubit_index[0], ground_index], -
-          capMatrix.iat[qubit_index[1], ground_index]]
+    Cg = [
+        -capMatrix.iat[qubit_index[0], ground_index],
+        -capMatrix.iat[qubit_index[1], ground_index]
+    ]
 
     # Cs qubit pads to each other
     Cs = -capMatrix.iat[qubit_index[0], qubit_index[1]]
@@ -213,11 +222,11 @@ def extract_transmon_coupled_Noscillator(capMatrix, Ic, CJ, N, fb, fr, res_L4_co
 
     # sum of capacitances from each pad to ground
     # this assumes the bus couplers are at "ground"
-    C1S = Cg[0]+np.sum(Cbus[0, ])
-    C2S = Cg[1]+np.sum(Cbus[1, ])
+    C1S = Cg[0] + np.sum(Cbus[0,])
+    C2S = Cg[1] + np.sum(Cbus[1,])
 
     # total capacitance between pads
-    tCSq = Cs + C1S*C2S/(C1S+C2S)
+    tCSq = Cs + C1S * C2S / (C1S + C2S)
 
     # total capacitance of each pad to ground?
     # Note the + in the squared term below !!!
@@ -227,7 +236,7 @@ def extract_transmon_coupled_Noscillator(capMatrix, Ic, CJ, N, fb, fr, res_L4_co
             (C1S+C2S) + np.sum(Cbus[:, ii]) + np.sum(Cbusbus[ii, :])
 
     # qubit to coupling pad capacitance
-    tCqbus = (C2S*Cbus[0, ]-Cbus[1, ]*C1S)/(C1S+C2S)
+    tCqbus = (C2S * Cbus[0,] - Cbus[1,] * C1S) / (C1S + C2S)
 
     # coupling pad to coupling pad capacitance
     tCqbusbus = np.zeros([N, N])
@@ -237,7 +246,7 @@ def extract_transmon_coupled_Noscillator(capMatrix, Ic, CJ, N, fb, fr, res_L4_co
                 (Cbus[0, ii]+Cbus[1, ii])*(Cbus[0, jj]+Cbus[1, jj])/(C1S+C2S)
 
     # voltage division ratio
-    bbus = (C2S*Cbus[0, ]-Cbus[1, ]*C1S)/((C1S+C2S)*Cs+C1S*C2S)
+    bbus = (C2S * Cbus[0,] - Cbus[1,] * C1S) / ((C1S + C2S) * Cs + C1S * C2S)
 
     # total qubit capacitance (including junction capacitance)
     Cq = tCSq + CJ
@@ -246,28 +255,30 @@ def extract_transmon_coupled_Noscillator(capMatrix, Ic, CJ, N, fb, fr, res_L4_co
     LJ, EJ, Zqp, EC, wq, wq0, eps1 = transmon_props(Ic, Cq)
 
     # get numerical properties
-    fq, alpha, disp, tphi_ms = levels_vs_ng_real_units(Cq/1e-15, Ic/1e-9, N=51)
-    wq = 2*np.pi*fq*1e9
+    fq, alpha, disp, tphi_ms = levels_vs_ng_real_units(Cq / 1e-15,
+                                                       Ic / 1e-9,
+                                                       N=51)
+    wq = 2 * np.pi * fq * 1e9
 
     # effective impedances of the coupling pads (?)
-    Zbus = np.sqrt(Lr/tCSbus)
+    Zbus = np.sqrt(Lr / tCSbus)
 
     # matrix of the qubit and couplings with a single ground node
-#    Cm = np.zeros([N+1,N+1])
+    #    Cm = np.zeros([N+1,N+1])
 
-#    Cm = np.array([[Cq, -tCqr1, -tCqr2],
-#        [-tCqr1, tCSr1, -tCr1r2],
-#        [-tCqr2, -tCr1r2, tCSr2]])
-#
-#    Cminv = np.linalg.inv(Cm)
-#
-#    #readout g
-#    gr0 = 0.5*Cminv[0,1]/np.sqrt(Zqp*Zr1p)
-#    print('gr0 = %f [MHz]'%(gr0/2/np.pi/1e6))
+    #    Cm = np.array([[Cq, -tCqr1, -tCqr2],
+    #        [-tCqr1, tCSr1, -tCr1r2],
+    #        [-tCqr2, -tCr1r2, tCSr2]])
+    #
+    #    Cminv = np.linalg.inv(Cm)
+    #
+    #    #readout g
+    #    gr0 = 0.5*Cminv[0,1]/np.sqrt(Zqp*Zr1p)
+    #    print('gr0 = %f [MHz]'%(gr0/2/np.pi/1e6))
 
     # g's from the qubit
-    gqbus = 0.5*wr*bbus*np.sqrt(Zbus/Zqp)*g_scale
-    gbus_in_MHz = gqbus/1e6/2/np.pi
+    gqbus = 0.5 * wr * bbus * np.sqrt(Zbus / Zqp) * g_scale
+    gbus_in_MHz = gqbus / 1e6 / 2 / np.pi
 
     #gbus = bbus*wr*np.sqrt(Zbus)*e*(EJ/8/EC)**(1/4)/np.sqrt(hbar)
 
@@ -275,7 +286,8 @@ def extract_transmon_coupled_Noscillator(capMatrix, Ic, CJ, N, fb, fr, res_L4_co
     gbusbus = np.zeros([N, N])
     for ii in range(N):
         for jj in range(N):
-            gbusbus[ii, jj] = (0.01)*tCqbusbus[ii, jj]/(tCSbus[ii]*tCSbus[jj])
+            gbusbus[ii,
+                    jj] = (0.01) * tCqbusbus[ii, jj] / (tCSbus[ii] * tCSbus[jj])
 
     # guesses for the Q's
     Qreadout = 1e4
@@ -288,30 +300,30 @@ def extract_transmon_coupled_Noscillator(capMatrix, Ic, CJ, N, fb, fr, res_L4_co
             Qbus[ii] = Qcouplingbus
 
     # loss tangent
-    kbus = wr/Qbus
+    kbus = wr / Qbus
 
     # chi's
     #d = -EC
-    d = alpha*2*np.pi*1e6
-    Chi_in_MHz = 2*chi(gqbus, wr, wq, d+wq) /2/np.pi/1e6
+    d = alpha * 2 * np.pi * 1e6
+    Chi_in_MHz = 2 * chi(gqbus, wr, wq, d + wq) / 2 / np.pi / 1e6
 
     # purcell due to each coupling bus
-    T1bus = (wr**2-wq**2)**2/(4*kbus*gqbus**2*wq**2)
+    T1bus = (wr**2 - wq**2)**2 / (4 * kbus * gqbus**2 * wq**2)
 
     # total T1
     if N > 0:
-        T1 = 1/(np.sum(1/T1bus))
+        T1 = 1 / (np.sum(1 / T1bus))
     else:
         T1 = 100
 
     ham_dict = {}
-    ham_dict['fQ'] = wq/2/np.pi/1E9
-    ham_dict['EC'] = EC/2/np.pi/1E6
-    ham_dict['EJ'] = EJ/2/np.pi/1E9
+    ham_dict['fQ'] = wq / 2 / np.pi / 1E9
+    ham_dict['EC'] = EC / 2 / np.pi / 1E6
+    ham_dict['EJ'] = EJ / 2 / np.pi / 1E9
     # correction to the anharmonicity (from eq 52 of solgun et al.)
     #ham_dict['alpha'] = ((wq0/wq)**2*ham_dict['EC'])
     ham_dict['alpha'] = alpha
-    ham_dict['dispersion'] = disp/1e3
+    ham_dict['dispersion'] = disp / 1e3
     ham_dict['gbus'] = gbus_in_MHz
     ham_dict['chi_in_MHz'] = Chi_in_MHz
 
@@ -323,24 +335,24 @@ def extract_transmon_coupled_Noscillator(capMatrix, Ic, CJ, N, fb, fr, res_L4_co
     print('EJ %f [GHz]' % ham_dict['EJ'])
     print('alpha %f [MHz]' % ham_dict['alpha'])
     print('dispersion %f [KHz]' % ham_dict['dispersion'])
-    print('Lq %f [nH]' % (Cq/1e-9))
-    print('Cq %f [fF]' % (Cq/1e-15))
-    print('T1 %f [us]' % (T1/(1e-6)))
+    print('Lq %f [nH]' % (Cq / 1e-9))
+    print('Cq %f [fF]' % (Cq / 1e-15))
+    print('T1 %f [us]' % (T1 / (1e-6)))
     print('')
 
     print('**Coupling Properties**')
     for ii in range(N):
-        print('\ntCqbus%d %f [fF]' % (ii+1, tCqbus[ii]/(1e-15)))
-        print('gbus%d_in_MHz %f [MHz]' % (ii+1, ham_dict['gbus'][ii]))
-        print('χ_bus%d %f [MHz]' % (ii+1, Chi_in_MHz[ii]))
-        print('1/T1bus%d %f [Hz]' % (ii+1, 1/T1bus[ii]/(2*np.pi)))
-        print('T1bus%d %f [us]' % (ii+1, T1bus[ii]/(1e-6)))
+        print('\ntCqbus%d %f [fF]' % (ii + 1, tCqbus[ii] / (1e-15)))
+        print('gbus%d_in_MHz %f [MHz]' % (ii + 1, ham_dict['gbus'][ii]))
+        print('χ_bus%d %f [MHz]' % (ii + 1, Chi_in_MHz[ii]))
+        print('1/T1bus%d %f [Hz]' % (ii + 1, 1 / T1bus[ii] / (2 * np.pi)))
+        print('T1bus%d %f [us]' % (ii + 1, T1bus[ii] / (1e-6)))
 
     print('Bus-Bus Couplings')
     for ii in range(N):
-        for jj in range(ii+1, N):
-            print('gbus%d_%d %f [MHz]' %
-                  (ii+1, jj+1, gbusbus[ii, jj]/(2*np.pi*1e6)))
+        for jj in range(ii + 1, N):
+            print('gbus%d_%d %f [MHz]' % (ii + 1, jj + 1, gbusbus[ii, jj] /
+                                          (2 * np.pi * 1e6)))
 
     return ham_dict
 
@@ -364,33 +376,33 @@ def levels_vs_ng_real_units(Cq, IC, N=301, do_disp=0, do_plots=0):
     Raises:
         ValueError: If the matrix is not Hermitian
     """
-    C = Cq*1e-15
-    IC = IC*1e-9
-    Ec = e**2/2/C
+    C = Cq * 1e-15
+    IC = IC * 1e-9
+    Ec = e**2 / 2 / C
 
     nmax = 40
-    dim = 2*nmax+1
+    dim = 2 * nmax + 1
     nmat = np.zeros([dim, dim])
     V = nmat
     charge = np.linspace(-1., 1., N)
 
     # KE
     for ii in range(dim):
-        nmat[ii, ii] = ii-nmax
+        nmat[ii, ii] = ii - nmax
 
     # PE
-    V = np.diag(-0.5*np.ones([dim-1]), 1)
+    V = np.diag(-0.5 * np.ones([dim - 1]), 1)
     V = (V + np.transpose(np.conj(V)))
 
-    varphi = hbar/2/e
-    EJ = IC*varphi
+    varphi = hbar / 2 / e
+    EJ = IC * varphi
 
     elvls = np.zeros([dim, N])
 
     for iindex in range(N):
         ng = charge[iindex]
 
-        H = 4*Ec*(nmat-ng*np.eye(dim))**2 + EJ*V
+        H = 4 * Ec * (nmat - ng * np.eye(dim))**2 + EJ * V
 
         if (not np.array_equal(H, np.transpose(np.conj(H)))):
             raise ValueError('Matrix is not Hermitian')
@@ -399,7 +411,7 @@ def levels_vs_ng_real_units(Cq, IC, N=301, do_disp=0, do_plots=0):
         sortIX = np.argsort(d)
         sorted_d = d[sortIX]
 
-        elvls[:, iindex] = (sorted_d-sorted_d[0])
+        elvls[:, iindex] = (sorted_d - sorted_d[0])
 
     if do_plots:
 
@@ -407,41 +419,54 @@ def levels_vs_ng_real_units(Cq, IC, N=301, do_disp=0, do_plots=0):
 
         plt.figure()
         plt.subplot(1, 2, 1)
-        plt.plot(charge, elvls[0, ]/h/1e9, 'k', charge, elvls[1, ]/h/1e9, 'b',
-                 charge, elvls[2, ]/h/1e9, 'r', charge, elvls[3, ]/h/1e9, 'g', LineWidth=2)
+        plt.plot(charge,
+                 elvls[0,] / h / 1e9,
+                 'k',
+                 charge,
+                 elvls[1,] / h / 1e9,
+                 'b',
+                 charge,
+                 elvls[2,] / h / 1e9,
+                 'r',
+                 charge,
+                 elvls[3,] / h / 1e9,
+                 'g',
+                 LineWidth=2)
         plt.xlabel('Gate charge, n_g [2e]')
         plt.ylabel('Energy, E_n [GHz]')
         plt.subplot(1, 2, 2)
-        plt.plot(charge, (-elvls[1, :]/h+elvls[1, 0]/h)/1e3, 'k')
+        plt.plot(charge, (-elvls[1, :] / h + elvls[1, 0] / h) / 1e3, 'k')
         plt.xlabel('Gate charge, n_g [2e]')
         plt.ylabel('Energy [kHz], ')
         plt.show()
 
         plt.figure(2)
         plt.subplot(1, 2, 1)
-        plt.plot(charge, 1000*(elvls[2, ]/h/1e9-elvls[0, ]/h/1e9-2 *
-                               elvls[1, ]/h/1e9-elvls[0, ]/h/1e9), charge, -charge*0-1000*Ec/h/1e9)
+        plt.plot(
+            charge, 1000 * (elvls[2,] / h / 1e9 - elvls[0,] / h / 1e9 -
+                            2 * elvls[1,] / h / 1e9 - elvls[0,] / h / 1e9),
+            charge, -charge * 0 - 1000 * Ec / h / 1e9)
         plt.xlabel('Gate charge, n_g [2e]')
         plt.ylabel('delta [MHZ] green theory, blue numerics ')
         plt.subplot(1, 2, 2)
-        plt.plot(charge, elvls[1, ]/h/1e9-elvls[0, ]/h/1e9,
-                 charge, charge*0+(np.sqrt(8*EJ*Ec)-Ec)/h/1e9)
+        plt.plot(charge, elvls[1,] / h / 1e9 - elvls[0,] / h / 1e9, charge,
+                 charge * 0 + (np.sqrt(8 * EJ * Ec) - Ec) / h / 1e9)
         plt.xlabel('Gate charge, n_g [2e]')
         plt.ylabel('F01 [GHZ] green theory, blue numerics ')
         plt.show()
 
-    fqubitGHz = np.mean(elvls[1, ]/h/1e9)
-    anharMHz = np.mean(
-        1000*(elvls[2, ]/h/1e9-elvls[0, ]/h/1e9-2*elvls[1, ]/h/1e9-elvls[0, ]/h/1e9))
+    fqubitGHz = np.mean(elvls[1,] / h / 1e9)
+    anharMHz = np.mean(1000 * (elvls[2,] / h / 1e9 - elvls[0,] / h / 1e9 -
+                               2 * elvls[1,] / h / 1e9 - elvls[0,] / h / 1e9))
 
-    disp = np.max(-elvls[1, ]/h+elvls[1, 0]/h)
-    tphi_ms = 2/(2*np.pi*disp*np.pi*1e-4*1e-3)
+    disp = np.max(-elvls[1,] / h + elvls[1, 0] / h)
+    tphi_ms = 2 / (2 * np.pi * disp * np.pi * 1e-4 * 1e-3)
 
     if do_disp:
         print('Mean Frequency %f [GHz]' % fqubitGHz)
         print('Anharmonicity %f [MHz]' % anharMHz)
-        print('EC %f [GHz]' % (Ec/h/1e9))
-        print('Charge Dispersion %f [kHz]' % (disp/1e3))
+        print('EC %f [GHz]' % (Ec / h / 1e9))
+        print('Charge Dispersion %f [kHz]' % (disp / 1e3))
         print('Dephasing Time %f [ms]' % tphi_ms)
 
     return fqubitGHz, anharMHz, disp, tphi_ms
@@ -463,16 +488,19 @@ def get_C_and_Ic(Cin_est, Icin_est, f01, f02on2):
         specified frequency and anharmonicity
     """
 
-    xrr = opt.minimize(lambda x: cos_to_mega_and_delta(x[0], x[1], f01, f02on2), [
-                       Cin_est, Icin_est], tol=1e-4, options={'maxiter': 100, 'disp': True})
+    xrr = opt.minimize(lambda x: cos_to_mega_and_delta(x[0], x[1], f01, f02on2),
+                       [Cin_est, Icin_est],
+                       tol=1e-4,
+                       options={
+                           'maxiter': 100,
+                           'disp': True
+                       })
 
     return xrr.x
 
 
-
 ########################################################################
 ### Utility functions for reporting and loading - Zlatko
-
 
 
 # Cost function for calculating C and IC
@@ -492,9 +520,12 @@ def cos_to_mega_and_delta(Cin, ICin, f01, f02on2):
     Returns:
         float: calculated value
     """
-    fqubitGHz, anharMHz, disp, tphi_ms = levels_vs_ng_real_units(Cin, ICin, N=51)
+    fqubitGHz, anharMHz, disp, tphi_ms = levels_vs_ng_real_units(Cin,
+                                                                 ICin,
+                                                                 N=51)
 
-    return ((fqubitGHz-f01)**2 + (fqubitGHz+anharMHz/2./1e3-f02on2)**2)**0.5
+    return ((fqubitGHz - f01)**2 +
+            (fqubitGHz + anharMHz / 2. / 1e3 - f02on2)**2)**0.5
 
 
 def chargeline_T1(Ccharge, Cq, f01):
@@ -510,7 +541,7 @@ def chargeline_T1(Ccharge, Cq, f01):
         float: calculated chargeline T1
     """
 
-    return Cq/(Ccharge**2*50.*(2*np.pi*f01)**2)
+    return Cq / (Ccharge**2 * 50. * (2 * np.pi * f01)**2)
 
 
 def readin_q3d_matrix(path):
@@ -564,11 +595,15 @@ def readin_q3d_matrix(path):
 
     s2 = s1[1].split('Conductance Matrix')
 
-    df_cmat = pd.read_csv(io.StringIO(
-        s2[0].strip()), delim_whitespace=True, skipinitialspace=True, index_col=0)
+    df_cmat = pd.read_csv(io.StringIO(s2[0].strip()),
+                          delim_whitespace=True,
+                          skipinitialspace=True,
+                          index_col=0)
     if len(s2) > 1:
-        df_cond = pd.read_csv(io.StringIO(
-            s2[1].strip()), delim_whitespace=True, skipinitialspace=True, index_col=0)
+        df_cond = pd.read_csv(io.StringIO(s2[1].strip()),
+                              delim_whitespace=True,
+                              skipinitialspace=True,
+                              index_col=0)
     else:
         df_cond = None
 
@@ -600,8 +635,9 @@ def load_q3d_capacitance_matrix(path, user_units='fF', _disp=True):
 
     # Report
     if _disp:
-        print("Imported capacitance matrix with UNITS: [%s] now converted to USER UNITS:[%s] from file:\n\t%s" % (
-            Cunits, user_units, path))
+        print(
+            "Imported capacitance matrix with UNITS: [%s] now converted to USER UNITS:[%s] from file:\n\t%s"
+            % (Cunits, user_units, path))
         df_cmat_style_print(df_cmat)
 
     return df_cmat, user_units, design_variation, df_cond
@@ -619,6 +655,7 @@ def df_cmat_style_print(df_cmat):
 
 ########################################################################
 ### Utility functions - Zlatko
+
 
 def move_index_to(i_from, i_to, len_):
     """
