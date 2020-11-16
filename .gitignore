@@ -104,7 +104,6 @@ ENV/
 # temporary
 shot.png
 shot.jpg
-*.gds
 .vs
 
 # mypy
