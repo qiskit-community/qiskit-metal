@@ -18,7 +18,6 @@
 #pylint: disable-msg=too-many-public-methods
 #pylint: disable-msg=broad-except
 #pylint: disable-msg=invalid-name
-
 """
 Qiskit Metal unit tests analyses functionality.
 
@@ -38,6 +37,7 @@ from qiskit_metal.components.qubits.transmon_pocket import TransmonPocket
 
 #pylint: disable-msg=line-too-long
 from qiskit_metal.components.interconnects.resonator_rectangle_spiral import ResonatorRectangleSpiral
+
 
 class TestDesign(unittest.TestCase):
     """
@@ -92,7 +92,8 @@ class TestDesign(unittest.TestCase):
         try:
             DesignPlanar(metadata={}, overwrite_enabled=True)
         except Exception:
-            self.fail("DesignPlanar(metadata={}, overwrite_enabled=True) failed")
+            self.fail(
+                "DesignPlanar(metadata={}, overwrite_enabled=True) failed")
 
     def test_design_instantiate_design_components(self):
         """
@@ -120,8 +121,8 @@ class TestDesign(unittest.TestCase):
         design = DesignPlanar(metadata={})
         data = design.metadata
 
-        design.update_metadata({'new-key':'new-value'})
-        design.update_metadata({'time_created':'07/23/2020, 17:00:00'})
+        design.update_metadata({'new-key': 'new-value'})
+        design.update_metadata({'time_created': '07/23/2020, 17:00:00'})
         data = design.metadata
 
         self.assertEqual(len(data), 4)
@@ -136,9 +137,16 @@ class TestDesign(unittest.TestCase):
         """
         design = DesignPlanar(metadata={})
 
-        main_expected = {'center_x': '0.0mm', 'center_y': '0.0mm', 'center_z': '0.0mm',
-                         'size_x': '9mm', 'size_y': '6mm', 'size_z': '-750um',
-                         'sample_holder_top': '890um', 'sample_holder_bottom': '1650um'}
+        main_expected = {
+            'center_x': '0.0mm',
+            'center_y': '0.0mm',
+            'center_z': '0.0mm',
+            'size_x': '9mm',
+            'size_y': '6mm',
+            'size_z': '-750um',
+            'sample_holder_top': '890um',
+            'sample_holder_bottom': '1650um'
+        }
 
         self.assertEqual(design.get_chip_size(), main_expected)
         self.assertEqual(design.get_chip_size('main'), main_expected)
@@ -285,9 +293,11 @@ class TestDesign(unittest.TestCase):
         components = Components(design)
 
         self.assertListEqual(components.get_list_ints(['my_name-1']), [1])
-        self.assertListEqual(components.get_list_ints(['my_name-1', 'my_name-2']), [1, 2])
-        self.assertListEqual(components.get_list_ints(['my_name-1', 'my_name-2', 'nope']),
-                             [1, 2, 0])
+        self.assertListEqual(
+            components.get_list_ints(['my_name-1', 'my_name-2']), [1, 2])
+        self.assertListEqual(
+            components.get_list_ints(['my_name-1', 'my_name-2', 'nope']),
+            [1, 2, 0])
 
     def test_design_interface_components_find_id(self):
         """
@@ -315,9 +325,11 @@ class TestDesign(unittest.TestCase):
         qnet.add_pins_to_table(1, 'my_name-1', 2, 'my_name-2')
         df = qnet.net_info
 
-        data = {'net_id':[1, 1],
-                'component_id':[1, 2],
-                'pin_name':['my_name-1', 'my_name-2']}
+        data = {
+            'net_id': [1, 1],
+            'component_id': [1, 2],
+            'pin_name': ['my_name-1', 'my_name-2']
+        }
         df_expected = pd.DataFrame(data, index=[0, 1])
 
         self.assertEqual(len(df), len(df_expected))
@@ -358,9 +370,11 @@ class TestDesign(unittest.TestCase):
         qnet.delete_all_pins_for_component(2)
         df = qnet.net_info
 
-        data = {'net_id':[2, 2],
-                'component_id':[3, 4],
-                'pin_name':['my_name-3', 'my_name-4']}
+        data = {
+            'net_id': [2, 2],
+            'component_id': [3, 4],
+            'pin_name': ['my_name-3', 'my_name-4']
+        }
         df_expected = pd.DataFrame(data, index=[2, 3])
 
         self.assertEqual(len(df), len(df_expected))
@@ -383,14 +397,18 @@ class TestDesign(unittest.TestCase):
         net_id_1 = qnet.add_pins_to_table(1, 'my_name-1', 2, 'my_name-2')
         net_id_2 = qnet.add_pins_to_table(3, 'my_name-3', 4, 'my_name-4')
 
-        data = {'net_id':[1, 1],
-                'component_id':[1, 2],
-                'pin_name':['my_name-1', 'my_name-2']}
+        data = {
+            'net_id': [1, 1],
+            'component_id': [1, 2],
+            'pin_name': ['my_name-1', 'my_name-2']
+        }
         df_expected_1 = pd.DataFrame(data, index=[0, 1])
 
-        data = {'net_id':[2, 2],
-                'component_id':[3, 4],
-                'pin_name':['my_name-3', 'my_name-4']}
+        data = {
+            'net_id': [2, 2],
+            'component_id': [3, 4],
+            'pin_name': ['my_name-3', 'my_name-4']
+        }
         df_expected_2 = pd.DataFrame(data, index=[2, 3])
 
         df = qnet.get_components_and_pins_for_netid(net_id_1)
@@ -436,9 +454,11 @@ class TestDesign(unittest.TestCase):
         q_2 = TransmonPocket(design, 'Q2')
         q_3 = TransmonPocket(design, 'Q3')
 
-        design.copy_multiple_qcomponents([q_1, q_2, q_3],
-                                         ['q1_copy', 'q2_copy', 'q3_copy'],
-                                         [dict(pos_y='-1.0mm'), dict(pos_y='-2.0mm'), dict(pos_y='-3.0mm')])
+        design.copy_multiple_qcomponents(
+            [q_1, q_2, q_3], ['q1_copy', 'q2_copy', 'q3_copy'],
+            [dict(pos_y='-1.0mm'),
+             dict(pos_y='-2.0mm'),
+             dict(pos_y='-3.0mm')])
 
         q1_copy = design._components[4]
         q2_copy = design._components[5]

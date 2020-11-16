@@ -11,7 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 """
 @auhtor: Zlatko Minev
 @date: 2019
@@ -27,15 +26,19 @@ from ...toolbox_metal.parsing import parse_value
 
 __all__ = ['parse_value_hfss', 'unparse_units']
 
+
 def parse_value_hfss(*args):
     '''
     Parse to HFSS units (from user units)
     '''
     return __parse_units_hfss__(*args)
 
+
 #TODO: function to itterate and convert user units to
 
-def to_ansys_units(value): # can make more efifiecnt if we assume this is already a float
+
+def to_ansys_units(
+        value):  # can make more efifiecnt if we assume this is already a float
     """Converve given value to ansys units
 
     Args:

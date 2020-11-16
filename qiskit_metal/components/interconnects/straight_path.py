@@ -11,7 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 '''
 @date: Aug-2020
 @author: Zlatko Minev, Dennis Wang, Marco Facchini
@@ -26,9 +25,7 @@ class RouteStraight(QRoute):
     Draw a straight Route connecting two pins.
     """
 
-    component_metadata = Dict(
-        short_name='cpw'
-        )
+    component_metadata = Dict(short_name='cpw')
     """Component metadata"""
 
     def make(self):

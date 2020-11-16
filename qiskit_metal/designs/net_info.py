@@ -11,7 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 """
 Module containing Net information storage.
 
@@ -64,7 +63,8 @@ class QNet():
         """
         return self._net_info
 
-    def add_pins_to_table(self, comp1_id: int, pin1_name: str, comp2_id: int, pin2_name: str) -> int:
+    def add_pins_to_table(self, comp1_id: int, pin1_name: str, comp2_id: int,
+                          pin2_name: str) -> int:
         """Add two entries into the _net_info table. If either component/pin is already in net_info,
         the connection will NOT be added to the net_info.
 
@@ -77,34 +77,41 @@ class QNet():
         Returns:
             int: 0 if not added to list, otherwise the netid
         """
-        net_id = 0   # Zero mean false, the pin was not added to _net_info
+        net_id = 0  # Zero mean false, the pin was not added to _net_info
 
         if not isinstance(comp1_id, int):
             self.logger.warning(
-                f'Expected an int, but have {comp1_id}. The pins are were not entered to the net_info table.')
+                f'Expected an int, but have {comp1_id}. The pins are were not entered to the net_info table.'
+            )
             return net_id
         if not isinstance(comp2_id, int):
             self.logger.warning(
-                f'Expected an int, but have {comp2_id}. The pins are were not entered to the net_info table.')
+                f'Expected an int, but have {comp2_id}. The pins are were not entered to the net_info table.'
+            )
             return net_id
         if not isinstance(pin1_name, str):
             self.logger.warning(
-                f'Expected a string, but have {pin1_name}. The pins are were not entered to the net_info table.')
+                f'Expected a string, but have {pin1_name}. The pins are were not entered to the net_info table.'
+            )
             return net_id
         if not isinstance(pin2_name, str):
             self.logger.warning(
-                f'Expected a string, but have {pin2_name}. The pins are were not entered to the net_info table.')
+                f'Expected a string, but have {pin2_name}. The pins are were not entered to the net_info table.'
+            )
             return net_id
 
         # Confirm the component-pin combonation is NOT in _net_info, before adding them.
-        for (netID, component_id, pin_name) in self._net_info.itertuples(index=False):
+        for (netID, component_id,
+             pin_name) in self._net_info.itertuples(index=False):
             if ((component_id == comp1_id) and (pin_name == pin1_name)):
                 self.logger.warning(
-                    f'Component: {comp1_id} and pin: {pin1_name} are already in net_info with net_id {netID}')
+                    f'Component: {comp1_id} and pin: {pin1_name} are already in net_info with net_id {netID}'
+                )
                 return net_id
             if ((component_id == comp2_id) and (pin_name == pin2_name)):
                 self.logger.warning(
-                    f'Component: {comp2_id} and pin: {pin2_name} are already in net_info with net_id {netID}')
+                    f'Component: {comp2_id} and pin: {pin2_name} are already in net_info with net_id {netID}'
+                )
                 return net_id
 
         net_id = self._get_new_net_id()
@@ -128,7 +135,8 @@ class QNet():
         """
 
         self._net_info.drop(
-            self._net_info.index[self._net_info['net_id'] == net_id_to_remove], inplace=True)
+            self._net_info.index[self._net_info['net_id'] == net_id_to_remove],
+            inplace=True)
         return
 
     def delete_all_pins_for_component(self, component_id_to_remove: int) -> set:
@@ -143,14 +151,16 @@ class QNet():
         """
         all_net_id_deleted = set()
 
-        for (netID, component_id, pin_name) in self._net_info.itertuples(index=False):
+        for (netID, component_id,
+             pin_name) in self._net_info.itertuples(index=False):
             if (component_id == component_id_to_remove):
                 all_net_id_deleted.add(netID)
                 self.delete_net_id(netID)
 
         return all_net_id_deleted
 
-    def get_components_and_pins_for_netid(self, net_id_search: int) -> pd.core.frame.DataFrame:
+    def get_components_and_pins_for_netid(
+            self, net_id_search: int) -> pd.core.frame.DataFrame:
         """Search with a net_id to get component id and pin name.
 
         Arguments:

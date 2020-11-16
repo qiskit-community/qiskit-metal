@@ -11,8 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
-
 '''
 @date: 2020/08/12
 @author: John Blair
@@ -20,7 +18,6 @@
 
 #  This a launch structure used on BlueJayV2, used for wire bonding
 #  There is no CPW tee attached to this p# TODO create image of structure
-
 
 # Imports required for drawing
 
@@ -30,6 +27,7 @@ from qiskit_metal.toolbox_python.attr_dict import Dict
 from qiskit_metal.components.base.base import QComponent
 
 # Define class and options for the launch geometry
+
 
 class LaunchpadWirebond(QComponent):
     """
@@ -88,9 +86,8 @@ class LaunchpadWirebond(QComponent):
         leadin_length='65um',
         pos_x='100um',
         pos_y='100um',
-        orientation='0' #90 for 90 degree turn
+        orientation='0'  #90 for 90 degree turn
     )
-
     """Default drawing options"""
 
     def make(self):
@@ -100,26 +97,30 @@ class LaunchpadWirebond(QComponent):
         #########################################################
 
         # Geometry of main launch structure
-        launch_pad = draw.Polygon([(0, p.cpw_width/2), (-.122, .035+p.cpw_width/2),
-                                   (-.202, .035+p.cpw_width/2), (-.202, -.045+p.cpw_width/2),
-                                   (-.122, -.045+p.cpw_width/2), (0, -p.cpw_width/2),
-                                   (p.leadin_length, -p.cpw_width/2),
-                                   (p.leadin_length, +p.cpw_width/2), (0, p.cpw_width/2)])
+        launch_pad = draw.Polygon([(0, p.cpw_width / 2),
+                                   (-.122, .035 + p.cpw_width / 2),
+                                   (-.202, .035 + p.cpw_width / 2),
+                                   (-.202, -.045 + p.cpw_width / 2),
+                                   (-.122, -.045 + p.cpw_width / 2),
+                                   (0, -p.cpw_width / 2),
+                                   (p.leadin_length, -p.cpw_width / 2),
+                                   (p.leadin_length, +p.cpw_width / 2),
+                                   (0, p.cpw_width / 2)])
 
         # Geometry pocket
-        pocket = draw.Polygon([(0, p.cpw_width/2+p.cpw_gap),
-                               (-.122, .087+p.cpw_width/2+p.cpw_gap),
-                               (-.25, .087+p.cpw_width/2+p.cpw_gap),
-                               (-.25, -.109+p.cpw_width/2+p.cpw_gap),
-                               (-.122, -.109+p.cpw_width/2+p.cpw_gap),
-                               (0, -p.cpw_width/2-p.cpw_gap),
-                               (p.leadin_length, -p.cpw_width/2-p.cpw_gap),
-                               (p.leadin_length, +p.cpw_width/2+p.cpw_gap),
-                               (0, p.cpw_width/2+p.cpw_gap)])
+        pocket = draw.Polygon([(0, p.cpw_width / 2 + p.cpw_gap),
+                               (-.122, .087 + p.cpw_width / 2 + p.cpw_gap),
+                               (-.25, .087 + p.cpw_width / 2 + p.cpw_gap),
+                               (-.25, -.109 + p.cpw_width / 2 + p.cpw_gap),
+                               (-.122, -.109 + p.cpw_width / 2 + p.cpw_gap),
+                               (0, -p.cpw_width / 2 - p.cpw_gap),
+                               (p.leadin_length, -p.cpw_width / 2 - p.cpw_gap),
+                               (p.leadin_length, +p.cpw_width / 2 + p.cpw_gap),
+                               (0, p.cpw_width / 2 + p.cpw_gap)])
 
         # These variables are used to graphically locate the pin locations
-        main_pin_line = draw.LineString([(p.leadin_length, p.cpw_width/2),
-                                         (p.leadin_length, -p.cpw_width/2)])
+        main_pin_line = draw.LineString([(p.leadin_length, p.cpw_width / 2),
+                                         (p.leadin_length, -p.cpw_width / 2)])
 
         # Create polygon object list
         polys1 = [main_pin_line, launch_pad, pocket]
@@ -134,7 +135,10 @@ class LaunchpadWirebond(QComponent):
         self.add_qgeometry('poly', dict(launch_pad=launch_pad), layer=p.layer)
 
         # Subtracts out ground plane on the layer its on
-        self.add_qgeometry('poly', dict(pocket=pocket), subtract=True, layer=p.layer)
+        self.add_qgeometry('poly',
+                           dict(pocket=pocket),
+                           subtract=True,
+                           layer=p.layer)
 
         # Generates the pins
         self.add_pin('a', main_pin_line.coords, p.cpw_width)

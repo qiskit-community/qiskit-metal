@@ -97,6 +97,7 @@ __all__ = ['figure_pz', 'MplInteraction', 'PanAndZoom']
 
 class MplInteraction(object):
     """Base class for class providing interaction to a matplotlib Figure."""
+
     def __init__(self, figure):
         """Initializer
 
@@ -175,6 +176,7 @@ class ZoomOnWheel(MplInteraction):
 
     Supports subplots, twin Axes and log scales.
     """
+
     def __init__(self, figure=None, scale_factor=1.1):
         """
         Args:
@@ -271,6 +273,7 @@ class PanAndZoom(ZoomOnWheel):
 
     This class extends the `ZoomOnWheel` class
     """
+
     def __init__(self, figure=None, scale_factor=1.1):
         """
         Args:
@@ -286,7 +289,7 @@ class PanAndZoom(ZoomOnWheel):
         self._axes = None  # To store x and y axes concerned by interaction
         self._event = None  # To store reference event during interaction
 
-        self.options = Dict(dict(report_point_position=True, ))
+        self.options = Dict(dict(report_point_position=True,))
         self.logger = None
         self._statusbar_label = None
 
@@ -503,8 +506,8 @@ class PanAndZoom(ZoomOnWheel):
             self._patch.remove()
             del self._patch
 
-            if (abs(event.x - self._event.x) < 3
-                    or abs(event.y - self._event.y) < 3):
+            if (abs(event.x - self._event.x) < 3 or
+                    abs(event.y - self._event.y) < 3):
                 return  # No zoom when points are too close
 
             x_axes, y_axes = self._axes

@@ -45,6 +45,7 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
     Access:
         table = gui.ui.tableComponents
     """
+
     def __init__(self, parent: QtWidgets.QWidget):
         """
         Args:
@@ -232,9 +233,9 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         Returns:
             List[str]: List of components that user highlighted.
         """
+
         def get_name(row):
-            return self.model().data(self.model().index(row,
-                                                        0))  # get the name
+            return self.model().data(self.model().index(row, 0))  # get the name
 
         selected_names = [get_name(row) for row in rows]
         return selected_names

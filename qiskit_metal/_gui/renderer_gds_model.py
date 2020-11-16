@@ -31,6 +31,7 @@ class RendererGDS_Model(QTreeModel_Base):
     Args:
         QTreeModel_Base (QAbstractItemModel): Base class for nested dicts
     """
+
     def __init__(self, parent: 'ParentWidget', gui: 'MetalGUI',
                  view: QTreeView):
         """

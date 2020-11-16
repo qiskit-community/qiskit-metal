@@ -64,6 +64,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
     Args:
         QMainWindow (QMainWindow): Main window
     """
+
     def __init__(self):
         super().__init__()
         self.gds_gui = None  # type: RendererGDSWidget
@@ -189,8 +190,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         if filename:
             text, okPressed = QInputDialog.getText(
                 self, "Name your QComponent class",
-                "Name your QComponent class:", QLineEdit.Normal,
-                "MyQComponent")
+                "Name your QComponent class:", QLineEdit.Normal, "MyQComponent")
             if okPressed and text != '':
                 text_inst, okPressed = QInputDialog.getText(
                     self, "Give a name to your instance of the class",
@@ -274,6 +274,7 @@ class MetalGUI(QMainWindowBaseHandler):
         Arguments:
             enabled (bool): True to enable, False to disable the design widgets (Default: True).
         """
+
         def setEnabled(parent, widgets):
             for widgetname in widgets:
                 if hasattr(parent, widgetname):
@@ -358,8 +359,7 @@ class MetalGUI(QMainWindowBaseHandler):
         self.main_window.tabifyDockWidget(self.ui.dockConnectors,
                                           self.ui.dockVariables)
         self.ui.dockDesign.raise_()
-        self.main_window.resizeDocks([self.ui.dockDesign], [350],
-                                     Qt.Horizontal)
+        self.main_window.resizeDocks([self.ui.dockDesign], [350], Qt.Horizontal)
 
         # Log
         self.ui.dockLog.parent().resizeDocks([self.ui.dockLog], [120],

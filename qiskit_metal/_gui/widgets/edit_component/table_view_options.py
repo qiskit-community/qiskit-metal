@@ -34,6 +34,7 @@ class QTableView_Options(QTableView, QWidget_PlaceholderText):
 
     This class inhertis the `QTableView` and `QWidget_PlaceholderText` classes.
     """
+
     def __init__(self, parent: QtWidgets.QWidget):
         """
         Args:

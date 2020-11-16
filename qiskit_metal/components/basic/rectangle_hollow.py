@@ -22,24 +22,20 @@ class RectangleHollow(QComponent):
     Inherits QComponent class
     """
 
-    default_options = Dict(
-        width='500um',
-        height='300um',
-        pos_x='0um',
-        pos_y='0um',
-        rotation='0',
-        subtract='False',
-        helper='False',
-        chip='main',
-        layer='1',
-        inner=dict(
-            width='250um',
-            height='100um',
-            offset_x='40um',
-            offset_y='-20um',
-            rotation='15'
-        )
-    )
+    default_options = Dict(width='500um',
+                           height='300um',
+                           pos_x='0um',
+                           pos_y='0um',
+                           rotation='0',
+                           subtract='False',
+                           helper='False',
+                           chip='main',
+                           layer='1',
+                           inner=dict(width='250um',
+                                      height='100um',
+                                      offset_x='40um',
+                                      offset_y='-20um',
+                                      rotation='15'))
     """Default drawing options"""
 
     def make(self):
@@ -54,11 +50,15 @@ class RectangleHollow(QComponent):
         # create the geometry
         rect = draw.rectangle(p.width, p.height, p.pos_x, p.pos_y)
         rec1 = draw.rectangle(p.inner.width, p.inner.height,
-                              p.pos_x+p.inner.offset_x, p.pos_y+p.inner.offset_y)
+                              p.pos_x + p.inner.offset_x,
+                              p.pos_y + p.inner.offset_y)
         rec1 = draw.rotate(rec1, p.inner.rotation)
         rect = draw.subtract(rect, rec1)
         rect = draw.rotate(rect, p.rotation)
 
         # add qgeometry
-        self.add_qgeometry('poly', {'rect': rect}, subtract=p.subtract,
-                           helper=p.helper, layer=p.layer, chip=p.chip)
+        self.add_qgeometry('poly', {'rect': rect},
+                           subtract=p.subtract,
+                           helper=p.helper,
+                           layer=p.layer,
+                           chip=p.chip)

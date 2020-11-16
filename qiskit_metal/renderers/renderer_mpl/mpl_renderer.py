@@ -11,7 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 """
 @auhtor: Zlatko Minev
 @date: 2019
@@ -54,9 +53,7 @@ if TYPE_CHECKING:
     from ..._gui.widgets.plot_widget.plot_window import QMainWindowPlot
     from .mpl_canvas import PlotCanvas
 
-
 __all__ = ['QMplRenderer']
-
 
 to_poly_patch = np.vectorize(PolygonPatch)
 
@@ -73,7 +70,8 @@ class QMplRenderer():
         self = gui.canvas.metal_renderer
     """
 
-    def __init__(self, canvas: 'PlotCanvas', design: QDesign, logger: logging.Logger):
+    def __init__(self, canvas: 'PlotCanvas', design: QDesign,
+                 logger: logging.Logger):
         """
         Args:
             canvas (PlotCanvas): the canvas
@@ -85,9 +83,7 @@ class QMplRenderer():
         self.canvas = canvas
         self.ax = None
         self.design = design
-        self.options = Dict(
-            resolution='16',
-        )
+        self.options = Dict(resolution='16',)
 
         # Filter view options
         self.hidden_layers = set()
@@ -95,8 +91,10 @@ class QMplRenderer():
         # Set of component ids which are integers.
         self._hidden_components = set()
 
-        self.colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728',
-                       '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf']
+        self.colors = [
+            '#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b',
+            '#e377c2', '#7f7f7f', '#bcbd22', '#17becf'
+        ]
 
         self.set_design(design)
 
@@ -191,8 +189,7 @@ class QMplRenderer():
 
         return ~mask  # not
 
-    def _render_poly_array(self, ax: Axes, poly_array: np.array,
-                           mpl_kw: dict):
+    def _render_poly_array(self, ax: Axes, poly_array: np.array, mpl_kw: dict):
         """rneder the poly array
 
         Args:
@@ -213,7 +210,8 @@ class QMplRenderer():
     styles = {
         'path': {
             'base': dict(linewidth=2, alpha=0.5),
-            'subtracted': dict(),  # linestyle='--', edgecolors='k', color='gray'),
+            'subtracted':
+                dict(),  # linestyle='--', edgecolors='k', color='gray'),
             'non-subtracted': dict()
         },
         'poly': {
@@ -224,7 +222,11 @@ class QMplRenderer():
     }
     """Styles"""
 
-    def get_style(self, element_type: str, subtracted=False, layer=None, extra=None):
+    def get_style(self,
+                  element_type: str,
+                  subtracted=False,
+                  layer=None,
+                  extra=None):
         """Get teh style
 
         Args:
@@ -241,9 +243,11 @@ class QMplRenderer():
 
         key = 'subtracted' if subtracted else 'non-subtracted'
 
-        kw = {**self.styles[element_type].get('base', {}),
-              **self.styles[element_type].get(key, {}),
-              **extra}
+        kw = {
+            **self.styles[element_type].get('base', {}),
+            **self.styles[element_type].get(key, {}),
+            **extra
+        }
 
         # TODO: maybe pop keys that are invalid for line etc.
         # we could have a validation flag to validate for specific poly / path
@@ -263,7 +267,7 @@ class QMplRenderer():
             # subtracted
             mask = table['subtract'] == True
             render_func = getattr(self, f'render_{element_type}')
-            render_func(table[mask], ax,  subtracted=True)
+            render_func(table[mask], ax, subtracted=True)
 
             # non-subtracted
             table1 = table[~mask]
@@ -274,12 +278,20 @@ class QMplRenderer():
             render_func = getattr(self, f'render_{element_type}')
             render_func(table1, ax, subtracted=False)
 
-    def render_junction(self, table: pd.DataFrame, ax: Axes, subtracted: bool = False, extra_kw: dict = None):
+    def render_junction(self,
+                        table: pd.DataFrame,
+                        ax: Axes,
+                        subtracted: bool = False,
+                        extra_kw: dict = None):
         """For Now, do nothing.  TODO:render junction tables.
         """
         pass
 
-    def render_poly(self, table: pd.DataFrame, ax: Axes, subtracted: bool = False, extra_kw: dict = None):
+    def render_poly(self,
+                    table: pd.DataFrame,
+                    ax: Axes,
+                    subtracted: bool = False,
+                    extra_kw: dict = None):
         """
         Render a table of poly geometry.
 
@@ -323,16 +335,18 @@ class QMplRenderer():
         newpath = np.array([path[0]])
 
         # Get list of vertices that can't be filleted
-        no_fillet = bad_fillet_idxs(path, row["fillet"], self.design.template_options.PRECISION)
+        no_fillet = bad_fillet_idxs(path, row["fillet"],
+                                    self.design.template_options.PRECISION)
 
         # Iterate through every three-vertex corner
-        for (i, (start, corner, end)) in enumerate(zip(path, path[1:], path[2:])):
-            if i+1 in no_fillet: # don't fillet this corner
+        for (i, (start, corner, end)) in enumerate(zip(path, path[1:],
+                                                       path[2:])):
+            if i + 1 in no_fillet:  # don't fillet this corner
                 newpath = np.concatenate((newpath, np.array([corner])))
             else:
-                fillet = self._calc_fillet(
-                    np.array(start), np.array(corner), np.array(end), row["fillet"], int(self.options['resolution'])
-                )
+                fillet = self._calc_fillet(np.array(start), np.array(corner),
+                                           np.array(end), row["fillet"],
+                                           int(self.options['resolution']))
                 if fillet is not False:
                     newpath = np.concatenate((newpath, fillet))
                 else:
@@ -340,8 +354,12 @@ class QMplRenderer():
         newpath = np.concatenate((newpath, np.array([end])))
         return LineString(newpath)
 
-
-    def _calc_fillet(self, vertex_start, vertex_corner, vertex_end, radius, points=16):
+    def _calc_fillet(self,
+                     vertex_start,
+                     vertex_corner,
+                     vertex_end,
+                     radius,
+                     points=16):
         """
         Returns the filleted path based on the start, corner, and end vertices and the
         fillet radius.
@@ -354,25 +372,17 @@ class QMplRenderer():
             points (int): Number of points to draw in the fillet corner.
         """
         if np.array_equal(vertex_start, vertex_corner) or np.array_equal(
-            vertex_end, vertex_corner
-        ):
+                vertex_end, vertex_corner):
             return False
 
-        fillet_start = (
-            radius
-            / np.linalg.norm(vertex_start - vertex_corner)
-            * (vertex_start - vertex_corner)
-            + vertex_corner
-        )
+        fillet_start = (radius / np.linalg.norm(vertex_start - vertex_corner) *
+                        (vertex_start - vertex_corner) + vertex_corner)
         path = np.array([fillet_start])
         # Calculate the angle of the corner, which is not necessarily 90 degrees
         end_angle = np.arccos(
-            np.dot(vertex_start - vertex_corner, vertex_end - vertex_corner)
-            / (
-                np.linalg.norm(vertex_start - vertex_corner)
-                * np.linalg.norm(vertex_end - vertex_corner)
-            )
-        )
+            np.dot(vertex_start - vertex_corner, vertex_end - vertex_corner) /
+            (np.linalg.norm(vertex_start - vertex_corner) *
+             np.linalg.norm(vertex_end - vertex_corner)))
         if end_angle == 0 or end_angle == np.pi:
             return False
         # Determine direction so we know which way to fillet
@@ -381,12 +391,11 @@ class QMplRenderer():
             np.argmax(abs(vertex_start - vertex_corner)),
             1 - np.argmax(abs(vertex_start - vertex_corner)),
         ]
-        sign = np.array(
-            [
-                np.argmax([vertex_start[direction[0]], vertex_corner[direction[0]]]),
-                np.argmax([vertex_corner[direction[1]], vertex_end[direction[1]]]),
-            ]
-        )
+        sign = np.array([
+            np.argmax([vertex_start[direction[0]],
+                       vertex_corner[direction[0]]]),
+            np.argmax([vertex_corner[direction[1]], vertex_end[direction[1]]]),
+        ])
         if direction[0] == 1 and sign[0] != sign[1]:
             sign = 1 - sign
         sign = sign * 2 - 1
@@ -394,22 +403,20 @@ class QMplRenderer():
         # Populate the fillet corner, skipping the start point since it's already added
         for theta in np.arange(0, end_angle, end_angle / points)[1:]:
             diff = [np.sin(theta) * radius, radius - np.cos(theta) * radius]
-            path = np.concatenate(
-                (
-                    path,
-                    np.array(
-                        [
-                            [
-                                fillet_start[0] + sign[0] * diff[direction[0]],
-                                fillet_start[1] + sign[1] * diff[direction[1]],
-                            ]
-                        ]
-                    ),
-                )
-            )
+            path = np.concatenate((
+                path,
+                np.array([[
+                    fillet_start[0] + sign[0] * diff[direction[0]],
+                    fillet_start[1] + sign[1] * diff[direction[1]],
+                ]]),
+            ))
         return path
 
-    def render_path(self, table: pd.DataFrame, ax: Axes, subtracted: bool = False, extra_kw: dict = None):
+    def render_path(self,
+                    table: pd.DataFrame,
+                    ax: Axes,
+                    subtracted: bool = False,
+                    extra_kw: dict = None):
         """
         Render a table of path geometry.
 
@@ -432,21 +439,19 @@ class QMplRenderer():
         table1 = table[~mask]
 
         # if any are fillet, alter the path separately
-        table1.loc[table1.fillet.notnull(), 'geometry'] = table1[table1.fillet.notnull()].apply(self.fillet_path, axis=1)
+        table1.loc[table1.fillet.notnull(),
+                   'geometry'] = table1[table1.fillet.notnull()].apply(
+                       self.fillet_path, axis=1)
 
         if len(table1) > 0:
-            table1.geometry = table1[['geometry', 'width']].apply(lambda x:
-                                                                  x[0].buffer(
-                                                                      distance=float(
-                                                                          x[1])/2.,
-                                                                      cap_style=CAP_STYLE.flat,
-                                                                      join_style=JOIN_STYLE.mitre,
-                                                                      resolution=int(self.options['resolution'])
-                                                                  ), axis=1)
+            table1.geometry = table1[['geometry', 'width']].apply(lambda x: x[
+                0].buffer(distance=float(x[1]) / 2.,
+                          cap_style=CAP_STYLE.flat,
+                          join_style=JOIN_STYLE.mitre,
+                          resolution=int(self.options['resolution'])),
+                                                                  axis=1)
 
             kw = self.get_style('poly', subtracted=subtracted, extra=extra_kw)
-
-
 
             # render components
             self.render_poly(table1, ax, subtracted=subtracted, extra_kw=kw)
@@ -472,7 +477,6 @@ class QMplRenderer():
 #     ),
 # )
 
-
 # class QRendererMPL(QRendererGui):
 #     """
 #     Renderer for matplotlib in a GUI environment.
@@ -486,7 +490,6 @@ class QMplRenderer():
 #         # TODO: simplify, specialize, and update this function
 #         # right now, this is just calling the V0.1 old style
 #         render(obj, ax=self.ax, kw= {} or kw)
-
 
 #     def render_connectors(self):
 #         '''

@@ -79,6 +79,7 @@ class BranchNode:
     where the former is the name of the child node and the latter is the child node itself.
     KEY (=0) and NODE (=1) identify their respective positions within each tuple pair.
     """
+
     def __init__(self, name: str, parent=None, data: dict = None):
         """
         Args:
@@ -180,6 +181,7 @@ class LeafNode:
     It is uniquely identified by its root-to-leaf path, which is a list of keys
     whose positions denote their nesting depth (shallow to deep).
     """
+
     def __init__(self, label: str, parent=None, path=None):
         """
         Args:
@@ -226,8 +228,8 @@ class QTreeModel_Base(QAbstractItemModel):
 
     # NOTE: __init__ takes in design as extra parameter compared to table_model_options!
 
-    def __init__(self, parent: 'ParentWidget', gui: 'MetalGUI',
-                 view: QTreeView, child: str):
+    def __init__(self, parent: 'ParentWidget', gui: 'MetalGUI', view: QTreeView,
+                 child: str):
         """
         Editable table with drop-down rows for a generic options menu.
         Organized as a tree model where child nodes are more specific properties

@@ -11,7 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 """
 File contains basic dictionaries. File contains a class to contain the basic dictionaries.
 
@@ -41,15 +40,11 @@ class DefaultMetalOptions(Dict):
     # TODO: not sure what example genetic means? can we find a better name
     default_generic = Dict(
         units='mm',  # Units in which all dimenions are converted as floats
-        chip='main',  # Default chip used thorugh codebase, wehn one is not specified
+        chip=
+        'main',  # Default chip used thorugh codebase, wehn one is not specified
 
         # Default options for QDesign variables
-        qdesign=Dict(
-            variables=Dict(
-                cpw_width='10 um',
-                cpw_gap='6 um'
-            )
-        ),
+        qdesign=Dict(variables=Dict(cpw_width='10 um', cpw_gap='6 um')),
 
         # Used for numpy.round()
         PRECISION=9,
@@ -58,14 +53,12 @@ class DefaultMetalOptions(Dict):
         geometry=Dict(
             buffer_resolution=16,  # for shapely buffer
             buffer_mitre_limit=5.0,
-        )
-    )
+        ))
     """
     Define the default generic properties
     """
 
-    def __init__(self,
-                 generic: Dict = None):
+    def __init__(self, generic: Dict = None):
         """
         The constructor for the `DefaultMetalOptions` class.
         """
@@ -76,9 +69,7 @@ class DefaultMetalOptions(Dict):
         super().__init__()
         self.update(generic)
 
-    def update_default_options(self,
-                               cust_key: str,
-                               cust_value=None):
+    def update_default_options(self, cust_key: str, cust_value=None):
         """Allow instance of class to update the default_options
 
         Args:
@@ -101,25 +92,25 @@ class DefaultOptionsRenderer():
     """
 
     # These are potential dicts that could be used for renderers.
-    default_bounding_box = Dict(draw_bounding_box=[
-        [0, 0], [0, 0], ['0.890mm', '0.900mm']
-    ])
+    default_bounding_box = Dict(
+        draw_bounding_box=[[0, 0], [0, 0], ['0.890mm', '0.900mm']])
     """
     Define the default bounding box
     """
 
-    default_draw_substrate = Dict(draw_substrate={
-        'pos_xy': "['0um', '0um']",
-        'size': "['8.5mm', '6.5mm', '-0.750mm']",
-        'elevation': 0,
-        'ground_plane': 'ground_plane',
-        'substrate': 'substrate',
-        'material': 'silicon',
-        # 'color_plane': DEFAULT.colors.ground_main,      #this needs to change
-        'transparency_plane': 0,
-        'transparency_substrate': 0,
-        'wireframe_substrate': False
-    })
+    default_draw_substrate = Dict(
+        draw_substrate={
+            'pos_xy': "['0um', '0um']",
+            'size': "['8.5mm', '6.5mm', '-0.750mm']",
+            'elevation': 0,
+            'ground_plane': 'ground_plane',
+            'substrate': 'substrate',
+            'material': 'silicon',
+            # 'color_plane': DEFAULT.colors.ground_main,      #this needs to change
+            'transparency_plane': 0,
+            'transparency_substrate': 0,
+            'wireframe_substrate': False
+        })
     """
     Define the default draw substrate
     """
@@ -155,6 +146,6 @@ class DefaultOptionsRenderer():
         Returns:
             The return value. True for success, False otherwise.
         """
-        assert(
-            cust_key is not None), f'ERROR: Need a key, update_default_options has {cust_key}'
+        assert (cust_key is not None
+               ), f'ERROR: Need a key, update_default_options has {cust_key}'
         self.default_options[cust_key] = cust_value

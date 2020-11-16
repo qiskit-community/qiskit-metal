@@ -19,6 +19,7 @@ from ... import config
 if not config.is_building_docs():
     from qiskit_metal import is_true
 
+
 class MyQComponent(QComponent):
     """
     Use this class as a template for your components - have fun
@@ -26,20 +27,16 @@ class MyQComponent(QComponent):
 
     # Edit these to define your own tempate options for creation
     # Default drawing options
-    default_options = Dict(
-        width='500um',
-        height='300um',
-        pos_x='0um',
-        pos_y='0um',
-        rotation='0',
-        layer='1'
-    )
+    default_options = Dict(width='500um',
+                           height='300um',
+                           pos_x='0um',
+                           pos_y='0um',
+                           rotation='0',
+                           layer='1')
     """Default drawing options"""
 
     # Name prefix of component, if user doesn't provide name
-    component_metadata = Dict(
-        short_name='component'
-        )
+    component_metadata = Dict(short_name='component')
     """Component metadata"""
 
     def make(self):

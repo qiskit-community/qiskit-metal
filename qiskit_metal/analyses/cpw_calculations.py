@@ -11,7 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 """
 For calculations of CPW parameters. Referenced primarily as a tool for some components.
 
@@ -22,16 +21,20 @@ For calculations of CPW parameters. Referenced primarily as a tool for some comp
 Based on https://iopscience.iop.org/article/10.1088/0953-2048/22/12/125028/meta
 """
 
-
 import numpy as np
 from scipy.special import ellipk
 
-c0 = 2.9979 *10**8
-e0 = 8.85419*10**-12
-u0 = 4*np.pi*10**-7
+c0 = 2.9979 * 10**8
+e0 = 8.85419 * 10**-12
+u0 = 4 * np.pi * 10**-7
 
-def guided_wavelength(freq, line_width, line_gap, substrate_thickness, film_thickness, 
-dielectric_constant = 11.45):
+
+def guided_wavelength(freq,
+                      line_width,
+                      line_gap,
+                      substrate_thickness,
+                      film_thickness,
+                      dielectric_constant=11.45):
     """
     A simple calculator to determine the guided wavelength of a planar CPW transmission line.
     Assumes the substrate has relative permiability of 1. Assumes package grounds are far away.
@@ -54,7 +57,7 @@ dielectric_constant = 11.45):
         * etfSqrt: effective dielectric constant (accounting for film thickness)
         * q: filling factor
     """
-    
+
     s = line_width
     w = line_gap
     h = substrate_thickness
@@ -62,21 +65,27 @@ dielectric_constant = 11.45):
     eRD = dielectric_constant
 
     #elliptic integrals
-    Kk0,Kk01,Kk1,Kk11 = elliptic_int_constants(s,w,h)
+    Kk0, Kk01, Kk1, Kk11 = elliptic_int_constants(s, w, h)
 
     #filling factor
-    q = 0.5*(Kk1*Kk01)/(Kk11*Kk0)
+    q = 0.5 * (Kk1 * Kk01) / (Kk11 * Kk0)
 
     #effective dielectric constant (accounting for film thickness)
-    etfSqrt = effective_dielectric_constant(freq,s,w,h,t,q,Kk0,Kk01,eRD)
+    etfSqrt = effective_dielectric_constant(freq, s, w, h, t, q, Kk0, Kk01, eRD)
 
-    lambdaG = (c0/freq)/etfSqrt
+    lambdaG = (c0 / freq) / etfSqrt
 
     return lambdaG, etfSqrt, q
 
 
-def lumped_cpw(freq, line_width, line_gap, substrate_thickness, film_thickness, 
-dielectric_constant = 11.45, loss_tangent = 10**-5,london_penetration_depth = 30*10**-9):
+def lumped_cpw(freq,
+               line_width,
+               line_gap,
+               substrate_thickness,
+               film_thickness,
+               dielectric_constant=11.45,
+               loss_tangent=10**-5,
+               london_penetration_depth=30 * 10**-9):
     """
     A simple calculator to determine the lumped element equivalent of a CPW transmission line.
     Assumes a lossless superconductor. The internal geometric series inductance is ignored.
@@ -127,41 +136,42 @@ dielectric_constant = 11.45, loss_tangent = 10**-5,london_penetration_depth = 30
     lambdaLT = london_penetration_depth
     wfreq = freq * 2 * np.pi
 
-    Kk0,Kk01,Kk1,Kk11 = elliptic_int_constants(s,w,h)
+    Kk0, Kk01, Kk1, Kk11 = elliptic_int_constants(s, w, h)
 
-    C = 2*e0*(eRD-1)*(Kk1/Kk11)+4*e0*(Kk0/Kk01)
-    
+    C = 2 * e0 * (eRD - 1) * (Kk1 / Kk11) + 4 * e0 * (Kk0 / Kk01)
+
     #filling factor
-    q = 0.5*(Kk1*Kk01)/(Kk11*Kk0)
+    q = 0.5 * (Kk1 * Kk01) / (Kk11 * Kk0)
 
     #Admittance
-    G = wfreq*C*q*tanD
+    G = wfreq * C * q * tanD
 
     #Effective Dielectric Constant
-    etfSqrt = effective_dielectric_constant(freq,s,w,h,t,q,Kk0,Kk01,eRD)
+    etfSqrt = effective_dielectric_constant(freq, s, w, h, t, q, Kk0, Kk01, eRD)
 
     #External Inducatance
-    Z0 = (30*np.pi/etfSqrt)*Kk01/Kk0
-    Lext = Z0**2*C
-    Cstar = 2*e0*(etfSqrt**2-1)*(Kk1/Kk11)+4*e0*(Kk0/Kk01)
+    Z0 = (30 * np.pi / etfSqrt) * Kk01 / Kk0
+    Lext = Z0**2 * C
+    Cstar = 2 * e0 * (etfSqrt**2 - 1) * (Kk1 / Kk11) + 4 * e0 * (Kk0 / Kk01)
 
     #Kinetic Inductance
-    A1 = (-t/np.pi)+(1/2)*np.sqrt((2*t/np.pi)**2+s**2)
-    B1 = s**2/(4*A1)
-    C1 = B1 - (t/np.pi)+np.sqrt((t/np.pi)**2+w**2)
-    D1 = 2*t/np.pi + C1
+    A1 = (-t / np.pi) + (1 / 2) * np.sqrt((2 * t / np.pi)**2 + s**2)
+    B1 = s**2 / (4 * A1)
+    C1 = B1 - (t / np.pi) + np.sqrt((t / np.pi)**2 + w**2)
+    D1 = 2 * t / np.pi + C1
 
-    LkinStep = (u0*lambdaLT*C1/(4*A1*D1*Kk0))
+    LkinStep = (u0 * lambdaLT * C1 / (4 * A1 * D1 * Kk0))
 
-    Lkin1 = LkinStep * 1.7/(np.sinh(t/(2*lambdaLT)))
-    Lkin2 = LkinStep * 0.4/(np.sqrt((((B1/A1)**2)-1)*(1-(B1/D1)**2)))
+    Lkin1 = LkinStep * 1.7 / (np.sinh(t / (2 * lambdaLT)))
+    Lkin2 = LkinStep * 0.4 / (np.sqrt(
+        (((B1 / A1)**2) - 1) * (1 - (B1 / D1)**2)))
 
-    Lk = Lkin1+Lkin2
+    Lk = Lkin1 + Lkin2
 
-    return Lk, Lext, C, G,Z0, etfSqrt**2, Cstar
+    return Lk, Lext, C, G, Z0, etfSqrt**2, Cstar
 
 
-def effective_dielectric_constant(freq,s,w,h,t,q,Kk0,Kk01,eRD=11.45):
+def effective_dielectric_constant(freq, s, w, h, t, q, Kk0, Kk01, eRD=11.45):
     """
     Returns the film and substrate thickness dependent effective 
     dielectric constant for a planar CPW transmission line. Assumes package ground can be ignored.
@@ -183,21 +193,22 @@ def effective_dielectric_constant(freq,s,w,h,t,q,Kk0,Kk01,eRD=11.45):
     """
 
     #Effective Dielectric Constant
-    e00 = 1 + q*(eRD-1)
-    et0 = e00 - (0.7*(e00-1)*t/w)/((Kk0/Kk01)+0.7*t/w)
+    e00 = 1 + q * (eRD - 1)
+    et0 = e00 - (0.7 * (e00 - 1) * t / w) / ((Kk0 / Kk01) + 0.7 * t / w)
 
-    p = np.log(s/h)
-    v = 0.43 - 0.86*p + 0.54*p**2
-    u = 0.54 - 0.64*p + 0.015*p**2
-    fTE = c0/(4*h*np.sqrt(eRD-1))
-    g = np.exp(u*np.log(s/w)+v)
+    p = np.log(s / h)
+    v = 0.43 - 0.86 * p + 0.54 * p**2
+    u = 0.54 - 0.64 * p + 0.015 * p**2
+    fTE = c0 / (4 * h * np.sqrt(eRD - 1))
+    g = np.exp(u * np.log(s / w) + v)
 
-    etfSqrt = np.sqrt(et0) + (np.sqrt(eRD)-np.sqrt(et0))/(1 + g*(freq/fTE)**-1.8)
+    etfSqrt = np.sqrt(et0) + (np.sqrt(eRD) -
+                              np.sqrt(et0)) / (1 + g * (freq / fTE)**-1.8)
 
     return etfSqrt
 
 
-def elliptic_int_constants(s,w,h):
+def elliptic_int_constants(s, w, h):
     """
     Calculates the complete elliptic integral of the first kind for CPW lumped 
     element equivalent circuit calculations.
@@ -217,9 +228,10 @@ def elliptic_int_constants(s,w,h):
         * ellipk(k11) (float): The complete elliptic integral for k11
     """
     #elliptical integral constants
-    k0 = s/(s+2*w)
-    k01 = np.sqrt(1-k0**2)
-    k1 = np.sinh((np.pi*s)/(4*h))/(np.sinh((np.pi*(s+2*w))/(4*h)))
-    k11 = np.sqrt(1-k1**2)
+    k0 = s / (s + 2 * w)
+    k01 = np.sqrt(1 - k0**2)
+    k1 = np.sinh((np.pi * s) / (4 * h)) / (np.sinh(
+        (np.pi * (s + 2 * w)) / (4 * h)))
+    k11 = np.sqrt(1 - k1**2)
 
-    return ellipk(k0),ellipk(k01),ellipk(k1),ellipk(k11)
+    return ellipk(k0), ellipk(k01), ellipk(k1), ellipk(k11)

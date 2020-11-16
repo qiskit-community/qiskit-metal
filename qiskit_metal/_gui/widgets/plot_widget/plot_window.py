@@ -11,7 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 """Main module that handles the entier plot window which is docked inside the mmain window.
 This can be undocked and can have its own toolbar. this is largley why i ddecied to use a
 QMainWindow, so that we can have inner docking and toolbars available.
@@ -50,6 +49,7 @@ class QMainWindowPlot(QMainWindow):
     Core canvas plot widget:
         canvas: The core plot object. Can be mpl or any other renderer.
     """
+
     def __init__(self, gui: 'MetalGUI', parent_window: 'QMainWindowExtension'):
         """
         Args:

@@ -11,7 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 """File contains dictionary for NSquareSpiral and the make()."""
 
 from qiskit_metal import draw, Dict
@@ -51,19 +50,17 @@ class NSquareSpiral(QComponent):
 
     """
 
-    default_options = Dict(
-        n='3',
-        width='1um',
-        radius='40um',
-        gap='4um',
-        pos_x='0um',
-        pos_y='0um',
-        rotation='0',
-        subtract='False',
-        helper='False',
-        chip='main',
-        layer='1'
-    )
+    default_options = Dict(n='3',
+                           width='1um',
+                           radius='40um',
+                           gap='4um',
+                           pos_x='0um',
+                           pos_y='0um',
+                           rotation='0',
+                           subtract='False',
+                           helper='False',
+                           chip='main',
+                           layer='1')
     """Default drawing options"""
 
     def make(self):
@@ -80,13 +77,13 @@ class NSquareSpiral(QComponent):
         spiral_list = []
 
         for step in range(n):
-            point_value = p.radius/2 + step*(p.width+p.gap)
+            point_value = p.radius / 2 + step * (p.width + p.gap)
             spiral_list.append((-point_value, -point_value))
             spiral_list.append((point_value, -point_value))
             spiral_list.append((point_value, point_value))
-            spiral_list.append((-point_value-(p.width+p.gap), point_value))
+            spiral_list.append((-point_value - (p.width + p.gap), point_value))
 
-        point_value = p.radius/2 + (step+1)*(p.width+p.gap)
+        point_value = p.radius / 2 + (step + 1) * (p.width + p.gap)
         spiral_list.append((-point_value, -point_value))
         spiral_list = draw.LineString(spiral_list)
 
@@ -95,11 +92,16 @@ class NSquareSpiral(QComponent):
 
         ##############################################
         # add qgeometry
-        self.add_qgeometry('path', {'n_spiral': spiral_list}, width=p.width, subtract=p.subtract,
-                           helper=p.helper, layer=p.layer, chip=p.chip)
+        self.add_qgeometry('path', {'n_spiral': spiral_list},
+                           width=p.width,
+                           subtract=p.subtract,
+                           helper=p.helper,
+                           layer=p.layer,
+                           chip=p.chip)
 
         points = np.array(spiral_list.coords)
         # FIX POINTS,
         self.add_pin('spiralPin',
                      points=points[-2:],
-                     width=p.width, input_as_norm=True)
+                     width=p.width,
+                     input_as_norm=True)

@@ -11,7 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 """
 This is the CircleCaterpillar module.
 
@@ -44,8 +43,7 @@ class CircleCaterpillar(QComponent):
         subtract='False',
         helper='False',
         chip='main',
-        layer='1'
-    )
+        layer='1')
     """Default drawing options"""
 
     def make(self):
@@ -59,14 +57,13 @@ class CircleCaterpillar(QComponent):
 
         # create the geometry
         caterpillar = [
-            draw.Point(p.pos_x-p.radius*i*p.distance, p.pos_y).buffer(p.radius,
-                                                                      resolution=int(
-                                                                          p.resolution),
-                                                                      cap_style=getattr(
-                                                                          CAP_STYLE, p.cap_style),
-                                                                      #join_style = getattr(JOIN_STYLE, p.join_style)
-                                                                      )
-            for i in range(int(p.segments))]
+            draw.Point(p.pos_x - p.radius * i * p.distance, p.pos_y).buffer(
+                p.radius,
+                resolution=int(p.resolution),
+                cap_style=getattr(CAP_STYLE, p.cap_style),
+                #join_style = getattr(JOIN_STYLE, p.join_style)
+            ) for i in range(int(p.segments))
+        ]
         caterpillar = draw.union(caterpillar)
 
         poly = draw.Polygon([(0, 0), (0.5, 0), (0.25, 0.5)])

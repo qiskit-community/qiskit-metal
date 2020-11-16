@@ -14,7 +14,6 @@
 
 #pylint: disable-msg=unnecessary-pass
 #pylint: disable-msg=too-many-public-methods
-
 """
 Qiskit Metal unit tests components functionality.
 
@@ -53,6 +52,7 @@ from qiskit_metal.tests.assertions import AssertionsMixin
 #pylint: disable-msg=line-too-long
 from qiskit_metal.components.interconnects.resonator_rectangle_spiral import ResonatorRectangleSpiral
 
+
 class TestComponentOptions(unittest.TestCase, AssertionsMixin):
     """
     Unit test class
@@ -77,7 +77,8 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         """
         # Setup expected test results
         _design = designs.DesignPlanar()
-        _circle_caterpillar = circle_caterpillar.CircleCaterpillar(_design, 'my_name')
+        _circle_caterpillar = circle_caterpillar.CircleCaterpillar(
+            _design, 'my_name')
         _options = _circle_caterpillar.default_options
 
         # Test all elements of the result data against expected data
@@ -350,7 +351,8 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         """
         # Setup expected test results
         design = designs.DesignPlanar()
-        my_transmon_concentric = transmon_concentric.TransmonConcentric(design, 'my_name')
+        my_transmon_concentric = transmon_concentric.TransmonConcentric(
+            design, 'my_name')
         options = my_transmon_concentric.default_options
 
         self.assertEqual(len(options), 19)
@@ -394,12 +396,18 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(_options['orientation'], '0')
 
         self.assertEqual(len(_options['_default_connection_pads']), 6)
-        self.assertEqual(_options['_default_connection_pads']['connector_type'], '0')
-        self.assertEqual(_options['_default_connection_pads']['claw_length'], '30um')
-        self.assertEqual(_options['_default_connection_pads']['ground_spacing'], '5um')
-        self.assertEqual(_options['_default_connection_pads']['claw_width'], '10um')
-        self.assertEqual(_options['_default_connection_pads']['claw_gap'], '6um')
-        self.assertEqual(_options['_default_connection_pads']['connector_location'], '0')
+        self.assertEqual(_options['_default_connection_pads']['connector_type'],
+                         '0')
+        self.assertEqual(_options['_default_connection_pads']['claw_length'],
+                         '30um')
+        self.assertEqual(_options['_default_connection_pads']['ground_spacing'],
+                         '5um')
+        self.assertEqual(_options['_default_connection_pads']['claw_width'],
+                         '10um')
+        self.assertEqual(_options['_default_connection_pads']['claw_gap'],
+                         '6um')
+        self.assertEqual(
+            _options['_default_connection_pads']['connector_location'], '0')
 
     def test_component_transmon_pocket_options(self):
         """
@@ -424,16 +432,26 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(_options['orientation'], '0')
 
         self.assertEqual(len(_options['_default_connection_pads']), 12)
-        self.assertEqual(_options['_default_connection_pads']['pad_gap'], '15um')
-        self.assertEqual(_options['_default_connection_pads']['pad_width'], '125um')
-        self.assertEqual(_options['_default_connection_pads']['pad_height'], '30um')
-        self.assertEqual(_options['_default_connection_pads']['pad_cpw_shift'], '5um')
-        self.assertEqual(_options['_default_connection_pads']['pad_cpw_extent'], '25um')
-        self.assertEqual(_options['_default_connection_pads']['cpw_width'], 'cpw_width')
-        self.assertEqual(_options['_default_connection_pads']['cpw_gap'], 'cpw_gap')
-        self.assertEqual(_options['_default_connection_pads']['cpw_extend'], '100um')
-        self.assertEqual(_options['_default_connection_pads']['pocket_extent'], '5um')
-        self.assertEqual(_options['_default_connection_pads']['pocket_rise'], '65um')
+        self.assertEqual(_options['_default_connection_pads']['pad_gap'],
+                         '15um')
+        self.assertEqual(_options['_default_connection_pads']['pad_width'],
+                         '125um')
+        self.assertEqual(_options['_default_connection_pads']['pad_height'],
+                         '30um')
+        self.assertEqual(_options['_default_connection_pads']['pad_cpw_shift'],
+                         '5um')
+        self.assertEqual(_options['_default_connection_pads']['pad_cpw_extent'],
+                         '25um')
+        self.assertEqual(_options['_default_connection_pads']['cpw_width'],
+                         'cpw_width')
+        self.assertEqual(_options['_default_connection_pads']['cpw_gap'],
+                         'cpw_gap')
+        self.assertEqual(_options['_default_connection_pads']['cpw_extend'],
+                         '100um')
+        self.assertEqual(_options['_default_connection_pads']['pocket_extent'],
+                         '5um')
+        self.assertEqual(_options['_default_connection_pads']['pocket_rise'],
+                         '65um')
         self.assertEqual(_options['_default_connection_pads']['loc_W'], '+1')
         self.assertEqual(_options['_default_connection_pads']['loc_H'], '+1')
 
@@ -444,7 +462,8 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         """
         # Setup expected test results
         _design = designs.DesignPlanar()
-        _transmon_pocket_cl = transmon_pocket_cl.TransmonPocketCL(_design, 'my_name')
+        _transmon_pocket_cl = transmon_pocket_cl.TransmonPocketCL(
+            _design, 'my_name')
         _options = _transmon_pocket_cl.default_options
 
         # Test all elements of the result data against expected data
@@ -588,6 +607,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['pos_x'], '100um')
         self.assertEqual(options['pos_y'], '100um')
         self.assertEqual(options['orientation'], '0')
+
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

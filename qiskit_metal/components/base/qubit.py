@@ -11,7 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 """
 @author: Zlatko Minev, Thomas McConekey, ... (IBM)
 @date: 2019
@@ -52,21 +51,20 @@ class BaseQubit(QComponent):
     '''
 
     _img = 'Metal_Qubit.png'
-    default_options = Dict(
-        pos_x='0um',
-        pos_y='0um',
-        connection_pads=Dict(),
-        _default_connection_pads=Dict()
-    )
+    default_options = Dict(pos_x='0um',
+                           pos_y='0um',
+                           connection_pads=Dict(),
+                           _default_connection_pads=Dict())
     """Default drawing options"""
 
-    component_metadata = Dict(
-        short_name='Q',
-        _qgeometry_table_poly='True')
-
+    component_metadata = Dict(short_name='Q', _qgeometry_table_poly='True')
     """Component metadata"""
 
-    def __init__(self, design, name=None, options=None, options_connection_pads=None,
+    def __init__(self,
+                 design,
+                 name=None,
+                 options=None,
+                 options_connection_pads=None,
                  make=True):
         """
         Args:
@@ -102,7 +100,8 @@ class BaseQubit(QComponent):
         Applies the default options
         """
         # class_name = type(self).__name__
-        assert '_default_connection_pads' in self.design.template_options[self.class_name], f"""When
+        assert '_default_connection_pads' in self.design.template_options[
+            self.class_name], f"""When
         you define your custom qubit class please add a _default_connection_pads
         dictionary name as default_options['_default_connection_pads']. This should specify the default
         creation options for the connection. """
@@ -114,6 +113,7 @@ class BaseQubit(QComponent):
         for name in self.options.connection_pads:
             my_options_connection_pads = self.options.connection_pads[name]
             self.options.connection_pads[name] = deepcopy(
-                self.design.template_options[self.class_name]['_default_connection_pads'])
+                self.design.template_options[
+                    self.class_name]['_default_connection_pads'])
             self.options.connection_pads[name].update(
                 my_options_connection_pads)

@@ -11,7 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 """
 This is the main module that defines what an element is in Qiskit Metal.
 See the docstring of `QGeometryTables`
@@ -35,7 +34,7 @@ from .. import Dict
 from ..draw import BaseGeometry
 from qiskit_metal.draw.utility import round_coordinate_sequence
 
-from shapely.geometry.multipolygon import MultiPolygon #for avoiding MultiPolygons
+from shapely.geometry.multipolygon import MultiPolygon  #for avoiding MultiPolygons
 from .. import config
 if not config.is_building_docs():
     from qiskit_metal.toolbox_python.utility_functions import get_range_of_vertex_to_not_fillet, data_frame_empty_typed
@@ -117,9 +116,7 @@ ELEMENT_COLUMNS = dict(
             #     type=str,
             #     color=str,
             # )
-        )
-    ),
-
+        )),
 
     ################################################
     # Specifies a path, such as a CPW.
@@ -127,18 +124,14 @@ ELEMENT_COLUMNS = dict(
     path=dict(
         width=float,
         fillet=object,  # TODO: not decided yet how to represent this
-        __renderers__=dict(
-        )
-    ),
+        __renderers__=dict()),
 
     ################################################
     # Specifies a polygon
     # Ideas: chamfer
     poly=dict(
         fillet=object,  # TODO: not decided yet how to represent this
-        __renderers__=dict(
-        )
-    ),
+        __renderers__=dict()),
     ################################################
     # Specifies a junction as a 2 point line and width
     # This should provide enough information so as to
@@ -146,11 +139,7 @@ ELEMENT_COLUMNS = dict(
     # - generate ports (edge ports?) for Z analysis
     # - provice bounding box dimensions for the p-cell of ebeam junction layout
     #       for GDS renderer
-    junction=dict(
-        width=float,
-        __renderers__=dict(
-        )
-    ),
+    junction=dict(width=float, __renderers__=dict()),
     ################################################
     # Specifies a curved object, such as a circle. Perhaps as a buffered point
     # Not yet implemented
@@ -309,9 +298,10 @@ class QGeometryTables(object):
 
         # Make sure that the base and all other element kinds have this renderer registerd
         for element_key in cls.ELEMENT_COLUMNS:
-            if not renderer_name in cls.ELEMENT_COLUMNS[element_key]['__renderers__']:
-                cls.ELEMENT_COLUMNS[element_key]['__renderers__'][renderer_name] = dict(
-                )
+            if not renderer_name in cls.ELEMENT_COLUMNS[element_key][
+                    '__renderers__']:
+                cls.ELEMENT_COLUMNS[element_key]['__renderers__'][
+                    renderer_name] = dict()
 
         # Now update the dictionaries with all qgeometry that the renderer may have
         for element_key, element_column_ext_dict in qgeometry.items():
@@ -324,8 +314,8 @@ class QGeometryTables(object):
                 cls.ELEMENT_COLUMNS[element_key] = dict(__renderers__=dict())
 
             # Now add qgeometry
-            cls.ELEMENT_COLUMNS[element_key]['__renderers__'][renderer_name].update(
-                element_column_ext_dict)
+            cls.ELEMENT_COLUMNS[element_key]['__renderers__'][
+                renderer_name].update(element_column_ext_dict)
 
     # could use weakref memorization
     # https://stackoverflow.com/questions/33672412/python-functools-lru-cache-with-class-methods-release-object
@@ -378,10 +368,12 @@ class QGeometryTables(object):
             columns.update(columns_concrete)
             # add renderer columns: base and then concrete
             for renderer_key in columns_base_renderers:
-                columns.update(self._prepend_renderer_names(
-                    table_name, renderer_key, columns_base_renderers))
-                columns.update(self._prepend_renderer_names(
-                    table_name, renderer_key, columns_concrete_renderer))
+                columns.update(
+                    self._prepend_renderer_names(table_name, renderer_key,
+                                                 columns_base_renderers))
+                columns.update(
+                    self._prepend_renderer_names(table_name, renderer_key,
+                                                 columns_concrete_renderer))
 
             # Validate -- Throws an error if not valid
             self._validate_column_dictionary(table_name, columns)
@@ -394,7 +386,7 @@ class QGeometryTables(object):
             # Assign
             self.tables[table_name] = table
 
-    def _validate_column_dictionary(self, table_name: str,  column_dict: dict):
+    def _validate_column_dictionary(self, table_name: str, column_dict: dict):
         """Validate
         A possible error here is if the user did not pass a valid data type
 
@@ -411,6 +403,7 @@ class QGeometryTables(object):
             \n  ELEMENT_TABLE_NAME = {table_name}\
             \n  KEY                = {k} \
             \n  VALUE              = {v}\n '
+
         # Are these assertions still holding true?
         for k, v in column_dict.items():
             assert isinstance(k, str), __pre.format(**locals()) +\
@@ -433,7 +426,8 @@ class QGeometryTables(object):
         """
         return renderer_name + self.name_delimiter + key
 
-    def _prepend_renderer_names(self, table_name: str, renderer_key: str, rdict: dict):
+    def _prepend_renderer_names(self, table_name: str, renderer_key: str,
+                                rdict: dict):
         """Prepare all the renderer names
 
         Args:
@@ -447,18 +441,21 @@ class QGeometryTables(object):
         TODO:
             This function has arguments that are used, fix the function or ditch the unused args
         """
-        return {self.get_rname(renderer_key, k): v
-                for k, v in rdict.get(renderer_key, {}).items()}
+        return {
+            self.get_rname(renderer_key, k): v
+            for k, v in rdict.get(renderer_key, {}).items()
+        }
 
-    def add_qgeometry(self,
-                      kind: str,
-                      component_name: str,
-                      geometry: dict,
-                      subtract: bool = False,
-                      helper: bool = False,
-                      layer: Union[int, str] = 1,  # chip will be here
-                      chip: str = 'main',
-                      **other_options):
+    def add_qgeometry(
+            self,
+            kind: str,
+            component_name: str,
+            geometry: dict,
+            subtract: bool = False,
+            helper: bool = False,
+            layer: Union[int, str] = 1,  # chip will be here
+            chip: str = 'main',
+            **other_options):
         """Main interface to add names
 
         Arguments:
@@ -480,11 +477,12 @@ class QGeometryTables(object):
             helper = helper in TRUE_BOOLS
 
         if not (kind in self.get_element_types()):
-            self.logger.error(f'Creator user error: Unkown element kind=`{kind}`'
-                              f'Kind must be in {self.get_element_types()}. This failed for component'
-                              f'name = `{component_name}`.\n'
-                              f' The call was with subtract={subtract} and helper={helper}'
-                              f' and layer={layer}, and options={other_options}')
+            self.logger.error(
+                f'Creator user error: Unkown element kind=`{kind}`'
+                f'Kind must be in {self.get_element_types()}. This failed for component'
+                f'name = `{component_name}`.\n'
+                f' The call was with subtract={subtract} and helper={helper}'
+                f' and layer={layer}, and options={other_options}')
 
         #Checks if (any) of the geometry are MultiPolygons, and breaks them up into
         #individual polygons. Rounds the coordinate sequences of those values to avoid
@@ -496,7 +494,9 @@ class QGeometryTables(object):
                 temp_multi = geometry[key]
                 shape_count = 0
                 for shape_temp in temp_multi.geoms:
-                    new_dict[key+'_'+str(shape_count)] = round_coordinate_sequence(shape_temp, rounding_val)
+                    new_dict[key + '_' +
+                             str(shape_count)] = round_coordinate_sequence(
+                                 shape_temp, rounding_val)
                     shape_count += 1
             else:
                 new_dict[key] = round_coordinate_sequence(item, rounding_val)
@@ -505,14 +505,18 @@ class QGeometryTables(object):
 
         # Create options TODO: Might want to modify this (component_name -> component_id)
         # Give warning if length is to be fillet's and not long enough.
-        self.check_lengths(geometry, kind, component_name,
-                           layer, chip, **other_options)
+        self.check_lengths(geometry, kind, component_name, layer, chip,
+                           **other_options)
 
         # Create options
-        options = dict(component=component_name, subtract=subtract,
-                       helper=helper, layer=int(layer), chip=chip, **other_options)
+        options = dict(component=component_name,
+                       subtract=subtract,
+                       helper=helper,
+                       layer=int(layer),
+                       chip=chip,
+                       **other_options)
 
-        #replaces line above to generate the options. 
+        #replaces line above to generate the options.
         #for keyC in design.qgeometry.tables[kind].columns:
         #    if keyC != 'geometry':
         #        options[keyC] = ???[keyC] -> alternative manner to pass options to the add_qgeometry function?
@@ -523,8 +527,9 @@ class QGeometryTables(object):
 
         # assert that all names in options are in table columns! TODO: New approach will not be wanting
         #to do this (maybe check that all columns are in options?)
-        df = GeoDataFrame.from_dict(
-            geometry, orient='index', columns=['geometry'])
+        df = GeoDataFrame.from_dict(geometry,
+                                    orient='index',
+                                    columns=['geometry'])
         df.index.name = 'name'
         df = df.reset_index()
 
@@ -536,11 +541,8 @@ class QGeometryTables(object):
         #          verify_integrity=False, copy=False)
 
     def check_lengths(self, geometry: shapely.geometry.base.BaseGeometry,
-                      kind: str,
-                      component_name: str,
-                      layer: Union[int, str],
-                      chip: str,
-                      **other_options):
+                      kind: str, component_name: str, layer: Union[int, str],
+                      chip: str, **other_options):
         """If user wants to fillet, check the line-segments to see if it is too short for fillet.
 
         Args:
@@ -572,8 +574,8 @@ class QGeometryTables(object):
                 if isinstance(geom, shapely.geometry.LineString):
                     coords = list(geom.coords)
                     qdesign_precision = self.design.template_options.PRECISION
-                    range_vertex_of_short_segments = get_range_of_vertex_to_not_fillet(coords, fillet, qdesign_precision,
-                                                                                       add_endpoints=False)
+                    range_vertex_of_short_segments = get_range_of_vertex_to_not_fillet(
+                        coords, fillet, qdesign_precision, add_endpoints=False)
 
                     if len(range_vertex_of_short_segments) > 0:
                         range_string = ""
@@ -624,10 +626,14 @@ class QGeometryTables(object):
         for table_name in self.tables:
             df_table_name = self.tables[table_name]
             # self.tables[table_name] = df_table_name.drop(df_table_name[df_table_name['component'] == component_id].index)
-            self.tables[table_name] = df_table_name[df_table_name['component']
-                                                    != component_id]
+            self.tables[table_name] = df_table_name[
+                df_table_name['component'] != component_id]
 
-    def get_component(self, name: str, table_name: str = 'all') -> Union[GeoDataFrame, Dict_[str, GeoDataFrame]]:
+    def get_component(
+        self,
+        name: str,
+        table_name: str = 'all'
+    ) -> Union[GeoDataFrame, Dict_[str, GeoDataFrame]]:
         """Return the table for just a given component.
         If all, returns a dictionary with kets as table names and tables of components as values.
 
@@ -659,7 +665,8 @@ class QGeometryTables(object):
             # comp_id = self.design.components[name].id
             # return df[df.component == comp_id]
 
-    def get_component_bounds(self, name: str) -> Tuple[float, float, float, float]:
+    def get_component_bounds(self,
+                             name: str) -> Tuple[float, float, float, float]:
         """Returns a tuple containing minx, miny, maxx, maxy values
         for the bounds of the component as a whole.
 
@@ -694,7 +701,10 @@ class QGeometryTables(object):
                 table = self.tables[table_name]
                 table.component[table.component == a_comp.id] = new_name
 
-    def get_component_geometry_list(self, name: str, table_name: str = 'all') -> List[BaseGeometry]:
+    def get_component_geometry_list(self,
+                                    name: str,
+                                    table_name: str = 'all'
+                                   ) -> List[BaseGeometry]:
         """Return just the bare element geometry (shapely geometry objects) as a list, for the
         selected component.
 
@@ -741,7 +751,10 @@ class QGeometryTables(object):
 
         return qgeometry
 
-    def get_component_geometry_dict(self, name: str, table_name: str = 'all') -> List[BaseGeometry]:
+    def get_component_geometry_dict(self,
+                                    name: str,
+                                    table_name: str = 'all'
+                                   ) -> List[BaseGeometry]:
         """Return just the bare element geometry (shapely geometry objects) as a dict,
         with key being the names of the qgeometry and the values as the shapely geometry,
         for the selected component.
@@ -756,8 +769,7 @@ class QGeometryTables(object):
         if table_name == 'all':
             qgeometry = Dict()
             for table in self.get_element_types():
-                qgeometry[table] = self.get_component_geometry_list(
-                    name, table)
+                qgeometry[table] = self.get_component_geometry_list(name, table)
             return qgeometry  # return pd.concat(qgeometry, axis=0)
 
         else:
@@ -765,13 +777,15 @@ class QGeometryTables(object):
 
             # mask the rows nad get only 2 columns
             comp_id = self.design.components[name].id
-            df_comp_id = table.loc[table.component ==
-                                   comp_id, ['name', 'geometry']]
+            df_comp_id = table.loc[table.component == comp_id,
+                                   ['name', 'geometry']]
             df_geometry = df_comp_id.geometry
             df_geometry.index = df_comp_id.name
             return df_geometry.to_dict()
 
-    def check_element_type(self, table_name: str, log_issue: bool = True) -> bool:
+    def check_element_type(self,
+                           table_name: str,
+                           log_issue: bool = True) -> bool:
         """Check if the name `table_name` is in the element tables.
 
         Arguments:
@@ -784,7 +798,8 @@ class QGeometryTables(object):
         if not table_name in self.get_element_types() or table_name in 'all':
             if log_issue:
                 self.logger.error(
-                    f'Element Tables: Tried to access non-existing element table: `{table_name}`')
+                    f'Element Tables: Tried to access non-existing element table: `{table_name}`'
+                )
             return False
         else:
             return True

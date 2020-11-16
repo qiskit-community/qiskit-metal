@@ -15,7 +15,6 @@
 #pylint: disable-msg=unnecessary-pass
 #pylint: disable-msg=broad-except
 #pylint: disable-msg=unused-variable
-
 """
 Qiskit Metal unit tests analyses functionality.
 
@@ -40,6 +39,7 @@ from qiskit_metal.components.qubits.transmon_concentric import TransmonConcentri
 from qiskit_metal.components.qubits.transmon_cross import TransmonCross
 from qiskit_metal.components.qubits.transmon_pocket import TransmonPocket
 from qiskit_metal.components.qubits.transmon_pocket_cl import TransmonPocketCL
+
 
 class TestGUIBasic(unittest.TestCase):
     """
@@ -109,6 +109,7 @@ class TestGUIBasic(unittest.TestCase):
         except Exception:
             message = "LeafNode instantiation failed"
             self.fail(message)
+
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

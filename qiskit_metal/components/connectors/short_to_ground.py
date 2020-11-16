@@ -11,7 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 '''
 @date: 2019
 @author: Qiskit Team
@@ -20,6 +19,7 @@
 from qiskit_metal import draw, Dict
 from qiskit_metal.components.base import QComponent
 import numpy as np
+
 
 class ShortToGround(QComponent):
     """A basic short to ground termination. Functions as a pin for auto CPW drawing.
@@ -38,26 +38,22 @@ class ShortToGround(QComponent):
 
     Values (unless noted) are strings with units included, (e.g., '30um')
     """
-    component_metadata = Dict(
-        short_name='term'
-        )
+    component_metadata = Dict(short_name='term')
     """Component metadata"""
 
-    default_options = Dict(
-        width='10um',
-        pos_x='0um',
-        pos_y='0um',
-        rotation='0',
-        chip='main',
-        layer='1'
-    )
+    default_options = Dict(width='10um',
+                           pos_x='0um',
+                           pos_y='0um',
+                           rotation='0',
+                           chip='main',
+                           layer='1')
     """Default connector options"""
 
     def make(self):
         """Build the component"""
         p = self.p  # p for parsed parameters. Access to the parsed options.
 
-        port_line = draw.LineString([(0, -p.width/2), (0, p.width/2)])
+        port_line = draw.LineString([(0, -p.width / 2), (0, p.width / 2)])
 
         # Rotates and translates the connector polygons (and temporary port_line)
         port_line = draw.rotate(port_line, p.rotation, origin=(0, 0))

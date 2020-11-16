@@ -13,7 +13,6 @@
 # that they have been altered from the originals.
 
 # pylint: disable=protected-access
-
 '''
 Saving and load metal data
 
@@ -27,7 +26,8 @@ from ..toolbox_python.utility_functions import log_error_easy
 
 __all__ = ['save_metal', 'load_metal_design']
 
-def save_metal(filename : str, design):
+
+def save_metal(filename: str, design):
     """
     Save metal
 
@@ -44,7 +44,7 @@ def save_metal(filename : str, design):
     result = False
 
     # Do not pickle the following -- THis is issue with picking
-    self = design # cludge for lazy tying
+    self = design  # cludge for lazy tying
     logger = self.logger
     self.logger = None
 
@@ -68,7 +68,7 @@ def save_metal(filename : str, design):
     return result
 
 
-def load_metal_design(filename : str, do_update=True):
+def load_metal_design(filename: str, do_update=True):
     """
     Load metal design
 
@@ -80,12 +80,12 @@ def load_metal_design(filename : str, do_update=True):
         picked QDesign: the pickled design object and updates if asked the param dicts for defaults
     """
     design = pickle.load(open(filename, "rb"))
-    design.save_path = str(filename) # Set the place from where we loaded the design
+    design.save_path = str(
+        filename)  # Set the place from where we loaded the design
 
     # Restore
     from .. import logger
-    design.logger = logger #TODO: fix from save pikcle
-
+    design.logger = logger  #TODO: fix from save pikcle
     ''' outdated code
     if do_update:
         from ..config import DEFAULT, DEFAULT_OPTIONS
@@ -98,5 +98,5 @@ def load_metal_design(filename : str, do_update=True):
         DEFAULT.update(design._defaults)
         DEFAULT_OPTIONS.update(design._default_options)
     '''
-    
+
     return design

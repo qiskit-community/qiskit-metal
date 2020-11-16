@@ -11,7 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 """File contains dictionary for Rectangle and the make()."""
 
 from qiskit_metal import draw, Dict  # , QComponent
@@ -27,17 +26,15 @@ class Rectangle(QComponent):
         The class will add default_options class Dict to QComponent class before calling make.
     """
 
-    default_options = Dict(
-        width='500um',
-        height='300um',
-        pos_x='0um',
-        pos_y='0um',
-        rotation='0',
-        subtract='False',
-        helper='False',
-        chip='main',
-        layer='1'
-    )
+    default_options = Dict(width='500um',
+                           height='300um',
+                           pos_x='0um',
+                           pos_y='0um',
+                           rotation='0',
+                           subtract='False',
+                           helper='False',
+                           chip='main',
+                           layer='1')
     """Default drawing options"""
 
     def make(self):
@@ -54,5 +51,8 @@ class Rectangle(QComponent):
         rect = draw.rotate(rect, p.rotation)
         ##############################################
         # add qgeometry
-        self.add_qgeometry('poly', {'rectangle': rect}, subtract=p.subtract,
-                           helper=p.helper, layer=p.layer, chip=p.chip)
+        self.add_qgeometry('poly', {'rectangle': rect},
+                           subtract=p.subtract,
+                           helper=p.helper,
+                           layer=p.layer,
+                           chip=p.chip)

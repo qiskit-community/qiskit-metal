@@ -195,8 +195,8 @@ class QTableModel_AllComponents(QAbstractTableModel):
             return Qt.ItemIsEnabled
 
         return Qt.ItemFlags(
-            QAbstractTableModel.flags(self, index)
-            | Qt.ItemIsSelectable)  # | Qt.ToolTip)  # ItemIsEditable
+            QAbstractTableModel.flags(self, index) |
+            Qt.ItemIsSelectable)  # | Qt.ToolTip)  # ItemIsEditable
 
     # @slot_catch_error()
     def data(self, index: QModelIndex, role: int = Qt.DisplayRole):
@@ -221,8 +221,8 @@ class QTableModel_AllComponents(QAbstractTableModel):
                 return str(
                     self.design.components[component_name].__class__.__name__)
             elif index.column() == 2:
-                return str(self.design.components[component_name].__class__.
-                           __module__)
+                return str(
+                    self.design.components[component_name].__class__.__module__)
             elif index.column() == 3:
                 return str(self.design.components[component_name].status)
             elif index.column() == 4:

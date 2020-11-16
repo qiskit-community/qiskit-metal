@@ -11,7 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 '''
 @date: 2020
 @author: Dennis Wang, Zlatko Minev
@@ -39,7 +38,11 @@ from qiskit_metal.toolbox_python.utility_functions import toggle_numbers, bad_fi
 
 from qiskit_metal import Dict
 
-def good_fillet_idxs(coords: list, fradius: float, precision: int = 9, isclosed: bool = False):
+
+def good_fillet_idxs(coords: list,
+                     fradius: float,
+                     precision: int = 9,
+                     isclosed: bool = False):
     """
     Get list of vertex indices in a linestring (isclosed = False) or polygon (isclosed = True) that can be filleted based on
     proximity to neighbors.
@@ -54,8 +57,13 @@ def good_fillet_idxs(coords: list, fradius: float, precision: int = 9, isclosed:
         list: List of indices of vertices that can be filleted.
     """
     if isclosed:
-        return toggle_numbers(bad_fillet_idxs(coords, fradius, precision, isclosed = True), len(coords))
-    return toggle_numbers(bad_fillet_idxs(coords, fradius, precision, isclosed = False), len(coords))[1:-1]
+        return toggle_numbers(
+            bad_fillet_idxs(coords, fradius, precision, isclosed=True),
+            len(coords))
+    return toggle_numbers(
+        bad_fillet_idxs(coords, fradius, precision, isclosed=False),
+        len(coords))[1:-1]
+
 
 def get_clean_name(name: str) -> str:
     """
@@ -74,6 +82,7 @@ def get_clean_name(name: str) -> str:
     name = re.sub('^[^a-zA-Z_]+', '', name)
     return name
 
+
 class QAnsysRenderer(QRenderer):
     """
     Extends QRenderer to export designs to Ansys using pyEPR.
@@ -85,13 +94,15 @@ class QAnsysRenderer(QRenderer):
     default_options = Dict(
         # Maximum mesh length for Josephson junction elements
         max_mesh_length_jj='7um',
-        Lj='10nH', # Lj has units of nanoHenries (nH)
-        Cj=0, # Cj *must* be 0 for pyEPR analysis! Cj has units of femtofarads (fF)
-        _Rj=0, # _Rj *must* be 0 for pyEPR analysis! _Rj has units of Ohms
-        project_path=None, # default project path; if None --> get active
-        project_name=None, # default project name
-        design_name=None, # default design name
-        ansys_file_extension='.aedt' # Ansys file extesion for 2016 version and newer
+        Lj='10nH',  # Lj has units of nanoHenries (nH)
+        Cj=
+        0,  # Cj *must* be 0 for pyEPR analysis! Cj has units of femtofarads (fF)
+        _Rj=0,  # _Rj *must* be 0 for pyEPR analysis! _Rj has units of Ohms
+        project_path=None,  # default project path; if None --> get active
+        project_name=None,  # default project name
+        design_name=None,  # default design name
+        ansys_file_extension=
+        '.aedt'  # Ansys file extesion for 2016 version and newer
     )
 
     NAME_DELIM = r'_'
@@ -115,14 +126,17 @@ class QAnsysRenderer(QRenderer):
     # Keeping this as a cls dict so could be edited before renderer is instantiated.
     # To update component.options junction table.
 
-    element_table_data = dict(
-        junction=dict(inductance=default_options['Lj'],
-                      capacitance=default_options['Cj'],
-                      resistance=default_options['_Rj'],
-                      mesh_kw_jj=parse_units(default_options['max_mesh_length_jj']))
-    )
+    element_table_data = dict(junction=dict(
+        inductance=default_options['Lj'],
+        capacitance=default_options['Cj'],
+        resistance=default_options['_Rj'],
+        mesh_kw_jj=parse_units(default_options['max_mesh_length_jj'])))
 
-    def __init__(self, design: 'QDesign', initiate=True, render_template: Dict = None, render_options: Dict = None):
+    def __init__(self,
+                 design: 'QDesign',
+                 initiate=True,
+                 render_template: Dict = None,
+                 render_options: Dict = None):
         """
         Create a QRenderer for Ansys.
 
@@ -132,8 +146,10 @@ class QAnsysRenderer(QRenderer):
             render_template (Dict, optional): Typically used by GUI for template options for GDS. Defaults to None.
             render_options (Dict, optional):  Used to override all options. Defaults to None.
         """
-        super().__init__(design=design, initiate=initiate,
-                         render_template=render_template, render_options=render_options)
+        super().__init__(design=design,
+                         initiate=initiate,
+                         render_template=render_template,
+                         render_options=render_options)
         QAnsysRenderer.load()
 
     @property
@@ -146,7 +162,7 @@ class QAnsysRenderer(QRenderer):
                                      design_name=self._options['design_name'])
         self.modeler = self.pinfo.design.modeler
 
-    def add_message(self, msg: str, severity: int=0):
+    def add_message(self, msg: str, severity: int = 0):
         """
         Add message to Message Manager box in Ansys.
 
@@ -189,7 +205,9 @@ class QAnsysRenderer(QRenderer):
         for table_type in self.design.qgeometry.get_element_types():
             self.render_components(table_type, selection)
 
-    def render_components(self, table_type: str, selection: Union[list, None] = None):
+    def render_components(self,
+                          table_type: str,
+                          selection: Union[list, None] = None):
         """
         Render individual components by breaking them down into individual elements.
 
@@ -276,8 +294,9 @@ class QAnsysRenderer(QRenderer):
 
         # Draw rectangle
         self.logger.debug(f'Drawing a rectangle: {name}')
-        poly_ansys = self.modeler.draw_rect_corner(
-            [x_min, y_min, qc_chip_z], x_max - x_min, y_max - y_min, qc_chip_z, **ansys_options)
+        poly_ansys = self.modeler.draw_rect_corner([x_min, y_min, qc_chip_z],
+                                                   x_max - x_min, y_max - y_min,
+                                                   qc_chip_z, **ansys_options)
         axis = 'x' if abs(x1 - x0) > abs(y1 - y0) else 'y'
         poly_ansys.make_rlc_boundary(axis,
                                      l=qgeom['ansys_inductance'],
@@ -289,8 +308,8 @@ class QAnsysRenderer(QRenderer):
 
         # Draw line
         poly_jj = self.modeler.draw_polyline([endpoints_3d[0], endpoints_3d[1]],
-                                              closed=False,
-                                              **dict(color=(128, 0, 128)))
+                                             closed=False,
+                                             **dict(color=(128, 0, 128)))
         poly_jj = poly_jj.rename('JJ_' + name + '_')
         poly_jj.show_direction = True
 
@@ -304,45 +323,53 @@ class QAnsysRenderer(QRenderer):
 
         ansys_options = dict(transparency=0.0)
 
-        qc_name = 'Q' + str(qgeom['component']) # name of QComponent
-        qc_elt = get_clean_name(qgeom['name']) # name of element within QGeometry table
+        qc_name = 'Q' + str(qgeom['component'])  # name of QComponent
+        qc_elt = get_clean_name(
+            qgeom['name'])  # name of element within QGeometry table
         qc_shapely = qgeom.geometry  # shapely geom
         qc_chip_z = parse_units(self.design.get_chip_z(qgeom.chip))
         qc_fillet = round(qgeom.fillet, 7)
 
         name = f'{qc_name}{QAnsysRenderer.NAME_DELIM}{qc_elt}'
 
-        points = parse_units(list(qc_shapely.exterior.coords))  # list of 2d point tuples
+        points = parse_units(list(
+            qc_shapely.exterior.coords))  # list of 2d point tuples
         points_3d = to_vec3D(points, qc_chip_z)
 
         if is_rectangle(qc_shapely):  # Draw as rectangle
             self.logger.debug(f'Drawing a rectangle: {name}')
             x_min, y_min, x_max, y_max = qc_shapely.bounds
-            poly_ansys = self.modeler.draw_rect_corner(*parse_units(
-                [[x_min, y_min, qc_chip_z], x_max - x_min, y_max - y_min, qc_chip_z]), **ansys_options)
+            poly_ansys = self.modeler.draw_rect_corner(
+                *parse_units([[x_min, y_min, qc_chip_z], x_max - x_min,
+                              y_max - y_min, qc_chip_z]), **ansys_options)
             self.modeler.rename_obj(poly_ansys, name)
 
         else:
             # Draw general closed poly
-            poly_ansys = self.modeler.draw_polyline(points_3d[:-1], closed=True, **ansys_options)
+            poly_ansys = self.modeler.draw_polyline(points_3d[:-1],
+                                                    closed=True,
+                                                    **ansys_options)
             # rename: handle bug if the name of the cut already exits and is used to make a cut
             poly_ansys = poly_ansys.rename(name)
 
         qc_fillet = round(qgeom.fillet, 7)
         if qc_fillet > 0:
             qc_fillet = parse_units(qc_fillet)
-            idxs_to_fillet = good_fillet_idxs(points,
-                                             qc_fillet,
-                                             precision=self.design._template_options.PRECISION,
-                                             isclosed=True)
+            idxs_to_fillet = good_fillet_idxs(
+                points,
+                qc_fillet,
+                precision=self.design._template_options.PRECISION,
+                isclosed=True)
             if idxs_to_fillet:
                 self.modeler._fillet(qc_fillet, idxs_to_fillet, poly_ansys)
 
         # Subtract interior shapes, if any
         if len(qc_shapely.interiors) > 0:
             for i, x in enumerate(qc_shapely.interiors):
-                interior_points_3d = to_vec3D(parse_units(list(x.coords)), qc_chip_z)
-                inner_shape = self.modeler.draw_polyline(interior_points_3d[:-1], closed=True)
+                interior_points_3d = to_vec3D(parse_units(list(x.coords)),
+                                              qc_chip_z)
+                inner_shape = self.modeler.draw_polyline(
+                    interior_points_3d[:-1], closed=True)
                 self.modeler.subtract(name, [inner_shape])
 
         # Input chip info into self.chip_subtract_dict
@@ -366,8 +393,9 @@ class QAnsysRenderer(QRenderer):
 
         ansys_options = dict(transparency=0.0)
 
-        qc_name = 'Q' + str(qgeom['component']) # name of QComponent
-        qc_elt = get_clean_name(qgeom['name']) # name of element within QGeometry table
+        qc_name = 'Q' + str(qgeom['component'])  # name of QComponent
+        qc_elt = get_clean_name(
+            qgeom['name'])  # name of element within QGeometry table
         qc_shapely = qgeom.geometry  # shapely geom
         qc_chip_z = parse_units(self.design.get_chip_z(qgeom.chip))
 
@@ -378,26 +406,34 @@ class QAnsysRenderer(QRenderer):
         points = parse_units(list(qc_shapely.coords))
         points_3d = to_vec3D(points, qc_chip_z)
 
-        poly_ansys = self.modeler.draw_polyline(points_3d, closed=False, **ansys_options)
+        poly_ansys = self.modeler.draw_polyline(points_3d,
+                                                closed=False,
+                                                **ansys_options)
         poly_ansys = poly_ansys.rename(name)
 
         qc_fillet = round(qgeom.fillet, 7)
         if qc_fillet > 0:
             qc_fillet = parse_units(qc_fillet)
-            idxs_to_fillet = good_fillet_idxs(points,
-                                            qc_fillet,
-                                            precision=self.design._template_options.PRECISION,
-                                            isclosed=False)
+            idxs_to_fillet = good_fillet_idxs(
+                points,
+                qc_fillet,
+                precision=self.design._template_options.PRECISION,
+                isclosed=False)
             if idxs_to_fillet:
                 self.modeler._fillet(qc_fillet, idxs_to_fillet, poly_ansys)
 
         if qc_width:
             x0, y0 = points[0]
             x1, y1 = points[1]
-            vlen = math.sqrt((x1 - x0) ** 2 + (y1 - y0) ** 2)
-            p0 = np.array([x0, y0, 0]) + qc_width / (2 * vlen) * np.array([y0 - y1, x1 - x0, 0])
-            p1 = np.array([x0, y0, 0]) + qc_width / (2 * vlen) * np.array([y1 - y0, x0 - x1, 0])
-            shortline = self.modeler.draw_polyline([p0, p1], closed=False)  # sweepline
+            vlen = math.sqrt((x1 - x0)**2 + (y1 - y0)**2)
+            p0 = np.array([
+                x0, y0, 0
+            ]) + qc_width / (2 * vlen) * np.array([y0 - y1, x1 - x0, 0])
+            p1 = np.array([
+                x0, y0, 0
+            ]) + qc_width / (2 * vlen) * np.array([y1 - y0, x0 - x1, 0])
+            shortline = self.modeler.draw_polyline([p0, p1],
+                                                   closed=False)  # sweepline
             self.modeler._sweep_along_path(shortline, poly_ansys)
 
         if qgeom.chip not in self.chip_subtract_dict:
@@ -424,23 +460,31 @@ class QAnsysRenderer(QRenderer):
             p = self.design.get_chip_size(chip_name)
             origin = parse_units([p['center_x'], p['center_y'], p['center_z']])
             size = parse_units([p['size_x'], p['size_y'], p['size_z']])
-            vac_height = parse_units([p['sample_holder_top'], p['sample_holder_bottom']])
-            if chip_name == 'main': # Create only a single vacuum box, centered around 'main' chip
-                vacuum_box = self.modeler.draw_box_center([origin[0], origin[1], (vac_height[0] - vac_height[1]) / 2],
-                                                        [size[0], size[1], sum(vac_height)],
-                                                        name='sample_holder')
-            plane = self.modeler.draw_rect_center(origin, x_size=size[0], y_size=size[1], name=f'{chip_name}_plane', **ansys_options)
-            if self.chip_subtract_dict[chip_name]: # Any layer which has subtract=True qgeometries will have a ground plane
+            vac_height = parse_units(
+                [p['sample_holder_top'], p['sample_holder_bottom']])
+            if chip_name == 'main':  # Create only a single vacuum box, centered around 'main' chip
+                vacuum_box = self.modeler.draw_box_center(
+                    [origin[0], origin[1], (vac_height[0] - vac_height[1]) / 2],
+                    [size[0], size[1], sum(vac_height)],
+                    name='sample_holder')
+            plane = self.modeler.draw_rect_center(origin,
+                                                  x_size=size[0],
+                                                  y_size=size[1],
+                                                  name=f'{chip_name}_plane',
+                                                  **ansys_options)
+            if self.chip_subtract_dict[
+                    chip_name]:  # Any layer which has subtract=True qgeometries will have a ground plane
                 self.assign_perfE.append(f'{chip_name}_plane')
             # if self.chip_subtract_dict[chip_name]:
             #     ground_plane = self.modeler.draw_rect_center(origin, x_size=size[0], y_size=size[1], name=f'{chip_name}_ground', **ansys_options)
-            whole_chip = self.modeler.draw_box_center([origin[0], origin[1], size[2] / 2],
-                                                 [size[0], size[1], -size[2]],
-                                                 name=chip_name,
-                                                 material=ops['material'],
-                                                 color=(186, 186, 205),
-                                                 transparency=0.2,
-                                                 wireframe=False)
+            whole_chip = self.modeler.draw_box_center(
+                [origin[0], origin[1], size[2] / 2],
+                [size[0], size[1], -size[2]],
+                name=chip_name,
+                material=ops['material'],
+                color=(186, 186, 205),
+                transparency=0.2,
+                wireframe=False)
 
     def subtract_from_ground(self):
         """

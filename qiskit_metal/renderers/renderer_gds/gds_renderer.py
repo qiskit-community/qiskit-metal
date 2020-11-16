@@ -280,9 +280,7 @@ class QGDSRenderer(QRenderer):
                 subtract_false)
 
     @staticmethod
-    def get_bounds(
-            gs_table: geopandas.GeoSeries
-    ) -> Tuple[float, float, float, float]:
+    def get_bounds(gs_table: geopandas.GeoSeries) -> Tuple[float, float, float, float]:
         """Get the bounds for all of the elements in gs_table.
 
         Args:
@@ -522,8 +520,7 @@ class QGDSRenderer(QRenderer):
             copy_no_subtract = deepcopy(all_table_no_subtracts)
 
             for item in copy_subtract:
-                item.drop(item.index[item['layer'] != chip_layer],
-                          inplace=True)
+                item.drop(item.index[item['layer'] != chip_layer], inplace=True)
 
             for item_no in copy_no_subtract:
                 item_no.drop(item_no.index[item_no['layer'] != chip_layer],
@@ -640,8 +637,7 @@ class QGDSRenderer(QRenderer):
 
         all_idx_bad_fillet = dict()
 
-        self.identify_vertex_not_to_fillet(coords, a_fillet,
-                                           all_idx_bad_fillet)
+        self.identify_vertex_not_to_fillet(coords, a_fillet, all_idx_bad_fillet)
 
         shorter_lines = dict()
 
@@ -662,29 +658,23 @@ class QGDSRenderer(QRenderer):
                         # Every vertex should not be fillet'd
                         no_fillet_vertices = coords[start:len_coords]
                         shorter_lines[stop] = dict({
-                            'line':
-                            LineString(no_fillet_vertices),
-                            'fillet':
-                            float('NaN')
+                            'line': LineString(no_fillet_vertices),
+                            'fillet': float('NaN')
                         })
                     else:
                         no_fillet_vertices = coords[start:stop + 1]
                         no_fillet_vertices.append(midpoints[stop])
                         shorter_lines[stop] = dict({
-                            'line':
-                            LineString(no_fillet_vertices),
-                            'fillet':
-                            float('NaN')
+                            'line': LineString(no_fillet_vertices),
+                            'fillet': float('NaN')
                         })
                 elif idx == status - 1 and stop == len_coords - 1:
                     # The last segment
                     no_fillet_vertices = coords[start:stop + 1]
                     no_fillet_vertices.insert(0, midpoints[start - 1])
                     shorter_lines[stop] = dict({
-                        'line':
-                        LineString(no_fillet_vertices),
-                        'fillet':
-                        float('NaN')
+                        'line': LineString(no_fillet_vertices),
+                        'fillet': float('NaN')
                     })
                 else:
                     # Segment in between first and last segment.
@@ -692,10 +682,8 @@ class QGDSRenderer(QRenderer):
                     no_fillet_vertices.insert(0, midpoints[start - 1])
                     no_fillet_vertices.append(midpoints[stop])
                     shorter_lines[stop] = dict({
-                        'line':
-                        LineString(no_fillet_vertices),
-                        'fillet':
-                        float('NaN')
+                        'line': LineString(no_fillet_vertices),
+                        'fillet': float('NaN')
                     })
             # Gather the fillet segments.
             at_vertex = 0
@@ -707,19 +695,15 @@ class QGDSRenderer(QRenderer):
                     init_tuple = coords[0]
                     fillet_vertices = [init_tuple, midpoints[start - 1]]
                     shorter_lines[start] = dict({
-                        'line':
-                        LineString(fillet_vertices),
-                        'fillet':
-                        a_fillet
+                        'line': LineString(fillet_vertices),
+                        'fillet': a_fillet
                     })
                 if idx == 0 and start > 1:
                     fillet_vertices = coords[0:start]
                     fillet_vertices.append(midpoints[start - 1])
                     shorter_lines[start] = dict({
-                        'line':
-                        LineString(fillet_vertices),
-                        'fillet':
-                        a_fillet
+                        'line': LineString(fillet_vertices),
+                        'fillet': a_fillet
                     })
                     if idx == status - 1 and stop != len_coords - 1:
                         # Extra segment after the last no-fillet.
@@ -727,20 +711,16 @@ class QGDSRenderer(QRenderer):
                         fillet_vertices = coords[stop + 1:len_coords]
                         fillet_vertices.insert(0, midpoints[stop])
                         shorter_lines[len_coords] = dict({
-                            'line':
-                            LineString(fillet_vertices),
-                            'fillet':
-                            a_fillet
+                            'line': LineString(fillet_vertices),
+                            'fillet': a_fillet
                         })
                 elif idx == status - 1 and start == 0 and stop != len_coords - 1:
                     # At last tuple, and and start at first index, and  the stop is not last index of coords.
                     fillet_vertices = coords[stop + 1:len_coords]
                     fillet_vertices.insert(0, midpoints[stop])
                     shorter_lines[start] = dict({
-                        'line':
-                        LineString(fillet_vertices),
-                        'fillet':
-                        a_fillet
+                        'line': LineString(fillet_vertices),
+                        'fillet': a_fillet
                     })
                 elif idx == status - 1 and stop != len_coords - 1:
                     # At last tuple, and the stop is not last index of coords.
@@ -748,20 +728,16 @@ class QGDSRenderer(QRenderer):
                     fillet_vertices.insert(0, midpoints[at_vertex])
                     fillet_vertices.append(midpoints[start - 1])
                     shorter_lines[start] = dict({
-                        'line':
-                        LineString(fillet_vertices),
-                        'fillet':
-                        a_fillet
+                        'line': LineString(fillet_vertices),
+                        'fillet': a_fillet
                     })
                     # Extra segment after the last no-fillet.
                     fillet_vertices.clear()
                     fillet_vertices = coords[stop + 1:len_coords]
                     fillet_vertices.insert(0, midpoints[stop])
                     shorter_lines[len_coords] = dict({
-                        'line':
-                        LineString(fillet_vertices),
-                        'fillet':
-                        a_fillet
+                        'line': LineString(fillet_vertices),
+                        'fillet': a_fillet
                     })
                 else:
                     if (start - at_vertex) > 1:
@@ -769,10 +745,8 @@ class QGDSRenderer(QRenderer):
                         fillet_vertices.insert(0, midpoints[at_vertex])
                         fillet_vertices.append(midpoints[start - 1])
                         shorter_lines[start] = dict({
-                            'line':
-                            LineString(fillet_vertices),
-                            'fillet':
-                            a_fillet
+                            'line': LineString(fillet_vertices),
+                            'fillet': a_fillet
                         })
                 at_vertex = stop  # Need to update for every loop.
         else:
