@@ -105,7 +105,9 @@ ENV/
 shot.png
 shot.jpg
 *.gds
+!guide/resources/**
 .vs
+src/
 
 # mypy
 .mypy_cache/
@@ -114,15 +116,10 @@ shot.jpg
 *.aedtresults*
 *.aedt.lock
 settings.json
+
+# others
 Qiskit-Metal.code-workspace
 qiskit_metal/.pylintrc
 qiskit_metal/_gui/ansys-screenshot.jpg
 launch.json
-qiskit_metal/.idea/workspace.xml
 main_window_ui.py.original
-_tutorials_/_dev_/Animations/imgs1
-_tutorials_/_dev_/Animations/imgs2
-_tutorials_/_dev_/Animations/imgs2_2
-_tutorials_/_dev_/Animations/imgs2_3
-_tutorials_/imgs
-src/

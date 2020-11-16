@@ -122,7 +122,7 @@ class QGDSRenderer(QRenderer):
 
         # Since Qiskit Metal GUI, does not require a width for LineString, GDS, will provide a default value.
         width_LineString='10um',
-        path_filename='../gds-files/Fake_Junctions_copy.gds',
+        path_filename='../resources/Fake_Junctions.GDS',
 
         # For junction table, when cell from default_options.path_filename does not fit into linestring,
         # QGDSRender will create two pads and add to junction to fill the location of lineString.
@@ -280,8 +280,7 @@ class QGDSRenderer(QRenderer):
                 subtract_false)
 
     @staticmethod
-    def get_bounds(
-            gs_table: geopandas.GeoSeries) -> Tuple[float, float, float, float]:
+    def get_bounds(gs_table: geopandas.GeoSeries) -> Tuple[float, float, float, float]:
         """Get the bounds for all of the elements in gs_table.
 
         Args:
@@ -416,7 +415,8 @@ class QGDSRenderer(QRenderer):
 
         return unique_qcomponents, 0
 
-    def create_qgeometry_for_gds(self, highlight_qcomponents: list = []) -> int:
+    def create_qgeometry_for_gds(self,
+                                 highlight_qcomponents: list = []) -> int:
         """Using self.design, this method does the following:
 
         1. Gather the QGeometries to be used to write to file.
@@ -789,8 +789,7 @@ class QGDSRenderer(QRenderer):
         midpoints = [
             QGDSRenderer.midpoint_xy(coords[idx - 1][0], coords[idx - 1][1],
                                      vertex2[0], vertex2[1])
-            for idx, vertex2 in enumerate(coords)
-            if idx > 0
+            for idx, vertex2 in enumerate(coords) if idx > 0
         ]
         all_idx_bad_fillet['midpoints'] = midpoints
 
@@ -1198,7 +1197,8 @@ class QGDSRenderer(QRenderer):
         else:
             return 0
 
-    def qgeometry_to_gds(self, qgeometry_element: pd.Series) -> 'gdspy.polygon':
+    def qgeometry_to_gds(self,
+                         qgeometry_element: pd.Series) -> 'gdspy.polygon':
         """Convert the design.qgeometry table to format used by GDS renderer.
         Convert the class to a series of GDSII elements.
 

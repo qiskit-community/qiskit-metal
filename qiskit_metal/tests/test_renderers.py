@@ -39,7 +39,6 @@ class TestRenderers(unittest.TestCase):
     """
     Unit test class
     """
-
     def setUp(self):
         """
         Setup unit test
@@ -151,7 +150,7 @@ class TestRenderers(unittest.TestCase):
         self.assertEqual(options['precision'], '0.000000001')
         self.assertEqual(options['width_LineString'], '10um')
         self.assertEqual(options['path_filename'],
-                         '../gds-files/Fake_Junctions_copy.gds')
+                         '../resources/Fake_Junctions.GDS')
         self.assertEqual(options['junction_pad_overlap'], '5um')
         self.assertEqual(options['max_points'], '8191')
         self.assertEqual(options['bounding_box_scale_x'], '1.2')
