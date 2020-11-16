@@ -27,7 +27,6 @@ from typing import TYPE_CHECKING
 from typing import Dict as Dict_
 from typing import List, Tuple, Union
 
-
 import pandas as pd
 from pandas.api.types import is_numeric_dtype
 
@@ -119,12 +118,11 @@ class QGDSRenderer(QRenderer):
         # They don't even show up in the fabricated masks.
         # So, the precision of e-9 (so 1 nm) should be good as a default.
         # FOR NOW SPECIFY IN METERS. # TODO: Add parsing of actual units here
-        precision='0.000000001',   # 1.0 nm
+        precision='0.000000001',  # 1.0 nm
 
         # Since Qiskit Metal GUI, does not require a width for LineString, GDS, will provide a default value.
         width_LineString='10um',
-
-        path_filename='../gds-files/Fake_Junctions_copy.gds',
+        path_filename='../resources/Fake_Junctions.GDS',
 
         # For junction table, when cell from default_options.path_filename does not fit into linestring,
         # QGDSRender will create two pads and add to junction to fill the location of lineString.
@@ -167,10 +165,13 @@ class QGDSRenderer(QRenderer):
 
     element_table_data = dict(
         # Cell_name must exist in gds file with: path_filename
-        junction=dict(cell_name='my_other_junction')
-    )
+        junction=dict(cell_name='my_other_junction'))
 
-    def __init__(self, design: 'QDesign', initiate=True, render_template: Dict = None, render_options: Dict = None):
+    def __init__(self,
+                 design: 'QDesign',
+                 initiate=True,
+                 render_template: Dict = None,
+                 render_options: Dict = None):
         """Create a QRenderer for GDS interface: export and import.
 
         Args:
@@ -180,8 +181,10 @@ class QGDSRenderer(QRenderer):
             render_options (Dict, optional):  Used to overide all options. Defaults to None.
         """
 
-        super().__init__(design=design, initiate=initiate,
-                         render_template=render_template, render_options=render_options)
+        super().__init__(design=design,
+                         initiate=initiate,
+                         render_template=render_template,
+                         render_options=render_options)
 
         self.lib = None  # type: gdspy.GdsLibrary
         self.new_gds_library()
@@ -213,14 +216,17 @@ class QGDSRenderer(QRenderer):
         bounding_box_scale_y = self.parse_value(p.bounding_box_scale_y)
 
         if bounding_box_scale_x < 1:
-            self.options['bounding_box_scale_x'] = QGDSRenderer.default_options.bounding_box_scale_x
-            self.logger.warning('Expected float and number greater than or equal to'
-                                ' 1.0 for bounding_box_scale_x. User'
-                                f'provided bounding_box_scale_x = {bounding_box_scale_x}'
-                                ', using default_options.bounding_box_scale_x.')
+            self.options[
+                'bounding_box_scale_x'] = QGDSRenderer.default_options.bounding_box_scale_x
+            self.logger.warning(
+                'Expected float and number greater than or equal to'
+                ' 1.0 for bounding_box_scale_x. User'
+                f'provided bounding_box_scale_x = {bounding_box_scale_x}'
+                ', using default_options.bounding_box_scale_x.')
 
         if bounding_box_scale_y < 1:
-            self.options['bounding_box_scale_y'] = QGDSRenderer.default_options.bounding_box_scale_y
+            self.options[
+                'bounding_box_scale_y'] = QGDSRenderer.default_options.bounding_box_scale_y
             self.logger.warning(
                 f'Expected float and number greater than or equal to 1.0 for bounding_box_scale_y.'
                 'User provided bounding_box_scale_y = {bounding_box_scale_y}, '
@@ -269,13 +275,14 @@ class QGDSRenderer(QRenderer):
 
         subtract_false = table[table['subtract'] == False]
 
-        setattr(
-            self, f'{chip_name}_{table_name}_subtract_true', subtract_true)
-        setattr(
-            self, f'{chip_name}_{table_name}_subtract_false', subtract_false)
+        setattr(self, f'{chip_name}_{table_name}_subtract_true', subtract_true)
+        setattr(self, f'{chip_name}_{table_name}_subtract_false',
+                subtract_false)
 
     @staticmethod
-    def get_bounds(gs_table: geopandas.GeoSeries) -> Tuple[float, float, float, float]:
+    def get_bounds(
+            gs_table: geopandas.GeoSeries
+    ) -> Tuple[float, float, float, float]:
         """Get the bounds for all of the elements in gs_table.
 
         Args:
@@ -285,7 +292,7 @@ class QGDSRenderer(QRenderer):
             Tuple[float, float, float, float]: The bounds of all of the elements in this table. [minx, miny, maxx, maxy]
         """
         if len(gs_table) == 0:
-            return(0, 0, 0, 0)
+            return (0, 0, 0, 0)
 
         return gs_table.total_bounds
 
@@ -313,7 +320,8 @@ class QGDSRenderer(QRenderer):
         return inclusive_tuple
 
     @staticmethod
-    def midpoint_xy(x1: float, y1: float, x2: float, y2: float) -> Tuple[float, float]:
+    def midpoint_xy(x1: float, y1: float, x2: float,
+                    y2: float) -> Tuple[float, float]:
         """Calculate the center of a line segment with endpoints (x1,y1) and (x2,y2).
 
         Args:
@@ -327,12 +335,13 @@ class QGDSRenderer(QRenderer):
             1st float: x for midpoint
             2nd float: y for midpoint
         """
-        midx = (x1+x2) / 2
-        midy = (y1+y2) / 2
+        midx = (x1 + x2) / 2
+        midy = (y1 + y2) / 2
 
         return midx, midy
 
-    def scale_max_bounds(self, chip_name: str, all_bounds: list) -> Tuple[tuple, tuple]:
+    def scale_max_bounds(self, chip_name: str,
+                         all_bounds: list) -> Tuple[tuple, tuple]:
         """Given the list of tuples to represent all of the bounds for path, poly, etc.
         This will return the scaled using self.bounding_box_scale_x and self.bounding_box_scale_y,
         and the max bounds of the tuples provided.
@@ -373,7 +382,8 @@ class QGDSRenderer(QRenderer):
 
         return scaled_box, (minx, miny, maxx, maxy)
 
-    def check_qcomps(self, highlight_qcomponents: list = []) -> Tuple[list, int]:
+    def check_qcomps(self,
+                     highlight_qcomponents: list = []) -> Tuple[list, int]:
         """Confirm the list doesn't have names of componentes repeated.
         Comfirm that the name of component exists in QDesign.
 
@@ -392,8 +402,9 @@ class QGDSRenderer(QRenderer):
         # Confirm all QComponent are in design.
         for qcomp in unique_qcomponents:
             if qcomp not in self.design.name_to_id:
-                self.logger.warning(f'The component={qcomp} in highlight_qcomponents not'
-                                    ' in QDesign. The GDS data not generated.')
+                self.logger.warning(
+                    f'The component={qcomp} in highlight_qcomponents not'
+                    ' in QDesign. The GDS data not generated.')
                 return unique_qcomponents, 1
 
         # For Subtraction bounding box.
@@ -406,7 +417,8 @@ class QGDSRenderer(QRenderer):
 
         return unique_qcomponents, 0
 
-    def create_qgeometry_for_gds(self, highlight_qcomponents: list = []) -> int:
+    def create_qgeometry_for_gds(self,
+                                 highlight_qcomponents: list = []) -> int:
         """Using self.design, this method does the following:
 
         1. Gather the QGeometries to be used to write to file.
@@ -447,8 +459,8 @@ class QGDSRenderer(QRenderer):
             for table_name in self.design.qgeometry.get_element_types():
 
                 # Get table for chip and table_name, and reduce to keep just the list of unique_qcomponents.
-                table = self.get_table(
-                    table_name, unique_qcomponents, chip_name)
+                table = self.get_table(table_name, unique_qcomponents,
+                                       chip_name)
 
                 if table_name == 'junction':
                     self.chip_info[chip_name]['junction'] = deepcopy(table)
@@ -456,12 +468,13 @@ class QGDSRenderer(QRenderer):
                     # For every chip, and layer, separate the "subtract" and "no_subtract" elements and gather bounds.
                     # dict_bounds[chip_name] = list_bounds
                     self.gather_subtract_elements_and_bounds(
-                        chip_name, table_name, table, all_table_subtracts, all_table_no_subtracts)
+                        chip_name, table_name, table, all_table_subtracts,
+                        all_table_no_subtracts)
 
             # If list of QComponents provided, use the bounding_box_scale(x and y),
             # otherwise use self._chips
-            scaled_max_bound, max_bound = self.scale_max_bounds(chip_name,
-                                                                self.dict_bounds[chip_name]['gather'])
+            scaled_max_bound, max_bound = self.scale_max_bounds(
+                chip_name, self.dict_bounds[chip_name]['gather'])
             if highlight_qcomponents:
                 self.dict_bounds[chip_name]['for_subtract'] = scaled_max_bound
             else:
@@ -472,14 +485,16 @@ class QGDSRenderer(QRenderer):
                     self.dict_bounds[chip_name]['for_subtract'] = max_bound
                     self.logger.warning(
                         f'design.get_x_y_for_chip() did NOT return a good code for chip={chip_name},'
-                        f'for ground subtraction-box using the size calculated from QGeometry, ({max_bound}) will be used. ')
+                        f'for ground subtraction-box using the size calculated from QGeometry, ({max_bound}) will be used. '
+                    )
             if is_true(self.options.ground_plane):
-                self.handle_ground_plane(chip_name,
-                                         all_table_subtracts, all_table_no_subtracts)
+                self.handle_ground_plane(chip_name, all_table_subtracts,
+                                         all_table_no_subtracts)
 
         return 0
 
-    def handle_ground_plane(self, chip_name: str, all_table_subtracts: list, all_table_no_subtracts: list):
+    def handle_ground_plane(self, chip_name: str, all_table_subtracts: list,
+                            all_table_no_subtracts: list):
         """Place all the subtract geometries for one chip into self.chip_info[chip_name]['all_subtract_true']
 
         For LINESTRING within table that has a value for fillet, check if any segment is shorter than fillet radius.
@@ -507,39 +522,44 @@ class QGDSRenderer(QRenderer):
             copy_no_subtract = deepcopy(all_table_no_subtracts)
 
             for item in copy_subtract:
-                item.drop(item.index[item['layer'] !=
-                                     chip_layer], inplace=True)
+                item.drop(item.index[item['layer'] != chip_layer],
+                          inplace=True)
 
             for item_no in copy_no_subtract:
-                item_no.drop(item_no.index[item_no['layer'] !=
-                                           chip_layer], inplace=True)
+                item_no.drop(item_no.index[item_no['layer'] != chip_layer],
+                             inplace=True)
 
-            self.chip_info[chip_name][chip_layer]['all_subtract_true'] = geopandas.GeoDataFrame(
-                pd.concat(copy_subtract, ignore_index=False))
+            self.chip_info[chip_name][chip_layer][
+                'all_subtract_true'] = geopandas.GeoDataFrame(
+                    pd.concat(copy_subtract, ignore_index=False))
 
-            self.chip_info[chip_name][chip_layer]['all_subtract_false'] = geopandas.GeoDataFrame(
-                pd.concat(copy_no_subtract, ignore_index=False))
+            self.chip_info[chip_name][chip_layer][
+                'all_subtract_false'] = geopandas.GeoDataFrame(
+                    pd.concat(copy_no_subtract, ignore_index=False))
 
-            self.chip_info[chip_name][chip_layer]['all_subtract_true'].reset_index(
-                inplace=True)
-            self.chip_info[chip_name][chip_layer]['all_subtract_false'].reset_index(
-                inplace=True)
+            self.chip_info[chip_name][chip_layer][
+                'all_subtract_true'].reset_index(inplace=True)
+            self.chip_info[chip_name][chip_layer][
+                'all_subtract_false'].reset_index(inplace=True)
 
             if is_true(fix_short_segments):
-                self.fix_short_segments_within_table(
-                    chip_name, chip_layer, 'all_subtract_true')
-                self.fix_short_segments_within_table(
-                    chip_name, chip_layer, 'all_subtract_false')
+                self.fix_short_segments_within_table(chip_name, chip_layer,
+                                                     'all_subtract_true')
+                self.fix_short_segments_within_table(chip_name, chip_layer,
+                                                     'all_subtract_false')
 
-            self.chip_info[chip_name][chip_layer]['q_subtract_true'] = self.chip_info[chip_name][chip_layer]['all_subtract_true'].apply(
-                self.qgeometry_to_gds, axis=1)
+            self.chip_info[chip_name][chip_layer][
+                'q_subtract_true'] = self.chip_info[chip_name][chip_layer][
+                    'all_subtract_true'].apply(self.qgeometry_to_gds, axis=1)
 
-            self.chip_info[chip_name][chip_layer]['q_subtract_false'] = self.chip_info[chip_name][chip_layer]['all_subtract_false'].apply(
-                self.qgeometry_to_gds, axis=1)
+            self.chip_info[chip_name][chip_layer][
+                'q_subtract_false'] = self.chip_info[chip_name][chip_layer][
+                    'all_subtract_false'].apply(self.qgeometry_to_gds, axis=1)
 
     # Handling Fillet issues.
 
-    def fix_short_segments_within_table(self, chip_name: str, chip_layer: int, all_sub_true_or_false: str):
+    def fix_short_segments_within_table(self, chip_name: str, chip_layer: int,
+                                        all_sub_true_or_false: str):
         """Update self.chip_info geopandas.GeoDataFrame.
 
         Will iterate through the rows to examine the LineString.
@@ -566,8 +586,8 @@ class QGDSRenderer(QRenderer):
                 if status > 0:
                     edit_index[index] = all_shapelys
 
-            df_copy = self.chip_info[chip_name][chip_layer][all_sub_true_or_false].copy(
-                deep=True)
+            df_copy = self.chip_info[chip_name][chip_layer][
+                all_sub_true_or_false].copy(deep=True)
             for del_key, the_shapes in edit_index.items():
                 # copy row "index" into a new df "status" times.  Then replace the LONG shapely with all_shapleys
                 # For any entries in edit_index, edit table here.
@@ -580,10 +600,11 @@ class QGDSRenderer(QRenderer):
                     # Keep ignore_index=False, otherwise, the other del_key will not be found.
                     df_copy = df_copy.append(orig_row, ignore_index=False)
 
-            self.chip_info[chip_name][chip_layer][all_sub_true_or_false] = df_copy.copy(
-                deep=True)
+            self.chip_info[chip_name][chip_layer][
+                all_sub_true_or_false] = df_copy.copy(deep=True)
 
-    def check_length(self, a_shapely: shapely.geometry.LineString, a_fillet: float) -> Tuple[int, Dict]:
+    def check_length(self, a_shapely: shapely.geometry.LineString,
+                     a_fillet: float) -> Tuple[int, Dict]:
         """Determine if a_shapely has short segments based on scaled fillet value.
 
         Use check_short_segments_by_scaling_fillet to determine the critera for flagging a segment.
@@ -611,7 +632,7 @@ class QGDSRenderer(QRenderer):
             int: Number of short segments that should not have fillet.
             Dict: Key: index into a_shapely, Value: dict with fillet and shorter LineString
         """
-       # Holds all of the index of when a segment is too short.
+        # Holds all of the index of when a segment is too short.
         idx_bad_fillet = list()
         status = -1  # Initalize to meaningless value.
         coords = list(a_shapely.coords)
@@ -619,8 +640,8 @@ class QGDSRenderer(QRenderer):
 
         all_idx_bad_fillet = dict()
 
-        self.identify_vertex_not_to_fillet(
-            coords, a_fillet, all_idx_bad_fillet)
+        self.identify_vertex_not_to_fillet(coords, a_fillet,
+                                           all_idx_bad_fillet)
 
         shorter_lines = dict()
 
@@ -637,85 +658,130 @@ class QGDSRenderer(QRenderer):
                 no_fillet_vertices.clear()
                 if idx == 0 and start == 0:
                     # The first segment.
-                    if stop == len_coords-1:
+                    if stop == len_coords - 1:
                         # Every vertex should not be fillet'd
                         no_fillet_vertices = coords[start:len_coords]
-                        shorter_lines[stop] = dict({'line': LineString(no_fillet_vertices),
-                                                    'fillet': float('NaN')})
+                        shorter_lines[stop] = dict({
+                            'line':
+                            LineString(no_fillet_vertices),
+                            'fillet':
+                            float('NaN')
+                        })
                     else:
-                        no_fillet_vertices = coords[start:stop+1]
+                        no_fillet_vertices = coords[start:stop + 1]
                         no_fillet_vertices.append(midpoints[stop])
-                        shorter_lines[stop] = dict({'line': LineString(no_fillet_vertices),
-                                                    'fillet': float('NaN')})
-                elif idx == status-1 and stop == len_coords-1:
+                        shorter_lines[stop] = dict({
+                            'line':
+                            LineString(no_fillet_vertices),
+                            'fillet':
+                            float('NaN')
+                        })
+                elif idx == status - 1 and stop == len_coords - 1:
                     # The last segment
-                    no_fillet_vertices = coords[start:stop+1]
-                    no_fillet_vertices.insert(0, midpoints[start-1])
-                    shorter_lines[stop] = dict({'line': LineString(no_fillet_vertices),
-                                                'fillet': float('NaN')})
+                    no_fillet_vertices = coords[start:stop + 1]
+                    no_fillet_vertices.insert(0, midpoints[start - 1])
+                    shorter_lines[stop] = dict({
+                        'line':
+                        LineString(no_fillet_vertices),
+                        'fillet':
+                        float('NaN')
+                    })
                 else:
                     # Segment in between first and last segment.
-                    no_fillet_vertices = coords[start:stop+1]
-                    no_fillet_vertices.insert(0, midpoints[start-1])
+                    no_fillet_vertices = coords[start:stop + 1]
+                    no_fillet_vertices.insert(0, midpoints[start - 1])
                     no_fillet_vertices.append(midpoints[stop])
-                    shorter_lines[stop] = dict({'line': LineString(no_fillet_vertices),
-                                                'fillet': float('NaN')})
+                    shorter_lines[stop] = dict({
+                        'line':
+                        LineString(no_fillet_vertices),
+                        'fillet':
+                        float('NaN')
+                    })
             # Gather the fillet segments.
             at_vertex = 0
             for idx, (start, stop) in enumerate(idx_bad_fillet):
                 fillet_vertices.clear()
                 if idx == 0 and start == 0:
-                    pass    # just update at_vertex
+                    pass  # just update at_vertex
                 if idx == 0 and start == 1:
                     init_tuple = coords[0]
-                    fillet_vertices = [init_tuple, midpoints[start-1]]
-                    shorter_lines[start] = dict({'line': LineString(fillet_vertices),
-                                                 'fillet': a_fillet})
+                    fillet_vertices = [init_tuple, midpoints[start - 1]]
+                    shorter_lines[start] = dict({
+                        'line':
+                        LineString(fillet_vertices),
+                        'fillet':
+                        a_fillet
+                    })
                 if idx == 0 and start > 1:
                     fillet_vertices = coords[0:start]
-                    fillet_vertices.append(midpoints[start-1])
-                    shorter_lines[start] = dict({'line': LineString(fillet_vertices),
-                                                 'fillet': a_fillet})
-                    if idx == status-1 and stop != len_coords-1:
+                    fillet_vertices.append(midpoints[start - 1])
+                    shorter_lines[start] = dict({
+                        'line':
+                        LineString(fillet_vertices),
+                        'fillet':
+                        a_fillet
+                    })
+                    if idx == status - 1 and stop != len_coords - 1:
                         # Extra segment after the last no-fillet.
                         fillet_vertices.clear()
-                        fillet_vertices = coords[stop+1:len_coords]
+                        fillet_vertices = coords[stop + 1:len_coords]
                         fillet_vertices.insert(0, midpoints[stop])
-                        shorter_lines[len_coords] = dict({'line': LineString(fillet_vertices),
-                                                          'fillet': a_fillet})
-                elif idx == status-1 and start == 0 and stop != len_coords-1:
+                        shorter_lines[len_coords] = dict({
+                            'line':
+                            LineString(fillet_vertices),
+                            'fillet':
+                            a_fillet
+                        })
+                elif idx == status - 1 and start == 0 and stop != len_coords - 1:
                     # At last tuple, and and start at first index, and  the stop is not last index of coords.
-                    fillet_vertices = coords[stop+1:len_coords]
+                    fillet_vertices = coords[stop + 1:len_coords]
                     fillet_vertices.insert(0, midpoints[stop])
-                    shorter_lines[start] = dict({'line': LineString(fillet_vertices),
-                                                 'fillet': a_fillet})
-                elif idx == status-1 and stop != len_coords-1:
+                    shorter_lines[start] = dict({
+                        'line':
+                        LineString(fillet_vertices),
+                        'fillet':
+                        a_fillet
+                    })
+                elif idx == status - 1 and stop != len_coords - 1:
                     # At last tuple, and the stop is not last index of coords.
-                    fillet_vertices = coords[at_vertex+1:start]
+                    fillet_vertices = coords[at_vertex + 1:start]
                     fillet_vertices.insert(0, midpoints[at_vertex])
-                    fillet_vertices.append(midpoints[start-1])
-                    shorter_lines[start] = dict({'line': LineString(fillet_vertices),
-                                                 'fillet': a_fillet})
+                    fillet_vertices.append(midpoints[start - 1])
+                    shorter_lines[start] = dict({
+                        'line':
+                        LineString(fillet_vertices),
+                        'fillet':
+                        a_fillet
+                    })
                     # Extra segment after the last no-fillet.
                     fillet_vertices.clear()
-                    fillet_vertices = coords[stop+1:len_coords]
+                    fillet_vertices = coords[stop + 1:len_coords]
                     fillet_vertices.insert(0, midpoints[stop])
-                    shorter_lines[len_coords] = dict({'line': LineString(fillet_vertices),
-                                                      'fillet': a_fillet})
+                    shorter_lines[len_coords] = dict({
+                        'line':
+                        LineString(fillet_vertices),
+                        'fillet':
+                        a_fillet
+                    })
                 else:
-                    if (start-at_vertex) > 1:
-                        fillet_vertices = coords[at_vertex+1:start]
+                    if (start - at_vertex) > 1:
+                        fillet_vertices = coords[at_vertex + 1:start]
                         fillet_vertices.insert(0, midpoints[at_vertex])
-                        fillet_vertices.append(midpoints[start-1])
-                        shorter_lines[start] = dict({'line': LineString(fillet_vertices),
-                                                     'fillet': a_fillet})
+                        fillet_vertices.append(midpoints[start - 1])
+                        shorter_lines[start] = dict({
+                            'line':
+                            LineString(fillet_vertices),
+                            'fillet':
+                            a_fillet
+                        })
                 at_vertex = stop  # Need to update for every loop.
         else:
             # No short segments.
-            shorter_lines[len_coords-1] = a_shapely
+            shorter_lines[len_coords - 1] = a_shapely
         return status, shorter_lines
 
-    def identify_vertex_not_to_fillet(self, coords: list, a_fillet: float, all_idx_bad_fillet: dict):
+    def identify_vertex_not_to_fillet(self, coords: list, a_fillet: float,
+                                      all_idx_bad_fillet: dict):
         """Use coords to denote segments that are too short.  In particular,
         when fillet'd, they will cause the appearance of incorrect fillet when graphed.
 
@@ -742,18 +808,24 @@ class QGDSRenderer(QRenderer):
 
         qdesign_precision = self.design.template_options.PRECISION
 
-        all_idx_bad_fillet['reduced_idx'] = get_range_of_vertex_to_not_fillet(coords, a_fillet, qdesign_precision,
-                                                                              add_endpoints=True)
+        all_idx_bad_fillet['reduced_idx'] = get_range_of_vertex_to_not_fillet(
+            coords, a_fillet, qdesign_precision, add_endpoints=True)
 
         midpoints = list()
-        midpoints = [QGDSRenderer.midpoint_xy(coords[idx-1][0], coords[idx-1][1], vertex2[0], vertex2[1])
-                     for idx, vertex2 in enumerate(coords) if idx > 0]
+        midpoints = [
+            QGDSRenderer.midpoint_xy(coords[idx - 1][0], coords[idx - 1][1],
+                                     vertex2[0], vertex2[1])
+            for idx, vertex2 in enumerate(coords) if idx > 0
+        ]
         all_idx_bad_fillet['midpoints'] = midpoints
 
     # Move data around to be useful for GDS
 
-    def gather_subtract_elements_and_bounds(self, chip_name: str, table_name: str, table: geopandas.GeoDataFrame,
-                                            all_subtracts: list, all_no_subtracts: list):
+    def gather_subtract_elements_and_bounds(self, chip_name: str,
+                                            table_name: str,
+                                            table: geopandas.GeoDataFrame,
+                                            all_subtracts: list,
+                                            all_no_subtracts: list):
         """For every chip, and layer, separate the "subtract" and "no_subtract" elements
         and gather bounds for all the elements in qgeometries..
         Use format: f'{chip_name}_{table_name}s'
@@ -790,7 +862,8 @@ class QGDSRenderer(QRenderer):
         setattr(self, f'{chip_name}_{table_name}s', q_geometries)
         '''
 
-    def get_table(self, table_name: str, unique_qcomponents: list, chip_name: str) -> geopandas.GeoDataFrame:
+    def get_table(self, table_name: str, unique_qcomponents: list,
+                  chip_name: str) -> geopandas.GeoDataFrame:
         """If unique_qcomponents list is empty, get table using table_name from QGeometry tables
             for all elements with table_name.  Otherwise, return a table with fewer elements, for just the
             qcomponents within the unique_qcomponents list.
@@ -809,8 +882,10 @@ class QGDSRenderer(QRenderer):
         else:
             table = self.design.qgeometry.tables[table_name]
             # Convert string QComponent.name  to QComponent.id
-            highlight_id = [self.design.name_to_id[a_qcomponent]
-                            for a_qcomponent in unique_qcomponents]
+            highlight_id = [
+                self.design.name_to_id[a_qcomponent]
+                for a_qcomponent in unique_qcomponents
+            ]
 
             # Remove QComponents which are not requested.
             table = table[table['component'].isin(highlight_id)]
@@ -835,8 +910,8 @@ class QGDSRenderer(QRenderer):
             self._clear_library()
 
         # Create a new GDS library file. It can contains multiple cells.
-        self.lib = gdspy.GdsLibrary(unit=float(
-            self.parse_value(self.options.gds_unit)))
+        self.lib = gdspy.GdsLibrary(
+            unit=float(self.parse_value(self.options.gds_unit)))
 
         return self.lib
 
@@ -878,17 +953,17 @@ class QGDSRenderer(QRenderer):
 
         if is_true(self.options.ground_plane):
             all_chips_top_name = 'TOP'
-            all_chips_top = lib.new_cell(
-                all_chips_top_name, overwrite_duplicate=True)
+            all_chips_top = lib.new_cell(all_chips_top_name,
+                                         overwrite_duplicate=True)
             for chip_name in self.chip_info:
                 chip_only_top_name = f'TOP_{chip_name}'
-                chip_only_top = lib.new_cell(
-                    chip_only_top_name, overwrite_duplicate=True)
+                chip_only_top = lib.new_cell(chip_only_top_name,
+                                             overwrite_duplicate=True)
 
                 # If junction table, import the cell and cell to chip_only_top
                 if 'junction' in self.chip_info[chip_name]:
-                    self.import_junctions_to_one_cell(
-                        chip_name, lib, chip_only_top)
+                    self.import_junctions_to_one_cell(chip_name, lib,
+                                                      chip_only_top)
 
                 # There can be more than one chip in QGeometry.
                 # All chips export to one gds file.
@@ -896,9 +971,10 @@ class QGDSRenderer(QRenderer):
                 layers_in_chip = self.design.qgeometry.get_all_unique_layers(
                     chip_name)
 
-                minx, miny, maxx, maxy = self.dict_bounds[chip_name]['for_subtract']
-                rectangle_points = [(minx, miny), (maxx, miny),
-                                    (maxx, maxy), (minx, maxy)]
+                minx, miny, maxx, maxy = self.dict_bounds[chip_name][
+                    'for_subtract']
+                rectangle_points = [(minx, miny), (maxx, miny), (maxx, maxy),
+                                    (minx, maxy)]
 
                 for chip_layer in layers_in_chip:
 
@@ -906,16 +982,16 @@ class QGDSRenderer(QRenderer):
                         rectangle_points, chip_layer)
 
                     ground_cell_name = f'TOP_{chip_name}_{chip_layer}'
-                    ground_cell = lib.new_cell(
-                        ground_cell_name, overwrite_duplicate=True)
+                    ground_cell = lib.new_cell(ground_cell_name,
+                                               overwrite_duplicate=True)
 
-                    if len(self.chip_info[chip_name][chip_layer]['q_subtract_true']) != 0:
+                    if len(self.chip_info[chip_name][chip_layer]
+                           ['q_subtract_true']) != 0:
                         subtract_cell_name = f'SUBTRACT_{chip_name}_{chip_layer}'
-                        subtract_cell = lib.new_cell(
-                            subtract_cell_name, overwrite_duplicate=True)
-                        subtract_cell.add(
-                            self.chip_info[chip_name][chip_layer]['q_subtract_true'])
-
+                        subtract_cell = lib.new_cell(subtract_cell_name,
+                                                     overwrite_duplicate=True)
+                        subtract_cell.add(self.chip_info[chip_name][chip_layer]
+                                          ['q_subtract_true'])
                         '''gdspy.boolean() is not documented clearly.
                         If there are multiple elements to subtract (both poly and path),
                         the way I could make it work is to put them into a cell, within lib.
@@ -924,28 +1000,33 @@ class QGDSRenderer(QRenderer):
                         After the boolean(), I deleted the cell from lib.
                         The memory is freed up then.
                         '''
-                        diff_geometry = gdspy.boolean(self.chip_info[chip_name]['subtract_poly'],
-                                                      subtract_cell.get_polygons(),
-                                                      'not',
-                                                      max_points=max_points,
-                                                      precision=precision,
-                                                      layer=chip_layer)
+                        diff_geometry = gdspy.boolean(
+                            self.chip_info[chip_name]['subtract_poly'],
+                            subtract_cell.get_polygons(),
+                            'not',
+                            max_points=max_points,
+                            precision=precision,
+                            layer=chip_layer)
 
                         lib.remove(subtract_cell)
 
                         if diff_geometry is None:
                             self.design.logger.warning(
-                                f'There is no table named diff_geometry to write.')
+                                f'There is no table named diff_geometry to write.'
+                            )
                         else:
                             ground_cell.add(diff_geometry)
 
-                    if self.chip_info[chip_name][chip_layer]['q_subtract_false'] is None:
+                    if self.chip_info[chip_name][chip_layer][
+                            'q_subtract_false'] is None:
                         self.logger.warning(
-                            f'There is no table named self.chip_info[{chip_name}][q_subtract_false] to write.')
+                            f'There is no table named self.chip_info[{chip_name}][q_subtract_false] to write.'
+                        )
                     else:
-                        if len(self.chip_info[chip_name][chip_layer]['q_subtract_false']) != 0:
-                            ground_cell.add(
-                                self.chip_info[chip_name][chip_layer]['q_subtract_false'])
+                        if len(self.chip_info[chip_name][chip_layer]
+                               ['q_subtract_false']) != 0:
+                            ground_cell.add(self.chip_info[chip_name]
+                                            [chip_layer]['q_subtract_false'])
                     # put all cells into TOP_chipname, if not empty.
                     # When checking for bounding box, gdspy will return None if empty.
                     if ground_cell.get_bounding_box() is not None:
@@ -961,7 +1042,9 @@ class QGDSRenderer(QRenderer):
 
         lib.write_gds(file_name)
 
-    def get_linestring_characteristics(self, row: 'pandas.core.frame.Pandas') -> Tuple[Tuple, float, float]:
+    def get_linestring_characteristics(
+            self,
+            row: 'pandas.core.frame.Pandas') -> Tuple[Tuple, float, float]:
         """Given a row in the Junction table, give the characteristics of LineString in 
         row.geometry.
 
@@ -980,15 +1063,16 @@ class QGDSRenderer(QRenderer):
         [(minx, miny), (maxx, maxy)] = row.geometry.coords[:]
 
         center = QGDSRenderer.midpoint_xy(minx, miny, maxx, maxy)
-        rotation = math.degrees(math.atan2((maxy-miny), (maxx-minx)))
-        magnitude = np.round(distance.euclidean(row.geometry.coords[0],
-                                                row.geometry.coords[1]), for_rounding)
+        rotation = math.degrees(math.atan2((maxy - miny), (maxx - minx)))
+        magnitude = np.round(
+            distance.euclidean(row.geometry.coords[0], row.geometry.coords[1]),
+            for_rounding)
 
         return center, rotation, magnitude
 
-    def give_rotation_center_twopads(self,
-                                     row: 'pandas.core.frame.Pandas',
-                                     a_cell_bounding_box: 'numpy.ndarray') -> Tuple:
+    def give_rotation_center_twopads(
+            self, row: 'pandas.core.frame.Pandas',
+            a_cell_bounding_box: 'numpy.ndarray') -> Tuple:
         """Calculate the angle for rotation, center of LineString in row.geometry, and
         if needed create two pads to connect the junction to qubit.
 
@@ -1015,8 +1099,8 @@ class QGDSRenderer(QRenderer):
 
         pad_left = None
         pad_right = None
-        jj_x_width = abs(jj_maxx-jj_minx)
-        jj_y_height = abs(jj_maxy-jj_miny)
+        jj_x_width = abs(jj_maxx - jj_minx)
+        jj_y_height = abs(jj_maxy - jj_miny)
 
         jj_center_x = (jj_x_width / 2) + jj_minx
         jj_center_y = (jj_y_height / 2) + jj_miny
@@ -1025,28 +1109,33 @@ class QGDSRenderer(QRenderer):
 
         if pad_height < jj_y_height:
             text_id = self.design._components[row.component]._name
-            self.logger.warning(f'In junction table, component={text_id} with key={row.key} '
-                                f'has width={pad_height} smaller than cell dimension={jj_y_height}.')
+            self.logger.warning(
+                f'In junction table, component={text_id} with key={row.key} '
+                f'has width={pad_height} smaller than cell dimension={jj_y_height}.'
+            )
 
         if jj_x_width < magnitude:
             pad_x_size_minus_overlap = (magnitude - jj_x_width) / 2
-            pad_miny = jj_center_y - (pad_height/2)
+            pad_miny = jj_center_y - (pad_height / 2)
             pad_left = gdspy.Rectangle(
-                (jj_minx-pad_x_size_minus_overlap, pad_miny),
-                (jj_minx+junction_pad_overlap, pad_miny+pad_height),
+                (jj_minx - pad_x_size_minus_overlap, pad_miny),
+                (jj_minx + junction_pad_overlap, pad_miny + pad_height),
                 layer=int(row.layer),
                 datatype=10)
 
             pad_right = gdspy.Rectangle(
-                (jj_maxx-junction_pad_overlap, pad_miny),
-                (jj_maxx+pad_x_size_minus_overlap, pad_miny+pad_height),
+                (jj_maxx - junction_pad_overlap, pad_miny),
+                (jj_maxx + pad_x_size_minus_overlap, pad_miny + pad_height),
                 layer=int(row.layer),
                 datatype=10)
 
         return rotation, center, pad_left, pad_right
+
+
 ############
 
-    def import_junctions_to_one_cell(self, chip_name: str, lib: gdspy.library, chip_only_top: gdspy.library.Cell):
+    def import_junctions_to_one_cell(self, chip_name: str, lib: gdspy.library,
+                                     chip_only_top: gdspy.library.Cell):
         """Given lib, import the gds file from default options.  Based on the cell name in QGeometry table,
         import the cell from the gds file and place it in hierarchy of chip_only_top. In addition, the linestring
         should be two vertexes, and denotes two things.  1. The midpoint of segment is the the center of cell. 
@@ -1069,13 +1158,13 @@ class QGDSRenderer(QRenderer):
                     a_cell = lib.extract(row.gds_cell_name)
                     a_cell_bounding_box = a_cell.get_bounding_box()
 
-                    rotation, center, pad_left, pad_right = self.give_rotation_center_twopads(row,
-                                                                                              a_cell_bounding_box)
+                    rotation, center, pad_left, pad_right = self.give_rotation_center_twopads(
+                        row, a_cell_bounding_box)
 
                     # String for JJ combined with pad Right and pad Left
                     jj_pad_RL_name = f'{row.gds_cell_name}_component{row.component}_name{row.name}'
-                    temp_cell = lib.new_cell(
-                        jj_pad_RL_name, overwrite_duplicate=True)
+                    temp_cell = lib.new_cell(jj_pad_RL_name,
+                                             overwrite_duplicate=True)
                     temp_cell.add(a_cell)
 
                     if pad_left is not None:
@@ -1083,20 +1172,26 @@ class QGDSRenderer(QRenderer):
                     if pad_right is not None:
                         temp_cell.add(pad_right)
 
-                    chip_only_top.add(gdspy.CellReference(
-                        temp_cell, origin=center, rotation=rotation))
+                    chip_only_top.add(
+                        gdspy.CellReference(temp_cell,
+                                            origin=center,
+                                            rotation=rotation))
                     deleteme = 5
                 else:
-                    self.logger.warning(f'From the "junction" table, the cell named'
-                                        f' "{row.gds_cell_name}"",  is not in file: {self.options.path_filename}.'
-                                        f' The cell was not used.')
+                    self.logger.warning(
+                        f'From the "junction" table, the cell named'
+                        f' "{row.gds_cell_name}"",  is not in file: {self.options.path_filename}.'
+                        f' The cell was not used.')
 
         else:
-            self.logger.warning(f'Not able to find file:"{self.options.path_filename}".  '
-                                f'Not used to replace junction.'
-                                f' Checked directory:"{directory_name}".')
+            self.logger.warning(
+                f'Not able to find file:"{self.options.path_filename}".  '
+                f'Not used to replace junction.'
+                f' Checked directory:"{directory_name}".')
 
-    def export_to_gds(self, file_name: str, highlight_qcomponents: list = []) -> int:
+    def export_to_gds(self,
+                      file_name: str,
+                      highlight_qcomponents: list = []) -> int:
         """Use the design which was used to initialize this class.
         The QGeometry element types of both "path" and "poly", will
         be used, to convert QGeometry to GDS formatted file.
@@ -1128,7 +1223,8 @@ class QGDSRenderer(QRenderer):
         else:
             return 0
 
-    def qgeometry_to_gds(self, qgeometry_element: pd.Series) -> 'gdspy.polygon':
+    def qgeometry_to_gds(self,
+                         qgeometry_element: pd.Series) -> 'gdspy.polygon':
         """Convert the design.qgeometry table to format used by GDS renderer.
         Convert the class to a series of GDSII elements.
 
@@ -1139,7 +1235,6 @@ class QGDSRenderer(QRenderer):
             'gdspy.polygon' or 'gdspy.FlexPath': Convert the class to a series of GDSII
             format on the input pd.Series.
         """
-
         """
         *NOTE:*
         GDS:
@@ -1159,10 +1254,11 @@ class QGDSRenderer(QRenderer):
         geom = qgeometry_element.geometry  # type: shapely.geometry.base.BaseGeometry
 
         if isinstance(geom, shapely.geometry.Polygon):
-            exterior_poly = gdspy.Polygon(list(geom.exterior.coords),
-                                          layer=qgeometry_element.layer,
-                                          datatype=10,
-                                          )
+            exterior_poly = gdspy.Polygon(
+                list(geom.exterior.coords),
+                layer=qgeometry_element.layer,
+                datatype=10,
+            )
 
             # If polygons have a holes, need to remove it for gdspy.
             all_interiors = list()
@@ -1204,28 +1300,31 @@ class QGDSRenderer(QRenderer):
                 self.logger.warning(
                     f'Since width:{width} for a Path is not a number, '
                     f'it will be exported using width_LineString: {use_width}.  '
-                    f'The component_id is:{qcomponent_id}, name is:{name}, layer is: {layer_num}')
+                    f'The component_id is:{qcomponent_id}, name is:{name}, layer is: {layer_num}'
+                )
             else:
                 use_width = qgeometry_element.width
 
             if 'fillet' in qgeometry_element:
-                if math.isnan(qgeometry_element.fillet) or qgeometry_element.fillet <= 0 or qgeometry_element.fillet < qgeometry_element.width:
+                if math.isnan(
+                        qgeometry_element.fillet
+                ) or qgeometry_element.fillet <= 0 or qgeometry_element.fillet < qgeometry_element.width:
                     to_return = gdspy.FlexPath(list(geom.coords),
                                                use_width,
                                                layer=qgeometry_element.layer,
                                                max_points=max_points,
                                                datatype=11)
                 else:
-                    to_return = gdspy.FlexPath(list(geom.coords),
-                                               use_width,
-                                               layer=qgeometry_element.layer,
-                                               datatype=11,
-                                               max_points=max_points,
-                                               corners=corners,
-                                               bend_radius=qgeometry_element.fillet,
-                                               tolerance=tolerance,
-                                               precision=precision
-                                               )
+                    to_return = gdspy.FlexPath(
+                        list(geom.coords),
+                        use_width,
+                        layer=qgeometry_element.layer,
+                        datatype=11,
+                        max_points=max_points,
+                        corners=corners,
+                        bend_radius=qgeometry_element.fillet,
+                        tolerance=tolerance,
+                        precision=precision)
                 return to_return
             else:
                 # Could be junction table with a linestring.
@@ -1233,13 +1332,13 @@ class QGDSRenderer(QRenderer):
                 self.logger.warning(
                     f'Linestring did not have fillet in column. The qgeometry_element was not drawn.\n'
                     f'The qgeometry_element within table is:\n'
-                    f'{qgeometry_element}'
-                )
+                    f'{qgeometry_element}')
         else:
             # TODO: Handle
             self.logger.warning(
                 f'Unexpected shapely object geometry.'
-                f'The variable qgeometry_element is {type(geom)}, method can currently handle Polygon and FlexPath.')
+                f'The variable qgeometry_element is {type(geom)}, method can currently handle Polygon and FlexPath.'
+            )
             # print(geom)
             return None
 

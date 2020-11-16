@@ -14,7 +14,6 @@
 
 # pylint: disable-msg=unnecessary-pass
 # pylint: disable-msg=broad-except
-
 """
 Qiskit Metal unit tests analyses functionality.
 
@@ -40,7 +39,6 @@ class TestRenderers(unittest.TestCase):
     """
     Unit test class
     """
-
     def setUp(self):
         """
         Setup unit test
@@ -114,13 +112,15 @@ class TestRenderers(unittest.TestCase):
             QGDSRenderer(design, initiate=False, render_template={})
         except Exception:
             self.fail(
-                "QGDSRenderer(design, initiate=False, render_template={}) failed")
+                "QGDSRenderer(design, initiate=False, render_template={}) failed"
+            )
 
         try:
             QGDSRenderer(design, initiate=False, render_options={})
         except Exception:
             self.fail(
-                "QGDSRenderer(design, initiate=False, render_options={}) failed")
+                "QGDSRenderer(design, initiate=False, render_options={}) failed"
+            )
 
     def test_renderer_instantiate_mplinteraction(self):
         """
@@ -141,8 +141,8 @@ class TestRenderers(unittest.TestCase):
 
         self.assertEqual(len(options), 13)
         self.assertEqual(options['short_segments_to_not_fillet'], 'True')
-        self.assertEqual(
-            options['check_short_segments_by_scaling_fillet'], '2.0')
+        self.assertEqual(options['check_short_segments_by_scaling_fillet'],
+                         '2.0')
         self.assertEqual(options['gds_unit'], '1')
         self.assertEqual(options['ground_plane'], 'True')
         self.assertEqual(options['corners'], 'circular bend')
@@ -150,7 +150,7 @@ class TestRenderers(unittest.TestCase):
         self.assertEqual(options['precision'], '0.000000001')
         self.assertEqual(options['width_LineString'], '10um')
         self.assertEqual(options['path_filename'],
-                         '../gds-files/Fake_Junctions_copy.gds')
+                         '../resources/Fake_Junctions.GDS')
         self.assertEqual(options['junction_pad_overlap'], '5um')
         self.assertEqual(options['max_points'], '8191')
         self.assertEqual(options['bounding_box_scale_x'], '1.2')
@@ -195,11 +195,14 @@ class TestRenderers(unittest.TestCase):
         transmon_pocket.make()
         transmon_pocket.get_template_options(design)
 
-        a_linestring = draw.LineString([[0,0],[0,1]])
-        a_poly = draw.rectangle(2,2,0,0)
-        qgt.add_qgeometry('path', 'my_id', {'n_sprial': a_linestring}, width=4000)
-        qgt.add_qgeometry('poly', 'my_id', {
-                          'n_spira_etch': a_poly}, subtract=True)
+        a_linestring = draw.LineString([[0, 0], [0, 1]])
+        a_poly = draw.rectangle(2, 2, 0, 0)
+        qgt.add_qgeometry('path',
+                          'my_id', {'n_sprial': a_linestring},
+                          width=4000)
+        qgt.add_qgeometry('poly',
+                          'my_id', {'n_spira_etch': a_poly},
+                          subtract=True)
 
         result = renderer.get_chip_names()
         self.assertEqual(result, {'main': {}})
