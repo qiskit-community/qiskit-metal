@@ -1,5 +1,7 @@
 # Guide
 
-A collection of read7-to-execute jupyter notebooks. We hopw these will help you dive right into the tool usage and coding depths.
+A collection of ready-to-execute Jupyter Notebooks, intended to help you dive right into the tool usage and the coding deep understanding.
 
-WORK IN PROGRESS - this folder will be expanded thorughout the early-access period, based on planned training and on your feedback. Please let us know what would you like to see or contribute directly to this folder content
+WORK IN PROGRESS - this folder will be expanded throughout the early-access period, based on both planned training and your feedback. Please let us know about anything you might want us to add or elaborate upon.
+
+Also feel free to directly contribute to the content of these folders. If you plan to submit notebooks, please clear the cells from any generated image, to minimize the repo data footprint.
