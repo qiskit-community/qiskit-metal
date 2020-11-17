@@ -587,16 +587,20 @@ class MetalGUI(QMainWindowBaseHandler):
 
         Args:
             path (str): the path to the file to save to
-            class_name (str): how you wnat ot call the class
+            class_name (str): how you want to call the class
             name_instance (str): name of the instance of the component to be created
         """
 
+        if not new_path.endswith('.py'):
+            new_path = new_path + ".py"
+
         # Copy template file
         tpath = Path(self.path_gui)
-        tpath = tpath.parent / 'components' / '_template.py'
+        tpath = tpath.parent/'components'/'_template.py'
         shutil.copy(str(tpath), str(new_path))
 
         # Rename the class name
+
         path = Path(new_path)
         text = path.read_text()
         text = text.replace('MyQComponent', class_name)
