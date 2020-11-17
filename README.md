@@ -113,7 +113,10 @@ If you are planning to develop the qiskmit metal codebase, you'll want to use th
 Please be aware that the environment.xml and requirements.txt each use a different pyside version. This is done to prevent kernel crashes formerly caused by pyqode. For non-Windows users, this setup causes an older version of pyqode.qt to be overwritten with a later forked version. On Windows, the background installation process is more complicated. Because of this, Windows users may experience GUI or other issues. If such issues occur, try rerunning `python setup.py install` or create a new, pristine conda environment as per above instructions.
 
 #### Jupyter Lab
-If you can not start Jupyter Lab in the new enviroment. Install Jupyter lab by
+If you can not start Jupyter Lab in the new enviroment. 
+
+Based on: https://anaconda.org/conda-forge/jupyterlab
+Install Jupyter lab by
 ```
 conda install -c conda-forge jupyterlab
 ```
