@@ -596,11 +596,10 @@ class MetalGUI(QMainWindowBaseHandler):
 
         # Copy template file
         tpath = Path(self.path_gui)
-        tpath = tpath.parent/'components'/'_template.py'
+        tpath = tpath.parent / 'components' / '_template.py'
         shutil.copy(str(tpath), str(new_path))
 
         # Rename the class name
-
         path = Path(new_path)
         text = path.read_text()
         text = text.replace('MyQComponent', class_name)
