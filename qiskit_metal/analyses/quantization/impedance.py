@@ -12,27 +12,10 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 """
-=================================================
-Analyses (:mod:`qiskit_metal.analyses`)
-=================================================
+Impedance-based analyses
 
-.. currentmodule:: qiskit_metal.analyses
+TODO
 
-Module containing all Qiskit Metal analyses.
-
-@date: 2019
-
-@author: Zlatko Minev (IBM)
-
-Submodules
-----------
-
-.. autosummary::
-    :toctree:
-
-    cpw_calculations
-    lumped_capacitive
+@author: Zlatko K. Minev
+@date: 2020
 """
-
-from .em import cpw_calculations
-from .quantization import lumped_capacitive

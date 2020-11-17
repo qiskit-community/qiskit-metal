@@ -26,8 +26,8 @@ import unittest
 import numpy as np
 import pandas as pd
 
-from qiskit_metal.analyses import lumped_capacitive
-from qiskit_metal.analyses import cpw_calculations
+from qiskit_metal.analyses.quantization import lumped_capacitive
+from qiskit_metal.analyses.em import cpw_calculations
 from qiskit_metal.tests.assertions import AssertionsMixin
 
 TEST_DATA = Path(__file__).parent / "test_data"
