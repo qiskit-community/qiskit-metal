@@ -13,20 +13,15 @@
 # that they have been altered from the originals.
 """
 =================================================
-Analyses (:mod:`qiskit_metal.analyses`)
+Analyses (:mod:`qiskit_metal.analyses.hamiltonian`)
 =================================================
 
-.. currentmodule:: qiskit_metal.analyses
+.. currentmodule:: qiskit_metal.analyses.em
 
-Module containing all Qiskit Metal analyses.
+Module containing all Qiskit Metal hamiltonian-only analyses.
 
 @date: 2019
 
 @author: Zlatko Minev (IBM)
 
-Submodules
-----------
-
-.. autosummary::
-    :toctree:
 """

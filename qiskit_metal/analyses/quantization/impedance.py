@@ -12,21 +12,10 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 """
-=================================================
-Analyses (:mod:`qiskit_metal.analyses`)
-=================================================
+Impedance-based analyses
 
-.. currentmodule:: qiskit_metal.analyses
+TODO
 
-Module containing all Qiskit Metal analyses.
-
-@date: 2019
-
-@author: Zlatko Minev (IBM)
-
-Submodules
-----------
-
-.. autosummary::
-    :toctree:
+@author: Zlatko K. Minev
+@date: 2020
 """
