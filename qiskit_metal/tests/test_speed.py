@@ -23,7 +23,7 @@ Created on Fri Nov 6 10:02:44 2020
 """
 
 import unittest
-from custom_decorators import timeout
+from qiskit_metal.tests.custom_decorators import timeout
 from qiskit_metal import designs
 from qiskit_metal import MetalGUI,  Headings
 from qiskit_metal.components.qubits.transmon_pocket import TransmonPocket
