@@ -106,9 +106,10 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         """Delete all components
         """
         ret = QMessageBox.question(
-            self, 'Delete all components?',
-            "Are you sure you want to clear all Metal components?",buttons=QMessageBox.StandardButtons(
-            QMessageBox.Yes | QMessageBox.No)
+            self,
+            'Delete all components?',
+            "Are you sure you want to clear all Metal components?",
+            buttons=(QMessageBox.Yes | QMessageBox.No))
         if ret == QMessageBox.Yes:
             self.logger.info('Delete all components.')
             self.design.delete_all_components()
