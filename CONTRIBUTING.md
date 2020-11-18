@@ -70,7 +70,7 @@ commands in the top-level of the repository:
 ``` sh
 conda env create -n <env_name> environment.yml
 conda activate <env_name>
-python -m pip install -e .
+python -m pip install -ve .
 ```
 
 For convenience, you can also try to install directly in an existing
@@ -82,7 +82,7 @@ the top-level of the repository:
 ``` sh
 conda env update -n <env_name> environment.yml
 conda activate <env_name>
-python -m pip install -e .
+python -m pip install -ve .
 ```
 
 ### Notes on Using Conda
