@@ -40,7 +40,7 @@ To do so, execute these commands in the top-level of the repository:
 ```
 conda env create -n <env_name> environment.yml
 conda activate <env_name>
-python -m pip install -e .
+python -m pip install -ve .
 ```
 
 This will first create a new environment with name `<env_name>`, which you can choose to name `metal` for example.
@@ -56,7 +56,7 @@ To install qiskit_metal and its depenencies into an existing environment named `
 ```
 conda env update -n <env_name> environment.yml
 conda activate <env_name>
-python -m pip install -e .
+python -m pip install -ve .
 ```
 
 ##### Notes on using conda
