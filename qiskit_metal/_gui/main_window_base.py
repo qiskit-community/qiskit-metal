@@ -196,10 +196,11 @@ class QMainWindowExtensionBase(QMainWindow):
             _disp_ops = dict(width=500)
             _disp_ops.update(disp_ops or {})
             width_to_scale = round(min(_disp_ops['width'] * 1.5, screenshot.width()))
-            path = Path(name + str(width_to_scale) + '.' + type_).resolve()
-            screenshot = screenshot.scaledToWidth(width_to_scale,
-                                                  mode=QtCore.Qt.SmoothTransformation)
-            screenshot.save(str(path), type_)
+            if not width_to_scale == screenshot.width():
+                path = Path(name + str(width_to_scale) + '.' + type_).resolve()
+                screenshot = screenshot.scaledToWidth(width_to_scale,
+                                                      mode=QtCore.Qt.SmoothTransformation)
+                screenshot.save(str(path), type_)
             display(Image(filename=str(path), **_disp_ops))
 
     def toggle_all_docks(self, do_hide: bool = None):
