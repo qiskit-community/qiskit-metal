@@ -171,12 +171,18 @@ class QMainWindowExtensionBase(QMainWindow):
         """
         Grad a screenshot of the main window,
         save to file, copy to clipboard and visualize in jupyter
+
+        Args:
+            name (string): File name without extension
+            type_ (string): File format and name extension
+            display (bool): indicates whether to visualize or not in jupyter notebook
+            disp_ops (dict): used to pass options to IPython.display.Image (example: width)
         """
 
         path = Path(name + '.' + type_).resolve()
 
         # grab the main window
-        screenshot = self.grab()  # type: QtGui.QPixelMap
+        screenshot = self.grab()  # type: QtGui.QPixMap
         screenshot.save(str(path), type_)
 
         # copy to clipboard
@@ -189,7 +195,7 @@ class QMainWindowExtensionBase(QMainWindow):
             from IPython.display import Image, display
             _disp_ops = dict(width=500)
             _disp_ops.update(disp_ops or {})
-            width_to_scale = round(_disp_ops['width'] * 1.5)
+            width_to_scale = round(min(_disp_ops['width'] * 1.5, screenshot.width()))
             path = Path(name + str(width_to_scale) + '.' + type_).resolve()
             screenshot = screenshot.scaledToWidth(width_to_scale,
                                                   mode=QtCore.Qt.SmoothTransformation)
@@ -582,8 +588,7 @@ class QMainWindowBaseHandler():
                    display=True,
                    disp_ops=None):
         """
-        Grab a screenshot of the main window,
-        save to file, and then copy to clipboard.
+        Alias for get_screenshot()
         """
         self.main_window.get_screenshot(name, type_, display, disp_ops)
 
