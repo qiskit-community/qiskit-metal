@@ -40,13 +40,15 @@ To do so, execute these commands in the top-level of the repository:
 ```
 conda env create -n <env_name> environment.yml
 conda activate <env_name>
-python -m pip install -e .
+python -m pip install -ve .
 ```
 
 This will first create a new environment with name `<env_name>`, which you can choose to name `metal` for example.
 Then we activate the new environment.
 Finally, we install the local package inside that environment.
-The -e flag install qiskit\_metal in [editable mode](https://pip.pypa.io/en/stable/reference/pip_install/#cmdoption-e).
+
+The `-e` flag install qiskit\_metal in [editable mode](https://pip.pypa.io/en/stable/reference/pip_install/#cmdoption-e).
+The `-v` flag is for verbose.
 
 ##### Option 2: Install into an existing environment
 
@@ -56,7 +58,7 @@ To install qiskit_metal and its depenencies into an existing environment named `
 ```
 conda env update -n <env_name> environment.yml
 conda activate <env_name>
-python -m pip install -e .
+python -m pip install -ve .
 ```
 
 ##### Notes on using conda
