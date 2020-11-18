@@ -2,6 +2,16 @@
 
 This folder contains the doc file src. We use sphinx to build the docs.
 
+## The automated method
+
+Build the docs by executing this line:
+```
+    $ python docs/build_docs.py
+```
+Congratulations!  The docs can now be found in your `docs\build\html` directory.
+
+## The step by step method
+
 ### Setup your environment to build the docs
 
 1. Install sphinx and numpydoc
@@ -21,7 +31,7 @@ This folder contains the doc file src. We use sphinx to build the docs.
 	pip install jupyter_sphinx
 ```
 
-### How to build the docs
+### Build the docs using the makefile
 
 1. Make the docs.  In the `docs` directory 
 ```
