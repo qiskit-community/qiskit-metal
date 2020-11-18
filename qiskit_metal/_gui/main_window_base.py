@@ -25,7 +25,7 @@ from copy import deepcopy
 from pathlib import Path
 
 from PySide2 import QtCore, QtGui, QtWidgets
-from PySide2.QtCore import QTimer, Slot
+from PySide2.QtCore import QTimer
 from PySide2.QtGui import QIcon
 from PySide2.QtWidgets import QApplication, QFileDialog, QMainWindow, QMessageBox, QDockWidget
 
@@ -164,39 +164,36 @@ class QMainWindowExtensionBase(QMainWindow):
         self.activateWindow()
 
     def get_screenshot(self,
-                       name='shot.png',
+                       name='shot',
                        type_='png',
                        display=True,
                        disp_ops=None):
         """
         Grad a screenshot of the main window,
-        save to file, and then copy to clipboard.
+        save to file, copy to clipboard and visualize in jupyter
         """
 
-        # self.bring_to_top()
+        path = Path(name + '.' + type_).resolve()
 
-        path = Path(name).resolve()
-
-        # This will grab the entire screen
-        #screen = QtWidgets.QApplication.primaryScreen()
-        #screennum = QtWidgets.QDesktopWidget().screenNumber(self)
-        # self.logger.info(f'screennum={screennum}')
-        #screen = QtWidgets.QApplication.screens()[screennum]
-        # screenshot = screen.grabWindow(self.winId())  # QPixelMap
-        # see also https://github.com/ColinDuquesnoy/QDarkStyleSheet/blob/6aef1de7e97227899c478a5634d136d80991123e/example/example.py#L292
-
-        # just grab the main window
+        # grab the main window
         screenshot = self.grab()  # type: QtGui.QPixelMap
-        screenshot.save(str(path), type_)  # Save
+        screenshot.save(str(path), type_)
 
-        QtWidgets.QApplication.clipboard().setPixmap(screenshot)  # To clipboard
+        # copy to clipboard
+        QtWidgets.QApplication.clipboard().setPixmap(screenshot)
         self.logger.info(
             f'Screenshot copied to clipboard and saved to:\n {path}')
 
+        # visualize in jupyter (adapt resolution and width first)
         if display:
             from IPython.display import Image, display
             _disp_ops = dict(width=500)
             _disp_ops.update(disp_ops or {})
+            width_to_scale = round(_disp_ops['width'] * 1.5)
+            path = Path(name + str(width_to_scale) + '.' + type_).resolve()
+            screenshot = screenshot.scaledToWidth(width_to_scale,
+                                                  mode=QtCore.Qt.SmoothTransformation)
+            screenshot.save(str(path), type_)
             display(Image(filename=str(path), **_disp_ops))
 
     def toggle_all_docks(self, do_hide: bool = None):
@@ -580,7 +577,7 @@ class QMainWindowBaseHandler():
             self.logger.error(f'_load_stylesheet_from_file error: {e}')
 
     def screenshot(self,
-                   name='shot.png',
+                   name='shot',
                    type_='png',
                    display=True,
                    disp_ops=None):

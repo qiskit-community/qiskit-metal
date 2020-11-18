@@ -103,7 +103,11 @@ ENV/
 
 # temporary
 shot.png
+shot*.png
 shot.jpg
+shot*.jpg
+shot.tif
+shot*.tif
 *.gds
 !guide/resources/**
 .vs
