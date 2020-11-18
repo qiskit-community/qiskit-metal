@@ -26,12 +26,12 @@ from .toolbox_python.attr_dict import Dict
 
 # TODO: @priti Write more description in docstring for class
 # TODO: @priti Write Init docstring, describe kwargs
-# TODO: Handle access to missing options - ie throw a warningor rror message
+# TODO: Handle access to missing options - ie throw a warning or error message
 class DefaultMetalOptions(Dict):
     """
     `DefaultMetalOptions` is the container for the default options used in:
         1. Components - each time a new component is registered (instantiated).
-        2. The metal code codebase, in functions such as drawing and in qdesign base  
+        2. The metal code codebase, in functions such as drawing and in qdesign base
 
     Args:
         generic (Dict): Dictionary of options (default: None)

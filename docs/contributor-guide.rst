@@ -594,7 +594,7 @@ To do so, execute these commands in the top-level of the repository:
 
    conda env create -n <env_name> environment.yml
    conda activate <env_name>
-   python -m pip install -e .
+   python -m pip install -ve .
 
 For convenience, you can also try to install directly in an existing environment such as the `base` environment, if it is relatively up to date.
 To install `qiskit_metal` and its depenencies into an existing environment named `<env_name>`, execute these commands in the top-level of the repository:
@@ -603,7 +603,7 @@ To install `qiskit_metal` and its depenencies into an existing environment named
 
    conda env update -n <env_name> environment.yml
    conda activate <env_name>
-   python -m pip install -e .
+   python -m pip install -ve .
 
 *Notes on using conda*
 

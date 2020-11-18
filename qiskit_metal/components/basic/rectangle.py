@@ -13,9 +13,8 @@
 # that they have been altered from the originals.
 """File contains dictionary for Rectangle and the make()."""
 
-from qiskit_metal import draw, Dict  # , QComponent
+from qiskit_metal import draw, Dict
 from qiskit_metal.components.base import QComponent
-#from qiskit_metal import is_true
 
 
 class Rectangle(QComponent):
