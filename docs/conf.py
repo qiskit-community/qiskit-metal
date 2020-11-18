@@ -59,35 +59,8 @@ author = 'Qiskit Metal Development Team'
 extensions = [
     'sphinx.ext.napoleon', 'sphinx.ext.autodoc', 'sphinx.ext.autosummary',
     'sphinx.ext.mathjax', 'sphinx.ext.viewcode', 'sphinx.ext.extlinks',
-    'sphinx_autodoc_typehints', 'sphinx_automodapi.automodapi', 'nbsphinx',
-    'sphinx_panels', 'jupyter_sphinx'
+    'jupyter_sphinx'
 ]
-
-nbsphinx_timeout = 300
-nbsphinx_execute = os.getenv('QISKIT_DOCS_BUILD_TUTORIALS', 'never')
-nbsphinx_widgets_path = ''
-html_sourcelink_suffix = ''
-exclude_patterns = ['_build', '**.ipynb_checkpoints']
-
-nbsphinx_prolog = """
-{% set docname = env.doc2path(env.docname, base=None) %}
-
-.. only:: html
-    
-    .. role:: raw-html(raw)
-        :format: html
-    
-    .. note::
-        This page was generated from `{{ docname }}`__.
-
-        Run interactively by opening the file directly in the repository https://github.com/Qiskit/qiskit-metal
-
-"""
-
-panels_css_variables = {
-    "tabs-color-label-active": "rgb(138, 63, 252)",
-    "tabs-color-label-inactive": "rgb(221, 225, 230)",
-}
 
 html_static_path = ['_static']
 templates_path = ['_templates']
