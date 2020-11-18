@@ -180,9 +180,11 @@ class QMainWindowExtension(QMainWindowExtensionBase):
     def new_qcomponent(self, _=None):
         """Create a new qcomponent call by button
         """
+
         path = str(
             Path(self.gui.path_gui).parent / 'components' / 'user_components' /
             'my_qcomponent.py')
+
         filename = QFileDialog.getSaveFileName(
             parent=None,
             caption='Select a location to save QComponent python file to',
@@ -196,6 +198,10 @@ class QMainWindowExtension(QMainWindowExtensionBase):
                     self, "Give a name to your instance of the class",
                     "Name of instance:", QLineEdit.Normal, "qcomp1")
                 if okPressed and text_inst != '':
+                    init_path = filename.rsplit("/", 1)[0] + "/__init__.py"
+                    if not os.path.exists(init_path):
+                        with open(init_path, "w"):
+                            pass
                     self.gui.new_qcomponent_file(filename, text, text_inst)
 
 
