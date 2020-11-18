@@ -24,5 +24,4 @@ Module containing all Qiskit Metal electromagnetic analyses.
 
 @author: Zlatko Minev (IBM)
 
-
 """
