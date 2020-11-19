@@ -365,7 +365,8 @@ class MetalGUI(QMainWindowBaseHandler):
         self.main_window.tabifyDockWidget(self.ui.dockConnectors,
                                           self.ui.dockVariables)
         self.ui.dockDesign.raise_()
-        self.main_window.resizeDocks([self.ui.dockDesign], [350], Qt.Horizontal)
+        self.main_window.resizeDocks(
+            [self.ui.dockDesign], [350], Qt.Horizontal)
 
         # Log
         self.ui.dockLog.parent().resizeDocks([self.ui.dockLog], [120],
