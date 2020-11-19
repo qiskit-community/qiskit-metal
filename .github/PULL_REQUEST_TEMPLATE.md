@@ -9,6 +9,16 @@
 ✅ I have read the CONTRIBUTING document.
 -->
 
+
+### What are the issues this pull addresses (issue numbers / links)?
+
+
+### Did you add tests to cover your changes (yes/no)?
+
+### Did you update the documentation accordingly (yes/no)?
+
+### Did you read the CONTRIBUTING document (yes/no)?
+
 ### Summary
 
 

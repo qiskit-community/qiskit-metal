@@ -15,8 +15,6 @@
 #pylint: disable-msg=unnecessary-pass
 #pylint: disable-msg=protected-access
 #pylint: disable-msg=broad-except
-
-
 """
 Qiskit Metal unit tests analyses functionality.
 
@@ -31,6 +29,7 @@ from qiskit_metal.toolbox_metal import about
 from qiskit_metal.toolbox_metal import parsing
 from qiskit_metal.toolbox_metal import math_and_overrides
 from qiskit_metal.tests.assertions import AssertionsMixin
+
 
 class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
     """
@@ -62,7 +61,10 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
         """
         Test that TRUE_STR in parsing.py has not accidentally changed
         """
-        expected = ['true', 'True', 'TRUE', True, '1', 't', 'y', 'Y', 'YES', 'yes', 'yeah', 1, 1.0]
+        expected = [
+            'true', 'True', 'TRUE', True, '1', 't', 'y', 'Y', 'YES', 'yes',
+            'yeah', 1, 1.0
+        ]
         actual = parsing.TRUE_STR
 
         self.assertEqual(len(actual), len(expected))
@@ -95,23 +97,42 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
         self.assertFalse(parsing.is_true(False))
         self.assertFalse(parsing.is_true(78))
         self.assertFalse(parsing.is_true('gibberish'))
-        self.assertFalse(parsing.is_true({'key':'val'}))
+        self.assertFalse(parsing.is_true({'key': 'val'}))
 
     def test_toolbox_metal_parse_string_to_float(self):
         """
         Test _parse_string_to_float in toolbox_metal.py
         """
-        self.assertAlmostEqualRel(parsing._parse_string_to_float('1um'), 0.001, rel_tol=1e-3)
-        self.assertAlmostEqualRel(parsing._parse_string_to_float('2mm'), 2, rel_tol=1e-3)
-        self.assertAlmostEqualRel(parsing._parse_string_to_float('3m'), 3000.0, rel_tol=1e-3)
-        self.assertAlmostEqualRel(parsing._parse_string_to_float('4km'), 4000000.0, rel_tol=1e-3)
-        self.assertAlmostEqualRel(parsing._parse_string_to_float('5cm'), 50.0, rel_tol=1e-3)
-        self.assertAlmostEqualRel(parsing._parse_string_to_float('6mm'), 6, rel_tol=1e-3)
-        self.assertAlmostEqualRel(parsing._parse_string_to_float('2 mile'), 3218688.0, rel_tol=1e-3)
-        self.assertAlmostEqualRel(parsing._parse_string_to_float('3 yard'), 2743.2, rel_tol=1e-3)
-        self.assertAlmostEqualRel(parsing._parse_string_to_float('4 inch'), 101.6, rel_tol=1e-3)
+        self.assertAlmostEqualRel(parsing._parse_string_to_float('1um'),
+                                  0.001,
+                                  rel_tol=1e-3)
+        self.assertAlmostEqualRel(parsing._parse_string_to_float('2mm'),
+                                  2,
+                                  rel_tol=1e-3)
+        self.assertAlmostEqualRel(parsing._parse_string_to_float('3m'),
+                                  3000.0,
+                                  rel_tol=1e-3)
+        self.assertAlmostEqualRel(parsing._parse_string_to_float('4km'),
+                                  4000000.0,
+                                  rel_tol=1e-3)
+        self.assertAlmostEqualRel(parsing._parse_string_to_float('5cm'),
+                                  50.0,
+                                  rel_tol=1e-3)
+        self.assertAlmostEqualRel(parsing._parse_string_to_float('6mm'),
+                                  6,
+                                  rel_tol=1e-3)
+        self.assertAlmostEqualRel(parsing._parse_string_to_float('2 mile'),
+                                  3218688.0,
+                                  rel_tol=1e-3)
+        self.assertAlmostEqualRel(parsing._parse_string_to_float('3 yard'),
+                                  2743.2,
+                                  rel_tol=1e-3)
+        self.assertAlmostEqualRel(parsing._parse_string_to_float('4 inch'),
+                                  101.6,
+                                  rel_tol=1e-3)
 
-        self.assertEqual(parsing._parse_string_to_float('not-a-number'), 'not-a-number')
+        self.assertEqual(parsing._parse_string_to_float('not-a-number'),
+                         'not-a-number')
         self.assertEqual(parsing._parse_string_to_float(12), 12)
         self.assertEqual(parsing._parse_string_to_float('12.2.3'), '12.2.3')
 
@@ -163,42 +184,70 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
         """
         Test parse_value in toolbox_metal.py
         """
-        var_dict = {'data_a':'4 miles', 'data_b':'1um'}
+        var_dict = {'data_a': '4 miles', 'data_b': '1um'}
 
-        self.assertAlmostEqualRel(parsing.parse_value('1 meter', var_dict), 1000.0, rel_tol=1e-3)
-        self.assertAlmostEqualRel(parsing.parse_value('2 um', var_dict), 0.002, rel_tol=1e-3)
-        self.assertAlmostEqualRel(parsing.parse_value('3 miles', var_dict), 4828032.0, rel_tol=1e-3)
-        self.assertAlmostEqualRel(parsing.parse_value('4 feet', var_dict), 1219.1999999999998,
+        self.assertAlmostEqualRel(parsing.parse_value('1 meter', var_dict),
+                                  1000.0,
                                   rel_tol=1e-3)
-        self.assertAlmostEqualRel(parsing.parse_value('5 km', var_dict), 5000000.0, rel_tol=1e-3)
-        self.assertAlmostEqualRel(parsing.parse_value('6 pm', var_dict), 6.000000000000001e-09,
+        self.assertAlmostEqualRel(parsing.parse_value('2 um', var_dict),
+                                  0.002,
+                                  rel_tol=1e-3)
+        self.assertAlmostEqualRel(parsing.parse_value('3 miles', var_dict),
+                                  4828032.0,
+                                  rel_tol=1e-3)
+        self.assertAlmostEqualRel(parsing.parse_value('4 feet', var_dict),
+                                  1219.1999999999998,
+                                  rel_tol=1e-3)
+        self.assertAlmostEqualRel(parsing.parse_value('5 km', var_dict),
+                                  5000000.0,
+                                  rel_tol=1e-3)
+        self.assertAlmostEqualRel(parsing.parse_value('6 pm', var_dict),
+                                  6.000000000000001e-09,
                                   rel_tol=1e-10)
-        self.assertAlmostEqualRel(parsing.parse_value('-12 inches', var_dict), -304.79999999999995,
+        self.assertAlmostEqualRel(parsing.parse_value('-12 inches', var_dict),
+                                  -304.79999999999995,
                                   rel_tol=1e-3)
-        self.assertAlmostEqualRel(parsing.parse_value('data_a', var_dict), 6437376.0, rel_tol=1e-3)
-        self.assertAlmostEqualRel(parsing.parse_value('data_b', var_dict), 0.001, rel_tol=1e-3)
-        self.assertAlmostEqualRel(parsing.parse_value('1 um', None), 0.001, rel_tol=1e-3)
-        self.assertAlmostEqualRel(parsing.parse_value('1 um', 'None'), 0.001, rel_tol=1e-3)
+        self.assertAlmostEqualRel(parsing.parse_value('data_a', var_dict),
+                                  6437376.0,
+                                  rel_tol=1e-3)
+        self.assertAlmostEqualRel(parsing.parse_value('data_b', var_dict),
+                                  0.001,
+                                  rel_tol=1e-3)
+        self.assertAlmostEqualRel(parsing.parse_value('1 um', None),
+                                  0.001,
+                                  rel_tol=1e-3)
+        self.assertAlmostEqualRel(parsing.parse_value('1 um', 'None'),
+                                  0.001,
+                                  rel_tol=1e-3)
 
     def test_toolbox_metal_parse_options(self):
         """
         Test parse_options in toolbox_metal.py
         """
-        dict_1 = {'data_a':'2mm', 'data_b':'1um'}
-        dict_2 = {'data_a':'20mm', 'data_b':'15um', 'data_c':'4 miles', 'data_d':'2 mm'}
+        dict_1 = {'data_a': '2mm', 'data_b': '1um'}
+        dict_2 = {
+            'data_a': '20mm',
+            'data_b': '15um',
+            'data_c': '4 miles',
+            'data_d': '2 mm'
+        }
 
         expected = [[2], [0.001], [20, 0.015, 6437376.0, 2]]
 
         actual = []
         actual.append(parsing.parse_options(dict_1, 'data_a'))
         actual.append(parsing.parse_options(dict_1, 'data_b'))
-        actual.append(parsing.parse_options(dict_2, 'data_a,data_b,data_c,data_d', dict_1))
+        actual.append(
+            parsing.parse_options(dict_2, 'data_a,data_b,data_c,data_d',
+                                  dict_1))
 
         for x in range(3):
             self.assertEqual(len(actual[x]), len(expected[x]))
             my_range = len(actual[x])
             for i in range(my_range):
-                self.assertAlmostEqualRel(actual[x][i], expected[x][i], rel_tol=1e-3)
+                self.assertAlmostEqualRel(actual[x][i],
+                                          expected[x][i],
+                                          rel_tol=1e-3)
 
     def test_toolbox_metal_set_decimal_precision(self):
         """
@@ -232,7 +281,6 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
         my_array_1 = np.array([3, 4])
         my_array_2 = np.array([12, 14])
         self.assertEqual(math_and_overrides.cross(my_array_1, my_array_2), -6)
-
 
 
 if __name__ == '__main__':

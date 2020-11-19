@@ -43,6 +43,7 @@ class QMainWindowExtensionBase(QMainWindow):
 
     Extends the `QMainWindow` class
     """
+
     def __init__(self):
         """  """
         super().__init__()
@@ -188,8 +189,7 @@ class QMainWindowExtensionBase(QMainWindow):
         screenshot = self.grab()  # type: QtGui.QPixelMap
         screenshot.save(str(path), type_)  # Save
 
-        QtWidgets.QApplication.clipboard().setPixmap(
-            screenshot)  # To clipboard
+        QtWidgets.QApplication.clipboard().setPixmap(screenshot)  # To clipboard
         self.logger.info(
             f'Screenshot copied to clipboard and saved to:\n {path}')
 
@@ -212,8 +212,8 @@ class QMainWindowExtensionBase(QMainWindow):
         ]
         docks = list(
             filter(
-                lambda x: not x.windowTitle().lower().startswith('edit source'
-                                                                 ), docks))
+                lambda x: not x.windowTitle().lower().startswith('edit source'),
+                docks))
         docks += [
             widget for widget in self.gui.plot_win.children()
             if isinstance(widget, QDockWidget)

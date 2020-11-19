@@ -153,6 +153,7 @@ class TransmonPocket(BaseQubit):
                               _qgeometry_table_poly='True',
                               _qgeometry_table_junction='True')
     """Component metadata"""
+
     def make(self):
         """Define the way the options are turned into QGeometry.
         The make function implements the logic that creates the geoemtry

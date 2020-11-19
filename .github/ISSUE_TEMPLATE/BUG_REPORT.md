@@ -7,10 +7,10 @@ assignees: ''
 
 ---
 
-<!-- ⚠️ If you do not respect this template, your issue will be closed -->
+<!-- ⚠️ Please abide by this template, otherwise you run the risk of the issue being closed -->
 <!-- ⚠️ Make sure to browse the opened and closed issues -->
 
-### Informations
+### Information
 
 - **Qiskit Metal version**:
 - **Python version**:

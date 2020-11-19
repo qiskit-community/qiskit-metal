@@ -19,12 +19,13 @@ based on pyqode.python: https://github.com/pyQode/pyqode.python
 import importlib
 import inspect
 import logging
+import os
 import pydoc
 import re
 import warnings
 from typing import TYPE_CHECKING, List, Tuple, Union
 
-import pygments
+import jedi
 import PySide2
 from pygments import highlight
 from pygments.formatters import HtmlFormatter
@@ -41,23 +42,40 @@ __all__ = [
 
 try:
     from pyqode.python.backend import server
-    import pyqode.qt
-except ImportError as e:
-    print("WARNING: Could not load")
-    os.system(
-        "python -m pip install -e git+https://github.com/jojurgens/pyqode.qt.git@master#egg=pyqode.qt"
+    from pyqode.qt import QtWidgets
+    _test_ = QtWidgets.QDialog
+except (ImportError, AttributeError) as e:
+    print(
+        "WARNING: Could not load `pyqode.qt` for PySide2. Installing pyqode.qt from special fork:\n"
+        " python -m pip install -e git+https://github.com/jojurgens/pyqode.qt.git@master#egg=pyqode.qt"
     )
+    # os.system(
+    #     "python -m pip install -e git+https://github.com/jojurgens/pyqode.qt.git@master#egg=pyqode.qt"
+    # )
+    import shlex
+    import subprocess
+    cmd = "python -m pip install -e git+https://github.com/jojurgens/pyqode.qt.git@master#egg=pyqode.qt"
+    print(f'\n\n*** Installing pyqode.qt for PySide2***\n$ {cmd}')
+    scmd = shlex.split(cmd)
+    result = subprocess.run(scmd, stdout=subprocess.PIPE, check=False)
+    stderr = result.stderr
+    stdout = result.stdout
+    returncode = result.returncode
+    print(f'\n****Exited with {returncode}')
+    if stdout:
+        print(f'\n****stdout****\n{stdout.decode()}')
+    if stderr:
+        print(f'\n****stderr****\n{stderr.decode()}')
 
 try:
-    from pyqode.python.backend import server
     from pyqode.core import api, modes, panels
-    from pyqode.python import modes as pymodes, panels as pypanels, widgets
-    from pyqode.python.folding import PythonFoldDetector
-    from pyqode.python.backend.workers import defined_names
     from pyqode.core.api import TextHelper
-    # The above uses jedi
-    import jedi
-    import os
+    from pyqode.python import modes as pymodes
+    from pyqode.python import panels as pypanels
+    from pyqode.python import widgets
+    from pyqode.python.backend import server
+    from pyqode.python.backend.workers import defined_names
+    from pyqode.python.folding import PythonFoldDetector
 
 except ImportError as e:
     # TODO: report in a more visible way.
@@ -389,7 +407,7 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
 
     def get_definitions_under_cursor(self,
                                      offset=0
-                                     ) -> List['jedi.api.classes.Definition']:
+                                    ) -> List['jedi.api.classes.Definition']:
         """Get jedi
 
         Args:

@@ -11,7 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 '''
 Anchored path
 
@@ -51,8 +50,8 @@ def intersecting(a: np.array, b: np.array, c: np.array, d: np.array) -> bool:
         if x0_end == x1_start:
             # Same x-intercept -> potential overlap, so check y coordinate
             # Distinct, non-overlapping segments if and only if min y coord of one is above max y coord of the other
-            return not ((min(y0_start, y0_end) > max(y1_start, y1_end)) or (
-                        min(y1_start, y1_end) > max(y0_start, y0_end)))
+            return not ((min(y0_start, y0_end) > max(y1_start, y1_end)) or
+                        (min(y1_start, y1_end) > max(y0_start, y0_end)))
         return False  # Parallel lines with different x-intercepts don't overlap
     elif (x0_start == x0_end) or (x1_start == x1_end):
         # One segment is vertical, the other is not
@@ -64,28 +63,34 @@ def intersecting(a: np.array, b: np.array, c: np.array, d: np.array) -> bool:
         m = (y1_end - y1_start) / (x1_end - x1_start)
         b = (x1_end * y1_start - x1_start * y1_end) / (x1_end - x1_start)
         if min(x1_start, x1_end) <= x0_start <= max(x1_start, x1_end):
-            if min(y0_start, y0_end) <= m * x0_start + b <= max(y0_start, y0_end):
+            if min(y0_start, y0_end) <= m * x0_start + b <= max(
+                    y0_start, y0_end):
                 return True
         return False
     else:
         # Neither line is vertical; check slopes and y-intercepts
-        b0 = (y0_start * x0_end - y0_end * x0_start) / (x0_end - x0_start)  # y-intercept of line 0
-        b1 = (y1_start * x1_end - y1_end * x1_start) / (x1_end - x1_start)  # y-intercept of line 1
-        if (x1_end - x1_start) * (y0_end - y0_start) == (x0_end - x0_start) * (y1_end - y1_start):
+        b0 = (y0_start * x0_end - y0_end * x0_start) / (
+            x0_end - x0_start)  # y-intercept of line 0
+        b1 = (y1_start * x1_end - y1_end * x1_start) / (
+            x1_end - x1_start)  # y-intercept of line 1
+        if (x1_end - x1_start) * (y0_end - y0_start) == (x0_end - x0_start) * (
+                y1_end - y1_start):
             # Lines have identical slopes
             if b0 == b1:
                 # Same y-intercept -> potential overlap, so check x coordinate
                 # Distinct, non-overlapping segments if and only if min x coord of one exceeds max x coord of the other
-                return not ((min(x0_start, x0_end) > max(x1_start, x1_end)) or (
-                            min(x1_start, x1_end) > max(x0_start, x0_end)))
+                return not ((min(x0_start, x0_end) > max(x1_start, x1_end)) or
+                            (min(x1_start, x1_end) > max(x0_start, x0_end)))
             return False  # Parallel lines with different y-intercepts don't overlap
         else:
             # Lines not parallel so must intersect somewhere -> examine slopes m0 and m1
             m0 = (y0_end - y0_start) / (x0_end - x0_start)  # slope of line 0
             m1 = (y1_end - y1_start) / (x1_end - x1_start)  # slope of line 1
-            x_intersect = (b1 - b0) / (m0 - m1)  # x coordinate of intersection point
+            x_intersect = (b1 - b0) / (m0 - m1
+                                      )  # x coordinate of intersection point
             if min(x0_start, x0_end) <= x_intersect <= max(x0_start, x0_end):
-                if min(x1_start, x1_end) <= x_intersect <= max(x1_start, x1_end):
+                if min(x1_start, x1_end) <= x_intersect <= max(
+                        x1_start, x1_end):
                     return True
             return False
 
@@ -104,18 +109,15 @@ class RouteAnchors(QRoute):
 
     """
 
-    component_metadata = Dict(
-        short_name='cpw'
-    )
+    component_metadata = Dict(short_name='cpw')
     """Component metadata"""
 
     default_options = Dict(
-        anchors=OrderedDict(),  # Intermediate anchors only; doesn't include endpoints
+        anchors=OrderedDict(
+        ),  # Intermediate anchors only; doesn't include endpoints
         # Example: {1: np.array([x1, y1]), 2: np.array([x2, y2])}
         # startpin -> startpin + leadin -> anchors -> endpin + leadout -> endpin
-        advanced=Dict(
-            avoid_collision='false')
-    )
+        advanced=Dict(avoid_collision='false'))
     """Default options"""
 
     def unobstructed(self, segment: list) -> bool:
@@ -131,19 +133,25 @@ class RouteAnchors(QRoute):
 
         # assumes rectangular bounding boxes
         for component in self.design.components:
-            xmin, ymin, xmax, ymax = self.design.components[component].qgeometry_bounds()
+            xmin, ymin, xmax, ymax = self.design.components[
+                component].qgeometry_bounds()
             # p, q, r, s are corner coordinates of each bounding box
-            p, q, r, s = [np.array([xmin, ymin]),
-                          np.array([xmin, ymax]),
-                          np.array([xmax, ymin]),
-                          np.array([xmax, ymax])]
-            if any(intersecting(segment[0], segment[1], k, l) for k, l in [(p, q), (p, r), (r, s), (q, s)]):
+            p, q, r, s = [
+                np.array([xmin, ymin]),
+                np.array([xmin, ymax]),
+                np.array([xmax, ymin]),
+                np.array([xmax, ymax])
+            ]
+            if any(
+                    intersecting(segment[0], segment[1], k, l)
+                    for k, l in [(p, q), (p, r), (r, s), (q, s)]):
                 # At least 1 intersection present; do not proceed!
                 return False
         # All clear, no intersections
         return True
 
-    def connect_simple(self, start_pt: QRoutePoint, end_pt: QRoutePoint) -> np.ndarray:
+    def connect_simple(self, start_pt: QRoutePoint,
+                       end_pt: QRoutePoint) -> np.ndarray:
         """
         Try connecting start and end with single or 2-segment/S-shaped CPWs if possible.
 
@@ -169,7 +177,8 @@ class RouteAnchors(QRoute):
             # Matching x or y coordinates -> check if endpoints can be connected with a single segment
             if mao.dot(start_direction, end - start) >= 0:
                 # Start direction and end - start for CPW must not be anti-aligned
-                if (end_direction is None) or (mao.dot(end - start, end_direction) <= 0):
+                if (end_direction is None) or (mao.dot(end - start,
+                                                       end_direction) <= 0):
                     # If leadout + end has been reached, the single segment CPW must not be aligned with its direction
                     return np.empty((0, 2), float)
         else:
@@ -178,28 +187,37 @@ class RouteAnchors(QRoute):
             # and check if both start and end directions are aligned with
             # the displacement vectors between start/end and
             # either of the 2 remaining corners ("perfect alignment").
-            corner1 = np.array([start[0], end[1]])  # x coordinate matches with start
-            corner2 = np.array([end[0], start[1]])  # x coordinate matches with end
+            corner1 = np.array([start[0],
+                                end[1]])  # x coordinate matches with start
+            corner2 = np.array([end[0],
+                                start[1]])  # x coordinate matches with end
             if avoid_collision:
                 # Check for collisions at the outset to avoid repeat work
-                startc1end = bool(self.unobstructed([start, corner1]) and self.unobstructed([corner1, end]))
-                startc2end = bool(self.unobstructed([start, corner2]) and self.unobstructed([corner2, end]))
+                startc1end = bool(
+                    self.unobstructed([start, corner1]) and
+                    self.unobstructed([corner1, end]))
+                startc2end = bool(
+                    self.unobstructed([start, corner2]) and
+                    self.unobstructed([corner2, end]))
             else:
                 startc1end = startc2end = True
             if (mao.dot(start_direction, corner1 - start) > 0) and startc1end:
                 # corner1 is "in front of" the start_pt
-                if (end_direction is None) or (mao.dot(end_direction, corner1 - end) >= 0):
+                if (end_direction is None) or (mao.dot(end_direction,
+                                                       corner1 - end) >= 0):
                     # corner1 is also "in front of" the end_pt
                     return np.expand_dims(corner1, axis=0)
             elif (mao.dot(start_direction, corner2 - start) > 0) and startc2end:
                 # corner2 is "in front of" the start_pt
-                if (end_direction is None) or (mao.dot(end_direction, corner2 - end) >= 0):
+                if (end_direction is None) or (mao.dot(end_direction,
+                                                       corner2 - end) >= 0):
                     # corner2 is also "in front of" the end_pt
                     return np.expand_dims(corner2, axis=0)
             # In notation below, corners 3 and 4 correspond to
             # the ends of the segment bisecting the longer rectangle formed by start and end
             # while the segment formed by corners 5 and 6 bisect the shorter rectangle
-            if stop_direction[0]:  # "Wide" rectangle -> vertical middle segment is more natural
+            if stop_direction[
+                    0]:  # "Wide" rectangle -> vertical middle segment is more natural
                 corner3 = np.array([(start[0] + end[0]) / 2, start[1]])
                 corner4 = np.array([(start[0] + end[0]) / 2, end[1]])
                 corner5 = np.array([start[0], (start[1] + end[1]) / 2])
@@ -211,32 +229,41 @@ class RouteAnchors(QRoute):
                 corner6 = np.array([(start[0] + end[0]) / 2, end[1]])
             if avoid_collision:
                 startc3c4end = bool(
-                    self.unobstructed([start, corner3]) and self.unobstructed([corner3, corner4]) and self.unobstructed(
-                        [corner4, end]))
+                    self.unobstructed([start, corner3]) and
+                    self.unobstructed([corner3, corner4]) and
+                    self.unobstructed([corner4, end]))
                 startc5c6end = bool(
-                    self.unobstructed([start, corner5]) and self.unobstructed([corner5, corner6]) and self.unobstructed(
-                        [corner6, end]))
+                    self.unobstructed([start, corner5]) and
+                    self.unobstructed([corner5, corner6]) and
+                    self.unobstructed([corner6, end]))
             else:
                 startc3c4end = startc5c6end = True
-            if (mao.dot(start_direction, stop_direction) < 0) and (
-                    mao.dot(start_direction, corner3 - start) > 0) and startc3c4end:
-                if (end_direction is None) or (mao.dot(end_direction, corner4 - end) > 0):
+            if (mao.dot(start_direction, stop_direction) < 0) and (mao.dot(
+                    start_direction, corner3 - start) > 0) and startc3c4end:
+                if (end_direction is None) or (mao.dot(end_direction,
+                                                       corner4 - end) > 0):
                     # Perfectly aligned S-shaped CPW
                     return np.vstack((corner3, corner4))
             # Relax constraints and check if imperfect 2-segment or S-segment works,
             # where "imperfect" means 1 or more dot products of directions
             # between successive segments is 0; otherwise return an empty list
             if (mao.dot(start_direction, corner1 - start) >= 0) and startc1end:
-                if (end_direction is None) or (mao.dot(end_direction, corner1 - end) >= 0):
+                if (end_direction is None) or (mao.dot(end_direction,
+                                                       corner1 - end) >= 0):
                     return np.expand_dims(corner1, axis=0)
             if (mao.dot(start_direction, corner2 - start) >= 0) and startc2end:
-                if (end_direction is None) or (mao.dot(end_direction, corner2 - end) >= 0):
+                if (end_direction is None) or (mao.dot(end_direction,
+                                                       corner2 - end) >= 0):
                     return np.expand_dims(corner2, axis=0)
-            if (mao.dot(start_direction, corner3 - start) >= 0) and startc3c4end:
-                if (end_direction is None) or (mao.dot(end_direction, corner4 - end) >= 0):
+            if (mao.dot(start_direction, corner3 - start) >=
+                    0) and startc3c4end:
+                if (end_direction is None) or (mao.dot(end_direction,
+                                                       corner4 - end) >= 0):
                     return np.vstack((corner3, corner4))
-            if (mao.dot(start_direction, corner5 - start) >= 0) and startc5c6end:
-                if (end_direction is None) or (mao.dot(end_direction, corner6 - end) >= 0):
+            if (mao.dot(start_direction, corner5 - start) >=
+                    0) and startc5c6end:
+                if (end_direction is None) or (mao.dot(end_direction,
+                                                       corner6 - end) >= 0):
                     return np.vstack((corner5, corner6))
         return None
 
@@ -255,7 +282,9 @@ class RouteAnchors(QRoute):
 
         length = 0
         for i in range(1, len(reference)):
-            length += abs(reference[i][0]-reference[i-1][0])+abs(reference[i][1]-reference[i-1][1])
+            length += abs(reference[i][0] -
+                          reference[i - 1][0]) + abs(reference[i][1] -
+                                                     reference[i - 1][1])
         return length
 
     def trim_pts(self):
@@ -300,14 +329,17 @@ class RouteAnchors(QRoute):
             if arc_pts is None:
                 self.intermediate_pts[arc_num] = [coord]
             else:
-                self.intermediate_pts[arc_num] = np.concatenate([arc_pts, [coord]], axis=0)
+                self.intermediate_pts[arc_num] = np.concatenate(
+                    [arc_pts, [coord]], axis=0)
         arc_pts = self.connect_simple(self.get_tip(), end_point)
         if arc_pts is not None:
             self.intermediate_pts[len(anchors)] = np.array(arc_pts)
 
         # concatenate all points, transforming the dictionary into a single numpy array
         self.trim_pts()
-        self.intermediate_pts = np.concatenate(list(self.intermediate_pts.values()), axis=0)
+        self.intermediate_pts = np.concatenate(list(
+            self.intermediate_pts.values()),
+                                               axis=0)
 
         # Make points into elements
         self.make_elements(self.get_points())

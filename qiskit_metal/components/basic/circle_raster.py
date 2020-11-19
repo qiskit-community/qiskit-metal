@@ -11,7 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 """
 This is the CircleCaterpillar module.
 
@@ -56,14 +55,16 @@ class CircleRaster(QComponent):
         p = self.p  # p for parsed parameters. Access to the parsed options.
 
         # create the geometry
-        circle = draw.Point(p.pos_x, p.pos_y).buffer(p.radius,
-                                                     resolution=int(
-                                                         p.resolution),
-                                                     cap_style=getattr(
-                                                         CAP_STYLE, p.cap_style),
-                                                     #join_style = getattr(JOIN_STYLE, p.join_style)
-                                                     )
+        circle = draw.Point(p.pos_x, p.pos_y).buffer(
+            p.radius,
+            resolution=int(p.resolution),
+            cap_style=getattr(CAP_STYLE, p.cap_style),
+            #join_style = getattr(JOIN_STYLE, p.join_style)
+        )
 
         # add qgeometry
-        self.add_qgeometry('poly', {'circle': circle}, subtract=p.subtract,
-                           helper=p.helper, layer=p.layer, chip=p.chip)
+        self.add_qgeometry('poly', {'circle': circle},
+                           subtract=p.subtract,
+                           helper=p.helper,
+                           layer=p.layer,
+                           chip=p.chip)

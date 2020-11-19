@@ -11,7 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 """
 Logging widget
 
@@ -78,8 +77,8 @@ class QTextEditLogger(QTextEdit):
         self._level_name = ''
 
         # Props of the Widget
-        self.setTextInteractionFlags(Qt.TextSelectableByMouse
-                                     | Qt.TextSelectableByKeyboard)
+        self.setTextInteractionFlags(Qt.TextSelectableByMouse |
+                                     Qt.TextSelectableByKeyboard)
         self.text_format = QtGui.QTextCharFormat()
         self.text_format.setFontFamily('Consolas')
 
@@ -179,8 +178,7 @@ class QTextEditLogger(QTextEdit):
             img_txt = f'<img src="{img_path}" height=80>'
         else:
             print(
-                'WARNING: welcome_message could not locate img_path={img_path}'
-            )
+                'WARNING: welcome_message could not locate img_path={img_path}')
 
         # Main message
         text = f'''<span class="INFO">{' '*self.timestamp_len}
@@ -346,8 +344,7 @@ class QTextEditLogger(QTextEdit):
                 # with pre tag by LogHandler_for_QTextLog
                 res = message.split('<pre>', 1)
                 if len(res) == 2:
-                    message = res[0] + '<pre>' + res[1][1 +
-                                                        self.timestamp_len:]
+                    message = res[0] + '<pre>' + res[1][1 + self.timestamp_len:]
                 else:
                     pass  # print(f'Warning incorrect: {message}')
 
@@ -384,6 +381,7 @@ class LogHandler_for_QTextLog(logging.Handler):
 
     This class extends the `logging.Handler` class
     """
+
     def __init__(self,
                  name,
                  parent,

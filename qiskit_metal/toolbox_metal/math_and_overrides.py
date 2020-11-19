@@ -13,7 +13,6 @@
 # that they have been altered from the originals.
 
 # pylint: disable=protected-access
-
 '''
 Math and override functions
 

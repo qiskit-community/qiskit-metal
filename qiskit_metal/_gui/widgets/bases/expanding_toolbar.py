@@ -11,7 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 """
 @author: Zlatko Minev
 @date: 2020
@@ -33,6 +32,7 @@ class QToolBarExpanding(QToolBar):
     Arguments:
         QToolbar (QToolbar): QToolbar
     """
+
     def expand_me(self):
         """Expand the toolbar"""
         if self.orientation() == Qt.Vertical:

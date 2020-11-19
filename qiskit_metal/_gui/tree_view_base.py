@@ -25,6 +25,7 @@ from PySide2.QtWidgets import QTreeView, QAbstractItemView
 
 class QTreeView_Base(QTreeView):
     """This class extends the `QTreeView` class."""
+
     def __init__(self, parent: QtWidgets.QWidget):
         """
         Args:

@@ -14,7 +14,6 @@
 
 # pylint: disable-msg=unnecessary-pass
 #pylint: disable-msg=too-many-public-methods
-
 """
 Qiskit Metal unit tests components functionality.
 
@@ -85,8 +84,13 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
         # Test all elements of the result data against expected data
         self.assertEqual('100nm', _test_a)
         self.assertEqual('34fF', _test_b)
-        self.assertEqual(
-            {'x1': {'dda': '34fF'}, 'y1': 'Y', 'z': '10um'}, _test_c)
+        self.assertEqual({
+            'x1': {
+                'dda': '34fF'
+            },
+            'y1': 'Y',
+            'z': '10um'
+        }, _test_c)
         self.assertEqual({}, _test_d)
 
     def test_component_get_and_set_qcomponent_name(self):
@@ -113,10 +117,10 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
         spiral_list_0 = self.generate_spiral_list(0, 0)
         spiral_list_1 = self.generate_spiral_list(1, 2)
 
-        my_q_component.add_pin(
-            'pin1-name', np.array(spiral_list_0.coords)[-2:], 0.1)
-        my_q_component.add_pin(
-            'pin2-name', np.array(spiral_list_1.coords)[-2:], 0.1)
+        my_q_component.add_pin('pin1-name',
+                               np.array(spiral_list_0.coords)[-2:], 0.1)
+        my_q_component.add_pin('pin2-name',
+                               np.array(spiral_list_1.coords)[-2:], 0.1)
 
         my_pins = my_q_component.pins
 
@@ -193,8 +197,12 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
 
         self.assertEqual(QComponent.get_template_options(design), {})
 
-        expected = {'pos_x': '0um', 'pos_y': '0um', 'connection_pads': {},
-                    '_default_connection_pads': {}}
+        expected = {
+            'pos_x': '0um',
+            'pos_y': '0um',
+            'connection_pads': {},
+            '_default_connection_pads': {}
+        }
         self.assertEqual(BaseQubit.get_template_options(design), expected)
 
     def test_component_qubit_component_metadata(self):
@@ -308,16 +316,15 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
         Test getting all the pin names
         """
         design = designs.DesignPlanar()
-        my_q_component = QComponent(
-            design, "my_name-get-pin-names", make=False)
+        my_q_component = QComponent(design, "my_name-get-pin-names", make=False)
 
         spiral_list_0 = self.generate_spiral_list(0, 0)
         spiral_list_1 = self.generate_spiral_list(1, 2)
 
-        my_q_component.add_pin(
-            'pin1-name', np.array(spiral_list_0.coords)[-2:], 0.1)
-        my_q_component.add_pin(
-            'pin2-name', np.array(spiral_list_1.coords)[-2:], 0.1)
+        my_q_component.add_pin('pin1-name',
+                               np.array(spiral_list_0.coords)[-2:], 0.1)
+        my_q_component.add_pin('pin2-name',
+                               np.array(spiral_list_1.coords)[-2:], 0.1)
 
         my_pin_names = list(my_q_component.pin_names)
         my_pin_names.sort()
@@ -336,10 +343,10 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
         spiral_list_0 = self.generate_spiral_list(0, 0)
         spiral_list_1 = self.generate_spiral_list(1, 2)
 
-        my_q_component.add_pin(
-            'pin1-name', np.array(spiral_list_0.coords)[-2:], 0.1)
-        my_q_component.add_pin(
-            'pin2-name', np.array(spiral_list_1.coords)[-2:], 0.1)
+        my_q_component.add_pin('pin1-name',
+                               np.array(spiral_list_0.coords)[-2:], 0.1)
+        my_q_component.add_pin('pin2-name',
+                               np.array(spiral_list_1.coords)[-2:], 0.1)
 
         my_pin = my_q_component.get_pin('pin2-name')
         self.assertEqual(len(my_pin), 10)
@@ -381,13 +388,13 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
         spiral_list = []
 
         for step in range(3):
-            point_value = 20 + step*5
+            point_value = 20 + step * 5
             spiral_list.append((-point_value, -point_value))
             spiral_list.append((point_value, -point_value))
             spiral_list.append((point_value, point_value))
-            spiral_list.append((-point_value-(1+4), point_value))
+            spiral_list.append((-point_value - (1 + 4), point_value))
 
-        point_value = 20 + (step+1)*5
+        point_value = 20 + (step + 1) * 5
         spiral_list.append((-point_value, -point_value))
         spiral_list = draw.LineString(spiral_list)
 

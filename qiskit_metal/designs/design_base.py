@@ -11,7 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 """
 The base class of all QDesigns in Qiskit Metal.
 
@@ -47,7 +46,6 @@ if TYPE_CHECKING:
     from qiskit_metal.renderers.renderer_base import QRenderer
     from qiskit_metal.renderers.renderer_gds.gds_renderer import QGDSRenderer
 
-
 __all__ = ['QDesign']
 
 #:ivar var1: initial value: par2
@@ -64,7 +62,8 @@ class QDesign():
     # Used by `is_design` to check.
     __i_am_design__ = True
 
-    def __init__(self, metadata: dict = None,
+    def __init__(self,
+                 metadata: dict = None,
                  overwrite_enabled: bool = False,
                  enable_renderers: bool = True):
         """Create a new Metal QDesign.
@@ -142,7 +141,8 @@ class QDesign():
         # Presently, self._template_options holds the templates_options for each renderers.
         # key is the unique name of renderer.
         # Also, renderer_base.options holds the latest options for each instance of renderer.
-        self._template_renderer_options = DefaultOptionsRenderer()  # use for renderer
+        self._template_renderer_options = DefaultOptionsRenderer(
+        )  # use for renderer
 
         self._qnet = QNet()
 
@@ -165,10 +165,9 @@ class QDesign():
             Dict: default metadata dictioanry
         """
         now = datetime.now()  # current date and time
-        return Dict(
-            design_name='my_design',
-            notes='',
-            time_created=now.strftime("%m/%d/%Y, %H:%M:%S"))
+        return Dict(design_name='my_design',
+                    notes='',
+                    time_created=now.strftime("%m/%d/%Y, %H:%M:%S"))
 
     def update_metadata(self, new_metadata: dict):
         """Update the metadata dictionary of the design with a
@@ -326,7 +325,8 @@ class QDesign():
         self._qnet._net_info = self._qnet._net_info.iloc[0:0]
         return self._qnet
 
-    def connect_pins(self, comp1_id: int, pin1_name: str, comp2_id: int, pin2_name: str) -> int:
+    def connect_pins(self, comp1_id: int, pin1_name: str, comp2_id: int,
+                     pin2_name: str) -> int:
         """
         Will generate an unique net_id and placed in a net_info table.
         Update the components.pin_name with the net_id.
@@ -346,15 +346,16 @@ class QDesign():
         Note: If not added to netlist, the net_id will be 0 (zero).
         """
         net_id = 0
-        net_id = self._qnet.add_pins_to_table(
-            comp1_id, pin1_name, comp2_id, pin2_name)
+        net_id = self._qnet.add_pins_to_table(comp1_id, pin1_name, comp2_id,
+                                              pin2_name)
         if net_id:
             # update the components to hold net_id
             self._components[comp1_id].pins[pin1_name].net_id = net_id
             self._components[comp2_id].pins[pin2_name].net_id = net_id
         else:
             logger.warning(
-                f'NetId was not added for {comp1_id}, {pin1_name}, {comp2_id}, {pin2_name} and will not be added to components.')
+                f'NetId was not added for {comp1_id}, {pin1_name}, {comp2_id}, {pin2_name} and will not be added to components.'
+            )
         return net_id
 
     # NOTE: Think nothing is using this. Remove this if no-one complains.
@@ -398,8 +399,7 @@ class QDesign():
         Returns:
             list[tuples]: Each tuple has the text name of component and UNIQUE integer ID for component.
         """
-        alist = [(value.name, key)
-                 for key, value in self._components.items()]
+        alist = [(value.name, key) for key, value in self._components.items()]
         return alist
 
     def _delete_all_pins_for_component(self, comp_id: int) -> set:
@@ -470,9 +470,12 @@ class QDesign():
             except:
                 print(f'ERORROR in building {name}')
                 log_error_easy(
-                    self.logger, post_text=f'\nERROR in rebuilding component "{name}={obj.name}"!\n')
+                    self.logger,
+                    post_text=
+                    f'\nERROR in rebuilding component "{name}={obj.name}"!\n')
 
-    def reload_component(self, component_module_name: str, component_class_name: str):
+    def reload_component(self, component_module_name: str,
+                         component_class_name: str):
         """
         Reload the module and class of a given component and update
         all class instances. (Advanced function.)
@@ -484,16 +487,17 @@ class QDesign():
                 such  as `TransmonPocket`
         """
         self.logger.debug(
-            f'Reloading component_class_name={component_class_name}; component_module_name={component_module_name}')
+            f'Reloading component_class_name={component_class_name}; component_module_name={component_module_name}'
+        )
         module = importlib.import_module(component_module_name)
         module = importlib.reload(module)
         new_class = getattr(module, component_class_name)
 
         # components that need
-        for instance in filter(lambda k:
-                               k.__class__.__name__ == component_class_name and
-                               k.__class__.__module__ == component_module_name,
-                               self._components.values()):
+        for instance in filter(
+                lambda k: k.__class__.__name__ == component_class_name and k.
+                __class__.__module__ == component_module_name,
+                self._components.values()):
             instance.__class__ = new_class
 
         # Alternative, but reload will say not in sys.path
@@ -536,15 +540,17 @@ class QDesign():
             if a_component_id is None:
                 return -3
         else:
-            logger.warning(f'Called rename_component, component_id={component_id}, but component_id'
-                           f' is not an integer, nor a string.')
+            logger.warning(
+                f'Called rename_component, component_id={component_id}, but component_id'
+                f' is not an integer, nor a string.')
             return -3
 
         if a_component_id in self._components:
             # Check if name is already being used.
             if new_component_name in self.name_to_id:
-                logger.warning(f'Called design.rename_component, component_id({self.name_to_id[new_component_name]}'
-                               f',  is already using {new_component_name}.')
+                logger.warning(
+                    f'Called design.rename_component, component_id({self.name_to_id[new_component_name]}'
+                    f',  is already using {new_component_name}.')
                 return -2
 
             # Do rename
@@ -559,13 +565,16 @@ class QDesign():
 
             return True
         else:
-            logger.warning(f'Called rename_component, component_id={component_id}, but component_id'
-                           f' is not in design.components dictionary.')
+            logger.warning(
+                f'Called rename_component, component_id={component_id}, but component_id'
+                f' is not in design.components dictionary.')
             return -3
 
         return True
 
-    def delete_component(self, component_name: str, force: bool = False) -> bool:
+    def delete_component(self,
+                         component_name: str,
+                         force: bool = False) -> bool:
         """Deletes component and pins attached to said component.
 
         If no component by that name is present, then just return True
@@ -582,8 +591,10 @@ class QDesign():
 
         # Nothing to delete if name not in components
         if component_name not in self.name_to_id:
-            self.logger.info(f'Called delete_component {component_name}, but such a '
-                             f'component is not in the design cache dictionary of components.')
+            self.logger.info(
+                f'Called delete_component {component_name}, but such a '
+                f'component is not in the design cache dictionary of components.'
+            )
             return True
         else:
             component_id = self.name_to_id[component_name]
@@ -620,7 +631,8 @@ class QDesign():
             #  before deleting from net_id table.
             for pin_name in self._components[component_id].pins:
                 # make net_id be zero for every component which is connected to it.
-                net_id_search = self._components[component_id].pins[pin_name].net_id
+                net_id_search = self._components[component_id].pins[
+                    pin_name].net_id
                 df_subset_based_on_net_id = self.net_info[(
                     self.net_info['net_id'] == net_id_search)]
                 delete_this_pin = df_subset_based_on_net_id[(
@@ -633,7 +645,8 @@ class QDesign():
 
                     if self._components[edit_component]:
                         if self._components[edit_component].pins[edit_pin]:
-                            self._components[edit_component].pins[edit_pin].net_id = 0
+                            self._components[edit_component].pins[
+                                edit_pin].net_id = 0
 
             # pins of component to delete.
             self._qnet.delete_all_pins_for_component(component_id)
@@ -650,14 +663,19 @@ class QDesign():
             self._components.pop(component_id, None)
         else:
             # if not in components dict
-            logger.warning(f'Called _delete_complete, component_id: {component_id}, '
-                           'but component_id is not in design.components dictionary.')
+            logger.warning(
+                f'Called _delete_complete, component_id: {component_id}, '
+                'but component_id is not in design.components dictionary.')
             return_response = True
             return return_response
 
         return return_response
 
-    def copy_multiple_qcomponents(self,  original_qcomponents: list, new_component_names: list, all_options_superimpose: list = list()) -> Dict:
+    def copy_multiple_qcomponents(
+        self,
+        original_qcomponents: list,
+        new_component_names: list,
+        all_options_superimpose: list = list()) -> Dict:
         """The lists in the arguments are all used in parallel.  If the length of original_qcomponents 
         and new_component_names are not the same, no copies will be made and an empty Dict will be returned. 
         The length of all_options_superimposes needs to be either empty or exactly the length of original_qcomponents, 
@@ -689,8 +707,8 @@ class QDesign():
 
         for index, item in enumerate(original_qcomponents):
             if num_options > 0:
-                a_copy = self.copy_qcomponent(
-                    item, new_component_names[index], all_options_superimpose[index])
+                a_copy = self.copy_qcomponent(item, new_component_names[index],
+                                              all_options_superimpose[index])
             else:
                 a_copy = self.copy_qcomponent(item, new_component_names[index])
 
@@ -698,7 +716,12 @@ class QDesign():
 
         return copied_info
 
-    def copy_qcomponent(self,  original_qcomponent: 'QComponent', new_component_name: str, options_superimpose: dict = dict()) -> Union['QComponent', None]:
+    def copy_qcomponent(
+        self,
+        original_qcomponent: 'QComponent',
+        new_component_name: str,
+        options_superimpose: dict = dict()
+    ) -> Union['QComponent', None]:
         """Copy a coponent in QDesign and add it to QDesign._components using options_overwrite.
 
         Args:
@@ -716,13 +739,14 @@ class QDesign():
         options = {**original_qcomponent.options, **options_superimpose}
         path_class_name = original_qcomponent.class_name
         module_path = path_class_name[:path_class_name.rfind('.')]
-        class_name = path_class_name[path_class_name.rfind('.')+1:]
+        class_name = path_class_name[path_class_name.rfind('.') + 1:]
         if new_component_name not in self.name_to_id:
             if importlib.util.find_spec(module_path):
-                qcomponent_class = getattr(
-                    importlib.import_module(module_path), class_name, None)
-                a_qcomponent = qcomponent_class(
-                    self, new_component_name, options=options)
+                qcomponent_class = getattr(importlib.import_module(module_path),
+                                           class_name, None)
+                a_qcomponent = qcomponent_class(self,
+                                                new_component_name,
+                                                options=options)
                 return a_qcomponent
             else:
                 # Path to QComponent not found
@@ -730,7 +754,6 @@ class QDesign():
         else:
             # The new name is already in QDesign.
             return None
-
 
 #########I/O###############################################################
 
@@ -767,9 +790,10 @@ class QDesign():
 
         if path is None:
             if self.save_path is None:
-                self.logger.error('Cannot save design since you did not provide a path to'
-                                  'save to yet. Once you save the dewisgn to a path, the then you call save '
-                                  'without an argument.')
+                self.logger.error(
+                    'Cannot save design since you did not provide a path to'
+                    'save to yet. Once you save the dewisgn to a path, the then you call save '
+                    'without an argument.')
             else:
                 path = self.save_path
 
@@ -917,7 +941,6 @@ class QDesign():
 
 ######### Renderers ###############################################################
 
-
     def _start_renderers(self):
         """1. Import the renderers identifed in config.renderers_to_load.
            2. Register them into QDesign.
@@ -928,21 +951,25 @@ class QDesign():
             if 'path_name' in import_info:
                 path_name = import_info.path_name
             else:
-                self.logger.warning(f'Renderer={renderer_key} is not registered in QDesign.  '
-                                    f'Looking for key="path_name" and value in config.renderers_to_load.')
+                self.logger.warning(
+                    f'Renderer={renderer_key} is not registered in QDesign.  '
+                    f'Looking for key="path_name" and value in config.renderers_to_load.'
+                )
                 continue
 
             if 'class_name' in import_info:
                 class_name = import_info.class_name
             else:
-                self.logger.warning(f'Renderer={renderer_key} is not registered in QDesign.  '
-                                    f'Looking for key="class_name" and value in config.renderers_to_load.')
+                self.logger.warning(
+                    f'Renderer={renderer_key} is not registered in QDesign.  '
+                    f'Looking for key="class_name" and value in config.renderers_to_load.'
+                )
                 continue
 
             # check if module_name exists
             if importlib.util.find_spec(path_name):
-                class_renderer = getattr(
-                    importlib.import_module(path_name), class_name, None)
+                class_renderer = getattr(importlib.import_module(path_name),
+                                         class_name, None)
 
                 # check if class_name is in module
                 if class_renderer is not None:
@@ -951,18 +978,23 @@ class QDesign():
                     # register renderers here.
                     self._renderers[renderer_key] = a_renderer
                 else:
-                    self.logger.warning(f'Renderer={renderer_key} is not registered in QDesign.  '
-                                        f'The class_name={class_name} was not found.')
+                    self.logger.warning(
+                        f'Renderer={renderer_key} is not registered in QDesign.  '
+                        f'The class_name={class_name} was not found.')
                     continue
             else:
-                self.logger.warning(f'Renderer={renderer_key} is not registered in QDesign.  '
-                                    f'The module_name={path_name} was not found.')
+                self.logger.warning(
+                    f'Renderer={renderer_key} is not registered in QDesign.  '
+                    f'The module_name={path_name} was not found.')
                 continue
 
         for render_name, a_render in self._renderers.items():
             a_render.add_table_data_to_QDesign(a_render.name)
 
-    def add_default_data_for_qgeometry_tables(self, table_name: str, renderer_name: str, column_name: str, column_value) -> set:
+    def add_default_data_for_qgeometry_tables(self, table_name: str,
+                                              renderer_name: str,
+                                              column_name: str,
+                                              column_value) -> set:
         """Populate the dict (self.renderer_defaults_by_table) which will hold the data until
         a component's get_template_options(design) is executed.
 
@@ -1018,16 +1050,20 @@ class QDesign():
             self.renderer_defaults_by_table[table_name] = Dict()
             status.add(1)
 
-        if renderer_name not in self.renderer_defaults_by_table[table_name].keys():
+        if renderer_name not in self.renderer_defaults_by_table[
+                table_name].keys():
             self.renderer_defaults_by_table[table_name][renderer_name] = Dict()
             status.add(2)
 
-        if column_name not in self.renderer_defaults_by_table[table_name][renderer_name].keys():
-            self.renderer_defaults_by_table[table_name][renderer_name][column_name] = column_value
+        if column_name not in self.renderer_defaults_by_table[table_name][
+                renderer_name].keys():
+            self.renderer_defaults_by_table[table_name][renderer_name][
+                column_name] = column_value
             status.add(3)
             status.add(5)
         else:
-            self.renderer_defaults_by_table[table_name][renderer_name][column_name] = column_value
+            self.renderer_defaults_by_table[table_name][renderer_name][
+                column_name] = column_value
             status.add(4)
             status.add(5)
 

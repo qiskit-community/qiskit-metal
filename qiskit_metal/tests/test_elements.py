@@ -15,7 +15,6 @@
 #pylint: disable-msg=unnecessary-pass
 #pylint: disable-msg=broad-except
 #pylint: disable-msg=import-outside-toplevel
-
 """
 Qiskit Metal unit tests analyses functionality.
 
@@ -28,13 +27,13 @@ import numpy as np
 
 from geopandas import GeoDataFrame
 
-
 from qiskit_metal import designs
 from qiskit_metal import draw
 
 from qiskit_metal.elements import elements_handler
 from qiskit_metal.elements.elements_handler import QGeometryTables
 from qiskit_metal.components.qubits.transmon_pocket import TransmonPocket
+
 
 class TestElements(unittest.TestCase):
     """
@@ -67,8 +66,10 @@ class TestElements(unittest.TestCase):
         """
         Test is_element_table in element_handler.py
         """
-        self.assertEqual(elements_handler.is_element_table(QGeometryTables), True)
-        self.assertEqual(elements_handler.is_element_table("i_am_a_string"), False)
+        self.assertEqual(elements_handler.is_element_table(QGeometryTables),
+                         True)
+        self.assertEqual(elements_handler.is_element_table("i_am_a_string"),
+                         False)
 
     def test_element_element_columns(self):
         """
@@ -134,9 +135,11 @@ class TestElements(unittest.TestCase):
         """
         design = designs.DesignPlanar()
         qgt = QGeometryTables(design)
-        qgt.add_renderer_extension('new_name', dict(base=dict(color=str, klayer=int),
-                                                    path=dict(thickness=float),
-                                                    poly=dict(material=str)))
+        qgt.add_renderer_extension(
+            'new_name',
+            dict(base=dict(color=str, klayer=int),
+                 path=dict(thickness=float),
+                 poly=dict(material=str)))
 
         e_c = qgt.ELEMENT_COLUMNS
 
@@ -146,9 +149,12 @@ class TestElements(unittest.TestCase):
         self.assertTrue('material' in e_c['poly']['__renderers__']['new_name'])
 
         self.assertEqual(e_c['base']['__renderers__']['new_name']['color'], str)
-        self.assertEqual(e_c['base']['__renderers__']['new_name']['klayer'], int)
-        self.assertEqual(e_c['path']['__renderers__']['new_name']['thickness'], float)
-        self.assertEqual(e_c['poly']['__renderers__']['new_name']['material'], str)
+        self.assertEqual(e_c['base']['__renderers__']['new_name']['klayer'],
+                         int)
+        self.assertEqual(e_c['path']['__renderers__']['new_name']['thickness'],
+                         float)
+        self.assertEqual(e_c['poly']['__renderers__']['new_name']['material'],
+                         str)
 
     def test_element_q_element_get_element_types(self):
         """
@@ -219,7 +225,7 @@ class TestElements(unittest.TestCase):
         qgt = QGeometryTables(design)
         qgt.clear_all_tables()
 
-        a_poly = draw.rectangle(2,2,0,0)
+        a_poly = draw.rectangle(2, 2, 0, 0)
         qgt.add_qgeometry('poly', 'my_id', dict(cl_metal=a_poly))
         table = qgt.tables
 
@@ -242,7 +248,7 @@ class TestElements(unittest.TestCase):
         qgt.clear_all_tables()
 
         # add something to the tables to check for after clear
-        a_poly = draw.rectangle(2,2,0,0)
+        a_poly = draw.rectangle(2, 2, 0, 0)
         qgt.add_qgeometry('poly', 'my_id', dict(cl_metal=a_poly))
 
         qgt.clear_all_tables()
@@ -259,10 +265,14 @@ class TestElements(unittest.TestCase):
         transmon_pocket = TransmonPocket(design, 'my_id')
         transmon_pocket.make()
         transmon_pocket.get_template_options(design)
-        a_linestring = draw.LineString([[0,0],[0,1]])
-        a_poly = draw.rectangle(2,2,0,0)
-        qgt.add_qgeometry('path', 'my_id', {'n_sprial': a_linestring}, width=4000)
-        qgt.add_qgeometry('poly', 'my_id', {'n_spira_etch': a_poly}, subtract=True)
+        a_linestring = draw.LineString([[0, 0], [0, 1]])
+        a_poly = draw.rectangle(2, 2, 0, 0)
+        qgt.add_qgeometry('path',
+                          'my_id', {'n_sprial': a_linestring},
+                          width=4000)
+        qgt.add_qgeometry('poly',
+                          'my_id', {'n_spira_etch': a_poly},
+                          subtract=True)
 
         self.assertEqual(len(qgt.tables['path']), 1)
         self.assertEqual(len(qgt.tables['poly']), 1)
@@ -283,10 +293,14 @@ class TestElements(unittest.TestCase):
         transmon_pocket = TransmonPocket(design, 'my_id')
         transmon_pocket.make()
         transmon_pocket.get_template_options(design)
-        a_linestring = draw.LineString([[0,0],[0,1]])
-        a_poly = draw.rectangle(2,2,0,0)
-        qgt.add_qgeometry('path', 'my_id', {'n_sprial': a_linestring}, width=4000)
-        qgt.add_qgeometry('poly', 'my_id', {'n_spira_etch': a_poly}, subtract=True)
+        a_linestring = draw.LineString([[0, 0], [0, 1]])
+        a_poly = draw.rectangle(2, 2, 0, 0)
+        qgt.add_qgeometry('path',
+                          'my_id', {'n_sprial': a_linestring},
+                          width=4000)
+        qgt.add_qgeometry('poly',
+                          'my_id', {'n_spira_etch': a_poly},
+                          subtract=True)
 
         self.assertEqual(qgt.get_all_unique_layers('main'), [1])
         self.assertEqual(qgt.get_all_unique_layers('fake'), [])
@@ -342,6 +356,7 @@ class TestElements(unittest.TestCase):
         self.assertEqual(actual['path'], None)
         self.assertEqual(actual['poly'], None)
         self.assertEqual(actual['junction'], None)
+
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

@@ -15,7 +15,6 @@
 # pylint: disable-msg=unnecessary-pass
 # pylint: disable-msg=pointless-statement
 # pylint: disable-msg=broad-except
-
 """
 Qiskit Metal unit tests components functionality.
 
@@ -78,7 +77,8 @@ class TestDefautOptions(unittest.TestCase):
             DefaultOptionsRenderer(draw_substrate={}, bounding_box={})
         except Exception:
             self.fail(
-                "DefaultOptionsRenderer(draw_substrate={}, bounding_box={}) failed")
+                "DefaultOptionsRenderer(draw_substrate={}, bounding_box={}) failed"
+            )
 
     def test_default_options_create(self):
         """

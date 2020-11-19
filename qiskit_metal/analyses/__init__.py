@@ -11,7 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 """
 =================================================
 Analyses (:mod:`qiskit_metal.analyses`)
@@ -35,5 +34,5 @@ Submodules
     lumped_capacitive
 """
 
-from . import cpw_calculations
-from . import lumped_capacitive
+from .em import cpw_calculations
+from .quantization import lumped_capacitive

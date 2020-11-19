@@ -34,6 +34,7 @@ class QTreeView_Options(QTreeView, QWidget_PlaceholderText):
 
     This class extends the `QTreeView` and `QWidget_PlaceholderText` classes
     """
+
     def __init__(self, parent: QtWidgets.QWidget):
         """
         Args:

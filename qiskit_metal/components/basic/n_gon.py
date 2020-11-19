@@ -12,7 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-
 from qiskit_metal import draw, Dict
 from qiskit_metal.components.base import QComponent
 import numpy as np
@@ -61,8 +60,8 @@ class NGon(QComponent):
         n = int(p.n)
         # Create the geometry
         # Generates a list of points
-        n_polygon = [(p.radius*np.cos(2*np.pi*x/n), p.radius *
-                      np.sin(2*np.pi*x/n)) for x in range(n)]
+        n_polygon = [(p.radius * np.cos(2 * np.pi * x / n),
+                      p.radius * np.sin(2 * np.pi * x / n)) for x in range(n)]
         # Converts said list into a shapely polygon
         n_polygon = draw.Polygon(n_polygon)
 
@@ -71,5 +70,8 @@ class NGon(QComponent):
 
         ##############################################
         # add qgeometry
-        self.add_qgeometry('poly', {'n_polygon': n_polygon}, subtract=p.subtract,
-                           helper=p.helper, layer=p.layer, chip=p.chip)
+        self.add_qgeometry('poly', {'n_polygon': n_polygon},
+                           subtract=p.subtract,
+                           helper=p.helper,
+                           layer=p.layer,
+                           chip=p.chip)

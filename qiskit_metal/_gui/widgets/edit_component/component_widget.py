@@ -163,6 +163,7 @@ class ComponentWidget(QTabWidget):
     **Access:**
         gui.component_window
     """
+
     def __init__(self, gui: 'MetalGUI', parent: QtWidgets.QWidget):
         """
         Args:
@@ -187,8 +188,7 @@ class ComponentWidget(QTabWidget):
         # Parameter model and table view
         self.model = QTreeModel_Options(self, gui, self.ui.treeView)
         self.ui.treeView.setModel(self.model)
-        self.ui.treeView.setVerticalScrollMode(
-            QAbstractItemView.ScrollPerPixel)
+        self.ui.treeView.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
         self.ui.treeView.setHorizontalScrollMode(
             QAbstractItemView.ScrollPerPixel)
 

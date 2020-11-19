@@ -24,6 +24,7 @@ from ...._gui.utility._handle_qt_messages import slot_catch_error
 
 class AnimatedText():
     """Class that animates text"""
+
     def __init__(self,
                  ax: plt.Axes,
                  text: str,

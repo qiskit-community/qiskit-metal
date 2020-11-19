@@ -13,7 +13,6 @@
 # that they have been altered from the originals.
 
 # WILL NEED UPDATING TO NEW ELEMENT SCHEME
-
 """
 Main module for basic geometric manipulation of non-shapely objects,
 but objects such as points and arrays used in drawing.
@@ -38,8 +37,11 @@ from .. import logger
 from ..components.base import is_component
 from . import BaseGeometry
 
-__all__ = ['get_poly_pts', 'get_all_component_bounds', 'get_all_geoms', 'flatten_all_filter',
-           'remove_colinear_pts', 'array_chop', 'vec_unit_planar',  'Vector']
+__all__ = [
+    'get_poly_pts', 'get_all_component_bounds', 'get_all_geoms',
+    'flatten_all_filter', 'remove_colinear_pts', 'array_chop',
+    'vec_unit_planar', 'Vector'
+]
 
 #########################################################################
 # Shapely Geometry Basic Coordinates
@@ -74,8 +76,8 @@ def get_all_geoms(obj, func=lambda x: x, root_name='components'):
 
     # Prelim
     # Calculate the new name
-    def new_name(name): return root_name + '.' + \
-        name if not (root_name == '') else name
+    def new_name(name):        return root_name + '.' + \
+name if not (root_name == '') else name
 
     # Check what we have
 
@@ -92,7 +94,10 @@ def get_all_geoms(obj, func=lambda x: x, root_name='components'):
         return obj
 
     elif isinstance(obj, Mapping):
-        return {get_all_geoms(sub_obj, root_name=new_name(name)) for name, sub_obj in obj.items()}
+        return {
+            get_all_geoms(sub_obj, root_name=new_name(name))
+            for name, sub_obj in obj.items()
+        }
         '''
         RES = {}
         for name, sub_obj in obj.items():
@@ -111,7 +116,8 @@ def get_all_geoms(obj, func=lambda x: x, root_name='components'):
 
     else:
         logger.debug(
-            f'warning: {root_name} was not an object or dict or the right handle')
+            f'warning: {root_name} was not an object or dict or the right handle'
+        )
         return None
 
 
@@ -182,13 +188,16 @@ def round_coordinate_sequence(geom_ref, precision):
         temp_ext = np.around(geom_ref.exterior.coords[:], precision).tolist()
         geom_ref.exterior.coords = temp_ext.copy()
         for x in range(0, len(geom_ref.interiors)):
-            temp_int = np.around(geom_ref.interiors[x].coords[:], precision).tolist()
+            temp_int = np.around(geom_ref.interiors[x].coords[:],
+                                 precision).tolist()
             geom_ref.interiors[x].coords = temp_int.copy()
 
     return geom_ref
 
+
 #########################################################################
 # POINT LIST FUNCTIONS
+
 
 def check_duplicate_list(your_list):
     """Check if the list contains duplicates
@@ -217,8 +226,10 @@ def array_chop(vec, zero=0, rtol=0, machine_tol=100):
         array: Chopped arary
     '''
     vec = np.array(vec)
-    mask = np.isclose(vec, zero, rtol=rtol,
-                      atol=machine_tol*np.finfo(float).eps)
+    mask = np.isclose(vec,
+                      zero,
+                      rtol=rtol,
+                      atol=machine_tol * np.finfo(float).eps)
     vec[mask] = 0
     return vec
 
@@ -235,18 +246,18 @@ def remove_colinear_pts(points):
     '''
     remove_idx = []
     for i in range(2, len(points)):
-        v1 = array(points[i-2])-array(points[i-1])
-        v2 = array(points[i-1])-array(points[i-0])
+        v1 = array(points[i - 2]) - array(points[i - 1])
+        v2 = array(points[i - 1]) - array(points[i - 0])
         if Vector.are_same(v1, v2):
-            remove_idx += [i-1]
+            remove_idx += [i - 1]
         elif Vector.angle_between(v1, v2) == 0:
-            remove_idx += [i-1]
+            remove_idx += [i - 1]
     points = np.delete(points, remove_idx, axis=0)
 
     # remove  consequtive duplicates
     remove_idx = []
     for i in range(1, len(points)):
-        if norm(points[i]-points[i-1]) == 0:
+        if norm(points[i] - points[i - 1]) == 0:
             remove_idx += [i]
     points = np.delete(points, remove_idx, axis=0)
 
@@ -300,15 +311,16 @@ def in_or_out(xs, ys, x0, y0):
     Parameters
     """
     crossings = 0
-    for i in range(len(xs)-1):
+    for i in range(len(xs) - 1):
         p1x = xs[i]
-        p2x = xs[i+1]
+        p2x = xs[i + 1]
         p1y = ys[i]
-        p2y = ys[i+1]
+        p2y = ys[i + 1]
         cross = intersect(p1x, p1y, p2x, p2y, x0, y0)
         # print('i = ', i, 'cross = ', cross)
         crossings += cross
     return crossings
+
 
 #########################################################################
 # Vector functions
@@ -348,7 +360,7 @@ def vec_unit_planar(vector: np.array):
         raise Exception('You did not give a 2 or 3 vec')
 
 
-def to_vec3D(list_of_2d_pts:List[Tuple], z=0) -> np.ndarray:
+def to_vec3D(list_of_2d_pts: List[Tuple], z=0) -> np.ndarray:
     """
     Adds 3rd point to list of 2D points.
     For the given design, get the z values in HFSS UNITS!
@@ -362,8 +374,7 @@ def to_vec3D(list_of_2d_pts:List[Tuple], z=0) -> np.ndarray:
         np.ndarray: [description]
     """
     add_me = [z]
-    return np.array([list(a_2d_pt) + add_me  for a_2d_pt in list_of_2d_pts])
-
+    return np.array([list(a_2d_pt) + add_me for a_2d_pt in list_of_2d_pts])
 
 
 Vec2D = Union[list, np.ndarray]
@@ -378,7 +389,8 @@ class Vector:
     """ Noraml Z array """
 
     @staticmethod
-    def rotate_around_point(xy: Vec2D, radians: float, origin=(0, 0)) -> np.ndarray:
+    def rotate_around_point(xy: Vec2D, radians: float,
+                            origin=(0, 0)) -> np.ndarray:
         r"""Rotate a point around a given point.
         Positive angles are counter-clockwise and negative are clockwise rotations.
 
@@ -425,7 +437,7 @@ class Vector:
         sin_rad = math.sin(radians)
         qx = cos_rad * x - sin_rad * y
         qy = sin_rad * x + cos_rad * y
-        return np.array([qx, qy]) #ADD ARRAY CHOP - draw_utility
+        return np.array([qx, qy])  #ADD ARRAY CHOP - draw_utility
 
     @staticmethod
     def angle(vector: Vec2D) -> float:
@@ -493,7 +505,7 @@ class Vector:
         if isinstance(vec2D[0], Iterable):
             return array([Vector.add_z(vec, z=z) for vec in vec2D])
         else:
-            return array(list(vec2D)+[z])
+            return array(list(vec2D) + [z])
 
     @staticmethod
     def normed(vec: Vec2D) -> Vec2D:
@@ -534,7 +546,7 @@ class Vector:
             bool: Same or not
         """
         v1, v2 = np.array(v1), np.array(v2)
-        return Vector.is_zero(v1-v2, tol=tol)
+        return Vector.is_zero(v1 - v2, tol=tol)
 
     @staticmethod
     def is_zero(vec: Vec2D, tol: int = 100) -> bool:
@@ -549,10 +561,12 @@ class Vector:
         Returns:
             bool: Close to zero or not
         """
-        return float(norm(vec)) < tol*np.finfo(float).eps
+        return float(norm(vec)) < tol * np.finfo(float).eps
 
     @staticmethod
-    def get_distance(u: Union[tuple, list, np.ndarray], v: Union[tuple, list, np.ndarray], precision: int = 9) -> float:
+    def get_distance(u: Union[tuple, list, np.ndarray],
+                     v: Union[tuple, list, np.ndarray],
+                     precision: int = 9) -> float:
         """
         Get the Euclidean distance between points u and v to the specified precision.
 
@@ -566,7 +580,7 @@ class Vector:
         """
         u, v = np.array(u), np.array(v)
         return round(abs(norm(u - v)), precision)
-    
+
     @staticmethod
     def two_points_described(points2D: List[Vec2D]) -> Tuple[np.ndarray]:
         """
@@ -591,15 +605,16 @@ class Vector:
         start = np.array(points2D[0])
         end = np.array(points2D[1])
 
-        distance_vec = end - start                   # distance vector
+        distance_vec = end - start  # distance vector
         # unit vector along the direction of the two point
         unit_vec = distance_vec / norm(distance_vec)
         # tangent vector counter-clockwise 90 deg rotation
-        tangent_vec = np.round(Vector.rotate(unit_vec, np.pi/2),decimals=11)
+        tangent_vec = np.round(Vector.rotate(unit_vec, np.pi / 2), decimals=11)
 
         if Vector.is_zero(distance_vec):
-            logger.debug(f'Function `two_points_described` encountered a zero vector'
-                         ' length. The two points should not be the same.')
+            logger.debug(
+                f'Function `two_points_described` encountered a zero vector'
+                ' length. The two points should not be the same.')
 
         return distance_vec, unit_vec, tangent_vec
 

@@ -11,7 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 '''
 @date: Aug-2020
 @author: Marco Facchini, John Blair, Zlatko Minev
@@ -51,19 +50,12 @@ class RouteMeander(QRoute):
 
     """
 
-    component_metadata = Dict(
-        short_name='cpw'
-        )
+    component_metadata = Dict(short_name='cpw')
     """Component metadata"""
 
-    default_options = Dict(
-        meander=Dict(
-            spacing='200um',
-            asymmetry='0um'
-        ),
-        snap='true',
-        prevent_short_edges='true'
-    )
+    default_options = Dict(meander=Dict(spacing='200um', asymmetry='0um'),
+                           snap='true',
+                           prevent_short_edges='true')
     """Default options"""
 
     def make(self):
@@ -85,19 +77,22 @@ class RouteMeander(QRoute):
         meander_end_point = self.set_lead("end")
 
         # approximate length needed for the meander
-        self._length_segment = self.p.total_length - (self.head.length + self.tail.length)
+        self._length_segment = self.p.total_length - (self.head.length +
+                                                      self.tail.length)
 
         arc_pts = self.connect_meandered(meander_start_point, meander_end_point)
 
         self.intermediate_pts = arc_pts
 
-        self.intermediate_pts = self.adjust_length(self.p.total_length - self.length, arc_pts,
-                                                   meander_start_point, meander_end_point)
+        self.intermediate_pts = self.adjust_length(
+            self.p.total_length - self.length, arc_pts, meander_start_point,
+            meander_end_point)
 
         # Make points into elements
         self.make_elements(self.get_points())
 
-    def connect_meandered(self, start_pt: QRoutePoint, end_pt: QRoutePoint) -> np.ndarray:
+    def connect_meandered(self, start_pt: QRoutePoint,
+                          end_pt: QRoutePoint) -> np.ndarray:
         """
         Meanders using a fixed length and fixed spacing.
 
@@ -143,8 +138,10 @@ class RouteMeander(QRoute):
         # Calculate lengths and meander number
         dist = end_pt.position - start_pt.position
         if snap:
-            length_direct = abs(norm(mao.dot(dist, forward)))  # in the vertical direction
-            length_sideways = abs(norm(mao.dot(dist, sideways)))  # in the orthogonal direction
+            length_direct = abs(norm(mao.dot(
+                dist, forward)))  # in the vertical direction
+            length_sideways = abs(norm(mao.dot(
+                dist, sideways)))  # in the orthogonal direction
         else:
             length_direct = norm(dist)
             length_sideways = 0
@@ -158,11 +155,16 @@ class RouteMeander(QRoute):
         # The start and end points can have 4 directions each. Depending on the direction
         # there might be not enough space for all the meanders, thus here we adjust
         # meander_number w.r.t. what the start and end points "directionality" allows
-        if mao.round(mao.dot(start_pt.direction, sideways) * mao.dot(end_pt.direction, sideways)) > 0 and (meander_number % 2) == 0:
+        if mao.round(
+                mao.dot(start_pt.direction, sideways) *
+                mao.dot(end_pt.direction, sideways)) > 0 and (meander_number %
+                                                              2) == 0:
             # even meander_number is no good if roots have same orientation (w.r.t sideway)
             meander_number -= 1
-        elif mao.round(mao.dot(start_pt.direction, sideways) * mao.dot(end_pt.direction, sideways)) < 0 and (
-                meander_number % 2) == 1:
+        elif mao.round(
+                mao.dot(start_pt.direction, sideways) *
+                mao.dot(end_pt.direction, sideways)) < 0 and (meander_number %
+                                                              2) == 1:
             # odd meander_number is no good if roots have opposite orientation (w.r.t sideway)
             meander_number -= 1
 
@@ -215,7 +217,8 @@ class RouteMeander(QRoute):
         # root_pts = np.concatenate([middle_points,
         #                            end.position[None, :]],  # convert to row vectors
         #                           axis=0)
-        side_shift_vecs = np.array([sideways * length_perp] * len(middle_points))
+        side_shift_vecs = np.array([sideways * length_perp] *
+                                   len(middle_points))
         asymmetry_vecs = np.array([sideways * asymmetry] * len(middle_points))
         root_pts = middle_points + asymmetry_vecs
         top_pts = root_pts + side_shift_vecs
@@ -245,13 +248,14 @@ class RouteMeander(QRoute):
         pts += start_pt.position  # move to start position
 
         if snap:
-            if ((mao.dot(start_pt.direction, end_pt.direction) < 0)
-                    and (mao.dot(forward, start_pt.direction) <= 0)):
+            if ((mao.dot(start_pt.direction, end_pt.direction) < 0) and
+                (mao.dot(forward, start_pt.direction) <= 0)):
                 # pins are pointing opposite directions and diverging
                 # the last root_pts need to be sideways aligned with the end.position point
                 # and forward aligned with the previous meander point
                 pts[-1, abs(forward[0])] = pts[-2, abs(forward[0])]
-                pts[-1, abs(forward[0])-1] = end_pt.position[abs(forward[0])-1]
+                pts[-1,
+                    abs(forward[0]) - 1] = end_pt.position[abs(forward[0]) - 1]
             else:
                 # the last root_pts need to be forward aligned with the end.position point
                 pts[-1, abs(forward[0])] = end_pt.position[abs(forward[0])]
@@ -265,8 +269,8 @@ class RouteMeander(QRoute):
                     pts[-2, abs(forward[0])] = end_pt.position[abs(forward[0])]
                     pts[-3, abs(forward[0])] = end_pt.position[abs(forward[0])]
         if abs(asymmetry) > abs(length_perp):
-            if not((mao.dot(start_pt.direction, end_pt.direction) < 0)
-                   and (mao.dot(forward, start_pt.direction) <= 0)):
+            if not ((mao.dot(start_pt.direction, end_pt.direction) < 0) and
+                    (mao.dot(forward, start_pt.direction) <= 0)):
                 # pins are "not" pointing opposite directions and diverging
                 if start_meander_direction * asymmetry < 0:  # sideway direction
                     pts[0, abs(forward[0])] = start_pt.position[abs(forward[0])]
@@ -274,7 +278,6 @@ class RouteMeander(QRoute):
                 if end_meander_direction * asymmetry < 0:  # opposite sideway direction
                     pts[-2, abs(forward[0])] = end_pt.position[abs(forward[0])]
                     pts[-3, abs(forward[0])] = end_pt.position[abs(forward[0])]
-
 
         # Adjust the meander to eliminate the terminating jog (dogleg)
         if prevent_short_edges:
@@ -286,23 +289,28 @@ class RouteMeander(QRoute):
                 skippoint = 0
             else:
                 skippoint = 1
-            if 0 < abs(mao.round(end_pt.position[0]-pts[-1, 0])) < x2fillet:
-                pts[-1-skippoint, 0-skippoint] = end_pt.position[0-skippoint]
-                pts[-2-skippoint, 0-skippoint] = end_pt.position[0-skippoint]
-            if 0 < abs(mao.round(end_pt.position[1]-pts[-1, 1])) < x2fillet:
-                pts[-1-skippoint, 1-skippoint] = end_pt.position[1-skippoint]
-                pts[-2-skippoint, 1-skippoint] = end_pt.position[1-skippoint]
+            if 0 < abs(mao.round(end_pt.position[0] - pts[-1, 0])) < x2fillet:
+                pts[-1 - skippoint,
+                    0 - skippoint] = end_pt.position[0 - skippoint]
+                pts[-2 - skippoint,
+                    0 - skippoint] = end_pt.position[0 - skippoint]
+            if 0 < abs(mao.round(end_pt.position[1] - pts[-1, 1])) < x2fillet:
+                pts[-1 - skippoint,
+                    1 - skippoint] = end_pt.position[1 - skippoint]
+                pts[-2 - skippoint,
+                    1 - skippoint] = end_pt.position[1 - skippoint]
             # repeat for the start. here we do not have the extra point
-            if 0 < abs(mao.round(start_pt.position[0]-pts[0, 0])) < x2fillet:
+            if 0 < abs(mao.round(start_pt.position[0] - pts[0, 0])) < x2fillet:
                 pts[0, 0] = start_pt.position[0]
                 pts[1, 0] = start_pt.position[0]
-            if 0 < abs(mao.round(start_pt.position[1]-pts[0, 1])) < x2fillet:
+            if 0 < abs(mao.round(start_pt.position[1] - pts[0, 1])) < x2fillet:
                 pts[0, 1] = start_pt.position[1]
                 pts[1, 1] = start_pt.position[1]
 
         return pts
 
-    def adjust_length(self, delta_length, pts, start_pt: QRoutePoint, end_pt: QRoutePoint) -> np.ndarray:
+    def adjust_length(self, delta_length, pts, start_pt: QRoutePoint,
+                      end_pt: QRoutePoint) -> np.ndarray:
         """
         Edits meander points to redistribute the length slacks accrued with the various local adjustments
         It should be run after self.pts_intermediate is completely defined
@@ -329,11 +337,12 @@ class RouteMeander(QRoute):
         snap = is_true(self.p.snap)  # snap to xy grid
         forward, sideways = self.get_unit_vectors(start_pt, end_pt, snap)
         # recompute meander_sideways
-        if mao.cross(pts[1]-pts[0], pts[2]-pts[1]) < 0:
+        if mao.cross(pts[1] - pts[0], pts[2] - pts[1]) < 0:
             first_meander_sideways = True
         else:
             first_meander_sideways = False
-        if mao.cross(pts[-2-term_point]-pts[-1-term_point], pts[-3-term_point]-pts[-2-term_point]) < 0:
+        if mao.cross(pts[-2 - term_point] - pts[-1 - term_point],
+                     pts[-3 - term_point] - pts[-2 - term_point]) < 0:
             last_meander_sideways = False
         else:
             last_meander_sideways = True
@@ -356,27 +365,32 @@ class RouteMeander(QRoute):
         end_pt_adjusted_down = end_pt.position - fillet_shift
 
         # if start_pt.position is below axes + shift - 2xfillet &  first_meander_sideways
-        if first_meander_sideways and not self.issideways(start_pt_adjusted_up, pts[0], pts[1]):
+        if first_meander_sideways and not self.issideways(
+                start_pt_adjusted_up, pts[0], pts[1]):
             #first meander is fair game
             pass
         # if start_pt.position is above axes - shift + 2xfillet &  not first_meander_sideways
-        elif not first_meander_sideways and self.issideways(start_pt_adjusted_down, pts[0], pts[1]):
+        elif not first_meander_sideways and self.issideways(
+                start_pt_adjusted_down, pts[0], pts[1]):
             # first meander is fair game
             pass
         else:
             # else block first mender
             adjustment_vector[:2] = [0, 0]
         # if end_pt.position is below axes + shift - 2xfillet &  last_meander_sideways
-        if last_meander_sideways and not self.issideways(end_pt_adjusted_up, pts[-2-term_point], pts[-1-term_point]):
+        if last_meander_sideways and not self.issideways(
+                end_pt_adjusted_up, pts[-2 - term_point], pts[-1 - term_point]):
             # first meander is fair game
             pass
         # if end_pt.position is above axes - shift + 2xfillet &  not last_meander_sideways
-        elif not last_meander_sideways and self.issideways(end_pt_adjusted_down, pts[-2-term_point], pts[-1 - term_point]):
+        elif not last_meander_sideways and self.issideways(
+                end_pt_adjusted_down, pts[-2 - term_point],
+                pts[-1 - term_point]):
             # first meander is fair game
             pass
         else:
             # else block last mender
-            adjustment_vector[-2-term_point:-term_point] = [0, 0]
+            adjustment_vector[-2 - term_point:-term_point] = [0, 0]
 
         if term_point:
             # pts count is a odd number
@@ -384,8 +398,8 @@ class RouteMeander(QRoute):
             adjustment_vector[-1] = 0
             #....unless the last point is anchored to the last meander curve
             if start_pt.direction is not None and end_pt.direction is not None:
-                if ((mao.dot(start_pt.direction, end_pt.direction) < 0)
-                        and (mao.dot(forward, start_pt.direction) <= 0)):
+                if ((mao.dot(start_pt.direction, end_pt.direction) < 0) and
+                    (mao.dot(forward, start_pt.direction) <= 0)):
                     # pins are pointing opposite directions and diverging, thus keep consistency
                     adjustment_vector[-1] = adjustment_vector[-2]
 
@@ -393,11 +407,13 @@ class RouteMeander(QRoute):
         # print("adj,vec", adjustment_vector)
         # print("before pts", len(pts), pts)
         # then divide the slack amongst all points
-        sideways_adjustment = sideways * (delta_length / np.count_nonzero(adjustment_vector))
+        sideways_adjustment = sideways * (delta_length /
+                                          np.count_nonzero(adjustment_vector))
 
         # print(self.length, delta_length, np.count_nonzero(adjustment_vector))
 
-        pts = pts + sideways_adjustment[np.newaxis, :] * adjustment_vector[:, np.newaxis]
+        pts = pts + sideways_adjustment[
+            np.newaxis, :] * adjustment_vector[:, np.newaxis]
         # print("after pts", len(pts), pts)
 
         return pts

@@ -15,27 +15,27 @@ When reporting an issue, please follow this template::
 ```
 <!--- Provide a general summary of the issue in the Title above -->
 
-## Expected Behavior
-<!--- Tell us what should happen -->
+### Informations
 
-## Current Behavior
-<!--- Tell us what happens instead of the expected behavior -->
+- **Qiskit Metal version**:
+- **Python version**:
+- **Operating system**:
 
-## System Settings
-<!--- Post the results of `metal.about()` here. --->
+### What is the current behavior?
 
-## Steps to Reproduce
-<!--- Provide a link to a live example, or an unambiguous set of steps to -->
-<!--- reproduce this bug. Include code to reproduce, if relevant -->
-1.
-2.
-3.
 
-## Detailed Description
-<!--- Provide a detailed description of the change or addition you are proposing -->
 
-## Possible Implementation
-<!--- Not obligatory, but suggest an idea for implementing addition or change -->
+### Steps to reproduce the problem
+
+
+
+### What is the expected behavior?
+
+
+
+### Suggested solutions
+
+
 ```
 
 ### Improvement Proposal
@@ -70,7 +70,7 @@ commands in the top-level of the repository:
 ``` sh
 conda env create -n <env_name> environment.yml
 conda activate <env_name>
-python -m pip install -e .
+python -m pip install -ve .
 ```
 
 For convenience, you can also try to install directly in an existing
@@ -82,7 +82,7 @@ the top-level of the repository:
 ``` sh
 conda env update -n <env_name> environment.yml
 conda activate <env_name>
-python -m pip install -e .
+python -m pip install -ve .
 ```
 
 ### Notes on Using Conda
@@ -114,19 +114,19 @@ python -m pip install -r requirements.txt -r requirements-dev.txt -e .
 ## Contributing Code
 
 ### Code Formatting
-To enforce a consistent code style in the project, we use customized [Pylint](https://www.pylint.org) for linting and 
+To enforce a consistent code style in the project, we use customized [Pylint](https://www.pylint.org) for linting and
 [YAPF](https://github.com/google/yapf) with the [Google style](
-https://google.github.io/styleguide/pyguide.html) for auto formatting. The custom 
+https://google.github.io/styleguide/pyguide.html) for auto formatting. The custom
 `.pylintrc` and `.style.yapf` files are located in the root of the repository. Our CI pipeline will enforce these styles when you make the pull request.
 
 #### VSCode Setup
 
-If you are using VSCode for your code editor, you can add these settings 
+If you are using VSCode for your code editor, you can add these settings
 to your `settings.json` to enforce your code to our style. Make sure to add PySide2 to the linter:
 ```
 {
     "python.linting.pylintEnabled": true,
-    "python.linting.enabled": true,    
+    "python.linting.enabled": true,
     "python.linting.pylintArgs": [
         "--extension-pkg-whitelist=PySide2"
     ],
@@ -153,7 +153,7 @@ Additionally, CI will run the test suite on all pushes made to any branch in the
 
 ### Pull Requests
 
-To submit your contribution, make a pull request from your forked repository to the `master` branch of Metal. Please ensure 
+To submit your contribution, make a pull request from your forked repository to the `master` branch of Metal. Please ensure
 
 -  The code follows the code style of the project (discussed above) and
    successfully passes all tests.
@@ -227,8 +227,9 @@ Submodules
 ----------
 .. autosummary::
     :toctree:
-    cpw_calculations
-    lumped_capacitive
+    em
+    quantization
+    hamiltonian
 """
 ```
 
@@ -241,7 +242,7 @@ The actual docstring for the elements listed in the module docstring
    The [napoleon documentation](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html)
    contains a good example of how docstrings should be formatted.
 
-  
+
     >  You can use any Sphinx directive or rst formatting in a docstring as it
     >  makes sense. For example, one common extension used is the ``jupyter-execute``
     >  directive, which is used to execute a code block in Jupyter and display both
@@ -249,21 +250,21 @@ The actual docstring for the elements listed in the module docstring
 
 ### Rebuilding Documentation
 
-If you make changes to the codebase and want to rebuild the documentation, 
+If you make changes to the codebase and want to rebuild the documentation,
 
 1. Install `sphinx` and `numpydoc`.
-``` 
+```
 conda install sphinx numpydoc
 (or pip install -U sphinx)
 ```
 
 2. Install [read the docs theme](https://github.com/rtfd/sphinx_rtd_theme) and set in the config `html_theme = "sphinx_rtd_theme"`.
-``` 
+```
 pip install sphinx_rtd_theme
 ```
 
 3. Install required packages.
-``` 
+```
 pip install sphinx_automodapi
 pip install jupyter_sphinx
 ```

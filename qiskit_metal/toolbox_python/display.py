@@ -11,7 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 """
 Utility display functions used in the tutorials.
 
@@ -33,6 +32,7 @@ __all__ = ['get_screenshot', 'format_dict_ala_z']
 @magics_class
 class MetalTutorialMagics(Magics):
     """A class of status magic functions."""
+
     @line_magic
     def metal_print(self, line='', cell=None):  # pylint: disable=unused-argument
         """
