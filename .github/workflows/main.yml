@@ -137,7 +137,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -U -r requirements-dev.txt
           pip install git+https://github.com/Qiskit/qiskit-metal
-          pip install -e .
+          pip install -ve .
           pip install -U "pyscf<1.7.4" "matplotlib<3.3.0" pylatexenc sphinx nbsphinx sphinx_rtd_theme cvxpy
           python setup.py build_ext --inplace
           sudo apt install -y graphviz pandoc
