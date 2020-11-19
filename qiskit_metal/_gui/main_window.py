@@ -106,9 +106,10 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         """Delete all components
         """
         ret = QMessageBox.question(
-            self, 'Delete all components?',
+            self,
+            'Delete all components?',
             "Are you sure you want to clear all Metal components?",
-            QMessageBox.Yes | QMessageBox.No)
+            buttons=(QMessageBox.Yes | QMessageBox.No))
         if ret == QMessageBox.Yes:
             self.logger.info('Delete all components.')
             self.design.delete_all_components()
@@ -123,7 +124,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
             None,
             'Select a new location to save Metal design to',
             self.design.get_design_name() + '.metal',
-            initialFilter='*.metal')[0]
+            selectedFilter='*.metal')[0]
 
         if filename:
             self.gui.save_file(filename)
@@ -151,7 +152,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         filename = QFileDialog.getOpenFileName(
             None,
             'Select locaiton to load Metal design from',
-            initialFilter='*.metal')[0]
+            selectedFilter='*.metal')[0]
         if filename:
             self.logger.info(f'Attempting to load design file {filename}')
             design = load_metal_design(filename)
@@ -179,14 +180,15 @@ class QMainWindowExtension(QMainWindowExtensionBase):
     def new_qcomponent(self, _=None):
         """Create a new qcomponent call by button
         """
+
         path = str(
             Path(self.gui.path_gui).parent / 'components' / 'user_components' /
             'my_qcomponent.py')
+
         filename = QFileDialog.getSaveFileName(
             parent=None,
-            caption='Select a locaiton to save QComponent python file to',
-            directory=path,
-            initialFilter='*.py')[0]
+            caption='Select a location to save QComponent python file to',
+            dir=path)[0]
         if filename:
             text, okPressed = QInputDialog.getText(
                 self, "Name your QComponent class",
@@ -196,6 +198,10 @@ class QMainWindowExtension(QMainWindowExtensionBase):
                     self, "Give a name to your instance of the class",
                     "Name of instance:", QLineEdit.Normal, "qcomp1")
                 if okPressed and text_inst != '':
+                    init_path = filename.rsplit("/", 1)[0] + "/__init__.py"
+                    if not os.path.exists(init_path):
+                        with open(init_path, "w"):
+                            pass
                     self.gui.new_qcomponent_file(filename, text, text_inst)
 
 
@@ -359,7 +365,8 @@ class MetalGUI(QMainWindowBaseHandler):
         self.main_window.tabifyDockWidget(self.ui.dockConnectors,
                                           self.ui.dockVariables)
         self.ui.dockDesign.raise_()
-        self.main_window.resizeDocks([self.ui.dockDesign], [350], Qt.Horizontal)
+        self.main_window.resizeDocks(
+            [self.ui.dockDesign], [350], Qt.Horizontal)
 
         # Log
         self.ui.dockLog.parent().resizeDocks([self.ui.dockLog], [120],
@@ -587,9 +594,12 @@ class MetalGUI(QMainWindowBaseHandler):
 
         Args:
             path (str): the path to the file to save to
-            class_name (str): how you wnat ot call the class
+            class_name (str): how you want to call the class
             name_instance (str): name of the instance of the component to be created
         """
+
+        if not new_path.endswith('.py'):
+            new_path = new_path + ".py"
 
         # Copy template file
         tpath = Path(self.path_gui)

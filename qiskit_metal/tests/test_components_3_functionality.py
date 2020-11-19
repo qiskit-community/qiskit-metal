@@ -41,7 +41,6 @@ from qiskit_metal import designs
 from qiskit_metal.components.qubits import transmon_pocket_cl
 from qiskit_metal.components.qubits import transmon_pocket
 from qiskit_metal.components.qubits import transmon_cross
-from qiskit_metal.components.user_components import my_qcomponent
 from qiskit_metal.tests.assertions import AssertionsMixin
 
 #pylint: disable-msg=line-too-long
@@ -302,14 +301,6 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
         self.assertEqual(metadata['short_name'], 'Cross')
         self.assertEqual(metadata['_qgeometry_table_poly'], 'True')
         self.assertEqual(metadata['_qgeometry_table_junction'], 'True')
-
-    def test_component_user_component_my_q_component_component_metadata(self):
-        """
-        Test component_metadata in user_component/my_qcomponent.py
-        """
-        component = my_qcomponent.MyQComponent
-        self.assertEqual(component.component_metadata,
-                         {'short_name': 'component'})
 
     def test_component_qcomponent_get_pin_names(self):
         """
