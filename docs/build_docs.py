@@ -13,51 +13,37 @@
 An automated process to build docs locally.
 
 Run using:
-    $ python docs/build_docs.py
+    $ python <path>/build_docs.py
+build_docs.py needs to be in the same folder as the Makefile
 """
 
 import shlex
 import subprocess
+import os
+import sys
+
 cmd = "conda install -y -c conda-forge sphinx numpydoc sphinx_rtd_theme sphinx-automodapi jupyter_sphinx"
-print(f'\n\n*** Installing pre-requisite packages to build the docs***\n$ {cmd}')
+print(f'\n*** Installing pre-requisite packages to build the docs***\n$ {cmd}')
 scmd = shlex.split(cmd)
-result = subprocess.run(scmd, stdout=subprocess.PIPE, check=False)
+result = subprocess.run(scmd, stdout=subprocess.PIPE, check=False, shell=True)
 stderr = result.stderr
 stdout = result.stdout
 returncode = result.returncode
 print(f'\n****Exited with {returncode}')
 if stdout:
-	print(f'\n****stdout****\n{stdout.decode()}')
+	print(f'****stdout****\n{stdout.decode()}')
 if stderr:
-	print(f'\n****stderr****\n{stderr.decode()}')
+	print(f'****stderr****\n{stderr.decode()}')
 print("Pre-requisite installation Complete!")
 
-import os
-import sys
 print(sys.argv)
 fn = sys.argv[0]
 path = os.path.dirname(fn)
+pwd = os.getcwd()
 
-sphinxopts  = ""
-sphinxbuild = "sphinx-build"
-sourcedir   = path + "/."
-builddir    = path + "/build"
+os.chdir(path)
+print(f'\n*** Running the build***\n$ make html')
+os.system("make html")
+os.chdir(pwd)
 
-with open(path + "/.buildingdocs", "w") as flag_file:
-	flag_file.write("makedocs")
-	cmd_make = sphinxbuild + " -b html " + sourcedir + " " + builddir + " " + sphinxopts
-	print(f'\n\n*** Running the build***\n$ {cmd_make}')
-	scmd = shlex.split(cmd_make)
-	result = subprocess.run(scmd, stdout=subprocess.PIPE, check=False)
-	stderr = result.stderr
-	stdout = result.stdout
-	returncode = result.returncode
-	print(f'\n****Exited with {returncode}')
-	if stdout:
-		print(f'\n****stdout****\n{stdout.decode()}')
-	if stderr:
-		print(f'\n****stderr****\n{stderr.decode()}')
-
-import os
-os.remove(path + "/.buildingdocs")
 print("Build Complete!")
