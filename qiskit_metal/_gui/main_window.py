@@ -188,8 +188,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         filename = QFileDialog.getSaveFileName(
             parent=None,
             caption='Select a locaiton to save QComponent python file to',
-            dir=path,
-            selectedFilter='*.py')[0]
+            dir=path)[0]
         if filename:
             text, okPressed = QInputDialog.getText(
                 self, "Name your QComponent class",
