@@ -126,7 +126,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
             None,
             'Select a new location to save Metal design to',
             self.design.get_design_name() + '.metal',
-            initialFilter='*.metal')[0]
+            selectedFilter='*.metal')[0]
 
         if filename:
             self.gui.save_file(filename)
@@ -182,15 +182,14 @@ class QMainWindowExtension(QMainWindowExtensionBase):
     def new_qcomponent(self, _=None):
         """Create a new qcomponent call by button
         """
-
         path = str(
             Path(self.gui.path_gui).parent / 'components' / 'user_components' /
             'my_qcomponent.py')
-
         filename = QFileDialog.getSaveFileName(
             parent=None,
-            caption='Select a location to save QComponent python file to',
-            dir=path)[0]
+            caption='Select a locaiton to save QComponent python file to',
+            dir=path,
+            selectedFilter='*.py')[0]
         if filename:
             text, okPressed = QInputDialog.getText(
                 self, "Name your QComponent class",
