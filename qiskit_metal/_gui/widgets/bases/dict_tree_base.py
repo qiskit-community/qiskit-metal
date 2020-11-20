@@ -238,7 +238,8 @@ class QTreeModel_Base(QAbstractItemModel):
         of a given parent node.
 
         Args:
-            gui (QWidget): The main user interface
+            parent (QWidget): The parent widge
+            gui (MetalGUI): The main user interface
             view (QTreeView): View corresponding to a tree structure
             child (str): Name of child class, eg 'component' or 'GDS renderer'
         """
@@ -472,9 +473,9 @@ class QTreeModel_Base(QAbstractItemModel):
                         if not isinstance(old_value, str):
                             processed_value, used_ast = parse_param_from_str(
                                 value)
-                            self.logger.info(f'  Used paring:  Old value type={type(old_value)}; '
-                                             f'New value type={type(processed_value)};'
-                                             f'  New value={processed_value};'
+                            self.logger.info(f'  Used paring:  Old value type={type(old_value)}; '\
+                                             f'New value type={type(processed_value)};'\
+                                             f'  New value={processed_value};'\
                                              f'; Used ast={used_ast}')
                             value = processed_value
                         #################################################
