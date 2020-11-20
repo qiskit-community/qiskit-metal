@@ -238,7 +238,7 @@ class QTreeModel_Base(QAbstractItemModel):
         of a given parent node.
 
         Args:
-            parent (QWidget): The parent widge
+            parent (QWidget): The parent widget
             gui (MetalGUI): The main user interface
             view (QTreeView): View corresponding to a tree structure
             child (str): Name of child class, eg 'component' or 'GDS renderer'
