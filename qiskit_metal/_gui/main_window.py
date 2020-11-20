@@ -47,6 +47,8 @@ from .widgets.edit_component.component_widget import ComponentWidget
 from .widgets.log_widget.log_metal import LogHandler_for_QTextLog
 from .widgets.plot_widget.plot_window import QMainWindowPlot
 from .widgets.variable_table import PropertyTableWidget
+from .._gui import MetalGUI
+from ..renderers.renderer_mpl.mpl_canvas import PlotCanvas
 
 if not config.is_building_docs():
     from ..toolbox_metal.import_export import load_metal_design
@@ -79,7 +81,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         return self.handler.design
 
     @property
-    def gui(self) -> 'MetalGUI':
+    def gui(self) -> MetalGUI:
         """Returns the MetalGUI"""
         return self.handler
 
@@ -124,7 +126,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
             None,
             'Select a new location to save Metal design to',
             self.design.get_design_name() + '.metal',
-            selectedFilter='*.metal')[0]
+            initialFilter='*.metal')[0]
 
         if filename:
             self.gui.save_file(filename)
@@ -489,7 +491,7 @@ class MetalGUI(QMainWindowBaseHandler):
         return self.plot_win.canvas.figure
 
     @property
-    def canvas(self) -> 'PlotCanvas':
+    def canvas(self) -> PlotCanvas:
         """Get access to the canvas that handles the figure
         and axes, and their main functions.
 

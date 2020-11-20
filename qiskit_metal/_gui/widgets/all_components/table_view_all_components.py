@@ -87,7 +87,7 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         return self.model().logger
 
     @property
-    def gui(self) -> 'MetalGUI':
+    def gui(self) -> MetalGUI:
         """Returns the GUI"""
         return self.model().gui
 
