@@ -153,7 +153,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         """
         filename = QFileDialog.getOpenFileName(
             None,
-            'Select locaiton to load Metal design from',
+            'Select location to load Metal design from',
             selectedFilter='*.metal')[0]
         if filename:
             self.logger.info(f'Attempting to load design file {filename}')
@@ -187,7 +187,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
             'my_qcomponent.py')
         filename = QFileDialog.getSaveFileName(
             parent=None,
-            caption='Select a locaiton to save QComponent python file to',
+            caption='Select a location to save QComponent python file to',
             dir=path)[0]
         if filename:
             text, okPressed = QInputDialog.getText(
