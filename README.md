@@ -16,7 +16,7 @@ The early-access program will start in November and proceed through March, 2021,
 
 To setup a development environment, first `git clone` this repository.
 
-* On your computer, clone the repository from qiskit-metal/v0.2-dev:
+* On your computer, clone the repository from qiskit-metal/main:
 `git clone https://github.com/Qiskit/qiskit-metal`
 
 * Note: If you don't have git installed, you can download and use [GitHub Desktop GUI](https://desktop.github.com/) and see these [notes](https://help.github.com/en/desktop/contributing-to-projects/cloning-a-repository-from-github-to-github-desktop).
