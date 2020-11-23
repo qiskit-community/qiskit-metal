@@ -22,13 +22,14 @@ Tree model for component options menu
 # from PySide2 import QtCore, QtGui, QtWidgets
 from PySide2.QtCore import QModelIndex, Qt
 from PySide2.QtGui import QFont
-from PySide2.QtWidgets import QTreeView
+from PySide2.QtWidgets import QTreeView, QWidget
 
-#, QLabel, QMainWindow, QMessageBox, QAbstractItemView, QApplication, QFileDialog,
+# , QLabel, QMainWindow, QMessageBox, QAbstractItemView, QApplication, QFileDialog,
 
 from .... import logger
 
 from ..bases.dict_tree_base import LeafNode, BranchNode, QTreeModel_Base, parse_param_from_str
+from ...main_window import MetalGUI
 
 
 class QTreeModel_Options(QTreeModel_Base):
@@ -41,7 +42,7 @@ class QTreeModel_Options(QTreeModel_Base):
         QTreeModel_Base (QAbstractItemModel): Base class for nested dicts
     """
 
-    def __init__(self, parent: 'ParentWidget', gui: 'MetalGUI',
+    def __init__(self, parent: QWidget, gui: MetalGUI,
                  view: QTreeView):
         """
         Editable table with drop-down rows for component options.
@@ -49,7 +50,7 @@ class QTreeModel_Options(QTreeModel_Base):
         of a given parent node.
 
         Args:
-            parent (ParentWidget): The parent widget
+            parent (QWidget): The parent widget
             gui (MetalGUI): The main user interface
             view (QTreeView): View corresponding to a tree structure
         """

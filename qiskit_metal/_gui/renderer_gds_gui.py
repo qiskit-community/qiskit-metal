@@ -97,7 +97,7 @@ class RendererGDSWidget(QMainWindow):
             None,
             'Select a new location to export to',
             'my_qdesign.gds',
-            initialFilter='*.gds')[0]
+            selectedFilter='*.gds')[0]
         self.ui.lineEdit.setText(destination_folder)
 
     def export_file(self):
