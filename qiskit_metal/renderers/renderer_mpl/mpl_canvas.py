@@ -624,9 +624,10 @@ class PlotCanvas(FigureCanvas):
         """The GUI displays a message to let users know they are using Qiskit Metal.
         """
         self._welcome_text = AnimatedText(self.axes[0],
-                                          "Welcome to Qiskit Metal",
+                                          "Welcome to Qiskit Metal Early Access Alpha",
                                           self,
-                                          start=False)
+                                          start=False,
+                                          kw={'fontsize': 20})
         self._welcome_start_timer = QTimer.singleShot(
             250, self._welcome_message_start)
 

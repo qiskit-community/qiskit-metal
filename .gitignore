@@ -103,7 +103,11 @@ ENV/
 
 # temporary
 shot.png
+shot*.png
 shot.jpg
+shot*.jpg
+shot.tif
+shot*.tif
 *.gds
 !guide/resources/**
 .vs
@@ -123,3 +127,4 @@ qiskit_metal/.pylintrc
 qiskit_metal/_gui/ansys-screenshot.jpg
 launch.json
 main_window_ui.py.original
+qiskit_metal/components/user_components/*
