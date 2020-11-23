@@ -264,7 +264,7 @@ class QGeometryTables(object):
         # self.create_tables()
 
     @property
-    def design(self) -> QDesign:
+    def design(self) -> 'QDesign':
         '''Return a reference to the parent design object'''
         return self._design
 

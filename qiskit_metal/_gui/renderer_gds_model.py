@@ -22,7 +22,11 @@ from PySide2 import QtWidgets
 from PySide2.QtWidgets import QTreeView, QWidget
 
 from .widgets.bases.dict_tree_base import QTreeModel_Base
-from .main_window import MetalGUI
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from .main_window import MetalGUI
 
 
 class RendererGDS_Model(QTreeModel_Base):
@@ -33,8 +37,7 @@ class RendererGDS_Model(QTreeModel_Base):
         QTreeModel_Base (QAbstractItemModel): Base class for nested dicts
     """
 
-    def __init__(self, parent: QWidget, gui: MetalGUI,
-                 view: QTreeView):
+    def __init__(self, parent: QWidget, gui: 'MetalGUI', view: QTreeView):
         """
         Editable table with drop-down rows for GDS renderer options.
         Organized as a tree model where child nodes are more specific properties

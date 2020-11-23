@@ -226,7 +226,7 @@ class QDesign():
         return self._metadata
 
     @property
-    def qgeometry(self) -> QGeometryTables:
+    def qgeometry(self) -> 'QGeometryTables':
         '''
         Returns the QGeometryTables (Use for advanced users only)
         '''
@@ -310,7 +310,7 @@ class QDesign():
         keys[keys.index(old_key)] = new_key
         self._variables = Dict(zip(keys, values))
 
-    def delete_all_pins(self) -> QNet:
+    def delete_all_pins(self) -> 'QNet':
         """
         Clear all pins in the net_Info and update the pins in components.
 
