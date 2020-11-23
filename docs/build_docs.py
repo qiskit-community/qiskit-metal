@@ -25,7 +25,7 @@ import sys
 cmd = "conda install -y -c conda-forge sphinx numpydoc sphinx_rtd_theme sphinx-automodapi jupyter_sphinx"
 print(f'\n*** Installing pre-requisite packages to build the docs***\n$ {cmd}')
 scmd = shlex.split(cmd)
-result = subprocess.run(scmd, stdout=subprocess.PIPE, check=False, shell=True)
+result = subprocess.run(scmd, stdout=subprocess.PIPE, check=False)
 stderr = result.stderr
 stdout = result.stdout
 returncode = result.returncode
@@ -36,14 +36,24 @@ if stderr:
 	print(f'****stderr****\n{stderr.decode()}')
 print("Pre-requisite installation Complete!")
 
-print(sys.argv)
-fn = sys.argv[0]
-path = os.path.dirname(fn)
-pwd = os.getcwd()
 
+print(sys.argv)
+pwd = os.getcwd()
+import qiskit_metal
+from pathlib import Path
+path = Path(qiskit_metal.__file__).parent.parent / 'docs'
 os.chdir(path)
 print(f'\n*** Running the build***\n$ make html')
-os.system("make html")
+
+from sys import platform
+if platform == "darwin":
+	scmd = shlex.split("make html")
+	result = subprocess.run(scmd, stdout=subprocess.PIPE, check=False)
+	if stdout:
+		print(f'****stdout****\n{stdout.decode()}')
+else:
+	os.system("make html")
+
 os.chdir(pwd)
 
 print("Build Complete!")
