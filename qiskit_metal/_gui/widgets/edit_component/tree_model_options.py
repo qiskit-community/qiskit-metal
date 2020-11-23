@@ -20,6 +20,7 @@ Tree model for component options menu
 # import numpy as np
 # import PySide2
 # from PySide2 import QtCore, QtGui, QtWidgets
+from typing import TYPE_CHECKING
 from PySide2.QtCore import QModelIndex, Qt
 from PySide2.QtGui import QFont
 from PySide2.QtWidgets import QTreeView, QWidget
@@ -29,7 +30,9 @@ from PySide2.QtWidgets import QTreeView, QWidget
 from .... import logger
 
 from ..bases.dict_tree_base import LeafNode, BranchNode, QTreeModel_Base, parse_param_from_str
-from ...main_window import MetalGUI
+
+if TYPE_CHECKING:
+    from ...main_window import MetalGUI
 
 
 class QTreeModel_Options(QTreeModel_Base):
@@ -42,8 +45,7 @@ class QTreeModel_Options(QTreeModel_Base):
         QTreeModel_Base (QAbstractItemModel): Base class for nested dicts
     """
 
-    def __init__(self, parent: QWidget, gui: MetalGUI,
-                 view: QTreeView):
+    def __init__(self, parent: QWidget, gui: 'MetalGUI', view: QTreeView):
         """
         Editable table with drop-down rows for component options.
         Organized as a tree model where child nodes are more specific properties

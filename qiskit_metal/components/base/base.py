@@ -363,7 +363,7 @@ class QComponent():
         return return_code
 
     @property
-    def design(self) -> QDesign:
+    def design(self) -> 'QDesign':
         '''Return a reference to the parent design object
 
         Returns:
