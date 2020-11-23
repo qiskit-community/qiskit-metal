@@ -232,7 +232,7 @@ class QTreeModel_Base(QAbstractItemModel):
 
     # NOTE: __init__ takes in design as extra parameter compared to table_model_options!
 
-    def __init__(self, parent: QWidget, gui: MetalGUI, view: QTreeView,
+    def __init__(self, parent: QWidget, gui: 'MetalGUI', view: QTreeView,
                  child: str):
         """
         Editable table with drop-down rows for a generic options menu.
@@ -267,12 +267,12 @@ class QTreeModel_Base(QAbstractItemModel):
         return self._gui
 
     @property
-    def design(self) -> QDesign:
+    def design(self) -> 'QDesign':
         """Returns the QDesign"""
         return self._gui.design
 
     @property
-    def component(self) -> QComponent:
+    def component(self) -> 'QComponent':
         """Returns the component if this is the components options menu"""
         if self.optionstype == 'component':
             return self._component_widget.component

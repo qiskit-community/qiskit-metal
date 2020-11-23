@@ -75,7 +75,7 @@ class QTableModel_Options(QAbstractTableModel):
         self.columns = ['Name', 'Value', 'Parsed value']
 
     @property
-    def design(self) -> QDesign:
+    def design(self) -> 'QDesign':
         """Returns the QDesign"""
         return self.gui.design
 

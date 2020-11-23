@@ -52,7 +52,7 @@ if not config.is_building_docs():
     from ..toolbox_metal.import_export import load_metal_design
 
 if TYPE_CHECKING:
-    from .._gui import MetalGUI
+    # from .._gui import MetalGUI
     from ..renderers.renderer_mpl.mpl_canvas import PlotCanvas
 
 
@@ -74,7 +74,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         self.gds_gui = None  # type: RendererGDSWidget
 
     @property
-    def design(self) -> QDesign:
+    def design(self) -> 'QDesign':
         """Return the design.
 
         Returns:
@@ -83,7 +83,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         return self.handler.design
 
     @property
-    def gui(self) -> MetalGUI:
+    def gui(self) -> 'MetalGUI':
         """Returns the MetalGUI"""
         return self.handler
 
@@ -367,8 +367,7 @@ class MetalGUI(QMainWindowBaseHandler):
         self.main_window.tabifyDockWidget(self.ui.dockConnectors,
                                           self.ui.dockVariables)
         self.ui.dockDesign.raise_()
-        self.main_window.resizeDocks(
-            [self.ui.dockDesign], [350], Qt.Horizontal)
+        self.main_window.resizeDocks([self.ui.dockDesign], [350], Qt.Horizontal)
 
         # Log
         self.ui.dockLog.parent().resizeDocks([self.ui.dockLog], [120],
@@ -491,7 +490,7 @@ class MetalGUI(QMainWindowBaseHandler):
         return self.plot_win.canvas.figure
 
     @property
-    def canvas(self) -> PlotCanvas:
+    def canvas(self) -> 'PlotCanvas':
         """Get access to the canvas that handles the figure
         and axes, and their main functions.
 

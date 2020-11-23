@@ -45,8 +45,7 @@ class QTreeModel_Options(QTreeModel_Base):
         QTreeModel_Base (QAbstractItemModel): Base class for nested dicts
     """
 
-    def __init__(self, parent: QWidget, gui: MetalGUI,
-                 view: QTreeView):
+    def __init__(self, parent: QWidget, gui: 'MetalGUI', view: QTreeView):
         """
         Editable table with drop-down rows for component options.
         Organized as a tree model where child nodes are more specific properties
