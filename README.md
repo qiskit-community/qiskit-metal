@@ -16,7 +16,7 @@ The early-access program will start in November and proceed through March, 2021,
 
 To setup a development environment, first `git clone` this repository.
 
-* On your computer, clone the repository from qiskit-metal/v0.2-dev:
+* On your computer, clone the repository from qiskit-metal/main:
 `git clone https://github.com/Qiskit/qiskit-metal`
 
 * Note: If you don't have git installed, you can download and use [GitHub Desktop GUI](https://desktop.github.com/) and see these [notes](https://help.github.com/en/desktop/contributing-to-projects/cloning-a-repository-from-github-to-github-desktop).
@@ -115,7 +115,7 @@ If you are planning to develop the qiskmit metal codebase, you'll want to use th
 Please be aware that the environment.xml and requirements.txt each use a different pyside version. This is done to prevent kernel crashes formerly caused by pyqode. For non-Windows users, this setup causes an older version of pyqode.qt to be overwritten with a later forked version. On Windows, the background installation process is more complicated. Because of this, Windows users may experience GUI or other issues. If such issues occur, try rerunning `python setup.py install` or create a new, pristine conda environment as per above instructions.
 
 #### Jupyter Lab
-If you can not start Jupyter Lab in the new enviroment. 
+If you can not start Jupyter Lab in the new enviroment.
 
 Based on: https://anaconda.org/conda-forge/jupyterlab
 Install Jupyter lab by
