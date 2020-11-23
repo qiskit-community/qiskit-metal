@@ -24,7 +24,7 @@ import os
 import shutil
 import sys
 from pathlib import Path
-from typing import List
+from typing import List, TYPE_CHECKING
 
 from PySide2 import QtWidgets
 from PySide2.QtCore import QEventLoop, Qt, QTimer, Slot
@@ -47,11 +47,13 @@ from .widgets.edit_component.component_widget import ComponentWidget
 from .widgets.log_widget.log_metal import LogHandler_for_QTextLog
 from .widgets.plot_widget.plot_window import QMainWindowPlot
 from .widgets.variable_table import PropertyTableWidget
-from .._gui import MetalGUI
-from ..renderers.renderer_mpl.mpl_canvas import PlotCanvas
 
 if not config.is_building_docs():
     from ..toolbox_metal.import_export import load_metal_design
+
+if TYPE_CHECKING:
+    from .._gui import MetalGUI
+    from ..renderers.renderer_mpl.mpl_canvas import PlotCanvas
 
 
 class QMainWindowExtension(QMainWindowExtensionBase):

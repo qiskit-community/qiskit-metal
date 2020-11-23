@@ -35,12 +35,12 @@ from .... import logger
 from ...component_widget_ui import Ui_ComponentWidget
 from ...utility._handle_qt_messages import slot_catch_error
 from .source_editor_widget import create_source_edit_widget
-from ....designs import QDesign
 
 __all__ = ['parse_param_from_str']
 
 if TYPE_CHECKING:
     from .component_widget import ComponentWidget
+    from ....designs import QDesign
 
 
 class QTableModel_Options(QAbstractTableModel):

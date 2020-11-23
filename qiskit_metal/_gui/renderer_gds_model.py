@@ -22,7 +22,11 @@ from PySide2 import QtWidgets
 from PySide2.QtWidgets import QTreeView, QWidget
 
 from .widgets.bases.dict_tree_base import QTreeModel_Base
-from .main_window import MetalGUI
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from .main_window import MetalGUI
 
 
 class RendererGDS_Model(QTreeModel_Base):

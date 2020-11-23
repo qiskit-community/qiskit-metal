@@ -20,20 +20,22 @@ Dict tree base
 
 import ast
 from pathlib import Path
-from typing import Union
+from typing import Union, TYPE_CHECKING
 
 import numpy as np
 import PySide2
 from PySide2 import QtCore, QtGui, QtWidgets
 from PySide2.QtCore import QAbstractItemModel, QModelIndex, QTimer, Qt
 from PySide2.QtGui import QFont
-from PySide2.QtWidgets import (QAbstractItemView, QApplication, QFileDialog, QWidget,
-                               QTreeView, QLabel, QMainWindow, QMessageBox,
-                               QTabWidget)
-from ....designs.design_base import QDesign
-from ....components.base import QComponent
-from ...main_window import MetalGUI
+from PySide2.QtWidgets import (QAbstractItemView, QApplication, QFileDialog,
+                               QWidget, QTreeView, QLabel, QMainWindow,
+                               QMessageBox, QTabWidget)
 from .... import logger
+
+if TYPE_CHECKING:
+    from ....designs.design_base import QDesign
+    from ....components.base import QComponent
+    from ...main_window import MetalGUI
 
 __all__ = ['get_nested_dict_item', 'parse_param_from_str']
 
