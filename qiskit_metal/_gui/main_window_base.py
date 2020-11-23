@@ -61,7 +61,7 @@ class QMainWindowExtensionBase(QMainWindow):
         return self.handler.settings
 
     @property
-    def gui(self) -> 'QMainWindowBaseHandler':
+    def gui(self) -> QMainWindowBaseHandler:
         """Get the GUI"""
         self.handler
 

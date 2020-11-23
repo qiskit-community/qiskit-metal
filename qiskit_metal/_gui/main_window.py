@@ -47,6 +47,8 @@ from .widgets.edit_component.component_widget import ComponentWidget
 from .widgets.log_widget.log_metal import LogHandler_for_QTextLog
 from .widgets.plot_widget.plot_window import QMainWindowPlot
 from .widgets.variable_table import PropertyTableWidget
+from .._gui import MetalGUI
+from ..renderers.renderer_mpl.mpl_canvas import PlotCanvas
 
 if not config.is_building_docs():
     from ..toolbox_metal.import_export import load_metal_design
@@ -79,7 +81,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         return self.handler.design
 
     @property
-    def gui(self) -> 'MetalGUI':
+    def gui(self) -> MetalGUI:
         """Returns the MetalGUI"""
         return self.handler
 
@@ -151,7 +153,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         """
         filename = QFileDialog.getOpenFileName(
             None,
-            'Select locaiton to load Metal design from',
+            'Select location to load Metal design from',
             selectedFilter='*.metal')[0]
         if filename:
             self.logger.info(f'Attempting to load design file {filename}')
@@ -180,11 +182,9 @@ class QMainWindowExtension(QMainWindowExtensionBase):
     def new_qcomponent(self, _=None):
         """Create a new qcomponent call by button
         """
-
         path = str(
             Path(self.gui.path_gui).parent / 'components' / 'user_components' /
             'my_qcomponent.py')
-
         filename = QFileDialog.getSaveFileName(
             parent=None,
             caption='Select a location to save QComponent python file to',
@@ -489,7 +489,7 @@ class MetalGUI(QMainWindowBaseHandler):
         return self.plot_win.canvas.figure
 
     @property
-    def canvas(self) -> 'PlotCanvas':
+    def canvas(self) -> PlotCanvas:
         """Get access to the canvas that handles the figure
         and axes, and their main functions.
 

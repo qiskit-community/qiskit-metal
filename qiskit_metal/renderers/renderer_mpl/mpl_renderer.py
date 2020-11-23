@@ -35,6 +35,8 @@ from matplotlib.cbook import _OrderedSet
 from matplotlib.collections import LineCollection, PatchCollection
 from matplotlib.figure import Figure
 from matplotlib.transforms import Bbox
+from qiskit_metal.elements.elements_handler import QGeometryTables
+
 from shapely.geometry import CAP_STYLE, JOIN_STYLE, LineString
 
 from ... import Dict
@@ -202,7 +204,7 @@ class QMplRenderer():
             ax.add_collection(PatchCollection(poly_array, **mpl_kw))
 
     @property
-    def qgeometry(self) -> 'QGeometryTables':
+    def qgeometry(self) -> QGeometryTables:
         """Return the qgeometry of the design"""
         return self.design.qgeometry
 

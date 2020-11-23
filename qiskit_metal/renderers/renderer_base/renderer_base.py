@@ -184,7 +184,7 @@ class QRenderer():
         return self._options
 
     @property
-    def design(self) -> 'QDesign':
+    def design(self) -> QDesign:
         """Return a reference to the parent design object."""
         return self._design
 
