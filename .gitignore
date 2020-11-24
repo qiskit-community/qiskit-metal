@@ -58,7 +58,7 @@ instance/
 .scrapy
 _sandbox_/
 user_components/
-!qiskit_metal/components/user_components/__init__.py
+!user_components/__init__.py
 
 # Sphinx documentation
 docs/build
