@@ -31,7 +31,6 @@ Base Components
     :toctree: ../stubs/
 
     QComponent
-    BaseJunction
     BaseQubit
     ParsedDynamicAttributes_Component
     QRoute
@@ -79,14 +78,6 @@ Interconnects
     ResonatorRectangleSpiral
 
 
-Junctions
----------
-
-.. autosummary::
-    :toctree:
-
-    junctions
-
 
 Passives
 --------
@@ -125,7 +116,6 @@ from .. import is_component
 from .base import QComponent
 from .base import QRoute
 from .base import BaseQubit
-from .base import BaseJunction
 
 from .. import config
 if config.is_building_docs():
@@ -155,6 +145,5 @@ if config.is_building_docs():
     from .qubits.transmon_cross import TransmonCross
     from .qubits.transmon_pocket import TransmonPocket
     from .qubits.transmon_pocket_cl import TransmonPocketCL
-
 
     from .interconnects import anchored_path
