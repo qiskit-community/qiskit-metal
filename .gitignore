@@ -54,9 +54,11 @@ local_settings.py
 instance/
 .webassets-cache
 
-# Sandboxes:
+# User Folders:
 .scrapy
 _sandbox_/
+user_components/*
+!user_components/__init__.py
 
 # Sphinx documentation
 docs/build
