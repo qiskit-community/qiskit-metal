@@ -57,7 +57,7 @@ instance/
 # User Folders:
 .scrapy
 _sandbox_/
-qiskit_metal/components/user_components/*
+user_components/
 !qiskit_metal/components/user_components/__init__.py
 
 # Sphinx documentation
