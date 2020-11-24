@@ -25,7 +25,6 @@ Created on Wed Apr 22 09:58:35 2020
 import unittest
 
 from qiskit_metal.components.base.base import QComponent
-from qiskit_metal.components.base.junction import BaseJunction
 from qiskit_metal.components.base.qroute import QRoute
 from qiskit_metal.components.base.qroute import QRouteLead
 from qiskit_metal.components.base.qroute import QRoutePoint
@@ -104,39 +103,6 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         except Exception:
             msg = "QComponent(design, \"my_name4\", options={}, make=False, component_template={})"
             self.fail(msg)
-
-    def test_component_instantiate_basejunction(self):
-        """
-        Test the instantiation of BaseJunction
-        """
-        design = designs.DesignPlanar()
-        try:
-            BaseJunction
-        except Exception:
-            self.fail("BaseJunction failed")
-
-        with self.assertRaises(NotImplementedError):
-            BaseJunction(design, "my_name")
-
-        with self.assertRaises(NotImplementedError):
-            BaseJunction(design, "my_name2", options={})
-
-        try:
-            BaseJunction(design, "my_name3", options={}, make=False)
-        except Exception:
-            self.fail(
-                "BaseJunction(design, \"my_name3\", options={}, make=False)")
-
-        try:
-            BaseJunction(design,
-                         "my_name4",
-                         options={},
-                         make=False,
-                         component_template={})
-        except Exception:
-            msg = "BaseJunction(design, \"my_name4\", options={}, make=False, "
-            msg = msg + "component_template={})"
-            self.fail(str)
 
     def test_component_instantiate_basequbit(self):
         """
