@@ -49,8 +49,14 @@ from sys import platform
 if platform == "darwin":
 	scmd = shlex.split("make html")
 	result = subprocess.run(scmd, stdout=subprocess.PIPE, check=False)
+	stderr = result.stderr
+	stdout = result.stdout
+	returncode = result.returncode
+	print(f'\n****Exited with {returncode}')
 	if stdout:
 		print(f'****stdout****\n{stdout.decode()}')
+	if stderr:
+		print(f'****stderr****\n{stderr.decode()}')
 else:
 	os.system("make html")
 
