@@ -54,9 +54,11 @@ local_settings.py
 instance/
 .webassets-cache
 
-# Sandboxes:
+# User Folders:
 .scrapy
 _sandbox_/
+user_components/
+!user_components/__init__.py
 
 # Sphinx documentation
 docs/build
@@ -127,4 +129,3 @@ qiskit_metal/.pylintrc
 qiskit_metal/_gui/ansys-screenshot.jpg
 launch.json
 main_window_ui.py.original
-qiskit_metal/components/user_components/*

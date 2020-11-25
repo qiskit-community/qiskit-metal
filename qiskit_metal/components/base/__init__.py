@@ -17,4 +17,4 @@ from .. import is_component
 from .base import QComponent
 from .qroute import QRoute, QRoutePoint
 from .qubit import BaseQubit
-from .junction import BaseJunction
+
