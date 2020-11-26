@@ -12,6 +12,10 @@ Through this early-access program, we are thrilled to ask you to join this journ
 The early-access program will start in November and proceed through March, 2021, during which time we will work closely to develop Metal and design quantum devices with it.
 <br><br>
 
+#### Get help: Slack
+Use the [Slack channel (Join here!)](https://join.slack.com/share/zt-jjgzilxu-1u2FGivroQi64fHajpTWiw) to communicate with the developers and other early-access participats. 
+
+
 ## Installation
 
 To setup a development environment, first `git clone` this repository.
