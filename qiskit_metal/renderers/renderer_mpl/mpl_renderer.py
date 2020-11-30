@@ -35,6 +35,7 @@ from matplotlib.cbook import _OrderedSet
 from matplotlib.collections import LineCollection, PatchCollection
 from matplotlib.figure import Figure
 from matplotlib.transforms import Bbox
+
 from shapely.geometry import CAP_STYLE, JOIN_STYLE, LineString
 
 from ... import Dict
@@ -52,6 +53,7 @@ if TYPE_CHECKING:
     from ..._gui.main_window import MetalGUI
     from ..._gui.widgets.plot_widget.plot_window import QMainWindowPlot
     from .mpl_canvas import PlotCanvas
+    from qiskit_metal.elements.elements_handler import QGeometryTables
 
 __all__ = ['QMplRenderer']
 

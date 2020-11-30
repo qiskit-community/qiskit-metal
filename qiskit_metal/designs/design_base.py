@@ -226,7 +226,7 @@ class QDesign():
         return self._metadata
 
     @property
-    def qgeometry(self) -> QGeometryTables:
+    def qgeometry(self) -> 'QGeometryTables':
         '''
         Returns the QGeometryTables (Use for advanced users only)
         '''
@@ -676,23 +676,23 @@ class QDesign():
         original_qcomponents: list,
         new_component_names: list,
         all_options_superimpose: list = list()) -> Dict:
-        """The lists in the arguments are all used in parallel.  If the length of original_qcomponents 
-        and new_component_names are not the same, no copies will be made and an empty Dict will be returned. 
-        The length of all_options_superimposes needs to be either empty or exactly the length of original_qcomponents, 
-        otherwise, an empty dict will be returned.  
+        """The lists in the arguments are all used in parallel.  If the length of original_qcomponents
+        and new_component_names are not the same, no copies will be made and an empty Dict will be returned.
+        The length of all_options_superimposes needs to be either empty or exactly the length of original_qcomponents,
+        otherwise, an empty dict will be returned.
 
 
         Args:
             original_qcomponents (list): Must be a list of original QComponents.
             new_component_names (list): Must be a list of QComponent names.
-            all_options_superimpose (list, optional): Must be list of dicts with options to superimpose on options 
+            all_options_superimpose (list, optional): Must be list of dicts with options to superimpose on options
                 from original_qcomponents. The list can be of both populated and empty dicts. Defaults to empty list().
 
         Returns:
-            Dict: Number of keys will be the same length of original_qcomponent.  
-                Each key will be the new_component_name. 
+            Dict: Number of keys will be the same length of original_qcomponent.
+                Each key will be the new_component_name.
                 Each value will be either a QComponent or None.
-                If the copy did not happen, the value will be None, and the key will extracted from new_componet_names. 
+                If the copy did not happen, the value will be None, and the key will extracted from new_componet_names.
 
         """
         copied_info = dict()

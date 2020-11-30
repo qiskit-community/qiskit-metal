@@ -25,8 +25,7 @@ from copy import deepcopy
 from operator import itemgetter
 from typing import TYPE_CHECKING
 from typing import Dict as Dict_
-from typing import List, Tuple, Union
-
+from typing import List, Tuple, Union, Any, Iterable
 import pandas as pd
 from pandas.api.types import is_numeric_dtype
 
@@ -199,7 +198,7 @@ class QGDSRenderer(QRenderer):
 
         QGDSRenderer.load()
 
-    def parse_value(self, value: 'Anything') -> 'Anything':
+    def parse_value(self, value: Union[Any, List, Dict, Iterable]) -> Any:
         """Same as design.parse_value. See design for help.
 
         Returns:
@@ -1019,17 +1018,17 @@ class QGDSRenderer(QRenderer):
     def get_linestring_characteristics(
             self,
             row: 'pandas.core.frame.Pandas') -> Tuple[Tuple, float, float]:
-        """Given a row in the Junction table, give the characteristics of LineString in 
+        """Given a row in the Junction table, give the characteristics of LineString in
         row.geometry.
 
         Args:
             row (pandas.core.frame.Pandas): A row from Junction table of QGeometry.
 
         Returns:
-            Tuple: 
+            Tuple:
             * 1st entry is Tuple[float,float]: The midpoint of Linestring from row.geometry in format (x,y).
             * 2nd entry is float: The angle in degrees of Linestring from row.geometry.
-            * 3rd entry is float: Is the magnitude of Linestring from row.geometry. 
+            * 3rd entry is float: Is the magnitude of Linestring from row.geometry.
         """
         precision = float(self.parse_value(self.options.precision))
         for_rounding = int(np.abs(np.log10(precision)))
@@ -1058,9 +1057,9 @@ class QGDSRenderer(QRenderer):
             Tuple:
             * 1st entry is float: The angle in degrees of Linestring from row.geometry.
             * 2nd entry is Tuple[float,float]: The midpoint of Linestring from row.geometry in format (x,y).
-            * 3rd entry is gdspy.polygon.Rectangle: None if Magnitude of LineString is smaller than width 
+            * 3rd entry is gdspy.polygon.Rectangle: None if Magnitude of LineString is smaller than width
               of cell from row.gds_cell_name. Otherwise the rectangle for pad on LEFT of row.gds_cell_name.
-            * 4th entry is gdspy.polygon.Rectangle: None if Magnitude of LineString is smaller than width 
+            * 4th entry is gdspy.polygon.Rectangle: None if Magnitude of LineString is smaller than width
               of cell from row.gds_cell_name. Otherwise the rectangle for pad on RIGHT of row.gds_cell_name.
         """
 
@@ -1112,13 +1111,13 @@ class QGDSRenderer(QRenderer):
                                      chip_only_top: gdspy.library.Cell):
         """Given lib, import the gds file from default options.  Based on the cell name in QGeometry table,
         import the cell from the gds file and place it in hierarchy of chip_only_top. In addition, the linestring
-        should be two vertexes, and denotes two things.  1. The midpoint of segment is the the center of cell. 
-        2. The angle made by second tuple - fist tuple  for delta y/ delta x is used to rotate the cell. 
+        should be two vertexes, and denotes two things.  1. The midpoint of segment is the the center of cell.
+        2. The angle made by second tuple - fist tuple  for delta y/ delta x is used to rotate the cell.
 
         Args:
             chip_name (str): The name of chip.
             lib (gdspy.library): The library used to export the entire QDesign.
-            chip_only_top (gdspy.library.Cell):  The cell used for just chip_name. 
+            chip_only_top (gdspy.library.Cell):  The cell used for just chip_name.
         """
         # Make sure the file exists, before trying to read it.
         max_points = int(self.parse_value(self.options.max_points))

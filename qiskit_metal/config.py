@@ -26,8 +26,12 @@ from .toolbox_python.attr_dict import Dict
 from ._defaults import DefaultMetalOptions, DefaultOptionsRenderer
 
 renderers_to_load = Dict(
-    ansys=Dict(path_name='qiskit_metal.renderers.renderer_ansys.ansys_renderer',
-               class_name='QAnsysRenderer'),
+    hfss=Dict(path_name='qiskit_metal.renderers.renderer_ansys.hfss_renderer',
+               class_name='QHFSSRenderer'),
+
+    q3d=Dict(path_name='qiskit_metal.renderers.renderer_ansys.q3d_renderer',
+               class_name='QQ3DRenderer'),
+               
     gds=Dict(path_name='qiskit_metal.renderers.renderer_gds.gds_renderer',
              class_name='QGDSRenderer'),
 )

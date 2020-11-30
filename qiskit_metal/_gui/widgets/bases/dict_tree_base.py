@@ -20,7 +20,7 @@ Dict tree base
 
 import ast
 from pathlib import Path
-from typing import Union
+from typing import Union, TYPE_CHECKING
 
 import numpy as np
 import PySide2
@@ -28,10 +28,14 @@ from PySide2 import QtCore, QtGui, QtWidgets
 from PySide2.QtCore import QAbstractItemModel, QModelIndex, QTimer, Qt
 from PySide2.QtGui import QFont
 from PySide2.QtWidgets import (QAbstractItemView, QApplication, QFileDialog,
-                               QTreeView, QLabel, QMainWindow, QMessageBox,
-                               QTabWidget)
-
+                               QWidget, QTreeView, QLabel, QMainWindow,
+                               QMessageBox, QTabWidget)
 from .... import logger
+
+if TYPE_CHECKING:
+    from ....designs.design_base import QDesign
+    from ....components.base import QComponent
+    from ...main_window import MetalGUI
 
 __all__ = ['get_nested_dict_item', 'parse_param_from_str']
 
@@ -228,7 +232,7 @@ class QTreeModel_Base(QAbstractItemModel):
 
     # NOTE: __init__ takes in design as extra parameter compared to table_model_options!
 
-    def __init__(self, parent: 'ParentWidget', gui: 'MetalGUI', view: QTreeView,
+    def __init__(self, parent: QWidget, gui: 'MetalGUI', view: QTreeView,
                  child: str):
         """
         Editable table with drop-down rows for a generic options menu.
@@ -236,7 +240,7 @@ class QTreeModel_Base(QAbstractItemModel):
         of a given parent node.
 
         Args:
-            parent (ParentWidget): The parent widget
+            parent (QWidget): The parent widget
             gui (MetalGUI): The main user interface
             view (QTreeView): View corresponding to a tree structure
             child (str): Name of child class, eg 'component' or 'GDS renderer'
