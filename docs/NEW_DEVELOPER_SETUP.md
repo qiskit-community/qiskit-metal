@@ -50,8 +50,22 @@ From your development machine
 ## Install git command line tool (optional)
 If you want to use git though the windows command line, install git-scm (or your favorite command line tool) to your local account.  You can download it here: `https://git-scm.com/download/win`
 
-## VS Code Tweaks & Issues
+## Setup pylint and yapf
+1. Install pylint and yapf: `pip install pylint yapf`
+2. To run automatically in vscode every time you save, put these settings in `settings.json` file:
+```
+"python.linting.pylintEnabled": true,
+"python.linting.enabled": true,
+"editor.formatOnSave": true,
+"python.formatting.provider": "yapf",
+```
+For help finding your `settings.json` file click [here](https://www.google.com/search?q=vscode+where+is+settings.json).
 
+Since the style file is already in the metal directory, yapf should automatically format to those rules when you save.
+
+To run manually on a file, execute `yapf -i <file>`.  To run recursively in a directory, execute `yapf -ir <directory>`.  Note that you shouldn't have to do this if your IDE is set up correctly.
+
+## VS Code Tweaks & Issues
 Take a look at this [summary of a great setup](https://donjayamanne.github.io/pythonVSCodeDocs/docs/python-path/). 
 
 ## Auto Formatting

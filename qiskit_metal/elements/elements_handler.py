@@ -27,7 +27,7 @@ import shapely
 
 from typing import TYPE_CHECKING
 from typing import Dict as Dict_
-from typing import List, Tuple, Union
+from typing import List, Tuple, Union, Any, Iterable
 from geopandas import GeoDataFrame, GeoSeries
 
 from .. import Dict
@@ -588,7 +588,7 @@ class QGeometryTables(object):
                             f' has short segments that could cause issues with fillet. Values in {range_string} '
                             f'are index(es) in shapley geometry.')
 
-    def parse_value(self, value: 'Anything') -> 'Anything':
+    def parse_value(self, value: Union[Any, List, Dict, Iterable]) -> Any:
         """Same as design.parse_value. See design for help.
 
         Returns:

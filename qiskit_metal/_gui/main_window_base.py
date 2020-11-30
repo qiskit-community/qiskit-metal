@@ -195,11 +195,12 @@ class QMainWindowExtensionBase(QMainWindow):
             from IPython.display import Image, display
             _disp_ops = dict(width=500)
             _disp_ops.update(disp_ops or {})
-            width_to_scale = round(min(_disp_ops['width'] * 1.5, screenshot.width()))
+            width_to_scale = round(
+                min(_disp_ops['width'] * 1.5, screenshot.width()))
             if not width_to_scale == screenshot.width():
                 path = Path(name + str(width_to_scale) + '.' + type_).resolve()
-                screenshot = screenshot.scaledToWidth(width_to_scale,
-                                                      mode=QtCore.Qt.SmoothTransformation)
+                screenshot = screenshot.scaledToWidth(
+                    width_to_scale, mode=QtCore.Qt.SmoothTransformation)
                 screenshot.save(str(path), type_)
             display(Image(filename=str(path), **_disp_ops))
 

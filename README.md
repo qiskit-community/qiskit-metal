@@ -12,6 +12,10 @@ Through this early-access program, we are thrilled to ask you to join this journ
 The early-access program will start in November and proceed through March, 2021, during which time we will work closely to develop Metal and design quantum devices with it.
 <br><br>
 
+#### Get help: Slack
+Use the [Slack channel (Join here!)](https://join.slack.com/share/zt-jjgzilxu-1u2FGivroQi64fHajpTWiw) to communicate with the developers and other early-access participats. (Troubleshooting: If the Slack invitation has expired, request one by opening a GitHub issue.)
+
+
 ## Installation
 
 To setup a development environment, first `git clone` this repository.
@@ -115,7 +119,7 @@ If you are planning to develop the qiskmit metal codebase, you'll want to use th
 Please be aware that the environment.xml and requirements.txt each use a different pyside version. This is done to prevent kernel crashes formerly caused by pyqode. For non-Windows users, this setup causes an older version of pyqode.qt to be overwritten with a later forked version. On Windows, the background installation process is more complicated. Because of this, Windows users may experience GUI or other issues. If such issues occur, try rerunning `python setup.py install` or create a new, pristine conda environment as per above instructions.
 
 #### Jupyter Lab
-If you can not start Jupyter Lab in the new enviroment. 
+If you can not start Jupyter Lab in the new enviroment.
 
 Based on: https://anaconda.org/conda-forge/jupyterlab
 Install Jupyter lab by
@@ -153,7 +157,7 @@ Copy the resulting output. Example: `"PATH": "/usr/local/bin:/usr/bin:/bin:/usr/
 Then open the applicable settings.json in your VS Code. (See how to open command palette [here](https://code.visualstudio.com/docs/getstarted/tips-and-tricks). Search "settings" and click Open Workspace Settings (JSON)). Paste:
 ```
     "terminal.integrated.env.osx": {
-        "PATH": "PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+        "PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
         }
 ```
 

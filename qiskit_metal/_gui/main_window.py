@@ -24,7 +24,7 @@ import os
 import shutil
 import sys
 from pathlib import Path
-from typing import List
+from typing import List, TYPE_CHECKING
 
 from PySide2 import QtWidgets
 from PySide2.QtCore import QEventLoop, Qt, QTimer, Slot
@@ -51,6 +51,10 @@ from .widgets.variable_table import PropertyTableWidget
 if not config.is_building_docs():
     from ..toolbox_metal.import_export import load_metal_design
 
+if TYPE_CHECKING:
+    # from .._gui import MetalGUI
+    from ..renderers.renderer_mpl.mpl_canvas import PlotCanvas
+
 
 class QMainWindowExtension(QMainWindowExtensionBase):
     """This contains all the functions tthat the gui needs
@@ -70,7 +74,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         self.gds_gui = None  # type: RendererGDSWidget
 
     @property
-    def design(self) -> QDesign:
+    def design(self) -> 'QDesign':
         """Return the design.
 
         Returns:
@@ -151,7 +155,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         """
         filename = QFileDialog.getOpenFileName(
             None,
-            'Select locaiton to load Metal design from',
+            'Select location to load Metal design from',
             selectedFilter='*.metal')[0]
         if filename:
             self.logger.info(f'Attempting to load design file {filename}')
@@ -180,11 +184,9 @@ class QMainWindowExtension(QMainWindowExtensionBase):
     def new_qcomponent(self, _=None):
         """Create a new qcomponent call by button
         """
-
         path = str(
             Path(self.gui.path_gui).parent / 'components' / 'user_components' /
             'my_qcomponent.py')
-
         filename = QFileDialog.getSaveFileName(
             parent=None,
             caption='Select a location to save QComponent python file to',
@@ -365,8 +367,7 @@ class MetalGUI(QMainWindowBaseHandler):
         self.main_window.tabifyDockWidget(self.ui.dockConnectors,
                                           self.ui.dockVariables)
         self.ui.dockDesign.raise_()
-        self.main_window.resizeDocks(
-            [self.ui.dockDesign], [350], Qt.Horizontal)
+        self.main_window.resizeDocks([self.ui.dockDesign], [350], Qt.Horizontal)
 
         # Log
         self.ui.dockLog.parent().resizeDocks([self.ui.dockLog], [120],

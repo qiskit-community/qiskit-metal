@@ -62,7 +62,7 @@ class DesignPlanar(QDesign):
         NOTE: self._chips dict comes from QDesign base class.
         """
         self._chips['main'] = Dict(
-            material='cold silicon',
+            material='silicon',
             layer_start='0',
             layer_end='2048',
         )
