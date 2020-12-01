@@ -138,7 +138,7 @@ python -m pip install -e .
 
 
  ##### Windows:
- Open you Windows Command Prompt and type in
+ Open Windows Command Prompt and type in
  ```
  $Env:Path
  ```
@@ -151,7 +151,7 @@ Then open the applicable settings.json in your VS Code. (See how to open command
 ```
 
 ##### MacOs:
- Open you Windows Command Prompt and type in
+ Open Terminal and type in
  ```
 echo $PATH
  ```
