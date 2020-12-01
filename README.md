@@ -18,6 +18,14 @@ The early-access program will start in November and proceed through March, 2021,
 Use the [Slack channel (Join here!)](https://join.slack.com/share/zt-jjgzilxu-1u2FGivroQi64fHajpTWiw) to communicate with the developers and other early-access participats. (Troubleshooting: If the Slack invitation has expired, request one by opening a GitHub issue.)
 
 
+## Installation YouTube Video
+
+<a href="https://www.youtube.com/watch?v=sYVDtnJb-ZM&ab_channel=Qiskit">
+ Click for YouTube Video <br>
+	<img src="https://www.gstatic.com/youtube/img/branding/youtubelogo/svg/youtubelogo.svg" alt="Qiskit Metal Install" width=250>
+</a>
+ 
+
 ## Installation
 
 To setup a development environment, first `git clone` this repository.
