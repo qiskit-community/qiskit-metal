@@ -14,18 +14,15 @@
 
 '''
 @date: 2020
-@author: Dennis Wang
+@author: Dennis Wang, Zlatko Minev
 '''
 
-from typing import Union
-
-from collections import defaultdict
+from typing import List, Union
 
 import pyEPR as epr
-
+from qiskit_metal import Dict
 from qiskit_metal.renderers.renderer_ansys.ansys_renderer import QAnsysRenderer
 
-from qiskit_metal import Dict
 
 class QQ3DRenderer(QAnsysRenderer):
     """
@@ -58,7 +55,7 @@ class QQ3DRenderer(QAnsysRenderer):
     def boundaries(self):
         if self.pinfo:
             return self.pinfo.design._boundaries
-    
+
     def render_design(self, selection: Union[list, None] = None, open_pins: Union[list, None] = None):
         """
         Initiate rendering of components in design contained in selection, assuming they're valid.
@@ -82,7 +79,7 @@ class QQ3DRenderer(QAnsysRenderer):
         self.render_chips(draw_sample_holder=False)
         self.subtract_from_ground()
 
-        self.assign_thin_conductor()
+        self.assign_thin_conductor(self.assign_perfE)
         self.assign_nets()
 
     def render_tables(self, selection: Union[list, None] = None):
@@ -96,18 +93,98 @@ class QQ3DRenderer(QAnsysRenderer):
             if table_type != 'junction':
                 self.render_components(table_type, selection)
 
-    def assign_thin_conductor(self):
+    def assign_thin_conductor(self, objects: List[str], material_type: str = None, thickness: str = None, name: str = None):
         """
         Assign thin conductor property to all exported shapes.
         Unless otherwise specified, all 2-D shapes are pec's with a thickness of 200 nm.
+
+        Args:
+            objects (List[str]): List of components that are thin conductors with the given properties.
+            material_type (str): Material assignment.
+            thickness (str): Thickness of thin conductor. Must include units.
+            name (str): Name assigned to this group of thin conductors.
         """
-        self.boundaries.AssignThinConductor(["NAME:ThinCond1",
-                                             "Objects:=", self.assign_perfE,
-                                             "Material:=", self.q3d_options['material_type'],
-                                             "Thickness:=", self.q3d_options['material_thickness']])
+        self.boundaries.AssignThinConductor(["NAME:" + (name if name else "ThinCond1"),
+                                             "Objects:=", objects,
+                                             "Material:=", material_type if material_type else self.q3d_options[
+                                                 'material_type'],
+                                             "Thickness:=", thickness if thickness else self.q3d_options[
+                                                 'material_thickness']
+                                             ])
 
     def assign_nets(self):
         """
         Auto assign nets to exported shapes.
         """
         self.boundaries.AutoIdentifyNets()
+
+    def add_q3d_setup(self, freq_ghz: float = 5.,
+                            name: str = "Setup",
+                            save_fields: bool = False,
+                            enabled: bool = True,
+                            max_passes: int = 15,
+                            min_passes: int = 2,
+                            min_converged_passes: int = 2,
+                            percent_error: float = 0.5,
+                            percent_refinement: int = 30,
+                            auto_increase_solution_order: bool = True,
+                            solution_order: str = 'High',
+                            solver_type: str = 'Iterative'):
+        # TODO: Move arguments to default options.
+        """
+        Create a solution setup in Ansys Q3D.
+
+        Args:
+            freq_ghz (float, optional): Frequency in GHz. Defaults to 5..
+            name (str, optional): Name of solution setup. Defaults to "Setup".
+            save_fields (bool, optional): Whether or not to save fields. Defaults to False.
+            enabled (bool, optional): Whether or not setup is enabled. Defaults to True.
+            max_passes (int, optional): Maximum number of passes. Defaults to 15.
+            min_passes (int, optional): Minimum number of passes. Defaults to 2.
+            min_converged_passes (int, optional): Minimum number of converged passes. Defaults to 2.
+            percent_error (float, optional): Error tolerance as a percentage. Defaults to 0.5.
+            percent_refinement (int, optional): Refinement as a percentage. Defaults to 30.
+            auto_increase_solution_order (bool, optional): Whether or not to increase solution order automatically. Defaults to True.
+            solution_order (str, optional): Solution order. Defaults to 'High'.
+            solver_type (str, optional): Solver type. Defaults to 'Iterative'.
+        """
+        if self.pinfo:
+            if self.pinfo.design:
+                self.pinfo.design.create_q3d_setup(freq_ghz=freq_ghz, 
+                                                   name=name, 
+                                                   save_fields=save_fields, 
+                                                   enabled=enabled,
+                                                   max_passes=max_passes, 
+                                                   min_passes=min_passes, 
+                                                   min_converged_passes=min_converged_passes, 
+                                                   percent_error=percent_error,
+                                                   percent_refinement=percent_refinement, 
+                                                   auto_increase_solution_order=auto_increase_solution_order, 
+                                                   solution_order=solution_order,
+                                                   solver_type=solver_type)
+
+    def analyze_setup(self, setup_name: str):
+        """
+        Run a specific solution setup in Ansys Q3D.
+
+        Args:
+            setup_name (str): Name of setup.
+        """
+        if self.pinfo:
+            setup = self.pinfo.get_setup(setup_name)
+            setup.analyze()
+
+    def get_capacitance_matrix(self, variation: str = '', solution_kind: str = 'AdaptivePass', pass_number: int = 3):
+        # TODO: Move arguments to default_options.
+        """
+        Obtain capacitance matrix in a dataframe format, as well as user units and other information.
+        Must be executed *after* analyze_setup.
+
+        Args:
+            variation (str, optional): [description]. Defaults to ''.
+            solution_kind (str, optional): [description]. Defaults to 'AdaptivePass'.
+            pass_number (int, optional): [description]. Defaults to 3.
+        """
+        if self.pinfo:
+            df_cmat, user_units, _, _ = self.pinfo.setup.get_matrix(variation=variation, solution_kind = solution_kind, pass_number=pass_number)
+            return df_cmat
