@@ -1,6 +1,8 @@
 ﻿# Qiskit Metal [![](https://badges.frapsoft.com/os/v1/open-source.png?v=103)](https://github.com/Qiskit/qiskit-metal) [![](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/Qiskit/qiskit-metal)
 >  Quantum hardware design and analysis
 
+![Welcome to Qiskit Metal!](docs/images/zkm_banner.png 'Welcome to Qiskit Metal')
+
 ### Early access for quantum device design project now open
 https://qiskit.org/metal/
 
@@ -15,6 +17,14 @@ The early-access program will start in November and proceed through March, 2021,
 #### Get help: Slack
 Use the [Slack channel (Join here!)](https://join.slack.com/share/zt-jjgzilxu-1u2FGivroQi64fHajpTWiw) to communicate with the developers and other early-access participats. (Troubleshooting: If the Slack invitation has expired, request one by opening a GitHub issue.)
 
+
+## Installation YouTube Video
+
+<a href="https://www.youtube.com/watch?v=sYVDtnJb-ZM&ab_channel=Qiskit">
+ Click for YouTube Video <br>
+	<img src="https://www.gstatic.com/youtube/img/branding/youtubelogo/svg/youtubelogo.svg" alt="Qiskit Metal Install" width=250>
+</a>
+ 
 
 ## Installation
 
@@ -136,7 +146,7 @@ python -m pip install -e .
 
 
  ##### Windows:
- Open you Windows Command Prompt and type in
+ Open Windows Command Prompt and type in
  ```
  $Env:Path
  ```
@@ -149,7 +159,7 @@ Then open the applicable settings.json in your VS Code. (See how to open command
 ```
 
 ##### MacOs:
- Open you Windows Command Prompt and type in
+ Open Terminal and type in
  ```
 echo $PATH
  ```
