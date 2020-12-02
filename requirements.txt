@@ -10,7 +10,7 @@ matplotlib
 numpy
 pandas
 pint
-pyEPR-quantum>0.8.4
+pyEPR-quantum>=0.8.4
 Pygments
 pyqode.python
 pyside2>=5.9, <5.14
