@@ -19,6 +19,7 @@ import logging
 import inspect
 from copy import deepcopy
 from typing import TYPE_CHECKING
+from typing import List, Tuple, Union, Any, Iterable
 from typing import Dict as Dict_
 from typing import List, Tuple, Union
 
@@ -288,6 +289,14 @@ class QRenderer():
         options = deepcopy(Dict(design.template_options[template_key]))
 
         return options
+
+    def parse_value(self, value: Union[Any, List, Dict, Iterable]) -> Any:
+        """Same as design.parse_value. See design for help.
+
+        Returns:
+            Parsed value of input.
+        """
+        return self.design.parse_value(value)
 
     def update_options(self,
                        render_options: Dict = None,
