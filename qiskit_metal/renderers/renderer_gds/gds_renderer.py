@@ -279,7 +279,8 @@ class QGDSRenderer(QRenderer):
                 subtract_false)
 
     @staticmethod
-    def get_bounds(gs_table: geopandas.GeoSeries) -> Tuple[float, float, float, float]:
+    def get_bounds(
+            gs_table: geopandas.GeoSeries) -> Tuple[float, float, float, float]:
         """Get the bounds for all of the elements in gs_table.
 
         Args:
@@ -414,8 +415,7 @@ class QGDSRenderer(QRenderer):
 
         return unique_qcomponents, 0
 
-    def create_qgeometry_for_gds(self,
-                                 highlight_qcomponents: list = []) -> int:
+    def create_qgeometry_for_gds(self, highlight_qcomponents: list = []) -> int:
         """Using self.design, this method does the following:
 
         1. Gather the QGeometries to be used to write to file.
@@ -788,7 +788,8 @@ class QGDSRenderer(QRenderer):
         midpoints = [
             QGDSRenderer.midpoint_xy(coords[idx - 1][0], coords[idx - 1][1],
                                      vertex2[0], vertex2[1])
-            for idx, vertex2 in enumerate(coords) if idx > 0
+            for idx, vertex2 in enumerate(coords)
+            if idx > 0
         ]
         all_idx_bad_fillet['midpoints'] = midpoints
 
@@ -1179,7 +1180,7 @@ class QGDSRenderer(QRenderer):
             int: 0=file_name can not be written, otherwise 1=file_name has been written
         """
 
-        if not can_write_to_path(file_name):
+        if not self._can_write_to_path(file_name):
             return 0
 
         # There can be more than one chip in QGeometry.  They all export to one gds file.
@@ -1196,8 +1197,7 @@ class QGDSRenderer(QRenderer):
         else:
             return 0
 
-    def qgeometry_to_gds(self,
-                         qgeometry_element: pd.Series) -> 'gdspy.polygon':
+    def qgeometry_to_gds(self, qgeometry_element: pd.Series) -> 'gdspy.polygon':
         """Convert the design.qgeometry table to format used by GDS renderer.
         Convert the class to a series of GDSII elements.
 
