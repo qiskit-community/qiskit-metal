@@ -1172,7 +1172,7 @@ class QGDSRenderer(QRenderer):
             int: 0=file_name can not be written, otherwise 1=file_name has been written
         """
 
-        if not can_write_to_path(file_name):
+        if not self._can_write_to_path(file_name):
             return 0
 
         # There can be more than one chip in QGeometry.  They all export to one gds file.
