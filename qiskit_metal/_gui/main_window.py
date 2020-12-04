@@ -206,7 +206,11 @@ class QMainWindowExtension(QMainWindowExtensionBase):
                             pass
                     self.gui.new_qcomponent_file(filename, text, text_inst)
 
-
+    @slot_catch_error()
+    def create_build_log_window(self,_=None):
+        self.new_qcomponent()
+        print("BUILDING WINDOW")
+        raise Exception("I'M BEING RUN")
 class MetalGUI(QMainWindowBaseHandler):
     """Qiskit Metal Main GUI.
 

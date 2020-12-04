@@ -28,10 +28,10 @@ rc_to_py=pyside2-rcc
 
 
 # Zlatko:
-# Qt Designer doesn't seem to know that in python you cant use self.raise
+# Qt Designer doesn't seem to know that in python you can't use self.raise
 # since raise is a reserved word.
-# Instead, the functgion is called self.raise_
-# Here i use sed on mac to replace it:
+# Instead, the function is called self.raise_
+# Here I ussed on mac to replace it:
 #         .raise)    --->    .raise_)
 # for the whole file
 sed -i '.original' 's/.raise)/.raise_)/g'  main_window_ui.py

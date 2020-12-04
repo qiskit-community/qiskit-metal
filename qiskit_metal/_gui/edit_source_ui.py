@@ -3,16 +3,14 @@
 # Form implementation generated from reading ui file 'edit_source_ui.ui',
 # licensing of 'edit_source_ui.ui' applies.
 #
-# Created: Wed Nov 11 18:01:16 2020
-#      by: pyside2-uic  running on PySide2 5.9.0~a1
+# Created: Fri Dec  4 11:24:57 2020
+#      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
 
 from PySide2 import QtCore, QtGui, QtWidgets
 
-
 class Ui_EditSource(object):
-
     def setupUi(self, EditSource):
         EditSource.setObjectName("EditSource")
         EditSource.resize(1161, 680)
@@ -46,15 +44,13 @@ class Ui_EditSource(object):
         font.setWeight(75)
         font.setBold(True)
         self.btn_rebuild.setFont(font)
-        self.btn_rebuild.setStyleSheet(
-            "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(61, 217, 245), stop:1 rgb(240, 53, 218));\n"
-            "border-style: solid;\n"
-            "border-radius:21px;\n"
-            "font-weight: bold;\n"
-            "color: rgb(255, 255, 255);")
+        self.btn_rebuild.setStyleSheet("background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(61, 217, 245), stop:1 rgb(240, 53, 218));\n"
+"border-style: solid;\n"
+"border-radius:21px;\n"
+"font-weight: bold;\n"
+"color: rgb(255, 255, 255);")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/rebuild"), QtGui.QIcon.Normal,
-                       QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(":/rebuild"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btn_rebuild.setIcon(icon)
         self.btn_rebuild.setIconSize(QtCore.QSize(20, 20))
         self.btn_rebuild.setObjectName("btn_rebuild")
@@ -71,25 +67,21 @@ class Ui_EditSource(object):
         font.setBold(True)
         self.btn_save.setFont(font)
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(":/save"), QtGui.QIcon.Normal,
-                        QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap(":/save"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btn_save.setIcon(icon1)
         self.btn_save.setIconSize(QtCore.QSize(20, 20))
         self.btn_save.setObjectName("btn_save")
         self.horizontalLayout_2.addWidget(self.btn_save)
         self.btn_reload = QtWidgets.QPushButton(self.verticalLayoutWidget)
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(":/refresh"), QtGui.QIcon.Normal,
-                        QtGui.QIcon.Off)
+        icon2.addPixmap(QtGui.QPixmap(":/refresh"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btn_reload.setIcon(icon2)
         self.btn_reload.setIconSize(QtCore.QSize(20, 20))
         self.btn_reload.setObjectName("btn_reload")
         self.horizontalLayout_2.addWidget(self.btn_reload)
-        self.pushButtonHideHelp = QtWidgets.QPushButton(
-            self.verticalLayoutWidget)
+        self.pushButtonHideHelp = QtWidgets.QPushButton(self.verticalLayoutWidget)
         icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap(":/basic/info_help"), QtGui.QIcon.Normal,
-                        QtGui.QIcon.Off)
+        icon3.addPixmap(QtGui.QPixmap(":/basic/info_help"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.pushButtonHideHelp.setIcon(icon3)
         self.pushButtonHideHelp.setIconSize(QtCore.QSize(20, 20))
         self.pushButtonHideHelp.setObjectName("pushButtonHideHelp")
@@ -100,29 +92,25 @@ class Ui_EditSource(object):
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.undo = QtWidgets.QPushButton(self.verticalLayoutWidget)
         icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap(":/delete"), QtGui.QIcon.Normal,
-                        QtGui.QIcon.Off)
+        icon4.addPixmap(QtGui.QPixmap(":/delete"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.undo.setIcon(icon4)
         self.undo.setObjectName("undo")
         self.horizontalLayout.addWidget(self.undo)
         self.zoomin = QtWidgets.QPushButton(self.verticalLayoutWidget)
         icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap(":/plot/zoom"), QtGui.QIcon.Normal,
-                        QtGui.QIcon.Off)
+        icon5.addPixmap(QtGui.QPixmap(":/plot/zoom"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.zoomin.setIcon(icon5)
         self.zoomin.setObjectName("zoomin")
         self.horizontalLayout.addWidget(self.zoomin)
         self.zoomout = QtWidgets.QPushButton(self.verticalLayoutWidget)
         icon6 = QtGui.QIcon()
-        icon6.addPixmap(QtGui.QPixmap(":/plot/zoom_out"), QtGui.QIcon.Normal,
-                        QtGui.QIcon.Off)
+        icon6.addPixmap(QtGui.QPixmap(":/plot/zoom_out"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.zoomout.setIcon(icon6)
         self.zoomout.setObjectName("zoomout")
         self.horizontalLayout.addWidget(self.zoomout)
         self.center = QtWidgets.QPushButton(self.verticalLayoutWidget)
         icon7 = QtGui.QIcon()
-        icon7.addPixmap(QtGui.QPixmap(":/plot/zoom_target"), QtGui.QIcon.Normal,
-                        QtGui.QIcon.Off)
+        icon7.addPixmap(QtGui.QPixmap(":/plot/zoom_target"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.center.setIcon(icon7)
         self.center.setObjectName("center")
         self.horizontalLayout.addWidget(self.center)
@@ -156,82 +144,44 @@ class Ui_EditSource(object):
         EditSource.setStatusBar(self.statusBar)
 
         self.retranslateUi(EditSource)
-        QtCore.QObject.connect(self.btn_save, QtCore.SIGNAL("clicked()"),
-                               self.src_editor.save_file)
-        QtCore.QObject.connect(self.btn_reload, QtCore.SIGNAL("clicked()"),
-                               self.src_editor.reload_file)
-        QtCore.QObject.connect(self.zoomout, QtCore.SIGNAL("clicked()"),
-                               self.src_editor.zoomOut)
-        QtCore.QObject.connect(self.zoomin, QtCore.SIGNAL("clicked()"),
-                               self.src_editor.zoomIn)
-        QtCore.QObject.connect(self.undo, QtCore.SIGNAL("clicked()"),
-                               self.src_editor.undo)
-        QtCore.QObject.connect(self.center, QtCore.SIGNAL("clicked()"),
-                               self.src_editor.centerCursor)
-        QtCore.QObject.connect(self.btn_rebuild, QtCore.SIGNAL("clicked()"),
-                               self.src_editor.rebuild_components)
-        QtCore.QObject.connect(self.pushButtonHideHelp,
-                               QtCore.SIGNAL("clicked()"),
-                               self.src_editor.hide_help)
+        QtCore.QObject.connect(self.btn_save, QtCore.SIGNAL("clicked()"), self.src_editor.save_file)
+        QtCore.QObject.connect(self.btn_reload, QtCore.SIGNAL("clicked()"), self.src_editor.reload_file)
+        QtCore.QObject.connect(self.zoomout, QtCore.SIGNAL("clicked()"), self.src_editor.zoomOut)
+        QtCore.QObject.connect(self.zoomin, QtCore.SIGNAL("clicked()"), self.src_editor.zoomIn)
+        QtCore.QObject.connect(self.undo, QtCore.SIGNAL("clicked()"), self.src_editor.undo)
+        QtCore.QObject.connect(self.center, QtCore.SIGNAL("clicked()"), self.src_editor.centerCursor)
+        QtCore.QObject.connect(self.btn_rebuild, QtCore.SIGNAL("clicked()"), self.src_editor.rebuild_components)
+        QtCore.QObject.connect(self.pushButtonHideHelp, QtCore.SIGNAL("clicked()"), self.src_editor.hide_help)
         QtCore.QMetaObject.connectSlotsByName(EditSource)
 
     def retranslateUi(self, EditSource):
-        EditSource.setWindowTitle(
-            QtWidgets.QApplication.translate("EditSource", "Edit source code",
-                                             None, -1))
-        self.btn_rebuild.setText(
-            QtWidgets.QApplication.translate("EditSource", "Rebuild Component",
-                                             None, -1))
-        self.btn_rebuild.setShortcut(
-            QtWidgets.QApplication.translate("EditSource", "Ctrl+R, Meta+R",
-                                             None, -1))
-        self.btn_save.setText(
-            QtWidgets.QApplication.translate("EditSource", "Save File", None,
-                                             -1))
-        self.btn_save.setShortcut(
-            QtWidgets.QApplication.translate("EditSource", "Ctrl+S, Meta+S",
-                                             None, -1))
-        self.btn_reload.setText(
-            QtWidgets.QApplication.translate("EditSource", "Reload File", None,
-                                             -1))
-        self.pushButtonHideHelp.setText(
-            QtWidgets.QApplication.translate("EditSource", "Help", None, -1))
-        self.undo.setText(
-            QtWidgets.QApplication.translate("EditSource", "Undo", None, -1))
-        self.zoomin.setText(
-            QtWidgets.QApplication.translate("EditSource", "Zoom in", None, -1))
-        self.zoomout.setText(
-            QtWidgets.QApplication.translate("EditSource", "Zoom out", None,
-                                             -1))
-        self.center.setText(
-            QtWidgets.QApplication.translate("EditSource", "Center", None, -1))
-        self.src_editor.setPlainText(
-            QtWidgets.QApplication.translate("EditSource", "Source comes here",
-                                             None, -1))
-        self.lineSrcPath.setText(
-            QtWidgets.QApplication.translate("EditSource",
-                                             "Source code file path here", None,
-                                             -1))
-        self.textEditHelp.setDocumentTitle(
-            QtWidgets.QApplication.translate("EditSource", "Help", None, -1))
-        self.textEditHelp.setHtml(
-            QtWidgets.QApplication.translate(
-                "EditSource",
-                "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-                "<html><head><meta name=\"qrichtext\" content=\"1\" /><title>Help</title><style type=\"text/css\">\n"
-                "p, li { white-space: pre-wrap; }\n"
-                "</style></head><body style=\" font-family:\'Arial\'; font-size:8.1pt; font-weight:400; font-style:normal;\">\n"
-                "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; background-color:#ffffff;\"><span style=\" font-family:\'Arial\'; font-size:13pt; font-weight:600; color:#797a7a; background-color:#ffffff;\">Help me?</span></p>\n"
-                "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; background-color:#ffffff;\"><span style=\" font-family:\'Arial\'; font-size:13pt; font-style:italic; color:#797a7a; background-color:#ffffff;\">Double click </span><span style=\" font-family:\'Arial\'; font-size:13pt; color:#797a7a; background-color:#ffffff;\">any function or class in the source code to view its documentation. </span></p>\n"
-                "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; background-color:#ffffff;\"><span style=\" font-family:\'Arial\'; font-size:13pt; color:#797a7a; background-color:#ffffff;\">Documentation is also shown anytime one types</span><span style=\" font-family:\'Arial\'; font-size:13pt; color:#797a7a;\"> a bracket </span><span style=\" font-family:\'Monaco\'; font-size:13pt; color:#797a7a;\">(</span><span style=\" font-family:\'Arial\'; font-size:13pt; color:#797a7a;\"> after the name of a function. </span><span style=\" font-family:\'Arial\'; font-size:13pt; color:#797a7a; background-color:#ffffff;\">For example, enter</span><span style=\" font-family:\'Arial\'; font-size:13pt; color:#797a7a;\"> </span><span style=\" font-family:\'Arial\'; font-size:13pt; color:#797a7a; background-color:#ecf0f3;\">draw.rectangle(</span><span style=\" font-family:\'Arial\'; font-size:13pt; color:#797a7a;\">, and a  calltip will appear here.</span></p>\n"
-                "<p style=\"-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; font-family:\'Arial\'; font-size:13pt; color:#797a7a; background-color:#ffffff;\"><br /></p>\n"
-                "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; background-color:#ffffff;\"><span style=\" font-family:\'Arial\'; font-size:13pt; font-weight:600; color:#797a7a;\">Hide help panel? </span></p>\n"
-                "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; background-color:#ffffff;\"><span style=\" font-family:\'Arial\'; font-size:13pt; color:#797a7a;\">Drag the slider in the middle all the way to the right. </span></p>\n"
-                "<p style=\"-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; font-family:\'Arial\'; font-size:13pt; color:#797a7a; background-color:#ffffff;\"><br /></p>\n"
-                "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; background-color:#ffffff;\"><span style=\" font-family:\'Arial\'; font-size:13pt; font-weight:600; color:#797a7a;\">Search, replace, and more?</span></p>\n"
-                "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; background-color:#ffffff;\"><span style=\" font-family:\'Arial\'; font-size:13pt; color:#797a7a;\">Right click the source code to view more.</span></p></body></html>",
-                None, -1))
-
+        EditSource.setWindowTitle(QtWidgets.QApplication.translate("EditSource", "Edit source code", None, -1))
+        self.btn_rebuild.setText(QtWidgets.QApplication.translate("EditSource", "Rebuild Component", None, -1))
+        self.btn_rebuild.setShortcut(QtWidgets.QApplication.translate("EditSource", "Ctrl+R, Meta+R", None, -1))
+        self.btn_save.setText(QtWidgets.QApplication.translate("EditSource", "Save File", None, -1))
+        self.btn_save.setShortcut(QtWidgets.QApplication.translate("EditSource", "Ctrl+S, Meta+S", None, -1))
+        self.btn_reload.setText(QtWidgets.QApplication.translate("EditSource", "Reload File", None, -1))
+        self.pushButtonHideHelp.setText(QtWidgets.QApplication.translate("EditSource", "Help", None, -1))
+        self.undo.setText(QtWidgets.QApplication.translate("EditSource", "Undo", None, -1))
+        self.zoomin.setText(QtWidgets.QApplication.translate("EditSource", "Zoom in", None, -1))
+        self.zoomout.setText(QtWidgets.QApplication.translate("EditSource", "Zoom out", None, -1))
+        self.center.setText(QtWidgets.QApplication.translate("EditSource", "Center", None, -1))
+        self.src_editor.setPlainText(QtWidgets.QApplication.translate("EditSource", "Source comes here", None, -1))
+        self.lineSrcPath.setText(QtWidgets.QApplication.translate("EditSource", "Source code file path here", None, -1))
+        self.textEditHelp.setDocumentTitle(QtWidgets.QApplication.translate("EditSource", "Help", None, -1))
+        self.textEditHelp.setHtml(QtWidgets.QApplication.translate("EditSource", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><title>Help</title><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'Arial\'; font-size:8.1pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; background-color:#ffffff;\"><span style=\" font-family:\'Arial\'; font-size:13pt; font-weight:600; color:#797a7a; background-color:#ffffff;\">Help me?</span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; background-color:#ffffff;\"><span style=\" font-family:\'Arial\'; font-size:13pt; font-style:italic; color:#797a7a; background-color:#ffffff;\">Double click </span><span style=\" font-family:\'Arial\'; font-size:13pt; color:#797a7a; background-color:#ffffff;\">any function or class in the source code to view its documentation. </span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; background-color:#ffffff;\"><span style=\" font-family:\'Arial\'; font-size:13pt; color:#797a7a; background-color:#ffffff;\">Documentation is also shown anytime one types</span><span style=\" font-family:\'Arial\'; font-size:13pt; color:#797a7a;\"> a bracket </span><span style=\" font-family:\'Monaco\'; font-size:13pt; color:#797a7a;\">(</span><span style=\" font-family:\'Arial\'; font-size:13pt; color:#797a7a;\"> after the name of a function. </span><span style=\" font-family:\'Arial\'; font-size:13pt; color:#797a7a; background-color:#ffffff;\">For example, enter</span><span style=\" font-family:\'Arial\'; font-size:13pt; color:#797a7a;\"> </span><span style=\" font-family:\'Arial\'; font-size:13pt; color:#797a7a; background-color:#ecf0f3;\">draw.rectangle(</span><span style=\" font-family:\'Arial\'; font-size:13pt; color:#797a7a;\">, and a  calltip will appear here.</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; font-family:\'Arial\'; font-size:13pt; color:#797a7a; background-color:#ffffff;\"><br /></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; background-color:#ffffff;\"><span style=\" font-family:\'Arial\'; font-size:13pt; font-weight:600; color:#797a7a;\">Hide help panel? </span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; background-color:#ffffff;\"><span style=\" font-family:\'Arial\'; font-size:13pt; color:#797a7a;\">Drag the slider in the middle all the way to the right. </span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; font-family:\'Arial\'; font-size:13pt; color:#797a7a; background-color:#ffffff;\"><br /></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; background-color:#ffffff;\"><span style=\" font-family:\'Arial\'; font-size:13pt; font-weight:600; color:#797a7a;\">Search, replace, and more?</span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; background-color:#ffffff;\"><span style=\" font-family:\'Arial\'; font-size:13pt; color:#797a7a;\">Right click the source code to view more.</span></p></body></html>", None, -1))
 
 from .widgets.edit_component.source_editor import MetalSourceEditor
 from . import main_window_rc_rc
