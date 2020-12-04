@@ -50,17 +50,16 @@ class QSkeletonRenderer(QRenderer):
     """Extends QRenderer to create new Skeleton QRenderer.
     """
 
-    ##### Default options
     #: Default options, over-written by passing ``options` dict to render_options.
     #: Type: Dict[str, str]
     default_options = Dict(
         # An option unique to QSkeletonRenderer.
         number_of_bones='200',)
+    """Default options"""
 
-    #### Name used in Metal code to refer to this QRenderer.
     name = 'skeleton'
+    """Name used in Metal code to refer to this QRenderer."""
 
-    #### element extentions dictionary   element_extensions = dict() from base class
     # When additional columns are added to QGeometry, this is the example to populate it.
     # e.g. element_extensions = dict(
     #         base=dict(color=str, klayer=int),
@@ -81,6 +80,7 @@ class QSkeletonRenderer(QRenderer):
         # with default values of "a_default_value" to the junction table.
         # Note: QSkeletonRenderer.name is prefixed to "a_column_name" when the table is appended by QComponents.
         junction=dict(a_column_name='a_default_value'))
+    """element extentions dictionary   element_extensions = dict() from base class"""
 
     def __init__(self,
                  design: 'QDesign',
