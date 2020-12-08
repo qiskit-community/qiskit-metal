@@ -34,6 +34,7 @@ from ...draw import BaseGeometry
 from ...toolbox_python.attr_dict import Dict
 from ._parsed_dynamic_attrs import ParsedDynamicAttributes_Component
 from ...toolbox_python.display import format_dict_ala_z
+from ...toolbox_python.metal_exceptions import ComponentNotMadeError
 from datetime import datetime
 from ... import config
 if not config.is_building_docs():
@@ -183,7 +184,9 @@ class QComponent():
         self._design = design  # reference to parent
 
         if self._delete_evaluation(name) is 'NameInUse':
-            return
+            raise ComponentNotMadeError(
+                f'The name "{name}" is already in use for another component and so this name cannot be used to make a new component"'
+            )
 
         self._name = name
         self._class_name = self._get_unique_class_name()  # Full class name

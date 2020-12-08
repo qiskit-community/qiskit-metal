@@ -23,6 +23,7 @@ Created on Wed Apr 22 09:58:35 2020
 """
 
 import unittest
+from PySide2.QtWidgets import QColorDialog
 
 from qiskit_metal.components.base.base import QComponent
 from qiskit_metal.components.base.qroute import QRoute
@@ -50,7 +51,7 @@ from qiskit_metal.components.passives.cap_three_fingers import CapThreeFingers
 from qiskit_metal import designs
 from qiskit_metal.components._template import MyQComponent
 from qiskit_metal.tests.assertions import AssertionsMixin
-
+from qiskit_metal.toolbox_python.metal_exceptions import ComponentNotMadeError
 #pylint: disable-msg=line-too-long
 from qiskit_metal.components.interconnects.resonator_rectangle_spiral import ResonatorRectangleSpiral
 
@@ -60,120 +61,136 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
     Unit test class
     """
 
-    def setUp(self):
-        """
-        Setup unit test
-        """
-        pass
+    ## Tests with make implemented
+    def qcomponent_implemented_make_true(self, component_class, component_name):
+        """ Tests whether the class creates a build when called except when make=False (should create except when make=False).
+        Also tests whether ComponentNotMadeError is thrown in the event you try
+        to instantiate a component with the same name as a pre-existing component
 
-    def tearDown(self):
-        """
-        Tie any loose ends
-        """
-        pass
-
-    def test_component_instantiate_qcomponent(self):
-        """
-        Test the instantiaion of QComponent
+        Args:
+            component_class (Class): Any Class inheriting from QComponent that has an implemented `make` method
+            component_name ([type]): String of the name of the class
         """
         design = designs.DesignPlanar()
+
         try:
-            QComponent
+            component_class
         except Exception:
-            self.fail("QComponent failed")
+            self.fail(f"{component_name} failed")
 
-        empty_q1 = QComponent(design, "my_name")
-        self.assertEqual(empty_q1._made, False)
+        c1 = component_class(design, "my_name")
+        self.assertTrue(c1._made)
 
-        empty_q2 = QComponent(design, "my_name")
-        self.assertEqual(empty_q2._made, False)
+        c2 = component_class(design, "my_name2", options={})
+        self.assertTrue(c2._made)
 
-        full_q = QComponent(design, "my_name3", options={}, make=False)
-        if full_q._made is False:
-            self.fail(
-                "QComponent(design, \"my_name3\", options={}, make=False)")
+        c3 = component_class(design, "my_name3", options={}, make=False)
+        self.assertFalse(c3._made)
 
-        full_q2 = QComponent(design,
-                             "my_name4",
-                             options={},
-                             make=False,
-                             component_template={})
-        if full_q2._made is False:
-            msg = "QComponent(design, \"my_name4\", options={}, make=False, component_template={})"
-            self.fail(msg)
+        with self.assertRaises(ComponentNotMadeError):
+            #should fail trying to make a new component_class with the same name as a previous component_class
+            component_class(design, "my_name")
+
+        design.delete_all_components()
 
     def test_component_instantiate_basequbit(self):
-        """
-        Test the instantiation of basequbit
-        """
-        design = designs.DesignPlanar()
-        try:
-            BaseQubit
-        except Exception:
-            self.fail("BaseQubit failed")
-
-        with self.assertRaises(NotImplementedError):
-            BaseQubit(design, "my_name")
-
-        with self.assertRaises(NotImplementedError):
-            BaseQubit(design, "my_name2", options={})
-
-        try:
-            BaseQubit(design, "my_name3", options={}, make=False)
-        except Exception:
-            self.fail("BaseQubit(design, \"my_name3\", options={}, make=False)")
+        self.qcomponent_implemented_make_true(BaseQubit, "BaseQubit")
 
     def test_component_instantiate_open_to_ground(self):
-        """
-        Test the instantiation of openToGround
-        """
-        design = designs.DesignPlanar()
-        try:
-            OpenToGround
-        except Exception:
-            self.fail("OpenToGround failed")
-
-        try:
-            OpenToGround(design, "my_name")
-        except Exception:
-            self.fail("OpenToGround(design, \"my_name\")")
-
-        try:
-            OpenToGround(design, "my_name2", options={})
-        except Exception:
-            self.fail("OpenToGround(design, \"my_name2\", options={})")
-
-        try:
-            OpenToGround(design, "my_name3", options={}, make=False)
-        except Exception:
-            self.fail(
-                "OpenToGround(design, \"my_name3\", options={}, make=False)")
+        self.qcomponent_implemented_make_true(OpenToGround, "OpenToGround")
 
     def test_component_instantiate_short_to_ground(self):
-        """
-        Test the instantiation of shortToGround
+        self.qcomponent_implemented_make_true(ShortToGround, "ShortToGround")
+
+    def test_component_instantiate_route_straight(self):
+        self.qcomponent_implemented_make_true(RouteStraight, "RouteStraight")
+
+    def test_component_instantiate_cpw_hanger_t(self):
+        self.qcomponent_implemented_make_true(CPWHangerT, "CPWHangerT")
+
+    def test_component_instantiate_resonator_rectangle_spiral(self):
+        self.qcomponent_implemented_make_true(ResonatorRectangleSpiral,
+                                              "ResonatorRectangleSpiral")
+
+    def test_component_instantiate_circle_raster(self):
+        self.qcomponent_implemented_make_true(CircleRaster, "CircleRaster")
+
+    def test_component_instantiate_circle_caterpillar(self):
+        self.qcomponent_implemented_make_true(CircleCaterpillar,
+                                              "CircleCaterpillar")
+
+    def test_component_instantiate_n_gon(self):
+        self.qcomponent_implemented_make_true(NGon, "NGon")
+
+    def test_component_instantiate_n_square_spiral(self):
+        self.qcomponent_implemented_make_true(NSquareSpiral, "NSquareSpiral")
+
+    def test_component_instantiate_rectangle(self):
+        self.qcomponent_implemented_make_true(Rectangle, "Rectangle")
+
+    def test_component_instantiate_rectangle_hollow(self):
+        self.qcomponent_implemented_make_true(RectangleHollow,
+                                              "RectangleHollow")
+
+    def test_component_instantiate_route_anchors(self):
+        self.qcomponent_implemented_make_true(RouteAnchors, "RouteAnchors")
+
+    def test_component_instantiate_route_pathfinder(self):
+        self.qcomponent_implemented_make_true(RoutePathfinder,
+                                              "RoutePathfinder")
+
+    def test_component_instantiate_launch_v1(self):
+        self.qcomponent_implemented_make_true(LaunchpadWirebond,
+                                              "LaunchpadWirebond")
+
+    def test_component_instantiate_launch_v2(self):
+        self.qcomponent_implemented_make_true(LaunchpadWirebondCoupled,
+                                              "LaunchpadWirebondCoupled")
+
+    def test_component_instantiate_three_finger_cap_v1(self):
+        self.qcomponent_implemented_make_true(CapThreeFingers,
+                                              "CapThreeFingers")
+
+    ## Tests without make implemented
+    def qcomponent_implemented_make_false(self, component_class,
+                                          component_name):
+        """ Tests whether the class creates a build when called (should not create build).
+        Also tests whether ComponentNotMadeError is thrown in the event you try
+        to instantiate a component with the same name as a pre-existing component
+
+        Args:
+            component_class (Class): Any Class inheriting from QComponent that does NOT have an implemented `make` method
+            component_name ([type]): String of the name of the class
         """
         design = designs.DesignPlanar()
-        try:
-            ShortToGround
-        except Exception:
-            self.fail("ShortToGround failed")
 
         try:
-            ShortToGround(design, "my_name")
+            component_class
         except Exception:
-            self.fail("ShortToGround(design, \"my_name\")")
+            self.fail(f"{component_name} failed")
 
-        try:
-            ShortToGround(design, "my_name2", options={})
-        except Exception:
-            self.fail("ShortToGround(design, \"my_name2\", options={})")
+        c1 = component_class(design, "my_name")
+        self.assertFalse(c1._made)
 
-        try:
-            ShortToGround(design, "my_name3", options={}, make=False)
-        except Exception:
-            self.fail(
-                "ShortToGround(design, \"my_name3\", options={}, make=False)")
+        c2 = component_class(design, "my_name2", options={})
+        self.assertFalse(c2._made)
+
+        c3 = component_class(design, "my_name3", options={}, make=False)
+        self.assertFalse(c3._made)
+
+        with self.assertRaises(ComponentNotMadeError):
+            #should fail trying to make a new component_class with the same name as a previous component_class
+            component_class(design, "my_name")
+
+        design.delete_all_components()
+
+    def test_component_instantiate_qcomponent(self):
+        self.qcomponent_implemented_make_false(QComponent, "QComponent")
+
+    def test_component_instantiate_basequbit(self):
+        self.qcomponent_implemented_make_false(BaseQubit, "BaseQubit")
+
+    ## Special Tests
 
     def test_component_instantiate_route_frame_path(self):
         """
@@ -183,27 +200,6 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
             RouteFramed
         except Exception:
             self.fail("RouteFramed failed")
-
-    def test_component_instantiate_route_straight(self):
-        """
-        Test the instantiation of RouteStraight
-        """
-        design = designs.DesignPlanar()
-        try:
-            RouteStraight
-        except Exception:
-            self.fail("RouteStraight failed")
-
-        try:
-            RouteStraight(design, "my_name2", options={})
-        except Exception:
-            self.fail("RouteStraight(design, \"my_name2\", options={})")
-
-        try:
-            RouteStraight(design, "my_name3", options={}, make=False)
-        except Exception:
-            self.fail(
-                "RouteStraight(design, \"my_name3\", options={}, make=False)")
 
     def test_component_instantiate_q_route_lead(self):
         """
@@ -249,364 +245,6 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
             QRoute
         except Exception:
             self.fail("QRoute failed")
-
-    def test_component_instantiate_my_q_component(self):
-        """
-        Test the instantiation of MyQComponent
-        """
-        design = designs.DesignPlanar()
-        try:
-            MyQComponent
-        except Exception:
-            self.fail("MyQComponent failed")
-
-        try:
-            MyQComponent(design, "my_name")
-        except Exception:
-            self.fail("MyQComponent(design, \"my_name\")")
-
-        try:
-            MyQComponent(design, "my_name2", options={})
-        except Exception:
-            self.fail("MyQComponent(design, \"my_name2\", options={})")
-
-        try:
-            MyQComponent(design, "my_name3", options={}, make=False)
-        except Exception:
-            self.fail(
-                "MyQComponent(design, \"my_name3\", options={}, make=False)")
-
-    def test_component_instantiate_cpw_hanger_t(self):
-        """
-        Test the instantiation of CPWHangerT
-        """
-        design = designs.DesignPlanar()
-        try:
-            CPWHangerT
-        except Exception:
-            self.fail("CPWHangerT failed")
-
-        try:
-            CPWHangerT(design, "my_name")
-        except Exception:
-            self.fail("CPWHangerT(design, \"my_name\")")
-
-        try:
-            CPWHangerT(design, "my_name2", options={})
-        except Exception:
-            self.fail("CPWHangerT(design, \"my_name2\", options={})")
-
-        try:
-            CPWHangerT(design, "my_name3", options={}, make=False)
-        except Exception:
-            self.fail(
-                "CPWHangerT(design, \"my_name3\", options={}, make=False)")
-
-    def test_component_instantiate_resonator_rectangle_spiral(self):
-        """
-        Test the instantiation of ResonatorRectangleSpiral
-        """
-        design = designs.DesignPlanar()
-        try:
-            ResonatorRectangleSpiral
-        except Exception:
-            self.fail("ResonatorRectangleSpiral failed")
-
-        try:
-            ResonatorRectangleSpiral(design, "my_name")
-        except Exception:
-            self.fail("ResonatorRectangleSpiral(design, \"my_name\")")
-
-        try:
-            ResonatorRectangleSpiral(design, "my_name2", options={})
-        except Exception:
-            self.fail(
-                "ResonatorRectangleSpiral(design, \"my_name2\", options={})")
-
-        try:
-            ResonatorRectangleSpiral(design, "my_name3", options={}, make=False)
-        except Exception:
-            self.fail(
-                "ResonatorRectangleSpiral(design, \"my_name3\", options={}, make=False)"
-            )
-
-    def test_component_instantiate_circle_raster(self):
-        """
-        Test the instantiation of CircleRaster
-        """
-        design = designs.DesignPlanar()
-        try:
-            CircleRaster
-        except Exception:
-            self.fail("CircleRaster failed")
-
-        try:
-            CircleRaster(design, "my_name")
-        except Exception:
-            self.fail("CircleRaster(design, \"my_name\")")
-
-        try:
-            CircleRaster(design, "my_name2", options={})
-        except Exception:
-            self.fail("CircleRaster(design, \"my_name2\", options={})")
-
-        try:
-            CircleRaster(design, "my_name3", options={}, make=False)
-        except Exception:
-            self.fail(
-                "CircleRaster(design, \"my_name3\", options={}, make=False)")
-
-    def test_component_instantiate_circle_caterpillar(self):
-        """
-        Test the instantiation of CircleCaterpillar
-        """
-        design = designs.DesignPlanar()
-        try:
-            CircleCaterpillar
-        except Exception:
-            self.fail("CircleCaterpillar failed")
-
-        try:
-            CircleCaterpillar(design, "my_name")
-        except Exception:
-            self.fail("CircleCaterpillar(design, \"my_name\")")
-
-        try:
-            CircleCaterpillar(design, "my_name2", options={})
-        except Exception:
-            self.fail("CircleCaterpillar(design, \"my_name2\", options={})")
-
-        try:
-            CircleCaterpillar(design, "my_name3", options={}, make=False)
-        except Exception:
-            self.fail(
-                "CircleCaterpillar(design, \"my_name3\", options={}, make=False)"
-            )
-
-    def test_component_instantiate_n_gon(self):
-        """
-        Test the instantiation of NGon
-        """
-        design = designs.DesignPlanar()
-        try:
-            NGon
-        except Exception:
-            self.fail("NGon failed")
-
-        try:
-            NGon(design, "my_name")
-        except Exception:
-            self.fail("NGon(design, \"my_name\")")
-
-        try:
-            NGon(design, "my_name2", options={})
-        except Exception:
-            self.fail("NGon(design, \"my_name2\", options={})")
-
-        try:
-            NGon(design, "my_name3", options={}, make=False)
-        except Exception:
-            self.fail("NGon(design, \"my_name3\", options={}, make=False)")
-
-    def test_component_instantiate_n_square_spiral(self):
-        """
-        Test the instantiation of NSquareSpiral
-        """
-        design = designs.DesignPlanar()
-        try:
-            NSquareSpiral
-        except Exception:
-            self.fail("NSquareSpiral failed")
-
-        try:
-            NSquareSpiral(design, "my_name")
-        except Exception:
-            self.fail("NSquareSpiral(design, \"my_name\")")
-
-        try:
-            NSquareSpiral(design, "my_name2", options={})
-        except Exception:
-            self.fail("NSquareSpiral(design, \"my_name2\", options={})")
-
-        try:
-            NSquareSpiral(design, "my_name3", options={}, make=False)
-        except Exception:
-            self.fail(
-                "NSquareSpiral(design, \"my_name3\", options={}, make=False)")
-
-    def test_component_instantiate_rectangle(self):
-        """
-        Test the instantiation of Rectangle
-        """
-        design = designs.DesignPlanar()
-        try:
-            Rectangle
-        except Exception:
-            self.fail("Rectangle failed")
-
-        try:
-            Rectangle(design, "my_name")
-        except Exception:
-            self.fail("Rectangle(design, \"my_name\")")
-
-        try:
-            Rectangle(design, "my_name2", options={})
-        except Exception:
-            self.fail("Rectangle(design, \"my_name2\", options={})")
-
-        try:
-            Rectangle(design, "my_name3", options={}, make=False)
-        except Exception:
-            self.fail("Rectangle(design, \"my_name3\", options={}, make=False)")
-
-    def test_component_instantiate_rectangle_hollow(self):
-        """
-        Test the instantiation of RectangleHollow
-        """
-        design = designs.DesignPlanar()
-        try:
-            RectangleHollow
-        except Exception:
-            self.fail("RectangleHollow failed")
-
-        try:
-            RectangleHollow(design, "my_name")
-        except Exception:
-            self.fail("RectangleHollow(design, \"my_name\")")
-
-        try:
-            RectangleHollow(design, "my_name2", options={})
-        except Exception:
-            self.fail("RectangleHollow(design, \"my_name2\", options={})")
-
-        try:
-            RectangleHollow(design, "my_name3", options={}, make=False)
-        except Exception:
-            self.fail(
-                "RectangleHollow(design, \"my_name3\", options={}, make=False)")
-
-    def test_component_instantiate_route_anchors(self):
-        """
-        Test the instantiation of RouteAnchors
-        """
-        design = designs.DesignPlanar()
-        try:
-            RouteAnchors
-        except Exception:
-            self.fail("RouteAnchors failed")
-
-        try:
-            RouteAnchors(design, "my_name2", options={})
-        except Exception:
-            self.fail("RouteAnchors(design, \"my_name2\", options={})")
-
-        try:
-            RouteAnchors(design, "my_name3", options={}, make=False)
-        except Exception:
-            self.fail(
-                "RouteAnchors(design, \"my_name3\", options={}, make=False)")
-
-    def test_component_instantiate_route_pathfinder(self):
-        """
-        Test the instantiation of RoutePathfinder
-        """
-        design = designs.DesignPlanar()
-        try:
-            RoutePathfinder
-        except Exception:
-            self.fail("RoutePathfinder failed")
-
-        try:
-            RoutePathfinder(design, "my_name2", options={})
-        except Exception:
-            self.fail("RoutePathfinder(design, \"my_name2\", options={})")
-
-        try:
-            RoutePathfinder(design, "my_name3", options={}, make=False)
-        except Exception:
-            self.fail(
-                "RoutePathfinder(design, \"my_name3\", options={}, make=False)")
-
-    def test_component_instantiate_launch_v1(self):
-        """
-        Test the instantiation of LaunchpadWirebond
-        """
-        design = designs.DesignPlanar()
-        try:
-            LaunchpadWirebond
-        except Exception:
-            self.fail("LaunchpadWirebond failed")
-
-        try:
-            LaunchpadWirebond(design, "my_name")
-        except Exception:
-            self.fail("LaunchpadWirebond(design, \"my_name\")")
-
-        try:
-            LaunchpadWirebond(design, "my_name2", options={})
-        except Exception:
-            self.fail("LaunchpadWirebond(design, \"my_name2\", options={})")
-
-        try:
-            LaunchpadWirebond(design, "my_name3", options={}, make=False)
-        except Exception:
-            self.fail(
-                "LaunchpadWirebond(design, \"my_name3\", options={}, make=False)"
-            )
-
-    def test_component_instantiate_launch_v2(self):
-        """
-        Test the instantiation of LaunchpadWirebondCoupled
-        """
-        design = designs.DesignPlanar()
-        try:
-            LaunchpadWirebondCoupled
-        except Exception:
-            self.fail("LaunchpadWirebondCoupled failed")
-
-        try:
-            LaunchpadWirebondCoupled(design, "my_name")
-        except Exception:
-            self.fail("LaunchpadWirebondCoupled(design, \"my_name\")")
-
-        try:
-            LaunchpadWirebondCoupled(design, "my_name2", options={})
-        except Exception:
-            self.fail(
-                "LaunchpadWirebondCoupled(design, \"my_name2\", options={})")
-
-        try:
-            LaunchpadWirebondCoupled(design, "my_name3", options={}, make=False)
-        except Exception:
-            self.fail(
-                "LaunchpadWirebondCoupled(design, \"my_name3\", options={}, make=False)"
-            )
-
-    def test_component_instantiate_three_finger_cap_v1(self):
-        """
-        Test the instantiation of CapThreeFingers
-        """
-        design = designs.DesignPlanar()
-        try:
-            CapThreeFingers
-        except Exception:
-            self.fail("CapThreeFingers failed")
-
-        try:
-            CapThreeFingers(design, "my_name")
-        except Exception:
-            self.fail("CapThreeFingers(design, \"my_name\")")
-
-        try:
-            CapThreeFingers(design, "my_name2", options={})
-        except Exception:
-            self.fail("CapThreeFingers(design, \"my_name2\", options={})")
-
-        try:
-            CapThreeFingers(design, "my_name3", options={}, make=False)
-        except Exception:
-            self.fail(
-                "CapThreeFingers(design, \"my_name3\", options={}, make=False)")
 
 
 if __name__ == '__main__':
