@@ -34,7 +34,7 @@ from .. import Dict
 from ..draw import BaseGeometry
 from qiskit_metal.draw.utility import round_coordinate_sequence
 
-from shapely.geometry.multipolygon import MultiPolygon  #for avoiding MultiPolygons
+from shapely.geometry.multipolygon import MultiPolygon  #to avoid MultiPolygons
 from .. import config
 if not config.is_building_docs():
     from qiskit_metal.toolbox_python.utility_functions import get_range_of_vertex_to_not_fillet, data_frame_empty_typed
@@ -46,7 +46,7 @@ if TYPE_CHECKING:
 __all__ = ['is_element_table', 'QGeometryTables']  # , 'ElementTypes']
 
 # from collections import OrderedDict
-# dict are oreder in Python 3.6+ by default, this is jsut in case for backward compatability
+# dict are ordered in Python 3.6+ by default, this is for backward compatibility
 
 # class ElementTypes:
 #     """
