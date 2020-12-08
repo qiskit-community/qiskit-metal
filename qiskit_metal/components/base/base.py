@@ -172,10 +172,10 @@ class QComponent():
             added to design using the name.
         """
 
+        #Important. If init method fails, _made and id will still be set correctly for the empty qcomponent
         # Make the id be None, which means it hasn't been added to design yet.
         self._id = None
         self._made = False
-        self._design = design  # reference to parent
 
         # Status: used to handle building of a component and checking if it succeeded or failed.
         self.status = 'Not Built'
@@ -183,6 +183,7 @@ class QComponent():
             raise ValueError(
                 "Error you did not pass in a valid Metal QDesign object as a '\
                 'parent of this QComponent.")
+        self._design = design  # reference to parent
 
         if self._delete_evaluation(name) is 'NameInUse':
             raise ComponentInitFailedError(
@@ -345,16 +346,6 @@ class QComponent():
             #     component_template)
             design.template_options[template_key] = deepcopy(
                 options_template_renderer)
-
-    @property
-    def _built(self) -> bool:
-        """Whether component is built"""
-        return self._made
-
-    @_built.setter
-    def _built(self, new_made: bool):
-        """sets flag to denote whether component is built"""
-        self._made = new_made
 
     @property
     def name(self) -> str:
