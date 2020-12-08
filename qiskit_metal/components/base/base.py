@@ -541,20 +541,15 @@ class QComponent():
 
             self.make()
             self._made = True  # what if make throws an error part way?
-            logStore.add(f"{str(datetime.now())} -- Component: {self.name} successfully built")
-        except Exception as e:
-            print(f'ERROR in building component name={self.name}')
-                logStore.add(f"{str(datetime.now())} -- Component: {self.name} failed with error\n: {error}")
-                log_error_easy(
-                    self.logger,
-                    post_text=
-                    f'\nERROR in rebuilding component "{self.name}"!\n')
-            raise e
-
-
-
-
-
+            self.status = 'good'
+            logStore.add(
+                f"{str(datetime.now())} -- Component: {self.name} successfully built"
+            )
+        except Exception as error:
+            self.logger.error(f'ERROR in building component name={self.name}')
+            logStore.add(
+                f"{str(datetime.now())} -- Component: {self.name} failed with error\n: {error}"
+            )
 
     def delete(self):
         """

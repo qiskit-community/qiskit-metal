@@ -18,7 +18,7 @@ The base class of all QDesigns in Qiskit Metal.
 @author: Zlatko Minev, Thomas McConeky, ... (IBM)
 """
 
-import importlib
+import importlib, collections
 from datetime import datetime
 from typing import TYPE_CHECKING, Any
 from typing import Dict as Dict_
@@ -32,7 +32,6 @@ from ..config import DefaultMetalOptions, DefaultOptionsRenderer
 from ..elements import QGeometryTables
 from qiskit_metal.toolbox_metal.parsing import parse_options, parse_value
 from qiskit_metal.toolbox_metal.parsing import is_true
-from ..toolbox_python._logging import LogStore
 from .interface_components import Components
 from .net_info import QNet
 
@@ -50,6 +49,32 @@ if TYPE_CHECKING:
 __all__ = ['QDesign']
 
 #:ivar var1: initial value: par2
+
+
+class LogStore(collections.deque):
+
+    def __init__(self,
+                 title: str,
+                 log_limit: int,
+                 _previous_builds: List[str] = [],
+                 *args,
+                 **kwargs):
+        super().__init__(maxlen=log_limit, *args, **kwargs)
+        self._title = title
+        for i in _previous_builds:
+            self.appendleft(i)
+        self._next_available_index = 0
+
+    def data(self):
+        #returns COPY of data
+        return list(self)
+
+    def add(self, log: str):
+        self.appendleft(log)
+
+    @property
+    def title(self):
+        return self._title
 
 
 class QDesign():
@@ -466,7 +491,7 @@ class QDesign():
         """
         Remakes all components with their current parameters.
         """
-        for id, obj in self._components.items():  # pylint: disable=unused-variable
+        for _, obj in self._components.items():  # pylint: disable=unused-variable
             obj.build()
 
     def reload_component(self, component_module_name: str,

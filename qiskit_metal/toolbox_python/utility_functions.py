@@ -30,12 +30,15 @@ import os
 import pandas as pd
 import numpy as np
 from scipy.spatial import distance
-from typing import Tuple
+from typing import Tuple, TYPE_CHECKING
 
 from copy import deepcopy
-from qiskit_metal import logger
 from qiskit_metal.draw import Vector
 from numpy.linalg import norm
+
+if TYPE_CHECKING:
+    from qiskit_metal import logger
+
 
 __all__ = [
     'copy_update', 'dict_start_with', 'data_frame_empty_typed', 'clean_name',
