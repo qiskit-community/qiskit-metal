@@ -27,9 +27,9 @@ import numpy as np
 import qutip as qt
 
 
-class H_CPB(object):
+class Hcpb(object):
     """
-    H_CPB class. Used to model analytically the CPB Hamiltonian quickly
+    Hcpb class. Used to model analytically the CPB Hamiltonian quickly
     and efficiently. Solves tridiagonal eigenvalue problem for arbitrary
     Ej, Ec, ng values.
 
@@ -56,6 +56,8 @@ class H_CPB(object):
         self._Ej = Ej
         self._Ec = Ec
         self._ng = ng
+        self.evals = None
+        self.evecs = None
         # Generate the diagonal and offdiagonal components of the Hamiltonian
         self._gen_operators()
         # compute the eigenvectors and eigenvalues of the CPB
@@ -88,13 +90,13 @@ class H_CPB(object):
         Diagonalize the CPB Hamiltonian using symmetric tridiagonal
         eigensolver for efficient calculation of properties
         '''
-        Ham_diag = 4 * self._Ec * (self._diag - self._ng)**2
-        Ham_off = -(self._Ej / 2.0) * self._off
-        evals, evecs = linalg.eigh_tridiagonal(Ham_diag, Ham_off)
+        ham_diag = 4 * self._Ec * (self._diag - self._ng)**2
+        ham_off = -(self._Ej / 2.0) * self._off
+        evals, evecs = linalg.eigh_tridiagonal(ham_diag, ham_off)
         self.evals = np.real(np.array(evals))
         self.evecs = np.array(evecs)
 
-    def Ek(self, k):
+    def evalue_k(self, k):
         '''
         Return the eigenvalue of the Hamiltonian for level k
 
@@ -141,9 +143,9 @@ class H_CPB(object):
         evec = self.evecs[:, k]
         n = np.arange(-self._nlevels, self._nlevels + 1)
         psi = []
-        for i in range(len(n)):
+        for i, val in enumerate(n):
             # Get Fourier component of each charge basis state
-            psi.append(evec[i] * np.exp(1j * n[i] * phi))
+            psi.append(evec[i] * np.exp(1j * val * phi))
         psi = np.array(psi)
         # Sum over Fourier components to get eigenwave
         psi = np.sum(psi, axis=0) / np.sqrt(2 * np.pi)
@@ -161,7 +163,7 @@ class H_CPB(object):
         Returns:
             (float): Eij, the transition energy
         '''
-        return np.abs(self.Ek(i) - self.Ek(j))
+        return np.abs(self.evalue_k(i) - self.evalue_k(j))
 
     def anharm(self):
         '''
@@ -187,9 +189,9 @@ class H_CPB(object):
                      n_ij = |<i|n|j>|
         '''
         n_op = np.arange(-self._nlevels, self._nlevels + 1)
-        g = np.conj(self.evec_k(i)) * n_op * self.evec_k(j)
-        g = np.abs(np.sum(g))
-        return g
+        n_ij = np.conj(self.evec_k(i)) * n_op * self.evec_k(j)
+        n_ij = np.abs(np.sum(n_ij))
+        return n_ij
 
     def h0_to_qutip(self, n_transmon):
         '''
