@@ -208,9 +208,9 @@ class QMainWindowExtension(QMainWindowExtensionBase):
                     self.gui.new_qcomponent_file(filename, text, text_inst)
 
     @slot_catch_error()
-    def create_build_log_window(self,_=None):
+    def create_build_log_window(self, _=None):
+        """"Handels click on Build History button"""
         self.gui.gui_create_build_log_window()
-
 
 
 class MetalGUI(QMainWindowBaseHandler):
@@ -660,7 +660,14 @@ class MetalGUI(QMainWindowBaseHandler):
         self.edit_component_source(name_instance)
 
     @slot_catch_error()
-    def gui_create_build_log_window(self,_=None):
-        if self.build_log_window is None or not self.build_log_window.isVisible() :
-            self.build_log_window = ComponentBuildLogWindow(self.design.build_logs.data())
+    def gui_create_build_log_window(self, _=None):
+        """Creates a separate window that displays the recents successful/fails of all components for the design
+
+        Args:
+            _ ([type], optional): Default parameters for slot  - used to call from action
+        """
+        if self.build_log_window is None or not self.build_log_window.isVisible(
+        ):
+            self.build_log_window = ComponentBuildLogWindow(
+                self.design.build_logs.data())
             self.build_log_window.show()

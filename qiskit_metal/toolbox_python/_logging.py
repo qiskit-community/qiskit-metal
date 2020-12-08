@@ -19,8 +19,8 @@ File contains some config definitions. Mostly internal.
 @author: Zlatko K. Minev
 """
 
-import logging
-
+import logging, collections
+from typing import List
 __all__ = ['setup_logger']
 
 
@@ -106,6 +106,11 @@ def setup_logger(logger_name,
 
 
 class LogStore(collections.deque):
+    """
+    Wrapper over collections.deque that ensures most recently added items (which should be strings) are at the "front" of the queue (i.e. left of the array)
+
+    Each QDesign instantiation has a LogStore object used to keep track of logs for the Build History display.
+    """
 
     def __init__(self,
                  title: str,

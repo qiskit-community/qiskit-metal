@@ -18,7 +18,7 @@ The base class of all QDesigns in Qiskit Metal.
 @author: Zlatko Minev, Thomas McConeky, ... (IBM)
 """
 
-import importlib, collections
+import importlib
 from datetime import datetime
 from typing import TYPE_CHECKING, Any
 from typing import Dict as Dict_

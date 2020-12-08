@@ -82,25 +82,23 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         except Exception:
             self.fail("QComponent failed")
 
-        with self.assertRaises(NotImplementedError):
-            QComponent(design, "my_name")
+        empty_q1 = QComponent(design, "my_name")
+        self.assertEqual(empty_q1._made, False)
 
-        with self.assertRaises(NotImplementedError):
-            QComponent(design, "my_name2", options={})
+        empty_q2 = QComponent(design, "my_name")
+        self.assertEqual(empty_q2._made, False)
 
-        try:
-            QComponent(design, "my_name3", options={}, make=False)
-        except Exception:
+        full_q = QComponent(design, "my_name3", options={}, make=False)
+        if full_q._made is False:
             self.fail(
                 "QComponent(design, \"my_name3\", options={}, make=False)")
 
-        try:
-            QComponent(design,
-                       "my_name4",
-                       options={},
-                       make=False,
-                       component_template={})
-        except Exception:
+        full_q2 = QComponent(design,
+                             "my_name4",
+                             options={},
+                             make=False,
+                             component_template={})
+        if full_q2._made is False:
             msg = "QComponent(design, \"my_name4\", options={}, make=False, component_template={})"
             self.fail(msg)
 
