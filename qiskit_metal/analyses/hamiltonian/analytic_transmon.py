@@ -191,7 +191,7 @@ class H_CPB(object):
         g = np.abs(np.sum(g))
         return g
 
-    def h0_to_Qutip(self, n_transmon):
+    def h0_to_qutip(self, n_transmon):
         '''
         Wrapper around Qutip to output the diagonalized
         Hamiltonian truncated up to n levels of the transmon
@@ -204,10 +204,10 @@ class H_CPB(object):
             (Qobj): Returns a Qutip Qobj for the diagonalized
                     transmon
         '''
-        H0 = np.diag(self.evals[:n_transmon] - self.evals[0])
-        return qt.Qobj(H0)
+        ham = np.diag(self.evals[:n_transmon] - self.evals[0])
+        return qt.Qobj(ham)
 
-    def n_to_Qutip(self, n_transmon, thresh=None):
+    def n_to_qutip(self, n_transmon, thresh=None):
         '''
         Wrapper around Qutip to output the number operator
         for the Transmon Hamiltonian for computing the
