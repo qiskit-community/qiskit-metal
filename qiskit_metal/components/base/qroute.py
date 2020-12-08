@@ -171,6 +171,7 @@ class QRoute(QComponent):
                     options.update(cpw_options)
             else:
                 # user did not pass custom options, so create it to add trace_gap
+                options = Dict()
                 options["options"] = cpw_options
         else:
             raise Exception("Unsupported Route type: " + self.type +
