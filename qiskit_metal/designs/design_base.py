@@ -38,7 +38,7 @@ from .net_info import QNet
 from .. import config
 if not config.is_building_docs():
     from qiskit_metal.toolbox_metal.import_export import load_metal_design, save_metal
-    from qiskit_metal.toolbox_python.utility_functions import log_error_easy
+    from qiskit_metal.toolbox_python._logging import LogStore
 
 if TYPE_CHECKING:
     # For linting, avoids circular imports.
@@ -49,32 +49,6 @@ if TYPE_CHECKING:
 __all__ = ['QDesign']
 
 #:ivar var1: initial value: par2
-
-
-class LogStore(collections.deque):
-
-    def __init__(self,
-                 title: str,
-                 log_limit: int,
-                 _previous_builds: List[str] = [],
-                 *args,
-                 **kwargs):
-        super().__init__(maxlen=log_limit, *args, **kwargs)
-        self._title = title
-        for i in _previous_builds:
-            self.appendleft(i)
-        self._next_available_index = 0
-
-    def data(self):
-        #returns COPY of data
-        return list(self)
-
-    def add(self, log: str):
-        self.appendleft(log)
-
-    @property
-    def title(self):
-        return self._title
 
 
 class QDesign():

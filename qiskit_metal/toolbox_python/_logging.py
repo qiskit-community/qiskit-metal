@@ -20,7 +20,6 @@ File contains some config definitions. Mostly internal.
 """
 
 import logging
-from qiskit_metal import config
 
 __all__ = ['setup_logger']
 
@@ -104,3 +103,29 @@ def setup_logger(logger_name,
             logger.zkm_c_format = c_format
 
     return logger
+
+
+class LogStore(collections.deque):
+
+    def __init__(self,
+                 title: str,
+                 log_limit: int,
+                 _previous_builds: List[str] = [],
+                 *args,
+                 **kwargs):
+        super().__init__(maxlen=log_limit, *args, **kwargs)
+        self._title = title
+        for i in _previous_builds:
+            self.appendleft(i)
+        self._next_available_index = 0
+
+    def data(self):
+        #returns COPY of data
+        return list(self)
+
+    def add(self, log: str):
+        self.appendleft(log)
+
+    @property
+    def title(self):
+        return self._title
