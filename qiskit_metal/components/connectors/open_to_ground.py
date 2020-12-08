@@ -21,7 +21,7 @@ from qiskit_metal.components.base import QComponent
 
 
 class OpenToGround(QComponent):
-    """A basic open to ground termination. Functions as a pin for auto CPW drawing.
+    """A basic open to ground termination. Functions as a pin for auto drawing.
 
     Inherits `QComponent` class
 
@@ -64,6 +64,11 @@ class OpenToGround(QComponent):
         polys = draw.translate(polys, p.pos_x, p.pos_y)
         [open_termination, port_line] = polys
 
-        self.add_qgeometry('poly', {'open_to_ground': open_termination},
-                           subtract=True)
+        # Subtracts out ground plane on the layer its on
+        self.add_qgeometry('poly',
+                           {'open_to_ground': open_termination},
+                           subtract=True,
+                           layer=p.layer)
+
+        # Generates the pins
         self.add_pin('open', port_line.coords, p.width)
