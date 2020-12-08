@@ -11,13 +11,14 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
+
 '''
 @date: 2020/08/12
 @author: John Blair
 '''
 
 #  This a launch structure used on BlueJayV2, used for wire bonding
-#  There is no CPW tee attached to this p# TODO create image of structure
+#  There is no CPW tee attached to this p#
 
 # Imports required for drawing
 
@@ -31,41 +32,41 @@ from qiskit_metal.components.base.base import QComponent
 
 class LaunchpadWirebond(QComponent):
     """
-    Create a 50 ohm launch with a ground pocket cuttout.  Geometry is hardcoded set of
-    polygon points for now. The (0,0) point is the center of the end of the launch.
+    Launch pad to feed/read signals to/from the chip
 
     Inherits 'QComponent' class
 
-    Options:
-        Convention: Values (unless noted) are strings with units included,
-        (e.g., '30um')
-
-    Pocket and pad:
-        Pocket and lauch pad geometry are currently fixed.
-        (0,0) point is the midpoint of the end of the pad.
-        Pocket is a negative shape that is cut out of the ground plane
-
-        * pos_x / pos_y   - where the center of the pocket should be located on chip
-        * orientation     - degree of qubit rotation
-
-    Pins:
+    Description:
+        Creates a 50 ohm launch pad with a ground pocket cutout.
+        Limited but expandable parameters to control the launchpad polygons.
+        The (0,0) point is the center of the necking of the launch tip.
         The pin attaches directly to the built in lead length at its midpoint
 
-        * cpw_width      - center trace width of the CPW line where the connector is placed
-        * cpw_gap        - gap of the cpw line
-        * leadin_length  - length of the cpw line attached to the end of the launch
+    Pocket and pad:
+        Pocket and launch pad geometries are currently fixed.
+        (0,0) point is the midpoint of the necking of the launch tip.
+        Pocket is a negative shape that is cut out of the ground plane
+
+    Options:
+        * pos_x / pos_y   - where the center of the pocket should be located on chip
+        * orientation     - degree of launch pad rotation
+        * trace_width    - center trace width of the terminating transmission line
+        * trace_gap      - gap of the transmission line
+        * lead_length    - length of the cpw line attached to the end of the launch pad
+
+    Values (unless noted) are strings with units included, (e.g., '30um')
 
     Sketch:
         Below is a sketch of the launch
         ::
 
-            ----------------
-            |               \
+            -----------
+            |          \
             |      ---------\\
-            |      |         |    (0,0) pin at midpoint, leadin starts there
+            |      |    0    |    (0,0) pin at midpoint of necking, before the lead
             |      ---------//
-            |               /
-            ----------------
+            |          /
+            -----------
 
             y
             ^
@@ -77,62 +78,69 @@ class LaunchpadWirebond(QComponent):
 
     """
 
-    #Define structure functions
-
     default_options = Dict(
         layer='1',
-        cpw_width='10um',
-        cpw_gap='6um',
-        leadin_length='65um',
-        pos_x='100um',
-        pos_y='100um',
+        trace_width='cpw_width',
+        trace_gap='cpw_gap',
+        lead_length='25um',
+        pos_x='0um',
+        pos_y='0um',
         orientation='0'  #90 for 90 degree turn
     )
-    """Default drawing options"""
+    """Default options"""
 
     def make(self):
         """ This is executed by the user to generate the qgeometry for the component.
         """
+
         p = self.p
+        trace_width = p.trace_width
+        trace_width_half = trace_width / 2
+        lead_length = p.lead_length
+        trace_gap = p.trace_gap
         #########################################################
 
         # Geometry of main launch structure
-        launch_pad = draw.Polygon([(0, p.cpw_width / 2),
-                                   (-.122, .035 + p.cpw_width / 2),
-                                   (-.202, .035 + p.cpw_width / 2),
-                                   (-.202, -.045 + p.cpw_width / 2),
-                                   (-.122, -.045 + p.cpw_width / 2),
-                                   (0, -p.cpw_width / 2),
-                                   (p.leadin_length, -p.cpw_width / 2),
-                                   (p.leadin_length, +p.cpw_width / 2),
-                                   (0, p.cpw_width / 2)])
+        launch_pad = draw.Polygon([(0, trace_width_half),
+                                   (-.122, trace_width_half + .035),
+                                   (-.202, trace_width_half + .035),
+                                   (-.202, -trace_width_half - .035),
+                                   (-.122, -trace_width_half - .035),
+                                   (0, -trace_width_half),
+                                   (lead_length, -trace_width_half),
+                                   (lead_length, +trace_width_half),
+                                   (0, trace_width_half)])
 
-        # Geometry pocket
-        pocket = draw.Polygon([(0, p.cpw_width / 2 + p.cpw_gap),
-                               (-.122, .087 + p.cpw_width / 2 + p.cpw_gap),
-                               (-.25, .087 + p.cpw_width / 2 + p.cpw_gap),
-                               (-.25, -.109 + p.cpw_width / 2 + p.cpw_gap),
-                               (-.122, -.109 + p.cpw_width / 2 + p.cpw_gap),
-                               (0, -p.cpw_width / 2 - p.cpw_gap),
-                               (p.leadin_length, -p.cpw_width / 2 - p.cpw_gap),
-                               (p.leadin_length, +p.cpw_width / 2 + p.cpw_gap),
-                               (0, p.cpw_width / 2 + p.cpw_gap)])
+        # Geometry pocket (gap)
+        pocket = draw.Polygon([(0, trace_width_half + trace_gap),
+                               (-.122, trace_width_half + trace_gap + .087),
+                               (-.25, trace_width_half + trace_gap + .087),
+                               (-.25, -trace_width_half - trace_gap - .087),
+                               (-.122, -trace_width_half - trace_gap - .087),
+                               (0, -trace_width_half - trace_gap),
+                               (lead_length, -trace_width_half - trace_gap),
+                               (lead_length, +trace_width_half + trace_gap),
+                               (0, trace_width_half + trace_gap)])
 
         # These variables are used to graphically locate the pin locations
-        main_pin_line = draw.LineString([(p.leadin_length, p.cpw_width / 2),
-                                         (p.leadin_length, -p.cpw_width / 2)])
+        main_pin_line = draw.LineString([(lead_length, trace_width_half),
+                                         (lead_length, -trace_width_half)])
 
         # Create polygon object list
         polys1 = [main_pin_line, launch_pad, pocket]
 
         # Rotates and translates all the objects as requested. Uses package functions in
         # 'draw_utility' for easy rotation/translation
-        polys1 = draw.rotate(polys1, p.orientation, origin=(p.leadin_length, 0))
+        polys1 = draw.rotate(polys1,
+                             p.orientation,
+                             origin=(0, 0))
         polys1 = draw.translate(polys1, xoff=p.pos_x, yoff=p.pos_y)
         [main_pin_line, launch_pad, pocket] = polys1
 
         # Adds the object to the qgeometry table
-        self.add_qgeometry('poly', dict(launch_pad=launch_pad), layer=p.layer)
+        self.add_qgeometry('poly',
+                           dict(launch_pad=launch_pad),
+                           layer=p.layer)
 
         # Subtracts out ground plane on the layer its on
         self.add_qgeometry('poly',
@@ -141,4 +149,4 @@ class LaunchpadWirebond(QComponent):
                            layer=p.layer)
 
         # Generates the pins
-        self.add_pin('a', main_pin_line.coords, p.cpw_width)
+        self.add_pin('tie', main_pin_line.coords, trace_width)
