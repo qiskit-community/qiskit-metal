@@ -347,6 +347,16 @@ class QComponent():
                 options_template_renderer)
 
     @property
+    def _built(self) -> bool:
+        """Whether component is built"""
+        return self._made
+
+    @_built.setter
+    def _built(self, new_made: bool):
+        """sets flag to denote whether component is built"""
+        self._made = new_made
+
+    @property
     def name(self) -> str:
         '''Name of the component'''
         return self._name
