@@ -581,14 +581,14 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         launch_v2 = LaunchpadWirebondCoupled(design, 'my_name')
         options = launch_v2.default_options
 
-        self.assertEqual(len(options), 7)
+        self.assertEqual(len(options), 8)
         self.assertEqual(options['layer'], '1')
         self.assertEqual(options['trace_width'], 'cpw_width')
         self.assertEqual(options['trace_gap'], 'cpw_gap')
         self.assertEqual(options['coupler_length'], '62.5um')
         self.assertEqual(options['lead_length'], '25um')
-        self.assertEqual(options['pos_x'], '100um')
-        self.assertEqual(options['pos_y'], '100um')
+        self.assertEqual(options['pos_x'], '0um')
+        self.assertEqual(options['pos_y'], '0um')
         self.assertEqual(options['orientation'], '0')
 
     def test_component_cap_three_fingers(self):
