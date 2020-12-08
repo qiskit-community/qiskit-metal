@@ -34,7 +34,7 @@ from ...draw import BaseGeometry
 from ...toolbox_python.attr_dict import Dict
 from ._parsed_dynamic_attrs import ParsedDynamicAttributes_Component
 from ...toolbox_python.display import format_dict_ala_z
-from ...toolbox_python.metal_exceptions import ComponentNotMadeError
+from ...toolbox_python.metal_exceptions import ComponentInitFailedError
 from datetime import datetime
 from ... import config
 if not config.is_building_docs():
@@ -165,7 +165,7 @@ class QComponent():
             exists in the design, the existing component will be
             kept in the design, and current component will not be generated,
             nor will be added to the design. The variable design.self.status
-            will still be NotBuilt, as opposed to Initialization Successful.
+            will still be NotBuilt, as opposed to Component Added to Design.
 
             Either True or False - If string name, used for component, is NOT
             being used in the design, a component will be generated and
@@ -174,6 +174,9 @@ class QComponent():
 
         # Make the id be None, which means it hasn't been added to design yet.
         self._id = None
+        self._made = False
+        self._design = design  # reference to parent
+
         # Status: used to handle building of a component and checking if it succeeded or failed.
         self.status = 'Not Built'
         if not is_design(design):
@@ -181,17 +184,14 @@ class QComponent():
                 "Error you did not pass in a valid Metal QDesign object as a '\
                 'parent of this QComponent.")
 
-        self._design = design  # reference to parent
-
         if self._delete_evaluation(name) is 'NameInUse':
-            raise ComponentNotMadeError(
-                f'The name "{name}" is already in use for another component and so this name cannot be used to make a new component"'
-            )
+            raise ComponentInitFailedError(
+                f"Cannot create component. Name {name} is already in use. ")
 
         self._name = name
         self._class_name = self._get_unique_class_name()  # Full class name
 
-        #: A dictionary of the component-desinger-defined options.
+        #: A dictionary of the component-designer-defined options.
         #: These options are used in the make function to create the QGeometry and QPins.
         #: All options should have string keys and preferrable string values.
         self.options = self.get_template_options(
@@ -205,25 +205,25 @@ class QComponent():
         # Should put this earlier so could pass in other error messages?
         self._error_message = ''
         if self._check_pin_inputs():
-            self.logger.warning(self._error_message)
-            return
+            raise ComponentInitFailedError(
+                f"Cannot create component due to pin errors. Error: {self._error_message}"
+            )
 
         # Build and component internals
 
         #: Dictionary of pins. Populated by component designer in make function using `add_pin`.
         self.pins = Dict()
-        self._made = False
 
         #: Metadata allows a designer to store extra information or analysis results.
         self.metadata = Dict()
 
-        # Add the component to the parent design
+        # Add the parent design to the component and the component to the parent design
         self._id = self.design._get_new_qcomponent_id()  # Create the unique id
         self._add_to_design()  # Do this after the pin checking?
 
         #: Stores the latest status of the component. Values include:
-        #: ``Initialization Successful``, ``Build Failed``, etc.
-        self.status = 'Initialization Successful'
+        #: ``Component Added to Design``, ``Build Failed``, etc.
+        self.status = 'Component Added to Design'
 
         # Used for short name, and renderers adding information to tables.
         self.a_metadata = self._gather_all_children_metadata()

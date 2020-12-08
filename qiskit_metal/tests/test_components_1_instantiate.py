@@ -51,7 +51,7 @@ from qiskit_metal.components.passives.cap_three_fingers import CapThreeFingers
 from qiskit_metal import designs
 from qiskit_metal.components._template import MyQComponent
 from qiskit_metal.tests.assertions import AssertionsMixin
-from qiskit_metal.toolbox_python.metal_exceptions import ComponentNotMadeError
+from qiskit_metal.toolbox_python.metal_exceptions import ComponentInitFailedError
 #pylint: disable-msg=line-too-long
 from qiskit_metal.components.interconnects.resonator_rectangle_spiral import ResonatorRectangleSpiral
 
@@ -64,7 +64,7 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
     ## Tests with make implemented
     def qcomponent_implemented_make_true(self, component_class, component_name):
         """ Tests whether the class creates a build when called except when make=False (should create except when make=False).
-        Also tests whether ComponentNotMadeError is thrown in the event you try
+        Also tests whether ComponentInitFailedError is thrown in the event you try
         to instantiate a component with the same name as a pre-existing component
 
         Args:
@@ -77,6 +77,7 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
             component_class
         except Exception:
             self.fail(f"{component_name} failed")
+
         try:
             c1 = component_class(design, "my_name")
             #self.assertTrue(c1._made)
@@ -89,9 +90,12 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         c3 = component_class(design, "my_name3", options={}, make=False)
         self.assertFalse(c3._made)
 
-        with self.assertRaises(ComponentNotMadeError):
-            #should fail trying to make a new component_class with the same name as a previous component_class
+        with self.assertRaises(
+                ComponentInitFailedError
+                #should fail trying to make a new component_class with the same name as a previous component_class
+        ) as cm:
             component_class(design, "my_name")
+        self.assertIn("Cannot create component. Name", str(cm.exception))
 
         design.delete_all_components()
 
@@ -143,11 +147,11 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         self.qcomponent_implemented_make_true(CapThreeFingers,
                                               "CapThreeFingers")
 
-    ## Tests without make implemented
+    ## Tests QComponent without make implemented
     def qcomponent_implemented_make_false(self, component_class,
                                           component_name):
         """ Tests whether the class creates a build when called (should not create build).
-        Also tests whether ComponentNotMadeError is thrown in the event you try
+        Also tests whether ComponentInitFailedError is thrown in the event you try
         to instantiate a component with the same name as a pre-existing component
 
         Args:
@@ -170,29 +174,68 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         c3 = component_class(design, "my_name3", options={}, make=False)
         self.assertFalse(c3._made)
 
-        with self.assertRaises(ComponentNotMadeError):
-            #should fail trying to make a new component_class with the same name as a previous component_class
+        with self.assertRaises(
+                ComponentInitFailedError
+                #should fail trying to make a new component_class with the same name as a previous component_class
+        ) as cm:
             component_class(design, "my_name")
+        self.assertIn("Cannot create component. Name", str(cm.exception))
 
         design.delete_all_components()
-
-    def test_component_instantiate_qcomponent(self):
-        self.qcomponent_implemented_make_false(QComponent, "QComponent")
 
     def test_component_instantiate_basequbit(self):
         self.qcomponent_implemented_make_false(BaseQubit, "BaseQubit")
 
+    def test_component_instantiate_qcomponent(self):
+        self.qcomponent_implemented_make_false(QComponent, "QComponent")
+
     #QRoute Tests
+    # Should fail because there are no valid pins
+    def qcomponent_instantiate_routes_exception(self, component_class,
+                                                component_name):
+        design = designs.DesignPlanar()
+
+        with self.assertRaises(
+                ComponentInitFailedError
+                #should fail trying to make a new component_class with the same name as a previous component_class
+        ) as cm:
+            component_class(design, "my_name")
+        self.assertIn("Cannot create component due to pin errors",
+                      str(cm.exception))
+
+        with self.assertRaises(
+                ComponentInitFailedError
+                #should fail trying to make a new component_class with the same name as a previous component_class
+        ) as cm:
+            component_class(design, "my_name", options={})
+        self.assertIn("Cannot create component due to pin errors",
+                      str(cm.exception))
+
+        with self.assertRaises(
+                ComponentInitFailedError
+                #should fail trying to make a new component_class with the same name as a previous component_class
+        ) as cm:
+            component_class(design, "my_name", options={}, make=False)
+        self.assertIn("Cannot create component due to pin errors",
+                      str(cm.exception))
+
+        design.delete_all_components()
 
     def test_component_instantiate_route_straight(self):
-        self.qcomponent_implemented_make_true(RouteStraight, "RouteStraight")
+        self.qcomponent_instantiate_routes_exception(RouteStraight,
+                                                     "RouteStraight")
 
     def test_component_instantiate_route_anchors(self):
-        self.qcomponent_implemented_make_true(RouteAnchors, "RouteAnchors")
+        self.qcomponent_instantiate_routes_exception(RouteAnchors,
+                                                     "RouteAnchors")
 
     def test_component_instantiate_route_pathfinder(self):
-        self.qcomponent_implemented_make_true(RoutePathfinder,
-                                              "RoutePathfinder")
+        self.qcomponent_instantiate_routes_exception(RoutePathfinder,
+                                                     "RoutePathfinder")
+
+    def test_component_instantiate_route_meander(self):
+        self.qcomponent_instantiate_routes_exception(RouteMeander,
+                                                     "RouteMeader")
 
     ## Special Tests
 
