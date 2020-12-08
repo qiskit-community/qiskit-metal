@@ -93,7 +93,8 @@ class BaseQubit(QComponent):
         self._set_options_connection_pads()
 
         if make:
-            self.rebuild()
+            self.build()
+
 
     def _set_options_connection_pads(self):
         """

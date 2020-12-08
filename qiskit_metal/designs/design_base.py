@@ -24,6 +24,7 @@ from typing import TYPE_CHECKING, Any
 from typing import Dict as Dict_
 from typing import Iterable, List, Union
 
+from datetime import datetime
 import pandas as pd
 
 from .. import Dict, logger
@@ -31,7 +32,7 @@ from ..config import DefaultMetalOptions, DefaultOptionsRenderer
 from ..elements import QGeometryTables
 from qiskit_metal.toolbox_metal.parsing import parse_options, parse_value
 from qiskit_metal.toolbox_metal.parsing import is_true
-
+from ..toolbox_python._logging import LogStore
 from .interface_components import Components
 from .net_info import QNet
 
@@ -105,7 +106,7 @@ class QDesign():
 
         # Key attributes related to physical content of the design. These will be saved
 
-        # Where components are actaully stored.
+        # Where components are actually stored.
         # i.e.  key=id and part of value (_components[id].name)
         self._components = Dict()
 
@@ -128,6 +129,7 @@ class QDesign():
         self.save_path = None  # type: str
 
         self.logger = logger  # type: logging.Logger
+        self.build_logs = LogStore("Build Logs", 30)
 
         self._qgeometry = QGeometryTables(self)
 
@@ -464,15 +466,8 @@ class QDesign():
         """
         Remakes all components with their current parameters.
         """
-        for name, obj in self._components.items():  # pylint: disable=unused-variable
-            try:
-                obj.rebuild()
-            except:
-                print(f'ERORROR in building {name}')
-                log_error_easy(
-                    self.logger,
-                    post_text=
-                    f'\nERROR in rebuilding component "{name}={obj.name}"!\n')
+        for id, obj in self._components.items():  # pylint: disable=unused-variable
+            obj.build()
 
     def reload_component(self, component_module_name: str,
                          component_class_name: str):

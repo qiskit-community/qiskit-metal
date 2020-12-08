@@ -144,7 +144,7 @@ class QRoute(QComponent):
         # # add default_options that are QRoute type specific:
         options = self._add_route_specific_options(options)
 
-        # regular QComponent boot, including the run of make()
+        # regular QComponent boot, including the run of build()
         super().__init__(design, name, options, **kwargs)
 
     def _add_route_specific_options(self, options):

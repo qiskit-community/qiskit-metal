@@ -202,7 +202,7 @@ def get_traceback():
 
 def print_traceback_easy(start=26):
     '''
-    Utility funciton to print traceback for debug.
+    Utility function to print traceback for debug.
     Will report in series the string version of the frames that we are currently in.
 
     Args:

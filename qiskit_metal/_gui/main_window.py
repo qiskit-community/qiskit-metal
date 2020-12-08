@@ -47,6 +47,7 @@ from .widgets.edit_component.component_widget import ComponentWidget
 from .widgets.log_widget.log_metal import LogHandler_for_QTextLog
 from .widgets.plot_widget.plot_window import QMainWindowPlot
 from .widgets.variable_table import PropertyTableWidget
+from .build_log_window import ComponentBuildLogWindow
 
 if not config.is_building_docs():
     from ..toolbox_metal.import_export import load_metal_design
@@ -208,9 +209,10 @@ class QMainWindowExtension(QMainWindowExtensionBase):
 
     @slot_catch_error()
     def create_build_log_window(self,_=None):
-        self.new_qcomponent()
-        print("BUILDING WINDOW")
-        raise Exception("I'M BEING RUN")
+        self.gui.gui_create_build_log_window()
+
+
+
 class MetalGUI(QMainWindowBaseHandler):
     """Qiskit Metal Main GUI.
 
@@ -251,6 +253,8 @@ class MetalGUI(QMainWindowBaseHandler):
         self.elements_win = None  # type: ElementsWindow
         self.component_window = ComponentWidget(self, self.ui.dockComponent)
         self.variables_window = PropertyTableWidget(self, gui=self)
+
+        self.build_log_window = None
 
         self._setup_component_widget()
         self._setup_plot_widget()
@@ -654,3 +658,9 @@ class MetalGUI(QMainWindowBaseHandler):
         self.highlight_components([name_instance])
         self.zoom_on_components([name_instance])
         self.edit_component_source(name_instance)
+
+    @slot_catch_error()
+    def gui_create_build_log_window(self,_=None):
+        if self.build_log_window is None or not self.build_log_window.isVisible() :
+            self.build_log_window = ComponentBuildLogWindow(self.design.build_logs.data())
+            self.build_log_window.show()

@@ -274,7 +274,7 @@ class QTableModel_Options(QAbstractTableModel):
                             f'; Used ast={used_ast}')
                         data[key] = processed_value
 
-                    self.component.rebuild()
+                    self.component.build()
                     self.gui.refresh()
 
                 # except and finally restore the value

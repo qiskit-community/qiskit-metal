@@ -34,7 +34,7 @@ from ...draw import BaseGeometry
 from ...toolbox_python.attr_dict import Dict
 from ._parsed_dynamic_attrs import ParsedDynamicAttributes_Component
 from ...toolbox_python.display import format_dict_ala_z
-
+from datetime import datetime
 from ... import config
 if not config.is_building_docs():
     from ...draw import Vector
@@ -247,7 +247,7 @@ class QComponent():
 
         # Make the component geometry
         if make:
-            self.rebuild()
+            self.build()
 
     @classmethod
     def _gather_all_children_options(cls) -> dict:
@@ -508,21 +508,21 @@ class QComponent():
         **Note:**
             * This method should be overwritten by the children make function.
             * This function only contains the logic, the actual call to make the element is in
-              rebuild() and remake()
+              build()
 
         Raises:
             NotImplementedError: Overwrite this function by subclassing.
         """
         raise NotImplementedError()
 
-    def rebuild(self):
+    def build(self):
         """Builds the QComponent.
         This is the main action function of a QComponent, call it qc.
         It converts the qc.options into QGeometry with all of the required options, such as
         the geometry points, layer number, materials, etc. needed to render.
 
         The build clears the existing QGeometry and QPins and then calls the qc.make function,
-        which is writen by the component developer to implement the logic (using the metal.
+        which is written by the component developer to implement the logic (using the metal.
         draw module) to convert the qc.options into the QGeometry.
 
         *Build status:*
@@ -531,18 +531,30 @@ class QComponent():
         done with no errors. The user can also set other statuses, which can appear if the code fails
         to reach the final line of the build, where the build status is set to `good`.
         """
-
+        logStore = self.design.build_logs
         # Begin by setting the status to failed, we will change this if we succeed
         self.status = 'failed'
-        if self._made:  # already made, just remaking
-            self.design.qgeometry.delete_component_id(self.id)
-            self.design._delete_all_pins_for_component(self.id)
+        try:
+            if self._made:  # already made, just remaking
+                self.design.qgeometry.delete_component_id(self.id)
+                self.design._delete_all_pins_for_component(self.id)
 
             self.make()
-        else:  # first time making
-            self.make()
             self._made = True  # what if make throws an error part way?
-        self.status = 'good'
+            logStore.add(f"{str(datetime.now())} -- Component: {self.name} successfully built")
+        except Exception as e:
+            print(f'ERROR in building component name={self.name}')
+                logStore.add(f"{str(datetime.now())} -- Component: {self.name} failed with error\n: {error}")
+                log_error_easy(
+                    self.logger,
+                    post_text=
+                    f'\nERROR in rebuilding component "{self.name}"!\n')
+            raise e
+
+
+
+
+
 
     def delete(self):
         """
@@ -583,7 +595,7 @@ class QComponent():
                 Returns ordered `Dict` with same key-value mappings, where the values have
                 been subjected to parse_value.
 
-            Itterables(list, tuple, ...):
+            Iterables(list, tuple, ...):
                 Returns same kind and calls itself `parse_value` on each element.
 
             Numbers:

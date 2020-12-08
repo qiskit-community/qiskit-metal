@@ -476,7 +476,7 @@ class QTreeModel_Base(QAbstractItemModel):
                             processed_value, used_ast = parse_param_from_str(
                                 value)
                             self.logger.info(f'  Used paring:  Old value type={type(old_value)}; '\
-                                             f'New value type={type(processed_value)};'\
+                                             f'  New value type={type(processed_value)};'\
                                              f'  New value={processed_value};'\
                                              f'; Used ast={used_ast}')
                             value = processed_value
@@ -489,7 +489,7 @@ class QTreeModel_Base(QAbstractItemModel):
                         else:  # if top-level option
                             dic[lbl] = value
                         if self.optionstype == 'component':
-                            self.component.rebuild()
+                            self.component.build()
                             self.gui.refresh()
                         return True
         return False
