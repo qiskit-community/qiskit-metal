@@ -43,7 +43,7 @@ if TYPE_CHECKING:
     from ..components.base import QComponent
     from ..designs import QDesign
 
-__all__ = ['is_element_table', 'QGeometryTables']  # , 'ElementTypes']
+__all__ = ['is_qgeometry_table', 'QGeometryTables']  # , 'ElementTypes']
 
 # from collections import OrderedDict
 # dict are ordered in Python 3.6+ by default, this is for backward compatibility
@@ -61,7 +61,7 @@ __all__ = ['is_element_table', 'QGeometryTables']  # , 'ElementTypes']
 #     helper   = 2
 
 
-def is_element_table(obj):
+def is_qgeometry_table(obj):
     """Check if an object is a Metal BaseElementTable, i.e., an instance of
     `QGeometryTables`.
 
@@ -77,7 +77,7 @@ def is_element_table(obj):
     if isinstance(obj, Dict):
         return False
 
-    return hasattr(obj, '__i_am_element_table__')
+    return hasattr(obj, '__i_am_qgeometry_table__')
 
 
 #############################################################################
@@ -237,7 +237,7 @@ class QGeometryTables(object):
     # indeed a elemnt table class. The problem is that the `isinstance`
     # built-in method fails when this module is reloaded.
     # Used by `is_element` to check.
-    __i_am_element_table__ = True
+    __i_am_qgeometry_table__ = True
 
     ELEMENT_COLUMNS = ELEMENT_COLUMNS
     """
