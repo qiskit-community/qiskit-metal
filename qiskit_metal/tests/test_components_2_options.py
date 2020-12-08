@@ -566,11 +566,11 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
 
         self.assertEqual(len(options), 7)
         self.assertEqual(options['layer'], '1')
-        self.assertEqual(options['cpw_width'], '10um')
-        self.assertEqual(options['cpw_gap'], '6um')
-        self.assertEqual(options['leadin_length'], '65um')
-        self.assertEqual(options['pos_x'], '100um')
-        self.assertEqual(options['pos_y'], '100um')
+        self.assertEqual(options['trace_width'], 'cpw_width')
+        self.assertEqual(options['trace_gap'], 'cpw_gap')
+        self.assertEqual(options['lead_length'], '25um')
+        self.assertEqual(options['pos_x'], '0um')
+        self.assertEqual(options['pos_y'], '0um')
         self.assertEqual(options['orientation'], '0')
 
     def test_component_launch_v2_options(self):
@@ -583,9 +583,10 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
 
         self.assertEqual(len(options), 7)
         self.assertEqual(options['layer'], '1')
-        self.assertEqual(options['cpw_width'], '10um')
-        self.assertEqual(options['cpw_gap'], '6um')
-        self.assertEqual(options['leadin_length'], '65um')
+        self.assertEqual(options['trace_width'], 'cpw_width')
+        self.assertEqual(options['trace_gap'], 'cpw_gap')
+        self.assertEqual(options['coupler_length'], '62.5um')
+        self.assertEqual(options['lead_length'], '25um')
         self.assertEqual(options['pos_x'], '100um')
         self.assertEqual(options['pos_y'], '100um')
         self.assertEqual(options['orientation'], '0')

@@ -462,7 +462,7 @@ class QGeometryTables(object):
             kind (str): Must be in get_element_types ('path', 'poly', etc.)
             component_name (str): Component name
             geometry (dict): Dict of shapely geomety
-            subtract (bool) : Substract - passed through (Default: False)
+            subtract (bool) : Subtract - passed through (Default: False)
             helper (bool) : helper - passed through (Default: False)
             layer (Union[int, str]) : Layer - passed through (default: 1)
             chip (str) : Chip name - passed through (Default: 'main')
@@ -478,7 +478,7 @@ class QGeometryTables(object):
 
         if not (kind in self.get_element_types()):
             self.logger.error(
-                f'Creator user error: Unkown element kind=`{kind}`'
+                f'Creator user error: Unknown element kind=`{kind}`'
                 f'Kind must be in {self.get_element_types()}. This failed for component'
                 f'name = `{component_name}`.\n'
                 f' The call was with subtract={subtract} and helper={helper}'
@@ -745,7 +745,7 @@ class QGeometryTables(object):
             qgeometry[table_name] = table.geometry[table.component == comp_id]
         qgeometry = pd.concat(qgeometry)
 
-        # when concatinating empty GeoSeries, returns Series (ugly fix)
+        # when concatenating empty GeoSeries, returns Series (ugly fix)
         if not isinstance(qgeometry, GeoSeries):
             qgeometry = GeoSeries(qgeometry)
 
