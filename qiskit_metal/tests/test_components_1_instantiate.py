@@ -195,6 +195,11 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
                                                 component_name):
         design = designs.DesignPlanar()
 
+        try:
+            component_class
+        except Exception:
+            self.fail(f"{component_name} failed")
+
         with self.assertRaises(
                 ComponentInitFailedError
                 #should fail trying to make a new component_class with the same name as a previous component_class
