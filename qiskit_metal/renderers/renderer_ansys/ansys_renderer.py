@@ -145,10 +145,10 @@ class QAnsysRenderer(QRenderer):
         self.assign_mesh = []
 
         # Establish bounds for exported components and update these accordingly
-        self.min_x_main = float('inf')
-        self.min_y_main = float('inf')
-        self.max_x_main = float('-inf')
-        self.max_y_main = float('-inf')
+        # self.min_x_main = float('inf')
+        # self.min_y_main = float('inf')
+        # self.max_x_main = float('-inf')
+        # self.max_y_main = float('-inf')
 
         # Default behavior is to render all components unless a strict subset was chosen
         self.render_everything = True
@@ -221,6 +221,11 @@ class QAnsysRenderer(QRenderer):
             table_type (str): Table type (poly, path, or junction).
             selection (Union[list, None], optional): List of components to render. Defaults to None.
         """
+        self.min_x_main = float('inf')
+        self.min_y_main = float('inf')
+        self.max_x_main = float('-inf')
+        self.max_y_main = float('-inf')
+        
         selection = selection if selection else []
         table = self.design.qgeometry.tables[table_type]
 
