@@ -550,7 +550,8 @@ class QComponent():
                 f"{str(datetime.now())} -- Component: {self.name} successfully built"
             )
         except Exception as error:
-            self.logger.error(f'ERROR in building component name={self.name}')
+            self.logger.error(
+                f'ERROR in building component name={self.name}, error={error}')
             logStore.add(
                 f"{str(datetime.now())} -- Component: {self.name} failed with error\n: {error}"
             )

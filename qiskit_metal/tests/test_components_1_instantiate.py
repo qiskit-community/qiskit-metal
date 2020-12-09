@@ -23,7 +23,6 @@ Created on Wed Apr 22 09:58:35 2020
 """
 
 import unittest
-from PySide2.QtWidgets import QColorDialog
 
 from qiskit_metal.components.base.base import QComponent
 from qiskit_metal.components.base.qroute import QRoute
@@ -49,7 +48,6 @@ from qiskit_metal.components.passives.launchpad_wb import LaunchpadWirebond
 from qiskit_metal.components.passives.launchpad_wb_coupled import LaunchpadWirebondCoupled
 from qiskit_metal.components.passives.cap_three_fingers import CapThreeFingers
 from qiskit_metal import designs
-from qiskit_metal.components._template import MyQComponent
 from qiskit_metal.tests.assertions import AssertionsMixin
 from qiskit_metal.toolbox_python.metal_exceptions import ComponentInitFailedError
 #pylint: disable-msg=line-too-long
