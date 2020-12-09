@@ -46,14 +46,3 @@ Now that the docs are built you can access them via your browser.
 #### with chrome
 Open Chrome while inside the browser, click ctrl + O (cmd + O on macos). You will see a file system pop up. Go to `docs\build\html\index.html`
 Open `index.html` You should now see the docs.
-
-
-#### with a local server
-In your terminal/command prompt/powershell/etc cd into your `docs\build\html` folder and run
-`python3 -m http.server`
-
-Your should see `Serving HTTP on...`
-Now open your browser and go to the link listed.
-For example if yours says `Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...` then open your browser and put in `http://0.0.0.0:8000/` as the URL.
-
-*It is important cd into the `html` folder before serving or else you will serve your entire folder directory.*
