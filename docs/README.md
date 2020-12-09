@@ -44,5 +44,8 @@ Congratulations!  The docs can now be found in your `docs\build\html` directory.
 Now that the docs are built you can access them via your browser.
 
 #### Chrome/Safari/Edge
-Open your browser while inside the browser, click ctrl + O (cmd + O on macos). You will see a file system pop up. Go to `docs\build\html\index.html`
+You should be able to open the docs by just double clicking index.html. However if this does work, try the following:
+
+
+Open your browser. While inside the browser, click ctrl + O (cmd + O on macos). You will see a file system pop up. Go to `docs\build\html\index.html`
 Open `index.html` You should now see the docs.
