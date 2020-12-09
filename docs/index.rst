@@ -32,6 +32,14 @@ Metal is automating and streamlining this process. Our vision is to develop a co
   Toolbox_Metal<apidocs/toolbox_metal>
   
 
+.. toctree::
+  :maxdepth: 2
+  :caption: FAQ
+  :hidden:
+
+  FAQ's<faq>
+
+
 .. Hiding - Indices and tables
    :ref:`genindex`
    :ref:`modindex`
