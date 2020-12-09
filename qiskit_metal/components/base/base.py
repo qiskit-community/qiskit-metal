@@ -535,7 +535,6 @@ class QComponent():
         done with no errors. The user can also set other statuses, which can appear if the code fails
         to reach the final line of the build, where the build status is set to `good`.
         """
-        logStore = self.design.build_logs
         # Begin by setting the status to failed, we will change this if we succeed
         self.status = 'failed'
         try:
@@ -546,13 +545,13 @@ class QComponent():
             self.make()
             self._made = True  # what if make throws an error part way?
             self.status = 'good'
-            logStore.add(
+            self.design.build_logs.add(
                 f"{str(datetime.now())} -- Component: {self.name} successfully built"
             )
         except Exception as error:
             self.logger.error(
                 f'ERROR in building component name={self.name}, error={error}')
-            logStore.add(
+            self.design.build_logs.add(
                 f"{str(datetime.now())} -- Component: {self.name} failed with error\n: {error}"
             )
 
