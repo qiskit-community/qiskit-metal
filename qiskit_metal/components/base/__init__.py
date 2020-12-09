@@ -15,6 +15,6 @@
 from ...toolbox_python.attr_dict import Dict
 from .. import is_component
 from .base import QComponent
-from .qroute import QRoute, QRoutePoint
+from .qroute import QRoute, QRoutePoint, QRouteLead
 from .qubit import BaseQubit
 

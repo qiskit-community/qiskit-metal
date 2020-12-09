@@ -29,7 +29,7 @@ import pandas as pd
 
 from .. import Dict, logger
 from ..config import DefaultMetalOptions, DefaultOptionsRenderer
-from ..elements import QGeometryTables
+from qiskit_metal.qgeometries.qgeometries_handler import QGeometryTables
 from qiskit_metal.toolbox_metal.parsing import parse_options, parse_value
 from qiskit_metal.toolbox_metal.parsing import is_true
 from .interface_components import Components
