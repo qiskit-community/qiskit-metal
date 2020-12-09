@@ -44,8 +44,9 @@ Congratulations!  The docs can now be found in your `docs\build\html` directory.
 Now that the docs are built you can access them via your browser.
 https://stackoverflow.com/questions/18586921/how-to-launch-html-using-chrome-at-allow-file-access-from-files-mode
 
-#### chrome
-When in Chrome, click ctrl + O; browse to the `docs\build\html\index`.html` , click on it, & click Open.
+#### with chrome
+Open Chrome while inside the browser,click ctrl + O (cmd + O on macos). You will see a file system pop up. Go to `docs\build\html\index.html`
+Open `index.html`
 
 
 #### with a local server
