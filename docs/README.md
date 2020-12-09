@@ -1,6 +1,8 @@
 ﻿# Docs for Qiskit Metal
 
-This folder contains the doc file src. We use sphinx to build the docs.
+In the future, users will not need to build their own docs. However, during early-access, these docs must be built by the user.
+
+This folder contains the doc file src. We use sphinx to build the docs. _Docs may take up to 15 minutes to build._
 
 ## The automated method
 
@@ -40,12 +42,19 @@ Congratulations!  The docs can now be found in your `docs\build\html` directory.
 
 Congratulations!  The docs can now be found in your `docs\build\html` directory.
 
-### View the Docs
+## View the Docs
 Now that the docs are built you can access them via your browser.
 
-#### Chrome/Safari/Edge
-You should be able to open the docs by just double clicking index.html. However if this does work, try the following:
+You should be able to open the docs by just double clicking `index.html`. However if this does not work, try the following:
 
-
-Open your browser. While inside the browser, click ctrl + O (cmd + O on macos). You will see a file system pop up. Go to `docs\build\html\index.html`
+#### Manually
+###### Chrome/Safari/Edge
+Open your browser. While inside the browser, click ctrl + O (cmd + O on MacOs). You will see a file system pop up. Go to `docs\build\html\index.html`
 Open `index.html` You should now see the docs.
+
+#### Using Metal
+Open a Python script or Jupyter Notebook. Write and run:
+```
+from qiskit_metal import open_docs
+open_docs()
+```
