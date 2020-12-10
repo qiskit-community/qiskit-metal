@@ -84,7 +84,7 @@ class Components:
         within design.
 
         Args:
-            name (str): Text name of compnent.  The name is assumed to be unique.
+            name (str): Text name of component.  The name is assumed to be unique.
             quiet (bool): Allow warning messages to be generated.
 
         Returns:

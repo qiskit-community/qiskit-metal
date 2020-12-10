@@ -1065,7 +1065,7 @@ class QComponent():
         if element_type == 'all' or self.design.qgeometry.check_element_type(
                 element_type):
             return self.design.qgeometry.get_component_geometry_list(
-                self.id, element_type)
+                self.name, element_type)
 
     def qgeometry_table(self, element_type: str) -> pd.DataFrame:
         """
