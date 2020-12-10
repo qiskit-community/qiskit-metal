@@ -174,13 +174,13 @@ python -m pip install -e .
  ##### Windows:
  Open Windows Command Prompt and type in
  ```
- $Env:Path
+ path
  ```
-Copy the resulting output. Example: `"PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"`
+Copy the resulting output. Example: `"PATH": "\usr\local\bin:\usr\bin:\bin:\usr\sbin:\sbin"`
 Then open the applicable settings.json in your VS Code. (See how to open command palette [here](https://code.visualstudio.com/docs/getstarted/tips-and-tricks). Search "settings" and click Open Workspace Settings (JSON)). Paste:
 ```
  "terminal.integrated.env.windows": {
-        "PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+        "PATH": "\usr\local\bin:\usr\bin:\bin:\usr\sbin:\sbin"
         }
 ```
 
