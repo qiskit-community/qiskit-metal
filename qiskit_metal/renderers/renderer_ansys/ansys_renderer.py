@@ -218,10 +218,6 @@ class QAnsysRenderer(QRenderer):
             selection (Union[list, None], optional): List of components to render. Defaults to None.
         """
         # Establish bounds for exported components and update these accordingly
-        self.min_x_main = float('inf')
-        self.min_y_main = float('inf')
-        self.max_x_main = float('-inf')
-        self.max_y_main = float('-inf')
         
         selection = selection if selection else []
         table = self.design.qgeometry.tables[table_type]
