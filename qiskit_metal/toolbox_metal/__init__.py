@@ -22,6 +22,17 @@ This folder contains code that is more specific to Metal.
 
 Created on Tue May 14 17:13:40 2019
 
+
+Custom Exceptions
+-----------------
+
+.. autosummary::
+    :toctree: ../stubs/
+
+    QiskitMetalExceptions
+    QiskitMetalDesignError
+
+
 Submodules
 ---------------
 
@@ -42,7 +53,8 @@ from .parsing import is_numeric_possible
 from .. import config
 if config.is_building_docs():
     from . import about
-    from . import exceptions
+    from .exceptions import QiskitMetalDesignError
+    from .exceptions import QiskitMetalExceptions
     from . import import_export
     from . import parsing
     from . import math_and_overrides
