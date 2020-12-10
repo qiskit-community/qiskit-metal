@@ -11,7 +11,15 @@ Designing quantum devices is the bedrock of the quantum ecosystem, but it is a d
 Metal is automating and streamlining this process. Our vision is to develop a community-driven universal platform capable of orchestrating quantum chip development from concept to fabrication in a simple and open framework.
 
 .. toctree::
-  :maxdepth: 1
+  :maxdepth: 2
+  :caption: Contributor Guide
+  :hidden:
+
+  Contributor Guide<contributor-guide>
+
+
+.. toctree::
+  :maxdepth: 2
   :caption: API
   :hidden:
 
@@ -22,8 +30,15 @@ Metal is automating and streamlining this process. Our vision is to develop a co
   GUI<apidocs/gui>
   Renderers<apidocs/renderers>
   Toolbox_Metal<apidocs/toolbox_metal>
-  Contributor Guide<contributor-guide>
   
+
+.. toctree::
+  :maxdepth: 2
+  :caption: FAQ
+  :hidden:
+
+  FAQ's<faq>
+
 
 .. Hiding - Indices and tables
    :ref:`genindex`
