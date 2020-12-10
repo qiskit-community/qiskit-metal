@@ -105,7 +105,7 @@ class QQ3DRenderer(QAnsysRenderer):
             if table_type != 'junction':
                 self.render_components(table_type, selection)
 
-    def assign_thin_conductor(self, objects: List[str], material_type: str = None, thickness: str = None, name: str = None):
+    def assign_thin_conductor(self, objects: List[str], material_type: str = 'pec', thickness: str = '200 nm', name: str = None):
         """
         Assign thin conductor property to all exported shapes.
         Unless otherwise specified, all 2-D shapes are pec's with a thickness of 200 nm.
