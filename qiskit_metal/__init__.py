@@ -113,7 +113,7 @@ from . import components  #TODO: slow to import? why
 from . import designs
 from . import draw
 from . import renderers
-from . import elements
+from . import qgeometries
 from . import analyses
 from . import toolbox_python
 from . import toolbox_metal

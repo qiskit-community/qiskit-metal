@@ -33,4 +33,4 @@ QGeometryTables
     QGeometryTables
 
 """
-from .elements_handler import is_element_table, QGeometryTables  # , ElementTypes
+from .qgeometries_handler import is_qgeometry_table, QGeometryTables  # , QGeometry Types
