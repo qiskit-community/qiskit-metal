@@ -13,10 +13,10 @@
 # that they have been altered from the originals.
 """
 =================================================
-QGeometryTables (:mod:`qiskit_metal.elements`)
+QGeometryTables (:mod:`qiskit_metal.qgeometries`)
 =================================================
 
-.. currentmodule:: qiskit_metal.elements
+.. currentmodule:: qiskit_metal.qgeometries
 
 This modules defines and handles everything related to the qgeometry abstraction.
 

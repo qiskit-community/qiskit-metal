@@ -49,6 +49,7 @@ class CapThreeFingers(QComponent):
     Sketch:
         Below is a sketch of the capacitor
         ::
+
                  |
             -----------
                  |
