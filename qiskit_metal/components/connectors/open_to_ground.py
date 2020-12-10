@@ -46,7 +46,7 @@ class OpenToGround(QComponent):
                            termination_gap='6um',
                            pos_x='0um',
                            pos_y='0um',
-                           orientation='0',
+                           rotation='0',
                            chip='main',
                            layer='1')
     """Default connector options"""
@@ -60,7 +60,7 @@ class OpenToGround(QComponent):
                                     p.termination_gap, (p.width / 2 + p.gap))
         # Rotates and translates the connector polygons (and temporary port_line)
         polys = [open_termination, port_line]
-        polys = draw.rotate(polys, p.orientation, origin=(0, 0))
+        polys = draw.rotate(polys, p.rotation, origin=(0, 0))
         polys = draw.translate(polys, p.pos_x, p.pos_y)
         [open_termination, port_line] = polys
 

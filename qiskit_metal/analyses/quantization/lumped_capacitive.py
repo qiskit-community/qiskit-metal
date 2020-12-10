@@ -199,26 +199,26 @@ def extract_transmon_coupled_Noscillator(capMatrix,
 
     # Cg list of qubit pads to ground
     Cg = [
-        -capMatrix[qubit_index[0], ground_index],
-        -capMatrix[qubit_index[1], ground_index]
+        -capMatrix.iat[qubit_index[0], ground_index],
+        -capMatrix.iat[qubit_index[1], ground_index]
     ]
 
     # Cs qubit pads to each other
-    Cs = -capMatrix[qubit_index[0], qubit_index[1]]
+    Cs = -capMatrix.iat[qubit_index[0], qubit_index[1]]
 
     # Cbus (qubit pads to coupling pads)
     # index is ordered as [readout,bus1,...]
     Cbus = np.zeros([2, N])
     for ii in range(2):
         for jj in range(N):
-            Cbus[ii, jj] = -capMatrix[qubit_index[ii], bus_index[jj]]
+            Cbus[ii, jj] = -capMatrix.iat[qubit_index[ii], bus_index[jj]]
 
     # crosspad capacitance
     Cbusbus = np.zeros([N, N])
     for ii in range(N):
         for jj in range(N):
             if ii != jj:
-                Cbusbus[ii, jj] = -capMatrix[bus_index[ii], bus_index[jj]]
+                Cbusbus[ii, jj] = -capMatrix.iat[bus_index[ii], bus_index[jj]]
 
     # sum of capacitances from each pad to ground
     # this assumes the bus couplers are at "ground"

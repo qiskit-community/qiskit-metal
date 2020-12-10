@@ -44,7 +44,7 @@ class ShortToGround(QComponent):
     default_options = Dict(width='10um',
                            pos_x='0um',
                            pos_y='0um',
-                           orientation='0',
+                           rotation='0',
                            chip='main',
                            layer='1')
     """Default connector options"""
@@ -56,7 +56,7 @@ class ShortToGround(QComponent):
         port_line = draw.LineString([(0, -p.width / 2), (0, p.width / 2)])
 
         # Rotates and translates the connector polygons (and temporary port_line)
-        port_line = draw.rotate(port_line, p.orientation, origin=(0, 0))
+        port_line = draw.rotate(port_line, p.rotation, origin=(0, 0))
         port_line = draw.translate(port_line, p.pos_x, p.pos_y)
 
         port_points = list(draw.shapely.geometry.shape(port_line).coords)
