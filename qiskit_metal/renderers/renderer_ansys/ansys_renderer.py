@@ -145,10 +145,7 @@ class QAnsysRenderer(QRenderer):
         self.assign_mesh = []
 
         # Establish bounds for exported components and update these accordingly
-        self.min_x_main = float('inf')
-        self.min_y_main = float('inf')
-        self.max_x_main = float('-inf')
-        self.max_y_main = float('-inf')
+
 
         # Default behavior is to render all components unless a strict subset was chosen
         self.render_everything = True
@@ -223,6 +220,11 @@ class QAnsysRenderer(QRenderer):
         """
         selection = selection if selection else []
         table = self.design.qgeometry.tables[table_type]
+
+        self.min_x_main = float('inf')
+        self.min_y_main = float('inf')
+        self.max_x_main = float('-inf')
+        self.max_y_main = float('-inf')
 
         if selection:
             qcomp_ids, case = self.get_unique_component_ids(selection)
