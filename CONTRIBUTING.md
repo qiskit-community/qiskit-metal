@@ -3,116 +3,38 @@ Qiskit Metal follows the overall Qiskit project contributing guidelines. These a
 
 Please read those general guidelines first, then the specific details for contributing to Metal below.
 
+## CLA - Contributor License Agreement
+Contributors need to submit a CLA before they can be granted write access to the repository. The CLA is a one time action that allows you to contribute to all the Qiskit repositories.
+
+During the early-access phase, follow the prompts at this link: https://cla-assistant.io/Qiskit/qiskit . After you are done, contact us via slack or e-mail to be granted write access to the repository.
+
+Past the early-access phase, the qiskit-metal repository will become public, which will allow to fully streamline and automate this process.
+
 ## Adding a New Issue
-
 ### Reporting a Bug
-
 When you encounter a problem while using Metal, please open an issue in the
 [Issue Tracker](https://github.com/Qiskit/qiskit-metal/issues).
 
 When reporting an issue, please follow this template::
 
 ```
-<!--- Provide a general summary of the issue in the Title above -->
-
+<!--- Provide a general summary of the issue in the Title -->
 ### Informations
-
 - **Qiskit Metal version**:
 - **Python version**:
 - **Operating system**:
-
 ### What is the current behavior?
-
-
-
 ### Steps to reproduce the problem
-
-
-
 ### What is the expected behavior?
-
-
-
 ### Suggested solutions
-
-
 ```
 
 ### Improvement Proposal
-If you have an idea for a new feature, please open an Enhancement issue in the issue tracker. Describe your idea, what the benefits are, and your implementation proposal, if you have one. Opening an issue starts a discussion with the team about your idea, how it fits in with the project, how it can be implemented, etc.
-
-## Building Metal from Source
-
-We highly recommend using a local Python environment rather than
-installing Qiskit Metal natively. Metal can either be installed using a
-[conda environment](<https://docs.conda.io/en/latest/miniconda.html>)
-or a Python virtual environment, as described below. We recommend conda.
-
-1.  Clone the Qiskit Metal repository.
-
-``` sh
-git clone https://github.com/Qiskit/qiskit-metal.git
-```
-
-2.  Cloning the repository creates a local folder called `qiskit-metal`.
-
-``` sh
-cd qiskit-metal
-```
-
-3.  Set up your local environment and instal.
-
-The most reliable way to set up a Metal environment is to build
-one from scratch using the provided conda environment specification file
-`environment.yml`. To do so, execute these
-commands in the top-level of the repository:
-
-``` sh
-conda env create -n <env_name> environment.yml
-conda activate <env_name>
-python -m pip install -ve .
-```
-
-For convenience, you can also try to install directly in an existing
-environment such as the `base` environment,
-if it is relatively up to date. To install Metal and its dependencies into an
-existing environment named `env_name` execute these commands in
-the top-level of the repository:
-
-``` sh
-conda env update -n <env_name> environment.yml
-conda activate <env_name>
-python -m pip install -ve .
-```
-
-### Notes on Using Conda
-
-It is possible that you may run into version issues in the above if
-previously installed packages conflict with the requirements of Metal.
-
-**Important**: Every time you intend to develop code using this
-environment, you MUST first run the command: `conda activate env_name`. More info on the [conda environment](<https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html>).
-
-To use the new environment inside jupyter lab you will need to follow
-these additional steps right after the above:
-
-``` sh
-conda install ipykernel
-ipython kernel install --user --name=<any_name_for_kernel>
-```
-
-To use a Python virtual environment instead, execute these commands in
-the top-level of the repository:
-
-``` sh
-python -m venv <virtual_env_path>
-source <virtual_env_path>/bin/activate
-python -m pip install -U pip
-python -m pip install -r requirements.txt -r requirements-dev.txt -e .
-```
+If you have an idea for a new feature, please open an Enhancement issue in the issue tracker.
+Describe your idea, its benefits, and your implementation proposal, if you have one.
+Opening an issue initiates a discussion with the team about your idea, how it fits in with the project, how it can be implemented, etc.
 
 ## Contributing Code
-
 ### Code Formatting
 To enforce a consistent code style in the project, we use customized [Pylint](https://www.pylint.org) for linting and
 [YAPF](https://github.com/google/yapf) with the [Google style](
@@ -147,7 +69,7 @@ If you would like to contribute to Qiskit Metal, but aren't sure of where to get
 
 Once you've made a code change, it is important to verify that your change does not break any existing tests and that any new tests that you've added also run successfully. Before you open a new pull request for your change, you'll want to run the test suite locally.
 
-The easiest way to do this is to execute the `run_all_tests.py` script in the `tests` directory.  It executes all test files in that directory.  You'll recieve a message informing you if the tests were successful or not.  Alternatively you may run an individual suite of tests by executing invidual `test_XYZ.py` files individually.  All test files utilize the `unittest` module - no further setup is needed.
+The easiest way to do this is to execute the `run_all_tests.py` script in the `tests` directory.  It executes all test files in that directory.  You'll receive a message informing you if the tests were successful or not.  Alternatively you may run an individual suite of tests by executing individual `test_XYZ.py` files individually.  All test files utilize the `unittest` module - no further setup is needed.
 
 Additionally, CI will run the test suite on all pushes made to any branch in the repository.
 
