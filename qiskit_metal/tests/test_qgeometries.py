@@ -30,8 +30,8 @@ from geopandas import GeoDataFrame
 from qiskit_metal import designs
 from qiskit_metal import draw
 
-from qiskit_metal.elements import elements_handler
-from qiskit_metal.elements.elements_handler import QGeometryTables
+from qiskit_metal.qgeometries import qgeometries_handler
+from qiskit_metal.qgeometries.qgeometries_handler import QGeometryTables
 from qiskit_metal.components.qubits.transmon_pocket import TransmonPocket
 
 
@@ -52,7 +52,7 @@ class TestElements(unittest.TestCase):
         """
         pass
 
-    def test_element_instantiate_q_geometry_tables(self):
+    def test_qgeometry_instantiate_q_geometry_tables(self):
         """
         Test instantiation of QGeometryTables
         """
@@ -62,22 +62,22 @@ class TestElements(unittest.TestCase):
         except Exception:
             self.fail("QGeometryTables failed")
 
-    def test_element_is_element_table(self):
+    def test_qgeometry_is_qgeometry_table(self):
         """
-        Test is_element_table in element_handler.py
+        Test is_qgeometry_table in qgeometries_handler.py
         """
-        self.assertEqual(elements_handler.is_element_table(QGeometryTables),
-                         True)
-        self.assertEqual(elements_handler.is_element_table("i_am_a_string"),
-                         False)
+        self.assertEqual(
+            qgeometries_handler.is_qgeometry_table(QGeometryTables), True)
+        self.assertEqual(
+            qgeometries_handler.is_qgeometry_table("i_am_a_string"), False)
 
-    def test_element_element_columns(self):
+    def test_qgeometry_element_columns(self):
         """
         Test that ELEMENT_COLUMNS was not accidentally changed in element_handler.py
         """
         import imp
-        imp.reload(elements_handler)
-        e_c = elements_handler.ELEMENT_COLUMNS
+        imp.reload(qgeometries_handler)
+        e_c = qgeometries_handler.ELEMENT_COLUMNS
 
         self.assertEqual(len(e_c), 4)
 
@@ -107,18 +107,18 @@ class TestElements(unittest.TestCase):
         self.assertEqual(e_c['junction']['width'], float)
         self.assertEqual(e_c['junction']['__renderers__'], dict())
 
-    def test_element_true_bools(self):
+    def test_qgeometry_true_bools(self):
         """
         Test that TRUE_BOOLS was not accidentally changed in element_handler.py
         """
         expected = [True, 'True', 'true', 'Yes', 'yes', '1', 1]
-        actual = elements_handler.TRUE_BOOLS
+        actual = qgeometries_handler.TRUE_BOOLS
 
         self.assertEqual(len(actual), len(expected))
         for i in range(7):
             self.assertEqual(actual[i], expected[i])
 
-    def test_element_q_element_constants(self):
+    def test_qgeometry_q_element_constants(self):
         """
         Test that constants in QGeometryTables class in element_handler.py were not accidentally
         changed
@@ -126,10 +126,10 @@ class TestElements(unittest.TestCase):
         design = designs.DesignPlanar()
         qgt = QGeometryTables(design)
 
-        self.assertEqual(qgt.__i_am_element_table__, True)
+        self.assertEqual(qgt.__i_am_qgeometry_table__, True)
         self.assertEqual(qgt.name_delimiter, '_')
 
-    def test_element_q_element_add_renderer_extension(self):
+    def test_qgeometry_q_element_add_renderer_extension(self):
         """
         Test add_renderer_extension in QGeometryTables class in element_handler.py
         """
@@ -156,7 +156,7 @@ class TestElements(unittest.TestCase):
         self.assertEqual(e_c['poly']['__renderers__']['new_name']['material'],
                          str)
 
-    def test_element_q_element_get_element_types(self):
+    def test_qgeometry_q_element_get_element_types(self):
         """
         Test get_element_types in QGeometryTables class in element_handler.py
         """
@@ -170,7 +170,7 @@ class TestElements(unittest.TestCase):
         for i in range(3):
             self.assertEqual(expected[i], actual[i])
 
-    def test_element_q_element_create_tables(self):
+    def test_qgeometry_q_element_create_tables(self):
         """
         Test create_tables in QGeometryTables class in element_handler.py
         """
@@ -206,7 +206,7 @@ class TestElements(unittest.TestCase):
         self.assertEqual(actual['junction'].dtypes['chip'], object)
         self.assertEqual(actual['junction'].dtypes['width'], float)
 
-    def test_element_q_element_get_rname(self):
+    def test_qgeometry_q_element_get_rname(self):
         """
         Test get_rname in QGeometryTables class in element_handler.py
         """
@@ -217,7 +217,7 @@ class TestElements(unittest.TestCase):
 
         self.assertEqual(actual, 'some_name_aloha')
 
-    def test_element_q_element_add_qgeometry(self):
+    def test_qgeometry_q_element_add_qgeometry(self):
         """
         Test add_qgeometry in QGeometryTables class in element_handler.py
         """
@@ -239,7 +239,7 @@ class TestElements(unittest.TestCase):
         self.assertEqual(table['poly']['chip'][0], 'main')
         self.assertEqual(str(table['poly']['fillet'][0]), str(np.nan))
 
-    def test_element_q_element_clear_all_tables(self):
+    def test_qgeometry_q_element_clear_all_tables(self):
         """
         Test clear_all_tables in QGeometryTables class in element_handler.py
         """
@@ -254,7 +254,7 @@ class TestElements(unittest.TestCase):
         qgt.clear_all_tables()
         self.assertEqual(len(qgt.tables['poly'].geometry), 0)
 
-    def test_element_q_element_delete_component_id(self):
+    def test_qgeometry_q_element_delete_component_id(self):
         """
         Test delete_component_id in QGeometryTables class in element_handler.py
         """
@@ -282,7 +282,7 @@ class TestElements(unittest.TestCase):
         self.assertEqual(len(qgt.tables['path']), 0)
         self.assertEqual(len(qgt.tables['poly']), 0)
 
-    def test_element_get_all_unique_layers(self):
+    def test_qgeometry_get_all_unique_layers(self):
         """
         Test get_all_unique_layers functionality in elment_handler.py
         """
@@ -305,7 +305,7 @@ class TestElements(unittest.TestCase):
         self.assertEqual(qgt.get_all_unique_layers('main'), [1])
         self.assertEqual(qgt.get_all_unique_layers('fake'), [])
 
-    def test_element_q_element_get_component_bounds(self):
+    def test_qgeometry_q_element_get_component_bounds(self):
         """
         Test get_component_bounds in QGeometryTables class in element_handler.py
         """
@@ -319,7 +319,7 @@ class TestElements(unittest.TestCase):
         for i in range(4):
             self.assertEqual(four_zeros[i], 0)
 
-    def test_element_q_element_check_element_type(self):
+    def test_qgeometry_q_element_check_element_type(self):
         """
         Test check_element_type in QGeometryTables class in element_handler.py
         """
@@ -330,7 +330,7 @@ class TestElements(unittest.TestCase):
         self.assertTrue(qgt.check_element_type('path', log_issue=False))
         self.assertFalse(qgt.check_element_type('not-there', log_issue=False))
 
-    def test_element_q_element_get_component(self):
+    def test_qgeometry_q_element_get_component(self):
         """
         Test get_component in QGeometryTables class in element_handler.py
         """

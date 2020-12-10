@@ -126,10 +126,6 @@ class QAnsysRenderer(QRenderer):
     def __init__(self, design: 'QDesign', initiate=True, render_template: Dict = None, render_options: Dict = None):
         """
         Create a QRenderer for Ansys.
-        Chip_subtract_dict consists of component names (keys) and a set of all elements within each component that
-        will eventually be subtracted from the ground plane. Add objects that are perfect conductors and/or have
-        meshing to self.assign_perfE and self.assign_mesh, respectively; both are initialized as empty lists.
-        All components are rendered by default if selection is empty or not specified.
 
         Args:
             design (QDesign): Use QGeometry within QDesign to obtain elements for Ansys.
@@ -139,16 +135,6 @@ class QAnsysRenderer(QRenderer):
         """
         super().__init__(design=design, initiate=initiate,
                          render_template=render_template, render_options=render_options)
-
-        self.chip_subtract_dict = defaultdict(set)
-        self.assign_perfE = []
-        self.assign_mesh = []
-
-        # Establish bounds for exported components and update these accordingly
-        self.min_x_main = float('inf')
-        self.min_y_main = float('inf')
-        self.max_x_main = float('-inf')
-        self.max_y_main = float('-inf')
 
         # Default behavior is to render all components unless a strict subset was chosen
         self.render_everything = True
@@ -185,6 +171,12 @@ class QAnsysRenderer(QRenderer):
         Components are rendered before the chips they reside on, and subtraction of negative shapes
         is performed at the very end.
 
+        Chip_subtract_dict consists of component names (keys) and a set of all elements within each component that
+        will eventually be subtracted from the ground plane. Add objects that are perfect conductors and/or have
+        meshing to self.assign_perfE and self.assign_mesh, respectively; both are initialized as empty lists. Note
+        that these objects are "refreshed" each time render_design is called (as opposed to in the init function)
+        to clear QAnsysRenderer of any leftover items from the last call to render_design.
+
         Among the components selected for export, there may or may not be unused (unconnected) pins.
         The second parameter, open_pins, contains tuples of the form (component_name, pin_name) that
         specify exactly which pins should be open rather than shorted during the simulation. Both the
@@ -196,6 +188,10 @@ class QAnsysRenderer(QRenderer):
             selection (Union[list, None], optional): List of components to render. Defaults to None.
             open_pins (Union[list, None], optional): List of tuples of pins that are open. Defaults to None.
         """
+        self.chip_subtract_dict = defaultdict(set)
+        self.assign_perfE = []
+        self.assign_mesh = []
+
         self.render_tables(selection)
         self.add_endcaps(open_pins)
 
@@ -221,6 +217,12 @@ class QAnsysRenderer(QRenderer):
             table_type (str): Table type (poly, path, or junction).
             selection (Union[list, None], optional): List of components to render. Defaults to None.
         """
+        # Establish bounds for exported components and update these accordingly
+        self.min_x_main = float('inf')
+        self.min_y_main = float('inf')
+        self.max_x_main = float('-inf')
+        self.max_y_main = float('-inf')
+        
         selection = selection if selection else []
         table = self.design.qgeometry.tables[table_type]
 

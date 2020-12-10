@@ -47,20 +47,21 @@ if TYPE_CHECKING:
 
 
 class QSkeletonRenderer(QRenderer):
-    """Extends QRenderer to create new Skeleton QRenderer.
+    """Extends QRenderer to create new Skeleton QRenderer. This QRenderer will print to 
+    a file the number_of_bones and the names of QGeometry tables that will be used to export
+    the QComponents the user highlighted.
     """
 
-    ##### Default options
     #: Default options, over-written by passing ``options` dict to render_options.
     #: Type: Dict[str, str]
     default_options = Dict(
         # An option unique to QSkeletonRenderer.
-        number_of_bones='200',)
+        number_of_bones='206',)
+    """Default options"""
 
-    #### Name used in Metal code to refer to this QRenderer.
     name = 'skeleton'
+    """Name used in Metal code to refer to this QRenderer."""
 
-    #### element extentions dictionary   element_extensions = dict() from base class
     # When additional columns are added to QGeometry, this is the example to populate it.
     # e.g. element_extensions = dict(
     #         base=dict(color=str, klayer=int),
@@ -81,6 +82,7 @@ class QSkeletonRenderer(QRenderer):
         # with default values of "a_default_value" to the junction table.
         # Note: QSkeletonRenderer.name is prefixed to "a_column_name" when the table is appended by QComponents.
         junction=dict(a_column_name='a_default_value'))
+    """element extentions dictionary   element_extensions = dict() from base class"""
 
     def __init__(self,
                  design: 'QDesign',
@@ -253,11 +255,18 @@ class QSkeletonRenderer(QRenderer):
 
         # Just for demo, a new plug-in may not need this.
         self.chip_info.update(self.get_chip_names())
+
         status, table_names_used = self.get_qgeometry_tables_for_skeleton(
             highlight_qcomponents)
 
+        # The method parse_value, returns a float.
+        total_bones = str(int(self.parse_value(self.options.number_of_bones)))
+
+        total_bones_text = 'Number of bones:  ' + total_bones + '\n'
+
         if (status == 0):
             skeleton_out = open(file_name, 'w')
+            skeleton_out.writelines(total_bones_text)
             skeleton_out.writelines(table_names_used)
             skeleton_out.close()
             return 1
