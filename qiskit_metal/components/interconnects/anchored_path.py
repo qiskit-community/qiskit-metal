@@ -171,8 +171,10 @@ class RouteAnchors(QRoute):
 
         # assumes rectangular bounding boxes
         for component in self.design.components:
+            if component == self.name:
+                continue
             xmin, ymin, xmax, ymax = self.design.components[
-                component].qgeometry_bounds()  ## TODO: partitio into smaller BBs
+                component].qgeometry_bounds()
             # p, q, r, s are corner coordinates of each bounding box
             p, q, r, s = [
                 np.array([xmin, ymin]),
