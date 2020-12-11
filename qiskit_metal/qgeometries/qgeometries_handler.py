@@ -34,7 +34,7 @@ from .. import Dict
 from ..draw import BaseGeometry
 from qiskit_metal.draw.utility import round_coordinate_sequence
 
-from shapely.geometry.multipolygon import MultiPolygon  #for avoiding MultiPolygons
+from shapely.geometry.multipolygon import MultiPolygon  #to avoid MultiPolygons
 from .. import config
 if not config.is_building_docs():
     from qiskit_metal.toolbox_python.utility_functions import get_range_of_vertex_to_not_fillet, data_frame_empty_typed
@@ -43,10 +43,10 @@ if TYPE_CHECKING:
     from ..components.base import QComponent
     from ..designs import QDesign
 
-__all__ = ['is_element_table', 'QGeometryTables']  # , 'ElementTypes']
+__all__ = ['is_qgeometry_table', 'QGeometryTables']  # , 'ElementTypes']
 
 # from collections import OrderedDict
-# dict are oreder in Python 3.6+ by default, this is jsut in case for backward compatability
+# dict are ordered in Python 3.6+ by default, this is for backward compatibility
 
 # class ElementTypes:
 #     """
@@ -61,7 +61,7 @@ __all__ = ['is_element_table', 'QGeometryTables']  # , 'ElementTypes']
 #     helper   = 2
 
 
-def is_element_table(obj):
+def is_qgeometry_table(obj):
     """Check if an object is a Metal BaseElementTable, i.e., an instance of
     `QGeometryTables`.
 
@@ -77,7 +77,7 @@ def is_element_table(obj):
     if isinstance(obj, Dict):
         return False
 
-    return hasattr(obj, '__i_am_element_table__')
+    return hasattr(obj, '__i_am_qgeometry_table__')
 
 
 #############################################################################
@@ -237,7 +237,7 @@ class QGeometryTables(object):
     # indeed a elemnt table class. The problem is that the `isinstance`
     # built-in method fails when this module is reloaded.
     # Used by `is_element` to check.
-    __i_am_element_table__ = True
+    __i_am_qgeometry_table__ = True
 
     ELEMENT_COLUMNS = ELEMENT_COLUMNS
     """
@@ -456,13 +456,13 @@ class QGeometryTables(object):
             layer: Union[int, str] = 1,  # chip will be here
             chip: str = 'main',
             **other_options):
-        """Main interface to add names
+        """Main interface to add qgeometries
 
         Arguments:
             kind (str): Must be in get_element_types ('path', 'poly', etc.)
             component_name (str): Component name
             geometry (dict): Dict of shapely geomety
-            subtract (bool) : Substract - passed through (Default: False)
+            subtract (bool) : Subtract - passed through (Default: False)
             helper (bool) : helper - passed through (Default: False)
             layer (Union[int, str]) : Layer - passed through (default: 1)
             chip (str) : Chip name - passed through (Default: 'main')
@@ -478,7 +478,7 @@ class QGeometryTables(object):
 
         if not (kind in self.get_element_types()):
             self.logger.error(
-                f'Creator user error: Unkown element kind=`{kind}`'
+                f'Creator user error: Unknown element kind=`{kind}`'
                 f'Kind must be in {self.get_element_types()}. This failed for component'
                 f'name = `{component_name}`.\n'
                 f' The call was with subtract={subtract} and helper={helper}'
@@ -745,7 +745,7 @@ class QGeometryTables(object):
             qgeometry[table_name] = table.geometry[table.component == comp_id]
         qgeometry = pd.concat(qgeometry)
 
-        # when concatinating empty GeoSeries, returns Series (ugly fix)
+        # when concatenating empty GeoSeries, returns Series (ugly fix)
         if not isinstance(qgeometry, GeoSeries):
             qgeometry = GeoSeries(qgeometry)
 

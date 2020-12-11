@@ -17,7 +17,7 @@
 """
 
 from ...designs import QDesign, is_design
-from ...elements import QGeometryTables
+from ...qgeometries import QGeometryTables
 
 from . import QRenderer
 
