@@ -244,7 +244,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['termination_gap'], '6um')
         self.assertEqual(options['pos_x'], '0um')
         self.assertEqual(options['pos_y'], '0um')
-        self.assertEqual(options['rotation'], '0')
+        self.assertEqual(options['orientation'], '0')
         self.assertEqual(options['chip'], 'main')
         self.assertEqual(options['layer'], '1')
 
@@ -263,7 +263,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['width'], '10um')
         self.assertEqual(options['pos_x'], '0um')
         self.assertEqual(options['pos_y'], '0um')
-        self.assertEqual(options['rotation'], '0')
+        self.assertEqual(options['orientation'], '0')
         self.assertEqual(options['chip'], 'main')
         self.assertEqual(options['layer'], '1')
 
