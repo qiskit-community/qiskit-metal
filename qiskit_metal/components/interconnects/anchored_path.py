@@ -24,7 +24,11 @@ from collections import OrderedDict
 from qiskit_metal import Dict
 from qiskit_metal.components.base import QRoute, QRoutePoint
 from qiskit_metal.toolbox_metal import math_and_overrides as mao
+from qiskit_metal.toolbox_metal.exceptions import QiskitMetalDesignError
 from collections.abc import Mapping
+from shapely.ops import cascaded_union
+from shapely.geometry import CAP_STYLE
+import geopandas as gpd
 
 
 def intersecting(a: np.array, b: np.array, c: np.array, d: np.array) -> bool:
@@ -120,12 +124,46 @@ class RouteAnchors(QRoute):
         advanced=Dict(avoid_collision='false'))
     """Default options"""
 
+    from shapely.ops import cascaded_union
+    from matplotlib import pyplot as plt
+    import geopandas as gpd
+
+    from shapely.geometry import CAP_STYLE, JOIN_STYLE
+
+    def unobstructed_close_up(self, segment: list, component_name: str) -> bool:
+        """
+        Checks whether the given component's perimeter intersects or overlaps a given segment.
+
+        Args:
+            segment (list): 2 vertices, in the form [np.array([x0, y0]), np.array([x1, y1])]
+            component_name (str): alphanumeric component name
+
+        Returns:
+            bool: True is no obstacles
+        """
+        # transform path to polygons
+        paths_converted = []
+        paths = self.design.components[component_name].qgeometry_table('path')
+        for _, row in paths.iterrows():
+            paths_converted.append(row['geometry'].buffer(row['width'] / 2, cap_style=CAP_STYLE.flat))
+        # merge all the polygons
+        polygons = self.design.components[component_name].qgeometry_list('poly')
+        boundary = gpd.GeoSeries(cascaded_union(polygons + paths_converted))
+        boundary_coords = list(boundary.geometry.exterior[0].coords)
+        if any(
+                intersecting(segment[0], segment[1], boundary_coords[i], boundary_coords[i + 1])
+                for i in range(len(boundary_coords) - 1)):
+            # At least 1 intersection with the actual component contour; do not proceed!
+            return False
+        # All clear, no intersections
+        return True
+
     def unobstructed(self, segment: list) -> bool:
         """
         Check that no component's bounding box in self.design intersects or overlaps a given segment.
 
         Args:
-            segment (list): List comprised of vertex coordinates of the form [np.array([x0, y0]), np.array([x1, y1])]
+            segment (list): 2 vertices, in the form [np.array([x0, y0]), np.array([x1, y1])]
 
         Returns:
             bool: True is no obstacles
@@ -134,7 +172,7 @@ class RouteAnchors(QRoute):
         # assumes rectangular bounding boxes
         for component in self.design.components:
             xmin, ymin, xmax, ymax = self.design.components[
-                component].qgeometry_bounds()
+                component].qgeometry_bounds()  ## TODO: partitio into smaller BBs
             # p, q, r, s are corner coordinates of each bounding box
             p, q, r, s = [
                 np.array([xmin, ymin]),
@@ -145,8 +183,10 @@ class RouteAnchors(QRoute):
             if any(
                     intersecting(segment[0], segment[1], k, l)
                     for k, l in [(p, q), (p, r), (r, s), (q, s)]):
-                # At least 1 intersection present; do not proceed!
-                return False
+                # At least 1 intersection with the component bounding box. Check the actual contour.
+                if not self.unobstructed_close_up(segment, component):
+                    # At least 1 intersection with the actual component contour; do not proceed!
+                    return False
         # All clear, no intersections
         return True
 
@@ -265,7 +305,12 @@ class RouteAnchors(QRoute):
                 if (end_direction is None) or (mao.dot(end_direction,
                                                        corner6 - end) >= 0):
                     return np.vstack((corner5, corner6))
-        return None
+        raise QiskitMetalDesignError("connect_simple() has failed. This might be due to "
+                                     f"the start point {start} or the end point {end} "
+                                     "being inside the bounding box of another QComponent. "
+                                     "Try to fix in one of two ways: "
+                                     "(1) Move the point outside the QComponent area; "
+                                     "(2) Add a long-enough \"lead\" to your QRoute to exit the QComponent area.")
 
     def free_manhattan_length_anchors(self):
         """
