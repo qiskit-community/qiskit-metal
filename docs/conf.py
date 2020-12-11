@@ -71,10 +71,11 @@ exclude_patterns = [
     'qiskit_metal.analyses.quantization.lumped_capacitive.rst',
     'qiskit_metal.analyses.lumped_capacitive.rst',
     'qiskit_metal.analyses.em.cpw_calculations.rst',
-    'qiskit_metal.analyses.cpw_calculations.rst'
+    'qiskit_metal.analyses.cpw_calculations.rst',
+    'qiskit_metal.analyses.Hcpb.rst'
 ]
 
-#suppress_warnings = ['epub.duplicated_toc_entry']
+suppress_warnings = ['ref.ref']
 
 # -----------------------------------------------------------------------------
 # Autosummary
