@@ -1,4 +1,5 @@
 .. _faq:
+
 ********************************
 FAQ's
 ********************************
@@ -48,8 +49,8 @@ Then open the applicable settings.json in your VS Code. (See how to open command
 .. code-block:: RST
 
    "terminal.integrated.env.windows": {
-       "PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
-       }
+      "PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+      }
 
 
 *MacOs:*
@@ -64,8 +65,8 @@ Then open the applicable settings.json in your VS Code. (See how to open command
 .. code-block:: RST
 
    "terminal.integrated.env.osx": {
-       "PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
-       }
+      "PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+      }
 
 
 
@@ -77,17 +78,17 @@ Getting started with GUI developement
 
 **Is there a PySide2 tutorial?**
 
-Yes!  `This article <https://realpython.com/python-pyqt-gui-calculator>`_ contains a nice tutorial to help you get started!
+Yes!  `This article from realpython.com <https://realpython.com/python-pyqt-gui-calculator>`_ contains a nice tutorial to help you get started!
 
 
 **Are there any pitfalls I may run into?**
 
-Like anything else, yes.  `This article <http://enki-editor.org/2014/08/23/Pyqt_mem_mgmt.html>`_ describes some common pitfalls.
+Like anything else, yes.  `This article from enki-editor.org <http://enki-editor.org/2014/08/23/Pyqt_mem_mgmt.html>`_ describes some common pitfalls.
 
 
 **Is there a video tutorial for starting QT Designer?**
 
-Yes there is, check it out `here <https://www.youtube.com/watch?v=XXPNpdaK9WA>`_.
+Yes there is, check it out `on youtube here <https://www.youtube.com/watch?v=XXPNpdaK9WA>`_.
 
 
 **I'm having trouble with slots and signals.  Can you help?**
@@ -97,3 +98,15 @@ Sure.  There are a few decent overviews.  A good place to start are these two:
    * `An Introduction to PyQt5 Signals, Slots and Events <https://www.learnpyqt.com/tutorials/signals-slots-events/>`_
    * `Qt for Python Signals and Slots <https://wiki.qt.io/Qt_for_Python_Signals_and_Slots>`_
 
+
+.. _docs:
+
+*************
+Documentation
+*************
+
+**I am seeing a lot of warnings when I build the docs.  How do I resolve them?**
+
+Some users may see a list of warnings when building the docs.  Warnings about matplotlib text role can be safely ignored.
+
+You can resolve other warnings by deleting the ``docs/build`` and ``docs/stubs`` directories and rebuilding.
