@@ -456,7 +456,7 @@ class QGeometryTables(object):
             layer: Union[int, str] = 1,  # chip will be here
             chip: str = 'main',
             **other_options):
-        """Main interface to add names
+        """Main interface to add qgeometries
 
         Arguments:
             kind (str): Must be in get_element_types ('path', 'poly', etc.)

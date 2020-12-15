@@ -1,4 +1,4 @@
-
+﻿
 
 RouteAnchors
 ====================================
@@ -44,6 +44,7 @@ RouteAnchors
       RouteAnchors.add_pin
       RouteAnchors.add_qgeometry
       RouteAnchors.assign_direction_to_anchor
+      RouteAnchors.cascaded_union
       RouteAnchors.connect_components_already_in_design
       RouteAnchors.connect_simple
       RouteAnchors.del_colinear_points
@@ -70,6 +71,7 @@ RouteAnchors
       RouteAnchors.set_pin
       RouteAnchors.trim_pts
       RouteAnchors.unobstructed
+      RouteAnchors.unobstructed_close_up
    
 
    
