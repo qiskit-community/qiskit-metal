@@ -12,13 +12,13 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 """
-=================================================
-Analyses (:mod:`qiskit_metal.analyses.hamiltonian`)
-=================================================
+====================================================
+Analyses (:mod:`qiskit_metal.analyses.quantization`)
+====================================================
 
-.. currentmodule:: qiskit_metal.analyses.em
+.. currentmodule:: qiskit_metal.analyses.quantization
 
-Module containing all Qiskit Metal hamiltonian-only analyses.
+Module containing all Qiskit Metal quantization-only analyses.
 
 @date: 2019
 

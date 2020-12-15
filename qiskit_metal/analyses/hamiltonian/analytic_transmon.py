@@ -45,7 +45,7 @@ class Hcpb(object):
         """
         Generate a CPB model
 
-        kwargs:
+        Arguments:
             nlevels (int): number of charge states of the CPB [-nlevels, nlevels+1]
             Ej (float): Josephson energy of the JJ
             Ec (float): Charging energy of the CPB
@@ -117,8 +117,7 @@ class Hcpb(object):
             k (int): index of eigenvector
 
         Returns:
-            (array): eigenvector of the |k> level of the
-                     CPB Hamiltonian
+            (array): eigenvector of the \|k> level of the CPB Hamiltonian
         '''
         return self.evecs[:, k]
 
@@ -130,14 +129,14 @@ class Hcpb(object):
 
         Arguments:
             k (int): index of wavevector corresponding to the
-                     |k> eigenstate
+                     \|k> eigenstate
 
         Keyword Arguments:
             pts (int): # of points to approximate the wavevector
                        in the interval [-pi, pi]
 
         Returns:
-            (array): Wavevector corresponding the |k> eigenstate
+            (array): Wavevector corresponding the \|k> eigenstate
         '''
         phi = np.linspace(-np.pi, np.pi, pts)
         evec = self.evecs[:, k]
@@ -154,11 +153,11 @@ class Hcpb(object):
     def fij(self, i, j):
         '''
         Compute the transition energy between states
-        |i> and |j>
+        \|i> and \|j>
 
         Arguments:
-            i (int): index of state |i>
-            j (int): index of state |j>
+            i (int): index of state \|i>
+            j (int): index of state \|j>
 
         Returns:
             (float): Eij, the transition energy
@@ -180,13 +179,13 @@ class Hcpb(object):
         coupling elements together
 
         Arguments:
-            i (int): |i> index of the transmon
-            j (int): |j> index of the transmon
+            i (int): \|i> index of the transmon
+            j (int): \|j> index of the transmon
 
         Returns:
             (float): matrix element corresponding to the
-                     number operator in the transmon basis
-                     n_ij = |<i|n|j>|
+            number operator in the transmon basis
+            `n_ij = |<i|n|j>|`
         '''
         n_op = np.arange(-self._nlevels, self._nlevels + 1)
         n_ij = np.conj(self.evec_k(i)) * n_op * self.evec_k(j)
@@ -204,7 +203,7 @@ class Hcpb(object):
                               Transmon Hamiltonian
         Returns:
             (Qobj): Returns a Qutip Qobj for the diagonalized
-                    transmon
+            transmon
         '''
         ham = np.diag(self.evals[:n_transmon] - self.evals[0])
         return qt.Qobj(ham)
@@ -220,13 +219,13 @@ class Hcpb(object):
 
         Keyword Arguments:
             thresh (float): threshold for keeping small values
-                            in the number operator i.e n_{i,i+2}
+                            in the number operator i.e `n_{i,i+2}`
                             terms drop off exponentially. If None
                             retain all terms.
 
         Returns:
             (Qobj): Returns a Qutip Qobj corresponding to the
-                    number operator for defining couplings
+            number operator for defining couplings
         '''
         n_op = np.zeros((n_transmon, n_transmon))
         for i in range(n_transmon):
@@ -255,8 +254,8 @@ class Hcpb(object):
 
         Returns:
             (float, float): Ej and Ec of the transmon Hamiltonian
-                            corresponding to the f01 and anharmonicty
-                            of the device
+            corresponding to the f01 and anharmonicty
+            of the device
         '''
         # Anharmonicty should be negative for the Transmon
         if anharm > 0:
