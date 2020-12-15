@@ -479,15 +479,17 @@ class QRoute(QComponent):
         return length_estimate
 
     def length_excess_corner_rounding(self, points) -> float:
-        """Sum of all segments length, including the head
+        """Computes how much length to deduce for compensating the fillet settings
+
+        Arguments:
+            points (list or array): list of vertices that will be receiving the corner rounding radius
 
         Return:
-            length (float): full point_array length
+            length_excess (float): corner rounding radius excess multiplied by the number of points
         """
         # deduct the corner rounding (WARNING: assumes fixed fillet for all corners)
-        p = self.parse_options()
-        length_arch = 0.5 * p.fillet * math.pi
-        length_corner = 2 * p.fillet
+        length_arch = 0.5 * self.p.fillet * math.pi
+        length_corner = 2 * self.p.fillet
         length_excess = length_corner - length_arch
         # the start and and point are the pins, so no corner rounding
         return (len(points) - 2) * length_excess
@@ -525,16 +527,10 @@ class QRoute(QComponent):
             pts (np.ndarray): Array of points
         """
 
-        p = self.parse_options()
-        length_arch = 0.5 * p.fillet * math.pi
-        length_corner = 2 * p.fillet
-        length_excess = length_corner - length_arch
-        # the start and and point are the pins, so no corner rounding
-        length_estimate = (len(draw.LineString(pts).coords) - 2) * length_excess
-
         # prepare the routing track
         line = draw.LineString(pts)
 
+        # compute actual final length
         p = self.p
         self.options._actual_length = str(
             line.length - self.length_excess_corner_rounding(line.coords)) + ' ' + self.design.get_units()
