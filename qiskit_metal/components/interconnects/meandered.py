@@ -110,7 +110,6 @@ class RouteMeander(QRoute):
 
         ################################################################
         # Setup
-        # print(self.name, start_pt, end_pt, self.get_points())
 
         # Parameters
         meander_opt = self.p.meander
@@ -173,21 +172,16 @@ class RouteMeander(QRoute):
         end_meander_direction = mao.dot(end_pt.direction, sideways)
         if start_meander_direction > 0:  # sideway direction
             first_meander_sideways = True
-            # print("1-> ", ((meander_number % 2) == 0))
         elif start_meander_direction < 0:  # opposite to sideway direction
             first_meander_sideways = False
-            # print("2-> ", ((meander_number % 2) == 0))
         else:
             if end_meander_direction > 0:  # sideway direction
                 first_meander_sideways = ((meander_number % 2) == 1)
-                # print("3-> ", ((meander_number % 2) == 0))
             elif end_meander_direction < 0:  # opposite to sideway direction
                 first_meander_sideways = ((meander_number % 2) == 0)
-                # print("4-> ", ((meander_number % 2) == 0))
             else:
                 # either direction is fine, so let's just pick one
                 first_meander_sideways = True
-                # print("5-> ", ((meander_number % 2) == 0))
 
         # length to distribute on the meanders (excess w.r.t a straight line between start and end)
         length_excess = (length_meander - length_direct - 2 * abs(asymmetry))
@@ -224,7 +218,6 @@ class RouteMeander(QRoute):
         top_pts = root_pts + side_shift_vecs
         bot_pts = root_pts - side_shift_vecs
 
-        # print("MDL->", root_pts, "\nTOP->", top_pts, "\nBOT->", bot_pts)
         ################################################################
         # Combine points
         # Meanest part of the meander
@@ -403,18 +396,12 @@ class RouteMeander(QRoute):
                     # pins are pointing opposite directions and diverging, thus keep consistency
                     adjustment_vector[-1] = adjustment_vector[-2]
 
-        # print("first", first_meander_sideways, "last", last_meander_sideways)
-        # print("adj,vec", adjustment_vector)
-        # print("before pts", len(pts), pts)
         # then divide the slack amongst all points
         sideways_adjustment = sideways * (delta_length /
                                           np.count_nonzero(adjustment_vector))
 
-        # print(self.length, delta_length, np.count_nonzero(adjustment_vector))
-
         pts = pts + sideways_adjustment[
             np.newaxis, :] * adjustment_vector[:, np.newaxis]
-        # print("after pts", len(pts), pts)
 
         return pts
 
