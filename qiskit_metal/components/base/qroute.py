@@ -492,11 +492,10 @@ class QRoute(QComponent):
         # Absolute value of displacement between ref and anchor in y direction
         offsety = abs(anchor[1] - ref[1])
         if offsetx >= offsety:  # "Wide" rectangle -> anchor_arrow points along x
-            assigned_direction = np.array([anchor[0] - ref[0], 0])
+            assigned_direction = np.array([ref[0] - anchor[0], 0])
         else:  # "Tall" rectangle -> anchor_arrow points along y
-            assigned_direction = np.array([0, anchor[1] - ref[1]])
-            assigned_direction = assigned_direction / norm(assigned_direction)
-        anchor_pt.direction = assigned_direction
+            assigned_direction = np.array([0, ref[1] - anchor[1]])
+        anchor_pt.direction = assigned_direction / norm(assigned_direction)
 
     def make_elements(self, pts: np.ndarray):
         """Turns the CPW points into design elements, and add them to the design object

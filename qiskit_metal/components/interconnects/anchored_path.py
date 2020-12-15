@@ -307,12 +307,12 @@ class RouteAnchors(QRoute):
                 if (end_direction is None) or (mao.dot(end_direction,
                                                        corner6 - end) >= 0):
                     return np.vstack((corner5, corner6))
-        raise QiskitMetalDesignError("connect_simple() has failed. This might be due to "
-                                     f"the start point {start} or the end point {end} "
-                                     "being inside the bounding box of another QComponent. "
-                                     "Try to fix in one of two ways: "
-                                     "(1) Move the point outside the QComponent area; "
-                                     "(2) Add a long-enough \"lead\" to your QRoute to exit the QComponent area.")
+        raise QiskitMetalDesignError("connect_simple() has failed. This might be due to one of two reasons. "
+                                     f"1. Either one of the start point {start} or the end point {end} "
+                                     "provided are inside the bounding box of another QComponent. "
+                                     "Please move the point, or setup a \"lead\" to exit the QComponent area. "
+                                     "2. none of the 4 routing possibilities of this algorithm "
+                                     "(^|_, ^^|, __|, _|^) can complete. Please use Pathfinder instead")
 
     def free_manhattan_length_anchors(self):
         """
