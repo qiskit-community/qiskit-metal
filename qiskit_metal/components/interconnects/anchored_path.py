@@ -385,8 +385,7 @@ class RouteAnchors(QRoute):
         # concatenate all points, transforming the dictionary into a single numpy array
         self.trim_pts()
         self.intermediate_pts = np.concatenate(list(
-            self.intermediate_pts.values()),
-                                               axis=0)
+            self.intermediate_pts.values()), axis=0)
 
         # Make points into elements
         self.make_elements(self.get_points())
