@@ -98,3 +98,15 @@ Sure.  There are a few decent overviews.  A good place to start are these two:
    * `An Introduction to PyQt5 Signals, Slots and Events <https://www.learnpyqt.com/tutorials/signals-slots-events/>`_
    * `Qt for Python Signals and Slots <https://wiki.qt.io/Qt_for_Python_Signals_and_Slots>`_
 
+
+.. _docs:
+
+*************
+Documentation
+*************
+
+**I am seeing a lot of warnings when I build the docs.  How do I resolve them?**
+
+Some users may see a list of warnings when building the docs.  Warnings about matplotlib text role can be safely ignored.
+
+You can resolve other warnings by deleting the ``docs/build`` and ``docs/stubs`` directories and rebuilding.
