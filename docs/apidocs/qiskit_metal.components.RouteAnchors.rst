@@ -55,6 +55,7 @@ RouteAnchors
       RouteAnchors.get_template_options
       RouteAnchors.get_tip
       RouteAnchors.get_unit_vectors
+      RouteAnchors.length_excess_corner_rounding
       RouteAnchors.make
       RouteAnchors.make_elements
       RouteAnchors.parse_options
