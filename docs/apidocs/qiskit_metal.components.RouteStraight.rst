@@ -1,4 +1,4 @@
-
+﻿
 
 RouteStraight
 =====================================
@@ -52,6 +52,7 @@ RouteStraight
       RouteStraight.get_template_options
       RouteStraight.get_tip
       RouteStraight.get_unit_vectors
+      RouteStraight.length_excess_corner_rounding
       RouteStraight.make
       RouteStraight.make_elements
       RouteStraight.parse_options

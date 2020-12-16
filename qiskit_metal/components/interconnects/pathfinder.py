@@ -23,6 +23,7 @@ from qiskit_metal.components.base import QRoutePoint
 from .anchored_path import RouteAnchors
 from qiskit_metal.toolbox_metal import math_and_overrides as mao
 from collections import OrderedDict
+from qiskit_metal.toolbox_metal.exceptions import QiskitMetalDesignError
 
 
 class RoutePathfinder(RouteAnchors):
@@ -57,6 +58,9 @@ class RoutePathfinder(RouteAnchors):
 
         Returns:
             List of vertices of a CPW going from start to end
+
+        Raises:
+            QiskitMetalDesignError: If the connect_simple() has failed.
         """
 
         start_direction = start_pt.direction
@@ -103,9 +107,15 @@ class RoutePathfinder(RouteAnchors):
             # point and a potential neighbor must be non-negative to avoid retracing.
 
             # Check if connect_simple works at each iteration of A*
-            simple_path = self.connect_simple(
-                QRoutePoint(np.array([x, y]), direction),
-                QRoutePoint(end, end_direction))
+            try:
+                simple_path = self.connect_simple(
+                    QRoutePoint(np.array([x, y]), direction),
+                    QRoutePoint(end, end_direction))
+            except QiskitMetalDesignError:
+                simple_path = None
+                # try the pathfinder algorithm
+                pass
+
             if simple_path is not None:
                 current_path.extend(simple_path)
                 return current_path
@@ -175,7 +185,8 @@ class RoutePathfinder(RouteAnchors):
         # concatenate all points, transforming the dictionary into a single numpy array
         self.trim_pts()
         self.intermediate_pts = np.concatenate(list(
-            self.intermediate_pts.values()), axis=0)
+            self.intermediate_pts.values()),
+                                               axis=0)
 
         # Make points into elements
         self.make_elements(self.get_points())

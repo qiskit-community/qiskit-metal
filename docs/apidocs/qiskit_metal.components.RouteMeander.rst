@@ -1,4 +1,4 @@
-
+﻿
 
 RouteMeander
 ====================================
@@ -56,6 +56,7 @@ RouteMeander
       RouteMeander.get_tip
       RouteMeander.get_unit_vectors
       RouteMeander.issideways
+      RouteMeander.length_excess_corner_rounding
       RouteMeander.make
       RouteMeander.make_elements
       RouteMeander.parse_options

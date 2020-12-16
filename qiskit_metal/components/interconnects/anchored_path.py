@@ -145,13 +145,15 @@ class RouteAnchors(QRoute):
         paths_converted = []
         paths = self.design.components[component_name].qgeometry_table('path')
         for _, row in paths.iterrows():
-            paths_converted.append(row['geometry'].buffer(row['width'] / 2, cap_style=CAP_STYLE.flat))
+            paths_converted.append(row['geometry'].buffer(
+                row['width'] / 2, cap_style=CAP_STYLE.flat))
         # merge all the polygons
         polygons = self.design.components[component_name].qgeometry_list('poly')
         boundary = gpd.GeoSeries(cascaded_union(polygons + paths_converted))
         boundary_coords = list(boundary.geometry.exterior[0].coords)
         if any(
-                intersecting(segment[0], segment[1], boundary_coords[i], boundary_coords[i + 1])
+                intersecting(segment[0], segment[1], boundary_coords[i],
+                             boundary_coords[i + 1])
                 for i in range(len(boundary_coords) - 1)):
             # At least 1 intersection with the actual component contour; do not proceed!
             return False
@@ -203,6 +205,9 @@ class RouteAnchors(QRoute):
 
         Returns:
             List of vertices of a CPW going from start to end
+
+        Raises:
+            QiskitMetalDesignError: If the connect_simple() has failed.
         """
         avoid_collision = self.parse_options().advanced.avoid_collision
 
@@ -307,12 +312,13 @@ class RouteAnchors(QRoute):
                 if (end_direction is None) or (mao.dot(end_direction,
                                                        corner6 - end) >= 0):
                     return np.vstack((corner5, corner6))
-        raise QiskitMetalDesignError("connect_simple() has failed. This might be due to "
-                                     f"the start point {start} or the end point {end} "
-                                     "being inside the bounding box of another QComponent. "
-                                     "Try to fix in one of two ways: "
-                                     "(1) Move the point outside the QComponent area; "
-                                     "(2) Add a long-enough \"lead\" to your QRoute to exit the QComponent area.")
+        raise QiskitMetalDesignError(
+            "connect_simple() has failed. This might be due to one of two reasons. "
+            f"1. Either one of the start point {start} or the end point {end} "
+            "provided are inside the bounding box of another QComponent. "
+            "Please move the point, or setup a \"lead\" to exit the QComponent area. "
+            "2. none of the 4 routing possibilities of this algorithm "
+            "(^|_, ^^|, __|, _|^) can complete. Please use Pathfinder instead")
 
     def free_manhattan_length_anchors(self):
         """

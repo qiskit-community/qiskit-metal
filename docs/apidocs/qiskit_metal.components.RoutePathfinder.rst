@@ -56,6 +56,7 @@ RoutePathfinder
       RoutePathfinder.get_template_options
       RoutePathfinder.get_tip
       RoutePathfinder.get_unit_vectors
+      RoutePathfinder.length_excess_corner_rounding
       RoutePathfinder.make
       RoutePathfinder.make_elements
       RoutePathfinder.parse_options

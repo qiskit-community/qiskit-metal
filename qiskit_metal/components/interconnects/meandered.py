@@ -25,6 +25,7 @@ from qiskit_metal import Dict
 from qiskit_metal.toolbox_metal.parsing import is_true
 from qiskit_metal.components.base import QRoute, QRoutePoint
 from qiskit_metal.toolbox_metal import math_and_overrides as mao
+from qiskit_metal.toolbox_metal.exceptions import QiskitMetalDesignError
 
 
 class RouteMeander(QRoute):
@@ -110,7 +111,6 @@ class RouteMeander(QRoute):
 
         ################################################################
         # Setup
-        # print(self.name, start_pt, end_pt, self.get_points())
 
         # Parameters
         meander_opt = self.p.meander
@@ -173,21 +173,16 @@ class RouteMeander(QRoute):
         end_meander_direction = mao.dot(end_pt.direction, sideways)
         if start_meander_direction > 0:  # sideway direction
             first_meander_sideways = True
-            # print("1-> ", ((meander_number % 2) == 0))
         elif start_meander_direction < 0:  # opposite to sideway direction
             first_meander_sideways = False
-            # print("2-> ", ((meander_number % 2) == 0))
         else:
             if end_meander_direction > 0:  # sideway direction
                 first_meander_sideways = ((meander_number % 2) == 1)
-                # print("3-> ", ((meander_number % 2) == 0))
             elif end_meander_direction < 0:  # opposite to sideway direction
                 first_meander_sideways = ((meander_number % 2) == 0)
-                # print("4-> ", ((meander_number % 2) == 0))
             else:
                 # either direction is fine, so let's just pick one
                 first_meander_sideways = True
-                # print("5-> ", ((meander_number % 2) == 0))
 
         # length to distribute on the meanders (excess w.r.t a straight line between start and end)
         length_excess = (length_meander - length_direct - 2 * abs(asymmetry))
@@ -224,7 +219,6 @@ class RouteMeander(QRoute):
         top_pts = root_pts + side_shift_vecs
         bot_pts = root_pts - side_shift_vecs
 
-        # print("MDL->", root_pts, "\nTOP->", top_pts, "\nBOT->", bot_pts)
         ################################################################
         # Combine points
         # Meanest part of the meander
@@ -331,6 +325,11 @@ class RouteMeander(QRoute):
         # the adjustment length has to be computed in the main or in other method
         # considering entire route (Could include the corner fillet)
 
+        if len(pts) <= 3:
+            # not a meander
+            return pts
+
+        # is it an even or odd count of points?
         term_point = len(pts) % 2
 
         # recompute direction
@@ -347,10 +346,10 @@ class RouteMeander(QRoute):
         else:
             last_meander_sideways = True
 
-        # which points need to receive the shift
-        # initialize the shift vector to 1 (1 = will receive shift)
+        # which points need to receive the shift?
+        # 1. initialize the shift vector to 1 (1 = will receive shift)
         adjustment_vector = np.ones(len(pts))
-        # switch shift direction depending on sideways or not
+        # 2. switch shift direction depending on sideways or not
         if first_meander_sideways:
             adjustment_vector[2::4] *= -1
             adjustment_vector[3::4] *= -1
@@ -358,6 +357,8 @@ class RouteMeander(QRoute):
             adjustment_vector[::4] *= -1
             adjustment_vector[1::4] *= -1
 
+        # 3. suppress shift for points that can cause short edges
+        # calculate thresholds for suppression of short edges (short edge = not long enough for set fillet)
         fillet_shift = sideways * self.p.fillet
         start_pt_adjusted_up = start_pt.position + fillet_shift
         start_pt_adjusted_down = start_pt.position - fillet_shift
@@ -367,12 +368,10 @@ class RouteMeander(QRoute):
         # if start_pt.position is below axes + shift - 2xfillet &  first_meander_sideways
         if first_meander_sideways and not self.issideways(
                 start_pt_adjusted_up, pts[0], pts[1]):
-            #first meander is fair game
             pass
         # if start_pt.position is above axes - shift + 2xfillet &  not first_meander_sideways
         elif not first_meander_sideways and self.issideways(
                 start_pt_adjusted_down, pts[0], pts[1]):
-            # first meander is fair game
             pass
         else:
             # else block first mender
@@ -380,41 +379,36 @@ class RouteMeander(QRoute):
         # if end_pt.position is below axes + shift - 2xfillet &  last_meander_sideways
         if last_meander_sideways and not self.issideways(
                 end_pt_adjusted_up, pts[-2 - term_point], pts[-1 - term_point]):
-            # first meander is fair game
             pass
         # if end_pt.position is above axes - shift + 2xfillet &  not last_meander_sideways
         elif not last_meander_sideways and self.issideways(
-                end_pt_adjusted_down, pts[-2 - term_point],
-                pts[-1 - term_point]):
-            # first meander is fair game
+                end_pt_adjusted_down, pts[-2 - term_point], pts[-1 - term_point]):
             pass
         else:
             # else block last mender
             adjustment_vector[-2 - term_point:-term_point] = [0, 0]
 
+        not_a_meander = 0
         if term_point:
-            # pts count is a odd number
-            # disable shift on the termination point
+            # means that pts count is a odd number
+            # thus needs to disable shift on the termination point...
             adjustment_vector[-1] = 0
-            #....unless the last point is anchored to the last meander curve
+            # ...unless the last point is anchored to the last meander curve
             if start_pt.direction is not None and end_pt.direction is not None:
                 if ((mao.dot(start_pt.direction, end_pt.direction) < 0) and
-                    (mao.dot(forward, start_pt.direction) <= 0)):
+                        (mao.dot(forward, start_pt.direction) <= 0)):
                     # pins are pointing opposite directions and diverging, thus keep consistency
                     adjustment_vector[-1] = adjustment_vector[-2]
+                    if adjustment_vector[-1]:
+                        # the point in between needs to be shifted, but it will not contribute to length change
+                        # therefore the total length distribution (next step) should ignore it.
+                        not_a_meander = 1
 
-        # print("first", first_meander_sideways, "last", last_meander_sideways)
-        # print("adj,vec", adjustment_vector)
-        # print("before pts", len(pts), pts)
-        # then divide the slack amongst all points
+        # Finally, divide the slack amongst all points...
         sideways_adjustment = sideways * (delta_length /
-                                          np.count_nonzero(adjustment_vector))
-
-        # print(self.length, delta_length, np.count_nonzero(adjustment_vector))
-
+                                          (np.count_nonzero(adjustment_vector) - not_a_meander))
         pts = pts + sideways_adjustment[
             np.newaxis, :] * adjustment_vector[:, np.newaxis]
-        # print("after pts", len(pts), pts)
 
         return pts
 
@@ -424,7 +418,7 @@ class RouteMeander(QRoute):
         Get the indices
 
         Args:
-            root_pts (list): List of points
+            num_root_pts (list): List of points
 
         Returns:
             tuple: Tuple of indices

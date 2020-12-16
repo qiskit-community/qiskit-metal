@@ -1,4 +1,4 @@
-
+﻿
 
 RouteFramed
 ===================================
@@ -53,6 +53,7 @@ RouteFramed
       RouteFramed.get_template_options
       RouteFramed.get_tip
       RouteFramed.get_unit_vectors
+      RouteFramed.length_excess_corner_rounding
       RouteFramed.make
       RouteFramed.make_elements
       RouteFramed.parse_options
