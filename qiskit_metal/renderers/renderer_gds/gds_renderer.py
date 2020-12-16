@@ -136,6 +136,22 @@ class QGDSRenderer(QRenderer):
         # can handle is 8191.
         max_points='8191',
 
+        # Cheesing
+        no_cheese_view_area='True',
+        cheese_view='True',
+
+        # For every layer, if there is a ground, do cheesing and place the output on the datatype number (sub-layer number)
+        no_cheese_sublayer='99',
+        cheese_view_sublayer='100',
+
+        # Expect to mostly cheese a square, but allow for expansion.
+        cheese_shape='0',
+        # cheese_shape_0 is rectangle
+        cheese_0_x='50um',
+        cheese_0_y='100um',
+        # chese_shape_1 is circle
+        cheese_1_radius='100um',
+
         # (float): Scale box of components to render. Should be greater than 1.0.
         # For benifit of the GUI, keep this the last entry in the dict.  GUI shows a note regarding bound_box.
         bounding_box_scale_x='1.2',
@@ -881,8 +897,9 @@ class QGDSRenderer(QRenderer):
 
         return self.lib
 
-    def write_poly_path_to_file(self, file_name: str) -> None:
-        """Using the geometries for each table name in QGeometry, write to a GDS file.
+    def populate_poly_path_for_export(self):
+        """Using the geometries for each table name in QGeometry, 
+        populate self.lib to eventually write to a GDS file.
 
         For every layer within a chip, use the same "subtraction box" for the elements that
         have subtract as true.  Every layer within a chip will have cell named:
@@ -891,6 +908,7 @@ class QGDSRenderer(QRenderer):
         Args:
             file_name (str): The path and file name to write the gds file.
                              Name needs to include desired extention, i.e. "a_path_and_name.gds".
+
         """
 
         precision = float(self.parse_value(self.options.precision))
@@ -1005,8 +1023,6 @@ class QGDSRenderer(QRenderer):
                     all_chips_top.add(gdspy.CellReference(chip_only_top))
                 else:
                     lib.remove(chip_only_top)
-
-        lib.write_gds(file_name)
 
     def get_linestring_characteristics(
             self,
@@ -1185,10 +1201,25 @@ class QGDSRenderer(QRenderer):
         self.chip_info.update(self.get_chip_names())
 
         if (self.create_qgeometry_for_gds(highlight_qcomponents) == 0):
-            self.write_poly_path_to_file(file_name)
+            # Create self.lib and populate path and poly.
+            self.populate_poly_path_for_export()
+
+            # Add to self.lib if default options requests it.
+            self.populate_no_cheese()
+            self.populate_cheese()
+
+            # Export the file to disk from self.lib
+            self.lib.write_gds(file_name)
+
             return 1
         else:
             return 0
+
+    def populate_no_cheese(self):
+        pass
+
+    def populate_cheese(self):
+        pass
 
     def qgeometry_to_gds(self, qgeometry_element: pd.Series) -> 'gdspy.polygon':
         """Convert the design.qgeometry table to format used by GDS renderer.
