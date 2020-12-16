@@ -1116,7 +1116,8 @@ class QGDSRenderer(QRenderer):
         max_points = int(self.parse_value(self.options.max_points))
 
         status, directory_name = can_write_to_path(self.options.path_filename)
-        if status:
+
+        if os.path.isfile(self.options.path_filename):
             lib.read_gds(self.options.path_filename, units='convert')
             for row in self.chip_info[chip_name]['junction'].itertuples():
                 layer_num = int(row.layer)
