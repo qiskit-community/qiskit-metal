@@ -59,7 +59,7 @@ class EndcapHFSSWidget(QMainWindow):
         self.table.setRowCount(len(self.pin_names))
         
         for idx in range(len(self.pin_names)):
-            pin_name = QTableWidgetItem(self.pin_names[idx])
+            pin_name = QTableWidgetItem(', '.join(self.pin_names[idx]))
             self.table.setItem(idx, 0, pin_name) # pin name for first column
             endcap_combo = QComboBox()
             endcap_combo.addItems(endcap_options)
@@ -67,7 +67,7 @@ class EndcapHFSSWidget(QMainWindow):
             endcap_combo.setCurrentIndex(int(self.pin_names[idx] not in open_pins)) # default endcap type
 
         self.table.verticalHeader().setVisible(False)
-        self.table.horizontalHeader().setVisible(False)
+        self.table.setHorizontalHeaderLabels(['QComp, Pin', 'Endcap Type'])
         self.table.horizontalHeader().setStretchLastSection(True)
 
     @property
@@ -100,14 +100,14 @@ class EndcapHFSSWidget(QMainWindow):
                 qcomp_id = self.design.components[qcomp].id
                 qcomp_net_id = self.design.components[qcomp].pins[pin].net_id
                 if qcomp_net_id == 0: # not connected in design
-                    short_set.add(f'{qcomp}_{pin}')
+                    short_set.add((qcomp, pin))
                 else: # originally connected in design
                     table = self.design.net_info
                     reduced_table = table[(table['net_id'] == qcomp_net_id) & (table['component_id'] != qcomp_id)]
                     if self.design._components[reduced_table.iloc[0].component_id].name not in qcomp_set: # counterpart not rendered -> make open
-                        open_set.add(f'{qcomp}_{pin}')
+                        open_set.add((qcomp, pin))
                     else: # counterpart rendered -> make shorted
-                        short_set.add(f'{qcomp}_{pin}')
+                        short_set.add((qcomp, pin))
 
         return open_set, short_set
 
@@ -116,7 +116,8 @@ class EndcapHFSSWidget(QMainWindow):
         add_open_pins = []
         for row in range(len(self.pin_names)):
             if self.table.cellWidget(row, 1).currentText() == 'Open':
-                add_open_pins.append(self.table.item(row, 0).text())
+                s = self.table.item(row, 0).text()
+                add_open_pins.append(tuple(s.split(', ')))
         hfss_renderer = self.design.renderers.hfss
         hfss_renderer.open_ansys_design()
         hfss_renderer.render_design(self.components_to_render, add_open_pins)
