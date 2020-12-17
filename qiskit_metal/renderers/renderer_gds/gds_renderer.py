@@ -137,12 +137,12 @@ class QGDSRenderer(QRenderer):
         max_points='8191',
 
         # Cheesing
-        no_cheese_view_area='True',
-        cheese_view='True',
+        no_cheese_view_in_file='True',
+        cheese_view_in_file='True',
 
         # For every layer, if there is a ground, do cheesing and place the output on the datatype number (sub-layer number)
         no_cheese_sublayer='99',
-        cheese_view_sublayer='100',
+        cheese_sublayer='100',
 
         # Expect to mostly cheese a square, but allow for expansion.
         cheese_shape='0',
@@ -897,6 +897,38 @@ class QGDSRenderer(QRenderer):
 
         return self.lib
 
+    def populate_cheese(self):
+        if (is_true(self.parse_value(self.options.cheese_view_in_file)) or
+                is_true(self.parse_value(self.options.no_cheese_view_in_file))):
+
+            sub_layer = int(self.parse_value(self.options.cheese_sublayer))
+            lib = self.lib
+            all_chips_top_name = 'TOP'
+
+            # look at lib and get the cell, so can add to it. so now can add
+            # self.lib.cells['TOP_main_1'].add()
+
+            for chip_name in self.chip_info:
+                chip_only_top_name = f'TOP_{chip_name}'
+                layers_in_chip = self.design.qgeometry.get_all_unique_layers(
+                    chip_name)
+                for chip_layer in layers_in_chip:
+                    pass
+
+    def populate_no_cheese(self):
+        if is_true(self.parse_value(self.options.no_cheese_view_in_file)):
+            sub_layer = int(self.parse_value(self.options.no_cheese_sublayer))
+            lib = self.lib
+            all_chips_top_name = 'TOP'
+
+            for chip_name in self.chip_info:
+                chip_only_top_name = f'TOP_{chip_name}'
+                layers_in_chip = self.design.qgeometry.get_all_unique_layers(
+                    chip_name)
+                for chip_layer in layers_in_chip:
+
+                    pass
+
     def populate_poly_path_for_export(self):
         """Using the geometries for each table name in QGeometry, 
         populate self.lib to eventually write to a GDS file.
@@ -1214,12 +1246,6 @@ class QGDSRenderer(QRenderer):
             return 1
         else:
             return 0
-
-    def populate_no_cheese(self):
-        pass
-
-    def populate_cheese(self):
-        pass
 
     def qgeometry_to_gds(self, qgeometry_element: pd.Series) -> 'gdspy.polygon':
         """Convert the design.qgeometry table to format used by GDS renderer.
