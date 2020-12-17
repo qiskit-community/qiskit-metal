@@ -40,6 +40,8 @@ from .elements_window import ElementsWindow
 from .main_window_base import QMainWindowBaseHandler, QMainWindowExtensionBase
 from .main_window_ui import Ui_MainWindow
 from .renderer_gds_gui import RendererGDSWidget
+from .renderer_hfss_gui import RendererHFSSWidget
+from .renderer_q3d_gui import RendererQ3DWidget
 from .utility._handle_qt_messages import slot_catch_error
 from .widgets.all_components.table_model_all_components import \
     QTableModel_AllComponents
@@ -72,6 +74,8 @@ class QMainWindowExtension(QMainWindowExtensionBase):
     def __init__(self):
         super().__init__()
         self.gds_gui = None  # type: RendererGDSWidget
+        self.hfss_gui = None # type: RendererHFSSWidget
+        self.q3d_gui = None  # type: RendererQ3DWidget
 
     @property
     def design(self) -> 'QDesign':
@@ -105,6 +109,16 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         """Handles click on GDS Renderer action"""
         self.gds_gui = RendererGDSWidget(self, self.gui)
         self.gds_gui.show()
+
+    def show_renderer_hfss(self):
+        """Handles click on HFSS Renderer action"""
+        self.hfss_gui = RendererHFSSWidget(self, self.gui)
+        self.hfss_gui.show()
+
+    def show_renderer_q3d(self):
+        """Handles click on Q3D Renderer action"""
+        self.q3d_gui = RendererQ3DWidget(self, self.gui)
+        self.q3d_gui.show()
 
     def delete_all_components(self):
         """Delete all components
@@ -318,6 +332,12 @@ class MetalGUI(QMainWindowBaseHandler):
 
         if self.main_window.gds_gui:
             self.main_window.gds_gui.set_design(design)
+
+        if self.main_window.hfss_gui:
+            self.main_window.hfss_gui.set_design(design)
+
+        if self.main_window.q3d_gui:
+            self.main_window.q3d_gui.set_design(design)
 
         self.variables_window.set_design(design)
 

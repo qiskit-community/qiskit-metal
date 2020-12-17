@@ -20,6 +20,10 @@ rc_to_py=pyside2-rcc
 "${ui_to_py}" --output=elements_ui.py           --from-imports  elements_ui.ui
 "${ui_to_py}" --output=edit_source_ui.py        --from-imports  edit_source_ui.ui
 "${ui_to_py}" --output=renderer_gds_ui.py       --from-imports  renderer_gds_ui.ui
+"${ui_to_py}" --output=renderer_hfss_ui.py      --from-imports  renderer_hfss_ui.ui
+"${ui_to_py}" --output=renderer_q3d_ui.py       --from-imports  renderer_q3d_ui.ui
+"${ui_to_py}" --output=endcap_hfss_ui.py        --from-imports  endcap_hfss_ui.ui
+"${ui_to_py}" --output=endcap_q3d_ui.py         --from-imports  endcap_q3d_ui.ui
 
 "${ui_to_py}" --output=widgets/variable_table/dialog_popup.py       --from-imports  widgets/variable_table/dialog_popup.ui
 "${ui_to_py}" --output=widgets/variable_table/add_delete_table.py   --from-imports  widgets/variable_table/add_delete_table.ui

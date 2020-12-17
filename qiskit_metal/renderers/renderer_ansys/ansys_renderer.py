@@ -556,6 +556,7 @@ class QAnsysRenderer(QRenderer):
         """
         Add mesh to all elements in self.assign_mesh.
         """
-        self.modeler.mesh_length('small_mesh',
-                                 self.assign_mesh,
-                                 MaxLength=self._options['max_mesh_length_jj'])
+        if self.assign_mesh:
+            self.modeler.mesh_length('small_mesh',
+                                    self.assign_mesh,
+                                    MaxLength=self._options['max_mesh_length_jj'])
