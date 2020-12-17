@@ -104,10 +104,9 @@ class EndcapHFSSWidget(QMainWindow):
                 else: # originally connected in design
                     table = self.design.net_info
                     reduced_table = table[(table['net_id'] == qcomp_net_id) & (table['component_id'] != qcomp_id)]
-                    if self.design._components[reduced_table.iloc[0].component_id].name not in qcomp_set: # counterpart not rendered -> make open
+                    other_qcomp = self.design._components[reduced_table.iloc[0].component_id].name
+                    if other_qcomp not in qcomp_set: # counterpart not rendered -> make open
                         open_set.add((qcomp, pin))
-                    else: # counterpart rendered -> make shorted
-                        short_set.add((qcomp, pin))
 
         return open_set, short_set
 
