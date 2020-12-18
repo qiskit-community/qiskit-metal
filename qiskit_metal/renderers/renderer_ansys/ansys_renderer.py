@@ -202,10 +202,16 @@ class QAnsysRenderer(QRenderer):
     def render_tables(self, selection: Union[list, None] = None):
         """
         Render components in design grouped by table type (path, poly, or junction).
+        Start by initializing chip boundaries for later use.
 
         Args:
             selection (Union[list, None], optional): List of components to render. Defaults to None.
         """
+        self.min_x_main = float('inf')
+        self.min_y_main = float('inf')
+        self.max_x_main = float('-inf')
+        self.max_y_main = float('-inf')
+
         for table_type in self.design.qgeometry.get_element_types():
             self.render_components(table_type, selection)
 
@@ -222,21 +228,24 @@ class QAnsysRenderer(QRenderer):
         selection = selection if selection else []
         table = self.design.qgeometry.tables[table_type]
 
-        self.min_x_main = float('inf')
-        self.min_y_main = float('inf')
-        self.max_x_main = float('-inf')
-        self.max_y_main = float('-inf')
-
         if selection:
             qcomp_ids, case = self.get_unique_component_ids(selection)
 
-            # Update bounding box (and hence main chip dimensions)
-            for qcomp_id in qcomp_ids:
-                min_x, min_y, max_x, max_y = self.design._components[qcomp_id].qgeometry_bounds()
-                self.min_x_main = min(min_x, self.min_x_main)
-                self.min_y_main = min(min_y, self.min_y_main)
-                self.max_x_main = max(max_x, self.max_x_main)
-                self.max_y_main = max(max_y, self.max_y_main)
+            if qcomp_ids: # Render strict subset of components
+                # Update bounding box (and hence main chip dimensions)
+                for qcomp_id in qcomp_ids:
+                    min_x, min_y, max_x, max_y = self.design._components[qcomp_id].qgeometry_bounds()
+                    self.min_x_main = min(min_x, self.min_x_main)
+                    self.min_y_main = min(min_y, self.min_y_main)
+                    self.max_x_main = max(max_x, self.max_x_main)
+                    self.max_y_main = max(max_y, self.max_y_main)
+            else: # All components rendered
+                for qcomp in self.design.components:
+                    min_x, min_y, max_x, max_y = self.design.components[qcomp].qgeometry_bounds()
+                    self.min_x_main = min(min_x, self.min_x_main)
+                    self.min_y_main = min(min_y, self.min_y_main)
+                    self.max_x_main = max(max_x, self.max_x_main)
+                    self.max_y_main = max(max_y, self.max_y_main)
 
             if case != 1:  # Render a subset of components using mask
                 mask = table['component'].isin(qcomp_ids)

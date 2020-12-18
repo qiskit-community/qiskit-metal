@@ -101,6 +101,10 @@ class QQ3DRenderer(QAnsysRenderer):
         Args:
             selection (Union[list, None], optional): List of components to render. Defaults to None.
         """
+        self.min_x_main = float('inf')
+        self.min_y_main = float('inf')
+        self.max_x_main = float('-inf')
+        self.max_y_main = float('-inf')
         for table_type in self.design.qgeometry.get_element_types():
             if table_type != 'junction':
                 self.render_components(table_type, selection)
