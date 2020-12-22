@@ -136,13 +136,17 @@ class QGDSRenderer(QRenderer):
         # can handle is 8191.
         max_points='8191',
 
-        # Cheesing
-        no_cheese_view_in_file='True',
-        cheese_view_in_file='True',
+        # Cheesing is denoted by each chip has dict which denotes layer number and bool
+        no_cheese_view_in_file={'main': {
+            1: True
+        }},
+        cheese_view_in_file={'main': {
+            1: True
+        }},
 
         # For every layer, if there is a ground, do cheesing and place the output on the datatype number (sub-layer number)
-        no_cheese_sublayer='99',
-        cheese_sublayer='100',
+        no_cheese_datatype='99',
+        cheese_datatype='100',
 
         # Expect to mostly cheese a square, but allow for expansion.
         cheese_shape='0',
@@ -508,7 +512,7 @@ class QGDSRenderer(QRenderer):
         Also remove "bad" LINESTRING from table.
 
         Then use qgeometry_to_gds() to convert the QGeometry elements to gdspy elements.  The gdspy elements
-        are place in self.chip_info[chip_name]['q_subtract_true'].
+        are placed in self.chip_info[chip_name]['q_subtract_true'].
 
         Args:
             chip_name (str): Chip_name that is being processed.
@@ -897,6 +901,109 @@ class QGDSRenderer(QRenderer):
 
         return self.lib
 
+    def check_cheese(self, chip: str, layer: int) -> int:
+        #return codes
+        # 0 This is the initialization state.
+        # 1 The layer is in the chip and cheese is True.
+        # 2 The layer is in the chip and no-cheese is False.
+        # 3 The chip is not in dict, so can't give answer.
+        # 4 The layer is not in the chip, so can't give answer.
+        code = 0
+
+        cheese_option = self.parse_value(self.options.cheese_view_in_file)
+
+        if chip in cheese_option:
+            if layer in cheese_option[chip]:
+                if is_true(cheese_option[chip][layer]):
+                    code = 1
+                    return code
+                else:
+                    code = 2
+                    return code
+            else:
+                code = 4
+                return code
+        else:
+            code = 3
+            return code
+
+        return code
+
+    def check_no_cheese(self, chip: str, layer: int) -> int:
+        #return codes
+        # 0 This is the initialization state.
+        # 1 The layer is in the chip and viewing no-cheese is True.
+        # 2 The layer is in the chip and viewing no-cheese is False.
+        # 3 The chip is not in dict, so can't give answer.
+        # 4 The layer is not in the chip, so can't give answer.
+        code = 0
+
+        no_cheese_option = self.parse_value(self.options.no_cheese_view_in_file)
+
+        if chip in no_cheese_option:
+            if layer in no_cheese_option[chip]:
+                if is_true(no_cheese_option[chip][layer]):
+                    code = 1
+                    return code
+                else:
+                    code = 2
+                    return code
+            else:
+                code = 4
+                return code
+        else:
+            code = 3
+            return code
+
+        return code
+
+    def check_either_cheese(self, chip: str, layer: int) -> int:
+        # return codes
+        # 0 This is the initialization state.
+        # 1 Show the layer in both cheese and no cheese
+        # 2 Show the layer in just the cheese
+        # 3 Show the no-cheese, but not the cheese
+        # 4 Do NOT show the layer in neither cheese
+        # 5 The chip is not in the default option.
+        # 6 The layer is not in the chip dict.
+
+        code = 0
+        no_cheese_code = self.check_no_cheese(chip, layer)
+        cheese_code = self.check_cheese(chip, layer)
+
+        if (no_cheese_code == 0 or cheese_code == 0):
+            self.logger.warning(
+                f'Not able to get no_cheese_view_in_file or cheese_view_in_file from self.options.'
+            )
+            code = 0
+            return code
+        if (no_cheese_code == 1 and cheese_code == 1):
+            code = 1
+            return code
+        if (no_cheese_code == 2 and cheese_code == 1):
+            code = 2
+            return code
+        if (no_cheese_code == 1 and cheese_code == 2):
+            code = 3
+            return code
+        if (no_cheese_code == 2 and cheese_code == 2):
+            code = 4
+            return code
+        if (no_cheese_code == 3 or cheese_code == 3):
+            code = 5
+            self.logger.warning(
+                f'Chip={chip} is not either in no_cheese_view_in_file or cheese_view_in_file from self.options.'
+            )
+            return code
+        if (no_cheese_code == 4 or cheese_code == 4):
+            code = 6
+            self.logger.warning(
+                f'layer={layer} is not in chip={chip} either in no_cheese_view_in_file or cheese_view_in_file from self.options.'
+            )
+            return code
+
+        return code
+
     def populate_cheese(self):
         if (is_true(self.parse_value(self.options.cheese_view_in_file)) or
                 is_true(self.parse_value(self.options.no_cheese_view_in_file))):
@@ -913,21 +1020,73 @@ class QGDSRenderer(QRenderer):
                 layers_in_chip = self.design.qgeometry.get_all_unique_layers(
                     chip_name)
                 for chip_layer in layers_in_chip:
+                    #Regarding no_cheese,if the user doesn't want as part of output, then delete
                     pass
 
-    def populate_no_cheese(self):
-        if is_true(self.parse_value(self.options.no_cheese_view_in_file)):
-            sub_layer = int(self.parse_value(self.options.no_cheese_sublayer))
-            lib = self.lib
-            all_chips_top_name = 'TOP'
+    def populate_no_cheese(self) -> dict:
+        lib = self.lib
+        all_chips_top_name = 'TOP'
 
-            for chip_name in self.chip_info:
-                chip_only_top_name = f'TOP_{chip_name}'
-                layers_in_chip = self.design.qgeometry.get_all_unique_layers(
-                    chip_name)
-                for chip_layer in layers_in_chip:
+        for chip_name in self.chip_info:
 
-                    pass
+            chip_only_top_name = f'TOP_{chip_name}'
+            layers_in_chip = self.design.qgeometry.get_all_unique_layers(
+                chip_name)
+
+            for chip_layer in layers_in_chip:
+                code = self.check_either_cheese(chip_name, chip_layer)
+
+                if (code == 1 or code == 2 or code == 3):
+                    sub_layer = int(
+                        self.parse_value(self.options.no_cheese_datatype))
+
+                    if len(self.chip_info[chip_name][chip_layer]
+                           ['all_subtract_true']) != 0:
+
+                        sub_df = self.chip_info[chip_name][chip_layer][
+                            'all_subtract_true']
+
+                        # Create new dataframe to add to self.chip_info[chip_name][chip_layer]['no_cheese']
+
+                        # no_cheese_subtract_cell_name = f'SUBTRACT_{chip_name}_{chip_layer}'
+                        # no_cheese_cell = lib.new_cell(
+                        #     no_cheese_subtract_cell_name,
+                        #     overwrite_duplicate=True)
+
+                        # no_cheese_cell.add(self.chip_info[chip_name][chip_layer]
+                        #                   ['q_subtract_true'])
+                        a = 5  # for breakpoint
+        return
+
+    #From Thomas
+    #Commented out since not part of GDS.
+    # def cheese_buffer_maker(design, buffer_size):
+    #     #grab all the 'subtract=true' shapes
+    #     df = design.qgeometry.tables['poly']
+    #     poly_subs = df.loc[df['subtract'] == True]
+    #     poly_sub_geo = poly_subs['geometry'].tolist()
+
+    #     df = design.qgeometry.tables['path']
+    #     path_subs = df.loc[df['subtract'] == True]
+    #     path_sub_geo = path_subs['geometry'].tolist()
+    #     path_sub_width = path_subs['width'].tolist()
+    #     for n in range(len(path_subs)):
+    #         path_sub_geo[n] = path_sub_geo[n].buffer(path_sub_width[n],
+    #                                                  cap_style=2,
+    #                                                  join_style=2)
+
+    #     #combine all shapes and buffer by buffer size
+    #     combo_l = poly_sub_geo + path_sub_geo
+    #     combo_l = metal.draw.union(combo_l)
+    #     combo_l = combo_l.buffer(buffer_size, cap_style=2, join_style=2)
+
+    #     design.qgeometry.add_qgeometry('poly',
+    #                                    design._get_new_qcomponent_id(),
+    #                                    dict(buffer_layer=combo_l),
+    #                                    subtract=False,
+    #                                    helper=False,
+    #                                    layer=99,
+    #                                    chip='main')
 
     def populate_poly_path_for_export(self):
         """Using the geometries for each table name in QGeometry, 
@@ -1236,8 +1395,10 @@ class QGDSRenderer(QRenderer):
             # Create self.lib and populate path and poly.
             self.populate_poly_path_for_export()
 
-            # Add to self.lib if default options requests it.
+            # Add no-cheese table to self.chip_info[chip_name][chip_layer]['no_cheese'], if self.options requests the layer.
             self.populate_no_cheese()
+
+            # Use self.options  to decide what to put for export into self.chip_info[chip_name][chip_layer]['cheese'].
             self.populate_cheese()
 
             # Export the file to disk from self.lib
