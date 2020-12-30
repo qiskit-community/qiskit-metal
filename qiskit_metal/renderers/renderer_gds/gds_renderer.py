@@ -144,7 +144,7 @@ class QGDSRenderer(QRenderer):
         cheese_view_in_file={'main': {
             1: True
         }},
-        no_cheese_buffer='20um',
+        no_cheese_buffer='25um',
 
         #The styles of caps are specified by integer values:
         # 1 (round), 2 (flat), 3 (square).
@@ -1060,7 +1060,7 @@ class QGDSRenderer(QRenderer):
                         sub_df = self.chip_info[chip_name][chip_layer][
                             'all_subtract_true']
                         no_cheese_multipolygon = self.cheese_buffer_maker(
-                            sub_df)
+                            sub_df, chip_name)
 
                         if no_cheese_multipolygon is not None:
                             self.chip_info[chip_name][chip_layer][
@@ -1087,7 +1087,7 @@ class QGDSRenderer(QRenderer):
         return
 
     def cheese_buffer_maker(
-        self, sub_df: geopandas.GeoDataFrame
+        self, sub_df: geopandas.GeoDataFrame, chip_name: str
     ) -> Union[None, shapely.geometry.multipolygon.MultiPolygon]:
         """For each layer in each chip, and if it has a ground plane (subtract==True), 
         determine the no-cheese buffer and return a shapely object. Before the buffer is
@@ -1122,23 +1122,36 @@ class QGDSRenderer(QRenderer):
 
         #  Need to add buffer_size, cap style, and join style to default options
         combo_list = path_sub_geo + poly_sub_geo
-        combo_list = draw.union(combo_list)
+        combo_shapely = draw.union(combo_list)
 
-        # chip_box, status = self.design.get_x_y_for_chip(chip_name)
-        # if status == 0:
-        #     self.dict_bounds[chip_name]['for_subtract'] = chip_box
-        # else:
-
-        if len(combo_list.geoms) > 0:
+        if len(combo_shapely.geoms) > 0:
             #Can return either Multipolgon or just one polygon.
-            combo_list = combo_list.buffer(no_cheese_buffer,
-                                           cap_style=style_cap,
-                                           join_style=style_join)
-            if isinstance(combo_list, shapely.geometry.polygon.Polygon):
-                combo_list = shapely.geometry.MultiPolygon([combo_list])
+            combo_shapely = combo_shapely.buffer(no_cheese_buffer,
+                                                 cap_style=style_cap,
+                                                 join_style=style_join)
+            if isinstance(combo_shapely, shapely.geometry.polygon.Polygon):
+                combo_shapely = shapely.geometry.MultiPolygon([combo_shapely])
 
-            # The type of combo_list will be  <class 'shapely.geometry.multipolygon.MultiPolygon'>
-            return combo_list
+            # Check if the buffer went past the chip size.
+            chip_box, status = self.design.get_x_y_for_chip(chip_name)
+            if status == 0:
+                minx, miny, maxx, maxy = chip_box
+                c_minx, c_miny, c_maxx, c_maxy = combo_shapely.bounds
+                if (c_minx >= minx or c_miny <= miny or c_maxx <= maxx or
+                        c_maxy <= maxy):
+                    self.logger.warning(
+                        f'The bounding box for no-cheese is outside of chip size.\n'
+                        f'Bounding box for chip is {chip_box}.\n'
+                        f'Bounding box with no_cheese buffer is {combo_shapely.bounds}.'
+                    )
+            else:
+                self.logger.warning(
+                    f'design.get_x_y_for_chip() did NOT return a good code for chip={chip_name},'
+                    f'for cheese_buffer_maker.  The chip boundary will not be tested.'
+                )
+
+            # The type of combo_shapely will be  <class 'shapely.geometry.multipolygon.MultiPolygon'>
+            return combo_shapely
         else:
             return None
 
