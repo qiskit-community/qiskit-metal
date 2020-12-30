@@ -33,6 +33,7 @@ import numpy as np
 
 from qiskit_metal.renderers.renderer_base import QRenderer
 from qiskit_metal.toolbox_metal.parsing import is_true
+from qiskit_metal import draw
 
 from .. import config
 if not config.is_building_docs():
@@ -143,6 +144,15 @@ class QGDSRenderer(QRenderer):
         cheese_view_in_file={'main': {
             1: True
         }},
+        no_cheese_buffer='20um',
+
+        #The styles of caps are specified by integer values:
+        # 1 (round), 2 (flat), 3 (square).
+        no_cheese_cap_style='2',
+
+        #The styles of joins between offset segments are specified by integer values:
+        # 1 (round), 2 (mitre), and 3 (bevel).
+        no_cheese_join_style='2',
 
         # For every layer, if there is a ground, do cheesing and place the output on the datatype number (sub-layer number)
         no_cheese_datatype='99',
@@ -1023,13 +1033,17 @@ class QGDSRenderer(QRenderer):
                     #Regarding no_cheese,if the user doesn't want as part of output, then delete
                     pass
 
-    def populate_no_cheese(self) -> dict:
-        lib = self.lib
-        all_chips_top_name = 'TOP'
+    def populate_no_cheese(self):
+        """Iterate through every chip and layer.  If options choose to have either cheese or no-cheese,
+        a MultiPolygon is placed self.chip_info[chip_name][chip_layer]['no_cheese'].  
 
+        If user selects to view the no-cheese, the method placed the cell with no-cheese
+        at f'NoCheese_{chip_name}_{chip_layer}_{sub_layer}'.  The sub_layer is data_type and denoted
+        in the options. 
+        """
+        lib = self.lib
         for chip_name in self.chip_info:
 
-            chip_only_top_name = f'TOP_{chip_name}'
             layers_in_chip = self.design.qgeometry.get_all_unique_layers(
                 chip_name)
 
@@ -1045,48 +1059,88 @@ class QGDSRenderer(QRenderer):
 
                         sub_df = self.chip_info[chip_name][chip_layer][
                             'all_subtract_true']
+                        no_cheese_multipolygon = self.cheese_buffer_maker(
+                            sub_df)
 
-                        # Create new dataframe to add to self.chip_info[chip_name][chip_layer]['no_cheese']
-
-                        # no_cheese_subtract_cell_name = f'SUBTRACT_{chip_name}_{chip_layer}'
-                        # no_cheese_cell = lib.new_cell(
-                        #     no_cheese_subtract_cell_name,
-                        #     overwrite_duplicate=True)
-
-                        # no_cheese_cell.add(self.chip_info[chip_name][chip_layer]
-                        #                   ['q_subtract_true'])
-                        a = 5  # for breakpoint
+                        if no_cheese_multipolygon is not None:
+                            self.chip_info[chip_name][chip_layer][
+                                'no_cheese'] = no_cheese_multipolygon
+                            if self.check_no_cheese(chip_name, chip_layer) == 1:
+                                sub_layer = int(
+                                    self.parse_value(
+                                        self.options.no_cheese_datatype))
+                                all_nocheese_gds = self.multipolygon_to_gds(
+                                    no_cheese_multipolygon, chip_layer,
+                                    sub_layer)
+                                no_cheese_subtract_cell_name = f'NoCheese_{chip_name}_{chip_layer}_{sub_layer}'
+                                no_cheese_cell = lib.new_cell(
+                                    no_cheese_subtract_cell_name,
+                                    overwrite_duplicate=True)
+                                no_cheese_cell.add(all_nocheese_gds)
+                                chip_only_top_layer_name = f'TOP_{chip_name}_{chip_layer}'
+                                if no_cheese_cell.get_bounding_box(
+                                ) is not None:
+                                    lib.cells[chip_only_top_layer_name].add(
+                                        gdspy.CellReference(no_cheese_cell))
+                                else:
+                                    lib.remove(no_cheese_cell)
         return
 
-    #From Thomas
-    #Commented out since not part of GDS.
-    # def cheese_buffer_maker(design, buffer_size):
-    #     #grab all the 'subtract=true' shapes
-    #     df = design.qgeometry.tables['poly']
-    #     poly_subs = df.loc[df['subtract'] == True]
-    #     poly_sub_geo = poly_subs['geometry'].tolist()
+    def cheese_buffer_maker(
+        self, sub_df: geopandas.GeoDataFrame
+    ) -> Union[None, shapely.geometry.multipolygon.MultiPolygon]:
+        """For each layer in each chip, and if it has a ground plane (subtract==True), 
+        determine the no-cheese buffer and return a shapely object. Before the buffer is
+        created for no-cheese, the LineStrings and Polygons are all combined. 
 
-    #     df = design.qgeometry.tables['path']
-    #     path_subs = df.loc[df['subtract'] == True]
-    #     path_sub_geo = path_subs['geometry'].tolist()
-    #     path_sub_width = path_subs['width'].tolist()
-    #     for n in range(len(path_subs)):
-    #         path_sub_geo[n] = path_sub_geo[n].buffer(path_sub_width[n],
-    #                                                  cap_style=2,
-    #                                                  join_style=2)
+        Args:
+            sub_df (geopandas.GeoDataFrame): The subset of QGeometry tables for each chip, and layer, 
+            and only if the layer has a ground plane.
 
-    #     #combine all shapes and buffer by buffer size
-    #     combo_l = poly_sub_geo + path_sub_geo
-    #     combo_l = metal.draw.union(combo_l)
-    #     combo_l = combo_l.buffer(buffer_size, cap_style=2, join_style=2)
+        Returns:
+            Union[None, shapely.geometry.multipolygon.MultiPolygon]: The shapely which combines the 
+            polygons and linestrings and creates buffer as specificed through default_options.
+        """
 
-    #     design.qgeometry.add_qgeometry('poly',
-    #                                    design._get_new_qcomponent_id(),
-    #                                    dict(buffer_layer=combo_l),
-    #                                    subtract=False,
-    #                                    helper=False,
-    #                                    layer=99,
-    #                                    chip='main')
+        no_cheese_buffer = float(self.parse_value(
+            self.options.no_cheese_buffer))
+        style_cap = int(self.parse_value(self.options.no_cheese_cap_style))
+        style_join = int(self.parse_value(self.options.no_cheese_join_style))
+
+        poly_sub_df = sub_df[sub_df.geometry.apply(
+            lambda x: isinstance(x, shapely.geometry.polygon.Polygon))]
+        poly_sub_geo = poly_sub_df['geometry'].tolist()
+
+        path_sub_df = sub_df[sub_df.geometry.apply(
+            lambda x: isinstance(x, shapely.geometry.linestring.LineString))]
+        path_sub_geo = path_sub_df['geometry'].tolist()
+        path_sub_width = path_sub_df['width'].tolist()
+        for n in range(len(path_sub_geo)):
+            path_sub_geo[n] = path_sub_geo[n].buffer(path_sub_width[n],
+                                                     cap_style=style_cap,
+                                                     join_style=style_join)
+
+        #  Need to add buffer_size, cap style, and join style to default options
+        combo_list = path_sub_geo + poly_sub_geo
+        combo_list = draw.union(combo_list)
+
+        # chip_box, status = self.design.get_x_y_for_chip(chip_name)
+        # if status == 0:
+        #     self.dict_bounds[chip_name]['for_subtract'] = chip_box
+        # else:
+
+        if len(combo_list.geoms) > 0:
+            #Can return either Multipolgon or just one polygon.
+            combo_list = combo_list.buffer(no_cheese_buffer,
+                                           cap_style=style_cap,
+                                           join_style=style_join)
+            if isinstance(combo_list, shapely.geometry.polygon.Polygon):
+                combo_list = shapely.geometry.MultiPolygon([combo_list])
+
+            # The type of combo_list will be  <class 'shapely.geometry.multipolygon.MultiPolygon'>
+            return combo_list
+        else:
+            return None
 
     def populate_poly_path_for_export(self):
         """Using the geometries for each table name in QGeometry, 
@@ -1395,10 +1449,12 @@ class QGDSRenderer(QRenderer):
             # Create self.lib and populate path and poly.
             self.populate_poly_path_for_export()
 
-            # Add no-cheese table to self.chip_info[chip_name][chip_layer]['no_cheese'], if self.options requests the layer.
+            # Add no-cheese MultiPolygon to self.chip_info[chip_name][chip_layer]['no_cheese'],
+            # if self.options requests the layer.
             self.populate_no_cheese()
 
-            # Use self.options  to decide what to put for export into self.chip_info[chip_name][chip_layer]['cheese'].
+            # Use self.options  to decide what to put for export
+            # into self.chip_info[chip_name][chip_layer]['cheese'].
             self.populate_cheese()
 
             # Export the file to disk from self.lib
@@ -1407,6 +1463,51 @@ class QGDSRenderer(QRenderer):
             return 1
         else:
             return 0
+
+    def multipolygon_to_gds(
+            self, multi_poly: shapely.geometry.multipolygon.MultiPolygon,
+            layer: int, data_type: int) -> list:
+        """Convert a shapely MultiPolygon to corresponding gdspy 
+
+        Args:
+            multi_poly (shapely.geometry.multipolygon.MultiPolygon): The shapely geometry of no-cheese boundary.
+            layer (int): The layer of the input multipolygon.
+            data_type (int): Used as a "sub-layer" to place the no-cheese gdspy output.
+
+        Returns:
+            list: Each entry is converted to GDSII.
+        """
+
+        max_points = int(self.parse_value(self.options.max_points))
+
+        all_polys = list(multi_poly)
+        all_gds = list()
+        for poly in all_polys:
+            exterior_poly = gdspy.Polygon(
+                list(poly.exterior.coords),
+                layer=layer,
+                datatype=data_type,
+            )
+
+            all_interiors = list()
+            if poly.interiors:
+                for hole in poly.interiors:
+                    interior_coords = list(hole.coords)
+                    all_interiors.append(interior_coords)
+                a_poly_set = gdspy.PolygonSet(all_interiors,
+                                              layer=layer,
+                                              datatype=data_type)
+                a_poly = gdspy.boolean(exterior_poly,
+                                       a_poly_set,
+                                       'not',
+                                       max_points=max_points,
+                                       layer=layer,
+                                       datatype=data_type)
+                all_gds.append(a_poly)
+            else:
+                exterior_poly = exterior_poly.fracture(max_points=max_points)
+                all_gds.append(exterior_poly)
+        return all_gds
 
     def qgeometry_to_gds(self, qgeometry_element: pd.Series) -> 'gdspy.polygon':
         """Convert the design.qgeometry table to format used by GDS renderer.
