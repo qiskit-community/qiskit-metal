@@ -915,7 +915,7 @@ class QGDSRenderer(QRenderer):
         #return codes
         # 0 This is the initialization state.
         # 1 The layer is in the chip and cheese is True.
-        # 2 The layer is in the chip and no-cheese is False.
+        # 2 The layer is in the chip and cheese is False.
         # 3 The chip is not in dict, so can't give answer.
         # 4 The layer is not in the chip, so can't give answer.
         code = 0
@@ -1015,23 +1015,40 @@ class QGDSRenderer(QRenderer):
         return code
 
     def populate_cheese(self):
-        if (is_true(self.parse_value(self.options.cheese_view_in_file)) or
-                is_true(self.parse_value(self.options.no_cheese_view_in_file))):
+        lib = self.lib
+        cheese_sub_layer = int(self.parse_value(self.options.cheese_datatype))
 
-            sub_layer = int(self.parse_value(self.options.cheese_sublayer))
-            lib = self.lib
-            all_chips_top_name = 'TOP'
+        for chip_name in self.chip_info:
+            layers_in_chip = self.design.qgeometry.get_all_unique_layers(
+                chip_name)
 
-            # look at lib and get the cell, so can add to it. so now can add
-            # self.lib.cells['TOP_main_1'].add()
+            for chip_layer in layers_in_chip:
+                code = self.check_cheese(chip_name, chip_layer)
+                if code == 1:
+                    chip_box, status = self.design.get_x_y_for_chip(chip_name)
+                    if status == 0:
+                        minx, miny, maxx, maxy = chip_box
+                        chip_rect_gds = gdspy.Rectangle(
+                            (minx, miny), (maxx, maxy),
+                            layer=chip_layer,
+                            datatype=cheese_sub_layer)
 
-            for chip_name in self.chip_info:
-                chip_only_top_name = f'TOP_{chip_name}'
-                layers_in_chip = self.design.qgeometry.get_all_unique_layers(
-                    chip_name)
-                for chip_layer in layers_in_chip:
-                    #Regarding no_cheese,if the user doesn't want as part of output, then delete
-                    pass
+                        # write method to create a cell with hole and shape
+
+                        # Use cell reference to add to all the cheese in chip_rect_gds
+
+                        #remove any hole that are in all_nocheese_gds
+                        all_nocheese_gds = self.chip_info[chip_name][
+                            chip_layer]['no_cheese_gds']
+
+                        chip_only_top_name = f'TOP_{chip_name}'
+                        cheese_cell_name = f'TOP_{chip_name}_{chip_layer}_NoCheese_{cheese_sub_layer}'
+
+                        #cheese_chip = lib.new_cell(, overwrite_duplicate=True))
+
+                        a = 5  # for breakpoint
+
+                a = 5  #for breakpoint
 
     def populate_no_cheese(self):
         """Iterate through every chip and layer.  If options choose to have either cheese or no-cheese,
@@ -1043,9 +1060,10 @@ class QGDSRenderer(QRenderer):
         """
         no_cheese_buffer = float(self.parse_value(
             self.options.no_cheese_buffer))
+        sub_layer = int(self.parse_value(self.options.no_cheese_datatype))
         lib = self.lib
-        for chip_name in self.chip_info:
 
+        for chip_name in self.chip_info:
             layers_in_chip = self.design.qgeometry.get_all_unique_layers(
                 chip_name)
 
@@ -1053,9 +1071,6 @@ class QGDSRenderer(QRenderer):
                 code = self.check_either_cheese(chip_name, chip_layer)
 
                 if (code == 1 or code == 2 or code == 3):
-                    sub_layer = int(
-                        self.parse_value(self.options.no_cheese_datatype))
-
                     if len(self.chip_info[chip_name][chip_layer]
                            ['all_subtract_true']) != 0:
 
@@ -1067,20 +1082,26 @@ class QGDSRenderer(QRenderer):
                         if no_cheese_multipolygon is not None:
                             self.chip_info[chip_name][chip_layer][
                                 'no_cheese'] = no_cheese_multipolygon
+                            sub_layer = int(
+                                self.parse_value(
+                                    self.options.no_cheese_datatype))
+                            all_nocheese_gds = self.multipolygon_to_gds(
+                                no_cheese_multipolygon, chip_layer, sub_layer,
+                                no_cheese_buffer)
+                            self.chip_info[chip_name][chip_layer][
+                                'no_cheese_gds'] = all_nocheese_gds
+
                             if self.check_no_cheese(chip_name, chip_layer) == 1:
-                                sub_layer = int(
-                                    self.parse_value(
-                                        self.options.no_cheese_datatype))
-                                all_nocheese_gds = self.multipolygon_to_gds(
-                                    no_cheese_multipolygon, chip_layer,
-                                    sub_layer, no_cheese_buffer)
                                 no_cheese_subtract_cell_name = f'TOP_{chip_name}_{chip_layer}_NoCheese_{sub_layer}'
                                 no_cheese_cell = lib.new_cell(
                                     no_cheese_subtract_cell_name,
                                     overwrite_duplicate=True)
+
                                 no_cheese_cell.add(all_nocheese_gds)
+
                                 # chip_only_top_layer_name = f'TOP_{chip_name}_{chip_layer}'
                                 chip_only_top_layer_name = f'TOP_{chip_name}'
+
                                 if no_cheese_cell.get_bounding_box(
                                 ) is not None:
                                     lib.cells[chip_only_top_layer_name].add(
