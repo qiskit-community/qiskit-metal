@@ -1041,6 +1041,8 @@ class QGDSRenderer(QRenderer):
         at f'NoCheese_{chip_name}_{chip_layer}_{sub_layer}'.  The sub_layer is data_type and denoted
         in the options. 
         """
+        no_cheese_buffer = float(self.parse_value(
+            self.options.no_cheese_buffer))
         lib = self.lib
         for chip_name in self.chip_info:
 
@@ -1060,7 +1062,7 @@ class QGDSRenderer(QRenderer):
                         sub_df = self.chip_info[chip_name][chip_layer][
                             'all_subtract_true']
                         no_cheese_multipolygon = self.cheese_buffer_maker(
-                            sub_df, chip_name)
+                            sub_df, chip_name, no_cheese_buffer)
 
                         if no_cheese_multipolygon is not None:
                             self.chip_info[chip_name][chip_layer][
@@ -1071,13 +1073,14 @@ class QGDSRenderer(QRenderer):
                                         self.options.no_cheese_datatype))
                                 all_nocheese_gds = self.multipolygon_to_gds(
                                     no_cheese_multipolygon, chip_layer,
-                                    sub_layer)
-                                no_cheese_subtract_cell_name = f'NoCheese_{chip_name}_{chip_layer}_{sub_layer}'
+                                    sub_layer, no_cheese_buffer)
+                                no_cheese_subtract_cell_name = f'TOP_{chip_name}_{chip_layer}_NoCheese_{sub_layer}'
                                 no_cheese_cell = lib.new_cell(
                                     no_cheese_subtract_cell_name,
                                     overwrite_duplicate=True)
                                 no_cheese_cell.add(all_nocheese_gds)
-                                chip_only_top_layer_name = f'TOP_{chip_name}_{chip_layer}'
+                                # chip_only_top_layer_name = f'TOP_{chip_name}_{chip_layer}'
+                                chip_only_top_layer_name = f'TOP_{chip_name}'
                                 if no_cheese_cell.get_bounding_box(
                                 ) is not None:
                                     lib.cells[chip_only_top_layer_name].add(
@@ -1087,7 +1090,8 @@ class QGDSRenderer(QRenderer):
         return
 
     def cheese_buffer_maker(
-        self, sub_df: geopandas.GeoDataFrame, chip_name: str
+        self, sub_df: geopandas.GeoDataFrame, chip_name: str,
+        no_cheese_buffer: float
     ) -> Union[None, shapely.geometry.multipolygon.MultiPolygon]:
         """For each layer in each chip, and if it has a ground plane (subtract==True), 
         determine the no-cheese buffer and return a shapely object. Before the buffer is
@@ -1096,14 +1100,14 @@ class QGDSRenderer(QRenderer):
         Args:
             sub_df (geopandas.GeoDataFrame): The subset of QGeometry tables for each chip, and layer, 
             and only if the layer has a ground plane.
+            chip_name (str): Name of chip.
+            no_cheese_buffer (float) :  Will be used for fillet and size of buffer. 
 
         Returns:
             Union[None, shapely.geometry.multipolygon.MultiPolygon]: The shapely which combines the 
             polygons and linestrings and creates buffer as specificed through default_options.
         """
 
-        no_cheese_buffer = float(self.parse_value(
-            self.options.no_cheese_buffer))
         style_cap = int(self.parse_value(self.options.no_cheese_cap_style))
         style_join = int(self.parse_value(self.options.no_cheese_join_style))
 
@@ -1479,18 +1483,19 @@ class QGDSRenderer(QRenderer):
 
     def multipolygon_to_gds(
             self, multi_poly: shapely.geometry.multipolygon.MultiPolygon,
-            layer: int, data_type: int) -> list:
+            layer: int, data_type: int, no_cheese_buffer: float) -> list:
         """Convert a shapely MultiPolygon to corresponding gdspy 
 
         Args:
             multi_poly (shapely.geometry.multipolygon.MultiPolygon): The shapely geometry of no-cheese boundary.
             layer (int): The layer of the input multipolygon.
             data_type (int): Used as a "sub-layer" to place the no-cheese gdspy output.
+            no_cheese_buffer (float): Used for both fillet and buffer size. 
 
         Returns:
             list: Each entry is converted to GDSII.
         """
-
+        precision = self.parse_value(self.options.precision)
         max_points = int(self.parse_value(self.options.max_points))
 
         all_polys = list(multi_poly)
@@ -1515,10 +1520,19 @@ class QGDSRenderer(QRenderer):
                                        'not',
                                        max_points=max_points,
                                        layer=layer,
-                                       datatype=data_type)
+                                       datatype=data_type,
+                                       precision=precision)
+
+                a_poly.fillet(no_cheese_buffer,
+                              points_per_2pi=128,
+                              max_points=max_points,
+                              precision=precision)
                 all_gds.append(a_poly)
             else:
-                exterior_poly = exterior_poly.fracture(max_points=max_points)
+                exterior_poly.fillet(no_cheese_buffer,
+                                     points_per_2pi=128,
+                                     max_points=max_points,
+                                     precision=precision)
                 all_gds.append(exterior_poly)
         return all_gds
 
