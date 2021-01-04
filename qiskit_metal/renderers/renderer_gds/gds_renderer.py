@@ -32,6 +32,7 @@ from pandas.api.types import is_numeric_dtype
 import numpy as np
 
 from qiskit_metal.renderers.renderer_base import QRenderer
+from qiskit_metal.renderers.renderer_gds.make_cheese import Cheesing
 from qiskit_metal.toolbox_metal.parsing import is_true
 from qiskit_metal import draw
 
@@ -159,10 +160,11 @@ class QGDSRenderer(QRenderer):
         cheese_datatype='100',
 
         # Expect to mostly cheese a square, but allow for expansion.
+        # 0 is rectangle, 1 is circle
         cheese_shape='0',
         # cheese_shape_0 is rectangle
         cheese_0_x='50um',
-        cheese_0_y='100um',
+        cheese_0_y='50um',
         # chese_shape_1 is circle
         cheese_1_radius='100um',
 
@@ -1015,6 +1017,8 @@ class QGDSRenderer(QRenderer):
         return code
 
     def populate_cheese(self):
+        #Iterate through each chip, then layer to determine the cheeing geometry.
+
         lib = self.lib
         cheese_sub_layer = int(self.parse_value(self.options.cheese_datatype))
 
@@ -1028,18 +1032,26 @@ class QGDSRenderer(QRenderer):
                     chip_box, status = self.design.get_x_y_for_chip(chip_name)
                     if status == 0:
                         minx, miny, maxx, maxy = chip_box
-                        chip_rect_gds = gdspy.Rectangle(
-                            (minx, miny), (maxx, maxy),
-                            layer=chip_layer,
-                            datatype=cheese_sub_layer)
+
+                        cheesed = self.cheese_based_on_shape(
+                            minx, miny, maxx, maxy, chip_name, chip_layer,
+                            cheese_sub_layer)
+
+                        # chip_rect_gds = gdspy.Rectangle(
+                        #     (minx, miny), (maxx, maxy),
+                        #     layer=chip_layer,
+                        #     datatype=cheese_sub_layer)
 
                         # write method to create a cell with hole and shape
 
                         # Use cell reference to add to all the cheese in chip_rect_gds
+                        # Type of cheesing, square vs some other shape.
+                        # Doubles in density near boundaries,
+                        # provide a callable function let user do it.
+                        # Default, circle, rectangle, , shape choice.
+                        # Test with both square and round , and size.
 
                         #remove any hole that are in all_nocheese_gds
-                        all_nocheese_gds = self.chip_info[chip_name][
-                            chip_layer]['no_cheese_gds']
 
                         chip_only_top_name = f'TOP_{chip_name}'
                         cheese_cell_name = f'TOP_{chip_name}_{chip_layer}_NoCheese_{cheese_sub_layer}'
@@ -1049,6 +1061,71 @@ class QGDSRenderer(QRenderer):
                         a = 5  # for breakpoint
 
                 a = 5  #for breakpoint
+
+    def cheese_based_on_shape(self, minx: float, miny: float, maxx: float,
+                              maxy: float, chip_name: str, chip_layer: int,
+                              cheese_sub_layer: int):
+        """Instantiate class to do cheesing.
+
+        Args:
+            minx (float): Chip minimum x location.
+            miny (float): Chip minimum y location.
+            maxx (float): Chip maximum x location.
+            maxy (float): chip maximum y location.
+            chip_name (str): User defined chip name.
+            layer (int): Layer number for calculating the cheese.
+            cheese_sub_layer (int):  User defined datatype, considered a sub-layer number for where to place the cheese output.
+        """
+
+        cheese_shape = int(self.parse_value(self.options.cheese_shape))
+
+        all_nocheese = self.chip_info[chip_name][chip_layer]['no_cheese']
+
+        all_nocheese_gds = self.chip_info[chip_name][chip_layer][
+            'no_cheese_gds']
+
+        if cheese_shape == 0:
+            cheese_x = float(self.parse_value(self.options.cheese_0_x))
+            cheese_y = float(self.parse_value(self.options.cheese_0_y))
+            a_cheese = Cheesing(all_nocheese,
+                                all_nocheese_gds,
+                                self.lib,
+                                minx,
+                                miny,
+                                maxx,
+                                maxy,
+                                chip_name,
+                                chip_layer,
+                                cheese_sub_layer,
+                                self.logger,
+                                cheese_shape=cheese_shape,
+                                shape_0_x=cheese_x,
+                                shape_0_y=cheese_y)
+        elif cheese_shape == 1:
+            cheese_radius = float(self.parse_value(
+                self.options.cheese_1_radius))
+            a_cheese = Cheesing(all_nocheese,
+                                all_nocheese_gds,
+                                self.lib,
+                                minx,
+                                miny,
+                                maxx,
+                                maxy,
+                                chip_name,
+                                chip_layer,
+                                cheese_sub_layer,
+                                self.logger,
+                                cheese_shape=cheese_shape,
+                                shape_1_radius=cheese_radius)
+        else:
+            self.logger.warning(
+                f'The cheese_shape={cheese_shape} is unknown in QGDSRenderer.')
+            a_cheese = None
+
+        if a_cheese is not None:
+            a_cheese.apply_cheesing()
+
+        return
 
     def populate_no_cheese(self):
         """Iterate through every chip and layer.  If options choose to have either cheese or no-cheese,
