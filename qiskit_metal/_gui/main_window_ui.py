@@ -3,8 +3,8 @@
 # Form implementation generated from reading ui file 'main_window_ui.ui',
 # licensing of 'main_window_ui.ui' applies.
 #
-# Created: Wed Nov 11 18:01:16 2020
-#      by: pyside2-uic  running on PySide2 5.9.0~a1
+# Created: Tue Jan  5 12:28:39 2021
+#      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -1054,6 +1054,6 @@ class Ui_MainWindow(object):
 
 
 from .widgets.bases.expanding_toolbar import QToolBarExpanding
-from .widgets.all_components.table_view_all_components import QTableView_AllComponents
 from .widgets.log_widget.log_metal import QTextEditLogger
+from .widgets.all_components.table_view_all_components import QTableView_AllComponents
 from . import main_window_rc_rc
