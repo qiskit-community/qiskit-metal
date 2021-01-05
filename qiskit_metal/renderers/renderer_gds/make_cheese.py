@@ -38,6 +38,7 @@ class Cheesing():
             layer: int,
             datatype: int,
             logger: logging.Logger,
+            max_points: int,
             cheese_shape: int = 0,
 
             #  For rectangle
@@ -59,6 +60,7 @@ class Cheesing():
             chip_name (str): User defined chip name.
             layer (int): Layer number for calculating the cheese.
             datatype (int): User defined datatype, considered a sub-layer number for where to place the cheese output.
+            max_points (int): Used in gdspy to identify max number of points for a Polygon.
             logger (logging.Logger):  Used to give warnings and errors.
             cheese_shape (int, optional): 0 is rectangle. 1 is circle. Defaults to 0.
             shape_0_x (float, optional): The width will be centered at (x=0,y=0). Defaults to 0.000050.
@@ -80,6 +82,7 @@ class Cheesing():
         self.chip_name = chip_name
         self.layer = layer
         self.datatype = datatype
+        self.max_points = max_points
 
         self.logger = logger
 
@@ -103,6 +106,7 @@ class Cheesing():
         # Default, circle, rectangle, , shape choice.
         # Test with both square and round , and size.
         self.make_one_hole_at_zero_zero()
+        self.hole_to_lib()
 
         a = 5  # for breakpoint
         return
@@ -113,13 +117,49 @@ class Cheesing():
         """
         if self.cheese_shape == 0:
             w, h = self.shape_0_x, self.shape_0_y
-            self.hole = shapely.geometry.Polygon([(-w / 2, -h / 2),
-                                                  (-w / 2, h / 2),
-                                                  (w / 2, h / 2)])
+            self.hole = shapely.geometry.box(-w / 2, -h / 2, w / 2, h / 2)
         elif self.cheese_shape == 1:
             self.hole = shapely.geometry.Point(0, 0).buffer(self.shape_1_radius)
         else:
             self.logger.warning(
                 f'The cheese_shape={cheese_shape} is unknown in Cheesing class.'
             )
+        return
+
+    def hole_to_lib(self):
+        #convert the self.hole to a gds cell and add to self.lib
+
+        if isinstance(self.hole, shapely.geometry.Polygon):
+            exterior_poly = gdspy.Polygon(list(self.hole.exterior.coords),
+                                          layer=self.layer,
+                                          datatype=self.datatype)
+
+            # If polygons have a holes, need to remove it for gdspy.
+            all_interiors = list()
+            geom = self.hole
+            if geom.interiors:
+                for hole in geom.interiors:
+                    interior_coords = list(hole.coords)
+                    all_interiors.append(interior_coords)
+                a_poly_set = gdspy.PloygonSet(all_interiors,
+                                              layer=self.layer,
+                                              datatype=self.datatype)
+                a_poly = gdspy.boolean(exterior_poly,
+                                       a_poly_set,
+                                       'not',
+                                       max_points=self.max_points,
+                                       layer=self.layer,
+                                       datatype=10)
+            else:
+                a_poly = exterior_poly.fracture(max_points=self.max_points)
+        else:
+            hole_type = type(self.hole)
+            self.logger.warning(
+                f'The self.hole was not converted to gdspy; the type \'{hole_type}\' was not handeled.'
+            )
+
+        #convert a_poly to cell
+
+        a = 5  #for breakpoint
+
         return

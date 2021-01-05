@@ -1077,30 +1077,32 @@ class QGDSRenderer(QRenderer):
             cheese_sub_layer (int):  User defined datatype, considered a sub-layer number for where to place the cheese output.
         """
 
+        max_points = int(self.parse_value(self.options.max_points))
         cheese_shape = int(self.parse_value(self.options.cheese_shape))
-
         all_nocheese = self.chip_info[chip_name][chip_layer]['no_cheese']
-
         all_nocheese_gds = self.chip_info[chip_name][chip_layer][
             'no_cheese_gds']
 
         if cheese_shape == 0:
             cheese_x = float(self.parse_value(self.options.cheese_0_x))
             cheese_y = float(self.parse_value(self.options.cheese_0_y))
-            a_cheese = Cheesing(all_nocheese,
-                                all_nocheese_gds,
-                                self.lib,
-                                minx,
-                                miny,
-                                maxx,
-                                maxy,
-                                chip_name,
-                                chip_layer,
-                                cheese_sub_layer,
-                                self.logger,
-                                cheese_shape=cheese_shape,
-                                shape_0_x=cheese_x,
-                                shape_0_y=cheese_y)
+            a_cheese = Cheesing(
+                all_nocheese,
+                all_nocheese_gds,
+                self.lib,
+                minx,
+                miny,
+                maxx,
+                maxy,
+                chip_name,
+                chip_layer,
+                cheese_sub_layer,
+                self.logger,
+                max_points,
+                cheese_shape=cheese_shape,
+                shape_0_x=cheese_x,
+                shape_0_y=cheese_y,
+            )
         elif cheese_shape == 1:
             cheese_radius = float(self.parse_value(
                 self.options.cheese_1_radius))
@@ -1115,6 +1117,7 @@ class QGDSRenderer(QRenderer):
                                 chip_layer,
                                 cheese_sub_layer,
                                 self.logger,
+                                max_points,
                                 cheese_shape=cheese_shape,
                                 shape_1_radius=cheese_radius)
         else:
@@ -1570,7 +1573,9 @@ class QGDSRenderer(QRenderer):
 
             # Use self.options  to decide what to put for export
             # into self.chip_info[chip_name][chip_layer]['cheese'].
-            self.populate_cheese()
+
+            # Not finished yet. Will get back to this later.
+            # self.populate_cheese()
 
             # Export the file to disk from self.lib
             self.lib.write_gds(file_name)
@@ -1620,17 +1625,17 @@ class QGDSRenderer(QRenderer):
                                        layer=layer,
                                        datatype=data_type,
                                        precision=precision)
-
-                a_poly.fillet(no_cheese_buffer,
-                              points_per_2pi=128,
-                              max_points=max_points,
-                              precision=precision)
+                # Poly facturing leading to a funny shape. Leave this out of gds output for now.
+                # a_poly.fillet(no_cheese_buffer,
+                #               points_per_2pi=128,
+                #               max_points=max_points,
+                #               precision=precision)
                 all_gds.append(a_poly)
             else:
-                exterior_poly.fillet(no_cheese_buffer,
-                                     points_per_2pi=128,
-                                     max_points=max_points,
-                                     precision=precision)
+                # exterior_poly.fillet(no_cheese_buffer,
+                #                      points_per_2pi=128,
+                #                      max_points=max_points,
+                #                      precision=precision)
                 all_gds.append(exterior_poly)
         return all_gds
 
