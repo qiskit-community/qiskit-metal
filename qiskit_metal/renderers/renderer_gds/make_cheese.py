@@ -97,18 +97,10 @@ class Cheesing():
                                                   (maxx, maxy)])
 
     def apply_cheesing(self):
-        # write method to create a cell with hole and shape
-
-        # Use cell reference to add to all the cheese in chip_rect_gds
-        # Type of cheesing, square vs some other shape.
-        # Doubles in density near boundaries,
-        # provide a callable function let user do it.
-        # Default, circle, rectangle, , shape choice.
-        # Test with both square and round , and size.
+        """Not complete. 
+        """
         self.make_one_hole_at_zero_zero()
         self.hole_to_lib()
-
-        a = 5  # for breakpoint
         return
 
     def make_one_hole_at_zero_zero(self):
@@ -127,7 +119,10 @@ class Cheesing():
         return
 
     def hole_to_lib(self):
-        #convert the self.hole to a gds cell and add to self.lib
+        """Convert the self.hole to a gds cell and add to self.lib.
+
+        This is not complete.
+        """
 
         if isinstance(self.hole, shapely.geometry.Polygon):
             exterior_poly = gdspy.Polygon(list(self.hole.exterior.coords),
@@ -158,8 +153,6 @@ class Cheesing():
                 f'The self.hole was not converted to gdspy; the type \'{hole_type}\' was not handeled.'
             )
 
-        #convert a_poly to cell
-
-        a = 5  #for breakpoint
+        #convert a_poly to cell, then use cell reference to add to all the cheese in chip_rect_gds
 
         return
