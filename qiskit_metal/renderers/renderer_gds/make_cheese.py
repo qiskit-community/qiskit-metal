@@ -21,6 +21,7 @@ import pandas as pd
 import logging
 
 
+### Presently this is not instantiated nor called nor executed.
 class Cheesing():
     """Create a cheese cell based on input of no-cheese locations.
     """
@@ -96,12 +97,13 @@ class Cheesing():
         self.boundary = shapely.geometry.Polygon([(minx, miny), (minx, maxy),
                                                   (maxx, maxy)])
 
-    def apply_cheesing(self):
-        """Not complete. 
+    def apply_cheesing(self) -> gdspy.GdsLibrary:
+        """Not complete. Need to populate self.lib with cheese holes.
         """
         self.make_one_hole_at_zero_zero()
         self.hole_to_lib()
-        return
+
+        return self.lib
 
     def make_one_hole_at_zero_zero(self):
         """This method will create just one hole used for cheesing 

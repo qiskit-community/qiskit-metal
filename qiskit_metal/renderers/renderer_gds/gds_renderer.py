@@ -157,8 +157,9 @@ class QGDSRenderer(QRenderer):
 
         # For every layer, if there is a ground, do cheesing and place the output on the datatype number (sub-layer number)
         no_cheese_datatype='99',
-        cheese_datatype='100',
 
+        #Cheesing is NOT completed
+        cheese_datatype='100',
         # Expect to mostly cheese a square, but allow for expansion.
         # 0 is rectangle, 1 is circle
         cheese_shape='0',
@@ -1016,6 +1017,7 @@ class QGDSRenderer(QRenderer):
 
         return code
 
+    # This is not complete.  Presently, not called/executed.
     def populate_cheese(self):
         #Iterate through each chip, then layer to determine the cheeing geometry.
 
@@ -1037,36 +1039,15 @@ class QGDSRenderer(QRenderer):
                             minx, miny, maxx, maxy, chip_name, chip_layer,
                             cheese_sub_layer)
 
-                        # chip_rect_gds = gdspy.Rectangle(
-                        #     (minx, miny), (maxx, maxy),
-                        #     layer=chip_layer,
-                        #     datatype=cheese_sub_layer)
-
-                        # write method to create a cell with hole and shape
-
-                        # Use cell reference to add to all the cheese in chip_rect_gds
-                        # Type of cheesing, square vs some other shape.
-                        # Doubles in density near boundaries,
-                        # provide a callable function let user do it.
-                        # Default, circle, rectangle, , shape choice.
-                        # Test with both square and round , and size.
-
-                        #remove any hole that are in all_nocheese_gds
-
                         chip_only_top_name = f'TOP_{chip_name}'
                         cheese_cell_name = f'TOP_{chip_name}_{chip_layer}_NoCheese_{cheese_sub_layer}'
 
-                        #cheese_chip = lib.new_cell(, overwrite_duplicate=True))
-
-                        a = 5  # for breakpoint
-
-                a = 5  #for breakpoint
-
+    ###  The Cheesing class needs to be completed. This method does not produce results.
+    ###  Presently, not called/executed.
     def cheese_based_on_shape(self, minx: float, miny: float, maxx: float,
                               maxy: float, chip_name: str, chip_layer: int,
                               cheese_sub_layer: int):
         """Instantiate class to do cheesing.
-
         Args:
             minx (float): Chip minimum x location.
             miny (float): Chip minimum y location.
@@ -1126,7 +1107,7 @@ class QGDSRenderer(QRenderer):
             a_cheese = None
 
         if a_cheese is not None:
-            a_cheese.apply_cheesing()
+            a_lib = a_cheese.apply_cheesing()
 
         return
 
@@ -1574,7 +1555,7 @@ class QGDSRenderer(QRenderer):
             # Use self.options  to decide what to put for export
             # into self.chip_info[chip_name][chip_layer]['cheese'].
 
-            # Not finished yet. Will get back to this later.
+            # Not finished. Comment-out so not called/executed.
             # self.populate_cheese()
 
             # Export the file to disk from self.lib
