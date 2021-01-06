@@ -19,10 +19,15 @@
 
 from typing import List, Union
 
+import pandas as pd
 from collections import defaultdict
 
 import pyEPR as epr
+from pyEPR.ansys import ureg
+from pyEPR.reports import _plot_q3d_convergence_main, _plot_q3d_convergence_chi_f
+from pyEPR.calcs.convert import Convert
 from qiskit_metal import Dict
+from qiskit_metal.analyses.quantization.lumped_capacitive import extract_transmon_coupled_Noscillator
 from qiskit_metal.renderers.renderer_ansys.ansys_renderer import QAnsysRenderer
 
 
@@ -204,3 +209,49 @@ class QQ3DRenderer(QAnsysRenderer):
         if self.pinfo:
             df_cmat, user_units, _, _ = self.pinfo.setup.get_matrix(variation=variation, solution_kind = solution_kind, pass_number=pass_number)
             return df_cmat
+
+    def lumped_oscillator_vs_passes(self,
+                                    Lj_nH: float,
+                                    Cj_fF: float,
+                                    N: int,
+                                    fr: Union[list, float],
+                                    fb: Union[list, float],
+                                    maxPass: int,
+                                    variation: str = '',
+                                    solution_kind: str = 'AdaptivePass',
+                                    g_scale: float = 1) -> dict:
+        """
+        Obtain dictionary composed of pass numbers (keys) and their respective capacitance matrices (values).
+        All capacitance matrices utilize the same values for Lj_nH and onwards in the list of arguments.
+
+        Args:
+            Lj_nH (float): junction inductance (in nH)
+            Cj_fF (float): junction capacitance (in fF)
+            N (int): coupling pads (1 readout, N - 1 bus)
+            fr (Union[list, float]): coupling bus and readout frequencies (in GHz). fr can be a list with the order
+                the order they appear in the capMatrix.
+            fb (Union[list, float]): coupling bus and readout frequencies (in GHz). fb can be a list with the order
+                the order they appear in the capMatrix.
+            maxPass (int): maximum number of passes
+            variation (str, optional): [description]. Defaults to ''.
+            solution_kind (str, optional): [description]. Defaults to 'AdaptivePass'.
+            g_scale (float, optional): [description]. Defaults to 1..
+
+        Returns:
+            dict: dictionary composed of pass numbers (keys) and their respective capacitance matrices (values)
+        """
+        IC_Amps = Convert.Ic_from_Lj(Lj_nH, 'nH', 'A')
+        CJ = ureg(f'{Cj_fF} fF').to('farad').magnitude
+        fr = ureg(f'{fr} GHz').to('GHz').magnitude
+        fb = [ureg(f'{freq} GHz').to('GHz').magnitude for freq in fb]
+        RES = {}
+        for i in range(1, maxPass):
+            print(i)
+            df_cmat, user_units, _, _ = self.pinfo.setup.get_matrix(variation=variation, solution_kind=solution_kind, pass_number=i)
+            c_units = ureg(user_units).to('farads').magnitude
+            res = extract_transmon_coupled_Noscillator(df_cmat.values * c_units, IC_Amps, CJ, N, fb, fr, g_scale = 1)
+            RES[i] = res
+        RES = pd.DataFrame(RES).transpose()
+        RES['χr MHz'] = abs(RES['chi_in_MHz'].apply(lambda x: x[0]))
+        RES['gr MHz'] = abs(RES['gbus'].apply(lambda x: x[0]))
+        return RES

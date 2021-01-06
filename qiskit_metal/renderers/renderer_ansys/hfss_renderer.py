@@ -55,12 +55,15 @@ class QHFSSRenderer(QAnsysRenderer):
                          render_template=render_template, render_options=render_options)
         QHFSSRenderer.load()
     
-    def render_design(self, selection: Union[list, None] = None, open_pins: Union[list, None] = None):
+    def render_design(self, 
+                      selection: Union[list, None] = None, 
+                      open_pins: Union[list, None] = None,
+                      port_list: Union[list, None] = None):
         """
         Initiate rendering of components in design contained in selection, assuming they're valid.
         Components are rendered before the chips they reside on, and subtraction of negative shapes
         is performed at the very end. Add the metallize() method here to turn objects in self.assign_perfE
-        (see init in QAnsysRenderer class) into perfect electrical conductors.
+        (see init in QAnsysRenderer class) into perfect electrical conductors. Create lumped ports as needed.
 
         Among the components selected for export, there may or may not be unused (unconnected) pins.
         The second parameter, open_pins, contains tuples of the form (component_name, pin_name) that
@@ -69,12 +72,74 @@ class QHFSSRenderer(QAnsysRenderer):
         components. All pins in this list are rendered with an additional endcap in the form of a
         rectangular cutout, to be subtracted from its respective plane.
 
+        In driven modal solutions, the Ansys design must include one or more ports. This is done by adding
+        all port designations and their respective impedances in Ohms as (qcomp, pin, impedance) to
+        port_list. Note that an open endcap must separate the two sides of each pin before inserting a lumped
+        port in between, so behind the scenes all pins in port_list are also added to open_pins. Practically,
+        however, port_list and open_pins are inputted as mutually exclusive lists.
+
         Args:
             selection (Union[list, None], optional): List of components to render. Defaults to None.
             open_pins (Union[list, None], optional): List of tuples of pins that are open. Defaults to None.
+            port_list (Union[list, None], optional): List of tuples of pins to be rendered as ports. Defaults to None.
         """
-        super().render_design(selection=selection, open_pins=open_pins)
+        self.chip_subtract_dict = defaultdict(set)
+        self.assign_perfE = []
+        self.assign_mesh = []
+
+        self.render_tables(selection)
+        if port_list:
+            self.add_endcaps(open_pins + [(qcomp, pin) for qcomp, pin, _ in port_list])
+        else:
+            self.add_endcaps(open_pins)
+
+        self.render_chips()
+        self.subtract_from_ground()
+        self.add_mesh()
         self.metallize()
+        if port_list:
+            self.create_ports(port_list)
+
+    def create_ports(self, port_list: list):
+        """
+        Add ports and their respective impedances in Ohms to designated pins in port_list.
+        Port_list is formatted as [(qcomp_0, pin_0, impedance_0), (qcomp_1, pin_1, impedance_1), ...].
+
+        Args:
+            port_list (list): List of tuples of pins to be rendered as ports.
+        """
+        for qcomp, pin, impedance in port_list:
+            port_name = f'Port_{qcomp}_{pin}'
+            pdict =  self.design.components[qcomp].pins[pin]
+            midpt, gap_size, norm_vec, width = pdict['middle'], pdict['gap'], pdict['normal'], pdict['width']
+            width = parse_units(width)
+            endpoints = parse_units([midpt, midpt + gap_size * norm_vec])
+            endpoints_3d = to_vec3D(endpoints, 0) # Set z height to 0
+            x0, y0 = endpoints_3d[0][:2]
+            x1, y1 = endpoints_3d[1][:2]
+            if abs(y1 - y0) > abs(x1 - x0):
+                # Junction runs vertically up/down
+                x_min, x_max = x0 - width / 2, x0 + width / 2
+                y_min, y_max = min(y0, y1), max(y0, y1)
+            else:
+                # Junction runs horizontally left/right
+                x_min, x_max = min(x0, x1), max(x0, x1)
+                y_min, y_max = y0 - width / 2, y0 + width / 2
+            
+            # Draw rectangle
+                self.logger.debug(f'Drawing a rectangle: {port_name}')
+            poly_ansys = self.modeler.draw_rect_corner(
+                [x_min, y_min, 0], x_max - x_min, y_max - y_min, 0, **dict(transparency=0.0))
+            axis = 'x' if abs(x1 - x0) > abs(y1 - y0) else 'y'
+            poly_ansys.make_lumped_port(axis, z0 = str(impedance) + 'ohm', name = f'LumpPort_{qcomp}_{pin}')
+            self.modeler.rename_obj(poly_ansys, port_name)
+            
+            # Draw line
+            lump_line = self.modeler.draw_polyline([endpoints_3d[0], endpoints_3d[1]],
+                                                closed=False,
+                                                **dict(color=(128, 0, 128)))
+            lump_line = lump_line.rename(f'voltage_line_{port_name}')
+            lump_line.show_direction = True
 
     def render_element_junction(self, qgeom: pd.Series):
         """
