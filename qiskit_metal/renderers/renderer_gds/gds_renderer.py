@@ -1210,7 +1210,7 @@ class QGDSRenderer(QRenderer):
         combo_list = path_sub_geo + poly_sub_geo
         combo_shapely = draw.union(combo_list)
 
-        if len(combo_shapely.geoms) > 0:
+        if not combo_shapely.is_empty:
             #Can return either Multipolgon or just one polygon.
             combo_shapely = combo_shapely.buffer(no_cheese_buffer,
                                                  cap_style=style_cap,
