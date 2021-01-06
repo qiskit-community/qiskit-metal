@@ -1632,6 +1632,7 @@ class QGDSRenderer(QRenderer):
                 #               precision=precision)
                 all_gds.append(a_poly)
             else:
+                # Poly facturing leading to a funny shape. Leave this out of gds output for now.
                 # exterior_poly.fillet(no_cheese_buffer,
                 #                      points_per_2pi=128,
                 #                      max_points=max_points,
