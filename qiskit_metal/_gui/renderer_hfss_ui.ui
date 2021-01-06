@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>651</width>
+    <width>646</width>
     <height>544</height>
    </rect>
   </property>
@@ -76,7 +76,7 @@
       <x>325</x>
       <y>30</y>
       <width>311</width>
-      <height>431</height>
+      <height>381</height>
      </rect>
     </property>
     <property name="rootIsDecorated">
@@ -118,13 +118,49 @@
      </item>
     </layout>
    </widget>
+   <widget class="QComboBox" name="solnComboBox">
+    <property name="geometry">
+     <rect>
+      <x>380</x>
+      <y>440</y>
+      <width>211</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>Eigenmode</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Driven Modal</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QLabel" name="solutionLabel">
+    <property name="geometry">
+     <rect>
+      <x>410</x>
+      <y>420</y>
+      <width>141</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Solution type:</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>651</width>
+     <width>646</width>
      <height>22</height>
     </rect>
    </property>

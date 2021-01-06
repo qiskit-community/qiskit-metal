@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'renderer_hfss_ui.ui',
 # licensing of 'renderer_hfss_ui.ui' applies.
 #
-# Created: Wed Dec 16 22:00:00 2020
+# Created: Tue Jan  5 16:18:23 2021
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -38,7 +38,7 @@ class Ui_MainWindow(object):
         self.listView.setGeometry(QtCore.QRect(10, 31, 301, 431))
         self.listView.setObjectName("listView")
         self.treeView = QTreeView_Base(self.centralwidget)
-        self.treeView.setGeometry(QtCore.QRect(325, 30, 311, 431))
+        self.treeView.setGeometry(QtCore.QRect(325, 30, 311, 381))
         self.treeView.setRootIsDecorated(False)
         self.treeView.setObjectName("treeView")
         self.instructionsLabel_2 = QtWidgets.QLabel(self.centralwidget)
@@ -54,6 +54,15 @@ class Ui_MainWindow(object):
         self.confirmButton = QtWidgets.QPushButton(self.horizontalLayoutWidget)
         self.confirmButton.setObjectName("confirmButton")
         self.horizontalLayout.addWidget(self.confirmButton)
+        self.solnComboBox = QtWidgets.QComboBox(self.centralwidget)
+        self.solnComboBox.setGeometry(QtCore.QRect(380, 440, 211, 26))
+        self.solnComboBox.setObjectName("solnComboBox")
+        self.solnComboBox.addItem("")
+        self.solnComboBox.addItem("")
+        self.solutionLabel = QtWidgets.QLabel(self.centralwidget)
+        self.solutionLabel.setGeometry(QtCore.QRect(410, 420, 141, 16))
+        self.solutionLabel.setAlignment(QtCore.Qt.AlignCenter)
+        self.solutionLabel.setObjectName("solutionLabel")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar()
         self.menubar.setGeometry(QtCore.QRect(0, 0, 651, 22))
@@ -78,6 +87,9 @@ class Ui_MainWindow(object):
         self.deselectAllButton.setText(QtWidgets.QApplication.translate("MainWindow", "Deselect All", None, -1))
         self.instructionsLabel_2.setText(QtWidgets.QApplication.translate("MainWindow", "Renderer options", None, -1))
         self.confirmButton.setText(QtWidgets.QApplication.translate("MainWindow", "Confirm Selection", None, -1))
+        self.solnComboBox.setItemText(0, QtWidgets.QApplication.translate("MainWindow", "Eigenmode", None, -1))
+        self.solnComboBox.setItemText(1, QtWidgets.QApplication.translate("MainWindow", "Driven Modal", None, -1))
+        self.solutionLabel.setText(QtWidgets.QApplication.translate("MainWindow", "Solution type:", None, -1))
 
 from .tree_view_base import QTreeView_Base
 from . import main_window_rc_rc
