@@ -23,10 +23,11 @@ Metal is automating and streamlining this process. Our vision is to develop a co
   :caption: API
   :hidden:
 
+  Overview<overview>
   Analyses<apidocs/analyses>
   Components<apidocs/components>
   Designs<apidocs/designs>
-  QGeometryTables<apidocs/elements>
+  QGeometryTables<apidocs/qgeometries>
   GUI<apidocs/gui>
   Renderers<apidocs/renderers>
   Toolbox_Metal<apidocs/toolbox_metal>

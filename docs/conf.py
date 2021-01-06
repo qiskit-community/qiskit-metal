@@ -66,7 +66,16 @@ html_static_path = ['_static']
 templates_path = ['_templates']
 html_css_files = ['theme.css', 'style.css', 'custom.css']
 
-exclude_patterns = ['_build', '**.ipynb_checkpoints']
+exclude_patterns = [
+    '_build', '**.ipynb_checkpoints',
+    'qiskit_metal.analyses.quantization.lumped_capacitive.rst',
+    'qiskit_metal.analyses.lumped_capacitive.rst',
+    'qiskit_metal.analyses.em.cpw_calculations.rst',
+    'qiskit_metal.analyses.cpw_calculations.rst',
+    'qiskit_metal.analyses.Hcpb.rst'
+]
+
+suppress_warnings = ['ref.ref']
 
 # -----------------------------------------------------------------------------
 # Autosummary

@@ -1,4 +1,5 @@
 .. _contributor_guide:
+
 ********************************
 Contributing to Qiskit Metal
 ********************************
@@ -430,7 +431,9 @@ The module-level docstring
 
    For example, as in the previous dagcircuit module example, the
    contents of the module docstring for ``qiskit/analyses/__init__.py`` would
-   be::
+   be
+
+   .. code-block:: RST
 
       """
       =================================================
@@ -444,8 +447,8 @@ The module-level docstring
       ----------
       .. autosummary::
          :toctree:
-         cpw_calculations
-         lumped_capacitive
+         em.cpw_calculations
+         quantization.lumped_capacitive
       """
 
    .. note::

@@ -60,6 +60,7 @@ RouteMixed
       RouteMixed.get_tip
       RouteMixed.get_unit_vectors
       RouteMixed.issideways
+      RouteMixed.length_excess_corner_rounding
       RouteMixed.make
       RouteMixed.make_elements
       RouteMixed.parse_options

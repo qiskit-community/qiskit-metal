@@ -22,7 +22,7 @@ from numpy.linalg import norm
 from typing import List, Tuple, Union, AnyStr
 from collections.abc import Mapping
 from qiskit_metal.toolbox_metal import math_and_overrides as mao
-
+import math
 
 class QRoutePoint:
     """A convenience wrapper class to define an point with orientation,
@@ -461,21 +461,44 @@ class QRoute(QComponent):
         return direction, normal
 
     @property
-    def length(self):
+    def length(self) -> float:
         """Sum of all segments length, including the head
 
         Return:
             length (float): full point_array length
         """
+        # get the final points (get_point also eliminate co-linear and short edges)
         points = self.get_points()
-        return sum(
+
+        # get the length without the corner rounding radius adjustment
+        length_estimate = sum(
             norm(points[i + 1] - points[i]) for i in range(len(points) - 1))
+        # compensate for corner rounding
+        length_estimate -= self.length_excess_corner_rounding(points)
+
+        return length_estimate
+
+    def length_excess_corner_rounding(self, points) -> float:
+        """Computes how much length to deduce for compensating the fillet settings
+
+        Arguments:
+            points (list or array): list of vertices that will be receiving the corner rounding radius
+
+        Return:
+            length_excess (float): corner rounding radius excess multiplied by the number of points
+        """
+        # deduct the corner rounding (WARNING: assumes fixed fillet for all corners)
+        length_arch = 0.5 * self.p.fillet * math.pi
+        length_corner = 2 * self.p.fillet
+        length_excess = length_corner - length_arch
+        # the start and and point are the pins, so no corner rounding
+        return (len(points) - 2) * length_excess
 
     def assign_direction_to_anchor(self, ref_pt: QRoutePoint,
                                    anchor_pt: QRoutePoint):
         """Method to assign a direction to a point. Currently assigned as the max(x,y projection)
-		of the direct path between the reference point and the anchor. Method directly modifies
-		the anchor_pt.direction, thus there is no return value
+        of the direct path between the reference point and the anchor. Method directly modifies
+        the anchor_pt.direction, thus there is no return value
 
         Arguments:
             ref_pt (QRoutePoint): Reference point
@@ -492,11 +515,10 @@ class QRoute(QComponent):
         # Absolute value of displacement between ref and anchor in y direction
         offsety = abs(anchor[1] - ref[1])
         if offsetx >= offsety:  # "Wide" rectangle -> anchor_arrow points along x
-            assigned_direction = np.array([anchor[0] - ref[0], 0])
+            assigned_direction = np.array([ref[0] - anchor[0], 0])
         else:  # "Tall" rectangle -> anchor_arrow points along y
-            assigned_direction = np.array([0, anchor[1] - ref[1]])
-            assigned_direction = assigned_direction / norm(assigned_direction)
-        anchor_pt.direction = assigned_direction
+            assigned_direction = np.array([0, ref[1] - anchor[1]])
+        anchor_pt.direction = assigned_direction / norm(assigned_direction)
 
     def make_elements(self, pts: np.ndarray):
         """Turns the CPW points into design elements, and add them to the design object
@@ -504,11 +526,15 @@ class QRoute(QComponent):
         Arguments:
             pts (np.ndarray): Array of points
         """
-        p = self.p
+
         # prepare the routing track
         line = draw.LineString(pts)
+
+        # compute actual final length
+        p = self.p
         self.options._actual_length = str(
-            line.length) + ' ' + self.design.get_units()
+            line.length - self.length_excess_corner_rounding(line.coords)) + ' ' + self.design.get_units()
+
         # expand the routing track to form the substrate core of the cpw
         self.add_qgeometry('path', {'trace': line},
                            width=p.trace_width,

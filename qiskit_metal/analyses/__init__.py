@@ -24,6 +24,15 @@ Module containing all Qiskit Metal analyses.
 
 @author: Zlatko Minev (IBM)
 
+Hamiltonian
+-----------
+
+.. autosummary::
+    :toctree:
+
+    Hcpb
+
+
 Submodules
 ----------
 
@@ -32,7 +41,9 @@ Submodules
 
     cpw_calculations
     lumped_capacitive
+
 """
 
 from .em import cpw_calculations
 from .quantization import lumped_capacitive
+from .hamiltonian.analytic_transmon import Hcpb
