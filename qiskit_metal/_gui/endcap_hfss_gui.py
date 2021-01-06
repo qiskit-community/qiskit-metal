@@ -18,7 +18,7 @@
 
 from typing import Tuple
 
-from PySide2.QtWidgets import (QComboBox, QTableWidgetItem, QAbstractItemView, QMainWindow)
+from PySide2.QtWidgets import (QComboBox, QTableWidgetItem, QAbstractItemView, QMainWindow, QLineEdit)
 
 from .endcap_hfss_ui import Ui_mainWindow
 
@@ -29,7 +29,7 @@ class EndcapHFSSWidget(QMainWindow):
     This widget lets the user decide whether they want those pins to be open or shorted.
     """
 
-    def __init__(self, parent: 'QMainWindow', gui: 'MetalGUI', components_to_render: list = None):
+    def __init__(self, parent: 'QMainWindow', gui: 'MetalGUI', components_to_render: list = None, soln_type: str = 'Eigenmode'):
         """
         Get access to design, which has the components.
         Then set up the model and view.
@@ -38,6 +38,7 @@ class EndcapHFSSWidget(QMainWindow):
             parent (QMainWindow): The parent window
             gui (MetalGUI): The metal GUI
             components_to_render (list): A list of components to render to Ansys HFSS
+            soln_type (str): Type of solution, either Eigenmode or Driven Modal
         """
         super().__init__(parent)
 
@@ -50,11 +51,17 @@ class EndcapHFSSWidget(QMainWindow):
 
         # Set up table widget for endcap list:
         self.table = self.ui.tableWidget
-        self.table.setColumnCount(2) # 2 columns for now: pin name and endcap status
         self.components_to_render = components_to_render
         open_pins, shorted_pins = self.get_unconnected_pins(self.components_to_render)
+
+        self.soln_type = soln_type
+        if self.soln_type == 'Eigenmode':
+            self.table.setColumnCount(2) # Columns for pin name and endcap status
+            endcap_options = ['Open', 'Shorted']
+        elif self.soln_type == 'Driven Modal':
+            self.table.setColumnCount(3) # Columns for pin name, endcap status, and impedance in Ohms
+            endcap_options = ['Open', 'Shorted', 'Port']
         self.pin_names = sorted(list(open_pins) + list(shorted_pins)) # sort alphabetically
-        endcap_options = ['Open', 'Shorted']
 
         self.table.setRowCount(len(self.pin_names))
         
@@ -65,9 +72,16 @@ class EndcapHFSSWidget(QMainWindow):
             endcap_combo.addItems(endcap_options)
             self.table.setCellWidget(idx, 1, endcap_combo) # combobox for second column
             endcap_combo.setCurrentIndex(int(self.pin_names[idx] not in open_pins)) # default endcap type
+            if self.soln_type == 'Driven Modal':
+                impedance_value = QLineEdit()
+                impedance_value.setText('50')
+                self.table.setCellWidget(idx, 2, impedance_value)
 
         self.table.verticalHeader().setVisible(False)
-        self.table.setHorizontalHeaderLabels(['QComp, Pin', 'Endcap Type'])
+        if self.soln_type == 'Eigenmode':
+            self.table.setHorizontalHeaderLabels(['QComp, Pin', 'Endcap Type'])
+        elif self.soln_type == 'Driven Modal':
+            self.table.setHorizontalHeaderLabels(['QComp, Pin', 'Endcap Type', 'Impedance (Ohms)'])
         self.table.horizontalHeader().setStretchLastSection(True)
 
     @property
@@ -111,14 +125,18 @@ class EndcapHFSSWidget(QMainWindow):
         return open_set, short_set
 
     def render_everything(self):
-        """Render all selected components from previous window and add open endcaps where appropriate."""
-        add_open_pins = []
+        """Render all selected components from previous window and add open endcaps and/or ports where appropriate."""
+        add_open_pins, port_list = [], []
         for row in range(len(self.pin_names)):
             if self.table.cellWidget(row, 1).currentText() == 'Open':
                 s = self.table.item(row, 0).text()
                 add_open_pins.append(tuple(s.split(', ')))
+            elif self.table.cellWidget(row, 1).currentText() == 'Port':
+                s = self.table.item(row, 0).text()
+                impedance = self.table.cellWidget(row, 2).text()
+                port_list.append(tuple(s.split(', ') + [str(impedance)]))
         hfss_renderer = self.design.renderers.hfss
         hfss_renderer.open_ansys_design()
-        hfss_renderer.render_design(self.components_to_render, add_open_pins)
+        hfss_renderer.render_design(self.components_to_render, add_open_pins, port_list)
         self.close()
         
