@@ -18,7 +18,17 @@ For calculations of CPW parameters. Referenced primarily as a tool for some comp
 
 @date: 2020-03-24
 
-Based on https://iopscience.iop.org/article/10.1088/0953-2048/22/12/125028/meta
+Key References:
+
+D. Schuster, Ph.D. Thesis, Yale University (2007)
+https://rsl.yale.edu/sites/default/files/files/RSL_Theses/SchusterThesis.pdf
+
+Goppl et al., Journal of Applied Physics 104, 1139044 (2008)
+https://aip.scitation.org/doi/abs/10.1063/1.3010859?journalCode=jap
+
+Mohebbi and Majedi, Superconducting Science and Technology 22, 125028 (2009)
+https://iopscience.iop.org/article/10.1088/0953-2048/22/12/125028/meta
+
 """
 
 import numpy as np
@@ -27,6 +37,11 @@ from scipy.special import ellipk
 c0 = 2.9979 * 10**8
 e0 = 8.85419 * 10**-12
 u0 = 4 * np.pi * 10**-7
+
+__all__ = [
+    'guided_wavelength', 'lumped_cpw', 'effective_dielectric_constant',
+    'elliptic_int_constants'
+]
 
 
 def guided_wavelength(freq,

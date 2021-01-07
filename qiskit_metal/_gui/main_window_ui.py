@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'main_window_ui.ui',
 # licensing of 'main_window_ui.ui' applies.
 #
-# Created: Wed Dec 16 21:59:59 2020
+# Created: Thu Jan  7 12:42:50 2021
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -659,7 +659,7 @@ class Ui_MainWindow(object):
         self.actionHFSS.setText(QtWidgets.QApplication.translate("MainWindow", "HFSS", None, -1))
         self.actionQ3D.setText(QtWidgets.QApplication.translate("MainWindow", "Q3D", None, -1))
 
-from .widgets.log_widget.log_metal import QTextEditLogger
-from .widgets.bases.expanding_toolbar import QToolBarExpanding
 from .widgets.all_components.table_view_all_components import QTableView_AllComponents
+from .widgets.bases.expanding_toolbar import QToolBarExpanding
+from .widgets.log_widget.log_metal import QTextEditLogger
 from . import main_window_rc_rc
