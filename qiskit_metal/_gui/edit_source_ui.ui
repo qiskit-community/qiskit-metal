@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1211</width>
-    <height>681</height>
+    <width>1161</width>
+    <height>680</height>
    </rect>
   </property>
   <property name="font">
@@ -71,9 +71,6 @@
               <bold>true</bold>
              </font>
             </property>
-            <property name="toolTip">
-             <string>Rebuild Component</string>
-            </property>
             <property name="styleSheet">
              <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(61, 217, 245), stop:1 rgb(240, 53, 218));
 border-style: solid;
@@ -82,7 +79,7 @@ font-weight: bold;
 color: rgb(255, 255, 255);</string>
             </property>
             <property name="text">
-             <string/>
+             <string>Rebuild Component</string>
             </property>
             <property name="icon">
              <iconset resource="main_window_rc.qrc">
@@ -90,8 +87,8 @@ color: rgb(255, 255, 255);</string>
             </property>
             <property name="iconSize">
              <size>
-              <width>16</width>
-              <height>16</height>
+              <width>20</width>
+              <height>20</height>
              </size>
             </property>
             <property name="shortcut">
@@ -107,48 +104,6 @@ color: rgb(255, 255, 255);</string>
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="zoomin">
-            <property name="toolTip">
-             <string>Zoom In</string>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-            <property name="icon">
-             <iconset resource="main_window_rc.qrc">
-              <normaloff>:/plot/zoom_in_large</normaloff>:/plot/zoom_in_large</iconset>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="zoomout">
-            <property name="toolTip">
-             <string>Zoom Out</string>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-            <property name="icon">
-             <iconset resource="main_window_rc.qrc">
-              <normaloff>:/plot/zoom_out_large</normaloff>:/plot/zoom_out_large</iconset>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="undo">
-            <property name="toolTip">
-             <string>Undo</string>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-            <property name="icon">
-             <iconset resource="main_window_rc.qrc">
-              <normaloff>:/plot/undo</normaloff>:/plot/undo</iconset>
-            </property>
-           </widget>
-          </item>
-          <item>
            <widget class="QPushButton" name="btn_save">
             <property name="font">
              <font>
@@ -157,11 +112,8 @@ color: rgb(255, 255, 255);</string>
               <bold>true</bold>
              </font>
             </property>
-            <property name="toolTip">
-             <string>Save File</string>
-            </property>
             <property name="text">
-             <string/>
+             <string>Save File</string>
             </property>
             <property name="icon">
              <iconset resource="main_window_rc.qrc">
@@ -169,8 +121,8 @@ color: rgb(255, 255, 255);</string>
             </property>
             <property name="iconSize">
              <size>
-              <width>16</width>
-              <height>16</height>
+              <width>20</width>
+              <height>20</height>
              </size>
             </property>
             <property name="shortcut">
@@ -180,11 +132,8 @@ color: rgb(255, 255, 255);</string>
           </item>
           <item>
            <widget class="QPushButton" name="btn_reload">
-            <property name="toolTip">
-             <string>Reload File</string>
-            </property>
             <property name="text">
-             <string/>
+             <string>Reload File</string>
             </property>
             <property name="icon">
              <iconset resource="main_window_rc.qrc">
@@ -192,42 +141,25 @@ color: rgb(255, 255, 255);</string>
             </property>
             <property name="iconSize">
              <size>
-              <width>16</width>
-              <height>16</height>
+              <width>20</width>
+              <height>20</height>
              </size>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="center">
-            <property name="toolTip">
-             <string>Center</string>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-            <property name="icon">
-             <iconset resource="main_window_rc.qrc">
-              <normaloff>:/plot/center</normaloff>:/plot/center</iconset>
-            </property>
-           </widget>
-          </item>
-          <item>
            <widget class="QPushButton" name="pushButtonHideHelp">
-            <property name="toolTip">
-             <string>Help</string>
-            </property>
             <property name="text">
              <string>Help</string>
             </property>
             <property name="icon">
              <iconset resource="main_window_rc.qrc">
-              <normaloff>:/plot/questionmark_black</normaloff>:/plot/questionmark_black</iconset>
+              <normaloff>:/basic/info_help</normaloff>:/basic/info_help</iconset>
             </property>
             <property name="iconSize">
              <size>
-              <width>16</width>
-              <height>16</height>
+              <width>20</width>
+              <height>20</height>
              </size>
             </property>
            </widget>
@@ -240,13 +172,57 @@ color: rgb(255, 255, 255);</string>
            <number>0</number>
           </property>
           <item>
-           <widget class="MetalSourceEditor" name="src_editor">
-            <property name="plainText">
-             <string>Source comes here</string>
+           <widget class="QPushButton" name="undo">
+            <property name="text">
+             <string>Undo</string>
+            </property>
+            <property name="icon">
+             <iconset resource="main_window_rc.qrc">
+              <normaloff>:/delete</normaloff>:/delete</iconset>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="zoomin">
+            <property name="text">
+             <string>Zoom in</string>
+            </property>
+            <property name="icon">
+             <iconset resource="main_window_rc.qrc">
+              <normaloff>:/plot/zoom</normaloff>:/plot/zoom</iconset>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="zoomout">
+            <property name="text">
+             <string>Zoom out</string>
+            </property>
+            <property name="icon">
+             <iconset resource="main_window_rc.qrc">
+              <normaloff>:/plot/zoom_out</normaloff>:/plot/zoom_out</iconset>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="center">
+            <property name="text">
+             <string>Center</string>
+            </property>
+            <property name="icon">
+             <iconset resource="main_window_rc.qrc">
+              <normaloff>:/plot/zoom_target</normaloff>:/plot/zoom_target</iconset>
             </property>
            </widget>
           </item>
          </layout>
+        </item>
+        <item>
+         <widget class="MetalSourceEditor" name="src_editor">
+          <property name="plainText">
+           <string>Source comes here</string>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QLineEdit" name="lineSrcPath">
@@ -289,16 +265,16 @@ color: rgb(255, 255, 255);</string>
            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;title&gt;Help&lt;/title&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Arial'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; background-color:#ffffff;&quot;&gt;&lt;span style=&quot; font-weight:600; color:#797a7a; background-color:#ffffff;&quot;&gt;Help me?&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; background-color:#ffffff;&quot;&gt;&lt;span style=&quot; font-style:italic; color:#797a7a; background-color:#ffffff;&quot;&gt;Double click &lt;/span&gt;&lt;span style=&quot; color:#797a7a; background-color:#ffffff;&quot;&gt;any function or class in the source code to view its documentation. &lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; background-color:#ffffff;&quot;&gt;&lt;span style=&quot; color:#797a7a; background-color:#ffffff;&quot;&gt;Documentation is also shown anytime one types&lt;/span&gt;&lt;span style=&quot; color:#797a7a;&quot;&gt; a bracket &lt;/span&gt;&lt;span style=&quot; font-family:'Monaco'; color:#797a7a;&quot;&gt;(&lt;/span&gt;&lt;span style=&quot; color:#797a7a;&quot;&gt; after the name of a function. &lt;/span&gt;&lt;span style=&quot; color:#797a7a; background-color:#ffffff;&quot;&gt;For example, enter&lt;/span&gt;&lt;span style=&quot; color:#797a7a;&quot;&gt; &lt;/span&gt;&lt;span style=&quot; color:#797a7a; background-color:#ecf0f3;&quot;&gt;draw.rectangle(&lt;/span&gt;&lt;span style=&quot; color:#797a7a;&quot;&gt;, and a  calltip will appear here.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; color:#797a7a; background-color:#ffffff;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; background-color:#ffffff;&quot;&gt;&lt;span style=&quot; font-weight:600; color:#797a7a;&quot;&gt;Hide help panel? &lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; background-color:#ffffff;&quot;&gt;&lt;span style=&quot; color:#797a7a;&quot;&gt;Drag the slider in the middle all the way to the right. &lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; color:#797a7a; background-color:#ffffff;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; background-color:#ffffff;&quot;&gt;&lt;span style=&quot; font-weight:600; color:#797a7a;&quot;&gt;Search, replace, and more?&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; background-color:#ffffff;&quot;&gt;&lt;span style=&quot; color:#797a7a;&quot;&gt;Right click the source code to view more.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Arial'; font-size:8.1pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; background-color:#ffffff;&quot;&gt;&lt;span style=&quot; font-family:'Arial'; font-size:13pt; font-weight:600; color:#797a7a; background-color:#ffffff;&quot;&gt;Help me?&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; background-color:#ffffff;&quot;&gt;&lt;span style=&quot; font-family:'Arial'; font-size:13pt; font-style:italic; color:#797a7a; background-color:#ffffff;&quot;&gt;Double click &lt;/span&gt;&lt;span style=&quot; font-family:'Arial'; font-size:13pt; color:#797a7a; background-color:#ffffff;&quot;&gt;any function or class in the source code to view its documentation. &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; background-color:#ffffff;&quot;&gt;&lt;span style=&quot; font-family:'Arial'; font-size:13pt; color:#797a7a; background-color:#ffffff;&quot;&gt;Documentation is also shown anytime one types&lt;/span&gt;&lt;span style=&quot; font-family:'Arial'; font-size:13pt; color:#797a7a;&quot;&gt; a bracket &lt;/span&gt;&lt;span style=&quot; font-family:'Monaco'; font-size:13pt; color:#797a7a;&quot;&gt;(&lt;/span&gt;&lt;span style=&quot; font-family:'Arial'; font-size:13pt; color:#797a7a;&quot;&gt; after the name of a function. &lt;/span&gt;&lt;span style=&quot; font-family:'Arial'; font-size:13pt; color:#797a7a; background-color:#ffffff;&quot;&gt;For example, enter&lt;/span&gt;&lt;span style=&quot; font-family:'Arial'; font-size:13pt; color:#797a7a;&quot;&gt; &lt;/span&gt;&lt;span style=&quot; font-family:'Arial'; font-size:13pt; color:#797a7a; background-color:#ecf0f3;&quot;&gt;draw.rectangle(&lt;/span&gt;&lt;span style=&quot; font-family:'Arial'; font-size:13pt; color:#797a7a;&quot;&gt;, and a  calltip will appear here.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; font-family:'Arial'; font-size:13pt; color:#797a7a; background-color:#ffffff;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; background-color:#ffffff;&quot;&gt;&lt;span style=&quot; font-family:'Arial'; font-size:13pt; font-weight:600; color:#797a7a;&quot;&gt;Hide help panel? &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; background-color:#ffffff;&quot;&gt;&lt;span style=&quot; font-family:'Arial'; font-size:13pt; color:#797a7a;&quot;&gt;Drag the slider in the middle all the way to the right. &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; font-family:'Arial'; font-size:13pt; color:#797a7a; background-color:#ffffff;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; background-color:#ffffff;&quot;&gt;&lt;span style=&quot; font-family:'Arial'; font-size:13pt; font-weight:600; color:#797a7a;&quot;&gt;Search, replace, and more?&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:22.4px; background-color:#ffffff;&quot;&gt;&lt;span style=&quot; font-family:'Arial'; font-size:13pt; color:#797a7a;&quot;&gt;Right click the source code to view more.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
         </item>
@@ -313,8 +289,8 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1211</width>
-     <height>22</height>
+     <width>1161</width>
+     <height>20</height>
     </rect>
    </property>
   </widget>
