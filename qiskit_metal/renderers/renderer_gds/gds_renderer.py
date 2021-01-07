@@ -915,12 +915,20 @@ class QGDSRenderer(QRenderer):
         return self.lib
 
     def check_cheese(self, chip: str, layer: int) -> int:
-        #return codes
-        # 0 This is the initialization state.
-        # 1 The layer is in the chip and cheese is True.
-        # 2 The layer is in the chip and cheese is False.
-        # 3 The chip is not in dict, so can't give answer.
-        # 4 The layer is not in the chip, so can't give answer.
+        """Examine the option for cheese_view_in_file.
+
+        Args:
+            chip (str): User defined chip name.
+            layer (int): Layer used in chip.
+
+        Returns:
+            int: Oberservation of option based on chip and layer information.
+                    0 This is the initialization state.
+                    1 The layer is in the chip and cheese is True.
+                    2 The layer is in the chip and cheese is False.
+                    3 The chip is not in dict, so can't give answer.
+                    4 The layer is not in the chip, so can't give answer.
+        """
         code = 0
 
         cheese_option = self.parse_value(self.options.cheese_view_in_file)
@@ -943,12 +951,21 @@ class QGDSRenderer(QRenderer):
         return code
 
     def check_no_cheese(self, chip: str, layer: int) -> int:
-        #return codes
-        # 0 This is the initialization state.
-        # 1 The layer is in the chip and viewing no-cheese is True.
-        # 2 The layer is in the chip and viewing no-cheese is False.
-        # 3 The chip is not in dict, so can't give answer.
-        # 4 The layer is not in the chip, so can't give answer.
+        """Examine the option for no_cheese_view_in_file.
+
+        Args:
+            chip (str): User defined chip name.
+            layer (int): Layer used in chip.
+
+        Returns:
+            int: Oberservation of option based on chip and layer information.
+                    0 This is the initialization state.
+                    1 The layer is in the chip and viewing no-cheese is True.
+                    2 The layer is in the chip and viewing no-cheese is False.
+                    3 The chip is not in dict, so can't give answer.
+                    4 The layer is not in the chip, so can't give answer.
+        """
+
         code = 0
 
         no_cheese_option = self.parse_value(self.options.no_cheese_view_in_file)
@@ -971,15 +988,23 @@ class QGDSRenderer(QRenderer):
         return code
 
     def check_either_cheese(self, chip: str, layer: int) -> int:
-        # return codes
-        # 0 This is the initialization state.
-        # 1 Show the layer in both cheese and no cheese
-        # 2 Show the layer in just the cheese
-        # 3 Show the no-cheese, but not the cheese
-        # 4 Do NOT show the layer in neither cheese
-        # 5 The chip is not in the default option.
-        # 6 The layer is not in the chip dict.
+        """Use methods to check two options and give review of values 
+        for no_cheese_view_in_file and cheese_view_in_file.
 
+        Args:
+            chip (str): User defined chip name.
+            layer (int): Layer used in chip.
+
+        Returns:
+            int: Oberservation of options based on chip and layer information.
+                    0 This is the initialization state.
+                    1 Show the layer in both cheese and no cheese
+                    2 Show the layer in just the cheese
+                    3 Show the no-cheese, but not the cheese
+                    4 Do NOT show the layer in neither cheese
+                    5 The chip is not in the default option.
+                    6 The layer is not in the chip dict.
+        """
         code = 0
         no_cheese_code = self.check_no_cheese(chip, layer)
         cheese_code = self.check_cheese(chip, layer)
@@ -1019,7 +1044,8 @@ class QGDSRenderer(QRenderer):
 
     # This is not complete.  Presently, not called/executed.
     def populate_cheese(self):
-        #Iterate through each chip, then layer to determine the cheeing geometry.
+        """ Iterate through each chip, then layer to determine the cheeing geometry.
+        """
 
         lib = self.lib
         cheese_sub_layer = int(self.parse_value(self.options.cheese_datatype))
