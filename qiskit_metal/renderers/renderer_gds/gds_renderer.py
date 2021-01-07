@@ -1001,31 +1001,31 @@ class QGDSRenderer(QRenderer):
         no_cheese_code = self.check_no_cheese(chip, layer)
         cheese_code = self.check_cheese(chip, layer)
 
-        if (no_cheese_code == 0 or cheese_code == 0):
+        if no_cheese_code == 0 or cheese_code == 0:
             self.logger.warning(
                 f'Not able to get no_cheese_view_in_file or cheese_view_in_file from self.options.'
             )
             code = 0
             return code
-        if (no_cheese_code == 1 and cheese_code == 1):
+        if no_cheese_code == 1 and cheese_code == 1:
             code = 1
             return code
-        if (no_cheese_code == 2 and cheese_code == 1):
+        if no_cheese_code == 2 and cheese_code == 1:
             code = 2
             return code
-        if (no_cheese_code == 1 and cheese_code == 2):
+        if no_cheese_code == 1 and cheese_code == 2:
             code = 3
             return code
-        if (no_cheese_code == 2 and cheese_code == 2):
+        if no_cheese_code == 2 and cheese_code == 2:
             code = 4
             return code
-        if (no_cheese_code == 3 or cheese_code == 3):
+        if no_cheese_code == 3 or cheese_code == 3:
             code = 5
             self.logger.warning(
                 f'Chip={chip} is not either in no_cheese_view_in_file or cheese_view_in_file from self.options.'
             )
             return code
-        if (no_cheese_code == 4 or cheese_code == 4):
+        if no_cheese_code == 4 or cheese_code == 4:
             code = 6
             self.logger.warning(
                 f'layer={layer} is not in chip={chip} either in no_cheese_view_in_file or cheese_view_in_file from self.options.'
@@ -1149,7 +1149,7 @@ class QGDSRenderer(QRenderer):
             for chip_layer in layers_in_chip:
                 code = self.check_either_cheese(chip_name, chip_layer)
 
-                if (code == 1 or code == 2 or code == 3):
+                if code == 1 or code == 2 or code == 3:
                     if len(self.chip_info[chip_name][chip_layer]
                            ['all_subtract_true']) != 0:
 
