@@ -3,21 +3,25 @@
 # Form implementation generated from reading ui file 'widgets/variable_table/add_delete_table.ui',
 # licensing of 'widgets/variable_table/add_delete_table.ui' applies.
 #
-# Created: Thu Jan  7 15:46:05 2021
+# Created: Thu Jan  7 15:48:37 2021
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
 
 from PySide2 import QtCore, QtGui, QtWidgets
 
+
 class Ui_MainWindow(object):
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(344, 206)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred,
+                                           QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            MainWindow.sizePolicy().hasHeightForWidth())
         MainWindow.setSizePolicy(sizePolicy)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -27,8 +31,10 @@ class Ui_MainWindow(object):
         self.gridLayout_3.setObjectName("gridLayout_3")
         self.tableView = RightClickView(self.centralwidget)
         self.tableView.setAutoScroll(False)
-        self.tableView.setVerticalScrollMode(QtWidgets.QAbstractItemView.ScrollPerPixel)
-        self.tableView.setHorizontalScrollMode(QtWidgets.QAbstractItemView.ScrollPerPixel)
+        self.tableView.setVerticalScrollMode(
+            QtWidgets.QAbstractItemView.ScrollPerPixel)
+        self.tableView.setHorizontalScrollMode(
+            QtWidgets.QAbstractItemView.ScrollPerPixel)
         self.tableView.setObjectName("tableView")
         self.tableView.horizontalHeader().setVisible(True)
         self.tableView.horizontalHeader().setStretchLastSection(True)
@@ -39,18 +45,22 @@ class Ui_MainWindow(object):
         self.gridLayout.setContentsMargins(0, -1, -1, -1)
         self.gridLayout.setObjectName("gridLayout")
         self.deleteButton = QtWidgets.QToolButton(self.centralwidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Maximum)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Ignored,
+                                           QtWidgets.QSizePolicy.Maximum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.deleteButton.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.deleteButton.sizePolicy().hasHeightForWidth())
         self.deleteButton.setSizePolicy(sizePolicy)
         self.deleteButton.setObjectName("deleteButton")
         self.gridLayout.addWidget(self.deleteButton, 0, 1, 1, 1)
         self.addButton = QtWidgets.QToolButton(self.centralwidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Ignored)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Ignored,
+                                           QtWidgets.QSizePolicy.Ignored)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.addButton.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.addButton.sizePolicy().hasHeightForWidth())
         self.addButton.setSizePolicy(sizePolicy)
         self.addButton.setObjectName("addButton")
         self.gridLayout.addWidget(self.addButton, 0, 0, 1, 1)
@@ -65,13 +75,22 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
-        QtCore.QObject.connect(self.addButton, QtCore.SIGNAL("clicked()"), MainWindow.addRow)
-        QtCore.QObject.connect(self.deleteButton, QtCore.SIGNAL("clicked()"), MainWindow.deleteRow)
+        QtCore.QObject.connect(self.addButton, QtCore.SIGNAL("clicked()"),
+                               MainWindow.addRow)
+        QtCore.QObject.connect(self.deleteButton, QtCore.SIGNAL("clicked()"),
+                               MainWindow.deleteRow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QtWidgets.QApplication.translate("MainWindow", "MainWindow", None, -1))
-        self.deleteButton.setText(QtWidgets.QApplication.translate("MainWindow", "Delete variable", None, -1))
-        self.addButton.setText(QtWidgets.QApplication.translate("MainWindow", "Add variable", None, -1))
+        MainWindow.setWindowTitle(
+            QtWidgets.QApplication.translate("MainWindow", "MainWindow", None,
+                                             -1))
+        self.deleteButton.setText(
+            QtWidgets.QApplication.translate("MainWindow", "Delete variable",
+                                             None, -1))
+        self.addButton.setText(
+            QtWidgets.QApplication.translate("MainWindow", "Add variable", None,
+                                             -1))
+
 
 from .right_click_table_view import RightClickView
