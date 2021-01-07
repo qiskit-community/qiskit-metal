@@ -937,16 +937,12 @@ class QGDSRenderer(QRenderer):
             if layer in cheese_option[chip]:
                 if is_true(cheese_option[chip][layer]):
                     code = 1
-                    return code
                 else:
                     code = 2
-                    return code
             else:
                 code = 4
-                return code
         else:
             code = 3
-            return code
 
         return code
 
@@ -974,16 +970,12 @@ class QGDSRenderer(QRenderer):
             if layer in no_cheese_option[chip]:
                 if is_true(no_cheese_option[chip][layer]):
                     code = 1
-                    return code
                 else:
                     code = 2
-                    return code
             else:
                 code = 4
-                return code
         else:
             code = 3
-            return code
 
         return code
 
