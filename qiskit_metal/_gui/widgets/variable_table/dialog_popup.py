@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'widgets/variable_table/dialog_popup.ui',
 # licensing of 'widgets/variable_table/dialog_popup.ui' applies.
 #
-# Created: Thu Jan  7 15:14:27 2021
+# Created: Thu Jan  7 15:48:36 2021
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!

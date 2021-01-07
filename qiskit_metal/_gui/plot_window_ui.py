@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'plot_window_ui.ui',
 # licensing of 'plot_window_ui.ui' applies.
 #
-# Created: Thu Jan  7 15:14:25 2021
+# Created: Thu Jan  7 15:48:34 2021
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
