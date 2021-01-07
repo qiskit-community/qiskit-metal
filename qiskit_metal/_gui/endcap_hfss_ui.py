@@ -3,14 +3,16 @@
 # Form implementation generated from reading ui file 'endcap_hfss_ui.ui',
 # licensing of 'endcap_hfss_ui.ui' applies.
 #
-# Created: Tue Jan  5 21:55:25 2021
+# Created: Thu Jan  7 15:14:26 2021
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
 
 from PySide2 import QtCore, QtGui, QtWidgets
 
+
 class Ui_mainWindow(object):
+
     def setupUi(self, mainWindow):
         mainWindow.setObjectName("mainWindow")
         mainWindow.resize(400, 530)
@@ -30,7 +32,8 @@ class Ui_mainWindow(object):
         self.verticalLayout.addWidget(self.renderButton)
         self.tableWidget = QtWidgets.QTableWidget(self.centralwidget)
         self.tableWidget.setGeometry(QtCore.QRect(10, 30, 381, 421))
-        self.tableWidget.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustIgnored)
+        self.tableWidget.setSizeAdjustPolicy(
+            QtWidgets.QAbstractScrollArea.AdjustIgnored)
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.setColumnCount(0)
         self.tableWidget.setRowCount(0)
@@ -44,11 +47,17 @@ class Ui_mainWindow(object):
         mainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(mainWindow)
-        QtCore.QObject.connect(self.renderButton, QtCore.SIGNAL("clicked()"), mainWindow.render_everything)
+        QtCore.QObject.connect(self.renderButton, QtCore.SIGNAL("clicked()"),
+                               mainWindow.render_everything)
         QtCore.QMetaObject.connectSlotsByName(mainWindow)
 
     def retranslateUi(self, mainWindow):
-        mainWindow.setWindowTitle(QtWidgets.QApplication.translate("mainWindow", "HFSS Endcaps", None, -1))
-        self.label.setText(QtWidgets.QApplication.translate("mainWindow", "Select endcap type for unconnected pins:", None, -1))
-        self.renderButton.setText(QtWidgets.QApplication.translate("mainWindow", "Render", None, -1))
-
+        mainWindow.setWindowTitle(
+            QtWidgets.QApplication.translate("mainWindow", "HFSS Endcaps", None,
+                                             -1))
+        self.label.setText(
+            QtWidgets.QApplication.translate(
+                "mainWindow", "Select endcap type for unconnected pins:", None,
+                -1))
+        self.renderButton.setText(
+            QtWidgets.QApplication.translate("mainWindow", "Render", None, -1))
