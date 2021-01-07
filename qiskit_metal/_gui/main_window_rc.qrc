@@ -55,5 +55,11 @@
     <file alias="point">_imgs/v2-flat/pin.png</file>
     <file alias="pan">_imgs/pan.png</file>
     <file alias="zoom">_imgs/v2-flat/zoom.png</file>
+    <file alias="zoom_in_large">_imgs/v2-flat/zoom_in_magnifying_glass.png</file>
+    <file alias="zoom_out_large">_imgs/v2-flat/zoom_out_magnifying_glass.png</file>
+    <file alias="undo">_imgs/v2-flat/undo.png</file>
+    <file alias="center">_imgs/v2-flat/center.png</file>
+    <file alias="questionmark_black">_imgs/v2-flat/questionmark_black.png</file>
+
   </qresource>
 </RCC>
