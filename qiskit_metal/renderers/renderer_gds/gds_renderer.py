@@ -138,36 +138,42 @@ class QGDSRenderer(QRenderer):
         # can handle is 8191.
         max_points='8191',
 
-        # Cheesing is denoted by each chip has dict which denotes layer number and bool
-        no_cheese_view_in_file={'main': {
-            1: True
-        }},
-        cheese_view_in_file={'main': {
-            1: True
-        }},
-        no_cheese_buffer='25um',
+        # Cheesing is denoted by each chip and layer.
+        cheese=Dict(
+            #Cheesing is NOT completed
+            datatype='100',
 
-        #The styles of caps are specified by integer values:
-        # 1 (round), 2 (flat), 3 (square).
-        no_cheese_cap_style='2',
+            # Expect to mostly cheese a square, but allow for expansion.
+            # 0 is rectangle, 1 is circle
+            shape='0',
+            # rectangle
+            cheese_0_x='50um',
+            cheese_0_y='50um',
+            # circle
+            cheese_1_radius='100um',
 
-        #The styles of joins between offset segments are specified by integer values:
-        # 1 (round), 2 (mitre), and 3 (bevel).
-        no_cheese_join_style='2',
+            #identify which layers to view in gds output file, for each chip
+            view_in_file=Dict(main={1: True}),
+        ),
 
-        # For every layer, if there is a ground, do cheesing and place the output on the datatype number (sub-layer number)
-        no_cheese_datatype='99',
+        # Think of this as a keep-out region for cheesing.
+        no_cheese=Dict(
+            # For every layer, if there is a ground plane, do cheesing and
+            # place the output on the datatype number (sub-layer number)
+            datatype='99',
+            buffer='25um',
 
-        #Cheesing is NOT completed
-        cheese_datatype='100',
-        # Expect to mostly cheese a square, but allow for expansion.
-        # 0 is rectangle, 1 is circle
-        cheese_shape='0',
-        # cheese_shape_0 is rectangle
-        cheese_0_x='50um',
-        cheese_0_y='50um',
-        # chese_shape_1 is circle
-        cheese_1_radius='100um',
+            #The styles of caps are specified by integer values:
+            # 1 (round), 2 (flat), 3 (square).
+            cap_style='2',
+
+            #The styles of joins between offset segments are specified by integer values:
+            # 1 (round), 2 (mitre), and 3 (bevel).
+            join_style='2',
+
+            #identify which layers to view in gds output file, for each chip
+            view_in_file=Dict(main={1: True}),
+        ),
 
         # (float): Scale box of components to render. Should be greater than 1.0.
         # For benifit of the GUI, keep this the last entry in the dict.  GUI shows a note regarding bound_box.
@@ -931,7 +937,7 @@ class QGDSRenderer(QRenderer):
         """
         code = 0
 
-        cheese_option = self.parse_value(self.options.cheese_view_in_file)
+        cheese_option = self.parse_value(self.options.cheese.view_in_file)
 
         if chip in cheese_option:
             if layer in cheese_option[chip]:
@@ -964,7 +970,7 @@ class QGDSRenderer(QRenderer):
 
         code = 0
 
-        no_cheese_option = self.parse_value(self.options.no_cheese_view_in_file)
+        no_cheese_option = self.parse_value(self.options.no_cheese.view_in_file)
 
         if chip in no_cheese_option:
             if layer in no_cheese_option[chip]:
@@ -1040,7 +1046,7 @@ class QGDSRenderer(QRenderer):
         """
 
         lib = self.lib
-        cheese_sub_layer = int(self.parse_value(self.options.cheese_datatype))
+        cheese_sub_layer = int(self.parse_value(self.options.cheese.datatype))
 
         for chip_name in self.chip_info:
             layers_in_chip = self.design.qgeometry.get_all_unique_layers(
@@ -1077,14 +1083,14 @@ class QGDSRenderer(QRenderer):
         """
 
         max_points = int(self.parse_value(self.options.max_points))
-        cheese_shape = int(self.parse_value(self.options.cheese_shape))
+        cheese_shape = int(self.parse_value(self.options.cheese.shape))
         all_nocheese = self.chip_info[chip_name][chip_layer]['no_cheese']
         all_nocheese_gds = self.chip_info[chip_name][chip_layer][
             'no_cheese_gds']
 
         if cheese_shape == 0:
-            cheese_x = float(self.parse_value(self.options.cheese_0_x))
-            cheese_y = float(self.parse_value(self.options.cheese_0_y))
+            cheese_x = float(self.parse_value(self.options.cheese.cheese_0_x))
+            cheese_y = float(self.parse_value(self.options.cheese.cheese_0_y))
             a_cheese = Cheesing(
                 all_nocheese,
                 all_nocheese_gds,
@@ -1103,8 +1109,8 @@ class QGDSRenderer(QRenderer):
                 shape_0_y=cheese_y,
             )
         elif cheese_shape == 1:
-            cheese_radius = float(self.parse_value(
-                self.options.cheese_1_radius))
+            cheese_radius = float(
+                self.parse_value(self.options.cheese.cheese_1_radius))
             a_cheese = Cheesing(all_nocheese,
                                 all_nocheese_gds,
                                 self.lib,
@@ -1138,8 +1144,8 @@ class QGDSRenderer(QRenderer):
         in the options. 
         """
         no_cheese_buffer = float(self.parse_value(
-            self.options.no_cheese_buffer))
-        sub_layer = int(self.parse_value(self.options.no_cheese_datatype))
+            self.options.no_cheese.buffer))
+        sub_layer = int(self.parse_value(self.options.no_cheese.datatype))
         lib = self.lib
 
         for chip_name in self.chip_info:
@@ -1163,7 +1169,7 @@ class QGDSRenderer(QRenderer):
                                 'no_cheese'] = no_cheese_multipolygon
                             sub_layer = int(
                                 self.parse_value(
-                                    self.options.no_cheese_datatype))
+                                    self.options.no_cheese.datatype))
                             all_nocheese_gds = self.multipolygon_to_gds(
                                 no_cheese_multipolygon, chip_layer, sub_layer,
                                 no_cheese_buffer)
@@ -1208,8 +1214,8 @@ class QGDSRenderer(QRenderer):
             polygons and linestrings and creates buffer as specificed through default_options.
         """
 
-        style_cap = int(self.parse_value(self.options.no_cheese_cap_style))
-        style_join = int(self.parse_value(self.options.no_cheese_join_style))
+        style_cap = int(self.parse_value(self.options.no_cheese.cap_style))
+        style_join = int(self.parse_value(self.options.no_cheese.join_style))
 
         poly_sub_df = sub_df[sub_df.geometry.apply(
             lambda x: isinstance(x, shapely.geometry.polygon.Polygon))]
@@ -1574,7 +1580,7 @@ class QGDSRenderer(QRenderer):
             # into self.chip_info[chip_name][chip_layer]['cheese'].
 
             # Not finished. Comment-out so not called/executed.
-            # self.populate_cheese()
+            #self.populate_cheese()
 
             # Export the file to disk from self.lib
             self.lib.write_gds(file_name)
