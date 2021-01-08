@@ -929,11 +929,12 @@ class QGDSRenderer(QRenderer):
 
         Returns:
             int: Oberservation of option based on chip and layer information.
-                    0 This is the initialization state.
-                    1 The layer is in the chip and cheese is True.
-                    2 The layer is in the chip and cheese is False.
-                    3 The chip is not in dict, so can't give answer.
-                    4 The layer is not in the chip, so can't give answer.
+
+            * 0 This is the initialization state.
+            * 1 The layer is in the chip and cheese is True.
+            * 2 The layer is in the chip and cheese is False.
+            * 3 The chip is not in dict, so can't give answer.
+            * 4 The layer is not in the chip, so can't give answer.
         """
         code = 0
 
@@ -961,11 +962,12 @@ class QGDSRenderer(QRenderer):
 
         Returns:
             int: Oberservation of option based on chip and layer information.
-                    0 This is the initialization state.
-                    1 The layer is in the chip and viewing no-cheese is True.
-                    2 The layer is in the chip and viewing no-cheese is False.
-                    3 The chip is not in dict, so can't give answer.
-                    4 The layer is not in the chip, so can't give answer.
+
+            * 0 This is the initialization state.
+            * 1 The layer is in the chip and viewing no-cheese is True.
+            * 2 The layer is in the chip and viewing no-cheese is False.
+            * 3 The chip is not in dict, so can't give answer.
+            * 4 The layer is not in the chip, so can't give answer.
         """
 
         code = 0
@@ -995,13 +997,14 @@ class QGDSRenderer(QRenderer):
 
         Returns:
             int: Oberservation of options based on chip and layer information.
-                    0 This is the initialization state.
-                    1 Show the layer in both cheese and no cheese
-                    2 Show the layer in just the cheese
-                    3 Show the no-cheese, but not the cheese
-                    4 Do NOT show the layer in neither cheese
-                    5 The chip is not in the default option.
-                    6 The layer is not in the chip dict.
+
+            * 0 This is the initialization state.
+            * 1 Show the layer in both cheese and no cheese
+            * 2 Show the layer in just the cheese
+            * 3 Show the no-cheese, but not the cheese
+            * 4 Do NOT show the layer in neither cheese
+            * 5 The chip is not in the default option.
+            * 6 The layer is not in the chip dict.
         """
         code = 0
         no_cheese_code = self.check_no_cheese(chip, layer)

@@ -157,6 +157,28 @@ class TestRenderers(unittest.TestCase):
         self.assertEqual(options['bounding_box_scale_x'], '1.2')
         self.assertEqual(options['bounding_box_scale_y'], '1.2')
 
+        self.assertEqual(len(options['cheese']), 6)
+        self.assertEqual(len(options['no_cheese']), 5)
+
+        self.assertEqual(options['cheese']['datatype'], '100')
+        self.assertEqual(options['cheese']['shape'], '0')
+        self.assertEqual(options['cheese']['cheese_0_x'], '50um')
+        self.assertEqual(options['cheese']['cheese_0_y'], '50um')
+        self.assertEqual(options['cheese']['cheese_1_radius'], '100um')
+
+        self.assertEqual(options['no_cheese']['datatype'], '99')
+        self.assertEqual(options['no_cheese']['buffer'], '25um')
+        self.assertEqual(options['no_cheese']['cap_style'], '2')
+        self.assertEqual(options['no_cheese']['join_style'], '2')
+
+        self.assertEqual(len(options['cheese']['view_in_file']), 1)
+        self.assertEqual(len(options['cheese']['view_in_file']['main']), 1)
+        self.assertEqual(options['cheese']['view_in_file']['main'][1], True)
+
+        self.assertEqual(len(options['no_cheese']['view_in_file']), 1)
+        self.assertEqual(len(options['no_cheese']['view_in_file']['main']), 1)
+        self.assertEqual(options['no_cheese']['view_in_file']['main'][1], True)
+
     def test_renderer_gdsrenderer_inclusive_bound(self):
         """
         Test functionality of inclusive_bound in gds_renderer.py
