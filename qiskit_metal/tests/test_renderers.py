@@ -140,7 +140,7 @@ class TestRenderers(unittest.TestCase):
         renderer = QGDSRenderer(design)
         options = renderer.default_options
 
-        self.assertEqual(len(options), 13)
+        self.assertEqual(len(options), 15)
         self.assertEqual(options['short_segments_to_not_fillet'], 'True')
         self.assertEqual(options['check_short_segments_by_scaling_fillet'],
                          '2.0')
@@ -156,6 +156,28 @@ class TestRenderers(unittest.TestCase):
         self.assertEqual(options['max_points'], '8191')
         self.assertEqual(options['bounding_box_scale_x'], '1.2')
         self.assertEqual(options['bounding_box_scale_y'], '1.2')
+
+        self.assertEqual(len(options['cheese']), 6)
+        self.assertEqual(len(options['no_cheese']), 5)
+
+        self.assertEqual(options['cheese']['datatype'], '100')
+        self.assertEqual(options['cheese']['shape'], '0')
+        self.assertEqual(options['cheese']['cheese_0_x'], '50um')
+        self.assertEqual(options['cheese']['cheese_0_y'], '50um')
+        self.assertEqual(options['cheese']['cheese_1_radius'], '100um')
+
+        self.assertEqual(options['no_cheese']['datatype'], '99')
+        self.assertEqual(options['no_cheese']['buffer'], '25um')
+        self.assertEqual(options['no_cheese']['cap_style'], '2')
+        self.assertEqual(options['no_cheese']['join_style'], '2')
+
+        self.assertEqual(len(options['cheese']['view_in_file']), 1)
+        self.assertEqual(len(options['cheese']['view_in_file']['main']), 1)
+        self.assertEqual(options['cheese']['view_in_file']['main'][1], True)
+
+        self.assertEqual(len(options['no_cheese']['view_in_file']), 1)
+        self.assertEqual(len(options['no_cheese']['view_in_file']['main']), 1)
+        self.assertEqual(options['no_cheese']['view_in_file']['main'][1], True)
 
     def test_renderer_gdsrenderer_inclusive_bound(self):
         """
