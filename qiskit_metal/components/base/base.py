@@ -34,7 +34,7 @@ from ...draw import BaseGeometry
 from ...toolbox_python.attr_dict import Dict
 from ._parsed_dynamic_attrs import ParsedDynamicAttributes_Component
 from ...toolbox_python.display import format_dict_ala_z
-
+from datetime import datetime 
 from ... import config
 if not config.is_building_docs():
     from ...draw import Vector
@@ -509,7 +509,7 @@ class QComponent():
         **Note:**
             * This method should be overwritten by the children make function.
             * This function only contains the logic, the actual call to make the element is in
-              rebuild() and remake()
+              rebuild()
 
         Raises:
             NotImplementedError: Overwrite this function by subclassing.
