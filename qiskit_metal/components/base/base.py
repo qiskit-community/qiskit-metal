@@ -173,6 +173,8 @@ class QComponent():
 
         # Make the id be None, which means it hasn't been added to design yet.
         self._id = None
+        self._made = False
+
         # Status: used to handle building of a component and checking if it succeeded or failed.
         self.status = 'Not Built'
         if not is_design(design):
@@ -209,7 +211,6 @@ class QComponent():
 
         #: Dictionary of pins. Populated by component designer in make function using `add_pin`.
         self.pins = Dict()
-        self._made = False
 
         #: Metadata allows a designer to store extra information or analysis results.
         self.metadata = Dict()
@@ -531,25 +532,27 @@ class QComponent():
         done with no errors. The user can also set other statuses, which can appear if the code fails
         to reach the final line of the build, where the build status is set to `good`.
         """
-
-        # Begin by setting the status to failed, we will change this if we succeed
         self.status = 'failed'
-        if self._made:  # already made, just remaking
-            self.design.qgeometry.delete_component_id(self.id)
-            self.design._delete_all_pins_for_component(self.id)
+        try:
+            if self._made:  # already made, just remaking
+                self.design.qgeometry.delete_component_id(self.id)
+                self.design._delete_all_pins_for_component(self.id)
 
             self.make()
-        else:  # first time making
-            self.make()
-            self._made = True  # what if make throws an error part way?
-        self.status = 'good'
+            self._made = True
+            self.status = 'good'
 
-    def delete(self):
-        """
-        Delete the QComponent.
-        Removes QGeometry, QPins, etc. from the design.
-        """
-        self.design.delete_component(self.name)
+            self.design.build_logs.add_success(
+                f"{str(datetime.now())} -- Component: {self.name} successfully built"
+            )
+
+        except Exception as error:
+            self.logger.error(
+                f'ERROR in building component name={self.name}, error={error}')
+            self.design.build_logs.add_error(
+                f"{str(datetime.now())} -- Component: {self.name} failed with error\n: {error}"
+            )
+            raise error
 
     # Maybe still should be fine as any values will be in component options still?
     # Though the data table approach and rendering directly via shapely could lead to problem

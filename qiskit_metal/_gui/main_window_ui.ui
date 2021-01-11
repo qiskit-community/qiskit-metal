@@ -39,10 +39,7 @@
    <set>QMainWindow::AllowNestedDocks|QMainWindow::AllowTabbedDocks|QMainWindow::AnimatedDocks|QMainWindow::GroupedDragging</set>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout">
-    <property name="spacing">
-     <number>0</number>
-    </property>
+   <layout class="QFormLayout" name="formLayout">
     <property name="leftMargin">
      <number>0</number>
     </property>
@@ -55,7 +52,7 @@
     <property name="bottomMargin">
      <number>0</number>
     </property>
-    <item>
+    <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
        <number>1</number>
@@ -296,8 +293,8 @@
    <addaction name="separator"/>
    <addaction name="action_full_refresh"/>
    <addaction name="actionRebuild"/>
+   <addaction name="actionBuildHistory"/>
    <addaction name="separator"/>
-   <addaction name="actionNew_QComponent"/>
   </widget>
   <widget class="QToolBarExpanding" name="toolBarView">
    <property name="font">
@@ -515,8 +512,8 @@
   <widget class="QDockWidget" name="dockNewComponent">
    <property name="minimumSize">
     <size>
-     <width>78</width>
-     <height>123</height>
+     <width>79</width>
+     <height>124</height>
     </size>
    </property>
    <property name="windowIcon">
@@ -645,8 +642,8 @@
   <widget class="QDockWidget" name="dockLog">
    <property name="minimumSize">
     <size>
-     <width>78</width>
-     <height>100</height>
+     <width>79</width>
+     <height>101</height>
     </size>
    </property>
    <property name="windowIcon">
@@ -714,8 +711,8 @@
   <widget class="QDockWidget" name="dockConnectors">
    <property name="minimumSize">
     <size>
-     <width>78</width>
-     <height>123</height>
+     <width>79</width>
+     <height>124</height>
     </size>
    </property>
    <property name="windowIcon">
@@ -828,6 +825,7 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionNew_QComponent"/>
    <addaction name="actionGDS"/>
    <addaction name="actionHFSS"/>
    <addaction name="actionQ3D"/>
@@ -1293,6 +1291,21 @@
     <string>Q3D</string>
    </property>
   </action>
+  <action name="actionBuildHistory">
+   <property name="icon">
+    <iconset resource="main_window_rc.qrc">
+     <normaloff>:/build_history</normaloff>:/build_history</iconset>
+   </property>
+   <property name="text">
+    <string>Build History</string>
+   </property>
+   <property name="toolTip">
+    <string>See the build history of your design</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+B</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -1550,8 +1563,8 @@
      <y>-1</y>
     </hint>
     <hint type="destinationlabel">
-     <x>383</x>
-     <y>433</y>
+     <x>170</x>
+     <y>465</y>
     </hint>
    </hints>
   </connection>
@@ -1578,8 +1591,8 @@
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>458</x>
-     <y>645</y>
+     <x>502</x>
+     <y>878</y>
     </hint>
     <hint type="destinationlabel">
      <x>-1</x>
@@ -1594,8 +1607,8 @@
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>383</x>
-     <y>433</y>
+     <x>170</x>
+     <y>465</y>
     </hint>
     <hint type="destinationlabel">
      <x>-1</x>
@@ -1646,8 +1659,8 @@
      <y>-1</y>
     </hint>
     <hint type="destinationlabel">
-     <x>458</x>
-     <y>645</y>
+     <x>502</x>
+     <y>878</y>
     </hint>
    </hints>
   </connection>
@@ -1726,8 +1739,8 @@
      <y>-1</y>
     </hint>
     <hint type="destinationlabel">
-     <x>383</x>
-     <y>433</y>
+     <x>170</x>
+     <y>465</y>
     </hint>
    </hints>
   </connection>
@@ -1758,8 +1771,8 @@
      <y>-1</y>
     </hint>
     <hint type="destinationlabel">
-     <x>458</x>
-     <y>645</y>
+     <x>502</x>
+     <y>878</y>
     </hint>
    </hints>
   </connection>
@@ -1860,6 +1873,22 @@
    </hints>
   </connection>
   <connection>
+   <sender>actionBuildHistory</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>create_build_log_window()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>610</x>
+     <y>410</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
    <sender>actionNew_QComponent</sender>
    <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
@@ -1910,5 +1939,6 @@
   <slot>toggle_all_docks()</slot>
   <slot>new_qcomponent()</slot>
   <slot>show_renderer_gds()</slot>
+  <slot>create_build_log_window()</slot>
  </slots>
 </ui>

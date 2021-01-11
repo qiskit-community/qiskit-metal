@@ -19,8 +19,8 @@ File contains some config definitions. Mostly internal.
 @author: Zlatko K. Minev
 """
 
-import logging
-
+import logging, collections
+from typing import List
 __all__ = ['setup_logger']
 
 
@@ -103,3 +103,45 @@ def setup_logger(logger_name,
             logger.zkm_c_format = c_format
 
     return logger
+
+
+class LogStore(collections.deque):
+    """
+    Wrapper over collections.deque that ensures most recently added items (which should be strings) are at the "front" of the queue (i.e. left of the array)
+
+    Each QDesign instantiation has a LogStore object used to keep track of logs for the Build History display.
+
+    Each
+    """
+
+    def __init__(self,
+                 title: str,
+                 log_limit: int,
+                 _previous_builds: List[str] = [],
+                 *args,
+                 **kwargs):
+        super().__init__(maxlen=log_limit, *args, **kwargs)
+        self._title = title
+        for i in _previous_builds:
+            self.appendleft(i)
+        self._next_available_index = 0
+
+    def data(self):
+        #returns COPY of data
+        return list(self)
+
+    def add(self, log: str):
+        self.appendleft(log)
+
+    def add_success(self, log: str):
+        self.appendleft(log)
+
+    def add_error(self, log: str):
+        self.appendleft(
+            "ERROR " + log
+        )  #used to differentiate error strings from success strings where logs are displayed
+
+    @property
+    def title(self):
+        """The title is an easy way to differentiate between multiple instances of LogStore, each with different data"""
+        return self._title

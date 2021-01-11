@@ -12,6 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 """
-@auhtor: Zlatko Minev, Thomas McConkey, ... (IBM)
+@author: Zlatko Minev, Thomas McConkey, ... (IBM)
 @date: 2019
 """
