@@ -34,7 +34,7 @@ from .... import logger
 
 if TYPE_CHECKING:
     from ....designs.design_base import QDesign
-    from ....components.base import QComponent
+    from ....qlibrary.base import QComponent
     from ...main_window import MetalGUI
 
 __all__ = ['get_nested_dict_item', 'parse_param_from_str']

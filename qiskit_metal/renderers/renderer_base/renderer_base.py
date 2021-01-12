@@ -394,7 +394,7 @@ class QRenderer():
                     f'The component={qcomp} in highlight_qcomponents not'
                     ' in QDesign.')
                 return [], 2  # Invalid
-        if len(unique_qcomponents) == len(self.design.components):
+        if len(unique_qcomponents) == len(self.design.qlibrary):
             return [], 1  # Everything selected
         return [self.design.name_to_id[elt] for elt in unique_qcomponents
                ], 0  # Subset selected

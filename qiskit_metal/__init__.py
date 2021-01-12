@@ -109,7 +109,7 @@ from ._is_design import is_design, is_component
 
 # Core modules for user to use
 from .toolbox_metal.parsing import is_true
-from . import components  #TODO: slow to import? why
+from . import qlibrary  #TODO: slow to import? why
 from . import designs
 from . import draw
 from . import renderers
@@ -132,5 +132,5 @@ from .toolbox_python.display import Headings
 from .renderers import setup_renderers
 
 # Common-use
-from .components import QComponent
+from .qlibrary import QComponent
 from .toolbox_metal.about import about, open_docs

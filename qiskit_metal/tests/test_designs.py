@@ -32,11 +32,11 @@ from qiskit_metal.designs.design_base import QDesign
 from qiskit_metal.designs.design_planar import DesignPlanar
 from qiskit_metal.designs.interface_components import Components
 from qiskit_metal.designs.net_info import QNet
-from qiskit_metal.components.base.base import QComponent
-from qiskit_metal.components.qubits.transmon_pocket import TransmonPocket
+from qiskit_metal.qlibrary.base.base import QComponent
+from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
 
 #pylint: disable-msg=line-too-long
-from qiskit_metal.components.interconnects.resonator_rectangle_spiral import ResonatorRectangleSpiral
+from qiskit_metal.qlibrary.interconnects.resonator_rectangle_spiral import ResonatorRectangleSpiral
 
 
 class TestDesign(unittest.TestCase):
@@ -195,23 +195,23 @@ class TestDesign(unittest.TestCase):
         design = DesignPlanar(metadata={})
 
         ResonatorRectangleSpiral(design, make=False)
-        self.assertEqual('res_1' in design.components, True)
+        self.assertEqual('res_1' in design.qlibrary, True)
         ResonatorRectangleSpiral(design, make=False)
-        self.assertEqual('res_2' in design.components, True)
+        self.assertEqual('res_2' in design.qlibrary, True)
 
         # Manually add the next automatic name to check it doesn't get repeated
         ResonatorRectangleSpiral(design, 'res_3', make=False)
         ResonatorRectangleSpiral(design, make=False)
-        self.assertEqual('res_3' in design.components, True)
-        self.assertEqual('res_4' in design.components, True)
+        self.assertEqual('res_3' in design.qlibrary, True)
+        self.assertEqual('res_4' in design.qlibrary, True)
 
         # Add a different component
         TransmonPocket(design, make=False)
-        self.assertEqual('Q_1' in design.components, False)
+        self.assertEqual('Q_1' in design.qlibrary, False)
 
         # Add a component with no predefined prefix
         QComponent(design, make=False)
-        self.assertEqual('QComponent_1' in design.components, True)
+        self.assertEqual('QComponent_1' in design.qlibrary, True)
 
     def test_design_delete_component(self):
         """

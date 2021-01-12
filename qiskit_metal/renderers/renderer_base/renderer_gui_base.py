@@ -92,7 +92,7 @@ class QRendererGui(QRenderer):
             selection (selection): Not used
         """
         # TOOD: handle selection
-        for _, component in self.design.components.items():
+        for _, component in self.design.qlibrary.items():
             self.render_component(component)
 
     def render_component(self, component):

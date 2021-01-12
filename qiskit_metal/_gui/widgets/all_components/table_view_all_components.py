@@ -178,7 +178,7 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
                                                    QLineEdit.Normal, "")
             if okPressed and text != '':
                 self.logger.info(f'Renaming {name} to {text}')
-                comp_id = self.design.components[name].id
+                comp_id = self.design.qlibrary[name].id
                 self.design.rename_component(comp_id, text)
 
     def viewClicked(self, index: QModelIndex):
