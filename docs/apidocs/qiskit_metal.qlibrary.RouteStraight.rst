@@ -3,7 +3,7 @@
 RouteStraight
 =====================================
 
-.. currentmodule:: qiskit_metal.components
+.. currentmodule:: qiskit_metal.qlibrary
 
 .. autoclass:: RouteStraight
    :no-members:

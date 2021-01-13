@@ -3,7 +3,7 @@
 RoutePathfinder
 =======================================
 
-.. currentmodule:: qiskit_metal.components
+.. currentmodule:: qiskit_metal.qlibrary
 
 .. autoclass:: RoutePathfinder
    :no-members:

@@ -3,7 +3,7 @@
 RouteAnchors
 ====================================
 
-.. currentmodule:: qiskit_metal.components
+.. currentmodule:: qiskit_metal.qlibrary
 
 .. autoclass:: RouteAnchors
    :no-members:

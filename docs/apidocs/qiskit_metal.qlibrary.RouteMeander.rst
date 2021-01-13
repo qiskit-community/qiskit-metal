@@ -3,7 +3,7 @@
 RouteMeander
 ====================================
 
-.. currentmodule:: qiskit_metal.components
+.. currentmodule:: qiskit_metal.qlibrary
 
 .. autoclass:: RouteMeander
    :no-members:

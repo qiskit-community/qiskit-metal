@@ -3,7 +3,7 @@
 LaunchpadWirebondCoupled
 ================================================
 
-.. currentmodule:: qiskit_metal.components
+.. currentmodule:: qiskit_metal.qlibrary
 
 .. autoclass:: LaunchpadWirebondCoupled
    :no-members:

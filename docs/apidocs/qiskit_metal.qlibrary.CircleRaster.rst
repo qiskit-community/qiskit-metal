@@ -3,7 +3,7 @@
 CircleRaster
 ====================================
 
-.. currentmodule:: qiskit_metal.components
+.. currentmodule:: qiskit_metal.qlibrary
 
 .. autoclass:: CircleRaster
    :no-members:

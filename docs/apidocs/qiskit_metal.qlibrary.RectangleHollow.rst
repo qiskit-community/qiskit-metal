@@ -3,7 +3,7 @@
 RectangleHollow
 =======================================
 
-.. currentmodule:: qiskit_metal.components
+.. currentmodule:: qiskit_metal.qlibrary
 
 .. autoclass:: RectangleHollow
    :no-members:

@@ -3,7 +3,7 @@
 TransmonConcentric
 ==========================================
 
-.. currentmodule:: qiskit_metal.components
+.. currentmodule:: qiskit_metal.qlibrary
 
 .. autoclass:: TransmonConcentric
    :no-members:

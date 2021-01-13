@@ -3,7 +3,7 @@
 RouteFramed
 ===================================
 
-.. currentmodule:: qiskit_metal.components
+.. currentmodule:: qiskit_metal.qlibrary
 
 .. autoclass:: RouteFramed
    :no-members:

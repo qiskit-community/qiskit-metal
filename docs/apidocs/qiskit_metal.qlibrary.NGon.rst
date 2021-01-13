@@ -3,7 +3,7 @@
 NGon
 ============================
 
-.. currentmodule:: qiskit_metal.components
+.. currentmodule:: qiskit_metal.qlibrary
 
 .. autoclass:: NGon
    :no-members:

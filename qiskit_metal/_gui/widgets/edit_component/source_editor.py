@@ -152,7 +152,7 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         self.component_class_name = None  # type: str - 'TransmonPocket'
         # type: str - 'qiskit_metal.qlibrary.qubits.transmon_pocket'
         self.component_module_name = None
-        # type: str - '/Users/zlatko.minev/qiskit_metal/qiskit_metal/components/qubits/transmon_pocket.py'
+        # type: str - '/Users/zlatko.minev/qiskit_metal/qiskit_metal/qlibrary/qubits/transmon_pocket.py'
         self.component_module_path = None
 
         # starts the default pyqode.python server (which enable the jedi code

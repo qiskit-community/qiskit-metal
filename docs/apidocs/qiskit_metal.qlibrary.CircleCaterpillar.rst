@@ -3,7 +3,7 @@
 CircleCaterpillar
 =========================================
 
-.. currentmodule:: qiskit_metal.components
+.. currentmodule:: qiskit_metal.qlibrary
 
 .. autoclass:: CircleCaterpillar
    :no-members:

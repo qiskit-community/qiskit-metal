@@ -3,7 +3,7 @@
 TransmonPocket
 ======================================
 
-.. currentmodule:: qiskit_metal.components
+.. currentmodule:: qiskit_metal.qlibrary
 
 .. autoclass:: TransmonPocket
    :no-members:

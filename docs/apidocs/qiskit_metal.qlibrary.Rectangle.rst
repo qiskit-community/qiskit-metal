@@ -3,7 +3,7 @@
 Rectangle
 =================================
 
-.. currentmodule:: qiskit_metal.components
+.. currentmodule:: qiskit_metal.qlibrary
 
 .. autoclass:: Rectangle
    :no-members:
