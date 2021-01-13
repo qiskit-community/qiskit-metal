@@ -164,9 +164,7 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         self.modes.append(modes.OutlineMode(defined_names))
 
         # --- core panels
-        fp = panels.FoldingPanel()
-        fp.native_look = False
-        self.panels.append(fp)
+        self.panels.append(panels.FoldingPanel())
         self.panels.append(panels.LineNumberPanel())
         self.panels.append(panels.CheckerPanel())
         self.panels.append(panels.SearchAndReplacePanel(),
