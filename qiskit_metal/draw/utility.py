@@ -34,7 +34,7 @@ from numpy.linalg import norm
 from shapely.geometry import MultiPolygon, Polygon
 
 from .. import logger
-from ..components.base import is_component
+from ..qlibrary.base import is_component
 from . import BaseGeometry
 
 __all__ = [
@@ -103,7 +103,7 @@ name if not (root_name == '') else name
         for name, sub_obj in obj.items():
             if is_component(obj):
                 RES[name] = get_all_geoms(
-                    sub_obj.components, root_name=new_name(name))
+                    sub_obj.qlibrary, root_name=new_name(name))
             elif isinstance(sub_obj, dict):
                 # if name.startswith('components'): # old school to remove eventually TODO
                 #    RES[name] = func(obj) # allow transofmraiton of components

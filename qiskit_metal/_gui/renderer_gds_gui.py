@@ -111,7 +111,7 @@ class RendererGDSWidget(QMainWindow):
         components_to_export = self.get_checked()
         a_gds = self.design.renderers.gds
         if filename and components_to_export:
-            if len(components_to_export) == len(self.design.components):
+            if len(components_to_export) == len(self.design.qlibrary):
                 a_gds.export_to_gds(filename)
             else:
                 a_gds.export_to_gds(filename,

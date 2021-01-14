@@ -26,9 +26,9 @@ from .. import logger
 from .. import config
 if not config.is_building_docs():
     # Only import QComponent if the docs are NOT being built
-    from ..components.base.base import QComponent
+    from ..qlibrary.base.base import QComponent
 
-from ..components.base._parsed_dynamic_attrs import is_ipython_magic
+from ..qlibrary.base._parsed_dynamic_attrs import is_ipython_magic
 
 if TYPE_CHECKING:
     # For linting typechecking, import modules that can't be loaded here under normal conditions.
@@ -52,7 +52,7 @@ class Components:
         """
         self._design = design
         self.logger = logger  # type: logging.Logger
-        self.components = design._components
+        self.qlibrary = design._components
         self.name_list = list()
         self.name_list_idx = 0
 
@@ -62,7 +62,7 @@ class Components:
         Returns:
             int: Total number of components registered within the design.
         """
-        return len(self.components)
+        return len(self.qlibrary)
 
     def get_list_ints(self, component_names: List[str]) -> List[int]:
         """Provide corresponding ints to be used as keys for dict: design._components,
@@ -122,7 +122,7 @@ class Components:
     #     """
 
     #     all_names = [(value.name, key)
-    #                  for (key, value) in self.components.items()]
+    #                  for (key, value) in self.qlibrary.items()]
     #     search_result = [
     #         item for item in all_names if new_name == item[0]]
     #     if len(search_result) != 0:
@@ -186,7 +186,7 @@ class Components:
             self.logger.debug(
                 f'The name={name} already exists in design._components.  A component_id={component_id} will be replaced.'
             )
-            self.components[component_id] = deepcopy(value)
+            self.qlibrary[component_id] = deepcopy(value)
         else:
             self.logger.warning(
                 f'Usualy new components are added to design during init.  The name={name} is not in design._components, and added as a new component.'
@@ -262,7 +262,7 @@ class Components:
         Returns:
             list: List of all the names used in design._components.
         """
-        all_names = [(value.name) for (key, value) in self.components.items()]
+        all_names = [(value.name) for (key, value) in self.qlibrary.items()]
         return all_names
 
         #     def __dir__(self):
@@ -286,7 +286,7 @@ class Components:
             list: List of (key, value) pairs.
         """
         all_items = [
-            (value.name, value) for (key, value) in self.components.items()
+            (value.name, value) for (key, value) in self.qlibrary.items()
         ]
         return all_items
 
@@ -296,7 +296,7 @@ class Components:
         Returns:
             list: List of just the values.
         """
-        all_items = [value for (key, value) in self.components.items()]
+        all_items = [value for (key, value) in self.qlibrary.items()]
 
         return all_items
 
@@ -306,7 +306,7 @@ class Components:
         Returns:
             list: List of just the keys.
         """
-        all_items = [value.name for (key, value) in self.components.items()]
+        all_items = [value.name for (key, value) in self.qlibrary.items()]
 
         return all_items
 

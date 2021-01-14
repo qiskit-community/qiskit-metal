@@ -40,7 +40,7 @@ __all__ = ['create_QTextDocument', 'format_docstr']
 
 if TYPE_CHECKING:
     from ...main_window import MetalGUI, QMainWindowExtension
-    from ....components import QComponent
+    from ....qlibrary import QComponent
     from ....designs import QDesign
 
 try:  # For source doc
@@ -250,8 +250,8 @@ class ComponentWidget(QTabWidget):
         """
         if self.design:
             if self.component_name:
-                if self.component_name in self.design.components:
-                    a_component = self.design.components[self.component_name]
+                if self.component_name in self.design.qlibrary:
+                    a_component = self.design.qlibrary[self.component_name]
                     if a_component is None:
                         self.set_component(None)
                     return a_component
