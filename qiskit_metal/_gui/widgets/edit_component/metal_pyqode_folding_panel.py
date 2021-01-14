@@ -13,9 +13,6 @@ class MetalPyqodeFoldingPanel(FoldingPanel):
     The _draw_fold_indicator threw:
     AttributeError: module 'pyqode.qt.QtGui' has no attribute 'QStyleOptionViewItemV2'
     when opt = QtGui.QStyleOptionViewItemV2() was called.
-
-    Args:
-        None
     """
 
     def __init__(self, *args, **kwargs):
@@ -25,10 +22,10 @@ class MetalPyqodeFoldingPanel(FoldingPanel):
         """
         Draw the fold indicator/trigger (arrow).
         Args:
-            param top: Top position
-            param mouse_over: Whether the mouse is over the indicator
-            param collapsed: Whether the trigger is collapsed or not.
-            param painter: QPainter
+            top (int): Top position
+            mouse_over (bool): Whether the mouse is over the indicator
+            collapsed (bool): Whether the trigger is collapsed or not.
+            painter (PySide.QtGui.QPainter): QPainter
         """
         rect = QtCore.QRect(0, top,
                             self.sizeHint().width(),
