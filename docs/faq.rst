@@ -110,3 +110,15 @@ Documentation
 Some users may see a list of warnings when building the docs.  Warnings about matplotlib text role can be safely ignored.
 
 You can resolve other warnings by deleting the ``docs/build`` and ``docs/stubs`` directories and rebuilding.
+
+********************************
+Connecting to 3rd party software
+********************************
+
+**I'm having trouble connecting to Ansys after running open_ansys_design().**
+
+First check to see if a project and design are already open and active in Ansys.
+
+Activate an Ansys design by double clicking on it in the Project Manager panel.
+
+If the error persists, there may be one or more hidden Ansys windows in the background. Close them via the task manager and try again.
