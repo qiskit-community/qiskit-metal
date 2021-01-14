@@ -24,6 +24,7 @@ Metal is automating and streamlining this process. Our vision is to develop a co
   :hidden:
 
   Overview<overview>
+  Workflow<workflow>
   Analyses<apidocs/analyses>
   Components<apidocs/components>
   Designs<apidocs/designs>
