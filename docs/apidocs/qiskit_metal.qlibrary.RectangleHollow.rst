@@ -1,7 +1,7 @@
-
+﻿
 
 RectangleHollow
-=======================================
+=====================================
 
 .. currentmodule:: qiskit_metal.qlibrary
 

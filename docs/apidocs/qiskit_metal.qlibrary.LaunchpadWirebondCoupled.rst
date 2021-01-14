@@ -1,7 +1,7 @@
 ﻿
 
 LaunchpadWirebondCoupled
-================================================
+==============================================
 
 .. currentmodule:: qiskit_metal.qlibrary
 

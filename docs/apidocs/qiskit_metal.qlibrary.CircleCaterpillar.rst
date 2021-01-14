@@ -1,7 +1,7 @@
-
+﻿
 
 CircleCaterpillar
-=========================================
+=======================================
 
 .. currentmodule:: qiskit_metal.qlibrary
 

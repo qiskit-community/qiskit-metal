@@ -1,7 +1,7 @@
-
+﻿
 
 NSquareSpiral
-=====================================
+===================================
 
 .. currentmodule:: qiskit_metal.qlibrary
 

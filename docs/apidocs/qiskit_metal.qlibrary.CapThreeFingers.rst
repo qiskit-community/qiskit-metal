@@ -1,7 +1,7 @@
 ﻿
 
 CapThreeFingers
-=======================================
+=====================================
 
 .. currentmodule:: qiskit_metal.qlibrary
 

@@ -1,7 +1,7 @@
-
+﻿
 
 NGon
-============================
+==========================
 
 .. currentmodule:: qiskit_metal.qlibrary
 

@@ -1,7 +1,7 @@
-
+﻿
 
 ResonatorRectangleSpiral
-================================================
+==============================================
 
 .. currentmodule:: qiskit_metal.qlibrary
 

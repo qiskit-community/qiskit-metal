@@ -1,7 +1,7 @@
 ﻿
 
 RouteMixed
-==================================
+================================
 
 .. currentmodule:: qiskit_metal.qlibrary
 

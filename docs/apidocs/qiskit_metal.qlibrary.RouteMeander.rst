@@ -1,7 +1,7 @@
 ﻿
 
 RouteMeander
-====================================
+==================================
 
 .. currentmodule:: qiskit_metal.qlibrary
 

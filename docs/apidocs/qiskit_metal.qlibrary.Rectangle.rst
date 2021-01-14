@@ -1,7 +1,7 @@
-
+﻿
 
 Rectangle
-=================================
+===============================
 
 .. currentmodule:: qiskit_metal.qlibrary
 

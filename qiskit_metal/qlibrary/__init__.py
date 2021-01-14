@@ -13,12 +13,12 @@
 # that they have been altered from the originals.
 """
 =================================================
-Component (:mod:`qiskit_metal.qlibrary`)
+QLibrary (:mod:`qiskit_metal.qlibrary`)
 =================================================
 
 .. currentmodule:: qiskit_metal.qlibrary
 
-Module containing all Qiskit Metal components.
+Module containing all Qiskit Metal QLibrary.
 
 @date: 2019
 

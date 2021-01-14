@@ -1,7 +1,7 @@
-
+﻿
 
 TransmonConcentric
-==========================================
+========================================
 
 .. currentmodule:: qiskit_metal.qlibrary
 

@@ -1,7 +1,7 @@
-
+﻿
 
 TransmonCross
-=====================================
+===================================
 
 .. currentmodule:: qiskit_metal.qlibrary
 

@@ -1,7 +1,7 @@
-
+﻿
 
 CircleRaster
-====================================
+==================================
 
 .. currentmodule:: qiskit_metal.qlibrary
 

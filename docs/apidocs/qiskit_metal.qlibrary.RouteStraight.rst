@@ -1,7 +1,7 @@
 ﻿
 
 RouteStraight
-=====================================
+===================================
 
 .. currentmodule:: qiskit_metal.qlibrary
 

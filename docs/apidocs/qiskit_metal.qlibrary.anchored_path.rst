@@ -1,7 +1,7 @@
-
+﻿
 
 anchored_path
-=====================================
+===================================
 
 .. automodule:: qiskit_metal.qlibrary.anchored_path
 
