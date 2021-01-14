@@ -281,7 +281,7 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
                 import jedi
                 jedi.settings.cache_directory
 
-            I have tried to fix this using the permisison code below
+            I have tried to fix this using the permission code below
         """
 
         ####################
