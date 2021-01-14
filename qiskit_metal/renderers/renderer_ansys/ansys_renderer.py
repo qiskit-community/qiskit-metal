@@ -339,13 +339,19 @@ class QAnsysRenderer(QRenderer):
         """
         ansys_options = dict(transparency=0.0)
 
-        qc_name = 'Q' + str(qgeom['component']) # name of QComponent
-        qc_elt = get_clean_name(qgeom['name']) # name of element within QGeometry table
+        # qc_name = 'Q' + str(qgeom['component']) # name of QComponent
+        # qc_elt = get_clean_name(qgeom['name']) # name of element within QGeometry table
+
+        qc_name = self.design._components[qgeom['component']].name
+        qc_elt = get_clean_name(qgeom['name'])
+
         qc_shapely = qgeom.geometry  # shapely geom
         qc_chip_z = parse_units(self.design.get_chip_z(qgeom.chip))
         qc_fillet = round(qgeom.fillet, 7)
 
-        name = f'{qc_name}{QAnsysRenderer.NAME_DELIM}{qc_elt}'
+        # name = f'{qc_name}{QAnsysRenderer.NAME_DELIM}{qc_elt}'
+
+        name = f'{qc_elt}{QAnsysRenderer.NAME_DELIM}{qc_name}'
 
         points = parse_units(list(qc_shapely.exterior.coords))  # list of 2d point tuples
         points_3d = to_vec3D(points, qc_chip_z)
@@ -400,12 +406,18 @@ class QAnsysRenderer(QRenderer):
         """
         ansys_options = dict(transparency=0.0)
 
-        qc_name = 'Q' + str(qgeom['component']) # name of QComponent
-        qc_elt = get_clean_name(qgeom['name']) # name of element within QGeometry table
+        # qc_name = 'Q' + str(qgeom['component']) # name of QComponent
+        # qc_elt = get_clean_name(qgeom['name']) # name of element within QGeometry table
+
+        qc_name = self.design._components[qgeom['component']].name
+        qc_elt = get_clean_name(qgeom['name'])
+
         qc_shapely = qgeom.geometry  # shapely geom
         qc_chip_z = parse_units(self.design.get_chip_z(qgeom.chip))
 
-        name = f'{qc_name}{QAnsysRenderer.NAME_DELIM}{qc_elt}'
+        # name = f'{qc_name}{QAnsysRenderer.NAME_DELIM}{qc_elt}'
+
+        name = f'{qc_elt}{QAnsysRenderer.NAME_DELIM}{qc_name}'
 
         qc_width = parse_units(qgeom.width)
 
@@ -476,11 +488,19 @@ class QAnsysRenderer(QRenderer):
                 max_y_edge = comp_center_y + self._options['bounding_box_scale_y'] * (self.max_y_main - comp_center_y)
                 if self.render_everything and (origin[0] - size[0] / 2 <= min_x_edge < max_x_edge <= origin[0] + size[0] / 2) and (origin[1] - size[1] / 2 <= min_y_edge < max_y_edge <= origin[1] + size[1] / 2):
                     # All components are rendered and the overall bounding box lies within 9 X 6 chip
+
+                    # plane = self.modeler.draw_rect_center(origin,
+                    #                                       x_size=size[0],
+                    #                                       y_size=size[1],
+                    #                                       name=f'{chip_name}_plane',
+                    #                                       **ansys_options)
+
                     plane = self.modeler.draw_rect_center(origin,
                                                           x_size=size[0],
                                                           y_size=size[1],
-                                                          name=f'{chip_name}_plane',
+                                                          name=f'ground_{chip_name}_plane',
                                                           **ansys_options)
+
                     whole_chip = self.modeler.draw_box_center([origin[0], origin[1], size[2] / 2],
                                                               [size[0], size[1], -size[2]],
                                                               name=chip_name,
@@ -496,11 +516,19 @@ class QAnsysRenderer(QRenderer):
                     # A strict subset of components is rendered, or exported components extend beyond boundaries of 9 X 6 chip
                     x_width = max_x_edge - min_x_edge
                     y_width = max_y_edge - min_y_edge
+
+                    # plane = self.modeler.draw_rect_center([comp_center_x, comp_center_y, origin[2]],
+                    #                                       x_size=x_width,
+                    #                                       y_size=y_width,
+                    #                                       name=f'{chip_name}_plane',
+                    #                                       **ansys_options)
+
                     plane = self.modeler.draw_rect_center([comp_center_x, comp_center_y, origin[2]],
                                                           x_size=x_width,
                                                           y_size=y_width,
-                                                          name=f'{chip_name}_plane',
+                                                          name=f'ground_{chip_name}_plane',
                                                           **ansys_options)
+
                     whole_chip = self.modeler.draw_box_center([comp_center_x, comp_center_y, size[2] / 2],
                                                               [x_width, y_width, -size[2]],
                                                               name=chip_name,
@@ -514,11 +542,19 @@ class QAnsysRenderer(QRenderer):
                                                                 name='sample_holder')
             else:
                 # Only draw plane and wafer
+
+                # plane = self.modeler.draw_rect_center(origin,
+                #                                       x_size=size[0],
+                #                                       y_size=size[1],
+                #                                       name=f'{chip_name}_plane',
+                #                                       **ansys_options)
+
                 plane = self.modeler.draw_rect_center(origin,
                                                       x_size=size[0],
                                                       y_size=size[1],
-                                                      name=f'{chip_name}_plane',
+                                                      name=f'ground_{chip_name}_plane',
                                                       **ansys_options)
+
                 whole_chip = self.modeler.draw_box_center([origin[0], origin[1], size[2] / 2],
                                                           [size[0], size[1], -size[2]],
                                                           name=chip_name,
@@ -526,8 +562,12 @@ class QAnsysRenderer(QRenderer):
                                                           color=(186, 186, 205),
                                                           transparency=0.2,
                                                           wireframe=False)
+            
+            # if self.chip_subtract_dict[chip_name]: # Any layer which has subtract=True qgeometries will have a ground plane
+            #     self.assign_perfE.append(f'{chip_name}_plane')
+
             if self.chip_subtract_dict[chip_name]: # Any layer which has subtract=True qgeometries will have a ground plane
-                self.assign_perfE.append(f'{chip_name}_plane')
+                self.assign_perfE.append(f'ground_{chip_name}_plane')
 
     def add_endcaps(self, open_pins: Union[list, None] = None):
         """
@@ -559,7 +599,8 @@ class QAnsysRenderer(QRenderer):
         """
         for chip, shapes in self.chip_subtract_dict.items():
             if shapes:
-                self.modeler.subtract(chip + '_plane', list(shapes))
+                # self.modeler.subtract(chip + '_plane', list(shapes))
+                self.modeler.subtract(f'ground_{chip}_plane', list(shapes))
 
     def add_mesh(self):
         """

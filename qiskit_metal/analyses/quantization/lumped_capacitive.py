@@ -111,14 +111,14 @@ def chi(g, wr, w01, w12):
     return (chibus_1 - chibus_0) / 2
 
 
-def extract_transmon_coupled_Noscillator(capMatrix,
-                                         Ic,
-                                         CJ,
-                                         N,
-                                         fb,
-                                         fr,
-                                         res_L4_corr=None,
-                                         g_scale=1):
+def extract_transmon_coupled_Noscillator(capMatrix: np.ndarray,
+                                         Ic: float,
+                                         CJ: float,
+                                         N: int,
+                                         fb: float,
+                                         fr: float,
+                                         res_L4_corr: list = None,
+                                         g_scale: float = 1):
     """
     Primary analysis function called by the user. Uses a (Maxwell) capacitance
     matrix generated from Q3D, and some additional values, to determine
@@ -126,14 +126,14 @@ def extract_transmon_coupled_Noscillator(capMatrix,
     should have first been imported using readin_q3d_matrix().
 
     Args:
-        capMatrix (float): order of the capacitance matrix must be
+        capMatrix (np.ndarray): order of the capacitance matrix must be
           bus1...busN-1, ground, Qubit_pad1, Qubit_pad2, readout. (in F)
           If not in the correct order, use df_reorder_matrix_basis() to put
           it in the proper order. It is advised that the user follow a naming scheme
           in QiskitMetal or Q3D which results in the necessary order by default (eg. alphabetical)
         Ic (float): junction Ic (in A)
         Cj (float): junction capacitance (in F)
-        N (float): coupling pads (1 readout, N-1 bus)
+        N (int): coupling pads (1 readout, N-1 bus)
         fb (float): coupling bus and readout frequencies (in GHz). fb can be a list with the order
           the order they appear in the capMatrix.
         fr (float): coupling bus and readout frequencies (in GHz). fb can be a list with the order

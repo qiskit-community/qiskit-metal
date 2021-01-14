@@ -198,13 +198,13 @@ class QQ3DRenderer(QAnsysRenderer):
     def get_capacitance_matrix(self, variation: str = '', solution_kind: str = 'AdaptivePass', pass_number: int = 3):
         # TODO: Move arguments to default_options.
         """
-        Obtain capacitance matrix in a dataframe format, as well as user units and other information.
+        Obtain capacitance matrix in a dataframe format.
         Must be executed *after* analyze_setup.
 
         Args:
-            variation (str, optional): [description]. Defaults to ''.
-            solution_kind (str, optional): [description]. Defaults to 'AdaptivePass'.
-            pass_number (int, optional): [description]. Defaults to 3.
+            variation (str, optional): An empty string returns nominal variation. Otherwise need the list. Defaults to ''
+            solution_kind (str, optional): Solution type. Defaults to 'AdaptivePass'.
+            pass_number (int, optional): Number of passes to perform. Defaults to 3.
         """
         if self.pinfo:
             df_cmat, user_units, _, _ = self.pinfo.setup.get_matrix(variation=variation, solution_kind = solution_kind, pass_number=pass_number)
@@ -229,13 +229,13 @@ class QQ3DRenderer(QAnsysRenderer):
             Cj_fF (float): junction capacitance (in fF)
             N (int): coupling pads (1 readout, N - 1 bus)
             fr (Union[list, float]): coupling bus and readout frequencies (in GHz). fr can be a list with the order
-                the order they appear in the capMatrix.
+                they appear in the capMatrix.
             fb (Union[list, float]): coupling bus and readout frequencies (in GHz). fb can be a list with the order
-                the order they appear in the capMatrix.
+                they appear in the capMatrix.
             maxPass (int): maximum number of passes
-            variation (str, optional): [description]. Defaults to ''.
-            solution_kind (str, optional): [description]. Defaults to 'AdaptivePass'.
-            g_scale (float, optional): [description]. Defaults to 1..
+            variation (str, optional): An empty string returns nominal variation. Otherwise need the list. Defaults to ''.
+            solution_kind (str, optional): Solution type. Defaults to 'AdaptivePass'.
+            g_scale (float, optional): Scale factor. Defaults to 1..
 
         Returns:
             dict: dictionary composed of pass numbers (keys) and their respective capacitance matrices (values)
@@ -246,7 +246,7 @@ class QQ3DRenderer(QAnsysRenderer):
         fb = [ureg(f'{freq} GHz').to('GHz').magnitude for freq in fb]
         RES = {}
         for i in range(1, maxPass):
-            print(i)
+            print('Pass number: ', i)
             df_cmat, user_units, _, _ = self.pinfo.setup.get_matrix(variation=variation, solution_kind=solution_kind, pass_number=i)
             c_units = ureg(user_units).to('farads').magnitude
             res = extract_transmon_coupled_Noscillator(df_cmat.values * c_units, IC_Amps, CJ, N, fb, fr, g_scale = 1)
@@ -255,3 +255,30 @@ class QQ3DRenderer(QAnsysRenderer):
         RES['χr MHz'] = abs(RES['chi_in_MHz'].apply(lambda x: x[0]))
         RES['gr MHz'] = abs(RES['gbus'].apply(lambda x: x[0]))
         return RES
+
+    @property
+    def distributed_analysis(self):
+        """Returns class containing info on Hamiltonian parameters from HFSS simulation."""
+        if self.pinfo:
+            return epr.DistributedAnalysis(self.pinfo)
+    
+    def plot_convergence_main(self, eprd, RES: pd.DataFrame):
+        """
+        Plot alpha and frequency versus pass number, as well as convergence of delta (in %).
+
+        Args:
+            eprd ([type]): Pointer to calculated Hamiltonian parameters from distributed analysis.
+            RES (pd.DataFrame): Dictionary of capacitance matrices versus pass number, organized as pandas table.
+        """
+        epr.toolbox.plotting.mpl_dpi(110)
+        return _plot_q3d_convergence_main(eprd, RES)
+
+    def plot_convergence_chi(self, RES):
+        """
+        Plot convergence of chi and g, both in MHz, as a function of pass number.
+
+        Args:
+            RES (pd.DataFrame): Dictionary of capacitance matrices versus pass number, organized as pandas table.
+        """
+        epr.toolbox.plotting.mpl_dpi(110)
+        return _plot_q3d_convergence_chi_f(RES)
