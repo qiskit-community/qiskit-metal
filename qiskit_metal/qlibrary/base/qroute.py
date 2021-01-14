@@ -24,6 +24,7 @@ from collections.abc import Mapping
 from qiskit_metal.toolbox_metal import math_and_overrides as mao
 import math
 
+
 class QRoutePoint:
     """A convenience wrapper class to define an point with orientation,
     with a 2D position and a 2D direction (XY plane).
@@ -187,7 +188,7 @@ class QRoute(QComponent):
         Return:
             the actual pin object.
         """
-        return self.design.qlibrary[pin_data.component].pins[pin_data.pin]
+        return self.design.components[pin_data.component].pins[pin_data.pin]
 
     def set_pin(self, name: str) -> QRoutePoint:
         """Defines the CPW pins and returns the pin coordinates and normal direction vector
@@ -219,7 +220,7 @@ class QRoute(QComponent):
         # create the cpw pin and document the connections to the reference_pin in the netlist
         self.add_pin(name, reference_pin.points[::-1], self.p.trace_width)
         self.design.connect_pins(
-            self.design.qlibrary[options_pin.component].id, options_pin.pin,
+            self.design.components[options_pin.component].id, options_pin.pin,
             self.id, name)
 
         # anchor the correct lead to the pin and return its position and direction
@@ -533,7 +534,8 @@ class QRoute(QComponent):
         # compute actual final length
         p = self.p
         self.options._actual_length = str(
-            line.length - self.length_excess_corner_rounding(line.coords)) + ' ' + self.design.get_units()
+            line.length - self.length_excess_corner_rounding(line.coords)
+        ) + ' ' + self.design.get_units()
 
         # expand the routing track to form the substrate core of the cpw
         self.add_qgeometry('path', {'trace': line},

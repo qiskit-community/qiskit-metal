@@ -195,23 +195,23 @@ class TestDesign(unittest.TestCase):
         design = DesignPlanar(metadata={})
 
         ResonatorRectangleSpiral(design, make=False)
-        self.assertEqual('res_1' in design.qlibrary, True)
+        self.assertEqual('res_1' in design.components, True)
         ResonatorRectangleSpiral(design, make=False)
-        self.assertEqual('res_2' in design.qlibrary, True)
+        self.assertEqual('res_2' in design.components, True)
 
         # Manually add the next automatic name to check it doesn't get repeated
         ResonatorRectangleSpiral(design, 'res_3', make=False)
         ResonatorRectangleSpiral(design, make=False)
-        self.assertEqual('res_3' in design.qlibrary, True)
-        self.assertEqual('res_4' in design.qlibrary, True)
+        self.assertEqual('res_3' in design.components, True)
+        self.assertEqual('res_4' in design.components, True)
 
         # Add a different component
         TransmonPocket(design, make=False)
-        self.assertEqual('Q_1' in design.qlibrary, False)
+        self.assertEqual('Q_1' in design.components, False)
 
         # Add a component with no predefined prefix
         QComponent(design, make=False)
-        self.assertEqual('QComponent_1' in design.qlibrary, True)
+        self.assertEqual('QComponent_1' in design.components, True)
 
     def test_design_delete_component(self):
         """

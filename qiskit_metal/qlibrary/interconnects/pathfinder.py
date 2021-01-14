@@ -94,7 +94,7 @@ class RoutePathfinder(RouteAnchors):
             length_travelled, current_path = pathmapper[(tot_dist, x, y)]
             # Look in forward, left, and right directions a fixed distance away.
             # If the line segment connecting the current point and this next one does
-            # not collide with any bounding boxes in design.qlibrary, add it to the
+            # not collide with any bounding boxes in design.components, add it to the
             # list of neighbors.
             neighbors = list()
             if len(current_path) == 1:
