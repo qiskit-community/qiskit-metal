@@ -34,3 +34,9 @@ class MetalPyqodeFoldingPanel(FoldingPanel):
                             self.sizeHint().width(),
                             self.sizeHint().height())
         self._native = False
+        index = 0
+        if not collapsed:
+            index = 2
+        if mouse_over:
+            index += 1
+        QtGui.QIcon(self._custom_indicators[index]).paint(painter, rect)
