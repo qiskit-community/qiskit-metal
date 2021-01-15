@@ -236,7 +236,7 @@ def draw_all_objects(components, ax, func=lambda x: x, root_name='components'):
 
         elif is_component(obj):
             #logger.debug(f' Metal_Object: {obj}')
-            render(obj.qlibrary, ax=ax)
+            render(obj.components, ax=ax)
 '''
 
 ##########################################################################################

@@ -250,8 +250,8 @@ class ComponentWidget(QTabWidget):
         """
         if self.design:
             if self.component_name:
-                if self.component_name in self.design.qlibrary:
-                    a_component = self.design.qlibrary[self.component_name]
+                if self.component_name in self.design.components:
+                    a_component = self.design.components[self.component_name]
                     if a_component is None:
                         self.set_component(None)
                     return a_component

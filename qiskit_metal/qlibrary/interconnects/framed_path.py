@@ -84,13 +84,13 @@ class RouteFramed(QRoute):
         pin_end = p.pin_inputs['end_pin']['pin']
 
         # Starting and ending pin (connector) dictionaries
-        connector1 = self.design.qlibrary[component_start].pins[pin_start]
-        connector2 = self.design.qlibrary[component_end].pins[pin_end]
+        connector1 = self.design.components[component_start].pins[pin_start]
+        connector2 = self.design.components[component_end].pins[pin_end]
 
         # Coordinates of bounding box for each individual component
-        minx1, miny1, maxx1, maxy1 = self.design.qlibrary[
+        minx1, miny1, maxx1, maxy1 = self.design.components[
             component_start].qgeometry_bounds()
-        minx2, miny2, maxx2, maxy2 = self.design.qlibrary[
+        minx2, miny2, maxx2, maxy2 = self.design.components[
             component_end].qgeometry_bounds()
 
         # Coordinates of overall bounding box which includes both components

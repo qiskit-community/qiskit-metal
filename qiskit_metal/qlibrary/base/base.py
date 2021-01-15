@@ -795,11 +795,11 @@ class QComponent():
             component = pin_check['component']
             pin = pin_check['pin']
             if isinstance(component, str):
-                if component not in self.design.qlibrary:
+                if component not in self.design.components:
                     false_component = True
-                elif pin not in self.design.qlibrary[component].pins:
+                elif pin not in self.design.components[component].pins:
                     false_pin = True
-                elif self.design.qlibrary[component].pins[pin].net_id:
+                elif self.design.components[component].pins[pin].net_id:
                     pin_in_use = True
             elif isinstance(component, int):
                 if component not in self.design._components:

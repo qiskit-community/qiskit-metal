@@ -52,7 +52,7 @@ class Components:
         """
         self._design = design
         self.logger = logger  # type: logging.Logger
-        self.qlibrary = design._components
+        self.components = design._components
         self.name_list = list()
         self.name_list_idx = 0
 
@@ -62,7 +62,7 @@ class Components:
         Returns:
             int: Total number of components registered within the design.
         """
-        return len(self.qlibrary)
+        return len(self.components)
 
     def get_list_ints(self, component_names: List[str]) -> List[int]:
         """Provide corresponding ints to be used as keys for dict: design._components,
@@ -122,7 +122,7 @@ class Components:
     #     """
 
     #     all_names = [(value.name, key)
-    #                  for (key, value) in self.qlibrary.items()]
+    #                  for (key, value) in self.components.items()]
     #     search_result = [
     #         item for item in all_names if new_name == item[0]]
     #     if len(search_result) != 0:
@@ -186,7 +186,7 @@ class Components:
             self.logger.debug(
                 f'The name={name} already exists in design._components.  A component_id={component_id} will be replaced.'
             )
-            self.qlibrary[component_id] = deepcopy(value)
+            self.components[component_id] = deepcopy(value)
         else:
             self.logger.warning(
                 f'Usualy new components are added to design during init.  The name={name} is not in design._components, and added as a new component.'
@@ -262,7 +262,7 @@ class Components:
         Returns:
             list: List of all the names used in design._components.
         """
-        all_names = [(value.name) for (key, value) in self.qlibrary.items()]
+        all_names = [(value.name) for (key, value) in self.components.items()]
         return all_names
 
         #     def __dir__(self):
@@ -286,7 +286,7 @@ class Components:
             list: List of (key, value) pairs.
         """
         all_items = [
-            (value.name, value) for (key, value) in self.qlibrary.items()
+            (value.name, value) for (key, value) in self.components.items()
         ]
         return all_items
 
@@ -296,7 +296,7 @@ class Components:
         Returns:
             list: List of just the values.
         """
-        all_items = [value for (key, value) in self.qlibrary.items()]
+        all_items = [value for (key, value) in self.components.items()]
 
         return all_items
 
@@ -306,7 +306,7 @@ class Components:
         Returns:
             list: List of just the keys.
         """
-        all_items = [value.name for (key, value) in self.qlibrary.items()]
+        all_items = [value.name for (key, value) in self.components.items()]
 
         return all_items
 

@@ -143,12 +143,12 @@ class RouteAnchors(QRoute):
         """
         # transform path to polygons
         paths_converted = []
-        paths = self.design.qlibrary[component_name].qgeometry_table('path')
+        paths = self.design.components[component_name].qgeometry_table('path')
         for _, row in paths.iterrows():
             paths_converted.append(row['geometry'].buffer(
                 row['width'] / 2, cap_style=CAP_STYLE.flat))
         # merge all the polygons
-        polygons = self.design.qlibrary[component_name].qgeometry_list('poly')
+        polygons = self.design.components[component_name].qgeometry_list('poly')
         boundary = gpd.GeoSeries(cascaded_union(polygons + paths_converted))
         boundary_coords = list(boundary.geometry.exterior[0].coords)
         if any(
@@ -172,10 +172,10 @@ class RouteAnchors(QRoute):
         """
 
         # assumes rectangular bounding boxes
-        for component in self.design.qlibrary:
+        for component in self.design.components:
             if component == self.name:
                 continue
-            xmin, ymin, xmax, ymax = self.design.qlibrary[
+            xmin, ymin, xmax, ymax = self.design.components[
                 component].qgeometry_bounds()
             # p, q, r, s are corner coordinates of each bounding box
             p, q, r, s = [
