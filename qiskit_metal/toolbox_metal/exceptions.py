@@ -27,7 +27,7 @@ class QiskitMetalExceptions(Exception):
     Custom Exception super-class. Every Exception raised by qiskit-metal should inherit this.
     Adds the qiskit-metal prefix
 
-    Arguments:
+    Args:
         message (str): string describing the error raised from qiskit-metal
     """
 
@@ -40,10 +40,22 @@ class QiskitMetalDesignError(QiskitMetalExceptions):
     """
     Custom Exception to indicate User action is needed to correct Design Inputs
 
-    Arguments:
+    Args:
         message (str): string describing the cause of the error and suggested solution
     """
 
     def __init__(self, message: str) -> None:
         prefix = "Designer Error: User action required. \n"
+        super().__init__(prefix + message)
+
+
+class IncorrectQtException(Exception):
+    """Run PySide2 only
+
+    Args:
+        message (str): string describing the cause of the error and suggested solution
+    """
+
+    def __init__(self, message: str) -> None:
+        prefix = "You should be using be PySide2. \n"
         super().__init__(prefix + message)
