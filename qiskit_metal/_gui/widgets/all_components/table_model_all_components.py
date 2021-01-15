@@ -130,7 +130,7 @@ class QTableModel_AllComponents(QAbstractTableModel):
             int: the number of rows
         """
         if self.design:  # should we jsut enforce this
-            num = int(len(self.design.qlibrary))
+            num = int(len(self.design.components))
             if num == 0:
                 self._tableView.show_placeholder_text()
             else:
@@ -211,7 +211,7 @@ class QTableModel_AllComponents(QAbstractTableModel):
         if not index.isValid() or not self.design:
             return
 
-        component_name = list(self.design.qlibrary.keys())[index.row()]
+        component_name = list(self.design.components.keys())[index.row()]
 
         if role == Qt.DisplayRole:
 
@@ -219,14 +219,14 @@ class QTableModel_AllComponents(QAbstractTableModel):
                 return str(component_name)
             elif index.column() == 1:
                 return str(
-                    self.design.qlibrary[component_name].__class__.__name__)
+                    self.design.components[component_name].__class__.__name__)
             elif index.column() == 2:
                 return str(
-                    self.design.qlibrary[component_name].__class__.__module__)
+                    self.design.components[component_name].__class__.__module__)
             elif index.column() == 3:
-                return str(self.design.qlibrary[component_name].status)
+                return str(self.design.components[component_name].status)
             elif index.column() == 4:
-                return str(self.design.qlibrary[component_name].id)
+                return str(self.design.components[component_name].id)
 
         # The font used for items rendered with the default delegate. (QFont)
         elif role == Qt.FontRole:
@@ -237,7 +237,7 @@ class QTableModel_AllComponents(QAbstractTableModel):
 
         elif role == Qt.BackgroundRole:
 
-            component = self.design.qlibrary[component_name]
+            component = self.design.components[component_name]
             if component.status != 'good':  # Did the component fail the build
                 #    and index.column()==0:
                 if not self._tableView:
@@ -250,11 +250,11 @@ class QTableModel_AllComponents(QAbstractTableModel):
         elif role == Qt.DecorationRole:
 
             if index.column() == 0:
-                component = self.design.qlibrary[component_name]
+                component = self.design.components[component_name]
                 if component.status != 'good':  # Did the component fail the build
                     return QIcon(":/basic/warning")
 
         elif role == Qt.ToolTipRole or role == Qt.StatusTipRole:
-            component = self.design.qlibrary[component_name]
+            component = self.design.components[component_name]
             text = f"""Component name= "{component.name}" instance of class "{component.__class__.__name__}" from module "{component.__class__.__module__}" """
             return text

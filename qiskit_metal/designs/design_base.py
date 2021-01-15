@@ -111,7 +111,7 @@ class QDesign():
 
         # User-facing interface for user to view components by using name (str) for key access to
         # QComponents, instead of id (int).
-        self.qlibrary = Components(self)
+        self.components = Components(self)
 
         self.overwrite_enabled = overwrite_enabled
 
@@ -360,7 +360,7 @@ class QDesign():
         return net_id
 
     # NOTE: Think nothing is using this. Remove this if no-one complains.
-    #       This is replaced by design.qlibrary.find_id()
+    #       This is replaced by design.components.find_id()
     # def get_component(self, search_name: str) -> 'QComponent':
     #     """The design contains a dict of all the components, which is correlated to
     #     a net_list connections, and qgeometry table. The key of the components dict are
@@ -561,7 +561,7 @@ class QDesign():
         else:
             logger.warning(
                 f'Called rename_component, component_id={component_id}, but component_id'
-                f' is not in design.qlibrary dictionary.')
+                f' is not in design.components dictionary.')
             return -3
 
         return True
@@ -659,7 +659,7 @@ class QDesign():
             # if not in components dict
             logger.warning(
                 f'Called _delete_complete, component_id: {component_id}, '
-                'but component_id is not in design.qlibrary dictionary.')
+                'but component_id is not in design.components dictionary.')
             return_response = True
             return return_response
 
