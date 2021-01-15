@@ -118,7 +118,7 @@ class QMplRenderer():
         Args:
             name (str): component name
         """
-        comp_id = self.design.components[name].id
+        comp_id = self.design.qlibrary[name].id
         self._hidden_components.add(comp_id)
 
     def show_component(self, name):
@@ -127,7 +127,7 @@ class QMplRenderer():
         Args:
             name (str): component name
         """
-        comp_id = self.design.components[name].id
+        comp_id = self.design.qlibrary[name].id
         self._hidden_components.discard(name)
 
     def hide_layer(self, name):

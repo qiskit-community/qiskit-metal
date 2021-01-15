@@ -26,7 +26,7 @@ Metal is automating and streamlining this process. Our vision is to develop a co
   Overview<overview>
   Workflow<workflow>
   Analyses<apidocs/analyses>
-  Components<apidocs/components>
+  Qlibrary<apidocs/qlibrary>
   Designs<apidocs/designs>
   QGeometryTables<apidocs/qgeometries>
   GUI<apidocs/gui>

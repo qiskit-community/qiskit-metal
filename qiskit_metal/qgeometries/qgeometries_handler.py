@@ -40,7 +40,7 @@ if not config.is_building_docs():
     from qiskit_metal.toolbox_python.utility_functions import get_range_of_vertex_to_not_fillet, data_frame_empty_typed
 
 if TYPE_CHECKING:
-    from ..components.base import QComponent
+    from ..qlibrary.base import QComponent
     from ..designs import QDesign
 
 __all__ = ['is_qgeometry_table', 'QGeometryTables']  # , 'ElementTypes']
@@ -611,7 +611,7 @@ class QGeometryTables(object):
         """
         # TODO: Add unit test
         # TODO: is this the best way to do this, or is there a faster way?
-        a_comp = self.design.components[name]
+        a_comp = self.design.qlibrary[name]
         if a_comp is not None:
             for table_name in self.tables:
                 df = self.tables[table_name]
@@ -655,14 +655,14 @@ class QGeometryTables(object):
             return tables
         else:
             df = self.tables[table_name]
-            a_comp = self.design.components[name]
+            a_comp = self.design.qlibrary[name]
             if a_comp is None:
                 # Component not found.
                 return None
             else:
                 return df[df.component == a_comp.id]
 
-            # comp_id = self.design.components[name].id
+            # comp_id = self.design.qlibrary[name].id
             # return df[df.component == comp_id]
 
     def get_component_bounds(self,
@@ -690,7 +690,7 @@ class QGeometryTables(object):
             new_name (str) : The new name of the component (case sensitive)
         """
 
-        # comp_id = self.design.components[name].id
+        # comp_id = self.design.qlibrary[name].id
         component_int_id = int(component_id)
         a_comp = self.design._components[component_int_id]
         if a_comp is None:
@@ -723,7 +723,7 @@ class QGeometryTables(object):
 
         else:
             table = self.tables[table_name]
-            comp_id = self.design.components[name].id
+            comp_id = self.design.qlibrary[name].id
             qgeometry = table.geometry[table.component == comp_id].to_list()
 
         return qgeometry
@@ -738,7 +738,7 @@ class QGeometryTables(object):
         Returns:
             GeoSeries : Geometry of the component
         """
-        comp_id = self.design.components[name].id
+        comp_id = self.design.qlibrary[name].id
         qgeometry = {}
         for table_name in self.get_element_types():
             table = self.tables[table_name]
@@ -776,7 +776,7 @@ class QGeometryTables(object):
             table = self.tables[table_name]
 
             # mask the rows nad get only 2 columns
-            comp_id = self.design.components[name].id
+            comp_id = self.design.qlibrary[name].id
             df_comp_id = table.loc[table.component == comp_id,
                                    ['name', 'geometry']]
             df_geometry = df_comp_id.geometry

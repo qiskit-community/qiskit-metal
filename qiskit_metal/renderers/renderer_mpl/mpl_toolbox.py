@@ -30,7 +30,7 @@ from matplotlib.cbook import _OrderedSet
 from shapely.geometry import LinearRing, Polygon  # Point, LineString,
 
 from ... import Dict
-from ...components import is_component
+from ...qlibrary import is_component
 from ...draw import BaseGeometry
 from .mpl_interaction import figure_pz
 
@@ -236,7 +236,7 @@ def draw_all_objects(components, ax, func=lambda x: x, root_name='components'):
 
         elif is_component(obj):
             #logger.debug(f' Metal_Object: {obj}')
-            render(obj.components, ax=ax)
+            render(obj.qlibrary, ax=ax)
 '''
 
 ##########################################################################################

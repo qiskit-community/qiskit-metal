@@ -35,7 +35,7 @@ def gds_draw_all(self, path=None):
 
     gdspy.current_library.cell_dict.clear()
     device = gdspy.Cell('TOP_CELL')
-    for _, obj in self.components.items():
+    for _, obj in self.qlibrary.items():
         if is_component(obj):
             cell = obj.gds_draw()
             device.add(gdspy.CellReference(cell))

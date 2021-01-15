@@ -59,7 +59,7 @@ class DynamicList(QStandardItemModel):
         # TODO: Generalize this to beyond components.
         self.clear()
         if self.datasrc:
-            for element in self.datasrc.components:
+            for element in self.datasrc.qlibrary:
                 item = QStandardItem(element)
                 item.setCheckable(True)
                 item.setCheckState(QtCore.Qt.Checked)

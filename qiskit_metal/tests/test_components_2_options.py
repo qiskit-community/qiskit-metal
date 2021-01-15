@@ -23,34 +23,34 @@ Created on Wed Apr 22 09:58:35 2020
 
 import unittest
 
-from qiskit_metal.components.base import qubit
-from qiskit_metal.components.basic import circle_caterpillar
-from qiskit_metal.components.basic import circle_raster
-from qiskit_metal.components.basic import rectangle
-from qiskit_metal.components.basic import rectangle_hollow
-from qiskit_metal.components.basic import n_gon
-from qiskit_metal.components.basic import n_square_spiral
-from qiskit_metal.components.connectors.cpw_hanger_t import CPWHangerT
-from qiskit_metal.components.connectors import open_to_ground
-from qiskit_metal.components.connectors import short_to_ground
-from qiskit_metal.components.interconnects.anchored_path import RouteAnchors
-from qiskit_metal.components.interconnects import straight_path
-from qiskit_metal.components.interconnects import meandered
-from qiskit_metal.components.interconnects.mixed_path import RouteMixed
-from qiskit_metal.components.interconnects.pathfinder import RoutePathfinder
+from qiskit_metal.qlibrary.base import qubit
+from qiskit_metal.qlibrary.basic import circle_caterpillar
+from qiskit_metal.qlibrary.basic import circle_raster
+from qiskit_metal.qlibrary.basic import rectangle
+from qiskit_metal.qlibrary.basic import rectangle_hollow
+from qiskit_metal.qlibrary.basic import n_gon
+from qiskit_metal.qlibrary.basic import n_square_spiral
+from qiskit_metal.qlibrary.connectors.cpw_hanger_t import CPWHangerT
+from qiskit_metal.qlibrary.connectors import open_to_ground
+from qiskit_metal.qlibrary.connectors import short_to_ground
+from qiskit_metal.qlibrary.interconnects.anchored_path import RouteAnchors
+from qiskit_metal.qlibrary.interconnects import straight_path
+from qiskit_metal.qlibrary.interconnects import meandered
+from qiskit_metal.qlibrary.interconnects.mixed_path import RouteMixed
+from qiskit_metal.qlibrary.interconnects.pathfinder import RoutePathfinder
 from qiskit_metal import designs
-from qiskit_metal.components.passives.launchpad_wb import LaunchpadWirebond
-from qiskit_metal.components.passives.launchpad_wb_coupled import LaunchpadWirebondCoupled
-from qiskit_metal.components.passives.cap_three_fingers import CapThreeFingers
-from qiskit_metal.components.qubits import transmon_concentric
-from qiskit_metal.components.qubits import transmon_cross
-from qiskit_metal.components.qubits import transmon_pocket
-from qiskit_metal.components.qubits import transmon_pocket_cl
-from qiskit_metal.components import _template
+from qiskit_metal.qlibrary.passives.launchpad_wb import LaunchpadWirebond
+from qiskit_metal.qlibrary.passives.launchpad_wb_coupled import LaunchpadWirebondCoupled
+from qiskit_metal.qlibrary.passives.cap_three_fingers import CapThreeFingers
+from qiskit_metal.qlibrary.qubits import transmon_concentric
+from qiskit_metal.qlibrary.qubits import transmon_cross
+from qiskit_metal.qlibrary.qubits import transmon_pocket
+from qiskit_metal.qlibrary.qubits import transmon_pocket_cl
+from qiskit_metal.qlibrary import _template
 from qiskit_metal.tests.assertions import AssertionsMixin
 
 #pylint: disable-msg=line-too-long
-from qiskit_metal.components.interconnects.resonator_rectangle_spiral import ResonatorRectangleSpiral
+from qiskit_metal.qlibrary.interconnects.resonator_rectangle_spiral import ResonatorRectangleSpiral
 
 
 class TestComponentOptions(unittest.TestCase, AssertionsMixin):

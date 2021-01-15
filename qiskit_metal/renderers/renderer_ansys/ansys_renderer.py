@@ -244,8 +244,8 @@ class QAnsysRenderer(QRenderer):
                 self.render_everything = False
 
         else:
-            for qcomp in self.design.components:
-                min_x, min_y, max_x, max_y = self.design.components[qcomp].qgeometry_bounds()
+            for qcomp in self.design.qlibrary:
+                min_x, min_y, max_x, max_y = self.design.qlibrary[qcomp].qgeometry_bounds()
                 self.min_x_main = min(min_x, self.min_x_main)
                 self.min_y_main = min(min_y, self.min_y_main)
                 self.max_x_main = max(max_x, self.max_x_main)
@@ -531,7 +531,7 @@ class QAnsysRenderer(QRenderer):
         open_pins = open_pins if open_pins else []
         
         for comp, pin in open_pins:
-            pin_dict = self.design.components[comp].pins[pin]
+            pin_dict = self.design.qlibrary[comp].pins[pin]
             width, gap = parse_units([pin_dict['width'], pin_dict['gap']])
             mid, normal = parse_units(pin_dict['middle']), pin_dict['normal']
             rect_mid = np.append(mid + normal * gap / 2, [0])

@@ -669,7 +669,7 @@ class PlotCanvas(FigureCanvas):
         # initialize bounds
         bounds = [float("inf"), float("inf"), float("-inf"), float("-inf")]
         for name in components:
-            component = self.design.components[name]
+            component = self.design.qlibrary[name]
             # return (minx, miny, maxx, maxy)
             newbounds = component.qgeometry_bounds()
             bbox = Bbox.from_extents(newbounds)
@@ -738,7 +738,7 @@ class PlotCanvas(FigureCanvas):
         # Functionality
         self.clear_annotation()
 
-        component_id_list = self.design.components.get_list_ints(
+        component_id_list = self.design.qlibrary.get_list_ints(
             component_names)
 
         for component_id in component_id_list:
@@ -786,7 +786,7 @@ class PlotCanvas(FigureCanvas):
                         self._annotations['text'] += [text]
 
                 if 1:  # Draw the pins
-                    # for component_id in self.design.components.keys():
+                    # for component_id in self.design.qlibrary.keys():
                     for pin_name in component.pins.keys():
                         #self.logger.debug(f'Pin {pin_name}')
                         pin = component.pins[pin_name]
