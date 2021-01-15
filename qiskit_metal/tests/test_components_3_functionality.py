@@ -24,27 +24,27 @@ Created on Wed Apr 22 09:58:35 2020
 import unittest
 import numpy as np
 
-from qiskit_metal.components.base import _parsed_dynamic_attrs
+from qiskit_metal.qlibrary.base import _parsed_dynamic_attrs
 from qiskit_metal import Dict
 from qiskit_metal import draw
-from qiskit_metal.components._template import MyQComponent
-from qiskit_metal.components.base.base import QComponent
-from qiskit_metal.components.base.qroute import QRoute
-from qiskit_metal.components.base.qubit import BaseQubit
-from qiskit_metal.components.connectors.cpw_hanger_t import CPWHangerT
-from qiskit_metal.components.connectors import open_to_ground
-from qiskit_metal.components.connectors import short_to_ground
-from qiskit_metal.components.interconnects.framed_path import RouteFramed
-from qiskit_metal.components.interconnects.meandered import RouteMeander
-from qiskit_metal.components.interconnects import straight_path
+from qiskit_metal.qlibrary._template import MyQComponent
+from qiskit_metal.qlibrary.base.base import QComponent
+from qiskit_metal.qlibrary.base.qroute import QRoute
+from qiskit_metal.qlibrary.base.qubit import BaseQubit
+from qiskit_metal.qlibrary.connectors.cpw_hanger_t import CPWHangerT
+from qiskit_metal.qlibrary.connectors import open_to_ground
+from qiskit_metal.qlibrary.connectors import short_to_ground
+from qiskit_metal.qlibrary.interconnects.framed_path import RouteFramed
+from qiskit_metal.qlibrary.interconnects.meandered import RouteMeander
+from qiskit_metal.qlibrary.interconnects import straight_path
 from qiskit_metal import designs
-from qiskit_metal.components.qubits import transmon_pocket_cl
-from qiskit_metal.components.qubits import transmon_pocket
-from qiskit_metal.components.qubits import transmon_cross
+from qiskit_metal.qlibrary.qubits import transmon_pocket_cl
+from qiskit_metal.qlibrary.qubits import transmon_pocket
+from qiskit_metal.qlibrary.qubits import transmon_cross
 from qiskit_metal.tests.assertions import AssertionsMixin
 
 #pylint: disable-msg=line-too-long
-from qiskit_metal.components.interconnects.resonator_rectangle_spiral import ResonatorRectangleSpiral
+from qiskit_metal.qlibrary.interconnects.resonator_rectangle_spiral import ResonatorRectangleSpiral
 
 
 class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):

@@ -24,35 +24,35 @@ Created on Wed Apr 22 09:58:35 2020
 
 import unittest
 
-from qiskit_metal.components.base.base import QComponent
-from qiskit_metal.components.base.qroute import QRoute
-from qiskit_metal.components.base.qroute import QRouteLead
-from qiskit_metal.components.base.qroute import QRoutePoint
-from qiskit_metal.components.base.qubit import BaseQubit
-from qiskit_metal.components.basic.circle_caterpillar import CircleCaterpillar
-from qiskit_metal.components.basic.circle_raster import CircleRaster
-from qiskit_metal.components.basic.rectangle import Rectangle
-from qiskit_metal.components.basic.rectangle_hollow import RectangleHollow
-from qiskit_metal.components.basic.n_gon import NGon
-from qiskit_metal.components.basic.n_square_spiral import NSquareSpiral
-from qiskit_metal.components.connectors.cpw_hanger_t import CPWHangerT
-from qiskit_metal.components.connectors.open_to_ground import OpenToGround
-from qiskit_metal.components.connectors.short_to_ground import ShortToGround
-from qiskit_metal.components.interconnects.anchored_path import RouteAnchors
-from qiskit_metal.components.interconnects.framed_path import RouteFramed
-from qiskit_metal.components.interconnects.straight_path import RouteStraight
-from qiskit_metal.components.interconnects.pathfinder import RoutePathfinder
-from qiskit_metal.components.interconnects.meandered import RouteMeander
-from qiskit_metal.components.interconnects.mixed_path import RouteMixed
-from qiskit_metal.components.passives.launchpad_wb import LaunchpadWirebond
-from qiskit_metal.components.passives.launchpad_wb_coupled import LaunchpadWirebondCoupled
-from qiskit_metal.components.passives.cap_three_fingers import CapThreeFingers
+from qiskit_metal.qlibrary.base.base import QComponent
+from qiskit_metal.qlibrary.base.qroute import QRoute
+from qiskit_metal.qlibrary.base.qroute import QRouteLead
+from qiskit_metal.qlibrary.base.qroute import QRoutePoint
+from qiskit_metal.qlibrary.base.qubit import BaseQubit
+from qiskit_metal.qlibrary.basic.circle_caterpillar import CircleCaterpillar
+from qiskit_metal.qlibrary.basic.circle_raster import CircleRaster
+from qiskit_metal.qlibrary.basic.rectangle import Rectangle
+from qiskit_metal.qlibrary.basic.rectangle_hollow import RectangleHollow
+from qiskit_metal.qlibrary.basic.n_gon import NGon
+from qiskit_metal.qlibrary.basic.n_square_spiral import NSquareSpiral
+from qiskit_metal.qlibrary.connectors.cpw_hanger_t import CPWHangerT
+from qiskit_metal.qlibrary.connectors.open_to_ground import OpenToGround
+from qiskit_metal.qlibrary.connectors.short_to_ground import ShortToGround
+from qiskit_metal.qlibrary.interconnects.anchored_path import RouteAnchors
+from qiskit_metal.qlibrary.interconnects.framed_path import RouteFramed
+from qiskit_metal.qlibrary.interconnects.straight_path import RouteStraight
+from qiskit_metal.qlibrary.interconnects.pathfinder import RoutePathfinder
+from qiskit_metal.qlibrary.interconnects.meandered import RouteMeander
+from qiskit_metal.qlibrary.interconnects.mixed_path import RouteMixed
+from qiskit_metal.qlibrary.passives.launchpad_wb import LaunchpadWirebond
+from qiskit_metal.qlibrary.passives.launchpad_wb_coupled import LaunchpadWirebondCoupled
+from qiskit_metal.qlibrary.passives.cap_three_fingers import CapThreeFingers
 from qiskit_metal import designs
-from qiskit_metal.components._template import MyQComponent
+from qiskit_metal.qlibrary._template import MyQComponent
 from qiskit_metal.tests.assertions import AssertionsMixin
 
 #pylint: disable-msg=line-too-long
-from qiskit_metal.components.interconnects.resonator_rectangle_spiral import ResonatorRectangleSpiral
+from qiskit_metal.qlibrary.interconnects.resonator_rectangle_spiral import ResonatorRectangleSpiral
 
 
 class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):

@@ -13,7 +13,7 @@
 # that they have been altered from the originals.
 
 from qiskit_metal import draw, Dict
-from qiskit_metal.components.base.base import QComponent
+from qiskit_metal.qlibrary.base.base import QComponent
 
 from ... import config
 if not config.is_building_docs():

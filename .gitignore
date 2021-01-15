@@ -114,6 +114,7 @@ shot*.tif
 !guide/resources/**
 .vs
 src/
+__pycache__
 
 # mypy
 .mypy_cache/

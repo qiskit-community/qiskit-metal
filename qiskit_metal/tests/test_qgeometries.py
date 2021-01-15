@@ -32,7 +32,7 @@ from qiskit_metal import draw
 
 from qiskit_metal.qgeometries import qgeometries_handler
 from qiskit_metal.qgeometries.qgeometries_handler import QGeometryTables
-from qiskit_metal.components.qubits.transmon_pocket import TransmonPocket
+from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
 
 
 class TestElements(unittest.TestCase):

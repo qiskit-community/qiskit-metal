@@ -42,7 +42,7 @@ if not config.is_building_docs():
 
 if TYPE_CHECKING:
     # For linting, avoids circular imports.
-    from qiskit_metal.components.base.base import QComponent
+    from qiskit_metal.qlibrary.base.base import QComponent
     from qiskit_metal.renderers.renderer_base import QRenderer
     from qiskit_metal.renderers.renderer_gds.gds_renderer import QGDSRenderer
 
@@ -482,7 +482,7 @@ class QDesign():
 
         Arguments:
             component_module_name (str): String name of the module name, such as
-                `qiskit_metal.components.qubits.transmon_pocket`
+                `qiskit_metal.qlibrary.qubits.transmon_pocket`
             component_class_name (str): String name of the class name inside thst module,
                 such  as `TransmonPocket`
         """

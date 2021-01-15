@@ -1229,7 +1229,7 @@ class QGDSRenderer(QRenderer):
         path_sub_geo = path_sub_df['geometry'].tolist()
         path_sub_width = path_sub_df['width'].tolist()
         for n in range(len(path_sub_geo)):
-            path_sub_geo[n] = path_sub_geo[n].buffer(path_sub_width[n],
+            path_sub_geo[n] = path_sub_geo[n].buffer(path_sub_width[n] / 2,
                                                      cap_style=style_cap,
                                                      join_style=style_join)
 
