@@ -119,7 +119,7 @@ from . import toolbox_python
 from . import toolbox_metal
 
 # Metal GUI
-from ._gui import MetalGUI
+from ._gui.main_window import MetalGUI
 
 # Utility modules
 # For plotting in matplotlib;  May be superseeded by a renderer?

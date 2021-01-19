@@ -37,10 +37,10 @@ from .. import config
 from ..designs.design_base import QDesign
 from .component_widget_ui import Ui_ComponentWidget
 from .elements_window import ElementsWindow
-from .main_window_base import QMainWindowBaseHandler, QMainWindowExtensionBase
+from .main_window_base import QMainWindowBaseHandler, QMainWindowExtensionBase, kick_start_qApp
 from .main_window_ui import Ui_MainWindow
 from .renderer_gds_gui import RendererGDSWidget
-from .utility._handle_qt_messages import slot_catch_error
+from .utility._handle_qt_messages import slot_catch_error, QtCore, _qt_message_handler
 from .widgets.all_components.table_model_all_components import \
     QTableModel_AllComponents
 from .widgets.edit_component.component_widget import ComponentWidget
@@ -237,6 +237,14 @@ class MetalGUI(QMainWindowBaseHandler):
                 (Default: None).
         """
 
+        QtCore.qInstallMessageHandler(_qt_message_handler)
+        del QtCore, _qt_message_handler
+
+        qApp = kick_start_qApp()
+        if not qApp:
+            logging.error(
+                "Could not start Qt event loop using QApplication.")
+        
         super().__init__()
 
         # use set_design
