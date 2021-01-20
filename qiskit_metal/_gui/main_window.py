@@ -175,7 +175,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
 
     @slot_catch_error()
     def rebuild(self, _=None):
-        """Handels click on Rebuild"""
+        """Handles click on Rebuild"""
         self.logger.info(
             f'Rebuilding all components in the model (and refreshing widgets)...'
         )
@@ -209,7 +209,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
 
     @slot_catch_error()
     def create_build_log_window(self, _=None):
-        """"Handels click on Build History button"""
+        """"Handles click on Build History button"""
         self.gui.gui_create_build_log_window()
 
 

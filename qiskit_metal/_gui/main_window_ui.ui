@@ -135,7 +135,7 @@
      <x>0</x>
      <y>0</y>
      <width>1300</width>
-     <height>22</height>
+     <height>24</height>
     </rect>
    </property>
    <property name="baseSize">
@@ -294,6 +294,7 @@
    <addaction name="action_full_refresh"/>
    <addaction name="actionRebuild"/>
    <addaction name="actionBuildHistory"/>
+   <addaction name="actionNew_QComponent"/>
    <addaction name="separator"/>
   </widget>
   <widget class="QToolBarExpanding" name="toolBarView">
@@ -825,7 +826,6 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionNew_QComponent"/>
    <addaction name="actionGDS"/>
    <addaction name="actionHFSS"/>
    <addaction name="actionQ3D"/>

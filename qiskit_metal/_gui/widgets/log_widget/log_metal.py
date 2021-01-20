@@ -207,7 +207,7 @@ class QTextEditLogger(QTextEdit):
             )
 
     def set_level(self, level: int):
-        """Set level on all handelrs
+        """Set level on all handlers
 
         Arguments:
             level (logging.level): The level of logging, eg.., logging.ERROR
