@@ -621,7 +621,6 @@ class MetalGUI(QMainWindowBaseHandler):
 
         # Copy template file
         tpath = Path(self.path_gui)
-
         tpath = tpath.parent / 'qlibrary' / '_template.py'
         shutil.copy(str(tpath), str(new_path))
 
