@@ -186,7 +186,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         """Create a new qcomponent call by button
         """
         path = str(
-            Path(self.gui.path_gui).parent / 'components' / 'user_components' /
+            Path(self.gui.path_gui).parent / 'qlibrary' / 'user_components' /
             'my_qcomponent.py')
         filename = QFileDialog.getSaveFileName(
             parent=None,
@@ -600,7 +600,7 @@ class MetalGUI(QMainWindowBaseHandler):
     def new_qcomponent_file(self, new_path: str, class_name: str,
                             name_instance: str):
         """Create a new qcomponent file based on template.
-        The template is stored in components/_template.py
+        The template is stored in qlibrary/_template.py
 
         Args:
             path (str): the path to the file to save to
@@ -613,7 +613,7 @@ class MetalGUI(QMainWindowBaseHandler):
 
         # Copy template file
         tpath = Path(self.path_gui)
-        tpath = tpath.parent / 'components' / '_template.py'
+        tpath = tpath.parent / 'qlibrary' / '_template.py'
         shutil.copy(str(tpath), str(new_path))
 
         # Rename the class name
