@@ -19,6 +19,7 @@
     <file alias="cancel">_imgs/cancel.png</file>
     <file alias="elements">_imgs/frequency.png</file>
     <file alias="log">_imgs/log.png</file>
+    <file alias="build_history">_imgs/build_history.png</file>
     <file>_imgs/lightbulb.png</file>
     <file alias="delete">_imgs/v2-flat/trash.png</file>
     <file alias="load">_imgs/stack.png</file>
