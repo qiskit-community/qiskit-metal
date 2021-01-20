@@ -34,7 +34,7 @@ from ...draw import BaseGeometry
 from ...toolbox_python.attr_dict import Dict
 from ._parsed_dynamic_attrs import ParsedDynamicAttributes_Component
 from ...toolbox_python.display import format_dict_ala_z
-
+from datetime import datetime 
 from ... import config
 if not config.is_building_docs():
     from ...draw import Vector
@@ -173,6 +173,8 @@ class QComponent():
 
         # Make the id be None, which means it hasn't been added to design yet.
         self._id = None
+        self._made = False
+
         # Status: used to handle building of a component and checking if it succeeded or failed.
         self.status = 'Not Built'
         if not is_design(design):
@@ -209,7 +211,6 @@ class QComponent():
 
         #: Dictionary of pins. Populated by component designer in make function using `add_pin`.
         self.pins = Dict()
-        self._made = False
 
         #: Metadata allows a designer to store extra information or analysis results.
         self.metadata = Dict()
@@ -314,7 +315,7 @@ class QComponent():
         """Returns unique class name based on the module
 
         Returns:
-            str: Example: 'qiskit_metal._components.qubits.transmon_pocket.TransmonPocket'
+            str: Example: 'qiskit_metal.qlibrary.qubits.transmon_pocket.TransmonPocket'
         """
         return f'{cls.__module__}.{cls.__name__}'
 
@@ -374,7 +375,7 @@ class QComponent():
     @property
     def class_name(self) -> str:
         '''Return the full name of the class: the full module name with the class name.
-        e.g., qiskit_metal._components.qubits.QubitClass
+        e.g., qiskit_metal.qlibrary.qubits.TransmonPocket
 
         Returns:
             str: class name
@@ -422,7 +423,7 @@ class QComponent():
                              logger_: logging.Logger = None,
                              template_key: str = None) -> Dict:
         """
-        Creates template options for the Metal Componnet class required for the class
+        Creates template options for the Metal Component class required for the class
         to function, based on the design template; i.e., be created, made, and rendered.
         Provides the blank option structure required.
 
@@ -508,7 +509,7 @@ class QComponent():
         **Note:**
             * This method should be overwritten by the children make function.
             * This function only contains the logic, the actual call to make the element is in
-              rebuild() and remake()
+              rebuild()
 
         Raises:
             NotImplementedError: Overwrite this function by subclassing.
@@ -531,25 +532,34 @@ class QComponent():
         done with no errors. The user can also set other statuses, which can appear if the code fails
         to reach the final line of the build, where the build status is set to `good`.
         """
-
-        # Begin by setting the status to failed, we will change this if we succeed
         self.status = 'failed'
-        if self._made:  # already made, just remaking
-            self.design.qgeometry.delete_component_id(self.id)
-            self.design._delete_all_pins_for_component(self.id)
+        try:
+            if self._made:  # already made, just remaking
+                self.design.qgeometry.delete_component_id(self.id)
+                self.design._delete_all_pins_for_component(self.id)
 
             self.make()
-        else:  # first time making
-            self.make()
-            self._made = True  # what if make throws an error part way?
-        self.status = 'good'
+            self._made = True
+            self.status = 'good'
 
+            self.design.build_logs.add_success(
+                f"{str(datetime.now())} -- Component: {self.name} successfully built"
+            )
+
+        except Exception as error:
+            self.logger.error(
+                f'ERROR in building component name={self.name}, error={error}')
+            self.design.build_logs.add_error(
+                f"{str(datetime.now())} -- Component: {self.name} failed with error\n: {error}"
+            )
+            raise error
     def delete(self):
         """
         Delete the QComponent.
         Removes QGeometry, QPins, etc. from the design.
         """
         self.design.delete_component(self.name)
+
 
     # Maybe still should be fine as any values will be in component options still?
     # Though the data table approach and rendering directly via shapely could lead to problem

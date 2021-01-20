@@ -152,7 +152,7 @@ class Cheesing():
         else:
             hole_type = type(self.hole)
             self.logger.warning(
-                f'The self.hole was not converted to gdspy; the type \'{hole_type}\' was not handeled.'
+                f'The self.hole was not converted to gdspy; the type \'{hole_type}\' was not handled.'
             )
 
         #convert a_poly to cell, then use cell reference to add to all the cheese in chip_rect_gds

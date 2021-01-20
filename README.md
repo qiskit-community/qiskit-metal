@@ -25,7 +25,6 @@ Use the [Slack channel (Join here!)](https://join.slack.com/share/zt-jjgzilxu-1u
  Click for YouTube Video <br>
 	<img src="https://www.gstatic.com/youtube/img/branding/youtubelogo/svg/youtubelogo.svg" alt="Qiskit Metal Install" width=250>
 </a>
- 
 
 ### Text Instructions
 You could download the code as a zip file at the top of this page.

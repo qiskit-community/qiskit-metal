@@ -35,6 +35,7 @@ class MyQComponent(QComponent):
     component_metadata = Dict(short_name='component')
     """Component metadata"""
 
+    # DO NOT DIRECTLY INSTANTIATE USING make() Use build()
     def make(self):
         """Convert self.options into QGeometry."""
 

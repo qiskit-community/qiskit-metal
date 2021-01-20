@@ -12,7 +12,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 """
-@auhtor: Zlatko K. Minev
+@author: Zlatko K. Minev
 @date: 2020
 """
 
