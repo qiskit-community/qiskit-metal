@@ -187,7 +187,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         """Create a new qcomponent call by button
         """
         path = str(
-            Path(self.gui.path_gui).parent / 'components' / 'user_components' /
+            Path(self.gui.path_gui).parent / 'qlibrary' / 'user_components' /
             'my_qcomponent.py')
         filename = QFileDialog.getSaveFileName(
             parent=None,
