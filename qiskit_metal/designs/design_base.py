@@ -15,7 +15,7 @@
 The base class of all QDesigns in Qiskit Metal.
 
 @date: 2019
-@author: Zlatko Minev, Thomas McConeky, ... (IBM)
+@author: Zlatko Minev, Thomas McConkey, ... (IBM)
 """
 
 import importlib

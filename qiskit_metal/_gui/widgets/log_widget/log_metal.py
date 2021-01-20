@@ -199,7 +199,7 @@ class QTextEditLogger(QTextEdit):
         self.log_message(text, format_as_html=2)
 
     def print_all_tips(self):
-        """Prints all availabel tips in the log window
+        """Prints all available tips in the log window
         """
         for tip in config.GUI_CONFIG['tips']:
             self.log_message(

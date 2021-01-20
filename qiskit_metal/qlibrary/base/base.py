@@ -315,7 +315,7 @@ class QComponent():
         """Returns unique class name based on the module
 
         Returns:
-            str: Example: 'qiskit_metal._components.qubits.transmon_pocket.TransmonPocket'
+            str: Example: 'qiskit_metal.qlibrary.qubits.transmon_pocket.TransmonPocket'
         """
         return f'{cls.__module__}.{cls.__name__}'
 
@@ -375,7 +375,7 @@ class QComponent():
     @property
     def class_name(self) -> str:
         '''Return the full name of the class: the full module name with the class name.
-        e.g., qiskit_metal._components.qubits.QubitClass
+        e.g., qiskit_metal.qlibrary.qubits.TransmonPocket
 
         Returns:
             str: class name
@@ -423,7 +423,7 @@ class QComponent():
                              logger_: logging.Logger = None,
                              template_key: str = None) -> Dict:
         """
-        Creates template options for the Metal Componnet class required for the class
+        Creates template options for the Metal Component class required for the class
         to function, based on the design template; i.e., be created, made, and rendered.
         Provides the blank option structure required.
 
@@ -553,6 +553,13 @@ class QComponent():
                 f"{str(datetime.now())} -- Component: {self.name} failed with error\n: {error}"
             )
             raise error
+    def delete(self):
+        """
+        Delete the QComponent.
+        Removes QGeometry, QPins, etc. from the design.
+        """
+        self.design.delete_component(self.name)
+
 
     # Maybe still should be fine as any values will be in component options still?
     # Though the data table approach and rendering directly via shapely could lead to problem

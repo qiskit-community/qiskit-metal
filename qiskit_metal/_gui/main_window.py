@@ -59,12 +59,12 @@ if TYPE_CHECKING:
 
 
 class QMainWindowExtension(QMainWindowExtensionBase):
-    """This contains all the functions tthat the gui needs
+    """This contains all the functions that the gui needs
     to call directly from the UI
 
     This class extends the `QMainWindowExtensionBase` class.
 
-    To access the GUI HAndler above this, call:
+    To access the GUI Handler above this, call:
         self.handler = gui
 
     Args:
@@ -608,7 +608,7 @@ class MetalGUI(QMainWindowBaseHandler):
     def new_qcomponent_file(self, new_path: str, class_name: str,
                             name_instance: str):
         """Create a new qcomponent file based on template.
-        The template is stored in components/_template.py
+        The template is stored in qlibrary/_template.py
 
         Args:
             path (str): the path to the file to save to
@@ -621,7 +621,8 @@ class MetalGUI(QMainWindowBaseHandler):
 
         # Copy template file
         tpath = Path(self.path_gui)
-        tpath = tpath.parent / 'components' / '_template.py'
+
+        tpath = tpath.parent / 'qlibrary' / '_template.py'
         shutil.copy(str(tpath), str(new_path))
 
         # Rename the class name
