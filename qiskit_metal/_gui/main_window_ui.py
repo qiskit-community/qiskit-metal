@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file './main_window_ui.ui',
 # licensing of './main_window_ui.ui' applies.
 #
-# Created: Wed Jan 20 09:42:07 2021
+# Created: Wed Jan 20 13:44:44 2021
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -23,9 +23,10 @@ class Ui_MainWindow(object):
         MainWindow.setDockOptions(QtWidgets.QMainWindow.AllowNestedDocks|QtWidgets.QMainWindow.AllowTabbedDocks|QtWidgets.QMainWindow.AnimatedDocks|QtWidgets.QMainWindow.GroupedDragging)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
-        self.formLayout = QtWidgets.QFormLayout(self.centralwidget)
-        self.formLayout.setContentsMargins(0, 0, 0, 0)
-        self.formLayout.setObjectName("formLayout")
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)
+        self.verticalLayout.setSpacing(0)
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout.setObjectName("verticalLayout")
         self.tabWidget = QtWidgets.QTabWidget(self.centralwidget)
         self.tabWidget.setUsesScrollButtons(False)
         self.tabWidget.setMovable(False)
@@ -49,7 +50,7 @@ class Ui_MainWindow(object):
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap(":/elements"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.tabWidget.addTab(self.tabElements, icon2, "")
-        self.formLayout.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.tabWidget)
+        self.verticalLayout.addWidget(self.tabWidget)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar()
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1300, 24))
@@ -666,7 +667,7 @@ class Ui_MainWindow(object):
         self.actionBuildHistory.setToolTip(QtWidgets.QApplication.translate("MainWindow", "See the build history of your design", None, -1))
         self.actionBuildHistory.setShortcut(QtWidgets.QApplication.translate("MainWindow", "Ctrl+B", None, -1))
 
-from .widgets.bases.expanding_toolbar import QToolBarExpanding
 from .widgets.log_widget.log_metal import QTextEditLogger
 from .widgets.all_components.table_view_all_components import QTableView_AllComponents
+from .widgets.bases.expanding_toolbar import QToolBarExpanding
 from . import main_window_rc_rc
