@@ -153,7 +153,7 @@ class TestRenderers(unittest.TestCase):
         self.assertEqual(options['path_filename'],
                          '../resources/Fake_Junctions.GDS')
         self.assertEqual(options['junction_pad_overlap'], '5um')
-        self.assertEqual(options['max_points'], '8191')
+        self.assertEqual(options['max_points'], '199')
         self.assertEqual(options['bounding_box_scale_x'], '1.2')
         self.assertEqual(options['bounding_box_scale_y'], '1.2')
 
