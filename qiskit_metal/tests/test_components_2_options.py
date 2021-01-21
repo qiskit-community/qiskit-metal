@@ -474,7 +474,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(_options['cl_length'], '20um')
         self.assertEqual(_options['cl_ground_gap'], '6um')
         self.assertEqual(_options['cl_pocket_edge'], '0')
-        self.assertEqual(_options['cl_off_center'], '100um')
+        self.assertEqual(_options['cl_off_center'], '50um')
 
     def test_component_cpw_hanger_t_options(self):
         """
