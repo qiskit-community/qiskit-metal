@@ -93,7 +93,7 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
         # -180 to +180 from the 'left edge', will round to the nearest 90.
         cl_pocket_edge='0',
         cl_off_center=
-        '100um',  # distance from the center axis the qubit pocket is built on
+        '50um',  # distance from the center axis the qubit pocket is built on
     )
     """Default drawing options"""
 
@@ -132,13 +132,13 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
         if (abs(p.cl_pocket_edge) > 135) or (abs(p.cl_pocket_edge) < 45):
             polys = draw.translate(
                 polys, -(p.pocket_width / 2 + p.cl_ground_gap + p.cl_gap),
-                -(p.pad_gap + p.pad_height) / 2)
+                p.cl_off_center)
             if (abs(p.cl_pocket_edge) > 135):
-                p.cl_rotate = 180
+                cl_rotate = 180
         else:
             polys = draw.translate(
-                polys, -(p.pocket_height / 2 + p.cl_groundGap + p.cl_gap),
-                -(p.pad_width) / 2)
+                polys, -(p.pocket_height / 2 + p.cl_ground_gap + p.cl_gap),
+                p.cl_off_center)
             cl_rotate = 90
             if (p.cl_pocket_edge < 0):
                 cl_rotate = -90
