@@ -91,8 +91,10 @@ class QAnsysRenderer(QRenderer):
         project_name=None, # default project name
         design_name=None, # default design name
         ansys_file_extension='.aedt', # Ansys file extension for 2016 version and newer
-        bounding_box_scale_x = 1.2, # Ratio of 'main' chip width to bounding box width
-        bounding_box_scale_y = 1.2 # Ratio of 'main' chip length to bounding box length 
+        # bounding_box_scale_x = 1.2, # Ratio of 'main' chip width to bounding box width
+        # bounding_box_scale_y = 1.2, # Ratio of 'main' chip length to bounding box length
+        x_buffer_width_mm=0.2, # Buffer between max/min x and edge of ground plane, in mm
+        y_buffer_width_mm=0.2, # Buffer between max/min y and edge of ground plane, in mm
     )
 
     NAME_DELIM = r'_'
@@ -139,21 +141,95 @@ class QAnsysRenderer(QRenderer):
         # Default behavior is to render all components unless a strict subset was chosen
         self.render_everything = True
 
-        self.pinfo = None
+        self._pinfo = None
 
-    def open_ansys_design(self):
+    def add_eigenmode_design(self, name: str, connect: bool = True):
+        if self.pinfo:
+            adesign = self.pinfo.project.new_em_design(name)
+            if connect:
+                self.connect_ansys_design(adesign.name)
+            return adesign
+        else:
+            self.logger.info("Are you mad?? You have to connect to ansys and aproject "\
+                "first before creating a new design . Use self.open_ansys()")
+    # TODO: Change names in GUIs
+    def open_ansys(self, project_path: str = None, project_name: str = None, design_name: str = None):
         """
-        Open new project and design in Ansys.
+        Open an existing project and/or design in Ansys, or simply connect to Ansys. 
+        If there is no project, just connect to the Ansys COM.
+        Check for, and grab if present, an active project, design, and design setup.
+
+        If the user provides the names of any of the above, grab them. 
         """
-        self.pinfo = epr.ProjectInfo(project_path=self._options['project_path'],
-                                     project_name=self._options['project_name'],
-                                     design_name=self._options['design_name'])
-     
+        self._pinfo = epr.ProjectInfo(project_path=self._options['project_path'] if not project_path else project_path,
+                                     project_name=self._options['project_name'] if not project_name else project_name,
+                                     design_name=self._options['design_name'] if not design_name else design_name)
+
+    def connect_ansys_design(self, design_name: str = None):
+        """Used to switch between existing designs."""
+        if self.pinfo:
+            if self.pinfo.project:
+                # TODO: Handle case when design does not EXIST?!?!?
+                self.pinfo.connect_design(design_name)
+                self.pinfo.connect_setup()
+            else:
+                self.logger.warning('You MUST have a project loaded in Ansys and be connected to it!!! Use hfss.open_ansys(),  Did you read the help file and tutorials!?!?!?')
+        else:
+            self.logger.warning('You MUST connect to Ansys first, using open_ansys(). Only when self.pinfo is then set can you connect to a design in a project. There must be a project!')
+
+
+    @property
+    def pinfo(self) -> epr.ProjectInfo:
+        """Project info for Ansys renderer (class: pyEPR.ProjectInfo)"""
+        return self._pinfo
+    
     @property
     def modeler(self):
         if self.pinfo:
             if self.pinfo.design:
                 return self.pinfo.design.modeler
+
+    def plot_ansys_fields(self, object_name:str):
+        if not self.pinfo:
+            return # TODO all checks 
+        #TODO: This is just a prototype - should add features and flexibility.
+        oFieldsReport = self.pinfo.design._fields_calc
+        oModeler = self.pinfo.design._modeler
+        setup = self.pinfo.setup
+
+        # Object ID - use tro plot on faces of 
+        object_id = oModeler.GetObjectIDByName(object_name)
+        # Can also use hfss.pinfo.design._modeler.GetFaceIDs("main")
+        # TODO: Allow all these need to be customizable, esp QuantityName
+        return oFieldsReport.CreateFieldPlot(
+            [
+                "NAME:Mag_E1",
+                "SolutionName:="	, f"{setup.name} : LastAdaptive", # name of the setup 
+                "UserSpecifyName:="	, 0,
+                "UserSpecifyFolder:="	, 0,
+                "QuantityName:="	, "Mag_E",
+                "PlotFolder:="		, "E Field",
+                "StreamlinePlot:="	, False,
+                "AdjacentSidePlot:="	, False,
+                "FullModelPlot:="	, False,
+                "IntrinsicVar:="	, "Phase=\'0deg\'",
+                "PlotGeomInfo:="	, [1,"Surface","FacesList",1, str(object_id)],
+            ], "Field")
+
+    def plot_ansys_delete(self, names: list):
+        """
+        Delete plots from modeler window in Ansys.
+        Does not throw an error if names are missing. 
+
+        Can give multiple names, for example:
+        hfss.plot_ansys_delete(['Mag_E1', 'Mag_E1_2'])
+
+        Args:
+            names (list): Names of plots to delete from modeler window.
+        """
+        # (["Mag_E1"]
+        oFieldsReport = self.pinfo.design._fields_calc
+        return oFieldsReport.DeleteFieldPlot(names)
 
     def add_message(self, msg: str, severity: int=0):
         """
@@ -164,6 +240,9 @@ class QAnsysRenderer(QRenderer):
             severity (int): 0 = Informational, 1 = Warning, 2 = Error, 3 = Fatal.
         """
         self.pinfo.design.add_message(msg, severity)
+
+    def save_screenshot(self, path: str = None, show: bool = True):
+        return self.pinfo.design.save_screenshot(path, show)
 
     def render_design(self, selection: Union[list, None] = None, open_pins: Union[list, None] = None):
         """
@@ -482,10 +561,14 @@ class QAnsysRenderer(QRenderer):
                 self.max_y_main = parse_units(self.max_y_main)
                 comp_center_x = (self.min_x_main + self.max_x_main) / 2
                 comp_center_y = (self.min_y_main + self.max_y_main) / 2
-                min_x_edge = comp_center_x - self._options['bounding_box_scale_x'] * (comp_center_x - self.min_x_main)
-                max_x_edge = comp_center_x + self._options['bounding_box_scale_x'] * (self.max_x_main - comp_center_x)
-                min_y_edge = comp_center_y - self._options['bounding_box_scale_y'] * (comp_center_y - self.min_y_main)
-                max_y_edge = comp_center_y + self._options['bounding_box_scale_y'] * (self.max_y_main - comp_center_y)
+                # min_x_edge = comp_center_x - self._options['bounding_box_scale_x'] * (comp_center_x - self.min_x_main)
+                # max_x_edge = comp_center_x + self._options['bounding_box_scale_x'] * (self.max_x_main - comp_center_x)
+                # min_y_edge = comp_center_y - self._options['bounding_box_scale_y'] * (comp_center_y - self.min_y_main)
+                # max_y_edge = comp_center_y + self._options['bounding_box_scale_y'] * (self.max_y_main - comp_center_y)
+                min_x_edge = self.min_x_main - parse_units(self._options['x_buffer_width_mm'])
+                max_x_edge = self.max_x_main + parse_units(self._options['x_buffer_width_mm'])
+                min_y_edge = self.min_y_main - parse_units(self._options['y_buffer_width_mm'])
+                max_y_edge = self.max_y_main + parse_units(self._options['y_buffer_width_mm'])
                 if self.render_everything and (origin[0] - size[0] / 2 <= min_x_edge < max_x_edge <= origin[0] + size[0] / 2) and (origin[1] - size[1] / 2 <= min_y_edge < max_y_edge <= origin[1] + size[1] / 2):
                     # All components are rendered and the overall bounding box lies within 9 X 6 chip
 
