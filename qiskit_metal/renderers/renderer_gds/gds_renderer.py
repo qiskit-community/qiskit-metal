@@ -1250,8 +1250,8 @@ class QGDSRenderer(QRenderer):
             if status == 0:
                 minx, miny, maxx, maxy = chip_box
                 c_minx, c_miny, c_maxx, c_maxy = combo_shapely.bounds
-                if (c_minx >= minx or c_miny <= miny or c_maxx <= maxx or
-                        c_maxy <= maxy):
+                if (c_minx < minx or c_miny < miny or c_maxx > maxx or
+                        c_maxy > maxy):
                     self.logger.warning(
                         f'The bounding box for no-cheese is outside of chip size.\n'
                         f'Bounding box for chip is {chip_box}.\n'
