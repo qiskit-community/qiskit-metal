@@ -164,9 +164,21 @@ class QAnsysRenderer(QRenderer):
         """
         Open new project and design in Ansys.
         """
-        self.pinfo = epr.ProjectInfo(project_path=self._options['project_path'],
+        import pythoncom
+        try:
+            self.pinfo = epr.ProjectInfo(project_path=self._options['project_path'],
                                      project_name=self._options['project_name'],
                                      design_name=self._options['design_name'])
+        except pythoncom.com_error as error:
+            print("com_error: ", error)
+            hr, msg, exc, arg = error.args
+            if msg == "Invalid class string":  # and hr == -2147221005 and exc is None and arg is None
+                print("pyEPR cannot find the Ansys COM. Ansys installation might not have registered it. "
+                      "To verify if this is the problem, execute the following: ",
+                      "`print(win32com.client.Dispatch('AnsoftHfss.HfssScriptInterface'))` ",
+                      "If the print-out is not `<COMObject ...>` then Ansys COM is not registered, ",
+                      "and you will need to look into correcting your Ansys installation.")
+            raise error
 
     @property
     def modeler(self):
