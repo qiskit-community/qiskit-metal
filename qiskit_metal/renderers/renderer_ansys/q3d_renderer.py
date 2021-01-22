@@ -171,18 +171,18 @@ class QQ3DRenderer(QAnsysRenderer):
         """
         if self.pinfo:
             if self.pinfo.design:
-                self.pinfo.design.create_q3d_setup(freq_ghz=freq_ghz, 
-                                                   name=name, 
-                                                   save_fields=save_fields, 
-                                                   enabled=enabled,
-                                                   max_passes=max_passes, 
-                                                   min_passes=min_passes, 
-                                                   min_converged_passes=min_converged_passes, 
-                                                   percent_error=percent_error,
-                                                   percent_refinement=percent_refinement, 
-                                                   auto_increase_solution_order=auto_increase_solution_order, 
-                                                   solution_order=solution_order,
-                                                   solver_type=solver_type)
+                return self.pinfo.design.create_q3d_setup(freq_ghz=freq_ghz, 
+                                                          name=name, 
+                                                          save_fields=save_fields, 
+                                                          enabled=enabled,
+                                                          max_passes=max_passes, 
+                                                          min_passes=min_passes, 
+                                                          min_converged_passes=min_converged_passes, 
+                                                          percent_error=percent_error,
+                                                          percent_refinement=percent_refinement, 
+                                                          auto_increase_solution_order=auto_increase_solution_order, 
+                                                          solution_order=solution_order,
+                                                          solver_type=solver_type)
 
     def analyze_setup(self, setup_name: str):
         """
@@ -255,12 +255,6 @@ class QQ3DRenderer(QAnsysRenderer):
         RES['χr MHz'] = abs(RES['chi_in_MHz'].apply(lambda x: x[0]))
         RES['gr MHz'] = abs(RES['gbus'].apply(lambda x: x[0]))
         return RES
-
-    @property
-    def distributed_analysis(self):
-        """Returns class containing info on Hamiltonian parameters from HFSS simulation."""
-        if self.pinfo:
-            return epr.DistributedAnalysis(self.pinfo)
     
     def plot_convergence_main(self, eprd, RES: pd.DataFrame):
         """
