@@ -136,7 +136,7 @@ class QGDSRenderer(QRenderer):
         # is zero, no fracture will occur. GDSpy uses 199 as the default. The historical max value of vertices
         # for a poly/path was 199 (fabrication equipment restrictions).  The hard max limit that a GDSII file
         # can handle is 8191.
-        max_points='8191',
+        max_points='199',
 
         # Cheesing is denoted by each chip and layer.
         cheese=Dict(
@@ -1250,8 +1250,8 @@ class QGDSRenderer(QRenderer):
             if status == 0:
                 minx, miny, maxx, maxy = chip_box
                 c_minx, c_miny, c_maxx, c_maxy = combo_shapely.bounds
-                if (c_minx >= minx or c_miny <= miny or c_maxx <= maxx or
-                        c_maxy <= maxy):
+                if (c_minx < minx or c_miny < miny or c_maxx > maxx or
+                        c_maxy > maxy):
                     self.logger.warning(
                         f'The bounding box for no-cheese is outside of chip size.\n'
                         f'Bounding box for chip is {chip_box}.\n'
