@@ -13,38 +13,12 @@
 # that they have been altered from the originals.
 """
 =================================================
-Analyses (:mod:`qiskit_metal.analyses`)
+Analyses (:mod:`qiskit_metal.analyses.scan_options`)
 =================================================
 
-.. currentmodule:: qiskit_metal.analyses
+.. currentmodule:: qiskit_metal.analyses.scan_options
 
-Module containing all Qiskit Metal analyses.
+Module containing scanning of values in options, to obtain different analysis results.
 
-@date: 2019
-
-@author: Zlatko Minev (IBM)
-
-Hamiltonian
------------
-
-.. autosummary::
-    :toctree:
-
-    Hcpb
-
-
-Submodules
-----------
-
-.. autosummary::
-    :toctree:
-
-    cpw_calculations
-    lumped_capacitive
 
 """
-
-from .em import cpw_calculations
-from .quantization import lumped_capacitive
-from .hamiltonian.analytic_transmon import Hcpb
-from .scan_options.scanning import Scanning
