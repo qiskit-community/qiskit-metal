@@ -155,15 +155,25 @@ class QAnsysRenderer(QRenderer):
     # TODO: Change names in GUIs
     def open_ansys(self, project_path: str = None, project_name: str = None, design_name: str = None):
         """
-        Open an existing project and/or design in Ansys, or simply connect to Ansys. 
-        If there is no project, just connect to the Ansys COM.
-        Check for, and grab if present, an active project, design, and design setup.
+        If none of the optional parameters are provided: connects to the Ansys COM, then
+        checks for, and grab if present, an active project, design, and design setup.
 
-        If the user provides the names of any of the above, grab them. 
+        If the optional parameters are provided: if present, opens the project file and design in Ansys.
+
+        Args:
+            project_path (str, optional): path without file name
+            project_name (str, optional): file name (with or without extension)
+            design_name (str, optional): nome of the default design to open from the project file
+
         """
-        self._pinfo = epr.ProjectInfo(project_path=self._options['project_path'] if not project_path else project_path,
-                                     project_name=self._options['project_name'] if not project_name else project_name,
-                                     design_name=self._options['design_name'] if not design_name else design_name)
+        # pyEPR does not like extensions
+        if project_name:
+            project_name = project_name.replace(".aedt", "")
+        # open connection through pyEPR
+        self._pinfo = epr.ProjectInfo(
+            project_path=self._options['project_path'] if not project_path else project_path,
+            project_name=self._options['project_name'] if not project_name else project_name,
+            design_name=self._options['design_name'] if not design_name else design_name)
 
     def connect_ansys_design(self, design_name: str = None):
         """Used to switch between existing designs."""
