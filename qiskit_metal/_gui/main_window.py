@@ -35,7 +35,6 @@ from PySide2.QtWidgets import (QApplication, QDockWidget, QFileDialog,
 
 from .. import config
 from ..designs.design_base import QDesign
-from .component_widget_ui import Ui_ComponentWidget
 from .elements_window import ElementsWindow
 from .main_window_base import QMainWindowBaseHandler, QMainWindowExtensionBase, kick_start_qApp
 from .main_window_ui import Ui_MainWindow
@@ -48,6 +47,7 @@ from .widgets.edit_component.component_widget import ComponentWidget
 from .widgets.log_widget.log_metal import LogHandler_for_QTextLog
 from .widgets.plot_widget.plot_window import QMainWindowPlot
 from .widgets.variable_table import PropertyTableWidget
+from .widgets.build_history.build_history_scroll_area import BuildHistoryScrollArea
 
 if not config.is_building_docs():
     from ..toolbox_metal.import_export import load_metal_design
@@ -58,12 +58,12 @@ if TYPE_CHECKING:
 
 
 class QMainWindowExtension(QMainWindowExtensionBase):
-    """This contains all the functions tthat the gui needs
+    """This contains all the functions that the gui needs
     to call directly from the UI
 
     This class extends the `QMainWindowExtensionBase` class.
 
-    To access the GUI HAndler above this, call:
+    To access the GUI Handler above this, call:
         self.handler = gui
 
     Args:
@@ -175,7 +175,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
 
     @slot_catch_error()
     def rebuild(self, _=None):
-        """Handels click on Rebuild"""
+        """Handles click on Rebuild"""
         self.logger.info(
             f'Rebuilding all components in the model (and refreshing widgets)...'
         )
@@ -207,13 +207,18 @@ class QMainWindowExtension(QMainWindowExtensionBase):
                             pass
                     self.gui.new_qcomponent_file(filename, text, text_inst)
 
+    @slot_catch_error()
+    def create_build_log_window(self, _=None):
+        """"Handles click on Build History button"""
+        self.gui.gui_create_build_log_window()
+
 
 class MetalGUI(QMainWindowBaseHandler):
     """Qiskit Metal Main GUI.
 
     This class extends the `QMainWindowBaseHandler` class
 
-    The GUI can be controled by the user using the mouse and keyboard or
+    The GUI can be controlled by the user using the mouse and keyboard or
     API for full control.
 
     Args:
@@ -228,7 +233,7 @@ class MetalGUI(QMainWindowBaseHandler):
     # This is somewhat outdated
     _dock_names = [
         'dockComponent', 'dockConnectors', 'dockDesign', 'dockLog',
-        'dockNewComponent', 'dockVariables'
+        'dockLibrary', 'dockVariables'
     ]
 
     def __init__(self, design: QDesign = None):
@@ -256,6 +261,8 @@ class MetalGUI(QMainWindowBaseHandler):
         self.elements_win = None  # type: ElementsWindow
         self.component_window = ComponentWidget(self, self.ui.dockComponent)
         self.variables_window = PropertyTableWidget(self, gui=self)
+
+        self.build_log_window = None
 
         self._setup_component_widget()
         self._setup_plot_widget()
@@ -303,7 +310,7 @@ class MetalGUI(QMainWindowBaseHandler):
 
         widgets = [
             'actionSave', 'action_full_refresh', 'actionRebuild',
-            'actionDelete_All', 'dockComponent', 'dockNewComponent',
+            'actionDelete_All', 'dockComponent', 'dockLibrary',
             'dockDesign', 'dockConnectors'
         ]
         setEnabled(self.ui, widgets)
@@ -370,8 +377,8 @@ class MetalGUI(QMainWindowBaseHandler):
         self.main_window.splitDockWidget(self.ui.dockDesign,
                                          self.ui.dockComponent, Qt.Vertical)
         self.main_window.tabifyDockWidget(self.ui.dockDesign,
-                                          self.ui.dockNewComponent)
-        self.main_window.tabifyDockWidget(self.ui.dockNewComponent,
+                                          self.ui.dockLibrary)
+        self.main_window.tabifyDockWidget(self.ui.dockLibrary,
                                           self.ui.dockConnectors)
         self.main_window.tabifyDockWidget(self.ui.dockConnectors,
                                           self.ui.dockVariables)
@@ -659,3 +666,14 @@ class MetalGUI(QMainWindowBaseHandler):
         self.highlight_components([name_instance])
         self.zoom_on_components([name_instance])
         self.edit_component_source(name_instance)
+
+    @slot_catch_error()
+    def gui_create_build_log_window(self, _=None):
+        """Creates a separate window that displays the recent successful/fails of all components for the design
+
+        Args:
+            _ ([type], optional): Default parameters for slot  - used to call from action
+        """
+        self.build_log_window = BuildHistoryScrollArea(
+            self.design.build_logs.data())
+        self.build_log_window.show()

@@ -49,7 +49,7 @@ class QTreeView_Options(QTreeView, QWidget_PlaceholderText):
 
     def style_me(self):
         """Style this widget"""
-        # Also can do in the ui file, but doesn't always transalte for me for some reason
+        # Also can do in the ui file, but doesn't always translate for some reason
         self.header().show()
         self.setAutoScroll(False)
         self.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)

@@ -55,7 +55,7 @@ except ImportError as e:
     HtmlFormatter = None
     get_lexer_by_name = None
 
-# TODO: move to conifg
+# TODO: move to config
 textHelp_css_style = """
 body {
   background-color: #f7f7f7;
@@ -157,8 +157,8 @@ class ComponentWidget(QTabWidget):
     This class extends the `QTabWidget` class.
 
     PySide2 Signal / Slots Extensions:
-        The UI can call up to this class to execeute button clicks for instance
-        Extensiosn in qt designer on signals/slots are linked to this class
+        The UI can call up to this class to execute button clicks for instance
+        Extensions in qt designer on signals/slots are linked to this class
 
     **Access:**
         gui.component_window
@@ -212,7 +212,7 @@ class ComponentWidget(QTabWidget):
         self.fixup_ui()
 
     def fixup_ui(self):
-        """For some reasonthe following i couldnt do in the ui successfully, so doing here.
+        """There were issues using QT Designer for the UI, hence this method.
         """
         # Clicked
         # This signal is emitted when the button is activated (i.e., pressed down then released
@@ -220,7 +220,7 @@ class ComponentWidget(QTabWidget):
         # click() or animateClick() is called. Notably, this signal is not emitted if you call
         #  setDown(), setChecked() or toggle().
 
-        # for some reason i need to clear the stylsheet. must be a bug inthis qt versino
+        # for some reason need to clear the style sheet; might be qt bug
         s1 = self.ui.btn_edit_src.styleSheet()
         s2 = self.ui.pushButtonEditSource.styleSheet()
         self.ui.btn_edit_src.setStyleSheet('')

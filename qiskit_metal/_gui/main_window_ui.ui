@@ -42,8 +42,7 @@
    <layout class="QVBoxLayout" name="verticalLayout">
     <property name="spacing">
      <number>0</number>
-    </property>
-    <property name="leftMargin">
+    </property>    <property name="leftMargin">
      <number>0</number>
     </property>
     <property name="topMargin">
@@ -138,7 +137,7 @@
      <x>0</x>
      <y>0</y>
      <width>1300</width>
-     <height>22</height>
+     <height>24</height>
     </rect>
    </property>
    <property name="baseSize">
@@ -296,10 +295,11 @@
    <addaction name="separator"/>
    <addaction name="action_full_refresh"/>
    <addaction name="actionRebuild"/>
-   <addaction name="separator"/>
+   <addaction name="actionBuildHistory"/>
    <addaction name="actionNew_QComponent"/>
+   <addaction name="separator"/>
   </widget>
-  <widget class="QToolBarExpanding" name="toolBarView">
+  <widget class="QToolBar" name="toolBarView">
    <property name="font">
     <font>
      <weight>75</weight>
@@ -512,11 +512,11 @@
     </layout>
    </widget>
   </widget>
-  <widget class="QDockWidget" name="dockNewComponent">
+  <widget class="QDockWidget" name="dockLibrary">
    <property name="minimumSize">
     <size>
-     <width>78</width>
-     <height>123</height>
+     <width>79</width>
+     <height>124</height>
     </size>
    </property>
    <property name="windowIcon">
@@ -577,7 +577,7 @@
       </layout>
      </item>
      <item>
-      <widget class="QTreeWidget" name="treeWidget">
+      <widget class="QTreeWidget" name="dockLibrary_TreeWidget">
        <property name="sizeAdjustPolicy">
         <enum>QAbstractScrollArea::AdjustToContents</enum>
        </property>
@@ -645,8 +645,8 @@
   <widget class="QDockWidget" name="dockLog">
    <property name="minimumSize">
     <size>
-     <width>78</width>
-     <height>100</height>
+     <width>79</width>
+     <height>101</height>
     </size>
    </property>
    <property name="windowIcon">
@@ -714,8 +714,8 @@
   <widget class="QDockWidget" name="dockConnectors">
    <property name="minimumSize">
     <size>
-     <width>78</width>
-     <height>123</height>
+     <width>79</width>
+     <height>124</height>
     </size>
    </property>
    <property name="windowIcon">
@@ -1293,13 +1293,23 @@
     <string>Q3D</string>
    </property>
   </action>
+  <action name="actionBuildHistory">
+   <property name="icon">
+    <iconset resource="main_window_rc.qrc">
+     <normaloff>:/build_history</normaloff>:/build_history</iconset>
+   </property>
+   <property name="text">
+    <string>Build History</string>
+   </property>
+   <property name="toolTip">
+    <string>See the build history of your design</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+B</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
-  <customwidget>
-   <class>QToolBarExpanding</class>
-   <extends>QToolBar</extends>
-   <header>.widgets.bases.expanding_toolbar</header>
-  </customwidget>
   <customwidget>
    <class>QTextEditLogger</class>
    <extends>QTextEdit</extends>
@@ -1550,8 +1560,8 @@
      <y>-1</y>
     </hint>
     <hint type="destinationlabel">
-     <x>383</x>
-     <y>433</y>
+     <x>170</x>
+     <y>465</y>
     </hint>
    </hints>
   </connection>
@@ -1578,8 +1588,8 @@
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>458</x>
-     <y>645</y>
+     <x>502</x>
+     <y>878</y>
     </hint>
     <hint type="destinationlabel">
      <x>-1</x>
@@ -1594,8 +1604,8 @@
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>383</x>
-     <y>433</y>
+     <x>170</x>
+     <y>465</y>
     </hint>
     <hint type="destinationlabel">
      <x>-1</x>
@@ -1604,7 +1614,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>dockNewComponent</sender>
+   <sender>dockLibrary</sender>
    <signal>visibilityChanged(bool)</signal>
    <receiver>actionNewComponent</receiver>
    <slot>setChecked(bool)</slot>
@@ -1622,7 +1632,7 @@
   <connection>
    <sender>actionNewComponent</sender>
    <signal>triggered(bool)</signal>
-   <receiver>dockNewComponent</receiver>
+   <receiver>dockLibrary</receiver>
    <slot>show()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1646,8 +1656,8 @@
      <y>-1</y>
     </hint>
     <hint type="destinationlabel">
-     <x>458</x>
-     <y>645</y>
+     <x>502</x>
+     <y>878</y>
     </hint>
    </hints>
   </connection>
@@ -1702,7 +1712,7 @@
   <connection>
    <sender>actionNewComponent</sender>
    <signal>triggered()</signal>
-   <receiver>dockNewComponent</receiver>
+   <receiver>dockLibrary</receiver>
    <slot>raise()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1726,8 +1736,8 @@
      <y>-1</y>
     </hint>
     <hint type="destinationlabel">
-     <x>383</x>
-     <y>433</y>
+     <x>170</x>
+     <y>465</y>
     </hint>
    </hints>
   </connection>
@@ -1758,8 +1768,8 @@
      <y>-1</y>
     </hint>
     <hint type="destinationlabel">
-     <x>458</x>
-     <y>645</y>
+     <x>502</x>
+     <y>878</y>
     </hint>
    </hints>
   </connection>
@@ -1860,6 +1870,22 @@
    </hints>
   </connection>
   <connection>
+   <sender>actionBuildHistory</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>create_build_log_window()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>610</x>
+     <y>410</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
    <sender>actionNew_QComponent</sender>
    <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
@@ -1910,5 +1936,6 @@
   <slot>toggle_all_docks()</slot>
   <slot>new_qcomponent()</slot>
   <slot>show_renderer_gds()</slot>
+  <slot>create_build_log_window()</slot>
  </slots>
 </ui>
