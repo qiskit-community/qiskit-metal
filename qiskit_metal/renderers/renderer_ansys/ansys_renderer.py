@@ -30,7 +30,7 @@ from collections import defaultdict
 
 import shapely
 import pyEPR as epr
-from pyEPR.ansys import parse_units
+from pyEPR.ansys import parse_units, HfssApp
 
 from qiskit_metal.draw.utility import to_vec3D
 from qiskit_metal.draw.basic import is_rectangle
@@ -175,8 +175,17 @@ class QAnsysRenderer(QRenderer):
             project_name=self._options['project_name'] if not project_name else project_name,
             design_name=self._options['design_name'] if not design_name else design_name)
 
+    def new_ansys_project(self):
+        """
+        Creates a new empty project in Ansys
+        """
+        here = HfssApp()
+        here.get_app_desktop().new_project()
+
     def connect_ansys_design(self, design_name: str = None):
-        """Used to switch between existing designs."""
+        """
+        Used to switch between existing designs.
+        """
         if self.pinfo:
             if self.pinfo.project:
                 # TODO: Handle case when design does not EXIST?!?!?
