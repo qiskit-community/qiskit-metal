@@ -33,6 +33,15 @@ Hamiltonian
     Hcpb
 
 
+Scan Options
+------------
+
+.. autosummary::
+    :toctree:
+
+    Scanning
+
+
 Submodules
 ----------
 

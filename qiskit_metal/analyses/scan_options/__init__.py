@@ -11,14 +11,3 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""
-=================================================
-Analyses (:mod:`qiskit_metal.analyses.scan_options`)
-=================================================
-
-.. currentmodule:: qiskit_metal.analyses.scan_options
-
-Module containing scanning of values in options, to obtain different analysis results.
-
-
-"""
