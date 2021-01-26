@@ -72,7 +72,7 @@ exclude_patterns = [
     'qiskit_metal.analyses.lumped_capacitive.rst',
     'qiskit_metal.analyses.em.cpw_calculations.rst',
     'qiskit_metal.analyses.cpw_calculations.rst',
-    'qiskit_metal.analyses.Hcpb.rst'
+    'qiskit_metal.analyses.Hcpb.rst', 'qiskit_metal.analyses.Scanning.rst'
 ]
 
 suppress_warnings = ['ref.ref']
