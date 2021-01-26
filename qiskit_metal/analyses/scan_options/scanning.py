@@ -22,10 +22,15 @@ class Scanning():
     """
 
     def __init__(self, design: 'QDesign'):
+        """Give QDesign to this class so Scanning can access the registered QRenderers.
+
+        Args:
+            design (QDesign): Used to access the QRenderers. 
+        """
         self.design = design
 
     def option_value(self, a_dict, search: str) -> str:
-        """Option values"""
+        """Get value from dict based on key.  This method is used for unknown depth, dict search, within a dict."""
         value = a_dict[search]
         return value
 
