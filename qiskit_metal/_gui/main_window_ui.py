@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'main_window_ui.ui',
-# licensing of 'main_window_ui.ui' applies.
+# Form implementation generated from reading ui file './main_window_ui.ui',
+# licensing of './main_window_ui.ui' applies.
 #
-# Created: Thu Jan  7 16:03:06 2021
+# Created: Wed Jan 20 13:44:44 2021
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -53,7 +53,7 @@ class Ui_MainWindow(object):
         self.verticalLayout.addWidget(self.tabWidget)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar()
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1300, 22))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1300, 24))
         self.menubar.setBaseSize(QtCore.QSize(0, 0))
         self.menubar.setObjectName("menubar")
         self.menuDesign = QtWidgets.QMenu(self.menubar)
@@ -159,7 +159,7 @@ class Ui_MainWindow(object):
         self.dockDesign.setWidget(self.dockWidgetContents)
         MainWindow.addDockWidget(QtCore.Qt.DockWidgetArea(1), self.dockDesign)
         self.dockNewComponent = QtWidgets.QDockWidget(MainWindow)
-        self.dockNewComponent.setMinimumSize(QtCore.QSize(78, 123))
+        self.dockNewComponent.setMinimumSize(QtCore.QSize(79, 124))
         icon8 = QtGui.QIcon()
         icon8.addPixmap(QtGui.QPixmap(":/component"), QtGui.QIcon.Normal, QtGui.QIcon.On)
         self.dockNewComponent.setWindowIcon(icon8)
@@ -203,7 +203,7 @@ class Ui_MainWindow(object):
         self.dockComponent.setWidget(self.dockComponentCental)
         MainWindow.addDockWidget(QtCore.Qt.DockWidgetArea(1), self.dockComponent)
         self.dockLog = QtWidgets.QDockWidget(MainWindow)
-        self.dockLog.setMinimumSize(QtCore.QSize(78, 100))
+        self.dockLog.setMinimumSize(QtCore.QSize(79, 101))
         icon9 = QtGui.QIcon()
         icon9.addPixmap(QtGui.QPixmap(":/log"), QtGui.QIcon.Normal, QtGui.QIcon.On)
         self.dockLog.setWindowIcon(icon9)
@@ -228,7 +228,7 @@ class Ui_MainWindow(object):
         self.dockLog.setWidget(self.dockWidgetContents_4)
         MainWindow.addDockWidget(QtCore.Qt.DockWidgetArea(8), self.dockLog)
         self.dockConnectors = QtWidgets.QDockWidget(MainWindow)
-        self.dockConnectors.setMinimumSize(QtCore.QSize(78, 123))
+        self.dockConnectors.setMinimumSize(QtCore.QSize(79, 124))
         icon10 = QtGui.QIcon()
         icon10.addPixmap(QtGui.QPixmap(":/connectors"), QtGui.QIcon.Normal, QtGui.QIcon.On)
         self.dockConnectors.setWindowIcon(icon10)
@@ -416,6 +416,11 @@ class Ui_MainWindow(object):
         icon29.addPixmap(QtGui.QPixmap(":/renderer/_imgs/renderers/Q3D.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionQ3D.setIcon(icon29)
         self.actionQ3D.setObjectName("actionQ3D")
+        self.actionBuildHistory = QtWidgets.QAction(MainWindow)
+        icon30 = QtGui.QIcon()
+        icon30.addPixmap(QtGui.QPixmap(":/build_history"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionBuildHistory.setIcon(icon30)
+        self.actionBuildHistory.setObjectName("actionBuildHistory")
         self.menuDesign.addSeparator()
         self.menuDesign.addAction(self.actionLabelDesign)
         self.menuDesign.addAction(self.actionLoad)
@@ -460,8 +465,9 @@ class Ui_MainWindow(object):
         self.toolBarDesign.addSeparator()
         self.toolBarDesign.addAction(self.action_full_refresh)
         self.toolBarDesign.addAction(self.actionRebuild)
-        self.toolBarDesign.addSeparator()
+        self.toolBarDesign.addAction(self.actionBuildHistory)
         self.toolBarDesign.addAction(self.actionNew_QComponent)
+        self.toolBarDesign.addSeparator()
         self.toolBarView.addAction(self.actionViewDummyLabel)
         self.toolBarView.addAction(self.actionDesign)
         self.toolBarView.addAction(self.actionComponent)
@@ -513,10 +519,9 @@ class Ui_MainWindow(object):
         QtCore.QObject.connect(self.actionVariables, QtCore.SIGNAL("triggered(bool)"), self.dockVariables.show)
         QtCore.QObject.connect(self.actionVariables, QtCore.SIGNAL("triggered()"), self.dockVariables.raise_)
         QtCore.QObject.connect(self.actionToggleDocks, QtCore.SIGNAL("triggered()"), MainWindow.toggle_all_docks)
+        QtCore.QObject.connect(self.actionBuildHistory, QtCore.SIGNAL("triggered()"), MainWindow.create_build_log_window)
         QtCore.QObject.connect(self.actionNew_QComponent, QtCore.SIGNAL("triggered()"), MainWindow.new_qcomponent)
         QtCore.QObject.connect(self.actionGDS, QtCore.SIGNAL("triggered()"), MainWindow.show_renderer_gds)
-        QtCore.QObject.connect(self.actionHFSS, QtCore.SIGNAL("triggered()"), MainWindow.show_renderer_hfss)
-        QtCore.QObject.connect(self.actionQ3D, QtCore.SIGNAL("triggered()"), MainWindow.show_renderer_q3d)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -658,8 +663,11 @@ class Ui_MainWindow(object):
         self.actionGDS.setToolTip(QtWidgets.QApplication.translate("MainWindow", "Open the GDS renderer.", None, -1))
         self.actionHFSS.setText(QtWidgets.QApplication.translate("MainWindow", "HFSS", None, -1))
         self.actionQ3D.setText(QtWidgets.QApplication.translate("MainWindow", "Q3D", None, -1))
+        self.actionBuildHistory.setText(QtWidgets.QApplication.translate("MainWindow", "Build History", None, -1))
+        self.actionBuildHistory.setToolTip(QtWidgets.QApplication.translate("MainWindow", "See the build history of your design", None, -1))
+        self.actionBuildHistory.setShortcut(QtWidgets.QApplication.translate("MainWindow", "Ctrl+B", None, -1))
 
-from .widgets.all_components.table_view_all_components import QTableView_AllComponents
 from .widgets.log_widget.log_metal import QTextEditLogger
+from .widgets.all_components.table_view_all_components import QTableView_AllComponents
 from .widgets.bases.expanding_toolbar import QToolBarExpanding
 from . import main_window_rc_rc

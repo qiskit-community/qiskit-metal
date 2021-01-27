@@ -14,28 +14,33 @@ rc_to_py=pyside2-rcc
 #     -i : Resource modules are imported using
 #          from <PACKAGE> import ... rather than a simple import ....
 #      --from-imports (pyside)  --import-from (pyqt)
-"${ui_to_py}" --output=main_window_ui.py        --from-imports  main_window_ui.ui
-"${ui_to_py}" --output=component_widget_ui.py   --from-imports  component_widget_ui.ui
-"${ui_to_py}" --output=plot_window_ui.py        --from-imports  plot_window_ui.ui
-"${ui_to_py}" --output=elements_ui.py           --from-imports  elements_ui.ui
-"${ui_to_py}" --output=edit_source_ui.py        --from-imports  edit_source_ui.ui
-"${ui_to_py}" --output=renderer_gds_ui.py       --from-imports  renderer_gds_ui.ui
-"${ui_to_py}" --output=renderer_hfss_ui.py      --from-imports  renderer_hfss_ui.ui
-"${ui_to_py}" --output=renderer_q3d_ui.py       --from-imports  renderer_q3d_ui.ui
-"${ui_to_py}" --output=endcap_hfss_ui.py        --from-imports  endcap_hfss_ui.ui
-"${ui_to_py}" --output=endcap_q3d_ui.py         --from-imports  endcap_q3d_ui.ui
 
-"${ui_to_py}" --output=widgets/variable_table/dialog_popup.py       --from-imports  widgets/variable_table/dialog_popup.ui
-"${ui_to_py}" --output=widgets/variable_table/add_delete_table.py   --from-imports  widgets/variable_table/add_delete_table.ui
 
-"${rc_to_py}" -o main_window_rc_rc.py   main_window_rc.qrc
+# ensure if there are no .ui files present, for loop won't take *.ui as string literal
+shopt -s nullglob
+for f in $(find . -name '*.ui' -or -name '*.doc')
+do
+    echo "Processing $f"
+    echo "${f%.ui}.py"
+    "${ui_to_py}"   --from-imports "$f"  --output="${f%.ui}.py"
+done
+
+#qrc
+# ensure if there are no .ui files present, for loop won't take *.ui as string literal
+shopt -s nullglob
+for f in $(find . -name '*.qrc' -or -name '*.doc');
+do
+    echo "Processing $f"
+    "${rc_to_py}"  -o "${f%.qrc}_rc.py"  "$f"
+done
+
 
 
 # Zlatko:
-# Qt Designer doesn't seem to know that in python you cant use self.raise
+# Qt Designer doesn't seem to know that in python you can't use self.raise
 # since raise is a reserved word.
-# Instead, the functgion is called self.raise_
-# Here i use sed on mac to replace it:
+# Instead, the function is called self.raise_
+# Here I used sed on mac to replace it:
 #         .raise)    --->    .raise_)
 # for the whole file
 sed -i '.original' 's/.raise)/.raise_)/g'  main_window_ui.py

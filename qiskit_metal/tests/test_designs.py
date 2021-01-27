@@ -32,11 +32,11 @@ from qiskit_metal.designs.design_base import QDesign
 from qiskit_metal.designs.design_planar import DesignPlanar
 from qiskit_metal.designs.interface_components import Components
 from qiskit_metal.designs.net_info import QNet
-from qiskit_metal.components.base.base import QComponent
-from qiskit_metal.components.qubits.transmon_pocket import TransmonPocket
+from qiskit_metal.qlibrary.base.base import QComponent
+from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
 
 #pylint: disable-msg=line-too-long
-from qiskit_metal.components.interconnects.resonator_rectangle_spiral import ResonatorRectangleSpiral
+from qiskit_metal.qlibrary.interconnects.resonator_rectangle_spiral import ResonatorRectangleSpiral
 
 
 class TestDesign(unittest.TestCase):

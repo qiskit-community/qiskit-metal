@@ -14,7 +14,7 @@
    <string>Qiskit Metal: Quantum Creator</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../../qiskit-metal/qiskit_metal/_gui/main_window_rc.qrc">
+   <iconset resource="main_window_rc.qrc">
     <normaloff>:/metal_logo</normaloff>:/metal_logo</iconset>
   </property>
   <property name="toolTip">
@@ -42,8 +42,7 @@
    <layout class="QVBoxLayout" name="verticalLayout">
     <property name="spacing">
      <number>0</number>
-    </property>
-    <property name="leftMargin">
+    </property>    <property name="leftMargin">
      <number>0</number>
     </property>
     <property name="topMargin">
@@ -98,7 +97,7 @@
       </widget>
       <widget class="QWidget" name="tabElements">
        <attribute name="icon">
-        <iconset resource="../../../qiskit-metal/qiskit_metal/_gui/main_window_rc.qrc">
+        <iconset resource="main_window_rc.qrc">
          <normaloff>:/elements</normaloff>:/elements</iconset>
        </attribute>
        <attribute name="title">
@@ -138,7 +137,7 @@
      <x>0</x>
      <y>0</y>
      <width>1300</width>
-     <height>22</height>
+     <height>24</height>
     </rect>
    </property>
    <property name="baseSize">
@@ -296,8 +295,9 @@
    <addaction name="separator"/>
    <addaction name="action_full_refresh"/>
    <addaction name="actionRebuild"/>
-   <addaction name="separator"/>
+   <addaction name="actionBuildHistory"/>
    <addaction name="actionNew_QComponent"/>
+   <addaction name="separator"/>
   </widget>
   <widget class="QToolBarExpanding" name="toolBarView">
    <property name="font">
@@ -415,7 +415,7 @@
           <string>Focus on component in drawing window</string>
          </property>
          <property name="icon">
-          <iconset resource="../../../qiskit-metal/qiskit_metal/_gui/main_window_rc.qrc">
+          <iconset resource="main_window_rc.qrc">
            <normaloff>:/fullscreen</normaloff>:/fullscreen</iconset>
          </property>
         </widget>
@@ -445,7 +445,7 @@
           <string>Delete</string>
          </property>
          <property name="icon">
-          <iconset resource="../../../qiskit-metal/qiskit_metal/_gui/main_window_rc.qrc">
+          <iconset resource="main_window_rc.qrc">
            <normaloff>:/delete</normaloff>:/delete</iconset>
          </property>
          <property name="popupMode">
@@ -515,8 +515,8 @@
   <widget class="QDockWidget" name="dockNewComponent">
    <property name="minimumSize">
     <size>
-     <width>78</width>
-     <height>123</height>
+     <width>79</width>
+     <height>124</height>
     </size>
    </property>
    <property name="windowIcon">
@@ -645,8 +645,8 @@
   <widget class="QDockWidget" name="dockLog">
    <property name="minimumSize">
     <size>
-     <width>78</width>
-     <height>100</height>
+     <width>79</width>
+     <height>101</height>
     </size>
    </property>
    <property name="windowIcon">
@@ -714,8 +714,8 @@
   <widget class="QDockWidget" name="dockConnectors">
    <property name="minimumSize">
     <size>
-     <width>78</width>
-     <height>123</height>
+     <width>79</width>
+     <height>124</height>
     </size>
    </property>
    <property name="windowIcon">
@@ -834,7 +834,7 @@
   </widget>
   <action name="actionSave">
    <property name="icon">
-    <iconset resource="../../../qiskit-metal/qiskit_metal/_gui/main_window_rc.qrc">
+    <iconset resource="main_window_rc.qrc">
      <normaloff>:/save</normaloff>:/save</iconset>
    </property>
    <property name="text">
@@ -855,7 +855,7 @@
   </action>
   <action name="actionLoad">
    <property name="icon">
-    <iconset resource="../../../qiskit-metal/qiskit_metal/_gui/main_window_rc.qrc">
+    <iconset resource="main_window_rc.qrc">
      <normaloff>:/load</normaloff>:/load</iconset>
    </property>
    <property name="text">
@@ -885,7 +885,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../../../qiskit-metal/qiskit_metal/_gui/main_window_rc.qrc">
+    <iconset resource="main_window_rc.qrc">
      <normaloff>:/design</normaloff>:/design</iconset>
    </property>
    <property name="text">
@@ -906,7 +906,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../../../qiskit-metal/qiskit_metal/_gui/main_window_rc.qrc">
+    <iconset resource="main_window_rc.qrc">
      <normaloff>:/component</normaloff>:/component</iconset>
    </property>
    <property name="text">
@@ -930,7 +930,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="../../../qiskit-metal/qiskit_metal/_gui/main_window_rc.qrc">
+    <iconset resource="main_window_rc.qrc">
      <normaloff>:/elements</normaloff>:/elements</iconset>
    </property>
    <property name="text">
@@ -948,7 +948,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../../../qiskit-metal/qiskit_metal/_gui/main_window_rc.qrc">
+    <iconset resource="main_window_rc.qrc">
      <normaloff>:/log</normaloff>:/log</iconset>
    </property>
    <property name="text">
@@ -969,7 +969,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="../../../qiskit-metal/qiskit_metal/_gui/main_window_rc.qrc">
+    <iconset resource="main_window_rc.qrc">
      <normaloff>:/component-library</normaloff>:/component-library</iconset>
    </property>
    <property name="text">
@@ -990,7 +990,7 @@
   </action>
   <action name="actionDelete_All">
    <property name="icon">
-    <iconset resource="../../../qiskit-metal/qiskit_metal/_gui/main_window_rc.qrc">
+    <iconset resource="main_window_rc.qrc">
      <normaloff>:/delete_all</normaloff>:/delete_all</iconset>
    </property>
    <property name="text">
@@ -1011,7 +1011,7 @@
   </action>
   <action name="actionZoom">
    <property name="icon">
-    <iconset resource="../../../qiskit-metal/qiskit_metal/_gui/main_window_rc.qrc">
+    <iconset resource="main_window_rc.qrc">
      <normaloff>:/plot/zoom</normaloff>:/plot/zoom</iconset>
    </property>
    <property name="text">
@@ -1045,7 +1045,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="../../../qiskit-metal/qiskit_metal/_gui/main_window_rc.qrc">
+    <iconset resource="main_window_rc.qrc">
      <normaloff>:/connectors</normaloff>:/connectors</iconset>
    </property>
    <property name="text">
@@ -1075,7 +1075,7 @@
   </action>
   <action name="actionScreenshot">
    <property name="icon">
-    <iconset resource="../../../qiskit-metal/qiskit_metal/_gui/main_window_rc.qrc">
+    <iconset resource="main_window_rc.qrc">
      <normaloff>:/screenshot</normaloff>:/screenshot</iconset>
    </property>
    <property name="text">
@@ -1087,7 +1087,7 @@
   </action>
   <action name="action_full_refresh">
    <property name="icon">
-    <iconset resource="../../../qiskit-metal/qiskit_metal/_gui/main_window_rc.qrc">
+    <iconset resource="main_window_rc.qrc">
      <normaloff>:/force_refresh</normaloff>:/force_refresh</iconset>
    </property>
    <property name="text">
@@ -1117,7 +1117,7 @@
   </action>
   <action name="actionRebuild">
    <property name="icon">
-    <iconset resource="../../../qiskit-metal/qiskit_metal/_gui/main_window_rc.qrc">
+    <iconset resource="main_window_rc.qrc">
      <normaloff>:/rebuild</normaloff>:/rebuild</iconset>
    </property>
    <property name="text">
@@ -1141,7 +1141,7 @@
   </action>
   <action name="actionFull_Screen">
    <property name="icon">
-    <iconset resource="../../../qiskit-metal/qiskit_metal/_gui/main_window_rc.qrc">
+    <iconset resource="main_window_rc.qrc">
      <normaloff>:/plot/----autozoom</normaloff>:/plot/----autozoom</iconset>
    </property>
    <property name="text">
@@ -1158,7 +1158,7 @@
   </action>
   <action name="actionSaveAs">
    <property name="icon">
-    <iconset resource="../../../qiskit-metal/qiskit_metal/_gui/main_window_rc.qrc">
+    <iconset resource="main_window_rc.qrc">
      <normaloff>:/save</normaloff>:/save</iconset>
    </property>
    <property name="text">
@@ -1179,7 +1179,7 @@
   </action>
   <action name="actionSave_window_state">
    <property name="icon">
-    <iconset resource="../../../qiskit-metal/qiskit_metal/_gui/main_window_rc.qrc">
+    <iconset resource="main_window_rc.qrc">
      <normaloff>:/save</normaloff>:/save</iconset>
    </property>
    <property name="text">
@@ -1220,7 +1220,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="../../../qiskit-metal/qiskit_metal/_gui/main_window_rc.qrc">
+    <iconset resource="main_window_rc.qrc">
      <normaloff>:/variables</normaloff>:/variables</iconset>
    </property>
    <property name="text">
@@ -1235,7 +1235,7 @@
   </action>
   <action name="actionToggleDocks">
    <property name="icon">
-    <iconset resource="../../../qiskit-metal/qiskit_metal/_gui/main_window_rc.qrc">
+    <iconset resource="main_window_rc.qrc">
      <normaloff>:/fullscreen</normaloff>:/fullscreen</iconset>
    </property>
    <property name="text">
@@ -1250,7 +1250,7 @@
   </action>
   <action name="actionNew_QComponent">
    <property name="icon">
-    <iconset resource="../../../qiskit-metal/qiskit_metal/_gui/main_window_rc.qrc">
+    <iconset resource="main_window_rc.qrc">
      <normaloff>:/add</normaloff>:/add</iconset>
    </property>
    <property name="text">
@@ -1265,7 +1265,7 @@
   </action>
   <action name="actionGDS">
    <property name="icon">
-    <iconset resource="../../../qiskit-metal/qiskit_metal/_gui/main_window_rc.qrc">
+    <iconset resource="main_window_rc.qrc">
      <normaloff>:/renderer/_imgs/renderers/GDS.png</normaloff>:/renderer/_imgs/renderers/GDS.png</iconset>
    </property>
    <property name="text">
@@ -1277,7 +1277,7 @@
   </action>
   <action name="actionHFSS">
    <property name="icon">
-    <iconset resource="../../../qiskit-metal/qiskit_metal/_gui/main_window_rc.qrc">
+    <iconset resource="main_window_rc.qrc">
      <normaloff>:/renderer/_imgs/renderers/HFSS.png</normaloff>:/renderer/_imgs/renderers/HFSS.png</iconset>
    </property>
    <property name="text">
@@ -1286,11 +1286,26 @@
   </action>
   <action name="actionQ3D">
    <property name="icon">
-    <iconset resource="../../../qiskit-metal/qiskit_metal/_gui/main_window_rc.qrc">
+    <iconset resource="main_window_rc.qrc">
      <normaloff>:/renderer/_imgs/renderers/Q3D.png</normaloff>:/renderer/_imgs/renderers/Q3D.png</iconset>
    </property>
    <property name="text">
     <string>Q3D</string>
+   </property>
+  </action>
+  <action name="actionBuildHistory">
+   <property name="icon">
+    <iconset resource="main_window_rc.qrc">
+     <normaloff>:/build_history</normaloff>:/build_history</iconset>
+   </property>
+   <property name="text">
+    <string>Build History</string>
+   </property>
+   <property name="toolTip">
+    <string>See the build history of your design</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+B</string>
    </property>
   </action>
  </widget>
@@ -1312,7 +1327,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../../qiskit-metal/qiskit_metal/_gui/main_window_rc.qrc"/>
+  <include location="main_window_rc.qrc"/>
  </resources>
  <connections>
   <connection>
@@ -1550,8 +1565,8 @@
      <y>-1</y>
     </hint>
     <hint type="destinationlabel">
-     <x>383</x>
-     <y>433</y>
+     <x>170</x>
+     <y>465</y>
     </hint>
    </hints>
   </connection>
@@ -1578,8 +1593,8 @@
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>458</x>
-     <y>645</y>
+     <x>502</x>
+     <y>878</y>
     </hint>
     <hint type="destinationlabel">
      <x>-1</x>
@@ -1594,8 +1609,8 @@
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>383</x>
-     <y>433</y>
+     <x>170</x>
+     <y>465</y>
     </hint>
     <hint type="destinationlabel">
      <x>-1</x>
@@ -1646,8 +1661,8 @@
      <y>-1</y>
     </hint>
     <hint type="destinationlabel">
-     <x>458</x>
-     <y>645</y>
+     <x>502</x>
+     <y>878</y>
     </hint>
    </hints>
   </connection>
@@ -1726,8 +1741,8 @@
      <y>-1</y>
     </hint>
     <hint type="destinationlabel">
-     <x>383</x>
-     <y>433</y>
+     <x>170</x>
+     <y>465</y>
     </hint>
    </hints>
   </connection>
@@ -1758,8 +1773,8 @@
      <y>-1</y>
     </hint>
     <hint type="destinationlabel">
-     <x>458</x>
-     <y>645</y>
+     <x>502</x>
+     <y>878</y>
     </hint>
    </hints>
   </connection>
@@ -1860,6 +1875,22 @@
    </hints>
   </connection>
   <connection>
+   <sender>actionBuildHistory</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>create_build_log_window()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>610</x>
+     <y>410</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
    <sender>actionNew_QComponent</sender>
    <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
@@ -1891,38 +1922,6 @@
     </hint>
    </hints>
   </connection>
-  <connection>
-   <sender>actionHFSS</sender>
-   <signal>triggered()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>show_renderer_hfss()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>649</x>
-     <y>449</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionQ3D</sender>
-   <signal>triggered()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>show_renderer_q3d()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>649</x>
-     <y>449</y>
-    </hint>
-   </hints>
-  </connection>
  </connections>
  <slots>
   <slot>showHelp()</slot>
@@ -1942,7 +1941,6 @@
   <slot>toggle_all_docks()</slot>
   <slot>new_qcomponent()</slot>
   <slot>show_renderer_gds()</slot>
-  <slot>show_renderer_hfss()</slot>
-  <slot>show_renderer_q3d()</slot>
+  <slot>create_build_log_window()</slot>
  </slots>
 </ui>

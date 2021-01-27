@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'component_widget_ui.ui',
-# licensing of 'component_widget_ui.ui' applies.
+# Form implementation generated from reading ui file './component_widget_ui.ui',
+# licensing of './component_widget_ui.ui' applies.
 #
-# Created: Thu Jan  7 16:03:06 2021
+# Created: Wed Jan 20 13:44:43 2021
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!

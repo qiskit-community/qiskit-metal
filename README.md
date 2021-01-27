@@ -25,7 +25,6 @@ Use the [Slack channel (Join here!)](https://join.slack.com/share/zt-jjgzilxu-1u
  Click for YouTube Video <br>
 	<img src="https://www.gstatic.com/youtube/img/branding/youtubelogo/svg/youtubelogo.svg" alt="Qiskit Metal Install" width=250>
 </a>
- 
 
 ### Text Instructions
 You could download the code as a zip file at the top of this page.
@@ -100,17 +99,17 @@ However, if you prefer using jupyter lab, you will need to execute a couple of e
 ##### (Optional) Jupyter lab
 
 Launching jupyter lab will execute python code in the conda `base` environment by default.
-To change environment to the one you just finished setting up, you will need first to "assign" the environment to a kernel label.
-To do so, from a command line inside the active <env_name>, run the following lines:
+To change environment to the Qiskit Metal one you just finished setting up, denoted by `<env_name>`, which we usually just call `metal`, you will need first to add to jupyter lab's list of available kernels. 
+From the command line, run the following lines (inside an active <env_name> environment):
 
 ```
+conda activate <env_name>
 conda install ipykernel
 ipython kernel install --user --name=<any_name_for_kernel>
 ```
+Using the above command, you will now have the current conda environment in any Jupyter notebook.
 
-This will create a kernel for the conda environment that is active at the moment.
-
-Once inside `jupyter lab`, switch to the newly created kernel to be able to work with qiskit-metal.
+Once inside `jupyter lab`, you can switch to the newly created Metal kernel to use qiskit-metal. Use the Menu `Kernel>Change Kernel`.
 
 #### Without conda: Virtual environment setup (alternative setup)
 

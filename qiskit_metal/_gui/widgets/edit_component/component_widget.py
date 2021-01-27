@@ -40,7 +40,7 @@ __all__ = ['create_QTextDocument', 'format_docstr']
 
 if TYPE_CHECKING:
     from ...main_window import MetalGUI, QMainWindowExtension
-    from ....components import QComponent
+    from ....qlibrary import QComponent
     from ....designs import QDesign
 
 try:  # For source doc

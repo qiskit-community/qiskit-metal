@@ -34,6 +34,8 @@ from PySide2 import QtCore, QtGui, QtWidgets
 from PySide2.QtGui import QTextCursor
 from PySide2.QtWidgets import QTextEdit
 
+from qiskit_metal._gui.widgets.edit_component.metal_pyqode_folding_panel import MetalPyqodeFoldingPanel
+
 __all__ = [
     'definition_generate_html', 'definition_get_source', 'doc_generate_html',
     'doc_get_object_from_info', 'get_definition_end_position',
@@ -150,9 +152,9 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
 
         self.gui = None  # type: MetalGUI
         self.component_class_name = None  # type: str - 'TransmonPocket'
-        # type: str - 'qiskit_metal.components.qubits.transmon_pocket'
+        # type: str - 'qiskit_metal.qlibrary.qubits.transmon_pocket'
         self.component_module_name = None
-        # type: str - '/Users/zlatko.minev/qiskit_metal/qiskit_metal/components/qubits/transmon_pocket.py'
+        # type: str - '/Users/zlatko.minev/qiskit_metal/qiskit_metal/qlibrary/qubits/transmon_pocket.py'
         self.component_module_path = None
 
         # starts the default pyqode.python server (which enable the jedi code
@@ -164,7 +166,10 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         self.modes.append(modes.OutlineMode(defined_names))
 
         # --- core panels
-        self.panels.append(panels.FoldingPanel())
+        # in pyqode/core/panels/folding.py there is:
+        #   if os.environ['QT_API'].lower() not in PYQT5_API
+
+        self.panels.append(MetalPyqodeFoldingPanel())
         self.panels.append(panels.LineNumberPanel())
         self.panels.append(panels.CheckerPanel())
         self.panels.append(panels.SearchAndReplacePanel(),
@@ -276,7 +281,7 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
                 import jedi
                 jedi.settings.cache_directory
 
-            I have tried to fix this using the permisison code below
+            I have tried to fix this using the permission code below
         """
 
         ####################

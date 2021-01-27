@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'renderer_gds_ui.ui',
-# licensing of 'renderer_gds_ui.ui' applies.
+# Form implementation generated from reading ui file './renderer_gds_ui.ui',
+# licensing of './renderer_gds_ui.ui' applies.
 #
-# Created: Thu Jan  7 16:03:07 2021
+# Created: Wed Jan 20 13:44:44 2021
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!

@@ -37,18 +37,20 @@ from .. import config
 from ..designs.design_base import QDesign
 from .component_widget_ui import Ui_ComponentWidget
 from .elements_window import ElementsWindow
-from .main_window_base import QMainWindowBaseHandler, QMainWindowExtensionBase
+from .main_window_base import QMainWindowBaseHandler, QMainWindowExtensionBase, kick_start_qApp
 from .main_window_ui import Ui_MainWindow
 from .renderer_gds_gui import RendererGDSWidget
 from .renderer_hfss_gui import RendererHFSSWidget
 from .renderer_q3d_gui import RendererQ3DWidget
 from .utility._handle_qt_messages import slot_catch_error
+from PySide2.QtCore import qInstallMessageHandler
 from .widgets.all_components.table_model_all_components import \
     QTableModel_AllComponents
 from .widgets.edit_component.component_widget import ComponentWidget
 from .widgets.log_widget.log_metal import LogHandler_for_QTextLog
 from .widgets.plot_widget.plot_window import QMainWindowPlot
 from .widgets.variable_table import PropertyTableWidget
+from .widgets.build_history.build_history_scroll_area import BuildHistoryScrollArea
 
 if not config.is_building_docs():
     from ..toolbox_metal.import_export import load_metal_design
@@ -59,12 +61,12 @@ if TYPE_CHECKING:
 
 
 class QMainWindowExtension(QMainWindowExtensionBase):
-    """This contains all the functions tthat the gui needs
+    """This contains all the functions that the gui needs
     to call directly from the UI
 
     This class extends the `QMainWindowExtensionBase` class.
 
-    To access the GUI HAndler above this, call:
+    To access the GUI Handler above this, call:
         self.handler = gui
 
     Args:
@@ -188,7 +190,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
 
     @slot_catch_error()
     def rebuild(self, _=None):
-        """Handels click on Rebuild"""
+        """Handles click on Rebuild"""
         self.logger.info(
             f'Rebuilding all components in the model (and refreshing widgets)...'
         )
@@ -199,7 +201,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         """Create a new qcomponent call by button
         """
         path = str(
-            Path(self.gui.path_gui).parent / 'components' / 'user_components' /
+            Path(self.gui.path_gui).parent / 'qlibrary' / 'user_components' /
             'my_qcomponent.py')
         filename = QFileDialog.getSaveFileName(
             parent=None,
@@ -220,13 +222,18 @@ class QMainWindowExtension(QMainWindowExtensionBase):
                             pass
                     self.gui.new_qcomponent_file(filename, text, text_inst)
 
+    @slot_catch_error()
+    def create_build_log_window(self, _=None):
+        """"Handles click on Build History button"""
+        self.gui.gui_create_build_log_window()
+
 
 class MetalGUI(QMainWindowBaseHandler):
     """Qiskit Metal Main GUI.
 
     This class extends the `QMainWindowBaseHandler` class
 
-    The GUI can be controled by the user using the mouse and keyboard or
+    The GUI can be controlled by the user using the mouse and keyboard or
     API for full control.
 
     Args:
@@ -251,6 +258,14 @@ class MetalGUI(QMainWindowBaseHandler):
                 (Default: None).
         """
 
+        from .utility._handle_qt_messages import QtCore, _qt_message_handler
+        QtCore.qInstallMessageHandler(_qt_message_handler)
+
+        qApp = kick_start_qApp()
+        if not qApp:
+            logging.error(
+                "Could not start Qt event loop using QApplication.")
+        
         super().__init__()
 
         # use set_design
@@ -261,6 +276,8 @@ class MetalGUI(QMainWindowBaseHandler):
         self.elements_win = None  # type: ElementsWindow
         self.component_window = ComponentWidget(self, self.ui.dockComponent)
         self.variables_window = PropertyTableWidget(self, gui=self)
+
+        self.build_log_window = None
 
         self._setup_component_widget()
         self._setup_plot_widget()
@@ -611,7 +628,7 @@ class MetalGUI(QMainWindowBaseHandler):
     def new_qcomponent_file(self, new_path: str, class_name: str,
                             name_instance: str):
         """Create a new qcomponent file based on template.
-        The template is stored in components/_template.py
+        The template is stored in qlibrary/_template.py
 
         Args:
             path (str): the path to the file to save to
@@ -624,7 +641,7 @@ class MetalGUI(QMainWindowBaseHandler):
 
         # Copy template file
         tpath = Path(self.path_gui)
-        tpath = tpath.parent / 'components' / '_template.py'
+        tpath = tpath.parent / 'qlibrary' / '_template.py'
         shutil.copy(str(tpath), str(new_path))
 
         # Rename the class name
@@ -670,3 +687,14 @@ class MetalGUI(QMainWindowBaseHandler):
         self.highlight_components([name_instance])
         self.zoom_on_components([name_instance])
         self.edit_component_source(name_instance)
+
+    @slot_catch_error()
+    def gui_create_build_log_window(self, _=None):
+        """Creates a separate window that displays the recent successful/fails of all components for the design
+
+        Args:
+            _ ([type], optional): Default parameters for slot  - used to call from action
+        """
+        self.build_log_window = BuildHistoryScrollArea(
+            self.design.build_logs.data())
+        self.build_log_window.show()

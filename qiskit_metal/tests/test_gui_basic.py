@@ -32,13 +32,13 @@ from qiskit_metal import MetalGUI
 from qiskit_metal._gui.widgets.bases.dict_tree_base import BranchNode
 from qiskit_metal._gui.widgets.bases.dict_tree_base import LeafNode
 
-from qiskit_metal.components.passives.launchpad_wb import LaunchpadWirebond
-from qiskit_metal.components.passives.launchpad_wb_coupled import LaunchpadWirebondCoupled
-from qiskit_metal.components.passives.cap_three_fingers import CapThreeFingers
-from qiskit_metal.components.qubits.transmon_concentric import TransmonConcentric
-from qiskit_metal.components.qubits.transmon_cross import TransmonCross
-from qiskit_metal.components.qubits.transmon_pocket import TransmonPocket
-from qiskit_metal.components.qubits.transmon_pocket_cl import TransmonPocketCL
+from qiskit_metal.qlibrary.passives.launchpad_wb import LaunchpadWirebond
+from qiskit_metal.qlibrary.passives.launchpad_wb_coupled import LaunchpadWirebondCoupled
+from qiskit_metal.qlibrary.passives.cap_three_fingers import CapThreeFingers
+from qiskit_metal.qlibrary.qubits.transmon_concentric import TransmonConcentric
+from qiskit_metal.qlibrary.qubits.transmon_cross import TransmonCross
+from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
+from qiskit_metal.qlibrary.qubits.transmon_pocket_cl import TransmonPocketCL
 
 
 class TestGUIBasic(unittest.TestCase):

@@ -4,15 +4,16 @@ descartes
 docutils
 gdspy>=1.5.2
 GeoPandas
-ipython
-jedi>=0.17
+ipython==7.19.0
+jedi==0.17.2
 matplotlib
 numpy
 pandas
 pint
 pyEPR-quantum>=0.8.4.2
-Pygments
+pyqode.python==2.12.1
 pyqode.python
+Pygments
 pyside2>=5.9, <5.14
 scipy
 Shapely
