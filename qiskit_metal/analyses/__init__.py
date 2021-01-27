@@ -33,6 +33,15 @@ Hamiltonian
     Hcpb
 
 
+Scan Options
+------------
+
+.. autosummary::
+    :toctree:
+
+    Scanning
+
+
 Submodules
 ----------
 
@@ -47,3 +56,4 @@ Submodules
 from .em import cpw_calculations
 from .quantization import lumped_capacitive
 from .hamiltonian.analytic_transmon import Hcpb
+from .scan_options.scanning import Scanning
