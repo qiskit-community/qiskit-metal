@@ -3,7 +3,6 @@ from PySide2.QtWidgets import QPushButton, QApplication,  QMainWindow,  QFileSys
 from PySide2.QtWidgets import (QLabel, QScrollArea, QVBoxLayout, QLabel, QWidget, QHBoxLayout, QLineEdit,
                                QGroupBox)
 from .parameter_entry_scroll_area_ui import Ui_ScrollArea
-class ParameterEntryScrollArea(QScrollArea,Ui_ScrollArea):
 from PySide2.QtCore import QModelIndex, QDir
 from typing import Dict
 from .collapsable_widget import CollapsibleWidget
