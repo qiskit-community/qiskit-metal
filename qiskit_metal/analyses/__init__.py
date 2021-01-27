@@ -33,7 +33,7 @@ Hamiltonian
     Hcpb
 
 
-Submodules
+Electromagnetic & quantization / paramerter extraction
 ----------
 
 .. autosummary::
@@ -46,4 +46,4 @@ Submodules
 
 from .em import cpw_calculations
 from .quantization import lumped_capacitive
-from .hamiltonian.analytic_transmon import Hcpb
+from .hamiltonian.transmon_charge_basis import Hcpb

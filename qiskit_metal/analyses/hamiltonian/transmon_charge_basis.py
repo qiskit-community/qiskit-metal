@@ -13,7 +13,7 @@
 # that they have been altered from the originals.
 """
 Models the transmon qubit in the cooper-pair charge basis, assuming wrapped
-junction wphase variable.
+junction phase variable.
 This model is closer to the analytic solution than the Duffing oscillator model.
 Can work backwards from target qubit parameters to get the Ej, Ec or use
 input Ej, Ec to find the spectrum of the Cooper Pair Box.
@@ -56,6 +56,27 @@ class Hcpb:
             ng (float): offset charge of the CPB (ng=0.5 is the sweet spot).
                         `ng` only needs to run betweren -0.5 and 0.5.
                         `ng` is defined in units of cooper pairs (2e)
+
+        Example use:
+
+            .. code-block::
+                H = Hcpb(nlevels=15, Ej=13971.3, Ec=295.2, ng=0.001)
+
+                print(f'''
+                Transmon frequencies
+                ω01/2π = {H.fij(0,1): 6.0f} MHz
+                  α/2π = {H.anharm(): 6.0f} MHz
+                ''')
+
+            .. code-block::
+
+                import matplotlib.pyplot as plt
+                for k in range (3):
+                    ψ, θ = H.psi_k(k)
+                    plt.plot(θ, ψ.real+ψ.imag, label=f"|{k}>") # it's in either quadrature, but not both
+                plt.xlabel("Junction phase θ (wrapped in the interval [-π, π])")
+                plt.ylabel("Re(ψ(θ))")
+                plt.legend(title="Level")
         """
 
         self._nlevels = nlevels
@@ -154,11 +175,11 @@ class Hcpb:
         psi = np.array(psi)
         # Sum over Fourier components to get eigenwave
         psi = np.sum(psi, axis=0) / np.sqrt(2 * np.pi)
-        return psi
+        return psi, phi
 
     def fij(self, i: int, j: int):
         '''
-        Compute the transition energy between states
+        Compute the transition energy (or frequency) between states
         \|i> and \|j>
 
         Arguments:
@@ -182,7 +203,7 @@ class Hcpb:
     def n_ij(self, i: int, j: int):
         '''
         Compute the value of the number operator for
-        coupling elements together
+        coupling elements together in the energy eigen-basis.
 
         Arguments:
             i (int): \|i> index of the transmon
@@ -216,12 +237,13 @@ class Hcpb:
 
     def n_to_qutip(self, n_transmon: int, thresh=None):
         '''
-        Wrapper around Qutip to output the number operator
-        for the Transmon Hamiltonian for computing the
+        Wrapper around Qutip to output the number operator (charge)
+        for the Transmon Hamiltonian in the energy eigen-basis.
+        Used for computing the
         coupling between other elements in the system.
 
         Arguments:
-            n_transmon (int): number of levels to consider
+            n_transmon (int): number of energy levels to consider
 
         Keyword Arguments:
             thresh (float): threshold for keeping small values
@@ -231,7 +253,8 @@ class Hcpb:
 
         Returns:
             (Qobj): Returns a Qutip Qobj corresponding to the
-            number operator for defining couplings
+            number operator for defining couplings in the
+            energy eigen-basis.
         '''
         n_op = np.zeros((n_transmon, n_transmon))
         for i in range(n_transmon):
@@ -246,7 +269,8 @@ class Hcpb:
                     n_op[i, j] = val
         return qt.Qobj(n_op)
 
-    def params_from_spectrum(self, f01: float, anharm: float):
+    def params_from_spectrum(self, f01: float, anharm: float,
+                        **kwargs):
         '''
         Method to work backwards from a desired transmon
         frequency and anharmonicty to extract the target
@@ -256,7 +280,10 @@ class Hcpb:
 
         Arguments:
             f01 (float): Desired qubit frequency
-            anharm (float): Desired qubit anharmonicity
+            anharm (float): Desired qubit anharmonicity (should be negative)
+
+        Keyword Arguments:
+            Passed to
 
         Returns:
             (float, float): Ej and Ec of the transmon Hamiltonian
@@ -270,13 +297,16 @@ class Hcpb:
         def fun(x):
             self.Ej = x[0]
             self.Ec = x[1]
-            return (self.fij(0, 1) - f01)**2 + (self.anharm() - anharm)**2
+            # the 10 on the anharmonicity allows faster convergnce, see Minev
+            return (self.fij(0, 1) - f01)**2 + 10*(self.anharm() - anharm)**2
 
         # Initial guesses from
         # f01 ~ sqrt(8*Ej*Ec) - Ec
         #  eta ~ -Ec
         x0 = [(f01 - anharm)**2 / (8 * (-anharm)), -anharm]
-        res = opt.least_squares(fun, x0)
+        # can converge slowly if cost function not set up well, or alpha<<freq
+        ops = dict(bounds=[(0,0), (x0[0]*3, x0[1]*3)], f_scale=1/x0[0], max_nfev=2000)
+        res = opt.least_squares(fun, x0, **{**ops, **kwargs})
         self.Ej, self.Ec = res.x
         return res.x
 
