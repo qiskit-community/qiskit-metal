@@ -35,7 +35,7 @@ if TYPE_CHECKING:
 
 class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
     """
-    Desing components.
+    Design components.
 
     The class extends the `QTableView` and `QWidget_PlaceholderText` classes.
 

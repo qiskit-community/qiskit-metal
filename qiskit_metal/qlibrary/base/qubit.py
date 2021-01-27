@@ -22,6 +22,9 @@ from copy import deepcopy
 from qiskit_metal.toolbox_python.attr_dict import Dict
 from .base import QComponent
 
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from ...designs.design_base import QDesign
 
 class BaseQubit(QComponent):
     '''
@@ -61,10 +64,10 @@ class BaseQubit(QComponent):
     """Component metadata"""
 
     def __init__(self,
-                 design,
-                 name=None,
-                 options=None,
-                 options_connection_pads=None,
+                 design: 'QDesign',
+                 name:str=None,
+                 options:Dict=None,
+                 options_connection_pads:Dict=None,
                  make=True):
         """
         Args:

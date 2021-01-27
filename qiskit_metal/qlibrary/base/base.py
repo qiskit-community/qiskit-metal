@@ -119,12 +119,12 @@ class QComponent():
     """Component metadata"""
 
     options = {}
-    """A dictionary of the component-desinger-defined options.
+    """A dictionary of the component-designer-defined options.
     These options are used in the make function to create the QGeometry and QPins.
     All options should have string keys and preferrable string values.
     """
 
-    # Dummy private attribute used to check if an instanciated object is
+    # Dummy private attribute used to check if an instantiated object is
     # indeed a QComponent class. The problem is that the `isinstance`
     # built-in method fails when this module is reloaded.
     # Used by `is_component` to check.
@@ -190,9 +190,9 @@ class QComponent():
         self._name = name
         self._class_name = self._get_unique_class_name()  # Full class name
 
-        #: A dictionary of the component-desinger-defined options.
+        #: A dictionary of the component-designer-defined options.
         #: These options are used in the make function to create the QGeometry and QPins.
-        #: All options should have string keys and preferrable string values.
+        #: All options should have string keys and preferably string values.
         self.options = self.get_template_options(
             design=design, component_template=component_template)
         if options:
@@ -418,7 +418,7 @@ class QComponent():
 
     @classmethod
     def get_template_options(cls,
-                             design: 'QDesign',
+                             design: QDesign,
                              component_template: Dict = None,
                              logger_: logging.Logger = None,
                              template_key: str = None) -> Dict:

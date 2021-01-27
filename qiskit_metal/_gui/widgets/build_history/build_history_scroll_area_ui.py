@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file './widgets/build_history/build_history_scroll_area_ui.ui',
 # licensing of './widgets/build_history/build_history_scroll_area_ui.ui' applies.
 #
-# Created: Mon Jan 25 11:30:23 2021
+# Created: Wed Jan 27 15:02:20 2021
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!

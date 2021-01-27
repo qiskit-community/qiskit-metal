@@ -27,11 +27,11 @@ from pathlib import Path
 from typing import List, TYPE_CHECKING
 
 from PySide2 import QtWidgets
-from PySide2.QtCore import QEventLoop, Qt, QTimer, Slot
+from PySide2.QtCore import QEventLoop, Qt, QTimer, Slot, QModelIndex
 from PySide2.QtGui import QIcon
 from PySide2.QtWidgets import (QApplication, QDockWidget, QFileDialog,
                                QInputDialog, QLabel, QLineEdit, QMainWindow,
-                               QMessageBox)
+                               QMessageBox, QFileSystemModel)
 
 from .. import config
 from ..designs.design_base import QDesign
@@ -48,9 +48,11 @@ from .widgets.log_widget.log_metal import LogHandler_for_QTextLog
 from .widgets.plot_widget.plot_window import QMainWindowPlot
 from .widgets.variable_table import PropertyTableWidget
 from .widgets.build_history.build_history_scroll_area import BuildHistoryScrollArea
-
+from .. import qlibrary
 if not config.is_building_docs():
     from ..toolbox_metal.import_export import load_metal_design
+
+from .widgets.library_new_qcomponent.parameter_entry_scroll_area import ParameterEntryScrollArea
 
 if TYPE_CHECKING:
     # from .._gui import MetalGUI
@@ -270,6 +272,7 @@ class MetalGUI(QMainWindowBaseHandler):
         self._setup_elements_widget()
         self._setup_variables_widget()
         self._ui_adjustments_final()
+        self._setup_library_widget()
 
         # Show and raise
         self.main_window.show()
@@ -465,6 +468,49 @@ class MetalGUI(QMainWindowBaseHandler):
                                           tableView=self.ui.tableComponents)
         self.ui.tableComponents.setModel(model)
 
+
+    #must be defined outside of _setup_library_widget to ensure self == MetalGUI and will retain opened ScrollArea
+    def create_new_component_object_from_qlibrary(self, relative_index: QModelIndex):
+        print("hi")
+        #filter for .py files
+        filename = self.ui.dockLibrary.library_model.data(relative_index)
+        if not filename.endswith('.py'):
+            print("no py")
+            return
+        print("yes PY")
+        full_path = self.ui.dockLibrary.library_model.filePath(relative_index)
+        print("full path: ", full_path)
+        try:
+            self.param_entry = ParameterEntryScrollArea(self.QLIBRARY_FOLDERNAME, self.QLIBRARY_ROOT, self.design)
+        except Exception as e:
+            print("exception was; ", e)
+        print("param_entry made")
+        self.param_entry.show()
+        print("param entry showing? :", str(self.param_entry.isVisible()))
+
+
+    def _setup_library_widget(self):
+
+        # getting absolute path of Qlibrary folder
+        init_qlibrary_abs_path = os.path.abspath(qlibrary.__file__)
+        qlibrary_abs_path = init_qlibrary_abs_path.split('__init__.py')[0]
+        self.QLIBRARY_ROOT = qlibrary_abs_path
+        self.QLIBRARY_FOLDERNAME = qlibrary.__name__
+
+        # create model for Qlibrary directory
+        self.ui.dockLibrary.library_model = QFileSystemModel()
+        self.ui.dockLibrary.library_model.setRootPath(self.QLIBRARY_ROOT)
+
+        ## TODO clean code
+        self.ui.dockLibrary_tree_view.setModel(self.ui.dockLibrary.library_model)
+        self.ui.dockLibrary_tree_view.setRootIndex(self.ui.dockLibrary.library_model.index(self.ui.dockLibrary.library_model.rootPath()))
+        self.ui.dockLibrary_tree_view.doubleClicked.connect(self.create_new_component_object_from_qlibrary)
+        self.ui.dockLibrary_tree_view.clicked.connect(self.create_new_component_object_from_qlibrary)
+
+
+
+
+
     ################################################
     # UI
     def toggle_docks(self, do_hide: bool = None):
@@ -478,7 +524,7 @@ class MetalGUI(QMainWindowBaseHandler):
         )  # Process all events, so that if we take screenshot next it won't be partially updated
 
     ################################################
-    # Ploting
+    # Plotting
     def get_axes(self, num: int = None):
         """Return access to the canvas axes.
         If num is specified, returns the n-th axis

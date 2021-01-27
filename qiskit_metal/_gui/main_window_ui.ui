@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1300</width>
-    <height>900</height>
+    <height>848</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -42,7 +42,8 @@
    <layout class="QVBoxLayout" name="verticalLayout">
     <property name="spacing">
      <number>0</number>
-    </property>    <property name="leftMargin">
+    </property>
+    <property name="leftMargin">
      <number>0</number>
     </property>
     <property name="topMargin">
@@ -515,8 +516,8 @@
   <widget class="QDockWidget" name="dockLibrary">
    <property name="minimumSize">
     <size>
-     <width>79</width>
-     <height>124</height>
+     <width>81</width>
+     <height>134</height>
     </size>
    </property>
    <property name="windowIcon">
@@ -542,7 +543,7 @@
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
-   <widget class="QWidget" name="dockWidgetContents_2">
+   <widget class="QWidget" name="dockLibraryContents">
     <layout class="QVBoxLayout" name="verticalLayout_5">
      <property name="spacing">
       <number>0</number>
@@ -560,48 +561,10 @@
       <number>0</number>
      </property>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_2">
-       <property name="spacing">
-        <number>0</number>
-       </property>
-       <item>
-        <widget class="QLineEdit" name="filter_text_component">
-         <property name="placeholderText">
-          <string>Filter</string>
-         </property>
-         <property name="clearButtonEnabled">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-      </layout>
+      <widget class="QLineEdit" name="dockLibrary_filter"/>
      </item>
      <item>
-      <widget class="QTreeWidget" name="dockLibrary_TreeWidget">
-       <property name="sizeAdjustPolicy">
-        <enum>QAbstractScrollArea::AdjustToContents</enum>
-       </property>
-       <property name="autoScroll">
-        <bool>false</bool>
-       </property>
-       <property name="editTriggers">
-        <set>QAbstractItemView::DoubleClicked</set>
-       </property>
-       <property name="alternatingRowColors">
-        <bool>true</bool>
-       </property>
-       <property name="sortingEnabled">
-        <bool>true</bool>
-       </property>
-       <property name="animated">
-        <bool>true</bool>
-       </property>
-       <column>
-        <property name="text">
-         <string notr="true">1</string>
-        </property>
-       </column>
-      </widget>
+      <widget class="QTreeView" name="dockLibrary_tree_view"/>
      </item>
     </layout>
    </widget>

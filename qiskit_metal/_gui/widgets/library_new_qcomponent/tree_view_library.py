@@ -13,54 +13,50 @@
 # that they have been altered from the originals.
 """Handles editing a QComponent
 
-@author: Zlatko Minev, Dennis Wang
-@date: 2020
+@author: Grace Harper
+@date: 2021
 """
 
+
+import sys, os
+from PySide2.QtWidgets import QApplication,  QMainWindow,  QFileSystemModel, QTabWidget, QWidget, QTreeView
+from PySide2.QtCore import  QModelIndex, QDir
 from typing import TYPE_CHECKING
-
-from PySide2 import QtCore, QtWidgets
-from PySide2.QtCore import Qt, QTimer
-from PySide2.QtWidgets import QTreeView, QAbstractItemView
-
-from ..bases.QWidget_PlaceholderText import QWidget_PlaceholderText
 
 if TYPE_CHECKING:
     from ...main_window import MetalGUI
 
 
-class QTreeView_Options(QTreeView, QWidget_PlaceholderText):
-    """Handles editing a QComponent
+class LibraryView(QTreeView):
+    """
+    This is just a handler (container) for the UI; it a child object of the main gui.
 
-    This class extends the `QTreeView` and `QWidget_PlaceholderText` classes
+    This class extends the `QTabWidget` class.
+
+    PySide2 Signal / Slots Extensions:
+        The UI can call up to this class to execute button clicks for instance
+        Extensions in qt designer on signals/slots are linked to this class
+
+    **Access:**
+        gui.component_window
     """
 
-    def __init__(self, parent: QtWidgets.QWidget):
+    def __init__(self, parent: QWidget):
         """
         Args:
             parent (QtWidgets.QWidget): the widget
         """
         QTreeView.__init__(self, parent)
-        QWidget_PlaceholderText.__init__(self, "Select a QComponent to edit"\
-                    "\n\nfrom the QComponents window")
-        # not sure whu the ui isnt unpdating these here.
-        QTimer.singleShot(200, self.style_me)
-        self.expanded.connect(self.resize_on_expand)
+        self.set_up_connections()
 
 
-    def style_me(self):
-        """Style this widget"""
-        # Also can do in the ui file, but doesn't always translate for some reason
-        self.header().show()
-        self.setAutoScroll(False)
-        self.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
-        self.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
 
-        self.setStyleSheet("""
-QTreeView::branch {  border-image: url(none.png); }
-        """)
+    def set_up_connections(self):
+        print("lol")
 
-    # TODO: Maybe move to base class of utility, along with the show template message
+
+    # TODO: (Duplicate code from tree_view_options)
+    #  Maybe move to base class of utility, along with the show template message
     def autoresize_columns(self, max_width: int = 200):
         """Resize columns to contents with maximum
 

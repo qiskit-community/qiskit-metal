@@ -24,6 +24,10 @@ from collections.abc import Mapping
 from qiskit_metal.toolbox_metal import math_and_overrides as mao
 import math
 
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from ...designs.design_base import QDesign
+
 
 class QRoutePoint:
     """A convenience wrapper class to define an point with orientation,
@@ -109,9 +113,9 @@ class QRoute(QComponent):
     """Default options"""
 
     def __init__(self,
-                 design,
-                 name=None,
-                 options=None,
+                 design: 'QDesign',
+                 name:str=None,
+                 options:Dict=None,
                  type: str = "CPW",
                  **kwargs):
         """Initializes all Routes
