@@ -418,7 +418,7 @@ class QComponent():
 
     @classmethod
     def get_template_options(cls,
-                             design: QDesign,
+                             design: 'QDesign',
                              component_template: Dict = None,
                              logger_: logging.Logger = None,
                              template_key: str = None) -> Dict:

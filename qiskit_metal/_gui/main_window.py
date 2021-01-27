@@ -48,11 +48,8 @@ from .widgets.log_widget.log_metal import LogHandler_for_QTextLog
 from .widgets.plot_widget.plot_window import QMainWindowPlot
 from .widgets.variable_table import PropertyTableWidget
 from .widgets.build_history.build_history_scroll_area import BuildHistoryScrollArea
-<<<<<<< HEAD
 from .. import qlibrary
-=======
 
->>>>>>> main
 if not config.is_building_docs():
     from ..toolbox_metal.import_export import load_metal_design
 

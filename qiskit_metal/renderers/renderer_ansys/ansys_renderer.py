@@ -647,11 +647,9 @@ class QAnsysRenderer(QRenderer):
                                  self.assign_mesh,
                                  MaxLength=self._options['max_mesh_length_jj'])
 
-<<<<<<< HEAD
-    def clean_project(self):
-=======
+
     def clean_active_design(self):
->>>>>>> main
+
         """
         Remove all elements from Q3 Modeler. 
         """

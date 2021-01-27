@@ -515,13 +515,8 @@
   <widget class="QDockWidget" name="dockLibrary">
    <property name="minimumSize">
     <size>
-<<<<<<< HEAD
-     <width>81</width>
-     <height>134</height>
-=======
      <width>79</width>
      <height>124</height>
->>>>>>> main
     </size>
    </property>
    <property name="windowIcon">
