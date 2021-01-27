@@ -176,7 +176,7 @@ class QGDSRenderer(QRenderer):
         ),
 
         # (float): Scale box of components to render. Should be greater than 1.0.
-        # For benifit of the GUI, keep this the last entry in the dict.  GUI shows a note regarding bound_box.
+        # For benefit of the GUI, keep this the last entry in the dict.  GUI shows a note regarding bound_box.
         bounding_box_scale_x='1.2',
         bounding_box_scale_y='1.2',
     )

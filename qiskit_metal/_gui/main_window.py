@@ -475,6 +475,7 @@ class MetalGUI(QMainWindowBaseHandler):
         print("hi")
         #filter for .py files
         filename = self.ui.dockLibrary.library_model.data(relative_index)
+        print("qmodelindex: filename: ", filename)
         if not filename.endswith('.py'):
             print("no py")
             return
@@ -482,7 +483,7 @@ class MetalGUI(QMainWindowBaseHandler):
         full_path = self.ui.dockLibrary.library_model.filePath(relative_index)
         print("full path: ", full_path)
         try:
-            self.param_entry = ParameterEntryScrollArea(self.QLIBRARY_FOLDERNAME, self.QLIBRARY_ROOT, self.design)
+            self.param_entry = ParameterEntryScrollArea(self.QLIBRARY_FOLDERNAME, full_path, self.design)
         except Exception as e:
             print("exception was; ", e)
         print("param_entry made")

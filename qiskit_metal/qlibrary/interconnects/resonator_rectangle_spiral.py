@@ -19,7 +19,7 @@ import numpy as np
 
 
 class ResonatorRectangleSpiral(QComponent):
-    """A rectnagle spiral resonator based on length input. The X dimension is modified
+    """A rectangle spiral resonator based on length input. The X dimension is modified
     by the code based on the total length inputed.
 
     Inherits `QComponent` class

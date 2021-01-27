@@ -68,7 +68,7 @@ class BaseQubit(QComponent):
                  name:str=None,
                  options:Dict=None,
                  options_connection_pads:Dict=None,
-                 make=True):
+                 make:bool=True):
         """
         Args:
             design (QDesign): The parent design.

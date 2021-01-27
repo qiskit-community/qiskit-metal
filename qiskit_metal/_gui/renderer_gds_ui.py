@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file './renderer_gds_ui.ui',
 # licensing of './renderer_gds_ui.ui' applies.
 #
-# Created: Wed Jan 27 15:23:14 2021
+# Created: Wed Jan 27 15:34:21 2021
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
