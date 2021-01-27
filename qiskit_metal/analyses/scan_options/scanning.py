@@ -113,7 +113,7 @@ class Scanning():
             scan_values['option_name'] = option_path[-1]
             scan_values['capacitance'] = cap_matrix
             all_scan[item] = scan_values
-            a_q3d.clean_project()
+            a_q3d.clean_active_design()
         return all_scan, 0
 
     # The methods allow users to scan a variable in a components's options.
