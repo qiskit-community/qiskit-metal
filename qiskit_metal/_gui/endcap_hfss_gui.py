@@ -136,7 +136,7 @@ class EndcapHFSSWidget(QMainWindow):
                 impedance = self.table.cellWidget(row, 2).text()
                 port_list.append(tuple(s.split(', ') + [str(impedance)]))
         hfss_renderer = self.design.renderers.hfss
-        hfss_renderer.open_ansys()
+        hfss_renderer.connect_ansys()
         hfss_renderer.render_design(self.components_to_render, add_open_pins, port_list)
         self.close()
         

@@ -118,7 +118,7 @@ class EndcapQ3DWidget(QMainWindow):
                 s = self.table.item(row, 0).text()
                 add_open_pins.append(tuple(s.split(', ')))
         q3d_renderer = self.design.renderers.q3d
-        q3d_renderer.open_ansys()
+        q3d_renderer.connect_ansys()
         q3d_renderer.render_design(self.components_to_render, add_open_pins)
         self.close()
         

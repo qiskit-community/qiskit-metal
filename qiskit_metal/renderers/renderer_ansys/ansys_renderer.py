@@ -165,9 +165,9 @@ class QAnsysRenderer(QRenderer):
             return adesign
         else:
             self.logger.info("Are you mad?? You have to connect to ansys and aproject "\
-                "first before creating a new design . Use self.open_ansys()")
+                "first before creating a new design . Use self.connect_ansys()")
     
-    def open_ansys(self, project_path: str = None, project_name: str = None, design_name: str = None):
+    def connect_ansys(self, project_path: str = None, project_name: str = None, design_name: str = None):
         """
         If none of the optional parameters are provided: connects to the Ansys COM, then
         checks for, and grab if present, an active project, design, and design setup.
@@ -227,9 +227,9 @@ class QAnsysRenderer(QRenderer):
                 self.pinfo.connect_design(design_name)
                 self.pinfo.connect_setup()
             else:
-                self.logger.warning('You MUST have a project loaded in Ansys and be connected to it!!! Use hfss.open_ansys(),  Did you read the help file and tutorials!?!?!?')
+                self.logger.warning('You MUST have a project loaded in Ansys and be connected to it!!! Use hfss.connect_ansys(),  Did you read the help file and tutorials!?!?!?')
         else:
-            self.logger.warning('You MUST connect to Ansys first, using open_ansys(). Only when self.pinfo is then set can you connect to a design in a project. There must be a project!')
+            self.logger.warning('You MUST connect to Ansys first, using connect_ansys(). Only when self.pinfo is then set can you connect to a design in a project. There must be a project!')
 
     @property
     def pinfo(self) -> epr.ProjectInfo:

@@ -99,7 +99,7 @@ class Scanning():
             a_q3d = self.design.renderers.q3d
             if index == 0:
                 #Only need to open just one time.
-                a_q3d.open_ansys_design()
+                a_q3d.connect_ansys()
 
             a_q3d.render_design(
                 selection=qcomp_render,
