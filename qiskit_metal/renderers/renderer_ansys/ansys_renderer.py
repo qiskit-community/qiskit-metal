@@ -175,6 +175,15 @@ class QAnsysRenderer(QRenderer):
             project_name=self._options['project_name'] if not project_name else project_name,
             design_name=self._options['design_name'] if not design_name else design_name)
 
+    def disconnect_ansys(self):
+        """
+        Disconnect Ansys
+        """
+        if self.pinfo:
+            self.pinfo.disconnect()
+        else:
+            self.logger.warning('This renderer appears to be already disconnected from Ansys')
+
     def new_ansys_project(self):
         """
         Creates a new empty project in Ansys

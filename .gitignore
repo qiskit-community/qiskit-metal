@@ -103,17 +103,15 @@ ENV/
 # mkdocs documentation
 /site
 
-# temporary
-shot.png
-shot*.png
-shot.jpg
-shot*.jpg
-shot.tif
-shot*.tif
+# temporary, installs and results
+src/
+.vs
+guide/**/*.png
+guide/**/*.jpg
+guide/**/*.tif
+guide/**/*.csv
 *.gds
 !guide/resources/**
-.vs
-src/
 
 # mypy
 .mypy_cache/
@@ -126,6 +124,4 @@ settings.json
 # others
 Qiskit-Metal.code-workspace
 qiskit_metal/.pylintrc
-qiskit_metal/_gui/ansys-screenshot.jpg
 launch.json
-main_window_ui.py.original
