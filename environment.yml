@@ -24,6 +24,5 @@ dependencies:
   - qutip
   - scipy
   - shapely
-
   - jupyter
   - wheel

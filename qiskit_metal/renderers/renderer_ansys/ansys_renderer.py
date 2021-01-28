@@ -201,6 +201,15 @@ class QAnsysRenderer(QRenderer):
                       "and you will need to look into correcting your Ansys installation.")
             raise error
 
+    def disconnect_ansys(self):
+        """
+        Disconnect Ansys
+        """
+        if self.pinfo:
+            self.pinfo.disconnect()
+        else:
+            self.logger.warning('This renderer appears to be already disconnected from Ansys')
+
     def new_ansys_project(self):
         """
         Creates a new empty project in Ansys
