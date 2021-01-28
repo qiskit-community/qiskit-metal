@@ -85,6 +85,10 @@ class Scanning():
                 self.design.logger.warning(f'Key="{name}" is not in dict.')
                 return all_scan, 3
 
+        a_q3d = self.design.renderers.q3d
+        a_q3d.open_ansys_design()
+        a_q3d.add_q3d_setup()  # Add a solution setup.
+
         # Last item in list.
         for index, item in enumerate(option_scan):
             if option_path[-1] in a_value.keys():
@@ -96,16 +100,10 @@ class Scanning():
 
             self.design.rebuild()
 
-            a_q3d = self.design.renderers.q3d
-            if index == 0:
-                #Only need to open just one time.
-                a_q3d.open_ansys_design()
-
             a_q3d.render_design(
                 selection=qcomp_render,
                 open_pins=endcaps_render)  #Render the items chosen
 
-            a_q3d.add_q3d_setup()  # Add a solution setup.
             a_q3d.analyze_setup("Setup")  #Analyze said solution setup.
             cap_matrix = a_q3d.get_capacitance_matrix()
 
