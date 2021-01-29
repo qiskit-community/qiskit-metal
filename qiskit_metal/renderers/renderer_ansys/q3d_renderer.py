@@ -256,18 +256,19 @@ class QQ3DRenderer(QAnsysRenderer):
         RES['gr MHz'] = abs(RES['gbus'].apply(lambda x: x[0]))
         return RES
     
-    def plot_convergence_main(self, eprd, RES: pd.DataFrame):
+    def plot_convergence_main(self, RES: pd.DataFrame):
         """
         Plot alpha and frequency versus pass number, as well as convergence of delta (in %).
 
         Args:
-            eprd ([type]): Pointer to calculated Hamiltonian parameters from distributed analysis.
             RES (pd.DataFrame): Dictionary of capacitance matrices versus pass number, organized as pandas table.
         """
-        epr.toolbox.plotting.mpl_dpi(110)
-        return _plot_q3d_convergence_main(eprd, RES)
+        if self._pinfo:
+            eprd = epr.DistributedAnalysis(self._pinfo)
+            epr.toolbox.plotting.mpl_dpi(110)
+            return _plot_q3d_convergence_main(eprd, RES)
 
-    def plot_convergence_chi(self, RES):
+    def plot_convergence_chi(self, RES: pd.DataFrame):
         """
         Plot convergence of chi and g, both in MHz, as a function of pass number.
 
