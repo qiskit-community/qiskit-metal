@@ -213,6 +213,9 @@ class QHFSSRenderer(QAnsysRenderer):
         self.modeler.assign_perfect_E(self.assign_perfE)
 
     def add_eigenmode_design(self, name: str, connect: bool = True):
+        """
+        Add an eigenmode design with the given name to the project.
+        """
         if self.pinfo:
             adesign = self.pinfo.project.new_em_design(name)
             if connect:
@@ -220,7 +223,7 @@ class QHFSSRenderer(QAnsysRenderer):
             return adesign
         else:
             self.logger.info("Are you mad?? You have to connect to ansys and a project " \
-                             "first before creating a new design . Use self.connect_ansys()")
+                            "first before creating a new design . Use self.connect_ansys()")
 
     def add_eigenmode_setup(self, name="Setup",
                             min_freq_ghz=1,
@@ -236,15 +239,15 @@ class QHFSSRenderer(QAnsysRenderer):
         Create a solution setup in Ansys HFSS Eigenmode.
 
         Args:
-            name (str, optional): [description]. Defaults to "Setup".
-            min_freq_ghz (int, optional): [description]. Defaults to 1.
-            n_modes (int, optional): [description]. Defaults to 1.
-            max_delta_f (float, optional): [description]. Defaults to 0.1.
-            max_passes (int, optional): [description]. Defaults to 10.
-            min_passes (int, optional): [description]. Defaults to 1.
-            min_converged (int, optional): [description]. Defaults to 1.
-            pct_refinement (int, optional): [description]. Defaults to 30.
-            basis_order (int, optional): [description]. Defaults to -1.
+            name (str, optional): Name of eigenmode setup. Defaults to "Setup".
+            min_freq_ghz (int, optional): Minimum frequency in GHz. Defaults to 1.
+            n_modes (int, optional): Number of modes. Defaults to 1.
+            max_delta_f (float, optional): Maximum difference in freq between consecutive passes. Defaults to 0.1.
+            max_passes (int, optional): Maximum number of passes. Defaults to 10.
+            min_passes (int, optional): Minimum number of passes. Defaults to 1.
+            min_converged (int, optional): Minimum number of converged passes. Defaults to 1.
+            pct_refinement (int, optional): Percent refinement. Defaults to 30.
+            basis_order (int, optional): Basis order. Defaults to -1.
         """
         if self.pinfo:
             if self.pinfo.design:
@@ -291,6 +294,11 @@ class QHFSSRenderer(QAnsysRenderer):
 
 
 def hfss_plot_convergences_report(convergence_t, convergence_f,  fig=None, _display=True):
+    """
+    Plot convergence frequency vs. pass number.
+    Plot delta frequency and solved elements vs. pass number.
+    Plot delta frequency vs. solved elements.
+    """
     if fig is None:
         fig = plt.figure(figsize=(11, 3.))
 
@@ -310,7 +318,6 @@ def hfss_plot_convergences_report(convergence_t, convergence_f,  fig=None, _disp
         # if _display:
         #     from IPython.display import display
         #     display(fig)
-
 
 def hfss_report_f_convergence(oDesign, setup, logger, variation=None, save_csv=True):
     '''
