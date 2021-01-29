@@ -19,6 +19,7 @@
 from typing import List, Tuple, Union
 
 import re
+import os
 from pathlib import Path
 import math
 import geopandas
@@ -26,6 +27,7 @@ import numpy as np
 import pandas as pd
 from numpy.linalg import norm
 from collections import defaultdict
+import pythoncom
 
 import shapely
 import pyEPR as epr
@@ -157,16 +159,29 @@ class QAnsysRenderer(QRenderer):
 
         self._pinfo = None
 
-    def add_eigenmode_design(self, name: str, connect: bool = True):
-        if self.pinfo:
-            adesign = self.pinfo.project.new_em_design(name)
-            if connect:
-                self.connect_ansys_design(adesign.name)
-            return adesign
+    def open_ansys(self, path: str = None, executable: str = 'reg_ansysedt.exe', path_var: str = 'ANSYSEM_ROOT202'):
+        """
+        Open a session of Ansys. Default is version 2020 R2, but can be overridden.
+
+        Args:
+            path (str): path to the Ansys executable. Defaults to None
+            executable (str): Name of the ansys executable. Defaults to 'reg_ansysedt.exe'
+            path_var (str): Name of the OS environment variable that contains the path to the Ansys executable.
+                            Only used when path=None. Defaults to 'ANSYSEM_ROOT202' (Ansys ver. 2020 R2)
+        """
+        import subprocess
+        if path is None:
+            try:
+                path = os.environ[path_var]
+            except KeyError:
+                self.logger.error('environment variable %s not found. Create it in the OS or pass to '
+                                  'open_ansys() an existing environment variable name' % path_var)
+                raise
         else:
-            self.logger.info("Are you mad?? You have to connect to ansys and aproject "\
-                "first before creating a new design . Use self.connect_ansys()")
-    
+            path = os.path.abspath(path)
+        cmdlist = [os.path.sep.join([path, executable]), '-shortcut']
+        subprocess.call(cmdlist, cwd=path)
+
     def connect_ansys(self, project_path: str = None, project_name: str = None, design_name: str = None):
         """
         If none of the optional parameters are provided: connects to the Ansys COM, then
@@ -184,7 +199,6 @@ class QAnsysRenderer(QRenderer):
         if project_name:
             project_name = project_name.replace(".aedt", "")
         # open connection through pyEPR
-        import pythoncom
         try:
             self._pinfo = epr.ProjectInfo(
                 project_path=self._options['project_path'] if not project_path else project_path,
@@ -194,7 +208,7 @@ class QAnsysRenderer(QRenderer):
             print("com_error: ", error)
             hr, msg, exc, arg = error.args
             if msg == "Invalid class string":  # and hr == -2147221005 and exc is None and arg is None
-                print(
+                self.logger.error(
                     "pyEPR cannot find the Ansys COM. Ansys installation might not have registered it. "
                     "To verify if this is the problem, execute the following: ",
                     "`print(win32com.client.Dispatch('AnsoftHfss.HfssScriptInterface'))` ",
@@ -589,7 +603,16 @@ class QAnsysRenderer(QRenderer):
             ]) + qc_width / (2 * vlen) * np.array([y1 - y0, x0 - x1, 0])
             shortline = self.modeler.draw_polyline([p0, p1],
                                                    closed=False)  # sweepline
-            self.modeler._sweep_along_path(shortline, poly_ansys)
+            try:
+                self.modeler._sweep_along_path(shortline, poly_ansys)
+            except pythoncom.com_error as error:
+                print("com_error: ", error)
+                hr, msg, exc, arg = error.args
+                if msg == "Exception occurred." and hr == -2147352567:
+                    self.logger.error(
+                        "Did you accidentally delete the design in Ansys? I cannot find it any longer."
+                    )
+                raise error
 
         if qgeom.chip not in self.chip_subtract_dict:
             self.chip_subtract_dict[qgeom.chip] = set()

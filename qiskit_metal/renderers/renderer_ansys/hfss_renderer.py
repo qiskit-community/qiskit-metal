@@ -212,6 +212,16 @@ class QHFSSRenderer(QAnsysRenderer):
         """
         self.modeler.assign_perfect_E(self.assign_perfE)
 
+    def add_eigenmode_design(self, name: str, connect: bool = True):
+        if self.pinfo:
+            adesign = self.pinfo.project.new_em_design(name)
+            if connect:
+                self.connect_ansys_design(adesign.name)
+            return adesign
+        else:
+            self.logger.info("Are you mad?? You have to connect to ansys and a project " \
+                             "first before creating a new design . Use self.connect_ansys()")
+
     def add_eigenmode_setup(self, name="Setup",
                             min_freq_ghz=1,
                             n_modes=1,
