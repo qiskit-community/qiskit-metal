@@ -215,6 +215,13 @@ class QHFSSRenderer(QAnsysRenderer):
     def add_eigenmode_design(self, name: str, connect: bool = True):
         """
         Add an eigenmode design with the given name to the project.
+
+        Args:
+            name (str): Name of the new eigenmode design
+            connect (bool, optional): Should we connect this session to this design? Defaults to True
+
+        Returns:
+
         """
         if self.pinfo:
             adesign = self.pinfo.project.new_em_design(name)
@@ -273,7 +280,9 @@ class QHFSSRenderer(QAnsysRenderer):
             setup.analyze()
 
     def distributed_analysis(self):
-        """Returns class containing info on Hamiltonian parameters from HFSS simulation."""
+        """
+        Returns class containing info on Hamiltonian parameters from HFSS simulation.
+        """
         if self.pinfo:
             return epr.DistributedAnalysis(self.pinfo)
 
