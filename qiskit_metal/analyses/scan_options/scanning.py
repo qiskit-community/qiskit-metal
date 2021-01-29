@@ -35,8 +35,13 @@ class Scanning():
         return value
 
     def scan_one_option_get_capacitance_matrix(
-            self, qcomp_name: str, option_name: str, option_scan: list,
-            qcomp_render: list, endcaps_render: list) -> Tuple[dict, int]:
+            self,
+            qcomp_name: str,
+            option_name: str,
+            option_scan: list,
+            qcomp_render: list,
+            endcaps_render: list,
+            leave_last_design: bool = True) -> Tuple[dict, int]:
         """Ansys must be open with inserted project "Q3D Extractor Design." 
 
         Args:
@@ -45,6 +50,7 @@ class Scanning():
             option_scan (list): Each entry in the list is a value for option_name.
             qcomp_render (list): The component to render to Q3D. 
             endcaps_render (list): Identify which kind of pins. Follow the details from renderer QQ3DRenderer.render_design.
+            leave_last_design (bool) : In Q3d, after the last scan, should the design be cleared?
 
         Returns:
             dict: The key is each value of option_scan, the value is the capacitance matrix for each scan.
@@ -87,7 +93,14 @@ class Scanning():
 
         a_q3d = self.design.renderers.q3d
         a_q3d.open_ansys_design()
+
+        obj_names = a_q3d.pinfo.get_all_object_names()
+        if obj_names:
+            a_q3d.clean_active_design()
+
         a_q3d.add_q3d_setup()  # Add a solution setup.
+
+        len_scan = len(option_scan) - 1
 
         # Last item in list.
         for index, item in enumerate(option_scan):
@@ -111,7 +124,10 @@ class Scanning():
             scan_values['option_name'] = option_path[-1]
             scan_values['capacitance'] = cap_matrix
             all_scan[item] = scan_values
-            a_q3d.clean_active_design()
+            if index == len_scan and not leave_last_design:
+                a_q3d.clean_active_design()
+            elif index != len_scan:
+                a_q3d.clean_active_design()
         return all_scan, 0
 
     # The methods allow users to scan a variable in a components's options.
