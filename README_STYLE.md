@@ -38,10 +38,10 @@ from mypackage import example1, example2 \
 **Comments**
 
 * Use complete sentences, starting with a capital letter.
-* Remeber to update the comments when the code changes.
+* Remember to update the comments when the code changes.
 * Indent block comments to the same level as the code they describe.
 * Start each line with a # followed by a single space.
-* Separate paragrahs by a line containing a single #.
+* Separate paragraphs by a line containing a single #.
 * Use inline comments sparingly.
 * Don't use inline comments to explain the obvious.
 
@@ -65,12 +65,12 @@ list_of_numbers = [
 ]
 ```
 
-**Whitepsace Around Binary Operators**
+**Whitespace Around Binary Operators**
 
 * Surround assignment and comparison binary operators with a single space on either side.
 * When = is used to assign a default value to a function argument do not surround it with spaces.
 
-**Other Recommendataions**
+**Other Recommendations**
 
 * To be sure a function can't be called again, use the `del` method.
 

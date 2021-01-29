@@ -14,7 +14,7 @@ A base qlibrary component contains several attributes and a method that must be 
 | ------------------ | ------------------------------------------------------ |
 | default_options    | Default drawing options                                |
 | component_metadata | Component metadata                                     |
-| options            | A dictionary of the component-desinger-defined options |
+| options            | A dictionary of the component-designer-defined options |
 
 **Methods**
 | Method | Description |
@@ -28,7 +28,7 @@ A base qrenderer contains several attributes and several methods that must be ov
 | Attribute          | Description                   |
 | ------------------ | ----------------------------- |
 | name               | Renderer name                 |
-| element_extensions | Element extentions dictionary |
+| element_extensions | Element extensions dictionary |
 | element_table_data | Element table data            |
 
 **Methods**
