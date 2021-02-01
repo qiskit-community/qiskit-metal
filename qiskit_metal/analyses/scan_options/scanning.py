@@ -86,7 +86,7 @@ class Scanning():
                 return all_scan, 3
 
         a_q3d = self.design.renderers.q3d
-        a_q3d.open_ansys_design()
+        a_q3d.connect_ansys()
         a_q3d.add_q3d_setup()  # Add a solution setup.
 
         # Last item in list.
