@@ -610,7 +610,10 @@ class QAnsysRenderer(QRenderer):
                 hr, msg, exc, arg = error.args
                 if msg == "Exception occurred." and hr == -2147352567:
                     self.logger.error(
-                        "Did you accidentally delete the design in Ansys? I cannot find it any longer."
+                        "We cannot find a writable design. Either you are trying to use a Ansys "
+                        "design that is not empty, in which case please clear it by executing this "
+                        "renderer clean_active_design() method. Or you accidentally deleted "
+                        "the design in Ansys, in which case please create a new one."
                     )
                 raise error
 
@@ -761,8 +764,20 @@ class QAnsysRenderer(QRenderer):
         """
         for chip, shapes in self.chip_subtract_dict.items():
             if shapes:
-                # self.modeler.subtract(chip + '_plane', list(shapes))
-                self.modeler.subtract(f'ground_{chip}_plane', list(shapes))
+                try:
+                    self.modeler.subtract(f'ground_{chip}_plane', list(shapes))
+                except pythoncom.com_error as error:
+                    print("com_error: ", error)
+                    hr, msg, exc, arg = error.args
+                    if msg == "Exception occurred." and hr == -2147352567:
+                        self.logger.error(
+                            "This error might indicate that a component was not correctly rendered in Ansys. \n"
+                            "This might have been caused by floating point numerical corrections. \n For example "
+                            "Ansys will inconsistently render (or not) routing that has 180deg jogs with the two "
+                            "adjacent segments spaced 'exactly' twice the fillet radius (U shaped routing). \n"
+                            "In this example, changing your fillet radius to a smaller number would solve the issue."
+                        )
+                    raise error
 
     def add_mesh(self):
         """
