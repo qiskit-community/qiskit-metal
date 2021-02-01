@@ -115,7 +115,7 @@ You can resolve other warnings by deleting the ``docs/build`` and ``docs/stubs``
 Connecting to 3rd party software
 ********************************
 
-**I'm having trouble connecting to Ansys after running open_ansys_design().**
+**I'm having trouble connecting to Ansys after running connect_ansys().**
 
 First check to see if a project and design are already open and active in Ansys.
 
