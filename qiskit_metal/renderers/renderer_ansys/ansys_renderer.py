@@ -154,11 +154,6 @@ class QAnsysRenderer(QRenderer):
                          render_template=render_template,
                          render_options=render_options)
 
-        if not system() == 'Windows':
-            self.logger.warning(
-                'You are using %s, but this is a renderer to Ansys, which only runs on Windows. \n'
-                'Expect any sort of Errors if you try to work with this renderer beyond this point.' % system())
-
         # Default behavior is to render all components unless a strict subset was chosen
         self.render_everything = True
 
@@ -174,6 +169,11 @@ class QAnsysRenderer(QRenderer):
             path_var (str): Name of the OS environment variable that contains the path to the Ansys executable.
                             Only used when path=None. Defaults to 'ANSYSEM_ROOT202' (Ansys ver. 2020 R2)
         """
+        if not system() == 'Windows':
+            self.logger.warning(
+                'You are using %s, but this is a renderer to Ansys, which only runs on Windows. \n'
+                'Expect any sort of Errors if you try to work with this renderer beyond this point.' % system())
+
         import subprocess
         if path is None:
             try:
