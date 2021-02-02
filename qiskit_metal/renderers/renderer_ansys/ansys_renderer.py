@@ -173,8 +173,10 @@ class QAnsysRenderer(QRenderer):
             try:
                 path = os.environ[path_var]
             except KeyError:
-                self.logger.error('environment variable %s not found. Create it in the OS or pass to '
-                                  'open_ansys() an existing environment variable name' % path_var)
+                self.logger.error(
+                    'environment variable %s not found. Is Ansys 2020 R2 installed on this machine? '
+                    'If yes, then create said environment variable. If you have a different version of Ansys, '
+                    'then pass to open_ansys() the path to its binary, or the env var that stores it.' % path_var)
                 raise
         else:
             path = os.path.abspath(path)
