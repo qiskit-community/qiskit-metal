@@ -240,12 +240,21 @@ class QAnsysRenderer(QRenderer):
         if self.pinfo:
             if self.pinfo.project:
                 # TODO: Handle case when design does not EXIST?!?!?
-                self.pinfo.connect_design(design_name)
-                self.pinfo.connect_setup()
+                try:
+                    self.pinfo.connect_design(design_name)
+                    self.pinfo.connect_setup()
+                except AttributeError:
+                    self.logger.error(
+                        'Please install a more recent version of pyEPR (>=0.8.4.3)')
             else:
-                self.logger.warning('You MUST have a project loaded in Ansys and be connected to it!!! Use hfss.connect_ansys(),  Did you read the help file and tutorials!?!?!?')
+                self.logger.warning(
+                    'Either you do not have a project loaded in Ansys, or you are not connected to it. '
+                    'Try executing hfss.connect_ansys(), or creating a new Ansys project. '
+                    'Also check the help file and other guide notebooks')
         else:
-            self.logger.warning('You MUST connect to Ansys first, using connect_ansys(). Only when self.pinfo is then set can you connect to a design in a project. There must be a project!')
+            self.logger.warning(
+                'It does not look like you are connected to Ansys. Please use connect_ansys() '
+                'and make sure self.pinfo is set. There must be a project open in Ansys first.')
 
     @property
     def pinfo(self) -> epr.ProjectInfo:
@@ -311,7 +320,11 @@ class QAnsysRenderer(QRenderer):
         self.pinfo.design.add_message(msg, severity)
 
     def save_screenshot(self, path: str = None, show: bool = True):
-        return self.pinfo.design.save_screenshot(path, show)
+        try:
+            return self.pinfo.design.save_screenshot(path, show)
+        except AttributeError:
+            self.logger.error(
+                'Please install a more recent version of pyEPR (>=0.8.4.3)')
 
     def render_design(self,
                       selection: Union[list, None] = None,
@@ -610,9 +623,9 @@ class QAnsysRenderer(QRenderer):
                 hr, msg, exc, arg = error.args
                 if msg == "Exception occurred." and hr == -2147352567:
                     self.logger.error(
-                        "We cannot find a writable design. Either you are trying to use a Ansys "
-                        "design that is not empty, in which case please clear it by executing this "
-                        "renderer clean_active_design() method. Or you accidentally deleted "
+                        "We cannot find a writable design. \n  Either you are trying to use a Ansys "
+                        "design that is not empty, in which case please clear it manually or with the "
+                        "renderer method clean_active_design(). \n  Or you accidentally deleted "
                         "the design in Ansys, in which case please create a new one."
                     )
                 raise error
