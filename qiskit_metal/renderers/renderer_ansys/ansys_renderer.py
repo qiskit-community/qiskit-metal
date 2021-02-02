@@ -27,6 +27,7 @@ import numpy as np
 import pandas as pd
 from numpy.linalg import norm
 from collections import defaultdict
+from platform import system
 
 import shapely
 import pyEPR as epr
@@ -152,6 +153,11 @@ class QAnsysRenderer(QRenderer):
                          initiate=initiate,
                          render_template=render_template,
                          render_options=render_options)
+
+        if not system() == 'Windows':
+            self.logger.warning(
+                'You are using %s, but this is a renderer to Ansys, which only runs on Windows. \n'
+                'Expect any sort of Errors if you try to work with this renderer beyond this point.' % system())
 
         # Default behavior is to render all components unless a strict subset was chosen
         self.render_everything = True

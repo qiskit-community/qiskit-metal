@@ -65,7 +65,7 @@ class QRenderer():
     #            path=dict(thickness=float, material=str, perfectE=bool),
     #            poly=dict(thickness=float, material=str), )
     element_extensions = dict()
-    """element extentions dictionary"""
+    """element extensions dictionary"""
 
     # TODO: To add: default parameters for the renderer for component element values.
     element_table_data = dict()
@@ -92,7 +92,7 @@ class QRenderer():
             pass
             # print(f'Warning: Renderer name={name}, class={cls} already loaded. Doing nothing.')
 
-        cls.populate_element_extentions()
+        cls.populate_element_extensions()
 
         # Add element extensions
         # see docstring for QRenderer.element_extensions
@@ -110,9 +110,9 @@ class QRenderer():
         return True
 
     @classmethod
-    def populate_element_extentions(cls):
-        """Populate cls.element_extentions which will be used to create columns for tables in QGeometry tables.
-        The structure of cls.element_table_data should be same as cls.element_extentions.
+    def populate_element_extensions(cls):
+        """Populate cls.element_extensions which will be used to create columns for tables in QGeometry tables.
+        The structure of cls.element_table_data should be same as cls.element_extensions.
         """
         for table, a_dict in cls.element_table_data.items():
             cls.element_extensions[table] = dict()
