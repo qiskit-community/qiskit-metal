@@ -27,7 +27,6 @@ import numpy as np
 import pandas as pd
 from numpy.linalg import norm
 from collections import defaultdict
-import pythoncom
 
 import shapely
 import pyEPR as epr
@@ -199,6 +198,7 @@ class QAnsysRenderer(QRenderer):
         if project_name:
             project_name = project_name.replace(".aedt", "")
         # open connection through pyEPR
+        import pythoncom
         try:
             self._pinfo = epr.ProjectInfo(
                 project_path=self._options['project_path'] if not project_path else project_path,
@@ -616,6 +616,7 @@ class QAnsysRenderer(QRenderer):
             ]) + qc_width / (2 * vlen) * np.array([y1 - y0, x0 - x1, 0])
             shortline = self.modeler.draw_polyline([p0, p1],
                                                    closed=False)  # sweepline
+            import pythoncom
             try:
                 self.modeler._sweep_along_path(shortline, poly_ansys)
             except pythoncom.com_error as error:
@@ -777,6 +778,7 @@ class QAnsysRenderer(QRenderer):
         """
         for chip, shapes in self.chip_subtract_dict.items():
             if shapes:
+                import pythoncom
                 try:
                     self.modeler.subtract(f'ground_{chip}_plane', list(shapes))
                 except pythoncom.com_error as error:
