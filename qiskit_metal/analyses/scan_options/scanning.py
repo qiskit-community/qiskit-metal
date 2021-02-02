@@ -94,7 +94,7 @@ class Scanning():
         a_q3d = self.design.renderers.q3d
         a_q3d.connect_ansys()
 
-         obj_names = a_q3d.pinfo.get_all_object_names()
+        obj_names = a_q3d.pinfo.get_all_object_names()
         if obj_names:
             a_q3d.clean_active_design()
 
