@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file './main_window_ui.ui',
 # licensing of './main_window_ui.ui' applies.
 #
-# Created: Wed Jan 20 13:44:44 2021
+# Created: Thu Jan 28 14:55:30 2021
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -53,7 +53,7 @@ class Ui_MainWindow(object):
         self.verticalLayout.addWidget(self.tabWidget)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar()
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1300, 24))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1300, 22))
         self.menubar.setBaseSize(QtCore.QSize(0, 0))
         self.menubar.setObjectName("menubar")
         self.menuDesign = QtWidgets.QMenu(self.menubar)
@@ -522,6 +522,8 @@ class Ui_MainWindow(object):
         QtCore.QObject.connect(self.actionBuildHistory, QtCore.SIGNAL("triggered()"), MainWindow.create_build_log_window)
         QtCore.QObject.connect(self.actionNew_QComponent, QtCore.SIGNAL("triggered()"), MainWindow.new_qcomponent)
         QtCore.QObject.connect(self.actionGDS, QtCore.SIGNAL("triggered()"), MainWindow.show_renderer_gds)
+        QtCore.QObject.connect(self.actionHFSS, QtCore.SIGNAL("triggered()"), MainWindow.show_renderer_hfss)
+        QtCore.QObject.connect(self.actionQ3D, QtCore.SIGNAL("triggered()"), MainWindow.show_renderer_q3d)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -667,7 +669,7 @@ class Ui_MainWindow(object):
         self.actionBuildHistory.setToolTip(QtWidgets.QApplication.translate("MainWindow", "See the build history of your design", None, -1))
         self.actionBuildHistory.setShortcut(QtWidgets.QApplication.translate("MainWindow", "Ctrl+B", None, -1))
 
-from .widgets.log_widget.log_metal import QTextEditLogger
 from .widgets.all_components.table_view_all_components import QTableView_AllComponents
+from .widgets.log_widget.log_metal import QTextEditLogger
 from .widgets.bases.expanding_toolbar import QToolBarExpanding
 from . import main_window_rc_rc

@@ -92,9 +92,9 @@ class Scanning():
                 return all_scan, 3
 
         a_q3d = self.design.renderers.q3d
-        a_q3d.open_ansys_design()
+        a_q3d.connect_ansys()
 
-        obj_names = a_q3d.pinfo.get_all_object_names()
+         obj_names = a_q3d.pinfo.get_all_object_names()
         if obj_names:
             a_q3d.clean_active_design()
 
@@ -112,6 +112,11 @@ class Scanning():
                 return all_scan, 4
 
             self.design.rebuild()
+
+            a_q3d = self.design.renderers.q3d
+            if index == 0:
+                #Only need to open just one time.
+                a_q3d.connect_ansys()
 
             a_q3d.render_design(
                 selection=qcomp_render,
