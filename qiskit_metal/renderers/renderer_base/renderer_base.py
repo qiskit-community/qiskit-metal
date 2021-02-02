@@ -65,7 +65,7 @@ class QRenderer():
     #            path=dict(thickness=float, material=str, perfectE=bool),
     #            poly=dict(thickness=float, material=str), )
     element_extensions = dict()
-    """element extentions dictionary"""
+    """element extensions dictionary"""
 
     # TODO: To add: default parameters for the renderer for component element values.
     element_table_data = dict()
@@ -75,7 +75,7 @@ class QRenderer():
         """Load the renderer and register all its extensions.
         Only performed once.
 
-        Once complete, the rendere is added to the class attribute
+        Once complete, the renderer is added to the class attribute
         '__loaded_renderers__' of QRenderer
 
         Returns:
@@ -92,7 +92,7 @@ class QRenderer():
             pass
             # print(f'Warning: Renderer name={name}, class={cls} already loaded. Doing nothing.')
 
-        cls.populate_element_extentions()
+        cls.populate_element_extensions()
 
         # Add element extensions
         # see docstring for QRenderer.element_extensions
@@ -104,20 +104,20 @@ class QRenderer():
         # to be used in the creation of default params for component qgeometry
         #raise NotImplementedError()
 
-        # Finish and register offically as ready to use.
+        # Finish and register officially as ready to use.
         QRenderer.__loaded_renderers__.add(name)
 
         return True
 
     @classmethod
-    def populate_element_extentions(cls):
-        """Populate cls.element_extentions which will be used to create columns for tables in QGeometry tables.
-        The structure of cls.element_table_data should be same as cls.element_extentions.
+    def populate_element_extensions(cls):
+        """Populate cls.element_extensions which will be used to create columns for tables in QGeometry tables.
+        The structure of cls.element_table_data should be same as cls.element_extensions.
         """
         for table, a_dict in cls.element_table_data.items():
             cls.element_extensions[table] = dict()
             for col_name, col_value in a_dict.items():
-                # type will only tell out about the base class, won't tell you about the inhertance.
+                # type will only tell out about the base class, won't tell you about the inheritance.
                 cls.element_extensions[table][col_name] = type(col_value)
 
     @staticmethod
@@ -152,7 +152,7 @@ class QRenderer():
             design (QDesign): The design
             initiate (bool): True to initiate the renderer (Default: True)
             render_template (Dict, optional): Typically used by GUI for template options for GDS.  Defaults to None.
-            render_options (Dict, optional):  Used to overide all options. Defaults to None.
+            render_options (Dict, optional):  Used to override all options. Defaults to None.
         """
 
         # TODO: check that the renderer has been loaded with load_renderer
@@ -230,7 +230,7 @@ class QRenderer():
     @classmethod
     def _register_class_with_design(cls, design: 'QDesign', template_key: str,
                                     render_template: Dict):
-        """Init funciton to register a renderer class with the design when first instantiated.
+        """Init function to register a renderer class with the design when first instantiated.
             Registers the renderer's template options.
 
             Arguments:
@@ -267,7 +267,7 @@ class QRenderer():
             Dict: Dictionary of renderer's default options based on design.template_options.
         """
 
-        # get key for tepmlates
+        # get key for templates
         if template_key is None:
             template_key = cls._get_unique_class_name()
 
@@ -344,11 +344,11 @@ class QRenderer():
                         f'col_value={col_value} not added to QDesign')
 
     def initate(self, re_initiate=False):
-        '''
+        """
         Call any initiations steps required to be performed a single time before rendering,
-        such as conneting to some API or COM, or importing the correct material libraries, etc.
+        such as connecting to some API or COM, or importing the correct material libraries, etc.
 
-        Overwrite `initate_renderer`
+        Overwrite `initiate_renderer`
 
         Arguments:
             re_initiate (bool) : If False will only apply this function once.
@@ -356,7 +356,7 @@ class QRenderer():
 
         Returns:
             bool: was a re_initiation applied or not
-        '''
+        """
 
         if not re_initiate:
             if self.initiated:
@@ -400,37 +400,37 @@ class QRenderer():
                ], 0  # Subset selected
 
     def _initate_renderer(self):
-        '''
+        """
         Call any initiations steps required to be performed a single time before rendering,
-        such as conneting to some API or COM, or importing the correct material libraries, etc.
+        such as connecting to some API or COM, or importing the correct material libraries, etc.
 
         Returns:
             bool: Always returns True
-        '''
+        """
         return True
 
     def post_render(self):
-        '''
+        """
         Any calls that one may want to make after a rendering is complete.
-        '''
+        """
 
     def render_design(self):
-        '''
+        """
         Renders all design chips and components.
-        '''
+        """
         self.initate()
         self.render_chips()
         self.render_components()
         # ...
 
     def render_chips(self):
-        '''
+        """
         Render all chips of the design.
         Calls render_chip for each chip.
 
         Raises:
             NotImplementedError: Function not written yet
-        '''
+        """
         raise NotImplementedError()
 
     def render_chip(self, name):
@@ -445,7 +445,7 @@ class QRenderer():
         raise NotImplementedError()
 
     def render_components(self, selection=None):
-        '''
+        """
         Render all components of the design.
         If selection is none, then render all components.
 
@@ -454,7 +454,7 @@ class QRenderer():
 
         Raises:
             NotImplementedError: Function not written yet
-        '''
+        """
         raise NotImplementedError()
 
     def render_component(self, component):

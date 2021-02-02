@@ -82,7 +82,7 @@ class QSkeletonRenderer(QRenderer):
         # with default values of "a_default_value" to the junction table.
         # Note: QSkeletonRenderer.name is prefixed to "a_column_name" when the table is appended by QComponents.
         junction=dict(a_column_name='a_default_value'))
-    """element extentions dictionary   element_extensions = dict() from base class"""
+    """element extensions dictionary   element_extensions = dict() from base class"""
 
     def __init__(self,
                  design: 'QDesign',
