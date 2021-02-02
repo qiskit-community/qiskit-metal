@@ -171,7 +171,7 @@ class QAnsysRenderer(QRenderer):
         """
         if not system() == 'Windows':
             self.logger.warning(
-                'You are using %s, but this is a renderer to Ansys, which only runs on Windows. \n'
+                'You are using %s, but this is a renderer to Ansys, which only runs on Windows. '
                 'Expect any sort of Errors if you try to work with this renderer beyond this point.' % system())
 
         import subprocess
@@ -202,6 +202,11 @@ class QAnsysRenderer(QRenderer):
             design_name (str, optional): nome of the default design to open from the project file
 
         """
+        if not system() == 'Windows':
+            self.logger.warning(
+                'You are using %s, but this is a renderer to Ansys, which only runs on Windows. '
+                'Expect any sort of Errors if you try to work with this renderer beyond this point.' % system())
+
         # pyEPR does not like extensions
         if project_name:
             project_name = project_name.replace(".aedt", "")
