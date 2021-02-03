@@ -35,8 +35,13 @@ class Scanning():
         return value
 
     def scan_one_option_get_capacitance_matrix(
-            self, qcomp_name: str, option_name: str, option_scan: list,
-            qcomp_render: list, endcaps_render: list) -> Tuple[dict, int]:
+            self,
+            qcomp_name: str,
+            option_name: str,
+            option_scan: list,
+            qcomp_render: list,
+            endcaps_render: list,
+            leave_last_design: bool = True) -> Tuple[dict, int]:
         """Ansys must be open with inserted project "Q3D Extractor Design." 
 
         Args:
@@ -45,6 +50,7 @@ class Scanning():
             option_scan (list): Each entry in the list is a value for option_name.
             qcomp_render (list): The component to render to Q3D. 
             endcaps_render (list): Identify which kind of pins. Follow the details from renderer QQ3DRenderer.render_design.
+            leave_last_design (bool) : In Q3d, after the last scan, should the design be cleared?
 
         Returns:
             dict: The key is each value of option_scan, the value is the capacitance matrix for each scan.
@@ -56,6 +62,8 @@ class Scanning():
             * 3 option_name is not found as key in dict.
             * 4 last key in option_name is not in dict.
             * 5 option_scan is empty, need at least one entry.
+            * 6 project not in app
+            * 7 design not in app
 
            
         """
@@ -87,7 +95,14 @@ class Scanning():
 
         a_q3d = self.design.renderers.q3d
         a_q3d.connect_ansys()
+
+        obj_names = a_q3d.pinfo.get_all_object_names()
+        if obj_names:
+            a_q3d.clean_active_design()
+
         a_q3d.add_q3d_setup()  # Add a solution setup.
+
+        len_scan = len(option_scan) - 1
 
         # Last item in list.
         for index, item in enumerate(option_scan):
@@ -101,9 +116,6 @@ class Scanning():
             self.design.rebuild()
 
             a_q3d = self.design.renderers.q3d
-            if index == 0:
-                #Only need to open just one time.
-                a_q3d.connect_ansys()
 
             a_q3d.render_design(
                 selection=qcomp_render,
@@ -116,7 +128,14 @@ class Scanning():
             scan_values['option_name'] = option_path[-1]
             scan_values['capacitance'] = cap_matrix
             all_scan[item] = scan_values
-            a_q3d.clean_active_design()
+
+            #Decide if need to clean the design.
+            obj_names = a_q3d.pinfo.get_all_object_names()
+            if obj_names:
+                if index == len_scan and not leave_last_design:
+                    a_q3d.clean_active_design()
+                elif index != len_scan:
+                    a_q3d.clean_active_design()
         return all_scan, 0
 
     # The methods allow users to scan a variable in a components's options.
