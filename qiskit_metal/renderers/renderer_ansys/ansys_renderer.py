@@ -27,7 +27,7 @@ import numpy as np
 import pandas as pd
 from numpy.linalg import norm
 from collections import defaultdict
-import pythoncom
+from platform import system
 
 import shapely
 import pyEPR as epr
@@ -169,13 +169,20 @@ class QAnsysRenderer(QRenderer):
             path_var (str): Name of the OS environment variable that contains the path to the Ansys executable.
                             Only used when path=None. Defaults to 'ANSYSEM_ROOT202' (Ansys ver. 2020 R2)
         """
+        if not system() == 'Windows':
+            self.logger.warning(
+                'You are using %s, but this is a renderer to Ansys, which only runs on Windows. '
+                'Expect any sort of Errors if you try to work with this renderer beyond this point.' % system())
+
         import subprocess
         if path is None:
             try:
                 path = os.environ[path_var]
             except KeyError:
-                self.logger.error('environment variable %s not found. Create it in the OS or pass to '
-                                  'open_ansys() an existing environment variable name' % path_var)
+                self.logger.error(
+                    'environment variable %s not found. Is Ansys 2020 R2 installed on this machine? '
+                    'If yes, then create said environment variable. If you have a different version of Ansys, '
+                    'then pass to open_ansys() the path to its binary, or the env var that stores it.' % path_var)
                 raise
         else:
             path = os.path.abspath(path)
@@ -195,10 +202,16 @@ class QAnsysRenderer(QRenderer):
             design_name (str, optional): nome of the default design to open from the project file
 
         """
+        if not system() == 'Windows':
+            self.logger.warning(
+                'You are using %s, but this is a renderer to Ansys, which only runs on Windows. '
+                'Expect any sort of Errors if you try to work with this renderer beyond this point.' % system())
+
         # pyEPR does not like extensions
         if project_name:
             project_name = project_name.replace(".aedt", "")
         # open connection through pyEPR
+        import pythoncom
         try:
             self._pinfo = epr.ProjectInfo(
                 project_path=self._options['project_path'] if not project_path else project_path,
@@ -240,12 +253,21 @@ class QAnsysRenderer(QRenderer):
         if self.pinfo:
             if self.pinfo.project:
                 # TODO: Handle case when design does not EXIST?!?!?
-                self.pinfo.connect_design(design_name)
-                self.pinfo.connect_setup()
+                try:
+                    self.pinfo.connect_design(design_name)
+                    self.pinfo.connect_setup()
+                except AttributeError:
+                    self.logger.error(
+                        'Please install a more recent version of pyEPR (>=0.8.4.3)')
             else:
-                self.logger.warning('You MUST have a project loaded in Ansys and be connected to it!!! Use hfss.connect_ansys(),  Did you read the help file and tutorials!?!?!?')
+                self.logger.warning(
+                    'Either you do not have a project loaded in Ansys, or you are not connected to it. '
+                    'Try executing hfss.connect_ansys(), or creating a new Ansys project. '
+                    'Also check the help file and other guide notebooks')
         else:
-            self.logger.warning('You MUST connect to Ansys first, using connect_ansys(). Only when self.pinfo is then set can you connect to a design in a project. There must be a project!')
+            self.logger.warning(
+                'It does not look like you are connected to Ansys. Please use connect_ansys() '
+                'and make sure self.pinfo is set. There must be a project open in Ansys first.')
 
     @property
     def pinfo(self) -> epr.ProjectInfo:
@@ -311,7 +333,11 @@ class QAnsysRenderer(QRenderer):
         self.pinfo.design.add_message(msg, severity)
 
     def save_screenshot(self, path: str = None, show: bool = True):
-        return self.pinfo.design.save_screenshot(path, show)
+        try:
+            return self.pinfo.design.save_screenshot(path, show)
+        except AttributeError:
+            self.logger.error(
+                'Please install a more recent version of pyEPR (>=0.8.4.3)')
 
     def render_design(self,
                       selection: Union[list, None] = None,
@@ -603,6 +629,7 @@ class QAnsysRenderer(QRenderer):
             ]) + qc_width / (2 * vlen) * np.array([y1 - y0, x0 - x1, 0])
             shortline = self.modeler.draw_polyline([p0, p1],
                                                    closed=False)  # sweepline
+            import pythoncom
             try:
                 self.modeler._sweep_along_path(shortline, poly_ansys)
             except pythoncom.com_error as error:
@@ -610,9 +637,9 @@ class QAnsysRenderer(QRenderer):
                 hr, msg, exc, arg = error.args
                 if msg == "Exception occurred." and hr == -2147352567:
                     self.logger.error(
-                        "We cannot find a writable design. Either you are trying to use a Ansys "
-                        "design that is not empty, in which case please clear it by executing this "
-                        "renderer clean_active_design() method. Or you accidentally deleted "
+                        "We cannot find a writable design. \n  Either you are trying to use a Ansys "
+                        "design that is not empty, in which case please clear it manually or with the "
+                        "renderer method clean_active_design(). \n  Or you accidentally deleted "
                         "the design in Ansys, in which case please create a new one."
                     )
                 raise error
@@ -764,6 +791,7 @@ class QAnsysRenderer(QRenderer):
         """
         for chip, shapes in self.chip_subtract_dict.items():
             if shapes:
+                import pythoncom
                 try:
                     self.modeler.subtract(f'ground_{chip}_plane', list(shapes))
                 except pythoncom.com_error as error:
