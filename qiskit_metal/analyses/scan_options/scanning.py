@@ -62,6 +62,8 @@ class Scanning():
             * 3 option_name is not found as key in dict.
             * 4 last key in option_name is not in dict.
             * 5 option_scan is empty, need at least one entry.
+            * 6 project not in app
+            * 7 design not in app
 
            
         """
@@ -114,9 +116,6 @@ class Scanning():
             self.design.rebuild()
 
             a_q3d = self.design.renderers.q3d
-            if index == 0:
-                #Only need to open just one time.
-                a_q3d.connect_ansys()
 
             a_q3d.render_design(
                 selection=qcomp_render,
@@ -129,10 +128,14 @@ class Scanning():
             scan_values['option_name'] = option_path[-1]
             scan_values['capacitance'] = cap_matrix
             all_scan[item] = scan_values
-            if index == len_scan and not leave_last_design:
-                a_q3d.clean_active_design()
-            elif index != len_scan:
-                a_q3d.clean_active_design()
+
+            #Decide if need to clean the design.
+            obj_names = a_q3d.pinfo.get_all_object_names()
+            if obj_names:
+                if index == len_scan and not leave_last_design:
+                    a_q3d.clean_active_design()
+                elif index != len_scan:
+                    a_q3d.clean_active_design()
         return all_scan, 0
 
     # The methods allow users to scan a variable in a components's options.
