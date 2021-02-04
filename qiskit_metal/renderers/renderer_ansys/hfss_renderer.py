@@ -229,6 +229,9 @@ class QHFSSRenderer(QAnsysRenderer):
         Args:
             name (str): Name of the new eigenmode design
             connect (bool, optional): Should we connect this session to this design? Defaults to True
+
+        Returns(pyEPR.ansys.HfssDesign): A eigenmode  within Ansys.
+
         """
         if self.pinfo:
             adesign = self.pinfo.project.new_em_design(name)
@@ -246,6 +249,9 @@ class QHFSSRenderer(QAnsysRenderer):
         Args:
             name (str): Name of the new driven modal design
             connect (bool, optional): Should we connect this session to this design? Defaults to True
+
+        Returns(pyEPR.ansys.HfssDesign): A driven modal design within Ansys. 
+
         """
         if self.pinfo:
             adesign = self.pinfo.project.new_dm_design(name)
