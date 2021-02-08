@@ -301,11 +301,12 @@ class QQ3DRenderer(QAnsysRenderer):
         return _plot_q3d_convergence_chi_f(RES)
 
     def add_q3d_design(self, name: str, connect: bool = True):
-        """[summary]
+        """
+        Add a q3d design with the given name to the project.
 
         Args:
-            name (str): [description]
-            connect (bool, optional): [description]. Defaults to True.
+            name (str): Name of the new q3d design
+            connect (bool, optional): Should we connect this session to this design? Defaults to True
         """
         if self.pinfo:
             try:
