@@ -308,7 +308,11 @@ class QQ3DRenderer(QAnsysRenderer):
             connect (bool, optional): [description]. Defaults to True.
         """
         if self.pinfo:
-            adesign = self.pinfo.project.new_q3d_design(name)
+            try:
+                adesign = self.pinfo.project.new_q3d_design(name)
+            except AttributeError:
+                self.logger.error(
+                    'Please install a more recent version of pyEPR (>=0.8.4.4)')
             if connect:
                 self.connect_ansys_design(adesign.name)
             return adesign
