@@ -11,7 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 '''
 @date: 2020
 @author: Dennis Wang, Zlatko Minev
@@ -39,12 +38,13 @@ class QQ3DRenderer(QAnsysRenderer):
     name = 'q3d'
     """name"""
 
-    q3d_options = Dict(
-        material_type='pec',
-        material_thickness='200nm'
-    )
+    q3d_options = Dict(material_type='pec', material_thickness='200nm')
 
-    def __init__(self, design: 'QDesign', initiate=True, render_template: Dict = None, render_options: Dict = None):
+    def __init__(self,
+                 design: 'QDesign',
+                 initiate=True,
+                 render_template: Dict = None,
+                 render_options: Dict = None):
         """
         Create a QRenderer for Q3D simulations, subclassed from QAnsysRenderer.
 
@@ -54,8 +54,10 @@ class QQ3DRenderer(QAnsysRenderer):
             render_template (Dict, optional): Typically used by GUI for template options for GDS. Defaults to None.
             render_options (Dict, optional):  Used to override all options. Defaults to None.
         """
-        super().__init__(design=design, initiate=initiate,
-                         render_template=render_template, render_options=render_options)
+        super().__init__(design=design,
+                         initiate=initiate,
+                         render_template=render_template,
+                         render_options=render_options)
         QQ3DRenderer.load()
 
     @property
@@ -63,7 +65,9 @@ class QQ3DRenderer(QAnsysRenderer):
         if self.pinfo:
             return self.pinfo.design._boundaries
 
-    def render_design(self, selection: Union[list, None] = None, open_pins: Union[list, None] = None):
+    def render_design(self,
+                      selection: Union[list, None] = None,
+                      open_pins: Union[list, None] = None):
         """
         Initiate rendering of components in design contained in selection, assuming they're valid.
         Components are rendered before the chips they reside on, and subtraction of negative shapes
@@ -114,7 +118,11 @@ class QQ3DRenderer(QAnsysRenderer):
             if table_type != 'junction':
                 self.render_components(table_type, selection)
 
-    def assign_thin_conductor(self, objects: List[str], material_type: str = 'pec', thickness: str = '200 nm', name: str = None):
+    def assign_thin_conductor(self,
+                              objects: List[str],
+                              material_type: str = 'pec',
+                              thickness: str = '200 nm',
+                              name: str = None):
         """
         Assign thin conductor property to all exported shapes.
         Unless otherwise specified, all 2-D shapes are pec's with a thickness of 200 nm.
@@ -125,13 +133,12 @@ class QQ3DRenderer(QAnsysRenderer):
             thickness (str): Thickness of thin conductor. Must include units.
             name (str): Name assigned to this group of thin conductors.
         """
-        self.boundaries.AssignThinConductor(["NAME:" + (name if name else "ThinCond1"),
-                                             "Objects:=", objects,
-                                             "Material:=", material_type if material_type else self.q3d_options[
-                                                 'material_type'],
-                                             "Thickness:=", thickness if thickness else self.q3d_options[
-                                                 'material_thickness']
-                                             ])
+        self.boundaries.AssignThinConductor([
+            "NAME:" + (name if name else "ThinCond1"), "Objects:=", objects,
+            "Material:=", material_type if material_type else
+            self.q3d_options['material_type'], "Thickness:=",
+            thickness if thickness else self.q3d_options['material_thickness']
+        ])
 
     def assign_nets(self):
         """
@@ -139,18 +146,19 @@ class QQ3DRenderer(QAnsysRenderer):
         """
         self.boundaries.AutoIdentifyNets()
 
-    def add_q3d_setup(self, freq_ghz: float = 5.,
-                            name: str = "Setup",
-                            save_fields: bool = False,
-                            enabled: bool = True,
-                            max_passes: int = 15,
-                            min_passes: int = 2,
-                            min_converged_passes: int = 2,
-                            percent_error: float = 0.5,
-                            percent_refinement: int = 30,
-                            auto_increase_solution_order: bool = True,
-                            solution_order: str = 'High',
-                            solver_type: str = 'Iterative'):
+    def add_q3d_setup(self,
+                      freq_ghz: float = 5.,
+                      name: str = "Setup",
+                      save_fields: bool = False,
+                      enabled: bool = True,
+                      max_passes: int = 15,
+                      min_passes: int = 2,
+                      min_converged_passes: int = 2,
+                      percent_error: float = 0.5,
+                      percent_refinement: int = 30,
+                      auto_increase_solution_order: bool = True,
+                      solution_order: str = 'High',
+                      solver_type: str = 'Iterative'):
         # TODO: Move arguments to default options.
         """
         Create a solution setup in Ansys Q3D.
@@ -171,18 +179,19 @@ class QQ3DRenderer(QAnsysRenderer):
         """
         if self.pinfo:
             if self.pinfo.design:
-                return self.pinfo.design.create_q3d_setup(freq_ghz=freq_ghz, 
-                                                          name=name, 
-                                                          save_fields=save_fields, 
-                                                          enabled=enabled,
-                                                          max_passes=max_passes, 
-                                                          min_passes=min_passes, 
-                                                          min_converged_passes=min_converged_passes, 
-                                                          percent_error=percent_error,
-                                                          percent_refinement=percent_refinement, 
-                                                          auto_increase_solution_order=auto_increase_solution_order, 
-                                                          solution_order=solution_order,
-                                                          solver_type=solver_type)
+                return self.pinfo.design.create_q3d_setup(
+                    freq_ghz=freq_ghz,
+                    name=name,
+                    save_fields=save_fields,
+                    enabled=enabled,
+                    max_passes=max_passes,
+                    min_passes=min_passes,
+                    min_converged_passes=min_converged_passes,
+                    percent_error=percent_error,
+                    percent_refinement=percent_refinement,
+                    auto_increase_solution_order=auto_increase_solution_order,
+                    solution_order=solution_order,
+                    solver_type=solver_type)
 
     def analyze_setup(self, setup_name: str):
         """
@@ -195,7 +204,10 @@ class QQ3DRenderer(QAnsysRenderer):
             setup = self.pinfo.get_setup(setup_name)
             setup.analyze()
 
-    def get_capacitance_matrix(self, variation: str = '', solution_kind: str = 'AdaptivePass', pass_number: int = 3):
+    def get_capacitance_matrix(self,
+                               variation: str = '',
+                               solution_kind: str = 'AdaptivePass',
+                               pass_number: int = 3):
         # TODO: Move arguments to default_options.
         """
         Obtain capacitance matrix in a dataframe format.
@@ -207,7 +219,10 @@ class QQ3DRenderer(QAnsysRenderer):
             pass_number (int, optional): Number of passes to perform. Defaults to 3.
         """
         if self.pinfo:
-            df_cmat, user_units, _, _ = self.pinfo.setup.get_matrix(variation=variation, solution_kind = solution_kind, pass_number=pass_number)
+            df_cmat, user_units, _, _ = self.pinfo.setup.get_matrix(
+                variation=variation,
+                solution_kind=solution_kind,
+                pass_number=pass_number)
             return df_cmat
 
     def lumped_oscillator_vs_passes(self,
@@ -247,15 +262,22 @@ class QQ3DRenderer(QAnsysRenderer):
         RES = {}
         for i in range(1, maxPass):
             print('Pass number: ', i)
-            df_cmat, user_units, _, _ = self.pinfo.setup.get_matrix(variation=variation, solution_kind=solution_kind, pass_number=i)
+            df_cmat, user_units, _, _ = self.pinfo.setup.get_matrix(
+                variation=variation, solution_kind=solution_kind, pass_number=i)
             c_units = ureg(user_units).to('farads').magnitude
-            res = extract_transmon_coupled_Noscillator(df_cmat.values * c_units, IC_Amps, CJ, N, fb, fr, g_scale = 1)
+            res = extract_transmon_coupled_Noscillator(df_cmat.values * c_units,
+                                                       IC_Amps,
+                                                       CJ,
+                                                       N,
+                                                       fb,
+                                                       fr,
+                                                       g_scale=1)
             RES[i] = res
         RES = pd.DataFrame(RES).transpose()
         RES['χr MHz'] = abs(RES['chi_in_MHz'].apply(lambda x: x[0]))
         RES['gr MHz'] = abs(RES['gbus'].apply(lambda x: x[0]))
         return RES
-    
+
     def plot_convergence_main(self, RES: pd.DataFrame):
         """
         Plot alpha and frequency versus pass number, as well as convergence of delta (in %).
@@ -277,3 +299,24 @@ class QQ3DRenderer(QAnsysRenderer):
         """
         epr.toolbox.plotting.mpl_dpi(110)
         return _plot_q3d_convergence_chi_f(RES)
+
+    def add_q3d_design(self, name: str, connect: bool = True):
+        """
+        Add a q3d design with the given name to the project.
+
+        Args:
+            name (str): Name of the new q3d design
+            connect (bool, optional): Should we connect this session to this design? Defaults to True
+        """
+        if self.pinfo:
+            try:
+                adesign = self.pinfo.project.new_q3d_design(name)
+            except AttributeError:
+                self.logger.error(
+                    'Please install a more recent version of pyEPR (>=0.8.4.4)')
+            if connect:
+                self.connect_ansys_design(adesign.name)
+            return adesign
+        else:
+            self.logger.info("Are you mad?? You have to connect to ansys and a project " \
+                            "first before creating a new design . Use self.connect_ansys()")
