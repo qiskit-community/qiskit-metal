@@ -601,9 +601,15 @@ class QAnsysRenderer(QRenderer):
         points = parse_units(list(qc_shapely.coords))
         points_3d = to_vec3D(points, qc_chip_z)
 
-        poly_ansys = self.modeler.draw_polyline(points_3d,
-                                                closed=False,
-                                                **ansys_options)
+        try:
+            poly_ansys = self.modeler.draw_polyline(points_3d,
+                                                    closed=False,
+                                                    **ansys_options)
+        except AttributeError:
+            if self.modeler is None:
+                self.logger.error('No modeler was found. Are you connected to an active Ansys Design?')
+            raise
+
         poly_ansys = poly_ansys.rename(name)
 
         qc_fillet = round(qgeom.fillet, 7)
