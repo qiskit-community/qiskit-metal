@@ -148,8 +148,8 @@ class QHFSSRenderer(QAnsysRenderer):
         for qcomp, pin, impedance in port_list:
             port_name = f'Port_{qcomp}_{pin}'
             pdict = self.design.components[qcomp].pins[pin]
-            midpt, gap_size, norm_vec, width = pdict['middle'], pdict[
-                'gap'], pdict['normal'], pdict['width']
+            midpt, gap_size, norm_vec, width = pdict['middle'], pdict['gap'], \
+                                               pdict['normal'], pdict['width']
             width = parse_units(width)
             endpoints = parse_units([midpt, midpt + gap_size * norm_vec])
             endpoints_3d = to_vec3D(endpoints, 0)  # Set z height to 0
@@ -236,8 +236,8 @@ class QHFSSRenderer(QAnsysRenderer):
                 # Draw rectangle for lumped port.
                 self.logger.debug(f'Drawing a rectangle: {port_name}')
                 poly_ansys = self.modeler.draw_rect_corner([x_min, y_min, qc_chip_z],
-				                                            x_max - x_min, y_max - y_min,
-															qc_chip_z, **ansys_options)
+                                                           x_max - x_min, y_max - y_min,
+                                                           qc_chip_z, **ansys_options)
                 axis = 'x' if abs(x1 - x0) > abs(y1 - y0) else 'y'
                 poly_ansys.make_lumped_port(axis, 
                                             z0=str(impedance) + 'ohm', 
