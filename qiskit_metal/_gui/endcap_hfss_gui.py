@@ -126,6 +126,8 @@ class EndcapHFSSWidget(QMainWindow):
 
     def render_everything(self):
         """Render all selected components from previous window and add open endcaps and/or ports where appropriate."""
+        # TODO: Create a new table for junctions in driven modal indicating whether they're ports or inductors, then
+        # add the corresponding parameter to render_design()
         add_open_pins, port_list = [], []
         for row in range(len(self.pin_names)):
             if self.table.cellWidget(row, 1).currentText() == 'Open':
