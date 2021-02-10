@@ -14,6 +14,7 @@
 
 # pylint: disable-msg=unnecessary-pass
 #pylint: disable-msg=too-many-public-methods
+#pylint: disable-msg=protected-access
 """
 Qiskit Metal unit tests components functionality.
 
@@ -384,11 +385,11 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
         self.assertEqual(len(q1_actual), len(q1_result))
         self.assertEqual(len(q2_actual), len(q2_result))
 
-        for x in range(len(q1_actual)):
-            self.assertEqual(q1_actual[x], q1_result[x])
+        for x, _ in enumerate(q1_actual):
+            self.assertEqual(_, q1_result[x])
 
-        for x in range(len(q2_actual)):
-            self.assertEqual(q2_actual[x], q2_result[x])
+        for x, _ in enumerate(q2_actual):
+            self.assertEqual(_, q2_result[x])
 
     def test_qlibrary_get_component_geometry_list(self):
         """
@@ -402,9 +403,11 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
                     (-0.325, -0.325, 0.325, 0.325), (0.0, -0.015, 0.0, 0.015)]
         actual = design._qgeometry.get_component_geometry_list('Q1')
         self.assertEqual(len(actual), len(expected))
-        for x in range(len(expected)):
+        length = len(expected)
+        for x in range(length):
             self.assertEqual(len(expected[x]), len(actual[x].bounds))
-            for y in range(len(expected[x])):
+            sub_length = len(expected[x])
+            for y in range(sub_length):
                 self.assertEqual(actual[x].bounds[y], expected[x][y])
 
     def test_qlibrary_get_component_geometry(self):
@@ -420,9 +423,11 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
         actual = design._qgeometry.get_component_geometry('Q1')
 
         self.assertEqual(len(expected), len(actual))
-        for x in range(len(expected)):
+        length = len(expected)
+        for x in range(length):
             self.assertEqual(len(expected[x]), len(actual[x].bounds))
-            for y in range(len(expected[x])):
+            sub_length = len(expected[x])
+            for y in range(sub_length):
                 self.assertEqual(actual[x].bounds[y], expected[x][y])
 
     def test_qlibrary_rename_component(self):
@@ -436,6 +441,31 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
         design.rename_component(component_id, 'Q1_new_name')
 
         self.assertEqual(design.components.keys(), ['Q1_new_name'])
+
+    def test_qlibrary_delete_component(self):
+        """
+        Test delete_component in element_handler.py
+        """
+        design = designs.DesignPlanar()
+        transmon_pocket.TransmonPocket(design, 'Q1')
+        transmon_pocket.TransmonPocket(design, 'Q2')
+        transmon_pocket.TransmonPocket(design, 'Q3')
+
+        before_junction_list = design.qgeometry.tables['junction'][
+            'component'].tolist()
+        before_poly_list = design.qgeometry.tables['poly']['component'].tolist()
+
+        component_id = design.components['Q2'].id
+        design.qgeometry.delete_component_id(component_id)
+
+        after_junction_list = design.qgeometry.tables['junction'][
+            'component'].tolist()
+        after_poly_list = design.qgeometry.tables['poly']['component'].tolist()
+
+        self.assertTrue(component_id in before_junction_list)
+        self.assertTrue(component_id in before_poly_list)
+        self.assertFalse(component_id in after_junction_list)
+        self.assertFalse(component_id in after_poly_list)
 
     @staticmethod
     def generate_spiral_list(x: int, y: int):
