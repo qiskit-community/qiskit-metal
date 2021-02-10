@@ -365,6 +365,78 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
         self.assertEqual(my_pin['length'], 0)
         my_q_component.delete()
 
+    def test_qlibrary_get_component_geometry_dict(self):
+        """
+        Test get_component_geometry_dict in qgeometries_handler.py
+        """
+        design = designs.DesignPlanar()
+        transmon_pocket.TransmonPocket(design, 'Q1')
+        transmon_pocket.TransmonPocket(design, 'Q2')
+
+        q1_actual = (-0.2275, 0.015, 0.2275, 0.105)
+        q2_actual = (-0.2275, -0.105, 0.2275, -0.015)
+
+        q1_dict = design._qgeometry.get_component_geometry_dict('Q1')
+        q2_dict = design._qgeometry.get_component_geometry_dict('Q2')
+        q1_result = q1_dict['poly'][0].bounds
+        q2_result = q2_dict['poly'][1].bounds
+
+        self.assertEqual(len(q1_actual), len(q1_result))
+        self.assertEqual(len(q2_actual), len(q2_result))
+
+        for x in range(len(q1_actual)):
+            self.assertEqual(q1_actual[x], q1_result[x])
+
+        for x in range(len(q2_actual)):
+            self.assertEqual(q2_actual[x], q2_result[x])
+
+    def test_qlibrary_get_component_geometry_list(self):
+        """
+        Test get_component_geometry_list in qgeometries_handler.py
+        """
+        design = designs.DesignPlanar()
+        transmon_pocket.TransmonPocket(design, 'Q1')
+
+        expected = [(-0.2275, 0.015, 0.2275, 0.105),
+                    (-0.2275, -0.105, 0.2275, -0.015),
+                    (-0.325, -0.325, 0.325, 0.325), (0.0, -0.015, 0.0, 0.015)]
+        actual = design._qgeometry.get_component_geometry_list('Q1')
+        self.assertEqual(len(actual), len(expected))
+        for x in range(len(expected)):
+            self.assertEqual(len(expected[x]), len(actual[x].bounds))
+            for y in range(len(expected[x])):
+                self.assertEqual(actual[x].bounds[y], expected[x][y])
+
+    def test_qlibrary_get_component_geometry(self):
+        """
+        Test get_component_geometry in qgeometries_handler.py
+        """
+        design = designs.DesignPlanar()
+        transmon_pocket.TransmonPocket(design, 'Q1')
+
+        expected = [(-0.2275, 0.015, 0.2275, 0.105),
+                    (-0.2275, -0.105, 0.2275, -0.015),
+                    (-0.325, -0.325, 0.325, 0.325), (0.0, -0.015, 0.0, 0.015)]
+        actual = design._qgeometry.get_component_geometry('Q1')
+
+        self.assertEqual(len(expected), len(actual))
+        for x in range(len(expected)):
+            self.assertEqual(len(expected[x]), len(actual[x].bounds))
+            for y in range(len(expected[x])):
+                self.assertEqual(actual[x].bounds[y], expected[x][y])
+
+    def test_qlibrary_rename_component(self):
+        """
+        Test rename_component in element_handler.py
+        """
+        design = designs.DesignPlanar()
+        transmon_pocket.TransmonPocket(design, 'Q1')
+
+        component_id = design.components['Q1'].id
+        design.rename_component(component_id, 'Q1_new_name')
+
+        self.assertEqual(design.components.keys(), ['Q1_new_name'])
+
     @staticmethod
     def generate_spiral_list(x: int, y: int):
         """Helper function to generate a sprital list
