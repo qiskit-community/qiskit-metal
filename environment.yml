@@ -26,3 +26,5 @@ dependencies:
   - shapely
   - jupyter
   - wheel
+  - pip:
+      - "--editable=git+https://github.com/jojurgens/pyqode.qt.git@master#egg=pyqode.qt"
