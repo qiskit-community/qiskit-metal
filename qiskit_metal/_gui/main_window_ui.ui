@@ -42,7 +42,8 @@
    <layout class="QVBoxLayout" name="verticalLayout">
     <property name="spacing">
      <number>0</number>
-    </property>    <property name="leftMargin">
+    </property>
+    <property name="leftMargin">
      <number>0</number>
     </property>
     <property name="topMargin">
@@ -137,7 +138,7 @@
      <x>0</x>
      <y>0</y>
      <width>1300</width>
-     <height>24</height>
+     <height>22</height>
     </rect>
    </property>
    <property name="baseSize">
@@ -1879,6 +1880,38 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionHFSS</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>show_renderer_hfss()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>649</x>
+     <y>449</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionQ3D</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>show_renderer_q3d()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>649</x>
+     <y>449</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>showHelp()</slot>
@@ -1899,5 +1932,7 @@
   <slot>new_qcomponent()</slot>
   <slot>show_renderer_gds()</slot>
   <slot>create_build_log_window()</slot>
+  <slot>show_renderer_hfss()</slot>
+  <slot>show_renderer_q3d()</slot>
  </slots>
 </ui>

@@ -17,6 +17,8 @@ Qiskit Metal Overview
      - Description
    * - Hamiltonian
      - Module containing all Qiskit Metal hamiltonian-only analyses.
+   * - Scan_Options
+     - Module containing all Qiskit Metal scan options for analyses.
 
 .. list-table:: Analyses details
    :widths: 10 90
@@ -26,8 +28,10 @@ Qiskit Metal Overview
      - Description
    * - Hcpb
      - Used to model analytically the CPB Hamiltonian quickly and efficiently. Solves tridiagonal eigenvalue problem for arbitrary Ej, Ec, ng values.
+   * - Scan_Options
+     - Need access to renderers which are registered in QDesign.
 
-**Components**
+**QLibrary**
 
 .. list-table:: Components details
    :widths: 10 90
@@ -137,6 +141,8 @@ Qiskit Metal Overview
      - Description
    * - AnimatedText
      - Class that animates text.
+   * - Cheesing
+     - Create a cheese cell based on input of no-cheese locations.
    * - MplInteraction
      - Base class for class providing interaction to a matplotlib Figure.
    * - PanAndZoom
@@ -166,4 +172,5 @@ Qiskit Metal Overview
      - Custom Exception to indicate User action is needed to correct Design Inputs.
    * - QiskitMetalExceptions
      - Custom Exception super-class. Every Exception raised by qiskit-metal should inherit this. Adds the qiskit-metal prefix.
-
+   * - IncorrectQtException
+     - Run PySide2 only

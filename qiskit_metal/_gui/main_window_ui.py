@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file './main_window_ui.ui',
 # licensing of './main_window_ui.ui' applies.
 #
-# Created: Wed Jan 27 15:34:21 2021
+# Created: Wed Feb 10 12:49:06 2021
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -53,7 +53,7 @@ class Ui_MainWindow(object):
         self.verticalLayout.addWidget(self.tabWidget)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar()
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1300, 24))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1300, 22))
         self.menubar.setBaseSize(QtCore.QSize(0, 0))
         self.menubar.setObjectName("menubar")
         self.menuDesign = QtWidgets.QMenu(self.menubar)
@@ -511,6 +511,8 @@ class Ui_MainWindow(object):
         QtCore.QObject.connect(self.actionBuildHistory, QtCore.SIGNAL("triggered()"), MainWindow.create_build_log_window)
         QtCore.QObject.connect(self.actionNew_QComponent, QtCore.SIGNAL("triggered()"), MainWindow.new_qcomponent)
         QtCore.QObject.connect(self.actionGDS, QtCore.SIGNAL("triggered()"), MainWindow.show_renderer_gds)
+        QtCore.QObject.connect(self.actionHFSS, QtCore.SIGNAL("triggered()"), MainWindow.show_renderer_hfss)
+        QtCore.QObject.connect(self.actionQ3D, QtCore.SIGNAL("triggered()"), MainWindow.show_renderer_q3d)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):

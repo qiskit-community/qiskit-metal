@@ -17,13 +17,12 @@ dependencies:
   - numpy
   - pandas
   - pint
-  - pyepr-quantum>=0.8.4.2
+  - pyepr-quantum>=0.8.4.4
   - pygments
   - pyqode.python
   - pyside2==5.9.0a1
   - qutip
   - scipy
   - shapely
-
   - jupyter
   - wheel

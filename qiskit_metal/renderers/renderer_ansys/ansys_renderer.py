@@ -19,6 +19,7 @@
 from typing import List, Tuple, Union
 
 import re
+import os
 from pathlib import Path
 import math
 import geopandas
@@ -26,10 +27,11 @@ import numpy as np
 import pandas as pd
 from numpy.linalg import norm
 from collections import defaultdict
+from platform import system
 
 import shapely
 import pyEPR as epr
-from pyEPR.ansys import parse_units
+from pyEPR.ansys import parse_units, HfssApp
 
 from qiskit_metal.draw.utility import to_vec3D
 from qiskit_metal.draw.basic import is_rectangle
@@ -92,21 +94,18 @@ class QAnsysRenderer(QRenderer):
     #: Default options, over-written by passing ``options` dict to render_options.
     #: Type: Dict[str, str]
     default_options = Dict(
-        Lj='10nH',  # Lj has units of nanoHenries (nH)
-        Cj=
-        0,  # Cj *must* be 0 for pyEPR analysis! Cj has units of femtofarads (fF)
-        _Rj=0,  # _Rj *must* be 0 for pyEPR analysis! _Rj has units of Ohms
-        max_mesh_length_jj=
-        '7um',  # maximum mesh length for Josephson junction elements
-        project_path=None,  # default project path; if None --> get active
-        project_name=None,  # default project name
-        design_name=None,  # default design name
-        ansys_file_extension=
-        '.aedt',  # Ansys file extension for 2016 version and newer
-        bounding_box_scale_x=
-        1.2,  # Ratio of 'main' chip width to bounding box width
-        bounding_box_scale_y=
-        1.2  # Ratio of 'main' chip length to bounding box length 
+        Lj='10nH', # Lj has units of nanoHenries (nH)
+        Cj=0, # Cj *must* be 0 for pyEPR analysis! Cj has units of femtofarads (fF)
+        _Rj=0, # _Rj *must* be 0 for pyEPR analysis! _Rj has units of Ohms
+        max_mesh_length_jj='7um', # maximum mesh length for Josephson junction elements
+        project_path=None, # default project path; if None --> get active
+        project_name=None, # default project name
+        design_name=None, # default design name
+        ansys_file_extension='.aedt', # Ansys file extension for 2016 version and newer
+        # bounding_box_scale_x = 1.2, # Ratio of 'main' chip width to bounding box width
+        # bounding_box_scale_y = 1.2, # Ratio of 'main' chip length to bounding box length
+        x_buffer_width_mm=0.2, # Buffer between max/min x and edge of ground plane, in mm
+        y_buffer_width_mm=0.2, # Buffer between max/min y and edge of ground plane, in mm
     )
 
     NAME_DELIM = r'_'
@@ -158,23 +157,71 @@ class QAnsysRenderer(QRenderer):
         # Default behavior is to render all components unless a strict subset was chosen
         self.render_everything = True
 
-        self.pinfo = None
+        self._pinfo = None
 
-    def open_ansys_design(self):
+    def open_ansys(self, path: str = None, executable: str = 'reg_ansysedt.exe', path_var: str = 'ANSYSEM_ROOT202'):
         """
-        Open new project and design in Ansys.
+        Open a session of Ansys. Default is version 2020 R2, but can be overridden.
+
+        Args:
+            path (str): path to the Ansys executable. Defaults to None
+            executable (str): Name of the ansys executable. Defaults to 'reg_ansysedt.exe'
+            path_var (str): Name of the OS environment variable that contains the path to the Ansys executable.
+                            Only used when path=None. Defaults to 'ANSYSEM_ROOT202' (Ansys ver. 2020 R2)
         """
+        if not system() == 'Windows':
+            self.logger.warning(
+                'You are using %s, but this is a renderer to Ansys, which only runs on Windows. '
+                'Expect any sort of Errors if you try to work with this renderer beyond this point.' % system())
+
+        import subprocess
+        if path is None:
+            try:
+                path = os.environ[path_var]
+            except KeyError:
+                self.logger.error(
+                    'environment variable %s not found. Is Ansys 2020 R2 installed on this machine? '
+                    'If yes, then create said environment variable. If you have a different version of Ansys, '
+                    'then pass to open_ansys() the path to its binary, or the env var that stores it.' % path_var)
+                raise
+        else:
+            path = os.path.abspath(path)
+        cmdlist = [os.path.sep.join([path, executable]), '-shortcut']
+        subprocess.call(cmdlist, cwd=path)
+
+    def connect_ansys(self, project_path: str = None, project_name: str = None, design_name: str = None):
+        """
+        If none of the optional parameters are provided: connects to the Ansys COM, then
+        checks for, and grab if present, an active project, design, and design setup.
+
+        If the optional parameters are provided: if present, opens the project file and design in Ansys.
+
+        Args:
+            project_path (str, optional): path without file name
+            project_name (str, optional): file name (with or without extension)
+            design_name (str, optional): nome of the default design to open from the project file
+
+        """
+        if not system() == 'Windows':
+            self.logger.warning(
+                'You are using %s, but this is a renderer to Ansys, which only runs on Windows. '
+                'Expect any sort of Errors if you try to work with this renderer beyond this point.' % system())
+
+        # pyEPR does not like extensions
+        if project_name:
+            project_name = project_name.replace(".aedt", "")
+        # open connection through pyEPR
         import pythoncom
         try:
-            self.pinfo = epr.ProjectInfo(
-                project_path=self._options['project_path'],
-                project_name=self._options['project_name'],
-                design_name=self._options['design_name'])
+            self._pinfo = epr.ProjectInfo(
+                project_path=self._options['project_path'] if not project_path else project_path,
+                project_name=self._options['project_name'] if not project_name else project_name,
+                design_name=self._options['design_name'] if not design_name else design_name)
         except pythoncom.com_error as error:
             print("com_error: ", error)
             hr, msg, exc, arg = error.args
             if msg == "Invalid class string":  # and hr == -2147221005 and exc is None and arg is None
-                print(
+                self.logger.error(
                     "pyEPR cannot find the Ansys COM. Ansys installation might not have registered it. "
                     "To verify if this is the problem, execute the following: ",
                     "`print(win32com.client.Dispatch('AnsoftHfss.HfssScriptInterface'))` ",
@@ -183,13 +230,99 @@ class QAnsysRenderer(QRenderer):
                 )
             raise error
 
+    def disconnect_ansys(self):
+        """
+        Disconnect Ansys
+        """
+        if self.pinfo:
+            self.pinfo.disconnect()
+        else:
+            self.logger.warning('This renderer appears to be already disconnected from Ansys')
+
+    def new_ansys_project(self):
+        """
+        Creates a new empty project in Ansys
+        """
+        here = HfssApp()
+        here.get_app_desktop().new_project()
+
+    def connect_ansys_design(self, design_name: str = None):
+        """
+        Used to switch between existing designs.
+        """
+        if self.pinfo:
+            if self.pinfo.project:
+                # TODO: Handle case when design does not EXIST?!?!?
+                try:
+                    self.pinfo.connect_design(design_name)
+                    self.pinfo.connect_setup()
+                except AttributeError:
+                    self.logger.error(
+                        'Please install a more recent version of pyEPR (>=0.8.4.3)')
+            else:
+                self.logger.warning(
+                    'Either you do not have a project loaded in Ansys, or you are not connected to it. '
+                    'Try executing hfss.connect_ansys(), or creating a new Ansys project. '
+                    'Also check the help file and other guide notebooks')
+        else:
+            self.logger.warning(
+                'It does not look like you are connected to Ansys. Please use connect_ansys() '
+                'and make sure self.pinfo is set. There must be a project open in Ansys first.')
+
+    @property
+    def pinfo(self) -> epr.ProjectInfo:
+        """Project info for Ansys renderer (class: pyEPR.ProjectInfo)"""
+        return self._pinfo
+    
     @property
     def modeler(self):
         if self.pinfo:
             if self.pinfo.design:
                 return self.pinfo.design.modeler
 
-    def add_message(self, msg: str, severity: int = 0):
+    def plot_ansys_fields(self, object_name:str):
+        if not self.pinfo:
+            return # TODO all checks 
+        #TODO: This is just a prototype - should add features and flexibility.
+        oFieldsReport = self.pinfo.design._fields_calc
+        oModeler = self.pinfo.design._modeler
+        setup = self.pinfo.setup
+
+        # Object ID - use tro plot on faces of 
+        object_id = oModeler.GetObjectIDByName(object_name)
+        # Can also use hfss.pinfo.design._modeler.GetFaceIDs("main")
+        # TODO: Allow all these need to be customizable, esp QuantityName
+        return oFieldsReport.CreateFieldPlot(
+            [
+                "NAME:Mag_E1",
+                "SolutionName:="	, f"{setup.name} : LastAdaptive", # name of the setup 
+                "UserSpecifyName:="	, 0,
+                "UserSpecifyFolder:="	, 0,
+                "QuantityName:="	, "Mag_E",
+                "PlotFolder:="		, "E Field",
+                "StreamlinePlot:="	, False,
+                "AdjacentSidePlot:="	, False,
+                "FullModelPlot:="	, False,
+                "IntrinsicVar:="	, "Phase=\'0deg\'",
+                "PlotGeomInfo:="	, [1,"Surface","FacesList",1, str(object_id)],
+            ], "Field")
+
+    def plot_ansys_delete(self, names: list):
+        """
+        Delete plots from modeler window in Ansys.
+        Does not throw an error if names are missing. 
+
+        Can give multiple names, for example:
+        hfss.plot_ansys_delete(['Mag_E1', 'Mag_E1_2'])
+
+        Args:
+            names (list): Names of plots to delete from modeler window.
+        """
+        # (["Mag_E1"]
+        oFieldsReport = self.pinfo.design._fields_calc
+        return oFieldsReport.DeleteFieldPlot(names)
+
+    def add_message(self, msg: str, severity: int=0):
         """
         Add message to Message Manager box in Ansys.
 
@@ -198,6 +331,13 @@ class QAnsysRenderer(QRenderer):
             severity (int): 0 = Informational, 1 = Warning, 2 = Error, 3 = Fatal.
         """
         self.pinfo.design.add_message(msg, severity)
+
+    def save_screenshot(self, path: str = None, show: bool = True):
+        try:
+            return self.pinfo.design.save_screenshot(path, show)
+        except AttributeError:
+            self.logger.error(
+                'Please install a more recent version of pyEPR (>=0.8.4.3)')
 
     def render_design(self,
                       selection: Union[list, None] = None,
@@ -238,10 +378,16 @@ class QAnsysRenderer(QRenderer):
     def render_tables(self, selection: Union[list, None] = None):
         """
         Render components in design grouped by table type (path, poly, or junction).
+        Start by initializing chip boundaries for later use.
 
         Args:
             selection (Union[list, None], optional): List of components to render. Defaults to None.
         """
+        self.min_x_main = float('inf')
+        self.min_y_main = float('inf')
+        self.max_x_main = float('-inf')
+        self.max_y_main = float('-inf')
+
         for table_type in self.design.qgeometry.get_element_types():
             self.render_components(table_type, selection)
 
@@ -260,22 +406,24 @@ class QAnsysRenderer(QRenderer):
         selection = selection if selection else []
         table = self.design.qgeometry.tables[table_type]
 
-        self.min_x_main = float('inf')
-        self.min_y_main = float('inf')
-        self.max_x_main = float('-inf')
-        self.max_y_main = float('-inf')
-
         if selection:
             qcomp_ids, case = self.get_unique_component_ids(selection)
 
-            # Update bounding box (and hence main chip dimensions)
-            for qcomp_id in qcomp_ids:
-                min_x, min_y, max_x, max_y = self.design._components[
-                    qcomp_id].qgeometry_bounds()
-                self.min_x_main = min(min_x, self.min_x_main)
-                self.min_y_main = min(min_y, self.min_y_main)
-                self.max_x_main = max(max_x, self.max_x_main)
-                self.max_y_main = max(max_y, self.max_y_main)
+            if qcomp_ids: # Render strict subset of components
+                # Update bounding box (and hence main chip dimensions)
+                for qcomp_id in qcomp_ids:
+                    min_x, min_y, max_x, max_y = self.design._components[qcomp_id].qgeometry_bounds()
+                    self.min_x_main = min(min_x, self.min_x_main)
+                    self.min_y_main = min(min_y, self.min_y_main)
+                    self.max_x_main = max(max_x, self.max_x_main)
+                    self.max_y_main = max(max_y, self.max_y_main)
+            else: # All components rendered
+                for qcomp in self.design.components:
+                    min_x, min_y, max_x, max_y = self.design.components[qcomp].qgeometry_bounds()
+                    self.min_x_main = min(min_x, self.min_x_main)
+                    self.min_y_main = min(min_y, self.min_y_main)
+                    self.max_x_main = max(max_x, self.max_x_main)
+                    self.max_y_main = max(max_y, self.max_y_main)
 
             if case != 1:  # Render a subset of components using mask
                 mask = table['component'].isin(qcomp_ids)
@@ -371,14 +519,14 @@ class QAnsysRenderer(QRenderer):
         """
         ansys_options = dict(transparency=0.0)
 
-        qc_name = 'Q' + str(qgeom['component'])  # name of QComponent
-        qc_elt = get_clean_name(
-            qgeom['name'])  # name of element within QGeometry table
+        qc_name = self.design._components[qgeom['component']].name
+        qc_elt = get_clean_name(qgeom['name'])
+
         qc_shapely = qgeom.geometry  # shapely geom
         qc_chip_z = parse_units(self.design.get_chip_z(qgeom.chip))
         qc_fillet = round(qgeom.fillet, 7)
 
-        name = f'{qc_name}{QAnsysRenderer.NAME_DELIM}{qc_elt}'
+        name = f'{qc_elt}{QAnsysRenderer.NAME_DELIM}{qc_name}'
 
         points = parse_units(list(
             qc_shapely.exterior.coords))  # list of 2d point tuples
@@ -440,22 +588,28 @@ class QAnsysRenderer(QRenderer):
         """
         ansys_options = dict(transparency=0.0)
 
-        qc_name = 'Q' + str(qgeom['component'])  # name of QComponent
-        qc_elt = get_clean_name(
-            qgeom['name'])  # name of element within QGeometry table
+        qc_name = self.design._components[qgeom['component']].name
+        qc_elt = get_clean_name(qgeom['name'])
+
         qc_shapely = qgeom.geometry  # shapely geom
         qc_chip_z = parse_units(self.design.get_chip_z(qgeom.chip))
 
-        name = f'{qc_name}{QAnsysRenderer.NAME_DELIM}{qc_elt}'
+        name = f'{qc_elt}{QAnsysRenderer.NAME_DELIM}{qc_name}'
 
         qc_width = parse_units(qgeom.width)
 
         points = parse_units(list(qc_shapely.coords))
         points_3d = to_vec3D(points, qc_chip_z)
 
-        poly_ansys = self.modeler.draw_polyline(points_3d,
-                                                closed=False,
-                                                **ansys_options)
+        try:
+            poly_ansys = self.modeler.draw_polyline(points_3d,
+                                                    closed=False,
+                                                    **ansys_options)
+        except AttributeError:
+            if self.modeler is None:
+                self.logger.error('No modeler was found. Are you connected to an active Ansys Design?')
+            raise
+
         poly_ansys = poly_ansys.rename(name)
 
         qc_fillet = round(qgeom.fillet, 7)
@@ -481,7 +635,20 @@ class QAnsysRenderer(QRenderer):
             ]) + qc_width / (2 * vlen) * np.array([y1 - y0, x0 - x1, 0])
             shortline = self.modeler.draw_polyline([p0, p1],
                                                    closed=False)  # sweepline
-            self.modeler._sweep_along_path(shortline, poly_ansys)
+            import pythoncom
+            try:
+                self.modeler._sweep_along_path(shortline, poly_ansys)
+            except pythoncom.com_error as error:
+                print("com_error: ", error)
+                hr, msg, exc, arg = error.args
+                if msg == "Exception occurred." and hr == -2147352567:
+                    self.logger.error(
+                        "We cannot find a writable design. \n  Either you are trying to use a Ansys "
+                        "design that is not empty, in which case please clear it manually or with the "
+                        "renderer method clean_active_design(). \n  Or you accidentally deleted "
+                        "the design in Ansys, in which case please create a new one."
+                    )
+                raise error
 
         if qgeom.chip not in self.chip_subtract_dict:
             self.chip_subtract_dict[qgeom.chip] = set()
@@ -520,34 +687,25 @@ class QAnsysRenderer(QRenderer):
                 self.max_y_main = parse_units(self.max_y_main)
                 comp_center_x = (self.min_x_main + self.max_x_main) / 2
                 comp_center_y = (self.min_y_main + self.max_y_main) / 2
-                min_x_edge = comp_center_x - self._options[
-                    'bounding_box_scale_x'] * (comp_center_x - self.min_x_main)
-                max_x_edge = comp_center_x + self._options[
-                    'bounding_box_scale_x'] * (self.max_x_main - comp_center_x)
-                min_y_edge = comp_center_y - self._options[
-                    'bounding_box_scale_y'] * (comp_center_y - self.min_y_main)
-                max_y_edge = comp_center_y + self._options[
-                    'bounding_box_scale_y'] * (self.max_y_main - comp_center_y)
-                if self.render_everything and (
-                        origin[0] - size[0] / 2 <= min_x_edge < max_x_edge <=
-                        origin[0] + size[0] / 2) and (origin[1] - size[1] / 2 <=
-                                                      min_y_edge < max_y_edge <=
-                                                      origin[1] + size[1] / 2):
+                min_x_edge = self.min_x_main - parse_units(self._options['x_buffer_width_mm'])
+                max_x_edge = self.max_x_main + parse_units(self._options['x_buffer_width_mm'])
+                min_y_edge = self.min_y_main - parse_units(self._options['y_buffer_width_mm'])
+                max_y_edge = self.max_y_main + parse_units(self._options['y_buffer_width_mm'])
+                if self.render_everything and (origin[0] - size[0] / 2 <= min_x_edge < max_x_edge <= origin[0] + size[0] / 2) and (origin[1] - size[1] / 2 <= min_y_edge < max_y_edge <= origin[1] + size[1] / 2):
                     # All components are rendered and the overall bounding box lies within 9 X 6 chip
-                    plane = self.modeler.draw_rect_center(
-                        origin,
-                        x_size=size[0],
-                        y_size=size[1],
-                        name=f'{chip_name}_plane',
-                        **ansys_options)
-                    whole_chip = self.modeler.draw_box_center(
-                        [origin[0], origin[1], size[2] / 2],
-                        [size[0], size[1], -size[2]],
-                        name=chip_name,
-                        material=ops['material'],
-                        color=(186, 186, 205),
-                        transparency=0.2,
-                        wireframe=False)
+                    plane = self.modeler.draw_rect_center(origin,
+                                                          x_size=size[0],
+                                                          y_size=size[1],
+                                                          name=f'ground_{chip_name}_plane',
+                                                          **ansys_options)
+
+                    whole_chip = self.modeler.draw_box_center([origin[0], origin[1], size[2] / 2],
+                                                              [size[0], size[1], -size[2]],
+                                                              name=chip_name,
+                                                              material=ops['material'],
+                                                              color=(186, 186, 205),
+                                                              transparency=0.2,
+                                                              wireframe=False)
                     if draw_sample_holder:
                         vacuum_box = self.modeler.draw_box_center(
                             [
@@ -560,11 +718,12 @@ class QAnsysRenderer(QRenderer):
                     # A strict subset of components is rendered, or exported components extend beyond boundaries of 9 X 6 chip
                     x_width = max_x_edge - min_x_edge
                     y_width = max_y_edge - min_y_edge
+
                     plane = self.modeler.draw_rect_center(
                         [comp_center_x, comp_center_y, origin[2]],
                         x_size=x_width,
                         y_size=y_width,
-                        name=f'{chip_name}_plane',
+                        name=f'ground_{chip_name}_plane',
                         **ansys_options)
                     whole_chip = self.modeler.draw_box_center(
                         [comp_center_x, comp_center_y, size[2] / 2],
@@ -587,8 +746,9 @@ class QAnsysRenderer(QRenderer):
                 plane = self.modeler.draw_rect_center(origin,
                                                       x_size=size[0],
                                                       y_size=size[1],
-                                                      name=f'{chip_name}_plane',
+                                                      name=f'ground_{chip_name}_plane',
                                                       **ansys_options)
+
                 whole_chip = self.modeler.draw_box_center(
                     [origin[0], origin[1], size[2] / 2],
                     [size[0], size[1], -size[2]],
@@ -599,7 +759,7 @@ class QAnsysRenderer(QRenderer):
                     wireframe=False)
             if self.chip_subtract_dict[
                     chip_name]:  # Any layer which has subtract=True qgeometries will have a ground plane
-                self.assign_perfE.append(f'{chip_name}_plane')
+                self.assign_perfE.append(f'ground_{chip_name}_plane')
 
     def add_endcaps(self, open_pins: Union[list, None] = None):
         """
@@ -637,15 +797,30 @@ class QAnsysRenderer(QRenderer):
         """
         for chip, shapes in self.chip_subtract_dict.items():
             if shapes:
-                self.modeler.subtract(chip + '_plane', list(shapes))
+                import pythoncom
+                try:
+                    self.modeler.subtract(f'ground_{chip}_plane', list(shapes))
+                except pythoncom.com_error as error:
+                    print("com_error: ", error)
+                    hr, msg, exc, arg = error.args
+                    if msg == "Exception occurred." and hr == -2147352567:
+                        self.logger.error(
+                            "This error might indicate that a component was not correctly rendered in Ansys. \n"
+                            "This might have been caused by floating point numerical corrections. \n For example "
+                            "Ansys will inconsistently render (or not) routing that has 180deg jogs with the two "
+                            "adjacent segments spaced 'exactly' twice the fillet radius (U shaped routing). \n"
+                            "In this example, changing your fillet radius to a smaller number would solve the issue."
+                        )
+                    raise error
 
     def add_mesh(self):
         """
         Add mesh to all elements in self.assign_mesh.
         """
-        self.modeler.mesh_length('small_mesh',
-                                 self.assign_mesh,
-                                 MaxLength=self._options['max_mesh_length_jj'])
+        if self.assign_mesh:
+            self.modeler.mesh_length('small_mesh',
+                                    self.assign_mesh,
+                                    MaxLength=self._options['max_mesh_length_jj'])
 
 
     def clean_active_design(self):

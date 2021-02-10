@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file './widgets/variable_table/add_delete_table.ui',
 # licensing of './widgets/variable_table/add_delete_table.ui' applies.
 #
-# Created: Wed Jan 27 15:34:22 2021
+# Created: Wed Feb 10 12:49:07 2021
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!

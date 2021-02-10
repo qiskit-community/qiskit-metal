@@ -190,7 +190,7 @@ class QGDSRenderer(QRenderer):
     #         base=dict(color=str, klayer=int),
     #         path=dict(thickness=float, material=str, perfectE=bool),
     #         poly=dict(thickness=float, material=str), )
-    """element extentions dictionary   element_extensions = dict() from base class"""
+    """element extensions dictionary   element_extensions = dict() from base class"""
 
     # Add columns to junction table during QGDSRenderer.load()
     # element_extensions  is now being populated as part of load().
@@ -1278,7 +1278,7 @@ class QGDSRenderer(QRenderer):
 
         Args:
             file_name (str): The path and file name to write the gds file.
-                             Name needs to include desired extention, i.e. "a_path_and_name.gds".
+                             Name needs to include desired extension, i.e. "a_path_and_name.gds".
 
         """
 

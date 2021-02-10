@@ -14,6 +14,7 @@
 
 # pylint: disable-msg=unnecessary-pass
 # pylint: disable-msg=broad-except
+# pylint: disable-msg=too-many-public-methods
 """
 Qiskit Metal unit tests analyses functionality.
 
@@ -26,6 +27,8 @@ import matplotlib.pyplot as _plt
 
 from qiskit_metal import designs
 from qiskit_metal.renderers import setup_default
+from qiskit_metal.renderers.renderer_ansys.q3d_renderer import QQ3DRenderer
+from qiskit_metal.renderers.renderer_ansys.hfss_renderer import QHFSSRenderer
 from qiskit_metal.renderers.renderer_base.renderer_base import QRenderer
 from qiskit_metal.renderers.renderer_base.renderer_gui_base import QRendererGui
 from qiskit_metal.renderers.renderer_gds.gds_renderer import QGDSRenderer
@@ -131,6 +134,51 @@ class TestRenderers(unittest.TestCase):
             MplInteraction(_plt)
         except Exception:
             self.fail("MplInteraction(None) failed")
+
+    def test_renderer_instantiate_qq3d_renderer(self):
+        """
+        Test instantiation of QQ3DRenderer in q3d_render.py
+        """
+        design = designs.DesignPlanar()
+        try:
+            QQ3DRenderer(design, initiate=False)
+        except Exception:
+            self.fail("QQ3DRenderer failed")
+
+    def test_renderer_instantiate_qhfss_renderer(self):
+        """
+        Test instantiation of QHFSSRenderer in q3d_render.py
+        """
+        design = designs.DesignPlanar()
+        try:
+            QHFSSRenderer(design, initiate=False)
+        except Exception:
+            self.fail("QHFSSRenderer failed")
+
+    def test_renderer_qq3d_render_options(self):
+        """
+        Test that defaults in QQ3DRenderer were not accidentally changed
+        """
+        design = designs.DesignPlanar()
+        renderer = QQ3DRenderer(design, initiate=False)
+        options = renderer.q3d_options
+
+        self.assertEqual(renderer.name, 'q3d')
+
+        self.assertEqual(len(options), 2)
+        self.assertEqual(options['material_type'], 'pec')
+        self.assertEqual(options['material_thickness'], '200nm')
+
+    def test_renderer_hfss_render_options(self):
+        """
+        Test that defaults in QHFSSRender were not accidentally changed
+        """
+        design = designs.DesignPlanar()
+        renderer = QHFSSRenderer(design, initiate=False)
+        options = renderer.hfss_options
+
+        self.assertEqual(renderer.name, 'hfss')
+        self.assertEqual(len(options), 0)
 
     def test_renderer_gdsrenderer_options(self):
         """
@@ -305,6 +353,39 @@ class TestRenderers(unittest.TestCase):
         mpl = MplInteraction(_plt)
         mpl.disconnect()
         self.assertEqual(mpl.figure, None)
+
+    def test_renderer_gds_check_cheese(self):
+        """
+        Test check_cheese in gds_renderer.py
+        """
+        design = designs.DesignPlanar()
+        renderer = QGDSRenderer(design)
+
+        self.assertEqual(renderer.check_cheese('main', 0), 4)
+        self.assertEqual(renderer.check_cheese('main', 1), 1)
+        self.assertEqual(renderer.check_cheese('fake', 0), 3)
+
+    def test_renderer_gds_check_no_cheese(self):
+        """
+        Test check_no_cheese in gds_renderer.py
+        """
+        design = designs.DesignPlanar()
+        renderer = QGDSRenderer(design)
+
+        self.assertEqual(renderer.check_no_cheese('main', 0), 4)
+        self.assertEqual(renderer.check_no_cheese('main', 1), 1)
+        self.assertEqual(renderer.check_no_cheese('fake', 0), 3)
+
+    def test_renderer_gds_check_either_cheese(self):
+        """
+        Test check_either_cheese in gds_renderer.py
+        """
+        design = designs.DesignPlanar()
+        renderer = QGDSRenderer(design)
+
+        self.assertEqual(renderer.check_either_cheese('main', 0), 6)
+        self.assertEqual(renderer.check_either_cheese('main', 1), 1)
+        self.assertEqual(renderer.check_either_cheese('fake', 0), 5)
 
 
 if __name__ == '__main__':
