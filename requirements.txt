@@ -11,9 +11,9 @@ numpy
 pandas
 pint
 pyEPR-quantum>=0.8.4.4
-pyqode.python==2.12.1
-pyqode.python
 Pygments
+pyqode.python==2.12.1
 pyside2>=5.9, <5.14
 scipy
 Shapely
+pyqode.qt @ git+https://github.com/jojurgens/pyqode.qt.git#egg=pyqode.qt
