@@ -25,20 +25,20 @@ Created on  2020
 """
 
 import unittest
-import inspect
+#import inspect
 
-from qiskit_metal import designs
-from qiskit_metal import MetalGUI
+#from qiskit_metal import designs
+#from qiskit_metal import MetalGUI
 from qiskit_metal._gui.widgets.bases.dict_tree_base import BranchNode
 from qiskit_metal._gui.widgets.bases.dict_tree_base import LeafNode
 
-from qiskit_metal.qlibrary.passives.launchpad_wb import LaunchpadWirebond
-from qiskit_metal.qlibrary.passives.launchpad_wb_coupled import LaunchpadWirebondCoupled
-from qiskit_metal.qlibrary.passives.cap_three_fingers import CapThreeFingers
-from qiskit_metal.qlibrary.qubits.transmon_concentric import TransmonConcentric
-from qiskit_metal.qlibrary.qubits.transmon_cross import TransmonCross
-from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
-from qiskit_metal.qlibrary.qubits.transmon_pocket_cl import TransmonPocketCL
+#from qiskit_metal.qlibrary.passives.launchpad_wb import LaunchpadWirebond
+#from qiskit_metal.qlibrary.passives.launchpad_wb_coupled import LaunchpadWirebondCoupled
+#from qiskit_metal.qlibrary.passives.cap_three_fingers import CapThreeFingers
+#from qiskit_metal.qlibrary.qubits.transmon_concentric import TransmonConcentric
+#from qiskit_metal.qlibrary.qubits.transmon_cross import TransmonCross
+#from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
+#from qiskit_metal.qlibrary.qubits.transmon_pocket_cl import TransmonPocketCL
 
 
 class TestGUIBasic(unittest.TestCase):
@@ -79,7 +79,8 @@ class TestGUIBasic(unittest.TestCase):
     #         q_4 = TransmonConcentric(design, 'Q4', options=dict(pos_x='+3.0mm', pos_y='+3.0mm'))
 
     #         cap_2 = LaunchpadWirebond(design, 'C2', options=dict(pos_x='-2.0mm', pos_y='0.0mm'))
-    #         cap_3 = LaunchpadWirebondCoupled(design, 'C3', options=dict(pos_x='-2.0mm', pos_y='-0.5mm'))
+    #         cap_3 = LaunchpadWirebondCoupled(design, 'C3', options=dict(pos_x='-2.0mm',
+    #                                          pos_y='-0.5mm'))
     #         cap_4 = CapThreeFingers(design, 'C4', options=dict(pos_x='-2.0mm', pos_y='-1.0mm'))
 
     #         gui = MetalGUI(design)
