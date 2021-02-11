@@ -407,8 +407,6 @@ class QHFSSRenderer(QAnsysRenderer):
             save_fields (bool, optional): Whether or not to save fields. Defaults to False.
         """
         if self.pinfo:
-            # TODO: Check if setup_name exists in design
-            self.pinfo.setup_name = setup_name
             setup = self.pinfo.get_setup(setup_name)
             return setup.insert_sweep(start_ghz=start_ghz,
                                       stop_ghz=stop_ghz,
