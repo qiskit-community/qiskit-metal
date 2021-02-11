@@ -775,6 +775,7 @@ class QAnsysRenderer(QRenderer):
             pin_dict = self.design.components[comp].pins[pin]
             width, gap = parse_units([pin_dict['width'], pin_dict['gap']])
             mid, normal = parse_units(pin_dict['middle']), pin_dict['normal']
+            print('mid: ', mid, 'normal: ', normal, 'gap: ', gap)
             rect_mid = np.append(mid + normal * gap / 2, [0])
             # Assumption: pins only point in x or y directions
             # If this assumption is not satisfied, draw_rect_center no longer works -> must use draw_polyline
