@@ -53,6 +53,6 @@ setup(
     keywords="qiskit sdk quantum",
     packages=find_packages(),
     package_data={"": ["*.ui", "*.qrc", "_imgs/*.png", "_imgs/*.txt"]},
-    python_requires=">=3.5, <=3.7.8",
+    python_requires=">=3.7, <=3.7.8",
     install_requires=requirements,
 )
