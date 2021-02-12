@@ -465,7 +465,6 @@ class QAnsysRenderer(QRenderer):
             if case != 1:  # Render a subset of components using mask
                 mask = table['component'].isin(qcomp_ids)
                 table = table[mask]
-                self.render_everything = False
 
         else:
             for qcomp in self.design.components:
@@ -738,21 +737,20 @@ class QAnsysRenderer(QRenderer):
                     self._options['y_buffer_width_mm'])
                 max_y_edge = self.max_y_main + parse_units(
                     self._options['y_buffer_width_mm'])
-                # if self.render_everything and (
-                #         origin[0] - size[0] / 2 <= min_x_edge < max_x_edge <=
-                #         origin[0] + size[0] / 2) and (origin[1] - size[1] / 2 <=
-                #                                       min_y_edge < max_y_edge <=
-                #                                       origin[1] + size[1] / 2):
-                if self.render_everything and not box_plus_buffer:
-                    # Expect all components are rendered and the overall bounding box lies within 9 X 6 chip
-                    if (origin[0] - size[0] / 2 <= min_x_edge < max_x_edge <=
-                            origin[0] + size[0] / 2) and (
-                                origin[1] - size[1] / 2 <= min_y_edge <
-                                max_y_edge <= origin[1] + size[1] / 2):
+
+                if not box_plus_buffer:
+                    # Expect all components are rendered and
+                    # the overall bounding box lies within 9 X 6 chip
+                    if not (origin[0] - size[0] / 2 <= self.min_x_main <
+                            self.max_x_main <= origin[0] + size[0] / 2) and (
+                                origin[1] - size[1] / 2 <= self.min_y_main <
+                                self.max_y_main <= origin[1] + size[1] / 2):
                         self.logger.warning(
                             'A bounding box with buffer around the QComponents are outside of the size of chip denoted in DesignPlanar.\n'
-                            f'Chip size from DesignPlanar is \n x={size[0]}, y={size[1]}, z={size[2]}; centered at x={origin[0]}, y={origin[1]}, z={origin[2]}. \n'
-                            f'Bounding box with buffer for rendered geometries is min_x={min_x_edge}, max_x={max_x_edge}, min_y={min_y_edge}, max_y={max_y_edge}.'
+                            'Chip size from DesignPlanar is:\n'
+                            f' x={size[0]}, y={size[1]}, z={size[2]}; centered at x={origin[0]}, y={origin[1]}, z={origin[2]}. \n'
+                            'Bounding box with buffer for rendered geometries is:\n'
+                            f' min_x={self.min_x_main}, max_x={self.max_x_main}, min_y={self.min_y_main}, max_y={self.max_y_main}.'
                         )
 
                     plane = self.modeler.draw_rect_center(
