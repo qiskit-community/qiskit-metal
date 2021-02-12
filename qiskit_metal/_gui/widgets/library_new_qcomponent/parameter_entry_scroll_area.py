@@ -1,5 +1,5 @@
 from PySide2.QtWidgets import QPushButton
-from PySide2.QtWidgets import (QScrollArea, QVBoxLayout, QLabel, QWidget, QHBoxLayout, QLineEdit, QLayout, QComboBox)
+from PySide2.QtWidgets import (QScrollArea, QVBoxLayout, QLabel, QWidget, QHBoxLayout, QLineEdit, QLayout, QComboBox, QMessageBox)
 from PySide2.QtCore import Qt
 from PySide2.QtCore import QDir
 from addict.addict import Dict
@@ -149,7 +149,7 @@ class ParameterEntryScrollArea(QScrollArea,Ui_ScrollArea):
                 self.key_value_entry_layout.addWidget(self.nested_dict_button)
                 print("box parts added")
                 self.remove_button.pressed.connect(
-                    lambda w=self, ll=cur_all_key_value_pairs_entry_layout: self.deleteWidget(w, ll)
+                    lambda w=self, ll=cur_all_key_value_pairs_entry_layout: self.delete_widget(w, ll)
                 )
                 print("remove lambda added")
                 self.nested_dict_button.pressed.connect(
@@ -206,7 +206,7 @@ class ParameterEntryScrollArea(QScrollArea,Ui_ScrollArea):
                 print("self.nd: ", self.nested_dictionary)
 
 
-            def deleteWidget(self, widg, lay):
+            def delete_widget(self, widg, lay):
                 lay.removeWidget(widg)
                 widg.deleteLater()
 
@@ -241,13 +241,11 @@ class ParameterEntryScrollArea(QScrollArea,Ui_ScrollArea):
         self.parameter_entry_vertical_layout.addWidget(self.make_button)
         print("made it")
 
-    def deleteWidget(self, widg, lay):
+    def delete_widget(self, widg, lay):
         lay.removeWidget(widg)
         widg.deleteLater()
 
-
     ## Reading User Input and Instantiating Component Methods
-
     # https://stackoverflow.com/questions/452969/does-python-have-an-equivalent-to-java-class-forname
     def get_class(self, import_statement):
         mymodule = importlib.import_module(import_statement)
@@ -257,6 +255,7 @@ class ParameterEntryScrollArea(QScrollArea,Ui_ScrollArea):
         for memtup in members:
             if  str(memtup[1].__module__).endswith(class_owner):
                 return memtup[1]
+        raise MissingClassException(f"Unable to find correct module for {class_owner} in {str(memtup[1])}")
 
     def get_class_from_abs_file_path(self, abs_file_path):
         root_dir = QDir(os.getcwd())
@@ -298,8 +297,58 @@ class ParameterEntryScrollArea(QScrollArea,Ui_ScrollArea):
                 import json
                 value = json.loads(entry_value)
                 return value
-            except:
-                raise Exception("CANNOT USE ARGUMENTS")
+            except Exception as e:
+                self.display_error_box(e)
+
+    def make_object(self):
+        try:
+             entry_count = self.parameter_entry_vertical_layout.count()
+             kwargs = {}
+             for index in range(entry_count):
+                 cur_widget = self.parameter_entry_vertical_layout.itemAt(index).widget()
+                 if isinstance(cur_widget, self.EntryWidget):
+                     print("will arg: ", cur_widget.arg_name)
+                     self.argify_entry(cur_widget, kwargs)
+
+             # * operator simply unpacks the tuple (or any iterable) and passes them as the positional arguments to the function.
+             print("all args added to kwargs", kwargs)
+             print("imported class", self.imported_class)
+             im = self.imported_class(self.design, **kwargs) # TODO use try catch maybe
+             print("imported class: ", im)
+             self.close()
+        except Exception as e:
+            self.display_error_box(e)
+
+    def argify_entry(self, entry:EntryWidget, argdict:dict):
+        if not isinstance(entry, self.EntryWidget):
+            raise InvalidEntry(f"Expected entry to be of type EntryWidget but is instead of type {str(type(entry))}")
+        if isinstance(entry, self.NormalEntryWidget):
+            print("Normal")
+            strvalue = entry.value_edit.text()
+            print("ed.txt()", strvalue)
+            if  strvalue == "":
+                print("default arg bc ", strvalue)
+                print("default arg: ", entry.arg_default)
+                if entry.arg_default is inspect._empty:
+                    raise InvalidArgumentException(f"No value was entered for {entry.arg_name} but no default value exists in constructor for {self.imported_class}")
+                value = entry.arg_default
+            else:
+                if entry.arg_type == bool:
+                    if strvalue.lower() in "true":
+                        value = True
+                    else:
+                        value = False
+                else:
+                    value = entry.arg_type(strvalue)
+            print("final value: ", value)
+            argdict[entry.arg_name] = value
+            print("entry.arg_name: ", entry.arg_name)
+            print("entry.arg_name type: ", type(entry.arg_name))
+
+        elif isinstance(entry, self.DictionaryEntryWidget):
+            deb_dict = {}
+            self.dictionaryentrybox_to_dictionary(entry.all_key_value_pairs_entry_layout, deb_dict)
+            argdict[entry.arg_name] = entry.arg_type(deb_dict)
 
     def dictionaryentrybox_to_dictionary(self, parent_layout, kv_dict):
         #get all Debs from layout and add to kv_dict
@@ -337,57 +386,16 @@ class ParameterEntryScrollArea(QScrollArea,Ui_ScrollArea):
 
         print("kv_dict is: ", kv_dict)
 
-    def argifyEntry(self, entry, argdict):
-        if isinstance(entry, self.NormalEntryWidget):
-            print("Normal")
-            strvalue = entry.value_edit.text()
-            print("ed.txt()", strvalue)
-            if  strvalue == "":
-                print("default arg bc ", strvalue)
-                print("default arg: ", entry.arg_default)
-                value = entry.arg_default
-            else:
-                if entry.arg_type == bool:
-                    if strvalue.lower() in "true":
-                        value = True
-                    else:
-                        value = False
-                else:
-                    value = entry.arg_type(strvalue)
-            print("final value: ", value)
-            argdict[entry.arg_name] = value
-            print("entry.arg_name: ", entry.arg_name)
-            print("entry.arg_name type: ", type(entry.arg_name))
-
-
-        elif isinstance(entry, self.DictionaryEntryWidget):
-            deb_dict = {}
-            self.dictionaryentrybox_to_dictionary(entry.all_key_value_pairs_entry_layout, deb_dict)
-            argdict[entry.arg_name] = entry.arg_type(deb_dict)
-
-
-
-    def make_object(self):
-        print("mak obj")
-        try:
-             entry_count = self.parameter_entry_vertical_layout.count()
-             kwargs = {}
-             for index in range(entry_count):
-                 cur_widget = self.parameter_entry_vertical_layout.itemAt(index).widget()
-                 if isinstance(cur_widget, self.EntryWidget):
-                     print("will arg: ", cur_widget.arg_name)
-                     self.argifyEntry(cur_widget, kwargs)
-
-
-             #instantiate QComponent (QRoute, Qbit, etc.)
-             # * operator simply unpacks the tuple (or any iterable) and passes them as the positional arguments to the function.
-             print("all args added to kwargs", kwargs)
-             print("imported class", self.imported_class)
-             im = self.imported_class(self.design, **kwargs) # TODO use try catch maybe
-             print("imported class: ", im)
-             self.close()
-        except Exception as e:
-            print("Make Object Failed: ", e)
+    def display_error_box(self, exception: Exception):
+        if exception is LibraryQComponentException:
+            self.error_pop_up = QMessageBox()
+            self.setWindowModality(self) # don't let user continue interacting with PEDA until error message is resolved
+            self.error_pop_up.critical(0, exception.__name__, str(exception))
+        else:
+            self.error_pop_up = QMessageBox()
+            self.setWindowModality(self) # don't let user continue interacting with PEDA until error message is resolved
+            self.error_pop_up.critical(0, str(exception))
+        #self.error_pop_up.setFixedSize(500, 200)
 
     # when press make:
       #design
@@ -397,5 +405,17 @@ class ParameterEntryScrollArea(QScrollArea,Ui_ScrollArea):
       #
 
 
+class LibraryQComponentException(Exception):
+    def __init__(self, message):
+        super().__init__()
+        self.name = self.__class__
+        self.message = message
 
+class InvalidArgumentException(LibraryQComponentException):
+    pass
 
+class InvalidEntry(LibraryQComponentException):
+    pass
+
+class MissingClassException(LibraryQComponentException):
+    pass

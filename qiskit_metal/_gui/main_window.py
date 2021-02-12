@@ -27,7 +27,7 @@ from pathlib import Path
 from typing import List, TYPE_CHECKING
 
 from PySide2 import QtWidgets
-from PySide2.QtCore import QEventLoop, Qt, QTimer, Slot, QModelIndex
+from PySide2.QtCore import QEventLoop, Qt, QTimer, Slot, QModelIndex, QSortFilterProxyModel
 from PySide2.QtGui import QIcon
 from PySide2.QtWidgets import (QApplication, QDockWidget, QFileDialog,
                                QInputDialog, QLabel, QLineEdit, QMainWindow,
@@ -494,13 +494,13 @@ class MetalGUI(QMainWindowBaseHandler):
     def create_new_component_object_from_qlibrary(self, relative_index: QModelIndex):
         print("hi")
         #filter for .py files
-        filename = self.ui.dockLibrary.library_model.data(relative_index)
+        filename = self.library_proxy_model.data(relative_index)
         print("qmodelindex: filename: ", filename)
         if not filename.endswith('.py'):
             print("no py")
             return
         print("yes PY")
-        full_path = self.ui.dockLibrary.library_model.filePath(relative_index)
+        full_path = self.library_proxy_model.filePath(relative_index)
         print("full path: ", full_path)
         try:
             self.param_entry = ParameterEntryScrollArea(self.QLIBRARY_FOLDERNAME, full_path, self.design)
@@ -523,9 +523,18 @@ class MetalGUI(QMainWindowBaseHandler):
         self.ui.dockLibrary.library_model = QFileSystemModel()
         self.ui.dockLibrary.library_model.setRootPath(self.QLIBRARY_ROOT)
 
+
+        # QSortFilterProxyModel
+        #QSortFilterProxyModel: sorting items, filtering out items, or both.  maps the original model indexes to new indexes, allows a given source model to be restructured as far as views are concerned without requiring any transformations on the underlying data, and without duplicating the data in memory.
+
+        self.library_proxy_model = QSortFilterProxyModel
+        self.library_proxy_model.setSourceModel(self.ui.dockLibrary.library_model)
+        self.file_filter_regex = "^((?!\.))(?!__init__).*\.py"
+        self.library_proxy_model.setFilterRegExp(self.file_filter_regex)
+
         ## TODO clean code
-        self.ui.dockLibrary_tree_view.setModel(self.ui.dockLibrary.library_model)
-        self.ui.dockLibrary_tree_view.setRootIndex(self.ui.dockLibrary.library_model.index(self.ui.dockLibrary.library_model.rootPath()))
+        self.ui.dockLibrary_tree_view.setModel(self.library_proxy_model)
+        self.ui.dockLibrary_tree_view.setRootIndex(self.library_proxy_model.mapFromSource(self.ui.dockLibrary.library_model.index(self.ui.dockLibrary.library_model.rootPath())))
         self.ui.dockLibrary_tree_view.doubleClicked.connect(self.create_new_component_object_from_qlibrary)
         self.ui.dockLibrary_tree_view.clicked.connect(self.create_new_component_object_from_qlibrary)
 
