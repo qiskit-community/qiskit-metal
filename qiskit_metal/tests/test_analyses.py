@@ -13,6 +13,7 @@
 # that they have been altered from the originals.
 
 #pylint: disable-msg=unnecessary-pass
+#pylint: disable-msg=broad-except
 """
 Qiskit Metal unit tests analyses functionality.
 
@@ -27,8 +28,11 @@ import numpy as np
 import pandas as pd
 
 from qiskit_metal.analyses.quantization import lumped_capacitive
+from qiskit_metal.analyses.hamiltonian.analytic_transmon import Hcpb
 from qiskit_metal.analyses.em import cpw_calculations
+from qiskit_metal.analyses.scan_options.scanning import Scanning
 from qiskit_metal.tests.assertions import AssertionsMixin
+from qiskit_metal import designs
 
 TEST_DATA = Path(__file__).parent / "test_data"
 
@@ -49,6 +53,25 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
         Tie any loose ends
         """
         pass
+
+    def test_analyses_instantiate_hcpb(self):
+        """
+        Test instantiation of Hcpb in analytic_transmon.py
+        """
+        try:
+            Hcpb()
+        except Exception:
+            self.fail("Hcpb failed")
+
+    def test_analyses_instantiate_scanning(self):
+        """
+        Test instantiation of Scanning in analytic_transmon.py
+        """
+        try:
+            design = designs.DesignPlanar()
+            Scanning(design)
+        except Exception:
+            self.fail("Scanning failed")
 
     def test_analyses_cpw_guided_wavelength(self):
         """

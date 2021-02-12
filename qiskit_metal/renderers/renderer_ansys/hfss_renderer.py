@@ -11,12 +11,10 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 '''
 @date: 2020
 @author: Dennis Wang
 '''
-
 
 from collections import defaultdict
 from pathlib import Path
@@ -47,7 +45,11 @@ class QHFSSRenderer(QAnsysRenderer):
 
     hfss_options = Dict()  # For potential future use
 
-    def __init__(self, design: 'QDesign', initiate=True, render_template: Dict = None, render_options: Dict = None):
+    def __init__(self,
+                 design: 'QDesign',
+                 initiate=True,
+                 render_template: Dict = None,
+                 render_options: Dict = None):
         """
         Create a QRenderer for HFSS simulations, subclassed from QAnsysRenderer.
 
@@ -57,10 +59,12 @@ class QHFSSRenderer(QAnsysRenderer):
             render_template (Dict, optional): Typically used by GUI for template options for GDS. Defaults to None.
             render_options (Dict, optional):  Used to override all options. Defaults to None.
         """
-        super().__init__(design=design, initiate=initiate,
-                         render_template=render_template, render_options=render_options)
+        super().__init__(design=design,
+                         initiate=initiate,
+                         render_template=render_template,
+                         render_options=render_options)
 
-        self.chip_subtract_dict = defaultdict(set) 
+        self.chip_subtract_dict = defaultdict(set)
         self.assign_perfE = []
         self.assign_mesh = []
         self.jj_lumped_ports = {}
@@ -124,8 +128,8 @@ class QHFSSRenderer(QAnsysRenderer):
 
         self.render_tables(selection)
         if port_list:
-            self.add_endcaps(open_pins + [(qcomp, pin)
-                                          for qcomp, pin, _ in port_list])
+            self.add_endcaps(open_pins +
+                             [(qcomp, pin) for qcomp, pin, _ in port_list])
         else:
             self.add_endcaps(open_pins)
 
@@ -147,7 +151,8 @@ class QHFSSRenderer(QAnsysRenderer):
         for qcomp, pin, impedance in port_list:
             port_name = f'Port_{qcomp}_{pin}'
             pdict = self.design.components[qcomp].pins[pin]
-            midpt, gap_size, norm_vec, width = pdict['middle'], pdict['gap'], pdict['normal'], pdict['width']
+            midpt, gap_size, norm_vec, width = pdict['middle'], pdict['gap'], \
+                                               pdict['normal'], pdict['width']
             width = parse_units(width)
             endpoints = parse_units([midpt, midpt + gap_size * norm_vec])
             endpoints_3d = to_vec3D(endpoints, 0)  # Set z height to 0
@@ -164,17 +169,21 @@ class QHFSSRenderer(QAnsysRenderer):
 
             # Draw rectangle
             self.logger.debug(f'Drawing a rectangle: {port_name}')
-            poly_ansys = self.modeler.draw_rect_corner(
-                [x_min, y_min, 0], x_max - x_min, y_max - y_min, 0, **dict(transparency=0.0))
+            poly_ansys = self.modeler.draw_rect_corner([x_min, y_min, 0],
+                                                       x_max - x_min,
+                                                       y_max - y_min, 0,
+                                                       **dict(transparency=0.0))
             axis = 'x' if abs(x1 - x0) > abs(y1 - y0) else 'y'
-            poly_ansys.make_lumped_port(axis, z0=str(
-                impedance) + 'ohm', name=f'LumpPort_{qcomp}_{pin}')
+            poly_ansys.make_lumped_port(axis,
+                                        z0=str(impedance) + 'ohm',
+                                        name=f'LumpPort_{qcomp}_{pin}')
             self.modeler.rename_obj(poly_ansys, port_name)
 
             # Draw line
-            lump_line = self.modeler.draw_polyline([endpoints_3d[0], endpoints_3d[1]],
-                                                   closed=False,
-                                                   **dict(color=(128, 0, 128)))
+            lump_line = self.modeler.draw_polyline(
+                [endpoints_3d[0], endpoints_3d[1]],
+                closed=False,
+                **dict(color=(128, 0, 128)))
             lump_line = lump_line.rename(f'voltage_line_{port_name}')
             lump_line.show_direction = True
 
@@ -229,8 +238,9 @@ class QHFSSRenderer(QAnsysRenderer):
             if (qcomp, qc_elt) in self.jj_lumped_ports:
                 # Draw rectangle for lumped port.
                 self.logger.debug(f'Drawing a rectangle: {port_name}')
-                poly_ansys = self.modeler.draw_rect_corner(
-                    [x_min, y_min, qc_chip_z], x_max - x_min, y_max - y_min, qc_chip_z, **ansys_options)
+                poly_ansys = self.modeler.draw_rect_corner([x_min, y_min, qc_chip_z],
+                                                           x_max - x_min, y_max - y_min,
+                                                           qc_chip_z, **ansys_options)
                 axis = 'x' if abs(x1 - x0) > abs(y1 - y0) else 'y'
                 poly_ansys.make_lumped_port(axis, 
                                             z0=str(impedance) + 'ohm', 
@@ -326,6 +336,9 @@ class QHFSSRenderer(QAnsysRenderer):
         Args:
             name (str): Name of the new eigenmode design
             connect (bool, optional): Should we connect this session to this design? Defaults to True
+
+        Returns(pyEPR.ansys.HfssDesign): A eigenmode  within Ansys.
+
         """
         if self.pinfo:
             adesign = self.pinfo.project.new_em_design(name)
@@ -336,7 +349,27 @@ class QHFSSRenderer(QAnsysRenderer):
             self.logger.info("Are you mad?? You have to connect to ansys and a project " \
                             "first before creating a new design . Use self.connect_ansys()")
 
-    def add_eigenmode_setup(self, 
+    def add_driven_modal_design(self, name: str, connect: bool = True):
+        """
+        Add a driven modal design with the given name to the project referenced in pinfo.
+
+        Args:
+            name (str): Name of the new driven modal design
+            connect (bool, optional): Should we connect this session to this design? Defaults to True
+
+        Returns(pyEPR.ansys.HfssDesign): A driven modal design within Ansys. 
+
+        """
+        if self.pinfo:
+            adesign = self.pinfo.project.new_dm_design(name)
+            if connect:
+                self.connect_ansys_design(adesign.name)
+            return adesign
+        else:
+            self.logger.info("Are you mad?? You have to connect to ansys and a project " \
+                            "first before creating a new design . Use self.connect_ansys()")
+
+    def add_eigenmode_setup(self,
                             name="Setup",
                             min_freq_ghz=1,
                             n_modes=1,
@@ -363,15 +396,16 @@ class QHFSSRenderer(QAnsysRenderer):
         """
         if self.pinfo:
             if self.pinfo.design:
-                return self.pinfo.design.create_em_setup(name=name,
-                                                         min_freq_ghz=min_freq_ghz,
-                                                         n_modes=n_modes,
-                                                         max_delta_f=max_delta_f,
-                                                         max_passes=max_passes,
-                                                         min_passes=min_passes,
-                                                         min_converged=min_converged,
-                                                         pct_refinement=pct_refinement,
-                                                         basis_order=basis_order)
+                return self.pinfo.design.create_em_setup(
+                    name=name,
+                    min_freq_ghz=min_freq_ghz,
+                    n_modes=n_modes,
+                    max_delta_f=max_delta_f,
+                    max_passes=max_passes,
+                    min_passes=min_passes,
+                    min_converged=min_converged,
+                    pct_refinement=pct_refinement,
+                    basis_order=basis_order)
 
     def analyze_setup(self, setup_name: str):
         """
@@ -465,12 +499,17 @@ class QHFSSRenderer(QAnsysRenderer):
 
     def plot_convergences(self, variation=None, fig=None):
         if self.pinfo:
-            convergence_t, convergence_f = self.get_convergences( variation)
-            hfss_plot_convergences_report(
-                convergence_t, convergence_f, fig=fig, _display=True)
+            convergence_t, convergence_f = self.get_convergences(variation)
+            hfss_plot_convergences_report(convergence_t,
+                                          convergence_f,
+                                          fig=fig,
+                                          _display=True)
 
 
-def hfss_plot_convergences_report(convergence_t, convergence_f,  fig=None, _display=True):
+def hfss_plot_convergences_report(convergence_t,
+                                  convergence_f,
+                                  fig=None,
+                                  _display=True):
     """
     Plot convergence frequency vs. pass number.
     Plot delta frequency and solved elements vs. pass number.
@@ -496,7 +535,12 @@ def hfss_plot_convergences_report(convergence_t, convergence_f,  fig=None, _disp
         #     from IPython.display import display
         #     display(fig)
 
-def hfss_report_f_convergence(oDesign, setup, logger, variation=None, save_csv=True):
+
+def hfss_report_f_convergence(oDesign,
+                              setup,
+                              logger,
+                              variation=None,
+                              save_csv=True):
     '''
     Create a report inside HFSS to plot the converge of freq and style it.
 
@@ -522,30 +566,35 @@ def hfss_report_f_convergence(oDesign, setup, logger, variation=None, save_csv=T
 
     # Create report
     n_modes = int(setup.n_modes)
-    ycomp = [f"re(Mode({i}))" for i in range(1, 1+n_modes)]
+    ycomp = [f"re(Mode({i}))" for i in range(1, 1 + n_modes)]
 
-    params = ["Pass:=", ["All"]]+variation
+    params = ["Pass:=", ["All"]] + variation
     report_name = "Freq. vs. pass"
     if report_name in report.GetAllReportNames():
         report.DeleteReports([report_name])
 
     solutions = setup.get_solutions()
-    solutions.create_report(
-        report_name, "Pass", ycomp, params, pass_name='AdaptivePass')
+    solutions.create_report(report_name,
+                            "Pass",
+                            ycomp,
+                            params,
+                            pass_name='AdaptivePass')
 
     # Properties of lines
-    curves = [f"{report_name}:re(Mode({i})):Curve1" for i in range(
-        1, 1 + n_modes)]
+    curves = [
+        f"{report_name}:re(Mode({i})):Curve1" for i in range(1, 1 + n_modes)
+    ]
     set_property(report, 'Attributes', curves, 'Line Width', 3)
-    set_property(report, 'Scaling',
-                 f"{report_name}:AxisY1", 'Auto Units', False)
+    set_property(report, 'Scaling', f"{report_name}:AxisY1", 'Auto Units',
+                 False)
     set_property(report, 'Scaling', f"{report_name}:AxisY1", 'Units', 'g')
-    set_property(report, 'Legend',
-                 f"{report_name}:Legend", 'Show Solution Name', False)
+    set_property(report, 'Legend', f"{report_name}:Legend",
+                 'Show Solution Name', False)
 
     if save_csv:  # Save
         try:
-            path = Path().absolute()/'hfss_eig_f_convergence.csv'  # TODO: Determine better path
+            path = Path().absolute(
+            ) / 'hfss_eig_f_convergence.csv'  # TODO: Determine better path
             report.ExportToFile(report_name, path)
             logger.info(f'Saved convergences to {path}')
             return pd.read_csv(path, index_col=0)
