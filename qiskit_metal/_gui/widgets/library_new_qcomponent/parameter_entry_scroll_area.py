@@ -38,22 +38,35 @@ class ParameterEntryScrollArea(QScrollArea,Ui_ScrollArea):
         self.parameter_values = []
 
         self.imported_class = self.get_class_from_abs_file_path(self.abs_file_path)
-        self.setWindowTitle(self.imported_class.__name__)
+        self.get_window_title_from_imported_class
         print("import_class name:", self.imported_class.__name__)
         print("import_class:", self.imported_class)
         print("self.logger IS: ", self.logger)
-
         self.display_class_parameter_entries(self.imported_class)
+
+        # WARNING: make sure anything that could throw an exception is wrapped in a decorater so that init doesn't have to be
 
     # Exception Handling/Logginger classes/properties
 
     class QLibraryExceptionDecorator(object):
+
+        @classmethod
+        def log_error(cls, log_owner, exception, wrapper, args, kwargs):
+            message = traceback.format_exc()
+            message += '\n\nERROR in PEDA\n' \
+                       + f"\n{' module   :':12s} {wrapper.__module__}" \
+                       + f"\n{' function :':12s} {wrapper.__qualname__}" \
+                       + f"\n{' err msg  :':12s} {exception.__repr__()}" \
+                       + f"\n{' args; kws:':12s} {args}; {kwargs}" \
+                       + "\nTill now I always got by on my own........ (I never really cared until I met you)"
+            log_owner.logger.error(message)
+
         # Does NOT handle chained exceptions
         """
         Should wrap ONLY  PEDA instance methods because it assumes args[0] is a self who has a valid logger
         """
         @classmethod
-        def on_exception_pop_up_warning(cls,func:Callable):
+        def entry_exception_pop_up_warning(cls,func:Callable):
             def wrapper(*args, **kwargs):
                 # args[0] is PEDA object
                 try:
@@ -62,35 +75,35 @@ class ParameterEntryScrollArea(QScrollArea,Ui_ScrollArea):
                 except (LibraryQComponentException) as lqce:
                     print("LibraryQCom...Exception AS str: ", str(lqce.__class__.__name__))
                     print("LibraryQCom...Exception AS: ", lqce.__class__.__name__)
+                    cls.log_error(args[0], lqce, self, args, kwargs)
                     args[0].error_pop_up = QMessageBox()
-                    try:
-                        args[0].error_pop_up.critical(args[0],"",str(lqce.__class__.__name__) + ":\n" +str(lqce)) #modality set by critical, Don't set Title -- will NOT show up on MacOs
-
-                    except Exception as e:
-                        print("Unable to popup window: ", e)
-                    print("DONE")
-                    message = traceback.format_exc()
-                    message += '\n\nERROR in PEDA\n' \
-                               + f"\n{' module   :':12s} {wrapper.__module__}" \
-                               + f"\n{' function :':12s} {wrapper.__qualname__}" \
-                               + f"\n{' err msg  :':12s} {e.__repr__()}" \
-                               + f"\n{' args; kws:':12s} {args}; {kwargs}" \
-                               + "\nTill now I always got by on my own........ (I never really cared until I met you)"
-                    args[0].logger.error(message)
+                    args[0].error_pop_up.critical(args[0],"",str(lqce.__class__.__name__) + ":\n" +str(lqce)) #modality set by critical, Don't set Title -- will NOT show up on MacOs
 
                 # else just log exception
                 except Exception as e:  # pylint: disable=invalid-name,broad-except
                     print("normal Exceptions", str(e))
                     print("args[0]: ", args[0])
-                    message = traceback.format_exc()
-                    message += '\n\nERROR in PEDA\n' \
-                          + f"\n{' module   :':12s} {wrapper.__module__}" \
-                          + f"\n{' function :':12s} {wrapper.__qualname__}" \
-                          + f"\n{' err msg  :':12s} {e.__repr__()}" \
-                          + f"\n{' args; kws:':12s} {args}; {kwargs}" \
-                          + "\nTill now I always got by on my own........ (I never really cared until I met you)"
-                    args[0].logger.error(message)
+                    cls.log_error(args[0], e, self, args, kwargs)
+
             return wrapper
+
+        @classmethod
+        def init_peda_pop_up_warning(cls, func:Callable):
+            def wrapper(*args, **kwargs):
+                # args[0] is PEDA object
+                try:
+                    func(*args, **kwargs)
+                # if anticipated Exception throw up error window
+                except (LibraryQComponentException) as lqce:
+                    print("init_peda_pop_up_arning LibraryQCom...Exception AS str: ", str(lqce.__class__.__name__))
+                    print("init_peda_pop_up_arning LibraryQCom...Exception AS: ", lqce.__class__.__name__)
+                    cls.log_error(args[0], e, self, args, kwargs)
+                    args[0].error_pop_up = QMessageBox()
+                    error_message = "Sorry. There has been an issue create the parameter input form for this QComponent. ERROR:"
+                    error_message =  str(lqce.__class__.__name__)  + error_message + ":\n" +str(lqce)
+                    args[0].error_pop_up.critical(args[0],"",error_message) #modality set by critical, Don't set Title -- will NOT show up on MacOs :(
+                except Exception as e:
+                    cls.log_error(args[0], e, self, args, kwargs)
 
     @property
     def logger(self) -> logging.Logger:
@@ -272,7 +285,7 @@ class ParameterEntryScrollArea(QScrollArea,Ui_ScrollArea):
                 widg.deleteLater()
 
     ## Parameter-Entry Qt Methods
-
+    @QLibraryExceptionDecorator.init_peda_pop_up_warning
     def display_class_parameter_entries(self, cls: Callable):
         class_signature = signature(cls.__init__)
 
@@ -302,12 +315,18 @@ class ParameterEntryScrollArea(QScrollArea,Ui_ScrollArea):
         self.parameter_entry_vertical_layout.addWidget(self.make_button)
         print("made it")
 
+    @QLibraryExceptionDecorator.init_peda_pop_up_warning
+    def get_window_title_from_imported_class(self):
+        self.setWindowTitle(self.imported_class.__name__)
+
+    @QLibraryExceptionDecorator.init_peda_pop_up_warning
     def delete_widget(self, widg, lay):
         lay.removeWidget(widg)
         widg.deleteLater()
 
     ## Reading User Input and Instantiating Component Methods
     # https://stackoverflow.com/questions/452969/does-python-have-an-equivalent-to-java-class-forname
+    @QLibraryExceptionDecorator.init_peda_pop_up_warning
     def get_class(self, import_statement):
         mymodule = importlib.import_module(import_statement)
         members = inspect.getmembers(mymodule, inspect.isclass)
@@ -318,6 +337,7 @@ class ParameterEntryScrollArea(QScrollArea,Ui_ScrollArea):
                 return memtup[1]
         raise MissingClassException(f"Unable to find correct module for {class_owner} in {str(memtup[1])}")
 
+    @QLibraryExceptionDecorator.init_peda_pop_up_warning
     def get_class_from_abs_file_path(self, abs_file_path):
         root_dir = QDir(os.getcwd())
         #relative_path = root_dir.relativeFilePath(abs_file_path)  # relative path for CWD at runtime!
@@ -327,8 +347,7 @@ class ParameterEntryScrollArea(QScrollArea,Ui_ScrollArea):
         imported_class = self.get_class(qis_mod_path)
         return imported_class
 
-
-
+    @QLibraryExceptionDecorator.entry_exception_pop_up_warning
     def make_object(self):
         try:
              entry_count = self.parameter_entry_vertical_layout.count()
@@ -348,6 +367,7 @@ class ParameterEntryScrollArea(QScrollArea,Ui_ScrollArea):
         except Exception as e:
             self.display_error_box(e)
 
+    @QLibraryExceptionDecorator.entry_exception_pop_up_warning
     def argify_entry(self, entry:EntryWidget, argdict:dict):
         if not isinstance(entry, self.EntryWidget):
             raise InvalidEntry(f"Expected entry to be of type EntryWidget but is instead of type {str(type(entry))}")
@@ -379,7 +399,7 @@ class ParameterEntryScrollArea(QScrollArea,Ui_ScrollArea):
             self.dictionaryentrybox_to_dictionary(entry.all_key_value_pairs_entry_layout, deb_dict)
             argdict[entry.arg_name] = entry.arg_type(deb_dict)
 
-    @QLibraryExceptionDecorator.on_exception_pop_up_warning
+    @QLibraryExceptionDecorator.entry_exception_pop_up_warning
     def dictionaryentrybox_to_dictionary(self, parent_layout, kv_dict):
         #get all Debs from layout and add to kv_dict
         kv_count = parent_layout.count()
@@ -431,6 +451,15 @@ class ParameterEntryScrollArea(QScrollArea,Ui_ScrollArea):
       #
 
 
+class PEDAInitException(Exception):
+    pass
+
+class InvalidFilePath(PEDAInitException):
+    def __init__(self, message, filepath):
+        super().__init__(message)
+        self.invalid_filepath = filepath
+
+
 
 class LibraryQComponentException(Exception):
     pass
@@ -441,7 +470,9 @@ class InvalidParameterTypeException(LibraryQComponentException):
 
 
 class InvalidEntry(LibraryQComponentException):
-    pass
+    def __init__(self, message):
+        super().__init__(message)
 
 class MissingClassException(LibraryQComponentException):
-    pass
+    def __init__(self, message):
+        super().__init__(message)
