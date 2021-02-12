@@ -27,7 +27,7 @@ from pathlib import Path
 from typing import List, TYPE_CHECKING
 
 from PySide2 import QtWidgets
-from PySide2.QtCore import QEventLoop, Qt, QTimer, Slot, QModelIndex, QSortFilterProxyModel
+from PySide2.QtCore import QEventLoop, Qt, QTimer, Slot, QModelIndex, QSortFilterProxyModel, QRegExp
 from PySide2.QtGui import QIcon
 from PySide2.QtWidgets import (QApplication, QDockWidget, QFileDialog,
                                QInputDialog, QLabel, QLineEdit, QMainWindow,
@@ -527,9 +527,13 @@ class MetalGUI(QMainWindowBaseHandler):
         # QSortFilterProxyModel
         #QSortFilterProxyModel: sorting items, filtering out items, or both.  maps the original model indexes to new indexes, allows a given source model to be restructured as far as views are concerned without requiring any transformations on the underlying data, and without duplicating the data in memory.
 
-        self.library_proxy_model = QSortFilterProxyModel
+        self.library_proxy_model = QSortFilterProxyModel()
         self.library_proxy_model.setSourceModel(self.ui.dockLibrary.library_model)
-        self.file_filter_regex = "^((?!\.))(?!__init__).*\.py"
+
+        # finds all files that
+        # (Aren't hidden (begin w/ .), don't begin with __init__, don't begin with _template, etc. AND end in .py)  OR (don't begin with __pycache__ and don't have a '.' in the name)
+        #  (QComponent files) OR (Directories)
+        self.file_filter_regex = r"(^((?!\.))(?!__init__)(?!_template)(?!__pycache__).*\.py)|(?!__pycache__)(^([^.]+)$)"
         self.library_proxy_model.setFilterRegExp(self.file_filter_regex)
 
         ## TODO clean code
@@ -537,8 +541,6 @@ class MetalGUI(QMainWindowBaseHandler):
         self.ui.dockLibrary_tree_view.setRootIndex(self.library_proxy_model.mapFromSource(self.ui.dockLibrary.library_model.index(self.ui.dockLibrary.library_model.rootPath())))
         self.ui.dockLibrary_tree_view.doubleClicked.connect(self.create_new_component_object_from_qlibrary)
         self.ui.dockLibrary_tree_view.clicked.connect(self.create_new_component_object_from_qlibrary)
-
-
 
 
 
