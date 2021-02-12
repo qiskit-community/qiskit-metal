@@ -15,6 +15,7 @@ class LibraryFileProxyModel(QSortFilterProxyModel):
         self.setFilterRegExp(self.accepted_files__regex)
 
 
+
     def filterAcceptsColumn(self, source_column:int, source_parent:QModelIndex) -> bool:
         if source_column > 0: # Won't show Size, Kind, Date Modified, etc. for QFileSystemModel
             return False

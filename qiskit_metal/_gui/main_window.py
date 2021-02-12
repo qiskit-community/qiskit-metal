@@ -497,15 +497,16 @@ class MetalGUI(QMainWindowBaseHandler):
         #TODO filter for .py files
         filename = self.library_proxy_model.data(relative_index)
         print("qmodelindex: filename: ", filename, "index: ", relative_index)
-        #full_path = self.library_proxy_model.filePath(relative_index)
-        #print("full path: ", full_path)
-        #try:
-        #    self.param_entry = ParameterEntryScrollArea(self.QLIBRARY_FOLDERNAME, full_path, self.design)
-        #except Exception as e:
-        #    print("exception was; ", e)
-        #print("param_entry made")
-        #self.param_entry.show()
-        #print("param entry showing? :", str(self.param_entry.isVisible()))
+        print("manolo")
+        full_path = self.ui.dockLibrary.library_model.filePath(self.library_proxy_model.mapToSource(relative_index))
+        print("full path: ", full_path)
+        try:
+            self.param_entry = ParameterEntryScrollArea(self.QLIBRARY_FOLDERNAME, full_path, self.design)
+        except Exception as e:
+            print("exception was; ", e)
+        print("param_entry made")
+        self.param_entry.show()
+        print("param entry showing? :", str(self.param_entry.isVisible()))
 
 
     def _setup_library_widget(self):
@@ -743,7 +744,6 @@ class MetalGUI(QMainWindowBaseHandler):
         self.zoom_on_components([name_instance])
         self.edit_component_source(name_instance)
 
-    @slot_catch_error()
     def gui_create_build_log_window(self, _=None):
         """Creates a separate window that displays the recent successful/fails of all components for the design
 

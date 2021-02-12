@@ -36,8 +36,19 @@ class ParameterEntryScrollArea(QScrollArea,Ui_ScrollArea):
         self.parameter_values = []
 
         self.imported_class = self.get_class_from_abs_file_path(self.abs_file_path)
+        self.setWindowTitle(self.imported_class.__name__)
         print("import_class name:", self.imported_class.__name__)
         print("import_class:", self.imported_class)
+
+        @property
+        def logger(self) -> logging.Logger:
+            """The Qiskit Metal Logger
+
+            Returns:
+                logging.Logger: logger
+            """
+            return self.design.logger #steal design's logging
+
 
         self.display_class_parameter_entries(self.imported_class)
 
@@ -388,9 +399,7 @@ class ParameterEntryScrollArea(QScrollArea,Ui_ScrollArea):
 
     def display_error_box(self, exception: Exception):
         if exception is LibraryQComponentException:
-            self.error_pop_up = QMessageBox()
-            self.setWindowModality(self) # don't let user continue interacting with PEDA until error message is resolved
-            self.error_pop_up.critical(0, exception.__name__, str(exception))
+
         else:
             self.error_pop_up = QMessageBox()
             self.setWindowModality(self) # don't let user continue interacting with PEDA until error message is resolved
@@ -403,6 +412,31 @@ class ParameterEntryScrollArea(QScrollArea,Ui_ScrollArea):
 
       #use param dictionary to type cast or if dict then try to json loads, if all fails
       #
+    class Decoraters(object):
+        # Does NOT handle chained exceptions
+        @classmethod
+        def on_exception_pop_up_warning(self,func:Callable):
+            def wrapper(*args, **kwargs):
+                try:
+                    func(*args, **kwargs)
+
+                # if anticipated Exception throw up error window
+                except LibraryQComponentException as lqce:
+                    self.error_pop_up = QMessageBox()
+                    self.setWindowModality(
+                        self)  # don't let user continue interacting with PEDA until error message is resolved
+                    self.error_pop_up.critical(0, lqce.__name__, str(lqce))
+
+                # else just log exception
+                except Exception as e:  # pylint: disable=invalid-name,broad-except
+                    message = traceback.format_exc()
+                    message += '\n\nERROR in call by Metal GUI (see traceback above)\n' \
+                          + f"\n{' module   :':12s} {wrapper.__module__}" \
+                          + f"\n{' function :':12s} {wrapper.__qualname__}" \
+                          + f"\n{' err msg  :':12s} {e.__repr__()}" \
+                          + f"\n{' args; kws:':12s} {args}; {kwargs}"
+                    self.logger.error(message)
+            return wrapper
 
 
 class LibraryQComponentException(Exception):
@@ -410,6 +444,9 @@ class LibraryQComponentException(Exception):
         super().__init__()
         self.name = self.__class__
         self.message = message
+
+
+
 
 class InvalidArgumentException(LibraryQComponentException):
     pass

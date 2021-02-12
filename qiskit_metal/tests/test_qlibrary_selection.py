@@ -56,96 +56,96 @@ def transmon_additional_options():
     }
 
 
-# @pytest.mark.parametrize(
-#     "test_name, component_file, args_dict",
-#     [ ("dictionary_empty",  inspect.getfile(TransmonPocket), {}),
-#       ("dictionary_basic",  inspect.getfile(TransmonPocket), {"name":"mytest", "Chilean":False, "size": 12, "depth":"12uq", "power":0.17}),
-#       ("dictionary_nested_only",  inspect.getfile(TransmonCross), {"my_nest" : {"n11" : 12, "n12": 0.9, "n13":"astring", "n14": True} } ),
-#       ("dictionary_nested_w_toplevel_key", inspect.getfile(TransmonCross), {"mykey":"myvalue", "my_nest" : {"n11" : 12, "n12": 0.9, "n13":"astring", "n14": True} } ),
-#       ("dictionary_2_parallel_nested",  inspect.getfile(TransmonCross), {"my_nest" : {"n11" : 12, "n12": 0.9, "n13":"astring", "n14": True},
-#                                                                                   "my_nest2": {"n11": 13, "n12": 0.8, "n13": "mystr", "n14":False},
-#                                                                                   "mykey":"myvalue"} ),
-#       ("dictionary_nested_4_deep",  inspect.getfile(TransmonCross), {"nest00":
-#                                                                                              {"nest10":
-#                                                                                                   {"n20":1, "n21":2, "nest23":
-#                                                                                                       {"nest30" : {"n40": "cherry"},
-#                                                                                                        "n31":0.7
-#
-#                                                                                                        }
-#                                                                                                    }
-#                                                                                               }
-#                                                                                          }
-#        ),
-#
-# ]
-# )
-# def test_create_dictionary(qtbot, test_name, component_file, args_dict): # doesn't test + button :(
-#     # open ParameterEntryScrollArea w/ abs file path
-#     # create with different entries (parameterize tests)
-#     QLIBRARY_ROOT = qlibrary.__name__
-#     new_design = designs.DesignPlanar()
-#
-#     ## Create GUI input from dictionary
-#     pesa = ParameterEntryScrollArea(QLIBRARY_ROOT, component_file, new_design)
-#     qtbot.addWidget(pesa)
-#     entry_count = pesa.parameter_entry_vertical_layout.count()
-#     a_dictionary = None
-#     for index in range(entry_count):
-#         cur_widget = pesa.parameter_entry_vertical_layout.itemAt(index).widget()
-#         if isinstance(cur_widget, pesa.EntryWidget):
-#             if isinstance(cur_widget, pesa.DictionaryEntryWidget):
-#                 a_dictionary = cur_widget
-#     qtbot.addWidget(a_dictionary)
-#
-#     create_gui_dictionary(qtbot, a_dictionary.all_key_value_pairs_entry_layout, a_dictionary.add_more_button, args_dict)
-#
-#     ## Create dictionary from GUI input
-#     new_dict = {}
-#     pesa.dictionaryentrybox_to_dictionary(a_dictionary.all_key_value_pairs_entry_layout, new_dict)
-#
-#     ## Compare dictionaries
-#     assert new_dict == args_dict
-#
-#     # pp = pprint.PrettyPrinter(indent=4)
-#     # print("new dict: ")
-#     # pp.pprint(new_dict)
-#     # print("para dict:")
-#     # pp.pprint(args_dict)
-#
-#     del new_design
-#
-#
-#
-# @pytest.mark.parametrize(
-#      "test_name, component_file, args_dict", # these vars will be subset of what real QComponent ends with
-#     [ ("TransmonPocket-make-true", inspect.getfile(TransmonPocket), {"name":"mytransmon", "make":True}),
-#        ("TransmonPocket-make-false", inspect.getfile(TransmonPocket), {"name":"mytransmon2", "make":False}),
-#        ("TransmonCross-make-true",  inspect.getfile(TransmonCross), {"name":"mytransmoncross", "make":True}  ),
-#        ("TransmonCross-make-false",  inspect.getfile(TransmonCross), {"name": "mytransmoncross2", "make": False}),
-#        ("TransmonPocket-with-options",inspect.getfile(TransmonPocket), {"name":"transmon-op","options":{"connection_pads":{"a":{}}}}),
-#        ("TransmonPocket-OptionsQ", inspect.getfile(TransmonPocket),
-#         {"name":"optionsq",
-#          "options":{
-#              "pos_x":'-1.5mm',
-#              "pos_y":'+0.0mm',
-#              "pad_width" :'425 um',
-#              "pocket_height" : '650um',
-#              "connection_pads" :{  # Qbits defined to have 4 pins
-#                     "a" : {"loc_W":+1,"loc_H":+1},
-#                     "b" : {"loc_W":-1,"loc_H":+1, "pad_height":'30um'},
-#                     "c" : {"loc_W":+1,"loc_H":-1, "pad_width":'200um'},
-#                     "d" : {"loc_W":-1,"loc_H":-1, "pad_height":'50um'},
-#                     }
-#                   }
-#          }
-#         )
-#      ]
-# )
-# def test_name_only_QComponent(qtbot, test_name, component_file, args_dict):
-#     new_design = designs.DesignPlanar()
-#     create_qcomponent_via_gui(qtbot, new_design, test_name, component_file, args_dict)
-#     validate_qcomponent_against_arguments(new_design, test_name, args_dict)
-#     del(new_design)
+@pytest.mark.parametrize(
+    "test_name, component_file, args_dict",
+    [ ("dictionary_empty",  inspect.getfile(TransmonPocket), {}),
+      ("dictionary_basic",  inspect.getfile(TransmonPocket), {"name":"mytest", "Chilean":False, "size": 12, "depth":"12uq", "power":0.17}),
+      ("dictionary_nested_only",  inspect.getfile(TransmonCross), {"my_nest" : {"n11" : 12, "n12": 0.9, "n13":"astring", "n14": True} } ),
+      ("dictionary_nested_w_toplevel_key", inspect.getfile(TransmonCross), {"mykey":"myvalue", "my_nest" : {"n11" : 12, "n12": 0.9, "n13":"astring", "n14": True} } ),
+      ("dictionary_2_parallel_nested",  inspect.getfile(TransmonCross), {"my_nest" : {"n11" : 12, "n12": 0.9, "n13":"astring", "n14": True},
+                                                                                  "my_nest2": {"n11": 13, "n12": 0.8, "n13": "mystr", "n14":False},
+                                                                                  "mykey":"myvalue"} ),
+      ("dictionary_nested_4_deep",  inspect.getfile(TransmonCross), {"nest00":
+                                                                                             {"nest10":
+                                                                                                  {"n20":1, "n21":2, "nest23":
+                                                                                                      {"nest30" : {"n40": "cherry"},
+                                                                                                       "n31":0.7
+
+                                                                                                       }
+                                                                                                   }
+                                                                                              }
+                                                                                         }
+       ),
+
+]
+)
+def test_create_dictionary(qtbot, test_name, component_file, args_dict): # doesn't test + button :(
+    # open ParameterEntryScrollArea w/ abs file path
+    # create with different entries (parameterize tests)
+    QLIBRARY_ROOT = qlibrary.__name__
+    new_design = designs.DesignPlanar()
+
+    ## Create GUI input from dictionary
+    pesa = ParameterEntryScrollArea(QLIBRARY_ROOT, component_file, new_design)
+    qtbot.addWidget(pesa)
+    entry_count = pesa.parameter_entry_vertical_layout.count()
+    a_dictionary = None
+    for index in range(entry_count):
+        cur_widget = pesa.parameter_entry_vertical_layout.itemAt(index).widget()
+        if isinstance(cur_widget, pesa.EntryWidget):
+            if isinstance(cur_widget, pesa.DictionaryEntryWidget):
+                a_dictionary = cur_widget
+    qtbot.addWidget(a_dictionary)
+
+    create_gui_dictionary(qtbot, a_dictionary.all_key_value_pairs_entry_layout, a_dictionary.add_more_button, args_dict)
+
+    ## Create dictionary from GUI input
+    new_dict = {}
+    pesa.dictionaryentrybox_to_dictionary(a_dictionary.all_key_value_pairs_entry_layout, new_dict)
+
+    ## Compare dictionaries
+    assert new_dict == args_dict
+
+    # pp = pprint.PrettyPrinter(indent=4)
+    # print("new dict: ")
+    # pp.pprint(new_dict)
+    # print("para dict:")
+    # pp.pprint(args_dict)
+
+    del new_design
+
+
+
+@pytest.mark.parametrize(
+     "test_name, component_file, args_dict", # these vars will be subset of what real QComponent ends with
+    [ ("TransmonPocket-make-true", inspect.getfile(TransmonPocket), {"name":"mytransmon", "make":True}),
+       ("TransmonPocket-make-false", inspect.getfile(TransmonPocket), {"name":"mytransmon2", "make":False}),
+       ("TransmonCross-make-true",  inspect.getfile(TransmonCross), {"name":"mytransmoncross", "make":True}  ),
+       ("TransmonCross-make-false",  inspect.getfile(TransmonCross), {"name": "mytransmoncross2", "make": False}),
+       ("TransmonPocket-with-options",inspect.getfile(TransmonPocket), {"name":"transmon-op","options":{"connection_pads":{"a":{}}}}),
+       ("TransmonPocket-OptionsQ", inspect.getfile(TransmonPocket),
+        {"name":"optionsq",
+         "options":{
+             "pos_x":'-1.5mm',
+             "pos_y":'+0.0mm',
+             "pad_width" :'425 um',
+             "pocket_height" : '650um',
+             "connection_pads" :{  # Qbits defined to have 4 pins
+                    "a" : {"loc_W":+1,"loc_H":+1},
+                    "b" : {"loc_W":-1,"loc_H":+1, "pad_height":'30um'},
+                    "c" : {"loc_W":+1,"loc_H":-1, "pad_width":'200um'},
+                    "d" : {"loc_W":-1,"loc_H":-1, "pad_height":'50um'},
+                    }
+                  }
+         }
+        )
+     ]
+)
+def test_name_only_QComponent(qtbot, test_name, component_file, args_dict):
+    new_design = designs.DesignPlanar()
+    create_qcomponent_via_gui(qtbot, new_design, test_name, component_file, args_dict)
+    validate_qcomponent_against_arguments(new_design, test_name, args_dict)
+    del(new_design)
 
 @pytest.mark.parametrize(
      "test_name, transmon_file, route_meander_file, transmon_1_args, transmon_2_args, route_meander_args", # these vars will be subset of what real QComponent ends with

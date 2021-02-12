@@ -82,7 +82,7 @@ def _qt_message_handler(mode, context, message):
 
 def do_debug(msg, name='info'):
     """
-    Utility function used to print debug statemetns from PySide2 Socket calls
+    Utility function used to print debug statements from PySide2 Socket calls
     A bit of a cludge
 
     Arguments:
@@ -97,8 +97,8 @@ def do_debug(msg, name='info'):
             try:
                 stack = inspect.stack()[i]
                 callers += [f'{stack.function}[{stack.lineno}]']
-            except Exception:  # pylint: disable=broad-except
-                pass
+            except Exception as e:  # pylint: disable=broad-except
+                print("Exception during do_debug exception handling: " + e.__repr__())
         callers = reversed(callers)
         callers = '\n'.join(callers)
         msg = callers + "\n" + str(msg) + '\n'
