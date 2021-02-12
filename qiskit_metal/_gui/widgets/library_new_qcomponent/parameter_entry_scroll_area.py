@@ -7,11 +7,13 @@ from .collapsable_widget import CollapsibleWidget
 from .parameter_entry_scroll_area_ui import Ui_ScrollArea
 from inspect import signature
 import inspect
-from collections.abc import Callable
+from collections import Callable
 import os
 from ....designs.design_base import QDesign
 import importlib
 import builtins
+import logging
+import traceback
 
 from typing import Dict as typeDict
 
@@ -39,18 +41,66 @@ class ParameterEntryScrollArea(QScrollArea,Ui_ScrollArea):
         self.setWindowTitle(self.imported_class.__name__)
         print("import_class name:", self.imported_class.__name__)
         print("import_class:", self.imported_class)
-
-        @property
-        def logger(self) -> logging.Logger:
-            """The Qiskit Metal Logger
-
-            Returns:
-                logging.Logger: logger
-            """
-            return self.design.logger #steal design's logging
-
+        print("self.logger IS: ", self.logger)
 
         self.display_class_parameter_entries(self.imported_class)
+
+    # Exception Handling/Logginger classes/properties
+
+    class QLibraryExceptionDecorator(object):
+        # Does NOT handle chained exceptions
+        """
+        Should wrap ONLY  PEDA instance methods because it assumes args[0] is a self who has a valid logger
+        """
+        @classmethod
+        def on_exception_pop_up_warning(cls,func:Callable):
+            def wrapper(*args, **kwargs):
+                # args[0] is PEDA object
+                try:
+                    func(*args, **kwargs)
+                # if anticipated Exception throw up error window
+                except (LibraryQComponentException) as lqce:
+                    print("LibraryQCom...Exception AS str: ", str(lqce.__class__.__name__))
+                    print("LibraryQCom...Exception AS: ", lqce.__class__.__name__)
+                    args[0].error_pop_up = QMessageBox()
+                    try:
+                        args[0].error_pop_up.critical(args[0],"",str(lqce.__class__.__name__) + ":\n" +str(lqce)) #modality set by critical, Don't set Title -- will NOT show up on MacOs
+
+                    except Exception as e:
+                        print("Unable to popup window: ", e)
+                    print("DONE")
+                    message = traceback.format_exc()
+                    message += '\n\nERROR in PEDA\n' \
+                               + f"\n{' module   :':12s} {wrapper.__module__}" \
+                               + f"\n{' function :':12s} {wrapper.__qualname__}" \
+                               + f"\n{' err msg  :':12s} {e.__repr__()}" \
+                               + f"\n{' args; kws:':12s} {args}; {kwargs}" \
+                               + "\nTill now I always got by on my own........ (I never really cared until I met you)"
+                    args[0].logger.error(message)
+
+                # else just log exception
+                except Exception as e:  # pylint: disable=invalid-name,broad-except
+                    print("normal Exceptions", str(e))
+                    print("args[0]: ", args[0])
+                    message = traceback.format_exc()
+                    message += '\n\nERROR in PEDA\n' \
+                          + f"\n{' module   :':12s} {wrapper.__module__}" \
+                          + f"\n{' function :':12s} {wrapper.__qualname__}" \
+                          + f"\n{' err msg  :':12s} {e.__repr__()}" \
+                          + f"\n{' args; kws:':12s} {args}; {kwargs}" \
+                          + "\nTill now I always got by on my own........ (I never really cared until I met you)"
+                    args[0].logger.error(message)
+            return wrapper
+
+    @property
+    def logger(self) -> logging.Logger:
+        """The Qiskit Metal Logger
+
+        Returns:
+            logging.Logger: logger
+        """
+        return self.design.logger #steal design's logging
+
 
     ## Parameter-Entry Qt Display Custom Classes
 
@@ -277,31 +327,7 @@ class ParameterEntryScrollArea(QScrollArea,Ui_ScrollArea):
         imported_class = self.get_class(qis_mod_path)
         return imported_class
 
-    @QLibraryExceptionDecorator.on_exception_pop_up_warning
-    def convert_string_to_obj(self, entry_value, ctype, default):
-        print("value: ", str(entry_value))
-        print("valuetype: ", type(entry_value))
-        print("ctype: ", ctype)
-        if entry_value == "" or entry_value == [] :
-            return default
-        if ctype is Dict or ctype is type({}):
-            print("dictionarying")
-            my_dictionary = {}
-            typ_d = {"str":str, "int":int }
-            for entries in entry_value:
-                print("entry_value: ", entry_value)
-                #these are each QLineEdits
-                k = entries[0].text()
-                v = entries[1].text()
-                t = typ_d[entries[2].text()]
-                print("t: ", t)
-                my_dictionary[k] = t(v)
-                print("current dictionary: ", my_dictionary)
-            return my_dictionary
 
-        else:
-            value = ctype(entry_value.text())
-            return value
 
     def make_object(self):
         try:
@@ -353,6 +379,7 @@ class ParameterEntryScrollArea(QScrollArea,Ui_ScrollArea):
             self.dictionaryentrybox_to_dictionary(entry.all_key_value_pairs_entry_layout, deb_dict)
             argdict[entry.arg_name] = entry.arg_type(deb_dict)
 
+    @QLibraryExceptionDecorator.on_exception_pop_up_warning
     def dictionaryentrybox_to_dictionary(self, parent_layout, kv_dict):
         #get all Debs from layout and add to kv_dict
         kv_count = parent_layout.count()
@@ -378,13 +405,18 @@ class ParameterEntryScrollArea(QScrollArea,Ui_ScrollArea):
                             value = None # todo perhaps do "" and 0 instead
                         else:
                             cur_type = cur_widget.type_name.getType()
+                            print("dict cur_type: ", cur_type)
                             if cur_type == bool:
                                 if strvalue.lower() in "true":
                                     value = True
                                 else:
                                     value = False
                             else:
-                                value = cur_type(strvalue)
+                                print("will value")
+                                try:
+                                    value = cur_type(strvalue)
+                                except ValueError as e:
+                                    raise InvalidParameterTypeException(f"The type {cur_type} you chose is not compatible with your input {strvalue}. Error: {e}")
                     kv_dict[keyname] =  value
 
         print("kv_dict is: ", kv_dict)
@@ -397,40 +429,16 @@ class ParameterEntryScrollArea(QScrollArea,Ui_ScrollArea):
 
       #use param dictionary to type cast or if dict then try to json loads, if all fails
       #
-    class QlibraryExceptionDecorator(object):
-        # Does NOT handle chained exceptions
-        @classmethod
-        def on_exception_pop_up_warning(self,func:Callable):
-            def wrapper(*args, **kwargs):
-                try:
-                    func(*args, **kwargs)
-                # if anticipated Exception throw up error window
-                except LibraryQComponentException as lqce:
-                    self.error_pop_up = QMessageBox()
-                    self.setWindowModality(
-                        self)  # don't let user continue interacting with PEDA until error message is resolved
-                    self.error_pop_up.critical(0, lqce.__name__, str(lqce))
 
-                # else just log exception
-                except Exception as e:  # pylint: disable=invalid-name,broad-except
-                    message = traceback.format_exc()
-                    message += '\n\nERROR in call by Metal GUI (see traceback above)\n' \
-                          + f"\n{' module   :':12s} {wrapper.__module__}" \
-                          + f"\n{' function :':12s} {wrapper.__qualname__}" \
-                          + f"\n{' err msg  :':12s} {e.__repr__()}" \
-                          + f"\n{' args; kws:':12s} {args}; {kwargs}"
-                    self.logger.error(message)
-            return wrapper
 
 
 class LibraryQComponentException(Exception):
-    def __init__(self, message):
-        super().__init__()
-        self.name = self.__class__
-        self.message = message
-
-class InvalidArgumentException(LibraryQComponentException):
     pass
+
+class InvalidParameterTypeException(LibraryQComponentException):
+    def __init__(self, message):
+        super().__init__(message)
+
 
 class InvalidEntry(LibraryQComponentException):
     pass
