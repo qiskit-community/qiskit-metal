@@ -76,7 +76,8 @@ class QHFSSRenderer(QAnsysRenderer):
                       open_pins: Union[list, None] = None,
                       port_list: Union[list, None] = None,
                       jj_to_port: Union[list, None] = None,
-                      ignored_jjs: Union[list, None] = None):
+                      ignored_jjs: Union[list, None] = None,
+                      box_plus_buffer: bool = True):
         """
         Initiate rendering of components in design contained in selection, assuming they're valid.
         Components are rendered before the chips they reside on, and subtraction of negative shapes
@@ -110,6 +111,8 @@ class QHFSSRenderer(QAnsysRenderer):
             port_list (Union[list, None], optional): List of tuples of pins to be rendered as ports. Defaults to None.
             jj_to_port (Union[list, None], optional): List of tuples of jj's to be rendered as ports. Defaults to None.
             ignored_jjs (Union[list, None], optional): List of tuples of jj's that shouldn't be rendered. Defaults to None.
+            box_plus_buffer (bool): Either calculate a bounding box based on the location of rendered geometries
+                                     or use chip size from design class.
         """
         self.chip_subtract_dict = defaultdict(set)
         self.assign_perfE = []
@@ -118,7 +121,9 @@ class QHFSSRenderer(QAnsysRenderer):
         self.jj_to_ignore = set()
 
         if jj_to_port:
-            self.jj_lumped_ports = {(qcomp, elt): impedance for qcomp, elt, impedance in jj_to_port}
+            self.jj_lumped_ports = {
+                (qcomp, elt): impedance for qcomp, elt, impedance in jj_to_port
+            }
 
         if ignored_jjs:
             self.jj_to_ignore = {(qcomp, qelt) for qcomp, qelt in ignored_jjs}
@@ -130,7 +135,7 @@ class QHFSSRenderer(QAnsysRenderer):
         else:
             self.add_endcaps(open_pins)
 
-        self.render_chips()
+        self.render_chips(box_plus_buffer=box_plus_buffer)
         self.subtract_from_ground()
         self.add_mesh()
         self.metallize()
@@ -204,7 +209,7 @@ class QHFSSRenderer(QAnsysRenderer):
         qc_elt = get_clean_name(qgeom['name'])
 
         if (qcomp, qc_elt) not in self.jj_to_ignore:
-            
+
             if (qcomp, qc_elt) in self.jj_lumped_ports:
                 # Treat the junction as a lumped port.
                 qc_name = qcomp
@@ -235,37 +240,40 @@ class QHFSSRenderer(QAnsysRenderer):
             if (qcomp, qc_elt) in self.jj_lumped_ports:
                 # Draw rectangle for lumped port.
                 self.logger.debug(f'Drawing a rectangle: {port_name}')
-                poly_ansys = self.modeler.draw_rect_corner([x_min, y_min, qc_chip_z],
-                                                           x_max - x_min, y_max - y_min,
-                                                           qc_chip_z, **ansys_options)
+                poly_ansys = self.modeler.draw_rect_corner(
+                    [x_min, y_min, qc_chip_z], x_max - x_min, y_max - y_min,
+                    qc_chip_z, **ansys_options)
                 axis = 'x' if abs(x1 - x0) > abs(y1 - y0) else 'y'
-                poly_ansys.make_lumped_port(axis, 
-                                            z0=str(impedance) + 'ohm', 
+                poly_ansys.make_lumped_port(axis,
+                                            z0=str(impedance) + 'ohm',
                                             name=f'LumpPort_{qcomp}_{qc_elt}')
                 self.modeler.rename_obj(poly_ansys, port_name)
                 # Draw line for lumped port.
-                lump_line = self.modeler.draw_polyline([endpoints_3d[0], endpoints_3d[1]],
-                                                    closed=False,
-                                                    **dict(color=(128, 0, 128)))
+                lump_line = self.modeler.draw_polyline(
+                    [endpoints_3d[0], endpoints_3d[1]],
+                    closed=False,
+                    **dict(color=(128, 0, 128)))
                 lump_line = lump_line.rename(f'voltage_line_{port_name}')
                 lump_line.show_direction = True
             else:
                 # Draw rectangle for inductor.
                 self.logger.debug(f'Drawing a rectangle: {inductor_name}')
                 poly_ansys = self.modeler.draw_rect_corner(
-                    [x_min, y_min, qc_chip_z], x_max - x_min, y_max - y_min, qc_chip_z, **ansys_options)
+                    [x_min, y_min, qc_chip_z], x_max - x_min, y_max - y_min,
+                    qc_chip_z, **ansys_options)
                 axis = 'x' if abs(x1 - x0) > abs(y1 - y0) else 'y'
                 poly_ansys.make_rlc_boundary(axis,
-                                            l=qgeom['hfss_inductance'],
-                                            c=qgeom['hfss_capacitance'],
-                                            r=qgeom['hfss_resistance'],
-                                            name='Lj_' + inductor_name)
+                                             l=qgeom['hfss_inductance'],
+                                             c=qgeom['hfss_capacitance'],
+                                             r=qgeom['hfss_resistance'],
+                                             name='Lj_' + inductor_name)
                 self.modeler.rename_obj(poly_ansys, 'JJ_rect_' + inductor_name)
                 self.assign_mesh.append('JJ_rect_' + inductor_name)
                 # Draw line for inductor.
-                poly_jj = self.modeler.draw_polyline([endpoints_3d[0], endpoints_3d[1]],
-                                                    closed=False,
-                                                    **dict(color=(128, 0, 128)))
+                poly_jj = self.modeler.draw_polyline(
+                    [endpoints_3d[0], endpoints_3d[1]],
+                    closed=False,
+                    **dict(color=(128, 0, 128)))
                 poly_jj = poly_jj.rename('JJ_' + inductor_name + '_')
                 poly_jj.show_direction = True
 
