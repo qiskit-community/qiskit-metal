@@ -277,6 +277,7 @@ class ParameterEntryScrollArea(QScrollArea,Ui_ScrollArea):
         imported_class = self.get_class(qis_mod_path)
         return imported_class
 
+    @QLibraryExceptionDecorator.on_exception_pop_up_warning
     def convert_string_to_obj(self, entry_value, ctype, default):
         print("value: ", str(entry_value))
         print("valuetype: ", type(entry_value))
@@ -298,18 +299,9 @@ class ParameterEntryScrollArea(QScrollArea,Ui_ScrollArea):
                 print("current dictionary: ", my_dictionary)
             return my_dictionary
 
-            # TODO handle nested dictionaries
-
-        try:
+        else:
             value = ctype(entry_value.text())
             return value
-        except:
-            try:
-                import json
-                value = json.loads(entry_value)
-                return value
-            except Exception as e:
-                self.display_error_box(e)
 
     def make_object(self):
         try:
@@ -397,14 +389,7 @@ class ParameterEntryScrollArea(QScrollArea,Ui_ScrollArea):
 
         print("kv_dict is: ", kv_dict)
 
-    def display_error_box(self, exception: Exception):
-        if exception is LibraryQComponentException:
 
-        else:
-            self.error_pop_up = QMessageBox()
-            self.setWindowModality(self) # don't let user continue interacting with PEDA until error message is resolved
-            self.error_pop_up.critical(0, str(exception))
-        #self.error_pop_up.setFixedSize(500, 200)
 
     # when press make:
       #design
@@ -412,14 +397,13 @@ class ParameterEntryScrollArea(QScrollArea,Ui_ScrollArea):
 
       #use param dictionary to type cast or if dict then try to json loads, if all fails
       #
-    class Decoraters(object):
+    class QlibraryExceptionDecorator(object):
         # Does NOT handle chained exceptions
         @classmethod
         def on_exception_pop_up_warning(self,func:Callable):
             def wrapper(*args, **kwargs):
                 try:
                     func(*args, **kwargs)
-
                 # if anticipated Exception throw up error window
                 except LibraryQComponentException as lqce:
                     self.error_pop_up = QMessageBox()
@@ -444,9 +428,6 @@ class LibraryQComponentException(Exception):
         super().__init__()
         self.name = self.__class__
         self.message = message
-
-
-
 
 class InvalidArgumentException(LibraryQComponentException):
     pass
