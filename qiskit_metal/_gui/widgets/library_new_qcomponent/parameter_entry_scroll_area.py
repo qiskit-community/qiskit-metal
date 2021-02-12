@@ -224,18 +224,17 @@ class ParameterEntryScrollArea(QScrollArea,Ui_ScrollArea):
                 cur_default = param.default
                 print("cur_name", cur_name)
                 print("entry_type:", entry_type)
+                print("param.default:", param.default)
 
-                if not param.default:
-                    # TODO show mandatory via color
-                    # TODO fill in non-mandatory with their default values
-                    if entry_type is class_signature.empty:
+                if (not param.default or param.default is inspect._empty) and (entry_type is class_signature.empty or entry_type is inspect._empty): # ignores args and kwargs since they won't have types
                         print("some error because we need signature if mandatory")
 
-                if entry_type is type({}) or entry_type is Dict:
-                    self.DictionaryEntryWidget(self.parameter_entry_vertical_layout, cur_name, entry_type, cur_default)
-
                 else:
-                    self.NormalEntryWidget(self.parameter_entry_vertical_layout, cur_name, entry_type, cur_default)
+                    if entry_type is type({}) or entry_type is Dict:
+                        self.DictionaryEntryWidget(self.parameter_entry_vertical_layout, cur_name, entry_type, cur_default)
+
+                    else:
+                        self.NormalEntryWidget(self.parameter_entry_vertical_layout, cur_name, entry_type, cur_default)
 
         self.make_button  = QPushButton("MAKE")
         self.make_button.clicked.connect(self.make_object)
