@@ -42,6 +42,7 @@ from .renderer_gds_gui import RendererGDSWidget
 from .renderer_hfss_gui import RendererHFSSWidget
 from .renderer_q3d_gui import RendererQ3DWidget
 from .utility._handle_qt_messages import slot_catch_error
+from qiskit_metal._gui.widgets.library_new_qcomponent.library_proxy_model import LibraryFileProxyModel
 from PySide2.QtCore import qInstallMessageHandler
 from .widgets.all_components.table_model_all_components import \
     QTableModel_AllComponents
@@ -493,22 +494,18 @@ class MetalGUI(QMainWindowBaseHandler):
     #must be defined outside of _setup_library_widget to ensure self == MetalGUI and will retain opened ScrollArea
     def create_new_component_object_from_qlibrary(self, relative_index: QModelIndex):
         print("hi")
-        #filter for .py files
+        #TODO filter for .py files
         filename = self.library_proxy_model.data(relative_index)
-        print("qmodelindex: filename: ", filename)
-        if not filename.endswith('.py'):
-            print("no py")
-            return
-        print("yes PY")
-        full_path = self.library_proxy_model.filePath(relative_index)
-        print("full path: ", full_path)
-        try:
-            self.param_entry = ParameterEntryScrollArea(self.QLIBRARY_FOLDERNAME, full_path, self.design)
-        except Exception as e:
-            print("exception was; ", e)
-        print("param_entry made")
-        self.param_entry.show()
-        print("param entry showing? :", str(self.param_entry.isVisible()))
+        print("qmodelindex: filename: ", filename, "index: ", relative_index)
+        #full_path = self.library_proxy_model.filePath(relative_index)
+        #print("full path: ", full_path)
+        #try:
+        #    self.param_entry = ParameterEntryScrollArea(self.QLIBRARY_FOLDERNAME, full_path, self.design)
+        #except Exception as e:
+        #    print("exception was; ", e)
+        #print("param_entry made")
+        #self.param_entry.show()
+        #print("param entry showing? :", str(self.param_entry.isVisible()))
 
 
     def _setup_library_widget(self):
@@ -527,12 +524,12 @@ class MetalGUI(QMainWindowBaseHandler):
         # QSortFilterProxyModel
         #QSortFilterProxyModel: sorting items, filtering out items, or both.  maps the original model indexes to new indexes, allows a given source model to be restructured as far as views are concerned without requiring any transformations on the underlying data, and without duplicating the data in memory.
 
-        self.library_proxy_model = QSortFilterProxyModel()
+        self.library_proxy_model = LibraryFileProxyModel()
         self.library_proxy_model.setSourceModel(self.ui.dockLibrary.library_model)
 
         # finds all files that
         # (Aren't hidden (begin w/ .), don't begin with __init__, don't begin with _template, etc. AND end in .py)  OR (don't begin with __pycache__ and don't have a '.' in the name)
-        #  (QComponent files) OR (Directories)
+        # (QComponent files) OR (Directories)
         self.file_filter_regex = r"(^((?!\.))(?!__init__)(?!_template)(?!__pycache__).*\.py)|(?!__pycache__)(^([^.]+)$)"
         self.library_proxy_model.setFilterRegExp(self.file_filter_regex)
 
