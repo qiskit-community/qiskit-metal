@@ -22,6 +22,7 @@ from typing import Union
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 import pyEPR as epr
 from pyEPR.ansys import set_property, parse_units
@@ -68,6 +69,8 @@ class QHFSSRenderer(QAnsysRenderer):
         self.assign_mesh = []
         self.jj_lumped_ports = {}
         self.jj_to_ignore = set()
+
+        self.current_sweep = None
 
         QHFSSRenderer.load()
 
@@ -275,6 +278,57 @@ class QHFSSRenderer(QAnsysRenderer):
         """
         self.modeler.assign_perfect_E(self.assign_perfE)
 
+    def add_drivenmodal_design(self, name: str, connect: bool = True):
+        """
+        Add a driven modal design with the given name to the project.
+
+        Args:
+            name (str): Name of the new driven modal design
+            connect (bool, optional): Should we connect this session to this design? Defaults to True
+        """
+        if self.pinfo:
+            adesign = self.pinfo.project.new_dm_design(name)
+            if connect:
+                self.connect_ansys_design(adesign.name)
+            return adesign
+        else:
+            self.logger.info("Are you mad?? You have to connect to ansys and a project " \
+                            "first before creating a new design . Use self.connect_ansys()")
+
+    def add_drivenmodal_setup(self, 
+                              freq_ghz=5,
+                              name="Setup",
+                              max_delta_s=0.1,
+                              max_passes=10,
+                              min_passes=1,
+                              min_converged=1,
+                              pct_refinement=30,
+                              basis_order=1):
+        # TODO: Move arguments to default options.
+        """
+        Create a solution setup in Ansys HFSS Driven Modal.
+
+        Args:
+            freq_ghz (int, optional): Frequency in GHz. Defaults to 5.
+            name (str, optional): Name of driven modal setup. Defaults to "Setup".
+            max_delta_s (float, optional): Absolute value of maximum difference in scattering parameter S. Defaults to 0.1.
+            max_passes (int, optional): Maximum number of passes. Defaults to 10.
+            min_passes (int, optional): Minimum number of passes. Defaults to 1.
+            min_converged (int, optional): Minimum number of converged passes. Defaults to 1.
+            pct_refinement (int, optional): Percent refinement. Defaults to 30.
+            basis_order (int, optional): Basis order. Defaults to -1.
+        """
+        if self.pinfo:
+            if self.pinfo.design:
+                return self.pinfo.design.create_dm_setup(freq_ghz=freq_ghz,
+                                                         name=name,
+                                                         max_delta_s=max_delta_s,
+                                                         max_passes=max_passes,
+                                                         min_passes=min_passes,
+                                                         min_converged=min_converged,
+                                                         pct_refinement=pct_refinement,
+                                                         basis_order=basis_order)
+
     def add_eigenmode_design(self, name: str, connect: bool = True):
         """
         Add an eigenmode design with the given name to the project.
@@ -355,7 +409,7 @@ class QHFSSRenderer(QAnsysRenderer):
 
     def analyze_setup(self, setup_name: str):
         """
-        Run a specific solution setup in Ansys Q3D.
+        Run a specific solution setup in Ansys HFSS.
 
         Args:
             setup_name (str): Name of setup.
@@ -363,6 +417,69 @@ class QHFSSRenderer(QAnsysRenderer):
         if self.pinfo:
             setup = self.pinfo.get_setup(setup_name)
             setup.analyze()
+    
+    def add_sweep(self,
+                  setup_name="Setup",
+                  start_ghz=2.0,
+                  stop_ghz=8.0,
+                  count=101,
+                  step_ghz=None,
+                  name="Sweep",
+                  type="Fast",
+                  save_fields=False):
+        """
+        Add a frequency sweep to a driven modal setup.
+
+        Args:
+            setup_name (str, optional): Name of driven modal simulation setup. Defaults to "Setup".
+            start_ghz (float, optional): Starting frequency of sweep in GHz. Defaults to 2.0.
+            stop_ghz (float, optional): Ending frequency of sweep in GHz. Defaults to 8.0.
+            count (int, optional): Total number of frequencies. Defaults to 101.
+            step_ghz ([type], optional): Difference between adjacent frequencies. Defaults to None.
+            name (str, optional): Name of sweep. Defaults to "Sweep".
+            type (str, optional): Type of sweep. Defaults to "Fast".
+            save_fields (bool, optional): Whether or not to save fields. Defaults to False.
+        """
+        if self.pinfo:
+            setup = self.pinfo.get_setup(setup_name)
+            return setup.insert_sweep(start_ghz=start_ghz,
+                                      stop_ghz=stop_ghz,
+                                      count=count,
+                                      step_ghz=step_ghz,
+                                      name=name,
+                                      type=type,
+                                      save_fields=save_fields)
+                                                    
+    def analyze_sweep(self, sweep_name: str, setup_name: str):
+        """
+        Analyze a single sweep within the setup.
+
+        Args:
+            sweep_name (str): Name of sweep to analyze.
+            setup_name (str): Name of setup to analyze.
+        """
+        if self.pinfo:
+            setup = self.pinfo.get_setup(setup_name)
+            sweep = setup.get_sweep(sweep_name)
+            sweep.analyze_sweep()
+            self.current_sweep = sweep
+    
+    def plot_s_params(self, getS: Union[list, None]=None):
+        """
+        Plot one or more S parameters as a function of frequency.
+
+        Args:
+            getS (Union[list, None], optional): S parameters to plot. Defaults to None.
+        """
+        if self.current_sweep:
+            freqs, Scurves = self.current_sweep.get_network_data(getS)
+            Sparams = pd.DataFrame(Scurves, columns=freqs/1e9, index=getS).transpose()
+            fig = plt.figure(10)
+            fig.clf()
+            ax = plt.gca()
+            Sparams.apply(lambda x: 20 * np.log10(np.abs(x))).plot(ax=ax)
+            ax.autoscale()
+            display(fig)
 
     def distributed_analysis(self):
         """
