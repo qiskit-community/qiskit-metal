@@ -1,5 +1,5 @@
 from PySide2.QtWidgets import QPushButton
-from PySide2.QtWidgets import (QScrollArea, QVBoxLayout, QLabel, QWidget, QHBoxLayout, QLineEdit, QLayout, QComboBox, QMessageBox)
+from PySide2.QtWidgets import (QScrollArea, QVBoxLayout, QLabel, QWidget, QHBoxLayout, QLineEdit, QLayout, QComboBox, QMessageBox, QSizePolicy)
 from PySide2.QtCore import Qt
 from PySide2.QtCore import QDir
 from addict.addict import Dict
@@ -28,7 +28,11 @@ class ParameterEntryScrollArea(QScrollArea,Ui_ScrollArea):
                  ):
         super().__init__(parent, *args, **kwargs)
         self.setupUi(self)
-        self.setWidgetResizable(True)
+        self.resize(1000,500)
+        #self.resize(1000,500) # figure out a better way to do this
+        #self.setWidgetResizable(True)
+        print("resized")
+
         self.setAttribute(Qt.WA_DeleteOnClose) # delete this ParameterEntryScrollArea when it closes
 
         self.QLIBRARY_FOLDERNAME = QLIBRARY_FOLDERNAME
@@ -37,7 +41,9 @@ class ParameterEntryScrollArea(QScrollArea,Ui_ScrollArea):
 
         self.parameter_values = []
 
+        print("about to get class from abd file")
         self.imported_class = self.get_class_from_abs_file_path(self.abs_file_path)
+        print("got class")
         self.get_window_title_from_imported_class
         print("import_class name:", self.imported_class.__name__)
         print("import_class:", self.imported_class)
@@ -70,7 +76,7 @@ class ParameterEntryScrollArea(QScrollArea,Ui_ScrollArea):
             def wrapper(*args, **kwargs):
                 # args[0] is PEDA object
                 try:
-                    func(*args, **kwargs)
+                    return func(*args, **kwargs)
                 # if anticipated Exception throw up error window
                 except (LibraryQComponentException) as lqce:
                     print("LibraryQCom...Exception AS str: ", str(lqce.__class__.__name__))
@@ -92,7 +98,8 @@ class ParameterEntryScrollArea(QScrollArea,Ui_ScrollArea):
             def wrapper(*args, **kwargs):
                 # args[0] is PEDA object
                 try:
-                    func(*args, **kwargs)
+                    print("tyring init wrapepr")
+                    return func(*args, **kwargs)
                 # if anticipated Exception throw up error window
                 except (LibraryQComponentException) as lqce:
                     print("init_peda_pop_up_arning LibraryQCom...Exception AS str: ", str(lqce.__class__.__name__))
@@ -103,7 +110,9 @@ class ParameterEntryScrollArea(QScrollArea,Ui_ScrollArea):
                     error_message =  str(lqce.__class__.__name__)  + error_message + ":\n" +str(lqce)
                     args[0].error_pop_up.critical(args[0],"",error_message) #modality set by critical, Don't set Title -- will NOT show up on MacOs :(
                 except Exception as e:
+                    print("An eceptions o no")
                     cls.log_error(args[0], e, self, args, kwargs)
+            return wrapper
 
     @property
     def logger(self) -> logging.Logger:
@@ -339,12 +348,14 @@ class ParameterEntryScrollArea(QScrollArea,Ui_ScrollArea):
 
     @QLibraryExceptionDecorator.init_peda_pop_up_warning
     def get_class_from_abs_file_path(self, abs_file_path):
+        print("rooting dir")
         root_dir = QDir(os.getcwd())
         #relative_path = root_dir.relativeFilePath(abs_file_path)  # relative path for CWD at runtime!
         #relative_import = relative_path.replace('/', '.')[:-len('.py')] if relative_path.endswith('.py') else relative_path.replace('/', '.')
         qis_abs_path = abs_file_path[abs_file_path.index(__name__.split('.')[0]):]
         qis_mod_path = qis_abs_path.replace('/', '.')[:-len('.py')]
         imported_class = self.get_class(qis_mod_path)
+        print("returning imported ")
         return imported_class
 
     @QLibraryExceptionDecorator.entry_exception_pop_up_warning
