@@ -283,7 +283,7 @@ class Hcpb:
             anharm (float): Desired qubit anharmonicity (should be negative)
 
         Keyword Arguments:
-            Passed to
+            Passed to least_squares
 
         Returns:
             (float, float): Ej and Ec of the transmon Hamiltonian
@@ -309,6 +309,32 @@ class Hcpb:
         res = opt.least_squares(fun, x0, **{**ops, **kwargs})
         self.Ej, self.Ec = res.x
         return res.x
+
+    def params_from_freq_fixEC(self, f01: float, Ec: float,
+                        **kwargs):
+        '''
+        Find transmon Ej given a fixed EC and frequency.
+
+        Arguments:
+            f01 (float): Desired qubit frequency
+            Ec (float): Qubit EC (4ECn^2) in same units as f01
+
+        Returns:
+            (float): Ej in same units
+        '''
+        def fun(x):
+            self.Ej = x[0]
+            self.Ec = Ec
+            # the 15 on the anharmonicity allows faster convergnce, see Minev
+            return (self.fij(0, 1) - f01)**2 + 15*(self.anharm() - Ec)**2
+
+        x0 = [(f01 - Ec)**2 / (8 * (Ec))]
+        # can converge slowly if cost function not set up well, or alpha<<freq
+        ops = dict(bounds=[(0,), (x0[0]*3,)], f_scale=1/x0[0], max_nfev=2000)
+        res = opt.least_squares(fun, x0, **{**ops, **kwargs})
+        self.Ej = res.x[0]
+        self.Ec = Ec
+        return res.x[0]
 
     @property
     def nlevels(self):
