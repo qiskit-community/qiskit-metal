@@ -34,7 +34,7 @@ Hamiltonian
 
 
 Electromagnetic & quantization / paramerter extraction
-----------
+------------
 
 .. autosummary::
     :toctree:
@@ -42,8 +42,17 @@ Electromagnetic & quantization / paramerter extraction
     cpw_calculations
     lumped_capacitive
 
+Scan Options
+------------
+
+.. autosummary::
+    :toctree:
+
+    Scanning
+
 """
 
 from .em import cpw_calculations
 from .quantization import lumped_capacitive
 from .hamiltonian.transmon_charge_basis import Hcpb
+from .scan_options.scanning import Scanning

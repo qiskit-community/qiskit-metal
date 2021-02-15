@@ -181,7 +181,7 @@ def extract_transmon_coupled_Noscillator(capMatrix,
     The capMatrix can be imported using `readin_q3d_matrix`
 
     Args:
-        capMatrix (float): order of the capacitance matrix must be
+        capMatrix (np.ndarray): order of the capacitance matrix must be
           bus1...busN-1, ground, Qubit_pad1, Qubit_pad2, readout. (in F)
           If not in the correct order, use df_reorder_matrix_basis() to put
           it in the proper order. It is advised that the user follow a naming scheme

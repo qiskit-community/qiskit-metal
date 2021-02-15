@@ -14,16 +14,17 @@ dependencies:
   - ipython
   - jedi>=0.17
   - matplotlib
-  - numpy
+  - numpy<1.20
   - pandas
   - pint
-  - pyepr-quantum>=0.8.4.2
+  - pyepr-quantum>=0.8.4.4
   - pygments
   - pyqode.python
   - pyside2==5.9.0a1
   - qutip
   - scipy
   - shapely
-
   - jupyter
   - wheel
+  - pip:
+      - "--editable=git+https://github.com/jojurgens/pyqode.qt.git@master#egg=pyqode.qt"
