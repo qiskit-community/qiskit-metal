@@ -33,8 +33,8 @@ Hamiltonian
     Hcpb
 
 
-Electromagnetic & quantization / paramerter extraction
-------------
+Electromagnetic & quantization / parameter extraction
+-----------------------------------------------------
 
 .. autosummary::
     :toctree:
