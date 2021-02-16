@@ -314,18 +314,18 @@ class QAnsysRenderer(QRenderer):
         # yapf: disable
         return oFieldsReport.CreateFieldPlot(
             [
-                "NAME:Mag_E1",
-                "SolutionName:=",  f"{setup.name} : LastAdaptive",  # name of the setup 
-                "UserSpecifyName:=", 0,
+                "NAME:Mag_E1"        ,
+                "SolutionName:="     ,  f"{setup.name} : LastAdaptive",  # name of the setup 
+                "UserSpecifyName:="  , 0,
                 "UserSpecifyFolder:=", 0,
-                "QuantityName:=", "Mag_E",
-                "PlotFolder:=",   "E Field",
-                "StreamlinePlot:=", False,
-                "AdjacentSidePlot:=", False,
-                "FullModelPlot:=", False,
-                "IntrinsicVar:=", "Phase=\'0deg\'",
-                "PlotGeomInfo:=", [1, "Surface", "FacesList", 1, str(object_id)],
-            ], "Field")
+                "QuantityName:="     , "Mag_E",
+                "PlotFolder:="       , "E Field",
+                "StreamlinePlot:="   , False,
+                "AdjacentSidePlot:=" , False,
+                "FullModelPlot:="    , False,
+                "IntrinsicVar:="     , "Phase=\'0deg\'",
+                "PlotGeomInfo:="     , [1, "Surface", "FacesList", 1, str(object_id)],
+            ],  "Field")
         #yapf: enable
 
     def plot_ansys_delete(self, names: list):
