@@ -93,26 +93,24 @@ class QAnsysRenderer(QRenderer):
 
     #: Default options, over-written by passing ``options` dict to render_options.
     #: Type: Dict[str, str]
+
+    # yapf: disable
     default_options = Dict(
         Lj='10nH',  # Lj has units of nanoHenries (nH)
-        Cj=
-        0,  # Cj *must* be 0 for pyEPR analysis! Cj has units of femtofarads (fF)
+        Cj=0,  # Cj *must* be 0 for pyEPR analysis! Cj has units of femtofarads (fF)
         _Rj=0,  # _Rj *must* be 0 for pyEPR analysis! _Rj has units of Ohms
-        max_mesh_length_jj=
-        '7um',  # maximum mesh length for Josephson junction elements
+        max_mesh_length_jj='7um',  # maximum mesh length for Josephson junction elements
         project_path=None,  # default project path; if None --> get active
         project_name=None,  # default project name
         design_name=None,  # default design name
-        ansys_file_extension=
-        '.aedt',  # Ansys file extension for 2016 version and newer
+        # Ansys file extension for 2016 version and newer
+        ansys_file_extension='.aedt',
         # bounding_box_scale_x = 1.2, # Ratio of 'main' chip width to bounding box width
         # bounding_box_scale_y = 1.2, # Ratio of 'main' chip length to bounding box length
-        x_buffer_width_mm=
-        0.2,  # Buffer between max/min x and edge of ground plane, in mm
-        y_buffer_width_mm=
-        0.2,  # Buffer between max/min y and edge of ground plane, in mm
+        x_buffer_width_mm=0.2,  # Buffer between max/min x and edge of ground plane, in mm
+        y_buffer_width_mm=0.2,  # Buffer between max/min y and edge of ground plane, in mm
     )
-
+    # yapf:enable
     NAME_DELIM = r'_'
 
     name = 'ansys'
@@ -312,32 +310,23 @@ class QAnsysRenderer(QRenderer):
         object_id = oModeler.GetObjectIDByName(object_name)
         # Can also use hfss.pinfo.design._modeler.GetFaceIDs("main")
         # TODO: Allow all these need to be customizable, esp QuantityName
+
+        # yapf: disable
         return oFieldsReport.CreateFieldPlot(
             [
                 "NAME:Mag_E1",
-                "SolutionName:=",
-                f"{setup.name} : LastAdaptive",  # name of the setup 
-                "UserSpecifyName:=",
-                0,
-                "UserSpecifyFolder:=",
-                0,
-                "QuantityName:=",
-                "Mag_E",
-                "PlotFolder:=",
-                "E Field",
-                "StreamlinePlot:=",
-                False,
-                "AdjacentSidePlot:=",
-                False,
-                "FullModelPlot:=",
-                False,
-                "IntrinsicVar:=",
-                "Phase=\'0deg\'",
-                "PlotGeomInfo:=",
-                [1, "Surface", "FacesList", 1,
-                 str(object_id)],
-            ],
-            "Field")
+                "SolutionName:=",  f"{setup.name} : LastAdaptive",  # name of the setup 
+                "UserSpecifyName:=", 0,
+                "UserSpecifyFolder:=", 0,
+                "QuantityName:=", "Mag_E",
+                "PlotFolder:=",   "E Field",
+                "StreamlinePlot:=", False,
+                "AdjacentSidePlot:=", False,
+                "FullModelPlot:=", False,
+                "IntrinsicVar:=", "Phase=\'0deg\'",
+                "PlotGeomInfo:=", [1, "Surface", "FacesList", 1, str(object_id)],
+            ], "Field")
+        #yapf: enable
 
     def plot_ansys_delete(self, names: list):
         """
