@@ -29,6 +29,7 @@ import pandas as pd
 
 from qiskit_metal.analyses.quantization import lumped_capacitive
 from qiskit_metal.analyses.hamiltonian.analytic_transmon import Hcpb
+from qiskit_metal.analyses.hamiltonian.HO_wavefunctions import wavefunction
 from qiskit_metal.analyses.em import cpw_calculations
 from qiskit_metal.analyses.scan_options.scanning import Scanning
 from qiskit_metal.tests.assertions import AssertionsMixin
@@ -798,6 +799,23 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
         with self.assertRaises(IndexError):
             test_a_result = lumped_capacitive.df_reorder_matrix_basis(
                 df_a, 1, 35)
+
+    def test_analyses_hamiltonian_ho_wavefunction(self):
+        """
+        Test the wavefunction function in the HO_waefunction.py file
+        """
+        x_range = np.linspace(-5, 5, 5)
+        actual = wavefunction(1.0, 1.0, 0.0, x_range)
+
+        expected = [
+            2.10255658e-06, 2.47888124e-02, 5.64189584e-01, 2.47888124e-02,
+            2.10255658e-06
+        ]
+
+        self.assertEqual(len(actual), len(expected))
+
+        for x, _ in enumerate(actual):
+            self.assertAlmostEqualRel(_, expected[x], rel_tol=1e-6)
 
 
 if __name__ == '__main__':
