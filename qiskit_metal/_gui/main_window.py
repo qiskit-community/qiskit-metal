@@ -57,7 +57,7 @@ if not config.is_building_docs():
     from ..toolbox_metal.import_export import load_metal_design
 
 from .widgets.library_new_qcomponent.parameter_entry_scroll_area import ParameterEntryScrollArea
-
+from .widgets.library_new_qcomponent import parameter_entry_scroll_area
 if TYPE_CHECKING:
     # from .._gui import MetalGUI
     from ..renderers.renderer_mpl.mpl_canvas import PlotCanvas
@@ -493,21 +493,29 @@ class MetalGUI(QMainWindowBaseHandler):
 
     #must be defined outside of _setup_library_widget to ensure self == MetalGUI and will retain opened ScrollArea
     def create_new_component_object_from_qlibrary(self, relative_index: QModelIndex):
-        print("hi")
-        #TODO filter for .py files
         filename = self.library_proxy_model.data(relative_index)
         print("qmodelindex: filename: ", filename, "index: ", relative_index)
-        print("manolo")
+        if self.ui.dockLibrary.library_model.isDir(self.library_proxy_model.mapToSource(relative_index)):
+            self.logger.info(f"{filename} is a directory")
+            return
+
+        print("hi")
+        #TODO filter for .py files
+
         full_path = self.ui.dockLibrary.library_model.filePath(self.library_proxy_model.mapToSource(relative_index))
         print("full path: ", full_path)
         try:
-            self.param_entry = ParameterEntryScrollArea(self.QLIBRARY_FOLDERNAME, full_path, self.design)
+            if self.pesa is not None and self.pesa.isVisible():
+                    self.logger.info("Param Entry Display is already open. Maybe check behind main GUI window")
+            else:
+                self.pesa = parameter_entry_scroll_area.create_param_entry_scroll_area(self, self.QLIBRARY_FOLDERNAME, full_path, self.design)
+                self.pesa.show()
 
         except Exception as e:
             print("exception was; ", e)
+            self.logger.error(f"Unable to open param entry window due to Exception: {e}")
         print("param_entry made")
-        self.param_entry.show()
-        print("param entry showing? :", str(self.param_entry.isVisible()))
+        print("param entry showing? :", str(self.pesa.isVisible()))
 
 
     def _setup_library_widget(self):
@@ -534,6 +542,8 @@ class MetalGUI(QMainWindowBaseHandler):
         self.ui.dockLibrary_tree_view.setRootIndex(self.library_proxy_model.mapFromSource(self.ui.dockLibrary.library_model.index(self.ui.dockLibrary.library_model.rootPath())))
         self.ui.dockLibrary_tree_view.doubleClicked.connect(self.create_new_component_object_from_qlibrary)
         self.ui.dockLibrary_tree_view.clicked.connect(self.create_new_component_object_from_qlibrary)
+
+        self.pesa = None
 
 
 

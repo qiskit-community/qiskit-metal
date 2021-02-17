@@ -55,7 +55,6 @@ def transmon_additional_options():
         }
     }
 
-
 @pytest.mark.parametrize(
     "test_name, component_file, args_dict",
     [ ("dictionary_empty",  inspect.getfile(TransmonPocket), {}),
@@ -113,8 +112,6 @@ def test_create_dictionary(qtbot, test_name, component_file, args_dict): # doesn
     # pp.pprint(args_dict)
 
     del new_design
-
-
 
 @pytest.mark.parametrize(
      "test_name, component_file, args_dict", # these vars will be subset of what real QComponent ends with
@@ -181,8 +178,6 @@ def test_connections(qtbot, test_name, transmon_file, route_meander_file, transm
     validate_qcomponent_against_arguments(new_design, test_name, transmon_2_args)
     validate_qcomponent_against_arguments(new_design, test_name, route_meander_args)
 
-
-
 def create_qcomponent_via_gui(qtbot, new_design, test_name, component_file, args_dict):
     # open ParameterEntryScrollArea w/ abs file path
     # create with different entries (parameterize testsV
@@ -232,7 +227,6 @@ def validate_qcomponent_against_arguments(new_design, test_name, args_dict):
             print("MISSING ATRIBUTE: ", qcomponent.__dict__)
             raise Exception("MISSING ATTRIBUTE: ", k)
 
-
 def compare_subset(qcomponent_v, param_v):
     for k in param_v.keys():
         if type(param_v[k]) is dict or type(param_v[k]) is Dict:
@@ -272,9 +266,7 @@ def create_gui_dictionary(qtbot, dict_box_layout, add_box_button: QPushButton, p
             assert isinstance(cur_box.value_o, ParameterEntryScrollArea.DictionaryEntryWidget.DictionaryEntryBox)
             create_gui_dictionary(qtbot, cur_box.nested_dictionary.nested_kv_layout, cur_box.nested_dictionary.add_more_button, value)
 
-
-
-
+# TODO  test open an dclosing
 
 
 # more button

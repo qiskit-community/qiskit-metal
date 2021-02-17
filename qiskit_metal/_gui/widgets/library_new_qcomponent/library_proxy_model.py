@@ -4,7 +4,7 @@ from PySide2.QtGui import QIcon
 from PySide2.QtWidgets import (QApplication, QDockWidget, QFileDialog,
                                QInputDialog, QLabel, QLineEdit, QMainWindow,
                                QMessageBox, QFileSystemModel)
-
+import typing
 class LibraryFileProxyModel(QSortFilterProxyModel):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -20,5 +20,3 @@ class LibraryFileProxyModel(QSortFilterProxyModel):
         if source_column > 0: # Won't show Size, Kind, Date Modified, etc. for QFileSystemModel
             return False
         return True
-
-
