@@ -502,6 +502,7 @@ class MetalGUI(QMainWindowBaseHandler):
         print("full path: ", full_path)
         try:
             self.param_entry = ParameterEntryScrollArea(self.QLIBRARY_FOLDERNAME, full_path, self.design)
+
         except Exception as e:
             print("exception was; ", e)
         print("param_entry made")
@@ -527,12 +528,6 @@ class MetalGUI(QMainWindowBaseHandler):
 
         self.library_proxy_model = LibraryFileProxyModel()
         self.library_proxy_model.setSourceModel(self.ui.dockLibrary.library_model)
-
-        # finds all files that
-        # (Aren't hidden (begin w/ .), don't begin with __init__, don't begin with _template, etc. AND end in .py)  OR (don't begin with __pycache__ and don't have a '.' in the name)
-        # (QComponent files) OR (Directories)
-        self.file_filter_regex = r"(^((?!\.))(?!__init__)(?!_template)(?!__pycache__).*\.py)|(?!__pycache__)(^([^.]+)$)"
-        self.library_proxy_model.setFilterRegExp(self.file_filter_regex)
 
         ## TODO clean code
         self.ui.dockLibrary_tree_view.setModel(self.library_proxy_model)
@@ -723,7 +718,7 @@ class MetalGUI(QMainWindowBaseHandler):
         #               invalidate_caches()
         # in order for the new module to be noticed by the import system.
 
-        # Do NOT work:
+        # Does NOT work:
         # importlib.import_module(path.stem, str(path.parent))
 
         # # spec for module and give it name
