@@ -67,7 +67,8 @@ class QQ3DRenderer(QAnsysRenderer):
 
     def render_design(self,
                       selection: Union[list, None] = None,
-                      open_pins: Union[list, None] = None):
+                      open_pins: Union[list, None] = None,
+                      box_plus_buffer: bool = True):
         """
         Initiate rendering of components in design contained in selection, assuming they're valid.
         Components are rendered before the chips they reside on, and subtraction of negative shapes
@@ -89,6 +90,8 @@ class QQ3DRenderer(QAnsysRenderer):
         Args:
             selection (Union[list, None], optional): List of components to render. Defaults to None.
             open_pins (Union[list, None], optional): List of tuples of pins that are open. Defaults to None.
+            box_plus_buffer (bool): Either calculate a bounding box based on the location of rendered geometries
+                                     or use chip size from design class.
         """
         self.chip_subtract_dict = defaultdict(set)
         self.assign_perfE = []
@@ -97,7 +100,8 @@ class QQ3DRenderer(QAnsysRenderer):
         self.render_tables(selection)
         self.add_endcaps(open_pins)
 
-        self.render_chips(draw_sample_holder=False)
+        self.render_chips(draw_sample_holder=False,
+                          box_plus_buffer=box_plus_buffer)
         self.subtract_from_ground()
 
         self.assign_thin_conductor(self.assign_perfE)
