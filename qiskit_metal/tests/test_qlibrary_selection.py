@@ -4,6 +4,7 @@ import hypothesis
 import pytest_bdd
 import pytest_cov
 import inspect
+from collections import OrderedDict
 
 from qiskit_metal._gui.widgets.library_new_qcomponent.parameter_entry_scroll_area import ParameterEntryScrollArea
 from qiskit_metal import qlibrary
@@ -11,14 +12,22 @@ from qiskit_metal.qlibrary.basic.circle_caterpillar import CircleCaterpillar
 from qiskit_metal.qlibrary.interconnects.meandered import RouteMeander
 from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
 from qiskit_metal.qlibrary.qubits.transmon_cross import TransmonCross
+from qiskit_metal.qlibrary.qubits.transmon_concentric import TransmonConcentric
+from qiskit_metal.qlibrary.basic.n_gon import NGon
+from qiskit_metal.qlibrary.passives.launchpad_wb_coupled import LaunchpadWirebondCoupled
+from qiskit_metal.qlibrary.interconnects.pathfinder import RoutePathfinder
+from qiskit_metal.qlibrary.connectors.cpw_hanger_t import CPWHangerT
 from addict.addict import Dict
+from qiskit_metal._gui.widgets.library_new_qcomponent.qlibrary_exceptions import PEDASetupException, InvalidParameterEntryException, InvalidFilePathException, LibraryQComponentException, MissingClassException
+
+
 from datetime import datetime
+import numpy as np
+import json
+from PySide2.QtCore import Qt, QTimer
 
-
-from PySide2.QtCore import Qt
-
-from PySide2.QtWidgets import QPushButton
-
+from PySide2.QtWidgets import QPushButton, QMessageBox
+from PySide2 import QtWidgets
 from qiskit_metal import designs
 import pytest
 import importlib
@@ -55,7 +64,6 @@ def transmon_additional_options():
         }
     }
 
-
 @pytest.mark.parametrize(
     "test_name, component_file, args_dict",
     [ ("dictionary_empty",  inspect.getfile(TransmonPocket), {}),
@@ -87,6 +95,7 @@ def test_create_dictionary(qtbot, test_name, component_file, args_dict): # doesn
 
     ## Create GUI input from dictionary
     pesa = ParameterEntryScrollArea(QLIBRARY_ROOT, component_file, new_design)
+    pesa.setup_pesa()
     qtbot.addWidget(pesa)
     entry_count = pesa.parameter_entry_vertical_layout.count()
     a_dictionary = None
@@ -114,8 +123,6 @@ def test_create_dictionary(qtbot, test_name, component_file, args_dict): # doesn
 
     del new_design
 
-
-
 @pytest.mark.parametrize(
      "test_name, component_file, args_dict", # these vars will be subset of what real QComponent ends with
     [ ("TransmonPocket-make-true", inspect.getfile(TransmonPocket), {"name":"mytransmon", "make":True}),
@@ -141,15 +148,105 @@ def test_create_dictionary(qtbot, test_name, component_file, args_dict): # doesn
         )
      ]
 )
-def test_name_only_QComponent(qtbot, test_name, component_file, args_dict):
+def test_make_QComponent(qtbot, test_name, component_file, args_dict):
     new_design = designs.DesignPlanar()
     create_qcomponent_via_gui(qtbot, new_design, test_name, component_file, args_dict)
     validate_qcomponent_against_arguments(new_design, test_name, args_dict)
     del(new_design)
 
+
+@pytest.mark.parametrize(
+     "test_name, component_file, args_dict", # these vars will be subset of what real QComponent ends with
+    [ ("Basic(NGon)", inspect.getfile(NGon), {"name":"bestNgon",
+                                              "options":{
+                                                'n':'13',
+                                                "radius":'50um',
+                                                "pos_x":'1um',
+                                                "pos_y":'2um',
+                                                "rotation":'3',
+                                                "subtract":'False',
+                                                "helper":'False',
+                                                "chip":'main',
+                                                "layer":'1'
+                                                }
+                                              }
+       ),
+      ("Connectors(CPWHangerT)", inspect.getfile(CPWHangerT), {"name": "bestCPWHangerT",
+                                                               "options": {
+                                                                   "prime_width": '10um',
+                                                                   "prime_gap": '6um',
+                                                                   "second_width": '10um',
+                                                                   "second_gap": '6um',
+                                                                   "coupling_space": '3um',
+                                                                   "coupling_length": '100um',
+                                                                   "fillet": '25um',
+                                                                   "pos_x": '0um',
+                                                                   "pos_y": '0um',
+                                                                   "rotation": '0',
+                                                                   "mirror": False,
+                                                                   "open_termination": True,
+                                                                   # Better way to decide this?
+                                                                   "chip": 'main',
+                                                                   "layer": '1'
+                                                               }
+                                                               }
+       ),
+      ("Passives(LaunchpadWirebondCoupled)", inspect.getfile(LaunchpadWirebondCoupled), {"name": "bestLWC",
+                                                                                         "options": {
+                                                                                             "layer": '1',
+                                                                                             "trace_width": 'cpw_width',
+                                                                                             "trace_gap": 'cpw_gap',
+                                                                                             "coupler_length": '65.5um',
+                                                                                             "lead_length": '30um',
+                                                                                             "pos_x": '1um',
+                                                                                             "pos_y": '2um',
+                                                                                             "orientation": '90'
+                                                                                         }
+                                                                                         }
+       ),
+      ("Qubits(TransmonConcentric)", inspect.getfile(TransmonConcentric), {"name": "bestTransmonConcentric",
+                                                                                         "options": {
+                                                                                             "width":'1000um',  # width of transmon pocket
+                                                                                             "height":'1000um',
+                                                                                             "layer":'1',
+                                                                                             "rad_o":'170um',
+                                                                                             "rad_i":'115um',
+                                                                                             "gap":'35um',
+                                                                                             "jj_w":'10um',
+                                                                                             "res_s":'100um',
+                                                                                             "res_ext":'100um',
+                                                                                             "fbl_rad":'100um',
+                                                                                             "fbl_sp":'100um',
+                                                                                             "fbl_gap":'80um',
+                                                                                             "fbl_ext":'300um',
+                                                                                             "pocket_w":'1500um',
+                                                                                             "pocket_h":'1000um',
+                                                                                             "position_x":'2.0mm',
+                                                                                             "position_y":'2.0mm',
+                                                                                             "rotation":'0.0',
+                                                                                             "cpw_width":'10.0um'
+                                                                                         }
+                                                                            }
+       ),
+     ]
+)
+def test_general_QComponent(qtbot, test_name, component_file, args_dict):
+    new_design = designs.DesignPlanar()
+    create_qcomponent_via_gui(qtbot, new_design, test_name, component_file, args_dict)
+    validate_qcomponent_against_arguments(new_design, test_name, args_dict)
+    del(new_design)
+
+def anchors(np0, np1):
+    ord = OrderedDict()
+    ord[0] = np0
+    ord[1] = np1
+    return ord
 @pytest.mark.parametrize(
      "test_name, transmon_file, route_meander_file, transmon_1_args, transmon_2_args, route_meander_args", # these vars will be subset of what real QComponent ends with
-    [ ("BasicConnection", inspect.getfile(TransmonPocket), inspect.getfile(RouteMeander), {"name":"Q1", "options" : {"pos_x":'+2.55mm', "pos_y":'+0.0mm',
+    [
+        ("Interconnects(RouteMeader)", inspect.getfile(TransmonPocket), inspect.getfile(RouteMeander),
+         {"name":"Q1",
+          "options" : {"pos_x":'+2.55mm', "pos_y":'+0.0mm',
         "pad_width" : '425 um',
         "pocket_height" : '650um',
         "connection_pads":{
@@ -158,20 +255,83 @@ def test_name_only_QComponent(qtbot, test_name, component_file, args_dict):
             "c" : {"loc_W":+1,"loc_H":-1, "pad_width":'200um'},
             "d" : {"loc_W":-1,"loc_H":-1, "pad_height":'50um'}
         }
-    }}, {"name":"Q2", "options" : {"pos_x":'+0.0mm', "pos_y":'-0.9mm', "pad_width" : '425 um',
-        "pocket_height" : '650um',
-        "connection_pads":{
+    }},
+         {"name":"Q2", "options" :
+             {"pos_x":'+0.0mm', "pos_y":'-0.9mm', "pad_width" : '425 um', "pocket_height" : '650um',"connection_pads":{
             "a"  :{"loc_W":+1,"loc_H":+1},
             "b" : {"loc_W":-1,"loc_H":+1, "pad_height":'30um'},
             "c" : {"loc_W":+1,"loc_H":-1, "pad_width":'200um'},
             "d" : {"loc_W":-1,"loc_H":-1, "pad_height":'50um'}
-        }}},
-       {
-       "name":"cpw1", "options":{'pin_inputs': {'start_pin': {'component': 'Q1', 'pin': 'd'}, 'end_pin': {'component': 'Q2', 'pin': 'c'}}, 'lead': {'start_straight': '0.13mm'}, 'total_length': '6.0 mm', 'fillet': '90um', 'meander': {'lead_start': '0.1mm', 'lead_end': '0.1mm', 'asymmetry': '+150um'}}
-       })
-     ]
+        }}},{
+       "name":"bestRouteMeander", "options":{'pin_inputs': {'start_pin': {'component': 'Q1', 'pin': 'd'}, 'end_pin': {'component': 'Q2', 'pin': 'c'}}, 'lead': {'start_straight': '0.13mm'}, 'total_length': '6.0 mm', 'fillet': '90um', 'meander': {'lead_start': '0.1mm', 'lead_end': '0.1mm', 'asymmetry': '+150um'}}
+       }),
+
+        ("Interconnects(RoutePathfinder)", inspect.getfile(TransmonPocket), inspect.getfile(RoutePathfinder),
+         {"name": "Q1",
+          "options": {"pos_x": '+2.55mm', "pos_y": '+0.0mm',
+                                    "pad_width": '425 um',
+                                    "pocket_height": '650um',
+                                    "connection_pads": {
+                                        "a": {"loc_W": +1, "loc_H": +1},
+                                        "b": {"loc_W": -1, "loc_H": +1, "pad_height": '30um'},
+                                        "c": {"loc_W": +1, "loc_H": -1, "pad_width": '200um'},
+                                        "d": {"loc_W": -1, "loc_H": -1, "pad_height": '50um'}
+                                    }
+                                    }},
+         {"name": "Q2",
+            "options": {"pos_x": '+0.0mm', "pos_y": '-0.9mm', "pad_width": '425 um',
+                                                     "pocket_height": '650um', "connection_pads": {
+                                                 "a": {"loc_W": +1, "loc_H": +1},
+                                                 "b": {"loc_W": -1, "loc_H": +1, "pad_height": '30um'},
+                                                 "c": {"loc_W": +1, "loc_H": -1, "pad_width": '200um'},
+                                                 "d": {"loc_W": -1, "loc_H": -1, "pad_height": '50um'}
+                                             }}}, {
+             "name": "bestRoutePathFinder", "options": {
+                'pin_inputs': {
+                    'start_pin': {'component': 'Q1', 'pin': 'b'},
+                    'end_pin': {'component': 'Q2', 'pin': 'b'}
+                },
+                'lead':  {'start_straight': '91um', 'end_straight': '90um'},
+                'step_size': '0.25mm',
+                'anchors': anchors(np.array([0.048, -0.555]), np.array([0.048, -0.555])),
+                'fillet': '90um',
+         }}),
+
+        ("Interconnects(RoutePathfinder)", inspect.getfile(TransmonPocket), inspect.getfile(RoutePathfinder),
+         {"name": "Q1",
+          "options": {"pos_x": '+2.55mm', "pos_y": '+0.0mm',
+                      "pad_width": '425 um',
+                      "pocket_height": '650um',
+                      "connection_pads": {
+                          "a": {"loc_W": +1, "loc_H": +1},
+                          "b": {"loc_W": -1, "loc_H": +1, "pad_height": '30um'},
+                          "c": {"loc_W": +1, "loc_H": -1, "pad_width": '200um'},
+                          "d": {"loc_W": -1, "loc_H": -1, "pad_height": '50um'}
+                      }
+                      }},
+         {"name": "Q2",
+          "options": {"pos_x": '+0.0mm', "pos_y": '-0.9mm', "pad_width": '425 um',
+                      "pocket_height": '650um', "connection_pads": {
+                  "a": {"loc_W": +1, "loc_H": +1},
+                  "b": {"loc_W": -1, "loc_H": +1, "pad_height": '30um'},
+                  "c": {"loc_W": +1, "loc_H": -1, "pad_width": '200um'},
+                  "d": {"loc_W": -1, "loc_H": -1, "pad_height": '50um'}
+              }}}, {
+             "name": "bestRoutePathFinder", "options": {
+                'pin_inputs': {
+                    'start_pin': {'component': 'Q1', 'pin': 'b'},
+                    'end_pin': {'component': 'Q2', 'pin': 'b'}
+                },
+                'lead': {'start_straight': '91um', 'end_straight': '90um'},
+                'step_size': '0.25mm',
+                'anchors': anchors(np.array([0.048, -0.555]), np.array([0.048, -0.555])),
+                'fillet': '90um',
+            }}),
+
+
+    ]
 )
-def test_connections(qtbot, test_name, transmon_file, route_meander_file, transmon_1_args, transmon_2_args, route_meander_args):
+def test_general_connecters(qtbot, test_name, transmon_file, route_meander_file, transmon_1_args, transmon_2_args, route_meander_args):
     #create transmons then add connections
     new_design = designs.DesignPlanar()
     create_qcomponent_via_gui(qtbot, new_design, test_name, transmon_file, transmon_1_args)
@@ -181,13 +341,12 @@ def test_connections(qtbot, test_name, transmon_file, route_meander_file, transm
     validate_qcomponent_against_arguments(new_design, test_name, transmon_2_args)
     validate_qcomponent_against_arguments(new_design, test_name, route_meander_args)
 
-
-
 def create_qcomponent_via_gui(qtbot, new_design, test_name, component_file, args_dict):
     # open ParameterEntryScrollArea w/ abs file path
     # create with different entries (parameterize testsV
     QLIBRARY_ROOT = qlibrary.__name__
     pesa = ParameterEntryScrollArea(QLIBRARY_ROOT, component_file, new_design)
+    pesa.setup_pesa()
     qtbot.addWidget(pesa)
     pesa.parameter_entry_vertical_layout
     entry_count = pesa.parameter_entry_vertical_layout.count()
@@ -232,13 +391,20 @@ def validate_qcomponent_against_arguments(new_design, test_name, args_dict):
             print("MISSING ATRIBUTE: ", qcomponent.__dict__)
             raise Exception("MISSING ATTRIBUTE: ", k)
 
-
 def compare_subset(qcomponent_v, param_v):
     for k in param_v.keys():
-        if type(param_v[k]) is dict or type(param_v[k]) is Dict:
+        if type(param_v[k]) is dict or type(param_v[k]) is Dict or type(param_v[k]) is OrderedDict:
+            # Ordered Dictionaries do NOT stay ordered dictionaries in Routing - not sure why
             compare_subset(qcomponent_v[k], param_v[k]) #will error if k is missing in qcomponent
         else:
-            assert param_v[k] == qcomponent_v[k]
+            print(f"k: {k}")
+            print(f"param_v[k]: {param_v[k]}")
+            if isinstance(param_v[k], type(np.array([]))):
+                print(f"k: {k}")
+                print(f"param_v[k]: {param_v[k]}")
+                assert (param_v[k]==qcomponent_v[k]).all() #compare each index of numpy array
+            else:
+                assert param_v[k] == qcomponent_v[k]
 
 def create_gui_dictionary(qtbot, dict_box_layout, add_box_button: QPushButton, param_dict: dict):
     if param_dict == {}:
@@ -262,19 +428,26 @@ def create_gui_dictionary(qtbot, dict_box_layout, add_box_button: QPushButton, p
         # see type
         v_type = type(value)
         cur_box.name_o.setText(str(key))
-        if v_type != dict and v_type != Dict:
+        if v_type != dict and v_type != Dict and v_type != OrderedDict:
             print("\nnewkey: ", cur_box.name_o.text())
+            if v_type is type(np.array([])):
+                value = json.dumps(list(value))
             cur_box.value_o.setText(str(value))
             cur_box.type_name.setCurrentText(v_type.__name__)
         else:
             print("clicking nest")
             qtbot.mouseClick(cur_box.nested_dict_button, Qt.LeftButton) #should turn value_o into dictBox inside of the self.sub_entry_collapsable
+            cur_box.type_name.setCurrentText(v_type.__name__)
+            print(f"setting box layer dict type to: {v_type.__name__}")
+
             assert isinstance(cur_box.value_o, ParameterEntryScrollArea.DictionaryEntryWidget.DictionaryEntryBox)
             create_gui_dictionary(qtbot, cur_box.nested_dictionary.nested_kv_layout, cur_box.nested_dictionary.add_more_button, value)
 
+<<<<<<< HEAD
 
 
-
+=======
+# TODO  test open an dclosing
 
 
 # more button
@@ -312,3 +485,4 @@ def create_gui_dictionary(qtbot, dict_box_layout, add_box_button: QPushButton, p
 #
 #
 # # test no make input
+>>>>>>> 8a53e50 (dockified with working collapsibles)

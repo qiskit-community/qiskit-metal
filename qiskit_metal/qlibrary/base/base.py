@@ -204,7 +204,7 @@ class QComponent():
         # Should put this earlier so could pass in other error messages?
         self._error_message = ''
         if self._check_pin_inputs():
-            self.logger.warning(self._error_message)
+            self.logger.warning(self._error_message + "QComponent has NOT been added to design")
             return
 
         # Build and component internals
@@ -801,7 +801,9 @@ class QComponent():
         false_component = False
         false_pin = False
         pin_in_use = False
+        print(f"self.options.pin_inputs is {self.options.pin_inputs}")
         for pin_check in self.options.pin_inputs.values():
+            print(f"pin_check is {pin_check}")
             component = pin_check['component']
             pin = pin_check['pin']
             if isinstance(component, str):

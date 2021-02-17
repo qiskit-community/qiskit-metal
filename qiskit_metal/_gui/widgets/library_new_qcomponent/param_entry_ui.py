@@ -10,7 +10,9 @@
 
 from PySide2 import QtCore, QtGui, QtWidgets
 
+
 class Ui_dict_entry_widget(object):
+
     def setupUi(self, dict_entry_widget):
         dict_entry_widget.setObjectName("dict_entry_widget")
         dict_entry_widget.resize(1536, 850)
@@ -30,6 +32,9 @@ class Ui_dict_entry_widget(object):
         QtCore.QMetaObject.connectSlotsByName(dict_entry_widget)
 
     def retranslateUi(self, dict_entry_widget):
-        dict_entry_widget.setWindowTitle(QtWidgets.QApplication.translate("dict_entry_widget", "Form", None, -1))
-        self.equals.setText(QtWidgets.QApplication.translate("dict_entry_widget", "=", None, -1))
-
+        dict_entry_widget.setWindowTitle(
+            QtWidgets.QApplication.translate("dict_entry_widget", "Form", None,
+                                             -1))
+        self.equals.setText(
+            QtWidgets.QApplication.translate("dict_entry_widget", "=", None,
+                                             -1))

@@ -10,32 +10,44 @@
 
 from PySide2 import QtCore, QtGui, QtWidgets
 
+
 class Ui_ScrollArea(object):
+
     def setupUi(self, ScrollArea):
         ScrollArea.setObjectName("ScrollArea")
         ScrollArea.resize(400, 300)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.MinimumExpanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.MinimumExpanding,
+            QtWidgets.QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(ScrollArea.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            ScrollArea.sizePolicy().hasHeightForWidth())
         ScrollArea.setSizePolicy(sizePolicy)
-        ScrollArea.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContentsOnFirstShow)
+        ScrollArea.setSizeAdjustPolicy(
+            QtWidgets.QAbstractScrollArea.AdjustToContentsOnFirstShow)
         ScrollArea.setWidgetResizable(True)
         self.parameter_entry_display = QtWidgets.QWidget()
         self.parameter_entry_display.setGeometry(QtCore.QRect(0, 0, 398, 298))
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.MinimumExpanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.MinimumExpanding,
+            QtWidgets.QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.parameter_entry_display.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.parameter_entry_display.sizePolicy().hasHeightForWidth())
         self.parameter_entry_display.setSizePolicy(sizePolicy)
         self.parameter_entry_display.setObjectName("parameter_entry_display")
-        self.parameter_entry_vertical_layout = QtWidgets.QVBoxLayout(self.parameter_entry_display)
-        self.parameter_entry_vertical_layout.setObjectName("parameter_entry_vertical_layout")
+        self.parameter_entry_vertical_layout = QtWidgets.QVBoxLayout(
+            self.parameter_entry_display)
+        self.parameter_entry_vertical_layout.setObjectName(
+            "parameter_entry_vertical_layout")
         ScrollArea.setWidget(self.parameter_entry_display)
 
         self.retranslateUi(ScrollArea)
         QtCore.QMetaObject.connectSlotsByName(ScrollArea)
 
     def retranslateUi(self, ScrollArea):
-        ScrollArea.setWindowTitle(QtWidgets.QApplication.translate("ScrollArea", "ScrollArea", None, -1))
-
+        ScrollArea.setWindowTitle(
+            QtWidgets.QApplication.translate("ScrollArea", "ScrollArea", None,
+                                             -1))

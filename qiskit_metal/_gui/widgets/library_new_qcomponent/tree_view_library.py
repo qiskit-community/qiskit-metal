@@ -17,10 +17,9 @@
 @date: 2021
 """
 
-
 import sys, os
-from PySide2.QtWidgets import QApplication,  QMainWindow,  QFileSystemModel, QTabWidget, QWidget, QTreeView
-from PySide2.QtCore import  QModelIndex, QDir
+from PySide2.QtWidgets import QApplication, QMainWindow, QFileSystemModel, QTabWidget, QWidget, QTreeView
+from PySide2.QtCore import QModelIndex, QDir
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -49,11 +48,8 @@ class LibraryView(QTreeView):
         QTreeView.__init__(self, parent)
         self.set_up_connections()
 
-
-
     def set_up_connections(self):
         print("lol")
-
 
     # TODO: (Duplicate code from tree_view_options)
     #  Maybe move to base class of utility, along with the show template message
