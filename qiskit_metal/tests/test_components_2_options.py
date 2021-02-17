@@ -22,6 +22,8 @@ Created on Wed Apr 22 09:58:35 2020
 """
 
 import unittest
+from collections import OrderedDict
+import numpy as np
 
 from qiskit_metal.qlibrary.base import qubit
 from qiskit_metal.qlibrary.basic import circle_caterpillar
@@ -308,7 +310,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         options = my_route_meander.default_options
 
         # Test all elements of the results data against expected ata
-        self.assertEqual(len(options), 3)
+        self.assertEqual(len(options), 7)
         self.assertEqual(options['snap'], 'true')
         self.assertEqual(options['prevent_short_edges'], 'true')
 
@@ -325,8 +327,18 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         options = my_route_mixed.default_options
 
         # Test all elements of the results data against expected ata
-        self.assertEqual(len(options), 1)
-        self.assertEqual(options['between_anchors'], {})
+        self.assertEqual(len(options), 13)
+        self.assertEqual(
+            options['between_anchors'],
+            OrderedDict(  # S, M, PF
+                {
+                    0: "S",
+                    1: "M",
+                    2: "S",
+                    3: "M",
+                    4: "S"
+                }),
+        )
 
     def test_component_my_qcomponent_options(self):
         """
@@ -528,7 +540,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
 
     def test_component_route_anchors_options(self):
         """
-        Test that default options of RouteAnchors in anchored_path.py were not accientally
+        Test that default options of RouteAnchors in anchored_path.py were not accidentally
         changed.
         """
         # Setup expected test results
@@ -536,8 +548,9 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         options = route_anchors.default_options
 
         # Test all elements of the result data against expected data
-        self.assertEqual(len(options), 2)
-        self.assertEqual(options['anchors'], {})
+        self.assertEqual(len(options), 5)
+        self.assertEqual(len(options['anchors']), 1)
+        assert (options['anchors'][0] == np.array([-2, 2.5])).all()
         self.assertEqual(len(options['advanced']), 1)
         self.assertEqual(options['advanced']['avoid_collision'], 'false')
 
@@ -551,7 +564,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         options = route_pathfinder.default_options
 
         # Test all elements of the result data against expected data
-        self.assertEqual(len(options), 2)
+        self.assertEqual(len(options), 6)
         self.assertEqual(options['step_size'], '0.25mm')
         self.assertEqual(len(options['advanced']), 1)
         self.assertEqual(options['advanced']['avoid_collision'], 'true')

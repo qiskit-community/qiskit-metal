@@ -303,7 +303,45 @@ class QHFSSRenderer(QAnsysRenderer):
             self.logger.info("Are you mad?? You have to connect to ansys and a project " \
                             "first before creating a new design . Use self.connect_ansys()")
 
-    def add_drivenmodal_setup(self, 
+    def activate_drivenmodal_design(self, name: str):
+        """Add a hfss drivenmodal design with the given name to the project.  If the design exists, that will be added WITHOUT
+        altering the suffix of the design name.
+
+        Args:
+            name (str): Name of the new q3d design
+        """
+        if self.pinfo:
+            if self.pinfo.project:
+                try:
+                    names_in_design = self.pinfo.project.get_design_names()
+                except AttributeError:
+                    self.logger.error(
+                        'Please install a more recent version of pyEPR (>=0.8.4.5)'
+                    )
+
+                if name in names_in_design:
+                    self.pinfo.connect_design(name)
+                    oDesktop = self.pinfo.design.parent.parent._desktop  # self.pinfo.design does not work
+                    oProject = oDesktop.SetActiveProject(
+                        self.pinfo.project_name)
+                    oDesign = oProject.SetActiveDesign(name)
+                else:
+                    self.logger.warning(
+                        f'The name={name} was not in active project.  '
+                        'A new design will be inserted to the project.  '
+                        f'Names in active project are: \n{names_in_design}.  ')
+                    adesign = self.add_drivenmodal_design(name=name,
+                                                          connect=True)
+
+            else:
+                self.logger.warning(
+                    "Project not available, have you opened a project?")
+        else:
+            self.logger.warning(
+                "Have you run connect_ansys()?  Can not find a reference to Ansys in QRenderer."
+            )
+
+    def add_drivenmodal_setup(self,
                               freq_ghz=5,
                               name="Setup",
                               max_delta_s=0.1,
@@ -328,14 +366,15 @@ class QHFSSRenderer(QAnsysRenderer):
         """
         if self.pinfo:
             if self.pinfo.design:
-                return self.pinfo.design.create_dm_setup(freq_ghz=freq_ghz,
-                                                         name=name,
-                                                         max_delta_s=max_delta_s,
-                                                         max_passes=max_passes,
-                                                         min_passes=min_passes,
-                                                         min_converged=min_converged,
-                                                         pct_refinement=pct_refinement,
-                                                         basis_order=basis_order)
+                return self.pinfo.design.create_dm_setup(
+                    freq_ghz=freq_ghz,
+                    name=name,
+                    max_delta_s=max_delta_s,
+                    max_passes=max_passes,
+                    min_passes=min_passes,
+                    min_converged=min_converged,
+                    pct_refinement=pct_refinement,
+                    basis_order=basis_order)
 
     def add_eigenmode_design(self, name: str, connect: bool = True):
         """
@@ -357,25 +396,42 @@ class QHFSSRenderer(QAnsysRenderer):
             self.logger.info("Are you mad?? You have to connect to ansys and a project " \
                             "first before creating a new design . Use self.connect_ansys()")
 
-    def add_driven_modal_design(self, name: str, connect: bool = True):
-        """
-        Add a driven modal design with the given name to the project referenced in pinfo.
+    def activate_eigenmode_design(self, name: str):
+        """Add a hfss eigenmode design with the given name to the project.  If the design exists, that will be added WITHOUT
+        altering the suffix of the design name.
 
         Args:
-            name (str): Name of the new driven modal design
-            connect (bool, optional): Should we connect this session to this design? Defaults to True
-
-        Returns(pyEPR.ansys.HfssDesign): A driven modal design within Ansys. 
-
+            name (str): Name of the new q3d design
         """
         if self.pinfo:
-            adesign = self.pinfo.project.new_dm_design(name)
-            if connect:
-                self.connect_ansys_design(adesign.name)
-            return adesign
+            if self.pinfo.project:
+                try:
+                    names_in_design = self.pinfo.project.get_design_names()
+                except AttributeError:
+                    self.logger.error(
+                        'Please install a more recent version of pyEPR (>=0.8.4.5)'
+                    )
+
+                if name in names_in_design:
+                    self.pinfo.connect_design(name)
+                    oDesktop = self.pinfo.design.parent.parent._desktop  # self.pinfo.design does not work
+                    oProject = oDesktop.SetActiveProject(
+                        self.pinfo.project_name)
+                    oDesign = oProject.SetActiveDesign(name)
+                else:
+                    self.logger.warning(
+                        f'The name={name} was not in active project.  '
+                        'A new design will be inserted to the project.  '
+                        f'Names in active project are: \n{names_in_design}.  ')
+                    adesign = self.add_eigenmode_design(name=name, connect=True)
+
+            else:
+                self.logger.warning(
+                    "Project not available, have you opened a project?")
         else:
-            self.logger.info("Are you mad?? You have to connect to ansys and a project " \
-                            "first before creating a new design . Use self.connect_ansys()")
+            self.logger.warning(
+                "Have you run connect_ansys()?  Can not find a reference to Ansys in QRenderer."
+            )
 
     def add_eigenmode_setup(self,
                             name="Setup",
@@ -425,7 +481,7 @@ class QHFSSRenderer(QAnsysRenderer):
         if self.pinfo:
             setup = self.pinfo.get_setup(setup_name)
             setup.analyze()
-    
+
     def add_sweep(self,
                   setup_name="Setup",
                   start_ghz=2.0,
@@ -457,7 +513,7 @@ class QHFSSRenderer(QAnsysRenderer):
                                       name=name,
                                       type=type,
                                       save_fields=save_fields)
-                                                    
+
     def analyze_sweep(self, sweep_name: str, setup_name: str):
         """
         Analyze a single sweep within the setup.
@@ -471,8 +527,8 @@ class QHFSSRenderer(QAnsysRenderer):
             sweep = setup.get_sweep(sweep_name)
             sweep.analyze_sweep()
             self.current_sweep = sweep
-    
-    def plot_s_params(self, getS: Union[list, None]=None):
+
+    def plot_s_params(self, getS: Union[list, None] = None):
         """
         Plot one or more S parameters as a function of frequency.
 
@@ -481,7 +537,8 @@ class QHFSSRenderer(QAnsysRenderer):
         """
         if self.current_sweep:
             freqs, Scurves = self.current_sweep.get_network_data(getS)
-            Sparams = pd.DataFrame(Scurves, columns=freqs/1e9, index=getS).transpose()
+            Sparams = pd.DataFrame(Scurves, columns=freqs / 1e9,
+                                   index=getS).transpose()
             fig = plt.figure(10)
             fig.clf()
             ax = plt.gca()

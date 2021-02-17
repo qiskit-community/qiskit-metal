@@ -26,12 +26,10 @@ import sys
 from pathlib import Path
 from typing import List, TYPE_CHECKING
 
-from PySide2 import QtWidgets
-from PySide2.QtCore import QEventLoop, Qt, QTimer, Slot, QModelIndex, QSortFilterProxyModel, QRegExp
-from PySide2.QtGui import QIcon
-from PySide2.QtWidgets import (QApplication, QDockWidget, QFileDialog,
-                               QInputDialog, QLabel, QLineEdit, QMainWindow,
-                               QMessageBox, QFileSystemModel)
+from PySide2.QtCore import Qt, QTimer, QModelIndex
+from PySide2.QtWidgets import (QDockWidget, QFileDialog, QInputDialog, QLabel,
+                               QLineEdit, QMainWindow, QMessageBox,
+                               QFileSystemModel)
 
 from .. import config
 from ..designs.design_base import QDesign
@@ -43,23 +41,22 @@ from .renderer_hfss_gui import RendererHFSSWidget
 from .renderer_q3d_gui import RendererQ3DWidget
 from .utility._handle_qt_messages import slot_catch_error
 from qiskit_metal._gui.widgets.library_new_qcomponent.library_proxy_model import LibraryFileProxyModel
-from PySide2.QtCore import qInstallMessageHandler
 from .widgets.all_components.table_model_all_components import \
     QTableModel_AllComponents
 from .widgets.edit_component.component_widget import ComponentWidget
-from .widgets.log_widget.log_metal import LogHandler_for_QTextLog
 from .widgets.plot_widget.plot_window import QMainWindowPlot
 from .widgets.variable_table import PropertyTableWidget
 from .widgets.build_history.build_history_scroll_area import BuildHistoryScrollArea
 from .. import qlibrary
+from .widgets.library_new_qcomponent import parameter_entry_window as pew
 
 if not config.is_building_docs():
     from ..toolbox_metal.import_export import load_metal_design
 
-from .widgets.library_new_qcomponent.parameter_entry_dockified import create_param_entry_scroll_area
 if TYPE_CHECKING:
-    # from .._gui import MetalGUI
     from ..renderers.renderer_mpl.mpl_canvas import PlotCanvas
+
+import time
 
 
 class QMainWindowExtension(QMainWindowExtensionBase):
@@ -78,7 +75,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
     def __init__(self):
         super().__init__()
         self.gds_gui = None  # type: RendererGDSWidget
-        self.hfss_gui = None # type: RendererHFSSWidget
+        self.hfss_gui = None  # type: RendererHFSSWidget
         self.q3d_gui = None  # type: RendererQ3DWidget
 
     @property
@@ -265,8 +262,7 @@ class MetalGUI(QMainWindowBaseHandler):
 
         qApp = kick_start_qApp()
         if not qApp:
-            logging.error(
-                "Could not start Qt event loop using QApplication.")
+            logging.error("Could not start Qt event loop using QApplication.")
 
         super().__init__()
 
@@ -328,8 +324,8 @@ class MetalGUI(QMainWindowBaseHandler):
 
         widgets = [
             'actionSave', 'action_full_refresh', 'actionRebuild',
-            'actionDelete_All', 'dockComponent', 'dockLibrary',
-            'dockDesign', 'dockConnectors'
+            'actionDelete_All', 'dockComponent', 'dockLibrary', 'dockDesign',
+            'dockConnectors'
         ]
         setEnabled(self.ui, widgets)
 
@@ -489,30 +485,25 @@ class MetalGUI(QMainWindowBaseHandler):
                                           tableView=self.ui.tableComponents)
         self.ui.tableComponents.setModel(model)
 
-
     #must be defined outside of _setup_library_widget to ensure self == MetalGUI and will retain opened ScrollArea
-    def create_new_component_object_from_qlibrary(self, relative_index: QModelIndex):
+    def create_new_component_object_from_qlibrary(self,
+                                                  relative_index: QModelIndex):
+
         filename = self.library_proxy_model.data(relative_index)
-        print("qmodelindex: filename: ", filename, "index: ", relative_index)
-        if self.ui.dockLibrary.library_model.isDir(self.library_proxy_model.mapToSource(relative_index)):
+
+        if self.ui.dockLibrary.library_model.isDir(
+                self.library_proxy_model.mapToSource(relative_index)):
             self.logger.info(f"{filename} is a directory")
             return
 
-        print("hi")
-        #TODO filter for .py files
-
-        full_path = self.ui.dockLibrary.library_model.filePath(self.library_proxy_model.mapToSource(relative_index))
-        print("full path: ", full_path)
+        full_path = self.ui.dockLibrary.library_model.filePath(
+            self.library_proxy_model.mapToSource(relative_index))
         try:
-            self.pesa = create_param_entry_scroll_area(self, self.QLIBRARY_FOLDERNAME, full_path, self.design)
-            print(f"new pesa : {self.pesa}")
-            self.pesa.setup_pesa()
-            self.pesa.show()
-
+            self.param_window = pew.create_parameter_entry_window(
+                self, full_path, self.main_window)
         except Exception as e:
-            print("exception was; ", e)
-            self.logger.error(f"Unable to open param entry window due to Exception: {e}")
-
+            self.logger.error(
+                f"Unable to open param entry window due to Exception: {e} ")
 
     def _setup_library_widget(self):
 
@@ -526,22 +517,21 @@ class MetalGUI(QMainWindowBaseHandler):
         self.ui.dockLibrary.library_model = QFileSystemModel()
         self.ui.dockLibrary.library_model.setRootPath(self.QLIBRARY_ROOT)
 
-
         # QSortFilterProxyModel
         #QSortFilterProxyModel: sorting items, filtering out items, or both.  maps the original model indexes to new indexes, allows a given source model to be restructured as far as views are concerned without requiring any transformations on the underlying data, and without duplicating the data in memory.
-
         self.library_proxy_model = LibraryFileProxyModel()
-        self.library_proxy_model.setSourceModel(self.ui.dockLibrary.library_model)
+        self.library_proxy_model.setSourceModel(
+            self.ui.dockLibrary.library_model)
 
-        ## TODO clean code
         self.ui.dockLibrary_tree_view.setModel(self.library_proxy_model)
-        self.ui.dockLibrary_tree_view.setRootIndex(self.library_proxy_model.mapFromSource(self.ui.dockLibrary.library_model.index(self.ui.dockLibrary.library_model.rootPath())))
-        self.ui.dockLibrary_tree_view.doubleClicked.connect(self.create_new_component_object_from_qlibrary)
-        self.ui.dockLibrary_tree_view.clicked.connect(self.create_new_component_object_from_qlibrary)
-
-        self.pesa = None
-
-
+        self.ui.dockLibrary_tree_view.setRootIndex(
+            self.library_proxy_model.mapFromSource(
+                self.ui.dockLibrary.library_model.index(
+                    self.ui.dockLibrary.library_model.rootPath())))
+        self.ui.dockLibrary_tree_view.doubleClicked.connect(
+            self.create_new_component_object_from_qlibrary)
+        self.ui.dockLibrary_tree_view.clicked.connect(
+            self.create_new_component_object_from_qlibrary)
 
     ################################################
     # UI

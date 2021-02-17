@@ -54,9 +54,17 @@ class RouteMeander(QRoute):
     component_metadata = Dict(short_name='cpw')
     """Component metadata"""
 
-    default_options = Dict(meander=Dict(spacing='200um', asymmetry='0um'),
+    default_options = Dict(total_length='8mm',
+                           pin_inputs=Dict(start_pin=Dict(component='Q0',
+                                                          pin='a'),
+                                           end_pin=Dict(component='Q1',
+                                                        pin='b')),
+                           lead=Dict(start_straight='0mm',
+                                     end_straight='0.5mm'),
+                           meander=Dict(spacing='200um', asymmetry='0um'),
                            snap='true',
-                           prevent_short_edges='true')
+                           prevent_short_edges='true',
+                           fillet='90um')
     """Default options"""
 
     def make(self):
@@ -382,7 +390,8 @@ class RouteMeander(QRoute):
             pass
         # if end_pt.position is above axes - shift + 2xfillet &  not last_meander_sideways
         elif not last_meander_sideways and self.issideways(
-                end_pt_adjusted_down, pts[-2 - term_point], pts[-1 - term_point]):
+                end_pt_adjusted_down, pts[-2 - term_point],
+                pts[-1 - term_point]):
             pass
         else:
             # else block last mender
@@ -396,7 +405,7 @@ class RouteMeander(QRoute):
             # ...unless the last point is anchored to the last meander curve
             if start_pt.direction is not None and end_pt.direction is not None:
                 if ((mao.dot(start_pt.direction, end_pt.direction) < 0) and
-                        (mao.dot(forward, start_pt.direction) <= 0)):
+                    (mao.dot(forward, start_pt.direction) <= 0)):
                     # pins are pointing opposite directions and diverging, thus keep consistency
                     adjustment_vector[-1] = adjustment_vector[-2]
                     if adjustment_vector[-1]:
@@ -405,8 +414,9 @@ class RouteMeander(QRoute):
                         not_a_meander = 1
 
         # Finally, divide the slack amongst all points...
-        sideways_adjustment = sideways * (delta_length /
-                                          (np.count_nonzero(adjustment_vector) - not_a_meander))
+        sideways_adjustment = sideways * (
+            delta_length /
+            (np.count_nonzero(adjustment_vector) - not_a_meander))
         pts = pts + sideways_adjustment[
             np.newaxis, :] * adjustment_vector[:, np.newaxis]
 

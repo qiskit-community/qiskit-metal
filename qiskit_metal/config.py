@@ -27,11 +27,9 @@ from ._defaults import DefaultMetalOptions, DefaultOptionsRenderer
 
 renderers_to_load = Dict(
     hfss=Dict(path_name='qiskit_metal.renderers.renderer_ansys.hfss_renderer',
-               class_name='QHFSSRenderer'),
-
+              class_name='QHFSSRenderer'),
     q3d=Dict(path_name='qiskit_metal.renderers.renderer_ansys.q3d_renderer',
-               class_name='QQ3DRenderer'),
-               
+             class_name='QQ3DRenderer'),
     gds=Dict(path_name='qiskit_metal.renderers.renderer_gds.gds_renderer',
              class_name='QGDSRenderer'),
 )
@@ -40,10 +38,9 @@ Define the renderes to load. Just provide the module names here.
 """
 
 GUI_CONFIG = Dict(
-    load_metal_modules=Dict(
-        Qubits='qiskit_metal.qlibrary.qubits',
-        Interconnects='qiskit_metal.qlibrary.interconnects',
-        Connectors='qiskit_metal.qlibrary.connectors'),
+    load_metal_modules=Dict(Qubits='qiskit_metal.qlibrary.qubits',
+                            Interconnects='qiskit_metal.qlibrary.interconnects',
+                            Connectors='qiskit_metal.qlibrary.connectors'),
     exclude_metal_classes=['Metal_Qubit'],
     tips=[
         'Right clicking the tree elements allows you to do neat things.',

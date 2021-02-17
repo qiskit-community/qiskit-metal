@@ -98,12 +98,13 @@ class RendererHFSSWidget(QMainWindow):
         """
         components_to_render = self.get_checked()
         if components_to_render:
-            txt = self.ui.solnComboBox.currentText() # solution type - eigenmode or driven modal
-            self.endcap_hfss_window = EndcapHFSSWidget(self, self._gui, components_to_render, txt)
+            txt = self.ui.solnComboBox.currentText(
+            )  # solution type - eigenmode or driven modal
+            self.endcap_hfss_window = EndcapHFSSWidget(self, self._gui,
+                                                       components_to_render,
+                                                       txt)
             self.endcap_hfss_window.show()
             self.close()
         else:
-            QMessageBox.warning(
-                self, "Error",
-                "Please select at least one component."
-            )
+            QMessageBox.warning(self, "Error",
+                                "Please select at least one component.")

@@ -11,7 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
 '''
 @date: 2020/08/12
 @author: John Blair
@@ -131,16 +130,12 @@ class LaunchpadWirebond(QComponent):
 
         # Rotates and translates all the objects as requested. Uses package functions in
         # 'draw_utility' for easy rotation/translation
-        polys1 = draw.rotate(polys1,
-                             p.orientation,
-                             origin=(0, 0))
+        polys1 = draw.rotate(polys1, p.orientation, origin=(0, 0))
         polys1 = draw.translate(polys1, xoff=p.pos_x, yoff=p.pos_y)
         [main_pin_line, launch_pad, pocket] = polys1
 
         # Adds the object to the qgeometry table
-        self.add_qgeometry('poly',
-                           dict(launch_pad=launch_pad),
-                           layer=p.layer)
+        self.add_qgeometry('poly', dict(launch_pad=launch_pad), layer=p.layer)
 
         # Subtracts out ground plane on the layer its on
         self.add_qgeometry('poly',

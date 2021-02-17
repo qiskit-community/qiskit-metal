@@ -228,7 +228,7 @@ class ComponentWidget(QTabWidget):
         # connect
         self.ui.btn_edit_src.clicked.connect(self.edit_source)
         self.ui.pushButtonEditSource.clicked.connect(self.edit_source)
-        # restore stylsheet
+        # restore stylesheet
         self.ui.btn_edit_src.setStyleSheet(s1)
         self.ui.pushButtonEditSource.setStyleSheet(s2)
 

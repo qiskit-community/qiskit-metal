@@ -23,6 +23,7 @@ from qiskit_metal.qlibrary.base import QRoutePoint
 from collections import OrderedDict
 from .meandered import RouteMeander
 from .pathfinder import RoutePathfinder
+import numpy as np
 
 
 # class RouteMixed(RouteFramed, RoutePathfinder, RouteMeander):
@@ -44,12 +45,78 @@ class RouteMixed(RoutePathfinder, RouteMeander):
 
     """
 
-    default_options = Dict(
-        between_anchors=OrderedDict(
-        ),  # Intermediate anchors only; doesn't include endpoints
+    default_options = dict({
+        'pin_inputs': {
+            'start_pin': {
+                'component': 'Q0',
+                'pin': 'b'
+            },
+            'end_pin': {
+                'component': 'Q1',
+                'pin': 'a'
+            }
+        },
+        'total_length':
+            '32mm',
+        'chip':
+            'main',
+        'layer':
+            '1',
+        'trace_width':
+            'cpw_width',
+        'step_size':
+            '0.25mm',
+        'anchors':
+            OrderedDict({
+                0: np.array([-3., 1.]),
+                1: np.array([0, 2]),
+                2: np.array([3., 1]),
+                3: np.array([4., .5])
+            }),
+        'between_anchors':
+            OrderedDict(  # S, M, PF
+                {
+                    0: "S",
+                    1: "M",
+                    2: "S",
+                    3: "M",
+                    4: "S"
+                }),  # Intermediate anchors only; doesn't include endpoints
         # Example: {1: "M", 2: "S", 3: "PF"}
         # startpin -> startpin + leadin -> anchors -> endpin + leadout -> endpin
-    )
+        'advanced': {
+            'avoid_collision': 'true'
+        },
+        'meander': {
+            'spacing': '200um',
+            'asymmetry': '0um'
+        },
+        'snap':
+            'true',
+        'lead': {
+            'start_straight':
+                '0.3mm',
+            'end_straight':
+                '0.3mm',
+            'start_jogged_extension':
+                OrderedDict({
+                    0: ["R", '200um'],
+                    1: ["R", '200um'],
+                    2: ["L", '200um'],
+                    3: ["L", '500um'],
+                    4: ["R", '200um']
+                }),
+            'end_jogged_extension':
+                OrderedDict({
+                    0: ["L", '200um'],
+                    1: ["L", '200um'],
+                    2: ["R", '200um'],
+                    3: ["R", '500um'],
+                    4: ["L", '200um']
+                })
+        },
+        **dict(fillet='90um')
+    })
     """Default options"""
 
     def make(self):
@@ -107,7 +174,8 @@ class RouteMixed(RoutePathfinder, RouteMeander):
         self.trim_pts()
         dictionary_intermediate_pts = self.intermediate_pts
         self.intermediate_pts = np.concatenate(list(
-            self.intermediate_pts.values()), axis=0)
+            self.intermediate_pts.values()),
+                                               axis=0)
 
         if any(count_meanders_list):
             # refine length of meanders

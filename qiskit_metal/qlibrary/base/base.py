@@ -34,7 +34,7 @@ from ...draw import BaseGeometry
 from ...toolbox_python.attr_dict import Dict
 from ._parsed_dynamic_attrs import ParsedDynamicAttributes_Component
 from ...toolbox_python.display import format_dict_ala_z
-from datetime import datetime 
+from datetime import datetime
 from ... import config
 if not config.is_building_docs():
     from ...draw import Vector
@@ -170,24 +170,28 @@ class QComponent():
             being used in the design, a component will be generated and
             added to design using the name.
         """
-
         # Make the id be None, which means it hasn't been added to design yet.
         self._id = None
         self._made = False
 
         # Status: used to handle building of a component and checking if it succeeded or failed.
         self.status = 'Not Built'
+        print("status maded in qcomp init")
         if not is_design(design):
             raise ValueError(
                 "Error you did not pass in a valid Metal QDesign object as a '\
                 'parent of this QComponent.")
 
         self._design = design  # reference to parent
-
+        print("Designed")
         if self._delete_evaluation(name) is 'NameInUse':
-            return
-
+            raise ValueError(
+                f"{name} is already in use. Please choose another name for component."
+            )
+        print("qcomp _nameing")
         self._name = name
+        print("qcomp done _named")
+
         self._class_name = self._get_unique_class_name()  # Full class name
 
         #: A dictionary of the component-designer-defined options.
@@ -204,7 +208,8 @@ class QComponent():
         # Should put this earlier so could pass in other error messages?
         self._error_message = ''
         if self._check_pin_inputs():
-            self.logger.warning(self._error_message + "QComponent has NOT been added to design")
+            self.logger.warning(self._error_message +
+                                "QComponent has NOT been added to design")
             return
 
         # Build and component internals
@@ -241,7 +246,7 @@ class QComponent():
             while self.design.rename_component(
                     self._id, short_name + "_" + str(name_id)) != 1:
                 name_id = self.design._get_new_qcomponent_name_id(short_name)
-
+        print("nameddddd")
         # Add keys for each type of table.  add_qgeometry() will update bool if the table is used.
         self.qgeometry_table_usage = Dict()
         self.populate_to_track_table_usage()
@@ -249,6 +254,7 @@ class QComponent():
         # Make the component geometry
         if make:
             self.rebuild()
+        print("done qcomp init rebuilded")
 
     @classmethod
     def _gather_all_children_options(cls) -> dict:
@@ -537,8 +543,9 @@ class QComponent():
             if self._made:  # already made, just remaking
                 self.design.qgeometry.delete_component_id(self.id)
                 self.design._delete_all_pins_for_component(self.id)
-
+            print("will make")
             self.make()
+            print("done maded")
             self._made = True
             self.status = 'good'
 
@@ -553,13 +560,13 @@ class QComponent():
                 f"{str(datetime.now())} -- Component: {self.name} failed with error\n: {error}"
             )
             raise error
+
     def delete(self):
         """
         Delete the QComponent.
         Removes QGeometry, QPins, etc. from the design.
         """
         self.design.delete_component(self.name)
-
 
     # Maybe still should be fine as any values will be in component options still?
     # Though the data table approach and rendering directly via shapely could lead to problem
@@ -801,9 +808,7 @@ class QComponent():
         false_component = False
         false_pin = False
         pin_in_use = False
-        print(f"self.options.pin_inputs is {self.options.pin_inputs}")
         for pin_check in self.options.pin_inputs.values():
-            print(f"pin_check is {pin_check}")
             component = pin_check['component']
             pin = pin_check['pin']
             if isinstance(component, str):
@@ -1137,4 +1142,5 @@ class QComponent():
         to get a summary tables used for this component.
         """
         for table_name in self.design.qgeometry.tables.keys():
+            print("table_name: ", table_name)
             self.qgeometry_table_usage[table_name] = False

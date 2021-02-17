@@ -41,9 +41,33 @@ class RoutePathfinder(RouteAnchors):
         * avoid_collision - true/false, defines if the route needs to avoid collisions (default: 'true')
 
     """
-
-    default_options = Dict(step_size='0.25mm',
-                           advanced=Dict(avoid_collision='true'))
+    default_options = {
+        'pin_inputs': {
+            'start_pin': {
+                'component': 'Q0',
+                'pin': 'b'
+            },
+            'end_pin': {
+                'component': 'Q1',
+                'pin': 'b'
+            }
+        },
+        'lead': {
+            'start_straight': '91um',
+            'end_straight': '90um'
+        },
+        'step_size':
+            '0.25mm',
+        'anchors':
+            OrderedDict({
+                0: np.array([0.048, -0.555]),
+                1: np.array([0.048, 0.195])
+            }),
+        'fillet':
+            '90um',
+        'advanced':
+            Dict(avoid_collision='true'),
+    }
     """Default options"""
 
     def connect_astar_or_simple(self, start_pt: QRoutePoint,

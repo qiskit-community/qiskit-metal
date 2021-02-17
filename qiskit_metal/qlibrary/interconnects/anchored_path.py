@@ -116,12 +116,30 @@ class RouteAnchors(QRoute):
     component_metadata = Dict(short_name='cpw')
     """Component metadata"""
 
-    default_options = Dict(
-        anchors=OrderedDict(
-        ),  # Intermediate anchors only; doesn't include endpoints
+    default_options = {
+        'pin_inputs': {
+            'start_pin': {
+                'component': 'Q0',
+                'pin': 'c'
+            },
+            'end_pin': {
+                'component': 'Q1',
+                'pin': 'c'
+            }
+        },
+        'lead': {
+            'start_straight': '120um',
+            'end_straight': '225um',
+            'start_jogged_extension': OrderedDict({0: ["L", '200um']})
+        },
+        'anchors': OrderedDict({0: np.array(
+            [-2,
+             2.5])}),  # Intermediate anchors only; doesn't include endpoints
         # Example: {1: np.array([x1, y1]), 2: np.array([x2, y2])}
         # startpin -> startpin + leadin -> anchors -> endpin + leadout -> endpin
-        advanced=Dict(avoid_collision='false'))
+        'fillet': '99.99um',
+        'advanced': Dict(avoid_collision='false')
+    }
     """Default options"""
 
     from shapely.ops import cascaded_union
@@ -252,6 +270,7 @@ class RouteAnchors(QRoute):
                 # corner1 is "in front of" the start_pt
                 if (end_direction is None) or (mao.dot(end_direction,
                                                        corner1 - end) >= 0):
+                    print("will exxpand np corner1 ")
                     # corner1 is also "in front of" the end_pt
                     return np.expand_dims(corner1, axis=0)
             elif (mao.dot(start_direction, corner2 - start) > 0) and startc2end:
@@ -259,6 +278,8 @@ class RouteAnchors(QRoute):
                 if (end_direction is None) or (mao.dot(end_direction,
                                                        corner2 - end) >= 0):
                     # corner2 is also "in front of" the end_pt
+                    print("will exxpand np corner2 ")
+
                     return np.expand_dims(corner2, axis=0)
             # In notation below, corners 3 and 4 correspond to
             # the ends of the segment bisecting the longer rectangle formed by start and end
@@ -297,10 +318,12 @@ class RouteAnchors(QRoute):
             if (mao.dot(start_direction, corner1 - start) >= 0) and startc1end:
                 if (end_direction is None) or (mao.dot(end_direction,
                                                        corner1 - end) >= 0):
+                    print("Dogehouse")
                     return np.expand_dims(corner1, axis=0)
             if (mao.dot(start_direction, corner2 - start) >= 0) and startc2end:
                 if (end_direction is None) or (mao.dot(end_direction,
                                                        corner2 - end) >= 0):
+                    print("Ben Awad")
                     return np.expand_dims(corner2, axis=0)
             if (mao.dot(start_direction, corner3 - start) >=
                     0) and startc3c4end:
@@ -377,22 +400,31 @@ class RouteAnchors(QRoute):
         end_point = self.set_lead("end")
 
         self.intermediate_pts = OrderedDict()
+        print("will items")
         for arc_num, coord in anchors.items():
+            print("coord: ", coord, "arcnum: ", arc_num)
             arc_pts = self.connect_simple(self.get_tip(), QRoutePoint(coord))
+            print("arcpts : ", arc_pts)
             if arc_pts is None:
+                print("will cord")
                 self.intermediate_pts[arc_num] = [coord]
             else:
+                print("will intermediate")
                 self.intermediate_pts[arc_num] = np.concatenate(
                     [arc_pts, [coord]], axis=0)
+        print("itemsED()")
         arc_pts = self.connect_simple(self.get_tip(), end_point)
+        print("arcpts again ", arc_pts)
         if arc_pts is not None:
             self.intermediate_pts[len(anchors)] = np.array(arc_pts)
-
+        print("done done done done")
         # concatenate all points, transforming the dictionary into a single numpy array
         self.trim_pts()
+        print("trimmed")
         self.intermediate_pts = np.concatenate(list(
             self.intermediate_pts.values()),
                                                axis=0)
-
+        print("intermediated")
         # Make points into elements
         self.make_elements(self.get_points())
+        print("made elements heresies ")

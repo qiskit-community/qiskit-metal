@@ -65,8 +65,7 @@ class OpenToGround(QComponent):
         [open_termination, port_line] = polys
 
         # Subtracts out ground plane on the layer its on
-        self.add_qgeometry('poly',
-                           {'open_to_ground': open_termination},
+        self.add_qgeometry('poly', {'open_to_ground': open_termination},
                            subtract=True,
                            layer=p.layer)
 

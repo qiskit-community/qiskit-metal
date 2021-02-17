@@ -263,9 +263,12 @@ class QAnsysRenderer(QRenderer):
         here.get_app_desktop().new_project()
 
     def connect_ansys_design(self, design_name: str = None):
+        """ Used to switch between existing designs.
+
+        Args:
+            design_name (str, optional): Name within the active project. Defaults to None.
         """
-        Used to switch between existing designs.
-        """
+
         if self.pinfo:
             if self.pinfo.project:
                 # TODO: Handle case when design does not EXIST?!?!?
@@ -875,27 +878,21 @@ class QAnsysRenderer(QRenderer):
                 self.assign_mesh,
                 MaxLength=self._options['max_mesh_length_jj'])
 
-
     def clean_active_design(self):
-
         """
-        Remove all elements from Q3 Modeler. 
+        Remove all elements from Ansys Modeler.
         """
-        project_name = self.pinfo.project_name
-        design_name = self.pinfo.design_name
-        select_all = ','.join(self.pinfo.get_all_object_names())
+        if self.pinfo:
+            if self.pinfo.get_all_object_names():
+                project_name = self.pinfo.project_name
+                design_name = self.pinfo.design_name
+                select_all = ','.join(self.pinfo.get_all_object_names())
 
-        ####Using self.pinfo.design directly seems obvious, but has segv'd.
-        ####Exception has occurred: AttributeErro
-        ####(note: full exception trace is shown but execution is paused at: _run_module_as_main)
-        ####'HfssDesign' object has no attribute 'SetActiveEditor'
-        # pinfo_editor = self.pinfo.design.SetActiveEditor("3D Modeler")
+                oDesktop = self.pinfo.design.parent.parent._desktop  # self.pinfo.design does not work
+                oProject = oDesktop.SetActiveProject(project_name)
+                oDesign = oProject.SetActiveDesign(design_name)
 
-        oDesktop = self.pinfo.design.parent.parent._desktop
-        oProject = oDesktop.SetActiveProject(project_name)
-        oDesign = oProject.SetActiveDesign(design_name)
+                # The available editors: "Layout", "3D Modeler", "SchematicEditor"
+                oEditor = oDesign.SetActiveEditor("3D Modeler")
 
-        # The available editors: "Layout", "3D Modeler", "SchematicEditor"
-        oEditor = oDesign.SetActiveEditor("3D Modeler")
-
-        oEditor.Delete(["NAME:Selections", "Selections:=", select_all])
+                oEditor.Delete(["NAME:Selections", "Selections:=", select_all])

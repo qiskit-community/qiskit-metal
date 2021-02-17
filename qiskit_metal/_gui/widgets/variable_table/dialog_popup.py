@@ -3,14 +3,16 @@
 # Form implementation generated from reading ui file './widgets/variable_table/dialog_popup.ui',
 # licensing of './widgets/variable_table/dialog_popup.ui' applies.
 #
-# Created: Fri Feb 12 18:05:35 2021
+# Created: Fri Mar 12 01:58:19 2021
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
 
 from PySide2 import QtCore, QtGui, QtWidgets
 
+
 class Ui_Dialog(object):
+
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
         Dialog.setWindowModality(QtCore.Qt.NonModal)
@@ -37,18 +39,23 @@ class Ui_Dialog(object):
         self.gridLayout.addWidget(self.value_box, 1, 1, 1, 1)
         self.buttonBox = QtWidgets.QDialogButtonBox(self.layoutWidget)
         self.buttonBox.setLayoutDirection(QtCore.Qt.RightToLeft)
-        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
+        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel |
+                                          QtWidgets.QDialogButtonBox.Ok)
         self.buttonBox.setCenterButtons(True)
         self.buttonBox.setObjectName("buttonBox")
         self.gridLayout.addWidget(self.buttonBox, 2, 0, 1, 2)
 
         self.retranslateUi(Dialog)
-        QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL("accepted()"), Dialog.accept)
-        QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL("rejected()"), Dialog.reject)
+        QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL("accepted()"),
+                               Dialog.accept)
+        QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL("rejected()"),
+                               Dialog.reject)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(QtWidgets.QApplication.translate("Dialog", "Dialog", None, -1))
-        self.label.setText(QtWidgets.QApplication.translate("Dialog", "Property", None, -1))
-        self.label_2.setText(QtWidgets.QApplication.translate("Dialog", "Value", None, -1))
-
+        Dialog.setWindowTitle(
+            QtWidgets.QApplication.translate("Dialog", "Dialog", None, -1))
+        self.label.setText(
+            QtWidgets.QApplication.translate("Dialog", "Property", None, -1))
+        self.label_2.setText(
+            QtWidgets.QApplication.translate("Dialog", "Value", None, -1))

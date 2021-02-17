@@ -122,7 +122,7 @@ from . import toolbox_metal
 from ._gui.main_window import MetalGUI
 
 # Utility modules
-# For plotting in matplotlib;  May be superseeded by a renderer?
+# For plotting in matplotlib;  May be superseded by a renderer?
 from .renderers.renderer_mpl import mpl_toolbox as plt
 
 # Utility functions
