@@ -28,9 +28,7 @@ class ParameterEntryScrollArea(QScrollArea,Ui_ScrollArea):
                  ):
         super().__init__(parent, *args, **kwargs)
         self.setupUi(self)
-        self.resize(1000,500)
-        #self.resize(1000,500) # figure out a better way to do this
-        #self.setWidgetResizable(True)
+        self.resize(1000,500) # TODO figure out a better way to do this
         print("resized")
 
         self.setAttribute(Qt.WA_DeleteOnClose) # delete this ParameterEntryScrollArea when it closes
@@ -460,6 +458,83 @@ class ParameterEntryScrollArea(QScrollArea,Ui_ScrollArea):
 
       #use param dictionary to type cast or if dict then try to json loads, if all fails
       #
+
+
+def create_param_entry_scroll_area(gui: 'MetalGUI',
+QLIBRARY_FOLDERNAME: str,
+                 abs_file_path: str,
+                 design:QDesign,
+                 parent=None,
+                 *args,
+                 **kwargs
+                                   ):
+    """Creates the spawned window that has the edit source
+
+    Arguments:
+        gui (MetalGUI): the GUI
+        class_name (str): the name of the class
+        module_name (str): the name of the module
+        module_path (str): the path to the module
+        parent (object): the parent
+
+    Returns:
+        QtWidgets.QWidget: Ui_EditSource widget
+
+    Access:
+        `gui.component_window.src_widgets[-1]`
+    """
+    if not parent:
+        parent = gui.main_window  # gui.component_window.ui.tabHelp
+
+    gui.logger.info(
+        f'Creating a PESA  window for\n  class_name={class_name}\n'
+        f'  file={module_path}')
+
+    pesa_main_window = QtWidgets.QMainWindow(
+        parent)  # use parent, so this way its style sheet is inherited
+
+    pesa = ParameterEntryScrollArea(QLIBRARY_FOLDERNAME, abs_file_path, design)
+    # TODO try just scroll area
+    pesa_main_window.setCentralWidget(pesa)
+    pesa_main_window.dock = dockify(pesa_main_window, gui)
+    pesa_main_window.ui.src_editor.gui = gui
+    pesa_main_window.ui.src_editor.set_component(class_name, module_name, module_path)
+    pesa_main_window.statusBar().hide()
+
+    pesa_main_window.ui.textEditHelp.setStyleSheet("""
+    background-color: #f9f9f9;
+    color: #000000;
+            """)
+
+    pesa_main_window.dock.show()
+    pesa_main_window.dock.raise_()
+    pesa_main_window.dock.activateWindow()
+
+    return pesa_main_window
+
+def dockify(self, gui):
+    """Dockify the given GUI
+
+    Args:
+        gui (MetalGUI): the GUI
+
+    Returns:
+        QDockWidget: the widget
+    """
+    ### Dockify
+    self.dock_widget = QDockWidget('Edit Source', gui.main_window)
+    dock = self.dock_widget
+    dock.setWidget(self)
+
+    dock.setAllowedAreas(Qt.RightDockWidgetArea)
+    dock.setFloating(True)
+    dock.resize(1200, 700)
+
+    # Doesnt work
+    # dock_gui = self.dock_widget
+    # dock_gui.setWindowFlags(dock_gui.windowFlags() & ~QtCore.Qt.WindowStaysOnTopHint)
+
+    return dock
 
 
 class PEDAInitException(Exception):
