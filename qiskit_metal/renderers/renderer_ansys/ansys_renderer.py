@@ -93,21 +93,24 @@ class QAnsysRenderer(QRenderer):
 
     #: Default options, over-written by passing ``options` dict to render_options.
     #: Type: Dict[str, str]
+
+    # yapf: disable
     default_options = Dict(
-        Lj='10nH', # Lj has units of nanoHenries (nH)
-        Cj=0, # Cj *must* be 0 for pyEPR analysis! Cj has units of femtofarads (fF)
-        _Rj=0, # _Rj *must* be 0 for pyEPR analysis! _Rj has units of Ohms
-        max_mesh_length_jj='7um', # maximum mesh length for Josephson junction elements
-        project_path=None, # default project path; if None --> get active
-        project_name=None, # default project name
-        design_name=None, # default design name
-        ansys_file_extension='.aedt', # Ansys file extension for 2016 version and newer
+        Lj='10nH',  # Lj has units of nanoHenries (nH)
+        Cj=0,  # Cj *must* be 0 for pyEPR analysis! Cj has units of femtofarads (fF)
+        _Rj=0,  # _Rj *must* be 0 for pyEPR analysis! _Rj has units of Ohms
+        max_mesh_length_jj='7um',  # maximum mesh length for Josephson junction elements
+        project_path=None,  # default project path; if None --> get active
+        project_name=None,  # default project name
+        design_name=None,  # default design name
+        # Ansys file extension for 2016 version and newer
+        ansys_file_extension='.aedt',
         # bounding_box_scale_x = 1.2, # Ratio of 'main' chip width to bounding box width
         # bounding_box_scale_y = 1.2, # Ratio of 'main' chip length to bounding box length
-        x_buffer_width_mm=0.2, # Buffer between max/min x and edge of ground plane, in mm
-        y_buffer_width_mm=0.2, # Buffer between max/min y and edge of ground plane, in mm
+        x_buffer_width_mm=0.2,  # Buffer between max/min x and edge of ground plane, in mm
+        y_buffer_width_mm=0.2,  # Buffer between max/min y and edge of ground plane, in mm
     )
-
+    # yapf:enable
     NAME_DELIM = r'_'
 
     name = 'ansys'
@@ -159,7 +162,10 @@ class QAnsysRenderer(QRenderer):
 
         self._pinfo = None
 
-    def open_ansys(self, path: str = None, executable: str = 'reg_ansysedt.exe', path_var: str = 'ANSYSEM_ROOT202'):
+    def open_ansys(self,
+                   path: str = None,
+                   executable: str = 'reg_ansysedt.exe',
+                   path_var: str = 'ANSYSEM_ROOT202'):
         """
         Open a session of Ansys. Default is version 2020 R2, but can be overridden.
 
@@ -172,7 +178,8 @@ class QAnsysRenderer(QRenderer):
         if not system() == 'Windows':
             self.logger.warning(
                 'You are using %s, but this is a renderer to Ansys, which only runs on Windows. '
-                'Expect any sort of Errors if you try to work with this renderer beyond this point.' % system())
+                'Expect any sort of Errors if you try to work with this renderer beyond this point.'
+                % system())
 
         import subprocess
         if path is None:
@@ -182,14 +189,18 @@ class QAnsysRenderer(QRenderer):
                 self.logger.error(
                     'environment variable %s not found. Is Ansys 2020 R2 installed on this machine? '
                     'If yes, then create said environment variable. If you have a different version of Ansys, '
-                    'then pass to open_ansys() the path to its binary, or the env var that stores it.' % path_var)
+                    'then pass to open_ansys() the path to its binary, or the env var that stores it.'
+                    % path_var)
                 raise
         else:
             path = os.path.abspath(path)
         cmdlist = [os.path.sep.join([path, executable]), '-shortcut']
         subprocess.call(cmdlist, cwd=path)
 
-    def connect_ansys(self, project_path: str = None, project_name: str = None, design_name: str = None):
+    def connect_ansys(self,
+                      project_path: str = None,
+                      project_name: str = None,
+                      design_name: str = None):
         """
         If none of the optional parameters are provided: connects to the Ansys COM, then
         checks for, and grab if present, an active project, design, and design setup.
@@ -205,7 +216,8 @@ class QAnsysRenderer(QRenderer):
         if not system() == 'Windows':
             self.logger.warning(
                 'You are using %s, but this is a renderer to Ansys, which only runs on Windows. '
-                'Expect any sort of Errors if you try to work with this renderer beyond this point.' % system())
+                'Expect any sort of Errors if you try to work with this renderer beyond this point.'
+                % system())
 
         # pyEPR does not like extensions
         if project_name:
@@ -214,9 +226,12 @@ class QAnsysRenderer(QRenderer):
         import pythoncom
         try:
             self._pinfo = epr.ProjectInfo(
-                project_path=self._options['project_path'] if not project_path else project_path,
-                project_name=self._options['project_name'] if not project_name else project_name,
-                design_name=self._options['design_name'] if not design_name else design_name)
+                project_path=self._options['project_path']
+                if not project_path else project_path,
+                project_name=self._options['project_name']
+                if not project_name else project_name,
+                design_name=self._options['design_name']
+                if not design_name else design_name)
         except pythoncom.com_error as error:
             print("com_error: ", error)
             hr, msg, exc, arg = error.args
@@ -237,7 +252,8 @@ class QAnsysRenderer(QRenderer):
         if self.pinfo:
             self.pinfo.disconnect()
         else:
-            self.logger.warning('This renderer appears to be already disconnected from Ansys')
+            self.logger.warning(
+                'This renderer appears to be already disconnected from Ansys')
 
     def new_ansys_project(self):
         """
@@ -258,7 +274,8 @@ class QAnsysRenderer(QRenderer):
                     self.pinfo.connect_setup()
                 except AttributeError:
                     self.logger.error(
-                        'Please install a more recent version of pyEPR (>=0.8.4.3)')
+                        'Please install a more recent version of pyEPR (>=0.8.4.3)'
+                    )
             else:
                 self.logger.warning(
                     'Either you do not have a project loaded in Ansys, or you are not connected to it. '
@@ -267,45 +284,49 @@ class QAnsysRenderer(QRenderer):
         else:
             self.logger.warning(
                 'It does not look like you are connected to Ansys. Please use connect_ansys() '
-                'and make sure self.pinfo is set. There must be a project open in Ansys first.')
+                'and make sure self.pinfo is set. There must be a project open in Ansys first.'
+            )
 
     @property
     def pinfo(self) -> epr.ProjectInfo:
         """Project info for Ansys renderer (class: pyEPR.ProjectInfo)"""
         return self._pinfo
-    
+
     @property
     def modeler(self):
         if self.pinfo:
             if self.pinfo.design:
                 return self.pinfo.design.modeler
 
-    def plot_ansys_fields(self, object_name:str):
+    def plot_ansys_fields(self, object_name: str):
         if not self.pinfo:
-            return # TODO all checks 
+            return  # TODO all checks
         #TODO: This is just a prototype - should add features and flexibility.
         oFieldsReport = self.pinfo.design._fields_calc
         oModeler = self.pinfo.design._modeler
         setup = self.pinfo.setup
 
-        # Object ID - use tro plot on faces of 
+        # Object ID - use tro plot on faces of
         object_id = oModeler.GetObjectIDByName(object_name)
         # Can also use hfss.pinfo.design._modeler.GetFaceIDs("main")
         # TODO: Allow all these need to be customizable, esp QuantityName
+
+        # yapf: disable
         return oFieldsReport.CreateFieldPlot(
             [
-                "NAME:Mag_E1",
-                "SolutionName:="	, f"{setup.name} : LastAdaptive", # name of the setup 
-                "UserSpecifyName:="	, 0,
-                "UserSpecifyFolder:="	, 0,
-                "QuantityName:="	, "Mag_E",
-                "PlotFolder:="		, "E Field",
-                "StreamlinePlot:="	, False,
-                "AdjacentSidePlot:="	, False,
-                "FullModelPlot:="	, False,
-                "IntrinsicVar:="	, "Phase=\'0deg\'",
-                "PlotGeomInfo:="	, [1,"Surface","FacesList",1, str(object_id)],
-            ], "Field")
+                "NAME:Mag_E1"        ,
+                "SolutionName:="     ,  f"{setup.name} : LastAdaptive",  # name of the setup 
+                "UserSpecifyName:="  , 0,
+                "UserSpecifyFolder:=", 0,
+                "QuantityName:="     , "Mag_E",
+                "PlotFolder:="       , "E Field",
+                "StreamlinePlot:="   , False,
+                "AdjacentSidePlot:=" , False,
+                "FullModelPlot:="    , False,
+                "IntrinsicVar:="     , "Phase=\'0deg\'",
+                "PlotGeomInfo:="     , [1, "Surface", "FacesList", 1, str(object_id)],
+            ],  "Field")
+        #yapf: enable
 
     def plot_ansys_delete(self, names: list):
         """
@@ -322,7 +343,7 @@ class QAnsysRenderer(QRenderer):
         oFieldsReport = self.pinfo.design._fields_calc
         return oFieldsReport.DeleteFieldPlot(names)
 
-    def add_message(self, msg: str, severity: int=0):
+    def add_message(self, msg: str, severity: int = 0):
         """
         Add message to Message Manager box in Ansys.
 
@@ -341,7 +362,8 @@ class QAnsysRenderer(QRenderer):
 
     def render_design(self,
                       selection: Union[list, None] = None,
-                      open_pins: Union[list, None] = None):
+                      open_pins: Union[list, None] = None,
+                      box_plus_buffer: bool = True):
         """
         Initiate rendering of components in design contained in selection, assuming they're valid.
         Components are rendered before the chips they reside on, and subtraction of negative shapes
@@ -363,6 +385,8 @@ class QAnsysRenderer(QRenderer):
         Args:
             selection (Union[list, None], optional): List of components to render. Defaults to None.
             open_pins (Union[list, None], optional): List of tuples of pins that are open. Defaults to None.
+            box_plus_buffer (bool): Either calculate a bounding box based on the location of rendered geometries
+                                     or use chip size from design class. 
         """
         self.chip_subtract_dict = defaultdict(set)
         self.assign_perfE = []
@@ -371,7 +395,7 @@ class QAnsysRenderer(QRenderer):
         self.render_tables(selection)
         self.add_endcaps(open_pins)
 
-        self.render_chips()
+        self.render_chips(box_plus_buffer=box_plus_buffer)
         self.subtract_from_ground()
         self.add_mesh()
 
@@ -409,17 +433,19 @@ class QAnsysRenderer(QRenderer):
         if selection:
             qcomp_ids, case = self.get_unique_component_ids(selection)
 
-            if qcomp_ids: # Render strict subset of components
+            if qcomp_ids:  # Render strict subset of components
                 # Update bounding box (and hence main chip dimensions)
                 for qcomp_id in qcomp_ids:
-                    min_x, min_y, max_x, max_y = self.design._components[qcomp_id].qgeometry_bounds()
+                    min_x, min_y, max_x, max_y = self.design._components[
+                        qcomp_id].qgeometry_bounds()
                     self.min_x_main = min(min_x, self.min_x_main)
                     self.min_y_main = min(min_y, self.min_y_main)
                     self.max_x_main = max(max_x, self.max_x_main)
                     self.max_y_main = max(max_y, self.max_y_main)
-            else: # All components rendered
+            else:  # All components rendered
                 for qcomp in self.design.components:
-                    min_x, min_y, max_x, max_y = self.design.components[qcomp].qgeometry_bounds()
+                    min_x, min_y, max_x, max_y = self.design.components[
+                        qcomp].qgeometry_bounds()
                     self.min_x_main = min(min_x, self.min_x_main)
                     self.min_y_main = min(min_y, self.min_y_main)
                     self.max_x_main = max(max_x, self.max_x_main)
@@ -428,7 +454,6 @@ class QAnsysRenderer(QRenderer):
             if case != 1:  # Render a subset of components using mask
                 mask = table['component'].isin(qcomp_ids)
                 table = table[mask]
-                self.render_everything = False
 
         else:
             for qcomp in self.design.components:
@@ -607,7 +632,9 @@ class QAnsysRenderer(QRenderer):
                                                     **ansys_options)
         except AttributeError:
             if self.modeler is None:
-                self.logger.error('No modeler was found. Are you connected to an active Ansys Design?')
+                self.logger.error(
+                    'No modeler was found. Are you connected to an active Ansys Design?'
+                )
             raise
 
         poly_ansys = poly_ansys.rename(name)
@@ -659,7 +686,9 @@ class QAnsysRenderer(QRenderer):
         elif qgeom['width'] and (not qgeom['helper']):
             self.assign_perfE.append(name)
 
-    def render_chips(self, draw_sample_holder: bool = True):
+    def render_chips(self,
+                     draw_sample_holder: bool = True,
+                     box_plus_buffer: bool = True):
         """
         Render chips using info from design.get_chip_size method.
 
@@ -668,6 +697,8 @@ class QAnsysRenderer(QRenderer):
 
         Args:
             draw_sample_holder (bool, optional): Option to draw vacuum box around chip. Defaults to True.
+            box_plus_buffer (bool): Either calculate a bounding box based on the location of rendered geometries
+                                     or use chip size from design class. 
         """
         ansys_options = dict(transparency=0.0)
 
@@ -687,25 +718,45 @@ class QAnsysRenderer(QRenderer):
                 self.max_y_main = parse_units(self.max_y_main)
                 comp_center_x = (self.min_x_main + self.max_x_main) / 2
                 comp_center_y = (self.min_y_main + self.max_y_main) / 2
-                min_x_edge = self.min_x_main - parse_units(self._options['x_buffer_width_mm'])
-                max_x_edge = self.max_x_main + parse_units(self._options['x_buffer_width_mm'])
-                min_y_edge = self.min_y_main - parse_units(self._options['y_buffer_width_mm'])
-                max_y_edge = self.max_y_main + parse_units(self._options['y_buffer_width_mm'])
-                if self.render_everything and (origin[0] - size[0] / 2 <= min_x_edge < max_x_edge <= origin[0] + size[0] / 2) and (origin[1] - size[1] / 2 <= min_y_edge < max_y_edge <= origin[1] + size[1] / 2):
-                    # All components are rendered and the overall bounding box lies within 9 X 6 chip
-                    plane = self.modeler.draw_rect_center(origin,
-                                                          x_size=size[0],
-                                                          y_size=size[1],
-                                                          name=f'ground_{chip_name}_plane',
-                                                          **ansys_options)
+                min_x_edge = self.min_x_main - parse_units(
+                    self._options['x_buffer_width_mm'])
+                max_x_edge = self.max_x_main + parse_units(
+                    self._options['x_buffer_width_mm'])
+                min_y_edge = self.min_y_main - parse_units(
+                    self._options['y_buffer_width_mm'])
+                max_y_edge = self.max_y_main + parse_units(
+                    self._options['y_buffer_width_mm'])
 
-                    whole_chip = self.modeler.draw_box_center([origin[0], origin[1], size[2] / 2],
-                                                              [size[0], size[1], -size[2]],
-                                                              name=chip_name,
-                                                              material=ops['material'],
-                                                              color=(186, 186, 205),
-                                                              transparency=0.2,
-                                                              wireframe=False)
+                if not box_plus_buffer:
+                    # Expect all components are rendered and
+                    # the overall bounding box lies within 9 X 6 chip
+                    if not (origin[0] - size[0] / 2 <= self.min_x_main <
+                            self.max_x_main <= origin[0] + size[0] / 2) and (
+                                origin[1] - size[1] / 2 <= self.min_y_main <
+                                self.max_y_main <= origin[1] + size[1] / 2):
+                        self.logger.warning(
+                            'A bounding box with buffer around the QComponents are outside of the size of chip denoted in DesignPlanar.\n'
+                            'Chip size from DesignPlanar is:\n'
+                            f' x={size[0]}, y={size[1]}, z={size[2]}; centered at x={origin[0]}, y={origin[1]}, z={origin[2]}. \n'
+                            'Bounding box with buffer for rendered geometries is:\n'
+                            f' min_x={self.min_x_main}, max_x={self.max_x_main}, min_y={self.min_y_main}, max_y={self.max_y_main}.'
+                        )
+
+                    plane = self.modeler.draw_rect_center(
+                        origin,
+                        x_size=size[0],
+                        y_size=size[1],
+                        name=f'ground_{chip_name}_plane',
+                        **ansys_options)
+
+                    whole_chip = self.modeler.draw_box_center(
+                        [origin[0], origin[1], size[2] / 2],
+                        [size[0], size[1], -size[2]],
+                        name=chip_name,
+                        material=ops['material'],
+                        color=(186, 186, 205),
+                        transparency=0.2,
+                        wireframe=False)
                     if draw_sample_holder:
                         vacuum_box = self.modeler.draw_box_center(
                             [
@@ -743,11 +794,12 @@ class QAnsysRenderer(QRenderer):
                             name='sample_holder')
             else:
                 # Only draw plane and wafer
-                plane = self.modeler.draw_rect_center(origin,
-                                                      x_size=size[0],
-                                                      y_size=size[1],
-                                                      name=f'ground_{chip_name}_plane',
-                                                      **ansys_options)
+                plane = self.modeler.draw_rect_center(
+                    origin,
+                    x_size=size[0],
+                    y_size=size[1],
+                    name=f'ground_{chip_name}_plane',
+                    **ansys_options)
 
                 whole_chip = self.modeler.draw_box_center(
                     [origin[0], origin[1], size[2] / 2],
@@ -818,9 +870,10 @@ class QAnsysRenderer(QRenderer):
         Add mesh to all elements in self.assign_mesh.
         """
         if self.assign_mesh:
-            self.modeler.mesh_length('small_mesh',
-                                    self.assign_mesh,
-                                    MaxLength=self._options['max_mesh_length_jj'])
+            self.modeler.mesh_length(
+                'small_mesh',
+                self.assign_mesh,
+                MaxLength=self._options['max_mesh_length_jj'])
 
     def clean_active_design(self):
         """
