@@ -28,7 +28,8 @@ import numpy as np
 import pandas as pd
 
 from qiskit_metal.analyses.quantization import lumped_capacitive
-from qiskit_metal.analyses.hamiltonian.analytic_transmon import Hcpb
+from qiskit_metal.analyses.hamiltonian.transmon_charge_basis import Hcpb
+from qiskit_metal.analyses.hamiltonian.HO_wavefunctions import wavefunction
 from qiskit_metal.analyses.em import cpw_calculations
 from qiskit_metal.analyses.scan_options.scanning import Scanning
 from qiskit_metal.tests.assertions import AssertionsMixin
@@ -231,40 +232,34 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
         Test the functionality of lumped_transmon_props in lumped_capacitives.py
         """
         # Setup expected test results
-        test_a_expected = (3.2897326737094774e-12, 311949615351887.6,
-                           0.00018137620223473302, 1.2170673260260538,
-                           55134023.405734204, 55134024.62280153, 0.0)
-        test_b_expected = (3.2897326737094773e-13, 3119496153518876.0,
-                           1.81376202234733e-05, 0.12170673260260537,
-                           55134024.501094796, 55134024.62280153, 0.0)
-        test_c_expected = (3.289732673709477e-14, 3.1194961535188764e+16,
-                           1.8137620223473303e-06, 0.012170673260260537,
-                           55134024.610630855, 55134024.62280153, 0.0)
-        test_d_expected = (3.2897326737094774e-15, 3.119496153518876e+17,
-                           1.8137620223473301e-07, 0.0012170673260260537,
-                           55134024.62158446, 55134024.62280153, 0.0)
-        test_e_expected = (3.2897326737094773e-16, 3.119496153518876e+18,
-                           1.8137620223473303e-08, 0.00012170673260260537,
-                           55134024.62267982, 55134024.62280153, 0.0)
-        test_f_expected = (3.289732673709477e-17, 3.1194961535188763e+19,
-                           1.8137620223473302e-09, 1.2170673260260537e-05,
-                           55134024.62278935, 55134024.62280153, 0.0)
+        expected = [
+            (3.2897326737094774e-12, 311949615351887.6, 0.00018137620223473302,
+             1.2170673260260538, 55134023.405734204, 55134024.62280153, 0.0),
+            (3.2897326737094773e-13, 3119496153518876.0, 1.81376202234733e-05,
+             0.12170673260260537, 55134024.501094796, 55134024.62280153, 0.0),
+            (3.289732673709477e-14, 3.1194961535188764e+16,
+             1.8137620223473303e-06, 0.012170673260260537, 55134024.610630855,
+             55134024.62280153, 0.0),
+            (3.2897326737094773e-16, 3.119496153518876e+18,
+             1.8137620223473303e-08, 0.00012170673260260537, 55134024.62267982,
+             55134024.62280153, 0.0),
+            (3.289732673709477e-17, 3.1194961535188763e+19,
+             1.8137620223473302e-09, 1.2170673260260537e-05, 55134024.62278935,
+             55134024.62280153, 0.0)
+        ]
 
         # Generate actual result data
-        test_a_result = lumped_capacitive.transmon_props(0.0001, 0.0001)
-        test_b_result = lumped_capacitive.transmon_props(0.001, 0.001)
-        test_c_result = lumped_capacitive.transmon_props(0.01, 0.01)
-        test_d_result = lumped_capacitive.transmon_props(0.1, 0.1)
-        test_e_result = lumped_capacitive.transmon_props(1, 1)
-        test_f_result = lumped_capacitive.transmon_props(10, 10)
+        result = []
+        result.append(lumped_capacitive.transmon_props(0.0001, 0.0001))
+        result.append(lumped_capacitive.transmon_props(0.001, 0.001))
+        result.append(lumped_capacitive.transmon_props(0.01, 0.01))
+        result.append(lumped_capacitive.transmon_props(1, 1))
+        result.append(lumped_capacitive.transmon_props(10, 10))
 
         # Test all elements of the result data against expected data
-        self.assertEqual(test_a_expected, test_a_result)
-        self.assertEqual(test_b_expected, test_b_result)
-        self.assertEqual(test_c_expected, test_c_result)
-        self.assertEqual(test_d_expected, test_d_result)
-        self.assertEqual(test_e_expected, test_e_result)
-        self.assertEqual(test_f_expected, test_f_result)
+        self.assertEqual(len(expected), len(result))
+        for x, _ in enumerate(expected):
+            self.assertAlmostEqual(_, result[x])
 
     def test_analyses_lumped_chi(self):
         """
@@ -798,6 +793,23 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
         with self.assertRaises(IndexError):
             test_a_result = lumped_capacitive.df_reorder_matrix_basis(
                 df_a, 1, 35)
+
+    def test_analyses_hamiltonian_ho_wavefunction(self):
+        """
+        Test the wavefunction function in the HO_waefunction.py file
+        """
+        x_range = np.linspace(-5, 5, 5)
+        actual = wavefunction(1.0, 1.0, 0.0, x_range)
+
+        expected = [
+            2.10255658e-06, 2.47888124e-02, 5.64189584e-01, 2.47888124e-02,
+            2.10255658e-06
+        ]
+
+        self.assertEqual(len(actual), len(expected))
+
+        for x, _ in enumerate(actual):
+            self.assertAlmostEqualRel(_, expected[x], rel_tol=1e-6)
 
 
 if __name__ == '__main__':

@@ -40,6 +40,7 @@ Hcpb
       Hcpb.h0_to_qutip
       Hcpb.n_ij
       Hcpb.n_to_qutip
+      Hcpb.params_from_freq_fixEC
       Hcpb.params_from_spectrum
       Hcpb.psi_k
    

@@ -14,7 +14,7 @@ dependencies:
   - ipython
   - jedi>=0.17
   - matplotlib
-  - numpy
+  - numpy<1.20
   - pandas
   - pint
   - pyepr-quantum>=0.8.4.4
@@ -26,3 +26,5 @@ dependencies:
   - shapely
   - jupyter
   - wheel
+  - pip:
+      - "--editable=git+https://github.com/jojurgens/pyqode.qt.git@master#egg=pyqode.qt"
