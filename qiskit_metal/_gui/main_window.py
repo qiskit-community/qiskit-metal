@@ -501,7 +501,8 @@ class MetalGUI(QMainWindowBaseHandler):
         full_path = self.ui.dockLibrary.library_model.filePath(self.library_proxy_model.mapToSource(relative_index))
         print("full path: ", full_path)
         try:
-            parameter_entry_scroll_area.create_param_entry_scroll_area(self.QLIBRARY_FOLDERNAME, full_path, self.design)
+
+            parameter_entry_scroll_area.create_param_entry_scroll_area(self, self.QLIBRARY_FOLDERNAME, full_path, self.design)
         except Exception as e:
             print("exception was; ", e)
         print("param_entry made")
