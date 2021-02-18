@@ -304,8 +304,7 @@ class QHFSSRenderer(QAnsysRenderer):
             adesign = self.pinfo.project.new_dm_design(
                 name, get_existing=get_existing)
             if connect:
-                self.connect_ansys_design(adesign.name,
-                                          get_existing=get_existing)
+                self.connect_ansys_design(adesign.name)
             return adesign
         else:
             self.logger.info("Are you mad?? You have to connect to ansys and a project " \
@@ -367,8 +366,7 @@ class QHFSSRenderer(QAnsysRenderer):
             adesign = self.pinfo.project.new_em_design(
                 name, get_existing=get_existing)
             if connect:
-                self.connect_ansys_design(adesign.name,
-                                          get_existing=get_existing)
+                self.connect_ansys_design(adesign.name)
             return adesign
         else:
             self.logger.info("Are you mad?? You have to connect to ansys and a project " \
