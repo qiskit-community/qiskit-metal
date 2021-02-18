@@ -262,15 +262,22 @@ class QAnsysRenderer(QRenderer):
         here = HfssApp()
         here.get_app_desktop().new_project()
 
-    def connect_ansys_design(self, design_name: str = None):
+    def connect_ansys_design(self, design_name: str = None, get_existing=False):
+        """ Used to switch between existing designs.
+
+        Args:
+            design_name (str, optional): Name within the active project. Defaults to None.
+            get_existing (bool, optional): When false, append incremented integer to name and insert a new design.
+                                           When true, if the design is found in project, use the existing design without appending integer. 
+                                           Defaults to False.
         """
-        Used to switch between existing designs.
-        """
+
         if self.pinfo:
             if self.pinfo.project:
                 # TODO: Handle case when design does not EXIST?!?!?
                 try:
-                    self.pinfo.connect_design(design_name)
+                    self.pinfo.connect_design(design_name,
+                                              get_existing=get_existing)
                     self.pinfo.connect_setup()
                 except AttributeError:
                     self.logger.error(

@@ -286,24 +286,32 @@ class QHFSSRenderer(QAnsysRenderer):
         """
         self.modeler.assign_perfect_E(self.assign_perfE)
 
-    def add_drivenmodal_design(self, name: str, connect: bool = True):
+    def add_drivenmodal_design(self,
+                               name: str,
+                               connect: bool = True,
+                               get_existing=False):
         """
         Add a driven modal design with the given name to the project.
 
         Args:
             name (str): Name of the new driven modal design
             connect (bool, optional): Should we connect this session to this design? Defaults to True
+            get_existing (bool, optional): When false, append incremented integer to name and insert a new design.
+                                           When true, if the design is found in project, use the existing design without appending integer. 
+                                           Defaults to False.
         """
         if self.pinfo:
-            adesign = self.pinfo.project.new_dm_design(name)
+            adesign = self.pinfo.project.new_dm_design(
+                name, get_existing=get_existing)
             if connect:
-                self.connect_ansys_design(adesign.name)
+                self.connect_ansys_design(adesign.name,
+                                          get_existing=get_existing)
             return adesign
         else:
             self.logger.info("Are you mad?? You have to connect to ansys and a project " \
                             "first before creating a new design . Use self.connect_ansys()")
 
-    def add_drivenmodal_setup(self, 
+    def add_drivenmodal_setup(self,
                               freq_ghz=5,
                               name="Setup",
                               max_delta_s=0.1,
@@ -328,50 +336,39 @@ class QHFSSRenderer(QAnsysRenderer):
         """
         if self.pinfo:
             if self.pinfo.design:
-                return self.pinfo.design.create_dm_setup(freq_ghz=freq_ghz,
-                                                         name=name,
-                                                         max_delta_s=max_delta_s,
-                                                         max_passes=max_passes,
-                                                         min_passes=min_passes,
-                                                         min_converged=min_converged,
-                                                         pct_refinement=pct_refinement,
-                                                         basis_order=basis_order)
+                return self.pinfo.design.create_dm_setup(
+                    freq_ghz=freq_ghz,
+                    name=name,
+                    max_delta_s=max_delta_s,
+                    max_passes=max_passes,
+                    min_passes=min_passes,
+                    min_converged=min_converged,
+                    pct_refinement=pct_refinement,
+                    basis_order=basis_order)
 
-    def add_eigenmode_design(self, name: str, connect: bool = True):
+    def add_eigenmode_design(self,
+                             name: str,
+                             connect: bool = True,
+                             get_existing=False):
         """
         Add an eigenmode design with the given name to the project.
 
         Args:
             name (str): Name of the new eigenmode design
             connect (bool, optional): Should we connect this session to this design? Defaults to True
+            get_existing (bool, optional): When false, append incremented integer to name and insert a new design.
+                                           When true, if the design is found in project, use the existing design without appending integer. 
+                                           Defaults to False.
 
         Returns(pyEPR.ansys.HfssDesign): A eigenmode  within Ansys.
 
         """
         if self.pinfo:
-            adesign = self.pinfo.project.new_em_design(name)
+            adesign = self.pinfo.project.new_em_design(
+                name, get_existing=get_existing)
             if connect:
-                self.connect_ansys_design(adesign.name)
-            return adesign
-        else:
-            self.logger.info("Are you mad?? You have to connect to ansys and a project " \
-                            "first before creating a new design . Use self.connect_ansys()")
-
-    def add_driven_modal_design(self, name: str, connect: bool = True):
-        """
-        Add a driven modal design with the given name to the project referenced in pinfo.
-
-        Args:
-            name (str): Name of the new driven modal design
-            connect (bool, optional): Should we connect this session to this design? Defaults to True
-
-        Returns(pyEPR.ansys.HfssDesign): A driven modal design within Ansys. 
-
-        """
-        if self.pinfo:
-            adesign = self.pinfo.project.new_dm_design(name)
-            if connect:
-                self.connect_ansys_design(adesign.name)
+                self.connect_ansys_design(adesign.name,
+                                          get_existing=get_existing)
             return adesign
         else:
             self.logger.info("Are you mad?? You have to connect to ansys and a project " \
@@ -425,7 +422,7 @@ class QHFSSRenderer(QAnsysRenderer):
         if self.pinfo:
             setup = self.pinfo.get_setup(setup_name)
             setup.analyze()
-    
+
     def add_sweep(self,
                   setup_name="Setup",
                   start_ghz=2.0,
@@ -457,7 +454,7 @@ class QHFSSRenderer(QAnsysRenderer):
                                       name=name,
                                       type=type,
                                       save_fields=save_fields)
-                                                    
+
     def analyze_sweep(self, sweep_name: str, setup_name: str):
         """
         Analyze a single sweep within the setup.
@@ -471,8 +468,8 @@ class QHFSSRenderer(QAnsysRenderer):
             sweep = setup.get_sweep(sweep_name)
             sweep.analyze_sweep()
             self.current_sweep = sweep
-    
-    def plot_s_params(self, getS: Union[list, None]=None):
+
+    def plot_s_params(self, getS: Union[list, None] = None):
         """
         Plot one or more S parameters as a function of frequency.
 
@@ -481,7 +478,8 @@ class QHFSSRenderer(QAnsysRenderer):
         """
         if self.current_sweep:
             freqs, Scurves = self.current_sweep.get_network_data(getS)
-            Sparams = pd.DataFrame(Scurves, columns=freqs/1e9, index=getS).transpose()
+            Sparams = pd.DataFrame(Scurves, columns=freqs / 1e9,
+                                   index=getS).transpose()
             fig = plt.figure(10)
             fig.clf()
             ax = plt.gca()
