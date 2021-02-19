@@ -464,22 +464,33 @@ class QHFSSRenderer(QAnsysRenderer):
             sweep.analyze_sweep()
             self.current_sweep = sweep
     
-    def plot_s_params(self, getS: Union[list, None]=None):
+    def get_params(self, param_name: Union[list, None]=None):
         """
-        Plot one or more S parameters as a function of frequency.
+        Get one or more parameters (S, Y, or Z) as a function of frequency.
 
         Args:
-            getS (Union[list, None], optional): S parameters to plot. Defaults to None.
+            getP (Union[list, None], optional): Parameters to obtain. Defaults to None.
         """
         if self.current_sweep:
-            freqs, Scurves = self.current_sweep.get_network_data(getS)
-            Sparams = pd.DataFrame(Scurves, columns=freqs/1e9, index=getS).transpose()
-            fig = plt.figure(10)
-            fig.clf()
-            ax = plt.gca()
-            Sparams.apply(lambda x: 20 * np.log10(np.abs(x))).plot(ax=ax)
-            ax.autoscale()
-            display(fig)
+            freqs, Pcurves = self.current_sweep.get_network_data(param_name)
+            Pparams = pd.DataFrame(Pcurves, columns=freqs/1e9, index=param_name).transpose()
+        return freqs, Pcurves, Pparams
+
+    def plot_params(self, param_name: Union[list, None]=None):
+        """
+        Plot one or more parameters (S, Y, or Z) as a function of frequency.
+
+        Args:
+            getP (Union[list, None], optional): Parameters to plot. Defaults to None.
+        """
+        freqs, Pcurves, Pparams = self.get_params(param_name)
+        if Pparams is not None :
+            fig, axs = plt.subplots(1,2, figsize=(10,6))
+            Pparams.apply(lambda x: 20 * np.log10(np.abs(x))).plot(ax=axs[0])
+            Pparams.apply(lambda x: np.angle(x)).plot(ax=axs[1])
+            for ax in axs:
+                ax.autoscale()
+        return Pparams, fig
 
     def distributed_analysis(self):
         """
