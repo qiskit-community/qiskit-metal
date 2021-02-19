@@ -65,7 +65,6 @@ Qiskit for quantum hardware design (`Qiskit Metal`) is:
 .. toctree::
     :maxdepth: 2
     :caption: Contributor Guide
-
     :hidden:
 
     Contributor Guide<contributor-guide>
