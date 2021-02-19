@@ -3,16 +3,15 @@
 
 ![Welcome to Qiskit Metal!](docs/images/zkm_banner.png 'Welcome to Qiskit Metal')
 
-### Early access for quantum device design project now open
-https://qiskit.org/metal/
+### Early Access to this quantum device design project
+We are thrilled to ask you to join this journey to revolutionize quantum devices. This is a first-of-its-kind, open-source project for engineers and scientists to design superconducting quantum devices with ease.
 
-Unpolished, early-access alpha version for a first-of-its-kind, open-source project for engineers and scientists to design superconducting quantum devices with ease.
+The early-access program started in November and will proceed through the first few months of 2021. During this time we will work closely together to develop Metal and design quantum devices with it.
 
-#### Early Access
-Through this early-access program, we are thrilled to ask you to join this journey to revolutionize quantum devices.
+#### Disclaimers
+Unpolished, early-access alpha version
 
-The early-access program will start in November and proceed through March, 2021, during which time we will work closely to develop Metal and design quantum devices with it.
-<br><br>
+Qiskit-metal is licensed under Apache 2.0. IBM reserves no copyright over outputs of qiskit-metal.
 
 #### Get help: Slack
 Use the [Slack channel (Join here!)](https://join.slack.com/share/zt-jjgzilxu-1u2FGivroQi64fHajpTWiw) to communicate with the developers and other early-access participats. (Troubleshooting: If the Slack invitation has expired, request one by opening a GitHub issue.)
