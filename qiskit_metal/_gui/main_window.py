@@ -501,13 +501,17 @@ class MetalGUI(QMainWindowBaseHandler):
         full_path = self.ui.dockLibrary.library_model.filePath(self.library_proxy_model.mapToSource(relative_index))
         print("full path: ", full_path)
         try:
+            if self.pesa is not None and self.pesa.isVisible():
+                    self.logger.info("Param Entry Display is already open. Maybe check behind main GUI window")
+            else:
+                self.pesa = parameter_entry_scroll_area.create_param_entry_scroll_area(self, self.QLIBRARY_FOLDERNAME, full_path, self.design)
+                self.pesa.show()
 
-            parameter_entry_scroll_area.create_param_entry_scroll_area(self, self.QLIBRARY_FOLDERNAME, full_path, self.design)
         except Exception as e:
             print("exception was; ", e)
+            self.logger.error(f"Unable to open param entry window due to Exception: {e}")
         print("param_entry made")
-        self.param_entry.show()
-        print("param entry showing? :", str(self.param_entry.isVisible()))
+        print("param entry showing? :", str(self.pesa.isVisible()))
 
 
     def _setup_library_widget(self):
@@ -534,6 +538,8 @@ class MetalGUI(QMainWindowBaseHandler):
         self.ui.dockLibrary_tree_view.setRootIndex(self.library_proxy_model.mapFromSource(self.ui.dockLibrary.library_model.index(self.ui.dockLibrary.library_model.rootPath())))
         self.ui.dockLibrary_tree_view.doubleClicked.connect(self.create_new_component_object_from_qlibrary)
         self.ui.dockLibrary_tree_view.clicked.connect(self.create_new_component_object_from_qlibrary)
+
+        self.pesa = None
 
 
 

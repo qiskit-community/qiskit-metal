@@ -79,7 +79,7 @@ class ParameterEntryScrollArea(QScrollArea,Ui_ScrollArea):
                 except (LibraryQComponentException) as lqce:
                     print("LibraryQCom...Exception AS str: ", str(lqce.__class__.__name__))
                     print("LibraryQCom...Exception AS: ", lqce.__class__.__name__)
-                    cls.log_error(args[0], lqce, self, args, kwargs)
+                    cls.log_error(args[0], lqce, func, args, kwargs)
                     args[0].error_pop_up = QMessageBox()
                     args[0].error_pop_up.critical(args[0],"",str(lqce.__class__.__name__) + ":\n" +str(lqce)) #modality set by critical, Don't set Title -- will NOT show up on MacOs
 
@@ -87,7 +87,7 @@ class ParameterEntryScrollArea(QScrollArea,Ui_ScrollArea):
                 except Exception as e:  # pylint: disable=invalid-name,broad-except
                     print("normal Exceptions", str(e))
                     print("args[0]: ", args[0])
-                    cls.log_error(args[0], e, self, args, kwargs)
+                    cls.log_error(args[0], e, func, args, kwargs)
 
             return wrapper
 
@@ -102,14 +102,14 @@ class ParameterEntryScrollArea(QScrollArea,Ui_ScrollArea):
                 except (LibraryQComponentException) as lqce:
                     print("init_peda_pop_up_arning LibraryQCom...Exception AS str: ", str(lqce.__class__.__name__))
                     print("init_peda_pop_up_arning LibraryQCom...Exception AS: ", lqce.__class__.__name__)
-                    cls.log_error(args[0], e, self, args, kwargs)
+                    cls.log_error(args[0], e, func, args, kwargs)
                     args[0].error_pop_up = QMessageBox()
                     error_message = "Sorry. There has been an issue create the parameter input form for this QComponent. ERROR:"
                     error_message =  str(lqce.__class__.__name__)  + error_message + ":\n" +str(lqce)
                     args[0].error_pop_up.critical(args[0],"",error_message) #modality set by critical, Don't set Title -- will NOT show up on MacOs :(
                 except Exception as e:
                     print("An eceptions o no")
-                    cls.log_error(args[0], e, self, args, kwargs)
+                    cls.log_error(args[0], e, func, args, kwargs)
             return wrapper
 
     @property
@@ -488,13 +488,10 @@ def create_param_entry_scroll_area(
 
     gui.logger.info(f'Creating a PESA  window for {abs_file_path}')
 
-    #pesa_main_window = QMainWindow(
-    #    parent)  # use parent, so this way its style sheet is inherited
-
     pesa = ParameterEntryScrollArea(QLIBRARY_FOLDERNAME, abs_file_path, design)
     # TODO try just scroll area
     #pesa_main_window.setCentralWidget(pesa)
-    pesa.dock = dockify(pesa, gui)
+    pesa.dock = dockify(pesa)
     pesa.gui = gui
 
     pesa.dock.show()
@@ -503,7 +500,7 @@ def create_param_entry_scroll_area(
 
     return pesa
 
-def dockify(pesa, gui):
+def dockify(pesa):
     """Dockify the given GUI
     Args:
         gui (MetalGUI): the GUI
@@ -512,9 +509,17 @@ def dockify(pesa, gui):
         QDockWidget: the widget
     """
     ### Dockify
-    pesa.dock_widget = QDockWidget('Parameter Entry Scroll Area', gui.main_window)
+    pesa.dock_widget = QDockWidget('Parameter Entry Scroll Area') #TODO make gui the parent --> currently this causes gui display issues
     dock = pesa.dock_widget
+    print("orig style sheet")
+    print(pesa.styleSheet())
     dock.setWidget(pesa)
+    print("old stylesheet")
+    print(pesa.styleSheet())
+    print(pesa.style())
+    dock.setStyleSheet("")
+    print("should be default style sheet")
+    print(pesa.styleSheet())
 
     #dock.setAllowedAreas(Qt.RightDockWidgetArea)
     dock.setFloating(True)
