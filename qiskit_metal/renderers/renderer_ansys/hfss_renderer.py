@@ -322,6 +322,10 @@ class QHFSSRenderer(QAnsysRenderer):
                         self.pinfo.project_name)
                     oDesign = oProject.SetActiveDesign(name)
                 else:
+                    self.logger.warning(
+                        f'The name={name} was not in active project.  '
+                        'A new design will be inserted to the project.  '
+                        f'Names in active project are: \n{names_in_design}.  ')
                     adesign = self.add_drivenmodal_design(name=name,
                                                           connect=connect)
 
@@ -407,6 +411,10 @@ class QHFSSRenderer(QAnsysRenderer):
                         self.pinfo.project_name)
                     oDesign = oProject.SetActiveDesign(name)
                 else:
+                    self.logger.warning(
+                        f'The name={name} was not in active project.  '
+                        'A new design will be inserted to the project.  '
+                        f'Names in active project are: \n{names_in_design}.  ')
                     adesign = self.add_eigenmode_design(name=name,
                                                         connect=connect)
 
