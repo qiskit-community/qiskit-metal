@@ -1,4 +1,4 @@
-﻿# ﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿New Qiskit Metal Developer Onboarding
+﻿# New Qiskit Metal Developer Onboarding
 Follow the instructions in the sections below to setup your local development environment.
 
 ## Setup Visual Studio 2019 Code
@@ -104,3 +104,22 @@ Another few extensions you may find useful to install from the vs marketplace ar
 * gittLab
   * When you click a line in the source code, tells you who wrote it.
   * Has powerful git diff viewer for different branches
+
+
+## Developer: Docs and how to use
+
+[Conda User Guide](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html)
+
+[Python Setup and Usage](https://docs.python.org/3/using/)
+
+[Python Language Reference](https://docs.python.org/3/reference/index.html)
+
+[Python How-To's](https://docs.python.org/3/howto/index.html)
+
+[Python Tutorials](https://docs.python.org/3/tutorial/index.html)
+
+[Python Style Guide](https://www.python.org/dev/peps/pep-0008/)
+
+[Metal Docs](/)
+
+[Docstring cheat sheet](/docs/docstring_cheat_sheet.md)
