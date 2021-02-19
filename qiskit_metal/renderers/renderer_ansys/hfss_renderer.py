@@ -368,26 +368,19 @@ class QHFSSRenderer(QAnsysRenderer):
                     pct_refinement=pct_refinement,
                     basis_order=basis_order)
 
-    def add_eigenmode_design(self,
-                             name: str,
-                             connect: bool = True,
-                             get_existing=False):
+    def add_eigenmode_design(self, name: str, connect: bool = True):
         """
         Add an eigenmode design with the given name to the project.
 
         Args:
             name (str): Name of the new eigenmode design
             connect (bool, optional): Should we connect this session to this design? Defaults to True
-            get_existing (bool, optional): When false, append incremented integer to name and insert a new design.
-                                           When true, if the design is found in project, use the existing design without appending integer. 
-                                           Defaults to False.
 
         Returns(pyEPR.ansys.HfssDesign): A eigenmode  within Ansys.
 
         """
         if self.pinfo:
-            adesign = self.pinfo.project.new_em_design(
-                name, get_existing=get_existing)
+            adesign = self.pinfo.project.new_em_design(name)
             if connect:
                 self.connect_ansys_design(adesign.name)
             return adesign
