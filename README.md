@@ -17,6 +17,13 @@ The early-access program will start in November and proceed through March, 2021,
 #### Get help: Slack
 Use the [Slack channel (Join here!)](https://join.slack.com/share/zt-jjgzilxu-1u2FGivroQi64fHajpTWiw) to communicate with the developers and other early-access participats. (Troubleshooting: If the Slack invitation has expired, request one by opening a GitHub issue.)
 
+## Documentation 
+After installation, you can open the documentation like this
+```
+import qiskit_metal
+qiskit_metal.open_docs()
+```
+Build the docs by running `python build_docs.py` in a shell in the `docs` folder.
 
 ## Installation
 ### Video Instructions
@@ -202,28 +209,10 @@ Then open the applicable settings.json in your VS Code. (See how to open command
         }
 ```
 
-## Docs and how to use
-
-[Conda User Guide](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html)
-
-[Python Setup and Usage](https://docs.python.org/3/using/)
-
-[Python Language Reference](https://docs.python.org/3/reference/index.html)
-
-[Python How-To's](https://docs.python.org/3/howto/index.html)
-
-[Python Tutorials](https://docs.python.org/3/tutorial/index.html)
-
-[Python Style Guide](https://www.python.org/dev/peps/pep-0008/)
-
-[Metal Docs](/docs)
-
-[Docstring cheat sheet](/docs/docstring_cheat_sheet.md)
-
 
 ## Authors and Citation
 
-Qiskit Metal is the work of [many people](https://github.com/Qiskit/qiskit-metal/pulse/monthly) who contribute to the project at different levels. Metal was conceived and developed by Zlatko Minev at IBM, then co-led with Thomas McConkey. If you use Qiskit, please cite as per the included [BibTeX file](https://github.com/Qiskit/qiskit/blob/master/Qiskit.bib).For icon attributions, see [here](/qiskit_metal/_gui/_imgs/icon_attributions.txt).
+Qiskit Metal is the work of [many people](https://github.com/Qiskit/qiskit-metal/pulse/monthly) who contribute to the project at different levels. Metal was conceived and developed by [Zlatko Minev](zlatko-minev.com) at IBM; then co-led with Thomas McConkey. If you use Qiskit, please cite as per the included [BibTeX file](https://github.com/Qiskit/qiskit/blob/master/Qiskit.bib). For icon attributions, see [here](/qiskit_metal/_gui/_imgs/icon_attributions.txt).
 
 
 ## License

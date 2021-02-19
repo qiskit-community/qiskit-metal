@@ -9,9 +9,9 @@ Frequently asked questions.
 
 .. _setup:
 
-**********************
+----------------------
 Setting up environment
-**********************
+----------------------
 
 **Why am I observing `pyqode`-related errors?**
 
@@ -72,9 +72,9 @@ Then open the applicable settings.json in your VS Code. (See how to open command
 
 .. _gui:
 
-*************************************
+-------------------------------------
 Getting started with GUI developement
-*************************************
+-------------------------------------
 
 **Is there a PySide2 tutorial?**
 
@@ -101,9 +101,9 @@ Sure.  There are a few decent overviews.  A good place to start are these two:
 
 .. _docs:
 
-*************
+-------------
 Documentation
-*************
+-------------
 
 **I am seeing a lot of warnings when I build the docs.  How do I resolve them?**
 
@@ -111,9 +111,9 @@ Some users may see a list of warnings when building the docs.  Warnings about ma
 
 You can resolve other warnings by deleting the ``docs/build`` and ``docs/stubs`` directories and rebuilding.
 
-********************************
+--------------------------------
 Connecting to 3rd party software
-********************************
+--------------------------------
 
 **I'm having trouble connecting to Ansys after running connect_ansys().**
 
