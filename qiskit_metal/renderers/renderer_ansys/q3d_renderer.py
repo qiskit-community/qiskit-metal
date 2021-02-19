@@ -304,51 +304,53 @@ class QQ3DRenderer(QAnsysRenderer):
         epr.toolbox.plotting.mpl_dpi(110)
         return _plot_q3d_convergence_chi_f(RES)
 
-    def add_q3d_design(self,
-                       name: str,
-                       connect: bool = True,
-                       get_existing=False):
+    def add_q3d_design(self, name: str, connect: bool = True):
         """
         Add a q3d design with the given name to the project.
 
         Args:
             name (str): Name of the new q3d design
             connect (bool, optional): Should we connect this session to this design? Defaults to True.
-            get_existing (bool, optional): When false, append incremented integer to name and insert a new design.
-                                           When true, if the design is found in project, use the existing design without appending integer. 
-                                           Defaults to False.
-
-        
         """
         if self.pinfo:
             try:
-                adesign = self.pinfo.project.new_q3d_design(
-                    name, get_existing=get_existing)
+                adesign = self.pinfo.project.new_q3d_design(name)
             except AttributeError:
                 self.logger.error(
                     'Please install a more recent version of pyEPR (>=0.8.4.4)')
             if connect:
-                self.connect_ansys_design(adesign.name,
-                                          get_existing=get_existing)
+                self.connect_ansys_design(adesign.name)
             return adesign
         else:
             self.logger.info("Are you mad?? You have to connect to ansys and a project " \
                             "first before creating a new design . Use self.connect_ansys()")
 
-    def activate_q3d_design(self,
-                            name: str,
-                            connect: bool = True,
-                            get_existing=True):
+    def activate_q3d_design(self, name: str, connect: bool = True):
         """Add a q3d design with the given name to the project.  If the design exists, that will be added WITHOUT
         altering the suffix of the design name.
 
         Args:
             name (str): Name of the new q3d design
             connect (bool, optional): Should we connect this session to this design? Defaults to True.
-            get_existing (bool, optional): When false, append incremented integer to name and insert a new design.
-                                           When true, if the design is found in project, use the existing design without appending integer. 
-                                           Defaults to False.
         """
-        return add_q3d_design(name=name,
-                              connect=connect,
-                              get_existing=get_existing)
+
+        if self.pinfo:
+            if self.pinfo.project:
+                names_in_design = self.pinfo.project.get_design_names()
+
+                if name in names_in_design:
+                    self.pinfo.connect_design(name)
+                    oDesktop = self.pinfo.design.parent.parent._desktop  # self.pinfo.design does not work
+                    oProject = oDesktop.SetActiveProject(
+                        self.pinfo.project_name)
+                    oDesign = oProject.SetActiveDesign(name)
+                else:
+                    adesign = self.add_q3d_design(name=name, connect=connect)
+
+            else:
+                self.logger.warning(
+                    "Project not available, have you opened a project?")
+        else:
+            self.logger.warning(
+                "Have you run connect_ansys()?  Can not find a reference to Ansys in QRenderer."
+            )
