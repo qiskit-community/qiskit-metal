@@ -313,7 +313,12 @@ class QHFSSRenderer(QAnsysRenderer):
         """
         if self.pinfo:
             if self.pinfo.project:
-                names_in_design = self.pinfo.project.get_design_names()
+                try:
+                    names_in_design = self.pinfo.project.get_design_names()
+                except AttributeError:
+                    self.logger.error(
+                        'Please install a more recent version of pyEPR (>=0.8.4.5)'
+                    )
 
                 if name in names_in_design:
                     self.pinfo.connect_design(name)
@@ -402,7 +407,12 @@ class QHFSSRenderer(QAnsysRenderer):
         """
         if self.pinfo:
             if self.pinfo.project:
-                names_in_design = self.pinfo.project.get_design_names()
+                try:
+                    names_in_design = self.pinfo.project.get_design_names()
+                except AttributeError:
+                    self.logger.error(
+                        'Please install a more recent version of pyEPR (>=0.8.4.5)'
+                    )
 
                 if name in names_in_design:
                     self.pinfo.connect_design(name)
