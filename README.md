@@ -139,6 +139,7 @@ On Windows, replace `source <virtual_env_path>/bin/activate` with `.\<virtual_en
 Here are some things to consider when setting up a development environment:
 * If using a virtual environment, make sure `pip` is up to date. In initial environment testing, PySide2 is installable with only the latest version of `pip`.
 * Add the path of your qiskit-metal folder to your PATH
+* Library errors when activating conda environments, or initializing jupyter notebook/lab, indicate a conflict between python libraries in the base and sub environments. Go ahead and manually delete the library from the base environment `site-packages` folder, shows in the error message. You might need to reinstall them in the sub environment, or create a new one.
 
 
 ### Additional steps for developers
