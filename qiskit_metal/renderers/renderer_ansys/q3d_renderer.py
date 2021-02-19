@@ -325,13 +325,12 @@ class QQ3DRenderer(QAnsysRenderer):
             self.logger.info("Are you mad?? You have to connect to ansys and a project " \
                             "first before creating a new design . Use self.connect_ansys()")
 
-    def activate_q3d_design(self, name: str, connect: bool = True):
+    def activate_q3d_design(self, name: str):
         """Add a q3d design with the given name to the project.  If the design exists, that will be added WITHOUT
         altering the suffix of the design name.
 
         Args:
             name (str): Name of the new q3d design
-            connect (bool, optional): Should we connect this session to this design? Defaults to True.
         """
 
         if self.pinfo:
@@ -354,7 +353,7 @@ class QQ3DRenderer(QAnsysRenderer):
                         f'The name={name} was not in active project.  '
                         'A new design will be inserted to the project.  '
                         f'Names in active project are: \n{names_in_design}.  ')
-                    adesign = self.add_q3d_design(name=name, connect=connect)
+                    adesign = self.add_q3d_design(name=name, connect=True)
 
             else:
                 self.logger.warning(
