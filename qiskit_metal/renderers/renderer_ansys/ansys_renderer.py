@@ -263,9 +263,12 @@ class QAnsysRenderer(QRenderer):
         here.get_app_desktop().new_project()
 
     def connect_ansys_design(self, design_name: str = None):
+        """ Used to switch between existing designs.
+
+        Args:
+            design_name (str, optional): Name within the active project. Defaults to None.
         """
-        Used to switch between existing designs.
-        """
+
         if self.pinfo:
             if self.pinfo.project:
                 # TODO: Handle case when design does not EXIST?!?!?
