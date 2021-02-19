@@ -57,10 +57,11 @@ Qiskit for quantum hardware design (`Qiskit Metal`) is:
     :maxdepth: 2
     :hidden:
 
-    Installing Qiskit Metal<getting_started/install.rst>
-    Getting Started With Metal
     Metal Workflow<workflow>
     Frequently Asked Questions<faq>
+
+.. TODO: Add Installing Qiskit Metal<getting_started/install.rst> before Metal Workflow
+.. TODO: Add Getting Started With Metal between Metal Workflow and Installing Qiskit Metal
 
 .. toctree::
     :maxdepth: 2
