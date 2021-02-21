@@ -14,6 +14,7 @@ pyEPR-quantum>=0.8.4.5
 Pygments
 pyqode.python==2.12.1
 pyside2>=5.9, <5.14
+qiskit-sphinx-theme
 scipy
 Shapely
 pyqode.qt @ git+https://github.com/jojurgens/pyqode.qt.git#egg=pyqode.qt

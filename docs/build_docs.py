@@ -24,29 +24,34 @@ import sys
 
 # first install prerequisite packages
 try:
-	import sphinx
-	import numpydoc
-	import sphinx_rtd_theme
-	import sphinx_automodapi
-	import jupyter_sphinx
+    import sphinx
+    import numpydoc
+    import qiskit_sphinx_theme
+    import sphinx_automodapi
+    import jupyter_sphinx
 except ImportError:
-	cmd = "conda install -y -c conda-forge sphinx numpydoc sphinx_rtd_theme sphinx-automodapi jupyter_sphinx"
-	print(f'\n*** Installing pre-requisite packages to build the docs***\n$ {cmd}')
-	scmd = shlex.split(cmd)
-	try:
-		result = subprocess.run(scmd, stdout=subprocess.PIPE, check=False)
-	except FileNotFoundError:
-		# some windows systems appear to require this switch
-		result = subprocess.run(scmd, stdout=subprocess.PIPE, check=False, shell=True)
-	stderr = result.stderr
-	stdout = result.stdout
-	returncode = result.returncode
-	print(f'\n****Exited with {returncode}')
-	if stdout:
-		print(f'****stdout****\n{stdout.decode()}')
-	if stderr:
-		print(f'****stderr****\n{stderr.decode()}')
-	print("Pre-requisite installation Complete!")
+    cmd = "conda install -y -c conda-forge sphinx numpydoc sphinx-automodapi jupyter_sphinx"
+    print(
+        f'\n*** Installing pre-requisite packages to build the docs***\n$ {cmd}'
+    )
+    scmd = shlex.split(cmd)
+    try:
+        result = subprocess.run(scmd, stdout=subprocess.PIPE, check=False)
+    except FileNotFoundError:
+        # some windows systems appear to require this switch
+        result = subprocess.run(scmd,
+                                stdout=subprocess.PIPE,
+                                check=False,
+                                shell=True)
+    stderr = result.stderr
+    stdout = result.stdout
+    returncode = result.returncode
+    print(f'\n****Exited with {returncode}')
+    if stdout:
+        print(f'****stdout****\n{stdout.decode()}')
+    if stderr:
+        print(f'****stderr****\n{stderr.decode()}')
+    print("Pre-requisite installation Complete!")
 
 # then build the docs
 pwd = os.getcwd()
@@ -60,18 +65,18 @@ print(f'\n*** Running the build***\n$ make html')
 from sys import platform
 
 if platform == "darwin":
-	scmd = shlex.split("make html")
-	result = subprocess.run(scmd, stdout=subprocess.PIPE, check=False)
-	stderr = result.stderr
-	stdout = result.stdout
-	returncode = result.returncode
-	print(f'\n****Exited with {returncode}')
-	if stdout:
-		print(f'****stdout****\n{stdout.decode()}')
-	if stderr:
-		print(f'****stderr****\n{stderr.decode()}')
+    scmd = shlex.split("make html")
+    result = subprocess.run(scmd, stdout=subprocess.PIPE, check=False)
+    stderr = result.stderr
+    stdout = result.stdout
+    returncode = result.returncode
+    print(f'\n****Exited with {returncode}')
+    if stdout:
+        print(f'****stdout****\n{stdout.decode()}')
+    if stderr:
+        print(f'****stderr****\n{stderr.decode()}')
 else:
-	os.system("make html")
+    os.system("make html")
 
 os.chdir(pwd)
 
