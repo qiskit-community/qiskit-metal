@@ -471,6 +471,45 @@ class QHFSSRenderer(QAnsysRenderer):
                     pct_refinement=pct_refinement,
                     basis_order=basis_order)
 
+    def set_mode(self, mode: int, setup_name: str):
+        if self.pinfo:
+            if self.pinfo.project:
+                if self.pinfo.design:
+                    oDesktop = self.pinfo.design.parent.parent._desktop  # self.pinfo.design does not work
+                    oProject = oDesktop.SetActiveProject(
+                        self.pinfo.project_name)
+                    oDesign = oProject.GetActiveDesign()
+                    if oDesign.GetSolutionType() == 'Eigenmode':
+                        setup = self.pinfo.get_setup(setup_name)
+                        if 0 <= mode <= setup.n_modes:
+                            setup_soltuions = setup.get_solutions()
+                            if setup_solutions:
+                                setup_soltuions.set_mode(mode)
+                            else:
+                                self.logger.warning(
+                                    'Not able to get setup_soltuions, the mode was not set.'
+                                )
+                        else:
+                            self.logger.warning(
+                                f'The requested mode={mode} is not a valid (0 to {setup.n_modes}) seletection. '
+                                'The mode was not set.')
+                    else:
+                        self.logger.warning(
+                            'The design does not have solution type as "Eignmode". The mode was not set.'
+                        )
+                else:
+                    self.logger.warning(
+                        'A design is not in active project. The mode was not set.'
+                    )
+            else:
+                self.logger.warning(
+                    "Project not available, have you opened a project? The mode was not set."
+                )
+        else:
+            self.logger.warning(
+                "Have you run set_mode()?  Can not find a reference to Ansys in QRenderer.  The mode was not set."
+            )
+
     def analyze_setup(self, setup_name: str):
         """
         Run a specific solution setup in Ansys HFSS.
