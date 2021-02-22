@@ -481,7 +481,7 @@ class QHFSSRenderer(QAnsysRenderer):
                     oDesign = oProject.GetActiveDesign()
                     if oDesign.GetSolutionType() == 'Eigenmode':
                         setup = self.pinfo.get_setup(setup_name)
-                        if 0 <= mode <= setup.n_modes:
+                        if 0 < int(mode) <= int(setup.n_modes):
                             setup_solutions = setup.get_solutions()
                             if setup_solutions:
                                 setup_solutions.set_mode(mode)
@@ -491,7 +491,7 @@ class QHFSSRenderer(QAnsysRenderer):
                                 )
                         else:
                             self.logger.warning(
-                                f'The requested mode={mode} is not a valid (0 to {setup.n_modes}) seletection. '
+                                f'The requested mode={mode} is not a valid (1 to {setup.n_modes}) seletection. '
                                 'The mode was not set.')
                     else:
                         self.logger.warning(
