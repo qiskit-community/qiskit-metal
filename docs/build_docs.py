@@ -29,8 +29,9 @@ try:
     import qiskit_sphinx_theme
     import sphinx_automodapi
     import jupyter_sphinx
+    import nbsphinx
 except ImportError:
-    cmd = "conda install -y -c conda-forge sphinx numpydoc sphinx-automodapi jupyter_sphinx"
+    cmd = "conda install -y -c conda-forge sphinx numpydoc sphinx-automodapi jupyter_sphinx nbsphinx"
     print(
         f'\n*** Installing pre-requisite packages to build the docs***\n$ {cmd}'
     )
