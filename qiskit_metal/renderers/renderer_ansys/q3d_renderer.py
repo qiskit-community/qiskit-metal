@@ -310,7 +310,7 @@ class QQ3DRenderer(QAnsysRenderer):
 
         Args:
             name (str): Name of the new q3d design
-            connect (bool, optional): Should we connect this session to this design? Defaults to True
+            connect (bool, optional): Should we connect this session to this design? Defaults to True.
         """
         if self.pinfo:
             try:
@@ -324,3 +324,41 @@ class QQ3DRenderer(QAnsysRenderer):
         else:
             self.logger.info("Are you mad?? You have to connect to ansys and a project " \
                             "first before creating a new design . Use self.connect_ansys()")
+
+    def activate_q3d_design(self, name: str):
+        """Add a q3d design with the given name to the project.  If the design exists, that will be added WITHOUT
+        altering the suffix of the design name.
+
+        Args:
+            name (str): Name of the new q3d design
+        """
+
+        if self.pinfo:
+            if self.pinfo.project:
+                try:
+                    names_in_design = self.pinfo.project.get_design_names()
+                except AttributeError:
+                    self.logger.error(
+                        'Please install a more recent version of pyEPR (>=0.8.4.5)'
+                    )
+
+                if name in names_in_design:
+                    self.pinfo.connect_design(name)
+                    oDesktop = self.pinfo.design.parent.parent._desktop  # self.pinfo.design does not work
+                    oProject = oDesktop.SetActiveProject(
+                        self.pinfo.project_name)
+                    oDesign = oProject.SetActiveDesign(name)
+                else:
+                    self.logger.warning(
+                        f'The name={name} was not in active project.  '
+                        'A new design will be inserted to the project.  '
+                        f'Names in active project are: \n{names_in_design}.  ')
+                    adesign = self.add_q3d_design(name=name, connect=True)
+
+            else:
+                self.logger.warning(
+                    "Project not available, have you opened a project?")
+        else:
+            self.logger.warning(
+                "Have you run connect_ansys()?  Can not find a reference to Ansys in QRenderer."
+            )
