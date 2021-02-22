@@ -1,104 +1,88 @@
-from .parameter_entry_scroll_area import ParameterEntryScrollArea
-from PySide2.QtWidgets import QPushButton
-from PySide2.QtWidgets import (QScrollArea, QVBoxLayout, QLabel, QWidget,
-                               QHBoxLayout, QLineEdit, QLayout, QComboBox,
-                               QMessageBox, QSizePolicy, QMainWindow,
-                               QDockWidget)
-from PySide2.QtCore import Qt
-from PySide2.QtCore import QDir
-from addict.addict import Dict
-from .collapsable_widget import CollapsibleWidget
-from collections import OrderedDict
-import numpy as np
-from .parameter_entry_scroll_area_ui import Ui_ScrollArea
-from inspect import signature
-import inspect
-from collections import Callable
-import os
+# -*- coding: utf-8 -*-
+
+# This code is part of Qiskit.
+#
+# (C) Copyright IBM 2017, 2020.
+#
+# This code is licensed under the Apache License, Version 2.0. You may
+# obtain a copy of this license in the LICENSE.txt file in the root directory
+# of this source tree or at http://www.apache.org/licenses/LICENSE-2.0.
+#
+# Any modifications or derivative works of this code must retain this
+# copyright notice, and modified files need to carry a notice indicating
+# that they have been altered from the originals.
+"""
+QLibrary display in Library tab
+
+@authors: Grace Harper
+@date: 2021
+"""
+
+from .qcomponent_parameter_entry import QComponentParameterEntry
+from PySide2.QtWidgets import (QDockWidget)
+from PySide2.QtWidgets import QWidget
+
 from ....designs.design_base import QDesign
-import importlib
-import builtins
-import logging
-import traceback
-import json
-from typing import Dict as typeDict
+
 import typing
 if typing.TYPE_CHECKING:
     from ...main_window import MetalGUI
 
 
-def create_param_entry_scroll_area(gui: 'MetalGUI',
-                                   QLIBRARY_FOLDERNAME: str,
-                                   abs_file_path: str,
-                                   design: QDesign,
-                                   parent=None,
-                                   *args,
-                                   **kwargs):
-    """Creates the spawned window that has the edit source
+def create_qcomponent_parameter_entry(
+    gui: 'MetalGUI',
+    QLIBRARY_FOLDERNAME: str,
+    abs_file_path: str,
+    design: QDesign,
+    parent=None,
+):
+    """Creates the spawned QComponentParameterEntry that is docked to force itself to
+    display on top of the rest of the GUI
 
     Arguments:
         gui (MetalGUI): the GUI
-        module_name (str): the name of the module
-        module_path (str): the path to the module
-        parent (object): the parent
+        QLIBRARY_FOLDERNAME: Current directory name for where all QComponent .py files are held - ex: 'qlibrary'
+        abs_file_path: absolute file path to current QComponent .py file
+        design: current design
+        parent: parent widget
 
     Returns:
-        QtWidgets.QWidget: Ui_EditSource widget
+        QtWidgets.QScrollArea: QComponentParameterEntry
 
     Access:
-        `gui.component_window.src_widgets[-1]`
+        gui.qcpe
     """
-    print(
-        f"ParameterEntryScrollArea should be class: {ParameterEntryScrollArea}")
 
     if not parent:
         parent = gui.main_window  # gui.component_window.ui.tabHelp
 
-    gui.logger.info(f'Creating a PESA  window for {abs_file_path}')
+    gui.logger.info(f'Creating a qcpe  window for {abs_file_path}')
 
-    pesa = ParameterEntryScrollArea(QLIBRARY_FOLDERNAME, abs_file_path, design)
-    print(f"new pesa: {pesa}")
-    # TODO try just scroll area
-    #pesa_main_window.setCentralWidget(pesa)
-    pesa.dock = dockify(pesa)
-    pesa.gui = gui
+    qcpe = QComponentParameterEntry(QLIBRARY_FOLDERNAME, abs_file_path, design)
+    qcpe.dock = dockify_hack(qcpe)
+    qcpe.gui = gui
 
-    pesa.dock.show()
-    pesa.dock.raise_()
-    pesa.dock.activateWindow()
+    qcpe.dock.show()
+    qcpe.dock.raise_()
+    qcpe.dock.activateWindow()
 
-    return pesa
+    return qcpe
 
 
-def dockify(pesa):
-    """Dockify the given GUI
+def dockify_hack(qcpe: QWidget):
+    """Dockify the given widget 
     Args:
-        gui (MetalGUI): the GUI
+        qcpe: QComponentParameterEntry to be docked
 
     Returns:
-        QDockWidget: the widget
+        QDockWidget: the docked widget
     """
-    ### Dockify
-    pesa.dock_widget = QDockWidget(
-        'Parameter Entry Scroll Area'
-    )  #TODO make gui the parent --> currently this causes gui display issues
-    dock = pesa.dock_widget
-    print("orig style sheet")
-    print(pesa.styleSheet())
-    dock.setWidget(pesa)
-    print("old stylesheet")
-    print(pesa.styleSheet())
-    print(pesa.style())
+    qcpe.dock_widget = QDockWidget('Parameter Entry')
+    dock = qcpe.dock_widget
+    dock.setWidget(qcpe)
     dock.setStyleSheet("")
-    print("should be default style sheet")
-    print(pesa.styleSheet())
 
-    #dock.setAllowedAreas(Qt.RightDockWidgetArea)
     dock.setFloating(True)
     dock.resize(1200, 700)
-
-    # Doesnt work
-    # dock_gui = pesa.dock_widget
-    # dock_gui.setWindowFlags(dock_gui.windowFlags() & ~QtCore.Qt.WindowStaysOnTopHint)
 
     return dock

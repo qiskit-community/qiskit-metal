@@ -81,4 +81,3 @@ if config.is_building_docs():
     from qiskit_metal._gui.widgets.edit_component import source_editor_widget
     from qiskit_metal._gui.widgets.edit_component import table_model_options
     from qiskit_metal._gui.widgets.edit_component import tree_model_options
-

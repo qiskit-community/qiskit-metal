@@ -98,11 +98,10 @@ class RendererQ3DWidget(QMainWindow):
         """
         components_to_render = self.get_checked()
         if components_to_render:
-            self.endcap_q3d_window = EndcapQ3DWidget(self, self._gui, components_to_render)
+            self.endcap_q3d_window = EndcapQ3DWidget(self, self._gui,
+                                                     components_to_render)
             self.endcap_q3d_window.show()
             self.close()
         else:
-            QMessageBox.warning(
-                self, "Error",
-                "Please select at least one component."
-            )
+            QMessageBox.warning(self, "Error",
+                                "Please select at least one component.")

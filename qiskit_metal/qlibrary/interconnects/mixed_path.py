@@ -107,7 +107,8 @@ class RouteMixed(RoutePathfinder, RouteMeander):
         self.trim_pts()
         dictionary_intermediate_pts = self.intermediate_pts
         self.intermediate_pts = np.concatenate(list(
-            self.intermediate_pts.values()), axis=0)
+            self.intermediate_pts.values()),
+                                               axis=0)
 
         if any(count_meanders_list):
             # refine length of meanders

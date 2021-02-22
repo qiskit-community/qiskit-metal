@@ -27,7 +27,8 @@ import numpy as np
 from math import *
 from scipy.special import ellipk
 
-def kappa_in(*argv): 
+
+def kappa_in(*argv):
     """
     A simple calculator for the kappa value of a readout resonator 
 
@@ -45,7 +46,7 @@ def kappa_in(*argv):
     Z_tran = 50.0
 
     # Effective impedance of the readout resonator, in Ohms
-    Z_res = 50.0 
+    Z_res = 50.0
 
     # If three arguments are passed to kappa_in, then the lowest resonator frequency is assumed to be an input
     if len(argv) == 3:
@@ -54,12 +55,13 @@ def kappa_in(*argv):
             C_in = argv[1]
             freq_res = argv[2]
 
-        # Calculation of kappa 
-        kappa = (2/pi)*(freq**2.0)*(C_in**2.0)*(Z_tran**2.0)*(freq_res) 
+        # Calculation of kappa
+        kappa = (2 / pi) * (freq**2.0) * (C_in**2.0) * (Z_tran**
+                                                        2.0) * (freq_res)
 
-        return kappa 
+        return kappa
 
-    # If six arguments are passed to kappa_in, the lowest resonator frequency of the resonator is calculated in the ideal case        
+    # If six arguments are passed to kappa_in, the lowest resonator frequency of the resonator is calculated in the ideal case
     elif len(argv) == 6:
         for i in argv:
             freq = argv[0]
@@ -70,17 +72,17 @@ def kappa_in(*argv):
             eta = argv[5]
 
         # Arguments for elliptic integrals
-        k0 = (res_width)/(res_width + 2.0*res_gap)
+        k0 = (res_width) / (res_width + 2.0 * res_gap)
         k01 = (1.0 - k0**2.0)**(0.5)
 
         # Calculation of the first resonant frequency of an ideal resonator
-        freq_res = (Z_res)*(ellipk(k0))/(15.0*eta*length*ellipk(k01))
+        freq_res = (Z_res) * (ellipk(k0)) / (15.0 * eta * length * ellipk(k01))
 
         # Calculation of kappa
-        kappa = (2/pi)*(freq**2.0)*(C_in**2.0)*(Z_tran**2.0)*(freq_res)
+        kappa = (2 / pi) * (freq**2.0) * (C_in**2.0) * (Z_tran**
+                                                        2.0) * (freq_res)
         return kappa
-    
-    # Only three or six arguments accepted by kappa_in, otherwise the calculation in invalid. 
-    else:
-        kappa = "Invalid number of arguments passed for kappa_in" 
 
+    # Only three or six arguments accepted by kappa_in, otherwise the calculation in invalid.
+    else:
+        kappa = "Invalid number of arguments passed for kappa_in"

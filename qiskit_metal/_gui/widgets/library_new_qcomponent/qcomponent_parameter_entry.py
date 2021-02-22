@@ -12,7 +12,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 """
-Tree model for component options menu
+QLibrary display in Library tab
 
 @authors: Grace Harper
 @date: 2021
@@ -70,6 +70,8 @@ class QComponentParameterEntry(QScrollArea, Ui_ScrollArea):
             design: current design
             parent: parent widget
 
+        Note: It is possible for critical MessageBoxes to pop open during the init function if one of the called functions fails for some reason
+
         """
         super(QComponentParameterEntry, self).__init__(parent)
         self.setupUi(self)
@@ -91,6 +93,7 @@ class QComponentParameterEntry(QScrollArea, Ui_ScrollArea):
             self.get_window_title_from_imported_class
             self.display_class_parameter_entries(self.imported_class)
 
+    ## Exception Handling
     class QComponentParameterEntryExceptionDecorators(object):
         """
         All exceptions in QComponentParameterEntry should result in a pop-up window.
@@ -118,11 +121,6 @@ class QComponentParameterEntry(QScrollArea, Ui_ScrollArea):
                        + f"\n{' args; kws:':12s} {args}; {kwargs}" \
                        + "\nTill now I always got by on my own........ (I never really cared until I met you)"
             log_owner.logger.error(message)
-
-        # Does NOT handle chained exceptions
-        """
-
-        """
 
         @classmethod
         def entry_exception_pop_up_warning(cls, func: Callable):
@@ -189,7 +187,48 @@ class QComponentParameterEntry(QScrollArea, Ui_ScrollArea):
         """
         return self.design.logger  #steal design's logging
 
-    ## Parameter-Entry Qt Display Custom Classes
+    ## Get Class Methods
+    @QComponentParameterEntryExceptionDecorators.init_qcpe_pop_up_warning
+    def get_class(self, import_statement):
+        """
+        Gets the corresponding class object for the import_statement
+        Args:
+            import_statement: import statement for desired QComponent
+
+
+        """
+        mymodule = importlib.import_module(import_statement)
+        members = inspect.getmembers(mymodule, inspect.isclass)
+        class_owner = import_statement.split('.')[-1]
+        for memtup in members:
+            if len(memtup) > 1:
+                if str(memtup[1].__module__).endswith(class_owner):
+                    return memtup[1]
+        raise MissingClassException(
+            f"Unable to find correct module for {class_owner} in {str(members)}"
+        )
+
+    @QComponentParameterEntryExceptionDecorators.init_qcpe_pop_up_warning
+    def get_class_from_abs_file_path(self, abs_file_path):
+        """
+        Gets the corresponding class object for the absolute file path to the file containing that class definition
+        Args:
+            abs_file_path: absolute file path to the file containing the QComponent class definition
+
+        getting class from absolute file path - https://stackoverflow.com/questions/452969/does-python-have-an-equivalent-to-java-class-forname
+
+        """
+        if not isinstance(abs_file_path, str):
+            raise InvalidFilePathException(
+                f"File path must be a string but is currently {abs_file_path} of type: {type(abs_file_path)}"
+            )
+        qis_abs_path = abs_file_path[abs_file_path.
+                                     index(__name__.split('.')[0]):]
+        qis_mod_path = qis_abs_path.replace('/', '.')[:-len('.py')]
+        imported_class = self.get_class(qis_mod_path)
+        return imported_class
+
+    ## Display QCPE Entry Subclasses
     class EntryWidget(QWidget):
         """
         Widget containing QLineEdits used by user for entering parameters
@@ -233,6 +272,22 @@ class QComponentParameterEntry(QScrollArea, Ui_ScrollArea):
     class DictionaryEntryWidget(EntryWidget):
         """
         Entry Widget for dictionaries
+        Each DEW contains several DictionaryEntryBox (DEB).
+        (Each DictionaryEntryBox is a widget to contain a single key value pair entered by the user).
+        While a DEB's key must be either a string or an int, the DEB's displayed value can be a NestedDictionary (allowing for nested dictionary entry).
+        (For testing purposes the actual value of the DEB will point to the first DEB in the NestedDictionary)
+        A NestedDictionary itself contains multiple DEBs for it's key, value pairs
+        Here is an example of the entry structure below:
+
+        #Dictionary Entry Widget:
+            - entry level 0 DEB --> key: value,
+            - entry level 0 DEB --> key:  Nested Dictionary:
+                                            - entry level 1 DEB --> key: value,
+                                            - entry level 1 DEB --> key: NestedDictionary:
+                                                                            - entry level 2 DEB --> key: value
+
+                                            - entry level 1 DEB --> key: value
+            - entry level 0 DEB --> key: value
         """
 
         def __init__(self, parent_layout, param_name, param_type,
@@ -272,7 +327,7 @@ class QComponentParameterEntry(QScrollArea, Ui_ScrollArea):
             self.collapsable_label = QLabel(
                 "Please refer to docs to see what key, value pair options are available. "
                 "\nNo need to write the ' nor \", your entry will automatically be converted to a string.\n"
-                "Do not forget to include dimensions when relevent. Key types are always strings"
+                "Do not forget to include dimensions when relevant. Except for OrderedDict, key types are always strings"
             )
             self.entry_collapsable_layout.addWidget(self.collapsable_label)
 
@@ -302,6 +357,7 @@ class QComponentParameterEntry(QScrollArea, Ui_ScrollArea):
             """
             DictionaryEntryBoxes contain the actual QLineEdits in which the user will enter parameter information.
             DEBs get added to top-level DictionaryEntryWidget and to NestedDictionary
+            A DEBs may use a NestedDictionary as their value
             """
 
             def __init__(self,
@@ -326,7 +382,8 @@ class QComponentParameterEntry(QScrollArea, Ui_ScrollArea):
                 self.value_name = QLabel("Value:")
                 self.value_o = QLineEdit(
                 )  # in event of nesting, self.value_o will then point to sub DictionaryEntryBox
-                self.type_name = self.TypeBuiltInComboBox()
+                self.type_name = self.TypeBuiltInComboBox(
+                )  #if nested will become TypeDictComboBox
                 self.remove_button = QPushButton("REMOVE")
                 self.nested_dict_button = QPushButton("nest")
                 self.key_value_entry_layout.addWidget(self.key_name)
@@ -391,18 +448,15 @@ class QComponentParameterEntry(QScrollArea, Ui_ScrollArea):
                 A NestedDictionary is nested inside a DEB to allow for multi-level key,value entries.
                 An ND can add/remove multiple DEBs to it's layout to allow for multiple key,value entries for it's entry level
 
-                Example of multi-level Dictionary Entry:
-                #DEW
-                    {   entry level 0 DEB --> key: value,
-                        entry level 0 DEB --> key: { ND
-                                                        entry level 1 DEB --> key: value,
-                                                        entry level 1 DEB --> key: { ND
-                                                                                    entry level 2 DEB --> key: value
-                                                                                    },
-                                                        entry level 1 DEB --> key: value
-                                                    },
-                        entry level 0 DEB --> key: value
-                    }
+                #Dictionary Entry Widget:
+                    - entry level 0 DEB --> key: value,
+                    - entry level 0 DEB --> key:  Nested Dictionary:
+                                                    - entry level 1 DEB --> key: value,
+                                                    - entry level 1 DEB --> key: NestedDictionary:
+                                                                                    - entry level 2 DEB --> key: value
+
+                                                    - entry level 1 DEB --> key: value
+                    - entry level 0 DEB --> key: value
                 """
 
                 def __init__(self, title, parent):
@@ -468,7 +522,7 @@ class QComponentParameterEntry(QScrollArea, Ui_ScrollArea):
                 lay.removeWidget(widg)
                 widg.deleteLater()
 
-    ## Parameter-Entry Qt Methods
+    ## Display QCPE Entry Methods
     @QComponentParameterEntryExceptionDecorators.init_qcpe_pop_up_warning
     def display_class_parameter_entries(self, cls: Callable):
         """
@@ -534,53 +588,11 @@ class QComponentParameterEntry(QScrollArea, Ui_ScrollArea):
         lay.removeWidget(widg)
         widg.deleteLater()
 
-    ## Reading User Input and Instantiating Component Methods
-    # https://stackoverflow.com/questions/452969/does-python-have-an-equivalent-to-java-class-forname
-    @QComponentParameterEntryExceptionDecorators.init_qcpe_pop_up_warning
-    def get_class(self, import_statement):
-        """
-        Gets the corresponding class object for the import_statement
-        Args:
-            import_statement: import statement for desired QComponent
-
-
-        """
-        mymodule = importlib.import_module(import_statement)
-        members = inspect.getmembers(mymodule, inspect.isclass)
-        class_owner = import_statement.split('.')[-1]
-        for memtup in members:
-            if len(memtup) > 1:
-                if str(memtup[1].__module__).endswith(class_owner):
-                    return memtup[1]
-        raise MissingClassException(
-            f"Unable to find correct module for {class_owner} in {str(members)}"
-        )
-
-    @QComponentParameterEntryExceptionDecorators.init_qcpe_pop_up_warning
-    def get_class_from_abs_file_path(self, abs_file_path):
-        """
-        Gets the corresponding class object for the absolute file path to the file containing that class definition
-        Args:
-            abs_file_path: absolute file path to the file containing the QComponent class definition
-
-        Returns:
-
-        """
-        if not isinstance(abs_file_path, str):
-            raise InvalidFilePathException(
-                f"File path must be a string but is currently {abs_file_path} of type: {type(abs_file_path)}"
-            )
-        qis_abs_path = abs_file_path[abs_file_path.
-                                     index(__name__.split('.')[0]):]
-        qis_mod_path = qis_abs_path.replace('/', '.')[:-len('.py')]
-        qis_mod_path = qis_abs_path.replace('/', '.')[:-len('.py')]
-        imported_class = self.get_class(qis_mod_path)
-        return imported_class
-
-    #can't wrap this function since it's responsible for closing qcpe
+    ## Entry Evaluation Methods
     def make_object(self):
         """
         Creates QComponent using parameters entered by user and closes QCPE.
+        Try-except must be handled by make_object (instead of decorater) to ensure qcpe closes
         """
 
         entry_count = self.parameter_entry_vertical_layout.count()
@@ -642,11 +654,12 @@ class QComponentParameterEntry(QScrollArea, Ui_ScrollArea):
             #param_dict[entry.param_name] = entry.param_type(deb_dict)
 
     @QComponentParameterEntryExceptionDecorators.entry_exception_pop_up_warning
-    def dictionaryentrybox_to_dictionary(self, parent_layout, kv_dict):
+    def dictionaryentrybox_to_dictionary(self, parent_layout: QLayout,
+                                         kv_dict: dict):
         """
-        Converts user-entered parameter DEBs in DEWs/NDs into dictionaries
+        Converts user-entered parameter DEBs into dictionaries
         Args:
-        parent_layout: layout owning the DEBs/ND
+            parent_layout: DEW/ND layout owning the DEBs
             kv_dict: the dictionary representation of the DEW/NDs
 
         """
@@ -659,18 +672,22 @@ class QComponentParameterEntry(QScrollArea, Ui_ScrollArea):
                           self.DictionaryEntryWidget.DictionaryEntryBox):
                 keyname = cur_widget.name_o.text()
                 if keyname != "":
-                    try:
-                        keyname = int(
-                            keyname)  # some routing requires keys that are ints
-                    except:
-                        pass
+                    if isinstance(kv_dict, OrderedDict):
+                        try:
+                            keyname = int(
+                                keyname
+                            )  # some routing requires keys that are ints
+                        except:
+                            pass
+
                     #subdictionaries will always be of type dict not of type addict.Dict
                     value_widget = cur_widget.value_o
                     if isinstance(
                             value_widget,
                             self.DictionaryEntryWidget.DictionaryEntryBox):
-                        value = cur_widget.type_name.getType()(
-                        )  #see whether value widget is OrderedDict or dict
+
+                        value = cur_widget.type_name.getType()()
+
                         self.dictionaryentrybox_to_dictionary(
                             cur_widget.nested_dictionary.nested_kv_layout,
                             value)
@@ -687,7 +704,7 @@ class QComponentParameterEntry(QScrollArea, Ui_ScrollArea):
                                     value = False
                                 else:
                                     raise InvalidParameterEntryException(
-                                        f"The type {cur_type} you chose is not compatible with your input {strvalue}. Error: {e}"
+                                        f"The type {cur_type} you chose is not compatible with your input {strvalue}."
                                     )
                             else:
                                 try:

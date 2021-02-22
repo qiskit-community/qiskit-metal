@@ -496,5 +496,6 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
 
         return spiral_list
 
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)

@@ -584,11 +584,7 @@ class QMainWindowBaseHandler():
         except Exception as e:
             self.logger.error(f'_load_stylesheet_from_file error: {e}')
 
-    def screenshot(self,
-                   name='shot',
-                   type_='png',
-                   display=True,
-                   disp_ops=None):
+    def screenshot(self, name='shot', type_='png', display=True, disp_ops=None):
         """
         Alias for get_screenshot()
         """

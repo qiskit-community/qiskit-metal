@@ -34,7 +34,7 @@ from ...draw import BaseGeometry
 from ...toolbox_python.attr_dict import Dict
 from ._parsed_dynamic_attrs import ParsedDynamicAttributes_Component
 from ...toolbox_python.display import format_dict_ala_z
-from datetime import datetime 
+from datetime import datetime
 from ... import config
 if not config.is_building_docs():
     from ...draw import Vector
@@ -204,7 +204,8 @@ class QComponent():
         # Should put this earlier so could pass in other error messages?
         self._error_message = ''
         if self._check_pin_inputs():
-            self.logger.warning(self._error_message + "QComponent has NOT been added to design")
+            self.logger.warning(self._error_message +
+                                "QComponent has NOT been added to design")
             return
 
         # Build and component internals
@@ -553,13 +554,13 @@ class QComponent():
                 f"{str(datetime.now())} -- Component: {self.name} failed with error\n: {error}"
             )
             raise error
+
     def delete(self):
         """
         Delete the QComponent.
         Removes QGeometry, QPins, etc. from the design.
         """
         self.design.delete_component(self.name)
-
 
     # Maybe still should be fine as any values will be in component options still?
     # Though the data table approach and rendering directly via shapely could lead to problem

@@ -47,7 +47,6 @@ class QTreeView_Options(QTreeView, QWidget_PlaceholderText):
         QTimer.singleShot(200, self.style_me)
         self.expanded.connect(self.resize_on_expand)
 
-
     def style_me(self):
         """Style this widget"""
         # Also can do in the ui file, but doesn't always translate for some reason

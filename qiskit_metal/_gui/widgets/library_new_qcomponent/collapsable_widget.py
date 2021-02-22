@@ -1,10 +1,31 @@
+# -*- coding: utf-8 -*-
+
+# This code is part of Qiskit.
+#
+# (C) Copyright IBM 2017, 2020.
+#
+# This code is licensed under the Apache License, Version 2.0. You may
+# obtain a copy of this license in the LICENSE.txt file in the root directory
+# of this source tree or at http://www.apache.org/licenses/LICENSE-2.0.
+#
+# Any modifications or derivative works of this code must retain this
+# copyright notice, and modified files need to carry a notice indicating
+# that they have been altered from the originals.
+"""
+QLibrary display in Library tab
+
+@authors: Grace Harper
+@date: 2021
+"""
+
+from PySide2 import QtCore, QtWidgets
+
+
 # code from https://stackoverflow.com/questions/52615115/how-to-create-collapsible-box-in-pyqt
-from PySide2 import QtCore, QtGui, QtWidgets, QtWidgets
-from PySide2.QtWidgets import QHBoxLayout, QVBoxLayout, QPushButton, QLayout
-from PySide2.QtWidgets import QWidget
-
-
 class CollapsibleWidget(QtWidgets.QWidget):
+    """
+    Creates a Widget that can collapse and un-collapse at the click of a toggle button
+    """
 
     def __init__(self, title="", parent=None):
         super(CollapsibleWidget, self).__init__(parent)
@@ -45,24 +66,19 @@ class CollapsibleWidget(QtWidgets.QWidget):
         if not self.is_set_up:
             self.set_up()
 
-        print("running")
         checked = self.toggle_button.isChecked()
-        print(f"Checked is {checked}")
         self.toggle_button.setArrowType(
             QtCore.Qt.RightArrow if self.toggle_button.arrowType() ==
             QtCore.Qt.DownArrow else QtCore.Qt.DownArrow)
         self.toggle_animation.setDirection(
             QtCore.QAbstractAnimation.Backward if self.toggle_button.arrowType(
             ) == QtCore.Qt.RightArrow else QtCore.QAbstractAnimation.Forward)
-        print("starting")
-        print(self.toggle_animation.direction())
         self.toggle_animation.start()
 
     def setContent(self, widget):
         self.content_area.setWidget(widget)
 
     def set_up(self):
-        print("setting up")
         self.collapsed_height = (self.sizeHint().height() -
                                  self.content_area.maximumHeight())
         self.content_height = self.content_area.widget().layout().sizeHint(

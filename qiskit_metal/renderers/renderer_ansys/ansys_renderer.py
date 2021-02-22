@@ -878,9 +878,7 @@ class QAnsysRenderer(QRenderer):
                 self.assign_mesh,
                 MaxLength=self._options['max_mesh_length_jj'])
 
-
     def clean_active_design(self):
-
         """
         Remove all elements from Ansys Modeler.
         """

@@ -26,6 +26,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from ...designs.design_base import QDesign
 
+
 class BaseQubit(QComponent):
     '''
     Qubit base class. Use to subscript, not to generate directly.
@@ -65,10 +66,10 @@ class BaseQubit(QComponent):
 
     def __init__(self,
                  design: 'QDesign',
-                 name:str=None,
-                 options:Dict=None,
-                 options_connection_pads:Dict=None,
-                 make:bool=True):
+                 name: str = None,
+                 options: Dict = None,
+                 options_connection_pads: Dict = None,
+                 make: bool = True):
         """
         Args:
             design (QDesign): The parent design.
