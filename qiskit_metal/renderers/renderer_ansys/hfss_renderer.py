@@ -482,9 +482,9 @@ class QHFSSRenderer(QAnsysRenderer):
                     if oDesign.GetSolutionType() == 'Eigenmode':
                         setup = self.pinfo.get_setup(setup_name)
                         if 0 <= mode <= setup.n_modes:
-                            setup_soltuions = setup.get_solutions()
+                            setup_solutions = setup.get_solutions()
                             if setup_solutions:
-                                setup_soltuions.set_mode(mode)
+                                setup_solutions.set_mode(mode)
                             else:
                                 self.logger.warning(
                                     'Not able to get setup_soltuions, the mode was not set.'
