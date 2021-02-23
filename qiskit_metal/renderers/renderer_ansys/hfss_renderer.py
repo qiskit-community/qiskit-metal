@@ -495,7 +495,7 @@ class QHFSSRenderer(QAnsysRenderer):
                                 setup_solutions.set_mode(mode)
                             else:
                                 self.logger.warning(
-                                    'Not able to get setup_soltuions, the mode was not set.'
+                                    'Not able to get setup_solutions, the mode was not set.'
                                 )
                         else:
                             self.logger.warning(
@@ -515,7 +515,8 @@ class QHFSSRenderer(QAnsysRenderer):
                 )
         else:
             self.logger.warning(
-                "Have you run set_mode()?  Can not find a reference to Ansys in QRenderer.  The mode was not set."
+                "Have you run connect_ansys()?  "
+                "Cannot find a reference to Ansys in QRenderer.  The mode was not set."
             )
 
     def analyze_setup(self, setup_name: str):
