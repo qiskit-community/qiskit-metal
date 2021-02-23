@@ -472,6 +472,12 @@ class QHFSSRenderer(QAnsysRenderer):
                     basis_order=basis_order)
 
     def set_mode(self, mode: int, setup_name: str):
+        """Set the eigenmode in pyEPR for a design with solution_type set to Eigenmode.
+
+        Args:
+            mode (int): Identify a mode from 1 to n_modes.
+            setup_name (str): Select a setup from the active design. 
+        """
         if self.pinfo:
             if self.pinfo.project:
                 if self.pinfo.design:
@@ -480,6 +486,8 @@ class QHFSSRenderer(QAnsysRenderer):
                         self.pinfo.project_name)
                     oDesign = oProject.GetActiveDesign()
                     if oDesign.GetSolutionType() == 'Eigenmode':
+                        # The set_mode() method is in HfssEMDesignSolutions class in pyEPR.
+                        # The class HfssEMDesignSolutions is instantiated by get_setup() and create_em_setup().
                         setup = self.pinfo.get_setup(setup_name)
                         if 0 < int(mode) <= int(setup.n_modes):
                             setup_solutions = setup.get_solutions()
@@ -491,11 +499,11 @@ class QHFSSRenderer(QAnsysRenderer):
                                 )
                         else:
                             self.logger.warning(
-                                f'The requested mode={mode} is not a valid (1 to {setup.n_modes}) seletection. '
+                                f'The requested mode={mode} is not a valid (1 to {setup.n_modes}) selection. '
                                 'The mode was not set.')
                     else:
                         self.logger.warning(
-                            'The design does not have solution type as "Eignmode". The mode was not set.'
+                            'The design does not have solution type as "Eigenmode". The mode was not set.'
                         )
                 else:
                     self.logger.warning(
