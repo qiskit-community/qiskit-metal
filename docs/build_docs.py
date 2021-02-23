@@ -26,15 +26,14 @@ import sys
 try:
     import sphinx
     import numpydoc
-    import qiskit_sphinx_theme
     import sphinx_automodapi
     import jupyter_sphinx
 except ImportError:
-    cmd = "conda install -y -c conda-forge sphinx numpydoc sphinx-automodapi jupyter_sphinx"
+    cmd1 = "conda install -y -c conda-forge sphinx numpydoc sphinx-automodapi jupyter_sphinx"
     print(
-        f'\n*** Installing pre-requisite packages to build the docs***\n$ {cmd}'
+        f'\n*** Installing pre-requisite packages to build the docs***\n$ {cmd1}'
     )
-    scmd = shlex.split(cmd)
+    scmd = shlex.split(cmd1)
     try:
         result = subprocess.run(scmd, stdout=subprocess.PIPE, check=False)
     except FileNotFoundError:
@@ -51,7 +50,32 @@ except ImportError:
         print(f'****stdout****\n{stdout.decode()}')
     if stderr:
         print(f'****stderr****\n{stderr.decode()}')
-    print("Pre-requisite installation Complete!")
+    print("Conda pre-requisite installation Complete!")
+try:
+    import qiskit_sphinx_theme
+except ImportError:
+    cmd2 = "python -m pip install qiskit-sphinx-theme"
+    print(
+        f'\n*** Installing pre-requisite packages to build the docs***\n$ {cmd2}'
+    )
+    scmd = shlex.split(cmd2)
+    try:
+        result = subprocess.run(scmd, stdout=subprocess.PIPE, check=False)
+    except FileNotFoundError:
+        # some windows systems appear to require this switch
+        result = subprocess.run(scmd,
+                                stdout=subprocess.PIPE,
+                                check=False,
+                                shell=True)
+    stderr = result.stderr
+    stdout = result.stdout
+    returncode = result.returncode
+    print(f'\n****Exited with {returncode}')
+    if stdout:
+        print(f'****stdout****\n{stdout.decode()}')
+    if stderr:
+        print(f'****stderr****\n{stderr.decode()}')
+    print("Pip pre-requisite installation Complete!")
 
 # then build the docs
 pwd = os.getcwd()
