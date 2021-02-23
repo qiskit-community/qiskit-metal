@@ -81,6 +81,7 @@ class ElementsWindow(QMainWindow):
     def force_refresh(self):
         """Force a refresh"""
         self.model.refresh()
+        self.ui.populateDesign(self.design.qgeometry.tables.keys())
 
 
 class ElementTableModel(QAbstractTableModel):
