@@ -179,12 +179,6 @@ class QQ3DRenderer(QAnsysRenderer):
                         # default name is "Setup"
                         self.pinfo.setup = self.add_q3d_setup()
                         self.pinfo.setup_name = self.pinfo.setup.name
-
-                    if self.pinfo.setup_name:
-                        # highlight setup in Ansys
-                        # ._setup_module = design.GetModule("AnalysisSetup")
-                        look_for_api_to_highlight = self.pinfo.design._setup_module
-
                 else:
                     self.logger.warning(
                         " The design within a project is not available, have you opened a design?"
