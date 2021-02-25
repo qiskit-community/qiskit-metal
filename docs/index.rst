@@ -1,7 +1,3 @@
-.. raw:: html
-
-    <br><br><br>
-
 ####################################
 Qiskit Metal |version| documentation
 ####################################
