@@ -297,6 +297,11 @@ class QAnsysRenderer(QRenderer):
 
     @property
     def modeler(self):
+        """ The modeler from pyEPR HfssModeler. 
+
+        Returns:
+            [type]: [description]
+        """
         if self.pinfo:
             if self.pinfo.design:
                 return self.pinfo.design.modeler
@@ -367,6 +372,15 @@ class QAnsysRenderer(QRenderer):
         self.pinfo.design.add_message(msg, severity)
 
     def save_screenshot(self, path: str = None, show: bool = True):
+        """Save the screenshot. 
+
+        Args:
+            path (str, optional): [description]. Defaults to None.
+            show (bool, optional): [description]. Defaults to True.
+
+        Returns:
+            [type]: [description]
+        """
         try:
             return self.pinfo.design.save_screenshot(path, show)
         except AttributeError:
