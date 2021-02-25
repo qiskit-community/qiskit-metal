@@ -41,6 +41,10 @@ version = qiskit_metal.__version__
 release = qiskit_metal.__version__
 
 rst_prolog = """
+.. raw:: html
+
+    <br><br><br>
+
 .. |version| replace:: {0}
 """.format(release)
 
