@@ -31,11 +31,11 @@ from platform import system
 
 import shapely
 import pyEPR as epr
-from pyEPR.ansys import parse_units, HfssApp
+from pyEPR.ansys import parse_units, HfssApp, release
 
 from qiskit_metal.draw.utility import to_vec3D
 from qiskit_metal.draw.basic import is_rectangle
-from qiskit_metal.renderers.renderer_base import QRenderer
+from qiskit_metal.renderers.renderer_base import QRendererAnalysis
 from qiskit_metal.toolbox_python.utility_functions import toggle_numbers, bad_fillet_idxs
 
 from qiskit_metal import Dict
@@ -85,7 +85,7 @@ def get_clean_name(name: str) -> str:
     return name
 
 
-class QAnsysRenderer(QRenderer):
+class QAnsysRenderer(QRendererAnalysis):
     """
     Extends QRenderer to export designs to Ansys using pyEPR.
     The methods which a user will need for Ansys export should be found within this class.
@@ -103,8 +103,6 @@ class QAnsysRenderer(QRenderer):
         project_path=None,  # default project path; if None --> get active
         project_name=None,  # default project name
         design_name=None,  # default design name
-        # Ansys file extension for 2016 version and newer
-        ansys_file_extension='.aedt',
         # bounding_box_scale_x = 1.2, # Ratio of 'main' chip width to bounding box width
         # bounding_box_scale_y = 1.2, # Ratio of 'main' chip length to bounding box length
         x_buffer_width_mm=0.2,  # Buffer between max/min x and edge of ground plane, in mm
@@ -141,33 +139,131 @@ class QAnsysRenderer(QRenderer):
     def __init__(self,
                  design: 'QDesign',
                  initiate=True,
-                 render_template: Dict = None,
-                 render_options: Dict = None):
+                 options: Dict = None):
         """
         Create a QRenderer for Ansys.
 
         Args:
             design (QDesign): Use QGeometry within QDesign to obtain elements for Ansys.
             initiate (bool, optional): True to initiate the renderer. Defaults to True.
-            render_template (Dict, optional): Typically used by GUI for template options for GDS. Defaults to None.
-            render_options (Dict, optional):  Used to override all options. Defaults to None.
+            options (Dict, optional):  Used to override all options. Defaults to None.
         """
         super().__init__(design=design,
                          initiate=initiate,
-                         render_template=render_template,
-                         render_options=render_options)
+                         options=options)
 
         # Default behavior is to render all components unless a strict subset was chosen
         self.render_everything = True
 
         self._pinfo = None
+        # Conected to Ansys variables
+        self._rapp = None
+        self._rdesktop = None
+        self._rproject = None
+        self._rdesign = None
+        self._rsetup = None
+
+    @property
+    def initialized(self):
+        if self._pinfo:
+            if self._pinfo.project:
+                return True
+        return False
+
+    @property
+    def rapp(self):
+        return self._rapp
+
+    @rapp.setter
+    def rapp(self, app_com):
+        if self._rapp:
+            self._rapp.release()
+        self._rapp = app_com
+
+    @property
+    def rdesktop(self):
+        return self._rdesktop
+
+    @rdesktop.setter
+    def rdesktop(self, desktop_com):
+        if self._rdesktop:
+            self._rdesktop.release()
+        self._rdesktop = desktop_com
+
+    @property
+    def rproject(self):
+        return self._rproject
+
+    @rproject.setter
+    def rproject(self, project_com):
+        if self._rproject:
+            self._rproject.release()
+        self._rproject = project_com
+
+    @property
+    def rdesign(self):
+        return self._rdesign
+
+    @rdesign.setter
+    def rdesign(self, design_com):
+        if self._rdesign:
+            self._rdesign.release()
+        self._rdesign = design_com
+
+    @property
+    def rsetup(self):
+        return self._rsetup
+
+    @rsetup.setter
+    def rsetup(self, setup_com):
+        if self._rsetup:
+            self._rsetup.release()
+        self._rsetup = setup_com
+
+    def _initiate_renderer(self):
+        """
+        Open a session of the default Ansys EDT.
+        Establishes the connection to the App and Desktop only.
+        """
+        # test if ansys is open
+        # import psutil
+        # booted = False
+        # for proc in psutil.process_iter():
+        #     if 'ansysedt' in proc.name():
+        #         booted = True
+
+        # if not booted:
+        #    self._open_ansys(*args, **kwargs)
+        # need to make it so that it waits for the Ansys boot to end
+        # after opening, should establish a connection (able to create a new project)
+
+        self.rapp = HfssApp()
+        self.rdesktop = self.rapp.get_app_desktop()
+        if self.rdesktop.project_count() == 0:
+            self.rdesktop.new_project()
+        self.connect_ansys()  # TODO: can this be done differently?
+
+        # return True to indicate successful completion
+        return True
+
+    def _close_renderer(self):
+        """Not used by the gds renderer at this time. only returns True
+        """
+        if self.rdesktop is not None:
+            self.rdesktop.release()
+        if self.rapp is not None:
+            self.rapp.release()
+        if self.pinfo:
+            disconnect_ansys(self)
+        return True
 
     def open_ansys(self,
                    path: str = None,
                    executable: str = 'reg_ansysedt.exe',
                    path_var: str = 'ANSYSEM_ROOT202'):
         """
-        Open a session of Ansys. Default is version 2020 R2, but can be overridden.
+        Alternative method to open an Ansys session that allows to specify which version to use.
+        Default is version 2020 R2, but can be overridden.
 
         Args:
             path (str): path to the Ansys executable. Defaults to None
@@ -225,7 +321,7 @@ class QAnsysRenderer(QRenderer):
         # open connection through pyEPR
         import pythoncom
         try:
-            self._pinfo = epr.ProjectInfo(
+            self._pinfo = epr.ProjectInfo(do_connect = True,
                 project_path=self._options['project_path']
                 if not project_path else project_path,
                 project_name=self._options['project_name']

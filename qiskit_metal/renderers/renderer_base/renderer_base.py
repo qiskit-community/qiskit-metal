@@ -12,7 +12,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 """
-@author: Zlatko Minev, ... (IBM)
+@author: Zlatko Minev, Marco Facchini (IBM)
 @date: 2019
 """
 import logging
@@ -20,8 +20,7 @@ import inspect
 from copy import deepcopy
 from typing import TYPE_CHECKING
 from typing import List, Tuple, Union, Any, Iterable
-from typing import Dict as Dict_
-from typing import List, Tuple, Union
+from abc import abstractmethod, ABC
 
 from qiskit_metal.designs import is_design
 from qiskit_metal.qgeometries import QGeometryTables
@@ -37,7 +36,7 @@ if TYPE_CHECKING:
     from qiskit_metal.designs import QDesign
 
 
-class QRenderer():
+class QRenderer(ABC):
     """Abstract base class for all Renderers of Metal designs and their components and qgeometry.
 
     Handles:
@@ -80,9 +79,6 @@ class QRenderer():
 
         Returns:
             bool: True if success, otherwise throws an error.
-
-        Raises:
-            NotImplementedError: Function not written yet
         """
 
         # Check name
@@ -144,13 +140,13 @@ class QRenderer():
 
     def __init__(self,
                  design: 'QDesign',
-                 initiate=True,
+                 initiate=False,
                  render_template: Dict = None,
                  render_options: Dict = None):
         """
         Args:
             design (QDesign): The design
-            initiate (bool): True to initiate the renderer (Default: True)
+            initiate (bool): True to initiate the renderer (Default: False)
             render_template (Dict, optional): Typically used by GUI for template options for GDS.  Defaults to None.
             render_options (Dict, optional):  Used to override all options. Defaults to None.
         """
@@ -167,7 +163,7 @@ class QRenderer():
         self.initiated = False
 
         if initiate:
-            self.initate()
+            self.start()
 
         # Register as an instantiated renderer.
         QRenderer.__instantiated_renderers__[self.name] = self
@@ -343,29 +339,54 @@ class QRenderer():
                     self.logger.warning(
                         f'col_value={col_value} not added to QDesign')
 
-    def initate(self, re_initiate=False):
+    def start(self, force=False):
         """
-        Call any initiations steps required to be performed a single time before rendering,
+        Call any initialization (single run) step required to setup the renderer for the first execution,
         such as connecting to some API or COM, or importing the correct material libraries, etc.
 
-        Overwrite `initiate_renderer`
-
         Arguments:
-            re_initiate (bool) : If False will only apply this function once.
-                                 If True, will re-apply (Default: False)
+            force (bool) : If True, need to scrap the existing initialization and re-do
+                           If False (default), will start a new one only if none exists
 
         Returns:
-            bool: was a re_initiation applied or not
+            bool: is the renderer initialized succesfully (thus usable?)
         """
 
-        if not re_initiate:
-            if self.initiated:
-                return False
+        if force or not self.initiated:
+            if force and self.initiated:
+                # previously initialized renderer, try to shut it down
+                self._close_renderer()
 
-        self.initiated = True
+            # try to initialize the renderer
+            self.initiated = self._initiate_renderer()
 
-        self._initate_renderer()
+        return self.initiated
 
+    def stop(self):
+        """
+        Any calls that one may want to make after a rendering is complete.
+        """
+        self.initiated = False
+        return self._close_renderer()
+
+    @abstractmethod
+    def _initiate_renderer(self):
+        """Abstract method. Must be implemented by the subclass.
+        Call any initialization (single run) step required to setup the renderer for the first execution,
+        such as connecting to some API or COM, or importing the correct material libraries, etc.
+
+        Implementation must return boolean True if succesful. False otherwise.
+        """
+        return True
+
+    @abstractmethod
+    def _close_renderer(self):
+        """
+        Call any initialization (single run) step required to close the renderer after final execution,
+        such as disconnecting from some API or COM, close hanging threads, free memory, etc.
+
+        Implementation must return boolean True if succesful. False otherwise.
+        """
         return True
 
     def get_unique_component_ids(
@@ -399,85 +420,62 @@ class QRenderer():
         return [self.design.name_to_id[elt] for elt in unique_qcomponents
                ], 0  # Subset selected
 
-    def _initate_renderer(self):
-        """
-        Call any initiations steps required to be performed a single time before rendering,
-        such as connecting to some API or COM, or importing the correct material libraries, etc.
-
-        Returns:
-            bool: Always returns True
-        """
-        return True
-
-    def post_render(self):
-        """
-        Any calls that one may want to make after a rendering is complete.
-        """
-
     def render_design(self):
         """
         Renders all design chips and components.
         """
-        self.initate()
         self.render_chips()
         self.render_components()
         # ...
 
+    @abstractmethod
     def render_chips(self):
-        """
+        """Abstract method. Must be implemented by the subclass.
         Render all chips of the design.
         Calls render_chip for each chip.
-
-        Raises:
-            NotImplementedError: Function not written yet
         """
-        raise NotImplementedError()
+        pass
 
+    @abstractmethod
     def render_chip(self, name):
-        """Render the given chip
+        """Abstract method. Must be implemented by the subclass.
+        Render the given chip
 
         Args:
             name (str): chip to render
-
-        Raises:
-            NotImplementedError: Function not written yet
         """
-        raise NotImplementedError()
+        pass
 
+    @abstractmethod
     def render_components(self, selection=None):
-        """
+        """Abstract method. Must be implemented by the subclass.
         Render all components of the design.
         If selection is none, then render all components.
 
         Args:
             selection (QComponent): component to render
-
-        Raises:
-            NotImplementedError: Function not written yet
         """
-        raise NotImplementedError()
+        pass
 
+    @abstractmethod
     def render_component(self, component):
-        """Render the specified component
+        """Abstract method. Must be implemented by the subclass.
+        Render the specified component
 
         Args:
             component (QComponent): Component to render
-
-        Raises:
-            NotImplementedError: Function not written yet
         """
-        raise NotImplementedError()
+        pass
 
+    @abstractmethod
     def render_element(self, element):
-        """Render the specified element
+        """Abstract method. Must be implemented by the subclass.
+        Render the specified element
 
         Args:
             element (Element): element to render
-
-        Raises:
-            NotImplementedError: Function not written yet
         """
-        raise NotImplementedError()
+        pass
         # if isinstance(element, path):
         #    self.render_element_path(element)
 
@@ -487,24 +485,22 @@ class QRenderer():
         # else:
         #    self.logger.error('RENDERER ERROR: Unkown element {element}')
 
+    @abstractmethod
     def render_element_path(self, path):
-        """Render an element path
+        """Abstract method. Must be implemented by the subclass.
+        Render an element path
 
         Args:
             path (str): Path to render
-
-        Raises:
-            NotImplementedError: Function not written yet
         """
-        raise NotImplementedError()
+        pass
 
+    @abstractmethod
     def render_element_poly(self, poly):
-        """Render an element poly
+        """Abstract method. Must be implemented by the subclass.
+        Render an element poly
 
         Args:
             poly (Poly): Poly to render
-
-        Raises:
-            NotImplementedError: Function not written yet
         """
-        raise NotImplementedError()
+        pass

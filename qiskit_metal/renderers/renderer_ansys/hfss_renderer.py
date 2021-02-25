@@ -48,21 +48,18 @@ class QHFSSRenderer(QAnsysRenderer):
     def __init__(self,
                  design: 'QDesign',
                  initiate=True,
-                 render_template: Dict = None,
-                 render_options: Dict = None):
+                 options: Dict = None):
         """
         Create a QRenderer for HFSS simulations, subclassed from QAnsysRenderer.
 
         Args:
             design (QDesign): Use QGeometry within QDesign to obtain elements for Ansys.
             initiate (bool, optional): True to initiate the renderer. Defaults to True.
-            render_template (Dict, optional): Typically used by GUI for template options for GDS. Defaults to None.
-            render_options (Dict, optional):  Used to override all options. Defaults to None.
+            options (Dict, optional):  Used to override all options. Defaults to None.
         """
         super().__init__(design=design,
                          initiate=initiate,
-                         render_template=render_template,
-                         render_options=render_options)
+                         options=options)
 
         self.chip_subtract_dict = defaultdict(set)
         self.assign_perfE = []
@@ -73,6 +70,12 @@ class QHFSSRenderer(QAnsysRenderer):
         self.current_sweep = None
 
         QHFSSRenderer.load()
+
+    def render_chip(self):
+        pass
+
+    def render_component(self):
+        pass
 
     def render_design(self,
                       selection: Union[list, None] = None,

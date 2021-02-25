@@ -40,7 +40,6 @@ from shapely.geometry import CAP_STYLE, JOIN_STYLE, LineString
 
 from ... import Dict
 from ...designs import QDesign
-from ..renderer_base.renderer_gui_base import QRendererGui
 from .mpl_interaction import MplInteraction, PanAndZoom
 from .mpl_toolbox import _axis_set_watermark_img, clear_axis, get_prop_cycle
 

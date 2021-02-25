@@ -159,6 +159,13 @@ class QDesign():
         # Need to add columns to Junction tables before create_tables().
         self._qgeometry.create_tables()
 
+        # Assign unique name to this design
+        self.name = self._assign_name_design()
+
+    def _assign_name_design(self, name: str = "Design") -> str:
+        # TODO: make this name unique, for when we will have multiple designs
+        return name
+
     def _init_metadata(self) -> Dict:
         """Initialize default metadata dictionary
 
@@ -967,7 +974,7 @@ class QDesign():
 
                 # check if class_name is in module
                 if class_renderer is not None:
-                    a_renderer = class_renderer(self)
+                    a_renderer = class_renderer(self, initiate=False)
 
                     # register renderers here.
                     self._renderers[renderer_key] = a_renderer

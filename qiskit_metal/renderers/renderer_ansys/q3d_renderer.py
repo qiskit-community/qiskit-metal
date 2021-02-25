@@ -43,27 +43,54 @@ class QQ3DRenderer(QAnsysRenderer):
     def __init__(self,
                  design: 'QDesign',
                  initiate=True,
-                 render_template: Dict = None,
-                 render_options: Dict = None):
+                 options: Dict = None):
         """
         Create a QRenderer for Q3D simulations, subclassed from QAnsysRenderer.
 
         Args:
             design (QDesign): Use QGeometry within QDesign to obtain elements for Ansys.
             initiate (bool, optional): True to initiate the renderer. Defaults to True.
-            render_template (Dict, optional): Typically used by GUI for template options for GDS. Defaults to None.
-            render_options (Dict, optional):  Used to override all options. Defaults to None.
+            options (Dict, optional):  Used to override all options. Defaults to None.
         """
         super().__init__(design=design,
                          initiate=initiate,
-                         render_template=render_template,
-                         render_options=render_options)
+                         options=options)
         QQ3DRenderer.load()
+
+    def render_chip(self):
+        pass
+
+    def render_component(self):
+        pass
 
     @property
     def boundaries(self):
         if self.pinfo:
             return self.pinfo.design._boundaries
+
+    def execute_design(self, design_name, force_redraw=False, **design_selection):
+        # If a selection of components is not specified, we will use the previous design, if it exists
+        done = False
+        if 'selection' not in design_selection:
+            done = True
+        else:
+            if design_selection['selection'] is None:
+                done = True
+        
+        if done:
+            try:
+                return self.design.name
+            except AttributeError:
+                # if no design exists, then we will proceed and render the full design instead
+                pass
+        
+        # full design rendering in a separate design file.
+        if force_redraw:
+            self.clean_active_design()
+        else:
+            self.new_q3d_design(design_name)
+        self.render_design(**design_selection)
+        return self.pinfo.design.name
 
     def render_design(self,
                       selection: Union[list, None] = None,
@@ -150,9 +177,9 @@ class QQ3DRenderer(QAnsysRenderer):
         """
         self.boundaries.AutoIdentifyNets()
 
-    def add_q3d_setup(self,
-                      freq_ghz: float = 5.,
+    def new_q3d_setup(self,
                       name: str = "Setup",
+                      freq_ghz: float = 5.,
                       save_fields: bool = False,
                       enabled: bool = True,
                       max_passes: int = 15,
@@ -184,8 +211,8 @@ class QQ3DRenderer(QAnsysRenderer):
         if self.pinfo:
             if self.pinfo.design:
                 return self.pinfo.design.create_q3d_setup(
-                    freq_ghz=freq_ghz,
                     name=name,
+                    freq_ghz=freq_ghz,
                     save_fields=save_fields,
                     enabled=enabled,
                     max_passes=max_passes,
@@ -206,12 +233,16 @@ class QQ3DRenderer(QAnsysRenderer):
         """
         if self.pinfo:
             setup = self.pinfo.get_setup(setup_name)
-            setup.analyze()
+            setup.analyze(setup_name)
+
+    def initialize_cap_extract(self, **kwargs):
+        setup = self.new_q3d_setup(**kwargs)
+        return setup.name
 
     def get_capacitance_matrix(self,
                                variation: str = '',
-                               solution_kind: str = 'AdaptivePass',
-                               pass_number: int = 3):
+                               solution_kind: str = 'LastAdaptive',
+                               pass_number: int = 1):
         # TODO: Move arguments to default_options.
         """
         Obtain capacitance matrix in a dataframe format.
@@ -219,8 +250,8 @@ class QQ3DRenderer(QAnsysRenderer):
 
         Args:
             variation (str, optional): An empty string returns nominal variation. Otherwise need the list. Defaults to ''
-            solution_kind (str, optional): Solution type. Defaults to 'AdaptivePass'.
-            pass_number (int, optional): Number of passes to perform. Defaults to 3.
+            solution_kind (str, optional): Solution type. Defaults to 'LastAdaptive' ('AdaptivePass' or 'LastAdaptive')
+            pass_number (int, optional): From which analysis pass you want to extract the matrix? Defaults to 1.
         """
         if self.pinfo:
             df_cmat, user_units, _, _ = self.pinfo.setup.get_matrix(
@@ -235,9 +266,9 @@ class QQ3DRenderer(QAnsysRenderer):
                                     N: int,
                                     fr: Union[list, float],
                                     fb: Union[list, float],
-                                    maxPass: int,
+                                    maxPass: int = 1,
                                     variation: str = '',
-                                    solution_kind: str = 'AdaptivePass',
+                                    solution_kind: str = 'LastAdaptive',
                                     g_scale: float = 1) -> dict:
         """
         Obtain dictionary composed of pass numbers (keys) and their respective capacitance matrices (values).
@@ -251,32 +282,37 @@ class QQ3DRenderer(QAnsysRenderer):
                 they appear in the capMatrix.
             fb (Union[list, float]): coupling bus and readout frequencies (in GHz). fb can be a list with the order
                 they appear in the capMatrix.
-            maxPass (int): maximum number of passes
+            maxPass (int): maximum number of passes. Ignored for 'LastAdaptive' solutions types. Defaults to 1.
             variation (str, optional): An empty string returns nominal variation. Otherwise need the list. Defaults to ''.
-            solution_kind (str, optional): Solution type. Defaults to 'AdaptivePass'.
-            g_scale (float, optional): Scale factor. Defaults to 1..
+            solution_kind (str, optional): Solution type ('AdaptivePass' or 'LastAdaptive'). Defaults to 'LastAdaptive'.
+            g_scale (float, optional): Scale factor. Defaults to 1.
 
         Returns:
             dict: dictionary composed of pass numbers (keys) and their respective capacitance matrices (values)
         """
+        if solution_kind == 'LastAdaptive':
+            maxPass = 1
         IC_Amps = Convert.Ic_from_Lj(Lj_nH, 'nH', 'A')
         CJ = ureg(f'{Cj_fF} fF').to('farad').magnitude
         fr = ureg(f'{fr} GHz').to('GHz').magnitude
         fb = [ureg(f'{freq} GHz').to('GHz').magnitude for freq in fb]
         RES = {}
-        for i in range(1, maxPass):
-            print('Pass number: ', i)
-            df_cmat, user_units, _, _ = self.pinfo.setup.get_matrix(
-                variation=variation, solution_kind=solution_kind, pass_number=i)
-            c_units = ureg(user_units).to('farads').magnitude
-            res = extract_transmon_coupled_Noscillator(df_cmat.values * c_units,
-                                                       IC_Amps,
-                                                       CJ,
-                                                       N,
-                                                       fb,
-                                                       fr,
-                                                       g_scale=1)
-            RES[i] = res
+        for i in range(1, maxPass+1):
+            try:
+                print('Pass number: ', i)
+                df_cmat, user_units, _, _ = self.pinfo.setup.get_matrix(
+                    variation=variation, solution_kind=solution_kind, pass_number=i)
+                c_units = ureg(user_units).to('farads').magnitude
+                res = extract_transmon_coupled_Noscillator(df_cmat.values * c_units,
+                                                            IC_Amps,
+                                                            CJ,
+                                                            N,
+                                                            fb,
+                                                            fr,
+                                                            g_scale=1)
+                RES[i] = res
+            except pd.errors.EmptyDataError:
+                break
         RES = pd.DataFrame(RES).transpose()
         RES['χr MHz'] = abs(RES['chi_in_MHz'].apply(lambda x: x[0]))
         RES['gr MHz'] = abs(RES['gbus'].apply(lambda x: x[0]))
@@ -304,7 +340,7 @@ class QQ3DRenderer(QAnsysRenderer):
         epr.toolbox.plotting.mpl_dpi(110)
         return _plot_q3d_convergence_chi_f(RES)
 
-    def add_q3d_design(self, name: str, connect: bool = True):
+    def new_q3d_design(self, name: str, connect: bool = True):
         """
         Add a q3d design with the given name to the project.
 
@@ -316,8 +352,13 @@ class QQ3DRenderer(QAnsysRenderer):
             try:
                 adesign = self.pinfo.project.new_q3d_design(name)
             except AttributeError:
-                self.logger.error(
-                    'Please install a more recent version of pyEPR (>=0.8.4.4)')
+                if self.pinfo.project is None:
+                    self.logger.error(
+                        'Project not found')
+                else:
+                    self.logger.error(
+                        'Please install a more recent version of pyEPR (>=0.8.4.4)')
+                raise
             if connect:
                 self.connect_ansys_design(adesign.name)
             return adesign
@@ -353,7 +394,7 @@ class QQ3DRenderer(QAnsysRenderer):
                         f'The name={name} was not in active project.  '
                         'A new design will be inserted to the project.  '
                         f'Names in active project are: \n{names_in_design}.  ')
-                    adesign = self.add_q3d_design(name=name, connect=True)
+                    adesign = self.new_q3d_design(name=name, connect=True)
 
             else:
                 self.logger.warning(
