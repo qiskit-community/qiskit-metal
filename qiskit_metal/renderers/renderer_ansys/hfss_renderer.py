@@ -338,7 +338,7 @@ class QHFSSRenderer(QAnsysRenderer):
                     "Project not available, have you opened a project?")
         else:
             self.logger.warning(
-                "Have you run connect_ansys()?  Can not find a reference to Ansys in QRenderer."
+                "Have you run connect_ansys()?  Cannot find a reference to Ansys in QRenderer."
             )
 
     def activate_drivenmodal_setup(self, setup_name_activate: str = None):
@@ -380,7 +380,7 @@ class QHFSSRenderer(QAnsysRenderer):
                     "Project not available, have you opened a project?")
         else:
             self.logger.warning(
-                "Have you run connect_ansys()?  Can not find a reference to Ansys in QRenderer."
+                "Have you run connect_ansys()?  Cannot find a reference to Ansys in QRenderer."
             )
 
     def add_drivenmodal_setup(self,
@@ -472,7 +472,7 @@ class QHFSSRenderer(QAnsysRenderer):
                     "Project not available, have you opened a project?")
         else:
             self.logger.warning(
-                "Have you run connect_ansys()?  Can not find a reference to Ansys in QRenderer."
+                "Have you run connect_ansys()?  Cannot find a reference to Ansys in QRenderer."
             )
 
     def activate_eigenmode_setup(self, setup_name_activate: str = None):
@@ -514,7 +514,7 @@ class QHFSSRenderer(QAnsysRenderer):
                     "Project not available, have you opened a project?")
         else:
             self.logger.warning(
-                "Have you run connect_ansys()?  Can not find a reference to Ansys in QRenderer."
+                "Have you run connect_ansys()?  Cannot find a reference to Ansys in QRenderer."
             )
 
     def add_eigenmode_setup(self,

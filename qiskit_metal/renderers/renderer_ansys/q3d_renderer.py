@@ -188,7 +188,7 @@ class QQ3DRenderer(QAnsysRenderer):
                     "Project not available, have you opened a project?")
         else:
             self.logger.warning(
-                "Have you run connect_ansys()?  Can not find a reference to Ansys in QRenderer."
+                "Have you run connect_ansys()?  Cannot find a reference to Ansys in QRenderer."
             )
 
     def add_q3d_setup(self,
@@ -401,5 +401,5 @@ class QQ3DRenderer(QAnsysRenderer):
                     "Project not available, have you opened a project?")
         else:
             self.logger.warning(
-                "Have you run connect_ansys()?  Can not find a reference to Ansys in QRenderer."
+                "Have you run connect_ansys()?  Cannot find a reference to Ansys in QRenderer."
             )
