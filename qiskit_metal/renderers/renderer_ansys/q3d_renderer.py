@@ -156,6 +156,47 @@ class QQ3DRenderer(QAnsysRenderer):
         """
         self.boundaries.AutoIdentifyNets()
 
+    def activate_q3d_setup(self, setup_name_activate: str = None):
+        """For active design, either get existing setup, make new setup with name, 
+        or make new setup with default name.
+
+        Args:
+            setup_name_activate (str, optional): If name exists for setup, then have pinfo reference it. 
+            If name for setup does not exist, create a new setup with the name.  If name is None, 
+            create a new setup with default name.
+        """
+        if self.pinfo:
+            if self.pinfo.project:
+                if self.pinfo.design:
+                    # look for setup name, if not there, then add a new one
+                    if setup_name_activate:
+                        all_setup_names = self.pinfo.design.get_setup_names()
+                        self.pinfo.setup_name = setup_name_activate
+                        if setup_name_activate in all_setup_names:
+                            # When name is given and in design. So have pinfo reference existing setup.
+                            self.pinfo.setup = self.pinfo.get_setup(
+                                self.pinfo.setup_name)
+                        else:
+                            # When name is given, but not in design. So make a new setup with given name.
+                            self.pinfo.setup = self.add_q3d_setup(
+                                name=self.pinfo.setup_name)
+                    else:
+                        # When name is not given, so use default name for setup.
+                        # default name is "Setup"
+                        self.pinfo.setup = self.add_q3d_setup()
+                        self.pinfo.setup_name = self.pinfo.setup.name
+                else:
+                    self.logger.warning(
+                        " The design within a project is not available, have you opened a design?"
+                    )
+            else:
+                self.logger.warning(
+                    "Project not available, have you opened a project?")
+        else:
+            self.logger.warning(
+                "Have you run connect_ansys()?  Cannot find a reference to Ansys in QRenderer."
+            )
+
     def add_q3d_setup(self,
                       freq_ghz: float = 5.,
                       name: str = "Setup",
@@ -331,7 +372,7 @@ class QQ3DRenderer(QAnsysRenderer):
             self.logger.info("Are you mad?? You have to connect to ansys and a project " \
                             "first before creating a new design . Use self.connect_ansys()")
 
-    def activate_q3d_design(self, name: str):
+    def activate_q3d_design(self, name: str = "MetalQ3ds"):
         """Add a q3d design with the given name to the project.  If the design exists, that will be added WITHOUT
         altering the suffix of the design name.
 
@@ -366,5 +407,5 @@ class QQ3DRenderer(QAnsysRenderer):
                     "Project not available, have you opened a project?")
         else:
             self.logger.warning(
-                "Have you run connect_ansys()?  Can not find a reference to Ansys in QRenderer."
+                "Have you run connect_ansys()?  Cannot find a reference to Ansys in QRenderer."
             )
