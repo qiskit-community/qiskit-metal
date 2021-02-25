@@ -62,8 +62,14 @@ class QQ3DRenderer(QAnsysRenderer):
 
     @property
     def boundaries(self):
+        """[summary]
+
+        Returns:
+            [type]: [description]
+        """
         if self.pinfo:
-            return self.pinfo.design._boundaries
+            if self.pinfo.design:
+                return self.pinfo.design._boundaries
 
     def render_design(self,
                       selection: Union[list, None] = None,

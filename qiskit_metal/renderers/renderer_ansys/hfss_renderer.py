@@ -18,8 +18,9 @@
 
 from collections import defaultdict
 from pathlib import Path
-from typing import Union
+from typing import Union, Tuple
 
+import logging
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
@@ -595,13 +596,25 @@ class QHFSSRenderer(QAnsysRenderer):
             display(fig)
 
     def distributed_analysis(self):
-        """
-        Returns class containing info on Hamiltonian parameters from HFSS simulation.
+        """Returns class containing info on Hamiltonian parameters from HFSS simulation.
+
+        Returns:
+            [type]: [description]
         """
         if self.pinfo:
             return epr.DistributedAnalysis(self.pinfo)
 
     def get_convergences(self, variation=None):
+        """[summary]
+
+        Args:
+            variation ([type], optional): [description]. Defaults to None.
+
+        Returns:
+            tuple[pandas.core.frame.DataFrame, pandas.core.frame.DataFrame]: 
+            1st DataFrame: convergence_t
+            2nd DataFrame: convergence_f
+        """
         if self.pinfo:
             design = self.pinfo.design
             setup = self.pinfo.setup
@@ -611,6 +624,12 @@ class QHFSSRenderer(QAnsysRenderer):
             return convergence_t, convergence_f
 
     def plot_convergences(self, variation=None, fig=None):
+        """Plot convergences in Ansys window.
+
+        Args:
+            variation ([type], optional): [description]. Defaults to None.
+            fig ([type], optional): [description]. Defaults to None.
+        """
         if self.pinfo:
             convergence_t, convergence_f = self.get_convergences(variation)
             hfss_plot_convergences_report(convergence_t,
@@ -619,15 +638,21 @@ class QHFSSRenderer(QAnsysRenderer):
                                           _display=True)
 
 
-def hfss_plot_convergences_report(convergence_t,
-                                  convergence_f,
+def hfss_plot_convergences_report(convergence_t: pd.core.frame.DataFrame,
+                                  convergence_f: pd.core.frame.DataFrame,
                                   fig=None,
                                   _display=True):
-    """
-    Plot convergence frequency vs. pass number.
+    """Plot convergence frequency vs. pass number.
     Plot delta frequency and solved elements vs. pass number.
     Plot delta frequency vs. solved elements.
+
+    Args:
+        convergence_t (pandas.core.frame.DataFrame): convergence vs pass number of the eignemode freqs.
+        convergence_f (pandas.core.frame.DataFrame): convergence vs pass number of the eignemode freqs.
+        fig ([type], optional): [description]. Defaults to None.
+        _display (bool, optional): Display the plot? Defaults to True.
     """
+
     if fig is None:
         fig = plt.figure(figsize=(11, 3.))
 
@@ -649,19 +674,13 @@ def hfss_plot_convergences_report(convergence_t,
         #     display(fig)
 
 
-def hfss_report_f_convergence(oDesign,
-                              setup,
-                              logger,
+def hfss_report_f_convergence(oDesign: epr.ansys.HfssDesign,
+                              setup: epr.ansys.HfssEMSetup,
+                              logger: logging.Logger,
                               variation=None,
                               save_csv=True):
-    '''
-    Create a report inside HFSS to plot the converge of freq and style it.
-
+    """Create a report inside HFSS to plot the converge of freq and style it.
     Saves report to csv file.
-
-    Returns a convergence vs pass number of the eignemode freqs.
-    Returns a pandas dataframe:
-
     .. code-block:: text
 
             re(Mode(1)) [g]	re(Mode(2)) [g]	re(Mode(3)) [g]
@@ -670,7 +689,16 @@ def hfss_report_f_convergence(oDesign,
         2	5.114490	5.505828	6.242423
         3	5.278594	5.604426	6.296777
 
-    '''
+    Args:
+        oDesign (pyEPR.ansys.HfssDesign): Active design within Ansys.
+        setup (pyEPR.ansys.HfssEMSetup): The setup of active project and design within Ansys.
+        logger (logging.Logger): To give feedback to user.
+        variation ([type], optional): [description]. Defaults to None.
+        save_csv (bool, optional): Save to file? Defaults to True.
+
+    Returns:
+        pd.core.frame.DataFrame: Returns a convergence vs pass number of the eignemode freqs.
+    """
 
     if not oDesign.solution_type == 'Eigenmode':
         return None

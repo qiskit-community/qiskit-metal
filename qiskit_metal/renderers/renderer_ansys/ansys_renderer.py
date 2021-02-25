@@ -302,8 +302,18 @@ class QAnsysRenderer(QRenderer):
                 return self.pinfo.design.modeler
 
     def plot_ansys_fields(self, object_name: str):
+        """Plot fields
+
+        Args:
+            object_name (str): Used to plot on faces of.
+
+        Returns:
+            [type]: Return information from oFieldsReport.CreateFieldPlot(). 
+        """
         if not self.pinfo:
-            return  # TODO all checks
+            return
+        elif not self.pinfo.design:
+            return
         #TODO: This is just a prototype - should add features and flexibility.
         oFieldsReport = self.pinfo.design._fields_calc
         oModeler = self.pinfo.design._modeler
