@@ -43,7 +43,10 @@ class QHFSSRenderer(QAnsysRenderer):
     name = 'hfss'
     """name"""
 
-    hfss_options = Dict()  # For potential future use
+    hfss_options = Dict(
+        port_inductor_gap=
+        '10um'  # spacing between port and inductor if junction is drawn both ways
+    )
 
     def __init__(self,
                  design: 'QDesign',
@@ -99,13 +102,15 @@ class QHFSSRenderer(QAnsysRenderer):
         port in between, so behind the scenes all pins in port_list are also added to open_pins. Practically,
         however, port_list and open_pins are inputted as mutually exclusive lists.
 
-        Also in driven modal solutions, one may want to render junctions as lumped ports rather than RLC sheets.
-        To do so, tuples of the form (component_name, element_name, impedance) are added to the list jj_to_port.
-        For example, ('Q1', 'rect_jj', 70) indicates that rect_jj of component Q1 is to be rendered as a lumped
-        port with an impedance of 70 Ohms. Finally, and again for driven modal solutions, one may want to
-        disregard select junctions in the Metal design altogether to simulate the capacitive effect while keeping
-        the qubit in an "off" state. Such junctions are listed in the form (component_name, element_name) in the
-        list ignored_jjs.
+        Also in driven modal solutions, one may want to render junctions as lumped ports and/or inductors, or
+        omit them altogether. To do so, tuples of the form (component_name, element_name, impedance, draw_ind)
+        are added to the list jj_to_port. For example, ('Q1', 'rect_jj', 70, True) indicates that rect_jj of
+        component Q1 is to be rendered as both a lumped port with an impedance of 70 Ohms as well as an inductor
+        whose properties are given in default_options. Replacing the last entry of this 4-element tuple with False
+        would indicate that only the port is to be drawn, not the inductor. Alternatively for driven modal
+        solutions, one may want to disregard select junctions in the Metal design altogether to simulate the
+        capacitive effect while keeping the qubit in an "off" state. Such junctions are specified in the form
+        (component_name, element_name) in the list ignored_jjs.
 
         Args:
             selection (Union[list, None], optional): List of components to render. Defaults to None.
@@ -121,7 +126,10 @@ class QHFSSRenderer(QAnsysRenderer):
         self.jj_to_ignore = set()
 
         if jj_to_port:
-            self.jj_lumped_ports = {(qcomp, elt): impedance for qcomp, elt, impedance in jj_to_port}
+            self.jj_lumped_ports = {
+                (qcomp, elt): [impedance, draw_ind]
+                for qcomp, elt, impedance, draw_ind in jj_to_port
+            }
 
         if ignored_jjs:
             self.jj_to_ignore = {(qcomp, qelt) for qcomp, qelt in ignored_jjs}
@@ -194,30 +202,17 @@ class QHFSSRenderer(QAnsysRenderer):
         1. A rectangle of length pad_gap and width inductor_width. Defines lumped element
            RLC boundary condition.
         2. A line that is later used to calculate the voltage in post-processing analysis.
-        If in HFSS driven modal, junctions can either be inductors or lumped ports. The
-        latter are characterized by an impedance value given in the list jj_to_port when
-        render_design() is called.
+        If in HFSS driven modal, junctions can be inductors, lumped ports, both inductors
+        and lumped ports, or omitted altogether. Ports are characterized by an impedance 
+        value given in the list jj_to_port when render_design() is called.
 
         Args:
             qgeom (pd.Series): GeoSeries of element properties.
         """
-        ansys_options = dict(transparency=0.0)
-
         qcomp = self.design._components[qgeom['component']].name
         qc_elt = get_clean_name(qgeom['name'])
 
         if (qcomp, qc_elt) not in self.jj_to_ignore:
-            
-            if (qcomp, qc_elt) in self.jj_lumped_ports:
-                # Treat the junction as a lumped port.
-                qc_name = qcomp
-                port_name = f'Port_{qcomp}_{qc_elt}'
-                impedance = self.jj_lumped_ports[(qcomp, qc_elt)]
-            else:
-                # Treat the junction as an inductor.
-                qc_name = 'Lj_' + qcomp
-                inductor_name = f'{qc_name}{QAnsysRenderer.NAME_DELIM}{qc_elt}'
-
             qc_shapely = qgeom.geometry
             qc_chip_z = parse_units(self.design.get_chip_z(qgeom.chip))
             qc_width = parse_units(qgeom.width)
@@ -228,49 +223,134 @@ class QHFSSRenderer(QAnsysRenderer):
             x1, y1, z0 = endpoints_3d[1]
             if abs(y1 - y0) > abs(x1 - x0):
                 # Junction runs vertically up/down
+                axis = 'y'
                 x_min, x_max = x0 - qc_width / 2, x0 + qc_width / 2
                 y_min, y_max = min(y0, y1), max(y0, y1)
             else:
                 # Junction runs horizontally left/right
+                axis = 'x'
                 x_min, x_max = min(x0, x1), max(x0, x1)
                 y_min, y_max = y0 - qc_width / 2, y0 + qc_width / 2
 
             if (qcomp, qc_elt) in self.jj_lumped_ports:
-                # Draw rectangle for lumped port.
-                self.logger.debug(f'Drawing a rectangle: {port_name}')
-                poly_ansys = self.modeler.draw_rect_corner([x_min, y_min, qc_chip_z],
-                                                           x_max - x_min, y_max - y_min,
-                                                           qc_chip_z, **ansys_options)
-                axis = 'x' if abs(x1 - x0) > abs(y1 - y0) else 'y'
-                poly_ansys.make_lumped_port(axis, 
-                                            z0=str(impedance) + 'ohm', 
-                                            name=f'LumpPort_{qcomp}_{qc_elt}')
-                self.modeler.rename_obj(poly_ansys, port_name)
-                # Draw line for lumped port.
-                lump_line = self.modeler.draw_polyline([endpoints_3d[0], endpoints_3d[1]],
-                                                    closed=False,
-                                                    **dict(color=(128, 0, 128)))
-                lump_line = lump_line.rename(f'voltage_line_{port_name}')
-                lump_line.show_direction = True
+                if self.jj_lumped_ports[(qcomp, qc_elt)][1]:
+                    # Draw both port and inductor side by side with small gap in between
+                    gap = parse_units(self.hfss_options['port_inductor_gap'])
+                    x_mid, y_mid = (x_min + x_max) / 2, (y_min + y_max) / 2
+                    if axis == 'x':
+                        y_mid_hi = y_mid + gap / 2
+                        y_mid_lo = y_mid - gap / 2
+                        self.render_junction_port(qgeom, x_min, x_max, y_mid_hi,
+                                                  y_max, qc_chip_z, axis)
+                        self.render_junction_inductor(qgeom, x_min, x_max,
+                                                      y_min, y_mid_lo,
+                                                      qc_chip_z, axis)
+                    elif axis == 'y':
+                        x_mid_lo = x_mid - gap / 2
+                        x_mid_hi = x_mid + gap / 2
+                        self.render_junction_port(qgeom, x_mid_hi, x_max, y_min,
+                                                  y_max, qc_chip_z, axis)
+                        self.render_junction_inductor(qgeom, x_min, x_mid_lo,
+                                                      y_min, y_max, qc_chip_z,
+                                                      axis)
+                else:
+                    # Only draw port
+                    self.render_junction_port(qgeom, x_min, x_max, y_min, y_max,
+                                              qc_chip_z, axis)
             else:
-                # Draw rectangle for inductor.
-                self.logger.debug(f'Drawing a rectangle: {inductor_name}')
-                poly_ansys = self.modeler.draw_rect_corner(
-                    [x_min, y_min, qc_chip_z], x_max - x_min, y_max - y_min, qc_chip_z, **ansys_options)
-                axis = 'x' if abs(x1 - x0) > abs(y1 - y0) else 'y'
-                poly_ansys.make_rlc_boundary(axis,
-                                            l=qgeom['hfss_inductance'],
-                                            c=qgeom['hfss_capacitance'],
-                                            r=qgeom['hfss_resistance'],
-                                            name='Lj_' + inductor_name)
-                self.modeler.rename_obj(poly_ansys, 'JJ_rect_' + inductor_name)
-                self.assign_mesh.append('JJ_rect_' + inductor_name)
-                # Draw line for inductor.
-                poly_jj = self.modeler.draw_polyline([endpoints_3d[0], endpoints_3d[1]],
-                                                    closed=False,
-                                                    **dict(color=(128, 0, 128)))
-                poly_jj = poly_jj.rename('JJ_' + inductor_name + '_')
-                poly_jj.show_direction = True
+                # Only draw inductor
+                self.render_junction_inductor(qgeom, x_min, x_max, y_min, y_max,
+                                              qc_chip_z, axis)
+
+    def render_junction_port(self, qgeom: pd.Series, xmin: float, xmax: float,
+                             ymin: float, ymax: float, z: float, axis: str):
+        """
+        Render a junction as a port with a bounding box given by
+        xmin/xmax and ymin/ymax, a height z, and a horizontal or
+        vertical axis.
+
+        Args:
+            qgeom (pd.Series): GeoSeries of element properties.
+            xmin (float): Smallest x coordinate
+            xmax (float): Largest x coordinate
+            ymin (float): Smallest y coordinate
+            ymax (float): Largest y coordinate
+            z (float): z coordinate
+            axis (str): Orientation, either 'x' or 'y'
+        """
+        ansys_options = dict(transparency=0.0)
+        qcomp = self.design._components[qgeom['component']].name
+        qc_elt = get_clean_name(qgeom['name'])
+        port_name = f'Port_{qcomp}_{qc_elt}'
+        impedance = self.jj_lumped_ports[(qcomp, qc_elt)][0]
+        # Draw rectangle for lumped port.
+        self.logger.debug(f'Drawing a rectangle: {port_name}')
+        poly_ansys = self.modeler.draw_rect_corner([xmin, ymin, z], xmax - xmin,
+                                                   ymax - ymin, z,
+                                                   **ansys_options)
+        poly_ansys.make_lumped_port(axis,
+                                    z0=str(impedance) + 'ohm',
+                                    name=f'LumpPort_{qcomp}_{qc_elt}')
+        self.modeler.rename_obj(poly_ansys, port_name)
+        # Draw line for lumped port.
+        if axis == 'x':
+            ymid = (ymin + ymax) / 2
+            start, end = [xmin, ymid, z], [xmax, ymid, z]
+        elif axis == 'y':
+            xmid = (xmin + xmax) / 2
+            start, end = [xmid, ymin, z], [xmid, ymax, z]
+        lump_line = self.modeler.draw_polyline([start, end],
+                                               closed=False,
+                                               **dict(color=(128, 0, 128)))
+        lump_line = lump_line.rename(f'voltage_line_{port_name}')
+        lump_line.show_direction = True
+
+    def render_junction_inductor(self, qgeom: pd.Series, xmin: float,
+                                 xmax: float, ymin: float, ymax: float,
+                                 z: float, axis: str):
+        """
+        Render a junction as an inductor with a bounding box given by
+        xmin/xmax and ymin/ymax, a height z, and a horizontal or
+        vertical axis.
+
+        Args:
+            qgeom (pd.Series): GeoSeries of element properties.
+            xmin (float): Smallest x coordinate
+            xmax (float): Largest x coordinate
+            ymin (float): Smallest y coordinate
+            ymax (float): Largest y coordinate
+            z (float): z coordinate
+            axis (str): Orientation, either 'x' or 'y'
+        """
+        ansys_options = dict(transparency=0.0)
+        qcomp = self.design._components[qgeom['component']].name
+        qc_elt = get_clean_name(qgeom['name'])
+        qc_name = 'Lj_' + qcomp
+        inductor_name = f'{qc_name}{QAnsysRenderer.NAME_DELIM}{qc_elt}'
+        # Draw rectangle for inductor.
+        self.logger.debug(f'Drawing a rectangle: {inductor_name}')
+        poly_ansys = self.modeler.draw_rect_corner([xmin, ymin, z], xmax - xmin,
+                                                   ymax - ymin, z,
+                                                   **ansys_options)
+        poly_ansys.make_rlc_boundary(axis,
+                                     l=qgeom['hfss_inductance'],
+                                     c=qgeom['hfss_capacitance'],
+                                     r=qgeom['hfss_resistance'],
+                                     name='Lj_' + inductor_name)
+        self.modeler.rename_obj(poly_ansys, 'JJ_rect_' + inductor_name)
+        self.assign_mesh.append('JJ_rect_' + inductor_name)
+        # Draw line for inductor.
+        if axis == 'x':
+            ymid = (ymin + ymax) / 2
+            start, end = [xmin, ymid, z], [xmax, ymid, z]
+        elif axis == 'y':
+            xmid = (xmin + xmax) / 2
+            start, end = [xmid, ymin, z], [xmid, ymax, z]
+        induc_line = self.modeler.draw_polyline([start, end],
+                                                closed=False,
+                                                **dict(color=(128, 0, 128)))
+        induc_line = induc_line.rename('JJ_' + inductor_name + '_')
+        induc_line.show_direction = True
 
     def metallize(self):
         """
@@ -295,7 +375,7 @@ class QHFSSRenderer(QAnsysRenderer):
             self.logger.info("Are you mad?? You have to connect to ansys and a project " \
                             "first before creating a new design . Use self.connect_ansys()")
 
-    def add_drivenmodal_setup(self, 
+    def add_drivenmodal_setup(self,
                               freq_ghz=5,
                               name="Setup",
                               max_delta_s=0.1,
@@ -303,7 +383,7 @@ class QHFSSRenderer(QAnsysRenderer):
                               min_passes=1,
                               min_converged=1,
                               pct_refinement=30,
-                              basis_order=1):
+                              basis_order=-1):
         # TODO: Move arguments to default options.
         """
         Create a solution setup in Ansys HFSS Driven Modal.
@@ -320,14 +400,15 @@ class QHFSSRenderer(QAnsysRenderer):
         """
         if self.pinfo:
             if self.pinfo.design:
-                return self.pinfo.design.create_dm_setup(freq_ghz=freq_ghz,
-                                                         name=name,
-                                                         max_delta_s=max_delta_s,
-                                                         max_passes=max_passes,
-                                                         min_passes=min_passes,
-                                                         min_converged=min_converged,
-                                                         pct_refinement=pct_refinement,
-                                                         basis_order=basis_order)
+                return self.pinfo.design.create_dm_setup(
+                    freq_ghz=freq_ghz,
+                    name=name,
+                    max_delta_s=max_delta_s,
+                    max_passes=max_passes,
+                    min_passes=min_passes,
+                    min_converged=min_converged,
+                    pct_refinement=pct_refinement,
+                    basis_order=basis_order)
 
     def add_eigenmode_design(self, name: str, connect: bool = True):
         """
@@ -417,7 +498,7 @@ class QHFSSRenderer(QAnsysRenderer):
         if self.pinfo:
             setup = self.pinfo.get_setup(setup_name)
             setup.analyze()
-    
+
     def add_sweep(self,
                   setup_name="Setup",
                   start_ghz=2.0,
@@ -449,7 +530,7 @@ class QHFSSRenderer(QAnsysRenderer):
                                       name=name,
                                       type=type,
                                       save_fields=save_fields)
-                                                    
+
     def analyze_sweep(self, sweep_name: str, setup_name: str):
         """
         Analyze a single sweep within the setup.
@@ -463,29 +544,31 @@ class QHFSSRenderer(QAnsysRenderer):
             sweep = setup.get_sweep(sweep_name)
             sweep.analyze_sweep()
             self.current_sweep = sweep
-    
-    def get_params(self, param_name: Union[list, None]=None):
+
+    def get_params(self, param_name: Union[list, None] = None):
         """
         Get one or more parameters (S, Y, or Z) as a function of frequency.
 
         Args:
-            getP (Union[list, None], optional): Parameters to obtain. Defaults to None.
+            param_name (Union[list, None], optional): Parameters to obtain. Defaults to None.
         """
         if self.current_sweep:
             freqs, Pcurves = self.current_sweep.get_network_data(param_name)
-            Pparams = pd.DataFrame(Pcurves, columns=freqs/1e9, index=param_name).transpose()
+            Pparams = pd.DataFrame(Pcurves,
+                                   columns=freqs / 1e9,
+                                   index=param_name).transpose()
         return freqs, Pcurves, Pparams
 
-    def plot_params(self, param_name: Union[list, None]=None):
+    def plot_params(self, param_name: Union[list, None] = None):
         """
         Plot one or more parameters (S, Y, or Z) as a function of frequency.
 
         Args:
-            getP (Union[list, None], optional): Parameters to plot. Defaults to None.
+            param_name (Union[list, None], optional): Parameters to plot. Defaults to None.
         """
         freqs, Pcurves, Pparams = self.get_params(param_name)
-        if Pparams is not None :
-            fig, axs = plt.subplots(1,2, figsize=(10,6))
+        if Pparams is not None:
+            fig, axs = plt.subplots(1, 2, figsize=(10, 6))
             Pparams.apply(lambda x: 20 * np.log10(np.abs(x))).plot(ax=axs[0])
             Pparams.apply(lambda x: np.angle(x)).plot(ax=axs[1])
             for ax in axs:
