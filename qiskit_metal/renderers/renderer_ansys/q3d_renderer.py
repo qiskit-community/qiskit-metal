@@ -67,7 +67,8 @@ class QQ3DRenderer(QAnsysRenderer):
 
     def render_design(self,
                       selection: Union[list, None] = None,
-                      open_pins: Union[list, None] = None):
+                      open_pins: Union[list, None] = None,
+                      box_plus_buffer: bool = True):
         """
         Initiate rendering of components in design contained in selection, assuming they're valid.
         Components are rendered before the chips they reside on, and subtraction of negative shapes
@@ -89,6 +90,8 @@ class QQ3DRenderer(QAnsysRenderer):
         Args:
             selection (Union[list, None], optional): List of components to render. Defaults to None.
             open_pins (Union[list, None], optional): List of tuples of pins that are open. Defaults to None.
+            box_plus_buffer (bool): Either calculate a bounding box based on the location of rendered geometries
+                                     or use chip size from design class.
         """
         self.chip_subtract_dict = defaultdict(set)
         self.assign_perfE = []
@@ -97,7 +100,8 @@ class QQ3DRenderer(QAnsysRenderer):
         self.render_tables(selection)
         self.add_endcaps(open_pins)
 
-        self.render_chips(draw_sample_holder=False)
+        self.render_chips(draw_sample_holder=False,
+                          box_plus_buffer=box_plus_buffer)
         self.subtract_from_ground()
 
         self.assign_thin_conductor(self.assign_perfE)
@@ -306,7 +310,7 @@ class QQ3DRenderer(QAnsysRenderer):
 
         Args:
             name (str): Name of the new q3d design
-            connect (bool, optional): Should we connect this session to this design? Defaults to True
+            connect (bool, optional): Should we connect this session to this design? Defaults to True.
         """
         if self.pinfo:
             try:
@@ -320,3 +324,41 @@ class QQ3DRenderer(QAnsysRenderer):
         else:
             self.logger.info("Are you mad?? You have to connect to ansys and a project " \
                             "first before creating a new design . Use self.connect_ansys()")
+
+    def activate_q3d_design(self, name: str):
+        """Add a q3d design with the given name to the project.  If the design exists, that will be added WITHOUT
+        altering the suffix of the design name.
+
+        Args:
+            name (str): Name of the new q3d design
+        """
+
+        if self.pinfo:
+            if self.pinfo.project:
+                try:
+                    names_in_design = self.pinfo.project.get_design_names()
+                except AttributeError:
+                    self.logger.error(
+                        'Please install a more recent version of pyEPR (>=0.8.4.5)'
+                    )
+
+                if name in names_in_design:
+                    self.pinfo.connect_design(name)
+                    oDesktop = self.pinfo.design.parent.parent._desktop  # self.pinfo.design does not work
+                    oProject = oDesktop.SetActiveProject(
+                        self.pinfo.project_name)
+                    oDesign = oProject.SetActiveDesign(name)
+                else:
+                    self.logger.warning(
+                        f'The name={name} was not in active project.  '
+                        'A new design will be inserted to the project.  '
+                        f'Names in active project are: \n{names_in_design}.  ')
+                    adesign = self.add_q3d_design(name=name, connect=True)
+
+            else:
+                self.logger.warning(
+                    "Project not available, have you opened a project?")
+        else:
+            self.logger.warning(
+                "Have you run connect_ansys()?  Can not find a reference to Ansys in QRenderer."
+            )

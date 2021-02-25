@@ -260,9 +260,12 @@ class QAnsysRenderer(QRenderer):
         here.get_app_desktop().new_project()
 
     def connect_ansys_design(self, design_name: str = None):
+        """ Used to switch between existing designs.
+
+        Args:
+            design_name (str, optional): Name within the active project. Defaults to None.
         """
-        Used to switch between existing designs.
-        """
+
         if self.pinfo:
             if self.pinfo.project:
                 # TODO: Handle case when design does not EXIST?!?!?
@@ -307,22 +310,23 @@ class QAnsysRenderer(QRenderer):
         object_id = oModeler.GetObjectIDByName(object_name)
         # Can also use hfss.pinfo.design._modeler.GetFaceIDs("main")
         # TODO: Allow all these need to be customizable, esp QuantityName
+
         # yapf: disable
         return oFieldsReport.CreateFieldPlot(
             [
-                "NAME:Mag_E1",
-                "SolutionName:=" , f"{setup.name} : LastAdaptive", # name of the setup 
-                "UserSpecifyName:=" , 0,
-                "UserSpecifyFolder:=" , 0,
-                "QuantityName:=" , "Mag_E",
-                "PlotFolder:="  , "E Field",
-                "StreamlinePlot:=" , False,
+                "NAME:Mag_E1"        ,
+                "SolutionName:="     ,  f"{setup.name} : LastAdaptive",  # name of the setup 
+                "UserSpecifyName:="  , 0,
+                "UserSpecifyFolder:=", 0,
+                "QuantityName:="     , "Mag_E",
+                "PlotFolder:="       , "E Field",
+                "StreamlinePlot:="   , False,
                 "AdjacentSidePlot:=" , False,
-                "FullModelPlot:=" , False,
-                "IntrinsicVar:=" , "Phase=\'0deg\'",
-                "PlotGeomInfo:=" , [1,"Surface","FacesList",1, str(object_id)],
-            ], "Field")
-        # yapf: enable
+                "FullModelPlot:="    , False,
+                "IntrinsicVar:="     , "Phase=\'0deg\'",
+                "PlotGeomInfo:="     , [1, "Surface", "FacesList", 1, str(object_id)],
+            ],  "Field")
+        #yapf: enable
 
     def plot_ansys_delete(self, names: list):
         """
@@ -358,7 +362,8 @@ class QAnsysRenderer(QRenderer):
 
     def render_design(self,
                       selection: Union[list, None] = None,
-                      open_pins: Union[list, None] = None):
+                      open_pins: Union[list, None] = None,
+                      box_plus_buffer: bool = True):
         """
         Initiate rendering of components in design contained in selection, assuming they're valid.
         Components are rendered before the chips they reside on, and subtraction of negative shapes
@@ -380,6 +385,8 @@ class QAnsysRenderer(QRenderer):
         Args:
             selection (Union[list, None], optional): List of components to render. Defaults to None.
             open_pins (Union[list, None], optional): List of tuples of pins that are open. Defaults to None.
+            box_plus_buffer (bool): Either calculate a bounding box based on the location of rendered geometries
+                                     or use chip size from design class. 
         """
         self.chip_subtract_dict = defaultdict(set)
         self.assign_perfE = []
@@ -388,7 +395,7 @@ class QAnsysRenderer(QRenderer):
         self.render_tables(selection)
         self.add_endcaps(open_pins)
 
-        self.render_chips()
+        self.render_chips(box_plus_buffer=box_plus_buffer)
         self.subtract_from_ground()
         self.add_mesh()
 
@@ -447,7 +454,6 @@ class QAnsysRenderer(QRenderer):
             if case != 1:  # Render a subset of components using mask
                 mask = table['component'].isin(qcomp_ids)
                 table = table[mask]
-                self.render_everything = False
 
         else:
             for qcomp in self.design.components:
@@ -680,7 +686,9 @@ class QAnsysRenderer(QRenderer):
         elif qgeom['width'] and (not qgeom['helper']):
             self.assign_perfE.append(name)
 
-    def render_chips(self, draw_sample_holder: bool = True):
+    def render_chips(self,
+                     draw_sample_holder: bool = True,
+                     box_plus_buffer: bool = True):
         """
         Render chips using info from design.get_chip_size method.
 
@@ -689,6 +697,8 @@ class QAnsysRenderer(QRenderer):
 
         Args:
             draw_sample_holder (bool, optional): Option to draw vacuum box around chip. Defaults to True.
+            box_plus_buffer (bool): Either calculate a bounding box based on the location of rendered geometries
+                                     or use chip size from design class. 
         """
         ansys_options = dict(transparency=0.0)
 
@@ -716,12 +726,22 @@ class QAnsysRenderer(QRenderer):
                     self._options['y_buffer_width_mm'])
                 max_y_edge = self.max_y_main + parse_units(
                     self._options['y_buffer_width_mm'])
-                if self.render_everything and (
-                        origin[0] - size[0] / 2 <= min_x_edge < max_x_edge <=
-                        origin[0] + size[0] / 2) and (origin[1] - size[1] / 2 <=
-                                                      min_y_edge < max_y_edge <=
-                                                      origin[1] + size[1] / 2):
-                    # All components are rendered and the overall bounding box lies within 9 X 6 chip
+
+                if not box_plus_buffer:
+                    # Expect all components are rendered and
+                    # the overall bounding box lies within 9 X 6 chip
+                    if not (origin[0] - size[0] / 2 <= self.min_x_main <
+                            self.max_x_main <= origin[0] + size[0] / 2) and (
+                                origin[1] - size[1] / 2 <= self.min_y_main <
+                                self.max_y_main <= origin[1] + size[1] / 2):
+                        self.logger.warning(
+                            'A bounding box with buffer around the QComponents are outside of the size of chip denoted in DesignPlanar.\n'
+                            'Chip size from DesignPlanar is:\n'
+                            f' x={size[0]}, y={size[1]}, z={size[2]}; centered at x={origin[0]}, y={origin[1]}, z={origin[2]}. \n'
+                            'Bounding box with buffer for rendered geometries is:\n'
+                            f' min_x={self.min_x_main}, max_x={self.max_x_main}, min_y={self.min_y_main}, max_y={self.max_y_main}.'
+                        )
+
                     plane = self.modeler.draw_rect_center(
                         origin,
                         x_size=size[0],
@@ -857,23 +877,19 @@ class QAnsysRenderer(QRenderer):
 
     def clean_active_design(self):
         """
-        Remove all elements from Q3 Modeler. 
+        Remove all elements from Ansys Modeler.
         """
-        project_name = self.pinfo.project_name
-        design_name = self.pinfo.design_name
-        select_all = ','.join(self.pinfo.get_all_object_names())
+        if self.pinfo:
+            if self.pinfo.get_all_object_names():
+                project_name = self.pinfo.project_name
+                design_name = self.pinfo.design_name
+                select_all = ','.join(self.pinfo.get_all_object_names())
 
-        ####Using self.pinfo.design directly seems obvious, but has segv'd.
-        ####Exception has occurred: AttributeErro
-        ####(note: full exception trace is shown but execution is paused at: _run_module_as_main)
-        ####'HfssDesign' object has no attribute 'SetActiveEditor'
-        # pinfo_editor = self.pinfo.design.SetActiveEditor("3D Modeler")
+                oDesktop = self.pinfo.design.parent.parent._desktop  # self.pinfo.design does not work
+                oProject = oDesktop.SetActiveProject(project_name)
+                oDesign = oProject.SetActiveDesign(design_name)
 
-        oDesktop = self.pinfo.design.parent.parent._desktop
-        oProject = oDesktop.SetActiveProject(project_name)
-        oDesign = oProject.SetActiveDesign(design_name)
+                # The available editors: "Layout", "3D Modeler", "SchematicEditor"
+                oEditor = oDesign.SetActiveEditor("3D Modeler")
 
-        # The available editors: "Layout", "3D Modeler", "SchematicEditor"
-        oEditor = oDesign.SetActiveEditor("3D Modeler")
-
-        oEditor.Delete(["NAME:Selections", "Selections:=", select_all])
+                oEditor.Delete(["NAME:Selections", "Selections:=", select_all])

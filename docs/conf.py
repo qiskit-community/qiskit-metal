@@ -30,6 +30,7 @@
 # sys.path.insert(0, os.path.abspath('.'))
 
 import qiskit_metal
+import qiskit_sphinx_theme
 """
 Sphinx documentation builder
 """
@@ -40,6 +41,10 @@ version = qiskit_metal.__version__
 release = qiskit_metal.__version__
 
 rst_prolog = """
+.. raw:: html
+
+    <br><br><br>
+
 .. |version| replace:: {0}
 """.format(release)
 
@@ -64,7 +69,7 @@ extensions = [
 
 html_static_path = ['_static']
 templates_path = ['_templates']
-html_css_files = ['theme.css', 'style.css', 'custom.css']
+html_css_files = ['custom.css']
 
 exclude_patterns = [
     '_build', '**.ipynb_checkpoints',
@@ -126,7 +131,8 @@ modindex_common_prefix = ['qiskit_metal.']
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'sphinx_rtd_theme'  # use the theme in subdir 'theme'
+html_theme = "qiskit_sphinx_theme"
+html_theme_path = ['.', qiskit_sphinx_theme.get_html_theme_path()]
 
 html_logo = 'images/logo.png'
 #html_sidebars = {'**': ['globaltoc.html']}
@@ -137,7 +143,6 @@ html_theme_options = {
     'display_version': True,
     'prev_next_buttons_location': 'bottom',
     'style_external_links': True,
-    'style_nav_header_background': '#e3e5e4',
     'collapse_navigation': True,
     'sticky_navigation': True,
 }

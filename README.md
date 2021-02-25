@@ -3,20 +3,26 @@
 
 ![Welcome to Qiskit Metal!](docs/images/zkm_banner.png 'Welcome to Qiskit Metal')
 
-### Early access for quantum device design project now open
-https://qiskit.org/metal/
+### Early Access to this quantum device design project
+We are thrilled to ask you to join this journey to revolutionize quantum devices. This is a first-of-its-kind, open-source project for engineers and scientists to design superconducting quantum devices with ease.
 
-Unpolished, early-access alpha version for a first-of-its-kind, open-source project for engineers and scientists to design superconducting quantum devices with ease.
+The early-access program started in November and will proceed through the first few months of 2021. During this time we will work closely together to develop Metal and design quantum devices with it.
 
-#### Early Access
-Through this early-access program, we are thrilled to ask you to join this journey to revolutionize quantum devices.
+#### Disclaimers
+Unpolished, early-access alpha version
 
-The early-access program will start in November and proceed through March, 2021, during which time we will work closely to develop Metal and design quantum devices with it.
-<br><br>
+Qiskit-metal is licensed under Apache 2.0. IBM reserves no copyright over outputs of qiskit-metal.
 
 #### Get help: Slack
 Use the [Slack channel (Join here!)](https://join.slack.com/share/zt-jjgzilxu-1u2FGivroQi64fHajpTWiw) to communicate with the developers and other early-access participats. (Troubleshooting: If the Slack invitation has expired, request one by opening a GitHub issue.)
 
+## Documentation 
+After installation, you can open the documentation like this
+```
+import qiskit_metal
+qiskit_metal.open_docs()
+```
+Build the docs by running `python build_docs.py` in a shell in the `docs` folder.
 
 ## Installation
 ### Video Instructions
@@ -139,6 +145,7 @@ On Windows, replace `source <virtual_env_path>/bin/activate` with `.\<virtual_en
 Here are some things to consider when setting up a development environment:
 * If using a virtual environment, make sure `pip` is up to date. In initial environment testing, PySide2 is installable with only the latest version of `pip`.
 * Add the path of your qiskit-metal folder to your PATH
+* Library errors when activating conda environments, or initializing jupyter notebook/lab, indicate a conflict between python libraries in the base and sub environments. Go ahead and manually delete the library from the base environment `site-packages` folder, shows in the error message. You might need to reinstall them in the sub environment, or create a new one.
 
 
 ### Additional steps for developers
@@ -201,28 +208,10 @@ Then open the applicable settings.json in your VS Code. (See how to open command
         }
 ```
 
-## Docs and how to use
-
-[Conda User Guide](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html)
-
-[Python Setup and Usage](https://docs.python.org/3/using/)
-
-[Python Language Reference](https://docs.python.org/3/reference/index.html)
-
-[Python How-To's](https://docs.python.org/3/howto/index.html)
-
-[Python Tutorials](https://docs.python.org/3/tutorial/index.html)
-
-[Python Style Guide](https://www.python.org/dev/peps/pep-0008/)
-
-[Metal Docs](/docs)
-
-[Docstring cheat sheet](/docs/docstring_cheat_sheet.md)
-
 
 ## Authors and Citation
 
-Qiskit Metal is the work of [many people](https://github.com/Qiskit/qiskit-metal/pulse/monthly) who contribute to the project at different levels. Metal was conceived and developed by Zlatko Minev at IBM, then co-led with Thomas McConkey. If you use Qiskit, please cite as per the included [BibTeX file](https://github.com/Qiskit/qiskit/blob/master/Qiskit.bib).For icon attributions, see [here](/qiskit_metal/_gui/_imgs/icon_attributions.txt).
+Qiskit Metal is the work of [many people](https://github.com/Qiskit/qiskit-metal/pulse/monthly) who contribute to the project at different levels. Metal was conceived and developed by [Zlatko Minev](zlatko-minev.com) at IBM; then co-led with Thomas McConkey. If you use Qiskit, please cite as per the included [BibTeX file](https://github.com/Qiskit/qiskit/blob/master/Qiskit.bib). For icon attributions, see [here](/qiskit_metal/_gui/_imgs/icon_attributions.txt).
 
 
 ## License

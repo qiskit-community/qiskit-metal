@@ -4,7 +4,6 @@
 
 `Metal_Design` is the very top object. 
 
-
 ### Rendered backends 
 * extensions for specific objects
 
