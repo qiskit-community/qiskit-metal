@@ -683,9 +683,11 @@ class QHFSSRenderer(QAnsysRenderer):
         """Returns class containing info on Hamiltonian parameters from HFSS simulation.
 
         Returns:
-            DistributedAnalysis: A  class from pyEPR which does DISTRIBUTED ANALYSIS of layout and microwave results.  It is the 
-            main compuation class & interface with HFSS.  This class defines a DistributedAnalysis object which calculates 
-            and saves Hamiltonian parameters from an HFSS simulation.  It allows one to calcualte dissipation
+            DistributedAnalysis: A  class from pyEPR which does DISTRIBUTED ANALYSIS of layout 
+            and microwave results.  It is the main computation class & interface with HFSS.  
+            This class defines a DistributedAnalysis object which calculates
+            and saves Hamiltonian parameters from an HFSS simulation.  
+            It allows one to calcualte dissipatio.
         """
         if self.pinfo:
             return epr.DistributedAnalysis(self.pinfo)
