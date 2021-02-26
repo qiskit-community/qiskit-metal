@@ -687,7 +687,7 @@ class QHFSSRenderer(QAnsysRenderer):
             and microwave results.  It is the main computation class & interface with HFSS.  
             This class defines a DistributedAnalysis object which calculates
             and saves Hamiltonian parameters from an HFSS simulation.  
-            It allows one to calcualte dissipatio.
+            It allows one to calculate dissipation.
         """
         if self.pinfo:
             return epr.DistributedAnalysis(self.pinfo)
@@ -739,8 +739,8 @@ def hfss_plot_convergences_report(convergence_t: pd.core.frame.DataFrame,
     Plot delta frequency vs. solved elements.
 
     Args:
-        convergence_t (pandas.core.frame.DataFrame): convergence vs pass number of the eignemode freqs.
-        convergence_f (pandas.core.frame.DataFrame): convergence vs pass number of the eignemode freqs.
+        convergence_t (pandas.core.frame.DataFrame): convergence vs pass number of the eigenemode freqs.
+        convergence_f (pandas.core.frame.DataFrame): convergence vs pass number of the eigenemode freqs.
         fig (matplotlib.figure.Figure, optional): A mpl figure. Defaults to None.
         _display (bool, optional): Display the plot? Defaults to True.
     """
@@ -771,7 +771,7 @@ def hfss_report_f_convergence(oDesign: epr.ansys.HfssDesign,
                               logger: logging.Logger,
                               variation: str = None,
                               save_csv: bool = True):
-    """Create a report inside HFSS to plot the converge of freq and style it.
+    """Create a report inside HFSS to plot the converge of frequency and style it.
     Saves report to csv file.
     .. code-block:: text
 
@@ -790,7 +790,7 @@ def hfss_report_f_convergence(oDesign: epr.ansys.HfssDesign,
         save_csv (bool, optional): Save to file? Defaults to True.
 
     Returns:
-        pd.core.frame.DataFrame: Returns a convergence vs pass number of the eignemode freqs.
+        pd.core.frame.DataFrame: Returns a convergence vs pass number of the eigenemode frequencies.
     """
 
     if not oDesign.solution_type == 'Eigenmode':
