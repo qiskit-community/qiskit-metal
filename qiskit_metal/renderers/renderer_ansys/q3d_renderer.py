@@ -62,10 +62,10 @@ class QQ3DRenderer(QAnsysRenderer):
 
     @property
     def boundaries(self):
-        """[summary]
+        """Reference to BoundarySetup in active design in Ansys.
 
         Returns:
-            [type]: [description]
+            win32com.client.CDispatch: COMObject GetModule, obtained by running within pyEPR: design.GetModule("BoundarySetup")
         """
         if self.pinfo:
             if self.pinfo.design:

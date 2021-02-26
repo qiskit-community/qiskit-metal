@@ -307,7 +307,7 @@ class QAnsysRenderer(QRenderer):
                 return self.pinfo.design.modeler
 
     def plot_ansys_fields(self, object_name: str):
-        """Plot fields
+        """Plot fields in Ansys.
 
         Args:
             object_name (str): Used to plot on faces of.
@@ -330,7 +330,7 @@ class QAnsysRenderer(QRenderer):
         # TODO: Allow all these need to be customizable, esp QuantityName
 
         # yapf: disable
-        to_return = oFieldsReport.CreateFieldPlot(
+        return oFieldsReport.CreateFieldPlot(
             [
                 "NAME:Mag_E1"        ,
                 "SolutionName:="     ,  f"{setup.name} : LastAdaptive",  # name of the setup 
@@ -345,7 +345,6 @@ class QAnsysRenderer(QRenderer):
                 "PlotGeomInfo:="     , [1, "Surface", "FacesList", 1, str(object_id)],
             ],  "Field")
         #yapf: enable
-        return to_return
 
     def plot_ansys_delete(self, names: list):
         """
@@ -380,7 +379,7 @@ class QAnsysRenderer(QRenderer):
             show (bool, optional): [description]. Defaults to True.
 
         Returns:
-            [type]: [description]
+            pathlib.WindowsPath: path to png formatted screenshot. 
         """
         try:
             return self.pinfo.design.save_screenshot(path, show)
