@@ -300,7 +300,7 @@ class QAnsysRenderer(QRenderer):
         """ The modeler from pyEPR HfssModeler. 
 
         Returns:
-            [type]: [description]
+            pyEPR.ansys.HfssModeler: reference to  design.HfssModeler in Ansys.
         """
         if self.pinfo:
             if self.pinfo.design:
@@ -313,15 +313,15 @@ class QAnsysRenderer(QRenderer):
             object_name (str): Used to plot on faces of.
 
         Returns:
-            [type]: Return information from oFieldsReport.CreateFieldPlot(). 
+            NoneType: Return information from oFieldsReport.CreateFieldPlot(). The method CreateFieldPlot() always returns None.
         """
         if not self.pinfo:
             return
         elif not self.pinfo.design:
             return
         #TODO: This is just a prototype - should add features and flexibility.
-        oFieldsReport = self.pinfo.design._fields_calc
-        oModeler = self.pinfo.design._modeler
+        oFieldsReport = self.pinfo.design._fields_calc  #design.GetModule("FieldsReporter")
+        oModeler = self.pinfo.design._modeler  #design.SetActiveEditor("3D Modeler")
         setup = self.pinfo.setup
 
         # Object ID - use tro plot on faces of
@@ -330,7 +330,7 @@ class QAnsysRenderer(QRenderer):
         # TODO: Allow all these need to be customizable, esp QuantityName
 
         # yapf: disable
-        return oFieldsReport.CreateFieldPlot(
+        to_return = oFieldsReport.CreateFieldPlot(
             [
                 "NAME:Mag_E1"        ,
                 "SolutionName:="     ,  f"{setup.name} : LastAdaptive",  # name of the setup 
@@ -345,6 +345,7 @@ class QAnsysRenderer(QRenderer):
                 "PlotGeomInfo:="     , [1, "Surface", "FacesList", 1, str(object_id)],
             ],  "Field")
         #yapf: enable
+        return to_return
 
     def plot_ansys_delete(self, names: list):
         """

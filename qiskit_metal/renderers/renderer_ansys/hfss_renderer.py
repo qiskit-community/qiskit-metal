@@ -688,11 +688,12 @@ class QHFSSRenderer(QAnsysRenderer):
         if self.pinfo:
             return epr.DistributedAnalysis(self.pinfo)
 
-    def get_convergences(self, variation=None):
-        """[summary]
+    def get_convergences(self, variation: str = None):
+        """Get convergence for convergence_t and convergence_f. 
 
         Args:
-            variation ([type], optional): [description]. Defaults to None.
+            variation (str, optional):  Information from pyEPR; variation should be in the form
+            variation = "scale_factor='1.2001'". Defaults to None.
 
         Returns:
             tuple[pandas.core.frame.DataFrame, pandas.core.frame.DataFrame]: 
@@ -704,15 +705,18 @@ class QHFSSRenderer(QAnsysRenderer):
             setup = self.pinfo.setup
             convergence_t, _ = setup.get_convergence(variation)
             convergence_f = hfss_report_f_convergence(
-                design, setup, self.logger, [])  # TODO; Fiox variation []
+                design, setup, self.logger, [])  # TODO; Fix variation []
             return convergence_t, convergence_f
 
-    def plot_convergences(self, variation=None, fig=None):
-        """Plot convergences in Ansys window.
+    def plot_convergences(self,
+                          variation: str = None,
+                          fig: mpl.figure.Figure = None):
+        """Plot the convergences in Ansys window.
 
         Args:
-            variation ([type], optional): [description]. Defaults to None.
-            fig ([type], optional): [description]. Defaults to None.
+            variation (str, optional): Information from pyEPR; variation should be in the form
+            variation = "scale_factor='1.2001'". Defaults to None.
+            fig (matplotlib.figure.Figure, optional): A mpl figure. Defaults to None.
         """
         if self.pinfo:
             convergence_t, convergence_f = self.get_convergences(variation)
@@ -724,16 +728,16 @@ class QHFSSRenderer(QAnsysRenderer):
 
 def hfss_plot_convergences_report(convergence_t: pd.core.frame.DataFrame,
                                   convergence_f: pd.core.frame.DataFrame,
-                                  fig=None,
+                                  fig: mpl.figure.Figure = None,
                                   _display=True):
-    """Plot convergence frequency vs. pass number.
+    """Plot convergence frequency vs. pass number if fig is None.
     Plot delta frequency and solved elements vs. pass number.
     Plot delta frequency vs. solved elements.
 
     Args:
         convergence_t (pandas.core.frame.DataFrame): convergence vs pass number of the eignemode freqs.
         convergence_f (pandas.core.frame.DataFrame): convergence vs pass number of the eignemode freqs.
-        fig ([type], optional): [description]. Defaults to None.
+        fig (matplotlib.figure.Figure, optional): A mpl figure. Defaults to None.
         _display (bool, optional): Display the plot? Defaults to True.
     """
 
@@ -761,8 +765,8 @@ def hfss_plot_convergences_report(convergence_t: pd.core.frame.DataFrame,
 def hfss_report_f_convergence(oDesign: epr.ansys.HfssDesign,
                               setup: epr.ansys.HfssEMSetup,
                               logger: logging.Logger,
-                              variation=None,
-                              save_csv=True):
+                              variation: str = None,
+                              save_csv: bool = True):
     """Create a report inside HFSS to plot the converge of freq and style it.
     Saves report to csv file.
     .. code-block:: text
@@ -777,7 +781,8 @@ def hfss_report_f_convergence(oDesign: epr.ansys.HfssDesign,
         oDesign (pyEPR.ansys.HfssDesign): Active design within Ansys.
         setup (pyEPR.ansys.HfssEMSetup): The setup of active project and design within Ansys.
         logger (logging.Logger): To give feedback to user.
-        variation ([type], optional): [description]. Defaults to None.
+        variation ('str', optional): Information from pyEPR; variation should be in the form
+            variation = "scale_factor='1.2001'". Defaults to None.
         save_csv (bool, optional): Save to file? Defaults to True.
 
     Returns:
