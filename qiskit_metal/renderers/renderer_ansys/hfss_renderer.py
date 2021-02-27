@@ -43,7 +43,23 @@ class QHFSSRenderer(QAnsysRenderer):
     name = 'hfss'
     """name"""
 
-    hfss_options = Dict()  # For potential future use
+    hfss_options = Dict(drivenmodal_setup=Dict(freq_ghz='5',
+                                               name="Setup",
+                                               max_delta_s='0.1',
+                                               max_passes='10',
+                                               min_passes='1',
+                                               min_converged='1',
+                                               pct_refinement='30',
+                                               basis_order='1'),
+                        eigenmode_setup=Dict(name="Setup",
+                                             min_freq_ghz='1',
+                                             n_modes='1',
+                                             max_delta_f='0.5',
+                                             max_passes='10',
+                                             min_passes='1',
+                                             min_converged='1',
+                                             pct_refinement='30',
+                                             basis_order='-1'))
 
     def __init__(self,
                  design: 'QDesign',
@@ -384,17 +400,18 @@ class QHFSSRenderer(QAnsysRenderer):
             )
 
     def add_drivenmodal_setup(self,
-                              freq_ghz=5,
-                              name="Setup",
-                              max_delta_s=0.1,
-                              max_passes=10,
-                              min_passes=1,
-                              min_converged=1,
-                              pct_refinement=30,
-                              basis_order=1):
-        # TODO: Move arguments to default options.
+                              freq_ghz=None,
+                              name=None,
+                              max_delta_s=None,
+                              max_passes=None,
+                              min_passes=None,
+                              min_converged=None,
+                              pct_refinement=None,
+                              basis_order=None):
         """
-        Create a solution setup in Ansys HFSS Driven Modal.
+        Create a solution setup in Ansys HFSS Driven Modal.   If user does not provide arguments, 
+        they will be obtained from hfss_options dict.  
+
 
         Args:
             freq_ghz (int, optional): Frequency in GHz. Defaults to 5.
@@ -404,8 +421,39 @@ class QHFSSRenderer(QAnsysRenderer):
             min_passes (int, optional): Minimum number of passes. Defaults to 1.
             min_converged (int, optional): Minimum number of converged passes. Defaults to 1.
             pct_refinement (int, optional): Percent refinement. Defaults to 30.
-            basis_order (int, optional): Basis order. Defaults to -1.
+            basis_order (int, optional): Basis order. Defaults to 1.
         """
+        if not freq_ghz:
+            freq_ghz = int(
+                self.parse_value(
+                    self.hfss_options.drivenmodal_setup['freq_ghz']))
+        if not name:
+            name = self.parse_value(self.hfss_options.drivenmodal_setup['name'])
+        if not max_delta_s:
+            max_delta_s = float(
+                self.parse_value(
+                    self.hfss_options.drivenmodal_setup['max_delta_s']))
+        if not max_passes:
+            max_passes = int(
+                self.parse_value(
+                    self.hfss_options.drivenmodal_setup['max_passes']))
+        if not min_passes:
+            min_passes = int(
+                self.parse_value(
+                    self.hfss_options.drivenmodal_setup['min_passes']))
+        if not min_converged:
+            min_converged = int(
+                self.parse_value(
+                    self.hfss_options.drivenmodal_setup['min_converged']))
+        if not pct_refinement:
+            pct_refinement = int(
+                self.parse_value(
+                    self.hfss_options.drivenmodal_setup['pct_refinement']))
+        if not basis_order:
+            basis_order = int(
+                self.parse_value(
+                    self.hfss_options.drivenmodal_setup['basis_order']))
+
         if self.pinfo:
             if self.pinfo.design:
                 return self.pinfo.design.create_dm_setup(
@@ -518,30 +566,65 @@ class QHFSSRenderer(QAnsysRenderer):
             )
 
     def add_eigenmode_setup(self,
-                            name="Setup",
-                            min_freq_ghz=1,
-                            n_modes=1,
-                            max_delta_f=0.5,
-                            max_passes=10,
-                            min_passes=1,
-                            min_converged=1,
-                            pct_refinement=30,
-                            basis_order=-1):
-        # TODO: Move arguments to default options.
+                            name=None,
+                            min_freq_ghz=None,
+                            n_modes=None,
+                            max_delta_f=None,
+                            max_passes=None,
+                            min_passes=None,
+                            min_converged=None,
+                            pct_refinement=None,
+                            basis_order=None):
         """
-        Create a solution setup in Ansys HFSS Eigenmode.
+        Create a solution setup in Ansys HFSS Eigenmode.  If user does not provide arguments, 
+        they will be obtained from hfss_options dict.  
 
         Args:
             name (str, optional): Name of eigenmode setup. Defaults to "Setup".
             min_freq_ghz (int, optional): Minimum frequency in GHz. Defaults to 1.
             n_modes (int, optional): Number of modes. Defaults to 1.
-            max_delta_f (float, optional): Maximum difference in freq between consecutive passes. Defaults to 0.1.
+            max_delta_f (float, optional): Maximum difference in freq between consecutive passes. Defaults to 0.5.
             max_passes (int, optional): Maximum number of passes. Defaults to 10.
             min_passes (int, optional): Minimum number of passes. Defaults to 1.
             min_converged (int, optional): Minimum number of converged passes. Defaults to 1.
             pct_refinement (int, optional): Percent refinement. Defaults to 30.
             basis_order (int, optional): Basis order. Defaults to -1.
         """
+
+        if not name:
+            name = self.parse_value(self.hfss_options.eigenmode_setup['name'])
+        if not min_freq_ghz:
+            min_freq_ghz = int(
+                self.parse_value(
+                    self.hfss_options.eigenmode_setup['min_freq_ghz']))
+        if not n_modes:
+            n_modes = int(
+                self.parse_value(self.hfss_options.eigenmode_setup['n_modes']))
+        if not max_delta_f:
+            max_delta_f = float(
+                self.parse_value(
+                    self.hfss_options.eigenmode_setup['max_delta_f']))
+        if not max_passes:
+            max_passes = int(
+                self.parse_value(
+                    self.hfss_options.eigenmode_setup['max_passes']))
+        if not min_passes:
+            min_passes = int(
+                self.parse_value(
+                    self.hfss_options.eigenmode_setup['min_passes']))
+        if not min_converged:
+            min_converged = int(
+                self.parse_value(
+                    self.hfss_options.eigenmode_setup['min_converged']))
+        if not pct_refinement:
+            pct_refinement = int(
+                self.parse_value(
+                    self.hfss_options.eigenmode_setup['pct_refinement']))
+        if not basis_order:
+            basis_order = int(
+                self.parse_value(
+                    self.hfss_options.eigenmode_setup['basis_order']))
+
         if self.pinfo:
             if self.pinfo.design:
                 return self.pinfo.design.create_em_setup(

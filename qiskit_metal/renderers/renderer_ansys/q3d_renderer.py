@@ -226,7 +226,7 @@ class QQ3DRenderer(QAnsysRenderer):
                       solution_order: str = None,
                       solver_type: str = None):
         """
-        Create a solution setup in Ansys Q3D. If you don't provide arguments, 
+        Create a solution setup in Ansys Q3D. If user does not provide arguments, 
         they will be obtained from q3d_options dict. 
 
         Args:

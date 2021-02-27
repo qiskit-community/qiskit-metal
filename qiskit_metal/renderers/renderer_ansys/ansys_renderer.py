@@ -272,7 +272,6 @@ class QAnsysRenderer(QRenderer):
 
         if self.pinfo:
             if self.pinfo.project:
-                #  TODO: Handle case when design does not EXIST?!?!?
                 all_designs_names = self.pinfo.project.get_design_names()
                 if design_name not in all_designs_names:
                     self.logger.warning(
@@ -312,7 +311,7 @@ class QAnsysRenderer(QRenderer):
     def plot_ansys_fields(self, object_name: str):
         if not self.pinfo:
             self.logger.warning('pinfo is None.')
-            return  # TODO all checks
+            return
 
         if self.pinfo.design:
             if not self.pinfo.design._fields_calc:
