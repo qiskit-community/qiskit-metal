@@ -28,6 +28,7 @@ from pyEPR.calcs.convert import Convert
 from qiskit_metal import Dict
 from qiskit_metal.analyses.quantization.lumped_capacitive import extract_transmon_coupled_Noscillator
 from qiskit_metal.renderers.renderer_ansys.ansys_renderer import QAnsysRenderer
+from qiskit_metal.toolbox_metal.parsing import is_true
 
 
 class QQ3DRenderer(QAnsysRenderer):
@@ -38,7 +39,23 @@ class QQ3DRenderer(QAnsysRenderer):
     name = 'q3d'
     """name"""
 
-    q3d_options = Dict(material_type='pec', material_thickness='200nm')
+    q3d_options = Dict(material_type='pec',
+                       material_thickness='200nm',
+                       add_setup=Dict(freq_ghz='5.0',
+                                      name='Setup',
+                                      save_fields='False',
+                                      enabled='True',
+                                      max_passes='15',
+                                      min_passes='2',
+                                      min_converged_passes='2',
+                                      percent_error='0.5',
+                                      percent_refinement='30',
+                                      auto_increase_solution_order='True',
+                                      solution_order='High',
+                                      solver_type='Iterative'),
+                       get_capacitance_matrix=Dict(variation='',
+                                                   solution_kind='AdaptivePass',
+                                                   pass_number='3'))
 
     def __init__(self,
                  design: 'QDesign',
@@ -64,6 +81,10 @@ class QQ3DRenderer(QAnsysRenderer):
     def boundaries(self):
         if self.pinfo:
             return self.pinfo.design._boundaries
+
+    @property
+    def setup_options(self):
+        return self.q3d_options['add_setup']
 
     def render_design(self,
                       selection: Union[list, None] = None,
@@ -192,21 +213,21 @@ class QQ3DRenderer(QAnsysRenderer):
             )
 
     def add_q3d_setup(self,
-                      freq_ghz: float = 5.,
-                      name: str = "Setup",
-                      save_fields: bool = False,
-                      enabled: bool = True,
-                      max_passes: int = 15,
-                      min_passes: int = 2,
-                      min_converged_passes: int = 2,
-                      percent_error: float = 0.5,
-                      percent_refinement: int = 30,
-                      auto_increase_solution_order: bool = True,
-                      solution_order: str = 'High',
-                      solver_type: str = 'Iterative'):
-        # TODO: Move arguments to default options.
+                      freq_ghz: float = None,
+                      name: str = None,
+                      save_fields: bool = None,
+                      enabled: bool = None,
+                      max_passes: int = None,
+                      min_passes: int = None,
+                      min_converged_passes: int = None,
+                      percent_error: float = None,
+                      percent_refinement: int = None,
+                      auto_increase_solution_order: bool = None,
+                      solution_order: str = None,
+                      solver_type: str = None):
         """
-        Create a solution setup in Ansys Q3D.
+        Create a solution setup in Ansys Q3D. If you don't provide arguments, 
+        they will be obtained from q3d_options dict. 
 
         Args:
             freq_ghz (float, optional): Frequency in GHz. Defaults to 5..
@@ -222,6 +243,36 @@ class QQ3DRenderer(QAnsysRenderer):
             solution_order (str, optional): Solution order. Defaults to 'High'.
             solver_type (str, optional): Solver type. Defaults to 'Iterative'.
         """
+        if not freq_ghz:
+            freq_ghz = float(self.parse_value(self.setup_options['freq_ghz']))
+        if not name:
+            name = self.parse_value(self.setup_options['name'])
+        if not save_fields:
+            save_fields = is_true(self.setup_options['save_fields'])
+        if not enabled:
+            enabled = is_true(self.setup_options['enabled'])
+        if not max_passes:
+            max_passes = int(self.parse_value(self.setup_options['max_passes']))
+        if not min_passes:
+            min_passes = int(self.parse_value(self.setup_options['min_passes']))
+        if not min_converged_passes:
+            min_converged_passes = int(
+                self.parse_value(self.setup_options['min_converged_passes']))
+        if not percent_error:
+            percent_error = float(
+                self.parse_value(self.setup_options['percent_error']))
+        if not percent_refinement:
+            percent_refinement = int(
+                self.parse_value(self.setup_options['percent_refinement']))
+        if not auto_increase_solution_order:
+            auto_increase_solution_order = is_true(
+                self.setup_options['auto_increase_solution_order'])
+        if not solution_order:
+            solution_order = self.parse_value(
+                self.setup_options['solution_order'])
+        if not solver_type:
+            solver_type = self.parse_value(self.setup_options['solver_type'])
+
         if self.pinfo:
             if self.pinfo.design:
                 return self.pinfo.design.create_q3d_setup(
@@ -253,7 +304,6 @@ class QQ3DRenderer(QAnsysRenderer):
                                variation: str = '',
                                solution_kind: str = 'AdaptivePass',
                                pass_number: int = 3):
-        # TODO: Move arguments to default_options.
         """
         Obtain capacitance matrix in a dataframe format.
         Must be executed *after* analyze_setup.
@@ -263,6 +313,17 @@ class QQ3DRenderer(QAnsysRenderer):
             solution_kind (str, optional): Solution type. Defaults to 'AdaptivePass'.
             pass_number (int, optional): Number of passes to perform. Defaults to 3.
         """
+        if not variation:
+            variation = self.parse_value(
+                self.q3d_options['get_capacitance_matrix']['variation'])
+        if not solution_kind:
+            solution_kind = self.parse_value(
+                self.q3d_options['get_capacitance_matrix']['solution_kind'])
+        if not pass_number:
+            pass_number = int(
+                self.parse_value(
+                    self.q3d_options['get_capacitance_matrix']['pass_number']))
+
         if self.pinfo:
             df_cmat, user_units, _, _ = self.pinfo.setup.get_matrix(
                 variation=variation,

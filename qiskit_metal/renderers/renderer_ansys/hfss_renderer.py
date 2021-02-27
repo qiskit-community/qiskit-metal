@@ -691,7 +691,7 @@ class QHFSSRenderer(QAnsysRenderer):
             setup = self.pinfo.setup
             convergence_t, _ = setup.get_convergence(variation)
             convergence_f = hfss_report_f_convergence(
-                design, setup, self.logger, [])  # TODO; Fiox variation []
+                design, setup, self.logger, [])  # TODO; Fix variation []
             return convergence_t, convergence_f
 
     def plot_convergences(self, variation=None, fig=None):

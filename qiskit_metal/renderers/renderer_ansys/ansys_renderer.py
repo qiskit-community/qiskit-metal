@@ -37,6 +37,7 @@ from qiskit_metal.draw.utility import to_vec3D
 from qiskit_metal.draw.basic import is_rectangle
 from qiskit_metal.renderers.renderer_base import QRenderer
 from qiskit_metal.toolbox_python.utility_functions import toggle_numbers, bad_fillet_idxs
+from qiskit_metal.toolbox_metal.parsing import is_true
 
 from qiskit_metal import Dict
 
@@ -271,7 +272,14 @@ class QAnsysRenderer(QRenderer):
 
         if self.pinfo:
             if self.pinfo.project:
-                # TODO: Handle case when design does not EXIST?!?!?
+                #  TODO: Handle case when design does not EXIST?!?!?
+                all_designs_names = self.pinfo.project.get_design_names()
+                if design_name not in all_designs_names:
+                    self.logger.warning(
+                        f'The design_name={design_name} is not in project.  Connection did not happen.'
+                    )
+                    return
+
                 try:
                     self.pinfo.connect_design(design_name)
                     self.pinfo.connect_setup()
@@ -303,13 +311,30 @@ class QAnsysRenderer(QRenderer):
 
     def plot_ansys_fields(self, object_name: str):
         if not self.pinfo:
+            self.logger.warning('pinfo is None.')
             return  # TODO all checks
+
+        if self.pinfo.design:
+            if not self.pinfo.design._fields_calc:
+                self.logger.warning('The _fields_calc in design is None.')
+                return
+            if not self.pinfo.design._modeler:
+                self.logger.warning('The _modeler in design is None.')
+                return
+        else:
+            self.logger.warning('The design in pinfo is None.')
+            return
+
+        if not self.pinfo.setup:
+            self.logger.warning('The setup in pinfo is None.')
+            return
+
         #TODO: This is just a prototype - should add features and flexibility.
         oFieldsReport = self.pinfo.design._fields_calc
         oModeler = self.pinfo.design._modeler
         setup = self.pinfo.setup
 
-        # Object ID - use tro plot on faces of
+        # Object ID - use to plot on faces of
         object_id = oModeler.GetObjectIDByName(object_name)
         # Can also use hfss.pinfo.design._modeler.GetFaceIDs("main")
         # TODO: Allow all these need to be customizable, esp QuantityName
