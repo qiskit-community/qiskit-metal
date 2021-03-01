@@ -78,7 +78,7 @@ Qiskit-metal is licensed under Apache 2.0. IBM reserves no copyright over output
     :caption: Tutorials
     :hidden:
 
-    Tutorials<guide_link>
+    Tutorials<tutorial_link>
 
 .. toctree::
     :maxdepth: 2

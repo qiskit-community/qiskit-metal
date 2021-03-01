@@ -1,0 +1,4 @@
+.. nbgallery::
+    :glob:
+
+    *

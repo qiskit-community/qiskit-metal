@@ -56,8 +56,9 @@ except ImportError:
 
 try:
     import qiskit_sphinx_theme
+    import jupyter_nbgallery
 except ImportError:
-    cmd2 = "python -m pip install qiskit-sphinx-theme"
+    cmd2 = "python -m pip install qiskit-sphinx-theme jupyter_nbgallery"
     print(
         f'\n*** Installing pre-requisite packages to build the docs***\n$ {cmd2}'
     )

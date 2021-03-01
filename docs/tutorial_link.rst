@@ -2,7 +2,11 @@
     :maxdepth: 2
     :caption: Deep Dive
 
-    ymaw/Deep Dive.ipynb
+    ymaw/index
+    ymaw2/index
+..    .. nbgallery::
+
+..        ymaw/Deep Dive.ipynb
 
 .. .. include::  ../guide/Deep Dive.ipynb
 
