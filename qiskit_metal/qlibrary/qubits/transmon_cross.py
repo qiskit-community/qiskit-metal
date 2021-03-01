@@ -57,7 +57,7 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
         ground_spacing - amount of ground plane between the connector and Crossmon arm (minimum should be based on fabrication capabilities)
         claw_width - the width of the CPW center trace making up the claw/gap connector
         claw_gap - the gap of the CPW center trace making up the claw/gap connector
-        connector_location - string of 'W', 'N', or 'E', which of the three arms where a given connector should be (South is for the junction)
+        connector_location - string of '0', '90', or '180' degrees, which of the three arms where a given connector should be (South is for the junction)
 
     Sketch:
         Below is a sketch of the qubit
