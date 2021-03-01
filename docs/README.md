@@ -14,9 +14,9 @@ Congratulations!  The docs can now be found in your `docs\build\html` directory.
 	 conda install sphinx numpydoc
 	 (or pip install -U Sphinx)
 ```
-2. Install read [the docs theme](https://github.com/rtfd/sphinx_rtd_theme) and set in the config `html_theme = “sphinx_rtd_theme”`
+2. Install read [the docs theme](https://github.com/Qiskit/qiskit_sphinx_theme) and set in the config `html_theme = “qiskit_sphinx_theme”`
 ```
-	pip install sphinx_rtd_theme
+	pip install qiskit_sphinx_theme
 ```
 3. Install required packages
 ```
