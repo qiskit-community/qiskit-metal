@@ -283,7 +283,7 @@ class QAnsysRenderer(QRenderer):
                 self.logger.warning(
                     'Either you do not have a project loaded in Ansys, or you are not connected to it. '
                     'Try executing hfss.connect_ansys(), or creating a new Ansys project. '
-                    'Also check the help file and other guide notebooks')
+                    'Also check the help file and other tutorials notebooks')
         else:
             self.logger.warning(
                 'It does not look like you are connected to Ansys. Please use connect_ansys() '
