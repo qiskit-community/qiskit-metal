@@ -297,16 +297,31 @@ class QAnsysRenderer(QRenderer):
 
     @property
     def modeler(self):
+        """ The modeler from pyEPR HfssModeler. 
+
+        Returns:
+            pyEPR.ansys.HfssModeler: reference to  design.HfssModeler in Ansys.
+        """
         if self.pinfo:
             if self.pinfo.design:
                 return self.pinfo.design.modeler
 
     def plot_ansys_fields(self, object_name: str):
+        """Plot fields in Ansys.
+
+        Args:
+            object_name (str): Used to plot on faces of.
+
+        Returns:
+            NoneType: Return information from oFieldsReport.CreateFieldPlot(). The method CreateFieldPlot() always returns None.
+        """
         if not self.pinfo:
-            return  # TODO all checks
+            return
+        elif not self.pinfo.design:
+            return
         #TODO: This is just a prototype - should add features and flexibility.
-        oFieldsReport = self.pinfo.design._fields_calc
-        oModeler = self.pinfo.design._modeler
+        oFieldsReport = self.pinfo.design._fields_calc  #design.GetModule("FieldsReporter")
+        oModeler = self.pinfo.design._modeler  #design.SetActiveEditor("3D Modeler")
         setup = self.pinfo.setup
 
         # Object ID - use tro plot on faces of
@@ -357,6 +372,15 @@ class QAnsysRenderer(QRenderer):
         self.pinfo.design.add_message(msg, severity)
 
     def save_screenshot(self, path: str = None, show: bool = True):
+        """Save the screenshot. 
+
+        Args:
+            path (str, optional): [description]. Defaults to None.
+            show (bool, optional): [description]. Defaults to True.
+
+        Returns:
+            pathlib.WindowsPath: path to png formatted screenshot. 
+        """
         try:
             return self.pinfo.design.save_screenshot(path, show)
         except AttributeError:

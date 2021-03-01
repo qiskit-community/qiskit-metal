@@ -18,8 +18,9 @@
 
 from collections import defaultdict
 from pathlib import Path
-from typing import Union
+from typing import Union, Tuple
 
+import logging
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
@@ -679,22 +680,48 @@ class QHFSSRenderer(QAnsysRenderer):
             display(fig)
 
     def distributed_analysis(self):
-        """
-        Returns class containing info on Hamiltonian parameters from HFSS simulation.
+        """Returns class containing info on Hamiltonian parameters from HFSS simulation.
+
+        Returns:
+            DistributedAnalysis: A  class from pyEPR which does DISTRIBUTED ANALYSIS of layout 
+            and microwave results.  It is the main computation class & interface with HFSS.  
+            This class defines a DistributedAnalysis object which calculates
+            and saves Hamiltonian parameters from an HFSS simulation.  
+            It allows one to calculate dissipation.
         """
         if self.pinfo:
             return epr.DistributedAnalysis(self.pinfo)
 
-    def get_convergences(self, variation=None):
+    def get_convergences(self, variation: str = None):
+        """Get convergence for convergence_t and convergence_f. 
+
+        Args:
+            variation (str, optional):  Information from pyEPR; variation should be in the form
+            variation = "scale_factor='1.2001'". Defaults to None.
+
+        Returns:
+            tuple[pandas.core.frame.DataFrame, pandas.core.frame.DataFrame]: 
+            1st DataFrame: convergence_t
+            2nd DataFrame: convergence_f
+        """
         if self.pinfo:
             design = self.pinfo.design
             setup = self.pinfo.setup
             convergence_t, _ = setup.get_convergence(variation)
             convergence_f = hfss_report_f_convergence(
-                design, setup, self.logger, [])  # TODO; Fiox variation []
+                design, setup, self.logger, [])  # TODO; Fix variation []
             return convergence_t, convergence_f
 
-    def plot_convergences(self, variation=None, fig=None):
+    def plot_convergences(self,
+                          variation: str = None,
+                          fig: mpl.figure.Figure = None):
+        """Plot the convergences in Ansys window.
+
+        Args:
+            variation (str, optional): Information from pyEPR; variation should be in the form
+            variation = "scale_factor='1.2001'". Defaults to None.
+            fig (matplotlib.figure.Figure, optional): A mpl figure. Defaults to None.
+        """
         if self.pinfo:
             convergence_t, convergence_f = self.get_convergences(variation)
             hfss_plot_convergences_report(convergence_t,
@@ -703,15 +730,21 @@ class QHFSSRenderer(QAnsysRenderer):
                                           _display=True)
 
 
-def hfss_plot_convergences_report(convergence_t,
-                                  convergence_f,
-                                  fig=None,
+def hfss_plot_convergences_report(convergence_t: pd.core.frame.DataFrame,
+                                  convergence_f: pd.core.frame.DataFrame,
+                                  fig: mpl.figure.Figure = None,
                                   _display=True):
-    """
-    Plot convergence frequency vs. pass number.
+    """Plot convergence frequency vs. pass number if fig is None.
     Plot delta frequency and solved elements vs. pass number.
     Plot delta frequency vs. solved elements.
+
+    Args:
+        convergence_t (pandas.core.frame.DataFrame): convergence vs pass number of the eigenemode freqs.
+        convergence_f (pandas.core.frame.DataFrame): convergence vs pass number of the eigenemode freqs.
+        fig (matplotlib.figure.Figure, optional): A mpl figure. Defaults to None.
+        _display (bool, optional): Display the plot? Defaults to True.
     """
+
     if fig is None:
         fig = plt.figure(figsize=(11, 3.))
 
@@ -733,19 +766,13 @@ def hfss_plot_convergences_report(convergence_t,
         #     display(fig)
 
 
-def hfss_report_f_convergence(oDesign,
-                              setup,
-                              logger,
-                              variation=None,
-                              save_csv=True):
-    '''
-    Create a report inside HFSS to plot the converge of freq and style it.
-
+def hfss_report_f_convergence(oDesign: epr.ansys.HfssDesign,
+                              setup: epr.ansys.HfssEMSetup,
+                              logger: logging.Logger,
+                              variation: str = None,
+                              save_csv: bool = True):
+    """Create a report inside HFSS to plot the converge of frequency and style it.
     Saves report to csv file.
-
-    Returns a convergence vs pass number of the eignemode freqs.
-    Returns a pandas dataframe:
-
     .. code-block:: text
 
             re(Mode(1)) [g]	re(Mode(2)) [g]	re(Mode(3)) [g]
@@ -754,7 +781,17 @@ def hfss_report_f_convergence(oDesign,
         2	5.114490	5.505828	6.242423
         3	5.278594	5.604426	6.296777
 
-    '''
+    Args:
+        oDesign (pyEPR.ansys.HfssDesign): Active design within Ansys.
+        setup (pyEPR.ansys.HfssEMSetup): The setup of active project and design within Ansys.
+        logger (logging.Logger): To give feedback to user.
+        variation ('str', optional): Information from pyEPR; variation should be in the form
+            variation = "scale_factor='1.2001'". Defaults to None.
+        save_csv (bool, optional): Save to file? Defaults to True.
+
+    Returns:
+        pd.core.frame.DataFrame: Returns a convergence vs pass number of the eigenemode frequencies.
+    """
 
     if not oDesign.solution_type == 'Eigenmode':
         return None
