@@ -52,7 +52,7 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
         orientation - how to orient the qubit and connectors in the end (where the +X vector should point, '+X', '-X','+Y','-Y')
 
     Connectors:
-        connectorType - string of 'Claw' or 'Gap' to define which type of connector is used.
+        connectorType - string of '0' for 'Claw' or '1' for 'Gap' to define which type of connector is used.
         claw_length - length of the claw 'arms', measured from the connector center trace
         ground_spacing - amount of ground plane between the connector and Crossmon arm (minimum should be based on fabrication capabilities)
         claw_width - the width of the CPW center trace making up the claw/gap connector
