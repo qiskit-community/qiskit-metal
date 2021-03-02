@@ -1,8 +1,8 @@
-.. _tutorials-getting-started:
+.. _tutorials-overview:
 
-#########################
-Getting Started Tutorials
-#########################
+##################
+Overview Tutorials
+##################
 
 
 .. nbgallery::
