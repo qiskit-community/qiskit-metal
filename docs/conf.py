@@ -86,8 +86,8 @@ nbsphinx_execute_arguments = [
 ]
 
 nbsphinx_thumbnails = {
-    'ymaw/Deep Dive': 'images/logo.png',
-    'ymaw/1.1  High Level Demo of Qiskit Metal': 'images/logo.png',
+    'ymaw/Deep Dive': '_static/logo.png',
+    'ymaw/1.1  High Level Demo of Qiskit Metal': '_static/logo.png',
 }
 
 nbsphinx_execute = 'never'
