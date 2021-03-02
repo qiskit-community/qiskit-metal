@@ -30,11 +30,11 @@ try:
     import jupyter_sphinx
     import nbsphinx
 except ImportError:
-    cmd = "conda install -y -c conda-forge sphinx numpydoc sphinx-automodapi jupyter_sphinx nbsphinx"
+    cmd1 = "conda install -y -c conda-forge sphinx numpydoc sphinx-automodapi jupyter_sphinx nbsphinx"
     print(
         f'\n*** Installing pre-requisite packages to build the docs***\n$ {cmd}'
     )
-    scmd = shlex.split(cmd)
+    scmd = shlex.split(cmd1)
 
     try:
         result = subprocess.run(scmd, stdout=subprocess.PIPE, check=False)
