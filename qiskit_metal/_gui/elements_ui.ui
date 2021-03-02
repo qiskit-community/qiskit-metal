@@ -127,6 +127,11 @@
             <string extracomment="Path shapes">path</string>
            </property>
           </item>
+          <item>
+           <property name="text">
+            <string>junction</string>
+           </property>
+          </item>
          </widget>
         </item>
         <item>

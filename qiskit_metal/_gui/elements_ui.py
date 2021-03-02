@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file './elements_ui.ui',
 # licensing of './elements_ui.ui' applies.
 #
-# Created: Wed Jan 20 13:44:45 2021
+# Created: Tue Mar  2 08:08:44 2021
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,7 +12,6 @@ from PySide2 import QtCore, QtGui, QtWidgets
 
 class Ui_ElementsWindow(object):
     def setupUi(self, ElementsWindow):
-        self.ElementsWindow = ElementsWindow
         ElementsWindow.setObjectName("ElementsWindow")
         ElementsWindow.resize(841, 623)
         self.centralwidget = QtWidgets.QWidget(ElementsWindow)
@@ -59,7 +58,9 @@ class Ui_ElementsWindow(object):
         self.combo_element_type.setSizePolicy(sizePolicy)
         self.combo_element_type.setSizeAdjustPolicy(QtWidgets.QComboBox.AdjustToContents)
         self.combo_element_type.setObjectName("combo_element_type")
-        self.element_table_keys = ['path', 'poly', 'junction'] # default keys
+        self.combo_element_type.addItem("")
+        self.combo_element_type.addItem("")
+        self.combo_element_type.addItem("")
         self.horizontalLayout.addWidget(self.combo_element_type)
         self.line = QtWidgets.QFrame(self.centralwidget)
         self.line.setFrameShape(QtWidgets.QFrame.VLine)
@@ -119,12 +120,6 @@ class Ui_ElementsWindow(object):
         QtCore.QObject.connect(self.btn_refresh, QtCore.SIGNAL("clicked()"), ElementsWindow.force_refresh)
         QtCore.QMetaObject.connectSlotsByName(ElementsWindow)
 
-    def populateDesign(self, element_tables=None):
-        """Automatically populate the elements dropdown with available qgeometry tables."""
-        if element_tables is not None:
-            self.element_table_keys = element_tables
-        self.retranslateUi(self.ElementsWindow)
-
     def retranslateUi(self, ElementsWindow):
         ElementsWindow.setWindowTitle(QtWidgets.QApplication.translate("ElementsWindow", "MainWindow", None, -1))
         self.btn_refresh.setToolTip(QtWidgets.QApplication.translate("ElementsWindow", "Force refresh the table ", None, -1))
@@ -133,13 +128,12 @@ class Ui_ElementsWindow(object):
         self.btn_refresh.setAccessibleDescription(QtWidgets.QApplication.translate("ElementsWindow", "Force refresh the table ", None, -1))
         self.label.setText(QtWidgets.QApplication.translate("ElementsWindow", "Element type: ", None, -1))
         self.combo_element_type.setToolTip(QtWidgets.QApplication.translate("ElementsWindow", "<html><head/><body><p>Select the element table you wish to view</p></body></html>", None, -1))
-
-        self.combo_element_type.clear()
-        cnt=0
-        for table in self.element_table_keys:
-            self.combo_element_type.addItem(str(QtWidgets.QApplication.translate("ElementsWindow", table, None, -1)))
-
+        self.combo_element_type.setCurrentText(QtWidgets.QApplication.translate("ElementsWindow", "poly", None, -1))
+        self.combo_element_type.setItemText(0, QtWidgets.QApplication.translate("ElementsWindow", "poly", None, -1))
+        self.combo_element_type.setItemText(1, QtWidgets.QApplication.translate("ElementsWindow", "path", None, -1))
+        self.combo_element_type.setItemText(2, QtWidgets.QApplication.translate("ElementsWindow", "junction", None, -1))
         self.label_3.setText(QtWidgets.QApplication.translate("ElementsWindow", "  Filter:  ", None, -1))
         self.label_2.setText(QtWidgets.QApplication.translate("ElementsWindow", "Component: ", None, -1))
         self.label_4.setText(QtWidgets.QApplication.translate("ElementsWindow", "  Layer:  ", None, -1))
+
 from . import main_window_rc_rc
