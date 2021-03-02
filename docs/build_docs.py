@@ -32,7 +32,7 @@ try:
 except ImportError:
     cmd1 = "conda install -y -c conda-forge sphinx numpydoc sphinx-automodapi jupyter_sphinx nbsphinx"
     print(
-        f'\n*** Installing pre-requisite packages to build the docs***\n$ {cmd}'
+        f'\n*** Installing pre-requisite packages to build the docs***\n$ {cmd1}'
     )
     scmd = shlex.split(cmd1)
 
