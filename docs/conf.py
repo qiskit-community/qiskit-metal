@@ -102,11 +102,6 @@ nbsphinx_execute_arguments = [
     "--InlineBackend.rc={'figure.dpi': 96}",
 ]
 
-nbsphinx_thumbnails = {
-    'ymaw/Deep Dive': '_static/logo.png',
-    'ymaw/1.1  High Level Demo of Qiskit Metal': '_static/logo.png',
-}
-
 nbsphinx_execute = 'never'
 nbsphinx_allow_errors = True
 
