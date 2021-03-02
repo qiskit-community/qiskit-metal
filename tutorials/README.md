@@ -1,4 +1,4 @@
-# Guide
+# Tutorials
 
 A collection of ready-to-execute Jupyter Notebooks, intended to help you dive right into the tool usage and the coding deep understanding.
 
