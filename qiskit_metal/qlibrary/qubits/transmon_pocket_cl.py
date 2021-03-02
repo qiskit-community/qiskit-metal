@@ -153,8 +153,8 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
 
         # Generating pins
         points = list(draw.shapely.geometry.shape(port_line).coords)
-        self.add_pin(name, points, p.cl_width)  # TODO: chip
+        self.add_pin(name, points, p.cl_width)
 
-        # Adding to element table
+        # Adding to qgeometry table
         self.add_qgeometry('poly', dict(cl_metal=cl_metal))
         self.add_qgeometry('poly', dict(cl_etcher=cl_etcher), subtract=True)
