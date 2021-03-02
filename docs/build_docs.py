@@ -108,12 +108,6 @@ files_to_copy = [[
     Path(raw_tutorials_path, 'Deep Dive.ipynb')
 ],
                  [
-                     Path(raw_origial_files, '1 High Level Demo',
-                          '1.1 High Level Demo of Qiskit Metal.ipynb'),
-                     Path(raw_tutorials_path,
-                          'High Level Demo of Qiskit Metal.ipynb')
-                 ],
-                 [
                      Path(raw_origial_files, '2 Front End User',
                           '2.1 My first custom QComponent',
                           '2.1 My First Custom QComponent.ipynb'),
