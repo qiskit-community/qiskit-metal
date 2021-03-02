@@ -70,12 +70,22 @@ Take a look at this [summary of a great setup](https://donjayamanne.github.io/py
 
 ## Auto Formatting
 Formatting the source code as and when you save the contents of the file is supported.
-Enabling this requires configuring the setting `"editor.formatOnSave": true` as identified [here](https://code.visualstudio.com/updates/v1_47#_format-on-save).
+You can add these settings
+to your `settings.json` to enforce your code to our style. Make sure to add PySide2 to the linter:
+```
+{
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true,
+    "python.linting.pylintArgs": [
+        "--extension-pkg-whitelist=PySide2"
+    ],
+    "python.formatting.provider": "yapf",
+    "editor.formatOnSave": true,
+    "files.trimTrailingWhitespace": true,
+    "files.trimFinalNewlines": true
+}
+```
 
-```
-"editor.formatOnSave": true  
-"python.formatting.provider": "autopep8"
-```
 Make sure that you have installed
 
 ``` 
