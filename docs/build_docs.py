@@ -90,6 +90,55 @@ path = Path(qiskit_metal.__file__).parent.parent / 'docs'
 os.chdir(path)
 print(f'\n*** Running the build***\n$ make html')
 
+# clear old tutorials - in case there were updates
+import glob
+raw_tutorials_path = os.path.join(path, 'tut', 'tutorials')
+raw_tutorials_files = os.path.join(path, 'tut', 'tutorials', '*.ipynb')
+
+files = glob.glob(raw_tutorials_files)
+for file in files:
+    os.remove(file)
+
+# copy specific tutorials from the tutorials directory we want to explicitly include in the docs
+import shutil
+raw_origial_files = Path(qiskit_metal.__file__).parent.parent / 'tutorials'
+
+files_to_copy = [[
+    Path(raw_origial_files, 'Deep Dive.ipynb'),
+    Path(raw_tutorials_path, 'Deep Dive.ipynb')
+],
+                 [
+                     Path(raw_origial_files, '1 High Level Demo',
+                          '1.1 High Level Demo of Qiskit Metal.ipynb'),
+                     Path(raw_tutorials_path,
+                          'High Level Demo of Qiskit Metal.ipynb')
+                 ],
+                 [
+                     Path(raw_origial_files, '2 Front End User',
+                          '2.1 My first custom QComponent',
+                          '2.1 My First Custom QComponent.ipynb'),
+                     Path(raw_tutorials_path,
+                          'My First Custom QComponent.ipynb')
+                 ],
+                 [
+                     Path(raw_origial_files, '2 Front End User',
+                          '2.3 My first QDesign', 'Full Chip Design.ipynb'),
+                     Path(raw_tutorials_path, 'Full Chip Design.ipynb')
+                 ],
+                 [
+                     Path(raw_origial_files, '3 QComponent Designer',
+                          '3.2 Creating a QComponent - Advanced.ipynb'),
+                     Path(raw_tutorials_path, 'Creating a QComponent.ipynb')
+                 ],
+                 [
+                     Path(raw_origial_files, '4 Plugin Developer',
+                          'Create new QRenderer.ipynb'),
+                     Path(raw_tutorials_path, 'Create new QRenderer.ipynb')
+                 ]]
+
+for orig, dest in files_to_copy:
+    shutil.copy(orig, dest)
+
 from sys import platform
 
 if platform == "darwin":

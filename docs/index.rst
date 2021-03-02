@@ -77,8 +77,8 @@ Qiskit-metal is licensed under Apache 2.0. IBM reserves no copyright over output
     :maxdepth: 2
     :caption: Tutorials
 
-    YMAW<ymaw/index.rst>
-    YMAW2<ymaw2/index.rst>
+    Getting Started<tut/tutorials/index.rst>
+    YMAW2<tut/ymaw2/index.rst>
 
 ..    Tutorials<tutorial_link>
 

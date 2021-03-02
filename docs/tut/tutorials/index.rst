@@ -1,8 +1,8 @@
-.. _tutorials-ymaw:
+.. _tutorials-getting-started:
 
-##############
-YMAW Tutorials
-##############
+#########################
+Getting Started Tutorials
+#########################
 
 
 .. nbgallery::

@@ -89,7 +89,7 @@ templates_path = ['_templates']
 html_css_files = ['style.css', 'custom.css', 'gallery.css']
 
 exclude_patterns = [
-    '_build', '*.ipynb', '**.ipynb_checkpoints',
+    '_build', 'build', '*.ipynb', '**.ipynb_checkpoints',
     'qiskit_metal.analyses.quantization.lumped_capacitive.rst',
     'qiskit_metal.analyses.lumped_capacitive.rst',
     'qiskit_metal.analyses.em.cpw_calculations.rst',
