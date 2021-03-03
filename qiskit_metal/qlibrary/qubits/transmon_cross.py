@@ -11,12 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-'''
-@date: 2019/09/08
-@author: Thomas McConkey
-
-converted to v0.2: Thomas McConkey 2020-04-23
-'''
 
 import numpy as np
 from qiskit_metal import draw, Dict
@@ -52,12 +46,12 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
         orientation - how to orient the qubit and connectors in the end (where the +X vector should point, '+X', '-X','+Y','-Y')
 
     Connectors:
-        connectorType - string of 'Claw' or 'Gap' to define which type of connector is used.
+        connectorType - string of '0' for 'Claw' or '1' for 'Gap' to define which type of connector is used.
         claw_length - length of the claw 'arms', measured from the connector center trace
         ground_spacing - amount of ground plane between the connector and Crossmon arm (minimum should be based on fabrication capabilities)
         claw_width - the width of the CPW center trace making up the claw/gap connector
         claw_gap - the gap of the CPW center trace making up the claw/gap connector
-        connector_location - string of 'W', 'N', or 'E', which of the three arms where a given connector should be (South is for the junction)
+        connector_location - string of '0', '90', or '180' degrees, which of the three arms where a given connector should be (South is for the junction)
 
     Sketch:
         Below is a sketch of the qubit

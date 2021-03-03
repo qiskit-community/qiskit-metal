@@ -11,10 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-'''
-@date: Sept-2020
-@author: Marco Facchini
-'''
 
 import numpy as np
 from qiskit_metal import Dict
@@ -107,7 +103,8 @@ class RouteMixed(RoutePathfinder, RouteMeander):
         self.trim_pts()
         dictionary_intermediate_pts = self.intermediate_pts
         self.intermediate_pts = np.concatenate(list(
-            self.intermediate_pts.values()), axis=0)
+            self.intermediate_pts.values()),
+                                               axis=0)
 
         if any(count_meanders_list):
             # refine length of meanders

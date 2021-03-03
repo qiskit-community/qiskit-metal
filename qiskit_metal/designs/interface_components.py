@@ -13,10 +13,6 @@
 # that they have been altered from the originals.
 """
 Module containing Design interface components.
-
-@date: 2020
-
-@author: Priti Shah, ... (IBM)
 """
 
 from copy import deepcopy

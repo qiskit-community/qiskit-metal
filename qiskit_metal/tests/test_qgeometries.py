@@ -17,9 +17,6 @@
 #pylint: disable-msg=import-outside-toplevel
 """
 Qiskit Metal unit tests analyses functionality.
-
-Created on  Wed Apr 22 10:02:06 2020
-@author: Jeremy D. Drysdale
 """
 
 import unittest

@@ -13,9 +13,6 @@
 # that they have been altered from the originals.
 """
 This is the CircleCaterpillar module.
-
-@author: Zlatko Minev, Thomas McConekey, ... (IBM)
-@date: 2019
 """
 
 from shapely.geometry import CAP_STYLE, JOIN_STYLE

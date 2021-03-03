@@ -12,8 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-# Zlatko Minev
-
 import numpy as np
 from PySide2 import QtCore, QtWidgets
 from PySide2.QtCore import QAbstractTableModel, QModelIndex, Qt

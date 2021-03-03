@@ -13,8 +13,6 @@
 # that they have been altered from the originals.
 """Main edit source code window,
 based on pyqode.python: https://github.com/pyQode/pyqode.python
-
-@author: Zlatko Minev 2020
 """
 
 from typing import TYPE_CHECKING

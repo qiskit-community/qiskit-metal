@@ -12,11 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-'''
-@date: 2020/08/12
-@author: John Blair
-'''
-
 #  This a launch structure used on BlueJayV2, used for wire bonding
 #  There is no CPW tee attached to this p#
 
@@ -107,60 +102,65 @@ class LaunchpadWirebondCoupled(QComponent):
         finger_side_gap = .002
         outer_finger_tip_gap = .0075
         inner_finger_tip_gap = .05 + inner_finger_offset
-        outer_finger_width = (trace_width - inner_finger_width - 2 * finger_side_gap) / 2
+        outer_finger_width = (trace_width - inner_finger_width -
+                              2 * finger_side_gap) / 2
         coupler_length = p.coupler_length
         lead_offset = coupler_length + outer_finger_tip_gap
         #########################################################
 
         # Geometry of main launch structure
-        launch_pad = draw.Polygon([(0, trace_width_half),
-                                   (-.122, trace_width_half + .035),
-                                   (-.202, trace_width_half + .035),
-                                   (-.202, -trace_width_half - .035),
-                                   (-.122, -trace_width_half - .035),
-                                   (0, -trace_width_half),
-                                   (coupler_length, -trace_width_half),
-                                   (coupler_length, -trace_width_half + outer_finger_width),
-                                   (-inner_finger_tip_gap + inner_finger_offset, -trace_width_half + outer_finger_width),
-                                   (-inner_finger_tip_gap + inner_finger_offset, trace_width_half - outer_finger_width),
-                                   (coupler_length, trace_width_half - outer_finger_width),
-                                   (coupler_length, trace_width_half),
-                                   (0, trace_width / 2)])
+        launch_pad = draw.Polygon([
+            (0, trace_width_half), (-.122, trace_width_half + .035),
+            (-.202, trace_width_half + .035), (-.202, -trace_width_half - .035),
+            (-.122, -trace_width_half - .035), (0, -trace_width_half),
+            (coupler_length, -trace_width_half),
+            (coupler_length, -trace_width_half + outer_finger_width),
+            (-inner_finger_tip_gap + inner_finger_offset,
+             -trace_width_half + outer_finger_width),
+            (-inner_finger_tip_gap + inner_finger_offset,
+             trace_width_half - outer_finger_width),
+            (coupler_length, trace_width_half - outer_finger_width),
+            (coupler_length, trace_width_half), (0, trace_width / 2)
+        ])
 
         # Geometry of coupling structure
-        ind_stub = draw.Polygon([(inner_finger_offset, -inner_finger_width_half),
-                                 (lead_offset, -inner_finger_width_half),
-                                 (lead_offset, -trace_width_half),
-                                 (lead_offset + lead_length, -trace_width_half),
-                                 (lead_offset + lead_length, trace_width_half),
-                                 (lead_offset, trace_width_half),
-                                 (lead_offset, +inner_finger_width_half),
-                                 (inner_finger_offset, +inner_finger_width_half),
-                                 (inner_finger_offset, -inner_finger_width_half)])
+        ind_stub = draw.Polygon([
+            (inner_finger_offset, -inner_finger_width_half),
+            (lead_offset, -inner_finger_width_half),
+            (lead_offset, -trace_width_half),
+            (lead_offset + lead_length, -trace_width_half),
+            (lead_offset + lead_length, trace_width_half),
+            (lead_offset, trace_width_half),
+            (lead_offset, +inner_finger_width_half),
+            (inner_finger_offset, +inner_finger_width_half),
+            (inner_finger_offset, -inner_finger_width_half)
+        ])
 
         # Geometry pocket (gap)
-        pocket = draw.Polygon([(0, trace_width_half + trace_gap),
-                               (-.122, trace_width_half + trace_gap + .087),
-                               (-.25, trace_width_half + trace_gap + .087),
-                               (-.25, -trace_width_half - trace_gap - .087),
-                               (-.122, -trace_width_half - trace_gap - .087),
-                               (0, -trace_width_half - trace_gap),
-                               (lead_offset + lead_length, -trace_width_half - trace_gap),
-                               (lead_offset + lead_length, +trace_width_half + trace_gap),
-                               (0, trace_width_half + trace_gap)])
+        pocket = draw.Polygon([
+            (0, trace_width_half + trace_gap),
+            (-.122, trace_width_half + trace_gap + .087),
+            (-.25, trace_width_half + trace_gap + .087),
+            (-.25, -trace_width_half - trace_gap - .087),
+            (-.122, -trace_width_half - trace_gap - .087),
+            (0, -trace_width_half - trace_gap),
+            (lead_offset + lead_length, -trace_width_half - trace_gap),
+            (lead_offset + lead_length, +trace_width_half + trace_gap),
+            (0, trace_width_half + trace_gap)
+        ])
 
         # These variables are used to graphically locate the pin locations
-        main_pin_line = draw.LineString([(lead_offset + lead_length, trace_width_half),
-                                         (lead_offset + lead_length, -trace_width_half)])
+        main_pin_line = draw.LineString([
+            (lead_offset + lead_length, trace_width_half),
+            (lead_offset + lead_length, -trace_width_half)
+        ])
 
         # Create polygon object list
         polys1 = [main_pin_line, launch_pad, ind_stub, pocket]
 
         # Rotates and translates all the objects as requested. Uses package functions
         # in 'draw_utility' for easy rotation/translation
-        polys1 = draw.rotate(polys1,
-                             p.orientation,
-                             origin=(0, 0))
+        polys1 = draw.rotate(polys1, p.orientation, origin=(0, 0))
         polys1 = draw.translate(polys1, xoff=p.pos_x, yoff=p.pos_y)
         [main_pin_line, launch_pad, ind_stub, pocket] = polys1
 

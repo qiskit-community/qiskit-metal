@@ -11,10 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""
-@author: Zlatko Minev
-@date: 2020
-"""
 
 from PySide2 import QtCore, QtGui
 from PySide2.QtCore import Qt

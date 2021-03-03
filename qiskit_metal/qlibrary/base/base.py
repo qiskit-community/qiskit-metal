@@ -17,8 +17,6 @@ This is the main module that defines what a QComponent is in Qiskit Metal.
 To see the docstring of QComponent, use:
     >> ?QComponent
 
-@author: Zlatko Minev, Thomas McConekey, ... (IBM)
-@date: 2019
 """
 
 import logging
@@ -34,7 +32,7 @@ from ...draw import BaseGeometry
 from ...toolbox_python.attr_dict import Dict
 from ._parsed_dynamic_attrs import ParsedDynamicAttributes_Component
 from ...toolbox_python.display import format_dict_ala_z
-from datetime import datetime 
+from datetime import datetime
 from ... import config
 if not config.is_building_docs():
     from ...draw import Vector
@@ -553,13 +551,13 @@ class QComponent():
                 f"{str(datetime.now())} -- Component: {self.name} failed with error\n: {error}"
             )
             raise error
+
     def delete(self):
         """
         Delete the QComponent.
         Removes QGeometry, QPins, etc. from the design.
         """
         self.design.delete_component(self.name)
-
 
     # Maybe still should be fine as any values will be in component options still?
     # Though the data table approach and rendering directly via shapely could lead to problem

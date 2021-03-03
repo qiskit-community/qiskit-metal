@@ -14,10 +14,6 @@
 """
 This is the main module that defines what an element is in Qiskit Metal.
 See the docstring of `QGeometryTables`
-
-@author: Zlatko Minev, Thomas McConekey, ... (IBM)
-
-@date: 2019
 """
 
 import inspect

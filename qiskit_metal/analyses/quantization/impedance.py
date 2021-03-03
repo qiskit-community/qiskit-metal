@@ -13,9 +13,4 @@
 # that they have been altered from the originals.
 """
 Impedance-based analyses
-
-TODO
-
-@author: Zlatko K. Minev
-@date: 2020
 """
