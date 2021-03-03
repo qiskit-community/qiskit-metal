@@ -28,7 +28,10 @@ class TransmonConcentric(BaseQubit):
         Metal transmon object consisting of a circle surrounding by a concentric 
         ring. There are two Josephson Junction connecting the circle to the ring; 
         one at the south end and one at the north end. There is a readout resonator. 
-        
+
+    .. image::
+        Component_TransmonConcentric.png
+
     Main Body:
         * position_x / position_y = where the center of the transmon circle should be located on the chip. 
         * width = width of the transmon pocket 
