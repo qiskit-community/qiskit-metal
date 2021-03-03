@@ -76,9 +76,8 @@ Qiskit-metal is licensed under Apache 2.0. IBM reserves no copyright over output
 .. toctree::
     :maxdepth: 2
     :caption: Tutorials
-    :hidden:
 
-.. TODO: Add jupyter notebooks here
+    Overview<tut/tutorials/index.rst>
 
 .. toctree::
     :maxdepth: 2

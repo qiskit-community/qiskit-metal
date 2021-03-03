@@ -25,9 +25,9 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
-# import sys
-# sys.path.insert(0, os.path.abspath('.'))
+import os
+import sys
+sys.path.insert(0, os.path.abspath('..'))
 
 import qiskit_metal
 import qiskit_sphinx_theme
@@ -48,6 +48,23 @@ rst_prolog = """
 .. |version| replace:: {0}
 """.format(release)
 
+nbsphinx_prolog = """
+{% set docname = env.doc2path(env.docname, base=None) %}
+.. only:: html
+    
+    .. role:: raw-html(raw)
+        :format: html
+
+    .. raw:: html
+
+        <br><br><br>
+
+    .. note::
+        This page was generated from tutorials.
+
+        Run interactively in jupyter notebook.
+"""
+
 # -- Project information -----------------------------------------------------
 project = 'Qiskit Metal {}'.format(version)
 copyright = '2020, Qiskit Development Team'  # pylint: disable=redefined-builtin
@@ -64,21 +81,31 @@ author = 'Qiskit Metal Development Team'
 extensions = [
     'sphinx.ext.napoleon', 'sphinx.ext.autodoc', 'sphinx.ext.autosummary',
     'sphinx.ext.mathjax', 'sphinx.ext.viewcode', 'sphinx.ext.extlinks',
-    'jupyter_sphinx'
+    'jupyter_sphinx', 'nbsphinx'
 ]
 
 html_static_path = ['_static']
 templates_path = ['_templates']
-html_css_files = ['custom.css']
+html_css_files = ['style.css', 'custom.css', 'gallery.css']
 
 exclude_patterns = [
-    '_build', '**.ipynb_checkpoints',
+    '_build', 'build', '*.ipynb', '**.ipynb_checkpoints',
     'qiskit_metal.analyses.quantization.lumped_capacitive.rst',
     'qiskit_metal.analyses.lumped_capacitive.rst',
     'qiskit_metal.analyses.em.cpw_calculations.rst',
     'qiskit_metal.analyses.cpw_calculations.rst',
     'qiskit_metal.analyses.Hcpb.rst', 'qiskit_metal.analyses.Scanning.rst'
 ]
+
+nbsphinx_execute_arguments = [
+    "--InlineBackend.figure_formats={'svg', 'pdf'}",
+    "--InlineBackend.rc={'figure.dpi': 96}",
+]
+
+nbsphinx_execute = 'never'
+nbsphinx_allow_errors = True
+
+source_suffix = ['.rst', '.ipynb']
 
 suppress_warnings = ['ref.ref']
 
