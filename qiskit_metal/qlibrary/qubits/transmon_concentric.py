@@ -30,7 +30,7 @@ class TransmonConcentric(BaseQubit):
         one at the south end and one at the north end. There is a readout resonator. 
 
     .. image::
-        Component_TransmonConcentric.png
+        QComponent_TransmonConcentric.png
 
     Main Body:
         * position_x / position_y = where the center of the transmon circle should be located on the chip. 
