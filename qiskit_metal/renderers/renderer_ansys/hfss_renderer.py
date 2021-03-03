@@ -424,36 +424,24 @@ class QHFSSRenderer(QAnsysRenderer):
             pct_refinement (int, optional): Percent refinement. Defaults to 30.
             basis_order (int, optional): Basis order. Defaults to 1.
         """
+        dsu = self.hfss_options.drivenmodal_setup
+
         if not freq_ghz:
-            freq_ghz = int(
-                self.parse_value(
-                    self.hfss_options.drivenmodal_setup['freq_ghz']))
+            freq_ghz = int(self.parse_value(dsu['freq_ghz']))
         if not name:
-            name = self.parse_value(self.hfss_options.drivenmodal_setup['name'])
+            name = self.parse_value(dsu['name'])
         if not max_delta_s:
-            max_delta_s = float(
-                self.parse_value(
-                    self.hfss_options.drivenmodal_setup['max_delta_s']))
+            max_delta_s = float(self.parse_value(dsu['max_delta_s']))
         if not max_passes:
-            max_passes = int(
-                self.parse_value(
-                    self.hfss_options.drivenmodal_setup['max_passes']))
+            max_passes = int(self.parse_value(dsu['max_passes']))
         if not min_passes:
-            min_passes = int(
-                self.parse_value(
-                    self.hfss_options.drivenmodal_setup['min_passes']))
+            min_passes = int(self.parse_value(dsu['min_passes']))
         if not min_converged:
-            min_converged = int(
-                self.parse_value(
-                    self.hfss_options.drivenmodal_setup['min_converged']))
+            min_converged = int(self.parse_value(dsu['min_converged']))
         if not pct_refinement:
-            pct_refinement = int(
-                self.parse_value(
-                    self.hfss_options.drivenmodal_setup['pct_refinement']))
+            pct_refinement = int(self.parse_value(dsu['pct_refinement']))
         if not basis_order:
-            basis_order = int(
-                self.parse_value(
-                    self.hfss_options.drivenmodal_setup['basis_order']))
+            basis_order = int(self.parse_value(dsu['basis_order']))
 
         if self.pinfo:
             if self.pinfo.design:
@@ -591,40 +579,26 @@ class QHFSSRenderer(QAnsysRenderer):
             pct_refinement (int, optional): Percent refinement. Defaults to 30.
             basis_order (int, optional): Basis order. Defaults to -1.
         """
+        esu = self.hfss_options.eigenmode_setup
 
         if not name:
-            name = self.parse_value(self.hfss_options.eigenmode_setup['name'])
+            name = self.parse_value(esu['name'])
         if not min_freq_ghz:
-            min_freq_ghz = int(
-                self.parse_value(
-                    self.hfss_options.eigenmode_setup['min_freq_ghz']))
+            min_freq_ghz = int(self.parse_value(esu['min_freq_ghz']))
         if not n_modes:
-            n_modes = int(
-                self.parse_value(self.hfss_options.eigenmode_setup['n_modes']))
+            n_modes = int(self.parse_value(esu['n_modes']))
         if not max_delta_f:
-            max_delta_f = float(
-                self.parse_value(
-                    self.hfss_options.eigenmode_setup['max_delta_f']))
+            max_delta_f = float(self.parse_value(esu['max_delta_f']))
         if not max_passes:
-            max_passes = int(
-                self.parse_value(
-                    self.hfss_options.eigenmode_setup['max_passes']))
+            max_passes = int(self.parse_value(esu['max_passes']))
         if not min_passes:
-            min_passes = int(
-                self.parse_value(
-                    self.hfss_options.eigenmode_setup['min_passes']))
+            min_passes = int(self.parse_value(esu['min_passes']))
         if not min_converged:
-            min_converged = int(
-                self.parse_value(
-                    self.hfss_options.eigenmode_setup['min_converged']))
+            min_converged = int(self.parse_value(esu['min_converged']))
         if not pct_refinement:
-            pct_refinement = int(
-                self.parse_value(
-                    self.hfss_options.eigenmode_setup['pct_refinement']))
+            pct_refinement = int(self.parse_value(esu['pct_refinement']))
         if not basis_order:
-            basis_order = int(
-                self.parse_value(
-                    self.hfss_options.eigenmode_setup['basis_order']))
+            basis_order = int(self.parse_value(esu['basis_order']))
 
         if self.pinfo:
             if self.pinfo.design:

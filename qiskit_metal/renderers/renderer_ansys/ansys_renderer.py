@@ -110,8 +110,14 @@ class QAnsysRenderer(QRenderer):
         # bounding_box_scale_y = 1.2, # Ratio of 'main' chip length to bounding box length
         x_buffer_width_mm=0.2,  # Buffer between max/min x and edge of ground plane, in mm
         y_buffer_width_mm=0.2,  # Buffer between max/min y and edge of ground plane, in mm
+
+
+
+
+
     )
     # yapf:enable
+
     NAME_DELIM = r'_'
 
     name = 'ansys'

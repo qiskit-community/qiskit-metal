@@ -249,35 +249,34 @@ class QQ3DRenderer(QAnsysRenderer):
             solution_order (str, optional): Solution order. Defaults to 'High'.
             solver_type (str, optional): Solver type. Defaults to 'Iterative'.
         """
+        su = self.setup_options
+
         if not freq_ghz:
-            freq_ghz = float(self.parse_value(self.setup_options['freq_ghz']))
+            freq_ghz = float(self.parse_value(su['freq_ghz']))
         if not name:
-            name = self.parse_value(self.setup_options['name'])
+            name = self.parse_value(su['name'])
         if not save_fields:
-            save_fields = is_true(self.setup_options['save_fields'])
+            save_fields = is_true(su['save_fields'])
         if not enabled:
-            enabled = is_true(self.setup_options['enabled'])
+            enabled = is_true(su['enabled'])
         if not max_passes:
-            max_passes = int(self.parse_value(self.setup_options['max_passes']))
+            max_passes = int(self.parse_value(su['max_passes']))
         if not min_passes:
-            min_passes = int(self.parse_value(self.setup_options['min_passes']))
+            min_passes = int(self.parse_value(su['min_passes']))
         if not min_converged_passes:
             min_converged_passes = int(
-                self.parse_value(self.setup_options['min_converged_passes']))
+                self.parse_value(su['min_converged_passes']))
         if not percent_error:
-            percent_error = float(
-                self.parse_value(self.setup_options['percent_error']))
+            percent_error = float(self.parse_value(su['percent_error']))
         if not percent_refinement:
-            percent_refinement = int(
-                self.parse_value(self.setup_options['percent_refinement']))
+            percent_refinement = int(self.parse_value(su['percent_refinement']))
         if not auto_increase_solution_order:
             auto_increase_solution_order = is_true(
-                self.setup_options['auto_increase_solution_order'])
+                su['auto_increase_solution_order'])
         if not solution_order:
-            solution_order = self.parse_value(
-                self.setup_options['solution_order'])
+            solution_order = self.parse_value(su['solution_order'])
         if not solver_type:
-            solver_type = self.parse_value(self.setup_options['solver_type'])
+            solver_type = self.parse_value(su['solver_type'])
 
         if self.pinfo:
             if self.pinfo.design:
@@ -319,16 +318,14 @@ class QQ3DRenderer(QAnsysRenderer):
             solution_kind (str, optional): Solution type. Defaults to 'AdaptivePass'.
             pass_number (int, optional): Number of passes to perform. Defaults to 3.
         """
+        qo = self.q3d_options['get_capacitance_matrix']
+
         if not variation:
-            variation = self.parse_value(
-                self.q3d_options['get_capacitance_matrix']['variation'])
+            variation = self.parse_value(qo['variation'])
         if not solution_kind:
-            solution_kind = self.parse_value(
-                self.q3d_options['get_capacitance_matrix']['solution_kind'])
+            solution_kind = self.parse_value(qo['solution_kind'])
         if not pass_number:
-            pass_number = int(
-                self.parse_value(
-                    self.q3d_options['get_capacitance_matrix']['pass_number']))
+            pass_number = int(self.parse_value(qo['pass_number']))
 
         if self.pinfo:
             df_cmat, user_units, _, _ = self.pinfo.setup.get_matrix(
