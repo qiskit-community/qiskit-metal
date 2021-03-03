@@ -66,6 +66,7 @@ docs/_build/
 docs/.buildingdocs
 docs/stubs
 docs/build/doctrees
+docs/tut/tutorials/*.png
 
 # PyBuilder
 target/
@@ -106,12 +107,12 @@ ENV/
 # temporary, installs and results
 src/
 .vs
-guide/**/*.png
-guide/**/*.jpg
-guide/**/*.tif
-guide/**/*.csv
+tutorials/**/*.png
+tutorials/**/*.jpg
+tutorials/**/*.tif
+tutorials/**/*.csv
 *.gds
-!guide/resources/**
+!tutorials/resources/**
 __pycache__
 
 # mypy
