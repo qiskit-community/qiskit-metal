@@ -18,18 +18,6 @@ Convert capacitance matrices extracted from Q3D into Hamiltonian parameters
 using the Duffing model. Typical input is the capacitance matrix calculated from Q3D.
 
 Each function prints out the parameters and outputs a dictionary
-
-Updates:
-    * 2017 or earlier: Jay Gambetta
-
-    * 2019-04-02 - Zlatko Minev
-      Aded import funcitons for Q3D import, and calculation of units, swap indexs, ...
-
-    * Update 2019-07-23 - Thomas McConkey
-      modified function 'jayNoscillator' to allow for bus frequencies to have different
-      values (fb input can be a vector)
-
-@author: Jay Gambetta, Zlatko K. Minev, Thomas McConkey
 """
 # pylint: disable=invalid-name
 

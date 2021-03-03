@@ -13,9 +13,6 @@
 # that they have been altered from the originals.
 """
 Plotting functions for shapely components using mpl.
-
-Created 2019
-@author: Zlatko Minev (IBM)
 """
 
 import descartes  # shapely plot

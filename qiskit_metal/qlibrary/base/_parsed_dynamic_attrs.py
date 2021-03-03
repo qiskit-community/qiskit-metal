@@ -13,9 +13,6 @@
 # that they have been altered from the originals.
 """
 Parsed dynamic attributes.
-
-@author: Zlatko Minev
-@date: 2020
 """
 import pprint
 from typing import List

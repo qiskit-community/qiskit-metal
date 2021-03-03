@@ -20,10 +20,6 @@ QGeometryTables (:mod:`qiskit_metal.qgeometries`)
 
 This modules defines and handles everything related to the qgeometry abstraction.
 
-@date: 2019
-
-@author: Zlatko Minev (IBM)
-
 QGeometryTables
 ---------------
 

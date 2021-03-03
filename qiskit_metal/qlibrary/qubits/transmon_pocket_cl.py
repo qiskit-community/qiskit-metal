@@ -12,10 +12,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 '''
-@date: 2019
-@author: Zlatko K Minev
-modified: Thomas McConkey - Added Charge Line
-
+Transmon Pocket CL
 
 Pocket "axis"
         _________________

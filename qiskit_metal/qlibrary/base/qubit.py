@@ -11,12 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""
-@author: Zlatko Minev, Thomas McConekey, ... (IBM)
-@date: 2019
-
-converted to v0.2: Thomas McConkey 2020-03-24
-"""
 
 from copy import deepcopy
 from qiskit_metal.toolbox_python.attr_dict import Dict

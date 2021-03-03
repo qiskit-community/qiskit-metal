@@ -11,12 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-'''
-@date: 2019/09/08
-@author: Thomas McConkey
-
-converted to v0.2: Thomas McConkey 2020-04-23
-'''
 
 import numpy as np
 from qiskit_metal import draw, Dict

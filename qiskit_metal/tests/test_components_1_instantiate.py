@@ -17,9 +17,6 @@
 #pylint: disable-msg=broad-except
 """
 Qiskit Metal unit tests components functionality.
-
-Created on Wed Apr 22 09:58:35 2020
-@author: Jeremy D. Drysdale
 """
 
 import unittest

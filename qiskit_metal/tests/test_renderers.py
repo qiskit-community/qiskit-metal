@@ -17,9 +17,6 @@
 # pylint: disable-msg=too-many-public-methods
 """
 Qiskit Metal unit tests analyses functionality.
-
-Created on Wed Apr 22 10:01:13 2020
-@author: Jeremy D. Drysdale
 """
 
 import unittest

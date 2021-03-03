@@ -12,9 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 """Handles editing a QComponent
-
-@author: Zlatko Minev, Dennis Wang
-@date: 2020
 """
 
 from typing import TYPE_CHECKING

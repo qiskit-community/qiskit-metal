@@ -13,7 +13,6 @@
 # that they have been altered from the originals.
 """
 GUI front-end interface for Qiskit Metal in PySide2.
-@author: Zlatko Minev, IBM
 """
 # pylint: disable=invalid-name
 
@@ -76,7 +75,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
     def __init__(self):
         super().__init__()
         self.gds_gui = None  # type: RendererGDSWidget
-        self.hfss_gui = None # type: RendererHFSSWidget
+        self.hfss_gui = None  # type: RendererHFSSWidget
         self.q3d_gui = None  # type: RendererQ3DWidget
 
     @property
@@ -263,9 +262,8 @@ class MetalGUI(QMainWindowBaseHandler):
 
         qApp = kick_start_qApp()
         if not qApp:
-            logging.error(
-                "Could not start Qt event loop using QApplication.")
-        
+            logging.error("Could not start Qt event loop using QApplication.")
+
         super().__init__()
 
         # use set_design

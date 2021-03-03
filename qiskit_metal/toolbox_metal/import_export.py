@@ -15,9 +15,6 @@
 # pylint: disable=protected-access
 '''
 Saving and load metal data
-
-@author: Zlatko K. Minev (IBM)
-@date: 2019-09
 '''
 
 import pickle
