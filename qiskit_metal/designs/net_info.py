@@ -13,10 +13,6 @@
 # that they have been altered from the originals.
 """
 Module containing Net information storage.
-
-@date: 2020
-
-@author: Priti Shah, ... (IBM)
 """
 #from typing import Tuple
 import pandas as pd

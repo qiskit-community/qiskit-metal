@@ -19,9 +19,6 @@
 Qiskit Metal unit tests analyses functionality.
 
 Test a planar deisgn and launching the GUI.
-
-Created on  2020
-@author: Zlatko K. Minev, Jeremy D. Drysdale
 """
 
 import unittest

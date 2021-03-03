@@ -16,9 +16,6 @@
 #pylint: disable-msg=broad-except
 """
 Qiskit Metal unit tests analyses functionality.
-
-Created on Wed Apr 22 09:28:05 2020
-@author: Jeremy D. Drysdale
 """
 
 from pathlib import Path

@@ -21,9 +21,6 @@ Main module for shapely manipulation and drawing.
 **Creation:**
     The module defines the creation of some basic shapely objects for convinence,
     such as a rectangle.
-
-@date: 2019
-@author: Zlatko Minev (IBM)
 """
 
 from collections.abc import Iterable, Mapping

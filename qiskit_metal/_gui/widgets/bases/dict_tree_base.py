@@ -13,9 +13,6 @@
 # that they have been altered from the originals.
 """
 Dict tree base
-
-@authors: Dennis Wang, Zlatko Minev
-@date: 2020
 """
 
 import ast

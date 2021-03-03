@@ -13,9 +13,6 @@
 # that they have been altered from the originals.
 """
 Utility display functions used in the tutorials.
-
-@author: Zlatko K. Minev
-@date: 2020
 """
 
 import re
