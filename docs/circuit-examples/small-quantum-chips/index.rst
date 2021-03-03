@@ -1,8 +1,8 @@
-.. _tutorials-overview:
+.. _tutorials-small-quantum-chips:
 
-##################
-Overview Tutorials
-##################
+###################
+Small Quantum Chips
+###################
 
 
 .. nbgallery::

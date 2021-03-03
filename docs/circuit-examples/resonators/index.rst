@@ -1,8 +1,8 @@
-.. _tutorials-overview:
+.. _tutorials-resonators:
 
-##################
-Overview Tutorials
-##################
+##########
+Resonators
+##########
 
 
 .. nbgallery::

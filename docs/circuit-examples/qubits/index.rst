@@ -1,8 +1,8 @@
-.. _tutorials-overview:
+.. _tutorials-qubits:
 
-##################
-Overview Tutorials
-##################
+######
+Qubits
+######
 
 
 .. nbgallery::

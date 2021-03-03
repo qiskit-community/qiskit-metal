@@ -1,8 +1,8 @@
-.. _tutorials-overview:
+.. _tutorials-qubit-couplers:
 
-##################
-Overview Tutorials
-##################
+##############
+Qubit Couplers
+##############
 
 
 .. nbgallery::
