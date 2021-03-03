@@ -401,14 +401,14 @@ class QHFSSRenderer(QAnsysRenderer):
             )
 
     def add_drivenmodal_setup(self,
-                              freq_ghz=None,
-                              name=None,
-                              max_delta_s=None,
-                              max_passes=None,
-                              min_passes=None,
-                              min_converged=None,
-                              pct_refinement=None,
-                              basis_order=None):
+                              freq_ghz: int = None,
+                              name: str = None,
+                              max_delta_s: float = None,
+                              max_passes: int = None,
+                              min_passes: int = None,
+                              min_converged: int = None,
+                              pct_refinement: int = None,
+                              basis_order: int = None):
         """
         Create a solution setup in Ansys HFSS Driven Modal.   If user does not provide arguments, 
         they will be obtained from hfss_options dict.  
@@ -567,15 +567,15 @@ class QHFSSRenderer(QAnsysRenderer):
             )
 
     def add_eigenmode_setup(self,
-                            name=None,
-                            min_freq_ghz=None,
-                            n_modes=None,
-                            max_delta_f=None,
-                            max_passes=None,
-                            min_passes=None,
-                            min_converged=None,
-                            pct_refinement=None,
-                            basis_order=None):
+                            name: str = None,
+                            min_freq_ghz: int = None,
+                            n_modes: int = None,
+                            max_delta_f: float = None,
+                            max_passes: int = None,
+                            min_passes: int = None,
+                            min_converged: int = None,
+                            pct_refinement: int = None,
+                            basis_order: int = None):
         """
         Create a solution setup in Ansys HFSS Eigenmode.  If user does not provide arguments, 
         they will be obtained from hfss_options dict.  
