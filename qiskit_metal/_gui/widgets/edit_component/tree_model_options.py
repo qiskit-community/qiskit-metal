@@ -13,9 +13,6 @@
 # that they have been altered from the originals.
 """
 Tree model for component options menu
-
-@authors: Dennis Wang, Zlatko Minev
-@date: 2020
 """
 # import numpy as np
 # import PySide2

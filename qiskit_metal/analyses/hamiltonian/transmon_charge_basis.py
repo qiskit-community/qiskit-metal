@@ -17,9 +17,6 @@ junction phase variable.
 This model is closer to the analytic solution than the Duffing oscillator model.
 Can work backwards from target qubit parameters to get the Ej, Ec or use
 input Ej, Ec to find the spectrum of the Cooper Pair Box.
-
-@author: Christopher Warren (Chalmers University of Technology), updated by Zlatko K. Minev (IBM Quantum)
-@date: 2020, 2021
 """
 # pylint: disable=invalid-name
 

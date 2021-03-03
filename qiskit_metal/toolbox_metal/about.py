@@ -16,9 +16,6 @@ Reports a summary of information on Qiskit Metal and dependencies.
 
 Contain functions to report more detailed information to orient a user,
 used for debug purposes.
-
-@author: Zlatko Minev
-@date: 2020
 """
 
 import os

@@ -11,10 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-'''
-@date: 2019
-@author: Qiskit Team
-'''
 
 from qiskit_metal import draw, Dict
 from qiskit_metal.qlibrary.base import QComponent
@@ -65,8 +61,7 @@ class OpenToGround(QComponent):
         [open_termination, port_line] = polys
 
         # Subtracts out ground plane on the layer its on
-        self.add_qgeometry('poly',
-                           {'open_to_ground': open_termination},
+        self.add_qgeometry('poly', {'open_to_ground': open_termination},
                            subtract=True,
                            layer=p.layer)
 

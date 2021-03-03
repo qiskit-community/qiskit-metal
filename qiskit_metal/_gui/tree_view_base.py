@@ -13,9 +13,6 @@
 # that they have been altered from the originals.
 """
 Handles editing a QComponent.
-
-@author: Zlatko Minev, Dennis Wang
-@date: 2020
 """
 
 from PySide2 import QtCore, QtWidgets

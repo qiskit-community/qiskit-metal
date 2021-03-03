@@ -11,10 +11,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""
-@author: Marco Facchini
-@date: 2020/08/06
-"""
+
 import numpy as np
 from qiskit_metal import draw, Dict
 from .base import QComponent

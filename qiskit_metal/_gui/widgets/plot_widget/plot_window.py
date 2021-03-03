@@ -14,8 +14,6 @@
 """Main module that handles the entier plot window which is docked inside the mmain window.
 This can be undocked and can have its own toolbar. this is largley why i ddecied to use a
 QMainWindow, so that we can have inner docking and toolbars available.
-@author: Zlatko Minev
-@date: 2020
 """
 
 from typing import TYPE_CHECKING

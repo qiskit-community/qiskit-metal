@@ -12,10 +12,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 '''
-@date: 2019
-@author: Zlatko K Minev
-converted to v0.2: Thomas McConkey 2020-03-24
-
+Transmon Pocket
 
 .. code-block::
      ________________________________
