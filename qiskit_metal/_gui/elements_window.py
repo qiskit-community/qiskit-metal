@@ -68,9 +68,15 @@ class ElementsWindow(QMainWindow):
         return self.gui.design
 
     def populate_combo_element(self):
+        """Populate the combo elements
+        """
         for table_type in self.design.qgeometry.tables.keys():
-            if self.ui.combo_element_type.findText(table_type) == -1: # not in combo box, add it
-                self.ui.combo_element_type.addItem(str(QtWidgets.QApplication.translate("ElementsWindow", table_type, None, -1)))
+            if self.ui.combo_element_type.findText(
+                    table_type) == -1:  # not in combo box, add it
+                self.ui.combo_element_type.addItem(
+                    str(
+                        QtWidgets.QApplication.translate(
+                            "ElementsWindow", table_type, None, -1)))
 
     def combo_element_type(self, new_type: str):
         """Change to the given type
