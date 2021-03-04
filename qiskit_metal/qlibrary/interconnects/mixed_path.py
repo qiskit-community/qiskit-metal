@@ -50,9 +50,9 @@ class RouteMixed(RoutePathfinder, RouteMeander):
             * start_jogged_extension: '' -- Lead-in, jogged extension of lead-in. Described as list of tuples
             * end_jogged_extension: '' -- Lead-out, jogged extension of lead-out. Described as list of tuples
         * total_length: '7mm'
-        * chip: 'main' -- Which chip is this component attached to (default: 'main')
-        * layer: '1' -- Which layer this component should be rendered on (default: '1')
-        * trace_width: 'cpw_width' -- Defines the width of the line (default: 'cpw_width')
+        * chip: 'main' -- Which chip is this component attached to
+        * layer: '1' -- Which layer this component should be rendered on
+        * trace_width: 'cpw_width' -- Defines the width of the line
 
     RoutePathfinder Options:
         * step_size: '0.25mm' -- Length of the step for the A* pathfinding algorithm
@@ -61,8 +61,8 @@ class RouteMixed(RoutePathfinder, RouteMeander):
 
     RouteMeander Options:
         * meander: Dict
-            * spacing: '200um' -- Minimum spacing between adjacent meander curves (default: 200um)
-            * asymmetry='0um' -- offset between the center-line of the meander and the center-line that stretches from the tip of lead-in to the x (or y) coordinate of the tip of the lead-out (default: '0um')
+            * spacing: '200um' -- Minimum spacing between adjacent meander curves
+            * asymmetry='0um' -- Offset between the center-line of the meander and the center-line that stretches from the tip of lead-in to the x (or y) coordinate of the tip of the lead-out (default: '0um')
         * snap: 'true'
         * prevent_short_edges: 'true'
 

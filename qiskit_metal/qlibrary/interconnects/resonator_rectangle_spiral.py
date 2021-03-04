@@ -41,18 +41,18 @@ class ResonatorRectangleSpiral(QComponent):
         Convention: Values (unless noted) are strings with units included,
         (e.g., '30um')
 
-        * n: '3' -- number of turns of the spiral
-        * length: '2000um' -- total length of the spiral
-        * line_width: '1um' -- the width of the line of the spiral
-        * height: '40um' -- the height of the inner portion of the spiral
-        * gap: '4um' -- the distance between each layer of the spiral
-        * coupler_distance: '10um' -- the pin position from the grounded termination of the spiral
-        * pos_x: '0um' -- the x position of the ground termination.
-        * pos_y: '0um' -- the y position of the ground termination.
-        * rotation: '0' -- the direction of the termination. 0 degrees is +x, following a
+        * n: '3' -- Number of turns of the spiral
+        * length: '2000um' -- Total length of the spiral
+        * line_width: '1um' -- The width of the line of the spiral
+        * height: '40um' -- The height of the inner portion of the spiral
+        * gap: '4um' -- The distance between each layer of the spiral
+        * coupler_distance: '10um' -- The pin position from the grounded termination of the spiral
+        * pos_x: '0um' -- The x position of the ground termination.
+        * pos_y: '0um' -- The y position of the ground termination.
+        * rotation: '0' -- The direction of the termination. 0 degrees is +x, following a
           counter-clockwise rotation (eg. 90 is +y)
-        * chip: 'main' -- the chip the pin should be on.
-        * layer: '1' -- layer the pin is on. Does not have any practical impact to the short.
+        * chip: 'main' -- The chip the pin should be on.
+        * layer: '1' -- Layer the pin is on. Does not have any practical impact to the short.
     """
     component_metadata = Dict(short_name='res')
     """Component metadata"""

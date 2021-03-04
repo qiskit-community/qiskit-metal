@@ -33,12 +33,12 @@ class RoutePathfinder(RouteAnchors):
     RouteAnchors Options:
         * anchors: OrderedDict -- Intermediate anchors only; doesn't include endpoints
         * advanced: Dict
-            * avoid_collision: 'false' -- true/false, defines if the route needs to avoid collisions (default: 'false')
+            * avoid_collision: 'false' -- true/false, defines if the route needs to avoid collisions
 
     Options:
         * step_size: '0.25mm' -- Length of the step for the A* pathfinding algorithm
         * advanced: Dict
-            * avoid_collision: 'true' -- true/false, defines if the route needs to avoid collisions (default: 'true')
+            * avoid_collision: 'true' -- true/false, defines if the route needs to avoid collisions
     """
 
     default_options = Dict(step_size='0.25mm',
