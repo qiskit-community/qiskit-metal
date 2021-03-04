@@ -20,9 +20,6 @@
 #pylint: disable-msg=invalid-name
 """
 Qiskit Metal unit tests analyses functionality.
-
-Created on Wed Apr 22 10:03:35 2020
-@author: Jeremy D. Drysdale
 """
 
 import unittest
@@ -34,12 +31,13 @@ from qiskit_metal.designs.interface_components import Components
 from qiskit_metal.designs.net_info import QNet
 from qiskit_metal.qlibrary.base.base import QComponent
 from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
+from qiskit_metal.tests.assertions import AssertionsMixin
 
 #pylint: disable-msg=line-too-long
 from qiskit_metal.qlibrary.interconnects.resonator_rectangle_spiral import ResonatorRectangleSpiral
 
 
-class TestDesign(unittest.TestCase):
+class TestDesign(unittest.TestCase, AssertionsMixin):
     """
     Unit test class
     """
@@ -542,6 +540,27 @@ class TestDesign(unittest.TestCase):
 
         for i in range(2):
             self.assertEqual(expected[i], actual[i])
+
+    def test_design_get_list_of_tables_in_metadata(self):
+        """
+        Tests the get_list_of_tables_in_metadata function in design_base.py by exeucting
+        get_table_values_form_renderers in a component
+        """
+        design = DesignPlanar()
+        q1 = TransmonPocket(design, 'Q1')
+
+        result = q1._get_table_values_from_renderers(design)
+
+        self.assertEqual(len(result), 9)
+        self.assertEqual(result['hfss_inductance'], '10nH')
+        self.assertEqual(result['hfss_capacitance'], 0)
+        self.assertEqual(result['hfss_resistance'], 0)
+        self.assertAlmostEqual(result['hfss_mesh_kw_jj'], 7e-06, places=6)
+        self.assertEqual(result['q3d_inductance'], '10nH')
+        self.assertEqual(result['q3d_capacitance'], 0)
+        self.assertEqual(result['q3d_resistance'], 0)
+        self.assertAlmostEqual(result['q3d_mesh_kw_jj'], 7e-06, places=6)
+        self.assertEqual(result['gds_cell_name'], 'my_other_junction')
 
 
 if __name__ == '__main__':

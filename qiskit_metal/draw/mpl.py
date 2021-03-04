@@ -12,12 +12,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 """
-Created 2019
-
 Matplotlib draw utility functions for shapely objects, for qgeometry, and for components.
-
-@date: 2019
-@author: Zlatko Minev
 """
 # pylint: disable=ungrouped-imports
 

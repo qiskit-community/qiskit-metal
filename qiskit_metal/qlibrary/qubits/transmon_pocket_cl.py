@@ -12,10 +12,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 '''
-@date: 2019
-@author: Zlatko K Minev
-modified: Thomas McConkey - Added Charge Line
-
+Transmon Pocket CL
 
 Pocket "axis"
         _________________
@@ -63,7 +60,7 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
 
 
     .. image::
-        Component_Qubit_Transmon_Pocket_CL.png
+        QComponent_Qubit_Transmon_Pocket_CL.png
 
 
     Charge Line:

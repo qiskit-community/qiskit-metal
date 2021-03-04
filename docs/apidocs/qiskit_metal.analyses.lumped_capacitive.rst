@@ -11,6 +11,9 @@ lumped_capacitive
 
    .. autosummary::
    
+      Cs_from_Ec
+      Ic_from_Ej
+      Ic_from_Lj
       chargeline_T1
       chi
       cos_to_mega_and_delta

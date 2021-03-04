@@ -20,10 +20,6 @@ Analyses (:mod:`qiskit_metal.analyses`)
 
 Module containing all Qiskit Metal analyses.
 
-@date: 2019
-
-@author: Zlatko Minev (IBM)
-
 Hamiltonian
 -----------
 
@@ -33,6 +29,15 @@ Hamiltonian
     Hcpb
 
 
+Electromagnetic & quantization / parameter extraction
+-----------------------------------------------------
+
+.. autosummary::
+    :toctree:
+
+    cpw_calculations
+    lumped_capacitive
+
 Scan Options
 ------------
 
@@ -41,19 +46,9 @@ Scan Options
 
     Scanning
 
-
-Submodules
-----------
-
-.. autosummary::
-    :toctree:
-
-    cpw_calculations
-    lumped_capacitive
-
 """
 
 from .em import cpw_calculations
 from .quantization import lumped_capacitive
-from .hamiltonian.analytic_transmon import Hcpb
+from .hamiltonian.transmon_charge_basis import Hcpb
 from .scan_options.scanning import Scanning

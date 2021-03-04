@@ -13,10 +13,6 @@
 # that they have been altered from the originals.
 '''
 Simply utility functions to improve QOL of QM developers and QM users
-
-@date: 2019
-@author: Zlatko K. Minev (IBM)
-@modified: Thomas McConkey 2019/10/16
 '''
 
 import logging

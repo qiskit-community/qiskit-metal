@@ -53,30 +53,6 @@ setup(
     keywords="qiskit sdk quantum",
     packages=find_packages(),
     package_data={"": ["*.ui", "*.qrc", "_imgs/*.png", "_imgs/*.txt"]},
-    python_requires=">=3.5, <=3.7.8",
+    python_requires=">=3.7, <=3.7.8",
     install_requires=requirements,
 )
-
-if 1:
-    # Cludge install for `pyqode.qt`.
-    # Make sure this doesnt get overwritten later by some other package.
-    # The output of these is only visible if we run pip install with -v flag.
-
-    # import os
-    # os.system("python -m pip install -e git+https://github.com/jojurgens/pyqode.qt.git@master#egg=pyqode.qt")
-
-    # For questions, ask Zlatko
-    import shlex
-    import subprocess
-    cmd = "python -m pip install -e git+https://github.com/jojurgens/pyqode.qt.git@master#egg=pyqode.qt"
-    print(f'\n\n*** Installing pyqode.qt for PySide2***\n$ {cmd}')
-    scmd = shlex.split(cmd)
-    result = subprocess.run(scmd, stdout=subprocess.PIPE, check=False)
-    stderr = result.stderr
-    stdout = result.stdout
-    returncode = result.returncode
-    print(f'\n****Exited with {returncode}')
-    if stdout:
-        print(f'\n****stdout****\n{stdout.decode()}')
-    if stderr:
-        print(f'\n****stderr****\n{stderr.decode()}')

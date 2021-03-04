@@ -13,9 +13,6 @@
 # that they have been altered from the originals.
 """
 This is the CircleCaterpillar module.
-
-@author: Zlatko Minev, Priti Shah, ... (IBM)
-@date: 2019
 """
 
 from qiskit_metal import draw, Dict  # , QComponent

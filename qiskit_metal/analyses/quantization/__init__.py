@@ -20,8 +20,4 @@ Analyses (:mod:`qiskit_metal.analyses.quantization`)
 
 Module containing all Qiskit Metal quantization-only analyses.
 
-@date: 2019
-
-@author: Zlatko Minev (IBM)
-
 """

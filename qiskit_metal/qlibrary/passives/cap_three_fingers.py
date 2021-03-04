@@ -11,10 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-'''
-@date: 2020/07/25
-@author: John Blair, Marco Facchini
-'''
 
 from qiskit_metal import draw
 from qiskit_metal.toolbox_python.attr_dict import Dict

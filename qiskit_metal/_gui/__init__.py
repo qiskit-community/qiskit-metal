@@ -23,9 +23,6 @@ GUI module, handles user interface.
 The gui module is only loaded if right python qt module
 (such as pyside or pyqt) can be found.
 
-Created on Tue May 14 17:13:40 2019
-@author: Zlatko
-
 
 Main Window
 ---------------
@@ -82,4 +79,3 @@ if config.is_building_docs():
     from qiskit_metal._gui.widgets.edit_component import source_editor_widget
     from qiskit_metal._gui.widgets.edit_component import table_model_options
     from qiskit_metal._gui.widgets.edit_component import tree_model_options
-

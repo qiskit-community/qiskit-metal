@@ -17,9 +17,6 @@
 #pylint: disable-msg=broad-except
 """
 Qiskit Metal unit tests analyses functionality.
-
-Created on Wed Apr 22 09:59:02 2020
-@author: Jeremy D. Drysdale
 """
 
 import unittest
@@ -28,6 +25,9 @@ import numpy as np
 from qiskit_metal.toolbox_metal import about
 from qiskit_metal.toolbox_metal import parsing
 from qiskit_metal.toolbox_metal import math_and_overrides
+from qiskit_metal.toolbox_metal.exceptions import QiskitMetalExceptions
+from qiskit_metal.toolbox_metal.exceptions import QiskitMetalDesignError
+from qiskit_metal.toolbox_metal.exceptions import IncorrectQtException
 from qiskit_metal.tests.assertions import AssertionsMixin
 
 
@@ -47,6 +47,33 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
         Tie any loose ends
         """
         math_and_overrides.set_decimal_precision(10)
+
+    def test_toolbox_metal_instantiation_qiskit_metal_exceptions(self):
+        """
+        Test instantiation of QiskitMetalExceptions
+        """
+        try:
+            QiskitMetalExceptions("test message")
+        except Exception:
+            self.fail("QiskitMetalExceptions failed")
+
+    def test_toolbox_metal_instantiation_qiskit_metal_design_error(self):
+        """
+        Test instantiation of QiskitMetalDesignError
+        """
+        try:
+            QiskitMetalDesignError("test message")
+        except Exception:
+            self.fail("QiskitMetalDesignError failed")
+
+    def test_toolbox_metal_instantiation_incorrect_qt_exception(self):
+        """
+        Test instantiation of IncorrectQtException
+        """
+        try:
+            IncorrectQtException
+        except Exception:
+            self.fail("IncorrectQtException failed")
 
     def test_toolbox_metal_about(self):
         """

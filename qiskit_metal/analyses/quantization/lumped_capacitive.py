@@ -18,29 +18,19 @@ Convert capacitance matrices extracted from Q3D into Hamiltonian parameters
 using the Duffing model. Typical input is the capacitance matrix calculated from Q3D.
 
 Each function prints out the parameters and outputs a dictionary
-
-Updates:
-    * 2017 or earlier: Jay Gambetta
-
-    * 2019-04-02 - Zlatko Minev
-      Aded import funcitons for Q3D import, and calculation of units, swap indexs, ...
-
-    * Update 2019-07-23 - Thomas McConkey
-      modified function 'jayNoscillator' to allow for bus frequencies to have different
-      values (fb input can be a vector)
-
-@author: Jay Gambetta, Zlatko K. Minev, Thomas McConkey
 """
+# pylint: disable=invalid-name
 
 import io
-from pathlib import Path
 import re
+from pathlib import Path
+from typing import List
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from pint import UnitRegistry
 import scipy.optimize as opt
+from pint import UnitRegistry
 
 __all__ = [
     'chargeline_T1', 'extract_transmon_coupled_Noscillator',
@@ -51,17 +41,59 @@ __all__ = [
 ]
 
 # define constants
-h = 6.62606957e-34
-hbar = 1.0545718E-34
-phinot = 2.067 * 1E-15
-e = 1.60217657e-19
+e = 1.60217657e-19  # electron charge
+h = 6.62606957e-34  # Plank's
+hbar = 1.0545718E-34  # Plank's reduced
+phinot = 2.067 * 1E-15  # magnetic flux quantum
+phi0 = phinot / (2 * np.pi)  # reduced magnetic flux quantum
+
+# TODO: Move to a more generic file
 
 
-def transmon_props(Ic, Cq):
+def Ic_from_Lj(Lj: float) -> float:
+    """Critical current
+    In SI units.
+
+    Args:
+        Lj (float): in Henries
+
+    Returns:
+        float: In Amps
+    """
+    return phi0 / Lj
+
+
+def Ic_from_Ej(Ej: float) -> float:
+    """Critical current
+    In SI units.
+
+    Args:
+        Ej (float): in Joules
+
+    Returns:
+        float: In Amps
+    """
+    return Ej / phi0
+
+
+def Cs_from_Ec(Ec: float) -> float:
+    """Get total shunt capacitance from charging energy
+    In SI units.
+
+    Args:
+        Ec (float): in Joules
+
+    Returns:
+        float: in farads
+    """
+    return e**2 / (2 * Ec)
+
+
+def transmon_props(Ic: float, Cq: float):
     """
     Properties of a transmon qubit
 
-    Calculate LJ,EJ,EC,wq,eps from Ic,Cq
+    Calculate LJ, EJ, EC, wq, eps from Ic,Cq
 
     Arguments:
         Ic (float): junction Ic (in A)
@@ -71,8 +103,8 @@ def transmon_props(Ic, Cq):
         tuple: [LJ, EJ, Zqp, EC, wq, wq0, eps1] -- [INductange ]
     """
 
-    LJ = (phinot / 2 / np.pi) * (Ic**-1)
-    EJ = (phinot / 2 / np.pi)**2 / LJ / hbar
+    LJ = phi0 / Ic
+    EJ = phi0**2 / LJ / hbar
     Zqp = np.sqrt(LJ / Cq)
     EC = e**2 / 2 / Cq / hbar
     wq0 = 1 / np.sqrt(LJ * Cq)
@@ -85,45 +117,58 @@ def transmon_props(Ic, Cq):
     return LJ, EJ, Zqp, EC, wq, wq0, eps1
 
 
-def chi(g, wr, w01, w12):
-    """
-    calculate the chi (2*chi is the `|0> --> |1>` splitting)
+# TODO: Move to a more generic file
 
-    these need to be in the same units
+
+def chi(g: float, wr: float, w01: float, w12: float):
+    r"""
+    Calculate the dispersive shift $\chi$, where $2*\chi$ is
+    the `|0> --> |1>` splitting).
+
+    Accounts for push on the i-th transmon level due to the j-th transmon level,
+    mediated by cavity.
+
+    All args need to be in the same units.
 
     Arguments:
-        g (float): Coupling
-        wr (float): wr
-        w01 (float): w01
-        w12 (float): w12
+        g (float): Qubit-cavity linear coupling.
+        wr (float): Frequency of resonator.
+        w01 (float): Qubit 01 transition frequency
+        w12 (float): Qubit 12 transition frequency
 
     Returns:
         float: calculated chi value
     """
 
+    # Push on the i-th transmon level due to the j-th transmon level
+    # mediated by cavity
+
     # shift of the zero state
-    chibus_0 = -2 * g**2 * w01 / (w01**2 - wr**2)
+    # In this case i=0 and j=1.
+    chibus_0 = -2 * g**2 * w01 / (w01**2 - wr**2)  # Koch Eq. (3.10)
 
     # shift of the 1 state
+    # the g of the levels scales rougly as sqrt(n), so the 2 for the 2 / (w12 - wr)
     chibus_1 = g**2 * (1 / (w01 - wr) - 2 / (w12 - wr) + 1 / (w01 + wr) - 2 /
                        (w12 + wr))
 
-    return (chibus_1 - chibus_0) / 2
+    return (chibus_1 - chibus_0) / 2  # Koch Eq. (3.9)
 
 
-def extract_transmon_coupled_Noscillator(capMatrix: np.ndarray,
+def extract_transmon_coupled_Noscillator(capMatrix,
                                          Ic: float,
                                          CJ: float,
                                          N: int,
-                                         fb: float,
+                                         fb: List[float],
                                          fr: float,
-                                         res_L4_corr: list = None,
-                                         g_scale: float = 1):
+                                         res_L4_corr: float = None,
+                                         g_scale: float = 1.0):
     """
-    Primary analysis function called by the user. Uses a (Maxwell) capacitance
-    matrix generated from Q3D, and some additional values, to determine
-    many parameters of the Hamiltonian of the system. The capMatrix
-    should have first been imported using readin_q3d_matrix().
+    Primary analysis function called by the user for lumped-element mode (LOM) analysis.
+    Uses a Maxwell capacitance matrix generated by a capacitave extractor, such as Q3D.
+    Additionally takes more values to determine many parameters of the Hamiltonian of the system.
+
+    The capMatrix can be imported using `readin_q3d_matrix`
 
     Args:
         capMatrix (np.ndarray): order of the capacitance matrix must be
@@ -134,10 +179,10 @@ def extract_transmon_coupled_Noscillator(capMatrix: np.ndarray,
         Ic (float): junction Ic (in A)
         Cj (float): junction capacitance (in F)
         N (int): coupling pads (1 readout, N-1 bus)
-        fb (float): coupling bus and readout frequencies (in GHz). fb can be a list with the order
-          the order they appear in the capMatrix.
-        fr (float): coupling bus and readout frequencies (in GHz). fb can be a list with the order
-          the order they appear in the capMatrix.
+        fb (float): coupling bus and readout frequencies (in GHz).
+                    fb can be a list with the order the order they appear in the capMatrix.
+        fr (float): coupling bus and readout frequencies (in GHz).
+                    fr can be a list with the order the order they appear in the capMatrix.
         res_L4_corr (list): correction factor is the resonators are L/4
           if none it ignores, otherwise this is a list of length N
           in the form [1,0,1,...] (Default: None)
@@ -150,26 +195,29 @@ def extract_transmon_coupled_Noscillator(capMatrix: np.ndarray,
         ValueError: If N is not positive
         ValueError: If the capacitance matrix is the wrong size
 
-    calculate the χ The full dispersive splitting using analytical
+    Calculate the χ The full dispersive splitting using analytical
     approximations, i.e., return the `|0> --> |1>` splitting
     """
 
     # Error checks
     if N < 0:
         raise ValueError('N must positive')
-
     if len(capMatrix) != (N + 3):
         raise ValueError('Capacitance matrix is not the right size')
 
-    wr = np.zeros(N)
+    # make list of angular frequencies of resonators
+    wr = np.zeros(N)  # angular freq of resonators (GHz-rad)
     for ii in range(N):
-        if ii == 0:
+        if ii == 0:  # readout resonator
             wr[ii] = 2 * np.pi * fr * 1e9
         else:
-            if isinstance(fb, (int, float)):
+            if isinstance(fb, (int, float)):  # just a single one
                 wr[ii] = 2 * np.pi * fb * 1e9
             else:
-                wr[ii] = 2 * np.pi * fb[ii - 1] * 1e9
+                wr[ii] = 2 * np.pi * fb[ii - 1] * 1e9  # offset index by
+
+    ########################################################
+    #### Transmission line properties
 
     # Initial values
     Zbus = 50
@@ -185,6 +233,9 @@ def extract_transmon_coupled_Noscillator(capMatrix: np.ndarray,
             if res_L4_corr[i]:
                 Cr[i] /= 2.0
                 Lr[i] *= 2.0
+
+    ########################################################
+    # Capacitance matrix parsing
 
     ground_index = max([0, N - 1])
     qubit_index = [ground_index + 1, ground_index + 2]
@@ -226,7 +277,7 @@ def extract_transmon_coupled_Noscillator(capMatrix: np.ndarray,
     C2S = Cg[1] + np.sum(Cbus[1,])
 
     # total capacitance between pads
-    tCSq = Cs + C1S * C2S / (C1S + C2S)
+    tCSq = Cs + C1S * C2S / (C1S + C2S)  # Key equation
 
     # total capacitance of each pad to ground?
     # Note the + in the squared term below !!!
@@ -250,6 +301,9 @@ def extract_transmon_coupled_Noscillator(capMatrix: np.ndarray,
 
     # total qubit capacitance (including junction capacitance)
     Cq = tCSq + CJ
+
+    ########################################################
+    ##### Transmon qubit & bus quantum properties
 
     # get transmon properties given Ic and Cq
     LJ, EJ, Zqp, EC, wq, wq0, eps1 = transmon_props(Ic, Cq)
@@ -278,9 +332,8 @@ def extract_transmon_coupled_Noscillator(capMatrix: np.ndarray,
 
     # g's from the qubit
     gqbus = 0.5 * wr * bbus * np.sqrt(Zbus / Zqp) * g_scale
-    gbus_in_MHz = gqbus / 1e6 / 2 / np.pi
-
     #gbus = bbus*wr*np.sqrt(Zbus)*e*(EJ/8/EC)**(1/4)/np.sqrt(hbar)
+    gbus_in_MHz = gqbus / 1e6 / 2 / np.pi
 
     # g's between pads
     gbusbus = np.zeros([N, N])
@@ -288,6 +341,9 @@ def extract_transmon_coupled_Noscillator(capMatrix: np.ndarray,
         for jj in range(N):
             gbusbus[ii,
                     jj] = (0.01) * tCqbusbus[ii, jj] / (tCSbus[ii] * tCSbus[jj])
+
+    ########################################################
+    ##### Purcell, Qs, dissipative
 
     # guesses for the Q's
     Qreadout = 1e4
@@ -302,11 +358,6 @@ def extract_transmon_coupled_Noscillator(capMatrix: np.ndarray,
     # loss tangent
     kbus = wr / Qbus
 
-    # chi's
-    #d = -EC
-    d = alpha * 2 * np.pi * 1e6
-    Chi_in_MHz = 2 * chi(gqbus, wr, wq, d + wq) / 2 / np.pi / 1e6
-
     # purcell due to each coupling bus
     T1bus = (wr**2 - wq**2)**2 / (4 * kbus * gqbus**2 * wq**2)
 
@@ -315,6 +366,15 @@ def extract_transmon_coupled_Noscillator(capMatrix: np.ndarray,
         T1 = 1 / (np.sum(1 / T1bus))
     else:
         T1 = 100
+
+    ########################################################
+    ##### Transmon properties and final summary
+
+    # chi's
+    #d = -EC
+    d = alpha * 2 * np.pi * 1e6
+    Chi_in_MHz = 2 * chi(gqbus, wr, wq,
+                         d + wq) / 2 / np.pi / 1e6  # Total chi in MHz
 
     ham_dict = {}
     ham_dict['fQ'] = wq / 2 / np.pi / 1E9
@@ -335,7 +395,7 @@ def extract_transmon_coupled_Noscillator(capMatrix: np.ndarray,
     print('EJ %f [GHz]' % ham_dict['EJ'])
     print('alpha %f [MHz]' % ham_dict['alpha'])
     print('dispersion %f [KHz]' % ham_dict['dispersion'])
-    print('Lq %f [nH]' % (Cq / 1e-9))
+    print('Lq %f [nH]' % (phi0**2 / (hbar * EJ) / 1e-9))
     print('Cq %f [fF]' % (Cq / 1e-15))
     print('T1 %f [us]' % (T1 / (1e-6)))
     print('')
@@ -500,7 +560,7 @@ def get_C_and_Ic(Cin_est, Icin_est, f01, f02on2):
 
 
 ########################################################################
-### Utility functions for reporting and loading - Zlatko
+# Utility functions for reporting and loading - Zlatko
 
 
 # Cost function for calculating C and IC
@@ -528,6 +588,9 @@ def cos_to_mega_and_delta(Cin, ICin, f01, f02on2):
             (fqubitGHz + anharMHz / 2. / 1e3 - f02on2)**2)**0.5
 
 
+# TODO: Move to a more generic file
+
+
 def chargeline_T1(Ccharge, Cq, f01):
     """
     Calculate the charge line `T1`
@@ -542,6 +605,9 @@ def chargeline_T1(Ccharge, Cq, f01):
     """
 
     return Cq / (Ccharge**2 * 50. * (2 * np.pi * f01)**2)
+
+
+# TODO: Move to a more generic file
 
 
 def readin_q3d_matrix(path):
@@ -559,7 +625,7 @@ def readin_q3d_matrix(path):
         tuple: df_cmat, units, design_variation, df_cond
 
     Example file:
-    
+
     ::
 
         DesignVariation:$BBoxL='650um' $boxH='750um' $boxL='2mm' $QubitGap='30um' $QubitH='90um' $QubitL='450um' Lj_1='13nH'
@@ -613,6 +679,9 @@ def readin_q3d_matrix(path):
     return df_cmat, units, design_variation, df_cond
 
 
+# TODO: Move to a more generic file
+
+
 def load_q3d_capacitance_matrix(path, user_units='fF', _disp=True):
     """Load Q3D capcitance file exported as Maxwell matrix.
     Do not export conductance.
@@ -654,7 +723,7 @@ def df_cmat_style_print(df_cmat):
 
 
 ########################################################################
-### Utility functions - Zlatko
+# Utility functions - Zlatko
 
 
 def move_index_to(i_from, i_to, len_):
@@ -672,6 +741,9 @@ def move_index_to(i_from, i_to, len_):
     idxs = np.arange(0, len_)
     idxs = np.delete(idxs, i_from)
     return np.insert(idxs, i_to, i_from)
+
+
+# TODO: Move to a more generic file
 
 
 def df_reorder_matrix_basis(df, i_from, i_to):
