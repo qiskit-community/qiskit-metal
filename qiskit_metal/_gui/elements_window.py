@@ -19,7 +19,7 @@
 from typing import TYPE_CHECKING
 
 import numpy as np
-from PySide2 import QtCore
+from PySide2 import QtCore, QtWidgets
 from PySide2.QtCore import QAbstractTableModel, QModelIndex
 from PySide2.QtWidgets import QMainWindow
 
@@ -59,6 +59,8 @@ class ElementsWindow(QMainWindow):
         self.ui = Ui_ElementsWindow()
         self.ui.setupUi(self)
 
+        #self.populate_combo_element()
+
         self.statusBar().hide()
 
         self.model = ElementTableModel(gui, self)
@@ -68,6 +70,11 @@ class ElementsWindow(QMainWindow):
     def design(self):
         """Returns the design"""
         return self.gui.design
+
+    def populate_combo_element(self):
+        for table_type in self.design.qgeometry.tables.keys():
+            if self.ui.combo_element_type.findText(table_type) == -1: # not in combo box, add it
+                self.ui.combo_element_type.addItem(str(QtWidgets.QApplication.translate("ElementsWindow", table_type, None, -1)))
 
     def combo_element_type(self, new_type: str):
         """Change to the given type
@@ -81,7 +88,7 @@ class ElementsWindow(QMainWindow):
     def force_refresh(self):
         """Force a refresh"""
         self.model.refresh()
-        self.ui.populateDesign(self.design.qgeometry.tables.keys())
+        self.populate_combo_element()
 
 
 class ElementTableModel(QAbstractTableModel):
