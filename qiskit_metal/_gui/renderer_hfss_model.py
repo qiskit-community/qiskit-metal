@@ -12,10 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 # Tree model for Ansys HFSS renderer
-"""
-@authors: Dennis Wang
-@date: 2020
-"""
 
 import PySide2
 from PySide2 import QtWidgets

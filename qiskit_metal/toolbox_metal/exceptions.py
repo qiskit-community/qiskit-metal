@@ -16,9 +16,6 @@
 # pylint: disable=unused-import
 """
 Custom Exceptions
-
-@author: Marco Facchini
-@date: 12/2020
 """
 
 

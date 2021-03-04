@@ -16,8 +16,6 @@ For calculations of CPW parameters. Referenced primarily as a tool for some comp
 
 @author: Thomas McConkey, as part of https://uwspace.uwaterloo.ca/handle/10012/13464
 
-@date: 2020-03-24
-
 Key References:
 
 D. Schuster, Ph.D. Thesis, Yale University (2007)

@@ -11,10 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-'''
-@date: 2020
-@author: Dennis Wang, Zlatko Minev
-'''
 
 from typing import List, Tuple, Union
 
@@ -94,7 +90,6 @@ class QAnsysRenderer(QRenderer):
 
     #: Default options, over-written by passing ``options` dict to render_options.
     #: Type: Dict[str, str]
-
     # yapf: disable
     default_options = Dict(
         Lj='10nH',  # Lj has units of nanoHenries (nH)
@@ -126,7 +121,7 @@ class QAnsysRenderer(QRenderer):
             PlotGeomInfo_3= "1",
         ),
     )
-    # yapf:enable
+    # yapf: enable
 
     NAME_DELIM = r'_'
 

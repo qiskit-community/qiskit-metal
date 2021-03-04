@@ -15,17 +15,14 @@
 # pylint: disable-msg=unnecessary-pass
 # pylint: disable-msg=broad-except
 #pylint: disable-msg=too-many-public-methods
-
 """
 Qiskit Metal unit tests for speed.
-Created on Fri Nov 6 10:02:44 2020
-@author: Grace Harper
 """
 
 import unittest
 from qiskit_metal.tests.custom_decorators import timeout
 from qiskit_metal import designs
-from qiskit_metal import MetalGUI,  Headings
+from qiskit_metal import MetalGUI, Headings
 from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
 from qiskit_metal.qlibrary.interconnects.meandered import RouteMeander
 import time

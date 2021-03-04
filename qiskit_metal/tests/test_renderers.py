@@ -17,9 +17,6 @@
 # pylint: disable-msg=too-many-public-methods
 """
 Qiskit Metal unit tests analyses functionality.
-
-Created on Wed Apr 22 10:01:13 2020
-@author: Jeremy D. Drysdale
 """
 
 import unittest
@@ -178,7 +175,8 @@ class TestRenderers(unittest.TestCase):
         options = renderer.hfss_options
 
         self.assertEqual(renderer.name, 'hfss')
-        self.assertEqual(len(options), 0)
+        self.assertEqual(len(options), 1)
+        self.assertEqual(options['port_inductor_gap'], '10um')
 
     def test_renderer_gdsrenderer_options(self):
         """

@@ -20,8 +20,4 @@ Analyses (:mod:`qiskit_metal.analyses.em`)
 
 Module containing all Qiskit Metal electromagnetic analyses.
 
-@date: 2019
-
-@author: Zlatko Minev (IBM)
-
 """

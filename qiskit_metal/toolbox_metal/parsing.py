@@ -164,9 +164,6 @@ Returns:
         'list1': [1000.0, 0.005, 0.01, -1, False, 'a string'],
         'dict1': {'key1': 4e-06, '2mm': 0.1}}
 
-@date: 2019
-
-@author: Zlatko K. Minev, Thomas McConkey (IBM)
 '''
 
 import ast

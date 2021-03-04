@@ -60,8 +60,6 @@ nbsphinx_prolog = """
         <br><br><br>
 
     .. note::
-        This page was generated from tutorials.
-
         Run interactively in jupyter notebook.
 """
 

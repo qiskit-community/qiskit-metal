@@ -18,10 +18,6 @@ Renderers (:mod:`qiskit_metal.renderers`)
 
 .. currentmodule:: qiskit_metal.renderers
 
-Created on Tue May 14 17:13:40 2019
-
-@author: Zlatko
-
 Renderer Base
 ---------------
 

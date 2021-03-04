@@ -12,8 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 """
-@author: Zlatko Minev
-@date: 2019
 """
 
 from .renderer_base import QRenderer

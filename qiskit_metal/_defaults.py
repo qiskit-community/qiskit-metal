@@ -13,10 +13,6 @@
 # that they have been altered from the originals.
 """
 File contains basic dictionaries. File contains a class to contain the basic dictionaries.
-
-Created 2019
-
-@author: Zlatko K. Minev, Priti A. Shah
 """
 
 from copy import deepcopy
