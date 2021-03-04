@@ -25,6 +25,19 @@ class CircleCaterpillar(QComponent):
     """A single configurable circle.
 
     Inherits QComponent class
+
+    Options:
+        * segments: '5'
+        * distance: '1.2'
+        * radius: '300um'
+        * pos_x: '0um'
+        * pos_y: '0um'
+        * resolution: '16'
+        * cap_style: 'round' -- Valid options are 'round', 'flat', 'square'
+        * subtract: 'False'
+        * helper: 'False'
+        * chip: 'main'
+        * layer: '1'        
     """
 
     default_options = dict(

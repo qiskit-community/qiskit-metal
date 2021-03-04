@@ -72,6 +72,34 @@ class QGDSRenderer(QRenderer):
     datatype:
         * 10 Polygon
         * 11 Flexpath
+
+    Options:
+        * short_segments_to_not_fillet: 'True'
+        * check_short_segments_by_scaling_fillet: '2.0'
+        * gds_unit: '1'
+        * ground_plane: 'True'
+        * corners: 'circular bend'
+        * tolerance: '0.00001'
+        * precision: '0.000000001'
+        * width_LineString: '10um'
+        * path_filename: '../resources/Fake_Junctions.GDS'
+        * junction_pad_overlap: '5um'
+        * max_points: '199'
+        * cheese: Dict
+            * datatype: '100'
+            * shape: '0'
+            * cheese_0_x: '50um'
+            * cheese_0_y: '50um'
+            * cheese_1_radius: '100um'
+            * view_in_file: Dict(main={1: True})
+        * no_cheese: Dict
+            * datatype: '99'
+            * buffer: '25um'
+            * cap_style: '2'
+            * join_style: '2'
+            * view_in_file: Dict(main={1: True})
+        * bounding_box_scale_x: '1.2'
+        * bounding_box_scale_y: '1.2'
     """
 
     #: Default options, over-written by passing ``options` dict to render_options.

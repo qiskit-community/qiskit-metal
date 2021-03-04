@@ -32,24 +32,33 @@ class TransmonConcentric(BaseQubit):
     .. image::
         QComponent_TransmonConcentric.png
 
-    Main Body:
-        * position_x / position_y = where the center of the transmon circle should be located on the chip. 
-        * width = width of the transmon pocket 
-        * height = height of the transmon pocket 
-        * rad_o = the outer radius defining the concentric ring 
-        * rad_i = the inner radius defining the concentric ring 
-        * gap = the distance between the transmon circle and the concentric ring 
-        * jj_w = the width of the Josephson Junction connecting the circle to the ring 
-        * res_s = the space between the top edge of the concentric ring and the readout resonator 
-        * res_ext = the distance which the readout resonator extends beyond the middle of the circle. 
-        * fbl_rad = the radius of the loop made by the flux bias line 
-        * fbl_sp = the separation between the concentric ring and the edge of the flux bias loop
-        * fbl_ext = the length of the straight portion of the flux bias loop 
-        * pocket_w = width of the transmon pocket containing all elements
-        * pocket_h = height of the transmon pocket containing all elements 
-        * rotation = degrees which the entire component is rotated by (counterclockwise)
-        * cpw_width = the width of the readout resonator and flux bias loop
-        
+    BaseQubit Options:
+        * pos_x: '0um'
+        * pos_y: '0um'
+        * connection_pads: empty Dict -- the dictionary which contains all active connection lines for the qubit.
+        * _default_connection_pads: empty Dict -- the default values for the (if any) connection lines of the qubit.
+
+    Options:
+        * width: '1000um' -- Width of transmon pocket
+        * height: '1000um' -- Height of transmon pocket
+        * layer: '1'
+        * rad_o: '170um' -- Outer radius
+        * rad_i: '115um' -- Inner radius
+        * gap: '35um' -- Radius of gap between two pads
+        * jj_w: '10um' -- Josephson Junction width
+        * res_s: '100um' -- Space between top electrode and readout resonator
+        * res_ext: '100um' -- Extension of readout resonator in x-direction beyond midpoint of transmon
+        * fbl_rad: '100um' -- Radius of the flux bias line loop
+        * fbl_sp: '100um' -- Spacing between metal pad and flux bias loop
+        * fbl_gap: '80um' -- Space between parallel lines of the flux bias loop
+        * fbl_ext: '300um' -- Run length of flux bias line between circular loop and edge of pocket
+        * pocket_w: '1500um' -- Transmon pocket width
+        * pocket_h: '1000um' -- Transmon pocket height
+        * position_x: '2.0mm' -- Translate component to be centered on this x-coordinate
+        * position_y: '2.0mm' -- Translate component to be centered on this y-coordinate
+        * rotation: '0.0' -- Degrees to rotate the component by
+        * cpw_width: '10.0um' -- Width of the readout resonator and flux bias line
+
     """
 
     # default drawing options

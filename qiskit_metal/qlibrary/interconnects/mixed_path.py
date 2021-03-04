@@ -30,14 +30,44 @@ class RouteMixed(RoutePathfinder, RouteMeander):
     Description:
         Implements fully featured Routing, allowing different type of connections between anchors
 
+    RoutePathfinder Options:
+        * anchors: OrderedDict -- Intermediate anchors only; doesn't include endpoints
+        * advanced: Dict
+            * avoid_collision: 'false' -- true/false, defines if the route needs to avoid collisions (default: 'false')
+
+    RouteMeander Options:
+        * pin_inputs: Dict
+            * start_pin: Dict -- Component and pin string pair. Define which pin to start from
+                * component: '' -- Name of component to start from, which has a pin
+                * pin: '' -- Name of pin used for pin_start
+            * end_pin=Dict -- Component and pin string pair. Define which pin to start from
+                * component: '' -- Name of component to end on, which has a pin
+                * pin: '' -- Name of pin used for pin_end
+        * fillet: '0'
+        * lead: Dict
+            * start_straight: '0mm' -- Lead-in, defined as the straight segment extension from start_pin (default: 0.1um)
+            * end_straight: '0mm' -- Lead-out, defined as the straight segment extension from end_pin (default: 0.1um)
+            * start_jogged_extension: '' -- Lead-in, jogged extension of lead-in. Described as list of tuples
+            * end_jogged_extension: '' -- Lead-out, jogged extension of lead-out. Described as list of tuples
+        * total_length: '7mm'
+        * chip: 'main' -- Which chip is this component attached to (default: 'main')
+        * layer: '1' -- Which layer this component should be rendered on (default: '1')
+        * trace_width: 'cpw_width' -- Defines the width of the line (default: 'cpw_width')
+
+    RoutePathfinder Options:
+        * step_size: '0.25mm' -- Length of the step for the A* pathfinding algorithm
+        * advanced: Dict
+            * avoid_collision: 'true' -- true/false, defines if the route needs to avoid collisions (default: 'true')
+
+    RouteMeander Options:
+        * meander: Dict
+            * spacing: '200um' -- Minimum spacing between adjacent meander curves (default: 200um)
+            * asymmetry='0um' -- offset between the center-line of the meander and the center-line that stretches from the tip of lead-in to the x (or y) coordinate of the tip of the lead-out (default: '0um')
+        * snap: 'true'
+        * prevent_short_edges: 'true'
+
     Options:
-
-    Meander:
-        * spacing         - minimum spacing between adjacent meander curves (default: 200um)
-        * asymmetry       - offset between the center-line of the meander and the center-line
-          that stretches from the tip of lead-in to the x (or y) coordinate
-          of the tip of the lead-out (default: '0um')
-
+        * between_anchors: Empty OrderedDict -- Intermediate anchors only; doesn't include endpoints
     """
 
     default_options = Dict(

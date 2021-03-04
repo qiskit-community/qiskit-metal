@@ -60,6 +60,15 @@ class CapThreeFingers(QComponent):
     .. image::
         ThreeFingerCap_V1.png
 
+    Options:
+        * layer: '1'
+        * trace_width: '10um'
+        * finger_length: '65um'
+        * pocket_buffer_width_x: '10um'
+        * pocket_buffer_width_y: '30um'
+        * pos_x: '100um'
+        * pos_y: '100um'
+        * orientation: '0'
     """
 
     #  Define structure functions

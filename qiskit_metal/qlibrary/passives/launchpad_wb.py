@@ -71,6 +71,14 @@ class LaunchpadWirebond(QComponent):
     .. image::
         LaunchpadWirebond.png
 
+    Options:
+        * layer: '1'
+        * trace_width: 'cpw_width'
+        * trace_gap: 'cpw_gap'
+        * lead_length: '25um'
+        * pos_x: '0um'
+        * pos_y: '0um'
+        * orientation: '0' -- 90 for 90 degree turn
     """
 
     default_options = Dict(

@@ -67,6 +67,27 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
 
     .. image::
         QComponent_Qubit_Transmon_Crossmon.png
+
+    BaseQubit Options:
+        * pos_x: '0um'
+        * pos_y: '0um'
+        * connection_pads: empty Dict -- the dictionary which contains all active connection lines for the qubit.
+        * _default_connection_pads: empty Dict -- the default values for the (if any) connection lines of the qubit.
+
+    Options:
+        * pos_x: '0um'
+        * pos_y: '0um'
+        * cross_width: '20um'
+        * cross_length: '200um'
+        * cross_gap: '20um'
+        * orientation: '0'
+        * _default_connection_pads: Dict
+            * connector_type: '0' -- 0 = Claw type, 1 = gap type
+            * claw_length: '30um'
+            * ground_spacing: '5um'
+            * claw_width: '10um'
+            * claw_gap: '6um'
+            * connector_location: '0' -- 0 => 'west' arm, 90 => 'north' arm, 180 => 'east' arm
     """
 
     #_img = 'Metal_Crossmon.png'

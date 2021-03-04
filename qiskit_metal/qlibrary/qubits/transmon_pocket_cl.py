@@ -74,6 +74,45 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
         * cl_pocket_edge (string): What side of the pocket the charge line is.
           -180 to +180 from the 'west edge', will round to the nearest 90.
         * cl_off_center (string):  Distance from the center axis the qubit pocket is referenced to
+
+    BaseQubit Options:
+        * pos_x: '0um'
+        * pos_y: '0um'
+        * connection_pads: empty Dict -- the dictionary which contains all active connection lines for the qubit.
+        * _default_connection_pads: empty Dict -- the default values for the (if any) connection lines of the qubit.
+
+    TransmonPocket Options:
+        * pos_x: '0um' -- where the center of the pocket should be located on chip
+        * pos_y: '0um' -- where the center of the pocket should be located on chip
+        * pad_gap: '30um' -- the distance between the two charge islands, which is also the resulting 'length' of the pseudo junction
+        * inductor_width: '20um' -- width of the pseudo junction between the two charge islands (if in doubt, make the same as pad_gap). Really just for simulating in HFSS / other EM software
+        * pad_width: '455um' -- the width (x-axis) of the charge island pads
+        * pad_height: '90um' -- the size (y-axis) of the charge island pads
+        * pocket_width: '650um' -- size of the pocket (cut out in ground) along x-axis
+        * pocket_height: '650um' -- size of the pocket (cut out in ground) along y-axis
+        * orientation: '0' -- degree of qubit rotation
+        * _default_connection_pads: Dict
+            * pad_gap: '15um' -- space between the connector pad and the charge island it is nearest to
+            * pad_width: '125um' -- width (x-axis) of the connector pad
+            * pad_height: '30um' -- height (y-axis) of the connector pad
+            * pad_cpw_shift: '5um' -- shift the connector pad cpw line by this much away from qubit
+            * pad_cpw_extent: '25um' -- shift the connector pad cpw line by this much away from qubit
+            * cpw_width: 'cpw_width' -- center trace width of the CPW line
+            * cpw_gap: 'cpw_gap' -- dielectric gap width of the CPW line
+            * cpw_extend: '100um' -- depth the connector line extense into ground (past the pocket edge)
+            * pocket_extent: '5um' -- How deep into the pocket should we penetrate with the cpw connector (into the fround plane)
+            * pocket_rise: '65um' -- How far up or downrelative to the center of the transmon should we elevate the cpw connection point on the ground plane
+            * loc_W: '+1' -- width location  only +-1
+            * loc_H: '+1' -- height location only +-1
+
+    Options:
+        * make_CL: True
+        * cl_gap: '6um' -- The cpw dielectric gap of the charge line
+        * cl_width: '10um' -- The cpw trace width of the charge line
+        * cl_length: '20um'
+        * cl_ground_gap: '6um' -- How much ground between the charge line and the qubit pocket
+        * cl_pocket_edge: '0'
+        * cl_off_center: '50um' -- Distance from the center axis the qubit pocket is built on
     """
     component_metadata = Dict(short_name='Q', _qgeometry_table_poly='True')
     """Component metadata"""
