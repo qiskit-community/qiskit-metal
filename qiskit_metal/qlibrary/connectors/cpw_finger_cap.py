@@ -11,10 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-'''
-@date: 2021
-@author: Thomas McConkey 2021-02-21
-'''
 
 from qiskit_metal import draw, Dict
 from qiskit_metal.qlibrary.base import QComponent

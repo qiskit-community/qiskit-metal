@@ -12,11 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 '''
-@date: 2021
-@author: Thomas McConkey
-
-
-
 Child of transmon cross, adds a flux line (galvanic T) to the arm with the DC SQUID
 '''
 # pylint: disable=invalid-name

@@ -12,10 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 '''
-@date: 2021
-@author:Thomas McConkey & Zlatko K Minev 2021-02-21 -----
-
-
 .. code-block::
      _________________________________
     |______ ____    _|_    __________|          
