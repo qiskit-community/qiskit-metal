@@ -59,8 +59,6 @@ class ElementsWindow(QMainWindow):
         self.ui = Ui_ElementsWindow()
         self.ui.setupUi(self)
 
-        #self.populate_combo_element()
-
         self.statusBar().hide()
 
         self.model = ElementTableModel(gui, self)
