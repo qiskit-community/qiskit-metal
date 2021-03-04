@@ -89,24 +89,21 @@ class QAnsysRenderer(QRenderer):
 
     #: Default options, over-written by passing ``options` dict to render_options.
     #: Type: Dict[str, str]
-
     # yapf: disable
     default_options = Dict(
-        Lj='10nH',  # Lj has units of nanoHenries (nH)
-        Cj=0,  # Cj *must* be 0 for pyEPR analysis! Cj has units of femtofarads (fF)
-        _Rj=0,  # _Rj *must* be 0 for pyEPR analysis! _Rj has units of Ohms
-        max_mesh_length_jj='7um',  # maximum mesh length for Josephson junction elements
-        project_path=None,  # default project path; if None --> get active
-        project_name=None,  # default project name
-        design_name=None,  # default design name
-        # Ansys file extension for 2016 version and newer
-        ansys_file_extension='.aedt',
-        # bounding_box_scale_x = 1.2, # Ratio of 'main' chip width to bounding box width
-        # bounding_box_scale_y = 1.2, # Ratio of 'main' chip length to bounding box length
-        x_buffer_width_mm=0.2,  # Buffer between max/min x and edge of ground plane, in mm
-        y_buffer_width_mm=0.2,  # Buffer between max/min y and edge of ground plane, in mm
+        Lj='10nH', # Lj has units of nanoHenries (nH)
+        Cj=0, # Cj *must* be 0 for pyEPR analysis! Cj has units of femtofarads (fF)
+        _Rj=0, # _Rj *must* be 0 for pyEPR analysis! _Rj has units of Ohms
+        max_mesh_length_jj='7um', # maximum mesh length for Josephson junction elements
+        project_path=None, # default project path; if None --> get active
+        project_name=None, # default project name
+        design_name=None, # default design name
+        ansys_file_extension='.aedt', # Ansys file extension for 2016 version and newer
+        x_buffer_width_mm=0.2, # Buffer between max/min x and edge of ground plane, in mm
+        y_buffer_width_mm=0.2, # Buffer between max/min y and edge of ground plane, in mm
     )
-    # yapf:enable
+    # yapf: enable
+
     NAME_DELIM = r'_'
 
     name = 'ansys'

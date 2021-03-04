@@ -175,7 +175,8 @@ class TestRenderers(unittest.TestCase):
         options = renderer.hfss_options
 
         self.assertEqual(renderer.name, 'hfss')
-        self.assertEqual(len(options), 0)
+        self.assertEqual(len(options), 1)
+        self.assertEqual(options['port_inductor_gap'], '10um')
 
     def test_renderer_gdsrenderer_options(self):
         """
