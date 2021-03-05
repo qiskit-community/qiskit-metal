@@ -85,6 +85,18 @@ class QAnsysRenderer(QRenderer):
     """
     Extends QRenderer to export designs to Ansys using pyEPR.
     The methods which a user will need for Ansys export should be found within this class.
+
+    Default Options:
+        * Lj: '10nH' -- Lj has units of nanoHenries (nH)
+        * Cj: 0 -- Cj *must* be 0 for pyEPR analysis! Cj has units of femtofarads (fF)
+        * _Rj: 0 -- _Rj *must* be 0 for pyEPR analysis! _Rj has units of Ohms
+        * max_mesh_length_jj: '7um' -- Maximum mesh length for Josephson junction elements
+        * project_path: None -- Default project path; if None --> get active
+        * project_name: None -- Default project name
+        * design_name: None -- Default design name
+        * ansys_file_extension: '.aedt' -- Ansys file extension for 2016 version and newer
+        * x_buffer_width_mm: 0.2 -- Buffer between max/min x and edge of ground plane, in mm
+        * y_buffer_width_mm: 0.2 -- Buffer between max/min y and edge of ground plane, in mm
     """
 
     #: Default options, over-written by passing ``options` dict to render_options.

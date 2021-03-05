@@ -25,23 +25,15 @@ class BaseQubit(QComponent):
 
     Inherits components.QComponent class
 
-    options_connection_pads (Dict): None, provides easy way to pass connection pads
-                            which merely update self.options.connection_pads
-
-    Default Options:
-        ._default_connection_pads : the default values for the (if any) connection lines of the qubit.
-
-        .connection_pads : the dictionary which contains all active connection lines for the qubit.
-        The structure should follow the format of .connection_pads = dict{name_of_connection_pad=dict{},
-        name_of_connection_pad2 = dict{value1 = X,value2 = Y...},...etc.}
-
-        When you define your custom qubit class please add a _default_connection_pads
-        dictionary names as described above.
-
-
     GUI interfaceing
         _img : set the name of the file such as 'Metal_Object.png'. YOu must place this
         file in the qiskit_metal._gui._imgs directory
+
+    Default Options:
+        * pos_x: '0um'
+        * pos_y: '0um'
+        * connection_pads: empty Dict -- The dictionary which contains all active connection lines for the qubit.
+        * _default_connection_pads: empty Dict -- The default values for the (if any) connection lines of the qubit.
     '''
 
     _img = 'Metal_Qubit.png'

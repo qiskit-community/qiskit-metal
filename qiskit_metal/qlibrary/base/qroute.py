@@ -59,27 +59,24 @@ class QRoute(QComponent):
         (x,y coordinates) and one direction, which is that of the last point in the array
         Values are stored as np.ndarray of parsed floats or np.array float pair
 
-    Options:
-
-    Pins:
-        * start_pin       - component and pin string pair. Define which pin to start from
-        * end_pin         - (optional) component and pin string pair. Define which pin to end at
-
-    Leads:
-        * start_straight  - lead-in, defined as the straight segment extension from start_pin (default: 0.1um)
-        * end_straight    - (optional) lead-out, defined as the straight segment extension from end_pin (default: 0.1um)
-        * start_jogged_extension   - (optional) lead-in, jogged extension of lead-in. Described as list of tuples
-        * end_jogged_extension     - (optional) lead-out, jogged extension of lead-out. Described as list of tuples
-
-    Others:
-        * snap            - true/false, defines if snapping on Manhattan routing or any direction (default: 'true')
-        * total_length    - target length of the overall route (default: '7mm')
-        * chip            - which chip is this component attached to (default: 'main')
-        * layer           - which layer this component should be rendered on (default: '1')
-        * trace_width     - defines the width of the line (default: 'cpw_width')
-        * trace_gap       - (only exists for type="CPW") defines the gap between the route wire
-                            and the ground plane (default: 'cpw_gap')
-
+    Default Options:
+        * pin_inputs: Dict
+            * start_pin: Dict -- Component and pin string pair. Define which pin to start from
+                * component: '' -- Name of component to start from, which has a pin
+                * pin: '' -- Name of pin used for pin_start
+            * end_pin=Dict -- Component and pin string pair. Define which pin to start from
+                * component: '' -- Name of component to end on, which has a pin
+                * pin: '' -- Name of pin used for pin_end
+        * fillet: '0'
+        * lead: Dict
+            * start_straight: '0mm' -- Lead-in, defined as the straight segment extension from start_pin (default: 0.1um)
+            * end_straight: '0mm' -- Lead-out, defined as the straight segment extension from end_pin (default: 0.1um)
+            * start_jogged_extension: '' -- Lead-in, jogged extension of lead-in. Described as list of tuples
+            * end_jogged_extension: '' -- Lead-out, jogged extension of lead-out. Described as list of tuples
+        * total_length: '7mm'
+        * chip: 'main' -- Which chip is this component attached to (default: 'main')
+        * layer: '1' -- Which layer this component should be rendered on (default: '1')
+        * trace_width: 'cpw_width' -- Defines the width of the line (default: 'cpw_width')
     """
 
     component_metadata = Dict(short_name='route')
