@@ -162,9 +162,30 @@ class TestRenderers(unittest.TestCase):
 
         self.assertEqual(renderer.name, 'q3d')
 
-        self.assertEqual(len(options), 2)
+        self.assertEqual(len(options), 4)
+        self.assertEqual(len(options['add_setup']), 12)
+        self.assertEqual(len(options['get_capacitance_matrix']), 3)
         self.assertEqual(options['material_type'], 'pec')
         self.assertEqual(options['material_thickness'], '200nm')
+
+        self.assertEqual(options['add_setup']['freq_ghz'], '5.0')
+        self.assertEqual(options['add_setup']['name'], 'Setup')
+        self.assertEqual(options['add_setup']['save_fields'], 'False')
+        self.assertEqual(options['add_setup']['enabled'], 'True')
+        self.assertEqual(options['add_setup']['max_passes'], '15')
+        self.assertEqual(options['add_setup']['min_passes'], '2')
+        self.assertEqual(options['add_setup']['min_converged_passes'], '2')
+        self.assertEqual(options['add_setup']['percent_error'], '0.5')
+        self.assertEqual(options['add_setup']['percent_refinement'], '30')
+        self.assertEqual(options['add_setup']['auto_increase_solution_order'],
+                         'True')
+        self.assertEqual(options['add_setup']['solution_order'], 'High')
+        self.assertEqual(options['add_setup']['solver_type'], 'Iterative')
+
+        self.assertEqual(options['get_capacitance_matrix']['variation'], '')
+        self.assertEqual(options['get_capacitance_matrix']['solution_kind'],
+                         'AdaptivePass')
+        self.assertEqual(options['get_capacitance_matrix']['pass_number'], '3')
 
     def test_renderer_hfss_render_options(self):
         """
@@ -175,8 +196,29 @@ class TestRenderers(unittest.TestCase):
         options = renderer.hfss_options
 
         self.assertEqual(renderer.name, 'hfss')
-        self.assertEqual(len(options), 1)
+        self.assertEqual(len(options), 3)
+        self.assertEqual(len(options['drivenmodal_setup']), 8)
+        self.assertEqual(len(options['eigenmode_setup']), 9)
         self.assertEqual(options['port_inductor_gap'], '10um')
+
+        self.assertEqual(options['drivenmodal_setup']['freq_ghz'], '5')
+        self.assertEqual(options['drivenmodal_setup']['name'], "Setup")
+        self.assertEqual(options['drivenmodal_setup']['max_delta_s'], '0.1')
+        self.assertEqual(options['drivenmodal_setup']['max_passes'], '10')
+        self.assertEqual(options['drivenmodal_setup']['min_passes'], '1')
+        self.assertEqual(options['drivenmodal_setup']['min_converged'], '1')
+        self.assertEqual(options['drivenmodal_setup']['pct_refinement'], '30')
+        self.assertEqual(options['drivenmodal_setup']['basis_order'], '1')
+
+        self.assertEqual(options['eigenmode_setup']['name'], "Setup")
+        self.assertEqual(options['eigenmode_setup']['min_freq_ghz'], '1')
+        self.assertEqual(options['eigenmode_setup']['n_modes'], '1')
+        self.assertEqual(options['eigenmode_setup']['max_delta_f'], '0.5')
+        self.assertEqual(options['eigenmode_setup']['max_passes'], '10')
+        self.assertEqual(options['eigenmode_setup']['min_passes'], '1')
+        self.assertEqual(options['eigenmode_setup']['min_converged'], '1')
+        self.assertEqual(options['eigenmode_setup']['pct_refinement'], '30')
+        self.assertEqual(options['eigenmode_setup']['basis_order'], '-1')
 
     def test_renderer_gdsrenderer_options(self):
         """

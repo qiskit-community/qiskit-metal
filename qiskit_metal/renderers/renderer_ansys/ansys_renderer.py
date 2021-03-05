@@ -33,6 +33,7 @@ from qiskit_metal.draw.utility import to_vec3D
 from qiskit_metal.draw.basic import is_rectangle
 from qiskit_metal.renderers.renderer_base import QRenderer
 from qiskit_metal.toolbox_python.utility_functions import toggle_numbers, bad_fillet_idxs
+from qiskit_metal.toolbox_metal.parsing import is_true
 
 from qiskit_metal import Dict
 
@@ -103,16 +104,34 @@ class QAnsysRenderer(QRenderer):
     #: Type: Dict[str, str]
     # yapf: disable
     default_options = Dict(
-        Lj='10nH', # Lj has units of nanoHenries (nH)
-        Cj=0, # Cj *must* be 0 for pyEPR analysis! Cj has units of femtofarads (fF)
-        _Rj=0, # _Rj *must* be 0 for pyEPR analysis! _Rj has units of Ohms
-        max_mesh_length_jj='7um', # maximum mesh length for Josephson junction elements
-        project_path=None, # default project path; if None --> get active
-        project_name=None, # default project name
-        design_name=None, # default design name
-        ansys_file_extension='.aedt', # Ansys file extension for 2016 version and newer
-        x_buffer_width_mm=0.2, # Buffer between max/min x and edge of ground plane, in mm
-        y_buffer_width_mm=0.2, # Buffer between max/min y and edge of ground plane, in mm
+        Lj='10nH',  # Lj has units of nanoHenries (nH)
+        Cj=0,  # Cj *must* be 0 for pyEPR analysis! Cj has units of femtofarads (fF)
+        _Rj=0,  # _Rj *must* be 0 for pyEPR analysis! _Rj has units of Ohms
+        max_mesh_length_jj='7um',  # maximum mesh length for Josephson junction elements
+        project_path=None,  # default project path; if None --> get active
+        project_name=None,  # default project name
+        design_name=None,  # default design name
+        # Ansys file extension for 2016 version and newer
+        ansys_file_extension='.aedt',
+        # bounding_box_scale_x = 1.2, # Ratio of 'main' chip width to bounding box width
+        # bounding_box_scale_y = 1.2, # Ratio of 'main' chip length to bounding box length
+        x_buffer_width_mm=0.2,  # Buffer between max/min x and edge of ground plane, in mm
+        y_buffer_width_mm=0.2,  # Buffer between max/min y and edge of ground plane, in mm
+        plot_ansys_fields_options = Dict(
+            name="NAME:Mag_E1",
+            UserSpecifyName='0',
+            UserSpecifyFolder='0',
+            QuantityName= "Mag_E",
+            PlotFolder= "E Field",
+            StreamlinePlot= "False",
+            AdjacentSidePlot= "False",
+            FullModelPlot= "False",
+            IntrinsicVar= "Phase=\'0deg\'",
+            PlotGeomInfo_0= "1",
+            PlotGeomInfo_1= "Surface",
+            PlotGeomInfo_2= "FacesList",
+            PlotGeomInfo_3= "1",
+        ),
     )
     # yapf: enable
 
@@ -276,7 +295,13 @@ class QAnsysRenderer(QRenderer):
 
         if self.pinfo:
             if self.pinfo.project:
-                # TODO: Handle case when design does not EXIST?!?!?
+                all_designs_names = self.pinfo.project.get_design_names()
+                if design_name not in all_designs_names:
+                    self.logger.warning(
+                        f'The design_name={design_name} is not in project.  Connection did not happen.'
+                    )
+                    return
+
                 try:
                     self.pinfo.connect_design(design_name)
                     self.pinfo.connect_setup()
@@ -311,45 +336,142 @@ class QAnsysRenderer(QRenderer):
             if self.pinfo.design:
                 return self.pinfo.design.modeler
 
-    def plot_ansys_fields(self, object_name: str):
-        """Plot fields in Ansys.
+    def plot_ansys_fields(
+        self,
+        object_name: str,
+        name: str = None,
+        UserSpecifyName: int = None,
+        UserSpecifyFolder: int = None,
+        QuantityName: str = None,
+        PlotFolder: str = None,
+        StreamlinePlot: bool = None,
+        AdjacentSidePlot: bool = None,
+        FullModelPlot: bool = None,
+        IntrinsicVar: str = None,
+        PlotGeomInfo_0: int = None,
+        PlotGeomInfo_1: str = None,
+        PlotGeomInfo_2: str = None,
+        PlotGeomInfo_3: int = None,
+    ):
+        """Plot fields in Ansys. The options are populated by the component's options.
 
         Args:
             object_name (str): Used to plot on faces of.
+            name (str, optional): "NAME:<PlotName>" Defaults to None.
+            UserSpecifyName (int, optional): 0 if default name for plot is used, 1 otherwise. Defaults to None.
+            UserSpecifyFolder (int, optional): 0 if default folder for plot is used, 1 otherwise. Defaults to None.
+            QuantityName (str, optional): Type of plot to create. Possible values are: 
+            Mesh plots: "Mesh"
+            Field plots: "Mag_E", "Mag_H", "Mag_Jvol", "Mag_Jsurf","ComplexMag_E", "ComplexMag_H", 
+            "ComplexMag_Jvol", "ComplexMag_Jsurf", "Vector_E", "Vector_H", "Vector_Jvol", "Vector_Jsurf", 
+            "Vector_RealPoynting","Local_SAR", "Average_SAR". Defaults to None.
+            PlotFolder (str, optional): Name of the folder to which the plot should be added. Possible values 
+            are: "E Field",  "H Field", "Jvol", "Jsurf", "SARField", and "MeshPlots". Defaults to None.
+            StreamlinePlot (bool, optional): Passed to CreateFieldPlot. Defaults to None.
+            AdjacentSidePlot (bool, optional): Passed to CreateFieldPlot. Defaults to None.
+            FullModelPlot (bool, optional): Passed to CreateFieldPlot. Defaults to None.
+            IntrinsicVar (str, optional): Formatted string that specifies the frequency and phase 
+            at which to make the plot.  For example: "Freq='1GHz' Phase='30deg'" Defaults to None.
+            PlotGeomInfo_0 (int, optional): 0th entry in list for "PlotGeomInfo:=", <PlotGeomArray>. Defaults to None.
+            PlotGeomInfo_1 (str, optional): 1st entry in list for "PlotGeomInfo:=", <PlotGeomArray>. Defaults to None.
+            PlotGeomInfo_2 (str, optional): 2nd entry in list for "PlotGeomInfo:=", <PlotGeomArray>. Defaults to None.
+            PlotGeomInfo_3 (int, optional): 3rd entry in list for "PlotGeomInfo:=", <PlotGeomArray>. Defaults to None.
 
         Returns:
-            NoneType: Return information from oFieldsReport.CreateFieldPlot(). The method CreateFieldPlot() always returns None.
+            NoneType: Return information from oFieldsReport.CreateFieldPlot(). 
+            The method CreateFieldPlot() always returns None.
         """
         if not self.pinfo:
+            self.logger.warning('pinfo is None.')
             return
-        elif not self.pinfo.design:
+
+        if self.pinfo.design:
+            if not self.pinfo.design._fields_calc:
+                self.logger.warning('The _fields_calc in design is None.')
+                return
+            if not self.pinfo.design._modeler:
+                self.logger.warning('The _modeler in design is None.')
+                return
+        else:
+            self.logger.warning('The design in pinfo is None.')
             return
+
+        if not self.pinfo.setup:
+            self.logger.warning('The setup in pinfo is None.')
+            return
+
         #TODO: This is just a prototype - should add features and flexibility.
         oFieldsReport = self.pinfo.design._fields_calc  #design.GetModule("FieldsReporter")
         oModeler = self.pinfo.design._modeler  #design.SetActiveEditor("3D Modeler")
         setup = self.pinfo.setup
 
-        # Object ID - use tro plot on faces of
+        # Object ID - use to plot on faces of
         object_id = oModeler.GetObjectIDByName(object_name)
         # Can also use hfss.pinfo.design._modeler.GetFaceIDs("main")
-        # TODO: Allow all these need to be customizable, esp QuantityName
+
+        paf = self.options['plot_ansys_fields_options']
+
+        if not name:
+            name = self.parse_value(paf['name'])
+
+        # Name of the solution setup and solution formatted as:"<SolveSetupName> : <WhichSolution>",
+        # where <WhichSolution> can be "Adaptive_<n>", "LastAdaptive", or "PortOnly".
+        # HFSS requires a space on either side of the ‘:’ character.
+        # If it is missing, the plot will not be created.
+        SolutionName = f"{setup.name} : LastAdaptive"
+        if not UserSpecifyName:
+            UserSpecifyName = int(self.parse_value(paf['UserSpecifyName']))
+        if not UserSpecifyFolder:
+            UserSpecifyFolder = int(self.parse_value(paf['UserSpecifyFolder']))
+        if not QuantityName:
+            QuantityName = self.parse_value(paf['QuantityName'])
+        if not PlotFolder:
+            PlotFolder = self.parse_value(paf['PlotFolder'])
+        if not StreamlinePlot:
+            StreamlinePlot = is_true(self.parse_value(paf['StreamlinePlot']))
+        if not AdjacentSidePlot:
+            AdjacentSidePlot = is_true(self.parse_value(
+                paf['AdjacentSidePlot']))
+        if not FullModelPlot:
+            FullModelPlot = is_true(self.parse_value(paf['FullModelPlot']))
+        if not IntrinsicVar:
+            IntrinsicVar = self.parse_value(paf['IntrinsicVar'])
+        if not PlotGeomInfo_0:
+            PlotGeomInfo_0 = int(self.parse_value(paf['PlotGeomInfo_0']))
+        if not PlotGeomInfo_1:
+            PlotGeomInfo_1 = self.parse_value(paf['PlotGeomInfo_1'])
+        if not PlotGeomInfo_2:
+            PlotGeomInfo_2 = self.parse_value(paf['PlotGeomInfo_2'])
+        if not PlotGeomInfo_3:
+            PlotGeomInfo_3 = int(self.parse_value(paf['PlotGeomInfo_3']))
+
+        # used to pass to CreateFieldPlot
+        # Copied from  pdf at http://www.ece.uprm.edu/~rafaelr/inel6068/HFSS/scripting.pdf
+        #<PlotGeomArray>Array(<NumGeomTypes>, <GeomTypeData>,<GeomTypeData>, ...)
+        # For example:
+        # Array(4, "Volume", "ObjList", 1, "Box1","Surface", "FacesList", 1, "12", "Line", 1,"Polyline1",
+        #       "Point", 2, "Point1", "Point2"
+        PlotGeomInfo = [
+            PlotGeomInfo_0, PlotGeomInfo_1, PlotGeomInfo_2, PlotGeomInfo_3,
+            str(object_id)
+        ]
 
         # yapf: disable
-        return oFieldsReport.CreateFieldPlot(
-            [
-                "NAME:Mag_E1"        ,
-                "SolutionName:="     ,  f"{setup.name} : LastAdaptive",  # name of the setup 
-                "UserSpecifyName:="  , 0,
-                "UserSpecifyFolder:=", 0,
-                "QuantityName:="     , "Mag_E",
-                "PlotFolder:="       , "E Field",
-                "StreamlinePlot:="   , False,
-                "AdjacentSidePlot:=" , False,
-                "FullModelPlot:="    , False,
-                "IntrinsicVar:="     , "Phase=\'0deg\'",
-                "PlotGeomInfo:="     , [1, "Surface", "FacesList", 1, str(object_id)],
-            ],  "Field")
+        args_list = [
+                name                 ,
+                "SolutionName:="     , SolutionName,  # name of the setup 
+                "UserSpecifyName:="  , UserSpecifyName ,
+                "UserSpecifyFolder:=", UserSpecifyFolder,
+                "QuantityName:="     , QuantityName,
+                "PlotFolder:="       , PlotFolder,
+                "StreamlinePlot:="   , StreamlinePlot,
+                "AdjacentSidePlot:=" , AdjacentSidePlot,
+                "FullModelPlot:="    , FullModelPlot,
+                "IntrinsicVar:="     , IntrinsicVar,
+                "PlotGeomInfo:="     , PlotGeomInfo,
+            ]
         #yapf: enable
+        return oFieldsReport.CreateFieldPlot(args_list, "Field")
 
     def plot_ansys_delete(self, names: list):
         """
