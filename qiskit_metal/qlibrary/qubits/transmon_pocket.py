@@ -76,13 +76,13 @@ class TransmonPocket(BaseQubit):
     .. image::
         QComponent_Qubit_Transmon_Pocket.png
 
-    Options:
+    BaseQubit Default Options:
         * pos_x: '0um'
         * pos_y: '0um'
         * connection_pads: empty Dict -- The dictionary which contains all active connection lines for the qubit.
         * _default_connection_pads: empty Dict -- The default values for the (if any) connection lines of the qubit.
 
-    Options:
+    Default Options:
         * pos_x: '0um' -- Where the center of the pocket should be located on chip
         * pos_y: '0um' -- Where the center of the pocket should be located on chip
         * pad_gap: '30um' -- The distance between the two charge islands, which is also the resulting 'length' of the pseudo junction

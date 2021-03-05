@@ -32,13 +32,13 @@ class TransmonConcentric(BaseQubit):
     .. image::
         QComponent_TransmonConcentric.png
 
-    BaseQubit Options:
+    BaseQubit Default Options:
         * pos_x: '0um'
         * pos_y: '0um'
         * connection_pads: empty Dict -- the dictionary which contains all active connection lines for the qubit.
         * _default_connection_pads: empty Dict -- the default values for the (if any) connection lines of the qubit.
 
-    Options:
+    Default Options:
         * width: '1000um' -- Width of transmon pocket
         * height: '1000um' -- Height of transmon pocket
         * layer: '1'

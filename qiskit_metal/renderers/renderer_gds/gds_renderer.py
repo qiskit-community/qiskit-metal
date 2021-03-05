@@ -73,7 +73,7 @@ class QGDSRenderer(QRenderer):
         * 10 Polygon
         * 11 Flexpath
 
-    Options:
+    Default Options:
         * short_segments_to_not_fillet: 'True'
         * check_short_segments_by_scaling_fillet: '2.0'
         * gds_unit: '1'

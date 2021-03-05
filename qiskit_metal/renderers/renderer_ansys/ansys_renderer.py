@@ -86,7 +86,7 @@ class QAnsysRenderer(QRenderer):
     Extends QRenderer to export designs to Ansys using pyEPR.
     The methods which a user will need for Ansys export should be found within this class.
 
-    Options:
+    Default Options:
         * Lj: '10nH' -- Lj has units of nanoHenries (nH)
         * Cj: 0 -- Cj *must* be 0 for pyEPR analysis! Cj has units of femtofarads (fF)
         * _Rj: 0 -- _Rj *must* be 0 for pyEPR analysis! _Rj has units of Ohms

@@ -30,12 +30,12 @@ class RoutePathfinder(RouteAnchors):
     2. Checks if connect_simple is valid each time we pop from the heap. If so, use it, otherwise proceed with A*.
     3. Tweaks connect_simple to account for end anchor direction in determining which CPW (elbow or S-segment) to use.
 
-    RouteAnchors Options:
+    RouteAnchors Default Options:
         * anchors: OrderedDict -- Intermediate anchors only; doesn't include endpoints
         * advanced: Dict
             * avoid_collision: 'false' -- true/false, defines if the route needs to avoid collisions
 
-    Options:
+    Default Options:
         * step_size: '0.25mm' -- Length of the step for the A* pathfinding algorithm
         * advanced: Dict
             * avoid_collision: 'true' -- true/false, defines if the route needs to avoid collisions

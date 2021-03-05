@@ -100,7 +100,7 @@ class RouteAnchors(QRoute):
     """
     Creates and connects a series of anchors through which the Route passes.
 
-    QRoute Options:
+    QRoute Default Options:
         * pin_inputs: Dict
             * start_pin: Dict -- Component and pin string pair. Define which pin to start from
                 * component: '' -- Name of component to start from, which has a pin
@@ -119,7 +119,7 @@ class RouteAnchors(QRoute):
         * layer: '1' -- Which layer this component should be rendered on (default: '1')
         * trace_width: 'cpw_width' -- Defines the width of the line (default: 'cpw_width')
 
-    Options:
+    Default Options:
         * anchors: OrderedDict -- Intermediate anchors only; doesn't include endpoints
         * advanced: Dict
             * avoid_collision: 'false' -- true/false, defines if the route needs to avoid collisions (default: 'false')

@@ -21,7 +21,7 @@ class RectangleHollow(QComponent):
 
     Inherits QComponent class
 
-    Options:
+    Default Options:
         * width: '500um'
         * height: '300um'
         * pos_x: '0um'

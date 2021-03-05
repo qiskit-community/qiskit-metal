@@ -22,7 +22,7 @@ class NGon(QComponent):
 
     Inherits `QComponent` class
 
-    Options:
+    Default Options:
         Convention: Values (unless noted) are strings with units included,
         (e.g., '30um')
 

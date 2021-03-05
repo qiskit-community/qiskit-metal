@@ -26,7 +26,7 @@ class CircleRaster(QComponent):
 
     Inherits QComponent class
 
-    Options:
+    Default Options:
         * radius: '300um'
         * pos_x: '0um'
         * pos_y: '0um'

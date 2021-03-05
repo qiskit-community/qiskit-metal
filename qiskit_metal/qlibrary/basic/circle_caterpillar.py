@@ -26,7 +26,7 @@ class CircleCaterpillar(QComponent):
 
     Inherits QComponent class
 
-    Options:
+    Default Options:
         * segments: '5'
         * distance: '1.2'
         * radius: '300um'

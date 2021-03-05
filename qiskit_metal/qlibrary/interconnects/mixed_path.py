@@ -30,12 +30,12 @@ class RouteMixed(RoutePathfinder, RouteMeander):
     Description:
         Implements fully featured Routing, allowing different type of connections between anchors
 
-    RoutePathfinder Options:
+    RoutePathfinder Default Options:
         * anchors: OrderedDict -- Intermediate anchors only; doesn't include endpoints
         * advanced: Dict
             * avoid_collision: 'false' -- true/false, defines if the route needs to avoid collisions (default: 'false')
 
-    RouteMeander Options:
+    RouteMeander Default Options:
         * pin_inputs: Dict
             * start_pin: Dict -- Component and pin string pair. Define which pin to start from
                 * component: '' -- Name of component to start from, which has a pin
@@ -54,19 +54,19 @@ class RouteMixed(RoutePathfinder, RouteMeander):
         * layer: '1' -- Which layer this component should be rendered on
         * trace_width: 'cpw_width' -- Defines the width of the line
 
-    RoutePathfinder Options:
+    RoutePathfinder Default Options:
         * step_size: '0.25mm' -- Length of the step for the A* pathfinding algorithm
         * advanced: Dict
             * avoid_collision: 'true' -- true/false, defines if the route needs to avoid collisions (default: 'true')
 
-    RouteMeander Options:
+    RouteMeander Default Options:
         * meander: Dict
             * spacing: '200um' -- Minimum spacing between adjacent meander curves
             * asymmetry='0um' -- Offset between the center-line of the meander and the center-line that stretches from the tip of lead-in to the x (or y) coordinate of the tip of the lead-out (default: '0um')
         * snap: 'true'
         * prevent_short_edges: 'true'
 
-    Options:
+    Default Options:
         * between_anchors: Empty OrderedDict -- Intermediate anchors only; doesn't include endpoints
     """
 

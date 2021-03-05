@@ -24,10 +24,6 @@ class CapThreeFingers(QComponent):
 
     Inherits QComponent class
 
-    Options:
-        Convention: Values (unless noted) are strings with units included,
-        (e.g., '30um')
-
     Capacitor Metal Geometry and Ground Cutout Pocket:
         * finger length  - length of each finger
         * pocket_buffer_width_x - sets size of pocket in +-x direction, added to cap size
@@ -60,7 +56,7 @@ class CapThreeFingers(QComponent):
     .. image::
         ThreeFingerCap_V1.png
 
-    Options:
+    Default Options:
         * layer: '1'
         * trace_width: '10um'
         * finger_length: '65um'

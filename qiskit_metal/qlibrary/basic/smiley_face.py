@@ -25,7 +25,7 @@ class SmileyFace(QComponent):
     """TEST COMPONENT It is for fun only.  Can view a 
     smiley face. Can make it wink or frown.
 
-    Options:
+    Default Options:
         * happy: True
         * wink: False
         * orientation: 0

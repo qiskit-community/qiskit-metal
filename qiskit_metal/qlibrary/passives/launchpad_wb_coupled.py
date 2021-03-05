@@ -43,14 +43,6 @@ class LaunchpadWirebondCoupled(QComponent):
         (0,0) point is the midpoint of the necking of the launch tip.
         Pocket is a negative shape that is cut out of the ground plane
 
-    Options:
-        * pos_x / pos_y   - where the center of the pocket should be located on chip
-        * orientation     - degree of launch pad rotation
-        * trace_width    - center trace width of the terminating transmission line
-        * trace_gap      - gap of the transmission line
-        * lead_length    - length of the cpw line attached to the end of the launch pad
-        * coupler_length - distance between the necking and the end of the coupler external finger
-
     Values (unless noted) are strings with units included, (e.g., '30um')
 
     Sketch:
@@ -73,14 +65,14 @@ class LaunchpadWirebondCoupled(QComponent):
     .. image::
         LaunchpadWirebondCoupled.png
 
-    Options:
+    Default Options:
         * layer: '1'
-        * trace_width: 'cpw_width'
-        * trace_gap: 'cpw_gap'
-        * coupler_length: '62.5um'
-        * lead_length: '25um'
-        * pos_x: '0um'
-        * pos_y: '0um'
+        * trace_width: 'cpw_width' -- center trace width of the terminating transmission line
+        * trace_gap: 'cpw_gap' -- gap of the transmission line
+        * coupler_length: '62.5um' -- distance between the necking and the end of the coupler external finger
+        * lead_length: '25um' -- length of the cpw line attached to the end of the launch pad
+        * pos_x: '0um' -- where the center of the pocket should be located on chip
+        * pos_y: '0um' -- where the center of the pocket should be located on chip
         * orientation: '0' -- 90 for 90 degree turn
     """
 

@@ -36,7 +36,7 @@ class QHFSSRenderer(QAnsysRenderer):
     """
     Subclass of QAnsysRenderer for running HFSS simulations.
 
-    QAnsysRenderer Options:
+    QAnsysRenderer Default Options:
         * Lj: '10nH' -- Lj has units of nanoHenries (nH)
         * Cj: 0 -- Cj *must* be 0 for pyEPR analysis! Cj has units of femtofarads (fF)
         * _Rj: 0 -- _Rj *must* be 0 for pyEPR analysis! _Rj has units of Ohms

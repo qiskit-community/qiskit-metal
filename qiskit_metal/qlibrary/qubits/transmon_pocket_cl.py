@@ -75,13 +75,13 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
           -180 to +180 from the 'west edge', will round to the nearest 90.
         * cl_off_center (string):  Distance from the center axis the qubit pocket is referenced to
 
-    BaseQubit Options:
+    BaseQubit Default Options:
         * pos_x: '0um'
         * pos_y: '0um'
         * connection_pads: empty Dict -- The dictionary which contains all active connection lines for the qubit.
         * _default_connection_pads: empty Dict -- The default values for the (if any) connection lines of the qubit.
 
-    TransmonPocket Options:
+    TransmonPocket Default Options:
         * pos_x: '0um' -- Where the center of the pocket should be located on chip
         * pos_y: '0um' -- Where the center of the pocket should be located on chip
         * pad_gap: '30um' -- The distance between the two charge islands, which is also the resulting 'length' of the pseudo junction
@@ -105,7 +105,7 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
             * loc_W: '+1' -- Width location  only +-1
             * loc_H: '+1' -- Height location only +-1
 
-    Options:
+    Default Options:
         * make_CL: True
         * cl_gap: '6um' -- The cpw dielectric gap of the charge line
         * cl_width: '10um' -- The cpw trace width of the charge line

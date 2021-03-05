@@ -37,7 +37,7 @@ class ResonatorRectangleSpiral(QComponent):
             |  |______________|
             |
 
-    Options:
+    Default Options:
         Convention: Values (unless noted) are strings with units included,
         (e.g., '30um')
 

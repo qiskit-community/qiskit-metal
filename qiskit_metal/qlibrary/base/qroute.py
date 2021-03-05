@@ -59,7 +59,7 @@ class QRoute(QComponent):
         (x,y coordinates) and one direction, which is that of the last point in the array
         Values are stored as np.ndarray of parsed floats or np.array float pair
 
-    Options:
+    Default Options:
         * pin_inputs: Dict
             * start_pin: Dict -- Component and pin string pair. Define which pin to start from
                 * component: '' -- Name of component to start from, which has a pin

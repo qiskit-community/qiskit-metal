@@ -29,7 +29,7 @@ class BaseQubit(QComponent):
         _img : set the name of the file such as 'Metal_Object.png'. YOu must place this
         file in the qiskit_metal._gui._imgs directory
 
-    Options:
+    Default Options:
         * pos_x: '0um'
         * pos_y: '0um'
         * connection_pads: empty Dict -- The dictionary which contains all active connection lines for the qubit.
