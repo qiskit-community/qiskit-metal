@@ -387,7 +387,7 @@ class PlotCanvas(FigureCanvas):
                                            logger=logger)
 
         # self.plot()
-        self.welcome_message()
+        # self.welcome_message()
 
     def set_design(self, design: QDesign):
         """Set the design
