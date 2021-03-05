@@ -13,8 +13,6 @@
 # that they have been altered from the originals.
 """
 Initialize default renderers for Metal
-
-@author: Zlatko
 """
 
 from .. import config

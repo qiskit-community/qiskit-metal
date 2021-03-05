@@ -11,10 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-'''
-@date: Aug-2020
-@author: Marco Facchini, John Blair, Zlatko Minev
-'''
 
 from typing import List, Tuple, Union
 
@@ -37,18 +33,31 @@ class RouteMeander(QRoute):
     Description:
         Implements a simple CPW, with a single meander
 
-    Options:
+    QRoute Default Options:
+        * pin_inputs: Dict
+            * start_pin: Dict -- Component and pin string pair. Define which pin to start from
+                * component: '' -- Name of component to start from, which has a pin
+                * pin: '' -- Name of pin used for pin_start
+            * end_pin=Dict -- Component and pin string pair. Define which pin to start from
+                * component: '' -- Name of component to end on, which has a pin
+                * pin: '' -- Name of pin used for pin_end
+        * fillet: '0'
+        * lead: Dict
+            * start_straight: '0mm' -- Lead-in, defined as the straight segment extension from start_pin (default: 0.1um)
+            * end_straight: '0mm' -- Lead-out, defined as the straight segment extension from end_pin (default: 0.1um)
+            * start_jogged_extension: '' -- Lead-in, jogged extension of lead-in. Described as list of tuples
+            * end_jogged_extension: '' -- Lead-out, jogged extension of lead-out. Described as list of tuples
+        * total_length: '7mm'
+        * chip: 'main' -- Which chip is this component attached to (default: 'main')
+        * layer: '1' -- Which layer this component should be rendered on (default: '1')
+        * trace_width: 'cpw_width' -- Defines the width of the line (default: 'cpw_width')
 
-    Meander:
-        * spacing         - minimum spacing between adjacent meander curves (default: 200um)
-        * asymmetry       - offset between the center-line of the meander and the center-line
-          that stretches from the tip of lead-in to the x (or y) coordinate
-          of the tip of the lead-out (default: '0um')
-
-    Leads:
-        * start_jogged_extension   - (optional) lead-in, jogged extension of lead-in. Described as list of tuples
-        * end_jogged_extension     - (optional) lead-in, jogged extension of lead-out. Described as list of tuples
-
+    Default Options:
+        * meander: Dict
+            * spacing: '200um' -- Minimum spacing between adjacent meander curves (default: 200um)
+            * asymmetry='0um' -- offset between the center-line of the meander and the center-line that stretches from the tip of lead-in to the x (or y) coordinate of the tip of the lead-out (default: '0um')
+        * snap: 'true'
+        * prevent_short_edges: 'true'
     """
 
     component_metadata = Dict(short_name='cpw')
@@ -382,7 +391,8 @@ class RouteMeander(QRoute):
             pass
         # if end_pt.position is above axes - shift + 2xfillet &  not last_meander_sideways
         elif not last_meander_sideways and self.issideways(
-                end_pt_adjusted_down, pts[-2 - term_point], pts[-1 - term_point]):
+                end_pt_adjusted_down, pts[-2 - term_point],
+                pts[-1 - term_point]):
             pass
         else:
             # else block last mender
@@ -396,7 +406,7 @@ class RouteMeander(QRoute):
             # ...unless the last point is anchored to the last meander curve
             if start_pt.direction is not None and end_pt.direction is not None:
                 if ((mao.dot(start_pt.direction, end_pt.direction) < 0) and
-                        (mao.dot(forward, start_pt.direction) <= 0)):
+                    (mao.dot(forward, start_pt.direction) <= 0)):
                     # pins are pointing opposite directions and diverging, thus keep consistency
                     adjustment_vector[-1] = adjustment_vector[-2]
                     if adjustment_vector[-1]:
@@ -405,8 +415,9 @@ class RouteMeander(QRoute):
                         not_a_meander = 1
 
         # Finally, divide the slack amongst all points...
-        sideways_adjustment = sideways * (delta_length /
-                                          (np.count_nonzero(adjustment_vector) - not_a_meander))
+        sideways_adjustment = sideways * (
+            delta_length /
+            (np.count_nonzero(adjustment_vector) - not_a_meander))
         pts = pts + sideways_adjustment[
             np.newaxis, :] * adjustment_vector[:, np.newaxis]
 

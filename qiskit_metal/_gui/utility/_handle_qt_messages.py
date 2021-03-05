@@ -13,8 +13,6 @@
 # that they have been altered from the originals.
 """
 This is a utility module used to handle qt error messages on slots and etc.
-
-@author: Zlatko K. Minev
 """
 
 import inspect

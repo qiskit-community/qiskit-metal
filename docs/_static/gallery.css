@@ -17,7 +17,7 @@ Tested for Read the Docs theme 0.1.7 */
   position: relative;
 }
 .sphx-glr-thumbcontainer:hover {
-  border: solid #fb8122 1px;
+  border: solid #6200EE 1px;
   box-shadow: 0 0 15px rgba(163, 142, 202, 0.5);
 }
 .sphx-glr-thumbcontainer a.internal {

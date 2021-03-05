@@ -15,9 +15,6 @@
 # pylint: disable=protected-access
 '''
 Math and override functions
-
-@author: Marco Facchini (IBM)
-@date: 2020-10
 '''
 
 import numpy as np

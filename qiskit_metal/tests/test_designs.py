@@ -20,9 +20,6 @@
 #pylint: disable-msg=invalid-name
 """
 Qiskit Metal unit tests analyses functionality.
-
-Created on Wed Apr 22 10:03:35 2020
-@author: Jeremy D. Drysdale
 """
 
 import unittest

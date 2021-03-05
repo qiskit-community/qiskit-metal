@@ -66,6 +66,8 @@ docs/_build/
 docs/.buildingdocs
 docs/stubs
 docs/build/doctrees
+docs/tut/**/*.png
+docs/circuit-examples/**/*.png
 
 # PyBuilder
 target/

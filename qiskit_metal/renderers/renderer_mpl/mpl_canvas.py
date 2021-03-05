@@ -12,8 +12,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 """
-@author: Zlatko Minev, ... (IBM)
-@date: 2019
+MPL Canvas
 """
 import logging
 import random
@@ -388,7 +387,7 @@ class PlotCanvas(FigureCanvas):
                                            logger=logger)
 
         # self.plot()
-        self.welcome_message()
+        # self.welcome_message()
 
     def set_design(self, design: QDesign):
         """Set the design

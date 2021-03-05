@@ -16,10 +16,6 @@
 """
 Main module for basic geometric manipulation of non-shapely objects,
 but objects such as points and arrays used in drawing.
-
-@date: 2019
-
-@author: Zlatko Minev (IBM)
 """
 
 import math

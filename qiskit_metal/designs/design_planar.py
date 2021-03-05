@@ -13,10 +13,6 @@
 # that they have been altered from the originals.
 """
 Module containing Basic Qiskit Metal Planar (2D) design for CPW type geometry.
-
-@date: 2019
-
-@author: Zlatko Minev, Thomas McConkey, ... (IBM)
 """
 
 from .design_base import QDesign, Dict

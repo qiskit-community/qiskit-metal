@@ -11,10 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-'''
-@date: Sept-2020
-@author: Marco Facchini
-'''
 
 import numpy as np
 from qiskit_metal import Dict
@@ -34,14 +30,44 @@ class RouteMixed(RoutePathfinder, RouteMeander):
     Description:
         Implements fully featured Routing, allowing different type of connections between anchors
 
-    Options:
+    RoutePathfinder Default Options:
+        * anchors: OrderedDict -- Intermediate anchors only; doesn't include endpoints
+        * advanced: Dict
+            * avoid_collision: 'false' -- true/false, defines if the route needs to avoid collisions (default: 'false')
 
-    Meander:
-        * spacing         - minimum spacing between adjacent meander curves (default: 200um)
-        * asymmetry       - offset between the center-line of the meander and the center-line
-          that stretches from the tip of lead-in to the x (or y) coordinate
-          of the tip of the lead-out (default: '0um')
+    RouteMeander Default Options:
+        * pin_inputs: Dict
+            * start_pin: Dict -- Component and pin string pair. Define which pin to start from
+                * component: '' -- Name of component to start from, which has a pin
+                * pin: '' -- Name of pin used for pin_start
+            * end_pin=Dict -- Component and pin string pair. Define which pin to start from
+                * component: '' -- Name of component to end on, which has a pin
+                * pin: '' -- Name of pin used for pin_end
+        * fillet: '0'
+        * lead: Dict
+            * start_straight: '0mm' -- Lead-in, defined as the straight segment extension from start_pin (default: 0.1um)
+            * end_straight: '0mm' -- Lead-out, defined as the straight segment extension from end_pin (default: 0.1um)
+            * start_jogged_extension: '' -- Lead-in, jogged extension of lead-in. Described as list of tuples
+            * end_jogged_extension: '' -- Lead-out, jogged extension of lead-out. Described as list of tuples
+        * total_length: '7mm'
+        * chip: 'main' -- Which chip is this component attached to
+        * layer: '1' -- Which layer this component should be rendered on
+        * trace_width: 'cpw_width' -- Defines the width of the line
 
+    RoutePathfinder Default Options:
+        * step_size: '0.25mm' -- Length of the step for the A* pathfinding algorithm
+        * advanced: Dict
+            * avoid_collision: 'true' -- true/false, defines if the route needs to avoid collisions (default: 'true')
+
+    RouteMeander Default Options:
+        * meander: Dict
+            * spacing: '200um' -- Minimum spacing between adjacent meander curves
+            * asymmetry='0um' -- Offset between the center-line of the meander and the center-line that stretches from the tip of lead-in to the x (or y) coordinate of the tip of the lead-out (default: '0um')
+        * snap: 'true'
+        * prevent_short_edges: 'true'
+
+    Default Options:
+        * between_anchors: Empty OrderedDict -- Intermediate anchors only; doesn't include endpoints
     """
 
     default_options = Dict(
@@ -107,7 +133,8 @@ class RouteMixed(RoutePathfinder, RouteMeander):
         self.trim_pts()
         dictionary_intermediate_pts = self.intermediate_pts
         self.intermediate_pts = np.concatenate(list(
-            self.intermediate_pts.values()), axis=0)
+            self.intermediate_pts.values()),
+                                               axis=0)
 
         if any(count_meanders_list):
             # refine length of meanders

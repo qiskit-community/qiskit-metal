@@ -12,8 +12,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 """
-@author: Zlatko Minev, ... (IBM)
-@date: 2019
+QRendererGui Base
 """
 
 from ...designs import QDesign, is_design

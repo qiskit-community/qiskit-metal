@@ -12,11 +12,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 """
-Created 2019
-
 File contains some config definitions. Mostly internal.
-
-@author: Zlatko K. Minev
 """
 
 import logging, collections

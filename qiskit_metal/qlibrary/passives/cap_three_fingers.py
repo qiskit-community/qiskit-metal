@@ -11,10 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-'''
-@date: 2020/07/25
-@author: John Blair, Marco Facchini
-'''
 
 from qiskit_metal import draw
 from qiskit_metal.toolbox_python.attr_dict import Dict
@@ -27,10 +23,6 @@ class CapThreeFingers(QComponent):
     the fingers is determined by the trace width.
 
     Inherits QComponent class
-
-    Options:
-        Convention: Values (unless noted) are strings with units included,
-        (e.g., '30um')
 
     Capacitor Metal Geometry and Ground Cutout Pocket:
         * finger length  - length of each finger
@@ -64,6 +56,15 @@ class CapThreeFingers(QComponent):
     .. image::
         ThreeFingerCap_V1.png
 
+    Default Options:
+        * layer: '1'
+        * trace_width: '10um'
+        * finger_length: '65um'
+        * pocket_buffer_width_x: '10um'
+        * pocket_buffer_width_y: '30um'
+        * pos_x: '100um'
+        * pos_y: '100um'
+        * orientation: '0'
     """
 
     #  Define structure functions

@@ -12,14 +12,12 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 """Main module that handles the elements window inside the main window.
-@author: Zlatko Minev
-@date: 2020
 """
 
 from typing import TYPE_CHECKING
 
 import numpy as np
-from PySide2 import QtCore
+from PySide2 import QtCore, QtWidgets
 from PySide2.QtCore import QAbstractTableModel, QModelIndex
 from PySide2.QtWidgets import QMainWindow
 
@@ -69,6 +67,17 @@ class ElementsWindow(QMainWindow):
         """Returns the design"""
         return self.gui.design
 
+    def populate_combo_element(self):
+        """Populate the combo elements
+        """
+        for table_type in self.design.qgeometry.tables.keys():
+            if self.ui.combo_element_type.findText(
+                    table_type) == -1:  # not in combo box, add it
+                self.ui.combo_element_type.addItem(
+                    str(
+                        QtWidgets.QApplication.translate(
+                            "ElementsWindow", table_type, None, -1)))
+
     def combo_element_type(self, new_type: str):
         """Change to the given type
 
@@ -81,6 +90,7 @@ class ElementsWindow(QMainWindow):
     def force_refresh(self):
         """Force a refresh"""
         self.model.refresh()
+        self.populate_combo_element()
 
 
 class ElementTableModel(QAbstractTableModel):

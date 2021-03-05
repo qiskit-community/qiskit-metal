@@ -12,8 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 """Main module that handles a component  inside the main window.
-@author: Zlatko Minev
-@date: 2020
 """
 
 import ast

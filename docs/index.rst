@@ -76,16 +76,27 @@ Qiskit-metal is licensed under Apache 2.0. IBM reserves no copyright over output
 .. toctree::
     :maxdepth: 2
     :caption: Tutorials
-    :hidden:
 
-.. TODO: Add jupyter notebooks here
+    Overview<tut/tutorials/index.rst>
 
 .. toctree::
     :maxdepth: 2
     :caption: Libraries
     :hidden:
 
-    Quantum devices<apidocs/qlibrary>
+    Quantum Devices<apidocs/qlibrary>
+
+.. toctree::
+    :maxdepth: 2
+    :caption: Circuit Example Library
+    :hidden:
+
+    Qubits<circuit-examples/qubits/index>
+    Resonators<circuit-examples/resonators/index>
+    Composite Bi-Partite Systems Comprising Qubit and Resonator<circuit-examples/composite-bi-partite/index>
+    Qubit Couplers<circuit-examples/qubit-couplers/index>
+    Input-Output Coupling<circuit-examples/input-output-coupling/index>
+    Small Quantum Chips<circuit-examples/small-quantum-chips/index>
 
 .. toctree::
     :maxdepth: 2

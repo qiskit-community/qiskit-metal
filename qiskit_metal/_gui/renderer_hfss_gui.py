@@ -11,10 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-'''
-@date: 2020
-@author: Dennis Wang
-'''
 
 from PySide2.QtWidgets import (QAbstractItemView, QMainWindow, QMessageBox)
 
@@ -98,12 +94,13 @@ class RendererHFSSWidget(QMainWindow):
         """
         components_to_render = self.get_checked()
         if components_to_render:
-            txt = self.ui.solnComboBox.currentText() # solution type - eigenmode or driven modal
-            self.endcap_hfss_window = EndcapHFSSWidget(self, self._gui, components_to_render, txt)
+            txt = self.ui.solnComboBox.currentText(
+            )  # solution type - eigenmode or driven modal
+            self.endcap_hfss_window = EndcapHFSSWidget(self, self._gui,
+                                                       components_to_render,
+                                                       txt)
             self.endcap_hfss_window.show()
             self.close()
         else:
-            QMessageBox.warning(
-                self, "Error",
-                "Please select at least one component."
-            )
+            QMessageBox.warning(self, "Error",
+                                "Please select at least one component.")
