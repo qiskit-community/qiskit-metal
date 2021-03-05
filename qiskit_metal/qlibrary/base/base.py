@@ -68,7 +68,7 @@ class QComponent():
         * The class define the internal representation of a components
         * The class provides the interfaces for the component (creator user)
 
-    Default options:
+    Default Options:
         Nested default options can be overwritten with the update function.
         The following code demonstrates how the update works.
 

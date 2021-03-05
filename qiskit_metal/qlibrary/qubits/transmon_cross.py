@@ -35,24 +35,6 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
         Add connectors to it using the `connection_pads` dictonary. See BaseQubit for more
         information.
 
-    Options:
-        Convention: Values (unless noted) are strings with units included, (e.g., '30um')
-
-    Main Body:
-        pos_x / pos_y - where the center of the Crossmon should be located on chip
-        cross_width - width of the CPW center trace making up the Crossmon
-        cross_length - length of one Crossmon arm (from center)
-        cross_gap - width of the CPW gap making up the Crossmon
-        orientation - how to orient the qubit and connectors in the end (where the +X vector should point, '+X', '-X','+Y','-Y')
-
-    Connectors:
-        connectorType - string of '0' for 'Claw' or '1' for 'Gap' to define which type of connector is used.
-        claw_length - length of the claw 'arms', measured from the connector center trace
-        ground_spacing - amount of ground plane between the connector and Crossmon arm (minimum should be based on fabrication capabilities)
-        claw_width - the width of the CPW center trace making up the claw/gap connector
-        claw_gap - the gap of the CPW center trace making up the claw/gap connector
-        connector_location - string of '0', '90', or '180' degrees, which of the three arms where a given connector should be (South is for the junction)
-
     Sketch:
         Below is a sketch of the qubit
         ::
@@ -67,6 +49,27 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
 
     .. image::
         QComponent_Qubit_Transmon_Crossmon.png
+
+    BaseQubit Default Options:
+        * pos_x: '0um' -- where the center of the Crossmon should be located on chip
+        * pos_y: '0um' -- where the center of the Crossmon should be located on chip
+        * connection_pads: empty Dict -- the dictionary which contains all active connection lines for the qubit.
+        * _default_connection_pads: empty Dict -- the default values for the (if any) connection lines of the qubit.
+
+    Default Options:
+        * pos_x: '0um' -- where the center of the Crossmon should be located on chip
+        * pos_y: '0um' -- where the center of the Crossmon should be located on chip
+        * cross_width: '20um' -- width of the CPW center trace making up the Crossmon
+        * cross_length: '200um' -- length of one Crossmon arm (from center)
+        * cross_gap: '20um' -- width of the CPW gap making up the Crossmon
+        * orientation: '0' -- how to orient the qubit and connectors in the end (where the +X vector should point, '+X', '-X','+Y','-Y')
+        * _default_connection_pads: Dict
+            * connector_type: '0' -- 0 = Claw type, 1 = gap type
+            * claw_length: '30um' -- length of the claw 'arms', measured from the connector center trace
+            * ground_spacing: '5um' -- amount of ground plane between the connector and Crossmon arm (minimum should be based on fabrication capabilities)
+            * claw_width: '10um' -- the width of the CPW center trace making up the claw/gap connector
+            * claw_gap: '6um' -- the gap of the CPW center trace making up the claw/gap connector
+            * connector_location: '0' -- 0 => 'west' arm, 90 => 'north' arm, 180 => 'east' arm
     """
 
     #_img = 'Metal_Crossmon.png'

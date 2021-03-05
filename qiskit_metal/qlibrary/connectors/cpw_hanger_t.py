@@ -35,22 +35,24 @@ class CPWHangerT(QComponent):
         |
         +
 
-    Options:
-        * prime_width: the width of the trace of the two pin CPW transmission line
-        * prime_gap: the dielectric gap of the two pin CPW transmission line
-        * second_width: the width of the trace of the one pin CPW transmission line
-        * second_gap: the dielectric gap of the one pin CPW transmission line
-        * coupling_space: the amound of ground plane between the two transmission lines
-        * coupling_length: the length of parallel between the two transmission lines
+    Default Options:
+        * prime_width: '10um' -- The width of the trace of the two pin CPW transmission line
+        * prime_gap: '6um' -- The dielectric gap of the two pin CPW transmission line
+        * second_width: '10um' -- The width of the trace of the one pin CPW transmission line
+        * second_gap: '6um' -- The dielectric gap of the one pin CPW transmission line
+        * coupling_space: '3um' -- The amound of ground plane between the two transmission lines
+        * coupling_length: '100um' -- The length of parallel between the two transmission lines
           note: this includes the distance of the curved second of the second line
-        * pos_x/_y: the x/y position of the ground termination.
-        * rotation: the direction of the termination. 0 degrees is +x, following a
+        * fillet: '25um'
+        * pos_x: '0um' -- The x position of the ground termination.
+        * pos_y: '0um' -- The y position of the ground termination.
+        * rotation: '0' -- The direction of the termination. 0 degrees is +x, following a
           counter-clockwise rotation (eg. 90 is +y)
-        * mirror: flips the hanger around the y-axis
-        * open_termination: sets if the termination of the second line at the coupling side
+        * mirror: False -- Flips the hanger around the y-axis
+        * open_termination: True -- sets if the termination of the second line at the coupling side
           is an open to ground or short to ground
-        * chip: the chip the pin should be on.
-        * layer: layer the pin is on. Does not have any practical impact to the short.
+        * chip: 'main' -- The chip the pin should be on.
+        * layer: '1' -- Layer the pin is on. Does not have any practical impact to the short.
     """
     component_metadata = Dict(short_name='cpw')
     """Component metadata"""
