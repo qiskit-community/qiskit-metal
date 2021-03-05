@@ -108,4 +108,13 @@ else:
 
 os.chdir(pwd)
 
+# for local build, copy from _build to build directory
+print("Copying locally to build directory\n")
+import shutil
+original = Path(pwd, 'docs', '_build')
+destination = Path(pwd, 'docs', 'build')
+if os.path.exists(destination):
+    shutil.rmtree(destination)
+shutil.copytree(original, destination)
+
 print("Build Complete!")

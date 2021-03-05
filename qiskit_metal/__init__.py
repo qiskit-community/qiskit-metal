@@ -76,7 +76,7 @@ def __setup_Qt_backend():
             # AA_DontUseNativeMenuBar
             # AA_MacDontSwapCtrlAndMeta
 
-    if 1:
+    if not os.getenv('QISKIT_METAL_HEADLESS', None):
         import matplotlib as mpl
         mpl.use("Qt5Agg")
         import matplotlib.pyplot as plt
