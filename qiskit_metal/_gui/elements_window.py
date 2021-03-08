@@ -168,10 +168,6 @@ class ElementTableModel(QAbstractTableModel):
         """
         Update row count etc.
         """
-        # We could not do if the widget is hidden - TODO: speed performace?
-
-        # TODO: This should probably just be on a global timer for all changes detect
-        # and then update all accordingly
         new_count = self.rowCount()
 
         # if the number of rows have changed
@@ -183,7 +179,6 @@ class ElementTableModel(QAbstractTableModel):
             # This includes but is not limited to the rowCount() and
             # columnCount(), flags(), data retrieved through data(), and roleNames().
             # This will loose the current selection.
-            # TODO: This seems overkill to just change the total number of rows?
             self.modelReset.emit()
 
             self._row_count = new_count

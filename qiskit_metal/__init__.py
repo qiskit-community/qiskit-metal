@@ -104,12 +104,9 @@ from .toolbox_python.attr_dict import Dict
 # Due to order of imports
 from ._is_design import is_design, is_component
 
-# TODO: Remove the as global variables, just use in design when
-# instanciating the default params and overwriting them.
-
 # Core modules for user to use
 from .toolbox_metal.parsing import is_true
-from . import qlibrary  #TODO: slow to import? why
+from . import qlibrary
 from . import designs
 from . import draw
 from . import renderers

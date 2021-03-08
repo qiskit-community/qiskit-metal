@@ -20,7 +20,6 @@ from copy import deepcopy
 from .toolbox_python.attr_dict import Dict
 
 
-# TODO: Handle access to missing options - ie throw a warning or error message
 class DefaultMetalOptions(Dict):
     """
     `DefaultMetalOptions` is the container for the default options used in:
@@ -31,7 +30,6 @@ class DefaultMetalOptions(Dict):
         generic (Dict): Dictionary of options (default: None)
     """
 
-    # TODO: not sure what example genetic means? can we find a better name
     default_generic = Dict(
         units='mm',  # Units in which all dimenions are converted as floats
         chip=
