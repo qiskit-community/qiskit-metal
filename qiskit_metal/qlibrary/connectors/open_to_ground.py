@@ -19,7 +19,7 @@ from qiskit_metal.qlibrary.base import QComponent
 class OpenToGround(QComponent):
     """A basic open to ground termination. Functions as a pin for auto drawing.
 
-    Inherits `QComponent` class
+    Inherits `QComponent` class.
 
     Default Options:
         * width: '10um' -- The width of the 'cpw' terminating to ground (this is merely
@@ -49,7 +49,7 @@ class OpenToGround(QComponent):
     """Default connector options"""
 
     def make(self):
-        """Build the component"""
+        """Build the component."""
         p = self.p  # p for parsed parameters. Access to the parsed options.
 
         port_line = draw.LineString([(0, -p.width / 2), (0, p.width / 2)])

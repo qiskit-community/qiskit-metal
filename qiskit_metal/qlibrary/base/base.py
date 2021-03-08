@@ -326,7 +326,7 @@ class QComponent():
             Arguments:
                 design (QDesign): The parent design
                 template_key (str): Key to use
-                component_template (dict): template of components to copy, with renderer options
+                component_template (dict): Template of components to copy, with renderer options
         """
         # do not overwrite
         if template_key not in design.template_options:
@@ -344,7 +344,7 @@ class QComponent():
 
     @property
     def name(self) -> str:
-        '''Name of the component'''
+        '''Name of the component.'''
         return self._name
 
     @name.setter
@@ -363,7 +363,7 @@ class QComponent():
 
     @property
     def design(self) -> 'QDesign':
-        '''Return a reference to the parent design object
+        '''Return a reference to the parent design object.
 
         Returns:
             QDesign: design
@@ -376,25 +376,25 @@ class QComponent():
         e.g., qiskit_metal.qlibrary.qubits.TransmonPocket
 
         Returns:
-            str: class name
+            str: Class name
         '''
         return self._class_name
 
     @property
     def logger(self) -> logging.Logger:
-        """The Qiskit Metal Logger
+        """The Qiskit Metal Logger.
 
         Returns:
-            logging.Logger: logger
+            logging.Logger: Logger
         """
         return self._design.logger
 
     @property
     def pin_names(self) -> set:
-        '''The names of the pins
+        '''The names of the pins.
 
         Returns:
-            set: set of pin names
+            set: Set of pin names
         '''
         return set(self.pins.keys())
 
@@ -403,7 +403,7 @@ class QComponent():
         '''The unique id of component within a design.
 
         Returns:
-            int: component id
+            int: Component id
         '''
         return self._id
 
@@ -471,7 +471,7 @@ class QComponent():
         return template_options
 
     def _delete_evaluation(self, check_name: str = None):
-        """design.overwrite_enabled allows user to delete an existing component within
+        """When design.overwrite_enabled, the user is allowed to delete an existing component within
         the design if the name is being used.
 
         Args:
@@ -529,6 +529,9 @@ class QComponent():
         It sets to `failed` when the component is created, and then it sets to `good` when it is
         done with no errors. The user can also set other statuses, which can appear if the code fails
         to reach the final line of the build, where the build status is set to `good`.
+
+        Raises:
+            Exception: Component build failure
         """
         self.status = 'failed'
         try:
@@ -571,7 +574,7 @@ class QComponent():
         This is the main parsing function of Qiskit Metal.
 
         Arguments:
-            value (str): string to parse *or*
+            value (str): String to parse *or*
             variable_dict (dict): dict pointer of variables
 
         Return:
@@ -608,8 +611,6 @@ class QComponent():
         Examples:
             See the docstring for this module.
                 >> ?qiskit_metal.toolbox_metal.parsing
-
-
         """
         return self.design.parse_value(value)
 
@@ -620,8 +621,7 @@ class QComponent():
         Explained by example below.
 
         Arguments:
-            options (dict) : default is None. If left None,
-                             then self.options is used
+            options (dict) : If left None, then self.options is used (Default: None)
 
         Returns:
             dict: Parsed value
@@ -630,14 +630,13 @@ class QComponent():
 
         See `self.parse_value` for more information.
         """
-
         return self.design.parse_value(options if options else self.options)
 
     def _is_name_used(self, check_name: str) -> int:
         """Used to check if name of component already exists.
 
         Args:
-            check_name (str):  Name which user requested to apply to current component.
+            check_name (str): Name which user requested to apply to current component.
 
         Returns:
             int: 0 if does not exist, otherwise
@@ -771,7 +770,7 @@ class QComponent():
         self.pins[name] = pin_dict
 
     def get_pin(self, name: str) -> Dict:
-        """Interface for components to get pin data
+        """Interface for components to get pin data.
 
         Args:
             name (str): Name of the desired pin.
@@ -786,11 +785,12 @@ class QComponent():
         """Checks that the pin_inputs are valid, sets an error message indicating what the
         error is if the inputs are not valid.
         Checks regardless of user passing the component name or component id (probably a smoother way
-        to do this check)
+        to do this check).
+
         3 Error cases:
-        - Component does not exist
-        - Pin does not exist
-        - Pin is already attached to something
+            - Component does not exist
+            - Pin does not exist
+            - Pin is already attached to something
 
         Returns:
             str: Status test, or None
@@ -1092,7 +1092,7 @@ class QComponent():
 
     def qgeometry_bounds(self) -> Tuple:
         """
-        Fetched the component bound dict_value
+        Fetched the component bound dict_value.
 
         Returns:
             tuple: containing (minx, miny, maxx, maxy) bound values for the bounds of the
@@ -1107,10 +1107,10 @@ class QComponent():
     def qgeometry_plot(self,
                        ax: 'matplotlib.axes.Axes' = None,
                        plot_kw: dict = None) -> List:
-        """    Draw all the qgeometry of the component (polys and path etc.)
+        """ Draw all the qgeometry of the component (polys and path etc.)
 
         Arguments:
-            ax (matplotlib.axes.Axes):  Matplotlib axis to draw on (Default: None -- gets the current axis)
+            ax (matplotlib.axes.Axes): Matplotlib axis to draw on (Default: None -- gets the current axis)
             plot_kw (dict): Parameters dictionary
 
         Returns:

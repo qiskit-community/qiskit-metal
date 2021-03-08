@@ -30,13 +30,13 @@ import geopandas as gpd
 
 def intersecting(a: np.array, b: np.array, c: np.array, d: np.array) -> bool:
     """Returns whether segment ab intersects or overlaps with segment cd, where a, b, c, and d are
-    all coordinates
+    all coordinates.
 
     Args:
-        a (np.array): coordinate
-        b (np.array): coordinate
-        c (np.array): coordinate
-        d (np.array): coordinate
+        a (np.array): Coordinate
+        b (np.array): Coordinate
+        c (np.array): Coordinate
+        d (np.array): Coordinate
 
     Returns:
         bool: True if intersecting, False otherwise
@@ -148,7 +148,7 @@ class RouteAnchors(QRoute):
 
         Args:
             segment (list): 2 vertices, in the form [np.array([x0, y0]), np.array([x1, y1])]
-            component_name (str): alphanumeric component name
+            component_name (str): Alphanumeric component name
 
         Returns:
             bool: True is no obstacles
@@ -338,7 +338,7 @@ class RouteAnchors(QRoute):
         passing through all of the given anchor points.
 
         Returns:
-            Total length (float) connecting all points in order
+            float: Total length connecting all points in order
         """
         anchors = self.parse_options().anchors
         reference = [self.head.get_tip().position]
@@ -355,7 +355,7 @@ class RouteAnchors(QRoute):
     def trim_pts(self):
         """Crops the sequence of points to concatenate. For example, if a segment between
         two anchors has no points, then the segment is eliminated (only anchor points will do).
-        Modified directly the self.intermediate_pts, thus nothing is returned
+        Modified directly the self.intermediate_pts, thus nothing is returned.
         """
         if isinstance(self.intermediate_pts, Mapping):
             keys_to_delete = set()

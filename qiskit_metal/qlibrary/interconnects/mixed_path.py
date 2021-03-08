@@ -24,11 +24,9 @@ from .pathfinder import RoutePathfinder
 # class RouteMixed(RouteFramed, RoutePathfinder, RouteMeander):
 class RouteMixed(RoutePathfinder, RouteMeander):
     """
-    The comprehensive Routing class
-    Inherits `RoutePathfinder, RouteMeander` class, thus also QRoute and RouteAnchors
-
-    Description:
-        Implements fully featured Routing, allowing different type of connections between anchors
+    Implements fully featured Routing, allowing different type of connections between anchors.
+    The comprehensive Routing class.
+    Inherits `RoutePathfinder, RouteMeander` class, thus also QRoute and RouteAnchors.
 
     RoutePathfinder Default Options:
         * anchors: OrderedDict -- Intermediate anchors only; doesn't include endpoints
@@ -163,13 +161,13 @@ class RouteMixed(RoutePathfinder, RouteMeander):
         self.make_elements(self.get_points())
 
     def select_connect_method(self, segment_num):
-        """Translates the user-selected connection method into the right method to execute
+        """Translates the user-selected connection method into the right method to execute.
 
         Args:
-            segment_num (int): segment ID. Counts 0 as the first segment after the lead-in.
+            segment_num (int): Segment ID. Counts 0 as the first segment after the lead-in.
 
         Return:
-            selected method
+            object: selected method
         """
         between_anchors = self.parse_options().between_anchors
         if segment_num in between_anchors:

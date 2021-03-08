@@ -196,7 +196,7 @@ TRUE_STR = [
 
 
 def is_true(value: Union[str, int, bool, float]) -> bool:
-    """Check if a value is true or not
+    """Check if a value is true or not.
 
     Arguments:
         value (str): Value to check
@@ -220,7 +220,7 @@ def _parse_string_to_float(expr: str):
     """Extract the value of a string.
 
     If the passed value is not convertable,
-    the input value `expr`  will just ne returned.
+    the input value `expr` will just ne returned.
 
     Note that you can also pass in some arithmetic:
         `UREG.Quantity('2*130um').to('mm').magnitude`
@@ -260,10 +260,10 @@ def is_variable_name(test_str: str):
     """Is the test string a valid name for a variable or not?
 
     Arguments:
-        test_str (str): test string
+        test_str (str): Test string
 
     Returns:
-        bool: is str a variable name
+        bool: Is str a variable name
     """
     return test_str.isidentifier()
 
@@ -271,13 +271,13 @@ def is_variable_name(test_str: str):
 def is_for_ast_eval(test_str: str):
     """
     Is the test string a valid list of dict string,
-    such as "[1, 2]", that can be evaluated by ast eval
+    such as "[1, 2]", that can be evaluated by ast eval.
 
     Arguments:
-        test_str (str): test string
+        test_str (str): Test string
 
     Returns:
-        bool: is test_str a valid list of dict strings
+        bool: Is test_str a valid list of dict strings
     """
     return ('[' in test_str and ']' in test_str) or \
            ('{' in test_str and '}' in test_str)
@@ -288,10 +288,10 @@ def is_numeric_possible(test_str: str):
     Is the test string a valid possible numerical with /or w/o units.
 
     Arguments:
-        test_str (str): test string
+        test_str (str): Test string
 
     Returns:
-        bool: is the test string a valid possible numerical
+        bool: Is the test string a valid possible numerical
     """
     return test_str[0].isdigit() or test_str[0] in ['+', '-', '.']
     # look into pyparsing
@@ -332,7 +332,7 @@ def parse_value(value: str, variable_dict: dict):
             >> ?qiskit_metal.toolbox_metal.parsing
 
     Arguments:
-        value (str): string to parse
+        value (str): String to parse
         variable_dict (dict): dict pointer of variables
 
     Return:
@@ -412,12 +412,12 @@ def parse_value(value: str, variable_dict: dict):
 def parse_options(params: dict, parse_names: str, variable_dict=None):
     """
     Calls parse_value to extract from a dictionary a small subset of values.
-    You can specify parse_names = 'x,y,z,cpw_width'
+    You can specify parse_names = 'x,y,z,cpw_width'.
 
     Args:
-        params (dict): dictionary of params
-        parse_names (str): name to parse
-        variable_dict (dict): dictionary of variables (Default: None)
+        params (dict): Dictionary of params
+        parse_names (str): Name to parse
+        variable_dict (dict): Dictionary of variables (Default: None)
     """
 
     # Prep args

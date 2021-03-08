@@ -29,7 +29,7 @@ class QRendererGui(QRenderer):
     """
 
     name = 'guibase'  # overwrite this!
-    """name"""
+    """Name"""
 
     def __init__(self, gui, design: QDesign, initiate=True, fig=None, ax=None):
         """
@@ -47,15 +47,15 @@ class QRendererGui(QRenderer):
         self.ax = None  # current ax
 
     def set_fig(self, fig):
-        """Set the given figure
+        """Set the given figure.
 
         Args:
-            fig (figure): figure to set
+            fig (figure): Figure to set
         """
         self.fig = fig
 
     def set_ax(self, ax):
-        """Set the given ax
+        """Set the given ax.
 
         Args:
             ax (ax): ax to set
@@ -63,7 +63,7 @@ class QRendererGui(QRenderer):
         self.ax = ax
 
     def setup_fig(self, fig):
-        """Setup the given figure
+        """Setup the given figure.
 
         Args:
             fig (figure): figure to setup
@@ -74,7 +74,7 @@ class QRendererGui(QRenderer):
         raise NotImplementedError()
 
     def style_axis(self, ax):
-        """Style the axis
+        """Style the axis.
 
         Args:
             ax (ax): ax to style
@@ -85,7 +85,7 @@ class QRendererGui(QRenderer):
         raise NotImplementedError()
 
     def render_design(self, selection=None):
-        """Render the design
+        """Render the design.
 
         Args:
             selection (selection): Not used
@@ -95,7 +95,7 @@ class QRendererGui(QRenderer):
             self.render_component(component)
 
     def render_component(self, component):
-        """Render the given component
+        """Render the given component.
 
         Args:
             component (QComponent): the component
@@ -106,15 +106,15 @@ class QRendererGui(QRenderer):
         raise NotImplementedError()
 
     def render_shapely(self):
-        """Render shapely
+        """Render shapely.
 
         Raises:
             NotImplementedError: Function not written yet
         """
         raise NotImplementedError()
 
-    def render_connectors(self):  # alredy covered via other code?
-        """Render connectors
+    def render_connectors(self):
+        """Render connectors.
 
         Raises:
             NotImplementedError: Function not written yet
@@ -122,7 +122,7 @@ class QRendererGui(QRenderer):
         raise NotImplementedError()
 
     def clear_axis(self):
-        """Clear the axis
+        """Clear the axis.
 
         Raises:
             NotImplementedError: Function not written yet
@@ -130,7 +130,7 @@ class QRendererGui(QRenderer):
         raise NotImplementedError()
 
     def clear_figure(self):
-        """Clear  the figure
+        """Clear  the figure.
 
         Raises:
             NotImplementedError: Function not written yet

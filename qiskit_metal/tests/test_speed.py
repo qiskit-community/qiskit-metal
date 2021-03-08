@@ -30,25 +30,25 @@ import time
 
 class TestSpeed(unittest.TestCase):
     """
-    Unit test class
+    Unit test class.
     """
 
     def setUp(self):
         """
-        Setup unit test
+        Setup unit test.
         """
         pass
 
     def tearDown(self):
         """
-        Tie any loose ends
+        Tie any loose ends.
         """
         pass
 
     @timeout(5)
     def test_example_test(self):
         """
-        Example test - Play with me to get comfortable with @timeout
+        Example test - Play with me to get comfortable with @timeout.
         """
         time.sleep(4)
 

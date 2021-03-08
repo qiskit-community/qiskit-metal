@@ -20,7 +20,7 @@ import numpy as np
 class ShortToGround(QComponent):
     """A basic short to ground termination. Functions as a pin for auto CPW drawing.
 
-    Inherits `QComponent` class
+    Inherits `QComponent` class.
 
     Default Options:
         * width: '10um' -- The width of the 'cpw' terminating to ground (this is merely for the purpose of
@@ -46,7 +46,7 @@ class ShortToGround(QComponent):
     """Default connector options"""
 
     def make(self):
-        """Build the component"""
+        """Build the component."""
         p = self.p  # p for parsed parameters. Access to the parsed options.
 
         port_line = draw.LineString([(0, -p.width / 2), (0, p.width / 2)])

@@ -83,7 +83,7 @@ class BaseQubit(QComponent):
 
     def _set_options_connection_pads(self):
         """
-        Applies the default options
+        Applies the default options.
         """
         # class_name = type(self).__name__
         assert '_default_connection_pads' in self.design.template_options[

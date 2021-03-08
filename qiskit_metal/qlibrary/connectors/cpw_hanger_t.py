@@ -77,7 +77,7 @@ class CPWHangerT(QComponent):
     """Default connector options"""
 
     def make(self):
-        """Build the component"""
+        """Build the component."""
         p = self.p
 
         prime_cpw_length = p.coupling_length * 2

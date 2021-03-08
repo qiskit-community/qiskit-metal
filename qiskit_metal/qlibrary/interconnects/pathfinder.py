@@ -48,7 +48,7 @@ class RoutePathfinder(RouteAnchors):
     def connect_astar_or_simple(self, start_pt: QRoutePoint,
                                 end_pt: QRoutePoint) -> list:
         """
-        Connect start and end via A* algo if connect_simple doesn't work
+        Connect start and end via A* algo if connect_simple doesn't work.
         
         Args:
             start_direction (np.array): Vector indicating direction of starting point

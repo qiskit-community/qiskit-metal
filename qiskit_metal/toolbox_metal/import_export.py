@@ -14,7 +14,7 @@
 
 # pylint: disable=protected-access
 '''
-Saving and load metal data
+Saving and load metal data.
 '''
 
 import pickle
@@ -26,11 +26,11 @@ __all__ = ['save_metal', 'load_metal_design']
 
 def save_metal(filename: str, design):
     """
-    Save metal
+    Save metal0
 
     Args:
-        filename (str): file path
-        design (QDesign): design obejct Metal_Design_Base
+        filename (str): File path
+        design (QDesign): Design obejct Metal_Design_Base
 
     Returns:
         bool: True is sucessful, False otherwise
@@ -67,14 +67,14 @@ def save_metal(filename: str, design):
 
 def load_metal_design(filename: str, do_update=True):
     """
-    Load metal design
+    Load metal design.
 
     Args:
-        filename (str): file path
+        filename (str): File path
         do_update (bool): True to update, False otherwsie (Default: True)
 
     Returns:
-        picked QDesign: the pickled design object and updates if asked the param dicts for defaults
+        picked QDesign: The pickled design object and updates if asked the param dicts for defaults
     """
     design = pickle.load(open(filename, "rb"))
     design.save_path = str(

@@ -138,14 +138,14 @@ class QAnsysRenderer(QRenderer):
     NAME_DELIM = r'_'
 
     name = 'ansys'
-    """name"""
+    """Name"""
 
     # When additional columns are added to QGeometry, this is the example to populate it.
     # e.g. element_extensions = dict(
     #         base=dict(color=str, klayer=int),
     #         path=dict(thickness=float, material=str, perfectE=bool),
     #         poly=dict(thickness=float, material=str), )
-    """element extensions dictionary   element_extensions = dict() from base class"""
+    """Element extensions dictionary   element_extensions = dict() from base class"""
 
     # Add columns to junction table during QAnsysRenderer.load()
     # element_extensions  is now being populated as part of load().
@@ -194,7 +194,7 @@ class QAnsysRenderer(QRenderer):
         Open a session of Ansys. Default is version 2020 R2, but can be overridden.
 
         Args:
-            path (str): path to the Ansys executable. Defaults to None
+            path (str): Path to the Ansys executable. Defaults to None
             executable (str): Name of the ansys executable. Defaults to 'reg_ansysedt.exe'
             path_var (str): Name of the OS environment variable that contains the path to the Ansys executable.
                             Only used when path=None. Defaults to 'ANSYSEM_ROOT202' (Ansys ver. 2020 R2)
@@ -232,9 +232,9 @@ class QAnsysRenderer(QRenderer):
         If the optional parameters are provided: if present, opens the project file and design in Ansys.
 
         Args:
-            project_path (str, optional): path without file name
-            project_name (str, optional): file name (with or without extension)
-            design_name (str, optional): nome of the default design to open from the project file
+            project_path (str, optional): Path without file name
+            project_name (str, optional): File name (with or without extension)
+            design_name (str, optional): Name of the default design to open from the project file
 
         """
         if not system() == 'Windows':
@@ -271,7 +271,7 @@ class QAnsysRenderer(QRenderer):
 
     def disconnect_ansys(self):
         """
-        Disconnect Ansys
+        Disconnect Ansys.
         """
         if self.pinfo:
             self.pinfo.disconnect()
@@ -281,7 +281,7 @@ class QAnsysRenderer(QRenderer):
 
     def new_ansys_project(self):
         """
-        Creates a new empty project in Ansys
+        Creates a new empty project in Ansys.
         """
         here = HfssApp()
         here.get_app_desktop().new_project()
@@ -322,7 +322,7 @@ class QAnsysRenderer(QRenderer):
 
     @property
     def pinfo(self) -> epr.ProjectInfo:
-        """Project info for Ansys renderer (class: pyEPR.ProjectInfo)"""
+        """Project info for Ansys renderer (class: pyEPR.ProjectInfo)."""
         return self._pinfo
 
     @property
@@ -330,7 +330,7 @@ class QAnsysRenderer(QRenderer):
         """ The modeler from pyEPR HfssModeler. 
 
         Returns:
-            pyEPR.ansys.HfssModeler: reference to  design.HfssModeler in Ansys.
+            pyEPR.ansys.HfssModeler: Reference to  design.HfssModeler in Ansys.
         """
         if self.pinfo:
             if self.pinfo.design:
@@ -502,8 +502,8 @@ class QAnsysRenderer(QRenderer):
         """Save the screenshot. 
 
         Args:
-            path (str, optional): [description]. Defaults to None.
-            show (bool, optional): [description]. Defaults to True.
+            path (str, optional): Path to save location (Default: None)
+            show (bool, optional): Whether or not to display the screenshot (Default: True()
 
         Returns:
             pathlib.WindowsPath: path to png formatted screenshot. 
@@ -559,7 +559,7 @@ class QAnsysRenderer(QRenderer):
         Start by initializing chip boundaries for later use.
 
         Args:
-            selection (Union[list, None], optional): List of components to render. Defaults to None.
+            selection (Union[list, None], optional): List of components to render. (Default: None)
         """
         self.min_x_main = float('inf')
         self.min_y_main = float('inf')
@@ -577,7 +577,7 @@ class QAnsysRenderer(QRenderer):
 
         Args:
             table_type (str): Table type (poly, path, or junction).
-            selection (Union[list, None], optional): List of components to render. Defaults to None.
+            selection (Union[list, None], optional): List of components to render.  (Default: None)
         """
         # Establish bounds for exported components and update these accordingly
 

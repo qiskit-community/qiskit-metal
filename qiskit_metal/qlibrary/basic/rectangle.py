@@ -20,7 +20,7 @@ from qiskit_metal.qlibrary.base import QComponent
 class Rectangle(QComponent):
     """A single configurable square.
 
-        Inherits QComponent class
+        Inherits QComponent class.
 
         The class will add default_options class Dict to QComponent class before calling make.
 

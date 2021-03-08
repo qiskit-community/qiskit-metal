@@ -26,12 +26,9 @@ from qiskit_metal.toolbox_metal.exceptions import QiskitMetalDesignError
 
 class RouteMeander(QRoute):
     """
-    The base `CPW meandered` class
+    Implements a simple CPW, with a single meander.  The base `CPW meandered` class.
 
     Inherits `QRoute` class
-
-    Description:
-        Implements a simple CPW, with a single meander
 
     QRoute Default Options:
         * pin_inputs: Dict
@@ -320,7 +317,7 @@ class RouteMeander(QRoute):
         Inputs are however specific to the one meander segment
         Assumption is that pts is always a sequence of paired points, each corresponds to one meander 180deg curve
         The pts is typically an odd count since the last point is typically used to anchor the left-over length,
-        therefore this code supports both odd and even cases, separately. For even it assumes all points are in paired
+        therefore this code supports both odd and even cases, separately. For even it assumes all points are in paired.
 
         Args:
             delta_length (delta_length): slack/excess length to distribute on the pts
@@ -426,7 +423,7 @@ class RouteMeander(QRoute):
     @staticmethod
     def get_index_for_side1_meander(num_root_pts: int):
         """
-        Get the indices
+        Get the indices.
 
         Args:
             num_root_pts (list): List of points

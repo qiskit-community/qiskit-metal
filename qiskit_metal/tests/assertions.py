@@ -16,7 +16,7 @@
 # pylint: disable-msg=invalid-name
 # pylint: disable-msg=bad-continuation
 """
-Custom assertion for unit tests
+Custom assertion for unit tests.
 """
 
 from itertools import zip_longest
@@ -24,7 +24,7 @@ from typing import Iterable, Optional
 
 
 class AssertionsMixin:
-    """Custom assertions for unit tests"""
+    """Custom assertions for unit tests."""
 
     def assertAlmostEqualRel(
         self,
@@ -35,14 +35,14 @@ class AssertionsMixin:
         rel_tol: float = 1e-7,
         abs_tol: float = 0.0,
     ):
-        """Assert tested almost equals expected
+        """Assert tested almost equals expected.
 
         Args:
-            expected (float): expected value to compare to
-            tested (float): value to compare to expected
-            msg (Optional[str]): custom message to show on failure (Default: None)
-            rel_tol (float): relative tolerance to accept (Default: 1e-7)
-            abs_tol (float): absolute tolerance to accept (Default: 0.0)
+            expected (float): Expected value to compare to
+            tested (float): Value to compare to expected
+            msg (Optional[str]): Custom message to show on failure (Default: None)
+            rel_tol (float): Relative tolerance to accept (Default: 1e-7)
+            abs_tol (float): Absolute tolerance to accept (Default: 0.0)
 
         Return:
             Exception: Failure exception, or nothing
@@ -78,14 +78,14 @@ class AssertionsMixin:
         rel_tol: float = 1e-7,
         abs_tol: float = 0.0,
     ):
-        """Assert all entries in two iterables are almost equal
+        """Assert all entries in two iterables are almost equal.
 
         Args:
-            expected (Iterable[float]): first iterable to compare
-            tested (Iterable[float]): second iterable to compare
-            msg (Optional[str]): custom message to show for failure (Default: None)
-            rel_tol (float): relative tolerance to accept (Default: 1e-7)
-            abs_tol (float): absolute tolerance to accept (Default: 0.0)
+            expected (Iterable[float]): First iterable to compare
+            tested (Iterable[float]): Second iterable to compare
+            msg (Optional[str]): Custom message to show for failure (Default: None)
+            rel_tol (float): Relative tolerance to accept (Default: 1e-7)
+            abs_tol (float): Absolute tolerance to accept (Default: 0.0)
 
         Return:
             Exception: Failure exception, or nothing

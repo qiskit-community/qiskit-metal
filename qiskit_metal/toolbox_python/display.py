@@ -113,11 +113,11 @@ def get_screenshot(self: 'QMainWindow',
     save to file, and then copy to clipboard.
 
     Args:
-        self (QMainWindow): window to take the screenshot of
-        name (str): file to save the screenshot to (Default: 'shot.png')
-        type (str): type of file to save (Default: 'png')
+        self (QMainWindow): Window to take the screenshot of
+        name (str): File to save the screenshot to (Default: 'shot.png')
+        type (str): Type of file to save (Default: 'png')
         do_display (bool): True to display the file (Default: True)
-        disp_ops (dict): disctionary of options (Default: None)
+        disp_ops (dict): Disctionary of options (Default: None)
     """
     from PySide2.QtWidgets import QApplication, QMainWindow
 
@@ -190,14 +190,14 @@ def format_dict_ala_z(dic: Dict_,
 
     Args:
         dic (dict): Dictionary to format
-        indent (int): indentation spaces (Default: 0)
-        key_width (int): width of the key (Default: 20)
+        indent (int): Indentation spaces (Default: 0)
+        key_width (int): Width of the key (Default: 20)
         do_repr (bool): True to do the cononical string representation (Default: True)
-        indent_all (int): indentation for everything (Default: 2)
-        indent_keys (int): indentation for the keys (Default: 5)
+        indent_all (int): Indentation for everything (Default: 2)
+        indent_keys (int): Indentation for the keys (Default: 5)
 
     Returns:
-        str: string repesentation of the dictionary
+        str: String repesentation of the dictionary
     """
     indent_all_full = indent_all + indent * indent_keys
 

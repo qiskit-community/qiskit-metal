@@ -32,9 +32,9 @@ class QRoutePoint:
         """
         Arguments:
             position (np.ndarray of 2 points): Center point of the pin
-            direction (np.ndarray of 2 points): (default: None) *Normal vector*
+            direction (np.ndarray of 2 points): *Normal vector*
                 This is the normal vector to the surface on which the pin mates.
-                Defines which way it points outward. Has unit norm.
+                Defines which way it points outward. Has unit norm. (Default: None) 
         """
         self.position = position
         if isinstance(position, list):
@@ -49,15 +49,12 @@ class QRoutePoint:
 
 class QRoute(QComponent):
     """
-    The super-class `QRoute`
-
+    Super-class implementing routing methods that are valid irrespective of
+    the number of pins (>=1). The route is stored in a n array of planar points
+    (x,y coordinates) and one direction, which is that of the last point in the array.
+    Values are stored as np.ndarray of parsed floats or np.array float pair
+    
     Inherits `QComponent` class
-
-    Description:
-        Super-class implementing routing methods that are valid irrespective of
-        the number of pins (>=1). The route is stored in a n array of planar points
-        (x,y coordinates) and one direction, which is that of the last point in the array
-        Values are stored as np.ndarray of parsed floats or np.array float pair
 
     Default Options:
         * pin_inputs: Dict
@@ -108,10 +105,10 @@ class QRoute(QComponent):
                  options=None,
                  type: str = "CPW",
                  **kwargs):
-        """Initializes all Routes
+        """Initializes all Routes.
 
-        Calls the QComponent __init__() to create a new Metal component
-        Before that, it adds the variables that are needed to support routing
+        Calls the QComponent __init__() to create a new Metal component.
+        Before that, it adds the variables that are needed to support routing.
 
         Arguments:
             type (string): Supports Route (single layer trace) and CPW (adds the gap around it) (default: "CPW")
@@ -143,13 +140,13 @@ class QRoute(QComponent):
         super().__init__(design, name, options, **kwargs)
 
     def _add_route_specific_options(self, options):
-        """Enriches the default_options to support different types of route styles
+        """Enriches the default_options to support different types of route styles.
 
         Args:
             options (dict): User options that will override the defaults
 
         Return:
-            a modified options dictionary
+            A modified options dictionary
 
         Raises:
             Exception: Unsupported route type
@@ -174,24 +171,24 @@ class QRoute(QComponent):
         return options
 
     def _get_connected_pin(self, pin_data: Dict):
-        """Recovers a pin from the dictionary
+        """Recovers a pin from the dictionary.
 
         Args:
             pin_data: dict {component: string, pin: string}
 
         Return:
-            the actual pin object.
+            The actual pin object.
         """
         return self.design.components[pin_data.component].pins[pin_data.pin]
 
     def set_pin(self, name: str) -> QRoutePoint:
-        """Defines the CPW pins and returns the pin coordinates and normal direction vector
+        """Defines the CPW pins and returns the pin coordinates and normal direction vector.
 
         Args:
-            name: string (supported pin names are: start, end)
+            name: String (supported pin names are: start, end)
 
         Return:
-            QRoutePoint: last point (for now the single point) in the QRouteLead
+            QRoutePoint: Last point (for now the single point) in the QRouteLead
 
         Raises:
             Exception: Ping name is not supported
@@ -221,13 +218,13 @@ class QRoute(QComponent):
         return lead.seed_from_pin(reference_pin)
 
     def set_lead(self, name: str) -> QRoutePoint:
-        """Defines the lead_extension by adding a point to the self.head/tail
+        """Defines the lead_extension by adding a point to the self.head/tail.
 
         Args:
-            name: string (supported pin names are: start, end)
+            name: String (supported pin names are: start, end)
 
         Return:
-            QRoutePoint: last point in the QRouteLead (self.head/tail)
+            QRoutePoint: Last point in the QRouteLead (self.head/tail)
 
         Raises:
             Exception: Ping name is not supported
@@ -260,13 +257,13 @@ class QRoute(QComponent):
         return lead.get_tip()
 
     def set_lead_extension(self, name: str) -> QRoutePoint:
-        """Defines the jogged lead_extension by adding a series of turns to the self.head/tail
+        """Defines the jogged lead_extension by adding a series of turns to the self.head/tail.
 
         Args:
-            name: string (supported pin names are: start, end)
+            name: String (supported pin names are: start, end)
 
         Return:
-            QRoutePoint: last point in the QRouteLead (self.head/tail)
+            QRoutePoint: Last point in the QRouteLead (self.head/tail)
 
         Raises:
             Exception: Ping name is not supported
@@ -305,10 +302,10 @@ class QRoute(QComponent):
 
     def _get_lead2pts_array(self, arr) -> Tuple:
         """Return the last "diff pts" of the array.
-        If the array is one dimensional or has only identical points, return -1 for tip_pt_minus_1
+        If the array is one dimensional or has only identical points, return -1 for tip_pt_minus_1.
 
         Return:
-            Tuple: of two np.ndarray. the arrays could be -1 instead, if point not found
+            Tuple: Of two np.ndarray. the arrays could be -1 instead, if point not found
         """
         pt = pt_minus_1 = None
         if len(arr) == 1:
@@ -331,10 +328,10 @@ class QRoute(QComponent):
         return pt, pt_minus_1
 
     def get_tip(self) -> QRoutePoint:
-        """Access the last element in the QRouteLead
+        """Access the last element in the QRouteLead.
 
         Return:
-            QRoutePoint: last point in the QRouteLead
+            QRoutePoint: Last point in the QRouteLead
             The values are numpy arrays with two float points each.
         """
         if self.intermediate_pts is None:
@@ -374,7 +371,7 @@ class QRoute(QComponent):
         return QRoutePoint(tip_pt, tip_pt - tip_pt_minus_1)
 
     def del_colinear_points(self, inarray):
-        """Delete colinear points from the given array
+        """Delete colinear points from the given array.
 
         Args:
             inarray (list): List of points
@@ -439,8 +436,8 @@ class QRoute(QComponent):
         coordinate sys.
 
         Arguments:
-            start (QRoutePoint): reference start point (direction from here)
-            end (QRoutePoint): reference end point (direction to here)
+            start (QRoutePoint): Reference start point (direction from here)
+            end (QRoutePoint): Reference end point (direction to here)
             snap (bool): True to snap to grid (default: False)
 
         Returns:
@@ -460,7 +457,7 @@ class QRoute(QComponent):
         """Sum of all segments length, including the head
 
         Return:
-            length (float): full point_array length
+            length (float): Full point_array length
         """
         # get the final points (get_point also eliminate co-linear and short edges)
         points = self.get_points()
@@ -477,10 +474,10 @@ class QRoute(QComponent):
         """Computes how much length to deduce for compensating the fillet settings
 
         Arguments:
-            points (list or array): list of vertices that will be receiving the corner rounding radius
+            points (list or array): List of vertices that will be receiving the corner rounding radius
 
         Return:
-            length_excess (float): corner rounding radius excess multiplied by the number of points
+            length_excess (float): Corner rounding radius excess multiplied by the number of points
         """
         # deduct the corner rounding (WARNING: assumes fixed fillet for all corners)
         length_arch = 0.5 * self.p.fillet * math.pi
@@ -493,7 +490,7 @@ class QRoute(QComponent):
                                    anchor_pt: QRoutePoint):
         """Method to assign a direction to a point. Currently assigned as the max(x,y projection)
         of the direct path between the reference point and the anchor. Method directly modifies
-        the anchor_pt.direction, thus there is no return value
+        the anchor_pt.direction, thus there is no return value.
 
         Arguments:
             ref_pt (QRoutePoint): Reference point
@@ -516,7 +513,7 @@ class QRoute(QComponent):
         anchor_pt.direction = assigned_direction / norm(assigned_direction)
 
     def make_elements(self, pts: np.ndarray):
-        """Turns the CPW points into design elements, and add them to the design object
+        """Turns the CPW points into design elements, and add them to the design object.
 
         Arguments:
             pts (np.ndarray): Array of points
@@ -553,10 +550,10 @@ class QRouteLead:
     """
 
     def __init__(self, *args, **kwargs):
-        """QRouteLead is a simple sequence of points
+        """QRouteLead is a simple sequence of points.
 
         Used to accurately control one of the QRoute termination points
-        Before that, it adds the variables that are needed to support routing
+        Before that, it adds the variables that are needed to support routing.
 
         Attributes:
             pts (numpy Nx2): Sequence of points (default: None)
@@ -568,14 +565,14 @@ class QRouteLead:
         self.direction = None  # will be numpy 2x1
 
     def seed_from_pin(self, pin: Dict) -> QRoutePoint:
-        """Initialize the QRouteLead by giving it a starting point and a direction
+        """Initialize the QRouteLead by giving it a starting point and a direction.
 
         Args:
             pin: object describing the "reference_pin" (not cpw_pin) this is attached to.
                 this is currently (8/4/2020) a dictionary
 
         Return:
-            QRoutePoint: last point (for now the single point) in the QRouteLead
+            QRoutePoint: Last point (for now the single point) in the QRouteLead
             The values are numpy arrays with two float points each.
         """
         position = pin['middle']
@@ -587,29 +584,29 @@ class QRouteLead:
         return QRoutePoint(position, direction)
 
     def go_straight(self, length: float):
-        """Add a point ot 'length' distance in the same direction
+        """Add a point ot 'length' distance in the same direction.
 
         Args:
-            length (float) : how much to move by
+            length (float) : How much to move by
         """
         self.pts = np.append(self.pts, [self.pts[-1] + self.direction * length],
                              axis=0)
 
     def go_left(self, length: float):
-        """Straight line 90deg counter-clock-wise direction w.r.t. lead tip direction
+        """Straight line 90deg counter-clock-wise direction w.r.t. lead tip direction.
 
         Args:
-            length (float): how much to move by
+            length (float): How much to move by
         """
         self.direction = draw.Vector.rotate(self.direction, np.pi / 2)
         self.pts = np.append(self.pts, [self.pts[-1] + self.direction * length],
                              axis=0)
 
     def go_right(self, length: float):
-        """Straight line 90deg clock-wise direction w.r.t. lead tip direction
+        """Straight line 90deg clock-wise direction w.r.t. lead tip direction.
 
         Args:
-            length (float): how much to move by
+            length (float): How much to move by
         """
         self.direction = draw.Vector.rotate(self.direction, -1 * np.pi / 2)
         self.pts = np.append(self.pts, [self.pts[-1] + self.direction * length],
@@ -617,20 +614,20 @@ class QRouteLead:
 
     @property
     def length(self):
-        """Sum of all segments length, including the head
+        """Sum of all segments length, including the head.
 
         Return:
-            length (float): full point_array length
+            length (float): Full point_array length
         """
         return sum(
             norm(self.pts[i + 1] - self.pts[i])
             for i in range(len(self.pts) - 1))
 
     def get_tip(self) -> QRoutePoint:
-        """Access the last element in the QRouteLead
+        """Access the last element in the QRouteLead.
 
         Return:
-            QRoutePoint: last point in the QRouteLead
+            QRoutePoint: Last point in the QRouteLead
             The values are numpy arrays with two float points each.
         """
         if self.pts.ndim == 1:

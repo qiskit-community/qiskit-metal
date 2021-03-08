@@ -52,7 +52,7 @@ class QRenderer():
     """
 
     name = 'base'  # overwrite this!
-    """name"""
+    """Name"""
 
     __loaded_renderers__ = set()
     __instantiated_renderers__ = dict()
@@ -64,7 +64,7 @@ class QRenderer():
     #            path=dict(thickness=float, material=str, perfectE=bool),
     #            poly=dict(thickness=float, material=str), )
     element_extensions = dict()
-    """element extensions dictionary"""
+    """Element extensions dictionary"""
 
     # TODO: To add: default parameters for the renderer for component element values.
     element_table_data = dict()
@@ -79,9 +79,6 @@ class QRenderer():
 
         Returns:
             bool: True if success, otherwise throws an error.
-
-        Raises:
-            NotImplementedError: Function not written yet
         """
 
         # Check name
@@ -219,7 +216,7 @@ class QRenderer():
 
     @classmethod
     def _get_unique_class_name(cls) -> str:
-        """Returns unique class name based on the module
+        """Returns unique class name based on the module.
 
         Returns:
             str: Example: 'qiskit_metal.renders.renderer_gds.gds_renderer.QGDSRenderer'
@@ -293,7 +290,7 @@ class QRenderer():
         """Same as design.parse_value. See design for help.
 
         Returns:
-            Parsed value of input.
+            object: Parsed value of input.
         """
         return self.design.parse_value(value)
 
@@ -309,9 +306,9 @@ class QRenderer():
 
         Args:
             render_options (Dict, optional): If user wants to over-ride the template
-                                             options. Defaults to None.
+                                             options. (Default: None)
             render_template (Dict, optional): All the template options for each child.
-                                             Defaults to None.
+                                              (Default: None)
         """
         self.options.update(
             self.get_template_options(self.design,
@@ -347,7 +344,7 @@ class QRenderer():
         Call any initiations steps required to be performed a single time before rendering,
         such as connecting to some API or COM, or importing the correct material libraries, etc.
 
-        Overwrite `initiate_renderer`
+        Overwrite `initiate_renderer`.
 
         Arguments:
             re_initiate (bool) : If False will only apply this function once.
@@ -412,6 +409,7 @@ class QRenderer():
         """
         Any calls that one may want to make after a rendering is complete.
         """
+        pass
 
     def render_design(self):
         """
@@ -433,10 +431,10 @@ class QRenderer():
         raise NotImplementedError()
 
     def render_chip(self, name):
-        """Render the given chip
+        """Render the given chip.
 
         Args:
-            name (str): chip to render
+            name (str): Chip to render
 
         Raises:
             NotImplementedError: Function not written yet
@@ -449,7 +447,7 @@ class QRenderer():
         If selection is none, then render all components.
 
         Args:
-            selection (QComponent): component to render
+            selection (QComponent): Component to render
 
         Raises:
             NotImplementedError: Function not written yet
@@ -457,7 +455,7 @@ class QRenderer():
         raise NotImplementedError()
 
     def render_component(self, component):
-        """Render the specified component
+        """Render the specified component.
 
         Args:
             component (QComponent): Component to render
@@ -468,10 +466,10 @@ class QRenderer():
         raise NotImplementedError()
 
     def render_element(self, element):
-        """Render the specified element
+        """Render the specified element.
 
         Args:
-            element (Element): element to render
+            element (Element): Element to render
 
         Raises:
             NotImplementedError: Function not written yet
@@ -487,7 +485,7 @@ class QRenderer():
         #    self.logger.error('RENDERER ERROR: Unkown element {element}')
 
     def render_element_path(self, path):
-        """Render an element path
+        """Render an element path.
 
         Args:
             path (str): Path to render
@@ -498,7 +496,7 @@ class QRenderer():
         raise NotImplementedError()
 
     def render_element_poly(self, poly):
-        """Render an element poly
+        """Render an element poly.
 
         Args:
             poly (Poly): Poly to render
