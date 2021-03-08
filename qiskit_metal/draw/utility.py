@@ -210,7 +210,6 @@ def check_duplicate_list(your_list):
 def array_chop(vec, zero=0, rtol=0, machine_tol=100):
     '''
     Chop array entries close to zero.
-    Zlatko quick solution.
 
     Args:
         vec (array): Array to chop

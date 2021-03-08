@@ -14,5 +14,3 @@
 """
 GUI module, handles user interface
 """
-
-__author__ = 'Zlatko K. Minev'
