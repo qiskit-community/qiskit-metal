@@ -139,4 +139,3 @@ or use the right click and drag to select a region.""")
             yesno (bool): Whether or not to show pins
         """
         self.logger.info(f"Showing pins: {yesno}")
-        # TODO:

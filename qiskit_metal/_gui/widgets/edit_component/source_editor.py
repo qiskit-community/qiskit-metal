@@ -78,8 +78,6 @@ try:
     from pyqode.python.folding import PythonFoldDetector
 
 except ImportError as e:
-    # TODO: report in a more visible way.
-    # Maybe reaise exception.
     # If this line fails then the GUI can't start.
     raise ImportError(
         'Error could not load `pyqode`\nPlease install. In a shell, try running: \n'

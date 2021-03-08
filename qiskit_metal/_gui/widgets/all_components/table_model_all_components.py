@@ -89,10 +89,7 @@ class QTableModel_AllComponents(QAbstractTableModel):
         """
         Update row count etc.
         """
-        # We could not do if the widget is hidden - TODO: speed performace?
-
-        # TODO: This should probably just be on a global timer for all changes detect
-        # and then update all accordingly
+        # We could not do if the widget is hidden
         new_count = self.rowCount()
 
         # if the number of rows have changed
@@ -104,7 +101,6 @@ class QTableModel_AllComponents(QAbstractTableModel):
             # This includes but is not limited to the rowCount() and
             # columnCount(), flags(), data retrieved through data(), and roleNames().
             # This will loose the current selection.
-            # TODO: This seems overkill to just change the total number of rows?
             self.modelReset.emit()
 
             # for some reason the horozontal header is hidden even if i call this in init

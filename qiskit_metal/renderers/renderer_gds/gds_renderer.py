@@ -1786,7 +1786,6 @@ class QGDSRenderer(QRenderer):
                     f'The qgeometry_element within table is:\n'
                     f'{qgeometry_element}')
         else:
-            # TODO: Handle
             self.logger.warning(
                 f'Unexpected shapely object geometry.'
                 f'The variable qgeometry_element is {type(geom)}, method can currently handle Polygon and FlexPath.'
