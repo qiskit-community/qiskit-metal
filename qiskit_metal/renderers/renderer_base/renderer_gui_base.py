@@ -34,11 +34,11 @@ class QRendererGui(QRenderer):
     def __init__(self, gui, design: QDesign, initiate=True, fig=None, ax=None):
         """
         Args:
-            gui (MetalGUI): the GUI
-            design (QDesign): The design
-            initiate (bool): True to initiate the renderer (Default: True)
-            fig (figure): current figure (Default: None)
-            ax (ax): current ax (Default: None)
+            gui (MetalGUI): the GUI.
+            design (QDesign): The design.
+            initiate (bool): True to initiate the renderer.  Defaults to True.
+            fig (figure): current figure.  Defaults to None.
+            ax (ax): current ax.  Defaults to None.
         """
         super().__init__(design=design, initiate=initiate)
 

@@ -31,7 +31,7 @@ class RouteMixed(RoutePathfinder, RouteMeander):
     RoutePathfinder Default Options:
         * anchors: OrderedDict -- Intermediate anchors only; doesn't include endpoints
         * advanced: Dict
-            * avoid_collision: 'false' -- true/false, defines if the route needs to avoid collisions (default: 'false')
+            * avoid_collision: 'false' -- true/false, defines if the route needs to avoid collisions.  Defaults to 'false'.
 
     RouteMeander Default Options:
         * pin_inputs: Dict
@@ -43,8 +43,8 @@ class RouteMixed(RoutePathfinder, RouteMeander):
                 * pin: '' -- Name of pin used for pin_end
         * fillet: '0'
         * lead: Dict
-            * start_straight: '0mm' -- Lead-in, defined as the straight segment extension from start_pin (default: 0.1um)
-            * end_straight: '0mm' -- Lead-out, defined as the straight segment extension from end_pin (default: 0.1um)
+            * start_straight: '0mm' -- Lead-in, defined as the straight segment extension from start_pin.  Defaults to 0.1um.
+            * end_straight: '0mm' -- Lead-out, defined as the straight segment extension from end_pin.  Defaults to 0.1um.
             * start_jogged_extension: '' -- Lead-in, jogged extension of lead-in. Described as list of tuples
             * end_jogged_extension: '' -- Lead-out, jogged extension of lead-out. Described as list of tuples
         * total_length: '7mm'
@@ -55,12 +55,12 @@ class RouteMixed(RoutePathfinder, RouteMeander):
     RoutePathfinder Default Options:
         * step_size: '0.25mm' -- Length of the step for the A* pathfinding algorithm
         * advanced: Dict
-            * avoid_collision: 'true' -- true/false, defines if the route needs to avoid collisions (default: 'true')
+            * avoid_collision: 'true' -- true/false, defines if the route needs to avoid collisions.  Defaults to 'true'.
 
     RouteMeander Default Options:
         * meander: Dict
             * spacing: '200um' -- Minimum spacing between adjacent meander curves
-            * asymmetry='0um' -- Offset between the center-line of the meander and the center-line that stretches from the tip of lead-in to the x (or y) coordinate of the tip of the lead-out (default: '0um')
+            * asymmetry='0um' -- Offset between the center-line of the meander and the center-line that stretches from the tip of lead-in to the x (or y) coordinate of the tip of the lead-out.  Defaults to '0um'.
         * snap: 'true'
         * prevent_short_edges: 'true'
 

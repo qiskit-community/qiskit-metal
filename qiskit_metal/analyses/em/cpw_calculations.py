@@ -59,7 +59,7 @@ def guided_wavelength(freq,
         substrate_thickness (float): Thickness of the dielectric substrate, in meters (eg. 760*10**-6).
         film_thickness (float): Thickness of the thin film, in meters (eg. 200*10**-9).
         dielectric_constant (float): The relative permitivity of the substrate. 
-            (Default: 11.45, the value for Silicon at cryogenic temperatures).
+            Defaults to 11.45, the value for Silicon at cryogenic temperatures.
 
     Returns:
         tuple: Contents outlined below
@@ -110,14 +110,14 @@ def lumped_cpw(freq,
         substrate_thickness (float): Thickness of the dielectric substrate, in meters (eg. 760*10**-6).
         film_thickness (float): Thickness of the thin film, in meters (eg. 200*10**-9).
         dielectric_constant (float, optional): The relative permitivity of the substrate. 
-            (Default: 11.45, the value for silicon at cryogenic temperatures).
+            Defaults to 11.45, the value for silicon at cryogenic temperatures.
         loss_tangent (float, optional): The loss tangent of the dielectric. 
-            (Default: 10**-6, reasonable quality silicon).
+            Defaults to 10**-6, reasonable quality silicon.
         london_penetration_depth (float, optional): The superconducting london penetration depth, in meters.
             It is advised to use the temperature and film thickness dependent value. If circuit
             geometries are on the scale of the Pearl Length, the kinetic inductance formulas
             breakdown. 
-            (Default: 30*10**-9, for Niobium).
+            Defaults to 30*10**-9, for Niobium.
 
     Returns:
         tuple: Contents outlined below
@@ -198,7 +198,7 @@ def effective_dielectric_constant(freq, s, w, h, t, q, Kk0, Kk01, eRD=11.45):
         q (float): Filling factor of the CPW in question
         Kk0 (float): The complete elliptic integral for k0
         Kk01 (float): The complete elliptic integral for k01
-        eRD (float, optional): The relative permitivity of the substrate. (Default: 11.45).
+        eRD (float, optional): The relative permitivity of the substrate. Defaults to 11.45.
     
     Returns:
         float: etfSqrt is the effective permitivity for a CPW transmission line, considering

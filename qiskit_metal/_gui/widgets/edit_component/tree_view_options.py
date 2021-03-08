@@ -61,7 +61,7 @@ QTreeView::branch {  border-image: url(none.png); }
         """Rezie columsn to contents with maximim.
 
         Args:
-            max (int): Maximum window width (Default: 200)
+            max (int): Maximum window width..  Defaults to 200.
         """
         # For TreeView: resizeColumnToContents
         # For TableView: resizeColumnsToContents

@@ -96,7 +96,7 @@ class QTreeModel_Options(QTreeModel_Base):
 
         Args:
             index (QModelIndex): Index to get data for
-            role (Qt.ItemDataRole): The role (Default: Qt.DisplayRole)
+            role (Qt.ItemDataRole): The role..  Defaults to Qt.DisplayRole.
 
         Returns:
             object: fetched data

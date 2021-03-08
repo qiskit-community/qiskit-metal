@@ -75,7 +75,7 @@ def dict_start_with(my_dict, start_with, as_=list):
     Args:
         my_dict (dict): The dictionary
         starts_with (str): String to check of
-        as_ (type): A list of dict (Default: list)
+        as_ (type): A list of dict.  Defaults to list.
 
     Returns:
         list or dict: Parts of the dictionary with keys starting with the given text
@@ -205,7 +205,7 @@ def print_traceback_easy(start=26):
 
     Args:
         start (int): Starting position of the traceback frame.
-                     Default: 26. Assumes runs from Jupyter notebooks.
+                     Defaults to 26. Assumes runs from Jupyter notebooks.
                      In general set to zero.
     '''
     print(f"\n")
@@ -221,10 +221,10 @@ def log_error_easy(logger: logging.Logger,
     Print log message.
 
     Arguments:
-        logger (logging.Logger): The logger
-        pre_text (str): Initial text to write (Default: '')
-        post_text (str): End text to write (Default: '')
-        do_print (bool): True to do the printing, False otherwise (Default: False)
+        logger (logging.Logger): The logger.
+        pre_text (str): Initial text to write.  Defaults to ''.
+        post_text (str): End text to write.  Defaults to ''.
+        do_print (bool): True to do the printing, False otherwise.  Defaults to False.
 
     Test use:
 
@@ -278,7 +278,7 @@ def monkey_patch(self, func, func_name=None):
 
     Args:
         func (function): function
-        func_name (str): name of the function (Default: None)
+        func_name (str): name of the function.  Defaults to None.
     '''
     func_name = func_name or func.__name__
     setattr(self, func_name, func.__get__(self, self.__class__))

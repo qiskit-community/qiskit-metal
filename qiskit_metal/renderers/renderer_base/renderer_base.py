@@ -146,9 +146,9 @@ class QRenderer():
         """
         Args:
             design (QDesign): The design
-            initiate (bool): True to initiate the renderer (Default: True)
+            initiate (bool): True to initiate the renderer.  Defaults to True.
             render_template (Dict, optional): Typically used by GUI for template options for GDS.  Defaults to None.
-            render_options (Dict, optional):  Used to override all options. Defaults to None.
+            render_options (Dict, optional):  Used to override all options.  Defaults to None.
         """
 
         # TODO: check that the renderer has been loaded with load_renderer
@@ -306,9 +306,9 @@ class QRenderer():
 
         Args:
             render_options (Dict, optional): If user wants to over-ride the template
-                                             options. (Default: None)
+                                             options.  Defaults to None.
             render_template (Dict, optional): All the template options for each child.
-                                              (Default: None)
+                                              Defaults to None.
         """
         self.options.update(
             self.get_template_options(self.design,
@@ -348,7 +348,7 @@ class QRenderer():
 
         Arguments:
             re_initiate (bool) : If False will only apply this function once.
-                                 If True, will re-apply (Default: False)
+                                 If True, will re-apply.  Defaults to False.
 
         Returns:
             bool: was a re_initiation applied or not

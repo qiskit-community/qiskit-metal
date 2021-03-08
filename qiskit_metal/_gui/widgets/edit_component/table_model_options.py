@@ -59,8 +59,8 @@ class QTableModel_Options(QAbstractTableModel):
         """
         Args:
             gui (MetalGUI): The GUI
-            parent (ComponentWidget): The parent ComponentWidget (Default: None)
-            view (object): The view (Default: None)
+            parent (ComponentWidget): The parent ComponentWidget.  Defaults to None.
+            view (object): The view.  Defaults to None.
         """
         super().__init__(parent=parent)
         self.logger = gui.logger
@@ -89,7 +89,7 @@ class QTableModel_Options(QAbstractTableModel):
         """Returns the number of rows.
 
         Args:
-            parent (QModelIndex): Unused (Default: None).
+            parent (QModelIndex): Unused.  Defaults to None.
 
         Returns:
             int: The number of rows
@@ -106,7 +106,7 @@ class QTableModel_Options(QAbstractTableModel):
         """Returns the number of columns.
 
         Args:
-            parent (QModelIndex): Unused (Default: None).
+            parent (QModelIndex): Unused.  Defaults to None.
 
         Returns:
             int: The number of columns
@@ -119,7 +119,7 @@ class QTableModel_Options(QAbstractTableModel):
         Args:
             section (int): Section number
             orientation (Qt orientation): Section orientation
-            role (Qt display role): Display role (Default: DisplayRole)
+            role (Qt display role): Display role.  Defaults to DisplayRole.
 
         Returns:
             str: The header data, or None if not found

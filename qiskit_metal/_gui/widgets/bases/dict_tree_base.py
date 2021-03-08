@@ -85,8 +85,8 @@ class BranchNode:
         """
         Args:
             name (str): Name of this branch
-            parent ([type]): The parent (Default: None)
-            data (dict): Node data (Default: None)
+            parent ([type]): The parent.  Defaults to None.
+            data (dict): Node data.  Defaults to None.
         """
         super(BranchNode, self).__init__()
         self.name = name
@@ -187,8 +187,8 @@ class LeafNode:
         """
         Args:
             label (str): Label for the leaf node
-            parent (Node): The parent (Default: None)
-            path (list): Node path (Default: None)
+            parent (Node): The parent.  Defaults to None.
+            path (list): Node path.  Defaults to None.
         """
         super(LeafNode, self).__init__()
         self.path = path or []
@@ -383,7 +383,7 @@ class QTreeModel_Base(QAbstractItemModel):
 
         Args:
             index (QModelIndex): Index to get data for
-            role (Qt.ItemDataRole): The role (Default: Qt.DisplayRole)
+            role (Qt.ItemDataRole): The role.  Defaults to Qt.DisplayRole.
 
         Returns:
             object: Fetched data
@@ -435,7 +435,7 @@ class QTreeModel_Base(QAbstractItemModel):
         Args:
             index (QModelIndex): The index
             value: The value
-            role (Qt.ItemDataRole): The role of the data (Default: Qt.EditRole)
+            role (Qt.ItemDataRole): The role of the data..  Defaults to Qt.EditRole.
 
         Returns:
             bool: True if successful, False otherwise

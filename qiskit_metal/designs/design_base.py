@@ -66,7 +66,7 @@ class QDesign():
         """Create a new Metal QDesign.
 
         Arguments:
-            metadata (Dict): Dictionary of metadata (default: None).
+            metadata (Dict): Dictionary of metadata.  Defaults to None.
 
             overwrite_enabled (bool): When True - If the string name, used for component, already
                             exists in the design, the existing component will be
@@ -268,7 +268,7 @@ class QDesign():
         Utility function to return the z value of a chip.
 
         Args:
-            chip_name (str): Returns the size of the given chip (Default: main)
+            chip_name (str): Returns the size of the given chip.  Defaults to 'main'.
 
         Returns:
             str: String representation of the chip height.
@@ -280,7 +280,7 @@ class QDesign():
         """Return the chip layer number for the ground plane.
 
         Args:
-            chip_name (str, optional): User can overwrite name of chip. Defaults to 'main'.
+            chip_name (str, optional): User can overwrite name of chip.  Defaults to 'main'.
 
         Returns:
             int: Layer of ground plane
@@ -573,8 +573,8 @@ class QDesign():
         unless force=True.
 
         Arguments:
-            component_name (str): Name of component to delete
-            force (bool): Force delete component even if it has children (Default: False)
+            component_name (str): Name of component to delete.
+            force (bool): Force delete component even if it has children.  Defaults to False.
 
         Returns:
             bool: Is there no such component
@@ -770,7 +770,7 @@ class QDesign():
         If no path is given, then tried to use self.save_pathif it is set.
 
         Arguments:
-            path (str): Path to save the design to.  (Default: None)
+            path (str): Path to save the design to.  Defaults to None.
 
         Returns:
             bool: True if successful; False if failure
@@ -922,7 +922,7 @@ class QDesign():
 
         Arguments:
             component_name (str): Component name to update
-            dependencies (bool): True to update all dependencies (Default: True)
+            dependencies (bool): True to update all dependencies.  Defaults to True.
         """
         # Get dependency graph
         # Remake components in order

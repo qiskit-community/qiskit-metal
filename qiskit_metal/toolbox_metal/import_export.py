@@ -71,7 +71,7 @@ def load_metal_design(filename: str, do_update=True):
 
     Args:
         filename (str): File path
-        do_update (bool): True to update, False otherwsie (Default: True)
+        do_update (bool): True to update, False otherwsie.  Defaults to True.
 
     Returns:
         picked QDesign: The pickled design object and updates if asked the param dicts for defaults

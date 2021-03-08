@@ -37,17 +37,17 @@ class AnimatedText():
                  loc=[0.5, 0.5]):
         """
         Args:
-            ax (plt.Axes): The axis
-            text (str): Text to animate
-            canvas (canvas): The canvas
-            kw (dict): The parameters (Default: None).
-            anim_start (float): Animation start (Default: 0.9).
-            anim_dt_ms (int): Animation dt in miliseconds (Default: 25).
-            anim_delta (float): Animation delta (Default: -0.0005).
-            anim_stop (int): Animation stop (Default: 0).
-            anim_accel (float): Animation acceleration (Default: -0.0005).
-            start (bool): Whether or not to start. (Default: True).
-            loc (list): Location. (Default: [0.5, 0.5]).
+            ax (plt.Axes): The axis.
+            text (str): Text to animate.
+            canvas (canvas): The canvas.
+            kw (dict): The parameters.  Defaults to None.
+            anim_start (float): Animation start.  Defaults to 0.9.
+            anim_dt_ms (int): Animation dt in miliseconds.  Defaults to 25.
+            anim_delta (float): Animation delta.  Defaults to -0.0005.
+            anim_stop (int): Animation stop.  Defaults to 0.
+            anim_accel (float): Animation acceleration.  Defaults to -0.0005.
+            start (bool): Whether or not to start.  Defaults to True.
+            loc (list): Location.  Defaults to [0.5, 0.5].
         """
 
         self.canvas = canvas

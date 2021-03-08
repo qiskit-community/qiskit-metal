@@ -33,8 +33,8 @@ class PropertyTableWidget(QMainWindow):
         """
         Args:
             parent (QMainWindowExtension): Parent window
-            design (QDesign): design (Default: None)
-            gui (MetalGUI): the GUI (Default: None)
+            design (QDesign): design.  Defaults to None.
+            gui (MetalGUI): the GUI.  Defaults to None.
         """
         super().__init__()
         self.ui = Ui_MainWindow()

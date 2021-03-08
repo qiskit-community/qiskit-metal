@@ -40,19 +40,19 @@ class RouteMeander(QRoute):
                 * pin: '' -- Name of pin used for pin_end
         * fillet: '0'
         * lead: Dict
-            * start_straight: '0mm' -- Lead-in, defined as the straight segment extension from start_pin (default: 0.1um)
-            * end_straight: '0mm' -- Lead-out, defined as the straight segment extension from end_pin (default: 0.1um)
+            * start_straight: '0mm' -- Lead-in, defined as the straight segment extension from start_pin.  Defaults to 0.1um.
+            * end_straight: '0mm' -- Lead-out, defined as the straight segment extension from end_pin.  Defaults to 0.1um.
             * start_jogged_extension: '' -- Lead-in, jogged extension of lead-in. Described as list of tuples
             * end_jogged_extension: '' -- Lead-out, jogged extension of lead-out. Described as list of tuples
         * total_length: '7mm'
-        * chip: 'main' -- Which chip is this component attached to (default: 'main')
-        * layer: '1' -- Which layer this component should be rendered on (default: '1')
-        * trace_width: 'cpw_width' -- Defines the width of the line (default: 'cpw_width')
+        * chip: 'main' -- Which chip is this component attached to.  Defaults to 'main'.
+        * layer: '1' -- Which layer this component should be rendered on.  Defaults to '1'.
+        * trace_width: 'cpw_width' -- Defines the width of the line.  Defaults to 'cpw_width'.
 
     Default Options:
         * meander: Dict
-            * spacing: '200um' -- Minimum spacing between adjacent meander curves (default: 200um)
-            * asymmetry='0um' -- offset between the center-line of the meander and the center-line that stretches from the tip of lead-in to the x (or y) coordinate of the tip of the lead-out (default: '0um')
+            * spacing: '200um' -- Minimum spacing between adjacent meander curves.  Defaults to 200um.
+            * asymmetry='0um' -- offset between the center-line of the meander and the center-line that stretches from the tip of lead-in to the x (or y) coordinate of the tip of the lead-out.  Defaults to '0um'.
         * snap: 'true'
         * prevent_short_edges: 'true'
     """

@@ -188,7 +188,7 @@ def extract_transmon_coupled_Noscillator(capMatrix,
                     fr can be a list with the order the order they appear in the capMatrix.
         res_L4_corr (list): Correction factor is the resonators are L/4
           if none it ignores, otherwise this is a list of length N
-          in the form [1,0,1,...] (Default: None)
+          in the form [1,0,1,...].  Defaults to None.
         g_scale (float): Scale factor
 
     Returns:
@@ -687,9 +687,9 @@ def load_q3d_capacitance_matrix(path, user_units='fF', _disp=True):
     Units are read in automatically and converted to user units.
 
     Arguments:
-        path (str): Path to file
-        user_units (str): Units (Default: 'fF')
-        _disp (bool): whehter or not to display messages (Default: True)
+        path (str): Path to file.
+        user_units (str): Units.  Defaults to 'fF'.
+        _disp (bool): whehter or not to display messages.  Defaults to True.
 
     Returns:
         tupe: df_cmat, user_units, design_variation, df_cond

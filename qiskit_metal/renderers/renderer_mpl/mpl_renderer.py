@@ -231,10 +231,10 @@ class QMplRenderer():
         """Get the style.
 
         Args:
-            element_type (str): The type of element
-            subtracted (bool): True to subtrat the key (Default: False)
-            layer (layer): The layer (Default: None)
-            extra (dict): Extra stuff to add (Default: None)
+            element_type (str): The type of element.
+            subtracted (bool): True to subtrat the key.  Defaults to False.
+            layer (layer): The layer.  Defaults to None.
+            extra (dict): Extra stuff to add.  Defaults to None.
 
         Return:
             dict: Style dictionary

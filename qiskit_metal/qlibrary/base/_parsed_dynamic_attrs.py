@@ -76,8 +76,8 @@ class ParsedDynamicAttributes_Component():
     def __init__(self, component: 'QComponent', key_list: List[str] = None):
         """
         Args:
-            component (QComponent): Component to get options from
-            key_list (List[str]): List of keys (Default: None).
+            component (QComponent): Component to get options from.
+            key_list (List[str]): List of keys.  Defaults to None.
         """
         #print(f'*** Created with {key_list}')
         # These names must have __xx__ or else they will go to getattr instead of getattribute
@@ -237,7 +237,7 @@ def get_nested_dict_item(dic: dict, key_list: list, level=0):
     Args:
         dic (dict): Dictionary of nested items
         key_list (list): List of keys
-        level (int): Internal for recussion (Default: 0)
+        level (int): Internal for recussion.  Defaults to 0.
 
     Returns:
         object: Item in the dic corresponding to the given key_list

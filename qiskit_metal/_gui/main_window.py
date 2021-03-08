@@ -253,8 +253,8 @@ class MetalGUI(QMainWindowBaseHandler):
     def __init__(self, design: QDesign = None):
         """
         Args:
-            design (QDesign, optional): Pass in the design that the GUI should handle
-                (Default: None).
+            design (QDesign, optional): Pass in the design that the GUI should handle.
+                Defaults to None.
         """
 
         from .utility._handle_qt_messages import QtCore, _qt_message_handler
@@ -309,7 +309,7 @@ class MetalGUI(QMainWindowBaseHandler):
         """Make rebuild and all the other main button disabled.
 
         Arguments:
-            enabled (bool): True to enable, False to disable the design widgets (Default: True).
+            enabled (bool): True to enable, False to disable the design widgets.  Defaults to True.
         """
 
         def setEnabled(parent, widgets):
@@ -457,7 +457,7 @@ class MetalGUI(QMainWindowBaseHandler):
         Args:
             dock (QDockWidget): Dock to move
             new_parent (QMainWindow): New parent window
-            dock_location (Qt dock location): Location of the dock (Default: Qt.BottomDockWidgetArea).
+            dock_location (Qt dock location): Location of the dock.  Defaults to Qt.BottomDockWidgetArea.
         """
         dock.setParent(new_parent)
         new_parent.addDockWidget(dock_location, dock)
@@ -490,7 +490,7 @@ class MetalGUI(QMainWindowBaseHandler):
         """Show or hide the full plot-area widget / show or hide all docks.
 
         Args:
-            do_hide (bool): Hide or show (Default: None -- toggle)
+            do_hide (bool): Hide or show. Defaults to None -- toggle.
         """
         self.main_window.toggle_all_docks(do_hide)
         self.qApp.processEvents(
@@ -503,7 +503,7 @@ class MetalGUI(QMainWindowBaseHandler):
         If num is specified, returns the n-th axis.
 
         Args:
-            num (int, optional): If num is specified, returns the n-th axis (Default: None).
+            num (int, optional): If num is specified, returns the n-th axis.  Defaults to None.
 
         Returns:
             List[Axes] or Axes: Of the canvas
@@ -578,7 +578,7 @@ class MetalGUI(QMainWindowBaseHandler):
         """Save the file.
 
         Args:
-            filename (str): Filename to save (Default: None).
+            filename (str): Filename to save.  Defaults to None.
         """
         self.design.save_design(filename)
 

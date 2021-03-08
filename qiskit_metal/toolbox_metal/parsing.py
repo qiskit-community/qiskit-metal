@@ -417,7 +417,7 @@ def parse_options(params: dict, parse_names: str, variable_dict=None):
     Args:
         params (dict): Dictionary of params
         parse_names (str): Name to parse
-        variable_dict (dict): Dictionary of variables (Default: None)
+        variable_dict (dict): Dictionary of variables.  Defaults to None.
     """
 
     # Prep args

@@ -38,11 +38,11 @@ class AssertionsMixin:
         """Assert tested almost equals expected.
 
         Args:
-            expected (float): Expected value to compare to
-            tested (float): Value to compare to expected
-            msg (Optional[str]): Custom message to show on failure (Default: None)
-            rel_tol (float): Relative tolerance to accept (Default: 1e-7)
-            abs_tol (float): Absolute tolerance to accept (Default: 0.0)
+            expected (float): Expected value to compare to.
+            tested (float): Value to compare to expected.
+            msg (Optional[str]): Custom message to show on failure.  Defaults to None.
+            rel_tol (float): Relative tolerance to accept.  Defaults to 1e-7.
+            abs_tol (float): Absolute tolerance to accept.  Defaults to 0.0.
 
         Return:
             Exception: Failure exception, or nothing
@@ -81,11 +81,11 @@ class AssertionsMixin:
         """Assert all entries in two iterables are almost equal.
 
         Args:
-            expected (Iterable[float]): First iterable to compare
-            tested (Iterable[float]): Second iterable to compare
-            msg (Optional[str]): Custom message to show for failure (Default: None)
-            rel_tol (float): Relative tolerance to accept (Default: 1e-7)
-            abs_tol (float): Absolute tolerance to accept (Default: 0.0)
+            expected (Iterable[float]): First iterable to compare.
+            tested (Iterable[float]): Second iterable to compare.
+            msg (Optional[str]): Custom message to show for failure.  Defaults to None.
+            rel_tol (float): Relative tolerance to accept.  Defaults to 1e-7.
+            abs_tol (float): Absolute tolerance to accept.  Defaults to 0.0.
 
         Return:
             Exception: Failure exception, or nothing

@@ -56,8 +56,8 @@ class QTextEditLogger(QTextEdit):
             gui.ui.log_text
 
         Args:
-            img_path (str): Path to images (Default: '/')
-            dock_window (QDockWidget): The dock window widget (Default: None)
+            img_path (str): Path to images.  Defaults to '/'.
+            dock_window (QDockWidget): The dock window widget.  Defaults to None.
         """
         super().__init__()
 
@@ -333,8 +333,8 @@ class QTextEditLogger(QTextEdit):
         """Do the actual logging.
 
         Arguments:
-            message (str): The message to log
-            format_as_html (bool): True to format as HTML, False otherwise (Default: True)
+            message (str): The message to log.
+            format_as_html (bool): True to format as HTML, False otherwise.  Defaults to True.
         """
         # set the write positon
         cursor = self.textCursor()
@@ -395,11 +395,11 @@ class LogHandler_for_QTextLog(logging.Handler):
                  log_string=None):
         """
         Arguments:
-            name (str): The name
-            parent (logger): The parent logger
-            log_qtextedit (QTextEditLogger): Text edit logger
-            logger (logging.Logger): The logger
-            log_string (str): The log string (Default: None)
+            name (str): The name.
+            parent (logger): The parent logger.
+            log_qtextedit (QTextEditLogger): Text edit logger.
+            logger (logging.Logger): The logger.
+            log_string (str): The log string.  Defaults to None.
         """
         super().__init__()
 

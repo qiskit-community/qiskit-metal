@@ -75,8 +75,8 @@ class QMainWindowExtensionBase(QMainWindow):
         When the window is cleaned up from memory.
 
         Args:
-            destroyWindow (bool): Whether or not to destroy the window (Default: True)
-            destroySubWindows (bool): Whether or not to destroy sub windows (Default: True)
+            destroyWindow (bool): Whether or not to destroy the window.  Defaults to True.
+            destroySubWindows (bool): Whether or not to destroy sub windows  Defaults to True.
         """
         self._remove_log_handlers()
         super().destroy(destroyWindow=destroyWindow,
@@ -206,7 +206,7 @@ class QMainWindowExtensionBase(QMainWindow):
         """Show or hide all docks.
 
         Args:
-            do_hide (bool): Hide or show (Default: None -- toggle)
+            do_hide (bool): Hide or show.  Defaults to None -- toggle.
         """
         # Get all docks to show/hide. Ignore edit source
         docks = [
@@ -302,8 +302,8 @@ class QMainWindowBaseHandler():
         Can pass in logger.
 
         Args:
-            logger (logging.Logger): The logger (Default: None)
-            handler (bool): Not used (Default: False)
+            logger (logging.Logger): The logger.  Defaults to None.
+            handler (bool): Not used.  Defaults to False.
 
         Attributes:
             _settings: Used to save the state of the window

@@ -448,7 +448,7 @@ class QGDSRenderer(QRenderer):
         Args:
             highlight_qcomponents (list, optional): List of strings which denote the name of QComponents to render.
                                                     Empty list means to render entire design.
-                                                    (Default: [])
+                                                    Defaults to [].
 
         Returns:
             Tuple[list, int]:

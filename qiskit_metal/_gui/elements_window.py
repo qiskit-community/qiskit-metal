@@ -115,8 +115,8 @@ class ElementTableModel(QAbstractTableModel):
         """
         Args:
             gui (MetalGUI): The GUI
-            parent (QMainWindowExtension): Parent window (Default: None)
-            element_type (str): The elment type (Default: 'poly')
+            parent (QMainWindowExtension): Parent window.  Defaults to None.
+            element_type (str): The elment type.  Defaults to 'poly'.
         """
         self.logger = gui.logger
         self.gui = gui
@@ -192,7 +192,7 @@ class ElementTableModel(QAbstractTableModel):
         """Counts all the rows.
 
         Args:
-            parent (QModelIndex): Unused (Default: None)
+            parent (QModelIndex): Unused.  Defaults to None.
 
         Returns:
             int: The number of rows
@@ -205,7 +205,7 @@ class ElementTableModel(QAbstractTableModel):
         """Counts all the columns
 
         Args:
-            parent (QModelIndex): Unused (Default: None)
+            parent (QModelIndex): Unused.  Defaults to None.
 
         Returns:
             int: The number of columns
@@ -220,7 +220,7 @@ class ElementTableModel(QAbstractTableModel):
         Args:
             section (int): Section number
             orientation (Qt orientation): Section orientation
-            role (Qt display role): Display role (Default: DisplayRole)
+            role (Qt display role): Display role.  Defaults to DisplayRole.
 
         Returns:
             str: The header data, or None if not found

@@ -50,8 +50,8 @@ def rectangle(w: float, h: float, xoff: float = 0, yoff: float = 0):
     Arguments:
         w (float) :  width
         h (float) :  height
-        xoff (float, optional) : Gives the x position of the center (Default: 0).
-        yoff (float, optional) : Gives the y position of the center (Default: 0).
+        xoff (float, optional) : Gives the x position of the center.  Defaults to 0.
+        yoff (float, optional) : Gives the y position of the center.  Defaults to 0.
 
     Returns:
         shapely.geometry.Polygon: Shapely rectangle
@@ -160,8 +160,8 @@ def flip_merge(line: shapely.geometry.LineString,
 
     Args:
         line (shapely.geometry.LineString): Geometry
-        xfact (double): x-scale factor (Default: -1)
-        yfact (double): y-scale factor (Default: 1)
+        xfact (double): x-scale factor.  Defaults to -1.
+        yfact (double): y-scale factor.  Defaults to 1.
         orign (tuple): Coordinates of the origin
 
     Returns:
@@ -194,7 +194,7 @@ def _iter_func_geom_(func, objs, *args, overwrite=False, **kwargs):
         func (function): Function the apply
         objs (Dict, List, Tuple or BaseGeometry): Set of objects
         overwrite (bool): Overwrite the parent dict or not. This applies to component qgeometry dictionary.
-            Maybe remove in future? (Default: False)
+            Maybe remove in future?  Defaults to False.
         kwargs (dict): Parameters dictionary
 
     Returns:
@@ -280,9 +280,9 @@ def rotate(qgeometry,
     Args:
         qgeometry (Dict, List, Tuple or BaseGeometry): Set of objects
         angle (double): Rotation angle
-        origin (tuple or str): Origin point (Default: 'center')
-        use_radians (bool): True to use radians (Default: False)
-        overwrite (bool): True to overwrite (Default: False)
+        origin (tuple or str): Origin point. Defaults to 'center'.
+        use_radians (bool): True to use radians.  Defaults to False.
+        overwrite (bool): True to overwrite.  Defaults to False.
 
     Returns:
         geometry: A rotated geometry on a 2D plane.
@@ -311,11 +311,11 @@ def rotate(qgeometry,
 def translate(qgeometry, xoff=0.0, yoff=0.0, zoff=0.0, overwrite=False):
     r'''Shifts the geometry by the given offset.
     Args:
-        qgeometry (Dict, List, Tuple or BaseGeometry): Set of objects
-        xoff (double): x-direction offset (Default: 0.0)
-        yoff (double): y-direction offset (Default: 0.0)
-        zoff (double): z-direction offset (Default: 0.0)
-        overwrite (bool): True to overwrite (Default: False)
+        qgeometry (Dict, List, Tuple or BaseGeometry): Set of objects.
+        xoff (double): x-direction offset.  Defaults to 0.0.
+        yoff (double): y-direction offset.  Defaults to 0.0.
+        zoff (double): z-direction offset.  Defaults to 0.0.
+        overwrite (bool): True to overwrite.  Defaults to False.
 
     Returns:
         geometry: A translated geometry shifted by offsets along each dimension.
@@ -347,11 +347,11 @@ def scale(qgeometry,
 
     Args:
         qgeometry (Dict, List, Tuple or BaseGeometry): Set of objects
-        xfact: x-direction scale factor (Default: 1.0)
-        yfact: y-direction scale factor (Default: 1.0)
-        zfact: z-direction scale factor (Default: 1.0)
-        origin (tuple or str): Origin point (Default: 'center')
-        overwrite (bool): True to overwrite (Default: False)
+        xfact: x-direction scale factor.  Defaults to 1.0.
+        yfact: y-direction scale factor.  Defaults to 1.0.
+        zfact: z-direction scale factor.  Defaults to 1.0.
+        origin (tuple or str): Origin point.  Defaults to 'center'.
+        overwrite (bool): True to overwrite.  Defaults to False.
 
     Returns:
         geometry: A scaled geometry, scaled by factors along each dimension.
@@ -398,7 +398,7 @@ def rotate_position(qgeometry,
         qgeometry (Dict, List, Tuple or BaseGeometry): Set of objects
         angle (float): Rotation angle
         pos (list, np.array): Position to translate to
-        pos_rot (tuple): Rotate about this point before translating. (default: {(0, 0)})
+        pos_rot (tuple): Rotate about this point before translating.  Default to {(0, 0)}).
 
     Returns:
         geometry: Rotate dand translated, same as input
@@ -430,13 +430,13 @@ def buffer(qgeometry,
         - join_style=JOIN_STYLE.mitre
 
     Args:
-        qgeometry (Dict, List, Tuple or BaseGeometry): Set of objects
-        distance (float): Distance
-        resolution (int): How many points (Default: None)
-        cap_style (shapely.geometry.CAP_STYLE): Cap style (Default: CAP_STYLE.falt)
-        join_style (shapely.geometry.JOIN_STYLE): Join style (Default JOIN_STYLE.mitre)
-        mitre_limit (double): Mitre limit (Default: None)
-        overwrite (bool): True to overwrite (Default: False)
+        qgeometry (Dict, List, Tuple or BaseGeometry): Set of objects.
+        distance (float): Distance.
+        resolution (int): How many points.  Defaults to None.
+        cap_style (shapely.geometry.CAP_STYLE): Cap style.  Defaults to CAP_STYLE.falt.
+        join_style (shapely.geometry.JOIN_STYLE): Join style.  Defaults to JOIN_STYLE.mitre.
+        mitre_limit (double): Mitre limit.  Defaults to None.
+        overwrite (bool): True to overwrite.  Defaults to None.
 
     Returns:
         geometry: A geometry with an envelope at a distance from the object's envelope

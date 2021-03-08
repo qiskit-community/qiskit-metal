@@ -139,13 +139,12 @@ class QComponent():
         Arguments:
             design (QDesign): The parent design.
             name (str): Name of the component. Auto-named if possible.
-            options (dict): User options that will override the defaults. (default: None)
+            options (dict): User options that will override the defaults.  Defaults to None.
             make (bool): True if the make function should be called at the end of the init.
-                Options be used in the make function to create the geometry. (default: True)
+                Options be used in the make function to create the geometry.  Defaults to True.
             component_template (dict): User can overwrite the template options for the component
                 that will be stored in the design, in design.template,
-                and used every time a new component is instantiated.
-                (default: None)
+                and used every time a new component is instantiated.  Defaults to None.
 
         Raises:
             ValueError: User supplied design isn't a QDesign
@@ -430,9 +429,9 @@ class QComponent():
         Arguments:
             design (QDesign): Design class. Should be the class, not the instance.
             component_template (Dict): Template options to overwrite the class ones (default: None)
-            logger_ (logging.Logger): A logger for errors. (default: None)
+            logger_ (logging.Logger): A logger for errors.  Defaults to None.
             template_key (str): The template key identifier. If None, then uses
-                cls._get_unique_class_name() (default: None)
+                cls._get_unique_class_name().  Defaults to None.
 
         Returns:
             Dict: dictionary of default options based on design template.
@@ -475,7 +474,7 @@ class QComponent():
         the design if the name is being used.
 
         Args:
-            check_name (str, optional): Name of new component. (Defaults: None)
+            check_name (str, optional): Name of new component.  Defaults to None.
 
         Returns:
             string: Return 'NameInUse' if overwrite flag is False and
@@ -621,7 +620,7 @@ class QComponent():
         Explained by example below.
 
         Arguments:
-            options (dict) : If left None, then self.options is used (Default: None)
+            options (dict) : If left None, then self.options is used.  Defaults to None.
 
         Returns:
             dict: Parsed value
@@ -677,11 +676,11 @@ class QComponent():
             * points (numpy.ndarray): [[x1,y1],[x2,y2]] for the normal/tangent line
             * width (float): the width of the intended connection (eg. qubit bus pad arm)
             * input_as_norm (bool): Indicates if the points are tangent or normal to the pin plane.
-              Default = False. Make True for normal.
-            * parent (Union[int,]): The id of the parent component
-            * chip (str): the name of the chip the pin is located on, default 'main'
+              Defaults to False.. Make True for normal.
+            * parent (Union[int,]): The id of the parent component.
+            * chip (str): the name of the chip the pin is located on.  Defaults to 'main'.
             * gap (float): the dielectric gap of the pin for the purpose of representing as a port
-              for simulations. Default = None which is converted to 0.6 * width.
+              for simulations.  Defaults to None which is converted to 0.6 * width.
 
         A dictionary containing a collection of information about the pin, necessary for use in Metal:
             * points (numpy.ndarray) - two (x,y) points which represent the edge of the pin for
@@ -694,7 +693,7 @@ class QComponent():
             * width (float) - the width of the pin
             * chip (str) - the chip the pin is on
             * parent_name - the id of the parent component
-            * net_id - net_id of the pin if connected to another pin (default 0, indicates
+            * net_id - net_id of the pin if connected to another pin.  Defaults to 0, indicates
               not connected))
 
         ::
@@ -913,12 +912,12 @@ class QComponent():
             geometry (Dict[BaseGeometry]): Key-value pairs of name of the geometry
                 you want to add and the value should be a shapely geometry object, such
                 as a Polygon or a LineString.
-            subtract (bool): Subtract from the layer (default: False)
+            subtract (bool): Subtract from the layer.  Defaults to False.
             helper (bool): Is this a helper object. If true, subtract must be false
-                           (default: False)
+                           Defaults to False.
             layer (int, str): The layer to which the set of QGeometry will belong
-                              (default: 1)
-            chip (str): Chip name (default: 'main')
+                              Defaults to 1.
+            chip (str): Chip name.  Defaults to 'main'.
             kwargs (dict): Parameters dictionary
 
         Assumptions:
@@ -1110,8 +1109,8 @@ class QComponent():
         """ Draw all the qgeometry of the component (polys and path etc.)
 
         Arguments:
-            ax (matplotlib.axes.Axes): Matplotlib axis to draw on (Default: None -- gets the current axis)
-            plot_kw (dict): Parameters dictionary
+            ax (matplotlib.axes.Axes): Matplotlib axis to draw on.  Defaults to None -- gets the current axis.
+            plot_kw (dict): Parameters dictionary.
 
         Returns:
             List: The list of qgeometry draw

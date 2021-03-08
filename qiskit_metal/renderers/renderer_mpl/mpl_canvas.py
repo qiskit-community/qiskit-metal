@@ -338,10 +338,10 @@ class PlotCanvas(FigureCanvas):
                  statusbar_label=None):
         """
         Args:
-            design (QDesign): The design
-            parent (QMainWindowPlot): The main window (Default: None)
-            logger (logger): The logger (Default: None)
-            statusbar_label (str): Statusbar label (Default: None)
+            design (QDesign): The design.
+            parent (QMainWindowPlot): The main window.  Defaults to None.
+            logger (logger): The logger.  Defaults to None.
+            statusbar_label (str): Statusbar label.  Defaults to None.
         """
 
         self.gui = parent.gui  # type: MetalGUI
@@ -472,8 +472,8 @@ class PlotCanvas(FigureCanvas):
         """Render the plot.
 
         Args:
-            clear (bool): True to clear everything first (Default: True)
-            with_try (bool): True to execute in a try-catch block (Default: True)
+            clear (bool): True to clear everything first.  Defaults to True.
+            with_try (bool): True to execute in a try-catch block.  Defaults to True.
 
         Raises:
             Exception: Plotting error
@@ -553,7 +553,7 @@ class PlotCanvas(FigureCanvas):
         Args:
             ax (plt.Axes): Clear an axis, or
                  if None, then clear all axes.
-                 (Default: None)
+                 Defaults to None.
         """
         if ax:
             clear_axis(ax)

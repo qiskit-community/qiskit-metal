@@ -27,7 +27,7 @@ class DefaultMetalOptions(Dict):
         2. The metal code codebase, in functions such as drawing and in qdesign base
 
     Args:
-        generic (Dict): Dictionary of options (default: None)
+        generic (Dict): Dictionary of options.  Defaults to None.
     """
 
     default_generic = Dict(
@@ -66,7 +66,7 @@ class DefaultMetalOptions(Dict):
 
         Args:
             cust_key (str): Type of component
-            cust_value (object): Value for the given key.  (default: None)
+            cust_value (object): Value for the given key.  Defaults to None.
         """
         self[cust_key] = cust_value
 
@@ -132,8 +132,8 @@ class DefaultOptionsRenderer():
         Allow instance of class to update the default_options.
 
         Args:
-            cust_key (str): Type of component. (default: None)
-            cust_value (Dict): The key/value pairs to describe component. (default: None)
+            cust_key (str): Type of component.  Defaults to None.
+            cust_value (Dict): The key/value pairs to describe component.  Defaults to None.
 
         Returns:
             The return value. True for success, False otherwise.

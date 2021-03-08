@@ -39,15 +39,15 @@ def setup_logger(logger_name,
     Integrates logging with the warnings module.
 
     Args:
-        logger_name (str): Name of the log
-        log_format (format): Format of the log
-        log_datefmt (format): Format of the date
-        level_stream (log level): Log level of the stream (Default: logging.INFO)
-        level_base (log level): Log level of the base (Default: logging.DEBUG)
-        force_set (bool): True to force (Default: False)
-        capture_warnings (bool): True to capture warnings (Default: None)
-        propagate (bool): True to propagate (Default: False)
-        create_stream (bool): True to create the stream (Default: True)
+        logger_name (str): Name of the log.
+        log_format (format): Format of the log.
+        log_datefmt (format): Format of the date.
+        level_stream (log level): Log level of the stream.  Defaults to logging.INFO.
+        level_base (log level): Log level of the base.  Defaults to logging.DEBUG.
+        force_set (bool): True to force.  Defaults to False.
+        capture_warnings (bool): True to capture warnings.  Defaults to None.
+        propagate (bool): True to propagate.  Defaults to False.
+        create_stream (bool): True to create the stream.  Defaults to True.
 
     Returns:
         logging.Logger: The logger

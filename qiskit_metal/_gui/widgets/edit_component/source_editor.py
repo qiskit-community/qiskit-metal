@@ -374,7 +374,7 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         """Scroll to the matched string.
 
         Args:
-            text (str): Test to scroll to (Default: 'def make(')
+            text (str): Test to scroll to..  Defaults to 'def make('.
         """
         text = self.toPlainText()
         # index = text.find('def make(')
@@ -412,7 +412,7 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         """Get jedi
 
         Args:
-            offset (int): Columns offset, such as -1. (Default: 0).
+            offset (int): Columns offset, such as -1.  Defaults to 0.
 
         Returns:
             list: Definitions under the cursor, or an empty list
@@ -470,7 +470,7 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         """Set the doc based on the word under the cursor
 
         Args:
-            offset (int): the offset (Default: 0)
+            offset (int): the offset.  Defaults to 0.
         """
         self.definitions = self.get_definitions_under_cursor(offset=offset)
         self.set_help_doc(self.definitions)
@@ -564,7 +564,7 @@ def definition_get_source(defn: 'jedi.api.classes.Definition',
 
     Args:
         defn (jedi.api.classes.Definition): The jedit definition
-        formatter (HtmlFormatter): The formatter (Default: None)
+        formatter (HtmlFormatter): The formatter.  Defaults to None.
 
     Returns:
         tuple: source_code, source_html, html_css_lex

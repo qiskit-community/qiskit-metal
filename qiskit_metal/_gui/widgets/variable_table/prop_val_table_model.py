@@ -36,9 +36,9 @@ class PropValTable(QAbstractTableModel):
     def __init__(self, design=None, gui=None, view=None):
         """
         Args:
-            design (QDesign): The QDesign (Default: None)
-            gui (MetalGUI): The MetalGUI (Default: None)
-            view (view): The view (Default: None)
+            design (QDesign): The QDesign.  Defaults to None.
+            gui (MetalGUI): The MetalGUI.  Defaults to None.
+            view (view): The view.  Defaults to None.
         """
         super().__init__()
         self._design = design
@@ -118,7 +118,7 @@ class PropValTable(QAbstractTableModel):
 
         Args:
             index (QModelIndex): The index of the data
-            role (QT.ItemDataRole): The data rolw (Default: Qt.DisplayRole)
+            role (QT.ItemDataRole): The data role.  Defaults to Qt.DisplayRole.
 
         Returns:
             ojbect: The data
@@ -157,7 +157,7 @@ class PropValTable(QAbstractTableModel):
         Args:
             index (QModelIndex): The index
             value (str): The data value
-            role (Qt.ItemDataRole): The role of the data (Default: Qt.EditRole)
+            role (Qt.ItemDataRole): The role of the data.  Defaults to Qt.EditRole.
 
         Returns:
             bool: True if successful; otherwise returns False.
@@ -192,7 +192,7 @@ class PropValTable(QAbstractTableModel):
         Args:
             secion (int): Section number
             orientation (Qt.Orientation): Orientation of the header
-            role (Qt.ItemDataRole): Role of the header (Default: Qt.DisplayRole)
+            role (Qt.ItemDataRole): Role of the header.  Defaults to None.Qt.DisplayRole.
 
         Returns:
             str: The header
@@ -216,9 +216,9 @@ class PropValTable(QAbstractTableModel):
         Delete highlighted rows.
 
         Args:
-            row (int): First row to delete
-            count (int): Number of rolws to delete (Default: 1)
-            parent (QModelIndex): Parent index
+            row (int): First row to delete.
+            count (int): Number of rolws to delete.  Defaults to 1.
+            parent (QModelIndex): Parent index.
         """
         self.beginRemoveRows(parent, row, row + count - 1)
         lst = list(self._data.keys())

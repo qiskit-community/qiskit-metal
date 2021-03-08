@@ -58,7 +58,7 @@ class QTableView_Options(QTableView, QWidget_PlaceholderText):
         """Rezie columsn to contents with maximim.
 
         Args:
-            max (int): automatically resize the columns to the given size (Default: 200)
+            max (int): automatically resize the columns to the given size.  Defaults to 200.
         """
         self.resizeColumnsToContents()
         columns = self.model().columnCount()

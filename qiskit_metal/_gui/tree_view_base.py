@@ -45,7 +45,7 @@ class QTreeView_Base(QTreeView):
         Resize columns to content with maximum size.
 
         Args:
-            max (int): Maximum window width (Default: 200)
+            max (int): Maximum window width.  Defaults to 200.
         """
         # For TreeView: resizeColumnToContents
         # For TableView: resizeColumnsToContents

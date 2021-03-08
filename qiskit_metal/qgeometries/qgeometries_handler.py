@@ -455,14 +455,14 @@ class QGeometryTables(object):
         """Main interface to add qgeometries
 
         Arguments:
-            kind (str): Must be in get_element_types ('path', 'poly', etc.)
-            component_name (str): Component name
-            geometry (dict): Dict of shapely geomety
-            subtract (bool) : Subtract - passed through (Default: False)
-            helper (bool) : Helper - passed through (Default: False)
-            layer (Union[int, str]) : Layer - passed through (default: 1)
-            chip (str) : Chip name - passed through (Default: 'main')
-            **other_options (object): Other_options - passed through
+            kind (str): Must be in get_element_types ('path', 'poly', etc.).
+            component_name (str): Component name.
+            geometry (dict): Dict of shapely geomety.
+            subtract (bool): Subtract - passed through.  Defaults to False.
+            helper (bool): Helper - passed through.  Defaults to False.
+            layer (Union[int, str]): Layer - passed through.  Defaults to 1.
+            chip (str): Chip name - passed through.  Defaults to 'main'.
+            **other_options (object): Other_options - passed through.
         """
         # TODO: Add unit test
 
@@ -634,8 +634,8 @@ class QGeometryTables(object):
         If all, returns a dictionary with kets as table names and tables of components as values.
 
         Arguments:
-            name (str): Name of component (case sensitive) (default: 'all')
-            table_name (str): Element table name ('poly', 'path', etc.) (default: {'all'})
+            name (str): Name of component (case sensitive).  Defaults to 'all'.
+            table_name (str): Element table name ('poly', 'path', etc.).  Defaults to {'all'}.
 
         Returns:
             Union[GeoDataFrame, Dict_[str, GeoDataFrame]]: Either a GeoDataFrame or a dict or GeoDataFrame.
@@ -757,7 +757,7 @@ class QGeometryTables(object):
 
         Arguments:
             name (str) : Name of component (case sensitive)
-            table_name (str) : Element type ('poly', 'path', etc.) (Default: 'all')
+            table_name (str) : Element type ('poly', 'path', etc.). Defaults to 'all'.
 
         Returns:
             dict: Bare element geometry
@@ -786,7 +786,7 @@ class QGeometryTables(object):
 
         Arguments:
             table_name (str): Element type ('poly', 'path', etc.) or 'all'
-            log_issue (bool): Throw an erro in the log if name missing  (Default: True)
+            log_issue (bool): Throw an erro in the log if name missing.  Defaults to True.
 
         Returns:
             bool: True if the name is valid, else False

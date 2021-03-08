@@ -31,10 +31,10 @@ class QRoutePoint:
     def __init__(self, position: np.array, direction: np.array = None):
         """
         Arguments:
-            position (np.ndarray of 2 points): Center point of the pin
+            position (np.ndarray of 2 points): Center point of the pin.
             direction (np.ndarray of 2 points): *Normal vector*
                 This is the normal vector to the surface on which the pin mates.
-                Defines which way it points outward. Has unit norm. (Default: None) 
+                Defines which way it points outward. Has unit norm.  Defaults to None.
         """
         self.position = position
         if isinstance(position, list):
@@ -66,14 +66,14 @@ class QRoute(QComponent):
                 * pin: '' -- Name of pin used for pin_end
         * fillet: '0'
         * lead: Dict
-            * start_straight: '0mm' -- Lead-in, defined as the straight segment extension from start_pin (default: 0.1um)
-            * end_straight: '0mm' -- Lead-out, defined as the straight segment extension from end_pin (default: 0.1um)
+            * start_straight: '0mm' -- Lead-in, defined as the straight segment extension from start_pin.  Defaults to 0.1um.
+            * end_straight: '0mm' -- Lead-out, defined as the straight segment extension from end_pin.  Defaults to 0.1um.
             * start_jogged_extension: '' -- Lead-in, jogged extension of lead-in. Described as list of tuples
             * end_jogged_extension: '' -- Lead-out, jogged extension of lead-out. Described as list of tuples
         * total_length: '7mm'
-        * chip: 'main' -- Which chip is this component attached to (default: 'main')
-        * layer: '1' -- Which layer this component should be rendered on (default: '1')
-        * trace_width: 'cpw_width' -- Defines the width of the line (default: 'cpw_width')
+        * chip: 'main' -- Which chip is this component attached to.  Defaults to 'main'.
+        * layer: '1' -- Which layer this component should be rendered on.  Defaults to '1'.
+        * trace_width: 'cpw_width' -- Defines the width of the line.  Defaults to 'cpw_width'.
     """
 
     component_metadata = Dict(short_name='route')
@@ -111,15 +111,15 @@ class QRoute(QComponent):
         Before that, it adds the variables that are needed to support routing.
 
         Arguments:
-            type (string): Supports Route (single layer trace) and CPW (adds the gap around it) (default: "CPW")
+            type (string): Supports Route (single layer trace) and CPW (adds the gap around it). Defaults to "CPW".
 
         Attributes:
             head (QRouteLead()): Stores sequential points to start the route
             tail (QRouteLead()): (optional) Stores sequential points to terminate the route
-            intermediate_pts: (list or numpy Nx2 or dict) Sequence of points between and other than head and tail (default:None).
+            intermediate_pts: (list or numpy Nx2 or dict) Sequence of points between and other than head and tail.  Defaults to None.
                               Type could be either list or numpy Nx2, or dict/OrderedDict nesting lists or numpy Nx2
-            start_pin_name (string): Head pin name (default: "start")
-            end_pin_name (string): Tail pin name (default: "end")
+            start_pin_name (string): Head pin name.  Defaults to "start".
+            end_pin_name (string): Tail pin name.  Defaults to "end".
         """
         self.head = QRouteLead()
         self.tail = QRouteLead()
@@ -438,7 +438,7 @@ class QRoute(QComponent):
         Arguments:
             start (QRoutePoint): Reference start point (direction from here)
             end (QRoutePoint): Reference end point (direction to here)
-            snap (bool): True to snap to grid (default: False)
+            snap (bool): True to snap to grid.  Defaults to False.
 
         Returns:
             array: straight and 90 deg CCW rotated vecs 2D
@@ -556,8 +556,8 @@ class QRouteLead:
         Before that, it adds the variables that are needed to support routing.
 
         Attributes:
-            pts (numpy Nx2): Sequence of points (default: None)
-            direction (numpy 2x1): Normal from the last point of the array (default: None)
+            pts (numpy Nx2): Sequence of points.  Defaults to None.
+            direction (numpy 2x1): Normal from the last point of the array.  Defaults to None.
         """
         # keep track of all points so far in the route from both ends
         self.pts = None  # will be numpy Nx2

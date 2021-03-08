@@ -62,9 +62,9 @@ def get_all_geoms(obj, func=lambda x: x, root_name='components'):
     Used to compute the bounding box.
 
     Arguments:
-        obj (dict, list, element, component): Object to get from
-        func (function): Function to use if mapping (Default: (lambda x: x)
-        root_name (str): Name to prepend in the flattening (Default: 'components')
+        obj (dict, list, element, component): Object to get from.
+        func (function): Function to use if mapping. Defaults to (lambda x: x).
+        root_name (str): Name to prepend in the flattening. Defaults to 'components'.
 
     Returns:
         dict: Dictonary of geometries
@@ -122,7 +122,7 @@ def flatten_all_filter(components: dict, filter_obj=None):
 
     Arguments:
         components (dict): Dictionary of components
-        filter_obj (class): Filter based on this class (Default: None)
+        filter_obj (class): Filter based on this class.  Defaults to None.
 
     Returns:
         array: Flattened dictionary
@@ -213,9 +213,9 @@ def array_chop(vec, zero=0, rtol=0, machine_tol=100):
 
     Args:
         vec (array): Array to chop
-        zero (double): Value to check against (Default: 0)
-        rtol (double): Relative tolerance (Default: 0)
-        machine_tol (double): Machine tolerance (Default: 100)
+        zero (double): Value to check against.  Defaults to 0.
+        rtol (double): Relative tolerance.  Defaults to 0.
+        machine_tol (double): Machine tolerance.  Defaults to 100.
 
     Returns:
         array: Chopped arary
@@ -395,8 +395,8 @@ class Vector:
 
         Arguments:
             xy (Vec2D): A 2D vector.
-            radians (float): Counter clockwise angle
-            origin (tuple): point to rotate about (Default: (0, 0)
+            radians (float): Counter clockwise angle.
+            origin (tuple): point to rotate about.  Defaults to (0, 0).
 
         Returns:
             np.ndarray: rotated point
@@ -489,7 +489,7 @@ class Vector:
 
         Arguments:
             vec2D (np.array): Input 2D vector.
-            z (float): Add this value to the 3rd dimension (default: {0})
+            z (float): Add this value to the 3rd dimension.  Defaults to {0}.
 
         Returns:
             np.array: 3D vector.
@@ -532,7 +532,7 @@ class Vector:
             v1 (Vec2D): First vector to check
             v2 (Vec2D): Second vector to check
             tol (int): How much to multiply the machine precision, np.finfo(float).eps,
-                       by as the tolerance (Default: 100)
+                       by as the tolerance.  Defaults to 100.
 
         Returns:
             bool: Same or not
@@ -548,7 +548,7 @@ class Vector:
         Arguments:
             vec (Vec2D): Vector to check
             tol (int): How much to multiply the machine precision, np.finfo(float).eps,
-                       by as the tolerance (Default: 100)
+                       by as the tolerance.  Defaults to 100.
 
         Returns:
             bool: Close to zero or not
@@ -617,7 +617,7 @@ class Vector:
 
         Arguments:
             vec_n (Vec2D): 2D vector
-            flip (bool): True to flip (Default: False)
+            flip (bool): True to flip.  Defaults to False.
 
         Returns:
             Vec2D: Snapped vector
