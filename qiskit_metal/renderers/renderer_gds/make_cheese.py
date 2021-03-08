@@ -47,7 +47,11 @@ class Cheesing():
             shape_0_y: float = 0.000050,
 
             #  For Circle
-            shape_1_radius: float = 0.000025):
+            shape_1_radius: float = 0.000025,
+
+            # delta spacing for holes
+            delta_x: float = 0.00010,
+            delta_y: float = 0.00010):
         """Create the cheesing based on the no-cheese multi_poly.
 
         Args:
@@ -67,6 +71,8 @@ class Cheesing():
             shape_0_x (float, optional): The width will be centered at (x=0,y=0). Defaults to 0.000050.
             shape_0_y (float, optional): The height will be centered at (x=0,y=0). Defaults to 0.000050.
             shape_1_radius (float, optional): The radius of circle. Defaults to 0.000025.
+            delta_x (float, optional): The spacing between holes in x.
+            delta_y (float, optional): The spacing between holes in y.
         """
 
         # All the no-cheese locations.
@@ -97,13 +103,48 @@ class Cheesing():
         self.boundary = shapely.geometry.Polygon([(minx, miny), (minx, maxy),
                                                   (maxx, maxy)])
 
+        self.delta_x = delta_x
+        self.delta_y = delta_y
+
     def apply_cheesing(self) -> gdspy.GdsLibrary:
         """Not complete. Need to populate self.lib with cheese holes.
         """
-        self.make_one_hole_at_zero_zero()
-        self.hole_to_lib()
+
+        if 0 == self.error_checking_hole_delta():
+            self.make_one_hole_at_zero_zero()
+            self.hole_to_lib()
+        else:
+            self.logger.warning(f'Cheesing not implemented.')
 
         return self.lib
+
+    def error_checking_hole_delta(self) -> int:
+        """Check ratio of hole size vs hole spacing
+
+        Returns:
+            int: Observation based on hole size and spacing.
+
+            * 0 No issues detected.
+            * 1 Delta spacing less than or equal to hole
+            * 2 cheese_shape is unknown to Cheesing class.
+        """
+        observe = -1
+        if self.cheese_shape == 0:
+            observe = 1 if delta_x <= self.shape_0_x or delta_y <= shape_0_y else 0
+        elif self.cheese_shape == 1:
+            diameter = 2 * self.shape_1_radius
+            return 1 if delta_x <= diameter or delta_y <= diameter else 0
+        else:
+            self.logger.warning(
+                f'The cheese_shape={self.cheese_shape} is unknown in Cheesing class.'
+            )
+            return 2
+
+        if observe == 1:
+            self.logger.warning(
+                'The size of delta spacing is same as or smaller than hole.')
+
+        return observe
 
     def make_one_hole_at_zero_zero(self):
         """This method will create just one hole used for cheesing 
@@ -116,7 +157,7 @@ class Cheesing():
             self.hole = shapely.geometry.Point(0, 0).buffer(self.shape_1_radius)
         else:
             self.logger.warning(
-                f'The cheese_shape={cheese_shape} is unknown in Cheesing class.'
+                f'The cheese_shape={self.cheese_shape} is unknown in Cheesing class.'
             )
         return
 
@@ -131,7 +172,7 @@ class Cheesing():
                                           layer=self.layer,
                                           datatype=self.datatype)
 
-            # If polygons have a holes, need to remove it for gdspy.
+            # If polygons have a holes, need to remove (subtract) it for gdspy.
             all_interiors = list()
             geom = self.hole
             if geom.interiors:
@@ -156,5 +197,22 @@ class Cheesing():
             )
 
         #convert a_poly to cell, then use cell reference to add to all the cheese in chip_rect_gds
+        cheese_one_hole_cell_name = f'TOP_{self.chip_name}_{self.layer}_one_hole_{self.datatype}'
+        one_hole_cell = self.lib.new_cell(cheese_one_hole_cell_name,
+                                          overwrite_duplicate=True)
+        one_hole_cell.add(a_poly)
 
+        chip_only_top_name = f'TOP_{self.chip_name}'
+        if chip_only_top_name in self.lib.cells:
+            chip_layer = self.lib.cells[chip_only_top_name]
+            cheese_cell_name = f'TOP_{self.chip_name}_layer{self.layer}_cheese_datatype{self.datatype}'
+            cheese_cell = lib.new_cell(cheese_cell_name,
+                                       overwrite_duplicate=True)
+
+            # add the cell with cheesing to this cell.
+            # Add a new element or list of elements to this cell.
+            # Parameters:	element (PolygonSet, CellReference, CellArray or iterable) –
+            #                    The element or iterable of elements to be inserted in this cell.
+            # chip_layer.add()
+            a = 5  #For breakpoint
         return
