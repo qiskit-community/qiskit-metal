@@ -117,7 +117,7 @@ class QComponent():
     """Component metadata"""
 
     options = {}
-    """A dictionary of the component-desinger-defined options.
+    """A dictionary of the component-designer-defined options.
     These options are used in the make function to create the QGeometry and QPins.
     All options should have string keys and preferrable string values.
     """
@@ -188,7 +188,7 @@ class QComponent():
         self._name = name
         self._class_name = self._get_unique_class_name()  # Full class name
 
-        #: A dictionary of the component-desinger-defined options.
+        #: A dictionary of the component-designer-defined options.
         #: These options are used in the make function to create the QGeometry and QPins.
         #: All options should have string keys and preferrable string values.
         self.options = self.get_template_options(

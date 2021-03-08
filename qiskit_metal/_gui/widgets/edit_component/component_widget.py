@@ -398,4 +398,4 @@ class ComponentWidget(QTabWidget):
             QtWidgets.QMessageBox.warning(
                 self, "Missing Selected Component",
                 "Please first select a component to edit, by clicking "
-                "one in the desing components menu.")
+                "one in the design components menu.")

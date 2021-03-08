@@ -368,7 +368,7 @@ class QMainWindowBaseHandler():
 
     @property
     def path_stylesheets(self):
-        """Returns the path to teh stylesheet."""
+        """Returns the path to the stylesheet."""
         return Path(self.path_gui) / 'styles'
 
     def style_window(self):

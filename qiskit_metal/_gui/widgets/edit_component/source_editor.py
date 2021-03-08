@@ -304,7 +304,7 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
             )
 
     def rebuild_components(self):
-        """Rebuild teh component"""
+        """Rebuild the component"""
         self.logger.debug('Source file rebuild started.')
         self.save_file()
         # print('saved')
