@@ -1,7 +1,7 @@
 .. _tutorials-composite-bi-partite:
 
 ###########################################################
-Composite Bi-Pirtite Systems Comprising Qubit and Resonator
+Composite Bi-Partite Systems Comprising Qubit and Resonator
 ###########################################################
 
 
