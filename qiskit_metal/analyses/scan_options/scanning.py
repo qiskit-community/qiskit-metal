@@ -18,7 +18,6 @@ from typing import List, Tuple, Union, Any, Iterable
 class Scanning():
     """
         Need access to renderers which are registered in QDesign.
-
     """
 
     def __init__(self, design: 'QDesign'):
@@ -30,7 +29,16 @@ class Scanning():
         self.design = design
 
     def option_value(self, a_dict, search: str) -> str:
-        """Get value from dict based on key.  This method is used for unknown depth, dict search, within a dict."""
+        """Get value from dict based on key.  This method is used for unknown depth,
+        dict search, within a dict.
+        
+        Args:
+            a_dict (dict): Dictionary to get values from
+            search (str): String to search for
+
+        Returns:
+            str: Value from the dictionary of the searched term        
+        """
         value = a_dict[search]
         return value
 

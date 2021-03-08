@@ -36,10 +36,10 @@ from .widgets.log_widget.log_metal import LogHandler_for_QTextLog
 
 
 class QMainWindowExtensionBase(QMainWindow):
-    """This contains all the functions tthat the gui needs
-    to call directly from the UI
+    """This contains all the functions that the gui needs
+    to call directly from the UI.
 
-    Extends the `QMainWindow` class
+    Extends the `QMainWindow` class.
     """
 
     def __init__(self):
@@ -50,21 +50,21 @@ class QMainWindowExtensionBase(QMainWindow):
 
     @property
     def logger(self) -> logging.Logger:
-        """Get the logger"""
+        """Get the logger."""
         return self.handler.logger
 
     @property
     def settings(self) -> QtCore.QSettings:
-        """Get the settings"""
+        """Get the settings."""
         return self.handler.settings
 
     @property
     def gui(self) -> 'QMainWindowBaseHandler':
-        """Get the GUI"""
+        """Get the GUI."""
         self.handler
 
     def _remove_log_handlers(self):
-        """Remove the log handlers"""
+        """Remove the log handlers."""
         if hasattr(self, 'log_text'):
             self.log_text.remove_handlers(self.logger)
 
@@ -92,7 +92,7 @@ class QMainWindowExtensionBase(QMainWindow):
 
     def ok_to_continue(self):
         """
-        Determine if it ok to continue
+        Determine if it ok to continue.
 
         Returns:
             bool: True to continue, False otherwise
@@ -108,7 +108,7 @@ class QMainWindowExtensionBase(QMainWindow):
         return True
 
     def save_window_settings(self):
-        """Save the window settings"""
+        """Save the window settings."""
         self.logger.info('Saving window state')
         # get the current size and position of the window as a byte array.
         self.settings.setValue('metal_version', __version__)
@@ -156,7 +156,7 @@ class QMainWindowExtensionBase(QMainWindow):
 
     def bring_to_top(self):
         """ Bring window to top.
-        Note that on Windows, this doesn't always work quite well
+        Note that on Windows, this doesn't always work quite well.
         """
         self.raise_()
         self.activateWindow()
@@ -173,8 +173,8 @@ class QMainWindowExtensionBase(QMainWindow):
         Args:
             name (string): File name without extension
             type_ (string): File format and name extension
-            display (bool): indicates whether to visualize or not in jupyter notebook
-            disp_ops (dict): used to pass options to IPython.display.Image (example: width)
+            display (bool): Indicates whether to visualize or not in jupyter notebook
+            disp_ops (dict): Used to pass options to IPython.display.Image (example: width)
         """
 
         path = Path(name + '.' + type_).resolve()
@@ -240,27 +240,27 @@ class QMainWindowExtensionBase(QMainWindow):
 
     @slot_catch_error()
     def _screenshot(self, _=None):
-        """Used to call from action"""
+        """Used to call from action."""
         self.get_screenshot()
 
     @slot_catch_error()
     def load_stylesheet_default(self, _=None):
-        """Used to call from action"""
+        """Used to call from action."""
         self.handler.load_stylesheet('default')
 
     @slot_catch_error()
     def load_stylesheet_metal_dark(self, _=None):
-        """Used to call from action"""
+        """Used to call from action."""
         self.handler.load_stylesheet('metal_dark')
 
     @slot_catch_error()
     def load_stylesheet_dark(self, _=None):
-        """Used to call from action"""
+        """Used to call from action."""
         self.handler.load_stylesheet('qdarkstyle')
 
     @slot_catch_error()
     def load_stylesheet_open(self, _=None):
-        """Used to call from action"""
+        """Used to call from action."""
         default_path = str(self.gui.path_stylesheets)
         filename = QFileDialog.getOpenFileName(
             self, 'Select Qt stylesheet file `.qss`', default_path)[0]
@@ -294,15 +294,15 @@ class QMainWindowBaseHandler():
 
     @staticmethod
     def __UI__() -> QMainWindow:  # pylint: disable=invalid-name
-        """Abstract, replace with UI class"""
+        """Abstract, replace with UI class."""
         return None
 
     def __init__(self, logger: logging.Logger = None, handler=False):
         """
-        Can pass in logger
+        Can pass in logger.
 
         Args:
-            logger (logging.Logger): the logger (Default: None)
+            logger (logging.Logger): The logger (Default: None)
             handler (bool): Not used (Default: False)
 
         Attributes:
@@ -368,22 +368,22 @@ class QMainWindowBaseHandler():
 
     @property
     def path_stylesheets(self):
-        """Returns the path to teh stylesheet"""
+        """Returns the path to teh stylesheet."""
         return Path(self.path_gui) / 'styles'
 
     def style_window(self):
-        """Styles the window"""
+        """Styles the window."""
         # fusion macintosh # windows
         self.main_window.setStyle(QtWidgets.QStyleFactory.create("fusion"))
         # TODO; add stlyesheet to load here - maybe pull form settings
 
     def _ui_adjustments(self):
-        """Any touchups to the loaded ui that need be done soon
+        """Any touchups to the loaded ui that need be done soon.
         """
         pass
 
     def _get_file_path(self):
-        """Get the dir name of the current path in which this file is stored"""
+        """Get the dir name of the current path in which this file is stored."""
         return os.path.dirname(__file__)
 
     def _setup_qApp(self):
@@ -443,7 +443,7 @@ class QMainWindowBaseHandler():
         return self.qApp
 
     def _setup_main_window_tray(self):
-        """Sets up the main window tray"""
+        """Sets up the main window tray."""
 
         if self.path_imgs.is_dir():
             icon = QIcon(str(self.path_imgs / self._img_logo_name))
@@ -455,14 +455,14 @@ class QMainWindowBaseHandler():
             self.qApp.setWindowIcon(icon)
 
     def create_log_handler(self, name_toshow: str, logger: logging.Logger):
-        """Creates a log handler
+        """Creates a log handler.
 
         Args:
             name_toshow (str): Display name
-            logger (logging.Logger): the logger
+            logger (logging.Logger): The logger
 
         Returns:
-            LogHandler_for_QTextLog: a LogHandler_for_QTextLog
+            LogHandler_for_QTextLog: A LogHandler_for_QTextLog
         """
         return LogHandler_for_QTextLog(name_toshow, self, self.ui.log_text,
                                        logger)
@@ -472,7 +472,7 @@ class QMainWindowBaseHandler():
         """
         Setup logging UI.
 
-        Show wellcome message
+        Show wellcome message.
         """
         if hasattr(self.ui, 'log_text'):
 
@@ -486,7 +486,7 @@ class QMainWindowBaseHandler():
             self.logger.warning('UI does not have `log_text`')
 
     def _setup_window_size(self):
-        """Setup the window size"""
+        """Setup the window size."""
         if self.config.main_window.auto_size:
             screen = self.qApp.primaryScreen()
             # screen.name()
@@ -547,7 +547,7 @@ class QMainWindowBaseHandler():
             return False
 
     def _load_stylesheet_from_file(self, path: str):
-        """Load the sylesheet from a file
+        """Load the sylesheet from a file.
 
         Args:
             path (str): Path to file
@@ -584,12 +584,12 @@ class QMainWindowBaseHandler():
 
     def screenshot(self, name='shot', type_='png', display=True, disp_ops=None):
         """
-        Alias for get_screenshot()
+        Alias for get_screenshot().
         """
         self.main_window.get_screenshot(name, type_, display, disp_ops)
 
     def save_file(self):
-        """Save file. Called on exit
+        """Save file. Called on exit.
 
         Raises:
             NotImplementedError: Function not written
@@ -622,7 +622,7 @@ class QMainWindowBaseHandler():
 
 
 def kick_start_qApp():
-    """Kick start the application
+    """Kick start the application.
 
     Returns:
         QtCore.QCoreApplication: the application

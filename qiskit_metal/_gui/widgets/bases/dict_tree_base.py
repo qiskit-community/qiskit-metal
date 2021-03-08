@@ -48,11 +48,11 @@ def get_nested_dict_item(dic: dict, key_list: list):
     If key_list is empty, return dic itself.
 
     Args:
-        dic (dict): dictionary of items
-        key_list (list): list of keys
+        dic (dict): Dictionary of items
+        key_list (list): List of keys
 
     Returns:
-        dict: nested dictionary
+        dict: Nested dictionary
 
     .. code-block:: python
         :linenos:
@@ -99,7 +99,7 @@ class BranchNode:
         Gets the number of children
 
         Returns:
-            int: the number of children this node has
+            int: The number of children this node has
         """
         return len(self.children)
 
@@ -108,7 +108,7 @@ class BranchNode:
         Gets the name
 
         Returns:
-            str: the nodes name
+            str: The nodes name
         """
         return self.name  # identifier for BranchNode
 
@@ -116,7 +116,7 @@ class BranchNode:
         """Gets the child at the given row
 
         Args:
-            row (int): the row
+            row (int): The row
 
         Returns:
             Node: The node at the row
@@ -128,7 +128,7 @@ class BranchNode:
         """Gets the row of the given child
 
         Args:
-            child (Node): the child
+            child (Node): The child
 
         Returns:
             int: Row of the given child.  -1 is returned if the child is not found.
@@ -142,7 +142,7 @@ class BranchNode:
         """Gets the child with the given key
 
         Args:
-            key (str): the key
+            key (str): The key
 
         Returns:
             Node: The child with the same name as the given key.
@@ -158,7 +158,7 @@ class BranchNode:
         Insert the given child
 
         Args:
-            child (Node): the child
+            child (Node): The child
         """
         child.parent = self
         self.children.append((child.provideName(), child))
@@ -167,7 +167,7 @@ class BranchNode:
         """Do I have leaves?
 
         Returns:
-            bool: True is I have leaves, False otherwise
+            bool: True if there are leaves, False otherwise
         """
         if not self.children:
             return False
@@ -209,7 +209,7 @@ class LeafNode:
         Get the label
 
         Returns:
-            str: the lable of the leaf node - this is *not* the value.
+            str: The lable of the leaf node - this is *not* the value.
         """
         return self.label  # identifier for LeafNode (note: NOT value!)
 
@@ -356,7 +356,7 @@ class QTreeModel_Base(QAbstractItemModel):
         """Get the number of rows
 
         Args:
-            parent (QModelIndex): the parent
+            parent (QModelIndex): The parent
 
         Returns:
             int: The number of rows
@@ -371,10 +371,10 @@ class QTreeModel_Base(QAbstractItemModel):
         """Get the number of columns
 
         Args:
-            parent (QModelIndex): the parent
+            parent (QModelIndex): The parent
 
         Returns:
-            int: the number of columns
+            int: The number of columns
         """
         return len(self.headers)
 
@@ -382,11 +382,11 @@ class QTreeModel_Base(QAbstractItemModel):
         """Gets the node data
 
         Args:
-            index (QModelIndex): index to get data for
-            role (Qt.ItemDataRole): the role (Default: Qt.DisplayRole)
+            index (QModelIndex): Index to get data for
+            role (Qt.ItemDataRole): The role (Default: Qt.DisplayRole)
 
         Returns:
-            object: fetched data
+            object: Fetched data
         """
         if not index.isValid():
             return None
@@ -433,9 +433,9 @@ class QTreeModel_Base(QAbstractItemModel):
         The dataChanged() signal should be emitted if the data was successfully set.
 
         Args:
-            index (QModelIndex): the index
-            value: the value
-            role (Qt.ItemDataRole): the role of the data (Default: Qt.EditRole)
+            index (QModelIndex): The index
+            value: The value
+            role (Qt.ItemDataRole): The role of the data (Default: Qt.EditRole)
 
         Returns:
             bool: True if successful, False otherwise
@@ -496,12 +496,12 @@ class QTreeModel_Base(QAbstractItemModel):
         """ Set the headers to be displayed.
 
         Args:
-            section (int): section number
-            orientation (Qt.Orientation): the orientation
-            role (Qt.ItemDataRole): the role
+            section (int): Section number
+            orientation (Qt.Orientation): The orientation
+            role (Qt.ItemDataRole): The role
 
         Returns:
-            object: header data
+            object: Header data
         """
         if orientation == Qt.Horizontal:
             if role == Qt.DisplayRole:
@@ -516,12 +516,12 @@ class QTreeModel_Base(QAbstractItemModel):
         return None
 
     def index(self, row: int, column: int, parent: QModelIndex):
-        """What is my index?
+        """Return my index
 
         Args:
-            row (int): the row
-            column (int): the column
-            parent (QModelIndex): the parent
+            row (int): The row
+            column (int): The column
+            parent (QModelIndex): The parent
 
         Returns:
             int: internal index
@@ -536,10 +536,10 @@ class QTreeModel_Base(QAbstractItemModel):
         """Gets the parent index of the given node
 
         Args:
-            child (node): the child
+            child (node): The child
 
         Returns:
-            int: the index
+            int: The index
         """
         node = self.nodeFromIndex(child)
         if node is None:
@@ -574,7 +574,7 @@ class QTreeModel_Base(QAbstractItemModel):
         Determine how user may interact with each cell in the table.
 
         Returns:
-            list: flags
+            list: List of flags
         """
         flags = Qt.ItemIsSelectable | Qt.ItemIsEnabled
         if index.column() == 1:
@@ -589,13 +589,13 @@ def parse_param_from_str(text):
     """Attempt to parse a value from a string using ast
 
     Args:
-        text (str): string to parse
+        text (str): String to parse
 
     Return:
         tuple: value, used_ast
 
     Raises:
-        Exception: an error occurred
+        Exception: An error occurred
     """
     text = str(text).strip()
     value = text

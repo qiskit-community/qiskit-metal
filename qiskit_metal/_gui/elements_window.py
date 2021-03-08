@@ -32,7 +32,7 @@ class ElementsWindow(QMainWindow):
     """
     This is just a handler (container) for the UI; it a child object of the main gui.
 
-    Extends the `QMainWindow` class
+    Extends the `QMainWindow` class.
 
     PySide2 Signal / Slots Extensions:
         The UI can call up to this class to execeute button clicks for instance
@@ -42,7 +42,7 @@ class ElementsWindow(QMainWindow):
     def __init__(self, gui: 'MetalGUI', parent_window: 'QMainWindowExtension'):
         """
         Args:
-            gui (MetalGUI): the GUI
+            gui (MetalGUI): The GUI
             parent_window (QMainWindowExtension): Parent window
         """
         # Q Main Window
@@ -64,11 +64,11 @@ class ElementsWindow(QMainWindow):
 
     @property
     def design(self):
-        """Returns the design"""
+        """Returns the design."""
         return self.gui.design
 
     def populate_combo_element(self):
-        """Populate the combo elements
+        """Populate the combo elements.
         """
         for table_type in self.design.qgeometry.tables.keys():
             if self.ui.combo_element_type.findText(
@@ -79,7 +79,7 @@ class ElementsWindow(QMainWindow):
                             "ElementsWindow", table_type, None, -1)))
 
     def combo_element_type(self, new_type: str):
-        """Change to the given type
+        """Change to the given type.
 
         Args:
             new_type (str): Type to change to
@@ -88,13 +88,13 @@ class ElementsWindow(QMainWindow):
         self.model.set_type(new_type)
 
     def force_refresh(self):
-        """Force a refresh"""
+        """Force a refresh."""
         self.model.refresh()
         self.populate_combo_element()
 
 
 class ElementTableModel(QAbstractTableModel):
-    """MVC class
+    """MVC ElementTableModel class
     See https://doc.qt.io/qt-5/qabstracttablemodel.html
 
     The class extends the `QAbstractTableModel` class.
@@ -116,7 +116,7 @@ class ElementTableModel(QAbstractTableModel):
         Args:
             gui (MetalGUI): The GUI
             parent (QMainWindowExtension): Parent window (Default: None)
-            element_type (str): the elment type (Default: 'poly')
+            element_type (str): The elment type (Default: 'poly')
         """
         self.logger = gui.logger
         self.gui = gui
@@ -127,36 +127,41 @@ class ElementTableModel(QAbstractTableModel):
 
     @property
     def design(self):
-        """Returns the design"""
+        """Returns the design."""
         return self.gui.design
 
     @property
     def qgeometry(self):
-        """Returns the qgeometry"""
+        """Returns the qgeometry."""
         if self.design:
             return self.design.qgeometry
 
     @property
     def tables(self):
-        """Returns all the tables"""
+        """Returns all the tables."""
         if self.design:
             return self.design.qgeometry.tables
 
     @property
     def table(self):
-        """Returns all the tables of the type specified in the constructor"""
+        """Returns all the tables of the type specified in the constructor."""
         if self.design:
             return self.design.qgeometry.tables[self.type]
 
     def _create_timer(self):
         """
-        Refresh the model number of rows, etc. there must be a smarter way?
+        Refresh the model number of rows, etc.
         """
         self._timer = QtCore.QTimer(self)
         self._timer.start(self.__timer_interval)
         self._timer.timeout.connect(self.refresh_auto)
 
     def set_type(self, element_type: str):
+        """Set the type.
+
+        Args:
+            element_type (str): Element type to set to
+        """
         self.type = element_type
         self.refresh()
 
@@ -184,13 +189,13 @@ class ElementTableModel(QAbstractTableModel):
             self._row_count = new_count
 
     def rowCount(self, parent: QModelIndex = None):
-        """Counts all the rows
+        """Counts all the rows.
 
         Args:
             parent (QModelIndex): Unused (Default: None)
 
         Returns:
-            int: the number of rows
+            int: The number of rows
         """
         if self.table is None:
             return 0
@@ -203,7 +208,7 @@ class ElementTableModel(QAbstractTableModel):
             parent (QModelIndex): Unused (Default: None)
 
         Returns:
-            int: the number of columns
+            int: The number of columns
         """
         if self.table is None:
             return 0
@@ -213,12 +218,12 @@ class ElementTableModel(QAbstractTableModel):
         """ Set the headers to be displayed.
 
         Args:
-            section (int): section number
-            orientation (Qt orientation): section orientation
-            role (Qt display role): display role (Default: DisplayRole)
+            section (int): Section number
+            orientation (Qt orientation): Section orientation
+            role (Qt display role): Display role (Default: DisplayRole)
 
         Returns:
-            str: the header data, or None if not found
+            str: The header data, or None if not found
         """
 
         if (role != QtCore.Qt.DisplayRole) or (self.table is None):
@@ -234,7 +239,7 @@ class ElementTableModel(QAbstractTableModel):
         manually adjust each tableView to have NoEditTriggers.
 
         Args:
-            index (QModelIndex): the index
+            index (QModelIndex): The index
 
         Returns:
             Qt flags: Flags from Qt
@@ -254,7 +259,7 @@ class ElementTableModel(QAbstractTableModel):
         "invalid QVariant").
 
         Returns:
-            str: data
+            str: Data related to the given index and role
         """
 
         if not index.isValid():

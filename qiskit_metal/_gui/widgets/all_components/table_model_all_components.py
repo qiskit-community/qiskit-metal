@@ -51,10 +51,10 @@ class QTableModel_AllComponents(QAbstractTableModel):
                  tableView: 'QTableView_AllComponents' = None):
         """
         Args:
-            gui (MetalGUI): the GUI (Default: None)
-            logger (logger): the logger
+            gui (MetalGUI): The GUI (Default: None)
+            logger (logger): The logger
             parent (QWidget): Parent widget (Default: None).
-            tableView (QTableView_AllComponents): the table view (Default: None).
+            tableView (QTableView_AllComponents): The table view (Default: None).
         """
         super().__init__(parent=parent)
         self.logger = logger
@@ -70,7 +70,7 @@ class QTableModel_AllComponents(QAbstractTableModel):
 
     @property
     def design(self):
-        """Retrusn the design"""
+        """Returns the design"""
         return self.gui.design
 
     def _create_timer(self):
@@ -82,12 +82,12 @@ class QTableModel_AllComponents(QAbstractTableModel):
         self._timer.timeout.connect(self.refresh_auto)
 
     def refresh(self):
-        """Force refresh.   Completly rebuild the model."""
+        """Force refresh.  Completly rebuild the model."""
         self.modelReset.emit()
 
     def refresh_auto(self):
         """
-        Update row count etc.
+        Automatic refresh, update row count, view, etc.
         """
         # We could not do if the widget is hidden
         new_count = self.rowCount()
@@ -121,7 +121,7 @@ class QTableModel_AllComponents(QAbstractTableModel):
             parent (QModelIndex): Unused (Default: None).
 
         Returns:
-            int: the number of rows
+            int: The number of rows
         """
         if self.design:  # should we jsut enforce this
             num = int(len(self.design.components))
@@ -141,7 +141,7 @@ class QTableModel_AllComponents(QAbstractTableModel):
             parent (QModelIndex): Unused (Default: None).
 
         Returns:
-            int: the number of columns
+            int: The number of columns
         """
         return len(self.columns)
 
@@ -152,12 +152,12 @@ class QTableModel_AllComponents(QAbstractTableModel):
         """ Set the headers to be displayed.
 
         Args:
-            section (int): section number
-            orientation (Qt orientation): section orientation
-            role (Qt display role): display role (Default: DisplayRole)
+            section (int): Section number
+            orientation (Qt orientation): Section orientation
+            role (Qt display role): Display role (Default: DisplayRole)
 
         Returns:
-            str: the header data, or None if not found
+            str: The header data, or None if not found
         """
 
         if role == Qt.DisplayRole:
@@ -173,12 +173,10 @@ class QTableModel_AllComponents(QAbstractTableModel):
                 return font
 
     def flags(self, index):
-        """ Set the item flags at the given index. Seems like we're
-        implementing this function just to see how it's done, as we
-        manually adjust each tableView to have NoEditTriggers.
+        """ Set the item flags at the given index.
 
         Args:
-            index (QModelIndex): the index
+            index (QModelIndex): The index
 
         Returns:
             Qt flags: Flags from Qt
@@ -199,7 +197,7 @@ class QTableModel_AllComponents(QAbstractTableModel):
         "invalid QVariant").
 
         Returns:
-            str: data
+            str: Data depending on the index and role
         """
 
         if not index.isValid() or not self.design:

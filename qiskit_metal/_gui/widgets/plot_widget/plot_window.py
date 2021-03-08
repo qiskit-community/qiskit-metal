@@ -78,7 +78,7 @@ class QMainWindowPlot(QMainWindow):
         self.ui.centralwidget.layout().addWidget(self.canvas)
 
     def set_design(self, design):
-        """Set the design
+        """Set the design.
 
         Args:
             design (QDesign): Design to set the canvas to
@@ -87,7 +87,7 @@ class QMainWindowPlot(QMainWindow):
 
     @property
     def design(self):
-        """Returns the design"""
+        """Returns the design."""
         return self.gui.design
 
     def replot(self):
@@ -96,12 +96,12 @@ class QMainWindowPlot(QMainWindow):
         self.canvas.plot()
 
     def auto_scale(self):
-        """Tells the canvas to perform an automatic scale"""
+        """Tells the canvas to perform an automatic scale."""
         self.logger.debug("Autoscale")
         self.canvas.auto_scale()
 
     def pan(self):
-        """Displays a message about how to pan"""
+        """Displays a message about how to pan."""
         QMessageBox.about(
             self, "Pan", """Navigation help:
 
@@ -115,14 +115,14 @@ Either use the mouse middle wheel to zoom in and out by scrolling,
 or use the right click and drag to select a region.""")
 
     def zoom(self):
-        """Displays a message about how to zoom"""
+        """Displays a message about how to zoom."""
         QMessageBox.about(
             self, "Zoom", "Either use the mouse middle wheel"
             " to zoom in and out by scrolling, or use the right click and"
             " drag to select a region.")
 
     def set_position_track(self, yesno: bool):
-        """Set the position tracker
+        """Set the position tracker.
 
         Args:
             yesno (bool): Whether or not to display instructions
@@ -133,7 +133,7 @@ or use the right click and drag to select a region.""")
         self.canvas.panzoom.options.report_point_position = yesno
 
     def set_show_pins(self, yesno: bool):
-        """Displays on the logger whether or not pins are showing
+        """Displays on the logger whether or not pins are showing.
 
         Args:
             yesno (bool): Whether or not to show pins

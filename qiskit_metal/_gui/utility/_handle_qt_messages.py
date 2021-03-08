@@ -80,7 +80,7 @@ def _qt_message_handler(mode, context, message):
 
 def do_debug(msg, name='info'):
     """
-    Utility function used to print debug statemetns from PySide2 Socket calls
+    Utility function used to print debug statements from PySide2 Socket calls
     A bit of a cludge
 
     Arguments:

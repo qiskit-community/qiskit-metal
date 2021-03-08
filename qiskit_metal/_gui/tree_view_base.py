@@ -33,7 +33,7 @@ class QTreeView_Base(QTreeView):
         self.expanded.connect(self.resize_on_expand)
 
     def style_me(self):
-        """Style this widget"""
+        """Style this widget."""
         # Can also do in the ui file, but doesn't always translate for some reason
         self.header().show()
         self.setAutoScroll(False)

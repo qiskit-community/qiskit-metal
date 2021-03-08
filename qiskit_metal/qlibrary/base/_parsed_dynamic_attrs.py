@@ -99,7 +99,7 @@ class ParsedDynamicAttributes_Component():
         return self.__getdict__().__str__()
 
     def __len__(self):
-        """Return the length"""
+        """Return the length."""
         return len(self.__getdict__())
 
     def __getdict__(self) -> dict:
@@ -141,7 +141,7 @@ class ParsedDynamicAttributes_Component():
 
     def __getitem__(self, name: str):
         """
-        Get the item associated with the given name
+        Get the item associated with the given name.
 
         Args:
             name (str): Name of the item
@@ -193,7 +193,7 @@ class ParsedDynamicAttributes_Component():
     #     return self.__getdict__().__repr__()
 
     def __repr__(self):
-        """For viewing. Just return the whole parse dictionary
+        """For viewing. Just return the whole parse dictionary.
         """
         b = '\033[95m\033[1m'
         e = '\033[0m'
@@ -232,7 +232,15 @@ self.p.a.c
 
 def get_nested_dict_item(dic: dict, key_list: list, level=0):
     """
-        level {int} -- internal for recussion
+    Get the nested dictionary item
+
+    Args:
+        dic (dict): Dictionary of nested items
+        key_list (list): List of keys
+        level (int): Internal for recussion (Default: 0)
+
+    Returns:
+        object: Item in the dic corresponding to the given key_list
 
     Example use:
 

@@ -84,7 +84,7 @@ class Components:
             quiet (bool): Allow warning messages to be generated.
 
         Returns:
-            int: key to use in  _components.
+            int: Key to use in  _components.
             If 0 is returned it means the name is not in dict.
 
         Raises:

@@ -24,9 +24,9 @@ from PySide2.QtWidgets import QMainWindow, QTableView, QDialog
 
 class PropertyTableWidget(QMainWindow):
     """
-    GUI for variables table with 3 columns: Property, Value, Number
+    GUI for variables table with 3 columns: Property, Value, Number.
 
-    Extends the `QMainWindow` class
+    Extends the `QMainWindow` class.
     """
 
     def __init__(self, parent, design=None, gui=None):
@@ -67,18 +67,18 @@ class PropertyTableWidget(QMainWindow):
 
     @property
     def design(self):
-        """Returns the design"""
+        """Returns the design."""
         return self._design
 
     @property
     def _data(self) -> dict:
-        """Returns the variables"""
+        """Returns the variables."""
         if self._design:
             return self._design.variables
 
     def addRow(self):
         """
-        Add new row.
+        Add a new row.
         """
         db = QDialog(self)
         dialog = Ui_Dialog()
