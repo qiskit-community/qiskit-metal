@@ -610,10 +610,11 @@ def chargeline_T1(Ccharge, Cq, f01):
 # TODO: Move to a more generic file
 
 
-def readin_q3d_matrix(path):
+def readin_q3d_matrix(path:str):
     """
-    Read in the txt file created from q3d export
-    and output the capacitance matrix
+    Read in the txt file created from q3d export as CSV
+    and output the capacitance matrix file exported by
+    Ansys Q3D.
 
     When exporting pick "save as type: data table"
     ZKM: 2019-04-02
@@ -678,6 +679,22 @@ def readin_q3d_matrix(path):
 
     return df_cmat, units, design_variation, df_cond
 
+def readin_q3d_matrix_m(path:str) -> pd.DataFrame:
+    """Read in Q3D cap matrix from a .m file exported by
+    Ansys Q3d.
+
+    Args:
+        path (str): Path to .m file
+
+    Returns:
+        pd.DataFrame of cap matrix, with no names of columns.
+    """
+    text = Path(path).read_text()
+    match = re.findall(r'capMatrix (.*?)]', text, re.DOTALL)
+    if match:
+        match = match[0].strip('= [').strip(']').strip('\n')
+        dfC   = pd.read_csv(io.StringIO(match), skipinitialspace=True, header=None)
+    return dfC
 
 # TODO: Move to a more generic file
 
