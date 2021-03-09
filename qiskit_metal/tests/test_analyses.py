@@ -37,24 +37,24 @@ TEST_DATA = Path(__file__).parent / "test_data"
 
 class TestAnalyses(unittest.TestCase, AssertionsMixin):
     """
-    Unit test class
+    Unit test class.
     """
 
     def setUp(self):
         """
-        Setup unit test
+        Setup unit test.
         """
         pass
 
     def tearDown(self):
         """
-        Tie any loose ends
+        Tie any loose ends.
         """
         pass
 
     def test_analyses_instantiate_hcpb(self):
         """
-        Test instantiation of Hcpb in analytic_transmon.py
+        Test instantiation of Hcpb in analytic_transmon.py.
         """
         try:
             Hcpb()
@@ -63,7 +63,7 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
 
     def test_analyses_instantiate_scanning(self):
         """
-        Test instantiation of Scanning in analytic_transmon.py
+        Test instantiation of Scanning in analytic_transmon.py.
         """
         try:
             design = designs.DesignPlanar()
@@ -73,7 +73,7 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
 
     def test_analyses_cpw_guided_wavelength(self):
         """
-        Test the functionality of guided_wavelength in cpw_calculations.py
+        Test the functionality of guided_wavelength in cpw_calculations.py.
         """
         # Setup expected test results
         test_a_expected = (0.024356252567915772, 2.4617087473867807,
@@ -114,7 +114,7 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
 
     def test_analyses_cpw_lumped_cpw(self):
         """
-        Test the functionality of lumped_cpw in cpw_calculations.py
+        Test the functionality of lumped_cpw in cpw_calculations.py.
         """
         # Setup expected test results
         test_a_expected = (1.0800538577735159e-13, 3.8582810449211895e-07,
@@ -164,7 +164,7 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
 
     def test_analyses_cpw_effective_dielectric_constant(self):
         """
-        Test the functionality of effective_dielectric_constant in cpw_calculations.py
+        Test the functionality of effective_dielectric_constant in cpw_calculations.py.
         """
         # Generate actual result data
         test_a_actual = cpw_calculations.effective_dielectric_constant(
@@ -202,7 +202,7 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
 
     def test_analyses_cpw_elliptic_int_constants(self):
         """
-        Test the functionality of elliptic_int_constants in cpw_calculations.py
+        Test the functionality of elliptic_int_constants in cpw_calculations.py.
         """
         # Setup expected test results
         test_a_expected = (1.8173686928723873, 2.536427762586688,
@@ -226,7 +226,7 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
 
     def test_analyses_lumped_transmon_props(self):
         """
-        Test the functionality of lumped_transmon_props in lumped_capacitives.py
+        Test the functionality of lumped_transmon_props in lumped_capacitives.py.
         """
         # Setup expected test results
         expected = [
@@ -260,7 +260,7 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
 
     def test_analyses_lumped_chi(self):
         """
-        Test the functionality of chi in lumped_capacitives.py
+        Test the functionality of chi in lumped_capacitives.py.
         """
         # Generate actual result data
         test_a_result = lumped_capacitive.chi(50, 30, 20, 10)
@@ -280,7 +280,7 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
     #pylint: disable-msg=too-many-locals
     def test_analyses_lumped_levels_vs_ng_real_units(self):
         """
-        Test the functionality of levels_vs_ng_real_units in lumped_capacitives.py
+        Test the functionality of levels_vs_ng_real_units in lumped_capacitives.py.
         """
         # Setup expected test results
         test_a_expected = (388.69198590629856, 383542.9078924127,
@@ -335,7 +335,7 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
 
     def test_analyses_lumped_get_c_and_ic(self):
         """
-        Test the functionality of get_C_and_Ic in lumped_capacitives.py
+        Test the functionality of get_C_and_Ic in lumped_capacitives.py.
         """
         # Setup expected test results
         test_a_expected = [33.38125825, -0.61217795]
@@ -354,7 +354,7 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
 
     def test_analyses_lumped_cos_to_mega_and_delta(self):
         """
-        Test the functionality of cos_to_mega_and_delta in lumped_capacitives.py
+        Test the functionality of cos_to_mega_and_delta in lumped_capacitives.py.
         """
         # Generate actual result data
         test_a_result = lumped_capacitive.cos_to_mega_and_delta(
@@ -372,7 +372,7 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
 
     def test_analyses_lumped_chargeline_t1(self):
         """
-        Test the functionality of chargeline_T1 in lumped_capacitives.py
+        Test the functionality of chargeline_T1 in lumped_capacitives.py.
         """
         # Generate actual result data
         test_a_result = lumped_capacitive.chargeline_T1(100, 20, 30)
@@ -387,7 +387,7 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
 
     def test_analyses_lumped_readin_q3d_matrix(self):
         """
-        Test the functionality of readin_q3d_matrix in lumped_capacitives.py
+        Test the functionality of readin_q3d_matrix in lumped_capacitives.py.
         """
         # Setup expected test results
         units_expected = 'farad'
@@ -480,7 +480,7 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
     #pylint: disable-msg=too-many-locals
     def test_analyses_lumped_load_q3d_capacitance_matrix(self):
         """
-        Test the functionality of load_q3d_capacitance_matrix in lumped_capacitives.py
+        Test the functionality of load_q3d_capacitance_matrix in lumped_capacitives.py.
         """
         # Setup expected test results
         test_a_design_variation_expected = (
@@ -660,7 +660,7 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
 
     def test_analyses_lumped_move_index_to(self):
         """
-        Test the functionality of move_index_to in lumped_capacitives.py
+        Test the functionality of move_index_to in lumped_capacitives.py.
         """
         # Setup expected test results
         test_a_expected = [0, 2, 3, 1, 4]
@@ -685,7 +685,7 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
 
     def test_analyses_lumped_df_reorder_matrix_basis(self):
         """
-        Test the functionality of df_reorder_matrix_basis in lumped_capacitives.py
+        Test the functionality of df_reorder_matrix_basis in lumped_capacitives.py.
         """
         # Setup expected test results
         data = {
@@ -793,7 +793,7 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
 
     def test_analyses_hamiltonian_ho_wavefunction(self):
         """
-        Test the wavefunction function in the HO_waefunction.py file
+        Test the wavefunction function in the HO_waefunction.py file.
         """
         x_range = np.linspace(-5, 5, 5)
         actual = wavefunction(1.0, 1.0, 0.0, x_range)

@@ -50,13 +50,13 @@ class Hcpb:
                  Ec: float = None,
                  ng: float = 0.5):
         """
-        Generate a Cooper-pair box (CPB) model
+        Generate a Cooper-pair box (CPB) model.
 
         Arguments:
-            nlevels (int): number of charge states of the CPB [-nlevels, nlevels+1]
+            nlevels (int): Number of charge states of the CPB [-nlevels, nlevels+1]
             Ej (float): Josephson energy of the JJ
             Ec (float): Charging energy of the CPB
-            ng (float): offset charge of the CPB (ng=0.5 is the sweet spot).
+            ng (float): Offset charge of the CPB (ng=0.5 is the sweet spot).
                         `ng` only needs to run betweren -0.5 and 0.5.
                         `ng` is defined in units of cooper pairs (2e)
 
@@ -98,7 +98,7 @@ class Hcpb:
     def _gen_operators(self):
         '''
         Generate at initialization the number of levels and only recompute
-        the size of the problem if nlevels changes
+        the size of the problem if nlevels changes.
         '''
 
         self._diag = np.arange(-self._nlevels, self._nlevels + 1)
@@ -119,7 +119,7 @@ class Hcpb:
     def _diagonalize_H(self):
         '''
         Diagonalize the CPB Hamiltonian using symmetric tridiagonal
-        eigensolver for efficient calculation of properties
+        eigensolver for efficient calculation of properties.
         '''
         ham_diag = 4 * self._Ec * (self._diag - self._ng)**2
         ham_off = -(self._Ej / 2.0) * self._off
@@ -129,13 +129,13 @@ class Hcpb:
 
     def evalue_k(self, k: int):
         '''
-        Return the eigenvalue of the Hamiltonian for level k
+        Return the eigenvalue of the Hamiltonian for level k.
 
         Arguments:
-            k (int): index of the eigenvalue
+            k (int): Index of the eigenvalue
 
         Returns:
-            (float): eigenvalue of the Hamiltonian
+            float: eigenvalue of the Hamiltonian
         '''
         return self.evals[k]
 
@@ -145,10 +145,10 @@ class Hcpb:
         level k.
 
         Arguments:
-            k (int): index of eigenvector
+            k (int): Index of eigenvector
 
         Returns:
-            (array): eigenvector of the \|k> level of the CPB Hamiltonian
+            array: Eigenvector of the \|k> level of the CPB Hamiltonian
         '''
         return self.evecs[:, k]
 
@@ -156,18 +156,18 @@ class Hcpb:
         '''
         Return the wavevector of the CPB Hamiltonian
         in the flux basis. Made compact over the interval
-        of [-pi, pi]
+        of [-pi, pi].
 
         Arguments:
             k (int): index of wavevector corresponding to the
                      \|k> eigenstate
 
         Keyword Arguments:
-            pts (int): # of points to approximate the wavevector
+            pts (int): Number of points to approximate the wavevector
                        in the interval [-pi, pi]
 
         Returns:
-            (array): Wavevector corresponding the \|k> eigenstate
+            array: Wavevector corresponding the \|k> eigenstate
         '''
         phi = np.linspace(-np.pi, np.pi, pts)
         evec = self.evecs[:, k]
@@ -184,23 +184,23 @@ class Hcpb:
     def fij(self, i: int, j: int):
         '''
         Compute the transition energy (or frequency) between states
-        \|i> and \|j>
+        \|i> and \|j>.
 
         Arguments:
-            i (int): index of state \|i>
-            j (int): index of state \|j>
+            i (int): Index of state \|i>
+            j (int): Index of state \|j>
 
         Returns:
-            (float): Eij, the transition energy
+            float: Eij, the transition energy
         '''
         return np.abs(self.evalue_k(i) - self.evalue_k(j))
 
     def anharm(self):
         '''
-        Compute the anharmonicity of the CPB
+        Compute the anharmonicity of the CPB.
 
         Returns:
-            (float): Anharmonicty defined as E12-E01
+            float: Anharmonicty defined as E12-E01
         '''
         return self.fij(1, 2) - self.fij(0, 1)
 
@@ -210,11 +210,11 @@ class Hcpb:
         coupling elements together in the energy eigen-basis.
 
         Arguments:
-            i (int): \|i> index of the transmon
-            j (int): \|j> index of the transmon
+            i (int): \|i> Index of the transmon
+            j (int): \|j> Index of the transmon
 
         Returns:
-            (float): matrix element corresponding to the
+            float: Matrix element corresponding to the
             number operator in the transmon basis
             `n_ij = |<i|n|j>|`
         '''
@@ -227,13 +227,13 @@ class Hcpb:
         '''
         Wrapper around Qutip to output the diagonalized
         Hamiltonian truncated up to n levels of the transmon
-        for modeling
+        for modeling.
 
         Arguments:
             n_transmon (int): Truncate up to n levels of the
                               Transmon Hamiltonian
         Returns:
-            (Qobj): Returns a Qutip Qobj for the diagonalized
+            Qobj: Returns a Qutip Qobj for the diagonalized
             transmon
         '''
         ham = np.diag(self.evals[:n_transmon] - self.evals[0])
@@ -247,16 +247,16 @@ class Hcpb:
         coupling between other elements in the system.
 
         Arguments:
-            n_transmon (int): number of energy levels to consider
+            n_transmon (int): Number of energy levels to consider
 
         Keyword Arguments:
-            thresh (float): threshold for keeping small values
+            thresh (float): Threshold for keeping small values
                             in the number operator i.e `n_{i,i+2}`
                             terms drop off exponentially. If None
                             retain all terms.
 
         Returns:
-            (Qobj): Returns a Qutip Qobj corresponding to the
+            Qobj: Returns a Qutip Qobj corresponding to the
             number operator for defining couplings in the
             energy eigen-basis.
         '''
@@ -279,7 +279,7 @@ class Hcpb:
         frequency and anharmonicty to extract the target
         Ej and Ec for design and fabrication. Updates the
         class to include these Ej and Ec as the new values
-        for extracting properties
+        for extracting properties.
 
         Arguments:
             f01 (float): Desired qubit frequency
@@ -324,7 +324,7 @@ class Hcpb:
             Ec (float): Qubit EC (4ECn^2) in same units as f01
 
         Returns:
-            (float): Ej in same units
+            float: Ej in same units
         '''
 
         def fun(x):
@@ -345,47 +345,47 @@ class Hcpb:
 
     @property
     def nlevels(self):
-        '''Return the number of levels'''
+        '''Return the number of levels.'''
         return self._nlevels
 
     @nlevels.setter
     def nlevels(self, value: int):
         '''
         Set the number of levels and recompute the Hamiltonian
-        with the new size
+        with the new size.
         '''
         self._nlevels = value
         self.__init__(value)
 
     @property
     def Ej(self):
-        '''Returns Ej'''
+        '''Returns Ej.'''
         return self._Ej
 
     @Ej.setter
     def Ej(self, value: float):
-        '''Set Ej and recompute properties'''
+        '''Set Ej and recompute properties.'''
         self._Ej = value
         self._calc_H()
 
     @property
     def Ec(self):
-        '''Return Ec'''
+        '''Return Ec.'''
         return self._Ec
 
     @Ec.setter
     def Ec(self, value: float):
-        '''Set Ec and recompute properties'''
+        '''Set Ec and recompute properties.'''
         self._Ec = value
         self._calc_H()
 
     @property
     def ng(self):
-        '''Return ng '''
+        '''Return ng.'''
         return self._ng
 
     @ng.setter
     def ng(self, value: float):
-        '''Set ng and recompute properties'''
+        '''Set ng and recompute properties.'''
         self._ng = value
         self._calc_H()

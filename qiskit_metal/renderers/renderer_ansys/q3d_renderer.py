@@ -80,7 +80,7 @@ class QQ3DRenderer(QAnsysRenderer):
             design (QDesign): Use QGeometry within QDesign to obtain elements for Ansys.
             initiate (bool, optional): True to initiate the renderer. Defaults to True.
             render_template (Dict, optional): Typically used by GUI for template options for GDS. Defaults to None.
-            render_options (Dict, optional):  Used to override all options. Defaults to None.
+            render_options (Dict, optional): Used to override all options. Defaults to None.
         """
         super().__init__(design=design,
                          initiate=initiate,
@@ -360,20 +360,20 @@ class QQ3DRenderer(QAnsysRenderer):
         All capacitance matrices utilize the same values for Lj_nH and onwards in the list of arguments.
 
         Args:
-            Lj_nH (float): junction inductance (in nH)
-            Cj_fF (float): junction capacitance (in fF)
-            N (int): coupling pads (1 readout, N - 1 bus)
-            fr (Union[list, float]): coupling bus and readout frequencies (in GHz). fr can be a list with the order
+            Lj_nH (float): Junction inductance (in nH)
+            Cj_fF (float): Junction capacitance (in fF)
+            N (int): Coupling pads (1 readout, N - 1 bus)
+            fr (Union[list, float]): Coupling bus and readout frequencies (in GHz). fr can be a list with the order
                 they appear in the capMatrix.
-            fb (Union[list, float]): coupling bus and readout frequencies (in GHz). fb can be a list with the order
+            fb (Union[list, float]): Coupling bus and readout frequencies (in GHz). fb can be a list with the order
                 they appear in the capMatrix.
-            maxPass (int): maximum number of passes
+            maxPass (int): Maximum number of passes
             variation (str, optional): An empty string returns nominal variation. Otherwise need the list. Defaults to ''.
             solution_kind (str, optional): Solution type. Defaults to 'AdaptivePass'.
             g_scale (float, optional): Scale factor. Defaults to 1..
 
         Returns:
-            dict: dictionary composed of pass numbers (keys) and their respective capacitance matrices (values)
+            dict: A dictionary composed of pass numbers (keys) and their respective capacitance matrices (values)
         """
         IC_Amps = Convert.Ic_from_Lj(Lj_nH, 'nH', 'A')
         CJ = ureg(f'{Cj_fF} fF').to('farad').magnitude

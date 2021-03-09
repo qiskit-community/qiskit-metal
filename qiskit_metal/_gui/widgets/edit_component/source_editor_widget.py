@@ -37,11 +37,11 @@ def create_source_edit_widget(gui: 'MetalGUI',
     """Creates the spawned window that has the edit source
 
     Arguments:
-        gui (MetalGUI): the GUI
-        class_name (str): the name of the class
-        module_name (str): the name of the module
-        module_path (str): the path to the module
-        parent (object): the parent
+        gui (MetalGUI): The GUI
+        class_name (str): The name of the class
+        module_name (str): The name of the module
+        module_path (str): The path to the module
+        parent (object): The parent
 
     Returns:
         QtWidgets.QWidget: Ui_EditSource widget
@@ -85,10 +85,10 @@ def dockify(self, gui):
     """Dockify the given GUI
 
     Args:
-        gui (MetalGUI): the GUI
+        gui (MetalGUI): The GUI
 
     Returns:
-        QDockWidget: the widget
+        QDockWidget: The widget
     """
     ### Dockify
     self.dock_widget = QDockWidget('Edit Source', gui.main_window)

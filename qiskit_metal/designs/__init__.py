@@ -20,6 +20,8 @@ Designs (:mod:`qiskit_metal.designs`)
 
 Module containing all Qiskit Metal designs.
 
+.. _qdesign:
+
 QDesign
 ---------------
 

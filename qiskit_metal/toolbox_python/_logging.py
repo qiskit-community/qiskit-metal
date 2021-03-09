@@ -39,18 +39,18 @@ def setup_logger(logger_name,
     Integrates logging with the warnings module.
 
     Args:
-        logger_name (str): name of the log
-        log_format (format): format of the log
-        log_datefmt (format): format of the date
-        level_stream (log level): log level of the stream (Default: logging.INFO)
-        level_base (log level): log level of the base (Default: logging.DEBUG)
-        force_set (bool): True to force (Default: False)
-        capture_warnings (bool): True to capture warnings (Default: None)
-        propagate (bool): True to propagate (Default: False)
-        create_stream (bool): True to create the stream (Default: True)
+        logger_name (str): Name of the log.
+        log_format (format): Format of the log.
+        log_datefmt (format): Format of the date.
+        level_stream (log level): Log level of the stream.  Defaults to logging.INFO.
+        level_base (log level): Log level of the base.  Defaults to logging.DEBUG.
+        force_set (bool): True to force.  Defaults to False.
+        capture_warnings (bool): True to capture warnings.  Defaults to None.
+        propagate (bool): True to propagate.  Defaults to False.
+        create_stream (bool): True to create the stream.  Defaults to True.
 
     Returns:
-        logging.Logger: the logger
+        logging.Logger: The logger
 
     To see the logging levels you can use:
 
@@ -103,7 +103,7 @@ def setup_logger(logger_name,
 
 class LogStore(collections.deque):
     """
-    Wrapper over collections.deque that ensures most recently added items (which should be strings) are at the "front" of the queue (i.e. left of the array)
+    Wrapper over collections.deque that ensures most recently added items (which should be strings) are at the "front" of the queue (i.e. left of the array).
 
     Each QDesign instantiation has a LogStore object used to keep track of logs for the Build History display.
     """
@@ -137,5 +137,5 @@ class LogStore(collections.deque):
 
     @property
     def title(self):
-        """The title is an easy way to differentiate between multiple instances of LogStore, each with different data"""
+        """The title is an easy way to differentiate between multiple instances of LogStore, each with different data."""
         return self._title

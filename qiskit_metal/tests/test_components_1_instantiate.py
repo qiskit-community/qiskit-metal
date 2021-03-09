@@ -54,12 +54,12 @@ from qiskit_metal.qlibrary.interconnects.resonator_rectangle_spiral import Reson
 
 class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
     """
-    Unit test class
+    Unit test class.
     """
 
     def setUp(self):
         """
-        Setup unit test
+        Setup unit test.
         """
         pass
 
@@ -71,7 +71,7 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
 
     def test_component_instantiate_qcomponent(self):
         """
-        Test the instantiaion of QComponent
+        Test the instantiaion of QComponent.
         """
         design = designs.DesignPlanar()
         try:
@@ -103,7 +103,7 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
 
     def test_component_instantiate_basequbit(self):
         """
-        Test the instantiation of basequbit
+        Test the instantiation of basequbit.
         """
         design = designs.DesignPlanar()
         try:
@@ -124,7 +124,7 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
 
     def test_component_instantiate_open_to_ground(self):
         """
-        Test the instantiation of openToGround
+        Test the instantiation of openToGround.
         """
         design = designs.DesignPlanar()
         try:
@@ -150,7 +150,7 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
 
     def test_component_instantiate_short_to_ground(self):
         """
-        Test the instantiation of shortToGround
+        Test the instantiation of shortToGround.
         """
         design = designs.DesignPlanar()
         try:
@@ -176,7 +176,7 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
 
     def test_component_instantiate_route_frame_path(self):
         """
-        Test the instantiation of RouteFramed
+        Test the instantiation of RouteFramed.
         """
         try:
             RouteFramed
@@ -185,7 +185,7 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
 
     def test_component_instantiate_route_straight(self):
         """
-        Test the instantiation of RouteStraight
+        Test the instantiation of RouteStraight.
         """
         design = designs.DesignPlanar()
         try:
@@ -206,7 +206,7 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
 
     def test_component_instantiate_q_route_lead(self):
         """
-        Test the instantiation of QRouteLead
+        Test the instantiation of QRouteLead.
         """
         try:
             QRouteLead
@@ -215,7 +215,7 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
 
     def test_component_instantiate_q_route_point(self):
         """
-        Test the instantiation of QRoutePoint
+        Test the instantiation of QRoutePoint.
         """
         try:
             QRoutePoint
@@ -224,7 +224,7 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
 
     def test_component_instantiate_route_meander(self):
         """
-        Test the instantiation of RouteMeander
+        Test the instantiation of RouteMeander.
         """
         try:
             RouteMeander
@@ -233,7 +233,7 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
 
     def test_component_instantiate_route_mixed(self):
         """
-        Test the instantiation of RouteMixed
+        Test the instantiation of RouteMixed.
         """
         try:
             RouteMixed
@@ -242,7 +242,7 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
 
     def test_component_instantiate_q_route(self):
         """
-        Test the instantiation of QRoute
+        Test the instantiation of QRoute.
         """
         try:
             QRoute
@@ -251,7 +251,7 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
 
     def test_component_instantiate_my_q_component(self):
         """
-        Test the instantiation of MyQComponent
+        Test the instantiation of MyQComponent.
         """
         design = designs.DesignPlanar()
         try:
@@ -277,7 +277,7 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
 
     def test_component_instantiate_cpw_hanger_t(self):
         """
-        Test the instantiation of CPWHangerT
+        Test the instantiation of CPWHangerT.
         """
         design = designs.DesignPlanar()
         try:
@@ -303,7 +303,7 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
 
     def test_component_instantiate_resonator_rectangle_spiral(self):
         """
-        Test the instantiation of ResonatorRectangleSpiral
+        Test the instantiation of ResonatorRectangleSpiral.
         """
         design = designs.DesignPlanar()
         try:
@@ -331,7 +331,7 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
 
     def test_component_instantiate_circle_raster(self):
         """
-        Test the instantiation of CircleRaster
+        Test the instantiation of CircleRaster.
         """
         design = designs.DesignPlanar()
         try:
@@ -357,7 +357,7 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
 
     def test_component_instantiate_circle_caterpillar(self):
         """
-        Test the instantiation of CircleCaterpillar
+        Test the instantiation of CircleCaterpillar.
         """
         design = designs.DesignPlanar()
         try:
@@ -384,7 +384,7 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
 
     def test_component_instantiate_n_gon(self):
         """
-        Test the instantiation of NGon
+        Test the instantiation of NGon.
         """
         design = designs.DesignPlanar()
         try:
@@ -409,7 +409,7 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
 
     def test_component_instantiate_n_square_spiral(self):
         """
-        Test the instantiation of NSquareSpiral
+        Test the instantiation of NSquareSpiral.
         """
         design = designs.DesignPlanar()
         try:
@@ -435,7 +435,7 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
 
     def test_component_instantiate_rectangle(self):
         """
-        Test the instantiation of Rectangle
+        Test the instantiation of Rectangle.
         """
         design = designs.DesignPlanar()
         try:
@@ -460,7 +460,7 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
 
     def test_component_instantiate_rectangle_hollow(self):
         """
-        Test the instantiation of RectangleHollow
+        Test the instantiation of RectangleHollow.
         """
         design = designs.DesignPlanar()
         try:
@@ -486,7 +486,7 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
 
     def test_component_instantiate_route_anchors(self):
         """
-        Test the instantiation of RouteAnchors
+        Test the instantiation of RouteAnchors.
         """
         design = designs.DesignPlanar()
         try:
@@ -507,7 +507,7 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
 
     def test_component_instantiate_route_pathfinder(self):
         """
-        Test the instantiation of RoutePathfinder
+        Test the instantiation of RoutePathfinder.
         """
         design = designs.DesignPlanar()
         try:
@@ -528,7 +528,7 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
 
     def test_component_instantiate_launch_v1(self):
         """
-        Test the instantiation of LaunchpadWirebond
+        Test the instantiation of LaunchpadWirebond.
         """
         design = designs.DesignPlanar()
         try:
@@ -555,7 +555,7 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
 
     def test_component_instantiate_launch_v2(self):
         """
-        Test the instantiation of LaunchpadWirebondCoupled
+        Test the instantiation of LaunchpadWirebondCoupled.
         """
         design = designs.DesignPlanar()
         try:
@@ -583,7 +583,7 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
 
     def test_component_instantiate_three_finger_cap_v1(self):
         """
-        Test the instantiation of CapThreeFingers
+        Test the instantiation of CapThreeFingers.
         """
         design = designs.DesignPlanar()
         try:

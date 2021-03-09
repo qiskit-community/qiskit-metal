@@ -18,6 +18,8 @@ Renderers (:mod:`qiskit_metal.renderers`)
 
 .. currentmodule:: qiskit_metal.renderers
 
+.. _qrenderer:
+
 Renderer Base
 ---------------
 

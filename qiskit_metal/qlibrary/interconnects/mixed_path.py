@@ -24,16 +24,14 @@ from .pathfinder import RoutePathfinder
 # class RouteMixed(RouteFramed, RoutePathfinder, RouteMeander):
 class RouteMixed(RoutePathfinder, RouteMeander):
     """
-    The comprehensive Routing class
-    Inherits `RoutePathfinder, RouteMeander` class, thus also QRoute and RouteAnchors
-
-    Description:
-        Implements fully featured Routing, allowing different type of connections between anchors
+    Implements fully featured Routing, allowing different type of connections between anchors.
+    The comprehensive Routing class.
+    Inherits `RoutePathfinder, RouteMeander` class, thus also QRoute and RouteAnchors.
 
     RoutePathfinder Default Options:
         * anchors: OrderedDict -- Intermediate anchors only; doesn't include endpoints
         * advanced: Dict
-            * avoid_collision: 'false' -- true/false, defines if the route needs to avoid collisions (default: 'false')
+            * avoid_collision: 'false' -- true/false, defines if the route needs to avoid collisions.  Defaults to 'false'.
 
     RouteMeander Default Options:
         * pin_inputs: Dict
@@ -45,8 +43,8 @@ class RouteMixed(RoutePathfinder, RouteMeander):
                 * pin: '' -- Name of pin used for pin_end
         * fillet: '0'
         * lead: Dict
-            * start_straight: '0mm' -- Lead-in, defined as the straight segment extension from start_pin (default: 0.1um)
-            * end_straight: '0mm' -- Lead-out, defined as the straight segment extension from end_pin (default: 0.1um)
+            * start_straight: '0mm' -- Lead-in, defined as the straight segment extension from start_pin.  Defaults to 0.1um.
+            * end_straight: '0mm' -- Lead-out, defined as the straight segment extension from end_pin.  Defaults to 0.1um.
             * start_jogged_extension: '' -- Lead-in, jogged extension of lead-in. Described as list of tuples
             * end_jogged_extension: '' -- Lead-out, jogged extension of lead-out. Described as list of tuples
         * total_length: '7mm'
@@ -57,12 +55,12 @@ class RouteMixed(RoutePathfinder, RouteMeander):
     RoutePathfinder Default Options:
         * step_size: '0.25mm' -- Length of the step for the A* pathfinding algorithm
         * advanced: Dict
-            * avoid_collision: 'true' -- true/false, defines if the route needs to avoid collisions (default: 'true')
+            * avoid_collision: 'true' -- true/false, defines if the route needs to avoid collisions.  Defaults to 'true'.
 
     RouteMeander Default Options:
         * meander: Dict
             * spacing: '200um' -- Minimum spacing between adjacent meander curves
-            * asymmetry='0um' -- Offset between the center-line of the meander and the center-line that stretches from the tip of lead-in to the x (or y) coordinate of the tip of the lead-out (default: '0um')
+            * asymmetry='0um' -- Offset between the center-line of the meander and the center-line that stretches from the tip of lead-in to the x (or y) coordinate of the tip of the lead-out.  Defaults to '0um'.
         * snap: 'true'
         * prevent_short_edges: 'true'
 
@@ -163,13 +161,13 @@ class RouteMixed(RoutePathfinder, RouteMeander):
         self.make_elements(self.get_points())
 
     def select_connect_method(self, segment_num):
-        """Translates the user-selected connection method into the right method to execute
+        """Translates the user-selected connection method into the right method to execute.
 
         Args:
-            segment_num (int): segment ID. Counts 0 as the first segment after the lead-in.
+            segment_num (int): Segment ID. Counts 0 as the first segment after the lead-in.
 
         Return:
-            selected method
+            object: selected method
         """
         between_anchors = self.parse_options().between_anchors
         if segment_num in between_anchors:

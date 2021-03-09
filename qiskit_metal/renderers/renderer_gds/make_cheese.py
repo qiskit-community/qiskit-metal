@@ -57,7 +57,7 @@ class Cheesing():
             minx (float): Chip minimum x location.
             miny (float): Chip minimum y location.
             maxx (float): Chip maximum x location.
-            maxy (float): chip maximum y location.
+            maxy (float): Chip maximum y location.
             chip_name (str): User defined chip name.
             layer (int): Layer number for calculating the cheese.
             datatype (int): User defined datatype, considered a sub-layer number for where to place the cheese output.

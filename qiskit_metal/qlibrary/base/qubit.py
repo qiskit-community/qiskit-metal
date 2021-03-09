@@ -56,13 +56,13 @@ class BaseQubit(QComponent):
         Args:
             design (QDesign): The parent design.
             name (str): Name of the component.
-            options (dict): User options that will override the defaults. (default: None)
+            options (dict): User options that will override the defaults.  Defaults to None.
             component_template (dict): User can overwrite the template options for the component
                                        that will be stored in the design, in design.template,
                                        and used every time a new component is instantiated.
-                                       (default: None)
+                                       Defaults to None.
             make (bool): True if the make function should be called at the end of the init.
-                    Options be used in the make function to create the geometry. (default: True)
+                    Options be used in the make function to create the geometry.  Defaults to None.
         """
         super().__init__(design, name, options=options, make=False)
 
@@ -83,7 +83,7 @@ class BaseQubit(QComponent):
 
     def _set_options_connection_pads(self):
         """
-        Applies the default options
+        Applies the default options.
         """
         # class_name = type(self).__name__
         assert '_default_connection_pads' in self.design.template_options[
