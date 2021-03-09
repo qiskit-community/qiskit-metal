@@ -17,9 +17,6 @@
 # pylint: disable-msg=too-many-public-methods
 """
 Qiskit Metal unit tests analyses functionality.
-
-Created on Wed Apr 22 10:01:13 2020
-@author: Jeremy D. Drysdale
 """
 
 import unittest
@@ -40,24 +37,24 @@ from qiskit_metal import draw
 
 class TestRenderers(unittest.TestCase):
     """
-    Unit test class
+    Unit test class.
     """
 
     def setUp(self):
         """
-        Setup unit test
+        Setup unit test.
         """
         pass
 
     def tearDown(self):
         """
-        Tie any loose ends
+        Tie any loose ends.
         """
         pass
 
     def test_renderer_instantiate_qrenderer(self):
         """
-        Test instantiation of QRenderer in renderer_base.py
+        Test instantiation of QRenderer in renderer_base.py.
         """
         design = designs.DesignPlanar()
         try:
@@ -84,7 +81,7 @@ class TestRenderers(unittest.TestCase):
 
     def test_renderer_instantiate_qrenderer_gui(self):
         """
-        Test instantiation of QRendererGui in renderer_gui_base.py
+        Test instantiation of QRendererGui in renderer_gui_base.py.
         """
         design = designs.DesignPlanar()
         try:
@@ -99,7 +96,7 @@ class TestRenderers(unittest.TestCase):
 
     def test_renderer_instantiate_gdsrender(self):
         """
-        Test instantiation of QGDSRenderer in gds_renderer.py
+        Test instantiation of QGDSRenderer in gds_renderer.py.
         """
         design = designs.DesignPlanar()
         try:
@@ -128,7 +125,7 @@ class TestRenderers(unittest.TestCase):
 
     def test_renderer_instantiate_mplinteraction(self):
         """
-        Test instantiation of MplInteraction in mpl_interaction.py
+        Test instantiation of MplInteraction in mpl_interaction.py.
         """
         try:
             MplInteraction(_plt)
@@ -137,7 +134,7 @@ class TestRenderers(unittest.TestCase):
 
     def test_renderer_instantiate_qq3d_renderer(self):
         """
-        Test instantiation of QQ3DRenderer in q3d_render.py
+        Test instantiation of QQ3DRenderer in q3d_render.py.
         """
         design = designs.DesignPlanar()
         try:
@@ -147,7 +144,7 @@ class TestRenderers(unittest.TestCase):
 
     def test_renderer_instantiate_qhfss_renderer(self):
         """
-        Test instantiation of QHFSSRenderer in q3d_render.py
+        Test instantiation of QHFSSRenderer in q3d_render.py.
         """
         design = designs.DesignPlanar()
         try:
@@ -157,7 +154,7 @@ class TestRenderers(unittest.TestCase):
 
     def test_renderer_qq3d_render_options(self):
         """
-        Test that defaults in QQ3DRenderer were not accidentally changed
+        Test that defaults in QQ3DRenderer were not accidentally changed.
         """
         design = designs.DesignPlanar()
         renderer = QQ3DRenderer(design, initiate=False)
@@ -165,24 +162,67 @@ class TestRenderers(unittest.TestCase):
 
         self.assertEqual(renderer.name, 'q3d')
 
-        self.assertEqual(len(options), 2)
+        self.assertEqual(len(options), 4)
+        self.assertEqual(len(options['add_setup']), 12)
+        self.assertEqual(len(options['get_capacitance_matrix']), 3)
         self.assertEqual(options['material_type'], 'pec')
         self.assertEqual(options['material_thickness'], '200nm')
 
+        self.assertEqual(options['add_setup']['freq_ghz'], '5.0')
+        self.assertEqual(options['add_setup']['name'], 'Setup')
+        self.assertEqual(options['add_setup']['save_fields'], 'False')
+        self.assertEqual(options['add_setup']['enabled'], 'True')
+        self.assertEqual(options['add_setup']['max_passes'], '15')
+        self.assertEqual(options['add_setup']['min_passes'], '2')
+        self.assertEqual(options['add_setup']['min_converged_passes'], '2')
+        self.assertEqual(options['add_setup']['percent_error'], '0.5')
+        self.assertEqual(options['add_setup']['percent_refinement'], '30')
+        self.assertEqual(options['add_setup']['auto_increase_solution_order'],
+                         'True')
+        self.assertEqual(options['add_setup']['solution_order'], 'High')
+        self.assertEqual(options['add_setup']['solver_type'], 'Iterative')
+
+        self.assertEqual(options['get_capacitance_matrix']['variation'], '')
+        self.assertEqual(options['get_capacitance_matrix']['solution_kind'],
+                         'AdaptivePass')
+        self.assertEqual(options['get_capacitance_matrix']['pass_number'], '3')
+
     def test_renderer_hfss_render_options(self):
         """
-        Test that defaults in QHFSSRender were not accidentally changed
+        Test that defaults in QHFSSRender were not accidentally changed.
         """
         design = designs.DesignPlanar()
         renderer = QHFSSRenderer(design, initiate=False)
         options = renderer.hfss_options
 
         self.assertEqual(renderer.name, 'hfss')
-        self.assertEqual(len(options), 0)
+        self.assertEqual(len(options), 3)
+        self.assertEqual(len(options['drivenmodal_setup']), 8)
+        self.assertEqual(len(options['eigenmode_setup']), 9)
+        self.assertEqual(options['port_inductor_gap'], '10um')
+
+        self.assertEqual(options['drivenmodal_setup']['freq_ghz'], '5')
+        self.assertEqual(options['drivenmodal_setup']['name'], "Setup")
+        self.assertEqual(options['drivenmodal_setup']['max_delta_s'], '0.1')
+        self.assertEqual(options['drivenmodal_setup']['max_passes'], '10')
+        self.assertEqual(options['drivenmodal_setup']['min_passes'], '1')
+        self.assertEqual(options['drivenmodal_setup']['min_converged'], '1')
+        self.assertEqual(options['drivenmodal_setup']['pct_refinement'], '30')
+        self.assertEqual(options['drivenmodal_setup']['basis_order'], '1')
+
+        self.assertEqual(options['eigenmode_setup']['name'], "Setup")
+        self.assertEqual(options['eigenmode_setup']['min_freq_ghz'], '1')
+        self.assertEqual(options['eigenmode_setup']['n_modes'], '1')
+        self.assertEqual(options['eigenmode_setup']['max_delta_f'], '0.5')
+        self.assertEqual(options['eigenmode_setup']['max_passes'], '10')
+        self.assertEqual(options['eigenmode_setup']['min_passes'], '1')
+        self.assertEqual(options['eigenmode_setup']['min_converged'], '1')
+        self.assertEqual(options['eigenmode_setup']['pct_refinement'], '30')
+        self.assertEqual(options['eigenmode_setup']['basis_order'], '-1')
 
     def test_renderer_gdsrenderer_options(self):
         """
-        Test that default_options in QGDSRenderer were not accidentally changed
+        Test that default_options in QGDSRenderer were not accidentally changed.
         """
         design = designs.DesignPlanar()
         renderer = QGDSRenderer(design)
@@ -229,7 +269,7 @@ class TestRenderers(unittest.TestCase):
 
     def test_renderer_gdsrenderer_inclusive_bound(self):
         """
-        Test functionality of inclusive_bound in gds_renderer.py
+        Test functionality of inclusive_bound in gds_renderer.py.
         """
         design = designs.DesignPlanar()
         renderer = QGDSRenderer(design)
@@ -242,7 +282,7 @@ class TestRenderers(unittest.TestCase):
 
     def test_renderer_scale_max_bounds(self):
         """
-        Test functionality of scale_max_bounds in gds_renderer.py
+        Test functionality of scale_max_bounds in gds_renderer.py.
         """
         design = designs.DesignPlanar()
         renderer = QGDSRenderer(design)
@@ -254,7 +294,7 @@ class TestRenderers(unittest.TestCase):
 
     def test_renderer_get_chip_names(self):
         """
-        Test functionality of get_chip_names in gds_renderer.py
+        Test functionality of get_chip_names in gds_renderer.py.
         """
         design = designs.DesignPlanar()
         renderer = QGDSRenderer(design)
@@ -280,14 +320,14 @@ class TestRenderers(unittest.TestCase):
 
     def test_renderer_setup_renderers(self):
         """
-        Test setup_renderers in setup_defauts.py
+        Test setup_renderers in setup_defauts.py.
         """
         actual = setup_default.setup_renderers()
         self.assertEqual(actual, {})
 
     def test_renderer_gdsrenderer_high_level(self):
         """
-        Test that high level defaults were not accidentally changed in gds_renderer.py
+        Test that high level defaults were not accidentally changed in gds_renderer.py.
         """
         design = designs.DesignPlanar()
         renderer = QGDSRenderer(design)
@@ -300,7 +340,7 @@ class TestRenderers(unittest.TestCase):
 
     def test_renderer_gdsrenderer_update_units(self):
         """
-        Test update_units in gds_renderer.py
+        Test update_units in gds_renderer.py.
         """
         design = designs.DesignPlanar()
         renderer = QGDSRenderer(design)
@@ -313,7 +353,7 @@ class TestRenderers(unittest.TestCase):
 
     def test_renderer_gdsrenderer_midpoint_xy(self):
         """
-        Test midpoint_xy in gds_renderer.py
+        Test midpoint_xy in gds_renderer.py.
         """
         actual = QGDSRenderer.midpoint_xy(10, 15, 20, 30)
         self.assertEqual(len(actual), 2)
@@ -322,7 +362,7 @@ class TestRenderers(unittest.TestCase):
 
     def test_renderer_gdsrenderer_check_qcomps(self):
         """
-        Test check_qcomps in gds_renderer.py
+        Test check_qcomps in gds_renderer.py.
         """
         design = designs.DesignPlanar()
         renderer = QGDSRenderer(design)
@@ -348,7 +388,7 @@ class TestRenderers(unittest.TestCase):
 
     def test_renderer_mpl_interaction_disconnect(self):
         """
-        Test disconnect in MplInteraction in mpl_interaction.py
+        Test disconnect in MplInteraction in mpl_interaction.py.
         """
         mpl = MplInteraction(_plt)
         mpl.disconnect()
@@ -356,7 +396,7 @@ class TestRenderers(unittest.TestCase):
 
     def test_renderer_gds_check_cheese(self):
         """
-        Test check_cheese in gds_renderer.py
+        Test check_cheese in gds_renderer.py.
         """
         design = designs.DesignPlanar()
         renderer = QGDSRenderer(design)
@@ -367,7 +407,7 @@ class TestRenderers(unittest.TestCase):
 
     def test_renderer_gds_check_no_cheese(self):
         """
-        Test check_no_cheese in gds_renderer.py
+        Test check_no_cheese in gds_renderer.py.
         """
         design = designs.DesignPlanar()
         renderer = QGDSRenderer(design)
@@ -378,7 +418,7 @@ class TestRenderers(unittest.TestCase):
 
     def test_renderer_gds_check_either_cheese(self):
         """
-        Test check_either_cheese in gds_renderer.py
+        Test check_either_cheese in gds_renderer.py.
         """
         design = designs.DesignPlanar()
         renderer = QGDSRenderer(design)

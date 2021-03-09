@@ -13,10 +13,6 @@
 # that they have been altered from the originals.
 """
 Module containing Design interface components.
-
-@date: 2020
-
-@author: Priti Shah, ... (IBM)
 """
 
 from copy import deepcopy
@@ -88,7 +84,7 @@ class Components:
             quiet (bool): Allow warning messages to be generated.
 
         Returns:
-            int: key to use in  _components.
+            int: Key to use in  _components.
             If 0 is returned it means the name is not in dict.
 
         Raises:
@@ -211,7 +207,7 @@ class Components:
     #     """Provide same behavior as __setitem__.
 
     #     Args:
-    #         name (str): Name of component used to find the QComponent in desing._components dict, vs using unique int id.
+    #         name (str): Name of component used to find the QComponent in design._components dict, vs using unique int id.
     #         value (QComponent): Component with the name used in arguments.
     #     """
     #     pass
@@ -253,7 +249,7 @@ class Components:
 
     #     #     def __repr__(slef):
     #     #         # make sure to define repreentation for print purpose
-    #     #         # Why every calss needs one?  https://dbader.org/blog/python-repr-vs-str
+    #     #         # Why every class needs one?  https://dbader.org/blog/python-repr-vs-str
     #     #         return str(self.__actual_place_I_store_components__.give_me_repr())
 
     def __dir__(self) -> List:

@@ -12,12 +12,8 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 """
-Created 2019/10/16
-
 Placeholder to allow for future modifications of the attribute dictionary class.
 We use the `addict` package `Dict` class.
-
-@author: Thomas McConkey (IBM)
 """
 
 # pylint: disable=unused-import

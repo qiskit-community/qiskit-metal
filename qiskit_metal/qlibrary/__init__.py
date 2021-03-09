@@ -20,9 +20,7 @@ QLibrary (:mod:`qiskit_metal.qlibrary`)
 
 Module containing all Qiskit Metal QLibrary.
 
-@date: 2019
-
-@author: Zlatko Minev (IBM)
+.. _qlibrary:
 
 Base Components
 ---------------

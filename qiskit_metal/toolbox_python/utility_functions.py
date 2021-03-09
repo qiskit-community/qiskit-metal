@@ -13,10 +13,6 @@
 # that they have been altered from the originals.
 '''
 Simply utility functions to improve QOL of QM developers and QM users
-
-@date: 2019
-@author: Zlatko K. Minev (IBM)
-@modified: Thomas McConkey 2019/10/16
 '''
 
 import logging
@@ -53,15 +49,15 @@ __all__ = [
 
 def copy_update(options, *args, deep_copy=True, **kwargs):
     '''
-    Utility funciton to merge two dictionaries
+    Utility funciton to merge two dictionaries.
 
     Args:
-        options (object): options
+        options (object): Options
         deep_copy (bool): True to do a deep copy
-        kwargs (dict): dictionary of parameters
+        kwargs (dict): Dictionary of parameters
 
     Returns:
-        dict: merged dictionary
+        dict: Merged dictionary
     '''
     if deep_copy:
         options = deepcopy(options)
@@ -77,12 +73,12 @@ def dict_start_with(my_dict, start_with, as_=list):
     https://stackoverflow.com/questions/17106819/accessing-python-dict-values-with-the-key-start-characters
 
     Args:
-        my_dict (dict): the dictionary
-        starts_with (str): string to check of
-        as_ (type): list of dict (Default: list)
+        my_dict (dict): The dictionary
+        starts_with (str): String to check of
+        as_ (type): A list of dict.  Defaults to list.
 
     Returns:
-        list or dict: parts of the dictionary with keys starting with the given text
+        list or dict: Parts of the dictionary with keys starting with the given text
 
     .. code-block:: python
 
@@ -131,13 +127,13 @@ def dict_start_with(my_dict, start_with, as_=list):
 
 def data_frame_empty_typed(column_types: dict):
     """Creates and empty DataFrame with dtypes for each column given
-    by the dictionary,
+    by the dictionary.
 
     Arguments:
-        column_types (dict): key, dtype pairs
+        column_types (dict): A key, dtype pairs
 
     Returns:
-        DataFrame: empty dataframe with the typed columns
+        DataFrame: An empty dataframe with the typed columns
     """
     df = pd.DataFrame()
     for name, dtype in column_types.items():
@@ -146,13 +142,13 @@ def data_frame_empty_typed(column_types: dict):
 
 
 def clean_name(text: str):
-    """Clean a string to a proper variable name in python
+    """Clean a string to a proper variable name in python.
 
     Arguments:
-        text (str): original string
+        text (str): Original string
 
     Returns:
-        str: corrected string
+        str: Corrected string
 
     .. code-block:: python
 
@@ -174,7 +170,7 @@ _old_warn = None
 
 def enable_warning_traceback():
     """
-    Show ow traceback on warning
+    Show ow traceback on warning.
     """
 
     global _old_warn
@@ -182,7 +178,7 @@ def enable_warning_traceback():
 
     def warn(*args, **kwargs):
         '''
-        Warn user with traceback to warning
+        Warn user with traceback to warning.
         '''
         tb = traceback.extract_stack()
         _old_warn(*args, **kwargs)
@@ -196,7 +192,7 @@ def get_traceback():
     Returns traceback string. Format each frame in the traceback as a string.
 
     Returns:
-        str: traceback string
+        str: Traceback string
     '''
     trace_back = traceback.extract_stack()
     return "".join(traceback.format_list(trace_back)[:-1])
@@ -209,7 +205,7 @@ def print_traceback_easy(start=26):
 
     Args:
         start (int): Starting position of the traceback frame.
-                     Default: 26. Assumes runs from Jupyter notebooks.
+                     Defaults to 26. Assumes runs from Jupyter notebooks.
                      In general set to zero.
     '''
     print(f"\n")
@@ -222,13 +218,14 @@ def log_error_easy(logger: logging.Logger,
                    post_text='',
                    do_print=False):
     """
-    Print
+    Print log message.
 
     Arguments:
-        logger (logging.Logger): the logger
-        pre_text (str): initial text to write (Default: '')
-        post_text (str): end text to write (Default: '')
-        do_print (bool): True to do the printing, False otherwise (Default: False)
+        logger (logging.Logger): The logger.
+        pre_text (str): Initial text to write.  Defaults to ''.
+        post_text (str): End text to write.  Defaults to ''.
+        do_print (bool): True to do the printing, False otherwise.  Defaults to False.
+
     Test use:
 
     .. code-block:: python
@@ -268,20 +265,20 @@ def log_error_easy(logger: logging.Logger,
 
 def monkey_patch(self, func, func_name=None):
     '''
-    Monkey patch a method into a class at runtime
+    Monkey patch a method into a class at runtime.
 
     Use descriptor protocol when adding method as an attribute.
 
     For a method on a class, when you do a.some_method, python actually does:
          a.some_method.__get__(a, type(a))
 
-    so we're just reproducing that call sequence here explicitly.
+    So we're just reproducing that call sequence here explicitly.
 
     See: https://stackoverflow.com/questions/38485123/monkey-patching-bound-methods-in-python
 
     Args:
         func (function): function
-        func_name (str): name of the function (Default: None)
+        func_name (str): name of the function.  Defaults to None.
     '''
     func_name = func_name or func.__name__
     setattr(self, func_name, func.__get__(self, self.__class__))
@@ -374,7 +371,7 @@ def bad_fillet_idxs(coords: list,
                     isclosed: bool = False) -> list:
     """
     Get list of vertex indices in a linestring (isclosed = False) or polygon (isclosed = True) that cannot be filleted based on
-     proximity to neighbors. By default, this list excludes the first and last vertices if the shape is a linestring.
+    proximity to neighbors. By default, this list excludes the first and last vertices if the shape is a linestring.
 
     Args:
         coords (list): Ordered list of tuples of vertex coordinates.

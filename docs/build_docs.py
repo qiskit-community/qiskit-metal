@@ -24,29 +24,62 @@ import sys
 
 # first install prerequisite packages
 try:
-	import sphinx
-	import numpydoc
-	import sphinx_rtd_theme
-	import sphinx_automodapi
-	import jupyter_sphinx
+    import sphinx
+    import numpydoc
+    import sphinx_automodapi
+    import jupyter_sphinx
+    import nbsphinx
 except ImportError:
-	cmd = "conda install -y -c conda-forge sphinx numpydoc sphinx_rtd_theme sphinx-automodapi jupyter_sphinx"
-	print(f'\n*** Installing pre-requisite packages to build the docs***\n$ {cmd}')
-	scmd = shlex.split(cmd)
-	try:
-		result = subprocess.run(scmd, stdout=subprocess.PIPE, check=False)
-	except FileNotFoundError:
-		# some windows systems appear to require this switch
-		result = subprocess.run(scmd, stdout=subprocess.PIPE, check=False, shell=True)
-	stderr = result.stderr
-	stdout = result.stdout
-	returncode = result.returncode
-	print(f'\n****Exited with {returncode}')
-	if stdout:
-		print(f'****stdout****\n{stdout.decode()}')
-	if stderr:
-		print(f'****stderr****\n{stderr.decode()}')
-	print("Pre-requisite installation Complete!")
+    cmd1 = "conda install -y -c conda-forge sphinx numpydoc sphinx-automodapi jupyter_sphinx nbsphinx"
+    print(
+        f'\n*** Installing pre-requisite packages to build the docs***\n$ {cmd1}'
+    )
+    scmd = shlex.split(cmd1)
+
+    try:
+        result = subprocess.run(scmd, stdout=subprocess.PIPE, check=False)
+    except FileNotFoundError:
+        # some windows systems appear to require this switch
+        result = subprocess.run(scmd,
+                                stdout=subprocess.PIPE,
+                                check=False,
+                                shell=True)
+    stderr = result.stderr
+    stdout = result.stdout
+    returncode = result.returncode
+    print(f'\n****Exited with {returncode}')
+    if stdout:
+        print(f'****stdout****\n{stdout.decode()}')
+    if stderr:
+        print(f'****stderr****\n{stderr.decode()}')
+    print("Conda pre-requisite installation Complete!")
+
+try:
+    import qiskit_sphinx_theme
+    import jupyter_nbgallery
+except ImportError:
+    cmd2 = "python -m pip install qiskit-sphinx-theme jupyter_nbgallery"
+    print(
+        f'\n*** Installing pre-requisite packages to build the docs***\n$ {cmd2}'
+    )
+    scmd = shlex.split(cmd2)
+    try:
+        result = subprocess.run(scmd, stdout=subprocess.PIPE, check=False)
+    except FileNotFoundError:
+        # some windows systems appear to require this switch
+        result = subprocess.run(scmd,
+                                stdout=subprocess.PIPE,
+                                check=False,
+                                shell=True)
+    stderr = result.stderr
+    stdout = result.stdout
+    returncode = result.returncode
+    print(f'\n****Exited with {returncode}')
+    if stdout:
+        print(f'****stdout****\n{stdout.decode()}')
+    if stderr:
+        print(f'****stderr****\n{stderr.decode()}')
+    print("Pip pre-requisite installation Complete!")
 
 # then build the docs
 pwd = os.getcwd()
@@ -60,19 +93,28 @@ print(f'\n*** Running the build***\n$ make html')
 from sys import platform
 
 if platform == "darwin":
-	scmd = shlex.split("make html")
-	result = subprocess.run(scmd, stdout=subprocess.PIPE, check=False)
-	stderr = result.stderr
-	stdout = result.stdout
-	returncode = result.returncode
-	print(f'\n****Exited with {returncode}')
-	if stdout:
-		print(f'****stdout****\n{stdout.decode()}')
-	if stderr:
-		print(f'****stderr****\n{stderr.decode()}')
+    scmd = shlex.split("make html")
+    result = subprocess.run(scmd, stdout=subprocess.PIPE, check=False)
+    stderr = result.stderr
+    stdout = result.stdout
+    returncode = result.returncode
+    print(f'\n****Exited with {returncode}')
+    if stdout:
+        print(f'****stdout****\n{stdout.decode()}')
+    if stderr:
+        print(f'****stderr****\n{stderr.decode()}')
 else:
-	os.system("make html")
+    os.system("make html")
 
 os.chdir(pwd)
+
+# for local build, copy from _build to build directory
+print("Copying locally to build directory\n")
+import shutil
+original = Path(pwd, 'docs', '_build')
+destination = Path(pwd, 'docs', 'build')
+if os.path.exists(destination):
+    shutil.rmtree(destination)
+shutil.copytree(original, destination)
 
 print("Build Complete!")

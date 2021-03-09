@@ -13,9 +13,4 @@
 # that they have been altered from the originals.
 """
 Energy-participation analyses
-
-TODO
-
-@author: Zlatko K. Minev
-@date: 2020
 """

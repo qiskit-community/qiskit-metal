@@ -13,9 +13,6 @@
 # that they have been altered from the originals.
 """
 Qiskit Metal main unit test functionality.
-
-Created on Wed Apr 22 08:55:40 2020
-@author: Jeremy D. Drysdale
 """
 
 import os

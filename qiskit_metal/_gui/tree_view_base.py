@@ -13,9 +13,6 @@
 # that they have been altered from the originals.
 """
 Handles editing a QComponent.
-
-@author: Zlatko Minev, Dennis Wang
-@date: 2020
 """
 
 from PySide2 import QtCore, QtWidgets
@@ -36,7 +33,7 @@ class QTreeView_Base(QTreeView):
         self.expanded.connect(self.resize_on_expand)
 
     def style_me(self):
-        """Style this widget"""
+        """Style this widget."""
         # Can also do in the ui file, but doesn't always translate for some reason
         self.header().show()
         self.setAutoScroll(False)
@@ -48,7 +45,7 @@ class QTreeView_Base(QTreeView):
         Resize columns to content with maximum size.
 
         Args:
-            max (int): Maximum window width (Default: 200)
+            max (int): Maximum window width.  Defaults to 200.
         """
         # For TreeView: resizeColumnToContents
         # For TableView: resizeColumnsToContents

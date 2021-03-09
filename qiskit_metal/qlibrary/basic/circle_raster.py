@@ -13,9 +13,6 @@
 # that they have been altered from the originals.
 """
 This is the CircleCaterpillar module.
-
-@author: Zlatko Minev, Priti Shah, ... (IBM)
-@date: 2019
 """
 
 from qiskit_metal import draw, Dict  # , QComponent
@@ -27,7 +24,18 @@ from shapely.geometry import CAP_STYLE, JOIN_STYLE
 class CircleRaster(QComponent):
     """A single configurable circle.
 
-    Inherits QComponent class
+    Inherits QComponent class.
+
+    Default Options:
+        * radius: '300um'
+        * pos_x: '0um'
+        * pos_y: '0um'
+        * resolution: '16'
+        * cap_style: 'round' -- Valid options are 'round', 'flat', 'square'
+        * subtract: 'False'
+        * helper: 'False'
+        * chip: 'main'
+        * layer: '1'
     """
 
     default_options = dict(

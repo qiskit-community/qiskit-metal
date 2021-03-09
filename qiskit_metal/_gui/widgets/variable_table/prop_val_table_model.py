@@ -25,7 +25,7 @@ class PropValTable(QAbstractTableModel):
     Design variables table model that shows variable name and dimension,
     both with and without units.
 
-    Thie class extends the `QAbstractTableModel` class
+    Thie class extends the `QAbstractTableModel` class.
 
     Access:
         gui.variables_window.model
@@ -36,9 +36,9 @@ class PropValTable(QAbstractTableModel):
     def __init__(self, design=None, gui=None, view=None):
         """
         Args:
-            design (QDesign): the QDesign (Default: None)
-            gui (MetalGUI): the MetalGUI (Default: None)
-            view (view): the view (Default: None)
+            design (QDesign): The QDesign.  Defaults to None.
+            gui (MetalGUI): The MetalGUI.  Defaults to None.
+            view (view): The view.  Defaults to None.
         """
         super().__init__()
         self._design = design
@@ -49,10 +49,10 @@ class PropValTable(QAbstractTableModel):
         self._start_timer()
 
     def set_design(self, design):
-        """Set the design
+        """Set the design.
 
         Args:
-            design (QDesign): the design
+            design (QDesign): The design
         """
         self._design = design
         self.modelReset.emit()
@@ -60,12 +60,12 @@ class PropValTable(QAbstractTableModel):
 
     @property
     def design(self):
-        """Returns the design"""
+        """Returns the design."""
         return self._design
 
     @property
     def _data(self) -> dict:
-        """Returns the data"""
+        """Returns the data."""
         if self._design:
             return self._design.variables
 
@@ -79,7 +79,7 @@ class PropValTable(QAbstractTableModel):
         self.timer.timeout.connect(self.auto_refresh)
 
     def auto_refresh(self):
-        """Do an automatic refresh"""
+        """Do an automatic refresh."""
         newRowCount = self.rowCount(self)
         if self._rowCount != newRowCount:
             self.modelReset.emit()
@@ -88,13 +88,13 @@ class PropValTable(QAbstractTableModel):
                 self._view.resizeColumnsToContents()
 
     def rowCount(self, index: QModelIndex) -> int:
-        """Count the number of rows
+        """Count the number of rows.
 
         Args:
             index (QModelIndex): Not used
 
         Returns:
-            int: the number of rows
+            int: Ihe number of rows
         """
         if self._design:
             return len(self._data)
@@ -102,13 +102,13 @@ class PropValTable(QAbstractTableModel):
             return 0
 
     def columnCount(self, index: QModelIndex) -> int:
-        """Count the number of columns
+        """Count the number of columns.
 
         Args:
             index (QModelIndex): Not used
 
         Returns:
-            int: the number of columns.  Always returns 3
+            int: Yhe number of columns.  Always returns 3
         """
         return 3
 
@@ -117,11 +117,11 @@ class PropValTable(QAbstractTableModel):
         Return data for corresponding index and role.
 
         Args:
-            index (QModelIndex): the index of the data
-            role (QT.ItemDataRole): th edata rolw (Default: Qt.DisplayRole)
+            index (QModelIndex): The index of the data
+            role (QT.ItemDataRole): The data role.  Defaults to Qt.DisplayRole.
 
         Returns:
-            ojbect: the data
+            ojbect: The data
         """
         self._index = index
         row = index.row()
@@ -155,9 +155,9 @@ class PropValTable(QAbstractTableModel):
         the user selected manually on the table.
 
         Args:
-            index (QModelIndex): the index
-            value (str): the data value
-            role (Qt.ItemDataRole): the role of the data (Default: Qt.EditRole)
+            index (QModelIndex): The index
+            value (str): The data value
+            role (Qt.ItemDataRole): The role of the data.  Defaults to Qt.EditRole.
 
         Returns:
             bool: True if successful; otherwise returns False.
@@ -190,12 +190,12 @@ class PropValTable(QAbstractTableModel):
         Get the headers to be displayed.
 
         Args:
-            secion (int): section number
-            orientation (Qt.Orientation): orientation of the header
-            role (Qt.ItemDataRole): role of the header (Default: Qt.DisplayRole)
+            secion (int): Section number.
+            orientation (Qt.Orientation): Orientation of the header.
+            role (Qt.ItemDataRole): Role of the header.  Defaults to Qt.DisplayRole.
 
         Returns:
-            str: the header
+            str: The header
         """
         if role == Qt.DisplayRole:
             if orientation == Qt.Horizontal:
@@ -216,9 +216,9 @@ class PropValTable(QAbstractTableModel):
         Delete highlighted rows.
 
         Args:
-            row (int): first row to delete
-            count (int): number of rolws to delete (Default: 1)
-            parent (QModelIndex): parent index
+            row (int): First row to delete.
+            count (int): Number of rolws to delete.  Defaults to 1.
+            parent (QModelIndex): Parent index.
         """
         self.beginRemoveRows(parent, row, row + count - 1)
         lst = list(self._data.keys())
@@ -231,10 +231,10 @@ class PropValTable(QAbstractTableModel):
         Determine how user may interact with each cell in the table.
 
         Args:
-            index (QModelIndex): the index
+            index (QModelIndex): The index
 
         Returns:
-            Qt.ItemFlags: the flags
+            Qt.ItemFlags: The flags
         """
         if index.column() < 2:
             return Qt.ItemIsSelectable | Qt.ItemIsEditable | Qt.ItemIsEnabled
@@ -244,8 +244,8 @@ class PropValTable(QAbstractTableModel):
         """Add row with the given key/value
 
         Args:
-            key (str): the key
-            val (str): the value
+            key (str): The key
+            val (str): The value
         """
         self._data[key] = val
         self._view.resizeColumnsToContents()

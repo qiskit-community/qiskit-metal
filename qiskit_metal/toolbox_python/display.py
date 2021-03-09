@@ -13,9 +13,6 @@
 # that they have been altered from the originals.
 """
 Utility display functions used in the tutorials.
-
-@author: Zlatko K. Minev
-@date: 2020
 """
 
 import re
@@ -116,11 +113,11 @@ def get_screenshot(self: 'QMainWindow',
     save to file, and then copy to clipboard.
 
     Args:
-        self (QMainWindow): window to take the screenshot of
-        name (str): file to save the screenshot to (Default: 'shot.png')
-        type (str): type of file to save (Default: 'png')
-        do_display (bool): True to display the file (Default: True)
-        disp_ops (dict): disctionary of options (Default: None)
+        self (QMainWindow): Window to take the screenshot of.
+        name (str): File to save the screenshot to.  Defaults to 'shot.png'.
+        type (str): Type of file to save.  Defaults to 'png'.
+        do_display (bool): True to display the file.  Defaults to True.
+        disp_ops (dict): Disctionary of options.  Defaults to None.
     """
     from PySide2.QtWidgets import QApplication, QMainWindow
 
@@ -192,15 +189,15 @@ def format_dict_ala_z(dic: Dict_,
     """Format a nested dictionary.
 
     Args:
-        dic (dict): Dictionary to format
-        indent (int): indentation spaces (Default: 0)
-        key_width (int): width of the key (Default: 20)
-        do_repr (bool): True to do the cononical string representation (Default: True)
-        indent_all (int): indentation for everything (Default: 2)
-        indent_keys (int): indentation for the keys (Default: 5)
+        dic (dict): Dictionary to format.
+        indent (int): Indentation spaces.  Defaults to 0.
+        key_width (int): Width of the key.  Defaults to 20.
+        do_repr (bool): True to do the cononical string representation.  Defaults to True.
+        indent_all (int): Indentation for everything.  Defaults to 2.
+        indent_keys (int): Indentation for the keys.  Defaults to 5.
 
     Returns:
-        str: string repesentation of the dictionary
+        str: String repesentation of the dictionary
     """
     indent_all_full = indent_all + indent * indent_keys
 

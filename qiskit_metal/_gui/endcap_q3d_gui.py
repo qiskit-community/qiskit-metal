@@ -11,14 +11,11 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-'''
-@date: 2020
-@author: Dennis Wang
-'''
 
 from typing import Tuple
 
-from PySide2.QtWidgets import (QComboBox, QTableWidgetItem, QAbstractItemView, QMainWindow)
+from PySide2.QtWidgets import (QComboBox, QTableWidgetItem, QAbstractItemView,
+                               QMainWindow)
 
 from .endcap_q3d_ui import Ui_mainWindow
 
@@ -29,7 +26,10 @@ class EndcapQ3DWidget(QMainWindow):
     This widget lets the user decide whether they want those pins to be open or shorted.
     """
 
-    def __init__(self, parent: 'QMainWindow', gui: 'MetalGUI', components_to_render: list = None):
+    def __init__(self,
+                 parent: 'QMainWindow',
+                 gui: 'MetalGUI',
+                 components_to_render: list = None):
         """
         Get access to design, which has the components.
         Then set up the model and view.
@@ -50,21 +50,27 @@ class EndcapQ3DWidget(QMainWindow):
 
         # Set up table widget for endcap list:
         self.table = self.ui.tableWidget
-        self.table.setColumnCount(2) # 2 columns for now: pin name and endcap status
+        self.table.setColumnCount(
+            2)  # 2 columns for now: pin name and endcap status
         self.components_to_render = components_to_render
-        open_pins, shorted_pins = self.get_unconnected_pins(self.components_to_render)
-        self.pin_names = sorted(list(open_pins) + list(shorted_pins)) # sort alphabetically
+        open_pins, shorted_pins = self.get_unconnected_pins(
+            self.components_to_render)
+        self.pin_names = sorted(list(open_pins) +
+                                list(shorted_pins))  # sort alphabetically
         endcap_options = ['Open', 'Shorted']
 
         self.table.setRowCount(len(self.pin_names))
-        
+
         for idx in range(len(self.pin_names)):
             pin_name = QTableWidgetItem(', '.join(self.pin_names[idx]))
-            self.table.setItem(idx, 0, pin_name) # pin name for first column
+            self.table.setItem(idx, 0, pin_name)  # pin name for first column
             endcap_combo = QComboBox()
             endcap_combo.addItems(endcap_options)
-            self.table.setCellWidget(idx, 1, endcap_combo) # combobox for second column
-            endcap_combo.setCurrentIndex(int(self.pin_names[idx] not in open_pins)) # default endcap type
+            self.table.setCellWidget(idx, 1,
+                                     endcap_combo)  # combobox for second column
+            endcap_combo.setCurrentIndex(
+                int(self.pin_names[idx] not in
+                    open_pins))  # default endcap type
 
         self.table.verticalHeader().setVisible(False)
         self.table.setHorizontalHeaderLabels(['QComp, Pin', 'Endcap Type'])
@@ -74,8 +80,10 @@ class EndcapQ3DWidget(QMainWindow):
     def design(self):
         """Returns the design."""
         return self._gui.design
-    
-    def get_unconnected_pins(self, components_to_render: list = None) -> Tuple[set, set]:
+
+    def get_unconnected_pins(self,
+                             components_to_render: list = None
+                            ) -> Tuple[set, set]:
         """
         Given a list of components to render, obtain 2 sets: open_set and short_set.
         Each contains pins belonging to components in components_to_render, but with the
@@ -85,7 +93,7 @@ class EndcapQ3DWidget(QMainWindow):
         These are the default endcap settings for all pins in components_to_render.
 
         Args:
-            components_to_render (list, optional): List of components to render. Defaults to None.
+            components_to_render (list, optional): List of components to render.  Defaults to None.
 
         Returns:
             Tuple[set, set]: 2 sets of pins to be open or shorted by default
@@ -99,13 +107,15 @@ class EndcapQ3DWidget(QMainWindow):
             for pin in self.design.components[qcomp].pins:
                 qcomp_id = self.design.components[qcomp].id
                 qcomp_net_id = self.design.components[qcomp].pins[pin].net_id
-                if qcomp_net_id == 0: # not connected in design
+                if qcomp_net_id == 0:  # not connected in design
                     short_set.add((qcomp, pin))
-                else: # originally connected in design
+                else:  # originally connected in design
                     table = self.design.net_info
-                    reduced_table = table[(table['net_id'] == qcomp_net_id) & (table['component_id'] != qcomp_id)]
-                    other_qcomp = self.design._components[reduced_table.iloc[0].component_id].name
-                    if other_qcomp not in qcomp_set: # counterpart not rendered -> make open
+                    reduced_table = table[(table['net_id'] == qcomp_net_id) &
+                                          (table['component_id'] != qcomp_id)]
+                    other_qcomp = self.design._components[
+                        reduced_table.iloc[0].component_id].name
+                    if other_qcomp not in qcomp_set:  # counterpart not rendered -> make open
                         open_set.add((qcomp, pin))
 
         return open_set, short_set
@@ -121,4 +131,3 @@ class EndcapQ3DWidget(QMainWindow):
         q3d_renderer.connect_ansys()
         q3d_renderer.render_design(self.components_to_render, add_open_pins)
         self.close()
-        

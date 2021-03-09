@@ -11,15 +11,12 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-'''
-@date: 2020
-@author: Dennis Wang
-'''
 
 from collections import defaultdict
 from pathlib import Path
-from typing import Union
+from typing import Union, Tuple
 
+import logging
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
@@ -38,12 +35,45 @@ from qiskit_metal.renderers.renderer_ansys.ansys_renderer import (
 class QHFSSRenderer(QAnsysRenderer):
     """
     Subclass of QAnsysRenderer for running HFSS simulations.
+
+    QAnsysRenderer Default Options:
+        * Lj: '10nH' -- Lj has units of nanoHenries (nH)
+        * Cj: 0 -- Cj *must* be 0 for pyEPR analysis! Cj has units of femtofarads (fF)
+        * _Rj: 0 -- _Rj *must* be 0 for pyEPR analysis! _Rj has units of Ohms
+        * max_mesh_length_jj: '7um' -- Maximum mesh length for Josephson junction elements
+        * project_path: None -- Default project path; if None --> get active
+        * project_name: None -- Default project name
+        * design_name: None -- Default design name
+        * ansys_file_extension: '.aedt' -- Ansys file extension for 2016 version and newer
+        * x_buffer_width_mm: 0.2 -- Buffer between max/min x and edge of ground plane, in mm
+        * y_buffer_width_mm: 0.2 -- Buffer between max/min y and edge of ground plane, in mm
     """
 
     name = 'hfss'
-    """name"""
+    """Name"""
 
-    hfss_options = Dict()  # For potential future use
+    hfss_options = Dict(
+        drivenmodal_setup=Dict(freq_ghz='5',
+                               name="Setup",
+                               max_delta_s='0.1',
+                               max_passes='10',
+                               min_passes='1',
+                               min_converged='1',
+                               pct_refinement='30',
+                               basis_order='1'),
+        eigenmode_setup=Dict(name="Setup",
+                             min_freq_ghz='1',
+                             n_modes='1',
+                             max_delta_f='0.5',
+                             max_passes='10',
+                             min_passes='1',
+                             min_converged='1',
+                             pct_refinement='30',
+                             basis_order='-1'),
+        port_inductor_gap=
+        '10um'  # spacing between port and inductor if junction is drawn both ways
+    )
+    """HFSS Options"""
 
     def __init__(self,
                  design: 'QDesign',
@@ -103,13 +133,15 @@ class QHFSSRenderer(QAnsysRenderer):
         port in between, so behind the scenes all pins in port_list are also added to open_pins. Practically,
         however, port_list and open_pins are inputted as mutually exclusive lists.
 
-        Also in driven modal solutions, one may want to render junctions as lumped ports rather than RLC sheets.
-        To do so, tuples of the form (component_name, element_name, impedance) are added to the list jj_to_port.
-        For example, ('Q1', 'rect_jj', 70) indicates that rect_jj of component Q1 is to be rendered as a lumped
-        port with an impedance of 70 Ohms. Finally, and again for driven modal solutions, one may want to
-        disregard select junctions in the Metal design altogether to simulate the capacitive effect while keeping
-        the qubit in an "off" state. Such junctions are listed in the form (component_name, element_name) in the
-        list ignored_jjs.
+        Also in driven modal solutions, one may want to render junctions as lumped ports and/or inductors, or
+        omit them altogether. To do so, tuples of the form (component_name, element_name, impedance, draw_ind)
+        are added to the list jj_to_port. For example, ('Q1', 'rect_jj', 70, True) indicates that rect_jj of
+        component Q1 is to be rendered as both a lumped port with an impedance of 70 Ohms as well as an inductor
+        whose properties are given in default_options. Replacing the last entry of this 4-element tuple with False
+        would indicate that only the port is to be drawn, not the inductor. Alternatively for driven modal
+        solutions, one may want to disregard select junctions in the Metal design altogether to simulate the
+        capacitive effect while keeping the qubit in an "off" state. Such junctions are specified in the form
+        (component_name, element_name) in the list ignored_jjs.
 
         Args:
             selection (Union[list, None], optional): List of components to render. Defaults to None.
@@ -128,7 +160,8 @@ class QHFSSRenderer(QAnsysRenderer):
 
         if jj_to_port:
             self.jj_lumped_ports = {
-                (qcomp, elt): impedance for qcomp, elt, impedance in jj_to_port
+                (qcomp, elt): [impedance, draw_ind]
+                for qcomp, elt, impedance, draw_ind in jj_to_port
             }
 
         if ignored_jjs:
@@ -202,30 +235,17 @@ class QHFSSRenderer(QAnsysRenderer):
         1. A rectangle of length pad_gap and width inductor_width. Defines lumped element
            RLC boundary condition.
         2. A line that is later used to calculate the voltage in post-processing analysis.
-        If in HFSS driven modal, junctions can either be inductors or lumped ports. The
-        latter are characterized by an impedance value given in the list jj_to_port when
-        render_design() is called.
+        If in HFSS driven modal, junctions can be inductors, lumped ports, both inductors
+        and lumped ports, or omitted altogether. Ports are characterized by an impedance 
+        value given in the list jj_to_port when render_design() is called.
 
         Args:
             qgeom (pd.Series): GeoSeries of element properties.
         """
-        ansys_options = dict(transparency=0.0)
-
         qcomp = self.design._components[qgeom['component']].name
         qc_elt = get_clean_name(qgeom['name'])
 
         if (qcomp, qc_elt) not in self.jj_to_ignore:
-
-            if (qcomp, qc_elt) in self.jj_lumped_ports:
-                # Treat the junction as a lumped port.
-                qc_name = qcomp
-                port_name = f'Port_{qcomp}_{qc_elt}'
-                impedance = self.jj_lumped_ports[(qcomp, qc_elt)]
-            else:
-                # Treat the junction as an inductor.
-                qc_name = 'Lj_' + qcomp
-                inductor_name = f'{qc_name}{QAnsysRenderer.NAME_DELIM}{qc_elt}'
-
             qc_shapely = qgeom.geometry
             qc_chip_z = parse_units(self.design.get_chip_z(qgeom.chip))
             qc_width = parse_units(qgeom.width)
@@ -236,52 +256,134 @@ class QHFSSRenderer(QAnsysRenderer):
             x1, y1, z0 = endpoints_3d[1]
             if abs(y1 - y0) > abs(x1 - x0):
                 # Junction runs vertically up/down
+                axis = 'y'
                 x_min, x_max = x0 - qc_width / 2, x0 + qc_width / 2
                 y_min, y_max = min(y0, y1), max(y0, y1)
             else:
                 # Junction runs horizontally left/right
+                axis = 'x'
                 x_min, x_max = min(x0, x1), max(x0, x1)
                 y_min, y_max = y0 - qc_width / 2, y0 + qc_width / 2
 
             if (qcomp, qc_elt) in self.jj_lumped_ports:
-                # Draw rectangle for lumped port.
-                self.logger.debug(f'Drawing a rectangle: {port_name}')
-                poly_ansys = self.modeler.draw_rect_corner(
-                    [x_min, y_min, qc_chip_z], x_max - x_min, y_max - y_min,
-                    qc_chip_z, **ansys_options)
-                axis = 'x' if abs(x1 - x0) > abs(y1 - y0) else 'y'
-                poly_ansys.make_lumped_port(axis,
-                                            z0=str(impedance) + 'ohm',
-                                            name=f'LumpPort_{qcomp}_{qc_elt}')
-                self.modeler.rename_obj(poly_ansys, port_name)
-                # Draw line for lumped port.
-                lump_line = self.modeler.draw_polyline(
-                    [endpoints_3d[0], endpoints_3d[1]],
-                    closed=False,
-                    **dict(color=(128, 0, 128)))
-                lump_line = lump_line.rename(f'voltage_line_{port_name}')
-                lump_line.show_direction = True
+                if self.jj_lumped_ports[(qcomp, qc_elt)][1]:
+                    # Draw both port and inductor side by side with small gap in between
+                    gap = parse_units(self.hfss_options['port_inductor_gap'])
+                    x_mid, y_mid = (x_min + x_max) / 2, (y_min + y_max) / 2
+                    if axis == 'x':
+                        y_mid_hi = y_mid + gap / 2
+                        y_mid_lo = y_mid - gap / 2
+                        self.render_junction_port(qgeom, x_min, x_max, y_mid_hi,
+                                                  y_max, qc_chip_z, axis)
+                        self.render_junction_inductor(qgeom, x_min, x_max,
+                                                      y_min, y_mid_lo,
+                                                      qc_chip_z, axis)
+                    elif axis == 'y':
+                        x_mid_lo = x_mid - gap / 2
+                        x_mid_hi = x_mid + gap / 2
+                        self.render_junction_port(qgeom, x_mid_hi, x_max, y_min,
+                                                  y_max, qc_chip_z, axis)
+                        self.render_junction_inductor(qgeom, x_min, x_mid_lo,
+                                                      y_min, y_max, qc_chip_z,
+                                                      axis)
+                else:
+                    # Only draw port
+                    self.render_junction_port(qgeom, x_min, x_max, y_min, y_max,
+                                              qc_chip_z, axis)
             else:
-                # Draw rectangle for inductor.
-                self.logger.debug(f'Drawing a rectangle: {inductor_name}')
-                poly_ansys = self.modeler.draw_rect_corner(
-                    [x_min, y_min, qc_chip_z], x_max - x_min, y_max - y_min,
-                    qc_chip_z, **ansys_options)
-                axis = 'x' if abs(x1 - x0) > abs(y1 - y0) else 'y'
-                poly_ansys.make_rlc_boundary(axis,
-                                             l=qgeom['hfss_inductance'],
-                                             c=qgeom['hfss_capacitance'],
-                                             r=qgeom['hfss_resistance'],
-                                             name='Lj_' + inductor_name)
-                self.modeler.rename_obj(poly_ansys, 'JJ_rect_' + inductor_name)
-                self.assign_mesh.append('JJ_rect_' + inductor_name)
-                # Draw line for inductor.
-                poly_jj = self.modeler.draw_polyline(
-                    [endpoints_3d[0], endpoints_3d[1]],
-                    closed=False,
-                    **dict(color=(128, 0, 128)))
-                poly_jj = poly_jj.rename('JJ_' + inductor_name + '_')
-                poly_jj.show_direction = True
+                # Only draw inductor
+                self.render_junction_inductor(qgeom, x_min, x_max, y_min, y_max,
+                                              qc_chip_z, axis)
+
+    def render_junction_port(self, qgeom: pd.Series, xmin: float, xmax: float,
+                             ymin: float, ymax: float, z: float, axis: str):
+        """
+        Render a junction as a port with a bounding box given by
+        xmin/xmax and ymin/ymax, a height z, and a horizontal or
+        vertical axis.
+
+        Args:
+            qgeom (pd.Series): GeoSeries of element properties.
+            xmin (float): Smallest x coordinate
+            xmax (float): Largest x coordinate
+            ymin (float): Smallest y coordinate
+            ymax (float): Largest y coordinate
+            z (float): z coordinate
+            axis (str): Orientation, either 'x' or 'y'
+        """
+        ansys_options = dict(transparency=0.0)
+        qcomp = self.design._components[qgeom['component']].name
+        qc_elt = get_clean_name(qgeom['name'])
+        port_name = f'Port_{qcomp}_{qc_elt}'
+        impedance = self.jj_lumped_ports[(qcomp, qc_elt)][0]
+        # Draw rectangle for lumped port.
+        self.logger.debug(f'Drawing a rectangle: {port_name}')
+        poly_ansys = self.modeler.draw_rect_corner([xmin, ymin, z], xmax - xmin,
+                                                   ymax - ymin, z,
+                                                   **ansys_options)
+        poly_ansys.make_lumped_port(axis,
+                                    z0=str(impedance) + 'ohm',
+                                    name=f'LumpPort_{qcomp}_{qc_elt}')
+        self.modeler.rename_obj(poly_ansys, port_name)
+        # Draw line for lumped port.
+        if axis == 'x':
+            ymid = (ymin + ymax) / 2
+            start, end = [xmin, ymid, z], [xmax, ymid, z]
+        elif axis == 'y':
+            xmid = (xmin + xmax) / 2
+            start, end = [xmid, ymin, z], [xmid, ymax, z]
+        lump_line = self.modeler.draw_polyline([start, end],
+                                               closed=False,
+                                               **dict(color=(128, 0, 128)))
+        lump_line = lump_line.rename(f'voltage_line_{port_name}')
+        lump_line.show_direction = True
+
+    def render_junction_inductor(self, qgeom: pd.Series, xmin: float,
+                                 xmax: float, ymin: float, ymax: float,
+                                 z: float, axis: str):
+        """
+        Render a junction as an inductor with a bounding box given by
+        xmin/xmax and ymin/ymax, a height z, and a horizontal or
+        vertical axis.
+
+        Args:
+            qgeom (pd.Series): GeoSeries of element properties.
+            xmin (float): Smallest x coordinate
+            xmax (float): Largest x coordinate
+            ymin (float): Smallest y coordinate
+            ymax (float): Largest y coordinate
+            z (float): z coordinate
+            axis (str): Orientation, either 'x' or 'y'
+        """
+        ansys_options = dict(transparency=0.0)
+        qcomp = self.design._components[qgeom['component']].name
+        qc_elt = get_clean_name(qgeom['name'])
+        qc_name = 'Lj_' + qcomp
+        inductor_name = f'{qc_name}{QAnsysRenderer.NAME_DELIM}{qc_elt}'
+        # Draw rectangle for inductor.
+        self.logger.debug(f'Drawing a rectangle: {inductor_name}')
+        poly_ansys = self.modeler.draw_rect_corner([xmin, ymin, z], xmax - xmin,
+                                                   ymax - ymin, z,
+                                                   **ansys_options)
+        poly_ansys.make_rlc_boundary(axis,
+                                     l=qgeom['hfss_inductance'],
+                                     c=qgeom['hfss_capacitance'],
+                                     r=qgeom['hfss_resistance'],
+                                     name='Lj_' + inductor_name)
+        self.modeler.rename_obj(poly_ansys, 'JJ_rect_' + inductor_name)
+        self.assign_mesh.append('JJ_rect_' + inductor_name)
+        # Draw line for inductor.
+        if axis == 'x':
+            ymid = (ymin + ymax) / 2
+            start, end = [xmin, ymid, z], [xmax, ymid, z]
+        elif axis == 'y':
+            xmid = (xmin + xmax) / 2
+            start, end = [xmid, ymin, z], [xmid, ymax, z]
+        induc_line = self.modeler.draw_polyline([start, end],
+                                                closed=False,
+                                                **dict(color=(128, 0, 128)))
+        induc_line = induc_line.rename('JJ_' + inductor_name + '_')
+        induc_line.show_direction = True
 
     def metallize(self):
         """
@@ -306,7 +408,7 @@ class QHFSSRenderer(QAnsysRenderer):
             self.logger.info("Are you mad?? You have to connect to ansys and a project " \
                             "first before creating a new design . Use self.connect_ansys()")
 
-    def activate_drivenmodal_design(self, name: str):
+    def activate_drivenmodal_design(self, name: str = "MetalHFSSDrivenModal"):
         """Add a hfss drivenmodal design with the given name to the project.  If the design exists, that will be added WITHOUT
         altering the suffix of the design name.
 
@@ -341,22 +443,64 @@ class QHFSSRenderer(QAnsysRenderer):
                     "Project not available, have you opened a project?")
         else:
             self.logger.warning(
-                "Have you run connect_ansys()?  Can not find a reference to Ansys in QRenderer."
+                "Have you run connect_ansys()?  Cannot find a reference to Ansys in QRenderer."
+            )
+
+    def activate_drivenmodal_setup(self, setup_name_activate: str = None):
+        """For active design, either get existing setup, make new setup with name, 
+        or make new setup with default name.
+
+        Args:
+            setup_name_activate (str, optional): If name exists for setup, then have pinfo reference it. 
+            If name for setup does not exist, create a new setup with the name.  If name is None, 
+            create a new setup with default name.
+        """
+        if self.pinfo:
+            if self.pinfo.project:
+                if self.pinfo.design:
+                    # look for setup name, if not there, then add a new one
+                    if setup_name_activate:
+                        all_setup_names = self.pinfo.design.get_setup_names()
+                        self.pinfo.setup_name = setup_name_activate
+                        if setup_name_activate in all_setup_names:
+                            # When name is given and in design. So have pinfo reference existing setup.
+                            self.pinfo.setup = self.pinfo.get_setup(
+                                self.pinfo.setup_name)
+                        else:
+                            # When name is given, but not in design. So make a new setup with given name.
+                            self.pinfo.setup = self.add_drivenmodal_setup(
+                                name=self.pinfo.setup_name)
+                    else:
+                        # When name is not given, so use default name for setup.
+                        # default name is "Setup"
+                        self.pinfo.setup = self.add_drivenmodal_setup()
+                        self.pinfo.setup_name = self.pinfo.setup.name
+
+                else:
+                    self.logger.warning(
+                        " The design within a project is not available, have you opened a design?"
+                    )
+            else:
+                self.logger.warning(
+                    "Project not available, have you opened a project?")
+        else:
+            self.logger.warning(
+                "Have you run connect_ansys()?  Cannot find a reference to Ansys in QRenderer."
             )
 
     def add_drivenmodal_setup(self,
-                              freq_ghz=5,
-                              name="Setup",
-                              max_delta_s=0.1,
-                              max_passes=10,
-                              min_passes=1,
-                              min_converged=1,
-                              pct_refinement=30,
-                              basis_order=1):
-        # TODO: Move arguments to default options.
+                              freq_ghz: int = None,
+                              name: str = None,
+                              max_delta_s: float = None,
+                              max_passes: int = None,
+                              min_passes: int = None,
+                              min_converged: int = None,
+                              pct_refinement: int = None,
+                              basis_order: int = None):
         """
-        Create a solution setup in Ansys HFSS Driven Modal.
-
+        Create a solution setup in Ansys HFSS Driven Modal.   If user does not provide arguments, 
+        they will be obtained from hfss_options dict.  
+        
         Args:
             freq_ghz (int, optional): Frequency in GHz. Defaults to 5.
             name (str, optional): Name of driven modal setup. Defaults to "Setup".
@@ -365,8 +509,27 @@ class QHFSSRenderer(QAnsysRenderer):
             min_passes (int, optional): Minimum number of passes. Defaults to 1.
             min_converged (int, optional): Minimum number of converged passes. Defaults to 1.
             pct_refinement (int, optional): Percent refinement. Defaults to 30.
-            basis_order (int, optional): Basis order. Defaults to -1.
+            basis_order (int, optional): Basis order. Defaults to 1.
         """
+        dsu = self.hfss_options.drivenmodal_setup
+
+        if not freq_ghz:
+            freq_ghz = int(self.parse_value(dsu['freq_ghz']))
+        if not name:
+            name = self.parse_value(dsu['name'])
+        if not max_delta_s:
+            max_delta_s = float(self.parse_value(dsu['max_delta_s']))
+        if not max_passes:
+            max_passes = int(self.parse_value(dsu['max_passes']))
+        if not min_passes:
+            min_passes = int(self.parse_value(dsu['min_passes']))
+        if not min_converged:
+            min_converged = int(self.parse_value(dsu['min_converged']))
+        if not pct_refinement:
+            pct_refinement = int(self.parse_value(dsu['pct_refinement']))
+        if not basis_order:
+            basis_order = int(self.parse_value(dsu['basis_order']))
+
         if self.pinfo:
             if self.pinfo.design:
                 return self.pinfo.design.create_dm_setup(
@@ -399,7 +562,7 @@ class QHFSSRenderer(QAnsysRenderer):
             self.logger.info("Are you mad?? You have to connect to ansys and a project " \
                             "first before creating a new design . Use self.connect_ansys()")
 
-    def activate_eigenmode_design(self, name: str):
+    def activate_eigenmode_design(self, name: str = "MetalHFSSEigenmode"):
         """Add a hfss eigenmode design with the given name to the project.  If the design exists, that will be added WITHOUT
         altering the suffix of the design name.
 
@@ -433,34 +596,97 @@ class QHFSSRenderer(QAnsysRenderer):
                     "Project not available, have you opened a project?")
         else:
             self.logger.warning(
-                "Have you run connect_ansys()?  Can not find a reference to Ansys in QRenderer."
+                "Have you run connect_ansys()?  Cannot find a reference to Ansys in QRenderer."
+            )
+
+    def activate_eigenmode_setup(self, setup_name_activate: str = None):
+        """For active design, either get existing setup, make new setup with name, 
+        or make new setup with default name.
+
+        Args:
+            setup_name_activate (str, optional): If name exists for setup, then have pinfo reference it. 
+            If name for setup does not exist, create a new setup with the name.  If name is None, 
+            create a new setup with default name.
+        """
+        if self.pinfo:
+            if self.pinfo.project:
+                if self.pinfo.design:
+                    # look for setup name, if not there, then add a new one
+                    if setup_name_activate:
+                        all_setup_names = self.pinfo.design.get_setup_names()
+                        self.pinfo.setup_name = setup_name_activate
+                        if setup_name_activate in all_setup_names:
+                            # When name is given and in design. So have pinfo reference existing setup.
+                            self.pinfo.setup = self.pinfo.get_setup(
+                                self.pinfo.setup_name)
+                        else:
+                            # When name is given, but not in design. So make a new setup with given name.
+                            self.pinfo.setup = self.add_eigenmode_setup(
+                                name=self.pinfo.setup_name)
+                    else:
+                        # When name is not given, so use default name for setup.
+                        # default name is "Setup"
+                        self.pinfo.setup = self.add_eigenmode_setup()
+                        self.pinfo.setup_name = self.pinfo.setup.name
+
+                else:
+                    self.logger.warning(
+                        " The design within a project is not available, have you opened a design?"
+                    )
+            else:
+                self.logger.warning(
+                    "Project not available, have you opened a project?")
+        else:
+            self.logger.warning(
+                "Have you run connect_ansys()?  Cannot find a reference to Ansys in QRenderer."
             )
 
     def add_eigenmode_setup(self,
-                            name="Setup",
-                            min_freq_ghz=1,
-                            n_modes=1,
-                            max_delta_f=0.5,
-                            max_passes=10,
-                            min_passes=1,
-                            min_converged=1,
-                            pct_refinement=30,
-                            basis_order=-1):
-        # TODO: Move arguments to default options.
+                            name: str = None,
+                            min_freq_ghz: int = None,
+                            n_modes: int = None,
+                            max_delta_f: float = None,
+                            max_passes: int = None,
+                            min_passes: int = None,
+                            min_converged: int = None,
+                            pct_refinement: int = None,
+                            basis_order: int = None):
         """
-        Create a solution setup in Ansys HFSS Eigenmode.
+        Create a solution setup in Ansys HFSS Eigenmode.  If user does not provide arguments, 
+        they will be obtained from hfss_options dict.  
 
         Args:
             name (str, optional): Name of eigenmode setup. Defaults to "Setup".
             min_freq_ghz (int, optional): Minimum frequency in GHz. Defaults to 1.
             n_modes (int, optional): Number of modes. Defaults to 1.
-            max_delta_f (float, optional): Maximum difference in freq between consecutive passes. Defaults to 0.1.
+            max_delta_f (float, optional): Maximum difference in freq between consecutive passes. Defaults to 0.5.
             max_passes (int, optional): Maximum number of passes. Defaults to 10.
             min_passes (int, optional): Minimum number of passes. Defaults to 1.
             min_converged (int, optional): Minimum number of converged passes. Defaults to 1.
             pct_refinement (int, optional): Percent refinement. Defaults to 30.
             basis_order (int, optional): Basis order. Defaults to -1.
         """
+        esu = self.hfss_options.eigenmode_setup
+
+        if not name:
+            name = self.parse_value(esu['name'])
+        if not min_freq_ghz:
+            min_freq_ghz = int(self.parse_value(esu['min_freq_ghz']))
+        if not n_modes:
+            n_modes = int(self.parse_value(esu['n_modes']))
+        if not max_delta_f:
+            max_delta_f = float(self.parse_value(esu['max_delta_f']))
+        if not max_passes:
+            max_passes = int(self.parse_value(esu['max_passes']))
+        if not min_passes:
+            min_passes = int(self.parse_value(esu['min_passes']))
+        if not min_converged:
+            min_converged = int(self.parse_value(esu['min_converged']))
+        if not pct_refinement:
+            pct_refinement = int(self.parse_value(esu['pct_refinement']))
+        if not basis_order:
+            basis_order = int(self.parse_value(esu['basis_order']))
+
         if self.pinfo:
             if self.pinfo.design:
                 return self.pinfo.design.create_em_setup(
@@ -473,6 +699,54 @@ class QHFSSRenderer(QAnsysRenderer):
                     min_converged=min_converged,
                     pct_refinement=pct_refinement,
                     basis_order=basis_order)
+
+    def set_mode(self, mode: int, setup_name: str):
+        """Set the eigenmode in pyEPR for a design with solution_type set to Eigenmode.
+
+        Args:
+            mode (int): Identify a mode from 1 to n_modes.
+            setup_name (str): Select a setup from the active design. 
+        """
+        if self.pinfo:
+            if self.pinfo.project:
+                if self.pinfo.design:
+                    oDesktop = self.pinfo.design.parent.parent._desktop  # self.pinfo.design does not work
+                    oProject = oDesktop.SetActiveProject(
+                        self.pinfo.project_name)
+                    oDesign = oProject.GetActiveDesign()
+                    if oDesign.GetSolutionType() == 'Eigenmode':
+                        # The set_mode() method is in HfssEMDesignSolutions class in pyEPR.
+                        # The class HfssEMDesignSolutions is instantiated by get_setup() and create_em_setup().
+                        setup = self.pinfo.get_setup(setup_name)
+                        if 0 < int(mode) <= int(setup.n_modes):
+                            setup_solutions = setup.get_solutions()
+                            if setup_solutions:
+                                setup_solutions.set_mode(mode)
+                            else:
+                                self.logger.warning(
+                                    'Not able to get setup_solutions, the mode was not set.'
+                                )
+                        else:
+                            self.logger.warning(
+                                f'The requested mode={mode} is not a valid (1 to {setup.n_modes}) selection. '
+                                'The mode was not set.')
+                    else:
+                        self.logger.warning(
+                            'The design does not have solution type as "Eigenmode". The mode was not set.'
+                        )
+                else:
+                    self.logger.warning(
+                        'A design is not in active project. The mode was not set.'
+                    )
+            else:
+                self.logger.warning(
+                    "Project not available, have you opened a project? The mode was not set."
+                )
+        else:
+            self.logger.warning(
+                "Have you run connect_ansys()?  "
+                "Cannot find a reference to Ansys in QRenderer.  The mode was not set."
+            )
 
     def analyze_setup(self, setup_name: str):
         """
@@ -531,41 +805,79 @@ class QHFSSRenderer(QAnsysRenderer):
             sweep.analyze_sweep()
             self.current_sweep = sweep
 
-    def plot_s_params(self, getS: Union[list, None] = None):
+    def get_params(self, param_name: Union[list, None] = None):
         """
-        Plot one or more S parameters as a function of frequency.
+        Get one or more parameters (S, Y, or Z) as a function of frequency.
 
         Args:
-            getS (Union[list, None], optional): S parameters to plot. Defaults to None.
+            param_name (Union[list, None], optional): Parameters to obtain. Defaults to None.
         """
         if self.current_sweep:
-            freqs, Scurves = self.current_sweep.get_network_data(getS)
-            Sparams = pd.DataFrame(Scurves, columns=freqs / 1e9,
-                                   index=getS).transpose()
-            fig = plt.figure(10)
-            fig.clf()
-            ax = plt.gca()
-            Sparams.apply(lambda x: 20 * np.log10(np.abs(x))).plot(ax=ax)
-            ax.autoscale()
-            display(fig)
+            freqs, Pcurves = self.current_sweep.get_network_data(param_name)
+            Pparams = pd.DataFrame(Pcurves,
+                                   columns=freqs / 1e9,
+                                   index=param_name).transpose()
+        return freqs, Pcurves, Pparams
+
+    def plot_params(self, param_name: Union[list, None] = None):
+        """
+        Plot one or more parameters (S, Y, or Z) as a function of frequency.
+
+        Args:
+            param_name (Union[list, None], optional): Parameters to plot. Defaults to None.
+        """
+        freqs, Pcurves, Pparams = self.get_params(param_name)
+        if Pparams is not None:
+            fig, axs = plt.subplots(1, 2, figsize=(10, 6))
+            Pparams.apply(lambda x: 20 * np.log10(np.abs(x))).plot(ax=axs[0])
+            Pparams.apply(lambda x: np.angle(x)).plot(ax=axs[1])
+            for ax in axs:
+                ax.autoscale()
+        return Pparams, fig
 
     def distributed_analysis(self):
-        """
-        Returns class containing info on Hamiltonian parameters from HFSS simulation.
+        """Returns class containing info on Hamiltonian parameters from HFSS simulation.
+
+        Returns:
+            DistributedAnalysis: A  class from pyEPR which does DISTRIBUTED ANALYSIS of layout 
+            and microwave results.  It is the main computation class & interface with HFSS.  
+            This class defines a DistributedAnalysis object which calculates
+            and saves Hamiltonian parameters from an HFSS simulation.  
+            It allows one to calculate dissipation.
         """
         if self.pinfo:
             return epr.DistributedAnalysis(self.pinfo)
 
-    def get_convergences(self, variation=None):
+    def get_convergences(self, variation: str = None):
+        """Get convergence for convergence_t and convergence_f. 
+
+        Args:
+            variation (str, optional):  Information from pyEPR; variation should be in the form
+            variation = "scale_factor='1.2001'". Defaults to None.
+
+        Returns:
+            tuple[pandas.core.frame.DataFrame, pandas.core.frame.DataFrame]: 
+            1st DataFrame: Convergence_t
+            2nd DataFrame: Convergence_f
+        """
         if self.pinfo:
             design = self.pinfo.design
             setup = self.pinfo.setup
             convergence_t, _ = setup.get_convergence(variation)
             convergence_f = hfss_report_f_convergence(
-                design, setup, self.logger, [])  # TODO; Fiox variation []
+                design, setup, self.logger, [])  # TODO; Fix variation []
             return convergence_t, convergence_f
 
-    def plot_convergences(self, variation=None, fig=None):
+    def plot_convergences(self,
+                          variation: str = None,
+                          fig: mpl.figure.Figure = None):
+        """Plot the convergences in Ansys window.
+
+        Args:
+            variation (str, optional): Information from pyEPR; variation should be in the form
+            variation = "scale_factor='1.2001'". Defaults to None.
+            fig (matplotlib.figure.Figure, optional): A mpl figure. Defaults to None.
+        """
         if self.pinfo:
             convergence_t, convergence_f = self.get_convergences(variation)
             hfss_plot_convergences_report(convergence_t,
@@ -574,15 +886,21 @@ class QHFSSRenderer(QAnsysRenderer):
                                           _display=True)
 
 
-def hfss_plot_convergences_report(convergence_t,
-                                  convergence_f,
-                                  fig=None,
+def hfss_plot_convergences_report(convergence_t: pd.core.frame.DataFrame,
+                                  convergence_f: pd.core.frame.DataFrame,
+                                  fig: mpl.figure.Figure = None,
                                   _display=True):
-    """
-    Plot convergence frequency vs. pass number.
+    """Plot convergence frequency vs. pass number if fig is None.
     Plot delta frequency and solved elements vs. pass number.
     Plot delta frequency vs. solved elements.
+
+    Args:
+        convergence_t (pandas.core.frame.DataFrame): Convergence vs pass number of the eigenemode freqs.
+        convergence_f (pandas.core.frame.DataFrame): Convergence vs pass number of the eigenemode freqs.
+        fig (matplotlib.figure.Figure, optional): A mpl figure. Defaults to None.
+        _display (bool, optional): Display the plot? Defaults to True.
     """
+
     if fig is None:
         fig = plt.figure(figsize=(11, 3.))
 
@@ -604,18 +922,13 @@ def hfss_plot_convergences_report(convergence_t,
         #     display(fig)
 
 
-def hfss_report_f_convergence(oDesign,
-                              setup,
-                              logger,
-                              variation=None,
-                              save_csv=True):
-    '''
-    Create a report inside HFSS to plot the converge of freq and style it.
-
+def hfss_report_f_convergence(oDesign: epr.ansys.HfssDesign,
+                              setup: epr.ansys.HfssEMSetup,
+                              logger: logging.Logger,
+                              variation: str = None,
+                              save_csv: bool = True):
+    """Create a report inside HFSS to plot the converge of frequency and style it.
     Saves report to csv file.
-
-    Returns a convergence vs pass number of the eignemode freqs.
-    Returns a pandas dataframe:
 
     .. code-block:: text
 
@@ -625,7 +938,17 @@ def hfss_report_f_convergence(oDesign,
         2	5.114490	5.505828	6.242423
         3	5.278594	5.604426	6.296777
 
-    '''
+    Args:
+        oDesign (pyEPR.ansys.HfssDesign): Active design within Ansys.
+        setup (pyEPR.ansys.HfssEMSetup): The setup of active project and design within Ansys.
+        logger (logging.Logger): To give feedback to user.
+        variation ('str', optional): Information from pyEPR; variation should be in the form
+            variation = "scale_factor='1.2001'". Defaults to None.
+        save_csv (bool, optional): Save to file? Defaults to True.
+
+    Returns:
+        pd.core.frame.DataFrame: Returns a convergence vs pass number of the eigenemode frequencies.
+    """
 
     if not oDesign.solution_type == 'Eigenmode':
         return None

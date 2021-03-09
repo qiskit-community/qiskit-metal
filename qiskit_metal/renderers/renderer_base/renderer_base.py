@@ -12,8 +12,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 """
-@author: Zlatko Minev, Marco Facchini (IBM)
-@date: 2019
+QRenderer
 """
 import logging
 import inspect
@@ -52,7 +51,7 @@ class QRenderer(ABC):
     """
 
     name = 'base'  # overwrite this!
-    """name"""
+    """Name"""
 
     __loaded_renderers__ = set()
     __instantiated_renderers__ = dict()
@@ -64,7 +63,7 @@ class QRenderer(ABC):
     #            path=dict(thickness=float, material=str, perfectE=bool),
     #            poly=dict(thickness=float, material=str), )
     element_extensions = dict()
-    """element extensions dictionary"""
+    """Element extensions dictionary"""
 
     # TODO: To add: default parameters for the renderer for component element values.
     element_table_data = dict()
@@ -146,9 +145,9 @@ class QRenderer(ABC):
         """
         Args:
             design (QDesign): The design
-            initiate (bool): True to initiate the renderer (Default: False)
+            initiate (bool): True to initiate the renderer.  Defaults to True.
             render_template (Dict, optional): Typically used by GUI for template options for GDS.  Defaults to None.
-            render_options (Dict, optional):  Used to override all options. Defaults to None.
+            render_options (Dict, optional): Used to override all options.  Defaults to None.
         """
 
         # TODO: check that the renderer has been loaded with load_renderer
@@ -216,7 +215,7 @@ class QRenderer(ABC):
 
     @classmethod
     def _get_unique_class_name(cls) -> str:
-        """Returns unique class name based on the module
+        """Returns unique class name based on the module.
 
         Returns:
             str: Example: 'qiskit_metal.renders.renderer_gds.gds_renderer.QGDSRenderer'
@@ -290,7 +289,7 @@ class QRenderer(ABC):
         """Same as design.parse_value. See design for help.
 
         Returns:
-            Parsed value of input.
+            object: Parsed value of input.
         """
         return self.design.parse_value(value)
 
@@ -306,9 +305,9 @@ class QRenderer(ABC):
 
         Args:
             render_options (Dict, optional): If user wants to over-ride the template
-                                             options. Defaults to None.
+                                             options.  Defaults to None.
             render_template (Dict, optional): All the template options for each child.
-                                             Defaults to None.
+                                              Defaults to None.
         """
         self.options.update(
             self.get_template_options(self.design,
@@ -346,7 +345,7 @@ class QRenderer(ABC):
 
         Arguments:
             force (bool) : If True, need to scrap the existing initialization and re-do
-                           If False (default), will start a new one only if none exists
+                           If False, will start a new one only if none exists.  Defaults to False.
 
         Returns:
             bool: is the renderer initialized succesfully (thus usable?)
@@ -419,6 +418,22 @@ class QRenderer(ABC):
             return [], 1  # Everything selected
         return [self.design.name_to_id[elt] for elt in unique_qcomponents
                ], 0  # Subset selected
+
+    def _initate_renderer(self):
+        """
+        Call any initiations steps required to be performed a single time before rendering,
+        such as connecting to some API or COM, or importing the correct material libraries, etc.
+
+        Returns:
+            bool: Always returns True
+        """
+        return True
+
+    def post_render(self):
+        """
+        Any calls that one may want to make after a rendering is complete.
+        """
+        pass
 
     def render_design(self):
         """

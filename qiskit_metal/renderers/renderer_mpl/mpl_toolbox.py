@@ -13,9 +13,6 @@
 # that they have been altered from the originals.
 """
 Plotting functions for shapely components using mpl.
-
-Created 2019
-@author: Zlatko Minev (IBM)
 """
 
 import descartes  # shapely plot
@@ -50,7 +47,7 @@ style_config = Dict(
     #exterior = dict(lw=1, edgecolors='k', alpha=0.5),
     # interior = dict(facecolors='w', lw=1, edgecolors='grey'))
 )
-"""style configuraiton"""
+"""Style configuraiton"""
 
 
 def _render_poly_zkm(poly: Polygon, ax, kw=None, kw_hole=None):
@@ -58,10 +55,10 @@ def _render_poly_zkm(poly: Polygon, ax, kw=None, kw_hole=None):
     Style and draw a shapely polygon using MPL.
 
     Args:
-        poly (Polygon): the polygon
-        ax (plt.Axes):  Matplotlib axis to render to
-        kw (dict): Dictionary of kwargs for the plotting (Default: None).
-        kw_hold (kw_hole): kw_hole (Default: None)
+        poly (Polygon): The polygon.
+        ax (plt.Axes): Matplotlib axis to render to.
+        kw (dict): Dictionary of kwargs for the plotting.  Defaults to None.
+        kw_hold (kw_hole): kw_hole.  Defaults to None.
     '''
     if kw_hole is None:
         kw_hole = {}
@@ -97,12 +94,12 @@ def _render_poly_zkm(poly: Polygon, ax, kw=None, kw_hole=None):
 
 def render_poly(poly: shapely.geometry.Polygon, ax: plt.Axes, kw=None):
     """
-    Render an individual shapely shapely.geometry.Polygon
+    Render an individual shapely shapely.geometry.Polygon.
 
     Args:
-        poly (shapely.geometry.Polygon): Poly or multipoly to render
-        ax (plt.Axes):  Matplotlib axis to render to
-        kw (dict): Dictionary of kwargs for the plotting (Default: None).
+        poly (shapely.geometry.Polygon): Poly or multipoly to render.
+        ax (plt.Axes): Matplotlib axis to render to.
+        kw (dict): Dictionary of kwargs for the plotting.  Defaults to None.
 
     Returns:
         patch: ax.add_patch result
@@ -129,15 +126,15 @@ def render(
     Plots onto an axis.
 
     Args:
-        components: a list, dict, tuple, itterable, or shapely object
-        ax (plt.Axes):  Matplotlib axis to render to (Default: None)
-        kw (dict): Dictionary of kwargs for the plotting (Default: None).
-        labels (str): labels (Default: None)
-        __depth (int): how many sublists in we are (Default: -1)
-        _interation (int) how many components we have plotted (Default: 0)
+        components: A list, dict, tuple, itterable, or shapely object.
+        ax (plt.Axes): Matplotlib axis to render to.  Defaults to None.
+        kw (dict): Dictionary of kwargs for the plotting.  Defaults to None.
+        labels (str): Labels.  Defaults to None.
+        __depth (int): How many sublists in we are.  Defaults to -1.
+        _interation (int): How many components we have plotted.  Defaults to 0.
 
     Return:
-        int: interation
+        int: Interation
     '''
     # TODO: Update to handle plotting argumetn with *args and **kwargs
     # but this needs the .draw functions to be updated
@@ -220,8 +217,8 @@ def draw_all_objects(components, ax, func=lambda x: x, root_name='components'):
         ax {[type]} -- [description]
 
     Keyword Arguments:
-        func {[type]} -- [description] (default: {lambdax:x})
-        root_name {str} -- [description] (default: {'components'})
+        func {[type]} -- [description] Defaults to {lambdax:x}
+        root_name {str} -- [description] Defaults to {'components'}
     """
 
     # logger.debug(components.keys())
@@ -245,11 +242,11 @@ def draw_all_objects(components, ax, func=lambda x: x, root_name='components'):
 
 def style_axis_simple(ax, labels=None):
     '''
-    Style function for axis called by `render`
+    Style function for axis called by `render`.
 
     Args:
-        ax (plt.Axes):  Matplotlib axis to render to (Default: None)
-        labels (str): label
+        ax (plt.Axes): Matplotlib axis to render to.  Defaults to None.
+        labels (str): Label
     '''
     if ax is None:
         ax = plt.gca()
@@ -271,7 +268,7 @@ rcParams = plt.matplotlib.rcParams
 
 
 def get_prop_cycle():
-    """Get the prop cycle"""
+    """Get the prop cycle."""
     prop_cycler = rcParams['axes.prop_cycle']
     if prop_cycler is None and 'axes.color_cycle' in rcParams:
         clist = rcParams['axes.color_cycle']
@@ -284,10 +281,10 @@ def get_prop_cycle():
 
 
 def style_axis_standard(ax):
-    """Style the axis standardly
+    """Style the axis standardly.
 
     Args:
-        ax (plt.Axes):  Matplotlib axis to render to (Default: None)
+        ax (plt.Axes): Matplotlib axis to render to.  Defaults to None.
     """
     #fig = ax.figure
 
@@ -337,7 +334,7 @@ def figure_spawn(fig_kw=None):
         fig_draw, ax_draw = figure_spawn()
 
     Args:
-        fig_kw (fig_kw): fig_kw (Default: None)
+        fig_kw (fig_kw): fig_kw.  Defaults to None.
 
     Returns:
         (fig_draw, ax_draw)
@@ -385,9 +382,9 @@ def _axis_set_watermark_img(ax: plt.Axes, file: str, size: float = 0.25):
     """Burn the axis watermark into the image
 
     Args:
-        ax (plt.Axes):  Matplotlib axis to render to (Default: None)
-        file (str): the file
-        size (float): the size (Default: 0.25)
+        ax (plt.Axes): Matplotlib axis to render to.  Defaults to None.
+        file (str): The file.
+        size (float): The size.  Defaults to None.
     """
     ### Load image
     datafile = cbook.get_sample_data(str(file), asfileobj=False)
@@ -415,7 +412,7 @@ def _axis_set_watermark_img(ax: plt.Axes, file: str, size: float = 0.25):
 
 def clear_axis(ax: plt.Axes):
     """Clear all plotted objects on an axis including lines, patches, tests, tables,
-    artists, images, mouseovers, child axes, legends, collections, and containers
+    artists, images, mouseovers, child axes, legends, collections, and containers.
     See: https://github.com/matplotlib/matplotlib/blob/master/lib/matplotlib/axes/_base.py#L1040
     
     Args:

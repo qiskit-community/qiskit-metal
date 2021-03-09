@@ -16,19 +16,16 @@
 # pylint: disable=unused-import
 """
 Custom Exceptions
-
-@author: Marco Facchini
-@date: 12/2020
 """
 
 
 class QiskitMetalExceptions(Exception):
     """
     Custom Exception super-class. Every Exception raised by qiskit-metal should inherit this.
-    Adds the qiskit-metal prefix
+    Adds the qiskit-metal prefix.
 
     Args:
-        message (str): string describing the error raised from qiskit-metal
+        message (str): String describing the error raised from qiskit-metal
     """
 
     def __init__(self, message: str) -> None:
@@ -38,10 +35,10 @@ class QiskitMetalExceptions(Exception):
 
 class QiskitMetalDesignError(QiskitMetalExceptions):
     """
-    Custom Exception to indicate User action is needed to correct Design Inputs
+    Custom Exception to indicate User action is needed to correct Design Inputs.
 
     Args:
-        message (str): string describing the cause of the error and suggested solution
+        message (str): String describing the cause of the error and suggested solution
     """
 
     def __init__(self, message: str) -> None:
@@ -50,10 +47,10 @@ class QiskitMetalDesignError(QiskitMetalExceptions):
 
 
 class IncorrectQtException(Exception):
-    """Run PySide2 only
+    """Run PySide2 only.
 
     Args:
-        message (str): string describing the cause of the error and suggested solution
+        message (str): String describing the cause of the error and suggested solution
     """
 
     def __init__(self, message: str) -> None:

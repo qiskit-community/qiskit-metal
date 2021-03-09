@@ -11,10 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""
-@author: Zlatko Minev
-@date: 2019
-"""
 
 from pyEPR.hfss import parse_units as __parse_units_hfss__
 from pyEPR.hfss import \
@@ -29,7 +25,7 @@ __all__ = ['parse_value_hfss', 'unparse_units']
 
 def parse_value_hfss(*args):
     '''
-    Parse to HFSS units (from user units)
+    Parse to HFSS units (from user units).
     '''
     return __parse_units_hfss__(*args)
 
@@ -39,9 +35,9 @@ def parse_value_hfss(*args):
 
 def to_ansys_units(
         value):  # can make more efifiecnt if we assume this is already a float
-    """Converve given value to ansys units
+    """Converve given value to ansys units.
 
     Args:
-        value (float): value
+        value (float): Value
     """
     __parse_units_hfss__(value)

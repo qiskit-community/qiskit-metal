@@ -20,9 +20,6 @@ Toolbox_metal (:mod:`qiskit_metal.toolbox_metal`)
 
 This folder contains code that is more specific to Metal.
 
-Created on Tue May 14 17:13:40 2019
-
-
 Custom Exceptions
 -----------------
 

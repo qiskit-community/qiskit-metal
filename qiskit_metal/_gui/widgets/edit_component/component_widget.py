@@ -12,8 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 """Main module that handles a component  inside the main window.
-@author: Zlatko Minev
-@date: 2020
 """
 
 import ast
@@ -103,10 +101,10 @@ def format_docstr(doc: Union[str, None]) -> str:
     """Format a docstring
 
     Args:
-        doc (Union[str, None]): string to format
+        doc (Union[str, None]): String to format
 
     Returns:
-        str: formatted string
+        str: Formatted string
     """
 
     if doc is None:
@@ -122,15 +120,15 @@ def format_docstr(doc: Union[str, None]) -> str:
 
 def create_QTextDocument(doc: QtWidgets.QTextEdit) -> QtGui.QTextDocument:
     """
-    For source doc.
+    Create QTextDocument for the source doc.
 
     Access with gui.component_window.src_doc
 
     Args:
-        doc (QtWidget.QTextEdit): text edit widget
+        doc (QtWidget.QTextEdit): Text edit widget
 
     Returns:
-        QtGui.QTextDocument: the document
+        QtGui.QTextDocument: The document
     """
     document = QtGui.QTextDocument()
 
@@ -167,7 +165,7 @@ class ComponentWidget(QTabWidget):
     def __init__(self, gui: 'MetalGUI', parent: QtWidgets.QWidget):
         """
         Args:
-            gui: (MetalGUI): the GUI
+            gui: (MetalGUI): The GUI
             parent (QWidget): Parent widget
         """
         # Parent is usually a dock component
@@ -400,4 +398,4 @@ class ComponentWidget(QTabWidget):
             QtWidgets.QMessageBox.warning(
                 self, "Missing Selected Component",
                 "Please first select a component to edit, by clicking "
-                "one in the desing components menu.")
+                "one in the design components menu.")

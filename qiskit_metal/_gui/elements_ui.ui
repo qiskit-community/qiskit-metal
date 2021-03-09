@@ -112,21 +112,11 @@
            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the element table you wish to view&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="currentText">
-           <string>poly</string>
+           <string/>
           </property>
           <property name="sizeAdjustPolicy">
            <enum>QComboBox::AdjustToContents</enum>
           </property>
-          <item>
-           <property name="text">
-            <string extracomment="Polygon shapes">poly</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string extracomment="Path shapes">path</string>
-           </property>
-          </item>
          </widget>
         </item>
         <item>

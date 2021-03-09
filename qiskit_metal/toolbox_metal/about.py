@@ -16,9 +16,6 @@ Reports a summary of information on Qiskit Metal and dependencies.
 
 Contain functions to report more detailed information to orient a user,
 used for debug purposes.
-
-@author: Zlatko Minev
-@date: 2020
 """
 
 import os
@@ -130,7 +127,7 @@ def orient_me(do_print: bool = True) -> Union[None, str]:
     """Full system, python, user, and environemnt information.
 
     Args:
-        do_print(bool) : Return the string if True, else format and print.
+        do_print(bool): Return the string if True, else format and print.
     """
 
     text = get_platform_info()

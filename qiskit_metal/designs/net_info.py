@@ -13,10 +13,6 @@
 # that they have been altered from the originals.
 """
 Module containing Net information storage.
-
-@date: 2020
-
-@author: Priti Shah, ... (IBM)
 """
 #from typing import Tuple
 import pandas as pd
@@ -37,7 +33,7 @@ class QNet():
         self.logger = logger  # type: logging.Logger
 
     def _get_new_net_id(self) -> int:
-        """ Provide uniqe new qnet_id
+        """ Provide uniqe new qnet_id.
 
         Returns:
             int: ID to use for storing a new net within _net_info.
@@ -141,7 +137,7 @@ class QNet():
 
     def delete_all_pins_for_component(self, component_id_to_remove: int) -> set:
         """
-        Delete all the pins for a given component id
+        Delete all the pins for a given component id.
 
         Args:
             component_id_to_remove (int): Component ID to remove

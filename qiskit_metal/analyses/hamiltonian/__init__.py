@@ -19,9 +19,4 @@ Analyses (:mod:`qiskit_metal.analyses.hamiltonian`)
 .. currentmodule:: qiskit_metal.analyses.hamiltonian
 
 Module containing all Qiskit Metal hamiltonian-only analyses.
-
-@date: 2019
-
-@author: Zlatko Minev (IBM)
-
 """

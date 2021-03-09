@@ -12,10 +12,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 '''
-@date: 2019
-@author: Zlatko K Minev
-converted to v0.2: Thomas McConkey 2020-03-24
-
+Transmon Pocket.
 
 .. code-block::
      ________________________________
@@ -43,53 +40,16 @@ from qiskit_metal.qlibrary.base.qubit import BaseQubit
 
 class TransmonPocket(BaseQubit):
     """
-    The base `TransmonPocket` class
+    The base `TransmonPocket` class.
 
-    Inherits `BaseQubit` class
+    Inherits `BaseQubit` class.
 
-    Description:
-        Create a standard pocket transmon qubit for a ground plane,
-        with two pads connected by a junction (see drawing below).
+    Create a standard pocket transmon qubit for a ground plane,
+    with two pads connected by a junction (see drawing below).
 
-        Connector lines can be added using the `connection_pads`
-        dictionary. Each connector pad has a name and a list of default
-        properties.
-
-    Options:
-        Convention: Values (unless noted) are strings with units included,
-        (e.g., '30um')
-
-    Pocket:
-        * pos_x / pos_y   - where the center of the pocket should be located on chip
-          (where the 'junction' is)
-        * pad_gap         - the distance between the two charge islands, which is also the
-          resulting 'length' of the pseudo junction
-        * inductor_width  - width of the pseudo junction between the two charge islands
-          (if in doubt, make the same as pad_gap). Really just for simulating
-          in HFSS / other EM software
-        * pad_width       - the width (x-axis) of the charge island pads
-        * pad_height      - the size (y-axis) of the charge island pads
-        * pocket_width    - size of the pocket (cut out in ground) along x-axis
-        * pocket_height   - size of the pocket (cut out in ground) along y-axis
-        * orientation     - degree of qubit rotation
-
-    Connector lines:
-        * pad_gap        - space between the connector pad and the charge island it is
-          nearest to
-        * pad_width      - width (x-axis) of the connector pad
-        * pad_height     - height (y-axis) of the connector pad
-        * pad_cpw_shift  - shift the connector pad cpw line by this much away from qubit
-        * pad_cpw_extent - how long should the pad be - edge that is parallel to pocket
-        * cpw_width      - center trace width of the CPW line
-        * cpw_gap        - dielectric gap width of the CPW line
-        * cpw_extend     - depth the connector line extense into ground (past the pocket edge)
-        * pocket_extent  - How deep into the pocket should we penetrate with the cpw connector
-          (into the fround plane)
-        * pocket_rise    - How far up or downrelative to the center of the transmon should we
-          elevate the cpw connection point on the ground plane
-        * loc_W / H      - which 'quadrant' of the pocket the connector is set to, +/- 1 (check
-          if diagram is correct)
-
+    Connector lines can be added using the `connection_pads`
+    dictionary. Each connector pad has a name and a list of default
+    properties.
 
     Sketch:
         Below is a sketch of the qubit
@@ -113,7 +73,37 @@ class TransmonPocket(BaseQubit):
                                             +1
 
     .. image::
-        Component_Qubit_Transmon_Pocket.png
+        QComponent_Qubit_Transmon_Pocket.png
+
+    BaseQubit Default Options:
+        * pos_x: '0um'
+        * pos_y: '0um'
+        * connection_pads: Empty Dict -- The dictionary which contains all active connection lines for the qubit.
+        * _default_connection_pads: Empty Dict -- The default values for the (if any) connection lines of the qubit.
+
+    Default Options:
+        * pos_x: '0um' -- Where the center of the pocket should be located on chip
+        * pos_y: '0um' -- Where the center of the pocket should be located on chip
+        * pad_gap: '30um' -- The distance between the two charge islands, which is also the resulting 'length' of the pseudo junction
+        * inductor_width: '20um' -- Width of the pseudo junction between the two charge islands (if in doubt, make the same as pad_gap). Really just for simulating in HFSS / other EM software
+        * pad_width: '455um' -- The width (x-axis) of the charge island pads
+        * pad_height: '90um' -- The size (y-axis) of the charge island pads
+        * pocket_width: '650um' -- Size of the pocket (cut out in ground) along x-axis
+        * pocket_height: '650um' -- Size of the pocket (cut out in ground) along y-axis
+        * orientation: '0' -- Degree of qubit rotation
+        * _default_connection_pads: Dict
+            * pad_gap: '15um' -- Space between the connector pad and the charge island it is nearest to
+            * pad_width: '125um' -- Width (x-axis) of the connector pad
+            * pad_height: '30um' -- Height (y-axis) of the connector pad
+            * pad_cpw_shift: '5um' -- Shift the connector pad cpw line by this much away from qubit
+            * pad_cpw_extent: '25um' -- Shift the connector pad cpw line by this much away from qubit
+            * cpw_width: 'cpw_width' -- Center trace width of the CPW line
+            * cpw_gap: 'cpw_gap' -- Dielectric gap width of the CPW line
+            * cpw_extend: '100um' -- Depth the connector line extense into ground (past the pocket edge)
+            * pocket_extent: '5um' -- How deep into the pocket should we penetrate with the cpw connector (into the fround plane)
+            * pocket_rise: '65um' -- How far up or downrelative to the center of the transmon should we elevate the cpw connection point on the ground plane
+            * loc_W: '+1' -- Width location  only +-1
+            * loc_H: '+1' -- Height location only +-1
     """
 
     #_img = 'transmon_pocket1.png'
@@ -206,14 +196,14 @@ class TransmonPocket(BaseQubit):
 
     def make_connection_pads(self):
         '''
-        Makes standard transmon in a pocket
+        Makes standard transmon in a pocket.
         '''
         for name in self.options.connection_pads:
             self.make_connection_pad(name)
 
     def make_connection_pad(self, name: str):
         '''
-        Makes n individual connector
+        Makes n individual connector.
 
         Args:
             name (str) : Name of the connector

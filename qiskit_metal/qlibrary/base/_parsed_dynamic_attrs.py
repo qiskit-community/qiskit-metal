@@ -13,9 +13,6 @@
 # that they have been altered from the originals.
 """
 Parsed dynamic attributes.
-
-@author: Zlatko Minev
-@date: 2020
 """
 import pprint
 from typing import List
@@ -79,8 +76,8 @@ class ParsedDynamicAttributes_Component():
     def __init__(self, component: 'QComponent', key_list: List[str] = None):
         """
         Args:
-            component (QComponent): Component to get options from
-            key_list (List[str]): List of keys (Default: None).
+            component (QComponent): Component to get options from.
+            key_list (List[str]): List of keys.  Defaults to None.
         """
         #print(f'*** Created with {key_list}')
         # These names must have __xx__ or else they will go to getattr instead of getattribute
@@ -102,7 +99,7 @@ class ParsedDynamicAttributes_Component():
         return self.__getdict__().__str__()
 
     def __len__(self):
-        """Return the length"""
+        """Return the length."""
         return len(self.__getdict__())
 
     def __getdict__(self) -> dict:
@@ -144,7 +141,7 @@ class ParsedDynamicAttributes_Component():
 
     def __getitem__(self, name: str):
         """
-        Get the item associated with the given name
+        Get the item associated with the given name.
 
         Args:
             name (str): Name of the item
@@ -196,7 +193,7 @@ class ParsedDynamicAttributes_Component():
     #     return self.__getdict__().__repr__()
 
     def __repr__(self):
-        """For viewing. Just return the whole parse dictionary
+        """For viewing. Just return the whole parse dictionary.
         """
         b = '\033[95m\033[1m'
         e = '\033[0m'
@@ -235,7 +232,15 @@ self.p.a.c
 
 def get_nested_dict_item(dic: dict, key_list: list, level=0):
     """
-        level {int} -- internal for recussion
+    Get the nested dictionary item
+
+    Args:
+        dic (dict): Dictionary of nested items
+        key_list (list): List of keys
+        level (int): Internal for recussion.  Defaults to 0.
+
+    Returns:
+        object: Item in the dic corresponding to the given key_list
 
     Example use:
 

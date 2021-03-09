@@ -11,10 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-'''
-@date: 2020
-@author: Dennis Wang
-'''
 
 from PySide2.QtWidgets import (QAbstractItemView, QFileDialog, QMainWindow,
                                QMessageBox)
