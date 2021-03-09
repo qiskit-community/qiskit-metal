@@ -190,9 +190,9 @@ class PropValTable(QAbstractTableModel):
         Get the headers to be displayed.
 
         Args:
-            secion (int): Section number
-            orientation (Qt.Orientation): Orientation of the header
-            role (Qt.ItemDataRole): Role of the header.  Defaults to None.Qt.DisplayRole.
+            secion (int): Section number.
+            orientation (Qt.Orientation): Orientation of the header.
+            role (Qt.ItemDataRole): Role of the header.  Defaults to Qt.DisplayRole.
 
         Returns:
             str: The header

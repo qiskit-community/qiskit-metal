@@ -374,7 +374,7 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         """Scroll to the matched string.
 
         Args:
-            text (str): Test to scroll to..  Defaults to 'def make('.
+            text (str): Test to scroll to.  Defaults to 'def make('.
         """
         text = self.toPlainText()
         # index = text.find('def make(')
