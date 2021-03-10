@@ -73,9 +73,9 @@ class TransmonPocket6(BaseQubit):
         * pad_cpw_extent - how long should the pad be - edge that is parallel to pocket
         * cpw_width      - center trace width of the CPW line
         * cpw_gap        - dielectric gap width of the CPW line
-        * cpw_extend     - depth the connector line extense into ground (past the pocket edge)
+        * cpw_extend     - depth the connector line extends into ground (past the pocket edge)
         * pocket_extent  - How deep into the pocket should we penetrate with the cpw connector
-          (into the fround plane)
+          (into the ground plane)
         * pocket_rise    - How far up or down relative to the center of the transmon should we
           elevate the cpw connection point on the ground plane
         * loc_W / H      - which 'quadrant' of the pocket the connector is set to, +/- 1 (check
@@ -160,7 +160,7 @@ class TransmonPocket6(BaseQubit):
         # self.p allows us to directly access parsed values (string -> numbers) form the user option
         p = self.p
 
-        # since we will reuse these options, parse them once and define them as varaibles
+        # since we will reuse these options, parse them once and define them as variables
         pad_width = p.pad_width
         pad_height = p.pad_height
         pad_gap = p.pad_gap
