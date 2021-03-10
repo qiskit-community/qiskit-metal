@@ -184,9 +184,11 @@ class QGDSRenderer(QRenderer):
             view_in_file=Dict(main={1: True}),
 
             #delta spacing between holes
-            delta_x='10mm',
-            delta_y='10mm',
-        ),
+            delta_x='75um',
+            delta_y='75um',
+
+            #Keep a buffer around the perimeter of chip, that will not need cheesing.
+            edge_nocheese='10um'),
 
         # Think of this as a keep-out region for cheesing.
         no_cheese=Dict(
@@ -1075,13 +1077,14 @@ class QGDSRenderer(QRenderer):
 
         return code
 
-    # This is not complete.
     def populate_cheese(self):
         """ Iterate through each chip, then layer to determine the cheesing geometry.
         """
 
         lib = self.lib
         cheese_sub_layer = int(self.parse_value(self.options.cheese.datatype))
+        nocheese_sub_layer = int(
+            self.parse_value(self.options.no_cheese.datatype))
 
         for chip_name in self.chip_info:
             layers_in_chip = self.design.qgeometry.get_all_unique_layers(
@@ -1096,15 +1099,11 @@ class QGDSRenderer(QRenderer):
 
                         cheesed = self.cheese_based_on_shape(
                             minx, miny, maxx, maxy, chip_name, chip_layer,
-                            cheese_sub_layer)
+                            cheese_sub_layer, nocheese_sub_layer)
 
-                        #chip_only_top_name = f'TOP_{chip_name}'
-                        #cheese_cell_name = f'TOP_{chip_name}_{chip_layer}_Cheese_{cheese_sub_layer}'
-
-    ###  The Cheesing class is not complete.
     def cheese_based_on_shape(self, minx: float, miny: float, maxx: float,
                               maxy: float, chip_name: str, chip_layer: int,
-                              cheese_sub_layer: int):
+                              cheese_sub_layer: int, nocheese_sub_layer: int):
         """Instantiate class to do cheesing.
         Args:
             minx (float): Chip minimum x location.
@@ -1114,6 +1113,7 @@ class QGDSRenderer(QRenderer):
             chip_name (str): User defined chip name.
             layer (int): Layer number for calculating the cheese.
             cheese_sub_layer (int):  User defined datatype, considered a sub-layer number for where to place the cheese output.
+            nocheese_sub_layer (int): User defined datatype, considered a sub-layer number for where to place the NO_cheese output.
         """
 
         max_points = int(self.parse_value(self.options.max_points))
@@ -1123,6 +1123,9 @@ class QGDSRenderer(QRenderer):
             'no_cheese_gds']
         delta_x = float(self.parse_value(self.options.cheese.delta_x))
         delta_y = float(self.parse_value(self.options.cheese.delta_y))
+        edge_nocheese = float(
+            self.parse_value(self.options.cheese.edge_nocheese))
+        precision = float(self.parse_value(self.options.precision))
 
         if cheese_shape == 0:
             cheese_x = float(self.parse_value(self.options.cheese.cheese_0_x))
@@ -1135,10 +1138,13 @@ class QGDSRenderer(QRenderer):
                                 maxx,
                                 maxy,
                                 chip_name,
+                                edge_nocheese,
                                 chip_layer,
                                 cheese_sub_layer,
+                                nocheese_sub_layer,
                                 self.logger,
                                 max_points,
+                                precision,
                                 cheese_shape=cheese_shape,
                                 shape_0_x=cheese_x,
                                 shape_0_y=cheese_y,
@@ -1155,10 +1161,13 @@ class QGDSRenderer(QRenderer):
                                 maxx,
                                 maxy,
                                 chip_name,
+                                edge_nocheese,
                                 chip_layer,
                                 cheese_sub_layer,
+                                nocheese_sub_layer,
                                 self.logger,
                                 max_points,
+                                precision,
                                 cheese_shape=cheese_shape,
                                 shape_1_radius=cheese_radius,
                                 delta_x=delta_x,
