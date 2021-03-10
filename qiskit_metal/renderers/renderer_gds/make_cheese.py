@@ -141,7 +141,7 @@ class Cheesing():
         if 0 == self.error_checking_hole_delta():
             self.make_one_hole_at_zero_zero()
             gdspy_hole = self.hole_to_lib()
-            self.cell_with_grid(gdspy_hole)
+            self.cell_with_grid()
         else:
             self.logger.warning(f'Cheesing not implemented.')
 
@@ -240,8 +240,10 @@ class Cheesing():
 
         return a_poly
 
-    def cell_with_grid(self, gdspy_hole: gdspy.polygon.Polygon):
-        """`[summary]`
+    def cell_with_grid(self):
+        """ Use the hole at self.one_hole_cell to create a grid.  Then use the no_cheese cell to 
+        remove the holes from grid.  The difference will be used subtract from the ground layer with 
+        geometry. The cells are added to the Top_<chip_name>.
         """
 
         gather_holes_cell = self.lib.new_cell('Gather_holes',

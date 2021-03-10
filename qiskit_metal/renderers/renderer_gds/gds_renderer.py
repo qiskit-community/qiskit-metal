@@ -43,7 +43,7 @@ if not config.is_building_docs():
 
 if TYPE_CHECKING:
     # For linting typechecking, import modules that can't be loaded here under normal conditions.
-    # For example, I can't import QDesign, because it requires Qrenderer first. We have the
+    # For example, I can't import QDesign, because it requires QRenderer first. We have the
     # chicken and egg issue.
     from qiskit_metal.designs import QDesign
 
@@ -59,14 +59,14 @@ class QGDSRenderer(QRenderer):
     then this box will be used for every layer within a chip.
 
     2. If user wants to export entire design, BUT there is not information in QDesign._chips[chip_name]['size'],
-    then the renderer will calcuate the size of all of the components
+    then the renderer will calculate the size of all of the components
     and use that size for the "subtraction box" for every layer within a chip.
 
     3. If user wants to export a list of explicit components, the bounding box will be calculated by size of
     QComponents in the QGeometry table. Then be scaled by bounding_box_scale_x and bounding_box_scale_y.
 
     4. Note: When using the Junction table, the cell for Junction should be "x-axis" aligned and then GDS rotates
-    based on LineString given in Juction table.
+    based on LineString given in Junction table.
 
 
     datatype:
@@ -91,6 +91,9 @@ class QGDSRenderer(QRenderer):
             * cheese_0_x: '50um'
             * cheese_0_y: '50um'
             * cheese_1_radius: '100um'
+            * delta_x='100um',
+            * delta_y='100um',
+            * edge_nocheese='10um',
             * view_in_file: Dict(main={1: True})
         * no_cheese: Dict
             * datatype: '99'
@@ -135,7 +138,7 @@ class QGDSRenderer(QRenderer):
         # tolerance > precision
         # Precision used for gds lib, boolean operations and FlexPath should likely be kept the same.
         # They can be different, but increases odds of weird artifacts or misalignment.
-        # Some of this occours regardless (might be related to offset of a curve when done as a boolean vs. rendered),
+        # Some of this occurs regardless (might be related to offset of a curve when done as a boolean vs. rendered),
         # but they are <<1nm, which isn't even picked up by any fab equipment (so can be ignored)
         # Numerical errors start to pop up if set precision too fine,
         # but 1nm seems to be the finest precision we use anyhow.
@@ -155,7 +158,7 @@ class QGDSRenderer(QRenderer):
 
         # For junction table, when cell from default_options.path_filename does not fit into linestring,
         # QGDSRender will create two pads and add to junction to fill the location of lineString.
-        # The junction_pad_overlap is from the juction cell to the newly created pads.
+        # The junction_pad_overlap is from the junction cell to the newly created pads.
         junction_pad_overlap='5um',
 
         # Vertex limit for FlexPath
