@@ -20,6 +20,8 @@ QLibrary (:mod:`qiskit_metal.qlibrary`)
 
 Module containing all Qiskit Metal QLibrary.
 
+.. _qlibrary:
+
 Base Components
 ---------------
 

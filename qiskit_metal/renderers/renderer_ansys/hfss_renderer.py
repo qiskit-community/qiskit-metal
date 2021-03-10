@@ -50,12 +50,30 @@ class QHFSSRenderer(QAnsysRenderer):
     """
 
     name = 'hfss'
-    """name"""
+    """Name"""
 
     hfss_options = Dict(
+        drivenmodal_setup=Dict(freq_ghz='5',
+                               name="Setup",
+                               max_delta_s='0.1',
+                               max_passes='10',
+                               min_passes='1',
+                               min_converged='1',
+                               pct_refinement='30',
+                               basis_order='1'),
+        eigenmode_setup=Dict(name="Setup",
+                             min_freq_ghz='1',
+                             n_modes='1',
+                             max_delta_f='0.5',
+                             max_passes='10',
+                             min_passes='1',
+                             min_converged='1',
+                             pct_refinement='30',
+                             basis_order='-1'),
         port_inductor_gap=
         '10um'  # spacing between port and inductor if junction is drawn both ways
     )
+    """HFSS Options"""
 
     def __init__(self,
                  design: 'QDesign',
@@ -69,7 +87,7 @@ class QHFSSRenderer(QAnsysRenderer):
             design (QDesign): Use QGeometry within QDesign to obtain elements for Ansys.
             initiate (bool, optional): True to initiate the renderer. Defaults to True.
             render_template (Dict, optional): Typically used by GUI for template options for GDS. Defaults to None.
-            render_options (Dict, optional):  Used to override all options. Defaults to None.
+            render_options (Dict, optional): Used to override all options. Defaults to None.
         """
         super().__init__(design=design,
                          initiate=initiate,
@@ -468,18 +486,18 @@ class QHFSSRenderer(QAnsysRenderer):
             )
 
     def add_drivenmodal_setup(self,
-                              freq_ghz=5,
-                              name="Setup",
-                              max_delta_s=0.1,
-                              max_passes=10,
-                              min_passes=1,
-                              min_converged=1,
-                              pct_refinement=30,
-                              basis_order=-1):
-        # TODO: Move arguments to default options.
+                              freq_ghz: int = None,
+                              name: str = None,
+                              max_delta_s: float = None,
+                              max_passes: int = None,
+                              min_passes: int = None,
+                              min_converged: int = None,
+                              pct_refinement: int = None,
+                              basis_order: int = None):
         """
-        Create a solution setup in Ansys HFSS Driven Modal.
-
+        Create a solution setup in Ansys HFSS Driven Modal.   If user does not provide arguments, 
+        they will be obtained from hfss_options dict.  
+        
         Args:
             freq_ghz (int, optional): Frequency in GHz. Defaults to 5.
             name (str, optional): Name of driven modal setup. Defaults to "Setup".
@@ -488,8 +506,27 @@ class QHFSSRenderer(QAnsysRenderer):
             min_passes (int, optional): Minimum number of passes. Defaults to 1.
             min_converged (int, optional): Minimum number of converged passes. Defaults to 1.
             pct_refinement (int, optional): Percent refinement. Defaults to 30.
-            basis_order (int, optional): Basis order. Defaults to -1.
+            basis_order (int, optional): Basis order. Defaults to 1.
         """
+        dsu = self.hfss_options.drivenmodal_setup
+
+        if not freq_ghz:
+            freq_ghz = int(self.parse_value(dsu['freq_ghz']))
+        if not name:
+            name = self.parse_value(dsu['name'])
+        if not max_delta_s:
+            max_delta_s = float(self.parse_value(dsu['max_delta_s']))
+        if not max_passes:
+            max_passes = int(self.parse_value(dsu['max_passes']))
+        if not min_passes:
+            min_passes = int(self.parse_value(dsu['min_passes']))
+        if not min_converged:
+            min_converged = int(self.parse_value(dsu['min_converged']))
+        if not pct_refinement:
+            pct_refinement = int(self.parse_value(dsu['pct_refinement']))
+        if not basis_order:
+            basis_order = int(self.parse_value(dsu['basis_order']))
+
         if self.pinfo:
             if self.pinfo.design:
                 return self.pinfo.design.create_dm_setup(
@@ -602,30 +639,51 @@ class QHFSSRenderer(QAnsysRenderer):
             )
 
     def add_eigenmode_setup(self,
-                            name="Setup",
-                            min_freq_ghz=1,
-                            n_modes=1,
-                            max_delta_f=0.5,
-                            max_passes=10,
-                            min_passes=1,
-                            min_converged=1,
-                            pct_refinement=30,
-                            basis_order=-1):
-        # TODO: Move arguments to default options.
+                            name: str = None,
+                            min_freq_ghz: int = None,
+                            n_modes: int = None,
+                            max_delta_f: float = None,
+                            max_passes: int = None,
+                            min_passes: int = None,
+                            min_converged: int = None,
+                            pct_refinement: int = None,
+                            basis_order: int = None):
         """
-        Create a solution setup in Ansys HFSS Eigenmode.
+        Create a solution setup in Ansys HFSS Eigenmode.  If user does not provide arguments, 
+        they will be obtained from hfss_options dict.  
 
         Args:
             name (str, optional): Name of eigenmode setup. Defaults to "Setup".
             min_freq_ghz (int, optional): Minimum frequency in GHz. Defaults to 1.
             n_modes (int, optional): Number of modes. Defaults to 1.
-            max_delta_f (float, optional): Maximum difference in freq between consecutive passes. Defaults to 0.1.
+            max_delta_f (float, optional): Maximum difference in freq between consecutive passes. Defaults to 0.5.
             max_passes (int, optional): Maximum number of passes. Defaults to 10.
             min_passes (int, optional): Minimum number of passes. Defaults to 1.
             min_converged (int, optional): Minimum number of converged passes. Defaults to 1.
             pct_refinement (int, optional): Percent refinement. Defaults to 30.
             basis_order (int, optional): Basis order. Defaults to -1.
         """
+        esu = self.hfss_options.eigenmode_setup
+
+        if not name:
+            name = self.parse_value(esu['name'])
+        if not min_freq_ghz:
+            min_freq_ghz = int(self.parse_value(esu['min_freq_ghz']))
+        if not n_modes:
+            n_modes = int(self.parse_value(esu['n_modes']))
+        if not max_delta_f:
+            max_delta_f = float(self.parse_value(esu['max_delta_f']))
+        if not max_passes:
+            max_passes = int(self.parse_value(esu['max_passes']))
+        if not min_passes:
+            min_passes = int(self.parse_value(esu['min_passes']))
+        if not min_converged:
+            min_converged = int(self.parse_value(esu['min_converged']))
+        if not pct_refinement:
+            pct_refinement = int(self.parse_value(esu['pct_refinement']))
+        if not basis_order:
+            basis_order = int(self.parse_value(esu['basis_order']))
+
         if self.pinfo:
             if self.pinfo.design:
                 return self.pinfo.design.create_em_setup(
@@ -796,8 +854,8 @@ class QHFSSRenderer(QAnsysRenderer):
 
         Returns:
             tuple[pandas.core.frame.DataFrame, pandas.core.frame.DataFrame]: 
-            1st DataFrame: convergence_t
-            2nd DataFrame: convergence_f
+            1st DataFrame: Convergence_t
+            2nd DataFrame: Convergence_f
         """
         if self.pinfo:
             design = self.pinfo.design
@@ -834,8 +892,8 @@ def hfss_plot_convergences_report(convergence_t: pd.core.frame.DataFrame,
     Plot delta frequency vs. solved elements.
 
     Args:
-        convergence_t (pandas.core.frame.DataFrame): convergence vs pass number of the eigenemode freqs.
-        convergence_f (pandas.core.frame.DataFrame): convergence vs pass number of the eigenemode freqs.
+        convergence_t (pandas.core.frame.DataFrame): Convergence vs pass number of the eigenemode freqs.
+        convergence_f (pandas.core.frame.DataFrame): Convergence vs pass number of the eigenemode freqs.
         fig (matplotlib.figure.Figure, optional): A mpl figure. Defaults to None.
         _display (bool, optional): Display the plot? Defaults to True.
     """
@@ -868,6 +926,7 @@ def hfss_report_f_convergence(oDesign: epr.ansys.HfssDesign,
                               save_csv: bool = True):
     """Create a report inside HFSS to plot the converge of frequency and style it.
     Saves report to csv file.
+
     .. code-block:: text
 
             re(Mode(1)) [g]	re(Mode(2)) [g]	re(Mode(3)) [g]

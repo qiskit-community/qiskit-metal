@@ -42,7 +42,7 @@ class RightClickView(QTableView):
             self.style_me)  # not sure whu the ui isnt unpdating these here.
 
     def style_me(self):
-        """Style this widget"""
+        """Style this widget."""
         # Also can do in the ui file, but doesn't always transalte for me for some reason
         self.horizontalHeader().show()
         self.verticalHeader().hide()
@@ -55,7 +55,7 @@ class RightClickView(QTableView):
         Create options for drop-down context menu.
 
         Args:
-            event (QContextMenuEvent): the event
+            event (QContextMenuEvent): The event
         """
         self.right_click_menu = QMenu(self)
         self.right_click_menu._d = self.right_click_menu.addAction('Delete')
@@ -73,7 +73,7 @@ class RightClickView(QTableView):
         Obtain location of clicked cell in form of row name and number.
 
         Args:
-            clickedIndex (QPoint): the QPoint of the click
+            clickedIndex (QPoint): The QPoint of the click
 
         Returns:
             tuple: name, index
@@ -89,8 +89,8 @@ class RightClickView(QTableView):
         Create message box to confirm row deletion.
 
         Args:
-            row_name (str): name of the row to delete
-            row_number (int): number of the row being deleted
+            row_name (str): Name of the row to delete
+            row_number (int): Number of the row being deleted
         """
         if row_number > -1:
             choice = QMessageBox.question(
@@ -105,8 +105,8 @@ class RightClickView(QTableView):
         Create message box to confirm row renaming and new name.
 
         Args:
-            row_name (str): name of the row to rename
-            index (QModelIndex): index of the row to rename
+            row_name (str): Name of the row to rename
+            index (QModelIndex): Index of the row to rename
         """
         if index.row() > -1:
             text, okPressed = QInputDialog.getText(self, 'Rename',

@@ -24,7 +24,7 @@ from shapely.geometry import CAP_STYLE, JOIN_STYLE
 class CircleRaster(QComponent):
     """A single configurable circle.
 
-    Inherits QComponent class
+    Inherits QComponent class.
 
     Default Options:
         * radius: '300um'

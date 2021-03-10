@@ -20,7 +20,7 @@ import numpy as np
 class NGon(QComponent):
     """A n-gon polygon. Eg. n = 3 : triangle, n = infinity : circle
 
-    Inherits `QComponent` class
+    Inherits `QComponent` class.
 
     Default Options:
         Convention: Values (unless noted) are strings with units included,

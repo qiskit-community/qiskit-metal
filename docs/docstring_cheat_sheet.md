@@ -13,8 +13,8 @@ This text appears on a new line
 Args:	# Don’t list if there are no arguments  # Arguments: is also acceptable
    Name1 (type): description                    # One argument per line
       Additional line of name1                  # Additional text must be indented
-   Name2 (type): description (Default: value)   # Only list Default if there is a default value
-   Name3 (type): description
+   Name2 (type): description. Defaults to value.   # Only list Default if there is a default value
+   Name3 (type): description.
 <blank line>                # Blank line separates sections
 Returns:     # Don’t list if there is no return
    Type: Description                       # Only one return
@@ -63,8 +63,8 @@ def __init__(self, <arguments here>):
    Args:    # Don’t list if there are no arguments # Arguments: is also acceptable
       Name1 (type): description                    # One argument per line
          Additional line of name1                  # Additional text must be indented
-      Name2 (type): description (Default: value)   # Only list Default if there is a default value
-      Name3 (type): description
+      Name2 (type): description. Defaults to value.   # Only list Default if there is a default value
+      Name3 (type): description.
    """
 ```
 

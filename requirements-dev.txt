@@ -14,4 +14,6 @@ sphinx
 numpydoc
 sphinx-automodapi
 jupyter_sphinx
+nbsphinx
 qiskit-sphinx-theme
+jupyter_nbgallery

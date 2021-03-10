@@ -21,7 +21,7 @@ import numpy as np
 class NSquareSpiral(QComponent):
     """A n count square spiral.
 
-    Inherits `QComponent` class
+    Inherits `QComponent` class.
 
     Description:
         A n count square spiral.

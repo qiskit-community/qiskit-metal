@@ -27,16 +27,15 @@ from qiskit_metal.qlibrary.base.base import QComponent
 
 class LaunchpadWirebondCoupled(QComponent):
     """
-    Launch pad to feed/read signals to/from the chip
+    Launch pad to feed/read signals to/from the chip.
 
-    Inherits 'QComponent' class
+    Inherits 'QComponent' class.
 
-    Description:
-        Creates a 50 ohm launch pad with a ground pocket cutout.
-        Limited but expandable parameters to control the launchpad polygons.
-        The (0,0) point is the center of the necking of the launch tip.
-        The pin attaches directly to the built in lead length at its midpoint
-        This launch has an inductive coupler section.
+    Creates a 50 ohm launch pad with a ground pocket cutout.
+    Limited but expandable parameters to control the launchpad polygons.
+    The (0,0) point is the center of the necking of the launch tip.
+    The pin attaches directly to the built in lead length at its midpoint
+    This launch has an inductive coupler section.
 
     Pocket and pad:
         Pocket and launch pad geometries are currently fixed.

@@ -78,8 +78,6 @@ try:
     from pyqode.python.folding import PythonFoldDetector
 
 except ImportError as e:
-    # TODO: report in a more visible way.
-    # Maybe reaise exception.
     # If this line fails then the GUI can't start.
     raise ImportError(
         'Error could not load `pyqode`\nPlease install. In a shell, try running: \n'
@@ -248,7 +246,7 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         self.logger.info('Source file reloaded.')
 
     def save_file(self):
-        """Save teh file"""
+        """Save the file"""
         # TODO: warning: if the kernel is run as a differnt user, eg.., sudo,
         # then the file persmissions will change but for that user and the file
         # can read only for the base user.
@@ -306,7 +304,7 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
             )
 
     def rebuild_components(self):
-        """Rebuild teh component"""
+        """Rebuild the component"""
         self.logger.debug('Source file rebuild started.')
         self.save_file()
         # print('saved')
@@ -348,9 +346,9 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         """Main function that set the components to be edited.
 
         Args:
-            class_name (str): the name of the class
-            module_name (str): the name of the module
-            module_path (str): the path to the module
+            class_name (str): The name of the class
+            module_name (str): The name of the module
+            module_path (str): The path to the module
         """
         self.component_class_name = class_name
         self.component_module_name = module_name
@@ -373,10 +371,10 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         self.scroll_to()
 
     def scroll_to(self, text: str = 'def make('):
-        """Scroll to the matched string
+        """Scroll to the matched string.
 
         Args:
-            text (str): test to scroll to (Default: 'def make(')
+            text (str): Test to scroll to.  Defaults to 'def make('.
         """
         text = self.toPlainText()
         # index = text.find('def make(')
@@ -391,7 +389,7 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
             self.centerCursor()
 
     def get_word_under_cursor(self) -> Tuple[PySide2.QtGui.QTextCursor, dict]:
-        """Returns the cursor to select word udner it and info
+        """Returns the cursor to select word udner it and info.
 
         Returns:
             tuple: PySide2.QtGui.QTextCursor, dict
@@ -414,10 +412,10 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         """Get jedi
 
         Args:
-            offset (int): Columns offset, such as -1. (Default: 0).
+            offset (int): Columns offset, such as -1.  Defaults to 0.
 
         Returns:
-            list: definitions under the cursor, or an empty list
+            list: Definitions under the cursor, or an empty list
 
         Raises:
             ValueError: Jedi couldn't find it
@@ -444,7 +442,7 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         """Sets the help docs
 
         Args:
-            definitions (List['jedi.api.classes.Definition']): help defintions
+            definitions (List['jedi.api.classes.Definition']): Help defintions
         """
         if len(definitions) < 1:
             return
@@ -472,7 +470,7 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         """Set the doc based on the word under the cursor
 
         Args:
-            offset (int): the offset (Default: 0)
+            offset (int): the offset.  Defaults to 0.
         """
         self.definitions = self.get_definitions_under_cursor(offset=offset)
         self.set_help_doc(self.definitions)
@@ -527,7 +525,7 @@ def definition_generate_html(defn: 'jedi.api.classes.Definition'):
     """Generate HTML definition
 
     Args:
-        defn (jedi.api.classes.Definition): the jedit definition
+        defn (jedi.api.classes.Definition): The jedit definition
 
     Returns:
         tuple: test, css
@@ -565,8 +563,8 @@ def definition_get_source(defn: 'jedi.api.classes.Definition',
     """Get the source code from definition
 
     Args:
-        defn (jedi.api.classes.Definition): the jedit definition
-        formatter (HtmlFormatter): the formatter (Default: None)
+        defn (jedi.api.classes.Definition): The jedit definition
+        formatter (HtmlFormatter): The formatter.  Defaults to None.
 
     Returns:
         tuple: source_code, source_html, html_css_lex
@@ -603,7 +601,7 @@ def get_definition_end_position(self):
     :rtype: Optional[Tuple[int, int]]
 
     Returns:
-        int: the end position
+        int: The end position
     """
     if self._name.tree_name is None:
         return None
@@ -625,7 +623,7 @@ def get_definition_start_position(self):
     :rtype: Optional[Tuple[int, int]]
 
     Returns:
-        int: the start position
+        int: The start position
     """
     if self._name.tree_name is None:
         return None
@@ -641,14 +639,14 @@ def doc_generate_html(obj) -> str:
     """Generate formatted fdoc -- UNUSED
 
     Args:
-        obj (object): the object
+        obj (object): The object
 
     Returns:
-        str: html
+        str: Generated html
 
     Raises:
-        TypeError: objcet is the wrong type
-        ValueError: inspectoin failed
+        TypeError: Objcet is the wrong type
+        ValueError: Inspectoin failed
     """
     # Generate formatted fdoc
     # Get docstring
@@ -714,10 +712,10 @@ def doc_get_object_from_info(info: dict) -> object:
     """Get objects from given info
 
     Args:
-        info (dict): the dictionary
+        info (dict): The dictionary
 
     Returns:
-        object: the retrieved object
+        object: The retrieved object
     """
 
     module_name = info['call.module.name']

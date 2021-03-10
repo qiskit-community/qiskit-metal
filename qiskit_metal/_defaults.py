@@ -20,9 +20,6 @@ from copy import deepcopy
 from .toolbox_python.attr_dict import Dict
 
 
-# TODO: @priti Write more description in docstring for class
-# TODO: @priti Write Init docstring, describe kwargs
-# TODO: Handle access to missing options - ie throw a warning or error message
 class DefaultMetalOptions(Dict):
     """
     `DefaultMetalOptions` is the container for the default options used in:
@@ -30,10 +27,9 @@ class DefaultMetalOptions(Dict):
         2. The metal code codebase, in functions such as drawing and in qdesign base
 
     Args:
-        generic (Dict): Dictionary of options (default: None)
+        generic (Dict): Dictionary of options.  Defaults to None.
     """
 
-    # TODO: not sure what example genetic means? can we find a better name
     default_generic = Dict(
         units='mm',  # Units in which all dimenions are converted as floats
         chip=
@@ -66,11 +62,11 @@ class DefaultMetalOptions(Dict):
         self.update(generic)
 
     def update_default_options(self, cust_key: str, cust_value=None):
-        """Allow instance of class to update the default_options
+        """Allow instance of class to update the default_options.
 
         Args:
             cust_key (str): Type of component
-            cust_value (object): Value for the given key.  (default: None)
+            cust_value (object): Value for the given key.  Defaults to None.
         """
         self[cust_key] = cust_value
 
@@ -78,7 +74,7 @@ class DefaultMetalOptions(Dict):
 # Can't really use this until default_draw_substrate.color_plane is resolved.
 class DefaultOptionsRenderer():
     """
-    `DefaultOptionsRenderer` is the class that  encapsulate generic data used throughout qiskit metal classes for renderers.
+    `DefaultOptionsRenderer` is the class that encapsulate generic data used throughout qiskit metal classes for renderers.
 
     This class is a skeleton and is expected to be updated when the renderer is updated.
 
@@ -91,7 +87,7 @@ class DefaultOptionsRenderer():
     default_bounding_box = Dict(
         draw_bounding_box=[[0, 0], [0, 0], ['0.890mm', '0.900mm']])
     """
-    Define the default bounding box
+    Define the default bounding box.
     """
 
     default_draw_substrate = Dict(
@@ -133,11 +129,11 @@ class DefaultOptionsRenderer():
                                cust_key: str = None,
                                cust_value: Dict = None):
         """
-        Allow instance of class to update the default_options
+        Allow instance of class to update the default_options.
 
         Args:
-            cust_key (str): Type of component. (default: None)
-            cust_value (Dict): The key/value pairs to describe component. (default: None)
+            cust_key (str): Type of component.  Defaults to None.
+            cust_value (Dict): The key/value pairs to describe component.  Defaults to None.
 
         Returns:
             The return value. True for success, False otherwise.

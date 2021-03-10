@@ -15,7 +15,7 @@
 
 def gds_draw_all(self, path=None):
     r'''
-    Create full gds export cell
+    Create full gds export cell.
 
     path : str : if passed will save
 

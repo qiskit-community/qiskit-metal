@@ -320,7 +320,7 @@ MPL_CONTEXT_DEFAULT = {
 
 class PlotCanvas(FigureCanvas):
     """
-    Main Plot canvas widget
+    Main Plot canvas widget.
 
     This class extends the `FigureCanvas` class.
 
@@ -338,10 +338,10 @@ class PlotCanvas(FigureCanvas):
                  statusbar_label=None):
         """
         Args:
-            design (QDesign): the design
-            parent (QMainWindowPlot): the main window (Default: None)
-            logger (logger): the logger (Default: None)
-            statusbar_label (str): statusbar label (Default: None)
+            design (QDesign): The design.
+            parent (QMainWindowPlot): The main window.  Defaults to None.
+            logger (logger): The logger.  Defaults to None.
+            statusbar_label (str): Statusbar label.  Defaults to None.
         """
 
         self.gui = parent.gui  # type: MetalGUI
@@ -387,10 +387,10 @@ class PlotCanvas(FigureCanvas):
                                            logger=logger)
 
         # self.plot()
-        self.welcome_message()
+        # self.welcome_message()
 
     def set_design(self, design: QDesign):
-        """Set the design
+        """Set the design.
 
         Args:
             design (QDesign): the design
@@ -454,12 +454,12 @@ class PlotCanvas(FigureCanvas):
 
     def get_axis(self):
         """
-        Gets the current axis
+        Gets the current axis.
         """
         return self.axes[self.current_axis]
 
     def _plot(self, ax):
-        """Set the axes
+        """Set the axes.
 
         Args:
             ax (matplotlib.axes.Axes): axes
@@ -472,8 +472,8 @@ class PlotCanvas(FigureCanvas):
         """Render the plot.
 
         Args:
-            clear (bool): True to clear everything first (Default: True)
-            with_try (bool): True to execute in a try-catch block (Default: True)
+            clear (bool): True to clear everything first.  Defaults to True.
+            with_try (bool): True to execute in a try-catch block.  Defaults to True.
 
         Raises:
             Exception: Plotting error
@@ -522,7 +522,7 @@ class PlotCanvas(FigureCanvas):
             final()
 
     def _watermark_axis(self, ax: plt.Axes):
-        """Add a watermark
+        """Add a watermark.
 
         Args:
             ax (plt.Axes): axes
@@ -548,12 +548,12 @@ class PlotCanvas(FigureCanvas):
             self.logger.error(f'Error could not load {file} for watermark.')
 
     def clear_axis(self, ax: plt.Axes = None):
-        """Clear an axis or clear all axes
+        """Clear an axis or clear all axes.
 
         Args:
             ax (plt.Axes): Clear an axis, or
                  if None, then clear all axes.
-                 (Default: None)
+                 Defaults to None.
         """
         if ax:
             clear_axis(ax)
@@ -562,17 +562,17 @@ class PlotCanvas(FigureCanvas):
                 clear_axis(ax)
 
     def refresh(self):
-        """Force refresh. Does not replot renderer. Just mpl refresh"""
+        """Force refresh. Does not replot renderer. Just mpl refresh."""
         self.update()  # not sure if needed
         self.flush_events()
         self.draw()
 
     def style_axis(self, ax, num: int):
-        """Style the axis
+        """Style the axis.
 
         Args:
-            ax (axis): the axis
-            num (int): not used
+            ax (axis): The axis
+            num (int): Not used
         """
         ax.set_aspect(1)
 
@@ -610,11 +610,11 @@ class PlotCanvas(FigureCanvas):
         # ax.set_position([0,0,1,1])
 
     def style_figure(self):
-        """Style a figure"""
+        """Style a figure."""
         pass  # self.figure.tight_layout()
 
     def auto_scale(self):
-        """Automaticlaly scale"""
+        """Automaticlaly scale."""
         for ax in self.figure.axes:
             ax.autoscale()
         self.refresh()
@@ -632,15 +632,15 @@ class PlotCanvas(FigureCanvas):
             250, self._welcome_message_start)
 
     def _welcome_message_start(self):
-        """Start the welcome message"""
+        """Start the welcome message."""
         self._welcome_text.start()
         # self._welcome_start_timer.deleteLater()
 
     def zoom_to_rectangle(self, bounds: tuple, ax: Axes = None):
-        """Zoom to the specified rectangle
+        """Zoom to the specified rectangle.
 
         Arguments:
-            bounds (tuple): tuple containing `minx, miny, maxx, maxy`
+            bounds (tuple): Tuple containing `minx, miny, maxx, maxy`
                      values for the bounds of the series as a whole.
             ax (Axes): Does for all if none (default: {None})
         """
@@ -654,11 +654,11 @@ class PlotCanvas(FigureCanvas):
             self.refresh()
 
     def find_component_bounds(self, components: List[str], zoom: float = 1.2):
-        """Find bounds of a set of components
+        """Find bounds of a set of components.
 
         Arguments:
-            components (List[str]): list of component names
-            zoom (float): fraction to expand the bounding vbox by
+            components (List[str]): A list of component names
+            zoom (float): Fraction to expand the bounding vbox by
 
         Returns:
             List: List of x,y coordinates defining the bounding box
@@ -688,12 +688,12 @@ class PlotCanvas(FigureCanvas):
         Shortcut to set a component in the component widget to be examined.
 
         Args:
-            name (str): name of the component in the design
+            name (str): Name of the component in the design
         """
         self.component_window.set_component(name)
 
     def clear_annotation(self):
-        """Clear the annotations
+        """Clear the annotations.
 
         Raises:
             Exception: Error while clearning the annotations
@@ -718,10 +718,10 @@ class PlotCanvas(FigureCanvas):
         self._annotations['text'] = []
 
     def highlight_components(self, component_names: List[str]):
-        """Higjlight a list of components
+        """Higjlight a list of components.
 
         Args:
-            component_names (List[str]): list of component names
+            component_names (List[str]): A list of component names
         """
         # Defaults - todo eventually move to some option place where can be changed
         text_kw = dict(color='r',

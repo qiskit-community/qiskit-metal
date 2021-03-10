@@ -76,7 +76,7 @@ def __setup_Qt_backend():
             # AA_DontUseNativeMenuBar
             # AA_MacDontSwapCtrlAndMeta
 
-    if 1:
+    if not os.getenv('QISKIT_METAL_HEADLESS', None):
         import matplotlib as mpl
         mpl.use("Qt5Agg")
         import matplotlib.pyplot as plt
@@ -104,12 +104,9 @@ from .toolbox_python.attr_dict import Dict
 # Due to order of imports
 from ._is_design import is_design, is_component
 
-# TODO: Remove the as global variables, just use in design when
-# instanciating the default params and overwriting them.
-
 # Core modules for user to use
 from .toolbox_metal.parsing import is_true
-from . import qlibrary  #TODO: slow to import? why
+from . import qlibrary
 from . import designs
 from . import draw
 from . import renderers
