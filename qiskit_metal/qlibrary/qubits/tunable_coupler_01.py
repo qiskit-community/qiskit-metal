@@ -28,7 +28,9 @@ class TunableCoupler01(BaseQubit):
     Description:
         Creates a tunable coupler, interdigitated capacitor to ground, with a junction to ground and a coupler arm.
         The shapes origin is shown with 0. X the location of the SQUID.
-                            
+
+    ::
+
                             connection claw
                               _____
                 X             |   |
@@ -56,16 +58,15 @@ class TunableCoupler01(BaseQubit):
         * a_height: '60um' -- The length of the arms forming the 'fingers' of the charge island
         * cp_height: '15um' -- The thickness (y-axis) of the connection claw
         * cp_arm_length: '30um' -- The length of the 'fingers' of the connection claw (Warning: can break 
-        the component if they are too long)
+          the component if they are too long)
         * cp_arm_width: '6um' -- The width of the 'fingers' of the connection claw (Warning: can break
-        the component if too wide)
+          the component if too wide)
         * cp_gap: '6um' -- The dielectric gap of the connection claw
         * cp_gspace: '3um' -- How much ground remains between the connection claw and the charge island
         * fl_width: '5um' -- Width of the flux line
         * fl_gap: '3um' -- Dielectric gap of the flux line
         * fl_length: '10um' -- Length of the flux line for mutual inductance to the SQUID
         * fl_ground: '2um' -- Amount of ground between the SQUID and the flux line
-        
         * _default_connection_pads: Currently empty
 
     """

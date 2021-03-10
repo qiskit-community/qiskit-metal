@@ -29,6 +29,7 @@ class CPWT(QComponent):
     Inherits QComponent class.
 
     ::
+
                   (0,0)
         +--------------------------+
                     |
@@ -49,6 +50,7 @@ class CPWT(QComponent):
           counter-clockwise rotation (eg. 90 is +y)
         * chip: the chip the pin should be on.
         * layer: layer the pin is on. Does not have any practical impact to the short.
+
     """
     component_metadata = Dict(short_name='cpw')
     """Component metadata"""

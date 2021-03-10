@@ -27,6 +27,7 @@ class CPWFingerCap(QComponent):
     Inherits QComponent class.
 
     ::
+
                   (0,0)     N
                     +       ^
                     |       |
@@ -58,6 +59,7 @@ class CPWFingerCap(QComponent):
           counter-clockwise rotation (eg. 90 is +x)
         * chip: the chip the capacitor should be on.
         * layer: layer the capacitor is on. 
+
     """
     component_metadata = Dict(short_name='cpw')
     """Component metadata"""

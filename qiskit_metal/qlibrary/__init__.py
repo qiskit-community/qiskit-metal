@@ -56,7 +56,10 @@ Connectors
 .. autosummary::
     :toctree:
 
+    CPWFingerCap
     CPWHangerT
+    CPWT
+    CPWTFingerCap
     OpenToGround
     ShortToGround
 
@@ -96,8 +99,11 @@ Qubits
 
     TransmonConcentric
     TransmonCross
+    TransmonCrossFL
     TransmonPocket
     TransmonPocketCL
+    TransmonPocket6
+    TunableCoupler01
 
 
 Submodules
@@ -127,6 +133,9 @@ if config.is_building_docs():
     from .basic.rectangle import Rectangle
     from .basic.rectangle_hollow import RectangleHollow
     from .connectors.cpw_hanger_t import CPWHangerT
+    from .connectors.cpw_finger_cap import CPWFingerCap
+    from .connectors.cpw_t import CPWT
+    from .connectors.cpw_t_finger_cap import CPWTFingerCap
     from .connectors.open_to_ground import OpenToGround
     from .connectors.short_to_ground import ShortToGround
     from .interconnects.straight_path import RouteStraight
@@ -141,7 +150,10 @@ if config.is_building_docs():
     from .passives.cap_three_fingers import CapThreeFingers
     from .qubits.transmon_concentric import TransmonConcentric
     from .qubits.transmon_cross import TransmonCross
+    from .qubits.transmon_cross_fl import TransmonCrossFL
     from .qubits.transmon_pocket import TransmonPocket
     from .qubits.transmon_pocket_cl import TransmonPocketCL
+    from .qubits.transmon_pocket_6 import TransmonPocket6
+    from .qubits.tunable_coupler_01 import TunableCoupler01
 
     from .interconnects import anchored_path

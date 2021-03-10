@@ -104,7 +104,7 @@ class TransmonPocket6(BaseQubit):
                                             +1
 
     .. image::
-        Component_Qubit_Transmon_Pocket.png
+        QComponent_Qubit_Transmon_Pocket.png
     """
 
     #_img = 'transmon_pocket1.png'
