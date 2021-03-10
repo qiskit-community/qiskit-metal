@@ -27,15 +27,14 @@ from qiskit_metal.qlibrary.base.base import QComponent
 
 class LaunchpadWirebond(QComponent):
     """
-    Launch pad to feed/read signals to/from the chip
+    Launch pad to feed/read signals to/from the chip.
 
-    Inherits 'QComponent' class
+    Inherits 'QComponent' class.
 
-    Description:
-        Creates a 50 ohm launch pad with a ground pocket cutout.
-        Limited but expandable parameters to control the launchpad polygons.
-        The (0,0) point is the center of the necking of the launch tip.
-        The pin attaches directly to the built in lead length at its midpoint
+    Creates a 50 ohm launch pad with a ground pocket cutout.
+    Limited but expandable parameters to control the launchpad polygons.
+    The (0,0) point is the center of the necking of the launch tip.
+    The pin attaches directly to the built in lead length at its midpoint
 
     Pocket and pad:
         Pocket and launch pad geometries are currently fixed.
@@ -66,11 +65,11 @@ class LaunchpadWirebond(QComponent):
 
     Default Options:
         * layer: '1'
-        * trace_width: 'cpw_width' -- center trace width of the terminating transmission line
-        * trace_gap: 'cpw_gap' -- gap of the transmission line
-        * lead_length: '25um' - - length of the cpw line attached to the end of the launch pad
-        * pos_x: '0um' -- where the center of the pocket should be located on chip
-        * pos_y: '0um' -- where the center of the pocket should be located on chip
+        * trace_width: 'cpw_width' -- Center trace width of the terminating transmission line
+        * trace_gap: 'cpw_gap' -- Gap of the transmission line
+        * lead_length: '25um' -- Length of the cpw line attached to the end of the launch pad
+        * pos_x: '0um' -- Where the center of the pocket should be located on chip
+        * pos_y: '0um' -- Where the center of the pocket should be located on chip
         * orientation: '0' -- 90 for 90 degree turn
     """
 

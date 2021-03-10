@@ -120,7 +120,7 @@ def is_using_ipython():
 
 def is_building_docs():
     """Checks for the existance of the .buildingdocs file which is only present when
-    building the docs
+    building the docs.
 
     Returns:
         bool: True if .buildingdocs exists

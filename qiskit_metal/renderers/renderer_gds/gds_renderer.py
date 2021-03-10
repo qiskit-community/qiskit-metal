@@ -211,14 +211,14 @@ class QGDSRenderer(QRenderer):
     """Default options"""
 
     name = 'gds'
-    """name"""
+    """Name"""
 
     # When additional columns are added to QGeometry, this is the example to populate it.
     # e.g. element_extensions = dict(
     #         base=dict(color=str, klayer=int),
     #         path=dict(thickness=float, material=str, perfectE=bool),
     #         poly=dict(thickness=float, material=str), )
-    """element extensions dictionary   element_extensions = dict() from base class"""
+    # """element extensions dictionary   element_extensions = dict() from base class"""
 
     # Add columns to junction table during QGDSRenderer.load()
     # element_extensions  is now being populated as part of load().
@@ -232,6 +232,7 @@ class QGDSRenderer(QRenderer):
     element_table_data = dict(
         # Cell_name must exist in gds file with: path_filename
         junction=dict(cell_name='my_other_junction'))
+    """Element table data"""
 
     def __init__(self,
                  design: 'QDesign',
@@ -244,7 +245,7 @@ class QGDSRenderer(QRenderer):
             design (QDesign): Use QGeometry within QDesign  to obtain elements for GDS file.
             initiate (bool, optional): True to initiate the renderer. Defaults to True.
             render_template (Dict, optional): Typically used by GUI for template options for GDS.  Defaults to None.
-            render_options (Dict, optional):  Used to overide all options. Defaults to None.
+            render_options (Dict, optional): Used to overide all options. Defaults to None.
         """
 
         super().__init__(design=design,
@@ -446,7 +447,8 @@ class QGDSRenderer(QRenderer):
 
         Args:
             highlight_qcomponents (list, optional): List of strings which denote the name of QComponents to render.
-                                                     Defaults to []. Empty list means to render entire design.
+                                                    Empty list means to render entire design.
+                                                    Defaults to [].
 
         Returns:
             Tuple[list, int]:
@@ -551,7 +553,7 @@ class QGDSRenderer(QRenderer):
 
     def handle_ground_plane(self, chip_name: str, all_table_subtracts: list,
                             all_table_no_subtracts: list):
-        """Place all the subtract geometries for one chip into self.chip_info[chip_name]['all_subtract_true']
+        """Place all the subtract geometries for one chip into self.chip_info[chip_name]['all_subtract_true'].
 
         For LINESTRING within table that has a value for fillet, check if any segment is shorter than fillet radius.
         If so, then break the LINESTRING so that shorter segments do not get fillet'ed and longer segments get fillet'ed.
@@ -685,7 +687,7 @@ class QGDSRenderer(QRenderer):
         Returns:
             Tuple[int, Dict]:
             int: Number of short segments that should not have fillet.
-            Dict: Key: index into a_shapely, Value: dict with fillet and shorter LineString
+            Dict: Key: Index into a_shapely, Value: dict with fillet and shorter LineString
         """
         # Holds all of the index of when a segment is too short.
         idx_bad_fillet = list()
@@ -860,8 +862,8 @@ class QGDSRenderer(QRenderer):
                                             all_subtracts: list,
                                             all_no_subtracts: list):
         """For every chip, and layer, separate the "subtract" and "no_subtract" elements
-        and gather bounds for all the elements in qgeometries..
-        Use format: f'{chip_name}_{table_name}s'
+        and gather bounds for all the elements in qgeometries.
+        Use format: f'{chip_name}_{table_name}s'.
 
         Args:
             chip_name (str): Name of chip.  Example is 'main'.
@@ -931,9 +933,9 @@ class QGDSRenderer(QRenderer):
 
     def new_gds_library(self) -> gdspy.GdsLibrary:
         """Creates a new GDS Library. Deletes the old.
-           Create a new GDS library file. It can contains multiple cells.
+        Create a new GDS library file. It can contains multiple cells.
 
-           Returns:
+        Returns:
             gdspy.GdsLibrary: GDS library which can contain multiple celles.
         """
 
@@ -1103,6 +1105,7 @@ class QGDSRenderer(QRenderer):
                               maxy: float, chip_name: str, chip_layer: int,
                               cheese_sub_layer: int):
         """Instantiate class to do cheesing.
+
         Args:
             minx (float): Chip minimum x location.
             miny (float): Chip minimum y location.
@@ -1238,7 +1241,7 @@ class QGDSRenderer(QRenderer):
             sub_df (geopandas.GeoDataFrame): The subset of QGeometry tables for each chip, and layer, 
             and only if the layer has a ground plane.
             chip_name (str): Name of chip.
-            no_cheese_buffer (float) :  Will be used for fillet and size of buffer. 
+            no_cheese_buffer (float): Will be used for fillet and size of buffer. 
 
         Returns:
             Union[None, shapely.geometry.multipolygon.MultiPolygon]: The shapely which combines the 
@@ -1525,7 +1528,7 @@ class QGDSRenderer(QRenderer):
         Args:
             chip_name (str): The name of chip.
             lib (gdspy.library): The library used to export the entire QDesign.
-            chip_only_top (gdspy.library.Cell):  The cell used for just chip_name.
+            chip_only_top (gdspy.library.Cell): The cell used for just chip_name.
         """
         # Make sure the file exists, before trying to read it.
         max_points = int(self.parse_value(self.options.max_points))
@@ -1695,6 +1698,7 @@ class QGDSRenderer(QRenderer):
             datatype (integer) – The GDSII datatype for this qgeometry_element (between 0 and 255).
                                   datatype=10 or 11 means only that they are from a
                                   Polygon vs. LineString.  This can be changed.
+
         See:
             https://gdspy.readthedocs.io/en/stable/reference.html#polygon
         """
@@ -1786,7 +1790,6 @@ class QGDSRenderer(QRenderer):
                     f'The qgeometry_element within table is:\n'
                     f'{qgeometry_element}')
         else:
-            # TODO: Handle
             self.logger.warning(
                 f'Unexpected shapely object geometry.'
                 f'The variable qgeometry_element is {type(geom)}, method can currently handle Polygon and FlexPath.'

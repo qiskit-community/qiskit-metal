@@ -50,7 +50,7 @@ class QHFSSRenderer(QAnsysRenderer):
     """
 
     name = 'hfss'
-    """name"""
+    """Name"""
 
     hfss_options = Dict(
         drivenmodal_setup=Dict(freq_ghz='5',
@@ -73,6 +73,7 @@ class QHFSSRenderer(QAnsysRenderer):
         port_inductor_gap=
         '10um'  # spacing between port and inductor if junction is drawn both ways
     )
+    """HFSS Options"""
 
     def __init__(self,
                  design: 'QDesign',
@@ -86,7 +87,7 @@ class QHFSSRenderer(QAnsysRenderer):
             design (QDesign): Use QGeometry within QDesign to obtain elements for Ansys.
             initiate (bool, optional): True to initiate the renderer. Defaults to True.
             render_template (Dict, optional): Typically used by GUI for template options for GDS. Defaults to None.
-            render_options (Dict, optional):  Used to override all options. Defaults to None.
+            render_options (Dict, optional): Used to override all options. Defaults to None.
         """
         super().__init__(design=design,
                          initiate=initiate,
@@ -853,8 +854,8 @@ class QHFSSRenderer(QAnsysRenderer):
 
         Returns:
             tuple[pandas.core.frame.DataFrame, pandas.core.frame.DataFrame]: 
-            1st DataFrame: convergence_t
-            2nd DataFrame: convergence_f
+            1st DataFrame: Convergence_t
+            2nd DataFrame: Convergence_f
         """
         if self.pinfo:
             design = self.pinfo.design
@@ -891,8 +892,8 @@ def hfss_plot_convergences_report(convergence_t: pd.core.frame.DataFrame,
     Plot delta frequency vs. solved elements.
 
     Args:
-        convergence_t (pandas.core.frame.DataFrame): convergence vs pass number of the eigenemode freqs.
-        convergence_f (pandas.core.frame.DataFrame): convergence vs pass number of the eigenemode freqs.
+        convergence_t (pandas.core.frame.DataFrame): Convergence vs pass number of the eigenemode freqs.
+        convergence_f (pandas.core.frame.DataFrame): Convergence vs pass number of the eigenemode freqs.
         fig (matplotlib.figure.Figure, optional): A mpl figure. Defaults to None.
         _display (bool, optional): Display the plot? Defaults to True.
     """
@@ -925,6 +926,7 @@ def hfss_report_f_convergence(oDesign: epr.ansys.HfssDesign,
                               save_csv: bool = True):
     """Create a report inside HFSS to plot the converge of frequency and style it.
     Saves report to csv file.
+
     .. code-block:: text
 
             re(Mode(1)) [g]	re(Mode(2)) [g]	re(Mode(3)) [g]

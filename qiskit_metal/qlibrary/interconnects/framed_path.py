@@ -381,9 +381,9 @@ class RouteFramed(QRoute):
             leadstart (float): Length of first CPW segment originating at startpin
             leadend (float): Length of final CPW segment ending at endpin
             constaxis (int, optional): In the case of 3 segment CPWs, the constant axis of the line that both
-                leadin and leadout must connect to. Example: If x = 3, the constant axis (x) is 0. Defaults to 0.
+                leadin and leadout must connect to. Example: If x = 3, the constant axis (x) is 0.  Defaults to 0.
             constval (int, optional): In the case of 3 segment CPWs, the constant numerical value of the line
-                that both leadin and leadout must connect to. Example: If x = 3, the constant value is 3. Defaults to 0.
+                that both leadin and leadout must connect to. Example: If x = 3, the constant value is 3.  Defaults to 0.
 
         Returns:
             List: [np.array([x0, y0]), np.array([x1, y1]), np.array([x2, y2])] where xi, yi are vertices of CPW.

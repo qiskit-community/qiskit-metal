@@ -50,10 +50,10 @@ Qiskit-metal is licensed under Apache 2.0. IBM reserves no copyright over output
 
 **Qiskit Metal consists of four foundational elements:**
 
-    - :ref:`Quantum Device Design (QDesign)<todo>`: ...
-    - :ref:`Quantum Device Components (QComponent)<todo>`: ...
-    - :ref:`Quantum Renderer (QRenderer)<todo>`: ...
-    - :ref:`Quantum Analysis (QAnalysis)<todo>`: ...
+    - Quantum Device Design (QDesign): :ref:`qdesign`
+    - Quantum Device Components (QComponent): :ref:`qlibrary`
+    - Quantum Renderer (QRenderer): :ref:`qrenderer`
+    - Quantum Analysis (QAnalysis): :ref:`qanalysis`
 
 .. toctree::
     :maxdepth: 2
@@ -61,6 +61,7 @@ Qiskit-metal is licensed under Apache 2.0. IBM reserves no copyright over output
 
     Metal Workflow<workflow>
     Frequently Asked Questions<faq>
+    Code of Conduct<https://github.com/Qiskit/qiskit/blob/master/CODE_OF_CONDUCT.md>
 
 .. TODO: Add Installing Qiskit Metal<getting_started/install.rst> before Metal Workflow
 .. TODO: Add Getting Started With Metal between Metal Workflow and Installing Qiskit Metal
@@ -76,6 +77,7 @@ Qiskit-metal is licensed under Apache 2.0. IBM reserves no copyright over output
 .. toctree::
     :maxdepth: 2
     :caption: Tutorials
+    :hidden:
 
     Overview<tut/tutorials/index.rst>
 

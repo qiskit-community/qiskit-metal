@@ -57,20 +57,20 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
 
     def setUp(self):
         """
-        Setup unit test
+        Setup unit test.
         """
         pass
 
     def tearDown(self):
         """
-        Tie any loose ends
+        Tie any loose ends.
         """
         pass
 
     def test_component_circle_caterpiller_options(self):
         """
         Test that default options of circle_caterpiller in circle_caterpillar.py were not
-        accidentally changed
+        accidentally changed.
         """
         # Setup expected test results
         _design = designs.DesignPlanar()
@@ -94,7 +94,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
 
     def test_component_circle_raster_options(self):
         """
-        Test that default options of circle_raster in circle_raster.py were not accidentally changed
+        Test that default options of circle_raster in circle_raster.py were not accidentally changed.
         """
         # Setup expected test results
         _design = designs.DesignPlanar()
@@ -115,7 +115,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
 
     def test_component_rectangle_options(self):
         """
-        Test that default options of rectangle in rectangle.py were not accidentally changed
+        Test that default options of rectangle in rectangle.py were not accidentally changed.
         """
         # Setup expected test results
         _design = designs.DesignPlanar()
@@ -137,7 +137,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
     def test_component_rectangle_hollow_options(self):
         """
         Test that default options of rectangle_hollow in rectangle_hollow.py were not accidentally
-        changed
+        changed.
         """
         # Setup expected test results
         _design = designs.DesignPlanar()
@@ -165,7 +165,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
 
     def test_component_n_gon_options(self):
         """
-        Test that default options of NGon in n_gon.py were not accidentally changed
+        Test that default options of NGon in n_gon.py were not accidentally changed.
         """
         # Setup expected test results
         design = designs.DesignPlanar()
@@ -187,7 +187,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
     def test_component_n_square_spiral_options(self):
         """
         Test that default options of NSquareSpiral in n_square_spiral.py were not accidentally
-        changed
+        changed.
         """
         # Setup expected test results
         design = designs.DesignPlanar()
@@ -344,7 +344,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
 
     def test_component_transmon_concentric_options(self):
         """Test that default options of transmon_concentric in transmon_concentric.py were not
-        accidentally changed
+        accidentally changed.
         """
         # Setup expected test results
         design = designs.DesignPlanar()
@@ -376,7 +376,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
     def test_component_transmon_cross_options(self):
         """
         Test that default options of transmon_cross in transmon_cross.py were not accidentally
-        changed
+        changed.
         """
         # Setup expected test results
         _design = designs.DesignPlanar()
@@ -409,7 +409,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
     def test_component_transmon_pocket_options(self):
         """
         Test that default options of transmon_pocket in transmon_pocket.py were not accidentally
-        changed
+        changed.
         """
         # Setup expected test results
         _design = designs.DesignPlanar()
@@ -455,7 +455,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
     def test_component_transmon_pocket_cl_options(self):
         """
         Test that default options of transmon_pocket_cl in transmon_pocket_cl.py were not
-        accidentally changed
+        accidentally changed.
         """
         # Setup expected test results
         _design = designs.DesignPlanar()
@@ -502,7 +502,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
     def test_component_resonator_rectangle_spiral_options(self):
         """
         Test that default options of ResonatorRectangleSpiral in resonator_rectangle_spiral.py
-        were not accidentally changed
+        were not accidentally changed.
         """
         # Setup expected test results
         design = designs.DesignPlanar()

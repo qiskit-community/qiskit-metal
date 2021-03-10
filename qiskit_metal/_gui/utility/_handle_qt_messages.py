@@ -80,12 +80,12 @@ def _qt_message_handler(mode, context, message):
 
 def do_debug(msg, name='info'):
     """
-    Utility function used to print debug statemetns from PySide2 Socket calls
+    Utility function used to print debug statements from PySide2 Socket calls
     A bit of a cludge
 
     Arguments:
         msg (str): Message to print or log to user
-        name (str): info wran, debug, etc. (Default: 'info')
+        name (str): info wran, debug, etc.  Defaults to 'info'.
     """
 
     if 0:
@@ -114,9 +114,9 @@ def slot_catch_error(*args, catch=Exception, on_exception_emit=None):
         https://stackoverflow.com/questions/18740884/preventing-pyqt-to-silence-exceptions-occurring-in-slots
 
     Arguments:
-        args (arguments):  any valid types for the Slot
-        catch (Exception):  Type of the exception to catch, (Default: Exception)
-        on_exception_emit (str):  name of a qtSignal to be emitted
+        args (arguments):  any valid types for the Slot.
+        catch (Exception):  Type of the exception to catch.  Defaults to Exception.
+        on_exception_emit (str):  name of a qtSignal to be emitted.
     """
 
     if len(args) == 0 or isinstance(args[0], types.FunctionType):

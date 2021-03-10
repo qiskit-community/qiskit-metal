@@ -22,7 +22,7 @@ class CapThreeFingers(QComponent):
     Create a three finger planar capacitor with a ground pocket cuttout.  The width of
     the fingers is determined by the trace width.
 
-    Inherits QComponent class
+    Inherits QComponent class.
 
     Capacitor Metal Geometry and Ground Cutout Pocket:
         * finger length  - length of each finger

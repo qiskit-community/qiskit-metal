@@ -34,24 +34,24 @@ from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
 
 class TestElements(unittest.TestCase):
     """
-    Unit test class
+    Unit test class.
     """
 
     def setUp(self):
         """
-        Setup unit test
+        Setup unit test.
         """
         pass
 
     def tearDown(self):
         """
-        Tie any loose ends
+        Tie any loose ends.
         """
         pass
 
     def test_qgeometry_instantiate_q_geometry_tables(self):
         """
-        Test instantiation of QGeometryTables
+        Test instantiation of QGeometryTables.
         """
         try:
             design = designs.DesignPlanar()
@@ -61,7 +61,7 @@ class TestElements(unittest.TestCase):
 
     def test_qgeometry_is_qgeometry_table(self):
         """
-        Test is_qgeometry_table in qgeometries_handler.py
+        Test is_qgeometry_table in qgeometries_handler.py.
         """
         self.assertEqual(
             qgeometries_handler.is_qgeometry_table(QGeometryTables), True)
@@ -70,7 +70,7 @@ class TestElements(unittest.TestCase):
 
     def test_qgeometry_element_columns(self):
         """
-        Test that ELEMENT_COLUMNS was not accidentally changed in element_handler.py
+        Test that ELEMENT_COLUMNS was not accidentally changed in element_handler.py.
         """
         import imp
         imp.reload(qgeometries_handler)
@@ -106,7 +106,7 @@ class TestElements(unittest.TestCase):
 
     def test_qgeometry_true_bools(self):
         """
-        Test that TRUE_BOOLS was not accidentally changed in element_handler.py
+        Test that TRUE_BOOLS was not accidentally changed in element_handler.py.
         """
         expected = [True, 'True', 'true', 'Yes', 'yes', '1', 1]
         actual = qgeometries_handler.TRUE_BOOLS
@@ -118,7 +118,7 @@ class TestElements(unittest.TestCase):
     def test_qgeometry_q_element_constants(self):
         """
         Test that constants in QGeometryTables class in element_handler.py were not accidentally
-        changed
+        changed.
         """
         design = designs.DesignPlanar()
         qgt = QGeometryTables(design)
@@ -128,7 +128,7 @@ class TestElements(unittest.TestCase):
 
     def test_qgeometry_q_element_add_renderer_extension(self):
         """
-        Test add_renderer_extension in QGeometryTables class in element_handler.py
+        Test add_renderer_extension in QGeometryTables class in element_handler.py.
         """
         design = designs.DesignPlanar()
         qgt = QGeometryTables(design)
@@ -155,7 +155,7 @@ class TestElements(unittest.TestCase):
 
     def test_qgeometry_q_element_get_element_types(self):
         """
-        Test get_element_types in QGeometryTables class in element_handler.py
+        Test get_element_types in QGeometryTables class in element_handler.py.
         """
         design = designs.DesignPlanar()
         qgt = QGeometryTables(design)
@@ -169,7 +169,7 @@ class TestElements(unittest.TestCase):
 
     def test_qgeometry_q_element_create_tables(self):
         """
-        Test create_tables in QGeometryTables class in element_handler.py
+        Test create_tables in QGeometryTables class in element_handler.py.
         """
         design = designs.DesignPlanar()
         qgt = QGeometryTables(design)
@@ -205,7 +205,7 @@ class TestElements(unittest.TestCase):
 
     def test_qgeometry_q_element_get_rname(self):
         """
-        Test get_rname in QGeometryTables class in element_handler.py
+        Test get_rname in QGeometryTables class in element_handler.py.
         """
         design = designs.DesignPlanar()
         qgt = QGeometryTables(design)
@@ -216,7 +216,7 @@ class TestElements(unittest.TestCase):
 
     def test_qgeometry_q_element_add_qgeometry(self):
         """
-        Test add_qgeometry in QGeometryTables class in element_handler.py
+        Test add_qgeometry in QGeometryTables class in element_handler.py.
         """
         design = designs.DesignPlanar()
         qgt = QGeometryTables(design)
@@ -238,7 +238,7 @@ class TestElements(unittest.TestCase):
 
     def test_qgeometry_q_element_clear_all_tables(self):
         """
-        Test clear_all_tables in QGeometryTables class in element_handler.py
+        Test clear_all_tables in QGeometryTables class in element_handler.py.
         """
         design = designs.DesignPlanar()
         qgt = QGeometryTables(design)
@@ -253,7 +253,7 @@ class TestElements(unittest.TestCase):
 
     def test_qgeometry_q_element_delete_component_id(self):
         """
-        Test delete_component_id in QGeometryTables class in element_handler.py
+        Test delete_component_id in QGeometryTables class in element_handler.py.
         """
         design = designs.DesignPlanar()
         qgt = QGeometryTables(design)
@@ -281,7 +281,7 @@ class TestElements(unittest.TestCase):
 
     def test_qgeometry_get_all_unique_layers(self):
         """
-        Test get_all_unique_layers functionality in elment_handler.py
+        Test get_all_unique_layers functionality in elment_handler.py.
         """
         design = designs.DesignPlanar()
         qgt = QGeometryTables(design)
@@ -304,7 +304,7 @@ class TestElements(unittest.TestCase):
 
     def test_qgeometry_q_element_get_component_bounds(self):
         """
-        Test get_component_bounds in QGeometryTables class in element_handler.py
+        Test get_component_bounds in QGeometryTables class in element_handler.py.
         """
         design = designs.DesignPlanar()
         qgt = QGeometryTables(design)
@@ -318,7 +318,7 @@ class TestElements(unittest.TestCase):
 
     def test_qgeometry_q_element_check_element_type(self):
         """
-        Test check_element_type in QGeometryTables class in element_handler.py
+        Test check_element_type in QGeometryTables class in element_handler.py.
         """
         design = designs.DesignPlanar()
         qgt = QGeometryTables(design)
@@ -329,7 +329,7 @@ class TestElements(unittest.TestCase):
 
     def test_qgeometry_q_element_get_component(self):
         """
-        Test get_component in QGeometryTables class in element_handler.py
+        Test get_component in QGeometryTables class in element_handler.py.
         """
         design = designs.DesignPlanar()
         qgt = QGeometryTables(design)

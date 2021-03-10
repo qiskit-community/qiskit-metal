@@ -12,7 +12,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 '''
-Transmon Pocket CL
+Transmon Pocket CL.
 
 Pocket "axis"
         _________________
@@ -22,7 +22,7 @@ Pocket "axis"
         |               |       |
         |_______________|
 
-Child of 'standard' transmon pocket
+Child of 'standard' transmon pocket.
 '''
 # pylint: disable=invalid-name
 # Modification of Transmon Pocket Object to include a charge line (would be better to just make as a child)
@@ -34,20 +34,19 @@ from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
 
 class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
     """
-    The base `TransmonPocketCL` class
+    The base `TransmonPocketCL` class.
 
-    Inherits `TransmonPocket` class
+    Inherits `TransmonPocket` class.
 
-    Description:
-        Create a standard pocket transmon qubit for a ground plane,
-        with two pads connected by a junction (see drawing below).
+    Create a standard pocket transmon qubit for a ground plane,
+    with two pads connected by a junction (see drawing below).
 
-        Connector lines can be added using the `connection_pads`
-        dictionary. Each connector line has a name and a list of default
-        properties.
+    Connector lines can be added using the `connection_pads`
+    dictionary. Each connector line has a name and a list of default
+    properties.
 
-        This is a child of TransmonPocket, see TransmonPocket for the variables and
-        description of that class.
+    This is a child of TransmonPocket, see TransmonPocket for the variables and
+    description of that class.
 
     ::
 
@@ -144,7 +143,7 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
 #####################################################################
 
     def make_charge_line(self):
-        """Creates the charge line if the user has charge line option to TRUE
+        """Creates the charge line if the user has charge line option to TRUE.
         """
 
         # Grab option values

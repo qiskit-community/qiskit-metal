@@ -32,7 +32,7 @@ class QWidget_PlaceholderText(QWidget):
     def __init__(self, placeholder_text: str = None):
         """
         Args:
-            placeholder_text (str): placeholder text (Default: None).
+            placeholder_text (str): Placeholder text..  Defaults to None.
         """
         self._placeholder_text = placeholder_text if placeholder_text else self.__placeholder_text
 
@@ -53,7 +53,7 @@ class QWidget_PlaceholderText(QWidget):
         """Update the placeholder text to the given string
 
         Args:
-            text (str): new placeholder text (Default: None)
+            text (str): New placeholder text..  Defaults to None.
         """
         if text:
             self._placeholder_text = text

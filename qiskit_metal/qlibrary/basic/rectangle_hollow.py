@@ -19,7 +19,7 @@ from qiskit_metal.qlibrary.base import QComponent
 class RectangleHollow(QComponent):
     """A single configurable square.
 
-    Inherits QComponent class
+    Inherits QComponent class.
 
     Default Options:
         * width: '500um'

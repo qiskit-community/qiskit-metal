@@ -20,6 +20,8 @@ Analyses (:mod:`qiskit_metal.analyses`)
 
 Module containing all Qiskit Metal analyses.
 
+.. _qanalysis:
+
 Hamiltonian
 -----------
 
