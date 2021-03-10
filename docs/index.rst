@@ -107,7 +107,7 @@ Qiskit-metal is licensed under Apache 2.0. IBM reserves no copyright over output
 
     Overview<overview>
     QDesigns<apidocs/designs>
-    QComponents<apidocs/qcomponent>
+    QComponents<apidocs/qlibrary>
     Analyses<apidocs/analyses>
     Renderer<apidocs/renderers>
     Toolbox<apidocs/toolbox_metal>
