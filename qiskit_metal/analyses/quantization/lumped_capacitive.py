@@ -610,7 +610,7 @@ def chargeline_T1(Ccharge, Cq, f01):
 # TODO: Move to a more generic file
 
 
-def readin_q3d_matrix(path:str):
+def readin_q3d_matrix(path:str, delim_whitespace=True):
     """
     Read in the txt file created from q3d export as CSV
     and output the capacitance matrix file exported by
@@ -663,19 +663,30 @@ def readin_q3d_matrix(path:str):
     s2 = s1[1].split('Conductance Matrix')
 
     df_cmat = pd.read_csv(io.StringIO(s2[0].strip()),
-                          delim_whitespace=True,
+                          delim_whitespace=delim_whitespace,
                           skipinitialspace=True,
                           index_col=0)
     if len(s2) > 1:
         df_cond = pd.read_csv(io.StringIO(s2[1].strip()),
-                              delim_whitespace=True,
+                              delim_whitespace=delim_whitespace,
                               skipinitialspace=True,
                               index_col=0)
     else:
         df_cond = None
 
+    if delim_whitespace == False and len(df_cmat.columns):
+        df_cmat = df_cmat.drop(df_cmat.columns[-1], axis=1)
+
     units = re.findall(r'C Units:(.*?),', text)[0]
-    design_variation = re.findall(r'DesignVariation:(.*?)\n', text)[0]
+    design_variation = re.findall(r'DesignVariation:(.*?)\n', text)
+    if len(design_variation) == 0:
+        design_variation = re.findall(r'Design Variation:(.*?)\n', text)
+        if design_variation:
+            design_variation = design_variation[0]
+        else:
+            design_variation = ''
+    else:
+        design_variation = design_variation[0]
 
     return df_cmat, units, design_variation, df_cond
 
@@ -729,7 +740,7 @@ def load_q3d_capacitance_matrix(path, user_units='fF', _disp=True):
     return df_cmat, user_units, design_variation, df_cond
 
 
-def df_cmat_style_print(df_cmat):
+def df_cmat_style_print(df_cmat:pd.DataFrame):
     """Display the dataframe in the cmat style
 
     Args:
@@ -743,7 +754,7 @@ def df_cmat_style_print(df_cmat):
 # Utility functions - Zlatko
 
 
-def move_index_to(i_from, i_to, len_):
+def move_index_to(i_from:List[int], i_to:List[int], len_):
     """
     Utility function to swap index
 
