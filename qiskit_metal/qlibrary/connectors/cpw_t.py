@@ -12,8 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 '''
-@date: 2021
-@author: Thomas McConkey 2021-02-21
 '''
 
 from qiskit_metal import draw, Dict
@@ -68,6 +66,7 @@ class CPWT(QComponent):
                            chip='main',
                            layer='1')
     """Default connector options"""
+
     def make(self):
         """Build the component"""
         p = self.p
@@ -78,8 +77,8 @@ class CPWT(QComponent):
                                      [prime_cpw_length / 2, 0]])
 
         #Secondary CPW
-        second_cpw = draw.LineString([[0, -p.prime_width / 2],
-                                      [0, -p.t_length]])
+        second_cpw = draw.LineString([[0, -p.prime_width / 2], [0,
+                                                                -p.t_length]])
 
         #Rotate and Translate
         c_items = [prime_cpw, second_cpw]
