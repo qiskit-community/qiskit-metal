@@ -262,30 +262,24 @@ class Cheesing():
                     gather_holes_cell.add(
                         gdspy.CellReference(self.one_hole_cell, origin=(x, y)))
 
-        # subtact the keepout
-        no_cheese_cell_name = f'TOP_{self.chip_name}_{self.layer}_NoCheese_{self.datatype_keepout}'
+        # subtact the keepout, note, Based on user options,
+        # the keepout (no_cheese) cell may not be in self.lib.
+        temp_keepout_cell = self.lib.new_cell('temp_keepout',
+                                              overwrite_duplicate=True)
+        temp_keepout_cell.add(self.nocheese_gds)
+        diff_holes = gdspy.boolean(gather_holes_cell.get_polygonsets(),
+                                   temp_keepout_cell.get_polygonsets(),
+                                   'not',
+                                   max_points=self.max_points,
+                                   precision=self.precision,
+                                   layer=self.layer,
+                                   datatype=self.datatype_cheese)
+        diff_holes_cell_name = f'TOP_{self.chip_name}_{self.layer}_Cheese_diff'
+        diff_holes_cell = self.lib.new_cell(diff_holes_cell_name,
+                                            overwrite_duplicate=True)
+        diff_holes_cell.add(diff_holes)
 
-        if no_cheese_cell_name in self.lib.cells.keys():
-            keepout_cell = self.lib.cells[no_cheese_cell_name]
-            a = 5  #for breakpoint
-            '''gdspy.boolean() is not documented clearly.
-                        If there are multiple elements to subtract (both poly and path),
-                        the way I could make it work is to put them into a cell, within lib.
-                        I used the method cell_name.get_polygons(),
-                        which appears to convert all elements within the cell to poly.
-            '''
-
-            diff_holes = gdspy.boolean(gather_holes_cell.get_polygonsets(),
-                                       keepout_cell.get_polygonsets(),
-                                       'not',
-                                       max_points=self.max_points,
-                                       precision=self.precision,
-                                       layer=self.layer,
-                                       datatype=self.datatype_cheese)
-            diff_holes_cell_name = f'TOP_{self.chip_name}_{self.layer}_Cheese_diff'
-            diff_holes_cell = self.lib.new_cell(diff_holes_cell_name,
-                                                overwrite_duplicate=True)
-            diff_holes_cell.add(diff_holes)
+        self.lib.remove('temp_keepout')
 
         #Move to under Top_main (Top_chipname)
         chip_only_top_name = f'TOP_{self.chip_name}'
@@ -298,5 +292,33 @@ class Cheesing():
                 self.lib.remove(diff_holes_cell)
 
         # Still need to 'not' with Top_main_1 (ground)
+        top_chip_layer_name = f'TOP_{self.chip_name}_{self.layer}'
+        if top_chip_layer_name in self.lib.cells.keys():
+            ground_cell = self.lib.cells[top_chip_layer_name]
+            ground_cheese = gdspy.boolean(ground_cell.get_polygonsets(),
+                                          diff_holes_cell.get_polygonsets(),
+                                          'not',
+                                          max_points=self.max_points,
+                                          precision=self.precision,
+                                          layer=self.layer,
+                                          datatype=self.datatype_cheese)
+            ground_cheese_cell_name = f'TOP_{self.chip_name}_{self.layer}_Cheese_{self.datatype_cheese}'
+            ground_cheese_cell = self.lib.new_cell(ground_cheese_cell_name,
+                                                   overwrite_duplicate=True)
+            ground_cheese_cell.add(ground_cheese)
+        else:
+            self.logger.warning(
+                f'The cell:{top_chip_layer_name} was not found in self.lib. Cheesing not implemented.'
+            )
 
-        a = 5  #for breakpoint
+        #Move to under Top_main (Top_chipname)
+        chip_only_top_name = f'TOP_{self.chip_name}'
+        if chip_only_top_name in self.lib.cells:
+            if ground_cheese_cell.get_bounding_box() is not None:
+                self.lib.cells[chip_only_top_name].add(
+                    gdspy.CellReference(ground_cheese_cell))
+            else:
+                a = 5
+                # self.lib.remove(ground_cell)
+
+        return

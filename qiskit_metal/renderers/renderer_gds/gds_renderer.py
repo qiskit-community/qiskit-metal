@@ -184,8 +184,8 @@ class QGDSRenderer(QRenderer):
             view_in_file=Dict(main={1: True}),
 
             #delta spacing between holes
-            delta_x='75um',
-            delta_y='75um',
+            delta_x='100um',
+            delta_y='100um',
 
             #Keep a buffer around the perimeter of chip, that will not need cheesing.
             edge_nocheese='10um'),
