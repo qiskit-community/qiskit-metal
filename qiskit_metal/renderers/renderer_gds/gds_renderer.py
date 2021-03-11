@@ -93,7 +93,7 @@ class QGDSRenderer(QRenderer):
             * cheese_1_radius: '100um'
             * delta_x='100um',
             * delta_y='100um',
-            * edge_nocheese='10um',
+            * edge_nocheese='200um',
             * view_in_file: Dict(main={1: True})
         * no_cheese: Dict
             * datatype: '99'
@@ -191,7 +191,7 @@ class QGDSRenderer(QRenderer):
             delta_y='100um',
 
             #Keep a buffer around the perimeter of chip, that will not need cheesing.
-            edge_nocheese='10um'),
+            edge_nocheese='200um'),
 
         # Think of this as a keep-out region for cheesing.
         no_cheese=Dict(

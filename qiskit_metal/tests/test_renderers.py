@@ -255,7 +255,7 @@ class TestRenderers(unittest.TestCase):
         self.assertEqual(options['cheese']['cheese_1_radius'], '100um')
         self.assertEqual(options['cheese']['delta_x'], '100um')
         self.assertEqual(options['cheese']['delta_y'], '100um')
-        self.assertEqual(options['cheese']['edge_nocheese'], '10um')
+        self.assertEqual(options['cheese']['edge_nocheese'], '200um')
 
         self.assertEqual(options['no_cheese']['datatype'], '99')
         self.assertEqual(options['no_cheese']['buffer'], '25um')
