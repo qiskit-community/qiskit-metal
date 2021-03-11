@@ -35,7 +35,7 @@ class OpenToGround(QComponent):
 
     Values (unless noted) are strings with units included, (e.g., '30um')
     """
-    component_metadata = Dict(short_name='term')
+    component_metadata = Dict(short_name='term', _qgeometry_table_poly='True')
     """Component metadata"""
 
     default_options = Dict(width='10um',

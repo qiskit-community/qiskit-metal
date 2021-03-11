@@ -43,7 +43,7 @@ if not config.is_building_docs():
 
 if TYPE_CHECKING:
     # For linting typechecking, import modules that can't be loaded here under normal conditions.
-    # For example, I can't import QDesign, because it requires Qrenderer first. We have the
+    # For example, I can't import QDesign, because it requires QRenderer first. We have the
     # chicken and egg issue.
     from qiskit_metal.designs import QDesign
 
@@ -59,14 +59,14 @@ class QGDSRenderer(QRenderer):
     then this box will be used for every layer within a chip.
 
     2. If user wants to export entire design, BUT there is not information in QDesign._chips[chip_name]['size'],
-    then the renderer will calcuate the size of all of the components
+    then the renderer will calculate the size of all of the components
     and use that size for the "subtraction box" for every layer within a chip.
 
     3. If user wants to export a list of explicit components, the bounding box will be calculated by size of
     QComponents in the QGeometry table. Then be scaled by bounding_box_scale_x and bounding_box_scale_y.
 
     4. Note: When using the Junction table, the cell for Junction should be "x-axis" aligned and then GDS rotates
-    based on LineString given in Juction table.
+    based on LineString given in Junction table.
 
 
     datatype:
@@ -91,6 +91,9 @@ class QGDSRenderer(QRenderer):
             * cheese_0_x: '50um'
             * cheese_0_y: '50um'
             * cheese_1_radius: '100um'
+            * delta_x='100um',
+            * delta_y='100um',
+            * edge_nocheese='200um',
             * view_in_file: Dict(main={1: True})
         * no_cheese: Dict
             * datatype: '99'
@@ -135,7 +138,7 @@ class QGDSRenderer(QRenderer):
         # tolerance > precision
         # Precision used for gds lib, boolean operations and FlexPath should likely be kept the same.
         # They can be different, but increases odds of weird artifacts or misalignment.
-        # Some of this occours regardless (might be related to offset of a curve when done as a boolean vs. rendered),
+        # Some of this occurs regardless (might be related to offset of a curve when done as a boolean vs. rendered),
         # but they are <<1nm, which isn't even picked up by any fab equipment (so can be ignored)
         # Numerical errors start to pop up if set precision too fine,
         # but 1nm seems to be the finest precision we use anyhow.
@@ -155,7 +158,7 @@ class QGDSRenderer(QRenderer):
 
         # For junction table, when cell from default_options.path_filename does not fit into linestring,
         # QGDSRender will create two pads and add to junction to fill the location of lineString.
-        # The junction_pad_overlap is from the juction cell to the newly created pads.
+        # The junction_pad_overlap is from the junction cell to the newly created pads.
         junction_pad_overlap='5um',
 
         # Vertex limit for FlexPath
@@ -175,14 +178,20 @@ class QGDSRenderer(QRenderer):
             # 0 is rectangle, 1 is circle
             shape='0',
             # rectangle
-            cheese_0_x='50um',
-            cheese_0_y='50um',
+            cheese_0_x='25um',
+            cheese_0_y='25um',
             # circle
             cheese_1_radius='100um',
 
             #identify which layers to view in gds output file, for each chip
             view_in_file=Dict(main={1: True}),
-        ),
+
+            #delta spacing between holes
+            delta_x='100um',
+            delta_y='100um',
+
+            #Keep a buffer around the perimeter of chip, that will not need cheesing.
+            edge_nocheese='200um'),
 
         # Think of this as a keep-out region for cheesing.
         no_cheese=Dict(
@@ -1073,13 +1082,14 @@ class QGDSRenderer(QRenderer):
 
         return code
 
-    # This is not complete.  Presently, not called/executed.
     def populate_cheese(self):
-        """ Iterate through each chip, then layer to determine the cheeing geometry.
+        """ Iterate through each chip, then layer to determine the cheesing geometry.
         """
 
         lib = self.lib
         cheese_sub_layer = int(self.parse_value(self.options.cheese.datatype))
+        nocheese_sub_layer = int(
+            self.parse_value(self.options.no_cheese.datatype))
 
         for chip_name in self.chip_info:
             layers_in_chip = self.design.qgeometry.get_all_unique_layers(
@@ -1094,16 +1104,11 @@ class QGDSRenderer(QRenderer):
 
                         cheesed = self.cheese_based_on_shape(
                             minx, miny, maxx, maxy, chip_name, chip_layer,
-                            cheese_sub_layer)
+                            cheese_sub_layer, nocheese_sub_layer)
 
-                        chip_only_top_name = f'TOP_{chip_name}'
-                        cheese_cell_name = f'TOP_{chip_name}_{chip_layer}_NoCheese_{cheese_sub_layer}'
-
-    ###  The Cheesing class needs to be completed. This method does not produce results.
-    ###  Presently, not called/executed.
     def cheese_based_on_shape(self, minx: float, miny: float, maxx: float,
                               maxy: float, chip_name: str, chip_layer: int,
-                              cheese_sub_layer: int):
+                              cheese_sub_layer: int, nocheese_sub_layer: int):
         """Instantiate class to do cheesing.
 
         Args:
@@ -1114,6 +1119,7 @@ class QGDSRenderer(QRenderer):
             chip_name (str): User defined chip name.
             layer (int): Layer number for calculating the cheese.
             cheese_sub_layer (int):  User defined datatype, considered a sub-layer number for where to place the cheese output.
+            nocheese_sub_layer (int): User defined datatype, considered a sub-layer number for where to place the NO_cheese output.
         """
 
         max_points = int(self.parse_value(self.options.max_points))
@@ -1121,27 +1127,35 @@ class QGDSRenderer(QRenderer):
         all_nocheese = self.chip_info[chip_name][chip_layer]['no_cheese']
         all_nocheese_gds = self.chip_info[chip_name][chip_layer][
             'no_cheese_gds']
+        delta_x = float(self.parse_value(self.options.cheese.delta_x))
+        delta_y = float(self.parse_value(self.options.cheese.delta_y))
+        edge_nocheese = float(
+            self.parse_value(self.options.cheese.edge_nocheese))
+        precision = float(self.parse_value(self.options.precision))
 
         if cheese_shape == 0:
             cheese_x = float(self.parse_value(self.options.cheese.cheese_0_x))
             cheese_y = float(self.parse_value(self.options.cheese.cheese_0_y))
-            a_cheese = Cheesing(
-                all_nocheese,
-                all_nocheese_gds,
-                self.lib,
-                minx,
-                miny,
-                maxx,
-                maxy,
-                chip_name,
-                chip_layer,
-                cheese_sub_layer,
-                self.logger,
-                max_points,
-                cheese_shape=cheese_shape,
-                shape_0_x=cheese_x,
-                shape_0_y=cheese_y,
-            )
+            a_cheese = Cheesing(all_nocheese,
+                                all_nocheese_gds,
+                                self.lib,
+                                minx,
+                                miny,
+                                maxx,
+                                maxy,
+                                chip_name,
+                                edge_nocheese,
+                                chip_layer,
+                                cheese_sub_layer,
+                                nocheese_sub_layer,
+                                self.logger,
+                                max_points,
+                                precision,
+                                cheese_shape=cheese_shape,
+                                shape_0_x=cheese_x,
+                                shape_0_y=cheese_y,
+                                delta_x=delta_x,
+                                delta_y=delta_y)
         elif cheese_shape == 1:
             cheese_radius = float(
                 self.parse_value(self.options.cheese.cheese_1_radius))
@@ -1153,12 +1167,17 @@ class QGDSRenderer(QRenderer):
                                 maxx,
                                 maxy,
                                 chip_name,
+                                edge_nocheese,
                                 chip_layer,
                                 cheese_sub_layer,
+                                nocheese_sub_layer,
                                 self.logger,
                                 max_points,
+                                precision,
                                 cheese_shape=cheese_shape,
-                                shape_1_radius=cheese_radius)
+                                shape_1_radius=cheese_radius,
+                                delta_x=delta_x,
+                                delta_y=delta_y)
         else:
             self.logger.warning(
                 f'The cheese_shape={cheese_shape} is unknown in QGDSRenderer.')
@@ -1612,9 +1631,8 @@ class QGDSRenderer(QRenderer):
 
             # Use self.options  to decide what to put for export
             # into self.chip_info[chip_name][chip_layer]['cheese'].
-
-            # Not finished. Comment-out so not called/executed.
-            #self.populate_cheese()
+            # Not finished.
+            self.populate_cheese()
 
             # Export the file to disk from self.lib
             self.lib.write_gds(file_name)

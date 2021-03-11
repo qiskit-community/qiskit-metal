@@ -384,13 +384,14 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         _options = _transmon_cross.default_options
 
         # Test all elements of the result data against expected data
-        self.assertEqual(len(_options), 7)
+        self.assertEqual(len(_options), 8)
         self.assertEqual(_options['pos_x'], '0um')
         self.assertEqual(_options['pos_y'], '0um')
         self.assertEqual(_options['cross_width'], '20um')
         self.assertEqual(_options['cross_length'], '200um')
         self.assertEqual(_options['cross_gap'], '20um')
         self.assertEqual(_options['orientation'], '0')
+        self.assertEqual(_options['layer'], '1')
 
         self.assertEqual(len(_options['_default_connection_pads']), 6)
         self.assertEqual(_options['_default_connection_pads']['connector_type'],
