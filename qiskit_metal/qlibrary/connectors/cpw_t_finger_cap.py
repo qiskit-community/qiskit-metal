@@ -41,23 +41,25 @@ class CPWTFingerCap(QComponent):
                     +
 
     Options:
-        * prime_width: the width of the trace of the two pin CPW transmission line
-        * prime_gap: the dielectric gap of the two pin CPW transmission line
-        * second_width: the width of the trace of the one pin CPW transmission line
-        * second_gap: the dielectric gap of the one pin CPW transmission line (also for the capacitor)
-        * cap_gap: the width of dielectric for the capacitive coupling (default same as second_gap)
-        * cap_width: the width of the finger capacitor (default same as second)
-        * finger_length: the depth of the charge islands of the capacitor
-        * finger_count: number of fingers in the capacitor
-        * cap_distance: distance of capacitor from center transmission line
-        * pos_x/_y: the x/y position of the center of the primary transmission line.
-        * rotation: the direction of the primary transmission line. 0 degrees is +x, following a
+        * prime_width: '10um' -- The width of the trace of the two pin CPW transmission line
+        * prime_gap: '6um' -- The dielectric gap of the two pin CPW transmission line
+        * second_width: '10um' -- The width of the trace of the one pin CPW transmission line
+        * second_gap: '6um' -- The dielectric gap of the one pin CPW transmission line (also for the capacitor)
+        * cap_gap: '6um' -- The width of dielectric for the capacitive coupling (default same as second_gap)
+        * cap_width: '10um' -- The width of the finger capacitor (default same as second)
+        * finger_length: '20um' -- The depth of the charge islands of the capacitor
+        * finger_count: '5' -- Number of fingers in the capacitor
+        * cap_distance: '50um' -- Distance of capacitor from center transmission line
+        * pos_x/_y: '0um' -- The x/y position of the center of the primary transmission line.
+        * rotation: '0' -- The direction of the primary transmission line. 0 degrees is +x, following a
           counter-clockwise rotation (eg. 90 is +y)
-        * chip: the chip the capacitor should be on.
-        * layer: layer the capacitor is on. 
+        * chip: 'main' -- The chip the capacitor should be on.
+        * layer: '1' -- Layer the capacitor is on. 
 
     """
-    component_metadata = Dict(short_name='cpw')
+    component_metadata = Dict(short_name='cpw',
+                              _qgeometry_table_poly='True',
+                              _qgeometry_table_path='True')
     """Component metadata"""
 
     #Currently setting the primary CPW length based on the coupling_length

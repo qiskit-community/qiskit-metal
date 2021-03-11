@@ -40,19 +40,19 @@ class CPWT(QComponent):
                     +
 
     Options:
-        * prime_width: the width of the trace of the two pin CPW transmission line
-        * prime_gap: the dielectric gap of the two pin CPW transmission line
-        * second_width: the width of the trace of the one pin CPW transmission line
-        * second_gap: the dielectric gap of the one pin CPW transmission line (also for the capacitor)
-        * t_length: length for the t branches
-        * pos_x/_y: the x/y position of the center of the primary transmission line.
-        * orientation: the direction of the primary transmission line. 0 degrees is +x, following a
+        * prime_width: '10um' -- The width of the trace of the two pin CPW transmission line
+        * prime_gap: '6um' -- The dielectric gap of the two pin CPW transmission line
+        * second_width: '10um' -- The width of the trace of the one pin CPW transmission line
+        * second_gap: '6um' -- The dielectric gap of the one pin CPW transmission line (also for the capacitor)
+        * t_length: '50um' -- The length for the t branches
+        * pos_x/_y: '0um' -- The x/y position of the center of the primary transmission line.
+        * orientation: '0' -- The direction of the primary transmission line. 0 degrees is +x, following a
           counter-clockwise rotation (eg. 90 is +y)
-        * chip: the chip the pin should be on.
-        * layer: layer the pin is on. Does not have any practical impact to the short.
+        * chip: 'main' -- The chip the pin should be on.
+        * layer: '1' -- Layer the pin is on. Does not have any practical impact to the short.
 
     """
-    component_metadata = Dict(short_name='cpw')
+    component_metadata = Dict(short_name='cpw', _qgeometry_table_path='True')
     """Component metadata"""
 
     #Currently setting the primary CPW length based on the coupling_length

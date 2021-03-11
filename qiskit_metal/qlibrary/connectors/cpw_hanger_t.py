@@ -54,7 +54,7 @@ class CPWHangerT(QComponent):
         * chip: 'main' -- The chip the pin should be on.
         * layer: '1' -- Layer the pin is on. Does not have any practical impact to the short.
     """
-    component_metadata = Dict(short_name='cpw')
+    component_metadata = Dict(short_name='cpw', _qgeometry_table_path='True')
     """Component metadata"""
 
     #Currently setting the primary CPW length based on the coupling_length

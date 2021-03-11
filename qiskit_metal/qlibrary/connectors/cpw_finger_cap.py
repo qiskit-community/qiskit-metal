@@ -21,8 +21,10 @@ class CPWFingerCap(QComponent):
     """Generates a two pin (+) structure comprised of a north CPW transmission 
     line, and a south transmission line, coupled together via a finger capacitor.
     Such a structure can be used, as an example, for generating
-    CPW resonator hangars off of a transmission line. (0,0) represents the center position
+    CPW resonators. (0,0) represents the center position
     of the component. Setting finger length to 0 gives a simple gap capacitor.
+    The width of the gap capacitor is found via 
+    (cap_width * finger_count +  * cap_gap * (finger_count-1)).
 
     Inherits QComponent class.
 
@@ -43,25 +45,27 @@ class CPWFingerCap(QComponent):
                     +
 
     Options:
-        * north_width: the width of the 'north' portion of the CPW transmission line
-        * north_gap: the dielectric gap of the 'north' portion of the CPW transmission line
-        * south_width: the width of the 'south' portion of the CPW transmission line
-        * south_gap: the dielectric gap of the 'south' portion of the CPW transmission line
+        * north_width: '10um' -- The width of the 'north' portion of the CPW transmission line
+        * north_gap: '6um' -- The dielectric gap of the 'north' portion of the CPW transmission line
+        * south_width: '10um' -- The width of the 'south' portion of the CPW transmission line
+        * south_gap: '6um' -- The dielectric gap of the 'south' portion of the CPW transmission line
             (also for the capacitor gap to ground)
-        * cap_width: the width of the finger capacitor metal (and islands)
-        * cap_gap: the width of dielectric for the capacitive coupling/fingers
-        * cap_gap_ground: width of the dielectric between the capacitor and ground
-        * finger_length: the depth of the finger islands of the capacitor
-        * finger_count: number of fingers in the capacitor
-        * cap_distance: distance of the north point of the capacitor from the north pin
-        * pos_x/_y: the x/y position of the north pin
-        * rotation: the direction of the transmission line. 0 degrees is -y, following a
+        * cap_width: '10um' -- The width of the finger capacitor metal (and islands)
+        * cap_gap: '6um' -- The width of dielectric for the capacitive coupling/fingers
+        * cap_gap_ground: '6um' -- Width of the dielectric between the capacitor and ground
+        * finger_length: '20um' -- The depth of the finger islands of the capacitor
+        * finger_count: '5' -- Number of fingers in the capacitor
+        * cap_distance: '50um' -- Distance of the north point of the capacitor from the north pin
+        * pos_x/_y: '0um' -- The x/y position of the north pin
+        * rotation: '0' -- The direction of the transmission line. 0 degrees is -y, following a
           counter-clockwise rotation (eg. 90 is +x)
-        * chip: the chip the capacitor should be on.
-        * layer: layer the capacitor is on. 
+        * chip: 'main' -- The chip the capacitor should be on.
+        * layer: '1' -- Layer the capacitor is on. 
 
     """
-    component_metadata = Dict(short_name='cpw')
+    component_metadata = Dict(short_name='cpw',
+                              _qgeometry_table_poly='True',
+                              _qgeometry_table_path='True')
     """Component metadata"""
 
     #Currently setting the primary CPW length based on the coupling_length
