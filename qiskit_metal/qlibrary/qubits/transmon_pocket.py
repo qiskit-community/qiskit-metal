@@ -12,7 +12,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 '''
-Transmon Pocket
+Transmon Pocket.
 
 .. code-block::
      ________________________________
@@ -40,17 +40,16 @@ from qiskit_metal.qlibrary.base.qubit import BaseQubit
 
 class TransmonPocket(BaseQubit):
     """
-    The base `TransmonPocket` class
+    The base `TransmonPocket` class.
 
-    Inherits `BaseQubit` class
+    Inherits `BaseQubit` class.
 
-    Description:
-        Create a standard pocket transmon qubit for a ground plane,
-        with two pads connected by a junction (see drawing below).
+    Create a standard pocket transmon qubit for a ground plane,
+    with two pads connected by a junction (see drawing below).
 
-        Connector lines can be added using the `connection_pads`
-        dictionary. Each connector pad has a name and a list of default
-        properties.
+    Connector lines can be added using the `connection_pads`
+    dictionary. Each connector pad has a name and a list of default
+    properties.
 
     Sketch:
         Below is a sketch of the qubit
@@ -79,8 +78,8 @@ class TransmonPocket(BaseQubit):
     BaseQubit Default Options:
         * pos_x: '0um'
         * pos_y: '0um'
-        * connection_pads: empty Dict -- The dictionary which contains all active connection lines for the qubit.
-        * _default_connection_pads: empty Dict -- The default values for the (if any) connection lines of the qubit.
+        * connection_pads: Empty Dict -- The dictionary which contains all active connection lines for the qubit.
+        * _default_connection_pads: Empty Dict -- The default values for the (if any) connection lines of the qubit.
 
     Default Options:
         * pos_x: '0um' -- Where the center of the pocket should be located on chip
@@ -197,14 +196,14 @@ class TransmonPocket(BaseQubit):
 
     def make_connection_pads(self):
         '''
-        Makes standard transmon in a pocket
+        Makes standard transmon in a pocket.
         '''
         for name in self.options.connection_pads:
             self.make_connection_pad(name)
 
     def make_connection_pad(self, name: str):
         '''
-        Makes n individual connector
+        Makes n individual connector.
 
         Args:
             name (str) : Name of the connector

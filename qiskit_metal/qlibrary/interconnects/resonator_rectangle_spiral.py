@@ -24,9 +24,9 @@ class ResonatorRectangleSpiral(QComponent):
 
     Inherits `QComponent` class
 
-    Description:
-        A rectangular spiral resonator. The width of the spiral is modified based on inputted values
-        and given total length of the spiral.
+    A rectangular spiral resonator. The width of the spiral is modified based on inputted values
+    and given total length of the spiral.
+
         ::
 
             <--------X-------->

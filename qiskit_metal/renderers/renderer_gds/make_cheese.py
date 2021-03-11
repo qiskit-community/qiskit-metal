@@ -66,7 +66,7 @@ class Cheesing():
             minx (float): Chip minimum x location.
             miny (float): Chip minimum y location.
             maxx (float): Chip maximum x location.
-            maxy (float): chip maximum y location.
+            maxy (float): Chip maximum y location.
             chip_name (str): User defined chip name.
             edge_nocheese (float): Keep a buffer around the perimeter of chip, that will not need cheesing.
             layer (int): Layer number for calculating the cheese.

@@ -29,13 +29,13 @@ if TYPE_CHECKING:
 class QTreeView_Options(QTreeView, QWidget_PlaceholderText):
     """Handles editing a QComponent
 
-    This class extends the `QTreeView` and `QWidget_PlaceholderText` classes
+    This class extends the `QTreeView` and `QWidget_PlaceholderText` classes.
     """
 
     def __init__(self, parent: QtWidgets.QWidget):
         """
         Args:
-            parent (QtWidgets.QWidget): the widget
+            parent (QtWidgets.QWidget): The parent widget
         """
         QTreeView.__init__(self, parent)
         QWidget_PlaceholderText.__init__(self, "Select a QComponent to edit"\
@@ -45,7 +45,7 @@ class QTreeView_Options(QTreeView, QWidget_PlaceholderText):
         self.expanded.connect(self.resize_on_expand)
 
     def style_me(self):
-        """Style this widget"""
+        """Style this widget."""
         # Also can do in the ui file, but doesn't always transalte for me for some reason
         self.header().show()
         self.setAutoScroll(False)
@@ -58,10 +58,10 @@ QTreeView::branch {  border-image: url(none.png); }
 
     # TODO: Maybe move to base class of utilty, along with the show template message
     def autoresize_columns(self, max_width: int = 200):
-        """Rezie columsn to contents with maximim
+        """Rezie columsn to contents with maximim.
 
         Args:
-            max (int): Maximum window width (Default: 200)
+            max (int): Maximum window width.. Defaults to 200.
         """
         # For TreeView: resizeColumnToContents
         # For TableView: resizeColumnsToContents
@@ -74,5 +74,5 @@ QTreeView::branch {  border-image: url(none.png); }
                 self.setColumnWidth(i, max_width)
 
     def resize_on_expand(self):
-        """Resize when exposed"""
+        """Resize when exposed."""
         self.resizeColumnToContents(0)

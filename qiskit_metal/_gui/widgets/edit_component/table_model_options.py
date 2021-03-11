@@ -58,9 +58,9 @@ class QTableModel_Options(QAbstractTableModel):
                  view=None):
         """
         Args:
-            gui (MetalGUI): the GUI
-            parent (ComponentWidget): the parent ComponentWidget (Default: None)
-            view (object): the view (Default: None)
+            gui (MetalGUI): The GUI
+            parent (ComponentWidget): The parent ComponentWidget.  Defaults to None.
+            view (object): The view.  Defaults to None.
         """
         super().__init__(parent=parent)
         self.logger = gui.logger
@@ -82,17 +82,17 @@ class QTableModel_Options(QAbstractTableModel):
         return self.parent().component
 
     def refresh(self):
-        """Force refresh.   Completly rebuild the model."""
+        """Force refresh.  Completly rebuild the model."""
         self.modelReset.emit()
 
     def rowCount(self, parent: QModelIndex = None):
-        """Returns the number of rows
+        """Returns the number of rows.
 
         Args:
-            parent (QModelIndex): Unused (Default: None).
+            parent (QModelIndex): Unused.  Defaults to None.
 
         Returns:
-            int: the number of rows
+            int: The number of rows
         """
         if self.component is None:
             if self._view:
@@ -103,13 +103,13 @@ class QTableModel_Options(QAbstractTableModel):
         return len(self.component.options)
 
     def columnCount(self, parent: QModelIndex = None):
-        """Returns the number of columns
+        """Returns the number of columns.
 
         Args:
-            parent (QModelIndex): Unused (Default: None).
+            parent (QModelIndex): Unused.  Defaults to None.
 
         Returns:
-            int: the number of columns
+            int: The number of columns
         """
         return 3
 
@@ -117,12 +117,12 @@ class QTableModel_Options(QAbstractTableModel):
         """ Set the headers to be displayed.
 
         Args:
-            section (int): section number
-            orientation (Qt orientation): section orientation
-            role (Qt display role): display role (Default: DisplayRole)
+            section (int): Section number
+            orientation (Qt orientation): Section orientation
+            role (Qt display role): Display role.  Defaults to DisplayRole.
 
         Returns:
-            str: the header data, or None if not found
+            str: The header data, or None if not found
         """
 
         if self.component is None:
@@ -145,7 +145,7 @@ class QTableModel_Options(QAbstractTableModel):
         manually adjust each treeView to have NoEditTriggers.
 
         Args:
-            index (QModelIndex): the index
+            index (QModelIndex): The index
 
         Returns:
             Qt flags: Flags from Qt
@@ -171,7 +171,7 @@ class QTableModel_Options(QAbstractTableModel):
         "invalid QVariant").
 
         Returns:
-            str: data
+            str: Data matching theindex and role.
         """
 
         if not index.isValid():
@@ -221,9 +221,9 @@ class QTableModel_Options(QAbstractTableModel):
         The dataChanged() signal should be emitted if the data was successfully set.
 
         Arguments:
-            index (QtCore.QModelIndex): the index
-            value (str): the value
-            role (QtCore.Qt.EditRole): the edit role
+            index (QtCore.QModelIndex): The index
+            value (str): The value
+            role (QtCore.Qt.EditRole): The edit role
 
         Returns:
             bool: Returns true if successful; otherwise returns false.
@@ -286,13 +286,13 @@ def parse_param_from_str(text):
     """Attempt to parse a value from a string using ast
 
     Args:
-        text (str): string to parse
+        text (str): String to parse
 
     Return:
         tuple: value, used_ast
 
     Raises:
-        Exception: an error occurred
+        Exception: An error occurred
     """
     text = str(text).strip()
     value = text

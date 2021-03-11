@@ -45,13 +45,13 @@ __all__ = [
 
 def rectangle(w: float, h: float, xoff: float = 0, yoff: float = 0):
     """
-    Draw a shapely rectangle of width and height
+    Draw a shapely rectangle of width and height.
 
     Arguments:
         w (float) :  width
         h (float) :  height
-        xoff (float, optional) : Gives the x position of the center (Default: 0).
-        yoff (float, optional) : Gives the y position of the center (Default: 0).
+        xoff (float, optional) : Gives the x position of the center.  Defaults to 0.
+        yoff (float, optional) : Gives the y position of the center.  Defaults to 0.
 
     Returns:
         shapely.geometry.Polygon: Shapely rectangle
@@ -77,11 +77,11 @@ def is_rectangle(obj):
     Test if a shapely object is a rectangle.
 
     If there are 4 ext cooridnate then
-    check if consequtive vectors are orhtogonal
-    Assumes that the last point is not repeating
+    check if consequtive vectors are orhtogonal.
+    Assumes that the last point is not repeating.
 
     Args:
-        obj (object): object to test
+        obj (object): Object to test
 
     Returns:
         bool: True is object is a rectangle, false otherwise
@@ -105,7 +105,7 @@ def is_rectangle(obj):
 
 def subtract(poly_main: shapely.geometry.Polygon,
              poly_tool: shapely.geometry.Polygon):
-    """Geometry subtract tool poly from main poly..
+    """Geometry subtract tool poly from main poly.
 
     Args:
         poly_main (Polygon): Main polygon from which we will carve out
@@ -124,8 +124,8 @@ def union(*polys):
     fully dissolved and noded. Duplicate Points will get merged.
 
     Args:
-        polys (Polygon, or list of polygons, or args of polygons):
-         Main polygon from which we will carve out
+        polys (Polygon, or list of polygons, or args of polygons).
+            Main polygon from which we will carve out.
 
     Returns:
         Polygon: Union of the input polygons
@@ -151,7 +151,7 @@ def flip_merge(line: shapely.geometry.LineString,
     '''
     Mirror type of drawing command on LineString.
 
-    Calls shapely.affinity.scale(geom, xfact=xfact, yfact=yfact, zfact=1.0, origin=origin)
+    Calls shapely.affinity.scale(geom, xfact=xfact, yfact=yfact, zfact=1.0, origin=origin).
 
     The point of origin can be a keyword 'center' for the 2D bounding
     box center (default), 'centroid' for the geometry's 2D centroid,
@@ -159,13 +159,13 @@ def flip_merge(line: shapely.geometry.LineString,
     Negative scale factors will mirror or reflect coordinates.
 
     Args:
-        line (shapely.geometry.LineString): geometry
-        xfact (double): x-scale factor (Default: -1)
-        yfact (double): y-scale factor (Default: 1)
-        orign (tuple): coordinates of the origin
+        line (shapely.geometry.LineString): Geometry
+        xfact (double): x-scale factor.  Defaults to -1.
+        yfact (double): y-scale factor.  Defaults to 1.
+        orign (tuple): Coordinates of the origin
 
     Returns:
-        list: the coorindates that can be used to construct a polygon, by flipping a linestring
+        list: The coorindates that can be used to construct a polygon, by flipping a linestring
         over an axis and mirroring it.
     '''
     line_flip = shapely.affinity.scale(line,
@@ -193,8 +193,8 @@ def _iter_func_geom_(func, objs, *args, overwrite=False, **kwargs):
     Arguments:
         func (function): Function the apply
         objs (Dict, List, Tuple or BaseGeometry): Set of objects
-        overwrite (bool): overwrite the parent dict or not. This applies to component qgeometry dictionary.
-            Maybe remove in future? (Default: False)
+        overwrite (bool): Overwrite the parent dict or not. This applies to component qgeometry dictionary.
+            Maybe remove in future?  Defaults to False.
         kwargs (dict): Parameters dictionary
 
     Returns:
@@ -279,10 +279,10 @@ def rotate(qgeometry,
 
     Args:
         qgeometry (Dict, List, Tuple or BaseGeometry): Set of objects
-        angle (double): rotation angle
-        origin (tuple or str): origin point (Default: 'center')
-        use_radians (bool): true to use radians (Default: False)
-        overwrite (bool): true to overwrite (Default: False)
+        angle (double): Rotation angle
+        origin (tuple or str): Origin point. Defaults to 'center'.
+        use_radians (bool): True to use radians.  Defaults to False.
+        overwrite (bool): True to overwrite.  Defaults to False.
 
     Returns:
         geometry: A rotated geometry on a 2D plane.
@@ -309,13 +309,13 @@ def rotate(qgeometry,
 
 
 def translate(qgeometry, xoff=0.0, yoff=0.0, zoff=0.0, overwrite=False):
-    r'''Shifts the geometry by the given offset
+    r'''Shifts the geometry by the given offset.
     Args:
-        qgeometry (Dict, List, Tuple or BaseGeometry): Set of objects
-        xoff (double): x-direction offset (Default: 0.0)
-        yoff (double): y-direction offset (Default: 0.0)
-        zoff (double): z-direction offset (Default: 0.0)
-        overwrite (bool): True to overwrite (Default: False)
+        qgeometry (Dict, List, Tuple or BaseGeometry): Set of objects.
+        xoff (double): x-direction offset.  Defaults to 0.0.
+        yoff (double): y-direction offset.  Defaults to 0.0.
+        zoff (double): z-direction offset.  Defaults to 0.0.
+        overwrite (bool): True to overwrite.  Defaults to False.
 
     Returns:
         geometry: A translated geometry shifted by offsets along each dimension.
@@ -347,11 +347,11 @@ def scale(qgeometry,
 
     Args:
         qgeometry (Dict, List, Tuple or BaseGeometry): Set of objects
-        xfact: x-direction scale factor (Default: 1.0)
-        yfact: y-direction scale factor (Default: 1.0)
-        zfact: z-direction scale factor (Default: 1.0)
-        origin (tuple or str): origin point (Default: 'center')
-        overwrite (bool): True to overwrite (Default: False)
+        xfact: x-direction scale factor.  Defaults to 1.0.
+        yfact: y-direction scale factor.  Defaults to 1.0.
+        zfact: z-direction scale factor.  Defaults to 1.0.
+        origin (tuple or str): Origin point.  Defaults to 'center'.
+        overwrite (bool): True to overwrite.  Defaults to False.
 
     Returns:
         geometry: A scaled geometry, scaled by factors along each dimension.
@@ -397,8 +397,8 @@ def rotate_position(qgeometry,
     Arguments:
         qgeometry (Dict, List, Tuple or BaseGeometry): Set of objects
         angle (float): Rotation angle
-        pos (list, np.array): position to translate to
-        pos_rot (tuple): Rotate about this point before translating. (default: {(0, 0)})
+        pos (list, np.array): Position to translate to
+        pos_rot (tuple): Rotate about this point before translating.  Default to {(0, 0)}).
 
     Returns:
         geometry: Rotate dand translated, same as input
@@ -423,20 +423,20 @@ def buffer(qgeometry,
            mitre_limit=None,
            overwrite=False):
     '''
-    Flat buffer of all components in the dictionary
+    Flat buffer of all components in the dictionary.
 
     Default stlye:
-        cap_style=CAP_STYLE.flat
-        join_style=JOIN_STYLE.mitre
+        - cap_style=CAP_STYLE.flat
+        - join_style=JOIN_STYLE.mitre
 
     Args:
-        qgeometry (Dict, List, Tuple or BaseGeometry): Set of objects
-        distance (float): distance
-        resolution (int): how many points (Default: None)
-        cap_style (shapely.geometry.CAP_STYLE): cap style (Default: CAP_STYLE.falt)
-        join_style (shapely.geometry.JOIN_STYLE): join style (Default JOIN_STYLE.mitre)
-        mitre_limit (double): mitre limit (Default: None)
-        overwrite (bool): True to overwrite (Default: False)
+        qgeometry (Dict, List, Tuple or BaseGeometry): Set of objects.
+        distance (float): Distance.
+        resolution (int): How many points.  Defaults to None.
+        cap_style (shapely.geometry.CAP_STYLE): Cap style.  Defaults to CAP_STYLE.falt.
+        join_style (shapely.geometry.JOIN_STYLE): Join style.  Defaults to JOIN_STYLE.mitre.
+        mitre_limit (double): Mitre limit.  Defaults to None.
+        overwrite (bool): True to overwrite.  Defaults to None.
 
     Returns:
         geometry: A geometry with an envelope at a distance from the object's envelope

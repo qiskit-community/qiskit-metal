@@ -56,19 +56,19 @@ def guided_wavelength(freq,
         freq (float): The frequency of interest, in Hz (eg. 5*10**9).
         line_width (float): The width of the CPW trace (center) line, in meters (eg. 10*10**-6).
         line_gap (float): The width of the CPW gap (dielectric space), in meters (eg. 6*10**-6).
-        substrate_thickness (float): thickness of the dielectric substrate, in meters (eg. 760*10**-6).
-        film_thickness (float): thickness of the thin film, in meters (eg. 200*10**-9).
-        dielectric_constant (float): the relative permitivity of the substrate. 
-            (Default: 11.45, the value for Silicon at cryogenic temperatures).
+        substrate_thickness (float): Thickness of the dielectric substrate, in meters (eg. 760*10**-6).
+        film_thickness (float): Thickness of the thin film, in meters (eg. 200*10**-9).
+        dielectric_constant (float): The relative permitivity of the substrate. 
+            Defaults to 11.45, the value for Silicon at cryogenic temperatures.
 
     Returns:
-        tuple: contents outlined below
+        tuple: Contents outlined below
 
     Tuple contents:
         * lambdaG: The guided wavelength of the CPW based on the input parameters, in meters.
           This value is for a full wavelength. Divide by 2 for a lambda/2 resonator, 4 for a lambda/4.
-        * etfSqrt: effective dielectric constant (accounting for film thickness)
-        * q: filling factor
+        * etfSqrt: Effective dielectric constant (accounting for film thickness)
+        * q: Filling factor
     """
 
     s = line_width
@@ -109,18 +109,18 @@ def lumped_cpw(freq,
         line_gap (float): The width of the CPW gap (dielectric space), in meters (eg. 6*10**-6).
         substrate_thickness (float): Thickness of the dielectric substrate, in meters (eg. 760*10**-6).
         film_thickness (float): Thickness of the thin film, in meters (eg. 200*10**-9).
-        dielectric_constant (float, optional): the relative permitivity of the substrate. 
-            (Default: 11.45, the value for silicon at cryogenic temperatures).
+        dielectric_constant (float, optional): The relative permitivity of the substrate. 
+            Defaults to 11.45, the value for silicon at cryogenic temperatures.
         loss_tangent (float, optional): The loss tangent of the dielectric. 
-            (Default: 10**-6, reasonable quality silicon).
+            Defaults to 10**-6, reasonable quality silicon.
         london_penetration_depth (float, optional): The superconducting london penetration depth, in meters.
             It is advised to use the temperature and film thickness dependent value. If circuit
             geometries are on the scale of the Pearl Length, the kinetic inductance formulas
             breakdown. 
-            (Default: 30*10**-9, for Niobium).
+            Defaults to 30*10**-9, for Niobium.
 
     Returns:
-        tuple: contents outlined below
+        tuple: Contents outlined below
 
     Tuple contents:
         * Lk (float): The series kinetic inductance, in Henries.
@@ -198,7 +198,7 @@ def effective_dielectric_constant(freq, s, w, h, t, q, Kk0, Kk01, eRD=11.45):
         q (float): Filling factor of the CPW in question
         Kk0 (float): The complete elliptic integral for k0
         Kk01 (float): The complete elliptic integral for k01
-        eRD (float, optional): The relative permitivity of the substrate. (Default: 11.45).
+        eRD (float, optional): The relative permitivity of the substrate. Defaults to 11.45.
     
     Returns:
         float: etfSqrt is the effective permitivity for a CPW transmission line, considering
@@ -229,10 +229,10 @@ def elliptic_int_constants(s, w, h):
     Args:
         s (float): The width of the CPW trace (center) line, in meters (eg. 10*10**-6).
         w (float): The width of the CPW gap (dielectric space), in meters (eg. 6*10**-6).
-        h (float): thickness of the dielectric substrate, in meters (eg. 760*10**-6).
+        h (float): Thickness of the dielectric substrate, in meters (eg. 760*10**-6).
     
     Returns:
-        tuple: contents outlined below
+        tuple: Contents outlined below
 
     Tuple contents:
         * ellipk(k0) (float): The complete elliptic integral for k0

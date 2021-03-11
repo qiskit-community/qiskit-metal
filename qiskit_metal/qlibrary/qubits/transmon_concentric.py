@@ -20,14 +20,13 @@ from qiskit_metal.qlibrary.base.qubit import BaseQubit
 
 class TransmonConcentric(BaseQubit):
     """
-    The base `TrasmonConcentric` class 
+    The base `TrasmonConcentric` class .
     
-    Inherits `BaseQubit` class
+    Inherits `BaseQubit` class.
     
-    Description:
-        Metal transmon object consisting of a circle surrounding by a concentric 
-        ring. There are two Josephson Junction connecting the circle to the ring; 
-        one at the south end and one at the north end. There is a readout resonator. 
+    Metal transmon object consisting of a circle surrounding by a concentric 
+    ring. There are two Josephson Junction connecting the circle to the ring; 
+    one at the south end and one at the north end. There is a readout resonator. 
 
     .. image::
         QComponent_TransmonConcentric.png

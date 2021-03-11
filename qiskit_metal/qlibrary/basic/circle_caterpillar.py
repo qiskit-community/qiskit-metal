@@ -24,7 +24,7 @@ from qiskit_metal.qlibrary.base import QComponent
 class CircleCaterpillar(QComponent):
     """A single configurable circle.
 
-    Inherits QComponent class
+    Inherits QComponent class.
 
     Default Options:
         * segments: '5'

@@ -29,24 +29,24 @@ from qiskit_metal.toolbox_python import utility_functions
 
 class TestToolboxPython(unittest.TestCase):
     """
-    Unit test class
+    Unit test class.
     """
 
     def setUp(self):
         """
-        Setup unit test
+        Setup unit test.
         """
         pass
 
     def tearDown(self):
         """
-        Tie any loose ends
+        Tie any loose ends.
         """
         pass
 
     def test_instantiate_headings(self):
         """
-        Test instantiation of Headings class
+        Test instantiation of Headings class.
         """
         try:
             Headings
@@ -55,7 +55,7 @@ class TestToolboxPython(unittest.TestCase):
 
     def test_instantiate_metal_tutorial_magics(self):
         """
-        Test instantiation of MetalTutorialMagics class
+        Test instantiation of MetalTutorialMagics class.
         """
         try:
             MetalTutorialMagics
@@ -64,7 +64,7 @@ class TestToolboxPython(unittest.TestCase):
 
     def test_instantiate_color(self):
         """
-        Test instantiation of Color class
+        Test instantiation of Color class.
         """
         try:
             Color
@@ -73,7 +73,7 @@ class TestToolboxPython(unittest.TestCase):
 
     def test_display_style_colon_list(self):
         """
-        Test style_colon_list in display.py
+        Test style_colon_list in display.py.
         """
         actual = display.style_colon_list("text:more:still")
         expected = "text:\033[94mmore:still\033[0m"
@@ -82,7 +82,7 @@ class TestToolboxPython(unittest.TestCase):
 
     def test_display_format_dict_ala_z(self):
         """
-        Test functionality of format_dict_ala_z in display.py
+        Test functionality of format_dict_ala_z in display.py.
         """
         my_dict = {'first': 1}
         expected = "  'first'             : 1,                            "
@@ -92,13 +92,13 @@ class TestToolboxPython(unittest.TestCase):
 
     def test_utility_defaults(self):
         """
-        Test defaults in utility_functions.py
+        Test defaults in utility_functions.py.
         """
         self.assertEqual(utility_functions._old_warn, None)
 
     def test_utility_dict_start_with(self):
         """
-        Test dict_start_with in utility_functions.py
+        Test dict_start_with in utility_functions.py.
         """
         my_dict = {
             'first': 1,
@@ -139,7 +139,7 @@ class TestToolboxPython(unittest.TestCase):
 
     def test_utility_data_frame_empty_typed(self):
         """
-        Test data_frame_empty_typed in utility_functions.py
+        Test data_frame_empty_typed in utility_functions.py.
         """
         base = dict(col1=bool, col2=object)
 
@@ -150,7 +150,7 @@ class TestToolboxPython(unittest.TestCase):
 
     def test_utility_copy_update(self):
         """
-        Test functionality of copy_update in utility_functions.py
+        Test functionality of copy_update in utility_functions.py.
         """
         self.assertEqual(utility_functions.copy_update({'a': 1}, {}), {'a': 1})
         self.assertEqual(utility_functions.copy_update({'a': 1}, {'b': 2}), {
@@ -162,7 +162,7 @@ class TestToolboxPython(unittest.TestCase):
 
     def test_utility_bad_fillet_idxs(self):
         """
-        Test functionality of bad_fillet_idxs in utility_functions.py
+        Test functionality of bad_fillet_idxs in utility_functions.py.
         """
         results = utility_functions.bad_fillet_idxs([(1.0, 1.0), (1.5, 1.5),
                                                      (1.51, 1.5), (2.0, 2.0)],
@@ -171,7 +171,7 @@ class TestToolboxPython(unittest.TestCase):
 
     def test_utility_clean_name(self):
         """
-        Test clean_name in utility_function.py
+        Test clean_name in utility_function.py.
         """
         self.assertEqual(
             utility_functions.clean_name('32v2 g #Gmw845h$W b53wi '),
@@ -181,14 +181,14 @@ class TestToolboxPython(unittest.TestCase):
 
     def test_utility_toggle_numbers(self):
         """
-        Test functionality of toggle_numbers in utility_functions.py
+        Test functionality of toggle_numbers in utility_functions.py.
         """
         self.assertEqual(utility_functions.toggle_numbers([3, 5, 9, 1], 14),
                          [0, 1, 2, 4, 6, 7, 8, 11, 12, 13])
 
     def test_utility_get_range_of_vertex_to_not_fillet(self):
         """
-        Test functionality of get_range_of_vertex_to_not_fillet in utility_functions.py
+        Test functionality of get_range_of_vertex_to_not_fillet in utility_functions.py.
         """
         my_list = [(1, 1), (1, 2), (1, 2), (2, 2), (5, 5), (3, 2), (11, 11),
                    (11, 11), (11, 21), (12, 21)]
@@ -198,7 +198,7 @@ class TestToolboxPython(unittest.TestCase):
 
     def test_utility_compress_vertex_list(self):
         """
-        Test functionality of compress_vertex_list in utility_functions.py
+        Test functionality of compress_vertex_list in utility_functions.py.
         """
         my_list = [1, 2, 5, 2, 6, 7, 10, 4, 7, 1]
         expected = [(1, 1), (1, 2), (2, 2), (4, 7), (7, 7), (10, 10)]

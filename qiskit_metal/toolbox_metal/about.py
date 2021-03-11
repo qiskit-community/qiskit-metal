@@ -127,7 +127,7 @@ def orient_me(do_print: bool = True) -> Union[None, str]:
     """Full system, python, user, and environemnt information.
 
     Args:
-        do_print(bool) : Return the string if True, else format and print.
+        do_print(bool): Return the string if True, else format and print.
     """
 
     text = get_platform_info()
