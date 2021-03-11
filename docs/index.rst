@@ -13,7 +13,7 @@ Qiskit Metal |version| documentation
 
 .. attention::
 
-    This is an early-access alpha version of Qiskit Metal. This folder will be expanded throughout the early-access period, based on both planned training and your feedback. Please let us know about anything you might want us to add or elaborate upon.
+    This is an alpha version of Qiskit Metal, the code is still under development.  Please let us know about anything you might want us to add or elaborate upon.
 
 
 | **Qiskit for quantum hardware design (`Qiskit Metal`)** is a quantum device design and analysis SDK, library, and community.
@@ -109,7 +109,7 @@ Qiskit-metal is licensed under Apache 2.0. IBM reserves no copyright over output
     QDesigns<apidocs/designs>
     QComponents<apidocs/qlibrary>
     Analyses<apidocs/analyses>
-    Renderer<apidocs/renderers>
+    QRenderes<apidocs/renderers>
     Toolbox<apidocs/toolbox_metal>
 
 .. toctree::

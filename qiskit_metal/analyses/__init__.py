@@ -29,6 +29,7 @@ Hamiltonian
     :toctree:
 
     Hcpb
+    HO_wavefunctions
 
 
 Electromagnetic & quantization / parameter extraction
@@ -38,7 +39,7 @@ Electromagnetic & quantization / parameter extraction
     :toctree:
 
     cpw_calculations
-    lumped_capacitive
+    kappa_calculation
 
 Scan Options
 ------------
@@ -48,9 +49,19 @@ Scan Options
 
     Scanning
 
+Quantization
+------------
+
+.. autosummary::
+    :toctree:
+
+    lumped_capacitive
+
 """
 
 from .em import cpw_calculations
+from .em import kappa_calculation
 from .quantization import lumped_capacitive
 from .hamiltonian.transmon_charge_basis import Hcpb
+from .hamiltonian import HO_wavefunctions
 from .scan_options.scanning import Scanning

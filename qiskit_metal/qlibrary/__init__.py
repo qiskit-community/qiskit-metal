@@ -22,7 +22,7 @@ Module containing all Qiskit Metal QLibrary.
 
 .. _qlibrary:
 
-Base Components
+QComponents
 ---------------
 
 .. autosummary::

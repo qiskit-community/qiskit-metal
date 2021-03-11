@@ -33,11 +33,11 @@ import scipy.optimize as opt
 from pint import UnitRegistry
 
 __all__ = [
-    'chargeline_T1', 'extract_transmon_coupled_Noscillator',
-    'levels_vs_ng_real_units', 'load_q3d_capacitance_matrix',
-    'df_reorder_matrix_basis', 'chi', 'cos_to_mega_and_delta',
-    'df_cmat_style_print', 'get_C_and_Ic', 'move_index_to', 'readin_q3d_matrix',
-    'transmon_props'
+    'Ic_from_Lj', 'Ic_from_Ej', 'Cs_from_Ec', 'transmon_props', 'chi',
+    'extract_transmon_coupled_Noscillator', 'levels_vs_ng_real_units',
+    'get_C_and_Ic', 'cos_to_mega_and_delta', 'chargeline_T1',
+    'readin_q3d_matrix', 'readin_q3d_matrix_m', 'load_q3d_capacitance_matrix',
+    'df_cmat_style_print', 'move_index_to', 'df_reorder_matrix_basis'
 ]
 
 # define constants
@@ -610,7 +610,7 @@ def chargeline_T1(Ccharge, Cq, f01):
 # TODO: Move to a more generic file
 
 
-def readin_q3d_matrix(path:str, delim_whitespace=True):
+def readin_q3d_matrix(path: str, delim_whitespace=True):
     """
     Read in the txt file created from q3d export as CSV
     and output the capacitance matrix file exported by
@@ -689,7 +689,8 @@ def readin_q3d_matrix(path:str, delim_whitespace=True):
 
     return df_cmat, units, design_variation, df_cond
 
-def readin_q3d_matrix_m(path:str) -> pd.DataFrame:
+
+def readin_q3d_matrix_m(path: str) -> pd.DataFrame:
     """Read in Q3D cap matrix from a .m file exported by
     Ansys Q3d.
 
@@ -703,8 +704,11 @@ def readin_q3d_matrix_m(path:str) -> pd.DataFrame:
     match = re.findall(r'capMatrix (.*?)]', text, re.DOTALL)
     if match:
         match = match[0].strip('= [').strip(']').strip('\n')
-        dfC   = pd.read_csv(io.StringIO(match), skipinitialspace=True, header=None)
+        dfC = pd.read_csv(io.StringIO(match),
+                          skipinitialspace=True,
+                          header=None)
     return dfC
+
 
 # TODO: Move to a more generic file
 
@@ -739,7 +743,7 @@ def load_q3d_capacitance_matrix(path, user_units='fF', _disp=True):
     return df_cmat, user_units, design_variation, df_cond
 
 
-def df_cmat_style_print(df_cmat:pd.DataFrame):
+def df_cmat_style_print(df_cmat: pd.DataFrame):
     """Display the dataframe in the cmat style
 
     Args:
@@ -753,7 +757,7 @@ def df_cmat_style_print(df_cmat:pd.DataFrame):
 # Utility functions - Zlatko
 
 
-def move_index_to(i_from:List[int], i_to:List[int], len_):
+def move_index_to(i_from: List[int], i_to: List[int], len_):
     """
     Utility function to swap index.
 
