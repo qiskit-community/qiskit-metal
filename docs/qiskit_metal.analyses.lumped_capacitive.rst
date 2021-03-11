@@ -25,6 +25,7 @@ lumped_capacitive
       load_q3d_capacitance_matrix
       move_index_to
       readin_q3d_matrix
+      readin_q3d_matrix_m
       transmon_props
    
    
