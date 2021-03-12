@@ -7,7 +7,7 @@ FAQ's
 Frequently asked questions.
 
 
-.. _setup:
+.. _faq_setup:
 
 ----------------------
 Setting up environment
