@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2017, 2020.
+# (C) Copyright IBM 2017, 2021.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -105,7 +105,7 @@ nbsphinx_epilog = """
 
 # -- Project information -----------------------------------------------------
 project = 'Qiskit Metal {}'.format(version)
-copyright = '2020, Qiskit Development Team'  # pylint: disable=redefined-builtin
+copyright = '2021, Qiskit Development Team'  # pylint: disable=redefined-builtin
 author = 'Qiskit Metal Development Team'
 # -- General configuration ---------------------------------------------------
 
