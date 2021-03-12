@@ -64,4 +64,4 @@ from .em import kappa_calculation
 from .quantization import lumped_capacitive
 from .hamiltonian.transmon_charge_basis import Hcpb
 from .hamiltonian import HO_wavefunctions
-from .scan_options.scanning import Scanning
+from .sweep_options.sweeping import Sweeping
