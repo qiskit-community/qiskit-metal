@@ -217,14 +217,22 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
         Test component_metadata in component/cpw_hanger_t.py.
         """
         component = CPWHangerT
-        self.assertEqual(component.component_metadata, {'short_name': 'cpw'})
+
+        metadata = component.component_metadata
+        self.assertEqual(len(metadata), 2)
+        self.assertEqual(metadata['short_name'], 'cpw')
+        self.assertEqual(metadata['_qgeometry_table_path'], 'True')
 
     def test_component_open_to_ground_component_metadata(self):
         """
         Test component_metadata in component/open_to_ground.py.
         """
         component = open_to_ground.OpenToGround
-        self.assertEqual(component.component_metadata, {'short_name': 'term'})
+
+        metadata = component.component_metadata
+        self.assertEqual(len(metadata), 2)
+        self.assertEqual(metadata['short_name'], 'term')
+        self.assertEqual(metadata['_qgeometry_table_poly'], 'True')
 
     def test_component_short_to_ground_component_metadata(self):
         """
