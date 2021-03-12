@@ -59,6 +59,7 @@ Qiskit-metal is licensed under Apache 2.0. IBM reserves no copyright over output
     :maxdepth: 2
     :hidden:
 
+    Home<https://qiskit.org/documentation/metal/>
     Installing Qiskit Metal<installation>
     Metal Workflow<workflow>
     Frequently Asked Questions<faq>
