@@ -49,7 +49,8 @@ class Sweeping():
             option_sweep: list,
             qcomp_render: list,
             endcaps_render: list,
-            leave_last_design: bool = True) -> Tuple[dict, int]:
+            leave_last_design: bool = True,
+            design_name: str = "Sweep_Capacitance") -> Tuple[dict, int]:
         """Ansys must be open with inserted project "Q3D Extractor Design." 
 
         Args:
@@ -59,6 +60,7 @@ class Sweeping():
             qcomp_render (list): The component to render to Q3D. 
             endcaps_render (list): Identify which kind of pins. Follow the details from renderer QQ3DRenderer.render_design.
             leave_last_design (bool) : In Q3d, after the last sweep, should the design be cleared?
+            design_name(str): Name of q3d_design to use in project.
 
         Returns:
             dict: The key is each value of option_sweep, the value is the capacitance matrix for each sweep.
@@ -72,7 +74,6 @@ class Sweeping():
             * 5 option_sweep is empty, need at least one entry.
             * 6 project not in app
             * 7 design not in app
-
            
         """
         #Dict of all swept information.
@@ -103,7 +104,7 @@ class Sweeping():
 
         a_q3d = self.design.renderers.q3d
         a_q3d.connect_ansys()
-        a_q3d.activate_q3d_design("Sweep_Capacitance")
+        a_q3d.activate_q3d_design(design_name)
 
         obj_names = a_q3d.pinfo.get_all_object_names()
         if obj_names:
