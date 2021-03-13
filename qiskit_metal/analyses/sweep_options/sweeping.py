@@ -103,6 +103,7 @@ class Sweeping():
 
         a_q3d = self.design.renderers.q3d
         a_q3d.connect_ansys()
+        a_q3d.activate_q3d_design("Sweep_Capacitance")
 
         obj_names = a_q3d.pinfo.get_all_object_names()
         if obj_names:
