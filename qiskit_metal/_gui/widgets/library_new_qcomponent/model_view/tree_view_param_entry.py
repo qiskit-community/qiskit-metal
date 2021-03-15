@@ -50,12 +50,9 @@ QTreeView::branch {  border-image: url(none.png); }
 
     def mousePressEvent(self, event: QtGui.QMouseEvent):
         myindex = self.indexAt(event.pos())
-        print("pos: ", event.pos())
-        print("INDEX: ", myindex)
         if (myindex.row() == -1):
             self.clearSelection()
             self.setCurrentIndex(QModelIndex())
-            print("taylow", self.currentIndex())
         super().mousePressEvent(event)
 
     def resize_on_expand(self):

@@ -26,23 +26,15 @@ class ParamDelegate(QItemDelegate):
                      index: QModelIndex) -> QWidget:
         if index.column() == TreeModelParamEntry.TYPE:
             node = index.model().nodeFromIndex(index)
-            try:
-                combo = node.get_type_combobox(parent)  #dicts vs values
-            except Exception as e:
-                print(e)
-            print("combo: ", combo)
+            combo = node.get_type_combobox(parent)  #dicts vs values
             combo.setEditable(True)
-            print("ret combo")
             return combo
         else:
             return QItemDelegate.createEditor(self, parent, option, index)
 
     def setEditorData(self, editor, index: QModelIndex):
-        print("hi")
         m = index.model()
-        print(m)
         d = m.data(index, Qt.DisplayRole)
-        print(d)
         text = index.model().data(index, Qt.DisplayRole)
         if index.column() == TreeModelParamEntry.TYPE:
             text = editor.setCurrentText(text)

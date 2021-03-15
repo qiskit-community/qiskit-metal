@@ -173,21 +173,17 @@ class QComponent():
 
         # Status: used to handle building of a component and checking if it succeeded or failed.
         self.status = 'Not Built'
-        print("status maded in qcomp init")
         if not is_design(design):
             raise ValueError(
                 "Error you did not pass in a valid Metal QDesign object as a '\
                 'parent of this QComponent.")
 
         self._design = design  # reference to parent
-        print("Designed")
         if self._delete_evaluation(name) is 'NameInUse':
             raise ValueError(
                 f"{name} is already in use. Please choose another name for component."
             )
-        print("qcomp _nameing")
         self._name = name
-        print("qcomp done _named")
 
         self._class_name = self._get_unique_class_name()  # Full class name
 
@@ -243,7 +239,6 @@ class QComponent():
             while self.design.rename_component(
                     self._id, short_name + "_" + str(name_id)) != 1:
                 name_id = self.design._get_new_qcomponent_name_id(short_name)
-        print("nameddddd")
         # Add keys for each type of table.  add_qgeometry() will update bool if the table is used.
         self.qgeometry_table_usage = Dict()
         self.populate_to_track_table_usage()
@@ -251,7 +246,6 @@ class QComponent():
         # Make the component geometry
         if make:
             self.rebuild()
-        print("done qcomp init rebuilded")
 
     @classmethod
     def _gather_all_children_options(cls) -> dict:
@@ -543,9 +537,7 @@ class QComponent():
             if self._made:  # already made, just remaking
                 self.design.qgeometry.delete_component_id(self.id)
                 self.design._delete_all_pins_for_component(self.id)
-            print("will make")
             self.make()
-            print("done maded")
             self._made = True
             self.status = 'good'
 
@@ -1021,8 +1013,6 @@ class QComponent():
         b1 = '\033[94m\033[1m'
         e = '\033[0m'
 
-        # id = {hex(id(self))}
-        # options = pprint.pformat(self.options)
 
         options = format_dict_ala_z(self.options)
         text = f"{b}name:    {b1}{self.name}{e}\n"\
@@ -1139,5 +1129,4 @@ class QComponent():
         to get a summary tables used for this component.
         """
         for table_name in self.design.qgeometry.tables.keys():
-            print("table_name: ", table_name)
             self.qgeometry_table_usage[table_name] = False

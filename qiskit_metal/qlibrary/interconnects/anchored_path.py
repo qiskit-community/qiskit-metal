@@ -282,7 +282,7 @@ class RouteAnchors(QRoute):
                 # corner1 is "in front of" the start_pt
                 if (end_direction is None) or (mao.dot(end_direction,
                                                        corner1 - end) >= 0):
-                    print("will exxpand np corner1 ")
+
                     # corner1 is also "in front of" the end_pt
                     return np.expand_dims(corner1, axis=0)
             elif (mao.dot(start_direction, corner2 - start) > 0) and startc2end:
@@ -290,7 +290,7 @@ class RouteAnchors(QRoute):
                 if (end_direction is None) or (mao.dot(end_direction,
                                                        corner2 - end) >= 0):
                     # corner2 is also "in front of" the end_pt
-                    print("will exxpand np corner2 ")
+
 
                     return np.expand_dims(corner2, axis=0)
             # In notation below, corners 3 and 4 correspond to
@@ -330,12 +330,12 @@ class RouteAnchors(QRoute):
             if (mao.dot(start_direction, corner1 - start) >= 0) and startc1end:
                 if (end_direction is None) or (mao.dot(end_direction,
                                                        corner1 - end) >= 0):
-                    print("Dogehouse")
+
                     return np.expand_dims(corner1, axis=0)
             if (mao.dot(start_direction, corner2 - start) >= 0) and startc2end:
                 if (end_direction is None) or (mao.dot(end_direction,
                                                        corner2 - end) >= 0):
-                    print("Ben Awad")
+
                     return np.expand_dims(corner2, axis=0)
             if (mao.dot(start_direction, corner3 - start) >=
                     0) and startc3c4end:
@@ -412,31 +412,31 @@ class RouteAnchors(QRoute):
         end_point = self.set_lead("end")
 
         self.intermediate_pts = OrderedDict()
-        print("will items")
+
         for arc_num, coord in anchors.items():
-            print("coord: ", coord, "arcnum: ", arc_num)
+
             arc_pts = self.connect_simple(self.get_tip(), QRoutePoint(coord))
-            print("arcpts : ", arc_pts)
+
             if arc_pts is None:
-                print("will cord")
+
                 self.intermediate_pts[arc_num] = [coord]
             else:
-                print("will intermediate")
+
                 self.intermediate_pts[arc_num] = np.concatenate(
                     [arc_pts, [coord]], axis=0)
-        print("itemsED()")
+
         arc_pts = self.connect_simple(self.get_tip(), end_point)
-        print("arcpts again ", arc_pts)
+
         if arc_pts is not None:
             self.intermediate_pts[len(anchors)] = np.array(arc_pts)
-        print("done done done done")
+
         # concatenate all points, transforming the dictionary into a single numpy array
         self.trim_pts()
-        print("trimmed")
+
         self.intermediate_pts = np.concatenate(list(
             self.intermediate_pts.values()),
                                                axis=0)
-        print("intermediated")
+
         # Make points into elements
         self.make_elements(self.get_points())
-        print("made elements heresies ")
+
