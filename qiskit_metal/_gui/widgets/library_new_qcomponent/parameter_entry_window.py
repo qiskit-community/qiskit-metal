@@ -67,6 +67,14 @@ class ParameterEntryWindow(QMainWindow):
                  design: designs.DesignPlanar,
                  parent=None,
                  gui=None):
+        """
+        Parameter Entry Widget when qcomponent is chosen from GUI's QLibrary
+        Args:
+            qcomp_class: QComponent to be instantiated
+            design: Current design being used
+            parent: Parent widget
+            gui: Metal GUI
+        """
 
         super().__init__(parent)
         self.qcomp_class = qcomp_class
@@ -86,9 +94,7 @@ class ParameterEntryWindow(QMainWindow):
         self.ui.qcomponent_param_tree_view.setModel(self.model)
         self.ui.qcomponent_param_tree_view.setItemDelegate(ParamDelegate(self))
 
-        # self.ui.qcomponent_param_tree_view.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
-        # self.ui.qcomponent_param_tree_view.setHorizontalScrollMode(
-        # QAbstractItemView.ScrollPerPixel)
+
         self.statusBar().hide()
 
         ## should be moved to qt designer
@@ -118,29 +124,6 @@ class ParameterEntryWindow(QMainWindow):
         All exceptions in QComponentParameterEntry should result in a pop-up window.
         This class contains the decorators that control exception handling for all functions in QComponentParameterEntry
         """
-        #
-        # @classmethod
-        # def log_error(cls, log_owner, exception: Exception, wrapper: Callable,
-        #               args, kwargs):
-        #     """
-        #     Log error manually with whatever logger is currently available. Only used by other QComponentParameterEntryExceptionDecorators decorators
-        #     Args:
-        #         log_owner: Owner of current logger
-        #         exception: exception
-        #         wrapper: wrapper function of other QComponentParameterEntryExceptionDecorators decoraters
-        #         args: current args for function causing the exception
-        #         kwargs: current kwargs for function causing the exception
-        #
-        #     """
-        #     message = traceback.format_exc()
-        #     message += '\n\nERROR in QCPE\n' \
-        #                + f"\n{' module   :':12s} {wrapper.__module__}" \
-        #                + f"\n{' function :':12s} {wrapper.__qualname__}" \
-        #                + f"\n{' err msg  :':12s} {exception.__repr__()}" \
-        #                + f"\n{' args; kws:':12s} {args}; {kwargs}" \
-        #                + "\nTill now I always got by on my own........ (I never really cared until I met you)"
-        #     log_owner.logger.error(message)
-
         @classmethod
         def entry_exception_pop_up_warning(cls, func: Callable):
             """
@@ -232,6 +215,7 @@ class ParameterEntryWindow(QMainWindow):
 
     @QComponentParameterEntryExceptionDecorators.entry_exception_pop_up_warning
     def _setup_source(self):
+        """Called when we need to set up a new source"""
 
         filepath = self.qcomponent_file_path
 
@@ -270,7 +254,7 @@ class ParameterEntryWindow(QMainWindow):
 
     @QComponentParameterEntryExceptionDecorators.entry_exception_pop_up_warning
     def add_k_v_row(self):
-        #based on what row is highlighed in treeview
+        """ Add key, value row to parent row based on what row is highlighed in treeview"""
         cur_index = self.ui.qcomponent_param_tree_view.currentIndex()
 
         key = "fake-param" + str(random.randint(0, 1000))
@@ -280,6 +264,7 @@ class ParameterEntryWindow(QMainWindow):
 
     @QComponentParameterEntryExceptionDecorators.entry_exception_pop_up_warning
     def add_k_dict_row(self):
+        """ Add key, dictionary-value to parent row based on what row is highlighed in treeview"""
         cur_index = self.ui.qcomponent_param_tree_view.currentIndex()
 
         fake_dict = "fake-dict" + str(random.randint(0, 1000))
@@ -289,13 +274,14 @@ class ParameterEntryWindow(QMainWindow):
 
     @QComponentParameterEntryExceptionDecorators.entry_exception_pop_up_warning
     def delete_row(self):
+        """Delete highlight row"""
         cur_index = self.ui.qcomponent_param_tree_view.currentIndex()
         self.model.delete_node(cur_index)
 
     @QComponentParameterEntryExceptionDecorators.entry_exception_pop_up_warning
     def generate_model_data(self):
+        """Use QComponent's default_options and parameter (with typing) to populate Param Entry Window"""
 
-        # GET ARGS dict
         param_dict = {}
         class_signature = signature(self.qcomp_class.__init__)
 
@@ -306,8 +292,6 @@ class ParameterEntryWindow(QMainWindow):
                 else:
                     param_dict[param.name] = create_default_from_type(
                         param.annotation)
-
-        # ADD in DEFAULT OPTIONS
 
         if 'default_options' in self.qcomp_class.__dict__:
             options = self.qcomp_class.default_options
@@ -322,6 +306,7 @@ class ParameterEntryWindow(QMainWindow):
 
     @QComponentParameterEntryExceptionDecorators.entry_exception_pop_up_warning
     def instantiate_qcomponent(self):
+        """Instantiate self.qcomp_class"""
 
         self.traverse_model_to_create_dictionary()
 
@@ -334,6 +319,7 @@ class ParameterEntryWindow(QMainWindow):
         self.close()
 
     def traverse_model_to_create_dictionary(self):
+        """Traverse model to create parameter entry dictionary given to self.qcomp_class"""
         parameter_dict = {}
         r = self.model.root
         self.recursively_get_params(parameter_dict, r)
@@ -341,6 +327,7 @@ class ParameterEntryWindow(QMainWindow):
         self.current_dict = parameter_dict[""]
 
     def recursively_get_params(self, parent_dict, curNode):
+        """Helper function for traverse_model_to_create_dictionary"""
 
         if isinstance(curNode, LeafNode):
 
@@ -358,32 +345,20 @@ class ParameterEntryWindow(QMainWindow):
 def create_parameter_entry_window(gui: 'MetalGUI',
                                   abs_file_path: str,
                                   parent=None) -> QtWidgets.QWidget:
-    """Creates the spawned window that has the edit source
+    """Creates the spawned window that has the Parameter Entry Window
     """
-    # GET CLASS
-
     cur_class = get_class_from_abs_file_path(abs_file_path)
     if cur_class is None:
         gui.logger.error("Unable to get class from abs file: ", abs_file_path)
         return None
 
-    #CREATE TREE
-
     if not parent:
         parent = gui.main_window  # gui.component_window.ui.tabHelp
-
-    #TODO gui log
 
     param_window = ParameterEntryWindow(cur_class, gui.design, parent, gui)
 
     param_window.dock = dockify(param_window, "New " + cur_class.__name__, gui)
     param_window.setup_pew()
-
-    #
-    # param_window.ui.textEditHelp.setStyleSheet("""
-    # background-color: #f9f9f9;
-    # color: #000000;
-    #         """)
 
     param_window.dock.show()
     param_window.dock.raise_()
@@ -439,7 +414,7 @@ def get_class_from_abs_file_path(abs_file_path):
 
 
 def create_default_from_type(t: type):
-    #yes this is hardcoded - we're all sad about it
+    """Create default values for a given type"""
     if t == int:
         return 0
     elif t == float:

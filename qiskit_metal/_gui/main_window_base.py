@@ -656,6 +656,7 @@ def kick_start_qApp():
                     ipython.magic('gui qt5')
 
                 except Exception as e:
+                    print("exception")
                     logging.error(f"FAILED: {e}")
                     print(e)
 

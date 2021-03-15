@@ -40,7 +40,7 @@ class TreeViewParamEntry(QTreeView):
         """
         QTreeView.__init__(self, parent)
 
-        # not sure whu the ui isnt unpdating these here.
+        # not sure whu the ui isn't updating these here.
         self.expanded.connect(self.resize_on_expand)
 
     def style_me(self):
@@ -49,6 +49,8 @@ QTreeView::branch {  border-image: url(none.png); }
         """)
 
     def mousePressEvent(self, event: QtGui.QMouseEvent):
+        """ Overrides inherited mousePressEvent to allow user to clear any selections
+        by clicking off the displayed tree. Then calls the inherited mousePressEvent"""
         myindex = self.indexAt(event.pos())
         if (myindex.row() == -1):
             self.clearSelection()

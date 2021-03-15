@@ -349,17 +349,19 @@ class TreeModelParamEntry(QAbstractItemModel):
 
     def __init__(self,
                  parent: QWidget,
-                 view,
+                 view: QTreeView,
                  data_dict: OrderedDict = {},
                  design: 'QDesign' = None):
         """
-        Editable table with drop-down rows for a generic options menu.
+        Editable table with drop-down rows for a generic qcomponent menu.
         Organized as a tree model where child nodes are more specific properties
         of a given parent node.
 
         Args:
             parent (QWidget): The parent widget
-            child (str): Name of child class, eg 'component' or 'GDS renderer'
+            view:  Model's related QTreeView
+            data_dict: Data to be stored in the model's tree
+            design: Current design using the model
         """
         super().__init__(parent=parent)
         self._rowCount = -1
@@ -373,6 +375,16 @@ class TreeModelParamEntry(QAbstractItemModel):
         self.init_load(data_dict)
 
     def add_new_leaf_node(self, cur_index: QModelIndex, key, value=None):
+        """
+        Add new leaf node to model's backing tree structure
+        Args:
+            cur_index: Index of parent of new leaf
+            key: Key value in leaf node's key-value pair
+            value: Value in lead node's key-value pair
+
+        Returns:
+
+        """
         parent_node = self.nodeFromIndex(cur_index)
 
         if isinstance(parent_node, LeafNode):
@@ -390,6 +402,15 @@ class TreeModelParamEntry(QAbstractItemModel):
                             key,
                             fake_key,
                             fake_value=None):
+        """
+        Adds new branch node to model's backing tree
+        Args:
+            cur_index: Index of parent of new branch
+            key: Key value, aka, name of new branch
+            fake_key: Placeholder leaf's key since QTreeView cannot display childless BranchNodes
+            fake_value: Placeholder leaf's value since QTreeView cannot display childless BranchNodes
+
+        """
         parent_node = self.nodeFromIndex(cur_index)
         if isinstance(parent_node, LeafNode):
             return
@@ -403,6 +424,14 @@ class TreeModelParamEntry(QAbstractItemModel):
         self.expand_items_in_paths(op)
 
     def delete_node(self, cur_index: QModelIndex):
+        """
+        Removes node from backing tree
+        Args:
+            cur_index: Index of node to be removed from backing tree
+
+        Returns:
+
+        """
         cur_node = self.nodeFromIndex(cur_index)
 
         if cur_node == self.root:
@@ -449,17 +478,16 @@ class TreeModelParamEntry(QAbstractItemModel):
                 self.paths.append(curpath + [k, v])
 
     def reload(self):
+        """ Sends out a signal forcing QTreeView to completely refresh"""
         self.beginResetModel()
         self.endResetModel()
 
     def init_load(self, data_dict: dict):
-        """Builds a tree from a dictionary (self.data_dict)"""
+        """Builds a tree from a dictionary (data_dict)"""
 
         if len(data_dict) < 1:
             return
         self.beginResetModel()
-
-        # Set the data dict reference of the root node. The root node doesn't have a name.
 
         # Clear existing tree paths if any
         self.root.children.clear()
@@ -492,8 +520,6 @@ class TreeModelParamEntry(QAbstractItemModel):
             # [Note: This happens when the root-to-leaf path length is just 2.]
             # In this case, add the LeafNode right below the master root.
             # Otherwise, add the LeafNode below the final branch.
-
-            # simplified
             root.insertChild(LeafNode(path[-2], path[-1], parent=root))
 
         # Emit a signal since the model's internal state
@@ -504,7 +530,7 @@ class TreeModelParamEntry(QAbstractItemModel):
         """Get the number of rows
 
         Args:
-            parent (QModelIndex): the parent
+            parent (QModelIndex): The parent
 
         Returns:
             int: The number of rows
@@ -526,30 +552,14 @@ class TreeModelParamEntry(QAbstractItemModel):
         """Get the number of columns
 
         Args:
-            parent (QModelIndex): the parent
+            parent (QModelIndex): The parent
 
         Returns:
-            int: the number of columns
+            int: The number of columns
         """
         return len(self.headers)
 
     def data(self, index: QModelIndex, role: Qt.ItemDataRole = Qt.DisplayRole):
-        # istr = f"index: {index}  {index.row()} {index.column()}"
-        # try:
-        #     name = self.nodeFromIndex(index).name
-        #     istr = f"{name}: {istr}"
-        #
-        # except:
-        #     istr = f"invalid: {istr}"
-        #
-        # try:
-        #     pname = self.nodeFromIndex(index.parent.parent()).name
-        #     istr = f"parent: {pname}: {istr}"
-        # except:
-        #     istr = f"no parent: {istr}"
-        #
-        # istr = f"\n\n\n\n  {istr}"
-        #
         """Gets the node data
 
         Args:
@@ -616,9 +626,9 @@ class TreeModelParamEntry(QAbstractItemModel):
         The dataChanged() signal should be emitted if the data was successfully set.
 
         Args:
-            index (QModelIndex): the index
-            value: the value
-            role (Qt.ItemDataRole): the role of the data (Default: Qt.EditRole)
+            index (QModelIndex): The index
+            value: The value
+            role (Qt.ItemDataRole): The role of the data (Default: Qt.EditRole)
 
         Returns:
             bool: True if successful, False otherwise
@@ -699,6 +709,7 @@ class TreeModelParamEntry(QAbstractItemModel):
 
     # persistentIndexList
     def get_path_of_expanded_items(self):
+        """ Collect which nodes are currently expanded in order to re-expand them after refreshing the model"""
         expanded_nodes = []
         try:
             pil = self.persistentIndexList()
@@ -712,7 +723,7 @@ class TreeModelParamEntry(QAbstractItemModel):
         return expanded_nodes
 
     def expand_items_in_paths(self, expanded_nodes):
-
+        """Expand all nodes that were previously saved in expanded_nodes"""
         INDEX = 0
         NODE = 1
         cur_index = QModelIndex()
@@ -739,28 +750,6 @@ class TreeModelParamEntry(QAbstractItemModel):
                     if isinstance(new_node, BranchNode):
                         discovered_queue.put((new_index, new_node))
 
-                    row = row + 1
-
-    def find_opened_toggles(self, cur_index: QModelIndex, key: str):
-        node = self.nodeFromIndex(cur_index)
-        discovered_queue = queue.Queue()
-        discovered_queue.put((cur_index, node))
-
-        while len(discovered_queue) > 0:
-            to_check = discovered_queue.get()
-            if to_check[2].name == key:
-                return to_check
-
-            # find all children and add them to queue
-            parent_index = to_check[1]
-            new_index = to_check[1]
-            row = 0
-            while (new_index.isValid()):
-                new_index = self.index(row, 0, parent_index)
-                if new_index is not None and new_index.isValid():
-                    # if
-                    new_node = self.nodeFromIndex(new_index)
-                    discovered_queue.put((new_index, new_node))
                     row = row + 1
 
     def headerData(self, section: int, orientation: Qt.Orientation,

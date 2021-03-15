@@ -484,9 +484,15 @@ class MetalGUI(QMainWindowBaseHandler):
                                           tableView=self.ui.tableComponents)
         self.ui.tableComponents.setModel(model)
 
-    #must be defined outside of _setup_library_widget to ensure self == MetalGUI and will retain opened ScrollArea
     def create_new_component_object_from_qlibrary(self,
                                                   relative_index: QModelIndex):
+        """
+        Must be defined outside of _setup_library_widget to ensure self == MetalGUI and will retain opened ScrollArea
+
+        Args:
+            relative_index: QModelIndex of the desired QComponent file in the Qlibrary GUI display
+
+        """
 
         filename = self.library_proxy_model.data(relative_index)
 
@@ -505,6 +511,10 @@ class MetalGUI(QMainWindowBaseHandler):
                 f"Unable to open param entry window due to Exception: {e} ")
 
     def _setup_library_widget(self):
+        """
+        Sets up the GUI's QLibrary display
+
+        """
 
         # getting absolute path of Qlibrary folder
         init_qlibrary_abs_path = os.path.abspath(qlibrary.__file__)
@@ -734,6 +744,7 @@ class MetalGUI(QMainWindowBaseHandler):
         self.zoom_on_components([name_instance])
         self.edit_component_source(name_instance)
 
+    @slot_catch_error()
     def gui_create_build_log_window(self, _=None):
         """Creates a separate window that displays the recent successful/fails of all components for the design.
 

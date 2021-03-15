@@ -1,29 +1,28 @@
 from PySide2.QtWidgets import QItemDelegate
+from PySide2.QtCore import QAbstractItemModel, QModelIndex, QTimer, Qt
+from PySide2.QtWidgets import (QWidget,QStyleOptionViewItem)
 
-from PySide2 import QtCore
-from PySide2.QtGui import QFont, QPainter, QTextDocument, QColor
-from PySide2.QtWidgets import QTreeView, QWidget
-from PySide2.QtCore import QAbstractItemModel, QModelIndex, QTimer, Qt
-import ast
-from typing import Union, TYPE_CHECKING
-import queue
-from PySide2.QtCore import QAbstractItemModel, QModelIndex, QTimer, Qt
-from PySide2.QtWidgets import (QAbstractItemView, QApplication, QFileDialog,
-                               QWidget, QTreeView, QLabel, QMainWindow,
-                               QMessageBox, QTabWidget, QStyle,
-                               QStyleOptionViewItem, QTextEdit, QLineEdit)
-from PySide2.QtWidgets import QApplication
-import builtins
-import numpy as np
-import json
 from qiskit_metal._gui.widgets.library_new_qcomponent.model_view.tree_model_param_entry import TreeModelParamEntry
 
 
 class ParamDelegate(QItemDelegate):
+    """
+    ParamDelegate for controlling specific UI display (such as QComboBoxes) for the Parameter Entry Window
+    """
     pass
 
     def createEditor(self, parent: QWidget, option: QStyleOptionViewItem,
                      index: QModelIndex) -> QWidget:
+        """
+        Overriding inherited createdEditor class
+        Args:
+            parent: Parent widget
+            option: Style options for the related view
+            index: Specific index being edited
+
+        Returns:
+
+        """
         if index.column() == TreeModelParamEntry.TYPE:
             node = index.model().nodeFromIndex(index)
             combo = node.get_type_combobox(parent)  #dicts vs values
@@ -33,6 +32,13 @@ class ParamDelegate(QItemDelegate):
             return QItemDelegate.createEditor(self, parent, option, index)
 
     def setEditorData(self, editor, index: QModelIndex):
+        """
+        Overriding inherited setEditorData class
+        Args:
+            editor: Current editor for the data
+            index: Current index being modified
+
+        """
         m = index.model()
         d = m.data(index, Qt.DisplayRole)
         text = index.model().data(index, Qt.DisplayRole)
@@ -42,6 +48,16 @@ class ParamDelegate(QItemDelegate):
             QItemDelegate.setEditorData(self, editor, index)
 
     def setModelData(self, editor, model: QAbstractItemModel, index):
+        """
+        Overriding inherited setModelData class
+        Args:
+            editor: Current editor for the data
+            model: Current model whose data is being set
+            index: Current index being modified
+
+        Returns:
+
+        """
         if index.column() == TreeModelParamEntry.TYPE:
             model.setData(index, editor.getTypeName())
             # get type
@@ -50,11 +66,3 @@ class ParamDelegate(QItemDelegate):
             # get value
         else:
             QItemDelegate.setModelData(self, editor, model, index)
-
-    #   WILL nEeD for values / names
-
-    # def commitAndCloseEditor(self):
-    #     editor = self.sender()
-    #     if isinstance(editor, (QTextEdit, QLineEdit)):
-    #         self.commitData.emit()
-    #

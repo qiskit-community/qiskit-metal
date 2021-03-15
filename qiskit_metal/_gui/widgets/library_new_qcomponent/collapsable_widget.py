@@ -23,11 +23,15 @@ from PySide2 import QtCore, QtWidgets
 
 # code from https://stackoverflow.com/questions/52615115/how-to-create-collapsible-box-in-pyqt
 class CollapsibleWidget(QtWidgets.QWidget):
-    """
-    Creates a Widget that can collapse and un-collapse at the click of a toggle button
-    """
 
     def __init__(self, title="", parent=None):
+        """
+        Creates a Widget that can collapse and un-collapse at the click of a toggle button
+
+        Args:
+            title: Displayed title of the Collapsible Widget
+            parent: Collapsed Widget's parent
+        """
         super(CollapsibleWidget, self).__init__(parent)
 
         self.toggle_button = QtWidgets.QToolButton(text=title,
@@ -65,6 +69,7 @@ class CollapsibleWidget(QtWidgets.QWidget):
         self.is_set_up = False
 
     def on_pressed(self):
+        """Toggles Collapsible Widget when toggle arrow is pressed"""
         if not self.is_set_up:
             self.set_up()
 
@@ -79,9 +84,11 @@ class CollapsibleWidget(QtWidgets.QWidget):
         self.toggle_animation.start()
 
     def setContent(self, widget):
+        """ Set's Collapsible Widget's content"""
         self.content_area.setWidget(widget)
 
     def set_up(self):
+        """ Calculates animation variables and set up animation (collapsing/expanding) for Collapsible Widget"""
 
         self.collapsed_height = (self.sizeHint().height() -
                                  self.content_area.maximumHeight())
