@@ -41,13 +41,13 @@ Electromagnetic & quantization / parameter extraction
     cpw_calculations
     kappa_calculation
 
-Scan Options
-------------
+Sweeping Options
+----------------
 
 .. autosummary::
     :toctree:
 
-    Scanning
+    Sweeping
 
 Quantization
 ------------
