@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2017, 2020.
+# (C) Copyright IBM 2017, 2021.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -122,7 +122,7 @@ class QComponent():
     All options should have string keys and preferrable string values.
     """
 
-    # Dummy private attribute used to check if an instantiated object is
+    # Dummy private attribute used to check if an instanciated object is
     # indeed a QComponent class. The problem is that the `isinstance`
     # built-in method fails when this module is reloaded.
     # Used by `is_component` to check.
@@ -167,6 +167,7 @@ class QComponent():
             being used in the design, a component will be generated and
             added to design using the name.
         """
+
         # Make the id be None, which means it hasn't been added to design yet.
         self._id = None
         self._made = False
@@ -179,17 +180,16 @@ class QComponent():
                 'parent of this QComponent.")
 
         self._design = design  # reference to parent
-        if self._delete_evaluation(name) is 'NameInUse':
-            raise ValueError(
-                f"{name} is already in use. Please choose another name for component."
-            )
-        self._name = name
 
+        if self._delete_evaluation(name) is 'NameInUse':
+            return
+
+        self._name = name
         self._class_name = self._get_unique_class_name()  # Full class name
 
         #: A dictionary of the component-designer-defined options.
         #: These options are used in the make function to create the QGeometry and QPins.
-        #: All options should have string keys and preferably string values.
+        #: All options should have string keys and preferrable string values.
         self.options = self.get_template_options(
             design=design, component_template=component_template)
         if options:
@@ -201,8 +201,7 @@ class QComponent():
         # Should put this earlier so could pass in other error messages?
         self._error_message = ''
         if self._check_pin_inputs():
-            self.logger.warning(self._error_message +
-                                "QComponent has NOT been added to design")
+            self.logger.warning(self._error_message)
             return
 
         # Build and component internals
@@ -239,6 +238,7 @@ class QComponent():
             while self.design.rename_component(
                     self._id, short_name + "_" + str(name_id)) != 1:
                 name_id = self.design._get_new_qcomponent_name_id(short_name)
+
         # Add keys for each type of table.  add_qgeometry() will update bool if the table is used.
         self.qgeometry_table_usage = Dict()
         self.populate_to_track_table_usage()
@@ -537,6 +537,7 @@ class QComponent():
             if self._made:  # already made, just remaking
                 self.design.qgeometry.delete_component_id(self.id)
                 self.design._delete_all_pins_for_component(self.id)
+
             self.make()
             self._made = True
             self.status = 'good'
@@ -1012,6 +1013,9 @@ class QComponent():
         b = '\033[95m\033[1m'
         b1 = '\033[94m\033[1m'
         e = '\033[0m'
+
+        # id = {hex(id(self))}
+        # options = pprint.pformat(self.options)
 
         options = format_dict_ala_z(self.options)
         text = f"{b}name:    {b1}{self.name}{e}\n"\

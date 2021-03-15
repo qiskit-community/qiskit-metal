@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2017, 2020.
+# (C) Copyright IBM 2017, 2021.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -19,7 +19,7 @@ import numpy as np
 
 
 class ResonatorRectangleSpiral(QComponent):
-    """A rectangle spiral resonator based on length input. The X dimension is modified
+    """A rectnagle spiral resonator based on length input. The X dimension is modified
     by the code based on the total length inputed.
 
     Inherits `QComponent` class

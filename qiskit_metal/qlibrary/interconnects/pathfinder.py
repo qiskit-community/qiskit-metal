@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2017, 2020.
+# (C) Copyright IBM 2017, 2021.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -40,35 +40,9 @@ class RoutePathfinder(RouteAnchors):
         * advanced: Dict
             * avoid_collision: 'true' -- true/false, defines if the route needs to avoid collisions
     """
-    default_options = {
-        'pin_inputs': {
-            'start_pin': {
-                'component': 'Q0',
-                'pin': 'b'
-            },
-            'end_pin': {
-                'component': 'Q1',
-                'pin': 'b'
-            }
-        },
-        'lead': {
-            'start_straight': '91um',
-            'end_straight': '90um',
-            'start_jogged_extension': OrderedDict({0: ["L", '200um']}),
-            'end_jogged_extension': ''
-        },
-        'step_size':
-            '0.25mm',
-        'anchors':
-            OrderedDict({
-                0: np.array([0.048, -0.555]),
-                1: np.array([0.048, 0.195])
-            }),
-        'fillet':
-            '90um',
-        'advanced':
-            Dict(avoid_collision='true'),
-    }
+
+    default_options = Dict(step_size='0.25mm',
+                           advanced=Dict(avoid_collision='true'))
     """Default options"""
 
     def connect_astar_or_simple(self, start_pt: QRoutePoint,

@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2017, 2020.
+# (C) Copyright IBM 2017, 2021.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -20,10 +20,6 @@ from typing import List, Tuple, Union, AnyStr
 from collections.abc import Mapping
 from qiskit_metal.toolbox_metal import math_and_overrides as mao
 import math
-
-from typing import TYPE_CHECKING
-if TYPE_CHECKING:
-    from ...designs.design_base import QDesign
 
 
 class QRoutePoint:
@@ -104,9 +100,9 @@ class QRoute(QComponent):
     """Default options"""
 
     def __init__(self,
-                 design: 'QDesign',
-                 name: str = None,
-                 options: Dict = None,
+                 design,
+                 name=None,
+                 options=None,
                  type: str = "CPW",
                  **kwargs):
         """Initializes all Routes.

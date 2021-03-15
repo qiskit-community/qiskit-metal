@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2017, 2020.
+# (C) Copyright IBM 2017, 2021.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -60,20 +60,9 @@ class RouteMeander(QRoute):
     component_metadata = Dict(short_name='cpw')
     """Component metadata"""
 
-    default_options = Dict(total_length='8mm',
-                           pin_inputs=Dict(start_pin=Dict(component='Q0',
-                                                          pin='a'),
-                                           end_pin=Dict(component='Q1',
-                                                        pin='b')),
-                           lead=Dict(start_straight='0mm',
-                                     end_straight='0.5mm',
-                                     start_jogged_extension='',
-                                     end_jogged_extension=''
-                                     ),
-                           meander=Dict(spacing='200um', asymmetry='0um'),
+    default_options = Dict(meander=Dict(spacing='200um', asymmetry='0um'),
                            snap='true',
-                           prevent_short_edges='true',
-                           fillet='90um')
+                           prevent_short_edges='true')
     """Default options"""
 
     def make(self):

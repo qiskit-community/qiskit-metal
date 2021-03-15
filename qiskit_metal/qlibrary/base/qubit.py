@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2017, 2020.
+# (C) Copyright IBM 2017, 2021.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -15,10 +15,6 @@
 from copy import deepcopy
 from qiskit_metal.toolbox_python.attr_dict import Dict
 from .base import QComponent
-
-from typing import TYPE_CHECKING
-if TYPE_CHECKING:
-    from ...designs.design_base import QDesign
 
 
 class BaseQubit(QComponent):
@@ -51,11 +47,11 @@ class BaseQubit(QComponent):
     """Component metadata"""
 
     def __init__(self,
-                 design: 'QDesign',
-                 name: str = None,
-                 options: Dict = None,
-                 options_connection_pads: Dict = None,
-                 make: bool = True):
+                 design,
+                 name=None,
+                 options=None,
+                 options_connection_pads=None,
+                 make=True):
         """
         Args:
             design (QDesign): The parent design.
