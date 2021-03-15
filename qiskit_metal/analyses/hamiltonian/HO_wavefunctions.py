@@ -16,16 +16,16 @@ This code calculations the wavefunction(s) of the simple harmonic oscillator cor
 to an LC circuit. 
 
 Key References:
-
-R. Shankar, "Principles of Quantum Mechanics", Second Edition, Springer (1994)
-
-(or any other undergraduate quantum mechanics textbook) 
+    - *R. Shankar*, "Principles of Quantum Mechanics", Second Edition, Springer (1994)
+    - or any other undergraduate quantum mechanics textbook)
 
 """
 
 import matplotlib.pyplot as plt
 import numpy as np
 from math import *
+
+__all__ = ['wavefunction']
 
 
 def wavefunction(L, C, n, x):
@@ -34,11 +34,13 @@ def wavefunction(L, C, n, x):
     for a given value of inductance (L) and capacitance (C) at a charge x. 
 
     Args:
-        L (float) - the inductance of the inductor in an LC circuit 
-        C (float) - the capacitance of the capacitor in an LC circuit
-        n (int) - the energy state of the harmonic oscillator 
-        x (float) - the value of charge (independent variable) for which the wavefunction is calculated. 
-        
+        L (float): The inductance of the inductor in an LC circuit.
+        C (float): The capacitance of the capacitor in an LC circuit.
+        n (int): The energy state of the harmonic oscillator.
+        x (float): The value of charge (independent variable) for which the wavefunction is calculated.
+
+    Returns:
+        float: Calculated wavefunction
     """
     # This is the fundamental frequency of the LC circuit
     omega = (L * C)**(0.5)

@@ -99,8 +99,7 @@ class MplInteraction(object):
     """Base class for class providing interaction to a matplotlib Figure."""
 
     def __init__(self, figure):
-        """Initializer
-
+        """
         Args:
             figure (figure): The matplotlib figure to attach the behavior to.
         """
@@ -108,11 +107,11 @@ class MplInteraction(object):
         self._cids = []
 
     def __del__(self):
-        """Disconnnect"""
+        """Disconnnect."""
         self.disconnect()
 
     def _add_connection(self, event_name, callback):
-        """Called to add a connection to an event of the figure
+        """Called to add a connection to an event of the figure.
 
         Args:
             event_name (str): The matplotlib event name to connect to.
@@ -165,14 +164,14 @@ class MplInteraction(object):
         return x_axes, y_axes
 
     def _draw(self):
-        """Conveninent method to redraw the figure"""
+        """Conveninent method to redraw the figure."""
         self.figure.canvas.draw()
 
 
 class ZoomOnWheel(MplInteraction):
     """Class providing zoom on wheel interaction to a matplotlib Figure.
 
-    This class extends the `MplInteraction` class
+    This class extends the `MplInteraction` class.
 
     Supports subplots, twin Axes and log scales.
     """
@@ -193,10 +192,10 @@ class ZoomOnWheel(MplInteraction):
         """Compute a 1D range zoomed around center.
 
         Args:
-            begin (float): The begin bound of the range.
-            end (float): The end bound of the range.
+            begin (float): The begin bound of the range
+            end (float): The end bound of the range
             center (float): The center of the zoom (i.e., invariant point)
-            scale_factor (float): The scale factor to apply.
+            scale_factor (float): The scale factor to apply
             scale (str): The scale of the axis
 
         Returns:
@@ -238,7 +237,7 @@ class ZoomOnWheel(MplInteraction):
             return new_max, new_min
 
     def _on_mouse_wheel(self, event):
-        """Mouse wheel event"""
+        """Mouse wheel event."""
         if event.step > 0:
             scale_factor = self.scale_factor
         else:
@@ -271,7 +270,7 @@ class PanAndZoom(ZoomOnWheel):
     Left button for pan, right button for zoom area and zoom on wheel.
     Support subplots, twin Axes and log scales.
 
-    This class extends the `ZoomOnWheel` class
+    This class extends the `ZoomOnWheel` class.
     """
 
     def __init__(self, figure=None, scale_factor=1.1):
@@ -300,7 +299,7 @@ class PanAndZoom(ZoomOnWheel):
         self._ix_iy_old = (0, 0)
 
     def _get_images_path(self):
-        """Get the path to images
+        """Get the path to images.
 
         Returns:
             str: path
@@ -324,13 +323,13 @@ class PanAndZoom(ZoomOnWheel):
         return imgs_path
 
     def _add_toolbar_tools(self):
-        """Add tools"""
+        """Add tools."""
         # TODO: Outdated - to be removed
 
         from matplotlib.backend_tools import ToolToggleBase  # ToolBase
 
         class ToolPointPosition(ToolToggleBase):
-            '''Tools'''
+            '''Tools.'''
             default_keymap = 'Ctrl+p'
             description = 'Click to get point coordinate printed'
             default_toggled = False
@@ -397,14 +396,14 @@ class PanAndZoom(ZoomOnWheel):
         # figManager.statusbar.set_message('')
 
     def auto_scale(self):
-        """Auto scaler"""
+        """Auto scaler."""
         for ax in self.figure.axes:
             ax.autoscale()
         # self.figure.canvas.flush_events()
         self.figure.canvas.draw()
 
     def _style_figure(self):
-        """Style figure"""
+        """Style figure."""
         #self.figure.dpi = 150
         pass
 
@@ -414,15 +413,15 @@ class PanAndZoom(ZoomOnWheel):
 
         Args:
             axis_id (int): ID of the axis
-            event (event): the event
-            last_event (event): the previous event
+            event (event): The event
+            last_event (event): The previous event
 
         Returns:
-            double: new limit
+            double: New limit
 
         Raises:
-            ValueError: value error
-            OverflowError: overflow error
+            ValueError: Value error
+            OverflowError: Overflow error
         """
         assert axis_id in (0, 1)
         if axis_id == 0:
@@ -455,10 +454,10 @@ class PanAndZoom(ZoomOnWheel):
         return new_lim
 
     def _pan(self, event):
-        """Pan
+        """Pan.
 
         Args:
-            event (event): the event
+            event (event): The event
         """
         if event.name == 'button_press_event':  # begin pan
             self._event = event
@@ -489,7 +488,7 @@ class PanAndZoom(ZoomOnWheel):
         """Zoom
 
         Args:
-            event (event): the event
+            event (event): The event
         """
         if event.name == 'button_press_event':  # begin drag
             self._event = event
@@ -556,7 +555,7 @@ class PanAndZoom(ZoomOnWheel):
         """Mouse press event
 
         Args:
-            event (event): the event
+            event (event): The event
         """
         if self._pressed_button is not None:
             return  # Discard event if a button is already pressed
@@ -580,7 +579,7 @@ class PanAndZoom(ZoomOnWheel):
         """Mouse release event
 
         Args:
-            event (event): the event
+            event (event): The event
         """
         if self._pressed_button == event.button:
             if self._pressed_button == 1:  # pan
@@ -593,7 +592,7 @@ class PanAndZoom(ZoomOnWheel):
         """Mouse motion event
 
         Args:
-            event (event): the event
+            event (event): The event
         """
         if self._pressed_button == 1:  # pan
             self._pan(event)
@@ -624,7 +623,7 @@ class PanAndZoom(ZoomOnWheel):
 
 
 def figure_pz(*args, **kwargs):
-    """matplotlib.pyplot.figure with pan and zoom interaction"""
+    """matplotlib.pyplot.figure with pan and zoom interaction."""
     #import warnings
     # warnings.filterwarnings(action='ignore')
 

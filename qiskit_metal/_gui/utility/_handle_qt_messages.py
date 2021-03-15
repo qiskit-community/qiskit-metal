@@ -13,8 +13,6 @@
 # that they have been altered from the originals.
 """
 This is a utility module used to handle qt error messages on slots and etc.
-
-@author: Zlatko K. Minev
 """
 
 import inspect
@@ -87,7 +85,7 @@ def do_debug(msg, name='info'):
 
     Arguments:
         msg (str): Message to print or log to user
-        name (str): info wran, debug, etc. (Default: 'info')
+        name (str): info wran, debug, etc.  Defaults to 'info'.
     """
 
     if 0:
@@ -117,9 +115,9 @@ def slot_catch_error(*args, catch=Exception, on_exception_emit=None):
         https://stackoverflow.com/questions/18740884/preventing-pyqt-to-silence-exceptions-occurring-in-slots
 
     Arguments:
-        args (arguments):  any valid types for the Slot
-        catch (Exception):  Type of the exception to catch, (Default: Exception)
-        on_exception_emit (str):  name of a qtSignal to be emitted
+        args (arguments):  any valid types for the Slot.
+        catch (Exception):  Type of the exception to catch.  Defaults to Exception.
+        on_exception_emit (str):  name of a qtSignal to be emitted.
     """
 
     if len(args) == 0 or isinstance(args[0], types.FunctionType):

@@ -11,15 +11,11 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""
-@author: Zlatko Minev
-@date: 2019
-"""
 
 
 def gds_draw_all(self, path=None):
     r'''
-    Create full gds export cell
+    Create full gds export cell.
 
     path : str : if passed will save
 

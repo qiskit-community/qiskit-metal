@@ -12,8 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-# Zlatko Minev
-
 import numpy as np
 from PySide2 import QtCore, QtWidgets
 from PySide2.QtCore import QAbstractTableModel, QModelIndex, Qt
@@ -53,10 +51,10 @@ class QTableModel_AllComponents(QAbstractTableModel):
                  tableView: 'QTableView_AllComponents' = None):
         """
         Args:
-            gui (MetalGUI): the GUI (Default: None)
-            logger (logger): the logger
-            parent (QWidget): Parent widget (Default: None).
-            tableView (QTableView_AllComponents): the table view (Default: None).
+            gui (MetalGUI): The GUI.  Defaults to None.
+            logger (logger): The logger.
+            parent (QWidget): Parent widget.  Defaults to None.
+            tableView (QTableView_AllComponents): The table view.  Defaults to None.
         """
         super().__init__(parent=parent)
         self.logger = logger
@@ -72,7 +70,7 @@ class QTableModel_AllComponents(QAbstractTableModel):
 
     @property
     def design(self):
-        """Retrusn the design"""
+        """Returns the design"""
         return self.gui.design
 
     def _create_timer(self):
@@ -84,17 +82,14 @@ class QTableModel_AllComponents(QAbstractTableModel):
         self._timer.timeout.connect(self.refresh_auto)
 
     def refresh(self):
-        """Force refresh.   Completly rebuild the model."""
+        """Force refresh.  Completly rebuild the model."""
         self.modelReset.emit()
 
     def refresh_auto(self):
         """
-        Update row count etc.
+        Automatic refresh, update row count, view, etc.
         """
-        # We could not do if the widget is hidden - TODO: speed performace?
-
-        # TODO: This should probably just be on a global timer for all changes detect
-        # and then update all accordingly
+        # We could not do if the widget is hidden
         new_count = self.rowCount()
 
         # if the number of rows have changed
@@ -106,7 +101,6 @@ class QTableModel_AllComponents(QAbstractTableModel):
             # This includes but is not limited to the rowCount() and
             # columnCount(), flags(), data retrieved through data(), and roleNames().
             # This will loose the current selection.
-            # TODO: This seems overkill to just change the total number of rows?
             self.modelReset.emit()
 
             # for some reason the horozontal header is hidden even if i call this in init
@@ -124,10 +118,10 @@ class QTableModel_AllComponents(QAbstractTableModel):
         """Returns the number of rows
 
         Args:
-            parent (QModelIndex): Unused (Default: None).
+            parent (QModelIndex): Unused.  Defaults to None.
 
         Returns:
-            int: the number of rows
+            int: The number of rows
         """
         if self.design:  # should we jsut enforce this
             num = int(len(self.design.components))
@@ -144,10 +138,10 @@ class QTableModel_AllComponents(QAbstractTableModel):
         """Returns the number of columns
 
         Args:
-            parent (QModelIndex): Unused (Default: None).
+            parent (QModelIndex): Unused.  Defaults to None.
 
         Returns:
-            int: the number of columns
+            int: The number of columns
         """
         return len(self.columns)
 
@@ -158,12 +152,12 @@ class QTableModel_AllComponents(QAbstractTableModel):
         """ Set the headers to be displayed.
 
         Args:
-            section (int): section number
-            orientation (Qt orientation): section orientation
-            role (Qt display role): display role (Default: DisplayRole)
+            section (int): Section number
+            orientation (Qt orientation): Section orientation
+            role (Qt display role): Display role.  Defaults to DisplayRole.
 
         Returns:
-            str: the header data, or None if not found
+            str: The header data, or None if not found
         """
 
         if role == Qt.DisplayRole:
@@ -179,12 +173,10 @@ class QTableModel_AllComponents(QAbstractTableModel):
                 return font
 
     def flags(self, index):
-        """ Set the item flags at the given index. Seems like we're
-        implementing this function just to see how it's done, as we
-        manually adjust each tableView to have NoEditTriggers.
+        """ Set the item flags at the given index.
 
         Args:
-            index (QModelIndex): the index
+            index (QModelIndex): The index
 
         Returns:
             Qt flags: Flags from Qt
@@ -205,7 +197,7 @@ class QTableModel_AllComponents(QAbstractTableModel):
         "invalid QVariant").
 
         Returns:
-            str: data
+            str: Data depending on the index and role
         """
 
         if not index.isValid() or not self.design:

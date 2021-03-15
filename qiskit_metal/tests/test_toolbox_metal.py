@@ -17,9 +17,6 @@
 #pylint: disable-msg=broad-except
 """
 Qiskit Metal unit tests analyses functionality.
-
-Created on Wed Apr 22 09:59:02 2020
-@author: Jeremy D. Drysdale
 """
 
 import unittest
@@ -36,24 +33,24 @@ from qiskit_metal.tests.assertions import AssertionsMixin
 
 class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
     """
-    Unit test class
+    Unit test class.
     """
 
     def setUp(self):
         """
-        Setup unit test
+        Setup unit test.
         """
         pass
 
     def tearDown(self):
         """
-        Tie any loose ends
+        Tie any loose ends.
         """
         math_and_overrides.set_decimal_precision(10)
 
     def test_toolbox_metal_instantiation_qiskit_metal_exceptions(self):
         """
-        Test instantiation of QiskitMetalExceptions
+        Test instantiation of QiskitMetalExceptions.
         """
         try:
             QiskitMetalExceptions("test message")
@@ -62,7 +59,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
 
     def test_toolbox_metal_instantiation_qiskit_metal_design_error(self):
         """
-        Test instantiation of QiskitMetalDesignError
+        Test instantiation of QiskitMetalDesignError.
         """
         try:
             QiskitMetalDesignError("test message")
@@ -71,7 +68,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
 
     def test_toolbox_metal_instantiation_incorrect_qt_exception(self):
         """
-        Test instantiation of IncorrectQtException
+        Test instantiation of IncorrectQtException.
         """
         try:
             IncorrectQtException
@@ -80,7 +77,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
 
     def test_toolbox_metal_about(self):
         """
-        Test that about in about.py produces about text without any errors
+        Test that about in about.py produces about text without any errors.
         """
         try:
             about.about()
@@ -89,7 +86,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
 
     def test_toolbox_metal_parsing_true_str(self):
         """
-        Test that TRUE_STR in parsing.py has not accidentally changed
+        Test that TRUE_STR in parsing.py has not accidentally changed.
         """
         expected = [
             'true', 'True', 'TRUE', True, '1', 't', 'y', 'Y', 'YES', 'yes',
@@ -103,7 +100,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
 
     def test_toolbox_metal_is_true(self):
         """
-        Test is_true in toolbox_metal.py
+        Test is_true in toolbox_metal.py.
         """
         self.assertTrue(parsing.is_true('true'))
         self.assertTrue(parsing.is_true('True'))
@@ -131,7 +128,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
 
     def test_toolbox_metal_parse_string_to_float(self):
         """
-        Test _parse_string_to_float in toolbox_metal.py
+        Test _parse_string_to_float in toolbox_metal.py.
         """
         self.assertAlmostEqualRel(parsing._parse_string_to_float('1um'),
                                   0.001,
@@ -168,7 +165,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
 
     def test_toolbox_metal_is_variable_name(self):
         """
-        Test is_variable_name in toolbox_metal.py
+        Test is_variable_name in toolbox_metal.py.
         """
         self.assertTrue(parsing.is_variable_name('ok'))
         self.assertTrue(parsing.is_variable_name('still_ok'))
@@ -181,7 +178,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
 
     def test_toolbox_metal_is_for_ast_eval(self):
         """
-        Test is_for_ast_eval in toolbox_metal.py
+        Test is_for_ast_eval in toolbox_metal.py.
         """
         self.assertTrue(parsing.is_for_ast_eval('[1, 2, 3]'))
         self.assertTrue(parsing.is_for_ast_eval('[[1, 2], [3, 4]]'))
@@ -196,7 +193,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
 
     def test_toolbox_metal_is_numeric_possible(self):
         """
-        Test is_numeric_possible in toolbox_metal.py
+        Test is_numeric_possible in toolbox_metal.py.
         """
         self.assertTrue(parsing.is_numeric_possible('123'))
         self.assertTrue(parsing.is_numeric_possible('12mm'))
@@ -212,7 +209,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
 
     def test_toolbox_metal_parse_value(self):
         """
-        Test parse_value in toolbox_metal.py
+        Test parse_value in toolbox_metal.py.
         """
         var_dict = {'data_a': '4 miles', 'data_b': '1um'}
 
@@ -252,7 +249,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
 
     def test_toolbox_metal_parse_options(self):
         """
-        Test parse_options in toolbox_metal.py
+        Test parse_options in toolbox_metal.py.
         """
         dict_1 = {'data_a': '2mm', 'data_b': '1um'}
         dict_2 = {
@@ -281,7 +278,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
 
     def test_toolbox_metal_set_decimal_precision(self):
         """
-        Test functionality of set_decimal_precision in toolbox_metal.py
+        Test functionality of set_decimal_precision in toolbox_metal.py.
         """
         self.assertEqual(math_and_overrides.decimal_precision, 10)
         math_and_overrides.set_decimal_precision(15)
@@ -289,7 +286,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
 
     def test_toolbox_metal_dot(self):
         """
-        Test functionality of dot in toolbox_metal.py
+        Test functionality of dot in toolbox_metal.py.
         """
         math_and_overrides.set_decimal_precision(3)
         my_array_1 = np.array([3, 4])
@@ -298,14 +295,14 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
 
     def test_toolbox_metal_round(self):
         """
-        Test functionality of round in toolbox_metal.py
+        Test functionality of round in toolbox_metal.py.
         """
         math_and_overrides.set_decimal_precision(2)
         self.assertEqual(math_and_overrides.round(12.349), 12.35)
 
     def test_toolbox_metal_cross(self):
         """
-        Test functionality of cross in toolbox_metal.py
+        Test functionality of cross in toolbox_metal.py.
         """
         math_and_overrides.set_decimal_precision(3)
         my_array_1 = np.array([3, 4])

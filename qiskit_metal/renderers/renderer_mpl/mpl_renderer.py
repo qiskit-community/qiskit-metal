@@ -12,8 +12,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 """
-@author: Zlatko Minev
-@date: 2019
+MPL Renderer
 """
 import logging
 import random
@@ -76,9 +75,9 @@ class QMplRenderer():
                  logger: logging.Logger):
         """
         Args:
-            canvas (PlotCanvas): the canvas
-            design (QDesign): the design
-            logger (logging.Logger): the logger
+            canvas (PlotCanvas): The canvas
+            design (QDesign): The design
+            logger (logging.Logger): The logger
         """
         super().__init__()
         self.logger = logger
@@ -113,51 +112,51 @@ class QMplRenderer():
         return self.colors[num % len(self.colors)]
 
     def hide_component(self, name):
-        """Hide the component with the given name
+        """Hide the component with the given name.
 
         Args:
-            name (str): component name
+            name (str): Component name
         """
         comp_id = self.design.components[name].id
         self._hidden_components.add(comp_id)
 
     def show_component(self, name):
-        """Show the component with the given name
+        """Show the component with the given name.
 
         Args:
-            name (str): component name
+            name (str): Component name
         """
         comp_id = self.design.components[name].id
         self._hidden_components.discard(name)
 
     def hide_layer(self, name):
-        """Hide the layer with the given name
+        """Hide the layer with the given name.
 
         Args:
-            name (str): layer name
+            name (str): Layer name
         """
         self.hidden_layers.add(name)
 
     def show_layer(self, name):
-        """Show the layer with the given name
+        """Show the layer with the given name.
 
         Args:
-            name (str): layer name
+            name (str): Layer name
         """
         self.hidden_layers.discard(name)
 
     def set_design(self, design: QDesign):
-        """set the design
+        """Set the design.
 
         Args:
-            design (QDesign): the design
+            design (QDesign): The design
         """
         self.design = design
         self.clear_options()
         # TODO
 
     def clear_options(self):
-        """Clear all options"""
+        """Clear all options."""
         self._hidden_components.clear()
         self.hidden_layers.clear()
 
@@ -173,7 +172,7 @@ class QMplRenderer():
 
     def get_mask(self, table: pd.DataFrame) -> pd.Series:
         '''
-        Gets the mask
+        Gets the mask.
 
         Args:
             table (pd.DataFrame): dataframe
@@ -192,12 +191,12 @@ class QMplRenderer():
         return ~mask  # not
 
     def _render_poly_array(self, ax: Axes, poly_array: np.array, mpl_kw: dict):
-        """rneder the poly array
+        """Render the poly array.
 
         Args:
-            ax (Axes): the axis
-            poly_array (np.array): the poly
-            mpl_kw (dict): the parameters dictionary
+            ax (Axes): The axis
+            poly_array (np.array): The poly
+            mpl_kw (dict): The parameters dictionary
         """
         if len(poly_array) > 0:
             poly_array = to_poly_patch(poly_array)
@@ -205,7 +204,7 @@ class QMplRenderer():
 
     @property
     def qgeometry(self) -> 'QGeometryTables':
-        """Return the qgeometry of the design"""
+        """Return the qgeometry of the design."""
         return self.design.qgeometry
 
     # TODO: move to some config and user input also make widget
@@ -229,16 +228,16 @@ class QMplRenderer():
                   subtracted=False,
                   layer=None,
                   extra=None):
-        """Get teh style
+        """Get the style.
 
         Args:
-            element_type (str): the type of element
-            subtracted (bool): True to subtrat the key (Default: False)
-            layer (layer): the layer (Default: None)
-            extra (dict): extra stuff to add (Default: None)
+            element_type (str): The type of element.
+            subtracted (bool): True to subtrat the key.  Defaults to False.
+            layer (layer): The layer.  Defaults to None.
+            extra (dict): Extra stuff to add.  Defaults to None.
 
         Return:
-            dict: style
+            dict: Style dictionary
         """
         # element_type - poly path
         extra = extra or {}
@@ -257,10 +256,10 @@ class QMplRenderer():
         return kw
 
     def render_tables(self, ax: Axes):
-        """Render the tables
+        """Render the tables.
 
         Args:
-            ax (Axes): the axes
+            ax (Axes): The axes
         """
         for element_type, table in self.qgeometry.tables.items():
             # Mask the table
@@ -298,9 +297,9 @@ class QMplRenderer():
         Render a table of poly geometry.
 
         Arguments:
-            table (DataFrame): element table
-            ax (matplotlib.axes.Axes): axis to render on
-            kw (dict): style params
+            table (DataFrame): Element table
+            ax (matplotlib.axes.Axes): Axis to render on
+            kw (dict): Style params
         """
         if len(table) < 1:
             return
@@ -313,7 +312,7 @@ class QMplRenderer():
         Renders fillet path.
 
         Arguments:
-            table (DataFrame): table of elements with fillets
+            table (DataFrame): Table of elements with fillets
 
         Returns:
             DataFrame table with geometry field updated with a polygon filleted path.
@@ -326,7 +325,7 @@ class QMplRenderer():
         Output the filleted path.
 
         Arguments:
-            row (DataFrame): row to fillet.
+            row (DataFrame): Row to fillet.
 
         Returns:
             Polygon of the new filleted path.
@@ -423,9 +422,9 @@ class QMplRenderer():
         Render a table of path geometry.
 
         Arguments:
-            table (DataFrame): element table
-            ax (matplotlib.axes.Axes): axis to render on
-            kw (dict): style params
+            table (DataFrame): Element table
+            ax (matplotlib.axes.Axes): Axis to render on
+            kw (dict): Style params
         """
         if len(table) < 1:
             return

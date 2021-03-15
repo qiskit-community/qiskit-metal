@@ -11,9 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""
-@author:Zlatko
-"""
 
 from typing import TYPE_CHECKING
 from typing import List
@@ -104,7 +101,7 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         See the QContextMenuEvent documentation for more details.
 
         Arguments:
-            event (QContextMenuEvent): the event
+            event (QContextMenuEvent): The event
         """
         self._event = event  # debug
 
@@ -122,10 +119,10 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         """Get the event name
 
         Args:
-            event (QContextMenuEvent): the event
+            event (QContextMenuEvent): The event
 
         Returns:
-            tuple: event name, row the event is on
+            tuple: Event name, Row the event is on
         """
         # get the selected row and column
         row = self.rowAt(event.pos().y())
@@ -141,7 +138,7 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         """Called when the user clicks the context menu delete.
 
         Args:
-            event (QContextMenuEvent): the event
+            event (QContextMenuEvent): The event
         """
         name, row = self.get_name_from_event(event)
 
@@ -156,7 +153,7 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         """Do delte a component by name.
 
         Args:
-            name (str): name of the component to delete
+            name (str): Name of the component to delete
         """
         self.logger.info(f'Deleting {name}')
         self.design.delete_component(name)
@@ -167,7 +164,7 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         """Called when the user clicks the context menu rename.
 
         Args:
-            event (QContextMenuEvent): the event
+            event (QContextMenuEvent): The event
         """
         name, row = self.get_name_from_event(event)
 
@@ -188,7 +185,7 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         In the init, we had to connect with self.clicked.connect(self.viewClicked)
 
         Args:
-            index (QModelIndex): the index
+            index (QModelIndex): The index
         """
         if self.gui is None or not index.isValid():
             return
@@ -214,7 +211,7 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         Note that single click will also get called.
 
         Args:
-            index (QModelIndex): the index
+            index (QModelIndex): The index
         """
         if self.gui is None or not index.isValid():
             return

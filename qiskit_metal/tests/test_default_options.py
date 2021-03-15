@@ -17,9 +17,6 @@
 # pylint: disable-msg=broad-except
 """
 Qiskit Metal unit tests components functionality.
-
-Created on Wed June 17 06:08:27 2020
-@author: Jeremy D. Drysdale
 """
 
 import unittest
@@ -35,19 +32,19 @@ class TestDefautOptions(unittest.TestCase):
 
     def setUp(self):
         """
-        Setup unit test
+        Setup unit test.
         """
         pass
 
     def tearDown(self):
         """
-        Tie any loose ends
+        Tie any loose ends.
         """
         pass
 
     def test_default_options_instantiation_default_metal_options(self):
         """
-        Test instantiation of DefaultMetalOptions
+        Test instantiation of DefaultMetalOptions.
         """
         try:
             DefaultMetalOptions
@@ -61,7 +58,7 @@ class TestDefautOptions(unittest.TestCase):
 
     def test_default_options_instantiation_default_options_renderer(self):
         """
-        Test instantiation of DefaultOptionsRenderer
+        Test instantiation of DefaultOptionsRenderer.
         """
         try:
             DefaultOptionsRenderer
@@ -82,7 +79,7 @@ class TestDefautOptions(unittest.TestCase):
 
     def test_default_options_create(self):
         """
-        Test the functionality of initializing default_options in _defaults.py
+        Test the functionality of initializing default_options in _defaults.py.
         """
         # Setup expected test results
         _options = DefaultMetalOptions()
@@ -107,7 +104,7 @@ class TestDefautOptions(unittest.TestCase):
 
     def test_default_options_update(self):
         """
-        Test the functionality of updating default_options in _defaults.py
+        Test the functionality of updating default_options in _defaults.py.
         """
         # Setup expected test results
         _options = DefaultMetalOptions()
@@ -129,7 +126,7 @@ class TestDefautOptions(unittest.TestCase):
 
     def test_default_options_renderer_create(self):
         """
-        Test the functionality of initializing default_options_renderer in _defaults.py
+        Test the functionality of initializing default_options_renderer in _defaults.py.
         """
         # Setup expected test results
         _options = DefaultOptionsRenderer()
@@ -158,7 +155,7 @@ class TestDefautOptions(unittest.TestCase):
 
     def test_default_options_renderer_update(self):
         """
-        Test the functionality of updating default_options_renderer in _defaults.py
+        Test the functionality of updating default_options_renderer in _defaults.py.
         """
         # Setup expected test results
         _options = DefaultOptionsRenderer()

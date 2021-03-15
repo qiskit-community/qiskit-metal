@@ -25,11 +25,12 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
-# import sys
-# sys.path.insert(0, os.path.abspath('.'))
+import os
+import sys
+sys.path.insert(0, os.path.abspath('..'))
 
 import qiskit_metal
+import qiskit_sphinx_theme
 """
 Sphinx documentation builder
 """
@@ -40,8 +41,67 @@ version = qiskit_metal.__version__
 release = qiskit_metal.__version__
 
 rst_prolog = """
+.. raw:: html
+
+    <br><br><br>
+
 .. |version| replace:: {0}
 """.format(release)
+
+nbsphinx_prolog = """
+{% set docname = env.doc2path(env.docname, base=None) %}
+.. only:: html
+    
+    .. role:: raw-html(raw)
+        :format: html
+
+    .. raw:: html
+
+        <br><br><br>
+
+    .. note::
+        Run interactively in jupyter notebook.
+"""
+
+nbsphinx_epilog = """
+{% set docname = env.doc2path(env.docname, base=None) %}
+.. only:: html
+    
+    .. role:: raw-html(raw)
+        :format: html
+
+    .. raw:: html
+
+        <h3>For more information, review the <b>Introduction to Quantum Computing and Quantum Hardware</b> lectures below</h3>
+        <div style="border:solid 1 px #990000;">
+        <table>
+        <tr><td><ul><li>Superconducting Qubits I: Quantizing a Harmonic Oscillator, Josephson Junctions Part 1</ul></td>
+        <td width="15%"><a href="https://www.youtube.com/watch?v=eZJjQGu85Ps&list=PLOFEBzvs-VvrXTMy5Y2IqmSaUjfnhvBHR">Lecture Video</a></td>
+        <td width="15%"><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/lectures/introqcqh-lecture-notes-6.pdf?raw=true">Lecture Notes</a></td>
+        <td width="5%"><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/labs/introqcqh-lab-6.zip?raw=true">Lab</a></td></tr>
+        <tr><td><ul><li>Superconducting Qubits I: Quantizing a Harmonic Oscillator, Josephson Junctions Part 2</ul></td>
+        <td><a href="https://www.youtube.com/watch?v=SDiiFOham6Y&list=PLOFEBzvs-VvrXTMy5Y2IqmSaUjfnhvBHR">Lecture Video</a></td>
+        <td><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/lectures/introqcqh-lecture-notes-6.pdf?raw=true">Lecture Notes</a></td>
+        <td><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/labs/introqcqh-lab-6.zip?raw=true">Lab</a></td></tr>
+        <tr><td><ul><li>Superconducting Qubits I: Quantizing a Harmonic Oscillator, Josephson Junctions Part 3</ul></td>
+        <td><a href="https://www.youtube.com/watch?v=hGBAz63NIH8&list=PLOFEBzvs-VvrXTMy5Y2IqmSaUjfnhvBHR">Lecture Video</a></td>
+        <td><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/lectures/introqcqh-lecture-notes-6.pdf?raw=true">Lecture Notes</a></td>
+        <td><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/labs/introqcqh-lab-6.zip?raw=true">Lab</a></td></tr>
+        <tr><td><ul><li>Superconducting Qubits II: Circuit Quantum Electrodynamics, Readout and Calibration Methods Part 1</ul></td>
+        <td><a href="https://www.youtube.com/watch?v=dmYnfGo-8eM&list=PLOFEBzvs-VvrXTMy5Y2IqmSaUjfnhvBHR">Lecture Video</a></td>
+        <td><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/lectures/introqcqh-lecture-notes-7.pdf?raw=true">Lecture Notes</a></td>
+        <td><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/labs/introqcqh-lab-7.zip?raw=true">Lab</a></td></tr>
+        <tr><td><ul><li>Superconducting Qubits II: Circuit Quantum Electrodynamics, Readout and Calibration Methods Part 2</ul></td>
+        <td><a href="https://www.youtube.com/watch?v=jUPAeOoZpEU&list=PLOFEBzvs-VvrXTMy5Y2IqmSaUjfnhvBHR">Lecture Video</a></td>
+        <td><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/lectures/introqcqh-lecture-notes-7.pdf?raw=true">Lecture Notes</a></td>
+        <td><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/labs/introqcqh-lab-7.zip?raw=true">Lab</a></td></tr>
+        <tr><td><ul><li>Superconducting Qubits II: Circuit Quantum Electrodynamics, Readout and Calibration Methods Part 3</ul></td>
+        <td><a href="https://www.youtube.com/watch?v=_IpCwMvc0dA&list=PLOFEBzvs-VvrXTMy5Y2IqmSaUjfnhvBHR">Lecture Video</a></td>
+        <td><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/lectures/introqcqh-lecture-notes-7.pdf?raw=true">Lecture Notes</a></td>
+        <td><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/labs/introqcqh-lab-7.zip?raw=true">Lab</a></td></tr></table>
+        </div>
+
+"""
 
 # -- Project information -----------------------------------------------------
 project = 'Qiskit Metal {}'.format(version)
@@ -59,21 +119,33 @@ author = 'Qiskit Metal Development Team'
 extensions = [
     'sphinx.ext.napoleon', 'sphinx.ext.autodoc', 'sphinx.ext.autosummary',
     'sphinx.ext.mathjax', 'sphinx.ext.viewcode', 'sphinx.ext.extlinks',
-    'jupyter_sphinx'
+    'jupyter_sphinx', 'nbsphinx'
 ]
 
 html_static_path = ['_static']
 templates_path = ['_templates']
-html_css_files = ['theme.css', 'style.css', 'custom.css']
+html_css_files = ['style.css', 'custom.css', 'gallery.css']
 
 exclude_patterns = [
-    '_build', '**.ipynb_checkpoints',
+    '_build', 'build', '*.ipynb', '**.ipynb_checkpoints',
     'qiskit_metal.analyses.quantization.lumped_capacitive.rst',
     'qiskit_metal.analyses.lumped_capacitive.rst',
     'qiskit_metal.analyses.em.cpw_calculations.rst',
     'qiskit_metal.analyses.cpw_calculations.rst',
-    'qiskit_metal.analyses.Hcpb.rst', 'qiskit_metal.analyses.Scanning.rst'
+    'qiskit_metal.analyses.Hcpb.rst', 'qiskit_metal.analyses.Scanning.rst',
+    'qiskit_metal.analyses.HO_wavefunctions.rst',
+    'qiskit_metal.analyses.kappa_calculation.rst'
 ]
+
+nbsphinx_execute_arguments = [
+    "--InlineBackend.figure_formats={'svg', 'pdf'}",
+    "--InlineBackend.rc={'figure.dpi': 96}",
+]
+
+nbsphinx_execute = 'never'
+nbsphinx_allow_errors = True
+
+source_suffix = ['.rst', '.ipynb']
 
 suppress_warnings = ['ref.ref']
 
@@ -126,7 +198,8 @@ modindex_common_prefix = ['qiskit_metal.']
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'sphinx_rtd_theme'  # use the theme in subdir 'theme'
+html_theme = "qiskit_sphinx_theme"
+html_theme_path = ['.', qiskit_sphinx_theme.get_html_theme_path()]
 
 html_logo = 'images/logo.png'
 #html_sidebars = {'**': ['globaltoc.html']}
@@ -137,7 +210,6 @@ html_theme_options = {
     'display_version': True,
     'prev_next_buttons_location': 'bottom',
     'style_external_links': True,
-    'style_nav_header_background': '#e3e5e4',
     'collapse_navigation': True,
     'sticky_navigation': True,
 }

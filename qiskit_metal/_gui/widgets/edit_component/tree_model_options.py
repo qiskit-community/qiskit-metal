@@ -13,9 +13,6 @@
 # that they have been altered from the originals.
 """
 Tree model for component options menu
-
-@authors: Dennis Wang, Zlatko Minev
-@date: 2020
 """
 from typing import TYPE_CHECKING
 from PySide2.QtCore import QModelIndex, Qt
@@ -58,10 +55,10 @@ class QTreeModel_Options(QTreeModel_Base):
         return self.component.options
 
     def rowCount(self, parent: QModelIndex):
-        """Get the number of rows
+        """Get the number of rows.
 
         Args:
-            parent (QModelIndex): the parent
+            parent (QModelIndex): The parent
 
         Returns:
             int: The number of rows
@@ -87,11 +84,11 @@ class QTreeModel_Options(QTreeModel_Base):
             return len(node)
 
     def data(self, index: QModelIndex, role: Qt.ItemDataRole = Qt.DisplayRole):
-        """Gets the node data
+        """Gets the node data.
 
         Args:
-            index (QModelIndex): index to get data for
-            role (Qt.ItemDataRole): the role (Default: Qt.DisplayRole)
+            index (QModelIndex): Index to get data for
+            role (Qt.ItemDataRole): The role..  Defaults to Qt.DisplayRole.
 
         Returns:
             object: fetched data

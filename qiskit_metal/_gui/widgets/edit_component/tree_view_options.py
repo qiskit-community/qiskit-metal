@@ -12,9 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 """Handles editing a QComponent
-
-@author: Zlatko Minev, Dennis Wang
-@date: 2020
 """
 
 from typing import TYPE_CHECKING
@@ -32,13 +29,13 @@ if TYPE_CHECKING:
 class QTreeView_Options(QTreeView, QWidget_PlaceholderText):
     """Handles editing a QComponent
 
-    This class extends the `QTreeView` and `QWidget_PlaceholderText` classes
+    This class extends the `QTreeView` and `QWidget_PlaceholderText` classes.
     """
 
     def __init__(self, parent: QtWidgets.QWidget):
         """
         Args:
-            parent (QtWidgets.QWidget): the widget
+            parent (QtWidgets.QWidget): The parent widget
         """
         QTreeView.__init__(self, parent)
         QWidget_PlaceholderText.__init__(self, "Select a QComponent to edit"\
@@ -64,7 +61,7 @@ QTreeView::branch {  border-image: url(none.png); }
         """Resize columns to contents with maximum
 
         Args:
-            max (int): Maximum window width (Default: 200)
+            max (int): Maximum window width.. Defaults to 200.
         """
         # For TreeView: resizeColumnToContents
         # For TableView: resizeColumnsToContents
@@ -77,5 +74,5 @@ QTreeView::branch {  border-image: url(none.png); }
                 self.setColumnWidth(i, max_width)
 
     def resize_on_expand(self):
-        """Resize when exposed"""
+        """Resize when exposed."""
         self.resizeColumnToContents(0)

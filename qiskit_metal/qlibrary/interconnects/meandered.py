@@ -11,10 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-'''
-@date: Aug-2020
-@author: Marco Facchini, John Blair, Zlatko Minev
-'''
 
 from typing import List, Tuple, Union
 
@@ -30,25 +26,35 @@ from qiskit_metal.toolbox_metal.exceptions import QiskitMetalDesignError
 
 class RouteMeander(QRoute):
     """
-    The base `CPW meandered` class
+    Implements a simple CPW, with a single meander.  The base `CPW meandered` class.
 
     Inherits `QRoute` class
 
-    Description:
-        Implements a simple CPW, with a single meander
+    QRoute Default Options:
+        * pin_inputs: Dict
+            * start_pin: Dict -- Component and pin string pair. Define which pin to start from
+                * component: '' -- Name of component to start from, which has a pin
+                * pin: '' -- Name of pin used for pin_start
+            * end_pin=Dict -- Component and pin string pair. Define which pin to start from
+                * component: '' -- Name of component to end on, which has a pin
+                * pin: '' -- Name of pin used for pin_end
+        * fillet: '0'
+        * lead: Dict
+            * start_straight: '0mm' -- Lead-in, defined as the straight segment extension from start_pin.  Defaults to 0.1um.
+            * end_straight: '0mm' -- Lead-out, defined as the straight segment extension from end_pin.  Defaults to 0.1um.
+            * start_jogged_extension: '' -- Lead-in, jogged extension of lead-in. Described as list of tuples
+            * end_jogged_extension: '' -- Lead-out, jogged extension of lead-out. Described as list of tuples
+        * total_length: '7mm'
+        * chip: 'main' -- Which chip is this component attached to.  Defaults to 'main'.
+        * layer: '1' -- Which layer this component should be rendered on.  Defaults to '1'.
+        * trace_width: 'cpw_width' -- Defines the width of the line.  Defaults to 'cpw_width'.
 
-    Options:
-
-    Meander:
-        * spacing         - minimum spacing between adjacent meander curves (default: 200um)
-        * asymmetry       - offset between the center-line of the meander and the center-line
-          that stretches from the tip of lead-in to the x (or y) coordinate
-          of the tip of the lead-out (default: '0um')
-
-    Leads:
-        * start_jogged_extension   - (optional) lead-in, jogged extension of lead-in. Described as list of tuples
-        * end_jogged_extension     - (optional) lead-in, jogged extension of lead-out. Described as list of tuples
-
+    Default Options:
+        * meander: Dict
+            * spacing: '200um' -- Minimum spacing between adjacent meander curves.  Defaults to 200um.
+            * asymmetry='0um' -- offset between the center-line of the meander and the center-line that stretches from the tip of lead-in to the x (or y) coordinate of the tip of the lead-out.  Defaults to '0um'.
+        * snap: 'true'
+        * prevent_short_edges: 'true'
     """
 
     component_metadata = Dict(short_name='cpw')
@@ -319,7 +325,7 @@ class RouteMeander(QRoute):
         Inputs are however specific to the one meander segment
         Assumption is that pts is always a sequence of paired points, each corresponds to one meander 180deg curve
         The pts is typically an odd count since the last point is typically used to anchor the left-over length,
-        therefore this code supports both odd and even cases, separately. For even it assumes all points are in paired
+        therefore this code supports both odd and even cases, separately. For even it assumes all points are in paired.
 
         Args:
             delta_length (delta_length): slack/excess length to distribute on the pts
@@ -425,7 +431,7 @@ class RouteMeander(QRoute):
     @staticmethod
     def get_index_for_side1_meander(num_root_pts: int):
         """
-        Get the indices
+        Get the indices.
 
         Args:
             num_root_pts (list): List of points

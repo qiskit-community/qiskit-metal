@@ -14,10 +14,6 @@
 """
 This is the main module that defines what an element is in Qiskit Metal.
 See the docstring of `QGeometryTables`
-
-@author: Zlatko Minev, Thomas McConekey, ... (IBM)
-
-@date: 2019
 """
 
 import inspect
@@ -69,7 +65,7 @@ def is_qgeometry_table(obj):
     when this module is reloaded.
 
     Arguments:
-        obj (object) : Test this object
+        obj (object): Test this object
 
     Returns:
         bool: True if is a Metal element
@@ -242,12 +238,12 @@ class QGeometryTables(object):
     ELEMENT_COLUMNS = ELEMENT_COLUMNS
     """
     Table column names to use to create.
-    this dict should be updated by renderers.
+    This dict should be updated by renderers.
     """
 
     # For creating names of columns of renderer properties
     name_delimiter = '_'
-    """ Delimiter to use when creating names of columns of renderer properties """
+    """ Delimiter to use when creating names of columns of renderer properties. """
 
     def __init__(self, design: 'QDesign'):
         """
@@ -265,13 +261,13 @@ class QGeometryTables(object):
 
     @property
     def design(self) -> 'QDesign':
-        '''Return a reference to the parent design object'''
+        '''Return a reference to the parent design object.'''
         return self._design
 
     @property
     def logger(self) -> logging.Logger:
         """
-        Return the logger
+        Return the logger.
         """
         return self._design.logger
 
@@ -291,8 +287,8 @@ class QGeometryTables(object):
         Called when the load function of a renderer is called.
 
         Arguments:
-            renderer_name (str): name of renderer
-            qgeometry (dict):  dict of dict. keys give element type names,
+            renderer_name (str): Name of renderer
+            qgeometry (dict):  dict of dict.  Keys give element type names,
                               such as base, poly, path, etc.
         """
 
@@ -325,7 +321,7 @@ class QGeometryTables(object):
         This does not include 'base', but is rather such as poly and path.
 
         Returns:
-            list(str) : list of name in self.ELEMENT_COLUMNS
+            list(str) : A list of name in self.ELEMENT_COLUMNS
         """
         # TODO: I should probably make this a variable and memeorize, only change when qgeometry are added and removed
         # can be slow for perofmance to look up eahc time and recalcualte, since may call this often
@@ -388,7 +384,7 @@ class QGeometryTables(object):
 
     def _validate_column_dictionary(self, table_name: str, column_dict: dict):
         """Validate
-        A possible error here is if the user did not pass a valid data type
+        A possible error here is if the user did not pass a valid data type.
 
         Throws an error if not valid.
 
@@ -397,7 +393,7 @@ class QGeometryTables(object):
             column_dict (dict): Dictionary to check
 
         Raises:
-            TypeError: data type '' not understood
+            TypeError: Data type '' not understood
         """
         __pre = 'ERROR CREATING ELEMENT TABLE FOR DESIGN: \
             \n  ELEMENT_TABLE_NAME = {table_name}\
@@ -415,11 +411,11 @@ class QGeometryTables(object):
 
     def get_rname(self, renderer_name: str, key: str) -> str:
         """
-        Get name for renderer property
+        Get name for renderer property.
 
         Arguments:
             renderer_name (str): Name of the renderer
-            key (str): key to get the name for
+            key (str): Key to get the name for
 
         Returns:
             str: The unique named used as a column in the table
@@ -428,7 +424,7 @@ class QGeometryTables(object):
 
     def _prepend_renderer_names(self, table_name: str, renderer_key: str,
                                 rdict: dict):
-        """Prepare all the renderer names
+        """Prepare all the renderer names.
 
         Args:
             table_name (str): Unused
@@ -439,7 +435,7 @@ class QGeometryTables(object):
             dict: Prepared dictionary
 
         TODO:
-            This function has arguments that are used, fix the function or ditch the unused args
+            This function has arguments that are unused, fix the function or ditch the unused args
         """
         return {
             self.get_rname(renderer_key, k): v
@@ -459,14 +455,14 @@ class QGeometryTables(object):
         """Main interface to add qgeometries
 
         Arguments:
-            kind (str): Must be in get_element_types ('path', 'poly', etc.)
-            component_name (str): Component name
-            geometry (dict): Dict of shapely geomety
-            subtract (bool) : Subtract - passed through (Default: False)
-            helper (bool) : helper - passed through (Default: False)
-            layer (Union[int, str]) : Layer - passed through (default: 1)
-            chip (str) : Chip name - passed through (Default: 'main')
-            **other_options (object): Other_options - passed through
+            kind (str): Must be in get_element_types ('path', 'poly', etc.).
+            component_name (str): Component name.
+            geometry (dict): Dict of shapely geomety.
+            subtract (bool): Subtract - passed through.  Defaults to False.
+            helper (bool): Helper - passed through.  Defaults to False.
+            layer (Union[int, str]): Layer - passed through.  Defaults to 1.
+            chip (str): Chip name - passed through.  Defaults to 'main'.
+            **other_options (object): Other_options - passed through.
         """
         # TODO: Add unit test
 
@@ -604,7 +600,7 @@ class QGeometryTables(object):
         self.create_tables()  # remake all tables
 
     def delete_component(self, name: str):
-        """Delete component by name
+        """Delete component by name.
 
         Arguments:
             name (str): Name of component (case sensitive)
@@ -618,7 +614,7 @@ class QGeometryTables(object):
                 self.tables[table_name] = df[df['component'] != a_comp.id]
 
     def delete_component_id(self, component_id: int):
-        """Drop the components within the qgeometry.tables
+        """Drop the components within the qgeometry.tables.
 
         Args:
             component_id (int): Unique number to describe the component.
@@ -638,13 +634,13 @@ class QGeometryTables(object):
         If all, returns a dictionary with kets as table names and tables of components as values.
 
         Arguments:
-            name (str): Name of component (case sensitive) (default: 'all')
-            table_name (str): Element table name ('poly', 'path', etc.) (default: {'all'})
+            name (str): Name of component (case sensitive).  Defaults to 'all'.
+            table_name (str): Element table name ('poly', 'path', etc.).  Defaults to {'all'}.
 
         Returns:
-            Union[GeoDataFrame, Dict_[str, GeoDataFrame]] : Either a GeoDataFrame or a dict or GeoDataFrame.
+            Union[GeoDataFrame, Dict_[str, GeoDataFrame]]: Either a GeoDataFrame or a dict or GeoDataFrame.
 
-        Example use:
+        Example usage:
             ```table = pd.concat(qgeometry.get_component('Q1')) # , axis=0```
         """
 
@@ -671,7 +667,7 @@ class QGeometryTables(object):
         for the bounds of the component as a whole.
 
         Arguments:
-            name (str): component name
+            name (str): Component name
 
         Returns:
             Geometry: Bare element geometry
@@ -730,7 +726,7 @@ class QGeometryTables(object):
 
     def get_component_geometry(self, name: str) -> GeoSeries:
         """
-        Returns geometry of a given component
+        Returns geometry of a given component.
 
         Arguments:
             name (str) : Name of component (case sensitive)
@@ -761,7 +757,7 @@ class QGeometryTables(object):
 
         Arguments:
             name (str) : Name of component (case sensitive)
-            table_name (str) : Element type ('poly', 'path', etc.) (Default: 'all')
+            table_name (str) : Element type ('poly', 'path', etc.). Defaults to 'all'.
 
         Returns:
             dict: Bare element geometry
@@ -789,11 +785,11 @@ class QGeometryTables(object):
         """Check if the name `table_name` is in the element tables.
 
         Arguments:
-            table_name (str) : Element type ('poly', 'path', etc.) or 'all'
-            log_issue (bool) : Throw an erro in the log if name missing  (Default: True)
+            table_name (str): Element type ('poly', 'path', etc.) or 'all'
+            log_issue (bool): Throw an erro in the log if name missing.  Defaults to True.
 
         Returns:
-            bool : True if the name is valid, else False
+            bool: True if the name is valid, else False
         """
         if not table_name in self.get_element_types() or table_name in 'all':
             if log_issue:
@@ -805,10 +801,10 @@ class QGeometryTables(object):
             return True
 
     def get_all_unique_layers(self, chip_name: str) -> list:
-        """Returns a lit of unique layers for the given chip names
+        """Returns a lit of unique layers for the given chip names.
 
         Args:
-            chip_name (str): name of the chip
+            chip_name (str): Name of the chip
 
         Returns:
             list: List of unique layers

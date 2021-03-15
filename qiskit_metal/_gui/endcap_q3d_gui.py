@@ -11,10 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-'''
-@date: 2020
-@author: Dennis Wang
-'''
 
 from typing import Tuple
 
@@ -97,7 +93,7 @@ class EndcapQ3DWidget(QMainWindow):
         These are the default endcap settings for all pins in components_to_render.
 
         Args:
-            components_to_render (list, optional): List of components to render. Defaults to None.
+            components_to_render (list, optional): List of components to render.  Defaults to None.
 
         Returns:
             Tuple[set, set]: 2 sets of pins to be open or shorted by default

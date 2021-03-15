@@ -17,19 +17,7 @@ Handles the capacitive simulation of a transmon pocket model.
 Convert capacitance matrices extracted from Q3D into Hamiltonian parameters
 using the Duffing model. Typical input is the capacitance matrix calculated from Q3D.
 
-Each function prints out the parameters and outputs a dictionary
-
-Updates:
-    * 2017 or earlier: Jay Gambetta
-
-    * 2019-04-02 - Zlatko Minev
-      Aded import funcitons for Q3D import, and calculation of units, swap indexs, ...
-
-    * Update 2019-07-23 - Thomas McConkey
-      modified function 'jayNoscillator' to allow for bus frequencies to have different
-      values (fb input can be a vector)
-
-@author: Jay Gambetta, Zlatko K. Minev, Thomas McConkey
+Each function prints out the parameters and outputs a dictionary.
 """
 # pylint: disable=invalid-name
 
@@ -45,11 +33,11 @@ import scipy.optimize as opt
 from pint import UnitRegistry
 
 __all__ = [
-    'chargeline_T1', 'extract_transmon_coupled_Noscillator',
-    'levels_vs_ng_real_units', 'load_q3d_capacitance_matrix',
-    'df_reorder_matrix_basis', 'chi', 'cos_to_mega_and_delta',
-    'df_cmat_style_print', 'get_C_and_Ic', 'move_index_to', 'readin_q3d_matrix',
-    'transmon_props'
+    'Ic_from_Lj', 'Ic_from_Ej', 'Cs_from_Ec', 'transmon_props', 'chi',
+    'extract_transmon_coupled_Noscillator', 'levels_vs_ng_real_units',
+    'get_C_and_Ic', 'cos_to_mega_and_delta', 'chargeline_T1',
+    'readin_q3d_matrix', 'readin_q3d_matrix_m', 'load_q3d_capacitance_matrix',
+    'df_cmat_style_print', 'move_index_to', 'df_reorder_matrix_basis'
 ]
 
 # define constants
@@ -67,7 +55,7 @@ def Ic_from_Lj(Lj: float) -> float:
     In SI units.
 
     Args:
-        Lj (float): in Henries
+        Lj (float): In Henries
 
     Returns:
         float: In Amps
@@ -80,7 +68,7 @@ def Ic_from_Ej(Ej: float) -> float:
     In SI units.
 
     Args:
-        Ej (float): in Joules
+        Ej (float): In Joules
 
     Returns:
         float: In Amps
@@ -93,26 +81,26 @@ def Cs_from_Ec(Ec: float) -> float:
     In SI units.
 
     Args:
-        Ec (float): in Joules
+        Ec (float): In Joules
 
     Returns:
-        float: in farads
+        float: In farads
     """
     return e**2 / (2 * Ec)
 
 
 def transmon_props(Ic: float, Cq: float):
     """
-    Properties of a transmon qubit
+    Properties of a transmon qubit.
 
-    Calculate LJ, EJ, EC, wq, eps from Ic,Cq
+    Calculate LJ, EJ, EC, wq, eps from Ic,Cq.
 
     Arguments:
-        Ic (float): junction Ic (in A)
-        Cq (float): junction capacitance (in F)
+        Ic (float): Junction Ic (in A)
+        Cq (float): Junction capacitance (in F)
 
     Returns:
-        tuple: [LJ, EJ, Zqp, EC, wq, wq0, eps1] -- [INductange ]
+        tuple: [LJ, EJ, Zqp, EC, wq, wq0, eps1] -- Inductange
     """
 
     LJ = phi0 / Ic
@@ -149,7 +137,7 @@ def chi(g: float, wr: float, w01: float, w12: float):
         w12 (float): Qubit 12 transition frequency
 
     Returns:
-        float: calculated chi value
+        float: Calculated chi value
     """
 
     # Push on the i-th transmon level due to the j-th transmon level
@@ -182,33 +170,33 @@ def extract_transmon_coupled_Noscillator(capMatrix,
 
     The capMatrix can be imported using `readin_q3d_matrix`
 
+    Calculate the χ The full dispersive splitting using analytical
+    approximations, i.e., return the `|0> --> |1>` splitting.
+
     Args:
-        capMatrix (np.ndarray): order of the capacitance matrix must be
+        capMatrix (np.ndarray): Order of the capacitance matrix must be
           bus1...busN-1, ground, Qubit_pad1, Qubit_pad2, readout. (in F)
           If not in the correct order, use df_reorder_matrix_basis() to put
           it in the proper order. It is advised that the user follow a naming scheme
           in QiskitMetal or Q3D which results in the necessary order by default (eg. alphabetical)
-        Ic (float): junction Ic (in A)
-        Cj (float): junction capacitance (in F)
-        N (int): coupling pads (1 readout, N-1 bus)
-        fb (float): coupling bus and readout frequencies (in GHz).
+        Ic (float): Junction Ic (in A)
+        Cj (float): Junction capacitance (in F)
+        N (int): Coupling pads (1 readout, N-1 bus)
+        fb (float): Coupling bus and readout frequencies (in GHz).
                     fb can be a list with the order the order they appear in the capMatrix.
-        fr (float): coupling bus and readout frequencies (in GHz).
+        fr (float): Coupling bus and readout frequencies (in GHz).
                     fr can be a list with the order the order they appear in the capMatrix.
-        res_L4_corr (list): correction factor is the resonators are L/4
+        res_L4_corr (list): Correction factor is the resonators are L/4
           if none it ignores, otherwise this is a list of length N
-          in the form [1,0,1,...] (Default: None)
-        g_scale (float): scale factor
+          in the form [1,0,1,...].  Defaults to None.
+        g_scale (float): Scale factor
 
     Returns:
-        dict: ham_dict is a dictionary of all the calculated values
+        dict: `ham_dict` is a dictionary of all the calculated values
 
     Raises:
         ValueError: If N is not positive
         ValueError: If the capacitance matrix is the wrong size
-
-    Calculate the χ The full dispersive splitting using analytical
-    approximations, i.e., return the `|0> --> |1>` splitting
     """
 
     # Error checks
@@ -436,11 +424,11 @@ def levels_vs_ng_real_units(Cq, IC, N=301, do_disp=0, do_plots=0):
     state is set to zero energy.
 
     Args:
-        C (float): in fF
-        Ic (float): in nA
-        N (int): number of charge values to use (needs to be odd)
-        do_disp (int): will print out the values
-        do_plots (int): will plot the data
+        C (float): In fF
+        Ic (float): In nA
+        N (int): Number of charge values to use (needs to be odd)
+        do_disp (int): Will print out the values
+        do_plots (int): Will plot the data
 
     Returns:
         tuple: fqubitGHz, anharMHz, disp, tphi_ms
@@ -547,7 +535,7 @@ def levels_vs_ng_real_units(Cq, IC, N=301, do_disp=0, do_plots=0):
 def get_C_and_Ic(Cin_est, Icin_est, f01, f02on2):
     """
     Get the capacitance and critical current for a transmon
-    of a certain frequency and anharmonicity
+    of a certain frequency and anharmonicity.
 
     Args:
         Cin_est (float): Initial guess for capacitance (in fF)
@@ -581,7 +569,7 @@ def get_C_and_Ic(Cin_est, Icin_est, f01, f02on2):
 def cos_to_mega_and_delta(Cin, ICin, f01, f02on2):
     """Cost function for calculating C and IC
     given a C and IC calculate f and f02/2 from 'levels_vs_ng_real_units'
-    and least square with measured f01,f02on2
+    and least square with measured f01,f02on2.
 
     Args:
         Cin (float): Cin
@@ -590,7 +578,7 @@ def cos_to_mega_and_delta(Cin, ICin, f01, f02on2):
         f02on2 (float): f02on2
 
     Returns:
-        float: calculated value
+        float: Calculated value
     """
     fqubitGHz, anharMHz, disp, tphi_ms = levels_vs_ng_real_units(Cin,
                                                                  ICin,
@@ -605,7 +593,7 @@ def cos_to_mega_and_delta(Cin, ICin, f01, f02on2):
 
 def chargeline_T1(Ccharge, Cq, f01):
     """
-    Calculate the charge line `T1`
+    Calculate the charge line `T1`.
 
     Args:
         Cchare (float): Ccharge
@@ -613,7 +601,7 @@ def chargeline_T1(Ccharge, Cq, f01):
         f01 (float): f01
 
     Returns:
-        float: calculated chargeline T1
+        float: Calculated chargeline T1
     """
 
     return Cq / (Ccharge**2 * 50. * (2 * np.pi * f01)**2)
@@ -622,13 +610,13 @@ def chargeline_T1(Ccharge, Cq, f01):
 # TODO: Move to a more generic file
 
 
-def readin_q3d_matrix(path):
+def readin_q3d_matrix(path: str, delim_whitespace=True):
     """
-    Read in the txt file created from q3d export
-    and output the capacitance matrix
+    Read in the txt file created from q3d export as CSV
+    and output the capacitance matrix file exported by
+    Ansys Q3D.
 
     When exporting pick "save as type: data table"
-    ZKM: 2019-04-02
 
     Args:
         path (str): Path to file
@@ -674,21 +662,52 @@ def readin_q3d_matrix(path):
     s2 = s1[1].split('Conductance Matrix')
 
     df_cmat = pd.read_csv(io.StringIO(s2[0].strip()),
-                          delim_whitespace=True,
+                          delim_whitespace=delim_whitespace,
                           skipinitialspace=True,
                           index_col=0)
     if len(s2) > 1:
         df_cond = pd.read_csv(io.StringIO(s2[1].strip()),
-                              delim_whitespace=True,
+                              delim_whitespace=delim_whitespace,
                               skipinitialspace=True,
                               index_col=0)
     else:
         df_cond = None
 
+    if delim_whitespace == False and len(df_cmat.columns):
+        df_cmat = df_cmat.drop(df_cmat.columns[-1], axis=1)
+
     units = re.findall(r'C Units:(.*?),', text)[0]
-    design_variation = re.findall(r'DesignVariation:(.*?)\n', text)[0]
+    design_variation = re.findall(r'DesignVariation:(.*?)\n', text)
+    if len(design_variation) == 0:
+        design_variation = re.findall(r'Design Variation:(.*?)\n', text)
+        if design_variation:
+            design_variation = design_variation[0]
+        else:
+            design_variation = ''
+    else:
+        design_variation = design_variation[0]
 
     return df_cmat, units, design_variation, df_cond
+
+
+def readin_q3d_matrix_m(path: str) -> pd.DataFrame:
+    """Read in Q3D cap matrix from a .m file exported by
+    Ansys Q3d.
+
+    Args:
+        path (str): Path to .m file
+
+    Returns:
+        pd.DataFrame of cap matrix, with no names of columns.
+    """
+    text = Path(path).read_text()
+    match = re.findall(r'capMatrix (.*?)]', text, re.DOTALL)
+    if match:
+        match = match[0].strip('= [').strip(']').strip('\n')
+        dfC = pd.read_csv(io.StringIO(match),
+                          skipinitialspace=True,
+                          header=None)
+    return dfC
 
 
 # TODO: Move to a more generic file
@@ -700,9 +719,9 @@ def load_q3d_capacitance_matrix(path, user_units='fF', _disp=True):
     Units are read in automatically and converted to user units.
 
     Arguments:
-        path (str): Path to file
-        user_units (str): units (Default: 'fF')
-        _disp (bool): whehter or not to display messages (Default: True)
+        path (str): Path to file.
+        user_units (str): Units.  Defaults to 'fF'.
+        _disp (bool): whehter or not to display messages.  Defaults to True.
 
     Returns:
         tupe: df_cmat, user_units, design_variation, df_cond
@@ -724,7 +743,7 @@ def load_q3d_capacitance_matrix(path, user_units='fF', _disp=True):
     return df_cmat, user_units, design_variation, df_cond
 
 
-def df_cmat_style_print(df_cmat):
+def df_cmat_style_print(df_cmat: pd.DataFrame):
     """Display the dataframe in the cmat style
 
     Args:
@@ -738,14 +757,14 @@ def df_cmat_style_print(df_cmat):
 # Utility functions - Zlatko
 
 
-def move_index_to(i_from, i_to, len_):
+def move_index_to(i_from: List[int], i_to: List[int], len_):
     """
-    Utility function to swap index
+    Utility function to swap index.
 
     Arguments:
         i_from (int): Data frame to swap index
         i_to (int): Data frame to index
-        len_ (int): --length of array
+        len_ (int): Length of array
 
     Returns:
         list: list of indecies, such as  array([1, 2, 3, 4, 0, 5])
@@ -760,12 +779,12 @@ def move_index_to(i_from, i_to, len_):
 
 def df_reorder_matrix_basis(df, i_from, i_to):
     """
-    Data frame handle reording of matrix basis
+    Data frame handle reording of matrix basis.
 
     Arguments:
         df (DataFrame): Data frame to swap
-        i_from (int): index # to move from
-        i_to (int): index # to move to
+        i_from (int): Index to move from
+        i_to (int): Index to move to
 
     Returns:
         DataFrame: The changed index DataFrame

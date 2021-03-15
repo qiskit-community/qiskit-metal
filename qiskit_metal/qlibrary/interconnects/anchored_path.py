@@ -13,9 +13,6 @@
 # that they have been altered from the originals.
 '''
 Anchored path
-
-@date: Aug-2020
-@author: Dennis Wang, Marco Facchini
 '''
 
 import numpy as np
@@ -33,13 +30,13 @@ import geopandas as gpd
 
 def intersecting(a: np.array, b: np.array, c: np.array, d: np.array) -> bool:
     """Returns whether segment ab intersects or overlaps with segment cd, where a, b, c, and d are
-    all coordinates
+    all coordinates.
 
     Args:
-        a (np.array): coordinate
-        b (np.array): coordinate
-        c (np.array): coordinate
-        d (np.array): coordinate
+        a (np.array): Coordinate
+        b (np.array): Coordinate
+        c (np.array): Coordinate
+        d (np.array): Coordinate
 
     Returns:
         bool: True if intersecting, False otherwise
@@ -103,14 +100,29 @@ class RouteAnchors(QRoute):
     """
     Creates and connects a series of anchors through which the Route passes.
 
-    Options:
+    QRoute Default Options:
+        * pin_inputs: Dict
+            * start_pin: Dict -- Component and pin string pair. Define which pin to start from
+                * component: '' -- Name of component to start from, which has a pin
+                * pin: '' -- Name of pin used for pin_start
+            * end_pin=Dict -- Component and pin string pair. Define which pin to start from
+                * component: '' -- Name of component to end on, which has a pin
+                * pin: '' -- Name of pin used for pin_end
+        * fillet: '0'
+        * lead: Dict
+            * start_straight: '0mm' -- Lead-in, defined as the straight segment extension from start_pin.  Defaults to 0.1um.
+            * end_straight: '0mm' -- Lead-out, defined as the straight segment extension from end_pin.  Defaults to 0.1um.
+            * start_jogged_extension: '' -- Lead-in, jogged extension of lead-in. Described as list of tuples
+            * end_jogged_extension: '' -- Lead-out, jogged extension of lead-out. Described as list of tuples
+        * total_length: '7mm'
+        * chip: 'main' -- Which chip is this component attached to.  Defaults to 'main'.
+        * layer: '1' -- Which layer this component should be rendered on.  Defaults to '1'.
+        * trace_width: 'cpw_width' -- Defines the width of the line.  Defaults to 'cpw_width'.
 
-    Anchors:
-        * (Ordered Dictionary) - array of numpy 1x2. Points we want the route to intercept
-
-    Advanced:
-        * avoid_collision - true/false, defines if the route needs to avoid collisions (default: 'false')
-
+    Default Options:
+        * anchors: OrderedDict -- Intermediate anchors only; doesn't include endpoints
+        * advanced: Dict
+            * avoid_collision: 'false' -- true/false, defines if the route needs to avoid collisions.  Defaults to 'false'.
     """
 
     component_metadata = Dict(short_name='cpw')
@@ -154,7 +166,7 @@ class RouteAnchors(QRoute):
 
         Args:
             segment (list): 2 vertices, in the form [np.array([x0, y0]), np.array([x1, y1])]
-            component_name (str): alphanumeric component name
+            component_name (str): Alphanumeric component name
 
         Returns:
             bool: True is no obstacles
@@ -349,7 +361,7 @@ class RouteAnchors(QRoute):
         passing through all of the given anchor points.
 
         Returns:
-            Total length (float) connecting all points in order
+            float: Total length connecting all points in order
         """
         anchors = self.parse_options().anchors
         reference = [self.head.get_tip().position]
@@ -366,7 +378,7 @@ class RouteAnchors(QRoute):
     def trim_pts(self):
         """Crops the sequence of points to concatenate. For example, if a segment between
         two anchors has no points, then the segment is eliminated (only anchor points will do).
-        Modified directly the self.intermediate_pts, thus nothing is returned
+        Modified directly the self.intermediate_pts, thus nothing is returned.
         """
         if isinstance(self.intermediate_pts, Mapping):
             keys_to_delete = set()

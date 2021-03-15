@@ -23,9 +23,6 @@ GUI module, handles user interface.
 The gui module is only loaded if right python qt module
 (such as pyside or pyqt) can be found.
 
-Created on Tue May 14 17:13:40 2019
-@author: Zlatko
-
 
 Main Window
 ---------------

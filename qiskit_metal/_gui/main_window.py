@@ -13,7 +13,6 @@
 # that they have been altered from the originals.
 """
 GUI front-end interface for Qiskit Metal in PySide2.
-@author: Zlatko Minev, IBM
 """
 # pylint: disable=invalid-name
 
@@ -61,7 +60,7 @@ import time
 
 class QMainWindowExtension(QMainWindowExtensionBase):
     """This contains all the functions that the gui needs
-    to call directly from the UI
+    to call directly from the UI.
 
     This class extends the `QMainWindowExtensionBase` class.
 
@@ -89,11 +88,11 @@ class QMainWindowExtension(QMainWindowExtensionBase):
 
     @property
     def gui(self) -> 'MetalGUI':
-        """Returns the MetalGUI"""
+        """Returns the MetalGUI."""
         return self.handler
 
     def _set_element_tab(self, yesno: bool):
-        """Set which part of the element table is in use
+        """Set which part of the element table is in use.
 
         Args:
             yesno (bool): True for View, False for Elements
@@ -107,22 +106,22 @@ class QMainWindowExtension(QMainWindowExtensionBase):
             self.ui.actionElements.setText("QGeometry")
 
     def show_renderer_gds(self):
-        """Handles click on GDS Renderer action"""
+        """Handles click on GDS Renderer action."""
         self.gds_gui = RendererGDSWidget(self, self.gui)
         self.gds_gui.show()
 
     def show_renderer_hfss(self):
-        """Handles click on HFSS Renderer action"""
+        """Handles click on HFSS Renderer action."""
         self.hfss_gui = RendererHFSSWidget(self, self.gui)
         self.hfss_gui.show()
 
     def show_renderer_q3d(self):
-        """Handles click on Q3D Renderer action"""
+        """Handles click on Q3D Renderer action."""
         self.q3d_gui = RendererQ3DWidget(self, self.gui)
         self.q3d_gui.show()
 
     def delete_all_components(self):
-        """Delete all components
+        """Delete all components.
         """
         ret = QMessageBox.question(
             self,
@@ -138,7 +137,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
 
     @slot_catch_error()
     def save_design_as(self, _=None):
-        """Handles click on Save Design As"""
+        """Handles click on Save Design As."""
         filename = QFileDialog.getSaveFileName(
             None,
             'Select a new location to save Metal design to',
@@ -151,7 +150,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
     @slot_catch_error()
     def save_design(self, _=None):
         """
-        Handles click on save design
+        Handles click on save design.
         """
         if self.design:
             if self.design.save_path:
@@ -166,7 +165,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
     @slot_catch_error()
     def load_design(self, _):
         """
-        Handles click on loading metal design
+        Handles click on loading metal design.
         """
         filename = QFileDialog.getOpenFileName(
             None,
@@ -182,14 +181,14 @@ class QMainWindowExtension(QMainWindowExtensionBase):
 
     @slot_catch_error()
     def full_refresh(self, _=None):
-        """Handles click on Refresh"""
+        """Handles click on Refresh."""
         self.logger.info(
             f'Force refresh of all widgets (does not rebuild components)...')
         self.gui.refresh()
 
     @slot_catch_error()
     def rebuild(self, _=None):
-        """Handles click on Rebuild"""
+        """Handles click on Rebuild."""
         self.logger.info(
             f'Rebuilding all components in the model (and refreshing widgets)...'
         )
@@ -197,7 +196,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
 
     @slot_catch_error()
     def new_qcomponent(self, _=None):
-        """Create a new qcomponent call by button
+        """Create a new qcomponent call by button.
         """
         path = str(
             Path(self.gui.path_gui).parent / 'qlibrary' / 'user_components' /
@@ -223,14 +222,14 @@ class QMainWindowExtension(QMainWindowExtensionBase):
 
     @slot_catch_error()
     def create_build_log_window(self, _=None):
-        """"Handles click on Build History button"""
+        """"Handles click on Build History button."""
         self.gui.gui_create_build_log_window()
 
 
 class MetalGUI(QMainWindowBaseHandler):
     """Qiskit Metal Main GUI.
 
-    This class extends the `QMainWindowBaseHandler` class
+    This class extends the `QMainWindowBaseHandler` class.
 
     The GUI can be controlled by the user using the mouse and keyboard or
     API for full control.
@@ -253,8 +252,8 @@ class MetalGUI(QMainWindowBaseHandler):
     def __init__(self, design: QDesign = None):
         """
         Args:
-            design (QDesign, optional): Pass in the design that the GUI should handle
-                (Default: None).
+            design (QDesign, optional): Pass in the design that the GUI should handle.
+                Defaults to None.
         """
 
         from .utility._handle_qt_messages import QtCore, _qt_message_handler
@@ -298,7 +297,7 @@ class MetalGUI(QMainWindowBaseHandler):
             self._set_enabled_design_widgets(False)
 
     def _raise(self):
-        """Raises the window to the top"""
+        """Raises the window to the top."""
         self.main_window.raise_()
 
         # Give keyboard focus.
@@ -310,7 +309,7 @@ class MetalGUI(QMainWindowBaseHandler):
         """Make rebuild and all the other main button disabled.
 
         Arguments:
-            enabled (bool): True to enable, False to disable the design widgets (Default: True).
+            enabled (bool): True to enable, False to disable the design widgets.  Defaults to True.
         """
 
         def setEnabled(parent, widgets):
@@ -361,7 +360,7 @@ class MetalGUI(QMainWindowBaseHandler):
         self.refresh()
 
     def _setup_logger(self):
-        """Setup the logger"""
+        """Setup the logger."""
         super()._setup_logger()
 
         logger = logging.getLogger('metal')
@@ -373,14 +372,14 @@ class MetalGUI(QMainWindowBaseHandler):
         self.update_design_name()
 
     def update_design_name(self):
-        """Update the design name"""
+        """Update the design name."""
         if self.design:
             design_name = self.design.get_design_name()
             self.main_window.setWindowTitle(self.config.main_window.title +
                                             f' — {design_name}')
 
     def _ui_adjustments(self):
-        """Any touchups to the loaded ui that need be done soon
+        """Any touchups to the loaded ui that need be done soon.
         """
         # QTextEditLogger
         self.ui.log_text.img_path = Path(self.path_imgs)
@@ -413,12 +412,12 @@ class MetalGUI(QMainWindowBaseHandler):
         self.ui.tabWidget.setCurrentIndex(0)
 
     def _ui_adjustments_final(self):
-        """Any touchups to the loaded ui that need be done after all the base and main ui is loaded"""
+        """Any touchups to the loaded ui that need be done after all the base and main ui is loaded."""
         if self.component_window:
             self.component_window.setCurrentIndex(0)
 
     def _set_element_tab(self, yesno: bool):
-        """Set the elements tabl to Elements or View
+        """Set the elements tabl to Elements or View.
 
         Args:
             yesno (bool): True for elements, False for view
@@ -429,16 +428,16 @@ class MetalGUI(QMainWindowBaseHandler):
             self.ui.tabWidget.setCurrentWidget(self.ui.mainViewTab)
 
     def _setup_component_widget(self):
-        """Setup the components widget"""
+        """Setup the components widget."""
         if self.component_window:
             self.ui.dockComponent.setWidget(self.component_window)
 
     def _setup_variables_widget(self):
-        """Setup the variables widget"""
+        """Setup the variables widget."""
         self.ui.dockVariables.setWidget(self.variables_window)
 
     def _setup_plot_widget(self):
-        """ Create main Window Widget Plot """
+        """ Create main Window Widget Plot."""
         self.plot_win = QMainWindowPlot(self, self.main_window)
 
         # Add to the tabbed main view
@@ -453,12 +452,12 @@ class MetalGUI(QMainWindowBaseHandler):
                                  dock: QDockWidget,
                                  new_parent: QMainWindow,
                                  dock_location=Qt.BottomDockWidgetArea):
-        """The the doc to a different parent window
+        """The the doc to a different parent window.
 
         Args:
             dock (QDockWidget): Dock to move
             new_parent (QMainWindow): New parent window
-            dock_location (Qt dock location): Location of the dock (Default: Qt.BottomDockWidgetArea).
+            dock_location (Qt dock location): Location of the dock.  Defaults to Qt.BottomDockWidgetArea.
         """
         dock.setParent(new_parent)
         new_parent.addDockWidget(dock_location, dock)
@@ -467,7 +466,7 @@ class MetalGUI(QMainWindowBaseHandler):
         dock.setMaximumHeight(99999)
 
     def _setup_elements_widget(self):
-        """ Create main Window Elements Widget """
+        """ Create main Window Elements Widget."""
         self.elements_win = ElementsWindow(self, self.main_window)
 
         # Add to the tabbed main view
@@ -539,7 +538,7 @@ class MetalGUI(QMainWindowBaseHandler):
         """Show or hide the full plot-area widget / show or hide all docks.
 
         Args:
-            do_hide (bool): Hide or show (Default: None -- toggle)
+            do_hide (bool): Hide or show. Defaults to None -- toggle.
         """
         self.main_window.toggle_all_docks(do_hide)
         self.qApp.processEvents(
@@ -549,13 +548,13 @@ class MetalGUI(QMainWindowBaseHandler):
     # Plotting
     def get_axes(self, num: int = None):
         """Return access to the canvas axes.
-        If num is specified, returns the n-th axis
+        If num is specified, returns the n-th axis.
 
         Args:
-            num (int, optional): if num is specified, returns the n-th axis (Default: None).
+            num (int, optional): If num is specified, returns the n-th axis.  Defaults to None.
 
         Returns:
-            List[Axes] or Axes: of the canvas
+            List[Axes] or Axes: Of the canvas
         """
         axes = self.plot_win.canvas.axes
         if num is not None:
@@ -564,12 +563,12 @@ class MetalGUI(QMainWindowBaseHandler):
 
     @property
     def axes(self) -> List['Axes']:
-        """Returns the axes"""
+        """Returns the axes."""
         return self.plot_win.canvas.axes
 
     @property
     def figure(self):
-        """Return axis to the figure of the canvas
+        """Return axis to the figure of the canvas.
         """
         return self.plot_win.canvas.figure
 
@@ -579,7 +578,7 @@ class MetalGUI(QMainWindowBaseHandler):
         and axes, and their main functions.
 
         Returns:
-            PlotCanvas
+            PlotCanvas: The canvas
         """
         return self.plot_win.canvas
 
@@ -618,16 +617,16 @@ class MetalGUI(QMainWindowBaseHandler):
         self.plot_win.replot()
 
     def autoscale(self):
-        """Shortcut to autoscale all views"""
+        """Shortcut to autoscale all views."""
         self.plot_win.auto_scale()
 
     #########################################################
     # Design level
     def save_file(self, filename: str = None):
-        """Save the file
+        """Save the file.
 
         Args:
-            filename (str): Filename to save (Default: None).
+            filename (str): Filename to save.  Defaults to None.
         """
         self.design.save_design(filename)
 
@@ -656,7 +655,7 @@ class MetalGUI(QMainWindowBaseHandler):
             self.component_window.edit_source()
 
     def highlight_components(self, component_names: List[str]):
-        """Hihglight a list of components
+        """Hihglight a list of components.
 
         Args:
             component_names (List[str]): List of component names to highlight
@@ -664,7 +663,7 @@ class MetalGUI(QMainWindowBaseHandler):
         self.canvas.highlight_components(component_names)
 
     def zoom_on_components(self, components: List[str]):
-        """Zoom to the components
+        """Zoom to the components.
 
         Args:
             components (List[str]): List of components to zoom to
@@ -675,12 +674,12 @@ class MetalGUI(QMainWindowBaseHandler):
     def new_qcomponent_file(self, new_path: str, class_name: str,
                             name_instance: str):
         """Create a new qcomponent file based on template.
-        The template is stored in qlibrary/_template.py
+        The template is stored in qlibrary/_template.py.
 
         Args:
-            path (str): the path to the file to save to
-            class_name (str): how you want to call the class
-            name_instance (str): name of the instance of the component to be created
+            path (str): The path to the file to save to
+            class_name (str): How you want to call the class
+            name_instance (str): Name of the instance of the component to be created
         """
 
         if not new_path.endswith('.py'):
@@ -736,10 +735,10 @@ class MetalGUI(QMainWindowBaseHandler):
         self.edit_component_source(name_instance)
 
     def gui_create_build_log_window(self, _=None):
-        """Creates a separate window that displays the recent successful/fails of all components for the design
+        """Creates a separate window that displays the recent successful/fails of all components for the design.
 
         Args:
-            _ ([type], optional): Default parameters for slot  - used to call from action
+            _ (object, optional): Default parameters for slot  - used to call from action
         """
         self.build_log_window = BuildHistoryScrollArea(
             self.design.build_logs.data())

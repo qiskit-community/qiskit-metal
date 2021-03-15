@@ -12,8 +12,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 '''
-@date: 2020
-@author: Dennis Wang, Zlatko Minev
+QQ3DRenderer
 '''
 
 from typing import List, Union
@@ -28,17 +27,46 @@ from pyEPR.calcs.convert import Convert
 from qiskit_metal import Dict
 from qiskit_metal.analyses.quantization.lumped_capacitive import extract_transmon_coupled_Noscillator
 from qiskit_metal.renderers.renderer_ansys.ansys_renderer import QAnsysRenderer
+from qiskit_metal.toolbox_metal.parsing import is_true
 
 
 class QQ3DRenderer(QAnsysRenderer):
     """
     Subclass of QAnsysRenderer for running Q3D simulations.
+
+    QAnsysRenderer Default Options:
+        * Lj: '10nH' -- Lj has units of nanoHenries (nH)
+        * Cj: 0 -- Cj *must* be 0 for pyEPR analysis! Cj has units of femtofarads (fF)
+        * _Rj: 0 -- _Rj *must* be 0 for pyEPR analysis! _Rj has units of Ohms
+        * max_mesh_length_jj: '7um' -- Maximum mesh length for Josephson junction elements
+        * project_path: None -- Default project path; if None --> get active
+        * project_name: None -- Default project name
+        * design_name: None -- Default design name
+        * ansys_file_extension: '.aedt' -- Ansys file extension for 2016 version and newer
+        * x_buffer_width_mm: 0.2 -- Buffer between max/min x and edge of ground plane, in mm
+        * y_buffer_width_mm: 0.2 -- Buffer between max/min y and edge of ground plane, in mm
     """
 
     name = 'q3d'
     """name"""
 
-    q3d_options = Dict(material_type='pec', material_thickness='200nm')
+    q3d_options = Dict(material_type='pec',
+                       material_thickness='200nm',
+                       add_setup=Dict(freq_ghz='5.0',
+                                      name='Setup',
+                                      save_fields='False',
+                                      enabled='True',
+                                      max_passes='15',
+                                      min_passes='2',
+                                      min_converged_passes='2',
+                                      percent_error='0.5',
+                                      percent_refinement='30',
+                                      auto_increase_solution_order='True',
+                                      solution_order='High',
+                                      solver_type='Iterative'),
+                       get_capacitance_matrix=Dict(variation='',
+                                                   solution_kind='AdaptivePass',
+                                                   pass_number='3'))
 
     def __init__(self,
                  design: 'QDesign',
@@ -52,7 +80,7 @@ class QQ3DRenderer(QAnsysRenderer):
             design (QDesign): Use QGeometry within QDesign to obtain elements for Ansys.
             initiate (bool, optional): True to initiate the renderer. Defaults to True.
             render_template (Dict, optional): Typically used by GUI for template options for GDS. Defaults to None.
-            render_options (Dict, optional):  Used to override all options. Defaults to None.
+            render_options (Dict, optional): Used to override all options. Defaults to None.
         """
         super().__init__(design=design,
                          initiate=initiate,
@@ -62,8 +90,18 @@ class QQ3DRenderer(QAnsysRenderer):
 
     @property
     def boundaries(self):
+        """Reference to BoundarySetup in active design in Ansys.
+
+        Returns:
+            win32com.client.CDispatch: COMObject GetModule, obtained by running within pyEPR: design.GetModule("BoundarySetup")
+        """
         if self.pinfo:
-            return self.pinfo.design._boundaries
+            if self.pinfo.design:
+                return self.pinfo.design._boundaries
+
+    @property
+    def setup_options(self):
+        return self.q3d_options['add_setup']
 
     def render_design(self,
                       selection: Union[list, None] = None,
@@ -150,22 +188,63 @@ class QQ3DRenderer(QAnsysRenderer):
         """
         self.boundaries.AutoIdentifyNets()
 
-    def add_q3d_setup(self,
-                      freq_ghz: float = 5.,
-                      name: str = "Setup",
-                      save_fields: bool = False,
-                      enabled: bool = True,
-                      max_passes: int = 15,
-                      min_passes: int = 2,
-                      min_converged_passes: int = 2,
-                      percent_error: float = 0.5,
-                      percent_refinement: int = 30,
-                      auto_increase_solution_order: bool = True,
-                      solution_order: str = 'High',
-                      solver_type: str = 'Iterative'):
-        # TODO: Move arguments to default options.
+    def activate_q3d_setup(self, setup_name_activate: str = None):
+        """For active design, either get existing setup, make new setup with name, 
+        or make new setup with default name.
+
+        Args:
+            setup_name_activate (str, optional): If name exists for setup, then have pinfo reference it. 
+            If name for setup does not exist, create a new setup with the name.  If name is None, 
+            create a new setup with default name.
         """
-        Create a solution setup in Ansys Q3D.
+        if self.pinfo:
+            if self.pinfo.project:
+                if self.pinfo.design:
+                    # look for setup name, if not there, then add a new one
+                    if setup_name_activate:
+                        all_setup_names = self.pinfo.design.get_setup_names()
+                        self.pinfo.setup_name = setup_name_activate
+                        if setup_name_activate in all_setup_names:
+                            # When name is given and in design. So have pinfo reference existing setup.
+                            self.pinfo.setup = self.pinfo.get_setup(
+                                self.pinfo.setup_name)
+                        else:
+                            # When name is given, but not in design. So make a new setup with given name.
+                            self.pinfo.setup = self.add_q3d_setup(
+                                name=self.pinfo.setup_name)
+                    else:
+                        # When name is not given, so use default name for setup.
+                        # default name is "Setup"
+                        self.pinfo.setup = self.add_q3d_setup()
+                        self.pinfo.setup_name = self.pinfo.setup.name
+                else:
+                    self.logger.warning(
+                        " The design within a project is not available, have you opened a design?"
+                    )
+            else:
+                self.logger.warning(
+                    "Project not available, have you opened a project?")
+        else:
+            self.logger.warning(
+                "Have you run connect_ansys()?  Cannot find a reference to Ansys in QRenderer."
+            )
+
+    def add_q3d_setup(self,
+                      freq_ghz: float = None,
+                      name: str = None,
+                      save_fields: bool = None,
+                      enabled: bool = None,
+                      max_passes: int = None,
+                      min_passes: int = None,
+                      min_converged_passes: int = None,
+                      percent_error: float = None,
+                      percent_refinement: int = None,
+                      auto_increase_solution_order: bool = None,
+                      solution_order: str = None,
+                      solver_type: str = None):
+        """
+        Create a solution setup in Ansys Q3D. If user does not provide arguments, 
+        they will be obtained from q3d_options dict. 
 
         Args:
             freq_ghz (float, optional): Frequency in GHz. Defaults to 5..
@@ -181,6 +260,35 @@ class QQ3DRenderer(QAnsysRenderer):
             solution_order (str, optional): Solution order. Defaults to 'High'.
             solver_type (str, optional): Solver type. Defaults to 'Iterative'.
         """
+        su = self.setup_options
+
+        if not freq_ghz:
+            freq_ghz = float(self.parse_value(su['freq_ghz']))
+        if not name:
+            name = self.parse_value(su['name'])
+        if not save_fields:
+            save_fields = is_true(su['save_fields'])
+        if not enabled:
+            enabled = is_true(su['enabled'])
+        if not max_passes:
+            max_passes = int(self.parse_value(su['max_passes']))
+        if not min_passes:
+            min_passes = int(self.parse_value(su['min_passes']))
+        if not min_converged_passes:
+            min_converged_passes = int(
+                self.parse_value(su['min_converged_passes']))
+        if not percent_error:
+            percent_error = float(self.parse_value(su['percent_error']))
+        if not percent_refinement:
+            percent_refinement = int(self.parse_value(su['percent_refinement']))
+        if not auto_increase_solution_order:
+            auto_increase_solution_order = is_true(
+                su['auto_increase_solution_order'])
+        if not solution_order:
+            solution_order = self.parse_value(su['solution_order'])
+        if not solver_type:
+            solver_type = self.parse_value(su['solver_type'])
+
         if self.pinfo:
             if self.pinfo.design:
                 return self.pinfo.design.create_q3d_setup(
@@ -212,7 +320,6 @@ class QQ3DRenderer(QAnsysRenderer):
                                variation: str = '',
                                solution_kind: str = 'AdaptivePass',
                                pass_number: int = 3):
-        # TODO: Move arguments to default_options.
         """
         Obtain capacitance matrix in a dataframe format.
         Must be executed *after* analyze_setup.
@@ -222,6 +329,15 @@ class QQ3DRenderer(QAnsysRenderer):
             solution_kind (str, optional): Solution type. Defaults to 'AdaptivePass'.
             pass_number (int, optional): Number of passes to perform. Defaults to 3.
         """
+        qo = self.q3d_options['get_capacitance_matrix']
+
+        if not variation:
+            variation = self.parse_value(qo['variation'])
+        if not solution_kind:
+            solution_kind = self.parse_value(qo['solution_kind'])
+        if not pass_number:
+            pass_number = int(self.parse_value(qo['pass_number']))
+
         if self.pinfo:
             df_cmat, user_units, _, _ = self.pinfo.setup.get_matrix(
                 variation=variation,
@@ -244,20 +360,20 @@ class QQ3DRenderer(QAnsysRenderer):
         All capacitance matrices utilize the same values for Lj_nH and onwards in the list of arguments.
 
         Args:
-            Lj_nH (float): junction inductance (in nH)
-            Cj_fF (float): junction capacitance (in fF)
-            N (int): coupling pads (1 readout, N - 1 bus)
-            fr (Union[list, float]): coupling bus and readout frequencies (in GHz). fr can be a list with the order
+            Lj_nH (float): Junction inductance (in nH)
+            Cj_fF (float): Junction capacitance (in fF)
+            N (int): Coupling pads (1 readout, N - 1 bus)
+            fr (Union[list, float]): Coupling bus and readout frequencies (in GHz). fr can be a list with the order
                 they appear in the capMatrix.
-            fb (Union[list, float]): coupling bus and readout frequencies (in GHz). fb can be a list with the order
+            fb (Union[list, float]): Coupling bus and readout frequencies (in GHz). fb can be a list with the order
                 they appear in the capMatrix.
-            maxPass (int): maximum number of passes
+            maxPass (int): Maximum number of passes
             variation (str, optional): An empty string returns nominal variation. Otherwise need the list. Defaults to ''.
             solution_kind (str, optional): Solution type. Defaults to 'AdaptivePass'.
             g_scale (float, optional): Scale factor. Defaults to 1..
 
         Returns:
-            dict: dictionary composed of pass numbers (keys) and their respective capacitance matrices (values)
+            dict: A dictionary composed of pass numbers (keys) and their respective capacitance matrices (values)
         """
         IC_Amps = Convert.Ic_from_Lj(Lj_nH, 'nH', 'A')
         CJ = ureg(f'{Cj_fF} fF').to('farad').magnitude
@@ -325,7 +441,11 @@ class QQ3DRenderer(QAnsysRenderer):
             self.logger.info("Are you mad?? You have to connect to ansys and a project " \
                             "first before creating a new design . Use self.connect_ansys()")
 
+<<<<<<< HEAD
     def activate_q3d_design(self, name: str):
+=======
+    def activate_q3d_design(self, name: str = "MetalQ3ds"):
+>>>>>>> main
         """Add a q3d design with the given name to the project.  If the design exists, that will be added WITHOUT
         altering the suffix of the design name.
 
@@ -360,5 +480,9 @@ class QQ3DRenderer(QAnsysRenderer):
                     "Project not available, have you opened a project?")
         else:
             self.logger.warning(
+<<<<<<< HEAD
                 "Have you run connect_ansys()?  Can not find a reference to Ansys in QRenderer."
+=======
+                "Have you run connect_ansys()?  Cannot find a reference to Ansys in QRenderer."
+>>>>>>> main
             )

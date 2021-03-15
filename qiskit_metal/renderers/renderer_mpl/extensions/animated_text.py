@@ -12,8 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 """
-@author: Zlatko K. Minev
-@date: 2020
 """
 
 import matplotlib.pyplot as plt
@@ -23,7 +21,7 @@ from ...._gui.utility._handle_qt_messages import slot_catch_error
 
 
 class AnimatedText():
-    """Class that animates text"""
+    """Class that animates text."""
 
     def __init__(self,
                  ax: plt.Axes,
@@ -39,17 +37,17 @@ class AnimatedText():
                  loc=[0.5, 0.5]):
         """
         Args:
-            ax (plt.Axes): the axis
-            text (str): text to animate
-            canvas (canvas): the canvas
-            kw (dict): the parameters (Default: None).
-            anim_start (float): animation start (Default: 0.9).
-            anim_dt_ms (int): animation dt in miliseconds (Default: 25).
-            anim_delta (float): animation delta (Default: -0.0005).
-            anim_stop (int): animation stop (Default: 0).
-            anim_accel (float): animation acceleration (Default: -0.0005).
-            start (bool): whether or not to start. (Default: True).
-            loc (list): location. (Default: [0.5, 0.5]).
+            ax (plt.Axes): The axis.
+            text (str): Text to animate.
+            canvas (canvas): The canvas.
+            kw (dict): The parameters.  Defaults to None.
+            anim_start (float): Animation start.  Defaults to 0.9.
+            anim_dt_ms (int): Animation dt in miliseconds.  Defaults to 25.
+            anim_delta (float): Animation delta.  Defaults to -0.0005.
+            anim_stop (int): Animation stop.  Defaults to 0.
+            anim_accel (float): Animation acceleration.  Defaults to -0.0005.
+            start (bool): Whether or not to start.  Defaults to True.
+            loc (list): Location.  Defaults to [0.5, 0.5].
         """
 
         self.canvas = canvas
@@ -85,16 +83,16 @@ class AnimatedText():
             self.start()
 
     def start(self):
-        """Start the timer"""
+        """Start the timer."""
         self.timer.start(self.anim_dt_ms)
 
     def stop(self):
-        """Stop the timer"""
+        """Stop the timer."""
         self.timer.start()
 
     @slot_catch_error()
     def timer_tick(self):
-        """Tick the timer"""
+        """Tick the timer."""
         # Update anim position value
         self.anim_veloc += self.anim_accel  # acceleration on vellcoity update
         self.anim_value += self.anim_delta + self.anim_veloc  # update position

@@ -11,10 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-'''
-@date: 2020
-@author: Dennis Wang, Zlatko Minev
-'''
 
 from typing import List, Tuple, Union
 
@@ -37,6 +33,7 @@ from qiskit_metal.draw.utility import to_vec3D
 from qiskit_metal.draw.basic import is_rectangle
 from qiskit_metal.renderers.renderer_base import QRenderer
 from qiskit_metal.toolbox_python.utility_functions import toggle_numbers, bad_fillet_idxs
+from qiskit_metal.toolbox_metal.parsing import is_true
 
 from qiskit_metal import Dict
 
@@ -89,11 +86,22 @@ class QAnsysRenderer(QRenderer):
     """
     Extends QRenderer to export designs to Ansys using pyEPR.
     The methods which a user will need for Ansys export should be found within this class.
+
+    Default Options:
+        * Lj: '10nH' -- Lj has units of nanoHenries (nH)
+        * Cj: 0 -- Cj *must* be 0 for pyEPR analysis! Cj has units of femtofarads (fF)
+        * _Rj: 0 -- _Rj *must* be 0 for pyEPR analysis! _Rj has units of Ohms
+        * max_mesh_length_jj: '7um' -- Maximum mesh length for Josephson junction elements
+        * project_path: None -- Default project path; if None --> get active
+        * project_name: None -- Default project name
+        * design_name: None -- Default design name
+        * ansys_file_extension: '.aedt' -- Ansys file extension for 2016 version and newer
+        * x_buffer_width_mm: 0.2 -- Buffer between max/min x and edge of ground plane, in mm
+        * y_buffer_width_mm: 0.2 -- Buffer between max/min y and edge of ground plane, in mm
     """
 
     #: Default options, over-written by passing ``options` dict to render_options.
     #: Type: Dict[str, str]
-
     # yapf: disable
     default_options = Dict(
         Lj='10nH',  # Lj has units of nanoHenries (nH)
@@ -109,19 +117,35 @@ class QAnsysRenderer(QRenderer):
         # bounding_box_scale_y = 1.2, # Ratio of 'main' chip length to bounding box length
         x_buffer_width_mm=0.2,  # Buffer between max/min x and edge of ground plane, in mm
         y_buffer_width_mm=0.2,  # Buffer between max/min y and edge of ground plane, in mm
+        plot_ansys_fields_options = Dict(
+            name="NAME:Mag_E1",
+            UserSpecifyName='0',
+            UserSpecifyFolder='0',
+            QuantityName= "Mag_E",
+            PlotFolder= "E Field",
+            StreamlinePlot= "False",
+            AdjacentSidePlot= "False",
+            FullModelPlot= "False",
+            IntrinsicVar= "Phase=\'0deg\'",
+            PlotGeomInfo_0= "1",
+            PlotGeomInfo_1= "Surface",
+            PlotGeomInfo_2= "FacesList",
+            PlotGeomInfo_3= "1",
+        ),
     )
-    # yapf:enable
+    # yapf: enable
+
     NAME_DELIM = r'_'
 
     name = 'ansys'
-    """name"""
+    """Name"""
 
     # When additional columns are added to QGeometry, this is the example to populate it.
     # e.g. element_extensions = dict(
     #         base=dict(color=str, klayer=int),
     #         path=dict(thickness=float, material=str, perfectE=bool),
     #         poly=dict(thickness=float, material=str), )
-    """element extensions dictionary   element_extensions = dict() from base class"""
+    """Element extensions dictionary   element_extensions = dict() from base class"""
 
     # Add columns to junction table during QAnsysRenderer.load()
     # element_extensions  is now being populated as part of load().
@@ -170,7 +194,7 @@ class QAnsysRenderer(QRenderer):
         Open a session of Ansys. Default is version 2020 R2, but can be overridden.
 
         Args:
-            path (str): path to the Ansys executable. Defaults to None
+            path (str): Path to the Ansys executable. Defaults to None
             executable (str): Name of the ansys executable. Defaults to 'reg_ansysedt.exe'
             path_var (str): Name of the OS environment variable that contains the path to the Ansys executable.
                             Only used when path=None. Defaults to 'ANSYSEM_ROOT202' (Ansys ver. 2020 R2)
@@ -208,9 +232,9 @@ class QAnsysRenderer(QRenderer):
         If the optional parameters are provided: if present, opens the project file and design in Ansys.
 
         Args:
-            project_path (str, optional): path without file name
-            project_name (str, optional): file name (with or without extension)
-            design_name (str, optional): nome of the default design to open from the project file
+            project_path (str, optional): Path without file name
+            project_name (str, optional): File name (with or without extension)
+            design_name (str, optional): Name of the default design to open from the project file
 
         """
         if not system() == 'Windows':
@@ -247,7 +271,7 @@ class QAnsysRenderer(QRenderer):
 
     def disconnect_ansys(self):
         """
-        Disconnect Ansys
+        Disconnect Ansys.
         """
         if self.pinfo:
             self.pinfo.disconnect()
@@ -257,7 +281,7 @@ class QAnsysRenderer(QRenderer):
 
     def new_ansys_project(self):
         """
-        Creates a new empty project in Ansys
+        Creates a new empty project in Ansys.
         """
         here = HfssApp()
         here.get_app_desktop().new_project()
@@ -271,7 +295,13 @@ class QAnsysRenderer(QRenderer):
 
         if self.pinfo:
             if self.pinfo.project:
-                # TODO: Handle case when design does not EXIST?!?!?
+                all_designs_names = self.pinfo.project.get_design_names()
+                if design_name not in all_designs_names:
+                    self.logger.warning(
+                        f'The design_name={design_name} is not in project.  Connection did not happen.'
+                    )
+                    return
+
                 try:
                     self.pinfo.connect_design(design_name)
                     self.pinfo.connect_setup()
@@ -283,7 +313,7 @@ class QAnsysRenderer(QRenderer):
                 self.logger.warning(
                     'Either you do not have a project loaded in Ansys, or you are not connected to it. '
                     'Try executing hfss.connect_ansys(), or creating a new Ansys project. '
-                    'Also check the help file and other guide notebooks')
+                    'Also check the help file and other tutorials notebooks')
         else:
             self.logger.warning(
                 'It does not look like you are connected to Ansys. Please use connect_ansys() '
@@ -292,44 +322,156 @@ class QAnsysRenderer(QRenderer):
 
     @property
     def pinfo(self) -> epr.ProjectInfo:
-        """Project info for Ansys renderer (class: pyEPR.ProjectInfo)"""
+        """Project info for Ansys renderer (class: pyEPR.ProjectInfo)."""
         return self._pinfo
 
     @property
     def modeler(self):
+        """ The modeler from pyEPR HfssModeler. 
+
+        Returns:
+            pyEPR.ansys.HfssModeler: Reference to  design.HfssModeler in Ansys.
+        """
         if self.pinfo:
             if self.pinfo.design:
                 return self.pinfo.design.modeler
 
-    def plot_ansys_fields(self, object_name: str):
+    def plot_ansys_fields(
+        self,
+        object_name: str,
+        name: str = None,
+        UserSpecifyName: int = None,
+        UserSpecifyFolder: int = None,
+        QuantityName: str = None,
+        PlotFolder: str = None,
+        StreamlinePlot: bool = None,
+        AdjacentSidePlot: bool = None,
+        FullModelPlot: bool = None,
+        IntrinsicVar: str = None,
+        PlotGeomInfo_0: int = None,
+        PlotGeomInfo_1: str = None,
+        PlotGeomInfo_2: str = None,
+        PlotGeomInfo_3: int = None,
+    ):
+        """Plot fields in Ansys. The options are populated by the component's options.
+
+        Args:
+            object_name (str): Used to plot on faces of.
+            name (str, optional): "NAME:<PlotName>" Defaults to None.
+            UserSpecifyName (int, optional): 0 if default name for plot is used, 1 otherwise. Defaults to None.
+            UserSpecifyFolder (int, optional): 0 if default folder for plot is used, 1 otherwise. Defaults to None.
+            QuantityName (str, optional): Type of plot to create. Possible values are: 
+            Mesh plots: "Mesh"
+            Field plots: "Mag_E", "Mag_H", "Mag_Jvol", "Mag_Jsurf","ComplexMag_E", "ComplexMag_H", 
+            "ComplexMag_Jvol", "ComplexMag_Jsurf", "Vector_E", "Vector_H", "Vector_Jvol", "Vector_Jsurf", 
+            "Vector_RealPoynting","Local_SAR", "Average_SAR". Defaults to None.
+            PlotFolder (str, optional): Name of the folder to which the plot should be added. Possible values 
+            are: "E Field",  "H Field", "Jvol", "Jsurf", "SARField", and "MeshPlots". Defaults to None.
+            StreamlinePlot (bool, optional): Passed to CreateFieldPlot. Defaults to None.
+            AdjacentSidePlot (bool, optional): Passed to CreateFieldPlot. Defaults to None.
+            FullModelPlot (bool, optional): Passed to CreateFieldPlot. Defaults to None.
+            IntrinsicVar (str, optional): Formatted string that specifies the frequency and phase 
+            at which to make the plot.  For example: "Freq='1GHz' Phase='30deg'" Defaults to None.
+            PlotGeomInfo_0 (int, optional): 0th entry in list for "PlotGeomInfo:=", <PlotGeomArray>. Defaults to None.
+            PlotGeomInfo_1 (str, optional): 1st entry in list for "PlotGeomInfo:=", <PlotGeomArray>. Defaults to None.
+            PlotGeomInfo_2 (str, optional): 2nd entry in list for "PlotGeomInfo:=", <PlotGeomArray>. Defaults to None.
+            PlotGeomInfo_3 (int, optional): 3rd entry in list for "PlotGeomInfo:=", <PlotGeomArray>. Defaults to None.
+
+        Returns:
+            NoneType: Return information from oFieldsReport.CreateFieldPlot(). 
+            The method CreateFieldPlot() always returns None.
+        """
         if not self.pinfo:
-            return  # TODO all checks
+            self.logger.warning('pinfo is None.')
+            return
+
+        if self.pinfo.design:
+            if not self.pinfo.design._fields_calc:
+                self.logger.warning('The _fields_calc in design is None.')
+                return
+            if not self.pinfo.design._modeler:
+                self.logger.warning('The _modeler in design is None.')
+                return
+        else:
+            self.logger.warning('The design in pinfo is None.')
+            return
+
+        if not self.pinfo.setup:
+            self.logger.warning('The setup in pinfo is None.')
+            return
+
         #TODO: This is just a prototype - should add features and flexibility.
-        oFieldsReport = self.pinfo.design._fields_calc
-        oModeler = self.pinfo.design._modeler
+        oFieldsReport = self.pinfo.design._fields_calc  #design.GetModule("FieldsReporter")
+        oModeler = self.pinfo.design._modeler  #design.SetActiveEditor("3D Modeler")
         setup = self.pinfo.setup
 
-        # Object ID - use tro plot on faces of
+        # Object ID - use to plot on faces of
         object_id = oModeler.GetObjectIDByName(object_name)
         # Can also use hfss.pinfo.design._modeler.GetFaceIDs("main")
-        # TODO: Allow all these need to be customizable, esp QuantityName
+
+        paf = self.options['plot_ansys_fields_options']
+
+        if not name:
+            name = self.parse_value(paf['name'])
+
+        # Name of the solution setup and solution formatted as:"<SolveSetupName> : <WhichSolution>",
+        # where <WhichSolution> can be "Adaptive_<n>", "LastAdaptive", or "PortOnly".
+        # HFSS requires a space on either side of the ‘:’ character.
+        # If it is missing, the plot will not be created.
+        SolutionName = f"{setup.name} : LastAdaptive"
+        if not UserSpecifyName:
+            UserSpecifyName = int(self.parse_value(paf['UserSpecifyName']))
+        if not UserSpecifyFolder:
+            UserSpecifyFolder = int(self.parse_value(paf['UserSpecifyFolder']))
+        if not QuantityName:
+            QuantityName = self.parse_value(paf['QuantityName'])
+        if not PlotFolder:
+            PlotFolder = self.parse_value(paf['PlotFolder'])
+        if not StreamlinePlot:
+            StreamlinePlot = is_true(self.parse_value(paf['StreamlinePlot']))
+        if not AdjacentSidePlot:
+            AdjacentSidePlot = is_true(self.parse_value(
+                paf['AdjacentSidePlot']))
+        if not FullModelPlot:
+            FullModelPlot = is_true(self.parse_value(paf['FullModelPlot']))
+        if not IntrinsicVar:
+            IntrinsicVar = self.parse_value(paf['IntrinsicVar'])
+        if not PlotGeomInfo_0:
+            PlotGeomInfo_0 = int(self.parse_value(paf['PlotGeomInfo_0']))
+        if not PlotGeomInfo_1:
+            PlotGeomInfo_1 = self.parse_value(paf['PlotGeomInfo_1'])
+        if not PlotGeomInfo_2:
+            PlotGeomInfo_2 = self.parse_value(paf['PlotGeomInfo_2'])
+        if not PlotGeomInfo_3:
+            PlotGeomInfo_3 = int(self.parse_value(paf['PlotGeomInfo_3']))
+
+        # used to pass to CreateFieldPlot
+        # Copied from  pdf at http://www.ece.uprm.edu/~rafaelr/inel6068/HFSS/scripting.pdf
+        #<PlotGeomArray>Array(<NumGeomTypes>, <GeomTypeData>,<GeomTypeData>, ...)
+        # For example:
+        # Array(4, "Volume", "ObjList", 1, "Box1","Surface", "FacesList", 1, "12", "Line", 1,"Polyline1",
+        #       "Point", 2, "Point1", "Point2"
+        PlotGeomInfo = [
+            PlotGeomInfo_0, PlotGeomInfo_1, PlotGeomInfo_2, PlotGeomInfo_3,
+            str(object_id)
+        ]
 
         # yapf: disable
-        return oFieldsReport.CreateFieldPlot(
-            [
-                "NAME:Mag_E1"        ,
-                "SolutionName:="     ,  f"{setup.name} : LastAdaptive",  # name of the setup 
-                "UserSpecifyName:="  , 0,
-                "UserSpecifyFolder:=", 0,
-                "QuantityName:="     , "Mag_E",
-                "PlotFolder:="       , "E Field",
-                "StreamlinePlot:="   , False,
-                "AdjacentSidePlot:=" , False,
-                "FullModelPlot:="    , False,
-                "IntrinsicVar:="     , "Phase=\'0deg\'",
-                "PlotGeomInfo:="     , [1, "Surface", "FacesList", 1, str(object_id)],
-            ],  "Field")
+        args_list = [
+                name                 ,
+                "SolutionName:="     , SolutionName,  # name of the setup 
+                "UserSpecifyName:="  , UserSpecifyName ,
+                "UserSpecifyFolder:=", UserSpecifyFolder,
+                "QuantityName:="     , QuantityName,
+                "PlotFolder:="       , PlotFolder,
+                "StreamlinePlot:="   , StreamlinePlot,
+                "AdjacentSidePlot:=" , AdjacentSidePlot,
+                "FullModelPlot:="    , FullModelPlot,
+                "IntrinsicVar:="     , IntrinsicVar,
+                "PlotGeomInfo:="     , PlotGeomInfo,
+            ]
         #yapf: enable
+        return oFieldsReport.CreateFieldPlot(args_list, "Field")
 
     def plot_ansys_delete(self, names: list):
         """
@@ -357,6 +499,15 @@ class QAnsysRenderer(QRenderer):
         self.pinfo.design.add_message(msg, severity)
 
     def save_screenshot(self, path: str = None, show: bool = True):
+        """Save the screenshot. 
+
+        Args:
+            path (str, optional): Path to save location.  Defaults to None.
+            show (bool, optional): Whether or not to display the screenshot.  Defaults to True.
+
+        Returns:
+            pathlib.WindowsPath: path to png formatted screenshot. 
+        """
         try:
             return self.pinfo.design.save_screenshot(path, show)
         except AttributeError:
@@ -408,7 +559,7 @@ class QAnsysRenderer(QRenderer):
         Start by initializing chip boundaries for later use.
 
         Args:
-            selection (Union[list, None], optional): List of components to render. Defaults to None.
+            selection (Union[list, None], optional): List of components to render. (Default: None)
         """
         self.min_x_main = float('inf')
         self.min_y_main = float('inf')
@@ -426,7 +577,7 @@ class QAnsysRenderer(QRenderer):
 
         Args:
             table_type (str): Table type (poly, path, or junction).
-            selection (Union[list, None], optional): List of components to render. Defaults to None.
+            selection (Union[list, None], optional): List of components to render.  (Default: None)
         """
         # Establish bounds for exported components and update these accordingly
 

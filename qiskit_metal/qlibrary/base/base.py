@@ -17,8 +17,6 @@ This is the main module that defines what a QComponent is in Qiskit Metal.
 To see the docstring of QComponent, use:
     >> ?QComponent
 
-@author: Zlatko Minev, Thomas McConekey, ... (IBM)
-@date: 2019
 """
 
 import logging
@@ -70,7 +68,7 @@ class QComponent():
         * The class define the internal representation of a components
         * The class provides the interfaces for the component (creator user)
 
-    Default options:
+    Default Options:
         Nested default options can be overwritten with the update function.
         The following code demonstrates how the update works.
 
@@ -141,13 +139,12 @@ class QComponent():
         Arguments:
             design (QDesign): The parent design.
             name (str): Name of the component. Auto-named if possible.
-            options (dict): User options that will override the defaults. (default: None)
+            options (dict): User options that will override the defaults.  Defaults to None.
             make (bool): True if the make function should be called at the end of the init.
-                Options be used in the make function to create the geometry. (default: True)
+                Options be used in the make function to create the geometry.  Defaults to True.
             component_template (dict): User can overwrite the template options for the component
                 that will be stored in the design, in design.template,
-                and used every time a new component is instantiated.
-                (default: None)
+                and used every time a new component is instantiated.  Defaults to None.
 
         Raises:
             ValueError: User supplied design isn't a QDesign
@@ -334,7 +331,7 @@ class QComponent():
             Arguments:
                 design (QDesign): The parent design
                 template_key (str): Key to use
-                component_template (dict): template of components to copy, with renderer options
+                component_template (dict): Template of components to copy, with renderer options
         """
         # do not overwrite
         if template_key not in design.template_options:
@@ -352,7 +349,7 @@ class QComponent():
 
     @property
     def name(self) -> str:
-        '''Name of the component'''
+        '''Name of the component.'''
         return self._name
 
     @name.setter
@@ -371,7 +368,7 @@ class QComponent():
 
     @property
     def design(self) -> 'QDesign':
-        '''Return a reference to the parent design object
+        '''Return a reference to the parent design object.
 
         Returns:
             QDesign: design
@@ -384,25 +381,25 @@ class QComponent():
         e.g., qiskit_metal.qlibrary.qubits.TransmonPocket
 
         Returns:
-            str: class name
+            str: Class name
         '''
         return self._class_name
 
     @property
     def logger(self) -> logging.Logger:
-        """The Qiskit Metal Logger
+        """The Qiskit Metal Logger.
 
         Returns:
-            logging.Logger: logger
+            logging.Logger: Logger
         """
         return self._design.logger
 
     @property
     def pin_names(self) -> set:
-        '''The names of the pins
+        '''The names of the pins.
 
         Returns:
-            set: set of pin names
+            set: Set of pin names
         '''
         return set(self.pins.keys())
 
@@ -411,7 +408,7 @@ class QComponent():
         '''The unique id of component within a design.
 
         Returns:
-            int: component id
+            int: Component id
         '''
         return self._id
 
@@ -438,9 +435,9 @@ class QComponent():
         Arguments:
             design (QDesign): Design class. Should be the class, not the instance.
             component_template (Dict): Template options to overwrite the class ones (default: None)
-            logger_ (logging.Logger): A logger for errors. (default: None)
+            logger_ (logging.Logger): A logger for errors.  Defaults to None.
             template_key (str): The template key identifier. If None, then uses
-                cls._get_unique_class_name() (default: None)
+                cls._get_unique_class_name().  Defaults to None.
 
         Returns:
             Dict: dictionary of default options based on design template.
@@ -479,11 +476,11 @@ class QComponent():
         return template_options
 
     def _delete_evaluation(self, check_name: str = None):
-        """design.overwrite_enabled allows user to delete an existing component within
+        """When design.overwrite_enabled, the user is allowed to delete an existing component within
         the design if the name is being used.
 
         Args:
-            check_name (str, optional): Name of new component. (Defaults: None)
+            check_name (str, optional): Name of new component.  Defaults to None.
 
         Returns:
             string: Return 'NameInUse' if overwrite flag is False and
@@ -537,6 +534,9 @@ class QComponent():
         It sets to `failed` when the component is created, and then it sets to `good` when it is
         done with no errors. The user can also set other statuses, which can appear if the code fails
         to reach the final line of the build, where the build status is set to `good`.
+
+        Raises:
+            Exception: Component build failure
         """
         self.status = 'failed'
         try:
@@ -580,7 +580,7 @@ class QComponent():
         This is the main parsing function of Qiskit Metal.
 
         Arguments:
-            value (str): string to parse *or*
+            value (str): String to parse *or*
             variable_dict (dict): dict pointer of variables
 
         Return:
@@ -617,8 +617,6 @@ class QComponent():
         Examples:
             See the docstring for this module.
                 >> ?qiskit_metal.toolbox_metal.parsing
-
-
         """
         return self.design.parse_value(value)
 
@@ -629,8 +627,7 @@ class QComponent():
         Explained by example below.
 
         Arguments:
-            options (dict) : default is None. If left None,
-                             then self.options is used
+            options (dict) : If left None, then self.options is used.  Defaults to None.
 
         Returns:
             dict: Parsed value
@@ -639,14 +636,13 @@ class QComponent():
 
         See `self.parse_value` for more information.
         """
-
         return self.design.parse_value(options if options else self.options)
 
     def _is_name_used(self, check_name: str) -> int:
         """Used to check if name of component already exists.
 
         Args:
-            check_name (str):  Name which user requested to apply to current component.
+            check_name (str): Name which user requested to apply to current component.
 
         Returns:
             int: 0 if does not exist, otherwise
@@ -687,11 +683,11 @@ class QComponent():
             * points (numpy.ndarray): [[x1,y1],[x2,y2]] for the normal/tangent line
             * width (float): the width of the intended connection (eg. qubit bus pad arm)
             * input_as_norm (bool): Indicates if the points are tangent or normal to the pin plane.
-              Default = False. Make True for normal.
-            * parent (Union[int,]): The id of the parent component
-            * chip (str): the name of the chip the pin is located on, default 'main'
+              Defaults to False.. Make True for normal.
+            * parent (Union[int,]): The id of the parent component.
+            * chip (str): the name of the chip the pin is located on.  Defaults to 'main'.
             * gap (float): the dielectric gap of the pin for the purpose of representing as a port
-              for simulations. Default = None which is converted to 0.6 * width.
+              for simulations.  Defaults to None which is converted to 0.6 * width.
 
         A dictionary containing a collection of information about the pin, necessary for use in Metal:
             * points (numpy.ndarray) - two (x,y) points which represent the edge of the pin for
@@ -704,7 +700,7 @@ class QComponent():
             * width (float) - the width of the pin
             * chip (str) - the chip the pin is on
             * parent_name - the id of the parent component
-            * net_id - net_id of the pin if connected to another pin (default 0, indicates
+            * net_id - net_id of the pin if connected to another pin.  Defaults to 0, indicates
               not connected))
 
         ::
@@ -780,7 +776,7 @@ class QComponent():
         self.pins[name] = pin_dict
 
     def get_pin(self, name: str) -> Dict:
-        """Interface for components to get pin data
+        """Interface for components to get pin data.
 
         Args:
             name (str): Name of the desired pin.
@@ -795,11 +791,12 @@ class QComponent():
         """Checks that the pin_inputs are valid, sets an error message indicating what the
         error is if the inputs are not valid.
         Checks regardless of user passing the component name or component id (probably a smoother way
-        to do this check)
+        to do this check).
+
         3 Error cases:
-        - Component does not exist
-        - Pin does not exist
-        - Pin is already attached to something
+            - Component does not exist
+            - Pin does not exist
+            - Pin is already attached to something
 
         Returns:
             str: Status test, or None
@@ -922,12 +919,12 @@ class QComponent():
             geometry (Dict[BaseGeometry]): Key-value pairs of name of the geometry
                 you want to add and the value should be a shapely geometry object, such
                 as a Polygon or a LineString.
-            subtract (bool): Subtract from the layer (default: False)
+            subtract (bool): Subtract from the layer.  Defaults to False.
             helper (bool): Is this a helper object. If true, subtract must be false
-                           (default: False)
+                           Defaults to False.
             layer (int, str): The layer to which the set of QGeometry will belong
-                              (default: 1)
-            chip (str): Chip name (default: 'main')
+                              Defaults to 1.
+            chip (str): Chip name.  Defaults to 'main'.
             kwargs (dict): Parameters dictionary
 
         Assumptions:
@@ -1101,7 +1098,7 @@ class QComponent():
 
     def qgeometry_bounds(self) -> Tuple:
         """
-        Fetched the component bound dict_value
+        Fetched the component bound dict_value.
 
         Returns:
             tuple: containing (minx, miny, maxx, maxy) bound values for the bounds of the
@@ -1116,11 +1113,11 @@ class QComponent():
     def qgeometry_plot(self,
                        ax: 'matplotlib.axes.Axes' = None,
                        plot_kw: dict = None) -> List:
-        """    Draw all the qgeometry of the component (polys and path etc.)
+        """ Draw all the qgeometry of the component (polys and path etc.)
 
         Arguments:
-            ax (matplotlib.axes.Axes):  Matplotlib axis to draw on (Default: None -- gets the current axis)
-            plot_kw (dict): Parameters dictionary
+            ax (matplotlib.axes.Axes): Matplotlib axis to draw on.  Defaults to None -- gets the current axis.
+            plot_kw (dict): Parameters dictionary.
 
         Returns:
             List: The list of qgeometry draw

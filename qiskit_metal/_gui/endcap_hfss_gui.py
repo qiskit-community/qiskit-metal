@@ -11,10 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-'''
-@date: 2020
-@author: Dennis Wang
-'''
 
 from typing import Tuple
 
@@ -114,7 +110,7 @@ class EndcapHFSSWidget(QMainWindow):
         These are the default endcap settings for all pins in components_to_render.
 
         Args:
-            components_to_render (list, optional): List of components to render. Defaults to None.
+            components_to_render (list, optional): List of components to render.  Defaults to None.
 
         Returns:
             Tuple[set, set]: 2 sets of pins to be open or shorted by default
@@ -143,8 +139,6 @@ class EndcapHFSSWidget(QMainWindow):
 
     def render_everything(self):
         """Render all selected components from previous window and add open endcaps and/or ports where appropriate."""
-        # TODO: Create a new table for junctions in driven modal indicating whether they're ports or inductors, then
-        # add the corresponding parameter to render_design()
         add_open_pins, port_list = [], []
         for row in range(len(self.pin_names)):
             if self.table.cellWidget(row, 1).currentText() == 'Open':

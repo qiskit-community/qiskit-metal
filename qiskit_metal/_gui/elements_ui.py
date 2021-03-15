@@ -3,7 +3,11 @@
 # Form implementation generated from reading ui file './elements_ui.ui',
 # licensing of './elements_ui.ui' applies.
 #
+<<<<<<< HEAD
 # Created: Fri Mar 12 01:58:20 2021
+=======
+# Created: Thu Mar  4 09:03:21 2021
+>>>>>>> main
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -65,11 +69,14 @@ class Ui_ElementsWindow(object):
         sizePolicy.setHeightForWidth(
             self.combo_element_type.sizePolicy().hasHeightForWidth())
         self.combo_element_type.setSizePolicy(sizePolicy)
+<<<<<<< HEAD
         self.combo_element_type.setSizeAdjustPolicy(
             QtWidgets.QComboBox.AdjustToContents)
+=======
+        self.combo_element_type.setCurrentText("")
+        self.combo_element_type.setSizeAdjustPolicy(QtWidgets.QComboBox.AdjustToContents)
+>>>>>>> main
         self.combo_element_type.setObjectName("combo_element_type")
-        self.combo_element_type.addItem("")
-        self.combo_element_type.addItem("")
         self.horizontalLayout.addWidget(self.combo_element_type)
         self.line = QtWidgets.QFrame(self.centralwidget)
         self.line.setFrameShape(QtWidgets.QFrame.VLine)
@@ -135,6 +142,7 @@ class Ui_ElementsWindow(object):
         QtCore.QMetaObject.connectSlotsByName(ElementsWindow)
 
     def retranslateUi(self, ElementsWindow):
+<<<<<<< HEAD
         ElementsWindow.setWindowTitle(
             QtWidgets.QApplication.translate("ElementsWindow", "MainWindow",
                                              None, -1))
@@ -183,5 +191,17 @@ class Ui_ElementsWindow(object):
             QtWidgets.QApplication.translate("ElementsWindow", "  Layer:  ",
                                              None, -1))
 
+=======
+        ElementsWindow.setWindowTitle(QtWidgets.QApplication.translate("ElementsWindow", "MainWindow", None, -1))
+        self.btn_refresh.setToolTip(QtWidgets.QApplication.translate("ElementsWindow", "Force refresh the table ", None, -1))
+        self.btn_refresh.setStatusTip(QtWidgets.QApplication.translate("ElementsWindow", "Force refresh the table ", None, -1))
+        self.btn_refresh.setWhatsThis(QtWidgets.QApplication.translate("ElementsWindow", "Force refresh the table ", None, -1))
+        self.btn_refresh.setAccessibleDescription(QtWidgets.QApplication.translate("ElementsWindow", "Force refresh the table ", None, -1))
+        self.label.setText(QtWidgets.QApplication.translate("ElementsWindow", "Element type: ", None, -1))
+        self.combo_element_type.setToolTip(QtWidgets.QApplication.translate("ElementsWindow", "<html><head/><body><p>Select the element table you wish to view</p></body></html>", None, -1))
+        self.label_3.setText(QtWidgets.QApplication.translate("ElementsWindow", "  Filter:  ", None, -1))
+        self.label_2.setText(QtWidgets.QApplication.translate("ElementsWindow", "Component: ", None, -1))
+        self.label_4.setText(QtWidgets.QApplication.translate("ElementsWindow", "  Layer:  ", None, -1))
+>>>>>>> main
 
 from . import main_window_rc_rc

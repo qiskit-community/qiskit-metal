@@ -4,9 +4,11 @@ import time
 
 
 def timeout(timeout_seconds: int):
-    """Simple decorator that fails a test that takes longer than time_seconds to run
+    """Simple decorator that fails a test that takes longer than time_seconds to run.
+
     Args:
         timeout_seconds (int): Maximum amount of time, in seconds, your test should run
+
     Returns:
         Returns nothing but does assert a failure if the test takes longer to run than timeout_seconds
     """

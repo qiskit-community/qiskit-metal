@@ -12,9 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 """Handles editing a QComponent
-
-@author: Zlatko Minev
-@date: 2020
 """
 
 from typing import TYPE_CHECKING
@@ -48,7 +45,7 @@ class QTableView_Options(QTableView, QWidget_PlaceholderText):
             self.style_me)  # not sure whu the ui isnt unpdating these here.
 
     def style_me(self):
-        """Style the widget"""
+        """Style the widget."""
         # Also can do in the ui file, but doesn't always transalte for me for some reason
         self.horizontalHeader().show()
         self.verticalHeader().hide()
@@ -58,10 +55,10 @@ class QTableView_Options(QTableView, QWidget_PlaceholderText):
 
     #TODO: Maybe move to base class of utilty, along with the show template message
     def autoresize_columns(self, max_width: int = 200):
-        """Rezie columsn to contents with maximim
+        """Rezie columsn to contents with maximim.
 
         Args:
-            max (int): automatically resize the columns to the given size (Default: 200)
+            max (int): automatically resize the columns to the given size.  Defaults to 200.
         """
         self.resizeColumnsToContents()
         columns = self.model().columnCount()

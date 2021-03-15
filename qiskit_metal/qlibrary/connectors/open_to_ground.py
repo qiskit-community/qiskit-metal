@@ -11,10 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-'''
-@date: 2019
-@author: Qiskit Team
-'''
 
 from qiskit_metal import draw, Dict
 from qiskit_metal.qlibrary.base import QComponent
@@ -23,22 +19,23 @@ from qiskit_metal.qlibrary.base import QComponent
 class OpenToGround(QComponent):
     """A basic open to ground termination. Functions as a pin for auto drawing.
 
-    Inherits `QComponent` class
+    Inherits `QComponent` class.
 
-    Options:
-        * width: the width of the 'cpw' terminating to ground (this is merely
+    Default Options:
+        * width: '10um' -- The width of the 'cpw' terminating to ground (this is merely
           for the purpose of generating a value to pass to the pin)
-        * gap: the gap of the 'cpw'
-        * termination_gap: the length of dielectric from the end of the cpw center trace to the ground.
-        * pos_x/_y: the x/y position of the ground termination.
-        * rotation: the direction of the termination. 0 degrees is +x, following a
+        * gap: '6um' -- The gap of the 'cpw'
+        * termination_gap: '6um' -- The length of dielectric from the end of the cpw center trace to the ground.
+        * pos_x: '0um' -- The x position of the ground termination.
+        * pos_y: '0um' -- The y position of the ground termination.
+        * rotation: '0' -- The direction of the termination. 0 degrees is +x, following a
           counter-clockwise rotation (eg. 90 is +y)
-        * chip: the chip the pin should be on.
-        * layer: layer the pin is on. Does not have any practical impact to the short.
+        * chip: 'main' -- The chip the pin should be on.
+        * layer: '1' -- Layer the pin is on. Does not have any practical impact to the short.
 
     Values (unless noted) are strings with units included, (e.g., '30um')
     """
-    component_metadata = Dict(short_name='term')
+    component_metadata = Dict(short_name='term', _qgeometry_table_poly='True')
     """Component metadata"""
 
     default_options = Dict(width='10um',
@@ -52,7 +49,7 @@ class OpenToGround(QComponent):
     """Default connector options"""
 
     def make(self):
-        """Build the component"""
+        """Build the component."""
         p = self.p  # p for parsed parameters. Access to the parsed options.
 
         port_line = draw.LineString([(0, -p.width / 2), (0, p.width / 2)])

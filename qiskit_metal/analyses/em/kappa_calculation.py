@@ -27,19 +27,27 @@ import numpy as np
 from math import *
 from scipy.special import ellipk
 
+<<<<<<< HEAD
+=======
+__all__ = ['kappa_in']
+
+>>>>>>> main
 
 def kappa_in(*argv):
     """
-    A simple calculator for the kappa value of a readout resonator 
+    A simple calculator for the kappa value of a readout resonator.
 
     Args:
-        freq (float): the frequency of interest, in Hz
-        C_in (float): effective capacitance between CPW and environment (from Q3D), in Farads
-        freq_res (float): lowest resonant frequency of a CPW (from HFSS), in Hz 
-        length (float): length of the CPW readout resonator, in meters
-        res_width (float): width of the resonator trace (center) line, in meters
-        res_gap (float): width of resonator gap (dielectric space), in meters 
+        freq (float): The frequency of interest, in Hz
+        C_in (float): Effective capacitance between CPW and environment (from Q3D), in Farads
+        freq_res (float): Lowest resonant frequency of a CPW (from HFSS), in Hz 
+        length (float): Length of the CPW readout resonator, in meters
+        res_width (float): Width of the resonator trace (center) line, in meters
+        res_gap (float): Width of resonator gap (dielectric space), in meters 
         eta (float): 2.0 for half-wavelength resonator; 4.0 for quarter-wavelength resonator
+
+    Returns:
+        float: Kappa value
     """
 
     # Effective impedance of the CPW transmission line, in Ohms

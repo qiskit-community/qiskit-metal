@@ -19,7 +19,23 @@ from qiskit_metal.qlibrary.base import QComponent
 class RectangleHollow(QComponent):
     """A single configurable square.
 
-    Inherits QComponent class
+    Inherits QComponent class.
+
+    Default Options:
+        * width: '500um'
+        * height: '300um'
+        * pos_x: '0um'
+        * pos_y: '0um'
+        * rotation: '0'
+        * subtract: 'False'
+        * helper: 'False'
+        * chip: 'main'
+        * layer: '1'
+        * inner: Dict
+            * height: '100um'
+            * offset_x: '40um'
+            * offset_y: '-20um'
+            * rotation: '15'
     """
 
     default_options = Dict(width='500um',

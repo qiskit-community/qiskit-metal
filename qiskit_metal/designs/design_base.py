@@ -13,9 +13,6 @@
 # that they have been altered from the originals.
 """
 The base class of all QDesigns in Qiskit Metal.
-
-@date: 2019
-@author: Zlatko Minev, Thomas McConkey, ... (IBM)
 """
 
 import importlib
@@ -66,7 +63,7 @@ class QDesign():
         """Create a new Metal QDesign.
 
         Arguments:
-            metadata (Dict): Dictionary of metadata (default: None).
+            metadata (Dict): Dictionary of metadata.  Defaults to None.
 
             overwrite_enabled (bool): When True - If the string name, used for component, already
                             exists in the design, the existing component will be
@@ -268,7 +265,7 @@ class QDesign():
         Utility function to return the z value of a chip.
 
         Args:
-            chip_name (str): Returns the size of the given chip (Default: main)
+            chip_name (str): Returns the size of the given chip.  Defaults to 'main'.
 
         Returns:
             str: String representation of the chip height.
@@ -280,10 +277,10 @@ class QDesign():
         """Return the chip layer number for the ground plane.
 
         Args:
-            chip_name (str, optional): User can overwrite name of chip. Defaults to 'main'.
+            chip_name (str, optional): User can overwrite name of chip.  Defaults to 'main'.
 
         Returns:
-            int: layer of ground plane
+            int: Layer of ground plane
         """
         if chip_name in self.chips:
             if 'layer_ground_plane' in self.chips:
@@ -298,8 +295,8 @@ class QDesign():
         Preserves order.
 
         Args:
-            old_key (str): previous variable name
-            new_key (str): new variable name
+            old_key (str): Previous variable name
+            new_key (str): New variable name
         """
 
         keys = list(self._variables.keys())
@@ -573,11 +570,11 @@ class QDesign():
         unless force=True.
 
         Arguments:
-            component_name (str): Name of component to delete
-            force (bool): force delete component even if it has children (Default: False)
+            component_name (str): Name of component to delete.
+            force (bool): Force delete component even if it has children.  Defaults to False.
 
         Returns:
-            bool: is there no such component
+            bool: Is there no such component
         """
 
         # Nothing to delete if name not in components
@@ -672,7 +669,6 @@ class QDesign():
         The length of all_options_superimposes needs to be either empty or exactly the length of original_qcomponents,
         otherwise, an empty dict will be returned.
 
-
         Args:
             original_qcomponents (list): Must be a list of original QComponents.
             new_component_names (list): Must be a list of QComponent names.
@@ -753,7 +749,7 @@ class QDesign():
         """
         Load a Metal design from a saved Metal file.
         Will also update default dictionaries.
-        (Class method)
+        (Class method).
 
         Arguments:
             path (str): Path to saved Metal design.
@@ -771,10 +767,10 @@ class QDesign():
         If no path is given, then tried to use self.save_pathif it is set.
 
         Arguments:
-            path (str): Path to save the design to.  (Default: None)
+            path (str): Path to save the design to.  Defaults to None.
 
         Returns:
-            bool: True = success; False = failure
+            bool: True if successful; False if failure
         """
 
         self.logger.warning("Saving is a beta feature.")
@@ -809,7 +805,7 @@ class QDesign():
         units conversion, some basic arithmetic, and design variables.
 
         Arguments:
-            value (str): string to parse *or*
+            value (str): String to parse *or*
             variable_dict (dict): dict pointer of variables
 
         Return:
@@ -869,7 +865,7 @@ class QDesign():
         Get the name of the design from the metadata.
 
         Returns:
-            str: name of design
+            str: Name of design
         """
         if 'design_name' not in self.metadata:
             self.update_metadata({'design_name': 'Unnamed'})
@@ -923,7 +919,7 @@ class QDesign():
 
         Arguments:
             component_name (str): Component name to update
-            dependencies (bool): True to update all dependencies (Default: True)
+            dependencies (bool): True to update all dependencies.  Defaults to True.
         """
         # Get dependency graph
         # Remake components in order
@@ -933,9 +929,9 @@ class QDesign():
 ######### Renderers ###############################################################
 
     def _start_renderers(self):
-        """1. Import the renderers identifed in config.renderers_to_load.
-           2. Register them into QDesign.
-           3. Populate self.renderer_defaults_by_table
+        """Start the renderers.  First import the renderers identifed in config.renderers_to_load.
+           Then register them into QDesign.
+           Finally populate self.renderer_defaults_by_table
         """
 
         for renderer_key, import_info in config.renderers_to_load.items():

@@ -11,10 +11,13 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
+<<<<<<< HEAD
 '''
 @date: 2020/08/12
 @author: John Blair
 '''
+=======
+>>>>>>> main
 
 #  This a launch structure used on BlueJayV2, used for wire bonding
 #  There is no CPW tee attached to this p#
@@ -31,27 +34,19 @@ from qiskit_metal.qlibrary.base.base import QComponent
 
 class LaunchpadWirebond(QComponent):
     """
-    Launch pad to feed/read signals to/from the chip
+    Launch pad to feed/read signals to/from the chip.
 
-    Inherits 'QComponent' class
+    Inherits 'QComponent' class.
 
-    Description:
-        Creates a 50 ohm launch pad with a ground pocket cutout.
-        Limited but expandable parameters to control the launchpad polygons.
-        The (0,0) point is the center of the necking of the launch tip.
-        The pin attaches directly to the built in lead length at its midpoint
+    Creates a 50 ohm launch pad with a ground pocket cutout.
+    Limited but expandable parameters to control the launchpad polygons.
+    The (0,0) point is the center of the necking of the launch tip.
+    The pin attaches directly to the built in lead length at its midpoint
 
     Pocket and pad:
         Pocket and launch pad geometries are currently fixed.
         (0,0) point is the midpoint of the necking of the launch tip.
         Pocket is a negative shape that is cut out of the ground plane
-
-    Options:
-        * pos_x / pos_y   - where the center of the pocket should be located on chip
-        * orientation     - degree of launch pad rotation
-        * trace_width    - center trace width of the terminating transmission line
-        * trace_gap      - gap of the transmission line
-        * lead_length    - length of the cpw line attached to the end of the launch pad
 
     Values (unless noted) are strings with units included, (e.g., '30um')
 
@@ -75,6 +70,14 @@ class LaunchpadWirebond(QComponent):
     .. image::
         LaunchpadWirebond.png
 
+    Default Options:
+        * layer: '1'
+        * trace_width: 'cpw_width' -- Center trace width of the terminating transmission line
+        * trace_gap: 'cpw_gap' -- Gap of the transmission line
+        * lead_length: '25um' -- Length of the cpw line attached to the end of the launch pad
+        * pos_x: '0um' -- Where the center of the pocket should be located on chip
+        * pos_y: '0um' -- Where the center of the pocket should be located on chip
+        * orientation: '0' -- 90 for 90 degree turn
     """
 
     default_options = Dict(

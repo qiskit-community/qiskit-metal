@@ -12,9 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 '''
-@date: 2019
-@author: Qiskit Team
-
 TEST COMPONENT
 NOT FOR ACTUAL USE
 '''
@@ -27,6 +24,11 @@ import numpy as np
 class SmileyFace(QComponent):
     """TEST COMPONENT It is for fun only.  Can view a 
     smiley face. Can make it wink or frown.
+
+    Default Options:
+        * happy: True
+        * wink: False
+        * orientation: 0
     """
 
     component_metadata = Dict(short_name='Smile')

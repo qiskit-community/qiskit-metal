@@ -11,10 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-'''
-@date: Aug-2020
-@author: Zlatko Minev, Dennis Wang, Marco Facchini
-'''
 
 from qiskit_metal import Dict
 from qiskit_metal.qlibrary import QRoute

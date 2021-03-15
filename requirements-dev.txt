@@ -4,3 +4,16 @@ jupyterlab
 
 # Build tools
 wheel
+
+# Formatters
+pylint
+yapf
+
+# Doc Build
+sphinx
+numpydoc
+sphinx-automodapi
+jupyter_sphinx
+nbsphinx
+qiskit-sphinx-theme
+jupyter_nbgallery

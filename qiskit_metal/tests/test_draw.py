@@ -17,9 +17,6 @@
 #pylint: disable-msg=too-many-public-methods
 """
 Qiskit Metal unit tests analyses functionality.
-
-Created on Wed Apr 22 10:02:44 2020
-@author: Jeremy D. Drysdale
 """
 
 import unittest
@@ -39,24 +36,24 @@ from qiskit_metal.tests.assertions import AssertionsMixin
 
 class TestDraw(unittest.TestCase, AssertionsMixin):
     """
-    Unit test class
+    Unit test class.
     """
 
     def setUp(self):
         """
-        Setup unit test
+        Setup unit test.
         """
         pass
 
     def tearDown(self):
         """
-        Tie any loose ends
+        Tie any loose ends.
         """
         pass
 
     def test_draw_instantiate_vector(self):
         """
-        Test instantiation of Vector class
+        Test instantiation of Vector class.
         """
         try:
             Vector
@@ -65,7 +62,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
 
     def test_draw_basic_rectangle(self):
         """
-        Test rectangle in basic.py
+        Test rectangle in basic.py.
         """
         polygon_actual = basic.rectangle(0.5, 1.5, 2.1, 3.2)
         polygon_expected = Polygon([[1.85, 2.45], [2.35, 2.45], [2.35, 3.95],
@@ -81,7 +78,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
 
     def test_draw_basic_is_rectangle(self):
         """
-        Test is_rectangle in basic.py
+        Test is_rectangle in basic.py.
         """
         my_rectangle = basic.rectangle(0.5, 1.5, 2.1, 3.2)
         my_integer = 7
@@ -91,7 +88,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
 
     def test_draw_basic_subtract(self):
         """
-        Test subtract in basic.py
+        Test subtract in basic.py.
         """
         first = basic.rectangle(0.5, 1.5, 2.1, 3.2)
         second = basic.rectangle(0.1, 1.3, 1.9, 2.2)
@@ -110,7 +107,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
 
     def test_draw_basic_union(self):
         """
-        Test union in basic.py
+        Test union in basic.py.
         """
         first = basic.rectangle(0.5, 1.5, 2.1, 3.2)
         second = basic.rectangle(0.1, 1.3, 1.9, 2.2)
@@ -139,7 +136,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
 
     def test_draw_basic_flip_merge(self):
         """
-        Test flip_merge in basic.py
+        Test flip_merge in basic.py.
         """
         my_line_string = LineString([(0, 0), (1, 1), (1, 2), (2, 2)])
 
@@ -165,7 +162,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
 
     def test_draw_basic_rotate(self):
         """
-        Test rotate in basic.py
+        Test rotate in basic.py.
         """
         poly = Polygon([(0, 0), (0.5, 0), (0.25, 0.5)])
 
@@ -205,7 +202,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
 
     def test_draw_basic_translate(self):
         """
-        Test translate in basic.py
+        Test translate in basic.py.
         """
         poly = Polygon([(0, 0), (0.5, 0), (0.25, 0.5)])
 
@@ -243,7 +240,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
 
     def test_draw_basic_scale(self):
         """
-        Test scale in basic.py
+        Test scale in basic.py.
         """
         poly = Polygon([(0, 0), (0.5, 0), (0.25, 0.5)])
 
@@ -284,7 +281,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
 
     def test_draw_basic_rotate_position(self):
         """
-        Test rotate_position in basic.py
+        Test rotate_position in basic.py.
         """
         poly = Polygon([(0, 0), (0.5, 0), (0.25, 0.5)])
 
@@ -322,7 +319,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
 
     def test_draw_basic_buffer(self):
         """
-        Test buffer in basic.py
+        Test buffer in basic.py.
         """
         poly = Polygon([(0, 0), (0.5, 0), (0.25, 0.5)])
 
@@ -376,7 +373,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
 
     def test_draw_utility_get_poly_pts(self):
         """
-        Test get_poly_pts in utility.py
+        Test get_poly_pts in utility.py.
         """
         poly = Polygon([(0, 0), (0.5, 0), (0.25, 0.5)])
 
@@ -394,7 +391,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
 
     def test_draw_utility_get_all_geoms(self):
         """
-        Test get_all_geoms in utility.py
+        Test get_all_geoms in utility.py.
         """
         poly = Polygon([(0, 0), (0.5, 0), (0.25, 0.5)])
 
@@ -413,7 +410,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
 
     def test_draw_utility_flatten_all_filter(self):
         """
-        Test flatten_all_filter in utility.py
+        Test flatten_all_filter in utility.py.
         """
         poly_1 = Polygon([(0, 0), (0.5, 0), (0.25, 0.5)])
         poly_2 = Polygon([(1, 1), (1.5, 1), (1.25, 1.5)])
@@ -439,7 +436,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
 
     def test_draw_utility_check_duplicate_list(self):
         """
-        Test check_duplicate_list in utility.py
+        Test check_duplicate_list in utility.py.
         """
         list_1 = [1, 2, 3, 4, 5]
         list_2 = [1, 2, 3, 1, 5]
@@ -449,7 +446,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
 
     def test_draw_utility_array_chop(self):
         """
-        Test array_chop in utility.py
+        Test array_chop in utility.py.
         """
         my_list = [0, 1, 0.02, 2, -1, 3, 0.11, 4, 5]
 
@@ -465,7 +462,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
 
     def test_draw_utility_remove_colinear_pts(self):
         """
-        Test remove_colinear_pts in utility.py
+        Test remove_colinear_pts in utility.py.
         """
         points_list = [[0, 0], [
             1,
@@ -491,14 +488,14 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
 
     def test_draw_utility_intersect(self):
         """
-        Test intersect in utility.py
+        Test intersect in utility.py.
         """
         self.assertEqual(utility.intersect(0, 0, 2, 2, 1, 1), 1)
         self.assertEqual(utility.intersect(0, 0, 2, 2, 3, 3), 0)
 
     def test_draw_utility_vec_unit_planar(self):
         """
-        Test vec_unit_planar in utility.py
+        Test vec_unit_planar in utility.py.
         """
         # error
         points_list = [[0, 0], [0, 1], [1.5, 1.5], [1, 1.5]]
@@ -537,7 +534,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
 
     def test_draw_vector_normal_z(self):
         """
-        Test that normal_z in Vector class was not accidentally changed
+        Test that normal_z in Vector class was not accidentally changed.
         """
         expected_list = [0, 0, 1]
         expected = np.array(expected_list)
@@ -549,7 +546,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
 
     def test_draw_vector_rotate_around_point(self):
         """
-        Test rotate_around_point in the Vector class in utility.py
+        Test rotate_around_point in the Vector class in utility.py.
         """
         vector = Vector()
 
@@ -574,7 +571,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
 
     def test_draw_vector_rotate(self):
         """
-        Test rotate in the Vector class in utility.py
+        Test rotate in the Vector class in utility.py.
         """
         vector = Vector()
 
@@ -593,7 +590,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
 
     def test_draw_vector_angle_between(self):
         """
-        Test angle_between in Vector class in utility.py
+        Test angle_between in Vector class in utility.py.
         """
         vector = Vector()
 
@@ -603,7 +600,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
 
     def test_draw_vector_add_z(self):
         """
-        Test add_z in Vector class in utility.py
+        Test add_z in Vector class in utility.py.
         """
         vector = Vector()
 
@@ -621,7 +618,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
 
     def test_draw_normed(self):
         """
-        Test functionality of normed in utility.py
+        Test functionality of normed in utility.py.
         """
         vector = Vector()
 
@@ -631,7 +628,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
 
     def test_draw_vector_norm(self):
         """
-        Test norm in Vector class in utility.py
+        Test norm in Vector class in utility.py.
         """
         vector = Vector()
 
@@ -641,7 +638,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
 
     def test_draw_vector_are_same(self):
         """
-        Test are_same in Vector class in utility.py
+        Test are_same in Vector class in utility.py.
         """
         points_list_1 = [10., 15., 2.]
         points_list_2 = [10., 15., 2.]
@@ -656,7 +653,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
 
     def test_draw_vector_is_zero(self):
         """
-        Test is_zero in Vector class in utility.py
+        Test is_zero in Vector class in utility.py.
         """
         vector = Vector()
 
@@ -671,7 +668,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
 
     def test_draw_vector_two_points_described(self):
         """
-        Test two_points_described in Vector class in utility.py
+        Test two_points_described in Vector class in utility.py.
         """
         vector = Vector()
 
@@ -697,7 +694,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
 
     def test_draw_vector_snap_unit_vector(self):
         """
-        Test snap_unit_vector in Vector class in utility.py
+        Test snap_unit_vector in Vector class in utility.py.
         """
         vector = Vector()
 
@@ -719,7 +716,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
 
     def test_draw_get_distance(self):
         """
-        Test the functionality of get_distance in utility.py
+        Test the functionality of get_distance in utility.py.
         """
         vector = Vector()
 
