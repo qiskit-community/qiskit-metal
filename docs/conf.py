@@ -105,7 +105,7 @@ nbsphinx_epilog = """
 
 # -- Project information -----------------------------------------------------
 project = 'Qiskit Metal {}'.format(version)
-copyright = '2021, Qiskit Development Team'  # pylint: disable=redefined-builtin
+copyright = '2019, Qiskit Development Team'  # pylint: disable=redefined-builtin
 author = 'Qiskit Metal Development Team'
 # -- General configuration ---------------------------------------------------
 
