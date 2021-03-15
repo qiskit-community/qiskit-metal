@@ -405,61 +405,14 @@ class QHFSSRenderer(QAnsysRenderer):
             self.logger.info("Are you mad?? You have to connect to ansys and a project " \
                             "first before creating a new design . Use self.connect_ansys()")
 
-<<<<<<< HEAD
-    def activate_drivenmodal_design(self, name: str):
-=======
+
     def activate_drivenmodal_design(self, name: str = "MetalHFSSDrivenModal"):
->>>>>>> main
         """Add a hfss drivenmodal design with the given name to the project.  If the design exists, that will be added WITHOUT
         altering the suffix of the design name.
 
         Args:
             name (str): Name of the new q3d design
-<<<<<<< HEAD
-        """
-        if self.pinfo:
-            if self.pinfo.project:
-                try:
-                    names_in_design = self.pinfo.project.get_design_names()
-                except AttributeError:
-                    self.logger.error(
-                        'Please install a more recent version of pyEPR (>=0.8.4.5)'
-                    )
 
-                if name in names_in_design:
-                    self.pinfo.connect_design(name)
-                    oDesktop = self.pinfo.design.parent.parent._desktop  # self.pinfo.design does not work
-                    oProject = oDesktop.SetActiveProject(
-                        self.pinfo.project_name)
-                    oDesign = oProject.SetActiveDesign(name)
-                else:
-                    self.logger.warning(
-                        f'The name={name} was not in active project.  '
-                        'A new design will be inserted to the project.  '
-                        f'Names in active project are: \n{names_in_design}.  ')
-                    adesign = self.add_drivenmodal_design(name=name,
-                                                          connect=True)
-
-            else:
-                self.logger.warning(
-                    "Project not available, have you opened a project?")
-        else:
-            self.logger.warning(
-                "Have you run connect_ansys()?  Can not find a reference to Ansys in QRenderer."
-            )
-
-    def add_drivenmodal_setup(self,
-                              freq_ghz=5,
-                              name="Setup",
-                              max_delta_s=0.1,
-                              max_passes=10,
-                              min_passes=1,
-                              min_converged=1,
-                              pct_refinement=30,
-                              basis_order=1):
-        # TODO: Move arguments to default options.
-=======
->>>>>>> main
         """
         if self.pinfo:
             if self.pinfo.project:
@@ -608,41 +561,13 @@ class QHFSSRenderer(QAnsysRenderer):
             self.logger.info("Are you mad?? You have to connect to ansys and a project " \
                             "first before creating a new design . Use self.connect_ansys()")
 
-<<<<<<< HEAD
-    def activate_eigenmode_design(self, name: str):
-=======
+
     def activate_eigenmode_design(self, name: str = "MetalHFSSEigenmode"):
->>>>>>> main
         """Add a hfss eigenmode design with the given name to the project.  If the design exists, that will be added WITHOUT
         altering the suffix of the design name.
 
         Args:
             name (str): Name of the new q3d design
-<<<<<<< HEAD
-        """
-        if self.pinfo:
-            if self.pinfo.project:
-                try:
-                    names_in_design = self.pinfo.project.get_design_names()
-                except AttributeError:
-                    self.logger.error(
-                        'Please install a more recent version of pyEPR (>=0.8.4.5)'
-                    )
-
-                if name in names_in_design:
-                    self.pinfo.connect_design(name)
-                    oDesktop = self.pinfo.design.parent.parent._desktop  # self.pinfo.design does not work
-                    oProject = oDesktop.SetActiveProject(
-                        self.pinfo.project_name)
-                    oDesign = oProject.SetActiveDesign(name)
-                else:
-                    self.logger.warning(
-                        f'The name={name} was not in active project.  '
-                        'A new design will be inserted to the project.  '
-                        f'Names in active project are: \n{names_in_design}.  ')
-                    adesign = self.add_eigenmode_design(name=name, connect=True)
-
-=======
         """
         if self.pinfo:
             if self.pinfo.project:
@@ -708,17 +633,13 @@ class QHFSSRenderer(QAnsysRenderer):
                     self.logger.warning(
                         " The design within a project is not available, have you opened a design?"
                     )
->>>>>>> main
             else:
                 self.logger.warning(
                     "Project not available, have you opened a project?")
         else:
             self.logger.warning(
-<<<<<<< HEAD
-                "Have you run connect_ansys()?  Can not find a reference to Ansys in QRenderer."
-=======
+
                 "Have you run connect_ansys()?  Cannot find a reference to Ansys in QRenderer."
->>>>>>> main
             )
 
     def add_eigenmode_setup(self,
@@ -885,11 +806,8 @@ class QHFSSRenderer(QAnsysRenderer):
             sweep.analyze_sweep()
             self.current_sweep = sweep
 
-<<<<<<< HEAD
-    def plot_s_params(self, getS: Union[list, None] = None):
-=======
+
     def get_params(self, param_name: Union[list, None] = None):
->>>>>>> main
         """
         Get one or more parameters (S, Y, or Z) as a function of frequency.
 
@@ -897,23 +815,12 @@ class QHFSSRenderer(QAnsysRenderer):
             param_name (Union[list, None], optional): Parameters to obtain. Defaults to None.
         """
         if self.current_sweep:
-<<<<<<< HEAD
-            freqs, Scurves = self.current_sweep.get_network_data(getS)
-            Sparams = pd.DataFrame(Scurves, columns=freqs / 1e9,
-                                   index=getS).transpose()
-            fig = plt.figure(10)
-            fig.clf()
-            ax = plt.gca()
-            Sparams.apply(lambda x: 20 * np.log10(np.abs(x))).plot(ax=ax)
-            ax.autoscale()
-            display(fig)
-=======
+
             freqs, Pcurves = self.current_sweep.get_network_data(param_name)
             Pparams = pd.DataFrame(Pcurves,
                                    columns=freqs / 1e9,
                                    index=param_name).transpose()
         return freqs, Pcurves, Pparams
->>>>>>> main
 
     def plot_params(self, param_name: Union[list, None] = None):
         """

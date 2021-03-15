@@ -27,11 +27,9 @@ import numpy as np
 from math import *
 from scipy.special import ellipk
 
-<<<<<<< HEAD
-=======
+
 __all__ = ['kappa_in']
 
->>>>>>> main
 
 def kappa_in(*argv):
     """

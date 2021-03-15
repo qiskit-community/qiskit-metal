@@ -132,8 +132,4 @@ Another few extensions you may find useful to install from the vs marketplace ar
 
 [Metal Docs](/)
 
-<<<<<<< HEAD
 [Docstring cheat sheet](/docs/docstring_cheat_sheet.md)
-=======
-[Docstring cheat sheet](/docs/docstring_cheat_sheet.md)
->>>>>>> main

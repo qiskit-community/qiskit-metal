@@ -11,13 +11,11 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-<<<<<<< HEAD
 '''
 @date: 2020/08/12
 @author: John Blair
 '''
-=======
->>>>>>> main
+
 
 #  This a launch structure used on BlueJayV2, used for wire bonding
 #  There is no CPW tee attached to this p#

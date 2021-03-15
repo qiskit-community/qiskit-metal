@@ -3,36 +3,20 @@ Qiskit Metal |version| documentation
 ####################################
 
 .. hint::
-<<<<<<< HEAD
-    
     You can open this documentation using
 
-=======
-
-    You can open this documentation using
-
->>>>>>> main
     .. code-block:: python
 
         import qiskit_metal
         qiskit_metal.open_docs()
 
 .. attention::
-<<<<<<< HEAD
-    
-    This is an early-access alpha version of Qiskit Metal. This folder will be expanded throughout the early-access period, based on both planned training and your feedback. Please let us know about anything you might want us to add or elaborate upon. 
-
-
-| **Qiskit for quantum hardware design (`Qiskit Metal`)** is a quantum device design and analysis SDK, library, and community.
-| Call it quantum EDA (QEDA) and analysis. 
-=======
 
     This is an alpha version of Qiskit Metal, the code is still under development.  Please let us know about anything you might want us to add or elaborate upon.
 
 
 | **Qiskit for quantum hardware design (`Qiskit Metal`)** is a quantum device design and analysis SDK, library, and community.
 | Call it quantum EDA (QEDA) and analysis.
->>>>>>> main
 
 
 .. rubric:: About Metal
@@ -51,18 +35,6 @@ Qiskit-metal is licensed under Apache 2.0. IBM reserves no copyright over output
 
 .. highlights::
 
-<<<<<<< HEAD
-    We want to accelerate and lower the barrier to innovation on quantum devices. 
-    Today at the IEEE Quantum Week Conference, the team discussed their vision for this first-of-its-kind project. Led by quantum physicist Zlatko Minev and 
-    developed with other IBM Quantum team members, this project is meant for those interested in quantum hardware design: a suite of design automation 
-    tools that can be used to devise and analyze superconducting devices, with a focus on being able to integrate the best tools into a quantum hardware 
-    designer’s workflow. We’ve code-named the project Qiskit Metal.
-
-    We hope that as a community, we might make the process of quantization — bridging the gap between pieces of a superconducting metal on a quantum chip 
-    with the computational mathematics of Hamiltonians and Hilbert spaces — available to anyone with a curious mind and a laptop. We want to make quantum 
-    device design a streamlined process that automates the laborious tasks as it does with conventional electronic device design. We are writing software
-    with built-in best practices and cutting-edge quantum analysis techniques, all this while seamlessly leveraging the power of conventional EDA tools. 
-=======
     We want to accelerate and lower the barrier to innovation on quantum devices.
     Today at the IEEE Quantum Week Conference, the team discussed their vision for this first-of-its-kind project. Led by quantum physicist Zlatko Minev and
     developed with other IBM Quantum team members, this project is meant for those interested in quantum hardware design: a suite of design automation
@@ -73,39 +45,24 @@ Qiskit-metal is licensed under Apache 2.0. IBM reserves no copyright over output
     with the computational mathematics of Hamiltonians and Hilbert spaces — available to anyone with a curious mind and a laptop. We want to make quantum
     device design a streamlined process that automates the laborious tasks as it does with conventional electronic device design. We are writing software
     with built-in best practices and cutting-edge quantum analysis techniques, all this while seamlessly leveraging the power of conventional EDA tools.
->>>>>>> main
     The goal of Qiskit Metal is to allow for easy quantum hardware modeling with reduction of design-related errors plus increased speed.
 
 **Qiskit Metal consists of four foundational elements:**
 
-<<<<<<< HEAD
-    - :ref:`Quantum Device Design (QDesign)<todo>`: ...
-    - :ref:`Quantum Device Components (QComponent)<todo>`: ...
-    - :ref:`Quantum Renderer (QRenderer)<todo>`: ...
-    - :ref:`Quantum Analysis (QAnalysis)<todo>`: ...
-=======
     - Quantum Device Design (QDesign): :ref:`qdesign`
     - Quantum Device Components (QComponent): :ref:`qlibrary`
     - Quantum Renderer (QRenderer): :ref:`qrenderer`
     - Quantum Analysis (QAnalysis): :ref:`qanalysis`
->>>>>>> main
 
 .. toctree::
     :maxdepth: 2
     :hidden:
 
-<<<<<<< HEAD
-    Metal Workflow<workflow>
-    Frequently Asked Questions<faq>
-
-.. TODO: Add Installing Qiskit Metal<getting_started/install.rst> before Metal Workflow
-=======
     Installing Qiskit Metal<installation>
     Metal Workflow<workflow>
     Frequently Asked Questions<faq>
     Code of Conduct<https://github.com/Qiskit/qiskit/blob/master/CODE_OF_CONDUCT.md>
 
->>>>>>> main
 .. TODO: Add Getting Started With Metal between Metal Workflow and Installing Qiskit Metal
 
 .. toctree::
@@ -121,35 +78,6 @@ Qiskit-metal is licensed under Apache 2.0. IBM reserves no copyright over output
     :caption: Tutorials
     :hidden:
 
-<<<<<<< HEAD
-.. TODO: Add jupyter notebooks here
-
-.. toctree::
-    :maxdepth: 2
-    :caption: Libraries
-    :hidden:
-
-    Quantum devices<apidocs/qlibrary>
-
-.. toctree::
-    :maxdepth: 2
-    :caption: API References
-    :hidden:
-
-    Overview<overview>
-    QDesign<apidocs/designs>
-    Analyse<apidocs/analyses>
-    Renderer<apidocs/renderers>
-    Toolbox<apidocs/toolbox_metal>
-  
-.. toctree::
-    :maxdepth: 2
-    :caption: API References Advanced
-    :hidden:
-
-    GUI<apidocs/gui>
-    QGeometry Tables<apidocs/qgeometries>
-=======
     Overview<tut/tutorials/index.rst>
 
 .. toctree::
@@ -190,7 +118,6 @@ Qiskit-metal is licensed under Apache 2.0. IBM reserves no copyright over output
 
     QGeometry<apidocs/qgeometries>
     GUI<apidocs/gui>
->>>>>>> main
 
 
 .. Hiding - Indices and tables

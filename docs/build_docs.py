@@ -26,17 +26,6 @@ import sys
 try:
     import sphinx
     import numpydoc
-<<<<<<< HEAD
-    import sphinx_rtd_theme
-    import sphinx_automodapi
-    import jupyter_sphinx
-except ImportError:
-    cmd = "conda install -y -c conda-forge sphinx numpydoc sphinx_rtd_theme sphinx-automodapi jupyter_sphinx"
-    print(
-        f'\n*** Installing pre-requisite packages to build the docs***\n$ {cmd}'
-    )
-    scmd = shlex.split(cmd)
-=======
     import sphinx_automodapi
     import jupyter_sphinx
     import nbsphinx
@@ -47,7 +36,6 @@ except ImportError:
     )
     scmd = shlex.split(cmd1)
 
->>>>>>> main
     try:
         result = subprocess.run(scmd, stdout=subprocess.PIPE, check=False)
     except FileNotFoundError:
@@ -64,9 +52,6 @@ except ImportError:
         print(f'****stdout****\n{stdout.decode()}')
     if stderr:
         print(f'****stderr****\n{stderr.decode()}')
-<<<<<<< HEAD
-    print("Pre-requisite installation Complete!")
-=======
     print("Conda pre-requisite installation Complete!")
 
 try:
@@ -95,7 +80,6 @@ except ImportError:
     if stderr:
         print(f'****stderr****\n{stderr.decode()}')
     print("Pip pre-requisite installation Complete!")
->>>>>>> main
 
 # then build the docs
 pwd = os.getcwd()
