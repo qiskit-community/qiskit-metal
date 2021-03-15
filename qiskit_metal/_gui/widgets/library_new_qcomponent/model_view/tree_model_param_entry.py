@@ -36,8 +36,7 @@ import numpy as np
 import json
 import builtins
 from typing import TYPE_CHECKING
-if TYPE_CHECKING:
-    from qiskit_metal.designs.design_base import QDesign
+from qiskit_metal.designs.design_base import QDesign
 import time
 
 # List of children given as [(childname_0, childnode_0), (childname_1, childnode_1), ...]
@@ -352,7 +351,7 @@ class TreeModelParamEntry(QAbstractItemModel):
                  parent: QWidget,
                  view,
                  data_dict: OrderedDict = {},
-                 design: QDesign = None):
+                 design: 'QDesign' = None):
         """
         Editable table with drop-down rows for a generic options menu.
         Organized as a tree model where child nodes are more specific properties
