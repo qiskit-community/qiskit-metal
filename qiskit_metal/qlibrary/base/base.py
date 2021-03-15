@@ -1013,7 +1013,6 @@ class QComponent():
         b1 = '\033[94m\033[1m'
         e = '\033[0m'
 
-
         options = format_dict_ala_z(self.options)
         text = f"{b}name:    {b1}{self.name}{e}\n"\
             f"{b}class:   {b1}{self.__class__.__name__:<22s}{e}\n"\

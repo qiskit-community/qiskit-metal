@@ -291,7 +291,6 @@ class RouteAnchors(QRoute):
                                                        corner2 - end) >= 0):
                     # corner2 is also "in front of" the end_pt
 
-
                     return np.expand_dims(corner2, axis=0)
             # In notation below, corners 3 and 4 correspond to
             # the ends of the segment bisecting the longer rectangle formed by start and end
@@ -439,4 +438,3 @@ class RouteAnchors(QRoute):
 
         # Make points into elements
         self.make_elements(self.get_points())
-

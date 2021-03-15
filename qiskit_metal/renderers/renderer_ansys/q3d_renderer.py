@@ -441,7 +441,6 @@ class QQ3DRenderer(QAnsysRenderer):
             self.logger.info("Are you mad?? You have to connect to ansys and a project " \
                             "first before creating a new design . Use self.connect_ansys()")
 
-
     def activate_q3d_design(self, name: str = "MetalQ3ds"):
         """Add a q3d design with the given name to the project.  If the design exists, that will be added WITHOUT
         altering the suffix of the design name.
@@ -477,6 +476,5 @@ class QQ3DRenderer(QAnsysRenderer):
                     "Project not available, have you opened a project?")
         else:
             self.logger.warning(
-
                 "Have you run connect_ansys()?  Cannot find a reference to Ansys in QRenderer."
             )

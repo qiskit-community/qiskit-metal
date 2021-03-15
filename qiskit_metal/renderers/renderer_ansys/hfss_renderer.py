@@ -405,7 +405,6 @@ class QHFSSRenderer(QAnsysRenderer):
             self.logger.info("Are you mad?? You have to connect to ansys and a project " \
                             "first before creating a new design . Use self.connect_ansys()")
 
-
     def activate_drivenmodal_design(self, name: str = "MetalHFSSDrivenModal"):
         """Add a hfss drivenmodal design with the given name to the project.  If the design exists, that will be added WITHOUT
         altering the suffix of the design name.
@@ -561,7 +560,6 @@ class QHFSSRenderer(QAnsysRenderer):
             self.logger.info("Are you mad?? You have to connect to ansys and a project " \
                             "first before creating a new design . Use self.connect_ansys()")
 
-
     def activate_eigenmode_design(self, name: str = "MetalHFSSEigenmode"):
         """Add a hfss eigenmode design with the given name to the project.  If the design exists, that will be added WITHOUT
         altering the suffix of the design name.
@@ -638,7 +636,6 @@ class QHFSSRenderer(QAnsysRenderer):
                     "Project not available, have you opened a project?")
         else:
             self.logger.warning(
-
                 "Have you run connect_ansys()?  Cannot find a reference to Ansys in QRenderer."
             )
 
@@ -805,7 +802,6 @@ class QHFSSRenderer(QAnsysRenderer):
             sweep = setup.get_sweep(sweep_name)
             sweep.analyze_sweep()
             self.current_sweep = sweep
-
 
     def get_params(self, param_name: Union[list, None] = None):
         """
