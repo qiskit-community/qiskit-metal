@@ -26,11 +26,12 @@ Designing quantum devices is the bedrock of the quantum ecosystem, but it is a d
 
 Metal is automating and streamlining this process. Our vision is to develop a community-driven universal platform capable of orchestrating quantum chip development from concept to fabrication in a simple and open framework.
 Qiskit for quantum hardware design (`Qiskit Metal`) is:
+
 * Open source
 * Community-driven
 * Both a python API and a front-end visual GUI interface.
 
-Use the [Slack channel (Join here!)](https://slack.com/app_redirect?channel=metal) to communicate with the developers and other participants.  You may also use this channel inquire about collaborations.
+Use the `Slack channel <https://slack.com/app_redirect?channel=metal>`_ to communicate with the developers and other participants.  You may also use this channel inquire about collaborations.
 
 Qiskit-metal is licensed under Apache 2.0. IBM reserves no copyright over outputs of qiskit-metal.
 
