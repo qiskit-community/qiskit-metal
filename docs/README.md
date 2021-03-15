@@ -1,7 +1,11 @@
 ﻿# Docs for Qiskit Metal
-In the future, users will not need to build their own docs. However, during early-access, these docs must be built by the user.
-This folder contains the doc file src. We use sphinx to build the docs. _Docs may take up to 15 minutes to build._
+There is no need to build the docs unless you want to.  In lieu of building the docs you can find them at https://qiskit.org/documentation/metal/.
+
+If you choose to build the docs yourself, there are two methods described below to do that.
+
 ## The automated method
+This folder contains the doc file src. We use sphinx to build the docs. _Docs may take up to 15 minutes to build._
+
 Build the docs by executing this line:
 ```
     $ python docs/build_docs.py
