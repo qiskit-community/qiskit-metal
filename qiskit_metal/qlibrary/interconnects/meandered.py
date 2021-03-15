@@ -66,7 +66,10 @@ class RouteMeander(QRoute):
                                            end_pin=Dict(component='Q1',
                                                         pin='b')),
                            lead=Dict(start_straight='0mm',
-                                     end_straight='0.5mm'),
+                                     end_straight='0.5mm',
+                                     start_jogged_extension='',
+                                     end_jogged_extension=''
+                                     ),
                            meander=Dict(spacing='200um', asymmetry='0um'),
                            snap='true',
                            prevent_short_edges='true',

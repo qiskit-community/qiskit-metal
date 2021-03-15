@@ -142,7 +142,8 @@ class RouteAnchors(QRoute):
         'lead': {
             'start_straight': '120um',
             'end_straight': '225um',
-            'start_jogged_extension': OrderedDict({0: ["L", '200um']})
+            'start_jogged_extension': OrderedDict({0: ["L", '200um']}),
+            'end_jogged_extension' : '',
         },
         'anchors': OrderedDict({0: np.array(
             [-2,

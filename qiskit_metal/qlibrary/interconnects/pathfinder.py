@@ -53,7 +53,9 @@ class RoutePathfinder(RouteAnchors):
         },
         'lead': {
             'start_straight': '91um',
-            'end_straight': '90um'
+            'end_straight': '90um',
+            'start_jogged_extension': OrderedDict({0: ["L", '200um']}),
+            'end_jogged_extension': ''
         },
         'step_size':
             '0.25mm',
