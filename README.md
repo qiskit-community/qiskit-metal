@@ -3,13 +3,8 @@
 
 ![Welcome to Qiskit Metal!](docs/images/zkm_banner.png 'Welcome to Qiskit Metal')
 
-### Early Access to this quantum device design project
+### Quantum device design project
 We are thrilled to ask you to join this journey to revolutionize quantum devices. This is a first-of-its-kind, open-source project for engineers and scientists to design superconducting quantum devices with ease.
-
-The early-access program started in November and will proceed through the first few months of 2021. During this time we will work closely together to develop Metal and design quantum devices with it.
-
-#### Disclaimers
-Unpolished, early-access alpha version
 
 Qiskit-metal is licensed under Apache 2.0. IBM reserves no copyright over outputs of qiskit-metal.
 
