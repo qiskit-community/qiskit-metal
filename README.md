@@ -18,7 +18,7 @@ Use the [Slack channel (Join here!)](https://join.slack.com/share/zt-jjgzilxu-1u
 
 ## Documentation 
 After installation, you can open the documentation like this
-```
+```python
 import qiskit_metal
 qiskit_metal.open_docs()
 ```
@@ -39,7 +39,7 @@ However we recommend investing into setting up a proper git linkage, which will 
 To do that, you will need to `git clone` this repository's main branch following one of two ways.
 
 1. Open any command line shell that has been configured with git and execute the following command:
-``` sh
+```sh
 git clone https://github.com/Qiskit/qiskit-metal.git
 ```
 2. Alternatively, you can download and use the user interface [GitHub Desktop GUI](https://desktop.github.com/) and refer to these [notes](https://help.github.com/en/desktop/contributing-to-projects/cloning-a-repository-from-github-to-github-desktop).
@@ -61,11 +61,11 @@ For this section you will need to use the command line. If you use github deskto
 ##### Option 1: A new environment
 The most reliable way to set up a qiskit_metal environment is to build one from scratch using the provided conda environment specification file `environment.yml`.
 To do so, first navigate to the folder created by the clone. For example:
-```
+```sh
 cd qiskit-metal
 ```
 Once you are in the folder that contains the `environemnt.yml` file, execute the following installation commands:
-```
+```sh
 conda env create -n <env_name> environment.yml
 conda activate <env_name>
 python -m pip install -ve .
@@ -98,7 +98,7 @@ However, if you prefer using jupyter lab, you will need to execute a couple of e
 Launching jupyter lab will execute python code in the conda `base` environment by default.
 To change environment to the Qiskit Metal one you just finished setting up, denoted by `<env_name>`, which we usually just call `metal`, you will need first to add to jupyter lab's list of available kernels. 
 From the command line, run the following lines (inside an active <env_name> environment):
-```
+```sh
 conda activate <env_name>
 conda install ipykernel
 ipython kernel install --user --name=<any_name_for_kernel>
@@ -112,11 +112,11 @@ Once inside `jupyter lab`, you can switch to the newly created Metal kernel to u
 Package dependencies will evolve over time and could at some point require a new version of a library.
 For example, we can anticipate updating `pyEPR-quantum` to enable Ansys interactions previously unsupported.
 To update your local install, simply execute the metal package install command
-```
+```sh
 python -m pip install -ve .
 ``` 
 Alternatively, you can remove your conda environment by executing the commands below and later re-create a new environment following the original install instructions in section 1.
-```
+```sh
 conda env list
 conda env remove -n <env_name_exist>
 ``` 
@@ -131,7 +131,7 @@ You can do this by downloading and installing [C++ Build Tools](https://visualst
 Be sure to select the latest versions of `MSVCv142 - VS 2019 C++ x64/x86 build tools` and `Windows 10 SDK` in the installer as suggested in [this wiki](https://wiki.python.org/moin/WindowsCompilers) referenced by the gdspy documentation.
 
 To use a Python virtual environment, execute these commands in the top-level of the repository:
-```
+```sh
 python -m venv <virtual_env_path>
 source <virtual_env_path>/bin/activate
 python -m pip install -U pip
@@ -169,11 +169,11 @@ If you can not start Jupyter Lab in the new environment.
 
 Based on: https://anaconda.org/conda-forge/jupyterlab
 Install Jupyter lab by
-```
+```sh
 conda install -c conda-forge jupyterlab
 ```
 Then change directory to top level of repository.
-```
+```sh
 python -m pip install -e .
 ```
 
@@ -184,7 +184,7 @@ python -m pip install -e .
 
 ##### Windows:
 Open Windows Command Prompt and type in
-```
+```sh
 path
 ```
 Copy the resulting output. Example: `"PATH": "\usr\local\bin:\usr\bin:\bin:\usr\sbin:\sbin"`
@@ -197,7 +197,7 @@ Then open the applicable settings.json in your VS Code. (See how to open command
 
 ##### MacOs:
  Open Terminal and type in
- ```
+ ```sh
 echo $PATH
  ```
 Copy the resulting output. Example: `"PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"`
