@@ -30,6 +30,8 @@ Qiskit for quantum hardware design (`Qiskit Metal`) is:
 * Community-driven
 * Both a python API and a front-end visual GUI interface.
 
+Use the [Slack channel (Join here!)](https://slack.com/app_redirect?channel=metal) to communicate with the developers and other participants.  You may also use this channel inquire about collaborations.
+
 Qiskit-metal is licensed under Apache 2.0. IBM reserves no copyright over outputs of qiskit-metal.
 
 .. rubric:: Metal & it's vision (read full `Medium blog <https://medium.com/qiskit/what-if-we-had-a-computer-aided-design-program-for-quantum-computers-4cb88bd1ddea>`_):
