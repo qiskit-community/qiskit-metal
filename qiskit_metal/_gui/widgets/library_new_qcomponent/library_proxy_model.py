@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2017, 2020.
+# (C) Copyright IBM 2017, 2021.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -12,23 +12,17 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 """
-QLibrary display in Library tab
-
-@authors: Grace Harper
-@date: 2021
+Proxy Model to clean display of QComponents in Library tab
 """
-
 from PySide2.QtCore import QModelIndex, QSortFilterProxyModel
 
 
 class LibraryFileProxyModel(QSortFilterProxyModel):
-    """
-    Proxy Model to clean display of QComponents in Library tab
-    """
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
         """Proxy Model for cleaning up Directory Model for displaying GUI's QLibrary """
+
+        super().__init__(*args, **kwargs)
         # finds all files that
         # (Aren't hidden (begin w/ .), don't begin with __init__, don't begin with _template, etc. AND end in .py)  OR (don't begin with __pycache__ and don't have a '.' in the name
         # (QComponent files) OR (Directories)

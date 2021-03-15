@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2017, 2020.
+# (C) Copyright IBM 2017, 2021.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -11,10 +11,8 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""Handles editing a QComponent
-
-@author: Zlatko Minev, Dennis Wang
-@date: 2020
+"""
+Tree view for Param Entry Window
 """
 
 from typing import TYPE_CHECKING
@@ -44,6 +42,7 @@ class TreeViewParamEntry(QTreeView):
         self.expanded.connect(self.resize_on_expand)
 
     def style_me(self):
+        """Set style"""
         self.setStyleSheet("""
 QTreeView::branch {  border-image: url(none.png); }
         """)

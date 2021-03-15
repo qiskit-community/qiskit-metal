@@ -16,6 +16,8 @@ The base class of all QDesigns in Qiskit Metal.
 """
 
 import importlib
+from datetime import datetime
+
 from typing import TYPE_CHECKING, Any
 from typing import Dict as Dict_
 from typing import Iterable, List, Union
@@ -39,6 +41,9 @@ if not config.is_building_docs():
 if TYPE_CHECKING:
     # For linting, avoids circular imports.
     from qiskit_metal.qlibrary.base.base import QComponent
+    from qiskit_metal.renderers.renderer_base import QRenderer
+    from qiskit_metal.renderers.renderer_gds.gds_renderer import QGDSRenderer
+
 
 __all__ = ['QDesign']
 

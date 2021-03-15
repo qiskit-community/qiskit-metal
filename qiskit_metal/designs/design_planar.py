@@ -16,6 +16,9 @@ Module containing Basic Qiskit Metal Planar (2D) design for CPW type geometry.
 """
 
 from .design_base import QDesign, Dict
+from typing import TYPE_CHECKING
+from typing import Dict as Dict_
+from typing import List, Tuple, Union
 from typing import Tuple
 
 __all__ = ['DesignPlanar']

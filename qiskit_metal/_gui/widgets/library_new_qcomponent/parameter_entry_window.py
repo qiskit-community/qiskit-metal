@@ -1,9 +1,8 @@
-## dockify
 # -*- coding: utf-8 -*-
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2017, 2020.
+# (C) Copyright IBM 2017, 2021.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -12,12 +11,9 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""Main edit source code window,
-based on pyqode.python: https://github.com/pyQode/pyqode.python
-
-@author: Zlatko Minev 2020
 """
-
+Parameter Entry Window for displaying parameters for QComponent instantiation from GUI's QLibrary tab
+"""
 from typing import TYPE_CHECKING, Union
 from PySide2.QtWidgets import QPushButton
 from PySide2.QtWidgets import (QScrollArea, QVBoxLayout, QLabel, QWidget,

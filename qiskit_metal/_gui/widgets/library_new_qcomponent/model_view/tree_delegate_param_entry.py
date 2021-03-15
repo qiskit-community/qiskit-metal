@@ -1,3 +1,20 @@
+# -*- coding: utf-8 -*-
+
+# This code is part of Qiskit.
+#
+# (C) Copyright IBM 2017, 2021.
+#
+# This code is licensed under the Apache License, Version 2.0. You may
+# obtain a copy of this license in the LICENSE.txt file in the root directory
+# of this source tree or at http://www.apache.org/licenses/LICENSE-2.0.
+#
+# Any modifications or derivative works of this code must retain this
+# copyright notice, and modified files need to carry a notice indicating
+# that they have been altered from the originals.
+"""
+Delegate for Param Entry Window's MVD
+"""
+
 from PySide2.QtWidgets import QItemDelegate
 from PySide2.QtCore import QAbstractItemModel, QModelIndex, QTimer, Qt
 from PySide2.QtWidgets import (QWidget,QStyleOptionViewItem)
@@ -54,8 +71,6 @@ class ParamDelegate(QItemDelegate):
             editor: Current editor for the data
             model: Current model whose data is being set
             index: Current index being modified
-
-        Returns:
 
         """
         if index.column() == TreeModelParamEntry.TYPE:
