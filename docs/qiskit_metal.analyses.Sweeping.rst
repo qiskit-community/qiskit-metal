@@ -1,11 +1,11 @@
 ﻿
 
-Scanning
+Sweeping
 ==============================
 
 .. currentmodule:: qiskit_metal.analyses
 
-.. autoclass:: Scanning
+.. autoclass:: Sweeping
    :no-members:
    :no-inherited-members:
    :no-special-members:
@@ -22,8 +22,8 @@ Scanning
    .. autosummary::
       :toctree: ../stubs/
    
-      Scanning.option_value
-      Scanning.scan_one_option_get_capacitance_matrix
+      Sweeping.option_value
+      Sweeping.sweep_one_option_get_capacitance_matrix
    
 
    
