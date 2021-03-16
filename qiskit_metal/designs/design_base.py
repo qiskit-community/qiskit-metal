@@ -44,7 +44,6 @@ if TYPE_CHECKING:
     from qiskit_metal.renderers.renderer_base import QRenderer
     from qiskit_metal.renderers.renderer_gds.gds_renderer import QGDSRenderer
 
-
 __all__ = ['QDesign']
 
 #:ivar var1: initial value: par2

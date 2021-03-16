@@ -90,7 +90,6 @@ class ParameterEntryWindow(QMainWindow):
         self.ui.qcomponent_param_tree_view.setModel(self.model)
         self.ui.qcomponent_param_tree_view.setItemDelegate(ParamDelegate(self))
 
-
         self.statusBar().hide()
 
         ## should be moved to qt designer
@@ -120,6 +119,7 @@ class ParameterEntryWindow(QMainWindow):
         All exceptions in QComponentParameterEntry should result in a pop-up window.
         This class contains the decorators that control exception handling for all functions in QComponentParameterEntry
         """
+
         @classmethod
         def entry_exception_pop_up_warning(cls, func: Callable):
             """
@@ -253,9 +253,9 @@ class ParameterEntryWindow(QMainWindow):
         """ Add key, value row to parent row based on what row is highlighed in treeview"""
         cur_index = self.ui.qcomponent_param_tree_view.currentIndex()
 
-        key = "fake-param" + str(random.randint(0, 1000))
+        key = "fake-param"
 
-        value = "Cheese"
+        value = "value"
         self.model.add_new_leaf_node(cur_index, key, value)
 
     @QComponentParameterEntryExceptionDecorators.entry_exception_pop_up_warning
@@ -263,7 +263,7 @@ class ParameterEntryWindow(QMainWindow):
         """ Add key, dictionary-value to parent row based on what row is highlighed in treeview"""
         cur_index = self.ui.qcomponent_param_tree_view.currentIndex()
 
-        fake_dict = "fake-dict" + str(random.randint(0, 1000))
+        fake_dict = "fake-dict"
         fakekey = "key"
         fakevalue = "value"
         self.model.add_new_branch_node(cur_index, fake_dict, fakekey, fakevalue)
@@ -282,7 +282,7 @@ class ParameterEntryWindow(QMainWindow):
         class_signature = signature(self.qcomp_class.__init__)
 
         for _, param in class_signature.parameters.items():
-            if param.name != 'self' and param.name != 'design' and param.name != 'kwargs' and param.name != 'args':
+            if self.is_param_usable(param):
                 if param.default:
                     param_dict[param.name] = param.default
                 else:
@@ -300,6 +300,17 @@ class ParameterEntryWindow(QMainWindow):
         self.reset_param_dictionary = copy.deepcopy(param_dict)
         self.model.init_load(param_dict)
 
+    def is_param_usable(self, param):
+        if_no_default_then_ignore_params = {'options_connection_pads'}
+
+        if param.name == 'self' or param.name == 'design' or param.name == 'kwargs' or param.name == 'args':
+            return False
+
+        if param.name in if_no_default_then_ignore_params:
+            return param.default is not None
+
+        return True
+
     @QComponentParameterEntryExceptionDecorators.entry_exception_pop_up_warning
     def instantiate_qcomponent(self):
         """Instantiate self.qcomp_class"""
@@ -307,13 +318,12 @@ class ParameterEntryWindow(QMainWindow):
         self.traverse_model_to_create_dictionary()
 
         mine = self.qcomp_class(self._design, **self.current_dict)
-
         if self._gui is not None:  #for the sake of testing, we won't have gui
             self._gui.refresh()
             self._gui.autoscale()
-
         self.close()
 
+    @QComponentParameterEntryExceptionDecorators.entry_exception_pop_up_warning
     def traverse_model_to_create_dictionary(self):
         """Traverse model to create parameter entry dictionary given to self.qcomp_class"""
         parameter_dict = {}
@@ -322,20 +332,23 @@ class ParameterEntryWindow(QMainWindow):
 
         self.current_dict = parameter_dict[""]
 
+    @QComponentParameterEntryExceptionDecorators.entry_exception_pop_up_warning
     def recursively_get_params(self, parent_dict, curNode):
         """Helper function for traverse_model_to_create_dictionary"""
+        try:
+            if isinstance(curNode, LeafNode):
+                parent_dict[curNode.name] = curNode.get_real_value()
+                return
 
-        if isinstance(curNode, LeafNode):
+            c_dict = curNode.get_empty_dictionary()
+            parent_dict[curNode.name] = c_dict
+            for child in curNode.children:
 
-            parent_dict[curNode.name] = curNode.get_real_value()
-
-            return
-
-        c_dict = curNode.get_empty_dictionary()
-        parent_dict[curNode.name] = c_dict
-        for child in curNode.children:
-
-            self.recursively_get_params(c_dict, child[Node.NODE])
+                self.recursively_get_params(c_dict, child[Node.NODE])
+        except Exception as e:
+            raise Exception(
+                f"Unable to add node:{self.model.node_str(curNode)} to {parent_dict} due to: {e}"
+            )
 
 
 def create_parameter_entry_window(gui: 'MetalGUI',
@@ -421,14 +434,14 @@ def create_default_from_type(t: type):
         return True
     elif t == dict:
         return {
-            "false-param":
-                "Did you think I wouldn't hear all the things you said about me? \n This is why we can't have! nice  things ~ "
+            "fake-param-" + str(random.randint(0, 1000)): "fake-param"
         }  # can't have empty branch nodes
     elif t == OrderedDict:
         return OrderedDict({0: "zeroth"})
     elif t == Dict:
         return Dict(falseparam1=Dict(falseparam2="false-param",
                                      falseparam3="false-param"))
-
+    elif t == None:
+        return "fake-param-" + str(random.randint(0, 1000))
     else:
         return np.ndarray(1)

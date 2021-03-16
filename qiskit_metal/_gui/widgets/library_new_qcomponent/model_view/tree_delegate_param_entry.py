@@ -17,7 +17,7 @@ Delegate for Param Entry Window's MVD
 
 from PySide2.QtWidgets import QItemDelegate
 from PySide2.QtCore import QAbstractItemModel, QModelIndex, QTimer, Qt
-from PySide2.QtWidgets import (QWidget,QStyleOptionViewItem)
+from PySide2.QtWidgets import (QWidget, QStyleOptionViewItem)
 
 from qiskit_metal._gui.widgets.library_new_qcomponent.model_view.tree_model_param_entry import TreeModelParamEntry
 
@@ -43,7 +43,7 @@ class ParamDelegate(QItemDelegate):
         if index.column() == TreeModelParamEntry.TYPE:
             node = index.model().nodeFromIndex(index)
             combo = node.get_type_combobox(parent)  #dicts vs values
-            combo.setEditable(True)
+            #combo.setEditable(True)
             return combo
         else:
             return QItemDelegate.createEditor(self, parent, option, index)

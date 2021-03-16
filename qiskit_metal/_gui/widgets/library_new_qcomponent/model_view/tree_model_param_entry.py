@@ -15,7 +15,6 @@
 Tree model for Param Entry Window
 """
 
-
 from PySide2 import QtCore
 from PySide2.QtGui import QFont
 from PySide2.QtWidgets import QTreeView, QWidget
@@ -73,11 +72,10 @@ def get_nested_dict_item(dic: dict, key_list: list):
 
 
 class Node:
+    """
+    This class was made for type hints (instead of having to union BranchNode and LeafNode)"
+    """
     KEY, NODE = range(2)
-
-    def update_name(self, new_name):
-        self.name = new_name
-        self.parent.update_child(self)
 
 
 class BranchNode(Node):
@@ -103,6 +101,10 @@ class BranchNode(Node):
         self.parent = parent
         self.children = []
         self.type = cur_type.__name__
+
+    def update_name(self, new_name):
+        self.name = new_name
+        self.parent.update_child(self)
 
     def get_type_combobox(self, parent: QWidget):
 
@@ -133,14 +135,6 @@ class BranchNode(Node):
         def getTypeName(self):
             return self.currentText()
 
-        def setCurrentText(self, text):
-
-            new_ind = self.findText(text)
-            if new_ind == -1:
-                new_ind = 0
-            self.setCurrentIndex(new_ind)
-            return self.currentText()
-
     def get_empty_dictionary(self):
         if self.type == self.BranchTypeComboBox.orderedDict:
             return OrderedDict()
@@ -154,6 +148,13 @@ class BranchNode(Node):
             int: the number of children this node has
         """
         return len(self.children)
+
+    def __str__(self):
+        mystr = f"BranchNode: {self.name} with children: "
+        for c in self.children:
+            mystr += f"{c[0]}, "
+
+        return mystr
 
     def childAtRow(self, row: int):
         """Gets the child at the given row
@@ -297,13 +298,6 @@ class LeafNode(Node):
         def getTypeName(self):
             return self.currentText()
 
-        def setCurrentText(self, text: str):
-            new_ind = self.findText(text)
-            if new_ind == -1:
-                new_ind = 0
-            self.setCurrentIndex(new_ind)
-            return self.currentText()
-
     def _get_display_value(self, value):
 
         if self.type in self.LeafTypeComboBox.customToStringItems:
@@ -326,6 +320,14 @@ class LeafNode(Node):
         else:
             value = cur_type(self.value)
         return value
+
+    def update_name(self, new_name):
+        self.name = new_name
+        self.parent.update_child(self)
+
+    def __str__(self):
+        mystr = f"LeafNode: {self.name} with value: {self.value}"
+        return mystr
 
 
 class TreeModelParamEntry(QAbstractItemModel):
@@ -434,11 +436,15 @@ class TreeModelParamEntry(QAbstractItemModel):
 
         if cur_node == self.root:
 
-            raise Exception("Don't delete the everything pls")
+            raise Exception("Don't delete the everything please")
+
         # remove from parent
         if (cur_node.name, cur_node) in cur_node.parent.children:
-
             cur_node.parent.children.remove((cur_node.name, cur_node))
+        else:
+            raise Exception(
+                "Internal Model Exception: unable to find parent of child node to be deleted."
+            )
 
         op = self.get_path_of_expanded_items()
 
@@ -672,9 +678,6 @@ class TreeModelParamEntry(QAbstractItemModel):
 
                     old_value = node.name
                     if old_value == value:
-                        self._design.logger.info(
-                            f"No data changed in tree model because old value {old_value} == new value: {value}"
-                        )
                         return False
 
                     node.update_name(value)
@@ -854,3 +857,8 @@ class TreeModelParamEntry(QAbstractItemModel):
                 return flags | Qt.ItemIsEditable
 
         return flags
+
+    def node_str(self, node: Node):
+        if Node is None:
+            return "None"
+        return str(node)
