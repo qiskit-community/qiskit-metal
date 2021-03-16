@@ -9,7 +9,7 @@ Unpolished, early-access alpha version
 Qiskit-metal is licensed under Apache 2.0. IBM reserves no copyright over outputs of qiskit-metal.
 
 #### Get help: Slack
-Use the [Slack channel (Join here!)](https://slack.com/app_redirect?channel=metal) to communicate with the developers and other participants.  You may also use this channel inquire about collaborations.
+Use the [Slack channel (Join here!)](https://qiskit.slack.com/archives/C01R8KP5WP7) to communicate with the developers and other participants.  You may also use this channel inquire about collaborations.
 
 ## Documentation 
 After installation, you can open the documentation like this
