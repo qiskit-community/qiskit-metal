@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2017, 2020.
+# (C) Copyright IBM 2017, 2021.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -28,7 +28,7 @@ from qiskit_metal.analyses.quantization import lumped_capacitive
 from qiskit_metal.analyses.hamiltonian.transmon_charge_basis import Hcpb
 from qiskit_metal.analyses.hamiltonian.HO_wavefunctions import wavefunction
 from qiskit_metal.analyses.em import cpw_calculations
-from qiskit_metal.analyses.scan_options.scanning import Scanning
+from qiskit_metal.analyses.sweep_options.sweeping import Sweeping
 from qiskit_metal.tests.assertions import AssertionsMixin
 from qiskit_metal import designs
 
@@ -61,15 +61,15 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
         except Exception:
             self.fail("Hcpb failed")
 
-    def test_analyses_instantiate_scanning(self):
+    def test_analyses_instantiate_sweeping(self):
         """
-        Test instantiation of Scanning in analytic_transmon.py.
+        Test instantiation of Sweeping in analytic_transmon.py.
         """
         try:
             design = designs.DesignPlanar()
-            Scanning(design)
+            Sweeping(design)
         except Exception:
-            self.fail("Scanning failed")
+            self.fail("Sweeping failed")
 
     def test_analyses_cpw_guided_wavelength(self):
         """
