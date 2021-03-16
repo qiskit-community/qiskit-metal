@@ -9,7 +9,7 @@ We are thrilled to ask you to join this journey to revolutionize quantum devices
 Qiskit-metal is licensed under Apache 2.0. IBM reserves no copyright over outputs of qiskit-metal.
 
 #### Get help: Slack
-Use the [Slack channel (Join here!)](https://qiskit.slack.com/archives/C01R8KP5WP7) to communicate with the developers and other participants.  You may also use this channel inquire about collaborations.
+Use the slack channel.  Join [qiskit slack](https://ibm.co/joinqiskitslack) and then join the `#metal` channel to communicate with the developers and other participants.  You may also use this channel inquire about collaborations.
 
 ## Documentation 
 After installation, you can open the documentation like this
