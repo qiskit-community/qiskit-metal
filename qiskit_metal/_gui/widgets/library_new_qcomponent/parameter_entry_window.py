@@ -289,12 +289,18 @@ class ParameterEntryWindow(QMainWindow):
                     param_dict[param.name] = create_default_from_type(
                         param.annotation)
 
-        if 'default_options' in self.qcomp_class.__dict__:
-            options = self.qcomp_class.default_options
+        try:
+            print("getting template options")
+            options = self.qcomp_class.get_template_options(self._design)
+            print("template_options: ", options)
+        except Exception as e:
+            self._design.logger.warning(f"Could not use template_options for component: {e}")
+            if 'default_options' in self.qcomp_class.__dict__:
+                options = self.qcomp_class.default_options
 
-            if options is not None:
-                copied_options = copy.deepcopy(options)
-                param_dict['options'] = copied_options
+        if options is not None:
+            copied_options = copy.deepcopy(options)
+            param_dict['options'] = copied_options
 
         self.param_dictionary = param_dict
         self.reset_param_dictionary = copy.deepcopy(param_dict)
