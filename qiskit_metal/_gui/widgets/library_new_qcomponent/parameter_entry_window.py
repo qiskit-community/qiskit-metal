@@ -290,9 +290,7 @@ class ParameterEntryWindow(QMainWindow):
                         param.annotation)
 
         try:
-            print("getting template options")
             options = self.qcomp_class.get_template_options(self._design)
-            print("template_options: ", options)
         except Exception as e:
             self._design.logger.warning(f"Could not use template_options for component: {e}")
             if 'default_options' in self.qcomp_class.__dict__:
