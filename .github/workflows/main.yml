@@ -2,9 +2,9 @@ name: Tests
 on:
   # Run this workflow every time a new commit is pushed to or a pull request is created from one of these branches
   push:
-    branches: [ master, 'stable/*' ]
+    branches: [ main, 'stable/*' ]
   pull_request:
-    branches: [ master, 'stable/*' ]
+    branches: [ main, 'stable/*' ]
 jobs:
   tests:
     # Name the Job
