@@ -90,12 +90,7 @@ Qiskit-metal is licensed under Apache 2.0. IBM reserves no copyright over output
     :caption: Circuit Example Library
     :hidden:
 
-    Qubits<circuit-examples/qubits/index>
-    Resonators<circuit-examples/resonators/index>
-    Composite Bi-Partite Systems Comprising Qubit and Resonator<circuit-examples/composite-bi-partite/index>
-    Qubit Couplers<circuit-examples/qubit-couplers/index>
-    Input-Output Coupling<circuit-examples/input-output-coupling/index>
-    Small Quantum Chips<circuit-examples/small-quantum-chips/index>
+    Circuit Examples<circuit-examples/index>
 
 .. toctree::
     :maxdepth: 2
@@ -115,12 +110,6 @@ Qiskit-metal is licensed under Apache 2.0. IBM reserves no copyright over output
     Analyses<apidocs/analyses>
     QRenderes<apidocs/renderers>
     Toolbox<apidocs/toolbox_metal>
-
-.. toctree::
-    :maxdepth: 2
-    :caption: Advanced API Reference
-    :hidden:
-
     QGeometry<apidocs/qgeometries>
     GUI<apidocs/gui>
 
