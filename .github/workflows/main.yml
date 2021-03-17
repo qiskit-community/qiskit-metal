@@ -109,7 +109,7 @@ jobs:
       - name: Install Deps
         run: |
           python -m pip install -U tox
-          sudo apt install -y graphviz pandoc
+          sudo apt install -y graphviz pandoc qt5-default
       - name: Build Docs
         run: tox -edocs
       - uses: actions/upload-artifact@v2
@@ -139,7 +139,7 @@ jobs:
           set -e
           python -m pip install --upgrade pip
           pip install -U tox
-          sudo apt install -y graphviz pandoc
+          sudo apt install -y graphviz pandoc qt5-default
           pip check
         shell: bash
       - name: Run Tutorials
