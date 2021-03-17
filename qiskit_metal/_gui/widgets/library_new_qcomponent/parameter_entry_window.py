@@ -156,7 +156,6 @@ class ParameterEntryWindow(QMainWindow):
 
         component = self.qcomp_class
         if component is None:
-
             raise Exception("No Component found.")
 
         filepath = self.qcomponent_file_path
@@ -168,10 +167,9 @@ class ParameterEntryWindow(QMainWindow):
         <div class="h1">Summary:</div>
         <table class="table ComponentHeader">
             <tbody>
-                <tr> <th>Name</th> <td>{component.name}</td></tr>
-                <tr> <th>Class</th><td>{component.__class__.__name__}</td></tr>
+                <tr> <th>Class</th><td>{component.__name__}</td></tr>
                 <tr> <th>Module</th><td>{component.__class__.__module__}</td></tr>
-                <tr> <th>Path </th> <td style="text-color=#BBBBBB;"> {filepath}</td></tr>
+                <tr> <th>Path</th><td style="text-color=#BBBBBB;"> {filepath}</td></tr>
             </tbody>
         </table>
         '''
