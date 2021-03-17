@@ -140,9 +140,26 @@ class Sweeping():
 
             a_hfss.analyze_setup("Setup")  #Analyze said solution setup.
             setup = a_hfss.pinfo.setup
-            solution_name = a_hfss.pinfo.setup.solution_name
-            a = 5  # for breakpoint
+            solution_name = setup.solution_name
+            all_solutions = setup.get_solutions()
+            setup_names = all_solutions.list_variations()
+            freqs, kappa_over_2pis = all_solutions.eigenmodes()
 
+            sweep_values = dict()
+            sweep_values['option_name'] = option_path[-1]
+            sweep_values['frequency'] = freqs
+            sweep_values['kappa_over_2pis'] = kappa_over_2pis
+            all_sweep[item] = sweep_values
+
+            #Decide if need to clean the design.
+            obj_names = a_hfss.pinfo.get_all_object_names()
+            if obj_names:
+                if index == len_sweep and not leave_last_design:
+                    a_hfss.clean_active_design()
+                elif index != len_sweep:
+                    a_hfss.clean_active_design()
+
+        a_hfss.disconnect_ansys()
         return all_sweep, 0
 
     def sweep_one_option_get_capacitance_matrix(
@@ -229,8 +246,6 @@ class Sweeping():
 
             self.design.rebuild()
 
-            a_q3d = self.design.renderers.q3d
-
             a_q3d.render_design(
                 selection=qcomp_render,
                 open_pins=endcaps_render)  #Render the items chosen
@@ -250,4 +265,6 @@ class Sweeping():
                     a_q3d.clean_active_design()
                 elif index != len_sweep:
                     a_q3d.clean_active_design()
+
+        a_q3d.disconnect_ansys()
         return all_sweep, 0
