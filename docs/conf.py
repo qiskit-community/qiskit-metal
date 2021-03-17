@@ -142,8 +142,7 @@ nbsphinx_execute_arguments = [
     "--InlineBackend.rc={'figure.dpi': 96}",
 ]
 
-nbsphinx_execute = 'never'
-nbsphinx_allow_errors = True
+nbsphinx_execute = os.getenv('QISKIT_DOCS_BUILD_TUTORIALS', 'never')
 
 source_suffix = ['.rst', '.ipynb']
 
