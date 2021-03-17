@@ -14,8 +14,8 @@ jobs:
     # Set matrix for runs-on
     strategy:
       matrix:
-        python-version: [3.7]
-        os: ["macOS-latest", "ubuntu-latest", "windows-latest"]
+        python-version: [3.7.8]
+        os: ["macOS-latest", "ubuntu-latest"]
     steps:
       - name: Chekout code
         uses: actions/checkout@v2
