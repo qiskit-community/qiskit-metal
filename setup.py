@@ -28,11 +28,11 @@ with open(here / "requirements.txt", encoding="utf-8") as f:
 setup(
     name="qiskit_metal",
     version="0.0.2",
-    description="Quantum VLSI and Sims",
+    description="Qiskit Metal | for quantum device design & analsysi",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/Qiskit/qiskit-metal",
-    author="Qiskit Development Team",
+    author="Qiskit Metal Development Team",
     author_email="qiskit@qiskit.org",
     license="Apache 2.0",
     classifiers=[
