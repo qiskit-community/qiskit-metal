@@ -9,7 +9,7 @@ We are thrilled to ask you to join this journey to revolutionize quantum devices
 Qiskit-metal is licensed under Apache 2.0. IBM reserves no copyright over outputs of qiskit-metal.
 
 #### Get help: Slack
-Use the [Slack channel (Join here!)](https://join.slack.com/share/zt-jjgzilxu-1u2FGivroQi64fHajpTWiw) to communicate with the developers and other early-access participats. (Troubleshooting: If the Slack invitation has expired, request one by opening a GitHub issue.)
+Use the slack channel.  Join [qiskit slack](https://ibm.co/joinqiskitslack) and then join the `#metal` channel to communicate with the developers and other participants.  You may also use this channel inquire about collaborations.
 
 ## Documentation 
 After installation, you can open the documentation like this
@@ -17,7 +17,10 @@ After installation, you can open the documentation like this
 import qiskit_metal
 qiskit_metal.open_docs()
 ```
-Build the docs by running `python build_docs.py` in a shell in the `docs` folder.
+
+There is no need to build the docs unless you want to.  In lieu of building the docs you can find them at https://qiskit.org/documentation/metal/.
+
+If you choose to build the docs, you do so by running `python build_docs.py` in a shell in the `docs` folder.
 
 ## Installation
 ### Video Instructions
