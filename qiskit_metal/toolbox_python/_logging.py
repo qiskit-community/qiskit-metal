@@ -17,6 +17,7 @@ File contains some config definitions. Mostly internal.
 
 import logging, collections
 from typing import List
+
 __all__ = ['setup_logger']
 
 
