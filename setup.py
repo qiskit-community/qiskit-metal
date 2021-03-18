@@ -28,15 +28,14 @@ with open(here / "requirements.txt", encoding="utf-8") as f:
 setup(
     name="qiskit_metal",
     version="0.0.2",
-    description="Quantum VLSI and Sims",
+    description="Qiskit Metal | for quantum device design & analsysi",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/Qiskit/qiskit-metal",
-    author="Qiskit Development Team",
+    author="Qiskit Metal Development Team",
     author_email="qiskit@qiskit.org",
     license="Apache 2.0",
     classifiers=[
-        "Environment :: Console",
         "License :: OSI Approved :: Apache Software License",
         "Intended Audience :: Developers",
         "Intended Audience :: Science/Research",
@@ -44,10 +43,7 @@ setup(
         "Operating System :: MacOS",
         "Operating System :: POSIX :: Linux",
         "Programming Language :: Python :: 3 :: Only",
-        "Programming Language :: Python :: 3.5",
-        "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
-        "Programming Language :: Python :: 3.8",
         "Topic :: Scientific/Engineering",
     ],
     keywords="qiskit sdk quantum",
@@ -55,4 +51,9 @@ setup(
     package_data={"": ["*.ui", "*.qrc", "_imgs/*.png", "_imgs/*.txt"]},
     python_requires=">=3.7, <=3.7.8",
     install_requires=requirements,
+    project_urls={
+        "Bug Tracker": "https://github.com/Qiskit/qiskit-metal/issues",
+        "Documentation": "https://qiskit.org/documentation/metal",
+        "Source Code": "https://github.com/Qiskit/qiskit-metal",
+    },
 )

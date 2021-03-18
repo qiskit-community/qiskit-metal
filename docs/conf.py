@@ -132,7 +132,7 @@ exclude_patterns = [
     'qiskit_metal.analyses.lumped_capacitive.rst',
     'qiskit_metal.analyses.em.cpw_calculations.rst',
     'qiskit_metal.analyses.cpw_calculations.rst',
-    'qiskit_metal.analyses.Hcpb.rst', 'qiskit_metal.analyses.Scanning.rst',
+    'qiskit_metal.analyses.Hcpb.rst', 'qiskit_metal.analyses.Sweeping.rst',
     'qiskit_metal.analyses.HO_wavefunctions.rst',
     'qiskit_metal.analyses.kappa_calculation.rst'
 ]
@@ -142,8 +142,7 @@ nbsphinx_execute_arguments = [
     "--InlineBackend.rc={'figure.dpi': 96}",
 ]
 
-nbsphinx_execute = 'never'
-nbsphinx_allow_errors = True
+nbsphinx_execute = os.getenv('QISKIT_DOCS_BUILD_TUTORIALS', 'never')
 
 source_suffix = ['.rst', '.ipynb']
 
