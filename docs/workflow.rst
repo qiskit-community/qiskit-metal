@@ -1,6 +1,45 @@
 .. _workflow:
 
 *********************
+Roadmap
+*********************
+
+Near-term development roadmap:
+
+.. image:: images/roadmap.png
+   :alt: Missing Image
+
+.. attention::
+
+   We need input form you on what to prioritize and how to best shape so that Metal is useful to the wide community and hopefuly makes life easier for you too.
+   Let us know through github issues, slack channel messages, or by telling us in one of the tutorials. 
+
+
+In the near future we aim to (See near-term roadmap below):
+
+* Add more quantum components
+   * Tunable couplers (community-driven)
+   * Fluxonium (community-driven)
+   * Flux lines, control, etc. 
+   * Wirbonds, etc.
+   * Grow library of quantum devices
+   * . . .
+* Develop quantum analysis
+   * Sweeping parameters, optimetrics 
+   * Impedence quantization
+   * Fully integreated pyEPR
+   * Updated lumped analysis code to more general circuits and couplers
+   * Better interfaces and abstractions
+   * . . .
+* Refactor and improve abstractions, interfaces, and data handling
+* Develop Ease of use and one-click solutions
+* More features in the GUI. Including customization of coloring layers, plotting options, more interactive component editing
+* Import from GDS
+* Integration with other quantum analysis packages: qiskit pulse, qutip, scQubits, pyEPR, ... (interested in listing your package here? let us know.)
+* User-requrested features: so, let us know :)
+
+
+*********************
 Qiskit Metal Workflow
 *********************
 
