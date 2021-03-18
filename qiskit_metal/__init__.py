@@ -89,6 +89,7 @@ del __setup_Qt_backend
 ## Setup logging
 from . import config
 from .toolbox_python._logging import setup_logger
+
 logger = setup_logger('metal',
                       config.log.format,
                       config.log.datefmt,
