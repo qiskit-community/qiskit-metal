@@ -93,6 +93,8 @@ The following image summarizes the main landscape of analysis and design methods
    :alt: Missing Image
 
 
+|
+
 -----------------------
 Lumped-oscillator model
 -----------------------
@@ -127,6 +129,8 @@ References:
    :alt: Missing Image
    :width: 400
 
+|
+
 ---------------------------------------------------
 Energy: The energy-participation-ratio (EPR) method
 ---------------------------------------------------
@@ -159,6 +163,8 @@ References:
 
 .. image:: images/epr.png
    :alt: Missing Image
+
+|
 
 -------------------------------------------------------
 Impedence: impedence-based black-box quantization (BBQ)
