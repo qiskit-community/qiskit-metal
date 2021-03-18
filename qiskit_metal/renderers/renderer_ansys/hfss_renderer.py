@@ -411,6 +411,7 @@ class QHFSSRenderer(QAnsysRenderer):
 
         Args:
             name (str): Name of the new q3d design
+
         """
         if self.pinfo:
             if self.pinfo.project:
@@ -810,6 +811,7 @@ class QHFSSRenderer(QAnsysRenderer):
             param_name (Union[list, None], optional): Parameters to obtain. Defaults to None.
         """
         if self.current_sweep:
+
             freqs, Pcurves = self.current_sweep.get_network_data(param_name)
             Pparams = pd.DataFrame(Pcurves,
                                    columns=freqs / 1e9,
