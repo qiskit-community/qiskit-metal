@@ -75,9 +75,8 @@ The goal of Qiskit Metal is to allow for easy quantum hardware modeling with red
 
     Home<https://qiskit.org/documentation/metal/>
     Installing Qiskit Metal<installation>
-    Metal Workflow<workflow>
     Frequently Asked Questions<faq>
-    Code of Conduct<https://github.com/Qiskit/qiskit/blob/master/CODE_OF_CONDUCT.md>
+    Metal Workflow<workflow>
 
 .. TODO: Add Getting Started With Metal between Metal Workflow and Installing Qiskit Metal
 
@@ -113,7 +112,7 @@ The goal of Qiskit Metal is to allow for easy quantum hardware modeling with red
     :caption: Libraries
     :hidden:
 
-    Quantum Devices<apidocs/qlibrary>
+    All Quantum Devices<apidocs/qlibrary>
 
 .. toctree::
     :maxdepth: 2
@@ -129,6 +128,11 @@ The goal of Qiskit Metal is to allow for easy quantum hardware modeling with red
     QGeometry<apidocs/qgeometries>
     GUI<apidocs/gui>
 
+.. toctree::
+    :titlesonly:
+    :hidden:
+
+    Code of Conduct<https://github.com/Qiskit/qiskit/blob/master/CODE_OF_CONDUCT.md>
 
 .. Hiding - Indices and tables
    :ref:`genindex`
