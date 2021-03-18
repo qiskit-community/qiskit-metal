@@ -27,8 +27,7 @@ if TYPE_CHECKING:
 
 
 class QTableModel_AllComponents(QAbstractTableModel):
-    """
-    Design compoentns Table model that shows the names of the compoentns and
+    """Design compoentns Table model that shows the names of the compoentns and
     their class names etc.
 
     This class extends the `QAbstractTableModel` class.
@@ -70,25 +69,27 @@ class QTableModel_AllComponents(QAbstractTableModel):
 
     @property
     def design(self):
-        """Returns the design"""
+        """Returns the design."""
         return self.gui.design
 
     def _create_timer(self):
-        """
-        Refresh the model number of rows, etc. there must be a smarter way?
+        """Refresh the model number of rows, etc.
+
+        there must be a smarter way?
         """
         self._timer = QtCore.QTimer(self)
         self._timer.start(self.__timer_interval)
         self._timer.timeout.connect(self.refresh_auto)
 
     def refresh(self):
-        """Force refresh.  Completly rebuild the model."""
+        """Force refresh.
+
+        Completly rebuild the model.
+        """
         self.modelReset.emit()
 
     def refresh_auto(self):
-        """
-        Automatic refresh, update row count, view, etc.
-        """
+        """Automatic refresh, update row count, view, etc."""
         # We could not do if the widget is hidden
         new_count = self.rowCount()
 
@@ -110,12 +111,12 @@ class QTableModel_AllComponents(QAbstractTableModel):
             self.update_view()
 
     def update_view(self):
-        """Updates the view"""
+        """Updates the view."""
         if self._tableView:
             self._tableView.resizeColumnsToContents()
 
     def rowCount(self, parent: QModelIndex = None):
-        """Returns the number of rows
+        """Returns the number of rows.
 
         Args:
             parent (QModelIndex): Unused.  Defaults to None.
@@ -135,7 +136,7 @@ class QTableModel_AllComponents(QAbstractTableModel):
             return 0
 
     def columnCount(self, parent: QModelIndex = None):
-        """Returns the number of columns
+        """Returns the number of columns.
 
         Args:
             parent (QModelIndex): Unused.  Defaults to None.
@@ -149,7 +150,7 @@ class QTableModel_AllComponents(QAbstractTableModel):
                    section,
                    orientation: Qt.Orientation,
                    role=Qt.DisplayRole):
-        """ Set the headers to be displayed.
+        """Set the headers to be displayed.
 
         Args:
             section (int): Section number
@@ -173,7 +174,7 @@ class QTableModel_AllComponents(QAbstractTableModel):
                 return font
 
     def flags(self, index):
-        """ Set the item flags at the given index.
+        """Set the item flags at the given index.
 
         Args:
             index (QModelIndex): The index
@@ -192,9 +193,8 @@ class QTableModel_AllComponents(QAbstractTableModel):
 
     # @slot_catch_error()
     def data(self, index: QModelIndex, role: int = Qt.DisplayRole):
-        """ Depending on the index and role given, return data. If not
-        returning data, return None (PySide equivalent of QT's
-        "invalid QVariant").
+        """Depending on the index and role given, return data. If not returning
+        data, return None (PySide equivalent of QT's "invalid QVariant").
 
         Returns:
             str: Data depending on the index and role

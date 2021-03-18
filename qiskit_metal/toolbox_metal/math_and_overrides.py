@@ -13,9 +13,7 @@
 # that they have been altered from the originals.
 
 # pylint: disable=protected-access
-'''
-Math and override functions
-'''
+"""Math and override functions."""
 
 import numpy as np
 
@@ -25,8 +23,7 @@ decimal_precision = 10
 
 
 def set_decimal_precision(value: int):
-    """
-    Override the decimal_precision default (10).
+    """Override the decimal_precision default (10).
 
     Args:
         value: Any integer. If present, decimal part will be truncated (flooring)
@@ -36,8 +33,7 @@ def set_decimal_precision(value: int):
 
 
 def dot(vector_1: np.array, vector_2: np.array) -> float:
-    """
-    Numpy dot product with decimal_precision.
+    """Numpy dot product with decimal_precision.
 
     Args:
         vector_1 (np.array): First of the dot product vectors
@@ -50,8 +46,7 @@ def dot(vector_1: np.array, vector_2: np.array) -> float:
 
 
 def round(value) -> float:
-    """
-    Numpy rounding with decimal_precision.
+    """Numpy rounding with decimal_precision.
 
     Args:
         value: Any numerical type supported by np.round()
@@ -63,8 +58,7 @@ def round(value) -> float:
 
 
 def cross(vector_1: np.array, vector_2: np.array) -> float:
-    """
-    Numpy cross product with decimal_precision.
+    """Numpy cross product with decimal_precision.
 
     Args:
         vector_1 (np.array): First of the cross product vectors

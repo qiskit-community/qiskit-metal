@@ -25,8 +25,8 @@ from qiskit_metal.toolbox_metal.exceptions import QiskitMetalDesignError
 
 
 class RouteMeander(QRoute):
-    """
-    Implements a simple CPW, with a single meander.  The base `CPW meandered` class.
+    """Implements a simple CPW, with a single meander.  The base `CPW
+    meandered` class.
 
     Inherits `QRoute` class
 
@@ -66,12 +66,11 @@ class RouteMeander(QRoute):
     """Default options"""
 
     def make(self):
-        """
-        The make function implements the logic that creates the geometry
-        (poly, path, etc.) from the qcomponent.options dictionary of parameters,
-        and the adds them to the design, using qcomponent.add_qgeometry(...),
-        adding in extra needed information, such as layer, subtract, etc.
-        """
+        """The make function implements the logic that creates the geometry
+        (poly, path, etc.) from the qcomponent.options dictionary of
+        parameters, and the adds them to the design, using
+        qcomponent.add_qgeometry(...), adding in extra needed information, such
+        as layer, subtract, etc."""
         # parsed options
         snap = is_true(self.p.snap)
 
@@ -100,8 +99,7 @@ class RouteMeander(QRoute):
 
     def connect_meandered(self, start_pt: QRoutePoint,
                           end_pt: QRoutePoint) -> np.ndarray:
-        """
-        Meanders using a fixed length and fixed spacing.
+        """Meanders using a fixed length and fixed spacing.
 
         Args:
             start_pt (QRoutePoint): QRoutePoint of the start
@@ -311,13 +309,14 @@ class RouteMeander(QRoute):
 
     def adjust_length(self, delta_length, pts, start_pt: QRoutePoint,
                       end_pt: QRoutePoint) -> np.ndarray:
-        """
-        Edits meander points to redistribute the length slacks accrued with the various local adjustments
-        It should be run after self.pts_intermediate is completely defined
-        Inputs are however specific to the one meander segment
-        Assumption is that pts is always a sequence of paired points, each corresponds to one meander 180deg curve
-        The pts is typically an odd count since the last point is typically used to anchor the left-over length,
-        therefore this code supports both odd and even cases, separately. For even it assumes all points are in paired.
+        """Edits meander points to redistribute the length slacks accrued with
+        the various local adjustments It should be run after
+        self.pts_intermediate is completely defined Inputs are however specific
+        to the one meander segment Assumption is that pts is always a sequence
+        of paired points, each corresponds to one meander 180deg curve The pts
+        is typically an odd count since the last point is typically used to
+        anchor the left-over length, therefore this code supports both odd and
+        even cases, separately. For even it assumes all points are in paired.
 
         Args:
             delta_length (delta_length): slack/excess length to distribute on the pts
@@ -422,8 +421,7 @@ class RouteMeander(QRoute):
 
     @staticmethod
     def get_index_for_side1_meander(num_root_pts: int):
-        """
-        Get the indices.
+        """Get the indices.
 
         Args:
             num_root_pts (list): List of points

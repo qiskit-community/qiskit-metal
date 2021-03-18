@@ -20,20 +20,20 @@ from qiskit_metal.qlibrary.base import QComponent
 class Rectangle(QComponent):
     """A single configurable square.
 
-        Inherits QComponent class.
+    Inherits QComponent class.
 
-        The class will add default_options class Dict to QComponent class before calling make.
+    The class will add default_options class Dict to QComponent class before calling make.
 
-        Default Options:
-            * width: '500um'
-            * height: '300um'
-            * pos_x: '0um'
-            * pos_y: '0um'
-            * rotation: '0'
-            * subtract: 'False'
-            * helper: 'False'
-            * chip: 'main'
-            * layer: '1'
+    Default Options:
+        * width: '500um'
+        * height: '300um'
+        * pos_x: '0um'
+        * pos_y: '0um'
+        * rotation: '0'
+        * subtract: 'False'
+        * helper: 'False'
+        * chip: 'main'
+        * layer: '1'
     """
 
     default_options = Dict(width='500um',
@@ -48,12 +48,11 @@ class Rectangle(QComponent):
     """Default drawing options"""
 
     def make(self):
-        """
-        The make function implements the logic that creates the geoemtry
-        (poly, path, etc.) from the qcomponent.options dictionary of parameters,
-        and the adds them to the design, using qcomponent.add_qgeometry(...),
-        adding in extra needed information, such as layer, subtract, etc.
-        """
+        """The make function implements the logic that creates the geoemtry
+        (poly, path, etc.) from the qcomponent.options dictionary of
+        parameters, and the adds them to the design, using
+        qcomponent.add_qgeometry(...), adding in extra needed information, such
+        as layer, subtract, etc."""
         p = self.p  # p for parsed parameters. Access to the parsed options.
 
         # create the geometry

@@ -15,9 +15,7 @@
 # pylint: disable-msg=unnecessary-pass
 # pylint: disable-msg=broad-except
 #pylint: disable-msg=too-many-public-methods
-"""
-Qiskit Metal unit tests for speed.
-"""
+"""Qiskit Metal unit tests for speed."""
 
 import unittest
 from qiskit_metal.tests.custom_decorators import timeout
@@ -29,20 +27,14 @@ import time
 
 
 class TestSpeed(unittest.TestCase):
-    """
-    Unit test class.
-    """
+    """Unit test class."""
 
     def setUp(self):
-        """
-        Setup unit test.
-        """
+        """Setup unit test."""
         pass
 
     def tearDown(self):
-        """
-        Tie any loose ends.
-        """
+        """Tie any loose ends."""
         pass
 
     @timeout(5)

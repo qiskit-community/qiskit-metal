@@ -11,29 +11,28 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""
-Module containing Net information storage.
-"""
+"""Module containing Net information storage."""
 #from typing import Tuple
 import pandas as pd
 from .. import logger
 
 
 class QNet():
-    """
-    Use DataFrame to hold Net Information about the connected pins of a design.   
+    """Use DataFrame to hold Net Information about the connected pins of a
+    design.
+
     There is one uniqe net_id for each connected pin.
     """
 
     def __init__(self):
-        """ Hold the net information of all the USED pins within a design."""
+        """Hold the net information of all the USED pins within a design."""
         self.column_names = ['net_id', 'component_id', 'pin_name']
         self._net_info = pd.DataFrame(columns=self.column_names)
         self._qnet_latest_assigned_id = 0
         self.logger = logger  # type: logging.Logger
 
     def _get_new_net_id(self) -> int:
-        """ Provide uniqe new qnet_id.
+        """Provide uniqe new qnet_id.
 
         Returns:
             int: ID to use for storing a new net within _net_info.
@@ -61,11 +60,11 @@ class QNet():
 
     def add_pins_to_table(self, comp1_id: int, pin1_name: str, comp2_id: int,
                           pin2_name: str) -> int:
-        """Add two entries into the _net_info table. If either component/pin is already in net_info,
-        the connection will NOT be added to the net_info.
+        """Add two entries into the _net_info table. If either component/pin is
+        already in net_info, the connection will NOT be added to the net_info.
 
         Arguments:
-            comp1_id (int): Name of component 1. 
+            comp1_id (int): Name of component 1.
             pin1_name (str): Corresponding pin name for component1.
             comp2_id (int): Name of component 2.
             pint2 (str): Corresponding pin name for component2.
@@ -122,9 +121,8 @@ class QNet():
         return net_id
 
     def delete_net_id(self, net_id_to_remove: int):
-        """
-        Removes the two entries with net_id_to_remove.
-        If id is in _net_info, the entry will be removed.
+        """Removes the two entries with net_id_to_remove. If id is in
+        _net_info, the entry will be removed.
 
         Arguments:
             net_id_to_remove (int): The id to remove.
@@ -136,8 +134,7 @@ class QNet():
         return
 
     def delete_all_pins_for_component(self, component_id_to_remove: int) -> set:
-        """
-        Delete all the pins for a given component id.
+        """Delete all the pins for a given component id.
 
         Args:
             component_id_to_remove (int): Component ID to remove

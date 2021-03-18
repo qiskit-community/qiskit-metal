@@ -11,9 +11,9 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""
-Tree model for component options menu
-"""
+
+"""Tree model for component options menu."""
+
 from typing import TYPE_CHECKING
 from PySide2.QtCore import QModelIndex, Qt
 from PySide2.QtGui import QFont
@@ -25,20 +25,18 @@ if TYPE_CHECKING:
 
 
 class QTreeModel_Options(QTreeModel_Base):
-    """
-    Tree model for component options menu.
-    Overrides rowCount method to include placeholder text, and data method to include
-    3rd column for parsed values.
+    """Tree model for component options menu. Overrides rowCount method to
+    include placeholder text, and data method to include 3rd column for parsed
+    values.
 
     Args:
         QTreeModel_Base (QAbstractItemModel): Base class for nested dicts
     """
 
     def __init__(self, parent: QWidget, gui: 'MetalGUI', view: QTreeView):
-        """
-        Editable table with drop-down rows for component options.
-        Organized as a tree model where child nodes are more specific properties
-        of a given parent node.
+        """Editable table with drop-down rows for component options. Organized
+        as a tree model where child nodes are more specific properties of a
+        given parent node.
 
         Args:
             parent (QWidget): The parent widget

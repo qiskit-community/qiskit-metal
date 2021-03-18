@@ -11,9 +11,8 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""Main edit source code window,
-based on pyqode.python: https://github.com/pyQode/pyqode.python
-"""
+"""Main edit source code window, based on pyqode.python:
+https://github.com/pyQode/pyqode.python."""
 import importlib
 import inspect
 import logging
@@ -91,8 +90,7 @@ warnings.filterwarnings("ignore", 'pyqode')
 
 
 class MetalSourceEditor(widgets.PyCodeEditBase):
-    """
-    A source code editor based on pyQode.
+    """A source code editor based on pyQode.
 
     This class inherits from the `widgets.PyCodeEditBase` class.
 
@@ -225,7 +223,7 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         self.style_me()
 
     def style_me(self):
-        """Style the editor"""
+        """Style the editor."""
         self.setStyleSheet("""
     background-color: #f9f9f9;
     color: #000000;
@@ -234,11 +232,11 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
 
     @property
     def logger(self) -> logging.Logger:
-        """Returns the logger"""
+        """Returns the logger."""
         return self.gui.logger
 
     def reload_file(self):
-        """Reload the file"""
+        """Reload the file."""
         encoding = self.file.encoding
         self.file.reload(encoding)
         self.file.reload()
@@ -246,7 +244,7 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         self.logger.info('Source file reloaded.')
 
     def save_file(self):
-        """Save the file"""
+        """Save the file."""
         # TODO: warning: if the kernel is run as a differnt user, eg.., sudo,
         # then the file persmissions will change but for that user and the file
         # can read only for the base user.
@@ -254,7 +252,7 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         self.logger.info('Source file saved.')
 
     def open_file(self, filename: str):
-        """Open a file
+        """Open a file.
 
         Args:
             filename (str): file to open
@@ -294,7 +292,7 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         self.file.open(filename)  # , use_cached_encoding=False)
 
     def reload_module(self):
-        """Reload the module"""
+        """Reload the module."""
         if self.component_module_name:
             self.gui.design.reload_component(
                 component_module_name=self.component_module_name,
@@ -304,7 +302,7 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
             )
 
     def rebuild_components(self):
-        """Rebuild the component"""
+        """Rebuild the component."""
         self.logger.debug('Source file rebuild started.')
         self.save_file()
         # print('saved')
@@ -317,7 +315,7 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         self.logger.info('Source file executed rebuild.')
 
     def hide_help(self):
-        """Hide the RHS sideebdar"""
+        """Hide the RHS sideebdar."""
         splitter = self.edit_widget.ui.splitter
 
         sizes = splitter.sizes()
@@ -338,7 +336,7 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
 
     @property
     def edit_widget(self):
-        """Returns the great-great-grandparent of the widget"""
+        """Returns the great-great-grandparent of the widget."""
         return self.parent().parent().parent().parent()
 
     def set_component(self, class_name: str, module_name: str,
@@ -409,7 +407,7 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
     def get_definitions_under_cursor(self,
                                      offset=0
                                     ) -> List['jedi.api.classes.Definition']:
-        """Get jedi
+        """Get jedi.
 
         Args:
             offset (int): Columns offset, such as -1.  Defaults to 0.
@@ -439,7 +437,7 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         return name_defns
 
     def set_help_doc(self, definitions: List['jedi.api.classes.Definition']):
-        """Sets the help docs
+        """Sets the help docs.
 
         Args:
             definitions (List['jedi.api.classes.Definition']): Help defintions
@@ -467,7 +465,7 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
             textEdit.moveCursor(QtGui.QTextCursor.Start)
 
     def set_doc_from_word_under_cursor(self, offset=0):
-        """Set the doc based on the word under the cursor
+        """Set the doc based on the word under the cursor.
 
         Args:
             offset (int): the offset.  Defaults to 0.
@@ -476,12 +474,12 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
         self.set_help_doc(self.definitions)
 
     def mouseDoubleClickEvent(self, event: QtGui.QMouseEvent):
-        """Double click leads to jedi inspection"""
+        """Double click leads to jedi inspection."""
         if event.button() == QtCore.Qt.LeftButton:
             self.set_doc_from_word_under_cursor(offset=0)
 
     def calltip_called(self, info: dict):
-        """When a call tip is requested
+        """When a call tip is requested.
 
         Args:
             info (dict): Dictionary of information
@@ -495,7 +493,6 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
                 'call.params': ['param minx', 'param miny', 'param maxx', 'param maxy', 'param ccw=True'],
                 'call.index': 0,
                 'call.bracket_start': [115, 12]}
-
         """
         self.set_doc_from_word_under_cursor(offset=-1)
 
@@ -522,7 +519,7 @@ css_base = """
 
 
 def definition_generate_html(defn: 'jedi.api.classes.Definition'):
-    """Generate HTML definition
+    """Generate HTML definition.
 
     Args:
         defn (jedi.api.classes.Definition): The jedit definition
@@ -560,7 +557,7 @@ f"""
 
 def definition_get_source(defn: 'jedi.api.classes.Definition',
                           formatter: HtmlFormatter = None):
-    """Get the source code from definition
+    """Get the source code from definition.
 
     Args:
         defn (jedi.api.classes.Definition): The jedit definition
@@ -636,7 +633,7 @@ def get_definition_start_position(self):
 ################################################################################################################################
 # UNUSED
 def doc_generate_html(obj) -> str:
-    """Generate formatted fdoc -- UNUSED
+    """Generate formatted fdoc -- UNUSED.
 
     Args:
         obj (object): The object
@@ -709,7 +706,7 @@ def doc_generate_html(obj) -> str:
 
 
 def doc_get_object_from_info(info: dict) -> object:
-    """Get objects from given info
+    """Get objects from given info.
 
     Args:
         info (dict): The dictionary

@@ -18,13 +18,12 @@ from qiskit_metal.renderers.renderer_ansys.q3d_renderer import QQ3DRenderer
 
 
 class Sweeping():
-    """
-    The methods allow users to sweep a variable in a components's options.
-    Need access to renderers which are registered in QDesign.
-    """
+    """The methods allow users to sweep a variable in a components's options.
+    Need access to renderers which are registered in QDesign."""
 
     def __init__(self, design: 'QDesign'):
-        """Give QDesign to this class so Sweeping can access the registered QRenderers.
+        """Give QDesign to this class so Sweeping can access the registered
+        QRenderers.
 
         Args:
             design (QDesign): Used to access the QRenderers.
@@ -32,9 +31,9 @@ class Sweeping():
         self.design = design
 
     def option_value(self, a_dict, search: str) -> str:
-        """Get value from dict based on key.  This method is used for unknown depth,
-        dict search, within a dict.
-        
+        """Get value from dict based on key.  This method is used for unknown
+        depth, dict search, within a dict.
+
         Args:
             a_dict (dict): Dictionary to get values from
             search (str): String to search for

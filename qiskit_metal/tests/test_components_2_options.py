@@ -14,9 +14,7 @@
 
 #pylint: disable-msg=unnecessary-pass
 #pylint: disable-msg=too-many-public-methods
-"""
-Qiskit Metal unit tests components functionality.
-"""
+"""Qiskit Metal unit tests components functionality."""
 
 import unittest
 
@@ -51,27 +49,19 @@ from qiskit_metal.qlibrary.interconnects.resonator_rectangle_spiral import Reson
 
 
 class TestComponentOptions(unittest.TestCase, AssertionsMixin):
-    """
-    Unit test class
-    """
+    """Unit test class."""
 
     def setUp(self):
-        """
-        Setup unit test.
-        """
+        """Setup unit test."""
         pass
 
     def tearDown(self):
-        """
-        Tie any loose ends.
-        """
+        """Tie any loose ends."""
         pass
 
     def test_component_circle_caterpiller_options(self):
-        """
-        Test that default options of circle_caterpiller in circle_caterpillar.py were not
-        accidentally changed.
-        """
+        """Test that default options of circle_caterpiller in
+        circle_caterpillar.py were not accidentally changed."""
         # Setup expected test results
         _design = designs.DesignPlanar()
         _circle_caterpillar = circle_caterpillar.CircleCaterpillar(
@@ -93,9 +83,8 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(_options['layer'], '1')
 
     def test_component_circle_raster_options(self):
-        """
-        Test that default options of circle_raster in circle_raster.py were not accidentally changed.
-        """
+        """Test that default options of circle_raster in circle_raster.py were
+        not accidentally changed."""
         # Setup expected test results
         _design = designs.DesignPlanar()
         _circle_raster = circle_raster.CircleRaster(_design, 'my_name')
@@ -114,9 +103,8 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(_options['layer'], '1')
 
     def test_component_rectangle_options(self):
-        """
-        Test that default options of rectangle in rectangle.py were not accidentally changed.
-        """
+        """Test that default options of rectangle in rectangle.py were not
+        accidentally changed."""
         # Setup expected test results
         _design = designs.DesignPlanar()
         _rectangle = rectangle.Rectangle(_design, 'my_name')
@@ -135,10 +123,8 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(_options['layer'], '1')
 
     def test_component_rectangle_hollow_options(self):
-        """
-        Test that default options of rectangle_hollow in rectangle_hollow.py were not accidentally
-        changed.
-        """
+        """Test that default options of rectangle_hollow in rectangle_hollow.py
+        were not accidentally changed."""
         # Setup expected test results
         _design = designs.DesignPlanar()
         _rectangle_hollow = rectangle_hollow.RectangleHollow(_design, 'my_name')
@@ -164,9 +150,8 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(_options['inner']['rotation'], '15')
 
     def test_component_n_gon_options(self):
-        """
-        Test that default options of NGon in n_gon.py were not accidentally changed.
-        """
+        """Test that default options of NGon in n_gon.py were not accidentally
+        changed."""
         # Setup expected test results
         design = designs.DesignPlanar()
         my_n_gon = n_gon.NGon(design, 'my_name')
@@ -185,10 +170,8 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['layer'], '1')
 
     def test_component_n_square_spiral_options(self):
-        """
-        Test that default options of NSquareSpiral in n_square_spiral.py were not accidentally
-        changed.
-        """
+        """Test that default options of NSquareSpiral in n_square_spiral.py
+        were not accidentally changed."""
         # Setup expected test results
         design = designs.DesignPlanar()
         my_n_square_spiral = n_square_spiral.NSquareSpiral(design, 'my_name')
@@ -209,9 +192,8 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['layer'], '1')
 
     def test_component_basequbit_options(self):
-        """
-        Test that default options of BaseQubit in qubit.py were not accidentally changed.
-        """
+        """Test that default options of BaseQubit in qubit.py were not
+        accidentally changed."""
         # Setup expected test results
         design = designs.DesignPlanar()
         my_base_qubit = qubit.BaseQubit(design, 'my_name', make=False)
@@ -225,10 +207,8 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['_default_connection_pads'], {})
 
     def test_component_open_to_ground_options(self):
-        """
-        Test that default options of OpenToGround in open_to_ground.py were not accidentally
-        changed.
-        """
+        """Test that default options of OpenToGround in open_to_ground.py were
+        not accidentally changed."""
         # Setup expected test results
         design = designs.DesignPlanar()
         my_open_to_ground = open_to_ground.OpenToGround(design, 'my_name')
@@ -246,10 +226,8 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['layer'], '1')
 
     def test_component_short_to_ground_options(self):
-        """
-        Test that default options of ShortToGround in short_to_ground.py where not accidentally
-        changed.
-        """
+        """Test that default options of ShortToGround in short_to_ground.py
+        where not accidentally changed."""
         # Setup expected test results
         design = designs.DesignPlanar()
         my_short_to_ground = short_to_ground.ShortToGround(design, 'my_name')
@@ -265,10 +243,8 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['layer'], '1')
 
     def test_component_straight_path_options(self):
-        """
-        Test that default options of RouteStraight in straight_path.py were not
-        accidentally changed.
-        """
+        """Test that default options of RouteStraight in straight_path.py were
+        not accidentally changed."""
         # Setup expected test results
         my_straight_path = straight_path.RouteStraight
         options = my_straight_path.default_options
@@ -296,10 +272,8 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['lead']['end_jogged_extension'], '')
 
     def test_component_route_meander_options(self):
-        """
-        Test that default options of RouteMeander in meandered.py were not
-        accidentally changed.
-        """
+        """Test that default options of RouteMeander in meandered.py were not
+        accidentally changed."""
         # Setup expected test results
         my_route_meander = meandered.RouteMeander
         options = my_route_meander.default_options
@@ -314,9 +288,8 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['meander']['asymmetry'], '0um')
 
     def test_component_route_mixed_options(self):
-        """
-        Test that default options of RouteMixed in mixed_path.py were not accidentally changed.
-        """
+        """Test that default options of RouteMixed in mixed_path.py were not
+        accidentally changed."""
         # Setup expected test results
         my_route_mixed = RouteMixed
         options = my_route_mixed.default_options
@@ -326,9 +299,8 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['between_anchors'], {})
 
     def test_component_my_qcomponent_options(self):
-        """
-        Test that default options in MyQComponent in _template.py were not accidentally changed.
-        """
+        """Test that default options in MyQComponent in _template.py were not
+        accidentally changed."""
         # Setup expected test results
         my_qcomponent_local = _template.MyQComponent
         options = my_qcomponent_local.default_options
@@ -343,9 +315,8 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['layer'], '1')
 
     def test_component_transmon_concentric_options(self):
-        """Test that default options of transmon_concentric in transmon_concentric.py were not
-        accidentally changed.
-        """
+        """Test that default options of transmon_concentric in
+        transmon_concentric.py were not accidentally changed."""
         # Setup expected test results
         design = designs.DesignPlanar()
         my_transmon_concentric = transmon_concentric.TransmonConcentric(
@@ -374,10 +345,8 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['cpw_width'], '10.0um')
 
     def test_component_transmon_cross_options(self):
-        """
-        Test that default options of transmon_cross in transmon_cross.py were not accidentally
-        changed.
-        """
+        """Test that default options of transmon_cross in transmon_cross.py
+        were not accidentally changed."""
         # Setup expected test results
         _design = designs.DesignPlanar()
         _transmon_cross = transmon_cross.TransmonCross(_design, 'my_name')
@@ -408,10 +377,8 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
             _options['_default_connection_pads']['connector_location'], '0')
 
     def test_component_transmon_pocket_options(self):
-        """
-        Test that default options of transmon_pocket in transmon_pocket.py were not accidentally
-        changed.
-        """
+        """Test that default options of transmon_pocket in transmon_pocket.py
+        were not accidentally changed."""
         # Setup expected test results
         _design = designs.DesignPlanar()
         _transmon_pocket = transmon_pocket.TransmonPocket(_design, 'my_name')
@@ -454,10 +421,8 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(_options['_default_connection_pads']['loc_H'], '+1')
 
     def test_component_transmon_pocket_cl_options(self):
-        """
-        Test that default options of transmon_pocket_cl in transmon_pocket_cl.py were not
-        accidentally changed.
-        """
+        """Test that default options of transmon_pocket_cl in
+        transmon_pocket_cl.py were not accidentally changed."""
         # Setup expected test results
         _design = designs.DesignPlanar()
         _transmon_pocket_cl = transmon_pocket_cl.TransmonPocketCL(
@@ -475,9 +440,8 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(_options['cl_off_center'], '50um')
 
     def test_component_cpw_hanger_t_options(self):
-        """
-        Test that default options of CPWHangerT in cpw_hanger_t.py were not accidentally changed.
-        """
+        """Test that default options of CPWHangerT in cpw_hanger_t.py were not
+        accidentally changed."""
         # Setup expected test results
         design = designs.DesignPlanar()
         hanger_t = CPWHangerT(design, 'my_name')
@@ -502,10 +466,8 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['layer'], '1')
 
     def test_component_resonator_rectangle_spiral_options(self):
-        """
-        Test that default options of ResonatorRectangleSpiral in resonator_rectangle_spiral.py
-        were not accidentally changed.
-        """
+        """Test that default options of ResonatorRectangleSpiral in
+        resonator_rectangle_spiral.py were not accidentally changed."""
         # Setup expected test results
         design = designs.DesignPlanar()
         resonator_rectangle_spiral = ResonatorRectangleSpiral(design, 'my_name')
@@ -526,10 +488,8 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['layer'], '1')
 
     def test_component_route_anchors_options(self):
-        """
-        Test that default options of RouteAnchors in anchored_path.py were not accientally
-        changed.
-        """
+        """Test that default options of RouteAnchors in anchored_path.py were
+        not accientally changed."""
         # Setup expected test results
         route_anchors = RouteAnchors
         options = route_anchors.default_options
@@ -541,10 +501,8 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['advanced']['avoid_collision'], 'false')
 
     def test_component_route_pathfinder_options(self):
-        """
-        Test that default options of RoutePathfinder in pathfinder.py were not accidentally
-        changed.
-        """
+        """Test that default options of RoutePathfinder in pathfinder.py were
+        not accidentally changed."""
         # Setup expected test results
         route_pathfinder = RoutePathfinder
         options = route_pathfinder.default_options
@@ -556,9 +514,8 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['advanced']['avoid_collision'], 'true')
 
     def test_component_launch_v1_options(self):
-        """
-        Test that default options of LaunchpadWirebond in launchpad_wb.py were not accidentally changed.
-        """
+        """Test that default options of LaunchpadWirebond in launchpad_wb.py
+        were not accidentally changed."""
         design = designs.DesignPlanar()
         launch_v1 = LaunchpadWirebond(design, 'my_name')
         options = launch_v1.default_options
@@ -573,9 +530,8 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['orientation'], '0')
 
     def test_component_launch_v2_options(self):
-        """
-        Test that default options of LaunchpadWirebondCoupled in launchpad_wb_coupled.py were not accidentally changed.
-        """
+        """Test that default options of LaunchpadWirebondCoupled in
+        launchpad_wb_coupled.py were not accidentally changed."""
         design = designs.DesignPlanar()
         launch_v2 = LaunchpadWirebondCoupled(design, 'my_name')
         options = launch_v2.default_options
@@ -591,9 +547,8 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['orientation'], '0')
 
     def test_component_cap_three_fingers(self):
-        """
-        Test that default options of CapThreeFingers were not accidentally changed.
-        """
+        """Test that default options of CapThreeFingers were not accidentally
+        changed."""
         design = designs.DesignPlanar()
         cap_three_fingers = CapThreeFingers(design, 'my_name')
         options = cap_three_fingers.default_options

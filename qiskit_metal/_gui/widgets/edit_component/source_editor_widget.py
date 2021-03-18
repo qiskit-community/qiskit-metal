@@ -11,9 +11,8 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""Main edit source code window,
-based on pyqode.python: https://github.com/pyQode/pyqode.python
-"""
+"""Main edit source code window, based on pyqode.python:
+https://github.com/pyQode/pyqode.python."""
 
 from typing import TYPE_CHECKING
 
@@ -34,7 +33,7 @@ def create_source_edit_widget(gui: 'MetalGUI',
                               module_name: str,
                               module_path: str,
                               parent=None) -> QtWidgets.QWidget:
-    """Creates the spawned window that has the edit source
+    """Creates the spawned window that has the edit source.
 
     Arguments:
         gui (MetalGUI): The GUI
@@ -82,7 +81,7 @@ def create_source_edit_widget(gui: 'MetalGUI',
 
 
 def dockify(self, gui):
-    """Dockify the given GUI
+    """Dockify the given GUI.
 
     Args:
         gui (MetalGUI): The GUI

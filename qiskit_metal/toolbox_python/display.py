@@ -11,9 +11,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""
-Utility display functions used in the tutorials.
-"""
+"""Utility display functions used in the tutorials."""
 
 import re
 from pathlib import Path
@@ -32,9 +30,7 @@ class MetalTutorialMagics(Magics):
 
     @line_magic
     def metal_print(self, line='', cell=None):  # pylint: disable=unused-argument
-        """
-        Print an HTML formatted message.
-        """
+        """Print an HTML formatted message."""
         return display(
             HTML(f"""
     <div style="
@@ -54,9 +50,7 @@ class MetalTutorialMagics(Magics):
 
     @line_magic
     def metal_heading(self, line='', cell=None):  # pylint: disable=unused-argument
-        """
-        Print an HTML formatted message.
-        """
+        """Print an HTML formatted message."""
         return display(
             HTML(f"""
     <h1 style="
@@ -98,7 +92,7 @@ class Headings:
 
     @classmethod
     def h1(cls, text):
-        """Display the HTML"""
+        """Display the HTML."""
         display(HTML(cls.__h1__.replace('!!!!', text)))
 
 
@@ -108,9 +102,8 @@ def get_screenshot(self: 'QMainWindow',
                    type_='png',
                    do_display=True,
                    disp_ops=None):
-    """
-    Grad a screenshot of the main window,
-    save to file, and then copy to clipboard.
+    """Grad a screenshot of the main window, save to file, and then copy to
+    clipboard.
 
     Args:
         self (QMainWindow): Window to take the screenshot of.
@@ -141,8 +134,7 @@ def get_screenshot(self: 'QMainWindow',
 
 
 class Color:
-    """
-    Shell/terminal color and style definitions for the cursor.
+    """Shell/terminal color and style definitions for the cursor.
 
     This will work on *NIX, MacOS, and Windows (provided you enable ansi.sys).
     The class attributes are various ANSI codes for setting the color and style of the cursor.
@@ -171,9 +163,7 @@ def style_colon_list(text: str,
                      sty1b='',
                      sty2a=Color.blue,
                      sty2b=Color.END) -> str:
-    """
-    Color on the left and right sides of single :
-    """
+    """Color on the left and right sides of single :"""
     text = re.sub('(.*?):(.*)', f'{sty1a}\g<1>{sty1b}:{sty2a}\g<2>{sty2b}',
                   text)  # *? is non-greedy
     return text

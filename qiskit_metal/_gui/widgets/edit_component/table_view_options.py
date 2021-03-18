@@ -11,8 +11,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""Handles editing a QComponent
-"""
+"""Handles editing a QComponent."""
 
 from typing import TYPE_CHECKING
 
@@ -27,9 +26,10 @@ if TYPE_CHECKING:
 
 
 class QTableView_Options(QTableView, QWidget_PlaceholderText):
-    """The class for QTableView_Options
+    """The class for QTableView_Options.
 
-    This class inhertis the `QTableView` and `QWidget_PlaceholderText` classes.
+    This class inhertis the `QTableView` and `QWidget_PlaceholderText`
+    classes.
     """
 
     def __init__(self, parent: QtWidgets.QWidget):

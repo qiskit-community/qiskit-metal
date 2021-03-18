@@ -18,11 +18,12 @@ import numpy as np
 
 
 class CPWTFingerCap(QComponent):
-    """Generates a three pin (+) structure comprised of a primary two pin CPW transmission 
-    line,     and a secondary one pin neighboring CPW transmission line that is capacitively
-    coupled to the primary. Such a structure can be used, as an example, for generating
-    CPW resonator hangars off of a transmission line. (0,0) represents the center position
-    of the component. Setting finger length to 0 gives a simple gap capacitor.
+    """Generates a three pin (+) structure comprised of a primary two pin CPW
+    transmission line,     and a secondary one pin neighboring CPW transmission
+    line that is capacitively coupled to the primary. Such a structure can be
+    used, as an example, for generating CPW resonator hangars off of a
+    transmission line. (0,0) represents the center position of the component.
+    Setting finger length to 0 gives a simple gap capacitor.
 
     Inherits QComponent class.
 
@@ -54,8 +55,7 @@ class CPWTFingerCap(QComponent):
         * rotation: '0' -- The direction of the primary transmission line. 0 degrees is +x, following a
           counter-clockwise rotation (eg. 90 is +y)
         * chip: 'main' -- The chip the capacitor should be on.
-        * layer: '1' -- Layer the capacitor is on. 
-
+        * layer: '1' -- Layer the capacitor is on.
     """
     component_metadata = Dict(short_name='cpw',
                               _qgeometry_table_poly='True',
@@ -81,7 +81,7 @@ class CPWTFingerCap(QComponent):
     """Default connector options"""
 
     def make(self):
-        """Build the component"""
+        """Build the component."""
         p = self.p
         N = int(p.finger_count)
         prime_cpw_length = p.cap_width * 2 * N

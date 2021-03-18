@@ -14,8 +14,9 @@
 
 # pylint: disable=invalid-name
 # pylint: disable=unused-import
-"""
-File contains some config definitions. Mostly internal.
+"""File contains some config definitions.
+
+Mostly internal.
 """
 
 from .toolbox_python.attr_dict import Dict
@@ -119,8 +120,8 @@ def is_using_ipython():
 
 
 def is_building_docs():
-    """Checks for the existance of the .buildingdocs file which is only present when
-    building the docs.
+    """Checks for the existance of the .buildingdocs file which is only present
+    when building the docs.
 
     Returns:
         bool: True if .buildingdocs exists

@@ -11,9 +11,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""
-Dict tree base
-"""
+"""Dict tree base."""
 
 import ast
 from pathlib import Path
@@ -43,9 +41,7 @@ KEY, NODE = range(2)
 
 
 def get_nested_dict_item(dic: dict, key_list: list):
-    """
-    Get a nested dictionary item.
-    If key_list is empty, return dic itself.
+    """Get a nested dictionary item. If key_list is empty, return dic itself.
 
     Args:
         dic (dict): Dictionary of items
@@ -62,7 +58,6 @@ def get_nested_dict_item(dic: dict, key_list: list):
         key_list = ['aa', 'x1', 'dda']
         [get_dict_item](myDict, key_list)
         returns 34
-
     """
     if key_list:
         for k in key_list:
@@ -71,14 +66,14 @@ def get_nested_dict_item(dic: dict, key_list: list):
 
 
 class BranchNode:
-    """
-    A BranchNode object has a nonzero number of child nodes.
-    These child nodes can be either BranchNodes or LeafNodes.
+    """A BranchNode object has a nonzero number of child nodes. These child
+    nodes can be either BranchNodes or LeafNodes.
 
-    It is uniquely defined by its name, parent node, and list of children.
-    The list of children consists of tuple pairs of the form (nodename_i, node_i),
-    where the former is the name of the child node and the latter is the child node itself.
-    KEY (=0) and NODE (=1) identify their respective positions within each tuple pair.
+    It is uniquely defined by its name, parent node, and list of
+    children. The list of children consists of tuple pairs of the form
+    (nodename_i, node_i), where the former is the name of the child node
+    and the latter is the child node itself. KEY (=0) and NODE (=1)
+    identify their respective positions within each tuple pair.
     """
 
     def __init__(self, name: str, parent=None, data: dict = None):
@@ -95,8 +90,7 @@ class BranchNode:
         self._data = data  # dictionary containing the actual data
 
     def __len__(self):
-        """
-        Gets the number of children
+        """Gets the number of children.
 
         Returns:
             int: The number of children this node has
@@ -104,8 +98,7 @@ class BranchNode:
         return len(self.children)
 
     def provideName(self):
-        """
-        Gets the name
+        """Gets the name.
 
         Returns:
             str: The nodes name
@@ -113,7 +106,7 @@ class BranchNode:
         return self.name  # identifier for BranchNode
 
     def childAtRow(self, row: int):
-        """Gets the child at the given row
+        """Gets the child at the given row.
 
         Args:
             row (int): The row
@@ -125,7 +118,7 @@ class BranchNode:
             return self.children[row][NODE]
 
     def rowOfChild(self, child):
-        """Gets the row of the given child
+        """Gets the row of the given child.
 
         Args:
             child (Node): The child
@@ -139,7 +132,7 @@ class BranchNode:
         return -1
 
     def childWithKey(self, key):
-        """Gets the child with the given key
+        """Gets the child with the given key.
 
         Args:
             key (str): The key
@@ -154,8 +147,7 @@ class BranchNode:
         return None
 
     def insertChild(self, child):
-        """
-        Insert the given child
+        """Insert the given child.
 
         Args:
             child (Node): The child
@@ -175,12 +167,12 @@ class BranchNode:
 
 
 class LeafNode:
-    """
-    A LeafNode object has no children but consists of a key-value pair, denoted by
-    label and value, respectively.
+    """A LeafNode object has no children but consists of a key-value pair,
+    denoted by label and value, respectively.
 
-    It is uniquely identified by its root-to-leaf path, which is a list of keys
-    whose positions denote their nesting depth (shallow to deep).
+    It is uniquely identified by its root-to-leaf path, which is a list
+    of keys whose positions denote their nesting depth (shallow to
+    deep).
     """
 
     def __init__(self, label: str, parent=None, path=None):
@@ -197,7 +189,7 @@ class LeafNode:
 
     @property
     def value(self):
-        """Returns the value"""
+        """Returns the value."""
         return get_nested_dict_item(self.parent._data, self.path)
 
     # @value.setter
@@ -205,8 +197,7 @@ class LeafNode:
     #     self._value = newvalue
 
     def provideName(self):
-        """
-        Get the label
+        """Get the label.
 
         Returns:
             str: The lable of the leaf node - this is *not* the value.
@@ -215,8 +206,7 @@ class LeafNode:
 
 
 class QTreeModel_Base(QAbstractItemModel):
-    """
-    Tree model for a general hierarchical dataset.
+    """Tree model for a general hierarchical dataset.
 
     This class extends the `QAbstractItemModel` class.
     It is part of the model-view-controller (MVC) architecture; see
@@ -231,10 +221,9 @@ class QTreeModel_Base(QAbstractItemModel):
 
     def __init__(self, parent: QWidget, gui: 'MetalGUI', view: QTreeView,
                  child: str):
-        """
-        Editable table with drop-down rows for a generic options menu.
-        Organized as a tree model where child nodes are more specific properties
-        of a given parent node.
+        """Editable table with drop-down rows for a generic options menu.
+        Organized as a tree model where child nodes are more specific
+        properties of a given parent node.
 
         Args:
             parent (QWidget): The parent widget
@@ -260,34 +249,32 @@ class QTreeModel_Base(QAbstractItemModel):
 
     @property
     def gui(self):
-        """Returns the GUI"""
+        """Returns the GUI."""
         return self._gui
 
     @property
     def design(self) -> 'QDesign':
-        """Returns the QDesign"""
+        """Returns the QDesign."""
         return self._gui.design
 
     @property
     def component(self) -> 'QComponent':
-        """Returns the component if this is the components options menu"""
+        """Returns the component if this is the components options menu."""
         if self.optionstype == 'component':
             return self._component_widget.component
         return None
 
     def _start_timer(self):
-        """
-        Start and continuously refresh timer in background to keep
-        the total number of rows up to date.
-        """
+        """Start and continuously refresh timer in background to keep the total
+        number of rows up to date."""
         self.timer = QTimer(self)
         self.timer.start(self.__refreshtime)
         self.timer.timeout.connect(self.auto_refresh)
 
     def auto_refresh(self):
-        """
-        Check to see if the total number of rows has been changed. If so,
-        completely rebuild the model and tree.
+        """Check to see if the total number of rows has been changed.
+
+        If so, completely rebuild the model and tree.
         """
         # TODO: Check if new nodes have been added; if so, rebuild model.
         newRowCount = self.rowCount(self.createIndex(0, 0))
@@ -298,12 +285,15 @@ class QTreeModel_Base(QAbstractItemModel):
                 self._view.autoresize_columns()
 
     def refresh(self):
-        """Force refresh. Completely rebuild the model and tree."""
+        """Force refresh.
+
+        Completely rebuild the model and tree.
+        """
         self.load()  # rebuild the tree
         self.modelReset.emit()
 
     def getPaths(self, curdict: dict, curpath: list):
-        """Recursively finds and saves all root-to-leaf paths in model"""
+        """Recursively finds and saves all root-to-leaf paths in model."""
         for k, v in curdict.items():
             if isinstance(v, dict):
                 self.getPaths(v, curpath + [k])
@@ -353,7 +343,7 @@ class QTreeModel_Base(QAbstractItemModel):
         self.endResetModel()
 
     def rowCount(self, parent: QModelIndex):
-        """Get the number of rows
+        """Get the number of rows.
 
         Args:
             parent (QModelIndex): The parent
@@ -368,7 +358,7 @@ class QTreeModel_Base(QAbstractItemModel):
         return len(node)
 
     def columnCount(self, parent: QModelIndex):
-        """Get the number of columns
+        """Get the number of columns.
 
         Args:
             parent (QModelIndex): The parent
@@ -379,7 +369,7 @@ class QTreeModel_Base(QAbstractItemModel):
         return len(self.headers)
 
     def data(self, index: QModelIndex, role: Qt.ItemDataRole = Qt.DisplayRole):
-        """Gets the node data
+        """Gets the node data.
 
         Args:
             index (QModelIndex): Index to get data for
@@ -429,8 +419,8 @@ class QTreeModel_Base(QAbstractItemModel):
                 value,
                 role: Qt.ItemDataRole = Qt.EditRole) -> bool:
         """Set the LeafNode value and corresponding data entry to value.
-        Returns true if successful; otherwise returns false.
-        The dataChanged() signal should be emitted if the data was successfully set.
+        Returns true if successful; otherwise returns false. The dataChanged()
+        signal should be emitted if the data was successfully set.
 
         Args:
             index (QModelIndex): The index
@@ -493,7 +483,7 @@ class QTreeModel_Base(QAbstractItemModel):
 
     def headerData(self, section: int, orientation: Qt.Orientation,
                    role: Qt.ItemDataRole):
-        """ Set the headers to be displayed.
+        """Set the headers to be displayed.
 
         Args:
             section (int): Section number
@@ -516,7 +506,7 @@ class QTreeModel_Base(QAbstractItemModel):
         return None
 
     def index(self, row: int, column: int, parent: QModelIndex):
-        """Return my index
+        """Return my index.
 
         Args:
             row (int): The row
@@ -533,7 +523,7 @@ class QTreeModel_Base(QAbstractItemModel):
         return self.createIndex(row, column, branch.childAtRow(row))
 
     def parent(self, child):
-        """Gets the parent index of the given node
+        """Gets the parent index of the given node.
 
         Args:
             child (node): The child
@@ -570,8 +560,7 @@ class QTreeModel_Base(QAbstractItemModel):
         return self.root
 
     def flags(self, index: QModelIndex):
-        """
-        Determine how user may interact with each cell in the table.
+        """Determine how user may interact with each cell in the table.
 
         Returns:
             list: List of flags
@@ -586,7 +575,7 @@ class QTreeModel_Base(QAbstractItemModel):
 
 
 def parse_param_from_str(text):
-    """Attempt to parse a value from a string using ast
+    """Attempt to parse a value from a string using ast.
 
     Args:
         text (str): String to parse

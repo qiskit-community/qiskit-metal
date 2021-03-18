@@ -11,8 +11,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-'''
-Parsing module Qiskit Metal.
+"""Parsing module Qiskit Metal.
 
 The main function in this module is `parse_value`, and it explains what
 and how it is handled. Some basic arithmetic can be handled as well,
@@ -163,8 +162,7 @@ Returns:
         'variable1': 0.01,
         'list1': [1000.0, 0.005, 0.01, -1, False, 'a string'],
         'dict1': {'key1': 4e-06, '2mm': 0.1}}
-
-'''
+"""
 
 import ast
 import numpy as np
@@ -269,9 +267,8 @@ def is_variable_name(test_str: str):
 
 
 def is_for_ast_eval(test_str: str):
-    """
-    Is the test string a valid list of dict string,
-    such as "[1, 2]", that can be evaluated by ast eval.
+    """Is the test string a valid list of dict string, such as "[1, 2]", that
+    can be evaluated by ast eval.
 
     Arguments:
         test_str (str): Test string
@@ -284,8 +281,7 @@ def is_for_ast_eval(test_str: str):
 
 
 def is_numeric_possible(test_str: str):
-    """
-    Is the test string a valid possible numerical with /or w/o units.
+    """Is the test string a valid possible numerical with /or w/o units.
 
     Arguments:
         test_str (str): Test string
@@ -298,10 +294,9 @@ def is_numeric_possible(test_str: str):
 
 
 def parse_value(value: str, variable_dict: dict):
-    """
-    Parse a string, mappable (dict, Dict), iterable (list, tuple) to account for units conversion,
-    some basic arithmetic, and design variables.
-    This is the main parsing function of Qiskit Metal.
+    """Parse a string, mappable (dict, Dict), iterable (list, tuple) to account
+    for units conversion, some basic arithmetic, and design variables. This is
+    the main parsing function of Qiskit Metal.
 
     Handled Inputs:
 

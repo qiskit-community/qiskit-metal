@@ -18,9 +18,8 @@ from qiskit_metal.qlibrary.base.base import QComponent
 
 
 class CapThreeFingers(QComponent):
-    """
-    Create a three finger planar capacitor with a ground pocket cuttout.  The width of
-    the fingers is determined by the trace width.
+    """Create a three finger planar capacitor with a ground pocket cuttout.
+    The width of the fingers is determined by the trace width.
 
     Inherits QComponent class.
 
@@ -80,8 +79,8 @@ class CapThreeFingers(QComponent):
     """Default drawing options"""
 
     def make(self):
-        """ This is executed by the user to generate the qgeometry for the component.
-        """
+        """This is executed by the user to generate the qgeometry for the
+        component."""
         p = self.p
         #########################################################
 
