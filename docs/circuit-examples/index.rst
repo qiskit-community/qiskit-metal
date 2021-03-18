@@ -1,8 +1,8 @@
-.. _tutorials-resonators:
+.. _circuit-examples:
 
-##########
-Resonators
-##########
+################
+Circuit Examples
+################
 
 
 .. nbgallery::
