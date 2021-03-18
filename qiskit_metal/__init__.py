@@ -26,10 +26,10 @@ __status__ = "Development"
 ### Basic Setups
 ## Setup Qt
 def __setup_Qt_backend():
-    """
-    Setup matplotlib to use Qt5's visualization.
-    This function needs to remain in the __init__ of the
-    library's root to prevent Qt windows from hanging.
+    """Setup matplotlib to use Qt5's visualization.
+
+    This function needs to remain in the __init__ of the library's root
+    to prevent Qt windows from hanging.
     """
     import os
     os.environ["QT_API"] = "pyside2"
@@ -38,7 +38,8 @@ def __setup_Qt_backend():
     from PySide2.QtCore import Qt
 
     def set_attribute(name: str, value=True):
-        '''Describes attributes that change the behavior of application-wide features.'''
+        """Describes attributes that change the behavior of application-wide
+        features."""
         if hasattr(Qt, name):
             # Does Qt have this attribute
             attr = getattr(Qt, name)

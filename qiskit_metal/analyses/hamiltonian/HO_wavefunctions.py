@@ -11,14 +11,12 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""
-This code calculations the wavefunction(s) of the simple harmonic oscillator corresponding
-to an LC circuit. 
+"""This code calculations the wavefunction(s) of the simple harmonic oscillator
+corresponding to an LC circuit.
 
 Key References:
     - *R. Shankar*, "Principles of Quantum Mechanics", Second Edition, Springer (1994)
     - or any other undergraduate quantum mechanics textbook)
-
 """
 
 import matplotlib.pyplot as plt
@@ -29,9 +27,8 @@ __all__ = ['wavefunction']
 
 
 def wavefunction(L, C, n, x):
-    """
-    This function calculates the nth wavefunction of the harmonic oscillator
-    for a given value of inductance (L) and capacitance (C) at a charge x. 
+    """This function calculates the nth wavefunction of the harmonic oscillator
+    for a given value of inductance (L) and capacitance (C) at a charge x.
 
     Args:
         L (float): The inductance of the inductor in an LC circuit.

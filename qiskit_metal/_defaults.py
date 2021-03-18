@@ -11,8 +11,9 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""
-File contains basic dictionaries. File contains a class to contain the basic dictionaries.
+"""File contains basic dictionaries.
+
+File contains a class to contain the basic dictionaries.
 """
 
 from copy import deepcopy
@@ -21,8 +22,8 @@ from .toolbox_python.attr_dict import Dict
 
 
 class DefaultMetalOptions(Dict):
-    """
-    `DefaultMetalOptions` is the container for the default options used in:
+    """`DefaultMetalOptions` is the container for the default options used in:
+
         1. Components - each time a new component is registered (instantiated).
         2. The metal code codebase, in functions such as drawing and in qdesign base
 
@@ -51,9 +52,7 @@ class DefaultMetalOptions(Dict):
     """
 
     def __init__(self, generic: Dict = None):
-        """
-        The constructor for the `DefaultMetalOptions` class.
-        """
+        """The constructor for the `DefaultMetalOptions` class."""
         if not generic:
             generic = deepcopy(self.default_generic)
 
@@ -73,8 +72,8 @@ class DefaultMetalOptions(Dict):
 
 # Can't really use this until default_draw_substrate.color_plane is resolved.
 class DefaultOptionsRenderer():
-    """
-    `DefaultOptionsRenderer` is the class that encapsulate generic data used throughout qiskit metal classes for renderers.
+    """`DefaultOptionsRenderer` is the class that encapsulate generic data used
+    throughout qiskit metal classes for renderers.
 
     This class is a skeleton and is expected to be updated when the renderer is updated.
 
@@ -110,9 +109,7 @@ class DefaultOptionsRenderer():
     def __init__(self,
                  draw_substrate: Dict = default_draw_substrate,
                  bounding_box: Dict = default_bounding_box):
-        """
-        The constructor for the `DefaultOptionsRenderer` class.
-        """
+        """The constructor for the `DefaultOptionsRenderer` class."""
         #self.logger = logger
 
         # Do Not edit the class variable
@@ -128,8 +125,7 @@ class DefaultOptionsRenderer():
     def update_default_options(self,
                                cust_key: str = None,
                                cust_value: Dict = None):
-        """
-        Allow instance of class to update the default_options.
+        """Allow instance of class to update the default_options.
 
         Args:
             cust_key (str): Type of component.  Defaults to None.

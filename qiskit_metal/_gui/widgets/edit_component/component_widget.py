@@ -11,8 +11,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""Main module that handles a component  inside the main window.
-"""
+"""Main module that handles a component  inside the main window."""
 
 import ast
 import inspect
@@ -98,7 +97,7 @@ body {
 
 
 def format_docstr(doc: Union[str, None]) -> str:
-    """Format a docstring
+    """Format a docstring.
 
     Args:
         doc (Union[str, None]): String to format
@@ -119,8 +118,7 @@ def format_docstr(doc: Union[str, None]) -> str:
 
 
 def create_QTextDocument(doc: QtWidgets.QTextEdit) -> QtGui.QTextDocument:
-    """
-    Create QTextDocument for the source doc.
+    """Create QTextDocument for the source doc.
 
     Access with gui.component_window.src_doc
 
@@ -149,8 +147,8 @@ def create_QTextDocument(doc: QtWidgets.QTextEdit) -> QtGui.QTextDocument:
 
 
 class ComponentWidget(QTabWidget):
-    """
-    This is just a handler (container) for the UI; it a child object of the main gui.
+    """This is just a handler (container) for the UI; it a child object of the
+    main gui.
 
     This class extends the `QTabWidget` class.
 
@@ -210,8 +208,8 @@ class ComponentWidget(QTabWidget):
         self.fixup_ui()
 
     def fixup_ui(self):
-        """For some reasonthe following i couldnt do in the ui successfully, so doing here.
-        """
+        """For some reasonthe following i couldnt do in the ui successfully, so
+        doing here."""
         # Clicked
         # This signal is emitted when the button is activated (i.e., pressed down then released
         # while the mouse cursor is inside the button), when the shortcut key is typed, or when
@@ -232,7 +230,7 @@ class ComponentWidget(QTabWidget):
 
     @property
     def design(self):
-        """Returns the design"""
+        """Returns the design."""
         return self.gui.design
 
     @property
@@ -256,8 +254,7 @@ class ComponentWidget(QTabWidget):
         return None
 
     def set_component(self, name: str):
-        """
-        Main interface to set the component (by name)
+        """Main interface to set the component (by name)
 
         Arguments:
             name (str): Set the component name, if None then clears
@@ -287,11 +284,11 @@ class ComponentWidget(QTabWidget):
         self.ui.treeView.autoresize_columns()  # resize columns
 
     def force_refresh(self):
-        """Force refresh"""
+        """Force refresh."""
         self.model.refresh()
 
     def _set_help(self):
-        """Called when we need to set a new help"""
+        """Called when we need to set a new help."""
         # See also
         # from IPython.core import oinspect
         # oinspect.getdoc(SampleClass)
@@ -338,8 +335,7 @@ class ComponentWidget(QTabWidget):
 
     @property
     def qcomponent_file_path(self):
-        """Get file path to qcomponent
-        """
+        """Get file path to qcomponent."""
         component = self.component
         module = inspect.getmodule(component)
         filepath = inspect.getfile(module)
@@ -347,7 +343,7 @@ class ComponentWidget(QTabWidget):
         return filepath
 
     def _set_source(self):
-        """Called when we need to set a new help"""
+        """Called when we need to set a new help."""
         filepath = self.qcomponent_file_path
 
         self.ui.lineSourcePath.setText(filepath)
@@ -376,8 +372,7 @@ class ComponentWidget(QTabWidget):
 
     def edit_source(self, *args, parent=None):
         """Calls the edit source window
-        ```gui.component_window.edit_source()```
-        """
+        ```gui.component_window.edit_source()```"""
 
         self.logger.debug(f"edit_source: {args}")
 

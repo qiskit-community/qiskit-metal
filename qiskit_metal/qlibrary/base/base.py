@@ -11,12 +11,9 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""
-This is the main module that defines what a QComponent is in Qiskit Metal.
+"""This is the main module that defines what a QComponent is in Qiskit Metal.
 
-To see the docstring of QComponent, use:
-    >> ?QComponent
-
+To see the docstring of QComponent, use:     >> ?QComponent
 """
 
 import logging
@@ -48,8 +45,7 @@ if TYPE_CHECKING:
 
 
 class QComponent():
-    """
-    `QComponent` is the base class for all Metal components and is the
+    """`QComponent` is the base class for all Metal components and is the
     central construct from which all components in Metal are derived.
 
     The class defines the user interface for working with components.
@@ -134,7 +130,8 @@ class QComponent():
                  options: Dict = None,
                  make=True,
                  component_template: Dict = None) -> Union[None, str]:
-        """Create a new Metal component and adds it's default_options to the design.
+        """Create a new Metal component and adds it's default_options to the
+        design.
 
         Arguments:
             design (QDesign): The parent design.
@@ -249,9 +246,8 @@ class QComponent():
 
     @classmethod
     def _gather_all_children_options(cls) -> dict:
-        '''
-        From the base class of QComponent, traverse the child classes
-        to gather the .default options for each child class.
+        """From the base class of QComponent, traverse the child classes to
+        gather the .default options for each child class.
 
         Collects the options starting with the basecomponent,
         and stepping through the children.
@@ -265,7 +261,7 @@ class QComponent():
 
         Returns:
             dict: options from all children
-        '''
+        """
 
         options_from_children = {}
         parents = inspect.getmro(cls)
@@ -283,16 +279,15 @@ class QComponent():
 
     @classmethod
     def _gather_all_children_metadata(cls) -> dict:
-        '''
-        From the base class of QComponent, traverse the child classes
-        to gather the .default options for each child class.
+        """From the base class of QComponent, traverse the child classes to
+        gather the .default options for each child class.
 
         Note: if keys are the same for child and grandchild, grandchild will overwrite child
         Init method.
 
         Returns:
             dict: options from all children
-        '''
+        """
 
         options_from_children = {}
         parents = inspect.getmro(cls)
@@ -309,7 +304,7 @@ class QComponent():
 
     @classmethod
     def _get_unique_class_name(cls) -> str:
-        """Returns unique class name based on the module
+        """Returns unique class name based on the module.
 
         Returns:
             str: Example: 'qiskit_metal.qlibrary.qubits.transmon_pocket.TransmonPocket'
@@ -319,13 +314,13 @@ class QComponent():
     @classmethod
     def _register_class_with_design(cls, design: 'QDesign', template_key: str,
                                     component_template: Dict):
-        """Init function to register a component class with the design when first instantiated.
-            Registers the design template options.
+        """Init function to register a component class with the design when
+        first instantiated. Registers the design template options.
 
-            Arguments:
-                design (QDesign): The parent design
-                template_key (str): Key to use
-                component_template (dict): Template of components to copy, with renderer options
+        Arguments:
+            design (QDesign): The parent design
+            template_key (str): Key to use
+            component_template (dict): Template of components to copy, with renderer options
         """
         # do not overwrite
         if template_key not in design.template_options:
@@ -343,17 +338,17 @@ class QComponent():
 
     @property
     def name(self) -> str:
-        '''Name of the component.'''
+        """Name of the component."""
         return self._name
 
     @name.setter
     def name(self, new_name: str):
-        '''Rename the component. Change the design dictionaries as well.
-        handle components. Delete and remake.
+        """Rename the component. Change the design dictionaries as well. handle
+        components. Delete and remake.
 
         Returns:
             bool: True is successful, otherwise failure code
-        '''
+        """
         return_code = self.design.rename_component(self.id, new_name)
         if return_code != True:
             logger.warning(
@@ -362,21 +357,21 @@ class QComponent():
 
     @property
     def design(self) -> 'QDesign':
-        '''Return a reference to the parent design object.
+        """Return a reference to the parent design object.
 
         Returns:
             QDesign: design
-        '''
+        """
         return self._design
 
     @property
     def class_name(self) -> str:
-        '''Return the full name of the class: the full module name with the class name.
-        e.g., qiskit_metal.qlibrary.qubits.TransmonPocket
+        """Return the full name of the class: the full module name with the
+        class name. e.g., qiskit_metal.qlibrary.qubits.TransmonPocket.
 
         Returns:
             str: Class name
-        '''
+        """
         return self._class_name
 
     @property
@@ -390,26 +385,28 @@ class QComponent():
 
     @property
     def pin_names(self) -> set:
-        '''The names of the pins.
+        """The names of the pins.
 
         Returns:
             set: Set of pin names
-        '''
+        """
         return set(self.pins.keys())
 
     @property
     def id(self) -> int:
-        '''The unique id of component within a design.
+        """The unique id of component within a design.
 
         Returns:
             int: Component id
-        '''
+        """
         return self._id
 
     def _add_to_design(self):
-        ''' Add self to design objects dictionary. Method will obtain an unique id
-        for the component within a design, THEN add itself to design.
-        '''
+        """Add self to design objects dictionary.
+
+        Method will obtain an unique id for the component within a
+        design, THEN add itself to design.
+        """
         self.design._components[self.id] = self
         self.design.name_to_id[self.name] = self._id
 
@@ -419,10 +416,9 @@ class QComponent():
                              component_template: Dict = None,
                              logger_: logging.Logger = None,
                              template_key: str = None) -> Dict:
-        """
-        Creates template options for the Metal Component class required for the class
-        to function, based on the design template; i.e., be created, made, and rendered.
-        Provides the blank option structure required.
+        """Creates template options for the Metal Component class required for
+        the class to function, based on the design template; i.e., be created,
+        made, and rendered. Provides the blank option structure required.
 
         The options can be extended by plugins, such as renderers.
 
@@ -470,8 +466,8 @@ class QComponent():
         return template_options
 
     def _delete_evaluation(self, check_name: str = None):
-        """When design.overwrite_enabled, the user is allowed to delete an existing component within
-        the design if the name is being used.
+        """When design.overwrite_enabled, the user is allowed to delete an
+        existing component within the design if the name is being used.
 
         Args:
             check_name (str, optional): Name of new component.  Defaults to None.
@@ -495,11 +491,11 @@ class QComponent():
         return None
 
     def make(self):
-        """
-        The make function implements the logic that creates the geometry
-        (poly, path, etc.) from the qcomponent.options dictionary of parameters,
-        and the adds them to the design, using qcomponent.add_qgeometry(...),
-        adding in extra needed information, such as layer, subtract, etc.
+        """The make function implements the logic that creates the geometry
+        (poly, path, etc.) from the qcomponent.options dictionary of
+        parameters, and the adds them to the design, using
+        qcomponent.add_qgeometry(...), adding in extra needed information, such
+        as layer, subtract, etc.
 
         Use the qiskit_metal.draw module to create the geometry.
 
@@ -514,10 +510,10 @@ class QComponent():
         raise NotImplementedError()
 
     def rebuild(self):
-        """Builds the QComponent.
-        This is the main action function of a QComponent, call it qc.
-        It converts the qc.options into QGeometry with all of the required options, such as
-        the geometry points, layer number, materials, etc. needed to render.
+        """Builds the QComponent. This is the main action function of a
+        QComponent, call it qc. It converts the qc.options into QGeometry with
+        all of the required options, such as the geometry points, layer number,
+        materials, etc. needed to render.
 
         The build clears the existing QGeometry and QPins and then calls the qc.make function,
         which is writen by the component developer to implement the logic (using the metal.
@@ -555,8 +551,8 @@ class QComponent():
             raise error
 
     def delete(self):
-        """
-        Delete the QComponent.
+        """Delete the QComponent.
+
         Removes QGeometry, QPins, etc. from the design.
         """
         self.design.delete_component(self.name)
@@ -567,10 +563,9 @@ class QComponent():
     def parse_value(
         self, value: Union[Any, List, Dict, Iterable]
     ) -> Union[Any, List, Dict, Iterable]:
-        """
-        Parse a string, mappable (dict, Dict), iterable (list, tuple) to account for
-        units conversion, some basic arithmetic, and design variables.
-        This is the main parsing function of Qiskit Metal.
+        """Parse a string, mappable (dict, Dict), iterable (list, tuple) to
+        account for units conversion, some basic arithmetic, and design
+        variables. This is the main parsing function of Qiskit Metal.
 
         Arguments:
             value (str): String to parse *or*
@@ -614,10 +609,9 @@ class QComponent():
         return self.design.parse_value(value)
 
     def parse_options(self, options: Dict = None) -> Dict:
-        """
-        Parse the options, converting string into interpreted values.
-        Parses units, variables, strings, lists, and dictionaries.
-        Explained by example below.
+        """Parse the options, converting string into interpreted values. Parses
+        units, variables, strings, lists, and dictionaries. Explained by
+        example below.
 
         Arguments:
             options (dict) : If left None, then self.options is used.  Defaults to None.
@@ -643,7 +637,6 @@ class QComponent():
 
         Warning: If user has used this text version of the component name already,
         warning will be given to user.
-
         """
 
         if check_name in self._design.name_to_id:
@@ -666,10 +659,10 @@ class QComponent():
             input_as_norm: bool = False,
             chip: str = 'main',
             gap: float = None):  # gap defaults to 0.6 * width
-        """
-        Adds a pin from two points which are normal/tangent to the intended plane of the pin.
-        The normal should 'point' in the direction of intended connection. Adds the
-        new pin as a subdictionary to parent component's pins dictionary.
+        """Adds a pin from two points which are normal/tangent to the intended
+        plane of the pin. The normal should 'point' in the direction of
+        intended connection. Adds the new pin as a subdictionary to parent
+        component's pins dictionary.
 
         Arguments:
             * name (str): name of the pin
@@ -723,7 +716,6 @@ class QComponent():
                      .*
                      .|
             ..........|
-
         """
         assert len(points) == 2
 
@@ -781,10 +773,10 @@ class QComponent():
         return self.pins[name]
 
     def _check_pin_inputs(self):
-        """Checks that the pin_inputs are valid, sets an error message indicating what the
-        error is if the inputs are not valid.
-        Checks regardless of user passing the component name or component id (probably a smoother way
-        to do this check).
+        """Checks that the pin_inputs are valid, sets an error message
+        indicating what the error is if the inputs are not valid. Checks
+        regardless of user passing the component name or component id (probably
+        a smoother way to do this check).
 
         3 Error cases:
             - Component does not exist
@@ -880,8 +872,8 @@ class QComponent():
 ########################################################################
 
     def add_dependency(self, parent: str, child: str):
-        """Add a dependency between one component and another.
-        Calls parent design.
+        """Add a dependency between one component and another. Calls parent
+        design.
 
         Arguments:
             parent (str): The component on which the child depends
@@ -1039,10 +1031,9 @@ class QComponent():
         return self.design.qgeometry.get_element_types()
 
     def qgeometry_dict(self, element_type: str) -> Dict_[str, BaseGeometry]:
-        """
-        Returns a dict of element qgeometry (shapely geometry) of the component
-        as a python dict, where the dict keys are the names of the qgeometry
-        and the corresponding values are the shapely geometries.
+        """Returns a dict of element qgeometry (shapely geometry) of the
+        component as a python dict, where the dict keys are the names of the
+        qgeometry and the corresponding values are the shapely geometries.
 
         Arguments:
             element_type (str): Name of element table or type; e.g., 'poly' and 'path'
@@ -1057,9 +1048,8 @@ class QComponent():
                 self.name, element_type)
 
     def qgeometry_list(self, element_type: str = 'all') -> List[BaseGeometry]:
-        """
-        Returns a list of element qgeometry (shapely geometry) of the component
-        as a python list of shapely geometries.
+        """Returns a list of element qgeometry (shapely geometry) of the
+        component as a python list of shapely geometries.
 
         Arguments:
             element_type (str): Name of element table or type; e.g., 'poly' and 'path'.
@@ -1075,8 +1065,7 @@ class QComponent():
                 self.name, element_type)
 
     def qgeometry_table(self, element_type: str) -> pd.DataFrame:
-        """
-        Returns the entire element table for the component.
+        """Returns the entire element table for the component.
 
         Arguments:
             element_type (str): Name of element table or type; e.g., 'poly' and 'path'
@@ -1090,8 +1079,7 @@ class QComponent():
             return self.design.qgeometry.get_component(self.name, element_type)
 
     def qgeometry_bounds(self) -> Tuple:
-        """
-        Fetched the component bound dict_value.
+        """Fetched the component bound dict_value.
 
         Returns:
             tuple: containing (minx, miny, maxx, maxy) bound values for the bounds of the
@@ -1106,7 +1094,7 @@ class QComponent():
     def qgeometry_plot(self,
                        ax: 'matplotlib.axes.Axes' = None,
                        plot_kw: dict = None) -> List:
-        """ Draw all the qgeometry of the component (polys and path etc.)
+        """Draw all the qgeometry of the component (polys and path etc.)
 
         Arguments:
             ax (matplotlib.axes.Axes): Matplotlib axis to draw on.  Defaults to None -- gets the current axis.
@@ -1127,9 +1115,12 @@ class QComponent():
         return qgeometry
 
     def populate_to_track_table_usage(self) -> None:
-        """Use the element_handler to get a list of all the table names used in QGeometry.
-        The dict qgeometry_able_usage should get updated by add_qgeometry(). This dict is used
-        to get a summary tables used for this component.
+        """Use the element_handler to get a list of all the table names used in
+        QGeometry.
+
+        The dict qgeometry_able_usage should get updated by
+        add_qgeometry(). This dict is used to get a summary tables used
+        for this component.
         """
         for table_name in self.design.qgeometry.tables.keys():
             self.qgeometry_table_usage[table_name] = False

@@ -11,9 +11,8 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""
-Module containing Basic Qiskit Metal Planar (2D) design for CPW type geometry.
-"""
+"""Module containing Basic Qiskit Metal Planar (2D) design for CPW type
+geometry."""
 
 from .design_base import QDesign, Dict
 from typing import TYPE_CHECKING
@@ -48,8 +47,9 @@ class DesignPlanar(QDesign):
         self.add_chip_info()
 
     def add_chip_info(self):
-        """TODO How to get the values into self.chip. Will need to set up parser for "self.p" for design base.
-        For now, just hard code in something.
+        """TODO How to get the values into self.chip. Will need to set up
+        parser for "self.p" for design base. For now, just hard code in
+        something.
 
         # GDSPY is using numbers based on 1 meter unit.
         # When the gds file is exported, data is converted to "user-selected" units.
@@ -75,8 +75,9 @@ class DesignPlanar(QDesign):
         )
 
     def get_x_y_for_chip(self, chip_name: str) -> Tuple[tuple, int]:
-        """If the chip_name is in self.chips, along with entry for size information
-        then return a tuple=(minx, miny, maxx, maxy). Used for subtraction while exporting design.
+        """If the chip_name is in self.chips, along with entry for size
+        information then return a tuple=(minx, miny, maxx, maxy). Used for
+        subtraction while exporting design.
 
         Args:
             chip_name (str): Name of chip that you want the size of.

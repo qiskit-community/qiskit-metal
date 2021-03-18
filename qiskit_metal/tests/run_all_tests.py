@@ -11,9 +11,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""
-Qiskit Metal main unit test functionality.
-"""
+"""Qiskit Metal main unit test functionality."""
 
 import os
 import fnmatch

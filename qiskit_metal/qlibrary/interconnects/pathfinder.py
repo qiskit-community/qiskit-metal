@@ -47,9 +47,8 @@ class RoutePathfinder(RouteAnchors):
 
     def connect_astar_or_simple(self, start_pt: QRoutePoint,
                                 end_pt: QRoutePoint) -> list:
-        """
-        Connect start and end via A* algo if connect_simple doesn't work.
-        
+        """Connect start and end via A* algo if connect_simple doesn't work.
+
         Args:
             start_direction (np.array): Vector indicating direction of starting point
             start (np.array): 2-D coordinates of first anchor
@@ -154,9 +153,7 @@ class RoutePathfinder(RouteAnchors):
         ]  # Shouldn't actually reach here - if it fails, there's a convergence issue
 
     def make(self):
-        """
-        Generates path from start pin to end pin.
-        """
+        """Generates path from start pin to end pin."""
         p = self.parse_options()
         anchors = p.anchors
 

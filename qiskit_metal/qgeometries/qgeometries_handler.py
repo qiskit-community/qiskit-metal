@@ -11,8 +11,8 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""
-This is the main module that defines what an element is in Qiskit Metal.
+"""This is the main module that defines what an element is in Qiskit Metal.
+
 See the docstring of `QGeometryTables`
 """
 
@@ -226,7 +226,6 @@ class QGeometryTables(object):
 
             qgeometry.tables['path']
             >>> component	name	geometry	layer	type	chip	subtract	fillet	color	width	hfss_boundary	hfss_perfectE	hfss_material	gds_color	gds_pcell
-
     """
 
     # Dummy private attribute used to check if an instanciated object is
@@ -246,8 +245,7 @@ class QGeometryTables(object):
     """ Delimiter to use when creating names of columns of renderer properties. """
 
     def __init__(self, design: 'QDesign'):
-        """
-        The constructor for the `QGeometryTables` class.
+        """The constructor for the `QGeometryTables` class.
 
         Arguments:
             design: Design in use
@@ -261,14 +259,12 @@ class QGeometryTables(object):
 
     @property
     def design(self) -> 'QDesign':
-        '''Return a reference to the parent design object.'''
+        """Return a reference to the parent design object."""
         return self._design
 
     @property
     def logger(self) -> logging.Logger:
-        """
-        Return the logger.
-        """
+        """Return the logger."""
         return self._design.logger
 
     @property
@@ -283,8 +279,8 @@ class QGeometryTables(object):
 
     @classmethod
     def add_renderer_extension(cls, renderer_name: str, qgeometry: dict):
-        """Add renderer element extension to ELEMENT_COLUMNS.
-        Called when the load function of a renderer is called.
+        """Add renderer element extension to ELEMENT_COLUMNS. Called when the
+        load function of a renderer is called.
 
         Arguments:
             renderer_name (str): Name of renderer
@@ -317,8 +313,8 @@ class QGeometryTables(object):
     # https://stackoverflow.com/questions/33672412/python-functools-lru-cache-with-class-methods-release-object
     @classmethod
     def get_element_types(cls) -> List[str]:
-        """Return the names of the available qgeometry to create.
-        This does not include 'base', but is rather such as poly and path.
+        """Return the names of the available qgeometry to create. This does not
+        include 'base', but is rather such as poly and path.
 
         Returns:
             list(str) : A list of name in self.ELEMENT_COLUMNS
@@ -330,9 +326,9 @@ class QGeometryTables(object):
         return names
 
     def create_tables(self):
-        """
-        Creates the default tables once. Populates the dict 'tables' of GeoDataFrame,
-        each with columns corresponding to the types of qgeometry defined in ELEMENT_COLUMNS.
+        """Creates the default tables once. Populates the dict 'tables' of
+        GeoDataFrame, each with columns corresponding to the types of qgeometry
+        defined in ELEMENT_COLUMNS.
 
         Should only be done once when a new design is created.
         """
@@ -383,8 +379,8 @@ class QGeometryTables(object):
             self.tables[table_name] = table
 
     def _validate_column_dictionary(self, table_name: str, column_dict: dict):
-        """Validate
-        A possible error here is if the user did not pass a valid data type.
+        """Validate A possible error here is if the user did not pass a valid
+        data type.
 
         Throws an error if not valid.
 
@@ -410,8 +406,7 @@ class QGeometryTables(object):
                 ' Value needs to be a class!'
 
     def get_rname(self, renderer_name: str, key: str) -> str:
-        """
-        Get name for renderer property.
+        """Get name for renderer property.
 
         Arguments:
             renderer_name (str): Name of the renderer
@@ -452,7 +447,7 @@ class QGeometryTables(object):
             layer: Union[int, str] = 1,  # chip will be here
             chip: str = 'main',
             **other_options):
-        """Main interface to add qgeometries
+        """Main interface to add qgeometries.
 
         Arguments:
             kind (str): Must be in get_element_types ('path', 'poly', etc.).
@@ -539,7 +534,8 @@ class QGeometryTables(object):
     def check_lengths(self, geometry: shapely.geometry.base.BaseGeometry,
                       kind: str, component_name: str, layer: Union[int, str],
                       chip: str, **other_options):
-        """If user wants to fillet, check the line-segments to see if it is too short for fillet.
+        """If user wants to fillet, check the line-segments to see if it is too
+        short for fillet.
 
         Args:
             geometry (shapely.geometry.base.BaseGeometry): The LineString to investigate.
@@ -594,6 +590,7 @@ class QGeometryTables(object):
 
     def clear_all_tables(self):
         """Clear all the internal tables and all else.
+
         Use when clearing a design and starting from scratch.
         """
         self.tables.clear()
@@ -630,8 +627,8 @@ class QGeometryTables(object):
         name: str,
         table_name: str = 'all'
     ) -> Union[GeoDataFrame, Dict_[str, GeoDataFrame]]:
-        """Return the table for just a given component.
-        If all, returns a dictionary with kets as table names and tables of components as values.
+        """Return the table for just a given component. If all, returns a
+        dictionary with kets as table names and tables of components as values.
 
         Arguments:
             name (str): Name of component (case sensitive).  Defaults to 'all'.
@@ -663,8 +660,8 @@ class QGeometryTables(object):
 
     def get_component_bounds(self,
                              name: str) -> Tuple[float, float, float, float]:
-        """Returns a tuple containing minx, miny, maxx, maxy values
-        for the bounds of the component as a whole.
+        """Returns a tuple containing minx, miny, maxx, maxy values for the
+        bounds of the component as a whole.
 
         Arguments:
             name (str): Component name
@@ -701,8 +698,8 @@ class QGeometryTables(object):
                                     name: str,
                                     table_name: str = 'all'
                                    ) -> List[BaseGeometry]:
-        """Return just the bare element geometry (shapely geometry objects) as a list, for the
-        selected component.
+        """Return just the bare element geometry (shapely geometry objects) as
+        a list, for the selected component.
 
         Arguments:
             name (str) : Name of component (case sensitive)
@@ -725,8 +722,7 @@ class QGeometryTables(object):
         return qgeometry
 
     def get_component_geometry(self, name: str) -> GeoSeries:
-        """
-        Returns geometry of a given component.
+        """Returns geometry of a given component.
 
         Arguments:
             name (str) : Name of component (case sensitive)
@@ -751,9 +747,9 @@ class QGeometryTables(object):
                                     name: str,
                                     table_name: str = 'all'
                                    ) -> List[BaseGeometry]:
-        """Return just the bare element geometry (shapely geometry objects) as a dict,
-        with key being the names of the qgeometry and the values as the shapely geometry,
-        for the selected component.
+        """Return just the bare element geometry (shapely geometry objects) as
+        a dict, with key being the names of the qgeometry and the values as the
+        shapely geometry, for the selected component.
 
         Arguments:
             name (str) : Name of component (case sensitive)

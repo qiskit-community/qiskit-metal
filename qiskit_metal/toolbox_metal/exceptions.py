@@ -14,15 +14,12 @@
 
 # pylint: disable=invalid-name
 # pylint: disable=unused-import
-"""
-Custom Exceptions
-"""
+"""Custom Exceptions."""
 
 
 class QiskitMetalExceptions(Exception):
-    """
-    Custom Exception super-class. Every Exception raised by qiskit-metal should inherit this.
-    Adds the qiskit-metal prefix.
+    """Custom Exception super-class. Every Exception raised by qiskit-metal
+    should inherit this. Adds the qiskit-metal prefix.
 
     Args:
         message (str): String describing the error raised from qiskit-metal
@@ -34,8 +31,8 @@ class QiskitMetalExceptions(Exception):
 
 
 class QiskitMetalDesignError(QiskitMetalExceptions):
-    """
-    Custom Exception to indicate User action is needed to correct Design Inputs.
+    """Custom Exception to indicate User action is needed to correct Design
+    Inputs.
 
     Args:
         message (str): String describing the cause of the error and suggested solution

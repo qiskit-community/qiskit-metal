@@ -15,8 +15,7 @@
 #pylint: disable-msg=unnecessary-pass
 #pylint: disable-msg=broad-except
 #pylint: disable-msg=unused-variable
-"""
-Qiskit Metal unit tests analyses functionality.
+"""Qiskit Metal unit tests analyses functionality.
 
 Test a planar design and launching the GUI.
 """
@@ -27,26 +26,18 @@ from qiskit_metal._gui.widgets.bases.dict_tree_base import LeafNode
 
 
 class TestGUIBasic(unittest.TestCase):
-    """
-    Unit test class.
-    """
+    """Unit test class."""
 
     def setUp(self):
-        """
-        Setup unit test.
-        """
+        """Setup unit test."""
         pass
 
     def tearDown(self):
-        """
-        Tie any loose ends.
-        """
+        """Tie any loose ends."""
         pass
 
     def test_instantiate_branch_node(self):
-        """
-        Test instantiation of BranchNode in dict_tree_base.py.
-        """
+        """Test instantiation of BranchNode in dict_tree_base.py."""
         try:
             BranchNode('my_name')
         except Exception:
@@ -54,9 +45,7 @@ class TestGUIBasic(unittest.TestCase):
             self.fail(message)
 
     def test_instantiate_leaf_node(self):
-        """
-        Test instantiation of LeafNode in dict_tree_base.py.
-        """
+        """Test instantiation of LeafNode in dict_tree_base.py."""
         try:
             LeafNode('my_label')
         except Exception:

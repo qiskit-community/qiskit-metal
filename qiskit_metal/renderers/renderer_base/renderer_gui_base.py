@@ -11,9 +11,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""
-QRendererGui Base
-"""
+"""QRendererGui Base."""
 
 from ...designs import QDesign, is_design
 from ...qgeometries import QGeometryTables
@@ -24,8 +22,9 @@ __all__ = ['QRendererGui']
 
 
 class QRendererGui(QRenderer):
-    """Abstract base class for the GUI rendering. Extends `QRenderer`.
-    An interface class.
+    """Abstract base class for the GUI rendering.
+
+    Extends `QRenderer`. An interface class.
     """
 
     name = 'guibase'  # overwrite this!

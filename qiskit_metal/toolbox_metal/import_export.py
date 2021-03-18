@@ -13,9 +13,7 @@
 # that they have been altered from the originals.
 
 # pylint: disable=protected-access
-'''
-Saving and load metal data.
-'''
+"""Saving and load metal data."""
 
 import pickle
 #from ..designs.base
@@ -25,8 +23,7 @@ __all__ = ['save_metal', 'load_metal_design']
 
 
 def save_metal(filename: str, design):
-    """
-    Save metal0
+    """Save metal0.
 
     Args:
         filename (str): File path
@@ -66,8 +63,7 @@ def save_metal(filename: str, design):
 
 
 def load_metal_design(filename: str, do_update=True):
-    """
-    Load metal design.
+    """Load metal design.
 
     Args:
         filename (str): File path

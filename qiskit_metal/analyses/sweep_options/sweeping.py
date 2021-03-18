@@ -16,28 +16,27 @@ from typing import List, Tuple, Union, Any, Iterable
 
 
 class Sweeping():
-    """
-        Need access to renderers which are registered in QDesign.
-    """
+    """Need access to renderers which are registered in QDesign."""
 
     def __init__(self, design: 'QDesign'):
-        """Give QDesign to this class so Sweeping can access the registered QRenderers.
+        """Give QDesign to this class so Sweeping can access the registered
+        QRenderers.
 
         Args:
-            design (QDesign): Used to access the QRenderers. 
+            design (QDesign): Used to access the QRenderers.
         """
         self.design = design
 
     def option_value(self, a_dict, search: str) -> str:
-        """Get value from dict based on key.  This method is used for unknown depth,
-        dict search, within a dict.
-        
+        """Get value from dict based on key.  This method is used for unknown
+        depth, dict search, within a dict.
+
         Args:
             a_dict (dict): Dictionary to get values from
             search (str): String to search for
 
         Returns:
-            str: Value from the dictionary of the searched term        
+            str: Value from the dictionary of the searched term
         """
         value = a_dict[search]
         return value
@@ -51,13 +50,13 @@ class Sweeping():
             endcaps_render: list,
             leave_last_design: bool = True,
             design_name: str = "Sweep_Capacitance") -> Tuple[dict, int]:
-        """Ansys must be open with inserted project "Q3D Extractor Design." 
+        """Ansys must be open with inserted project "Q3D Extractor Design.".
 
         Args:
             qcomp_name (str): A component that contains the option to be swept.
             option_name (str): The option within qcomp_name to sweep.
             option_sweep (list): Each entry in the list is a value for option_name.
-            qcomp_render (list): The component to render to Q3D. 
+            qcomp_render (list): The component to render to Q3D.
             endcaps_render (list): Identify which kind of pins. Follow the details from renderer QQ3DRenderer.render_design.
             leave_last_design (bool) : In Q3d, after the last sweep, should the design be cleared?
             design_name(str): Name of q3d_design to use in project.
@@ -74,7 +73,6 @@ class Sweeping():
             * 5 option_sweep is empty, need at least one entry.
             * 6 project not in app
             * 7 design not in app
-           
         """
         #Dict of all swept information.
         all_sweep = dict()

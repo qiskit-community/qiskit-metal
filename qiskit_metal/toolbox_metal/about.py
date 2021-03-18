@@ -11,8 +11,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""
-Reports a summary of information on Qiskit Metal and dependencies.
+"""Reports a summary of information on Qiskit Metal and dependencies.
 
 Contain functions to report more detailed information to orient a user,
 used for debug purposes.
@@ -37,8 +36,7 @@ __all__ = [
 
 
 def about():
-    """
-    Reports a summary of information on Qiskit Metal and dependencies.
+    """Reports a summary of information on Qiskit Metal and dependencies.
 
     Returns:
         str: About message
@@ -95,16 +93,15 @@ IBM Quantum Team"""
 def get_module_doc_page(module,
                         folder=r'../docs/build/html',
                         page='index.html'):
-    """
-    Get the file path to a module doc folder assumed to be inside the package.
-    """
+    """Get the file path to a module doc folder assumed to be inside the
+    package."""
     return Path(os.path.dirname(module.__file__)) / folder / page
 
 
 def open_docs(page='https://qiskit.org/documentation/metal/'):
-    """
-    Open the qiskit_metal documentation in HTML. Open the URL in new window,
-    raising the window if possible.
+    """Open the qiskit_metal documentation in HTML.
+
+    Open the URL in new window, raising the window if possible.
     """
     webbrowser.open(page, new=1)
 

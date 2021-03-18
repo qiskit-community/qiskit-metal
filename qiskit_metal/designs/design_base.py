@@ -11,9 +11,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""
-The base class of all QDesigns in Qiskit Metal.
-"""
+"""The base class of all QDesigns in Qiskit Metal."""
 
 import importlib
 from datetime import datetime
@@ -49,7 +47,8 @@ __all__ = ['QDesign']
 
 
 class QDesign():
-    """ QDesign is the base class for Qiskit Metal Designs.
+    """QDesign is the base class for Qiskit Metal Designs.
+
     A design is the most top-level object in all of Qiskit Metal.
     """
 
@@ -85,7 +84,6 @@ class QDesign():
             enable_renderers: Enable the renderers during the init() of design.
                         The list in config.renderers_to_load() to determine
                         which renderers to enable.
-
         """
 
         # _qcomponent_latest_assigned_id -- Used to keep a tally and ID of all components within an
@@ -157,7 +155,7 @@ class QDesign():
         self._qgeometry.create_tables()
 
     def _init_metadata(self) -> Dict:
-        """Initialize default metadata dictionary
+        """Initialize default metadata dictionary.
 
         Returns:
             Dict: default metadata dictioanry
@@ -168,9 +166,9 @@ class QDesign():
                     time_created=now.strftime("%m/%d/%Y, %H:%M:%S"))
 
     def update_metadata(self, new_metadata: dict):
-        """Update the metadata dictionary of the design with a
-        new metadata dictionary. This will overwrite only the new keys
-        that you pass in. All other keys will be unaffected.
+        """Update the metadata dictionary of the design with a new metadata
+        dictionary. This will overwrite only the new keys that you pass in. All
+        other keys will be unaffected.
 
         Args:
             new_metadata (dict): New metadatadata dict to update
@@ -181,68 +179,60 @@ class QDesign():
 
     @property
     def variables(self) -> Dict_[str, str]:
-        '''
-        Return the Dict object that keeps track of all variables in the design.
-        '''
+        """Return the Dict object that keeps track of all variables in the
+        design."""
         return self._variables
 
     @property
     def template_options(self) -> Dict:
-        '''
-        Return default_options dictionary, which contain default options used in creating Metal
-        component, and in calling other drawing and key functions.
-        '''
+        """Return default_options dictionary, which contain default options
+        used in creating Metal component, and in calling other drawing and key
+        functions."""
         return self._template_options
 
     @property
     def renderers(self) -> Dict:
-        '''
-        Return a Dict of all the renderers registered within QDesign.
-        '''
+        """Return a Dict of all the renderers registered within QDesign."""
 
         return self._renderers
 
     @property
     def chips(self) -> Dict:
-        '''
-        Return a Dict of information regarding chip.
-        '''
+        """Return a Dict of information regarding chip."""
         return self._chips
 
     @property
     def template_renderer_options(self) -> Dict:
-        '''
-        Return default_renderer_options dictionary, which contain default options used in creating Metal renderer.
-        '''
+        """Return default_renderer_options dictionary, which contain default
+        options used in creating Metal renderer."""
         return self._template_renderer_options.default_options
 
     @property
     def metadata(self) -> Dict:
-        '''
-        Return the metadata Dict object that keeps track of all metadata in the design.
-        '''
+        """Return the metadata Dict object that keeps track of all metadata in
+        the design."""
         return self._metadata
 
     @property
     def qgeometry(self) -> 'QGeometryTables':
-        '''
-        Returns the QGeometryTables (Use for advanced users only)
-        '''
+        """Returns the QGeometryTables (Use for advanced users only)"""
         return self._qgeometry
 
     @property
     def qcomponent_latest_assigned_id(self) -> int:
-        '''
-        Return unique number for each instance.
-        For user of the design class to know the lastest id assigned to QComponent.
-        '''
+        """Return unique number for each instance.
+
+        For user of the design class to know the lastest id assigned to
+        QComponent.
+        """
         return self._qcomponent_latest_assigned_id
 
     @property
     def net_info(self) -> pd.core.frame.DataFrame:
-        """Provides a copy of net_info table which holds all the connections, of pins, within a design.
-        An advanced user can use methods within the class of design._qnet.
-        Also, an advanced user can also directly edit the table at design._qnet._net_info.
+        """Provides a copy of net_info table which holds all the connections,
+        of pins, within a design. An advanced user can use methods within the
+        class of design._qnet. Also, an advanced user can also directly edit
+        the table at design._qnet._net_info.
 
         Returns:
             pd.core.frame.DataFrame: copy of net_info table.
@@ -252,8 +242,8 @@ class QDesign():
 #########Proxy properties##################################################
 
     def get_chip_size(self, chip_name: str = 'main') -> dict:
-        """
-        Utility function to get a dictionary containing chip dimensions (size and center).
+        """Utility function to get a dictionary containing chip dimensions
+        (size and center).
 
         Args:
             chip_name (str): Name of the chip.
@@ -264,8 +254,7 @@ class QDesign():
         return self._chips[chip_name]['size']
 
     def get_chip_z(self, chip_name: str = 'main') -> str:
-        """
-        Utility function to return the z value of a chip.
+        """Utility function to return the z value of a chip.
 
         Args:
             chip_name (str): Returns the size of the given chip.  Defaults to 'main'.
@@ -293,9 +282,7 @@ class QDesign():
 #########General methods###################################################
 
     def rename_variable(self, old_key: str, new_key: str):
-        """
-        Renames a variable in the variables dictionary.
-        Preserves order.
+        """Renames a variable in the variables dictionary. Preserves order.
 
         Args:
             old_key (str): Previous variable name
@@ -309,8 +296,7 @@ class QDesign():
         self._variables = Dict(zip(keys, values))
 
     def delete_all_pins(self) -> 'QNet':
-        """
-        Clear all pins in the net_Info and update the pins in components.
+        """Clear all pins in the net_Info and update the pins in components.
 
         Returns:
             QNet: QNet with all pins removed
@@ -325,8 +311,7 @@ class QDesign():
 
     def connect_pins(self, comp1_id: int, pin1_name: str, comp2_id: int,
                      pin2_name: str) -> int:
-        """
-        Will generate an unique net_id and placed in a net_info table.
+        """Will generate an unique net_id and placed in a net_info table.
         Update the components.pin_name with the net_id.
 
         Component's pin will know if pin is connected to another component,
@@ -392,7 +377,8 @@ class QDesign():
     #     return return_component
 
     def all_component_names_id(self) -> list:
-        """Get the text names and corresponding unique ID  of each component within this design.
+        """Get the text names and corresponding unique ID  of each component
+        within this design.
 
         Returns:
             list[tuples]: Each tuple has the text name of component and UNIQUE integer ID for component.
@@ -401,8 +387,7 @@ class QDesign():
         return alist
 
     def _delete_all_pins_for_component(self, comp_id: int) -> set:
-        """
-        Remove component from self._qnet._net_info.
+        """Remove component from self._qnet._net_info.
 
         Args:
             comp_id (int): Component ID for which pins are to be removed
@@ -420,10 +405,10 @@ class QDesign():
         return all_net_id_removed
 
     def delete_all_components(self):
-        '''
-        Clear all components in the design dictionary.
+        """Clear all components in the design dictionary.
+
         Also clears all pins and netlist.
-        '''
+        """
         # clear all the dictionaries and element tables.
 
         # Need to remove pin connections before clearing the components.
@@ -434,23 +419,21 @@ class QDesign():
         self._qgeometry.clear_all_tables()
 
     def _get_new_qcomponent_id(self):
-        '''
-        Give new id that QComponent can use.
+        """Give new id that QComponent can use.
 
         Returns:
             int: ID of the qcomponent
-        '''
+        """
         self._qcomponent_latest_assigned_id += 1
         return self._qcomponent_latest_assigned_id
 
     def _get_new_qcomponent_name_id(self, prefix):
-        '''
-        Give new id that an auto-named QComponent can use
-        based on the type of the component.
+        """Give new id that an auto-named QComponent can use based on the type
+        of the component.
 
         Returns:
             int: ID of the qcomponent
-        '''
+        """
         if prefix in self._qcomponent_latest_name_id:
             self._qcomponent_latest_name_id[prefix] += 1
         else:
@@ -459,17 +442,14 @@ class QDesign():
         return self._qcomponent_latest_name_id[prefix]
 
     def rebuild(self):  # remake_all_components
-        """
-        Remakes all components with their current parameters.
-        """
+        """Remakes all components with their current parameters."""
         for _, obj in self._components.items():  # pylint: disable=unused-variable
             obj.rebuild()
 
     def reload_component(self, component_module_name: str,
                          component_class_name: str):
-        """
-        Reload the module and class of a given component and update
-        all class instances. (Advanced function.)
+        """Reload the module and class of a given component and update all
+        class instances. (Advanced function.)
 
         Arguments:
             component_module_name (str): String name of the module name, such as
@@ -667,10 +647,11 @@ class QDesign():
         original_qcomponents: list,
         new_component_names: list,
         all_options_superimpose: list = list()) -> Dict:
-        """The lists in the arguments are all used in parallel.  If the length of original_qcomponents
-        and new_component_names are not the same, no copies will be made and an empty Dict will be returned.
-        The length of all_options_superimposes needs to be either empty or exactly the length of original_qcomponents,
-        otherwise, an empty dict will be returned.
+        """The lists in the arguments are all used in parallel.  If the length
+        of original_qcomponents and new_component_names are not the same, no
+        copies will be made and an empty Dict will be returned. The length of
+        all_options_superimposes needs to be either empty or exactly the length
+        of original_qcomponents, otherwise, an empty dict will be returned.
 
         Args:
             original_qcomponents (list): Must be a list of original QComponents.
@@ -683,7 +664,6 @@ class QDesign():
                 Each key will be the new_component_name.
                 Each value will be either a QComponent or None.
                 If the copy did not happen, the value will be None, and the key will extracted from new_componet_names.
-
         """
         copied_info = dict()
         length = len(original_qcomponents)
@@ -712,7 +692,8 @@ class QDesign():
         new_component_name: str,
         options_superimpose: dict = dict()
     ) -> Union['QComponent', None]:
-        """Copy a coponent in QDesign and add it to QDesign._components using options_overwrite.
+        """Copy a coponent in QDesign and add it to QDesign._components using
+        options_overwrite.
 
         Args:
             original_class (QComponent): The QComponent to copy.
@@ -749,10 +730,8 @@ class QDesign():
 
     @classmethod
     def load_design(cls, path: str):
-        """
-        Load a Metal design from a saved Metal file.
-        Will also update default dictionaries.
-        (Class method).
+        """Load a Metal design from a saved Metal file. Will also update
+        default dictionaries. (Class method).
 
         Arguments:
             path (str): Path to saved Metal design.
@@ -765,9 +744,8 @@ class QDesign():
         return design
 
     def save_design(self, path: str = None):
-        """
-        Save the metal design to a Metal file.
-        If no path is given, then tried to use self.save_pathif it is set.
+        """Save the metal design to a Metal file. If no path is given, then
+        tried to use self.save_pathif it is set.
 
         Arguments:
             path (str): Path to save the design to.  Defaults to None.
@@ -802,10 +780,9 @@ class QDesign():
 #########Creating Components###############################################################
 
     def parse_value(self, value: Union[Any, List, Dict, Iterable]) -> Any:
-        """
-        Main parsing function.
-        Parse a string, mappable (dict, Dict), iterrable (list, tuple) to account for
-        units conversion, some basic arithmetic, and design variables.
+        """Main parsing function. Parse a string, mappable (dict, Dict),
+        iterrable (list, tuple) to account for units conversion, some basic
+        arithmetic, and design variables.
 
         Arguments:
             value (str): String to parse *or*
@@ -849,9 +826,9 @@ class QDesign():
         return parse_value(value, self.variables)
 
     def parse_options(self, params: dict, param_names: str) -> dict:
-        """
-        Extra utility function that can call parse_value on individual options.
-        Use self.parse_value to parse only some options from a params dictionary.
+        """Extra utility function that can call parse_value on individual
+        options. Use self.parse_value to parse only some options from a params
+        dictionary.
 
         Arguments:
             params (dict): Input dict to pull form
@@ -864,8 +841,7 @@ class QDesign():
         return parse_options(params, param_names, variable_dict=self.variables)
 
     def get_design_name(self) -> str:
-        """
-        Get the name of the design from the metadata.
+        """Get the name of the design from the metadata.
 
         Returns:
             str: Name of design
@@ -875,8 +851,7 @@ class QDesign():
         return self.metadata.design_name
 
     def set_design_name(self, name: str):
-        """
-        Set the name of the design in the metadata.
+        """Set the name of the design in the metadata.
 
         Args:
             name (str) : Name of design
@@ -884,8 +859,7 @@ class QDesign():
         self.update_metadata({'design_name': name})
 
     def get_units(self):
-        """
-        Gets the units of the design
+        """Gets the units of the design.
 
         Returns:
             str: units
@@ -896,8 +870,7 @@ class QDesign():
 # Dependencies
 
     def add_dependency(self, parent: str, child: str):
-        """
-        Add a dependency between one component and another.
+        """Add a dependency between one component and another.
 
         Arguments:
             parent (str): The component on which the child depends.
@@ -906,8 +879,7 @@ class QDesign():
         pass
 
     def remove_dependency(self, parent: str, child: str):
-        """
-        Remove a dependency between one component and another.
+        """Remove a dependency between one component and another.
 
         Arguments:
             parent (str): The component on which the child depends.
@@ -916,9 +888,8 @@ class QDesign():
         pass
 
     def update_component(self, component_name: str, dependencies: bool = True):
-        """
-        Update the component and any dependencies it may have.
-        Mediator type function to update all children.
+        """Update the component and any dependencies it may have. Mediator type
+        function to update all children.
 
         Arguments:
             component_name (str): Component name to update
@@ -932,9 +903,11 @@ class QDesign():
 ######### Renderers ###############################################################
 
     def _start_renderers(self):
-        """Start the renderers.  First import the renderers identifed in config.renderers_to_load.
-           Then register them into QDesign.
-           Finally populate self.renderer_defaults_by_table
+        """Start the renderers.
+
+        First import the renderers identifed in
+        config.renderers_to_load. Then register them into QDesign.
+        Finally populate self.renderer_defaults_by_table
         """
 
         for renderer_key, import_info in config.renderers_to_load.items():
@@ -985,8 +958,8 @@ class QDesign():
                                               renderer_name: str,
                                               column_name: str,
                                               column_value) -> set:
-        """Populate the dict (self.renderer_defaults_by_table) which will hold the data until
-        a component's get_template_options(design) is executed.
+        """Populate the dict (self.renderer_defaults_by_table) which will hold
+        the data until a component's get_template_options(design) is executed.
 
         Note that get_template_options(design) will populate the columns
         of QGeometry table i.e. path, junction, poly etc.

@@ -1,5 +1,4 @@
-"""
-A setuptools based setup module.
+"""A setuptools based setup module.
 
 Run using:
     $ python -m pip install -ve .
