@@ -31,9 +31,9 @@ class DefaultMetalOptions(Dict):
     """
 
     default_generic = Dict(
-        units='mm',  # Units in which all dimenions are converted as floats
+        units='mm',  # Units in which all dimensions are converted as floats
         chip=
-        'main',  # Default chip used thorugh codebase, wehn one is not specified
+        'main',  # Default chip used through codebase, when one is not specified
 
         # Default options for QDesign variables
         qdesign=Dict(variables=Dict(cpw_width='10 um', cpw_gap='6 um')),

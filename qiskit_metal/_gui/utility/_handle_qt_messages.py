@@ -95,8 +95,9 @@ def do_debug(msg, name='info'):
             try:
                 stack = inspect.stack()[i]
                 callers += [f'{stack.function}[{stack.lineno}]']
-            except Exception:  # pylint: disable=broad-except
-                pass
+            except Exception as e:  # pylint: disable=broad-except
+                print("Exception during do_debug exception handling: " +
+                      e.__repr__())
         callers = reversed(callers)
         callers = '\n'.join(callers)
         msg = callers + "\n" + str(msg) + '\n'
