@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file './main_window_ui.ui',
 # licensing of './main_window_ui.ui' applies.
 #
-# Created: Thu Jan 28 14:55:30 2021
+# Created: Thu Mar 18 09:03:10 2021
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -15,7 +15,7 @@ class Ui_MainWindow(object):
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1300, 900)
+        MainWindow.resize(1300, 848)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/metal_logo"), QtGui.QIcon.Normal,
                        QtGui.QIcon.Off)
@@ -100,7 +100,7 @@ class Ui_MainWindow(object):
         self.toolBarDesign.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
         self.toolBarDesign.setObjectName("toolBarDesign")
         MainWindow.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBarDesign)
-        self.toolBarView = QToolBarExpanding(MainWindow)
+        self.toolBarView = QtWidgets.QToolBar(MainWindow)
         font = QtGui.QFont()
         font.setWeight(75)
         font.setBold(True)
@@ -174,44 +174,30 @@ class Ui_MainWindow(object):
         self.verticalLayout_3.addWidget(self.tableComponents)
         self.dockDesign.setWidget(self.dockWidgetContents)
         MainWindow.addDockWidget(QtCore.Qt.DockWidgetArea(1), self.dockDesign)
-        self.dockNewComponent = QtWidgets.QDockWidget(MainWindow)
-        self.dockNewComponent.setMinimumSize(QtCore.QSize(79, 124))
+        self.dockLibrary = QtWidgets.QDockWidget(MainWindow)
+        self.dockLibrary.setMinimumSize(QtCore.QSize(79, 124))
         icon8 = QtGui.QIcon()
         icon8.addPixmap(QtGui.QPixmap(":/component"), QtGui.QIcon.Normal,
                         QtGui.QIcon.On)
-        self.dockNewComponent.setWindowIcon(icon8)
-        self.dockNewComponent.setFeatures(
+        self.dockLibrary.setWindowIcon(icon8)
+        self.dockLibrary.setFeatures(
             QtWidgets.QDockWidget.AllDockWidgetFeatures)
-        self.dockNewComponent.setObjectName("dockNewComponent")
-        self.dockWidgetContents_2 = QtWidgets.QWidget()
-        self.dockWidgetContents_2.setObjectName("dockWidgetContents_2")
-        self.verticalLayout_5 = QtWidgets.QVBoxLayout(self.dockWidgetContents_2)
+        self.dockLibrary.setObjectName("dockLibrary")
+        self.dockLibraryContents = QtWidgets.QWidget()
+        self.dockLibraryContents.setObjectName("dockLibraryContents")
+        self.verticalLayout_5 = QtWidgets.QVBoxLayout(self.dockLibraryContents)
         self.verticalLayout_5.setSpacing(0)
         self.verticalLayout_5.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_5.setObjectName("verticalLayout_5")
-        self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_2.setSpacing(0)
-        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        self.filter_text_component = QtWidgets.QLineEdit(
-            self.dockWidgetContents_2)
-        self.filter_text_component.setClearButtonEnabled(True)
-        self.filter_text_component.setObjectName("filter_text_component")
-        self.horizontalLayout_2.addWidget(self.filter_text_component)
-        self.verticalLayout_5.addLayout(self.horizontalLayout_2)
-        self.treeWidget = QtWidgets.QTreeWidget(self.dockWidgetContents_2)
-        self.treeWidget.setSizeAdjustPolicy(
-            QtWidgets.QAbstractScrollArea.AdjustToContents)
-        self.treeWidget.setAutoScroll(False)
-        self.treeWidget.setEditTriggers(
-            QtWidgets.QAbstractItemView.DoubleClicked)
-        self.treeWidget.setAlternatingRowColors(True)
-        self.treeWidget.setAnimated(True)
-        self.treeWidget.setObjectName("treeWidget")
-        self.treeWidget.headerItem().setText(0, "1")
-        self.verticalLayout_5.addWidget(self.treeWidget)
-        self.dockNewComponent.setWidget(self.dockWidgetContents_2)
-        MainWindow.addDockWidget(QtCore.Qt.DockWidgetArea(1),
-                                 self.dockNewComponent)
+        self.dockLibrary_filter = QtWidgets.QLineEdit(self.dockLibraryContents)
+        self.dockLibrary_filter.setObjectName("dockLibrary_filter")
+        self.verticalLayout_5.addWidget(self.dockLibrary_filter)
+        self.dockLibrary_tree_view = QtWidgets.QTreeView(
+            self.dockLibraryContents)
+        self.dockLibrary_tree_view.setObjectName("dockLibrary_tree_view")
+        self.verticalLayout_5.addWidget(self.dockLibrary_tree_view)
+        self.dockLibrary.setWidget(self.dockLibraryContents)
+        MainWindow.addDockWidget(QtCore.Qt.DockWidgetArea(1), self.dockLibrary)
         self.dockComponent = QtWidgets.QDockWidget(MainWindow)
         self.dockComponent.setMinimumSize(QtCore.QSize(62, 38))
         self.dockComponent.setFeatures(
@@ -596,12 +582,12 @@ class Ui_MainWindow(object):
         QtCore.QObject.connect(self.dockComponent,
                                QtCore.SIGNAL("visibilityChanged(bool)"),
                                self.actionComponent.setChecked)
-        QtCore.QObject.connect(self.dockNewComponent,
+        QtCore.QObject.connect(self.dockLibrary,
                                QtCore.SIGNAL("visibilityChanged(bool)"),
                                self.actionNewComponent.setChecked)
         QtCore.QObject.connect(self.actionNewComponent,
                                QtCore.SIGNAL("triggered(bool)"),
-                               self.dockNewComponent.show)
+                               self.dockLibrary.show)
         QtCore.QObject.connect(self.actionLog, QtCore.SIGNAL("triggered(bool)"),
                                self.dockLog.show)
         QtCore.QObject.connect(self.actionConnectors,
@@ -614,7 +600,7 @@ class Ui_MainWindow(object):
                                self.dockConnectors.raise_)
         QtCore.QObject.connect(self.actionNewComponent,
                                QtCore.SIGNAL("triggered()"),
-                               self.dockNewComponent.raise_)
+                               self.dockLibrary.raise_)
         QtCore.QObject.connect(self.actionComponent,
                                QtCore.SIGNAL("triggered()"),
                                self.dockComponent.raise_)
@@ -786,22 +772,19 @@ class Ui_MainWindow(object):
             QtWidgets.QApplication.translate("MainWindow", "Delete", None, -1))
         self.filter_text_design.setPlaceholderText(
             QtWidgets.QApplication.translate("MainWindow", "Filter", None, -1))
-        self.dockNewComponent.setToolTip(
+        self.dockLibrary.setToolTip(
             QtWidgets.QApplication.translate("MainWindow",
                                              "Library of components", None, -1))
-        self.dockNewComponent.setStatusTip(
+        self.dockLibrary.setStatusTip(
             QtWidgets.QApplication.translate("MainWindow",
                                              "Library design components", None,
                                              -1))
-        self.dockNewComponent.setWhatsThis(
+        self.dockLibrary.setWhatsThis(
             QtWidgets.QApplication.translate("MainWindow",
                                              "Library design components", None,
                                              -1))
-        self.dockNewComponent.setWindowTitle(
+        self.dockLibrary.setWindowTitle(
             QtWidgets.QApplication.translate("MainWindow", "Library", None, -1))
-        self.filter_text_component.setPlaceholderText(
-            QtWidgets.QApplication.translate("MainWindow", "Filter", None, -1))
-        self.treeWidget.setSortingEnabled(True)
         self.dockComponent.setWindowTitle(
             QtWidgets.QApplication.translate("MainWindow", "Edit component",
                                              None, -1))
@@ -1077,5 +1060,4 @@ class Ui_MainWindow(object):
 
 from .widgets.all_components.table_view_all_components import QTableView_AllComponents
 from .widgets.log_widget.log_metal import QTextEditLogger
-from .widgets.bases.expanding_toolbar import QToolBarExpanding
 from . import main_window_rc_rc

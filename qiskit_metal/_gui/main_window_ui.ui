@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1300</width>
-    <height>900</height>
+    <height>848</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -300,7 +300,7 @@
    <addaction name="actionNew_QComponent"/>
    <addaction name="separator"/>
   </widget>
-  <widget class="QToolBarExpanding" name="toolBarView">
+  <widget class="QToolBar" name="toolBarView">
    <property name="font">
     <font>
      <weight>75</weight>
@@ -513,7 +513,7 @@
     </layout>
    </widget>
   </widget>
-  <widget class="QDockWidget" name="dockNewComponent">
+  <widget class="QDockWidget" name="dockLibrary">
    <property name="minimumSize">
     <size>
      <width>79</width>
@@ -543,7 +543,7 @@
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
-   <widget class="QWidget" name="dockWidgetContents_2">
+   <widget class="QWidget" name="dockLibraryContents">
     <layout class="QVBoxLayout" name="verticalLayout_5">
      <property name="spacing">
       <number>0</number>
@@ -561,48 +561,10 @@
       <number>0</number>
      </property>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_2">
-       <property name="spacing">
-        <number>0</number>
-       </property>
-       <item>
-        <widget class="QLineEdit" name="filter_text_component">
-         <property name="placeholderText">
-          <string>Filter</string>
-         </property>
-         <property name="clearButtonEnabled">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-      </layout>
+      <widget class="QLineEdit" name="dockLibrary_filter"/>
      </item>
      <item>
-      <widget class="QTreeWidget" name="treeWidget">
-       <property name="sizeAdjustPolicy">
-        <enum>QAbstractScrollArea::AdjustToContents</enum>
-       </property>
-       <property name="autoScroll">
-        <bool>false</bool>
-       </property>
-       <property name="editTriggers">
-        <set>QAbstractItemView::DoubleClicked</set>
-       </property>
-       <property name="alternatingRowColors">
-        <bool>true</bool>
-       </property>
-       <property name="sortingEnabled">
-        <bool>true</bool>
-       </property>
-       <property name="animated">
-        <bool>true</bool>
-       </property>
-       <column>
-        <property name="text">
-         <string notr="true">1</string>
-        </property>
-       </column>
-      </widget>
+      <widget class="QTreeView" name="dockLibrary_tree_view"/>
      </item>
     </layout>
    </widget>
@@ -1312,11 +1274,6 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>QToolBarExpanding</class>
-   <extends>QToolBar</extends>
-   <header>.widgets.bases.expanding_toolbar</header>
-  </customwidget>
-  <customwidget>
    <class>QTextEditLogger</class>
    <extends>QTextEdit</extends>
    <header>.widgets.log_widget.log_metal</header>
@@ -1620,7 +1577,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>dockNewComponent</sender>
+   <sender>dockLibrary</sender>
    <signal>visibilityChanged(bool)</signal>
    <receiver>actionNewComponent</receiver>
    <slot>setChecked(bool)</slot>
@@ -1638,7 +1595,7 @@
   <connection>
    <sender>actionNewComponent</sender>
    <signal>triggered(bool)</signal>
-   <receiver>dockNewComponent</receiver>
+   <receiver>dockLibrary</receiver>
    <slot>show()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1718,7 +1675,7 @@
   <connection>
    <sender>actionNewComponent</sender>
    <signal>triggered()</signal>
-   <receiver>dockNewComponent</receiver>
+   <receiver>dockLibrary</receiver>
    <slot>raise()</slot>
    <hints>
     <hint type="sourcelabel">
