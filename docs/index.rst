@@ -100,12 +100,7 @@ The goal of Qiskit Metal is to allow for easy quantum hardware modeling with red
     :caption: Circuit Example Library
     :hidden:
 
-    Qubits<circuit-examples/qubits/index>
-    Resonators<circuit-examples/resonators/index>
-    Composite Bi-Partite Systems Comprising Qubit and Resonator<circuit-examples/composite-bi-partite/index>
-    Qubit Couplers<circuit-examples/qubit-couplers/index>
-    Input-Output Coupling<circuit-examples/input-output-coupling/index>
-    Small Quantum Chips<circuit-examples/small-quantum-chips/index>
+    Circuit Examples<circuit-examples/index>
 
 .. toctree::
     :maxdepth: 2
