@@ -112,7 +112,7 @@ The goal of Qiskit Metal is to allow for easy quantum hardware modeling with red
     :caption: Libraries
     :hidden:
 
-    Quantum Devices<apidocs/qlibrary>
+    All Quantum Devices<apidocs/qlibrary>
 
 .. toctree::
     :maxdepth: 2
