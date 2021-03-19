@@ -11,23 +11,26 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
+
+# pylint: disable-msg=import-error
 """Reports a summary of information on Qiskit Metal and dependencies.
 
 Contain functions to report more detailed information to orient a user,
 used for debug purposes.
 """
 
+from pathlib import Path
+from typing import Union
+
 import os
 import sys
-import numpy
 import getpass
 import inspect
 import platform
 import webbrowser
+import numpy
 
-from pathlib import Path
 from qiskit_metal.toolbox_python.display import Color, style_colon_list
-from typing import Union
 
 __all__ = [
     'about', 'open_docs', 'orient_me', 'get_platform_info',
@@ -35,6 +38,9 @@ __all__ = [
 ]
 
 
+# pylint: disable-msg=invalid-name
+# pylint: disable-msg=import-outside-toplevel
+# pylint: disable-msg=bare-except
 def about():
     """Reports a summary of information on Qiskit Metal and dependencies.
 
@@ -47,15 +53,17 @@ def about():
 
     try:
         import matplotlib
-        matplotlib_ver = matplotlib.__version__
+        #matplotlib_ver = matplotlib.__version__
     except:
-        matplotlib_ver = 'None'
+        #matplotlib_ver = 'None'
+        pass
 
     try:
         from sip import SIP_VERSION_STR
     except:
         SIP_VERSION_STR = 'Not installed'
-    # Riverbank: SIP is a tool for quickly writing Python modules that interface with C++ and C libraries.
+    # Riverbank: SIP is a tool for quickly writing Python modules that interface with
+    # C++ and C libraries.
 
     text = f"""
 Qiskit Metal        {qiskit_metal.__version__}
@@ -133,8 +141,8 @@ def orient_me(do_print: bool = True) -> Union[None, str]:
         text = style_colon_list(text, Color.BOLD, Color.END)
         print(text)
         return None
-    else:
-        return text
+
+    return text
 
 
 def get_platform_info() -> str:

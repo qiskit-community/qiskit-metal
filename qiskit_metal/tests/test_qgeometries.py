@@ -12,9 +12,10 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-#pylint: disable-msg=unnecessary-pass
-#pylint: disable-msg=broad-except
-#pylint: disable-msg=import-outside-toplevel
+# pylint: disable-msg=unnecessary-pass
+# pylint: disable-msg=broad-except
+# pylint: disable-msg=import-outside-toplevel
+# pylint: disable-msg=import-error
 """Qiskit Metal unit tests analyses functionality."""
 
 import unittest
