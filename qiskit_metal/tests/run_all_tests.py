@@ -28,9 +28,9 @@ if __name__ == '__main__':
             if entry != sys.argv[0]:
                 print("Running ", entry, " tests...")
                 cmd = 'pytest ' + entry
-                error_back = subprocess.call(cmd, shell=True)
-                if error_back != 3221225477:  # access violation
-                    ERRORS_EXIST += error_back
+                ERROR_BACK = subprocess.call(cmd, shell=True)
+                if ERROR_BACK != 3221225477:  # access violation
+                    ERRORS_EXIST += ERROR_BACK
                 print("")
 
     print("All tests complete")

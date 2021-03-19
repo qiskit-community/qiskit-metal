@@ -15,6 +15,7 @@
 # pylint: disable-msg=unnecessary-pass
 # pylint: disable-msg=broad-except
 # pylint: disable-msg=too-many-public-methods
+# pylint: disable-msg=import-error
 """Qiskit Metal unit tests analyses functionality."""
 
 import unittest
@@ -274,9 +275,9 @@ class TestRenderers(unittest.TestCase):
         qgt = QGeometryTables(design)
         qgt.clear_all_tables()
 
-        transmon_pocket = TransmonPocket(design, 'my_id')
-        transmon_pocket.make()
-        transmon_pocket.get_template_options(design)
+        transmon_pocket_1 = TransmonPocket(design, 'my_id')
+        transmon_pocket_1.make()
+        transmon_pocket_1.get_template_options(design)
 
         a_linestring = draw.LineString([[0, 0], [0, 1]])
         a_poly = draw.rectangle(2, 2, 0, 0)

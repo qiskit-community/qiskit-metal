@@ -13,8 +13,9 @@
 # that they have been altered from the originals.
 
 # pylint: disable-msg=unnecessary-pass
-#pylint: disable-msg=too-many-public-methods
-#pylint: disable-msg=protected-access
+# pylint: disable-msg=too-many-public-methods
+# pylint: disable-msg=protected-access
+# pylint: disable-msg=import-error
 """Qiskit Metal unit tests components functionality."""
 
 import unittest
