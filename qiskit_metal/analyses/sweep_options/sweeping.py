@@ -42,12 +42,6 @@ class Sweeping():
         value = a_dict[search]
         return value
 
-    '''all_sweeps, return_code = sweep.sweep_one_option_get_eigenmode_solution_data(
-    q2.name,
-    'connection_pads.c.pad_width', 
-    ['100um', '110um', '120um'],
-    design_name="GetCapacitance")'''
-
     def sweep_one_option_get_eigenmode_solution_data(
             self,
             qcomp_name: str,
