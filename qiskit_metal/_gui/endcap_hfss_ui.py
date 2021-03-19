@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'endcap_hfss_ui.ui',
-# licensing of 'endcap_hfss_ui.ui' applies.
+# Form implementation generated from reading ui file './endcap_hfss_ui.ui',
+# licensing of './endcap_hfss_ui.ui' applies.
 #
-# Created: Thu Jan  7 16:03:08 2021
+# Created: Mon Mar 15 02:36:44 2021
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!

@@ -26,7 +26,7 @@ with open(here / "requirements.txt", encoding="utf-8") as f:
 
 setup(
     name="qiskit_metal",
-    version="0.0.2",
+    version="0.0.3",
     description="Qiskit Metal | for quantum device design & analsysi",
     long_description=long_description,
     long_description_content_type="text/markdown",

@@ -11,19 +11,13 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""Tree model for component options menu."""
-# import numpy as np
-# import PySide2
-# from PySide2 import QtCore, QtGui, QtWidgets
+"""
+Tree model for component options menu
+"""
 from typing import TYPE_CHECKING
 from PySide2.QtCore import QModelIndex, Qt
 from PySide2.QtGui import QFont
 from PySide2.QtWidgets import QTreeView, QWidget
-
-# , QLabel, QMainWindow, QMessageBox, QAbstractItemView, QApplication, QFileDialog,
-
-from .... import logger
-
 from ..bases.dict_tree_base import LeafNode, BranchNode, QTreeModel_Base, parse_param_from_str
 
 if TYPE_CHECKING:
@@ -74,7 +68,7 @@ class QTreeModel_Options(QTreeModel_Base):
             return 0
 
         else:
-            # We have a compoentn selected
+            # We have a component selected
             # if we have the view of the model linked (we should)
             # hide placeholder text
             if self._view:

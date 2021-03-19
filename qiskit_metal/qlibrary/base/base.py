@@ -175,15 +175,18 @@ class QComponent():
             raise ValueError(
                 "Error you did not pass in a valid Metal QDesign object as a '\
                 'parent of this QComponent.")
+            return
 
         self._design = design  # reference to parent
 
         if self._delete_evaluation(name) is 'NameInUse':
+            raise ValueError(
+                f"{name} already exists! Please choose a different name for your new QComponent"
+            )
             return
 
         self._name = name
         self._class_name = self._get_unique_class_name()  # Full class name
-
         #: A dictionary of the component-designer-defined options.
         #: These options are used in the make function to create the QGeometry and QPins.
         #: All options should have string keys and preferrable string values.
@@ -194,13 +197,11 @@ class QComponent():
 
         # Parser for options
         self.p = ParsedDynamicAttributes_Component(self)
-
         # Should put this earlier so could pass in other error messages?
         self._error_message = ''
         if self._check_pin_inputs():
             self.logger.warning(self._error_message)
             return
-
         # Build and component internals
 
         #: Dictionary of pins. Populated by component designer in make function using `add_pin`.

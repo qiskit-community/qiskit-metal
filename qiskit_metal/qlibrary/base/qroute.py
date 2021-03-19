@@ -102,8 +102,8 @@ class QRoute(QComponent):
 
     def __init__(self,
                  design,
-                 name=None,
-                 options=None,
+                 name: str = None,
+                 options: Dict = None,
                  type: str = "CPW",
                  **kwargs):
         """Initializes all Routes.

@@ -15,7 +15,7 @@
 # pylint: disable=wrong-import-order
 # pylint: disable=wrong-import-position
 
-__version__ = '0.0.2'
+__version__ = '0.0.3'
 __license__ = "Apache 2.0"
 __copyright__ = 'Copyright IBM 2019-2020'
 __author__ = 'Zlatko Minev, Thomas McConkey, and them IBM Quantum Team'
@@ -121,7 +121,7 @@ from . import toolbox_metal
 from ._gui.main_window import MetalGUI
 
 # Utility modules
-# For plotting in matplotlib;  May be superseeded by a renderer?
+# For plotting in matplotlib;  May be superseded by a renderer?
 from .renderers.renderer_mpl import mpl_toolbox as plt
 
 # Utility functions

@@ -311,15 +311,17 @@ class QQ3DRenderer(QAnsysRenderer):
 
     def get_capacitance_matrix(self,
                                variation: str = '',
-                               solution_kind: str = 'AdaptivePass',
+                               solution_kind: str = 'LastAdaptive',
                                pass_number: int = 3):
         """Obtain capacitance matrix in a dataframe format. Must be executed
         *after* analyze_setup.
 
         Args:
             variation (str, optional): An empty string returns nominal variation. Otherwise need the list. Defaults to ''
-            solution_kind (str, optional): Solution type. Defaults to 'AdaptivePass'.
-            pass_number (int, optional): Number of passes to perform. Defaults to 3.
+            solution_kind (str, optional): Solution type. Defaults to 'LastAdaptive'.
+                Set to 'AdaptivePass' to return the capacitance matrix of a specific pass.
+            pass_number (int, optional): Which adaptive pass to acquire the capacitance
+                matrix from. Defaults to 3, only in effect with 'AdaptivePass' chosen.
         """
         qo = self.q3d_options['get_capacitance_matrix']
 
@@ -345,7 +347,6 @@ class QQ3DRenderer(QAnsysRenderer):
                                     fb: Union[list, float],
                                     maxPass: int,
                                     variation: str = '',
-                                    solution_kind: str = 'AdaptivePass',
                                     g_scale: float = 1) -> dict:
         """Obtain dictionary composed of pass numbers (keys) and their
         respective capacitance matrices (values). All capacitance matrices
@@ -355,13 +356,12 @@ class QQ3DRenderer(QAnsysRenderer):
             Lj_nH (float): Junction inductance (in nH)
             Cj_fF (float): Junction capacitance (in fF)
             N (int): Coupling pads (1 readout, N - 1 bus)
-            fr (Union[list, float]): Coupling bus and readout frequencies (in GHz). fr can be a list with the order
+            fr (Union[list, float]):Readout frequencies (in GHz). fr can be a list with the order
                 they appear in the capMatrix.
-            fb (Union[list, float]): Coupling bus and readout frequencies (in GHz). fb can be a list with the order
+            fb (Union[list, float]): Coupling bus frequencies (in GHz). fb can be a list with the order
                 they appear in the capMatrix.
             maxPass (int): Maximum number of passes
             variation (str, optional): An empty string returns nominal variation. Otherwise need the list. Defaults to ''.
-            solution_kind (str, optional): Solution type. Defaults to 'AdaptivePass'.
             g_scale (float, optional): Scale factor. Defaults to 1..
 
         Returns:
@@ -375,7 +375,9 @@ class QQ3DRenderer(QAnsysRenderer):
         for i in range(1, maxPass):
             print('Pass number: ', i)
             df_cmat, user_units, _, _ = self.pinfo.setup.get_matrix(
-                variation=variation, solution_kind=solution_kind, pass_number=i)
+                variation=variation,
+                solution_kind='AdaptivePass',
+                pass_number=i)
             c_units = ureg(user_units).to('farads').magnitude
             res = extract_transmon_coupled_Noscillator(df_cmat.values * c_units,
                                                        IC_Amps,
