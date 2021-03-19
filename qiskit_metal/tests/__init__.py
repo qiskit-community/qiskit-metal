@@ -22,7 +22,6 @@ if config.is_building_docs():
     from .test_default_options import TestDefautOptions
     from .test_designs import TestDesign
     from .test_draw import TestDraw
-    from .test_elements import TestElements
     from .test_gui_basic import TestGUIBasic
     from .test_renderers import TestRenderers
     from .test_toolbox_metal import TestToolboxMetal

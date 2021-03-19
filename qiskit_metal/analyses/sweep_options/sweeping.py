@@ -262,3 +262,5 @@ class Sweeping():
 
         a_q3d.disconnect_ansys()
         return all_sweep, 0
+
+    # The methods allow users to sweep a variable in a components's options.

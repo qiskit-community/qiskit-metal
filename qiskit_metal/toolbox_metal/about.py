@@ -101,20 +101,12 @@ def get_module_doc_page(module,
     return Path(os.path.dirname(module.__file__)) / folder / page
 
 
-def open_docs(page='index.html'):
+def open_docs(page='https://qiskit.org/documentation/metal/'):
     """
     Open the qiskit_metal documentation in HTML. Open the URL in new window,
     raising the window if possible.
     """
-    import qiskit_metal
-    module = qiskit_metal
-    filepath = get_module_doc_page(module, page=page)
-    if filepath.is_file():
-        webbrowser.open(f"file://{filepath}", new=1)
-        print(f'Opened {module.__name__} docs in a new web browser page.')
-    else:
-        print(f'Error: Could not find the doc file {filepath}.'
-              'Check the folder path.')
+    webbrowser.open(page, new=1)
 
 
 ######################################################################################
