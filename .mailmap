@@ -14,10 +14,13 @@
 # Note that each qiskit element uses its own mailmap so it may be necessary to
 # propagate changes in other repos for consistency.
 #
+Christopher W. Warren <warrenc@chalmers.se>
 Dennis Wang <Dennis.Wang@ibm.com>
+Dennis Wang <Dennis.Wang@ibm.com> <dwang429@users.noreply.github.com>
 Grace Harper <Grace.Harper@ibm.com> <graceharperibm@Graces-MacBook-Pro.local>
 Grace Harper <Grace.Harper@ibm.com> <74260313+grace-harper-ibm@users.noreply.github.com>
 Grace Harper <Grace.Harper@ibm.com> <Grace.Harper@ibm.com>
+Grace Harper <Grace.Harper@ibm.com> <graceharper555@gmail.com>
 Helena Zhang <Helena.Zhang@ibm.com>
 Jeremy Drysdale <jdrysda@us.ibm.com>
 Jeremy Drysdale <jdrysda@us.ibm.com> <jdrysda@WIN-LM01CHKSD9E>
@@ -27,11 +30,15 @@ Marco Facchini <Marco.Facchini2@ibm.com> <marco.facchini2@ibm.com>
 Marco Facchini <Marco.Facchini2@ibm.com> <marcolincs@gmail.com>
 Marco Facchini <Marco.Facchini2@ibm.com> <marco.facchini.1980@gmail.com>
 Nicholas A. Lanzillo <nalanzil@us.ibm.com>
+Nicholas A. Lanzillo <nalanzil@us.ibm.com> <69473562+nalanzil@users.noreply.github.com>
 Olivia Lanes <Olivia.Lanes@ibm.com> <olivia.lanes@ibm.com>
 Paul Nation <nonhermitian@gmail.com>
 Priti A. Shah <Priti.Ashvin.Shah@ibm.com>
 Priti A. Shah <Priti.Ashvin.Shah@ibm.com> <priti.ashvin.shah@ibm.com>
+Priti A. Shah <Priti.Ashvin.Shah@ibm.com> <74020801+priti-ashvin-shah-ibm@users.noreply.github.com>
+Sagarika Mukesh <sm25@ibm.com> <48924652+smukesh25@users.noreply.github.com>
 Thomas G. McConkey <Thomas.G.McConkey@ibm.com>
+Thomas G. McConkey <Thomas.G.McConkey@ibm.com> <53087709+ThomasGM4@users.noreply.github.com>
 William E. Shanks <willshanks@us.ibm.com>
 Zlatko K. Minev <Zlatko.Minev@ibm.com> <zlatko.minev@ibm.com>
 Zlatko K. Minev <Zlatko.Minev@ibm.com> <zminev@gmail.com>
