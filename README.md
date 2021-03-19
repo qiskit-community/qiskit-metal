@@ -11,6 +11,9 @@ Qiskit-metal is licensed under Apache 2.0. IBM reserves no copyright over output
 #### Get help: Slack
 Use the slack channel.  Join [qiskit slack](https://ibm.co/joinqiskitslack) and then join the `#metal` channel to communicate with the developers and other participants.  You may also use this channel inquire about collaborations.
 
+#### Take part to the live tutorials and discussion
+Use [this form](https://airtable.com/shrxQEgKqZCf319F3) to sign-up for the upcoming sessions. The calendar, reminders and recordings will be shared in the Slack channel.
+
 ## Documentation 
 After installation, you can open the documentation like this
 ```python
