@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2017, 2020.
+# (C) Copyright IBM 2017, 2021.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -33,11 +33,11 @@ import scipy.optimize as opt
 from pint import UnitRegistry
 
 __all__ = [
-    'chargeline_T1', 'extract_transmon_coupled_Noscillator',
-    'levels_vs_ng_real_units', 'load_q3d_capacitance_matrix',
-    'df_reorder_matrix_basis', 'chi', 'cos_to_mega_and_delta',
-    'df_cmat_style_print', 'get_C_and_Ic', 'move_index_to', 'readin_q3d_matrix',
-    'transmon_props'
+    'Ic_from_Lj', 'Ic_from_Ej', 'Cs_from_Ec', 'transmon_props', 'chi',
+    'extract_transmon_coupled_Noscillator', 'levels_vs_ng_real_units',
+    'get_C_and_Ic', 'cos_to_mega_and_delta', 'chargeline_T1',
+    'readin_q3d_matrix', 'readin_q3d_matrix_m', 'load_q3d_capacitance_matrix',
+    'df_cmat_style_print', 'move_index_to', 'df_reorder_matrix_basis'
 ]
 
 # define constants
@@ -610,10 +610,11 @@ def chargeline_T1(Ccharge, Cq, f01):
 # TODO: Move to a more generic file
 
 
-def readin_q3d_matrix(path):
+def readin_q3d_matrix(path: str, delim_whitespace=True):
     """
-    Read in the txt file created from q3d export
-    and output the capacitance matrix.
+    Read in the txt file created from q3d export as CSV
+    and output the capacitance matrix file exported by
+    Ansys Q3D.
 
     When exporting pick "save as type: data table"
 
@@ -661,21 +662,52 @@ def readin_q3d_matrix(path):
     s2 = s1[1].split('Conductance Matrix')
 
     df_cmat = pd.read_csv(io.StringIO(s2[0].strip()),
-                          delim_whitespace=True,
+                          delim_whitespace=delim_whitespace,
                           skipinitialspace=True,
                           index_col=0)
     if len(s2) > 1:
         df_cond = pd.read_csv(io.StringIO(s2[1].strip()),
-                              delim_whitespace=True,
+                              delim_whitespace=delim_whitespace,
                               skipinitialspace=True,
                               index_col=0)
     else:
         df_cond = None
 
+    if delim_whitespace == False and len(df_cmat.columns):
+        df_cmat = df_cmat.drop(df_cmat.columns[-1], axis=1)
+
     units = re.findall(r'C Units:(.*?),', text)[0]
-    design_variation = re.findall(r'DesignVariation:(.*?)\n', text)[0]
+    design_variation = re.findall(r'DesignVariation:(.*?)\n', text)
+    if len(design_variation) == 0:
+        design_variation = re.findall(r'Design Variation:(.*?)\n', text)
+        if design_variation:
+            design_variation = design_variation[0]
+        else:
+            design_variation = ''
+    else:
+        design_variation = design_variation[0]
 
     return df_cmat, units, design_variation, df_cond
+
+
+def readin_q3d_matrix_m(path: str) -> pd.DataFrame:
+    """Read in Q3D cap matrix from a .m file exported by
+    Ansys Q3d.
+
+    Args:
+        path (str): Path to .m file
+
+    Returns:
+        pd.DataFrame of cap matrix, with no names of columns.
+    """
+    text = Path(path).read_text()
+    match = re.findall(r'capMatrix (.*?)]', text, re.DOTALL)
+    if match:
+        match = match[0].strip('= [').strip(']').strip('\n')
+        dfC = pd.read_csv(io.StringIO(match),
+                          skipinitialspace=True,
+                          header=None)
+    return dfC
 
 
 # TODO: Move to a more generic file
@@ -711,8 +743,8 @@ def load_q3d_capacitance_matrix(path, user_units='fF', _disp=True):
     return df_cmat, user_units, design_variation, df_cond
 
 
-def df_cmat_style_print(df_cmat):
-    """Display the dataframe in the cmat style.
+def df_cmat_style_print(df_cmat: pd.DataFrame):
+    """Display the dataframe in the cmat style
 
     Args:
         df_cmat (dataframe): Dataframe to display
@@ -725,7 +757,7 @@ def df_cmat_style_print(df_cmat):
 # Utility functions - Zlatko
 
 
-def move_index_to(i_from, i_to, len_):
+def move_index_to(i_from: List[int], i_to: List[int], len_):
     """
     Utility function to swap index.
 

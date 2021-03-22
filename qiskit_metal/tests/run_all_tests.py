@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2017, 2020.
+# (C) Copyright IBM 2017, 2021.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -29,7 +29,7 @@ if __name__ == '__main__':
         if fnmatch.fnmatch(entry, PATTERN):
             if entry != sys.argv[0]:
                 print("Running ", entry, " tests...")
-                cmd = 'python ' + entry
+                cmd = 'pytest ' + entry
                 error_back = subprocess.call(cmd, shell=True)
                 if error_back != 3221225477:  # access violation
                     ERRORS_EXIST += error_back

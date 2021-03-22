@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2017, 2020.
+# (C) Copyright IBM 2017, 2021.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -245,14 +245,17 @@ class TestRenderers(unittest.TestCase):
         self.assertEqual(options['bounding_box_scale_x'], '1.2')
         self.assertEqual(options['bounding_box_scale_y'], '1.2')
 
-        self.assertEqual(len(options['cheese']), 6)
+        self.assertEqual(len(options['cheese']), 9)
         self.assertEqual(len(options['no_cheese']), 5)
 
         self.assertEqual(options['cheese']['datatype'], '100')
         self.assertEqual(options['cheese']['shape'], '0')
-        self.assertEqual(options['cheese']['cheese_0_x'], '50um')
-        self.assertEqual(options['cheese']['cheese_0_y'], '50um')
+        self.assertEqual(options['cheese']['cheese_0_x'], '25um')
+        self.assertEqual(options['cheese']['cheese_0_y'], '25um')
         self.assertEqual(options['cheese']['cheese_1_radius'], '100um')
+        self.assertEqual(options['cheese']['delta_x'], '100um')
+        self.assertEqual(options['cheese']['delta_y'], '100um')
+        self.assertEqual(options['cheese']['edge_nocheese'], '200um')
 
         self.assertEqual(options['no_cheese']['datatype'], '99')
         self.assertEqual(options['no_cheese']['buffer'], '25um')

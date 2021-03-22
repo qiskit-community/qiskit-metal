@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2017, 2020.
+# (C) Copyright IBM 2017, 2021.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -31,9 +31,9 @@ class DefaultMetalOptions(Dict):
     """
 
     default_generic = Dict(
-        units='mm',  # Units in which all dimenions are converted as floats
+        units='mm',  # Units in which all dimensions are converted as floats
         chip=
-        'main',  # Default chip used thorugh codebase, wehn one is not specified
+        'main',  # Default chip used through codebase, when one is not specified
 
         # Default options for QDesign variables
         qdesign=Dict(variables=Dict(cpw_width='10 um', cpw_gap='6 um')),

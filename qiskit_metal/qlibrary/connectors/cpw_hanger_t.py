@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2017, 2020.
+# (C) Copyright IBM 2017, 2021.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -19,7 +19,7 @@ import numpy as np
 
 class CPWHangerT(QComponent):
     """Generates a three pin (+) structure comprised of a primary two pin CPW transmission line,
-    and a secondary one pin neigbouring CPW transmission line that is capacitively/inductively
+    and a secondary one pin neighboring CPW transmission line that is capacitively/inductively
     coupled to the primary. Such a structure can be used, as an example, for generating
     CPW resonator hangars off of a transmission line.
 
@@ -40,7 +40,7 @@ class CPWHangerT(QComponent):
         * prime_gap: '6um' -- The dielectric gap of the two pin CPW transmission line
         * second_width: '10um' -- The width of the trace of the one pin CPW transmission line
         * second_gap: '6um' -- The dielectric gap of the one pin CPW transmission line
-        * coupling_space: '3um' -- The amound of ground plane between the two transmission lines
+        * coupling_space: '3um' -- The amount of ground plane between the two transmission lines
         * coupling_length: '100um' -- The length of parallel between the two transmission lines
           note: this includes the distance of the curved second of the second line
         * fillet: '25um'
@@ -54,26 +54,25 @@ class CPWHangerT(QComponent):
         * chip: 'main' -- The chip the pin should be on.
         * layer: '1' -- Layer the pin is on. Does not have any practical impact to the short.
     """
-    component_metadata = Dict(short_name='cpw')
+    component_metadata = Dict(short_name='cpw', _qgeometry_table_path='True')
     """Component metadata"""
 
     #Currently setting the primary CPW length based on the coupling_length
     #May want it to be it's own value that the user can control?
-    default_options = Dict(
-        prime_width='10um',
-        prime_gap='6um',
-        second_width='10um',
-        second_gap='6um',
-        coupling_space='3um',
-        coupling_length='100um',
-        fillet='25um',
-        pos_x='0um',
-        pos_y='0um',
-        rotation='0',
-        mirror=False,
-        open_termination=True,  #Better way to decide this?
-        chip='main',
-        layer='1')
+    default_options = Dict(prime_width='10um',
+                           prime_gap='6um',
+                           second_width='10um',
+                           second_gap='6um',
+                           coupling_space='3um',
+                           coupling_length='100um',
+                           fillet='25um',
+                           pos_x='0um',
+                           pos_y='0um',
+                           rotation='0',
+                           mirror=False,
+                           open_termination=True,
+                           chip='main',
+                           layer='1')
     """Default connector options"""
 
     def make(self):

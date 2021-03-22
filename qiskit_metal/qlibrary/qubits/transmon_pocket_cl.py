@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2017, 2020.
+# (C) Copyright IBM 2017, 2021.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -188,8 +188,8 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
 
         # Generating pins
         points = list(draw.shapely.geometry.shape(port_line).coords)
-        self.add_pin(name, points, p.cl_width)  # TODO: chip
+        self.add_pin(name, points, p.cl_width)
 
-        # Adding to element table
+        # Adding to qgeometry table
         self.add_qgeometry('poly', dict(cl_metal=cl_metal))
         self.add_qgeometry('poly', dict(cl_etcher=cl_etcher), subtract=True)

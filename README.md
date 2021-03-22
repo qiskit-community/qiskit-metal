@@ -1,28 +1,29 @@
-﻿# Qiskit Metal [![](https://badges.frapsoft.com/os/v1/open-source.png?v=103)](https://github.com/Qiskit/qiskit-metal) [![](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/Qiskit/qiskit-metal)
+﻿# Qiskit Metal [![](https://badges.frapsoft.com/os/v1/open-source.png?v=103)](https://github.com/Qiskit/qiskit-metal) [![](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/Qiskit/qiskit-metal) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4618153.svg)](https://doi.org/10.5281/zenodo.4618153)
 >  Quantum hardware design and analysis
 
 ![Welcome to Qiskit Metal!](docs/images/zkm_banner.png 'Welcome to Qiskit Metal')
 
-### Early Access to this quantum device design project
+### Quantum device design project
 We are thrilled to ask you to join this journey to revolutionize quantum devices. This is a first-of-its-kind, open-source project for engineers and scientists to design superconducting quantum devices with ease.
-
-The early-access program started in November and will proceed through the first few months of 2021. During this time we will work closely together to develop Metal and design quantum devices with it.
-
-#### Disclaimers
-Unpolished, early-access alpha version
 
 Qiskit-metal is licensed under Apache 2.0. IBM reserves no copyright over outputs of qiskit-metal.
 
 #### Get help: Slack
-Use the [Slack channel (Join here!)](https://join.slack.com/share/zt-jjgzilxu-1u2FGivroQi64fHajpTWiw) to communicate with the developers and other early-access participats. (Troubleshooting: If the Slack invitation has expired, request one by opening a GitHub issue.)
+Use the slack channel.  Join [qiskit slack](https://ibm.co/joinqiskitslack) and then join the `#metal` channel to communicate with the developers and other participants.  You may also use this channel inquire about collaborations.
+
+#### Take part to the live tutorials and discussion
+Use [this form](https://airtable.com/shrxQEgKqZCf319F3) to sign-up for the upcoming sessions. The calendar, reminders and recordings will be shared in the Slack channel.
 
 ## Documentation 
 After installation, you can open the documentation like this
-```
+```python
 import qiskit_metal
 qiskit_metal.open_docs()
 ```
-Build the docs by running `python build_docs.py` in a shell in the `docs` folder.
+
+There is no need to build the docs unless you want to.  In lieu of building the docs you can find them at https://qiskit.org/documentation/metal/.
+
+If you choose to build the docs, you do so by running `python build_docs.py` in a shell in the `docs` folder.
 
 ## Installation
 ### Video Instructions
@@ -39,7 +40,7 @@ However we recommend investing into setting up a proper git linkage, which will 
 To do that, you will need to `git clone` this repository's main branch following one of two ways.
 
 1. Open any command line shell that has been configured with git and execute the following command:
-``` sh
+```sh
 git clone https://github.com/Qiskit/qiskit-metal.git
 ```
 2. Alternatively, you can download and use the user interface [GitHub Desktop GUI](https://desktop.github.com/) and refer to these [notes](https://help.github.com/en/desktop/contributing-to-projects/cloning-a-repository-from-github-to-github-desktop).
@@ -61,11 +62,11 @@ For this section you will need to use the command line. If you use github deskto
 ##### Option 1: A new environment
 The most reliable way to set up a qiskit_metal environment is to build one from scratch using the provided conda environment specification file `environment.yml`.
 To do so, first navigate to the folder created by the clone. For example:
-```
+```sh
 cd qiskit-metal
 ```
 Once you are in the folder that contains the `environemnt.yml` file, execute the following installation commands:
-```
+```sh
 conda env create -n <env_name> environment.yml
 conda activate <env_name>
 python -m pip install -ve .
@@ -98,7 +99,7 @@ However, if you prefer using jupyter lab, you will need to execute a couple of e
 Launching jupyter lab will execute python code in the conda `base` environment by default.
 To change environment to the Qiskit Metal one you just finished setting up, denoted by `<env_name>`, which we usually just call `metal`, you will need first to add to jupyter lab's list of available kernels. 
 From the command line, run the following lines (inside an active <env_name> environment):
-```
+```sh
 conda activate <env_name>
 conda install ipykernel
 ipython kernel install --user --name=<any_name_for_kernel>
@@ -112,11 +113,11 @@ Once inside `jupyter lab`, you can switch to the newly created Metal kernel to u
 Package dependencies will evolve over time and could at some point require a new version of a library.
 For example, we can anticipate updating `pyEPR-quantum` to enable Ansys interactions previously unsupported.
 To update your local install, simply execute the metal package install command
-```
+```sh
 python -m pip install -ve .
 ``` 
 Alternatively, you can remove your conda environment by executing the commands below and later re-create a new environment following the original install instructions in section 1.
-```
+```sh
 conda env list
 conda env remove -n <env_name_exist>
 ``` 
@@ -131,7 +132,7 @@ You can do this by downloading and installing [C++ Build Tools](https://visualst
 Be sure to select the latest versions of `MSVCv142 - VS 2019 C++ x64/x86 build tools` and `Windows 10 SDK` in the installer as suggested in [this wiki](https://wiki.python.org/moin/WindowsCompilers) referenced by the gdspy documentation.
 
 To use a Python virtual environment, execute these commands in the top-level of the repository:
-```
+```sh
 python -m venv <virtual_env_path>
 source <virtual_env_path>/bin/activate
 python -m pip install -U pip
@@ -146,7 +147,7 @@ Here are some things to consider when setting up a development environment:
 * If using a virtual environment, make sure `pip` is up to date. In initial environment testing, PySide2 is installable with only the latest version of `pip`.
 * Add the path of your qiskit-metal folder to your PATH
 * Library errors when activating conda environments, or initializing jupyter notebook/lab, indicate a conflict between python libraries in the base and sub environments. Go ahead and manually delete the library from the base environment `site-packages` folder, shows in the error message. You might need to reinstall them in the sub environment, or create a new one.
-
+ If Jupyter notebook has trouble finding a dll for a package that works in the new environment outside of Jupyter, then try opening Jupyter notebook from the new environment instead of from `base`
 
 ### Additional steps for developers
 
@@ -169,11 +170,11 @@ If you can not start Jupyter Lab in the new environment.
 
 Based on: https://anaconda.org/conda-forge/jupyterlab
 Install Jupyter lab by
-```
+```sh
 conda install -c conda-forge jupyterlab
 ```
 Then change directory to top level of repository.
-```
+```sh
 python -m pip install -e .
 ```
 
@@ -184,7 +185,7 @@ python -m pip install -e .
 
 ##### Windows:
 Open Windows Command Prompt and type in
-```
+```sh
 path
 ```
 Copy the resulting output. Example: `"PATH": "\usr\local\bin:\usr\bin:\bin:\usr\sbin:\sbin"`
@@ -197,7 +198,7 @@ Then open the applicable settings.json in your VS Code. (See how to open command
 
 ##### MacOs:
  Open Terminal and type in
- ```
+ ```sh
 echo $PATH
  ```
 Copy the resulting output. Example: `"PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"`
@@ -211,7 +212,7 @@ Then open the applicable settings.json in your VS Code. (See how to open command
 
 ## Authors and Citation
 
-Qiskit Metal is the work of [many people](https://github.com/Qiskit/qiskit-metal/pulse/monthly) who contribute to the project at different levels. Metal was conceived and developed by [Zlatko Minev](zlatko-minev.com) at IBM; then co-led with Thomas McConkey. If you use Qiskit, please cite as per the included [BibTeX file](https://github.com/Qiskit/qiskit/blob/master/Qiskit.bib). For icon attributions, see [here](/qiskit_metal/_gui/_imgs/icon_attributions.txt).
+Qiskit Metal is the work of [many people](https://github.com/Qiskit/qiskit-metal/pulse/monthly) who contribute to the project at different levels. Metal was conceived and developed by [Zlatko Minev](zlatko-minev.com) at IBM; then co-led with Thomas McConkey. If you use Qiskit Metal, please cite as per the included [BibTeX file](https://github.com/Qiskit/qiskit-metal/blob/main/Qiskit_Metal.bib). For icon attributions, see [here](/qiskit_metal/_gui/_imgs/icon_attributions.txt).
 
 
 ## License

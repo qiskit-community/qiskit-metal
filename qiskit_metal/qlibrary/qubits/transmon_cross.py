@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2017, 2020.
+# (C) Copyright IBM 2017, 2021.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -23,7 +23,7 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
 
     Inherits `BaseQubit` class.
 
-    Simple Metal Transmon Cross object. Creates the A cross-shaped island,
+    Simple Metal Transmon Cross object. Creates the X cross-shaped island,
     the "junction" on the south end, and up to 3 connectors on the remaining arms
     (claw or gap).
 
@@ -80,6 +80,7 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
         cross_length='200um',
         cross_gap='20um',
         orientation='0',
+        layer='1',
         _default_connection_pads=Dict(
             connector_type='0',  # 0 = Claw type, 1 = gap type
             claw_length='30um',

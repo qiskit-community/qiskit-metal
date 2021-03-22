@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2017, 2020.
+# (C) Copyright IBM 2017, 2021.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -22,7 +22,6 @@ if config.is_building_docs():
     from .test_default_options import TestDefautOptions
     from .test_designs import TestDesign
     from .test_draw import TestDraw
-    from .test_elements import TestElements
     from .test_gui_basic import TestGUIBasic
     from .test_renderers import TestRenderers
     from .test_toolbox_metal import TestToolboxMetal

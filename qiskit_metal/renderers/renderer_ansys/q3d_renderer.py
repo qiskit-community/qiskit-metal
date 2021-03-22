@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2020.
+# (C) Copyright IBM 2017, 2021.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -357,8 +357,10 @@ class QQ3DRenderer(QAnsysRenderer):
 
         Args:
             variation (str, optional): An empty string returns nominal variation. Otherwise need the list. Defaults to ''
-            solution_kind (str, optional): Solution type. Defaults to 'LastAdaptive' ('AdaptivePass' or 'LastAdaptive')
-            pass_number (int, optional): From which analysis pass you want to extract the matrix? Defaults to 1.
+            solution_kind (str, optional): Solution type. Defaults to 'LastAdaptive'.
+				Set to 'AdaptivePass' to return the capacitance matrix of a specific pass.
+            pass_number (int, optional): Which adaptive pass to acquire the capacitance
+                matrix from. Only in effect with 'AdaptivePass' chosen. Defaults to 1.
         """
         qo = self.q3d_options['get_capacitance_matrix']
 
@@ -394,9 +396,9 @@ class QQ3DRenderer(QAnsysRenderer):
             Lj_nH (float): Junction inductance (in nH)
             Cj_fF (float): Junction capacitance (in fF)
             N (int): Coupling pads (1 readout, N - 1 bus)
-            fr (Union[list, float]): Coupling bus and readout frequencies (in GHz). fr can be a list with the order
+            fr (Union[list, float]):Readout frequencies (in GHz). fr can be a list with the order
                 they appear in the capMatrix.
-            fb (Union[list, float]): Coupling bus and readout frequencies (in GHz). fb can be a list with the order
+            fb (Union[list, float]): Coupling bus frequencies (in GHz). fb can be a list with the order
                 they appear in the capMatrix.
             maxPass (int): maximum number of passes. Ignored for 'LastAdaptive' solutions types. Defaults to 1.
             variation (str, optional): An empty string returns nominal variation. Otherwise need the list. Defaults to ''.

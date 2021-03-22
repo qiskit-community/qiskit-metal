@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2017, 2020.
+# (C) Copyright IBM 2017, 2021.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -56,5 +56,6 @@ class ShortToGround(QComponent):
         port_line = draw.translate(port_line, p.pos_x, p.pos_y)
 
         port_points = list(draw.shapely.geometry.shape(port_line).coords)
+
+        #Generates the pin
         self.add_pin('short', port_points, p.width)
-        #HOW TO ADD A 0 volume element to a table for the GUI? Or not even needed?

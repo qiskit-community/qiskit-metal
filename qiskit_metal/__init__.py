@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2017, 2020.
+# (C) Copyright IBM 2017, 2021.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -15,7 +15,7 @@
 # pylint: disable=wrong-import-order
 # pylint: disable=wrong-import-position
 
-__version__ = '0.0.2'
+__version__ = '0.0.3'
 __license__ = "Apache 2.0"
 __copyright__ = 'Copyright IBM 2019-2020'
 __author__ = 'Zlatko Minev, Thomas McConkey, and them IBM Quantum Team'
@@ -89,6 +89,7 @@ del __setup_Qt_backend
 ## Setup logging
 from . import config
 from .toolbox_python._logging import setup_logger
+
 logger = setup_logger('metal',
                       config.log.format,
                       config.log.datefmt,
@@ -119,7 +120,7 @@ from . import toolbox_metal
 from ._gui.main_window import MetalGUI
 
 # Utility modules
-# For plotting in matplotlib;  May be superseeded by a renderer?
+# For plotting in matplotlib;  May be superseded by a renderer?
 from .renderers.renderer_mpl import mpl_toolbox as plt
 
 # Utility functions

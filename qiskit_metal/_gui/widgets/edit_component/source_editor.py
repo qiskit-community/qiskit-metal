@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2017, 2020.
+# (C) Copyright IBM 2017, 2021.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -114,13 +114,13 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
     Access with:
         self = gui.component_window.src_widgets[-1].ui.src_editor
 
-        Note that thtehre can be more than one edit widet open.
-        A refernece is kept to all of them in `gui.component_window.src_widgets`
+        Note that there can be more than one edit widget open.
+        A reference is kept to all of them in `gui.component_window.src_widgets`
     """
 
     # TODO: remember previous state, save to config like gui and recall when created
-    # save font size too.  remmeber window properties and zoom level
-    # TODO: Add error slot handling to all call funcitons below
+    # save font size too.  remember window properties and zoom level
+    # TODO: Add error slot handling to all call functions below
 
     # MRO:
     # qiskit_metal._gui.widgets.edit_component.source_editor.MetalSourceEditor,
