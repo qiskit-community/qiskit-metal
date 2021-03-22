@@ -13,6 +13,8 @@
 # that they have been altered from the originals.
 
 from typing import List, Tuple, Union, Any, Iterable, Dict
+from qiskit_metal.renderers.renderer_ansys.hfss_renderer import QHFSSRenderer, QAnsysRenderer
+from qiskit_metal.renderers.renderer_ansys.q3d_renderer import QQ3DRenderer
 
 
 class Sweeping():
@@ -90,6 +92,33 @@ class Sweeping():
 
         return option_path, a_value, 0
 
+    def handle_eignmode_setup(self, a_hfss: QHFSSRenderer, setup_args: Dict):
+        """User can pass arguments for method add_eigenmode_setup().  If not passed, use the options in 
+        HFSS default_options.
+
+        Args:
+            a_hfss (QHFSSRenderer): Reference to instantiated  renderer to HFSS.
+            setup_args (Dict): a Dict 
+        """
+        '''
+                Args:
+            name (str, optional): Name of eigenmode setup. Defaults to "Setup".
+            min_freq_ghz (int, optional): Minimum frequency in GHz. Defaults to 1.
+            n_modes (int, optional): Number of modes. Defaults to 1.
+            max_delta_f (float, optional): Maximum difference in freq between consecutive passes. Defaults to 0.5.
+            max_passes (int, optional): Maximum number of passes. Defaults to 10.
+            min_passes (int, optional): Minimum number of passes. Defaults to 1.
+            min_converged (int, optional): Minimum number of converged passes. Defaults to 1.
+            pct_refinement (int, optional): Percent refinement. Defaults to 30.
+            basis_order (int, optional): Basis order. Defaults to -1.
+        '''
+        if setup_args.name is None:
+            # Give a new name to use.
+            setup_args.name = "Sweep_em_setup"
+
+        a_hfss.add_eigenmode_setup(**setup_args)
+        a_hfss.activate_eigenmode_setup(setup_args.name)
+
     def sweep_one_option_get_eigenmode_solution_data(
             self,
             qcomp_name: str,
@@ -97,6 +126,7 @@ class Sweeping():
             option_sweep: list,
             qcomp_render: list,
             endcaps_render: list,
+            setup_args: Dict = None,
             leave_last_design: bool = True,
             design_name: str = "Sweep_Capacitance") -> Tuple[dict, int]:
         """Ansys must be open with inserted project. A design, "HFSS Design" with eigenmode solution-type
@@ -107,9 +137,12 @@ class Sweeping():
             option_name (str): The option within qcomp_name to sweep.
             option_sweep (list): Each entry in the list is a value for option_name.
             leave_last_design (bool) : In HFSS, after the last sweep, should the design be cleared?
-            endcaps_render (list): Identify which kind of pins. Follow the details from renderer QAnsysRenderer.render_design.
+            endcaps_render (list): Identify which kind of pins. 
+                                    Follow details from renderer QAnsysRenderer.render_design.
+            setup_args (Dict): Hold the arguments for  add_eigenmode_setup() as  key/values to pass to Ansys.  
+                                If None, default Setup will be used.
             leave_last_design (bool) : In HFSS, after the last sweep, should the design be cleared?
-            design_name (str, optional):  Name of hfss_design to use in project. Defaults to "Sweep_Eigenmode".
+            design_name (str, optional):  Name of HFSS_design to use in project. Defaults to "Sweep_Eigenmode".
             
 
         Returns:
@@ -139,11 +172,9 @@ class Sweeping():
         a_hfss.connect_ansys()
         a_hfss.activate_eigenmode_design(design_name)
 
-        obj_names = a_hfss.pinfo.get_all_object_names()
-        if obj_names:
-            a_hfss.clean_active_design()
+        a_hfss.clean_active_design()
 
-        a_hfss.activate_eigenmode_setup()  # Add a default solution setup.
+        self.handle_eignmode_setup(a_hfss, setup_args)
 
         len_sweep = len(option_sweep) - 1
 
@@ -172,6 +203,7 @@ class Sweeping():
             sweep_values['option_name'] = option_path[-1]
             sweep_values['frequency'] = freqs
             sweep_values['kappa_over_2pis'] = kappa_over_2pis
+            sweep_values['quality_factor'] = freqs / kappa_over_2pis
             all_sweep[item] = sweep_values
 
             #Decide if need to clean the design.
@@ -231,9 +263,7 @@ class Sweeping():
         a_q3d.connect_ansys()
         a_q3d.activate_q3d_design(design_name)
 
-        obj_names = a_q3d.pinfo.get_all_object_names()
-        if obj_names:
-            a_q3d.clean_active_design()
+        a_q3d.clean_active_design()
 
         a_q3d.add_q3d_setup()  # Add a solution setup.
 
