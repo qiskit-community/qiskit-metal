@@ -12,7 +12,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-from typing import List, Tuple, Union, Any, Iterable
+from typing import List, Tuple, Union, Any, Iterable, Dict
 
 
 class Sweeping():
@@ -37,10 +37,58 @@ class Sweeping():
             search (str): String to search for
 
         Returns:
-            str: Value from the dictionary of the searched term
+            str: Value from the dictionary of the searched term.
         """
         value = a_dict[search]
         return value
+
+    def error_check_sweep_input(self, qcomp_name: str, option_name: str,
+                                option_sweep: list) -> Tuple[list, Dict, int]:
+        """ Implement error checking of data for sweeping.
+
+        Args:
+            qcomp_name (str): A component that contains the option to be swept.
+            option_name (str): The option within qcomp_name to sweep.
+            option_sweep (list): Each entry in the list is a value for option_name.
+
+        Returns:
+            list: Traverse the option Dict.  
+            addict.addict.Dict: Value from the dictionary of the searched key.
+            int: Observation of searching for data from arguments.
+
+            * 0 Error not detected in the input-data.
+            * 1 qcomp_name not registered in design.
+            * 2 option_name is empty.
+            * 3 option_name is not found as key in dict.
+            * 4 option_sweep is empty, need at least one entry.
+        """
+        option_path = None
+        a_value = None
+
+        if len(option_sweep) == 0:
+            return option_path, a_value, 4
+
+        if option_name:
+            option_path = option_name.split('.')
+        else:
+            return option_path, a_value, 2
+
+        if qcomp_name in self.design.components.keys():
+            qcomp_options = self.design.components[qcomp_name].options
+        else:
+            return option_path, a_value, 1
+
+        a_value = qcomp_options
+
+        # All but the last item in list.
+        for name in option_path[:-1]:
+            if name in a_value:
+                a_value = self.option_value(a_value, name)
+            else:
+                self.design.logger.warning(f'Key="{name}" is not in dict.')
+                return option_path, a_value, 3
+
+        return option_path, a_value, 0
 
     def sweep_one_option_get_eigenmode_solution_data(
             self,
@@ -73,8 +121,8 @@ class Sweeping():
             * 1 qcomp_name not registered in design.
             * 2 option_name is empty.
             * 3 option_name is not found as key in dict.
-            * 4 last key in option_name is not in dict.
-            * 5 option_sweep is empty, need at least one entry.
+            * 4 option_sweep is empty, need at least one entry.
+            * 5 last key in option_name is not in dict.
             * 6 project not in app
             * 7 design not in app
 
@@ -82,29 +130,10 @@ class Sweeping():
 
         #Dict of all swept information.
         all_sweep = dict()
-
-        if len(option_sweep) == 0:
-            return all_sweep, 5
-
-        if option_name:
-            option_path = option_name.split('.')
-        else:
-            return all_sweep, 2
-
-        if qcomp_name in self.design.components.keys():
-            qcomp_options = self.design.components[qcomp_name].options
-        else:
-            return all_sweep, 1
-
-        a_value = qcomp_options
-
-        # All but the last item in list.
-        for name in option_path[:-1]:
-            if name in a_value:
-                a_value = self.option_value(a_value, name)
-            else:
-                self.design.logger.warning(f'Key="{name}" is not in dict.')
-                return all_sweep, 3
+        option_path, a_value, check_result, = self.error_check_sweep_input(
+            qcomp_name, option_name, option_sweep)
+        if check_result != 0:
+            return all_sweep, check_result
 
         a_hfss = self.design.renderers.hfss
         a_hfss.connect_ansys()
@@ -124,7 +153,7 @@ class Sweeping():
             else:
                 self.design.logger.warning(
                     f'Key="{option_path[-1]}" is not in dict.')
-                return all_sweep, 4
+                return all_sweep, 5
 
             self.design.rebuild()
 
@@ -185,37 +214,18 @@ class Sweeping():
             * 1 qcomp_name not registered in design.
             * 2 option_name is empty.
             * 3 option_name is not found as key in dict.
-            * 4 last key in option_name is not in dict.
-            * 5 option_sweep is empty, need at least one entry.
+            * 4 option_sweep is empty, need at least one entry.
+            * 5 last key in option_name is not in dict.
             * 6 project not in app
             * 7 design not in app
            
         """
         #Dict of all swept information.
         all_sweep = dict()
-
-        if len(option_sweep) == 0:
-            return all_sweep, 5
-
-        if option_name:
-            option_path = option_name.split('.')
-        else:
-            return all_sweep, 2
-
-        if qcomp_name in self.design.components.keys():
-            qcomp_options = self.design.components[qcomp_name].options
-        else:
-            return all_sweep, 1
-
-        a_value = qcomp_options
-
-        # All but the last item in list.
-        for name in option_path[:-1]:
-            if name in a_value:
-                a_value = self.option_value(a_value, name)
-            else:
-                self.design.logger.warning(f'Key="{name}" is not in dict.')
-                return all_sweep, 3
+        option_path, a_value, check_result = self.error_check_sweep_input(
+            qcomp_name, option_name, option_sweep)
+        if check_result != 0:
+            return all_sweep, check_result
 
         a_q3d = self.design.renderers.q3d
         a_q3d.connect_ansys()
@@ -236,7 +246,7 @@ class Sweeping():
             else:
                 self.design.logger.warning(
                     f'Key="{option_path[-1]}" is not in dict.')
-                return all_sweep, 4
+                return all_sweep, 5
 
             self.design.rebuild()
 
