@@ -203,7 +203,8 @@ class Sweeping():
             sweep_values['option_name'] = option_path[-1]
             sweep_values['frequency'] = freqs
             sweep_values['kappa_over_2pis'] = kappa_over_2pis
-            sweep_values['quality_factor'] = freqs / kappa_over_2pis
+            quality_factor = self.get_quality_factor(freqs, kappa_over_2pis)
+            sweep_values['quality_factor'] = quality_factor
             all_sweep[item] = sweep_values
 
             #Decide if need to clean the design.
@@ -216,6 +217,36 @@ class Sweeping():
 
         a_hfss.disconnect_ansys()
         return all_sweep, 0
+
+    def get_quality_factor(
+            self,
+            freqs: Union[list, None] = None,
+            kappa_over_2pis: Union[list, None] = None) -> Union[list, None]:
+        """Calculate Quality Factor = freqs/kappa_over_2pis.  Before division, some error checking. 
+
+        Args:
+            freqs (Union[list, None], optional): The eigenmode frequency. Defaults to None.
+            kappa_over_2pis (Union[list, None], optional): The kappa/(2*pi) Defaults to None.
+
+        Returns:
+            Union[list, None]: Calculate freqs/kappa_over_2pis
+        """
+
+        quality_factor = None
+        if kappa_over_2pis is None:
+            return quality_factor
+
+        # Asssume both are lists or None since method:  eigenmodes() in pyEPR returns a list or None.
+        if len(freqs) == len(kappa_over_2pis):
+            quailty_factor = [
+                float(ff) / float(kk) for ff, kk in zip(freqs, kappa_over_2pis)
+            ]
+            return quality_factor
+        else:
+            self.design.logger.warning(
+                'The Quality factor not calculated since size of freqs and kappa_over_2pis are not identical'
+            )
+            return quailty_factor
 
     def sweep_one_option_get_capacitance_matrix(
             self,
