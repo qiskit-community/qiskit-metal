@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2017, 2020.
+# (C) Copyright IBM 2017, 2021.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -25,16 +25,13 @@ import sys
 from pathlib import Path
 from typing import List, TYPE_CHECKING
 
-from PySide2 import QtWidgets
-from PySide2.QtCore import QEventLoop, Qt, QTimer, Slot
-from PySide2.QtGui import QIcon
-from PySide2.QtWidgets import (QApplication, QDockWidget, QFileDialog,
-                               QInputDialog, QLabel, QLineEdit, QMainWindow,
-                               QMessageBox)
+from PySide2.QtCore import Qt, QTimer, QModelIndex
+from PySide2.QtWidgets import (QDockWidget, QFileDialog, QInputDialog, QLabel,
+                               QLineEdit, QMainWindow, QMessageBox,
+                               QFileSystemModel)
 
 from .. import config
 from ..designs.design_base import QDesign
-from .component_widget_ui import Ui_ComponentWidget
 from .elements_window import ElementsWindow
 from .main_window_base import QMainWindowBaseHandler, QMainWindowExtensionBase, kick_start_qApp
 from .main_window_ui import Ui_MainWindow
@@ -42,21 +39,23 @@ from .renderer_gds_gui import RendererGDSWidget
 from .renderer_hfss_gui import RendererHFSSWidget
 from .renderer_q3d_gui import RendererQ3DWidget
 from .utility._handle_qt_messages import slot_catch_error
-from PySide2.QtCore import qInstallMessageHandler
+from qiskit_metal._gui.widgets.library_new_qcomponent.library_proxy_model import LibraryFileProxyModel
 from .widgets.all_components.table_model_all_components import \
     QTableModel_AllComponents
 from .widgets.edit_component.component_widget import ComponentWidget
-from .widgets.log_widget.log_metal import LogHandler_for_QTextLog
 from .widgets.plot_widget.plot_window import QMainWindowPlot
 from .widgets.variable_table import PropertyTableWidget
 from .widgets.build_history.build_history_scroll_area import BuildHistoryScrollArea
+from .. import qlibrary
+from .widgets.library_new_qcomponent import parameter_entry_window as pew
 
 if not config.is_building_docs():
     from ..toolbox_metal.import_export import load_metal_design
 
 if TYPE_CHECKING:
-    # from .._gui import MetalGUI
     from ..renderers.renderer_mpl.mpl_canvas import PlotCanvas
+
+import time
 
 
 class QMainWindowExtension(QMainWindowExtensionBase):
@@ -247,7 +246,7 @@ class MetalGUI(QMainWindowBaseHandler):
     # This is somewhat outdated
     _dock_names = [
         'dockComponent', 'dockConnectors', 'dockDesign', 'dockLog',
-        'dockNewComponent', 'dockVariables'
+        'dockLibrary', 'dockVariables'
     ]
 
     def __init__(self, design: QDesign = None):
@@ -283,6 +282,7 @@ class MetalGUI(QMainWindowBaseHandler):
         self._setup_elements_widget()
         self._setup_variables_widget()
         self._ui_adjustments_final()
+        self._setup_library_widget()
 
         # Show and raise
         self.main_window.show()
@@ -323,8 +323,8 @@ class MetalGUI(QMainWindowBaseHandler):
 
         widgets = [
             'actionSave', 'action_full_refresh', 'actionRebuild',
-            'actionDelete_All', 'dockComponent', 'dockNewComponent',
-            'dockDesign', 'dockConnectors'
+            'actionDelete_All', 'dockComponent', 'dockLibrary', 'dockDesign',
+            'dockConnectors'
         ]
         setEnabled(self.ui, widgets)
 
@@ -396,8 +396,8 @@ class MetalGUI(QMainWindowBaseHandler):
         self.main_window.splitDockWidget(self.ui.dockDesign,
                                          self.ui.dockComponent, Qt.Vertical)
         self.main_window.tabifyDockWidget(self.ui.dockDesign,
-                                          self.ui.dockNewComponent)
-        self.main_window.tabifyDockWidget(self.ui.dockNewComponent,
+                                          self.ui.dockLibrary)
+        self.main_window.tabifyDockWidget(self.ui.dockLibrary,
                                           self.ui.dockConnectors)
         self.main_window.tabifyDockWidget(self.ui.dockConnectors,
                                           self.ui.dockVariables)
@@ -484,6 +484,64 @@ class MetalGUI(QMainWindowBaseHandler):
                                           tableView=self.ui.tableComponents)
         self.ui.tableComponents.setModel(model)
 
+    def create_new_component_object_from_qlibrary(self,
+                                                  relative_index: QModelIndex):
+        """
+        Must be defined outside of _setup_library_widget to ensure self == MetalGUI and will retain opened ScrollArea
+
+        Args:
+            relative_index: QModelIndex of the desired QComponent file in the Qlibrary GUI display
+
+        """
+
+        filename = self.library_proxy_model.data(relative_index)
+
+        if self.ui.dockLibrary.library_model.isDir(
+                self.library_proxy_model.mapToSource(relative_index)):
+            self.logger.info(f"{filename} is a directory")
+            return
+
+        full_path = self.ui.dockLibrary.library_model.filePath(
+            self.library_proxy_model.mapToSource(relative_index))
+        try:
+            self.param_window = pew.create_parameter_entry_window(
+                self, full_path, self.main_window)
+        except Exception as e:
+            self.logger.error(
+                f"Unable to open param entry window due to Exception: {e} ")
+
+    def _setup_library_widget(self):
+        """
+        Sets up the GUI's QLibrary display
+
+        """
+
+        # getting absolute path of Qlibrary folder
+        init_qlibrary_abs_path = os.path.abspath(qlibrary.__file__)
+        qlibrary_abs_path = init_qlibrary_abs_path.split('__init__.py')[0]
+        self.QLIBRARY_ROOT = qlibrary_abs_path
+        self.QLIBRARY_FOLDERNAME = qlibrary.__name__
+
+        # create model for Qlibrary directory
+        self.ui.dockLibrary.library_model = QFileSystemModel()
+        self.ui.dockLibrary.library_model.setRootPath(self.QLIBRARY_ROOT)
+
+        # QSortFilterProxyModel
+        #QSortFilterProxyModel: sorting items, filtering out items, or both.  maps the original model indexes to new indexes, allows a given source model to be restructured as far as views are concerned without requiring any transformations on the underlying data, and without duplicating the data in memory.
+        self.library_proxy_model = LibraryFileProxyModel()
+        self.library_proxy_model.setSourceModel(
+            self.ui.dockLibrary.library_model)
+
+        self.ui.dockLibrary_tree_view.setModel(self.library_proxy_model)
+        self.ui.dockLibrary_tree_view.setRootIndex(
+            self.library_proxy_model.mapFromSource(
+                self.ui.dockLibrary.library_model.index(
+                    self.ui.dockLibrary.library_model.rootPath())))
+        self.ui.dockLibrary_tree_view.doubleClicked.connect(
+            self.create_new_component_object_from_qlibrary)
+        self.ui.dockLibrary_tree_view.clicked.connect(
+            self.create_new_component_object_from_qlibrary)
+
     ################################################
     # UI
     def toggle_docks(self, do_hide: bool = None):
@@ -497,7 +555,7 @@ class MetalGUI(QMainWindowBaseHandler):
         )  # Process all events, so that if we take screenshot next it won't be partially updated
 
     ################################################
-    # Ploting
+    # Plotting
     def get_axes(self, num: int = None):
         """Return access to the canvas axes.
         If num is specified, returns the n-th axis.
@@ -665,7 +723,7 @@ class MetalGUI(QMainWindowBaseHandler):
         #               invalidate_caches()
         # in order for the new module to be noticed by the import system.
 
-        # Do NOT work:
+        # Does NOT work:
         # importlib.import_module(path.stem, str(path.parent))
 
         # # spec for module and give it name

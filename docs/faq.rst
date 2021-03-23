@@ -7,7 +7,7 @@ FAQ's
 Frequently asked questions.
 
 
-.. _setup:
+.. _faq_setup:
 
 ----------------------
 Setting up environment
@@ -107,9 +107,15 @@ Documentation
 
 **I am seeing a lot of warnings when I build the docs.  How do I resolve them?**
 
-Some users may see a list of warnings when building the docs.  Warnings about matplotlib text role can be safely ignored.
+There is no need to build the docs locally unless you *really* want to.  The docs can be accessed without building them yourself by navigating to `<https://qiskit.org/documentation/metal/>`_.
 
-You can resolve other warnings by deleting the ``docs/build`` and ``docs/stubs`` directories and rebuilding.
+If you chose to build the docs yourself, some users may see a list of warnings when building the docs.  Warnings about matplotlib text role can be safely ignored.
+
+You can resolve other warnings by deleting the following directories and rebuilding:
+
+   * ``docs/_build``
+   * ``docs/build``
+   * ``docs/stubs``
 
 --------------------------------
 Connecting to 3rd party software

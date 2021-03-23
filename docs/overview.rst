@@ -17,8 +17,8 @@ Qiskit Metal Overview
      - Description
    * - Hamiltonian
      - Module containing all Qiskit Metal hamiltonian-only analyses.
-   * - Scan_Options
-     - Module containing all Qiskit Metal scan options for analyses.
+   * - Sweep_Options
+     - Module containing all Qiskit Metal sweeping options for analyses.
 
 .. list-table:: Analyses details
    :widths: 10 90
@@ -28,7 +28,7 @@ Qiskit Metal Overview
      - Description
    * - Hcpb
      - Used to model analytically the CPB Hamiltonian quickly and efficiently. Solves tridiagonal eigenvalue problem for arbitrary Ej, Ec, ng values.
-   * - Scan_Options
+   * - Sweeping
      - Need access to renderers which are registered in QDesign.
 
 **QLibrary**

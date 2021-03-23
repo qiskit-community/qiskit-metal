@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2017, 2020.
+# (C) Copyright IBM 2017, 2021.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -105,7 +105,7 @@ nbsphinx_epilog = """
 
 # -- Project information -----------------------------------------------------
 project = 'Qiskit Metal {}'.format(version)
-copyright = '2020, Qiskit Development Team'  # pylint: disable=redefined-builtin
+copyright = '2019, Qiskit Development Team'  # pylint: disable=redefined-builtin
 author = 'Qiskit Metal Development Team'
 # -- General configuration ---------------------------------------------------
 
@@ -132,7 +132,7 @@ exclude_patterns = [
     'qiskit_metal.analyses.lumped_capacitive.rst',
     'qiskit_metal.analyses.em.cpw_calculations.rst',
     'qiskit_metal.analyses.cpw_calculations.rst',
-    'qiskit_metal.analyses.Hcpb.rst', 'qiskit_metal.analyses.Scanning.rst',
+    'qiskit_metal.analyses.Hcpb.rst', 'qiskit_metal.analyses.Sweeping.rst',
     'qiskit_metal.analyses.HO_wavefunctions.rst',
     'qiskit_metal.analyses.kappa_calculation.rst'
 ]
@@ -142,8 +142,7 @@ nbsphinx_execute_arguments = [
     "--InlineBackend.rc={'figure.dpi': 96}",
 ]
 
-nbsphinx_execute = 'never'
-nbsphinx_allow_errors = True
+nbsphinx_execute = os.getenv('QISKIT_DOCS_BUILD_TUTORIALS', 'never')
 
 source_suffix = ['.rst', '.ipynb']
 

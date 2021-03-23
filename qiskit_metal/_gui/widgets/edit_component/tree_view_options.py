@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2017, 2020.
+# (C) Copyright IBM 2017, 2021.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -45,8 +45,8 @@ class QTreeView_Options(QTreeView, QWidget_PlaceholderText):
         self.expanded.connect(self.resize_on_expand)
 
     def style_me(self):
-        """Style this widget."""
-        # Also can do in the ui file, but doesn't always transalte for me for some reason
+        """Style this widget"""
+        # Also can do in the ui file, but doesn't always translate for some reason
         self.header().show()
         self.setAutoScroll(False)
         self.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
@@ -56,9 +56,9 @@ class QTreeView_Options(QTreeView, QWidget_PlaceholderText):
 QTreeView::branch {  border-image: url(none.png); }
         """)
 
-    # TODO: Maybe move to base class of utilty, along with the show template message
+    # TODO: Maybe move to base class of utility, along with the show template message
     def autoresize_columns(self, max_width: int = 200):
-        """Rezie columsn to contents with maximim.
+        """Resize columns to contents with maximum
 
         Args:
             max (int): Maximum window width.. Defaults to 200.

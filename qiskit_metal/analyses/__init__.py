@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2017, 2020.
+# (C) Copyright IBM 2017, 2021.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -41,13 +41,13 @@ Electromagnetic & quantization / parameter extraction
     cpw_calculations
     kappa_calculation
 
-Scan Options
-------------
+Sweeping Options
+----------------
 
 .. autosummary::
     :toctree:
 
-    Scanning
+    Sweeping
 
 Quantization
 ------------
@@ -64,4 +64,4 @@ from .em import kappa_calculation
 from .quantization import lumped_capacitive
 from .hamiltonian.transmon_charge_basis import Hcpb
 from .hamiltonian import HO_wavefunctions
-from .scan_options.scanning import Scanning
+from .sweep_options.sweeping import Sweeping

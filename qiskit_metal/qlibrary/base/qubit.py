@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2017, 2020.
+# (C) Copyright IBM 2017, 2021.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -48,10 +48,10 @@ class BaseQubit(QComponent):
 
     def __init__(self,
                  design,
-                 name=None,
-                 options=None,
-                 options_connection_pads=None,
-                 make=True):
+                 name: str = None,
+                 options: Dict = None,
+                 options_connection_pads: dict = None,
+                 make: bool = True):
         """
         Args:
             design (QDesign): The parent design.
@@ -72,12 +72,15 @@ class BaseQubit(QComponent):
             # self.logger.warning(
             # 'In BaseQubit.__init(), the qubit has not been added to design. The component is exiting with None.')
             return None
-
         if options_connection_pads:
             self.options.connection_pads.update(options_connection_pads)
 
-        self._set_options_connection_pads()
-
+        try:
+            self._set_options_connection_pads()
+        except Exception as e:
+            raise Exception(
+                f"Unable to create connection pads using given parameters: {options_connection_pads}.\n\n If given parameters is None, check to make sure you don't have any invalid child parameters in your connection_pads parameter.\n\n If you don't want any pads, ensure neither options_connection_pads nor options[connection_pads] are parameters\n\n Exception is: {e} "
+            )
         if make:
             self.rebuild()
 
