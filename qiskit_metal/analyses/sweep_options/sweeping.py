@@ -92,32 +92,37 @@ class Sweeping():
 
         return option_path, a_value, 0
 
-    def handle_eignmode_setup(self, a_hfss: QHFSSRenderer, setup_args: Dict):
-        """User can pass arguments for method add_eigenmode_setup().  If not passed, use the options in 
-        HFSS default_options.
+    def edit_eigenmode_setup(self, a_hfss: QHFSSRenderer, setup_args: Dict):
+        """User can pass arguments for method eigenmode setup.  If not passed, use the options in 
+        HFSS default_options. 
+
+        Assume: Error checking has occurred for existence of Ansys, project, 
+                and HFSS eigenmode design has been connected to pinfo.
+        
 
         Args:
             a_hfss (QHFSSRenderer): Reference to instantiated  renderer to HFSS.
             setup_args (Dict): a Dict 
+                The possible keys used in setup_args.
+                name (str, optional): Name of eigenmode setup. Defaults to "Setup".
+                min_freq_ghz (int, optional): Minimum frequency in GHz. Defaults to 1.
+                n_modes (int, optional): Number of modes. Defaults to 1.
+                max_delta_f (float, optional): Maximum difference in freq between consecutive passes. Defaults to 0.5.
+                max_passes (int, optional): Maximum number of passes. Defaults to 10.
+                pct_refinement (int, optional): Percent refinement. Defaults to 30.
+                basis_order (int, optional): Basis order. Defaults to -1.
         """
-        '''
-                Args:
-            name (str, optional): Name of eigenmode setup. Defaults to "Setup".
-            min_freq_ghz (int, optional): Minimum frequency in GHz. Defaults to 1.
-            n_modes (int, optional): Number of modes. Defaults to 1.
-            max_delta_f (float, optional): Maximum difference in freq between consecutive passes. Defaults to 0.5.
-            max_passes (int, optional): Maximum number of passes. Defaults to 10.
-            min_passes (int, optional): Minimum number of passes. Defaults to 1.
-            min_converged (int, optional): Minimum number of converged passes. Defaults to 1.
-            pct_refinement (int, optional): Percent refinement. Defaults to 30.
-            basis_order (int, optional): Basis order. Defaults to -1.
-        '''
+
         if setup_args.name is None:
             # Give a new name to use.
             setup_args.name = "Sweep_em_setup"
 
-        a_hfss.add_eigenmode_setup(**setup_args)
+        # If setup_args.name is not already in project, a new one will be
+        # added with defaults from HFSS default_options.
         a_hfss.activate_eigenmode_setup(setup_args.name)
+
+        # Update the Setup by using the key/values from setup_args.
+        a_hfss.edit_eigenmode_setup(setup_args)
 
     def sweep_one_option_get_eigenmode_solution_data(
             self,
@@ -139,7 +144,7 @@ class Sweeping():
             leave_last_design (bool) : In HFSS, after the last sweep, should the design be cleared?
             endcaps_render (list): Identify which kind of pins. 
                                     Follow details from renderer QAnsysRenderer.render_design.
-            setup_args (Dict): Hold the arguments for  add_eigenmode_setup() as  key/values to pass to Ansys.  
+            setup_args (Dict): Hold the arguments for  Hfss eigenmode setup() as  key/values to pass to Ansys.  
                                 If None, default Setup will be used.
             leave_last_design (bool) : In HFSS, after the last sweep, should the design be cleared?
             design_name (str, optional):  Name of HFSS_design to use in project. Defaults to "Sweep_Eigenmode".
@@ -174,7 +179,7 @@ class Sweeping():
 
         a_hfss.clean_active_design()
 
-        self.handle_eignmode_setup(a_hfss, setup_args)
+        self.edit_eigenmode_setup(a_hfss, setup_args)
 
         len_sweep = len(option_sweep) - 1
 
@@ -192,7 +197,8 @@ class Sweeping():
                 selection=qcomp_render,
                 open_pins=endcaps_render)  #Render the items chosen
 
-            a_hfss.analyze_setup("Setup")  #Analyze said solution setup.
+            a_hfss.analyze_setup(
+                a_hfss.pinfo.setup.name)  #Analyze said solution setup.
             setup = a_hfss.pinfo.setup
             solution_name = setup.solution_name
             all_solutions = setup.get_solutions()
@@ -203,8 +209,8 @@ class Sweeping():
             sweep_values['option_name'] = option_path[-1]
             sweep_values['frequency'] = freqs
             sweep_values['kappa_over_2pis'] = kappa_over_2pis
-            quality_factor = self.get_quality_factor(freqs, kappa_over_2pis)
-            sweep_values['quality_factor'] = quality_factor
+            sweep_values['quality_factor'] = self.get_quality_factor(
+                freqs, kappa_over_2pis)
             all_sweep[item] = sweep_values
 
             #Decide if need to clean the design.
@@ -238,7 +244,7 @@ class Sweeping():
 
         # Asssume both are lists or None since method:  eigenmodes() in pyEPR returns a list or None.
         if len(freqs) == len(kappa_over_2pis):
-            quailty_factor = [
+            quality_factor = [
                 float(ff) / float(kk) for ff, kk in zip(freqs, kappa_over_2pis)
             ]
             return quality_factor
@@ -246,7 +252,7 @@ class Sweeping():
             self.design.logger.warning(
                 'The Quality factor not calculated since size of freqs and kappa_over_2pis are not identical'
             )
-            return quailty_factor
+            return quality_factor
 
     def sweep_one_option_get_capacitance_matrix(
             self,
