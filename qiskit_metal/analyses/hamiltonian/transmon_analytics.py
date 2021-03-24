@@ -20,15 +20,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 """
-This code calculate the energy eigenvalues of the transmon qubit cooper pair box
-as a function of the offset charge. The first several energy levels are plotted
-as a function of the offset charge. 
+This code calculates the energy eigenvalues of the transmon qubit cooper pair box
+as a function of the offset charge and plots the corresponding results. 
 
 Key References:
-    - J. Koch et al. "Charge-insensitive qubit design derived from the Cooper pair box", 
+    - J. Koch et al. "Charge-insensitive qubit design derived from the Cooper pair box"
     Phys. Rev. A. 76, 042319 (2007). 
 """
-
 
 def kidx_raw(m, my_ng):
     """
@@ -128,3 +126,4 @@ plt.plot(ng_periodic, E2_periodic, 'b')  # m=2
 plt.plot(ng_periodic, E3_periodic, 'm')  # m=3
 plt.xlabel("Offset Charge [ng]")
 plt.ylabel("Energy E_m[ng]")
+
