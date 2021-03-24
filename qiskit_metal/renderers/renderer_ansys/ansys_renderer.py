@@ -156,11 +156,13 @@ class QAnsysRenderer(QRenderer):
     # Keeping this as a cls dict so could be edited before renderer is instantiated.
     # To update component.options junction table.
 
-    element_table_data = dict(junction=dict(
-        inductance=default_options['Lj'],
-        capacitance=default_options['Cj'],
-        resistance=default_options['_Rj'],
-        mesh_kw_jj=parse_units(default_options['max_mesh_length_jj'])))
+    element_table_data = dict(path=dict(wire_bonds=False),
+                              junction=dict(
+                                  inductance=default_options['Lj'],
+                                  capacitance=default_options['Cj'],
+                                  resistance=default_options['_Rj'],
+                                  mesh_kw_jj=parse_units(
+                                      default_options['max_mesh_length_jj'])))
 
     def __init__(self,
                  design: 'QDesign',
