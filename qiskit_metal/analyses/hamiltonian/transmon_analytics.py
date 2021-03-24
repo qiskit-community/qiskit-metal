@@ -16,15 +16,32 @@
 #pylint: disable-msg=consider-using-enumerate
 
 from scipy.special import mathieu_a
-#from math import *
-#from sympy import mathieuc, mathieus
 import numpy as np
 import matplotlib.pyplot as plt
 
+"""
+This code calculate the energy eigenvalues of the transmon qubit cooper pair box
+as a function of the offset charge. The first several energy levels are plotted
+as a function of the offset charge. 
 
-# this function calculates the index passed to the Mathieu characteristic function
-# in the calculation of the eigenvalues for a given offset charge (ng) and energy level (m)
+Key References:
+    - J. Koch et al. "Charge-insensitive qubit design derived from the Cooper pair box", 
+    Phys. Rev. A. 76, 042319 (2007). 
+"""
+
+
 def kidx_raw(m, my_ng):
+    """
+    This function calculates the integers which correct sort the eigenstates and eigenenergies
+    of the solution to Mathieu's equation. 
+
+        Args:
+            m (int): The energy level of the qubit (m=0,1,2,3,etc.)
+            my_ng (float): the offset charge of the Josephjunction island (in units of 2e)
+
+        Returns:
+            float: the calculated index 
+    """
     if my_ng == 0:
         return m + 1.0 - ((m + 1.0) % 2.0)
 
@@ -43,10 +60,20 @@ RATIO = 1.0
 E_C = 1.0
 
 
-# this function calculates the eigenvalue (energy) for a given offset charge (ng)
-# and energy level (m). Note that the scipy implementation of Mathieu characteristic
-# values can only accept integer values of index.
 def transmon_eigenvalue(m, my_ng):
+    """
+    This function calculate the energy eigenvalue of the transmon qubit for a given
+    energy level (m) and offset charge (my_ng). The input values are first used to
+    calculate the index using the function defined above, and then the calculated
+    index is used to calculate the energy eigenvalue using Mathieu's characteristic values. 
+
+        Args:
+            m (int): The energy level of the qubit (m=0,1,2,3,etc.)
+            ng (float): the offset charge of the Josephjunction island (in units of 2e)
+
+        Returns:
+            float: the calculated energy eigenvalue. 
+    """
     index = kidx(m, my_ng)
     return (E_C) * mathieu_a(index, -0.5 * RATIO)
 
@@ -70,7 +97,7 @@ E1_periodic = [None] * 9
 E2_periodic = [None] * 9
 E3_periodic = [None] * 9
 
-# calculate the energies for m=0,1,2
+# calculate the energies for m=0,1,2 at each value of offset charge
 for i in ng:
     E0.append(transmon_eigenvalue(0, i))
     E1.append(transmon_eigenvalue(1, i))
