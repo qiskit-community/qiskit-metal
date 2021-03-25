@@ -164,12 +164,6 @@ For other OS users, this setup might cause `pyqode.qt` to be upgraded automatica
 
 If Windows users continue to experience GUI or other issues, try rerunning `python setup.py install` or creating a new, pristine conda environment as per above instructions. Pay particular attention to the python version, which must remain 3.7.8 for as long as qiskit-metal utilizes pyqode.
 
-
-#### xcrun: error: invalid active developer path (/Library/Developer/CommandLineTools), missing xcrun at /Library/Developer/CommandLineTools/usr/bin/xcrun
-
-If on a Mac, the Command Line Tools package for XCode should be already installed.  
-If not, they can be installed with: `xcode-select —install`
-
 #### Jupyter Lab
 
 If you can not start Jupyter Lab in the new environment.
