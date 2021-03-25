@@ -305,6 +305,126 @@ class QQ3DRenderer(QAnsysRenderer):
                     solution_order=solution_order,
                     solver_type=solver_type)
 
+    def edit_q3d_setup(self, setup_args: Dict):
+        """User can pass key/values to edit the setup for active q3d setup.  
+
+        Args:
+            setup_args (Dict): a Dict with possible keys/values.
+                * freq_ghz (float, optional): Frequency in GHz. Defaults to 5..
+                * name (str, optional): Name of solution setup. Defaults to "Setup".
+                * max_passes (int, optional): Maximum number of passes. Defaults to 15.
+                * min_passes (int, optional): Minimum number of passes. Defaults to 2.
+                * percent_error (float, optional): Error tolerance as a percentage. Defaults to 0.5.
+
+                Note, that these 7 arguments are currently NOT implemented:
+                Ansys API named EditSetup requires all arguments to be passed, but
+                presently have to way to read all of the setup.  
+                Also, self.pinfo.setup does not have all the @property variables 
+                used for Setup. 
+                * save_fields (bool, optional): Whether or not to save fields. Defaults to False.
+                * enabled (bool, optional): Whether or not setup is enabled. Defaults to True.
+                * min_converged_passes (int, optional): Minimum number of converged passes. Defaults to 2.
+                * percent_refinement (int, optional): Refinement as a percentage. Defaults to 30.
+                * auto_increase_solution_order (bool, optional): Whether or not to increase solution order automatically. Defaults to True.
+                * solution_order (str, optional): Solution order. Defaults to 'High'.
+                * solver_type (str, optional): Solver type. Defaults to 'Iterative'.
+        """
+
+        if self.pinfo:
+            if self.pinfo.project:
+                if self.pinfo.design:
+                    if self.pinfo.design.solution_type == 'Q3D':
+                        if self.pinfo.setup_name != setup_args.name:
+                            self.design.logger.warning(
+                                f'The name of active setup={self.pinfo.setup_name} does not match'
+                                f'the name of of setup_args.name={setup_args.name}. '
+                                f'To use this method, activate the desired Setup before editing it. '
+                                f'The setup_args was not used to update the active Setup.'
+                            )
+                            return
+
+                        for key, value in setup_args.items():
+                            if key == "name":
+                                continue  #Checked for above.
+                            if key == "freq_ghz":
+                                if not isinstance(value, float):
+                                    self.logger.warning(
+                                        'The value for min_freq_ghz should be an int. '
+                                        f'The present value is {value}.')
+                                else:
+                                    ### This EditSetup works if we change all of the arguments
+                                    # at the same time.  We don't always want to change all of them.
+                                    # Need to have a way to read all of the arguments to
+                                    # avoid overwriting arguments. Presently, will use
+                                    # the variables set in pyEPR with @property.
+                                    # args_editsetup = [
+                                    #     f"NAME:{setup_args.name}",
+                                    #     "AdaptiveFreq:=", f"{value}GHz",
+                                    #     "SaveFields:=", False, "Enabled:=",
+                                    #     True,
+                                    #     [
+                                    #         "NAME:Cap", "MaxPass:=", 15,
+                                    #         "MinPass:=", 2, "MinConvPass:=", 2,
+                                    #         "PerError:=", 0.5, "PerRefine:=",
+                                    #         30, "AutoIncreaseSolutionOrder:=",
+                                    #         True, "SolutionOrder:=", "High",
+                                    #         "Solver Type:=", "Iterative"
+                                    #     ]
+                                    # ]
+                                    # self.pinfo.design._setup_module.EditSetup(
+                                    #     setup_args.name, args_editsetup)
+                                    self.pinfo.setup.frequency = value
+                                    continue
+                            if key == 'max_passes':
+                                if not isinstance(value, int):
+                                    self.logger.warning(
+                                        'The value for max_passes should be an int. '
+                                        f'The present value is {value}.')
+                                else:
+                                    self.pinfo.setup.max_pass = value
+                                    continue
+
+                            if key == 'min_passes':
+                                if not isinstance(value, int):
+                                    self.logger.warning(
+                                        'The value for min_passes should be an int. '
+                                        f'The present value is {value}.')
+                                else:
+                                    self.pinfo.setup.min_pass = value
+                                    continue
+
+                            if key == 'percent_error':
+                                if not isinstance(value, float):
+                                    self.logger.warning(
+                                        'The value for percent_error should be a float. '
+                                        f'The present value is {value}.')
+                                else:
+                                    self.pinfo.setup.pct_error = value
+                                    continue
+
+                            self.design.logger.warning(
+                                f'In setup_args, key={key}, value={value} is not in pinfo.setup, '
+                                'the key/value pair from setup_args not added to Setup in Ansys.'
+                            )
+
+                    else:
+                        self.logger.warning(
+                            'The design does not have solution type as "Q3D". The Setup not updated.'
+                        )
+                else:
+                    self.logger.warning(
+                        'A design is not in active project. The Setup not updated.'
+                    )
+            else:
+                self.logger.warning(
+                    "Project not available, have you opened a project? Setup not updated."
+                )
+        else:
+            self.logger.warning(
+                "Have you run connect_ansys()?  "
+                "Cannot find a reference to Ansys in QRenderer. Setup not updated. "
+            )
+
     def analyze_setup(self, setup_name: str):
         """
         Run a specific solution setup in Ansys Q3D.

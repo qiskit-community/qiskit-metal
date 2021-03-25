@@ -92,37 +92,57 @@ class Sweeping():
 
         return option_path, a_value, 0
 
-    def edit_eigenmode_setup(self, a_hfss: QHFSSRenderer, setup_args: Dict):
-        """User can pass arguments for method eigenmode setup.  If not passed, use the options in 
-        HFSS default_options. 
+    def edit_eigenmode_setup(self, setup_args: Dict) -> int:
+        """User can pass arguments for method eigenmode setup.  If not passed, 
+        method will use the options in HFSS default_options. The name of setup will 
+        be "Sweep_em_setup".  If a setup named "Sweep_em_setup" exists in the project, 
+        it will be deleted, and a new setup will be added with the arguments from setup_args. 
 
-        Assume: Error checking has occurred for existence of Ansys, project, 
+        Assume: Error checking has already occurred for existence of Ansys, project, 
                 and HFSS eigenmode design has been connected to pinfo.
-        
 
         Args:
-            a_hfss (QHFSSRenderer): Reference to instantiated  renderer to HFSS.
-            setup_args (Dict): a Dict 
+            setup_args (Dict):  a Dict 
                 The possible keys used in setup_args.
-                name (str, optional): Name of eigenmode setup. Defaults to "Setup".
-                min_freq_ghz (int, optional): Minimum frequency in GHz. Defaults to 1.
-                n_modes (int, optional): Number of modes. Defaults to 1.
-                max_delta_f (float, optional): Maximum difference in freq between consecutive passes. Defaults to 0.5.
-                max_passes (int, optional): Maximum number of passes. Defaults to 10.
-                pct_refinement (int, optional): Percent refinement. Defaults to 30.
-                basis_order (int, optional): Basis order. Defaults to -1.
+                * min_freq_ghz (int, optional): Minimum frequency in GHz. Defaults to 1.
+                * n_modes (int, optional): Number of modes. Defaults to 1.
+                * max_delta_f (float, optional): Maximum difference in freq between consecutive passes. Defaults to 0.5.
+                * max_passes (int, optional): Maximum number of passes. Defaults to 10.
+                * min_passes (int, optional): Minimum number of passes. Defaults to 1.
+                * min_converged (int, optional): Minimum number of converged passes. Defaults to 1.
+                * pct_refinement (int, optional): Percent refinement. Defaults to 30.
+                * basis_order (int, optional): Basis order. Defaults to -1.
+
+        Returns:
+            int: The return code of status.
+
+                *0 Setup of "Sweep_em_setup" added to design with setup_args. 
+                *1 Look at warning message to determine which argument was of the wrong data type.
         """
 
-        if setup_args.name is None:
-            # Give a new name to use.
-            setup_args.name = "Sweep_em_setup"
+        a_hfss = self.design.renderers.hfss
+        setup_args.name = "Sweep_em_setup"
+        a_hfss.pinfo.design.delete_setup(setup_args.name)
 
-        # If setup_args.name is not already in project, a new one will be
-        # added with defaults from HFSS default_options.
+        #####
+        #Need to add error checking for setup_args.
+        #Give a non-zero return code, and do not do the sweep.
+        # End gracefully.
+        a_hfss.add_eigenmode_setup(**setup_args)
         a_hfss.activate_eigenmode_setup(setup_args.name)
 
-        # Update the Setup by using the key/values from setup_args.
-        a_hfss.edit_eigenmode_setup(setup_args)
+    def edit_q3d_setup(self, setup_args):
+        a_q3d = self.design.renderers.q3d
+        setup_args.name = "Sweep_q3d_setup"
+        a_q3d.pinfo.design.delete_setup(setup_args.name)
+
+        #####
+        #Need to add error checking for setup_args.
+        #Give a non-zero return code, and do not do the sweep.
+        # End gracefully.
+
+        a_q3d.add_q3d_setup(**setup_args)
+        a_q3d.activate_q3d_setup(setup_args.name)
 
     def sweep_one_option_get_eigenmode_solution_data(
             self,
@@ -174,12 +194,13 @@ class Sweeping():
             return all_sweep, check_result
 
         a_hfss = self.design.renderers.hfss
+        # Assume Ansys is open, with a project open.
         a_hfss.connect_ansys()
         a_hfss.activate_eigenmode_design(design_name)
 
         a_hfss.clean_active_design()
 
-        self.edit_eigenmode_setup(a_hfss, setup_args)
+        self.edit_eigenmode_setup(setup_args)
 
         len_sweep = len(option_sweep) - 1
 
@@ -261,9 +282,10 @@ class Sweeping():
             option_sweep: list,
             qcomp_render: list,
             endcaps_render: list,
+            setup_args: Dict = None,
             leave_last_design: bool = True,
             design_name: str = "Sweep_Capacitance") -> Tuple[dict, int]:
-        """Ansys must be open with inserted project.  A design, "Q3D Extractor Design", 
+        """Ansys must be open with an inserted project.  A design, "Q3D Extractor Design", 
         will be inserted by this method. 
 
         Args:
@@ -272,6 +294,8 @@ class Sweeping():
             option_sweep (list): Each entry in the list is a value for option_name.
             qcomp_render (list): The component to render to Q3D. 
             endcaps_render (list): Identify which kind of pins. Follow the details from renderer QAnsysRenderer.render_design.
+            setup_args (Dict): Hold the arguments for  Q3d setup() as  key/values to pass to Ansys.  
+                        If None, default Setup will be used.
             leave_last_design (bool) : In Q3d, after the last sweep, should the design be cleared?
             design_name(str): Name of q3d_design to use in project.
 
@@ -297,12 +321,13 @@ class Sweeping():
             return all_sweep, check_result
 
         a_q3d = self.design.renderers.q3d
+        # Assume Ansys is open, with a project open.
         a_q3d.connect_ansys()
         a_q3d.activate_q3d_design(design_name)
 
         a_q3d.clean_active_design()
 
-        a_q3d.add_q3d_setup()  # Add a solution setup.
+        self.edit_q3d_setup(setup_args)  # Add a solution setup.
 
         len_sweep = len(option_sweep) - 1
 

@@ -723,11 +723,7 @@ class QHFSSRenderer(QAnsysRenderer):
         if self.pinfo:
             if self.pinfo.project:
                 if self.pinfo.design:
-                    oDesktop = self.pinfo.design.parent.parent._desktop  # self.pinfo.design does not work
-                    oProject = oDesktop.SetActiveProject(
-                        self.pinfo.project_name)
-                    oDesign = oProject.GetActiveDesign()
-                    if oDesign.GetSolutionType() == 'Eigenmode':
+                    if self.pinfo.design.solution_type == 'Eigenmode':
                         if self.pinfo.setup_name != setup_args.name:
                             self.design.logger.warning(
                                 f'The name of active setup={self.pinfo.setup_name} does not match'
@@ -738,13 +734,16 @@ class QHFSSRenderer(QAnsysRenderer):
                             return
 
                         for key, value in setup_args.items():
+                            if key == "name":
+                                continue  #Checked for above.
                             if key == "n_modes":
                                 #EditSetup  not documented, this is just attempt to use.
                                 #args_editsetup = ["NAME:" + setup_args.name,["NumModes:=", setup_args.n_modes]]
                                 #self.pinfo.setup._setup_module.EditSetup([setup_args.name, args_editsetup])
-                                if value < 0 or value > 20:
+                                if value < 0 or value > 20 or not isinstance(
+                                        value, int):
                                     self.logger.warning(
-                                        f'Value of n_modes={value} must be from 1 to 20.'
+                                        f'Value of n_modes={value} must be integer from 1 to 20.'
                                     )
                                 else:
                                     self.pinfo.setup.n_modes = value
