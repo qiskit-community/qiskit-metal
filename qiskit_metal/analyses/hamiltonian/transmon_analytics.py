@@ -14,31 +14,32 @@
 
 #pylint: disable-msg=import-error
 #pylint: disable-msg=consider-using-enumerate
+"""
+This code calculates the energy eigenvalues of the transmon qubit cooper pair box
+as a function of the offset charge and plots the corresponding results.
+
+Key References:
+    - J. Koch et al. "Charge-insensitive qubit design derived from the Cooper pair box"
+      Phys. Rev. A. 76, 042319 (2007).
+
+"""
 
 from scipy.special import mathieu_a
 import numpy as np
 import matplotlib.pyplot as plt
 
-"""
-This code calculates the energy eigenvalues of the transmon qubit cooper pair box
-as a function of the offset charge and plots the corresponding results. 
-
-Key References:
-    - J. Koch et al. "Charge-insensitive qubit design derived from the Cooper pair box"
-    Phys. Rev. A. 76, 042319 (2007). 
-"""
 
 def kidx_raw(m, my_ng):
     """
     This function calculates the integers which correct sort the eigenstates and eigenenergies
-    of the solution to Mathieu's equation. 
+    of the solution to Mathieu's equation.
 
         Args:
             m (int): The energy level of the qubit (m=0,1,2,3,etc.)
             my_ng (float): the offset charge of the Josephjunction island (in units of 2e)
 
         Returns:
-            float: the calculated index 
+            float: the calculated index
     """
     if my_ng == 0:
         return m + 1.0 - ((m + 1.0) % 2.0)
@@ -63,14 +64,14 @@ def transmon_eigenvalue(m, my_ng):
     This function calculate the energy eigenvalue of the transmon qubit for a given
     energy level (m) and offset charge (my_ng). The input values are first used to
     calculate the index using the function defined above, and then the calculated
-    index is used to calculate the energy eigenvalue using Mathieu's characteristic values. 
+    index is used to calculate the energy eigenvalue using Mathieu's characteristic values.
 
         Args:
             m (int): The energy level of the qubit (m=0,1,2,3,etc.)
             ng (float): the offset charge of the Josephjunction island (in units of 2e)
 
         Returns:
-            float: the calculated energy eigenvalue. 
+            float: the calculated energy eigenvalue.
     """
     index = kidx(m, my_ng)
     return (E_C) * mathieu_a(index, -0.5 * RATIO)
@@ -126,4 +127,3 @@ plt.plot(ng_periodic, E2_periodic, 'b')  # m=2
 plt.plot(ng_periodic, E3_periodic, 'm')  # m=3
 plt.xlabel("Offset Charge [ng]")
 plt.ylabel("Energy E_m[ng]")
-
