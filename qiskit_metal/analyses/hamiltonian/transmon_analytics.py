@@ -136,6 +136,16 @@ for i in range(len(E0_periodic)):
         E3_periodic[i] = E3_periodic[i - 2]
         
 def plot_eigenvalues(): 
+    """
+    This function actually creates the plot(s) of eigenvalues as a function of
+    offset charge. No arguments need to be passed.
+
+        Args:
+            None.
+
+        Returns:
+            A plot of the eigenvalues as a function of offset charge.
+    """
     # plot the PERIODIC eigen energies between (-2.0, 2.0)
     plt.plot(ng_periodic, E0_periodic, 'k')  # m=0
     plt.plot(ng_periodic, E1_periodic, 'r')  # m=1
