@@ -102,8 +102,7 @@ class Sweeping():
                 and HFSS eigenmode design has been connected to pinfo.
 
         Args:
-            setup_args (Dict):  a Dict 
-                The possible keys used in setup_args.
+            setup_args (Dict):  Maximum  keys used in setup_args.
                 * min_freq_ghz (int, optional): Minimum frequency in GHz. Defaults to 1.
                 * n_modes (int, optional): Number of modes. Defaults to 1.
                 * max_delta_f (float, optional): Maximum difference in freq between consecutive passes. Defaults to 0.5.
@@ -115,34 +114,202 @@ class Sweeping():
 
         Returns:
             int: The return code of status.
-
                 *0 Setup of "Sweep_em_setup" added to design with setup_args. 
                 *1 Look at warning message to determine which argument was of the wrong data type.
+                *2 Look at warning message, a key in setup_args that was not expected.
         """
 
         a_hfss = self.design.renderers.hfss
         setup_args.name = "Sweep_em_setup"
         a_hfss.pinfo.design.delete_setup(setup_args.name)
 
-        #####
-        #Need to add error checking for setup_args.
-        #Give a non-zero return code, and do not do the sweep.
-        # End gracefully.
+        for key, value in setup_args.items():
+            if key == "name":
+                continue  #For this method, "Sweep_em_setup" used.
+            if key == "min_freq_ghz":
+                if isinstance(value, int) or value is None:
+                    continue
+                else:
+                    self.warning_for_setup(setup_args, key, "int")
+                    return 1
+            if key == "n_modes":
+                if isinstance(value, int) or value is None:
+                    continue
+                else:
+                    self.warning_for_setup(setup_args, key, "int")
+                    return 1
+            if key == "max_delta_f":
+                if isinstance(value, float) or value is None:
+                    continue
+                else:
+                    self.warning_for_setup(setup_args, key, "float")
+                    return 1
+            if key == 'max_passes':
+                if isinstance(value, int) or value is None:
+                    continue
+                else:
+                    self.warning_for_setup(setup_args, key, "int")
+                    return 1
+            if key == 'min_passes':
+                if isinstance(value, int) or value is None:
+                    continue
+                else:
+                    self.warning_for_setup(setup_args, key, "int")
+                    return 1
+            if key == 'min_converged':
+                if isinstance(value, int) or value is None:
+                    continue
+                else:
+                    self.warning_for_setup(setup_args, key, "int")
+                    return 1
+            if key == 'basis_order':
+                if isinstance(value, int) or value is None:
+                    continue
+                else:
+                    self.warning_for_setup(setup_args, key, "int")
+                    return 1
+            if key == 'pct_refinement':
+                if isinstance(value, int) or value is None:
+                    continue
+                else:
+                    self.warning_for_setup(setup_args, key, "int")
+                    return 1
+
+            self.design.logger.warning(
+                f'The key={key} is not expected.  Do you have a typo?  '
+                f'The setup was not added to design. Sweep will not be implemented.'
+            )
+            return 2
+
         a_hfss.add_eigenmode_setup(**setup_args)
         a_hfss.activate_eigenmode_setup(setup_args.name)
+        return 0
 
-    def edit_q3d_setup(self, setup_args):
+    def warning_for_setup(self, setup_args: dict, key: str, data_type: str):
+        self.design.logger.warning(
+            f'The value for {key} should be a {data_type}. '
+            f'The present value is {setup_args[key]}.  Sweep will not be implemented.'
+        )
+
+    def edit_q3d_setup(self, setup_args: Dict) -> int:
+        """User can pass arguments for method q3d setup.  If not passed, 
+        method will use the options in Q3D renderer default_options. The name of setup will 
+        be "Sweep_q3d_setup".  If a setup named "Sweep_q3d_setup" exists in the project, 
+        it will be deleted, and a new setup will be added with the arguments from setup_args. 
+
+        Assume: Error checking has already occurred for existence of Ansys, project, 
+                and Q3d Extractor design has been connected to pinfo.
+
+        Args:
+            setup_args (Dict): Maximum  keys used in setup_args.
+                * freq_ghz (float, optional): Frequency in GHz. Defaults to 5..
+                * name (str, optional): Name of solution setup. Defaults to "Setup".
+                * max_passes (int, optional): Maximum number of passes. Defaults to 15.
+                * min_passes (int, optional): Minimum number of passes. Defaults to 2.
+                * percent_error (float, optional): Error tolerance as a percentage. Defaults to 0.5.
+                * save_fields (bool, optional): Whether or not to save fields. Defaults to False.
+                * enabled (bool, optional): Whether or not setup is enabled. Defaults to True.
+                * min_converged_passes (int, optional): Minimum number of converged passes. Defaults to 2.
+                * percent_refinement (int, optional): Refinement as a percentage. Defaults to 30.
+                * auto_increase_solution_order (bool, optional): Whether or not to increase solution order automatically. Defaults to True.
+                * solution_order (str, optional): Solution order. Defaults to 'High'.
+                * solver_type (str, optional): Solver type. Defaults to 'Iterative'.
+
+        Returns:
+            int:  The return code of status.
+                *0 Setup of "Sweep_q3d_setup" added to design with setup_args. 
+                *1 Look at warning message to determine which argument was of the wrong data type.
+                *2 Look at warning message, a key in setup_args that was not expected.
+        """
         a_q3d = self.design.renderers.q3d
         setup_args.name = "Sweep_q3d_setup"
         a_q3d.pinfo.design.delete_setup(setup_args.name)
 
-        #####
-        #Need to add error checking for setup_args.
-        #Give a non-zero return code, and do not do the sweep.
-        # End gracefully.
+        for key, value in setup_args.items():
+            if key == "name":
+                continue  #For this method, "Sweep_q3d_setup" used.
+            if key == "freq_ghz":
+                if isinstance(value, float) or value is None:
+                    continue
+                else:
+                    self.warning_for_setup(setup_args, key, "float")
+                    return 1
+            if key == 'max_passes':
+                if isinstance(value, int) or value is None:
+                    continue
+                else:
+                    self.warning_for_setup(setup_args, key, "int")
+                    return 1
+            if key == 'min_passes':
+                if isinstance(value, int) or value is None:
+                    continue
+                else:
+                    self.warning_for_setup(setup_args, key, "int")
+                    return 1
+            if key == 'percent_error':
+                if isinstance(value, float) or value is None:
+                    continue
+                else:
+                    self.warning_for_setup(setup_args, key, "float")
+                    return 1
+            if key == 'save_fields':
+                if isinstance(value, bool) or value is None:
+                    continue
+                else:
+                    self.warning_for_setup(setup_args, key, "bool")
+                    return 1
+            if key == 'enabled':
+                if isinstance(value, bool) or value is None:
+                    continue
+                else:
+                    self.warning_for_setup(setup_args, key, "bool")
+                    return 1
+            if key == 'min_converged_passes':
+                if isinstance(value, int) or value is None:
+                    continue
+                else:
+                    self.warning_for_setup(setup_args, key, "int")
+                    return 1
+            if key == 'percent_refinement':
+                if isinstance(value, int) or value is None:
+                    continue
+                else:
+                    self.warning_for_setup(setup_args, key, "int")
+                    return 1
+            if key == 'auto_increase_solution_order':
+                if isinstance(value, bool) or value is None:
+                    continue
+                else:
+                    self.warning_for_setup(setup_args, key, "bool")
+                    return 1
+            if key == 'solution_order':
+                if (isinstance(value, str) and
+                        value in ["High", "Normal", "Higher", "Highest"
+                                 ]) or value is None:
+                    continue
+                else:
+                    self.design.logger.warning(
+                        f'The value for solution_order should be a str '
+                        f'in ["High", "Normal", "Higher", "Highest"]. '
+                        f'The present value is {value}.  Sweep will not be implemented.'
+                    )
+                    return 1
+            if key == 'solver_type':
+                if isinstance(value, str) or value is None:
+                    continue
+                else:
+                    self.warning_for_setup(setup_args, key, "str")
+                    return 1
+
+            self.design.logger.warning(
+                f'The key={key} is not expected.  Do you have a typo?  '
+                f'The setup was not added to design. Sweep will not be implemented.'
+            )
+            return 2
 
         a_q3d.add_q3d_setup(**setup_args)
         a_q3d.activate_q3d_setup(setup_args.name)
+        return 0
 
     def sweep_one_option_get_eigenmode_solution_data(
             self,
@@ -183,7 +350,7 @@ class Sweeping():
             * 5 last key in option_name is not in dict.
             * 6 project not in app
             * 7 design not in app
-
+            * 8 setup not implement, check the setup_args. 
         """
 
         #Dict of all swept information.
@@ -200,7 +367,11 @@ class Sweeping():
 
         a_hfss.clean_active_design()
 
-        self.edit_eigenmode_setup(setup_args)
+        if self.edit_eigenmode_setup(setup_args) != 0:
+            self.design.logger.warning(
+                f'The setup was not implemented, please look at warning messages.'
+            )
+            return all_sweep, 8
 
         len_sweep = len(option_sweep) - 1
 
@@ -221,9 +392,9 @@ class Sweeping():
             a_hfss.analyze_setup(
                 a_hfss.pinfo.setup.name)  #Analyze said solution setup.
             setup = a_hfss.pinfo.setup
-            solution_name = setup.solution_name
+            #solution_name = setup.solution_name
             all_solutions = setup.get_solutions()
-            setup_names = all_solutions.list_variations()
+            #setup_names = all_solutions.list_variations()
             freqs, kappa_over_2pis = all_solutions.eigenmodes()
 
             sweep_values = dict()
@@ -311,6 +482,7 @@ class Sweeping():
             * 5 last key in option_name is not in dict.
             * 6 project not in app
             * 7 design not in app
+            * 8 setup not implement, check the setup_args. 
            
         """
         #Dict of all swept information.
@@ -327,7 +499,12 @@ class Sweeping():
 
         a_q3d.clean_active_design()
 
-        self.edit_q3d_setup(setup_args)  # Add a solution setup.
+        # Add a solution setup.
+        if self.edit_q3d_setup(setup_args) != 0:
+            self.design.logger.warning(
+                f'The setup was not implemented, please look at warning messages.'
+            )
+            return all_sweep, 8
 
         len_sweep = len(option_sweep) - 1
 

@@ -318,7 +318,7 @@ class QQ3DRenderer(QAnsysRenderer):
 
                 Note, that these 7 arguments are currently NOT implemented:
                 Ansys API named EditSetup requires all arguments to be passed, but
-                presently have to way to read all of the setup.  
+                presently have no way to read all of the setup.  
                 Also, self.pinfo.setup does not have all the @property variables 
                 used for Setup. 
                 * save_fields (bool, optional): Whether or not to save fields. Defaults to False.
