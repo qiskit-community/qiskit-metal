@@ -28,6 +28,8 @@ from scipy.special import mathieu_a
 import numpy as np
 import matplotlib.pyplot as plt
 
+__all__ = ['kidx_raw', 'kidx', 'transmon_eigenvalue']
+
 
 def kidx_raw(m, my_ng):
     """
@@ -51,16 +53,16 @@ def kidx_raw(m, my_ng):
 def kidx(m, my_ng):
     """
     This function is a placeholder which performs an additional modulo operation
-    with an offset of ng=0.5, but is not necessary when only integer values of 
-    kidxRAW(m, my_ng) are used. If non-integer values of kidxRAW are used, then 
-    the modulo operation below needs to be updated to include the offset. 
+    with an offset of ng=0.5, but is not necessary when only integer values of
+    kidxRAW(m, my_ng) are used. If non-integer values of kidxRAW are used, then
+    the modulo operation below needs to be updated to include the offset.
 
         Args:
             m (int): The energy level of the qubit (m=0,1,2,3,etc.)
             ng (float): the offset charge of the Josephjunction island (in units of 2e)
 
         Returns:
-            float: the calculated energy eigenvalue, after an ng=0.5 offset. 
+            float: the calculated energy eigenvalue, after an ng=0.5 offset.
     """
     return kidx_raw(m, my_ng)
 
