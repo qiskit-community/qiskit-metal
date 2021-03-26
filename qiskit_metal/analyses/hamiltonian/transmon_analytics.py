@@ -28,7 +28,7 @@ from scipy.special import mathieu_a
 import numpy as np
 import matplotlib.pyplot as plt
 
-__all__ = ['kidx_raw', 'kidx', 'transmon_eigenvalue']
+__all__ = ['kidx_raw', 'kidx', 'transmon_eigenvalue', 'plot_eigenvalues']
 
 
 def kidx_raw(m, my_ng):
@@ -134,17 +134,15 @@ for i in range(len(E0_periodic)):
         E1_periodic[i] = E1_periodic[i - 2]
         E2_periodic[i] = E2_periodic[i - 2]
         E3_periodic[i] = E3_periodic[i - 2]
-        
-def plot_eigenvalues(): 
+
+
+def plot_eigenvalues():
     """
     This function actually creates the plot(s) of eigenvalues as a function of
     offset charge. No arguments need to be passed.
 
-        Args:
-            None.
-
-        Returns:
-            A plot of the eigenvalues as a function of offset charge.
+    Returns:
+        A plot of the eigenvalues as a function of offset charge.
     """
     # plot the PERIODIC eigen energies between (-2.0, 2.0)
     plt.plot(ng_periodic, E0_periodic, 'k')  # m=0
