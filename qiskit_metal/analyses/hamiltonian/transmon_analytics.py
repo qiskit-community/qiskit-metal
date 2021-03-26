@@ -134,11 +134,12 @@ for i in range(len(E0_periodic)):
         E1_periodic[i] = E1_periodic[i - 2]
         E2_periodic[i] = E2_periodic[i - 2]
         E3_periodic[i] = E3_periodic[i - 2]
-
-# plot the PERIODIC eigen energies between (-2.0, 2.0)
-plt.plot(ng_periodic, E0_periodic, 'k')  # m=0
-plt.plot(ng_periodic, E1_periodic, 'r')  # m=1
-plt.plot(ng_periodic, E2_periodic, 'b')  # m=2
-plt.plot(ng_periodic, E3_periodic, 'm')  # m=3
-plt.xlabel("Offset Charge [ng]")
-plt.ylabel("Energy E_m[ng]")
+        
+def plot_eigenvalues(): 
+    # plot the PERIODIC eigen energies between (-2.0, 2.0)
+    plt.plot(ng_periodic, E0_periodic, 'k')  # m=0
+    plt.plot(ng_periodic, E1_periodic, 'r')  # m=1
+    plt.plot(ng_periodic, E2_periodic, 'b')  # m=2
+    plt.plot(ng_periodic, E3_periodic, 'm')  # m=3
+    plt.xlabel("Offset Charge [ng]")
+    plt.ylabel("Energy E_m[ng]")
