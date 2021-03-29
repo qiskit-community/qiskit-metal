@@ -887,7 +887,7 @@ class QHFSSRenderer(QAnsysRenderer):
 
                     else:
                         self.logger.warning(
-                            'The design does not have solution type as "Eigenmode". The Setup not updated.'
+                            'The design does not have solution type as "Driven Modal". The Setup not updated.'
                         )
                 else:
                     self.logger.warning(
