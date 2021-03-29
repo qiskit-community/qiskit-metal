@@ -21,16 +21,12 @@ For other OS users, this setup might cause ``pyqode.qt`` to be upgraded automati
 
 If Windows users continue to experience GUI or other issues, try rerunning `python setup.py install` or creating a new, pristine conda environment as per above instructions. Pay particular attention to the python version, which must remain 3.7.8 for as long as qiskit-metal utilizes pyqode.
 
+**Why do I have an inactive developer path on MacOs?**
 
-**Why am I not able to start Jupyter Lab in the new environment?**
+If you are seeing: *xcrun: error: invalid active developer path (/Library/Developer/CommandLineTools), missing xcrun at /Library/Developer/CommandLineTools/usr/bin/xcrun* you may be missing the Command Line Tools.
 
-Based on: `this <https://anaconda.org/conda-forge/jupyterlab>`_, install Jupyter lab by
-
-``conda install -c conda-forge jupyterlab``
-
-Then change directory to top level of repository.
-
-``python -m pip install -e .``
+The Command Line Tools package for XCode should be already installed.
+If not, they can be installed with: `xcode-select —install`
 
 
 **Why can't qutip find my path?**
@@ -67,6 +63,16 @@ Then open the applicable settings.json in your VS Code. (See how to open command
    "terminal.integrated.env.osx": {
       "PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
       }
+
+**Why am I not able to start Jupyter Lab in the new environment?**
+
+Based on: `this <https://anaconda.org/conda-forge/jupyterlab>`_, install Jupyter lab by
+
+``conda install -c conda-forge jupyterlab``
+
+Then change directory to top level of repository.
+
+``python -m pip install -e .``
 
 
 
