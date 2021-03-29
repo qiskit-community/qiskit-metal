@@ -24,6 +24,7 @@ import pandas as pd
 from numpy.linalg import norm
 from collections import defaultdict
 from platform import system
+from scipy.spatial import distance
 
 import shapely
 import pyEPR as epr
@@ -98,6 +99,11 @@ class QAnsysRenderer(QRenderer):
         * ansys_file_extension: '.aedt' -- Ansys file extension for 2016 version and newer
         * x_buffer_width_mm: 0.2 -- Buffer between max/min x and edge of ground plane, in mm
         * y_buffer_width_mm: 0.2 -- Buffer between max/min y and edge of ground plane, in mm
+        * wb_threshold:'400um' -- the minimum distance between two vertices of a path for a
+            wirebond to be added.
+        * wb_offset:'0um' -- offset distance for wirebond placement (along the direction
+            of the cpw)
+        * wb_size: 3 -- scalar which controls the width of the wirebond (wb_size * path['width'])
     """
 
     #: Default options, over-written by passing ``options` dict to render_options.
@@ -117,6 +123,9 @@ class QAnsysRenderer(QRenderer):
         # bounding_box_scale_y = 1.2, # Ratio of 'main' chip length to bounding box length
         x_buffer_width_mm=0.2,  # Buffer between max/min x and edge of ground plane, in mm
         y_buffer_width_mm=0.2,  # Buffer between max/min y and edge of ground plane, in mm
+        wb_threshold = '400um',
+        wb_offset = '0um',
+        wb_size = 3,
         plot_ansys_fields_options = Dict(
             name="NAME:Mag_E1",
             UserSpecifyName='0',
@@ -623,6 +632,9 @@ class QAnsysRenderer(QRenderer):
         for _, qgeom in table.iterrows():
             self.render_element(qgeom, bool(table_type == 'junction'))
 
+        if table_type == 'path':
+            self.auto_wirebonds(table)
+
     def render_element(self, qgeom: pd.Series, is_junction: bool):
         """
         Render an individual shape whose properties are listed in a row of QGeometry table.
@@ -1030,6 +1042,55 @@ class QAnsysRenderer(QRenderer):
                 'small_mesh',
                 self.assign_mesh,
                 MaxLength=self._options['max_mesh_length_jj'])
+
+    #Still implementing
+    def auto_wirebonds(self, table):
+        """
+        Adds wirebonds to the Ansys model for path elements where;
+        subtract = True and wire_bonds = True.
+        Uses render options for determining of the;
+        * wb_threshold -- the minimum distance between two vertices of a path for a
+            wirebond to be added.
+        * wb_offset -- offset distance for wirebond placement (along the direction
+            of the cpw)
+        * wb_size -- controls the width of the wirebond (wb_size * path['width'])
+        """
+        norm_z = np.array([0, 0, 1])
+
+        wb_threshold = parse_units(self._options['wb_threshold'])
+        wb_offset = parse_units(self._options['wb_offset'])
+
+        #change table calls to that used in renderer
+        wb_table = table.loc[table['hfss_wire_bonds'] == True]
+        wb_table2 = wb_table.loc[wb_table['subtract'] == True]
+
+        for index, row in wb_table2.iterrows():
+            geom = row['geometry']
+            width = row['width']
+            for index, i_p in enumerate(geom.coords[:-1], start=0):
+                j_p = np.asarray(geom.coords[:][index + 1])
+                vert_distance = parse_units(distance.euclidean(i_p, j_p))
+                if vert_distance > wb_threshold:
+                    wb_count = int(vert_distance // wb_threshold)
+                    wb_pos = (j_p - i_p) / (wb_count + 1)
+                    wb_vec = wb_pos / np.linalg.norm(wb_pos)
+                    wb_perp = np.cross(norm_z, wb_vec)[:2]
+                    wb_pos_step = parse_units(wb_pos + i_p) + (wb_vec *
+                                                               wb_offset)
+                    #Other input values could be modified, kept to minimal selection for automation
+                    #for the time being.
+                    for wb_i in range(wb_count):
+                        self.modeler.draw_wirebond(
+                            pos=wb_pos_step + parse_units(wb_pos * wb_i),
+                            ori=wb_perp,
+                            width=parse_units(width * self._options['wb_size']),
+                            height='0.1mm',
+                            z=0,
+                            wire_diameter='0.02mm',
+                            NumSides=6,
+                            name='g_wb',
+                            material='pec',
+                            solve_inside=False)
 
     def clean_active_design(self):
         """
