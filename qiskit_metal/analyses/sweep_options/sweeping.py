@@ -186,6 +186,13 @@ class Sweeping():
         return 0
 
     def warning_for_setup(self, setup_args: dict, key: str, data_type: str):
+        """Give a warning based on key/value of dict.
+
+        Args:
+            setup_args (dict): Holds the key/value of setup arguments that are of interest.
+            key (str): Name of setup argument.
+            data_type (str): The data type the argument should be. 
+        """
         self.design.logger.warning(
             f'The value for {key} should be a {data_type}. '
             f'The present value is {setup_args[key]}.  Sweep will not be implemented.'
