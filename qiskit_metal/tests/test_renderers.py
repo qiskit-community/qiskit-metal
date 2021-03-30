@@ -337,10 +337,10 @@ class TestRenderers(unittest.TestCase):
         renderer = QGDSRenderer(design)
 
         self.assertEqual(renderer.name, 'gds')
-        element_extensions = renderer.element_extensions
-        self.assertEqual(len(element_extensions), 2)
-        self.assertEqual(len(element_extensions['junction']), 1)
-        self.assertEqual(element_extensions['junction']['cell_name'], str)
+        element_table_data = renderer.element_table_data
+        self.assertEqual(len(element_table_data), 1)
+        self.assertEqual(len(element_table_data['junction']), 1)
+        self.assertEqual(element_table_data['junction']['cell_name'], str)
 
     def test_renderer_gdsrenderer_update_units(self):
         """
