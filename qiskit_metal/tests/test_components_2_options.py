@@ -491,6 +491,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['second_gap'], '6um')
         self.assertEqual(options['coupling_space'], '3um')
         self.assertEqual(options['coupling_length'], '100um')
+        self.assertEqual(options['down_length'], '100um')
         self.assertEqual(options['fillet'], '25um')
         self.assertEqual(options['pos_x'], '0um')
         self.assertEqual(options['pos_y'], '0um')
