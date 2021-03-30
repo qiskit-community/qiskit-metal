@@ -341,7 +341,6 @@ class TestRenderers(unittest.TestCase):
         self.assertEqual(len(element_extensions), 2)
         self.assertEqual(len(element_extensions['junction']), 1)
         self.assertEqual(element_extensions['junction']['cell_name'], str)
-        self.assertEqual(element_extensions['path']['wire_bonds'], bool)
 
     def test_renderer_gdsrenderer_update_units(self):
         """
