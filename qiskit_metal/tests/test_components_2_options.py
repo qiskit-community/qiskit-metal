@@ -484,13 +484,14 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         options = hanger_t.default_options
 
         # Test all elements of the result data against expected data
-        self.assertEqual(len(options), 14)
+        self.assertEqual(len(options), 15)
         self.assertEqual(options['prime_width'], '10um')
         self.assertEqual(options['prime_gap'], '6um')
         self.assertEqual(options['second_width'], '10um')
         self.assertEqual(options['second_gap'], '6um')
         self.assertEqual(options['coupling_space'], '3um')
         self.assertEqual(options['coupling_length'], '100um')
+        self.assertEqual(options['down_length'], '100um')
         self.assertEqual(options['fillet'], '25um')
         self.assertEqual(options['pos_x'], '0um')
         self.assertEqual(options['pos_y'], '0um')
