@@ -15,6 +15,7 @@
 # pylint: disable-msg=unnecessary-pass
 # pylint: disable-msg=broad-except
 # pylint: disable-msg=too-many-public-methods
+# pylint: disable-msg=import-error
 """
 Qiskit Metal unit tests analyses functionality.
 """
@@ -337,9 +338,10 @@ class TestRenderers(unittest.TestCase):
 
         self.assertEqual(renderer.name, 'gds')
         element_extensions = renderer.element_extensions
-        self.assertEqual(len(element_extensions), 1)
+        self.assertEqual(len(element_extensions), 2)
         self.assertEqual(len(element_extensions['junction']), 1)
         self.assertEqual(element_extensions['junction']['cell_name'], str)
+        self.assertEqual(element_extensions['path']['wire_bonds'], bool)
 
     def test_renderer_gdsrenderer_update_units(self):
         """
