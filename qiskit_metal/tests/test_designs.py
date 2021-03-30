@@ -12,12 +12,13 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-#pylint: disable-msg=unnecessary-pass
-#pylint: disable-msg=protected-access
-#pylint: disable-msg=pointless-statement
-#pylint: disable-msg=too-many-public-methods
-#pylint: disable-msg=broad-except
-#pylint: disable-msg=invalid-name
+# pylint: disable-msg=unnecessary-pass
+# pylint: disable-msg=protected-access
+# pylint: disable-msg=pointless-statement
+# pylint: disable-msg=too-many-public-methods
+# pylint: disable-msg=broad-except
+# pylint: disable-msg=invalid-name
+# pylint: disable-msg=import-error
 """
 Qiskit Metal unit tests analyses functionality.
 """
@@ -551,7 +552,7 @@ class TestDesign(unittest.TestCase, AssertionsMixin):
 
         result = q1._get_table_values_from_renderers(design)
 
-        self.assertEqual(len(result), 9)
+        self.assertEqual(len(result), 11)
         self.assertEqual(result['hfss_inductance'], '10nH')
         self.assertEqual(result['hfss_capacitance'], 0)
         self.assertEqual(result['hfss_resistance'], 0)
@@ -561,6 +562,8 @@ class TestDesign(unittest.TestCase, AssertionsMixin):
         self.assertEqual(result['q3d_resistance'], 0)
         self.assertAlmostEqual(result['q3d_mesh_kw_jj'], 7e-06, places=6)
         self.assertEqual(result['gds_cell_name'], 'my_other_junction')
+        self.assertEqual(result['hfss_wire_bonds'], False)
+        self.assertEqual(result['q3d_wire_bonds'], False)
 
 
 if __name__ == '__main__':
