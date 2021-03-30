@@ -33,6 +33,7 @@ from ...utility._handle_qt_messages import slot_catch_error
 from .source_editor_widget import create_source_edit_widget
 # from .table_model_options import QTableModel_Options
 from .tree_model_options import QTreeModel_Options
+from .external_editors import get_mac_app
 
 __all__ = ['create_QTextDocument', 'format_docstr']
 
@@ -380,20 +381,30 @@ class ComponentWidget(QTabWidget):
         """
 
         self.logger.debug(f"edit_source: {args}")
+        self.create_msg_box = QMessageBox(text="The template for a new QComponent "
+                                                                                   + "will open in your local IDE. When you "
+                                                                                   + "have edited the template to your liking, "
+                                                                                   + "save it via the IDE. Then come back to Metal "
+                                                                                   + "and press 'rebuild'",
+                                          buttons=QMessageBox.Ok)
+
 
         if self.component is not None:
             class_name = self.component.__class__.__name__
             module_name = self.component.__class__.__module__
             module_path = self.qcomponent_file_path
-            self.src_widgets += [
-                create_source_edit_widget(self.gui,
-                                          class_name,
-                                          module_name,
-                                          module_path,
-                                          parent=parent)
-            ]
-            self.logger.info('Edit sources window created. '
-                             'Please find on your screen.')
+
+            get_mac_app(module_path)
+            # self.src_widgets += [
+            #     # surgically replace source edit widget with actual IDE opening
+            #     create_source_edit_widget(self.gui,
+            #                               class_name,
+            #                               module_name,
+            #                               module_path,
+            #                               parent=parent)
+            # ]
+            # self.logger.info('Edit sources window created. '
+            #                  'Please find on your screen.')
         else:
             QtWidgets.QMessageBox.warning(
                 self, "Missing Selected Component",

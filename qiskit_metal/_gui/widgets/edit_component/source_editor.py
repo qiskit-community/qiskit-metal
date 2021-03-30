@@ -261,7 +261,7 @@ class MetalSourceEditor(widgets.PyCodeEditBase):
 
         **Troubleshooting**
 
-            If you get a strange permission error when opening hte file, but it otherwsie sems to more or less work fine
+            If you get a strange permission error when opening hte file, but it otherwise seems to more or less work fine
             it is because you probably opened in sudo before and now are not running in sudo.
 
             If the error is about Jedi:
