@@ -134,7 +134,9 @@ exclude_patterns = [
     'qiskit_metal.analyses.cpw_calculations.rst',
     'qiskit_metal.analyses.Hcpb.rst', 'qiskit_metal.analyses.Sweeping.rst',
     'qiskit_metal.analyses.HO_wavefunctions.rst',
-    'qiskit_metal.analyses.kappa_calculation.rst'
+    'qiskit_metal.analyses.kappa_calculation.rst',
+    'qiskit_metal.analyses.transmon_analytics.rst',
+    'qiskit_metal.analyses.Sweeping.rst'
 ]
 
 nbsphinx_execute_arguments = [
