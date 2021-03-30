@@ -705,19 +705,21 @@ class QHFSSRenderer(QAnsysRenderer):
 
         Args:
             setup_args (Dict): a Dict with possible keys/values.
-                * name (str, optional): Name of eigenmode setup. Defaults to "Setup".
-                * min_freq_ghz (int, optional): Minimum frequency in GHz. Defaults to 1.
-                * n_modes (int, optional): Number of modes. Defaults to 1.
-                * max_delta_f (float, optional): Maximum difference in freq between consecutive passes. Defaults to 0.5.
-                * max_passes (int, optional): Maximum number of passes. Defaults to 10.
-                * pct_refinement (int, optional): Percent refinement. Defaults to 30.
-                * basis_order (int, optional): Basis order. Defaults to -1.
 
-                Note, that these two are currently NOT implemented:
-                Ansys API named EditSetup not documented for HFSS, and 
-                self.pinfo.setup does not have all the property variables used for Setup.
-                * min_passes (int, optional): Minimum number of passes. Defaults to 1.
-                * min_converged (int, optional): Minimum number of converged passes. Defaults to 1.
+        **setup_args** dict contents:
+            * name (str, optional): Name of eigenmode setup. Defaults to "Setup".
+            * min_freq_ghz (int, optional): Minimum frequency in GHz. Defaults to 1.
+            * n_modes (int, optional): Number of modes. Defaults to 1.
+            * max_delta_f (float, optional): Maximum difference in freq between consecutive passes. Defaults to 0.5.
+            * max_passes (int, optional): Maximum number of passes. Defaults to 10.
+            * pct_refinement (int, optional): Percent refinement. Defaults to 30.
+            * basis_order (int, optional): Basis order. Defaults to -1.
+
+            Note, that these two are currently NOT implemented:
+            Ansys API named EditSetup not documented for HFSS, and 
+            self.pinfo.setup does not have all the property variables used for Setup.
+            * min_passes (int, optional): Minimum number of passes. Defaults to 1.
+            * min_converged (int, optional): Minimum number of converged passes. Defaults to 1.
         """
 
         if self.pinfo:
@@ -817,18 +819,20 @@ class QHFSSRenderer(QAnsysRenderer):
 
         Args:
             setup_args (Dict): a Dict with possible keys/values.
-                * name (str, optional): Name of eigenmode setup. Defaults to "Setup".
-                * freq_ghz (int, optional): Minimum frequency in GHz. Defaults to 1.
-                * max_passes (int, optional): Maximum number of passes. Defaults to 10.
-                * pct_refinement (int, optional): Percent refinement. Defaults to 30.
-                * basis_order (int, optional): Basis order. Defaults to -1 (1 is "Mixed Order").
 
-                Note, that these three are currently NOT implemented:
-                Ansys API named EditSetup not documented for HFSS, and 
-                self.pinfo.setup does not have all the property variables used for Setup.
-                * max_delta_s (float, optional): Absolute value of maximum difference in scattering parameter S. Defaults to 0.1.
-                * min_passes (int, optional): Minimum number of passes. Defaults to 1.
-                * min_converged (int, optional): Minimum number of converged passes. Defaults to 1.
+        **setup_args** dict contents:
+            * name (str, optional): Name of eigenmode setup. Defaults to "Setup".
+            * freq_ghz (int, optional): Minimum frequency in GHz. Defaults to 1.
+            * max_passes (int, optional): Maximum number of passes. Defaults to 10.
+            * pct_refinement (int, optional): Percent refinement. Defaults to 30.
+            * basis_order (int, optional): Basis order. Defaults to -1 (1 is "Mixed Order").
+
+            Note, that these three are currently NOT implemented:
+            Ansys API named EditSetup not documented for HFSS, and 
+            self.pinfo.setup does not have all the property variables used for Setup.
+            * max_delta_s (float, optional): Absolute value of maximum difference in scattering parameter S. Defaults to 0.1.
+            * min_passes (int, optional): Minimum number of passes. Defaults to 1.
+            * min_converged (int, optional): Minimum number of converged passes. Defaults to 1.
         """
 
         if self.pinfo:

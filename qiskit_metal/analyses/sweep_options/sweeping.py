@@ -18,7 +18,8 @@ from qiskit_metal.renderers.renderer_ansys.q3d_renderer import QQ3DRenderer
 
 
 class Sweeping():
-    """  The methods allow users to sweep a variable in a components's options.  
+    """
+    The methods allow users to sweep a variable in a components's options.
     Need access to renderers which are registered in QDesign.
     """
 
@@ -26,7 +27,7 @@ class Sweeping():
         """Give QDesign to this class so Sweeping can access the registered QRenderers.
 
         Args:
-            design (QDesign): Used to access the QRenderers. 
+            design (QDesign): Used to access the QRenderers.
         """
         self.design = design
 
@@ -98,25 +99,27 @@ class Sweeping():
         be "Sweep_em_setup".  If a setup named "Sweep_em_setup" exists in the project, 
         it will be deleted, and a new setup will be added with the arguments from setup_args. 
 
-        Assume: Error checking has already occurred for existence of Ansys, project, 
-                and HFSS eigenmode design has been connected to pinfo.
+        Assume: Error checking has already occurred for existence of Ansys, project,
+        and HFSS eigenmode design has been connected to pinfo.
 
         Args:
             setup_args (Dict):  Maximum  keys used in setup_args.
-                * min_freq_ghz (int, optional): Minimum frequency in GHz. Defaults to 1.
-                * n_modes (int, optional): Number of modes. Defaults to 1.
-                * max_delta_f (float, optional): Maximum difference in freq between consecutive passes. Defaults to 0.5.
-                * max_passes (int, optional): Maximum number of passes. Defaults to 10.
-                * min_passes (int, optional): Minimum number of passes. Defaults to 1.
-                * min_converged (int, optional): Minimum number of converged passes. Defaults to 1.
-                * pct_refinement (int, optional): Percent refinement. Defaults to 30.
-                * basis_order (int, optional): Basis order. Defaults to -1.
+
+        **setup_args** dict contents:
+            * min_freq_ghz (int, optional): Minimum frequency in GHz. Defaults to 1.
+            * n_modes (int, optional): Number of modes. Defaults to 1.
+            * max_delta_f (float, optional): Maximum difference in freq between consecutive passes. Defaults to 0.5.
+            * max_passes (int, optional): Maximum number of passes. Defaults to 10.
+            * min_passes (int, optional): Minimum number of passes. Defaults to 1.
+            * min_converged (int, optional): Minimum number of converged passes. Defaults to 1.
+            * pct_refinement (int, optional): Percent refinement. Defaults to 30.
+            * basis_order (int, optional): Basis order. Defaults to -1.
 
         Returns:
             int: The return code of status.
-                *0 Setup of "Sweep_em_setup" added to design with setup_args. 
-                *1 Look at warning message to determine which argument was of the wrong data type.
-                *2 Look at warning message, a key in setup_args that was not expected.
+                * 0 Setup of "Sweep_em_setup" added to design with setup_args. 
+                * 1 Look at warning message to determine which argument was of the wrong data type.
+                * 2 Look at warning message, a key in setup_args that was not expected.
         """
 
         a_hfss = self.design.renderers.hfss
@@ -204,29 +207,31 @@ class Sweeping():
         be "Sweep_q3d_setup".  If a setup named "Sweep_q3d_setup" exists in the project, 
         it will be deleted, and a new setup will be added with the arguments from setup_args. 
 
-        Assume: Error checking has already occurred for existence of Ansys, project, 
-                and Q3d Extractor design has been connected to pinfo.
+        Assume: Error checking has already occurred for existence of Ansys, project,
+        and Q3d Extractor design has been connected to pinfo.
 
         Args:
             setup_args (Dict): Maximum  keys used in setup_args.
-                * freq_ghz (float, optional): Frequency in GHz. Defaults to 5..
-                * name (str, optional): Name of solution setup. Defaults to "Setup".
-                * max_passes (int, optional): Maximum number of passes. Defaults to 15.
-                * min_passes (int, optional): Minimum number of passes. Defaults to 2.
-                * percent_error (float, optional): Error tolerance as a percentage. Defaults to 0.5.
-                * save_fields (bool, optional): Whether or not to save fields. Defaults to False.
-                * enabled (bool, optional): Whether or not setup is enabled. Defaults to True.
-                * min_converged_passes (int, optional): Minimum number of converged passes. Defaults to 2.
-                * percent_refinement (int, optional): Refinement as a percentage. Defaults to 30.
-                * auto_increase_solution_order (bool, optional): Whether or not to increase solution order automatically. Defaults to True.
-                * solution_order (str, optional): Solution order. Defaults to 'High'.
-                * solver_type (str, optional): Solver type. Defaults to 'Iterative'.
+
+        **setup_args** dict contents:
+            * freq_ghz (float, optional): Frequency in GHz. Defaults to 5..
+            * name (str, optional): Name of solution setup. Defaults to "Setup".
+            * max_passes (int, optional): Maximum number of passes. Defaults to 15.
+            * min_passes (int, optional): Minimum number of passes. Defaults to 2.
+            * percent_error (float, optional): Error tolerance as a percentage. Defaults to 0.5.
+            * save_fields (bool, optional): Whether or not to save fields. Defaults to False.
+            * enabled (bool, optional): Whether or not setup is enabled. Defaults to True.
+            * min_converged_passes (int, optional): Minimum number of converged passes. Defaults to 2.
+            * percent_refinement (int, optional): Refinement as a percentage. Defaults to 30.
+            * auto_increase_solution_order (bool, optional): Whether or not to increase solution order automatically. Defaults to True.
+            * solution_order (str, optional): Solution order. Defaults to 'High'.
+            * solver_type (str, optional): Solver type. Defaults to 'Iterative'.
 
         Returns:
             int:  The return code of status.
-                *0 Setup of "Sweep_q3d_setup" added to design with setup_args. 
-                *1 Look at warning message to determine which argument was of the wrong data type.
-                *2 Look at warning message, a key in setup_args that was not expected.
+                * 0 Setup of "Sweep_q3d_setup" added to design with setup_args. 
+                * 1 Look at warning message to determine which argument was of the wrong data type.
+                * 2 Look at warning message, a key in setup_args that was not expected.
         """
         a_q3d = self.design.renderers.q3d
         setup_args.name = "Sweep_q3d_setup"

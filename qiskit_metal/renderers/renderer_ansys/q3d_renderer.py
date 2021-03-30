@@ -310,24 +310,26 @@ class QQ3DRenderer(QAnsysRenderer):
 
         Args:
             setup_args (Dict): a Dict with possible keys/values.
-                * freq_ghz (float, optional): Frequency in GHz. Defaults to 5..
-                * name (str, optional): Name of solution setup. Defaults to "Setup".
-                * max_passes (int, optional): Maximum number of passes. Defaults to 15.
-                * min_passes (int, optional): Minimum number of passes. Defaults to 2.
-                * percent_error (float, optional): Error tolerance as a percentage. Defaults to 0.5.
 
-                Note, that these 7 arguments are currently NOT implemented:
-                Ansys API named EditSetup requires all arguments to be passed, but
-                presently have no way to read all of the setup.  
-                Also, self.pinfo.setup does not have all the @property variables 
-                used for Setup. 
-                * save_fields (bool, optional): Whether or not to save fields. Defaults to False.
-                * enabled (bool, optional): Whether or not setup is enabled. Defaults to True.
-                * min_converged_passes (int, optional): Minimum number of converged passes. Defaults to 2.
-                * percent_refinement (int, optional): Refinement as a percentage. Defaults to 30.
-                * auto_increase_solution_order (bool, optional): Whether or not to increase solution order automatically. Defaults to True.
-                * solution_order (str, optional): Solution order. Defaults to 'High'.
-                * solver_type (str, optional): Solver type. Defaults to 'Iterative'.
+        **setup_args** dict contents:
+            * freq_ghz (float, optional): Frequency in GHz. Defaults to 5..
+            * name (str, optional): Name of solution setup. Defaults to "Setup".
+            * max_passes (int, optional): Maximum number of passes. Defaults to 15.
+            * min_passes (int, optional): Minimum number of passes. Defaults to 2.
+            * percent_error (float, optional): Error tolerance as a percentage. Defaults to 0.5.
+
+            Note, that these 7 arguments are currently NOT implemented:
+            Ansys API named EditSetup requires all arguments to be passed, but
+            presently have no way to read all of the setup.  
+            Also, self.pinfo.setup does not have all the @property variables 
+            used for Setup. 
+            * save_fields (bool, optional): Whether or not to save fields. Defaults to False.
+            * enabled (bool, optional): Whether or not setup is enabled. Defaults to True.
+            * min_converged_passes (int, optional): Minimum number of converged passes. Defaults to 2.
+            * percent_refinement (int, optional): Refinement as a percentage. Defaults to 30.
+            * auto_increase_solution_order (bool, optional): Whether or not to increase solution order automatically. Defaults to True.
+            * solution_order (str, optional): Solution order. Defaults to 'High'.
+            * solver_type (str, optional): Solver type. Defaults to 'Iterative'.
         """
 
         if self.pinfo:
