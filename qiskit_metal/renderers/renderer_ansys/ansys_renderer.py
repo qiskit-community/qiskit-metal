@@ -1060,25 +1060,32 @@ class QAnsysRenderer(QRenderer):
         wb_threshold = parse_units(self._options['wb_threshold'])
         wb_offset = parse_units(self._options['wb_offset'])
 
-        #change table calls to that used in renderer
+        #selecting only the qgeometry which meet criteria
         wb_table = table.loc[table['hfss_wire_bonds'] == True]
         wb_table2 = wb_table.loc[wb_table['subtract'] == True]
 
+        #looping through each qgeometry
         for index, row in wb_table2.iterrows():
             geom = row['geometry']
             width = row['width']
+            #looping through the linestring of the path to determine where WBs should be
             for index, i_p in enumerate(geom.coords[:-1], start=0):
                 j_p = np.asarray(geom.coords[:][index + 1])
                 vert_distance = parse_units(distance.euclidean(i_p, j_p))
                 if vert_distance > wb_threshold:
+                    #Gets number of wirebonds to fit in section of path
                     wb_count = int(vert_distance // wb_threshold)
+                    #finds the position vector
                     wb_pos = (j_p - i_p) / (wb_count + 1)
+                    #gets the norm vector for finding the orthonormal of path
                     wb_vec = wb_pos / np.linalg.norm(wb_pos)
+                    #finds the orthonormal (for orientation)
                     wb_perp = np.cross(norm_z, wb_vec)[:2]
+                    #finds the first wirebond to place (rest are in the loop)
                     wb_pos_step = parse_units(wb_pos + i_p) + (wb_vec *
                                                                wb_offset)
                     #Other input values could be modified, kept to minimal selection for automation
-                    #for the time being.
+                    #for the time being. Loops to place N wirebonds based on length of path section.
                     for wb_i in range(wb_count):
                         self.modeler.draw_wirebond(
                             pos=wb_pos_step + parse_units(wb_pos * wb_i),
