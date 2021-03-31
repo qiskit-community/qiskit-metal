@@ -22,8 +22,14 @@ Sweeping
    .. autosummary::
       :toctree: ../stubs/
    
+      Sweeping.edit_eigenmode_setup
+      Sweeping.edit_q3d_setup
+      Sweeping.error_check_sweep_input
+      Sweeping.get_quality_factor
       Sweeping.option_value
       Sweeping.sweep_one_option_get_capacitance_matrix
+      Sweeping.sweep_one_option_get_eigenmode_solution_data
+      Sweeping.warning_for_setup
    
 
    
