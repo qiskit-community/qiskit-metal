@@ -381,12 +381,14 @@ class ComponentWidget(QTabWidget):
         """
 
         self.logger.debug(f"edit_source: {args}")
-        self.create_msg_box = QMessageBox(text="The template for a new QComponent "
+        self.editor_msg_box = QMessageBox(parent=self, #madality
+                                          text="The template for a new QComponent "
                                                                                    + "will open in your local IDE. When you "
                                                                                    + "have edited the template to your liking, "
                                                                                    + "save it via the IDE. Then come back to Metal "
                                                                                    + "and press 'rebuild'",
-                                          buttons=QMessageBox.Ok)
+                                          buttons=QMessageBox.Ok,flags=Qt.Popup)
+        self.editor_msg_box.setWindowModality(Qt.WindowModal)
 
 
         if self.component is not None:
