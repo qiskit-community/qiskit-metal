@@ -125,7 +125,7 @@ class QAnsysRenderer(QRenderer):
         y_buffer_width_mm=0.2,  # Buffer between max/min y and edge of ground plane, in mm
         wb_threshold = '400um',
         wb_offset = '0um',
-        wb_size = 3,
+        wb_size = 5,
         plot_ansys_fields_options = Dict(
             name="NAME:Mag_E1",
             UserSpecifyName='0',
@@ -1091,9 +1091,10 @@ class QAnsysRenderer(QRenderer):
                             pos=wb_pos_step + parse_units(wb_pos * wb_i),
                             ori=wb_perp,
                             width=parse_units(width * self._options['wb_size']),
-                            height='0.1mm',
+                            height=parse_units(width *
+                                               self._options['wb_size']),
                             z=0,
-                            wire_diameter='0.02mm',
+                            wire_diameter='0.015mm',
                             NumSides=6,
                             name='g_wb',
                             material='pec',
