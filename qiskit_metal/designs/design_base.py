@@ -490,13 +490,24 @@ class QDesign():
         except Exception as e:
             self.logger.error("error making mods: " + str(e))
 
+        try:
+            print("asdf\n\n\n\n\n\n\n\n")
+            for comp in self._components.values():
+                print(f"Reloading component_class_name={component_class_name}; component_module_name={component_module_name.split('.')[-1]}")
+                print("class", comp.__class__.__name__)
+                print("mod", comp.__class__.__module__.split('.')[-1])
+                if comp.__class__.__name__ == component_class_name and comp.__class__.__module__.split('.')[-1] == component_module_name.split('.')[-1]:
+                    print("positive:", comp)
+
+        except Exception as e:
+            print("ERROR:",e)
 
         try:
             # components that need
             for instance in filter(
-                    lambda k: k.__class__.__name__ == component_class_name and k.
-                    __class__.__module__ == component_module_name,
+                    lambda k: k.__class__.__name__ == component_class_name and k.__class__.__module__.split('.')[-1] == component_module_name.split('.')[-1],
                     self._components.values()):
+                print("instances: ", instance)
                 instance.__class__ = new_class
         except Exception as e:
             self.logger.error("e2: " + str(e))
