@@ -32,6 +32,6 @@ class LibraryFileProxyModel(QSortFilterProxyModel):
     def filterAcceptsColumn(self, source_column: int,
                             source_parent: QModelIndex) -> bool:
         """Filters out unwanted file information in display"""
-        if source_column > 0:  # Won't show Size, Kind, Date Modified, etc. for QFileSystemModel
+        if source_column > 1:  # Won't show Size, Kind, Date Modified, etc. for QFileSystemModel
             return False
         return True

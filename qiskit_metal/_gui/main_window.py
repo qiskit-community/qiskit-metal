@@ -495,6 +495,13 @@ class MetalGUI(QMainWindowBaseHandler):
         """
 
         filename = self.library_proxy_model.data(relative_index)
+        refreshing = False
+        if relative_index.column() == 1:
+            refreshing = True
+            print('refreshing', type(relative_index))
+            file_index  = self.library_proxy_model.index(relative_index.row(), 0, relative_index.parent())
+            #file_index = relative_index.siblingAtColumn(0)
+            filename = self.library_proxy_model.data(file_index)
 
         if self.ui.dockLibrary.library_model.isDir(
                 self.library_proxy_model.mapToSource(relative_index)):
@@ -503,12 +510,33 @@ class MetalGUI(QMainWindowBaseHandler):
 
         full_path = self.ui.dockLibrary.library_model.filePath(
             self.library_proxy_model.mapToSource(relative_index))
-        try:
-            self.param_window = pew.create_parameter_entry_window(
-                self, full_path, self.main_window)
-        except Exception as e:
-            self.logger.error(
-                f"Unable to open param entry window due to Exception: {e} ")
+
+        if refreshing:
+            print(f"{full_path} last modified: {os.path.getmtime(full_path)}")
+
+            qis_abs_path = full_path[full_path.index(__name__.split('.')[0]):]
+            qis_mod_path = qis_abs_path.replace(os.sep, '.')[:-len('.py')]
+
+            import inspect
+            qis_class_name = "main window no name"
+            mymodule = importlib.import_module(qis_mod_path)
+            members = inspect.getmembers(mymodule, inspect.isclass)
+            class_owner = qis_mod_path.split('.')[-1]
+            for memtup in members:
+                if len(memtup) > 1:
+                    if str(memtup[1].__module__).endswith(class_owner):
+                        qis_class_name = memtup[1].__name__
+
+            self.design.reload_component(qis_mod_path, qis_class_name)
+
+        else:
+            try:
+                self.param_window = pew.create_parameter_entry_window(
+                    self, full_path, self.main_window)
+            except Exception as e:
+                self.logger.error(
+                    f"Unable to open param entry window due to Exception: {e} ")
+
 
     def _setup_library_widget(self):
         """

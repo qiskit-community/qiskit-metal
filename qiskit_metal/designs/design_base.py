@@ -481,16 +481,28 @@ class QDesign():
         self.logger.debug(
             f'Reloading component_class_name={component_class_name}; component_module_name={component_module_name}'
         )
-        module = importlib.import_module(component_module_name)
-        module = importlib.reload(module)
-        new_class = getattr(module, component_class_name)
 
-        # components that need
-        for instance in filter(
-                lambda k: k.__class__.__name__ == component_class_name and k.
-                __class__.__module__ == component_module_name,
-                self._components.values()):
-            instance.__class__ = new_class
+
+        try:
+            module = importlib.import_module(component_module_name)
+            module = importlib.reload(module)
+            new_class = getattr(module, component_class_name)
+        except Exception as e:
+            self.logger.debug("error making mods: " + str(e))
+
+
+        try:
+            # components that need
+            for instance in filter(
+                    lambda k: k.__class__.__name__ == component_class_name and k.
+                    __class__.__module__ == component_module_name,
+                    self._components.values()):
+                instance.__class__ = new_class
+        except Exception as e:
+            self.logger.debug("e2: " + str(e))
+
+        self.logger.debug(f'Finished reloading component_class_name={component_class_name}; component_module_name={component_module_name}'
+)
 
         # Alternative, but reload will say not in sys.path
         # self = gui.component_window.src_widgets[-1].ui.src_editor
