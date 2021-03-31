@@ -488,7 +488,7 @@ class QDesign():
             module = importlib.reload(module)
             new_class = getattr(module, component_class_name)
         except Exception as e:
-            self.logger.debug("error making mods: " + str(e))
+            self.logger.error("error making mods: " + str(e))
 
 
         try:
@@ -499,7 +499,7 @@ class QDesign():
                     self._components.values()):
                 instance.__class__ = new_class
         except Exception as e:
-            self.logger.debug("e2: " + str(e))
+            self.logger.error("e2: " + str(e))
 
         self.logger.debug(f'Finished reloading component_class_name={component_class_name}; component_module_name={component_module_name}'
 )
