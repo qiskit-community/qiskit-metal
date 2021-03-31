@@ -21,6 +21,7 @@ dependencies:
   - pygments
   - pyqode.python
   - pyside2==5.9.0a1
+  - pytest
   - qutip
   - scipy
   - shapely
