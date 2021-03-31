@@ -43,6 +43,7 @@ class CPWHangerT(QComponent):
         * coupling_space: '3um' -- The amount of ground plane between the two transmission lines
         * coupling_length: '100um' -- The length of parallel between the two transmission lines
           note: this includes the distance of the curved second of the second line
+        * down_length: '100um' -- The length of the hanging part of the resonator, including the curved region
         * fillet: '25um'
         * pos_x: '0um' -- The x position of the ground termination.
         * pos_y: '0um' -- The y position of the ground termination.
@@ -65,6 +66,7 @@ class CPWHangerT(QComponent):
                            second_gap='6um',
                            coupling_space='3um',
                            coupling_length='100um',
+                           down_length='100um',
                            fillet='25um',
                            pos_x='0um',
                            pos_y='0um',
@@ -89,7 +91,7 @@ class CPWHangerT(QComponent):
                                      [prime_cpw_length / 2, 0]])
 
         #Secondary CPW
-        second_down_length = p.coupling_length * 2
+        second_down_length = p.down_length
         second_y = -p.prime_width / 2 - p.prime_gap - p.coupling_space - p.second_gap - p.second_width / 2
         second_cpw = draw.LineString(
             [[second_flip * (-p.coupling_length / 2), second_y],
