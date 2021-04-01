@@ -414,7 +414,10 @@ def get_class_from_abs_file_path(abs_file_path):
 
     """
     qis_abs_path = abs_file_path[abs_file_path.index(__name__.split('.')[0]):]
+
+    # Windows users' qis_abs_path may use os.sep or '/' due to PySide's handling of file names
     qis_mod_path = qis_abs_path.replace(os.sep, '.')[:-len('.py')]
+    qis_mod_path = qis_mod_path.replace("/", '.') # users cannot use '/' in filename
 
     mymodule = importlib.import_module(qis_mod_path)
     members = inspect.getmembers(mymodule, inspect.isclass)
