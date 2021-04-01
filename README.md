@@ -71,7 +71,7 @@ conda env create -n <env_name> environment.yml
 conda activate <env_name>
 python -m pip install -ve .
 ```
-Execut the following command if you plan to contribute code:
+Execute the following command if you plan to contribute code:
 ```
 python -m pip install -r requirements-dev.txt -ve .
 ```
@@ -91,7 +91,7 @@ conda env update -n <env_name_exist> environment.yml
 conda activate <env_name_exist>
 python -m pip install -ve .
 ```
-Execut the following command if you plan to contribute code:
+Execute the following command if you plan to contribute code:
 ```
 python -m pip install -r requirements-dev.txt -ve .
 ```
