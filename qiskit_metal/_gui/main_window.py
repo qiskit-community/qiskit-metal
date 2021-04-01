@@ -40,6 +40,7 @@ from .renderer_hfss_gui import RendererHFSSWidget
 from .renderer_q3d_gui import RendererQ3DWidget
 from .utility._handle_qt_messages import slot_catch_error
 from qiskit_metal._gui.widgets.library_new_qcomponent.library_proxy_model import LibraryFileProxyModel
+from qiskit_metal._gui.widgets.library_new_qcomponent.library_delegate import LibraryDelegate
 from .widgets.all_components.table_model_all_components import \
     QTableModel_AllComponents
 from .widgets.edit_component.component_widget import ComponentWidget
@@ -565,10 +566,12 @@ class MetalGUI(QMainWindowBaseHandler):
             self.library_proxy_model.mapFromSource(
                 self.ui.dockLibrary.library_model.index(
                     self.ui.dockLibrary.library_model.rootPath())))
+        self.ui.dockLibrary_tree_view.setItemDelegate(LibraryDelegate(self.ui.dockLibraryContents))
         self.ui.dockLibrary_tree_view.doubleClicked.connect(
             self.create_new_component_object_from_qlibrary)
         self.ui.dockLibrary_tree_view.clicked.connect(
             self.create_new_component_object_from_qlibrary)
+
 
     ################################################
     # UI
