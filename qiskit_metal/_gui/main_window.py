@@ -28,7 +28,7 @@ from typing import List, TYPE_CHECKING
 from PySide2.QtCore import Qt, QTimer, QModelIndex
 from PySide2.QtWidgets import (QDockWidget, QFileDialog, QInputDialog, QLabel,
                                QLineEdit, QMainWindow, QMessageBox,
-                               QFileSystemModel)
+                               QFileSystemModel, QErrorMessage)
 
 from .. import config
 from ..designs.design_base import QDesign
@@ -225,6 +225,26 @@ class QMainWindowExtension(QMainWindowExtensionBase):
     def create_build_log_window(self, _=None):
         """"Handles click on Build History button."""
         self.gui.gui_create_build_log_window()
+
+    @slot_catch_error()
+    def activate_developer_mode(self, ison : bool):
+        print("dev mode activatesd: ", ison)
+
+        if ison:
+
+            QMessageBox.warning(
+                self, "bjyun", "If you're editing a component via an external IDE, don't forget to refresh the component's file in the Library before rebuilding so your changes will take effect.")
+            LD = LibraryDelegate(self.ui.dockLibraryContents)
+            LD.active = True
+            self.gui.ui.dockLibrary_tree_view.setItemDelegate(LD)
+            self.gui.ui.actionNew_QComponent.setVisible(True)
+
+        else:
+            self.gui.ui.dockLibrary_tree_view.setItemDelegate(LibraryDelegate(self.ui.dockLibraryContents)) # try empty one if no work
+            self.gui.ui.actionNew_QComponent.setVisible(False)
+
+
+
 
 
 class MetalGUI(QMainWindowBaseHandler):
@@ -566,7 +586,6 @@ class MetalGUI(QMainWindowBaseHandler):
             self.library_proxy_model.mapFromSource(
                 self.ui.dockLibrary.library_model.index(
                     self.ui.dockLibrary.library_model.rootPath())))
-        self.ui.dockLibrary_tree_view.setItemDelegate(LibraryDelegate(self.ui.dockLibraryContents))
         self.ui.dockLibrary_tree_view.doubleClicked.connect(
             self.create_new_component_object_from_qlibrary)
         self.ui.dockLibrary_tree_view.clicked.connect(
@@ -785,3 +804,6 @@ class MetalGUI(QMainWindowBaseHandler):
         self.build_log_window = BuildHistoryScrollArea(
             self.design.build_logs.data())
         self.build_log_window.show()
+
+
+

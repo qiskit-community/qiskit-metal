@@ -397,9 +397,9 @@ class ComponentWidget(QTabWidget):
             module_path = self.qcomponent_file_path
 
             QtWidgets.QMessageBox.warning(
-                self, "bjyun", "If you're editing a component via an external IDE, don't forget to refresh the component's file in the Library before rebuilding so your changes will take effect.")
+                self, "bjyun", "Please use an external IDE to open the file you just created. :)")
 
-            get_mac_app(module_path)
+            #get_mac_app(module_path)
             # self.src_widgets += [
             #     # surgically replace source edit widget with actual IDE opening
             #     create_source_edit_widget(self.gui,

@@ -27,11 +27,12 @@ class LibraryDelegate(QItemDelegate):
     """
     def __init__(self,parent=None):
         super().__init__(parent)
+        self.active = False
 
 
     def paint(self, painter:PySide2.QtGui.QPainter, option:PySide2.QtWidgets.QStyleOptionViewItem, index:PySide2.QtCore.QModelIndex):
         try:
-            if index.column() == 1: # add const instead of 1
+            if index.column() == 1 and self.active: # add const instead of 1
                 text = "refresh"
                 palette = option.palette
                 document = QTextDocument()
@@ -44,7 +45,6 @@ class LibraryDelegate(QItemDelegate):
                 color = palette.base().color()
                 painter.save()
                 painter.fillRect(option.rect, color)
-                print("filled rect")
                 painter.translate(option.rect.x(), option.rect.y())
                 document.drawContents(painter)
                 painter.restore()

@@ -138,7 +138,7 @@
      <x>0</x>
      <y>0</y>
      <width>1300</width>
-     <height>22</height>
+     <height>24</height>
     </rect>
    </property>
    <property name="baseSize">
@@ -297,6 +297,7 @@
    <addaction name="action_full_refresh"/>
    <addaction name="actionRebuild"/>
    <addaction name="actionBuildHistory"/>
+   <addaction name="actionDeveloperMode"/>
    <addaction name="actionNew_QComponent"/>
    <addaction name="separator"/>
   </widget>
@@ -1225,6 +1226,9 @@
    <property name="shortcut">
     <string>Ctrl+N, Meta+N</string>
    </property>
+   <property name="visible">
+    <bool>false</bool>
+   </property>
   </action>
   <action name="actionGDS">
    <property name="icon">
@@ -1269,6 +1273,22 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+B</string>
+   </property>
+  </action>
+  <action name="actionDeveloperMode">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="main_window_rc.qrc">
+     <normaloff>:/_imgs/lightbulb.png</normaloff>
+     <normalon>:/_imgs/support.png</normalon>:/_imgs/lightbulb.png</iconset>
+   </property>
+   <property name="text">
+    <string>DeveloperMode</string>
+   </property>
+   <property name="toolTip">
+    <string>clickme</string>
    </property>
   </action>
  </widget>
@@ -1912,6 +1932,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionDeveloperMode</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>activate_developer_mode()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>649</x>
+     <y>423</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>showHelp()</slot>
@@ -1934,5 +1970,6 @@
   <slot>create_build_log_window()</slot>
   <slot>show_renderer_hfss()</slot>
   <slot>show_renderer_q3d()</slot>
+  <slot>activate_developer_mode()</slot>
  </slots>
 </ui>
