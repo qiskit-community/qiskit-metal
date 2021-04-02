@@ -606,11 +606,13 @@ class QHFSSRenderer(QAnsysRenderer):
                         all_setup_names = self.pinfo.design.get_setup_names()
                         self.pinfo.setup_name = setup_name_activate
                         if setup_name_activate in all_setup_names:
-                            # When name is given and in design. So have pinfo reference existing setup.
+                            # When name is given and in design.
+                            # So have pinfo reference existing setup.
                             self.pinfo.setup = self.pinfo.get_setup(
                                 self.pinfo.setup_name)
                         else:
-                            # When name is given, but not in design. So make a new setup with given name.
+                            # When name is given, but not in design.
+                            # So make a new setup with given name.
                             self.pinfo.setup = self.add_eigenmode_setup(
                                 name=self.pinfo.setup_name)
                     else:
@@ -688,6 +690,213 @@ class QHFSSRenderer(QAnsysRenderer):
                     min_converged=min_converged,
                     pct_refinement=pct_refinement,
                     basis_order=basis_order)
+
+    def edit_eigenmode_setup(self, setup_args: Dict):
+        """User can pass key/values to edit the setup for active eigenmode setup.  
+
+        Args:
+            setup_args (Dict): a Dict with possible keys/values.
+
+        **setup_args** dict contents:
+            * name (str, optional): Name of eigenmode setup. Defaults to "Setup".
+            * min_freq_ghz (int, optional): Minimum frequency in GHz. Defaults to 1.
+            * n_modes (int, optional): Number of modes. Defaults to 1.
+            * max_delta_f (float, optional): Maximum difference in freq between consecutive passes. Defaults to 0.5.
+            * max_passes (int, optional): Maximum number of passes. Defaults to 10.
+            * pct_refinement (int, optional): Percent refinement. Defaults to 30.
+            * basis_order (int, optional): Basis order. Defaults to -1.
+
+            Note, that these two are currently NOT implemented:
+            Ansys API named EditSetup not documented for HFSS, and 
+            self.pinfo.setup does not have all the property variables used for Setup.
+            * min_passes (int, optional): Minimum number of passes. Defaults to 1.
+            * min_converged (int, optional): Minimum number of converged passes. Defaults to 1.
+        """
+
+        if self.pinfo:
+            if self.pinfo.project:
+                if self.pinfo.design:
+                    if self.pinfo.design.solution_type == 'Eigenmode':
+                        if self.pinfo.setup_name != setup_args.name:
+                            self.design.logger.warning(
+                                f'The name of active setup={self.pinfo.setup_name} does not match'
+                                f'the name of of setup_args.name={setup_args.name}. '
+                                f'To use this method, activate the desired Setup before editing it. The '
+                                f'setup_args was not used to update the active Setup.'
+                            )
+                            return
+
+                        for key, value in setup_args.items():
+                            if key == "name":
+                                continue  #Checked for above.
+                            if key == "n_modes":
+                                #EditSetup  not documented, this is just attempt to use.
+                                #args_editsetup = ["NAME:" + setup_args.name,["NumModes:=", setup_args.n_modes]]
+                                #self.pinfo.setup._setup_module.EditSetup([setup_args.name, args_editsetup])
+                                if value < 0 or value > 20 or not isinstance(
+                                        value, int):
+                                    self.logger.warning(
+                                        f'Value of n_modes={value} must be integer from 1 to 20.'
+                                    )
+                                else:
+                                    self.pinfo.setup.n_modes = value
+                                    continue
+                            if key == "min_freq_ghz":
+                                if not isinstance(value, int):
+                                    self.logger.warning(
+                                        'The value for min_freq_ghz should be an int. '
+                                        f'The present value is {value}.')
+                                else:
+                                    self.pinfo.setup.min_freq_ghz = value
+                                    continue
+                            if key == 'max_delta_f':
+                                if not isinstance(value, float):
+                                    self.logger.warning(
+                                        'The value for max_delta_f should be float. '
+                                        f'The present value is {value}.')
+                                else:
+                                    self.pinfo.setup.delta_f = value
+                                    continue
+                            if key == 'max_passes':
+                                if not isinstance(value, int):
+                                    self.logger.warning(
+                                        'The value for max_passes should be an int. '
+                                        f'The present value is {value}.')
+                                else:
+                                    self.pinfo.setup.passes = value
+                                    continue
+                            if key == 'pct_refinement':
+                                if not isinstance(value, int):
+                                    self.logger.warning(
+                                        'The value for pct_refinement should be an int. '
+                                        f'The present value is {value}.')
+                                else:
+                                    self.pinfo.setup.pct_refinement = value
+                                    continue
+                            if key == 'basis_order':
+                                if not isinstance(value, int):
+                                    self.logger.warning(
+                                        'The value for basis_order should be an int. '
+                                        f'The present value is {value}.')
+                                else:
+                                    self.pinfo.setup.basis_order = value
+                                    continue
+
+                            self.design.logger.warning(
+                                f'In setup_args, key={key}, value={value} is not in pinfo.setup, '
+                                'the key/value pair from setup_args not added to Setup in Ansys.'
+                            )
+
+                    else:
+                        self.logger.warning(
+                            'The design does not have solution type as "Eigenmode". The Setup not updated.'
+                        )
+                else:
+                    self.logger.warning(
+                        'A design is not in active project. The Setup not updated.'
+                    )
+            else:
+                self.logger.warning(
+                    "Project not available, have you opened a project? Setup not updated."
+                )
+        else:
+            self.logger.warning(
+                "Have you run connect_ansys()?  "
+                "Cannot find a reference to Ansys in QRenderer. Setup not updated. "
+            )
+
+    def edit_drivenmodal_setup(self, setup_args: Dict):
+        """User can pass key/values to edit the setup for active driven modal setup.  
+
+        Args:
+            setup_args (Dict): a Dict with possible keys/values.
+
+        **setup_args** dict contents:
+            * name (str, optional): Name of eigenmode setup. Defaults to "Setup".
+            * freq_ghz (int, optional): Minimum frequency in GHz. Defaults to 1.
+            * max_passes (int, optional): Maximum number of passes. Defaults to 10.
+            * pct_refinement (int, optional): Percent refinement. Defaults to 30.
+            * basis_order (int, optional): Basis order. Defaults to -1 (1 is "Mixed Order").
+
+            Note, that these three are currently NOT implemented:
+            Ansys API named EditSetup not documented for HFSS, and 
+            self.pinfo.setup does not have all the property variables used for Setup.
+            * max_delta_s (float, optional): Absolute value of maximum difference in scattering parameter S. Defaults to 0.1.
+            * min_passes (int, optional): Minimum number of passes. Defaults to 1.
+            * min_converged (int, optional): Minimum number of converged passes. Defaults to 1.
+        """
+
+        if self.pinfo:
+            if self.pinfo.project:
+                if self.pinfo.design:
+                    if self.pinfo.design.solution_type == 'DrivenModal':
+                        if self.pinfo.setup_name != setup_args.name:
+                            self.design.logger.warning(
+                                f'The name of active setup={self.pinfo.setup_name} does not match'
+                                f'the name of of setup_args.name={setup_args.name}. '
+                                f'To use this method, activate the desired Setup before editing it. The '
+                                f'setup_args was not used to update the active Setup.'
+                            )
+                            return
+
+                        for key, value in setup_args.items():
+                            if key == "name":
+                                continue  #Checked for above.
+                            if key == "freq_ghz":
+                                if not isinstance(value, int):
+                                    self.logger.warning(
+                                        'The value for freq_ghz should be an int. '
+                                        f'The present value is {value}.')
+                                else:
+                                    self.pinfo.setup.freq_ghz = value
+                                    continue
+                            if key == 'max_passes':
+                                if not isinstance(value, int):
+                                    self.logger.warning(
+                                        'The value for passes should be an int. '
+                                        f'The present value is {value}.')
+                                else:
+                                    self.pinfo.setup.passes = value
+                                    continue
+                            if key == 'pct_refinement':
+                                if not isinstance(value, int):
+                                    self.logger.warning(
+                                        'The value for pct_refinement should be an int. '
+                                        f'The present value is {value}.')
+                                else:
+                                    self.pinfo.setup.pct_refinement = value
+                                    continue
+                            if key == 'basis_order':
+                                if not isinstance(value, int):
+                                    self.logger.warning(
+                                        'The value for basis_order should be an int. '
+                                        f'The present value is {value}.')
+                                else:
+                                    self.pinfo.setup.basis_order = value
+                                    continue
+
+                            self.design.logger.warning(
+                                f'In setup_args, key={key}, value={value} is not in pinfo.setup, '
+                                'the key/value pair from setup_args not added to Setup in Ansys.'
+                            )
+
+                    else:
+                        self.logger.warning(
+                            'The design does not have solution type as "Driven Modal". The Setup not updated.'
+                        )
+                else:
+                    self.logger.warning(
+                        'A design is not in active project. The Setup not updated.'
+                    )
+            else:
+                self.logger.warning(
+                    "Project not available, have you opened a project? Setup not updated."
+                )
+        else:
+            self.logger.warning(
+                "Have you run connect_ansys()?  "
+                "Cannot find a reference to Ansys in QRenderer. Setup not updated. "
+            )
 
     def set_mode(self, mode: int, setup_name: str):
         """Set the eigenmode in pyEPR for a design with solution_type set to
