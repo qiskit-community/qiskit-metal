@@ -25,6 +25,7 @@ class QiskitMetalExceptions(Exception):
         message (str): String describing the error raised from qiskit-metal
     """
 
+    # pylint: disable=super-init-not-called
     def __init__(self, message: str) -> None:
         prefix = "Qiskit Metal - "
         self.args = [prefix + message]

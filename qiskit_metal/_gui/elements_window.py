@@ -82,7 +82,7 @@ class ElementsWindow(QMainWindow):
         Args:
             new_type (str): Type to change to
         """
-        self.logger.info(f'Changed elemtn table type to: {new_type}')
+        self.logger.info(f'Changed element table type to: {new_type}')
         self.model.set_type(new_type)
 
     def force_refresh(self):

@@ -11,6 +11,9 @@ Qiskit-metal is licensed under Apache 2.0. IBM reserves no copyright over output
 #### Get help: Slack
 Use the slack channel.  Join [qiskit slack](https://ibm.co/joinqiskitslack) and then join the `#metal` channel to communicate with the developers and other participants.  You may also use this channel inquire about collaborations.
 
+#### Take part to the live tutorials and discussion
+Use [this form](https://airtable.com/shrxQEgKqZCf319F3) to sign-up for the upcoming sessions. The calendar, reminders and recordings will be shared in the Slack channel.
+
 ## Documentation 
 After installation, you can open the documentation like this
 ```python
@@ -68,6 +71,11 @@ conda env create -n <env_name> environment.yml
 conda activate <env_name>
 python -m pip install -ve .
 ```
+Execute the following command if you plan to contribute code:
+```
+python -m pip install -r requirements-dev.txt -ve .
+```
+
 This creates a new environment with name `<env_name>` with all the necessary library dependencies.
 Then it activates the new environment.
 Finally installs the local qiskit-metal code inside that environment.
@@ -83,6 +91,11 @@ conda env update -n <env_name_exist> environment.yml
 conda activate <env_name_exist>
 python -m pip install -ve .
 ```
+Execute the following command if you plan to contribute code:
+```
+python -m pip install -r requirements-dev.txt -ve .
+```
+
 Notes:
 
 * It is possible that you may run into version conflicts during the above installation, as qiskit-metal requires specific library versions to work correctly on every OS.
