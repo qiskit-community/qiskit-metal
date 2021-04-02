@@ -71,6 +71,11 @@ conda env create -n <env_name> environment.yml
 conda activate <env_name>
 python -m pip install -ve .
 ```
+Execute the following command if you plan to contribute code:
+```
+python -m pip install -r requirements-dev.txt -ve .
+```
+
 This creates a new environment with name `<env_name>` with all the necessary library dependencies.
 Then it activates the new environment.
 Finally installs the local qiskit-metal code inside that environment.
@@ -86,6 +91,11 @@ conda env update -n <env_name_exist> environment.yml
 conda activate <env_name_exist>
 python -m pip install -ve .
 ```
+Execute the following command if you plan to contribute code:
+```
+python -m pip install -r requirements-dev.txt -ve .
+```
+
 Notes:
 
 * It is possible that you may run into version conflicts during the above installation, as qiskit-metal requires specific library versions to work correctly on every OS.
