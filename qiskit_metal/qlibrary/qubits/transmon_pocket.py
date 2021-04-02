@@ -110,6 +110,7 @@ class TransmonPocket(BaseQubit):
 
     # Default drawing options
     default_options = Dict(
+        chip='main',
         pos_x='0um',
         pos_y='0um',
         pad_gap='30um',

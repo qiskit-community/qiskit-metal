@@ -125,6 +125,16 @@ class QQ3DRenderer(QAnsysRenderer):
         components. All pins in this list are rendered with an additional endcap in the form of a
         rectangular cutout, to be subtracted from its respective plane.
 
+        The final parameter, box_plus_buffer, determines how the chip is drawn. When set to True, it takes the
+        minimum rectangular bounding box of all rendered components and adds a buffer of x_buffer_width_mm and
+        y_buffer_width_mm horizontally and vertically, respectively, to the chip size. The center of the chip
+        lies at the midpoint x/y coordinates of the minimum rectangular bounding box and may change depending
+        on which components are rendered and how they're positioned. If box_plus_buffer is False, however, the
+        chip position and dimensions are taken from the chip info dictionary found in self.design, irrespective
+        of what's being rendered. While this latter option is faster because it doesn't require calculating a
+        bounding box, it carries with it the risk of rendered components being too close to the edge of the chip
+        or even falling outside its boundaries.
+
         Args:
             selection (Union[list, None], optional): List of components to render. Defaults to None.
             open_pins (Union[list, None], optional): List of tuples of pins that are open. Defaults to None.
