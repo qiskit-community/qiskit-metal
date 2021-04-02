@@ -491,7 +491,6 @@ class QDesign():
             self.logger.error("error making mods: " + str(e))
 
         try:
-            print("asdf\n\n\n\n\n\n\n\n")
             for comp in self._components.values():
                 print(f"Reloading component_class_name={component_class_name}; component_module_name={component_module_name.split('.')[-1]}")
                 print("class", comp.__class__.__name__)
@@ -513,7 +512,68 @@ class QDesign():
             self.logger.error("e2: " + str(e))
 
         self.logger.debug(f'Finished reloading component_class_name={component_class_name}; component_module_name={component_module_name}'
-)
+                          )
+
+        # Alternative, but reload will say not in sys.path
+        # self = gui.component_window.src_widgets[-1].ui.src_editor
+        # spec = importlib.util.spec_from_file_location(self.component_module_name, self.component_module_path) # type: ModuleSpec
+        # module = importlib.util.module_from_spec(spec) # type: module e.g.,
+        # spec.loader.exec_module(module)
+        # importlib.reload(module)
+
+    def reload_and_rebuild_component(self, component_module_name: str,
+                         component_class_name: str):
+        """
+        Reload the module and class of a given component and update
+        all class instances. (Advanced function.)
+
+        Arguments:
+            component_module_name (str): String name of the module name, such as
+                `qiskit_metal.qlibrary.qubits.transmon_pocket`
+            component_class_name (str): String name of the class name inside thst module,
+                such  as `TransmonPocket`
+        """
+        self.logger.debug(
+            f'Reloading component_class_name={component_class_name}; component_module_name={component_module_name}'
+        )
+
+        try:
+            module = importlib.import_module(component_module_name)
+            module = importlib.reload(module)
+            new_class = getattr(module, component_class_name)
+        except Exception as e:
+            self.logger.error("error making mods: " + str(e))
+
+        # try:
+        #     print(f'values {self._components.values()}')
+        #     for comp in self._components.values():
+        #         #print(
+        #         #    f"Reloading component_class_name={component_class_name}; component_module_name={component_module_name.split('.')[-1]}")
+        #         #print("class", comp.__class__.__name__)
+        #         #print("mod", comp.__class__.__module__.split('.')[-1])
+        #         if comp.__class__.__name__ == component_class_name and comp.__class__.__module__.split('.')[-1] == \
+        #                 component_module_name.split('.')[-1]:
+        #             #print("positive:", comp)
+        #
+        # except Exception as e:
+        #     print("ERROR:", e)
+
+        try:
+            # components that need
+            for instance in filter(
+                    lambda k: k.__class__.__name__ == component_class_name and k.__class__.__module__.split('.')[
+                        -1] == component_module_name.split('.')[-1],
+                    self._components.values()):
+                print("instances: ", instance)
+                instance.__class__ = new_class
+                instance.rebuild()
+
+        except Exception as e:
+            self.logger.error("e2: " + str(e))
+
+        self.logger.debug(
+            f'Finished reloading component_class_name={component_class_name}; component_module_name={component_module_name}'
+            )
 
         # Alternative, but reload will say not in sys.path
         # self = gui.component_window.src_widgets[-1].ui.src_editor

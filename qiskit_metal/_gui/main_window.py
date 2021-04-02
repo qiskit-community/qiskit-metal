@@ -536,7 +536,10 @@ class MetalGUI(QMainWindowBaseHandler):
             print(f"{full_path} last modified: {os.path.getmtime(full_path)}")
 
             qis_abs_path = full_path[full_path.index(__name__.split('.')[0]):]
+            # Windows users' qis_abs_path may use os.sep or '/' due to PySide's handling of file names
             qis_mod_path = qis_abs_path.replace(os.sep, '.')[:-len('.py')]
+
+            qis_mod_path = qis_mod_path.replace("/", '.')  # users cannot use '/' in filename
 
             import inspect
             qis_class_name = "main window no name"
@@ -548,7 +551,16 @@ class MetalGUI(QMainWindowBaseHandler):
                     if str(memtup[1].__module__).endswith(class_owner):
                         qis_class_name = memtup[1].__name__
 
-            self.design.reload_component(qis_mod_path, qis_class_name)
+
+            print(qis_class_name)
+            self.design.reload_and_rebuild_component(qis_mod_path, qis_class_name)
+            # Table models
+            self.ui.tableComponents.model().refresh()
+
+            # Redraw plots
+            self.refresh_plot()
+            #self.main_window.replot()
+            print("replotted")
 
         else:
             try:

@@ -33,7 +33,7 @@ class LibraryDelegate(QItemDelegate):
     def paint(self, painter:PySide2.QtGui.QPainter, option:PySide2.QtWidgets.QStyleOptionViewItem, index:PySide2.QtCore.QModelIndex):
         try:
             if index.column() == 1 and self.active: # add const instead of 1
-                text = "refresh"
+                text = "rebuild"
                 palette = option.palette
                 document = QTextDocument()
                 document.setDefaultFont(option.font)
