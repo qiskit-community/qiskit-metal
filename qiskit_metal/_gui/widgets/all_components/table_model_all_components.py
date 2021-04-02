@@ -27,7 +27,7 @@ if TYPE_CHECKING:
 
 
 class QTableModel_AllComponents(QAbstractTableModel):
-    """Design compoentns Table model that shows the names of the compoentns and
+    """Design components Table model that shows the names of the components and
     their class names etc.
 
     This class extends the `QAbstractTableModel` class.
@@ -104,7 +104,7 @@ class QTableModel_AllComponents(QAbstractTableModel):
             # This will loose the current selection.
             self.modelReset.emit()
 
-            # for some reason the horozontal header is hidden even if i call this in init
+            # for some reason the horizontal header is hidden even if i call this in init
             self._tableView.horizontalHeader().show()
 
             self._row_count = new_count
@@ -124,7 +124,7 @@ class QTableModel_AllComponents(QAbstractTableModel):
         Returns:
             int: The number of rows
         """
-        if self.design:  # should we jsut enforce this
+        if self.design:  # should we just enforce this
             num = int(len(self.design.components))
             if num == 0:
                 self._tableView.show_placeholder_text()
