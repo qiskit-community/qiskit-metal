@@ -248,9 +248,9 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
 
     def test_toolbox_metal_set_decimal_precision(self):
         """Test functionality of set_decimal_precision in toolbox_metal.py."""
-        self.assertEqual(math_and_overrides.decimal_precision, 10)
+        self.assertEqual(math_and_overrides.DECIMAL_PRECISION, 10)
         math_and_overrides.set_decimal_precision(15)
-        self.assertEqual(math_and_overrides.decimal_precision, 15)
+        self.assertEqual(math_and_overrides.DECIMAL_PRECISION, 15)
 
     def test_toolbox_metal_dot(self):
         """Test functionality of dot in toolbox_metal.py."""
