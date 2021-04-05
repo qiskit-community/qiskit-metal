@@ -818,12 +818,14 @@ class QComponent():
             if false_pin:
                 self._error_message = (
                     f'Pin {pin} does not exist in component {component}. '
-                    f'{self.name} has not been built. Please check your pin_input values.')
+                    f'{self.name} has not been built. Please check your pin_input values.'
+                )
                 return 'Pin Does Not Exist'
             if pin_in_use:
                 self._error_message = (
                     f'Pin {pin} of component {component} is already in use. '
-                    f'{self.name} has not been built. Please check your pin_input values.')
+                    f'{self.name} has not been built. Please check your pin_input values.'
+                )
                 return 'Pin In Use'
         return None
 
@@ -932,8 +934,7 @@ class QComponent():
         else:
             self.logger.warning(
                 f'Component with classname={self.class_name} does not know about '
-                f'table name "{kind}". '
-            )
+                f'table name "{kind}".')
 
         renderer_key_values = self._get_specific_table_values_from_renderers(
             kind)
