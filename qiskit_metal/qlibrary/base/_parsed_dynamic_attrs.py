@@ -56,7 +56,6 @@ class ParsedDynamicAttributes_Component():
         >> `float(1e7)`
     """
     """
-    Ask Zlatko for explanation.
     Special method names:
         See Python Data Module for Objects:
             https://docs.python.org/3/reference/datamodel.html
