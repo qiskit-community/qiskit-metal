@@ -1065,7 +1065,7 @@ class QAnsysRenderer(QRenderer):
         wb_table2 = wb_table.loc[wb_table['subtract'] == True]
 
         #looping through each qgeometry
-        for index, row in wb_table2.iterrows():
+        for _, row in wb_table2.iterrows():
             geom = row['geometry']
             width = row['width']
             #looping through the linestring of the path to determine where WBs should be
