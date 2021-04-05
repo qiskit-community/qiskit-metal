@@ -442,13 +442,13 @@ class Vector:
                     |
                     |
 
-                    x1  x2      arctan2(x1,x2)
-                    +/- 0       +0      +/- 0
-                    +/- 0       -0      +/- pi
-                    > 0 +/-inf  +0 / +pi
-                    < 0 +/-inf  -0 / -pi
-                    +/-inf      +inf    +/- (pi/4)
-                    +/-inf      -inf    +/- (3*pi/4)
+                    x1       x2       arctan2(x1,x2)
+                    +/- 0    +0       +/- 0
+                    +/- 0    -0       +/- pi
+                    > 0      +/-inf   +0 / +pi
+                    < 0      +/-inf   -0 / -pi
+                    +/-inf   +inf     +/- (pi/4)
+                    +/-inf   -inf     +/- (3*pi/4)
 
             Note that +0 and -0 are distinct floating point numbers, as are +inf and -inf.
         """

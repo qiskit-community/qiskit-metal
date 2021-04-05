@@ -13,7 +13,8 @@
 # that they have been altered from the originals.
 """This is the main module that defines what a QComponent is in Qiskit Metal.
 
-To see the docstring of QComponent, use:     >> ?QComponent
+To see the docstring of QComponent in Jupyter notebook, use:
+>> ?QComponent
 """
 
 import logging
@@ -175,7 +176,6 @@ class QComponent():
             raise ValueError(
                 "Error you did not pass in a valid Metal QDesign object as a '\
                 'parent of this QComponent.")
-            return
 
         self._design = design  # reference to parent
 
@@ -183,7 +183,6 @@ class QComponent():
             raise ValueError(
                 f"{name} already exists! Please choose a different name for your new QComponent"
             )
-            return
 
         self._name = name
         self._class_name = self._get_unique_class_name()  # Full class name
@@ -351,7 +350,7 @@ class QComponent():
             bool: True is successful, otherwise failure code
         """
         return_code = self.design.rename_component(self.id, new_name)
-        if return_code != True:
+        if return_code is not True:
             logger.warning(
                 f'In design_base.name, the new_name={new_name} was not set. ')
         return return_code
@@ -511,7 +510,9 @@ class QComponent():
         raise NotImplementedError()
 
     def rebuild(self):
-        """Builds the QComponent. This is the main action function of a
+        """Builds the QComponent.
+        
+        This is the main action function of a
         QComponent, call it qc. It converts the qc.options into QGeometry with
         all of the required options, such as the geometry points, layer number,
         materials, etc. needed to render.
@@ -523,8 +524,8 @@ class QComponent():
         *Build status:*
         The function also sets the build status of the component.
         It sets to `failed` when the component is created, and then it sets to `good` when it is
-        done with no errors. The user can also set other statuses, which can appear if the code fails
-        to reach the final line of the build, where the build status is set to `good`.
+        done with no errors. The user can also set other statuses, which can appear if the code
+        fails to reach the final line of the build, where the build status is set to `good`.
 
         Raises:
             Exception: Component build failure
@@ -643,11 +644,11 @@ class QComponent():
         if check_name in self._design.name_to_id:
             component_id = self._design.name_to_id[check_name]
             # if not self._overwrite_flag:
-            #    logger.warning(f"Called _is_name_used, component_id({check_name}, id={component_id})"
+            #    logger.warning(f"Called _is_name_used, "
+            #                   f"component_id({check_name}, id={component_id})"
             #                   " is already being used in design.")
             return component_id
-        else:
-            return 0
+        return 0
 
 ####################################################################################
 # Functions for handling of pins
@@ -676,7 +677,7 @@ class QComponent():
             * gap (float): the dielectric gap of the pin for the purpose of representing as a port
               for simulations.  Defaults to None which is converted to 0.6 * width.
 
-        A dictionary containing a collection of information about the pin, necessary for use in Metal:
+        Dictionary containing pins information:
             * points (numpy.ndarray) - two (x,y) points which represent the edge of the pin for
               another component to attach to (eg. the edge of a CPW TL)
             * middle (numpy.ndarray) - an (x,y) which represents the middle of the points above,
@@ -810,13 +811,19 @@ class QComponent():
                     pin_in_use = True
             # Should modify to allow for multiple error messages to be returned.
             if false_component:
-                self._error_message = f'Component {component} does not exist. {self.name} has not been built. Please check your pin_input values.'
+                self._error_message = (
+                    f'Component {component} does not exist. {self.name} has not been built. '
+                    'Please check your pin_input values.')
                 return 'Component Does Not Exist'
             if false_pin:
-                self._error_message = f'Pin {pin} does not exist in component {component}. {self.name} has not been built. Please check your pin_input values.'
+                self._error_message = (
+                    f'Pin {pin} does not exist in component {component}. '
+                    f'{self.name} has not been built. Please check your pin_input values.')
                 return 'Pin Does Not Exist'
             if pin_in_use:
-                self._error_message = f'Pin {pin} of component {component} is already in use. {self.name} has not been built. Please check your pin_input values.'
+                self._error_message = (
+                    f'Pin {pin} of component {component} is already in use. '
+                    f'{self.name} has not been built. Please check your pin_input values.')
                 return 'Pin In Use'
         return None
 
@@ -924,7 +931,8 @@ class QComponent():
             self.qgeometry_table_usage[kind] = True
         else:
             self.logger.warning(
-                f'Component with classname={self.class_name} does not know about table name "{kind}". '
+                f'Component with classname={self.class_name} does not know about '
+                f'table name "{kind}". '
             )
 
         renderer_key_values = self._get_specific_table_values_from_renderers(
@@ -1098,7 +1106,8 @@ class QComponent():
         """Draw all the qgeometry of the component (polys and path etc.)
 
         Arguments:
-            ax (matplotlib.axes.Axes): Matplotlib axis to draw on.  Defaults to None -- gets the current axis.
+            ax (matplotlib.axes.Axes): Matplotlib axis to draw on.  Defaults to None.
+                                       When None, it gets the current axis.
             plot_kw (dict): Parameters dictionary.
 
         Returns:
