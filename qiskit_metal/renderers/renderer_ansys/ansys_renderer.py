@@ -24,6 +24,7 @@ import pandas as pd
 from numpy.linalg import norm
 from collections import defaultdict
 from platform import system
+from scipy.spatial import distance
 
 import shapely
 import pyEPR as epr
@@ -97,6 +98,11 @@ class QAnsysRenderer(QRenderer):
         * ansys_file_extension: '.aedt' -- Ansys file extension for 2016 version and newer
         * x_buffer_width_mm: 0.2 -- Buffer between max/min x and edge of ground plane, in mm
         * y_buffer_width_mm: 0.2 -- Buffer between max/min y and edge of ground plane, in mm
+        * wb_threshold:'400um' -- the minimum distance between two vertices of a path for a
+            wirebond to be added.
+        * wb_offset:'0um' -- offset distance for wirebond placement (along the direction
+            of the cpw)
+        * wb_size: 3 -- scalar which controls the width of the wirebond (wb_size * path['width'])
     """
 
     #: Default options, over-written by passing ``options` dict to render_options.
@@ -116,6 +122,9 @@ class QAnsysRenderer(QRenderer):
         # bounding_box_scale_y = 1.2, # Ratio of 'main' chip length to bounding box length
         x_buffer_width_mm=0.2,  # Buffer between max/min x and edge of ground plane, in mm
         y_buffer_width_mm=0.2,  # Buffer between max/min y and edge of ground plane, in mm
+        wb_threshold = '400um',
+        wb_offset = '0um',
+        wb_size = 5,
         plot_ansys_fields_options = Dict(
             name="NAME:Mag_E1",
             UserSpecifyName='0',
@@ -155,11 +164,13 @@ class QAnsysRenderer(QRenderer):
     # Keeping this as a cls dict so could be edited before renderer is instantiated.
     # To update component.options junction table.
 
-    element_table_data = dict(junction=dict(
-        inductance=default_options['Lj'],
-        capacitance=default_options['Cj'],
-        resistance=default_options['_Rj'],
-        mesh_kw_jj=parse_units(default_options['max_mesh_length_jj'])))
+    element_table_data = dict(path=dict(wire_bonds=False),
+                              junction=dict(
+                                  inductance=default_options['Lj'],
+                                  capacitance=default_options['Cj'],
+                                  resistance=default_options['_Rj'],
+                                  mesh_kw_jj=parse_units(
+                                      default_options['max_mesh_length_jj'])))
 
     def __init__(self,
                  design: 'QDesign',
@@ -612,6 +623,9 @@ class QAnsysRenderer(QRenderer):
         for _, qgeom in table.iterrows():
             self.render_element(qgeom, bool(table_type == 'junction'))
 
+        if table_type == 'path':
+            self.auto_wirebonds(table)
+
     def render_element(self, qgeom: pd.Series, is_junction: bool):
         """Render an individual shape whose properties are listed in a row of
         QGeometry table. Junction elements are handled separately from non-
@@ -1014,6 +1028,63 @@ class QAnsysRenderer(QRenderer):
                 'small_mesh',
                 self.assign_mesh,
                 MaxLength=self._options['max_mesh_length_jj'])
+
+    #Still implementing
+    def auto_wirebonds(self, table):
+        """
+        Adds wirebonds to the Ansys model for path elements where;
+        subtract = True and wire_bonds = True.
+        Uses render options for determining of the;
+        * wb_threshold -- the minimum distance between two vertices of a path for a
+            wirebond to be added.
+        * wb_offset -- offset distance for wirebond placement (along the direction
+            of the cpw)
+        * wb_size -- controls the width of the wirebond (wb_size * path['width'])
+        """
+        norm_z = np.array([0, 0, 1])
+
+        wb_threshold = parse_units(self._options['wb_threshold'])
+        wb_offset = parse_units(self._options['wb_offset'])
+
+        #selecting only the qgeometry which meet criteria
+        wb_table = table.loc[table['hfss_wire_bonds'] == True]
+        wb_table2 = wb_table.loc[wb_table['subtract'] == True]
+
+        #looping through each qgeometry
+        for _, row in wb_table2.iterrows():
+            geom = row['geometry']
+            width = row['width']
+            #looping through the linestring of the path to determine where WBs should be
+            for index, i_p in enumerate(geom.coords[:-1], start=0):
+                j_p = np.asarray(geom.coords[:][index + 1])
+                vert_distance = parse_units(distance.euclidean(i_p, j_p))
+                if vert_distance > wb_threshold:
+                    #Gets number of wirebonds to fit in section of path
+                    wb_count = int(vert_distance // wb_threshold)
+                    #finds the position vector
+                    wb_pos = (j_p - i_p) / (wb_count + 1)
+                    #gets the norm vector for finding the orthonormal of path
+                    wb_vec = wb_pos / np.linalg.norm(wb_pos)
+                    #finds the orthonormal (for orientation)
+                    wb_perp = np.cross(norm_z, wb_vec)[:2]
+                    #finds the first wirebond to place (rest are in the loop)
+                    wb_pos_step = parse_units(wb_pos + i_p) + (wb_vec *
+                                                               wb_offset)
+                    #Other input values could be modified, kept to minimal selection for automation
+                    #for the time being. Loops to place N wirebonds based on length of path section.
+                    for wb_i in range(wb_count):
+                        self.modeler.draw_wirebond(
+                            pos=wb_pos_step + parse_units(wb_pos * wb_i),
+                            ori=wb_perp,
+                            width=parse_units(width * self._options['wb_size']),
+                            height=parse_units(width *
+                                               self._options['wb_size']),
+                            z=0,
+                            wire_diameter='0.015mm',
+                            NumSides=6,
+                            name='g_wb',
+                            material='pec',
+                            solve_inside=False)
 
     def clean_active_design(self):
         """Remove all elements from Ansys Modeler."""

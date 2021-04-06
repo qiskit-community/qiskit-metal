@@ -82,7 +82,7 @@ def is_qgeometry_table(obj):
 #
 
 # TODO: implement data types in construction of tables?
-# TODO: when i copy over the table and manipualt ehtmee
+# TODO: when a copy over the table and manipulate ehtmee
 # i seem to loose the assignments to bool etc.
 
 ELEMENT_COLUMNS = dict(
@@ -104,7 +104,7 @@ ELEMENT_COLUMNS = dict(
             # ADD specific renderers here, all renderes must register here.
             # hfss = dict( ... ) # pick names as hfss_name
             # hfss=dict(
-            #     boundaray_name=str,
+            #     boundary_name=str,
             #     material=str,
             #     perfectE=bool
             # ),
@@ -195,7 +195,7 @@ class QGeometryTables(object):
             design.qgeometry.get_component(
                     component_name,
                     element_name,
-                    columns=all or geom or list) # get all elemetns for compoentns
+                    columns=all or geom or list) # get all elements for components
 
             >>> component	name	geometry	layer	type	chip	subtract	fillet	color	width
 
@@ -229,7 +229,7 @@ class QGeometryTables(object):
     """
 
     # Dummy private attribute used to check if an instanciated object is
-    # indeed a elemnt table class. The problem is that the `isinstance`
+    # indeed a element table class. The problem is that the `isinstance`
     # built-in method fails when this module is reloaded.
     # Used by `is_element` to check.
     __i_am_qgeometry_table__ = True
@@ -254,7 +254,7 @@ class QGeometryTables(object):
 
         self._tables = Dict()
 
-        # Need to call after columns are added by add_renderer_extenstion is run by all the renderers.
+        # Need to call after columns are added by add_renderer_extension is run by all the renderers.
         # self.create_tables()
 
     @property
@@ -287,8 +287,7 @@ class QGeometryTables(object):
             qgeometry (dict):  dict of dict.  Keys give element type names,
                               such as base, poly, path, etc.
         """
-
-        # Make sure that the base and all other element kinds have this renderer registerd
+        # Make sure that the base and all other element kinds have this renderer registered
         for element_key in cls.ELEMENT_COLUMNS:
             if not renderer_name in cls.ELEMENT_COLUMNS[element_key][
                     '__renderers__']:
@@ -319,8 +318,8 @@ class QGeometryTables(object):
         Returns:
             list(str) : A list of name in self.ELEMENT_COLUMNS
         """
-        # TODO: I should probably make this a variable and memeorize, only change when qgeometry are added and removed
-        # can be slow for perofmance to look up eahc time and recalcualte, since may call this often
+        # TODO: I should probably make this a variable and memorize, only change when qgeometry are added and removed
+        # can be slow for performance to look up each time and recalculate, since may call this often
         names = list(cls.ELEMENT_COLUMNS.keys())
         names.remove('base')
         return names
@@ -452,7 +451,7 @@ class QGeometryTables(object):
         Arguments:
             kind (str): Must be in get_element_types ('path', 'poly', etc.).
             component_name (str): Component name.
-            geometry (dict): Dict of shapely geomety.
+            geometry (dict): Dict of shapely geometry.
             subtract (bool): Subtract - passed through.  Defaults to False.
             helper (bool): Helper - passed through.  Defaults to False.
             layer (Union[int, str]): Layer - passed through.  Defaults to 1.
@@ -526,7 +525,7 @@ class QGeometryTables(object):
 
         df = df.assign(**options)
 
-        # Set new table. Unfortuanly, this creates a new instance. Can just direct append
+        # Set new table. Unfortunately, this creates a new instance. Can just direct append
         self.tables[kind] = table.append(df, sort=False, ignore_index=True)
         # concat([table,df], axis=0, join='outer', ignore_index=True,sort=False,
         #          verify_integrity=False, copy=False)
@@ -546,8 +545,8 @@ class QGeometryTables(object):
         """
 
         if 'fillet' in other_options.keys():
-            # fillet_scalar = 2.0    #Depreciated, moved to toolbox_python.utilit_functions
-            # fillet_comparison_precision = 9  # used for np.round #Depreciated, moved to toolbox_python.utilit_functions
+            # fillet_scalar = 2.0    #Depreciated, moved to toolbox_python.utility_functions
+            # fillet_comparison_precision = 9  # used for np.round #Depreciated, moved to toolbox_python.utility_functions
 
             # For now, don't let front end user edit this.
             # if 'fillet_comparison_precision' in other_options.keys():
@@ -555,7 +554,7 @@ class QGeometryTables(object):
             #     fillet_comparison_precision = int(self.parse_value(
             #         other_options['fillet_comparison_precision']))
 
-            # Depreciated, moved to toolbox_python.utilit_functions
+            # Depreciated, moved to toolbox_python.utility_functions
             # if 'fillet_scalar' in other_options.keys():
             #     fillet_scalar = self.parse_value(
             #         other_options['fillet_scalar'])
@@ -782,7 +781,7 @@ class QGeometryTables(object):
 
         Arguments:
             table_name (str): Element type ('poly', 'path', etc.) or 'all'
-            log_issue (bool): Throw an erro in the log if name missing.  Defaults to True.
+            log_issue (bool): Throw an error in the log if name missing.  Defaults to True.
 
         Returns:
             bool: True if the name is valid, else False

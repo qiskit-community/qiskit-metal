@@ -101,6 +101,10 @@ class QRenderer():
         # Finish and register officially as ready to use.
         QRenderer.__loaded_renderers__.add(name)
 
+        # Reset the table for the next QRenderer.
+        for table in cls.element_table_data.keys():
+            cls.element_extensions.pop(table, None)
+
         return True
 
     @classmethod

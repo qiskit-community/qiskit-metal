@@ -77,7 +77,7 @@ class QRoute(QComponent):
         * trace_width: 'cpw_width' -- Defines the width of the line.  Defaults to 'cpw_width'.
     """
 
-    component_metadata = Dict(short_name='route')
+    component_metadata = Dict(short_name='route', _qgeometry_table_path='True')
     """Component metadata"""
 
     default_options = Dict(

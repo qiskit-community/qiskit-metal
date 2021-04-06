@@ -16,7 +16,9 @@
 # pylint: disable-msg=too-many-public-methods
 # pylint: disable-msg=protected-access
 # pylint: disable-msg=import-error
+
 """Qiskit Metal unit tests components functionality."""
+
 
 import unittest
 import numpy as np
@@ -233,7 +235,10 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
     def test_component_qroute_base_component_metadata(self):
         """Test component_metadata in interconnects/qroute_base.py."""
         component = QRoute
-        self.assertEqual(component.component_metadata, {'short_name': 'route'})
+        metadata = component.component_metadata
+        self.assertEqual(len(metadata), 2)
+        self.assertEqual(metadata['short_name'], 'route')
+        self.assertEqual(metadata['_qgeometry_table_path'], 'True')
 
     def test_component_resonator_rectangle_spiral_component_metadata(self):
         """Test component_metadata in
