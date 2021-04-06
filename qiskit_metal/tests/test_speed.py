@@ -14,35 +14,24 @@
 
 # pylint: disable-msg=unnecessary-pass
 # pylint: disable-msg=broad-except
-#pylint: disable-msg=too-many-public-methods
-"""
-Qiskit Metal unit tests for speed.
-"""
+# pylint: disable-msg=too-many-public-methods
+# pylint: disable-msg=import-error
+"""Qiskit Metal unit tests for speed."""
 
 import unittest
-from qiskit_metal.tests.custom_decorators import timeout
-from qiskit_metal import designs
-from qiskit_metal import MetalGUI, Headings
-from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
-from qiskit_metal.qlibrary.interconnects.meandered import RouteMeander
 import time
+from qiskit_metal.tests.custom_decorators import timeout
 
 
 class TestSpeed(unittest.TestCase):
-    """
-    Unit test class.
-    """
+    """Unit test class."""
 
     def setUp(self):
-        """
-        Setup unit test.
-        """
+        """Setup unit test."""
         pass
 
     def tearDown(self):
-        """
-        Tie any loose ends.
-        """
+        """Tie any loose ends."""
         pass
 
     @timeout(5)
@@ -51,6 +40,7 @@ class TestSpeed(unittest.TestCase):
         Example test - Play with me to get comfortable with @timeout.
         """
         time.sleep(4)
+        self.assertEqual(4, 2 + 2)
 
 
 if __name__ == '__main__':

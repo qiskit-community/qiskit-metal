@@ -11,9 +11,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""
-Handles editing a QComponent.
-"""
+"""Handles editing a QComponent."""
 
 from PySide2 import QtCore, QtWidgets
 from PySide2.QtCore import Qt, QTimer
@@ -41,8 +39,7 @@ class QTreeView_Base(QTreeView):
         self.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
 
     def autoresize_columns(self, max_width: int = 200):
-        """
-        Resize columns to content with maximum size.
+        """Resize columns to content with maximum size.
 
         Args:
             max (int): Maximum window width.  Defaults to 200.

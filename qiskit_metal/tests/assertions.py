@@ -15,9 +15,7 @@
 # pylint: disable-msg=unnecessary-pass
 # pylint: disable-msg=invalid-name
 # pylint: disable-msg=bad-continuation
-"""
-Custom assertion for unit tests.
-"""
+"""Custom assertion for unit tests."""
 
 from itertools import zip_longest
 from typing import Iterable, Optional

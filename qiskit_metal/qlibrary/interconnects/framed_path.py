@@ -20,9 +20,9 @@ from qiskit_metal.toolbox_metal import math_and_overrides as mao
 
 
 class RouteFramed(QRoute):
-    """
-    A non-meandered basic CPW that is auto-generated between 2 components.
-    Designed to avoid self-collisions and collisions with components it is attached to.
+    """A non-meandered basic CPW that is auto-generated between 2 components.
+    Designed to avoid self-collisions and collisions with components it is
+    attached to.
 
     This class extends the `QComponent` class.
 
@@ -41,13 +41,15 @@ class RouteFramed(QRoute):
     """Component metadata"""
 
     def make(self):
-        """
-        Use user-specified parameters and geometric orientation of components to determine whether the CPW connecting
-        the pins on either end requires 1, 2, or 3 segments. Preference given to shorter paths and paths that flow
-        with the leadin and leadout directions rather than turning immediately at 90 deg.
+        """Use user-specified parameters and geometric orientation of
+        components to determine whether the CPW connecting the pins on either
+        end requires 1, 2, or 3 segments. Preference given to shorter paths and
+        paths that flow with the leadin and leadout directions rather than
+        turning immediately at 90 deg.
 
-        Keepout region along x and y directions specified for CPWs that wrap around outer perimeter of overall bounding
-        box of both components.
+        Keepout region along x and y directions specified for CPWs that
+        wrap around outer perimeter of overall bounding box of both
+        components.
         """
 
         self.__pts = []  # list of 2D numpy arrays containing vertex locations
@@ -370,8 +372,8 @@ class RouteFramed(QRoute):
                       leadend: float,
                       constaxis=0,
                       constval=0) -> list:
-        """
-        Generate the list of 2D coordinates comprising a CPW between startpin and endpin.
+        """Generate the list of 2D coordinates comprising a CPW between
+        startpin and endpin.
 
         Args:
             startpin (str): Name of startpin

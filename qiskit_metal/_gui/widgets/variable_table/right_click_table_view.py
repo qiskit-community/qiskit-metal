@@ -20,8 +20,7 @@ from PySide2.QtWidgets import QAbstractItemView
 
 
 class RightClickView(QTableView):
-    """
-    Standard QTableView with drop-down context menu upon right-clicking.
+    """Standard QTableView with drop-down context menu upon right-clicking.
     Menu allows for row deletion and renaming a cell.
 
     This class extends the `QTableView` class.
@@ -31,9 +30,7 @@ class RightClickView(QTableView):
     """
 
     def __init__(self, parent):
-        """
-        Provide access to GUI QMainWindow via parent.
-        """
+        """Provide access to GUI QMainWindow via parent."""
         super().__init__(parent)
         self.gui = parent.parent()  # this is not the main gui
 
@@ -51,8 +48,7 @@ class RightClickView(QTableView):
         self.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
 
     def contextMenuEvent(self, event: QContextMenuEvent):
-        """
-        Create options for drop-down context menu.
+        """Create options for drop-down context menu.
 
         Args:
             event (QContextMenuEvent): The event
@@ -69,8 +65,7 @@ class RightClickView(QTableView):
             self.mapToGlobal(event.pos()))
 
     def getPosition(self, clickedIndex: QPoint):
-        """
-        Obtain location of clicked cell in form of row name and number.
+        """Obtain location of clicked cell in form of row name and number.
 
         Args:
             clickedIndex (QPoint): The QPoint of the click
@@ -85,8 +80,7 @@ class RightClickView(QTableView):
         return None, None
 
     def deleteRow(self, row_name: str, row_number: int):
-        """
-        Create message box to confirm row deletion.
+        """Create message box to confirm row deletion.
 
         Args:
             row_name (str): Name of the row to delete
@@ -101,8 +95,7 @@ class RightClickView(QTableView):
                 model.removeRows(row_number)
 
     def renameRow(self, row_name: str, index: QModelIndex):
-        """
-        Create message box to confirm row renaming and new name.
+        """Create message box to confirm row renaming and new name.
 
         Args:
             row_name (str): Name of the row to rename

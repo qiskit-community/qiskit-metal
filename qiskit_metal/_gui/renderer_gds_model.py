@@ -26,18 +26,16 @@ if TYPE_CHECKING:
 
 
 class RendererGDS_Model(QTreeModel_Base):
-    """
-    Tree model for GDS renderer.
+    """Tree model for GDS renderer.
 
     Args:
         QTreeModel_Base (QAbstractItemModel): Base class for nested dicts
     """
 
     def __init__(self, parent: QWidget, gui: 'MetalGUI', view: QTreeView):
-        """
-        Editable table with drop-down rows for GDS renderer options.
-        Organized as a tree model where child nodes are more specific properties
-        of a given parent node.
+        """Editable table with drop-down rows for GDS renderer options.
+        Organized as a tree model where child nodes are more specific
+        properties of a given parent node.
 
         Args:
             parent (QWidget): The parent widget
@@ -51,5 +49,6 @@ class RendererGDS_Model(QTreeModel_Base):
 
     @property
     def data_dict(self) -> dict:
-        """Return a reference to the (nested) dictionary containing the data."""
+        """Return a reference to the (nested) dictionary containing the
+        data."""
         return self.design.renderers.gds.options

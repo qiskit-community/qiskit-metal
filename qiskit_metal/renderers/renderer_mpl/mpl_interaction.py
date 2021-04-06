@@ -35,8 +35,7 @@
 # THE SOFTWARE.
 #
 # ###########################################################################*/
-"""
-Pan and zoom interaction to plug on a matplotlib Figure.
+"""Pan and zoom interaction to plug on a matplotlib Figure.
 
 Interaction:
     - Zoom in/out with the mouse wheel
@@ -75,7 +74,6 @@ Known limitations:
     - Only support linear and log scale axes.
     - Zoom area not working well with keep aspect ratio.
     - Interfere with matplotlib toolbar.
-
 """
 
 import logging
@@ -131,13 +129,13 @@ class MplInteraction(object):
 
     @property
     def figure(self):
-        """The Figure this interaction is connected to or
-        None if not connected."""
+        """The Figure this interaction is connected to or None if not
+        connected."""
         return self._fig_ref() if self._fig_ref is not None else None
 
     def _axes_to_update(self, event):
-        """Returns two sets of Axes to update according to event.
-        Takes care of multiple axes and shared axes.
+        """Returns two sets of Axes to update according to event. Takes care of
+        multiple axes and shared axes.
 
         Args:
             event (MouseEvent): Matplotlib event to consider
@@ -266,9 +264,9 @@ class ZoomOnWheel(MplInteraction):
 
 
 class PanAndZoom(ZoomOnWheel):
-    """Class providing pan & zoom interaction to a matplotlib Figure.
-    Left button for pan, right button for zoom area and zoom on wheel.
-    Support subplots, twin Axes and log scales.
+    """Class providing pan & zoom interaction to a matplotlib Figure. Left
+    button for pan, right button for zoom area and zoom on wheel. Support
+    subplots, twin Axes and log scales.
 
     This class extends the `ZoomOnWheel` class.
     """
@@ -329,7 +327,7 @@ class PanAndZoom(ZoomOnWheel):
         from matplotlib.backend_tools import ToolToggleBase  # ToolBase
 
         class ToolPointPosition(ToolToggleBase):
-            '''Tools.'''
+            """Tools."""
             default_keymap = 'Ctrl+p'
             description = 'Click to get point coordinate printed'
             default_toggled = False
@@ -485,7 +483,7 @@ class PanAndZoom(ZoomOnWheel):
             self._event = event
 
     def _zoom_area(self, event):
-        """Zoom
+        """Zoom.
 
         Args:
             event (event): The event
@@ -552,7 +550,7 @@ class PanAndZoom(ZoomOnWheel):
         self._draw()
 
     def _on_mouse_press(self, event):
-        """Mouse press event
+        """Mouse press event.
 
         Args:
             event (event): The event
@@ -576,7 +574,7 @@ class PanAndZoom(ZoomOnWheel):
                     self._zoom_area(event)
 
     def _on_mouse_release(self, event):
-        """Mouse release event
+        """Mouse release event.
 
         Args:
             event (event): The event
@@ -589,7 +587,7 @@ class PanAndZoom(ZoomOnWheel):
             self._pressed_button = None
 
     def _on_mouse_motion(self, event):
-        """Mouse motion event
+        """Mouse motion event.
 
         Args:
             event (event): The event
@@ -600,7 +598,7 @@ class PanAndZoom(ZoomOnWheel):
             self._zoom_area(event)
 
     def _report_point_position(self, event):
-        """Report point position
+        """Report point position.
 
         Args:
             event (event): the event

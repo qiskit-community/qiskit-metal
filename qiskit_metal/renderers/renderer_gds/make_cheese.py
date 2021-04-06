@@ -24,8 +24,7 @@ import logging
 
 ### Presently this is not instantiated nor called nor executed.
 class Cheesing():
-    """Create a cheese cell based on input of no-cheese locations.
-    """
+    """Create a cheese cell based on input of no-cheese locations."""
 
     def __init__(
         self,
@@ -73,7 +72,7 @@ class Cheesing():
             datatype_cheese (int): User defined datatype, considered a sub-layer number for where to place the cheese output.
             datatype_keepout (int): User defined datatype, considered a sub-layer number for where to place the keepout of cheese.
             max_points (int): Used in gdspy to identify max number of points for a Polygon.
-            precision (float): Used in gdspy to identify precision. 
+            precision (float): Used in gdspy to identify precision.
             logger (logging.Logger):  Used to give warnings and errors.
             cheese_shape (int, optional): 0 is rectangle. 1 is circle. Defaults to 0.
             shape_0_x (float, optional): The width will be centered at (x=0,y=0). Defaults to 0.000050.
@@ -81,7 +80,6 @@ class Cheesing():
             shape_1_radius (float, optional): The radius of circle. Defaults to 0.000025.
             delta_x (float, optional): The spacing between holes in x.
             delta_y (float, optional): The spacing between holes in y.
-
         """
 
         # All the no-cheese locations.
@@ -135,7 +133,9 @@ class Cheesing():
         self.one_hole_cell = None
 
     def apply_cheesing(self) -> gdspy.GdsLibrary:
-        """Not complete. Need to populate self.lib with cheese holes.
+        """Not complete.
+
+        Need to populate self.lib with cheese holes.
         """
 
         if 0 == self.error_checking_hole_delta():
@@ -148,7 +148,7 @@ class Cheesing():
         return self.lib
 
     def error_checking_hole_delta(self) -> int:
-        """Check ratio of hole size vs hole spacing
+        """Check ratio of hole size vs hole spacing.
 
         Returns:
             int: Observation based on hole size and spacing.
@@ -176,8 +176,10 @@ class Cheesing():
         return observe
 
     def make_one_hole_at_zero_zero(self):
-        """This method will create just one hole used for cheesing 
-        defined by a shapely object.  It will be placed in self.hole.
+        """This method will create just one hole used for cheesing defined by a
+        shapely object.
+
+        It will be placed in self.hole.
         """
         if self.cheese_shape == 0:
             w, h = self.shape_0_x, self.shape_0_y
@@ -241,8 +243,10 @@ class Cheesing():
         return a_poly
 
     def cell_with_grid(self):
-        """ Use the hole at self.one_hole_cell to create a grid.  Then use the no_cheese cell to 
-        remove the holes from grid.  The difference will be used subtract from the ground layer with 
+        """Use the hole at self.one_hole_cell to create a grid.
+
+        Then use the no_cheese cell to remove the holes from grid.  The
+        difference will be used subtract from the ground layer with
         geometry. The cells are added to the Top_<chip_name>.
         """
 
