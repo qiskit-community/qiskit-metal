@@ -16,9 +16,7 @@
 # pylint: disable-msg=too-many-public-methods
 # pylint: disable-msg=protected-access
 # pylint: disable-msg=import-error
-
 """Qiskit Metal unit tests components functionality."""
-
 
 import unittest
 import numpy as np

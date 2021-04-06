@@ -19,9 +19,7 @@
 # pylint: disable-msg=broad-except
 # pylint: disable-msg=invalid-name
 # pylint: disable-msg=import-error
-
 """Qiskit Metal unit tests analyses functionality."""
-
 
 import unittest
 import pandas as pd

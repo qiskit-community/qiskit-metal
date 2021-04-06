@@ -16,9 +16,7 @@
 # pylint: disable-msg=broad-except
 # pylint: disable-msg=too-many-public-methods
 # pylint: disable-msg=import-error
-
 """Qiskit Metal unit tests analyses functionality."""
-
 
 import unittest
 import matplotlib.pyplot as _plt
