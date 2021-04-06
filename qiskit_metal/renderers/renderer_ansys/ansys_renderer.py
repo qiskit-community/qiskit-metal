@@ -514,138 +514,6 @@ class QAnsysRenderer(QRenderer):
             self.logger.error(
                 'Please install a more recent version of pyEPR (>=0.8.4.3)')
 
-    def get_chip_names(self, selection: Union[list, None] = None) -> List[str]:
-        """
-        Obtain a list of chips on which the selection of components, if valid, resides.
-
-        Args:
-            selection (Union[list, None], optional): Components to render. Defaults to None.
-
-        Returns:
-            List[str]: Chips to render.
-        """
-        if selection:
-            qcomp_ids, case = self.get_unique_component_ids(selection)
-        else:
-            qcomp_ids, case = None, 1
-        if case == 2:  # One or more components not in QDesign.
-            self.logger.warning('One or more components not found.')
-            return []
-        if case == 1:  # All components rendered.
-            comps = self.design.components
-            return list(set(comps[qcomp].options.chip for qcomp in comps))
-        else:  # Strict subset rendered.
-            icomps = self.design._components
-            return list(set(icomps[qcomp_id].options.chip for qcomp_id in qcomp_ids))
-
-    def get_min_bounding_box(self,
-                             selection: Union[list,
-                                              None] = None) -> Tuple[float]:
-        """
-        Given a list of components to render, determine the max/min x/y coordinates of the
-        smallest rectangular, axis-aligned bounding box that will enclose that selection.
-        The default selection, None, is equivalent to rendering the entire Metal design.
-
-        Args:
-            selection (Union[list, None], optional): Components to render. Defaults to None.
-
-        Returns:
-            Tuple[float]: min x, min y, max x, and max y coordinates of bounding box.
-        """
-        if selection:
-            qcomp_ids, case = self.get_unique_component_ids(selection)
-        else:
-            qcomp_ids, case = None, 1
-        min_x_main = min_y_main = float('inf')
-        max_x_main = max_y_main = float('-inf')
-        if case == 2:  # One or more components not in QDesign.
-            self.logger.warning('One or more components not found.')
-        elif case == 1:  # All components rendered.
-            for qcomp in self.design.components:
-                min_x, min_y, max_x, max_y = self.design.components[
-                    qcomp].qgeometry_bounds()
-                min_x_main = min(min_x, min_x_main)
-                min_y_main = min(min_y, min_y_main)
-                max_x_main = max(max_x, max_x_main)
-                max_y_main = max(max_y, max_y_main)
-        else:  # Strict subset rendered.
-            for qcomp_id in qcomp_ids:
-                min_x, min_y, max_x, max_y = self.design._components[
-                    qcomp_id].qgeometry_bounds()
-                min_x_main = min(min_x, min_x_main)
-                min_y_main = min(min_y, min_y_main)
-                max_x_main = max(max_x, max_x_main)
-                max_y_main = max(max_y, max_y_main)
-        return min_x_main, min_y_main, max_x_main, max_y_main
-
-    def render_chips(self,
-                     selection: Union[list, None] = None,
-                     draw_sample_holder: bool = True,
-                     box_plus_buffer: bool = True):
-        """
-        Render all chips containing components in selection.
-
-        Args:
-            selection (Union[list, None], optional): Components to render. Defaults to None.
-            draw_sample_holder (bool, optional): Option to draw vacuum box around chip. Defaults to True.
-            box_plus_buffer (bool, optional): Whether or not to use a box plus buffer. Defaults to True.
-        """
-        chip_list = self.get_chip_names(selection)
-        if box_plus_buffer: # Get bounding box of components first
-            min_x_main, min_y_main, max_x_main, max_y_main = parse_units(
-                self.get_min_bounding_box(selection))
-            self.cw_x = max_x_main - min_x_main # chip width along x
-            self.cw_y = max_y_main - min_y_main # chip width along y
-            self.cw_x += 2 * parse_units(self._options['x_buffer_width_mm'])
-            self.cw_y += 2 * parse_units(self._options['y_buffer_width_mm'])
-            self.cc_x = (max_x_main + min_x_main) / 2 # x coord of chip center
-            self.cc_y = (max_y_main + min_y_main) / 2 # y coord of chip center
-        else: # Adhere to chip placement and dimensions in QDesign
-            p = self.design.get_chip_size('main') # x/y center/width same for all chips
-            self.cw_x, self.cw_y, _ = parse_units([p['size_x'], p['size_y'], p['size_z']])
-            self.cc_x, self.cc_y, _ = parse_units([p['center_x'], p['center_y'], p['center_z']])
-        for chip_name in chip_list:
-            self.render_chip(chip_name, draw_sample_holder and (chip_name == 'main'))
-    
-    def render_chip(self, 
-                    chip_name: str,
-                    draw_sample_holder: bool):
-        """
-        Render individual chips.
-
-        Args:
-            chip_name (str): Name of chip.
-            draw_sample_holder (bool): Option to draw vacuum box around chip.
-        """
-        ansys_options = dict(transparency=0.0)
-        ops = self.design._chips[chip_name]
-        p = self.design.get_chip_size(chip_name)
-        z_coord, height = parse_units([p['center_z'], p['size_z']])
-        plane = self.modeler.draw_rect_center(
-                        [self.cc_x, self.cc_y, z_coord],
-                        x_size=self.cw_x,
-                        y_size=self.cw_y,
-                        name=f'ground_{chip_name}_plane',
-                        **ansys_options)
-        whole_chip = self.modeler.draw_box_center(
-            [self.cc_x, self.cc_y, height / 2],
-            [self.cw_x, self.cw_y, -height],
-            name=chip_name,
-            material=ops['material'],
-            color=(186, 186, 205),
-            transparency=0.2,
-            wireframe=False)
-        if draw_sample_holder: # HFSS
-            vac_height = parse_units(
-                [p['sample_holder_top'], p['sample_holder_bottom']])
-            vacuum_box = self.modeler.draw_box_center(
-                [self.cc_x, self.cc_y, (vac_height[0] - vac_height[1]) / 2],
-                [self.cw_x, self.cw_y, sum(vac_height)],
-                name='sample_holder')
-        if self.chip_subtract_dict[chip_name]:
-            # Any layer which has subtract=True qgeometries will have a ground plane
-            self.assign_perfE.append(f'ground_{chip_name}_plane')
-
     def render_design(self,
                       selection: Union[list, None] = None,
                       open_pins: Union[list, None] = None,
@@ -654,6 +522,11 @@ class QAnsysRenderer(QRenderer):
         Initiate rendering of components in design contained in selection, assuming they're valid.
         Components are rendered before the chips they reside on, and subtraction of negative shapes
         is performed at the very end.
+
+        First obtain a list of IDs of components to render and a corresponding case, denoted by self.qcomp_ids
+        and self.case, respectively. If self.case == 1, all components in QDesign are to be rendered.
+        If self.case == 0, a strict subset of components in QDesign are to be rendered. Otherwise, if
+        self.case == 2, one or more component names in selection cannot be found in QDesign.
 
         Chip_subtract_dict consists of component names (keys) and a set of all elements within each component that
         will eventually be subtracted from the ground plane. Add objects that are perfect conductors and/or have
@@ -675,8 +548,8 @@ class QAnsysRenderer(QRenderer):
         on which components are rendered and how they're positioned. If box_plus_buffer is False, however, the
         chip position and dimensions are taken from the chip info dictionary found in QDesign, irrespective
         of what's being rendered. While this latter option is faster because it doesn't require calculating a
-        bounding box, it carries with it the risk of rendered components being too close to the edge of the chip
-        or even falling outside its boundaries.
+        bounding box, it runs the risk of rendered components being too close to the edge of the chip or even
+        falling outside its boundaries.
 
         Args:
             selection (Union[list, None], optional): List of components to render. Defaults to None.
@@ -684,82 +557,43 @@ class QAnsysRenderer(QRenderer):
             box_plus_buffer (bool): Either calculate a bounding box based on the location of rendered geometries
                                      or use chip size from design class. 
         """
+        self.qcomp_ids, self.case = self.get_unique_component_ids(selection)
+
+        if self.case == 2:
+            self.logger.warning('Unable to proceed with rendering. Please check selection.')
+            return
+
         self.chip_subtract_dict = defaultdict(set)
         self.assign_perfE = []
         self.assign_mesh = []
 
-        self.render_tables(selection)
+        self.render_tables()
         self.add_endcaps(open_pins)
 
         self.render_chips(box_plus_buffer=box_plus_buffer)
         self.subtract_from_ground()
         self.add_mesh()
 
-    def render_tables(self, selection: Union[list, None] = None):
+    def render_tables(self):
         """
         Render components in design grouped by table type (path, poly, or junction).
-        Start by initializing chip boundaries for later use.
-
-        Args:
-            selection (Union[list, None], optional): List of components to render. (Default: None)
         """
-        self.min_x_main = float('inf')
-        self.min_y_main = float('inf')
-        self.max_x_main = float('-inf')
-        self.max_y_main = float('-inf')
-
         for table_type in self.design.qgeometry.get_element_types():
-            self.render_components(table_type, selection)
+            self.render_components(table_type)
 
     def render_components(self,
-                          table_type: str,
-                          selection: Union[list, None] = None):
+                          table_type: str):
         """
-        Render individual components by breaking them down into individual elements.
+        Render components by breaking them down into individual elements.
 
         Args:
             table_type (str): Table type (poly, path, or junction).
-            selection (Union[list, None], optional): List of components to render.  (Default: None)
         """
-        # Establish bounds for exported components and update these accordingly
-
-        selection = selection if selection else []
         table = self.design.qgeometry.tables[table_type]
 
-        if selection:
-            qcomp_ids, case = self.get_unique_component_ids(selection)
-
-            if self.box_plus_buffer:
-                if qcomp_ids:  # Render strict subset of components
-                    # Update bounding box (and hence main chip dimensions)
-                    for qcomp_id in qcomp_ids:
-                        min_x, min_y, max_x, max_y = self.design._components[
-                            qcomp_id].qgeometry_bounds()
-                        self.min_x_main = min(min_x, self.min_x_main)
-                        self.min_y_main = min(min_y, self.min_y_main)
-                        self.max_x_main = max(max_x, self.max_x_main)
-                        self.max_y_main = max(max_y, self.max_y_main)
-                else:  # All components rendered
-                    for qcomp in self.design.components:
-                        min_x, min_y, max_x, max_y = self.design.components[
-                            qcomp].qgeometry_bounds()
-                        self.min_x_main = min(min_x, self.min_x_main)
-                        self.min_y_main = min(min_y, self.min_y_main)
-                        self.max_x_main = max(max_x, self.max_x_main)
-                        self.max_y_main = max(max_y, self.max_y_main)
-
-            if case != 1:  # Render a subset of components using mask
-                mask = table['component'].isin(qcomp_ids)
-                table = table[mask]
-
-        elif self.box_plus_buffer:
-            for qcomp in self.design.components:
-                min_x, min_y, max_x, max_y = self.design.components[
-                    qcomp].qgeometry_bounds()
-                self.min_x_main = min(min_x, self.min_x_main)
-                self.min_y_main = min(min_y, self.min_y_main)
-                self.max_x_main = max(max_x, self.max_x_main)
-                self.max_y_main = max(max_y, self.max_y_main)
+        if self.case == 0:  # Render a subset of components using mask
+            mask = table['component'].isin(self.qcomp_ids)
+            table = table[mask]
 
         for _, qgeom in table.iterrows():
             self.render_element(qgeom, bool(table_type == 'junction'))
@@ -983,133 +817,6 @@ class QAnsysRenderer(QRenderer):
         elif qgeom['width'] and (not qgeom['helper']):
             self.assign_perfE.append(name)
 
-    def render_chips(self,
-                     draw_sample_holder: bool = True,
-                     box_plus_buffer: bool = True):
-        """
-        Render chips using info from design.get_chip_size method.
-
-        Renders the ground plane of this chip (if one is present).
-        Renders the wafer of the chip.
-
-        Args:
-            draw_sample_holder (bool, optional): Option to draw vacuum box around chip. Defaults to True.
-            box_plus_buffer (bool): Either calculate a bounding box based on the location of rendered geometries
-                                     or use chip size from design class. 
-        """
-        ansys_options = dict(transparency=0.0)
-
-        for chip_name in self.chip_subtract_dict:
-            ops = self.design._chips[chip_name]
-            p = self.design.get_chip_size(chip_name)
-            origin = parse_units([p['center_x'], p['center_y'], p['center_z']])
-            size = parse_units([p['size_x'], p['size_y'], p['size_z']])
-            vac_height = parse_units(
-                [p['sample_holder_top'], p['sample_holder_bottom']])
-            if chip_name == 'main':
-                # Draw plane, wafer, and sample holder (vacuum box)
-                # x and y dimensions of the vacuum box are identical to that of the 'main' chip
-                self.min_x_main = parse_units(self.min_x_main)
-                self.max_x_main = parse_units(self.max_x_main)
-                self.min_y_main = parse_units(self.min_y_main)
-                self.max_y_main = parse_units(self.max_y_main)
-                comp_center_x = (self.min_x_main + self.max_x_main) / 2
-                comp_center_y = (self.min_y_main + self.max_y_main) / 2
-                min_x_edge = self.min_x_main - parse_units(
-                    self._options['x_buffer_width_mm'])
-                max_x_edge = self.max_x_main + parse_units(
-                    self._options['x_buffer_width_mm'])
-                min_y_edge = self.min_y_main - parse_units(
-                    self._options['y_buffer_width_mm'])
-                max_y_edge = self.max_y_main + parse_units(
-                    self._options['y_buffer_width_mm'])
-
-                if not box_plus_buffer:
-                    # Expect all components are rendered and
-                    # the overall bounding box lies within 9 X 6 chip
-                    if not (origin[0] - size[0] / 2 <= self.min_x_main <
-                            self.max_x_main <= origin[0] + size[0] / 2) and (
-                                origin[1] - size[1] / 2 <= self.min_y_main <
-                                self.max_y_main <= origin[1] + size[1] / 2):
-                        self.logger.warning(
-                            'A bounding box with buffer around the QComponents are outside of the size of chip denoted in DesignPlanar.\n'
-                            'Chip size from DesignPlanar is:\n'
-                            f' x={size[0]}, y={size[1]}, z={size[2]}; centered at x={origin[0]}, y={origin[1]}, z={origin[2]}. \n'
-                            'Bounding box with buffer for rendered geometries is:\n'
-                            f' min_x={self.min_x_main}, max_x={self.max_x_main}, min_y={self.min_y_main}, max_y={self.max_y_main}.'
-                        )
-
-                    plane = self.modeler.draw_rect_center(
-                        origin,
-                        x_size=size[0],
-                        y_size=size[1],
-                        name=f'ground_{chip_name}_plane',
-                        **ansys_options)
-
-                    whole_chip = self.modeler.draw_box_center(
-                        [origin[0], origin[1], size[2] / 2],
-                        [size[0], size[1], -size[2]],
-                        name=chip_name,
-                        material=ops['material'],
-                        color=(186, 186, 205),
-                        transparency=0.2,
-                        wireframe=False)
-                    if draw_sample_holder:
-                        vacuum_box = self.modeler.draw_box_center(
-                            [
-                                origin[0], origin[1],
-                                (vac_height[0] - vac_height[1]) / 2
-                            ], [size[0], size[1],
-                                sum(vac_height)],
-                            name='sample_holder')
-                else:
-                    # A strict subset of components is rendered, or exported components extend beyond boundaries of 9 X 6 chip
-                    x_width = max_x_edge - min_x_edge
-                    y_width = max_y_edge - min_y_edge
-
-                    plane = self.modeler.draw_rect_center(
-                        [comp_center_x, comp_center_y, origin[2]],
-                        x_size=x_width,
-                        y_size=y_width,
-                        name=f'ground_{chip_name}_plane',
-                        **ansys_options)
-                    whole_chip = self.modeler.draw_box_center(
-                        [comp_center_x, comp_center_y, size[2] / 2],
-                        [x_width, y_width, -size[2]],
-                        name=chip_name,
-                        material=ops['material'],
-                        color=(186, 186, 205),
-                        transparency=0.2,
-                        wireframe=False)
-                    if draw_sample_holder:
-                        vacuum_box = self.modeler.draw_box_center(
-                            [
-                                comp_center_x, comp_center_y,
-                                (vac_height[0] - vac_height[1]) / 2
-                            ], [x_width, y_width,
-                                sum(vac_height)],
-                            name='sample_holder')
-            else:
-                # Only draw plane and wafer
-                plane = self.modeler.draw_rect_center(
-                    origin,
-                    x_size=size[0],
-                    y_size=size[1],
-                    name=f'ground_{chip_name}_plane',
-                    **ansys_options)
-
-                whole_chip = self.modeler.draw_box_center(
-                    [origin[0], origin[1], size[2] / 2],
-                    [size[0], size[1], -size[2]],
-                    name=chip_name,
-                    material=ops['material'],
-                    color=(186, 186, 205),
-                    transparency=0.2,
-                    wireframe=False)
-            if self.chip_subtract_dict[
-                    chip_name]:  # Any layer which has subtract=True qgeometries will have a ground plane
-                self.assign_perfE.append(f'ground_{chip_name}_plane')
-
     def add_endcaps(self, open_pins: Union[list, None] = None):
         """
         Create endcaps (rectangular cutouts) for all pins in the list open_pins and add them to chip_subtract_dict.
@@ -1140,6 +847,121 @@ class QAnsysRenderer(QRenderer):
                                               name=endcap_name)
             self.chip_subtract_dict[pin_dict['chip']].add(endcap_name)
 
+    def get_chip_names(self) -> List[str]:
+        """
+        Obtain a list of chips on which the selection of components, if valid, resides.
+
+        Returns:
+            List[str]: Chips to render.
+        """
+        if self.case == 2:  # One or more components not in QDesign.
+            self.logger.warning('One or more components not found.')
+            return []
+        elif self.case == 1:  # All components rendered.
+            comps = self.design.components
+            return list(set(comps[qcomp].options.chip for qcomp in comps))
+        else:  # Strict subset rendered.
+            icomps = self.design._components
+            return list(set(icomps[qcomp_id].options.chip for qcomp_id in self.qcomp_ids))
+
+    def get_min_bounding_box(self) -> Tuple[float]:
+        """
+        Determine the max/min x/y coordinates of the smallest rectangular, axis-aligned
+        bounding box that will enclose a selection of components to render, given by
+        self.qcomp_ids. This method is only used when box_plus_buffer is True.
+
+        Returns:
+            Tuple[float]: min x, min y, max x, and max y coordinates of bounding box.
+        """
+        min_x_main = min_y_main = float('inf')
+        max_x_main = max_y_main = float('-inf')
+        if self.case == 2:  # One or more components not in QDesign.
+            self.logger.warning('One or more components not found.')
+        elif self.case == 1:  # All components rendered.
+            for qcomp in self.design.components:
+                min_x, min_y, max_x, max_y = self.design.components[
+                    qcomp].qgeometry_bounds()
+                min_x_main = min(min_x, min_x_main)
+                min_y_main = min(min_y, min_y_main)
+                max_x_main = max(max_x, max_x_main)
+                max_y_main = max(max_y, max_y_main)
+        else:  # Strict subset rendered.
+            for qcomp_id in self.qcomp_ids:
+                min_x, min_y, max_x, max_y = self.design._components[
+                    qcomp_id].qgeometry_bounds()
+                min_x_main = min(min_x, min_x_main)
+                min_y_main = min(min_y, min_y_main)
+                max_x_main = max(max_x, max_x_main)
+                max_y_main = max(max_y, max_y_main)
+        return min_x_main, min_y_main, max_x_main, max_y_main
+
+    def render_chips(self,
+                     draw_sample_holder: bool = True,
+                     box_plus_buffer: bool = True):
+        """
+        Render all chips containing components in self.qcomp_ids.
+
+        Args:
+            draw_sample_holder (bool, optional): Option to draw vacuum box around chip. Defaults to True.
+            box_plus_buffer (bool, optional): Whether or not to use a box plus buffer. Defaults to True.
+        """
+        chip_list = self.get_chip_names()
+        if box_plus_buffer: # Get bounding box of components first
+            min_x_main, min_y_main, max_x_main, max_y_main = parse_units(
+                self.get_min_bounding_box())
+            self.cw_x = max_x_main - min_x_main # chip width along x
+            self.cw_y = max_y_main - min_y_main # chip width along y
+            self.cw_x += 2 * parse_units(self._options['x_buffer_width_mm'])
+            self.cw_y += 2 * parse_units(self._options['y_buffer_width_mm'])
+            self.cc_x = (max_x_main + min_x_main) / 2 # x coord of chip center
+            self.cc_y = (max_y_main + min_y_main) / 2 # y coord of chip center
+        else: # Adhere to chip placement and dimensions in QDesign
+            p = self.design.get_chip_size('main') # x/y center/width same for all chips
+            self.cw_x, self.cw_y, _ = parse_units([p['size_x'], p['size_y'], p['size_z']])
+            self.cc_x, self.cc_y, _ = parse_units([p['center_x'], p['center_y'], p['center_z']])
+        for chip_name in chip_list:
+            self.render_chip(chip_name, draw_sample_holder and (chip_name == 'main'))
+    
+    def render_chip(self, 
+                    chip_name: str,
+                    draw_sample_holder: bool):
+        """
+        Render individual chips.
+
+        Args:
+            chip_name (str): Name of chip.
+            draw_sample_holder (bool): Option to draw vacuum box around chip.
+        """
+        ansys_options = dict(transparency=0.0)
+        ops = self.design._chips[chip_name]
+        p = self.design.get_chip_size(chip_name)
+        z_coord, height = parse_units([p['center_z'], p['size_z']])
+        plane = self.modeler.draw_rect_center(
+                        [self.cc_x, self.cc_y, z_coord],
+                        x_size=self.cw_x,
+                        y_size=self.cw_y,
+                        name=f'ground_{chip_name}_plane',
+                        **ansys_options)
+        whole_chip = self.modeler.draw_box_center(
+            [self.cc_x, self.cc_y, height / 2],
+            [self.cw_x, self.cw_y, -height],
+            name=chip_name,
+            material=ops['material'],
+            color=(186, 186, 205),
+            transparency=0.2,
+            wireframe=False)
+        if draw_sample_holder: # HFSS
+            vac_height = parse_units(
+                [p['sample_holder_top'], p['sample_holder_bottom']])
+            vacuum_box = self.modeler.draw_box_center(
+                [self.cc_x, self.cc_y, (vac_height[0] - vac_height[1]) / 2],
+                [self.cw_x, self.cw_y, sum(vac_height)],
+                name='sample_holder')
+        if self.chip_subtract_dict[chip_name]:
+            # Any layer which has subtract=True qgeometries will have a ground plane
+            # TODO: Material property assignment may become layer-dependent.
+            self.assign_perfE.append(f'ground_{chip_name}_plane')
+    
     def subtract_from_ground(self):
         """
         For each chip, subtract all "negative" shapes residing on its surface if any such shapes exist.

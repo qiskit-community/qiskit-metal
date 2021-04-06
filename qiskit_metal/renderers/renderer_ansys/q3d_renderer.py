@@ -112,6 +112,11 @@ class QQ3DRenderer(QAnsysRenderer):
         Components are rendered before the chips they reside on, and subtraction of negative shapes
         is performed at the very end.
 
+        First obtain a list of IDs of components to render and a corresponding case, denoted by self.qcomp_ids
+        and self.case, respectively. If self.case == 1, all components in QDesign are to be rendered.
+        If self.case == 0, a strict subset of components in QDesign are to be rendered. Otherwise, if
+        self.case == 2, one or more component names in selection cannot be found in QDesign.
+
         Chip_subtract_dict consists of component names (keys) and a set of all elements within each component that
         will eventually be subtracted from the ground plane. Add objects that are perfect conductors and/or have
         meshing to self.assign_perfE and self.assign_mesh, respectively; both are initialized as empty lists. Note
@@ -132,8 +137,8 @@ class QQ3DRenderer(QAnsysRenderer):
         on which components are rendered and how they're positioned. If box_plus_buffer is False, however, the
         chip position and dimensions are taken from the chip info dictionary found in self.design, irrespective
         of what's being rendered. While this latter option is faster because it doesn't require calculating a
-        bounding box, it carries with it the risk of rendered components being too close to the edge of the chip
-        or even falling outside its boundaries.
+        bounding box, it runs the risk of rendered components being too close to the edge of the chip or even
+        falling outside its boundaries.
 
         Args:
             selection (Union[list, None], optional): List of components to render. Defaults to None.
@@ -141,37 +146,36 @@ class QQ3DRenderer(QAnsysRenderer):
             box_plus_buffer (bool): Either calculate a bounding box based on the location of rendered geometries
                                      or use chip size from design class.
         """
+        self.qcomp_ids, self.case = self.get_unique_component_ids(selection)
+
+        if self.case == 2:
+            self.logger.warning('Unable to proceed with rendering. Please check selection.')
+            return
+        
         self.chip_subtract_dict = defaultdict(set)
         self.assign_perfE = []
         self.assign_mesh = []
 
-        self.render_tables(selection)
+        self.render_tables()
         self.add_endcaps(open_pins)
 
         self.render_chips(draw_sample_holder=False,
                           box_plus_buffer=box_plus_buffer)
         self.subtract_from_ground()
+        self.add_mesh()
 
-        self.assign_thin_conductor(self.assign_perfE)
+        self.assign_thin_conductor()
         self.assign_nets()
 
-    def render_tables(self, selection: Union[list, None] = None):
+    def render_tables(self):
         """
         Render components in design grouped by table type (path or poly, but not junction).
-
-        Args:
-            selection (Union[list, None], optional): List of components to render. Defaults to None.
         """
-        self.min_x_main = float('inf')
-        self.min_y_main = float('inf')
-        self.max_x_main = float('-inf')
-        self.max_y_main = float('-inf')
         for table_type in self.design.qgeometry.get_element_types():
             if table_type != 'junction':
-                self.render_components(table_type, selection)
+                self.render_components(table_type)
 
     def assign_thin_conductor(self,
-                              objects: List[str],
                               material_type: str = 'pec',
                               thickness: str = '200 nm',
                               name: str = None):
@@ -180,13 +184,12 @@ class QQ3DRenderer(QAnsysRenderer):
         Unless otherwise specified, all 2-D shapes are pec's with a thickness of 200 nm.
 
         Args:
-            objects (List[str]): List of components that are thin conductors with the given properties.
             material_type (str): Material assignment.
             thickness (str): Thickness of thin conductor. Must include units.
             name (str): Name assigned to this group of thin conductors.
         """
         self.boundaries.AssignThinConductor([
-            "NAME:" + (name if name else "ThinCond1"), "Objects:=", objects,
+            "NAME:" + (name if name else "ThinCond1"), "Objects:=", self.assign_perfE,
             "Material:=", material_type if material_type else
             self.q3d_options['material_type'], "Thickness:=",
             thickness if thickness else self.q3d_options['material_thickness']
