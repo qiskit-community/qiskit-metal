@@ -11,8 +11,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""Main module that handles the elements window inside the main window.
-"""
+"""Main module that handles the elements window inside the main window."""
 
 from typing import TYPE_CHECKING
 
@@ -29,8 +28,8 @@ if TYPE_CHECKING:
 
 
 class ElementsWindow(QMainWindow):
-    """
-    This is just a handler (container) for the UI; it a child object of the main gui.
+    """This is just a handler (container) for the UI; it a child object of the
+    main gui.
 
     Extends the `QMainWindow` class.
 
@@ -68,8 +67,7 @@ class ElementsWindow(QMainWindow):
         return self.gui.design
 
     def populate_combo_element(self):
-        """Populate the combo elements.
-        """
+        """Populate the combo elements."""
         for table_type in self.design.qgeometry.tables.keys():
             if self.ui.combo_element_type.findText(
                     table_type) == -1:  # not in combo box, add it
@@ -94,8 +92,8 @@ class ElementsWindow(QMainWindow):
 
 
 class ElementTableModel(QAbstractTableModel):
-    """MVC ElementTableModel class
-    See https://doc.qt.io/qt-5/qabstracttablemodel.html
+    """MVC ElementTableModel class See
+    https://doc.qt.io/qt-5/qabstracttablemodel.html.
 
     The class extends the `QAbstractTableModel` class.
 
@@ -106,7 +104,6 @@ class ElementTableModel(QAbstractTableModel):
             model = t.model()
             index = model.index(1,0)
             model.data(index)
-
     """
     __timer_interval = 500  # ms
 
@@ -149,9 +146,7 @@ class ElementTableModel(QAbstractTableModel):
             return self.design.qgeometry.tables[self.type]
 
     def _create_timer(self):
-        """
-        Refresh the model number of rows, etc.
-        """
+        """Refresh the model number of rows, etc."""
         self._timer = QtCore.QTimer(self)
         self._timer.start(self.__timer_interval)
         self._timer.timeout.connect(self.refresh_auto)
@@ -166,13 +161,14 @@ class ElementTableModel(QAbstractTableModel):
         self.refresh()
 
     def refresh(self):
-        """Force refresh.   Completly rebuild the model."""
+        """Force refresh.
+
+        Completly rebuild the model.
+        """
         self.modelReset.emit()
 
     def refresh_auto(self):
-        """
-        Update row count etc.
-        """
+        """Update row count etc."""
         new_count = self.rowCount()
 
         # if the number of rows have changed
@@ -202,7 +198,7 @@ class ElementTableModel(QAbstractTableModel):
         return self.table.shape[0]
 
     def columnCount(self, parent: QModelIndex = None):
-        """Counts all the columns
+        """Counts all the columns.
 
         Args:
             parent (QModelIndex): Unused.  Defaults to None.
@@ -215,7 +211,7 @@ class ElementTableModel(QAbstractTableModel):
         return self.table.shape[1]
 
     def headerData(self, section, orientation, role=QtCore.Qt.DisplayRole):
-        """ Set the headers to be displayed.
+        """Set the headers to be displayed.
 
         Args:
             section (int): Section number
@@ -234,9 +230,9 @@ class ElementTableModel(QAbstractTableModel):
                 return str(self.table.columns[section])
 
     def flags(self, index: QModelIndex):
-        """ Set the item flags at the given index. Seems like we're
-        implementing this function just to see how it's done, as we
-        manually adjust each tableView to have NoEditTriggers.
+        """Set the item flags at the given index. Seems like we're implementing
+        this function just to see how it's done, as we manually adjust each
+        tableView to have NoEditTriggers.
 
         Args:
             index (QModelIndex): The index
@@ -254,9 +250,8 @@ class ElementTableModel(QAbstractTableModel):
             QtCore.Qt.ItemIsSelectable)  # ItemIsEditable
 
     def data(self, index: QModelIndex, role=QtCore.Qt.DisplayRole):
-        """ Depending on the index and role given, return data. If not
-        returning data, return None (PySide equivalent of QT's
-        "invalid QVariant").
+        """Depending on the index and role given, return data. If not returning
+        data, return None (PySide equivalent of QT's "invalid QVariant").
 
         Returns:
             str: Data related to the given index and role

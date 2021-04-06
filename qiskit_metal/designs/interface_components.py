@@ -11,9 +11,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""
-Module containing Design interface components.
-"""
+"""Module containing Design interface components."""
 
 from copy import deepcopy
 from typing import TYPE_CHECKING, Any, Iterable, List, Optional, TypeVar, Union, Dict as Dict_
@@ -34,13 +32,15 @@ if TYPE_CHECKING:
 
 
 class Components:
-    """This is a user interface for the design._components dict.  The keys are unique integers,
-    however, this interface allows user to treat the keys as strings.
+    """This is a user interface for the design._components dict.
+
+    The keys are unique integers, however, this interface allows user to
+    treat the keys as strings.
     """
 
     def __init__(self, design: 'QDesign'):
-        """ Set up variables and logger which are used to emulate a dict which is
-        referencing design._components.
+        """Set up variables and logger which are used to emulate a dict which
+        is referencing design._components.
 
         Args:
             design (QDesign): Need to have a Qdesign class so this class can
@@ -53,7 +53,7 @@ class Components:
         self.name_list_idx = 0
 
     def __len__(self) -> int:
-        """ Give number of components in design.
+        """Give number of components in design.
 
         Returns:
             int: Total number of components registered within the design.
@@ -61,8 +61,8 @@ class Components:
         return len(self.components)
 
     def get_list_ints(self, component_names: List[str]) -> List[int]:
-        """Provide corresponding ints to be used as keys for dict: design._components,
-           when list of names is provided.
+        """Provide corresponding ints to be used as keys for dict:
+        design._components, when list of names is provided.
 
         Args:
             component_names (List[str]): Names of components which user wants to know
@@ -75,9 +75,8 @@ class Components:
         return component_ints
 
     def find_id(self, name: str, quiet: bool = False) -> int:
-        """
-        Find id of component.  The id is the key for a dict which holds all of the components
-        within design.
+        """Find id of component.  The id is the key for a dict which holds all
+        of the components within design.
 
         Args:
             name (str): Text name of component.  The name is assumed to be unique.
@@ -131,7 +130,8 @@ class Components:
     def __getitem__(self,
                     name: str,
                     quiet: bool = False) -> Union[None, 'QComponent']:
-        """Get the QComponent based on string name vs the unique id of QComponent.
+        """Get the QComponent based on string name vs the unique id of
+        QComponent.
 
         Args:
             name (str): Name of component.
@@ -162,8 +162,8 @@ class Components:
 
     def __setitem__(self, name: str, value: 'QComponent'):
         """Replace QComponent for an existing name. Use this at your own risk.
-        There are netids used for pins within a component.  The netids are used in
-        the net_info table and qgeometry tables.
+        There are netids used for pins within a component.  The netids are used
+        in the net_info table and qgeometry tables.
 
         Args:
             name (str): Name of QComponent.  If not in design._components,
@@ -266,7 +266,7 @@ class Components:
         #         return list(self.__get_dict__().keys())
 
     def __iter__(self) -> iter:
-        """Give iterator for design._components
+        """Give iterator for design._components.
 
         Returns:
             iter: for design._components , the keys are names of the components.

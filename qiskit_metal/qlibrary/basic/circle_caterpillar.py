@@ -11,9 +11,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""
-This is the CircleCaterpillar module.
-"""
+"""This is the CircleCaterpillar module."""
 
 from shapely.geometry import CAP_STYLE, JOIN_STYLE
 from qiskit_metal import draw  # , Dict
@@ -37,7 +35,7 @@ class CircleCaterpillar(QComponent):
         * subtract: 'False'
         * helper: 'False'
         * chip: 'main'
-        * layer: '1'        
+        * layer: '1'
     """
 
     default_options = dict(
@@ -57,12 +55,11 @@ class CircleCaterpillar(QComponent):
     """Default drawing options"""
 
     def make(self):
-        """
-        The make function implements the logic that creates the geoemtry
-        (poly, path, etc.) from the qcomponent.options dictionary of parameters,
-        and the adds them to the design, using qcomponent.add_qgeometry(...),
-        adding in extra needed information, such as layer, subtract, etc.
-        """
+        """The make function implements the logic that creates the geoemtry
+        (poly, path, etc.) from the qcomponent.options dictionary of
+        parameters, and the adds them to the design, using
+        qcomponent.add_qgeometry(...), adding in extra needed information, such
+        as layer, subtract, etc."""
         p = self.p  # p for parsed parameters. Access to the parsed options.
 
         # create the geometry

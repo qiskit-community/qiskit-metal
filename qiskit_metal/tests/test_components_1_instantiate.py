@@ -15,9 +15,7 @@
 #pylint: disable-msg=unnecessary-pass
 #pylint: disable-msg=too-many-public-methods
 #pylint: disable-msg=broad-except
-"""
-Qiskit Metal unit tests components functionality.
-"""
+"""Qiskit Metal unit tests components functionality."""
 
 import unittest
 
@@ -53,26 +51,18 @@ from qiskit_metal.qlibrary.interconnects.resonator_rectangle_spiral import Reson
 
 
 class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
-    """
-    Unit test class.
-    """
+    """Unit test class."""
 
     def setUp(self):
-        """
-        Setup unit test.
-        """
+        """Setup unit test."""
         pass
 
     def tearDown(self):
-        """
-        Tie any loose ends
-        """
+        """Tie any loose ends."""
         pass
 
     def test_component_instantiate_qcomponent(self):
-        """
-        Test the instantiaion of QComponent.
-        """
+        """Test the instantiaion of QComponent."""
         design = designs.DesignPlanar()
         try:
             QComponent
@@ -102,9 +92,7 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
             self.fail(msg)
 
     def test_component_instantiate_basequbit(self):
-        """
-        Test the instantiation of basequbit.
-        """
+        """Test the instantiation of basequbit."""
         design = designs.DesignPlanar()
         try:
             BaseQubit
@@ -123,9 +111,7 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
             self.fail("BaseQubit(design, \"my_name3\", options={}, make=False)")
 
     def test_component_instantiate_open_to_ground(self):
-        """
-        Test the instantiation of openToGround.
-        """
+        """Test the instantiation of openToGround."""
         design = designs.DesignPlanar()
         try:
             OpenToGround
@@ -149,9 +135,7 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
                 "OpenToGround(design, \"my_name3\", options={}, make=False)")
 
     def test_component_instantiate_short_to_ground(self):
-        """
-        Test the instantiation of shortToGround.
-        """
+        """Test the instantiation of shortToGround."""
         design = designs.DesignPlanar()
         try:
             ShortToGround
@@ -175,18 +159,14 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
                 "ShortToGround(design, \"my_name3\", options={}, make=False)")
 
     def test_component_instantiate_route_frame_path(self):
-        """
-        Test the instantiation of RouteFramed.
-        """
+        """Test the instantiation of RouteFramed."""
         try:
             RouteFramed
         except Exception:
             self.fail("RouteFramed failed")
 
     def test_component_instantiate_route_straight(self):
-        """
-        Test the instantiation of RouteStraight.
-        """
+        """Test the instantiation of RouteStraight."""
         design = designs.DesignPlanar()
         try:
             RouteStraight
@@ -205,54 +185,42 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
                 "RouteStraight(design, \"my_name3\", options={}, make=False)")
 
     def test_component_instantiate_q_route_lead(self):
-        """
-        Test the instantiation of QRouteLead.
-        """
+        """Test the instantiation of QRouteLead."""
         try:
             QRouteLead
         except Exception:
             self.fail("QRouteLead failed")
 
     def test_component_instantiate_q_route_point(self):
-        """
-        Test the instantiation of QRoutePoint.
-        """
+        """Test the instantiation of QRoutePoint."""
         try:
             QRoutePoint
         except Exception:
             self.fail("QRoutePoint failed")
 
     def test_component_instantiate_route_meander(self):
-        """
-        Test the instantiation of RouteMeander.
-        """
+        """Test the instantiation of RouteMeander."""
         try:
             RouteMeander
         except Exception:
             self.fail("RouteMeander failed")
 
     def test_component_instantiate_route_mixed(self):
-        """
-        Test the instantiation of RouteMixed.
-        """
+        """Test the instantiation of RouteMixed."""
         try:
             RouteMixed
         except Exception:
             self.fail("RouteMixed failed")
 
     def test_component_instantiate_q_route(self):
-        """
-        Test the instantiation of QRoute.
-        """
+        """Test the instantiation of QRoute."""
         try:
             QRoute
         except Exception:
             self.fail("QRoute failed")
 
     def test_component_instantiate_my_q_component(self):
-        """
-        Test the instantiation of MyQComponent.
-        """
+        """Test the instantiation of MyQComponent."""
         design = designs.DesignPlanar()
         try:
             MyQComponent
@@ -276,9 +244,7 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
                 "MyQComponent(design, \"my_name3\", options={}, make=False)")
 
     def test_component_instantiate_cpw_hanger_t(self):
-        """
-        Test the instantiation of CPWHangerT.
-        """
+        """Test the instantiation of CPWHangerT."""
         design = designs.DesignPlanar()
         try:
             CPWHangerT
@@ -302,9 +268,7 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
                 "CPWHangerT(design, \"my_name3\", options={}, make=False)")
 
     def test_component_instantiate_resonator_rectangle_spiral(self):
-        """
-        Test the instantiation of ResonatorRectangleSpiral.
-        """
+        """Test the instantiation of ResonatorRectangleSpiral."""
         design = designs.DesignPlanar()
         try:
             ResonatorRectangleSpiral
@@ -330,9 +294,7 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
             )
 
     def test_component_instantiate_circle_raster(self):
-        """
-        Test the instantiation of CircleRaster.
-        """
+        """Test the instantiation of CircleRaster."""
         design = designs.DesignPlanar()
         try:
             CircleRaster
@@ -356,9 +318,7 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
                 "CircleRaster(design, \"my_name3\", options={}, make=False)")
 
     def test_component_instantiate_circle_caterpillar(self):
-        """
-        Test the instantiation of CircleCaterpillar.
-        """
+        """Test the instantiation of CircleCaterpillar."""
         design = designs.DesignPlanar()
         try:
             CircleCaterpillar
@@ -383,9 +343,7 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
             )
 
     def test_component_instantiate_n_gon(self):
-        """
-        Test the instantiation of NGon.
-        """
+        """Test the instantiation of NGon."""
         design = designs.DesignPlanar()
         try:
             NGon
@@ -408,9 +366,7 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
             self.fail("NGon(design, \"my_name3\", options={}, make=False)")
 
     def test_component_instantiate_n_square_spiral(self):
-        """
-        Test the instantiation of NSquareSpiral.
-        """
+        """Test the instantiation of NSquareSpiral."""
         design = designs.DesignPlanar()
         try:
             NSquareSpiral
@@ -434,9 +390,7 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
                 "NSquareSpiral(design, \"my_name3\", options={}, make=False)")
 
     def test_component_instantiate_rectangle(self):
-        """
-        Test the instantiation of Rectangle.
-        """
+        """Test the instantiation of Rectangle."""
         design = designs.DesignPlanar()
         try:
             Rectangle
@@ -459,9 +413,7 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
             self.fail("Rectangle(design, \"my_name3\", options={}, make=False)")
 
     def test_component_instantiate_rectangle_hollow(self):
-        """
-        Test the instantiation of RectangleHollow.
-        """
+        """Test the instantiation of RectangleHollow."""
         design = designs.DesignPlanar()
         try:
             RectangleHollow
@@ -485,9 +437,7 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
                 "RectangleHollow(design, \"my_name3\", options={}, make=False)")
 
     def test_component_instantiate_route_anchors(self):
-        """
-        Test the instantiation of RouteAnchors.
-        """
+        """Test the instantiation of RouteAnchors."""
         design = designs.DesignPlanar()
         try:
             RouteAnchors
@@ -506,9 +456,7 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
                 "RouteAnchors(design, \"my_name3\", options={}, make=False)")
 
     def test_component_instantiate_route_pathfinder(self):
-        """
-        Test the instantiation of RoutePathfinder.
-        """
+        """Test the instantiation of RoutePathfinder."""
         design = designs.DesignPlanar()
         try:
             RoutePathfinder
@@ -527,9 +475,7 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
                 "RoutePathfinder(design, \"my_name3\", options={}, make=False)")
 
     def test_component_instantiate_launch_v1(self):
-        """
-        Test the instantiation of LaunchpadWirebond.
-        """
+        """Test the instantiation of LaunchpadWirebond."""
         design = designs.DesignPlanar()
         try:
             LaunchpadWirebond
@@ -554,9 +500,7 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
             )
 
     def test_component_instantiate_launch_v2(self):
-        """
-        Test the instantiation of LaunchpadWirebondCoupled.
-        """
+        """Test the instantiation of LaunchpadWirebondCoupled."""
         design = designs.DesignPlanar()
         try:
             LaunchpadWirebondCoupled
@@ -582,9 +526,7 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
             )
 
     def test_component_instantiate_three_finger_cap_v1(self):
-        """
-        Test the instantiation of CapThreeFingers.
-        """
+        """Test the instantiation of CapThreeFingers."""
         design = designs.DesignPlanar()
         try:
             CapThreeFingers

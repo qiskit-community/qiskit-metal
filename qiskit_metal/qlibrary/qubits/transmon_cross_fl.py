@@ -11,9 +11,8 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-'''
-Child of transmon cross, adds a flux line (galvanic T) to the arm with the DC SQUID
-'''
+"""Child of transmon cross, adds a flux line (galvanic T) to the arm with the
+DC SQUID."""
 # pylint: disable=invalid-name
 # Modification of Transmon Pocket Object to include a charge line (would be better to just make as a child)
 
@@ -23,8 +22,7 @@ from qiskit_metal.qlibrary.qubits.transmon_cross import TransmonCross
 
 
 class TransmonCrossFL(TransmonCross):  # pylint: disable=invalid-name
-    """
-    The base `TransmonCrossFL` class
+    """The base `TransmonCrossFL` class.
 
     Inherits `TransmonCross` class
 
@@ -48,11 +46,11 @@ class TransmonCrossFL(TransmonCross):  # pylint: disable=invalid-name
 
         * make_fl -         (Boolean) If True, adds a flux line
         * t_top -           length of the flux line for mutual inductance to the SQUID
-        * t_inductive_gap - amount of metalization between the flux line and SQUID    
+        * t_inductive_gap - amount of metalization between the flux line and SQUID
         * t_offset -        degree by which the tail of the T is offset from the center
         * t_width -         width of the flux line's transmission line center trace
         * t_gap -           dielectric gap of the flux line's transmission line
-"""
+    """
 
     component_metadata = Dict(short_name='Q',
                               _qgeometry_table_poly='True',
@@ -78,8 +76,8 @@ class TransmonCrossFL(TransmonCross):  # pylint: disable=invalid-name
 #####################################################################
 
     def make_flux_line(self):
-        """Creates the charge line if the user has charge line option to TRUE
-        """
+        """Creates the charge line if the user has charge line option to
+        TRUE."""
 
         # Grab option values
         pf = self.p.fl_options

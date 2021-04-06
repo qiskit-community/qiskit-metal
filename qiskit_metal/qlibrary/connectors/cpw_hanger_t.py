@@ -18,10 +18,11 @@ import numpy as np
 
 
 class CPWHangerT(QComponent):
-    """Generates a three pin (+) structure comprised of a primary two pin CPW transmission line,
-    and a secondary one pin neighboring CPW transmission line that is capacitively/inductively
-    coupled to the primary. Such a structure can be used, as an example, for generating
-    CPW resonator hangars off of a transmission line.
+    """Generates a three pin (+) structure comprised of a primary two pin CPW
+    transmission line, and a secondary one pin neighboring CPW transmission
+    line that is capacitively/inductively coupled to the primary. Such a
+    structure can be used, as an example, for generating CPW resonator hangars
+    off of a transmission line.
 
     Inherits QComponent class.
 
