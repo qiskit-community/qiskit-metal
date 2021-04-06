@@ -11,9 +11,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""
-Plotting functions for shapely components using mpl.
-"""
+"""Plotting functions for shapely components using mpl."""
 
 import descartes  # shapely plot
 import matplotlib as mpl
@@ -51,15 +49,14 @@ style_config = Dict(
 
 
 def _render_poly_zkm(poly: Polygon, ax, kw=None, kw_hole=None):
-    '''
-    Style and draw a shapely polygon using MPL.
+    """Style and draw a shapely polygon using MPL.
 
     Args:
         poly (Polygon): The polygon.
         ax (plt.Axes): Matplotlib axis to render to.
         kw (dict): Dictionary of kwargs for the plotting.  Defaults to None.
         kw_hold (kw_hole): kw_hole.  Defaults to None.
-    '''
+    """
     if kw_hole is None:
         kw_hole = {}
     if kw is None:
@@ -93,8 +90,7 @@ def _render_poly_zkm(poly: Polygon, ax, kw=None, kw_hole=None):
 
 
 def render_poly(poly: shapely.geometry.Polygon, ax: plt.Axes, kw=None):
-    """
-    Render an individual shapely shapely.geometry.Polygon.
+    """Render an individual shapely shapely.geometry.Polygon.
 
     Args:
         poly (shapely.geometry.Polygon): Poly or multipoly to render.
@@ -121,9 +117,7 @@ def render(
     labels=None,
     __depth=-1,  # how many sublists in we are
     _iteration=0):  # how many components we have plotted
-    '''
-    Main plotting function.
-    Plots onto an axis.
+    """Main plotting function. Plots onto an axis.
 
     Args:
         components: A list, dict, tuple, itterable, or shapely object.
@@ -135,7 +129,7 @@ def render(
 
     Return:
         int: Interation
-    '''
+    """
     # TODO: Update to handle plotting argumetn with *args and **kwargs
     # but this needs the .draw functions to be updated
 
@@ -241,13 +235,12 @@ def draw_all_objects(components, ax, func=lambda x: x, root_name='components'):
 
 
 def style_axis_simple(ax, labels=None):
-    '''
-    Style function for axis called by `render`.
+    """Style function for axis called by `render`.
 
     Args:
         ax (plt.Axes): Matplotlib axis to render to.  Defaults to None.
         labels (str): Label
-    '''
+    """
     if ax is None:
         ax = plt.gca()
 
@@ -320,10 +313,8 @@ def style_axis_standard(ax):
 
 
 def figure_spawn(fig_kw=None):
-    '''
-    Spawn a simple, interactive matplotlib figure and gui
-    with styled axis.  Use mouse wheel and click and drag
-    to navigate.
+    """Spawn a simple, interactive matplotlib figure and gui with styled axis.
+    Use mouse wheel and click and drag to navigate.
 
     Results in a plot that spwaned up as a window! Make sure
     to enable non-inline matplotlib.
@@ -338,7 +329,7 @@ def figure_spawn(fig_kw=None):
 
     Returns:
         (fig_draw, ax_draw)
-    '''
+    """
     if not fig_kw:
         fig_kw = {}
     fig_draw = figure_pz(**{**dict(num=1), **fig_kw})
@@ -379,7 +370,7 @@ def figure_spawn(fig_kw=None):
 
 
 def _axis_set_watermark_img(ax: plt.Axes, file: str, size: float = 0.25):
-    """Burn the axis watermark into the image
+    """Burn the axis watermark into the image.
 
     Args:
         ax (plt.Axes): Matplotlib axis to render to.  Defaults to None.

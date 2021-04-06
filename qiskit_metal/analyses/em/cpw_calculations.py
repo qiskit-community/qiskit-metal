@@ -11,8 +11,8 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""
-For calculations of CPW parameters. Referenced primarily as a tool for some components.
+"""For calculations of CPW parameters. Referenced primarily as a tool for some
+components.
 
 @author: Thomas McConkey, as part of https://uwspace.uwaterloo.ca/handle/10012/13464
 
@@ -26,7 +26,6 @@ https://aip.scitation.org/doi/abs/10.1063/1.3010859?journalCode=jap
 
 Mohebbi and Majedi, Superconducting Science and Technology 22, 125028 (2009)
 https://iopscience.iop.org/article/10.1088/0953-2048/22/12/125028/meta
-
 """
 
 import numpy as np
@@ -48,9 +47,9 @@ def guided_wavelength(freq,
                       substrate_thickness,
                       film_thickness,
                       dielectric_constant=11.45):
-    """
-    A simple calculator to determine the guided wavelength of a planar CPW transmission line.
-    Assumes the substrate has relative permiability of 1. Assumes package grounds are far away.
+    """A simple calculator to determine the guided wavelength of a planar CPW
+    transmission line. Assumes the substrate has relative permiability of 1.
+    Assumes package grounds are far away.
 
     Args:
         freq (float): The frequency of interest, in Hz (eg. 5*10**9).
@@ -58,7 +57,7 @@ def guided_wavelength(freq,
         line_gap (float): The width of the CPW gap (dielectric space), in meters (eg. 6*10**-6).
         substrate_thickness (float): Thickness of the dielectric substrate, in meters (eg. 760*10**-6).
         film_thickness (float): Thickness of the thin film, in meters (eg. 200*10**-9).
-        dielectric_constant (float): The relative permitivity of the substrate. 
+        dielectric_constant (float): The relative permitivity of the substrate.
             Defaults to 11.45, the value for Silicon at cryogenic temperatures.
 
     Returns:
@@ -99,9 +98,9 @@ def lumped_cpw(freq,
                dielectric_constant=11.45,
                loss_tangent=10**-5,
                london_penetration_depth=30 * 10**-9):
-    """
-    A simple calculator to determine the lumped element equivalent of a CPW transmission line.
-    Assumes a lossless superconductor. The internal geometric series inductance is ignored.
+    """A simple calculator to determine the lumped element equivalent of a CPW
+    transmission line. Assumes a lossless superconductor. The internal
+    geometric series inductance is ignored.
 
     Args:
         freq (float): The frequency of interest, in Hz (eg. 5*10**9).
@@ -109,14 +108,14 @@ def lumped_cpw(freq,
         line_gap (float): The width of the CPW gap (dielectric space), in meters (eg. 6*10**-6).
         substrate_thickness (float): Thickness of the dielectric substrate, in meters (eg. 760*10**-6).
         film_thickness (float): Thickness of the thin film, in meters (eg. 200*10**-9).
-        dielectric_constant (float, optional): The relative permitivity of the substrate. 
+        dielectric_constant (float, optional): The relative permitivity of the substrate.
             Defaults to 11.45, the value for silicon at cryogenic temperatures.
-        loss_tangent (float, optional): The loss tangent of the dielectric. 
+        loss_tangent (float, optional): The loss tangent of the dielectric.
             Defaults to 10**-6, reasonable quality silicon.
         london_penetration_depth (float, optional): The superconducting london penetration depth, in meters.
             It is advised to use the temperature and film thickness dependent value. If circuit
             geometries are on the scale of the Pearl Length, the kinetic inductance formulas
-            breakdown. 
+            breakdown.
             Defaults to 30*10**-9, for Niobium.
 
     Returns:
@@ -138,7 +137,6 @@ def lumped_cpw(freq,
                         C   G
                         |   |
         ----------------+---+---
-
     """
     s = line_width
     w = line_gap
@@ -185,10 +183,10 @@ def lumped_cpw(freq,
 
 
 def effective_dielectric_constant(freq, s, w, h, t, q, Kk0, Kk01, eRD=11.45):
-    """
-    Returns the film and substrate thickness dependent effective 
-    dielectric constant for a planar CPW transmission line. Assumes package ground can be ignored.
-    
+    """Returns the film and substrate thickness dependent effective dielectric
+    constant for a planar CPW transmission line. Assumes package ground can be
+    ignored.
+
     Args:
         freq (float): The frequency of interest (eg. 5*10**9)
         s (float): The width of the CPW trace (center) line, in meters (eg. 10*10**-6).
@@ -199,7 +197,7 @@ def effective_dielectric_constant(freq, s, w, h, t, q, Kk0, Kk01, eRD=11.45):
         Kk0 (float): The complete elliptic integral for k0
         Kk01 (float): The complete elliptic integral for k01
         eRD (float, optional): The relative permitivity of the substrate. Defaults to 11.45.
-    
+
     Returns:
         float: etfSqrt is the effective permitivity for a CPW transmission line, considering
         film and substrate thickness.
@@ -222,15 +220,14 @@ def effective_dielectric_constant(freq, s, w, h, t, q, Kk0, Kk01, eRD=11.45):
 
 
 def elliptic_int_constants(s, w, h):
-    """
-    Calculates the complete elliptic integral of the first kind for CPW lumped 
-    element equivalent circuit calculations.
-    
+    """Calculates the complete elliptic integral of the first kind for CPW
+    lumped element equivalent circuit calculations.
+
     Args:
         s (float): The width of the CPW trace (center) line, in meters (eg. 10*10**-6).
         w (float): The width of the CPW gap (dielectric space), in meters (eg. 6*10**-6).
         h (float): Thickness of the dielectric substrate, in meters (eg. 760*10**-6).
-    
+
     Returns:
         tuple: Contents outlined below
 

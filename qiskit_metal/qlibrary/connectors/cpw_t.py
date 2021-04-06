@@ -11,8 +11,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-'''
-'''
+""""""
 
 from qiskit_metal import draw, Dict
 from qiskit_metal.qlibrary.base import QComponent
@@ -20,11 +19,11 @@ import numpy as np
 
 
 class CPWT(QComponent):
-    """Generates a three pin (+) structure comprised of a primary two pin CPW transmission line,
-    and a secondary one pin neighboring CPW transmission line that is capacitively
-    coupled to the primary. Such a structure can be used, as an example, for generating
-    CPW resonator hangars off of a transmission line. (0,0) represents the center position
-    of the component.
+    """Generates a three pin (+) structure comprised of a primary two pin CPW
+    transmission line, and a secondary one pin neighboring CPW transmission
+    line that is capacitively coupled to the primary. Such a structure can be
+    used, as an example, for generating CPW resonator hangars off of a
+    transmission line. (0,0) represents the center position of the component.
 
     Inherits QComponent class.
 
@@ -50,7 +49,6 @@ class CPWT(QComponent):
           counter-clockwise rotation (eg. 90 is +y)
         * chip: 'main' -- The chip the pin should be on.
         * layer: '1' -- Layer the pin is on. Does not have any practical impact to the short.
-
     """
     component_metadata = Dict(short_name='cpw', _qgeometry_table_path='True')
     """Component metadata"""
@@ -70,7 +68,7 @@ class CPWT(QComponent):
     """Default connector options"""
 
     def make(self):
-        """Build the component"""
+        """Build the component."""
         p = self.p
         prime_cpw_length = p.t_length * 2
 

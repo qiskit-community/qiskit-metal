@@ -13,31 +13,29 @@
 # that they have been altered from the originals.
 
 # pylint: disable=protected-access
-'''
-Math and override functions
-'''
+# pylint: disable=global-statement
+# pylint: disable=import-error
+"""Math and override functions."""
 
 import numpy as np
 
 __all__ = ['set_decimal_precision', 'dot', 'cross', 'round']
 
-decimal_precision = 10
+DECIMAL_PRECISION = 10
 
 
 def set_decimal_precision(value: int):
-    """
-    Override the decimal_precision default (10).
+    """Override the decimal_precision default (10).
 
     Args:
         value: Any integer. If present, decimal part will be truncated (flooring)
     """
-    global decimal_precision
-    decimal_precision = int(value)
+    global DECIMAL_PRECISION
+    DECIMAL_PRECISION = int(value)
 
 
 def dot(vector_1: np.array, vector_2: np.array) -> float:
-    """
-    Numpy dot product with decimal_precision.
+    """Numpy dot product with decimal_precision.
 
     Args:
         vector_1 (np.array): First of the dot product vectors
@@ -46,12 +44,12 @@ def dot(vector_1: np.array, vector_2: np.array) -> float:
     Returns:
         float: Rounded dot product
     """
-    return np.round(np.dot(vector_1, vector_2), decimal_precision)
+    return np.round(np.dot(vector_1, vector_2), DECIMAL_PRECISION)
 
 
+# pylint: disable=redefined-builtin
 def round(value) -> float:
-    """
-    Numpy rounding with decimal_precision.
+    """Numpy rounding with decimal_precision.
 
     Args:
         value: Any numerical type supported by np.round()
@@ -59,12 +57,11 @@ def round(value) -> float:
     Returns:
         float: Rounded number
     """
-    return np.round(value, decimal_precision)
+    return np.round(value, DECIMAL_PRECISION)
 
 
 def cross(vector_1: np.array, vector_2: np.array) -> float:
-    """
-    Numpy cross product with decimal_precision.
+    """Numpy cross product with decimal_precision.
 
     Args:
         vector_1 (np.array): First of the cross product vectors
@@ -73,4 +70,4 @@ def cross(vector_1: np.array, vector_2: np.array) -> float:
     Returns:
         float: Rounded cross product
     """
-    return np.round(np.cross(vector_1, vector_2), decimal_precision)
+    return np.round(np.cross(vector_1, vector_2), DECIMAL_PRECISION)

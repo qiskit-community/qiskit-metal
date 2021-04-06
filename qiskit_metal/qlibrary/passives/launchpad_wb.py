@@ -26,8 +26,7 @@ from qiskit_metal.qlibrary.base.base import QComponent
 
 
 class LaunchpadWirebond(QComponent):
-    """
-    Launch pad to feed/read signals to/from the chip.
+    """Launch pad to feed/read signals to/from the chip.
 
     Inherits 'QComponent' class.
 
@@ -85,8 +84,8 @@ class LaunchpadWirebond(QComponent):
     """Default options"""
 
     def make(self):
-        """ This is executed by the user to generate the qgeometry for the component.
-        """
+        """This is executed by the user to generate the qgeometry for the
+        component."""
 
         p = self.p
         trace_width = p.trace_width

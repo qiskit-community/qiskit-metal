@@ -11,9 +11,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""
-This is a utility module used for qt.
-"""
+"""This is a utility module used for qt."""
 
 import numpy as np
 from PySide2 import QtCore, QtWidgets
@@ -28,7 +26,7 @@ def blend_colors(color1: QColor,
                  color2: QColor,
                  r: float = 0.2,
                  alpha=255) -> QColor:
-    """Blend two qt colors together
+    """Blend two qt colors together.
 
     Arguments:
         color1 (QColor): first color

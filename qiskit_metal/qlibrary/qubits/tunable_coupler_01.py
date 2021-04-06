@@ -18,11 +18,11 @@ from qiskit_metal.qlibrary.base.qubit import BaseQubit
 
 
 class TunableCoupler01(BaseQubit):
-    """
-    One of the tunable couplers
-    Based off the implementation in https://arxiv.org/pdf/2011.01261.pdf
+    """One of the tunable couplers Based off the implementation in
+    https://arxiv.org/pdf/2011.01261.pdf.
+
     WIP - initial test structure
-    
+
     Inherits `BaseQubit` class
 
     Description:
@@ -36,7 +36,7 @@ class TunableCoupler01(BaseQubit):
                 X             |   |
         |       |       |     | | |     |       |
         |       |       |     | | |     |       | charge island
-        |       |       |       |       |       |  
+        |       |       |       |       |       |
         --------------------0--------------------
 
     Options:
@@ -57,7 +57,7 @@ class TunableCoupler01(BaseQubit):
         * l_gap: '10um' -- The dielectric gap of the charge island to ground
         * a_height: '60um' -- The length of the arms forming the 'fingers' of the charge island
         * cp_height: '15um' -- The thickness (y-axis) of the connection claw
-        * cp_arm_length: '30um' -- The length of the 'fingers' of the connection claw (Warning: can break 
+        * cp_arm_length: '30um' -- The length of the 'fingers' of the connection claw (Warning: can break
           the component if they are too long)
         * cp_arm_width: '6um' -- The width of the 'fingers' of the connection claw (Warning: can break
           the component if too wide)
@@ -68,7 +68,6 @@ class TunableCoupler01(BaseQubit):
         * fl_length: '10um' -- Length of the flux line for mutual inductance to the SQUID
         * fl_ground: '2um' -- Amount of ground between the SQUID and the flux line
         * _default_connection_pads: Currently empty
-
     """
 
     default_options = Dict(pos_x='0um',
@@ -95,9 +94,7 @@ class TunableCoupler01(BaseQubit):
                               _qgeometry_table_junction='True')
 
     def make(self):
-        """
-        Builds the component
-        """
+        """Builds the component."""
         p = self.p
 
         #Draw the charge island

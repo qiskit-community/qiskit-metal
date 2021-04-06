@@ -11,16 +11,12 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""
-Initialize default renderers for Metal
-"""
+"""Initialize default renderers for Metal."""
 
 from .. import config
 from .. import Dict
 
 
 def setup_renderers():
-    """
-    Use config to set up default renderes.
-    """
+    """Use config to set up default renderes."""
     return Dict()

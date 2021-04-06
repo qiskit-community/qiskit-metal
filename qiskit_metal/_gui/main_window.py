@@ -11,9 +11,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""
-GUI front-end interface for Qiskit Metal in PySide2.
-"""
+"""GUI front-end interface for Qiskit Metal in PySide2."""
 # pylint: disable=invalid-name
 
 import importlib
@@ -59,8 +57,8 @@ import time
 
 
 class QMainWindowExtension(QMainWindowExtensionBase):
-    """This contains all the functions that the gui needs
-    to call directly from the UI.
+    """This contains all the functions that the gui needs to call directly from
+    the UI.
 
     This class extends the `QMainWindowExtensionBase` class.
 
@@ -121,8 +119,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         self.q3d_gui.show()
 
     def delete_all_components(self):
-        """Delete all components.
-        """
+        """Delete all components."""
         ret = QMessageBox.question(
             self,
             'Delete all components?',
@@ -149,9 +146,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
 
     @slot_catch_error()
     def save_design(self, _=None):
-        """
-        Handles click on save design.
-        """
+        """Handles click on save design."""
         if self.design:
             if self.design.save_path:
                 self.gui.save_file()
@@ -164,9 +159,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
 
     @slot_catch_error()
     def load_design(self, _):
-        """
-        Handles click on loading metal design.
-        """
+        """Handles click on loading metal design."""
         filename = QFileDialog.getOpenFileName(
             None,
             'Select location to load Metal design from',
@@ -196,8 +189,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
 
     @slot_catch_error()
     def new_qcomponent(self, _=None):
-        """Create a new qcomponent call by button.
-        """
+        """Create a new qcomponent call by button."""
         path = str(
             Path(self.gui.path_gui).parent / 'qlibrary' / 'user_components' /
             'my_qcomponent.py')
@@ -367,8 +359,7 @@ class MetalGUI(QMainWindowBaseHandler):
         self._log_handler_design = self.create_log_handler('metal', logger)
 
     def refresh_design(self):
-        """Refresh design properties associated with the GUI.
-        """
+        """Refresh design properties associated with the GUI."""
         self.update_design_name()
 
     def update_design_name(self):
@@ -379,8 +370,7 @@ class MetalGUI(QMainWindowBaseHandler):
                                             f' — {design_name}')
 
     def _ui_adjustments(self):
-        """Any touchups to the loaded ui that need be done soon.
-        """
+        """Any touchups to the loaded ui that need be done soon."""
         # QTextEditLogger
         self.ui.log_text.img_path = Path(self.path_imgs)
         self.ui.log_text.dock_window = self.ui.dockLog
@@ -412,7 +402,8 @@ class MetalGUI(QMainWindowBaseHandler):
         self.ui.tabWidget.setCurrentIndex(0)
 
     def _ui_adjustments_final(self):
-        """Any touchups to the loaded ui that need be done after all the base and main ui is loaded."""
+        """Any touchups to the loaded ui that need be done after all the base
+        and main ui is loaded."""
         if self.component_window:
             self.component_window.setCurrentIndex(0)
 
@@ -437,7 +428,7 @@ class MetalGUI(QMainWindowBaseHandler):
         self.ui.dockVariables.setWidget(self.variables_window)
 
     def _setup_plot_widget(self):
-        """ Create main Window Widget Plot."""
+        """Create main Window Widget Plot."""
         self.plot_win = QMainWindowPlot(self, self.main_window)
 
         # Add to the tabbed main view
@@ -466,18 +457,17 @@ class MetalGUI(QMainWindowBaseHandler):
         dock.setMaximumHeight(99999)
 
     def _setup_elements_widget(self):
-        """ Create main Window Elements Widget."""
+        """Create main Window Elements Widget."""
         self.elements_win = ElementsWindow(self, self.main_window)
 
         # Add to the tabbed main view
         self.ui.tabElements.layout().addWidget(self.elements_win)
 
     def _setup_design_components_widget(self):
-        """
-        Design components.
+        """Design components.
 
-        Table model that shows the summary of the components of a design in a table
-        with their names, classes, and modules
+        Table model that shows the summary of the components of a design
+        in a table with their names, classes, and modules
         """
         model = QTableModel_AllComponents(self,
                                           logger=self.logger,
@@ -557,8 +547,8 @@ class MetalGUI(QMainWindowBaseHandler):
     ################################################
     # Plotting
     def get_axes(self, num: int = None):
-        """Return access to the canvas axes.
-        If num is specified, returns the n-th axis.
+        """Return access to the canvas axes. If num is specified, returns the
+        n-th axis.
 
         Args:
             num (int, optional): If num is specified, returns the n-th axis.  Defaults to None.
@@ -578,14 +568,13 @@ class MetalGUI(QMainWindowBaseHandler):
 
     @property
     def figure(self):
-        """Return axis to the figure of the canvas.
-        """
+        """Return axis to the figure of the canvas."""
         return self.plot_win.canvas.figure
 
     @property
     def canvas(self) -> 'PlotCanvas':
-        """Get access to the canvas that handles the figure
-        and axes, and their main functions.
+        """Get access to the canvas that handles the figure and axes, and their
+        main functions.
 
         Returns:
             PlotCanvas: The canvas
@@ -593,17 +582,16 @@ class MetalGUI(QMainWindowBaseHandler):
         return self.plot_win.canvas
 
     def rebuild(self, autoscale: bool = False):
-        """
-        Rebuild all components in the design from scratch and refresh the gui.
-        """
+        """Rebuild all components in the design from scratch and refresh the
+        gui."""
         self.design.rebuild()
         self.refresh()
         if autoscale:
             self.autoscale()
 
     def refresh(self):
-        '''
-        Refreshes everything. Overkill in general.
+        """Refreshes everything. Overkill in general.
+
             * Refreshes the design names in the gui
             * Refreshes the table models
             * Replots everything
@@ -611,7 +599,7 @@ class MetalGUI(QMainWindowBaseHandler):
         Warning:
             This does *not* rebuild the components.
             For that, call rebuild.
-        '''
+        """
 
         # Global level
         self.refresh_design()
@@ -652,8 +640,8 @@ class MetalGUI(QMainWindowBaseHandler):
             self.component_window.set_component(name)
 
     def edit_component_source(self, name: str = None):
-        """For the selected component in the edit component widet (see gui.edit_component)
-        open up the source editor.
+        """For the selected component in the edit component widet (see
+        gui.edit_component) open up the source editor.
 
         Arguments:
             name (str): Name of component to exmaine.
@@ -683,8 +671,8 @@ class MetalGUI(QMainWindowBaseHandler):
 
     def new_qcomponent_file(self, new_path: str, class_name: str,
                             name_instance: str):
-        """Create a new qcomponent file based on template.
-        The template is stored in qlibrary/_template.py.
+        """Create a new qcomponent file based on template. The template is
+        stored in qlibrary/_template.py.
 
         Args:
             path (str): The path to the file to save to
@@ -746,7 +734,8 @@ class MetalGUI(QMainWindowBaseHandler):
 
     @slot_catch_error()
     def gui_create_build_log_window(self, _=None):
-        """Creates a separate window that displays the recent successful/fails of all components for the design.
+        """Creates a separate window that displays the recent successful/fails
+        of all components for the design.
 
         Args:
             _ (object, optional): Default parameters for slot  - used to call from action

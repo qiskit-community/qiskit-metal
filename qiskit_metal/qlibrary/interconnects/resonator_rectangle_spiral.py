@@ -19,8 +19,8 @@ import numpy as np
 
 
 class ResonatorRectangleSpiral(QComponent):
-    """A rectnagle spiral resonator based on length input. The X dimension is modified
-    by the code based on the total length inputed.
+    """A rectnagle spiral resonator based on length input. The X dimension is
+    modified by the code based on the total length inputed.
 
     Inherits `QComponent` class
 
@@ -71,12 +71,11 @@ class ResonatorRectangleSpiral(QComponent):
     """Default drawing options"""
 
     def make(self):
-        """
-        The make function implements the logic that creates the geoemtry
-        (poly, path, etc.) from the qcomponent.options dictionary of parameters,
-        and the adds them to the design, using qcomponent.add_qgeometry(...),
-        adding in extra needed information, such as layer, subtract, etc.
-        """
+        """The make function implements the logic that creates the geoemtry
+        (poly, path, etc.) from the qcomponent.options dictionary of
+        parameters, and the adds them to the design, using
+        qcomponent.add_qgeometry(...), adding in extra needed information, such
+        as layer, subtract, etc."""
         p = self.p  # p for parsed parameters. Access to the parsed options.
         n = int(p.n)
         # Create the geometry

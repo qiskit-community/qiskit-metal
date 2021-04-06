@@ -11,24 +11,26 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""
-Reports a summary of information on Qiskit Metal and dependencies.
+
+# pylint: disable-msg=import-error
+"""Reports a summary of information on Qiskit Metal and dependencies.
 
 Contain functions to report more detailed information to orient a user,
 used for debug purposes.
 """
 
+from pathlib import Path
+from typing import Union
+
 import os
 import sys
-import numpy
 import getpass
 import inspect
 import platform
 import webbrowser
+import numpy
 
-from pathlib import Path
 from qiskit_metal.toolbox_python.display import Color, style_colon_list
-from typing import Union
 
 __all__ = [
     'about', 'open_docs', 'orient_me', 'get_platform_info',
@@ -36,9 +38,11 @@ __all__ = [
 ]
 
 
+# pylint: disable-msg=invalid-name
+# pylint: disable-msg=import-outside-toplevel
+# pylint: disable-msg=bare-except
 def about():
-    """
-    Reports a summary of information on Qiskit Metal and dependencies.
+    """Reports a summary of information on Qiskit Metal and dependencies.
 
     Returns:
         str: About message
@@ -49,15 +53,17 @@ def about():
 
     try:
         import matplotlib
-        matplotlib_ver = matplotlib.__version__
+        #matplotlib_ver = matplotlib.__version__
     except:
-        matplotlib_ver = 'None'
+        #matplotlib_ver = 'None'
+        pass
 
     try:
         from sip import SIP_VERSION_STR
     except:
         SIP_VERSION_STR = 'Not installed'
-    # Riverbank: SIP is a tool for quickly writing Python modules that interface with C++ and C libraries.
+    # Riverbank: SIP is a tool for quickly writing Python modules that interface with
+    # C++ and C libraries.
 
     text = f"""
 Qiskit Metal        {qiskit_metal.__version__}
@@ -95,16 +101,15 @@ IBM Quantum Team"""
 def get_module_doc_page(module,
                         folder=r'../docs/build/html',
                         page='index.html'):
-    """
-    Get the file path to a module doc folder assumed to be inside the package.
-    """
+    """Get the file path to a module doc folder assumed to be inside the
+    package."""
     return Path(os.path.dirname(module.__file__)) / folder / page
 
 
 def open_docs(page='https://qiskit.org/documentation/metal/'):
-    """
-    Open the qiskit_metal documentation in HTML. Open the URL in new window,
-    raising the window if possible.
+    """Open the qiskit_metal documentation in HTML.
+
+    Open the URL in new window, raising the window if possible.
     """
     webbrowser.open(page, new=1)
 
@@ -136,8 +141,8 @@ def orient_me(do_print: bool = True) -> Union[None, str]:
         text = style_colon_list(text, Color.BOLD, Color.END)
         print(text)
         return None
-    else:
-        return text
+
+    return text
 
 
 def get_platform_info() -> str:

@@ -47,9 +47,11 @@ if TYPE_CHECKING:
 
 
 class QSkeletonRenderer(QRenderer):
-    """Extends QRenderer to create new Skeleton QRenderer. This QRenderer will print to 
-    a file the number_of_bones and the names of QGeometry tables that will be used to export
-    the QComponents the user highlighted.
+    """Extends QRenderer to create new Skeleton QRenderer.
+
+    This QRenderer will print to a file the number_of_bones and the
+    names of QGeometry tables that will be used to export the
+    QComponents the user highlighted.
     """
 
     #: Default options, over-written by passing ``options` dict to render_options.
@@ -128,8 +130,8 @@ class QSkeletonRenderer(QRenderer):
 
     def check_qcomps(self,
                      highlight_qcomponents: list = []) -> Tuple[list, int]:
-        """Confirm the list doesn't have names of componentes repeated.
-        Comfirm that the name of component exists in QDesign.
+        """Confirm the list doesn't have names of componentes repeated. Comfirm
+        that the name of component exists in QDesign.
 
         Args:
             highlight_qcomponents (list, optional): List of strings which denote the name of QComponents to render.
@@ -200,9 +202,10 @@ class QSkeletonRenderer(QRenderer):
 
     def get_table(self, table_name: str, unique_qcomponents: list,
                   chip_name: str) -> geopandas.GeoDataFrame:
-        """If unique_qcomponents list is empty, get table using table_name from QGeometry tables
-            for all elements with table_name.  Otherwise, return a table with fewer elements, for just the
-            qcomponents within the unique_qcomponents list.
+        """If unique_qcomponents list is empty, get table using table_name from
+        QGeometry tables for all elements with table_name.  Otherwise, return a
+        table with fewer elements, for just the qcomponents within the
+        unique_qcomponents list.
 
         Args:
             table_name (str): Can be "path", "poly", etc. from the QGeometry tables.
@@ -234,10 +237,10 @@ class QSkeletonRenderer(QRenderer):
                                             file_name: str,
                                             highlight_qcomponents: list = []
                                            ) -> int:
-        """Obtain the names of the QGeometry Pandas tables and write them to a file.
-        The names will be for qcomponents that were selected or all of the qcomponents within 
-        the qdesign. 
-        
+        """Obtain the names of the QGeometry Pandas tables and write them to a
+        file. The names will be for qcomponents that were selected or all of
+        the qcomponents within the qdesign.
+
         Args:
             file_name (str): File name which can also include directory path.
                              If the file exists, it will be overwritten.
@@ -274,9 +277,10 @@ class QSkeletonRenderer(QRenderer):
             return 0
 
     def get_chip_names(self) -> Dict:
-        """ Returns a dict of unique chip names for ALL tables within QGeometry.
-        In another words, for every "path" table, "poly" table ... etc, this method will search for unique
-        chip names and return a dict of unique chip names from QGeometry table.
+        """Returns a dict of unique chip names for ALL tables within QGeometry.
+        In another words, for every "path" table, "poly" table ... etc, this
+        method will search for unique chip names and return a dict of unique
+        chip names from QGeometry table.
 
         Returns:
             Dict: dict with key of chip names and value of empty dict to hold things for renderers.

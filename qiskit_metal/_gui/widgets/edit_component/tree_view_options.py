@@ -11,8 +11,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""Handles editing a QComponent
-"""
+"""Handles editing a QComponent."""
 
 from typing import TYPE_CHECKING
 
@@ -27,9 +26,10 @@ if TYPE_CHECKING:
 
 
 class QTreeView_Options(QTreeView, QWidget_PlaceholderText):
-    """Handles editing a QComponent
+    """Handles editing a QComponent.
 
-    This class extends the `QTreeView` and `QWidget_PlaceholderText` classes.
+    This class extends the `QTreeView` and `QWidget_PlaceholderText`
+    classes.
     """
 
     def __init__(self, parent: QtWidgets.QWidget):
@@ -40,7 +40,7 @@ class QTreeView_Options(QTreeView, QWidget_PlaceholderText):
         QTreeView.__init__(self, parent)
         QWidget_PlaceholderText.__init__(self, "Select a QComponent to edit"\
                     "\n\nfrom the QComponents window")
-        # not sure whu the ui isnt unpdating these here.
+        # not sure whu the ui isn't updating these here.
         QTimer.singleShot(200, self.style_me)
         self.expanded.connect(self.resize_on_expand)
 

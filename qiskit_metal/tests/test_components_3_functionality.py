@@ -16,9 +16,7 @@
 # pylint: disable-msg=too-many-public-methods
 # pylint: disable-msg=protected-access
 # pylint: disable-msg=import-error
-"""
-Qiskit Metal unit tests components functionality.
-"""
+"""Qiskit Metal unit tests components functionality."""
 
 import unittest
 import numpy as np
@@ -47,26 +45,19 @@ from qiskit_metal.qlibrary.interconnects.resonator_rectangle_spiral import Reson
 
 
 class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
-    """
-    Unit test class.
-    """
+    """Unit test class."""
 
     def setUp(self):
-        """
-        Setup unit test.
-        """
+        """Setup unit test."""
         pass
 
     def tearDown(self):
-        """
-        Tie any loose ends.
-        """
+        """Tie any loose ends."""
         pass
 
     def test_component_get_nested_dict_item(self):
-        """
-        Test the functionality of get_nested_dict_item in _parsed_dynamic_attrs.py.
-        """
+        """Test the functionality of get_nested_dict_item in
+        _parsed_dynamic_attrs.py."""
         # Setup expected test results
         my_dict = Dict(aa=Dict(x1={'dda': '34fF'}, y1='Y', z='10um'),
                        bb=Dict(x2=5, y2='YYYsdg', z='100um'),
@@ -92,9 +83,7 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
         self.assertEqual({}, _test_d)
 
     def test_component_get_and_set_qcomponent_name(self):
-        """
-        Test the getting and setting of a QComponent name.
-        """
+        """Test the getting and setting of a QComponent name."""
         design = designs.DesignPlanar()
         my_qcomponent_local = None
 
@@ -106,9 +95,7 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
 
     #pylint: disable-msg=too-many-statements
     def test_component_qcomponent_add_pins(self):
-        """
-        Test pin addition.
-        """
+        """Test pin addition."""
         design = designs.DesignPlanar()
         my_q_component = QComponent(design, "my_name-add-pins", make=False)
 
@@ -173,24 +160,18 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
         my_q_component.delete()
 
     def test_component_template_component_metadata(self):
-        """
-        Test component_metadata in _template.py.
-        """
+        """Test component_metadata in _template.py."""
         component = MyQComponent
         self.assertEqual(component.component_metadata,
                          {'short_name': 'component'})
 
     def test_component_base_component_metadata(self):
-        """
-        Test component_metadata in base/base.py.
-        """
+        """Test component_metadata in base/base.py."""
         component = QComponent
         self.assertEqual(component.component_metadata, {})
 
     def test_component_base_get_template_options(self):
-        """
-        Test get_template_options in base.py.
-        """
+        """Test get_template_options in base.py."""
         design = designs.DesignPlanar()
 
         self.assertEqual(QComponent.get_template_options(design), {})
@@ -204,9 +185,7 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
         self.assertEqual(BaseQubit.get_template_options(design), expected)
 
     def test_component_qubit_component_metadata(self):
-        """
-        Test component_metadata in base/qubit.py.
-        """
+        """Test component_metadata in base/qubit.py."""
         component = BaseQubit
         metadata = component.component_metadata
         self.assertEqual(len(metadata), 2)
@@ -214,9 +193,7 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
         self.assertEqual(metadata['_qgeometry_table_poly'], 'True')
 
     def test_component_cpw_hanger_t_component_metadata(self):
-        """
-        Test component_metadata in component/cpw_hanger_t.py.
-        """
+        """Test component_metadata in component/cpw_hanger_t.py."""
         component = CPWHangerT
 
         metadata = component.component_metadata
@@ -225,9 +202,7 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
         self.assertEqual(metadata['_qgeometry_table_path'], 'True')
 
     def test_component_open_to_ground_component_metadata(self):
-        """
-        Test component_metadata in component/open_to_ground.py.
-        """
+        """Test component_metadata in component/open_to_ground.py."""
         component = open_to_ground.OpenToGround
 
         metadata = component.component_metadata
@@ -236,37 +211,27 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
         self.assertEqual(metadata['_qgeometry_table_poly'], 'True')
 
     def test_component_short_to_ground_component_metadata(self):
-        """
-        Test component_metadata in component/short_to_ground.py.
-        """
+        """Test component_metadata in component/short_to_ground.py."""
         component = short_to_ground.ShortToGround
         self.assertEqual(component.component_metadata, {'short_name': 'term'})
 
     def test_component_framed_path_component_metadata(self):
-        """
-        Test component_metadata in interconnects/framed_path.py.
-        """
+        """Test component_metadata in interconnects/framed_path.py."""
         component = RouteFramed
         self.assertEqual(component.component_metadata, {'short_name': 'cpw'})
 
     def test_component_straight_path_component_metadata(self):
-        """
-        Test component_metadata in interconnects/straight_path.py.
-        """
+        """Test component_metadata in interconnects/straight_path.py."""
         component = straight_path.RouteStraight
         self.assertEqual(component.component_metadata, {'short_name': 'cpw'})
 
     def test_component_meander_path_component_metadata(self):
-        """
-        Test component_metadata in interconnects/meandered.py.
-        """
+        """Test component_metadata in interconnects/meandered.py."""
         component = RouteMeander
         self.assertEqual(component.component_metadata, {'short_name': 'cpw'})
 
     def test_component_qroute_base_component_metadata(self):
-        """
-        Test component_metadata in interconnects/qroute_base.py.
-        """
+        """Test component_metadata in interconnects/qroute_base.py."""
         component = QRoute
         metadata = component.component_metadata
         self.assertEqual(len(metadata), 2)
@@ -274,16 +239,13 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
         self.assertEqual(metadata['_qgeometry_table_path'], 'True')
 
     def test_component_resonator_rectangle_spiral_component_metadata(self):
-        """
-        Test component_metadata in interconnects/resonator_rectangle_spiral.py.
-        """
+        """Test component_metadata in
+        interconnects/resonator_rectangle_spiral.py."""
         component = ResonatorRectangleSpiral
         self.assertEqual(component.component_metadata, {'short_name': 'res'})
 
     def test_component_transmon_pocket_cl_component_metadata(self):
-        """
-        Test component_metadata in qubits/transmon_pocket_cl.py.
-        """
+        """Test component_metadata in qubits/transmon_pocket_cl.py."""
         component = transmon_pocket_cl.TransmonPocketCL
         metadata = component.component_metadata
         self.assertEqual(len(metadata), 2)
@@ -291,9 +253,7 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
         self.assertEqual(metadata['_qgeometry_table_poly'], 'True')
 
     def test_component_transmon_pocket_component_metadata(self):
-        """
-        Test component_metadata in qubits.transmon_pocket.py.
-        """
+        """Test component_metadata in qubits.transmon_pocket.py."""
         component = transmon_pocket.TransmonPocket
         metadata = component.component_metadata
         self.assertEqual(len(metadata), 4)
@@ -302,9 +262,7 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
         self.assertEqual(metadata['_qgeometry_table_poly'], 'True')
 
     def test_component_transmon_cross_component_metadata(self):
-        """
-        Test component_metadata in qubits.transmon_cross.py.
-        """
+        """Test component_metadata in qubits.transmon_cross.py."""
         component = transmon_cross.TransmonCross
         metadata = component.component_metadata
         self.assertEqual(len(metadata), 3)
@@ -313,9 +271,7 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
         self.assertEqual(metadata['_qgeometry_table_junction'], 'True')
 
     def test_component_qcomponent_get_pin_names(self):
-        """
-        Test getting all the pin names.
-        """
+        """Test getting all the pin names."""
         design = designs.DesignPlanar()
         my_q_component = QComponent(design, "my_name-get-pin-names", make=False)
 
@@ -335,9 +291,7 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
         my_q_component.delete()
 
     def test_component_qcomponent_add_and_get_pin(self):
-        """
-        Test getting a pin by name.
-        """
+        """Test getting a pin by name."""
         design = designs.DesignPlanar()
         my_q_component = QComponent(design, "my_name-get-pin", make=False)
 
@@ -376,9 +330,7 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
         my_q_component.delete()
 
     def test_qlibrary_get_component_geometry_dict(self):
-        """
-        Test get_component_geometry_dict in qgeometries_handler.py.
-        """
+        """Test get_component_geometry_dict in qgeometries_handler.py."""
         design = designs.DesignPlanar()
         transmon_pocket.TransmonPocket(design, 'Q1')
         transmon_pocket.TransmonPocket(design, 'Q2')
@@ -401,9 +353,7 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
             self.assertEqual(_, q2_result[x])
 
     def test_qlibrary_get_component_geometry_list(self):
-        """
-        Test get_component_geometry_list in qgeometries_handler.py.
-        """
+        """Test get_component_geometry_list in qgeometries_handler.py."""
         design = designs.DesignPlanar()
         transmon_pocket.TransmonPocket(design, 'Q1')
 
@@ -420,9 +370,7 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
                 self.assertEqual(actual[x].bounds[y], expected[x][y])
 
     def test_qlibrary_get_component_geometry(self):
-        """
-        Test get_component_geometry in qgeometries_handler.py.
-        """
+        """Test get_component_geometry in qgeometries_handler.py."""
         design = designs.DesignPlanar()
         transmon_pocket.TransmonPocket(design, 'Q1')
 
@@ -440,9 +388,7 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
                 self.assertEqual(actual[x].bounds[y], expected[x][y])
 
     def test_qlibrary_rename_component(self):
-        """
-        Test rename_component in element_handler.py.
-        """
+        """Test rename_component in element_handler.py."""
         design = designs.DesignPlanar()
         transmon_pocket.TransmonPocket(design, 'Q1')
 
@@ -452,9 +398,7 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
         self.assertEqual(design.components.keys(), ['Q1_new_name'])
 
     def test_qlibrary_delete_component(self):
-        """
-        Test delete_component in element_handler.py.
-        """
+        """Test delete_component in element_handler.py."""
         design = designs.DesignPlanar()
         transmon_pocket.TransmonPocket(design, 'Q1')
         transmon_pocket.TransmonPocket(design, 'Q2')

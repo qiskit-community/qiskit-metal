@@ -1,10 +1,9 @@
-"""
-This code calculates the photon loss (kappa) due to the capacitive coupling between CPWs
-and input/output transmission lines in a quantum circuit. 
+"""This code calculates the photon loss (kappa) due to the capacitive coupling
+between CPWs and input/output transmission lines in a quantum circuit.
 
 Two cases are treated: In the first case, three arguments are passed to the function kappa_in
 and the resonant frequency of the CPW is input as a float. In the second case, six arguments
-are passed to kappa_in and the frequency of the CPW is calculated assuming an ideal CPW. 
+are passed to kappa_in and the frequency of the CPW is calculated assuming an ideal CPW.
 
 Key References:
 
@@ -19,8 +18,6 @@ https://iopscience.iop.org/article/10.1088/0953-2048/22/12/125028/meta
 
 P. Krantz, et al. Physical Review Applied 6, 021318 (2019)
 https://aip.scitation.org/doi/10.1063/1.5089550
-
-
 """
 
 import numpy as np
@@ -31,16 +28,15 @@ __all__ = ['kappa_in']
 
 
 def kappa_in(*argv):
-    """
-    A simple calculator for the kappa value of a readout resonator.
+    """A simple calculator for the kappa value of a readout resonator.
 
     Args:
         freq (float): The frequency of interest, in Hz
         C_in (float): Effective capacitance between CPW and environment (from Q3D), in Farads
-        freq_res (float): Lowest resonant frequency of a CPW (from HFSS), in Hz 
+        freq_res (float): Lowest resonant frequency of a CPW (from HFSS), in Hz
         length (float): Length of the CPW readout resonator, in meters
         res_width (float): Width of the resonator trace (center) line, in meters
-        res_gap (float): Width of resonator gap (dielectric space), in meters 
+        res_gap (float): Width of resonator gap (dielectric space), in meters
         eta (float): 2.0 for half-wavelength resonator; 4.0 for quarter-wavelength resonator
 
     Returns:

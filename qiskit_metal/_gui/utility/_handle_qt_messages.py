@@ -11,9 +11,8 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""
-This is a utility module used to handle qt error messages on slots and etc.
-"""
+"""This is a utility module used to handle qt error messages on slots and
+etc."""
 
 import inspect
 import logging
@@ -33,14 +32,13 @@ __all__ = ['slot_catch_error', 'do_debug']
 
 
 def _qt_message_handler(mode, context, message):
-    '''
-    The message handler is a function that prints out debug messages,
+    """The message handler is a function that prints out debug messages,
     warnings, critical and fatal error messages. The Qt library (debug mode)
     contains hundreds of warning messages that are printed when internal errors
     (usually invalid function arguments) occur. Qt built in release mode also
-    contains such warnings unless QT_NO_WARNING_OUTPUT and/or QT_NO_DEBUG_OUTPUT
-    have been set during compilation. If you implement your own message handler,
-     you get total control of these messages.
+    contains such warnings unless QT_NO_WARNING_OUTPUT and/or
+    QT_NO_DEBUG_OUTPUT have been set during compilation. If you implement your
+    own message handler, you get total control of these messages.
 
     The default message handler prints the message to the standard output under X11
     or to the debugger under Windows. If it is a fatal message, the application
@@ -52,7 +50,7 @@ def _qt_message_handler(mode, context, message):
         mode (QtCore mode): the mode
         context (context): the context
         message (str): the message
-    '''
+    """
 
     if message.startswith(
             'QSocketNotifier: Multiple socket notifiers for same socket'):
@@ -79,9 +77,8 @@ def _qt_message_handler(mode, context, message):
 
 
 def do_debug(msg, name='info'):
-    """
-    Utility function used to print debug statements from PySide2 Socket calls
-    A bit of a cludge
+    """Utility function used to print debug statements from PySide2 Socket
+    calls A bit of a cludge.
 
     Arguments:
         msg (str): Message to print or log to user
@@ -106,10 +103,9 @@ def do_debug(msg, name='info'):
 
 
 def slot_catch_error(*args, catch=Exception, on_exception_emit=None):
-    """
-    This is a decorator for Slots where an exception
-    in user code is caught, printed and a optional qtSignal with
-    signature qtSignal(Exception, str) is emitted when that happens.
+    """This is a decorator for Slots where an exception in user code is caught,
+    printed and a optional qtSignal with signature qtSignal(Exception, str) is
+    emitted when that happens.
 
     Based on:
         https://stackoverflow.com/questions/18740884/preventing-pyqt-to-silence-exceptions-occurring-in-slots
