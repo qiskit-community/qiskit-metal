@@ -331,7 +331,7 @@ class Sweeping():
             endcaps_render: list,
             setup_args: Dict = None,
             leave_last_design: bool = True,
-            design_name: str = "Sweep_Capacitance") -> Tuple[dict, int]:
+            design_name: str = "Sweep_Eigenmode") -> Tuple[dict, int]:
         """Ansys must be open with inserted project. A design, "HFSS Design" with eigenmode solution-type
         will be inserted by this method.
 
