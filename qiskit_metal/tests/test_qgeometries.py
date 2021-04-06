@@ -312,7 +312,7 @@ class TestElements(unittest.TestCase):
         geom = {'my_polygon': rect}
         qgt.add_qgeometry('poly', 'Q1', geom)
 
-        # sucess results
+        # success results
         actual = qgt.get_component('Q1')
         self.assertEqual(len(actual), 3)
         self.assertTrue(isinstance(actual['path'], GeoDataFrame))
