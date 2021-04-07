@@ -345,8 +345,9 @@ class QQ3DRenderer(QAnsysRenderer):
                             if key == "freq_ghz":
                                 if not isinstance(value, float):
                                     self.logger.warning(
-                                        'The value for min_freq_ghz should be an int. '
-                                        f'The present value is {value}.')
+                                        'The value for min_freq_ghz should be a '
+                                        f'float.  The present value is {value}.'
+                                    )
                                 else:
                                     ### This EditSetup works if we change all of the arguments
                                     # at the same time.  We don't always want to change all of them.
@@ -369,7 +370,7 @@ class QQ3DRenderer(QAnsysRenderer):
                                     # ]
                                     # self.pinfo.design._setup_module.EditSetup(
                                     #     setup_args.name, args_editsetup)
-                                    self.pinfo.setup.frequency = value
+                                    self.pinfo.setup.frequency = f"{value}GHz"
                                     continue
                             if key == 'max_passes':
                                 if not isinstance(value, int):
