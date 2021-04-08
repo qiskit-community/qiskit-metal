@@ -231,54 +231,42 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
         with self.assertRaises(ZeroDivisionError):
             test_a_result = lumped_capacitive.chi(50, 30, 20, 30)
 
-    #pylint: disable-msg=too-many-locals
     def test_analyses_lumped_levels_vs_ng_real_units(self):
         """Test the functionality of levels_vs_ng_real_units in
         lumped_capacitives.py."""
         # Setup expected test results
-        test_a_expected = (388.69198590629856, 383542.9078924127,
-                           774759511877.3142, 1.30777592387123e-06)
-        test_b_expected = (776.6068552699635, 766320.2586084654,
-                           1548045428680.8086, 6.545104023767585e-07)
-        test_c_expected = (388691.64789067156, 383543414.14295447,
-                           774809178857568.5, 1.3076920925450654e-09)
-        test_d_expected = (402.9047503275388, 340910.07369285496,
-                           774759511877.3142, 1.30777592387123e-06)
-        test_e_expected = (804.9985387148533, 681147.9428256081,
-                           1548045428680.8086, 6.545104023767585e-07)
-        test_f_expected = (402900.7730357366, 340916038.71322423,
-                           774809178857568.5, 1.3076920925450654e-09)
+        expected = [(388.69198590629856, 383542.9078924127, 774759511877.3142,
+                     1.30777592387123e-06),
+                    (776.6068552699635, 766320.2586084654, 1548045428680.8086,
+                     6.545104023767585e-07),
+                    (388691.64789067156, 383543414.14295447, 774809178857568.5,
+                     1.3076920925450654e-09),
+                    (402.9047503275388, 340910.07369285496, 774759511877.3142,
+                     1.30777592387123e-06),
+                    (804.9985387148533, 681147.9428256081, 1548045428680.8086,
+                     6.545104023767585e-07),
+                    (402900.7730357366, 340916038.71322423, 774809178857568.5,
+                     1.3076920925450654e-09)]
 
         # Generate actual result data
-        test_a_results = lumped_capacitive.levels_vs_ng_real_units(0.1, 0.1)
-        test_b_results = lumped_capacitive.levels_vs_ng_real_units(
-            0.05005, 0.05005)
-        test_c_results = lumped_capacitive.levels_vs_ng_real_units(
-            0.0001, 0.0001)
-        test_d_results = lumped_capacitive.levels_vs_ng_real_units(0.1,
-                                                                   0.1,
-                                                                   N=25)
-        test_e_results = lumped_capacitive.levels_vs_ng_real_units(0.05005,
-                                                                   0.05005,
-                                                                   N=25)
-        test_f_results = lumped_capacitive.levels_vs_ng_real_units(0.0001,
-                                                                   0.0001,
-                                                                   N=25)
+        result = []
+        result.append(lumped_capacitive.levels_vs_ng_real_units(0.1, 0.1))
+        result.append(
+            lumped_capacitive.levels_vs_ng_real_units(0.05005, 0.05005))
+        result.append(lumped_capacitive.levels_vs_ng_real_units(0.0001, 0.0001))
+        result.append(lumped_capacitive.levels_vs_ng_real_units(0.1, 0.1, N=25))
+        result.append(
+            lumped_capacitive.levels_vs_ng_real_units(0.05005, 0.05005, N=25))
+        result.append(
+            lumped_capacitive.levels_vs_ng_real_units(0.0001, 0.0001, N=25))
 
         # Test all elements of the result data against expected data
-        for k in [
-                test_a_results, test_b_results, test_c_results, test_d_results,
-                test_e_results, test_f_results
-        ]:
-            self.assertEqual(len(k), 4)
+        for my_result in result:
+            self.assertEqual(len(my_result), 4)
 
-        for (i, j) in [(test_a_results, test_a_expected),
-                       (test_b_results, test_b_expected),
-                       (test_c_results, test_c_expected),
-                       (test_d_results, test_d_expected),
-                       (test_e_results, test_e_expected),
-                       (test_f_results, test_f_expected)]:
-            self.assertIterableAlmostEqual(i, j, rel_tol=1e-6)
+        self.assertEqual(len(expected), len(result))
+        for x, _ in enumerate(expected):
+            self.assertIterableAlmostEqual(_, result[x], rel_tol=1e-6)
 
         with self.assertRaises(ValueError):
             lumped_capacitive.levels_vs_ng_real_units(100, 100, N=-10)
@@ -286,19 +274,15 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
     def test_analyses_lumped_get_c_and_ic(self):
         """Test the functionality of get_C_and_Ic in lumped_capacitives.py."""
         # Setup expected test results
-        test_a_expected = [33.38125825, -0.61217795]
+        expected = [33.38125825, -0.61217795]
 
         # Generate actual result data
-        test_a_result = lumped_capacitive.get_C_and_Ic(0.1, 0.2, 1.25, 1.75)
+        result = lumped_capacitive.get_C_and_Ic(0.1, 0.2, 1.25, 1.75)
 
         # Test all elements of the result data against expected data
-        self.assertEqual(len(test_a_result), 2)
-        self.assertAlmostEqualRel(test_a_expected[0],
-                                  test_a_result[0],
-                                  rel_tol=1e-6)
-        self.assertAlmostEqualRel(test_a_expected[1],
-                                  test_a_result[1],
-                                  rel_tol=1e-6)
+        self.assertEqual(len(result), 2)
+        self.assertAlmostEqualRel(expected[0], result[0], rel_tol=1e-6)
+        self.assertAlmostEqualRel(expected[1], result[1], rel_tol=1e-6)
 
     def test_analyses_lumped_cos_to_mega_and_delta(self):
         """Test the functionality of cos_to_mega_and_delta in
