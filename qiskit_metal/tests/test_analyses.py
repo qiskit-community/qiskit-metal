@@ -26,7 +26,7 @@ import pandas as pd
 from qiskit_metal.analyses.quantization import lumped_capacitive
 from qiskit_metal.analyses.hamiltonian.transmon_charge_basis import Hcpb
 from qiskit_metal.analyses.hamiltonian.HO_wavefunctions import wavefunction
-from qiskit_metal.analyses.em import cpw_calculations
+from qiskit_metal.analyses.em import cpw_calculations, kappa_calculation
 from qiskit_metal.analyses.sweep_options.sweeping import Sweeping
 from qiskit_metal.tests.assertions import AssertionsMixin
 from qiskit_metal import designs
@@ -50,7 +50,27 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
         try:
             Hcpb()
         except Exception:
-            self.fail("Hcpb failed")
+            self.fail("Hcpb() failed")
+
+        try:
+            Hcpb(nlevels=15)
+        except Exception:
+            self.fail("Hcpb(nlevels=15) failed")
+
+        try:
+            Hcpb(nlevels=15, Ej=13971.3)
+        except Exception:
+            self.fail("Hcpb(nlevels=15, Ej=13971.3) failed")
+
+        try:
+            Hcpb(nlevels=15, Ej=13971.3, Ec=295.2)
+        except Exception:
+            self.fail("Hcpb(nlevels=15, Ej=13971.3, Ec=295.2) failed")
+
+        try:
+            Hcpb(nlevels=15, Ej=13971.3, Ec=295.2, ng=0.001)
+        except Exception:
+            self.fail("Hcpb(nlevels=15, Ej=13971.3, Ec=295.2, ng=0.001) failed")
 
     def test_analyses_instantiate_sweeping(self):
         """Test instantiation of Sweeping in analytic_transmon.py."""
@@ -180,6 +200,18 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
 
         with self.assertRaises(ZeroDivisionError):
             cpw_calculations.elliptic_int_constants(0, 0, 0)
+
+    def test_analysis_lumped_Ic_from_Lj(self):
+        """Test the Ic_from_Lj function in lumped_capacitives.py."""
+        self.assertAlmostEqualRel(lumped_capacitive.Ic_from_Lj(5e9),
+                                  6.579465347418954e-26,
+                                  rel_tol=1e-26)
+
+    def test_analysis_lumped_Ic_from_Ej(self):
+        """Test the Ic_from_Ej function in lumped_capacitives.py."""
+        self.assertAlmostEqualRel(lumped_capacitive.Ic_from_Ej(5),
+                                  1.5198803355538426e+16,
+                                  rel_tol=1e16)
 
     def test_analyses_lumped_transmon_props(self):
         """Test the functionality of lumped_transmon_props in
@@ -729,6 +761,49 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
 
         for x, _ in enumerate(actual):
             self.assertAlmostEqualRel(_, expected[x], rel_tol=1e-6)
+
+    def test_analysis_transmon_charge_basis_evaluek(self):
+        """Test the evaluek function in the Hcpb class."""
+        hcpb = Hcpb(nlevels=15, Ej=13971.3, Ec=295.2, ng=0.001)
+        self.assertAlmostEqualRel(hcpb.evalue_k(0),
+                                  -11175.114908531536,
+                                  rel_tol=1e-6)
+        self.assertAlmostEqualRel(hcpb.evalue_k(2),
+                                  -653.7652579628739,
+                                  rel_tol=1e-6)
+
+    def test_analysis_transmon_charge_basis_evec_k(self):
+        """Test the evec_k function in the Hcpb class."""
+        hcpb = Hcpb(nlevels=2, Ej=13971.3, Ec=295.2, ng=0.001)
+
+        expected = [
+            0.434102035, 0.558197591, 0.000417109677, -0.557943545, -0.434361255
+        ]
+        actual = hcpb.evec_k(1)
+
+        self.assertIterableAlmostEqual(expected, actual, abs_tol=1e-4)
+
+    def test_analysis_transmon_charge_basis_fij(self):
+        """Test the fij function in the Hcpb class."""
+        hcpb = Hcpb(nlevels=15, Ej=13971.3, Ec=295.2, ng=0.001)
+
+        self.assertAlmostEqual(hcpb.fij(1, 2), 5090.160741580386)
+
+    def test_analysis_transmon_charge_basis_anharm(self):
+        """Test the anharm function in the Hcpb class."""
+        hcpb = Hcpb(nlevels=15, Ej=13971.3, Ec=295.2, ng=0.001)
+        self.assertAlmostEqual(hcpb.anharm(), -341.0281674078906)
+
+    def test_analysis_transmon_charge_basis_n_ij(self):
+        """Test the n_ij function in the Hcpb class."""
+        hcpb = Hcpb(nlevels=15, Ej=13971.3, Ec=295.2, ng=0.001)
+        self.assertAlmostEqual(hcpb.n_ij(1, 2), 1.4670047579229986)
+
+    def test_analysis_kappa_calculation_kappa_in(self):
+        """Test the kappa_in function in kappa_calculation.py."""
+        self.assertAlmostEqual(
+            kappa_calculation.kappa_in(5.0E9, 30.0E-15, 4.5E9),
+            161144.37988054403)
 
 
 if __name__ == '__main__':
