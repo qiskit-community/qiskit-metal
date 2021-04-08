@@ -15,6 +15,7 @@
 # pylint: disable-msg=unnecessary-pass
 # pylint: disable-msg=broad-except
 # pylint: disable-msg=import-error
+# pylint: disable-msg=too-many-public-methods
 """Qiskit Metal unit tests analyses functionality."""
 
 from pathlib import Path
@@ -201,13 +202,13 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
         with self.assertRaises(ZeroDivisionError):
             cpw_calculations.elliptic_int_constants(0, 0, 0)
 
-    def test_analysis_lumped_Ic_from_Lj(self):
+    def test_analysis_lumped_ic_from_lj(self):
         """Test the Ic_from_Lj function in lumped_capacitives.py."""
         self.assertAlmostEqualRel(lumped_capacitive.Ic_from_Lj(5e9),
                                   6.579465347418954e-26,
                                   rel_tol=1e-26)
 
-    def test_analysis_lumped_Ic_from_Ej(self):
+    def test_analysis_lumped_ic_from_ej(self):
         """Test the Ic_from_Ej function in lumped_capacitives.py."""
         self.assertAlmostEqualRel(lumped_capacitive.Ic_from_Ej(5),
                                   1.5198803355538426e+16,
@@ -804,6 +805,15 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
         self.assertAlmostEqual(
             kappa_calculation.kappa_in(5.0E9, 30.0E-15, 4.5E9),
             161144.37988054403)
+
+    def test_analysis_sweeping_option_value(self):
+        """Test the option_value function in the Sweeping class"""
+        design = designs.DesignPlanar()
+        sweeping = Sweeping(design)
+
+        in_dict = {'a': 1, 'b': 'bee'}
+        self.assertEqual(sweeping.option_value(in_dict, 'a'), 1)
+        self.assertEqual(sweeping.option_value(in_dict, 'b'), 'bee')
 
 
 if __name__ == '__main__':
