@@ -366,14 +366,13 @@ class Sweeping():
 
         Args:
             qcomp_name (str): A component that contains the option to be 
-                                swept.
+                                swept. Assume qcomp_name is in qcomp_render.
             option_name (str): The option within qcomp_name to sweep.
                                 Follow details from 
                                 renderer in QHFSSRenderer.render_design.
             option_sweep (list): Each entry in the list is a value for 
                                 option_name.
-            leave_last_design (bool) : In HFSS, after the last sweep, 
-                                should the design be cleared?
+            qcomp_render(list): List of components to render to Ansys.
             endcaps_render (list): Identify which kind of pins. 
                                     Follow details from renderer in
                                     QHFSSRenderer.render_design.
