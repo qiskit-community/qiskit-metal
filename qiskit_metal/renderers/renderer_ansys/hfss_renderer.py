@@ -747,7 +747,7 @@ class QHFSSRenderer(QAnsysRenderer):
                                         'The value for min_freq_ghz should be an int. '
                                         f'The present value is {value}.')
                                 else:
-                                    self.pinfo.setup.min_freq_ghz = value
+                                    self.pinfo.setup.min_freq = f'{value}GHz'
                                     continue
                             if key == 'max_delta_f':
                                 if not isinstance(value, float):
@@ -848,7 +848,7 @@ class QHFSSRenderer(QAnsysRenderer):
                                         'The value for freq_ghz should be an int. '
                                         f'The present value is {value}.')
                                 else:
-                                    self.pinfo.setup.freq_ghz = value
+                                    self.pinfo.setup.solution_freq = f'{value}GHz'
                                     continue
                             if key == 'max_passes':
                                 if not isinstance(value, int):
