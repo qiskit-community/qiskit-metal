@@ -5,25 +5,23 @@ Follow the instructions in the sections below to setup your local development en
 1. On your development machine download [Visual Studio Code](https://code.visualstudio.com/docs/).
 2. Install extensions: `File -> Preferences -> Extensions`
 
-      a. Anaconda Extension Pack 
-
-      b. autoDocstring
+      a. Python Docstring Generator
   
-      c. Install .VSIX
+      b. Install .VSIX
   
-      d. Markdown Preview Enhanced
+      c. Markdown Preview Enhanced
   
-      e. PYQT Integration
+      d. PYQT Integration
   
-      f. Python
+      e. Python
   
-      g. Qt for Python
+      f. Qt for Python
   
-      h. SFTP
+      g. SFTP
   
-      i. YAML
+      h. YAML
   
-      j. GitLens
+      i. GitLens
 
 3. Open a file with simple python code: `helloworld.py` example below:
 ```
