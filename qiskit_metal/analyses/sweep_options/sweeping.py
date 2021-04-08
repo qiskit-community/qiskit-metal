@@ -108,28 +108,28 @@ class Sweeping():
 
         **setup_args** dict contents:
             * min_freq_ghz (int, optional): Minimum frequency in GHz. 
-                                            Defaults to 1.
+              Defaults to 1.
             * n_modes (int, optional): Number of modes. Defaults to 1.
             * max_delta_f (float, optional): Maximum difference in 
-                                        freq between consecutive passes. 
-                                        Defaults to 0.5.
+              freq between consecutive passes. 
+              Defaults to 0.5.
             * max_passes (int, optional): Maximum number of passes. 
-                                        Defaults to 10.
+              Defaults to 10.
             * min_passes (int, optional): Minimum number of passes. 
-                                        Defaults to 1.
+              Defaults to 1.
             * min_converged (int, optional): Minimum number of converged 
-                                        passes.  Defaults to 1.
+              passes.  Defaults to 1.
             * pct_refinement (int, optional): Percent refinement. 
-                                        Defaults to 30.
+              Defaults to 30.
             * basis_order (int, optional): Basis order. Defaults to -1.
 
         Returns:
             int: The return code of status.
                 * 0 Setup of "Sweep_em_setup" added to design with setup_args. 
                 * 1 Look at warning message to determine which argument was of 
-                the wrong data type.
+                  the wrong data type.
                 * 2 Look at warning message, a key in setup_args that was 
-                not expected.
+                  not expected.
         """
 
         a_hfss = self.design.renderers.hfss
@@ -361,7 +361,8 @@ class Sweeping():
             setup_args: Dict = None,
             leave_last_design: bool = True,
             design_name: str = "Sweep_Eigenmode") -> Tuple[dict, int]:
-        """Ansys must be open with inserted project. A design, "HFSS Design" 
+        """
+        Ansys must be open with inserted project. A design, "HFSS Design"
         with eigenmode solution-type will be inserted by this method.
 
         Args:
@@ -382,24 +383,22 @@ class Sweeping():
             box_plus_buffer_render (bool): Either calculate a bounding box  
                                     based on the location of rendered  
                                     geometries or use chip size from design 
-                                     class.  Follow details from renderer in
+                                    class.  Follow details from renderer in
                                     QHFSSRenderer.render_design.  
                                     Default is True.
             setup_args (Dict): Hold the arguments for  Hfss eigenmode setup() 
                                     as  key/values to pass to Ansys.  
                                     If None, default Setup will be used.
-            leave_last_design (bool) : In HFSS, after the last sweep, 
+            leave_last_design (bool): In HFSS, after the last sweep, 
                                     should the design be cleared? 
                                     Default is True.
             design_name (str, optional):  Name of HFSS_design to use in 
                                     project. Defaults to "Sweep_Eigenmode".
-            
 
         Returns:
-            Tuple[dict, int]: 
-            dict: The key is each value of option_sweep, the value is 
-                    the solution-data for each sweep.
-            int: Observation of searching for data from arguments.
+            Tuple[dict, int]: The dict key is each value of option_sweep, the value is
+            the solution-data for each sweep.
+            The int is the o bservation of searching for data from arguments as defined below.
 
             * 0 Have list of capacitance matrix.
             * 1 qcomp_name not registered in design.
@@ -409,7 +408,7 @@ class Sweeping():
             * 5 last key in option_name is not in dict.
             * 6 project not in app
             * 7 design not in app
-            * 8 setup not implement, check the setup_args. 
+            * 8 setup not implement, check the setup_args.
         """
 
         #Dict of all swept information.
@@ -535,9 +534,9 @@ class Sweeping():
             design_name(str): Name of q3d_design to use in project.
 
         Returns:
-            dict: The key is each value of option_sweep, the value is 
-                the capacitance matrix for each sweep.
-            int: Observation of searching for data from arguments.
+            dict or int: If dict, the key is each value of option_sweep, the value is 
+            the capacitance matrix for each sweep.
+            If int, observation of searching for data from arguments as defined below
 
             * 0 Have list of capacitance matrix.
             * 1 qcomp_name not registered in design.
