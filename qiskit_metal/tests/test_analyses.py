@@ -103,50 +103,23 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
     def test_analyses_cpw_lumped_cpw(self):
         """Test the functionality of lumped_cpw in cpw_calculations.py."""
         # Setup expected test results
-        test_a_expected = (1.0800538577735159e-13, 3.8582810449211895e-07,
-                           2.887792953700545e-11, 0.0, 115.58830719541695,
-                           1.000000000244218, 2.887792953700545e-11)
-        test_b_expected = (1.0800538577735159e-13, 3.858281044369713e-07,
-                           2.887792953700545e-11, 0.0, 115.58830718715625,
-                           1.0000000003871512, 2.887792953700545e-11)
-        test_c_expected = (1.0800538577735159e-13, 3.858281044369713e-07,
-                           2.887792953700545e-11, 0.0, 115.58830718715625,
-                           1.0000000003871512, 2.887792953700545e-11)
-        test_d_expected = (0.03756048636141296, 3.858281044369713e-07,
-                           2.887792953700545e-11, 0.0, 115.58830718715625,
-                           1.0000000003871512, 2.887792953700545e-11)
+        expected = (0.03756048636141296, 3.858281044369713e-07,
+                    2.887792953700545e-11, 0.0, 115.58830718715625,
+                    1.0000000003871512, 2.887792953700545e-11)
 
         # Generate actual result data
-        test_a_result = cpw_calculations.lumped_cpw(1000000.75, 0.25, 0.1,
-                                                    0.002, 0.003)
-        test_b_result = cpw_calculations.lumped_cpw(1000000.75,
-                                                    0.25,
-                                                    0.1,
-                                                    0.002,
-                                                    0.003,
-                                                    dielectric_constant=15.1)
-        test_c_result = cpw_calculations.lumped_cpw(1000000.75,
-                                                    0.25,
-                                                    0.1,
-                                                    0.002,
-                                                    0.003,
-                                                    dielectric_constant=15.1,
-                                                    loss_tangent=0.1)
-        test_d_result = cpw_calculations.lumped_cpw(1000000.75,
-                                                    0.25,
-                                                    0.1,
-                                                    0.002,
-                                                    0.003,
-                                                    dielectric_constant=15.1,
-                                                    loss_tangent=0.1,
-                                                    london_penetration_depth=1 *
-                                                    10**.7)
+        result = cpw_calculations.lumped_cpw(1000000.75,
+                                             0.25,
+                                             0.1,
+                                             0.002,
+                                             0.003,
+                                             dielectric_constant=15.1,
+                                             loss_tangent=0.1,
+                                             london_penetration_depth=1 *
+                                             10**.7)
 
         # Test all elements of the result data against expected data
-        self.assertIterableAlmostEqual(test_a_expected, test_a_result)
-        self.assertIterableAlmostEqual(test_b_expected, test_b_result)
-        self.assertIterableAlmostEqual(test_c_expected, test_c_result)
-        self.assertIterableAlmostEqual(test_d_expected, test_d_result)
+        self.assertIterableAlmostEqual(expected, result)
 
     def test_analyses_cpw_effective_dielectric_constant(self):
         """Test the functionality of effective_dielectric_constant in
@@ -295,7 +268,7 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
         # Test all elements of the result data against expected data
         for k in [
                 test_a_results, test_b_results, test_c_results, test_d_results,
-                test_e_results
+                test_e_results, test_f_results
         ]:
             self.assertEqual(len(k), 4)
 
@@ -306,9 +279,6 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
                        (test_e_results, test_e_expected),
                        (test_f_results, test_f_expected)]:
             self.assertIterableAlmostEqual(i, j, rel_tol=1e-6)
-
-        with self.assertRaises(IndexError):
-            lumped_capacitive.levels_vs_ng_real_units(100, 100, N=0)
 
         with self.assertRaises(ValueError):
             lumped_capacitive.levels_vs_ng_real_units(100, 100, N=-10)
