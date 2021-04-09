@@ -12,20 +12,23 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-#pylint: disable-msg=unnecessary-pass
-#pylint: disable-msg=too-many-public-methods
+# pylint: disable-msg=unnecessary-pass
+# pylint: disable-msg=too-many-public-methods
 """Qiskit Metal unit tests components functionality."""
 
 import unittest
 
-from qiskit_metal.qlibrary.base import qubit
+from qiskit_metal.qlibrary.base import qubit, qroute
 from qiskit_metal.qlibrary.basic import circle_caterpillar
 from qiskit_metal.qlibrary.basic import circle_raster
 from qiskit_metal.qlibrary.basic import rectangle
 from qiskit_metal.qlibrary.basic import rectangle_hollow
 from qiskit_metal.qlibrary.basic import n_gon
 from qiskit_metal.qlibrary.basic import n_square_spiral
+from qiskit_metal.qlibrary.connectors.cpw_finger_cap import CPWFingerCap
 from qiskit_metal.qlibrary.connectors.cpw_hanger_t import CPWHangerT
+from qiskit_metal.qlibrary.connectors.cpw_t_finger_cap import CPWTFingerCap
+from qiskit_metal.qlibrary.connectors.cpw_t import CPWT
 from qiskit_metal.qlibrary.connectors import open_to_ground
 from qiskit_metal.qlibrary.connectors import short_to_ground
 from qiskit_metal.qlibrary.interconnects.anchored_path import RouteAnchors
@@ -39,8 +42,11 @@ from qiskit_metal.qlibrary.passives.launchpad_wb_coupled import LaunchpadWirebon
 from qiskit_metal.qlibrary.passives.cap_three_fingers import CapThreeFingers
 from qiskit_metal.qlibrary.qubits import transmon_concentric
 from qiskit_metal.qlibrary.qubits import transmon_cross
+from qiskit_metal.qlibrary.qubits.transmon_cross_fl import TransmonCrossFL
 from qiskit_metal.qlibrary.qubits import transmon_pocket
 from qiskit_metal.qlibrary.qubits import transmon_pocket_cl
+from qiskit_metal.qlibrary.qubits.transmon_pocket_6 import TransmonPocket6
+from qiskit_metal.qlibrary.qubits.tunable_coupler_01 import TunableCoupler01
 from qiskit_metal.qlibrary import _template
 from qiskit_metal.tests.assertions import AssertionsMixin
 
@@ -59,7 +65,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         """Tie any loose ends."""
         pass
 
-    def test_component_circle_caterpiller_options(self):
+    def test_qlibrary_circle_caterpiller_options(self):
         """Test that default options of circle_caterpiller in
         circle_caterpillar.py were not accidentally changed."""
         # Setup expected test results
@@ -82,7 +88,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(_options['chip'], 'main')
         self.assertEqual(_options['layer'], '1')
 
-    def test_component_circle_raster_options(self):
+    def test_qlibrary_circle_raster_options(self):
         """Test that default options of circle_raster in circle_raster.py were
         not accidentally changed."""
         # Setup expected test results
@@ -102,7 +108,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(_options['chip'], 'main')
         self.assertEqual(_options['layer'], '1')
 
-    def test_component_rectangle_options(self):
+    def test_qlibrary_rectangle_options(self):
         """Test that default options of rectangle in rectangle.py were not
         accidentally changed."""
         # Setup expected test results
@@ -122,7 +128,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(_options['chip'], 'main')
         self.assertEqual(_options['layer'], '1')
 
-    def test_component_rectangle_hollow_options(self):
+    def test_qlibrary_rectangle_hollow_options(self):
         """Test that default options of rectangle_hollow in rectangle_hollow.py
         were not accidentally changed."""
         # Setup expected test results
@@ -149,7 +155,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(_options['inner']['offset_y'], '-20um')
         self.assertEqual(_options['inner']['rotation'], '15')
 
-    def test_component_n_gon_options(self):
+    def test_qlibrary_n_gon_options(self):
         """Test that default options of NGon in n_gon.py were not accidentally
         changed."""
         # Setup expected test results
@@ -169,7 +175,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['chip'], 'main')
         self.assertEqual(options['layer'], '1')
 
-    def test_component_n_square_spiral_options(self):
+    def test_qlibrary_n_square_spiral_options(self):
         """Test that default options of NSquareSpiral in n_square_spiral.py
         were not accidentally changed."""
         # Setup expected test results
@@ -191,7 +197,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['chip'], 'main')
         self.assertEqual(options['layer'], '1')
 
-    def test_component_basequbit_options(self):
+    def test_qlibrary_basequbit_options(self):
         """Test that default options of BaseQubit in qubit.py were not
         accidentally changed."""
         # Setup expected test results
@@ -206,7 +212,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['connection_pads'], {})
         self.assertEqual(options['_default_connection_pads'], {})
 
-    def test_component_open_to_ground_options(self):
+    def test_qlibrary_open_to_ground_options(self):
         """Test that default options of OpenToGround in open_to_ground.py were
         not accidentally changed."""
         # Setup expected test results
@@ -225,7 +231,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['chip'], 'main')
         self.assertEqual(options['layer'], '1')
 
-    def test_component_short_to_ground_options(self):
+    def test_qlibrary_short_to_ground_options(self):
         """Test that default options of ShortToGround in short_to_ground.py
         where not accidentally changed."""
         # Setup expected test results
@@ -242,7 +248,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['chip'], 'main')
         self.assertEqual(options['layer'], '1')
 
-    def test_component_straight_path_options(self):
+    def test_qlibrary_straight_path_options(self):
         """Test that default options of RouteStraight in straight_path.py were
         not accidentally changed."""
         # Setup expected test results
@@ -271,7 +277,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['lead']['start_jogged_extension'], '')
         self.assertEqual(options['lead']['end_jogged_extension'], '')
 
-    def test_component_route_meander_options(self):
+    def test_qlibrary_route_meander_options(self):
         """Test that default options of RouteMeander in meandered.py were not
         accidentally changed."""
         # Setup expected test results
@@ -287,7 +293,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['meander']['spacing'], '200um')
         self.assertEqual(options['meander']['asymmetry'], '0um')
 
-    def test_component_route_mixed_options(self):
+    def test_qlibrary_route_mixed_options(self):
         """Test that default options of RouteMixed in mixed_path.py were not
         accidentally changed."""
         # Setup expected test results
@@ -298,7 +304,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(len(options), 1)
         self.assertEqual(options['between_anchors'], {})
 
-    def test_component_my_qcomponent_options(self):
+    def test_qlibrary_my_qcomponent_options(self):
         """Test that default options in MyQComponent in _template.py were not
         accidentally changed."""
         # Setup expected test results
@@ -314,7 +320,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['rotation'], '0')
         self.assertEqual(options['layer'], '1')
 
-    def test_component_transmon_concentric_options(self):
+    def test_qlibrary_transmon_concentric_options(self):
         """Test that default options of transmon_concentric in
         transmon_concentric.py were not accidentally changed."""
         # Setup expected test results
@@ -344,7 +350,88 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['rotation'], '0.0')
         self.assertEqual(options['cpw_width'], '10.0um')
 
-    def test_component_transmon_cross_options(self):
+    def test_qlibrary_transmon_cross_fl_options(self):
+        """Test that default_options of transmon_cross_fl were not accidentally changed."""
+        # Setup expected test results
+        design = designs.DesignPlanar()
+        transmon_cross_fl = TransmonCrossFL(design, 'my_name')
+        options = transmon_cross_fl.default_options
+
+        self.assertEqual(len(options), 2)
+        self.assertEqual(len(options['fl_options']), 5)
+        self.assertEqual(options['make_fl'], True)
+        self.assertEqual(options['fl_options']['t_top'], '15um')
+        self.assertEqual(options['fl_options']['t_offset'], '0um')
+        self.assertEqual(options['fl_options']['t_inductive_gap'], '3um')
+        self.assertEqual(options['fl_options']['t_width'], '5um')
+        self.assertEqual(options['fl_options']['t_gap'], '3um')
+
+    def test_qlibrary_transmon_pocket_6_options(self):
+        """Test that default_options of transmon_pocket_6 were not accidentally changed."""
+        # Setup expected test results
+        design = designs.DesignPlanar()
+        transmon_pocket_6 = TransmonPocket6(design, 'my_name')
+        options = transmon_pocket_6.default_options
+
+        self.assertEqual(len(options), 10)
+        self.assertEqual(options['pos_x'], '0um')
+        self.assertEqual(options['pos_y'], '0um')
+        self.assertEqual(options['pad_gap'], '30um')
+        self.assertEqual(options['inductor_width'], '20um')
+        self.assertEqual(options['pad_width'], '455um')
+        self.assertEqual(options['pad_height'], '90um')
+        self.assertEqual(options['pocket_width'], '650um')
+        self.assertEqual(options['pocket_height'], '650um')
+        self.assertEqual(options['orientation'], '0')
+
+        self.assertEqual(len(options['_default_connection_pads']), 11)
+        self.assertEqual(options['_default_connection_pads']['pad_gap'], '15um')
+        self.assertEqual(options['_default_connection_pads']['pad_width'],
+                         '125um')
+        self.assertEqual(options['_default_connection_pads']['pad_height'],
+                         '30um')
+        self.assertEqual(options['_default_connection_pads']['pad_cpw_shift'],
+                         '0um')
+        self.assertEqual(options['_default_connection_pads']['pad_cpw_extent'],
+                         '25um')
+        self.assertEqual(options['_default_connection_pads']['cpw_width'],
+                         '10um')
+        self.assertEqual(options['_default_connection_pads']['cpw_gap'], '6um')
+        self.assertEqual(options['_default_connection_pads']['cpw_extend'],
+                         '100um')
+        self.assertEqual(options['_default_connection_pads']['pocket_extent'],
+                         '5um')
+        self.assertEqual(options['_default_connection_pads']['pocket_rise'],
+                         '0um')
+        self.assertEqual(options['_default_connection_pads']['loc_W'], '+1')
+
+    def test_qlibrary_tunable_coupler_01_options(self):
+        """Test that default_options of tunable_coupler_01 were not accidentally changed."""
+        # Setup expected test results
+        design = designs.DesignPlanar()
+        tunable_coupler = TunableCoupler01(design, 'my_name')
+        options = tunable_coupler.default_options
+
+        self.assertEqual(len(options), 17)
+        self.assertEqual(options['pos_x'], '0um')
+        self.assertEqual(options['pos_y'], '0um')
+        self.assertEqual(options['orientation'], '0')
+        self.assertEqual(options['layer'], '1')
+        self.assertEqual(options['c_width'], '400um')
+        self.assertEqual(options['l_width'], '20um')
+        self.assertEqual(options['l_gap'], '10um')
+        self.assertEqual(options['a_height'], '60um')
+        self.assertEqual(options['cp_height'], '15um')
+        self.assertEqual(options['cp_arm_length'], '30um')
+        self.assertEqual(options['cp_arm_width'], '6um')
+        self.assertEqual(options['cp_gap'], '6um')
+        self.assertEqual(options['cp_gspace'], '3um')
+        self.assertEqual(options['fl_width'], '5um')
+        self.assertEqual(options['fl_gap'], '3um')
+        self.assertEqual(options['fl_length'], '10um')
+        self.assertEqual(options['fl_ground'], '2um')
+
+    def test_qlibrary_transmon_cross_options(self):
         """Test that default options of transmon_cross in transmon_cross.py
         were not accidentally changed."""
         # Setup expected test results
@@ -376,7 +463,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(
             _options['_default_connection_pads']['connector_location'], '0')
 
-    def test_component_transmon_pocket_options(self):
+    def test_qlibrary_transmon_pocket_options(self):
         """Test that default options of transmon_pocket in transmon_pocket.py
         were not accidentally changed."""
         # Setup expected test results
@@ -420,7 +507,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(_options['_default_connection_pads']['loc_W'], '+1')
         self.assertEqual(_options['_default_connection_pads']['loc_H'], '+1')
 
-    def test_component_transmon_pocket_cl_options(self):
+    def test_qlibrary_transmon_pocket_cl_options(self):
         """Test that default options of transmon_pocket_cl in
         transmon_pocket_cl.py were not accidentally changed."""
         # Setup expected test results
@@ -439,7 +526,78 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(_options['cl_pocket_edge'], '0')
         self.assertEqual(_options['cl_off_center'], '50um')
 
-    def test_component_cpw_hanger_t_options(self):
+    def test_qlibrary_cpw_finger_cap_options(self):
+        """Test that default options of CPWFingerCap in cpw_finger_cap.py were not
+        accidentally changed."""
+        # Setup expected test results
+        design = designs.DesignPlanar()
+        finger_cap = CPWFingerCap(design, 'my_name')
+        options = finger_cap.default_options
+
+        # Test all elements of the result data against expected data
+        self.assertEqual(len(options), 15)
+        self.assertEqual(options['north_width'], '10um')
+        self.assertEqual(options['north_gap'], '6um')
+        self.assertEqual(options['south_width'], '10um')
+        self.assertEqual(options['south_gap'], '6um')
+        self.assertEqual(options['cap_width'], '10um')
+        self.assertEqual(options['cap_gap'], '6um')
+        self.assertEqual(options['cap_gap_ground'], '6um')
+        self.assertEqual(options['finger_length'], '20um')
+        self.assertEqual(options['finger_count'], '5')
+        self.assertEqual(options['cap_distance'], '50um')
+        self.assertEqual(options['pos_x'], '0um')
+        self.assertEqual(options['pos_y'], '0um')
+        self.assertEqual(options['orientation'], '0')
+        self.assertEqual(options['chip'], 'main')
+        self.assertEqual(options['layer'], '1')
+
+    def test_qlibrary_cpw_t_finger_cap_options(self):
+        """Test that default options of CPWTFingerCap in cpw_t_finger_cap.py were not
+        accidentally changed."""
+        # Setup expected test results
+        design = designs.DesignPlanar()
+        t_finger_cap = CPWTFingerCap(design, 'my_name')
+        options = t_finger_cap.default_options
+
+        # Test all elements of the result data against expected data
+        self.assertEqual(len(options), 14)
+        self.assertEqual(options['prime_width'], '10um')
+        self.assertEqual(options['prime_gap'], '6um')
+        self.assertEqual(options['second_width'], '10um')
+        self.assertEqual(options['second_gap'], '6um')
+        self.assertEqual(options['cap_gap'], '6um')
+        self.assertEqual(options['cap_width'], '10um')
+        self.assertEqual(options['finger_length'], '20um')
+        self.assertEqual(options['finger_count'], '5')
+        self.assertEqual(options['cap_distance'], '50um')
+        self.assertEqual(options['pos_x'], '0um')
+        self.assertEqual(options['pos_y'], '0um')
+        self.assertEqual(options['orientation'], '0')
+        self.assertEqual(options['chip'], 'main')
+        self.assertEqual(options['layer'], '1')
+
+    def test_qlibrary_cpw_t_options(self):
+        """Test that default options of CPWT in cpw_t.py were not accidentally changed."""
+        # Setup expected test results
+        design = designs.DesignPlanar()
+        cpw_t = CPWT(design, 'my_name')
+        options = cpw_t.default_options
+
+        # Test all elements of the result data against expected data
+        self.assertEqual(len(options), 10)
+        self.assertEqual(options['prime_width'], '10um')
+        self.assertEqual(options['prime_gap'], '6um')
+        self.assertEqual(options['second_width'], '10um')
+        self.assertEqual(options['second_gap'], '6um')
+        self.assertEqual(options['t_length'], '50um')
+        self.assertEqual(options['pos_x'], '0um')
+        self.assertEqual(options['pos_y'], '0um')
+        self.assertEqual(options['orientation'], '0')
+        self.assertEqual(options['chip'], 'main')
+        self.assertEqual(options['layer'], '1')
+
+    def test_qlibrary_cpw_hanger_t_options(self):
         """Test that default options of CPWHangerT in cpw_hanger_t.py were not
         accidentally changed."""
         # Setup expected test results
@@ -465,7 +623,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['chip'], 'main')
         self.assertEqual(options['layer'], '1')
 
-    def test_component_resonator_rectangle_spiral_options(self):
+    def test_qlibrary_resonator_rectangle_spiral_options(self):
         """Test that default options of ResonatorRectangleSpiral in
         resonator_rectangle_spiral.py were not accidentally changed."""
         # Setup expected test results
@@ -487,7 +645,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['chip'], 'main')
         self.assertEqual(options['layer'], '1')
 
-    def test_component_route_anchors_options(self):
+    def test_qlibrary_route_anchors_options(self):
         """Test that default options of RouteAnchors in anchored_path.py were
         not accientally changed."""
         # Setup expected test results
@@ -500,7 +658,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(len(options['advanced']), 1)
         self.assertEqual(options['advanced']['avoid_collision'], 'false')
 
-    def test_component_route_pathfinder_options(self):
+    def test_qlibrary_route_pathfinder_options(self):
         """Test that default options of RoutePathfinder in pathfinder.py were
         not accidentally changed."""
         # Setup expected test results
@@ -513,7 +671,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(len(options['advanced']), 1)
         self.assertEqual(options['advanced']['avoid_collision'], 'true')
 
-    def test_component_launch_v1_options(self):
+    def test_qlibrary_launch_v1_options(self):
         """Test that default options of LaunchpadWirebond in launchpad_wb.py
         were not accidentally changed."""
         design = designs.DesignPlanar()
@@ -529,7 +687,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['pos_y'], '0um')
         self.assertEqual(options['orientation'], '0')
 
-    def test_component_launch_v2_options(self):
+    def test_qlibrary_launch_v2_options(self):
         """Test that default options of LaunchpadWirebondCoupled in
         launchpad_wb_coupled.py were not accidentally changed."""
         design = designs.DesignPlanar()
@@ -546,7 +704,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['pos_y'], '0um')
         self.assertEqual(options['orientation'], '0')
 
-    def test_component_cap_three_fingers(self):
+    def test_qlibrary_cap_three_fingers(self):
         """Test that default options of CapThreeFingers were not accidentally
         changed."""
         design = designs.DesignPlanar()
@@ -562,6 +720,33 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['pos_x'], '100um')
         self.assertEqual(options['pos_y'], '100um')
         self.assertEqual(options['orientation'], '0')
+
+    def test_qlibrary_qroute_options(self):
+        """Test that default options of QRoute were not accidentally changed."""
+        design = designs.DesignPlanar()
+        my_qroute = qroute.QRoute(design, name='test_qroute', options={})
+        options = my_qroute.default_options
+
+        self.assertEqual(len(options), 7)
+        self.assertEqual(options['fillet'], '0')
+        self.assertEqual(options['total_length'], '7mm')
+        self.assertEqual(options['chip'], 'main')
+        self.assertEqual(options['layer'], '1')
+        self.assertEqual(options['trace_width'], 'cpw_width')
+
+        self.assertEqual(len(options['pin_inputs']), 2)
+        self.assertEqual(len(options['pin_inputs']['start_pin']), 2)
+        self.assertEqual(len(options['pin_inputs']['end_pin']), 2)
+        self.assertEqual(options['pin_inputs']['start_pin']['component'], '')
+        self.assertEqual(options['pin_inputs']['start_pin']['pin'], '')
+        self.assertEqual(options['pin_inputs']['end_pin']['component'], '')
+        self.assertEqual(options['pin_inputs']['end_pin']['pin'], '')
+
+        self.assertEqual(len(options['lead']), 4)
+        self.assertEqual(options['lead']['start_straight'], '0mm')
+        self.assertEqual(options['lead']['end_straight'], '0mm')
+        self.assertEqual(options['lead']['start_jogged_extension'], '')
+        self.assertEqual(options['lead']['end_jogged_extension'], '')
 
 
 if __name__ == '__main__':
