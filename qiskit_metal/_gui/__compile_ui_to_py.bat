@@ -10,7 +10,6 @@ call pyside2-uic -o main_window_ui.py --from-imports        main_window_ui.ui
 call pyside2-uic -o component_widget_ui.py --from-imports   component_widget_ui.ui
 call pyside2-uic -o plot_window_ui.py --from-imports        plot_window_ui.ui
 call pyside2-uic -o elements_ui.py --from-imports           elements_ui.ui
-call pyside2-uic -o edit_source_ui.py --from-imports        edit_source_ui.ui
 
 call pyside2-rcc -o main_window_rc_rc.py                    main_window_rc.qrc
 

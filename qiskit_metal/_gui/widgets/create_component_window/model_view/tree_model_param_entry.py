@@ -800,7 +800,7 @@ class TreeModelParamEntry(QAbstractItemModel):
         return self.createIndex(
             -1, -1, QModelIndex())  # return invalid index which is Branch("")
 
-    def parent(self, child):
+    def parent(self, child: QModelIndex):
         """Gets the parent index of the given node
 
         Args:

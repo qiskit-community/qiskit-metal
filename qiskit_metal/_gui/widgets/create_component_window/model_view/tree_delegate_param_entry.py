@@ -19,7 +19,7 @@ from PySide2.QtWidgets import QItemDelegate
 from PySide2.QtCore import QAbstractItemModel, QModelIndex, QTimer, Qt
 from PySide2.QtWidgets import (QWidget, QStyleOptionViewItem)
 
-from qiskit_metal._gui.widgets.library_new_qcomponent.model_view.tree_model_param_entry import TreeModelParamEntry
+from qiskit_metal._gui.widgets.create_component_window.model_view.tree_model_param_entry import TreeModelParamEntry
 
 
 class ParamDelegate(QItemDelegate):

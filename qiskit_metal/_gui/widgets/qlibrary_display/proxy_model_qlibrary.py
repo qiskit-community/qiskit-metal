@@ -14,8 +14,8 @@
 """
 Proxy Model to clean display of QComponents in Library tab
 """
-from PySide2.QtCore import QModelIndex, QSortFilterProxyModel
-
+from PySide2.QtCore import QModelIndex, QSortFilterProxyModel, Qt
+import typing
 
 class LibraryFileProxyModel(QSortFilterProxyModel):
 
@@ -28,10 +28,37 @@ class LibraryFileProxyModel(QSortFilterProxyModel):
         # (QComponent files) OR (Directories)
         self.accepted_files__regex = r"(^((?!\.))(?!__init__)(?!_template)(?!__pycache__).*\.py)|(?!__pycache__)(?!base)(^([^.]+)$)"
         self.setFilterRegExp(self.accepted_files__regex)
+        self.is_dev_mode = False
+
+
+    def set_dev_mode(self, ison:bool):
+        self.is_dev_mode = ison
 
     def filterAcceptsColumn(self, source_column: int,
                             source_parent: QModelIndex) -> bool:
         """Filters out unwanted file information in display"""
-        if source_column > 1:  # Won't show Size, Kind, Date Modified, etc. for QFileSystemModel
-            return False
-        return True
+        if (self.is_dev_mode and source_column <= self.sourceModel().REBUILD):
+            return True
+        elif source_column <= self.sourceModel().REBUILD:  # Won't show Size, Kind, Date Modified, etc. for QFileSystemModel
+            return True
+
+        return False
+
+
+
+    def data(self, index:QModelIndex, role:int = Qt.DisplayRole) -> typing.Any:
+        from PySide2.QtCore import Qt,QSize
+
+        if role == Qt.EditRole:
+            return self.data(index, Qt.DisplayRole)
+
+        elif role == Qt.SizeHintRole:
+            return QSize(10,25)
+
+        elif role == Qt.DisplayRole and index.column() == 1:
+            return ""
+
+        else:
+            return super().data(index, role)
+
+

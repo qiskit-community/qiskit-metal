@@ -29,11 +29,7 @@ from PySide2.QtWidgets import (QAbstractItemView, QApplication, QFileDialog,
 
 from .... import logger
 from ...component_widget_ui import Ui_ComponentWidget
-from ...utility._handle_qt_messages import slot_catch_error
-from .source_editor_widget import create_source_edit_widget
-# from .table_model_options import QTableModel_Options
 from .tree_model_options import QTreeModel_Options
-from .external_editors import get_mac_app
 
 __all__ = ['create_QTextDocument', 'format_docstr']
 
@@ -208,29 +204,6 @@ class ComponentWidget(QTabWidget):
         document = self.ui.textHelp.document()
         document.setDefaultStyleSheet(textHelp_css_style)
 
-        self.fixup_ui()
-
-    def fixup_ui(self):
-        """There were issues using QT Designer for the UI, hence this method.
-        """
-        # Clicked
-        # This signal is emitted when the button is activated (i.e., pressed down then released
-        # while the mouse cursor is inside the button), when the shortcut key is typed, or when
-        # click() or animateClick() is called. Notably, this signal is not emitted if you call
-        #  setDown(), setChecked() or toggle().
-
-        # for some reason need to clear the style sheet; might be qt bug
-        s1 = self.ui.btn_edit_src.styleSheet()
-        s2 = self.ui.pushButtonEditSource.styleSheet()
-        self.ui.btn_edit_src.setStyleSheet('')
-        self.ui.pushButtonEditSource.setStyleSheet('')
-        # connect
-        self.ui.btn_edit_src.clicked.connect(self.edit_source)
-        self.ui.pushButtonEditSource.clicked.connect(self.edit_source)
-        # restore stylesheet
-        self.ui.btn_edit_src.setStyleSheet(s1)
-        self.ui.pushButtonEditSource.setStyleSheet(s2)
-
     @property
     def design(self):
         """Returns the design"""
@@ -372,46 +345,3 @@ class ComponentWidget(QTabWidget):
         textEdit = self.ui.textSource
         textEdit.moveCursor(QtGui.QTextCursor.Start)
         textEdit.ensureCursorVisible()
-
-    # @slot_catch_error()
-
-    def edit_source(self, *args, parent=None):
-        """Calls the edit source window
-        ```gui.component_window.edit_source()```
-        """
-
-        self.logger.debug(f"edit_source: {args}")
-        self.editor_msg_box = QMessageBox(parent=self, #madality
-                                          text="The template for a new QComponent "
-                                                                                   + "will open in your local IDE. When you "
-                                                                                   + "have edited the template to your liking, "
-                                                                                   + "save it via the IDE. Then come back to Metal "
-                                                                                   + "and press 'rebuild'",
-                                          buttons=QMessageBox.Ok,flags=Qt.Popup)
-        self.editor_msg_box.setWindowModality(Qt.WindowModal)
-
-
-        if self.component is not None:
-            class_name = self.component.__class__.__name__
-            module_name = self.component.__class__.__module__
-            module_path = self.qcomponent_file_path
-
-            QtWidgets.QMessageBox.warning(
-                self, "bjyun", "Please use an external IDE to open the file you just created. :)")
-
-            #get_mac_app(module_path)
-            # self.src_widgets += [
-            #     # surgically replace source edit widget with actual IDE opening
-            #     create_source_edit_widget(self.gui,
-            #                               class_name,
-            #                               module_name,
-            #                               module_path,
-            #                               parent=parent)
-            # ]
-            # self.logger.info('Edit sources window created. '
-            #                  'Please find on your screen.')
-        else:
-            QtWidgets.QMessageBox.warning(
-                self, "Missing Selected Component",
-                "Please first select a component to edit, by clicking "
-                "one in the design components menu.")

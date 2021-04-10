@@ -15,7 +15,7 @@
 The base class of all QDesigns in Qiskit Metal.
 """
 
-import importlib
+import importlib, os
 from datetime import datetime
 
 from typing import TYPE_CHECKING, Any
@@ -487,8 +487,9 @@ class QDesign():
             module = importlib.import_module(component_module_name)
             module = importlib.reload(module)
             new_class = getattr(module, component_class_name)
+            self.template_options.pop(new_class._get_unique_class_name()) # remove default options form template_options
         except Exception as e:
-            self.logger.error("error making mods: " + str(e))
+            self.logger.error("reload_component error making mods: " + str(e))
 
         try:
             for comp in self._components.values():
@@ -521,8 +522,8 @@ class QDesign():
         # spec.loader.exec_module(module)
         # importlib.reload(module)
 
-    def reload_and_rebuild_component(self, component_module_name: str,
-                         component_class_name: str):
+    def reload_and_rebuild_component(self, qis_abs_path: str):
+
         """
         Reload the module and class of a given component and update
         all class instances. (Advanced function.)
@@ -533,54 +534,85 @@ class QDesign():
             component_class_name (str): String name of the class name inside thst module,
                 such  as `TransmonPocket`
         """
-        self.logger.debug(
-            f'Reloading component_class_name={component_class_name}; component_module_name={component_module_name}'
-        )
 
+        # ensure get only filename
+        # split on os.sep and / because PySide appears to sometimes use / on certain Windows
+        # Windows users' qis_abs_path may use os.sep or '/' due to PySide's handling of file names
+        # TODO remove tries
         try:
-            module = importlib.import_module(component_module_name)
-            module = importlib.reload(module)
-            new_class = getattr(module, component_class_name)
-        except Exception as e:
-            self.logger.error("error making mods: " + str(e))
+            qis_mod_path = qis_abs_path.replace(os.sep, '.')[:-len('.py')]
 
-        # try:
-        #     print(f'values {self._components.values()}')
-        #     for comp in self._components.values():
-        #         #print(
-        #         #    f"Reloading component_class_name={component_class_name}; component_module_name={component_module_name.split('.')[-1]}")
-        #         #print("class", comp.__class__.__name__)
-        #         #print("mod", comp.__class__.__module__.split('.')[-1])
-        #         if comp.__class__.__name__ == component_class_name and comp.__class__.__module__.split('.')[-1] == \
-        #                 component_module_name.split('.')[-1]:
-        #             #print("positive:", comp)
-        #
-        # except Exception as e:
-        #     print("ERROR:", e)
+            qis_mod_path = qis_mod_path.replace("/", '.')  # users cannot use '/' in filename
 
-        try:
-            # components that need
-            for instance in filter(
-                    lambda k: k.__class__.__name__ == component_class_name and k.__class__.__module__.split('.')[
-                        -1] == component_module_name.split('.')[-1],
-                    self._components.values()):
-                print("instances: ", instance)
-                instance.__class__ = new_class
-                instance.rebuild()
+            print("qis_mod_path made: ", qis_mod_path)
 
-        except Exception as e:
-            self.logger.error("e2: " + str(e))
+            import inspect
+            qis_class_name = "reload and rebuild no name"
+            mymodule = importlib.import_module(qis_mod_path)
+            print("mymodule: ", mymodule)
+            members = inspect.getmembers(mymodule, inspect.isclass)
+            print("members: ", members)
+            class_owner = qis_mod_path.split('.')[-1]
+            print("class owner: ", class_owner)
+            for memtup in members:
+                print("cur memtup ", memtup)
+                if len(memtup) > 1:
+                    if str(memtup[1].__module__).endswith(class_owner):
+                        qis_class_name = memtup[1].__name__
 
-        self.logger.debug(
-            f'Finished reloading component_class_name={component_class_name}; component_module_name={component_module_name}'
+
+            self.logger.debug(
+                f'Reloading component_class_name={qis_class_name}; component_module_name={qis_mod_path}'
             )
 
-        # Alternative, but reload will say not in sys.path
-        # self = gui.component_window.src_widgets[-1].ui.src_editor
-        # spec = importlib.util.spec_from_file_location(self.component_module_name, self.component_module_path) # type: ModuleSpec
-        # module = importlib.util.module_from_spec(spec) # type: module e.g.,
-        # spec.loader.exec_module(module)
-        # importlib.reload(module)
+            try:
+                # print("qis class name: ", qis_class_name)
+                # module = "sad chickens"
+                module = importlib.import_module(qis_mod_path)
+                # print("tried")
+                print("cur modeule: ", module)
+                module = importlib.reload(module)
+                # print("reloaded: ", module)
+                new_class = getattr(module, qis_class_name)
+                print("new class is :", new_class)
+                print("defOps :", new_class.default_options)
+                print(f"popping: _get_unique_class_name() {new_class._get_unique_class_name()}")
+                popped = self.template_options.pop(new_class._get_unique_class_name())
+                print("template poppped: \n", popped)
+
+            except Exception as e:
+                self.logger.error("Unable to reload module: " + str(e))
+
+
+            try:
+                print("comps: ",self._components.values())
+                for v in self._components.values():
+                    print(qis_class_name)
+                    print(v.__class__.__name__)
+                    print(v.__class__.__module__.split('.')[
+                            -1])
+                    print(qis_class_name.split('.')[-1])
+                    print("BASD")
+
+
+                for instance in filter(
+                        lambda k: k.__class__.__name__ == qis_class_name,
+                        self._components.values()):
+                    print("instances: ", instance)
+                    instance.__class__ = new_class
+                    instance.rebuild()
+                    print("don rebuilded")
+
+
+            except Exception as e:
+                self.logger.error("e2: " + str(e))
+
+            self.logger.debug(
+                f'Finished reloading component_class_name={qis_class_name}; component_module_name={qis_mod_path}'
+                )
+        except Exception as e:
+            self.logger.error(f"Failed to refresh/rebuild: {e}")
+
 
     def rename_component(self, component_id: int, new_component_name: str):
         """Rename component.  The component_id is expected.  However, if user

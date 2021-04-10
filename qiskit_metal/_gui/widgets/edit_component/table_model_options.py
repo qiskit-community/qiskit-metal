@@ -19,19 +19,10 @@ import inspect
 from inspect import getfile, signature
 from pathlib import Path
 from typing import TYPE_CHECKING, Union
-
-import numpy as np
-import PySide2
 from PySide2 import QtCore, QtGui, QtWidgets
 from PySide2.QtCore import QAbstractTableModel, QModelIndex, Qt
 from PySide2.QtGui import QFont
-from PySide2.QtWidgets import (QAbstractItemView, QApplication, QFileDialog,
-                               QLabel, QMainWindow, QMessageBox, QTabWidget)
 
-from .... import logger
-from ...component_widget_ui import Ui_ComponentWidget
-from ...utility._handle_qt_messages import slot_catch_error
-from .source_editor_widget import create_source_edit_widget
 
 __all__ = ['parse_param_from_str']
 

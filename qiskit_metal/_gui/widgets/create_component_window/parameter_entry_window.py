@@ -15,13 +15,6 @@
 Parameter Entry Window for displaying parameters for QComponent instantiation from GUI's QLibrary tab
 """
 from typing import TYPE_CHECKING, Union
-from PySide2.QtWidgets import QPushButton
-from PySide2.QtWidgets import (QScrollArea, QVBoxLayout, QLabel, QWidget,
-                               QHBoxLayout, QLineEdit, QLayout, QComboBox,
-                               QMessageBox)
-from PySide2.QtCore import Qt
-from addict.addict import Dict
-from .collapsable_widget import CollapsibleWidget
 from collections import OrderedDict
 import numpy as np
 from inspect import signature
@@ -29,11 +22,6 @@ import inspect
 from collections import Callable
 from ....designs.design_base import QDesign
 import importlib
-import builtins
-import logging
-import traceback
-import json
-import os
 import numpy as np
 import random
 from PySide2 import QtCore, QtGui, QtWidgets
@@ -46,7 +34,6 @@ from ..edit_component.tree_view_options import QTreeView_Options
 from .model_view.tree_model_param_entry import TreeModelParamEntry, BranchNode, LeafNode, Node
 from .model_view.tree_delegate_param_entry import ParamDelegate
 from .parameter_entry_window_ui import Ui_MainWindow
-from ...edit_source_ui import Ui_EditSource
 import os
 import copy
 from ..edit_component.component_widget import ComponentWidget
@@ -277,6 +264,7 @@ class ParameterEntryWindow(QMainWindow):
         """Use QComponent's default_options and parameter (with typing) to populate Param Entry Window"""
 
         param_dict = {}
+        print(f"getting signature: {self.qcomp_class.default_options}")
         class_signature = signature(self.qcomp_class.__init__)
 
         for _, param in class_signature.parameters.items():
@@ -288,12 +276,15 @@ class ParameterEntryWindow(QMainWindow):
                         param.annotation)
 
         try:
+
             options = self.qcomp_class.get_template_options(self._design)
+            print(f"Using the get_template_options: {options}")
         except Exception as e:
             self._design.logger.warning(
                 f"Could not use template_options for component: {e}")
             if 'default_options' in self.qcomp_class.__dict__:
                 options = self.qcomp_class.default_options
+                print(f"getting options: {self.qcomp_class.default_options}")
 
         if options is not None:
             copied_options = copy.deepcopy(options)
@@ -425,6 +416,7 @@ def get_class_from_abs_file_path(abs_file_path):
     for memtup in members:
         if len(memtup) > 1:
             if str(memtup[1].__module__).endswith(class_owner):
+                print(f" stupid mode: {qis_mod_path}, {mymodule}: Just imped:  {memtup[1].default_options}")
                 return memtup[1]
 
 

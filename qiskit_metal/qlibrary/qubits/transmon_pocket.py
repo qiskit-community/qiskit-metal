@@ -108,9 +108,10 @@ class TransmonPocket(BaseQubit):
 
     #_img = 'transmon_pocket1.png'
 
-    # Default drawing options
+    # Default drawing op
+    # tions
     default_options = Dict(
-        pos_x='0um',
+        pos_x='5775um',
         pos_y='0um',
         pad_gap='30um',
         inductor_width='20um',
