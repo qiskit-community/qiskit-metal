@@ -12,12 +12,11 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-#pylint: disable-msg=unnecessary-pass
-#pylint: disable-msg=broad-except
-#pylint: disable-msg=too-many-public-methods
-"""
-Qiskit Metal unit tests analyses functionality.
-"""
+# pylint: disable-msg=unnecessary-pass
+# pylint: disable-msg=broad-except
+# pylint: disable-msg=too-many-public-methods
+# pylint: disable-msg=import-error
+"""Qiskit Metal unit tests analyses functionality."""
 
 import unittest
 
@@ -35,35 +34,25 @@ from qiskit_metal.tests.assertions import AssertionsMixin
 
 
 class TestDraw(unittest.TestCase, AssertionsMixin):
-    """
-    Unit test class.
-    """
+    """Unit test class."""
 
     def setUp(self):
-        """
-        Setup unit test.
-        """
+        """Setup unit test."""
         pass
 
     def tearDown(self):
-        """
-        Tie any loose ends.
-        """
+        """Tie any loose ends."""
         pass
 
     def test_draw_instantiate_vector(self):
-        """
-        Test instantiation of Vector class.
-        """
+        """Test instantiation of Vector class."""
         try:
             Vector
         except Exception:
             self.fail("Vector failed")
 
     def test_draw_basic_rectangle(self):
-        """
-        Test rectangle in basic.py.
-        """
+        """Test rectangle in basic.py."""
         polygon_actual = basic.rectangle(0.5, 1.5, 2.1, 3.2)
         polygon_expected = Polygon([[1.85, 2.45], [2.35, 2.45], [2.35, 3.95],
                                     [1.85, 3.95], [1.85, 2.45]])
@@ -77,9 +66,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
                 self.assertEqual(coords_actual[i][j], coords_expected[i][j])
 
     def test_draw_basic_is_rectangle(self):
-        """
-        Test is_rectangle in basic.py.
-        """
+        """Test is_rectangle in basic.py."""
         my_rectangle = basic.rectangle(0.5, 1.5, 2.1, 3.2)
         my_integer = 7
 
@@ -87,9 +74,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
         self.assertEqual(basic.is_rectangle(my_integer), False)
 
     def test_draw_basic_subtract(self):
-        """
-        Test subtract in basic.py.
-        """
+        """Test subtract in basic.py."""
         first = basic.rectangle(0.5, 1.5, 2.1, 3.2)
         second = basic.rectangle(0.1, 1.3, 1.9, 2.2)
 
@@ -106,9 +91,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
                 self.assertEqual(actual_subtract[i][j], expected_subtract[i][j])
 
     def test_draw_basic_union(self):
-        """
-        Test union in basic.py.
-        """
+        """Test union in basic.py."""
         first = basic.rectangle(0.5, 1.5, 2.1, 3.2)
         second = basic.rectangle(0.1, 1.3, 1.9, 2.2)
 
@@ -135,9 +118,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
                                               rel_tol=1e-3)
 
     def test_draw_basic_flip_merge(self):
-        """
-        Test flip_merge in basic.py.
-        """
+        """Test flip_merge in basic.py."""
         my_line_string = LineString([(0, 0), (1, 1), (1, 2), (2, 2)])
 
         expected = [[(0.0, 0.0), (1.0, 1.0), (1.0, 2.0), (2.0, 2.0),
@@ -161,9 +142,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
                                               rel_tol=1e-3)
 
     def test_draw_basic_rotate(self):
-        """
-        Test rotate in basic.py.
-        """
+        """Test rotate in basic.py."""
         poly = Polygon([(0, 0), (0.5, 0), (0.25, 0.5)])
 
         expected = [[(0.3709223813239876, -0.08223151219433734),
@@ -201,9 +180,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
                                               rel_tol=1e-3)
 
     def test_draw_basic_translate(self):
-        """
-        Test translate in basic.py.
-        """
+        """Test translate in basic.py."""
         poly = Polygon([(0, 0), (0.5, 0), (0.25, 0.5)])
 
         expected = [[(0.0, 0.0), (0.5, 0.0), (0.25, 0.5), (0.0, 0.0)],
@@ -239,9 +216,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
                                               rel_tol=1e-3)
 
     def test_draw_basic_scale(self):
-        """
-        Test scale in basic.py.
-        """
+        """Test scale in basic.py."""
         poly = Polygon([(0, 0), (0.5, 0), (0.25, 0.5)])
 
         expected = [[(0.0, 0.0), (0.5, 0.0), (0.25, 0.5), (0.0, 0.0)],
@@ -280,9 +255,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
                                               rel_tol=1e-3)
 
     def test_draw_basic_rotate_position(self):
-        """
-        Test rotate_position in basic.py.
-        """
+        """Test rotate_position in basic.py."""
         poly = Polygon([(0, 0), (0.5, 0), (0.25, 0.5)])
 
         expected = [[(2.0, 5.0), (2.433012701892219, 5.25),
@@ -318,9 +291,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
                                               rel_tol=1e-3)
 
     def test_draw_basic_buffer(self):
-        """
-        Test buffer in basic.py.
-        """
+        """Test buffer in basic.py."""
         poly = Polygon([(0, 0), (0.5, 0), (0.25, 0.5)])
 
         expected = [[(-0.16180339887498948, -0.1), (0.25, 0.7236067977499789),
@@ -372,9 +343,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
                                               rel_tol=1e-3)
 
     def test_draw_utility_get_poly_pts(self):
-        """
-        Test get_poly_pts in utility.py.
-        """
+        """Test get_poly_pts in utility.py."""
         poly = Polygon([(0, 0), (0.5, 0), (0.25, 0.5)])
 
         expected_list = [[0., 0.], [0.5, 0.], [0.25, 0.5]]
@@ -390,9 +359,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
                                           rel_tol=1e-3)
 
     def test_draw_utility_get_all_geoms(self):
-        """
-        Test get_all_geoms in utility.py.
-        """
+        """Test get_all_geoms in utility.py."""
         poly = Polygon([(0, 0), (0.5, 0), (0.25, 0.5)])
 
         expected = [(0.0, 0.0), (0.5, 0.0), (0.25, 0.5), (0.0, 0.0)]
@@ -409,9 +376,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
                                           rel_tol=1e-3)
 
     def test_draw_utility_flatten_all_filter(self):
-        """
-        Test flatten_all_filter in utility.py.
-        """
+        """Test flatten_all_filter in utility.py."""
         poly_1 = Polygon([(0, 0), (0.5, 0), (0.25, 0.5)])
         poly_2 = Polygon([(1, 1), (1.5, 1), (1.25, 1.5)])
         poly_3 = Polygon([(2, 2), (2.5, 2), (2.25, 2.5)])
@@ -435,9 +400,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
                                           rel_tol=1e-3)
 
     def test_draw_utility_check_duplicate_list(self):
-        """
-        Test check_duplicate_list in utility.py.
-        """
+        """Test check_duplicate_list in utility.py."""
         list_1 = [1, 2, 3, 4, 5]
         list_2 = [1, 2, 3, 1, 5]
 
@@ -445,9 +408,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
         self.assertEqual(utility.check_duplicate_list(list_2), True)
 
     def test_draw_utility_array_chop(self):
-        """
-        Test array_chop in utility.py.
-        """
+        """Test array_chop in utility.py."""
         my_list = [0, 1, 0.02, 2, -1, 3, 0.11, 4, 5]
 
         expected_list = [0., 0., 0.02, 2., -1., 3., 0.11, 4., 5.]
@@ -461,9 +422,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
             self.assertAlmostEqualRel(actual[i], expected[i], rel_tol=1e-3)
 
     def test_draw_utility_remove_colinear_pts(self):
-        """
-        Test remove_colinear_pts in utility.py.
-        """
+        """Test remove_colinear_pts in utility.py."""
         points_list = [[0, 0], [
             1,
             1,
@@ -487,16 +446,12 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
                                           rel_tol=1e-3)
 
     def test_draw_utility_intersect(self):
-        """
-        Test intersect in utility.py.
-        """
+        """Test intersect in utility.py."""
         self.assertEqual(utility.intersect(0, 0, 2, 2, 1, 1), 1)
         self.assertEqual(utility.intersect(0, 0, 2, 2, 3, 3), 0)
 
     def test_draw_utility_vec_unit_planar(self):
-        """
-        Test vec_unit_planar in utility.py.
-        """
+        """Test vec_unit_planar in utility.py."""
         # error
         points_list = [[0, 0], [0, 1], [1.5, 1.5], [1, 1.5]]
         points = np.array(points_list)
@@ -533,9 +488,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
                                           rel_tol=1e-3)
 
     def test_draw_vector_normal_z(self):
-        """
-        Test that normal_z in Vector class was not accidentally changed.
-        """
+        """Test that normal_z in Vector class was not accidentally changed."""
         expected_list = [0, 0, 1]
         expected = np.array(expected_list)
         actual = Vector.normal_z
@@ -545,9 +498,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
             self.assertAlmostEqualRel(actual[i], expected[i], rel_tol=1e-3)
 
     def test_draw_vector_rotate_around_point(self):
-        """
-        Test rotate_around_point in the Vector class in utility.py.
-        """
+        """Test rotate_around_point in the Vector class in utility.py."""
         vector = Vector()
 
         expected = [(2.130314698073308, -0.6795287243176937),
@@ -570,9 +521,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
                                           rel_tol=1e-3)
 
     def test_draw_vector_rotate(self):
-        """
-        Test rotate in the Vector class in utility.py.
-        """
+        """Test rotate in the Vector class in utility.py."""
         vector = Vector()
 
         expected = [(2.130314698073308, -0.6795287243176937),
@@ -589,9 +538,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
                                           rel_tol=1e-3)
 
     def test_draw_vector_angle_between(self):
-        """
-        Test angle_between in Vector class in utility.py.
-        """
+        """Test angle_between in Vector class in utility.py."""
         vector = Vector()
 
         expected = 0.6435011087932843
@@ -599,9 +546,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
         self.assertAlmostEqualRel(actual, expected, rel_tol=1e-3)
 
     def test_draw_vector_add_z(self):
-        """
-        Test add_z in Vector class in utility.py.
-        """
+        """Test add_z in Vector class in utility.py."""
         vector = Vector()
 
         expected = [[10.0, 15.0, 0.0], [22.0, 7.0, 2.5]]
@@ -617,9 +562,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
                                           rel_tol=1e-3)
 
     def test_draw_normed(self):
-        """
-        Test functionality of normed in utility.py.
-        """
+        """Test functionality of normed in utility.py."""
         vector = Vector()
 
         result = vector.normed([12, 16])
@@ -627,9 +570,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
         self.assertEqual(result[1], 0.8)
 
     def test_draw_vector_norm(self):
-        """
-        Test norm in Vector class in utility.py.
-        """
+        """Test norm in Vector class in utility.py."""
         vector = Vector()
 
         expected = 18.138357147217054
@@ -637,9 +578,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
         self.assertAlmostEqualRel(actual, expected, rel_tol=1e-3)
 
     def test_draw_vector_are_same(self):
-        """
-        Test are_same in Vector class in utility.py.
-        """
+        """Test are_same in Vector class in utility.py."""
         points_list_1 = [10., 15., 2.]
         points_list_2 = [10., 15., 2.]
         points_list_3 = [20., 25., 30.]
@@ -652,9 +591,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
         self.assertEqual(Vector.are_same(vect_1, vect_3), False)
 
     def test_draw_vector_is_zero(self):
-        """
-        Test is_zero in Vector class in utility.py.
-        """
+        """Test is_zero in Vector class in utility.py."""
         vector = Vector()
 
         points_list_1 = [10., 15., 2.]
@@ -667,9 +604,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
         self.assertEqual(vector.is_zero(vect_2), True)
 
     def test_draw_vector_two_points_described(self):
-        """
-        Test two_points_described in Vector class in utility.py.
-        """
+        """Test two_points_described in Vector class in utility.py."""
         vector = Vector()
 
         expected = ([-8.0, 15.0], [-0.47058823529411764, 0.8823529411764706],
@@ -693,9 +628,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
                                           rel_tol=1e-3)
 
     def test_draw_vector_snap_unit_vector(self):
-        """
-        Test snap_unit_vector in Vector class in utility.py.
-        """
+        """Test snap_unit_vector in Vector class in utility.py."""
         vector = Vector()
 
         expected = ([0, 1], [1, 0])
@@ -715,9 +648,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
                                           rel_tol=1e-3)
 
     def test_draw_get_distance(self):
-        """
-        Test the functionality of get_distance in utility.py.
-        """
+        """Test the functionality of get_distance in utility.py."""
         vector = Vector()
 
         expected = [1.41, 24.187]

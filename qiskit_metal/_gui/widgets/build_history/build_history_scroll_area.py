@@ -5,7 +5,7 @@ from .build_history_scroll_area_ui import Ui_BuildHistory
 
 
 class BuildHistoryScrollArea(QScrollArea, Ui_BuildHistory):
-    """Widget for holding & displaying build logs of the component
+    """Widget for holding & displaying build logs of the component.
 
     This class extends the `QScrollArea` class
     """
@@ -33,8 +33,7 @@ class BuildHistoryScrollArea(QScrollArea, Ui_BuildHistory):
         self._display_logs()
 
     def _display_logs(self):
-        """Create UI for BuildHistoryScrollAreas
-        """
+        """Create UI for BuildHistoryScrollAreas."""
         for build_log_indx in range(len(self._previous_builds)):
             label = QLabel(self._previous_builds[build_log_indx])
             if 'ERROR' in self._previous_builds[build_log_indx]:

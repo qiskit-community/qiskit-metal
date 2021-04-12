@@ -18,7 +18,8 @@ import numpy as np
 
 
 class ShortToGround(QComponent):
-    """A basic short to ground termination. Functions as a pin for auto CPW drawing.
+    """A basic short to ground termination. Functions as a pin for auto CPW
+    drawing.
 
     Inherits `QComponent` class.
 

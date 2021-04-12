@@ -11,9 +11,12 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""Main module that handles the entier plot window which is docked inside the mmain window.
-This can be undocked and can have its own toolbar. this is largley why i ddecied to use a
-QMainWindow, so that we can have inner docking and toolbars available.
+"""Main module that handles the entier plot window which is docked inside the
+mmain window.
+
+This can be undocked and can have its own toolbar. this is largley why i
+ddecied to use a QMainWindow, so that we can have inner docking and
+toolbars available.
 """
 
 from typing import TYPE_CHECKING
@@ -35,8 +38,8 @@ if TYPE_CHECKING:
 
 
 class QMainWindowPlot(QMainWindow):
-    """
-    This is just a handler (container) for the UI; it a child object of the main gui.
+    """This is just a handler (container) for the UI; it a child object of the
+    main gui.
 
     Extends the `QMainWindow` class
 

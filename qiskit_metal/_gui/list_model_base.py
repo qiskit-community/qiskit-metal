@@ -18,14 +18,11 @@ from PySide2.QtGui import QStandardItem, QStandardItemModel
 
 
 class DynamicList(QStandardItemModel):
-    """
-    Create a dynamic checklist that gets updated when the
-    data source is modified or a new one is introduced.
-    """
+    """Create a dynamic checklist that gets updated when the data source is
+    modified or a new one is introduced."""
 
     def __init__(self, orig_design: 'QDesign'):
-        """
-        Set the original design source and populate list.
+        """Set the original design source and populate list.
 
         Args:
             orig_design (QDesign): The design
@@ -40,8 +37,7 @@ class DynamicList(QStandardItemModel):
         return self._design
 
     def update_src(self, new_design: 'QDesign'):
-        """
-        Change the data source to a new one.
+        """Change the data source to a new one.
 
         Args:
             new_design (QDesign): The new data source
@@ -49,9 +45,7 @@ class DynamicList(QStandardItemModel):
         self._design = new_design
 
     def populate_list(self):
-        """
-        Clear model and (re)populate it with the latest elements.
-        """
+        """Clear model and (re)populate it with the latest elements."""
         # TODO: Generalize this to beyond components.
         self.clear()
         if self.datasrc:
@@ -73,8 +67,7 @@ class DynamicList(QStandardItemModel):
             self.item(i).setCheckState(QtCore.Qt.Unchecked)
 
     def get_checked(self) -> list:
-        """
-        Get list of all selected items.
+        """Get list of all selected items.
 
         Returns:
             list: List of selected (checked) items

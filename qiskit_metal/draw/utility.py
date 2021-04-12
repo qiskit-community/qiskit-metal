@@ -13,10 +13,8 @@
 # that they have been altered from the originals.
 
 # WILL NEED UPDATING TO NEW ELEMENT SCHEME
-"""
-Main module for basic geometric manipulation of non-shapely objects,
-but objects such as points and arrays used in drawing.
-"""
+"""Main module for basic geometric manipulation of non-shapely objects, but
+objects such as points and arrays used in drawing."""
 
 import math
 from collections.abc import Iterable, Mapping
@@ -44,8 +42,8 @@ __all__ = [
 
 
 def get_poly_pts(poly: Polygon):
-    """
-    Return the coordinates of a Shapely polygon with the last repeating point removed.
+    """Return the coordinates of a Shapely polygon with the last repeating
+    point removed.
 
     Arguments:
         poly (shapely.Polygon): Shapely polygin
@@ -146,8 +144,7 @@ def flatten_all_filter(components: dict, filter_obj=None):
 
 
 def get_all_component_bounds(components: dict, filter_obj=Polygon):
-    """
-    Pass in a dict of components to calcualte the total bounding box.
+    """Pass in a dict of components to calcualte the total bounding box.
 
     Arguments:
         components (dict): Dictionary of components
@@ -168,8 +165,8 @@ def get_all_component_bounds(components: dict, filter_obj=Polygon):
 
 
 def round_coordinate_sequence(geom_ref, precision):
-    """Rounds the vertices of a coordinate sequence (both interior
-    and exterior).
+    """Rounds the vertices of a coordinate sequence (both interior and
+    exterior).
 
     Arguments:
         geometry (shapely.geometry) : A shapely geometry, should not be a MultiPoly
@@ -208,8 +205,7 @@ def check_duplicate_list(your_list):
 
 
 def array_chop(vec, zero=0, rtol=0, machine_tol=100):
-    '''
-    Chop array entries close to zero.
+    """Chop array entries close to zero.
 
     Args:
         vec (array): Array to chop
@@ -219,7 +215,7 @@ def array_chop(vec, zero=0, rtol=0, machine_tol=100):
 
     Returns:
         array: Chopped arary
-    '''
+    """
     vec = np.array(vec)
     mask = np.isclose(vec,
                       zero,
@@ -230,15 +226,14 @@ def array_chop(vec, zero=0, rtol=0, machine_tol=100):
 
 
 def remove_colinear_pts(points):
-    '''
-    Remove colinear points and identical consequtive points.
+    """Remove colinear points and identical consequtive points.
 
     Args:
         points (array): Array of points
 
     Returns:
         ndarray: A copy of the input array without colinear points
-    '''
+    """
     remove_idx = []
     for i in range(2, len(points)):
         v1 = array(points[i - 2]) - array(points[i - 1])
@@ -262,8 +257,8 @@ def remove_colinear_pts(points):
 #########################################################################
 # Points, Lines and Areas functions
 def intersect(p1x, p1y, p2x, p2y, x0, y0):
-    """Intersect segment defined by p1 and p2 with ray coming out of x0,y0
-    ray can be horizontal y=y0  x=x0+dx , want dx>0.
+    """Intersect segment defined by p1 and p2 with ray coming out of x0,y0 ray
+    can be horizontal y=y0  x=x0+dx , want dx>0.
 
     Arguments:
         p1x (float): x coordinate of point 1 of segment
@@ -275,7 +270,6 @@ def intersect(p1x, p1y, p2x, p2y, x0, y0):
 
     Returns:
         boolean int: (1) if intersecting, (0) if not intersecting
-
     """
     if p1x != p2x and p1y != p2y:
         m = (p2y - p1y) / (p2x - p1x)
@@ -299,9 +293,8 @@ def intersect(p1x, p1y, p2x, p2y, x0, y0):
 
 
 def in_or_out(xs, ys, x0, y0):
-    """Count up how many times a ray intersects the polygon, even or odd
-    tells you whether inside (odd) or outside (even)
-    """
+    """Count up how many times a ray intersects the polygon, even or odd tells
+    you whether inside (odd) or outside (even)"""
     crossings = 0
     for i in range(len(xs) - 1):
         p1x = xs[i]
@@ -319,10 +312,9 @@ def in_or_out(xs, ys, x0, y0):
 
 
 def vec_unit_planar(vector: np.array):
-    """
-    Make the planar 2D (x,y) part of a vector to be unit mag.
-    Return a vector where is XY components now a unit vector.
-    I.e., Normalizes only in the XY plane, leaves the Z plane alone.
+    """Make the planar 2D (x,y) part of a vector to be unit mag. Return a
+    vector where is XY components now a unit vector. I.e., Normalizes only in
+    the XY plane, leaves the Z plane alone.
 
     Arguments:
         vector (np.array): Input 2D or 3D
@@ -353,10 +345,8 @@ def vec_unit_planar(vector: np.array):
 
 
 def to_vec3D(list_of_2d_pts: List[Tuple], z=0) -> np.ndarray:
-    """
-    Adds 3rd point to list of 2D points.
-    For the given design, get the z values in HFSS UNITS!
-    Manually specify z dimension.
+    """Adds 3rd point to list of 2D points. For the given design, get the z
+    values in HFSS UNITS! Manually specify z dimension.
 
     Args:
         list_of_2d_pts (List[Tuple]): List of 2D points
@@ -373,9 +363,8 @@ Vec2D = Union[list, np.ndarray]
 
 
 class Vector:
-    """
-    Utility functions to call on 2D vectors, which can be np.ndarrays or lists.
-    """
+    """Utility functions to call on 2D vectors, which can be np.ndarrays or
+    lists."""
 
     normal_z = np.array([0, 0, 1])
     """ Noraml Z array """
@@ -414,8 +403,8 @@ class Vector:
 
     @staticmethod
     def rotate(xy: Vec2D, radians: float) -> np.ndarray:
-        """Counter-clockwise rotation of the vector in radians.
-        Positive angles are counter-clockwise and negative are clockwise rotations.
+        """Counter-clockwise rotation of the vector in radians. Positive angles
+        are counter-clockwise and negative are clockwise rotations.
 
         Arguments:
             xy (Vec2D): A 2D vector.
@@ -433,8 +422,7 @@ class Vector:
 
     @staticmethod
     def angle(vector: Vec2D) -> float:
-        """
-        Return the angle in radians of a vector.
+        """Return the angle in radians of a vector.
 
         Arguments:
             vector (Union[list, np.ndarray): A 2D vector
@@ -454,13 +442,13 @@ class Vector:
                     |
                     |
 
-                    x1	x2	arctan2(x1,x2)
-                    +/- 0	+0	+/- 0
-                    +/- 0	-0	+/- pi
-                    > 0	+/-inf	+0 / +pi
-                    < 0	+/-inf	-0 / -pi
-                    +/-inf	+inf	+/- (pi/4)
-                    +/-inf	-inf	+/- (3*pi/4)
+                    x1       x2       arctan2(x1,x2)
+                    +/- 0    +0       +/- 0
+                    +/- 0    -0       +/- pi
+                    > 0      +/-inf   +0 / +pi
+                    < 0      +/-inf   -0 / -pi
+                    +/-inf   +inf     +/- (pi/4)
+                    +/-inf   -inf     +/- (3*pi/4)
 
             Note that +0 and -0 are distinct floating point numbers, as are +inf and -inf.
         """
@@ -484,8 +472,7 @@ class Vector:
 
     @staticmethod
     def add_z(vec2D: np.array, z: float = 0.):
-        """
-        Turn a 2D vector into a 3D vector by adding the z coorindate.
+        """Turn a 2D vector into a 3D vector by adding the z coorindate.
 
         Arguments:
             vec2D (np.array): Input 2D vector.
@@ -524,9 +511,8 @@ class Vector:
         return norm(vec)
 
     def are_same(v1: Vec2D, v2: Vec2D, tol: int = 100) -> bool:
-        """
-        Check if two vectors are within an infentesmimal distance set
-        by `tol` and machine epsilon.
+        """Check if two vectors are within an infentesmimal distance set by
+        `tol` and machine epsilon.
 
         Arguments:
             v1 (Vec2D): First vector to check
@@ -542,8 +528,8 @@ class Vector:
 
     @staticmethod
     def is_zero(vec: Vec2D, tol: int = 100) -> bool:
-        """Check if a vector is essentially zero within machine precision,
-        set by `tol` and machine epsilon.
+        """Check if a vector is essentially zero within machine precision, set
+        by `tol` and machine epsilon.
 
         Arguments:
             vec (Vec2D): Vector to check
@@ -559,8 +545,8 @@ class Vector:
     def get_distance(u: Union[tuple, list, np.ndarray],
                      v: Union[tuple, list, np.ndarray],
                      precision: int = 9) -> float:
-        """
-        Get the Euclidean distance between points u and v to the specified precision.
+        """Get the Euclidean distance between points u and v to the specified
+        precision.
 
         Args:
             u (Union[tuple, list, np.ndarray]): Coordinates of a point.
@@ -575,8 +561,7 @@ class Vector:
 
     @staticmethod
     def two_points_described(points2D: List[Vec2D]) -> Tuple[np.ndarray]:
-        """
-        Get the distance, units and tagents.
+        """Get the distance, units and tagents.
 
         Arguments:
             points (np.array or list): 2D list of points
@@ -592,7 +577,6 @@ class Vector:
         .. code-block:: python
 
             vec_D, vec_d, vec_n = Vector.difference_dnt(points)
-
         """
         assert len(points2D) == 2
         start = np.array(points2D[0])

@@ -11,9 +11,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""
-QRenderer
-"""
+"""QRenderer."""
 import logging
 import inspect
 from copy import deepcopy
@@ -37,7 +35,8 @@ if TYPE_CHECKING:
 
 
 class QRenderer():
-    """Abstract base class for all Renderers of Metal designs and their components and qgeometry.
+    """Abstract base class for all Renderers of Metal designs and their
+    components and qgeometry.
 
     Handles:
         ::
@@ -48,7 +47,6 @@ class QRenderer():
                         paths
                         polys
                 chips
-
     """
 
     name = 'base'  # overwrite this!
@@ -71,8 +69,8 @@ class QRenderer():
 
     @classmethod
     def load(cls):
-        """Load the renderer and register all its extensions.
-        Only performed once.
+        """Load the renderer and register all its extensions. Only performed
+        once.
 
         Once complete, the renderer is added to the class attribute
         '__loaded_renderers__' of QRenderer
@@ -111,8 +109,11 @@ class QRenderer():
 
     @classmethod
     def populate_element_extensions(cls):
-        """Populate cls.element_extensions which will be used to create columns for tables in QGeometry tables.
-        The structure of cls.element_table_data should be same as cls.element_extensions.
+        """Populate cls.element_extensions which will be used to create columns
+        for tables in QGeometry tables.
+
+        The structure of cls.element_table_data should be same as
+        cls.element_extensions.
         """
         for table, a_dict in cls.element_table_data.items():
             cls.element_extensions[table] = dict()
@@ -196,8 +197,8 @@ class QRenderer():
 
     @classmethod
     def _gather_all_children_default_options(cls) -> Dict:
-        """From the base class of QRenderer, traverse the child classes
-        to gather the .default_options for each child class.
+        """From the base class of QRenderer, traverse the child classes to
+        gather the .default_options for each child class.
 
         Note: If keys are the same for a child and grandchild, the grandchild will
         overwrite the child init method.
@@ -230,13 +231,13 @@ class QRenderer():
     @classmethod
     def _register_class_with_design(cls, design: 'QDesign', template_key: str,
                                     render_template: Dict):
-        """Init function to register a renderer class with the design when first instantiated.
-            Registers the renderer's template options.
+        """Init function to register a renderer class with the design when
+        first instantiated. Registers the renderer's template options.
 
-            Arguments:
-                design (QDesign): The parent design
-                template_key (str): Key to use
-                render_template (dict): template of render to copy
+        Arguments:
+            design (QDesign): The parent design
+            template_key (str): Key to use
+            render_template (dict): template of render to copy
         """
         # do not overwrite
         if template_key not in design.template_options:
@@ -250,9 +251,9 @@ class QRenderer():
                              render_template: Dict = None,
                              logger_: logging.Logger = None,
                              template_key: str = None) -> Dict:
-        """Creates template options for the Metal QRenderer class required for the class
-        to function, based on the design template; i.e., be created, made, and rendered.
-        Provides the blank option structure required.
+        """Creates template options for the Metal QRenderer class required for
+        the class to function, based on the design template; i.e., be created,
+        made, and rendered. Provides the blank option structure required.
 
         The options can be extended by plugins, such as renderers.
 
@@ -301,9 +302,9 @@ class QRenderer():
     def update_options(self,
                        render_options: Dict = None,
                        render_template: Dict = None):
-        """If template options has not been set for this renderer,
-        then gather all the default options for children and add to design.  The GUI
-        would use this to store the template options.
+        """If template options has not been set for this renderer, then gather
+        all the default options for children and add to design.  The GUI would
+        use this to store the template options.
 
         Then give the template options to render
         to store in self.options.  Then user can over-ride the render_options.
@@ -322,8 +323,8 @@ class QRenderer():
             self.options.update(render_options)
 
     def add_table_data_to_QDesign(self, class_name: str):
-        """During init of renderer, this needs to happen. In particular,
-        each renderer needs to update custom columns and values within QDesign.
+        """During init of renderer, this needs to happen. In particular, each
+        renderer needs to update custom columns and values within QDesign.
 
         Args:
             class_name (str): Name from cls.name for each renderer.
@@ -344,9 +345,9 @@ class QRenderer():
                         f'col_value={col_value} not added to QDesign')
 
     def initate(self, re_initiate=False):
-        """
-        Call any initiations steps required to be performed a single time before rendering,
-        such as connecting to some API or COM, or importing the correct material libraries, etc.
+        """Call any initiations steps required to be performed a single time
+        before rendering, such as connecting to some API or COM, or importing
+        the correct material libraries, etc.
 
         Overwrite `initiate_renderer`.
 
@@ -372,13 +373,12 @@ class QRenderer():
             self,
             highlight_qcomponents: Union[list,
                                          None] = None) -> Tuple[list, int]:
-        """
-        Confirm the list doesn't have names of components repeated.
-        Confirm that the name of component exists in QDesign.
-        If QDesign doesn't contain any component, or if all components in QDesign are found
-        in highlight_qcomponents, return an empty list; otherwise return a list of unique
-        components to be sent to Ansys. The second returned item, an integer, specifies
-        which of these 3 cases applies.
+        """Confirm the list doesn't have names of components repeated. Confirm
+        that the name of component exists in QDesign. If QDesign doesn't
+        contain any component, or if all components in QDesign are found in
+        highlight_qcomponents, return an empty list; otherwise return a list of
+        unique components to be sent to Ansys. The second returned item, an
+        integer, specifies which of these 3 cases applies.
 
         Args:
             highlight_qcomponents (Union[list, None], optional): Components to render into Ansys. Defaults to None.
@@ -400,9 +400,9 @@ class QRenderer():
                ], 0  # Subset selected
 
     def _initate_renderer(self):
-        """
-        Call any initiations steps required to be performed a single time before rendering,
-        such as connecting to some API or COM, or importing the correct material libraries, etc.
+        """Call any initiations steps required to be performed a single time
+        before rendering, such as connecting to some API or COM, or importing
+        the correct material libraries, etc.
 
         Returns:
             bool: Always returns True
@@ -410,24 +410,19 @@ class QRenderer():
         return True
 
     def post_render(self):
-        """
-        Any calls that one may want to make after a rendering is complete.
-        """
+        """Any calls that one may want to make after a rendering is
+        complete."""
         pass
 
     def render_design(self):
-        """
-        Renders all design chips and components.
-        """
+        """Renders all design chips and components."""
         self.initate()
         self.render_chips()
         self.render_components()
         # ...
 
     def render_chips(self):
-        """
-        Render all chips of the design.
-        Calls render_chip for each chip.
+        """Render all chips of the design. Calls render_chip for each chip.
 
         Raises:
             NotImplementedError: Function not written yet
@@ -446,9 +441,8 @@ class QRenderer():
         raise NotImplementedError()
 
     def render_components(self, selection=None):
-        """
-        Render all components of the design.
-        If selection is none, then render all components.
+        """Render all components of the design. If selection is none, then
+        render all components.
 
         Args:
             selection (QComponent): Component to render

@@ -9,12 +9,10 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""
-An automated process to build docs locally.
+"""An automated process to build docs locally.
 
-Run using:
-    $ python <path>/build_docs.py
-build_docs.py needs to be in the same folder as the Makefile
+Run using:     $ python <path>/build_docs.py build_docs.py needs to be
+in the same folder as the Makefile
 """
 
 import shlex

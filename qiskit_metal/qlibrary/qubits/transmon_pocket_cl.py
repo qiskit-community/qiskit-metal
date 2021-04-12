@@ -11,8 +11,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-'''
-Transmon Pocket CL.
+"""Transmon Pocket CL.
 
 Pocket "axis"
         _________________
@@ -23,7 +22,7 @@ Pocket "axis"
         |_______________|
 
 Child of 'standard' transmon pocket.
-'''
+"""
 # pylint: disable=invalid-name
 # Modification of Transmon Pocket Object to include a charge line (would be better to just make as a child)
 
@@ -33,8 +32,7 @@ from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
 
 
 class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
-    """
-    The base `TransmonPocketCL` class.
+    """The base `TransmonPocketCL` class.
 
     Inherits `TransmonPocket` class.
 
@@ -143,8 +141,8 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
 #####################################################################
 
     def make_charge_line(self):
-        """Creates the charge line if the user has charge line option to TRUE.
-        """
+        """Creates the charge line if the user has charge line option to
+        TRUE."""
 
         # Grab option values
         name = 'Charge_Line'

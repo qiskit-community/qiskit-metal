@@ -11,8 +11,9 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""
-Placeholder to allow for future modifications of the attribute dictionary class.
+"""Placeholder to allow for future modifications of the attribute dictionary
+class.
+
 We use the `addict` package `Dict` class.
 """
 

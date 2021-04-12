@@ -11,9 +11,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""
-GUI front-end interface for Qiskit Metal in PySide2.
-"""
+"""GUI front-end interface for Qiskit Metal in PySide2."""
 # pylint: disable=invalid-name
 
 import logging
@@ -36,14 +34,14 @@ from .widgets.log_widget.log_metal import LogHandler_for_QTextLog
 
 
 class QMainWindowExtensionBase(QMainWindow):
-    """This contains all the functions that the gui needs
-    to call directly from the UI.
+    """This contains all the functions that the gui needs to call directly from
+    the UI.
 
     Extends the `QMainWindow` class.
     """
 
     def __init__(self):
-        """  """
+        """"""
         super().__init__()
         # Set manually
         self.handler = None  # type: QMainWindowBaseHandler
@@ -71,8 +69,7 @@ class QMainWindowExtensionBase(QMainWindow):
     def destroy(self,
                 destroyWindow: bool = True,
                 destroySubWindows: bool = True):
-        """
-        When the window is cleaned up from memory.
+        """When the window is cleaned up from memory.
 
         Args:
             destroyWindow (bool): Whether or not to destroy the window.  Defaults to True.
@@ -84,6 +81,7 @@ class QMainWindowExtensionBase(QMainWindow):
 
     def closeEvent(self, event):
         """whenever a window is closed.
+
         Passed an event which we can choose to accept or reject.
         """
         if self.ok_to_continue():
@@ -91,8 +89,7 @@ class QMainWindowExtensionBase(QMainWindow):
             super().closeEvent(event)
 
     def ok_to_continue(self):
-        """
-        Determine if it ok to continue.
+        """Determine if it ok to continue.
 
         Returns:
             bool: True to continue, False otherwise
@@ -117,9 +114,8 @@ class QMainWindowExtensionBase(QMainWindow):
         self.settings.setValue('stylesheet', self.handler._stylesheet)
 
     def restore_window_settings(self):
-        """
-        Call a Qt built-in function to restore values
-        from the settings file.
+        """Call a Qt built-in function to restore values from the settings
+        file.
 
         Raises:
             Exception: Error in restoration
@@ -155,7 +151,8 @@ class QMainWindowExtensionBase(QMainWindow):
             self.logger.error(f'ERROR [restore_window_settings]: {e}')
 
     def bring_to_top(self):
-        """ Bring window to top.
+        """Bring window to top.
+
         Note that on Windows, this doesn't always work quite well.
         """
         self.raise_()
@@ -166,9 +163,8 @@ class QMainWindowExtensionBase(QMainWindow):
                        type_='png',
                        display=True,
                        disp_ops=None):
-        """
-        Grad a screenshot of the main window,
-        save to file, copy to clipboard and visualize in jupyter
+        """Grad a screenshot of the main window, save to file, copy to
+        clipboard and visualize in jupyter.
 
         Args:
             name (string): File name without extension
@@ -298,8 +294,7 @@ class QMainWindowBaseHandler():
         return None
 
     def __init__(self, logger: logging.Logger = None, handler=False):
-        """
-        Can pass in logger.
+        """Can pass in logger.
 
         Args:
             logger (logging.Logger): The logger.  Defaults to None.
@@ -378,17 +373,16 @@ class QMainWindowBaseHandler():
         # TODO; add stlyesheet to load here - maybe pull form settings
 
     def _ui_adjustments(self):
-        """Any touchups to the loaded ui that need be done soon.
-        """
+        """Any touchups to the loaded ui that need be done soon."""
         pass
 
     def _get_file_path(self):
-        """Get the dir name of the current path in which this file is stored."""
+        """Get the dir name of the current path in which this file is
+        stored."""
         return os.path.dirname(__file__)
 
     def _setup_qApp(self):
-        """
-        Only one qApp can exist at a time, so check before creating one.
+        """Only one qApp can exist at a time, so check before creating one.
 
         Returns:
             QApplication: a setup QApplication
@@ -469,8 +463,7 @@ class QMainWindowBaseHandler():
 
     @slot_catch_error()
     def _setup_logger(self):
-        """
-        Setup logging UI.
+        """Setup logging UI.
 
         Show wellcome message.
         """
@@ -499,8 +492,7 @@ class QMainWindowBaseHandler():
             self.main_window.setGeometry(rect)
 
     def load_stylesheet(self, path=None):
-        """
-        Load and set stylesheet for the main gui.
+        """Load and set stylesheet for the main gui.
 
         Arguments:
             path (str) : Path to stylesheet or its name.
@@ -583,9 +575,7 @@ class QMainWindowBaseHandler():
             self.logger.error(f'_load_stylesheet_from_file error: {e}')
 
     def screenshot(self, name='shot', type_='png', display=True, disp_ops=None):
-        """
-        Alias for get_screenshot().
-        """
+        """Alias for get_screenshot()."""
         self.main_window.get_screenshot(name, type_, display, disp_ops)
 
     def save_file(self):
@@ -597,14 +587,13 @@ class QMainWindowBaseHandler():
         raise NotImplementedError()
 
     def show(self):
-        """
-        Show the main window.
-        """
+        """Show the main window."""
         self.main_window.show()
 
     def clear_settings(self):
-        """
-        Clear the settings that get saved each time the main window is closed.
+        """Clear the settings that get saved each time the main window is
+        closed.
+
         This will reset the window layout to the default.
         """
         self.settings.clear()
