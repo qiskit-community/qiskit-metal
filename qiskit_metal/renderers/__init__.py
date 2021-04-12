@@ -51,6 +51,18 @@ GDS Renderer
     :toctree: ../stubs/
 
     QGDSRenderer
+    Cheesing
+
+
+Ansys Renderer
+---------------
+
+.. autosummary::
+    :toctree: ../stubs/
+
+    QAnsysRenderer
+    QHFSSRenderer
+    QQ3DRenderer
 
 
 """
@@ -61,7 +73,9 @@ from .. import config
 if config.is_building_docs():
     from .renderer_base.renderer_base import QRenderer
     from .renderer_base.renderer_gui_base import QRendererGui
+
     from .renderer_gds.gds_renderer import QGDSRenderer
+    from .renderer_gds.make_cheese import Cheesing
 
     from .renderer_mpl.mpl_canvas import PlotCanvas
     from .renderer_mpl.mpl_interaction import MplInteraction
@@ -72,3 +86,7 @@ if config.is_building_docs():
 
     from .renderer_mpl import mpl_interaction
     from .renderer_mpl import mpl_toolbox
+
+    from .renderer_ansys.ansys_renderer import QAnsysRenderer
+    from .renderer_ansys.hfss_renderer import QHFSSRenderer
+    from .renderer_ansys.q3d_renderer import QQ3DRenderer
