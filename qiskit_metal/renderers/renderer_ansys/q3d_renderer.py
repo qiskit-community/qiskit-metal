@@ -516,7 +516,6 @@ class QQ3DRenderer(QAnsysRenderer):
         fb = [ureg(f'{freq} GHz').to('GHz').magnitude for freq in fb]
         RES = {}
         for i in range(1, maxPass):
-            print('Pass number: ', i)
             df_cmat, user_units, _, _ = self.pinfo.setup.get_matrix(
                 variation=variation,
                 solution_kind='AdaptivePass',
@@ -528,7 +527,8 @@ class QQ3DRenderer(QAnsysRenderer):
                                                        N,
                                                        fb,
                                                        fr,
-                                                       g_scale=1)
+                                                       g_scale=1,
+                                                       print_info = bool(i == maxPass - 1))
             RES[i] = res
         RES = pd.DataFrame(RES).transpose()
         RES['χr MHz'] = abs(RES['chi_in_MHz'].apply(lambda x: x[0]))
