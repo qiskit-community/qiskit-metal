@@ -52,21 +52,25 @@ class QGDSRenderer(QRenderer):
     """Extends QRenderer to export GDS formatted files. The methods which a
     user will need for GDS export should be found within this class.
 
-    All chips within design should be exported to one gds file. For the "subtraction box":
-    1. If user wants to export the entire design, AND if the base class of QDesign._chips[chip_name]['size']
-    has dict following below example:
+    All chips within design should be exported to one gds file.
+    For the "subtraction box":
+    1. If user wants to export the entire design, AND if the base class of
+    QDesign._chips[chip_name]['size'] has dict following below example:
     {'center_x': 0.0, 'center_y': 0.0, 'size_x': 9, 'size_y': 6}
     then this box will be used for every layer within a chip.
 
-    2. If user wants to export entire design, BUT there is not information in QDesign._chips[chip_name]['size'],
-    then the renderer will calculate the size of all of the components
-    and use that size for the "subtraction box" for every layer within a chip.
+    2. If user wants to export entire design, BUT there is no information in
+    QDesign._chips[chip_name]['size'], then the renderer will calculate the
+    size of all of the components and use that size for the "subtraction box"
+    for every layer within a chip.
 
-    3. If user wants to export a list of explicit components, the bounding box will be calculated by size of
-    QComponents in the QGeometry table. Then be scaled by bounding_box_scale_x and bounding_box_scale_y.
+    3. If user wants to export a list of explicit components, the bounding
+    box will be calculated by size of QComponents in the QGeometry table.
+    Then be scaled by bounding_box_scale_x and bounding_box_scale_y.
 
-    4. Note: When using the Junction table, the cell for Junction should be "x-axis" aligned and then GDS rotates
-    based on LineString given in Junction table.
+    4. Note: When using the Junction table, the cell for Junction should
+    be "x-axis" aligned and then GDS rotates based on LineString given
+    in Junction table.
 
 
     datatype:
@@ -105,68 +109,80 @@ class QGDSRenderer(QRenderer):
         * bounding_box_scale_y: '1.2'
     """
 
-    #: Default options, over-written by passing ``options` dict to render_options.
-    #: Type: Dict[str, str]
+    # Default options, over-written by passing ``options` dict to
+    # render_options.
+    # Type: Dict[str, str]
     default_options = Dict(
 
-        # Before converting LINESTRING to FlexPath for GDS, check for fillet errors
-        # for LINESTRINGS in QGeometry in QGeometry due to short segments.
-        # If true, break up the LINESTRING so any segment which is shorter than the scaled-fillet
-        # by "fillet_scale_factor" will be separated so the short segment will not be fillet'ed.
+        # Before converting LINESTRING to FlexPath for GDS, check for fillet
+        # errors for LINESTRINGS in QGeometry in QGeometry due to short
+        # segments.  If true, break up the LINESTRING so any segment which is
+        # shorter than the scaled-fillet by "fillet_scale_factor" will be
+        # separated so the short segment will not be fillet'ed.
         short_segments_to_not_fillet='True',
         check_short_segments_by_scaling_fillet='2.0',
 
         # DO NOT MODIFY `gds_unit`. Gets overwritten by ``set_units``.
-        # gdspy unit is 1 meter.  gds_units appear to ONLY be used during write_gds().
-        # Note that gds_unit will be overwritten from the design units, during init().
-        # WARNING: this cannot be changed. since it is only used during the init once.
-        # TODO: Maybe hide form user and document use of this function: what is the effect?
+        # gdspy unit is 1 meter.  gds_units appear to ONLY be used during
+        # write_gds().  Note that gds_unit will be overwritten from the design
+        # units, during init().
+        # WARNING: this cannot be changed since it is only used during the
+        # init once.
         gds_unit='1',  # 1m
 
-        # Implement creating a ground plane which is scaled from largest bounding box,
-        # then QGeometry which is marked as subtract will be removed from ground_plane.
-        # Then the balance of QGeometry will be placed placed in same layer as ground_plane.
+        # Implement creating a ground plane which is scaled from largest
+        # bounding box, then QGeometry which is marked as subtract will be
+        # removed from ground_plane.  Then the balance of QGeometry will be
+        # placed placed in same layer as ground_plane.
         ground_plane='True',
 
-        # corners ('natural', 'miter', 'bevel', 'round', 'smooth', 'circular bend', callable, list)
+        # corners: ('natural', 'miter', 'bevel', 'round', 'smooth',
+        # 'circular bend', callable, list)
         # Type of joins. A callable must receive 6 arguments
-        # (vertex and direction vector from both segments being joined, the center and width of the path)
+        # (vertex and direction vector from both segments being joined,
+        # the center and width of the path)
         # and return a list of vertices that make the join.
         # A list can be used to define the join for each parallel path.
         corners='circular bend',
 
         # tolerance > precision
-        # Precision used for gds lib, boolean operations and FlexPath should likely be kept the same.
-        # They can be different, but increases odds of weird artifacts or misalignment.
-        # Some of this occurs regardless (might be related to offset of a curve when done as a boolean vs. rendered),
-        # but they are <<1nm, which isn't even picked up by any fab equipment (so can be ignored)
-        # Numerical errors start to pop up if set precision too fine,
+        # Precision used for gds lib, boolean operations and FlexPath should
+        # likely be kept the same.  They can be different, but increases odds
+        # of weird artifacts or misalignment.  Some of this occurs regardless
+        # (might be related to offset of a curve when done as a
+        # boolean vs. rendered), but they are <<1nm, which isn't even picked
+        # up by any fab equipment (so can be ignored).  Numerical errors start
+        # to pop up if set precision too fine,
         # but 1nm seems to be the finest precision we use anyhow.
         # FOR NOW SPECIFY IN METERS. # TODO: Add parsing of actual units here
         tolerance='0.00001',  # 10.0 um
 
-        # With input from fab people, any of the weird artifacts (like unwanted gaps)
-        # that are less than 1nm in size can be ignored.
+        # With input from fab people, any of the weird artifacts
+        # (like unwanted gaps) that are less than 1nm in size can be ignored.
         # They don't even show up in the fabricated masks.
         # So, the precision of e-9 (so 1 nm) should be good as a default.
         # FOR NOW SPECIFY IN METERS. # TODO: Add parsing of actual units here
         precision='0.000000001',  # 1.0 nm
 
-        # Since Qiskit Metal GUI, does not require a width for LineString, GDS, will provide a default value.
+        # Since Qiskit Metal GUI, does not require a width for LineString, GDS,
+        # will provide a default value.
         width_LineString='10um',
         path_filename='../resources/Fake_Junctions.GDS',
 
-        # For junction table, when cell from default_options.path_filename does not fit into linestring,
-        # QGDSRender will create two pads and add to junction to fill the location of lineString.
-        # The junction_pad_overlap is from the junction cell to the newly created pads.
+        # For junction table, when cell from default_options.path_filename does
+        # not fit into linestring, QGDSRender will create two pads and add to
+        # junction to fill the location of lineString.  The junction_pad_overlap
+        # is from the junction cell to the newly created pads.
         junction_pad_overlap='5um',
 
         # Vertex limit for FlexPath
-        # max_points (integer) – If the number of points in the polygonal path boundary is greater than
-        # max_points, it will be fractured in smaller polygons with at most max_points each. If max_points
-        # is zero, no fracture will occur. GDSpy uses 199 as the default. The historical max value of vertices
-        # for a poly/path was 199 (fabrication equipment restrictions).  The hard max limit that a GDSII file
-        # can handle is 8191.
+        # max_points (integer) – If the number of points in the polygonal path
+        # boundary is greater than max_points, it will be fractured in smaller
+        # polygons with at most max_points each. If max_points is zero,
+        # no fracture will occur. GDSpy uses 199 as the default. The historical
+        # max value of vertices for a poly/path was 199 (fabrication equipment
+        # restrictions).  The hard max limit that a GDSII file can
+        # handle is 8191.
         max_points='199',
 
         # Cheesing is denoted by each chip and layer.
@@ -183,14 +199,15 @@ class QGDSRenderer(QRenderer):
             # circle
             cheese_1_radius='100um',
 
-            #identify which layers to view in gds output file, for each chip
+            # Identify which layers to view in gds output file, for each chip
             view_in_file=Dict(main={1: True}),
 
-            #delta spacing between holes
+            # delta spacing between holes
             delta_x='100um',
             delta_y='100um',
 
-            #Keep a buffer around the perimeter of chip, that will not need cheesing.
+            # Keep a buffer around the perimeter of chip, that will
+            # not need cheesing.
             edge_nocheese='200um'),
 
         # Think of this as a keep-out region for cheesing.
@@ -204,16 +221,18 @@ class QGDSRenderer(QRenderer):
             # 1 (round), 2 (flat), 3 (square).
             cap_style='2',
 
-            #The styles of joins between offset segments are specified by integer values:
+            # The styles of joins between offset segments are specified by
+            # integer values:
             # 1 (round), 2 (mitre), and 3 (bevel).
             join_style='2',
 
-            #identify which layers to view in gds output file, for each chip
+            # Identify which layers to view in gds output file, for each chip
             view_in_file=Dict(main={1: True}),
         ),
 
-        # (float): Scale box of components to render. Should be greater than 1.0.
-        # For benefit of the GUI, keep this the last entry in the dict.  GUI shows a note regarding bound_box.
+        # (float): Scale box of components to render.
+        # Should be greater than 1.0.  For benefit of the GUI, keep this the
+        # last entry in the dict.  GUI shows a note regarding bound_box.
         bounding_box_scale_x='1.2',
         bounding_box_scale_y='1.2',
     )
@@ -222,12 +241,14 @@ class QGDSRenderer(QRenderer):
     name = 'gds'
     """Name"""
 
-    # When additional columns are added to QGeometry, this is the example to populate it.
+    # When additional columns are added to QGeometry,
+    # this is the example to populate it.
     # e.g. element_extensions = dict(
     #         base=dict(color=str, klayer=int),
     #         path=dict(thickness=float, material=str, perfectE=bool),
     #         poly=dict(thickness=float, material=str), )
-    # """element extensions dictionary   element_extensions = dict() from base class"""
+    # """element extensions dictionary from base class:
+    #    element_extensions = dict() """
 
     # Add columns to junction table during QGDSRenderer.load()
     # element_extensions  is now being populated as part of load().
@@ -235,8 +256,8 @@ class QGDSRenderer(QRenderer):
 
     # Dict structure MUST be same as  element_extensions!!!!!!
     # This dict will be used to update QDesign during init of renderer.
-    # Keeping this as a cls dict so could be edited before renderer is instantiated.
-    # To update component.options junction table.
+    # Keeping this as a cls dict so could be edited before renderer is
+    # instantiated.  To update component.options junction table.
 
     element_table_data = dict(
         # Cell_name must exist in gds file with: path_filename
@@ -251,10 +272,14 @@ class QGDSRenderer(QRenderer):
         """Create a QRenderer for GDS interface: export and import.
 
         Args:
-            design (QDesign): Use QGeometry within QDesign  to obtain elements for GDS file.
-            initiate (bool, optional): True to initiate the renderer. Defaults to True.
-            render_template (Dict, optional): Typically used by GUI for template options for GDS.  Defaults to None.
-            render_options (Dict, optional): Used to overide all options. Defaults to None.
+            design (QDesign): Use QGeometry within QDesign  to obtain elements
+                            for GDS file.
+            initiate (bool, optional): True to initiate the renderer.
+                                        Defaults to True.
+            render_template (Dict, optional): Typically used by GUI for
+                                template options for GDS.  Defaults to None.
+            render_options (Dict, optional): Used to overide all options.
+                                            Defaults to None.
         """
 
         super().__init__(design=design,
@@ -295,9 +320,10 @@ class QGDSRenderer(QRenderer):
             self.options[
                 'bounding_box_scale_y'] = QGDSRenderer.default_options.bounding_box_scale_y
             self.logger.warning(
-                f'Expected float and number greater than or equal to 1.0 for bounding_box_scale_y.'
-                'User provided bounding_box_scale_y = {bounding_box_scale_y}, '
-                'using default_options.bounding_box_scale_y.')
+                f'Expected float and number greater than or equal to 1.0 for '
+                f'bounding_box_scale_y.  User provided '
+                f'bounding_box_scale_y = {bounding_box_scale_y}, '
+                f'using default_options.bounding_box_scale_y.')
 
     def _clear_library(self):
         """Clear current library."""
@@ -354,10 +380,12 @@ class QGDSRenderer(QRenderer):
         """Get the bounds for all of the elements in gs_table.
 
         Args:
-            gs_table (pandas.GeoSeries): A pandas GeoSeries used to describe components in a design.
+            gs_table (pandas.GeoSeries): A pandas GeoSeries used to describe
+                                        components in a design.
 
         Returns:
-            Tuple[float, float, float, float]: The bounds of all of the elements in this table. [minx, miny, maxx, maxy]
+            Tuple[float, float, float, float]: The bounds of all of the
+            elements in this table. [minx, miny, maxx, maxy]
         """
         if len(gs_table) == 0:
             return (0, 0, 0, 0)
@@ -375,7 +403,8 @@ class QGDSRenderer(QRenderer):
             all_bounds (list): List of bounds. Each tuple corresponds to a box.
 
         Returns:
-            tuple: Describe a box which includes the area of each box in all_bounds.
+            tuple: Describe a box which includes the area of each box
+            in all_bounds.
         """
 
         # If given an empty list.
@@ -419,7 +448,8 @@ class QGDSRenderer(QRenderer):
 
         Args:
             chip_name (str): Name of chip.
-            all_bounds (list): Each tuple=(minx, miny, maxx, maxy) in list represents bounding box for poly, path, etc.
+            all_bounds (list): Each tuple=(minx, miny, maxx, maxy) in list
+                            represents bounding box for poly, path, etc.
 
         Returns:
             tuple[tuple, tuple]:
@@ -442,7 +472,8 @@ class QGDSRenderer(QRenderer):
         scaled_height = (maxy - miny) * \
             self.parse_value(self.options.bounding_box_scale_y)
 
-        # Scaled inclusive bounding box by self.options.bounding_box_scale_x and self.options.bounding_box_scale_y.
+        # Scaled inclusive bounding box by self.options.bounding_box_scale_x
+        #  and self.options.bounding_box_scale_y.
         scaled_box = (center_x - (.5 * scaled_width),
                       center_y - (.5 * scaled_height),
                       center_x + (.5 * scaled_width),
@@ -455,18 +486,20 @@ class QGDSRenderer(QRenderer):
 
     def check_qcomps(self,
                      highlight_qcomponents: list = []) -> Tuple[list, int]:
-        """Confirm the list doesn't have names of componentes repeated. Comfirm
+        """Confirm the list doesn't have names of components repeated. Comfirm
         that the name of component exists in QDesign.
 
         Args:
-            highlight_qcomponents (list, optional): List of strings which denote the name of QComponents to render.
-                                                    Empty list means to render entire design.
-                                                    Defaults to [].
+            highlight_qcomponents (list, optional): List of strings which
+                                        denote the name of QComponents to render.
+                                        Empty list means to render entire design.
+                                        Defaults to [].
 
         Returns:
             Tuple[list, int]:
             list: Unique list of QComponents to render.
-            int: 0 if all ended well. Otherwise, 1 if QComponent name not in design.
+            int: 0 if all ended well. Otherwise,
+            1 if QComponent name not in design.
         """
         # Remove identical QComponent names.
         unique_qcomponents = list(set(highlight_qcomponents))
@@ -480,11 +513,13 @@ class QGDSRenderer(QRenderer):
                 return unique_qcomponents, 1
 
         # For Subtraction bounding box.
-        # If list passed to export is the whole chip, then want to use the bounding box from design planar.
-        # If list is subset of chip, then caluclate a custom bounding box and scale it.
+        # If list passed to export is the whole chip, then want to use the
+        # bounding box from design planar.  If list is subset of chip, then
+        # calculate a custom bounding box and scale it.
 
         if len(unique_qcomponents) == len(self.design._components):
-            # Since user wants all of the chip to be rendered, use the design.planar bounding box.
+            # Since user wants all of the chip to be rendered, use the
+            # design.planar bounding box.
             unique_qcomponents[:] = []
 
         return unique_qcomponents, 0
@@ -493,22 +528,28 @@ class QGDSRenderer(QRenderer):
         """Using self.design, this method does the following:
 
         1. Gather the QGeometries to be used to write to file.
-           Duplicate names in hightlight_qcomponents will be removed without warning.
+           Duplicate names in hightlight_qcomponents will be removed without
+           warning.
 
-        2. Populate self.dict_bounds, for each chip, contains the maximum bound for all elements to render.
+        2. Populate self.dict_bounds, for each chip, contains the maximum bound
+           for all elements to render.
 
-        3. Calculate scaled bounding box to emulate size of chip using self.bounding_box_scale(x and y)
-           and place into self.dict_bounds[chip_name]['for_subtract'].
+        3. Calculate scaled bounding box to emulate size of chip using
+           self.bounding_box_scale(x and y) and place into
+           self.dict_bounds[chip_name]['for_subtract'].
 
         4. Gather Geometries to export to GDS format.
 
         Args:
-            highlight_qcomponents (list): List of strings which denote the name of QComponents to render.
-                                        If empty, render all comonents in design.
-                                        If QComponent names are dupliated, duplicates will be ignored.
+            highlight_qcomponents (list): List of strings which denote the name
+                            of QComponents to render.
+                            If empty, render all components in design.
+                            If QComponent names are duplicated,
+                            duplicates will be ignored.
 
         Returns:
-            int: 0 if all ended well. Otherwise, 1 if QComponent name(s) not in design.
+            int: 0 if all ended well.
+            Otherwise, 1 if QComponent name(s) not in design.
         """
         unique_qcomponents, status = self.check_qcomps(highlight_qcomponents)
         if status == 1:
@@ -517,7 +558,8 @@ class QGDSRenderer(QRenderer):
 
         for chip_name in self.chip_info:
             # put the QGeometry into GDS format.
-            # There can be more than one chip in QGeometry.  They all export to one gds file.
+            # There can be more than one chip in QGeometry.
+            # They all export to one gds file.
             self.chip_info[chip_name]['all_subtract'] = []
             self.chip_info[chip_name]['all_no_subtract'] = []
 
@@ -529,21 +571,23 @@ class QGDSRenderer(QRenderer):
 
             for table_name in self.design.qgeometry.get_element_types():
 
-                # Get table for chip and table_name, and reduce to keep just the list of unique_qcomponents.
+                # Get table for chip and table_name, and reduce
+                # to keep just the list of unique_qcomponents.
                 table = self.get_table(table_name, unique_qcomponents,
                                        chip_name)
 
                 if table_name == 'junction':
                     self.chip_info[chip_name]['junction'] = deepcopy(table)
                 else:
-                    # For every chip, and layer, separate the "subtract" and "no_subtract" elements and gather bounds.
+                    # For every chip, and layer, separate the "subtract"
+                    # and "no_subtract" elements and gather bounds.
                     # dict_bounds[chip_name] = list_bounds
                     self.gather_subtract_elements_and_bounds(
                         chip_name, table_name, table, all_table_subtracts,
                         all_table_no_subtracts)
 
-            # If list of QComponents provided, use the bounding_box_scale(x and y),
-            # otherwise use self._chips
+            # If list of QComponents provided, use the
+            # bounding_box_scale(x and y), otherwise use self._chips.
             scaled_max_bound, max_bound = self.scale_max_bounds(
                 chip_name, self.dict_bounds[chip_name]['gather'])
             if highlight_qcomponents:
@@ -555,9 +599,10 @@ class QGDSRenderer(QRenderer):
                 else:
                     self.dict_bounds[chip_name]['for_subtract'] = max_bound
                     self.logger.warning(
-                        f'design.get_x_y_for_chip() did NOT return a good code for chip={chip_name},'
-                        f'for ground subtraction-box using the size calculated from QGeometry, ({max_bound}) will be used. '
-                    )
+                        f'design.get_x_y_for_chip() did NOT return a good '
+                        f'code for chip={chip_name},for ground subtraction-box'
+                        f' using the size calculated from QGeometry, '
+                        f'({max_bound}) will be used. ')
             if is_true(self.options.ground_plane):
                 self.handle_ground_plane(chip_name, all_table_subtracts,
                                          all_table_no_subtracts)
@@ -569,13 +614,15 @@ class QGDSRenderer(QRenderer):
         """Place all the subtract geometries for one chip into
         self.chip_info[chip_name]['all_subtract_true'].
 
-        For LINESTRING within table that has a value for fillet, check if any segment is shorter than fillet radius.
-        If so, then break the LINESTRING so that shorter segments do not get fillet'ed and longer segments get fillet'ed.
-        Add the mulitiple LINESTRINGS back to table.
+        For LINESTRING within table that has a value for fillet, check if any
+        segment is shorter than fillet radius.  If so, then break the
+        LINESTRING so that shorter segments do not get fillet'ed and longer
+        segments get fillet'ed.  Add the multiple LINESTRINGS back to table.
         Also remove "bad" LINESTRING from table.
 
-        Then use qgeometry_to_gds() to convert the QGeometry elements to gdspy elements.  The gdspy elements
-        are placed in self.chip_info[chip_name]['q_subtract_true'].
+        Then use qgeometry_to_gds() to convert the QGeometry elements to gdspy
+        elements.  The gdspy elements are placed in
+        self.chip_info[chip_name]['q_subtract_true'].
 
         Args:
             chip_name (str): Chip_name that is being processed.
@@ -634,13 +681,15 @@ class QGDSRenderer(QRenderer):
         """Update self.chip_info geopandas.GeoDataFrame.
 
         Will iterate through the rows to examine the LineString.
-        Then determine if there is a segment that is shorter than the critera based on default_options.
-        If so, then remove the row, and append shorter LineString with no fillet, within the dataframe.
+        Then determine if there is a segment that is shorter than the critera
+        based on default_options. If so, then remove the row, and append
+        shorter LineString with no fillet, within the dataframe.
 
         Args:
             chip_name (str): The name of chip.
             chip_layer (int): The layer within the chip to be evaluated.
-            all_sub_true_or_false (str): To be used within self.chip_info: 'all_subtract_true' or 'all_subtract_false'.
+            all_sub_true_or_false (str): To be used within self.chip_info:
+                                'all_subtract_true' or 'all_subtract_false'.
         """
         df = self.chip_info[chip_name][chip_layer][all_sub_true_or_false]
         df_fillet = df[-df['fillet'].isnull()]
@@ -651,7 +700,8 @@ class QGDSRenderer(QRenderer):
             edit_index = dict()
             for index, row in df_fillet.iterrows():
                 # print(
-                #     f'With parse_value: {self.parse_value(row.fillet)}, row.fille: {row.fillet}')
+                #     f'With parse_value: {self.parse_value(row.fillet)}, '
+                #     f'row.fillet: {row.fillet}')
                 status, all_shapelys = self.check_length(
                     row.geometry, row.fillet)
                 if status > 0:
@@ -660,7 +710,8 @@ class QGDSRenderer(QRenderer):
             df_copy = self.chip_info[chip_name][chip_layer][
                 all_sub_true_or_false].copy(deep=True)
             for del_key, the_shapes in edit_index.items():
-                # copy row "index" into a new df "status" times.  Then replace the LONG shapely with all_shapleys
+                # copy row "index" into a new df "status" times.
+                # Then replace the LONG shapely with all_shapelys.
                 # For any entries in edit_index, edit table here.
                 orig_row = df_copy.loc[del_key].copy(deep=True)
                 df_copy = df_copy.drop(index=del_key)
@@ -668,7 +719,8 @@ class QGDSRenderer(QRenderer):
                 for new_row, short_shape in the_shapes.items():
                     orig_row['geometry'] = short_shape['line']
                     orig_row['fillet'] = short_shape['fillet']
-                    # Keep ignore_index=False, otherwise, the other del_key will not be found.
+                    # Keep ignore_index=False, otherwise,
+                    # the other del_key will not be found.
                     df_copy = df_copy.append(orig_row, ignore_index=False)
 
             self.chip_info[chip_name][chip_layer][
@@ -679,34 +731,38 @@ class QGDSRenderer(QRenderer):
         """Determine if a_shapely has short segments based on scaled fillet
         value.
 
-        Use check_short_segments_by_scaling_fillet to determine the critera for flagging a segment.
-        Return Tuple with flagged segments.
+        Use check_short_segments_by_scaling_fillet to determine the critera
+        for flagging a segment.  Return Tuple with flagged segments.
 
         The "status" returned in int:
             * -1: Method needs to update the return code.
             * 0: No issues, no short segments found
-            * int: The number of shapelys returned. New shapeleys, should replace the ones provided in a_shapley
+            * int: The number of shapelys returned. New shapeleys, should
+                    replace the ones provided in a_shapely
 
         The "shorter_lines" returned in dict:
         key: Using the index values from list(a_shapely.coords)
         value: dict() for each new, shorter, LineString
 
         The dict()
-        key: fillet, value: can be float from before, or undefined to denote no fillet.
+        key: fillet, value: can be float from before, or undefined to
+                            denote no fillet.
         key: line, value: shorter LineString
 
         Args:
-            a_shapely (shapely.geometry.LineString): A shapley object that needs to be evaluated.
+            a_shapely (shapely.geometry.LineString): A shapely object that
+                                                    needs to be evaluated.
             a_fillet (float): From component developer.
 
         Returns:
             Tuple[int, Dict]:
             int: Number of short segments that should not have fillet.
-            Dict: Key: Index into a_shapely, Value: dict with fillet and shorter LineString
+            Dict: The key is an index into a_shapely. The value is a dict with
+            fillet and shorter LineString.
         """
         # Holds all of the index of when a segment is too short.
         idx_bad_fillet = list()
-        status = -1  # Initalize to meaningless value.
+        status = -1  # Initialize to meaningless value.
         coords = list(a_shapely.coords)
         len_coords = len(coords)
 
@@ -790,7 +846,8 @@ class QGDSRenderer(QRenderer):
                             'fillet': a_fillet
                         })
                 elif idx == status - 1 and start == 0 and stop != len_coords - 1:
-                    # At last tuple, and and start at first index, and  the stop is not last index of coords.
+                    # At last tuple, and and start at first index,
+                    # and the stop is not last index of coords.
                     fillet_vertices = coords[stop + 1:len_coords]
                     fillet_vertices.insert(0, midpoints[stop])
                     shorter_lines[start] = dict({
@@ -836,18 +893,24 @@ class QGDSRenderer(QRenderer):
         graphed.
 
         Args:
-            coords (list): User provide a list of tuples.  The tuple is (x,y) location for a vertex.
-              The list represents a LineString.
+            coords (list): User provide a list of tuples.
+                    The tuple is (x,y) location for a vertex.
+                    The list represents a LineString.
             a_fillet (float): The value provided by component developer.
-            all_idx_bad_fillet (dict): An empty dict which will be populated by this method.
+            all_idx_bad_fillet (dict): An empty dict which will be
+                                        populated by this method.
 
         Dictionary:
-            Key 'reduced_idx' will hold list of tuples.  The tuples correspond to index for list named "coords".
-            Key 'midpoints' will hold list of tuples. The index of a tuple corresponds to two index within coords.
-            For example, a index in midpoints is x, that coresponds midpoint of segment x-1 to x.
+            Key 'reduced_idx' will hold list of tuples.
+                    The tuples correspond to index for list named "coords".
+            Key 'midpoints' will hold list of tuples.
+                    The index of a tuple corresponds to two index within coords.
+            For example, a index in midpoints is x,
+            that coresponds midpoint of segment x-1 to x.
         """
 
-        # Depreciated since there is no longer a scale factor  given to QCheckLength.
+        # Depreciated since there is no longer a scale factor
+        # given to QCheckLength.
         # fillet_scale_factor = self.parse_value(
         #     self.options.check_short_segments_by_scaling_fillet)
 
@@ -883,10 +946,13 @@ class QGDSRenderer(QRenderer):
 
         Args:
             chip_name (str): Name of chip.  Example is 'main'.
-            table_name (str): There are multiple tables in QGeometry table.  Example: 'path' and 'poly'.
+            table_name (str): There are multiple tables in QGeometry table.
+                                Example: 'path' and 'poly'.
             table (geopandas.GeoDataFrame): Actual table for the name.
-            all_subtracts (list): Pass by reference so method can update this list.
-            all_no_subtracts (list): Pass by reference so method can update this list.
+            all_subtracts (list): Pass by reference so method can update
+                                    this list.
+            all_no_subtracts (list): Pass by reference so method can update
+                                    this list.
         """
 
         # Determine bound box and return scalar larger than size.
@@ -920,8 +986,10 @@ class QGDSRenderer(QRenderer):
         unique_qcomponents list.
 
         Args:
-            table_name (str): Can be "path", "poly", etc. from the QGeometry tables.
-            unique_qcomponents (list): User requested list of component names to export to GDS file.
+            table_name (str): Can be "path", "poly", etc. from the
+                            QGeometry tables.
+            unique_qcomponents (list): User requested list of qcomponent
+                            names to export to GDS file.
 
         Returns:
             geopandas.GeoDataFrame: Table of elements within the QGeometry.
@@ -952,7 +1020,7 @@ class QGDSRenderer(QRenderer):
         file. It can contains multiple cells.
 
         Returns:
-            gdspy.GdsLibrary: GDS library which can contain multiple celles.
+            gdspy.GdsLibrary: GDS library which can contain multiple cells.
         """
 
         self.update_units()
@@ -974,7 +1042,7 @@ class QGDSRenderer(QRenderer):
             layer (int): Layer used in chip.
 
         Returns:
-            int: Oberservation of option based on chip and layer information.
+            int: Observation of option based on chip and layer information.
 
             * 0 This is the initialization state.
             * 1 The layer is in the chip and cheese is True.
@@ -1007,7 +1075,7 @@ class QGDSRenderer(QRenderer):
             layer (int): Layer used in chip.
 
         Returns:
-            int: Oberservation of option based on chip and layer information.
+            int: Observation of option based on chip and layer information.
 
             * 0 This is the initialization state.
             * 1 The layer is in the chip and viewing no-cheese is True.
@@ -1057,9 +1125,8 @@ class QGDSRenderer(QRenderer):
         cheese_code = self.check_cheese(chip, layer)
 
         if no_cheese_code == 0 or cheese_code == 0:
-            self.logger.warning(
-                f'Not able to get no_cheese_view_in_file or cheese_view_in_file from self.options.'
-            )
+            self.logger.warning(f'Not able to get no_cheese_view_in_file or '
+                                f'cheese_view_in_file from self.options.')
             code = 0
             return code
         if no_cheese_code == 1 and cheese_code == 1:
@@ -1077,13 +1144,14 @@ class QGDSRenderer(QRenderer):
         if no_cheese_code == 3 or cheese_code == 3:
             code = 5
             self.logger.warning(
-                f'Chip={chip} is not either in no_cheese_view_in_file or cheese_view_in_file from self.options.'
-            )
+                f'Chip={chip} is not either in no_cheese_view_in_file '
+                f'or cheese_view_in_file from self.options.')
             return code
         if no_cheese_code == 4 or cheese_code == 4:
             code = 6
             self.logger.warning(
-                f'layer={layer} is not in chip={chip} either in no_cheese_view_in_file or cheese_view_in_file from self.options.'
+                f'layer={layer} is not in chip={chip} either in '
+                f'no_cheese_view_in_file or cheese_view_in_file from self.options.'
             )
             return code
 
@@ -1125,8 +1193,10 @@ class QGDSRenderer(QRenderer):
             maxy (float): chip maximum y location.
             chip_name (str): User defined chip name.
             layer (int): Layer number for calculating the cheese.
-            cheese_sub_layer (int):  User defined datatype, considered a sub-layer number for where to place the cheese output.
-            nocheese_sub_layer (int): User defined datatype, considered a sub-layer number for where to place the NO_cheese output.
+            cheese_sub_layer (int):  User defined datatype, considered a
+                    sub-layer number for where to place the cheese output.
+            nocheese_sub_layer (int): User defined datatype, considered a
+                    sub-layer number for where to place the NO_cheese output.
         """
 
         max_points = int(self.parse_value(self.options.max_points))
@@ -1239,7 +1309,9 @@ class QGDSRenderer(QRenderer):
                                 'no_cheese_gds'] = all_nocheese_gds
 
                             if self.check_no_cheese(chip_name, chip_layer) == 1:
-                                no_cheese_subtract_cell_name = f'TOP_{chip_name}_{chip_layer}_NoCheese_{sub_layer}'
+                                no_cheese_subtract_cell_name = (
+                                    f'TOP_{chip_name}_{chip_layer}'
+                                    f'_NoCheese_{sub_layer}')
                                 no_cheese_cell = lib.new_cell(
                                     no_cheese_subtract_cell_name,
                                     overwrite_duplicate=True)
@@ -1267,14 +1339,17 @@ class QGDSRenderer(QRenderer):
         Polygons are all combined.
 
         Args:
-            sub_df (geopandas.GeoDataFrame): The subset of QGeometry tables for each chip, and layer,
+            sub_df (geopandas.GeoDataFrame): The subset of QGeometry tables
+                                                for each chip, and layer,
             and only if the layer has a ground plane.
             chip_name (str): Name of chip.
-            no_cheese_buffer (float): Will be used for fillet and size of buffer.
+            no_cheese_buffer (float): Will be used for fillet and
+                                    size of buffer.
 
         Returns:
-            Union[None, shapely.geometry.multipolygon.MultiPolygon]: The shapely which combines the
-            polygons and linestrings and creates buffer as specificed through default_options.
+            Union[None, shapely.geometry.multipolygon.MultiPolygon]: The
+            shapely which combines the polygons and linestrings and creates
+            buffer as specificed through default_options.
         """
 
         style_cap = int(self.parse_value(self.options.no_cheese.cap_style))
@@ -1323,7 +1398,8 @@ class QGDSRenderer(QRenderer):
                     f'for cheese_buffer_maker.  The chip boundary will not be tested.'
                 )
 
-            # The type of combo_shapely will be  <class 'shapely.geometry.multipolygon.MultiPolygon'>
+            # The type of combo_shapely will be
+            # <class 'shapely.geometry.multipolygon.MultiPolygon'>
             return combo_shapely
         else:
             return None
@@ -1332,13 +1408,14 @@ class QGDSRenderer(QRenderer):
         """Using the geometries for each table name in QGeometry, populate
         self.lib to eventually write to a GDS file.
 
-        For every layer within a chip, use the same "subtraction box" for the elements that
-        have subtract as true.  Every layer within a chip will have cell named:
-        f'TOP_{chip_name}_{chip_layer}'.
+        For every layer within a chip, use the same "subtraction box" for the
+        elements that have subtract as true.  Every layer within a chip will
+        have cell named:  f'TOP_{chip_name}_{chip_layer}'.
 
         Args:
             file_name (str): The path and file name to write the gds file.
-                             Name needs to include desired extension, i.e. "a_path_and_name.gds".
+                             Name needs to include desired extension,
+                             i.e. "a_path_and_name.gds".
         """
 
         precision = float(self.parse_value(self.options.precision))
@@ -1407,12 +1484,12 @@ class QGDSRenderer(QRenderer):
                         subtract_cell.add(self.chip_info[chip_name][chip_layer]
                                           ['q_subtract_true'])
                         '''gdspy.boolean() is not documented clearly.
-                        If there are multiple elements to subtract (both poly and path),
-                        the way I could make it work is to put them into a cell, within lib.
-                        I used the method cell_name.get_polygons(),
-                        which appears to convert all elements within the cell to poly.
-                        After the boolean(), I deleted the cell from lib.
-                        The memory is freed up then.
+                        If there are multiple elements to subtract
+                        (both poly and path), the way I could make it work is
+                        to put them into a cell, within lib.  I used the method
+                        cell_name.get_polygons(), which appears to convert all
+                        elements within the cell to poly. After the boolean(),
+                        I deleted the cell from lib.  The memory is freed up then.
                         '''
                         diff_geometry = gdspy.boolean(
                             self.chip_info[chip_name]['subtract_poly'],
@@ -1434,8 +1511,9 @@ class QGDSRenderer(QRenderer):
                     if self.chip_info[chip_name][chip_layer][
                             'q_subtract_false'] is None:
                         self.logger.warning(
-                            f'There is no table named self.chip_info[{chip_name}][q_subtract_false] to write.'
-                        )
+                            f'There is no table named '
+                            f'self.chip_info[{chip_name}][q_subtract_false]'
+                            f' to write.')
                     else:
                         if len(self.chip_info[chip_name][chip_layer]
                                ['q_subtract_false']) != 0:
@@ -1465,8 +1543,10 @@ class QGDSRenderer(QRenderer):
 
         Returns:
             Tuple:
-            * 1st entry is Tuple[float,float]: The midpoint of Linestring from row.geometry in format (x,y).
-            * 2nd entry is float: The angle in degrees of Linestring from row.geometry.
+            * 1st entry is Tuple[float,float]: The midpoint of Linestring from
+            row.geometry in format (x,y).
+            * 2nd entry is float: The angle in degrees of Linestring from
+            row.geometry.
             * 3rd entry is float: Is the magnitude of Linestring from row.geometry.
         """
         precision = float(self.parse_value(self.options.precision))
@@ -1490,17 +1570,23 @@ class QGDSRenderer(QRenderer):
         qubit.
 
         Args:
-            row (pandas.core.frame.Pandas): A row from Junction table of QGeometry.
-            a_cell_bounding_box (numpy.ndarray): Give the bounding box of cell used in row.gds_cell_name.
+            row (pandas.core.frame.Pandas): A row from Junction table
+                                            of QGeometry.
+            a_cell_bounding_box (numpy.ndarray): Give the bounding box of cell
+                                             used in row.gds_cell_name.
 
         Returns:
             Tuple:
-            * 1st entry is float: The angle in degrees of Linestring from row.geometry.
-            * 2nd entry is Tuple[float,float]: The midpoint of Linestring from row.geometry in format (x,y).
-            * 3rd entry is gdspy.polygon.Rectangle: None if Magnitude of LineString is smaller than width
-              of cell from row.gds_cell_name. Otherwise the rectangle for pad on LEFT of row.gds_cell_name.
-            * 4th entry is gdspy.polygon.Rectangle: None if Magnitude of LineString is smaller than width
-              of cell from row.gds_cell_name. Otherwise the rectangle for pad on RIGHT of row.gds_cell_name.
+            * 1st entry is float: The angle in degrees of Linestring from
+            row.geometry.
+            * 2nd entry is Tuple[float,float]: The midpoint of Linestring
+            from row.geometry in format (x,y).
+            * 3rd entry is gdspy.polygon.Rectangle: None if Magnitude of
+            LineString is smaller than width of cell from row.gds_cell_name.
+            Otherwise the rectangle for pad on LEFT of row.gds_cell_name.
+            * 4th entry is gdspy.polygon.Rectangle: None if Magnitude of
+            LineString is smaller than width of cell from row.gds_cell_name.
+            Otherwise the rectangle for pad on RIGHT of row.gds_cell_name.
         """
 
         junction_pad_overlap = float(
@@ -1555,12 +1641,14 @@ class QGDSRenderer(QRenderer):
         should be two vertexes, and denotes two things.  1. The midpoint of
         segment is the the center of cell.
 
-        2. The angle made by second tuple - fist tuple  for delta y/ delta x is used to rotate the cell.
+        2. The angle made by second tuple - fist tuple  for delta y/ delta x
+        is used to rotate the cell.
 
         Args:
             chip_name (str): The name of chip.
             lib (gdspy.library): The library used to export the entire QDesign.
-            chip_only_top (gdspy.library.Cell): The cell used for just chip_name.
+            chip_only_top (gdspy.library.Cell): The cell used for
+            just chip_name.
         """
         # Make sure the file exists, before trying to read it.
         max_points = int(self.parse_value(self.options.max_points))
@@ -1616,7 +1704,8 @@ class QGDSRenderer(QRenderer):
         Args:
             file_name (str): File name which can also include directory path.
                              If the file exists, it will be overwritten.
-            highlight_qcomponents (list): List of strings which denote the name of QComponents to render.
+            highlight_qcomponents (list): List of strings which denote
+                                        the name of QComponents to render.
                                         If empty, render all components in design.
 
         Returns:
@@ -1626,7 +1715,8 @@ class QGDSRenderer(QRenderer):
         if not self._can_write_to_path(file_name):
             return 0
 
-        # There can be more than one chip in QGeometry.  They all export to one gds file.
+        # There can be more than one chip in QGeometry.
+        # They all export to one gds file.
         # Each chip will hold the rectangle for subtract for each layer so:
         # chip_info[chip_name][subtract_box][(min_x,min_y,max_x,max_y)]
         # chip_info[chip_name][layer_number][all_subtract_elements]
@@ -1634,11 +1724,12 @@ class QGDSRenderer(QRenderer):
         self.chip_info.clear()
         self.chip_info.update(self.get_chip_names())
 
-        if (self.create_qgeometry_for_gds(highlight_qcomponents) == 0):
+        if self.create_qgeometry_for_gds(highlight_qcomponents) == 0:
             # Create self.lib and populate path and poly.
             self.populate_poly_path_for_export()
 
-            # Add no-cheese MultiPolygon to self.chip_info[chip_name][chip_layer]['no_cheese'],
+            # Add no-cheese MultiPolygon to
+            # self.chip_info[chip_name][chip_layer]['no_cheese'],
             # if self.options requests the layer.
             self.populate_no_cheese()
 
@@ -1660,9 +1751,11 @@ class QGDSRenderer(QRenderer):
         """Convert a shapely MultiPolygon to corresponding gdspy.
 
         Args:
-            multi_poly (shapely.geometry.multipolygon.MultiPolygon): The shapely geometry of no-cheese boundary.
+            multi_poly (shapely.geometry.multipolygon.MultiPolygon): The
+                                shapely geometry of no-cheese boundary.
             layer (int): The layer of the input multipolygon.
-            data_type (int): Used as a "sub-layer" to place the no-cheese gdspy output.
+            data_type (int): Used as a "sub-layer" to place the no-cheese
+                                gdspy output.
             no_cheese_buffer (float): Used for both fillet and buffer size.
 
         Returns:
@@ -1715,7 +1808,7 @@ class QGDSRenderer(QRenderer):
         Convert the class to a series of GDSII elements.
 
         Args:
-            qgeometry_element (pd.Series): Expect a shapley object.
+            qgeometry_element (pd.Series): Expect a shapely object.
 
         Returns:
             'gdspy.polygon' or 'gdspy.FlexPath': Convert the class to a series of GDSII
@@ -1724,11 +1817,15 @@ class QGDSRenderer(QRenderer):
         """
         *NOTE:*
         GDS:
-            points (array-like[N][2]) – Coordinates of the vertices of the polygon.
-            layer (integer) – The GDSII layer number for this qgeometry_element.
-            datatype (integer) – The GDSII datatype for this qgeometry_element (between 0 and 255).
-                                  datatype=10 or 11 means only that they are from a
-                                  Polygon vs. LineString.  This can be changed.
+            points (array-like[N][2]) – Coordinates of the vertices of
+                                        the polygon.
+            layer (integer) – The GDSII layer number for this
+                                        qgeometry_element.
+            datatype (integer) – The GDSII datatype for this qgeometry_element
+                                (between 0 and 255).
+                                datatype=10 or 11 means only that they are
+                                from a Polygon vs. LineString.
+                                This can be changed.
 
         See:
             https://gdspy.readthedocs.io/en/stable/reference.html#polygon
@@ -1786,16 +1883,18 @@ class QGDSRenderer(QRenderer):
                 width = self.parse_value(qgeometry_element.width)
                 self.logger.warning(
                     f'Since width:{width} for a Path is not a number, '
-                    f'it will be exported using width_LineString: {use_width}.  '
-                    f'The component_id is:{qcomponent_id}, name is:{name}, layer is: {layer_num}'
-                )
+                    f'it will be exported using width_LineString:'
+                    f' {use_width}.  The component_id is:{qcomponent_id},'
+                    f' name is:{name}, layer is: {layer_num}')
             else:
                 use_width = qgeometry_element.width
 
             if 'fillet' in qgeometry_element:
-                if math.isnan(
-                        qgeometry_element.fillet
-                ) or qgeometry_element.fillet <= 0 or qgeometry_element.fillet < qgeometry_element.width:
+
+                if (math.isnan(qgeometry_element.fillet) or
+                        qgeometry_element.fillet <= 0 or
+                        qgeometry_element.fillet < qgeometry_element.width):
+
                     to_return = gdspy.FlexPath(list(geom.coords),
                                                use_width,
                                                layer=qgeometry_element.layer,
@@ -1817,14 +1916,15 @@ class QGDSRenderer(QRenderer):
                 # Could be junction table with a linestring.
                 # Look for gds_path_filename in column.
                 self.logger.warning(
-                    f'Linestring did not have fillet in column. The qgeometry_element was not drawn.\n'
+                    f'Linestring did not have fillet in column. '
+                    f'The qgeometry_element was not drawn.\n'
                     f'The qgeometry_element within table is:\n'
                     f'{qgeometry_element}')
         else:
             self.logger.warning(
                 f'Unexpected shapely object geometry.'
-                f'The variable qgeometry_element is {type(geom)}, method can currently handle Polygon and FlexPath.'
-            )
+                f'The variable qgeometry_element is {type(geom)}, '
+                f'method can currently handle Polygon and FlexPath.')
             # print(geom)
             return None
 
@@ -1835,7 +1935,8 @@ class QGDSRenderer(QRenderer):
         chip names from QGeometry table.
 
         Returns:
-            Dict: dict with key of chip names and value of empty dict to hold things for renderers.
+            Dict: dict with key of chip names and value of empty
+            dict to hold things for renderers.
         """
         chip_names = Dict()
         for table_name in self.design.qgeometry.get_element_types():
