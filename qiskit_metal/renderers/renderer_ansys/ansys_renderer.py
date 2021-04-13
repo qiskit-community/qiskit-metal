@@ -11,6 +11,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
+# pylint: disable=too-many-lines
 
 from typing import List, Tuple, Union
 
@@ -563,7 +564,8 @@ class QAnsysRenderer(QRenderer):
         self.qcomp_ids, self.case = self.get_unique_component_ids(selection)
 
         if self.case == 2:
-            self.logger.warning('Unable to proceed with rendering. Please check selection.')
+            self.logger.warning(
+                'Unable to proceed with rendering. Please check selection.')
             return
 
         self.chip_subtract_dict = defaultdict(set)
@@ -584,8 +586,7 @@ class QAnsysRenderer(QRenderer):
         for table_type in self.design.qgeometry.get_element_types():
             self.render_components(table_type)
 
-    def render_components(self,
-                          table_type: str):
+    def render_components(self, table_type: str):
         """
         Render components by breaking them down into individual elements.
 
@@ -867,7 +868,9 @@ class QAnsysRenderer(QRenderer):
             return list(set(comps[qcomp].options.chip for qcomp in comps))
         else:  # Strict subset rendered.
             icomps = self.design._components
-            return list(set(icomps[qcomp_id].options.chip for qcomp_id in self.qcomp_ids))
+            return list(
+                set(icomps[qcomp_id].options.chip
+                    for qcomp_id in self.qcomp_ids))
 
     def get_min_bounding_box(self) -> Tuple[float]:
         """
@@ -911,25 +914,27 @@ class QAnsysRenderer(QRenderer):
             box_plus_buffer (bool, optional): Whether or not to use a box plus buffer. Defaults to True.
         """
         chip_list = self.get_chip_names()
-        if box_plus_buffer: # Get bounding box of components first
+        if box_plus_buffer:  # Get bounding box of components first
             min_x_main, min_y_main, max_x_main, max_y_main = parse_units(
                 self.get_min_bounding_box())
-            self.cw_x = max_x_main - min_x_main # chip width along x
-            self.cw_y = max_y_main - min_y_main # chip width along y
+            self.cw_x = max_x_main - min_x_main  # chip width along x
+            self.cw_y = max_y_main - min_y_main  # chip width along y
             self.cw_x += 2 * parse_units(self._options['x_buffer_width_mm'])
             self.cw_y += 2 * parse_units(self._options['y_buffer_width_mm'])
-            self.cc_x = (max_x_main + min_x_main) / 2 # x coord of chip center
-            self.cc_y = (max_y_main + min_y_main) / 2 # y coord of chip center
-        else: # Adhere to chip placement and dimensions in QDesign
-            p = self.design.get_chip_size('main') # x/y center/width same for all chips
-            self.cw_x, self.cw_y, _ = parse_units([p['size_x'], p['size_y'], p['size_z']])
-            self.cc_x, self.cc_y, _ = parse_units([p['center_x'], p['center_y'], p['center_z']])
+            self.cc_x = (max_x_main + min_x_main) / 2  # x coord of chip center
+            self.cc_y = (max_y_main + min_y_main) / 2  # y coord of chip center
+        else:  # Adhere to chip placement and dimensions in QDesign
+            p = self.design.get_chip_size(
+                'main')  # x/y center/width same for all chips
+            self.cw_x, self.cw_y, _ = parse_units(
+                [p['size_x'], p['size_y'], p['size_z']])
+            self.cc_x, self.cc_y, _ = parse_units(
+                [p['center_x'], p['center_y'], p['center_z']])
         for chip_name in chip_list:
-            self.render_chip(chip_name, draw_sample_holder and (chip_name == 'main'))
-    
-    def render_chip(self, 
-                    chip_name: str,
-                    draw_sample_holder: bool):
+            self.render_chip(chip_name, draw_sample_holder and
+                             (chip_name == 'main'))
+
+    def render_chip(self, chip_name: str, draw_sample_holder: bool):
         """
         Render individual chips.
 
@@ -941,21 +946,19 @@ class QAnsysRenderer(QRenderer):
         ops = self.design._chips[chip_name]
         p = self.design.get_chip_size(chip_name)
         z_coord, height = parse_units([p['center_z'], p['size_z']])
-        plane = self.modeler.draw_rect_center(
-                        [self.cc_x, self.cc_y, z_coord],
-                        x_size=self.cw_x,
-                        y_size=self.cw_y,
-                        name=f'ground_{chip_name}_plane',
-                        **ansys_options)
+        plane = self.modeler.draw_rect_center([self.cc_x, self.cc_y, z_coord],
+                                              x_size=self.cw_x,
+                                              y_size=self.cw_y,
+                                              name=f'ground_{chip_name}_plane',
+                                              **ansys_options)
         whole_chip = self.modeler.draw_box_center(
-            [self.cc_x, self.cc_y, height / 2],
-            [self.cw_x, self.cw_y, -height],
+            [self.cc_x, self.cc_y, height / 2], [self.cw_x, self.cw_y, -height],
             name=chip_name,
             material=ops['material'],
             color=(186, 186, 205),
             transparency=0.2,
             wireframe=False)
-        if draw_sample_holder: # HFSS
+        if draw_sample_holder:  # HFSS
             vac_height = parse_units(
                 [p['sample_holder_top'], p['sample_holder_bottom']])
             vacuum_box = self.modeler.draw_box_center(
@@ -966,7 +969,7 @@ class QAnsysRenderer(QRenderer):
             # Any layer which has subtract=True qgeometries will have a ground plane
             # TODO: Material property assignment may become layer-dependent.
             self.assign_perfE.append(f'ground_{chip_name}_plane')
-    
+
     def subtract_from_ground(self):
         """For each chip, subtract all "negative" shapes residing on its
         surface if any such shapes exist."""

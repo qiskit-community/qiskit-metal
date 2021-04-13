@@ -377,7 +377,7 @@ class QRenderer():
         that the name of component exists in QDesign. If QDesign doesn't
         contain any component, or if all components in QDesign are found in
         highlight_qcomponents, return an empty list; otherwise return a list of
-        unique components to be sent to Ansys. The second returned item, an
+        unique components to be sent to the renderer. The second returned item, an
         integer, specifies which of these 3 cases applies.
 
         Args:
