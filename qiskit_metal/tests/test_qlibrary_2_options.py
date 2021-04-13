@@ -373,7 +373,8 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         transmon_pocket_6 = TransmonPocket6(design, 'my_name')
         options = transmon_pocket_6.default_options
 
-        self.assertEqual(len(options), 10)
+        self.assertEqual(len(options), 11)
+        self.assertEqual(options['chip'], 'main')
         self.assertEqual(options['pos_x'], '0um')
         self.assertEqual(options['pos_y'], '0um')
         self.assertEqual(options['pad_gap'], '30um')
@@ -472,7 +473,8 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         _options = _transmon_pocket.default_options
 
         # Test all elements of the result data against expected data
-        self.assertEqual(len(_options), 10)
+        self.assertEqual(len(_options), 11)
+        self.assertEqual(_options['chip'], 'main')
         self.assertEqual(_options['pos_x'], '0um')
         self.assertEqual(_options['pos_y'], '0um')
         self.assertEqual(_options['pad_gap'], '30um')
