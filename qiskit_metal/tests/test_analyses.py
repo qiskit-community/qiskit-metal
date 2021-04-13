@@ -12,11 +12,11 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-#pylint: disable-msg=unnecessary-pass
-#pylint: disable-msg=broad-except
-"""
-Qiskit Metal unit tests analyses functionality.
-"""
+# pylint: disable-msg=unnecessary-pass
+# pylint: disable-msg=broad-except
+# pylint: disable-msg=import-error
+# pylint: disable-msg=too-many-public-methods
+"""Qiskit Metal unit tests analyses functionality."""
 
 from pathlib import Path
 import unittest
@@ -27,7 +27,7 @@ import pandas as pd
 from qiskit_metal.analyses.quantization import lumped_capacitive
 from qiskit_metal.analyses.hamiltonian.transmon_charge_basis import Hcpb
 from qiskit_metal.analyses.hamiltonian.HO_wavefunctions import wavefunction
-from qiskit_metal.analyses.em import cpw_calculations
+from qiskit_metal.analyses.em import cpw_calculations, kappa_calculation
 from qiskit_metal.analyses.sweep_options.sweeping import Sweeping
 from qiskit_metal.tests.assertions import AssertionsMixin
 from qiskit_metal import designs
@@ -36,35 +36,45 @@ TEST_DATA = Path(__file__).parent / "test_data"
 
 
 class TestAnalyses(unittest.TestCase, AssertionsMixin):
-    """
-    Unit test class.
-    """
+    """Unit test class."""
 
     def setUp(self):
-        """
-        Setup unit test.
-        """
+        """Setup unit test."""
         pass
 
     def tearDown(self):
-        """
-        Tie any loose ends.
-        """
+        """Tie any loose ends."""
         pass
 
     def test_analyses_instantiate_hcpb(self):
-        """
-        Test instantiation of Hcpb in analytic_transmon.py.
-        """
+        """Test instantiation of Hcpb in analytic_transmon.py."""
         try:
             Hcpb()
         except Exception:
-            self.fail("Hcpb failed")
+            self.fail("Hcpb() failed")
+
+        try:
+            Hcpb(nlevels=15)
+        except Exception:
+            self.fail("Hcpb(nlevels=15) failed")
+
+        try:
+            Hcpb(nlevels=15, Ej=13971.3)
+        except Exception:
+            self.fail("Hcpb(nlevels=15, Ej=13971.3) failed")
+
+        try:
+            Hcpb(nlevels=15, Ej=13971.3, Ec=295.2)
+        except Exception:
+            self.fail("Hcpb(nlevels=15, Ej=13971.3, Ec=295.2) failed")
+
+        try:
+            Hcpb(nlevels=15, Ej=13971.3, Ec=295.2, ng=0.001)
+        except Exception:
+            self.fail("Hcpb(nlevels=15, Ej=13971.3, Ec=295.2, ng=0.001) failed")
 
     def test_analyses_instantiate_sweeping(self):
-        """
-        Test instantiation of Sweeping in analytic_transmon.py.
-        """
+        """Test instantiation of Sweeping in analytic_transmon.py."""
         try:
             design = designs.DesignPlanar()
             Sweeping(design)
@@ -72,9 +82,8 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
             self.fail("Sweeping failed")
 
     def test_analyses_cpw_guided_wavelength(self):
-        """
-        Test the functionality of guided_wavelength in cpw_calculations.py.
-        """
+        """Test the functionality of guided_wavelength in
+        cpw_calculations.py."""
         # Setup expected test results
         test_a_expected = (0.024356252567915772, 2.4617087473867807,
                            0.49998001152009985)
@@ -113,59 +122,29 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
             self.assertIterableAlmostEqual(actual, expected)
 
     def test_analyses_cpw_lumped_cpw(self):
-        """
-        Test the functionality of lumped_cpw in cpw_calculations.py.
-        """
+        """Test the functionality of lumped_cpw in cpw_calculations.py."""
         # Setup expected test results
-        test_a_expected = (1.0800538577735159e-13, 3.8582810449211895e-07,
-                           2.887792953700545e-11, 0.0, 115.58830719541695,
-                           1.000000000244218, 2.887792953700545e-11)
-        test_b_expected = (1.0800538577735159e-13, 3.858281044369713e-07,
-                           2.887792953700545e-11, 0.0, 115.58830718715625,
-                           1.0000000003871512, 2.887792953700545e-11)
-        test_c_expected = (1.0800538577735159e-13, 3.858281044369713e-07,
-                           2.887792953700545e-11, 0.0, 115.58830718715625,
-                           1.0000000003871512, 2.887792953700545e-11)
-        test_d_expected = (0.03756048636141296, 3.858281044369713e-07,
-                           2.887792953700545e-11, 0.0, 115.58830718715625,
-                           1.0000000003871512, 2.887792953700545e-11)
+        expected = (0.03756048636141296, 3.858281044369713e-07,
+                    2.887792953700545e-11, 0.0, 115.58830718715625,
+                    1.0000000003871512, 2.887792953700545e-11)
 
         # Generate actual result data
-        test_a_result = cpw_calculations.lumped_cpw(1000000.75, 0.25, 0.1,
-                                                    0.002, 0.003)
-        test_b_result = cpw_calculations.lumped_cpw(1000000.75,
-                                                    0.25,
-                                                    0.1,
-                                                    0.002,
-                                                    0.003,
-                                                    dielectric_constant=15.1)
-        test_c_result = cpw_calculations.lumped_cpw(1000000.75,
-                                                    0.25,
-                                                    0.1,
-                                                    0.002,
-                                                    0.003,
-                                                    dielectric_constant=15.1,
-                                                    loss_tangent=0.1)
-        test_d_result = cpw_calculations.lumped_cpw(1000000.75,
-                                                    0.25,
-                                                    0.1,
-                                                    0.002,
-                                                    0.003,
-                                                    dielectric_constant=15.1,
-                                                    loss_tangent=0.1,
-                                                    london_penetration_depth=1 *
-                                                    10**.7)
+        result = cpw_calculations.lumped_cpw(1000000.75,
+                                             0.25,
+                                             0.1,
+                                             0.002,
+                                             0.003,
+                                             dielectric_constant=15.1,
+                                             loss_tangent=0.1,
+                                             london_penetration_depth=1 *
+                                             10**.7)
 
         # Test all elements of the result data against expected data
-        self.assertIterableAlmostEqual(test_a_expected, test_a_result)
-        self.assertIterableAlmostEqual(test_b_expected, test_b_result)
-        self.assertIterableAlmostEqual(test_c_expected, test_c_result)
-        self.assertIterableAlmostEqual(test_d_expected, test_d_result)
+        self.assertIterableAlmostEqual(expected, result)
 
     def test_analyses_cpw_effective_dielectric_constant(self):
-        """
-        Test the functionality of effective_dielectric_constant in cpw_calculations.py.
-        """
+        """Test the functionality of effective_dielectric_constant in
+        cpw_calculations.py."""
         # Generate actual result data
         test_a_actual = cpw_calculations.effective_dielectric_constant(
             5 * 10**9, 10 * 10**-6, 6 * 10**-6, 760 * 10**-6, 200 * 10**-9, 1.3,
@@ -201,9 +180,8 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
                 1.3)
 
     def test_analyses_cpw_elliptic_int_constants(self):
-        """
-        Test the functionality of elliptic_int_constants in cpw_calculations.py.
-        """
+        """Test the functionality of elliptic_int_constants in
+        cpw_calculations.py."""
         # Setup expected test results
         test_a_expected = (1.8173686928723873, 2.536427762586688,
                            1.8173447681250923, 2.5364957731769597)
@@ -224,10 +202,21 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
         with self.assertRaises(ZeroDivisionError):
             cpw_calculations.elliptic_int_constants(0, 0, 0)
 
+    def test_analysis_lumped_ic_from_lj(self):
+        """Test the Ic_from_Lj function in lumped_capacitives.py."""
+        self.assertAlmostEqualRel(lumped_capacitive.Ic_from_Lj(5e9),
+                                  6.579465347418954e-26,
+                                  rel_tol=1e-26)
+
+    def test_analysis_lumped_ic_from_ej(self):
+        """Test the Ic_from_Ej function in lumped_capacitives.py."""
+        self.assertAlmostEqualRel(lumped_capacitive.Ic_from_Ej(5),
+                                  1.5198803355538426e+16,
+                                  rel_tol=1e16)
+
     def test_analyses_lumped_transmon_props(self):
-        """
-        Test the functionality of lumped_transmon_props in lumped_capacitives.py.
-        """
+        """Test the functionality of lumped_transmon_props in
+        lumped_capacitives.py."""
         # Setup expected test results
         expected = [
             (3.2897326737094774e-12, 311949615351887.6, 0.00018137620223473302,
@@ -259,9 +248,7 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
             self.assertAlmostEqual(_, result[x])
 
     def test_analyses_lumped_chi(self):
-        """
-        Test the functionality of chi in lumped_capacitives.py.
-        """
+        """Test the functionality of chi in lumped_capacitives.py."""
         # Generate actual result data
         test_a_result = lumped_capacitive.chi(50, 30, 20, 10)
         test_b_result = lumped_capacitive.chi(100, 60, 40, 20)
@@ -277,85 +264,62 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
         with self.assertRaises(ZeroDivisionError):
             test_a_result = lumped_capacitive.chi(50, 30, 20, 30)
 
-    #pylint: disable-msg=too-many-locals
     def test_analyses_lumped_levels_vs_ng_real_units(self):
-        """
-        Test the functionality of levels_vs_ng_real_units in lumped_capacitives.py.
-        """
+        """Test the functionality of levels_vs_ng_real_units in
+        lumped_capacitives.py."""
         # Setup expected test results
-        test_a_expected = (388.69198590629856, 383542.9078924127,
-                           774759511877.3142, 1.30777592387123e-06)
-        test_b_expected = (776.6068552699635, 766320.2586084654,
-                           1548045428680.8086, 6.545104023767585e-07)
-        test_c_expected = (388691.64789067156, 383543414.14295447,
-                           774809178857568.5, 1.3076920925450654e-09)
-        test_d_expected = (402.9047503275388, 340910.07369285496,
-                           774759511877.3142, 1.30777592387123e-06)
-        test_e_expected = (804.9985387148533, 681147.9428256081,
-                           1548045428680.8086, 6.545104023767585e-07)
-        test_f_expected = (402900.7730357366, 340916038.71322423,
-                           774809178857568.5, 1.3076920925450654e-09)
+        expected = [(388.69198590629856, 383542.9078924127, 774759511877.3142,
+                     1.30777592387123e-06),
+                    (776.6068552699635, 766320.2586084654, 1548045428680.8086,
+                     6.545104023767585e-07),
+                    (388691.64789067156, 383543414.14295447, 774809178857568.5,
+                     1.3076920925450654e-09),
+                    (402.9047503275388, 340910.07369285496, 774759511877.3142,
+                     1.30777592387123e-06),
+                    (804.9985387148533, 681147.9428256081, 1548045428680.8086,
+                     6.545104023767585e-07),
+                    (402900.7730357366, 340916038.71322423, 774809178857568.5,
+                     1.3076920925450654e-09)]
 
         # Generate actual result data
-        test_a_results = lumped_capacitive.levels_vs_ng_real_units(0.1, 0.1)
-        test_b_results = lumped_capacitive.levels_vs_ng_real_units(
-            0.05005, 0.05005)
-        test_c_results = lumped_capacitive.levels_vs_ng_real_units(
-            0.0001, 0.0001)
-        test_d_results = lumped_capacitive.levels_vs_ng_real_units(0.1,
-                                                                   0.1,
-                                                                   N=25)
-        test_e_results = lumped_capacitive.levels_vs_ng_real_units(0.05005,
-                                                                   0.05005,
-                                                                   N=25)
-        test_f_results = lumped_capacitive.levels_vs_ng_real_units(0.0001,
-                                                                   0.0001,
-                                                                   N=25)
+        result = []
+        result.append(lumped_capacitive.levels_vs_ng_real_units(0.1, 0.1))
+        result.append(
+            lumped_capacitive.levels_vs_ng_real_units(0.05005, 0.05005))
+        result.append(lumped_capacitive.levels_vs_ng_real_units(0.0001, 0.0001))
+        result.append(lumped_capacitive.levels_vs_ng_real_units(0.1, 0.1, N=25))
+        result.append(
+            lumped_capacitive.levels_vs_ng_real_units(0.05005, 0.05005, N=25))
+        result.append(
+            lumped_capacitive.levels_vs_ng_real_units(0.0001, 0.0001, N=25))
 
         # Test all elements of the result data against expected data
-        for k in [
-                test_a_results, test_b_results, test_c_results, test_d_results,
-                test_e_results
-        ]:
-            self.assertEqual(len(k), 4)
+        for my_result in result:
+            self.assertEqual(len(my_result), 4)
 
-        for (i, j) in [(test_a_results, test_a_expected),
-                       (test_b_results, test_b_expected),
-                       (test_c_results, test_c_expected),
-                       (test_d_results, test_d_expected),
-                       (test_e_results, test_e_expected),
-                       (test_f_results, test_f_expected)]:
-            self.assertIterableAlmostEqual(i, j, rel_tol=1e-6)
-
-        with self.assertRaises(IndexError):
-            lumped_capacitive.levels_vs_ng_real_units(100, 100, N=0)
+        self.assertEqual(len(expected), len(result))
+        for x, _ in enumerate(expected):
+            self.assertIterableAlmostEqual(_, result[x], rel_tol=1e-6)
 
         with self.assertRaises(ValueError):
             lumped_capacitive.levels_vs_ng_real_units(100, 100, N=-10)
 
     def test_analyses_lumped_get_c_and_ic(self):
-        """
-        Test the functionality of get_C_and_Ic in lumped_capacitives.py.
-        """
+        """Test the functionality of get_C_and_Ic in lumped_capacitives.py."""
         # Setup expected test results
-        test_a_expected = [33.38125825, -0.61217795]
+        expected = [33.38125825, -0.61217795]
 
         # Generate actual result data
-        test_a_result = lumped_capacitive.get_C_and_Ic(0.1, 0.2, 1.25, 1.75)
+        result = lumped_capacitive.get_C_and_Ic(0.1, 0.2, 1.25, 1.75)
 
         # Test all elements of the result data against expected data
-        self.assertEqual(len(test_a_result), 2)
-        self.assertAlmostEqualRel(test_a_expected[0],
-                                  test_a_result[0],
-                                  rel_tol=1e-6)
-        self.assertAlmostEqualRel(test_a_expected[1],
-                                  test_a_result[1],
-                                  rel_tol=1e-6)
+        self.assertEqual(len(result), 2)
+        self.assertAlmostEqualRel(expected[0], result[0], rel_tol=1e-6)
+        self.assertAlmostEqualRel(expected[1], result[1], rel_tol=1e-6)
 
     def test_analyses_lumped_cos_to_mega_and_delta(self):
-        """
-        Test the functionality of cos_to_mega_and_delta in lumped_capacitives.py.
-        """
+        """Test the functionality of cos_to_mega_and_delta in
+        lumped_capacitives.py."""
         # Generate actual result data
         test_a_result = lumped_capacitive.cos_to_mega_and_delta(
             1000, 100, 200, 200)
@@ -371,9 +335,7 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
                 0, 100, 200, 200)
 
     def test_analyses_lumped_chargeline_t1(self):
-        """
-        Test the functionality of chargeline_T1 in lumped_capacitives.py.
-        """
+        """Test the functionality of chargeline_T1 in lumped_capacitives.py."""
         # Generate actual result data
         test_a_result = lumped_capacitive.chargeline_T1(100, 20, 30)
         test_b_result = lumped_capacitive.chargeline_T1(13, 104, 1.6)
@@ -386,9 +348,8 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
             lumped_capacitive.chargeline_T1(1, 55, 0)
 
     def test_analyses_lumped_readin_q3d_matrix(self):
-        """
-        Test the functionality of readin_q3d_matrix in lumped_capacitives.py.
-        """
+        """Test the functionality of readin_q3d_matrix in
+        lumped_capacitives.py."""
         # Setup expected test results
         units_expected = 'farad'
         design_variation_expected = (
@@ -479,9 +440,8 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
 
     #pylint: disable-msg=too-many-locals
     def test_analyses_lumped_load_q3d_capacitance_matrix(self):
-        """
-        Test the functionality of load_q3d_capacitance_matrix in lumped_capacitives.py.
-        """
+        """Test the functionality of load_q3d_capacitance_matrix in
+        lumped_capacitives.py."""
         # Setup expected test results
         test_a_design_variation_expected = (
             "$BBoxL='650um' $boxH='750um' $boxL='2mm' " +
@@ -659,9 +619,7 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
                                        places=3)
 
     def test_analyses_lumped_move_index_to(self):
-        """
-        Test the functionality of move_index_to in lumped_capacitives.py.
-        """
+        """Test the functionality of move_index_to in lumped_capacitives.py."""
         # Setup expected test results
         test_a_expected = [0, 2, 3, 1, 4]
         test_b_expected = [1, 2, 3, 4, 0]
@@ -684,9 +642,8 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
             lumped_capacitive.move_index_to(3, 1.5, 5)
 
     def test_analyses_lumped_df_reorder_matrix_basis(self):
-        """
-        Test the functionality of df_reorder_matrix_basis in lumped_capacitives.py.
-        """
+        """Test the functionality of df_reorder_matrix_basis in
+        lumped_capacitives.py."""
         # Setup expected test results
         data = {
             'ground_plane': [
@@ -792,9 +749,7 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
                 df_a, 1, 35)
 
     def test_analyses_hamiltonian_ho_wavefunction(self):
-        """
-        Test the wavefunction function in the HO_waefunction.py file.
-        """
+        """Test the wavefunction function in the HO_waefunction.py file."""
         x_range = np.linspace(-5, 5, 5)
         actual = wavefunction(1.0, 1.0, 0.0, x_range)
 
@@ -807,6 +762,58 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
 
         for x, _ in enumerate(actual):
             self.assertAlmostEqualRel(_, expected[x], rel_tol=1e-6)
+
+    def test_analysis_transmon_charge_basis_evaluek(self):
+        """Test the evaluek function in the Hcpb class."""
+        hcpb = Hcpb(nlevels=15, Ej=13971.3, Ec=295.2, ng=0.001)
+        self.assertAlmostEqualRel(hcpb.evalue_k(0),
+                                  -11175.114908531536,
+                                  rel_tol=1e-6)
+        self.assertAlmostEqualRel(hcpb.evalue_k(2),
+                                  -653.7652579628739,
+                                  rel_tol=1e-6)
+
+    def test_analysis_transmon_charge_basis_evec_k(self):
+        """Test the evec_k function in the Hcpb class."""
+        hcpb = Hcpb(nlevels=2, Ej=13971.3, Ec=295.2, ng=0.001)
+
+        expected = [
+            0.434102035, 0.558197591, 0.000417109677, -0.557943545, -0.434361255
+        ]
+        actual = hcpb.evec_k(1)
+
+        self.assertIterableAlmostEqual(expected, actual, abs_tol=1e-4)
+
+    def test_analysis_transmon_charge_basis_fij(self):
+        """Test the fij function in the Hcpb class."""
+        hcpb = Hcpb(nlevels=15, Ej=13971.3, Ec=295.2, ng=0.001)
+
+        self.assertAlmostEqual(hcpb.fij(1, 2), 5090.160741580386)
+
+    def test_analysis_transmon_charge_basis_anharm(self):
+        """Test the anharm function in the Hcpb class."""
+        hcpb = Hcpb(nlevels=15, Ej=13971.3, Ec=295.2, ng=0.001)
+        self.assertAlmostEqual(hcpb.anharm(), -341.0281674078906)
+
+    def test_analysis_transmon_charge_basis_n_ij(self):
+        """Test the n_ij function in the Hcpb class."""
+        hcpb = Hcpb(nlevels=15, Ej=13971.3, Ec=295.2, ng=0.001)
+        self.assertAlmostEqual(hcpb.n_ij(1, 2), 1.4670047579229986)
+
+    def test_analysis_kappa_calculation_kappa_in(self):
+        """Test the kappa_in function in kappa_calculation.py."""
+        self.assertAlmostEqual(
+            kappa_calculation.kappa_in(5.0E9, 30.0E-15, 4.5E9),
+            161144.37988054403)
+
+    def test_analysis_sweeping_option_value(self):
+        """Test the option_value function in the Sweeping class"""
+        design = designs.DesignPlanar()
+        sweeping = Sweeping(design)
+
+        in_dict = {'a': 1, 'b': 'bee'}
+        self.assertEqual(sweeping.option_value(in_dict, 'a'), 1)
+        self.assertEqual(sweeping.option_value(in_dict, 'b'), 'bee')
 
 
 if __name__ == '__main__':

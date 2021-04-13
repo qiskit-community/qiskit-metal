@@ -15,9 +15,7 @@
 # pylint: disable-msg=unnecessary-pass
 # pylint: disable-msg=pointless-statement
 # pylint: disable-msg=broad-except
-"""
-Qiskit Metal unit tests components functionality.
-"""
+"""Qiskit Metal unit tests components functionality."""
 
 import unittest
 
@@ -26,26 +24,18 @@ from qiskit_metal._defaults import DefaultOptionsRenderer
 
 
 class TestDefautOptions(unittest.TestCase):
-    """
-    Unit test class
-    """
+    """Unit test class."""
 
     def setUp(self):
-        """
-        Setup unit test.
-        """
+        """Setup unit test."""
         pass
 
     def tearDown(self):
-        """
-        Tie any loose ends.
-        """
+        """Tie any loose ends."""
         pass
 
     def test_default_options_instantiation_default_metal_options(self):
-        """
-        Test instantiation of DefaultMetalOptions.
-        """
+        """Test instantiation of DefaultMetalOptions."""
         try:
             DefaultMetalOptions
         except Exception:
@@ -57,9 +47,7 @@ class TestDefautOptions(unittest.TestCase):
             self.fail("DefaultMetalOptions({}) failed")
 
     def test_default_options_instantiation_default_options_renderer(self):
-        """
-        Test instantiation of DefaultOptionsRenderer.
-        """
+        """Test instantiation of DefaultOptionsRenderer."""
         try:
             DefaultOptionsRenderer
         except Exception:
@@ -78,9 +66,8 @@ class TestDefautOptions(unittest.TestCase):
             )
 
     def test_default_options_create(self):
-        """
-        Test the functionality of initializing default_options in _defaults.py.
-        """
+        """Test the functionality of initializing default_options in
+        _defaults.py."""
         # Setup expected test results
         _options = DefaultMetalOptions()
 
@@ -103,9 +90,8 @@ class TestDefautOptions(unittest.TestCase):
         self.assertEqual(5.0, _geometry['buffer_mitre_limit'])
 
     def test_default_options_update(self):
-        """
-        Test the functionality of updating default_options in _defaults.py.
-        """
+        """Test the functionality of updating default_options in
+        _defaults.py."""
         # Setup expected test results
         _options = DefaultMetalOptions()
 
@@ -125,9 +111,8 @@ class TestDefautOptions(unittest.TestCase):
         self.assertEqual('miles', _options['units'])
 
     def test_default_options_renderer_create(self):
-        """
-        Test the functionality of initializing default_options_renderer in _defaults.py.
-        """
+        """Test the functionality of initializing default_options_renderer in
+        _defaults.py."""
         # Setup expected test results
         _options = DefaultOptionsRenderer()
 
@@ -154,9 +139,8 @@ class TestDefautOptions(unittest.TestCase):
         self.assertEqual(_draw_bounding_box[2], ['0.890mm', '0.900mm'])
 
     def test_default_options_renderer_update(self):
-        """
-        Test the functionality of updating default_options_renderer in _defaults.py.
-        """
+        """Test the functionality of updating default_options_renderer in
+        _defaults.py."""
         # Setup expected test results
         _options = DefaultOptionsRenderer()
 

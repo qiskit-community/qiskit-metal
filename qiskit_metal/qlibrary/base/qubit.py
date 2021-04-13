@@ -18,8 +18,7 @@ from .base import QComponent
 
 
 class BaseQubit(QComponent):
-    '''
-    Qubit base class. Use to subscript, not to generate directly.
+    """Qubit base class. Use to subscript, not to generate directly.
 
     Has connection lines that can be added
 
@@ -34,7 +33,7 @@ class BaseQubit(QComponent):
         * pos_y: '0um'
         * connection_pads: empty Dict -- The dictionary which contains all active connection lines for the qubit.
         * _default_connection_pads: empty Dict -- The default values for the (if any) connection lines of the qubit.
-    '''
+    """
 
     _img = 'Metal_Qubit.png'
     default_options = Dict(pos_x='0um',
@@ -85,9 +84,7 @@ class BaseQubit(QComponent):
             self.rebuild()
 
     def _set_options_connection_pads(self):
-        """
-        Applies the default options.
-        """
+        """Applies the default options."""
         # class_name = type(self).__name__
         assert '_default_connection_pads' in self.design.template_options[
             self.class_name], f"""When

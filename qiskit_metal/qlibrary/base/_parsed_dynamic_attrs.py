@@ -11,9 +11,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""
-Parsed dynamic attributes.
-"""
+"""Parsed dynamic attributes."""
 import pprint
 from typing import List
 from typing import TYPE_CHECKING
@@ -23,7 +21,7 @@ if TYPE_CHECKING:
 
 
 def is_ipython_magic(check_attribute: str) -> bool:
-    """Ignore the following checks by jupyter """
+    """Ignore the following checks by jupyter."""
     return check_attribute in {
         '_ipython_canary_method_should_not_exist_',
         '_ipython_display_',
@@ -44,8 +42,7 @@ def is_ipython_magic(check_attribute: str) -> bool:
 
 
 class ParsedDynamicAttributes_Component():
-    """
-    Provides a parsing view of the component options.
+    """Provides a parsing view of the component options.
 
     When accessed, returns parse versions of the user options.
     Works with nested options too.
@@ -59,7 +56,6 @@ class ParsedDynamicAttributes_Component():
         >> `float(1e7)`
     """
     """
-    Ask Zlatko for explanation.
     Special method names:
         See Python Data Module for Objects:
             https://docs.python.org/3/reference/datamodel.html
@@ -110,19 +106,15 @@ class ParsedDynamicAttributes_Component():
         return self.__getdict__().__iter__()
 
     def items(self):
-        """
-        Produces tuples consisting of keys and respective parsed
-        values for iterating over a dictionary.
-        """
+        """Produces tuples consisting of keys and respective parsed values for
+        iterating over a dictionary."""
         for key in self:  # calls __iter__
             yield (key, self.__getitem__(key))
 
     def __getattr__(self, name: str):
-        """
-        Delegating Attribute Access
-        After regular attribute access, try looking up the name
-        This allows simpler access to columns for interactive use.
-        """
+        """Delegating Attribute Access After regular attribute access, try
+        looking up the name This allows simpler access to columns for
+        interactive use."""
         #### Note: obj.x will always call obj.__getattribute__('x') prior to
         # calling obj.__getattr__('x').
         #
@@ -140,8 +132,7 @@ class ParsedDynamicAttributes_Component():
         return self.__getitem__(name)
 
     def __getitem__(self, name: str):
-        """
-        Get the item associated with the given name.
+        """Get the item associated with the given name.
 
         Args:
             name (str): Name of the item
@@ -193,7 +184,9 @@ class ParsedDynamicAttributes_Component():
     #     return self.__getdict__().__repr__()
 
     def __repr__(self):
-        """For viewing. Just return the whole parse dictionary.
+        """For viewing.
+
+        Just return the whole parse dictionary.
         """
         b = '\033[95m\033[1m'
         e = '\033[0m'
@@ -231,8 +224,7 @@ self.p.a.c
 
 
 def get_nested_dict_item(dic: dict, key_list: list, level=0):
-    """
-    Get the nested dictionary item
+    """Get the nested dictionary item.
 
     Args:
         dic (dict): Dictionary of nested items

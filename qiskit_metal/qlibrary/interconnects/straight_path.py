@@ -17,20 +17,17 @@ from qiskit_metal.qlibrary import QRoute
 
 
 class RouteStraight(QRoute):
-    """
-    Draw a straight Route connecting two pins.
-    """
+    """Draw a straight Route connecting two pins."""
 
     component_metadata = Dict(short_name='cpw')
     """Component metadata"""
 
     def make(self):
-        """
-        The make function implements the logic that creates the geometry
-        (poly, path, etc.) from the qcomponent.options dictionary of parameters,
-        and the adds them to the design, using qcomponent.add_qgeometry(...),
-        adding in extra needed information, such as layer, subtract, etc.
-        """
+        """The make function implements the logic that creates the geometry
+        (poly, path, etc.) from the qcomponent.options dictionary of
+        parameters, and the adds them to the design, using
+        qcomponent.add_qgeometry(...), adding in extra needed information, such
+        as layer, subtract, etc."""
         # Set the CPW pins and add the points/directions to the lead-in/out arrays
         self.set_pin("start")
         self.set_pin("end")

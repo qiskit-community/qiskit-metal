@@ -11,9 +11,8 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""
-Matplotlib draw utility functions for shapely objects, for qgeometry, and for components.
-"""
+"""Matplotlib draw utility functions for shapely objects, for qgeometry, and
+for components."""
 # pylint: disable=ungrouped-imports
 
 # allow full access to all functions and code in the toolbox

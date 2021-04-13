@@ -13,9 +13,9 @@
 # that they have been altered from the originals.
 
 # pylint: disable=protected-access
-'''
-Saving and load metal data.
-'''
+# pylint: disable-msg=relative-beyond-top-level
+# pylint: disable-msg=broad-except
+"""Saving and load metal data."""
 
 import pickle
 #from ..designs.base
@@ -25,8 +25,7 @@ __all__ = ['save_metal', 'load_metal_design']
 
 
 def save_metal(filename: str, design):
-    """
-    Save metal0
+    """Save metal0.
 
     Args:
         filename (str): File path
@@ -65,13 +64,12 @@ def save_metal(filename: str, design):
     return result
 
 
-def load_metal_design(filename: str, do_update=True):
-    """
-    Load metal design.
+# pylint: disable-msg=import-outside-toplevel
+def load_metal_design(filename: str):
+    """Load metal design.
 
     Args:
         filename (str): File path
-        do_update (bool): True to update, False otherwsie.  Defaults to True.
 
     Returns:
         picked QDesign: The pickled design object and updates if asked the param dicts for defaults
@@ -83,17 +81,5 @@ def load_metal_design(filename: str, do_update=True):
     # Restore
     from .. import logger
     design.logger = logger  #TODO: fix from save pikcle
-    ''' outdated code
-    if do_update:
-        from ..config import DEFAULT, DEFAULT_OPTIONS
-
-        DEFAULT.clear()
-        DEFAULT_OPTIONS.clear()
-
-        # Will this work? I need to change the pointers,
-        # so that they are linked after
-        DEFAULT.update(design._defaults)
-        DEFAULT_OPTIONS.update(design._default_options)
-    '''
 
     return design
