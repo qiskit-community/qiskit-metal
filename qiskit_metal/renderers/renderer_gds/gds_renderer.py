@@ -11,30 +11,32 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
+""" This module has a QRenderer to export QDesign to a GDS file."""
+# pylint: disable=too-many-lines
 
-from ... import Dict
-import math
-from scipy.spatial import distance
-import os
-import gdspy
-import geopandas
-import shapely
-
-from shapely.geometry import LineString as LineString
 from copy import deepcopy
 from operator import itemgetter
 from typing import TYPE_CHECKING
 from typing import Dict as Dict_
 from typing import List, Tuple, Union, Any, Iterable
-import pandas as pd
+import math
+import os
+from shapely.geometry import LineString
 from pandas.api.types import is_numeric_dtype
 
+import gdspy
+import geopandas
+import shapely
+from scipy.spatial import distance
+import pandas as pd
 import numpy as np
 
 from qiskit_metal.renderers.renderer_base import QRenderer
 from qiskit_metal.renderers.renderer_gds.make_cheese import Cheesing
 from qiskit_metal.toolbox_metal.parsing import is_true
 from qiskit_metal import draw
+
+from ... import Dict
 
 from .. import config
 if not config.is_building_docs():
@@ -324,6 +326,11 @@ class QGDSRenderer(QRenderer):
                 f'bounding_box_scale_y.  User provided '
                 f'bounding_box_scale_y = {bounding_box_scale_y}, '
                 f'using default_options.bounding_box_scale_y.')
+
+    @property
+    def clear_library(self):
+        """Use private method to clear library."""
+        self._clear_library()
 
     def _clear_library(self):
         """Clear current library."""
@@ -1125,8 +1132,8 @@ class QGDSRenderer(QRenderer):
         cheese_code = self.check_cheese(chip, layer)
 
         if no_cheese_code == 0 or cheese_code == 0:
-            self.logger.warning(f'Not able to get no_cheese_view_in_file or '
-                                f'cheese_view_in_file from self.options.')
+            self.logger.warning('Not able to get no_cheese_view_in_file or '
+                                'cheese_view_in_file from self.options.')
             code = 0
             return code
         if no_cheese_code == 1 and cheese_code == 1:
@@ -1503,7 +1510,7 @@ class QGDSRenderer(QRenderer):
 
                         if diff_geometry is None:
                             self.design.logger.warning(
-                                f'There is no table named diff_geometry to write.'
+                                'There is no table named diff_geometry to write.'
                             )
                         else:
                             ground_cell.add(diff_geometry)
