@@ -383,7 +383,7 @@ class QRenderer():
         integer, specifies which of these 3 cases applies.
 
         Args:
-            highlight_qcomponents (Union[list, None], optional): Components to render into Ansys. Defaults to None.
+            highlight_qcomponents (Union[list, None], optional): Components to render into chosen application. Defaults to None.
 
         Returns:
             Tuple[list, int]: Empty or partial list of components in QDesign.
