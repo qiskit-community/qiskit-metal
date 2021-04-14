@@ -167,7 +167,8 @@ class QHFSSRenderer(QAnsysRenderer):
         self.qcomp_ids, self.case = self.get_unique_component_ids(selection)
 
         if self.case == 2:
-            self.logger.warning('Unable to proceed with rendering. Please check selection.')
+            self.logger.warning(
+                'Unable to proceed with rendering. Please check selection.')
             return
 
         self.chip_subtract_dict = defaultdict(set)

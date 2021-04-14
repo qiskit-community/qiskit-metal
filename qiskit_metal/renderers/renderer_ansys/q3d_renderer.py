@@ -146,9 +146,10 @@ class QQ3DRenderer(QAnsysRenderer):
         self.qcomp_ids, self.case = self.get_unique_component_ids(selection)
 
         if self.case == 2:
-            self.logger.warning('Unable to proceed with rendering. Please check selection.')
+            self.logger.warning(
+                'Unable to proceed with rendering. Please check selection.')
             return
-        
+
         self.chip_subtract_dict = defaultdict(set)
         self.assign_perfE = []
         self.assign_mesh = []
@@ -186,8 +187,8 @@ class QQ3DRenderer(QAnsysRenderer):
             name (str): Name assigned to this group of thin conductors.
         """
         self.boundaries.AssignThinConductor([
-            "NAME:" + (name if name else "ThinCond1"), "Objects:=", self.assign_perfE,
-            "Material:=", material_type if material_type else
+            "NAME:" + (name if name else "ThinCond1"), "Objects:=",
+            self.assign_perfE, "Material:=", material_type if material_type else
             self.q3d_options['material_type'], "Thickness:=",
             thickness if thickness else self.q3d_options['material_thickness']
         ])
@@ -514,14 +515,15 @@ class QQ3DRenderer(QAnsysRenderer):
                 solution_kind='AdaptivePass',
                 pass_number=i)
             c_units = ureg(user_units).to('farads').magnitude
-            res = extract_transmon_coupled_Noscillator(df_cmat.values * c_units,
-                                                       IC_Amps,
-                                                       CJ,
-                                                       N,
-                                                       fb,
-                                                       fr,
-                                                       g_scale=1,
-                                                       print_info = bool(i == maxPass - 1))
+            res = extract_transmon_coupled_Noscillator(
+                df_cmat.values * c_units,
+                IC_Amps,
+                CJ,
+                N,
+                fb,
+                fr,
+                g_scale=1,
+                print_info=bool(i == maxPass - 1))
             RES[i] = res
         RES = pd.DataFrame(RES).transpose()
         RES['χr MHz'] = abs(RES['chi_in_MHz'].apply(lambda x: x[0]))

@@ -409,7 +409,7 @@ def extract_transmon_coupled_Noscillator(capMatrix,
         for ii in range(N):
             for jj in range(ii + 1, N):
                 print('gbus%d_%d %f [MHz]' % (ii + 1, jj + 1, gbusbus[ii, jj] /
-                                            (2 * np.pi * 1e6)))
+                                              (2 * np.pi * 1e6)))
 
     return ham_dict
 
