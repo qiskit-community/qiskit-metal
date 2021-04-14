@@ -167,7 +167,8 @@ class QHFSSRenderer(QAnsysRenderer):
         self.qcomp_ids, self.case = self.get_unique_component_ids(selection)
 
         if self.case == 2:
-            self.logger.warning('Unable to proceed with rendering. Please check selection.')
+            self.logger.warning(
+                'Unable to proceed with rendering. Please check selection.')
             return
 
         self.chip_subtract_dict = defaultdict(set)
@@ -254,7 +255,7 @@ class QHFSSRenderer(QAnsysRenderer):
            RLC boundary condition.
         2. A line that is later used to calculate the voltage in post-processing analysis.
         If in HFSS driven modal, junctions can be inductors, lumped ports, both inductors
-        and lumped ports, or omitted altogether. Ports are characterized by an impedance 
+        and lumped ports, or omitted altogether. Ports are characterized by an impedance
         value given in the list jj_to_port when render_design() is called.
 
         Args:
@@ -713,7 +714,7 @@ class QHFSSRenderer(QAnsysRenderer):
                     basis_order=basis_order)
 
     def edit_eigenmode_setup(self, setup_args: Dict):
-        """User can pass key/values to edit the setup for active eigenmode setup.  
+        """User can pass key/values to edit the setup for active eigenmode setup.
 
         Args:
             setup_args (Dict): a Dict with possible keys/values.
@@ -728,7 +729,7 @@ class QHFSSRenderer(QAnsysRenderer):
             * basis_order (int, optional): Basis order. Defaults to -1.
 
             Note, that these two are currently NOT implemented:
-            Ansys API named EditSetup not documented for HFSS, and 
+            Ansys API named EditSetup not documented for HFSS, and
             self.pinfo.setup does not have all the property variables used for Setup.
             * min_passes (int, optional): Minimum number of passes. Defaults to 1.
             * min_converged (int, optional): Minimum number of converged passes. Defaults to 1.
@@ -827,7 +828,7 @@ class QHFSSRenderer(QAnsysRenderer):
             )
 
     def edit_drivenmodal_setup(self, setup_args: Dict):
-        """User can pass key/values to edit the setup for active driven modal setup.  
+        """User can pass key/values to edit the setup for active driven modal setup.
 
         Args:
             setup_args (Dict): a Dict with possible keys/values.
@@ -840,7 +841,7 @@ class QHFSSRenderer(QAnsysRenderer):
             * basis_order (int, optional): Basis order. Defaults to -1 (1 is "Mixed Order").
 
             Note, that these three are currently NOT implemented:
-            Ansys API named EditSetup not documented for HFSS, and 
+            Ansys API named EditSetup not documented for HFSS, and
             self.pinfo.setup does not have all the property variables used for Setup.
             * max_delta_s (float, optional): Absolute value of maximum difference in scattering parameter S. Defaults to 0.1.
             * min_passes (int, optional): Minimum number of passes. Defaults to 1.

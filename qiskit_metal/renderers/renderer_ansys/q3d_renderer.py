@@ -146,9 +146,10 @@ class QQ3DRenderer(QAnsysRenderer):
         self.qcomp_ids, self.case = self.get_unique_component_ids(selection)
 
         if self.case == 2:
-            self.logger.warning('Unable to proceed with rendering. Please check selection.')
+            self.logger.warning(
+                'Unable to proceed with rendering. Please check selection.')
             return
-        
+
         self.chip_subtract_dict = defaultdict(set)
         self.assign_perfE = []
         self.assign_mesh = []
@@ -186,8 +187,8 @@ class QQ3DRenderer(QAnsysRenderer):
             name (str): Name assigned to this group of thin conductors.
         """
         self.boundaries.AssignThinConductor([
-            "NAME:" + (name if name else "ThinCond1"), "Objects:=", self.assign_perfE,
-            "Material:=", material_type if material_type else
+            "NAME:" + (name if name else "ThinCond1"), "Objects:=",
+            self.assign_perfE, "Material:=", material_type if material_type else
             self.q3d_options['material_type'], "Thickness:=",
             thickness if thickness else self.q3d_options['material_thickness']
         ])
@@ -313,7 +314,7 @@ class QQ3DRenderer(QAnsysRenderer):
                     solver_type=solver_type)
 
     def edit_q3d_setup(self, setup_args: Dict):
-        """User can pass key/values to edit the setup for active q3d setup.  
+        """User can pass key/values to edit the setup for active q3d setup.
 
         Args:
             setup_args (Dict): a Dict with possible keys/values.
@@ -327,9 +328,9 @@ class QQ3DRenderer(QAnsysRenderer):
 
             Note, that these 7 arguments are currently NOT implemented:
             Ansys API named EditSetup requires all arguments to be passed, but
-            presently have no way to read all of the setup.  
-            Also, self.pinfo.setup does not have all the @property variables 
-            used for Setup. 
+            presently have no way to read all of the setup.
+            Also, self.pinfo.setup does not have all the @property variables
+            used for Setup.
             * save_fields (bool, optional): Whether or not to save fields. Defaults to False.
             * enabled (bool, optional): Whether or not setup is enabled. Defaults to True.
             * min_converged_passes (int, optional): Minimum number of converged passes. Defaults to 2.
@@ -514,14 +515,15 @@ class QQ3DRenderer(QAnsysRenderer):
                 solution_kind='AdaptivePass',
                 pass_number=i)
             c_units = ureg(user_units).to('farads').magnitude
-            res = extract_transmon_coupled_Noscillator(df_cmat.values * c_units,
-                                                       IC_Amps,
-                                                       CJ,
-                                                       N,
-                                                       fb,
-                                                       fr,
-                                                       g_scale=1,
-                                                       print_info = bool(i == maxPass - 1))
+            res = extract_transmon_coupled_Noscillator(
+                df_cmat.values * c_units,
+                IC_Amps,
+                CJ,
+                N,
+                fb,
+                fr,
+                g_scale=1,
+                print_info=bool(i == maxPass - 1))
             RES[i] = res
         RES = pd.DataFrame(RES).transpose()
         RES['χr MHz'] = abs(RES['chi_in_MHz'].apply(lambda x: x[0]))
