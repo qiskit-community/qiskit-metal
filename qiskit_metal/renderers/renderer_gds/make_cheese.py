@@ -18,7 +18,7 @@ import gdspy
 import shapely
 import numpy as np
 
-from ... import Dict
+#from ... import Dict
 
 
 ### Presently this is not instantiated nor called nor executed.
@@ -142,6 +142,8 @@ class Cheesing():
                 'will happen, the resulting size is not realistic.')
 
         self.one_hole_cell = None
+
+        self.hole = None
 
     def apply_cheesing(self) -> gdspy.GdsLibrary:
         """Not complete.
