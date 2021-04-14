@@ -465,7 +465,7 @@ class QAnsysRenderer(QRenderer):
         # yapf: disable
         args_list = [
                 name                 ,
-                "SolutionName:="     , SolutionName,  # name of the setup 
+                "SolutionName:="     , SolutionName,  # name of the setup
                 "UserSpecifyName:="  , UserSpecifyName ,
                 "UserSpecifyFolder:=", UserSpecifyFolder,
                 "QuantityName:="     , QuantityName,

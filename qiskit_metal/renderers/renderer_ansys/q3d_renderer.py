@@ -314,7 +314,7 @@ class QQ3DRenderer(QAnsysRenderer):
                     solver_type=solver_type)
 
     def edit_q3d_setup(self, setup_args: Dict):
-        """User can pass key/values to edit the setup for active q3d setup.  
+        """User can pass key/values to edit the setup for active q3d setup.
 
         Args:
             setup_args (Dict): a Dict with possible keys/values.
@@ -328,9 +328,9 @@ class QQ3DRenderer(QAnsysRenderer):
 
             Note, that these 7 arguments are currently NOT implemented:
             Ansys API named EditSetup requires all arguments to be passed, but
-            presently have no way to read all of the setup.  
-            Also, self.pinfo.setup does not have all the @property variables 
-            used for Setup. 
+            presently have no way to read all of the setup.
+            Also, self.pinfo.setup does not have all the @property variables
+            used for Setup.
             * save_fields (bool, optional): Whether or not to save fields. Defaults to False.
             * enabled (bool, optional): Whether or not setup is enabled. Defaults to True.
             * min_converged_passes (int, optional): Minimum number of converged passes. Defaults to 2.
