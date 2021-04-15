@@ -1,4 +1,4 @@
-﻿﻿# Tutorials Access and Schedule
+# Tutorials - Access and Schedule
 
 Through June 2021 we are offering live tutorials and Q&A.
 
