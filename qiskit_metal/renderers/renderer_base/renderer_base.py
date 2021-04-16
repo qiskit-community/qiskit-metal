@@ -116,6 +116,7 @@ class QRenderer():
         The structure of cls.element_table_data should be same as
         cls.element_extensions.
         """
+
         for table, a_dict in cls.element_table_data.items():
             cls.element_extensions[table] = dict()
             for col_name, col_value in a_dict.items():
@@ -378,11 +379,11 @@ class QRenderer():
         that the name of component exists in QDesign. If QDesign doesn't
         contain any component, or if all components in QDesign are found in
         highlight_qcomponents, return an empty list; otherwise return a list of
-        unique components to be sent to Ansys. The second returned item, an
+        unique components to be sent to the renderer. The second returned item, an
         integer, specifies which of these 3 cases applies.
 
         Args:
-            highlight_qcomponents (Union[list, None], optional): Components to render into Ansys. Defaults to None.
+            highlight_qcomponents (Union[list, None], optional): Components to render. Defaults to None.
 
         Returns:
             Tuple[list, int]: Empty or partial list of components in QDesign.
@@ -395,7 +396,7 @@ class QRenderer():
                     f'The component={qcomp} in highlight_qcomponents not'
                     ' in QDesign.')
                 return [], 2  # Invalid
-        if len(unique_qcomponents) == len(self.design.components):
+        if len(unique_qcomponents) in (0, len(self.design.components)):
             return [], 1  # Everything selected
         return [self.design.name_to_id[elt] for elt in unique_qcomponents
                ], 0  # Subset selected
@@ -455,8 +456,8 @@ class QRenderer():
         raise NotImplementedError()
 
     def render_components(self, selection=None):
-        """Render all components of the design. If selection is none, then
-        render all components.
+        """Render all components of the design.
+        If selection is none, then render all components.
 
         Args:
             selection (QComponent): Component to render.
@@ -475,12 +476,11 @@ class QRenderer():
         """Render the specified qcomponent.
 
         Args:
-            qcomponent (QComponent): Qcomponent to render.
+            qcomponent (QComponent): QComponent to render.
 
         Raises:
             NotImplementedError: Function not written yet
         """
-
         # To avoid linting message in a subclass: Method 'render_component'
         # is abstract in class 'QRenderer' but is not overridden,
         # have this method do something.

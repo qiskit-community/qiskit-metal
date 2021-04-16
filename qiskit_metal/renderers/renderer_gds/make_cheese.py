@@ -291,7 +291,7 @@ class Cheesing():
                                    max_points=self.max_points,
                                    precision=self.precision,
                                    layer=self.layer,
-                                   datatype=self.datatype_cheese)
+                                   datatype=self.datatype_cheese + 1)
         diff_holes_cell_name = f'TOP_{self.chip_name}_{self.layer}_Cheese_diff'
         diff_holes_cell = self.lib.new_cell(diff_holes_cell_name,
                                             overwrite_duplicate=True)
@@ -313,7 +313,7 @@ class Cheesing():
         top_chip_layer_name = f'TOP_{self.chip_name}_{self.layer}'
         if top_chip_layer_name in self.lib.cells.keys():
             ground_cell = self.lib.cells[top_chip_layer_name]
-            ground_cheese = gdspy.boolean(ground_cell.get_polygonsets(),
+            ground_cheese = gdspy.boolean(ground_cell.get_polygons(),
                                           diff_holes_cell.get_polygonsets(),
                                           'not',
                                           max_points=self.max_points,

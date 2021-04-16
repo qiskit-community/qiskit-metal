@@ -1117,7 +1117,7 @@ class QGDSRenderer(QRenderer):
             layer (int): Layer used in chip.
 
         Returns:
-            int: Oberservation of options based on chip and layer information.
+            int: Observation of options based on chip and layer information.
 
             * 0 This is the initialization state.
             * 1 Show the layer in both cheese and no cheese
@@ -1688,7 +1688,6 @@ class QGDSRenderer(QRenderer):
                         gdspy.CellReference(temp_cell,
                                             origin=center,
                                             rotation=rotation))
-                    deleteme = 5
                 else:
                     self.logger.warning(
                         f'From the "junction" table, the cell named'
