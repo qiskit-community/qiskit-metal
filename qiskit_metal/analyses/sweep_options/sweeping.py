@@ -586,7 +586,8 @@ class Sweeping():
                 selection=qcomp_render,
                 open_pins=endcaps_render)  #Render the items chosen
 
-            a_q3d.analyze_setup("Setup")  #Analyze said solution setup.
+            a_q3d.analyze_setup(
+                a_q3d.pinfo.setup.name)  #Analyze said solution setup.
             cap_matrix = a_q3d.get_capacitance_matrix()
 
             sweep_values = dict()
