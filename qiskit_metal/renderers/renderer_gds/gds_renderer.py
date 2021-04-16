@@ -489,7 +489,7 @@ class QGDSRenderer(QRenderer):
         return scaled_box, (minx, miny, maxx, maxy)
 
     def _check_qcomps(self,
-                      highlight_qcomponents: list = []) -> Tuple[list, int]:
+                      highlight_qcomponents: list = None) -> Tuple[list, int]:
         """Confirm the list doesn't have names of components repeated. Comfirm
         that the name of component exists in QDesign.
 
@@ -505,6 +505,9 @@ class QGDSRenderer(QRenderer):
             int: 0 if all ended well. Otherwise,
             1 if QComponent name not in design.
         """
+        if highlight_qcomponents is None:
+            highlight_qcomponents = []
+
         # Remove identical QComponent names.
         unique_qcomponents = list(set(highlight_qcomponents))
 
@@ -530,7 +533,7 @@ class QGDSRenderer(QRenderer):
         return unique_qcomponents, 0
 
     def _create_qgeometry_for_gds(self,
-                                  highlight_qcomponents: list = []) -> int:
+                                  highlight_qcomponents: list = None) -> int:
         """Using self.design, this method does the following:
 
         1. Gather the QGeometries to be used to write to file.
@@ -557,6 +560,8 @@ class QGDSRenderer(QRenderer):
             int: 0 if all ended well.
             Otherwise, 1 if QComponent name(s) not in design.
         """
+        if highlight_qcomponents is None:
+            highlight_qcomponents = []
         unique_qcomponents, status = self._check_qcomps(highlight_qcomponents)
         if status == 1:
             return 1
@@ -697,6 +702,7 @@ class QGDSRenderer(QRenderer):
             all_sub_true_or_false (str): To be used within self.chip_info:
                                 'all_subtract_true' or 'all_subtract_false'.
         """
+        # pylint: disable=too-many-locals
         df = self.chip_info[chip_name][chip_layer][all_sub_true_or_false]
         df_fillet = df[-df['fillet'].isnull()]
 
@@ -766,6 +772,11 @@ class QGDSRenderer(QRenderer):
             Dict: The key is an index into a_shapely. The value is a dict with
             fillet and shorter LineString.
         """
+        # pylint: disable=too-many-locals
+        # pylint: disable=too-many-arguments
+        # pylint: disable=too-many-statements
+        # pylint: disable=too-many-branches
+
         # Holds all of the index of when a segment is too short.
         idx_bad_fillet = list()
         status = -1  # Initialize to meaningless value.
@@ -1126,6 +1137,7 @@ class QGDSRenderer(QRenderer):
             * 5 The chip is not in the default option.
             * 6 The layer is not in the chip dict.
         """
+        # pylint: disable=too-many-return-statements
         code = 0
         no_cheese_code = self._check_no_cheese(chip, layer)
         cheese_code = self._check_cheese(chip, layer)
@@ -1205,6 +1217,8 @@ class QGDSRenderer(QRenderer):
             nocheese_sub_layer (int): User defined datatype, considered a
                     sub-layer number for where to place the NO_cheese output.
         """
+        # pylint: disable=too-many-locals
+        # pylint: disable=too-many-arguments
 
         max_points = int(self.parse_value(self.options.max_points))
         cheese_shape = int(self.parse_value(self.options.cheese.shape))
@@ -1280,6 +1294,9 @@ class QGDSRenderer(QRenderer):
         f'NoCheese_{chip_name}_{chip_layer}_{sub_layer}'.  The sub_layer
         is data_type and denoted in the options.
         """
+
+        # pylint: disable=too-many-nested-blocks
+
         no_cheese_buffer = float(self.parse_value(
             self.options.no_cheese.buffer))
         sub_layer = int(self.parse_value(self.options.no_cheese.datatype))
@@ -1292,7 +1309,7 @@ class QGDSRenderer(QRenderer):
             for chip_layer in layers_in_chip:
                 code = self._check_either_cheese(chip_name, chip_layer)
 
-                if code == 1 or code == 2 or code == 3:
+                if code in (1, 2, 3):
                     if len(self.chip_info[chip_name][chip_layer]
                            ['all_subtract_true']) != 0:
 
@@ -1356,7 +1373,7 @@ class QGDSRenderer(QRenderer):
             shapely which combines the polygons and linestrings and creates
             buffer as specificed through default_options.
         """
-
+        # pylint: disable=too-many-locals
         style_cap = int(self.parse_value(self.options.no_cheese.cap_style))
         style_join = int(self.parse_value(self.options.no_cheese.join_style))
 
@@ -1422,6 +1439,8 @@ class QGDSRenderer(QRenderer):
                              Name needs to include desired extension,
                              i.e. "a_path_and_name.gds".
         """
+        # pylint: disable=too-many-locals
+        # pylint: disable=too-many-branches
 
         precision = float(self.parse_value(self.options.precision))
         max_points = int(self.parse_value(self.options.max_points))
@@ -1594,7 +1613,7 @@ class QGDSRenderer(QRenderer):
             LineString is smaller than width of cell from row.gds_cell_name.
             Otherwise the rectangle for pad on RIGHT of row.gds_cell_name.
         """
-
+        # pylint: disable=too-many-locals
         junction_pad_overlap = float(
             self.parse_value(self.options.junction_pad_overlap))
 
@@ -1657,6 +1676,9 @@ class QGDSRenderer(QRenderer):
             chip_only_top (gdspy.library.Cell): The cell used for
             just chip_name.
         """
+
+        # pylint: disable=too-many-locals
+
         # Make sure the file exists, before trying to read it.
         dummy_status, directory_name = can_write_to_path(
             self.options.path_filename)
@@ -1701,7 +1723,7 @@ class QGDSRenderer(QRenderer):
 
     def export_to_gds(self,
                       file_name: str,
-                      highlight_qcomponents: list = []) -> int:
+                      highlight_qcomponents: list = None) -> int:
         """Use the design which was used to initialize this class. The
         QGeometry element types of both "path" and "poly", will be used, to
         convert QGeometry to GDS formatted file.
@@ -1716,6 +1738,8 @@ class QGDSRenderer(QRenderer):
         Returns:
             int: 0=file_name can not be written, otherwise 1=file_name has been written
         """
+        if highlight_qcomponents is None:
+            highlight_qcomponents = []
 
         if not self._can_write_to_path(file_name):
             return 0
@@ -1766,6 +1790,8 @@ class QGDSRenderer(QRenderer):
         Returns:
             list: Each entry is converted to GDSII.
         """
+        # pylint: disable=too-many-locals
+
         dummy_keep_for_future_use = no_cheese_buffer
         precision = self.parse_value(self.options.precision)
         max_points = int(self.parse_value(self.options.max_points))
@@ -1838,6 +1864,9 @@ class QGDSRenderer(QRenderer):
         See:
             https://gdspy.readthedocs.io/en/stable/reference.html#polygon
         """
+
+        # pylint: disable=too-many-locals
+
         corners = self.options.corners
         tolerance = self.parse_value(self.options.tolerance)
         precision = self.parse_value(self.options.precision)
@@ -1871,10 +1900,10 @@ class QGDSRenderer(QRenderer):
                                        layer=qgeometry_element.layer,
                                        datatype=10)
                 return a_poly
-            else:
-                exterior_poly = exterior_poly.fracture(max_points=max_points)
-                return exterior_poly
-        elif isinstance(geom, shapely.geometry.LineString):
+
+            exterior_poly = exterior_poly.fracture(max_points=max_points)
+            return exterior_poly
+        if isinstance(geom, shapely.geometry.LineString):
             #class gdspy.FlexPath(points, width, offset=0, corners='natural',
             #ends='flush', bend_radius=None, tolerance=0.01, precision=0.001,
             #max_points=199, gdsii_path=False, width_transform=True, layer=0,
@@ -1920,21 +1949,20 @@ class QGDSRenderer(QRenderer):
                         tolerance=tolerance,
                         precision=precision)
                 return to_return
-            else:
-                # Could be junction table with a linestring.
-                # Look for gds_path_filename in column.
-                self.logger.warning(
-                    f'Linestring did not have fillet in column. '
-                    f'The qgeometry_element was not drawn.\n'
-                    f'The qgeometry_element within table is:\n'
-                    f'{qgeometry_element}')
-                return None  # Need explicitly to avoid lint warnings.
-        else:
-            self.logger.warning(
-                f'Unexpected shapely object geometry.'
-                f'The variable qgeometry_element is {type(geom)}, '
-                f'method can currently handle Polygon and FlexPath.')
-            return None
+
+            # Could be junction table with a linestring.
+            # Look for gds_path_filename in column.
+            self.logger.warning(f'Linestring did not have fillet in column. '
+                                f'The qgeometry_element was not drawn.\n'
+                                f'The qgeometry_element within table is:\n'
+                                f'{qgeometry_element}')
+            return None  # Need explicitly to avoid lint warnings.
+
+        self.logger.warning(
+            f'Unexpected shapely object geometry.'
+            f'The variable qgeometry_element is {type(geom)}, '
+            f'method can currently handle Polygon and FlexPath.')
+        return None
 
     def _get_chip_names(self) -> Dict:
         """Returns a dict of unique chip names for ALL tables within QGeometry.
