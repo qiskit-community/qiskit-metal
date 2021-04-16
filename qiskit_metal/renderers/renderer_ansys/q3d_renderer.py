@@ -23,9 +23,12 @@ from pyEPR.ansys import ureg
 from pyEPR.reports import _plot_q3d_convergence_main, _plot_q3d_convergence_chi_f
 from pyEPR.calcs.convert import Convert
 from qiskit_metal import Dict
-from qiskit_metal.analyses.quantization.lumped_capacitive import extract_transmon_coupled_Noscillator
 from qiskit_metal.renderers.renderer_ansys.ansys_renderer import QAnsysRenderer
 from qiskit_metal.toolbox_metal.parsing import is_true
+
+from .. import config
+if not config.is_building_docs():
+    from qiskit_metal.analyses.quantization.lumped_capacitive import extract_transmon_coupled_Noscillator
 
 
 class QQ3DRenderer(QAnsysRenderer):
@@ -64,6 +67,7 @@ class QQ3DRenderer(QAnsysRenderer):
                        get_capacitance_matrix=Dict(variation='',
                                                    solution_kind='AdaptivePass',
                                                    pass_number='3'))
+    """Q3d options"""
 
     def __init__(self,
                  design: 'QDesign',
@@ -98,6 +102,7 @@ class QQ3DRenderer(QAnsysRenderer):
 
     @property
     def setup_options(self):
+        """Setup the q3d options."""
         return self.q3d_options['add_setup']
 
     def render_design(self,
@@ -202,9 +207,9 @@ class QQ3DRenderer(QAnsysRenderer):
         name, or make new setup with default name.
 
         Args:
-            setup_name_activate (str, optional): If name exists for setup, then have pinfo reference it.
-            If name for setup does not exist, create a new setup with the name.  If name is None,
-            create a new setup with default name.
+            setup_name_activate (str, optional): If name exists for setup, then have pinfo
+              reference it.  If name for setup does not exist, create a new setup with the name.
+              If name is None, create a new setup with default name.
         """
         if self.pinfo:
             if self.pinfo.project:

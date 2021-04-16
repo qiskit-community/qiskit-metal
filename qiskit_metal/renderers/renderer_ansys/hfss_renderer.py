@@ -250,10 +250,12 @@ class QHFSSRenderer(QAnsysRenderer):
     def render_element_junction(self, qgeom: pd.Series):
         """
         Render a Josephson junction depending on the solution type.
+
         If in HFSS eigenmode, junctions are rendered as inductors consisting of
-        1. A rectangle of length pad_gap and width inductor_width. Defines lumped element
-           RLC boundary condition.
-        2. A line that is later used to calculate the voltage in post-processing analysis.
+            1. A rectangle of length pad_gap and width inductor_width. Defines lumped element RLC
+               boundary condition.
+            2. A line that is later used to calculate the voltage in post-processing analysis.
+
         If in HFSS driven modal, junctions can be inductors, lumped ports, both inductors
         and lumped ports, or omitted altogether. Ports are characterized by an impedance
         value given in the list jj_to_port when render_design() is called.
@@ -465,9 +467,9 @@ class QHFSSRenderer(QAnsysRenderer):
         name, or make new setup with default name.
 
         Args:
-            setup_name_activate (str, optional): If name exists for setup, then have pinfo reference it.
-            If name for setup does not exist, create a new setup with the name.  If name is None,
-            create a new setup with default name.
+            setup_name_activate (str, optional): If name exists for setup, then have pinfo
+                reference it.  If name for setup does not exist, create a new setup with the name.
+                If name is None, create a new setup with default name.
         """
         if self.pinfo:
             if self.pinfo.project:
@@ -616,9 +618,9 @@ class QHFSSRenderer(QAnsysRenderer):
         name, or make new setup with default name.
 
         Args:
-            setup_name_activate (str, optional): If name exists for setup, then have pinfo reference it.
-            If name for setup does not exist, create a new setup with the name.  If name is None,
-            create a new setup with default name.
+            setup_name_activate (str, optional): If name exists for setup, then have pinfo
+                reference it.  If name for setup does not exist, create a new setup with the
+                name.  If name is None, create a new setup with default name.
         """
         if self.pinfo:
             if self.pinfo.project:
