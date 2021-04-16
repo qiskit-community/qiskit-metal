@@ -25,6 +25,12 @@ import numpy as np
 class Cheesing():
     """Create a cheese cell based on input of no-cheese locations."""
 
+    # pylint: disable=too-many-instance-attributes
+    # pylint: disable=too-many-arguments
+    # pylint: disable=too-many-locals
+    # To be used by QGDSRenderer only.
+    # Number of instance attributes is acceptable for this case.
+
     def __init__(
         self,
         multi_poly: shapely.geometry.multipolygon.MultiPolygon,
@@ -195,8 +201,9 @@ class Cheesing():
         It will be placed in self.hole.
         """
         if self.cheese_shape == 0:
-            w, h = self.shape_0_x, self.shape_0_y
-            self.hole = shapely.geometry.box(-w / 2, -h / 2, w / 2, h / 2)
+            width, height = self.shape_0_x, self.shape_0_y
+            self.hole = shapely.geometry.box(-width / 2, -height / 2, width / 2,
+                                             height / 2)
         elif self.cheese_shape == 1:
             self.hole = shapely.geometry.Point(0, 0).buffer(self.shape_1_radius)
         else:
@@ -220,10 +227,10 @@ class Cheesing():
             all_interiors = list()
             geom = self.hole
             if geom.interiors:
-                for hole in geom.interiors:
-                    interior_coords = list(hole.coords)
+                for inside in geom.interiors:
+                    interior_coords = list(inside.coords)
                     all_interiors.append(interior_coords)
-                a_poly_set = gdspy.PloygonSet(all_interiors,
+                a_poly_set = gdspy.PolygonSet(all_interiors,
                                               layer=self.layer,
                                               datatype=self.datatype_cheese)
                 a_poly = gdspy.boolean(exterior_poly,
