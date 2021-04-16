@@ -34,10 +34,13 @@ from pyEPR.ansys import parse_units, HfssApp
 from qiskit_metal.draw.utility import to_vec3D
 from qiskit_metal.draw.basic import is_rectangle
 from qiskit_metal.renderers.renderer_base import QRenderer
-from qiskit_metal.toolbox_python.utility_functions import toggle_numbers, bad_fillet_idxs
 from qiskit_metal.toolbox_metal.parsing import is_true
 
 from qiskit_metal import Dict
+
+from .. import config
+if not config.is_building_docs():
+    from qiskit_metal.toolbox_python.utility_functions import toggle_numbers, bad_fillet_idxs
 
 
 def good_fillet_idxs(coords: list,
@@ -100,9 +103,9 @@ class QAnsysRenderer(QRenderer):
         * x_buffer_width_mm: 0.2 -- Buffer between max/min x and edge of ground plane, in mm
         * y_buffer_width_mm: 0.2 -- Buffer between max/min y and edge of ground plane, in mm
         * wb_threshold:'400um' -- the minimum distance between two vertices of a path for a
-            wirebond to be added.
+          wirebond to be added.
         * wb_offset:'0um' -- offset distance for wirebond placement (along the direction
-            of the cpw)
+          of the cpw)
         * wb_size: 3 -- scalar which controls the width of the wirebond (wb_size * path['width'])
     """
 
@@ -142,9 +145,11 @@ class QAnsysRenderer(QRenderer):
             PlotGeomInfo_3= "1",
         ),
     )
+    """Default options"""
     # yapf: enable
 
     NAME_DELIM = r'_'
+    """Name delimiter"""
 
     name = 'ansys'
     """Name"""
@@ -172,6 +177,7 @@ class QAnsysRenderer(QRenderer):
                                   resistance=default_options['_Rj'],
                                   mesh_kw_jj=parse_units(
                                       default_options['max_mesh_length_jj'])))
+    """Element table data"""
 
     def __init__(self,
                  design: 'QDesign',
@@ -364,24 +370,33 @@ class QAnsysRenderer(QRenderer):
         Args:
             object_name (str): Used to plot on faces of.
             name (str, optional): "NAME:<PlotName>" Defaults to None.
-            UserSpecifyName (int, optional): 0 if default name for plot is used, 1 otherwise. Defaults to None.
-            UserSpecifyFolder (int, optional): 0 if default folder for plot is used, 1 otherwise. Defaults to None.
-            QuantityName (str, optional): Type of plot to create. Possible values are:
-            Mesh plots: "Mesh"
-            Field plots: "Mag_E", "Mag_H", "Mag_Jvol", "Mag_Jsurf","ComplexMag_E", "ComplexMag_H",
-            "ComplexMag_Jvol", "ComplexMag_Jsurf", "Vector_E", "Vector_H", "Vector_Jvol", "Vector_Jsurf",
-            "Vector_RealPoynting","Local_SAR", "Average_SAR". Defaults to None.
-            PlotFolder (str, optional): Name of the folder to which the plot should be added. Possible values
-            are: "E Field",  "H Field", "Jvol", "Jsurf", "SARField", and "MeshPlots". Defaults to None.
+            UserSpecifyName (int, optional): 0 if default name for plot is used, 1 otherwise.
+              Defaults to None.
+            UserSpecifyFolder (int, optional): 0 if default folder for plot is used, 1 otherwise.
+              Defaults to None.
+            QuantityName (str, optional): Type of plot to create. Possible values are 
+              Mesh plots - "Mesh"; 
+              Field plots - "Mag_E", "Mag_H", "Mag_Jvol", "Mag_Jsurf","ComplexMag_E",
+              "ComplexMag_H", "ComplexMag_Jvol", "ComplexMag_Jsurf", "Vector_E", "Vector_H",
+              "Vector_Jvol", "Vector_Jsurf", "Vector_RealPoynting","Local_SAR", "Average_SAR".
+              Defaults to None.
+            PlotFolder (str, optional): Name of the folder to which the plot should be added.
+              Possible values are: "E Field",  "H Field", "Jvol", "Jsurf", "SARField", and
+              "MeshPlots". Defaults to None.
             StreamlinePlot (bool, optional): Passed to CreateFieldPlot. Defaults to None.
             AdjacentSidePlot (bool, optional): Passed to CreateFieldPlot. Defaults to None.
             FullModelPlot (bool, optional): Passed to CreateFieldPlot. Defaults to None.
             IntrinsicVar (str, optional): Formatted string that specifies the frequency and phase
-            at which to make the plot.  For example: "Freq='1GHz' Phase='30deg'" Defaults to None.
-            PlotGeomInfo_0 (int, optional): 0th entry in list for "PlotGeomInfo:=", <PlotGeomArray>. Defaults to None.
-            PlotGeomInfo_1 (str, optional): 1st entry in list for "PlotGeomInfo:=", <PlotGeomArray>. Defaults to None.
-            PlotGeomInfo_2 (str, optional): 2nd entry in list for "PlotGeomInfo:=", <PlotGeomArray>. Defaults to None.
-            PlotGeomInfo_3 (int, optional): 3rd entry in list for "PlotGeomInfo:=", <PlotGeomArray>. Defaults to None.
+              at which to make the plot.  For example: "Freq='1GHz' Phase='30deg'".
+              Defaults to None.
+            PlotGeomInfo_0 (int, optional): 0th entry in list for "PlotGeomInfo:=",
+              <PlotGeomArray>. Defaults to None.
+            PlotGeomInfo_1 (str, optional): 1st entry in list for "PlotGeomInfo:=",
+              <PlotGeomArray>. Defaults to None.
+            PlotGeomInfo_2 (str, optional): 2nd entry in list for "PlotGeomInfo:=",
+              <PlotGeomArray>. Defaults to None.
+            PlotGeomInfo_3 (int, optional): 3rd entry in list for "PlotGeomInfo:=",
+              <PlotGeomArray>. Defaults to None.
 
         Returns:
             NoneType: Return information from oFieldsReport.CreateFieldPlot().
@@ -627,9 +642,9 @@ class QAnsysRenderer(QRenderer):
     def render_element_junction(self, qgeom: pd.Series):
         """
         Render a Josephson junction consisting of
-        1. A rectangle of length pad_gap and width inductor_width. Defines lumped element
-           RLC boundary condition.
-        2. A line that is later used to calculate the voltage in post-processing analysis.
+            1. A rectangle of length pad_gap and width inductor_width. Defines lumped element
+               RLC boundary condition.
+            2. A line that is later used to calculate the voltage in post-processing analysis.
 
         Args:
             qgeom (pd.Series): GeoSeries of element properties.
@@ -1004,11 +1019,12 @@ class QAnsysRenderer(QRenderer):
         """
         Adds wirebonds to the Ansys model for path elements where;
         subtract = True and wire_bonds = True.
-        Uses render options for determining of the;
+
+        Uses render options for determining of the:
         * wb_threshold -- the minimum distance between two vertices of a path for a
-            wirebond to be added.
+        wirebond to be added.
         * wb_offset -- offset distance for wirebond placement (along the direction
-            of the cpw)
+        of the cpw)
         * wb_size -- controls the width of the wirebond (wb_size * path['width'])
         """
         norm_z = np.array([0, 0, 1])
