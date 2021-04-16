@@ -117,6 +117,11 @@ class QHFSSRenderer(QAnsysRenderer):
         self.assign_perfE (see init in QAnsysRenderer class) into perfect
         electrical conductors. Create lumped ports as needed.
 
+        First obtain a list of IDs of components to render and a corresponding case, denoted by self.qcomp_ids
+        and self.case, respectively. If self.case == 1, all components in QDesign are to be rendered.
+        If self.case == 0, a strict subset of components in QDesign are to be rendered. Otherwise, if
+        self.case == 2, one or more component names in selection cannot be found in QDesign.
+
         Among the components selected for export, there may or may not be unused (unconnected) pins.
         The second parameter, open_pins, contains tuples of the form (component_name, pin_name) that
         specify exactly which pins should be open rather than shorted during the simulation. Both the
@@ -140,6 +145,16 @@ class QHFSSRenderer(QAnsysRenderer):
         capacitive effect while keeping the qubit in an "off" state. Such junctions are specified in the form
         (component_name, element_name) in the list ignored_jjs.
 
+        The final parameter, box_plus_buffer, determines how the chip is drawn. When set to True, it takes the
+        minimum rectangular bounding box of all rendered components and adds a buffer of x_buffer_width_mm and
+        y_buffer_width_mm horizontally and vertically, respectively, to the chip size. The center of the chip
+        lies at the midpoint x/y coordinates of the minimum rectangular bounding box and may change depending
+        on which components are rendered and how they're positioned. If box_plus_buffer is False, however, the
+        chip position and dimensions are taken from the chip info dictionary found in self.design, irrespective
+        of what's being rendered. While this latter option is faster because it doesn't require calculating a
+        bounding box, it runs the risk of rendered components being too close to the edge of the chip or even
+        falling outside its boundaries.
+
         Args:
             selection (Union[list, None], optional): List of components to render. Defaults to None.
             open_pins (Union[list, None], optional): List of tuples of pins that are open. Defaults to None.
@@ -149,6 +164,13 @@ class QHFSSRenderer(QAnsysRenderer):
             box_plus_buffer (bool): Either calculate a bounding box based on the location of rendered geometries
                                      or use chip size from design class.
         """
+        self.qcomp_ids, self.case = self.get_unique_component_ids(selection)
+
+        if self.case == 2:
+            self.logger.warning(
+                'Unable to proceed with rendering. Please check selection.')
+            return
+
         self.chip_subtract_dict = defaultdict(set)
         self.assign_perfE = []
         self.assign_mesh = []
@@ -164,7 +186,7 @@ class QHFSSRenderer(QAnsysRenderer):
         if ignored_jjs:
             self.jj_to_ignore = {(qcomp, qelt) for qcomp, qelt in ignored_jjs}
 
-        self.render_tables(selection)
+        self.render_tables()
         if port_list:
             self.add_endcaps(open_pins +
                              [(qcomp, pin) for qcomp, pin, _ in port_list])
@@ -235,7 +257,7 @@ class QHFSSRenderer(QAnsysRenderer):
             2. A line that is later used to calculate the voltage in post-processing analysis.
 
         If in HFSS driven modal, junctions can be inductors, lumped ports, both inductors
-        and lumped ports, or omitted altogether. Ports are characterized by an impedance 
+        and lumped ports, or omitted altogether. Ports are characterized by an impedance
         value given in the list jj_to_port when render_design() is called.
 
         Args:
@@ -694,7 +716,7 @@ class QHFSSRenderer(QAnsysRenderer):
                     basis_order=basis_order)
 
     def edit_eigenmode_setup(self, setup_args: Dict):
-        """User can pass key/values to edit the setup for active eigenmode setup.  
+        """User can pass key/values to edit the setup for active eigenmode setup.
 
         Args:
             setup_args (Dict): a Dict with possible keys/values.
@@ -709,7 +731,7 @@ class QHFSSRenderer(QAnsysRenderer):
             * basis_order (int, optional): Basis order. Defaults to -1.
 
             Note, that these two are currently NOT implemented:
-            Ansys API named EditSetup not documented for HFSS, and 
+            Ansys API named EditSetup not documented for HFSS, and
             self.pinfo.setup does not have all the property variables used for Setup.
             * min_passes (int, optional): Minimum number of passes. Defaults to 1.
             * min_converged (int, optional): Minimum number of converged passes. Defaults to 1.
@@ -808,7 +830,7 @@ class QHFSSRenderer(QAnsysRenderer):
             )
 
     def edit_drivenmodal_setup(self, setup_args: Dict):
-        """User can pass key/values to edit the setup for active driven modal setup.  
+        """User can pass key/values to edit the setup for active driven modal setup.
 
         Args:
             setup_args (Dict): a Dict with possible keys/values.
@@ -821,7 +843,7 @@ class QHFSSRenderer(QAnsysRenderer):
             * basis_order (int, optional): Basis order. Defaults to -1 (1 is "Mixed Order").
 
             Note, that these three are currently NOT implemented:
-            Ansys API named EditSetup not documented for HFSS, and 
+            Ansys API named EditSetup not documented for HFSS, and
             self.pinfo.setup does not have all the property variables used for Setup.
             * max_delta_s (float, optional): Absolute value of maximum difference in scattering parameter S. Defaults to 0.1.
             * min_passes (int, optional): Minimum number of passes. Defaults to 1.

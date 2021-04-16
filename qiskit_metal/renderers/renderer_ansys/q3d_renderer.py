@@ -114,6 +114,11 @@ class QQ3DRenderer(QAnsysRenderer):
         reside on, and subtraction of negative shapes is performed at the very
         end.
 
+        First obtain a list of IDs of components to render and a corresponding case, denoted by self.qcomp_ids
+        and self.case, respectively. If self.case == 1, all components in QDesign are to be rendered.
+        If self.case == 0, a strict subset of components in QDesign are to be rendered. Otherwise, if
+        self.case == 2, one or more component names in selection cannot be found in QDesign.
+
         Chip_subtract_dict consists of component names (keys) and a set of all elements within each component that
         will eventually be subtracted from the ground plane. Add objects that are perfect conductors and/or have
         meshing to self.assign_perfE and self.assign_mesh, respectively; both are initialized as empty lists. Note
@@ -127,43 +132,53 @@ class QQ3DRenderer(QAnsysRenderer):
         components. All pins in this list are rendered with an additional endcap in the form of a
         rectangular cutout, to be subtracted from its respective plane.
 
+        The final parameter, box_plus_buffer, determines how the chip is drawn. When set to True, it takes the
+        minimum rectangular bounding box of all rendered components and adds a buffer of x_buffer_width_mm and
+        y_buffer_width_mm horizontally and vertically, respectively, to the chip size. The center of the chip
+        lies at the midpoint x/y coordinates of the minimum rectangular bounding box and may change depending
+        on which components are rendered and how they're positioned. If box_plus_buffer is False, however, the
+        chip position and dimensions are taken from the chip info dictionary found in self.design, irrespective
+        of what's being rendered. While this latter option is faster because it doesn't require calculating a
+        bounding box, it runs the risk of rendered components being too close to the edge of the chip or even
+        falling outside its boundaries.
+
         Args:
             selection (Union[list, None], optional): List of components to render. Defaults to None.
             open_pins (Union[list, None], optional): List of tuples of pins that are open. Defaults to None.
             box_plus_buffer (bool): Either calculate a bounding box based on the location of rendered geometries
                                      or use chip size from design class.
         """
+        self.qcomp_ids, self.case = self.get_unique_component_ids(selection)
+
+        if self.case == 2:
+            self.logger.warning(
+                'Unable to proceed with rendering. Please check selection.')
+            return
+
         self.chip_subtract_dict = defaultdict(set)
         self.assign_perfE = []
         self.assign_mesh = []
 
-        self.render_tables(selection)
+        self.render_tables()
         self.add_endcaps(open_pins)
 
         self.render_chips(draw_sample_holder=False,
                           box_plus_buffer=box_plus_buffer)
         self.subtract_from_ground()
+        self.add_mesh()
 
-        self.assign_thin_conductor(self.assign_perfE)
+        self.assign_thin_conductor()
         self.assign_nets()
 
-    def render_tables(self, selection: Union[list, None] = None):
-        """Render components in design grouped by table type (path or poly, but
-        not junction).
-
-        Args:
-            selection (Union[list, None], optional): List of components to render. Defaults to None.
+    def render_tables(self):
         """
-        self.min_x_main = float('inf')
-        self.min_y_main = float('inf')
-        self.max_x_main = float('-inf')
-        self.max_y_main = float('-inf')
+        Render components in design grouped by table type (path or poly, but not junction).
+        """
         for table_type in self.design.qgeometry.get_element_types():
             if table_type != 'junction':
-                self.render_components(table_type, selection)
+                self.render_components(table_type)
 
     def assign_thin_conductor(self,
-                              objects: List[str],
                               material_type: str = 'pec',
                               thickness: str = '200 nm',
                               name: str = None):
@@ -172,14 +187,13 @@ class QQ3DRenderer(QAnsysRenderer):
         nm.
 
         Args:
-            objects (List[str]): List of components that are thin conductors with the given properties.
             material_type (str): Material assignment.
             thickness (str): Thickness of thin conductor. Must include units.
             name (str): Name assigned to this group of thin conductors.
         """
         self.boundaries.AssignThinConductor([
-            "NAME:" + (name if name else "ThinCond1"), "Objects:=", objects,
-            "Material:=", material_type if material_type else
+            "NAME:" + (name if name else "ThinCond1"), "Objects:=",
+            self.assign_perfE, "Material:=", material_type if material_type else
             self.q3d_options['material_type'], "Thickness:=",
             thickness if thickness else self.q3d_options['material_thickness']
         ])
@@ -305,7 +319,7 @@ class QQ3DRenderer(QAnsysRenderer):
                     solver_type=solver_type)
 
     def edit_q3d_setup(self, setup_args: Dict):
-        """User can pass key/values to edit the setup for active q3d setup.  
+        """User can pass key/values to edit the setup for active q3d setup.
 
         Args:
             setup_args (Dict): a Dict with possible keys/values.
@@ -319,9 +333,9 @@ class QQ3DRenderer(QAnsysRenderer):
 
             Note, that these 7 arguments are currently NOT implemented:
             Ansys API named EditSetup requires all arguments to be passed, but
-            presently have no way to read all of the setup.  
-            Also, self.pinfo.setup does not have all the @property variables 
-            used for Setup. 
+            presently have no way to read all of the setup.
+            Also, self.pinfo.setup does not have all the @property variables
+            used for Setup.
             * save_fields (bool, optional): Whether or not to save fields. Defaults to False.
             * enabled (bool, optional): Whether or not setup is enabled. Defaults to True.
             * min_converged_passes (int, optional): Minimum number of converged passes. Defaults to 2.
@@ -501,19 +515,20 @@ class QQ3DRenderer(QAnsysRenderer):
         fb = [ureg(f'{freq} GHz').to('GHz').magnitude for freq in fb]
         RES = {}
         for i in range(1, maxPass):
-            print('Pass number: ', i)
             df_cmat, user_units, _, _ = self.pinfo.setup.get_matrix(
                 variation=variation,
                 solution_kind='AdaptivePass',
                 pass_number=i)
             c_units = ureg(user_units).to('farads').magnitude
-            res = extract_transmon_coupled_Noscillator(df_cmat.values * c_units,
-                                                       IC_Amps,
-                                                       CJ,
-                                                       N,
-                                                       fb,
-                                                       fr,
-                                                       g_scale=1)
+            res = extract_transmon_coupled_Noscillator(
+                df_cmat.values * c_units,
+                IC_Amps,
+                CJ,
+                N,
+                fb,
+                fr,
+                g_scale=1,
+                print_info=bool(i == maxPass - 1))
             RES[i] = res
         RES = pd.DataFrame(RES).transpose()
         RES['χr MHz'] = abs(RES['chi_in_MHz'].apply(lambda x: x[0]))
