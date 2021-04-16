@@ -369,7 +369,7 @@ class QGDSRenderer(QRenderer):
             table_name (str): Name for "table".  Example is "poly", and "path".
             table (geopandas.GeoSeries): Table with similar qgeometries.
         """
-
+        # pylint: disable=singleton-comparison
         subtract_true = table[table['subtract'] == True]
 
         subtract_false = table[table['subtract'] == False]
@@ -521,6 +521,7 @@ class QGDSRenderer(QRenderer):
         # bounding box from design planar.  If list is subset of chip, then
         # calculate a custom bounding box and scale it.
 
+        # pylint: disable=protected-access
         if len(unique_qcomponents) == len(self.design._components):
             # Since user wants all of the chip to be rendered, use the
             # design.planar bounding box.
@@ -721,7 +722,7 @@ class QGDSRenderer(QRenderer):
                 orig_row = df_copy.loc[del_key].copy(deep=True)
                 df_copy = df_copy.drop(index=del_key)
 
-                for new_row, short_shape in the_shapes.items():
+                for dummy_new_row, short_shape in the_shapes.items():
                     orig_row['geometry'] = short_shape['line']
                     orig_row['fillet'] = short_shape['fillet']
                     # Keep ignore_index=False, otherwise,
@@ -920,7 +921,7 @@ class QGDSRenderer(QRenderer):
         # fillet_scale_factor = self.parse_value(
         #     self.options.check_short_segments_by_scaling_fillet)
 
-        precision = float(self.parse_value(self.options.precision))
+        # precision = float(self.parse_value(self.options.precision))
 
         # For now, DO NOT allow the user of GDS to provide the precision.
         # user_precision = int(np.abs(np.log10(precision)))
@@ -979,10 +980,9 @@ class QGDSRenderer(QRenderer):
         # This is not used anywhere currently.
         # Keep this depreciated code.
         # polys use gdspy.Polygon;    paths use gdspy.LineString
-        '''
-        q_geometries = table.apply(self._qgeometry_to_gds, axis=1)
-        setattr(self, f'{chip_name}_{table_name}s', q_geometries)
-        '''
+
+        #q_geometries = table.apply(self._qgeometry_to_gds, axis=1)
+        #setattr(self, f'{chip_name}_{table_name}s', q_geometries)
 
     def _get_table(self, table_name: str, unique_qcomponents: list,
                    chip_name: str) -> geopandas.GeoDataFrame:
@@ -1268,9 +1268,7 @@ class QGDSRenderer(QRenderer):
             a_cheese = None
 
         if a_cheese is not None:
-            a_lib = a_cheese.apply_cheesing()
-
-        return
+            dummy_a_lib = a_cheese.apply_cheesing()
 
     def _populate_no_cheese(self):
         """Iterate through every chip and layer.  If options choose to have
@@ -1335,7 +1333,6 @@ class QGDSRenderer(QRenderer):
                                         gdspy.CellReference(no_cheese_cell))
                                 else:
                                     lib.remove(no_cheese_cell)
-        return
 
     def _cheese_buffer_maker(
         self, sub_df: geopandas.GeoDataFrame, chip_name: str,
@@ -1371,7 +1368,8 @@ class QGDSRenderer(QRenderer):
             lambda x: isinstance(x, shapely.geometry.linestring.LineString))]
         path_sub_geo = path_sub_df['geometry'].tolist()
         path_sub_width = path_sub_df['width'].tolist()
-        for n in range(len(path_sub_geo)):
+        #for n in range(len(path_sub_geo)):
+        for n, _ in enumerate(path_sub_geo):
             path_sub_geo[n] = path_sub_geo[n].buffer(path_sub_width[n] / 2,
                                                      cap_style=style_cap,
                                                      join_style=style_join)
@@ -1490,14 +1488,15 @@ class QGDSRenderer(QRenderer):
                                                      overwrite_duplicate=True)
                         subtract_cell.add(self.chip_info[chip_name][chip_layer]
                                           ['q_subtract_true'])
-                        '''gdspy.boolean() is not documented clearly.
-                        If there are multiple elements to subtract
-                        (both poly and path), the way I could make it work is
-                        to put them into a cell, within lib.  I used the method
-                        cell_name.get_polygons(), which appears to convert all
-                        elements within the cell to poly. After the boolean(),
-                        I deleted the cell from lib.  The memory is freed up then.
-                        '''
+
+                        # gdspy.boolean() is not documented clearly.
+                        # If there are multiple elements to subtract
+                        # (both poly and path), the way I could make it work is
+                        # to put them into a cell, within lib.  I used the method
+                        # cell_name.get_polygons(), which appears to convert all
+                        # elements within the cell to poly. After the boolean(),
+                        # I deleted the cell from lib.  The memory is freed up then.
+
                         diff_geometry = gdspy.boolean(
                             self.chip_info[chip_name]['subtract_poly'],
                             subtract_cell.get_polygons(),
@@ -1608,12 +1607,13 @@ class QGDSRenderer(QRenderer):
         jj_x_width = abs(jj_maxx - jj_minx)
         jj_y_height = abs(jj_maxy - jj_miny)
 
-        jj_center_x = (jj_x_width / 2) + jj_minx
+        #jj_center_x = (jj_x_width / 2) + jj_minx
         jj_center_y = (jj_y_height / 2) + jj_miny
 
         pad_height = row.width
 
         if pad_height < jj_y_height:
+            # pylint: disable=protected-access
             text_id = self.design._components[row.component]._name
             self.logger.warning(
                 f'In junction table, component={text_id} with key={row.key} '
@@ -1673,8 +1673,8 @@ class QGDSRenderer(QRenderer):
                         row, a_cell_bounding_box)
 
                     # String for JJ combined with pad Right and pad Left
-                    jj_pad_RL_name = f'{row.gds_cell_name}_component{row.component}_name{row.name}'
-                    temp_cell = lib.new_cell(jj_pad_RL_name,
+                    jj_pad_r_l_name = f'{row.gds_cell_name}_component{row.component}_name{row.name}'
+                    temp_cell = lib.new_cell(jj_pad_r_l_name,
                                              overwrite_duplicate=True)
                     temp_cell.add(a_cell)
 
@@ -1747,8 +1747,8 @@ class QGDSRenderer(QRenderer):
             self.lib.write_gds(file_name)
 
             return 1
-        else:
-            return 0
+
+        return 0
 
     def _multipolygon_to_gds(
             self, multi_poly: shapely.geometry.multipolygon.MultiPolygon,
@@ -1766,6 +1766,7 @@ class QGDSRenderer(QRenderer):
         Returns:
             list: Each entry is converted to GDSII.
         """
+        dummy_keep_for_future_use = no_cheese_buffer
         precision = self.parse_value(self.options.precision)
         max_points = int(self.parse_value(self.options.max_points))
 
@@ -1820,8 +1821,8 @@ class QGDSRenderer(QRenderer):
         Returns:
             Union['gdspy.polygon' or 'gdspy.FlexPath' or None]: Convert the
             class to a series of GDSII format on the input pd.Series.
-        """
-        """
+
+
         *NOTE:*
         GDS:
             points (array-like[N][2]) – Coordinates of the vertices of
@@ -1874,13 +1875,13 @@ class QGDSRenderer(QRenderer):
                 exterior_poly = exterior_poly.fracture(max_points=max_points)
                 return exterior_poly
         elif isinstance(geom, shapely.geometry.LineString):
-            """class gdspy.FlexPath(points, width, offset=0, corners='natural',
-            ends='flush', bend_radius=None, tolerance=0.01, precision=0.001,
-            max_points=199, gdsii_path=False, width_transform=True, layer=0,
-            datatype=0)
+            #class gdspy.FlexPath(points, width, offset=0, corners='natural',
+            #ends='flush', bend_radius=None, tolerance=0.01, precision=0.001,
+            #max_points=199, gdsii_path=False, width_transform=True, layer=0,
+            #datatype=0)
 
-            Only fillet, if number is greater than zero.
-            """
+            #Only fillet, if number is greater than zero.
+
             use_width = self.parse_value(self.options.width_LineString)
 
             if math.isnan(qgeometry_element.width):
