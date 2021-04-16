@@ -11,7 +11,8 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""QRenderer."""
+"""QRenderer base class."""
+
 import logging
 import inspect
 from copy import deepcopy
@@ -115,6 +116,7 @@ class QRenderer():
         The structure of cls.element_table_data should be same as
         cls.element_extensions.
         """
+
         for table, a_dict in cls.element_table_data.items():
             cls.element_extensions[table] = dict()
             for col_name, col_value in a_dict.items():
@@ -377,11 +379,11 @@ class QRenderer():
         that the name of component exists in QDesign. If QDesign doesn't
         contain any component, or if all components in QDesign are found in
         highlight_qcomponents, return an empty list; otherwise return a list of
-        unique components to be sent to Ansys. The second returned item, an
+        unique components to be sent to the renderer. The second returned item, an
         integer, specifies which of these 3 cases applies.
 
         Args:
-            highlight_qcomponents (Union[list, None], optional): Components to render into Ansys. Defaults to None.
+            highlight_qcomponents (Union[list, None], optional): Components to render. Defaults to None.
 
         Returns:
             Tuple[list, int]: Empty or partial list of components in QDesign.
@@ -394,7 +396,7 @@ class QRenderer():
                     f'The component={qcomp} in highlight_qcomponents not'
                     ' in QDesign.')
                 return [], 2  # Invalid
-        if len(unique_qcomponents) == len(self.design.components):
+        if len(unique_qcomponents) in (0, len(self.design.components)):
             return [], 1  # Everything selected
         return [self.design.name_to_id[elt] for elt in unique_qcomponents
                ], 0  # Subset selected
@@ -427,6 +429,11 @@ class QRenderer():
         Raises:
             NotImplementedError: Function not written yet
         """
+        # To avoid linting message in a subclass:  Method 'render_chips' is
+        # abstract in class 'QRenderer' but is not overridden,
+        # have this method do something.
+        type(all_chips)
+
         raise NotImplementedError()
 
     def render_chip(self, name):
@@ -438,29 +445,44 @@ class QRenderer():
         Raises:
             NotImplementedError: Function not written yet
         """
+        # To avoid linting message in a subclass: Method 'render_chip' is
+        # abstract in class 'QRenderer' but is not overridden,
+        # have this method do something.
+        type(name)
+
         raise NotImplementedError()
 
     def render_components(self, selection=None):
-        """Render all components of the design. If selection is none, then
-        render all components.
+        """Render all components of the design.
+        If selection is none, then render all components.
 
         Args:
-            selection (QComponent): Component to render
+            selection (QComponent): Component to render.
 
         Raises:
             NotImplementedError: Function not written yet
         """
+        # To avoid linting message in a subclass: Method 'render_component'
+        # is abstract in class 'QRenderer' but is not overridden,
+        # have this method do something.
+        type(selection)
+
         raise NotImplementedError()
 
-    def render_component(self, component):
-        """Render the specified component.
+    def render_component(self, qcomponent):
+        """Render the specified qcomponent.
 
         Args:
-            component (QComponent): Component to render
+            qcomponent (QComponent): QComponent to render.
 
         Raises:
             NotImplementedError: Function not written yet
         """
+        # To avoid linting message in a subclass: Method 'render_component'
+        # is abstract in class 'QRenderer' but is not overridden,
+        # have this method do something.
+        type(qcomponent)
+
         raise NotImplementedError()
 
     def render_element(self, element):
@@ -472,6 +494,11 @@ class QRenderer():
         Raises:
             NotImplementedError: Function not written yet
         """
+        # To avoid linting message in a subclass: Method 'render_element' is
+        # abstract in class 'QRenderer' but is not overridden,
+        # have this method do something.
+        type(element)
+
         raise NotImplementedError()
         # if isinstance(element, path):
         #    self.render_element_path(element)
@@ -480,17 +507,22 @@ class QRenderer():
         #    self.render_element_poly(element)
 
         # else:
-        #    self.logger.error('RENDERER ERROR: Unkown element {element}')
+        #    self.logger.error('RENDERER ERROR: Unknown element {element}')
 
     def render_element_path(self, path):
         """Render an element path.
 
         Args:
-            path (str): Path to render
+            path (str): Path to render.
 
         Raises:
             NotImplementedError: Function not written yet
         """
+        # To avoid linting message in a subclass:  Method 'render_element_path'
+        # is abstract in class 'QRenderer' but is not overridden,
+        # have this method do something.
+        type(path)
+
         raise NotImplementedError()
 
     def render_element_poly(self, poly):
@@ -502,4 +534,9 @@ class QRenderer():
         Raises:
             NotImplementedError: Function not written yet
         """
+        # To avoid linting message in a subclass:  Method 'render_element_poly'
+        # is abstract in class 'QRenderer' but is not overridden
+        # have this method do something.
+        type(poly)
+
         raise NotImplementedError()
