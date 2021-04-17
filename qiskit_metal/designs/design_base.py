@@ -1,3 +1,4 @@
+# pylint disable=too-many-lines
 # -*- coding: utf-8 -*-
 
 # This code is part of Qiskit.
@@ -13,26 +14,21 @@
 # that they have been altered from the originals.
 """The base class of all QDesigns in Qiskit Metal."""
 
-import importlib, os
-from datetime import datetime
-
-from typing import TYPE_CHECKING, Any
-from typing import Dict as Dict_
-from typing import Iterable, List, Union
-
-from datetime import datetime
-import pandas as pd
+import importlib
 import inspect
+import os
+from datetime import datetime
+from typing import Any, Dict as Dict_, Iterable, List, TYPE_CHECKING, Union
 
-from .. import Dict, logger
-from ..config import DefaultMetalOptions, DefaultOptionsRenderer
+import pandas as pd
+
 from qiskit_metal.qgeometries.qgeometries_handler import QGeometryTables
-from qiskit_metal.toolbox_metal.parsing import parse_options, parse_value
-from qiskit_metal.toolbox_metal.parsing import is_true
+from qiskit_metal.toolbox_metal.parsing import is_true, parse_options, parse_value
 from .interface_components import Components
 from .net_info import QNet
+from .. import Dict, config, logger
+from ..config import DefaultMetalOptions, DefaultOptionsRenderer
 
-from .. import config
 if not config.is_building_docs():
     from qiskit_metal.toolbox_metal.import_export import load_metal_design, save_metal
     from qiskit_metal.toolbox_python._logging import LogStore
@@ -40,15 +36,13 @@ if not config.is_building_docs():
 if TYPE_CHECKING:
     # For linting, avoids circular imports.
     from qiskit_metal.qlibrary.base.base import QComponent
-    from qiskit_metal.renderers.renderer_base import QRenderer
-    from qiskit_metal.renderers.renderer_gds.gds_renderer import QGDSRenderer
 
 __all__ = ['QDesign']
 
 #:ivar var1: initial value: par2
 
-
-class QDesign():
+# pylint disable=too-many-public-methods, too-many-instance-attributes
+class QDesign(): # pylint disable=too-many-public-methods, too-many-instance-attributes
     """QDesign is the base class for Qiskit Metal Designs.
 
     A design is the most top-level object in all of Qiskit Metal.
@@ -89,12 +83,12 @@ class QDesign():
         """
 
         # _qcomponent_latest_assigned_id -- Used to keep a tally and ID of all components within an
-        #                   instanziation of a design.
-        #                   A component is added to a design by base._add_to_design with init of a comoponent.
-        #                   During init of component, design class provides an unique id for each instance of
-        #                   component being added to design.  Note, if a component is removed from the design,
-        #                   the ID of removed component should not be used again.  However, if a component is
-        #                   renamed with an unique name, then the ID should continute to be used.
+        # instanziation of a design.
+        # A component is added to a design by base._add_to_design with init of a comoponent.
+        # During init of component, design class provides an unique id for each instance of
+        # component being added to design.  Note, if a component is removed from the design,
+        # the ID of removed component should not be used again.  However, if a component is
+        # renamed with an unique name, then the ID should continute to be used.
         self._qcomponent_latest_assigned_id = 0
 
         # Dictionary that keeps the latest ID for each unique type of component
@@ -138,13 +132,15 @@ class QDesign():
         # is resolved.
         # Presently, self._template_options holds the templates_options for each renderers.
         # key is the unique name of renderer.
-        # Also, renderer_base.options holds the latest options for each instance of renderer.
+        # Also, renderer_base.options holds the latest options for each instance
+        # of renderer.
         self._template_renderer_options = DefaultOptionsRenderer(
         )  # use for renderer
 
         self._qnet = QNet()
 
-        # Dict used to populate the columns of QGeometry table i.e. path, junction, poly etc.
+        # Dict used to populate the columns of QGeometry table i.e. path,
+        # junction, poly etc.
         self.renderer_defaults_by_table = Dict()
 
         # Instantiate and register renderers to Qdesign.renderers
@@ -152,11 +148,12 @@ class QDesign():
         if enable_renderers:
             self._start_renderers()
 
-        # Take out of the QGeometryTables init(). Add add_renderer_extension() during renderer's init().
+        # Take out of the QGeometryTables init().
+        # Add add_renderer_extension() during renderer's init().
         # Need to add columns to Junction tables before create_tables().
         self._qgeometry.create_tables()
 
-    def _init_metadata(self) -> Dict:
+    def _init_metadata(self) -> Dict: # pylint disable=no-self-use
         """Initialize default metadata dictionary.
 
         Returns:
@@ -239,7 +236,7 @@ class QDesign():
         Returns:
             pd.core.frame.DataFrame: copy of net_info table.
         """
-        return self._qnet._net_info.copy(deep=True)
+        return self._qnet._net_info.copy(deep=True) # pylint disable=protected_access
 
 #########Proxy properties##################################################
 
@@ -251,7 +248,8 @@ class QDesign():
             chip_name (str): Name of the chip.
 
         Returns:
-            dict: Dictionary of chip dimensions, including central coordinates and widths along x, y, and z axes.
+            dict: Dictionary of chip dimensions,
+            including central coordinates and widths along x, y, and z axes.
         """
         return self._chips[chip_name]['size']
 
@@ -303,12 +301,12 @@ class QDesign():
         Returns:
             QNet: QNet with all pins removed
         """
-        df_net_info = self._qnet._net_info
-        for (index, netID, comp_id, pin_name) in df_net_info.itertuples():
+        df_net_info = self._qnet._net_info # pylint disable=protected_access
+        for (index, netID, comp_id, pin_name) in df_net_info.itertuples(): # pylint disable=unused_variable, invalid_name, line-too-long
             self._components[comp_id].pins[pin_name].net_id = 0
 
         # remove rows, but save column names
-        self._qnet._net_info = self._qnet._net_info.iloc[0:0]
+        self._qnet._net_info = self._qnet._net_info.iloc[0:0] # pylint disable=protected_access
         return self._qnet
 
     def connect_pins(self, comp1_id: int, pin1_name: str, comp2_id: int,
@@ -339,51 +337,17 @@ class QDesign():
             self._components[comp2_id].pins[pin2_name].net_id = net_id
         else:
             logger.warning(
-                f'NetId was not added for {comp1_id}, {pin1_name}, {comp2_id}, {pin2_name} and will not be added to components.'
+                f'NetId was not added for {comp1_id}, {pin1_name},'
+                f' {comp2_id}, {pin2_name} and will not be added to components.'
             )
         return net_id
-
-    # NOTE: Think nothing is using this. Remove this if no-one complains.
-    #       This is replaced by design.components.find_id()
-    # def get_component(self, search_name: str) -> 'QComponent':
-    #     """The design contains a dict of all the components, which is correlated to
-    #     a net_list connections, and qgeometry table. The key of the components dict are
-    #     unique integers.  This method will search through the dict to find the component with search_name.
-
-    #     Args:
-    #         search_name (str): Name of the component
-
-    #     Returns:
-    #         QComponent: A component within design with the name search_name.
-
-    #     *Note:* If None is returned the component wass not found. A warning through logger.warning().
-
-    #     *Note:* If multiple components have the same name, only the first component found in the search
-    #     will be returned, ALONG with logger.warning().
-    #     """
-    #     alist = [(value.name, key)
-    #              for key, value in self._components.items() if value.name == search_name]
-
-    #     length = len(alist)
-    #     if length == 1:
-    #         return_component = self._components[alist[0][1]]
-    #     elif length == 0:
-    #         self.logger.warning(
-    #             f'Name of component:{search_name} not found. Returned None')
-    #         return_component = None
-    #     else:
-    #         self.logger.warning(
-    #             f'Component:{search_name} is used multiple times, return the first component in list: (name, component_id) {str(alist)}')
-    #         return_component = self._components[alist[0][1]]
-
-    #     return return_component
 
     def all_component_names_id(self) -> list:
         """Get the text names and corresponding unique ID  of each component
         within this design.
 
         Returns:
-            list[tuples]: Each tuple has the text name of component and UNIQUE integer ID for component.
+            list[tuples]: Each tuple has the text name of component and UNIQUE integer ID for component.  # pylint disable=line-too-long
         """
         alist = [(value.name, key) for key, value in self._components.items()]
         return alist
@@ -401,7 +365,7 @@ class QDesign():
 
         # reset all pins to be 0 (zero),
         pins_dict = self._components[comp_id].pins
-        for key, value in pins_dict.items():
+        for key, _ in pins_dict.items():
             self._components[comp_id].pins[key].net_id = 0
 
         return all_net_id_removed
@@ -460,9 +424,11 @@ class QDesign():
 
         try:
             # split on os.sep and / because PySide appears to sometimes use / on certain Windows
-            # Windows users' qis_abs_path may use os.sep or '/' due to PySide's handling of file names
+            # Windows users' qis_abs_path may use os.sep or '/' due to PySide's
+            # handling of file names
             qis_mod_path = qis_abs_path.replace(os.sep, '.')[:-len('.py')]
-            qis_mod_path = qis_mod_path.replace("/", '.')  # users cannot use '/' in filename
+            # users cannot use '/' in filename
+            qis_mod_path = qis_mod_path.replace("/", '.')
 
             qis_class_name = "reload and rebuild no name"
             mymodule = importlib.import_module(qis_mod_path)
@@ -473,15 +439,15 @@ class QDesign():
                     if str(memtup[1].__module__).endswith(class_owner):
                         qis_class_name = memtup[1].__name__
 
-
             self.logger.debug(
-                f'Reloading component_class_name={qis_class_name}; component_module_name={qis_mod_path}'
+                f'Reloading component_class_name={qis_class_name};'
+                f' component_module_name={qis_mod_path}'
             )
 
             module = importlib.import_module(qis_mod_path)
             module = importlib.reload(module)
             new_class = getattr(module, qis_class_name)
-            self.template_options.pop(new_class._get_unique_class_name())
+            self.template_options.pop(new_class._get_unique_class_name()) # pylint disable=protected-access, line-too-long
 
             for instance in filter(
                     lambda k: k.__class__.__name__ == qis_class_name,
@@ -489,13 +455,13 @@ class QDesign():
                 instance.__class__ = new_class
                 instance.rebuild()
 
-
             self.logger.debug(
-                f'Finished reloading component_class_name={qis_class_name}; component_module_name={qis_mod_path}'
-                )
-        except Exception as e:
-            self.logger.error(f"Failed to refresh/rebuild {qis_abs_path} due to: {e}")
-
+                f'Finished reloading '
+                f'component_class_name={qis_class_name}; component_module_name={qis_mod_path}'
+            )
+        except Exception as e: # pylint disable=broad-except
+            self.logger.error(
+                f"Failed to refresh/rebuild {qis_abs_path} due to: {e}")
 
     def rename_component(self, component_id: int, new_component_name: str):
         """Rename component.  The component_id is expected.  However, if user
@@ -537,9 +503,10 @@ class QDesign():
 
         if a_component_id in self._components:
             # Check if name is already being used.
-            if new_component_name in self.name_to_id:
+            if new_component_name in self.name_to_id:  # pylint disable=line-too-long
                 logger.warning(
-                    f'Called design.rename_component, component_id({self.name_to_id[new_component_name]}'
+                    f'Called design.rename_component,'
+                    f' component_id({self.name_to_id[new_component_name]}'
                     f',  is already using {new_component_name}.')
                 return -2
 
@@ -548,23 +515,20 @@ class QDesign():
 
             # Remove old name from cache, add new name
             self.name_to_id.pop(a_component.name, None)
-            self.name_to_id[new_component_name] = a_component.id
+            self.name_to_id[new_component_name] = a_component.id  # pylint disable=line-too-long
 
             # do rename
-            self._components[component_id]._name = new_component_name
+            self._components[component_id]._name = new_component_name # pylint disable=protected-access, line-too-long
 
             return True
-        else:
-            logger.warning(
+        logger.warning(
                 f'Called rename_component, component_id={component_id}, but component_id'
                 f' is not in design.components dictionary.')
-            return -3
-
-        return True
+        return -3
 
     def delete_component(self,
                          component_name: str,
-                         force: bool = False) -> bool:
+                         force: bool = False) -> bool: #pylint disable=unused-argument
         """Deletes component and pins attached to said component.
 
         If no component by that name is present, then just return True
@@ -586,8 +550,7 @@ class QDesign():
                 f'component is not in the design cache dictionary of components.'
             )
             return True
-        else:
-            component_id = self.name_to_id[component_name]
+        component_id = self.name_to_id[component_name]
 
         # check if components has dependencies
         #   if it does, then do not delete, unless force=true
@@ -628,7 +591,8 @@ class QDesign():
                 delete_this_pin = df_subset_based_on_net_id[(
                     df_subset_based_on_net_id['component_id'] != component_id)]
 
-                # If Component is connected to anything, meaning it is part of net_info table.
+                # If Component is connected to anything, meaning it is part of net_info
+                # table.
                 if not delete_this_pin.empty:
                     edit_component = list(delete_this_pin['component_id'])[0]
                     edit_pin = list(delete_this_pin['pin_name'])[0]
@@ -661,7 +625,7 @@ class QDesign():
 
         return return_response
 
-    def copy_multiple_qcomponents(
+    def copy_multiple_qcomponents( # pylint disable=dangerous-default-value
         self,
         original_qcomponents: list,
         new_component_names: list,
@@ -675,8 +639,10 @@ class QDesign():
         Args:
             original_qcomponents (list): Must be a list of original QComponents.
             new_component_names (list): Must be a list of QComponent names.
-            all_options_superimpose (list, optional): Must be list of dicts with options to superimpose on options
-                from original_qcomponents. The list can be of both populated and empty dicts. Defaults to empty list().
+            all_options_superimpose (list, optional): Must be list of dicts
+             with options to superimpose on options
+                from original_qcomponents. The list can be of both populated
+                 and empty dicts. Defaults to empty list().
 
         Returns:
             Dict: Number of keys will be the same length of original_qcomponent.
@@ -709,16 +675,20 @@ class QDesign():
         self,
         original_qcomponent: 'QComponent',
         new_component_name: str,
-        options_superimpose: dict = dict()
+        options_superimpose: dict = dict()  # pylint disable=dangerous-default-value
     ) -> Union['QComponent', None]:
-        """Copy a coponent in QDesign and add it to QDesign._components using
+        """Copy a coponent in QDesign and
+        add it to QDesign._components using
         options_overwrite.
 
         Args:
             original_class (QComponent): The QComponent to copy.
-            new_component_name (str): The name should not already be in QDesign, if it is, the copy fill fail.
-            options_superimpose (dict): Can use differnt options for copied QComponent. Will start with the options
-                                        in original QComponent, and then superimpose with options_superimpose. An example
+            new_component_name (str): The name should not already
+            be in QDesign, if it is, the copy fill fail.
+            options_superimpose (dict): Can use differnt options
+             for copied QComponent. Will start with the options
+                                        in original QComponent,
+                                         and then superimpose with options_superimpose. An example
                                         would be x and y locations.
 
         Returns:
@@ -738,9 +708,7 @@ class QDesign():
                                                 new_component_name,
                                                 options=options)
                 return a_qcomponent
-            else:
-                # Path to QComponent not found
-                return None
+            return None
         else:
             # The new name is already in QDesign.
             return None
@@ -790,13 +758,13 @@ class QDesign():
         self.logger.info(f'Saving design to {path}')
         result = save_metal(path, self)
         if result:
-            self.logger.info(f'Saving successful.')
+            self.logger.info('Saving successful.')
         else:
-            self.logger.error(f'Saving failed.')
+            self.logger.error('Saving failed.')
 
         return result
 
-#########Creating Components###############################################################
+#########Creating Components##############################################
 
     def parse_value(self, value: Union[Any, List, Dict, Iterable]) -> Any:
         """Main parsing function. Parse a string, mappable (dict, Dict),
@@ -895,7 +863,7 @@ class QDesign():
             parent (str): The component on which the child depends.
             child (str): The child cannot live without the parent.
         """
-        pass
+        pass  # pylint disable=unnecessary-pass
 
     def remove_dependency(self, parent: str, child: str):
         """Remove a dependency between one component and another.
@@ -904,7 +872,7 @@ class QDesign():
             parent (str): The component on which the child depends.
             child (str): The child cannot live without the parent.
         """
-        pass
+        pass  # pylint disable=unnecessary-pass
 
     def update_component(self, component_name: str, dependencies: bool = True):
         """Update the component and any dependencies it may have. Mediator type
@@ -916,7 +884,7 @@ class QDesign():
         """
         # Get dependency graph
         # Remake components in order
-        pass
+        pass  # pylint disable=unnecessary-pass
 
 
 ######### Renderers ###############################################################
@@ -970,7 +938,7 @@ class QDesign():
                     f'The module_name={path_name} was not found.')
                 continue
 
-        for render_name, a_render in self._renderers.items():
+        for _, a_render in self._renderers.items():
             a_render.add_table_data_to_QDesign(a_render.name)
 
     def add_default_data_for_qgeometry_tables(self, table_name: str,
@@ -984,13 +952,14 @@ class QDesign():
         of QGeometry table i.e. path, junction, poly etc.
 
         Example of data format is:
-        self.renderer_defaults_by_table[table_name][renderer_name][column_name] = column_value
-        The type for default value placed in a table column is determined by populate_element_extenstions() on line:
-        cls.element_extensions[table][col_name] = type(col_value)
+        self.renderer_defaults_by_table[table_name][renderer_name][column_name] = column_value  # pylint disable=line-too-long
+        The type for default value placed in a table column is determined by populate_element_extenstions() on line:  # pylint disable=line-too-long
+        cls.element_extensions[table][col_name] = type(col_value)  # pylint disable=line-too-long
         in renderer_base.py.
 
         Dict layout and examples within parenthesis:
-            key: Only if need to add data to components, for each type of table (path, poly, or junction).
+            key: Only if need to add data to components,
+            for each type of table (path, poly, or junction).
             value: Dict which has
 
                   keys: render_name (gds), value: Dict which has
