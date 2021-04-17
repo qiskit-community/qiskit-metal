@@ -15,7 +15,6 @@
 Tree view for Param Entry Window
 """
 
-from typing import TYPE_CHECKING
 
 from PySide2 import QtCore, QtWidgets, QtGui
 from PySide2.QtCore import Qt, QTimer

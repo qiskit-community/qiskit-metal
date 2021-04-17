@@ -55,7 +55,8 @@ class LibraryFileProxyModel(QSortFilterProxyModel):
 
         return False
 
-    def data(self, index: QModelIndex, role: int = Qt.DisplayRole) -> typing.Any:
+    def data(self, index: QModelIndex,
+             role: int = Qt.DisplayRole) -> typing.Any:
         """ Sets standard size hint for indexes and allows """
         from PySide2.QtCore import Qt, QSize
 

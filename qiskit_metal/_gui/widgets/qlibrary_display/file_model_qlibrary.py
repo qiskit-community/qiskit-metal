@@ -1,11 +1,4 @@
-import importlib
-import importlib.util
-import logging
 import os
-import shutil
-import sys
-from pathlib import Path
-from typing import List, TYPE_CHECKING
 
 from PySide2.QtGui import QFont
 from PySide2.QtCore import Qt, QTimer, QModelIndex, QFileSystemWatcher, Signal
@@ -73,7 +66,8 @@ class QFileSystemLibraryModel(QFileSystemModel):
         sep = os.sep if os.sep in filepath else '/'
         for file in filepath.split(sep):
             if file in self.dirtied_files:
-                # if file was in dirtied files only because it is a parent dir of filename, remove
+                # if file was in dirtied files only because it is a parent dir
+                # of filename, remove
                 self.dirtied_files[file].discard(filename)
 
                 if len(self.dirtied_files[file]) < 1:
@@ -128,7 +122,8 @@ class QFileSystemLibraryModel(QFileSystemModel):
 
         """
 
-        # split on os.sep and / because PySide appears to sometimes use / on certain Windows
+        # split on os.sep and / because PySide appears to sometimes use / on
+        # certain Windows
         filename = filepath.split(os.sep)[-1].split('/')[-1]
         if '.py' in filename:
             return filename[:-len('.py')]
@@ -167,7 +162,11 @@ class QFileSystemLibraryModel(QFileSystemModel):
                 self.file_system_watcher.addPath(filepath)
         self.dirty_file(filepath)
 
-    def headerData(self, section: int, orientation: PySide2.QtCore.Qt.Orientation, role: int = ...) -> typing.Any:
+    def headerData(
+            self,
+            section: int,
+            orientation: PySide2.QtCore.Qt.Orientation,
+            role: int = ...) -> typing.Any:
         """ Set the headers to be displayed.
 
         Args:

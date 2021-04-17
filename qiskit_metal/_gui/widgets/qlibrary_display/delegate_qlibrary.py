@@ -15,7 +15,7 @@
 Delegate for display of QComponents in Library tab
 """
 from PySide2.QtWidgets import (
-    QFileSystemModel)
+    QFileSystemModel) 
 
 from PySide2.QtWidgets import QItemDelegate
 from PySide2.QtCore import QAbstractItemModel, QModelIndex, Qt, QAbstractProxyModel
@@ -35,7 +35,8 @@ class LibraryDelegate(QItemDelegate):
 
     def __init__(self, parent=None):
         """
-        source_model_type - The Delegate may belong to a view using a ProxyModel. However, the source model for that Proxy Model(s) should be a QFileSystemLibraryModel
+        source_model_type - The Delegate may belong to a view using a ProxyModel.
+        However, the source model for that Proxy Model(s) should be a QFileSystemLibraryModel
         is_dev_mode - Whether the MetalGUI is in Developer Mode or not
 
         Args:
@@ -48,9 +49,11 @@ class LibraryDelegate(QItemDelegate):
 
     # https://www.youtube.com/watch?v=v6clAW6FmcU
 
-    def get_source_model(self, model, source_type):
+    def get_source_model(self, model, source_type): # pylint: disable=R0201, no-self-use
         """
-        The Delegate may belong to a view using a ProxyModel. However, the source model for that Proxy Model(s) should be a QFileSystemLibraryModel and is returned by this function
+        The Delegate may belong to a view using a ProxyModel. However,
+        the source model for that Proxy Model(s) should be a QFileSystemLibraryModel
+        and is returned by this function
 
 
         Args:
@@ -61,11 +64,11 @@ class LibraryDelegate(QItemDelegate):
 
 
         """
-        while(True):
+        while True:
             # https://stackoverflow.com/questions/50478661/python-isinstance-not-working-as-id-expect
             if model.__class__.__name__ == source_type.__name__:
                 return model
-            elif isinstance(model, QAbstractProxyModel):
+            if isinstance(model, QAbstractProxyModel):
                 model = model.sourceModel()
             else:
                 raise Exception(f"Unable to find model: "
@@ -77,9 +80,14 @@ class LibraryDelegate(QItemDelegate):
                                 f"\n{type(model)}"
                                 )
 
-    def paint(self, painter: PySide2.QtGui.QPainter, option: PySide2.QtWidgets.QStyleOptionViewItem, index: QModelIndex):
+    def paint(
+            self,
+            painter: PySide2.QtGui.QPainter,
+            option: PySide2.QtWidgets.QStyleOptionViewItem,
+            index: QModelIndex):
         """
-        Displays dirty files in red with corresponding rebuild buttons if in developer mode (is_dev_mode). Otherwise, renders normally
+        Displays dirty files in red with corresponding rebuild buttons
+        if in developer mode (is_dev_mode). Otherwise, renders normally
         Args:
             painter: QPainter
             option: QStyleOptionViewItem
@@ -91,17 +99,15 @@ class LibraryDelegate(QItemDelegate):
         if self.is_dev_mode:
             source_model = self.get_source_model(
                 index.model(), self.source_model_type)
-            FILENAME = source_model.FILENAME
-            REBUILD = source_model.REBUILD
 
             model = index.model()
 
             # get data of filename
             filename = str(model.data(
-                model.sibling(index.row(), FILENAME, index)))
+                model.sibling(index.row(), source_model.FILENAME, index)))
 
             if source_model.is_file_dirty(filename):
-                if index.column() == FILENAME:
+                if index.column() == source_model.FILENAME:
 
                     text = filename
                     palette = option.palette
@@ -115,12 +121,13 @@ class LibraryDelegate(QItemDelegate):
                     document.drawContents(painter)
                     painter.restore()
 
-                elif index.column() == REBUILD:
-                    if ('.py' in filename):
+                elif index.column() == source_model.REBUILD:
+                    if '.py' in filename:
                         text = "rebuild"
                         palette = option.palette
                         document = QTextDocument()
-                        # needed to add Right Alignment:  qt bug : https://bugreports.qt.io/browse/QTBUG-22851
+                        # needed to add Right Alignment:  qt bug :
+                        # https://bugreports.qt.io/browse/QTBUG-22851
                         document.setTextWidth(option.rect.width())
                         text_options = document.defaultTextOption()
                         text_options.setTextDirection(Qt.RightToLeft)
