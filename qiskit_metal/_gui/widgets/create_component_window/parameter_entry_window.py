@@ -372,7 +372,7 @@ class ParameterEntryWindow(QMainWindow):
 
         self.traverse_model_to_create_dictionary()
 
-        #mine = self.qcomp_class(self._design, **self.current_dict)
+        self.qcomp_class(self._design, **self.current_dict)
         if self._gui is not None:  #for the sake of testing, we won't have gui
             self._gui.refresh()
             self._gui.autoscale()
