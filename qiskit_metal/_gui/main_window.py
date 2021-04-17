@@ -238,8 +238,8 @@ class MetalGUI(QMainWindowBaseHandler):
         from .utility._handle_qt_messages import QtCore, _qt_message_handler
         QtCore.qInstallMessageHandler(_qt_message_handler)
 
-        qApp = kick_start_qApp()
-        if not qApp:
+        self.qApp = kick_start_qApp()
+        if not self.qApp:
             logging.error("Could not start Qt event loop using QApplication.")
 
         super().__init__()

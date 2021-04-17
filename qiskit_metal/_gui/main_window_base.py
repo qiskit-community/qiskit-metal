@@ -45,6 +45,7 @@ class QMainWindowExtensionBase(QMainWindow):
         super().__init__()
         # Set manually
         self.handler = None  # type: QMainWindowBaseHandler
+        self.force_close = False
 
     @property
     def logger(self) -> logging.Logger:
@@ -79,14 +80,23 @@ class QMainWindowExtensionBase(QMainWindow):
         super().destroy(destroyWindow=destroyWindow,
                         destroySubWindows=destroySubWindows)
 
+    def set_force_close(self, ison:bool):
+        self.force_close = ison
+
     def closeEvent(self, event):
         """whenever a window is closed.
 
         Passed an event which we can choose to accept or reject.
         """
+
+        if self.force_close:
+            super().closeEvent(event)
+            return
+
         if self.ok_to_continue():
             self.save_window_settings()
             super().closeEvent(event)
+
 
     def ok_to_continue(self):
         """Determine if it ok to continue.
@@ -621,6 +631,7 @@ def kick_start_qApp():
         Exception: Magic method failure
     """
     qApp = QtCore.QCoreApplication.instance()
+
 
     if qApp is None:
         try:
