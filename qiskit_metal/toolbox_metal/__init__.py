@@ -11,6 +11,10 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
+
+# pylint: disable-msg=relative-beyond-top-level
+# pylint: disable-msg=import-error
+# pylint: disable-msg=import-self
 """
 =================================================
 Toolbox_metal (:mod:`qiskit_metal.toolbox_metal`)

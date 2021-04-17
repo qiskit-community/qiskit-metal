@@ -23,8 +23,9 @@ import math
 
 
 class QRoutePoint:
-    """A convenience wrapper class to define an point with orientation,
-    with a 2D position and a 2D direction (XY plane).
+    """A convenience wrapper class to define an point with orientation, with a
+    2D position and a 2D direction (XY plane).
+
     All values stored as np.ndarray of parsed floats.
     """
 
@@ -48,12 +49,12 @@ class QRoutePoint:
 
 
 class QRoute(QComponent):
-    """
-    Super-class implementing routing methods that are valid irrespective of
+    """Super-class implementing routing methods that are valid irrespective of
     the number of pins (>=1). The route is stored in a n array of planar points
-    (x,y coordinates) and one direction, which is that of the last point in the array.
-    Values are stored as np.ndarray of parsed floats or np.array float pair
-    
+    (x,y coordinates) and one direction, which is that of the last point in the
+    array. Values are stored as np.ndarray of parsed floats or np.array float
+    pair.
+
     Inherits `QComponent` class
 
     Default Options:
@@ -76,7 +77,7 @@ class QRoute(QComponent):
         * trace_width: 'cpw_width' -- Defines the width of the line.  Defaults to 'cpw_width'.
     """
 
-    component_metadata = Dict(short_name='route')
+    component_metadata = Dict(short_name='route', _qgeometry_table_path='True')
     """Component metadata"""
 
     default_options = Dict(
@@ -140,7 +141,8 @@ class QRoute(QComponent):
         super().__init__(design, name, options, **kwargs)
 
     def _add_route_specific_options(self, options):
-        """Enriches the default_options to support different types of route styles.
+        """Enriches the default_options to support different types of route
+        styles.
 
         Args:
             options (dict): User options that will override the defaults
@@ -182,7 +184,8 @@ class QRoute(QComponent):
         return self.design.components[pin_data.component].pins[pin_data.pin]
 
     def set_pin(self, name: str) -> QRoutePoint:
-        """Defines the CPW pins and returns the pin coordinates and normal direction vector.
+        """Defines the CPW pins and returns the pin coordinates and normal
+        direction vector.
 
         Args:
             name: String (supported pin names are: start, end)
@@ -257,7 +260,8 @@ class QRoute(QComponent):
         return lead.get_tip()
 
     def set_lead_extension(self, name: str) -> QRoutePoint:
-        """Defines the jogged lead_extension by adding a series of turns to the self.head/tail.
+        """Defines the jogged lead_extension by adding a series of turns to the
+        self.head/tail.
 
         Args:
             name: String (supported pin names are: start, end)
@@ -301,8 +305,8 @@ class QRoute(QComponent):
         return lead.get_tip()
 
     def _get_lead2pts_array(self, arr) -> Tuple:
-        """Return the last "diff pts" of the array.
-        If the array is one dimensional or has only identical points, return -1 for tip_pt_minus_1.
+        """Return the last "diff pts" of the array. If the array is one
+        dimensional or has only identical points, return -1 for tip_pt_minus_1.
 
         Return:
             Tuple: Of two np.ndarray. the arrays could be -1 instead, if point not found
@@ -406,7 +410,7 @@ class QRoute(QComponent):
 
     def get_points(self) -> np.ndarray:
         """Assembles the list of points for the route by concatenating:
-        head_pts + intermediate_pts, tail_pts
+        head_pts + intermediate_pts, tail_pts.
 
         Returns:
             np.ndarray: ((H+N+T)x2) all points (x,y) of the CPW
@@ -432,8 +436,8 @@ class QRoute(QComponent):
                          start: QRoutePoint,
                          end: QRoutePoint,
                          snap: bool = False) -> Tuple:
-        """Return the unit and target vector in which the CPW should process as its
-        coordinate sys.
+        """Return the unit and target vector in which the CPW should process as
+        its coordinate sys.
 
         Arguments:
             start (QRoutePoint): Reference start point (direction from here)
@@ -454,7 +458,7 @@ class QRoute(QComponent):
 
     @property
     def length(self) -> float:
-        """Sum of all segments length, including the head
+        """Sum of all segments length, including the head.
 
         Return:
             length (float): Full point_array length
@@ -471,7 +475,8 @@ class QRoute(QComponent):
         return length_estimate
 
     def length_excess_corner_rounding(self, points) -> float:
-        """Computes how much length to deduce for compensating the fillet settings
+        """Computes how much length to deduce for compensating the fillet
+        settings.
 
         Arguments:
             points (list or array): List of vertices that will be receiving the corner rounding radius
@@ -488,9 +493,10 @@ class QRoute(QComponent):
 
     def assign_direction_to_anchor(self, ref_pt: QRoutePoint,
                                    anchor_pt: QRoutePoint):
-        """Method to assign a direction to a point. Currently assigned as the max(x,y projection)
-        of the direct path between the reference point and the anchor. Method directly modifies
-        the anchor_pt.direction, thus there is no return value.
+        """Method to assign a direction to a point. Currently assigned as the
+        max(x,y projection) of the direct path between the reference point and
+        the anchor. Method directly modifies the anchor_pt.direction, thus
+        there is no return value.
 
         Arguments:
             ref_pt (QRoutePoint): Reference point
@@ -513,7 +519,8 @@ class QRoute(QComponent):
         anchor_pt.direction = assigned_direction / norm(assigned_direction)
 
     def make_elements(self, pts: np.ndarray):
-        """Turns the CPW points into design elements, and add them to the design object.
+        """Turns the CPW points into design elements, and add them to the
+        design object.
 
         Arguments:
             pts (np.ndarray): Array of points
@@ -546,6 +553,7 @@ class QRoute(QComponent):
 class QRouteLead:
     """A simple class to define a an array of points with some properties,
     defines 2D positions and some of the 2D directions (XY plane).
+
     All values stored as np.ndarray of parsed floats.
     """
 
@@ -565,7 +573,8 @@ class QRouteLead:
         self.direction = None  # will be numpy 2x1
 
     def seed_from_pin(self, pin: Dict) -> QRoutePoint:
-        """Initialize the QRouteLead by giving it a starting point and a direction.
+        """Initialize the QRouteLead by giving it a starting point and a
+        direction.
 
         Args:
             pin: object describing the "reference_pin" (not cpw_pin) this is attached to.
@@ -593,7 +602,8 @@ class QRouteLead:
                              axis=0)
 
     def go_left(self, length: float):
-        """Straight line 90deg counter-clock-wise direction w.r.t. lead tip direction.
+        """Straight line 90deg counter-clock-wise direction w.r.t. lead tip
+        direction.
 
         Args:
             length (float): How much to move by

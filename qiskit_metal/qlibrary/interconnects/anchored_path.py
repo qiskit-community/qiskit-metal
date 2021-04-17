@@ -11,9 +11,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-'''
-Anchored path
-'''
+"""Anchored path."""
 
 import numpy as np
 
@@ -29,8 +27,8 @@ import geopandas as gpd
 
 
 def intersecting(a: np.array, b: np.array, c: np.array, d: np.array) -> bool:
-    """Returns whether segment ab intersects or overlaps with segment cd, where a, b, c, and d are
-    all coordinates.
+    """Returns whether segment ab intersects or overlaps with segment cd, where
+    a, b, c, and d are all coordinates.
 
     Args:
         a (np.array): Coordinate
@@ -97,8 +95,7 @@ def intersecting(a: np.array, b: np.array, c: np.array, d: np.array) -> bool:
 
 
 class RouteAnchors(QRoute):
-    """
-    Creates and connects a series of anchors through which the Route passes.
+    """Creates and connects a series of anchors through which the Route passes.
 
     QRoute Default Options:
         * pin_inputs: Dict
@@ -143,8 +140,8 @@ class RouteAnchors(QRoute):
     from shapely.geometry import CAP_STYLE, JOIN_STYLE
 
     def unobstructed_close_up(self, segment: list, component_name: str) -> bool:
-        """
-        Checks whether the given component's perimeter intersects or overlaps a given segment.
+        """Checks whether the given component's perimeter intersects or
+        overlaps a given segment.
 
         Args:
             segment (list): 2 vertices, in the form [np.array([x0, y0]), np.array([x1, y1])]
@@ -173,8 +170,8 @@ class RouteAnchors(QRoute):
         return True
 
     def unobstructed(self, segment: list) -> bool:
-        """
-        Check that no component's bounding box in self.design intersects or overlaps a given segment.
+        """Check that no component's bounding box in self.design intersects or
+        overlaps a given segment.
 
         Args:
             segment (list): 2 vertices, in the form [np.array([x0, y0]), np.array([x1, y1])]
@@ -208,8 +205,8 @@ class RouteAnchors(QRoute):
 
     def connect_simple(self, start_pt: QRoutePoint,
                        end_pt: QRoutePoint) -> np.ndarray:
-        """
-        Try connecting start and end with single or 2-segment/S-shaped CPWs if possible.
+        """Try connecting start and end with single or 2-segment/S-shaped CPWs
+        if possible.
 
         Args:
             start_pt (QRoutePoint): QRoutePoint of the start
@@ -333,9 +330,8 @@ class RouteAnchors(QRoute):
             "(^|_, ^^|, __|, _|^) can complete. Please use Pathfinder instead")
 
     def free_manhattan_length_anchors(self):
-        """
-        Computes the free-flight manhattan distance between start_pt and end_pt
-        passing through all of the given anchor points.
+        """Computes the free-flight manhattan distance between start_pt and
+        end_pt passing through all of the given anchor points.
 
         Returns:
             float: Total length connecting all points in order
@@ -353,9 +349,12 @@ class RouteAnchors(QRoute):
         return length
 
     def trim_pts(self):
-        """Crops the sequence of points to concatenate. For example, if a segment between
-        two anchors has no points, then the segment is eliminated (only anchor points will do).
-        Modified directly the self.intermediate_pts, thus nothing is returned.
+        """Crops the sequence of points to concatenate.
+
+        For example, if a segment between two anchors has no points,
+        then the segment is eliminated (only anchor points will do).
+        Modified directly the self.intermediate_pts, thus nothing is
+        returned.
         """
         if isinstance(self.intermediate_pts, Mapping):
             keys_to_delete = set()
@@ -374,9 +373,7 @@ class RouteAnchors(QRoute):
                 del self.intermediate_pts[key]
 
     def make(self):
-        """
-        Generates path from start pin to end pin.
-        """
+        """Generates path from start pin to end pin."""
         p = self.parse_options()
         anchors = p.anchors
 

@@ -11,10 +11,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-'''
-TEST COMPONENT
-NOT FOR ACTUAL USE
-'''
+"""TEST COMPONENT NOT FOR ACTUAL USE."""
 
 from qiskit_metal import draw, Dict
 from qiskit_metal.qlibrary.base import QComponent
@@ -22,8 +19,8 @@ import numpy as np
 
 
 class SmileyFace(QComponent):
-    """TEST COMPONENT It is for fun only.  Can view a 
-    smiley face. Can make it wink or frown.
+    """TEST COMPONENT It is for fun only.  Can view a smiley face. Can make it
+    wink or frown.
 
     Default Options:
         * happy: True
@@ -38,7 +35,7 @@ class SmileyFace(QComponent):
     """Default connector options"""
 
     def make(self):
-        """Build the component"""
+        """Build the component."""
         face = draw.shapely.geometry.Point(0, 0).buffer(1)
         eye = draw.shapely.geometry.Point(0, 0).buffer(0.2)
         eye_l = draw.translate(eye, -0.4, 0.4)

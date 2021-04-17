@@ -11,7 +11,7 @@ Near-term development roadmap:
 
 .. attention::
 
-   We need input form you on what to prioritize and how to best shape so that Metal is useful to the wide community and hopefuly makes life easier for you too.
+   We need input from you on what to prioritize and how to best shape so that Metal is useful to the wide community and hopefuly makes life easier for you too.
    Let us know through github issues, slack channel messages, or by telling us in one of the tutorials. 
 
 

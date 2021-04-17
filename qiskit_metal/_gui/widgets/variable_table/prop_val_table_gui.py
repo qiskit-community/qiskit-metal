@@ -23,8 +23,7 @@ from PySide2.QtWidgets import QMainWindow, QTableView, QDialog
 
 
 class PropertyTableWidget(QMainWindow):
-    """
-    GUI for variables table with 3 columns: Property, Value, Number.
+    """GUI for variables table with 3 columns: Property, Value, Number.
 
     Extends the `QMainWindow` class.
     """
@@ -57,7 +56,8 @@ class PropertyTableWidget(QMainWindow):
         self.show()
 
     def set_design(self, design):
-        """Swap out reference to design, which changes the reference to the dictionary.
+        """Swap out reference to design, which changes the reference to the
+        dictionary.
 
         Args:
             design (QDesign): The design
@@ -77,9 +77,7 @@ class PropertyTableWidget(QMainWindow):
             return self._design.variables
 
     def addRow(self):
-        """
-        Add a new row.
-        """
+        """Add a new row."""
         db = QDialog(self)
         dialog = Ui_Dialog()
         dialog.setupUi(db)
@@ -90,9 +88,7 @@ class PropertyTableWidget(QMainWindow):
             self.model.add_row(key, val)
 
     def deleteRow(self):
-        """
-        Delete all rows corresponding to selected cells.
-        """
+        """Delete all rows corresponding to selected cells."""
         rowidxlst = list(set(elt.row() for elt in self.table.selectedIndexes()))
         for idx in sorted(rowidxlst, reverse=True):
             self.model.removeRows(idx, 1, QModelIndex())

@@ -24,9 +24,7 @@ __all__ = ['parse_value_hfss', 'unparse_units']
 
 
 def parse_value_hfss(*args):
-    '''
-    Parse to HFSS units (from user units).
-    '''
+    """Parse to HFSS units (from user units)."""
     return __parse_units_hfss__(*args)
 
 

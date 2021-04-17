@@ -49,8 +49,8 @@ if TYPE_CHECKING:
 
 
 class QGDSRenderer(QRenderer):
-    """Extends QRenderer to export GDS formatted files. The methods which a user will need for GDS export
-    should be found within this class.
+    """Extends QRenderer to export GDS formatted files. The methods which a
+    user will need for GDS export should be found within this class.
 
     All chips within design should be exported to one gds file. For the "subtraction box":
     1. If user wants to export the entire design, AND if the base class of QDesign._chips[chip_name]['size']
@@ -276,9 +276,8 @@ class QGDSRenderer(QRenderer):
         QGDSRenderer.load()
 
     def check_bounding_box_scale(self):
-        """
-        Some error checking for bounding_box_scale_x and bounding_box_scale_y numbers.
-        """
+        """Some error checking for bounding_box_scale_x and
+        bounding_box_scale_y numbers."""
         p = self.options
         bounding_box_scale_x = self.parse_value(p.bounding_box_scale_x)
         bounding_box_scale_y = self.parse_value(p.bounding_box_scale_y)
@@ -324,14 +323,16 @@ class QGDSRenderer(QRenderer):
 
     def update_units(self):
         """Update the options in the units.
+
         Warning: DOES NOT CHANGE THE CURRENT LIB
         """
         self.options['gds_unit'] = 1.0 / self.design.parse_value('1 meter')
 
     def separate_subtract_shapes(self, chip_name: str, table_name: str,
                                  table: geopandas.GeoSeries) -> None:
-        """For each chip and table, separate them by subtract being either True or False.
-           Names of chip and table should be same as the QGeometry tables.
+        """For each chip and table, separate them by subtract being either True
+        or False. Names of chip and table should be same as the QGeometry
+        tables.
 
         Args:
             chip_name (str): Name of "chip".  Example is "main".
@@ -365,9 +366,10 @@ class QGDSRenderer(QRenderer):
 
     @staticmethod
     def inclusive_bound(all_bounds: list) -> tuple:
-        """Given a list of tuples which describe corners of a box, i.e. (minx, miny, maxx, maxy).
-        This method will find the box, which will include all boxes.  In another words, the smallest minx and miny;
-        and the largest maxx and maxy.
+        """Given a list of tuples which describe corners of a box, i.e. (minx,
+        miny, maxx, maxy). This method will find the box, which will include
+        all boxes.  In another words, the smallest minx and miny; and the
+        largest maxx and maxy.
 
         Args:
             all_bounds (list): List of bounds. Each tuple corresponds to a box.
@@ -389,7 +391,8 @@ class QGDSRenderer(QRenderer):
     @staticmethod
     def midpoint_xy(x1: float, y1: float, x2: float,
                     y2: float) -> Tuple[float, float]:
-        """Calculate the center of a line segment with endpoints (x1,y1) and (x2,y2).
+        """Calculate the center of a line segment with endpoints (x1,y1) and
+        (x2,y2).
 
         Args:
             x1 (float): x of endpoint (x1,y1)
@@ -409,9 +412,10 @@ class QGDSRenderer(QRenderer):
 
     def scale_max_bounds(self, chip_name: str,
                          all_bounds: list) -> Tuple[tuple, tuple]:
-        """Given the list of tuples to represent all of the bounds for path, poly, etc.
-        This will return the scaled using self.bounding_box_scale_x and self.bounding_box_scale_y,
-        and the max bounds of the tuples provided.
+        """Given the list of tuples to represent all of the bounds for path,
+        poly, etc. This will return the scaled using self.bounding_box_scale_x
+        and self.bounding_box_scale_y, and the max bounds of the tuples
+        provided.
 
         Args:
             chip_name (str): Name of chip.
@@ -451,8 +455,8 @@ class QGDSRenderer(QRenderer):
 
     def check_qcomps(self,
                      highlight_qcomponents: list = []) -> Tuple[list, int]:
-        """Confirm the list doesn't have names of componentes repeated.
-        Comfirm that the name of component exists in QDesign.
+        """Confirm the list doesn't have names of componentes repeated. Comfirm
+        that the name of component exists in QDesign.
 
         Args:
             highlight_qcomponents (list, optional): List of strings which denote the name of QComponents to render.
@@ -562,7 +566,8 @@ class QGDSRenderer(QRenderer):
 
     def handle_ground_plane(self, chip_name: str, all_table_subtracts: list,
                             all_table_no_subtracts: list):
-        """Place all the subtract geometries for one chip into self.chip_info[chip_name]['all_subtract_true'].
+        """Place all the subtract geometries for one chip into
+        self.chip_info[chip_name]['all_subtract_true'].
 
         For LINESTRING within table that has a value for fillet, check if any segment is shorter than fillet radius.
         If so, then break the LINESTRING so that shorter segments do not get fillet'ed and longer segments get fillet'ed.
@@ -671,7 +676,8 @@ class QGDSRenderer(QRenderer):
 
     def check_length(self, a_shapely: shapely.geometry.LineString,
                      a_fillet: float) -> Tuple[int, Dict]:
-        """Determine if a_shapely has short segments based on scaled fillet value.
+        """Determine if a_shapely has short segments based on scaled fillet
+        value.
 
         Use check_short_segments_by_scaling_fillet to determine the critera for flagging a segment.
         Return Tuple with flagged segments.
@@ -826,7 +832,8 @@ class QGDSRenderer(QRenderer):
     def identify_vertex_not_to_fillet(self, coords: list, a_fillet: float,
                                       all_idx_bad_fillet: dict):
         """Use coords to denote segments that are too short.  In particular,
-        when fillet'd, they will cause the appearance of incorrect fillet when graphed.
+        when fillet'd, they will cause the appearance of incorrect fillet when
+        graphed.
 
         Args:
             coords (list): User provide a list of tuples.  The tuple is (x,y) location for a vertex.
@@ -870,9 +877,9 @@ class QGDSRenderer(QRenderer):
                                             table: geopandas.GeoDataFrame,
                                             all_subtracts: list,
                                             all_no_subtracts: list):
-        """For every chip, and layer, separate the "subtract" and "no_subtract" elements
-        and gather bounds for all the elements in qgeometries.
-        Use format: f'{chip_name}_{table_name}s'.
+        """For every chip, and layer, separate the "subtract" and "no_subtract"
+        elements and gather bounds for all the elements in qgeometries. Use
+        format: f'{chip_name}_{table_name}s'.
 
         Args:
             chip_name (str): Name of chip.  Example is 'main'.
@@ -880,7 +887,6 @@ class QGDSRenderer(QRenderer):
             table (geopandas.GeoDataFrame): Actual table for the name.
             all_subtracts (list): Pass by reference so method can update this list.
             all_no_subtracts (list): Pass by reference so method can update this list.
-
         """
 
         # Determine bound box and return scalar larger than size.
@@ -908,9 +914,10 @@ class QGDSRenderer(QRenderer):
 
     def get_table(self, table_name: str, unique_qcomponents: list,
                   chip_name: str) -> geopandas.GeoDataFrame:
-        """If unique_qcomponents list is empty, get table using table_name from QGeometry tables
-            for all elements with table_name.  Otherwise, return a table with fewer elements, for just the
-            qcomponents within the unique_qcomponents list.
+        """If unique_qcomponents list is empty, get table using table_name from
+        QGeometry tables for all elements with table_name.  Otherwise, return a
+        table with fewer elements, for just the qcomponents within the
+        unique_qcomponents list.
 
         Args:
             table_name (str): Can be "path", "poly", etc. from the QGeometry tables.
@@ -941,8 +948,8 @@ class QGDSRenderer(QRenderer):
     # To export the data.
 
     def new_gds_library(self) -> gdspy.GdsLibrary:
-        """Creates a new GDS Library. Deletes the old.
-        Create a new GDS library file. It can contains multiple cells.
+        """Creates a new GDS Library. Deletes the old. Create a new GDS library
+        file. It can contains multiple cells.
 
         Returns:
             gdspy.GdsLibrary: GDS library which can contain multiple celles.
@@ -1027,8 +1034,8 @@ class QGDSRenderer(QRenderer):
         return code
 
     def check_either_cheese(self, chip: str, layer: int) -> int:
-        """Use methods to check two options and give review of values 
-        for no_cheese_view_in_file and cheese_view_in_file.
+        """Use methods to check two options and give review of values for
+        no_cheese_view_in_file and cheese_view_in_file.
 
         Args:
             chip (str): User defined chip name.
@@ -1083,8 +1090,8 @@ class QGDSRenderer(QRenderer):
         return code
 
     def populate_cheese(self):
-        """ Iterate through each chip, then layer to determine the cheesing geometry.
-        """
+        """Iterate through each chip, then layer to determine the cheesing
+        geometry."""
 
         lib = self.lib
         cheese_sub_layer = int(self.parse_value(self.options.cheese.datatype))
@@ -1189,12 +1196,14 @@ class QGDSRenderer(QRenderer):
         return
 
     def populate_no_cheese(self):
-        """Iterate through every chip and layer.  If options choose to have either cheese or no-cheese,
-        a MultiPolygon is placed self.chip_info[chip_name][chip_layer]['no_cheese'].  
+        """Iterate through every chip and layer.  If options choose to have
+        either cheese or no-cheese, a MultiPolygon is placed
+        self.chip_info[chip_name][chip_layer]['no_cheese'].
 
-        If user selects to view the no-cheese, the method placed the cell with no-cheese
-        at f'NoCheese_{chip_name}_{chip_layer}_{sub_layer}'.  The sub_layer is data_type and denoted
-        in the options. 
+        If user selects to view the no-cheese, the method placed the
+        cell with no-cheese at
+        f'NoCheese_{chip_name}_{chip_layer}_{sub_layer}'.  The sub_layer
+        is data_type and denoted in the options.
         """
         no_cheese_buffer = float(self.parse_value(
             self.options.no_cheese.buffer))
@@ -1252,18 +1261,19 @@ class QGDSRenderer(QRenderer):
         self, sub_df: geopandas.GeoDataFrame, chip_name: str,
         no_cheese_buffer: float
     ) -> Union[None, shapely.geometry.multipolygon.MultiPolygon]:
-        """For each layer in each chip, and if it has a ground plane (subtract==True), 
-        determine the no-cheese buffer and return a shapely object. Before the buffer is
-        created for no-cheese, the LineStrings and Polygons are all combined. 
+        """For each layer in each chip, and if it has a ground plane
+        (subtract==True), determine the no-cheese buffer and return a shapely
+        object. Before the buffer is created for no-cheese, the LineStrings and
+        Polygons are all combined.
 
         Args:
-            sub_df (geopandas.GeoDataFrame): The subset of QGeometry tables for each chip, and layer, 
+            sub_df (geopandas.GeoDataFrame): The subset of QGeometry tables for each chip, and layer,
             and only if the layer has a ground plane.
             chip_name (str): Name of chip.
-            no_cheese_buffer (float): Will be used for fillet and size of buffer. 
+            no_cheese_buffer (float): Will be used for fillet and size of buffer.
 
         Returns:
-            Union[None, shapely.geometry.multipolygon.MultiPolygon]: The shapely which combines the 
+            Union[None, shapely.geometry.multipolygon.MultiPolygon]: The shapely which combines the
             polygons and linestrings and creates buffer as specificed through default_options.
         """
 
@@ -1319,8 +1329,8 @@ class QGDSRenderer(QRenderer):
             return None
 
     def populate_poly_path_for_export(self):
-        """Using the geometries for each table name in QGeometry, 
-        populate self.lib to eventually write to a GDS file.
+        """Using the geometries for each table name in QGeometry, populate
+        self.lib to eventually write to a GDS file.
 
         For every layer within a chip, use the same "subtraction box" for the elements that
         have subtract as true.  Every layer within a chip will have cell named:
@@ -1329,7 +1339,6 @@ class QGDSRenderer(QRenderer):
         Args:
             file_name (str): The path and file name to write the gds file.
                              Name needs to include desired extension, i.e. "a_path_and_name.gds".
-
         """
 
         precision = float(self.parse_value(self.options.precision))
@@ -1448,8 +1457,8 @@ class QGDSRenderer(QRenderer):
     def get_linestring_characteristics(
             self,
             row: 'pandas.core.frame.Pandas') -> Tuple[Tuple, float, float]:
-        """Given a row in the Junction table, give the characteristics of LineString in
-        row.geometry.
+        """Given a row in the Junction table, give the characteristics of
+        LineString in row.geometry.
 
         Args:
             row (pandas.core.frame.Pandas): A row from Junction table of QGeometry.
@@ -1476,8 +1485,9 @@ class QGDSRenderer(QRenderer):
     def give_rotation_center_twopads(
             self, row: 'pandas.core.frame.Pandas',
             a_cell_bounding_box: 'numpy.ndarray') -> Tuple:
-        """Calculate the angle for rotation, center of LineString in row.geometry, and
-        if needed create two pads to connect the junction to qubit.
+        """Calculate the angle for rotation, center of LineString in
+        row.geometry, and if needed create two pads to connect the junction to
+        qubit.
 
         Args:
             row (pandas.core.frame.Pandas): A row from Junction table of QGeometry.
@@ -1539,9 +1549,12 @@ class QGDSRenderer(QRenderer):
 
     def import_junctions_to_one_cell(self, chip_name: str, lib: gdspy.library,
                                      chip_only_top: gdspy.library.Cell):
-        """Given lib, import the gds file from default options.  Based on the cell name in QGeometry table,
-        import the cell from the gds file and place it in hierarchy of chip_only_top. In addition, the linestring
-        should be two vertexes, and denotes two things.  1. The midpoint of segment is the the center of cell.
+        """Given lib, import the gds file from default options.  Based on the
+        cell name in QGeometry table, import the cell from the gds file and
+        place it in hierarchy of chip_only_top. In addition, the linestring
+        should be two vertexes, and denotes two things.  1. The midpoint of
+        segment is the the center of cell.
+
         2. The angle made by second tuple - fist tuple  for delta y/ delta x is used to rotate the cell.
 
         Args:
@@ -1596,9 +1609,9 @@ class QGDSRenderer(QRenderer):
     def export_to_gds(self,
                       file_name: str,
                       highlight_qcomponents: list = []) -> int:
-        """Use the design which was used to initialize this class.
-        The QGeometry element types of both "path" and "poly", will
-        be used, to convert QGeometry to GDS formatted file.
+        """Use the design which was used to initialize this class. The
+        QGeometry element types of both "path" and "poly", will be used, to
+        convert QGeometry to GDS formatted file.
 
         Args:
             file_name (str): File name which can also include directory path.
@@ -1644,13 +1657,13 @@ class QGDSRenderer(QRenderer):
     def multipolygon_to_gds(
             self, multi_poly: shapely.geometry.multipolygon.MultiPolygon,
             layer: int, data_type: int, no_cheese_buffer: float) -> list:
-        """Convert a shapely MultiPolygon to corresponding gdspy 
+        """Convert a shapely MultiPolygon to corresponding gdspy.
 
         Args:
             multi_poly (shapely.geometry.multipolygon.MultiPolygon): The shapely geometry of no-cheese boundary.
             layer (int): The layer of the input multipolygon.
             data_type (int): Used as a "sub-layer" to place the no-cheese gdspy output.
-            no_cheese_buffer (float): Used for both fillet and buffer size. 
+            no_cheese_buffer (float): Used for both fillet and buffer size.
 
         Returns:
             list: Each entry is converted to GDSII.
@@ -1757,13 +1770,13 @@ class QGDSRenderer(QRenderer):
                 exterior_poly = exterior_poly.fracture(max_points=max_points)
                 return exterior_poly
         elif isinstance(geom, shapely.geometry.LineString):
-            '''
-            class gdspy.FlexPath(points, width, offset=0, corners='natural', ends='flush',
-            bend_radius=None, tolerance=0.01, precision=0.001, max_points=199,
-            gdsii_path=False, width_transform=True, layer=0, datatype=0)
+            """class gdspy.FlexPath(points, width, offset=0, corners='natural',
+            ends='flush', bend_radius=None, tolerance=0.01, precision=0.001,
+            max_points=199, gdsii_path=False, width_transform=True, layer=0,
+            datatype=0)
 
             Only fillet, if number is greater than zero.
-            '''
+            """
             use_width = self.parse_value(self.options.width_LineString)
 
             if math.isnan(qgeometry_element.width):
@@ -1816,9 +1829,10 @@ class QGDSRenderer(QRenderer):
             return None
 
     def get_chip_names(self) -> Dict:
-        """ Returns a dict of unique chip names for ALL tables within QGeometry.
-        In another words, for every "path" table, "poly" table ... etc, this method will search for unique
-        chip names and return a dict of unique chip names from QGeometry table.
+        """Returns a dict of unique chip names for ALL tables within QGeometry.
+        In another words, for every "path" table, "poly" table ... etc, this
+        method will search for unique chip names and return a dict of unique
+        chip names from QGeometry table.
 
         Returns:
             Dict: dict with key of chip names and value of empty dict to hold things for renderers.

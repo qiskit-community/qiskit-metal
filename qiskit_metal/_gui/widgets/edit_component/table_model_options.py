@@ -11,8 +11,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""Handles editing a QComponent
-"""
+"""Handles editing a QComponent."""
 
 import ast
 import inspect
@@ -32,8 +31,7 @@ if TYPE_CHECKING:
 
 
 class QTableModel_Options(QAbstractTableModel):
-    """
-    Table model for the options of a given component.
+    """Table model for the options of a given component.
 
     This class inherits from the `QAbstractTableModel` class
 
@@ -64,16 +62,19 @@ class QTableModel_Options(QAbstractTableModel):
 
     @property
     def design(self) -> 'QDesign':
-        """Returns the QDesign"""
+        """Returns the QDesign."""
         return self.gui.design
 
     @property
     def component(self):
-        """Returns the component"""
+        """Returns the component."""
         return self.parent().component
 
     def refresh(self):
-        """Force refresh.  Completly rebuild the model."""
+        """Force refresh.
+
+        Completly rebuild the model.
+        """
         self.modelReset.emit()
 
     def rowCount(self, parent: QModelIndex = None):
@@ -105,7 +106,7 @@ class QTableModel_Options(QAbstractTableModel):
         return 3
 
     def headerData(self, section, orientation, role=Qt.DisplayRole):
-        """ Set the headers to be displayed.
+        """Set the headers to be displayed.
 
         Args:
             section (int): Section number
@@ -131,9 +132,9 @@ class QTableModel_Options(QAbstractTableModel):
                 return font
 
     def flags(self, index: QModelIndex):
-        """ Set the item flags at the given index. Seems like we're
-        implementing this function just to see how it's done, as we
-        manually adjust each treeView to have NoEditTriggers.
+        """Set the item flags at the given index. Seems like we're implementing
+        this function just to see how it's done, as we manually adjust each
+        treeView to have NoEditTriggers.
 
         Args:
             index (QModelIndex): The index
@@ -157,9 +158,8 @@ class QTableModel_Options(QAbstractTableModel):
 
     # https://doc.qt.io/qt-5/qt.html#ItemDataRole-enum
     def data(self, index: QModelIndex, role=Qt.DisplayRole):
-        """ Depending on the index and role given, return data. If not
-        returning data, return None (PySide equivalent of QT's
-        "invalid QVariant").
+        """Depending on the index and role given, return data. If not returning
+        data, return None (PySide equivalent of QT's "invalid QVariant").
 
         Returns:
             str: Data matching theindex and role.
@@ -208,8 +208,8 @@ class QTableModel_Options(QAbstractTableModel):
                 index: QtCore.QModelIndex,
                 value,
                 role=QtCore.Qt.EditRole) -> bool:
-        """Sets the role data for the item at index to value.
-        The dataChanged() signal should be emitted if the data was successfully set.
+        """Sets the role data for the item at index to value. The dataChanged()
+        signal should be emitted if the data was successfully set.
 
         Arguments:
             index (QtCore.QModelIndex): The index
@@ -274,7 +274,7 @@ class QTableModel_Options(QAbstractTableModel):
 
 
 def parse_param_from_str(text):
-    """Attempt to parse a value from a string using ast
+    """Attempt to parse a value from a string using ast.
 
     Args:
         text (str): String to parse

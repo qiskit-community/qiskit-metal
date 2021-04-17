@@ -11,8 +11,9 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""
-File contains some config definitions. Mostly internal.
+"""File contains some config definitions.
+
+Mostly internal.
 """
 
 import logging, collections
@@ -30,8 +31,7 @@ def setup_logger(logger_name,
                  capture_warnings=None,
                  propagate=False,
                  create_stream=True) -> logging.Logger:
-    '''
-    Setup the logger to work with jupyter and command line.
+    """Setup the logger to work with jupyter and command line.
 
     `level_stream` and `level_base`:
     You can set a different logging level for each logging handler, however you have
@@ -60,8 +60,7 @@ def setup_logger(logger_name,
         print(logger)
         print(logger.zkm_c_handler)
         print(gui._log_handler)
-
-    '''
+    """
 
     logger = logging.getLogger(logger_name)  # singleton
 
@@ -103,10 +102,12 @@ def setup_logger(logger_name,
 
 
 class LogStore(collections.deque):
-    """
-    Wrapper over collections.deque that ensures most recently added items (which should be strings) are at the "front" of the queue (i.e. left of the array).
+    """Wrapper over collections.deque that ensures most recently added items
+    (which should be strings) are at the "front" of the queue (i.e. left of the
+    array).
 
-    Each QDesign instantiation has a LogStore object used to keep track of logs for the Build History display.
+    Each QDesign instantiation has a LogStore object used to keep track
+    of logs for the Build History display.
     """
 
     def __init__(self,
@@ -138,5 +139,6 @@ class LogStore(collections.deque):
 
     @property
     def title(self):
-        """The title is an easy way to differentiate between multiple instances of LogStore, each with different data."""
+        """The title is an easy way to differentiate between multiple instances
+        of LogStore, each with different data."""
         return self._title

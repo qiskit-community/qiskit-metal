@@ -24,9 +24,8 @@ class RendererHFSSWidget(QMainWindow):
     """Contains methods associated with Ansys HFSS Renderer button."""
 
     def __init__(self, parent: 'QMainWindow', gui: 'MetalGUI'):
-        """
-        Get access to design, which has the components.
-        Then set up the model and view.
+        """Get access to design, which has the components. Then set up the
+        model and view.
 
         Args:
             parent (QMainWindow): The parent window
@@ -53,8 +52,8 @@ class RendererHFSSWidget(QMainWindow):
             QAbstractItemView.ScrollPerPixel)
 
     def set_design(self, new_design: 'QDesign'):
-        """
-        Swaps out reference to design, which changes the reference to the dictionary.
+        """Swaps out reference to design, which changes the reference to the
+        dictionary.
 
         Args:
             new_design (QDesign): The design
@@ -79,8 +78,7 @@ class RendererHFSSWidget(QMainWindow):
         self.list_model.deselect_all()
 
     def get_checked(self) -> list:
-        """
-        Gets list of all selected components to export.
+        """Gets list of all selected components to export.
 
         Returns:
             list: List of selected components
@@ -88,10 +86,8 @@ class RendererHFSSWidget(QMainWindow):
         return self.list_model.get_checked()
 
     def choose_checked_components(self):
-        """
-        Sends checked components to the next window that allows the user
-        to select which unconnected pins are to be open.
-        """
+        """Sends checked components to the next window that allows the user to
+        select which unconnected pins are to be open."""
         components_to_render = self.get_checked()
         if components_to_render:
             txt = self.ui.solnComboBox.currentText(
