@@ -15,7 +15,7 @@
 Delegate for display of QComponents in Library tab
 """
 from PySide2.QtWidgets import (
-                               QFileSystemModel)
+    QFileSystemModel)
 
 from PySide2.QtWidgets import QItemDelegate
 from PySide2.QtCore import QAbstractItemModel, QModelIndex, Qt, QAbstractProxyModel
@@ -26,7 +26,6 @@ from qiskit_metal._gui.widgets.qlibrary_display.file_model_qlibrary import QFile
 USER_COMP_DIR = "user_components"
 
 
-
 class LibraryDelegate(QItemDelegate):
 
     """
@@ -34,7 +33,7 @@ class LibraryDelegate(QItemDelegate):
     Requires LibraryModel
     """
 
-    def __init__(self,parent=None):
+    def __init__(self, parent=None):
         """
         source_model_type - The Delegate may belong to a view using a ProxyModel. However, the source model for that Proxy Model(s) should be a QFileSystemLibraryModel
         is_dev_mode - Whether the MetalGUI is in Developer Mode or not
@@ -47,8 +46,8 @@ class LibraryDelegate(QItemDelegate):
         self.source_model_type = QFileSystemLibraryModel
         self.is_dev_mode = False
 
-
     # https://www.youtube.com/watch?v=v6clAW6FmcU
+
     def get_source_model(self, model, source_type):
         """
         The Delegate may belong to a view using a ProxyModel. However, the source model for that Proxy Model(s) should be a QFileSystemLibraryModel and is returned by this function
@@ -78,9 +77,7 @@ class LibraryDelegate(QItemDelegate):
                                 f"\n{type(model)}"
                                 )
 
-
-
-    def paint(self, painter:PySide2.QtGui.QPainter, option:PySide2.QtWidgets.QStyleOptionViewItem, index:QModelIndex):
+    def paint(self, painter: PySide2.QtGui.QPainter, option: PySide2.QtWidgets.QStyleOptionViewItem, index: QModelIndex):
         """
         Displays dirty files in red with corresponding rebuild buttons if in developer mode (is_dev_mode). Otherwise, renders normally
         Args:
@@ -92,13 +89,16 @@ class LibraryDelegate(QItemDelegate):
 
         """
         if self.is_dev_mode:
-            source_model = self.get_source_model(index.model(), self.source_model_type)
+            source_model = self.get_source_model(
+                index.model(), self.source_model_type)
             FILENAME = source_model.FILENAME
             REBUILD = source_model.REBUILD
 
             model = index.model()
 
-            filename = str(model.data(model.sibling(index.row(), FILENAME, index))) # get data of filename
+            # get data of filename
+            filename = str(model.data(
+                model.sibling(index.row(), FILENAME, index)))
 
             if source_model.is_file_dirty(filename):
                 if index.column() == FILENAME:
@@ -120,19 +120,21 @@ class LibraryDelegate(QItemDelegate):
                         text = "rebuild"
                         palette = option.palette
                         document = QTextDocument()
-                        document.setTextWidth(option.rect.width()) # needed to add Right Alignment:  qt bug : https://bugreports.qt.io/browse/QTBUG-22851
+                        # needed to add Right Alignment:  qt bug : https://bugreports.qt.io/browse/QTBUG-22851
+                        document.setTextWidth(option.rect.width())
                         text_options = document.defaultTextOption()
                         text_options.setTextDirection(Qt.RightToLeft)
-                        document.setDefaultTextOption(text_options) # get right alignment
+                        document.setDefaultTextOption(
+                            text_options)  # get right alignment
                         document.setDefaultFont(option.font)
-                        document.setHtml(f'<font color={"red"}> <b> {text}</b> </font>')
+                        document.setHtml(
+                            f'<font color={"red"}> <b> {text}</b> </font>')
                         background_color = palette.base().color()
                         painter.save()
                         painter.fillRect(option.rect, background_color)
                         painter.translate(option.rect.x(), option.rect.y())
                         document.drawContents(painter)
                         painter.restore()
-
 
             else:
                 QItemDelegate.paint(self, painter, option, index)

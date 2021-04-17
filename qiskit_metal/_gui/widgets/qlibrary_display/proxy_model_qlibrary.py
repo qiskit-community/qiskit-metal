@@ -17,6 +17,7 @@ Proxy Model to clean display of QComponents in Library tab
 from PySide2.QtCore import QModelIndex, QSortFilterProxyModel, Qt
 import typing
 
+
 class LibraryFileProxyModel(QSortFilterProxyModel):
     """
     Proxy Model to clean up display for QFileSystemLibraryModel
@@ -27,7 +28,6 @@ class LibraryFileProxyModel(QSortFilterProxyModel):
 
         super().__init__(*args, **kwargs)
 
-
         # finds all files that
         # (Aren't hidden (begin w/ .), don't begin with __init__, don't begin with _template, etc. AND end in .py)  OR (don't begin with __pycache__ and don't have a '.' in the name
         # (QComponent files) OR (Directories)
@@ -35,8 +35,7 @@ class LibraryFileProxyModel(QSortFilterProxyModel):
         self.setFilterRegExp(self.accepted_files__regex)
         self.is_dev_mode = False
 
-
-    def set_dev_mode(self, ison:bool):
+    def set_dev_mode(self, ison: bool):
         """
         Set dev mode
         Args:
@@ -50,28 +49,26 @@ class LibraryFileProxyModel(QSortFilterProxyModel):
         """Filters out unwanted file information in display"""
         if (self.is_dev_mode and source_column <= self.sourceModel().REBUILD):
             return True
-        elif source_column <= self.sourceModel().REBUILD:  # Won't show Size, Kind, Date Modified, etc. for QFileSystemModel
+        # Won't show Size, Kind, Date Modified, etc. for QFileSystemModel
+        elif source_column <= self.sourceModel().REBUILD:
             return True
 
         return False
 
-
-
-    def data(self, index:QModelIndex, role:int = Qt.DisplayRole) -> typing.Any:
+    def data(self, index: QModelIndex, role: int = Qt.DisplayRole) -> typing.Any:
         """ Sets standard size hint for indexes and allows """
-        from PySide2.QtCore import Qt,QSize
+        from PySide2.QtCore import Qt, QSize
 
         # allow editable
         if role == Qt.EditRole:
             return self.data(index, Qt.DisplayRole)
 
         elif role == Qt.SizeHintRole:
-            return QSize(10,25)
+            return QSize(10, 25)
 
-        elif role == Qt.DisplayRole and index.column() == self.sourceModel().REBUILD: # Don't return any data for REBUILD column - Delegate handles that
+        # Don't return any data for REBUILD column - Delegate handles that
+        elif role == Qt.DisplayRole and index.column() == self.sourceModel().REBUILD:
             return ""
 
         else:
             return super().data(index, role)
-
-

@@ -39,21 +39,22 @@ class TreeViewQLibrary(QTreeView):
             parent (QtWidgets.QWidget): parent widget
         """
         QTreeView.__init__(self, parent)
-        self.is_dev_mode = False # Whether MetalGUI is in developer mode
+        self.is_dev_mode = False  # Whether MetalGUI is in developer mode
 
-
-    def set_dev_mode(self, ison:bool):
+    def set_dev_mode(self, ison: bool):
         """ Sets dev mode for self, model, model's source model, and delegate """
         self.is_dev_mode = ison
         self.itemDelegate().is_dev_mode = ison
         self.model().set_dev_mode(ison)
         self.model().sourceModel().set_file_is_dev_mode(ison)
 
-    def setModel(self, model:QtCore.QAbstractItemModel):
+    def setModel(self, model: QtCore.QAbstractItemModel):
         """ Overriding setModel to hook up clean/dirty file signals to model before setting Model"""
-        if not isinstance(model,LibraryFileProxyModel):
-            print(f"Invalid model. Expected type {LibraryFileProxyModel} but got type {type(model)}")
-            raise Exception(f"Invalid model. Expected type {LibraryFileProxyModel} but got type {type(model)}")
+        if not isinstance(model, LibraryFileProxyModel):
+            print(
+                f"Invalid model. Expected type {LibraryFileProxyModel} but got type {type(model)}")
+            raise Exception(
+                f"Invalid model. Expected type {LibraryFileProxyModel} but got type {type(model)}")
 
         source_model = model.sourceModel()
         self.qlibrary_rebuild_signal.connect(source_model.clean_file)
@@ -66,7 +67,6 @@ class TreeViewQLibrary(QTreeView):
         )
         return super().setModel(model)
 
-
     def mousePressEvent(self, event: QtGui.QMouseEvent):
         """ Overrides inherited mousePressEvent to emit appropriate rebuild or filepath signals
          based on which columns were clicked, and to allow user to clear any selections
@@ -74,12 +74,10 @@ class TreeViewQLibrary(QTreeView):
 
         index = self.indexAt(event.pos())
 
-
         if (index.row() == -1):
             self.clearSelection()
             self.setCurrentIndex(QModelIndex())
-            return  super().mousePressEvent(event)
-
+            return super().mousePressEvent(event)
 
         model = self.model()
         source_model = self.model().sourceModel()
@@ -87,22 +85,15 @@ class TreeViewQLibrary(QTreeView):
 
         """Sends REBUILD signal is REBUILD column is clicked. Sends FILENAME signal if filename is clicked"""
 
-
         if self.is_dev_mode and index.column() == source_model.REBUILD:
             qis_abs_path = full_path[full_path.index(__name__.split('.')[0]):]
             self.qlibrary_rebuild_signal.emit(qis_abs_path)
             print("emitted")
 
-
         elif index.column() == source_model.FILENAME:
             if not source_model.isDir(model.mapToSource(index)):
-                qis_abs_path = full_path[full_path.index(__name__.split('.')[0]):]
+                qis_abs_path = full_path[full_path.index(
+                    __name__.split('.')[0]):]
                 self.qlibrary_filepath_signal.emit(qis_abs_path)
 
         return super().mousePressEvent(event)
-
-
-
-
-
-

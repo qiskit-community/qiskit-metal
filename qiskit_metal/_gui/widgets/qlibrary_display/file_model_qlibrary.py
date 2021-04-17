@@ -10,7 +10,7 @@ from typing import List, TYPE_CHECKING
 from PySide2.QtGui import QFont
 from PySide2.QtCore import Qt, QTimer, QModelIndex, QFileSystemWatcher, Signal
 from PySide2.QtWidgets import (
-                               QFileSystemModel, QErrorMessage)
+    QFileSystemModel, QErrorMessage)
 
 import PySide2
 import typing
@@ -22,8 +22,8 @@ class QFileSystemLibraryModel(QFileSystemModel):
     Has additional FileWatcher added to keep track of edited QComponent files and, in developer mode,
     to alert the view/delegate to let the user know these files are dirty and refresh the design
     """
-    FILENAME = 0 # Column index to display filenames
-    REBUILD = 1 # Column index to display Rebuild button
+    FILENAME = 0  # Column index to display filenames
+    REBUILD = 1  # Column index to display Rebuild button
 
     file_dirtied_signal = Signal()
     file_cleaned_signal = Signal()
@@ -45,9 +45,7 @@ class QFileSystemLibraryModel(QFileSystemModel):
         self.is_dev_mode = False
         self.columns = ['QComponents', 'Rebuild Buttons']
 
-
-
-    def is_valid_file(self, file:str):
+    def is_valid_file(self, file: str):
         """
         Whether it's a file the FileWatcher should track
         Args:
@@ -61,7 +59,7 @@ class QFileSystemLibraryModel(QFileSystemModel):
                 return False
         return True
 
-    def clean_file(self, filepath:str):
+    def clean_file(self, filepath: str):
         """
         Remove file from the dirtied_files dictionary and remove any parent files who are only dirty due to
         this file
@@ -82,8 +80,7 @@ class QFileSystemLibraryModel(QFileSystemModel):
                     self.dirtied_files.pop(file)
         self.file_cleaned_signal.emit()
 
-
-    def dirty_file(self, filepath:str):
+    def dirty_file(self, filepath: str):
         """
         Adds file and parent directories to the dirtied_files dictionary
         Args:
@@ -104,13 +101,12 @@ class QFileSystemLibraryModel(QFileSystemModel):
             else:
                 self.dirtied_files[file] = {filename}
 
-        self.dirtied_files[filename] = {filepath} #overwrite filename entry from above
+        # overwrite filename entry from above
+        self.dirtied_files[filename] = {filepath}
 
         self.file_dirtied_signal.emit()
 
-
-
-    def is_file_dirty(self, filepath:str) -> bool:
+    def is_file_dirty(self, filepath: str) -> bool:
         """
         Checks whether file is dirty
         Args:
@@ -122,8 +118,7 @@ class QFileSystemLibraryModel(QFileSystemModel):
         filename = self.filepath_to_filename(filepath)
         return filename in self.dirtied_files
 
-
-    def filepath_to_filename(self, filepath:str) -> str:
+    def filepath_to_filename(self, filepath: str) -> str:
         """
         Gets just the filename from the full filepath
         Args:
@@ -139,7 +134,7 @@ class QFileSystemLibraryModel(QFileSystemModel):
             return filename[:-len('.py')]
         return filename
 
-    def setRootPath(self, path:str) -> PySide2.QtCore.QModelIndex:
+    def setRootPath(self, path: str) -> PySide2.QtCore.QModelIndex:
         """
         Sets FileWatcher on root path and adds rootpath to model
         Args:
@@ -158,8 +153,7 @@ class QFileSystemLibraryModel(QFileSystemModel):
 
         return super().setRootPath(path)
 
-
-    def alert_highlight_row(self, filepath:str):
+    def alert_highlight_row(self, filepath: str):
         """
         Dirties file and re-adds edited file to the FileWatcher
         Args:
@@ -173,8 +167,7 @@ class QFileSystemLibraryModel(QFileSystemModel):
                 self.file_system_watcher.addPath(filepath)
         self.dirty_file(filepath)
 
-
-    def headerData(self, section:int, orientation:PySide2.QtCore.Qt.Orientation, role:int=...) -> typing.Any:
+    def headerData(self, section: int, orientation: PySide2.QtCore.Qt.Orientation, role: int = ...) -> typing.Any:
         """ Set the headers to be displayed.
 
         Args:
@@ -200,8 +193,7 @@ class QFileSystemLibraryModel(QFileSystemModel):
                 font.setBold(True)
                 return font
 
-
-    def set_file_is_dev_mode(self, ison:bool):
+    def set_file_is_dev_mode(self, ison: bool):
         """
         Set dev_mode
         Args:
