@@ -15,18 +15,17 @@
 Delegate for Param Entry Window's MVD
 """
 
-from PySide2.QtWidgets import QItemDelegate
-from PySide2.QtCore import QAbstractItemModel, QModelIndex, QTimer, Qt
-from PySide2.QtWidgets import (QWidget, QStyleOptionViewItem)
+from PySide2.QtCore import QAbstractItemModel, QModelIndex, Qt
+from PySide2.QtWidgets import QItemDelegate, QStyleOptionViewItem, QWidget
 
-from qiskit_metal._gui.widgets.create_component_window.model_view.tree_model_param_entry import TreeModelParamEntry
+from qiskit_metal._gui.widgets.create_component_window.model_view.tree_model_param_entry import TreeModelParamEntry # pylint: disable=line-too-long
 
 
 class ParamDelegate(QItemDelegate):
     """
-    ParamDelegate for controlling specific UI display (such as QComboBoxes) for the Parameter Entry Window
+    ParamDelegate for controlling specific UI display
+    (such as QComboBoxes) for the Parameter Entry Window
     """
-    pass
 
     def createEditor(self, parent: QWidget, option: QStyleOptionViewItem,
                      index: QModelIndex) -> QWidget:
@@ -43,10 +42,9 @@ class ParamDelegate(QItemDelegate):
         if index.column() == TreeModelParamEntry.TYPE:
             node = index.model().nodeFromIndex(index)
             combo = node.get_type_combobox(parent)  #dicts vs values
-            #combo.setEditable(True)
             return combo
-        else:
-            return QItemDelegate.createEditor(self, parent, option, index)
+
+        return QItemDelegate.createEditor(self, parent, option, index)
 
     def setEditorData(self, editor, index: QModelIndex):
         """
@@ -56,11 +54,9 @@ class ParamDelegate(QItemDelegate):
             index: Current index being modified
 
         """
-        m = index.model()
-        d = m.data(index, Qt.DisplayRole)
         text = index.model().data(index, Qt.DisplayRole)
         if index.column() == TreeModelParamEntry.TYPE:
-            text = editor.setCurrentText(text)
+            editor.setCurrentText(text)
         else:
             QItemDelegate.setEditorData(self, editor, index)
 

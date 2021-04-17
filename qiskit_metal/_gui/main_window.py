@@ -14,21 +14,18 @@
 """GUI front-end interface for Qiskit Metal in PySide2."""
 # pylint: disable=invalid-name
 
-import importlib
-import importlib.util
 import logging
 import os
-import shutil
-import sys
 from pathlib import Path
 from typing import List, TYPE_CHECKING
 
-from PySide2.QtCore import Qt, QTimer, QModelIndex
-from PySide2.QtWidgets import (QDockWidget, QFileDialog, QInputDialog, QLabel,
-                               QLineEdit, QMainWindow, QMessageBox)
+from PySide2.QtCore import QTimer, Qt
+from PySide2.QtWidgets import (QDockWidget, QFileDialog, QLabel,
+                               QMainWindow, QMessageBox)
 
-from .. import config
-from ..designs.design_base import QDesign
+from qiskit_metal._gui.widgets.qlibrary_display.delegate_qlibrary import LibraryDelegate
+from qiskit_metal._gui.widgets.qlibrary_display.file_model_qlibrary import QFileSystemLibraryModel
+from qiskit_metal._gui.widgets.qlibrary_display.proxy_model_qlibrary import LibraryFileProxyModel
 from .elements_window import ElementsWindow
 from .main_window_base import QMainWindowBaseHandler, QMainWindowExtensionBase, kick_start_qApp
 from .main_window_ui import Ui_MainWindow
@@ -36,17 +33,15 @@ from .renderer_gds_gui import RendererGDSWidget
 from .renderer_hfss_gui import RendererHFSSWidget
 from .renderer_q3d_gui import RendererQ3DWidget
 from .utility._handle_qt_messages import slot_catch_error
-from qiskit_metal._gui.widgets.qlibrary_display.proxy_model_qlibrary import LibraryFileProxyModel
-from qiskit_metal._gui.widgets.qlibrary_display.delegate_qlibrary import LibraryDelegate
-from qiskit_metal._gui.widgets.qlibrary_display.file_model_qlibrary import QFileSystemLibraryModel
 from .widgets.all_components.table_model_all_components import \
     QTableModel_AllComponents
+from .widgets.build_history.build_history_scroll_area import BuildHistoryScrollArea
+from .widgets.create_component_window import parameter_entry_window as pew
 from .widgets.edit_component.component_widget import ComponentWidget
 from .widgets.plot_widget.plot_window import QMainWindowPlot
 from .widgets.variable_table import PropertyTableWidget
-from .widgets.build_history.build_history_scroll_area import BuildHistoryScrollArea
-from .. import qlibrary
-from .widgets.create_component_window import parameter_entry_window as pew
+from .. import config, qlibrary
+from ..designs.design_base import QDesign
 
 if not config.is_building_docs():
     from ..toolbox_metal.import_export import load_metal_design

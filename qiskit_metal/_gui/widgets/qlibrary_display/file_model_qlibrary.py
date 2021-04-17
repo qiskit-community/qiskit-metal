@@ -1,19 +1,37 @@
+# -*- coding: utf-8 -*-
+
+# This code is part of Qiskit.
+#
+# (C) Copyright IBM 2017, 2021.
+#
+# This code is licensed under the Apache License, Version 2.0. You may
+# obtain a copy of this license in the LICENSE.txt file in the root directory
+# of this source tree or at http://www.apache.org/licenses/LICENSE-2.0.
+#
+# Any modifications or derivative works of this code must retain this
+# copyright notice, and modified files need to carry a notice indicating
+# that they have been altered from the originals.
+"""
+File System Model for QLibrary Display
+"""
+
 import os
+import typing
 
 from PySide2.QtGui import QFont
-from PySide2.QtCore import Qt, QTimer, QModelIndex, QFileSystemWatcher, Signal
+from PySide2.QtCore import QFileSystemWatcher, Qt, Signal, QModelIndex
 from PySide2.QtWidgets import (
-    QFileSystemModel, QErrorMessage)
+    QFileSystemModel)
 
-import PySide2
-import typing
 
 
 class QFileSystemLibraryModel(QFileSystemModel):
     """
     File System Model for displaying QLibrary in MetalGUI
-    Has additional FileWatcher added to keep track of edited QComponent files and, in developer mode,
-    to alert the view/delegate to let the user know these files are dirty and refresh the design
+    Has additional FileWatcher added to keep track of edited
+    QComponent files and, in developer mode,
+    to alert the view/delegate to let the user know these files
+    are dirty and refresh the design
     """
     FILENAME = 0  # Column index to display filenames
     REBUILD = 1  # Column index to display Rebuild button
@@ -54,7 +72,8 @@ class QFileSystemLibraryModel(QFileSystemModel):
 
     def clean_file(self, filepath: str):
         """
-        Remove file from the dirtied_files dictionary and remove any parent files who are only dirty due to
+        Remove file from the dirtied_files dictionary
+        and remove any parent files who are only dirty due to
         this file
         Args:
             filepath: Clean file path
@@ -112,7 +131,7 @@ class QFileSystemLibraryModel(QFileSystemModel):
         filename = self.filepath_to_filename(filepath)
         return filename in self.dirtied_files
 
-    def filepath_to_filename(self, filepath: str) -> str:
+    def filepath_to_filename(self, filepath: str) -> str: # pylint: disable=R0201, no-self-use
         """
         Gets just the filename from the full filepath
         Args:
@@ -129,7 +148,7 @@ class QFileSystemLibraryModel(QFileSystemModel):
             return filename[:-len('.py')]
         return filename
 
-    def setRootPath(self, path: str) -> PySide2.QtCore.QModelIndex:
+    def setRootPath(self, path: str) -> QModelIndex:
         """
         Sets FileWatcher on root path and adds rootpath to model
         Args:
@@ -139,7 +158,7 @@ class QFileSystemLibraryModel(QFileSystemModel):
 
         """
 
-        for root, dirs, files in os.walk(path):
+        for root, _, files in os.walk(path):
             # do NOT use directory changed -- fails for some reason
             for name in files:
                 self.file_system_watcher.addPath(os.path.join(root, name))
@@ -165,7 +184,7 @@ class QFileSystemLibraryModel(QFileSystemModel):
     def headerData(
             self,
             section: int,
-            orientation: PySide2.QtCore.Qt.Orientation,
+            orientation: Qt.Orientation,
             role: int = ...) -> typing.Any:
         """ Set the headers to be displayed.
 
@@ -191,6 +210,8 @@ class QFileSystemLibraryModel(QFileSystemModel):
                 font = QFont()
                 font.setBold(True)
                 return font
+
+        return super().headerData(section,orientation,role)
 
     def set_file_is_dev_mode(self, ison: bool):
         """

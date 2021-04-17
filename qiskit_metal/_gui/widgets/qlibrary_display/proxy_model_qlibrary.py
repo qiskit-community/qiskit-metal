@@ -14,8 +14,11 @@
 """
 Proxy Model to clean display of QComponents in Library tab
 """
-from PySide2.QtCore import QModelIndex, QSortFilterProxyModel, Qt
+
 import typing
+
+from PySide2.QtCore import QModelIndex, QSortFilterProxyModel, Qt, QSize
+
 
 
 class LibraryFileProxyModel(QSortFilterProxyModel):
@@ -29,9 +32,9 @@ class LibraryFileProxyModel(QSortFilterProxyModel):
         super().__init__(*args, **kwargs)
 
         # finds all files that
-        # (Aren't hidden (begin w/ .), don't begin with __init__, don't begin with _template, etc. AND end in .py)  OR (don't begin with __pycache__ and don't have a '.' in the name
+        # (Aren't hidden (begin w/ .), don't begin with __init__, don't begin with _template, etc. AND end in .py)  OR (don't begin with __pycache__ and don't have a '.' in the name   # pylint: disable=line-too-long
         # (QComponent files) OR (Directories)
-        self.accepted_files__regex = r"(^((?!\.))(?!__init__)(?!_template)(?!__pycache__).*\.py)|(?!__pycache__)(?!base)(^([^.]+)$)"
+        self.accepted_files__regex = r"(^((?!\.))(?!__init__)(?!_template)(?!__pycache__).*\.py)|(?!__pycache__)(?!base)(^([^.]+)$)" # pylint: disable=line-too-long
         self.setFilterRegExp(self.accepted_files__regex)
         self.is_dev_mode = False
 
@@ -45,12 +48,12 @@ class LibraryFileProxyModel(QSortFilterProxyModel):
         self.is_dev_mode = ison
 
     def filterAcceptsColumn(self, source_column: int,
-                            source_parent: QModelIndex) -> bool:
+                            source_parent: QModelIndex) -> bool:  #pylint: disable=unused-argument
         """Filters out unwanted file information in display"""
         if (self.is_dev_mode and source_column <= self.sourceModel().REBUILD):
             return True
         # Won't show Size, Kind, Date Modified, etc. for QFileSystemModel
-        elif source_column <= self.sourceModel().REBUILD:
+        if source_column <= self.sourceModel().REBUILD:
             return True
 
         return False
@@ -58,18 +61,16 @@ class LibraryFileProxyModel(QSortFilterProxyModel):
     def data(self, index: QModelIndex,
              role: int = Qt.DisplayRole) -> typing.Any:
         """ Sets standard size hint for indexes and allows """
-        from PySide2.QtCore import Qt, QSize
 
         # allow editable
         if role == Qt.EditRole:
             return self.data(index, Qt.DisplayRole)
 
-        elif role == Qt.SizeHintRole:
+        if role == Qt.SizeHintRole:
             return QSize(10, 25)
 
         # Don't return any data for REBUILD column - Delegate handles that
-        elif role == Qt.DisplayRole and index.column() == self.sourceModel().REBUILD:
+        if role == Qt.DisplayRole and index.column() == self.sourceModel().REBUILD:
             return ""
 
-        else:
-            return super().data(index, role)
+        return super().data(index, role)

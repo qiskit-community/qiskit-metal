@@ -17,10 +17,9 @@ Tree view for Param Entry Window
 
 
 from PySide2 import QtCore, QtWidgets, QtGui
-from PySide2.QtCore import Qt, QTimer
-from PySide2.QtWidgets import QTreeView, QAbstractItemView
-from PySide2.QtCore import QAbstractTableModel, QModelIndex, Signal
-from .proxy_model_qlibrary import LibraryFileProxyModel
+from PySide2.QtWidgets import QTreeView
+from PySide2.QtCore import QModelIndex, Signal
+from qiskit_metal._gui.widgets.qlibrary_display.proxy_model_qlibrary import LibraryFileProxyModel
 
 
 class TreeViewQLibrary(QTreeView):
@@ -73,7 +72,7 @@ class TreeViewQLibrary(QTreeView):
 
         index = self.indexAt(event.pos())
 
-        if (index.row() == -1):
+        if index.row() == -1:
             self.clearSelection()
             self.setCurrentIndex(QModelIndex())
             return super().mousePressEvent(event)
@@ -81,8 +80,6 @@ class TreeViewQLibrary(QTreeView):
         model = self.model()
         source_model = self.model().sourceModel()
         full_path = source_model.filePath(model.mapToSource(index))
-
-        """Sends REBUILD signal is REBUILD column is clicked. Sends FILENAME signal if filename is clicked"""
 
         if self.is_dev_mode and index.column() == source_model.REBUILD:
             qis_abs_path = full_path[full_path.index(__name__.split('.')[0]):]

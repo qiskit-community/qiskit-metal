@@ -14,12 +14,9 @@
 """
 Delegate for display of QComponents in Library tab
 """
-from PySide2.QtWidgets import (
-    QFileSystemModel) 
 
 from PySide2.QtWidgets import QItemDelegate
-from PySide2.QtCore import QAbstractItemModel, QModelIndex, Qt, QAbstractProxyModel
-from PySide2.QtWidgets import (QWidget, QStyleOptionViewItem, QPushButton)
+from PySide2.QtCore import QAbstractProxyModel, QModelIndex, Qt
 import PySide2
 from PySide2.QtGui import QTextDocument
 from qiskit_metal._gui.widgets.qlibrary_display.file_model_qlibrary import QFileSystemLibraryModel

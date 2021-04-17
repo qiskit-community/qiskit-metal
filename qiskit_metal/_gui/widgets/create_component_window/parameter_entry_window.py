@@ -28,65 +28,29 @@
 Parameter Entry Window for displaying parameters for QComponent instantiation from GUI's
 QLibrary tab
 """
-from typing import TYPE_CHECKING, Union
-from collections import OrderedDict
-import numpy as np
-from inspect import signature
-import inspect
-from collections import Callable
-from ....designs.design_base import QDesign
+
+
+import copy
 import importlib
+import inspect
+import os
+import random
 from collections import OrderedDict, Callable
 from inspect import signature
 from pathlib import Path
+from typing import TYPE_CHECKING, Union
 
-import random
-import os
-import copy
-import importlib
-#import builtins
-#import logging
-#import traceback
-#import json
-import inspect
 import numpy as np
-
-from qiskit_metal.toolbox_python.attr_dict import Dict
-from qiskit_metal import designs
-
 from PySide2 import QtGui, QtWidgets
-#from PySide2 import QtCore
 from PySide2.QtCore import Qt
 from PySide2.QtWidgets import QDockWidget
 from PySide2.QtWidgets import (QMainWindow, QMessageBox)
 
-#from PySide2.QtWidgets import (QAbstractItemView, QApplication, QFileDialog,
-#                               QLabel, QTabWidget)
-
-#from PySide2.QtWidgets import QPushButton
-#from PySide2.QtWidgets import (QMessageBox)
-
-#from PySide2.QtWidgets import (QLabel, QScrollArea, QVBoxLayout, QWidget,
-#                               QHBoxLayout, QLineEdit, QLayout, QComboBox,
-#                               QMessageBox)
-
-#from PySide2.QtCore import Qt
-
-#from addict.addict import Dict
-#from .collapsable_widget import CollapsibleWidget
-#from ....designs.design_base import QDesign
-#from ..edit_component.tree_view_options import QTreeView_Options
-from .model_view.tree_model_param_entry import TreeModelParamEntry, LeafNode, Node
-#from .model_view.tree_model_param_entry import BranchNode
-from .model_view.tree_delegate_param_entry import ParamDelegate
-from .parameter_entry_window_ui import Ui_MainWindow
-import os
-import copy
-from ..edit_component.component_widget import ComponentWidget
-from qiskit_metal.toolbox_python.attr_dict import Dict
 from qiskit_metal import designs
-#from ...edit_source_ui import Ui_EditSource
-#from ..edit_component.component_widget import ComponentWidget
+from qiskit_metal.toolbox_python.attr_dict import Dict
+from .model_view.tree_delegate_param_entry import ParamDelegate
+from .model_view.tree_model_param_entry import TreeModelParamEntry, LeafNode, Node
+from .parameter_entry_window_ui import Ui_MainWindow
 
 if TYPE_CHECKING:
     from ...main_window import MetalGUI
@@ -117,8 +81,9 @@ class ParameterEntryWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.param_dictionary = {}
-        self.reset_param_dictionary = {
-        }  # set during generate_model_data as a backup in case tree need be reloaded
+        # set during generate_model_data as a backup in case tree need be
+        # reloaded
+        self.reset_param_dictionary = {}
 
         self.model = TreeModelParamEntry(self,
                                          self.ui.qcomponent_param_tree_view,
@@ -129,8 +94,9 @@ class ParameterEntryWindow(QMainWindow):
 
         self.statusBar().hide()
 
-        ## should be moved to qt designer
-        self.ui.create_qcomp_button.clicked.connect(self.instantiate_qcomponent)
+        # should be moved to qt designer
+        self.ui.create_qcomp_button.clicked.connect(
+            self.instantiate_qcomponent)
         self.ui.add_k_v_row_button.pressed.connect(self.add_k_v_row)
         self.ui.nest_dictionary_button.pressed.connect(self.add_k_dict_row)
         self.ui.remove_button.pressed.connect(self.delete_row)
@@ -151,7 +117,7 @@ class ParameterEntryWindow(QMainWindow):
         # TypeError
         return filepath
 
-    ## Exception Handling
+    # Exception Handling
     class QComponentParameterEntryExceptionDecorators():
         """
         All exceptions in QComponentParameterEntry should result in a pop-up window.
@@ -186,9 +152,9 @@ class ParameterEntryWindow(QMainWindow):
                         func.__name__) + "\n" + str(
                             lqce.__class__.__name__) + ":\n" + str(lqce)
 
-                    args[0].error_pop_up.critical(
-                        args[0], "", error_message
-                    )  #modality set by critical, Don't set Title -- will NOT show up on MacOs
+                    # modality set by critical, Don't set Title -- will NOT show
+                    # up on MacOs
+                    args[0].error_pop_up.critical(args[0], "", error_message)
 
             return wrapper
 
@@ -306,7 +272,8 @@ class ParameterEntryWindow(QMainWindow):
         fake_dict = "fake-dict"
         fakekey = "key"
         fakevalue = "value"
-        self.model.add_new_branch_node(cur_index, fake_dict, fakekey, fakevalue)
+        self.model.add_new_branch_node(
+            cur_index, fake_dict, fakekey, fakevalue)
 
     @QComponentParameterEntryExceptionDecorators.entry_exception_pop_up_warning
     def delete_row(self):
@@ -369,7 +336,7 @@ class ParameterEntryWindow(QMainWindow):
         self.traverse_model_to_create_dictionary()
 
         self.qcomp_class(self._design, **self.current_dict)
-        if self._gui is not None:  #for the sake of testing, we won't have gui
+        if self._gui is not None:  # for the sake of testing, we won't have gui
             self._gui.refresh()
             self._gui.autoscale()
         self.close()
@@ -399,7 +366,7 @@ class ParameterEntryWindow(QMainWindow):
         except Exception as e:
             raise Exception(
                 f"Unable to add node:{self.model.node_str(cur_node)} to {parent_dict} due to: {e}"
-            )
+            ) from e
 
 
 def create_parameter_entry_window(gui: 'MetalGUI',
@@ -436,7 +403,7 @@ def dockify(main_window, docked_title, gui):
     Returns:
         QDockWidget: the widget
     """
-    ### Dockify
+    # Dockify
     main_window.dock_widget = QDockWidget(docked_title, gui.main_window)
     dock = main_window.dock_widget
     dock.setWidget(main_window)
@@ -463,10 +430,11 @@ def get_class_from_abs_file_path(abs_file_path):
     """
     qis_abs_path = abs_file_path[abs_file_path.index(__name__.split('.')[0]):]
 
-    # Windows users' qis_abs_path may use os.sep or '/' due to PySide's handling of file names
+    # Windows users' qis_abs_path may use os.sep or '/' due to PySide's
+    # handling of file names
     qis_mod_path = qis_abs_path.replace(os.sep, '.')[:-len('.py')]
-    qis_mod_path = qis_mod_path.replace("/",
-                                        '.')  # users cannot use '/' in filename
+    qis_mod_path = qis_mod_path.replace(
+        "/", '.')  # users cannot use '/' in filename
 
     mymodule = importlib.import_module(qis_mod_path)
     members = inspect.getmembers(mymodule, inspect.isclass)
