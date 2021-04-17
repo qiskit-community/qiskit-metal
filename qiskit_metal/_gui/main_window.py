@@ -195,13 +195,10 @@ class QMainWindowExtension(QMainWindowExtensionBase):
     def activate_developer_mode(self, ison : bool):
         if ison:
             QMessageBox.warning(
-                self, "bjyun", "If you're editing a component via an external IDE, don't forget to refresh the component's file in the Library before rebuilding so your changes will take effect.")
+                self, "Notice", "If you're editing a component via an external IDE, don't forget to refresh the component's file in the Library before rebuilding so your changes will take effect.")
 
         self.gui.ui.dockLibrary_tree_view.set_dev_mode(ison)
         self.gui.is_dev_mode = ison
-
-        print("GUI IS: ", self.gui.is_dev_mode)
-
 
 
 
@@ -479,16 +476,13 @@ class MetalGUI(QMainWindowBaseHandler):
 
 
     def _refresh_component_build(self, qis_abs_path):
-        print(f"refreshing comp now...: {qis_abs_path}")
         self.design.reload_and_rebuild_component(qis_abs_path)
         # Table models
-        print("refreshing model table now")
         self.ui.tableComponents.model().refresh()
 
         # Redraw plots
         self.refresh_plot()
         self.autoscale()
-        print("done refreshing")
 
 
     def _setup_library_widget(self):
@@ -598,9 +592,7 @@ class MetalGUI(QMainWindowBaseHandler):
         for file in values: # dirtied_files size changes during clean_file
             if '.py' in file:
                 file = file[file.index('qiskit_metal'):]
-                print(f"let's remake: {file}")
                 self.design.reload_and_rebuild_component(file)
-                print(f"cleaning {file}")
                 self.ui.dockLibrary.library_model.clean_file(file)
         self.refresh()
         self.autoscale()

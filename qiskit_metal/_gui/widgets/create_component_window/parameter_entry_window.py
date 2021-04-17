@@ -295,7 +295,6 @@ class ParameterEntryWindow(QMainWindow):
         cur_index = self.ui.qcomponent_param_tree_view.currentIndex()
 
         key = "fake-param"
-
         value = "value"
         self.model.add_new_leaf_node(cur_index, key, value)
 
@@ -322,7 +321,6 @@ class ParameterEntryWindow(QMainWindow):
         """
 
         param_dict = {}
-        print(f"getting signature: {self.qcomp_class.default_options}")
         class_signature = signature(self.qcomp_class.__init__)
 
         for _, param in class_signature.parameters.items():
@@ -336,13 +334,11 @@ class ParameterEntryWindow(QMainWindow):
         try:
 
             options = self.qcomp_class.get_template_options(self._design)
-            print(f"Using the get_template_options: {options}")
         except Exception as e:
             self._design.logger.warning(
                 f"Could not use template_options for component: {e}")
             if 'default_options' in self.qcomp_class.__dict__:
                 options = self.qcomp_class.default_options
-                print(f"getting options: {self.qcomp_class.default_options}")
 
         if options is not None:
             copied_options = copy.deepcopy(options)
@@ -449,9 +445,6 @@ def dockify(main_window, docked_title, gui):
     dock.setFloating(True)
     dock.resize(1200, 700)
 
-    # Doesnt work
-    # dock_gui = self.dock_widget
-    # dock_gui.setWindowFlags(dock_gui.windowFlags() & ~QtCore.Qt.WindowStaysOnTopHint)
     gui.logger.info("dockified window: " + docked_title)
     return dock
 
@@ -481,7 +474,6 @@ def get_class_from_abs_file_path(abs_file_path):
     for memtup in members:
         if len(memtup) > 1:
             if str(memtup[1].__module__).endswith(class_owner):
-                print(f" stupid mode: {qis_mod_path}, {mymodule}: Just imped:  {memtup[1].default_options}")
                 return memtup[1]
 
 

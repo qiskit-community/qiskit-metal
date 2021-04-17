@@ -27,7 +27,7 @@ from .proxy_model_qlibrary import LibraryFileProxyModel
 class TreeViewQLibrary(QTreeView):
     """Handles editing a QComponent
 
-    This class extends the `QTreeView` and `QWidget_PlaceholderText` classes
+    This class extend the `QTreeView`
     """
 
     qlibrary_rebuild_signal = Signal(str)
@@ -36,19 +36,21 @@ class TreeViewQLibrary(QTreeView):
     def __init__(self, parent: QtWidgets.QWidget):
         """
         Args:
-            parent (QtWidgets.QWidget): the widget
+            parent (QtWidgets.QWidget): parent widget
         """
         QTreeView.__init__(self, parent)
-        self.is_dev_mode = False
+        self.is_dev_mode = False # Whether MetalGUI is in developer mode
 
 
     def set_dev_mode(self, ison:bool):
+        """ Sets dev mode for self, model, model's source model, and delegate """
         self.is_dev_mode = ison
         self.itemDelegate().is_dev_mode = ison
         self.model().set_dev_mode(ison)
         self.model().sourceModel().set_file_is_dev_mode(ison)
 
     def setModel(self, model:QtCore.QAbstractItemModel):
+        """ Overriding setModel to hook up clean/dirty file signals to model before setting Model"""
         if not isinstance(model,LibraryFileProxyModel):
             print(f"Invalid model. Expected type {LibraryFileProxyModel} but got type {type(model)}")
             raise Exception(f"Invalid model. Expected type {LibraryFileProxyModel} but got type {type(model)}")
@@ -66,8 +68,9 @@ class TreeViewQLibrary(QTreeView):
 
 
     def mousePressEvent(self, event: QtGui.QMouseEvent):
-        """ Overrides inherited mousePressEvent to allow user to clear any selections
-        by clicking off the displayed tree. """
+        """ Overrides inherited mousePressEvent to emit appropriate rebuild or filepath signals
+         based on which columns were clicked, and to allow user to clear any selections
+        by clicking off the displayed tree and to, when necessary, """
 
         index = self.indexAt(event.pos())
 

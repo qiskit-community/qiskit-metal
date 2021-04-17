@@ -30,10 +30,19 @@ USER_COMP_DIR = "user_components"
 class LibraryDelegate(QItemDelegate):
 
     """
+    Delegate for QLibrary view
     Requires LibraryModel
-
     """
+
     def __init__(self,parent=None):
+        """
+        source_model_type - The Delegate may belong to a view using a ProxyModel. However, the source model for that Proxy Model(s) should be a QFileSystemLibraryModel
+        is_dev_mode - Whether the MetalGUI is in Developer Mode or not
+
+        Args:
+            parent: parent
+
+        """
         super().__init__(parent)
         self.source_model_type = QFileSystemLibraryModel
         self.is_dev_mode = False
@@ -41,7 +50,18 @@ class LibraryDelegate(QItemDelegate):
 
     # https://www.youtube.com/watch?v=v6clAW6FmcU
     def get_source_model(self, model, source_type):
+        """
+        The Delegate may belong to a view using a ProxyModel. However, the source model for that Proxy Model(s) should be a QFileSystemLibraryModel and is returned by this function
 
+
+        Args:
+            model: Current model
+            source_type: Expected source model type
+
+        Returns: source model : QFileSystemLibraryModel
+
+
+        """
         while(True):
             # https://stackoverflow.com/questions/50478661/python-isinstance-not-working-as-id-expect
             if model.__class__.__name__ == source_type.__name__:
@@ -61,25 +81,51 @@ class LibraryDelegate(QItemDelegate):
 
 
     def paint(self, painter:PySide2.QtGui.QPainter, option:PySide2.QtWidgets.QStyleOptionViewItem, index:QModelIndex):
-        try:
-            if self.is_dev_mode:
+        """
+        Displays dirty files in red with corresponding rebuild buttons if in developer mode (is_dev_mode). Otherwise, renders normally
+        Args:
+            painter: QPainter
+            option: QStyleOptionViewItem
+            index: QModelIndex
 
-                source_model = self.get_source_model(index.model(), self.source_model_type)
-                FILENAME = source_model.FILENAME
-                REBUILD = source_model.REBUILD
 
-                model = index.model()
 
-                filename = str(model.data(model.sibling(index.row(), FILENAME, index))) # get data of filename
+        """
+        if self.is_dev_mode:
+            source_model = self.get_source_model(index.model(), self.source_model_type)
+            FILENAME = source_model.FILENAME
+            REBUILD = source_model.REBUILD
 
-                if source_model.is_file_dirty(filename):
-                    if index.column() == FILENAME:
+            model = index.model()
 
-                        text = filename
+            filename = str(model.data(model.sibling(index.row(), FILENAME, index))) # get data of filename
+
+            if source_model.is_file_dirty(filename):
+                if index.column() == FILENAME:
+
+                    text = filename
+                    palette = option.palette
+                    document = QTextDocument()
+                    document.setDefaultFont(option.font)
+                    document.setHtml(f"<font color={'red'}>{text}</font>")
+                    background_color = palette.base().color()
+                    painter.save()
+                    painter.fillRect(option.rect, background_color)
+                    painter.translate(option.rect.x(), option.rect.y())
+                    document.drawContents(painter)
+                    painter.restore()
+
+                elif index.column() == REBUILD:
+                    if ('.py' in filename):
+                        text = "rebuild"
                         palette = option.palette
                         document = QTextDocument()
+                        document.setTextWidth(option.rect.width()) # needed to add Right Alignment:  qt bug : https://bugreports.qt.io/browse/QTBUG-22851
+                        text_options = document.defaultTextOption()
+                        text_options.setTextDirection(Qt.RightToLeft)
+                        document.setDefaultTextOption(text_options) # get right alignment
                         document.setDefaultFont(option.font)
-                        document.setHtml(f"<font color={'red'}>{text}</font>")
+                        document.setHtml(f'<font color={"red"}> <b> {text}</b> </font>')
                         background_color = palette.base().color()
                         painter.save()
                         painter.fillRect(option.rect, background_color)
@@ -87,31 +133,9 @@ class LibraryDelegate(QItemDelegate):
                         document.drawContents(painter)
                         painter.restore()
 
-                    elif index.column() == REBUILD:
-                        if ('.py' in filename):
-                            print("REBUILDING COLUM")
-                            text = "rebuild"
-                            palette = option.palette
-                            document = QTextDocument()
-                            document.setTextWidth(option.rect.width()) # needed to add Right Alignment:  qt bug : https://bugreports.qt.io/browse/QTBUG-22851
-                            text_options = document.defaultTextOption()
-                            text_options.setTextDirection(Qt.RightToLeft)
-                            document.setDefaultTextOption(text_options) # get right alignment
-                            document.setDefaultFont(option.font)
-                            document.setHtml(f'<font color={"red"}> <b> {text}</b> </font>')
-                            background_color = palette.base().color()
-                            painter.save()
-                            painter.fillRect(option.rect, background_color)
-                            painter.translate(option.rect.x(), option.rect.y())
-                            document.drawContents(painter)
-                            painter.restore()
-
-
-                else:
-                    QItemDelegate.paint(self, painter, option, index)
 
             else:
                 QItemDelegate.paint(self, painter, option, index)
 
-        except Exception as e:
-            print("Exception in paint: ", e)
+        else:
+            QItemDelegate.paint(self, painter, option, index)
