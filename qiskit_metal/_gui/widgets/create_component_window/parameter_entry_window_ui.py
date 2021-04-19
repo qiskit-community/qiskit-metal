@@ -13,6 +13,7 @@ from PySide2 import QtCore, QtWidgets
 
 
 class Ui_MainWindow(object):
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(753, 600)
@@ -21,9 +22,8 @@ class Ui_MainWindow(object):
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.centralwidget)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.explanatory_label = QtWidgets.QLabel(self.centralwidget)
-        sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Preferred,
-            QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred,
+                                           QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(1)
         sizePolicy.setHeightForWidth(
@@ -32,9 +32,8 @@ class Ui_MainWindow(object):
         self.explanatory_label.setObjectName("explanatory_label")
         self.verticalLayout_2.addWidget(self.explanatory_label)
         self.widget = QtWidgets.QWidget(self.centralwidget)
-        sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Preferred,
-            QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred,
+                                           QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(20)
         sizePolicy.setHeightForWidth(
@@ -70,8 +69,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_4.addWidget(self.qcomponent_param_tree_view)
         self.parameter_entry_form = QtWidgets.QWidget(self.edit_box)
         self.parameter_entry_form.setObjectName("parameter_entry_form")
-        self.verticalLayout_6 = QtWidgets.QVBoxLayout(
-            self.parameter_entry_form)
+        self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.parameter_entry_form)
         self.verticalLayout_6.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_6.setObjectName("verticalLayout_6")
         self.verticalLayout_4.addWidget(self.parameter_entry_form)
@@ -86,8 +84,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_5.setObjectName("verticalLayout_5")
         self.help_button_holder = QtWidgets.QWidget(self.help_box)
         self.help_button_holder.setObjectName("help_button_holder")
-        self.horizontalLayout_6 = QtWidgets.QHBoxLayout(
-            self.help_button_holder)
+        self.horizontalLayout_6 = QtWidgets.QHBoxLayout(self.help_button_holder)
         self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_6.setObjectName("horizontalLayout_6")
         self.verticalLayout_5.addWidget(self.help_button_holder)
@@ -117,28 +114,24 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(
-            QtWidgets.QApplication.translate(
-                "MainWindow", "MainWindow", None, -1))
+            QtWidgets.QApplication.translate("MainWindow", "MainWindow", None,
+                                             -1))
         self.explanatory_label.setText(
-            QtWidgets.QApplication.translate(
-                "MainWindow", "Options to create with", None, -1))
+            QtWidgets.QApplication.translate("MainWindow",
+                                             "Options to create with", None,
+                                             -1))
         self.add_k_v_row_button.setText(
-            QtWidgets.QApplication.translate(
-                "MainWindow", "Add Row", None, -1))
+            QtWidgets.QApplication.translate("MainWindow", "Add Row", None, -1))
         self.nest_dictionary_button.setText(
-            QtWidgets.QApplication.translate(
-                "MainWindow", "Nest Dictionary", None, -1))
+            QtWidgets.QApplication.translate("MainWindow", "Nest Dictionary",
+                                             None, -1))
         self.remove_button.setText(
-            QtWidgets.QApplication.translate(
-                "MainWindow", "Remove", None, -1))
+            QtWidgets.QApplication.translate("MainWindow", "Remove", None, -1))
         self.create_qcomp_button.setText(
-            QtWidgets.QApplication.translate(
-                "MainWindow", "Create", None, -1))
+            QtWidgets.QApplication.translate("MainWindow", "Create", None, -1))
         self.help_tab_tabWidget.setTabText(
-            self.help_tab_tabWidget.indexOf(
-                self.tab_source), QtWidgets.QApplication.translate(
-                "MainWindow", "Source", None, -1))
+            self.help_tab_tabWidget.indexOf(self.tab_source),
+            QtWidgets.QApplication.translate("MainWindow", "Source", None, -1))
         self.help_tab_tabWidget.setTabText(
-            self.help_tab_tabWidget.indexOf(
-                self.tab_help), QtWidgets.QApplication.translate(
-                "MainWindow", "Help", None, -1))
+            self.help_tab_tabWidget.indexOf(self.tab_help),
+            QtWidgets.QApplication.translate("MainWindow", "Help", None, -1))

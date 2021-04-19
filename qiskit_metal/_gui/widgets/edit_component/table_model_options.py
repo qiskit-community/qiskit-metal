@@ -22,7 +22,6 @@ from PySide2 import QtCore, QtGui, QtWidgets
 from PySide2.QtCore import QAbstractTableModel, QModelIndex, Qt
 from PySide2.QtGui import QFont
 
-
 __all__ = ['parse_param_from_str']
 
 if TYPE_CHECKING:

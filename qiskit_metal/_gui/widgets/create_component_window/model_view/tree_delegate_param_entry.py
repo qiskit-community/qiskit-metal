@@ -18,7 +18,7 @@ Delegate for Param Entry Window's MVD
 from PySide2.QtCore import QAbstractItemModel, QModelIndex, Qt
 from PySide2.QtWidgets import QItemDelegate, QStyleOptionViewItem, QWidget
 
-from qiskit_metal._gui.widgets.create_component_window.model_view.tree_model_param_entry import TreeModelParamEntry # pylint: disable=line-too-long
+from qiskit_metal._gui.widgets.create_component_window.model_view.tree_model_param_entry import TreeModelParamEntry  # pylint: disable=line-too-long
 
 
 class ParamDelegate(QItemDelegate):

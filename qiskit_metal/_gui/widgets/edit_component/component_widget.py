@@ -341,4 +341,3 @@ class ComponentWidget(QTabWidget):
         textEdit = self.ui.textSource
         textEdit.moveCursor(QtGui.QTextCursor.Start)
         textEdit.ensureCursorVisible()
-

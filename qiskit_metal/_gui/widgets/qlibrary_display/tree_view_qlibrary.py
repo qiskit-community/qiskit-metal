@@ -15,7 +15,6 @@
 Tree view for Param Entry Window
 """
 
-
 from PySide2 import QtCore, QtWidgets, QtGui
 from PySide2.QtWidgets import QTreeView
 from PySide2.QtCore import QModelIndex, Signal
@@ -50,19 +49,17 @@ class TreeViewQLibrary(QTreeView):
         """ Overriding setModel to hook up clean/dirty file signals to model before setting Model"""
         if not isinstance(model, LibraryFileProxyModel):
             print(
-                f"Invalid model. Expected type {LibraryFileProxyModel} but got type {type(model)}")
+                f"Invalid model. Expected type {LibraryFileProxyModel} but got type {type(model)}"
+            )
             raise Exception(
-                f"Invalid model. Expected type {LibraryFileProxyModel} but got type {type(model)}")
+                f"Invalid model. Expected type {LibraryFileProxyModel} but got type {type(model)}"
+            )
 
         source_model = model.sourceModel()
         self.qlibrary_rebuild_signal.connect(source_model.clean_file)
 
-        source_model.file_dirtied_signal.connect(
-            self.update
-        )
-        source_model.file_cleaned_signal.connect(
-            self.update
-        )
+        source_model.file_dirtied_signal.connect(self.update)
+        source_model.file_cleaned_signal.connect(self.update)
         return super().setModel(model)
 
     def mousePressEvent(self, event: QtGui.QMouseEvent):
@@ -88,8 +85,8 @@ class TreeViewQLibrary(QTreeView):
 
         elif index.column() == source_model.FILENAME:
             if not source_model.isDir(model.mapToSource(index)):
-                qis_abs_path = full_path[full_path.index(
-                    __name__.split('.')[0]):]
+                qis_abs_path = full_path[full_path.
+                                         index(__name__.split('.')[0]):]
                 self.qlibrary_filepath_signal.emit(qis_abs_path)
 
         return super().mousePressEvent(event)

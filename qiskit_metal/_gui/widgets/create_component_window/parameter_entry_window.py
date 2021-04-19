@@ -29,7 +29,6 @@ Parameter Entry Window for displaying parameters for QComponent instantiation fr
 QLibrary tab
 """
 
-
 import copy
 import importlib
 import inspect
@@ -95,8 +94,7 @@ class ParameterEntryWindow(QMainWindow):
         self.statusBar().hide()
 
         # should be moved to qt designer
-        self.ui.create_qcomp_button.clicked.connect(
-            self.instantiate_qcomponent)
+        self.ui.create_qcomp_button.clicked.connect(self.instantiate_qcomponent)
         self.ui.add_k_v_row_button.pressed.connect(self.add_k_v_row)
         self.ui.nest_dictionary_button.pressed.connect(self.add_k_dict_row)
         self.ui.remove_button.pressed.connect(self.delete_row)
@@ -272,8 +270,7 @@ class ParameterEntryWindow(QMainWindow):
         fake_dict = "fake-dict"
         fakekey = "key"
         fakevalue = "value"
-        self.model.add_new_branch_node(
-            cur_index, fake_dict, fakekey, fakevalue)
+        self.model.add_new_branch_node(cur_index, fake_dict, fakekey, fakevalue)
 
     @QComponentParameterEntryExceptionDecorators.entry_exception_pop_up_warning
     def delete_row(self):
@@ -433,8 +430,8 @@ def get_class_from_abs_file_path(abs_file_path):
     # Windows users' qis_abs_path may use os.sep or '/' due to PySide's
     # handling of file names
     qis_mod_path = qis_abs_path.replace(os.sep, '.')[:-len('.py')]
-    qis_mod_path = qis_mod_path.replace(
-        "/", '.')  # users cannot use '/' in filename
+    qis_mod_path = qis_mod_path.replace("/",
+                                        '.')  # users cannot use '/' in filename
 
     mymodule = importlib.import_module(qis_mod_path)
     members = inspect.getmembers(mymodule, inspect.isclass)

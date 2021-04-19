@@ -32,8 +32,6 @@ if TYPE_CHECKING:
     from qiskit_metal.designs.design_base import QDesign
 
 
-
-
 def get_nested_dict_item(dic: dict, key_list: list):
     """
     Get a nested dictionary item.
@@ -65,7 +63,7 @@ def get_nested_dict_item(dic: dict, key_list: list):
     return dic
 
 
-class Node: # pylint: disable=too-few-public-methods
+class Node:  # pylint: disable=too-few-public-methods
     """
     This class was made for type hints (instead of having to union BranchNode and LeafNode)"
     """
@@ -129,7 +127,7 @@ class BranchNode(Node):
             for btn in self.branch_type_names:
                 self.addItem(btn)
 
-        def getType(self): # pylint: disable=invalid-name disable=inconsistent-return-statements
+        def getType(self):  # pylint: disable=invalid-name disable=inconsistent-return-statements
             """ Return Type """
             if self.currentText() in self.type_dictionary:
                 return self.type_dictionary[self.currentText()]
@@ -173,7 +171,7 @@ class BranchNode(Node):
         if 0 <= row < len(self.children):
             return self.children[row][self.NODE]
 
-    def rowOfChild(self, child): # pylint: disable=invalid-name
+    def rowOfChild(self, child):  # pylint: disable=invalid-name
         """Gets the row of the given child
 
         Args:
@@ -187,7 +185,7 @@ class BranchNode(Node):
                 return i
         return -1
 
-    def childWithKey(self, key): # pylint: disable=invalid-name
+    def childWithKey(self, key):  # pylint: disable=invalid-name
         """Gets the child with the given key
 
         Args:
@@ -202,7 +200,7 @@ class BranchNode(Node):
                 return childnode
         return None
 
-    def insertChild(self, child): # pylint: disable=invalid-name
+    def insertChild(self, child):  # pylint: disable=invalid-name
         """
         Insert the given child
 
@@ -217,7 +215,7 @@ class BranchNode(Node):
         row = self.rowOfChild(child_node)
         self.children[row] = (child_node.name, child_node)
 
-    def hasLeaves(self): # pylint: disable=invalid-name
+    def hasLeaves(self):  # pylint: disable=invalid-name
         """Do I have leaves?
 
         Returns:
@@ -305,7 +303,7 @@ class LeafNode(Node):
 
             return getattr(builtins, self.currentText())
 
-        def getTypeName(self): # pylint: disable=invalid-name
+        def getTypeName(self):  # pylint: disable=invalid-name
             """Return name"""
             return self.currentText()
 
@@ -324,8 +322,8 @@ class LeafNode(Node):
             return val
 
         cur_type = getattr(builtins, self.type)
-        if cur_type == bool: # pylint: disable=simplifiable-if-statement
-            if self.value.lower() in "true": # pylint: disable=simplifiable-if-statement
+        if cur_type == bool:  # pylint: disable=simplifiable-if-statement
+            if self.value.lower() in "true":  # pylint: disable=simplifiable-if-statement
                 value = True
             else:
                 value = False
@@ -483,7 +481,7 @@ class TreeModelParamEntry(QAbstractItemModel):
         completely rebuild the model and tree.
         """
         # TODO: Check if new nodes have been added; if so, rebuild model.
-        newRowCount = self.rowCount(self.createIndex(0, 0)) # pylint: disable=invalid-name
+        newRowCount = self.rowCount(self.createIndex(0, 0))  # pylint: disable=invalid-name
         if self._rowCount != newRowCount:
             self.modelReset.emit()
             self._rowCount = newRowCount
@@ -624,10 +622,11 @@ class TreeModelParamEntry(QAbstractItemModel):
 
         return None
 
-    def setData(self, # pylint: disable=too-many-return-statements
-                index: QModelIndex,
-                value,
-                role: Qt.ItemDataRole = Qt.EditRole) -> bool:
+    def setData(
+            self,  # pylint: disable=too-many-return-statements
+            index: QModelIndex,
+            value,
+            role: Qt.ItemDataRole = Qt.EditRole) -> bool:
         """Set the LeafNode value and corresponding data entry to value.
         Returns true if successful; otherwise returns false.
         The dataChanged() signal should be emitted if the data was successfully set.
@@ -661,17 +660,15 @@ class TreeModelParamEntry(QAbstractItemModel):
                             return False
 
                         # Set the value of an option when the new value is different
-                        node.value = value # # pylint: disable=attribute-defined-outside-init
+                        node.value = value  # # pylint: disable=attribute-defined-outside-init
                         return True  # why doesn't this require a self.init_load()?
 
                 elif index.column(
                 ) == self.NAME:  # either editing BranchNode name or LeafNode name
                     node = self.nodeFromIndex(index)
                     if node.parent is None:
-                        raise Exception(
-                            "Trying to edit node without a parent. "
-                            "The root node should be uneditable."
-                        )
+                        raise Exception("Trying to edit node without a parent. "
+                                        "The root node should be uneditable.")
 
                     old_value = node.name
                     if old_value == value:
@@ -701,7 +698,7 @@ class TreeModelParamEntry(QAbstractItemModel):
                     return True
 
             return False
-        except Exception as e: # pylint: disable=broad-except
+        except Exception as e:  # pylint: disable=broad-except
             self._design.logger.error(f"Unable to parse tree information: {e}")
             return False
 
@@ -720,8 +717,8 @@ class TreeModelParamEntry(QAbstractItemModel):
 
     def expand_items_in_paths(self, expanded_nodes):
         """Expand all nodes that were previously saved in expanded_nodes"""
-        INDEX = 0 # pylint: disable=invalid-name
-        NODE = 1 # pylint: disable=invalid-name
+        INDEX = 0  # pylint: disable=invalid-name
+        NODE = 1  # pylint: disable=invalid-name
         cur_index = QModelIndex()
         node = self.nodeFromIndex(cur_index)
         discovered_queue = queue.Queue()
@@ -820,7 +817,7 @@ class TreeModelParamEntry(QAbstractItemModel):
         assert row != -1
         return self.createIndex(row, 0, parent)
 
-    def nodeFromIndex(self, index: QModelIndex) -> Union[BranchNode, LeafNode]: # pylint: disable=invalid-name
+    def nodeFromIndex(self, index: QModelIndex) -> Union[BranchNode, LeafNode]:  # pylint: disable=invalid-name
         """Utility method we define to get the node from the index.
 
         Args:
@@ -853,7 +850,7 @@ class TreeModelParamEntry(QAbstractItemModel):
 
         return flags
 
-    def node_str(self, node: Node): # pylint: disable=no-self-use
+    def node_str(self, node: Node):  # pylint: disable=no-self-use
         """Node to string"""
         if Node is None:
             return "None"

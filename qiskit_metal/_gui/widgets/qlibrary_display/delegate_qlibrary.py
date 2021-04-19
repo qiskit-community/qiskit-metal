@@ -24,7 +24,6 @@ USER_COMP_DIR = "user_components"
 
 
 class LibraryDelegate(QItemDelegate):
-
     """
     Delegate for QLibrary view
     Requires LibraryModel
@@ -46,7 +45,7 @@ class LibraryDelegate(QItemDelegate):
 
     # https://www.youtube.com/watch?v=v6clAW6FmcU
 
-    def get_source_model(self, model, source_type): # pylint: disable=R0201, no-self-use
+    def get_source_model(self, model, source_type):  # pylint: disable=R0201, no-self-use
         """
         The Delegate may belong to a view using a ProxyModel. However,
         the source model for that Proxy Model(s) should be a QFileSystemLibraryModel
@@ -74,14 +73,11 @@ class LibraryDelegate(QItemDelegate):
                                 f"\n Current Expect is:"
                                 f"\n{source_type}"
                                 f"\n Type(model) is"
-                                f"\n{type(model)}"
-                                )
+                                f"\n{type(model)}")
 
-    def paint(
-            self,
-            painter: PySide2.QtGui.QPainter,
-            option: PySide2.QtWidgets.QStyleOptionViewItem,
-            index: QModelIndex):
+    def paint(self, painter: PySide2.QtGui.QPainter,
+              option: PySide2.QtWidgets.QStyleOptionViewItem,
+              index: QModelIndex):
         """
         Displays dirty files in red with corresponding rebuild buttons
         if in developer mode (is_dev_mode). Otherwise, renders normally
@@ -94,14 +90,15 @@ class LibraryDelegate(QItemDelegate):
 
         """
         if self.is_dev_mode:
-            source_model = self.get_source_model(
-                index.model(), self.source_model_type)
+            source_model = self.get_source_model(index.model(),
+                                                 self.source_model_type)
 
             model = index.model()
 
             # get data of filename
-            filename = str(model.data(
-                model.sibling(index.row(), source_model.FILENAME, index)))
+            filename = str(
+                model.data(
+                    model.sibling(index.row(), source_model.FILENAME, index)))
 
             if source_model.is_file_dirty(filename):
                 if index.column() == source_model.FILENAME:

@@ -20,7 +20,6 @@ import typing
 from PySide2.QtCore import QModelIndex, QSortFilterProxyModel, Qt, QSize
 
 
-
 class LibraryFileProxyModel(QSortFilterProxyModel):
     """
     Proxy Model to clean up display for QFileSystemLibraryModel
@@ -34,7 +33,7 @@ class LibraryFileProxyModel(QSortFilterProxyModel):
         # finds all files that
         # (Aren't hidden (begin w/ .), don't begin with __init__, don't begin with _template, etc. AND end in .py)  OR (don't begin with __pycache__ and don't have a '.' in the name   # pylint: disable=line-too-long
         # (QComponent files) OR (Directories)
-        self.accepted_files__regex = r"(^((?!\.))(?!__init__)(?!_template)(?!__pycache__).*\.py)|(?!__pycache__)(?!base)(^([^.]+)$)" # pylint: disable=line-too-long
+        self.accepted_files__regex = r"(^((?!\.))(?!__init__)(?!_template)(?!__pycache__).*\.py)|(?!__pycache__)(?!base)(^([^.]+)$)"  # pylint: disable=line-too-long
         self.setFilterRegExp(self.accepted_files__regex)
         self.is_dev_mode = False
 
@@ -47,8 +46,8 @@ class LibraryFileProxyModel(QSortFilterProxyModel):
         """
         self.is_dev_mode = ison
 
-    def filterAcceptsColumn(self, source_column: int,
-                            source_parent: QModelIndex) -> bool:  #pylint: disable=unused-argument
+    def filterAcceptsColumn(
+            self, source_column: int, source_parent: QModelIndex) -> bool:  #pylint: disable=unused-argument
         """Filters out unwanted file information in display"""
         if (self.is_dev_mode and source_column <= self.sourceModel().REBUILD):
             return True
@@ -58,7 +57,8 @@ class LibraryFileProxyModel(QSortFilterProxyModel):
 
         return False
 
-    def data(self, index: QModelIndex,
+    def data(self,
+             index: QModelIndex,
              role: int = Qt.DisplayRole) -> typing.Any:
         """ Sets standard size hint for indexes and allows """
 
@@ -70,7 +70,8 @@ class LibraryFileProxyModel(QSortFilterProxyModel):
             return QSize(10, 25)
 
         # Don't return any data for REBUILD column - Delegate handles that
-        if role == Qt.DisplayRole and index.column() == self.sourceModel().REBUILD:
+        if role == Qt.DisplayRole and index.column() == self.sourceModel(
+        ).REBUILD:
             return ""
 
         return super().data(index, role)

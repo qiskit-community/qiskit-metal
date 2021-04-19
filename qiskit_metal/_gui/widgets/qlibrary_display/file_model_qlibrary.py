@@ -20,9 +20,7 @@ import typing
 
 from PySide2.QtGui import QFont
 from PySide2.QtCore import QFileSystemWatcher, Qt, Signal, QModelIndex
-from PySide2.QtWidgets import (
-    QFileSystemModel)
-
+from PySide2.QtWidgets import (QFileSystemModel)
 
 
 class QFileSystemLibraryModel(QFileSystemModel):
@@ -131,7 +129,7 @@ class QFileSystemLibraryModel(QFileSystemModel):
         filename = self.filepath_to_filename(filepath)
         return filename in self.dirtied_files
 
-    def filepath_to_filename(self, filepath: str) -> str: # pylint: disable=R0201, no-self-use
+    def filepath_to_filename(self, filepath: str) -> str:  # pylint: disable=R0201, no-self-use
         """
         Gets just the filename from the full filepath
         Args:
@@ -181,11 +179,10 @@ class QFileSystemLibraryModel(QFileSystemModel):
                 self.file_system_watcher.addPath(filepath)
         self.dirty_file(filepath)
 
-    def headerData(
-            self,
-            section: int,
-            orientation: Qt.Orientation,
-            role: int = ...) -> typing.Any:
+    def headerData(self,
+                   section: int,
+                   orientation: Qt.Orientation,
+                   role: int = ...) -> typing.Any:
         """ Set the headers to be displayed.
 
         Args:
@@ -211,7 +208,7 @@ class QFileSystemLibraryModel(QFileSystemModel):
                 font.setBold(True)
                 return font
 
-        return super().headerData(section,orientation,role)
+        return super().headerData(section, orientation, role)
 
     def set_file_is_dev_mode(self, ison: bool):
         """
