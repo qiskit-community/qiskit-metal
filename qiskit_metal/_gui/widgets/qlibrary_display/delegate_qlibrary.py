@@ -20,6 +20,7 @@ from PySide2.QtCore import QAbstractProxyModel, QModelIndex, Qt
 import PySide2
 from PySide2.QtGui import QTextDocument
 from qiskit_metal._gui.widgets.qlibrary_display.file_model_qlibrary import QFileSystemLibraryModel
+
 USER_COMP_DIR = "user_components"
 
 
