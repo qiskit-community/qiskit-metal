@@ -20,8 +20,8 @@ from pathlib import Path
 from typing import List, TYPE_CHECKING
 
 from PySide2.QtCore import QTimer, Qt
-from PySide2.QtWidgets import (QDockWidget, QFileDialog, QLabel,
-                               QMainWindow, QMessageBox)
+from PySide2.QtWidgets import (QDockWidget, QFileDialog, QLabel, QMainWindow,
+                               QMessageBox)
 
 from qiskit_metal._gui.widgets.qlibrary_display.delegate_qlibrary import LibraryDelegate
 from qiskit_metal._gui.widgets.qlibrary_display.file_model_qlibrary import QFileSystemLibraryModel
@@ -187,14 +187,15 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         self.gui.gui_create_build_log_window()
 
     @slot_catch_error()
-    def activate_developer_mode(self, ison : bool):
+    def activate_developer_mode(self, ison: bool):
         if ison:
             QMessageBox.warning(
-                self, "Notice", "If you're editing a component via an external IDE, don't forget to refresh the component's file in the Library before rebuilding so your changes will take effect.")
+                self, "Notice",
+                "If you're editing a component via an external IDE, don't forget to refresh the component's file in the Library before rebuilding so your changes will take effect."
+            )
 
         self.gui.ui.dockLibrary_tree_view.set_dev_mode(ison)
         self.gui.is_dev_mode = ison
-
 
 
 class MetalGUI(QMainWindowBaseHandler):
@@ -453,8 +454,7 @@ class MetalGUI(QMainWindowBaseHandler):
                                           tableView=self.ui.tableComponents)
         self.ui.tableComponents.setModel(model)
 
-    def _create_new_component_object_from_qlibrary(self,
-                                                  full_path: str):
+    def _create_new_component_object_from_qlibrary(self, full_path: str):
         """
         Must be defined outside of _setup_library_widget to ensure self == MetalGUI and will retain opened ScrollArea
 
@@ -469,7 +469,6 @@ class MetalGUI(QMainWindowBaseHandler):
             self.logger.error(
                 f"Unable to open param entry window due to Exception: {e} ")
 
-
     def _refresh_component_build(self, qis_abs_path):
         self.design.reload_and_rebuild_component(qis_abs_path)
         # Table models
@@ -478,7 +477,6 @@ class MetalGUI(QMainWindowBaseHandler):
         # Redraw plots
         self.refresh_plot()
         self.autoscale()
-
 
     def _setup_library_widget(self):
         """
@@ -503,7 +501,8 @@ class MetalGUI(QMainWindowBaseHandler):
         self.ui.dockLibrary.proxy_library_model.setSourceModel(
             self.ui.dockLibrary.library_model)
 
-        self.ui.dockLibrary_tree_view.setModel(self.ui.dockLibrary.proxy_library_model)
+        self.ui.dockLibrary_tree_view.setModel(
+            self.ui.dockLibrary.proxy_library_model)
         self.ui.dockLibrary_tree_view.setRootIndex(
             self.ui.dockLibrary.proxy_library_model.mapFromSource(
                 self.ui.dockLibrary.library_model.index(
@@ -513,8 +512,7 @@ class MetalGUI(QMainWindowBaseHandler):
             LibraryDelegate(self.main_window))  # try empty one if no work
 
         self.ui.dockLibrary_tree_view.qlibrary_filepath_signal.connect(
-            self._create_new_component_object_from_qlibrary
-        )
+            self._create_new_component_object_from_qlibrary)
         self.ui.dockLibrary_tree_view.qlibrary_rebuild_signal.connect(
             self._refresh_component_build)
 
@@ -578,13 +576,13 @@ class MetalGUI(QMainWindowBaseHandler):
         self.refresh()
         if autoscale:
             self.autoscale()
-    
+
     def refresh_everything(self):
 
         df = self.ui.dockLibrary.library_model.dirtied_files
         values = {list(df[k])[0] for k in df.keys()}
 
-        for file in values: # dirtied_files size changes during clean_file
+        for file in values:  # dirtied_files size changes during clean_file
             if '.py' in file:
                 file = file[file.index('qiskit_metal'):]
                 self.design.reload_and_rebuild_component(file)
@@ -670,6 +668,3 @@ class MetalGUI(QMainWindowBaseHandler):
         self.build_log_window = BuildHistoryScrollArea(
             self.design.build_logs.data())
         self.build_log_window.show()
-
-
-

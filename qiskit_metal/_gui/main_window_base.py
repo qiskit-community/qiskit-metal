@@ -80,7 +80,7 @@ class QMainWindowExtensionBase(QMainWindow):
         super().destroy(destroyWindow=destroyWindow,
                         destroySubWindows=destroySubWindows)
 
-    def set_force_close(self, ison:bool):
+    def set_force_close(self, ison: bool):
         self.force_close = ison
 
     def closeEvent(self, event):
@@ -96,7 +96,6 @@ class QMainWindowExtensionBase(QMainWindow):
         if self.ok_to_continue():
             self.save_window_settings()
             super().closeEvent(event)
-
 
     def ok_to_continue(self):
         """Determine if it ok to continue.
@@ -631,7 +630,6 @@ def kick_start_qApp():
         Exception: Magic method failure
     """
     qApp = QtCore.QCoreApplication.instance()
-
 
     if qApp is None:
         try:
