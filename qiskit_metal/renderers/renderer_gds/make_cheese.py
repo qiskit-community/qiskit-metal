@@ -136,7 +136,7 @@ class Cheesing():
 
         self.cheese_cell = None
 
-        # max dimension of grid is chip size reducded by self.edge_nocheese
+        # max dimension of grid is chip size reduced by self.edge_nocheese
         self.grid_minx = self.minx + self.edge_nocheese
         self.grid_miny = self.miny + self.edge_nocheese
         self.grid_maxx = self.maxx - self.edge_nocheese
@@ -215,7 +215,7 @@ class Cheesing():
         """Convert the self.hole to a gds cell and add to self.lib.
 
         Returns:
-            gdspy.polygon.Polygon: The gdspy polgon for single hole for cheesing. None is not made.
+            gdspy.polygon.Polygon: The gdspy polygon for single hole for cheesing. None is not made.
         """
         a_poly = None
         if isinstance(self.hole, shapely.geometry.Polygon):
@@ -282,10 +282,11 @@ class Cheesing():
                             dtype=float).tolist()
 
         if self.one_hole_cell is not None:
-            for x in x_holes:
-                for y in y_holes:
+            for x_loc in x_holes:
+                for y_loc in y_holes:
                     gather_holes_cell.add(
-                        gdspy.CellReference(self.one_hole_cell, origin=(x, y)))
+                        gdspy.CellReference(self.one_hole_cell,
+                                            origin=(x_loc, y_loc)))
 
         # subtact the keepout, note, Based on user options,
         # the keepout (no_cheese) cell may not be in self.lib.

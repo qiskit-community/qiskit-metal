@@ -157,14 +157,14 @@ class QGDSRenderer(QRenderer):
         # up by any fab equipment (so can be ignored).  Numerical errors start
         # to pop up if set precision too fine,
         # but 1nm seems to be the finest precision we use anyhow.
-        # FOR NOW SPECIFY IN METERS. # TODO: Add parsing of actual units here
+        # FOR NOW SPECIFY IN METERS.
         tolerance='0.00001',  # 10.0 um
 
         # With input from fab people, any of the weird artifacts
         # (like unwanted gaps) that are less than 1nm in size can be ignored.
         # They don't even show up in the fabricated masks.
         # So, the precision of e-9 (so 1 nm) should be good as a default.
-        # FOR NOW SPECIFY IN METERS. # TODO: Add parsing of actual units here
+        # FOR NOW SPECIFY IN METERS.
         precision='0.000000001',  # 1.0 nm
 
         # Since Qiskit Metal GUI, does not require a width for LineString, GDS,
@@ -306,9 +306,10 @@ class QGDSRenderer(QRenderer):
     def _check_bounding_box_scale(self):
         """Some error checking for bounding_box_scale_x and
         bounding_box_scale_y numbers."""
-        p = self.options
-        bounding_box_scale_x = self.parse_value(p.bounding_box_scale_x)
-        bounding_box_scale_y = self.parse_value(p.bounding_box_scale_y)
+        bounding_box_scale_x = self.parse_value(
+            self.options.bounding_box_scale_x)
+        bounding_box_scale_y = self.parse_value(
+            self.options.bounding_box_scale_y)
 
         if bounding_box_scale_x < 1:
             self.options[
@@ -703,8 +704,9 @@ class QGDSRenderer(QRenderer):
                                 'all_subtract_true' or 'all_subtract_false'.
         """
         # pylint: disable=too-many-locals
-        df = self.chip_info[chip_name][chip_layer][all_sub_true_or_false]
-        df_fillet = df[-df['fillet'].isnull()]
+        data_frame = self.chip_info[chip_name][chip_layer][
+            all_sub_true_or_false]
+        df_fillet = data_frame[-data_frame['fillet'].isnull()]
 
         if not df_fillet.empty:
             # Don't edit the table when iterating through the rows.
@@ -722,7 +724,7 @@ class QGDSRenderer(QRenderer):
             df_copy = self.chip_info[chip_name][chip_layer][
                 all_sub_true_or_false].copy(deep=True)
             for del_key, the_shapes in edit_index.items():
-                # copy row "index" into a new df "status" times.
+                # copy row "index" into a new data-frame "status" times.
                 # Then replace the LONG shapely with all_shapelys.
                 # For any entries in edit_index, edit table here.
                 orig_row = df_copy.loc[del_key].copy(deep=True)
@@ -1386,17 +1388,18 @@ class QGDSRenderer(QRenderer):
         path_sub_geo = path_sub_df['geometry'].tolist()
         path_sub_width = path_sub_df['width'].tolist()
         #for n in range(len(path_sub_geo)):
-        for n, _ in enumerate(path_sub_geo):
-            path_sub_geo[n] = path_sub_geo[n].buffer(path_sub_width[n] / 2,
-                                                     cap_style=style_cap,
-                                                     join_style=style_join)
+        for index, _ in enumerate(path_sub_geo):
+            path_sub_geo[index] = path_sub_geo[index].buffer(
+                path_sub_width[index] / 2,
+                cap_style=style_cap,
+                join_style=style_join)
 
         #  Need to add buffer_size, cap style, and join style to default options
         combo_list = path_sub_geo + poly_sub_geo
         combo_shapely = draw.union(combo_list)
 
         if not combo_shapely.is_empty:
-            #Can return either Multipolgon or just one polygon.
+            #Can return either Multipolygon or just one polygon.
             combo_shapely = combo_shapely.buffer(no_cheese_buffer,
                                                  cap_style=style_cap,
                                                  join_style=style_join)
