@@ -11,32 +11,4 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
-
-def gds_draw_all(self, path=None):
-    r'''
-    Create full gds export cell.
-
-    path : str : if passed will save
-
-    Can see with
-        gdspy.LayoutViewer()
-
-    can save with
-        # Save all created cells in file 'first.gds'
-        path = r'C:\zkm\2019-hfss\gds'
-        gdspy.write_gds(path+r'\first.gds')
-    '''
-    import gdspy
-
-    gdspy.current_library.cell_dict.clear()
-    device = gdspy.Cell('TOP_CELL')
-    for _, obj in self.components.items():
-        if is_component(obj):
-            cell = obj.gds_draw()
-            device.add(gdspy.CellReference(cell))
-
-    if path:
-        gdspy.write_gds(path)
-
-    return gdspy.current_library.cell_dict
+""" GDS QRenderer """
