@@ -15,9 +15,10 @@
 Tree view for Param Entry Window
 """
 
-from PySide2 import QtCore, QtWidgets, QtGui
-from PySide2.QtWidgets import QTreeView
+from PySide2 import QtCore, QtGui, QtWidgets
 from PySide2.QtCore import QModelIndex, Signal
+from PySide2.QtWidgets import QTreeView
+
 from qiskit_metal._gui.widgets.qlibrary_display.proxy_model_qlibrary import LibraryFileProxyModel
 
 
@@ -37,6 +38,7 @@ class TreeViewQLibrary(QTreeView):
         """
         QTreeView.__init__(self, parent)
         self.is_dev_mode = False  # Whether MetalGUI is in developer mode
+        self.tool_tip_str = "Library of QComponents"
 
     def set_dev_mode(self, ison: bool):
         """ Sets dev mode for self, model, model's source model, and delegate """
@@ -86,3 +88,10 @@ class TreeViewQLibrary(QTreeView):
                 self.qlibrary_filepath_signal.emit(qis_abs_path)
 
         return super().mousePressEvent(event)
+
+    def setToolTip(self, arg__1: str):
+        """ sets tool tip """
+        if arg__1 is None or len(arg__1) < 1:
+            super().setToolTip(self.tool_tip_str)
+        else:
+            super().setToolTip(arg__1)

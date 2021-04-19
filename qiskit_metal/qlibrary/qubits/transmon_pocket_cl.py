@@ -130,6 +130,9 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
     )
     """Default drawing options"""
 
+    TOOLTIP = """Create a standard pocket transmon qubit for a ground plane,
+    with two pads connected by a junction"""
+
     def make(self):
         """Define the way the options are turned into QGeometry."""
         super().make()

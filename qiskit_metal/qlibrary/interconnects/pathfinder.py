@@ -45,6 +45,9 @@ class RoutePathfinder(RouteAnchors):
                            advanced=Dict(avoid_collision='true'))
     """Default options"""
 
+    TOOLTIP = """ Non-meandered CPW class that combines A* pathfinding algorithm with
+    simple 1-, 2-, or S-shaped segment checks and user-specified anchor points."""
+
     def connect_astar_or_simple(self, start_pt: QRoutePoint,
                                 end_pt: QRoutePoint) -> list:
         """Connect start and end via A* algo if connect_simple doesn't work.

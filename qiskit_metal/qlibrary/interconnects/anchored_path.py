@@ -133,6 +133,8 @@ class RouteAnchors(QRoute):
         advanced=Dict(avoid_collision='false'))
     """Default options"""
 
+    TOOLTIP = """Creates and connects a series of anchors through which the Route passes."""
+
     from shapely.ops import cascaded_union
     from matplotlib import pyplot as plt
     import geopandas as gpd

@@ -141,6 +141,8 @@ class TransmonPocket(BaseQubit):
                               _qgeometry_table_junction='True')
     """Component metadata"""
 
+    TOOLTIP = """The base `TransmonPocket` class."""
+
     def make(self):
         """Define the way the options are turned into QGeometry.
 

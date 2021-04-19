@@ -15,11 +15,13 @@
 Delegate for display of QComponents in Library tab
 """
 
-from PySide2.QtWidgets import QItemDelegate
-from PySide2.QtCore import QAbstractProxyModel, QModelIndex, Qt
 import PySide2
+from PySide2.QtCore import QAbstractProxyModel, QModelIndex, Qt, Signal
 from PySide2.QtGui import QTextDocument
+from PySide2.QtWidgets import QItemDelegate, QStyle
+
 from qiskit_metal._gui.widgets.qlibrary_display.file_model_qlibrary import QFileSystemLibraryModel
+from qiskit_metal.toolbox_python.utility_functions import get_class_from_abs_file_path
 
 USER_COMP_DIR = "user_components"
 
@@ -29,6 +31,7 @@ class LibraryDelegate(QItemDelegate):
     Delegate for QLibrary view
     Requires LibraryModel
     """
+    tool_tip_signal = Signal(str)
 
     def __init__(self, parent=None):
         """
@@ -88,8 +91,24 @@ class LibraryDelegate(QItemDelegate):
             index: QModelIndex
 
 
-
         """
+        if option.state & QStyle.State_MouseOver:  #         if option.state  == QStyle.State_MouseOver: Qt.WA_Hover
+            source_model = self.get_source_model(index.model(),
+                                                 self.source_model_type)
+
+            model = index.model()
+            full_path = source_model.filePath(
+                model.mapToSource(index))  # todo both columns work?
+
+            # try:
+            try:
+                current_class = get_class_from_abs_file_path(full_path)
+                information = current_class.TOOLTIP
+            except:
+                information = ""
+
+            self.tool_tip_signal.emit(information)
+
         if self.is_dev_mode:
             source_model = self.get_source_model(index.model(),
                                                  self.source_model_type)

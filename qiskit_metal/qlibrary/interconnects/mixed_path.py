@@ -75,6 +75,9 @@ class RouteMixed(RoutePathfinder, RouteMeander):
     )
     """Default options"""
 
+    TOOLTIP = """Implements fully featured Routing, allowing different type of
+    connections between anchors."""
+
     def make(self):
         """Generates path from start pin to end pin."""
         p = self.parse_options()

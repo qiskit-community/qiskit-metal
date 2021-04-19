@@ -87,6 +87,8 @@ class CPWFingerCap(QComponent):
                            layer='1')
     """Default connector options"""
 
+    TOOLTIP = "Generates a two pin (+) structure comprised of a north CPW transmission line, and a south transmission line, coupled together via a finger capacitor."
+
     def make(self):
         """Build the component."""
         p = self.p

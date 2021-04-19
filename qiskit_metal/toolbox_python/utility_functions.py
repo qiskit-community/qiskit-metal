@@ -13,22 +13,20 @@
 # that they have been altered from the originals.
 """Simply utility functions to improve QOL of QM developers and QM users."""
 
+import importlib
+import inspect
 import logging
+import os
 import re
 import sys
 import traceback
 import warnings
-import logging
-import sys
-import os
-import pandas as pd
-import numpy as np
-from scipy.spatial import distance
-from typing import Tuple, TYPE_CHECKING
-
 from copy import deepcopy
+from typing import TYPE_CHECKING, Tuple
+
+import pandas as pd
+
 from qiskit_metal.draw import Vector
-from numpy.linalg import norm
 
 if TYPE_CHECKING:
     from qiskit_metal import logger
@@ -538,3 +536,33 @@ def can_write_to_path(file: str) -> Tuple[int, str]:
         return 1, directory_name
     else:
         return 0, directory_name
+
+
+
+def get_class_from_abs_file_path(abs_file_path):
+    """
+    Gets the corresponding class object for the absolute file path to the file containing that
+    class definition
+
+    Args:
+        abs_file_path: absolute file path to the file containing the QComponent class definition
+
+    getting class from absolute file path -
+    https://stackoverflow.com/questions/452969/does-python-have-an-equivalent-to-java-class-forname
+
+    """
+    qis_abs_path = abs_file_path[abs_file_path.index(__name__.split('.')[0]):]
+
+    # Windows users' qis_abs_path may use os.sep or '/' due to PySide's
+    # handling of file names
+    qis_mod_path = qis_abs_path.replace(os.sep, '.')[:-len('.py')]
+    qis_mod_path = qis_mod_path.replace("/",
+                                        '.')  # users cannot use '/' in filename
+
+    mymodule = importlib.import_module(qis_mod_path)
+    members = inspect.getmembers(mymodule, inspect.isclass)
+    class_owner = qis_mod_path.split('.')[-1]
+    for memtup in members:
+        if len(memtup) > 1:
+            if str(memtup[1].__module__).endswith(class_owner):
+                return memtup[1]
