@@ -255,14 +255,14 @@ class TestRenderers(unittest.TestCase):
         my_list.append([1, 1, 2, 2])
         my_list.append([3, 3, 5, 5])
         my_list.append([2.2, 2.3, 4.4, 4.9])
-        self.assertEqual(renderer.inclusive_bound(my_list), (1, 1, 5, 5))
+        self.assertEqual(renderer._inclusive_bound(my_list), (1, 1, 5, 5))
 
     def test_renderer_scale_max_bounds(self):
         """Test functionality of scale_max_bounds in gds_renderer.py."""
         design = designs.DesignPlanar()
         renderer = QGDSRenderer(design)
 
-        actual = renderer.scale_max_bounds('main', [(1, 1, 3, 3)])
+        actual = renderer._scale_max_bounds('main', [(1, 1, 3, 3)])
         self.assertEqual(len(actual), 2)
         self.assertEqual(actual[0], (0.8, 0.8, 3.2, 3.2))
         self.assertEqual(actual[1], (1, 1, 3, 3))
@@ -288,7 +288,7 @@ class TestRenderers(unittest.TestCase):
                           'my_id', {'n_spira_etch': a_poly},
                           subtract=True)
 
-        result = renderer.get_chip_names()
+        result = renderer._get_chip_names()
         self.assertEqual(result, {'main': {}})
 
     def test_renderer_setup_renderers(self):
@@ -317,12 +317,12 @@ class TestRenderers(unittest.TestCase):
         renderer.options['gds_unit'] = 12345
         self.assertEqual(renderer.options['gds_unit'], 12345)
 
-        renderer.update_units()
+        renderer._update_units()
         self.assertEqual(renderer.options['gds_unit'], 0.001)
 
     def test_renderer_gdsrenderer_midpoint_xy(self):
         """Test midpoint_xy in gds_renderer.py."""
-        actual = QGDSRenderer.midpoint_xy(10, 15, 20, 30)
+        actual = QGDSRenderer._midpoint_xy(10, 15, 20, 30)
         self.assertEqual(len(actual), 2)
         self.assertEqual(actual[0], 15.0)
         self.assertEqual(actual[1], 22.5)
@@ -333,9 +333,9 @@ class TestRenderers(unittest.TestCase):
         renderer = QGDSRenderer(design)
 
         actual = []
-        actual.append(renderer.check_qcomps([]))
-        actual.append(renderer.check_qcomps(['Q1', 'Q2', 'Q3']))
-        actual.append(renderer.check_qcomps(['Q1', 'Q2', 'Q3', 'Q1']))
+        actual.append(renderer._check_qcomps([]))
+        actual.append(renderer._check_qcomps(['Q1', 'Q2', 'Q3']))
+        actual.append(renderer._check_qcomps(['Q1', 'Q2', 'Q3', 'Q1']))
 
         expected = []
         expected.append(([], 0))
@@ -362,27 +362,27 @@ class TestRenderers(unittest.TestCase):
         design = designs.DesignPlanar()
         renderer = QGDSRenderer(design)
 
-        self.assertEqual(renderer.check_cheese('main', 0), 4)
-        self.assertEqual(renderer.check_cheese('main', 1), 1)
-        self.assertEqual(renderer.check_cheese('fake', 0), 3)
+        self.assertEqual(renderer._check_cheese('main', 0), 4)
+        self.assertEqual(renderer._check_cheese('main', 1), 1)
+        self.assertEqual(renderer._check_cheese('fake', 0), 3)
 
     def test_renderer_gds_check_no_cheese(self):
         """Test check_no_cheese in gds_renderer.py."""
         design = designs.DesignPlanar()
         renderer = QGDSRenderer(design)
 
-        self.assertEqual(renderer.check_no_cheese('main', 0), 4)
-        self.assertEqual(renderer.check_no_cheese('main', 1), 1)
-        self.assertEqual(renderer.check_no_cheese('fake', 0), 3)
+        self.assertEqual(renderer._check_no_cheese('main', 0), 4)
+        self.assertEqual(renderer._check_no_cheese('main', 1), 1)
+        self.assertEqual(renderer._check_no_cheese('fake', 0), 3)
 
     def test_renderer_gds_check_either_cheese(self):
         """Test check_either_cheese in gds_renderer.py."""
         design = designs.DesignPlanar()
         renderer = QGDSRenderer(design)
 
-        self.assertEqual(renderer.check_either_cheese('main', 0), 6)
-        self.assertEqual(renderer.check_either_cheese('main', 1), 1)
-        self.assertEqual(renderer.check_either_cheese('fake', 0), 5)
+        self.assertEqual(renderer._check_either_cheese('main', 0), 6)
+        self.assertEqual(renderer._check_either_cheese('main', 1), 1)
+        self.assertEqual(renderer._check_either_cheese('fake', 0), 5)
 
 
 if __name__ == '__main__':
