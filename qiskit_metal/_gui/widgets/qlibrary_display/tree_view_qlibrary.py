@@ -48,9 +48,6 @@ class TreeViewQLibrary(QTreeView):
     def setModel(self, model: QtCore.QAbstractItemModel):
         """ Overriding setModel to hook up clean/dirty file signals to model before setting Model"""
         if not isinstance(model, LibraryFileProxyModel):
-            print(
-                f"Invalid model. Expected type {LibraryFileProxyModel} but got type {type(model)}"
-            )
             raise Exception(
                 f"Invalid model. Expected type {LibraryFileProxyModel} but got type {type(model)}"
             )
@@ -81,7 +78,6 @@ class TreeViewQLibrary(QTreeView):
         if self.is_dev_mode and index.column() == source_model.REBUILD:
             qis_abs_path = full_path[full_path.index(__name__.split('.')[0]):]
             self.qlibrary_rebuild_signal.emit(qis_abs_path)
-            print("emitted")
 
         elif index.column() == source_model.FILENAME:
             if not source_model.isDir(model.mapToSource(index)):

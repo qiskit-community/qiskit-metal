@@ -266,17 +266,10 @@ class QComponent():
         options_from_children = {}
         parents = inspect.getmro(cls)
 
-        try:
-            print(f"me getting: : {cls.default_options}")
-
-        except Exception as e:
-            print("base e", e)
-
         # len-2: base.py is not expected to have default_options dict to add to design class.
         for child in parents[len(parents) - 2::-1]:
             # The template default options are in a class dict attribute `default_options`.
             if hasattr(child, 'default_options'):
-                print(f"qcomp getting: {child} w def: {child.default_options}")
                 options_from_children = {
                     **options_from_children,
                     **child.default_options
@@ -444,7 +437,6 @@ class QComponent():
             template_key = cls._get_unique_class_name()
 
         renderer_key_values = cls._get_table_values_from_renderers(design)
-        print('renderer thingies: ', renderer_key_values)
         # Think
         if component_template is not None:
             renderer_and_component_template = {
@@ -455,7 +447,6 @@ class QComponent():
             renderer_and_component_template = renderer_key_values
 
         if template_key not in design.template_options:
-            print("Missin tmp: ", template_key)
             cls._register_class_with_design(design, template_key,
                                             renderer_and_component_template)
             # design, template_key, component_template)
@@ -538,7 +529,6 @@ class QComponent():
         Raises:
             Exception: Component build failure
         """
-        print("rebuilding: ", self.name)
         self.status = 'failed'
         try:
             if self._made:  # already made, just remaking
