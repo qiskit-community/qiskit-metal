@@ -20,7 +20,7 @@ from qiskit_metal.toolbox_metal import math_and_overrides as mao
 
 
 class RouteFramed(QRoute):
-    """A non-meandered basic CPW that is auto-generated between 2 components.
+    """A non-meandered sample_shapes CPW that is auto-generated between 2 components.
     Designed to avoid self-collisions and collisions with components it is
     attached to.
 
@@ -34,7 +34,7 @@ class RouteFramed(QRoute):
         3. Intersection of CPWs with themselves or the qubits they stem from is prohibited. Intersection with other
            components/CPWs has not yet been considered.
         4. Components may not share an edge; a nonzero gap must be present between 2 adjacent qubits.
-        5. CPWs must be attached to protruding leads via connectors head-on, not from the sides.
+        5. CPWs must be attached to protruding leads via terminations head-on, not from the sides.
     """
 
     component_metadata = Dict(short_name='cpw')

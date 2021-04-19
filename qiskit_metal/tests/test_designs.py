@@ -33,7 +33,7 @@ from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
 from qiskit_metal.tests.assertions import AssertionsMixin
 
 #pylint: disable-msg=line-too-long
-from qiskit_metal.qlibrary.interconnects.resonator_rectangle_spiral import ResonatorRectangleSpiral
+from qiskit_metal.qlibrary.lumped.resonator_coil_rect import ResonatorRectangleSpiral
 
 
 class TestDesign(unittest.TestCase, AssertionsMixin):

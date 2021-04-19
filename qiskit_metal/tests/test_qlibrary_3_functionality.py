@@ -28,28 +28,28 @@ from qiskit_metal.qlibrary._template import MyQComponent
 from qiskit_metal.qlibrary.base.base import QComponent
 from qiskit_metal.qlibrary.base.qroute import QRoute
 from qiskit_metal.qlibrary.base.qubit import BaseQubit
-from qiskit_metal.qlibrary.connectors.cpw_finger_cap import CPWFingerCap
-from qiskit_metal.qlibrary.connectors.cpw_hanger_t import CPWHangerT
-from qiskit_metal.qlibrary.connectors.cpw_t_finger_cap import CPWTFingerCap
-from qiskit_metal.qlibrary.connectors.cpw_t import CPWT
-from qiskit_metal.qlibrary.connectors import open_to_ground
-from qiskit_metal.qlibrary.connectors import short_to_ground
-from qiskit_metal.qlibrary.interconnects import anchored_path
-from qiskit_metal.qlibrary.interconnects.anchored_path import RouteAnchors
-from qiskit_metal.qlibrary.interconnects.framed_path import RouteFramed
-from qiskit_metal.qlibrary.interconnects.meandered import RouteMeander
-from qiskit_metal.qlibrary.interconnects import straight_path
+from qiskit_metal.qlibrary.lumped.cap_n_interdigital import CPWFingerCap
+from qiskit_metal.qlibrary.coupler.coupled_line_tee import CPWHangerT
+from qiskit_metal.qlibrary.coupler.cap_n_interdigital_tee import CPWTFingerCap
+from qiskit_metal.qlibrary.coupler.tee import CPWT
+from qiskit_metal.qlibrary.terminations import open_to_ground
+from qiskit_metal.qlibrary.terminations import short_to_ground
+from qiskit_metal.qlibrary.tlines import anchored_path
+from qiskit_metal.qlibrary.tlines.anchored_path import RouteAnchors
+from qiskit_metal.qlibrary.tlines.framed_path import RouteFramed
+from qiskit_metal.qlibrary.tlines.meandered import RouteMeander
+from qiskit_metal.qlibrary.tlines import straight_path
 from qiskit_metal import designs
 from qiskit_metal.qlibrary.qubits import transmon_pocket_cl
 from qiskit_metal.qlibrary.qubits import transmon_pocket
 from qiskit_metal.qlibrary.qubits import transmon_cross
 from qiskit_metal.qlibrary.qubits import transmon_cross_fl
 from qiskit_metal.qlibrary.qubits import transmon_pocket_6
-from qiskit_metal.qlibrary.qubits import tunable_coupler_01
+from qiskit_metal.qlibrary.coupler import tunable_coupler_01
 from qiskit_metal.tests.assertions import AssertionsMixin
 
 #pylint: disable-msg=line-too-long
-from qiskit_metal.qlibrary.interconnects.resonator_rectangle_spiral import ResonatorRectangleSpiral
+from qiskit_metal.qlibrary.lumped.resonator_coil_rect import ResonatorRectangleSpiral
 
 
 class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
@@ -201,7 +201,7 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
         self.assertEqual(metadata['_qgeometry_table_poly'], 'True')
 
     def test_qlibrary_cpw_hanger_t_component_metadata(self):
-        """Test component_metadata in component/cpw_hanger_t.py."""
+        """Test component_metadata in component/coupled_line_tee.py."""
         component = CPWHangerT
 
         metadata = component.component_metadata
@@ -210,7 +210,7 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
         self.assertEqual(metadata['_qgeometry_table_path'], 'True')
 
     def test_qlibrary_cpw_finger_component_metadata(self):
-        """Test component_metadata in component/cpw_finger_cap.py."""
+        """Test component_metadata in component/cap_n_interdigital.py."""
         component = CPWFingerCap
 
         metadata = component.component_metadata
@@ -221,7 +221,7 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
         self.assertEqual(metadata['_qgeometry_table_poly'], 'True')
 
     def test_qlibrary_cpw_t_finger_component_metadata(self):
-        """Test component_metadata in component/cpw_t_finger_cap.py."""
+        """Test component_metadata in component/cap_n_interdigital_tee.py."""
         component = CPWTFingerCap
 
         metadata = component.component_metadata
@@ -232,7 +232,7 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
         self.assertEqual(metadata['_qgeometry_table_poly'], 'True')
 
     def test_qlibrary_cpw_t_component_metadata(self):
-        """Test component_metadata in component/cpw_t.py."""
+        """Test component_metadata in component/tee.py."""
         component = CPWT
 
         metadata = component.component_metadata
@@ -261,22 +261,22 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
         self.assertEqual(component.component_metadata, {'short_name': 'cpw'})
 
     def test_qlibrary_framed_path_component_metadata(self):
-        """Test component_metadata in interconnects/framed_path.py."""
+        """Test component_metadata in tlines/framed_path.py."""
         component = RouteFramed
         self.assertEqual(component.component_metadata, {'short_name': 'cpw'})
 
     def test_qlibrary_straight_path_component_metadata(self):
-        """Test component_metadata in interconnects/straight_path.py."""
+        """Test component_metadata in tlines/straight_path.py."""
         component = straight_path.RouteStraight
         self.assertEqual(component.component_metadata, {'short_name': 'cpw'})
 
     def test_qlibrary_meander_path_component_metadata(self):
-        """Test component_metadata in interconnects/meandered.py."""
+        """Test component_metadata in tlines/meandered.py."""
         component = RouteMeander
         self.assertEqual(component.component_metadata, {'short_name': 'cpw'})
 
     def test_qlibrary_qroute_base_component_metadata(self):
-        """Test component_metadata in interconnects/qroute_base.py."""
+        """Test component_metadata in tlines/qroute_base.py."""
         component = QRoute
         metadata = component.component_metadata
         self.assertEqual(len(metadata), 2)
@@ -285,7 +285,7 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
 
     def test_qlibrary_resonator_rectangle_spiral_component_metadata(self):
         """Test component_metadata in
-        interconnects/resonator_rectangle_spiral.py."""
+        tlines/resonator_coil_rect.py."""
         component = ResonatorRectangleSpiral
         self.assertEqual(component.component_metadata, {'short_name': 'res'})
 

@@ -19,39 +19,39 @@
 import unittest
 
 from qiskit_metal.qlibrary.base import qubit, qroute
-from qiskit_metal.qlibrary.basic import circle_caterpillar
-from qiskit_metal.qlibrary.basic import circle_raster
-from qiskit_metal.qlibrary.basic import rectangle
-from qiskit_metal.qlibrary.basic import rectangle_hollow
-from qiskit_metal.qlibrary.basic import n_gon
-from qiskit_metal.qlibrary.basic import n_square_spiral
-from qiskit_metal.qlibrary.connectors.cpw_finger_cap import CPWFingerCap
-from qiskit_metal.qlibrary.connectors.cpw_hanger_t import CPWHangerT
-from qiskit_metal.qlibrary.connectors.cpw_t_finger_cap import CPWTFingerCap
-from qiskit_metal.qlibrary.connectors.cpw_t import CPWT
-from qiskit_metal.qlibrary.connectors import open_to_ground
-from qiskit_metal.qlibrary.connectors import short_to_ground
-from qiskit_metal.qlibrary.interconnects.anchored_path import RouteAnchors
-from qiskit_metal.qlibrary.interconnects import straight_path
-from qiskit_metal.qlibrary.interconnects import meandered
-from qiskit_metal.qlibrary.interconnects.mixed_path import RouteMixed
-from qiskit_metal.qlibrary.interconnects.pathfinder import RoutePathfinder
+from qiskit_metal.qlibrary.sample_shapes import circle_caterpillar
+from qiskit_metal.qlibrary.sample_shapes import circle_raster
+from qiskit_metal.qlibrary.sample_shapes import rectangle
+from qiskit_metal.qlibrary.sample_shapes import rectangle_hollow
+from qiskit_metal.qlibrary.sample_shapes import n_gon
+from qiskit_metal.qlibrary.sample_shapes import n_square_spiral
+from qiskit_metal.qlibrary.lumped.cap_n_interdigital import CPWFingerCap
+from qiskit_metal.qlibrary.coupler.coupled_line_tee import CPWHangerT
+from qiskit_metal.qlibrary.coupler.cap_n_interdigital_tee import CPWTFingerCap
+from qiskit_metal.qlibrary.coupler.tee import CPWT
+from qiskit_metal.qlibrary.terminations import open_to_ground
+from qiskit_metal.qlibrary.terminations import short_to_ground
+from qiskit_metal.qlibrary.tlines.anchored_path import RouteAnchors
+from qiskit_metal.qlibrary.tlines import straight_path
+from qiskit_metal.qlibrary.tlines import meandered
+from qiskit_metal.qlibrary.tlines.mixed_path import RouteMixed
+from qiskit_metal.qlibrary.tlines.pathfinder import RoutePathfinder
 from qiskit_metal import designs
-from qiskit_metal.qlibrary.passives.launchpad_wb import LaunchpadWirebond
-from qiskit_metal.qlibrary.passives.launchpad_wb_coupled import LaunchpadWirebondCoupled
-from qiskit_metal.qlibrary.passives.cap_three_fingers import CapThreeFingers
+from qiskit_metal.qlibrary.terminations.launchpad_wb import LaunchpadWirebond
+from qiskit_metal.qlibrary.terminations.launchpad_wb_coupled import LaunchpadWirebondCoupled
+from qiskit_metal.qlibrary.lumped.cap_3_interdigital import CapThreeFingers
 from qiskit_metal.qlibrary.qubits import transmon_concentric
 from qiskit_metal.qlibrary.qubits import transmon_cross
 from qiskit_metal.qlibrary.qubits.transmon_cross_fl import TransmonCrossFL
 from qiskit_metal.qlibrary.qubits import transmon_pocket
 from qiskit_metal.qlibrary.qubits import transmon_pocket_cl
 from qiskit_metal.qlibrary.qubits.transmon_pocket_6 import TransmonPocket6
-from qiskit_metal.qlibrary.qubits.tunable_coupler_01 import TunableCoupler01
+from qiskit_metal.qlibrary.coupler.tunable_coupler_01 import TunableCoupler01
 from qiskit_metal.qlibrary import _template
 from qiskit_metal.tests.assertions import AssertionsMixin
 
 #pylint: disable-msg=line-too-long
-from qiskit_metal.qlibrary.interconnects.resonator_rectangle_spiral import ResonatorRectangleSpiral
+from qiskit_metal.qlibrary.lumped.resonator_coil_rect import ResonatorRectangleSpiral
 
 
 class TestComponentOptions(unittest.TestCase, AssertionsMixin):
@@ -529,7 +529,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(_options['cl_off_center'], '50um')
 
     def test_qlibrary_cpw_finger_cap_options(self):
-        """Test that default options of CPWFingerCap in cpw_finger_cap.py were not
+        """Test that default options of CPWFingerCap in cap_n_interdigital.py were not
         accidentally changed."""
         # Setup expected test results
         design = designs.DesignPlanar()
@@ -555,7 +555,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['layer'], '1')
 
     def test_qlibrary_cpw_t_finger_cap_options(self):
-        """Test that default options of CPWTFingerCap in cpw_t_finger_cap.py were not
+        """Test that default options of CPWTFingerCap in cap_n_interdigital_tee.py were not
         accidentally changed."""
         # Setup expected test results
         design = designs.DesignPlanar()
@@ -580,7 +580,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['layer'], '1')
 
     def test_qlibrary_cpw_t_options(self):
-        """Test that default options of CPWT in cpw_t.py were not accidentally changed."""
+        """Test that default options of CPWT in tee.py were not accidentally changed."""
         # Setup expected test results
         design = designs.DesignPlanar()
         cpw_t = CPWT(design, 'my_name')
@@ -600,7 +600,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['layer'], '1')
 
     def test_qlibrary_cpw_hanger_t_options(self):
-        """Test that default options of CPWHangerT in cpw_hanger_t.py were not
+        """Test that default options of CPWHangerT in coupled_line_tee.py were not
         accidentally changed."""
         # Setup expected test results
         design = designs.DesignPlanar()
@@ -627,7 +627,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
 
     def test_qlibrary_resonator_rectangle_spiral_options(self):
         """Test that default options of ResonatorRectangleSpiral in
-        resonator_rectangle_spiral.py were not accidentally changed."""
+        resonator_coil_rect.py were not accidentally changed."""
         # Setup expected test results
         design = designs.DesignPlanar()
         resonator_rectangle_spiral = ResonatorRectangleSpiral(design, 'my_name')

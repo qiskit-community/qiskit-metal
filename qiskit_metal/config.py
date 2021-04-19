@@ -36,8 +36,8 @@ Define the renderes to load. Just provide the module names here.
 
 GUI_CONFIG = Dict(
     load_metal_modules=Dict(Qubits='qiskit_metal.qlibrary.qubits',
-                            Interconnects='qiskit_metal.qlibrary.interconnects',
-                            Connectors='qiskit_metal.qlibrary.connectors'),
+                            Interconnects='qiskit_metal.qlibrary.tlines',
+                            Connectors='qiskit_metal.qlibrary.terminations'),
     exclude_metal_classes=['Metal_Qubit'],
     tips=[
         'Right clicking the tree elements allows you to do neat things.',

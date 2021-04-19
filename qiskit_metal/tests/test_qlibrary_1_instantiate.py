@@ -26,40 +26,40 @@ from qiskit_metal.qlibrary.base.qroute import QRoute
 from qiskit_metal.qlibrary.base.qroute import QRouteLead
 from qiskit_metal.qlibrary.base.qroute import QRoutePoint
 from qiskit_metal.qlibrary.base.qubit import BaseQubit
-from qiskit_metal.qlibrary.basic.circle_caterpillar import CircleCaterpillar
-from qiskit_metal.qlibrary.basic.circle_raster import CircleRaster
-from qiskit_metal.qlibrary.basic.rectangle import Rectangle
-from qiskit_metal.qlibrary.basic.rectangle_hollow import RectangleHollow
-from qiskit_metal.qlibrary.basic.n_gon import NGon
-from qiskit_metal.qlibrary.basic.n_square_spiral import NSquareSpiral
-from qiskit_metal.qlibrary.connectors.cpw_finger_cap import CPWFingerCap
-from qiskit_metal.qlibrary.connectors.cpw_hanger_t import CPWHangerT
-from qiskit_metal.qlibrary.connectors.cpw_t_finger_cap import CPWTFingerCap
-from qiskit_metal.qlibrary.connectors.cpw_t import CPWT
-from qiskit_metal.qlibrary.connectors.open_to_ground import OpenToGround
-from qiskit_metal.qlibrary.connectors.short_to_ground import ShortToGround
-from qiskit_metal.qlibrary.interconnects.anchored_path import RouteAnchors
-from qiskit_metal.qlibrary.interconnects.framed_path import RouteFramed
-from qiskit_metal.qlibrary.interconnects.straight_path import RouteStraight
-from qiskit_metal.qlibrary.interconnects.pathfinder import RoutePathfinder
-from qiskit_metal.qlibrary.interconnects.meandered import RouteMeander
-from qiskit_metal.qlibrary.interconnects.mixed_path import RouteMixed
-from qiskit_metal.qlibrary.passives.launchpad_wb import LaunchpadWirebond
-from qiskit_metal.qlibrary.passives.launchpad_wb_coupled import LaunchpadWirebondCoupled
-from qiskit_metal.qlibrary.passives.cap_three_fingers import CapThreeFingers
+from qiskit_metal.qlibrary.sample_shapes.circle_caterpillar import CircleCaterpillar
+from qiskit_metal.qlibrary.sample_shapes.circle_raster import CircleRaster
+from qiskit_metal.qlibrary.sample_shapes.rectangle import Rectangle
+from qiskit_metal.qlibrary.sample_shapes.rectangle_hollow import RectangleHollow
+from qiskit_metal.qlibrary.sample_shapes.n_gon import NGon
+from qiskit_metal.qlibrary.sample_shapes.n_square_spiral import NSquareSpiral
+from qiskit_metal.qlibrary.lumped.cap_n_interdigital import CPWFingerCap
+from qiskit_metal.qlibrary.coupler.coupled_line_tee import CPWHangerT
+from qiskit_metal.qlibrary.coupler.cap_n_interdigital_tee import CPWTFingerCap
+from qiskit_metal.qlibrary.coupler.tee import CPWT
+from qiskit_metal.qlibrary.terminations.open_to_ground import OpenToGround
+from qiskit_metal.qlibrary.terminations.short_to_ground import ShortToGround
+from qiskit_metal.qlibrary.tlines.anchored_path import RouteAnchors
+from qiskit_metal.qlibrary.tlines.framed_path import RouteFramed
+from qiskit_metal.qlibrary.tlines.straight_path import RouteStraight
+from qiskit_metal.qlibrary.tlines.pathfinder import RoutePathfinder
+from qiskit_metal.qlibrary.tlines.meandered import RouteMeander
+from qiskit_metal.qlibrary.tlines.mixed_path import RouteMixed
+from qiskit_metal.qlibrary.terminations.launchpad_wb import LaunchpadWirebond
+from qiskit_metal.qlibrary.terminations.launchpad_wb_coupled import LaunchpadWirebondCoupled
+from qiskit_metal.qlibrary.lumped.cap_3_interdigital import CapThreeFingers
 from qiskit_metal.qlibrary.qubits.transmon_concentric import TransmonConcentric
 from qiskit_metal.qlibrary.qubits.transmon_cross import TransmonCross
 from qiskit_metal.qlibrary.qubits.transmon_cross_fl import TransmonCrossFL
 from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
 from qiskit_metal.qlibrary.qubits.transmon_pocket_cl import TransmonPocketCL
 from qiskit_metal.qlibrary.qubits.transmon_pocket_6 import TransmonPocket6
-from qiskit_metal.qlibrary.qubits.tunable_coupler_01 import TunableCoupler01
+from qiskit_metal.qlibrary.coupler.tunable_coupler_01 import TunableCoupler01
 from qiskit_metal import designs
 from qiskit_metal.qlibrary._template import MyQComponent
 from qiskit_metal.tests.assertions import AssertionsMixin
 
 #pylint: disable-msg=line-too-long
-from qiskit_metal.qlibrary.interconnects.resonator_rectangle_spiral import ResonatorRectangleSpiral
+from qiskit_metal.qlibrary.lumped.resonator_coil_rect import ResonatorRectangleSpiral
 
 
 class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):

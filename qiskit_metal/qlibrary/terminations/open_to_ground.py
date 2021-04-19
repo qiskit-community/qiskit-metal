@@ -17,7 +17,7 @@ from qiskit_metal.qlibrary.base import QComponent
 
 
 class OpenToGround(QComponent):
-    """A basic open to ground termination. Functions as a pin for auto drawing.
+    """A sample_shapes open to ground termination. Functions as a pin for auto drawing.
 
     Inherits `QComponent` class.
 

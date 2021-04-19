@@ -116,7 +116,6 @@ Submodules
 
 """
 
-from .. import is_component
 from .base import QComponent
 from .base import QRoute
 from .base import BaseQubit
@@ -126,34 +125,33 @@ if config.is_building_docs():
     from .base.qroute import QRouteLead
     from .base.qroute import QRoutePoint
     from .base._parsed_dynamic_attrs import ParsedDynamicAttributes_Component
-    from .basic.circle_caterpillar import CircleCaterpillar
-    from .basic.circle_raster import CircleRaster
-    from .basic.n_gon import NGon
-    from .basic.n_square_spiral import NSquareSpiral
-    from .basic.rectangle import Rectangle
-    from .basic.rectangle_hollow import RectangleHollow
-    from .connectors.cpw_hanger_t import CPWHangerT
-    from .connectors.cpw_finger_cap import CPWFingerCap
-    from .connectors.cpw_t import CPWT
-    from .connectors.cpw_t_finger_cap import CPWTFingerCap
-    from .connectors.open_to_ground import OpenToGround
-    from .connectors.short_to_ground import ShortToGround
-    from .interconnects.straight_path import RouteStraight
-    from .interconnects.framed_path import RouteFramed
-    from .interconnects.meandered import RouteMeander
-    from .interconnects.anchored_path import RouteAnchors
-    from .interconnects.mixed_path import RouteMixed
-    from .interconnects.pathfinder import RoutePathfinder
-    from .interconnects.resonator_rectangle_spiral import ResonatorRectangleSpiral
-    from .passives.launchpad_wb import LaunchpadWirebond
-    from .passives.launchpad_wb_coupled import LaunchpadWirebondCoupled
-    from .passives.cap_three_fingers import CapThreeFingers
+    from .sample_shapes.circle_caterpillar import CircleCaterpillar
+    from .sample_shapes.circle_raster import CircleRaster
+    from .sample_shapes.n_gon import NGon
+    from .sample_shapes.n_square_spiral import NSquareSpiral
+    from .sample_shapes.rectangle import Rectangle
+    from .sample_shapes.rectangle_hollow import RectangleHollow
+    from .coupler.coupled_line_tee import CPWHangerT
+    from .coupler.tee import CPWT
+    from .coupler.cap_n_interdigital_tee import CPWTFingerCap
+    from .coupler.tunable_coupler_01 import TunableCoupler01
+    from .lumped.cap_n_interdigital import CPWFingerCap
+    from .lumped.cap_3_interdigital import CapThreeFingers
+    from .lumped.resonator_coil_rect import ResonatorRectangleSpiral
+    from .terminations.launchpad_wb import LaunchpadWirebond
+    from .terminations.open_to_ground import OpenToGround
+    from .terminations.short_to_ground import ShortToGround
+    from .tlines.straight_path import RouteStraight
+    from .tlines.framed_path import RouteFramed
+    from .tlines.meandered import RouteMeander
+    from .tlines.anchored_path import RouteAnchors
+    from .tlines.mixed_path import RouteMixed
+    from .tlines.pathfinder import RoutePathfinder
     from .qubits.transmon_concentric import TransmonConcentric
     from .qubits.transmon_cross import TransmonCross
     from .qubits.transmon_cross_fl import TransmonCrossFL
     from .qubits.transmon_pocket import TransmonPocket
     from .qubits.transmon_pocket_cl import TransmonPocketCL
     from .qubits.transmon_pocket_6 import TransmonPocket6
-    from .qubits.tunable_coupler_01 import TunableCoupler01
 
-    from .interconnects import anchored_path
+    from .tlines import anchored_path
