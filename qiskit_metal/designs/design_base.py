@@ -41,8 +41,10 @@ __all__ = ['QDesign']
 
 #:ivar var1: initial value: par2
 
+
 # pylint disable=too-many-public-methods, too-many-instance-attributes
-class QDesign(): # pylint disable=too-many-public-methods, too-many-instance-attributes
+class QDesign(
+):  # pylint disable=too-many-public-methods, too-many-instance-attributes
     """QDesign is the base class for Qiskit Metal Designs.
 
     A design is the most top-level object in all of Qiskit Metal.
@@ -153,7 +155,7 @@ class QDesign(): # pylint disable=too-many-public-methods, too-many-instance-att
         # Need to add columns to Junction tables before create_tables().
         self._qgeometry.create_tables()
 
-    def _init_metadata(self) -> Dict: # pylint disable=no-self-use
+    def _init_metadata(self) -> Dict:  # pylint disable=no-self-use
         """Initialize default metadata dictionary.
 
         Returns:
@@ -236,7 +238,8 @@ class QDesign(): # pylint disable=too-many-public-methods, too-many-instance-att
         Returns:
             pd.core.frame.DataFrame: copy of net_info table.
         """
-        return self._qnet._net_info.copy(deep=True) # pylint disable=protected_access
+        return self._qnet._net_info.copy(
+            deep=True)  # pylint disable=protected_access
 
 #########Proxy properties##################################################
 
@@ -301,12 +304,14 @@ class QDesign(): # pylint disable=too-many-public-methods, too-many-instance-att
         Returns:
             QNet: QNet with all pins removed
         """
-        df_net_info = self._qnet._net_info # pylint disable=protected_access
-        for (index, netID, comp_id, pin_name) in df_net_info.itertuples(): # pylint disable=unused_variable, invalid_name, line-too-long
+        df_net_info = self._qnet._net_info  # pylint disable=protected_access
+        for (index, netID, comp_id, pin_name) in df_net_info.itertuples(
+        ):  # pylint disable=unused_variable, invalid_name, line-too-long
             self._components[comp_id].pins[pin_name].net_id = 0
 
         # remove rows, but save column names
-        self._qnet._net_info = self._qnet._net_info.iloc[0:0] # pylint disable=protected_access
+        self._qnet._net_info = self._qnet._net_info.iloc[
+            0:0]  # pylint disable=protected_access
         return self._qnet
 
     def connect_pins(self, comp1_id: int, pin1_name: str, comp2_id: int,
@@ -441,13 +446,13 @@ class QDesign(): # pylint disable=too-many-public-methods, too-many-instance-att
 
             self.logger.debug(
                 f'Reloading component_class_name={qis_class_name};'
-                f' component_module_name={qis_mod_path}'
-            )
+                f' component_module_name={qis_mod_path}')
 
             module = importlib.import_module(qis_mod_path)
             module = importlib.reload(module)
             new_class = getattr(module, qis_class_name)
-            self.template_options.pop(new_class._get_unique_class_name()) # pylint disable=protected-access, line-too-long
+            self.template_options.pop(new_class._get_unique_class_name(
+            ))  # pylint disable=protected-access, line-too-long
 
             for instance in filter(
                     lambda k: k.__class__.__name__ == qis_class_name,
@@ -459,7 +464,7 @@ class QDesign(): # pylint disable=too-many-public-methods, too-many-instance-att
                 f'Finished reloading '
                 f'component_class_name={qis_class_name}; component_module_name={qis_mod_path}'
             )
-        except Exception as e: # pylint disable=broad-except
+        except Exception as e:  # pylint disable=broad-except
             self.logger.error(
                 f"Failed to refresh/rebuild {qis_abs_path} due to: {e}")
 
@@ -515,20 +520,23 @@ class QDesign(): # pylint disable=too-many-public-methods, too-many-instance-att
 
             # Remove old name from cache, add new name
             self.name_to_id.pop(a_component.name, None)
-            self.name_to_id[new_component_name] = a_component.id  # pylint disable=line-too-long
+            self.name_to_id[
+                new_component_name] = a_component.id  # pylint disable=line-too-long
 
             # do rename
-            self._components[component_id]._name = new_component_name # pylint disable=protected-access, line-too-long
+            self._components[
+                component_id]._name = new_component_name  # pylint disable=protected-access, line-too-long
 
             return True
         logger.warning(
-                f'Called rename_component, component_id={component_id}, but component_id'
-                f' is not in design.components dictionary.')
+            f'Called rename_component, component_id={component_id}, but component_id'
+            f' is not in design.components dictionary.')
         return -3
 
-    def delete_component(self,
-                         component_name: str,
-                         force: bool = False) -> bool: #pylint disable=unused-argument
+    def delete_component(
+            self,
+            component_name: str,
+            force: bool = False) -> bool:  #pylint disable=unused-argument
         """Deletes component and pins attached to said component.
 
         If no component by that name is present, then just return True
@@ -625,7 +633,7 @@ class QDesign(): # pylint disable=too-many-public-methods, too-many-instance-att
 
         return return_response
 
-    def copy_multiple_qcomponents( # pylint disable=dangerous-default-value
+    def copy_multiple_qcomponents(  # pylint disable=dangerous-default-value
         self,
         original_qcomponents: list,
         new_component_names: list,
@@ -675,7 +683,8 @@ class QDesign(): # pylint disable=too-many-public-methods, too-many-instance-att
         self,
         original_qcomponent: 'QComponent',
         new_component_name: str,
-        options_superimpose: dict = dict()  # pylint disable=dangerous-default-value
+        options_superimpose: dict = dict(
+        )  # pylint disable=dangerous-default-value
     ) -> Union['QComponent', None]:
         """Copy a coponent in QDesign and
         add it to QDesign._components using
