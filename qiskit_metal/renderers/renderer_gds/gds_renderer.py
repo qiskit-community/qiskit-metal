@@ -139,6 +139,10 @@ class QGDSRenderer(QRenderer):
         # placed placed in same layer as ground_plane.
         ground_plane='True',
 
+        # By default, export_to_gds() will create a negative photoresist.
+        # If user wants to export to a positive_photoresist, change to False
+        negative_photoresist=True,
+
         # corners: ('natural', 'miter', 'bevel', 'round', 'smooth',
         # 'circular bend', callable, list)
         # Type of joins. A callable must receive 6 arguments
@@ -1483,82 +1487,129 @@ class QGDSRenderer(QRenderer):
                     self._import_junctions_to_one_cell(chip_name, lib,
                                                        chip_only_top)
 
-                # There can be more than one chip in QGeometry.
-                # All chips export to one gds file.
-                # Each chip uses its own subtract rectangle.
-                layers_in_chip = self.design.qgeometry.get_all_unique_layers(
+                layers_in_chip, rectangle_points = self._get_rectangle_points(
                     chip_name)
 
-                minx, miny, maxx, maxy = self.dict_bounds[chip_name][
-                    'for_subtract']
-                rectangle_points = [(minx, miny), (maxx, miny), (maxx, maxy),
-                                    (minx, maxy)]
-
                 for chip_layer in layers_in_chip:
-
-                    self.chip_info[chip_name]['subtract_poly'] = gdspy.Polygon(
-                        rectangle_points, chip_layer)
-
-                    ground_cell_name = f'TOP_{chip_name}_{chip_layer}'
-                    ground_cell = lib.new_cell(ground_cell_name,
-                                               overwrite_duplicate=True)
-
-                    if len(self.chip_info[chip_name][chip_layer]
-                           ['q_subtract_true']) != 0:
-                        subtract_cell_name = f'SUBTRACT_{chip_name}_{chip_layer}'
-                        subtract_cell = lib.new_cell(subtract_cell_name,
-                                                     overwrite_duplicate=True)
-                        subtract_cell.add(self.chip_info[chip_name][chip_layer]
-                                          ['q_subtract_true'])
-
-                        # gdspy.boolean() is not documented clearly.
-                        # If there are multiple elements to subtract
-                        # (both poly and path), the way I could make it work is
-                        # to put them into a cell, within lib.  I used the method
-                        # cell_name.get_polygons(), which appears to convert all
-                        # elements within the cell to poly. After the boolean(),
-                        # I deleted the cell from lib.  The memory is freed up then.
-
-                        diff_geometry = gdspy.boolean(
-                            self.chip_info[chip_name]['subtract_poly'],
-                            subtract_cell.get_polygons(),
-                            'not',
-                            max_points=max_points,
-                            precision=precision,
-                            layer=chip_layer)
-
-                        lib.remove(subtract_cell)
-
-                        if diff_geometry is None:
-                            self.design.logger.warning(
-                                'There is no table named diff_geometry to write.'
-                            )
-                        else:
-                            ground_cell.add(diff_geometry)
-
-                    if self.chip_info[chip_name][chip_layer][
-                            'q_subtract_false'] is None:
-                        self.logger.warning(
-                            f'There is no table named '
-                            f'self.chip_info[{chip_name}][q_subtract_false]'
-                            f' to write.')
-                    else:
-                        if len(self.chip_info[chip_name][chip_layer]
-                               ['q_subtract_false']) != 0:
-                            ground_cell.add(self.chip_info[chip_name]
-                                            [chip_layer]['q_subtract_false'])
-                    # put all cells into TOP_chipname, if not empty.
-                    # When checking for bounding box, gdspy will return None if empty.
-                    if ground_cell.get_bounding_box() is not None:
-                        chip_only_top.add(gdspy.CellReference(ground_cell))
-                    else:
-                        lib.remove(ground_cell)
+                    self._handle_photo_resist(lib, chip_only_top, chip_name,
+                                              chip_layer, rectangle_points,
+                                              precision, max_points)
 
                 # put all chips into TOP
                 if chip_only_top.get_bounding_box() is not None:
                     all_chips_top.add(gdspy.CellReference(chip_only_top))
                 else:
                     lib.remove(chip_only_top)
+
+    def _get_rectangle_points(self, chip_name: str) -> Tuple[list, list]:
+        """There can be more than one chip in QGeometry. All chips export to
+        one gds file. Each chip uses its own subtract rectangle.
+
+        Args:
+            chip_name (str): Name of chip to render.
+
+        Returns:
+            Tuple[list, list]: The subtract-rectangle for the chip_name.
+        """
+        layers_in_chip = self.design.qgeometry.get_all_unique_layers(chip_name)
+
+        minx, miny, maxx, maxy = self.dict_bounds[chip_name]['for_subtract']
+        rectangle_points = [(minx, miny), (maxx, miny), (maxx, maxy),
+                            (minx, maxy)]
+
+        return layers_in_chip, rectangle_points
+
+    def _handle_photo_resist(self, lib: gdspy.GdsLibrary,
+                             chip_only_top: gdspy.library.Cell, chip_name: str,
+                             chip_layer: int, rectangle_points: list,
+                             precision: float, max_points: int):
+        """Handle the positive vs negative photoresist.
+
+        Args:
+            lib (gdspy.GdsLibrary): The gdspy library to export.
+            chip_only_top (gdspy.library.Cell): The gdspy cell for top.
+            chip_name (str): Name of chip to render.
+            chip_layer (int): Layer of the chip to render.
+            rectangle_points (list): The rectangle to denote the ground for each layer.
+            precision (float): Used for gdspy.
+            max_points (int): Used for gdspy. GDSpy uses 199 as the default.
+        """
+
+        self.chip_info[chip_name]['subtract_poly'] = gdspy.Polygon(
+            rectangle_points, chip_layer)
+
+        ground_cell_name = f'TOP_{chip_name}_{chip_layer}'
+        ground_cell = lib.new_cell(ground_cell_name, overwrite_duplicate=True)
+
+        if len(self.chip_info[chip_name][chip_layer]['q_subtract_true']) != 0:
+            subtract_cell_name = f'SUBTRACT_{chip_name}_{chip_layer}'
+            subtract_cell = lib.new_cell(subtract_cell_name,
+                                         overwrite_duplicate=True)
+            subtract_cell.add(
+                self.chip_info[chip_name][chip_layer]['q_subtract_true'])
+
+            # gdspy.boolean() is not documented clearly.  If there are multiple
+            # elements to subtract (both poly & path), the way I could
+            # make it work is to put them into a cell, within lib. I used
+            # the method cell_name.get_polygons(), which appears to convert
+            # all elements within the cell to poly. After the boolean(),
+            # I deleted the cell from lib. The memory is freed up then.
+            diff_geometry = gdspy.boolean(
+                self.chip_info[chip_name]['subtract_poly'],
+                subtract_cell.get_polygons(),
+                'not',
+                max_points=max_points,
+                precision=precision,
+                layer=chip_layer)
+
+            lib.remove(subtract_cell)
+
+            if diff_geometry is None:
+                self.design.logger.warning(
+                    'There is no table named diff_geometry to write.')
+            else:
+                ground_cell.add(diff_geometry)
+
+        self._handle_q_subtract_false(chip_name, chip_layer, ground_cell)
+
+        self._add_groundcell_to_chip_only_top(lib, chip_only_top, ground_cell)
+
+    def _handle_q_subtract_false(self, chip_name: str, chip_layer: int,
+                                 ground_cell: gdspy.library.Cell):
+        """[summary]
+
+        Args:
+            chip_name (str): Name of chip to render.
+            chip_layer (int): Name of layer to render.
+            ground_cell (gdspy.library.Cell): The cell in lib to add to.
+        """
+        if self.chip_info[chip_name][chip_layer]['q_subtract_false'] is None:
+            self.logger.warning(f'There is no table named '
+                                f'self.chip_info[{chip_name}][q_subtract_false]'
+                                f' to write.')
+        else:
+            if len(self.chip_info[chip_name][chip_layer]
+                   ['q_subtract_false']) != 0:
+                ground_cell.add(
+                    self.chip_info[chip_name][chip_layer]['q_subtract_false'])
+
+    def _add_groundcell_to_chip_only_top(self, lib: gdspy.GdsLibrary,
+                                         chip_only_top: gdspy.library.Cell,
+                                         ground_cell: gdspy.library.Cell):
+        """Add the ground cell to the top of cell for chip.
+
+        Args:
+            lib (gdspy.GdsLibrary): Holds all of the chips to export to gds.
+            chip_only_top (gdspy.library.Cell): Cell which for a single chip.
+            ground_cell (gdspy.library.Cell): The ground cell to add to chp_only_top.
+        """
+        # put all cells into TOP_chipname, if not empty.
+        # When checking for bounding box, gdspy will return None if empty.
+
+        if ground_cell.get_bounding_box() is not None:
+            chip_only_top.add(gdspy.CellReference(ground_cell))
+        else:
+            lib.remove(ground_cell)
 
     def _get_linestring_characteristics(
             self,
