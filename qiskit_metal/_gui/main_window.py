@@ -470,6 +470,11 @@ class MetalGUI(QMainWindowBaseHandler):
                 f"Unable to open param entry window due to Exception: {e} ")
 
     def _refresh_component_build(self, qis_abs_path):
+        """Reresh build for a component along a given path.
+
+        Args:
+            qis_abs_path (str): Absolute component path.
+        """
         self.design.reload_and_rebuild_component(qis_abs_path)
         # Table models
         self.ui.tableComponents.model().refresh()
@@ -578,6 +583,7 @@ class MetalGUI(QMainWindowBaseHandler):
             self.autoscale()
 
     def refresh_everything(self):
+        """Refresh everything."""
 
         df = self.ui.dockLibrary.library_model.dirtied_files
         values = {list(df[k])[0] for k in df.keys()}

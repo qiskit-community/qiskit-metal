@@ -81,6 +81,11 @@ class QMainWindowExtensionBase(QMainWindow):
                         destroySubWindows=destroySubWindows)
 
     def set_force_close(self, ison: bool):
+        """Set method for force_close
+
+        Args:
+            ison (bool): value
+        """
         self.force_close = ison
 
     def closeEvent(self, event):
