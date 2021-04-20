@@ -128,3 +128,13 @@ First check to see if a project and design are already open and active in Ansys.
 Activate an Ansys design by double clicking on it in the Project Manager panel.
 
 If the error persists, there may be one or more hidden Ansys windows in the background. Close them via the task manager and try again.
+
+**Why am I getting a win32com error?**
+
+If you have run a EnsureDispatch command as part of qiskit-metal or independently in your conda environment, you might later encounter errors such as ``AttributeError: module 'win32com.xxx' has no attribute 'CLSIDToClassMap'``.
+
+To resolve this, you will need to delete the temporary module python files that EnsureDispach creates as part of COM object method retrieval.
+
+To do so, delete the entire folder `gen_py` or just the file in it that corresponds to your error message.
+
+Note that this folder might show up in different paths, depending on the OS and setup. You should in general be able to find it at this path: $env:LOCALAPPDATA\Temp\gen_py

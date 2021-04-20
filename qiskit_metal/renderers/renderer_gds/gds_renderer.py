@@ -275,6 +275,20 @@ class QGDSRenderer(QRenderer):
 
         QGDSRenderer.load()
 
+    def _initiate_renderer(self):
+        """Not used by the gds renderer at this time. only returns True
+        """
+        return True
+
+    def _close_renderer(self):
+        """Not used by the gds renderer at this time. only returns True
+        """
+        return True
+
+    def render_design(self):
+        self.export_to_gds(file_name=self.design.name, highlight_qcomponents=[])
+        pass
+
     def check_bounding_box_scale(self):
         """
         Some error checking for bounding_box_scale_x and bounding_box_scale_y numbers.
@@ -296,8 +310,8 @@ class QGDSRenderer(QRenderer):
             self.options[
                 'bounding_box_scale_y'] = QGDSRenderer.default_options.bounding_box_scale_y
             self.logger.warning(
-                f'Expected float and number greater than or equal to 1.0 for bounding_box_scale_y.'
-                'User provided bounding_box_scale_y = {bounding_box_scale_y}, '
+                'Expected float and number greater than or equal to 1.0 for bounding_box_scale_y.'
+                f'User provided bounding_box_scale_y = {bounding_box_scale_y}, '
                 'using default_options.bounding_box_scale_y.')
 
     def _clear_library(self):
@@ -317,7 +331,7 @@ class QGDSRenderer(QRenderer):
         if status:
             return 1
 
-        self.logger.warning(f'Not able to write to directory.'
+        self.logger.warning('Not able to write to directory.'
                             f'File:"{file}" not written.'
                             f' Checked directory:"{directory_name}".')
         return 0
@@ -1051,7 +1065,7 @@ class QGDSRenderer(QRenderer):
 
         if no_cheese_code == 0 or cheese_code == 0:
             self.logger.warning(
-                f'Not able to get no_cheese_view_in_file or cheese_view_in_file from self.options.'
+                'Not able to get no_cheese_view_in_file or cheese_view_in_file from self.options.'
             )
             code = 0
             return code
@@ -1252,12 +1266,12 @@ class QGDSRenderer(QRenderer):
         self, sub_df: geopandas.GeoDataFrame, chip_name: str,
         no_cheese_buffer: float
     ) -> Union[None, shapely.geometry.multipolygon.MultiPolygon]:
-        """For each layer in each chip, and if it has a ground plane (subtract==True), 
+        """For each layer in each chip, and if it has a ground plane (subtract==True),
         determine the no-cheese buffer and return a shapely object. Before the buffer is
-        created for no-cheese, the LineStrings and Polygons are all combined. 
+        created for no-cheese, the LineStrings and Polygons are all combined.
 
         Args:
-            sub_df (geopandas.GeoDataFrame): The subset of QGeometry tables for each chip, and layer, 
+            sub_df (geopandas.GeoDataFrame): The subset of QGeometry tables for each chip, and layer,
             and only if the layer has a ground plane.
             chip_name (str): Name of chip.
             no_cheese_buffer (float): Will be used for fillet and size of buffer. 
@@ -1446,13 +1460,12 @@ class QGDSRenderer(QRenderer):
                     lib.remove(chip_only_top)
 
     def get_linestring_characteristics(
-            self,
-            row: 'pandas.core.frame.Pandas') -> Tuple[Tuple, float, float]:
+            self, row: 'pandas.Pandas') -> Tuple[Tuple, float, float]:
         """Given a row in the Junction table, give the characteristics of LineString in
         row.geometry.
 
         Args:
-            row (pandas.core.frame.Pandas): A row from Junction table of QGeometry.
+            row (pandas.Pandas): A row from Junction table of QGeometry.
 
         Returns:
             Tuple:
@@ -1474,13 +1487,13 @@ class QGDSRenderer(QRenderer):
         return center, rotation, magnitude
 
     def give_rotation_center_twopads(
-            self, row: 'pandas.core.frame.Pandas',
+            self, row: 'pandas.Pandas',
             a_cell_bounding_box: 'numpy.ndarray') -> Tuple:
         """Calculate the angle for rotation, center of LineString in row.geometry, and
         if needed create two pads to connect the junction to qubit.
 
         Args:
-            row (pandas.core.frame.Pandas): A row from Junction table of QGeometry.
+            row (pandas.Pandas): A row from Junction table of QGeometry.
             a_cell_bounding_box (numpy.ndarray): Give the bounding box of cell used in row.gds_cell_name.
 
         Returns:
