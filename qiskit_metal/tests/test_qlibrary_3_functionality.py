@@ -21,17 +21,17 @@
 import unittest
 import numpy as np
 
-from qiskit_metal.qlibrary.base import _parsed_dynamic_attrs
+from qiskit_metal.qlibrary.core import _parsed_dynamic_attrs
 from qiskit_metal import Dict
 from qiskit_metal import draw
 from qiskit_metal.qlibrary._template import MyQComponent
-from qiskit_metal.qlibrary.base.base import QComponent
-from qiskit_metal.qlibrary.base.qroute import QRoute
-from qiskit_metal.qlibrary.base.qubit import BaseQubit
+from qiskit_metal.qlibrary.core import QComponent
+from qiskit_metal.qlibrary.core import QRoute
+from qiskit_metal.qlibrary.core import BaseQubit
 from qiskit_metal.qlibrary.lumped.cap_n_interdigital import CPWFingerCap
-from qiskit_metal.qlibrary.coupler.coupled_line_tee import CPWHangerT
-from qiskit_metal.qlibrary.coupler.cap_n_interdigital_tee import CPWTFingerCap
-from qiskit_metal.qlibrary.coupler.tee import CPWT
+from qiskit_metal.qlibrary.couplers.coupled_line_tee import CPWHangerT
+from qiskit_metal.qlibrary.couplers.cap_n_interdigital_tee import CPWTFingerCap
+from qiskit_metal.qlibrary.couplers.tee import CPWT
 from qiskit_metal.qlibrary.terminations import open_to_ground
 from qiskit_metal.qlibrary.terminations import short_to_ground
 from qiskit_metal.qlibrary.tlines import anchored_path
@@ -45,7 +45,7 @@ from qiskit_metal.qlibrary.qubits import transmon_pocket
 from qiskit_metal.qlibrary.qubits import transmon_cross
 from qiskit_metal.qlibrary.qubits import transmon_cross_fl
 from qiskit_metal.qlibrary.qubits import transmon_pocket_6
-from qiskit_metal.qlibrary.coupler import tunable_coupler_01
+from qiskit_metal.qlibrary.couplers import tunable_coupler_01
 from qiskit_metal.tests.assertions import AssertionsMixin
 
 #pylint: disable-msg=line-too-long

@@ -20,7 +20,7 @@
 # import numpy as np # (currently not used, may be needed later for component customization)
 from qiskit_metal import draw
 from qiskit_metal.toolbox_python.attr_dict import Dict
-from qiskit_metal.qlibrary.base.base import QComponent
+from qiskit_metal.qlibrary.core import QComponent
 
 # Define class and options for the launch geometry
 

@@ -202,7 +202,7 @@ class ParsedDynamicAttributes_Component():
 
 # TESTING code:
 """
-from qiskit_metal.qlibrary.base.base import QComponent
+from qiskit_metal.qlibrary.core.base import QComponent
 
 class Test(QComponent):
     def make(self):

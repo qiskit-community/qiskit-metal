@@ -17,7 +17,7 @@ import numpy as np
 
 from collections import OrderedDict
 from qiskit_metal import Dict
-from qiskit_metal.qlibrary.base import QRoute, QRoutePoint
+from qiskit_metal.qlibrary.core import QRoute, QRoutePoint
 from qiskit_metal.toolbox_metal import math_and_overrides as mao
 from qiskit_metal.toolbox_metal.exceptions import QiskitMetalDesignError
 from collections.abc import Mapping

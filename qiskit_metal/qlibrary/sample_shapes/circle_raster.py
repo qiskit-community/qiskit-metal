@@ -14,7 +14,7 @@
 """This is the CircleCaterpillar module."""
 
 from qiskit_metal import draw, Dict  # , QComponent
-from qiskit_metal.qlibrary.base import QComponent
+from qiskit_metal.qlibrary.core import QComponent
 #from qiskit_metal import is_true
 from shapely.geometry import CAP_STYLE, JOIN_STYLE
 

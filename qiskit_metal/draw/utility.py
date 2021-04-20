@@ -28,7 +28,7 @@ from numpy.linalg import norm
 from shapely.geometry import MultiPolygon, Polygon
 
 from .. import logger
-from ..qlibrary.base import is_component
+from .. import is_component
 from . import BaseGeometry
 
 __all__ = [

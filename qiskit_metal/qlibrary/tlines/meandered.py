@@ -19,7 +19,7 @@ from numpy.linalg import norm
 import numpy as np
 from qiskit_metal import Dict
 from qiskit_metal.toolbox_metal.parsing import is_true
-from qiskit_metal.qlibrary.base import QRoute, QRoutePoint
+from qiskit_metal.qlibrary.core import QRoute, QRoutePoint
 from qiskit_metal.toolbox_metal import math_and_overrides as mao
 from qiskit_metal.toolbox_metal.exceptions import QiskitMetalDesignError
 

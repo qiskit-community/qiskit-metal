@@ -20,9 +20,9 @@ from .. import logger
 from .. import config
 if not config.is_building_docs():
     # Only import QComponent if the docs are NOT being built
-    from ..qlibrary.base.base import QComponent
+    from ..qlibrary.core import QComponent
 
-from ..qlibrary.base._parsed_dynamic_attrs import is_ipython_magic
+from ..qlibrary.core._parsed_dynamic_attrs import is_ipython_magic
 
 if TYPE_CHECKING:
     # For linting typechecking, import modules that can't be loaded here under normal conditions.

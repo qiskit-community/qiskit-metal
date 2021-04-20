@@ -15,7 +15,7 @@
 import heapq
 import numpy as np
 from qiskit_metal import Dict
-from qiskit_metal.qlibrary.base import QRoutePoint
+from qiskit_metal.qlibrary.core import QRoutePoint
 from .anchored_path import RouteAnchors
 from qiskit_metal.toolbox_metal import math_and_overrides as mao
 from collections import OrderedDict

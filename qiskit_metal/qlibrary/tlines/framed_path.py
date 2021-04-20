@@ -15,7 +15,7 @@
 import numpy as np
 from numpy.linalg import norm
 from qiskit_metal import Dict
-from qiskit_metal.qlibrary.base import QRoute
+from qiskit_metal.qlibrary.core import QRoute
 from qiskit_metal.toolbox_metal import math_and_overrides as mao
 
 

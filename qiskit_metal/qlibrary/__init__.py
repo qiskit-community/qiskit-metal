@@ -116,25 +116,25 @@ Submodules
 
 """
 
-from .base import QComponent
-from .base import QRoute
-from .base import BaseQubit
+from .core import QComponent
+from .core import QRoute
+from .core import BaseQubit
 
 from .. import config
 if config.is_building_docs():
-    from .base.qroute import QRouteLead
-    from .base.qroute import QRoutePoint
-    from .base._parsed_dynamic_attrs import ParsedDynamicAttributes_Component
+    from .core import QRouteLead
+    from .core import QRoutePoint
+    from .core._parsed_dynamic_attrs import ParsedDynamicAttributes_Component
     from .sample_shapes.circle_caterpillar import CircleCaterpillar
     from .sample_shapes.circle_raster import CircleRaster
     from .sample_shapes.n_gon import NGon
     from .sample_shapes.n_square_spiral import NSquareSpiral
     from .sample_shapes.rectangle import Rectangle
     from .sample_shapes.rectangle_hollow import RectangleHollow
-    from .coupler.coupled_line_tee import CPWHangerT
-    from .coupler.tee import CPWT
-    from .coupler.cap_n_interdigital_tee import CPWTFingerCap
-    from .coupler.tunable_coupler_01 import TunableCoupler01
+    from .couplers.coupled_line_tee import CPWHangerT
+    from .couplers.tee import CPWT
+    from .couplers.cap_n_interdigital_tee import CPWTFingerCap
+    from .couplers.tunable_coupler_01 import TunableCoupler01
     from .lumped.cap_n_interdigital import CPWFingerCap
     from .lumped.cap_3_interdigital import CapThreeFingers
     from .lumped.resonator_coil_rect import ResonatorRectangleSpiral

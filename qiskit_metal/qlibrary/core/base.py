@@ -46,7 +46,7 @@ if TYPE_CHECKING:
 
 
 class QComponent():
-    """`QComponent` is the base class for all Metal components and is the
+    """`QComponent` is the ore class for all Metal components and is the
     central construct from which all components in Metal are derived.
 
     The class defines the user interface for working with components.
@@ -246,7 +246,7 @@ class QComponent():
 
     @classmethod
     def _gather_all_children_options(cls) -> dict:
-        """From the base class of QComponent, traverse the child classes to
+        """From the QComponent core class, traverse the child classes to
         gather the .default options for each child class.
 
         Collects the options starting with the basecomponent,
@@ -279,7 +279,7 @@ class QComponent():
 
     @classmethod
     def _gather_all_children_metadata(cls) -> dict:
-        """From the base class of QComponent, traverse the child classes to
+        """From the QComponent core class, traverse the child classes to
         gather the .default options for each child class.
 
         Note: if keys are the same for child and grandchild, grandchild will overwrite child

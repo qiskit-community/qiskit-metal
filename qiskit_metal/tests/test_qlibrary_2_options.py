@@ -18,7 +18,7 @@
 
 import unittest
 
-from qiskit_metal.qlibrary.base import qubit, qroute
+from qiskit_metal.qlibrary.core import qubit, qroute
 from qiskit_metal.qlibrary.sample_shapes import circle_caterpillar
 from qiskit_metal.qlibrary.sample_shapes import circle_raster
 from qiskit_metal.qlibrary.sample_shapes import rectangle
@@ -26,9 +26,9 @@ from qiskit_metal.qlibrary.sample_shapes import rectangle_hollow
 from qiskit_metal.qlibrary.sample_shapes import n_gon
 from qiskit_metal.qlibrary.sample_shapes import n_square_spiral
 from qiskit_metal.qlibrary.lumped.cap_n_interdigital import CPWFingerCap
-from qiskit_metal.qlibrary.coupler.coupled_line_tee import CPWHangerT
-from qiskit_metal.qlibrary.coupler.cap_n_interdigital_tee import CPWTFingerCap
-from qiskit_metal.qlibrary.coupler.tee import CPWT
+from qiskit_metal.qlibrary.couplers.coupled_line_tee import CPWHangerT
+from qiskit_metal.qlibrary.couplers.cap_n_interdigital_tee import CPWTFingerCap
+from qiskit_metal.qlibrary.couplers.tee import CPWT
 from qiskit_metal.qlibrary.terminations import open_to_ground
 from qiskit_metal.qlibrary.terminations import short_to_ground
 from qiskit_metal.qlibrary.tlines.anchored_path import RouteAnchors
@@ -46,7 +46,7 @@ from qiskit_metal.qlibrary.qubits.transmon_cross_fl import TransmonCrossFL
 from qiskit_metal.qlibrary.qubits import transmon_pocket
 from qiskit_metal.qlibrary.qubits import transmon_pocket_cl
 from qiskit_metal.qlibrary.qubits.transmon_pocket_6 import TransmonPocket6
-from qiskit_metal.qlibrary.coupler.tunable_coupler_01 import TunableCoupler01
+from qiskit_metal.qlibrary.couplers.tunable_coupler_01 import TunableCoupler01
 from qiskit_metal.qlibrary import _template
 from qiskit_metal.tests.assertions import AssertionsMixin
 

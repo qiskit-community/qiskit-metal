@@ -15,7 +15,7 @@
 
 from shapely.geometry import CAP_STYLE, JOIN_STYLE
 from qiskit_metal import draw  # , Dict
-from qiskit_metal.qlibrary.base import QComponent
+from qiskit_metal.qlibrary.core import QComponent
 #from qiskit_metal import is_true
 
 

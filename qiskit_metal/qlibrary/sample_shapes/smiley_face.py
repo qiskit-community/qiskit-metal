@@ -14,7 +14,7 @@
 """TEST COMPONENT NOT FOR ACTUAL USE."""
 
 from qiskit_metal import draw, Dict
-from qiskit_metal.qlibrary.base import QComponent
+from qiskit_metal.qlibrary.core import QComponent
 import numpy as np
 
 

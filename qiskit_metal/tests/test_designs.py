@@ -28,7 +28,7 @@ from qiskit_metal.designs.design_base import QDesign
 from qiskit_metal.designs.design_planar import DesignPlanar
 from qiskit_metal.designs.interface_components import Components
 from qiskit_metal.designs.net_info import QNet
-from qiskit_metal.qlibrary.base.base import QComponent
+from qiskit_metal.qlibrary.core import QComponent
 from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
 from qiskit_metal.tests.assertions import AssertionsMixin
 

@@ -14,7 +14,7 @@
 
 import numpy as np
 from qiskit_metal import Dict
-from qiskit_metal.qlibrary.base import QRoutePoint
+from qiskit_metal.qlibrary.core import QRoutePoint
 
 from collections import OrderedDict
 from .meandered import RouteMeander
