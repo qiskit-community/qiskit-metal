@@ -1433,6 +1433,24 @@ class QGDSRenderer(QRenderer):
             return combo_shapely
         return None  # Need explicitly to avoid lint warnings.
 
+    def _get_rectangle_points(self, chip_name: str) -> Tuple[list, list]:
+        """There can be more than one chip in QGeometry. All chips export to
+        one gds file. Each chip uses its own subtract rectangle.
+
+        Args:
+            chip_name (str): Name of chip to render.
+
+        Returns:
+            Tuple[list, list]: The subtract-rectangle for the chip_name.
+        """
+        layers_in_chip = self.design.qgeometry.get_all_unique_layers(chip_name)
+
+        minx, miny, maxx, maxy = self.dict_bounds[chip_name]['for_subtract']
+        rectangle_points = [(minx, miny), (maxx, miny), (maxx, maxy),
+                            (minx, maxy)]
+
+        return layers_in_chip, rectangle_points
+
     def _populate_poly_path_for_export(self):
         """Using the geometries for each table name in QGeometry, populate
         self.lib to eventually write to a GDS file.
@@ -1453,25 +1471,6 @@ class QGDSRenderer(QRenderer):
         max_points = int(self.parse_value(self.options.max_points))
 
         lib = self.new_gds_library()
-
-        # Keep this to demo how to pass to gds without subtraction
-        # Need to add the chipnames to this depreciated code.
-        # The NO_EDITS cell is for testing of development code.
-        # cell = lib.new_cell('NO_EDITS', overwrite_duplicate=True)
-
-        # for table_name in self.design.qgeometry.get_element_types():
-        #     q_geometries = getattr(self, f'{table_name}s')
-        #     if q_geometries is None:
-        #         self.logger.warning(
-        #             f'There are no {table_name}s to write.')
-        #     else:
-        #         cell.add(q_geometries)
-
-        #     if q_geometries is None:
-        #         self.logger.warning(
-        #             f'There is no table named "{table_name}s" to write.')
-        #     else:
-        #        cell.add(q_geometries)
 
         if is_true(self.options.ground_plane):
             all_chips_top_name = 'TOP'
@@ -1501,24 +1500,6 @@ class QGDSRenderer(QRenderer):
                 else:
                     lib.remove(chip_only_top)
 
-    def _get_rectangle_points(self, chip_name: str) -> Tuple[list, list]:
-        """There can be more than one chip in QGeometry. All chips export to
-        one gds file. Each chip uses its own subtract rectangle.
-
-        Args:
-            chip_name (str): Name of chip to render.
-
-        Returns:
-            Tuple[list, list]: The subtract-rectangle for the chip_name.
-        """
-        layers_in_chip = self.design.qgeometry.get_all_unique_layers(chip_name)
-
-        minx, miny, maxx, maxy = self.dict_bounds[chip_name]['for_subtract']
-        rectangle_points = [(minx, miny), (maxx, miny), (maxx, maxy),
-                            (minx, maxy)]
-
-        return layers_in_chip, rectangle_points
-
     def _handle_photo_resist(self, lib: gdspy.GdsLibrary,
                              chip_only_top: gdspy.library.Cell, chip_name: str,
                              chip_layer: int, rectangle_points: list,
@@ -1530,7 +1511,8 @@ class QGDSRenderer(QRenderer):
             chip_only_top (gdspy.library.Cell): The gdspy cell for top.
             chip_name (str): Name of chip to render.
             chip_layer (int): Layer of the chip to render.
-            rectangle_points (list): The rectangle to denote the ground for each layer.
+            rectangle_points (list): The rectangle to denote the ground
+                                    for each layer.
             precision (float): Used for gdspy.
             max_points (int): Used for gdspy. GDSpy uses 199 as the default.
         """
@@ -1541,6 +1523,68 @@ class QGDSRenderer(QRenderer):
         ground_cell_name = f'TOP_{chip_name}_{chip_layer}'
         ground_cell = lib.new_cell(ground_cell_name, overwrite_duplicate=True)
 
+        if is_true(self.options.negative_photoresist):
+            self._negative_photoresist(lib, ground_cell, chip_name, chip_layer,
+                                       precision, max_points)
+        else:
+            self._positive_photoresist(lib, ground_cell, chip_name, chip_layer,
+                                       precision, max_points)
+
+        self._add_groundcell_to_chip_only_top(lib, chip_only_top, ground_cell)
+
+    def _positive_photoresist(self, lib: gdspy.GdsLibrary,
+                              ground_cell: gdspy.library.Cell, chip_name: str,
+                              chip_layer: int, precision: float,
+                              max_points: int):
+        """Apply logic for positive photoresist.
+
+        Args:
+            lib (gdspy.GdsLibrary): The gdspy library to export.
+            ground_cell (gdspy.library.Cell): Cell created for each layer.
+            chip_name (str): Name of chip to render.
+            chip_layer (int): Layer of the chip to render.
+            precision (float): Used for gdspy.
+            max_points (int): Used for gdspy. GDSpy uses 199 as the default.
+        """
+        if len(self.chip_info[chip_name][chip_layer]['q_subtract_false']) != 0:
+            subtract_cell_name = f'SUBTRACT_{chip_name}_{chip_layer}'
+            subtract_cell = lib.new_cell(subtract_cell_name,
+                                         overwrite_duplicate=True)
+            subtract_cell.add(
+                self.chip_info[chip_name][chip_layer]['q_subtract_false'])
+
+            diff_geometry = gdspy.boolean(
+                self.chip_info[chip_name]['subtract_poly'],
+                subtract_cell.get_polygons(),
+                'not',
+                max_points=max_points,
+                precision=precision,
+                layer=chip_layer)
+
+            lib.remove(subtract_cell)
+
+            if diff_geometry is None:
+                self.design.logger.warning(
+                    'There is no table named diff_geometry to write.')
+            else:
+                ground_cell.add(diff_geometry)
+
+        self._handle_q_subtract_true(chip_name, chip_layer, ground_cell)
+
+    def _negative_photoresist(self, lib: gdspy.GdsLibrary,
+                              ground_cell: gdspy.library.Cell, chip_name: str,
+                              chip_layer: int, precision: float,
+                              max_points: int):
+        """Apply logic for negative photoresist.
+
+        Args:
+            lib (gdspy.GdsLibrary): The gdspy library to export.
+            ground_cell (gdspy.library.Cell): Cell created for each layer.
+            chip_name (str): Name of chip to render.
+            chip_layer (int): Layer of the chip to render.
+            precision (float): Used for gdspy.
+            max_points (int): Used for gdspy. GDSpy uses 199 as the default.
+        """
         if len(self.chip_info[chip_name][chip_layer]['q_subtract_true']) != 0:
             subtract_cell_name = f'SUBTRACT_{chip_name}_{chip_layer}'
             subtract_cell = lib.new_cell(subtract_cell_name,
@@ -1572,16 +1616,35 @@ class QGDSRenderer(QRenderer):
 
         self._handle_q_subtract_false(chip_name, chip_layer, ground_cell)
 
-        self._add_groundcell_to_chip_only_top(lib, chip_only_top, ground_cell)
-
-    def _handle_q_subtract_false(self, chip_name: str, chip_layer: int,
-                                 ground_cell: gdspy.library.Cell):
-        """[summary]
+    def _handle_q_subtract_true(self, chip_name: str, chip_layer: int,
+                                ground_cell: gdspy.library.Cell):
+        """For each layer, add the subtract=true components to ground.
 
         Args:
             chip_name (str): Name of chip to render.
             chip_layer (int): Name of layer to render.
             ground_cell (gdspy.library.Cell): The cell in lib to add to.
+                                            Cell created for each layer.
+        """
+        if self.chip_info[chip_name][chip_layer]['q_subtract_true'] is None:
+            self.logger.warning(f'There is no table named '
+                                f'self.chip_info[{chip_name}][q_subtract_true]'
+                                f' to write.')
+        else:
+            if len(self.chip_info[chip_name][chip_layer]
+                   ['q_subtract_true']) != 0:
+                ground_cell.add(
+                    self.chip_info[chip_name][chip_layer]['q_subtract_true'])
+
+    def _handle_q_subtract_false(self, chip_name: str, chip_layer: int,
+                                 ground_cell: gdspy.library.Cell):
+        """For each layer, add the subtract=false components to ground.
+
+        Args:
+            chip_name (str): Name of chip to render.
+            chip_layer (int): Name of layer to render.
+            ground_cell (gdspy.library.Cell): The cell in lib to add to.
+                                            Cell created for each layer.
         """
         if self.chip_info[chip_name][chip_layer]['q_subtract_false'] is None:
             self.logger.warning(f'There is no table named '
@@ -1601,7 +1664,8 @@ class QGDSRenderer(QRenderer):
         Args:
             lib (gdspy.GdsLibrary): Holds all of the chips to export to gds.
             chip_only_top (gdspy.library.Cell): Cell which for a single chip.
-            ground_cell (gdspy.library.Cell): The ground cell to add to chp_only_top.
+            ground_cell (gdspy.library.Cell): The ground cell to add to
+                                    chip_only_top. Cell created for each layer.
         """
         # put all cells into TOP_chipname, if not empty.
         # When checking for bounding box, gdspy will return None if empty.
@@ -1618,7 +1682,8 @@ class QGDSRenderer(QRenderer):
         LineString in row.geometry.
 
         Args:
-            row (pandas.core.frame.Pandas): A row from Junction table of QGeometry.
+            row (pandas.core.frame.Pandas): A row from Junction table
+                                        of QGeometry.
 
         Returns:
             Tuple:
@@ -1626,7 +1691,8 @@ class QGDSRenderer(QRenderer):
             row.geometry in format (x,y).
             * 2nd entry is float: The angle in degrees of Linestring from
             row.geometry.
-            * 3rd entry is float: Is the magnitude of Linestring from row.geometry.
+            * 3rd entry is float: Is the magnitude of Linestring from
+            row.geometry.
         """
         precision = float(self.parse_value(self.options.precision))
         for_rounding = int(np.abs(np.log10(precision)))
