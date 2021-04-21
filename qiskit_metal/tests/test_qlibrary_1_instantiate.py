@@ -278,7 +278,8 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
             CapNInterdigital(design, "my_name3", options={}, make=False)
         except Exception:
             self.fail(
-                "CapNInterdigital(design, \"my_name3\", options={}, make=False)")
+                "CapNInterdigital(design, \"my_name3\", options={}, make=False)"
+            )
 
     def test_qlibrary_instantiate_cpw_t_finger_cap(self):
         """Test the instantiation of CapNInterdigitalTee."""
@@ -302,7 +303,8 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
             CapNInterdigitalTee(design, "my_name3", options={}, make=False)
         except Exception:
             self.fail(
-                "CapNInterdigitalTee(design, \"my_name3\", options={}, make=False)")
+                "CapNInterdigitalTee(design, \"my_name3\", options={}, make=False)"
+            )
 
     def test_qlibrary_instantiate_cpw_t(self):
         """Test the instantiation of LineTee."""
@@ -367,8 +369,7 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             ResonatorCoilRect(design, "my_name2", options={})
         except Exception:
-            self.fail(
-                "ResonatorCoilRect(design, \"my_name2\", options={})")
+            self.fail("ResonatorCoilRect(design, \"my_name2\", options={})")
 
         try:
             ResonatorCoilRect(design, "my_name3", options={}, make=False)
@@ -631,7 +632,8 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
             Cap3Interdigital(design, "my_name3", options={}, make=False)
         except Exception:
             self.fail(
-                "Cap3Interdigital(design, \"my_name3\", options={}, make=False)")
+                "Cap3Interdigital(design, \"my_name3\", options={}, make=False)"
+            )
 
     def test_qlibrary_qubits_transmon_concentric(self):
         """Test the instantiation of TransmonConcentric."""
