@@ -1,7 +1,7 @@
 ﻿
 
 Cap3Interdigital
-=====================================
+======================================
 
 .. currentmodule:: qiskit_metal.qlibrary
 

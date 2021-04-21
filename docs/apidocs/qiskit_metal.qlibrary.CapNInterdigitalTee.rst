@@ -1,7 +1,7 @@
 ﻿
 
 CapNInterdigitalTee
-===================================
+=========================================
 
 .. currentmodule:: qiskit_metal.qlibrary
 

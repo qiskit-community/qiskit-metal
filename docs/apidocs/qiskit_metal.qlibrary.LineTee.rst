@@ -1,7 +1,7 @@
 ﻿
 
 LineTee
-==========================
+=============================
 
 .. currentmodule:: qiskit_metal.qlibrary
 

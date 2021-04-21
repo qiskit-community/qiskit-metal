@@ -1,7 +1,7 @@
 ﻿
 
 CoupledLineTee
-================================
+====================================
 
 .. currentmodule:: qiskit_metal.qlibrary
 

@@ -1,7 +1,7 @@
 ﻿
 
 ResonatorCoilRect
-==============================================
+=======================================
 
 .. currentmodule:: qiskit_metal.qlibrary
 
