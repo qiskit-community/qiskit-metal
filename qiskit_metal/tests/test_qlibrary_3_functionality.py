@@ -28,10 +28,10 @@ from qiskit_metal.qlibrary._template import MyQComponent
 from qiskit_metal.qlibrary.core import QComponent
 from qiskit_metal.qlibrary.core import QRoute
 from qiskit_metal.qlibrary.core import BaseQubit
-from qiskit_metal.qlibrary.lumped.cap_n_interdigital import CPWFingerCap
-from qiskit_metal.qlibrary.couplers.coupled_line_tee import CPWHangerT
-from qiskit_metal.qlibrary.couplers.cap_n_interdigital_tee import CPWTFingerCap
-from qiskit_metal.qlibrary.couplers.tee import CPWT
+from qiskit_metal.qlibrary.lumped.cap_n_interdigital import CapNInterdigital
+from qiskit_metal.qlibrary.couplers.coupled_line_tee import CoupledLineTee
+from qiskit_metal.qlibrary.couplers.cap_n_interdigital_tee import CapNInterdigitalTee
+from qiskit_metal.qlibrary.couplers.line_tee import LineTee
 from qiskit_metal.qlibrary.terminations import open_to_ground
 from qiskit_metal.qlibrary.terminations import short_to_ground
 from qiskit_metal.qlibrary.tlines import anchored_path
@@ -49,7 +49,7 @@ from qiskit_metal.qlibrary.couplers import tunable_coupler_01
 from qiskit_metal.tests.assertions import AssertionsMixin
 
 #pylint: disable-msg=line-too-long
-from qiskit_metal.qlibrary.lumped.resonator_coil_rect import ResonatorRectangleSpiral
+from qiskit_metal.qlibrary.lumped.resonator_coil_rect import ResonatorCoilRect
 
 
 class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
@@ -202,7 +202,7 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
 
     def test_qlibrary_cpw_hanger_t_component_metadata(self):
         """Test component_metadata in component/coupled_line_tee.py."""
-        component = CPWHangerT
+        component = CoupledLineTee
 
         metadata = component.component_metadata
         self.assertEqual(len(metadata), 2)
@@ -211,7 +211,7 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
 
     def test_qlibrary_cpw_finger_component_metadata(self):
         """Test component_metadata in component/cap_n_interdigital.py."""
-        component = CPWFingerCap
+        component = CapNInterdigital
 
         metadata = component.component_metadata
 
@@ -222,7 +222,7 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
 
     def test_qlibrary_cpw_t_finger_component_metadata(self):
         """Test component_metadata in component/cap_n_interdigital_tee.py."""
-        component = CPWTFingerCap
+        component = CapNInterdigitalTee
 
         metadata = component.component_metadata
 
@@ -232,8 +232,8 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
         self.assertEqual(metadata['_qgeometry_table_poly'], 'True')
 
     def test_qlibrary_cpw_t_component_metadata(self):
-        """Test component_metadata in component/tee.py."""
-        component = CPWT
+        """Test component_metadata in component/line_tee.py."""
+        component = LineTee
 
         metadata = component.component_metadata
 
@@ -286,7 +286,7 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
     def test_qlibrary_resonator_rectangle_spiral_component_metadata(self):
         """Test component_metadata in
         tlines/resonator_coil_rect.py."""
-        component = ResonatorRectangleSpiral
+        component = ResonatorCoilRect
         self.assertEqual(component.component_metadata, {'short_name': 'res'})
 
     def test_qlibrary_transmon_pocket_cl_component_metadata(self):

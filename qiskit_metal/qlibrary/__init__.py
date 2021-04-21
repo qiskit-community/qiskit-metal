@@ -56,9 +56,9 @@ Lumped
 .. autosummary::
     :toctree:
 
-    CapThreeFingers
-    CPWFingerCap
-    ResonatorRectangleSpiral
+    Cap3Interdigital
+    CapNInterdigital
+    ResonatorCoilRect
 
 
 Couplers
@@ -67,9 +67,9 @@ Couplers
 .. autosummary::
     :toctree:
 
-    CPWHangerT
-    CPWT
-    CPWTFingerCap
+    CoupledLineTee
+    LineTee
+    CapNInterdigitalTee
 	TunableCoupler01
 
 
@@ -139,13 +139,13 @@ if config.is_building_docs():
     from .sample_shapes.n_square_spiral import NSquareSpiral
     from .sample_shapes.rectangle import Rectangle
     from .sample_shapes.rectangle_hollow import RectangleHollow
-    from .couplers.coupled_line_tee import CPWHangerT
-    from .couplers.tee import CPWT
-    from .couplers.cap_n_interdigital_tee import CPWTFingerCap
+    from .couplers.coupled_line_tee import CoupledLineTee
+    from .couplers.line_tee import LineTee
+    from .couplers.cap_n_interdigital_tee import CapNInterdigitalTee
     from .couplers.tunable_coupler_01 import TunableCoupler01
-    from .lumped.cap_n_interdigital import CPWFingerCap
-    from .lumped.cap_3_interdigital import CapThreeFingers
-    from .lumped.resonator_coil_rect import ResonatorRectangleSpiral
+    from .lumped.cap_n_interdigital import CapNInterdigital
+    from .lumped.cap_3_interdigital import Cap3Interdigital
+    from .lumped.resonator_coil_rect import ResonatorCoilRect
     from .terminations.launchpad_wb import LaunchpadWirebond
     from .terminations.launchpad_wb_coupled import LaunchpadWirebondCoupled
     from .terminations.open_to_ground import OpenToGround

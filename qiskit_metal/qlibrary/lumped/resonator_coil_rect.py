@@ -18,7 +18,7 @@ from qiskit_metal.qlibrary.core import QComponent
 import numpy as np
 
 
-class ResonatorRectangleSpiral(QComponent):
+class ResonatorCoilRect(QComponent):
     """A rectnagle spiral resonator based on length input. The X dimension is
     modified by the code based on the total length inputed.
 

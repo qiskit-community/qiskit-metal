@@ -17,7 +17,7 @@ from qiskit_metal.toolbox_python.attr_dict import Dict
 from qiskit_metal.qlibrary.core import QComponent
 
 
-class CapThreeFingers(QComponent):
+class Cap3Interdigital(QComponent):
     """Create a three finger planar capacitor with a ground pocket cuttout.
     The width of the fingers is determined by the trace width.
 

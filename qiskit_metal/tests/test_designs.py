@@ -33,7 +33,7 @@ from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
 from qiskit_metal.tests.assertions import AssertionsMixin
 
 #pylint: disable-msg=line-too-long
-from qiskit_metal.qlibrary.lumped.resonator_coil_rect import ResonatorRectangleSpiral
+from qiskit_metal.qlibrary.lumped.resonator_coil_rect import ResonatorCoilRect
 
 
 class TestDesign(unittest.TestCase, AssertionsMixin):
@@ -165,14 +165,14 @@ class TestDesign(unittest.TestCase, AssertionsMixin):
         """Test automatic naming of components."""
         design = DesignPlanar(metadata={})
 
-        ResonatorRectangleSpiral(design, make=False)
+        ResonatorCoilRect(design, make=False)
         self.assertEqual('res_1' in design.components, True)
-        ResonatorRectangleSpiral(design, make=False)
+        ResonatorCoilRect(design, make=False)
         self.assertEqual('res_2' in design.components, True)
 
         # Manually add the next automatic name to check it doesn't get repeated
-        ResonatorRectangleSpiral(design, 'res_3', make=False)
-        ResonatorRectangleSpiral(design, make=False)
+        ResonatorCoilRect(design, 'res_3', make=False)
+        ResonatorCoilRect(design, make=False)
         self.assertEqual('res_3' in design.components, True)
         self.assertEqual('res_4' in design.components, True)
 

@@ -17,7 +17,7 @@ from qiskit_metal.qlibrary.core import QComponent
 import numpy as np
 
 
-class CPWFingerCap(QComponent):
+class CapNInterdigital(QComponent):
     """Generates a two pin (+) structure comprised of a north CPW transmission
     line, and a south transmission line, coupled together via a finger
     capacitor. Such a structure can be used, as an example, for generating CPW

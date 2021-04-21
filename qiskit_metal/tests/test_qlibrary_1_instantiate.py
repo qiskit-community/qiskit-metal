@@ -32,10 +32,10 @@ from qiskit_metal.qlibrary.sample_shapes.rectangle import Rectangle
 from qiskit_metal.qlibrary.sample_shapes.rectangle_hollow import RectangleHollow
 from qiskit_metal.qlibrary.sample_shapes.n_gon import NGon
 from qiskit_metal.qlibrary.sample_shapes.n_square_spiral import NSquareSpiral
-from qiskit_metal.qlibrary.lumped.cap_n_interdigital import CPWFingerCap
-from qiskit_metal.qlibrary.couplers.coupled_line_tee import CPWHangerT
-from qiskit_metal.qlibrary.couplers.cap_n_interdigital_tee import CPWTFingerCap
-from qiskit_metal.qlibrary.couplers.tee import CPWT
+from qiskit_metal.qlibrary.lumped.cap_n_interdigital import CapNInterdigital
+from qiskit_metal.qlibrary.couplers.coupled_line_tee import CoupledLineTee
+from qiskit_metal.qlibrary.couplers.cap_n_interdigital_tee import CapNInterdigitalTee
+from qiskit_metal.qlibrary.couplers.line_tee import LineTee
 from qiskit_metal.qlibrary.terminations.open_to_ground import OpenToGround
 from qiskit_metal.qlibrary.terminations.short_to_ground import ShortToGround
 from qiskit_metal.qlibrary.tlines.anchored_path import RouteAnchors
@@ -46,7 +46,7 @@ from qiskit_metal.qlibrary.tlines.meandered import RouteMeander
 from qiskit_metal.qlibrary.tlines.mixed_path import RouteMixed
 from qiskit_metal.qlibrary.terminations.launchpad_wb import LaunchpadWirebond
 from qiskit_metal.qlibrary.terminations.launchpad_wb_coupled import LaunchpadWirebondCoupled
-from qiskit_metal.qlibrary.lumped.cap_3_interdigital import CapThreeFingers
+from qiskit_metal.qlibrary.lumped.cap_3_interdigital import Cap3Interdigital
 from qiskit_metal.qlibrary.qubits.transmon_concentric import TransmonConcentric
 from qiskit_metal.qlibrary.qubits.transmon_cross import TransmonCross
 from qiskit_metal.qlibrary.qubits.transmon_cross_fl import TransmonCrossFL
@@ -59,7 +59,7 @@ from qiskit_metal.qlibrary._template import MyQComponent
 from qiskit_metal.tests.assertions import AssertionsMixin
 
 #pylint: disable-msg=line-too-long
-from qiskit_metal.qlibrary.lumped.resonator_coil_rect import ResonatorRectangleSpiral
+from qiskit_metal.qlibrary.lumped.resonator_coil_rect import ResonatorCoilRect
 
 
 class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
@@ -257,124 +257,124 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
                 "MyQComponent(design, \"my_name3\", options={}, make=False)")
 
     def test_qlibrary_instantiate_cpw_finger_cap(self):
-        """Test the instantiation of CPWFingerCap."""
+        """Test the instantiation of CapNInterdigital."""
         design = designs.DesignPlanar()
         try:
-            CPWFingerCap
+            CapNInterdigital
         except Exception:
-            self.fail("CPWFingerCap failed")
+            self.fail("CapNInterdigital failed")
 
         try:
-            CPWFingerCap(design, "my_name")
+            CapNInterdigital(design, "my_name")
         except Exception:
-            self.fail("CPWFingerCap(design, \"my_name\")")
+            self.fail("CapNInterdigital(design, \"my_name\")")
 
         try:
-            CPWFingerCap(design, "my_name2", options={})
+            CapNInterdigital(design, "my_name2", options={})
         except Exception:
-            self.fail("CPWFingerCap(design, \"my_name2\", options={})")
+            self.fail("CapNInterdigital(design, \"my_name2\", options={})")
 
         try:
-            CPWFingerCap(design, "my_name3", options={}, make=False)
+            CapNInterdigital(design, "my_name3", options={}, make=False)
         except Exception:
             self.fail(
-                "CPWFingerCap(design, \"my_name3\", options={}, make=False)")
+                "CapNInterdigital(design, \"my_name3\", options={}, make=False)")
 
     def test_qlibrary_instantiate_cpw_t_finger_cap(self):
-        """Test the instantiation of CPWTFingerCap."""
+        """Test the instantiation of CapNInterdigitalTee."""
         design = designs.DesignPlanar()
         try:
-            CPWTFingerCap
+            CapNInterdigitalTee
         except Exception:
-            self.fail("CPWTFingerCap failed")
+            self.fail("CapNInterdigitalTee failed")
 
         try:
-            CPWTFingerCap(design, "my_name")
+            CapNInterdigitalTee(design, "my_name")
         except Exception:
-            self.fail("CPWTFingerCap(design, \"my_name\")")
+            self.fail("CapNInterdigitalTee(design, \"my_name\")")
 
         try:
-            CPWTFingerCap(design, "my_name2", options={})
+            CapNInterdigitalTee(design, "my_name2", options={})
         except Exception:
-            self.fail("CPWTFingerCap(design, \"my_name2\", options={})")
+            self.fail("CapNInterdigitalTee(design, \"my_name2\", options={})")
 
         try:
-            CPWTFingerCap(design, "my_name3", options={}, make=False)
+            CapNInterdigitalTee(design, "my_name3", options={}, make=False)
         except Exception:
             self.fail(
-                "CPWTFingerCap(design, \"my_name3\", options={}, make=False)")
+                "CapNInterdigitalTee(design, \"my_name3\", options={}, make=False)")
 
     def test_qlibrary_instantiate_cpw_t(self):
-        """Test the instantiation of CPWT."""
+        """Test the instantiation of LineTee."""
         design = designs.DesignPlanar()
         try:
-            CPWT
+            LineTee
         except Exception:
-            self.fail("CPWT failed")
+            self.fail("LineTee failed")
 
         try:
-            CPWT(design, "my_name")
+            LineTee(design, "my_name")
         except Exception:
-            self.fail("CPWT(design, \"my_name\")")
+            self.fail("LineTee(design, \"my_name\")")
 
         try:
-            CPWT(design, "my_name2", options={})
+            LineTee(design, "my_name2", options={})
         except Exception:
-            self.fail("CPWT(design, \"my_name2\", options={})")
+            self.fail("LineTee(design, \"my_name2\", options={})")
 
         try:
-            CPWT(design, "my_name3", options={}, make=False)
+            LineTee(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail("CPWT(design, \"my_name3\", options={}, make=False)")
+            self.fail("LineTee(design, \"my_name3\", options={}, make=False)")
 
     def test_qlibrary_instantiate_cpw_hanger_t(self):
-        """Test the instantiation of CPWHangerT."""
+        """Test the instantiation of CoupledLineTee."""
         design = designs.DesignPlanar()
         try:
-            CPWHangerT
+            CoupledLineTee
         except Exception:
-            self.fail("CPWHangerT failed")
+            self.fail("CoupledLineTee failed")
 
         try:
-            CPWHangerT(design, "my_name")
+            CoupledLineTee(design, "my_name")
         except Exception:
-            self.fail("CPWHangerT(design, \"my_name\")")
+            self.fail("CoupledLineTee(design, \"my_name\")")
 
         try:
-            CPWHangerT(design, "my_name2", options={})
+            CoupledLineTee(design, "my_name2", options={})
         except Exception:
-            self.fail("CPWHangerT(design, \"my_name2\", options={})")
+            self.fail("CoupledLineTee(design, \"my_name2\", options={})")
 
         try:
-            CPWHangerT(design, "my_name3", options={}, make=False)
+            CoupledLineTee(design, "my_name3", options={}, make=False)
         except Exception:
             self.fail(
-                "CPWHangerT(design, \"my_name3\", options={}, make=False)")
+                "CoupledLineTee(design, \"my_name3\", options={}, make=False)")
 
     def test_qlibrary_instantiate_resonator_rectangle_spiral(self):
-        """Test the instantiation of ResonatorRectangleSpiral."""
+        """Test the instantiation of ResonatorCoilRect."""
         design = designs.DesignPlanar()
         try:
-            ResonatorRectangleSpiral
+            ResonatorCoilRect
         except Exception:
-            self.fail("ResonatorRectangleSpiral failed")
+            self.fail("ResonatorCoilRect failed")
 
         try:
-            ResonatorRectangleSpiral(design, "my_name")
+            ResonatorCoilRect(design, "my_name")
         except Exception:
-            self.fail("ResonatorRectangleSpiral(design, \"my_name\")")
+            self.fail("ResonatorCoilRect(design, \"my_name\")")
 
         try:
-            ResonatorRectangleSpiral(design, "my_name2", options={})
+            ResonatorCoilRect(design, "my_name2", options={})
         except Exception:
             self.fail(
-                "ResonatorRectangleSpiral(design, \"my_name2\", options={})")
+                "ResonatorCoilRect(design, \"my_name2\", options={})")
 
         try:
-            ResonatorRectangleSpiral(design, "my_name3", options={}, make=False)
+            ResonatorCoilRect(design, "my_name3", options={}, make=False)
         except Exception:
             self.fail(
-                "ResonatorRectangleSpiral(design, \"my_name3\", options={}, make=False)"
+                "ResonatorCoilRect(design, \"my_name3\", options={}, make=False)"
             )
 
     def test_qlibrary_instantiate_circle_raster(self):
@@ -610,28 +610,28 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
             )
 
     def test_qlibrary_instantiate_three_finger_cap_v1(self):
-        """Test the instantiation of CapThreeFingers."""
+        """Test the instantiation of Cap3Interdigital."""
         design = designs.DesignPlanar()
         try:
-            CapThreeFingers
+            Cap3Interdigital
         except Exception:
-            self.fail("CapThreeFingers failed")
+            self.fail("Cap3Interdigital failed")
 
         try:
-            CapThreeFingers(design, "my_name")
+            Cap3Interdigital(design, "my_name")
         except Exception:
-            self.fail("CapThreeFingers(design, \"my_name\")")
+            self.fail("Cap3Interdigital(design, \"my_name\")")
 
         try:
-            CapThreeFingers(design, "my_name2", options={})
+            Cap3Interdigital(design, "my_name2", options={})
         except Exception:
-            self.fail("CapThreeFingers(design, \"my_name2\", options={})")
+            self.fail("Cap3Interdigital(design, \"my_name2\", options={})")
 
         try:
-            CapThreeFingers(design, "my_name3", options={}, make=False)
+            Cap3Interdigital(design, "my_name3", options={}, make=False)
         except Exception:
             self.fail(
-                "CapThreeFingers(design, \"my_name3\", options={}, make=False)")
+                "Cap3Interdigital(design, \"my_name3\", options={}, make=False)")
 
     def test_qlibrary_qubits_transmon_concentric(self):
         """Test the instantiation of TransmonConcentric."""

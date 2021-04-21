@@ -25,10 +25,10 @@ from qiskit_metal.qlibrary.sample_shapes import rectangle
 from qiskit_metal.qlibrary.sample_shapes import rectangle_hollow
 from qiskit_metal.qlibrary.sample_shapes import n_gon
 from qiskit_metal.qlibrary.sample_shapes import n_square_spiral
-from qiskit_metal.qlibrary.lumped.cap_n_interdigital import CPWFingerCap
-from qiskit_metal.qlibrary.couplers.coupled_line_tee import CPWHangerT
-from qiskit_metal.qlibrary.couplers.cap_n_interdigital_tee import CPWTFingerCap
-from qiskit_metal.qlibrary.couplers.tee import CPWT
+from qiskit_metal.qlibrary.lumped.cap_n_interdigital import CapNInterdigital
+from qiskit_metal.qlibrary.couplers.coupled_line_tee import CoupledLineTee
+from qiskit_metal.qlibrary.couplers.cap_n_interdigital_tee import CapNInterdigitalTee
+from qiskit_metal.qlibrary.couplers.line_tee import LineTee
 from qiskit_metal.qlibrary.terminations import open_to_ground
 from qiskit_metal.qlibrary.terminations import short_to_ground
 from qiskit_metal.qlibrary.tlines.anchored_path import RouteAnchors
@@ -39,7 +39,7 @@ from qiskit_metal.qlibrary.tlines.pathfinder import RoutePathfinder
 from qiskit_metal import designs
 from qiskit_metal.qlibrary.terminations.launchpad_wb import LaunchpadWirebond
 from qiskit_metal.qlibrary.terminations.launchpad_wb_coupled import LaunchpadWirebondCoupled
-from qiskit_metal.qlibrary.lumped.cap_3_interdigital import CapThreeFingers
+from qiskit_metal.qlibrary.lumped.cap_3_interdigital import Cap3Interdigital
 from qiskit_metal.qlibrary.qubits import transmon_concentric
 from qiskit_metal.qlibrary.qubits import transmon_cross
 from qiskit_metal.qlibrary.qubits.transmon_cross_fl import TransmonCrossFL
@@ -51,7 +51,7 @@ from qiskit_metal.qlibrary import _template
 from qiskit_metal.tests.assertions import AssertionsMixin
 
 #pylint: disable-msg=line-too-long
-from qiskit_metal.qlibrary.lumped.resonator_coil_rect import ResonatorRectangleSpiral
+from qiskit_metal.qlibrary.lumped.resonator_coil_rect import ResonatorCoilRect
 
 
 class TestComponentOptions(unittest.TestCase, AssertionsMixin):
@@ -529,11 +529,11 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(_options['cl_off_center'], '50um')
 
     def test_qlibrary_cpw_finger_cap_options(self):
-        """Test that default options of CPWFingerCap in cap_n_interdigital.py were not
+        """Test that default options of CapNInterdigital in cap_n_interdigital.py were not
         accidentally changed."""
         # Setup expected test results
         design = designs.DesignPlanar()
-        finger_cap = CPWFingerCap(design, 'my_name')
+        finger_cap = CapNInterdigital(design, 'my_name')
         options = finger_cap.default_options
 
         # Test all elements of the result data against expected data
@@ -555,11 +555,11 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['layer'], '1')
 
     def test_qlibrary_cpw_t_finger_cap_options(self):
-        """Test that default options of CPWTFingerCap in cap_n_interdigital_tee.py were not
+        """Test that default options of CapNInterdigitalTee in cap_n_interdigital_tee.py were not
         accidentally changed."""
         # Setup expected test results
         design = designs.DesignPlanar()
-        t_finger_cap = CPWTFingerCap(design, 'my_name')
+        t_finger_cap = CapNInterdigitalTee(design, 'my_name')
         options = t_finger_cap.default_options
 
         # Test all elements of the result data against expected data
@@ -580,10 +580,10 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['layer'], '1')
 
     def test_qlibrary_cpw_t_options(self):
-        """Test that default options of CPWT in tee.py were not accidentally changed."""
+        """Test that default options of LineTee in line_tee.py were not accidentally changed."""
         # Setup expected test results
         design = designs.DesignPlanar()
-        cpw_t = CPWT(design, 'my_name')
+        cpw_t = LineTee(design, 'my_name')
         options = cpw_t.default_options
 
         # Test all elements of the result data against expected data
@@ -600,11 +600,11 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['layer'], '1')
 
     def test_qlibrary_cpw_hanger_t_options(self):
-        """Test that default options of CPWHangerT in coupled_line_tee.py were not
+        """Test that default options of CoupledLineTee in coupled_line_tee.py were not
         accidentally changed."""
         # Setup expected test results
         design = designs.DesignPlanar()
-        hanger_t = CPWHangerT(design, 'my_name')
+        hanger_t = CoupledLineTee(design, 'my_name')
         options = hanger_t.default_options
 
         # Test all elements of the result data against expected data
@@ -626,11 +626,11 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['layer'], '1')
 
     def test_qlibrary_resonator_rectangle_spiral_options(self):
-        """Test that default options of ResonatorRectangleSpiral in
+        """Test that default options of ResonatorCoilRect in
         resonator_coil_rect.py were not accidentally changed."""
         # Setup expected test results
         design = designs.DesignPlanar()
-        resonator_rectangle_spiral = ResonatorRectangleSpiral(design, 'my_name')
+        resonator_rectangle_spiral = ResonatorCoilRect(design, 'my_name')
         options = resonator_rectangle_spiral.default_options
 
         # Test all elements of the result data against expected data
@@ -707,10 +707,10 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['orientation'], '0')
 
     def test_qlibrary_cap_three_fingers(self):
-        """Test that default options of CapThreeFingers were not accidentally
+        """Test that default options of Cap3Interdigital were not accidentally
         changed."""
         design = designs.DesignPlanar()
-        cap_three_fingers = CapThreeFingers(design, 'my_name')
+        cap_three_fingers = Cap3Interdigital(design, 'my_name')
         options = cap_three_fingers.default_options
 
         self.assertEqual(len(options), 8)
