@@ -38,7 +38,7 @@ if not config.is_building_docs():
 
 if TYPE_CHECKING:
     # For linting, avoids circular imports.
-    from qiskit_metal.qlibrary.base.base import QComponent
+    from qiskit_metal.qlibrary.core.base import QComponent
     from qiskit_metal.renderers.renderer_base import QRenderer
     from qiskit_metal.renderers.renderer_gds.gds_renderer import QGDSRenderer
 

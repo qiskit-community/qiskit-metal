@@ -22,22 +22,22 @@ Module containing all Qiskit Metal QLibrary.
 
 .. _qlibrary:
 
-QComponents
----------------
+Core Classes
+----------------
 
 .. autosummary::
     :toctree: ../stubs/
 
     QComponent
-    BaseQubit
     ParsedDynamicAttributes_Component
+    BaseQubit
     QRoute
     QRouteLead
     QRoutePoint
 
 
-Basic
------
+Sample Shapes
+-----------------
 
 .. autosummary::
     :toctree:
@@ -50,22 +50,43 @@ Basic
     RectangleHollow
 
 
-Connectors
+Lumped
 ----------
 
 .. autosummary::
     :toctree:
 
+    CapThreeFingers
     CPWFingerCap
+    ResonatorRectangleSpiral
+
+
+Couplers
+------------
+
+.. autosummary::
+    :toctree:
+
     CPWHangerT
     CPWT
     CPWTFingerCap
+	TunableCoupler01
+
+
+Terminations
+----------------
+
+.. autosummary::
+    :toctree:
+
+    LaunchpadWirebond
+    LaunchpadWirebondCoupled
     OpenToGround
     ShortToGround
 
 
-Interconnects
--------------
+Transmission Lines
+----------------------
 
 .. autosummary::
     :toctree:
@@ -76,19 +97,6 @@ Interconnects
     RouteAnchors
     RouteMixed
     RoutePathfinder
-    ResonatorRectangleSpiral
-
-
-
-Passives
---------
-
-.. autosummary::
-    :toctree:
-
-    LaunchpadWirebond
-    LaunchpadWirebondCoupled
-    CapThreeFingers
 
 
 Qubits
@@ -107,7 +115,7 @@ Qubits
 
 
 Submodules
-----------
+--------------
 
 .. autosummary::
     :toctree:
