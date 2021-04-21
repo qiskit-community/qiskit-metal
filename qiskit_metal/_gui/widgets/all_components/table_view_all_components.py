@@ -247,7 +247,6 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         self.logger.debug(f'Highlighting {selected_names}')
         self.gui.highlight_components(selected_names)
 
-
     def delete_selected_rows(self, *args, **kwargs):
         index_list = self.selectedIndexes()
         model = self.model()
@@ -257,11 +256,11 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
             name = model.data(name_index)
             if name is not None:
                 ret = QMessageBox.question(
-                        self, '', f"Are you sure you want to delete component {name}",
-                        QMessageBox.Yes | QMessageBox.No)
+                    self, '',
+                    f"Are you sure you want to delete component {name}",
+                    QMessageBox.Yes | QMessageBox.No)
                 if ret == QMessageBox.Yes:
                     self._do_delete(name)
-
 
     def rename_row(self, *args, **kwargs):
         index_list = self.selectedIndexes()
@@ -277,33 +276,16 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         name = model.data(name_index)
         self.do_menu_rename_helper(name, index.row())
 
+    def name_of_selected_qcomponent(self):
+        model = self.model()
+        index_list = self.selectedIndexes()
+        name_set = set()
+        if len(index_list) == 0:
+            return
 
+        for ind in index_list:
+            name_ind = model.index(ind.row(), 0)
+            name = model.data(name_ind)
+            name_set.add(name)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        return list(name_set)

@@ -153,8 +153,9 @@ class Components:
             if not is_ipython_magic(name):
                 if not quiet:
                     self.logger.warning(
-                        f'In Components.__getitem__, name={name} is not registered in the design class. Return None for QComponent.'
-                    )
+                        f'In Components.__getitem__, name={name} is not '
+                        f'registered in the design class. Return '
+                        f'None for QComponent.')
                 return None
             else:
                 raise AttributeError(name)

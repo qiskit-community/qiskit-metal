@@ -660,10 +660,10 @@ class PlotCanvas(FigureCanvas):
         """
         if len(components) == 0:
             self.logger.error('At least one component must be provided.')
-
         # initialize bounds
         bounds = [float("inf"), float("inf"), float("-inf"), float("-inf")]
         for name in components:
+            # self.design.components[name]
             component = self.design.components[name]
             # return (minx, miny, maxx, maxy)
             newbounds = component.qgeometry_bounds()
@@ -676,6 +676,7 @@ class PlotCanvas(FigureCanvas):
                 max(newbounds[2], bounds[2]),
                 max(newbounds[3], bounds[3])
             ]
+
         return bounds
 
     def set_component(self, name: str):
