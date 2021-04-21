@@ -243,3 +243,48 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
 
         self.logger.debug(f'Highlighting {selected_names}')
         self.gui.highlight_components(selected_names)
+
+
+    def delete_selected_rows(self, *args, **kwargs):
+        index_list = self.selectedIndexes()
+        model = self.model()
+
+        for index in index_list:
+            name_index = model.index(index.row(), 0)
+            name = model.data(name_index)
+            if name is not None:
+                ret = QMessageBox.question(
+                        self, '', f"Are you sure you want to delete component {name}",
+                        QMessageBox.Yes | QMessageBox.No)
+                if ret == QMessageBox.Yes:
+                    self._do_delete(name)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

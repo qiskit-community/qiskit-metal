@@ -191,7 +191,10 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         if ison:
             QMessageBox.warning(
                 self, "Notice",
-                "If you're editing a component via an external IDE, don't forget to refresh the component's file in the Library before rebuilding so your changes will take effect."
+                "If you're editing a component via an external IDE,"
+                " don't forget to refresh the component's file"
+                " in the Library before rebuilding so your changes"
+                " will take effect."
             )
 
         self.gui.ui.dockLibrary_tree_view.set_dev_mode(ison)
@@ -406,6 +409,9 @@ class MetalGUI(QMainWindowBaseHandler):
     def _setup_variables_widget(self):
         """Setup the variables widget."""
         self.ui.dockVariables.setWidget(self.variables_window)
+        # hookup to delete action
+        self.ui.btn_comp_del.clicked.connect(self.ui.tableComponents.delete_selected_rows)
+
 
     def _setup_plot_widget(self):
         """Create main Window Widget Plot."""

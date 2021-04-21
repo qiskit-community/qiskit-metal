@@ -250,3 +250,5 @@ class QTableModel_AllComponents(QAbstractTableModel):
             component = self.design.components[component_name]
             text = f"""Component name= "{component.name}" instance of class "{component.__class__.__name__}" from module "{component.__class__.__module__}" """
             return text
+
+

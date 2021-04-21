@@ -108,12 +108,3 @@ class RightClickView(QTableView):
             if okPressed and (text != ''):
                 model = self.model()
                 model.setData(index, text)
-
-    def delete_selected_rows(self):
-        index_list = self.selectedIndexes()
-        for index in index_list:
-            print("deleting")
-            row_name = list(self.gui.model._data.keys())[index.row()]
-            print(f"dleting: {row_name}")
-            self.deleteRow(row_name, index.row())
-
