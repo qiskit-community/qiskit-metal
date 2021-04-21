@@ -251,7 +251,12 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         index_list = self.selectedIndexes()
         model = self.model()
 
-        for index in index_list:
+        index_dict = {}
+        for ind in index_list:
+            if ind.row() not in index_dict:
+                index_dict[ind.row()] = ind
+
+        for index in index_dict.values():
             name_index = model.index(index.row(), 0)
             name = model.data(name_index)
             if name is not None:
