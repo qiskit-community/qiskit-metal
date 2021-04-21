@@ -46,7 +46,7 @@ if TYPE_CHECKING:
 
 
 class QComponent():
-    """`QComponent` is the ore class for all Metal components and is the
+    """`QComponent` is the core class for all Metal components and is the
     central construct from which all components in Metal are derived.
 
     The class defines the user interface for working with components.
