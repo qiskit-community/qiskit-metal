@@ -147,6 +147,7 @@ if config.is_building_docs():
     from .lumped.cap_3_interdigital import CapThreeFingers
     from .lumped.resonator_coil_rect import ResonatorRectangleSpiral
     from .terminations.launchpad_wb import LaunchpadWirebond
+    from .terminations.launchpad_wb_coupled import LaunchpadWirebondCoupled
     from .terminations.open_to_ground import OpenToGround
     from .terminations.short_to_ground import ShortToGround
     from .tlines.straight_path import RouteStraight
