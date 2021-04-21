@@ -166,6 +166,9 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         """
         name, row = self.get_name_from_event(event)
 
+        self.do_menu_rename_helper(name, row)
+
+    def do_menu_rename_helper(self, name, row):
         if row > -1:
             text, okPressed = QInputDialog.getText(self,
                                                    f"Rename component {name}",
@@ -258,6 +261,22 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
                         QMessageBox.Yes | QMessageBox.No)
                 if ret == QMessageBox.Yes:
                     self._do_delete(name)
+
+
+    def rename_row(self, *args, **kwargs):
+        index_list = self.selectedIndexes()
+        if len(index_list) == 0:
+            return
+
+        index = index_list[0]
+        for ind in index_list:
+            if ind.row() != index.row():
+                return
+        model = self.model()
+        name_index = model.index(index.row(), 0)
+        name = model.data(name_index)
+        self.do_menu_rename_helper(name, index.row())
+
 
 
 

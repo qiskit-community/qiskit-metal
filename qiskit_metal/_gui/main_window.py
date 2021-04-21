@@ -411,6 +411,7 @@ class MetalGUI(QMainWindowBaseHandler):
         self.ui.dockVariables.setWidget(self.variables_window)
         # hookup to delete action
         self.ui.btn_comp_del.clicked.connect(self.ui.tableComponents.delete_selected_rows)
+        self.ui.btn_comp_rename.clicked.connect(self.ui.tableComponents.rename_row)
 
 
     def _setup_plot_widget(self):
