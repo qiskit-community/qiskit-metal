@@ -19,10 +19,10 @@ import os
 from pathlib import Path
 from typing import List, TYPE_CHECKING
 
-from PySide2.QtCore import QTimer, Qt
+from PySide2.QtCore import QTimer, Qt, QSize
 from PySide2.QtWidgets import (QDockWidget, QFileDialog, QLabel, QMainWindow,
                                QMessageBox)
-
+from PySide2.QtGui import QIcon, QPixmap
 from qiskit_metal._gui.widgets.qlibrary_display.delegate_qlibrary import LibraryDelegate
 from qiskit_metal._gui.widgets.qlibrary_display.file_model_qlibrary import QFileSystemLibraryModel
 from qiskit_metal._gui.widgets.qlibrary_display.proxy_model_qlibrary import LibraryFileProxyModel
@@ -196,6 +196,11 @@ class QMainWindowExtension(QMainWindowExtensionBase):
 
         self.gui.ui.dockLibrary_tree_view.set_dev_mode(ison)
         self.gui.is_dev_mode = ison
+        self.gui._set_rebuild_unneeded()
+        # import rebuild
+        # rebuild.activate_developer_mode(RebuildAction, RebuildFunction, QLibraryTree)
+        # else:
+        #  deactivateDeveMode()
 
 
 class MetalGUI(QMainWindowBaseHandler):
@@ -247,6 +252,15 @@ class MetalGUI(QMainWindowBaseHandler):
         self.variables_window = PropertyTableWidget(self, gui=self)
 
         self.build_log_window = None
+        self.is_dev_mode = False
+        self.action_rebuild_deactive_icon = QIcon()
+        self.action_rebuild_deactive_icon.addPixmap(QPixmap(":/rebuild"),
+                                                    QIcon.Normal, QIcon.Off)
+        self.action_rebuild_active_icon = QIcon()
+        self.action_rebuild_active_icon.addPixmap(QPixmap(":/rebuild_needed"),
+                                                  QIcon.Normal, QIcon.Off)
+        self.ui.actionRebuild.setIcon(self.action_rebuild_deactive_icon)
+        #self.ui.toolBarDesign.setIconSize(QSize(20,20))
 
         self._setup_component_widget()
         self._setup_plot_widget()
@@ -475,7 +489,7 @@ class MetalGUI(QMainWindowBaseHandler):
         Args:
             qis_abs_path (str): Absolute component path.
         """
-        self.design.reload_and_rebuild_component(qis_abs_path)
+        self.design.reload_and_rebuild_components(qis_abs_path)
         # Table models
         self.ui.tableComponents.model().refresh()
 
@@ -520,6 +534,8 @@ class MetalGUI(QMainWindowBaseHandler):
             self._create_new_component_object_from_qlibrary)
         self.ui.dockLibrary_tree_view.qlibrary_rebuild_signal.connect(
             self._refresh_component_build)
+        self.ui.dockLibrary_tree_view.qlibrary_file_dirtied_signal.connect(
+            self._set_rebuild_needed)
 
     ################################################
     # UI
@@ -532,6 +548,15 @@ class MetalGUI(QMainWindowBaseHandler):
         self.main_window.toggle_all_docks(do_hide)
         self.qApp.processEvents(
         )  # Process all events, so that if we take screenshot next it won't be partially updated
+
+    def _set_rebuild_needed(self):
+        if self.is_dev_mode:
+            self.main_window.ui.actionRebuild.setIcon(
+                self.action_rebuild_active_icon)
+
+    def _set_rebuild_unneeded(self):
+        self.main_window.ui.actionRebuild.setIcon(
+            self.action_rebuild_deactive_icon)
 
     ################################################
     # Plotting
@@ -574,6 +599,7 @@ class MetalGUI(QMainWindowBaseHandler):
         """
         Rebuild all components in the design from scratch and refresh the gui.
         """
+        self._set_rebuild_unneeded()
         if self.is_dev_mode:
             self.refresh_everything()
 
@@ -591,7 +617,7 @@ class MetalGUI(QMainWindowBaseHandler):
         for file in values:  # dirtied_files size changes during clean_file
             if '.py' in file:
                 file = file[file.index('qiskit_metal'):]
-                self.design.reload_and_rebuild_component(file)
+                self.design.reload_and_rebuild_components(file)
                 self.ui.dockLibrary.library_model.clean_file(file)
         self.refresh()
         self.autoscale()

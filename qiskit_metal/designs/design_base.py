@@ -28,6 +28,7 @@ from .interface_components import Components
 from .net_info import QNet
 from .. import Dict, config, logger
 from ..config import DefaultMetalOptions, DefaultOptionsRenderer
+from qiskit_metal.toolbox_metal.exceptions import QiskitMetalDesignError
 
 if not config.is_building_docs():
     from qiskit_metal.toolbox_metal.import_export import load_metal_design, save_metal
@@ -417,7 +418,7 @@ class QDesign(
         for _, obj in self._components.items():  # pylint: disable=unused-variable
             obj.rebuild()
 
-    def reload_and_rebuild_component(self, qis_abs_path: str):
+    def reload_and_rebuild_components(self, qis_abs_path: str):
         """
         Reload the module and class of a given component and updates
         all class instances. Then rebuilds all QComponents of that class
@@ -425,46 +426,35 @@ class QDesign(
         Arguments:
             qis_abs_path: Absolute to the QComponent source file to be reloaded
 
+        Raises:
+            QiskitMetalDesignError: The given name is a magic method not in the dictionary
         """
 
         try:
-            # split on os.sep and / because PySide appears to sometimes use / on certain Windows
-            # Windows users' qis_abs_path may use os.sep or '/' due to PySide's
-            # handling of file names
-            qis_mod_path = qis_abs_path.replace(os.sep, '.')[:-len('.py')]
-            # users cannot use '/' in filename
-            qis_mod_path = qis_mod_path.replace("/", '.')
+            for comp in self.components:  # runs so few times, it's fine to reload object multiple times
+                imported_module = importlib.import_module(
+                    self.components[comp].__module__)
+                reloaded_module = importlib.reload(imported_module)
 
-            qis_class_name = "reload and rebuild no name"
-            mymodule = importlib.import_module(qis_mod_path)
-            members = inspect.getmembers(mymodule, inspect.isclass)
-            class_owner = qis_mod_path.split('.')[-1]
-            for memtup in members:
-                if len(memtup) > 1:
-                    if str(memtup[1].__module__).endswith(class_owner):
-                        qis_class_name = memtup[1].__name__
+                new_class = getattr(reloaded_module,
+                                    self.components[comp].__class__.__name__)
 
-            self.logger.debug(
-                f'Reloading component_class_name={qis_class_name};'
-                f' component_module_name={qis_mod_path}')
+                print(f"template options: {self.template_options}")
+                if self.components[comp].__class__._get_unique_class_name(
+                ) in self.template_options:
+                    print(f"popping: {new_class}")
+                    self.template_options.pop(new_class._get_unique_class_name(
+                    ))  # pylint disable=protected-access, line-too-long
 
-            module = importlib.import_module(qis_mod_path)
-            module = importlib.reload(module)
-            new_class = getattr(module, qis_class_name)
-            self.template_options.pop(new_class._get_unique_class_name(
-            ))  # pylint disable=protected-access, line-too-long
+                self.components[comp].__class__ = new_class
 
-            for instance in filter(
-                    lambda k: k.__class__.__name__ == qis_class_name,
-                    self._components.values()):
-                instance.__class__ = new_class
-                instance.rebuild()
+                self.logger.debug(
+                    f'Finished reloading '
+                    f'component_class_name={new_class.__name__}; component_module_name={imported_module}'
+                )
+            self.rebuild()
 
-            self.logger.debug(
-                f'Finished reloading '
-                f'component_class_name={qis_class_name}; component_module_name={qis_mod_path}'
-            )
-        except Exception as e:  # pylint disable=broad-except
+        except QiskitMetalDesignError as e:  # pylint disable=broad-except
             self.logger.error(
                 f"Failed to refresh/rebuild {qis_abs_path} due to: {e}")
 

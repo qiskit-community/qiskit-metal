@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file './main_window_ui.ui',
 # licensing of './main_window_ui.ui' applies.
 #
-# Created: Fri Apr 16 19:04:26 2021
+# Created: Tue May  4 12:26:10 2021
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -390,6 +390,8 @@ class Ui_MainWindow(object):
         icon22 = QtGui.QIcon()
         icon22.addPixmap(QtGui.QPixmap(":/rebuild"), QtGui.QIcon.Normal,
                          QtGui.QIcon.Off)
+        icon22.addPixmap(QtGui.QPixmap(":/rebuild"), QtGui.QIcon.Active,
+                         QtGui.QIcon.On)
         self.actionRebuild.setIcon(icon22)
         self.actionRebuild.setPriority(QtWidgets.QAction.HighPriority)
         self.actionRebuild.setObjectName("actionRebuild")
@@ -509,7 +511,6 @@ class Ui_MainWindow(object):
         self.toolBarDesign.addSeparator()
         self.toolBarView.addAction(self.actionViewDummyLabel)
         self.toolBarView.addAction(self.actionDesign)
-        self.toolBarView.addAction(self.actionNewComponent)
         self.toolBarView.addAction(self.actionVariables)
         self.toolBarView.addSeparator()
         self.toolBarView.addAction(self.actionConnectors)
@@ -1023,7 +1024,7 @@ class Ui_MainWindow(object):
             QtWidgets.QApplication.translate("MainWindow", "clickme", None, -1))
 
 
+from .widgets.all_components.table_view_all_components import QTableView_AllComponents
 from .widgets.qlibrary_display.tree_view_qlibrary import TreeViewQLibrary
 from .widgets.log_widget.log_metal import QTextEditLogger
-from .widgets.all_components.table_view_all_components import QTableView_AllComponents
 from . import main_window_rc_rc
