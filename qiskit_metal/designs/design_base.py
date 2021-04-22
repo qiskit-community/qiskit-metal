@@ -648,9 +648,9 @@ class QDesign(
             original_qcomponents (list): Must be a list of original QComponents.
             new_component_names (list): Must be a list of QComponent names.
             all_options_superimpose (list, optional): Must be list of dicts
-             with options to superimpose on options
-                from original_qcomponents. The list can be of both populated
-                 and empty dicts. Defaults to empty list().
+              with options to superimpose on options from original_qcomponents.
+              The list can be of both populated and empty dicts.
+              Defaults to empty list().
 
         Returns:
             Dict: Number of keys will be the same length of original_qcomponent.
@@ -693,12 +693,11 @@ class QDesign(
         Args:
             original_class (QComponent): The QComponent to copy.
             new_component_name (str): The name should not already
-            be in QDesign, if it is, the copy fill fail.
+              be in QDesign, if it is, the copy fill fail.
             options_superimpose (dict): Can use differnt options
-             for copied QComponent. Will start with the options
-                                        in original QComponent,
-                                         and then superimpose with options_superimpose. An example
-                                        would be x and y locations.
+              for copied QComponent. Will start with the options
+              in original QComponent, and then superimpose with
+              options_superimpose. An example would be x and y locations.
 
         Returns:
             union['QComponent', None]: None if not copied, otherwise, a QComponent instance.
