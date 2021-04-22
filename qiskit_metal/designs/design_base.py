@@ -28,6 +28,7 @@ from .interface_components import Components
 from .net_info import QNet
 from .. import Dict, config, logger
 from ..config import DefaultMetalOptions, DefaultOptionsRenderer
+from qiskit_metal.toolbox_metal.exceptions import QiskitMetalDesignError
 
 if not config.is_building_docs():
     from qiskit_metal.toolbox_metal.import_export import load_metal_design, save_metal
@@ -417,7 +418,7 @@ class QDesign(
         for _, obj in self._components.items():  # pylint: disable=unused-variable
             obj.rebuild()
 
-    def reload_and_rebuild_component(self, qis_abs_path: str):
+    def reload_and_rebuild_components(self, qis_abs_path: str):
         """
         Reload the module and class of a given component and updates
         all class instances. Then rebuilds all QComponents of that class
@@ -425,6 +426,8 @@ class QDesign(
         Arguments:
             qis_abs_path: Absolute to the QComponent source file to be reloaded
 
+        Raises:
+            QiskitMetalDesignError: The given name is a magic method not in the dictionary
         """
 
         try:
@@ -436,8 +439,8 @@ class QDesign(
             qis_mod_path = qis_mod_path.replace("/", '.')
 
             qis_class_name = "reload and rebuild no name"
-            mymodule = importlib.import_module(qis_mod_path)
-            members = inspect.getmembers(mymodule, inspect.isclass)
+            cur_module = importlib.import_module(qis_mod_path)
+            members = inspect.getmembers(cur_module, inspect.isclass)
             class_owner = qis_mod_path.split('.')[-1]
             for memtup in members:
                 if len(memtup) > 1:
@@ -464,7 +467,7 @@ class QDesign(
                 f'Finished reloading '
                 f'component_class_name={qis_class_name}; component_module_name={qis_mod_path}'
             )
-        except Exception as e:  # pylint disable=broad-except
+        except QiskitMetalDesignError as e:  # pylint disable=broad-except
             self.logger.error(
                 f"Failed to refresh/rebuild {qis_abs_path} due to: {e}")
 

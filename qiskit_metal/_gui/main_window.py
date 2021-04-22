@@ -247,6 +247,7 @@ class MetalGUI(QMainWindowBaseHandler):
         self.variables_window = PropertyTableWidget(self, gui=self)
 
         self.build_log_window = None
+        self.is_dev_mode = False
 
         self._setup_component_widget()
         self._setup_plot_widget()
@@ -475,7 +476,7 @@ class MetalGUI(QMainWindowBaseHandler):
         Args:
             qis_abs_path (str): Absolute component path.
         """
-        self.design.reload_and_rebuild_component(qis_abs_path)
+        self.design.reload_and_rebuild_components(qis_abs_path)
         # Table models
         self.ui.tableComponents.model().refresh()
 
@@ -591,7 +592,7 @@ class MetalGUI(QMainWindowBaseHandler):
         for file in values:  # dirtied_files size changes during clean_file
             if '.py' in file:
                 file = file[file.index('qiskit_metal'):]
-                self.design.reload_and_rebuild_component(file)
+                self.design.reload_and_rebuild_components(file)
                 self.ui.dockLibrary.library_model.clean_file(file)
         self.refresh()
         self.autoscale()

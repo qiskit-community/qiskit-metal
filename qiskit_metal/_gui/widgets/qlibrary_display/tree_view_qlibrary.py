@@ -15,10 +15,11 @@
 Tree view for Param Entry Window
 """
 
-from PySide2 import QtCore, QtWidgets, QtGui
-from PySide2.QtWidgets import QTreeView
+from PySide2 import QtCore, QtGui
+from PySide2.QtWidgets import QTreeView, QWidget
 from PySide2.QtCore import QModelIndex, Signal
 from qiskit_metal._gui.widgets.qlibrary_display.proxy_model_qlibrary import LibraryFileProxyModel
+from qiskit_metal.toolbox_metal.exceptions import QLibraryGUIException
 
 
 class TreeViewQLibrary(QTreeView):
@@ -30,8 +31,9 @@ class TreeViewQLibrary(QTreeView):
     qlibrary_rebuild_signal = Signal(str)
     qlibrary_filepath_signal = Signal(str)
 
-    def __init__(self, parent: QtWidgets.QWidget):
+    def __init__(self, parent: QWidget):
         """
+        Inits TreeViewQLibrary
         Args:
             parent (QtWidgets.QWidget): parent widget
         """
@@ -39,16 +41,28 @@ class TreeViewQLibrary(QTreeView):
         self.is_dev_mode = False  # Whether MetalGUI is in developer mode
 
     def set_dev_mode(self, ison: bool):
-        """ Sets dev mode for self, model, model's source model, and delegate """
+        """Sets dev mode for self, model, model's source model, and delegate
+
+        Args:
+            ison (bool): Whether to set dev mode
+        """
         self.is_dev_mode = ison
         self.itemDelegate().is_dev_mode = ison
         self.model().set_dev_mode(ison)
         self.model().sourceModel().set_file_is_dev_mode(ison)
 
     def setModel(self, model: QtCore.QAbstractItemModel):
-        """ Overriding setModel to hook up clean/dirty file signals to model before setting Model"""
+        """Overriding setModel to hook up clean/dirty file signals to model before setting Model
+
+        Args:
+            model (QtCore.QAbstractItemModel): Model to be set
+
+        Raises:
+            Exception: QLibraryGUIException if model is not LibraryFileProxyModel
+
+        """
         if not isinstance(model, LibraryFileProxyModel):
-            raise Exception(
+            raise QLibraryGUIException(
                 f"Invalid model. Expected type {LibraryFileProxyModel} but got type {type(model)}"
             )
 
@@ -57,12 +71,16 @@ class TreeViewQLibrary(QTreeView):
 
         source_model.file_dirtied_signal.connect(self.update)
         source_model.file_cleaned_signal.connect(self.update)
-        return super().setModel(model)
+        super().setModel(model)
 
     def mousePressEvent(self, event: QtGui.QMouseEvent):
-        """ Overrides inherited mousePressEvent to emit appropriate rebuild or filepath signals
+        """Overrides inherited mousePressEvent to emit appropriate rebuild or filepath signals
          based on which columns were clicked, and to allow user to clear any selections
-        by clicking off the displayed tree and to, when necessary, """
+        by clicking off the displayed tree.
+
+        Args:
+            event (QtGui.QMouseEvent): QMouseEvent triggered by user
+        """
 
         index = self.indexAt(event.pos())
 
@@ -85,4 +103,4 @@ class TreeViewQLibrary(QTreeView):
                                          index(__name__.split('.')[0]):]
                 self.qlibrary_filepath_signal.emit(qis_abs_path)
 
-        return super().mousePressEvent(event)
+        super().mousePressEvent(event)

@@ -18,6 +18,7 @@ Proxy Model to clean display of QComponents in Library tab
 import typing
 
 from PySide2.QtCore import QModelIndex, QSortFilterProxyModel, Qt, QSize
+from PySide2.QtWidgets import QWidget
 
 
 class LibraryFileProxyModel(QSortFilterProxyModel):
@@ -25,10 +26,13 @@ class LibraryFileProxyModel(QSortFilterProxyModel):
     Proxy Model to clean up display for QFileSystemLibraryModel
     """
 
-    def __init__(self, *args, **kwargs):
-        """Proxy Model for cleaning up QFileSystemLibraryModel for displaying GUI's QLibrary """
+    def __init__(self, parent: QWidget = None):
+        """Proxy Model for cleaning up QFileSystemLibraryModel for displaying GUI's QLibrary
+        Args:
+            parent: Parent widget
+        """
 
-        super().__init__(*args, **kwargs)
+        super().__init__(parent)
 
         # finds all files that
         # (Aren't hidden (begin w/ .), don't begin with __init__, don't begin with _template, etc. AND end in .py)  OR (don't begin with __pycache__ and don't have a '.' in the name   # pylint: disable=line-too-long
@@ -46,9 +50,16 @@ class LibraryFileProxyModel(QSortFilterProxyModel):
         """
         self.is_dev_mode = ison
 
-    def filterAcceptsColumn(
-            self, source_column: int, source_parent: QModelIndex) -> bool:  #pylint: disable=unused-argument
-        """Filters out unwanted file information in display"""
+    def filterAcceptsColumn(self, source_column: int) -> bool:  #pylint: disable=unused-argument
+        """
+        Filters out unwanted file information in display
+        Args:
+            source_column: Display column in question
+        Returns:
+            bool: Whether to display column
+
+
+        """
         if (self.is_dev_mode and source_column <= self.sourceModel().REBUILD):
             return True
         # Won't show Size, Kind, Date Modified, etc. for QFileSystemModel
@@ -60,7 +71,14 @@ class LibraryFileProxyModel(QSortFilterProxyModel):
     def data(self,
              index: QModelIndex,
              role: int = Qt.DisplayRole) -> typing.Any:
-        """ Sets standard size hint for indexes and allows """
+        """
+        Sets standard size hint for indexes and allows
+        Args:
+            index: Model Index holding data
+            role: DisplayRole being requested of index
+        Returns:
+            Any (QVariant): Data stored under the given role for the item referred to by the index.
+        """
 
         # allow editable
         if role == Qt.EditRole:

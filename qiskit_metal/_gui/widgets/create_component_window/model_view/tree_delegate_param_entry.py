@@ -30,14 +30,17 @@ class ParamDelegate(QItemDelegate):
     def createEditor(self, parent: QWidget, option: QStyleOptionViewItem,
                      index: QModelIndex) -> QWidget:
         """
-        Overriding inherited createdEditor class
+        Overriding inherited createdEditor class.
+        Note that the index contains information about the model being used.
+        The editor's parent widget is specified by parent, and the item options by option.
+
         Args:
             parent: Parent widget
             option: Style options for the related view
             index: Specific index being edited
 
         Returns:
-
+            Returns the editor to be used for editing the data item with the given index.
         """
         if index.column() == TreeModelParamEntry.TYPE:
             node = index.model().nodeFromIndex(index)

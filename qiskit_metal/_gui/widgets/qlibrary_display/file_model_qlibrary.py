@@ -20,7 +20,7 @@ import typing
 
 from PySide2.QtGui import QFont
 from PySide2.QtCore import QFileSystemWatcher, Qt, Signal, QModelIndex
-from PySide2.QtWidgets import (QFileSystemModel)
+from PySide2.QtWidgets import QFileSystemModel, QWidget
 
 
 class QFileSystemLibraryModel(QFileSystemModel):
@@ -37,16 +37,16 @@ class QFileSystemLibraryModel(QFileSystemModel):
     file_dirtied_signal = Signal()
     file_cleaned_signal = Signal()
 
-    def __init__(self, *args):
+    def __init__(self, parent: QWidget = None):
         """
         Initializes Model
 
         is_dev_mode -- Whether the MetalGUI is in Developer Mode or not
 
         Args:
-            *args:
+            parent: Parent widget
         """
-        super().__init__(*args)
+        super().__init__(parent)
 
         self.file_system_watcher = QFileSystemWatcher()
         self.dirtied_files = {}
@@ -60,7 +60,7 @@ class QFileSystemLibraryModel(QFileSystemModel):
         Args:
             file: Filename
 
-        Returns:
+        Returns: Whether file is one the FileWatcher should track
 
         """
         for sub in self.ignored_substrings:
@@ -72,7 +72,7 @@ class QFileSystemLibraryModel(QFileSystemModel):
         """
         Remove file from the dirtied_files dictionary
         and remove any parent files who are only dirty due to
-        this file
+        this file. Emits file_cleaned_signal.
         Args:
             filepath: Clean file path
 
@@ -93,11 +93,10 @@ class QFileSystemLibraryModel(QFileSystemModel):
 
     def dirty_file(self, filepath: str):
         """
-        Adds file and parent directories to the dirtied_files dictionary
+        Adds file and parent directories to the dirtied_files dictionary.
+        Emits file_dirtied_signal
         Args:
             filepath: Dirty file path
-
-        Returns:
 
         """
         filename = self.filepath_to_filename(filepath)
