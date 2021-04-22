@@ -252,13 +252,15 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         model = self.model()
 
         index_dict = {}
+        name_set = set()
         for ind in index_list:
             if ind.row() not in index_dict:
                 index_dict[ind.row()] = ind
+                name_index = model.index(ind.row(), 0)
+                name = model.data(name_index)
+                name_set.add(name)
 
-        for index in index_dict.values():
-            name_index = model.index(index.row(), 0)
-            name = model.data(name_index)
+        for name in name_set:
             if name is not None:
                 ret = QMessageBox.question(
                     self, '',
