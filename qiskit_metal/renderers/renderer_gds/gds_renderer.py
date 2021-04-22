@@ -1632,7 +1632,8 @@ class QGDSRenderer(QRenderer):
                 ground_cell.add(diff_geometry)
 
         self._handle_q_subtract_false(chip_name, chip_layer, ground_cell)
-        self._add_groundcell_to_chip_only_top(lib, chip_only_top, ground_cell)
+        QGDSRenderer._add_groundcell_to_chip_only_top(lib, chip_only_top,
+                                                      ground_cell)
 
     # def _handle_q_subtract_true(self, chip_name: str, chip_layer: int,
     #                             ground_cell: gdspy.library.Cell):
@@ -1674,7 +1675,8 @@ class QGDSRenderer(QRenderer):
                 ground_cell.add(
                     self.chip_info[chip_name][chip_layer]['q_subtract_false'])
 
-    def _add_groundcell_to_chip_only_top(self, lib: gdspy.GdsLibrary,
+    @classmethod
+    def _add_groundcell_to_chip_only_top(cls, lib: gdspy.GdsLibrary,
                                          chip_only_top: gdspy.library.Cell,
                                          ground_cell: gdspy.library.Cell):
         """Add the ground cell to the top of cell for chip.
@@ -1850,6 +1852,7 @@ class QGDSRenderer(QRenderer):
             chip_only_top (gdspy.library.Cell): The cell used for
                                                 just chip_name.
         """
+        # pylint: disable=too-many-locals
         a_cell = lib.extract(row.gds_cell_name)
         a_cell_bounding_box = a_cell.get_bounding_box()
 
