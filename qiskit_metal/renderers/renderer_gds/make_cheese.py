@@ -26,6 +26,8 @@ class Cheesing():
     # pylint: disable=too-many-instance-attributes
     # pylint: disable=too-many-arguments
     # pylint: disable=too-many-locals
+    # pylint: disable=too-few-public-methods
+
     # To be used by QGDSRenderer only.
     # Number of instance attributes is acceptable for this case.
 
@@ -393,10 +395,11 @@ class Cheesing():
             ground_cheese_cell = self.lib.new_cell(ground_cheese_cell_name,
                                                    overwrite_duplicate=True)
             return ground_cheese_cell.add(ground_cheese)
-        else:
-            self.logger.warning(
-                f'The cell:{top_chip_layer_name} was not found in self.lib. '
-                f'Cheesing not implemented.')
+
+        self.logger.warning(
+            f'The cell:{top_chip_layer_name} was not found in self.lib. '
+            f'Cheesing not implemented.')
+        return None
 
     def _move_to_under_top_name(self, ground_cheese_cell: gdspy.library.Cell):
         """Move the cheesed cell to under TOP_<chip name>.
