@@ -18,5 +18,5 @@ from .. import Dict
 
 
 def setup_renderers():
-    """Use config to set up default renderes."""
+    """Use config to set up default renderers."""
     return Dict()
