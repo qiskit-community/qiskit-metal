@@ -85,8 +85,8 @@ class QDesign(
         """
 
         # _qcomponent_latest_assigned_id -- Used to keep a tally and ID of all components within an
-        # instanziation of a design.
-        # A component is added to a design by base._add_to_design with init of a comoponent.
+        # instantiation of a design.
+        # A qcomponent is added to a design by base._add_to_design with init of a qcomponent.
         # During init of component, design class provides an unique id for each instance of
         # component being added to design.  Note, if a component is removed from the design,
         # the ID of removed component should not be used again.  However, if a component is
@@ -566,7 +566,7 @@ class QDesign(
         #          return false
         #   if it does not then delete
 
-        # Do delete component ruthelessly
+        # Do delete component ruthlessly
         return self._delete_component(component_id)
 
     def _delete_component(self, component_id: int) -> bool:
@@ -686,7 +686,7 @@ class QDesign(
         options_superimpose: dict = dict(
         )  # pylint disable=dangerous-default-value
     ) -> Union['QComponent', None]:
-        """Copy a coponent in QDesign and
+        """Copy a qcomponent in QDesign and
         add it to QDesign._components using
         options_overwrite.
 
@@ -694,7 +694,7 @@ class QDesign(
             original_class (QComponent): The QComponent to copy.
             new_component_name (str): The name should not already
               be in QDesign, if it is, the copy fill fail.
-            options_superimpose (dict): Can use differnt options
+            options_superimpose (dict): Can use different options
               for copied QComponent. Will start with the options
               in original QComponent, and then superimpose with
               options_superimpose. An example would be x and y locations.
@@ -703,7 +703,7 @@ class QDesign(
             union['QComponent', None]: None if not copied, otherwise, a QComponent instance.
         """
 
-        # overwrite orignal option with new options
+        # overwrite original option with new options
         options = {**original_qcomponent.options, **options_superimpose}
         path_class_name = original_qcomponent.class_name
         module_path = path_class_name[:path_class_name.rfind('.')]
@@ -740,7 +740,7 @@ class QDesign(
 
     def save_design(self, path: str = None):
         """Save the metal design to a Metal file. If no path is given, then
-        tried to use self.save_pathif it is set.
+        tried to use self.save_path if it is set.
 
         Arguments:
             path (str): Path to save the design to.  Defaults to None.
@@ -755,7 +755,7 @@ class QDesign(
             if self.save_path is None:
                 self.logger.error(
                     'Cannot save design since you did not provide a path to'
-                    'save to yet. Once you save the dewisgn to a path, the then you call save '
+                    'save to yet. Once you save the design to a path, the then you call save '
                     'without an argument.')
             else:
                 path = self.save_path
@@ -776,7 +776,7 @@ class QDesign(
 
     def parse_value(self, value: Union[Any, List, Dict, Iterable]) -> Any:
         """Main parsing function. Parse a string, mappable (dict, Dict),
-        iterrable (list, tuple) to account for units conversion, some basic
+        iterable (list, tuple) to account for units conversion, some basic
         arithmetic, and design variables.
 
         Arguments:
@@ -791,7 +791,7 @@ class QDesign(
             Strings:
                 Strings of numbers, numbers with units; e.g., '1', '1nm', '1 um'
                     Converts to int or float.
-                    Some basic arithmatic is possible, see below.
+                    Some basic arithmetic is possible, see below.
                 Strings of variables 'variable1'.
                     Variable interpertation will use string method
                     isidentifier 'variable1'.isidentifier()
@@ -800,8 +800,8 @@ class QDesign(
                 Returns ordered `Dict` with same key-value mappings, where the values have
                 been subjected to parse_value.
 
-            Itterables(list, tuple, ...):
-                Returns same kind and calls itself `parse_value` on each elemnt.
+            Iterables(list, tuple, ...):
+                Returns same kind and calls itself `parse_value` on each element.
 
             Numbers:
                 Returns the number as is. Int to int, etc.
@@ -900,7 +900,7 @@ class QDesign(
     def _start_renderers(self):
         """Start the renderers.
 
-        First import the renderers identifed in
+        First import the renderers identified in
         config.renderers_to_load. Then register them into QDesign.
         Finally populate self.renderer_defaults_by_table
         """
