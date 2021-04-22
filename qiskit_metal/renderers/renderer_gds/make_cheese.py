@@ -14,14 +14,12 @@
 """ For GDS export, separate the logic for cheesing."""
 
 import logging
+from typing import Union
 import gdspy
 import shapely
 import numpy as np
 
-#from ... import Dict
 
-
-### Presently this is not instantiated nor called nor executed.
 class Cheesing():
     """Create a cheese cell based on input of no-cheese locations."""
 
@@ -152,21 +150,23 @@ class Cheesing():
         self.hole = None
 
     def apply_cheesing(self) -> gdspy.GdsLibrary:
-        """Not complete.
+        """Prototype, not complete.
 
         Need to populate self.lib with cheese holes.
         """
 
-        if self.error_checking_hole_delta() == 0:
-            self.make_one_hole_at_zero_zero()
-            _ = self.hole_to_lib()
-            self.cell_with_grid()
+        if self._error_checking_hole_delta() == 0:
+            # Place hole into self.hole
+            self._make_one_hole_at_zero_zero()
+
+            _ = self._hole_to_lib()
+            self._cell_with_grid()
         else:
             self.logger.warning('Cheesing not implemented.')
 
         return self.lib
 
-    def error_checking_hole_delta(self) -> int:
+    def _error_checking_hole_delta(self) -> int:
         """Check ratio of hole size vs hole spacing.
 
         Returns:
@@ -194,7 +194,7 @@ class Cheesing():
 
         return observe
 
-    def make_one_hole_at_zero_zero(self):
+    def _make_one_hole_at_zero_zero(self):
         """This method will create just one hole used for cheesing defined by a
         shapely object.
 
@@ -211,8 +211,10 @@ class Cheesing():
                 f'The cheese_shape={self.cheese_shape} is unknown in Cheesing class.'
             )
 
-    def hole_to_lib(self) -> gdspy.polygon.Polygon:
+    def _hole_to_lib(self) -> gdspy.polygon.Polygon:
         """Convert the self.hole to a gds cell and add to self.lib.
+        Put the hole on datatype_cheese +2.  This is expected to change when
+        we agree to some convention.
 
         Returns:
             gdspy.polygon.Polygon: The gdspy polygon for single hole for cheesing. None is not made.
@@ -221,7 +223,7 @@ class Cheesing():
         if isinstance(self.hole, shapely.geometry.Polygon):
             exterior_poly = gdspy.Polygon(list(self.hole.exterior.coords),
                                           layer=self.layer,
-                                          datatype=self.datatype_cheese)
+                                          datatype=self.datatype_cheese + 2)
 
             # If polygons have a holes, need to remove (subtract) it for gdspy.
             all_interiors = list()
@@ -232,13 +234,13 @@ class Cheesing():
                     all_interiors.append(interior_coords)
                 a_poly_set = gdspy.PolygonSet(all_interiors,
                                               layer=self.layer,
-                                              datatype=self.datatype_cheese)
+                                              datatype=self.datatype_cheese + 2)
                 a_poly = gdspy.boolean(exterior_poly,
                                        a_poly_set,
                                        'not',
                                        max_points=self.max_points,
                                        layer=self.layer,
-                                       datatype=self.datatype_cheese)
+                                       datatype=self.datatype_cheese + 2)
             else:
                 a_poly = exterior_poly.fracture(max_points=self.max_points)
         else:
@@ -261,7 +263,7 @@ class Cheesing():
 
         return a_poly
 
-    def cell_with_grid(self):
+    def _cell_with_grid(self):
         """Use the hole at self.one_hole_cell to create a grid.
 
         Then use the no_cheese cell to remove the holes from grid.  The
@@ -269,24 +271,49 @@ class Cheesing():
         geometry. The cells are added to the Top_<chip_name>.
         """
 
-        gather_holes_cell = self.lib.new_cell('Gather_holes',
-                                              overwrite_duplicate=True)
+        gather_holes_cell = self._get_all_holes()
 
-        x_holes = np.arange(self.grid_minx,
-                            self.grid_maxx,
-                            self.delta_x,
-                            dtype=float).tolist()
-        y_holes = np.arange(self.grid_miny,
-                            self.grid_maxy,
-                            self.delta_y,
-                            dtype=float).tolist()
+        diff_holes_cell = self._subtract_keepout_from_hole_grid(
+            gather_holes_cell)
+        self.lib.remove(gather_holes_cell)
 
-        if self.one_hole_cell is not None:
-            for x_loc in x_holes:
-                for y_loc in y_holes:
-                    gather_holes_cell.add(
-                        gdspy.CellReference(self.one_hole_cell,
-                                            origin=(x_loc, y_loc)))
+        self._subtract_from_ground_and_move_under_top_name(diff_holes_cell)
+
+    def _subtract_from_ground_and_move_under_top_name(
+            self, diff_holes_cell: gdspy.library.Cell):
+        """Get the existing chip_only_top_name cell, then add the holes to it.
+        Also, add ground_cheesed_cell under chip_only_top_name
+
+        Args:
+            diff_holes_cell (gdspy.library.Cell): New cell with cheesed ground
+        """
+
+        chip_only_top_name = f'TOP_{self.chip_name}'
+        if chip_only_top_name in self.lib.cells:
+            if diff_holes_cell.get_bounding_box() is not None:
+                self.lib.cells[chip_only_top_name].add(
+                    gdspy.CellReference(diff_holes_cell))
+                ground_cheese_cell = self._subtract_holes_from_ground(
+                    diff_holes_cell)
+
+                #Move to under Top_main (Top_chipname)
+                self._move_to_under_top_name(ground_cheese_cell)
+            else:
+                self.lib.remove(diff_holes_cell)
+
+    def _subtract_keepout_from_hole_grid(
+            self, gather_holes_cell: gdspy.library.Cell) -> gdspy.library.Cell:
+        """Given a cell with all the holes, subtract the keepout region.
+        Then return a new cell with the result.
+
+        Args:
+            gather_holes_cell (gdspy.library.Cell): Holds a grid of all
+                                                the holes for cheesing.
+
+        Returns:
+            gdspy.library.Cell: Newly created cell that holds the difference
+                                        of holes minus the keep=out region.
+        """
 
         # subtact the keepout, note, Based on user options,
         # the keepout (no_cheese) cell may not be in self.lib.
@@ -306,16 +333,49 @@ class Cheesing():
         diff_holes_cell.add(diff_holes)
 
         self.lib.remove('temp_keepout')
+        return diff_holes_cell
 
-        #Move to under Top_main (Top_chipname)
-        chip_only_top_name = f'TOP_{self.chip_name}'
-        if chip_only_top_name in self.lib.cells:
-            if diff_holes_cell.get_bounding_box() is not None:
-                self.lib.cells[chip_only_top_name].add(
-                    gdspy.CellReference(diff_holes_cell))
-                self.lib.remove(gather_holes_cell)
-            else:
-                self.lib.remove(diff_holes_cell)
+    def _get_all_holes(self) -> gdspy.library.Cell:
+        """Return a cell with a grid of holes. The keepout has not been
+        applied yet.
+
+        Returns:
+            gdspy.library.Cell: Cell containing all the holes.
+        """
+        gather_holes_cell = self.lib.new_cell('Gather_holes',
+                                              overwrite_duplicate=True)
+
+        x_holes = np.arange(self.grid_minx,
+                            self.grid_maxx,
+                            self.delta_x,
+                            dtype=float).tolist()
+        y_holes = np.arange(self.grid_miny,
+                            self.grid_maxy,
+                            self.delta_y,
+                            dtype=float).tolist()
+
+        if self.one_hole_cell is not None:
+            for x_loc in x_holes:
+                for y_loc in y_holes:
+                    gather_holes_cell.add(
+                        gdspy.CellReference(self.one_hole_cell,
+                                            origin=(x_loc, y_loc)))
+
+        return gather_holes_cell
+
+    def _subtract_holes_from_ground(
+            self, diff_holes_cell) -> Union[gdspy.library.Cell, None]:
+        """Get reference to ground cell and then subtract the holes from
+        ground. Place the difference into a new cell, which will eventually
+        be added under Top.
+
+        Args:
+            diff_holes_cell ([type]): Cell which contains all the holes.
+
+        Returns:
+            Union[gdspy.library.Cell, None]: If worked, the new cell with
+            cheesed ground, otherwise, None.
+        """
 
         # Still need to 'not' with Top_main_1 (ground)
         top_chip_layer_name = f'TOP_{self.chip_name}_{self.layer}'
@@ -332,13 +392,19 @@ class Cheesing():
                                        f'_Cheese_{self.datatype_cheese}')
             ground_cheese_cell = self.lib.new_cell(ground_cheese_cell_name,
                                                    overwrite_duplicate=True)
-            ground_cheese_cell.add(ground_cheese)
+            return ground_cheese_cell.add(ground_cheese)
         else:
             self.logger.warning(
                 f'The cell:{top_chip_layer_name} was not found in self.lib. '
                 f'Cheesing not implemented.')
 
-        #Move to under Top_main (Top_chipname)
+    def _move_to_under_top_name(self, ground_cheese_cell: gdspy.library.Cell):
+        """Move the cheesed cell to under TOP_<chip name>.
+
+        Args:
+            ground_cheese_cell (gdspy.library.Cell): Cell with cheesing
+                                                subtracted from ground.
+        """
         chip_only_top_name = f'TOP_{self.chip_name}'
         if chip_only_top_name in self.lib.cells:
             if ground_cheese_cell.get_bounding_box() is not None:
