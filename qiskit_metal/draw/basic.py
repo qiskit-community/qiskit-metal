@@ -31,7 +31,7 @@ import shapely.wkt
 from shapely.geometry import CAP_STYLE, JOIN_STYLE, Point, Polygon
 
 from .. import config, logger
-from ..qlibrary.base import is_component
+from .. import is_component
 from ..config import DefaultMetalOptions
 from . import BaseGeometry
 from .utility import get_poly_pts

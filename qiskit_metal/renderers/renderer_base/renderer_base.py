@@ -423,8 +423,11 @@ class QRenderer():
         self.render_components()
         # ...
 
-    def render_chips(self):
+    def render_chips(self, all_chips):
         """Render all chips of the design. Calls render_chip for each chip.
+
+        Args: 
+            all_chips (list): All chip names to render.
 
         Raises:
             NotImplementedError: Function not written yet
@@ -440,7 +443,7 @@ class QRenderer():
         """Render the given chip.
 
         Args:
-            name (str): Chip to render
+            name (str): Chip to render.
 
         Raises:
             NotImplementedError: Function not written yet

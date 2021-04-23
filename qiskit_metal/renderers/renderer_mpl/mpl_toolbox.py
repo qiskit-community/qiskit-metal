@@ -25,7 +25,7 @@ from matplotlib.cbook import _OrderedSet
 from shapely.geometry import LinearRing, Polygon  # Point, LineString,
 
 from ... import Dict
-from ...qlibrary import is_component
+from ... import is_component
 from ...draw import BaseGeometry
 from .mpl_interaction import figure_pz
 

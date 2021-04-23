@@ -11,20 +11,25 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
+""" For GDS export, separate the logic for cheesing."""
 
-from ... import Dict
-import math
-import os
+import logging
 import gdspy
 import shapely
 import numpy as np
-import pandas as pd
-import logging
+
+#from ... import Dict
 
 
 ### Presently this is not instantiated nor called nor executed.
 class Cheesing():
     """Create a cheese cell based on input of no-cheese locations."""
+
+    # pylint: disable=too-many-instance-attributes
+    # pylint: disable=too-many-arguments
+    # pylint: disable=too-many-locals
+    # To be used by QGDSRenderer only.
+    # Number of instance attributes is acceptable for this case.
 
     def __init__(
         self,
@@ -59,25 +64,37 @@ class Cheesing():
         """Create the cheesing based on the no-cheese multi_poly.
 
         Args:
-            multi_poly (shapely.geometry.multipolygon.MultiPolygon): The area on chip for no-cheese.
-            all_nocheese_gds (list): The same as multi_poly, but a list to be used for gdspy.
+            multi_poly (shapely.geometry.multipolygon.MultiPolygon): The area
+                                                        on chip for no-cheese.
+            all_nocheese_gds (list): The same as multi_poly, but a list to be
+                                    used for gdspy.
             lib (gdspy.GdsLibrary): Holds all of the cells for export.
             minx (float): Chip minimum x location.
             miny (float): Chip minimum y location.
             maxx (float): Chip maximum x location.
             maxy (float): Chip maximum y location.
             chip_name (str): User defined chip name.
-            edge_nocheese (float): Keep a buffer around the perimeter of chip, that will not need cheesing.
+            edge_nocheese (float): Keep a buffer around the perimeter of chip,
+                                    that will not need cheesing.
             layer (int): Layer number for calculating the cheese.
-            datatype_cheese (int): User defined datatype, considered a sub-layer number for where to place the cheese output.
-            datatype_keepout (int): User defined datatype, considered a sub-layer number for where to place the keepout of cheese.
-            max_points (int): Used in gdspy to identify max number of points for a Polygon.
+            datatype_cheese (int): User defined datatype, considered a
+                                sub-layer number for where to place the
+                                cheese output.
+            datatype_keepout (int): User defined datatype, considered a
+                                sub-layer number for where to place the
+                                keepout of cheese.
+            max_points (int): Used in gdspy to identify max number of points
+                                for a Polygon.
             precision (float): Used in gdspy to identify precision.
             logger (logging.Logger):  Used to give warnings and errors.
-            cheese_shape (int, optional): 0 is rectangle. 1 is circle. Defaults to 0.
-            shape_0_x (float, optional): The width will be centered at (x=0,y=0). Defaults to 0.000050.
-            shape_0_y (float, optional): The height will be centered at (x=0,y=0). Defaults to 0.000050.
-            shape_1_radius (float, optional): The radius of circle. Defaults to 0.000025.
+            cheese_shape (int, optional): 0 is rectangle. 1 is circle.
+                                        Defaults to 0.
+            shape_0_x (float, optional): The width will be centered at
+                                    (x=0,y=0). Defaults to 0.000050.
+            shape_0_y (float, optional): The height will be centered at
+                                    (x=0,y=0). Defaults to 0.000050.
+            shape_1_radius (float, optional): The radius of circle.
+                                    Defaults to 0.000025.
             delta_x (float, optional): The spacing between holes in x.
             delta_y (float, optional): The spacing between holes in y.
         """
@@ -127,10 +144,12 @@ class Cheesing():
 
         if self.grid_maxx <= self.grid_minx or self.grid_maxy <= self.grid_miny:
             self.logger.warning(
-                f'When edge_nocheese is applied to decrease the chip size, of where cheesing ',
+                'When edge_nocheese is applied to decrease the chip size, of where cheesing ',
                 'will happen, the resulting size is not realistic.')
 
         self.one_hole_cell = None
+
+        self.hole = None
 
     def apply_cheesing(self) -> gdspy.GdsLibrary:
         """Not complete.
@@ -138,12 +157,12 @@ class Cheesing():
         Need to populate self.lib with cheese holes.
         """
 
-        if 0 == self.error_checking_hole_delta():
+        if self.error_checking_hole_delta() == 0:
             self.make_one_hole_at_zero_zero()
-            gdspy_hole = self.hole_to_lib()
+            _ = self.hole_to_lib()
             self.cell_with_grid()
         else:
-            self.logger.warning(f'Cheesing not implemented.')
+            self.logger.warning('Cheesing not implemented.')
 
         return self.lib
 
@@ -182,8 +201,9 @@ class Cheesing():
         It will be placed in self.hole.
         """
         if self.cheese_shape == 0:
-            w, h = self.shape_0_x, self.shape_0_y
-            self.hole = shapely.geometry.box(-w / 2, -h / 2, w / 2, h / 2)
+            width, height = self.shape_0_x, self.shape_0_y
+            self.hole = shapely.geometry.box(-width / 2, -height / 2, width / 2,
+                                             height / 2)
         elif self.cheese_shape == 1:
             self.hole = shapely.geometry.Point(0, 0).buffer(self.shape_1_radius)
         else:
@@ -207,10 +227,10 @@ class Cheesing():
             all_interiors = list()
             geom = self.hole
             if geom.interiors:
-                for hole in geom.interiors:
-                    interior_coords = list(hole.coords)
+                for inside in geom.interiors:
+                    interior_coords = list(inside.coords)
                     all_interiors.append(interior_coords)
-                a_poly_set = gdspy.PloygonSet(all_interiors,
+                a_poly_set = gdspy.PolygonSet(all_interiors,
                                               layer=self.layer,
                                               datatype=self.datatype_cheese)
                 a_poly = gdspy.boolean(exterior_poly,
@@ -223,9 +243,8 @@ class Cheesing():
                 a_poly = exterior_poly.fracture(max_points=self.max_points)
         else:
             hole_type = type(self.hole)
-            self.logger.warning(
-                f'The self.hole was not converted to gdspy; the type \'{hole_type}\' was not handled.'
-            )
+            self.logger.warning(f'The self.hole was not converted to gdspy; '
+                                f'the type \'{hole_type}\' was not handled.')
 
         #convert a_poly to cell, then use cell reference to add to all the cheese in chip_rect_gds
         chip_only_top_name = f'TOP_{self.chip_name}'
@@ -308,14 +327,15 @@ class Cheesing():
                                           precision=self.precision,
                                           layer=self.layer,
                                           datatype=self.datatype_cheese)
-            ground_cheese_cell_name = f'TOP_{self.chip_name}_{self.layer}_Cheese_{self.datatype_cheese}'
+            ground_cheese_cell_name = (f'TOP_{self.chip_name}_{self.layer}'
+                                       f'_Cheese_{self.datatype_cheese}')
             ground_cheese_cell = self.lib.new_cell(ground_cheese_cell_name,
                                                    overwrite_duplicate=True)
             ground_cheese_cell.add(ground_cheese)
         else:
             self.logger.warning(
-                f'The cell:{top_chip_layer_name} was not found in self.lib. Cheesing not implemented.'
-            )
+                f'The cell:{top_chip_layer_name} was not found in self.lib. '
+                f'Cheesing not implemented.')
 
         #Move to under Top_main (Top_chipname)
         chip_only_top_name = f'TOP_{self.chip_name}'
@@ -324,7 +344,5 @@ class Cheesing():
                 self.lib.cells[chip_only_top_name].add(
                     gdspy.CellReference(ground_cheese_cell))
             else:
-                pass
                 # self.lib.remove(ground_cell)
-
-        return
+                pass

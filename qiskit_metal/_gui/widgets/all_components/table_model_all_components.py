@@ -244,7 +244,7 @@ class QTableModel_AllComponents(QAbstractTableModel):
             if index.column() == 0:
                 component = self.design.components[component_name]
                 if component.status != 'good':  # Did the component fail the build
-                    return QIcon(":/basic/warning")
+                    return QIcon(":/sample_shapes/warning")
 
         elif role == Qt.ToolTipRole or role == Qt.StatusTipRole:
             component = self.design.components[component_name]

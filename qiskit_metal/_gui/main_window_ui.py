@@ -249,7 +249,7 @@ class Ui_MainWindow(object):
         self.dockConnectors = QtWidgets.QDockWidget(MainWindow)
         self.dockConnectors.setMinimumSize(QtCore.QSize(79, 124))
         icon10 = QtGui.QIcon()
-        icon10.addPixmap(QtGui.QPixmap(":/connectors"), QtGui.QIcon.Normal,
+        icon10.addPixmap(QtGui.QPixmap(":/terminations"), QtGui.QIcon.Normal,
                          QtGui.QIcon.On)
         self.dockConnectors.setWindowIcon(icon10)
         self.dockConnectors.setObjectName("dockConnectors")
@@ -369,7 +369,7 @@ class Ui_MainWindow(object):
         self.actionConnectors.setCheckable(True)
         self.actionConnectors.setChecked(False)
         icon20 = QtGui.QIcon()
-        icon20.addPixmap(QtGui.QPixmap(":/connectors"), QtGui.QIcon.Normal,
+        icon20.addPixmap(QtGui.QPixmap(":/terminations"), QtGui.QIcon.Normal,
                          QtGui.QIcon.Off)
         self.actionConnectors.setIcon(icon20)
         self.actionConnectors.setObjectName("actionConnectors")
