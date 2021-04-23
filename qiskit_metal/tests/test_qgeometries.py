@@ -92,6 +92,7 @@ class TestElements(unittest.TestCase):
         self.assertEqual(e_c['junction']['width'], float)
         self.assertEqual(e_c['junction']['__renderers__'], dict())
 
+    # pylint: disable-msg=unused-variable
     def test_qgeometry_true_bools(self):
         """Test that TRUE_BOOLS was not accidentally changed in
         element_handler.py."""
@@ -99,8 +100,9 @@ class TestElements(unittest.TestCase):
         actual = qgeometries_handler.TRUE_BOOLS
 
         self.assertEqual(len(actual), len(expected))
-        for i in range(7):
-            self.assertEqual(actual[i], expected[i])
+
+        for x, _ in enumerate(expected):
+            self.assertTrue(_ in actual)
 
     def test_qgeometry_q_element_constants(self):
         """Test that constants in QGeometryTables class in element_handler.py
@@ -147,8 +149,9 @@ class TestElements(unittest.TestCase):
         actual = qgt.get_element_types()
 
         self.assertEqual(len(expected), len(actual))
-        for i in range(3):
-            self.assertEqual(expected[i], actual[i])
+
+        for x, _ in enumerate(expected):
+            self.assertTrue(_ in actual)
 
     def test_qgeometry_q_element_create_tables(self):
         """Test create_tables in QGeometryTables class in
