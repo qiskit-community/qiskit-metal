@@ -92,9 +92,6 @@ class EigenmodeAndEPR(QAnalysis, NeedsRenderer):
         """Executes the analysis step of the Run. First it initializes the renderer setup
         to prepare for eignemode analysis, then it executes it. Finally it recovers the
         output of the analysis and stores it in self.convergence_t and self.convergence_f.
-
-        Returns:
-            str: Name of the setup that was run.
         """
         self.setup_name = self.renderer.initialize_eigenmode(**self.setup)
 

@@ -72,6 +72,9 @@ class CapMatrixAndLOM(QAnalysis, NeedsRenderer):
         # create and set setup variables
         self._setup = deepcopy(self.default_setup)
 
+        # settings variables
+        self.setup_name = None
+
         # result variables
         self._capacitance_matrix = None
         self._lom_output = None
@@ -99,15 +102,11 @@ class CapMatrixAndLOM(QAnalysis, NeedsRenderer):
         """Executes the analysis step of the Run. First it initializes the renderer setup
         to prepare for the capacitance calculation, then it executes it.
         Finally it recovers the output of the analysis and stores it in self.capacitance_matrix_df
-
-        Returns:
-            str: Name of the setup that was run
         """
-        setup_name = self.renderer.initialize_cap_extract(**self.setup)
+        self.setup_name = self.renderer.initialize_cap_extract(**self.setup)
 
-        self.renderer.analyze_setup(setup_name)
+        self.renderer.analyze_setup(self.setup_name)
         self.capacitance_matrix_df = self.renderer.get_capacitance_matrix()
-        return setup_name
 
     def run(self,
             name: str = None,
@@ -141,8 +140,8 @@ class CapMatrixAndLOM(QAnalysis, NeedsRenderer):
                                             open_pins=open_terminations,
                                             box_plus_buffer=box_plus_buffer)
 
-        setup_name = self._analyze()
-        return renderer_design_name, setup_name
+        self._analyze()
+        return renderer_design_name, self.setup_name
 
     @property
     def capacitance_matrix_df(self) -> pd.DataFrame:
