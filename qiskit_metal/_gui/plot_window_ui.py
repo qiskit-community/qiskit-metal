@@ -53,7 +53,7 @@ class Ui_MainWindowPlot(object):
         self.actionConnectors.setCheckable(True)
         self.actionConnectors.setChecked(False)
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(":/connectors"), QtGui.QIcon.Normal,
+        icon2.addPixmap(QtGui.QPixmap(":/terminations"), QtGui.QIcon.Normal,
                         QtGui.QIcon.Off)
         self.actionConnectors.setIcon(icon2)
         self.actionConnectors.setObjectName("actionConnectors")
@@ -134,7 +134,7 @@ class Ui_MainWindowPlot(object):
         self.actionConnectors.setToolTip(
             QtWidgets.QApplication.translate(
                 "MainWindowPlot",
-                "Show connectors pins for selected qcomponents", None, -1))
+                "Show terminations pins for selected qcomponents", None, -1))
         self.actionConnectors.setShortcut(
             QtWidgets.QApplication.translate("MainWindowPlot", "C", None, -1))
         self.actionCoords.setText(
