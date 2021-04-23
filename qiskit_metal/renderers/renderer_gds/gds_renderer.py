@@ -1353,7 +1353,6 @@ class QGDSRenderer(QRenderer):
 
                                 no_cheese_cell.add(all_nocheese_gds)
 
-                                # chip_only_top_layer_name = f'TOP_{chip_name}_{chip_layer}'
                                 chip_only_top_layer_name = f'TOP_{chip_name}'
 
                                 if no_cheese_cell.get_bounding_box(
@@ -1470,8 +1469,6 @@ class QGDSRenderer(QRenderer):
                              Name needs to include desired extension,
                              i.e. "a_path_and_name.gds".
         """
-        # pylint: disable=too-many-locals
-        # pylint: disable=too-many-branches
 
         precision = float(self.parse_value(self.options.precision))
         max_points = int(self.parse_value(self.options.max_points))
@@ -1533,16 +1530,18 @@ class QGDSRenderer(QRenderer):
             self._positive_mask(lib, chip_only_top, ground_cell, chip_name,
                                 chip_layer, precision, max_points)
         else:
-            self._negative_mask(lib, ground_cell, chip_name, chip_layer,
-                                precision, max_points)
+            self._negative_mask(lib, chip_only_top, ground_cell, chip_name,
+                                chip_layer, precision, max_points)
 
     def _negative_mask(self, lib: gdspy.GdsLibrary,
+                       chip_only_top: gdspy.library.Cell,
                        ground_cell: gdspy.library.Cell, chip_name: str,
                        chip_layer: int, precision: float, max_points: int):
         """Apply logic for negative_mask.
 
         Args:
             lib (gdspy.GdsLibrary): The gdspy library to export.
+            chip_only_top (gdspy.library.Cell): The gdspy cell for top.
             ground_cell (gdspy.library.Cell): Cell created for each layer.
             chip_name (str): Name of chip to render.
             chip_layer (int): Layer of the chip to render.
@@ -1550,18 +1549,22 @@ class QGDSRenderer(QRenderer):
             max_points (int): Used for gdspy. GDSpy uses 199 as the default.
         """
         if len(self.chip_info[chip_name][chip_layer]['q_subtract_true']) != 0:
+
+            # When subtract==True for chip and layer.
             subtract_true_cell_name = f'SUBTRACT_true_{chip_name}_{chip_layer}'
             subtract_true_cell = lib.new_cell(subtract_true_cell_name,
                                               overwrite_duplicate=True)
             subtract_true_cell.add(
                 self.chip_info[chip_name][chip_layer]['q_subtract_true'])
 
+            #When subtract==False for chip and layer.
             subtract_false_cell_name = f'SUBTRACT_false_{chip_name}_{chip_layer}'
             subtract_false_cell = lib.new_cell(subtract_false_cell_name,
                                                overwrite_duplicate=True)
             subtract_false_cell.add(
                 self.chip_info[chip_name][chip_layer]['q_subtract_false'])
 
+            # Difference for True-False.
             diff_geometry = gdspy.boolean(subtract_true_cell.get_polygons(),
                                           subtract_false_cell.get_polygons(),
                                           'not',
@@ -1569,15 +1572,8 @@ class QGDSRenderer(QRenderer):
                                           precision=precision,
                                           layer=chip_layer)
 
-            # diff_geometry = gdspy.boolean(
-            #     self.chip_info[chip_name]['subtract_poly'],
-            #     subtract_cell.get_polygons(),
-            #     'not',
-            #     max_points=max_points,
-            #     precision=precision,
-            #     layer=chip_layer)
-
-            # lib.remove(subtract_cell)
+            lib.remove(subtract_true_cell)
+            lib.remove(subtract_false_cell)
 
             if diff_geometry is None:
                 self.design.logger.warning(
@@ -1585,7 +1581,8 @@ class QGDSRenderer(QRenderer):
             else:
                 ground_cell.add(diff_geometry)
 
-        #self._handle_q_subtract_true(chip_name, chip_layer, ground_cell)
+        QGDSRenderer._add_groundcell_to_chip_only_top(lib, chip_only_top,
+                                                      ground_cell)
 
     def _positive_mask(self, lib: gdspy.GdsLibrary,
                        chip_only_top: gdspy.library.Cell,
@@ -1634,26 +1631,6 @@ class QGDSRenderer(QRenderer):
         self._handle_q_subtract_false(chip_name, chip_layer, ground_cell)
         QGDSRenderer._add_groundcell_to_chip_only_top(lib, chip_only_top,
                                                       ground_cell)
-
-    # def _handle_q_subtract_true(self, chip_name: str, chip_layer: int,
-    #                             ground_cell: gdspy.library.Cell):
-    #     """For each layer, add the subtract=true components to ground.
-
-    #     Args:
-    #         chip_name (str): Name of chip to render.
-    #         chip_layer (int): Name of layer to render.
-    #         ground_cell (gdspy.library.Cell): The cell in lib to add to.
-    #                                         Cell created for each layer.
-    #     """
-    #     if self.chip_info[chip_name][chip_layer]['q_subtract_true'] is None:
-    #         self.logger.warning(f'There is no table named '
-    #                             f'self.chip_info[{chip_name}][q_subtract_true]'
-    #                             f' to write.')
-    #     else:
-    #         if len(self.chip_info[chip_name][chip_layer]
-    #                ['q_subtract_true']) != 0:
-    #             ground_cell.add(
-    #                 self.chip_info[chip_name][chip_layer]['q_subtract_true'])
 
     def _handle_q_subtract_false(self, chip_name: str, chip_layer: int,
                                  ground_cell: gdspy.library.Cell):
@@ -1877,27 +1854,32 @@ class QGDSRenderer(QRenderer):
         else:
 
             junction_index_pads = f'r_l_pads_only_{row.Index}'
-            pad_cell = lib.new_cell(junction_index_pads,
-                                    overwrite_duplicate=True)
+            # pad_cell = lib.new_cell(junction_index_pads,
+            #                         overwrite_duplicate=True)
 
-            if pad_left is not None:
-                pad_cell.add(pad_left)
-            if pad_right is not None:
-                pad_cell.add(pad_right)
+            # if pad_left is not None:
+            #     pad_cell.add(pad_left)
+            # if pad_right is not None:
+            #     pad_cell.add(pad_right)
 
-            precision = self.parse_value(self.options.precision)
-            max_points = int(self.parse_value(self.options.max_points))
+            # precision = self.parse_value(self.options.precision)
+            # max_points = int(self.parse_value(self.options.max_points))
 
-            jj_minus_pads = gdspy.boolean(temp_cell,
-                                          pad_cell,
-                                          'not',
-                                          max_points=max_points,
-                                          precision=precision)
-            chip_only_top.add(
-                gdspy.CellReference(jj_minus_pads,
-                                    origin=center,
-                                    rotation=rotation))
-            #lib.remove(pad_cell)
+            # jj_minus_pads = gdspy.boolean(temp_cell,
+            #                               pad_cell,
+            #                               'not',
+            #                               max_points=max_points,
+            #                               precision=precision)
+
+            # if jj_minus_pads.get_bounding_box():
+            #     chip_only_top.add(
+            #         gdspy.CellReference(jj_minus_pads,
+            #                             origin=center,
+            #                             rotation=rotation))
+            # else:
+            #     lib.remove(jj_minus_pads)
+
+            # lib.remove(pad_cell)
 
     def export_to_gds(self,
                       file_name: str,
