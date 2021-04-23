@@ -18,7 +18,6 @@ from copy import deepcopy
 import pandas as pd
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-import pyEPR as epr
 from pyEPR.reports import (plot_convergence_f_vspass, plot_convergence_max_df,
                            plot_convergence_maxdf_vs_sol,
                            plot_convergence_solved_elem)
@@ -40,8 +39,7 @@ class EigenmodeAndEPR(QAnalysis, NeedsRenderer):
                          min_converged=1,
                          pct_refinement=30,
                          basis_order=-1,
-                         Lj='10 nH',
-                         Cj='0 fF')
+                         variables = Dict(Lj='10 nH', Cj='0 fF'))
     """Default setup"""
 
     def __init__(self, design: 'QDesign', renderer_name: str = 'hfss'):
@@ -56,6 +54,9 @@ class EigenmodeAndEPR(QAnalysis, NeedsRenderer):
 
         # create and set setup variables
         self._setup = deepcopy(self.default_setup)
+
+        # settings variables
+        self.setup_name = None
 
         # results variables
         self._convergence_t = None
@@ -76,7 +77,12 @@ class EigenmodeAndEPR(QAnalysis, NeedsRenderer):
         Returns:
             str: Final design name that the renderer used.
         """
-        design_name = self.design.name + "_" + self.renderer_name
+        base_name = self.design.name
+        if "name" in design_selection:
+            if design_selection["name"] is not None:
+                base_name = design_selection["name"]
+                del design_selection["name"]
+        design_name = base_name + "_" + self.renderer_name
         design_name = self.renderer.execute_design(design_name,
                                                    solution_type='eigenmode',
                                                    **design_selection)
@@ -90,14 +96,14 @@ class EigenmodeAndEPR(QAnalysis, NeedsRenderer):
         Returns:
             str: Name of the setup that was run.
         """
-        setup_name = self.renderer.initialize_eigenmode(**self.setup)
+        self.setup_name = self.renderer.initialize_eigenmode(**self.setup)
 
-        self.renderer.analyze_setup(setup_name)
+        self.renderer.analyze_setup(self.setup_name)
         self.convergence_t, self.convergence_f = self.renderer.get_convergences(
         )
-        return setup_name
 
     def run(self,
+            name: str = None,
             components: Union[list, None] = None,
             open_terminations: Union[list, None] = None,
             port_list: Union[list, None] = None,
@@ -111,6 +117,8 @@ class EigenmodeAndEPR(QAnalysis, NeedsRenderer):
         After this method concludes you can inspect the output using this class properties.
 
         Args:
+            name (str): reference name for the somponents selection. If None,
+                it will use the design.name. Defaults to None.
             components (Union[list, None], optional): List of components to render.
                 Defaults to None.
             open_terminations (Union[list, None], optional):
@@ -130,15 +138,16 @@ class EigenmodeAndEPR(QAnalysis, NeedsRenderer):
         if not self.renderer_initialized:
             self._initialize_renderer()
 
-        renderer_design_name = self._render(selection=components,
+        renderer_design_name = self._render(name=name,
+                                            selection=components,
                                             open_pins=open_terminations,
                                             port_list=port_list,
                                             jj_to_port=jj_to_port,
                                             ignored_jjs=ignored_jjs,
                                             box_plus_buffer=box_plus_buffer)
 
-        setup_name = self._analyze()
-        return renderer_design_name, setup_name
+        self._analyze()
+        return renderer_design_name, self.setup_name
 
     @property
     def convergence_f(self):
@@ -231,14 +240,18 @@ class EigenmodeAndEPR(QAnalysis, NeedsRenderer):
 
     ##### Below methods are related to EPR
 
-    def plot_fields(self, *args, **kwargs):
+    def plot_fields(self, object_name, eigenmode, *args, **kwargs):
         """Plots electro(magnetic) fields in the renderer.
         Accepts as args everything parameter accepted by the homonymous renderer method.
+
+        Args:
+            object_name (str): Used to plot on faces of.
 
         Returns:
             None
         """
-        return self.renderer.plot_fields(*args, **kwargs)
+        self.renderer.set_mode(eigenmode, self.setup_name)
+        return self.renderer.plot_fields(*args, **kwargs, object_name=object_name)
 
     def clear_fields(self, names: list = None):
         """
@@ -310,14 +323,25 @@ class EigenmodeAndEPR(QAnalysis, NeedsRenderer):
     def epr_get_stored_energy(self):
         """Calculate the energy stored in the system based on the eigenmode results
         """
+        # package the system information for EPR
+        system = dict()
+        if self.junctions is not None:
+            system['junctions'] = self.junctions
+        if self.dissipatives is not None:
+            system['dissipatives'] = self.dissipatives
+
+        # execute EPR and energy extraction
         self.ℰ_elec, self.ℰ_elec_sub, self.ℰ_mag = self.renderer.epr_get_stored_energy(
-        )
+            **system)
+
+        # present a human-friendly output
         print(f"""
         ℰ_elec_all       = {self.ℰ_elec}
         ℰ_elec_substrate = {self.ℰ_elec_sub}
         EPR of substrate = {self.ℰ_elec_sub / self.ℰ_elec * 100 :.1f}%
 
         ℰ_mag    = {self.ℰ_mag}
+        ℰ_mag % of ℰ_elec_all  = {self.ℰ_mag / self.ℰ_elec * 100 :.1f}%
         """)
 
     def epr_run_analysis(self):
@@ -337,6 +361,13 @@ class EigenmodeAndEPR(QAnalysis, NeedsRenderer):
         Eventually, the analysis code needs to be only here, and the renderer method deprecated
         """
         self.renderer.epr_report_hamiltonian(swp_variable, numeric)
+
+    def epr_get_frequencies(self):
+        """Short-cut to the same-name method found in renderers.ansys_renderer.py
+        Eventually, the analysis code needs to be only here, and the renderer method deprecated
+        """
+        return self.renderer.epr_get_frequencies(self.junctions,
+                                                 self.dissipatives)
 
     def close(self):
         """Collects the operations necessary to close well the sim/analysis

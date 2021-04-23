@@ -84,7 +84,12 @@ class CapMatrixAndLOM(QAnalysis, NeedsRenderer):
         Returns:
             str: Final design name that the renderer used
         """
-        design_name = self.design.name + "_" + self.renderer_name
+        base_name = self.design.name
+        if "name" in design_selection:
+            if design_selection["name"] is not None:
+                base_name = design_selection["name"]
+                del design_selection["name"]
+        design_name = base_name + "_" + self.renderer_name
         design_name = self.renderer.execute_design(design_name,
                                                    solution_type='capacitance',
                                                    **design_selection)
@@ -105,6 +110,7 @@ class CapMatrixAndLOM(QAnalysis, NeedsRenderer):
         return setup_name
 
     def run(self,
+            name: str = None,
             components: Union[list, None] = None,
             open_terminations: Union[list, None] = None,
             box_plus_buffer: bool = True) -> (str, str):
@@ -115,6 +121,8 @@ class CapMatrixAndLOM(QAnalysis, NeedsRenderer):
         After this method concludes you can inspect the output using this class properties.
 
         Args:
+            name (str): reference name for the somponents selection. If None,
+                it will use the design.name. Defaults to None.
             components (Union[list, None], optional): List of components to render.
                 Defaults to None.
             open_terminations (Union[list, None], optional):
@@ -128,7 +136,8 @@ class CapMatrixAndLOM(QAnalysis, NeedsRenderer):
         if not self.renderer_initialized:
             self._initialize_renderer()
 
-        renderer_design_name = self._render(selection=components,
+        renderer_design_name = self._render(name=name,
+                                            selection=components,
                                             open_pins=open_terminations,
                                             box_plus_buffer=box_plus_buffer)
 

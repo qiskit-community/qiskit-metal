@@ -273,12 +273,18 @@ class QAnsysRenderer(QRendererAnalysis):
         Returns:
             bool: True
         """
+        # wipe local variables
+        self.epr_distributed_analysis = None
+        self.epr_quantum_analysis = None
+
+        # close COM connections to ansys
         if self.rdesktop is not None:
             self.rdesktop.release()
         if self.rapp is not None:
             self.rapp.release()
         if self.pinfo:
             self.disconnect_ansys()
+
         return True
 
     def close(self):
@@ -796,23 +802,29 @@ class QAnsysRenderer(QRendererAnalysis):
         setup = self.new_ansys_setup(**kwargs)  #TODO: activate_ansys_setup?
         return setup.name
 
-    def initialize_eigenmode(self, Lj: str, Cj: str, **kwargs):
+    def initialize_eigenmode(self, variables: Dict, **kwargs):
         """Any task that needs to occur before running a simulation, such as creating a setup
+
+        Args:
+            variables (Dict): list of parametric variables to set in the renderer
 
         Returns:
             str: Name of the setup that has been updated
         """
-        self.set_junction(Lj, Cj)
+        self.set_variables(variables)
         setup = self.new_ansys_setup(**kwargs)  #TODO: activate_ansys_setup?
         return setup.name
 
-    def initialize_drivenmodal(self, **kwargs):
+    def initialize_drivenmodal(self, variables: Dict, **kwargs):
         """Any task that needs to occur before running a simulation, such as creating a setup
+
+        Args:
+            variables (Dict): list of parametric variables to set in the renderer
 
         Returns:
             str: Name of the setup that has been updated
         """
-        self.set_junction(Lj, Cj)
+        self.set_variables(variables)
         setup = self.new_ansys_setup(**kwargs)  #TODO: activate_ansys_setup?
         return setup.name
 
@@ -1402,18 +1414,19 @@ class QAnsysRenderer(QRendererAnalysis):
 
                 oEditor.Delete(["NAME:Selections", "Selections:=", select_all])
 
-    def set_junction(self, Lj: str = '10 nH', Cj: str = '0 fF'):
+    def set_variables(self, variables: Dict):
         """Fixes the junctionction properties before setup. This is necessary ecasue the eigenmode
         analysis only considers the junction as a lumped CL element.
 
         Args:
-            Lj (str, optional): Fixes the inductance inductance. Defaults to '10 nH'.
-            Cj (str, optional): Fixes the capacitance inductance. Defaults to '0 fF'.
+            variables (Dict): dictionary of variables to set in Ansys. For example it could
+                contain 'Lj': '10 nH'
         """
         if self.pinfo:
             if self.pinfo.design:
-                self.pinfo.design.set_variable('Lj', Lj)
-                self.pinfo.design.set_variable('Cj', Cj)
+                for k, v in variables.items():
+                    self.pinfo.design.set_variable(k, v)
+                    self.pinfo.design.set_variable(k, v)
 
     # TODO: epr methods below should not be in the renderer, but in the analysis files.
     #  Thus needs to remove the dependency from pinfo, which is Ansys-specific.
@@ -1460,6 +1473,8 @@ class QAnsysRenderer(QRendererAnalysis):
         """
         if junctions is not None or dissipatives is not None:
             self.epr_start(junctions, dissipatives)
+        elif self.epr_distributed_analysis is None:
+            self.epr_start()
 
         if self.pinfo.dissipative['dielectrics_bulk'] is not None:
             eprd = self.epr_distributed_analysis
@@ -1499,3 +1514,10 @@ class QAnsysRenderer(QRendererAnalysis):
             swp_variable=swp_variable)
         self.epr_quantum_analysis.report_results(swp_variable=swp_variable,
                                                  numeric=True)
+
+    def epr_get_frequencies(self,
+                            junctions: dict = None,
+                            dissipatives: dict = None):
+        # TODO: do I need to reset self.pinfo.junctions (does it keep the older analysis one)
+        self.epr_start(junctions, dissipatives)
+        return self.epr_distributed_analysis.get_ansys_frequencies_all()
