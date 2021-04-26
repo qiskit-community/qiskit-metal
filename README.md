@@ -14,6 +14,8 @@ Use the slack channel.  Join [qiskit slack](https://ibm.co/joinqiskitslack) and 
 #### Take part to the live tutorials and discussion
 Through June 2021 we are offering live tutorials and Q&A. [Sign up](https://airtable.com/shrxQEgKqZCf319F3) to receive an invite to the upcoming sessions.  The streaming will also be recorded and made available for offline review.  Find [here](https://github.com/Qiskit/qiskit-metal/blob/main/README_Tutorials.md) more details on schedule and use the Slack channel to give us feedback and to request the most relevant content to you.
 
+The streaming will also be recorded and made available [here](https://www.youtube.com/playlist?list=PLOFEBzvs-VvqHl5ZqVmhB_FcSqmLufsjb) for offline review.
+
 ## Documentation 
 After installation, you can open the documentation like this
 ```python
