@@ -1854,22 +1854,22 @@ class QGDSRenderer(QRenderer):
         else:
 
             junction_index_pads = f'r_l_pads_only_{row.Index}'
-            # pad_cell = lib.new_cell(junction_index_pads,
-            #                         overwrite_duplicate=True)
+            pad_cell = lib.new_cell(junction_index_pads,
+                                    overwrite_duplicate=True)
 
-            # if pad_left is not None:
-            #     pad_cell.add(pad_left)
-            # if pad_right is not None:
-            #     pad_cell.add(pad_right)
+            if pad_left is not None:
+                pad_cell.add(pad_left)
+            if pad_right is not None:
+                pad_cell.add(pad_right)
 
-            # precision = self.parse_value(self.options.precision)
-            # max_points = int(self.parse_value(self.options.max_points))
+            precision = self.parse_value(self.options.precision)
+            max_points = int(self.parse_value(self.options.max_points))
 
-            # jj_minus_pads = gdspy.boolean(temp_cell,
-            #                               pad_cell,
-            #                               'not',
-            #                               max_points=max_points,
-            #                               precision=precision)
+            jj_minus_pads = gdspy.boolean(temp_cell,
+                                          pad_cell,
+                                          'not',
+                                          max_points=max_points,
+                                          precision=precision)
 
             # if jj_minus_pads.get_bounding_box():
             #     chip_only_top.add(
@@ -1879,7 +1879,7 @@ class QGDSRenderer(QRenderer):
             # else:
             #     lib.remove(jj_minus_pads)
 
-            # lib.remove(pad_cell)
+            lib.remove(pad_cell)
 
     def export_to_gds(self,
                       file_name: str,
