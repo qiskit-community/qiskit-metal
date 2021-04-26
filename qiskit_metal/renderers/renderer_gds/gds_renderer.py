@@ -1800,16 +1800,56 @@ class QGDSRenderer(QRenderer):
 
         if os.path.isfile(self.options.path_filename):
             lib.read_gds(self.options.path_filename, units='convert')
+            if not is_true(self.options.positive_mask):
+                # Want to export a negative mask. Gather the pads in the
+                # extention_cell.
+                hold_all_pads_name = f'r_l_hold_all_pads'
+                hold_all_pads_cell = lib.new_cell(hold_all_pads_name,
+                                                  overwrite_duplicate=True)
+
             for row in self.chip_info[chip_name]['junction'].itertuples():
                 #dummy_layer_num = int(row.layer)
-                if row.gds_cell_name in lib.cells.keys():
-                    self._add_extention_to_jj(lib, row, chip_only_top)
-
+                if row.gds_cell_name in lib.cells.keys() and is_true(
+                        self.options.positive_mask):
+                    # When positive mask, just add the pads to chip_only_top
+                    self._add_positive_extention_to_jj(lib, row, chip_only_top)
+                elif row.gds_cell_name in lib.cells.keys():
+                    # For negative mask, collect the pads to subtract,
+                    # then collect the pads for each row, and subtract from
+                    # chip_only_top
+                    self._gather_negative_extention_for_jj(
+                        lib, row, chip_only_top, hold_all_pads_cell)
                 else:
                     self.logger.warning(
                         f'From the "junction" table, the cell named'
                         f' "{row.gds_cell_name}"",  is not in file: {self.options.path_filename}.'
                         f' The cell was not used.')
+
+            if not is_true(self.options.positive_mask):
+                # Want to export a negative mask.
+                diff_r_l_pads_name = f'r_l_pads_diff'
+                diff_pad_cell = lib.new_cell(diff_r_l_pads_name,
+                                             overwrite_duplicate=True)
+
+                precision = self.parse_value(self.options.precision)
+                max_points = int(self.parse_value(self.options.max_points))
+
+                # Make sure  the pads to hold_all_pads_cell is not empty
+
+                if chip_only_top.get_bounding_box() is not None:
+
+                    jj_minus_pads = gdspy.boolean(
+                        chip_only_top.get_polygons(),
+                        hold_all_pads_cell.get_polygons(),
+                        'not',
+                        max_points=max_points,
+                        precision=precision)
+                diff_pad_cell.add(jj_minus_pads)
+
+                if hold_all_pads_cell.get_bounding_box() is not None:
+                    chip_only_top.add(gdspy.CellReference(hold_all_pads_cell))
+                else:
+                    lib.remove(hold_all_pads_cell)
 
         else:
             self.logger.warning(
@@ -1817,9 +1857,33 @@ class QGDSRenderer(QRenderer):
                 f'Not used to replace junction.'
                 f' Checked directory:"{directory_name}".')
 
-    def _add_extention_to_jj(self, lib: gdspy.library,
-                             row: 'pandas.core.frame.Pandas',
-                             chip_only_top: gdspy.library.Cell):
+    def _gather_negative_extention_for_jj(
+            self, lib: gdspy.library, row: 'pandas.core.frame.Pandas',
+            chip_only_top: gdspy.library.Cell,
+            hold_all_pads_cell: gdspy.library.Cell):
+
+        a_cell = lib.extract(row.gds_cell_name)
+        a_cell_bounding_box = a_cell.get_bounding_box()
+        chip_only_top.add(a_cell)
+
+        rotation, center, pad_left, pad_right = self._give_rotation_center_twopads(
+            row, a_cell_bounding_box)
+
+        # String for JJ combined with pad Right and pad Left
+        jj_pad_r_l_name = f'{row.gds_cell_name}_QComponent_is_{row.component}_Name_is_{row.name}'
+        temp_cell = lib.new_cell(jj_pad_r_l_name, overwrite_duplicate=True)
+
+        if pad_left is not None:
+            temp_cell.add(pad_left)
+        if pad_right is not None:
+            temp_cell.add(pad_right)
+
+        hold_all_pads_cell.add(
+            gdspy.CellReference(temp_cell, origin=center, rotation=rotation))
+
+    def _add_positive_extention_to_jj(self, lib: gdspy.library,
+                                      row: 'pandas.core.frame.Pandas',
+                                      chip_only_top: gdspy.library.Cell):
         """Get the extention pads, then add or subtract to extracted cell based on
         positive or negative mask.
 
@@ -1829,7 +1893,6 @@ class QGDSRenderer(QRenderer):
             chip_only_top (gdspy.library.Cell): The cell used for
                                                 just chip_name.
         """
-        # pylint: disable=too-many-locals
         a_cell = lib.extract(row.gds_cell_name)
         a_cell_bounding_box = a_cell.get_bounding_box()
 
@@ -1837,49 +1900,18 @@ class QGDSRenderer(QRenderer):
             row, a_cell_bounding_box)
 
         # String for JJ combined with pad Right and pad Left
-        jj_pad_r_l_name = f'{row.gds_cell_name}_component{row.component}_name{row.name}'
+        jj_pad_r_l_name = f'{row.gds_cell_name}_QComponent_is_{row.component}_Name_is_{row.name}'
         temp_cell = lib.new_cell(jj_pad_r_l_name, overwrite_duplicate=True)
         temp_cell.add(a_cell)
 
-        # For testing with positive and negative mask difference.
-        if is_true(self.options.positive_mask):
-            if pad_left is not None:
-                temp_cell.add(pad_left)
-            if pad_right is not None:
-                temp_cell.add(pad_right)
+        if pad_left is not None:
+            temp_cell.add(pad_left)
+        if pad_right is not None:
+            temp_cell.add(pad_right)
 
-            chip_only_top.add(
-                gdspy.CellReference(temp_cell, origin=center,
-                                    rotation=rotation))
-        else:
-
-            junction_index_pads = f'r_l_pads_only_{row.Index}'
-            pad_cell = lib.new_cell(junction_index_pads,
-                                    overwrite_duplicate=True)
-
-            if pad_left is not None:
-                pad_cell.add(pad_left)
-            if pad_right is not None:
-                pad_cell.add(pad_right)
-
-            precision = self.parse_value(self.options.precision)
-            max_points = int(self.parse_value(self.options.max_points))
-
-            jj_minus_pads = gdspy.boolean(temp_cell,
-                                          pad_cell,
-                                          'not',
-                                          max_points=max_points,
-                                          precision=precision)
-
-            # if jj_minus_pads.get_bounding_box():
-            #     chip_only_top.add(
-            #         gdspy.CellReference(jj_minus_pads,
-            #                             origin=center,
-            #                             rotation=rotation))
-            # else:
-            #     lib.remove(jj_minus_pads)
-
-            lib.remove(pad_cell)
+        # "temp_cell" is kept in the lib.
+        chip_only_top.add(
+            gdspy.CellReference(temp_cell, origin=center, rotation=rotation))
 
     def export_to_gds(self,
                       file_name: str,
