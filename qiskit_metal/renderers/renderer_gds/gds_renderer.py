@@ -1802,10 +1802,16 @@ class QGDSRenderer(QRenderer):
             lib.read_gds(self.options.path_filename, units='convert')
             if not is_true(self.options.positive_mask):
                 # Want to export a negative mask. Gather the pads in the
-                # extention_cell.
+                # hold_all_pads_cell.
                 hold_all_pads_name = f'r_l_hold_all_pads'
                 hold_all_pads_cell = lib.new_cell(hold_all_pads_name,
                                                   overwrite_duplicate=True)
+                chip_only_top.add(gdspy.CellReference(hold_all_pads_cell))
+
+                # put all junctions into one cell.
+                hold_all_jj_cell_name = f'all_jj_imported'
+                hold_all_jj_cell = lib.new_cell(hold_all_jj_cell_name,
+                                                overwrite_duplicate=True)
 
             for row in self.chip_info[chip_name]['junction'].itertuples():
                 #dummy_layer_num = int(row.layer)
@@ -1818,7 +1824,7 @@ class QGDSRenderer(QRenderer):
                     # then collect the pads for each row, and subtract from
                     # chip_only_top
                     self._gather_negative_extention_for_jj(
-                        lib, row, chip_only_top, hold_all_pads_cell)
+                        lib, row, hold_all_pads_cell, hold_all_jj_cell)
                 else:
                     self.logger.warning(
                         f'From the "junction" table, the cell named'
@@ -1830,6 +1836,7 @@ class QGDSRenderer(QRenderer):
                 diff_r_l_pads_name = f'r_l_pads_diff'
                 diff_pad_cell = lib.new_cell(diff_r_l_pads_name,
                                              overwrite_duplicate=True)
+                chip_only_top.add(gdspy.CellReference(diff_pad_cell))
 
                 precision = self.parse_value(self.options.precision)
                 max_points = int(self.parse_value(self.options.max_points))
@@ -1837,19 +1844,15 @@ class QGDSRenderer(QRenderer):
                 # Make sure  the pads to hold_all_pads_cell is not empty
 
                 if chip_only_top.get_bounding_box() is not None:
-
                     jj_minus_pads = gdspy.boolean(
                         chip_only_top.get_polygons(),
                         hold_all_pads_cell.get_polygons(),
                         'not',
                         max_points=max_points,
                         precision=precision)
-                diff_pad_cell.add(jj_minus_pads)
-
-                if hold_all_pads_cell.get_bounding_box() is not None:
-                    chip_only_top.add(gdspy.CellReference(hold_all_pads_cell))
-                else:
-                    lib.remove(hold_all_pads_cell)
+                    diff_pad_cell.add(jj_minus_pads)
+                if hold_all_jj_cell.get_bounding_box() is not None:
+                    diff_pad_cell.add(gdspy.CellReference(hold_all_jj_cell))
 
         else:
             self.logger.warning(
@@ -1859,12 +1862,22 @@ class QGDSRenderer(QRenderer):
 
     def _gather_negative_extention_for_jj(
             self, lib: gdspy.library, row: 'pandas.core.frame.Pandas',
-            chip_only_top: gdspy.library.Cell,
-            hold_all_pads_cell: gdspy.library.Cell):
+            hold_all_pads_cell: gdspy.library.Cell,
+            hold_all_jj_cell: gdspy.library.Cell):
+        """Gather the pads and jjs and put them in seprate cells.  The
+        the pads can be boolean'd 'not' just once. After boolean for pads, then
+        the jjs will be added to result.  The boolean is very
+        time intensive, so just want to do it once.
+
+        Args:
+            lib (gdspy.library): The library used to export the entire QDesign.
+            row (pandas.core.frame.Pandas): Each row is from the qgeometry junction table.
+            hold_all_pads_cell (gdspy.library.Cell): Collect all the pads with movement.
+            hold_all_jj_cell (gdspy.library.Cell): Collect all the jj's with movement.
+        """
 
         a_cell = lib.extract(row.gds_cell_name)
         a_cell_bounding_box = a_cell.get_bounding_box()
-        chip_only_top.add(a_cell)
 
         rotation, center, pad_left, pad_right = self._give_rotation_center_twopads(
             row, a_cell_bounding_box)
@@ -1878,6 +1891,8 @@ class QGDSRenderer(QRenderer):
         if pad_right is not None:
             temp_cell.add(pad_right)
 
+        hold_all_jj_cell.add(
+            gdspy.CellReference(a_cell, origin=center, rotation=rotation))
         hold_all_pads_cell.add(
             gdspy.CellReference(temp_cell, origin=center, rotation=rotation))
 
@@ -1889,7 +1904,8 @@ class QGDSRenderer(QRenderer):
 
         Args:
             lib (gdspy.library): The library used to export the entire QDesign.
-            row (pandas.core.frame.Pandas): Each row is from the qgeometry junction table.
+            row (pandas.core.frame.Pandas): Each row is from the qgeometry
+                                            junction table.
             chip_only_top (gdspy.library.Cell): The cell used for
                                                 just chip_name.
         """
@@ -1902,7 +1918,8 @@ class QGDSRenderer(QRenderer):
         # String for JJ combined with pad Right and pad Left
         jj_pad_r_l_name = f'{row.gds_cell_name}_QComponent_is_{row.component}_Name_is_{row.name}'
         temp_cell = lib.new_cell(jj_pad_r_l_name, overwrite_duplicate=True)
-        temp_cell.add(a_cell)
+        #temp_cell.add(a_cell)
+        temp_cell.add(gdspy.CellReference(a_cell))
 
         if pad_left is not None:
             temp_cell.add(pad_left)
