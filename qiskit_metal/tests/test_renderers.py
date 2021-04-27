@@ -443,6 +443,7 @@ class TestRenderers(unittest.TestCase):
         self.assertEqual(actual[0], 15.0)
         self.assertEqual(actual[1], 22.5)
 
+    # pylint: disable-msg=unused-variable
     def test_renderer_gdsrenderer_check_qcomps(self):
         """Test check_qcomps in gds_renderer.py."""
         design = designs.DesignPlanar()
@@ -463,9 +464,8 @@ class TestRenderers(unittest.TestCase):
             self.assertEqual(my_length, len(expected[x][0]))
             self.assertEqual(actual[x][1], expected[x][1])
 
-            # note order is not guarenteed - fix this
-            # for y in range(my_length):
-            #self.assertEqual(actual[x][0][y], expected[x][0][y])
+            for y, _ in enumerate(expected[x][0]):
+                self.assertTrue(_ in actual[x][0])
 
     def test_renderer_mpl_interaction_disconnect(self):
         """Test disconnect in MplInteraction in mpl_interaction.py."""
