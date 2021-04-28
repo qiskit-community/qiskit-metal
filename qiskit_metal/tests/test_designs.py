@@ -32,7 +32,6 @@ from qiskit_metal.qlibrary.core import QComponent
 from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
 from qiskit_metal.tests.assertions import AssertionsMixin
 
-#pylint: disable-msg=line-too-long
 from qiskit_metal.qlibrary.lumped.resonator_coil_rect import ResonatorCoilRect
 
 
@@ -50,7 +49,7 @@ class TestDesign(unittest.TestCase, AssertionsMixin):
     def test_design_instantiate_qdesign(self):
         """Test the instantiation of QDesign."""
         try:
-            QDesign
+            QDesign()
         except Exception:
             self.fail("QDesign failed")
 
@@ -67,7 +66,7 @@ class TestDesign(unittest.TestCase, AssertionsMixin):
     def test_design_instantiate_design_planar(self):
         """Test the instantiation of DesignPlanar."""
         try:
-            DesignPlanar
+            DesignPlanar()
         except Exception:
             self.fail("DesignPlanar failed")
 
@@ -93,9 +92,24 @@ class TestDesign(unittest.TestCase, AssertionsMixin):
     def test_design_instantiate_qnet(self):
         """Test the instantiation of QNet."""
         try:
-            QNet
+            QNet()
         except Exception:
             self.fail("QNet failed")
+
+    def test_design_get_chip_layer(self):
+        """Test getting chip size in design_base.py."""
+        design = QDesign(metadata={})
+        self.assertEqual(design.get_chip_layer('main'), 0)
+
+    def test_design_rename_variable(self):
+        """Test rename_variable in QDesign class"""
+        design = QDesign(metadata={})
+        design.rename_variable('cpw_gap', 'new_name')
+        my_keys = design._variables.keys()
+
+        self.assertEqual(len(my_keys), 2)
+        self.assertTrue('cpw_width' in my_keys)
+        self.assertTrue('new_name' in my_keys)
 
     def test_design_update_metadata(self):
         """Test the update of metadata in design_base.py."""

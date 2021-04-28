@@ -16,6 +16,7 @@
 # pylint: disable-msg=broad-except
 # pylint: disable-msg=too-many-public-methods
 # pylint: disable-msg=import-error
+# pylint: disable-msg=protected-access
 """Qiskit Metal unit tests analyses functionality."""
 
 import unittest
@@ -23,12 +24,16 @@ import matplotlib.pyplot as _plt
 
 from qiskit_metal import designs
 from qiskit_metal.renderers import setup_default
+from qiskit_metal.renderers.renderer_ansys.ansys_renderer import QAnsysRenderer
 from qiskit_metal.renderers.renderer_ansys.q3d_renderer import QQ3DRenderer
 from qiskit_metal.renderers.renderer_ansys.hfss_renderer import QHFSSRenderer
 from qiskit_metal.renderers.renderer_base.renderer_base import QRenderer
 from qiskit_metal.renderers.renderer_base.renderer_gui_base import QRendererGui
 from qiskit_metal.renderers.renderer_gds.gds_renderer import QGDSRenderer
 from qiskit_metal.renderers.renderer_mpl.mpl_interaction import MplInteraction
+
+from qiskit_metal.renderers.renderer_ansys import ansys_renderer
+
 from qiskit_metal.qgeometries.qgeometries_handler import QGeometryTables
 from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
 from qiskit_metal import draw
@@ -69,6 +74,14 @@ class TestRenderers(unittest.TestCase):
         except Exception:
             self.fail(
                 "QRenderer(design, initiate=False, render_options={}) failed")
+
+    def test_renderer_instanitate_qansys_renderer(self):
+        """Test instantiation of QAnsysRenderer in ansys_renderer.py"""
+        design = designs.DesignPlanar()
+        try:
+            QAnsysRenderer(design)
+        except Exception:
+            self.fail("QAnsysRenderer() failed")
 
     def test_renderer_instantiate_qrenderer_gui(self):
         """Test instantiation of QRendererGui in renderer_gui_base.py."""
@@ -132,6 +145,55 @@ class TestRenderers(unittest.TestCase):
             QHFSSRenderer(design, initiate=False)
         except Exception:
             self.fail("QHFSSRenderer failed")
+
+    def test_renderer_qansys_renderer_options(self):
+        """Test that defaults in QAnsysRenderer were not accidentally changed."""
+        design = designs.DesignPlanar()
+        renderer = QAnsysRenderer(design)
+        options = renderer.default_options
+
+        self.assertEqual(len(options), 14)
+        self.assertEqual(options['Lj'], '10nH')
+        self.assertEqual(options['Cj'], 0)
+        self.assertEqual(options['_Rj'], 0)
+        self.assertEqual(options['max_mesh_length_jj'], '7um')
+        self.assertEqual(options['project_path'], None)
+        self.assertEqual(options['project_name'], None)
+        self.assertEqual(options['design_name'], None)
+        self.assertEqual(options['ansys_file_extension'], '.aedt')
+        self.assertEqual(options['x_buffer_width_mm'], 0.2)
+        self.assertEqual(options['y_buffer_width_mm'], 0.2)
+        self.assertEqual(options['wb_threshold'], '400um')
+        self.assertEqual(options['wb_offset'], '0um')
+        self.assertEqual(options['wb_size'], 5)
+
+        self.assertEqual(len(options['plot_ansys_fields_options']), 13)
+        self.assertEqual(options['plot_ansys_fields_options']['name'],
+                         "NAME:Mag_E1")
+        self.assertEqual(
+            options['plot_ansys_fields_options']['UserSpecifyName'], '0')
+        self.assertEqual(
+            options['plot_ansys_fields_options']['UserSpecifyFolder'], '0')
+        self.assertEqual(options['plot_ansys_fields_options']['QuantityName'],
+                         "Mag_E")
+        self.assertEqual(options['plot_ansys_fields_options']['PlotFolder'],
+                         "E Field")
+        self.assertEqual(options['plot_ansys_fields_options']['StreamlinePlot'],
+                         "False")
+        self.assertEqual(
+            options['plot_ansys_fields_options']['AdjacentSidePlot'], "False")
+        self.assertEqual(options['plot_ansys_fields_options']['FullModelPlot'],
+                         "False")
+        self.assertEqual(options['plot_ansys_fields_options']['IntrinsicVar'],
+                         "Phase=\'0deg\'")
+        self.assertEqual(options['plot_ansys_fields_options']['PlotGeomInfo_0'],
+                         "1")
+        self.assertEqual(options['plot_ansys_fields_options']['PlotGeomInfo_1'],
+                         "Surface")
+        self.assertEqual(options['plot_ansys_fields_options']['PlotGeomInfo_2'],
+                         "FacesList")
+        self.assertEqual(options['plot_ansys_fields_options']['PlotGeomInfo_3'],
+                         "1")
 
     def test_renderer_qq3d_render_options(self):
         """Test that defaults in QQ3DRenderer were not accidentally changed."""
@@ -246,6 +308,36 @@ class TestRenderers(unittest.TestCase):
         self.assertEqual(len(options['no_cheese']['view_in_file']['main']), 1)
         self.assertEqual(options['no_cheese']['view_in_file']['main'][1], True)
 
+    def test_renderer_ansys_renderer_get_clean_name(self):
+        """Test get_clean_name in ansys_renderer.py"""
+        self.assertEqual(ansys_renderer.get_clean_name('name12'), 'name12')
+        self.assertEqual(ansys_renderer.get_clean_name('12name12'), 'name12')
+        self.assertEqual(ansys_renderer.get_clean_name('name!'), 'name')
+
+    def test_renderer_ansys_renderer_name_delim(self):
+        """Test NAME_DELIM in QAnsysRenderer."""
+        design = designs.DesignPlanar()
+        renderer = QAnsysRenderer(design)
+        self.assertEqual(renderer.NAME_DELIM, '_')
+
+    def test_renderer_ansys_renderer_name(self):
+        """Test name in QAnsysRenderer."""
+        design = designs.DesignPlanar()
+        renderer = QAnsysRenderer(design)
+        self.assertEqual(renderer.name, 'ansys')
+
+    def test_renderer_renderer_base_name(self):
+        """Test name in QRenderer."""
+        design = designs.DesignPlanar()
+        renderer = QRenderer(design)
+        self.assertEqual(renderer.name, 'base')
+
+    def test_renderer_renderer_gui_base_name(self):
+        """Test name in QRenderer."""
+        design = designs.DesignPlanar()
+        renderer = QRendererGui(None, design)
+        self.assertEqual(renderer.name, 'guibase')
+
     def test_renderer_gdsrenderer_inclusive_bound(self):
         """Test functionality of inclusive_bound in gds_renderer.py."""
         design = designs.DesignPlanar()
@@ -296,6 +388,30 @@ class TestRenderers(unittest.TestCase):
         actual = setup_default.setup_renderers()
         self.assertEqual(actual, {})
 
+    def test_renderer_renderer_base_element_table_data(self):
+        """Test element_table_data in QRenderer."""
+        design = designs.DesignPlanar()
+        renderer = QRenderer(design)
+        etd = renderer.element_table_data
+
+        self.assertEqual(len(etd), 0)
+
+    def test_renderer_ansys_renderer_element_table_data(self):
+        """Test element_table_data in QAnsysRenderer."""
+        design = designs.DesignPlanar()
+        renderer = QAnsysRenderer(design)
+        etd = renderer.element_table_data
+
+        self.assertEqual(len(etd), 2)
+        self.assertEqual(len(etd['path']), 1)
+        self.assertEqual(len(etd['junction']), 4)
+
+        self.assertEqual(etd['path']['wire_bonds'], False)
+        self.assertEqual(etd['junction']['inductance'], '10nH')
+        self.assertEqual(etd['junction']['capacitance'], 0)
+        self.assertEqual(etd['junction']['resistance'], 0)
+        self.assertEqual(etd['junction']['mesh_kw_jj'], 7e-06)
+
     def test_renderer_gdsrenderer_high_level(self):
         """Test that high level defaults were not accidentally changed in
         gds_renderer.py."""
@@ -327,6 +443,7 @@ class TestRenderers(unittest.TestCase):
         self.assertEqual(actual[0], 15.0)
         self.assertEqual(actual[1], 22.5)
 
+    # pylint: disable-msg=unused-variable
     def test_renderer_gdsrenderer_check_qcomps(self):
         """Test check_qcomps in gds_renderer.py."""
         design = designs.DesignPlanar()
@@ -347,9 +464,8 @@ class TestRenderers(unittest.TestCase):
             self.assertEqual(my_length, len(expected[x][0]))
             self.assertEqual(actual[x][1], expected[x][1])
 
-            # note order is not guarenteed - fix this
-            # for y in range(my_length):
-            #self.assertEqual(actual[x][0][y], expected[x][0][y])
+            for y, _ in enumerate(expected[x][0]):
+                self.assertTrue(_ in actual[x][0])
 
     def test_renderer_mpl_interaction_disconnect(self):
         """Test disconnect in MplInteraction in mpl_interaction.py."""
