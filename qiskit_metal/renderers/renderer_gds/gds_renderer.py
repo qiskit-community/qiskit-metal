@@ -1794,24 +1794,14 @@ class QGDSRenderer(QRenderer):
                                                 just chip_name.
         """
 
-        # Name of cell, with layer number. Place junction here.
-        #ground_cell_name = f'TOP_{chip_name}_{chip_layer}'
-
-        # to find top level
-        # gdspy.GdsLibrary.top_level()
-        # ? lib.top_level()
-
-        # Access to the cells in the loaded library is provided
-        # through the dictionary (cells indexed by name).
-        # gdspy.GdsLibrary.cell_dict
-        # ?  lib.cell_dict
-
         # Make sure the file exists, before trying to read it.
+
         dummy_status, directory_name = can_write_to_path(
             self.options.path_filename)
 
         if os.path.isfile(self.options.path_filename):
             lib.read_gds(self.options.path_filename, units='convert')
+
             if not is_true(self.options.positive_mask):
                 # Want to export a negative mask. Gather the pads in the
                 # hold_all_pads_cell.
@@ -1826,22 +1816,27 @@ class QGDSRenderer(QRenderer):
                                                 overwrite_duplicate=True)
 
             for row in self.chip_info[chip_name]['junction'].itertuples():
-                #dummy_layer_num = int(row.layer)
-                if row.gds_cell_name in lib.cells.keys() and is_true(
-                        self.options.positive_mask):
-                    # When positive mask, just add the pads to chip_only_top
-                    self._add_positive_extention_to_jj(lib, row, chip_only_top)
-                elif row.gds_cell_name in lib.cells.keys():
-                    # For negative mask, collect the pads to subtract,
-                    # then collect the pads for each row, and subtract from
-                    # chip_only_top
-                    self._gather_negative_extention_for_jj(
-                        lib, row, hold_all_pads_cell, hold_all_jj_cell)
-                else:
-                    self.logger.warning(
-                        f'From the "junction" table, the cell named'
-                        f' "{row.gds_cell_name}"",  is not in file: {self.options.path_filename}.'
-                        f' The cell was not used.')
+                chip_layer = int(row.layer)
+                ground_cell_name = f'TOP_{chip_name}_{chip_layer}'
+                if ground_cell_name in lib.cells.keys():
+                    chip_layer_cell = lib.cells[ground_cell_name]
+
+                    if row.gds_cell_name in lib.cells.keys() and is_true(
+                            self.options.positive_mask):
+                        # When positive mask, just add the pads to chip_only_top
+                        self._add_positive_extention_to_jj(
+                            lib, row, chip_layer_cell)
+                    elif row.gds_cell_name in lib.cells.keys():
+                        # For negative mask, collect the pads to subtract,
+                        # then collect the pads for each row, and subtract from
+                        # chip_only_top
+                        self._gather_negative_extention_for_jj(
+                            lib, row, hold_all_pads_cell, hold_all_jj_cell)
+                    else:
+                        self.logger.warning(
+                            f'From the "junction" table, the cell named'
+                            f' "{row.gds_cell_name}"",  is not in file: {self.options.path_filename}.'
+                            f' The cell was not used.')
 
             if not is_true(self.options.positive_mask):
                 # Want to export a negative mask.
@@ -1910,7 +1905,7 @@ class QGDSRenderer(QRenderer):
 
     def _add_positive_extention_to_jj(self, lib: gdspy.library,
                                       row: 'pandas.core.frame.Pandas',
-                                      chip_only_top: gdspy.library.Cell):
+                                      chip_only_top_layer: gdspy.library.Cell):
         """Get the extention pads, then add or subtract to extracted cell based on
         positive or negative mask.
 
@@ -1918,8 +1913,8 @@ class QGDSRenderer(QRenderer):
             lib (gdspy.library): The library used to export the entire QDesign.
             row (pandas.core.frame.Pandas): Each row is from the qgeometry
                                             junction table.
-            chip_only_top (gdspy.library.Cell): The cell used for
-                                                just chip_name.
+            chip_only_top_layer (gdspy.library.Cell): The cell used for
+                                            chip_name and layer_num.
         """
         a_cell = lib.extract(row.gds_cell_name)
         a_cell_bounding_box = a_cell.get_bounding_box()
@@ -1930,7 +1925,6 @@ class QGDSRenderer(QRenderer):
         # String for JJ combined with pad Right and pad Left
         jj_pad_r_l_name = f'{row.gds_cell_name}_QComponent_is_{row.component}_Name_is_{row.name}'
         temp_cell = lib.new_cell(jj_pad_r_l_name, overwrite_duplicate=True)
-        #temp_cell.add(a_cell)
         temp_cell.add(gdspy.CellReference(a_cell))
 
         if pad_left is not None:
@@ -1939,7 +1933,7 @@ class QGDSRenderer(QRenderer):
             temp_cell.add(pad_right)
 
         # "temp_cell" is kept in the lib.
-        chip_only_top.add(
+        chip_only_top_layer.add(
             gdspy.CellReference(temp_cell, origin=center, rotation=rotation))
 
     def export_to_gds(self,
