@@ -1794,6 +1794,18 @@ class QGDSRenderer(QRenderer):
                                                 just chip_name.
         """
 
+        # Name of cell, with layer number. Place junction here.
+        #ground_cell_name = f'TOP_{chip_name}_{chip_layer}'
+
+        # to find top level
+        # gdspy.GdsLibrary.top_level()
+        # ? lib.top_level()
+
+        # Access to the cells in the loaded library is provided
+        # through the dictionary (cells indexed by name).
+        # gdspy.GdsLibrary.cell_dict
+        # ?  lib.cell_dict
+
         # Make sure the file exists, before trying to read it.
         dummy_status, directory_name = can_write_to_path(
             self.options.path_filename)
