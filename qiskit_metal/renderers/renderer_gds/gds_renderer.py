@@ -85,7 +85,7 @@ class QGDSRenderer(QRenderer):
         * check_short_segments_by_scaling_fillet: '2.0'
         * gds_unit: '1'
         * ground_plane: 'True'
-        * positive_mask: 'True'
+        * negative_mask: [],
         * corners: 'circular bend'
         * tolerance: '0.00001'
         * precision: '0.000000001'
@@ -142,8 +142,8 @@ class QGDSRenderer(QRenderer):
 
         # By default, export_to_gds() will create a positive_mask for every layer.
         # If layer number in list, the mask will be negative for that layer.
-        # If user wants to export to a negative_mask for a specific layer,
-        # add the layer number to list.
+        # If user wants to export to a negative_mask for a all layers,
+        # every layer_number MUST be in list.
         negative_mask=[],
 
         # corners: ('natural', 'miter', 'bevel', 'round', 'smooth',
