@@ -1781,7 +1781,8 @@ class QGDSRenderer(QRenderer):
         """Given lib, import the gds file from default options.  Based on the
         cell name in QGeometry table, import the cell from the gds file and
         place it in hierarchy of chip_only_top. In addition, the linestring
-        should be two vertexes, and denotes two things.  1. The midpoint of
+        should be two vertexes, and denotes two things.
+        1. The midpoint of
         segment is the the center of cell.
 
         2. The angle made by second tuple - fist tuple  for delta y/ delta x
@@ -1802,70 +1803,114 @@ class QGDSRenderer(QRenderer):
         if os.path.isfile(self.options.path_filename):
             lib.read_gds(self.options.path_filename, units='convert')
 
-            if not is_true(self.options.positive_mask):
-                # Want to export a negative mask. Gather the pads in the
-                # hold_all_pads_cell.
-                hold_all_pads_name = f'r_l_hold_all_pads'
-                hold_all_pads_cell = lib.new_cell(hold_all_pads_name,
-                                                  overwrite_duplicate=True)
-                chip_only_top.add(gdspy.CellReference(hold_all_pads_cell))
+            if is_true(self.options.positive_mask):
+                for row in self.chip_info[chip_name]['junction'].itertuples():
+                    chip_layer = int(row.layer)
+                    ground_cell_name = f'TOP_{chip_name}_{chip_layer}'
+                    if ground_cell_name in lib.cells.keys():
+                        chip_layer_cell = lib.cells[ground_cell_name]
 
-                # put all junctions into one cell.
-                hold_all_jj_cell_name = f'all_jj_imported'
-                hold_all_jj_cell = lib.new_cell(hold_all_jj_cell_name,
-                                                overwrite_duplicate=True)
+                        if row.gds_cell_name in lib.cells.keys():
+                            # When positive mask, just add the pads to chip_only_top
+                            self._add_positive_extention_to_jj(
+                                lib, row, chip_layer_cell)
+                        else:
+                            self.logger.warning(
+                                f'From the "junction" table, the cell named'
+                                f' "{row.gds_cell_name}"",  is not in '
+                                f'file: {self.options.path_filename}.'
+                                f' The cell was not used.')
+            else:  # Want to export negative mask
+                # Gather the pads into hold_all_pads_cell for same layer.
+                layers_in_junction_table = set(
+                    self.chip_info[chip_name]['junction']['layer'])
+                for jj_layer in layers_in_junction_table:
+                    chip_only_top_layer_name = f'TOP_{chip_name}_{jj_layer}'
+                    if chip_only_top_layer_name in lib.cells.keys():
+                        chip_only_top_layer = lib.cells[
+                            chip_only_top_layer_name]
+                        hold_all_pads_name = f'r_l_hold_all_pads_{jj_layer}'
+                        hold_all_pads_cell = lib.new_cell(
+                            hold_all_pads_name, overwrite_duplicate=True)
+                        chip_only_top_layer.add(
+                            gdspy.CellReference(hold_all_pads_cell))
 
-            for row in self.chip_info[chip_name]['junction'].itertuples():
-                chip_layer = int(row.layer)
-                ground_cell_name = f'TOP_{chip_name}_{chip_layer}'
-                if ground_cell_name in lib.cells.keys():
-                    chip_layer_cell = lib.cells[ground_cell_name]
+                        # Put all junctions into one cell for same layer.
+                        hold_all_jj_cell_name = f'all_jj_imported_{jj_layer}'
+                        hold_all_jj_cell = lib.new_cell(
+                            hold_all_jj_cell_name, overwrite_duplicate=True)
 
-                    if row.gds_cell_name in lib.cells.keys() and is_true(
-                            self.options.positive_mask):
-                        # When positive mask, just add the pads to chip_only_top
-                        self._add_positive_extention_to_jj(
-                            lib, row, chip_layer_cell)
-                    elif row.gds_cell_name in lib.cells.keys():
-                        # For negative mask, collect the pads to subtract,
-                        # then collect the pads for each row, and subtract from
-                        # chip_only_top
-                        self._gather_negative_extention_for_jj(
-                            lib, row, hold_all_pads_cell, hold_all_jj_cell)
-                    else:
-                        self.logger.warning(
-                            f'From the "junction" table, the cell named'
-                            f' "{row.gds_cell_name}"",  is not in file: {self.options.path_filename}.'
-                            f' The cell was not used.')
-
-            if not is_true(self.options.positive_mask):
-                # Want to export a negative mask.
-                diff_r_l_pads_name = f'r_l_pads_diff'
-                diff_pad_cell = lib.new_cell(diff_r_l_pads_name,
-                                             overwrite_duplicate=True)
-                chip_only_top.add(gdspy.CellReference(diff_pad_cell))
-
-                precision = self.parse_value(self.options.precision)
-                max_points = int(self.parse_value(self.options.max_points))
-
-                # Make sure  the pads to hold_all_pads_cell is not empty
-
-                if chip_only_top.get_bounding_box() is not None:
-                    jj_minus_pads = gdspy.boolean(
-                        chip_only_top.get_polygons(),
-                        hold_all_pads_cell.get_polygons(),
-                        'not',
-                        max_points=max_points,
-                        precision=precision)
-                    diff_pad_cell.add(jj_minus_pads)
-                if hold_all_jj_cell.get_bounding_box() is not None:
-                    diff_pad_cell.add(gdspy.CellReference(hold_all_jj_cell))
+                        self._add_negative_extention_to_jj(
+                            chip_name, jj_layer, lib, chip_only_top,
+                            chip_only_top_layer, hold_all_pads_cell,
+                            hold_all_jj_cell)
 
         else:
             self.logger.warning(
                 f'Not able to find file:"{self.options.path_filename}".  '
                 f'Not used to replace junction.'
                 f' Checked directory:"{directory_name}".')
+
+    def _add_negative_extention_to_jj(self, chip_name: str, jj_layer: int,
+                                      lib: gdspy.library,
+                                      chip_only_top: gdspy.library.Cell,
+                                      chip_only_top_layer: gdspy.library.Cell,
+                                      hold_all_pads_cell: gdspy.library.Cell,
+                                      hold_all_jj_cell: gdspy.library.Cell):
+        """Manipulate existing geometries for the layer that the junctions need
+         to be added.  Since boolean subtaction is computationally intensive,
+         the method will gather the pads for a layer, and do the boolean just
+         once. Then add the junctions to difference.
+
+        Args:
+            chip_name (str): The name of chip.
+            jj_layer (int): The layer the
+            lib (gdspy.library): The library used to export the entire QDesign.
+            chip_only_top (gdspy.library.Cell): The cell used for
+                                                just chip_name.
+            chip_only_top_layer (gdspy.library.Cell): Cell under chip,
+                                                    with specific layer.
+            hold_all_pads_cell (gdspy.library.Cell): Collect all the pads with movement.
+            hold_all_jj_cell (gdspy.library.Cell): Collect all the jj's with movement.
+        """
+
+        boolean_by_layer = self.chip_info[chip_name]['junction'][
+            'layer'] == jj_layer
+        for row in self.chip_info[chip_name]['junction'][
+                boolean_by_layer].itertuples():
+
+            if row.gds_cell_name in lib.cells.keys():
+                # For negative mask, collect the pads to subtract per layer,
+                # and subtract from chip_only_top_layer
+                self._gather_negative_extention_for_jj(lib, row,
+                                                       hold_all_pads_cell,
+                                                       hold_all_jj_cell)
+            else:
+                self.logger.warning(
+                    f'From the "junction" table, the cell named'
+                    f' "{row.gds_cell_name}",  is not in file: '
+                    f'{self.options.path_filename}. The cell was not used.')
+
+        diff_r_l_pads_name = f'r_l_pads_diff_{jj_layer}'
+        diff_pad_cell_layer = lib.new_cell(diff_r_l_pads_name,
+                                           overwrite_duplicate=True)
+        #chip_only_top_layer.add(gdspy.CellReference(diff_pad_cell_layer))
+        chip_only_top.add(gdspy.CellReference(diff_pad_cell_layer))
+
+        precision = self.parse_value(self.options.precision)
+        max_points = int(self.parse_value(self.options.max_points))
+
+        # Make sure  the pads to hold_all_pads_cell is not empty
+
+        if chip_only_top_layer.get_bounding_box() is not None:
+            jj_minus_pads = gdspy.boolean(chip_only_top_layer.get_polygons(),
+                                          hold_all_pads_cell.get_polygons(),
+                                          'not',
+                                          max_points=max_points,
+                                          precision=precision)
+            diff_pad_cell_layer.add(jj_minus_pads)
+        if hold_all_jj_cell.get_bounding_box() is not None:
+            diff_pad_cell_layer.add(gdspy.CellReference(hold_all_jj_cell))
 
     def _gather_negative_extention_for_jj(
             self, lib: gdspy.library, row: 'pandas.core.frame.Pandas',
