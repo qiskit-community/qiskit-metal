@@ -36,7 +36,7 @@ if not config.is_building_docs():
     from qiskit_metal.toolbox_python.utility_functions import get_range_of_vertex_to_not_fillet, data_frame_empty_typed
 
 if TYPE_CHECKING:
-    from ..qlibrary.base import QComponent
+    from ..qlibrary.core import QComponent
     from ..designs import QDesign
 
 __all__ = ['is_qgeometry_table', 'QGeometryTables']  # , 'ElementTypes']

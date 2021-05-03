@@ -13,7 +13,7 @@
 # that they have been altered from the originals.
 
 from qiskit_metal import draw, Dict, is_true
-from qiskit_metal.qlibrary.base.base import QComponent
+from qiskit_metal.qlibrary.core import QComponent
 
 
 class MyQComponent(QComponent):
