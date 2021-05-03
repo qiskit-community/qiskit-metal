@@ -284,14 +284,11 @@ class Cheesing():
 
         if self.is_neg_mask:
             #negative mask for given chip and layer
-            self._add_under_chip_layer(diff_holes_cell)
+            self._move_to_under_top_chip_layer_name(diff_holes_cell)
         else:
             #positive mask for given chip and layer
             self._subtract_from_ground_and_move_under_top_chip_layer(
                 diff_holes_cell)
-
-    def _add_under_chip_layer(self, diff_holes_cell: gdspy.library.Cell):
-        self._move_to_under_top_chip_layer_name_(diff_holes_cell)
 
     def _subtract_from_ground_and_move_under_top_chip_layer(
             self, diff_holes_cell: gdspy.library.Cell):
@@ -313,7 +310,7 @@ class Cheesing():
                     diff_holes_cell)
 
                 #Move to under Top_main_layer (Top_chipname_#)
-                self._move_to_under_top_chip_layer_name_(ground_cheese_cell)
+                self._move_to_under_top_chip_layer_name(ground_cheese_cell)
             else:
                 self.lib.remove(diff_holes_cell)
 
@@ -417,18 +414,16 @@ class Cheesing():
             f'Cheesing not implemented.')
         return None
 
-    def _move_to_under_top_chip_layer_name_(
-            self, ground_cheese_cell: gdspy.library.Cell):
-        """Move the cheesed cell to under TOP_<chip name>.
+    def _move_to_under_top_chip_layer_name(self, a_cell: gdspy.library.Cell):
+        """Move the cell to under TOP_<chip name>_<layer number>.
 
         Args:
-            ground_cheese_cell (gdspy.library.Cell): Cell with cheesing
-                                                subtracted from ground.
+            a_cell (gdspy.library.Cell): A GDSPY cell.
         """
         chip_only_top_chip_layer_name = f'TOP_{self.chip_name}_{self.layer}'
         if chip_only_top_chip_layer_name in self.lib.cells:
-            if ground_cheese_cell.get_bounding_box() is not None:
+            if a_cell.get_bounding_box() is not None:
                 self.lib.cells[chip_only_top_chip_layer_name].add(
-                    gdspy.CellReference(ground_cheese_cell))
+                    gdspy.CellReference(a_cell))
             else:
-                self.lib.remove(ground_cheese_cell)
+                self.lib.remove(a_cell)

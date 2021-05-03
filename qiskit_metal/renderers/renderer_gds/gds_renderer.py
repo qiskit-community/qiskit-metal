@@ -1360,11 +1360,12 @@ class QGDSRenderer(QRenderer):
 
                                 no_cheese_cell.add(all_nocheese_gds)
 
-                                chip_only_top_layer_name = f'TOP_{chip_name}_{chip_layer}'
+                                # Keep the cell out to layer, it becomes part of ground.
+                                chip_only_top_name = f'TOP_{chip_name}'
 
                                 if no_cheese_cell.get_bounding_box(
                                 ) is not None:
-                                    lib.cells[chip_only_top_layer_name].add(
+                                    lib.cells[chip_only_top_name].add(
                                         gdspy.CellReference(no_cheese_cell))
                                 else:
                                     lib.remove(no_cheese_cell)
