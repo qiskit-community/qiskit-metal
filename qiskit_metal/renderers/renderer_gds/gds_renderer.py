@@ -1823,6 +1823,8 @@ class QGDSRenderer(QRenderer):
                                                 just chip_name.
             layers_in_chip (list):  List of all layers in chip.
         """
+        # pylint: disable=too-many-locals
+        # pylint: disable=too-many-nested-blocks
 
         # Make sure the file exists, before trying to read it.
         dummy_status, directory_name = can_write_to_path(
@@ -1948,7 +1950,8 @@ class QGDSRenderer(QRenderer):
         self._clean_hierarchy(lib, chip_only_top, chip_only_top_layer,
                               diff_pad_cell_layer, hold_all_pads_cell)
 
-    def _clean_hierarchy(self, lib, chip_only_top, chip_only_top_layer,
+    @classmethod
+    def _clean_hierarchy(cls, lib, chip_only_top, chip_only_top_layer,
                          diff_pad_cell_layer, hold_all_pads_cell):
         """Delete cell that doesn't have pad nor jjs.  Then use same
         name for correct cell.  Also, get rid of cell that had the pads
