@@ -92,7 +92,7 @@ The goal of Qiskit Metal is to allow for easy quantum hardware modeling with red
     :caption: Tutorials
     :hidden:
 
-    Overview<tut/tutorials/index.rst>
+    Tutorials<tut/index>
     Video Recordings<https://www.youtube.com/playlist?list=PLOFEBzvs-VvqHl5ZqVmhB_FcSqmLufsjb>
 
 .. toctree::
