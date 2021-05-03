@@ -85,7 +85,7 @@ class QGDSRenderer(QRenderer):
         * check_short_segments_by_scaling_fillet: '2.0'
         * gds_unit: '1'
         * ground_plane: 'True'
-        * negative_mask: [],
+        * negative_mask: Dict(main=[])
         * corners: 'circular bend'
         * tolerance: '0.00001'
         * precision: '0.000000001'
@@ -140,11 +140,13 @@ class QGDSRenderer(QRenderer):
         # placed placed in same layer as ground_plane.
         ground_plane='True',
 
-        # By default, export_to_gds() will create a positive_mask for every layer.
-        # If layer number in list, the mask will be negative for that layer.
-        # If user wants to export to a negative_mask for a all layers,
-        # every layer_number MUST be in list.
-        negative_mask=[],
+        # By default, export_to_gds() will create a positive_mask for every
+        # chip and layer.  Within the Dict, there needs to be an entry for each
+        # chip.  Each chip has a list of layers that should export as a
+        # negative mask.  If layer number in list, the mask will be negative
+        # for that layer.  If user wants to export to a negative_mask for all
+        # layers, every layer_number MUST be in list.
+        negative_mask=Dict(main=[]),
 
         # corners: ('natural', 'miter', 'bevel', 'round', 'smooth',
         # 'circular bend', callable, list)
@@ -1355,7 +1357,7 @@ class QGDSRenderer(QRenderer):
 
                                 no_cheese_cell.add(all_nocheese_gds)
 
-                                chip_only_top_layer_name = f'TOP_{chip_name}'
+                                chip_only_top_layer_name = f'TOP_{chip_name}_{chip_layer}'
 
                                 if no_cheese_cell.get_bounding_box(
                                 ) is not None:
@@ -1529,12 +1531,30 @@ class QGDSRenderer(QRenderer):
         ground_cell_name = f'TOP_{chip_name}_{chip_layer}'
         ground_cell = lib.new_cell(ground_cell_name, overwrite_duplicate=True)
 
-        if chip_layer in self.options.negative_mask:
+        if self._is_negative_mask(chip_name, chip_layer):
             self._negative_mask(lib, chip_only_top, ground_cell, chip_name,
                                 chip_layer, precision, max_points)
         else:
             self._positive_mask(lib, chip_only_top, ground_cell, chip_name,
                                 chip_layer, precision, max_points)
+
+    def _is_negative_mask(self, chip: str, layer: int) -> bool:
+        """Check options to see if negative mask is requested for the
+        chip and layer.
+
+        Args:
+            chip (str): Chip name to search for in options.
+            layer (int): Layer to search for within chip.  Determine if this
+                         layer should have negative mask.
+
+        Returns:
+            bool: If there should be a negative mask for this chip and layer.
+        """
+        if chip in self.options.negative_mask.keys():
+            if layer in self.options.negative_mask[chip]:
+                return True
+
+        return False
 
     def _negative_mask(self, lib: gdspy.GdsLibrary,
                        chip_only_top: gdspy.library.Cell,
@@ -1809,7 +1829,7 @@ class QGDSRenderer(QRenderer):
         if os.path.isfile(self.options.path_filename):
             lib.read_gds(self.options.path_filename, units='convert')
             for iter_layer in layers_in_chip:
-                if iter_layer in self.options.negative_mask:
+                if self._is_negative_mask(chip_name, iter_layer):
                     # Want to export negative mask
                     # Gather the pads into hold_all_pads_cell for same layer.
                     if iter_layer in layers_in_junction_table:
