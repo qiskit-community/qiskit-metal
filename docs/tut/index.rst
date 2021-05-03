@@ -22,6 +22,16 @@ Components
     components/*
 
 
+########
+Analysis
+########
+
+
+.. nbgallery::
+    :glob:
+
+    analysis/*
+
 
 .. Hiding - Indices and tables
    :ref:`genindex`
