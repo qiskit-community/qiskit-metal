@@ -43,6 +43,7 @@ class Cheesing():
         chip_name: str,
         edge_nocheese: float,
         layer: int,
+        is_neg_mask: bool,
         datatype_cheese: int,
         datatype_keepout: int,
         logger: logging.Logger,
@@ -77,6 +78,8 @@ class Cheesing():
             edge_nocheese (float): Keep a buffer around the perimeter of chip,
                                     that will not need cheesing.
             layer (int): Layer number for calculating the cheese.
+            is_neg_mask: Export a negative mask for chip and layer of init. If
+                        False, export a positive mask.
             datatype_cheese (int): User defined datatype, considered a
                                 sub-layer number for where to place the
                                 cheese output.
@@ -114,6 +117,7 @@ class Cheesing():
 
         self.edge_nocheese = edge_nocheese
         self.layer = layer
+        self.is_neg_mask = is_neg_mask
         self.datatype_cheese = datatype_cheese
         self.datatype_keepout = datatype_keepout
         self.max_points = max_points
@@ -274,14 +278,22 @@ class Cheesing():
         """
 
         gather_holes_cell = self._get_all_holes()
-
         diff_holes_cell = self._subtract_keepout_from_hole_grid(
             gather_holes_cell)
         self.lib.remove(gather_holes_cell)
 
-        self._subtract_from_ground_and_move_under_top_name(diff_holes_cell)
+        if self.is_neg_mask:
+            #negative mask for given chip and layer
+            self._add_under_chip_layer(diff_holes_cell)
+        else:
+            #positive mask for given chip and layer
+            self._subtract_from_ground_and_move_under_top_chip_layer(
+                diff_holes_cell)
 
-    def _subtract_from_ground_and_move_under_top_name(
+    def _add_under_chip_layer(self, diff_holes_cell: gdspy.library.Cell):
+        self._move_to_under_top_chip_layer_name_(diff_holes_cell)
+
+    def _subtract_from_ground_and_move_under_top_chip_layer(
             self, diff_holes_cell: gdspy.library.Cell):
         """Get the existing chip_only_top_name cell, then add the holes to it.
         Also, add ground_cheesed_cell under chip_only_top_name
@@ -419,5 +431,4 @@ class Cheesing():
                 self.lib.cells[chip_only_top_chip_layer_name].add(
                     gdspy.CellReference(ground_cheese_cell))
             else:
-                # self.lib.remove(chip_only_top_chip_layer_name)
-                pass
+                self.lib.remove(ground_cheese_cell)

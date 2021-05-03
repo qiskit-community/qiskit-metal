@@ -1246,6 +1246,7 @@ class QGDSRenderer(QRenderer):
         edge_nocheese = float(
             self.parse_value(self.options.cheese.edge_nocheese))
         precision = float(self.parse_value(self.options.precision))
+        is_neg_mask = self._is_negative_mask(chip_name, chip_layer)
 
         if cheese_shape == 0:
             cheese_x = float(self.parse_value(self.options.cheese.cheese_0_x))
@@ -1260,6 +1261,7 @@ class QGDSRenderer(QRenderer):
                                 chip_name,
                                 edge_nocheese,
                                 chip_layer,
+                                is_neg_mask,
                                 cheese_sub_layer,
                                 nocheese_sub_layer,
                                 self.logger,
@@ -1283,6 +1285,7 @@ class QGDSRenderer(QRenderer):
                                 chip_name,
                                 edge_nocheese,
                                 chip_layer,
+                                is_neg_mask,
                                 cheese_sub_layer,
                                 nocheese_sub_layer,
                                 self.logger,
