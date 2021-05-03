@@ -11,6 +11,17 @@ Overview
     overview/*
 
 
+##########
+Components
+##########
+
+
+.. nbgallery::
+    :glob:
+
+    components/*
+
+
 
 .. Hiding - Indices and tables
    :ref:`genindex`
