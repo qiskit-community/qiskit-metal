@@ -266,12 +266,13 @@ class TestRenderers(unittest.TestCase):
         renderer = QGDSRenderer(design)
         options = renderer.default_options
 
-        self.assertEqual(len(options), 15)
+        self.assertEqual(len(options), 16)
         self.assertEqual(options['short_segments_to_not_fillet'], 'True')
         self.assertEqual(options['check_short_segments_by_scaling_fillet'],
                          '2.0')
         self.assertEqual(options['gds_unit'], '1')
         self.assertEqual(options['ground_plane'], 'True')
+        self.assertEqual(options['negative_mask']['main'], [])
         self.assertEqual(options['corners'], 'circular bend')
         self.assertEqual(options['tolerance'], '0.00001')
         self.assertEqual(options['precision'], '0.000000001')
