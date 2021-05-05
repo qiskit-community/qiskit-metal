@@ -66,6 +66,16 @@ Small Quantum Chips
     small-quantum-chips/*
 
 
+###########
+Design Flow
+###########
+
+
+.. nbgallery::
+    :glob:
+
+    design-flow/*
+
 
 .. Hiding - Indices and tables
    :ref:`genindex`
