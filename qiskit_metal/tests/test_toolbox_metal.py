@@ -70,17 +70,19 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
         except Exception:
             self.fail("about() failed")
 
+    # pylint: disable-msg=unused-variable
     def test_toolbox_metal_parsing_true_str(self):
         """Test that TRUE_STR in parsing.py has not accidentally changed."""
         expected = [
-            'true', 'True', 'TRUE', True, '1', 't', 'y', 'Y', 'YES', 'yes',
+            'True', 'true', 'TRUE', True, '1', 't', 'y', 'Y', 'YES', 'yes',
             'yeah', 1, 1.0
         ]
         actual = parsing.TRUE_STR
 
         self.assertEqual(len(actual), len(expected))
-        for i in range(13):
-            self.assertEqual(expected[i], actual[i])
+
+        for x, _ in enumerate(expected):
+            self.assertTrue(_ in actual)
 
     def test_toolbox_metal_is_true(self):
         """Test is_true in toolbox_metal.py."""
