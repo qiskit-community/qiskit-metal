@@ -32,17 +32,18 @@ class LibraryDelegate(QItemDelegate):
 
     def __init__(self, parent: QWidget = None):
         """
-        source_model_type - The Delegate may belong to a view using a ProxyModel.
-        However, the source model for that Proxy Model(s) should be a QFileSystemLibraryModel
-        is_dev_mode - Whether the MetalGUI is in Developer Mode or not
+         Initializer for LibraryDelegate
 
-        Args:
-            parent: parent
+
+        Arguments:
+            parent(QWidget): parent
 
         """
         super().__init__(parent)
+        #  The Delegate may belong to a view using a ProxyModel but even so
+        #  the source model for that Proxy Model(s) should be a QFileSystemLibraryModel
         self.source_model_type = QFileSystemLibraryModel
-        self.is_dev_mode = False
+        self.is_dev_mode = False # Whether the MetalGUI is in Developer Mode or not
 
     def get_source_model(self, model: QAbstractItemModel, source_type: type):  # pylint: disable=R0201, no-self-use
         """
@@ -51,11 +52,12 @@ class LibraryDelegate(QItemDelegate):
         and is returned by this function
 
 
-        Args:
-            model: Current model
-            source_type: Expected source model type
+        Arguments:
+            model(QAbstractItemModel): Current model
+            source_type(type): Expected source model type
 
-        Returns: source model : QFileSystemLibraryModel
+        Returns:
+            QFileSystemLibraryModel: Source model 
 
         Raises:
             QLibraryGUIException: If unable to find the source model for the given model
@@ -83,10 +85,12 @@ class LibraryDelegate(QItemDelegate):
         """
         Displays dirty files in red with corresponding rebuild buttons
         if in developer mode (is_dev_mode). Otherwise, renders normally
+
+
         Args:
-            painter: QPainter
-            option: QStyleOptionViewItem
-            index: QModelIndex
+            painter (QPainter): Current painter
+            option (QStyleOptionViewItem): Current option
+            index (QModelIndex): Current index of related model
 
 
 

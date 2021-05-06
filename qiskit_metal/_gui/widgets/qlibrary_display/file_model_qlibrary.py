@@ -41,10 +41,9 @@ class QFileSystemLibraryModel(QFileSystemModel):
         """
         Initializes Model
 
-        is_dev_mode -- Whether the MetalGUI is in Developer Mode or not
 
         Args:
-            parent: Parent widget
+            parent(QWidget): Parent widget
         """
         super().__init__(parent)
 
@@ -54,13 +53,14 @@ class QFileSystemLibraryModel(QFileSystemModel):
         self.is_dev_mode = False
         self.columns = ['QComponents', 'Rebuild Buttons']
 
-    def is_valid_file(self, file: str):
+    def is_valid_file(self, file: str)->bool:
         """
         Whether it's a file the FileWatcher should track
         Args:
             file: Filename
 
-        Returns: Whether file is one the FileWatcher should track
+        Returns:
+            bool: Whether file is one the FileWatcher should track
 
         """
         for sub in self.ignored_substrings:
@@ -122,7 +122,8 @@ class QFileSystemLibraryModel(QFileSystemModel):
         Args:
             filepath: File in question
 
-        Returns: Whether file is dirty
+        Returns:
+            bool: Whether file is dirty
 
         """
         filename = self.filepath_to_filename(filepath)
@@ -134,7 +135,8 @@ class QFileSystemLibraryModel(QFileSystemModel):
         Args:
             filepath: Full file path
 
-        Returns: Filename
+        Returns:
+            str: Filename
 
         """
 
@@ -151,7 +153,8 @@ class QFileSystemLibraryModel(QFileSystemModel):
         Args:
             path: Root path
 
-        Returns: Root index
+        Returns:
+            QModelIndex: Root index
 
         """
 
@@ -190,7 +193,7 @@ class QFileSystemLibraryModel(QFileSystemModel):
             role (Qt display role): Display role.  Defaults to DisplayRole.
 
         Returns:
-            str: The header data, or None if not found
+            typing.Any: The header data, or None if not found
         """
 
         if role == Qt.DisplayRole:
