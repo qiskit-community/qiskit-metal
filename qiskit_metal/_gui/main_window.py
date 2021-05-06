@@ -188,6 +188,12 @@ class QMainWindowExtension(QMainWindowExtensionBase):
 
     @slot_catch_error()
     def activate_developer_mode(self, ison: bool):
+        """
+        Sets the correct UI features for developer mode
+        Args:
+            ison: Whether developer mode is active
+
+        """
         if ison:
             QMessageBox.warning(
                 self, "Notice",
@@ -484,7 +490,7 @@ class MetalGUI(QMainWindowBaseHandler):
                 f"Unable to open param entry window due to Exception: {e} ")
 
     def _refresh_component_build(self, qis_abs_path):
-        """Reresh build for a component along a given path.
+        """Refresh build for a component along a given path.
 
         Args:
             qis_abs_path (str): Absolute component path.
