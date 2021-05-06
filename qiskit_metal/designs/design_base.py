@@ -350,7 +350,7 @@ class QDesign(
             )
         return net_id
 
-    #     This is replaced by design.components.find_id()
+    #  This is replaced by design.components.find_id()
     # def get_component(self, search_name: str) -> 'QComponent':
     #     """The design contains a dict of all the components, which is correlated to
     #     a net_list connections, and qgeometry table. The key of the components dict are
