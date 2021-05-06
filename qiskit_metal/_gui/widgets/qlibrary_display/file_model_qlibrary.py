@@ -57,7 +57,7 @@ class QFileSystemLibraryModel(QFileSystemModel):
         """
         Whether it's a file the FileWatcher should track
         Args:
-            file: Filename
+            file(str): Filename
 
         Returns:
             bool: Whether file is one the FileWatcher should track
@@ -74,7 +74,7 @@ class QFileSystemLibraryModel(QFileSystemModel):
         and remove any parent files who are only dirty due to
         this file. Emits file_cleaned_signal.
         Args:
-            filepath: Clean file path
+            filepath(str):  File path of file to be cleaned
 
         """
         filename = self.filepath_to_filename(filepath)
@@ -96,7 +96,7 @@ class QFileSystemLibraryModel(QFileSystemModel):
         Adds file and parent directories to the dirtied_files dictionary.
         Emits file_dirtied_signal
         Args:
-            filepath: Dirty file path
+            filepath (str): Dirty file path
 
         """
         filename = self.filepath_to_filename(filepath)
@@ -120,7 +120,7 @@ class QFileSystemLibraryModel(QFileSystemModel):
         """
         Checks whether file is dirty
         Args:
-            filepath: File in question
+            filepath (str): File in question
 
         Returns:
             bool: Whether file is dirty
@@ -133,7 +133,7 @@ class QFileSystemLibraryModel(QFileSystemModel):
         """
         Gets just the filename from the full filepath
         Args:
-            filepath: Full file path
+            filepath (str): Full file path
 
         Returns:
             str: Filename
@@ -151,7 +151,7 @@ class QFileSystemLibraryModel(QFileSystemModel):
         """
         Sets FileWatcher on root path and adds rootpath to model
         Args:
-            path: Root path
+            path (str): Root path
 
         Returns:
             QModelIndex: Root index
@@ -171,7 +171,7 @@ class QFileSystemLibraryModel(QFileSystemModel):
         """
         Dirties file and re-adds edited file to the FileWatcher
         Args:
-            filepath: Dirty file
+            filepath (str): Dirty file
 
 
         """
@@ -216,7 +216,7 @@ class QFileSystemLibraryModel(QFileSystemModel):
         """
         Set dev_mode
         Args:
-            ison: Whther dev_mode is on
+            ison(bool): Whether dev_mode is on
 
         """
         self.is_dev_mode = ison
