@@ -27,6 +27,7 @@ from qiskit_metal.toolbox_metal import math_and_overrides
 from qiskit_metal.toolbox_metal.exceptions import QiskitMetalExceptions
 from qiskit_metal.toolbox_metal.exceptions import QiskitMetalDesignError
 from qiskit_metal.toolbox_metal.exceptions import IncorrectQtException
+from qiskit_metal.toolbox_metal.exceptions import QLibraryGUIException
 from qiskit_metal.tests.assertions import AssertionsMixin
 
 
@@ -46,21 +47,28 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
         try:
             QiskitMetalExceptions("test message")
         except Exception:
-            self.fail("QiskitMetalExceptions failed")
+            self.fail("QiskitMetalExceptions failed.")
 
     def test_toolbox_metal_instantiation_qiskit_metal_design_error(self):
         """Test instantiation of QiskitMetalDesignError."""
         try:
             QiskitMetalDesignError("test message")
         except Exception:
-            self.fail("QiskitMetalDesignError failed")
+            self.fail("QiskitMetalDesignError failed.")
 
     def test_toolbox_metal_instantiation_incorrect_qt_exception(self):
         """Test instantiation of IncorrectQtException."""
         try:
-            IncorrectQtException
+            IncorrectQtException("test message")
         except Exception:
-            self.fail("IncorrectQtException failed")
+            self.fail("IncorrectQtException failed.")
+
+    def test_toolbox_metal_instantiation_qlibrary_gui__excpetion(self):
+        """Test instantiation of QLibraryGUIException."""
+        try:
+            QLibraryGUIException("test message")
+        except Exception:
+            self.fail("QLibraryGUIException failed.")
 
     def test_toolbox_metal_about(self):
         """Test that about in about.py produces about text without any
