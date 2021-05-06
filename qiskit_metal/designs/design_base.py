@@ -317,7 +317,6 @@ class QDesign(
             0:0]  # pylint disable=protected_access
         return self._qnet
 
-
     def connect_pins(self, comp1_id: int, pin1_name: str, comp2_id: int,
                      pin2_name: str) -> int:
         """Will generate an unique net_id and placed in a net_info table.

@@ -53,7 +53,7 @@ class QFileSystemLibraryModel(QFileSystemModel):
         self.is_dev_mode = False
         self.columns = ['QComponents', 'Rebuild Buttons']
 
-    def is_valid_file(self, file: str)->bool:
+    def is_valid_file(self, file: str) -> bool:
         """
         Whether it's a file the FileWatcher should track
         Args:

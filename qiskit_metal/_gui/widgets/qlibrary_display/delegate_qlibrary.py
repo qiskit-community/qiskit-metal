@@ -43,7 +43,7 @@ class LibraryDelegate(QItemDelegate):
         #  The Delegate may belong to a view using a ProxyModel but even so
         #  the source model for that Proxy Model(s) should be a QFileSystemLibraryModel
         self.source_model_type = QFileSystemLibraryModel
-        self.is_dev_mode = False # Whether the MetalGUI is in Developer Mode or not
+        self.is_dev_mode = False  # Whether the MetalGUI is in Developer Mode or not
 
     def get_source_model(self, model: QAbstractItemModel, source_type: type):  # pylint: disable=R0201, no-self-use
         """
