@@ -29,6 +29,7 @@ import inspect
 import platform
 import webbrowser
 import numpy
+import qutip
 
 from qiskit_metal.toolbox_python.display import Color, style_colon_list
 
@@ -77,6 +78,7 @@ ____________________________________
 Packages
 ____________________________________
  Numpy               {numpy.__version__}
+ Qutip               {qutip.__version__}
 
 Rendering
 ____________________________________
@@ -84,7 +86,7 @@ ____________________________________
 
 GUI
 ____________________________________
- PySide2 version        {PYSIDE_VERSION_STR}
+ PySide2 version     {PYSIDE_VERSION_STR}
  Qt version          {QT_VERSION_STR}
  SIP version         {SIP_VERSION_STR}
 
