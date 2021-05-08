@@ -20,7 +20,7 @@ import typing
 
 from PySide2.QtGui import QFont
 from PySide2.QtCore import QFileSystemWatcher, Qt, Signal, QModelIndex
-from PySide2.QtWidgets import (QFileSystemModel)
+from PySide2.QtWidgets import QFileSystemModel, QWidget
 
 
 class QFileSystemLibraryModel(QFileSystemModel):
@@ -37,16 +37,15 @@ class QFileSystemLibraryModel(QFileSystemModel):
     file_dirtied_signal = Signal()
     file_cleaned_signal = Signal()
 
-    def __init__(self, *args):
+    def __init__(self, parent: QWidget = None):
         """
         Initializes Model
 
-        is_dev_mode -- Whether the MetalGUI is in Developer Mode or not
 
         Args:
-            *args:
+            parent(QWidget): Parent widget
         """
-        super().__init__(*args)
+        super().__init__(parent)
 
         self.file_system_watcher = QFileSystemWatcher()
         self.dirtied_files = {}
@@ -54,13 +53,14 @@ class QFileSystemLibraryModel(QFileSystemModel):
         self.is_dev_mode = False
         self.columns = ['QComponents', 'Rebuild Buttons']
 
-    def is_valid_file(self, file: str):
+    def is_valid_file(self, file: str) -> bool:
         """
         Whether it's a file the FileWatcher should track
         Args:
-            file: Filename
+            file(str): Filename
 
         Returns:
+            bool: Whether file is one the FileWatcher should track
 
         """
         for sub in self.ignored_substrings:
@@ -72,9 +72,9 @@ class QFileSystemLibraryModel(QFileSystemModel):
         """
         Remove file from the dirtied_files dictionary
         and remove any parent files who are only dirty due to
-        this file
+        this file. Emits file_cleaned_signal.
         Args:
-            filepath: Clean file path
+            filepath(str):  File path of file to be cleaned
 
         """
         filename = self.filepath_to_filename(filepath)
@@ -93,11 +93,10 @@ class QFileSystemLibraryModel(QFileSystemModel):
 
     def dirty_file(self, filepath: str):
         """
-        Adds file and parent directories to the dirtied_files dictionary
+        Adds file and parent directories to the dirtied_files dictionary.
+        Emits file_dirtied_signal
         Args:
-            filepath: Dirty file path
-
-        Returns:
+            filepath (str): Dirty file path
 
         """
         filename = self.filepath_to_filename(filepath)
@@ -121,9 +120,10 @@ class QFileSystemLibraryModel(QFileSystemModel):
         """
         Checks whether file is dirty
         Args:
-            filepath: File in question
+            filepath (str): File in question
 
-        Returns: Whether file is dirty
+        Returns:
+            bool: Whether file is dirty
 
         """
         filename = self.filepath_to_filename(filepath)
@@ -133,9 +133,10 @@ class QFileSystemLibraryModel(QFileSystemModel):
         """
         Gets just the filename from the full filepath
         Args:
-            filepath: Full file path
+            filepath (str): Full file path
 
-        Returns: Filename
+        Returns:
+            str: Filename
 
         """
 
@@ -150,9 +151,10 @@ class QFileSystemLibraryModel(QFileSystemModel):
         """
         Sets FileWatcher on root path and adds rootpath to model
         Args:
-            path: Root path
+            path (str): Root path
 
-        Returns: Root index
+        Returns:
+            QModelIndex: Root index
 
         """
 
@@ -169,7 +171,7 @@ class QFileSystemLibraryModel(QFileSystemModel):
         """
         Dirties file and re-adds edited file to the FileWatcher
         Args:
-            filepath: Dirty file
+            filepath (str): Dirty file
 
 
         """
@@ -191,7 +193,7 @@ class QFileSystemLibraryModel(QFileSystemModel):
             role (Qt display role): Display role.  Defaults to DisplayRole.
 
         Returns:
-            str: The header data, or None if not found
+            typing.Any: The header data, or None if not found
         """
 
         if role == Qt.DisplayRole:
@@ -214,7 +216,7 @@ class QFileSystemLibraryModel(QFileSystemModel):
         """
         Set dev_mode
         Args:
-            ison: Whther dev_mode is on
+            ison(bool): Whether dev_mode is on
 
         """
         self.is_dev_mode = ison

@@ -329,7 +329,6 @@
    </attribute>
    <addaction name="actionViewDummyLabel"/>
    <addaction name="actionDesign"/>
-   <addaction name="actionNewComponent"/>
    <addaction name="actionVariables"/>
    <addaction name="separator"/>
    <addaction name="actionConnectors"/>
@@ -1052,7 +1051,8 @@
   <action name="actionRebuild">
    <property name="icon">
     <iconset resource="main_window_rc.qrc">
-     <normaloff>:/rebuild</normaloff>:/rebuild</iconset>
+     <normaloff>:/rebuild</normaloff>
+     <activeon>:/rebuild</activeon>:/rebuild</iconset>
    </property>
    <property name="text">
     <string>Rebuild</string>

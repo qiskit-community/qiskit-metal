@@ -400,12 +400,9 @@ The ``.rst`` files in the ``docs/apidocs``
    inside the documentation, and an `automodule directive <http://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html>`__
    used to parse the
    module docstrings from a specified import path. For example, the analyses.rst
-   file contains::
+   file contains
 
-      .. automodule:: qiskit_metal.analyses
-         :no-members:
-         :no-inherited-members:
-         :no-special-members:
+   .. image:: images/contributer-example-1.jpg
 
    If you're adding a new ``.rst`` file for a new module's documentation, make
    sure to add it to the `toctree <https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#table-of-contents>`__
@@ -433,22 +430,7 @@ The module-level docstring
    contents of the module docstring for ``qiskit/analyses/__init__.py`` would
    be
 
-   .. code-block:: RST
-
-      """
-      =================================================
-      Analyses (:mod:`qiskit_metal.analyses`)
-      =================================================
-      .. currentmodule:: qiskit_metal.analyses
-      Module containing all Qiskit Metal analyses.
-      
-      Submodules
-      ----------
-      .. autosummary::
-         :toctree:
-         em.cpw_calculations
-         quantization.lumped_capacitive
-      """
+   .. image:: images/contributer-example-2.jpg
 
    .. note::
 

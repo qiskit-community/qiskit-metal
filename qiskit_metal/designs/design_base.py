@@ -28,6 +28,7 @@ from .interface_components import Components
 from .net_info import QNet
 from .. import Dict, config, logger
 from ..config import DefaultMetalOptions, DefaultOptionsRenderer
+from qiskit_metal.toolbox_metal.exceptions import QiskitMetalDesignError
 
 if not config.is_building_docs():
     from qiskit_metal.toolbox_metal.import_export import load_metal_design, save_metal
@@ -35,7 +36,9 @@ if not config.is_building_docs():
 
 if TYPE_CHECKING:
     # For linting, avoids circular imports.
-    from qiskit_metal.qlibrary.base.base import QComponent
+    from qiskit_metal.qlibrary.core.base import QComponent
+    from qiskit_metal.renderers.renderer_base import QRenderer
+    from qiskit_metal.renderers.renderer_gds.gds_renderer import QGDSRenderer
 
 __all__ = ['QDesign']
 
@@ -85,8 +88,8 @@ class QDesign(
         """
 
         # _qcomponent_latest_assigned_id -- Used to keep a tally and ID of all components within an
-        # instanziation of a design.
-        # A component is added to a design by base._add_to_design with init of a comoponent.
+        # instantiation of a design.
+        # A qcomponent is added to a design by base._add_to_design with init of a qcomponent.
         # During init of component, design class provides an unique id for each instance of
         # component being added to design.  Note, if a component is removed from the design,
         # the ID of removed component should not be used again.  However, if a component is
@@ -347,6 +350,40 @@ class QDesign(
             )
         return net_id
 
+    #  This is replaced by design.components.find_id()
+    # def get_component(self, search_name: str) -> 'QComponent':
+    #     """The design contains a dict of all the components, which is correlated to
+    #     a net_list connections, and qgeometry table. The key of the components dict are
+    #     unique integers.  This method will search through the dict to find the component with search_name.
+
+    #     Args:
+    #         search_name (str): Name of the component
+
+    #     Returns:
+    #         QComponent: A component within design with the name search_name.
+
+    #     *Note:* If None is returned the component wass not found. A warning through logger.warning().
+
+    #     *Note:* If multiple components have the same name, only the first component found in the search
+    #     will be returned, ALONG with logger.warning().
+    #     """
+    #     alist = [(value.name, key)
+    #              for key, value in self._components.items() if value.name == search_name]
+
+    #     length = len(alist)
+    #     if length == 1:
+    #         return_component = self._components[alist[0][1]]
+    #     elif length == 0:
+    #         self.logger.warning(
+    #             f'Name of component:{search_name} not found. Returned None')
+    #         return_component = None
+    #     else:
+    #         self.logger.warning(
+    #             f'Component:{search_name} is used multiple times, return the first component in list: (name, component_id) {str(alist)}')
+    #         return_component = self._components[alist[0][1]]
+
+    #     return return_component
+
     def all_component_names_id(self) -> list:
         """Get the text names and corresponding unique ID  of each component
         within this design.
@@ -417,7 +454,7 @@ class QDesign(
         for _, obj in self._components.items():  # pylint: disable=unused-variable
             obj.rebuild()
 
-    def reload_and_rebuild_component(self, qis_abs_path: str):
+    def reload_and_rebuild_components(self, qis_abs_path: str):
         """
         Reload the module and class of a given component and updates
         all class instances. Then rebuilds all QComponents of that class
@@ -425,46 +462,35 @@ class QDesign(
         Arguments:
             qis_abs_path: Absolute to the QComponent source file to be reloaded
 
+        Raises:
+            QiskitMetalDesignError: The given name is a magic method not in the dictionary
         """
 
         try:
-            # split on os.sep and / because PySide appears to sometimes use / on certain Windows
-            # Windows users' qis_abs_path may use os.sep or '/' due to PySide's
-            # handling of file names
-            qis_mod_path = qis_abs_path.replace(os.sep, '.')[:-len('.py')]
-            # users cannot use '/' in filename
-            qis_mod_path = qis_mod_path.replace("/", '.')
+            for comp in self.components:  # runs so few times, it's fine to reload object multiple times
+                imported_module = importlib.import_module(
+                    self.components[comp].__module__)
+                reloaded_module = importlib.reload(imported_module)
 
-            qis_class_name = "reload and rebuild no name"
-            mymodule = importlib.import_module(qis_mod_path)
-            members = inspect.getmembers(mymodule, inspect.isclass)
-            class_owner = qis_mod_path.split('.')[-1]
-            for memtup in members:
-                if len(memtup) > 1:
-                    if str(memtup[1].__module__).endswith(class_owner):
-                        qis_class_name = memtup[1].__name__
+                new_class = getattr(reloaded_module,
+                                    self.components[comp].__class__.__name__)
 
-            self.logger.debug(
-                f'Reloading component_class_name={qis_class_name};'
-                f' component_module_name={qis_mod_path}')
+                print(f"template options: {self.template_options}")
+                if self.components[comp].__class__._get_unique_class_name(
+                ) in self.template_options:
+                    print(f"popping: {new_class}")
+                    self.template_options.pop(new_class._get_unique_class_name(
+                    ))  # pylint disable=protected-access, line-too-long
 
-            module = importlib.import_module(qis_mod_path)
-            module = importlib.reload(module)
-            new_class = getattr(module, qis_class_name)
-            self.template_options.pop(new_class._get_unique_class_name(
-            ))  # pylint disable=protected-access, line-too-long
+                self.components[comp].__class__ = new_class
 
-            for instance in filter(
-                    lambda k: k.__class__.__name__ == qis_class_name,
-                    self._components.values()):
-                instance.__class__ = new_class
-                instance.rebuild()
+                self.logger.debug(
+                    f'Finished reloading '
+                    f'component_class_name={new_class.__name__}; component_module_name={imported_module}'
+                )
+            self.rebuild()
 
-            self.logger.debug(
-                f'Finished reloading '
-                f'component_class_name={qis_class_name}; component_module_name={qis_mod_path}'
-            )
-        except Exception as e:  # pylint disable=broad-except
+        except QiskitMetalDesignError as e:  # pylint disable=broad-except
             self.logger.error(
                 f"Failed to refresh/rebuild {qis_abs_path} due to: {e}")
 
@@ -566,7 +592,7 @@ class QDesign(
         #          return false
         #   if it does not then delete
 
-        # Do delete component ruthelessly
+        # Do delete component ruthlessly
         return self._delete_component(component_id)
 
     def _delete_component(self, component_id: int) -> bool:
@@ -648,9 +674,9 @@ class QDesign(
             original_qcomponents (list): Must be a list of original QComponents.
             new_component_names (list): Must be a list of QComponent names.
             all_options_superimpose (list, optional): Must be list of dicts
-             with options to superimpose on options
-                from original_qcomponents. The list can be of both populated
-                 and empty dicts. Defaults to empty list().
+              with options to superimpose on options from original_qcomponents.
+              The list can be of both populated and empty dicts.
+              Defaults to empty list().
 
         Returns:
             Dict: Number of keys will be the same length of original_qcomponent.
@@ -686,25 +712,24 @@ class QDesign(
         options_superimpose: dict = dict(
         )  # pylint disable=dangerous-default-value
     ) -> Union['QComponent', None]:
-        """Copy a coponent in QDesign and
+        """Copy a qcomponent in QDesign and
         add it to QDesign._components using
         options_overwrite.
 
         Args:
             original_class (QComponent): The QComponent to copy.
             new_component_name (str): The name should not already
-            be in QDesign, if it is, the copy fill fail.
-            options_superimpose (dict): Can use differnt options
-             for copied QComponent. Will start with the options
-                                        in original QComponent,
-                                         and then superimpose with options_superimpose. An example
-                                        would be x and y locations.
+              be in QDesign, if it is, the copy fill fail.
+            options_superimpose (dict): Can use different options
+              for copied QComponent. Will start with the options
+              in original QComponent, and then superimpose with
+              options_superimpose. An example would be x and y locations.
 
         Returns:
             union['QComponent', None]: None if not copied, otherwise, a QComponent instance.
         """
 
-        # overwrite orignal option with new options
+        # overwrite original option with new options
         options = {**original_qcomponent.options, **options_superimpose}
         path_class_name = original_qcomponent.class_name
         module_path = path_class_name[:path_class_name.rfind('.')]
@@ -741,7 +766,7 @@ class QDesign(
 
     def save_design(self, path: str = None):
         """Save the metal design to a Metal file. If no path is given, then
-        tried to use self.save_pathif it is set.
+        tried to use self.save_path if it is set.
 
         Arguments:
             path (str): Path to save the design to.  Defaults to None.
@@ -756,7 +781,7 @@ class QDesign(
             if self.save_path is None:
                 self.logger.error(
                     'Cannot save design since you did not provide a path to'
-                    'save to yet. Once you save the dewisgn to a path, the then you call save '
+                    'save to yet. Once you save the design to a path, the then you call save '
                     'without an argument.')
             else:
                 path = self.save_path
@@ -777,7 +802,7 @@ class QDesign(
 
     def parse_value(self, value: Union[Any, List, Dict, Iterable]) -> Any:
         """Main parsing function. Parse a string, mappable (dict, Dict),
-        iterrable (list, tuple) to account for units conversion, some basic
+        iterable (list, tuple) to account for units conversion, some basic
         arithmetic, and design variables.
 
         Arguments:
@@ -792,7 +817,7 @@ class QDesign(
             Strings:
                 Strings of numbers, numbers with units; e.g., '1', '1nm', '1 um'
                     Converts to int or float.
-                    Some basic arithmatic is possible, see below.
+                    Some basic arithmetic is possible, see below.
                 Strings of variables 'variable1'.
                     Variable interpertation will use string method
                     isidentifier 'variable1'.isidentifier()
@@ -801,8 +826,8 @@ class QDesign(
                 Returns ordered `Dict` with same key-value mappings, where the values have
                 been subjected to parse_value.
 
-            Itterables(list, tuple, ...):
-                Returns same kind and calls itself `parse_value` on each elemnt.
+            Iterables(list, tuple, ...):
+                Returns same kind and calls itself `parse_value` on each element.
 
             Numbers:
                 Returns the number as is. Int to int, etc.
@@ -901,7 +926,7 @@ class QDesign(
     def _start_renderers(self):
         """Start the renderers.
 
-        First import the renderers identifed in
+        First import the renderers identified in
         config.renderers_to_load. Then register them into QDesign.
         Finally populate self.renderer_defaults_by_table
         """

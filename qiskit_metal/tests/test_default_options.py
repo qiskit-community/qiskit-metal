@@ -65,6 +65,57 @@ class TestDefautOptions(unittest.TestCase):
                 "DefaultOptionsRenderer(draw_substrate={}, bounding_box={}) failed"
             )
 
+    def test_default_metal_options_default_generic(self):
+        """Test the default_generic of DefaultMetalOptions class.
+        """
+        default_metal_options = DefaultMetalOptions()
+        options = default_metal_options.default_generic
+
+        self.assertEqual(len(options), 5)
+        self.assertEqual(options['units'], 'mm')
+        self.assertEqual(options['chip'], 'main')
+        self.assertEqual(options['PRECISION'], 9)
+
+        self.assertEqual(len(options['geometry']), 2)
+        self.assertEqual(options['geometry']['buffer_resolution'], 16)
+        self.assertEqual(options['geometry']['buffer_mitre_limit'], 5.0)
+
+        self.assertEqual(len(options['qdesign']), 1)
+        self.assertEqual(len(options['qdesign']['variables']), 2)
+        self.assertEqual(options['qdesign']['variables']['cpw_width'], '10 um')
+        self.assertEqual(options['qdesign']['variables']['cpw_gap'], '6 um')
+
+    def test_default_options_renderer_default_draw_substrate(self):
+        """Test the default_draw_substrate of DefaultOptionsRenderer"""
+        default_options_renderer = DefaultOptionsRenderer()
+        options = default_options_renderer.default_draw_substrate
+
+        self.assertEqual(len(options), 1)
+        self.assertEqual(len(options), 1)
+        self.assertEqual(len(options['draw_substrate']), 9)
+
+        self.assertEqual(options['draw_substrate']['pos_xy'], "['0um', '0um']")
+        self.assertEqual(options['draw_substrate']['size'],
+                         "['8.5mm', '6.5mm', '-0.750mm']")
+        self.assertEqual(options['draw_substrate']['elevation'], 0)
+        self.assertEqual(options['draw_substrate']['ground_plane'],
+                         'ground_plane')
+        self.assertEqual(options['draw_substrate']['substrate'], 'substrate')
+        self.assertEqual(options['draw_substrate']['material'], 'silicon')
+        self.assertEqual(options['draw_substrate']['transparency_plane'], 0)
+        self.assertEqual(options['draw_substrate']['transparency_substrate'], 0)
+        self.assertEqual(options['draw_substrate']['wireframe_substrate'],
+                         False)
+
+    def test_default_options_renderer_default_bounding_box(self):
+        """Test the default_bounding_box of DefaultOptionsRenderer"""
+        default_options_renderer = DefaultOptionsRenderer()
+        options = default_options_renderer.default_bounding_box
+
+        self.assertEqual(len(options), 1)
+        self.assertEqual(options['draw_bounding_box'],
+                         [[0, 0], [0, 0], ['0.890mm', '0.900mm']])
+
     def test_default_options_create(self):
         """Test the functionality of initializing default_options in
         _defaults.py."""

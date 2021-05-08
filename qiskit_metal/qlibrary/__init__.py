@@ -22,22 +22,22 @@ Module containing all Qiskit Metal QLibrary.
 
 .. _qlibrary:
 
-QComponents
----------------
+Core Classes
+----------------
 
 .. autosummary::
     :toctree: ../stubs/
 
     QComponent
-    BaseQubit
     ParsedDynamicAttributes_Component
+    BaseQubit
     QRoute
     QRouteLead
     QRoutePoint
 
 
-Basic
------
+Sample Shapes
+-----------------
 
 .. autosummary::
     :toctree:
@@ -50,22 +50,43 @@ Basic
     RectangleHollow
 
 
-Connectors
+Lumped
 ----------
 
 .. autosummary::
     :toctree:
 
-    CPWFingerCap
-    CPWHangerT
-    CPWT
-    CPWTFingerCap
+    Cap3Interdigital
+    CapNInterdigital
+    ResonatorCoilRect
+
+
+Couplers
+------------
+
+.. autosummary::
+    :toctree:
+
+    CoupledLineTee
+    LineTee
+    CapNInterdigitalTee
+	TunableCoupler01
+
+
+Terminations
+----------------
+
+.. autosummary::
+    :toctree:
+
+    LaunchpadWirebond
+    LaunchpadWirebondCoupled
     OpenToGround
     ShortToGround
 
 
-Interconnects
--------------
+Transmission Lines
+----------------------
 
 .. autosummary::
     :toctree:
@@ -76,19 +97,6 @@ Interconnects
     RouteAnchors
     RouteMixed
     RoutePathfinder
-    ResonatorRectangleSpiral
-
-
-
-Passives
---------
-
-.. autosummary::
-    :toctree:
-
-    LaunchpadWirebond
-    LaunchpadWirebondCoupled
-    CapThreeFingers
 
 
 Qubits
@@ -107,7 +115,7 @@ Qubits
 
 
 Submodules
-----------
+--------------
 
 .. autosummary::
     :toctree:
@@ -116,44 +124,43 @@ Submodules
 
 """
 
-from .. import is_component
-from .base import QComponent
-from .base import QRoute
-from .base import BaseQubit
+from .core import QComponent
+from .core import QRoute
+from .core import BaseQubit
 
 from .. import config
 if config.is_building_docs():
-    from .base.qroute import QRouteLead
-    from .base.qroute import QRoutePoint
-    from .base._parsed_dynamic_attrs import ParsedDynamicAttributes_Component
-    from .basic.circle_caterpillar import CircleCaterpillar
-    from .basic.circle_raster import CircleRaster
-    from .basic.n_gon import NGon
-    from .basic.n_square_spiral import NSquareSpiral
-    from .basic.rectangle import Rectangle
-    from .basic.rectangle_hollow import RectangleHollow
-    from .connectors.cpw_hanger_t import CPWHangerT
-    from .connectors.cpw_finger_cap import CPWFingerCap
-    from .connectors.cpw_t import CPWT
-    from .connectors.cpw_t_finger_cap import CPWTFingerCap
-    from .connectors.open_to_ground import OpenToGround
-    from .connectors.short_to_ground import ShortToGround
-    from .interconnects.straight_path import RouteStraight
-    from .interconnects.framed_path import RouteFramed
-    from .interconnects.meandered import RouteMeander
-    from .interconnects.anchored_path import RouteAnchors
-    from .interconnects.mixed_path import RouteMixed
-    from .interconnects.pathfinder import RoutePathfinder
-    from .interconnects.resonator_rectangle_spiral import ResonatorRectangleSpiral
-    from .passives.launchpad_wb import LaunchpadWirebond
-    from .passives.launchpad_wb_coupled import LaunchpadWirebondCoupled
-    from .passives.cap_three_fingers import CapThreeFingers
+    from .core import QRouteLead
+    from .core import QRoutePoint
+    from .core._parsed_dynamic_attrs import ParsedDynamicAttributes_Component
+    from .sample_shapes.circle_caterpillar import CircleCaterpillar
+    from .sample_shapes.circle_raster import CircleRaster
+    from .sample_shapes.n_gon import NGon
+    from .sample_shapes.n_square_spiral import NSquareSpiral
+    from .sample_shapes.rectangle import Rectangle
+    from .sample_shapes.rectangle_hollow import RectangleHollow
+    from .couplers.coupled_line_tee import CoupledLineTee
+    from .couplers.line_tee import LineTee
+    from .couplers.cap_n_interdigital_tee import CapNInterdigitalTee
+    from .couplers.tunable_coupler_01 import TunableCoupler01
+    from .lumped.cap_n_interdigital import CapNInterdigital
+    from .lumped.cap_3_interdigital import Cap3Interdigital
+    from .lumped.resonator_coil_rect import ResonatorCoilRect
+    from .terminations.launchpad_wb import LaunchpadWirebond
+    from .terminations.launchpad_wb_coupled import LaunchpadWirebondCoupled
+    from .terminations.open_to_ground import OpenToGround
+    from .terminations.short_to_ground import ShortToGround
+    from .tlines.straight_path import RouteStraight
+    from .tlines.framed_path import RouteFramed
+    from .tlines.meandered import RouteMeander
+    from .tlines.anchored_path import RouteAnchors
+    from .tlines.mixed_path import RouteMixed
+    from .tlines.pathfinder import RoutePathfinder
     from .qubits.transmon_concentric import TransmonConcentric
     from .qubits.transmon_cross import TransmonCross
     from .qubits.transmon_cross_fl import TransmonCrossFL
     from .qubits.transmon_pocket import TransmonPocket
     from .qubits.transmon_pocket_cl import TransmonPocketCL
     from .qubits.transmon_pocket_6 import TransmonPocket6
-    from .qubits.tunable_coupler_01 import TunableCoupler01
 
-    from .interconnects import anchored_path
+    from .tlines import anchored_path
