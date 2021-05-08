@@ -15,11 +15,11 @@
 Delegate for display of QComponents in Library tab
 """
 
-from PySide2.QtWidgets import QItemDelegate
-from PySide2.QtCore import QAbstractProxyModel, QModelIndex, Qt
-import PySide2
-from PySide2.QtGui import QTextDocument
+from PySide2.QtWidgets import QItemDelegate, QWidget, QStyleOptionViewItem
+from PySide2.QtCore import QAbstractProxyModel, QModelIndex, Qt, QAbstractItemModel
+from PySide2.QtGui import QTextDocument, QPainter
 from qiskit_metal._gui.widgets.qlibrary_display.file_model_qlibrary import QFileSystemLibraryModel
+from qiskit_metal.toolbox_metal.exceptions import QLibraryGUIException
 
 USER_COMP_DIR = "user_components"
 
@@ -30,34 +30,38 @@ class LibraryDelegate(QItemDelegate):
     Requires LibraryModel
     """
 
-    def __init__(self, parent=None):
+    def __init__(self, parent: QWidget = None):
         """
-        source_model_type - The Delegate may belong to a view using a ProxyModel.
-        However, the source model for that Proxy Model(s) should be a QFileSystemLibraryModel
-        is_dev_mode - Whether the MetalGUI is in Developer Mode or not
+         Initializer for LibraryDelegate
 
-        Args:
-            parent: parent
+
+        Arguments:
+            parent(QWidget): parent
 
         """
         super().__init__(parent)
+        #  The Delegate may belong to a view using a ProxyModel but even so
+        #  the source model for that Proxy Model(s) should be a QFileSystemLibraryModel
         self.source_model_type = QFileSystemLibraryModel
-        self.is_dev_mode = False
+        self.is_dev_mode = False  # Whether the MetalGUI is in Developer Mode or not
 
-    # https://www.youtube.com/watch?v=v6clAW6FmcU
-
-    def get_source_model(self, model, source_type):  # pylint: disable=R0201, no-self-use
+    def get_source_model(self, model: QAbstractItemModel, source_type: type):  # pylint: disable=R0201, no-self-use
         """
         The Delegate may belong to a view using a ProxyModel. However,
         the source model for that Proxy Model(s) should be a QFileSystemLibraryModel
         and is returned by this function
 
 
-        Args:
-            model: Current model
-            source_type: Expected source model type
+        Arguments:
+            model(QAbstractItemModel): Current model
+            source_type(type): Expected source model type
 
-        Returns: source model : QFileSystemLibraryModel
+        Returns:
+            QFileSystemLibraryModel: Source model 
+
+        Raises:
+            QLibraryGUIException: If unable to find the source model for the given model
+
 
 
         """
@@ -68,24 +72,25 @@ class LibraryDelegate(QItemDelegate):
             if isinstance(model, QAbstractProxyModel):
                 model = model.sourceModel()
             else:
-                raise Exception(f"Unable to find model: "
-                                f"\nCurrent Type is: "
-                                f"\n{model},  "
-                                f"\n Current Expect is:"
-                                f"\n{source_type}"
-                                f"\n Type(model) is"
-                                f"\n{type(model)}")
+                raise QLibraryGUIException(
+                    f"Unable to find source model: "
+                    f"\n Expected Type is:"
+                    f"\n{source_type}"
+                    f"\n First non-proxy model type found is"
+                    f"\n{type(model)} for"
+                    f"\n{model}")
 
-    def paint(self, painter: PySide2.QtGui.QPainter,
-              option: PySide2.QtWidgets.QStyleOptionViewItem,
+    def paint(self, painter: QPainter, option: QStyleOptionViewItem,
               index: QModelIndex):
         """
         Displays dirty files in red with corresponding rebuild buttons
         if in developer mode (is_dev_mode). Otherwise, renders normally
+
+
         Args:
-            painter: QPainter
-            option: QStyleOptionViewItem
-            index: QModelIndex
+            painter (QPainter): Current painter
+            option (QStyleOptionViewItem): Current option
+            index (QModelIndex): Current index of related model
 
 
 

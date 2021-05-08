@@ -433,8 +433,8 @@ def get_class_from_abs_file_path(abs_file_path):
     qis_mod_path = qis_mod_path.replace("/",
                                         '.')  # users cannot use '/' in filename
 
-    mymodule = importlib.import_module(qis_mod_path)
-    members = inspect.getmembers(mymodule, inspect.isclass)
+    cur_module = importlib.import_module(qis_mod_path)
+    members = inspect.getmembers(cur_module, inspect.isclass)
     class_owner = qis_mod_path.split('.')[-1]
     for memtup in members:
         if len(memtup) > 1:

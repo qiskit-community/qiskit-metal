@@ -32,7 +32,7 @@
 
 import numpy as np
 from qiskit_metal import draw, Dict
-from qiskit_metal.qlibrary.base.qubit import BaseQubit
+from qiskit_metal.qlibrary.core import BaseQubit
 
 
 class TransmonPocket(BaseQubit):
