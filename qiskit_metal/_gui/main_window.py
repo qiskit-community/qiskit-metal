@@ -704,6 +704,9 @@ class MetalGUI(QMainWindowBaseHandler):
         self.canvas.zoom_to_rectangle(bounds)
 
     def btn_comp_zoom_fx(self):
+        """
+        Zooms in display on selected QComponent
+        """
         names = self.ui.tableComponents.name_of_selected_qcomponent()
         self.zoom_on_components(names)
 
