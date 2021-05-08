@@ -168,7 +168,14 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
 
         self.do_menu_rename_helper(name, row)
 
-    def do_menu_rename_helper(self, name, row):
+    def do_menu_rename_helper(self, name:str, row:int):
+        """
+        Allows users to rename a created QComponent
+        Args:
+            name (str): Old name for QComponent
+            row (int): Row of QComponent in Model
+
+        """
         if row > -1:
             text, okPressed = QInputDialog.getText(self,
                                                    f"Rename component {name}",
@@ -247,7 +254,15 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         self.logger.debug(f'Highlighting {selected_names}')
         self.gui.highlight_components(selected_names)
 
-    def delete_selected_rows(self, *args, **kwargs):
+    def delete_selected_rows(self, *args):
+        """
+        Deletes selected rows of QComponents
+
+        Args:
+            *args: Allows function to be a slot
+            even for signals that pass in args
+
+        """
         index_list = self.selectedIndexes()
         model = self.model()
 
@@ -269,7 +284,15 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
                 if ret == QMessageBox.Yes:
                     self._do_delete(name)
 
-    def rename_row(self, *args, **kwargs):
+    def rename_row(self, *args):
+        """
+        Rename single component
+        Args:
+            *args: Allows function to be a slot
+            even for signals that pass in args
+
+        """
+
         index_list = self.selectedIndexes()
         if len(index_list) == 0:
             return
@@ -284,6 +307,12 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         self.do_menu_rename_helper(name, index.row())
 
     def name_of_selected_qcomponent(self):
+        """
+        Returns names of selected qcomponents
+        Returns:
+            list(str): names of selected qcomponents
+
+        """
         model = self.model()
         index_list = self.selectedIndexes()
         name_set = set()
