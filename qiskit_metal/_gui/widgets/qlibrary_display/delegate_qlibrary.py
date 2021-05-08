@@ -15,13 +15,11 @@
 Delegate for display of QComponents in Library tab
 """
 
-from PySide2.QtCore import QAbstractItemModel, QAbstractProxyModel, QModelIndex, Qt, Signal
-from PySide2.QtGui import QPainter, QTextDocument
-from PySide2.QtWidgets import QItemDelegate, QStyle, QStyleOptionViewItem, QWidget
-
+from PySide2.QtWidgets import QItemDelegate, QWidget, QStyleOptionViewItem
+from PySide2.QtCore import QAbstractProxyModel, QModelIndex, Qt, QAbstractItemModel
+from PySide2.QtGui import QTextDocument, QPainter
 from qiskit_metal._gui.widgets.qlibrary_display.file_model_qlibrary import QFileSystemLibraryModel
 from qiskit_metal.toolbox_metal.exceptions import QLibraryGUIException
-from qiskit_metal.toolbox_python.utility_functions import get_class_from_abs_file_path
 
 USER_COMP_DIR = "user_components"
 
@@ -31,16 +29,12 @@ class LibraryDelegate(QItemDelegate):
     Delegate for QLibrary view
     Requires LibraryModel
     """
-    tool_tip_signal = Signal(str)
 
     def __init__(self, parent: QWidget = None):
         """
          Initializer for LibraryDelegate
-
-
         Arguments:
             parent(QWidget): parent
-
         """
         super().__init__(parent)
         #  The Delegate may belong to a view using a ProxyModel but even so
@@ -53,20 +47,13 @@ class LibraryDelegate(QItemDelegate):
         The Delegate may belong to a view using a ProxyModel. However,
         the source model for that Proxy Model(s) should be a QFileSystemLibraryModel
         and is returned by this function
-
-
         Arguments:
             model(QAbstractItemModel): Current model
             source_type(type): Expected source model type
-
         Returns:
-            QFileSystemLibraryModel: Source model 
-
+            QFileSystemLibraryModel: Source model
         Raises:
             QLibraryGUIException: If unable to find the source model for the given model
-
-
-
         """
         while True:
             # https://stackoverflow.com/questions/50478661/python-isinstance-not-working-as-id-expect
@@ -88,32 +75,11 @@ class LibraryDelegate(QItemDelegate):
         """
         Displays dirty files in red with corresponding rebuild buttons
         if in developer mode (is_dev_mode). Otherwise, renders normally
-
-
         Args:
             painter (QPainter): Current painter
             option (QStyleOptionViewItem): Current option
             index (QModelIndex): Current index of related model
-
-
         """
-        if option.state & QStyle.State_MouseOver:  #         if option.state  == QStyle.State_MouseOver: Qt.WA_Hover
-            source_model = self.get_source_model(index.model(),
-                                                 self.source_model_type)
-
-            model = index.model()
-            full_path = source_model.filePath(
-                model.mapToSource(index))  # todo both columns work?
-
-            # try:
-            try:
-                current_class = get_class_from_abs_file_path(full_path)
-                information = current_class.TOOLTIP
-            except:
-                information = ""
-
-            self.tool_tip_signal.emit(information)
-
         if self.is_dev_mode:
             source_model = self.get_source_model(index.model(),
                                                  self.source_model_type)
