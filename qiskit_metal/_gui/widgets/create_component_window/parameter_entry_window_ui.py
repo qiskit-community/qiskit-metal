@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file './widgets/library_new_qcomponent/parameter_entry_window_ui.ui',
-# licensing of './widgets/library_new_qcomponent/parameter_entry_window_ui.ui' applies.
+# Form implementation generated from reading ui file './widgets/create_component_window/parameter_entry_window_ui.ui',
+# licensing of './widgets/create_component_window/parameter_entry_window_ui.ui' applies.
 #
-# Created: Mon Mar 15 02:36:45 2021
+# Created: Wed May  5 16:57:41 2021
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!

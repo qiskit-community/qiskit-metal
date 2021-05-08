@@ -19,7 +19,7 @@ Mostly internal.
 import logging, collections
 from typing import List
 
-__all__ = ['setup_logger']
+__all__ = ['setup_logger', 'LogStore']
 
 
 def setup_logger(logger_name,

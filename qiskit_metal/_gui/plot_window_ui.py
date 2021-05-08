@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file './plot_window_ui.ui',
 # licensing of './plot_window_ui.ui' applies.
 #
-# Created: Mon Mar 15 02:36:42 2021
+# Created: Wed May  5 16:57:39 2021
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -53,7 +53,7 @@ class Ui_MainWindowPlot(object):
         self.actionConnectors.setCheckable(True)
         self.actionConnectors.setChecked(False)
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(":/terminations"), QtGui.QIcon.Normal,
+        icon2.addPixmap(QtGui.QPixmap(":/connectors"), QtGui.QIcon.Normal,
                         QtGui.QIcon.Off)
         self.actionConnectors.setIcon(icon2)
         self.actionConnectors.setObjectName("actionConnectors")
@@ -134,7 +134,7 @@ class Ui_MainWindowPlot(object):
         self.actionConnectors.setToolTip(
             QtWidgets.QApplication.translate(
                 "MainWindowPlot",
-                "Show terminations pins for selected qcomponents", None, -1))
+                "Show connector pins for selected qcomponents", None, -1))
         self.actionConnectors.setShortcut(
             QtWidgets.QApplication.translate("MainWindowPlot", "C", None, -1))
         self.actionCoords.setText(

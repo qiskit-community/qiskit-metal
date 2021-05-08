@@ -20,7 +20,7 @@
    <enum>QTabWidget::Triangular</enum>
   </property>
   <property name="currentIndex">
-   <number>0</number>
+   <number>2</number>
   </property>
   <property name="movable">
    <bool>true</bool>
@@ -79,30 +79,6 @@
       </property>
      </widget>
     </item>
-    <item>
-     <widget class="QPushButton" name="pushButtonEditSource">
-      <property name="statusTip">
-       <string>Edit the QComponent source code in real time and see changes. </string>
-      </property>
-      <property name="whatsThis">
-       <string>Edit the QComponent source code in real time and see changes. </string>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(61, 217, 245,0.8), stop:1 rgba(240, 53, 218,0.8));
-border-style: solid;
-border-radius:30px;
-font-weight: bold;
-color: rgb(255, 255, 255);</string>
-      </property>
-      <property name="text">
-       <string>Edit Source</string>
-      </property>
-      <property name="icon">
-       <iconset resource="main_window_rc.qrc">
-        <normaloff>:/---component</normaloff>:/---component</iconset>
-      </property>
-     </widget>
-    </item>
    </layout>
   </widget>
   <widget class="QWidget" name="tabHelp">
@@ -133,8 +109,8 @@ color: rgb(255, 255, 255);</string>
        <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Arial'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Help about a component will be displayed here when you select a compoent in the design components dialog. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'.AppleSystemUIFont'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Arial'; font-size:14pt;&quot;&gt;Help about a component will be displayed here when you select a compoent in the design components dialog. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
     </item>
@@ -166,46 +142,6 @@ p, li { white-space: pre-wrap; }
      <number>0</number>
     </property>
     <item>
-     <widget class="QPushButton" name="btn_edit_src">
-      <property name="font">
-       <font>
-        <pointsize>14</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="autoFillBackground">
-       <bool>false</bool>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(61, 217, 245), stop:1 rgb(240, 53, 218));
-border-style: solid;
-border-radius:30px;
-font-weight: bold;
-color: rgb(255, 255, 255);</string>
-      </property>
-      <property name="text">
-       <string>Edit Source</string>
-      </property>
-      <property name="icon">
-       <iconset resource="main_window_rc.qrc">
-        <normaloff>:/---component</normaloff>:/---component</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>20</width>
-        <height>20</height>
-       </size>
-      </property>
-      <property name="default">
-       <bool>false</bool>
-      </property>
-      <property name="flat">
-       <bool>false</bool>
-      </property>
-     </widget>
-    </item>
-    <item>
      <widget class="QTextEdit" name="textSource">
       <property name="autoFillBackground">
        <bool>true</bool>
@@ -217,8 +153,8 @@ color: rgb(255, 255, 255);</string>
        <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Arial'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;The source code of a QComponent class will be displayed here when you select a compoent in the design components dialog. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'.AppleSystemUIFont'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Arial'; font-size:14pt;&quot;&gt;The source code of a QComponent class will be displayed here when you select a compoent in the design components dialog. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
     </item>
@@ -263,8 +199,4 @@ p, li { white-space: pre-wrap; }
  <resources>
   <include location="main_window_rc.qrc"/>
  </resources>
- <connections/>
- <slots>
-  <slot>edit_source()</slot>
- </slots>
 </ui>

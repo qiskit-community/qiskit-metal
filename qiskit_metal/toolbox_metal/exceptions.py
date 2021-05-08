@@ -31,6 +31,18 @@ class QiskitMetalExceptions(Exception):
         self.args = [prefix + message]
 
 
+class QLibraryGUIException(QiskitMetalExceptions):
+    """Custom Exception for the QLibrary GUI feature
+
+    Args:
+        message (str): String describing the error raised
+    """
+
+    # pylint: disable=super-init-not-called
+    def __init__(self, message: str) -> None:
+        super().__init__(message)
+
+
 class QiskitMetalDesignError(QiskitMetalExceptions):
     """Custom Exception to indicate User action is needed to correct Design
     Inputs.

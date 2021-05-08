@@ -437,7 +437,6 @@ class QComponent():
             template_key = cls._get_unique_class_name()
 
         renderer_key_values = cls._get_table_values_from_renderers(design)
-
         # Think
         if component_template is not None:
             renderer_and_component_template = {
