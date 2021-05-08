@@ -168,7 +168,7 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
 
         self.do_menu_rename_helper(name, row)
 
-    def do_menu_rename_helper(self, name:str, row:int):
+    def do_menu_rename_helper(self, name: str, row: int):
         """
         Allows users to rename a created QComponent
         Args:
