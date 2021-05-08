@@ -85,6 +85,7 @@ class QGDSRenderer(QRenderer):
         * check_short_segments_by_scaling_fillet: '2.0'
         * gds_unit: '1'
         * ground_plane: 'True'
+        * negative_mask: Dict(main=[])
         * corners: 'circular bend'
         * tolerance: '0.00001'
         * precision: '0.000000001'
@@ -139,6 +140,14 @@ class QGDSRenderer(QRenderer):
         # placed placed in same layer as ground_plane.
         ground_plane='True',
 
+        # By default, export_to_gds() will create a positive_mask for every
+        # chip and layer.  Within the Dict, there needs to be an entry for each
+        # chip.  Each chip has a list of layers that should export as a
+        # negative mask.  If layer number in list, the mask will be negative
+        # for that layer.  If user wants to export to a negative_mask for all
+        # layers, every layer_number MUST be in list.
+        negative_mask=Dict(main=[]),
+
         # corners: ('natural', 'miter', 'bevel', 'round', 'smooth',
         # 'circular bend', callable, list)
         # Type of joins. A callable must receive 6 arguments
@@ -157,19 +166,24 @@ class QGDSRenderer(QRenderer):
         # up by any fab equipment (so can be ignored).  Numerical errors start
         # to pop up if set precision too fine,
         # but 1nm seems to be the finest precision we use anyhow.
-        # FOR NOW SPECIFY IN METERS. # TODO: Add parsing of actual units here
+        # FOR NOW SPECIFY IN METERS.
         tolerance='0.00001',  # 10.0 um
 
         # With input from fab people, any of the weird artifacts
         # (like unwanted gaps) that are less than 1nm in size can be ignored.
         # They don't even show up in the fabricated masks.
         # So, the precision of e-9 (so 1 nm) should be good as a default.
-        # FOR NOW SPECIFY IN METERS. # TODO: Add parsing of actual units here
+        # FOR NOW SPECIFY IN METERS.
         precision='0.000000001',  # 1.0 nm
 
         # Since Qiskit Metal GUI, does not require a width for LineString, GDS,
         # will provide a default value.
         width_LineString='10um',
+
+        # The file is expected to be in GDS format.  The cell will be placed
+        # into gds Metal output without being edited. The name of the cell can
+        # be placed as options for a component, i.e. placing within a qubit.
+        # During export, the cell will NOT be edited, just imported.
         path_filename='../resources/Fake_Junctions.GDS',
 
         # For junction table, when cell from default_options.path_filename does
@@ -306,9 +320,10 @@ class QGDSRenderer(QRenderer):
     def _check_bounding_box_scale(self):
         """Some error checking for bounding_box_scale_x and
         bounding_box_scale_y numbers."""
-        p = self.options
-        bounding_box_scale_x = self.parse_value(p.bounding_box_scale_x)
-        bounding_box_scale_y = self.parse_value(p.bounding_box_scale_y)
+        bounding_box_scale_x = self.parse_value(
+            self.options.bounding_box_scale_x)
+        bounding_box_scale_y = self.parse_value(
+            self.options.bounding_box_scale_y)
 
         if bounding_box_scale_x < 1:
             self.options[
@@ -703,8 +718,9 @@ class QGDSRenderer(QRenderer):
                                 'all_subtract_true' or 'all_subtract_false'.
         """
         # pylint: disable=too-many-locals
-        df = self.chip_info[chip_name][chip_layer][all_sub_true_or_false]
-        df_fillet = df[-df['fillet'].isnull()]
+        data_frame = self.chip_info[chip_name][chip_layer][
+            all_sub_true_or_false]
+        df_fillet = data_frame[-data_frame['fillet'].isnull()]
 
         if not df_fillet.empty:
             # Don't edit the table when iterating through the rows.
@@ -722,7 +738,7 @@ class QGDSRenderer(QRenderer):
             df_copy = self.chip_info[chip_name][chip_layer][
                 all_sub_true_or_false].copy(deep=True)
             for del_key, the_shapes in edit_index.items():
-                # copy row "index" into a new df "status" times.
+                # copy row "index" into a new data-frame "status" times.
                 # Then replace the LONG shapely with all_shapelys.
                 # For any entries in edit_index, edit table here.
                 orig_row = df_copy.loc[del_key].copy(deep=True)
@@ -1230,6 +1246,7 @@ class QGDSRenderer(QRenderer):
         edge_nocheese = float(
             self.parse_value(self.options.cheese.edge_nocheese))
         precision = float(self.parse_value(self.options.precision))
+        is_neg_mask = self._is_negative_mask(chip_name, chip_layer)
 
         if cheese_shape == 0:
             cheese_x = float(self.parse_value(self.options.cheese.cheese_0_x))
@@ -1244,6 +1261,7 @@ class QGDSRenderer(QRenderer):
                                 chip_name,
                                 edge_nocheese,
                                 chip_layer,
+                                is_neg_mask,
                                 cheese_sub_layer,
                                 nocheese_sub_layer,
                                 self.logger,
@@ -1267,6 +1285,7 @@ class QGDSRenderer(QRenderer):
                                 chip_name,
                                 edge_nocheese,
                                 chip_layer,
+                                is_neg_mask,
                                 cheese_sub_layer,
                                 nocheese_sub_layer,
                                 self.logger,
@@ -1341,12 +1360,12 @@ class QGDSRenderer(QRenderer):
 
                                 no_cheese_cell.add(all_nocheese_gds)
 
-                                # chip_only_top_layer_name = f'TOP_{chip_name}_{chip_layer}'
-                                chip_only_top_layer_name = f'TOP_{chip_name}'
+                                # Keep the cell out to layer, it becomes part of ground.
+                                chip_only_top_name = f'TOP_{chip_name}'
 
                                 if no_cheese_cell.get_bounding_box(
                                 ) is not None:
-                                    lib.cells[chip_only_top_layer_name].add(
+                                    lib.cells[chip_only_top_name].add(
                                         gdspy.CellReference(no_cheese_cell))
                                 else:
                                     lib.remove(no_cheese_cell)
@@ -1386,17 +1405,18 @@ class QGDSRenderer(QRenderer):
         path_sub_geo = path_sub_df['geometry'].tolist()
         path_sub_width = path_sub_df['width'].tolist()
         #for n in range(len(path_sub_geo)):
-        for n, _ in enumerate(path_sub_geo):
-            path_sub_geo[n] = path_sub_geo[n].buffer(path_sub_width[n] / 2,
-                                                     cap_style=style_cap,
-                                                     join_style=style_join)
+        for index, _ in enumerate(path_sub_geo):
+            path_sub_geo[index] = path_sub_geo[index].buffer(
+                path_sub_width[index] / 2,
+                cap_style=style_cap,
+                join_style=style_join)
 
         #  Need to add buffer_size, cap style, and join style to default options
         combo_list = path_sub_geo + poly_sub_geo
         combo_shapely = draw.union(combo_list)
 
         if not combo_shapely.is_empty:
-            #Can return either Multipolgon or just one polygon.
+            #Can return either Multipolygon or just one polygon.
             combo_shapely = combo_shapely.buffer(no_cheese_buffer,
                                                  cap_style=style_cap,
                                                  join_style=style_join)
@@ -1426,6 +1446,24 @@ class QGDSRenderer(QRenderer):
             return combo_shapely
         return None  # Need explicitly to avoid lint warnings.
 
+    def _get_rectangle_points(self, chip_name: str) -> Tuple[list, list]:
+        """There can be more than one chip in QGeometry. All chips export to
+        one gds file. Each chip uses its own subtract rectangle.
+
+        Args:
+            chip_name (str): Name of chip to render.
+
+        Returns:
+            Tuple[list, list]: The subtract-rectangle for the chip_name.
+        """
+        layers_in_chip = self.design.qgeometry.get_all_unique_layers(chip_name)
+
+        minx, miny, maxx, maxy = self.dict_bounds[chip_name]['for_subtract']
+        rectangle_points = [(minx, miny), (maxx, miny), (maxx, maxy),
+                            (minx, maxy)]
+
+        return layers_in_chip, rectangle_points
+
     def _populate_poly_path_for_export(self):
         """Using the geometries for each table name in QGeometry, populate
         self.lib to eventually write to a GDS file.
@@ -1439,32 +1477,11 @@ class QGDSRenderer(QRenderer):
                              Name needs to include desired extension,
                              i.e. "a_path_and_name.gds".
         """
-        # pylint: disable=too-many-locals
-        # pylint: disable=too-many-branches
 
         precision = float(self.parse_value(self.options.precision))
         max_points = int(self.parse_value(self.options.max_points))
 
         lib = self.new_gds_library()
-
-        # Keep this to demo how to pass to gds without subtraction
-        # Need to add the chipnames to this depreciated code.
-        # The NO_EDITS cell is for testing of development code.
-        # cell = lib.new_cell('NO_EDITS', overwrite_duplicate=True)
-
-        # for table_name in self.design.qgeometry.get_element_types():
-        #     q_geometries = getattr(self, f'{table_name}s')
-        #     if q_geometries is None:
-        #         self.logger.warning(
-        #             f'There are no {table_name}s to write.')
-        #     else:
-        #         cell.add(q_geometries)
-
-        #     if q_geometries is None:
-        #         self.logger.warning(
-        #             f'There is no table named "{table_name}s" to write.')
-        #     else:
-        #        cell.add(q_geometries)
 
         if is_true(self.options.ground_plane):
             all_chips_top_name = 'TOP'
@@ -1475,87 +1492,212 @@ class QGDSRenderer(QRenderer):
                 chip_only_top = lib.new_cell(chip_only_top_name,
                                              overwrite_duplicate=True)
 
+                layers_in_chip, rectangle_points = self._get_rectangle_points(
+                    chip_name)
+
+                for chip_layer in layers_in_chip:
+                    self._handle_photo_resist(lib, chip_only_top, chip_name,
+                                              chip_layer, rectangle_points,
+                                              precision, max_points)
+
                 # If junction table, import the cell and cell to chip_only_top
                 if 'junction' in self.chip_info[chip_name]:
                     self._import_junctions_to_one_cell(chip_name, lib,
-                                                       chip_only_top)
-
-                # There can be more than one chip in QGeometry.
-                # All chips export to one gds file.
-                # Each chip uses its own subtract rectangle.
-                layers_in_chip = self.design.qgeometry.get_all_unique_layers(
-                    chip_name)
-
-                minx, miny, maxx, maxy = self.dict_bounds[chip_name][
-                    'for_subtract']
-                rectangle_points = [(minx, miny), (maxx, miny), (maxx, maxy),
-                                    (minx, maxy)]
-
-                for chip_layer in layers_in_chip:
-
-                    self.chip_info[chip_name]['subtract_poly'] = gdspy.Polygon(
-                        rectangle_points, chip_layer)
-
-                    ground_cell_name = f'TOP_{chip_name}_{chip_layer}'
-                    ground_cell = lib.new_cell(ground_cell_name,
-                                               overwrite_duplicate=True)
-
-                    if len(self.chip_info[chip_name][chip_layer]
-                           ['q_subtract_true']) != 0:
-                        subtract_cell_name = f'SUBTRACT_{chip_name}_{chip_layer}'
-                        subtract_cell = lib.new_cell(subtract_cell_name,
-                                                     overwrite_duplicate=True)
-                        subtract_cell.add(self.chip_info[chip_name][chip_layer]
-                                          ['q_subtract_true'])
-
-                        # gdspy.boolean() is not documented clearly.
-                        # If there are multiple elements to subtract
-                        # (both poly and path), the way I could make it work is
-                        # to put them into a cell, within lib.  I used the method
-                        # cell_name.get_polygons(), which appears to convert all
-                        # elements within the cell to poly. After the boolean(),
-                        # I deleted the cell from lib.  The memory is freed up then.
-
-                        diff_geometry = gdspy.boolean(
-                            self.chip_info[chip_name]['subtract_poly'],
-                            subtract_cell.get_polygons(),
-                            'not',
-                            max_points=max_points,
-                            precision=precision,
-                            layer=chip_layer)
-
-                        lib.remove(subtract_cell)
-
-                        if diff_geometry is None:
-                            self.design.logger.warning(
-                                'There is no table named diff_geometry to write.'
-                            )
-                        else:
-                            ground_cell.add(diff_geometry)
-
-                    if self.chip_info[chip_name][chip_layer][
-                            'q_subtract_false'] is None:
-                        self.logger.warning(
-                            f'There is no table named '
-                            f'self.chip_info[{chip_name}][q_subtract_false]'
-                            f' to write.')
-                    else:
-                        if len(self.chip_info[chip_name][chip_layer]
-                               ['q_subtract_false']) != 0:
-                            ground_cell.add(self.chip_info[chip_name]
-                                            [chip_layer]['q_subtract_false'])
-                    # put all cells into TOP_chipname, if not empty.
-                    # When checking for bounding box, gdspy will return None if empty.
-                    if ground_cell.get_bounding_box() is not None:
-                        chip_only_top.add(gdspy.CellReference(ground_cell))
-                    else:
-                        lib.remove(ground_cell)
+                                                       chip_only_top,
+                                                       layers_in_chip)
 
                 # put all chips into TOP
                 if chip_only_top.get_bounding_box() is not None:
                     all_chips_top.add(gdspy.CellReference(chip_only_top))
                 else:
                     lib.remove(chip_only_top)
+
+    def _handle_photo_resist(self, lib: gdspy.GdsLibrary,
+                             chip_only_top: gdspy.library.Cell, chip_name: str,
+                             chip_layer: int, rectangle_points: list,
+                             precision: float, max_points: int):
+        """Handle the positive vs negative mask.
+
+        Args:
+            lib (gdspy.GdsLibrary): The gdspy library to export.
+            chip_only_top (gdspy.library.Cell): The gdspy cell for top.
+            chip_name (str): Name of chip to render.
+            chip_layer (int): Layer of the chip to render.
+            rectangle_points (list): The rectangle to denote the ground
+                                    for each layer.
+            precision (float): Used for gdspy.
+            max_points (int): Used for gdspy. GDSpy uses 199 as the default.
+        """
+
+        self.chip_info[chip_name]['subtract_poly'] = gdspy.Polygon(
+            rectangle_points, chip_layer)
+
+        ground_cell_name = f'TOP_{chip_name}_{chip_layer}'
+        ground_cell = lib.new_cell(ground_cell_name, overwrite_duplicate=True)
+
+        if self._is_negative_mask(chip_name, chip_layer):
+            self._negative_mask(lib, chip_only_top, ground_cell, chip_name,
+                                chip_layer, precision, max_points)
+        else:
+            self._positive_mask(lib, chip_only_top, ground_cell, chip_name,
+                                chip_layer, precision, max_points)
+
+    def _is_negative_mask(self, chip: str, layer: int) -> bool:
+        """Check options to see if negative mask is requested for the
+        chip and layer.
+
+        Args:
+            chip (str): Chip name to search for in options.
+            layer (int): Layer to search for within chip.  Determine if this
+                         layer should have negative mask.
+
+        Returns:
+            bool: If there should be a negative mask for this chip and layer.
+        """
+        if chip in self.options.negative_mask.keys():
+            if layer in self.options.negative_mask[chip]:
+                return True
+
+        return False
+
+    def _negative_mask(self, lib: gdspy.GdsLibrary,
+                       chip_only_top: gdspy.library.Cell,
+                       ground_cell: gdspy.library.Cell, chip_name: str,
+                       chip_layer: int, precision: float, max_points: int):
+        """Apply logic for negative_mask.
+
+        Args:
+            lib (gdspy.GdsLibrary): The gdspy library to export.
+            chip_only_top (gdspy.library.Cell): The gdspy cell for top.
+            ground_cell (gdspy.library.Cell): Cell created for each layer.
+            chip_name (str): Name of chip to render.
+            chip_layer (int): Layer of the chip to render.
+            precision (float): Used for gdspy.
+            max_points (int): Used for gdspy. GDSpy uses 199 as the default.
+        """
+        if len(self.chip_info[chip_name][chip_layer]['q_subtract_true']) != 0:
+
+            # When subtract==True for chip and layer.
+            subtract_true_cell_name = f'SUBTRACT_true_{chip_name}_{chip_layer}'
+            subtract_true_cell = lib.new_cell(subtract_true_cell_name,
+                                              overwrite_duplicate=True)
+            subtract_true_cell.add(
+                self.chip_info[chip_name][chip_layer]['q_subtract_true'])
+
+            #When subtract==False for chip and layer.
+            subtract_false_cell_name = f'SUBTRACT_false_{chip_name}_{chip_layer}'
+            subtract_false_cell = lib.new_cell(subtract_false_cell_name,
+                                               overwrite_duplicate=True)
+            subtract_false_cell.add(
+                self.chip_info[chip_name][chip_layer]['q_subtract_false'])
+
+            # Difference for True-False.
+            diff_geometry = gdspy.boolean(subtract_true_cell.get_polygons(),
+                                          subtract_false_cell.get_polygons(),
+                                          'not',
+                                          max_points=max_points,
+                                          precision=precision,
+                                          layer=chip_layer)
+
+            lib.remove(subtract_true_cell)
+            lib.remove(subtract_false_cell)
+
+            if diff_geometry is None:
+                self.design.logger.warning(
+                    'There is no table named diff_geometry to write.')
+            else:
+                ground_cell.add(diff_geometry)
+
+        QGDSRenderer._add_groundcell_to_chip_only_top(lib, chip_only_top,
+                                                      ground_cell)
+
+    def _positive_mask(self, lib: gdspy.GdsLibrary,
+                       chip_only_top: gdspy.library.Cell,
+                       ground_cell: gdspy.library.Cell, chip_name: str,
+                       chip_layer: int, precision: float, max_points: int):
+        """Apply logic for positive mask.
+
+        Args:
+            lib (gdspy.GdsLibrary): The gdspy library to export.
+            chip_only_top (gdspy.library.Cell): The gdspy cell for top.
+            ground_cell (gdspy.library.Cell): Cell created for each layer.
+            chip_name (str): Name of chip to render.
+            chip_layer (int): Layer of the chip to render.
+            precision (float): Used for gdspy.
+            max_points (int): Used for gdspy. GDSpy uses 199 as the default.
+        """
+        if len(self.chip_info[chip_name][chip_layer]['q_subtract_true']) != 0:
+            subtract_cell_name = f'SUBTRACT_{chip_name}_{chip_layer}'
+            subtract_cell = lib.new_cell(subtract_cell_name,
+                                         overwrite_duplicate=True)
+            subtract_cell.add(
+                self.chip_info[chip_name][chip_layer]['q_subtract_true'])
+
+            # gdspy.boolean() is not documented clearly.  If there are multiple
+            # elements to subtract (both poly & path), the way I could
+            # make it work is to put them into a cell, within lib. I used
+            # the method cell_name.get_polygons(), which appears to convert
+            # all elements within the cell to poly. After the boolean(),
+            # I deleted the cell from lib. The memory is freed up then.
+            diff_geometry = gdspy.boolean(
+                self.chip_info[chip_name]['subtract_poly'],
+                subtract_cell.get_polygons(),
+                'not',
+                max_points=max_points,
+                precision=precision,
+                layer=chip_layer)
+
+            lib.remove(subtract_cell)
+
+            if diff_geometry is None:
+                self.design.logger.warning(
+                    'There is no table named diff_geometry to write.')
+            else:
+                ground_cell.add(diff_geometry)
+
+        self._handle_q_subtract_false(chip_name, chip_layer, ground_cell)
+        QGDSRenderer._add_groundcell_to_chip_only_top(lib, chip_only_top,
+                                                      ground_cell)
+
+    def _handle_q_subtract_false(self, chip_name: str, chip_layer: int,
+                                 ground_cell: gdspy.library.Cell):
+        """For each layer, add the subtract=false components to ground.
+
+        Args:
+            chip_name (str): Name of chip to render.
+            chip_layer (int): Name of layer to render.
+            ground_cell (gdspy.library.Cell): The cell in lib to add to.
+                                            Cell created for each layer.
+        """
+        if self.chip_info[chip_name][chip_layer]['q_subtract_false'] is None:
+            self.logger.warning(f'There is no table named '
+                                f'self.chip_info[{chip_name}][q_subtract_false]'
+                                f' to write.')
+        else:
+            if len(self.chip_info[chip_name][chip_layer]
+                   ['q_subtract_false']) != 0:
+                ground_cell.add(
+                    self.chip_info[chip_name][chip_layer]['q_subtract_false'])
+
+    @classmethod
+    def _add_groundcell_to_chip_only_top(cls, lib: gdspy.GdsLibrary,
+                                         chip_only_top: gdspy.library.Cell,
+                                         ground_cell: gdspy.library.Cell):
+        """Add the ground cell to the top of cell for chip.
+
+        Args:
+            lib (gdspy.GdsLibrary): Holds all of the chips to export to gds.
+            chip_only_top (gdspy.library.Cell): Cell which for a single chip.
+            ground_cell (gdspy.library.Cell): The ground cell to add to
+                                    chip_only_top. Cell created for each layer.
+        """
+        # put all cells into TOP_chipname, if not empty.
+        # When checking for bounding box, gdspy will return None if empty.
+
+        if ground_cell.get_bounding_box() is not None:
+            chip_only_top.add(gdspy.CellReference(ground_cell))
+        else:
+            lib.remove(ground_cell)
 
     def _get_linestring_characteristics(
             self,
@@ -1564,7 +1706,8 @@ class QGDSRenderer(QRenderer):
         LineString in row.geometry.
 
         Args:
-            row (pandas.core.frame.Pandas): A row from Junction table of QGeometry.
+            row (pandas.core.frame.Pandas): A row from Junction table
+                                        of QGeometry.
 
         Returns:
             Tuple:
@@ -1572,7 +1715,8 @@ class QGDSRenderer(QRenderer):
             row.geometry in format (x,y).
             * 2nd entry is float: The angle in degrees of Linestring from
             row.geometry.
-            * 3rd entry is float: Is the magnitude of Linestring from row.geometry.
+            * 3rd entry is float: Is the magnitude of Linestring from
+            row.geometry.
         """
         precision = float(self.parse_value(self.options.precision))
         for_rounding = int(np.abs(np.log10(precision)))
@@ -1660,11 +1804,13 @@ class QGDSRenderer(QRenderer):
 ############
 
     def _import_junctions_to_one_cell(self, chip_name: str, lib: gdspy.library,
-                                      chip_only_top: gdspy.library.Cell):
+                                      chip_only_top: gdspy.library.Cell,
+                                      layers_in_chip: list):
         """Given lib, import the gds file from default options.  Based on the
         cell name in QGeometry table, import the cell from the gds file and
         place it in hierarchy of chip_only_top. In addition, the linestring
-        should be two vertexes, and denotes two things.  1. The midpoint of
+        should be two vertexes, and denotes two things.
+        1. The midpoint of
         segment is the the center of cell.
 
         2. The angle made by second tuple - fist tuple  for delta y/ delta x
@@ -1674,52 +1820,237 @@ class QGDSRenderer(QRenderer):
             chip_name (str): The name of chip.
             lib (gdspy.library): The library used to export the entire QDesign.
             chip_only_top (gdspy.library.Cell): The cell used for
-            just chip_name.
+                                                just chip_name.
+            layers_in_chip (list):  List of all layers in chip.
         """
-
         # pylint: disable=too-many-locals
+        # pylint: disable=too-many-nested-blocks
 
         # Make sure the file exists, before trying to read it.
         dummy_status, directory_name = can_write_to_path(
             self.options.path_filename)
+        layers_in_junction_table = set(
+            self.chip_info[chip_name]['junction']['layer'])
 
         if os.path.isfile(self.options.path_filename):
             lib.read_gds(self.options.path_filename, units='convert')
-            for row in self.chip_info[chip_name]['junction'].itertuples():
-                dummy_layer_num = int(row.layer)
-                if row.gds_cell_name in lib.cells.keys():
-                    a_cell = lib.extract(row.gds_cell_name)
-                    a_cell_bounding_box = a_cell.get_bounding_box()
+            for iter_layer in layers_in_chip:
+                if self._is_negative_mask(chip_name, iter_layer):
+                    # Want to export negative mask
+                    # Gather the pads into hold_all_pads_cell for same layer.
+                    if iter_layer in layers_in_junction_table:
+                        chip_only_top_layer_name = f'TOP_{chip_name}_{iter_layer}'
+                        if chip_only_top_layer_name in lib.cells.keys():
+                            chip_only_top_layer = lib.cells[
+                                chip_only_top_layer_name]
+                            hold_all_pads_name = f'r_l_hold_all_pads_{iter_layer}'
+                            hold_all_pads_cell = lib.new_cell(
+                                hold_all_pads_name, overwrite_duplicate=True)
+                            chip_only_top_layer.add(
+                                gdspy.CellReference(hold_all_pads_cell))
 
-                    rotation, center, pad_left, pad_right = self._give_rotation_center_twopads(
-                        row, a_cell_bounding_box)
+                            # Put all junctions into one cell for same layer.
+                            hold_all_jj_cell_name = f'all_jj_imported_{iter_layer}'
+                            hold_all_jj_cell = lib.new_cell(
+                                hold_all_jj_cell_name, overwrite_duplicate=True)
 
-                    # String for JJ combined with pad Right and pad Left
-                    jj_pad_r_l_name = f'{row.gds_cell_name}_component{row.component}_name{row.name}'
-                    temp_cell = lib.new_cell(jj_pad_r_l_name,
-                                             overwrite_duplicate=True)
-                    temp_cell.add(a_cell)
-
-                    if pad_left is not None:
-                        temp_cell.add(pad_left)
-                    if pad_right is not None:
-                        temp_cell.add(pad_right)
-
-                    chip_only_top.add(
-                        gdspy.CellReference(temp_cell,
-                                            origin=center,
-                                            rotation=rotation))
+                            self._add_negative_extention_to_jj(
+                                chip_name, iter_layer, lib, chip_only_top,
+                                chip_only_top_layer, hold_all_pads_cell,
+                                hold_all_jj_cell)
                 else:
-                    self.logger.warning(
-                        f'From the "junction" table, the cell named'
-                        f' "{row.gds_cell_name}"",  is not in file: {self.options.path_filename}.'
-                        f' The cell was not used.')
+                    # By default, make a positive mask.
+                    for row in self.chip_info[chip_name]['junction'].itertuples(
+                    ):
+                        chip_layer = int(row.layer)
+                        ground_cell_name = f'TOP_{chip_name}_{chip_layer}'
+
+                        if ground_cell_name in lib.cells.keys(
+                        ) and chip_layer == iter_layer:
+                            chip_layer_cell = lib.cells[ground_cell_name]
+
+                            if row.gds_cell_name in lib.cells.keys():
+                                # When positive mask, just add the pads to chip_only_top
+                                self._add_positive_extention_to_jj(
+                                    lib, row, chip_layer_cell)
+                            else:
+                                self.logger.warning(
+                                    f'From the "junction" table, the cell named'
+                                    f' "{row.gds_cell_name}"",  is not in '
+                                    f'file: {self.options.path_filename}.'
+                                    f' The cell was not used.')
 
         else:
             self.logger.warning(
                 f'Not able to find file:"{self.options.path_filename}".  '
                 f'Not used to replace junction.'
                 f' Checked directory:"{directory_name}".')
+
+    def _add_negative_extention_to_jj(self, chip_name: str, jj_layer: int,
+                                      lib: gdspy.library,
+                                      chip_only_top: gdspy.library.Cell,
+                                      chip_only_top_layer: gdspy.library.Cell,
+                                      hold_all_pads_cell: gdspy.library.Cell,
+                                      hold_all_jj_cell: gdspy.library.Cell):
+        """Manipulate existing geometries for the layer that the junctions need
+         to be added.  Since boolean subtaction is computationally intensive,
+         the method will gather the pads for a layer, and do the boolean just
+         once. Then add the junctions to difference.
+
+        Args:
+            chip_name (str): The name of chip.
+            jj_layer (int): The layer the
+            lib (gdspy.library): The library used to export the entire QDesign.
+            chip_only_top (gdspy.library.Cell): The cell used for
+                                                just chip_name.
+            chip_only_top_layer (gdspy.library.Cell): Cell under chip,
+                                                    with specific layer.
+            hold_all_pads_cell (gdspy.library.Cell): Collect all the pads with movement.
+            hold_all_jj_cell (gdspy.library.Cell): Collect all the jj's with movement.
+        """
+
+        boolean_by_layer = self.chip_info[chip_name]['junction'][
+            'layer'] == jj_layer
+        for row in self.chip_info[chip_name]['junction'][
+                boolean_by_layer].itertuples():
+
+            if row.gds_cell_name in lib.cells.keys():
+                # For negative mask, collect the pads to subtract per layer,
+                # and subtract from chip_only_top_layer
+                self._gather_negative_extention_for_jj(lib, row,
+                                                       hold_all_pads_cell,
+                                                       hold_all_jj_cell)
+            else:
+                self.logger.warning(
+                    f'From the "junction" table, the cell named'
+                    f' "{row.gds_cell_name}",  is not in file: '
+                    f'{self.options.path_filename}. The cell was not used.')
+
+        diff_r_l_pads_name = f'r_l_pads_diff_{jj_layer}'
+        diff_pad_cell_layer = lib.new_cell(diff_r_l_pads_name,
+                                           overwrite_duplicate=True)
+        #chip_only_top_layer.add(gdspy.CellReference(diff_pad_cell_layer))
+        chip_only_top.add(gdspy.CellReference(diff_pad_cell_layer))
+
+        precision = self.parse_value(self.options.precision)
+        max_points = int(self.parse_value(self.options.max_points))
+
+        # Make sure  the pads to hold_all_pads_cell is not empty
+
+        if chip_only_top_layer.get_bounding_box() is not None:
+            jj_minus_pads = gdspy.boolean(chip_only_top_layer.get_polygons(),
+                                          hold_all_pads_cell.get_polygons(),
+                                          'not',
+                                          max_points=max_points,
+                                          precision=precision)
+            diff_pad_cell_layer.add(jj_minus_pads)
+        if hold_all_jj_cell.get_bounding_box() is not None:
+            diff_pad_cell_layer.add(gdspy.CellReference(hold_all_jj_cell))
+
+        self._clean_hierarchy(lib, chip_only_top, chip_only_top_layer,
+                              diff_pad_cell_layer, hold_all_pads_cell)
+
+    @classmethod
+    def _clean_hierarchy(cls, lib, chip_only_top, chip_only_top_layer,
+                         diff_pad_cell_layer, hold_all_pads_cell):
+        """Delete cell that doesn't have pad nor jjs.  Then use same
+        name for correct cell.  Also, get rid of cell that had the pads
+        since subtraction happened and we don't need it any more.
+
+        Args:
+            lib (gdspy.library): [The library used to export the entire QDesign.
+            chip_only_top (gdspy.library.Cell): [description]
+            chip_only_top_layer (gdspy.library.Cell): Cell under chip,
+                                        with specific layer.
+            diff_pad_cell_layer (gdspy.library.Cell): Holds result of top_layer - pads + jjs.
+            hold_all_pads_cell (gdspy.library.Cell): Collect all the jj's with movement.
+        """
+        hold_name = chip_only_top_layer.name
+        lib.remove(hold_name)
+        lib.rename_cell(diff_pad_cell_layer, hold_name)
+        chip_only_top.add(gdspy.CellReference(diff_pad_cell_layer))
+        # remove the sub libs before removing hold_all_pads_cells
+        for _, value in enumerate(hold_all_pads_cell.references):
+            lib.remove(value.ref_cell.name)
+        lib.remove(hold_all_pads_cell)
+
+    def _gather_negative_extention_for_jj(
+            self, lib: gdspy.library, row: 'pandas.core.frame.Pandas',
+            hold_all_pads_cell: gdspy.library.Cell,
+            hold_all_jj_cell: gdspy.library.Cell):
+        """Gather the pads and jjs and put them in seprate cells.  The
+        the pads can be boolean'd 'not' just once. After boolean for pads, then
+        the jjs will be added to result.  The boolean is very
+        time intensive, so just want to do it once.
+
+        Args:
+            lib (gdspy.library): The library used to export the entire QDesign.
+            row (pandas.core.frame.Pandas): Each row is from the qgeometry junction table.
+            hold_all_pads_cell (gdspy.library.Cell): Collect all the pads with movement.
+            hold_all_jj_cell (gdspy.library.Cell): Collect all the jj's with movement.
+        """
+
+        a_cell = lib.extract(row.gds_cell_name)
+        a_cell_bounding_box = a_cell.get_bounding_box()
+
+        rotation, center, pad_left, pad_right = self._give_rotation_center_twopads(
+            row, a_cell_bounding_box)
+
+        # String for JJ combined with pad Right and pad Left
+        jj_pad_r_l_name = f'{row.gds_cell_name}_QComponent_is_{row.component}_Name_is_{row.name}'
+        temp_cell = lib.new_cell(jj_pad_r_l_name, overwrite_duplicate=True)
+
+        if pad_left is not None:
+            temp_cell.add(pad_left)
+        if pad_right is not None:
+            temp_cell.add(pad_right)
+
+        hold_all_jj_cell.add(
+            gdspy.CellReference(a_cell, origin=center, rotation=rotation))
+        hold_all_pads_cell.add(
+            gdspy.CellReference(temp_cell, origin=center, rotation=rotation))
+
+    def _add_positive_extention_to_jj(self, lib: gdspy.library,
+                                      row: 'pandas.core.frame.Pandas',
+                                      chip_only_top_layer: gdspy.library.Cell):
+        """Get the extention pads, then add or subtract to extracted cell based on
+        positive or negative mask.
+
+        Args:
+            lib (gdspy.library): The library used to export the entire QDesign.
+            row (pandas.core.frame.Pandas): Each row is from the qgeometry
+                                            junction table.
+            chip_only_top_layer (gdspy.library.Cell): The cell used for
+                                            chip_name and layer_num.
+        """
+        a_cell = lib.extract(row.gds_cell_name)
+        a_cell_bounding_box = a_cell.get_bounding_box()
+
+        rotation, center, pad_left, pad_right = self._give_rotation_center_twopads(
+            row, a_cell_bounding_box)
+
+        # String for JJ combined with pad Right and pad Left
+        jj_pad_r_l_name = f'pads_{row.gds_cell_name}_QComponent_is_{row.component}'
+        temp_cell = lib.new_cell(jj_pad_r_l_name, overwrite_duplicate=True)
+        chip_only_top_layer.add(
+            gdspy.CellReference(a_cell, origin=center, rotation=rotation))
+
+        if pad_left is not None:
+            # chip_only_top_layer.add(
+            #     gdspy.CellReference(pad_left, origin=center, rotation=rotation))
+
+            temp_cell.add(pad_left)
+
+        if pad_right is not None:
+            # chip_only_top_layer.add(
+            #     gdspy.CellReference(pad_right, origin=center,
+            #                         rotation=rotation))
+
+            temp_cell.add(pad_right)
+
+        # "temp_cell" is kept in the lib.
+        chip_only_top_layer.add(
+            gdspy.CellReference(temp_cell, origin=center, rotation=rotation))
 
     def export_to_gds(self,
                       file_name: str,

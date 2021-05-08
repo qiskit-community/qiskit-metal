@@ -3,13 +3,12 @@
 # Form implementation generated from reading ui file './widgets/create_component_window/parameter_entry_window_ui.ui',
 # licensing of './widgets/create_component_window/parameter_entry_window_ui.ui' applies.
 #
-# Created: Fri Apr 16 19:04:26 2021
+# Created: Wed May  5 16:57:41 2021
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
 
-from .model_view.tree_view_param_entry import TreeViewParamEntry
-from PySide2 import QtCore, QtWidgets
+from PySide2 import QtCore, QtGui, QtWidgets
 
 
 class Ui_MainWindow(object):
@@ -135,3 +134,6 @@ class Ui_MainWindow(object):
         self.help_tab_tabWidget.setTabText(
             self.help_tab_tabWidget.indexOf(self.tab_help),
             QtWidgets.QApplication.translate("MainWindow", "Help", None, -1))
+
+
+from .model_view.tree_view_param_entry import TreeViewParamEntry

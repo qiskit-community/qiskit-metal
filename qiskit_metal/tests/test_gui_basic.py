@@ -14,7 +14,6 @@
 
 #pylint: disable-msg=unnecessary-pass
 #pylint: disable-msg=broad-except
-#pylint: disable-msg=unused-variable
 """Qiskit Metal unit tests analyses functionality.
 
 Test a planar design and launching the GUI.

@@ -11,10 +11,9 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
-from typing import List, Tuple, Union, Any, Iterable, Dict
-from qiskit_metal.renderers.renderer_ansys.hfss_renderer import QHFSSRenderer, QAnsysRenderer
-from qiskit_metal.renderers.renderer_ansys.q3d_renderer import QQ3DRenderer
+""" Sweep a qcomponent option, and get results of analysis."""
+from typing import Tuple, Union, Dict
+# from typing import List, Iterable, Any
 
 
 class Sweeping():
@@ -30,7 +29,8 @@ class Sweeping():
         """
         self.design = design
 
-    def option_value(self, a_dict, search: str) -> str:
+    @classmethod
+    def option_value(cls, a_dict, search: str) -> str:
         """Get value from dict based on key.  This method is used for unknown
         depth, dict search, within a dict.
 
@@ -51,11 +51,11 @@ class Sweeping():
         Args:
             qcomp_name (str): Component that contains the option to be swept.
             option_name (str): The option within qcomp_name to sweep.
-            option_sweep (list): Each entry in the list is a value 
+            option_sweep (list): Each entry in the list is a value
                                 for option_name.
 
         Returns:
-            list: Traverse the option Dict.  
+            list: Traverse the option Dict.
             addict.addict.Dict: Value from the dictionary of the searched key.
             int: Observation of searching for data from arguments.
 
@@ -94,43 +94,45 @@ class Sweeping():
         return option_path, a_value, 0
 
     def prep_eigenmode_setup(self, setup_args: Dict) -> int:
-        """User can pass arguments for method eigenmode setup.  If not passed, 
-        method will use the options in HFSS default_options. The name of setup 
-        will be "Sweep_em_setup".  If a setup named "Sweep_em_setup" exists 
-        in the project, it will be deleted, and a new setup will be added 
-        with the arguments from setup_args. 
+        """User can pass arguments for method eigenmode setup.  If not passed,
+        method will use the options in HFSS default_options. The name of setup
+        will be "Sweep_em_setup".  If a setup named "Sweep_em_setup" exists
+        in the project, it will be deleted, and a new setup will be added
+        with the arguments from setup_args.
 
-        Assume: Error checking has already occurred for existence of Ansys, 
+        Assume: Error checking has already occurred for existence of Ansys,
         project, and HFSS eigenmode design has been connected to pinfo.
 
         Args:
             setup_args (Dict):  Maximum  keys used in setup_args.
 
         **setup_args** dict contents:
-            * min_freq_ghz (int, optional): Minimum frequency in GHz. 
+            * min_freq_ghz (int, optional): Minimum frequency in GHz.
               Defaults to 1.
             * n_modes (int, optional): Number of modes. Defaults to 1.
-            * max_delta_f (float, optional): Maximum difference in 
-              freq between consecutive passes. 
+            * max_delta_f (float, optional): Maximum difference in
+              freq between consecutive passes.
               Defaults to 0.5.
-            * max_passes (int, optional): Maximum number of passes. 
+            * max_passes (int, optional): Maximum number of passes.
               Defaults to 10.
-            * min_passes (int, optional): Minimum number of passes. 
+            * min_passes (int, optional): Minimum number of passes.
               Defaults to 1.
-            * min_converged (int, optional): Minimum number of converged 
+            * min_converged (int, optional): Minimum number of converged
               passes.  Defaults to 1.
-            * pct_refinement (int, optional): Percent refinement. 
+            * pct_refinement (int, optional): Percent refinement.
               Defaults to 30.
             * basis_order (int, optional): Basis order. Defaults to -1.
 
         Returns:
             int: The return code of status.
-                * 0 Setup of "Sweep_em_setup" added to design with setup_args. 
-                * 1 Look at warning message to determine which argument was of 
+                * 0 Setup of "Sweep_em_setup" added to design with setup_args.
+                * 1 Look at warning message to determine which argument was of
                   the wrong data type.
-                * 2 Look at warning message, a key in setup_args that was 
+                * 2 Look at warning message, a key in setup_args that was
                   not expected.
         """
+        # pylint: disable=too-many-branches
+        # pylint: disable=too-many-return-statements
 
         a_hfss = self.design.renderers.hfss
         setup_args.name = "Sweep_em_setup"
@@ -142,51 +144,43 @@ class Sweeping():
             if key == "min_freq_ghz":
                 if isinstance(value, int) or value is None:
                     continue
-                else:
-                    self.warning_for_setup(setup_args, key, "int")
-                    return 1
+                self.warning_for_setup(setup_args, key, "int")
+                return 1
             if key == "n_modes":
                 if isinstance(value, int) or value is None:
                     continue
-                else:
-                    self.warning_for_setup(setup_args, key, "int")
-                    return 1
+                self.warning_for_setup(setup_args, key, "int")
+                return 1
             if key == "max_delta_f":
                 if isinstance(value, float) or value is None:
                     continue
-                else:
-                    self.warning_for_setup(setup_args, key, "float")
-                    return 1
+                self.warning_for_setup(setup_args, key, "float")
+                return 1
             if key == 'max_passes':
                 if isinstance(value, int) or value is None:
                     continue
-                else:
-                    self.warning_for_setup(setup_args, key, "int")
-                    return 1
+                self.warning_for_setup(setup_args, key, "int")
+                return 1
             if key == 'min_passes':
                 if isinstance(value, int) or value is None:
                     continue
-                else:
-                    self.warning_for_setup(setup_args, key, "int")
-                    return 1
+                self.warning_for_setup(setup_args, key, "int")
+                return 1
             if key == 'min_converged':
                 if isinstance(value, int) or value is None:
                     continue
-                else:
-                    self.warning_for_setup(setup_args, key, "int")
-                    return 1
+                self.warning_for_setup(setup_args, key, "int")
+                return 1
             if key == 'basis_order':
                 if isinstance(value, int) or value is None:
                     continue
-                else:
-                    self.warning_for_setup(setup_args, key, "int")
-                    return 1
+                self.warning_for_setup(setup_args, key, "int")
+                return 1
             if key == 'pct_refinement':
                 if isinstance(value, int) or value is None:
                     continue
-                else:
-                    self.warning_for_setup(setup_args, key, "int")
-                    return 1
+                self.warning_for_setup(setup_args, key, "int")
+                return 1
 
             self.design.logger.warning(
                 f'The key={key} is not expected.  Do you have a typo?  '
@@ -202,10 +196,10 @@ class Sweeping():
         """Give a warning based on key/value of dict.
 
         Args:
-            setup_args (dict): Holds the key/value of setup arguments 
+            setup_args (dict): Holds the key/value of setup arguments
                         that are of interest.
             key (str): Name of setup argument.
-            data_type (str): The data type the argument should be. 
+            data_type (str): The data type the argument should be.
         """
         self.design.logger.warning(
             f'The value for {key} should be a {data_type}. '
@@ -213,13 +207,13 @@ class Sweeping():
             f'Sweep will not be implemented.')
 
     def prep_q3d_setup(self, setup_args: Dict) -> int:
-        """User can pass arguments for method q3d setup.  If not passed, 
-        method will use the options in Q3D renderer default_options. 
-        The name of setup will be "Sweep_q3d_setup".  If a setup named 
-        "Sweep_q3d_setup" exists in the project, it will be deleted, and 
-        a new setup will be added with the arguments from setup_args. 
+        """User can pass arguments for method q3d setup.  If not passed,
+        method will use the options in Q3D renderer default_options.
+        The name of setup will be "Sweep_q3d_setup".  If a setup named
+        "Sweep_q3d_setup" exists in the project, it will be deleted, and
+        a new setup will be added with the arguments from setup_args.
 
-        Assume: Error checking has already occurred for existence of Ansys, 
+        Assume: Error checking has already occurred for existence of Ansys,
         project, and Q3d Extractor design has been connected to pinfo.
 
         Args:
@@ -227,38 +221,42 @@ class Sweeping():
 
         **setup_args** dict contents:
             * freq_ghz (float, optional): Frequency in GHz. Defaults to 5..
-            * name (str, optional): Name of solution setup. 
+            * name (str, optional): Name of solution setup.
                         Defaults to "Setup".
-            * max_passes (int, optional): Maximum number of passes. 
+            * max_passes (int, optional): Maximum number of passes.
                         Defaults to 15.
-            * min_passes (int, optional): Minimum number of passes. 
+            * min_passes (int, optional): Minimum number of passes.
                         Defaults to 2.
-            * percent_error (float, optional): Error tolerance as percentage. 
+            * percent_error (float, optional): Error tolerance as percentage.
                         Defaults to 0.5.
-            * save_fields (bool, optional): Whether or not to save fields. 
+            * save_fields (bool, optional): Whether or not to save fields.
                         Defaults to False.
-            * enabled (bool, optional): Whether or not setup is enabled. 
+            * enabled (bool, optional): Whether or not setup is enabled.
                         Defaults to True.
-            * min_converged_passes (int, optional): Minimum number of 
+            * min_converged_passes (int, optional): Minimum number of
                         converged passes. Defaults to 2.
-            * percent_refinement (int, optional): Refinement as a percentage. 
+            * percent_refinement (int, optional): Refinement as a percentage.
                         Defaults to 30.
-            * auto_increase_solution_order (bool, optional): Whether or not 
-                        to increase solution order automatically. 
+            * auto_increase_solution_order (bool, optional): Whether or not
+                        to increase solution order automatically.
                         Defaults to True.
-            * solution_order (str, optional): Solution order. 
+            * solution_order (str, optional): Solution order.
                         Defaults to 'High'.
-            * solver_type (str, optional): Solver type. 
+            * solver_type (str, optional): Solver type.
                         Defaults to 'Iterative'.
 
         Returns:
             int:  The return code of status.
                 * 0 Setup of "Sweep_q3d_setup" added to design with setup_args.
-                * 1 Look at warning message to determine which argument was 
+                * 1 Look at warning message to determine which argument was
                         of the wrong data type.
-                * 2 Look at warning message, a key in setup_args that was not 
+                * 2 Look at warning message, a key in setup_args that was not
                         expected.
         """
+        # pylint: disable=too-many-statements
+        # pylint: disable=too-many-branches
+        # pylint: disable=too-many-return-statements
+
         a_q3d = self.design.renderers.q3d
         setup_args.name = "Sweep_q3d_setup"
         a_q3d.pinfo.design.delete_setup(setup_args.name)
@@ -269,75 +267,65 @@ class Sweeping():
             if key == "freq_ghz":
                 if isinstance(value, float) or value is None:
                     continue
-                else:
-                    self.warning_for_setup(setup_args, key, "float")
-                    return 1
+                self.warning_for_setup(setup_args, key, "float")
+                return 1
             if key == 'max_passes':
                 if isinstance(value, int) or value is None:
                     continue
-                else:
-                    self.warning_for_setup(setup_args, key, "int")
-                    return 1
+                self.warning_for_setup(setup_args, key, "int")
+                return 1
             if key == 'min_passes':
                 if isinstance(value, int) or value is None:
                     continue
-                else:
-                    self.warning_for_setup(setup_args, key, "int")
-                    return 1
+                self.warning_for_setup(setup_args, key, "int")
+                return 1
             if key == 'percent_error':
                 if isinstance(value, float) or value is None:
                     continue
-                else:
-                    self.warning_for_setup(setup_args, key, "float")
-                    return 1
+                self.warning_for_setup(setup_args, key, "float")
+                return 1
             if key == 'save_fields':
                 if isinstance(value, bool) or value is None:
                     continue
-                else:
-                    self.warning_for_setup(setup_args, key, "bool")
-                    return 1
+                self.warning_for_setup(setup_args, key, "bool")
+                return 1
             if key == 'enabled':
                 if isinstance(value, bool) or value is None:
                     continue
-                else:
-                    self.warning_for_setup(setup_args, key, "bool")
-                    return 1
+                self.warning_for_setup(setup_args, key, "bool")
+                return 1
             if key == 'min_converged_passes':
                 if isinstance(value, int) or value is None:
                     continue
-                else:
-                    self.warning_for_setup(setup_args, key, "int")
-                    return 1
+                self.warning_for_setup(setup_args, key, "int")
+                return 1
             if key == 'percent_refinement':
                 if isinstance(value, int) or value is None:
                     continue
-                else:
-                    self.warning_for_setup(setup_args, key, "int")
-                    return 1
+                self.warning_for_setup(setup_args, key, "int")
+                return 1
             if key == 'auto_increase_solution_order':
                 if isinstance(value, bool) or value is None:
                     continue
-                else:
-                    self.warning_for_setup(setup_args, key, "bool")
-                    return 1
+                self.warning_for_setup(setup_args, key, "bool")
+                return 1
             if key == 'solution_order':
                 if (isinstance(value, str) and
                         value in ["High", "Normal", "Higher", "Highest"
                                  ]) or value is None:
                     continue
-                else:
-                    self.design.logger.warning(
-                        f'The value for solution_order should be a str '
-                        f'in ["High", "Normal", "Higher", "Highest"]. '
-                        f'The present value is {value}.  '
-                        f'Sweep will not be implemented.')
-                    return 1
+                self.design.logger.warning(
+                    f'The value for solution_order should be a str '
+                    f'in ["High", "Normal", "Higher", "Highest"]. '
+                    f'The present value is {value}.  '
+                    f'Sweep will not be implemented.')
+                return 1
             if key == 'solver_type':
                 if isinstance(value, str) or value is None:
                     continue
-                else:
-                    self.warning_for_setup(setup_args, key, "str")
-                    return 1
+
+                self.warning_for_setup(setup_args, key, "str")
+                return 1
 
             self.design.logger.warning(
                 f'The key={key} is not expected.  Do you have a typo?  '
@@ -366,39 +354,40 @@ class Sweeping():
         with eigenmode solution-type will be inserted by this method.
 
         Args:
-            qcomp_name (str): A component that contains the option to be 
+            qcomp_name (str): A component that contains the option to be
                                 swept. Assume qcomp_name is in qcomp_render.
             option_name (str): The option within qcomp_name to sweep.
-                                Follow details from 
+                                Follow details from
                                 renderer in QHFSSRenderer.render_design.
-            option_sweep (list): Each entry in the list is a value for 
+            option_sweep (list): Each entry in the list is a value for
                                 option_name.
             qcomp_render(list): List of components to render to Ansys.
-            endcaps_render (list): Identify which kind of pins. 
+            endcaps_render (list): Identify which kind of pins.
                                     Follow details from renderer in
                                     QHFSSRenderer.render_design.
-            ignored_jjs_render (list): List of tuples of jj's that shouldn't  
-                                    be rendered.  Follow details from 
+            ignored_jjs_render (list): List of tuples of jj's that shouldn't
+                                    be rendered.  Follow details from
                                     renderer in QHFSSRenderer.render_design.
-            box_plus_buffer_render (bool): Either calculate a bounding box  
-                                    based on the location of rendered  
-                                    geometries or use chip size from design 
+            box_plus_buffer_render (bool): Either calculate a bounding box
+                                    based on the location of rendered
+                                    geometries or use chip size from design
                                     class.  Follow details from renderer in
-                                    QHFSSRenderer.render_design.  
+                                    QHFSSRenderer.render_design.
                                     Default is True.
-            setup_args (Dict): Hold the arguments for  Hfss eigenmode setup() 
-                                    as  key/values to pass to Ansys.  
+            setup_args (Dict): Hold the arguments for  Hfss eigenmode setup()
+                                    as  key/values to pass to Ansys.
                                     If None, default Setup will be used.
-            leave_last_design (bool): In HFSS, after the last sweep, 
-                                    should the design be cleared? 
+            leave_last_design (bool): In HFSS, after the last sweep,
+                                    should the design be cleared?
                                     Default is True.
-            design_name (str, optional):  Name of HFSS_design to use in 
+            design_name (str, optional):  Name of HFSS_design to use in
                                     project. Defaults to "Sweep_Eigenmode".
 
         Returns:
-            Tuple[dict, int]: The dict key is each value of option_sweep, the value is
-            the solution-data for each sweep.
-            The int is the o bservation of searching for data from arguments as defined below.
+            Tuple[dict, int]: The dict key is each value of option_sweep, the
+            value is the solution-data for each sweep.
+            The int is the observation of searching for data from arguments as
+            defined below.
 
             * 0 Have list of capacitance matrix.
             * 1 qcomp_name not registered in design.
@@ -410,6 +399,8 @@ class Sweeping():
             * 7 design not in app
             * 8 setup not implement, check the setup_args.
         """
+        # pylint: disable=too-many-locals
+        # pylint: disable=too-many-arguments
 
         #Dict of all swept information.
         all_sweep = dict()
@@ -427,7 +418,7 @@ class Sweeping():
 
         if self.prep_eigenmode_setup(setup_args) != 0:
             self.design.logger.warning(
-                f'The setup was not implemented, look at warning messages.')
+                'The setup was not implemented, look at warning messages.')
             return all_sweep, 8
 
         len_sweep = len(option_sweep) - 1
@@ -479,11 +470,14 @@ class Sweeping():
             self,
             freqs: Union[list, None] = None,
             kappa_over_2pis: Union[list, None] = None) -> Union[list, None]:
-        """Calculate Quality Factor = freqs/kappa_over_2pis.  Before division, some error checking. 
+        """Calculate Quality Factor = freqs/kappa_over_2pis.  Before division,
+        some error checking.
 
         Args:
-            freqs (Union[list, None], optional): The eigenmode frequency. Defaults to None.
-            kappa_over_2pis (Union[list, None], optional): The kappa/(2*pi) Defaults to None.
+            freqs (Union[list, None], optional): The eigenmode frequency.
+                                                Defaults to None.
+            kappa_over_2pis (Union[list, None], optional): The kappa/(2*pi).
+                                                Defaults to None.
 
         Returns:
             Union[list, None]: Calculate freqs/kappa_over_2pis
@@ -493,17 +487,18 @@ class Sweeping():
         if kappa_over_2pis is None:
             return quality_factor
 
-        # Asssume both are lists or None since method:  eigenmodes() in pyEPR returns a list or None.
+        # Assume both are lists or None since method:  eigenmodes()
+        #                              in pyEPR returns a list or None.
         if len(freqs) == len(kappa_over_2pis):
             quality_factor = [
                 float(ff) / float(kk) for ff, kk in zip(freqs, kappa_over_2pis)
             ]
             return quality_factor
-        else:
-            self.design.logger.warning(
-                'The Quality factor not calculated since size of freqs and kappa_over_2pis are not identical'
-            )
-            return quality_factor
+
+        self.design.logger.warning(
+            'The Quality factor not calculated since size of freqs'
+            ' and kappa_over_2pis are not identical')
+        return quality_factor
 
     def sweep_one_option_get_capacitance_matrix(
             self,
@@ -515,28 +510,29 @@ class Sweeping():
             setup_args: Dict = None,
             leave_last_design: bool = True,
             design_name: str = "Sweep_Capacitance") -> Tuple[dict, int]:
-        """Ansys must be open with an inserted project.  A design, 
+        """Ansys must be open with an inserted project.  A design,
         "Q3D Extractor Design", will be inserted by this method.
 
         Args:
             qcomp_name (str): A component that contains the option to be swept.
             option_name (str): The option within qcomp_name to sweep.
-            option_sweep (list): Each entry in the list is a value for 
+            option_sweep (list): Each entry in the list is a value for
                         option_name.
-            qcomp_render (list): The component to render to Q3D. 
-            endcaps_render (list): Identify which kind of pins. Follow the 
+            qcomp_render (list): The component to render to Q3D.
+            endcaps_render (list): Identify which kind of pins. Follow the
                         details from renderer QQ3DRenderer.render_design.
-            setup_args (Dict): Hold the arguments for  Q3d setup() as  
-                        key/values to pass to Ansys.  
+            setup_args (Dict): Hold the arguments for  Q3d setup() as
+                        key/values to pass to Ansys.
                         If None, default Setup will be used.
-            leave_last_design (bool) : In Q3d, after the last sweep, should 
+            leave_last_design (bool) : In Q3d, after the last sweep, should
                         the design be cleared?
             design_name(str): Name of q3d_design to use in project.
 
         Returns:
-            dict or int: If dict, the key is each value of option_sweep, the value is 
-            the capacitance matrix for each sweep.
-            If int, observation of searching for data from arguments as defined below
+            dict or int: If dict, the key is each value of option_sweep, the
+            value is the capacitance matrix for each sweep.
+            If int, observation of searching for data from arguments as
+            defined below:
 
             * 0 Have list of capacitance matrix.
             * 1 qcomp_name not registered in design.
@@ -546,9 +542,12 @@ class Sweeping():
             * 5 last key in option_name is not in dict.
             * 6 project not in app
             * 7 design not in app
-            * 8 setup not implement, check the setup_args. 
-           
+            * 8 setup not implement, check the setup_args.
+
         """
+        # pylint: disable=too-many-arguments
+        # pylint: disable=too-many-locals
+
         #Dict of all swept information.
         all_sweep = dict()
         option_path, a_value, check_result = self.error_check_sweep_input(
@@ -565,8 +564,8 @@ class Sweeping():
 
         # Add a solution setup.
         if self.prep_q3d_setup(setup_args) != 0:
-            self.design.logger.warning(f'The setup was not implemented, '
-                                       f'please look at warning messages.')
+            self.design.logger.warning('The setup was not implemented, '
+                                       'please look at warning messages.')
             return all_sweep, 8
 
         len_sweep = len(option_sweep) - 1
