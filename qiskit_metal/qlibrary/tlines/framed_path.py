@@ -40,7 +40,7 @@ class RouteFramed(QRoute):
     component_metadata = Dict(short_name='cpw')
     """Component metadata"""
 
-    TOOLTIP ="""A non-meandered basic CPW that is auto-generated between 2 components."""
+    TOOLTIP = """A non-meandered basic CPW that is auto-generated between 2 components."""
 
     def make(self):
         """Use user-specified parameters and geometric orientation of

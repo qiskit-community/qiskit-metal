@@ -48,7 +48,7 @@ class OpenToGround(QComponent):
                            layer='1')
     """Default connector options"""
 
-    TOOLTIP =  """A basic open to ground termination. """
+    TOOLTIP = """A basic open to ground termination. """
 
     def make(self):
         """Build the component."""

@@ -29,7 +29,6 @@ class QRoutePoint:
     All values stored as np.ndarray of parsed floats.
     """
 
-
     def __init__(self, position: np.array, direction: np.array = None):
         """
         Arguments:

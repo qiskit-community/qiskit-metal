@@ -65,7 +65,7 @@ class RouteMeander(QRoute):
                            prevent_short_edges='true')
     """Default options"""
 
-    TOOLTIP =  """Implements a simple CPW, with a single meander."""
+    TOOLTIP = """Implements a simple CPW, with a single meander."""
 
     def make(self):
         """The make function implements the logic that creates the geometry

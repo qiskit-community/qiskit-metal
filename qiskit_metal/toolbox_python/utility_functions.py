@@ -538,7 +538,6 @@ def can_write_to_path(file: str) -> Tuple[int, str]:
         return 0, directory_name
 
 
-
 def get_class_from_abs_file_path(abs_file_path):
     """
     Gets the corresponding class object for the absolute file path to the file containing that
