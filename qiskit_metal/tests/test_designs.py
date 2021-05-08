@@ -32,7 +32,8 @@ from qiskit_metal.qlibrary.core import QComponent
 from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
 from qiskit_metal.tests.assertions import AssertionsMixin
 
-from qiskit_metal.qlibrary.lumped.resonator_coil_rect import  ResonatorCoilRect
+from qiskit_metal.qlibrary.lumped.resonator_coil_rect import ResonatorCoilRect
+
 
 class TestDesign(unittest.TestCase, AssertionsMixin):
     """Unit test class."""
