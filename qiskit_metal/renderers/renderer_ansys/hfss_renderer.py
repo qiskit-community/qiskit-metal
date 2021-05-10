@@ -113,56 +113,78 @@ class QHFSSRenderer(QAnsysRenderer):
         """Initiate rendering of components in design contained in selection,
         assuming they're valid. Components are rendered before the chips they
         reside on, and subtraction of negative shapes is performed at the very
-        end. Add the metallize() method here to turn objects in
+        end. Add the metalize() method here to turn objects in
         self.assign_perfE (see init in QAnsysRenderer class) into perfect
         electrical conductors. Create lumped ports as needed.
 
-        First obtain a list of IDs of components to render and a corresponding case, denoted by self.qcomp_ids
-        and self.case, respectively. If self.case == 1, all components in QDesign are to be rendered.
-        If self.case == 0, a strict subset of components in QDesign are to be rendered. Otherwise, if
-        self.case == 2, one or more component names in selection cannot be found in QDesign.
+        First obtain a list of IDs of components to render and a corresponding
+        case, denoted by self.qcomp_ids and self.case, respectively. If
+        self.case == 1, all components in QDesign are to be rendered.  If
+        self.case == 0, a strict subset of components in QDesign are to be
+        rendered. Otherwise, if self.case == 2, one or more component names in
+        selection cannot be found in QDesign.
 
-        Among the components selected for export, there may or may not be unused (unconnected) pins.
-        The second parameter, open_pins, contains tuples of the form (component_name, pin_name) that
-        specify exactly which pins should be open rather than shorted during the simulation. Both the
-        component and pin name must be specified because the latter could be shared by multiple
-        components. All pins in this list are rendered with an additional endcap in the form of a
-        rectangular cutout, to be subtracted from its respective plane.
+        Among the components selected for export, there may or may not be
+        unused (unconnected) pins. The second parameter, open_pins, contains
+        tuples of the form (component_name, pin_name) that specify exactly
+        which pins should be open rather than shorted during the simulation.
+        Both the component and pin name must be specified because the latter
+        could be shared by multiple components. All pins in this list are
+        rendered with an additional endcap in the form of a rectangular
+        cutout, to be subtracted from its respective plane.
 
-        In driven modal solutions, the Ansys design must include one or more ports. This is done by adding
-        all port designations and their respective impedances in Ohms as (qcomp, pin, impedance) to
-        port_list. Note that an open endcap must separate the two sides of each pin before inserting a lumped
-        port in between, so behind the scenes all pins in port_list are also added to open_pins. Practically,
-        however, port_list and open_pins are inputted as mutually exclusive lists.
+        In driven modal solutions, the Ansys design must include one or more
+        ports. This is done by adding all port designations and their
+        respective impedances in Ohms as (qcomp, pin, impedance) to port_list.
+        Note that an open endcap must separate the two sides of each pin before
+        inserting a lumped port in between, so behind the scenes all pins in
+        port_list are also added to open_pins. Practically, however, port_list
+        and open_pins are inputted as mutually exclusive lists.
 
-        Also in driven modal solutions, one may want to render junctions as lumped ports and/or inductors, or
-        omit them altogether. To do so, tuples of the form (component_name, element_name, impedance, draw_ind)
-        are added to the list jj_to_port. For example, ('Q1', 'rect_jj', 70, True) indicates that rect_jj of
-        component Q1 is to be rendered as both a lumped port with an impedance of 70 Ohms as well as an inductor
-        whose properties are given in default_options. Replacing the last entry of this 4-element tuple with False
-        would indicate that only the port is to be drawn, not the inductor. Alternatively for driven modal
-        solutions, one may want to disregard select junctions in the Metal design altogether to simulate the
-        capacitive effect while keeping the qubit in an "off" state. Such junctions are specified in the form
-        (component_name, element_name) in the list ignored_jjs.
+        Also in driven modal solutions, one may want to render junctions as
+        lumped ports and/or inductors, or omit them altogether. To do so,
+        tuples of the form (component_name, element_name, impedance, draw_ind)
+        are added to the list jj_to_port. For example,
+        ('Q1', 'rect_jj', 70, True) indicates that rect_jj of component Q1 is
+        to be rendered as both a lumped port with an impedance of 70 Ohms as
+        well as an inductor whose properties are given in default_options.
+        Replacing the last entry of this 4-element tuple with False would
+        indicate that only the port is to be drawn, not the inductor.
+        Alternatively for driven modal solutions, one may want to disregard
+        select junctions in the Metal design altogether to simulate the
+        capacitive effect while keeping the qubit in an "off" state. Such
+        junctions are specified in the form (component_name, element_name)
+        in the list ignored_jjs.
 
-        The final parameter, box_plus_buffer, determines how the chip is drawn. When set to True, it takes the
-        minimum rectangular bounding box of all rendered components and adds a buffer of x_buffer_width_mm and
-        y_buffer_width_mm horizontally and vertically, respectively, to the chip size. The center of the chip
-        lies at the midpoint x/y coordinates of the minimum rectangular bounding box and may change depending
-        on which components are rendered and how they're positioned. If box_plus_buffer is False, however, the
-        chip position and dimensions are taken from the chip info dictionary found in self.design, irrespective
-        of what's being rendered. While this latter option is faster because it doesn't require calculating a
-        bounding box, it runs the risk of rendered components being too close to the edge of the chip or even
-        falling outside its boundaries.
+        The final parameter, box_plus_buffer, determines how the chip is drawn.
+        When set to True, it takes the minimum rectangular bounding box of all
+        rendered components and adds a buffer of x_buffer_width_mm and
+        y_buffer_width_mm horizontally and vertically, respectively, to the
+        chip size. The center of the chip lies at the midpoint x/y coordinates
+        of the minimum rectangular bounding box and may change depending on
+        which components are rendered and how they're positioned. If
+        box_plus_buffer is False, however, the chip position and dimensions
+        are taken from the chip info dictionary found in self.design,
+        irrespective of what's being rendered. While this latter option is
+        faster because it doesn't require calculating a bounding box, it runs
+        the risk of rendered components being too close to the edge of the chip
+        or even falling outside its boundaries.
 
         Args:
-            selection (Union[list, None], optional): List of components to render. Defaults to None.
-            open_pins (Union[list, None], optional): List of tuples of pins that are open. Defaults to None.
-            port_list (Union[list, None], optional): List of tuples of pins to be rendered as ports. Defaults to None.
-            jj_to_port (Union[list, None], optional): List of tuples of jj's to be rendered as ports. Defaults to None.
-            ignored_jjs (Union[list, None], optional): List of tuples of jj's that shouldn't be rendered. Defaults to None.
-            box_plus_buffer (bool): Either calculate a bounding box based on the location of rendered geometries
-                                     or use chip size from design class.
+            selection (Union[list, None], optional): List of components to
+                                        render. Defaults to None.
+            open_pins (Union[list, None], optional): List of tuples of pins
+                                        that are open. Defaults to None.
+            port_list (Union[list, None], optional): List of tuples of pins to
+                                        be rendered as ports. Defaults to None.
+            jj_to_port (Union[list, None], optional): List of tuples of jj's to
+                                        be rendered as ports. Defaults to None.
+            ignored_jjs (Union[list, None], optional): List of tuples of jj's
+                                        that shouldn't be rendered.
+                                        Defaults to None.
+            box_plus_buffer (bool): Either calculate a bounding box based on
+                                        the location of rendered geometries
+                                        or use chip size from design class.
         """
         self.qcomp_ids, self.case = self.get_unique_component_ids(selection)
 
@@ -519,10 +541,12 @@ class QHFSSRenderer(QAnsysRenderer):
         Args:
             freq_ghz (int, optional): Frequency in GHz. Defaults to 5.
             name (str, optional): Name of driven modal setup. Defaults to "Setup".
-            max_delta_s (float, optional): Absolute value of maximum difference in scattering parameter S. Defaults to 0.1.
+            max_delta_s (float, optional): Absolute value of maximum
+                    difference in scattering parameter S. Defaults to 0.1.
             max_passes (int, optional): Maximum number of passes. Defaults to 10.
             min_passes (int, optional): Minimum number of passes. Defaults to 1.
-            min_converged (int, optional): Minimum number of converged passes. Defaults to 1.
+            min_converged (int, optional): Minimum number of converged passes.
+                                            Defaults to 1.
             pct_refinement (int, optional): Percent refinement. Defaults to 30.
             basis_order (int, optional): Basis order. Defaults to 1.
         """

@@ -374,8 +374,8 @@ class QAnsysRenderer(QRenderer):
               Defaults to None.
             UserSpecifyFolder (int, optional): 0 if default folder for plot is used, 1 otherwise.
               Defaults to None.
-            QuantityName (str, optional): Type of plot to create. Possible values are 
-              Mesh plots - "Mesh"; 
+            QuantityName (str, optional): Type of plot to create. Possible values are
+              Mesh plots - "Mesh";
               Field plots - "Mag_E", "Mag_H", "Mag_Jvol", "Mag_Jsurf","ComplexMag_E",
               "ComplexMag_H", "ComplexMag_Jvol", "ComplexMag_Jsurf", "Vector_E", "Vector_H",
               "Vector_Jvol", "Vector_Jsurf", "Vector_RealPoynting","Local_SAR", "Average_SAR".
