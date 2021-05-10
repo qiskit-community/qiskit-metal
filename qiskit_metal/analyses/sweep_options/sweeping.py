@@ -93,6 +93,97 @@ class Sweeping():
 
         return option_path, a_value, 0
 
+    def prep_drivenmodal_setup(self, setup_args: Dict) -> int:
+        """User can pass arguments for method drivenmodal setup.  If not passed,
+        method will use the options in HFSS default_options. The name of setup
+        will be "Sweep_dm_setup".  If a setup named "Sweep_dm_setup" exists
+        in the project, it will be deleted, and a new setup will be added
+        with the arguments from setup_args.
+
+        Assume: Error checking has already occurred for existence of Ansys,
+        project, and HFSS eigenmode design has been connected to pinfo.
+
+        Args:
+            setup_args (Dict):  Maximum  keys used in setup_args.
+
+        **setup_args** dict contents:
+            * freq_ghz (int, optional): Frequency in GHz.  Defaults to 5.
+            * max_delta_s (float, optional): Absolute value of maximum
+                    difference in scattering parameter S. Defaults to 0.1.
+            * max_passes (int, optional): Maximum number of passes.
+              Defaults to 10.
+            * min_passes (int, optional): Minimum number of passes.
+              Defaults to 1.
+            * min_converged (int, optional): Minimum number of converged
+              passes.  Defaults to 1.
+            * pct_refinement (int, optional): Percent refinement.
+              Defaults to 30.
+            * basis_order (int, optional): Basis order. Defaults to 1.
+
+        Returns:
+            int: The return code of status.
+                * 0 Setup of "Sweep_dm_setup" added to design with setup_args.
+                * 1 Look at warning message to determine which argument was of
+                  the wrong data type.
+                * 2 Look at warning message, a key in setup_args that was
+                  not expected.
+        """
+        # pylint: disable=too-many-branches
+        # pylint: disable=too-many-return-statements
+
+        a_hfss = self.design.renderers.hfss
+        setup_args.name = "Sweep_dm_setup"
+        a_hfss.pinfo.design.delete_setup(setup_args.name)
+
+        for key, value in setup_args.items():
+            if key == "name":
+                continue  #For this method, "Sweep_dm_setup" used.
+            if key == "freq_ghz":
+                if isinstance(value, int) or value is None:
+                    continue
+                self.warning_for_setup(setup_args, key, "int")
+                return 1
+            if key == "max_delta_s":
+                if isinstance(value, float) or value is None:
+                    continue
+                self.warning_for_setup(setup_args, key, "float")
+                return 1
+            if key == 'max_passes':
+                if isinstance(value, int) or value is None:
+                    continue
+                self.warning_for_setup(setup_args, key, "int")
+                return 1
+            if key == 'min_passes':
+                if isinstance(value, int) or value is None:
+                    continue
+                self.warning_for_setup(setup_args, key, "int")
+                return 1
+            if key == 'min_converged':
+                if isinstance(value, int) or value is None:
+                    continue
+                self.warning_for_setup(setup_args, key, "int")
+                return 1
+            if key == 'basis_order':
+                if isinstance(value, int) or value is None:
+                    continue
+                self.warning_for_setup(setup_args, key, "int")
+                return 1
+            if key == 'pct_refinement':
+                if isinstance(value, int) or value is None:
+                    continue
+                self.warning_for_setup(setup_args, key, "int")
+                return 1
+
+            self.design.logger.warning(
+                f'The key={key} is not expected.  Do you have a typo?  '
+                f'The setup was not added to design. '
+                f'Sweep will not be implemented.')
+            return 2
+
+        a_hfss.add_drivenmodal_setup(**setup_args)
+        a_hfss.activate_drivenmodal_setup(setup_args.name)
+        return 0
+
     def prep_eigenmode_setup(self, setup_args: Dict) -> int:
         """User can pass arguments for method eigenmode setup.  If not passed,
         method will use the options in HFSS default_options. The name of setup
@@ -436,6 +527,148 @@ class Sweeping():
             a_hfss.render_design(selection=qcomp_render,
                                  open_pins=endcaps_render,
                                  ignored_jjs=ignored_jjs_render,
+                                 box_plus_buffer=box_plus_buffer_render
+                                )  #Render the items chosen
+
+            a_hfss.analyze_setup(
+                a_hfss.pinfo.setup.name)  #Analyze said solution setup.
+            setup = a_hfss.pinfo.setup
+            #solution_name = setup.solution_name
+            all_solutions = setup.get_solutions()
+            #setup_names = all_solutions.list_variations()
+            freqs, kappa_over_2pis = all_solutions.eigenmodes()
+
+            sweep_values = dict()
+            sweep_values['option_name'] = option_path[-1]
+            sweep_values['frequency'] = freqs
+            sweep_values['kappa_over_2pis'] = kappa_over_2pis
+            sweep_values['quality_factor'] = self.get_quality_factor(
+                freqs, kappa_over_2pis)
+            all_sweep[item] = sweep_values
+
+            #Decide if need to clean the design.
+            obj_names = a_hfss.pinfo.get_all_object_names()
+            if obj_names:
+                if index == len_sweep and not leave_last_design:
+                    a_hfss.clean_active_design()
+                elif index != len_sweep:
+                    a_hfss.clean_active_design()
+
+        a_hfss.disconnect_ansys()
+        return all_sweep, 0
+
+    def sweep_one_option_get_drivenmodal_solution_data(
+            self,
+            qcomp_name: str,
+            option_name: str,
+            option_sweep: list,
+            qcomp_render: list,
+            endcaps_render: list,
+            ignored_jjs_render: list,
+            jjs_to_render: list,
+            jjs_to_omit: list,
+            box_plus_buffer_render: bool = True,
+            setup_args: Dict = None,
+            leave_last_design: bool = True,
+            design_name: str = "Sweep_DrivenModal") -> Tuple[dict, int]:
+        """
+        Ansys must be open with inserted project. A design, "HFSS Design"
+        with Driven Modal solution-type will be inserted by this method.
+
+        Args:
+            qcomp_name (str): A component that contains the option to be
+                                swept. Assume qcomp_name is in qcomp_render.
+            option_name (str): The option within qcomp_name to sweep.
+                                Follow details from
+                                renderer in QHFSSRenderer.render_design.
+            option_sweep (list): Each entry in the list is a value for
+                                option_name.
+            qcomp_render(list): List of components to render to Ansys.
+            endcaps_render (list): Identify which kind of pins.
+                                    Follow details from renderer in
+                                    QHFSSRenderer.render_design.
+            ignored_jjs_render (list): List of tuples of jj's that shouldn't
+                                    be rendered.  Follow details from
+                                    renderer in QHFSSRenderer.render_design.
+            jjs_to_render (list): List of junctions (qcomp, qgeometry_name,
+                                impedance, draw_ind) to render as lumped ports
+                                or as lumped port in parallel with a sheet
+                                inductance.    Follow details from renderer
+                                in QHFSSRenderer.render_design.
+            jjs_to_omit (list): List of junctions (qcomp, qgeometry_name) to
+                                omit altogether during rendering.   Follow
+                                details from renderer in
+                                QHFSSRenderer.render_design.
+            box_plus_buffer_render (bool): Either calculate a bounding box
+                                    based on the location of rendered
+                                    geometries or use chip size from design
+                                    class.  Follow details from renderer in
+                                    QHFSSRenderer.render_design.
+                                    Default is True.
+            setup_args (Dict): Hold the arguments for  Hfss driven-modal setup()
+                                    as  key/values to pass to Ansys.
+                                    If None, default Setup will be used.
+            leave_last_design (bool): In HFSS, after the last sweep,
+                                    should the design be cleared?
+                                    Default is True.
+            design_name (str, optional):  Name of HFSS_design to use in
+                                    project. Defaults to "Sweep_DrivenModal".
+
+        Returns:
+            Tuple[dict, int]: The dict key is each value of option_sweep, the
+            value is the solution-data for each sweep.
+            The int is the observation of searching for data from arguments as
+            defined below.
+
+            * 0 Have list of capacitance matrix.
+            * 1 qcomp_name not registered in design.
+            * 2 option_name is empty.
+            * 3 option_name is not found as key in dict.
+            * 4 option_sweep is empty, need at least one entry.
+            * 5 last key in option_name is not in dict.
+            * 6 project not in app
+            * 7 design not in app
+            * 8 setup not implement, check the setup_args.
+        """
+        # pylint: disable=too-many-locals
+        # pylint: disable=too-many-arguments
+
+        #Dict of all swept information.
+        all_sweep = dict()
+        option_path, a_value, check_result, = self.error_check_sweep_input(
+            qcomp_name, option_name, option_sweep)
+        if check_result != 0:
+            return all_sweep, check_result
+
+        a_hfss = self.design.renderers.hfss
+        # Assume Ansys is open, with a project open.
+        a_hfss.connect_ansys()
+        a_hfss.activate_drivenmodal_design(design_name)
+
+        a_hfss.clean_active_design()
+
+        if self.prep_drivenmodal_setup(setup_args) != 0:
+            self.design.logger.warning(
+                'The setup was not implemented, look at warning messages.')
+            return all_sweep, 8
+
+        len_sweep = len(option_sweep) - 1
+
+        for index, item in enumerate(option_sweep):
+            if option_path[-1] in a_value.keys():
+                a_value[option_path[-1]] = item
+            else:
+                self.design.logger.warning(
+                    f'Key="{option_path[-1]}" is not in dict.')
+                return all_sweep, 5
+
+            self.design.rebuild()
+
+            a_hfss.render_design(selection=qcomp_render,
+                                 open_pins=endcaps_render,
+                                 port_list=ignored_jjs_render,
+                                 jj_to_port=jjs_to_render,
+                                 ignored_jjs=jjs_to_omit,
                                  box_plus_buffer=box_plus_buffer_render
                                 )  #Render the items chosen
 
