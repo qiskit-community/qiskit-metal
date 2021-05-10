@@ -562,12 +562,8 @@ class Sweeping():
             qcomp_name: str,
             option_name: str,
             option_sweep: list,
-            qcomp_render: list,
-            endcaps_render: list,
-            ignored_jjs_render: list,
-            jjs_to_render: list,
-            jjs_to_omit: list,
-            box_plus_buffer_render: bool = True,
+            dm_render_args: Dict,
+            dm_add_sweep_args: Dict,
             setup_args: Dict = None,
             leave_last_design: bool = True,
             design_name: str = "Sweep_DrivenModal") -> Tuple[dict, int]:
@@ -583,31 +579,55 @@ class Sweeping():
                                 renderer in QHFSSRenderer.render_design.
             option_sweep (list): Each entry in the list is a value for
                                 option_name.
-            qcomp_render(list): List of components to render to Ansys.
-            endcaps_render (list): Identify which kind of pins.
+            dm_render_args (Dict): Arguments to pass to render_design().
+                                Next six items are key/value pairs.
+            *selection(list): List of components to render to Ansys.
+            *open_pins (list): Identify which kind of pins.
                                     Follow details from renderer in
                                     QHFSSRenderer.render_design.
-            ignored_jjs_render (list): List of tuples of jj's that shouldn't
+            *port_list (list): List of tuples of jj's that shouldn't
                                     be rendered.  Follow details from
                                     renderer in QHFSSRenderer.render_design.
-            jjs_to_render (list): List of junctions (qcomp, qgeometry_name,
+            *jj_to_port (list): List of junctions (qcomp, qgeometry_name,
                                 impedance, draw_ind) to render as lumped ports
                                 or as lumped port in parallel with a sheet
                                 inductance.    Follow details from renderer
                                 in QHFSSRenderer.render_design.
-            jjs_to_omit (list): List of junctions (qcomp, qgeometry_name) to
+            *ignored_jjs (list): List of junctions (qcomp, qgeometry_name) to
                                 omit altogether during rendering.   Follow
                                 details from renderer in
                                 QHFSSRenderer.render_design.
-            box_plus_buffer_render (bool): Either calculate a bounding box
+            *box_plus_buffer (bool): Either calculate a bounding box
                                     based on the location of rendered
                                     geometries or use chip size from design
                                     class.  Follow details from renderer in
                                     QHFSSRenderer.render_design.
                                     Default is True.
+            dm_add_sweep_args(Dict): Arguments to pass to insert_sweep().
+                                    Next 7 items are key/value pairs, if passed
+                                    will be used. start_ghz and
+                                    stop_ghz must be passed. Follow details from
+                                    insert_sweep()  in pyEPR.  The rest are
+                                    optional.  If an allowable key is not
+                                    passed, the default will be used.  You can
+                                    provide either step_ghz OR count when
+                                    inserting an HFSS driven model freq sweep.
+
+            *start_ghz (float): Starting frequency of sweep in GHz.
+            *stop_ghz (float):  Ending frequency of sweep in GHz.
+            *count(int):  Total number of frequencies.  Defaults to 101.
+            step_ghz ([type]): Difference between adjacent frequencies.
+                            Defaults to None.
+            *name (str): Name of sweep. Defaults to "Sweep".
+            *type(str): Type of sweep.   Defaults to "Fast". Choose from
+                        'Fast', 'Interpolating', 'Discrete'.
+            *save_fields (bool): Whether or not to save fields.
+                                 Defaults to False.
+
             setup_args (Dict): Hold the arguments for  Hfss driven-modal setup()
                                     as  key/values to pass to Ansys.
                                     If None, default Setup will be used.
+
             leave_last_design (bool): In HFSS, after the last sweep,
                                     should the design be cleared?
                                     Default is True.
@@ -629,6 +649,7 @@ class Sweeping():
             * 6 project not in app
             * 7 design not in app
             * 8 setup not implement, check the setup_args.
+            * 9 dm_render_args is missing keys in the Dict.
         """
         # pylint: disable=too-many-locals
         # pylint: disable=too-many-arguments
@@ -652,6 +673,9 @@ class Sweeping():
                 'The setup was not implemented, look at warning messages.')
             return all_sweep, 8
 
+        if self.error_check_render_design_args(dm_render_args) != 0:
+            return all_sweep, 9
+
         len_sweep = len(option_sweep) - 1
 
         for index, item in enumerate(option_sweep):
@@ -664,29 +688,28 @@ class Sweeping():
 
             self.design.rebuild()
 
-            a_hfss.render_design(selection=qcomp_render,
-                                 open_pins=endcaps_render,
-                                 port_list=ignored_jjs_render,
-                                 jj_to_port=jjs_to_render,
-                                 ignored_jjs=jjs_to_omit,
-                                 box_plus_buffer=box_plus_buffer_render
-                                )  #Render the items chosen
+            a_hfss.render_design(selection=dm_render_args.qcomp_render,
+                                 open_pins=dm_render_args.endcaps_render,
+                                 port_list=dm_render_args.ignored_jjs_render,
+                                 jj_to_port=dm_render_args.jjs_to_render,
+                                 ignored_jjs=dm_render_args.jjs_to_omit,
+                                 box_plus_buffer=dm_render_args.box_plus_buffer)
 
-            a_hfss.analyze_setup(
-                a_hfss.pinfo.setup.name)  #Analyze said solution setup.
-            setup = a_hfss.pinfo.setup
-            #solution_name = setup.solution_name
-            all_solutions = setup.get_solutions()
-            #setup_names = all_solutions.list_variations()
-            freqs, kappa_over_2pis = all_solutions.eigenmodes()
+            # a_hfss.analyze_setup(
+            #     a_hfss.pinfo.setup.name)  #Analyze said solution setup.
+            # setup = a_hfss.pinfo.setup
+            # #solution_name = setup.solution_name
+            # all_solutions = setup.get_solutions()
+            # #setup_names = all_solutions.list_variations()
+            # freqs, kappa_over_2pis = all_solutions.eigenmodes()
 
-            sweep_values = dict()
-            sweep_values['option_name'] = option_path[-1]
-            sweep_values['frequency'] = freqs
-            sweep_values['kappa_over_2pis'] = kappa_over_2pis
-            sweep_values['quality_factor'] = self.get_quality_factor(
-                freqs, kappa_over_2pis)
-            all_sweep[item] = sweep_values
+            # sweep_values = dict()
+            # sweep_values['option_name'] = option_path[-1]
+            # sweep_values['frequency'] = freqs
+            # sweep_values['kappa_over_2pis'] = kappa_over_2pis
+            # sweep_values['quality_factor'] = self.get_quality_factor(
+            #     freqs, kappa_over_2pis)
+            # all_sweep[item] = sweep_values
 
             #Decide if need to clean the design.
             obj_names = a_hfss.pinfo.get_all_object_names()
@@ -698,6 +721,46 @@ class Sweeping():
 
         a_hfss.disconnect_ansys()
         return all_sweep, 0
+
+    def error_check_render_design_args(
+            self, dm_render_args: Dict) -> Union[int, None]:
+
+        # * 0 All the expected keys in Dict.
+        # * 1 A key is missing in dm_render_args Dict, look at warning message.
+
+        all_keys = dm_render_args.keys()
+
+        if 'selection' not in all_keys:
+            self.design.logger.warning(
+                'The key selection is missing in Dict dm_render_args. '
+                'Method render_design() NOT implemented.')
+            return 1
+        if 'open_pins' not in all_keys:
+            self.design.logger.warning(
+                'The key open_pins is missing in Dict dm_render_args. '
+                'Method render_design() NOT implemented.')
+            return 1
+        if 'port_list' not in all_keys:
+            self.design.logger.warning(
+                'The key port_list is missing in Dict dm_render_args. '
+                'Method render_design() NOT implemented.')
+            return 1
+        if 'jj_to_port' not in all_keys:
+            self.design.logger.warning(
+                'The key jj_to_port is missing in Dict dm_render_args. '
+                'Method render_design() NOT implemented.')
+            return 1
+        if 'ignored_jjs' not in all_keys:
+            self.design.logger.warning(
+                'The key ignored_jjs is missing in Dict dm_render_args. '
+                'Method render_design() NOT implemented.')
+            return 1
+        if 'box_plus_buffer' not in all_keys:
+            self.design.logger.warning(
+                'The key box_plus_buffer is missing in Dict dm_render_args. '
+                'Method render_design() NOT implemented.')
+            return 1
+        return 0
 
     def get_quality_factor(
             self,
