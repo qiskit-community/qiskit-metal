@@ -58,7 +58,6 @@ if config.is_building_docs():
     from qiskit_metal._gui.widgets.bases.dict_tree_base import QTreeModel_Base
     from qiskit_metal._gui.widgets.bases.QWidget_PlaceholderText import QWidget_PlaceholderText
     from qiskit_metal._gui.widgets.edit_component.component_widget import ComponentWidget
-    from qiskit_metal._gui.widgets.edit_component.source_editor import MetalSourceEditor
     from qiskit_metal._gui.widgets.edit_component.table_model_options import QTableModel_Options
     from qiskit_metal._gui.widgets.edit_component.table_view_options import QTableView_Options
     from qiskit_metal._gui.widgets.edit_component.tree_model_options import QTreeModel_Options
@@ -74,7 +73,5 @@ if config.is_building_docs():
     from qiskit_metal._gui.utility import _toolbox_qt
     from qiskit_metal._gui.widgets.bases import dict_tree_base
     from qiskit_metal._gui.widgets.edit_component import component_widget
-    from qiskit_metal._gui.widgets.edit_component import source_editor
-    from qiskit_metal._gui.widgets.edit_component import source_editor_widget
     from qiskit_metal._gui.widgets.edit_component import table_model_options
     from qiskit_metal._gui.widgets.edit_component import tree_model_options

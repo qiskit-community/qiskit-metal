@@ -15,14 +15,9 @@
 Tree view for Param Entry Window
 """
 
-from typing import TYPE_CHECKING
-
-from PySide2 import QtCore, QtWidgets, QtGui
-from PySide2.QtCore import Qt, QTimer
-from PySide2.QtWidgets import QTreeView, QAbstractItemView
-from PySide2.QtCore import QAbstractTableModel, QModelIndex
-
-from ...bases.QWidget_PlaceholderText import QWidget_PlaceholderText
+from PySide2 import QtGui, QtWidgets
+from PySide2.QtCore import QModelIndex
+from PySide2.QtWidgets import QTreeView
 
 
 class TreeViewParamEntry(QTreeView):
@@ -51,7 +46,7 @@ QTreeView::branch {  border-image: url(none.png); }
         """ Overrides inherited mousePressEvent to allow user to clear any selections
         by clicking off the displayed tree. Then calls the inherited mousePressEvent"""
         myindex = self.indexAt(event.pos())
-        if (myindex.row() == -1):
+        if myindex.row() == -1:
             self.clearSelection()
             self.setCurrentIndex(QModelIndex())
         super().mousePressEvent(event)

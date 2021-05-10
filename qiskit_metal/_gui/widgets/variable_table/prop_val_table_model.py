@@ -17,7 +17,7 @@ from PySide2.QtCore import QAbstractTableModel, QModelIndex, Qt
 from PySide2.QtGui import QFont
 
 from .... import config
-from .add_delete_table import Ui_MainWindow
+from .add_delete_table_ui import Ui_MainWindow
 
 
 class PropValTable(QAbstractTableModel):
