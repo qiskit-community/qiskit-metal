@@ -957,13 +957,16 @@ class QHFSSRenderer(QAnsysRenderer):
         if self.pinfo:
             if self.pinfo.project:
                 if self.pinfo.design:
-                    oDesktop = self.pinfo.design.parent.parent._desktop  # self.pinfo.design does not work
+                    # self.pinfo.design does not work
+                    oDesktop = self.pinfo.design.parent.parent._desktop
                     oProject = oDesktop.SetActiveProject(
                         self.pinfo.project_name)
                     oDesign = oProject.GetActiveDesign()
                     if oDesign.GetSolutionType() == 'Eigenmode':
-                        # The set_mode() method is in HfssEMDesignSolutions class in pyEPR.
-                        # The class HfssEMDesignSolutions is instantiated by get_setup() and create_em_setup().
+                        # The set_mode() method is in HfssEMDesignSolutions
+                        # class in pyEPR.
+                        # The class HfssEMDesignSolutions is instantiated by
+                        # get_setup() and create_em_setup().
                         setup = self.pinfo.get_setup(setup_name)
                         if 0 < int(mode) <= int(setup.n_modes):
                             setup_solutions = setup.get_solutions()
@@ -971,29 +974,29 @@ class QHFSSRenderer(QAnsysRenderer):
                                 setup_solutions.set_mode(mode)
                             else:
                                 self.logger.warning(
-                                    'Not able to get setup_solutions, the mode was not set.'
-                                )
+                                    'Not able to get setup_solutions, '
+                                    'the mode was not set.')
                         else:
                             self.logger.warning(
-                                f'The requested mode={mode} is not a valid (1 to {setup.n_modes}) selection. '
+                                f'The requested mode={mode} is not a valid '
+                                f'(1 to {setup.n_modes}) selection. '
                                 'The mode was not set.')
                     else:
                         self.logger.warning(
-                            'The design does not have solution type as "Eigenmode". The mode was not set.'
-                        )
+                            'The design does not have solution type as '
+                            '"Eigenmode". The mode was not set.')
                 else:
-                    self.logger.warning(
-                        'A design is not in active project. The mode was not set.'
-                    )
+                    self.logger.warning('A design is not in active project. '
+                                        'The mode was not set.')
             else:
                 self.logger.warning(
-                    "Project not available, have you opened a project? The mode was not set."
-                )
+                    "Project not available, have you opened a project? "
+                    "The mode was not set.")
         else:
             self.logger.warning(
                 "Have you run connect_ansys()?  "
-                "Cannot find a reference to Ansys in QRenderer.  The mode was not set."
-            )
+                "Cannot find a reference to Ansys in QRenderer.  "
+                "The mode was not set.")
 
     def analyze_setup(self, setup_name: str):
         """Run a specific solution setup in Ansys HFSS.
@@ -1017,14 +1020,20 @@ class QHFSSRenderer(QAnsysRenderer):
         """Add a frequency sweep to a driven modal setup.
 
         Args:
-            setup_name (str, optional): Name of driven modal simulation setup. Defaults to "Setup".
-            start_ghz (float, optional): Starting frequency of sweep in GHz. Defaults to 2.0.
-            stop_ghz (float, optional): Ending frequency of sweep in GHz. Defaults to 8.0.
-            count (int, optional): Total number of frequencies. Defaults to 101.
-            step_ghz ([type], optional): Difference between adjacent frequencies. Defaults to None.
+            setup_name (str, optional): Name of driven modal simulation setup.
+                                    Defaults to "Setup".
+            start_ghz (float, optional): Starting frequency of sweep in GHz.
+                                    Defaults to 2.0.
+            stop_ghz (float, optional): Ending frequency of sweep in GHz.
+                                    Defaults to 8.0.
+            count (int, optional): Total number of frequencies.
+                                    Defaults to 101.
+            step_ghz ([type], optional): Difference between adjacent
+                                    frequencies. Defaults to None.
             name (str, optional): Name of sweep. Defaults to "Sweep".
             type (str, optional): Type of sweep. Defaults to "Fast".
-            save_fields (bool, optional): Whether or not to save fields. Defaults to False.
+            save_fields (bool, optional): Whether or not to save fields.
+                                Defaults to False.
         """
         if self.pinfo:
             setup = self.pinfo.get_setup(setup_name)

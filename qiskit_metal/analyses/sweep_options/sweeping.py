@@ -603,15 +603,16 @@ class Sweeping():
                                     class.  Follow details from renderer in
                                     QHFSSRenderer.render_design.
                                     Default is True.
-            dm_add_sweep_args(Dict): Arguments to pass to insert_sweep().
+            dm_add_sweep_args(Dict): Arguments to pass to insert_sweep() in
+                                    pyEPR, through add_sweep in QHFSSRenderer.
                                     Next 7 items are key/value pairs, if passed
                                     will be used. start_ghz and
                                     stop_ghz must be passed. Follow details from
-                                    insert_sweep()  in pyEPR.  The rest are
-                                    optional.  If an allowable key is not
+                                    insert_sweep()  in pyEPR.  If an allowable key is not
                                     passed, the default will be used.  You can
                                     provide either step_ghz OR count when
                                     inserting an HFSS driven model freq sweep.
+                                    DO NOT provide both OR neither!
 
             *start_ghz (float): Starting frequency of sweep in GHz.
             *stop_ghz (float):  Ending frequency of sweep in GHz.
@@ -695,6 +696,9 @@ class Sweeping():
                                  ignored_jjs=dm_render_args.jjs_to_omit,
                                  box_plus_buffer=dm_render_args.box_plus_buffer)
 
+            self.error_check_and_insert_sweep(dm_add_sweep_args,
+                                              'Sweep_dm_setup')
+
             # a_hfss.analyze_setup(
             #     a_hfss.pinfo.setup.name)  #Analyze said solution setup.
             # setup = a_hfss.pinfo.setup
@@ -721,6 +725,10 @@ class Sweeping():
 
         a_hfss.disconnect_ansys()
         return all_sweep, 0
+
+    def error_check_and_insert_sweep(dm_add_sweep_args: Dict,
+                                     setup_name: str = 'Sweep_dm_setup') -> int:
+        pass
 
     def error_check_render_design_args(
             self, dm_render_args: Dict) -> Union[int, None]:
