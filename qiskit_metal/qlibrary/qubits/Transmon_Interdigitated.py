@@ -213,9 +213,4 @@ class TransmonInterdigitated(QComponent):
                      points=np.array([qp3a, qp3b]),
                      width=0.01,
                      input_as_norm=True)
-        
-        
-        
-        
-        
-        
+              
