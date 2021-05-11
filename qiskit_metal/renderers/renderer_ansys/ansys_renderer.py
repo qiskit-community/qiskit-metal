@@ -235,6 +235,13 @@ class QAnsysRenderer(QRendererAnalysis):
     def initialized(self):
         if self._pinfo:
             if self._pinfo.project:
+                try:
+                    # this is because after previous pyEPR close(),
+                    # the pinfo.project becomes None, but the type is not None (method)
+                    # TODO: fix where appropriate, then remove this patch.
+                    self._pinfo.project.name
+                except AttributeError:
+                    return False
                 return True
         return False
 

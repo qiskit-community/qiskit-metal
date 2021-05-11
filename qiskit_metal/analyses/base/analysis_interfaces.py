@@ -65,6 +65,16 @@ class NeedsRenderer():
         """
         self.renderer.stop()
 
+    def start(self):
+        """Starts the renderer by executing the routine of the selected renderer.
+        """
+        self._initialize_renderer()
+
+    def close(self):
+        """Stops the renderer by executing the routine of the selected renderer.
+        """
+        self._close_renderer()
+
     @property
     def renderer_initialized(self):
         """Reports whether the renderer is initialized or stopped.

@@ -237,12 +237,13 @@ class EigenmodeAndEPR(QAnalysis, NeedsRenderer):
 
     ##### Below methods are related to EPR
 
-    def plot_fields(self, object_name, eigenmode, *args, **kwargs):
+    def plot_fields(self, object_name, eigenmode=1, *args, **kwargs):
         """Plots electro(magnetic) fields in the renderer.
         Accepts as args everything parameter accepted by the homonymous renderer method.
 
         Args:
             object_name (str): Used to plot on faces of.
+            eigenmode (int, optional): ID of the mode you intend to plot. Defaults to 1.
 
         Returns:
             None
@@ -365,8 +366,3 @@ class EigenmodeAndEPR(QAnalysis, NeedsRenderer):
         """
         return self.renderer.epr_get_frequencies(self.junctions,
                                                  self.dissipatives)
-
-    def close(self):
-        """Collects the operations necessary to close well the sim/analysis
-        """
-        self.renderer.close()

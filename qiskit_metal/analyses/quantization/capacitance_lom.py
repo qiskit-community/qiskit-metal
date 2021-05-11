@@ -91,7 +91,7 @@ class CapMatrixAndLOM(QAnalysis, NeedsRenderer):
         if "name" in design_selection:
             if design_selection["name"] is not None:
                 base_name = design_selection["name"]
-                del design_selection["name"]
+            del design_selection["name"]
         design_name = base_name + "_" + self.renderer_name
         design_name = self.renderer.execute_design(design_name,
                                                    solution_type='capacitance',
