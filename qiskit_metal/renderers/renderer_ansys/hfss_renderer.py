@@ -31,8 +31,7 @@ from qiskit_metal.renderers.renderer_ansys.ansys_renderer import (
 
 
 class QHFSSRenderer(QAnsysRenderer):
-    """
-    Subclass of QAnsysRenderer for running HFSS simulations.
+    """Subclass of QAnsysRenderer for running HFSS simulations.
 
     QAnsysRenderer Default Options:
         * Lj: '10nH' -- Lj has units of nanoHenries (nH)
@@ -57,8 +56,7 @@ class QHFSSRenderer(QAnsysRenderer):
     """HFSS Options"""
 
     def __init__(self, design: 'QDesign', initiate=True, options: Dict = None):
-        """
-        Create a QRenderer for HFSS simulations, subclassed from QAnsysRenderer.
+        """Create a QRenderer for HFSS simulations, subclassed from QAnsysRenderer.
 
         Args:
             design (QDesign): Use QGeometry within QDesign to obtain elements for Ansys.
@@ -78,11 +76,17 @@ class QHFSSRenderer(QAnsysRenderer):
                       jj_to_port: Union[list, None] = None,
                       ignored_jjs: Union[list, None] = None,
                       box_plus_buffer: bool = True):
-        """
-        Initiate rendering of components in design contained in selection, assuming they're valid.
-        Components are rendered before the chips they reside on, and subtraction of negative shapes
-        is performed at the very end. Add the metallize() method here to turn objects in self.assign_perfE
-        (see init in QAnsysRenderer class) into perfect electrical conductors. Create lumped ports as needed.
+        """Initiate rendering of components in design contained in selection,
+        assuming they're valid. Components are rendered before the chips they
+        reside on, and subtraction of negative shapes is performed at the very
+        end. Add the metallize() method here to turn objects in
+        self.assign_perfE (see init in QAnsysRenderer class) into perfect
+        electrical conductors. Create lumped ports as needed.
+
+        First obtain a list of IDs of components to render and a corresponding case, denoted by self.qcomp_ids
+        and self.case, respectively. If self.case == 1, all components in QDesign are to be rendered.
+        If self.case == 0, a strict subset of components in QDesign are to be rendered. Otherwise, if
+        self.case == 2, one or more component names in selection cannot be found in QDesign.
 
         Among the components selected for export, there may or may not be unused (unconnected) pins.
         The second parameter, open_pins, contains tuples of the form (component_name, pin_name) that
@@ -107,6 +111,16 @@ class QHFSSRenderer(QAnsysRenderer):
         capacitive effect while keeping the qubit in an "off" state. Such junctions are specified in the form
         (component_name, element_name) in the list ignored_jjs.
 
+        The final parameter, box_plus_buffer, determines how the chip is drawn. When set to True, it takes the
+        minimum rectangular bounding box of all rendered components and adds a buffer of x_buffer_width_mm and
+        y_buffer_width_mm horizontally and vertically, respectively, to the chip size. The center of the chip
+        lies at the midpoint x/y coordinates of the minimum rectangular bounding box and may change depending
+        on which components are rendered and how they're positioned. If box_plus_buffer is False, however, the
+        chip position and dimensions are taken from the chip info dictionary found in self.design, irrespective
+        of what's being rendered. While this latter option is faster because it doesn't require calculating a
+        bounding box, it runs the risk of rendered components being too close to the edge of the chip or even
+        falling outside its boundaries.
+
         Args:
             selection (Union[list, None], optional): List of components to render. Defaults to None.
             open_pins (Union[list, None], optional): List of tuples of pins that are open. Defaults to None.
@@ -116,6 +130,13 @@ class QHFSSRenderer(QAnsysRenderer):
             box_plus_buffer (bool): Either calculate a bounding box based on the location of rendered geometries
                                      or use chip size from design class.
         """
+        self.qcomp_ids, self.case = self.get_unique_component_ids(selection)
+
+        if self.case == 2:
+            self.logger.warning(
+                'Unable to proceed with rendering. Please check selection.')
+            return
+
         self.chip_subtract_dict = defaultdict(set)
         self.assign_perfE = []
         self.assign_mesh = []
@@ -131,7 +152,7 @@ class QHFSSRenderer(QAnsysRenderer):
         if ignored_jjs:
             self.jj_to_ignore = {(qcomp, qelt) for qcomp, qelt in ignored_jjs}
 
-        self.render_tables(selection)
+        self.render_tables()
         if port_list:
             self.add_endcaps(open_pins +
                              [(qcomp, pin) for qcomp, pin, _ in port_list])
@@ -146,9 +167,9 @@ class QHFSSRenderer(QAnsysRenderer):
             self.create_ports(port_list)
 
     def create_ports(self, port_list: list):
-        """
-        Add ports and their respective impedances in Ohms to designated pins in port_list.
-        Port_list is formatted as [(qcomp_0, pin_0, impedance_0), (qcomp_1, pin_1, impedance_1), ...].
+        """Add ports and their respective impedances in Ohms to designated pins
+        in port_list. Port_list is formatted as [(qcomp_0, pin_0, impedance_0),
+        (qcomp_1, pin_1, impedance_1), ...].
 
         Args:
             port_list (list): List of tuples of pins to be rendered as ports.
@@ -195,12 +216,14 @@ class QHFSSRenderer(QAnsysRenderer):
     def render_element_junction(self, qgeom: pd.Series):
         """
         Render a Josephson junction depending on the solution type.
+
         If in HFSS eigenmode, junctions are rendered as inductors consisting of
-        1. A rectangle of length pad_gap and width inductor_width. Defines lumped element
-           RLC boundary condition.
-        2. A line that is later used to calculate the voltage in post-processing analysis.
+            1. A rectangle of length pad_gap and width inductor_width. Defines lumped element RLC
+               boundary condition.
+            2. A line that is later used to calculate the voltage in post-processing analysis.
+
         If in HFSS driven modal, junctions can be inductors, lumped ports, both inductors
-        and lumped ports, or omitted altogether. Ports are characterized by an impedance 
+        and lumped ports, or omitted altogether. Ports are characterized by an impedance
         value given in the list jj_to_port when render_design() is called.
 
         Args:
@@ -261,10 +284,8 @@ class QHFSSRenderer(QAnsysRenderer):
 
     def render_junction_port(self, qgeom: pd.Series, xmin: float, xmax: float,
                              ymin: float, ymax: float, z: float, axis: str):
-        """
-        Render a junction as a port with a bounding box given by
-        xmin/xmax and ymin/ymax, a height z, and a horizontal or
-        vertical axis.
+        """Render a junction as a port with a bounding box given by xmin/xmax
+        and ymin/ymax, a height z, and a horizontal or vertical axis.
 
         Args:
             qgeom (pd.Series): GeoSeries of element properties.
@@ -305,10 +326,8 @@ class QHFSSRenderer(QAnsysRenderer):
     def render_junction_inductor(self, qgeom: pd.Series, xmin: float,
                                  xmax: float, ymin: float, ymax: float,
                                  z: float, axis: str):
-        """
-        Render a junction as an inductor with a bounding box given by
-        xmin/xmax and ymin/ymax, a height z, and a horizontal or
-        vertical axis.
+        """Render a junction as an inductor with a bounding box given by
+        xmin/xmax and ymin/ymax, a height z, and a horizontal or vertical axis.
 
         Args:
             qgeom (pd.Series): GeoSeries of element properties.
@@ -350,9 +369,7 @@ class QHFSSRenderer(QAnsysRenderer):
         induc_line.show_direction = True
 
     def metallize(self):
-        """
-        Assign metallic property to all shapes in self.assign_perfE list.
-        """
+        """Assign metallic property to all shapes in self.assign_perfE list."""
         self.modeler.assign_perfect_E(self.assign_perfE)
 
     def add_drivenmodal_design(self, name: str, connect: bool = True):
@@ -391,9 +408,8 @@ class QHFSSRenderer(QAnsysRenderer):
                               min_converged: int = None,
                               pct_refinement: int = None,
                               basis_order: int = None):
-        """
-        Create a solution setup in Ansys HFSS Driven Modal. If user does not provide arguments, 
-        they will be obtained from default_setup dict.  
+        """Create a solution setup in Ansys HFSS Driven Modal. If user does
+        not provide arguments, they will be obtained from default_setup dict.  
         
         Args:
             name (str, optional): Name of driven modal setup. Defaults to None.
@@ -473,9 +489,8 @@ class QHFSSRenderer(QAnsysRenderer):
                             min_converged: int = None,
                             pct_refinement: int = None,
                             basis_order: int = None):
-        """
-        Create a solution setup in Ansys HFSS Eigenmode.  If user does not provide arguments, 
-        they will be obtained from default_setup dict.  
+        """Create a solution setup in Ansys HFSS Eigenmode.  If user does not
+        provide arguments, they will be obtained from hfss_options dict.
 
         Args:
             name (str, optional): Name of eigenmode setup. Defaults to "Setup".
@@ -522,12 +537,220 @@ class QHFSSRenderer(QAnsysRenderer):
                     pct_refinement=pct_refinement,
                     basis_order=basis_order)
 
+    def edit_eigenmode_setup(self, setup_args: Dict):
+        """User can pass key/values to edit the setup for active eigenmode setup.
+
+        Args:
+            setup_args (Dict): a Dict with possible keys/values.
+
+        **setup_args** dict contents:
+            * name (str, optional): Name of eigenmode setup. Defaults to "Setup".
+            * min_freq_ghz (int, optional): Minimum frequency in GHz. Defaults to 1.
+            * n_modes (int, optional): Number of modes. Defaults to 1.
+            * max_delta_f (float, optional): Maximum difference in freq between consecutive passes. Defaults to 0.5.
+            * max_passes (int, optional): Maximum number of passes. Defaults to 10.
+            * pct_refinement (int, optional): Percent refinement. Defaults to 30.
+            * basis_order (int, optional): Basis order. Defaults to -1.
+
+            Note, that these two are currently NOT implemented:
+            Ansys API named EditSetup not documented for HFSS, and
+            self.pinfo.setup does not have all the property variables used for Setup.
+            * min_passes (int, optional): Minimum number of passes. Defaults to 1.
+            * min_converged (int, optional): Minimum number of converged passes. Defaults to 1.
+        """
+
+        if self.pinfo:
+            if self.pinfo.project:
+                if self.pinfo.design:
+                    if self.pinfo.design.solution_type == 'Eigenmode':
+                        if self.pinfo.setup_name != setup_args.name:
+                            self.design.logger.warning(
+                                f'The name of active setup={self.pinfo.setup_name} does not match'
+                                f'the name of of setup_args.name={setup_args.name}. '
+                                f'To use this method, activate the desired Setup before editing it. The '
+                                f'setup_args was not used to update the active Setup.'
+                            )
+                            return
+
+                        for key, value in setup_args.items():
+                            if key == "name":
+                                continue  #Checked for above.
+                            if key == "n_modes":
+                                #EditSetup  not documented, this is just attempt to use.
+                                #args_editsetup = ["NAME:" + setup_args.name,["NumModes:=", setup_args.n_modes]]
+                                #self.pinfo.setup._setup_module.EditSetup([setup_args.name, args_editsetup])
+                                if value < 0 or value > 20 or not isinstance(
+                                        value, int):
+                                    self.logger.warning(
+                                        f'Value of n_modes={value} must be integer from 1 to 20.'
+                                    )
+                                else:
+                                    self.pinfo.setup.n_modes = value
+                                    continue
+                            if key == "min_freq_ghz":
+                                if not isinstance(value, int):
+                                    self.logger.warning(
+                                        'The value for min_freq_ghz should be an int. '
+                                        f'The present value is {value}.')
+                                else:
+                                    self.pinfo.setup.min_freq = f'{value}GHz'
+                                    continue
+                            if key == 'max_delta_f':
+                                if not isinstance(value, float):
+                                    self.logger.warning(
+                                        'The value for max_delta_f should be float. '
+                                        f'The present value is {value}.')
+                                else:
+                                    self.pinfo.setup.delta_f = value
+                                    continue
+                            if key == 'max_passes':
+                                if not isinstance(value, int):
+                                    self.logger.warning(
+                                        'The value for max_passes should be an int. '
+                                        f'The present value is {value}.')
+                                else:
+                                    self.pinfo.setup.passes = value
+                                    continue
+                            if key == 'pct_refinement':
+                                if not isinstance(value, int):
+                                    self.logger.warning(
+                                        'The value for pct_refinement should be an int. '
+                                        f'The present value is {value}.')
+                                else:
+                                    self.pinfo.setup.pct_refinement = value
+                                    continue
+                            if key == 'basis_order':
+                                if not isinstance(value, int):
+                                    self.logger.warning(
+                                        'The value for basis_order should be an int. '
+                                        f'The present value is {value}.')
+                                else:
+                                    self.pinfo.setup.basis_order = value
+                                    continue
+
+                            self.design.logger.warning(
+                                f'In setup_args, key={key}, value={value} is not in pinfo.setup, '
+                                'the key/value pair from setup_args not added to Setup in Ansys.'
+                            )
+
+                    else:
+                        self.logger.warning(
+                            'The design does not have solution type as "Eigenmode". The Setup not updated.'
+                        )
+                else:
+                    self.logger.warning(
+                        'A design is not in active project. The Setup not updated.'
+                    )
+            else:
+                self.logger.warning(
+                    "Project not available, have you opened a project? Setup not updated."
+                )
+        else:
+            self.logger.warning(
+                "Have you run connect_ansys()?  "
+                "Cannot find a reference to Ansys in QRenderer. Setup not updated. "
+            )
+
+    def edit_drivenmodal_setup(self, setup_args: Dict):
+        """User can pass key/values to edit the setup for active driven modal setup.
+
+        Args:
+            setup_args (Dict): a Dict with possible keys/values.
+
+        **setup_args** dict contents:
+            * name (str, optional): Name of eigenmode setup. Defaults to "Setup".
+            * freq_ghz (int, optional): Minimum frequency in GHz. Defaults to 1.
+            * max_passes (int, optional): Maximum number of passes. Defaults to 10.
+            * pct_refinement (int, optional): Percent refinement. Defaults to 30.
+            * basis_order (int, optional): Basis order. Defaults to -1 (1 is "Mixed Order").
+
+            Note, that these three are currently NOT implemented:
+            Ansys API named EditSetup not documented for HFSS, and
+            self.pinfo.setup does not have all the property variables used for Setup.
+            * max_delta_s (float, optional): Absolute value of maximum difference in scattering parameter S. Defaults to 0.1.
+            * min_passes (int, optional): Minimum number of passes. Defaults to 1.
+            * min_converged (int, optional): Minimum number of converged passes. Defaults to 1.
+        """
+
+        if self.pinfo:
+            if self.pinfo.project:
+                if self.pinfo.design:
+                    if self.pinfo.design.solution_type == 'DrivenModal':
+                        if self.pinfo.setup_name != setup_args.name:
+                            self.design.logger.warning(
+                                f'The name of active setup={self.pinfo.setup_name} does not match'
+                                f'the name of of setup_args.name={setup_args.name}. '
+                                f'To use this method, activate the desired Setup before editing it. The '
+                                f'setup_args was not used to update the active Setup.'
+                            )
+                            return
+
+                        for key, value in setup_args.items():
+                            if key == "name":
+                                continue  #Checked for above.
+                            if key == "freq_ghz":
+                                if not isinstance(value, int):
+                                    self.logger.warning(
+                                        'The value for freq_ghz should be an int. '
+                                        f'The present value is {value}.')
+                                else:
+                                    self.pinfo.setup.solution_freq = f'{value}GHz'
+                                    continue
+                            if key == 'max_passes':
+                                if not isinstance(value, int):
+                                    self.logger.warning(
+                                        'The value for passes should be an int. '
+                                        f'The present value is {value}.')
+                                else:
+                                    self.pinfo.setup.passes = value
+                                    continue
+                            if key == 'pct_refinement':
+                                if not isinstance(value, int):
+                                    self.logger.warning(
+                                        'The value for pct_refinement should be an int. '
+                                        f'The present value is {value}.')
+                                else:
+                                    self.pinfo.setup.pct_refinement = value
+                                    continue
+                            if key == 'basis_order':
+                                if not isinstance(value, int):
+                                    self.logger.warning(
+                                        'The value for basis_order should be an int. '
+                                        f'The present value is {value}.')
+                                else:
+                                    self.pinfo.setup.basis_order = value
+                                    continue
+
+                            self.design.logger.warning(
+                                f'In setup_args, key={key}, value={value} is not in pinfo.setup, '
+                                'the key/value pair from setup_args not added to Setup in Ansys.'
+                            )
+
+                    else:
+                        self.logger.warning(
+                            'The design does not have solution type as "Driven Modal". The Setup not updated.'
+                        )
+                else:
+                    self.logger.warning(
+                        'A design is not in active project. The Setup not updated.'
+                    )
+            else:
+                self.logger.warning(
+                    "Project not available, have you opened a project? Setup not updated."
+                )
+        else:
+            self.logger.warning(
+                "Have you run connect_ansys()?  "
+                "Cannot find a reference to Ansys in QRenderer. Setup not updated. "
+            )
+
     def set_mode(self, mode: int, setup_name: str):
-        """Set the eigenmode in pyEPR for a design with solution_type set to Eigenmode.
+        """Set the eigenmode in pyEPR for a design with solution_type set to
+        Eigenmode.
 
         Args:
             mode (int): Identify a mode from 1 to n_modes.
-            setup_name (str): Select a setup from the active design. 
+            setup_name (str): Select a setup from the active design.
         """
         if self.pinfo:
             if self.pinfo.project:
@@ -571,8 +794,7 @@ class QHFSSRenderer(QAnsysRenderer):
             )
 
     def analyze_setup(self, setup_name: str):
-        """
-        Run a specific solution setup in Ansys HFSS.
+        """Run a specific solution setup in Ansys HFSS.
 
         Args:
             setup_name (str): Name of setup.
@@ -590,8 +812,7 @@ class QHFSSRenderer(QAnsysRenderer):
                   name="Sweep",
                   type="Fast",
                   save_fields=False):
-        """
-        Add a frequency sweep to a driven modal setup.
+        """Add a frequency sweep to a driven modal setup.
 
         Args:
             setup_name (str, optional): Name of driven modal simulation setup. Defaults to "Setup".
@@ -614,8 +835,7 @@ class QHFSSRenderer(QAnsysRenderer):
                                       save_fields=save_fields)
 
     def analyze_sweep(self, sweep_name: str, setup_name: str):
-        """
-        Analyze a single sweep within the setup.
+        """Analyze a single sweep within the setup.
 
         Args:
             sweep_name (str): Name of sweep to analyze.
@@ -628,8 +848,7 @@ class QHFSSRenderer(QAnsysRenderer):
             self.current_sweep = sweep
 
     def get_params(self, param_name: Union[list, None] = None):
-        """
-        Get one or more parameters (S, Y, or Z) as a function of frequency.
+        """Get one or more parameters (S, Y, or Z) as a function of frequency.
 
         Args:
             param_name (Union[list, None], optional): Parameters to obtain. Defaults to None.
@@ -643,8 +862,7 @@ class QHFSSRenderer(QAnsysRenderer):
         return freqs, Pcurves, Pparams
 
     def plot_params(self, param_name: Union[list, None] = None):
-        """
-        Plot one or more parameters (S, Y, or Z) as a function of frequency.
+        """Plot one or more parameters (S, Y, or Z) as a function of frequency.
 
         Args:
             param_name (Union[list, None], optional): Parameters to plot. Defaults to None.
@@ -659,13 +877,14 @@ class QHFSSRenderer(QAnsysRenderer):
         return Pparams, fig
 
     def distributed_analysis(self):
-        """Returns class containing info on Hamiltonian parameters from HFSS simulation.
+        """Returns class containing info on Hamiltonian parameters from HFSS
+        simulation.
 
         Returns:
-            DistributedAnalysis: A  class from pyEPR which does DISTRIBUTED ANALYSIS of layout 
-            and microwave results.  It is the main computation class & interface with HFSS.  
+            DistributedAnalysis: A  class from pyEPR which does DISTRIBUTED ANALYSIS of layout
+            and microwave results.  It is the main computation class & interface with HFSS.
             This class defines a DistributedAnalysis object which calculates
-            and saves Hamiltonian parameters from an HFSS simulation.  
+            and saves Hamiltonian parameters from an HFSS simulation.
             It allows one to calculate dissipation.
         """
         if self.pinfo:
@@ -700,8 +919,8 @@ class QHFSSRenderer(QAnsysRenderer):
         )
 
     def get_f_convergence(self, variation: str = None, save_csv: bool = True):
-        """Create a report inside HFSS to plot the converge of frequency and style it.
-        Saves report to csv file.
+        """Create a report inside HFSS to plot the converge of frequency and
+        style it. Saves report to csv file.
 
         .. code-block:: text
 

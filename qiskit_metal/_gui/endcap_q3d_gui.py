@@ -21,18 +21,19 @@ from .endcap_q3d_ui import Ui_mainWindow
 
 
 class EndcapQ3DWidget(QMainWindow):
-    """
-    Upon selecting components to export, there may or may not be unconnected pins.
-    This widget lets the user decide whether they want those pins to be open or shorted.
+    """Upon selecting components to export, there may or may not be unconnected
+    pins.
+
+    This widget lets the user decide whether they want those pins to be
+    open or shorted.
     """
 
     def __init__(self,
                  parent: 'QMainWindow',
                  gui: 'MetalGUI',
                  components_to_render: list = None):
-        """
-        Get access to design, which has the components.
-        Then set up the model and view.
+        """Get access to design, which has the components. Then set up the
+        model and view.
 
         Args:
             parent (QMainWindow): The parent window
@@ -84,13 +85,14 @@ class EndcapQ3DWidget(QMainWindow):
     def get_unconnected_pins(self,
                              components_to_render: list = None
                             ) -> Tuple[set, set]:
-        """
-        Given a list of components to render, obtain 2 sets: open_set and short_set.
-        Each contains pins belonging to components in components_to_render, but with the
-        following difference. Open_set contains all pins that were connected in the original
-        Metal design but whose counterparts are not in components_to_render, whereas short_set 
-        contains all pins that were unconnected in the original Metal design to begin with.
-        These are the default endcap settings for all pins in components_to_render.
+        """Given a list of components to render, obtain 2 sets: open_set and
+        short_set. Each contains pins belonging to components in
+        components_to_render, but with the following difference. Open_set
+        contains all pins that were connected in the original Metal design but
+        whose counterparts are not in components_to_render, whereas short_set
+        contains all pins that were unconnected in the original Metal design to
+        begin with. These are the default endcap settings for all pins in
+        components_to_render.
 
         Args:
             components_to_render (list, optional): List of components to render.  Defaults to None.
@@ -121,7 +123,8 @@ class EndcapQ3DWidget(QMainWindow):
         return open_set, short_set
 
     def render_everything(self):
-        """Render all selected components from previous window and add open endcaps where appropriate."""
+        """Render all selected components from previous window and add open
+        endcaps where appropriate."""
         add_open_pins = []
         for row in range(len(self.pin_names)):
             if self.table.cellWidget(row, 1).currentText() == 'Open':

@@ -11,6 +11,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
+# pylint: disable=too-many-lines
 
 from typing import List, Tuple, Union
 
@@ -24,6 +25,7 @@ import pandas as pd
 from numpy.linalg import norm
 from collections import defaultdict
 from platform import system
+from scipy.spatial import distance
 
 import shapely
 import pyEPR as epr
@@ -36,6 +38,10 @@ from qiskit_metal.toolbox_python.utility_functions import toggle_numbers, bad_fi
 from qiskit_metal.toolbox_metal.parsing import is_true
 
 from qiskit_metal import Dict
+
+from .. import config
+if not config.is_building_docs():
+    from qiskit_metal.toolbox_python.utility_functions import toggle_numbers, bad_fillet_idxs
 
 
 def good_fillet_idxs(coords: list,
@@ -65,9 +71,9 @@ def good_fillet_idxs(coords: list,
 
 
 def get_clean_name(name: str) -> str:
-    """
-    Create a valid variable name from the given one by removing having it begin with a letter or underscore
-    followed by an unlimited string of letters, numbers, and underscores.
+    """Create a valid variable name from the given one by removing having it
+    begin with a letter or underscore followed by an unlimited string of
+    letters, numbers, and underscores.
 
     Args:
         name (str): Initial, possibly unusable, string to be modified.
@@ -83,9 +89,8 @@ def get_clean_name(name: str) -> str:
 
 
 class QAnsysRenderer(QRendererAnalysis):
-    """
-    Extends QRenderer to export designs to Ansys using pyEPR.
-    The methods which a user will need for Ansys export should be found within this class.
+    """Extends QRenderer to export designs to Ansys using pyEPR. The methods
+	which a user will need for Ansys export should be found within this class.
 
     Default Options:
         * Lj: '10nH' -- Lj has units of nanoHenries (nH)
@@ -98,6 +103,11 @@ class QAnsysRenderer(QRendererAnalysis):
         * ansys_file_extension: '.aedt' -- Ansys file extension for 2016 version and newer
         * x_buffer_width_mm: 0.2 -- Buffer between max/min x and edge of ground plane, in mm
         * y_buffer_width_mm: 0.2 -- Buffer between max/min y and edge of ground plane, in mm
+        * wb_threshold:'400um' -- the minimum distance between two vertices of a path for a
+          wirebond to be added.
+        * wb_offset:'0um' -- offset distance for wirebond placement (along the direction
+          of the cpw)
+        * wb_size: 3 -- scalar which controls the width of the wirebond (wb_size * path['width'])
     """
 
     #: Default options, over-written by passing ``options` dict to render_options.
@@ -115,6 +125,9 @@ class QAnsysRenderer(QRendererAnalysis):
         # bounding_box_scale_y = 1.2, # Ratio of 'main' chip length to bounding box length
         x_buffer_width_mm=0.2,  # Buffer between max/min x and edge of ground plane, in mm
         y_buffer_width_mm=0.2,  # Buffer between max/min y and edge of ground plane, in mm
+        wb_threshold = '400um',
+        wb_offset = '0um',
+        wb_size = 5,
         plot_ansys_fields_options = Dict(
             name="NAME:Mag_E1",
             UserSpecifyName='0',
@@ -131,9 +144,11 @@ class QAnsysRenderer(QRendererAnalysis):
             PlotGeomInfo_3= "1",
         ),
     )
+    """Default options"""
     # yapf: enable
 
     NAME_DELIM = r'_'
+    """Name delimiter"""
 
     name = 'ansys'
     """Name"""
@@ -189,15 +204,17 @@ class QAnsysRenderer(QRendererAnalysis):
     # Keeping this as a cls dict so could be edited before renderer is instantiated.
     # To update component.options junction table.
 
-    element_table_data = dict(junction=dict(
-        inductance=default_options['Lj'],
-        capacitance=default_options['Cj'],
-        resistance=default_options['_Rj'],
-        mesh_kw_jj=parse_units(default_options['max_mesh_length_jj'])))
+    element_table_data = dict(path=dict(wire_bonds=False),
+                              junction=dict(
+                                  inductance=default_options['Lj'],
+                                  capacitance=default_options['Cj'],
+                                  resistance=default_options['_Rj'],
+                                  mesh_kw_jj=parse_units(
+                                      default_options['max_mesh_length_jj'])))
+    """Element table data"""
 
     def __init__(self, design: 'QDesign', initiate=True, options: Dict = None):
-        """
-        Create a QRenderer for Ansys.
+        """Create a QRenderer for Ansys.
 
         Args:
             design (QDesign): Use QGeometry within QDesign to obtain elements for Ansys.
@@ -299,9 +316,8 @@ class QAnsysRenderer(QRendererAnalysis):
                    path: str = None,
                    executable: str = 'reg_ansysedt.exe',
                    path_var: str = 'ANSYSEM_ROOT202'):
-        """
-        Alternative method to open an Ansys session that allows to specify which version to use.
-        Default is version 2020 R2, but can be overridden.
+        """Alternative method to open an Ansys session that allows to specify
+		which version to use. Default is version 2020 R2, but can be overridden.
 
         Args:
             path (str): Path to the Ansys executable. Defaults to None
@@ -336,9 +352,9 @@ class QAnsysRenderer(QRendererAnalysis):
                       project_path: str = None,
                       project_name: str = None,
                       design_name: str = None):
-        """
-        If none of the optional parameters are provided: connects to the Ansys COM, then
-        checks for, and grab if present, an active project, design, and design setup.
+        """If none of the optional parameters are provided: connects to the
+        Ansys COM, then checks for, and grab if present, an active project,
+        design, and design setup.
 
         If the optional parameters are provided: if present, opens the project file and design in 
         Ansys.
@@ -347,7 +363,6 @@ class QAnsysRenderer(QRendererAnalysis):
             project_path (str, optional): Path without file name
             project_name (str, optional): File name (with or without extension)
             design_name (str, optional): Name of the default design to open from the project file
-
         """
         if not system() == 'Windows':
             self.logger.warning(
@@ -383,9 +398,7 @@ class QAnsysRenderer(QRendererAnalysis):
             raise error
 
     def disconnect_ansys(self):
-        """
-        Disconnect Ansys.
-        """
+        """Disconnect Ansys."""
         if self.pinfo:
             self.pinfo.disconnect()
         else:
@@ -393,14 +406,12 @@ class QAnsysRenderer(QRendererAnalysis):
                 'This renderer appears to be already disconnected from Ansys')
 
     def new_ansys_project(self):
-        """
-        Creates a new empty project in Ansys.
-        """
+        """Creates a new empty project in Ansys."""
         here = HfssApp()
         here.get_app_desktop().new_project()
 
     def connect_ansys_design(self, design_name: str = None):
-        """ Used to switch between existing designs.
+        """Used to switch between existing designs.
 
         Args:
             design_name (str, optional): Name within the active project. Defaults to None.
@@ -440,7 +451,7 @@ class QAnsysRenderer(QRendererAnalysis):
 
     @property
     def modeler(self):
-        """ The modeler from pyEPR HfssModeler. 
+        """The modeler from pyEPR HfssModeler.
 
         Returns:
             pyEPR.ansys.HfssModeler: Reference to  design.HfssModeler in Ansys.
@@ -475,37 +486,39 @@ class QAnsysRenderer(QRendererAnalysis):
         PlotGeomInfo_2: str = None,
         PlotGeomInfo_3: int = None,
     ):
-        """Plot fields in Ansys. The options are populated by the component's options.
+        """Plot fields in Ansys. The options are populated by the component's
+        options.
 
         Args:
             object_name (str): Used to plot on faces of.
-            name (str, optional): "NAME:<PlotName>". Defaults to None.
+            name (str, optional): "NAME:<PlotName>" Defaults to None.
             UserSpecifyName (int, optional): 0 if default name for plot is used, 1 otherwise.
                 Defaults to None.
             UserSpecifyFolder (int, optional): 0 if default folder for plot is used, 1 otherwise.
                 Defaults to None.
-            QuantityName (str, optional): Type of plot to create. Possible values are:
-                Mesh plots: "Mesh".
-                Field plots: "Mag_E", "Mag_H", "Mag_Jvol", "Mag_Jsurf","ComplexMag_E",
+            QuantityName (str, optional): Type of plot to create. Possible values are
+                Mesh plots - "Mesh";
+                Field plots - "Mag_E", "Mag_H", "Mag_Jvol", "Mag_Jsurf","ComplexMag_E",
                 "ComplexMag_H", "ComplexMag_Jvol", "ComplexMag_Jsurf", "Vector_E", "Vector_H",
                 "Vector_Jvol", "Vector_Jsurf", "Vector_RealPoynting","Local_SAR", "Average_SAR".
                 Defaults to None.
             PlotFolder (str, optional): Name of the folder to which the plot should be added.
-                Possible values are: "E Field",  "H Field", "Jvol", "Jsurf", "SARField",
-                and "MeshPlots". Defaults to None.
+                Possible values are: "E Field",  "H Field", "Jvol", "Jsurf", "SARField", and
+                "MeshPlots". Defaults to None.
             StreamlinePlot (bool, optional): Passed to CreateFieldPlot. Defaults to None.
             AdjacentSidePlot (bool, optional): Passed to CreateFieldPlot. Defaults to None.
             FullModelPlot (bool, optional): Passed to CreateFieldPlot. Defaults to None.
-            IntrinsicVar (str, optional): Formatted string that specifies the frequency and phase at
-                which to make the plot.  For example: "Freq='1GHz' Phase='30deg'" Defaults to None.
-            PlotGeomInfo_0 (int, optional): 0th entry in list for "PlotGeomInfo:=", <PlotGeomArray>.
+            IntrinsicVar (str, optional): Formatted string that specifies the frequency and phase
+                at which to make the plot.  For example: "Freq='1GHz' Phase='30deg'".
                 Defaults to None.
-            PlotGeomInfo_1 (str, optional): 1st entry in list for "PlotGeomInfo:=", <PlotGeomArray>.
-                Defaults to None.
-            PlotGeomInfo_2 (str, optional): 2nd entry in list for "PlotGeomInfo:=", <PlotGeomArray>.
-                Defaults to None.
-            PlotGeomInfo_3 (int, optional): 3rd entry in list for "PlotGeomInfo:=", <PlotGeomArray>.
-                Defaults to None.
+            PlotGeomInfo_0 (int, optional): 0th entry in list for "PlotGeomInfo:=",
+                <PlotGeomArray>. Defaults to None.
+            PlotGeomInfo_1 (str, optional): 1st entry in list for "PlotGeomInfo:=",
+                <PlotGeomArray>. Defaults to None.
+            PlotGeomInfo_2 (str, optional): 2nd entry in list for "PlotGeomInfo:=",
+                <PlotGeomArray>. Defaults to None.
+            PlotGeomInfo_3 (int, optional): 3rd entry in list for "PlotGeomInfo:=",
+                <PlotGeomArray>. Defaults to None.
 
         Returns:
             NoneType: Return information from oFieldsReport.CreateFieldPlot().
@@ -590,7 +603,7 @@ class QAnsysRenderer(QRendererAnalysis):
         # yapf: disable
         args_list = [
                 name                 ,
-                "SolutionName:="     , SolutionName,  # name of the setup 
+                "SolutionName:="     , SolutionName,  # name of the setup
                 "UserSpecifyName:="  , UserSpecifyName ,
                 "UserSpecifyFolder:=", UserSpecifyFolder,
                 "QuantityName:="     , QuantityName,
@@ -629,8 +642,7 @@ class QAnsysRenderer(QRendererAnalysis):
         return self.pinfo.design._fields_calc.DeleteFieldPlot(names)
 
     def add_message(self, msg: str, severity: int = 0):
-        """
-        Add message to Message Manager box in Ansys.
+        """Add message to Message Manager box in Ansys.
 
         Args:
             msg (str): Message to add.
@@ -874,10 +886,15 @@ class QAnsysRenderer(QRendererAnalysis):
                       selection: Union[list, None] = None,
                       open_pins: Union[list, None] = None,
                       box_plus_buffer: bool = True):
-        """
-        Initiate rendering of components in design contained in selection, assuming they're valid.
-        Components are rendered before the chips they reside on, and subtraction of negative shapes
-        is performed at the very end.
+        """Initiate rendering of components in design contained in selection,
+        assuming they're valid. Components are rendered before the chips they
+        reside on, and subtraction of negative shapes is performed at the very
+        end.
+
+        First obtain a list of IDs of components to render and a corresponding case, denoted by self.qcomp_ids
+        and self.case, respectively. If self.case == 1, all components in QDesign are to be rendered.
+        If self.case == 0, a strict subset of components in QDesign are to be rendered. Otherwise, if
+        self.case == 2, one or more component names in selection cannot be found in QDesign.
 
         Chip_subtract_dict consists of component names (keys) and a set of all elements within each component that
         will eventually be subtracted from the ground plane. Add objects that are perfect conductors and/or have
@@ -892,17 +909,34 @@ class QAnsysRenderer(QRendererAnalysis):
         components. All pins in this list are rendered with an additional endcap in the form of a
         rectangular cutout, to be subtracted from its respective plane.
 
+        The final parameter, box_plus_buffer, determines how the chip is drawn. When set to True, it takes the
+        minimum rectangular bounding box of all rendered components and adds a buffer of x_buffer_width_mm and
+        y_buffer_width_mm horizontally and vertically, respectively, to the chip size. The center of the chip
+        lies at the midpoint x/y coordinates of the minimum rectangular bounding box and may change depending
+        on which components are rendered and how they're positioned. If box_plus_buffer is False, however, the
+        chip position and dimensions are taken from the chip info dictionary found in QDesign, irrespective
+        of what's being rendered. While this latter option is faster because it doesn't require calculating a
+        bounding box, it runs the risk of rendered components being too close to the edge of the chip or even
+        falling outside its boundaries.
+
         Args:
             selection (Union[list, None], optional): List of components to render. Defaults to None.
             open_pins (Union[list, None], optional): List of tuples of pins that are open. Defaults to None.
             box_plus_buffer (bool): Either calculate a bounding box based on the location of rendered geometries
-                                     or use chip size from design class. 
+                                     or use chip size from design class.
         """
+        self.qcomp_ids, self.case = self.get_unique_component_ids(selection)
+
+        if self.case == 2:
+            self.logger.warning(
+                'Unable to proceed with rendering. Please check selection.')
+            return
+
         self.chip_subtract_dict = defaultdict(set)
         self.assign_perfE = []
         self.assign_mesh = []
 
-        self.render_tables(selection)
+        self.render_tables()
         self.add_endcaps(open_pins)
 
         self.render_chips(box_plus_buffer=box_plus_buffer)
@@ -916,81 +950,38 @@ class QAnsysRenderer(QRendererAnalysis):
         pass
 
     def render_tables(self,
-                      selection: Union[list, None] = None,
                       skip_junction: bool = False):
         """
         Render components in design grouped by table type (path, poly, or junction).
-        Start by initializing chip boundaries for later use.
-
-        Args:
-            selection (Union[list, None], optional): List of components to render. (Default: None)
         """
-        self.min_x_main = float('inf')
-        self.min_y_main = float('inf')
-        self.max_x_main = float('-inf')
-        self.max_y_main = float('-inf')
-
         for table_type in self.design.qgeometry.get_element_types():
             if table_type != 'junction' or not skip_junction:
-                self.render_components(table_type, selection)
+                self.render_components(table_type)
 
-    def render_components(self,
-                          table_type: str,
-                          selection: Union[list, None] = None):
+    def render_components(self, table_type: str):
         """
-        Render individual components by breaking them down into individual elements.
+        Render components by breaking them down into individual elements.
 
         Args:
             table_type (str): Table type (poly, path, or junction).
-            selection (Union[list, None], optional): List of components to render.  (Default: None)
         """
-        # Establish bounds for exported components and update these accordingly
-
-        selection = selection if selection else []
         table = self.design.qgeometry.tables[table_type]
 
-        if selection:
-            qcomp_ids, case = self.get_unique_component_ids(selection)
-
-            if qcomp_ids:  # Render strict subset of components
-                # Update bounding box (and hence main chip dimensions)
-                for qcomp_id in qcomp_ids:
-                    min_x, min_y, max_x, max_y = self.design._components[
-                        qcomp_id].qgeometry_bounds()
-                    self.min_x_main = min(min_x, self.min_x_main)
-                    self.min_y_main = min(min_y, self.min_y_main)
-                    self.max_x_main = max(max_x, self.max_x_main)
-                    self.max_y_main = max(max_y, self.max_y_main)
-            else:  # All components rendered
-                for qcomp in self.design.components:
-                    min_x, min_y, max_x, max_y = self.design.components[
-                        qcomp].qgeometry_bounds()
-                    self.min_x_main = min(min_x, self.min_x_main)
-                    self.min_y_main = min(min_y, self.min_y_main)
-                    self.max_x_main = max(max_x, self.max_x_main)
-                    self.max_y_main = max(max_y, self.max_y_main)
-
-            if case != 1:  # Render a subset of components using mask
-                mask = table['component'].isin(qcomp_ids)
-                table = table[mask]
-
-        else:
-            for qcomp in self.design.components:
-                min_x, min_y, max_x, max_y = self.design.components[
-                    qcomp].qgeometry_bounds()
-                self.min_x_main = min(min_x, self.min_x_main)
-                self.min_y_main = min(min_y, self.min_y_main)
-                self.max_x_main = max(max_x, self.max_x_main)
-                self.max_y_main = max(max_y, self.max_y_main)
+        if self.case == 0:  # Render a subset of components using mask
+            mask = table['component'].isin(self.qcomp_ids)
+            table = table[mask]
 
         for _, qgeom in table.iterrows():
             self.render_element(qgeom, bool(table_type == 'junction'))
 
+        if table_type == 'path':
+            self.auto_wirebonds(table)
+
     def render_element(self, qgeom: pd.Series, is_junction: bool):
-        """
-        Render an individual shape whose properties are listed in a row of QGeometry table.
-        Junction elements are handled separately from non-junction elements, as the former
-        consist of two rendered shapes, not just one.
+        """Render an individual shape whose properties are listed in a row of
+        QGeometry table. Junction elements are handled separately from non-
+        junction elements, as the former consist of two rendered shapes, not
+        just one.
 
         Args:
             qgeom (pd.Series): GeoSeries of element properties.
@@ -1008,9 +999,9 @@ class QAnsysRenderer(QRendererAnalysis):
     def render_element_junction(self, qgeom: pd.Series):
         """
         Render a Josephson junction consisting of
-        1. A rectangle of length pad_gap and width inductor_width. Defines lumped element
-           RLC boundary condition.
-        2. A line that is later used to calculate the voltage in post-processing analysis.
+            1. A rectangle of length pad_gap and width inductor_width. Defines lumped element
+               RLC boundary condition.
+            2. A line that is later used to calculate the voltage in post-processing analysis.
 
         Args:
             qgeom (pd.Series): GeoSeries of element properties.
@@ -1055,8 +1046,7 @@ class QAnsysRenderer(QRendererAnalysis):
         poly_jj.show_direction = True
 
     def render_element_poly(self, qgeom: pd.Series):
-        """
-        Render a closed polygon.
+        """Render a closed polygon.
 
         Args:
             qgeom (pd.Series): GeoSeries of element properties.
@@ -1124,8 +1114,7 @@ class QAnsysRenderer(QRendererAnalysis):
             self.assign_perfE.append(name)
 
     def render_element_path(self, qgeom: pd.Series):
-        """
-        Render a path-type element.
+        """Render a path-type element.
 
         Args:
             qgeom (pd.Series): GeoSeries of element properties.
@@ -1205,137 +1194,11 @@ class QAnsysRenderer(QRendererAnalysis):
         elif qgeom['width'] and (not qgeom['helper']):
             self.assign_perfE.append(name)
 
-    def render_chips(self,
-                     draw_sample_holder: bool = True,
-                     box_plus_buffer: bool = True):
-        """
-        Render chips using info from design.get_chip_size method.
-
-        Renders the ground plane of this chip (if one is present).
-        Renders the wafer of the chip.
-
-        Args:
-            draw_sample_holder (bool, optional): Option to draw vacuum box around chip. Defaults to True.
-            box_plus_buffer (bool): Either calculate a bounding box based on the location of rendered geometries
-                                     or use chip size from design class. 
-        """
-        ansys_options = dict(transparency=0.0)
-
-        for chip_name in self.chip_subtract_dict:
-            ops = self.design._chips[chip_name]
-            p = self.design.get_chip_size(chip_name)
-            origin = parse_units([p['center_x'], p['center_y'], p['center_z']])
-            size = parse_units([p['size_x'], p['size_y'], p['size_z']])
-            vac_height = parse_units(
-                [p['sample_holder_top'], p['sample_holder_bottom']])
-            if chip_name == 'main':
-                # Draw plane, wafer, and sample holder (vacuum box)
-                # x and y dimensions of the vacuum box are identical to that of the 'main' chip
-                self.min_x_main = parse_units(self.min_x_main)
-                self.max_x_main = parse_units(self.max_x_main)
-                self.min_y_main = parse_units(self.min_y_main)
-                self.max_y_main = parse_units(self.max_y_main)
-                comp_center_x = (self.min_x_main + self.max_x_main) / 2
-                comp_center_y = (self.min_y_main + self.max_y_main) / 2
-                min_x_edge = self.min_x_main - parse_units(
-                    self._options['x_buffer_width_mm'])
-                max_x_edge = self.max_x_main + parse_units(
-                    self._options['x_buffer_width_mm'])
-                min_y_edge = self.min_y_main - parse_units(
-                    self._options['y_buffer_width_mm'])
-                max_y_edge = self.max_y_main + parse_units(
-                    self._options['y_buffer_width_mm'])
-
-                if not box_plus_buffer:
-                    # Expect all components are rendered and
-                    # the overall bounding box lies within 9 X 6 chip
-                    if not (origin[0] - size[0] / 2 <= self.min_x_main <
-                            self.max_x_main <= origin[0] + size[0] / 2) and (
-                                origin[1] - size[1] / 2 <= self.min_y_main <
-                                self.max_y_main <= origin[1] + size[1] / 2):
-                        self.logger.warning(
-                            'A bounding box with buffer around the QComponents are outside of the size of chip denoted in DesignPlanar.\n'
-                            'Chip size from DesignPlanar is:\n'
-                            f' x={size[0]}, y={size[1]}, z={size[2]}; centered at x={origin[0]}, y={origin[1]}, z={origin[2]}. \n'
-                            'Bounding box with buffer for rendered geometries is:\n'
-                            f' min_x={self.min_x_main}, max_x={self.max_x_main}, min_y={self.min_y_main}, max_y={self.max_y_main}.'
-                        )
-
-                    plane = self.modeler.draw_rect_center(
-                        origin,
-                        x_size=size[0],
-                        y_size=size[1],
-                        name=f'ground_{chip_name}_plane',
-                        **ansys_options)
-
-                    whole_chip = self.modeler.draw_box_center(
-                        [origin[0], origin[1], size[2] / 2],
-                        [size[0], size[1], -size[2]],
-                        name=chip_name,
-                        material=ops['material'],
-                        color=(186, 186, 205),
-                        transparency=0.2,
-                        wireframe=False)
-                    if draw_sample_holder:
-                        vacuum_box = self.modeler.draw_box_center(
-                            [
-                                origin[0], origin[1],
-                                (vac_height[0] - vac_height[1]) / 2
-                            ], [size[0], size[1],
-                                sum(vac_height)],
-                            name='sample_holder')
-                else:
-                    # A strict subset of components is rendered, or exported components extend beyond boundaries of 9 X 6 chip
-                    x_width = max_x_edge - min_x_edge
-                    y_width = max_y_edge - min_y_edge
-
-                    plane = self.modeler.draw_rect_center(
-                        [comp_center_x, comp_center_y, origin[2]],
-                        x_size=x_width,
-                        y_size=y_width,
-                        name=f'ground_{chip_name}_plane',
-                        **ansys_options)
-                    whole_chip = self.modeler.draw_box_center(
-                        [comp_center_x, comp_center_y, size[2] / 2],
-                        [x_width, y_width, -size[2]],
-                        name=chip_name,
-                        material=ops['material'],
-                        color=(186, 186, 205),
-                        transparency=0.2,
-                        wireframe=False)
-                    if draw_sample_holder:
-                        vacuum_box = self.modeler.draw_box_center(
-                            [
-                                comp_center_x, comp_center_y,
-                                (vac_height[0] - vac_height[1]) / 2
-                            ], [x_width, y_width,
-                                sum(vac_height)],
-                            name='sample_holder')
-            else:
-                # Only draw plane and wafer
-                plane = self.modeler.draw_rect_center(
-                    origin,
-                    x_size=size[0],
-                    y_size=size[1],
-                    name=f'ground_{chip_name}_plane',
-                    **ansys_options)
-
-                whole_chip = self.modeler.draw_box_center(
-                    [origin[0], origin[1], size[2] / 2],
-                    [size[0], size[1], -size[2]],
-                    name=chip_name,
-                    material=ops['material'],
-                    color=(186, 186, 205),
-                    transparency=0.2,
-                    wireframe=False)
-            if self.chip_subtract_dict[
-                    chip_name]:  # Any layer which has subtract=True qgeometries will have a ground plane
-                self.assign_perfE.append(f'ground_{chip_name}_plane')
-
     def add_endcaps(self, open_pins: Union[list, None] = None):
-        """
-        Create endcaps (rectangular cutouts) for all pins in the list open_pins and add them to chip_subtract_dict.
-        Each element in open_pins takes on the form (component_name, pin_name) and corresponds to a single pin.
+        """Create endcaps (rectangular cutouts) for all pins in the list
+        open_pins and add them to chip_subtract_dict. Each element in open_pins
+        takes on the form (component_name, pin_name) and corresponds to a
+        single pin.
 
         Args:
             open_pins (Union[list, None], optional): List of tuples of pins that are open. Defaults to None.
@@ -1362,10 +1225,159 @@ class QAnsysRenderer(QRendererAnalysis):
                                               name=endcap_name)
             self.chip_subtract_dict[pin_dict['chip']].add(endcap_name)
 
+    def get_chip_names(self) -> List[str]:
+        """
+        Obtain a list of chips on which the selection of components, if valid, resides.
+
+        Returns:
+            List[str]: Chips to render.
+        """
+        if self.case == 2:  # One or more components not in QDesign.
+            self.logger.warning('One or more components not found.')
+            return []
+        chip_names = set()
+        if self.case == 1:  # All components rendered.
+            comps = self.design.components
+            for qcomp in comps:
+                if 'chip' not in comps[qcomp].options:
+                    self.chip_designation_error()
+                    return []
+                elif comps[qcomp].options.chip != 'main':
+                    self.chip_not_main()
+                    return []
+                chip_names.add(comps[qcomp].options.chip)
+        else:  # Strict subset rendered.
+            icomps = self.design._components
+            for qcomp_id in self.qcomp_ids:
+                if 'chip' not in icomps[qcomp_id].options:
+                    self.chip_designation_error()
+                    return []
+                elif icomps[qcomp_id].options.chip != 'main':
+                    self.chip_not_main()
+                    return []
+                chip_names.add(icomps[qcomp_id].options.chip)
+        return list(chip_names)
+
+    def chip_designation_error(self):
+        """
+        Warning message that appears when the Ansys renderer fails to locate a component's chip designation.
+        Provides instructions for a temporary workaround until the layer stack is finalized.
+        """
+        self.logger.warning(
+            "This component currently lacks a chip designation. Please add chip='main' to the component's default_options dictionary, restart the kernel, and try again."
+        )
+
+    def chip_not_main(self):
+        """
+        Warning message that appears when a component's chip designation is not 'main'.
+        As of 05/10/21, all chip designations should be 'main' until the layer stack is finalized.
+        Provides instructions for a temporary workaround until the layer stack is finalized.
+        """
+        self.logger.warning(
+            "The chip designation for this component is not 'main'. Please set chip='main' in its default_options dictionary, restart the kernel, and try again."
+        )
+
+    def get_min_bounding_box(self) -> Tuple[float]:
+        """
+        Determine the max/min x/y coordinates of the smallest rectangular, axis-aligned
+        bounding box that will enclose a selection of components to render, given by
+        self.qcomp_ids. This method is only used when box_plus_buffer is True.
+
+        Returns:
+            Tuple[float]: min x, min y, max x, and max y coordinates of bounding box.
+        """
+        min_x_main = min_y_main = float('inf')
+        max_x_main = max_y_main = float('-inf')
+        if self.case == 2:  # One or more components not in QDesign.
+            self.logger.warning('One or more components not found.')
+        elif self.case == 1:  # All components rendered.
+            for qcomp in self.design.components:
+                min_x, min_y, max_x, max_y = self.design.components[
+                    qcomp].qgeometry_bounds()
+                min_x_main = min(min_x, min_x_main)
+                min_y_main = min(min_y, min_y_main)
+                max_x_main = max(max_x, max_x_main)
+                max_y_main = max(max_y, max_y_main)
+        else:  # Strict subset rendered.
+            for qcomp_id in self.qcomp_ids:
+                min_x, min_y, max_x, max_y = self.design._components[
+                    qcomp_id].qgeometry_bounds()
+                min_x_main = min(min_x, min_x_main)
+                min_y_main = min(min_y, min_y_main)
+                max_x_main = max(max_x, max_x_main)
+                max_y_main = max(max_y, max_y_main)
+        return min_x_main, min_y_main, max_x_main, max_y_main
+
+    def render_chips(self,
+                     draw_sample_holder: bool = True,
+                     box_plus_buffer: bool = True):
+        """
+        Render all chips containing components in self.qcomp_ids.
+
+        Args:
+            draw_sample_holder (bool, optional): Option to draw vacuum box around chip. Defaults to True.
+            box_plus_buffer (bool, optional): Whether or not to use a box plus buffer. Defaults to True.
+        """
+        chip_list = self.get_chip_names()
+        if box_plus_buffer:  # Get bounding box of components first
+            min_x_main, min_y_main, max_x_main, max_y_main = parse_units(
+                self.get_min_bounding_box())
+            self.cw_x = max_x_main - min_x_main  # chip width along x
+            self.cw_y = max_y_main - min_y_main  # chip width along y
+            self.cw_x += 2 * parse_units(self._options['x_buffer_width_mm'])
+            self.cw_y += 2 * parse_units(self._options['y_buffer_width_mm'])
+            self.cc_x = (max_x_main + min_x_main) / 2  # x coord of chip center
+            self.cc_y = (max_y_main + min_y_main) / 2  # y coord of chip center
+        else:  # Adhere to chip placement and dimensions in QDesign
+            p = self.design.get_chip_size(
+                'main')  # x/y center/width same for all chips
+            self.cw_x, self.cw_y, _ = parse_units(
+                [p['size_x'], p['size_y'], p['size_z']])
+            self.cc_x, self.cc_y, _ = parse_units(
+                [p['center_x'], p['center_y'], p['center_z']])
+        for chip_name in chip_list:
+            self.render_chip(chip_name, draw_sample_holder and
+                             (chip_name == 'main'))
+
+    def render_chip(self, chip_name: str, draw_sample_holder: bool):
+        """
+        Render individual chips.
+
+        Args:
+            chip_name (str): Name of chip.
+            draw_sample_holder (bool): Option to draw vacuum box around chip.
+        """
+        ansys_options = dict(transparency=0.0)
+        ops = self.design._chips[chip_name]
+        p = self.design.get_chip_size(chip_name)
+        z_coord, height = parse_units([p['center_z'], p['size_z']])
+        plane = self.modeler.draw_rect_center([self.cc_x, self.cc_y, z_coord],
+                                              x_size=self.cw_x,
+                                              y_size=self.cw_y,
+                                              name=f'ground_{chip_name}_plane',
+                                              **ansys_options)
+        whole_chip = self.modeler.draw_box_center(
+            [self.cc_x, self.cc_y, height / 2], [self.cw_x, self.cw_y, -height],
+            name=chip_name,
+            material=ops['material'],
+            color=(186, 186, 205),
+            transparency=0.2,
+            wireframe=False)
+        if draw_sample_holder:  # HFSS
+            vac_height = parse_units(
+                [p['sample_holder_top'], p['sample_holder_bottom']])
+            vacuum_box = self.modeler.draw_box_center(
+                [self.cc_x, self.cc_y, (vac_height[0] - vac_height[1]) / 2],
+                [self.cw_x, self.cw_y, sum(vac_height)],
+                name='sample_holder')
+        if self.chip_subtract_dict[chip_name]:
+            # Any layer which has subtract=True qgeometries will have a ground plane
+            # TODO: Material property assignment may become layer-dependent.
+            self.assign_perfE.append(f'ground_{chip_name}_plane')
+
     def subtract_from_ground(self):
-        """
-        For each chip, subtract all "negative" shapes residing on its surface if any such shapes exist.
-        """
+        """For each chip, subtract all "negative" shapes residing on its
+        surface if any such shapes exist."""
         for chip, shapes in self.chip_subtract_dict.items():
             if shapes:
                 import pythoncom
@@ -1385,19 +1397,73 @@ class QAnsysRenderer(QRendererAnalysis):
                     raise error
 
     def add_mesh(self):
-        """
-        Add mesh to all elements in self.assign_mesh.
-        """
+        """Add mesh to all elements in self.assign_mesh."""
         if self.assign_mesh:
             self.modeler.mesh_length(
                 'small_mesh',
                 self.assign_mesh,
                 MaxLength=self._options['max_mesh_length_jj'])
 
+    #Still implementing
+    def auto_wirebonds(self, table):
+        """
+        Adds wirebonds to the Ansys model for path elements where;
+        subtract = True and wire_bonds = True.
+
+        Uses render options for determining of the:
+        * wb_threshold -- the minimum distance between two vertices of a path for a
+        wirebond to be added.
+        * wb_offset -- offset distance for wirebond placement (along the direction
+        of the cpw)
+        * wb_size -- controls the width of the wirebond (wb_size * path['width'])
+        """
+        norm_z = np.array([0, 0, 1])
+
+        wb_threshold = parse_units(self._options['wb_threshold'])
+        wb_offset = parse_units(self._options['wb_offset'])
+
+        #selecting only the qgeometry which meet criteria
+        wb_table = table.loc[table['hfss_wire_bonds'] == True]
+        wb_table2 = wb_table.loc[wb_table['subtract'] == True]
+
+        #looping through each qgeometry
+        for _, row in wb_table2.iterrows():
+            geom = row['geometry']
+            width = row['width']
+            #looping through the linestring of the path to determine where WBs should be
+            for index, i_p in enumerate(geom.coords[:-1], start=0):
+                j_p = np.asarray(geom.coords[:][index + 1])
+                vert_distance = parse_units(distance.euclidean(i_p, j_p))
+                if vert_distance > wb_threshold:
+                    #Gets number of wirebonds to fit in section of path
+                    wb_count = int(vert_distance // wb_threshold)
+                    #finds the position vector
+                    wb_pos = (j_p - i_p) / (wb_count + 1)
+                    #gets the norm vector for finding the orthonormal of path
+                    wb_vec = wb_pos / np.linalg.norm(wb_pos)
+                    #finds the orthonormal (for orientation)
+                    wb_perp = np.cross(norm_z, wb_vec)[:2]
+                    #finds the first wirebond to place (rest are in the loop)
+                    wb_pos_step = parse_units(wb_pos + i_p) + (wb_vec *
+                                                               wb_offset)
+                    #Other input values could be modified, kept to minimal selection for automation
+                    #for the time being. Loops to place N wirebonds based on length of path section.
+                    for wb_i in range(wb_count):
+                        self.modeler.draw_wirebond(
+                            pos=wb_pos_step + parse_units(wb_pos * wb_i),
+                            ori=wb_perp,
+                            width=parse_units(width * self._options['wb_size']),
+                            height=parse_units(width *
+                                               self._options['wb_size']),
+                            z=0,
+                            wire_diameter='0.015mm',
+                            NumSides=6,
+                            name='g_wb',
+                            material='pec',
+                            solve_inside=False)
+
     def clean_active_design(self):
-        """
-        Remove all elements from Ansys Modeler.
-        """
+        """Remove all elements from Ansys Modeler."""
         if self.pinfo:
             if self.pinfo.get_all_object_names():
                 project_name = self.pinfo.project_name

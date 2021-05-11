@@ -9,12 +9,10 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""
-An automated process to build docs locally.
+"""An automated process to build docs locally.
 
-Run using:
-    $ python <path>/build_docs.py
-build_docs.py needs to be in the same folder as the Makefile
+Run using:     $ python <path>/build_docs.py build_docs.py needs to be
+in the same folder as the Makefile
 """
 
 import shlex
@@ -92,19 +90,24 @@ print(f'\n*** Running the build***\n$ make html')
 
 from sys import platform
 
-if platform == "darwin":
-    scmd = shlex.split("make html")
-    result = subprocess.run(scmd, stdout=subprocess.PIPE, check=False)
-    stderr = result.stderr
-    stdout = result.stdout
-    returncode = result.returncode
-    print(f'\n****Exited with {returncode}')
-    if stdout:
-        print(f'****stdout****\n{stdout.decode()}')
-    if stderr:
-        print(f'****stderr****\n{stderr.decode()}')
-else:
-    os.system("make html")
+try:
+    if platform == "darwin":
+        scmd = shlex.split("make html")
+        result = subprocess.run(scmd, stdout=subprocess.PIPE, check=False)
+        stderr = result.stderr
+        stdout = result.stdout
+        returncode = result.returncode
+        print(f'\n****Exited with {returncode}')
+        if stdout:
+            print(f'****stdout****\n{stdout.decode()}')
+        if stderr:
+            print(f'****stderr****\n{stderr.decode()}')
+    else:
+        os.system("make html")
+except KeyboardInterrupt:
+    print("\nTerminating... please wait")
+    os.remove('.buildingdocs')
+    exit(1)
 
 os.chdir(pwd)
 

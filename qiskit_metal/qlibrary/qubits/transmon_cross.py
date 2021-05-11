@@ -14,12 +14,11 @@
 
 import numpy as np
 from qiskit_metal import draw, Dict
-from qiskit_metal.qlibrary.base.qubit import BaseQubit
+from qiskit_metal.qlibrary.core import BaseQubit
 
 
 class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
-    """
-    The base `TransmonCross` class.
+    """The base `TransmonCross` class.
 
     Inherits `BaseQubit` class.
 
@@ -100,17 +99,15 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
     ##############################################MAKE######################################################
 
     def make(self):
-        """ This is executed by the GUI/user to generate the qgeometry for the component.
-        """
+        """This is executed by the GUI/user to generate the qgeometry for the
+        component."""
         self.make_pocket()
         self.make_connection_pads()
 
 ###################################TRANSMON#############################################################
 
     def make_pocket(self):
-        '''
-        Makes a basic Crossmon, 4 arm cross.
-        '''
+        """Makes a basic Crossmon, 4 arm cross."""
 
         # self.p allows us to directly access parsed values (string -> numbers) form the user option
         p = self.p
@@ -150,19 +147,16 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
 ############################CONNECTORS##################################################################################################
 
     def make_connection_pads(self):
-        '''
-        Goes through connector pads and makes each one.
-        '''
+        """Goes through connector pads and makes each one."""
         for name in self.options.connection_pads:
             self.make_connection_pad(name)
 
     def make_connection_pad(self, name: str):
-        '''
-        Makes individual connector pad.
+        """Makes individual connector pad.
 
         Args:
             name (str) : Name of the connector pad
-        '''
+        """
 
         # self.p allows us to directly access parsed values (string -> numbers) form the user option
         p = self.p

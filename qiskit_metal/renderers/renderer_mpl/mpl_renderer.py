@@ -11,9 +11,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""
-MPL Renderer
-"""
+"""MPL Renderer."""
 import logging
 import random
 import sys
@@ -61,8 +59,7 @@ to_poly_patch = np.vectorize(PolygonPatch)
 
 
 class QMplRenderer():
-    """
-    Matplotlib handle all rendering of an axis.
+    """Matplotlib handle all rendering of an axis.
 
     The axis is given in the function render.
 
@@ -99,8 +96,7 @@ class QMplRenderer():
         self.set_design(design)
 
     def get_color_num(self, num: int) -> str:
-        """
-        Get the color from the given number
+        """Get the color from the given number.
 
         Args:
             num (int): number
@@ -170,8 +166,7 @@ class QMplRenderer():
         self.render_tables(ax)
 
     def get_mask(self, table: pd.DataFrame) -> pd.Series:
-        '''
-        Gets the mask.
+        """Gets the mask.
 
         Args:
             table (pd.DataFrame): dataframe
@@ -179,7 +174,7 @@ class QMplRenderer():
         Returns:
             pd.Series: return pandas index series with boolen mask
             - i.e., which are not hidden or otherwise
-        '''
+        """
 
         # TODO: Ideally these should be replaced with interface functions,
         # not direct access to undelying internal representation
@@ -283,7 +278,9 @@ class QMplRenderer():
                         ax: Axes,
                         subtracted: bool = False,
                         extra_kw: dict = None):
-        """For Now, do nothing.  TODO:render junction tables.
+        """For Now, do nothing.
+
+        TODO:render junction tables.
         """
         pass
 
@@ -292,8 +289,7 @@ class QMplRenderer():
                     ax: Axes,
                     subtracted: bool = False,
                     extra_kw: dict = None):
-        """
-        Render a table of poly geometry.
+        """Render a table of poly geometry.
 
         Arguments:
             table (DataFrame): Element table
@@ -307,8 +303,7 @@ class QMplRenderer():
         self._render_poly_array(ax, table.geometry, kw)
 
     def render_fillet(self, table):
-        """
-        Renders fillet path.
+        """Renders fillet path.
 
         Arguments:
             table (DataFrame): Table of elements with fillets
@@ -320,8 +315,7 @@ class QMplRenderer():
         return table
 
     def fillet_path(self, row):
-        """
-        Output the filleted path.
+        """Output the filleted path.
 
         Arguments:
             row (DataFrame): Row to fillet.
@@ -360,9 +354,8 @@ class QMplRenderer():
                      vertex_end,
                      radius,
                      points=16):
-        """
-        Returns the filleted path based on the start, corner, and end vertices and the
-        fillet radius.
+        """Returns the filleted path based on the start, corner, and end
+        vertices and the fillet radius.
 
         Arguments:
             vertex_start (np.ndarray): x-y coordinates of starting vertex.
@@ -417,8 +410,7 @@ class QMplRenderer():
                     ax: Axes,
                     subtracted: bool = False,
                     extra_kw: dict = None):
-        """
-        Render a table of path geometry.
+        """Render a table of path geometry.
 
         Arguments:
             table (DataFrame): Element table

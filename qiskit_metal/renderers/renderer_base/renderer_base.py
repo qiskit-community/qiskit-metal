@@ -11,9 +11,8 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""
-QRenderer
-"""
+"""QRenderer base class."""
+
 import logging
 import inspect
 from copy import deepcopy
@@ -36,7 +35,8 @@ if TYPE_CHECKING:
 
 
 class QRenderer(ABC):
-    """Abstract base class for all Renderers of Metal designs and their components and qgeometry.
+    """Abstract base class for all Renderers of Metal designs and their
+	components and qgeometry.
 
     Handles:
         ::
@@ -47,7 +47,6 @@ class QRenderer(ABC):
                         paths
                         polys
                 chips
-
     """
 
     name = 'base'  # overwrite this!
@@ -70,8 +69,8 @@ class QRenderer(ABC):
 
     @classmethod
     def load(cls):
-        """Load the renderer and register all its extensions.
-        Only performed once.
+        """Load the renderer and register all its extensions. Only performed
+        once.
 
         Once complete, the renderer is added to the class attribute
         '__loaded_renderers__' of QRenderer
@@ -102,13 +101,21 @@ class QRenderer(ABC):
         # Finish and register officially as ready to use.
         QRenderer.__loaded_renderers__.add(name)
 
+        # Reset the table for the next QRenderer.
+        for table in cls.element_table_data.keys():
+            cls.element_extensions.pop(table, None)
+
         return True
 
     @classmethod
     def populate_element_extensions(cls):
-        """Populate cls.element_extensions which will be used to create columns for tables in QGeometry tables.
-        The structure of cls.element_table_data should be same as cls.element_extensions.
+        """Populate cls.element_extensions which will be used to create columns
+        for tables in QGeometry tables.
+
+        The structure of cls.element_table_data should be same as
+        cls.element_extensions.
         """
+
         for table, a_dict in cls.element_table_data.items():
             cls.element_extensions[table] = dict()
             for col_name, col_value in a_dict.items():
@@ -191,8 +198,8 @@ class QRenderer(ABC):
 
     @classmethod
     def _gather_all_children_default_options(cls) -> Dict:
-        """From the base class of QRenderer, traverse the child classes
-        to gather the .default_options for each child class.
+        """From the base class of QRenderer, traverse the child classes to
+        gather the .default_options for each child class.
 
         Note: If keys are the same for a child and grandchild, the grandchild will
         overwrite the child init method.
@@ -225,13 +232,13 @@ class QRenderer(ABC):
     @classmethod
     def _register_class_with_design(cls, design: 'QDesign', template_key: str,
                                     render_template: Dict):
-        """Init function to register a renderer class with the design when first instantiated.
-            Registers the renderer's template options.
+        """Init function to register a renderer class with the design when
+        first instantiated. Registers the renderer's template options.
 
-            Arguments:
-                design (QDesign): The parent design
-                template_key (str): Key to use
-                render_template (dict): template of render to copy
+        Arguments:
+            design (QDesign): The parent design
+            template_key (str): Key to use
+            render_template (dict): template of render to copy
         """
         # do not overwrite
         if template_key not in design.template_options:
@@ -245,9 +252,9 @@ class QRenderer(ABC):
                              render_template: Dict = None,
                              logger_: logging.Logger = None,
                              template_key: str = None) -> Dict:
-        """Creates template options for the Metal QRenderer class required for the class
-        to function, based on the design template; i.e., be created, made, and rendered.
-        Provides the blank option structure required.
+        """Creates template options for the Metal QRenderer class required for
+        the class to function, based on the design template; i.e., be created,
+        made, and rendered. Provides the blank option structure required.
 
         The options can be extended by plugins, such as renderers.
 
@@ -296,9 +303,9 @@ class QRenderer(ABC):
     def update_options(self,
                        render_options: Dict = None,
                        render_template: Dict = None):
-        """If template options has not been set for this renderer,
-        then gather all the default options for children and add to design.  The GUI
-        would use this to store the template options.
+        """If template options has not been set for this renderer, then gather
+        all the default options for children and add to design.  The GUI would
+        use this to store the template options.
 
         Then give the template options to render
         to store in self.options.  Then user can over-ride the render_options.
@@ -317,8 +324,8 @@ class QRenderer(ABC):
             self.options.update(render_options)
 
     def add_table_data_to_QDesign(self, class_name: str):
-        """During init of renderer, this needs to happen. In particular,
-        each renderer needs to update custom columns and values within QDesign.
+        """During init of renderer, this needs to happen. In particular, each
+        renderer needs to update custom columns and values within QDesign.
 
         Args:
             class_name (str): Name from cls.name for each renderer.
@@ -392,16 +399,15 @@ class QRenderer(ABC):
             self,
             highlight_qcomponents: Union[list,
                                          None] = None) -> Tuple[list, int]:
-        """
-        Confirm the list doesn't have names of components repeated.
-        Confirm that the name of component exists in QDesign.
-        If QDesign doesn't contain any component, or if all components in QDesign are found
-        in highlight_qcomponents, return an empty list; otherwise return a list of unique
-        components to be sent to Ansys. The second returned item, an integer, specifies
-        which of these 3 cases applies.
+        """Confirm the list doesn't have names of components repeated. Confirm
+        that the name of component exists in QDesign. If QDesign doesn't
+        contain any component, or if all components in QDesign are found in
+        highlight_qcomponents, return an empty list; otherwise return a list of
+        unique components to be sent to the renderer. The second returned item, an
+        integer, specifies which of these 3 cases applies.
 
         Args:
-            highlight_qcomponents (Union[list, None], optional): Components to render into Ansys. Defaults to None.
+            highlight_qcomponents (Union[list, None], optional): Components to render. Defaults to None.
 
         Returns:
             Tuple[list, int]: Empty or partial list of components in QDesign.
@@ -414,7 +420,7 @@ class QRenderer(ABC):
                     f'The component={qcomp} in highlight_qcomponents not'
                     ' in QDesign.')
                 return [], 2  # Invalid
-        if len(unique_qcomponents) == len(self.design.components):
+        if len(unique_qcomponents) in (0, len(self.design.components)):
             return [], 1  # Everything selected
         return [self.design.name_to_id[elt] for elt in unique_qcomponents
                ], 0  # Subset selected

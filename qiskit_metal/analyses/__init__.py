@@ -30,7 +30,7 @@ Hamiltonian
 
     Hcpb
     HO_wavefunctions
-
+    transmon_analytics
 
 Electromagnetic & quantization / parameter extraction
 -----------------------------------------------------
@@ -64,4 +64,5 @@ from .em import kappa_calculation
 from .quantization import lumped_capacitive
 from .hamiltonian.transmon_charge_basis import Hcpb
 from .hamiltonian import HO_wavefunctions
+from .hamiltonian import transmon_analytics
 from .sweep_options.sweeping import Sweeping

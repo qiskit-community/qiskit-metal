@@ -11,9 +11,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""
-MPL Canvas
-"""
+"""MPL Canvas."""
 import logging
 import random
 import sys
@@ -319,8 +317,7 @@ MPL_CONTEXT_DEFAULT = {
 
 
 class PlotCanvas(FigureCanvas):
-    """
-    Main Plot canvas widget.
+    """Main Plot canvas widget.
 
     This class extends the `FigureCanvas` class.
 
@@ -399,9 +396,7 @@ class PlotCanvas(FigureCanvas):
         self.metal_renderer.set_design(design)
 
     def setup_figure_and_axes(self):
-        """
-        Main setup from scratch.
-        """
+        """Main setup from scratch."""
 
         self.setup_rendering()
 
@@ -420,10 +415,9 @@ class PlotCanvas(FigureCanvas):
                 ax.set_ylim([-0.5, 0.5])
 
     def setup_rendering(self):
-        """Line segment simplificatio:
-        For plots that have line segments (e.g. typical line plots, outlines of
-        polygons, etc.), rendering performance can be controlled by the path.simplify
-        and path.simplify_threshold
+        """Line segment simplificatio: For plots that have line segments (e.g.
+        typical line plots, outlines of polygons, etc.), rendering performance
+        can be controlled by the path.simplify and path.simplify_threshold.
 
             path_simplify:
                 When True, simplify paths by removing "invisible" points to reduce file
@@ -453,9 +447,7 @@ class PlotCanvas(FigureCanvas):
         mpl.rcParams['agg.path.chunksize'] = self.config.chunksize
 
     def get_axis(self):
-        """
-        Gets the current axis.
-        """
+        """Gets the current axis."""
         return self.axes[self.current_axis]
 
     def _plot(self, ax):
@@ -562,7 +554,10 @@ class PlotCanvas(FigureCanvas):
                 clear_axis(ax)
 
     def refresh(self):
-        """Force refresh. Does not replot renderer. Just mpl refresh."""
+        """Force refresh.
+
+        Does not replot renderer. Just mpl refresh.
+        """
         self.update()  # not sure if needed
         self.flush_events()
         self.draw()
@@ -620,8 +615,8 @@ class PlotCanvas(FigureCanvas):
         self.refresh()
 
     def welcome_message(self):
-        """The GUI displays a message to let users know they are using Qiskit Metal.
-        """
+        """The GUI displays a message to let users know they are using Qiskit
+        Metal."""
         self._welcome_text = AnimatedText(
             self.axes[0],
             "Welcome to Qiskit Metal Early Access Alpha",
@@ -684,8 +679,7 @@ class PlotCanvas(FigureCanvas):
         return bounds
 
     def set_component(self, name: str):
-        """
-        Shortcut to set a component in the component widget to be examined.
+        """Shortcut to set a component in the component widget to be examined.
 
         Args:
             name (str): Name of the component in the design

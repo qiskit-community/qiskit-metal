@@ -11,8 +11,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-'''
-Transmon Pocket.
+"""Transmon Pocket.
 
 .. code-block::
      ________________________________
@@ -29,18 +28,15 @@ Transmon Pocket.
     |        ______                  |
     |_______|______|                 |
     |________________________________|
-
-
-'''
+"""
 
 import numpy as np
 from qiskit_metal import draw, Dict
-from qiskit_metal.qlibrary.base.qubit import BaseQubit
+from qiskit_metal.qlibrary.core import BaseQubit
 
 
 class TransmonPocket(BaseQubit):
-    """
-    The base `TransmonPocket` class.
+    """The base `TransmonPocket` class.
 
     Inherits `BaseQubit` class.
 
@@ -110,6 +106,7 @@ class TransmonPocket(BaseQubit):
 
     # Default drawing options
     default_options = Dict(
+        chip='main',
         pos_x='0um',
         pos_y='0um',
         pad_gap='30um',
@@ -146,16 +143,18 @@ class TransmonPocket(BaseQubit):
 
     def make(self):
         """Define the way the options are turned into QGeometry.
+
         The make function implements the logic that creates the geoemtry
-        (poly, path, etc.) from the qcomponent.options dictionary of parameters,
-        and the adds them to the design, using qcomponent.add_qgeometry(...),
-        adding in extra needed information, such as layer, subtract, etc.
+        (poly, path, etc.) from the qcomponent.options dictionary of
+        parameters, and the adds them to the design, using
+        qcomponent.add_qgeometry(...), adding in extra needed
+        information, such as layer, subtract, etc.
         """
         self.make_pocket()
         self.make_connection_pads()
 
     def make_pocket(self):
-        '''Makes standard transmon in a pocket.'''
+        """Makes standard transmon in a pocket."""
 
         # self.p allows us to directly access parsed values (string -> numbers) form the user option
         p = self.p
@@ -195,19 +194,16 @@ class TransmonPocket(BaseQubit):
                            width=p.inductor_width)
 
     def make_connection_pads(self):
-        '''
-        Makes standard transmon in a pocket.
-        '''
+        """Makes standard transmon in a pocket."""
         for name in self.options.connection_pads:
             self.make_connection_pad(name)
 
     def make_connection_pad(self, name: str):
-        '''
-        Makes n individual connector.
+        """Makes n individual connector.
 
         Args:
             name (str) : Name of the connector
-        '''
+        """
 
         # self.p allows us to directly access parsed values (string -> numbers) form the user option
         p = self.p

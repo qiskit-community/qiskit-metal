@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file './component_widget_ui.ui',
 # licensing of './component_widget_ui.ui' applies.
 #
-# Created: Mon Mar 15 02:36:43 2021
+# Created: Fri May  7 19:27:13 2021
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -38,23 +38,10 @@ class Ui_ComponentWidget(object):
         self.treeView.setProperty("showDropIndicator", False)
         self.treeView.setObjectName("treeView")
         self.verticalLayout.addWidget(self.treeView)
-        self.pushButtonEditSource = QtWidgets.QPushButton(self.tabOptions)
-        self.pushButtonEditSource.setStyleSheet(
-            "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(61, 217, 245,0.8), stop:1 rgba(240, 53, 218,0.8));\n"
-            "border-style: solid;\n"
-            "border-radius:30px;\n"
-            "font-weight: bold;\n"
-            "color: rgb(255, 255, 255);")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/---component"), QtGui.QIcon.Normal,
-                       QtGui.QIcon.Off)
-        self.pushButtonEditSource.setIcon(icon)
-        self.pushButtonEditSource.setObjectName("pushButtonEditSource")
-        self.verticalLayout.addWidget(self.pushButtonEditSource)
-        icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(":/options"), QtGui.QIcon.Normal,
-                        QtGui.QIcon.On)
-        ComponentWidget.addTab(self.tabOptions, icon1, "")
+        icon.addPixmap(QtGui.QPixmap(":/options"), QtGui.QIcon.Normal,
+                       QtGui.QIcon.On)
+        ComponentWidget.addTab(self.tabOptions, icon, "")
         self.tabHelp = QtWidgets.QWidget()
         self.tabHelp.setObjectName("tabHelp")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.tabHelp)
@@ -63,35 +50,16 @@ class Ui_ComponentWidget(object):
         self.textHelp = QtWidgets.QTextEdit(self.tabHelp)
         self.textHelp.setObjectName("textHelp")
         self.verticalLayout_2.addWidget(self.textHelp)
-        icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(":/help"), QtGui.QIcon.Normal,
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap(":/help"), QtGui.QIcon.Normal,
                         QtGui.QIcon.On)
-        ComponentWidget.addTab(self.tabHelp, icon2, "")
+        ComponentWidget.addTab(self.tabHelp, icon1, "")
         self.tabSource = QtWidgets.QWidget()
         self.tabSource.setObjectName("tabSource")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.tabSource)
         self.verticalLayout_3.setSpacing(0)
         self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
-        self.btn_edit_src = QtWidgets.QPushButton(self.tabSource)
-        font = QtGui.QFont()
-        font.setPointSize(14)
-        font.setWeight(75)
-        font.setBold(True)
-        self.btn_edit_src.setFont(font)
-        self.btn_edit_src.setAutoFillBackground(False)
-        self.btn_edit_src.setStyleSheet(
-            "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(61, 217, 245), stop:1 rgb(240, 53, 218));\n"
-            "border-style: solid;\n"
-            "border-radius:30px;\n"
-            "font-weight: bold;\n"
-            "color: rgb(255, 255, 255);")
-        self.btn_edit_src.setIcon(icon)
-        self.btn_edit_src.setIconSize(QtCore.QSize(20, 20))
-        self.btn_edit_src.setDefault(False)
-        self.btn_edit_src.setFlat(False)
-        self.btn_edit_src.setObjectName("btn_edit_src")
-        self.verticalLayout_3.addWidget(self.btn_edit_src)
         self.textSource = QtWidgets.QTextEdit(self.tabSource)
         self.textSource.setAutoFillBackground(True)
         self.textSource.setLineWrapMode(QtWidgets.QTextEdit.NoWrap)
@@ -102,32 +70,18 @@ class Ui_ComponentWidget(object):
         self.lineSourcePath.setClearButtonEnabled(False)
         self.lineSourcePath.setObjectName("lineSourcePath")
         self.verticalLayout_3.addWidget(self.lineSourcePath)
-        icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap(":/_imgs/support.png"),
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap(":/_imgs/support.png"),
                         QtGui.QIcon.Normal, QtGui.QIcon.On)
-        ComponentWidget.addTab(self.tabSource, icon3, "")
+        ComponentWidget.addTab(self.tabSource, icon2, "")
 
         self.retranslateUi(ComponentWidget)
-        ComponentWidget.setCurrentIndex(0)
-        QtCore.QMetaObject.connectSlotsByName(ComponentWidget)
+        ComponentWidget.setCurrentIndex(2)
 
     def retranslateUi(self, ComponentWidget):
         ComponentWidget.setWindowTitle(
             QtWidgets.QApplication.translate("ComponentWidget",
                                              "Edit a component", None, -1))
-        self.pushButtonEditSource.setStatusTip(
-            QtWidgets.QApplication.translate(
-                "ComponentWidget",
-                "Edit the QComponent source code in real time and see changes. ",
-                None, -1))
-        self.pushButtonEditSource.setWhatsThis(
-            QtWidgets.QApplication.translate(
-                "ComponentWidget",
-                "Edit the QComponent source code in real time and see changes. ",
-                None, -1))
-        self.pushButtonEditSource.setText(
-            QtWidgets.QApplication.translate("ComponentWidget", "Edit Source",
-                                             None, -1))
         ComponentWidget.setTabText(
             ComponentWidget.indexOf(self.tabOptions),
             QtWidgets.QApplication.translate("ComponentWidget", "Options", None,
@@ -142,24 +96,21 @@ class Ui_ComponentWidget(object):
                 "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
                 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
                 "p, li { white-space: pre-wrap; }\n"
-                "</style></head><body style=\" font-family:\'Arial\'; font-size:13pt; font-weight:400; font-style:normal;\">\n"
-                "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:14pt;\">Help about a component will be displayed here when you select a compoent in the design components dialog. </span></p></body></html>",
+                "</style></head><body style=\" font-family:\'.AppleSystemUIFont\'; font-size:13pt; font-weight:400; font-style:normal;\">\n"
+                "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Arial\'; font-size:14pt;\">Help about a component will be displayed here when you select a compoent in the design components dialog. </span></p></body></html>",
                 None, -1))
         ComponentWidget.setTabText(
             ComponentWidget.indexOf(self.tabHelp),
             QtWidgets.QApplication.translate("ComponentWidget", "Help", None,
                                              -1))
-        self.btn_edit_src.setText(
-            QtWidgets.QApplication.translate("ComponentWidget", "Edit Source",
-                                             None, -1))
         self.textSource.setHtml(
             QtWidgets.QApplication.translate(
                 "ComponentWidget",
                 "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
                 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
                 "p, li { white-space: pre-wrap; }\n"
-                "</style></head><body style=\" font-family:\'Arial\'; font-size:13pt; font-weight:400; font-style:normal;\">\n"
-                "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:14pt;\">The source code of a QComponent class will be displayed here when you select a compoent in the design components dialog. </span></p></body></html>",
+                "</style></head><body style=\" font-family:\'.AppleSystemUIFont\'; font-size:13pt; font-weight:400; font-style:normal;\">\n"
+                "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Arial\'; font-size:14pt;\">The source code of a QComponent class will be displayed here when you select a compoent in the design components dialog. </span></p></body></html>",
                 None, -1))
         self.lineSourcePath.setToolTip(
             QtWidgets.QApplication.translate("ComponentWidget",

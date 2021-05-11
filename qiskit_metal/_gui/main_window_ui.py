@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file './main_window_ui.ui',
 # licensing of './main_window_ui.ui' applies.
 #
-# Created: Thu Mar 18 09:03:10 2021
+# Created: Fri May  7 19:27:14 2021
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -61,7 +61,7 @@ class Ui_MainWindow(object):
         self.verticalLayout.addWidget(self.tabWidget)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar()
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1300, 22))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1300, 24))
         self.menubar.setBaseSize(QtCore.QSize(0, 0))
         self.menubar.setObjectName("menubar")
         self.menuDesign = QtWidgets.QMenu(self.menubar)
@@ -192,8 +192,7 @@ class Ui_MainWindow(object):
         self.dockLibrary_filter = QtWidgets.QLineEdit(self.dockLibraryContents)
         self.dockLibrary_filter.setObjectName("dockLibrary_filter")
         self.verticalLayout_5.addWidget(self.dockLibrary_filter)
-        self.dockLibrary_tree_view = QtWidgets.QTreeView(
-            self.dockLibraryContents)
+        self.dockLibrary_tree_view = TreeViewQLibrary(self.dockLibraryContents)
         self.dockLibrary_tree_view.setObjectName("dockLibrary_tree_view")
         self.verticalLayout_5.addWidget(self.dockLibrary_tree_view)
         self.dockLibrary.setWidget(self.dockLibraryContents)
@@ -317,14 +316,6 @@ class Ui_MainWindow(object):
                          QtGui.QIcon.Off)
         self.actionDesign.setIcon(icon13)
         self.actionDesign.setObjectName("actionDesign")
-        self.actionComponent = QtWidgets.QAction(MainWindow)
-        self.actionComponent.setCheckable(True)
-        self.actionComponent.setChecked(True)
-        icon14 = QtGui.QIcon()
-        icon14.addPixmap(QtGui.QPixmap(":/component"), QtGui.QIcon.Normal,
-                         QtGui.QIcon.Off)
-        self.actionComponent.setIcon(icon14)
-        self.actionComponent.setObjectName("actionComponent")
         self.actionElements = QtWidgets.QAction(MainWindow)
         self.actionElements.setCheckable(True)
         self.actionElements.setChecked(False)
@@ -333,45 +324,45 @@ class Ui_MainWindow(object):
         self.actionLog = QtWidgets.QAction(MainWindow)
         self.actionLog.setCheckable(True)
         self.actionLog.setChecked(True)
-        icon15 = QtGui.QIcon()
-        icon15.addPixmap(QtGui.QPixmap(":/log"), QtGui.QIcon.Normal,
+        icon14 = QtGui.QIcon()
+        icon14.addPixmap(QtGui.QPixmap(":/log"), QtGui.QIcon.Normal,
                          QtGui.QIcon.Off)
-        self.actionLog.setIcon(icon15)
+        self.actionLog.setIcon(icon14)
         self.actionLog.setObjectName("actionLog")
         self.actionNewComponent = QtWidgets.QAction(MainWindow)
         self.actionNewComponent.setCheckable(True)
         self.actionNewComponent.setChecked(False)
-        icon16 = QtGui.QIcon()
-        icon16.addPixmap(QtGui.QPixmap(":/component-library"),
+        icon15 = QtGui.QIcon()
+        icon15.addPixmap(QtGui.QPixmap(":/component-library"),
                          QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.actionNewComponent.setIcon(icon16)
+        self.actionNewComponent.setIcon(icon15)
         self.actionNewComponent.setObjectName("actionNewComponent")
         self.actionDelete_All = QtWidgets.QAction(MainWindow)
-        icon17 = QtGui.QIcon()
-        icon17.addPixmap(QtGui.QPixmap(":/delete_all"), QtGui.QIcon.Normal,
+        icon16 = QtGui.QIcon()
+        icon16.addPixmap(QtGui.QPixmap(":/delete_all"), QtGui.QIcon.Normal,
                          QtGui.QIcon.Off)
-        self.actionDelete_All.setIcon(icon17)
+        self.actionDelete_All.setIcon(icon16)
         self.actionDelete_All.setPriority(QtWidgets.QAction.LowPriority)
         self.actionDelete_All.setObjectName("actionDelete_All")
         self.actionZoom = QtWidgets.QAction(MainWindow)
-        icon18 = QtGui.QIcon()
-        icon18.addPixmap(QtGui.QPixmap(":/plot/zoom"), QtGui.QIcon.Normal,
+        icon17 = QtGui.QIcon()
+        icon17.addPixmap(QtGui.QPixmap(":/plot/zoom"), QtGui.QIcon.Normal,
                          QtGui.QIcon.Off)
-        self.actionZoom.setIcon(icon18)
+        self.actionZoom.setIcon(icon17)
         self.actionZoom.setObjectName("actionZoom")
         self.actionPan = QtWidgets.QAction(MainWindow)
-        icon19 = QtGui.QIcon()
-        icon19.addPixmap(QtGui.QPixmap(":/plot/pan"), QtGui.QIcon.Normal,
+        icon18 = QtGui.QIcon()
+        icon18.addPixmap(QtGui.QPixmap(":/plot/pan"), QtGui.QIcon.Normal,
                          QtGui.QIcon.On)
-        self.actionPan.setIcon(icon19)
+        self.actionPan.setIcon(icon18)
         self.actionPan.setObjectName("actionPan")
         self.actionConnectors = QtWidgets.QAction(MainWindow)
         self.actionConnectors.setCheckable(True)
         self.actionConnectors.setChecked(False)
-        icon20 = QtGui.QIcon()
-        icon20.addPixmap(QtGui.QPixmap(":/connectors"), QtGui.QIcon.Normal,
+        icon19 = QtGui.QIcon()
+        icon19.addPixmap(QtGui.QPixmap(":/connectors"), QtGui.QIcon.Normal,
                          QtGui.QIcon.Off)
-        self.actionConnectors.setIcon(icon20)
+        self.actionConnectors.setIcon(icon19)
         self.actionConnectors.setObjectName("actionConnectors")
         self.actionStyleOpen = QtWidgets.QAction(MainWindow)
         self.actionStyleOpen.setObjectName("actionStyleOpen")
@@ -380,33 +371,35 @@ class Ui_MainWindow(object):
         self.actionStyleDark = QtWidgets.QAction(MainWindow)
         self.actionStyleDark.setObjectName("actionStyleDark")
         self.actionScreenshot = QtWidgets.QAction(MainWindow)
-        icon21 = QtGui.QIcon()
-        icon21.addPixmap(QtGui.QPixmap(":/screenshot"), QtGui.QIcon.Normal,
+        icon20 = QtGui.QIcon()
+        icon20.addPixmap(QtGui.QPixmap(":/screenshot"), QtGui.QIcon.Normal,
                          QtGui.QIcon.Off)
-        self.actionScreenshot.setIcon(icon21)
+        self.actionScreenshot.setIcon(icon20)
         self.actionScreenshot.setObjectName("actionScreenshot")
         self.action_full_refresh = QtWidgets.QAction(MainWindow)
-        icon22 = QtGui.QIcon()
-        icon22.addPixmap(QtGui.QPixmap(":/force_refresh"), QtGui.QIcon.Normal,
+        icon21 = QtGui.QIcon()
+        icon21.addPixmap(QtGui.QPixmap(":/force_refresh"), QtGui.QIcon.Normal,
                          QtGui.QIcon.Off)
-        self.action_full_refresh.setIcon(icon22)
+        self.action_full_refresh.setIcon(icon21)
         self.action_full_refresh.setShortcutContext(
             QtCore.Qt.WidgetWithChildrenShortcut)
         self.action_full_refresh.setAutoRepeat(False)
         self.action_full_refresh.setPriority(QtWidgets.QAction.HighPriority)
         self.action_full_refresh.setObjectName("action_full_refresh")
         self.actionRebuild = QtWidgets.QAction(MainWindow)
-        icon23 = QtGui.QIcon()
-        icon23.addPixmap(QtGui.QPixmap(":/rebuild"), QtGui.QIcon.Normal,
+        icon22 = QtGui.QIcon()
+        icon22.addPixmap(QtGui.QPixmap(":/rebuild"), QtGui.QIcon.Normal,
                          QtGui.QIcon.Off)
-        self.actionRebuild.setIcon(icon23)
+        icon22.addPixmap(QtGui.QPixmap(":/rebuild"), QtGui.QIcon.Active,
+                         QtGui.QIcon.On)
+        self.actionRebuild.setIcon(icon22)
         self.actionRebuild.setPriority(QtWidgets.QAction.HighPriority)
         self.actionRebuild.setObjectName("actionRebuild")
         self.actionFull_Screen = QtWidgets.QAction(MainWindow)
-        icon24 = QtGui.QIcon()
-        icon24.addPixmap(QtGui.QPixmap(":/plot/----autozoom"),
+        icon23 = QtGui.QIcon()
+        icon23.addPixmap(QtGui.QPixmap(":/plot/----autozoom"),
                          QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.actionFull_Screen.setIcon(icon24)
+        self.actionFull_Screen.setIcon(icon23)
         self.actionFull_Screen.setObjectName("actionFull_Screen")
         self.actionMetal_Dark = QtWidgets.QAction(MainWindow)
         self.actionMetal_Dark.setObjectName("actionMetal_Dark")
@@ -429,44 +422,47 @@ class Ui_MainWindow(object):
         self.actionVariables = QtWidgets.QAction(MainWindow)
         self.actionVariables.setCheckable(True)
         self.actionVariables.setChecked(False)
-        icon25 = QtGui.QIcon()
-        icon25.addPixmap(QtGui.QPixmap(":/variables"), QtGui.QIcon.Normal,
+        icon24 = QtGui.QIcon()
+        icon24.addPixmap(QtGui.QPixmap(":/variables"), QtGui.QIcon.Normal,
                          QtGui.QIcon.Off)
-        self.actionVariables.setIcon(icon25)
+        self.actionVariables.setIcon(icon24)
         self.actionVariables.setObjectName("actionVariables")
         self.actionToggleDocks = QtWidgets.QAction(MainWindow)
         self.actionToggleDocks.setIcon(icon6)
         self.actionToggleDocks.setObjectName("actionToggleDocks")
-        self.actionNew_QComponent = QtWidgets.QAction(MainWindow)
-        icon26 = QtGui.QIcon()
-        icon26.addPixmap(QtGui.QPixmap(":/add"), QtGui.QIcon.Normal,
-                         QtGui.QIcon.Off)
-        self.actionNew_QComponent.setIcon(icon26)
-        self.actionNew_QComponent.setObjectName("actionNew_QComponent")
         self.actionGDS = QtWidgets.QAction(MainWindow)
-        icon27 = QtGui.QIcon()
-        icon27.addPixmap(QtGui.QPixmap(":/renderer/_imgs/renderers/GDS.png"),
+        icon25 = QtGui.QIcon()
+        icon25.addPixmap(QtGui.QPixmap(":/renderer/_imgs/renderers/GDS.png"),
                          QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.actionGDS.setIcon(icon27)
+        self.actionGDS.setIcon(icon25)
         self.actionGDS.setObjectName("actionGDS")
         self.actionHFSS = QtWidgets.QAction(MainWindow)
-        icon28 = QtGui.QIcon()
-        icon28.addPixmap(QtGui.QPixmap(":/renderer/_imgs/renderers/HFSS.png"),
+        icon26 = QtGui.QIcon()
+        icon26.addPixmap(QtGui.QPixmap(":/renderer/_imgs/renderers/HFSS.png"),
                          QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.actionHFSS.setIcon(icon28)
+        self.actionHFSS.setIcon(icon26)
         self.actionHFSS.setObjectName("actionHFSS")
         self.actionQ3D = QtWidgets.QAction(MainWindow)
-        icon29 = QtGui.QIcon()
-        icon29.addPixmap(QtGui.QPixmap(":/renderer/_imgs/renderers/Q3D.png"),
+        icon27 = QtGui.QIcon()
+        icon27.addPixmap(QtGui.QPixmap(":/renderer/_imgs/renderers/Q3D.png"),
                          QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.actionQ3D.setIcon(icon29)
+        self.actionQ3D.setIcon(icon27)
         self.actionQ3D.setObjectName("actionQ3D")
         self.actionBuildHistory = QtWidgets.QAction(MainWindow)
-        icon30 = QtGui.QIcon()
-        icon30.addPixmap(QtGui.QPixmap(":/build_history"), QtGui.QIcon.Normal,
+        icon28 = QtGui.QIcon()
+        icon28.addPixmap(QtGui.QPixmap(":/build_history"), QtGui.QIcon.Normal,
                          QtGui.QIcon.Off)
-        self.actionBuildHistory.setIcon(icon30)
+        self.actionBuildHistory.setIcon(icon28)
         self.actionBuildHistory.setObjectName("actionBuildHistory")
+        self.actionDeveloperMode = QtWidgets.QAction(MainWindow)
+        self.actionDeveloperMode.setCheckable(True)
+        icon29 = QtGui.QIcon()
+        icon29.addPixmap(QtGui.QPixmap(":/_imgs/lightbulb.png"),
+                         QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon29.addPixmap(QtGui.QPixmap(":/_imgs/support.png"),
+                         QtGui.QIcon.Normal, QtGui.QIcon.On)
+        self.actionDeveloperMode.setIcon(icon29)
+        self.actionDeveloperMode.setObjectName("actionDeveloperMode")
         self.menuDesign.addSeparator()
         self.menuDesign.addAction(self.actionLabelDesign)
         self.menuDesign.addAction(self.actionLoad)
@@ -482,7 +478,6 @@ class Ui_MainWindow(object):
         self.menuStylesheet.addAction(self.actionStyleDefault)
         self.menuStylesheet.addAction(self.actionStyleOpen)
         self.menuView.addAction(self.actionDesign)
-        self.menuView.addAction(self.actionComponent)
         self.menuView.addAction(self.actionElements)
         self.menuView.addAction(self.actionConnectors)
         self.menuView.addAction(self.actionLog)
@@ -512,12 +507,10 @@ class Ui_MainWindow(object):
         self.toolBarDesign.addAction(self.action_full_refresh)
         self.toolBarDesign.addAction(self.actionRebuild)
         self.toolBarDesign.addAction(self.actionBuildHistory)
-        self.toolBarDesign.addAction(self.actionNew_QComponent)
+        self.toolBarDesign.addAction(self.actionDeveloperMode)
         self.toolBarDesign.addSeparator()
         self.toolBarView.addAction(self.actionViewDummyLabel)
         self.toolBarView.addAction(self.actionDesign)
-        self.toolBarView.addAction(self.actionComponent)
-        self.toolBarView.addAction(self.actionNewComponent)
         self.toolBarView.addAction(self.actionVariables)
         self.toolBarView.addSeparator()
         self.toolBarView.addAction(self.actionConnectors)
@@ -570,18 +563,12 @@ class Ui_MainWindow(object):
         QtCore.QObject.connect(self.actionDesign,
                                QtCore.SIGNAL("triggered(bool)"),
                                self.dockDesign.show)
-        QtCore.QObject.connect(self.actionComponent,
-                               QtCore.SIGNAL("triggered()"),
-                               self.dockComponent.show)
         QtCore.QObject.connect(self.dockConnectors,
                                QtCore.SIGNAL("visibilityChanged(bool)"),
                                self.actionConnectors.setChecked)
         QtCore.QObject.connect(self.dockLog,
                                QtCore.SIGNAL("visibilityChanged(bool)"),
                                self.actionLog.setChecked)
-        QtCore.QObject.connect(self.dockComponent,
-                               QtCore.SIGNAL("visibilityChanged(bool)"),
-                               self.actionComponent.setChecked)
         QtCore.QObject.connect(self.dockLibrary,
                                QtCore.SIGNAL("visibilityChanged(bool)"),
                                self.actionNewComponent.setChecked)
@@ -601,9 +588,6 @@ class Ui_MainWindow(object):
         QtCore.QObject.connect(self.actionNewComponent,
                                QtCore.SIGNAL("triggered()"),
                                self.dockLibrary.raise_)
-        QtCore.QObject.connect(self.actionComponent,
-                               QtCore.SIGNAL("triggered()"),
-                               self.dockComponent.raise_)
         QtCore.QObject.connect(self.actionElements,
                                QtCore.SIGNAL("triggered()"),
                                self.tabWidget.setFocus)
@@ -629,15 +613,15 @@ class Ui_MainWindow(object):
         QtCore.QObject.connect(self.actionBuildHistory,
                                QtCore.SIGNAL("triggered()"),
                                MainWindow.create_build_log_window)
-        QtCore.QObject.connect(self.actionNew_QComponent,
-                               QtCore.SIGNAL("triggered()"),
-                               MainWindow.new_qcomponent)
         QtCore.QObject.connect(self.actionGDS, QtCore.SIGNAL("triggered()"),
                                MainWindow.show_renderer_gds)
         QtCore.QObject.connect(self.actionHFSS, QtCore.SIGNAL("triggered()"),
                                MainWindow.show_renderer_hfss)
         QtCore.QObject.connect(self.actionQ3D, QtCore.SIGNAL("triggered()"),
                                MainWindow.show_renderer_q3d)
+        QtCore.QObject.connect(self.actionDeveloperMode,
+                               QtCore.SIGNAL("toggled(bool)"),
+                               MainWindow.activate_developer_mode)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -846,19 +830,6 @@ class Ui_MainWindow(object):
                 -1))
         self.actionDesign.setShortcut(
             QtWidgets.QApplication.translate("MainWindow", "Ctrl+D", None, -1))
-        self.actionComponent.setText(
-            QtWidgets.QApplication.translate("MainWindow", "Edit component",
-                                             None, -1))
-        self.actionComponent.setToolTip(
-            QtWidgets.QApplication.translate(
-                "MainWindow", "Edit a component of the design (show/hide)",
-                None, -1))
-        self.actionComponent.setStatusTip(
-            QtWidgets.QApplication.translate("MainWindow",
-                                             "Edit a design component", None,
-                                             -1))
-        self.actionComponent.setShortcut(
-            QtWidgets.QApplication.translate("MainWindow", "Ctrl+E", None, -1))
         self.actionElements.setText(
             QtWidgets.QApplication.translate("MainWindow", "Elements", None,
                                              -1))
@@ -1028,16 +999,6 @@ class Ui_MainWindow(object):
         self.actionToggleDocks.setShortcut(
             QtWidgets.QApplication.translate("MainWindow", "Meta+F, Ctrl+F",
                                              None, -1))
-        self.actionNew_QComponent.setText(
-            QtWidgets.QApplication.translate("MainWindow", "New QComponent",
-                                             None, -1))
-        self.actionNew_QComponent.setToolTip(
-            QtWidgets.QApplication.translate("MainWindow",
-                                             "Create a new QComponent file",
-                                             None, -1))
-        self.actionNew_QComponent.setShortcut(
-            QtWidgets.QApplication.translate("MainWindow", "Ctrl+N, Meta+N",
-                                             None, -1))
         self.actionGDS.setText(
             QtWidgets.QApplication.translate("MainWindow", "GDS", None, -1))
         self.actionGDS.setToolTip(
@@ -1056,8 +1017,14 @@ class Ui_MainWindow(object):
                 "MainWindow", "See the build history of your design", None, -1))
         self.actionBuildHistory.setShortcut(
             QtWidgets.QApplication.translate("MainWindow", "Ctrl+B", None, -1))
+        self.actionDeveloperMode.setText(
+            QtWidgets.QApplication.translate("MainWindow", "DeveloperMode",
+                                             None, -1))
+        self.actionDeveloperMode.setToolTip(
+            QtWidgets.QApplication.translate("MainWindow", "clickme", None, -1))
 
 
-from .widgets.all_components.table_view_all_components import QTableView_AllComponents
+from .widgets.qlibrary_display.tree_view_qlibrary import TreeViewQLibrary
 from .widgets.log_widget.log_metal import QTextEditLogger
+from .widgets.all_components.table_view_all_components import QTableView_AllComponents
 from . import main_window_rc_rc

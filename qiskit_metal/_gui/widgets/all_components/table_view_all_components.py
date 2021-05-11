@@ -31,8 +31,7 @@ if TYPE_CHECKING:
 
 
 class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
-    """
-    Design components.
+    """Design components.
 
     The class extends the `QTableView` and `QWidget_PlaceholderText` classes.
 
@@ -62,7 +61,7 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         QTimer.singleShot(100, self.style2)
 
     def style2(self):
-        """Style the widget"""
+        """Style the widget."""
         # Do in the ui file
         self.horizontalHeader().hide()
         self.verticalHeader().show()
@@ -75,24 +74,23 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
 
     @property
     def design(self):
-        """Returns the design"""
+        """Returns the design."""
         return self.model().design
 
     @property
     def logger(self):
-        """Returns the logger"""
+        """Returns the logger."""
         return self.model().logger
 
     @property
     def gui(self) -> 'MetalGUI':
-        """Returns the GUI"""
+        """Returns the GUI."""
         return self.model().gui
 
     # @slot_catch_error
     def contextMenuEvent(self, event: QContextMenuEvent):
-        """
-        This event handler, for event event, can be reimplemented
-        in a subclass to receive widget context menu events.
+        """This event handler, for event event, can be reimplemented in a
+        subclass to receive widget context menu events.
 
         The handler is called when the widget's contextMenuPolicy
         is Qt::DefaultContextMenu.
@@ -116,7 +114,7 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         self.menu._action = self.menu.exec_(self.mapToGlobal(event.pos()))
 
     def get_name_from_event(self, event):
-        """Get the event name
+        """Get the event name.
 
         Args:
             event (QContextMenuEvent): The event
@@ -179,8 +177,8 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
                 self.design.rename_component(comp_id, text)
 
     def viewClicked(self, index: QModelIndex):
-        """
-        Select a component and set it in the compoient widget when you left click.
+        """Select a component and set it in the compoient widget when you left
+        click.
 
         In the init, we had to connect with self.clicked.connect(self.viewClicked)
 
@@ -222,7 +220,8 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         # self.logger.info(f'Double clicked component {name}')
 
     def rows_to_names(self, rows: List[int]) -> List[str]:
-        """Based on user highlighting  rows of components in GUI, return the name of components.
+        """Based on user highlighting  rows of components in GUI, return the
+        name of components.
 
         Args:
             rows (List[int]): User highlighted rows.
@@ -238,8 +237,7 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         return selected_names
 
     def selection_changed(self, *args):
-        """Update by highlighting, the rows which the user selected.
-        """
+        """Update by highlighting, the rows which the user selected."""
         rows = set([idx.row() for idx in self.selectedIndexes()])
         selected_names = self.rows_to_names(rows)
 

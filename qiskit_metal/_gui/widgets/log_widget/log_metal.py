@@ -11,8 +11,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""
-Logging widget
+"""Logging widget.
 
 Credits, based on:
     https://stackoverflow.com/questions/28655198/best-way-to-display-logs-in-pyqt
@@ -39,7 +38,7 @@ __all__ = ['QTextEditLogger', 'LogHandler_for_QTextLog']
 
 
 class QTextEditLogger(QTextEdit):
-    """A text edit logger class
+    """A text edit logger class.
 
     This class extends the `QTextEdit` class
     """
@@ -47,10 +46,10 @@ class QTextEditLogger(QTextEdit):
     _logo = 'metal_logo.png'
 
     def __init__(self, img_path='/', dock_window: QDockWidget = None):
-        """
-        Widget to handle logging. Based on QTextEdit, an advanced WYSIWYG viewer/editor
-        supporting rich text formatting using HTML-style tags. It is optimized to handle
-        large documents and to respond quickly to user input.
+        """Widget to handle logging. Based on QTextEdit, an advanced WYSIWYG
+        viewer/editor supporting rich text formatting using HTML-style tags. It
+        is optimized to handle large documents and to respond quickly to user
+        input.
 
         Get as:
             gui.ui.log_text
@@ -136,7 +135,7 @@ class QTextEditLogger(QTextEdit):
         ###################
         # Filter level actions
         def make_trg(lvl):
-            """Make a trg
+            """Make a trg.
 
             Args:
                 lvl (logging.level): The level of logging, eg.., logging.ERROR
@@ -204,8 +203,7 @@ class QTextEditLogger(QTextEdit):
         self.log_message(text, format_as_html=2)
 
     def print_all_tips(self):
-        """Prints all available tips in the log window.
-        """
+        """Prints all available tips in the log window."""
         for tip in config.GUI_CONFIG['tips']:
             self.log_message(
                 f'''<br><span class="INFO">{' '*self.timestamp_len} \u2022 {tip} </span>'''
@@ -223,7 +221,7 @@ class QTextEditLogger(QTextEdit):
             handler.setLevel(level)
 
     def set_window_title_level(self, level: int):
-        """Set the window title level
+        """Set the window title level.
 
         Args:
             level (int): the level
@@ -238,8 +236,7 @@ class QTextEditLogger(QTextEdit):
         return self._level_name
 
     def add_logger(self, name: str, handler: logging.Handler):
-        """
-        Adds a logger to the widget.
+        """Adds a logger to the widget.
 
             - adds `true bool`   to self.tracked_loggers for on/off to show
             - adds `the handler` in self.handlers
@@ -266,7 +263,7 @@ class QTextEditLogger(QTextEdit):
         func_name = f'toggle_{clean_name(name)}'
 
         def toggle_show_log(self2, val: bool):
-            """Toggle the value of the
+            """Toggle the value of the.
 
             Arguments:
                 self2 (QTextEdit): self
@@ -310,9 +307,8 @@ class QTextEditLogger(QTextEdit):
         return res
 
     def show_all_messages(self):
-        """
-        Clear and reprint all log lines, thus refreshing toggles for timestamp, etc.
-        """
+        """Clear and reprint all log lines, thus refreshing toggles for
+        timestamp, etc."""
         self.clear()
         for name, record in self.logged_lines:
             if name in self.get_all_checked():
@@ -368,17 +364,15 @@ class QTextEditLogger(QTextEdit):
         self.ensureCursorVisible()
 
     def remove_handlers(self, logger):
-        """
-        Call on clsoe window to remove handlers from the logger.
-        """
+        """Call on clsoe window to remove handlers from the logger."""
         for name, handler in self.handlers.items():
             if handler in logger.handlers:
                 logger.handlers.remove(handler)
 
 
 class LogHandler_for_QTextLog(logging.Handler):
-    """Class to handle GUI logging.
-    Handler instances dispatch logging events to specific destinations.
+    """Class to handle GUI logging. Handler instances dispatch logging events
+    to specific destinations.
 
     For formatting:
         https://docs.python.org/3/library/logging.html#logrecord-attributes
@@ -422,10 +416,10 @@ class LogHandler_for_QTextLog(logging.Handler):
         self._logger.addHandler(self)  # ADD HANDLER!
 
     def emit(self, record):
-        """
-        Do whatever it takes to actually log the specified logging record.
-        Converts the characters '&', '<' and '>' in string s to HTML-safe sequences.
-        Used to display text that might contain such characters in HTML.
+        """Do whatever it takes to actually log the specified logging record.
+        Converts the characters '&', '<' and '>' in string s to HTML-safe
+        sequences. Used to display text that might contain such characters in
+        HTML.
 
         Arguments:
             record (LogRecord): The log recorder

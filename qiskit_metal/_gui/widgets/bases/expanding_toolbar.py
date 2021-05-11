@@ -19,8 +19,7 @@ import time
 
 
 class QToolBarExpanding(QToolBar):
-    """
-    `QToolBarExpanding` class extends the `QToolBar` class.
+    """`QToolBarExpanding` class extends the `QToolBar` class.
 
     Example:
         ```toolbar = gui.ui.toolBarView```
@@ -30,7 +29,7 @@ class QToolBarExpanding(QToolBar):
     """
 
     def expand_me(self):
-        """Expand the toolbar"""
+        """Expand the toolbar."""
         if self.orientation() == Qt.Vertical:
             tool_style = Qt.ToolButtonTextBesideIcon
             align = Qt.AlignLeft | Qt.AlignVCenter
@@ -51,12 +50,13 @@ class QToolBarExpanding(QToolBar):
             # https://doc.qt.io/qt-5/qlayoutitem.html#setAlignment
 
     def contract_me(self):
-        """Contract the toolbar"""
+        """Contract the toolbar."""
         self.setToolButtonStyle(Qt.ToolButtonIconOnly)
 
     def enterEvent(self, evt: QtCore.QEvent) -> None:
-        """enterEvent() is called when the mouse enters the widget's screen space.
-         (This excludes screen space owned by any of the widget's children.)
+        """enterEvent() is called when the mouse enters the widget's screen
+        space. (This excludes screen space owned by any of the widget's
+        children.)
 
         Arguments:
             evt (QtCore.QEvent): QtCore event
@@ -68,8 +68,9 @@ class QToolBarExpanding(QToolBar):
         super().enterEvent(evt)
 
     def leaveEvent(self, evt: QtCore.QEvent) -> None:
-        """leaveEvent() is called when the mouse leaves the widget's screen space.
-        If the mouse enters a child widget it will not cause a leaveEvent().
+        """leaveEvent() is called when the mouse leaves the widget's screen
+        space. If the mouse enters a child widget it will not cause a
+        leaveEvent().
 
         Arguments:
             evt (QtCore.QEvent): QtCore event

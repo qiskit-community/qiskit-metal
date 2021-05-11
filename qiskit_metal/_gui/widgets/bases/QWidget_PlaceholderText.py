@@ -11,7 +11,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""Ask Zlatko for help on this file"""
+
 from typing import TYPE_CHECKING
 
 from PySide2 import QtCore, QtWidgets
@@ -22,8 +22,7 @@ from PySide2.QtWidgets import (QInputDialog, QLineEdit, QMenu, QMessageBox,
 
 
 class QWidget_PlaceholderText(QWidget):
-    """
-    QTableView or Tree with palceholder text if empty.
+    """QTableView or Tree with palceholder text if empty.
 
     This class extends the `QWidget` class.
     """
@@ -40,7 +39,7 @@ class QWidget_PlaceholderText(QWidget):
         self.setup_placeholder_label()
 
     def setup_placeholder_label(self):
-        "QComponents will be displayed here when you create them."
+        """QComponents will be displayed here when you create them."""
         self.update_placeholder_text()
 
         if not self.layout():
@@ -50,7 +49,7 @@ class QWidget_PlaceholderText(QWidget):
         self.layout().addWidget(self._placeholder_label)
 
     def update_placeholder_text(self, text=None):
-        """Update the placeholder text to the given string
+        """Update the placeholder text to the given string.
 
         Args:
             text (str): New placeholder text..  Defaults to None.
@@ -82,9 +81,9 @@ class QWidget_PlaceholderText(QWidget):
         label.setPalette(palette)
 
     def show_placeholder_text(self):
-        """Show the placeholder text"""
+        """Show the placeholder text."""
         self._placeholder_label.show()
 
     def hide_placeholder_text(self):
-        """Hide the placeholder text"""
+        """Hide the placeholder text."""
         self._placeholder_label.hide()

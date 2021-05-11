@@ -12,15 +12,14 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-#pylint: disable-msg=unnecessary-pass
-#pylint: disable-msg=protected-access
-#pylint: disable-msg=pointless-statement
-#pylint: disable-msg=too-many-public-methods
-#pylint: disable-msg=broad-except
-#pylint: disable-msg=invalid-name
-"""
-Qiskit Metal unit tests analyses functionality.
-"""
+# pylint: disable-msg=unnecessary-pass
+# pylint: disable-msg=protected-access
+# pylint: disable-msg=pointless-statement
+# pylint: disable-msg=too-many-public-methods
+# pylint: disable-msg=broad-except
+# pylint: disable-msg=invalid-name
+# pylint: disable-msg=import-error
+"""Qiskit Metal unit tests analyses functionality."""
 
 import unittest
 import pandas as pd
@@ -29,37 +28,28 @@ from qiskit_metal.designs.design_base import QDesign
 from qiskit_metal.designs.design_planar import DesignPlanar
 from qiskit_metal.designs.interface_components import Components
 from qiskit_metal.designs.net_info import QNet
-from qiskit_metal.qlibrary.base.base import QComponent
+from qiskit_metal.qlibrary.core import QComponent
 from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
 from qiskit_metal.tests.assertions import AssertionsMixin
 
-#pylint: disable-msg=line-too-long
-from qiskit_metal.qlibrary.interconnects.resonator_rectangle_spiral import ResonatorRectangleSpiral
+from qiskit_metal.qlibrary.lumped.resonator_coil_rect import ResonatorCoilRect
 
 
 class TestDesign(unittest.TestCase, AssertionsMixin):
-    """
-    Unit test class.
-    """
+    """Unit test class."""
 
     def setUp(self):
-        """
-        Setup unit test.
-        """
+        """Setup unit test."""
         pass
 
     def tearDown(self):
-        """
-        Tie any loose ends.
-        """
+        """Tie any loose ends."""
         pass
 
     def test_design_instantiate_qdesign(self):
-        """
-        Test the instantiation of QDesign.
-        """
+        """Test the instantiation of QDesign."""
         try:
-            QDesign
+            QDesign()
         except Exception:
             self.fail("QDesign failed")
 
@@ -74,11 +64,9 @@ class TestDesign(unittest.TestCase, AssertionsMixin):
             self.fail("QDesign(metadata={}, overwrite_enabled=True) failed")
 
     def test_design_instantiate_design_planar(self):
-        """
-        Test the instantiation of DesignPlanar.
-        """
+        """Test the instantiation of DesignPlanar."""
         try:
-            DesignPlanar
+            DesignPlanar()
         except Exception:
             self.fail("DesignPlanar failed")
 
@@ -94,9 +82,7 @@ class TestDesign(unittest.TestCase, AssertionsMixin):
                 "DesignPlanar(metadata={}, overwrite_enabled=True) failed")
 
     def test_design_instantiate_design_components(self):
-        """
-        Test the instantiation of Components.
-        """
+        """Test the instantiation of Components."""
         design = QDesign()
         try:
             Components(design)
@@ -104,18 +90,29 @@ class TestDesign(unittest.TestCase, AssertionsMixin):
             self.fail("Components(design) failed")
 
     def test_design_instantiate_qnet(self):
-        """
-        Test the instantiation of QNet.
-        """
+        """Test the instantiation of QNet."""
         try:
-            QNet
+            QNet()
         except Exception:
             self.fail("QNet failed")
 
+    def test_design_get_chip_layer(self):
+        """Test getting chip size in design_base.py."""
+        design = QDesign(metadata={})
+        self.assertEqual(design.get_chip_layer('main'), 0)
+
+    def test_design_rename_variable(self):
+        """Test rename_variable in QDesign class"""
+        design = QDesign(metadata={})
+        design.rename_variable('cpw_gap', 'new_name')
+        my_keys = design._variables.keys()
+
+        self.assertEqual(len(my_keys), 2)
+        self.assertTrue('cpw_width' in my_keys)
+        self.assertTrue('new_name' in my_keys)
+
     def test_design_update_metadata(self):
-        """
-        Test the update of metadata in design_base.py.
-        """
+        """Test the update of metadata in design_base.py."""
         design = DesignPlanar(metadata={})
         data = design.metadata
 
@@ -130,9 +127,7 @@ class TestDesign(unittest.TestCase, AssertionsMixin):
         self.assertEqual(data['new-key'], 'new-value')
 
     def test_design_get_chip_size(self):
-        """
-        Test getting chip size in design_base.py.
-        """
+        """Test getting chip size in design_base.py."""
         design = DesignPlanar(metadata={})
 
         main_expected = {
@@ -151,18 +146,14 @@ class TestDesign(unittest.TestCase, AssertionsMixin):
         self.assertEqual(design.get_chip_size('dead'), {})
 
     def test_design_get_chip_z(self):
-        """
-        Test getting chip z in design_base.py.
-        """
+        """Test getting chip z in design_base.py."""
         design = DesignPlanar(metadata={})
 
         actual = design.get_chip_z()
         self.assertEqual(actual, '0.0mm')
 
     def test_design_rename_variables(self):
-        """
-        Test variable renaming in design_base.py.
-        """
+        """Test variable renaming in design_base.py."""
         design = DesignPlanar(metadata={})
         design.rename_variable('cpw_gap', 'new-name')
 
@@ -173,9 +164,7 @@ class TestDesign(unittest.TestCase, AssertionsMixin):
         self.assertEqual('cpw_gap' in design.variables.keys(), False)
 
     def test_design_rename_component(self):
-        """
-        Test renaming component in design_base.py.
-        """
+        """Test renaming component in design_base.py."""
         design = DesignPlanar(metadata={})
         QComponent(design, 'my_name-1', make=False)
         QComponent(design, 'my_name-2', make=False)
@@ -187,19 +176,17 @@ class TestDesign(unittest.TestCase, AssertionsMixin):
         self.assertEqual('my_name-2' in design.name_to_id, True)
 
     def test_design_default_component_name(self):
-        """
-        Test automatic naming of components.
-        """
+        """Test automatic naming of components."""
         design = DesignPlanar(metadata={})
 
-        ResonatorRectangleSpiral(design, make=False)
+        ResonatorCoilRect(design, make=False)
         self.assertEqual('res_1' in design.components, True)
-        ResonatorRectangleSpiral(design, make=False)
+        ResonatorCoilRect(design, make=False)
         self.assertEqual('res_2' in design.components, True)
 
         # Manually add the next automatic name to check it doesn't get repeated
-        ResonatorRectangleSpiral(design, 'res_3', make=False)
-        ResonatorRectangleSpiral(design, make=False)
+        ResonatorCoilRect(design, 'res_3', make=False)
+        ResonatorCoilRect(design, make=False)
         self.assertEqual('res_3' in design.components, True)
         self.assertEqual('res_4' in design.components, True)
 
@@ -212,9 +199,7 @@ class TestDesign(unittest.TestCase, AssertionsMixin):
         self.assertEqual('QComponent_1' in design.components, True)
 
     def test_design_delete_component(self):
-        """
-        Test deleteing a component in design_base.py.
-        """
+        """Test deleteing a component in design_base.py."""
         design = DesignPlanar(metadata={})
         QComponent(design, 'my_name-1', make=False)
         QComponent(design, 'my_name-2', make=False)
@@ -224,9 +209,7 @@ class TestDesign(unittest.TestCase, AssertionsMixin):
         self.assertEqual('my_name-2' in design.name_to_id, True)
 
     def test_design_delete_all_components(self):
-        """
-        Test deleteing a component in design_base.py.
-        """
+        """Test deleteing a component in design_base.py."""
         design = DesignPlanar(metadata={})
         QComponent(design, 'my_name-1', make=False)
         QComponent(design, 'my_name-2', make=False)
@@ -236,9 +219,7 @@ class TestDesign(unittest.TestCase, AssertionsMixin):
         self.assertEqual('my_name-2' in design.name_to_id, False)
 
     def test_design_get_and_set_design_name(self):
-        """
-        Test getting the design name in design_base.py.
-        """
+        """Test getting the design name in design_base.py."""
         design = DesignPlanar(metadata={})
         self.assertEqual(design.get_design_name(), 'my_design')
 
@@ -246,16 +227,12 @@ class TestDesign(unittest.TestCase, AssertionsMixin):
         self.assertEqual(design.get_design_name(), 'new-name')
 
     def test_design_get_units(self):
-        """
-        Test get units in design_base.py.
-        """
+        """Test get units in design_base.py."""
         design = DesignPlanar(metadata={})
         self.assertEqual(design.get_units(), 'mm')
 
     def test_design_get_new_qcomponent_name_id(self):
-        """
-        Test _get_new_qcomponent_name_id in design_base.py
-        """
+        """Test _get_new_qcomponent_name_id in design_base.py."""
         design = DesignPlanar(metadata={})
         QComponent(design, make=False)
         QComponent(design, make=False)
@@ -264,9 +241,7 @@ class TestDesign(unittest.TestCase, AssertionsMixin):
         self.assertEqual(design._get_new_qcomponent_name_id('Not-there'), 1)
 
     def test_design_planar_get_x_y_for_chip(self):
-        """
-        Test get_x_y_for_chip in design_planar.py.
-        """
+        """Test get_x_y_for_chip in design_planar.py."""
         design = DesignPlanar(metadata={})
         QComponent(design, make=False)
         QComponent(design, make=False)
@@ -282,9 +257,7 @@ class TestDesign(unittest.TestCase, AssertionsMixin):
         self.assertEqual(expected[1], actual[1])
 
     def test_design_interface_components_get_list_ints(self):
-        """
-        Test geting the list ints in interface_components.py.
-        """
+        """Test geting the list ints in interface_components.py."""
         design = DesignPlanar(metadata={})
         QComponent(design, 'my_name-1', make=False)
         QComponent(design, 'my_name-2', make=False)
@@ -298,9 +271,7 @@ class TestDesign(unittest.TestCase, AssertionsMixin):
             [1, 2, 0])
 
     def test_design_interface_components_find_id(self):
-        """
-        Test finding the id from the name in interface_components.py.
-        """
+        """Test finding the id from the name in interface_components.py."""
         design = DesignPlanar(metadata={})
         QComponent(design, 'my_name-1', make=False)
         QComponent(design, 'my_name-2', make=False)
@@ -311,9 +282,7 @@ class TestDesign(unittest.TestCase, AssertionsMixin):
         self.assertEqual(components.find_id('my_name-3'), 0)
 
     def test_design_qnet_add_pins_to_table(self):
-        """
-        Test add_pins_to_table in net_info.py.
-        """
+        """Test add_pins_to_table in net_info.py."""
         design = DesignPlanar(metadata={})
         QComponent(design, 'my_name-1', make=False)
         QComponent(design, 'my_name-2', make=False)
@@ -337,9 +306,7 @@ class TestDesign(unittest.TestCase, AssertionsMixin):
                 self.assertEqual(df_expected[j][i], df[j][i])
 
     def test_design_qnet_delete_net_id(self):
-        """
-        Test delete a given net id in net_info.py.
-        """
+        """Test delete a given net id in net_info.py."""
         design = DesignPlanar(metadata={})
         QComponent(design, 'my_name-1', make=False)
         QComponent(design, 'my_name-2', make=False)
@@ -352,9 +319,7 @@ class TestDesign(unittest.TestCase, AssertionsMixin):
         self.assertEqual(df.empty, True)
 
     def test_design_qnet_delete_all_pins_for_component_id(self):
-        """
-        Test delete all pins for a given component id in net_info.py.
-        """
+        """Test delete all pins for a given component id in net_info.py."""
         design = DesignPlanar(metadata={})
         QComponent(design, 'my_name-1', make=False)
         QComponent(design, 'my_name-2', make=False)
@@ -381,9 +346,7 @@ class TestDesign(unittest.TestCase, AssertionsMixin):
                 self.assertEqual(df_expected[j][i], df[j][i])
 
     def test_design_qnet_get_components_and_pins_for_netid(self):
-        """
-        Test get_components_Sand_pins_for_netid in net_info.py.
-        """
+        """Test get_components_Sand_pins_for_netid in net_info.py."""
         design = DesignPlanar(metadata={})
         QComponent(design, 'my_name-1', make=False)
         QComponent(design, 'my_name-2', make=False)
@@ -423,9 +386,7 @@ class TestDesign(unittest.TestCase, AssertionsMixin):
                 self.assertEqual(df_expected_2[j][i], df[j][i])
 
     def test_design_copy_qcomponent(self):
-        """
-        Test the functionlaity of copy_qcomponent in design_base.py.
-        """
+        """Test the functionlaity of copy_qcomponent in design_base.py."""
         design = DesignPlanar()
         design.overwrite_enabled = True
         q_1 = TransmonPocket(design, 'Q1')
@@ -443,9 +404,8 @@ class TestDesign(unittest.TestCase, AssertionsMixin):
         self.assertEqual(q1_copy.options['pos_x'], '1.0mm')
 
     def test_design_copy_multiple_qcomponents(self):
-        """
-        Test the functionality of copy_multiple_qcomponents in design_base.py.
-        """
+        """Test the functionality of copy_multiple_qcomponents in
+        design_base.py."""
         design = DesignPlanar()
         design.overwrite_enabled = True
         q_1 = TransmonPocket(design, 'Q1')
@@ -487,9 +447,7 @@ class TestDesign(unittest.TestCase, AssertionsMixin):
         self.assertEqual(q3_copy.options['pos_y'], '-3.0mm')
 
     def test_design_connect_pins(self):
-        """
-        Test connect_pins functionality in design_base.py.
-        """
+        """Test connect_pins functionality in design_base.py."""
         design = DesignPlanar()
         design.overwrite_enabled = True
 
@@ -508,9 +466,7 @@ class TestDesign(unittest.TestCase, AssertionsMixin):
         self.assertEqual(pf['pin_name'][1], 'p2')
 
     def test_design_delete_all_pins(self):
-        """
-        Test delete_all_pins functionality in design_base.py.
-        """
+        """Test delete_all_pins functionality in design_base.py."""
         design = DesignPlanar()
         design.overwrite_enabled = True
 
@@ -526,9 +482,7 @@ class TestDesign(unittest.TestCase, AssertionsMixin):
         self.assertTrue(pf.empty)
 
     def test_design_all_component_names_id(self):
-        """
-        Test all_component_names_id functionality in design_base.py.
-        """
+        """Test all_component_names_id functionality in design_base.py."""
         design = DesignPlanar()
         design.overwrite_enabled = True
 
@@ -542,16 +496,14 @@ class TestDesign(unittest.TestCase, AssertionsMixin):
             self.assertEqual(expected[i], actual[i])
 
     def test_design_get_list_of_tables_in_metadata(self):
-        """
-        Tests the get_list_of_tables_in_metadata function in design_base.py by exeucting
-        get_table_values_form_renderers in a component.
-        """
+        """Tests the get_list_of_tables_in_metadata function in design_base.py
+        by exeucting get_table_values_form_renderers in a component."""
         design = DesignPlanar()
         q1 = TransmonPocket(design, 'Q1')
 
         result = q1._get_table_values_from_renderers(design)
 
-        self.assertEqual(len(result), 9)
+        self.assertEqual(len(result), 11)
         self.assertEqual(result['hfss_inductance'], '10nH')
         self.assertEqual(result['hfss_capacitance'], 0)
         self.assertEqual(result['hfss_resistance'], 0)
@@ -561,6 +513,8 @@ class TestDesign(unittest.TestCase, AssertionsMixin):
         self.assertEqual(result['q3d_resistance'], 0)
         self.assertAlmostEqual(result['q3d_mesh_kw_jj'], 7e-06, places=6)
         self.assertEqual(result['gds_cell_name'], 'my_other_junction')
+        self.assertEqual(result['hfss_wire_bonds'], False)
+        self.assertEqual(result['q3d_wire_bonds'], False)
 
 
 if __name__ == '__main__':

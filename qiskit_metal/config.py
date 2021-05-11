@@ -14,8 +14,9 @@
 
 # pylint: disable=invalid-name
 # pylint: disable=unused-import
-"""
-File contains some config definitions. Mostly internal.
+"""File contains some config definitions.
+
+Mostly internal.
 """
 
 from .toolbox_python.attr_dict import Dict
@@ -35,8 +36,8 @@ Define the renderes to load. Just provide the module names here.
 
 GUI_CONFIG = Dict(
     load_metal_modules=Dict(Qubits='qiskit_metal.qlibrary.qubits',
-                            Interconnects='qiskit_metal.qlibrary.interconnects',
-                            Connectors='qiskit_metal.qlibrary.connectors'),
+                            TLines='qiskit_metal.qlibrary.tlines',
+                            Terminations='qiskit_metal.qlibrary.terminations'),
     exclude_metal_classes=['Metal_Qubit'],
     tips=[
         'Right clicking the tree elements allows you to do neat things.',
@@ -119,8 +120,8 @@ def is_using_ipython():
 
 
 def is_building_docs():
-    """Checks for the existance of the .buildingdocs file which is only present when
-    building the docs.
+    """Checks for the existance of the .buildingdocs file which is only present
+    when building the docs.
 
     Returns:
         bool: True if .buildingdocs exists

@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file './plot_window_ui.ui',
 # licensing of './plot_window_ui.ui' applies.
 #
-# Created: Mon Mar 15 02:36:42 2021
+# Created: Fri May  7 19:27:13 2021
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -134,7 +134,7 @@ class Ui_MainWindowPlot(object):
         self.actionConnectors.setToolTip(
             QtWidgets.QApplication.translate(
                 "MainWindowPlot",
-                "Show connectors pins for selected qcomponents", None, -1))
+                "Show connector pins for selected qcomponents", None, -1))
         self.actionConnectors.setShortcut(
             QtWidgets.QApplication.translate("MainWindowPlot", "C", None, -1))
         self.actionCoords.setText(

@@ -15,9 +15,7 @@
 # pylint: disable-msg=unnecessary-pass
 # pylint: disable-msg=pointless-statement
 # pylint: disable-msg=broad-except
-"""
-Qiskit Metal unit tests components functionality.
-"""
+"""Qiskit Metal unit tests components functionality."""
 
 import unittest
 
@@ -26,26 +24,18 @@ from qiskit_metal._defaults import DefaultOptionsRenderer
 
 
 class TestDefautOptions(unittest.TestCase):
-    """
-    Unit test class
-    """
+    """Unit test class."""
 
     def setUp(self):
-        """
-        Setup unit test.
-        """
+        """Setup unit test."""
         pass
 
     def tearDown(self):
-        """
-        Tie any loose ends.
-        """
+        """Tie any loose ends."""
         pass
 
     def test_default_options_instantiation_default_metal_options(self):
-        """
-        Test instantiation of DefaultMetalOptions.
-        """
+        """Test instantiation of DefaultMetalOptions."""
         try:
             DefaultMetalOptions
         except Exception:
@@ -57,9 +47,7 @@ class TestDefautOptions(unittest.TestCase):
             self.fail("DefaultMetalOptions({}) failed")
 
     def test_default_options_instantiation_default_options_renderer(self):
-        """
-        Test instantiation of DefaultOptionsRenderer.
-        """
+        """Test instantiation of DefaultOptionsRenderer."""
         try:
             DefaultOptionsRenderer
         except Exception:
@@ -77,10 +65,60 @@ class TestDefautOptions(unittest.TestCase):
                 "DefaultOptionsRenderer(draw_substrate={}, bounding_box={}) failed"
             )
 
+    def test_default_metal_options_default_generic(self):
+        """Test the default_generic of DefaultMetalOptions class.
+        """
+        default_metal_options = DefaultMetalOptions()
+        options = default_metal_options.default_generic
+
+        self.assertEqual(len(options), 5)
+        self.assertEqual(options['units'], 'mm')
+        self.assertEqual(options['chip'], 'main')
+        self.assertEqual(options['PRECISION'], 9)
+
+        self.assertEqual(len(options['geometry']), 2)
+        self.assertEqual(options['geometry']['buffer_resolution'], 16)
+        self.assertEqual(options['geometry']['buffer_mitre_limit'], 5.0)
+
+        self.assertEqual(len(options['qdesign']), 1)
+        self.assertEqual(len(options['qdesign']['variables']), 2)
+        self.assertEqual(options['qdesign']['variables']['cpw_width'], '10 um')
+        self.assertEqual(options['qdesign']['variables']['cpw_gap'], '6 um')
+
+    def test_default_options_renderer_default_draw_substrate(self):
+        """Test the default_draw_substrate of DefaultOptionsRenderer"""
+        default_options_renderer = DefaultOptionsRenderer()
+        options = default_options_renderer.default_draw_substrate
+
+        self.assertEqual(len(options), 1)
+        self.assertEqual(len(options), 1)
+        self.assertEqual(len(options['draw_substrate']), 9)
+
+        self.assertEqual(options['draw_substrate']['pos_xy'], "['0um', '0um']")
+        self.assertEqual(options['draw_substrate']['size'],
+                         "['8.5mm', '6.5mm', '-0.750mm']")
+        self.assertEqual(options['draw_substrate']['elevation'], 0)
+        self.assertEqual(options['draw_substrate']['ground_plane'],
+                         'ground_plane')
+        self.assertEqual(options['draw_substrate']['substrate'], 'substrate')
+        self.assertEqual(options['draw_substrate']['material'], 'silicon')
+        self.assertEqual(options['draw_substrate']['transparency_plane'], 0)
+        self.assertEqual(options['draw_substrate']['transparency_substrate'], 0)
+        self.assertEqual(options['draw_substrate']['wireframe_substrate'],
+                         False)
+
+    def test_default_options_renderer_default_bounding_box(self):
+        """Test the default_bounding_box of DefaultOptionsRenderer"""
+        default_options_renderer = DefaultOptionsRenderer()
+        options = default_options_renderer.default_bounding_box
+
+        self.assertEqual(len(options), 1)
+        self.assertEqual(options['draw_bounding_box'],
+                         [[0, 0], [0, 0], ['0.890mm', '0.900mm']])
+
     def test_default_options_create(self):
-        """
-        Test the functionality of initializing default_options in _defaults.py.
-        """
+        """Test the functionality of initializing default_options in
+        _defaults.py."""
         # Setup expected test results
         _options = DefaultMetalOptions()
 
@@ -103,9 +141,8 @@ class TestDefautOptions(unittest.TestCase):
         self.assertEqual(5.0, _geometry['buffer_mitre_limit'])
 
     def test_default_options_update(self):
-        """
-        Test the functionality of updating default_options in _defaults.py.
-        """
+        """Test the functionality of updating default_options in
+        _defaults.py."""
         # Setup expected test results
         _options = DefaultMetalOptions()
 
@@ -125,9 +162,8 @@ class TestDefautOptions(unittest.TestCase):
         self.assertEqual('miles', _options['units'])
 
     def test_default_options_renderer_create(self):
-        """
-        Test the functionality of initializing default_options_renderer in _defaults.py.
-        """
+        """Test the functionality of initializing default_options_renderer in
+        _defaults.py."""
         # Setup expected test results
         _options = DefaultOptionsRenderer()
 
@@ -154,9 +190,8 @@ class TestDefautOptions(unittest.TestCase):
         self.assertEqual(_draw_bounding_box[2], ['0.890mm', '0.900mm'])
 
     def test_default_options_renderer_update(self):
-        """
-        Test the functionality of updating default_options_renderer in _defaults.py.
-        """
+        """Test the functionality of updating default_options_renderer in
+        _defaults.py."""
         # Setup expected test results
         _options = DefaultOptionsRenderer()
 

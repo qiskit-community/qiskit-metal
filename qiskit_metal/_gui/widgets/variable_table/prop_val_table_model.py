@@ -17,12 +17,11 @@ from PySide2.QtCore import QAbstractTableModel, QModelIndex, Qt
 from PySide2.QtGui import QFont
 
 from .... import config
-from .add_delete_table import Ui_MainWindow
+from .add_delete_table_ui import Ui_MainWindow
 
 
 class PropValTable(QAbstractTableModel):
-    """
-    Design variables table model that shows variable name and dimension,
+    """Design variables table model that shows variable name and dimension,
     both with and without units.
 
     Thie class extends the `QAbstractTableModel` class.
@@ -70,10 +69,8 @@ class PropValTable(QAbstractTableModel):
             return self._design.variables
 
     def _start_timer(self):
-        """
-        Start and continuously refresh timer in background to keep
-        the total number of rows up to date.
-        """
+        """Start and continuously refresh timer in background to keep the total
+        number of rows up to date."""
         self.timer = QtCore.QTimer(self)
         self.timer.start(self.__refreshtime)
         self.timer.timeout.connect(self.auto_refresh)
@@ -113,8 +110,7 @@ class PropValTable(QAbstractTableModel):
         return 3
 
     def data(self, index: QModelIndex, role: Qt.ItemDataRole = Qt.DisplayRole):
-        """
-        Return data for corresponding index and role.
+        """Return data for corresponding index and role.
 
         Args:
             index (QModelIndex): The index of the data
@@ -150,9 +146,8 @@ class PropValTable(QAbstractTableModel):
                 index: QModelIndex,
                 value: str,
                 role: Qt.ItemDataRole = Qt.EditRole) -> bool:
-        """
-        Modify either key or value (Property or Value) of dictionary depending on what
-        the user selected manually on the table.
+        """Modify either key or value (Property or Value) of dictionary
+        depending on what the user selected manually on the table.
 
         Args:
             index (QModelIndex): The index
@@ -186,8 +181,7 @@ class PropValTable(QAbstractTableModel):
                    section: int,
                    orientation: Qt.Orientation,
                    role: Qt.ItemDataRole = Qt.DisplayRole) -> str:
-        """
-        Get the headers to be displayed.
+        """Get the headers to be displayed.
 
         Args:
             secion (int): Section number.
@@ -212,8 +206,7 @@ class PropValTable(QAbstractTableModel):
             return str(section + 1)
 
     def removeRows(self, row: int, count: int = 1, parent=QModelIndex()):
-        """
-        Delete highlighted rows.
+        """Delete highlighted rows.
 
         Args:
             row (int): First row to delete.
@@ -227,8 +220,7 @@ class PropValTable(QAbstractTableModel):
         self.endRemoveRows()
 
     def flags(self, index: QModelIndex) -> Qt.ItemFlags:
-        """
-        Determine how user may interact with each cell in the table.
+        """Determine how user may interact with each cell in the table.
 
         Args:
             index (QModelIndex): The index
@@ -241,7 +233,7 @@ class PropValTable(QAbstractTableModel):
         return Qt.ItemIsSelectable | Qt.ItemIsEnabled
 
     def add_row(self, key: str, val: str):
-        """Add row with the given key/value
+        """Add row with the given key/value.
 
         Args:
             key (str): The key
