@@ -108,7 +108,7 @@ class EigenmodeAndEPR(QAnalysis, NeedsRenderer):
             ignored_jjs: Union[list, None] = None,
             box_plus_buffer: bool = True) -> (str, str):
         """Executes the entire eigenmode analysis and convergence result export.
-        First it makes sure the tool is running. Then it does the necessary to render the design.
+        First it makes sure the tool is running. Then it does what's necessary to render the design.
         Finally it runs the setup defined in this class. So you need to modify the setup ahead.
         You can modify the setup by using the methods defined in the QAnalysis super-class.
         After this method concludes you can inspect the output using this class properties.

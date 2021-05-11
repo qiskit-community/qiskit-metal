@@ -210,7 +210,7 @@ class QAnsysRenderer(QRendererAnalysis):
         self.render_everything = True
 
         self._pinfo = None
-        # Conected to Ansys variables
+        # Connected to Ansys variables
         self._rapp = None
         self._rdesktop = None
 
@@ -1415,7 +1415,7 @@ class QAnsysRenderer(QRendererAnalysis):
                 oEditor.Delete(["NAME:Selections", "Selections:=", select_all])
 
     def set_variables(self, variables: Dict):
-        """Fixes the junctionction properties before setup. This is necessary ecasue the eigenmode
+        """Fixes the junction properties before setup. This is necessary becasue the eigenmode
         analysis only considers the junction as a lumped CL element.
 
         Args:
@@ -1432,9 +1432,9 @@ class QAnsysRenderer(QRendererAnalysis):
     #  Thus needs to remove the dependency from pinfo, which is Ansys-specific.
 
     def epr_start(self, junctions: dict = None, dissipatives: dict = None):
-        """Use to initialize the epr analysis package by first identify which are the junctions,
+        """Use to initialize the epr analysis package by first identifying which are the junctions,
         their electrical properties and their reference plane; then initialize the
-        DistrobutedAnalysis package, which can execute microwave analysis on eigenmode results.
+        DistributedAnalysis package, which can execute microwave analysis on eigenmode results.
 
         Args:
             junctions (dict, optional): Each element of this dictionary describes one junction.
@@ -1459,7 +1459,7 @@ class QAnsysRenderer(QRendererAnalysis):
                               junctions: dict = None,
                               dissipatives: dict = None):
         """Computes the energy stored in the system
-        pinfo must have a valid list of junctions and dissipative to compute the energy stored
+        pinfo must have a valid list of junctions and dissipatives to compute the energy stored
         in the system. So please provide them here, or using epr_start()
 
         Args:
@@ -1490,7 +1490,7 @@ class QAnsysRenderer(QRendererAnalysis):
                          junctions: dict = None,
                          dissipatives: dict = None):
         """Executes the EPR analysis
-        pinfo must have a valid list of junctions and dissipative to compute the energy stored
+        pinfo must have a valid list of junctions and dissipatives to compute the energy stored
         in the system. So please provide them here, or using epr_start()
 
         Args:

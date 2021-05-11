@@ -43,7 +43,7 @@ class QRendererAnalysis(QRenderer):
     def initialized(self):
         """Abstract method. Must be implemented by the subclass.
         Is renderer ready to be used?
-        Implementation must return boolean True if succesful. False otherwise.
+        Implementation must return boolean True if successful. False otherwise.
         """
         return True
 

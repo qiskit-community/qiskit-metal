@@ -19,7 +19,7 @@ from ... import Dict
 
 
 class QAnalysis(ABC):
-    """Methods and varaibles that every analysis class should inherit
+    """Methods and variables that every analysis class should inherit
     Has default_setup = Dict() defined. Requires to define default_setup in all inheriting classes
     """
     default_setup = Dict(
@@ -39,7 +39,7 @@ class QAnalysis(ABC):
 
     @property
     def setup(self):
-        """Getter: Dictinary intended to be used to modify the analysis behavior
+        """Getter: Dictionary intended to be used to modify the analysis behavior
 
         Returns:
             Dict: current setup
@@ -48,7 +48,7 @@ class QAnalysis(ABC):
 
     @setup.setter
     def setup(self, setup_dict):
-        """Setter: Dictinary intended to be used to modify the analysis behavior. You can only
+        """Setter: Dictionary intended to be used to modify the analysis behavior. You can only
         pass to this method those settings that are already defined in the default_setup list.
 
         Args:
