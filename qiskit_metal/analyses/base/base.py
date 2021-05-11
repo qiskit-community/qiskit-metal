@@ -28,7 +28,7 @@ class QAnalysis(ABC):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self._setup = None
+        self._setup = {}
 
     @abstractmethod
     def run(self):
@@ -64,13 +64,12 @@ class QAnalysis(ABC):
         """Intended to modify multiple setup settings at once, while retaining previous settings.
         If you intend to change a single setting, the better way is: `setup.setting1 = value`.
         """
-        if not self._setup:
-            self.setup = kwargs
-        else:
-            for k,v in kwargs.items():
-                if k in self._setup:
-                    self._setup[k]=v
-            unsupported_keys = set(kwargs.keys()) - set(self._setup.keys())
-            if unsupported_keys:
-                print (f'the parameters {unsupported_keys} are unsupported, so they have been ignored')
+        unsupported_keys = list()
+        for k,v in kwargs.items():
+            if k in self._setup:
+                self._setup[k]=v
+            else:
+                unsupported_keys.append(k)
+        if unsupported_keys:
+            print (f'the parameters {unsupported_keys} are unsupported, so they have been ignored')
 
