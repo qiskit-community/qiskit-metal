@@ -13,6 +13,8 @@
 # that they have been altered from the originals.
 """ Sweep a qcomponent option, and get results of analysis."""
 from typing import Tuple, Union, Dict
+
+from qiskit_metal.renderers.renderer_ansys.hfss_renderer import QHFSSRenderer
 # from typing import List, Iterable, Any
 
 
@@ -619,7 +621,7 @@ class Sweeping():
             *count(int):  Total number of frequencies.  Defaults to 101.
             step_ghz ([type]): Difference between adjacent frequencies.
                             Defaults to None.
-            *name (str): Name of sweep. Defaults to "Sweep".
+            *name (str): Name of sweep. Defaults to "Sweep_options__dm_sweep".
             *type(str): Type of sweep.   Defaults to "Fast". Choose from
                         'Fast', 'Interpolating', 'Discrete'.
             *save_fields (bool): Whether or not to save fields.
@@ -689,15 +691,18 @@ class Sweeping():
 
             self.design.rebuild()
 
-            a_hfss.render_design(selection=dm_render_args.qcomp_render,
-                                 open_pins=dm_render_args.endcaps_render,
-                                 port_list=dm_render_args.ignored_jjs_render,
-                                 jj_to_port=dm_render_args.jjs_to_render,
-                                 ignored_jjs=dm_render_args.jjs_to_omit,
+            a_hfss.render_design(selection=dm_render_args.selection,
+                                 open_pins=dm_render_args.open_pins,
+                                 port_list=dm_render_args.port_list,
+                                 jj_to_port=dm_render_args.jj_to_port,
+                                 ignored_jjs=dm_render_args.ignored_jjs,
                                  box_plus_buffer=dm_render_args.box_plus_buffer)
 
-            self.error_check_and_insert_sweep(dm_add_sweep_args,
-                                              'Sweep_dm_setup')
+            self.error_check_and_insert_sweep(a_hfss, setup_args.name,
+                                              dm_add_sweep_args,
+                                              'Sweep_options__dm_sweep')
+
+            a_hfss.analyze_sweep(setup_args.name, dm_add_sweep_args.name)
 
             # a_hfss.analyze_setup(
             #     a_hfss.pinfo.setup.name)  #Analyze said solution setup.
@@ -726,15 +731,58 @@ class Sweeping():
         a_hfss.disconnect_ansys()
         return all_sweep, 0
 
-    def error_check_and_insert_sweep(dm_add_sweep_args: Dict,
-                                     setup_name: str = 'Sweep_dm_setup') -> int:
-        pass
+    def error_check_and_insert_sweep(
+            self,
+            a_hfss: 'QHFSSRenderer',
+            setup_name: str,
+            dm_add_sweep_args: Dict,
+            dm_sweep_name: str = 'Sweep_options__dm_sweep'):
+        """To insert an Ansys sweep to the named setup.  The Dict
+        dm_add_sweep_args comes from user. They are arguments to pass to
+        add sweep to Ansys.  If there are unexpected arguments, they will
+        be removed.
 
-    def error_check_render_design_args(
-            self, dm_render_args: Dict) -> Union[int, None]:
+        Args:
+            a_hfss (QHFSSRenderer): Reference to Ansys renderer.
+            setup_name (str): Name of active setup in active project.
+            dm_add_sweep_args (Dict): Arguments to pass to
+                        QHFSSRenderer.add_sweep.  If key is not in Dict, the
+                        default value will be used.  The keys have to match
+                        arguments which are passed to insert_sweep() in pyEPR,
+                        through add_sweep in QHFSSRenderer.
+            dm_sweep_name (str, optional): Name of inserted Ansys sweep.
+                                    qDefaults to 'Sweep_options__dm_sweep'.
+        """
+        if 'name' not in dm_add_sweep_args.keys():
+            dm_add_sweep_args['name'] = dm_sweep_name
 
-        # * 0 All the expected keys in Dict.
-        # * 1 A key is missing in dm_render_args Dict, look at warning message.
+        allowed_keys = {
+            'start_ghz', 'stop_ghz', 'count', 'step_ghz', 'name', 'type',
+            'save_fields'
+        }
+        unexpected_keys = set(dm_add_sweep_args.keys()) - allowed_keys
+
+        if unexpected_keys:
+            [dm_add_sweep_args.pop(key) for key in unexpected_keys]
+            self.design.logger.warning(
+                f'Removed keys: {unexpected_keys} from '
+                'dm_add_sweep_args Dict before using it. ')
+
+        a_hfss.add_sweep(setup_name=setup_name, **dm_add_sweep_args)
+
+    def error_check_render_design_args(self, dm_render_args: Dict) -> int:
+        """To render to Ansys, we need every argument in render_design.
+        This method confirms all arguments are present.
+
+        Args:
+            dm_render_args (Dict): Dict that has the key=argument name,
+                        value=data for argument.
+
+        Returns:
+            int: Return code.
+            * 0 All the expected keys in Dict.
+            * 1 A key is missing in dm_render_args Dict, look at warning message.
+        """
 
         all_keys = dm_render_args.keys()
 
