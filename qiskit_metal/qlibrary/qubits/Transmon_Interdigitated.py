@@ -15,7 +15,7 @@
 #from math import *
 from math import sin, cos
 from qiskit_metal import draw, Dict
-from qiskit_metal.qlibrary.base.base import QComponent
+from qiskit_metal.qlibrary.core.base import QComponent
 import numpy as np
 
 #from ... import config
@@ -23,7 +23,7 @@ import numpy as np
 #    from qiskit_metal import is_true
 
 
-class TransmonInterdigitated(QComponent):  # pylint: disable=invalid-name
+class TransmonInterdigitated(QComponent):
     """
     The base "TransmonInterdigitated" inherits the "QComponent" class.
 
