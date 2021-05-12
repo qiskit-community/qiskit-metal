@@ -12,10 +12,12 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
+
 class NeedsRenderer():
     """Just a way to centralize the selection and naming of the renderer.
     Could refactor code to transform this class into a class-less function.
     """
+
     def __init__(self, design: 'QDesign', renderer_name: str, *args, **kwargs):
         """Variables and method needed from all those Analysis types that need a renderer.
 

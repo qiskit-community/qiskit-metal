@@ -49,13 +49,9 @@ class QQ3DRenderer(QAnsysRenderer):
     name = 'q3d'
     """name"""
 
-    q3d_options = Dict(material_type='pec',
-                       material_thickness='200nm')
+    q3d_options = Dict(material_type='pec', material_thickness='200nm')
 
-    def __init__(self,
-                 design: 'QDesign',
-                 initiate=True,
-                 options: Dict = None):
+    def __init__(self, design: 'QDesign', initiate=True, options: Dict = None):
         """Create a QRenderer for Q3D simulations, subclassed from
         QAnsysRenderer.
 
@@ -64,9 +60,7 @@ class QQ3DRenderer(QAnsysRenderer):
             initiate (bool, optional): True to initiate the renderer. Defaults to True.
             options (Dict, optional):  Used to override all options. Defaults to None.
         """
-        super().__init__(design=design,
-                         initiate=initiate,
-                         options=options)
+        super().__init__(design=design, initiate=initiate, options=options)
         QQ3DRenderer.load()
 
     @property
@@ -173,7 +167,9 @@ class QQ3DRenderer(QAnsysRenderer):
         """
         (deprecated) use activate_ansys_setup()
         """
-        self.logger.warning('This method is deprecated. Change your scripts to use activate_ansys_setup()')
+        self.logger.warning(
+            'This method is deprecated. Change your scripts to use activate_ansys_setup()'
+        )
         self.activate_ansys_setup(setup_name_activate)
 
     def add_q3d_setup(self,
@@ -442,10 +438,12 @@ class QQ3DRenderer(QAnsysRenderer):
         fr = ureg(f'{fr} GHz').to('GHz').magnitude
         fb = [ureg(f'{freq} GHz').to('GHz').magnitude for freq in fb]
         RES = {}
-        for i in range(1, maxPass+1):
+        for i in range(1, maxPass + 1):
             try:
                 df_cmat, user_units, _, _ = self.pinfo.setup.get_matrix(
-                    variation=variation, solution_kind=solution_kind, pass_number=i)
+                    variation=variation,
+                    solution_kind=solution_kind,
+                    pass_number=i)
                 c_units = ureg(user_units).to('farads').magnitude
                 res = extract_transmon_coupled_Noscillator(
                     df_cmat.values * c_units,
@@ -490,12 +488,16 @@ class QQ3DRenderer(QAnsysRenderer):
         """
         (deprecated) use new_ansys_design()
         """
-        self.logger.warning('This method is deprecated. Change your scripts to use new_ansys_design()')
+        self.logger.warning(
+            'This method is deprecated. Change your scripts to use new_ansys_design()'
+        )
         self.new_ansys_design(name, 'capacitance', connect)
 
     def activate_q3d_design(self, name: str = "MetalQ3ds"):
         """
         (deprecated) use activate_ansys_design()
         """
-        self.logger.warning('This method is deprecated. Change your scripts to use activate_ansys_design()')
+        self.logger.warning(
+            'This method is deprecated. Change your scripts to use activate_ansys_design()'
+        )
         self.activate_ansys_design(name, 'capacitance')

@@ -1712,7 +1712,6 @@ class QGDSRenderer(QRenderer):
         else:
             lib.remove(ground_cell)
 
-
     def _get_linestring_characteristics(
             self, row: 'pandas.Pandas') -> Tuple[Tuple, float, float]:
         """Given a row in the Junction table, give the characteristics of

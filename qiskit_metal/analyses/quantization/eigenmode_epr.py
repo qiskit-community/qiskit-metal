@@ -39,7 +39,7 @@ class EigenmodeAndEPR(QAnalysis, NeedsRenderer):
                          min_converged=1,
                          pct_refinement=30,
                          basis_order=-1,
-                         variables = Dict(Lj='10 nH', Cj='0 fF'))
+                         variables=Dict(Lj='10 nH', Cj='0 fF'))
     """Default setup"""
 
     def __init__(self, design: 'QDesign', renderer_name: str = 'hfss'):
@@ -249,7 +249,9 @@ class EigenmodeAndEPR(QAnalysis, NeedsRenderer):
             None
         """
         self.renderer.set_mode(eigenmode, self.setup_name)
-        return self.renderer.plot_fields(*args, **kwargs, object_name=object_name)
+        return self.renderer.plot_fields(*args,
+                                         **kwargs,
+                                         object_name=object_name)
 
     def clear_fields(self, names: list = None):
         """

@@ -18,17 +18,14 @@ from abc import abstractmethod, ABC
 
 from ...designs import QDesign, is_design
 
-
 __all__ = ['QRendererAnalysis']
 
 
 class QRendererAnalysis(QRenderer):
     """Abstract base class for all Renderers intended for Analysis.
     """
-    def __init__(self,
-                 design: 'QDesign',
-                 initiate=False,
-                 options: Dict = None):
+
+    def __init__(self, design: 'QDesign', initiate=False, options: Dict = None):
         """
         Args:
             design (QDesign): The design
@@ -136,6 +133,7 @@ class QRendererAnalysis(QRenderer):
             pathlib.WindowsPath: path to png formatted screenshot. 
         """
         pass
+
 
 # class Cap():
 #     def

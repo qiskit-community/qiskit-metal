@@ -22,8 +22,7 @@ class QAnalysis(ABC):
     """Methods and variables that every analysis class should inherit
     Has default_setup = Dict() defined. Requires to define default_setup in all inheriting classes
     """
-    default_setup = Dict(
-    )
+    default_setup = Dict()
     """Default setup"""
 
     def __init__(self, *args, **kwargs):
@@ -65,11 +64,12 @@ class QAnalysis(ABC):
         If you intend to change a single setting, the better way is: `setup.setting1 = value`.
         """
         unsupported_keys = list()
-        for k,v in kwargs.items():
+        for k, v in kwargs.items():
             if k in self._setup:
-                self._setup[k]=v
+                self._setup[k] = v
             else:
                 unsupported_keys.append(k)
         if unsupported_keys:
-            print (f'the parameters {unsupported_keys} are unsupported, so they have been ignored')
-
+            print(
+                f'the parameters {unsupported_keys} are unsupported, so they have been ignored'
+            )

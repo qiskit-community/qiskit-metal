@@ -34,7 +34,6 @@ from pyEPR.ansys import parse_units, HfssApp, release
 from qiskit_metal.draw.utility import to_vec3D
 from qiskit_metal.draw.basic import is_rectangle
 from qiskit_metal.renderers.renderer_base import QRendererAnalysis
-from qiskit_metal.toolbox_python.utility_functions import toggle_numbers, bad_fillet_idxs
 from qiskit_metal.toolbox_metal.parsing import is_true
 
 from qiskit_metal import Dict
@@ -956,8 +955,7 @@ class QAnsysRenderer(QRendererAnalysis):
     def render_component(self):
         pass
 
-    def render_tables(self,
-                      skip_junction: bool = False):
+    def render_tables(self, skip_junction: bool = False):
         """
         Render components in design grouped by table type (path, poly, or junction).
         """
