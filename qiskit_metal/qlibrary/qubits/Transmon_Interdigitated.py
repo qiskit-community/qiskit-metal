@@ -34,47 +34,47 @@ class TransmonInterdigitated(QComponent):
 
     Default Options:
         * pad_width: '1000um' -- width of the large rectanglular pads on either side
-        of the junction
+          of the junction
         * pad_height: '300um' -- height of the large rectanglular pads on either side
-        of the junction
+          of the junction
         * finger_width: '50um' -- width of the "finger" on either side of the junction
         * finger_height: '100um' -- height of the "finger" on the side of the junction
         * finger_space: '50um' -- height of the Josephson Junction (equivalently; space
-        between two fingers)
+          between two fingers)
         * pad_pos_x: '0um' -- the internal coordinate defining the center of the bottom
-        rectangular pad
+          rectangular pad
         * pad_pos_y: '0um' -- the internal coordinate defining the center of the bottom
-        rectangular pad
+          rectangular pad
         * comb_width: '50um' -- the width of the four interdigitated combs connected to
-        either pad
+          either pad
         * comb_space_vert: '50um' -- the space between the edge of a comb and the edge of
-        the opposite rectangular pad
+          the opposite rectangular pad
         * comb_space_hor: '50um' -- the space between adjacent interdigitated comb structures
         * jj_width: '20um' -- the width of the Josephson Junction located between the two
-        fingers of the device
+          fingers of the device
         * cc_space: '50um' -- the space between the lower rectangular pad and the coupling
-        capacitor below it
+          capacitor below it
         * cc_width: '100um' -- the width of the coupling capacitor located below the bottom
-        rectangular pad
+          rectangular pad
         * cc_height: '100um' -- the height of the coupling capacitor located below the bottom
-        rectangular pad
+          rectangular pad
         * cc_topleft_space: '50um' -- the space between the upper rectangular pad and the top
-        left coupling capacitor
+          left coupling capacitor
         * cc_topleft_width: '100um' -- the width of the top left coupling capacitor pad
         * cc_topleft_height: '100um' -- the height of the top left coupling capacitor pad
         * cc_topright_space: '50um' -- the space between the upper rectangular pad and the
-        top right coupling capacitor
+          top right coupling capacitor
         * cc_topright_width: '100um' -- the width of the top right coupling capacitor pad
         * cc_topright_height: '100um' -- the height of the top right coupling capacitor pad
         * position_x: '0um' -- the x-coordinate defining the center of the transmon pocket
-        on the chip
+          on the chip
         * position_y: '0um' -- the y-coordinate defining the center of the transmon pocket
-        on the chip
+          on the chip
         * rotation: '0.0' -- the angle at which the entire structure is rotated
         * rotation_top_pad: '180' -- internal coordinate defining the angle of rotation
-        between top and bottom pads
+          between top and bottom pads
         * layer: '1' -- all objcets are drawn assuming they are part of the same layer on a
-        the chip
+          the chip
     """
 
     # Default drawing options
