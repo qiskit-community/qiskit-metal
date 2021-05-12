@@ -1072,8 +1072,40 @@ class QHFSSRenderer(QAnsysRenderer):
                                    index=param_name).transpose()
         return freqs, Pcurves, Pparams
 
+    # yapf: disable
+    def get_all_Pparms_matrices(self, matrix_size: int) -> Tuple[
+            Union[pd.core.frame.DataFrame, None],
+            Union[pd.core.frame.DataFrame, None],
+            Union[pd.core.frame.DataFrame, None]]:
+        #yapf: enable
+        '''
+        S = scattering matrix, Y = Admittance, Z= impedance.
+
+        matrix_size should be 1 or larger.
+        This method will get the entire Scattering matrix based on matrix_size.
+
+        Example:'S21'
+        S matrix: SAB means, excite B, measure A
+        '''
+        s_param_name = []
+        y_param_name = []
+        z_param_name = []
+        if matrix_size < 1:
+            return None, None, None
+        for excite in range(1, matrix_size + 1):
+            for measure in range(1, matrix_size + 1):
+                s_param_name.append(f'S{measure}{excite}')
+                y_param_name.append(f'Y{measure}{excite}')
+                z_param_name.append(f'Z{measure}{excite}')
+        dummy_freqs, dummy_Pcurves, S_Pparams = self.get_params(s_param_name)
+        dummy_freqs, dummy_Pcurves, Y_Pparams = self.get_params(y_param_name)
+        dummy_freqs, dummy_Pcurves, Z_Pparams = self.get_params(z_param_name)
+
+        return S_Pparams, Y_Pparams, Z_Pparams
+
     def plot_params(self, param_name: Union[list, None] = None):
         """Plot one or more parameters (S, Y, or Z) as a function of frequency.
+        S = scattering matrix, Y = Admittance, Z= impedance.
 
         Args:
             param_name (Union[list, None], optional): Parameters to plot. Defaults to None.

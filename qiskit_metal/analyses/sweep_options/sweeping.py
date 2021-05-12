@@ -640,6 +640,9 @@ class Sweeping():
         Returns:
             Tuple[dict, int]: The dict key is each value of option_sweep, the
             value is the solution-data for each sweep.
+            There is a pandas dataframe for Scatter matrix, Impedance matrix,
+            and Admittance matrix.
+
             The int is the observation of searching for data from arguments as
             defined below.
 
@@ -699,26 +702,12 @@ class Sweeping():
                                  box_plus_buffer=dm_render_args.box_plus_buffer)
 
             self.error_check_and_insert_sweep(a_hfss, setup_args.name,
-                                              dm_add_sweep_args,
-                                              'Sweep_options__dm_sweep')
+                                              dm_add_sweep_args)
 
-            a_hfss.analyze_sweep(setup_args.name, dm_add_sweep_args.name)
+            matrix_size = self.get_size_of_matrix(dm_render_args)
 
-            # a_hfss.analyze_setup(
-            #     a_hfss.pinfo.setup.name)  #Analyze said solution setup.
-            # setup = a_hfss.pinfo.setup
-            # #solution_name = setup.solution_name
-            # all_solutions = setup.get_solutions()
-            # #setup_names = all_solutions.list_variations()
-            # freqs, kappa_over_2pis = all_solutions.eigenmodes()
-
-            # sweep_values = dict()
-            # sweep_values['option_name'] = option_path[-1]
-            # sweep_values['frequency'] = freqs
-            # sweep_values['kappa_over_2pis'] = kappa_over_2pis
-            # sweep_values['quality_factor'] = self.get_quality_factor(
-            #     freqs, kappa_over_2pis)
-            # all_sweep[item] = sweep_values
+            self.populate_dm_all_sweep(all_sweep, a_hfss, dm_add_sweep_args,
+                                       setup_args, matrix_size, item)
 
             #Decide if need to clean the design.
             obj_names = a_hfss.pinfo.get_all_object_names()
@@ -730,6 +719,66 @@ class Sweeping():
 
         a_hfss.disconnect_ansys()
         return all_sweep, 0
+
+    def populate_dm_all_sweep(self, all_sweep: Dict, a_hfss: 'QHFSSRenderer',
+                              dm_add_sweep_args: Dict, setup_args: Dict,
+                              matrix_size: int, item: str):
+        """The Dict all_sweep holds three matrices for each iteration of a
+        option in Metal.
+
+        Args:
+            all_sweep (Dict): To hold the output for each iteration of option
+                             from Metal.
+            a_hfss (QHFSSRenderer): Reference to Metal Ansys renderer.
+            dm_add_sweep_args (Dict): Has name of sweep in setup.
+            setup_args (Dict): Has name of setup.
+            matrix_size (int): Size of matrix to retreive from Ansys sweep.
+            item (str): Each value of option in Metal to iterate through.
+        """
+        sweep_values = dict()
+        if matrix_size == 0:
+            sweep_values['s_matrix'] = None
+            sweep_values['y_matrix'] = None
+            sweep_values['z_matrix'] = None
+        else:
+            a_hfss.analyze_sweep(dm_add_sweep_args.name, setup_args.name)
+            s_Pparms, y_Pparams, z_Pparams = a_hfss.get_all_Pparms_matrices(
+                matrix_size)
+            sweep_values['s_matrix'] = s_Pparms
+            sweep_values['y_matrix'] = y_Pparams
+            sweep_values['z_matrix'] = z_Pparams
+        all_sweep[item] = sweep_values
+
+    def get_size_of_matrix(self, dm_render_args: Dict) -> int:
+        """Determine the size of s_matrix, y_matrix, z_matrix.
+        s_matrix =
+        size of list of pins to render to lumped port +
+        size of list of junctions to render as lumped port.
+
+        size of matrix = size of 3rd parameter + size of fourth parfameter
+
+        List of arguments for render_design:
+        First parameter: List of components to render (empty list if rendering whole Metal design) <br>
+        Second parameter: List of pins (qcomp, pin) with open endcaps <br>
+        Third parameter: List of pins (qcomp, pin, impedance) to render as lumped ports <br>
+        Fourth parameter: List of junctions (qcomp, qgeometry_name, impedance, draw_ind)
+               to render as lumped ports or as lumped port in parallel with a sheet inductance <br>
+        Fifth parameter: List of junctions (qcomp, qgeometry_name) to omit altogether during rendering
+        Sixth parameter: Whether to render chip via box plus buffer or fixed chip size
+
+        Args:
+            dm_render_args (Dict): Holds the arguments used for render_design.
+
+        Returns:
+            int: Size of expected S-matrix.
+        """
+        matrix_size = 0
+        if dm_render_args.port_list:
+            matrix_size += len(dm_render_args.port_list)
+        if dm_render_args.jj_to_port:
+            matrix_size += len(dm_render_args.jj_to_port)
+
+        return matrix_size
 
     def error_check_and_insert_sweep(
             self,
