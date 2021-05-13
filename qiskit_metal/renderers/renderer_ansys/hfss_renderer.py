@@ -1028,7 +1028,7 @@ class QHFSSRenderer(QAnsysRenderer):
                                     Defaults to 8.0.
             count (int, optional): Total number of frequencies.
                                     Defaults to 101.
-            step_ghz ([type], optional): Difference between adjacent
+            step_ghz (float, optional): Difference between adjacent
                                     frequencies. Defaults to None.
             name (str, optional): Name of sweep. Defaults to "Sweep".
             type (str, optional): Type of sweep. Defaults to "Fast".
