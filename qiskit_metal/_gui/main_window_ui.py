@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file './main_window_ui.ui',
 # licensing of './main_window_ui.ui' applies.
 #
-# Created: Wed May  5 16:57:40 2021
+# Created: Fri May  7 19:27:14 2021
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -1024,7 +1024,7 @@ class Ui_MainWindow(object):
             QtWidgets.QApplication.translate("MainWindow", "clickme", None, -1))
 
 
-from .widgets.log_widget.log_metal import QTextEditLogger
 from .widgets.qlibrary_display.tree_view_qlibrary import TreeViewQLibrary
+from .widgets.log_widget.log_metal import QTextEditLogger
 from .widgets.all_components.table_view_all_components import QTableView_AllComponents
 from . import main_window_rc_rc
