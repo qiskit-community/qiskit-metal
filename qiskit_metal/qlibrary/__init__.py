@@ -108,6 +108,7 @@ Qubits
     TransmonConcentric
     TransmonCross
     TransmonCrossFL
+    TransmonInterdigitated
     TransmonPocket
     TransmonPocketCL
     TransmonPocket6
@@ -159,6 +160,7 @@ if config.is_building_docs():
     from .qubits.transmon_concentric import TransmonConcentric
     from .qubits.transmon_cross import TransmonCross
     from .qubits.transmon_cross_fl import TransmonCrossFL
+    from .qubits.Transmon_Interdigitated import TransmonInterdigitated
     from .qubits.transmon_pocket import TransmonPocket
     from .qubits.transmon_pocket_cl import TransmonPocketCL
     from .qubits.transmon_pocket_6 import TransmonPocket6
