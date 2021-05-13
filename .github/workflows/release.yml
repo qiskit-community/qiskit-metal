@@ -12,7 +12,7 @@ jobs:
       - uses: actions/setup-python@v2
         name: Install Python
         with:
-          python-version: '3.7.8'
+          python-version: '3.7'
       - name: Install Deps
         run: pip install -U twine wheel
       - name: Build Artifacts
