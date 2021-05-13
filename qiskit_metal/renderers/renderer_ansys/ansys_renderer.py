@@ -878,14 +878,47 @@ class QAnsysRenderer(QRenderer):
         if self.case == 2:  # One or more components not in QDesign.
             self.logger.warning('One or more components not found.')
             return []
-        elif self.case == 1:  # All components rendered.
+        chip_names = set()
+        if self.case == 1:  # All components rendered.
             comps = self.design.components
-            return list(set(comps[qcomp].options.chip for qcomp in comps))
+            for qcomp in comps:
+                if 'chip' not in comps[qcomp].options:
+                    self.chip_designation_error()
+                    return []
+                elif comps[qcomp].options.chip != 'main':
+                    self.chip_not_main()
+                    return []
+                chip_names.add(comps[qcomp].options.chip)
         else:  # Strict subset rendered.
             icomps = self.design._components
-            return list(
-                set(icomps[qcomp_id].options.chip
-                    for qcomp_id in self.qcomp_ids))
+            for qcomp_id in self.qcomp_ids:
+                if 'chip' not in icomps[qcomp_id].options:
+                    self.chip_designation_error()
+                    return []
+                elif icomps[qcomp_id].options.chip != 'main':
+                    self.chip_not_main()
+                    return []
+                chip_names.add(icomps[qcomp_id].options.chip)
+        return list(chip_names)
+
+    def chip_designation_error(self):
+        """
+        Warning message that appears when the Ansys renderer fails to locate a component's chip designation.
+        Provides instructions for a temporary workaround until the layer stack is finalized.
+        """
+        self.logger.warning(
+            "This component currently lacks a chip designation. Please add chip='main' to the component's default_options dictionary, restart the kernel, and try again."
+        )
+
+    def chip_not_main(self):
+        """
+        Warning message that appears when a component's chip designation is not 'main'.
+        As of 05/10/21, all chip designations should be 'main' until the layer stack is finalized.
+        Provides instructions for a temporary workaround until the layer stack is finalized.
+        """
+        self.logger.warning(
+            "The chip designation for this component is not 'main'. Please set chip='main' in its default_options dictionary, restart the kernel, and try again."
+        )
 
     def get_min_bounding_box(self) -> Tuple[float]:
         """
