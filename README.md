@@ -73,11 +73,13 @@ Once you are in the folder that contains the `environemnt.yml` file, execute the
 ```sh
 conda env create -n <env_name> environment.yml
 conda activate <env_name>
-python -m pip install -ve .
+python -m pip install --no-deps -e .
 ```
-Execute the following command if you plan to contribute code:
+Note the use of `--no-deps`. Indeed the `environment.yml` already instructs conda to install all the necessary package dependencies. We therefore prevent `setup.py` from overwriting them with the pip-equivalent packages, which might not be compatible with conda. 
+
+If you plan to contribute code, you need extra packages, which you can install by running the following command instead of (or after) the previous one:
 ```
-python -m pip install -r requirements-dev.txt -ve .
+python -m pip install --no-deps -r requirements-dev.txt -e .
 ```
 
 This creates a new environment with name `<env_name>` with all the necessary library dependencies.
@@ -85,25 +87,23 @@ Then it activates the new environment.
 Finally installs the local qiskit-metal code inside that environment.
 
 The `-e` flag install qiskit\_metal in [editable mode](https://pip.pypa.io/en/stable/reference/pip_install/#cmdoption-e).
-The `-v` flag is for verbose.
+You can add the `-v` flag if you would like to observe the verbose output during the installation.
 
 ##### Option 2: A pre-existing environment
-If convenient, you can instead try to install directly in an existing conda environment `<env_name_exist>`, if it is relatively up to date.
-To do so, execute these commands in the top-level of the repository:
+If convenient, you can instead try to install directly in an existing conda environment `<env_name_exist>`. To do so, just replace the word `create` with `update` in the commands in the previous section. Find the resulting commands updated below for simplicity:
 ```
 conda env update -n <env_name_exist> environment.yml
 conda activate <env_name_exist>
-python -m pip install -ve .
+python -m pip install --no-deps -e .
 ```
-Execute the following command if you plan to contribute code:
 ```
-python -m pip install -r requirements-dev.txt -ve .
+python -m pip install --no-deps -r requirements-dev.txt -e .
 ```
 
 Notes:
 
-* It is possible that you may run into version conflicts during the above installation, as qiskit-metal requires specific library versions to work correctly on every OS.
-* Remember the period (".") at the end of the third command.
+* It is possible that you may run into version conflicts during the above installation, as qiskit-metal requires specific library versions to work correctly on every OS. In this case, please revert to using a separate conda environment.
+* Remember to type the period (".") at the end of the pip install command.
 * **Important**: Remember to `conda activate <env_name>` if you intend to use qiskit-metal.  See what a [conda environment is](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html)
 
 At this point you can already use qiskit-metal through jupyter notebook.
@@ -128,32 +128,31 @@ Package dependencies will evolve over time and could at some point require a new
 For example, we can anticipate updating `pyEPR-quantum` to enable Ansys interactions previously unsupported.
 To update your local install, simply execute the metal package install command
 ```sh
-python -m pip install -ve .
+conda env update -n <env_name_exist> environment.yml
 ``` 
 Alternatively, you can remove your conda environment by executing the commands below and later re-create a new environment following the original install instructions in section 1.
 ```sh
 conda env list
 conda env remove -n <env_name_exist>
 ``` 
-We discourage using conda commands to update packages after the install of Qiskit Metal.
-Indeed, since Qiskit Metal is installed using pip, the subsequent use of conda commands can introduce inconsistencies that could render your environment unusable.
+Notice that using the `conda env update` command might introduce inconsistencies in your virtual environment, that could render it unusable. That can occur when a conda update occurs after any number of pip install.
 
 #### Without conda: Virtual environment setup (alternative setup)
 
-**On Windows, do this first:** It is recommended that you first install `Visual C++ 14.0`, it is required for a successful install of `gdspy`.
-If you do not have `Visual C++ 14.0` installed you will be notified to install it when `gdspy` attempts to install.
-You can do this by downloading and installing [C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/).
-Be sure to select the latest versions of `MSVCv142 - VS 2019 C++ x64/x86 build tools` and `Windows 10 SDK` in the installer as suggested in [this wiki](https://wiki.python.org/moin/WindowsCompilers) referenced by the gdspy documentation.
+##### Prerequisites
+The package dependency `gdspy`, needs C++ compilation to successfully install in a base or virtualenv. Make sure the right compiler is installed on your machine if you encounter errors during the installation process described above.
+**Windows** you can install the `Visual C++ x.0` using the [C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/). Be sure to select the most current versions of `MSVC` and `Windows SDK`, as suggested in [this wiki](https://wiki.python.org/moin/WindowsCompilers) referenced by the gdspy documentation.
+**Linux** execute the following command `sudo apt-get install gcc g++`. Linux users might encounter other python-related errors during creation of the virtualenv or during qiskit-metal installation. You might be able to deal with those by executing `sudo apt-get install python3-dev python3-venv`. Be sure to customize the `python3` string if you are trying to use a custom installation of python.
 
-To use a Python virtual environment, execute these commands in the top-level of the repository:
+To create and populate the Python virtual environment, execute these commands in the top-level of the repository:
 ```sh
-python -m venv <virtual_env_path>
-source <virtual_env_path>/bin/activate
+python -m venv <virtual_env_path/name>
+source <virtual_env_path/name>/bin/activate
 python -m pip install -U pip
-python -m pip install -r requirements.txt -r requirements-dev.txt -e .
+python -m pip install -e .
 ```
-where `<virtual_env_path>` is where you want the Python virtual environment to be installed.
-On Windows, replace `source <virtual_env_path>/bin/activate` with `.\<virtual_env_path>\Scripts\activate`.
+add `-r requirements-dev.txt` to the last line if you intend to install also the packages required for development.
+where `<virtual_env_path/name>` is the name of your new Python virtual environment. You can also specify its path. On Windows, replace the activate command line above with this one: `.\<virtual_env_path/name>\Scripts\activate`.
 
 #### Installation hints
 
@@ -168,53 +167,9 @@ Here are some things to consider when setting up a development environment:
 If you are planning to develop the qiskit metal codebase, you'll want to use these instructions to [setup user environment](/docs/NEW_DEVELOPER_SETUP.md)
 
 
-### Common Issues
+### Other Common Issues
 
-#### Jupyter Lab
-
-If you can not start Jupyter Lab in the new environment.
-
-Based on: https://anaconda.org/conda-forge/jupyterlab
-Install Jupyter lab by
-```sh
-conda install -c conda-forge jupyterlab
-```
-Then change directory to top level of repository.
-```sh
-python -m pip install -e .
-```
-
-#### qutip
-
-`qutip` may have issues finding your path if using VSCode, resulting in a `KeyError: 'physicalcpu'`. If the error occurs, please add your PATH to VSCode's settings as follows.
-
-
-##### Windows:
-Open Windows Command Prompt and type in
-```sh
-path
-```
-Copy the resulting output. Example: `"PATH": "\usr\local\bin:\usr\bin:\bin:\usr\sbin:\sbin"`
-Then open the applicable settings.json in your VS Code. (See how to open command palette [here](https://code.visualstudio.com/docs/getstarted/tips-and-tricks). Search "settings" and click Open Workspace Settings (JSON)). Paste:
-```
- "terminal.integrated.env.windows": {
-        "PATH": "\usr\local\bin:\usr\bin:\bin:\usr\sbin:\sbin"
-        }
-```
-
-##### MacOs:
- Open Terminal and type in
- ```sh
-echo $PATH
- ```
-Copy the resulting output. Example: `"PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"`
-Then open the applicable settings.json in your VS Code. (See how to open command palette [here](https://code.visualstudio.com/docs/getstarted/tips-and-tricks). Search "settings" and click Open Workspace Settings (JSON)). Paste:
-```
-    "terminal.integrated.env.osx": {
-        "PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
-        }
-```
-
+For other common installation issues, please refer to the [FAQ](https://qiskit.org/documentation/metal/faq.html)
 
 ## Authors and Citation
 

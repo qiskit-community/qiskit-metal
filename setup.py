@@ -1,7 +1,7 @@
 """A setuptools based setup module.
 
 Run using:
-    $ python -m pip install -ve .
+    $ python -m pip install -e .
 
 Explanation of arguments:
     -e, --editable <path/url>

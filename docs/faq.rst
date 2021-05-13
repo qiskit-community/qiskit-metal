@@ -63,9 +63,9 @@ Based on: `this <https://anaconda.org/conda-forge/jupyterlab>`_, install Jupyter
 
 ``conda install -c conda-forge jupyterlab``
 
-Then change directory to top level of repository.
+Then re-install the qiskit-metal package with pip, for example, if you are using the github local installation flow run the following:
 
-``python -m pip install -e .``
+``python -m pip install --no-deps -e .``
 
 
 
