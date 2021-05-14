@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# pylint: disable=too-many-lines
+# pylint: disable=too-many-lines, cyclic-import
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2021.
