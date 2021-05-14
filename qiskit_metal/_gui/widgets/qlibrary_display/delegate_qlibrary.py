@@ -15,12 +15,16 @@
 Delegate for display of QComponents in Library tab
 """
 
-from PySide2.QtWidgets import QItemDelegate, QWidget, QStyleOptionViewItem, QStyle
-from PySide2.QtCore import QAbstractProxyModel, QModelIndex, Qt, QAbstractItemModel, Signal
-from PySide2.QtGui import QTextDocument, QPainter
+import importlib
+import inspect
+import os
+
+from PySide2.QtCore import QAbstractItemModel, QAbstractProxyModel, QModelIndex, Qt, Signal
+from PySide2.QtGui import QPainter, QTextDocument
+from PySide2.QtWidgets import QItemDelegate, QStyle, QStyleOptionViewItem, QWidget
+
 from qiskit_metal._gui.widgets.qlibrary_display.file_model_qlibrary import QFileSystemLibraryModel
 from qiskit_metal.toolbox_metal.exceptions import QLibraryGUIException
-from qiskit_metal.toolbox_python.utility_functions import get_class_from_abs_file_path
 
 
 class LibraryDelegate(QItemDelegate):
@@ -157,9 +161,37 @@ class LibraryDelegate(QItemDelegate):
 
             # try:
             try:
-                current_class = get_class_from_abs_file_path(full_path)
+                current_class = self.get_class_from_abs_file_path(full_path)
                 information = current_class.TOOLTIP
             except:
                 information = ""
 
             self.tool_tip_signal.emit(information)
+
+    def get_class_from_abs_file_path(self,abs_file_path):
+        """
+        Gets the corresponding class object for the absolute file path to the file containing that
+        class definition
+
+        Args:
+            abs_file_path: absolute file path to the file containing the QComponent class definition
+
+        getting class from absolute file path -
+        https://stackoverflow.com/questions/452969/does-python-have-an-equivalent-to-java-class-forname
+
+        """
+        qis_abs_path = abs_file_path[abs_file_path.index(__name__.split('.')[0]):]
+
+        # Windows users' qis_abs_path may use os.sep or '/' due to PySide's
+        # handling of file names
+        qis_mod_path = qis_abs_path.replace(os.sep, '.')[:-len('.py')]
+        qis_mod_path = qis_mod_path.replace("/",
+                                            '.')  # users cannot use '/' in filename
+
+        mymodule = importlib.import_module(qis_mod_path)
+        members = inspect.getmembers(mymodule, inspect.isclass)
+        class_owner = qis_mod_path.split('.')[-1]
+        for memtup in members:
+            if len(memtup) > 1:
+                if str(memtup[1].__module__).endswith(class_owner):
+                    return memtup[1]
