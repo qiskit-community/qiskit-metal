@@ -15,13 +15,12 @@
 Delegate for display of QComponents in Library tab
 """
 
-from PySide2.QtWidgets import QItemDelegate, QWidget, QStyleOptionViewItem
-from PySide2.QtCore import QAbstractProxyModel, QModelIndex, Qt, QAbstractItemModel
+from PySide2.QtWidgets import QItemDelegate, QWidget, QStyleOptionViewItem, QStyle
+from PySide2.QtCore import QAbstractProxyModel, QModelIndex, Qt, QAbstractItemModel, Signal
 from PySide2.QtGui import QTextDocument, QPainter
 from qiskit_metal._gui.widgets.qlibrary_display.file_model_qlibrary import QFileSystemLibraryModel
 from qiskit_metal.toolbox_metal.exceptions import QLibraryGUIException
-
-USER_COMP_DIR = "user_components"
+from qiskit_metal.toolbox_python.utility_functions import get_class_from_abs_file_path
 
 
 class LibraryDelegate(QItemDelegate):
@@ -29,6 +28,8 @@ class LibraryDelegate(QItemDelegate):
     Delegate for QLibrary view
     Requires LibraryModel
     """
+
+    tool_tip_signal = Signal(str)
 
     def __init__(self, parent: QWidget = None):
         """
@@ -80,6 +81,9 @@ class LibraryDelegate(QItemDelegate):
             option (QStyleOptionViewItem): Current option
             index (QModelIndex): Current index of related model
         """
+
+        self.emit_tool_tip(option, index)
+
         if self.is_dev_mode:
             source_model = self.get_source_model(index.model(),
                                                  self.source_model_type)
@@ -133,3 +137,33 @@ class LibraryDelegate(QItemDelegate):
 
         else:
             QItemDelegate.paint(self, painter, option, index)
+
+
+
+    def emit_tool_tip(self, option: QStyleOptionViewItem,
+          index: QModelIndex):
+        """
+
+        Args:
+            option (QStyleOptionViewItem): Contains current style flags
+            index (QModelIndex): Index being moused over
+
+        Emits:
+           tool_tip_signal(str): The TOOLTIP for the QComponent of the index
+        """
+        if option.state & QStyle.State_MouseOver:  # if option.state  == QStyle.State_MouseOver: Qt.WA_Hover
+            source_model = self.get_source_model(index.model(),
+                                                 self.source_model_type)
+
+            model = index.model()
+            full_path = source_model.filePath(
+                model.mapToSource(index))
+
+            # try:
+            try:
+                current_class = get_class_from_abs_file_path(full_path)
+                information = current_class.TOOLTIP
+            except:
+                information = ""
+
+            self.tool_tip_signal.emit(information)

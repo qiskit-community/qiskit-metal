@@ -112,9 +112,15 @@ class TreeViewQLibrary(QTreeView):
 
         return super().mousePressEvent(event)
 
-    def setToolTip(self, arg__1: str):
-        """ sets tool tip """
-        if arg__1 is None or len(arg__1) < 1:
+    def setToolTip(self, qcomp_tooltip: str):
+        """
+        Sets tooltip
+
+        Args:
+            qcomp_tooltip: Tooltip to be set
+
+        """
+        if qcomp_tooltip is None or len(qcomp_tooltip) < 1:
             super().setToolTip(self.tool_tip_str)
         else:
-            super().setToolTip(arg__1)
+            super().setToolTip(qcomp_tooltip)
