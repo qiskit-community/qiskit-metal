@@ -26,14 +26,14 @@ from datetime import datetime
 import pandas as pd
 import numpy as np
 
-from qiskit_metal.designs import draw
-from qiskit_metal.designs import is_design, logger
+from qiskit_metal import draw
+from qiskit_metal import is_design, logger
 
-from qiskit_metal.designs import config
-from ...draw import BaseGeometry
-from ...toolbox_python.attr_dict import Dict
-from ._parsed_dynamic_attrs import ParsedDynamicAttributes_Component
-from ...toolbox_python.display import format_dict_ala_z
+from qiskit_metal import config
+from qiskit_metal.draw import BaseGeometry
+from qiskit_metal.toolbox_python.attr_dict import Dict
+from qiskit_metal.toolbox_python.display import format_dict_ala_z
+from qiskit_metal.qlibrary.core._parsed_dynamic_attrs import ParsedDynamicAttributes_Component
 
 if not config.is_building_docs():
     from ...draw import Vector
