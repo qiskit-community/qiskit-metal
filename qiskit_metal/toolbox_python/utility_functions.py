@@ -36,8 +36,7 @@ __all__ = [
     'enable_warning_traceback', 'get_traceback', 'print_traceback_easy',
     'log_error_easy', 'monkey_patch', 'can_write_to_path',
     'can_write_to_path_with_warning', 'toggle_numbers', 'bad_fillet_idxs',
-    'compress_vertex_list', 'get_range_of_vertex_to_not_fillet',
-    'get_class_from_abs_file_path'
+    'compress_vertex_list', 'get_range_of_vertex_to_not_fillet'
 ]
 
 ####################################################################################
