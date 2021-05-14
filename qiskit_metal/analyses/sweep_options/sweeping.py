@@ -758,13 +758,13 @@ class Sweeping():
         size of matrix = size of 3rd parameter + size of fourth parfameter
 
         List of arguments for render_design:
-        First parameter: List of components to render (empty list if rendering whole Metal design) <br>
-        Second parameter: List of pins (qcomp, pin) with open endcaps <br>
-        Third parameter: List of pins (qcomp, pin, impedance) to render as lumped ports <br>
-        Fourth parameter: List of junctions (qcomp, qgeometry_name, impedance, draw_ind)
+            - First parameter: List of components to render (empty list if rendering whole Metal design) <br>
+            - Second parameter: List of pins (qcomp, pin) with open endcaps <br>
+            - Third parameter: List of pins (qcomp, pin, impedance) to render as lumped ports <br>
+            - Fourth parameter: List of junctions (qcomp, qgeometry_name, impedance, draw_ind)
                to render as lumped ports or as lumped port in parallel with a sheet inductance <br>
-        Fifth parameter: List of junctions (qcomp, qgeometry_name) to omit altogether during rendering
-        Sixth parameter: Whether to render chip via box plus buffer or fixed chip size
+            - Fifth parameter: List of junctions (qcomp, qgeometry_name) to omit altogether during rendering
+            - Sixth parameter: Whether to render chip via box plus buffer or fixed chip size
 
         Args:
             dm_render_args (Dict): Holds the arguments used for render_design.
