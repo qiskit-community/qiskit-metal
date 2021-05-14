@@ -536,7 +536,3 @@ def can_write_to_path(file: str) -> Tuple[int, str]:
         return 1, directory_name
     else:
         return 0, directory_name
-
-
-
-
