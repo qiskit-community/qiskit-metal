@@ -138,10 +138,7 @@ class LibraryDelegate(QItemDelegate):
         else:
             QItemDelegate.paint(self, painter, option, index)
 
-
-
-    def emit_tool_tip(self, option: QStyleOptionViewItem,
-          index: QModelIndex):
+    def emit_tool_tip(self, option: QStyleOptionViewItem, index: QModelIndex):
         """
 
         Args:
@@ -156,8 +153,7 @@ class LibraryDelegate(QItemDelegate):
                                                  self.source_model_type)
 
             model = index.model()
-            full_path = source_model.filePath(
-                model.mapToSource(index))
+            full_path = source_model.filePath(model.mapToSource(index))
 
             # try:
             try:
