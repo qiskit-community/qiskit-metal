@@ -279,11 +279,34 @@ class QMplRenderer():
                         ax: Axes,
                         subtracted: bool = False,
                         extra_kw: dict = None):
-        """For Now, do nothing.
+        """Render a table of junction geometry.
+        A junction is basically drawn like a path with finite width and no fillet.
 
-        TODO:render junction tables.
+        Arguments:
+            table (DataFrame): Element table
+            ax (matplotlib.axes.Axes): Axis to render on
+            extra_kw (dict): Style params
         """
-        pass
+        if len(table) > 0:
+            mask = (table.width == 0) | table.width.isna()
+            table1 = table[~mask]
+            if len(table1) > 0:
+                table1.geometry = table1[['geometry', 'width']].apply(
+                    lambda x: x[0].buffer(distance=float(x[1]) / 2.,
+                                          cap_style=CAP_STYLE.flat,
+                                          join_style=JOIN_STYLE.mitre,
+                                          resolution=int(self.options[
+                                              'resolution'])),
+                    axis=1)
+                kw = self.get_style('poly',
+                                    subtracted=subtracted,
+                                    extra=extra_kw)
+                self.render_poly(table1, ax, subtracted=subtracted, extra_kw=kw)
+            table1 = table[mask]
+            if len(table1) > 0:
+                self.logger.warning(
+                    'One or more junctions have zero width. Consider changing this.'
+                )
 
     def render_poly(self,
                     table: pd.DataFrame,
