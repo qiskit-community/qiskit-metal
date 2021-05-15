@@ -312,7 +312,7 @@ class QTextEditLogger(QTextEdit):
         self.clear()
         for name, record in self.logged_lines:
             if name in self.get_all_checked():
-                self.log_message(record, not (name is 'Errors'))
+                self.log_message(record, name != 'Errors')
 
     def log_message_to(self, name, record):
         """Set where to log messages to.
@@ -323,7 +323,7 @@ class QTextEditLogger(QTextEdit):
         """
         self.logged_lines.append((name, record))
         if name in self.get_all_checked():
-            self.log_message(record, not (name is 'Errors'))
+            self.log_message(record, name != 'Errors')
 
     def log_message(self, message, format_as_html=True):
         """Do the actual logging.
