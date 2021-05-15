@@ -15,6 +15,25 @@ Most used flags:
 from pathlib import Path
 from setuptools import setup, find_packages
 
+import os
+if os.name == 'nt':
+    try:
+        import fiona
+    except:
+        print(
+            ">>>>>> Packages fiona and gdal have a known install issue on windows. <<<<<<"
+        )
+        print(
+            ">>>>>>>>>>> Please install fiona before installing qiskit-metal. <<<<<<<<<<<"
+        )
+        print(
+            ">>>>>>> For detailed instructions refer to the qiskit-metal FAQ page <<<<<<<"
+        )
+        print(
+            ">>>>>>>>>>>>> https://qiskit.org/documentation/metal/faq.html <<<<<<<<<<<<<<"
+        )
+        raise
+
 here = Path(__file__).parent.absolute()  # pylint: disable=no-member
 
 # Get the long description from the README file
