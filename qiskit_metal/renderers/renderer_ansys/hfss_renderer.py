@@ -539,7 +539,7 @@ class QHFSSRenderer(QAnsysRenderer):
         not provide arguments, they will be obtained from hfss_options dict.
 
         Args:
-            freq_ghz (int, optional): Frequency in GHz. Defaults to 5.
+            freq_ghz (float, optional): Frequency in GHz. Defaults to 5.
             name (str, optional): Name of driven modal setup. Defaults to "Setup".
             max_delta_s (float, optional): Absolute value of maximum
                     difference in scattering parameter S. Defaults to 0.1.
@@ -550,10 +550,10 @@ class QHFSSRenderer(QAnsysRenderer):
             pct_refinement (int, optional): Percent refinement. Defaults to 30.
             basis_order (int, optional): Basis order. Defaults to 1.
         """
-        dsu = self.hfss_options.drivenmodal_setup
+        dsu = self.hfss_options.drivenmodal_setup  #driven_modal set up.
 
         if not freq_ghz:
-            freq_ghz = int(self.parse_value(dsu['freq_ghz']))
+            freq_ghz = float(self.parse_value(dsu['freq_ghz']))
         if not name:
             name = self.parse_value(dsu['name'])
         if not max_delta_s:
@@ -891,9 +891,9 @@ class QHFSSRenderer(QAnsysRenderer):
                             if key == "name":
                                 continue  #Checked for above.
                             if key == "freq_ghz":
-                                if not isinstance(value, int):
+                                if not isinstance(value, float):
                                     self.logger.warning(
-                                        'The value for freq_ghz should be an int. '
+                                        'The value for freq_ghz should be an float. '
                                         f'The present value is {value}.')
                                 else:
                                     self.pinfo.setup.solution_freq = f'{value}GHz'

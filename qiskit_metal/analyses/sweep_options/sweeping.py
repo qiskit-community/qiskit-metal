@@ -109,7 +109,7 @@ class Sweeping():
             setup_args (Dict):  Maximum  keys used in setup_args.
 
         **setup_args** dict contents:
-            * freq_ghz (int, optional): Frequency in GHz.  Defaults to 5.
+            * freq_ghz (float, optional): Frequency in GHz.  Defaults to 5.
             * max_delta_s (float, optional): Absolute value of maximum
                     difference in scattering parameter S. Defaults to 0.1.
             * max_passes (int, optional): Maximum number of passes.
@@ -141,9 +141,9 @@ class Sweeping():
             if key == "name":
                 continue  #For this method, "Sweep_dm_setup" used.
             if key == "freq_ghz":
-                if isinstance(value, int) or value is None:
+                if isinstance(value, float) or value is None:
                     continue
-                self.warning_for_setup(setup_args, key, "int")
+                self.warning_for_setup(setup_args, key, "float")
                 return 1
             if key == "max_delta_s":
                 if isinstance(value, float) or value is None:
