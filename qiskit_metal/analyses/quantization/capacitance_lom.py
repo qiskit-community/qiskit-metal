@@ -22,8 +22,8 @@ from ..base import QAnalysis
 from ... import Dict
 
 
-class CapMatrixAndLOM(QAnalysis, NeedsRenderer):
-    """Compute Capacitance matrix, then derive from it the lom parameters.
+class CapExtraction(QAnalysis, NeedsRenderer):
+    """Compute Capacitance matrix using the selected renderer.
     """
     default_setup = Dict(name="Setup",
                          freq_ghz=5.,
@@ -60,7 +60,7 @@ class CapMatrixAndLOM(QAnalysis, NeedsRenderer):
     #         print(f"I do not support these variables at this time: {kwargs}")
 
     def __init__(self, design: 'QDesign', renderer_name: str = 'q3d'):
-        """Compute Capacitance matrix, then derive from it the lom parameters
+        """Initialize the class to extract the capacitance matrix
 
         Args:
             design (QDesign): pointer to the main qiskit-metal design. Used to access the Qrenderer
@@ -69,15 +69,11 @@ class CapMatrixAndLOM(QAnalysis, NeedsRenderer):
         # set design and renderer
         super().__init__(design, renderer_name)
 
-        # create and set setup variables
-        self._setup = deepcopy(self.default_setup)
-
         # settings variables
         self.setup_name = None
 
-        # result variables
+        # output variables
         self._capacitance_matrix = None
-        self._lom_output = None
 
     def _render(self, **design_selection) -> str:
         """Renders the design from qiskit metal into the selected renderer.
@@ -144,23 +140,68 @@ class CapMatrixAndLOM(QAnalysis, NeedsRenderer):
         return renderer_design_name, self.setup_name
 
     @property
-    def capacitance_matrix_df(self) -> pd.DataFrame:
+    def capacitance_matrix(self) -> pd.DataFrame:
         """Stores the last-pass capacitance matrix after run() concludes.
-        It is populated by _analyze()
+        It is populated by _analyze() with a pandas database.
 
         Returns:
             pd.DataFrame: Capacitance Matrix from the last pass
         """
         return self._capacitance_matrix
 
-    @capacitance_matrix_df.setter
-    def capacitance_matrix_df(self, cap_mtrx: pd.DataFrame):
+    @capacitance_matrix.setter
+    def capacitance_matrix(self, cap_mtrx: pd.DataFrame):
         """Sets the capacitance matrix.
 
         Args:
             cap_mtrx (pd.DataFrame): Capactiance Matrix to store in the Analysis instance
         """
-        self._capacitance_matrix = cap_mtrx
+        if isinstance(cap_mtrx, pd.DataFrame):
+            self._capacitance_matrix = cap_mtrx
+        else:
+            print("unuspported type. Only accepts pandas dataframes")
+
+
+class LOManalysis(QAnalysis):
+    """Extracts and LOM model from a provided capacitance matrix.
+    """
+    default_setup = Dict()
+    """Default setup"""
+    def __init__(self, design: 'QDesign', *args, **kwargs):
+        """Initialize the analysis step to extract the LOM model from the system capacitance
+
+        Args:
+            design (QDesign): pointer to the main qiskit-metal design. Used to access the Qrenderer
+        """
+        # set design and renderer
+        super().__init__(design, *args, **kwargs)
+
+        # input variables
+        self._capacitance_matrix = None
+
+        # output variables
+        self._lom_output = None
+
+    @property
+    def capacitance_matrix(self) -> pd.DataFrame:
+        """Returns the capacitance matrix as a pandas dataframe
+
+        Returns:
+            pd.DataFrame: Capacitance Matrix from the last pass
+        """
+        return self._capacitance_matrix
+
+    @capacitance_matrix.setter
+    def capacitance_matrix(self, cap_mtrx: pd.DataFrame):
+        """Sets the capacitance matrix
+
+        Args:
+            cap_mtrx (pd.DataFrame): Capactiance Matrix to store in the Analysis instance
+        """
+        if isinstance(cap_mtrx, pd.DataFrame):
+            self._capacitance_matrix = cap_mtrx
+        else:
+            print("unuspported type. Only accepts pandas dataframes")
 
     @property
     def lumped_oscillator_dic(self) -> dict:
@@ -180,6 +221,7 @@ class CapMatrixAndLOM(QAnalysis, NeedsRenderer):
         """
         self._lom_output = lom_dict
 
+
     def get_lumped_oscillator(self,
                               Lj_nH: float,
                               Cj_fF: float,
@@ -188,7 +230,7 @@ class CapMatrixAndLOM(QAnalysis, NeedsRenderer):
                               fb: Union[list, float],
                               maxPass: int,
                               variation: str = '',
-                              solution_kind: str = 'AdaptivePass',
+                              all_passes: str = 'False',
                               g_scale: float = 1):
         """Executes the lumped oscillator extraction from the simulation
 
@@ -204,10 +246,11 @@ class CapMatrixAndLOM(QAnalysis, NeedsRenderer):
                 Defaults to 1.
             variation (str, optional): An empty string returns nominal variation.
                 Otherwise need the list. Defaults to ''.
-            solution_kind (str, optional): Solution type ('AdaptivePass' or 'LastAdaptive').
-                Defaults to 'LastAdaptive'.
+            all_passes (str, optional): Change to True to return results for every simulated pass.
+                False, will only return the final one. Defaults to 'False'.
             g_scale (float, optional): Scale factor. Defaults to 1.
         """
+        solution_kind = 'AdaptivePass' if all_passes else 'LastAdaptive'
         self._lom_output = self.renderer.lumped_oscillator_vs_passes(
             Lj_nH, Cj_fF, N, fr, fb, maxPass, variation, solution_kind, g_scale)
 
@@ -233,3 +276,17 @@ class CapMatrixAndLOM(QAnalysis, NeedsRenderer):
         if self._lom_output is None or args or kwargs:
             self.get_lumped_oscillator(*args, **kwargs)
         self.renderer.plot_convergence_chi(self._lom_output)
+
+
+class CapExtractAndLOM(CapExtraction, LOManalysis):
+    """Compute Capacitance matrix, then derive from it the lom parameters.
+    """
+    def __init__(self, design: 'QDesign', renderer_name: str = 'q3d'):
+        """Initialize class to simulate the capacitance matrix and extract the lom model
+
+        Args:
+            design (QDesign): pointer to the main qiskit-metal design. Used to access the Qrenderer
+            renderer_name (str, optional): which renderer to use. Defaults to 'q3d'.
+        """
+        # set design and renderer
+        super().__init__(design, renderer_name)

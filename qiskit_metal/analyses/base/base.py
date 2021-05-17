@@ -14,6 +14,7 @@
 
 from copy import deepcopy
 from abc import abstractmethod, ABC
+import inspect
 
 from ... import Dict
 
@@ -27,7 +28,7 @@ class QAnalysis(ABC):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self._setup = {}
+        self._setup = self._gather_all_children_setup()
 
     @abstractmethod
     def run(self):
@@ -49,12 +50,15 @@ class QAnalysis(ABC):
     def setup(self, setup_dict):
         """Setter: Dictionary intended to be used to modify the analysis behavior. You can only
         pass to this method those settings that are already defined in the default_setup list.
+        Non specified keys, will be assigned the default_setup value.
 
         Args:
             setup_dict (Dict): define the settings to change. The rest will be set to defaults
         """
         if isinstance(setup_dict, dict):
-            self._setup = deepcopy(self.default_setup)
+            # first reset the setup
+            self._setup = self._gather_all_children_setup()
+            # then apply specified variables
             self.setup_update(**setup_dict)
         else:
             print("The analysis setup has to be defined as a dictionary")
@@ -73,3 +77,21 @@ class QAnalysis(ABC):
             print(
                 f'the parameters {unsupported_keys} are unsupported, so they have been ignored'
             )
+
+    def _gather_all_children_setup(self):
+        """From the QAnalysis core class, traverse the child classes to
+        gather the default_setup for each child class.
+
+        If the key is the same, the setup option of the youngest child is used.
+        """
+
+        setup_from_children = Dict()
+        parents = inspect.getmro(self.__class__)
+
+        # len-2: base.py is not expected to have default_setup dict to add to design class.
+        for child in parents[len(parents) - 2::-1]:
+            # The template default options are in a class dict attribute `default_setup`.
+            if hasattr(child, 'default_setup'):
+                setup_from_children.update(child.default_setup)
+
+        return setup_from_children

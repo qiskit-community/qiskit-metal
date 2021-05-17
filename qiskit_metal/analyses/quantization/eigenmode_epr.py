@@ -27,7 +27,7 @@ from ..base import NeedsRenderer
 from ..base import QAnalysis
 
 
-class EigenmodeAndEPR(QAnalysis, NeedsRenderer):
+class Eigenmode(QAnalysis, NeedsRenderer):
     """Compute eigenmode, then derive from it using the epr method
     """
     default_setup = Dict(name="Setup",
@@ -52,22 +52,12 @@ class EigenmodeAndEPR(QAnalysis, NeedsRenderer):
         # set design and renderer
         super().__init__(design, renderer_name)
 
-        # create and set setup variables
-        self._setup = deepcopy(self.default_setup)
-
         # settings variables
         self.setup_name = None
 
-        # results variables
+        # output variables
         self._convergence_t = None
         self._convergence_f = None
-
-        # epr variables
-        self.junctions = dict()
-        self.dissipatives = dict()
-        self.ℰ_elec = None
-        self.ℰ_mag = None
-        self.ℰ_elec_sub = None
 
     def _render(self, **design_selection):
         """Renders the design from qiskit metal into the selected renderer.
@@ -262,6 +252,33 @@ class EigenmodeAndEPR(QAnalysis, NeedsRenderer):
         """
         return self.renderer.clear_fields(names)
 
+
+class EPRanalysis(QAnalysis, NeedsRenderer):
+    """Compute eigenmode, then derive from it using the epr method
+    """
+    default_setup = Dict()
+    """Default setup"""
+    def __init__(self, design: 'QDesign', *args, **kwargs):
+        """Compute eigenmode, then derive from it using the epr method
+
+        Args:
+            design (QDesign): pointer to the main qiskit-metal design. Used to access the Qrenderer
+            renderer_name (str, optional): which renderer to use. Defaults to 'hfss'.
+        """
+        # set design and renderer
+        super().__init__(design, *args, **kwargs)
+
+        # input variables
+        self._convergence_t = None
+        self._convergence_f = None
+
+        # output variables
+        self.junctions = dict()
+        self.dissipatives = dict()
+        self.ℰ_elec = None
+        self.ℰ_mag = None
+        self.ℰ_elec_sub = None
+
     def add_junction(self, name: str, Lj_variable: str, rect: str, line: str,
                      Cj_variable: str):
         """
@@ -368,3 +385,17 @@ class EigenmodeAndEPR(QAnalysis, NeedsRenderer):
         """
         return self.renderer.epr_get_frequencies(self.junctions,
                                                  self.dissipatives)
+
+
+class EigenmodeAndEPR(Eigenmode, EPRanalysis):
+    """Compute eigenmode, then derive from it using the epr method
+    """
+    def __init__(self, design: 'QDesign', renderer_name: str = 'hfss'):
+        """Compute eigenmode, then derive from it using the epr method
+
+        Args:
+            design (QDesign): pointer to the main qiskit-metal design. Used to access the Qrenderer
+            renderer_name (str, optional): which renderer to use. Defaults to 'hfss'.
+        """
+        # set design and renderer
+        super().__init__(design, renderer_name)
