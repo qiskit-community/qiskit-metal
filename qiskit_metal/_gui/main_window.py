@@ -97,6 +97,17 @@ class QMainWindowExtension(QMainWindowExtensionBase):
             self.ui.tabWidget.setCurrentWidget(self.ui.mainViewTab)
             self.ui.actionElements.setText("QGeometry")
 
+
+    # !! Why not put the functionality in the button? --> bc needs to QMessageBox.question
+        class DeleteAllComponentsButton():
+
+            def delete_all_components
+
+            self.toggled.connect(delete_all_components())
+
+    # !! ^^ What if
+
+    #!! SHOW RENDERER
     def show_renderer_gds(self):
         """Handles click on GDS Renderer action."""
         self.gds_gui = RendererGDSWidget(self, self.gui)
