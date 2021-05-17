@@ -701,6 +701,8 @@ class Sweeping():
                                  ignored_jjs=dm_render_args.ignored_jjs,
                                  box_plus_buffer=dm_render_args.box_plus_buffer)
 
+            #To insert a "frequency sweep" within setup,
+            # the pin/ports have to be rendered.
             self.error_check_and_insert_sweep(a_hfss, setup_args.name,
                                               dm_add_sweep_args)
 
@@ -817,7 +819,9 @@ class Sweeping():
                 f'Removed keys: {unexpected_keys} from '
                 'dm_add_sweep_args Dict before using it. ')
 
-        a_hfss.add_sweep(setup_name=setup_name, **dm_add_sweep_args)
+        all_sweep_names = a_hfss.pinfo.setup._setup_module.GetSweeps(setup_name)
+        if dm_add_sweep_args.name not in all_sweep_names:
+            a_hfss.add_sweep(setup_name=setup_name, **dm_add_sweep_args)
 
     def error_check_render_design_args(self, dm_render_args: Dict) -> int:
         """To render to Ansys, we need every argument in render_design.
