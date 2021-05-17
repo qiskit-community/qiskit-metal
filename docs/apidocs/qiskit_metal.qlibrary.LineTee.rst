@@ -18,6 +18,7 @@ LineTee
    .. autosummary::
       :toctree: ../stubs/
    
+      LineTee.TOOLTIP
       LineTee.class_name
       LineTee.component_metadata
       LineTee.default_options
