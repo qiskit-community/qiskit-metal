@@ -16,15 +16,15 @@ Setting up environment
 
 **Q: Why do I have an inactive developer path on MacOs?**
 
-**A:** If you are seeing: *xcrun: error: invalid active developer path (/Library/Developer/CommandLineTools), missing xcrun at /Library/Developer/CommandLineTools/usr/bin/xcrun* you may be missing the Command Line Tools.
+**A:** If you are seeing: ``xcrun: error: invalid active developer path (/Library/Developer/CommandLineTools), missing xcrun at /Library/Developer/CommandLineTools/usr/bin/xcrun`` you may be missing the Command Line Tools.
 
 The Command Line Tools package for XCode should be already installed.
-If not, they can be installed with: `xcode-select —install`
+If not, they can be installed with: ``xcode-select —install``
 
 
 **Q: Why can't qutip find my path?**
 
-**A:** `qutip` may have issues finding your path if using VSCode, resulting in a `KeyError: 'physicalcpu'`. If the error occurs, please add your PATH to VSCode's settings as follows.
+**A:** ``qutip`` may have issues finding your path if using VSCode, resulting in a ``KeyError: 'physicalcpu'``. If the error occurs, please add your PATH to VSCode's settings as follows.
 
 *Windows:*
 
@@ -48,7 +48,7 @@ Open Terminal and type:
 
 ``echo $PATH``
 
-Copy the resulting output. Example: `"PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"`
+Copy the resulting output. Example: ``"PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"``
 Then open the applicable settings.json in your VS Code. (See how to open command palette `here <https://code.visualstudio.com/docs/getstarted/tips-and-tricks>`_). Search "settings" and click Open Workspace Settings (JSON)). Paste:
 
 .. code-block:: RST
@@ -60,16 +60,16 @@ Then open the applicable settings.json in your VS Code. (See how to open command
 **Q: Why is the pip installation asking for a path to gdal-config?**
 
 **A:** If you are seeing: *A GDAL API version must be specified. Provide a path to gdal-config using a GDAL_CONFIG environment variable or use a GDAL_VERSION environment variable.* you are probably trying to install qiskit-metal on a brand new environment.
-This is the result of a known limitation of the PyPI windows packages `gdal` and `fiona`.
+This is the result of a known limitation of the PyPI windows packages ``gdal`` and ``fiona``.
 
 *conda:*
 
-Conda has valid `gdal` and `fiona` packages. Simply run `conda install fiona` before trying again to install qiskit-metal.
+Conda has valid ``gdal`` and ``fiona`` packages. Simply run ``conda install fiona`` before trying again to install qiskit-metal.
 
 *python venv:*
 
 You will need to download and install the binary wheels from `here <https://www.lfd.uci.edu/~gohlke/pythonlibs/>_`.
-After downloading the wheels, install `gdal` first, then `fiona`, then again `qiskit-metal`. Replace the wheel names in the example below with the names of the files you downloaded:
+After downloading the wheels, install ``gdal`` first, then ``fiona``, then again ``qiskit-metal``. Replace the wheel names in the example below with the names of the files you downloaded:
 
 .. code-block:: RST
 
@@ -77,9 +77,16 @@ After downloading the wheels, install `gdal` first, then `fiona`, then again `qi
    python -m pip install .\Fiona-1.8.19-cp38-cp38-win_amd64.whl
    python -m pip install -e .   (replace this line with the one you executed before the error)
 
-**Q: Why is my installation complaining about missing `geos_c.dll`?**
+**Q: Why is my installation complaining about missing ``geos_c.dll``?**
 
-**A:** Based on: `this <https://github.com/Toblerity/Shapely/pull/1108>`_, this is a known bug with the `shapely` package <1.8. that should be fixed with a more recent shapely package. Meanwhile, you can use the shapely package from conda by installing it as `conda install shapely` before installing `qiskit-metal`, which installs the missing file as a dependency.
+**A:** Based on: `this <https://github.com/Toblerity/Shapely/pull/1108>`_, this is a known bug with the ``shapely`` package <1.8. that should be fixed with a more recent shapely package. Meanwhile, you can use the shapely package from conda by installing it as ``conda install shapely`` before installing ``qiskit-metal``, which installs the missing file as a dependency.
+
+**Q: Why is "xcb" found but not loaded?**
+
+**A:** it has been observed for pip installation on fresh conda environments that this error might show up: ``Could not load the Qt platform plugin "xcb" in "" even though it was found.``
+
+Based on `this source <https://forum.qt.io/topic/93247/qt-qpa-plugin-could-not-load-the-qt-platform-plugin-xcb-in-even-though-it-was-found>`_ You might be able to resolve this error by installing the dependency with ``sudo apt-get install libxcb-xinerama0``
+An alternative might be to install an older version of python (and related dependencies)
 
 **Q: Why am I not able to start Jupyter Lab in the new environment?**
 
