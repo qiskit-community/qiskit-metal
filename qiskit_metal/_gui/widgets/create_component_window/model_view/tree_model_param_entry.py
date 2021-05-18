@@ -28,7 +28,6 @@ from PySide2.QtGui import QFont
 from PySide2.QtWidgets import (QComboBox, QTreeView, QWidget)
 from addict import Dict
 
-
 if TYPE_CHECKING:
     from qiskit_metal.designs.design_base import QDesign
 
@@ -186,7 +185,7 @@ class BranchNode(Node):
                 return i
         return -1
 
-    def childWithKey(self, key:str):  # pylint: disable=invalid-name
+    def childWithKey(self, key: str):  # pylint: disable=invalid-name
         """Gets the child with the given key
 
         Arguments:
@@ -251,7 +250,7 @@ class LeafNode(Node):
     whose positions denote their nesting depth (shallow to deep).
     """
 
-    def __init__(self, name: str, value:Any, parent=None):
+    def __init__(self, name: str, value: Any, parent=None):
         """
         Arguments:
             name (str): Label for the leaf node
@@ -389,7 +388,10 @@ class TreeModelParamEntry(QAbstractItemModel):
             data_dict = {}
         self.init_load(data_dict)
 
-    def add_new_leaf_node(self, cur_index: QModelIndex, key: str, value:Any=None):
+    def add_new_leaf_node(self,
+                          cur_index: QModelIndex,
+                          key: str,
+                          value: Any = None):
         """
         Add new leaf node to model's backing tree structure
         Arguments:
@@ -415,8 +417,8 @@ class TreeModelParamEntry(QAbstractItemModel):
     def add_new_branch_node(self,
                             cur_index: QModelIndex,
                             key: str,
-                            fake_key :str,
-                            fake_value: Any=None):
+                            fake_key: str,
+                            fake_value: Any = None):
         """
         Adds new branch node to model's backing tree
         Arguments:

@@ -63,7 +63,8 @@ class ParamDelegate(QItemDelegate):
         else:
             QItemDelegate.setEditorData(self, editor, index)
 
-    def setModelData(self, editor:QWidget, model: QAbstractItemModel, index: QModelIndex):
+    def setModelData(self, editor: QWidget, model: QAbstractItemModel,
+                     index: QModelIndex):
         """
         Overriding inherited setModelData class
         Arguments:

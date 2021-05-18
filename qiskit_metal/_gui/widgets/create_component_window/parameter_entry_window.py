@@ -61,8 +61,8 @@ class ParameterEntryWindow(QMainWindow):
     def __init__(self,
                  qcomp_class: Type,
                  design: designs.DesignPlanar,
-                 parent: QWidget=None,
-                 gui: 'MetalGUI'=None):
+                 parent: QWidget = None,
+                 gui: 'MetalGUI' = None):
         """
         Parameter Entry Widget when qcomponent is chosen from GUI's QLibrary
         Arguments:
@@ -151,7 +151,7 @@ class ParameterEntryWindow(QMainWindow):
                             lqce.__class__.__name__) + ":\n" + str(lqce)
 
                     # modality set by critical, Don't set Title -- will NOT show
-                    # up on MacOs
+                    # up on MacOs¥
                     args[0].error_pop_up.critical(args[0], "", error_message)
 
             return wrapper
