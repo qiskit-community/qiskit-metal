@@ -34,7 +34,7 @@ class SmileyFace(QComponent):
     default_options = Dict(happy=True, wink=False, orientation=0)
     """Default connector options"""
 
-    TOOLTIP = "TEST COMPONENT It is for fun only"
+    TOOLTIP = """TEST COMPONENT It is for fun only"""
 
     def make(self):
         """Build the component."""

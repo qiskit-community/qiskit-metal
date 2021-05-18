@@ -100,7 +100,7 @@ class QRoute(QComponent):
         trace_width='cpw_width')
     """Default options"""
 
-    TOOLTIP = "QRoute"
+    TOOLTIP = """QRoute"""
 
     def __init__(self,
                  design,

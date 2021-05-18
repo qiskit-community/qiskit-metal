@@ -117,7 +117,7 @@ class QComponent():
     component_metadata = Dict()
     """Component metadata"""
 
-    TOOLTIP = "QComponent"
+    TOOLTIP = """QComponent"""
 
     options = {}
     """A dictionary of the component-designer-defined options.

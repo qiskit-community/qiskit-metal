@@ -54,7 +54,7 @@ class RectangleHollow(QComponent):
                                       rotation='15'))
     """Default drawing options"""
 
-    TOOLTIP = "A single configurable square"
+    TOOLTIP = """A single configurable square"""
 
     def make(self):
         """The make function implements the logic that creates the geoemtry

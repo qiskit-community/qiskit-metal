@@ -68,7 +68,7 @@ class NSquareSpiral(QComponent):
                            layer='1')
     """Default drawing options"""
 
-    TOOLTIP = "A n count square spiral"
+    TOOLTIP = """An n count square spiral"""
 
     def make(self):
         """The make function implements the logic that creates the geoemtry

@@ -46,7 +46,7 @@ class ShortToGround(QComponent):
                            layer='1')
     """Default connector options"""
 
-    TOOLTIP = "A basic short to ground termination"
+    TOOLTIP = """A basic short to ground termination"""
 
     def make(self):
         """Build the component."""

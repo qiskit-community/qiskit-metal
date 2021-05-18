@@ -51,7 +51,7 @@ class CircleRaster(QComponent):
     )
     """Default drawing options"""
 
-    TOOLTIP = "A single configurable circle"
+    TOOLTIP = """A single configurable circle"""
 
     def make(self):
         """The make function implements the logic that creates the geoemtry
