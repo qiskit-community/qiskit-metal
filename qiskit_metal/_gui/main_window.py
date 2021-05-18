@@ -197,8 +197,10 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         if ison:
             QMessageBox.warning(
                 self, "Notice",
-                "If you're editing a component via an external IDE, don't forget to refresh the component's file in the Library before rebuilding so your changes will take effect."
-            )
+                "If you're editing a component via an external IDE,"
+                " don't forget to refresh the component's file"
+                " in the Library before rebuilding so your changes"
+                " will take effect.")
 
         self.gui.ui.dockLibrary_tree_view.set_dev_mode(ison)
         self.gui.is_dev_mode = ison
@@ -426,6 +428,12 @@ class MetalGUI(QMainWindowBaseHandler):
     def _setup_variables_widget(self):
         """Setup the variables widget."""
         self.ui.dockVariables.setWidget(self.variables_window)
+        # hookup to delete action
+        self.ui.btn_comp_del.clicked.connect(
+            self.ui.tableComponents.delete_selected_rows)
+        self.ui.btn_comp_rename.clicked.connect(
+            self.ui.tableComponents.rename_row)
+        self.ui.btn_comp_zoom.clicked.connect(self.btn_comp_zoom_fx)
 
     def _setup_plot_widget(self):
         """Create main Window Widget Plot."""
@@ -699,6 +707,13 @@ class MetalGUI(QMainWindowBaseHandler):
         """
         bounds = self.canvas.find_component_bounds(components)
         self.canvas.zoom_to_rectangle(bounds)
+
+    def btn_comp_zoom_fx(self):
+        """
+        Zooms in display on selected QComponent
+        """
+        names = self.ui.tableComponents.name_of_selected_qcomponent()
+        self.zoom_on_components(names)
 
     @slot_catch_error()
     def gui_create_build_log_window(self, _=None):
