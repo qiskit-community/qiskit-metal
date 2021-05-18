@@ -62,7 +62,7 @@ class QNet():
                          pin2_name: str) -> int:
         """Error check the arguments before using them.
 
-        Args:
+        Arguments:
             comp1_id (int): Name of component 1.
             pin1_name (str): Corresponding pin name for component1.
             comp2_id (int): Name of component 2.
@@ -151,7 +151,7 @@ class QNet():
     def delete_all_pins_for_component(self, component_id_to_remove: int) -> set:
         """Delete all the pins for a given component id.
 
-        Args:
+        Arguments:
             component_id_to_remove (int): Component ID to remove
 
         Returns:

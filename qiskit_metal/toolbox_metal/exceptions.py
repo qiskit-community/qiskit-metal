@@ -21,7 +21,7 @@ class QiskitMetalExceptions(Exception):
     """Custom Exception super-class. Every Exception raised by qiskit-metal
     should inherit this. Adds the qiskit-metal prefix.
 
-    Args:
+    Arguments:
         message (str): String describing the error raised from qiskit-metal
     """
 
@@ -34,7 +34,7 @@ class QiskitMetalExceptions(Exception):
 class QLibraryGUIException(QiskitMetalExceptions):
     """Custom Exception for the QLibrary GUI feature
 
-    Args:
+    Arguments:
         message (str): String describing the error raised
     """
 
@@ -47,7 +47,7 @@ class QiskitMetalDesignError(QiskitMetalExceptions):
     """Custom Exception to indicate User action is needed to correct Design
     Inputs.
 
-    Args:
+    Arguments:
         message (str): String describing the cause of the error and suggested solution
     """
 
@@ -59,7 +59,7 @@ class QiskitMetalDesignError(QiskitMetalExceptions):
 class IncorrectQtException(Exception):
     """Run PySide2 only.
 
-    Args:
+    Arguments:
         message (str): String describing the cause of the error and suggested solution
     """
 

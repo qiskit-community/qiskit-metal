@@ -203,7 +203,7 @@ class TransmonPocket6(BaseQubit):
     def make_connection_pad(self, name: str):
         """Makes n individual connector.
 
-        Args:
+        Arguments:
             name (str) : Name of the connector
         """
 

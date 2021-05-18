@@ -30,7 +30,7 @@ class PropertyTableWidget(QMainWindow):
 
     def __init__(self, parent, design=None, gui=None):
         """
-        Args:
+        Arguments:
             parent (QMainWindowExtension): Parent window
             design (QDesign): design.  Defaults to None.
             gui (MetalGUI): the GUI.  Defaults to None.
@@ -59,7 +59,7 @@ class PropertyTableWidget(QMainWindow):
         """Swap out reference to design, which changes the reference to the
         dictionary.
 
-        Args:
+        Arguments:
             design (QDesign): The design
         """
         self._design = design

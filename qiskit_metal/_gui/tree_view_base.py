@@ -23,7 +23,7 @@ class QTreeView_Base(QTreeView):
 
     def __init__(self, parent: QtWidgets.QWidget):
         """
-        Args:
+        Arguments:
             parent (QtWidgets.QWidget): The widget
         """
         QTreeView.__init__(self, parent)
@@ -41,7 +41,7 @@ class QTreeView_Base(QTreeView):
     def autoresize_columns(self, max_width: int = 200):
         """Resize columns to content with maximum size.
 
-        Args:
+        Arguments:
             max (int): Maximum window width.  Defaults to 200.
         """
         # For TreeView: resizeColumnToContents

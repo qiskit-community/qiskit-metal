@@ -40,7 +40,7 @@ class ElementsWindow(QMainWindow):
 
     def __init__(self, gui: 'MetalGUI', parent_window: 'QMainWindowExtension'):
         """
-        Args:
+        Arguments:
             gui (MetalGUI): The GUI
             parent_window (QMainWindowExtension): Parent window
         """
@@ -79,7 +79,7 @@ class ElementsWindow(QMainWindow):
     def combo_element_type(self, new_type: str):
         """Change to the given type.
 
-        Args:
+        Arguments:
             new_type (str): Type to change to
         """
         self.logger.info(f'Changed element table type to: {new_type}')
@@ -110,7 +110,7 @@ class ElementTableModel(QAbstractTableModel):
     def __init__(self, gui, parent=None, element_type='poly'):
         super().__init__(parent=parent)
         """
-        Args:
+        Arguments:
             gui (MetalGUI): The GUI
             parent (QMainWindowExtension): Parent window.  Defaults to None.
             element_type (str): The elment type.  Defaults to 'poly'.
@@ -154,7 +154,7 @@ class ElementTableModel(QAbstractTableModel):
     def set_type(self, element_type: str):
         """Set the type.
 
-        Args:
+        Arguments:
             element_type (str): Element type to set to
         """
         self.type = element_type
@@ -187,7 +187,7 @@ class ElementTableModel(QAbstractTableModel):
     def rowCount(self, parent: QModelIndex = None):
         """Counts all the rows.
 
-        Args:
+        Arguments:
             parent (QModelIndex): Unused.  Defaults to None.
 
         Returns:
@@ -200,7 +200,7 @@ class ElementTableModel(QAbstractTableModel):
     def columnCount(self, parent: QModelIndex = None):
         """Counts all the columns.
 
-        Args:
+        Arguments:
             parent (QModelIndex): Unused.  Defaults to None.
 
         Returns:
@@ -213,7 +213,7 @@ class ElementTableModel(QAbstractTableModel):
     def headerData(self, section, orientation, role=QtCore.Qt.DisplayRole):
         """Set the headers to be displayed.
 
-        Args:
+        Arguments:
             section (int): Section number
             orientation (Qt orientation): Section orientation
             role (Qt display role): Display role.  Defaults to DisplayRole.
@@ -234,7 +234,7 @@ class ElementTableModel(QAbstractTableModel):
         this function just to see how it's done, as we manually adjust each
         tableView to have NoEditTriggers.
 
-        Args:
+        Arguments:
             index (QModelIndex): The index
 
         Returns:

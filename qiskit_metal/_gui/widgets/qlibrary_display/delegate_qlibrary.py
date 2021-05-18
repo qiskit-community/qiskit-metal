@@ -87,7 +87,7 @@ class LibraryDelegate(QItemDelegate):
         if in developer mode (is_dev_mode). Otherwise, renders normally
 
 
-        Args:
+        Arguments:
             painter (QPainter): Current painter
             option (QStyleOptionViewItem): Current option
             index (QModelIndex): Current index of related model

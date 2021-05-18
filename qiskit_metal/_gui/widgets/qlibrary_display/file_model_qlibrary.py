@@ -42,7 +42,7 @@ class QFileSystemLibraryModel(QFileSystemModel):
         Initializes Model
 
 
-        Args:
+        Arguments:
             parent(QWidget): Parent widget
         """
         super().__init__(parent)
@@ -56,7 +56,7 @@ class QFileSystemLibraryModel(QFileSystemModel):
     def is_valid_file(self, file: str) -> bool:
         """
         Whether it's a file the FileWatcher should track
-        Args:
+        Arguments:
             file(str): Filename
 
         Returns:
@@ -73,7 +73,7 @@ class QFileSystemLibraryModel(QFileSystemModel):
         Remove file from the dirtied_files dictionary
         and remove any parent files who are only dirty due to
         this file. Emits file_cleaned_signal.
-        Args:
+        Arguments:
             filepath(str):  File path of file to be cleaned
 
         """
@@ -95,7 +95,7 @@ class QFileSystemLibraryModel(QFileSystemModel):
         """
         Adds file and parent directories to the dirtied_files dictionary.
         Emits file_dirtied_signal
-        Args:
+        Arguments:
             filepath (str): Dirty file path
 
         """
@@ -119,7 +119,7 @@ class QFileSystemLibraryModel(QFileSystemModel):
     def is_file_dirty(self, filepath: str) -> bool:
         """
         Checks whether file is dirty
-        Args:
+        Arguments:
             filepath (str): File in question
 
         Returns:
@@ -132,7 +132,7 @@ class QFileSystemLibraryModel(QFileSystemModel):
     def filepath_to_filename(self, filepath: str) -> str:  # pylint: disable=R0201, no-self-use
         """
         Gets just the filename from the full filepath
-        Args:
+        Arguments:
             filepath (str): Full file path
 
         Returns:
@@ -150,7 +150,7 @@ class QFileSystemLibraryModel(QFileSystemModel):
     def setRootPath(self, path: str) -> QModelIndex:
         """
         Sets FileWatcher on root path and adds rootpath to model
-        Args:
+        Arguments:
             path (str): Root path
 
         Returns:
@@ -170,7 +170,7 @@ class QFileSystemLibraryModel(QFileSystemModel):
     def alert_highlight_row(self, filepath: str):
         """
         Dirties file and re-adds edited file to the FileWatcher
-        Args:
+        Arguments:
             filepath (str): Dirty file
 
 
@@ -187,7 +187,7 @@ class QFileSystemLibraryModel(QFileSystemModel):
                    role: int = ...) -> typing.Any:
         """ Set the headers to be displayed.
 
-        Args:
+        Arguments:
             section (int): Section number
             orientation (Qt orientation): Section orientation
             role (Qt display role): Display role.  Defaults to DisplayRole.
@@ -215,7 +215,7 @@ class QFileSystemLibraryModel(QFileSystemModel):
     def set_file_is_dev_mode(self, ison: bool):
         """
         Set dev_mode
-        Args:
+        Arguments:
             ison(bool): Whether dev_mode is on
 
         """

@@ -46,7 +46,7 @@ def _qt_message_handler(mode, context, message):
 
     For more info, see https://doc.qt.io/qt-5/qtglobal.html#qInstallMessageHandler
 
-    Args:
+    Arguments:
         mode (QtCore mode): the mode
         context (context): the context
         message (str): the message

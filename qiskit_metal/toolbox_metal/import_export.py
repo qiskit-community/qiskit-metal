@@ -27,7 +27,7 @@ __all__ = ['save_metal', 'load_metal_design']
 def save_metal(filename: str, design):
     """Save metal0.
 
-    Args:
+    Arguments:
         filename (str): File path
         design (QDesign): Design obejct Metal_Design_Base
 
@@ -68,7 +68,7 @@ def save_metal(filename: str, design):
 def load_metal_design(filename: str):
     """Load metal design.
 
-    Args:
+    Arguments:
         filename (str): File path
 
     Returns:

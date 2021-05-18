@@ -507,7 +507,7 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
     def generate_spiral_list(x: int, y: int):
         """Helper function to generate a sprital list.
 
-        Args:
+        Arguments:
             x (int): x-coordinate
             y (int): y-coordinate
 

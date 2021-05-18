@@ -101,7 +101,7 @@ class RouteMeander(QRoute):
                           end_pt: QRoutePoint) -> np.ndarray:
         """Meanders using a fixed length and fixed spacing.
 
-        Args:
+        Arguments:
             start_pt (QRoutePoint): QRoutePoint of the start
             end_pt (QRoutePoint): QRoutePoint of the end
 
@@ -318,7 +318,7 @@ class RouteMeander(QRoute):
         anchor the left-over length, therefore this code supports both odd and
         even cases, separately. For even it assumes all points are in paired.
 
-        Args:
+        Arguments:
             delta_length (delta_length): slack/excess length to distribute on the pts
             pts (np.array): intermediate points of meander. pairs, except last point (2,2,...,2,1)
             start_pt (QRoutePoint): QRoutePoint of the start
@@ -423,7 +423,7 @@ class RouteMeander(QRoute):
     def get_index_for_side1_meander(num_root_pts: int):
         """Get the indices.
 
-        Args:
+        Arguments:
             num_root_pts (list): List of points
 
         Returns:

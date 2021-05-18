@@ -28,7 +28,7 @@ class LibraryFileProxyModel(QSortFilterProxyModel):
 
     def __init__(self, parent: QWidget = None):
         """Proxy Model for cleaning up QFileSystemLibraryModel for displaying GUI's QLibrary
-        Args:
+        Arguments:
             parent:(QWidget) Parent widget
         """
 
@@ -44,7 +44,7 @@ class LibraryFileProxyModel(QSortFilterProxyModel):
     def set_dev_mode(self, ison: bool):
         """
         Set dev mode
-        Args:
+        Arguments:
             ison(bool): Whether dev mode is on
 
         """
@@ -54,7 +54,7 @@ class LibraryFileProxyModel(QSortFilterProxyModel):
             self, source_column: int, source_parent: QModelIndex) -> bool:  #pylint: disable=unused-argument
         """
         Filters out unwanted file information in display
-        Args:
+        Arguments:
             source_column(int): Display column in question
             source_parent(QModelIndex): Parent index
         Returns:
@@ -72,7 +72,7 @@ class LibraryFileProxyModel(QSortFilterProxyModel):
              role: int = Qt.DisplayRole) -> typing.Any:
         """
         Sets standard size hint for indexes and allows
-        Args:
+        Arguments:
             index(QModelIndex): Model Index holding data
             role(int): DisplayRole being requested of index
         Returns:

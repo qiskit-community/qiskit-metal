@@ -161,7 +161,7 @@ class RouteMixed(RoutePathfinder, RouteMeander):
         """Translates the user-selected connection method into the right method
         to execute.
 
-        Args:
+        Arguments:
             segment_num (int): Segment ID. Counts 0 as the first segment after the lead-in.
 
         Return:

@@ -98,7 +98,7 @@ class MplInteraction(object):
 
     def __init__(self, figure):
         """
-        Args:
+        Arguments:
             figure (figure): The matplotlib figure to attach the behavior to.
         """
         self._fig_ref = weakref.ref(figure)
@@ -111,7 +111,7 @@ class MplInteraction(object):
     def _add_connection(self, event_name, callback):
         """Called to add a connection to an event of the figure.
 
-        Args:
+        Arguments:
             event_name (str): The matplotlib event name to connect to.
             callback (callback): The callback to register to this event.
         """
@@ -137,7 +137,7 @@ class MplInteraction(object):
         """Returns two sets of Axes to update according to event. Takes care of
         multiple axes and shared axes.
 
-        Args:
+        Arguments:
             event (MouseEvent): Matplotlib event to consider
 
         Returns:
@@ -176,7 +176,7 @@ class ZoomOnWheel(MplInteraction):
 
     def __init__(self, figure=None, scale_factor=1.1):
         """
-        Args:
+        Arguments:
             figure (figure): The matplotlib figure to attach the behavior to.
             scale_factor (float): The scale factor to apply on wheel event.
         """
@@ -189,7 +189,7 @@ class ZoomOnWheel(MplInteraction):
     def _zoom_range(begin, end, center, scale_factor, scale):
         """Compute a 1D range zoomed around center.
 
-        Args:
+        Arguments:
             begin (float): The begin bound of the range
             end (float): The end bound of the range
             center (float): The center of the zoom (i.e., invariant point)
@@ -273,7 +273,7 @@ class PanAndZoom(ZoomOnWheel):
 
     def __init__(self, figure=None, scale_factor=1.1):
         """
-        Args:
+        Arguments:
             figure (figure): The matplotlib figure to attach the behavior to.
             scale_factor (float): The scale factor to apply on wheel event.
         """
@@ -409,7 +409,7 @@ class PanAndZoom(ZoomOnWheel):
     def _pan_update_limits(ax, axis_id, event, last_event):
         """Compute limits with applied pan.
 
-        Args:
+        Arguments:
             axis_id (int): ID of the axis
             event (event): The event
             last_event (event): The previous event
@@ -454,7 +454,7 @@ class PanAndZoom(ZoomOnWheel):
     def _pan(self, event):
         """Pan.
 
-        Args:
+        Arguments:
             event (event): The event
         """
         if event.name == 'button_press_event':  # begin pan
@@ -485,7 +485,7 @@ class PanAndZoom(ZoomOnWheel):
     def _zoom_area(self, event):
         """Zoom.
 
-        Args:
+        Arguments:
             event (event): The event
         """
         if event.name == 'button_press_event':  # begin drag
@@ -552,7 +552,7 @@ class PanAndZoom(ZoomOnWheel):
     def _on_mouse_press(self, event):
         """Mouse press event.
 
-        Args:
+        Arguments:
             event (event): The event
         """
         if self._pressed_button is not None:
@@ -576,7 +576,7 @@ class PanAndZoom(ZoomOnWheel):
     def _on_mouse_release(self, event):
         """Mouse release event.
 
-        Args:
+        Arguments:
             event (event): The event
         """
         if self._pressed_button == event.button:
@@ -589,7 +589,7 @@ class PanAndZoom(ZoomOnWheel):
     def _on_mouse_motion(self, event):
         """Mouse motion event.
 
-        Args:
+        Arguments:
             event (event): The event
         """
         if self._pressed_button == 1:  # pan
@@ -600,7 +600,7 @@ class PanAndZoom(ZoomOnWheel):
     def _report_point_position(self, event):
         """Report point position.
 
-        Args:
+        Arguments:
             event (event): the event
         """
         ix, iy = event.xdata, event.ydata

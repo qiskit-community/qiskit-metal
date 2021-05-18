@@ -35,7 +35,7 @@ class EndcapQ3DWidget(QMainWindow):
         """Get access to design, which has the components. Then set up the
         model and view.
 
-        Args:
+        Arguments:
             parent (QMainWindow): The parent window
             gui (MetalGUI): The metal GUI
             components_to_render (list): A list of components to render to Ansys Q3D
@@ -94,7 +94,7 @@ class EndcapQ3DWidget(QMainWindow):
         begin with. These are the default endcap settings for all pins in
         components_to_render.
 
-        Args:
+        Arguments:
             components_to_render (list, optional): List of components to render.  Defaults to None.
 
         Returns:

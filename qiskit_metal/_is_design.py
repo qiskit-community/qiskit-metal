@@ -25,7 +25,7 @@ def is_design(obj):
     The problem is that the `isinstance` built-in method fails
     when this module is reloaded.
 
-    Args:
+    Arguments:
         obj (object): Test this object
 
     Returns:
@@ -43,7 +43,7 @@ def is_component(obj):
     The problem is that the `isinstance` built-in method fails
     when this module is reloaded.
 
-    Args:
+    Arguments:
         obj (object): Test this object
 
     Returns:

@@ -474,7 +474,7 @@ class QComponent():
         """When design.overwrite_enabled, the user is allowed to delete an
         existing component within the design if the name is being used.
 
-        Args:
+        Arguments:
             check_name (str, optional): Name of new component.  Defaults to None.
 
         Returns:
@@ -637,7 +637,7 @@ class QComponent():
     def _is_name_used(self, check_name: str) -> int:
         """Used to check if name of component already exists.
 
-        Args:
+        Arguments:
             check_name (str): Name which user requested to apply to current component.
 
         Returns:
@@ -772,7 +772,7 @@ class QComponent():
     def get_pin(self, name: str) -> Dict:
         """Interface for components to get pin data.
 
-        Args:
+        Arguments:
             name (str): Name of the desired pin.
 
         Returns:
@@ -845,7 +845,7 @@ class QComponent():
             This method is expecting self to be added to design._components dict.  More importantly,
             the unique id of self component needs to be in design._components dict.
 
-        Args:
+        Arguments:
             pin_name_self (str): Name of pin within the component.
             comp2_id (int): Component within design, but not self.
             pin2_name (str): The pin of comp2_id that pin_name_self will connect to.
@@ -973,7 +973,7 @@ class QComponent():
         assume those qgeometry.tables are used for the component. The method
         will search a dict populated by all the renderers during their init.
 
-        Args:
+        Arguments:
             kind (str): Name of table, like junction, path, or poly.
 
         Returns:

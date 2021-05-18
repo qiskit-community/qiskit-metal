@@ -52,7 +52,7 @@ phi0 = phinot / (2 * np.pi)  # reduced magnetic flux quantum
 def Ic_from_Lj(Lj: float) -> float:
     """Critical current In SI units.
 
-    Args:
+    Arguments:
         Lj (float): In Henries
 
     Returns:
@@ -64,7 +64,7 @@ def Ic_from_Lj(Lj: float) -> float:
 def Ic_from_Ej(Ej: float) -> float:
     """Critical current In SI units.
 
-    Args:
+    Arguments:
         Ej (float): In Joules
 
     Returns:
@@ -76,7 +76,7 @@ def Ic_from_Ej(Ej: float) -> float:
 def Cs_from_Ec(Ec: float) -> float:
     """Get total shunt capacitance from charging energy In SI units.
 
-    Args:
+    Arguments:
         Ec (float): In Joules
 
     Returns:
@@ -169,7 +169,7 @@ def extract_transmon_coupled_Noscillator(capMatrix,
     Calculate the χ The full dispersive splitting using analytical
     approximations, i.e., return the `|0> --> |1>` splitting.
 
-    Args:
+    Arguments:
         capMatrix (np.ndarray): Order of the capacitance matrix must be
           bus1...busN-1, ground, Qubit_pad1, Qubit_pad2, readout. (in F)
           If not in the correct order, use df_reorder_matrix_basis() to put
@@ -419,7 +419,7 @@ def levels_vs_ng_real_units(Cq, IC, N=301, do_disp=0, do_plots=0):
     function of the ng ration -- it subtracts the vaccuum flucations so that
     the groud state is set to zero energy.
 
-    Args:
+    Arguments:
         C (float): In fF
         Ic (float): In nA
         N (int): Number of charge values to use (needs to be odd)
@@ -532,7 +532,7 @@ def get_C_and_Ic(Cin_est, Icin_est, f01, f02on2):
     """Get the capacitance and critical current for a transmon of a certain
     frequency and anharmonicity.
 
-    Args:
+    Arguments:
         Cin_est (float): Initial guess for capacitance (in fF)
         Icin_est (float): Initial guess for critical current (in nA)
         f01 (float): Transmon frequency (in GHz)
@@ -566,7 +566,7 @@ def cos_to_mega_and_delta(Cin, ICin, f01, f02on2):
     f02/2 from 'levels_vs_ng_real_units' and least square with measured
     f01,f02on2.
 
-    Args:
+    Arguments:
         Cin (float): Cin
         ICin (float): ICin
         f01 (float): f01
@@ -589,7 +589,7 @@ def cos_to_mega_and_delta(Cin, ICin, f01, f02on2):
 def chargeline_T1(Ccharge, Cq, f01):
     """Calculate the charge line `T1`.
 
-    Args:
+    Arguments:
         Cchare (float): Ccharge
         Cq (float): Cq
         f01 (float): f01
@@ -610,7 +610,7 @@ def readin_q3d_matrix(path: str, delim_whitespace=True):
 
     When exporting pick "save as type: data table"
 
-    Args:
+    Arguments:
         path (str): Path to file
 
     Returns:
@@ -685,7 +685,7 @@ def readin_q3d_matrix(path: str, delim_whitespace=True):
 def readin_q3d_matrix_m(path: str) -> pd.DataFrame:
     """Read in Q3D cap matrix from a .m file exported by Ansys Q3d.
 
-    Args:
+    Arguments:
         path (str): Path to .m file
 
     Returns:
@@ -736,7 +736,7 @@ def load_q3d_capacitance_matrix(path, user_units='fF', _disp=True):
 def df_cmat_style_print(df_cmat: pd.DataFrame):
     """Display the dataframe in the cmat style.
 
-    Args:
+    Arguments:
         df_cmat (dataframe): Dataframe to display
     """
     from IPython.display import display

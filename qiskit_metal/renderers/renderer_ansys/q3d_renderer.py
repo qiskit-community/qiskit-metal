@@ -77,7 +77,7 @@ class QQ3DRenderer(QAnsysRenderer):
         """Create a QRenderer for Q3D simulations, subclassed from
         QAnsysRenderer.
 
-        Args:
+        Arguments:
             design (QDesign): Use QGeometry within QDesign to obtain elements for Ansys.
             initiate (bool, optional): True to initiate the renderer. Defaults to True.
             render_template (Dict, optional): Typically used by GUI for template options for GDS. Defaults to None.
@@ -142,7 +142,7 @@ class QQ3DRenderer(QAnsysRenderer):
         bounding box, it runs the risk of rendered components being too close to the edge of the chip or even
         falling outside its boundaries.
 
-        Args:
+        Arguments:
             selection (Union[list, None], optional): List of components to render. Defaults to None.
             open_pins (Union[list, None], optional): List of tuples of pins that are open. Defaults to None.
             box_plus_buffer (bool): Either calculate a bounding box based on the location of rendered geometries
@@ -186,7 +186,7 @@ class QQ3DRenderer(QAnsysRenderer):
         otherwise specified, all 2-D shapes are pec's with a thickness of 200
         nm.
 
-        Args:
+        Arguments:
             material_type (str): Material assignment.
             thickness (str): Thickness of thin conductor. Must include units.
             name (str): Name assigned to this group of thin conductors.
@@ -206,7 +206,7 @@ class QQ3DRenderer(QAnsysRenderer):
         """For active design, either get existing setup, make new setup with
         name, or make new setup with default name.
 
-        Args:
+        Arguments:
             setup_name_activate (str, optional): If name exists for setup, then have pinfo
               reference it.  If name for setup does not exist, create a new setup with the name.
               If name is None, create a new setup with default name.
@@ -259,7 +259,7 @@ class QQ3DRenderer(QAnsysRenderer):
         """Create a solution setup in Ansys Q3D. If user does not provide
         arguments, they will be obtained from q3d_options dict.
 
-        Args:
+        Arguments:
             freq_ghz (float, optional): Frequency in GHz. Defaults to 5..
             name (str, optional): Name of solution setup. Defaults to "Setup".
             save_fields (bool, optional): Whether or not to save fields. Defaults to False.
@@ -321,7 +321,7 @@ class QQ3DRenderer(QAnsysRenderer):
     def edit_q3d_setup(self, setup_args: Dict):
         """User can pass key/values to edit the setup for active q3d setup.
 
-        Args:
+        Arguments:
             setup_args (Dict): a Dict with possible keys/values.
 
         **setup_args** dict contents:
@@ -444,7 +444,7 @@ class QQ3DRenderer(QAnsysRenderer):
     def analyze_setup(self, setup_name: str):
         """Run a specific solution setup in Ansys Q3D.
 
-        Args:
+        Arguments:
             setup_name (str): Name of setup.
         """
         if self.pinfo:
@@ -458,7 +458,7 @@ class QQ3DRenderer(QAnsysRenderer):
         """Obtain capacitance matrix in a dataframe format. Must be executed
         *after* analyze_setup.
 
-        Args:
+        Arguments:
             variation (str, optional): An empty string returns nominal variation. Otherwise need the list. Defaults to ''
             solution_kind (str, optional): Solution type. Defaults to 'LastAdaptive'.
                 Set to 'AdaptivePass' to return the capacitance matrix of a specific pass.
@@ -494,7 +494,7 @@ class QQ3DRenderer(QAnsysRenderer):
         respective capacitance matrices (values). All capacitance matrices
         utilize the same values for Lj_nH and onwards in the list of arguments.
 
-        Args:
+        Arguments:
             Lj_nH (float): Junction inductance (in nH)
             Cj_fF (float): Junction capacitance (in fF)
             N (int): Coupling pads (1 readout, N - 1 bus)
@@ -539,7 +539,7 @@ class QQ3DRenderer(QAnsysRenderer):
         """Plot alpha and frequency versus pass number, as well as convergence
         of delta (in %).
 
-        Args:
+        Arguments:
             RES (pd.DataFrame): Dictionary of capacitance matrices versus pass number, organized as pandas table.
         """
         if self._pinfo:
@@ -551,7 +551,7 @@ class QQ3DRenderer(QAnsysRenderer):
         """Plot convergence of chi and g, both in MHz, as a function of pass
         number.
 
-        Args:
+        Arguments:
             RES (pd.DataFrame): Dictionary of capacitance matrices versus pass number, organized as pandas table.
         """
         epr.toolbox.plotting.mpl_dpi(110)
@@ -560,7 +560,7 @@ class QQ3DRenderer(QAnsysRenderer):
     def add_q3d_design(self, name: str, connect: bool = True):
         """Add a q3d design with the given name to the project.
 
-        Args:
+        Arguments:
             name (str): Name of the new q3d design
             connect (bool, optional): Should we connect this session to this design? Defaults to True.
         """
@@ -582,7 +582,7 @@ class QQ3DRenderer(QAnsysRenderer):
         exists, that will be added WITHOUT altering the suffix of the design
         name.
 
-        Args:
+        Arguments:
             name (str): Name of the new q3d design
         """
 

@@ -41,7 +41,7 @@ class Components:
         """Set up variables and logger which are used to emulate a dict which
         is referencing design._components.
 
-        Args:
+        Arguments:
             design (QDesign): Need to have a Qdesign class so this class can
                               reference design._components.
         """
@@ -63,7 +63,7 @@ class Components:
         """Provide corresponding ints to be used as keys for dict:
         design._components, when list of names is provided.
 
-        Args:
+        Arguments:
             component_names (List[str]): Names of components which user wants to know
                                          the int to be used as a key.
 
@@ -77,7 +77,7 @@ class Components:
         """Find id of component.  The id is the key for a dict which holds all
         of the components within design.
 
-        Args:
+        Arguments:
             name (str): Text name of component.  The name is assumed to be unique.
             quiet (bool): Allow warning messages to be generated.
 
@@ -107,7 +107,7 @@ class Components:
     # def is_name_used(self, new_name: str) -> int:
     #     """Check to see if name being used in components.
 
-    #      Args:
+    #      Arguments:
     #          new_name (str): name to check
     #
     #      Returns:
@@ -134,7 +134,7 @@ class Components:
         """Get the QComponent based on string name vs the unique id of
         QComponent.
 
-        Args:
+        Arguments:
             name (str): Name of component.
             quiet (bool): Allow warning messages to be generated.
 
@@ -166,7 +166,7 @@ class Components:
         There are netids used for pins within a component.  The netids are used
         in the net_info table and qgeometry tables.
 
-        Args:
+        Arguments:
             name (str): Name of QComponent.  If not in design._components,
                         then will be added to dict.
                         If in dict, the value(QComponent) will replace existing QComponent.
@@ -195,7 +195,7 @@ class Components:
     def __getattr__(self, name: str) -> Union['QComponent', None]:
         """Provide same behavior as __getitem__.
 
-        Args:
+        Arguments:
             name (str): Name of component used to find the QComponent in
                     design._components dict, vs using unique int id.
 
@@ -209,7 +209,7 @@ class Components:
     # def __setattr__(self, name: str, value: 'QComponent'):
     #     """Provide same behavior as __setitem__.
 
-    #     Args:
+    #     Arguments:
     #         name (str): Name of component used to find the QComponent in
     #                   design._components dict, vs using unique int id.
     #         value (QComponent): Component with the name used in arguments.
@@ -220,7 +220,7 @@ class Components:
     def __contains__(self, item: str) -> int:
         """Look for item in design._components in the value.
 
-        Args:
+        Arguments:
             item (str): Name in the value of design._components.
 
         Returns:
@@ -237,7 +237,7 @@ class Components:
     #     """Will delete component from design class along with deleting the
     #      net_info and element tables.
 
-    #     Args:
+    #     Arguments:
     #         name (str): Name of component to delete from design._components.
     #     """
     #     component_id = self.is_name_used(name)

@@ -39,7 +39,7 @@ def setup_logger(logger_name,
 
     Integrates logging with the warnings module.
 
-    Args:
+    Arguments:
         logger_name (str): Name of the log.
         log_format (format): Format of the log.
         log_datefmt (format): Format of the date.

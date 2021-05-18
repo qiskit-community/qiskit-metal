@@ -96,7 +96,7 @@ body {
 def format_docstr(doc: Union[str, None]) -> str:
     """Format a docstring.
 
-    Args:
+    Arguments:
         doc (Union[str, None]): String to format
 
     Returns:
@@ -119,7 +119,7 @@ def create_QTextDocument(doc: QtWidgets.QTextEdit) -> QtGui.QTextDocument:
 
     Access with gui.component_window.src_doc
 
-    Args:
+    Arguments:
         doc (QtWidget.QTextEdit): Text edit widget
 
     Returns:
@@ -159,7 +159,7 @@ class ComponentWidget(QTabWidget):
 
     def __init__(self, gui: 'MetalGUI', parent: QtWidgets.QWidget):
         """
-        Args:
+        Arguments:
             gui: (MetalGUI): The GUI
             parent (QWidget): Parent widget
         """

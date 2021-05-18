@@ -35,7 +35,7 @@ class TreeViewQLibrary(QTreeView):
     def __init__(self, parent: QWidget):
         """
         Inits TreeViewQLibrary
-        Args:
+        Arguments:
             parent (QtWidgets.QWidget): parent widget
         """
         QTreeView.__init__(self, parent)
@@ -44,7 +44,7 @@ class TreeViewQLibrary(QTreeView):
     def set_dev_mode(self, ison: bool):
         """Sets dev mode for self, model, model's source model, and delegate
 
-        Args:
+        Arguments:
             ison (bool): Whether to set dev mode
         """
         self.is_dev_mode = ison
@@ -58,7 +58,7 @@ class TreeViewQLibrary(QTreeView):
     def setModel(self, model: QtCore.QAbstractItemModel):
         """Overriding setModel to hook up clean/dirty file signals to model before setting Model
 
-        Args:
+        Arguments:
             model (QtCore.QAbstractItemModel): Model to be set
 
         Raises:
@@ -83,7 +83,7 @@ class TreeViewQLibrary(QTreeView):
          based on which columns were clicked, and to allow user to clear any selections
         by clicking off the displayed tree.
 
-        Args:
+        Arguments:
             event (QtGui.QMouseEvent): QMouseEvent triggered by user
         """
 

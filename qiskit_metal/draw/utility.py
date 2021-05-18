@@ -195,7 +195,7 @@ def round_coordinate_sequence(geom_ref, precision):
 def check_duplicate_list(your_list):
     """Check if the list contains duplicates.
 
-    Args:
+    Arguments:
         your_list (list): List to check
 
     Returns:
@@ -207,7 +207,7 @@ def check_duplicate_list(your_list):
 def array_chop(vec, zero=0, rtol=0, machine_tol=100):
     """Chop array entries close to zero.
 
-    Args:
+    Arguments:
         vec (array): Array to chop
         zero (double): Value to check against.  Defaults to 0.
         rtol (double): Relative tolerance.  Defaults to 0.
@@ -228,7 +228,7 @@ def array_chop(vec, zero=0, rtol=0, machine_tol=100):
 def remove_colinear_pts(points):
     """Remove colinear points and identical consequtive points.
 
-    Args:
+    Arguments:
         points (array): Array of points
 
     Returns:
@@ -348,7 +348,7 @@ def to_vec3D(list_of_2d_pts: List[Tuple], z=0) -> np.ndarray:
     """Adds 3rd point to list of 2D points. For the given design, get the z
     values in HFSS UNITS! Manually specify z dimension.
 
-    Args:
+    Arguments:
         list_of_2d_pts (List[Tuple]): List of 2D points
         z (int, optional): z-value in hfss. Defaults to 0.
 
@@ -548,7 +548,7 @@ class Vector:
         """Get the Euclidean distance between points u and v to the specified
         precision.
 
-        Args:
+        Arguments:
             u (Union[tuple, list, np.ndarray]): Coordinates of a point.
             v (Union[tuple, list, np.ndarray]): Coordinates of a second point.
             precision (int, optional): Precision of the result. Defaults to 9.

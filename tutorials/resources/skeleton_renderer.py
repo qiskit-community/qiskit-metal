@@ -93,7 +93,7 @@ class QSkeletonRenderer(QRenderer):
                  render_options: Dict = None):
         """Create a QRenderer for GDS interface: export and import.
 
-        Args:
+        Arguments:
             design (QDesign): Use QGeometry within QDesign  to obtain elements.
             initiate (bool, optional): True to initiate the renderer. Defaults to True.
             render_template (Dict, optional): Typically used by GUI for template options for GDS.  Defaults to None.
@@ -113,7 +113,7 @@ class QSkeletonRenderer(QRenderer):
     def _can_write_to_path(self, file: str) -> int:
         """Check if can write file.
 
-        Args:
+        Arguments:
             file (str): Has the path and/or just the file name.
 
         Returns:
@@ -133,7 +133,7 @@ class QSkeletonRenderer(QRenderer):
         """Confirm the list doesn't have names of componentes repeated. Comfirm
         that the name of component exists in QDesign.
 
-        Args:
+        Arguments:
             highlight_qcomponents (list, optional): List of strings which denote the name of QComponents to render.
                                                      Defaults to []. Empty list means to render entire design.
 
@@ -171,7 +171,7 @@ class QSkeletonRenderer(QRenderer):
         1. Gather the QGeometries to be used to write to file.
            Duplicate names in hightlight_qcomponents will be removed without warning.
 
-        Args:
+        Arguments:
             highlight_qcomponents (list): List of strings which denote the name of QComponents to render.
                                         If empty, render all comonents in design.
                                         If QComponent names are dupliated, duplicates will be ignored.
@@ -207,7 +207,7 @@ class QSkeletonRenderer(QRenderer):
         table with fewer elements, for just the qcomponents within the
         unique_qcomponents list.
 
-        Args:
+        Arguments:
             table_name (str): Can be "path", "poly", etc. from the QGeometry tables.
             unique_qcomponents (list): User requested list of component names to export to GDS file.
 
@@ -241,7 +241,7 @@ class QSkeletonRenderer(QRenderer):
         file. The names will be for qcomponents that were selected or all of
         the qcomponents within the qdesign.
 
-        Args:
+        Arguments:
             file_name (str): File name which can also include directory path.
                              If the file exists, it will be overwritten.
             highlight_qcomponents (list): List of strings which denote the name of QComponents to render.

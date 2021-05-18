@@ -28,7 +28,7 @@ class TreeViewParamEntry(QTreeView):
 
     def __init__(self, parent: QtWidgets.QWidget):
         """
-        Args:
+        Arguments:
             parent (QtWidgets.QWidget): the widget
         """
         QTreeView.__init__(self, parent)

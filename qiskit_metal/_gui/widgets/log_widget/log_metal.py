@@ -54,7 +54,7 @@ class QTextEditLogger(QTextEdit):
         Get as:
             gui.ui.log_text
 
-        Args:
+        Arguments:
             img_path (str): Path to images.  Defaults to '/'.
             dock_window (QDockWidget): The dock window widget.  Defaults to None.
         """
@@ -86,7 +86,7 @@ class QTextEditLogger(QTextEdit):
     def toggle_autoscroll(self, checked: bool):
         """Toggle the autoscroll.
 
-        Args:
+        Arguments:
             checked (bool): True to toggle on, False otherwise
         """
         self._auto_scroll = bool(checked)
@@ -94,7 +94,7 @@ class QTextEditLogger(QTextEdit):
     def toggle_timestamps(self, checked: bool):
         """Toggle the timestamp.
 
-        Args:
+        Arguments:
             checked (bool): True to toggle on, False otherwise
         """
         self._show_timestamps = bool(checked)
@@ -137,7 +137,7 @@ class QTextEditLogger(QTextEdit):
         def make_trg(lvl):
             """Make a trg.
 
-            Args:
+            Arguments:
                 lvl (logging.level): The level of logging, eg.., logging.ERROR
 
             Returns:
@@ -223,7 +223,7 @@ class QTextEditLogger(QTextEdit):
     def set_window_title_level(self, level: int):
         """Set the window title level.
 
-        Args:
+        Arguments:
             level (int): the level
         """
         self._level_name = logging.getLevelName(level).lower()
@@ -317,7 +317,7 @@ class QTextEditLogger(QTextEdit):
     def log_message_to(self, name, record):
         """Set where to log messages to.
 
-        Args:
+        Arguments:
             name (str): The name
             record (bool): True to send to records, False otherwise
         """

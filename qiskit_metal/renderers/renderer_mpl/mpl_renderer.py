@@ -71,7 +71,7 @@ class QMplRenderer():
     def __init__(self, canvas: 'PlotCanvas', design: QDesign,
                  logger: logging.Logger):
         """
-        Args:
+        Arguments:
             canvas (PlotCanvas): The canvas
             design (QDesign): The design
             logger (logging.Logger): The logger
@@ -99,7 +99,7 @@ class QMplRenderer():
     def get_color_num(self, num: int) -> str:
         """Get the color from the given number.
 
-        Args:
+        Arguments:
             num (int): number
 
         Return:
@@ -110,7 +110,7 @@ class QMplRenderer():
     def hide_component(self, name):
         """Hide the component with the given name.
 
-        Args:
+        Arguments:
             name (str): Component name
         """
         comp_id = self.design.components[name].id
@@ -119,7 +119,7 @@ class QMplRenderer():
     def show_component(self, name):
         """Show the component with the given name.
 
-        Args:
+        Arguments:
             name (str): Component name
         """
         comp_id = self.design.components[name].id
@@ -128,7 +128,7 @@ class QMplRenderer():
     def hide_layer(self, name):
         """Hide the layer with the given name.
 
-        Args:
+        Arguments:
             name (str): Layer name
         """
         self.hidden_layers.add(name)
@@ -136,7 +136,7 @@ class QMplRenderer():
     def show_layer(self, name):
         """Show the layer with the given name.
 
-        Args:
+        Arguments:
             name (str): Layer name
         """
         self.hidden_layers.discard(name)
@@ -144,7 +144,7 @@ class QMplRenderer():
     def set_design(self, design: QDesign):
         """Set the design.
 
-        Args:
+        Arguments:
             design (QDesign): The design
         """
         self.design = design
@@ -169,7 +169,7 @@ class QMplRenderer():
     def get_mask(self, table: pd.DataFrame) -> pd.Series:
         """Gets the mask.
 
-        Args:
+        Arguments:
             table (pd.DataFrame): dataframe
 
         Returns:
@@ -188,7 +188,7 @@ class QMplRenderer():
     def _render_poly_array(self, ax: Axes, poly_array: np.array, mpl_kw: dict):
         """Render the poly array.
 
-        Args:
+        Arguments:
             ax (Axes): The axis
             poly_array (np.array): The poly
             mpl_kw (dict): The parameters dictionary
@@ -225,7 +225,7 @@ class QMplRenderer():
                   extra=None):
         """Get the style.
 
-        Args:
+        Arguments:
             element_type (str): The type of element.
             subtracted (bool): True to subtrat the key.  Defaults to False.
             layer (layer): The layer.  Defaults to None.
@@ -253,7 +253,7 @@ class QMplRenderer():
     def render_tables(self, ax: Axes):
         """Render the tables.
 
-        Args:
+        Arguments:
             ax (Axes): The axes
         """
         for element_type, table in self.qgeometry.tables.items():

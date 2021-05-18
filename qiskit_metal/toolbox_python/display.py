@@ -105,7 +105,7 @@ def get_screenshot(self: 'QMainWindow',
     """Grad a screenshot of the main window, save to file, and then copy to
     clipboard.
 
-    Args:
+    Arguments:
         self (QMainWindow): Window to take the screenshot of.
         name (str): File to save the screenshot to.  Defaults to 'shot.png'.
         type (str): Type of file to save.  Defaults to 'png'.
@@ -178,7 +178,7 @@ def format_dict_ala_z(dic: Dict_,
                       style_dicts=True):
     """Format a nested dictionary.
 
-    Args:
+    Arguments:
         dic (dict): Dictionary to format.
         indent (int): Indentation spaces.  Defaults to 0.
         key_width (int): Width of the key.  Defaults to 20.

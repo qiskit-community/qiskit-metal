@@ -49,7 +49,7 @@ class RoutePathfinder(RouteAnchors):
                                 end_pt: QRoutePoint) -> list:
         """Connect start and end via A* algo if connect_simple doesn't work.
 
-        Args:
+        Arguments:
             start_direction (np.array): Vector indicating direction of starting point
             start (np.array): 2-D coordinates of first anchor
             end (np.array): 2-D coordinates of second anchor

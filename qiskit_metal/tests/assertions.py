@@ -35,7 +35,7 @@ class AssertionsMixin:
     ):
         """Assert tested almost equals expected.
 
-        Args:
+        Arguments:
             expected (float): Expected value to compare to.
             tested (float): Value to compare to expected.
             msg (Optional[str]): Custom message to show on failure.  Defaults to None.
@@ -78,7 +78,7 @@ class AssertionsMixin:
     ):
         """Assert all entries in two iterables are almost equal.
 
-        Args:
+        Arguments:
             expected (Iterable[float]): First iterable to compare.
             tested (Iterable[float]): Second iterable to compare.
             msg (Optional[str]): Custom message to show for failure.  Defaults to None.

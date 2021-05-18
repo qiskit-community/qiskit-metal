@@ -16,7 +16,7 @@ class BuildHistoryScrollArea(QScrollArea, Ui_BuildHistory):
                  *args,
                  **kwargs):
         """
-        Args:
+        Arguments:
             previous_builds (List[str]):
                 List of all previous attempted builds of the components
                 (including successes and failures). Each attempted

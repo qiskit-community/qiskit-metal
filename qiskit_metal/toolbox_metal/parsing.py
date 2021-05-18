@@ -417,7 +417,7 @@ def parse_options(params: dict, parse_names: str, variable_dict=None):
     Calls parse_value to extract from a dictionary a small subset of values.
     You can specify parse_names = 'x,y,z,cpw_width'.
 
-    Args:
+    Arguments:
         params (dict): Dictionary of params
         parse_names (str): Name to parse
         variable_dict (dict): Dictionary of variables.  Defaults to None.

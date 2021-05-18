@@ -53,7 +53,7 @@ class QMainWindowPlot(QMainWindow):
 
     def __init__(self, gui: 'MetalGUI', parent_window: 'QMainWindowExtension'):
         """
-        Args:
+        Arguments:
             gui (MetalGUI): The GUI
             parent_window (QMainWindowExtension): Parent window
         """
@@ -83,7 +83,7 @@ class QMainWindowPlot(QMainWindow):
     def set_design(self, design):
         """Set the design.
 
-        Args:
+        Arguments:
             design (QDesign): Design to set the canvas to
         """
         self.canvas.set_design(design)
@@ -127,7 +127,7 @@ or use the right click and drag to select a region.""")
     def set_position_track(self, yesno: bool):
         """Set the position tracker.
 
-        Args:
+        Arguments:
             yesno (bool): Whether or not to display instructions
         """
         if yesno:
@@ -138,7 +138,7 @@ or use the right click and drag to select a region.""")
     def set_show_pins(self, yesno: bool):
         """Displays on the logger whether or not pins are showing.
 
-        Args:
+        Arguments:
             yesno (bool): Whether or not to show pins
         """
         self.logger.info(f"Showing pins: {yesno}")

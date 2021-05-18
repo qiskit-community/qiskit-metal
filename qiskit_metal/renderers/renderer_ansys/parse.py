@@ -35,7 +35,7 @@ def to_ansys_units(
         value):  # can make more efifiecnt if we assume this is already a float
     """Converve given value to ansys units.
 
-    Args:
+    Arguments:
         value (float): Value
     """
     __parse_units_hfss__(value)

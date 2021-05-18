@@ -27,7 +27,7 @@ class RendererHFSSWidget(QMainWindow):
         """Get access to design, which has the components. Then set up the
         model and view.
 
-        Args:
+        Arguments:
             parent (QMainWindow): The parent window
             gui (MetalGUI): The metal GUI
         """
@@ -55,7 +55,7 @@ class RendererHFSSWidget(QMainWindow):
         """Swaps out reference to design, which changes the reference to the
         dictionary.
 
-        Args:
+        Arguments:
             new_design (QDesign): The design
         """
         self.list_model.update_src(self.design)

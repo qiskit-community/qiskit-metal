@@ -45,7 +45,7 @@ class QTableModel_Options(QAbstractTableModel):
                  parent: 'ComponentWidget' = None,
                  view=None):
         """
-        Args:
+        Arguments:
             gui (MetalGUI): The GUI
             parent (ComponentWidget): The parent ComponentWidget.  Defaults to None.
             view (object): The view.  Defaults to None.
@@ -79,7 +79,7 @@ class QTableModel_Options(QAbstractTableModel):
     def rowCount(self, parent: QModelIndex = None):
         """Returns the number of rows.
 
-        Args:
+        Arguments:
             parent (QModelIndex): Unused.  Defaults to None.
 
         Returns:
@@ -96,7 +96,7 @@ class QTableModel_Options(QAbstractTableModel):
     def columnCount(self, parent: QModelIndex = None):
         """Returns the number of columns.
 
-        Args:
+        Arguments:
             parent (QModelIndex): Unused.  Defaults to None.
 
         Returns:
@@ -107,7 +107,7 @@ class QTableModel_Options(QAbstractTableModel):
     def headerData(self, section, orientation, role=Qt.DisplayRole):
         """Set the headers to be displayed.
 
-        Args:
+        Arguments:
             section (int): Section number
             orientation (Qt orientation): Section orientation
             role (Qt display role): Display role.  Defaults to DisplayRole.
@@ -135,7 +135,7 @@ class QTableModel_Options(QAbstractTableModel):
         this function just to see how it's done, as we manually adjust each
         treeView to have NoEditTriggers.
 
-        Args:
+        Arguments:
             index (QModelIndex): The index
 
         Returns:
@@ -275,7 +275,7 @@ class QTableModel_Options(QAbstractTableModel):
 def parse_param_from_str(text):
     """Attempt to parse a value from a string using ast.
 
-    Args:
+    Arguments:
         text (str): String to parse
 
     Return:

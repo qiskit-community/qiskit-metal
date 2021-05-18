@@ -144,7 +144,7 @@ class QRoute(QComponent):
         """Enriches the default_options to support different types of route
         styles.
 
-        Args:
+        Arguments:
             options (dict): User options that will override the defaults
 
         Return:
@@ -175,7 +175,7 @@ class QRoute(QComponent):
     def _get_connected_pin(self, pin_data: Dict):
         """Recovers a pin from the dictionary.
 
-        Args:
+        Arguments:
             pin_data: dict {component: string, pin: string}
 
         Return:
@@ -187,7 +187,7 @@ class QRoute(QComponent):
         """Defines the CPW pins and returns the pin coordinates and normal
         direction vector.
 
-        Args:
+        Arguments:
             name: String (supported pin names are: start, end)
 
         Return:
@@ -223,7 +223,7 @@ class QRoute(QComponent):
     def set_lead(self, name: str) -> QRoutePoint:
         """Defines the lead_extension by adding a point to the self.head/tail.
 
-        Args:
+        Arguments:
             name: String (supported pin names are: start, end)
 
         Return:
@@ -263,7 +263,7 @@ class QRoute(QComponent):
         """Defines the jogged lead_extension by adding a series of turns to the
         self.head/tail.
 
-        Args:
+        Arguments:
             name: String (supported pin names are: start, end)
 
         Return:
@@ -377,7 +377,7 @@ class QRoute(QComponent):
     def del_colinear_points(self, inarray):
         """Delete colinear points from the given array.
 
-        Args:
+        Arguments:
             inarray (list): List of points
 
         Returns:
@@ -576,7 +576,7 @@ class QRouteLead:
         """Initialize the QRouteLead by giving it a starting point and a
         direction.
 
-        Args:
+        Arguments:
             pin: object describing the "reference_pin" (not cpw_pin) this is attached to.
                 this is currently (8/4/2020) a dictionary
 
@@ -595,7 +595,7 @@ class QRouteLead:
     def go_straight(self, length: float):
         """Add a point ot 'length' distance in the same direction.
 
-        Args:
+        Arguments:
             length (float) : How much to move by
         """
         self.pts = np.append(self.pts, [self.pts[-1] + self.direction * length],
@@ -605,7 +605,7 @@ class QRouteLead:
         """Straight line 90deg counter-clock-wise direction w.r.t. lead tip
         direction.
 
-        Args:
+        Arguments:
             length (float): How much to move by
         """
         self.direction = draw.Vector.rotate(self.direction, np.pi / 2)
@@ -615,7 +615,7 @@ class QRouteLead:
     def go_right(self, length: float):
         """Straight line 90deg clock-wise direction w.r.t. lead tip direction.
 
-        Args:
+        Arguments:
             length (float): How much to move by
         """
         self.direction = draw.Vector.rotate(self.direction, -1 * np.pi / 2)

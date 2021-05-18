@@ -77,7 +77,7 @@ def is_rectangle(obj):
     check if consequtive vectors are orhtogonal.
     Assumes that the last point is not repeating.
 
-    Args:
+    Arguments:
         obj (object): Object to test
 
     Returns:
@@ -104,7 +104,7 @@ def subtract(poly_main: shapely.geometry.Polygon,
              poly_tool: shapely.geometry.Polygon):
     """Geometry subtract tool poly from main poly.
 
-    Args:
+    Arguments:
         poly_main (Polygon): Main polygon from which we will carve out
         poly_tool (Polygon or list): Poly or list of polys to subtract
 
@@ -120,7 +120,7 @@ def union(*polys):
     Areas of overlapping Polygons will get merged. LineStrings will get
     fully dissolved and noded. Duplicate Points will get merged.
 
-    Args:
+    Arguments:
         polys (Polygon, or list of polygons, or args of polygons).
             Main polygon from which we will carve out.
 
@@ -154,7 +154,7 @@ def flip_merge(line: shapely.geometry.LineString,
     a Point object or a coordinate tuple (x0, y0, z0).
     Negative scale factors will mirror or reflect coordinates.
 
-    Args:
+    Arguments:
         line (shapely.geometry.LineString): Geometry
         xfact (double): x-scale factor.  Defaults to -1.
         yfact (double): y-scale factor.  Defaults to 1.
@@ -274,7 +274,7 @@ def rotate(qgeometry,
     Calls: shapely.affinity.rotate(
         geom, angle, origin='center', use_radians=False)
 
-    Args:
+    Arguments:
         qgeometry (Dict, List, Tuple or BaseGeometry): Set of objects
         angle (double): Rotation angle
         origin (tuple or str): Origin point. Defaults to 'center'.
@@ -307,7 +307,7 @@ def rotate(qgeometry,
 
 def translate(qgeometry, xoff=0.0, yoff=0.0, zoff=0.0, overwrite=False):
     r'''Shifts the geometry by the given offset.
-    Args:
+    Arguments:
         qgeometry (Dict, List, Tuple or BaseGeometry): Set of objects.
         xoff (double): x-direction offset.  Defaults to 0.0.
         yoff (double): y-direction offset.  Defaults to 0.0.
@@ -342,7 +342,7 @@ def scale(qgeometry,
     r'''
     Operatos on a list or Dict of components.
 
-    Args:
+    Arguments:
         qgeometry (Dict, List, Tuple or BaseGeometry): Set of objects
         xfact: x-direction scale factor.  Defaults to 1.0.
         yfact: y-direction scale factor.  Defaults to 1.0.
@@ -424,7 +424,7 @@ def buffer(qgeometry,
         - cap_style=CAP_STYLE.flat
         - join_style=JOIN_STYLE.mitre
 
-    Args:
+    Arguments:
         qgeometry (Dict, List, Tuple or BaseGeometry): Set of objects.
         distance (float): Distance.
         resolution (int): How many points.  Defaults to None.

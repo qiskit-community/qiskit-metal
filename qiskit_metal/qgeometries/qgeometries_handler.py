@@ -420,7 +420,7 @@ class QGeometryTables(object):
                                 rdict: dict):
         """Prepare all the renderer names.
 
-        Args:
+        Arguments:
             table_name (str): Unused
             renderer_key (str): Key to check for
             rdict (dict): Renderer dictionary
@@ -536,7 +536,7 @@ class QGeometryTables(object):
         """If user wants to fillet, check the line-segments to see if it is too
         short for fillet.
 
-        Args:
+        Arguments:
             geometry (shapely.geometry.base.BaseGeometry): The LineString to investigate.
             kind (str): Name of table, i.e. 'path', 'poly', 'junction, etc
             component_name (str): Is an integer id.
@@ -612,7 +612,7 @@ class QGeometryTables(object):
     def delete_component_id(self, component_id: int):
         """Drop the components within the qgeometry.tables.
 
-        Args:
+        Arguments:
             component_id (int): Unique number to describe the component.
         """
         for table_name in self.tables:
@@ -798,7 +798,7 @@ class QGeometryTables(object):
     def get_all_unique_layers(self, chip_name: str) -> list:
         """Returns a lit of unique layers for the given chip names.
 
-        Args:
+        Arguments:
             chip_name (str): Name of the chip
 
         Returns:

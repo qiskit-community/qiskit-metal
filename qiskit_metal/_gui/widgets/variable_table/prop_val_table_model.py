@@ -34,7 +34,7 @@ class PropValTable(QAbstractTableModel):
 
     def __init__(self, design=None, gui=None, view=None):
         """
-        Args:
+        Arguments:
             design (QDesign): The QDesign.  Defaults to None.
             gui (MetalGUI): The MetalGUI.  Defaults to None.
             view (view): The view.  Defaults to None.
@@ -50,7 +50,7 @@ class PropValTable(QAbstractTableModel):
     def set_design(self, design):
         """Set the design.
 
-        Args:
+        Arguments:
             design (QDesign): The design
         """
         self._design = design
@@ -87,7 +87,7 @@ class PropValTable(QAbstractTableModel):
     def rowCount(self, index: QModelIndex) -> int:
         """Count the number of rows.
 
-        Args:
+        Arguments:
             index (QModelIndex): Not used
 
         Returns:
@@ -101,7 +101,7 @@ class PropValTable(QAbstractTableModel):
     def columnCount(self, index: QModelIndex) -> int:
         """Count the number of columns.
 
-        Args:
+        Arguments:
             index (QModelIndex): Not used
 
         Returns:
@@ -112,7 +112,7 @@ class PropValTable(QAbstractTableModel):
     def data(self, index: QModelIndex, role: Qt.ItemDataRole = Qt.DisplayRole):
         """Return data for corresponding index and role.
 
-        Args:
+        Arguments:
             index (QModelIndex): The index of the data
             role (QT.ItemDataRole): The data role.  Defaults to Qt.DisplayRole.
 
@@ -149,7 +149,7 @@ class PropValTable(QAbstractTableModel):
         """Modify either key or value (Property or Value) of dictionary
         depending on what the user selected manually on the table.
 
-        Args:
+        Arguments:
             index (QModelIndex): The index
             value (str): The data value
             role (Qt.ItemDataRole): The role of the data.  Defaults to Qt.EditRole.
@@ -183,7 +183,7 @@ class PropValTable(QAbstractTableModel):
                    role: Qt.ItemDataRole = Qt.DisplayRole) -> str:
         """Get the headers to be displayed.
 
-        Args:
+        Arguments:
             secion (int): Section number.
             orientation (Qt.Orientation): Orientation of the header.
             role (Qt.ItemDataRole): Role of the header.  Defaults to Qt.DisplayRole.
@@ -208,7 +208,7 @@ class PropValTable(QAbstractTableModel):
     def removeRows(self, row: int, count: int = 1, parent=QModelIndex()):
         """Delete highlighted rows.
 
-        Args:
+        Arguments:
             row (int): First row to delete.
             count (int): Number of rolws to delete.  Defaults to 1.
             parent (QModelIndex): Parent index.
@@ -222,7 +222,7 @@ class PropValTable(QAbstractTableModel):
     def flags(self, index: QModelIndex) -> Qt.ItemFlags:
         """Determine how user may interact with each cell in the table.
 
-        Args:
+        Arguments:
             index (QModelIndex): The index
 
         Returns:
@@ -235,7 +235,7 @@ class PropValTable(QAbstractTableModel):
     def add_row(self, key: str, val: str):
         """Add row with the given key/value.
 
-        Args:
+        Arguments:
             key (str): The key
             val (str): The value
         """

@@ -34,7 +34,7 @@ class QTreeView_Options(QTreeView, QWidget_PlaceholderText):
 
     def __init__(self, parent: QtWidgets.QWidget):
         """
-        Args:
+        Arguments:
             parent (QtWidgets.QWidget): The parent widget
         """
         QTreeView.__init__(self, parent)
@@ -60,7 +60,7 @@ QTreeView::branch {  border-image: url(none.png); }
     def autoresize_columns(self, max_width: int = 200):
         """Resize columns to contents with maximum
 
-        Args:
+        Arguments:
             max (int): Maximum window width.. Defaults to 200.
         """
         # For TreeView: resizeColumnToContents

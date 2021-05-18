@@ -334,7 +334,7 @@ class PlotCanvas(FigureCanvas):
                  logger=None,
                  statusbar_label=None):
         """
-        Args:
+        Arguments:
             design (QDesign): The design.
             parent (QMainWindowPlot): The main window.  Defaults to None.
             logger (logger): The logger.  Defaults to None.
@@ -389,7 +389,7 @@ class PlotCanvas(FigureCanvas):
     def set_design(self, design: QDesign):
         """Set the design.
 
-        Args:
+        Arguments:
             design (QDesign): the design
         """
         self.design = design
@@ -453,7 +453,7 @@ class PlotCanvas(FigureCanvas):
     def _plot(self, ax):
         """Set the axes.
 
-        Args:
+        Arguments:
             ax (matplotlib.axes.Axes): axes
         """
         self.metal_renderer.render(ax)
@@ -463,7 +463,7 @@ class PlotCanvas(FigureCanvas):
     def plot(self, clear=True, with_try=True):
         """Render the plot.
 
-        Args:
+        Arguments:
             clear (bool): True to clear everything first.  Defaults to True.
             with_try (bool): True to execute in a try-catch block.  Defaults to True.
 
@@ -516,7 +516,7 @@ class PlotCanvas(FigureCanvas):
     def _watermark_axis(self, ax: plt.Axes):
         """Add a watermark.
 
-        Args:
+        Arguments:
             ax (plt.Axes): axes
         """
         # self.logger.debug('WATERMARK')
@@ -542,7 +542,7 @@ class PlotCanvas(FigureCanvas):
     def clear_axis(self, ax: plt.Axes = None):
         """Clear an axis or clear all axes.
 
-        Args:
+        Arguments:
             ax (plt.Axes): Clear an axis, or
                  if None, then clear all axes.
                  Defaults to None.
@@ -565,7 +565,7 @@ class PlotCanvas(FigureCanvas):
     def style_axis(self, ax, num: int):
         """Style the axis.
 
-        Args:
+        Arguments:
             ax (axis): The axis
             num (int): Not used
         """
@@ -681,7 +681,7 @@ class PlotCanvas(FigureCanvas):
     def set_component(self, name: str):
         """Shortcut to set a component in the component widget to be examined.
 
-        Args:
+        Arguments:
             name (str): Name of the component in the design
         """
         self.component_window.set_component(name)
@@ -714,7 +714,7 @@ class PlotCanvas(FigureCanvas):
     def highlight_components(self, component_names: List[str]):
         """Higjlight a list of components.
 
-        Args:
+        Arguments:
             component_names (List[str]): A list of component names
         """
         # Defaults - todo eventually move to some option place where can be changed
