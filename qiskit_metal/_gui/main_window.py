@@ -208,7 +208,9 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         if ison:
             QMessageBox.warning(
                 self, "Notice",
-                "If you're editing a component via an external IDE, don't forget to refresh the component's file in the Library before rebuilding so your changes will take effect."
+                "If you're editing a component via an external IDE,"
+                " don't forget to refresh the component's file in "
+                "the Library before rebuilding so your changes will take effect."
             )
 
         self.gui.ui.dockLibrary_tree_view.set_dev_mode(ison)

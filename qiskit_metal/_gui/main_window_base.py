@@ -40,6 +40,8 @@ class QMainWindowExtensionBase(QMainWindow):
     Extends the `QMainWindow` class.
     """
 
+    # settings, style, screenshot
+
     def __init__(self):
         """"""
         super().__init__()
