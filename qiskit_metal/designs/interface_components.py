@@ -148,15 +148,19 @@ class Components:
         component_id = int(self.find_id(name))
         if component_id:
             return self._design._components[component_id]
+        else:
+            # IPython checking methods
+            # https://github.com/jupyter/notebook/issues/2014
+            if not is_ipython_magic(name):
+                if not quiet:
+                    self.logger.warning(
+                        f'In Components.__getitem__, name={name} is not '
+                        f'registered in the design class. Return '
+                        f'None for QComponent.')
+                return None
+            else:
+                raise AttributeError(name)
 
-        # IPython checking methods
-        # https://github.com/jupyter/notebook/issues/2014
-        if not is_ipython_magic(name):
-            if not quiet:
-                self.logger.warning(
-                    f'In Components.__getitem__, name={name} is not '
-                    'registered in the design class. Return None for QComponent.'
-                )
             return None
 
         raise AttributeError(name)
