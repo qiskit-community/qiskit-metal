@@ -12,7 +12,8 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 """
-Models the transmon qubit in the cooper-pair charge basis and calculate the exact (analytic) solutions
+Models the transmon qubit in the cooper-pair charge basis
+and calculate the exact (analytic) solutions
 
 @author: Nick Lanzillo (IBM) 
 """
@@ -71,7 +72,8 @@ class Hcpb_analytic:
         if self._ng == 0:
             index =  k + 1.0 - ((k + 1.0) % 2.0)
         else:
-            index =  k + 1.0 - ((k + 1.0) % 2.0) + 2.0 * self._ng * ((-1.0)**(k - 0.5 * (np.sign(self._ng) - 1.0))) 
+            index =  k + 1.0 - ((k + 1.0) % 2.0) + 2.0 * self._ng *
+            ((-1.0)**(k - 0.5 * (np.sign(self._ng) - 1.0))) 
 
         self.evals = self._Ec*mathieu_a(index, -0.5*self._Ej/self._Ec)       
         #return self.evals[k]
