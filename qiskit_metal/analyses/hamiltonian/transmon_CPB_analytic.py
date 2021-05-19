@@ -15,14 +15,11 @@
 Models the transmon qubit in the cooper-pair charge basis
 and calculate the exact (analytic) solutions
 
-@author: Nick Lanzillo (IBM) 
+@author: Nick Lanzillo (IBM)
 """
 # pylint: disable=invalid-name
 
 import numpy as np
-import qutip as qt
-import scipy.linalg as linalg
-import scipy.optimize as opt
 from scipy.special import mathieu_a
 
 
