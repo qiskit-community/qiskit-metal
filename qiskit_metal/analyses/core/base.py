@@ -16,7 +16,7 @@ from copy import deepcopy
 from abc import abstractmethod, ABC
 import inspect
 
-from ... import Dict
+from ... import Dict, config, logger
 
 
 class QAnalysis(ABC):
@@ -29,6 +29,11 @@ class QAnalysis(ABC):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._setup = self._gather_all_children_setup()
+
+    @property
+    def logger(self):
+        """Returns the logger."""
+        return logger
 
     @abstractmethod
     def run(self):
@@ -63,19 +68,27 @@ class QAnalysis(ABC):
         else:
             print("The analysis setup has to be defined as a dictionary")
 
-    def setup_update(self, **kwargs):
+    def setup_update(self, section: str, **kwargs):
         """Intended to modify multiple setup settings at once, while retaining previous settings.
         If you intend to change a single setting, the better way is: `setup.setting1 = value`.
+
+        Args:
+            section (str): setup section that contains the setup keys to update
         """
-        unsupported_keys = list()
-        for k, v in kwargs.items():
-            if k in self._setup:
-                self._setup[k] = v
-            else:
-                unsupported_keys.append(k)
-        if unsupported_keys:
+        if section in self._setup:
+            unsupported_keys = list()
+            for k, v in kwargs.items():
+                if k in self._setup[section]:
+                    self._setup[section][k] = v
+                else:
+                    unsupported_keys.append(k)
+            if unsupported_keys:
+                print(
+                    f'the parameters {unsupported_keys} are unsupported, so they have been ignored'
+                )
+        else:
             print(
-                f'the parameters {unsupported_keys} are unsupported, so they have been ignored'
+                f'the section {section} does not exist in this analysis setup'
             )
 
     def _gather_all_children_setup(self):

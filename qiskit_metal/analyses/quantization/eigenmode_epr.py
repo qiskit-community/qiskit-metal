@@ -23,23 +23,23 @@ from pyEPR.reports import (plot_convergence_f_vspass, plot_convergence_max_df,
                            plot_convergence_solved_elem)
 
 from ... import Dict
-from ..base import NeedsRenderer
-from ..base import QAnalysis
+from ..core import NeedsRenderer
+from ..core import QAnalysis
 
 
 class Eigenmode(QAnalysis, NeedsRenderer):
     """Compute eigenmode, then derive from it using the epr method
     """
-    default_setup = Dict(name="Setup",
-                         min_freq_ghz=1,
-                         n_modes=1,
-                         max_delta_f=0.5,
-                         max_passes=10,
-                         min_passes=1,
-                         min_converged=1,
-                         pct_refinement=30,
-                         basis_order=-1,
-                         vars=Dict(Lj='10 nH', Cj='0 fF'))
+    default_setup = Dict(eig=Dict(name="Setup",
+                                  min_freq_ghz=1,
+                                  n_modes=1,
+                                  max_delta_f=0.5,
+                                  max_passes=10,
+                                  min_passes=1,
+                                  min_converged=1,
+                                  pct_refinement=30,
+                                  basis_order=-1,
+                                  vars=Dict(Lj='10 nH', Cj='0 fF')))
     """Default setup"""
 
     def __init__(self, design: 'QDesign', renderer_name: str = 'hfss'):
@@ -83,7 +83,7 @@ class Eigenmode(QAnalysis, NeedsRenderer):
         to prepare for eignemode analysis, then it executes it. Finally it recovers the
         output of the analysis and stores it in self.convergence_t and self.convergence_f.
         """
-        self.setup_name = self.renderer.initialize_eigenmode(**self.setup)
+        self.setup_name = self.renderer.initialize_eigenmode(**self.setup.eig)
 
         self.renderer.analyze_setup(self.setup_name)
         self.convergence_t, self.convergence_f = self.renderer.get_convergences(
@@ -256,8 +256,9 @@ class Eigenmode(QAnalysis, NeedsRenderer):
 class EPRanalysis(QAnalysis, NeedsRenderer):
     """Compute eigenmode, then derive from it using the epr method
     """
-    default_setup = Dict()
+    default_setup = Dict(epr=Dict())
     """Default setup"""
+
     def __init__(self, design: 'QDesign', *args, **kwargs):
         """Compute eigenmode, then derive from it using the epr method
 
@@ -390,6 +391,7 @@ class EPRanalysis(QAnalysis, NeedsRenderer):
 class EigenmodeAndEPR(Eigenmode, EPRanalysis):
     """Compute eigenmode, then derive from it using the epr method
     """
+
     def __init__(self, design: 'QDesign', renderer_name: str = 'hfss'):
         """Compute eigenmode, then derive from it using the epr method
 

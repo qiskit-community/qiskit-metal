@@ -18,8 +18,8 @@ import pandas as pd
 from pyEPR.ansys import ureg
 from pyEPR.calcs.convert import Convert
 
-from ..base import NeedsRenderer
-from ..base import QAnalysis
+from ..core import NeedsRenderer
+from ..core import QAnalysis
 
 from ... import Dict
 from ... import config
@@ -31,18 +31,18 @@ if not config.is_building_docs():
 class CapExtraction(QAnalysis, NeedsRenderer):
     """Compute Capacitance matrix using the selected renderer.
     """
-    default_setup = Dict(name="Setup",
-                         freq_ghz=5.,
-                         save_fields=False,
-                         enabled=True,
-                         max_passes=15,
-                         min_passes=2,
-                         min_converged_passes=2,
-                         percent_error=0.5,
-                         percent_refinement=30,
-                         auto_increase_solution_order=True,
-                         solution_order='High',
-                         solver_type='Iterative')
+    default_setup = Dict(sim=Dict(name="Setup",
+                                  freq_ghz=5.,
+                                  save_fields=False,
+                                  enabled=True,
+                                  max_passes=15,
+                                  min_passes=2,
+                                  min_converged_passes=2,
+                                  percent_error=0.5,
+                                  percent_refinement=30,
+                                  auto_increase_solution_order=True,
+                                  solution_order='High',
+                                  solver_type='Iterative'))
     """Default setup"""
 
     # TODO: add type check to the setup.setter. redefine above to support types
@@ -107,7 +107,7 @@ class CapExtraction(QAnalysis, NeedsRenderer):
         to prepare for the capacitance calculation, then it executes it.
         Finally it recovers the output of the analysis and stores it in self.capacitance_matrix
         """
-        self.setup_name = self.renderer.initialize_cap_extract(**self.setup)
+        self.setup_name = self.renderer.initialize_cap_extract(**self.setup.sim)
 
         self.renderer.analyze_setup(self.setup_name)
 
@@ -179,7 +179,8 @@ class CapExtraction(QAnalysis, NeedsRenderer):
         if isinstance(cap_mtrx, pd.DataFrame):
             self._capacitance_matrix = cap_mtrx
         else:
-            print("unuspported type. Only accepts pandas dataframes")
+            self.logger.warning(
+                'Unuspported type. Only accepts pandas dataframes')
 
 
 class LOManalysis(QAnalysis):
@@ -194,9 +195,8 @@ class LOManalysis(QAnalysis):
             freq_bus can be a list with the order they appear in the capMatrix.
 
     """
-    default_setup = Dict(junctions=Dict(Lj=12, Cj=2),
-                         freq_readout=7.0,
-                         freq_bus=[6.0, 6.2])
+    default_setup = Dict(lom=Dict(
+        junctions=Dict(Lj=12, Cj=2), freq_readout=7.0, freq_bus=[6.0, 6.2]))
     """Default setup"""
 
     def __init__(self, design: 'QDesign', *args, **kwargs):
@@ -236,7 +236,8 @@ class LOManalysis(QAnalysis):
         if isinstance(cap_mtrx, pd.DataFrame):
             self._capacitance_matrix = cap_mtrx
         else:
-            print("unuspported type. Only accepts pandas dataframes")
+            self.logger.warning(
+                'Unuspported type. Only accepts pandas dataframes')
 
     @property
     def lumped_oscillator(self) -> pd.DataFrame:
@@ -263,10 +264,12 @@ class LOManalysis(QAnalysis):
         Returns:
             dict: Pass numbers (keys) and their respective capacitance matrices (values)
         """
-        s = self.setup
+        s = self.setup.lom
 
         if self.capacitance_matrix is None:
-            print("the capacitance_matrix was not initialized")
+            self.logger.warning(
+                'Please initialize the capacitance_matrix before executing this method.'
+            )
         else:
             if not self._capacitance_all_passes:
                 self._capacitance_all_passes[1] = self.capacitance_matrix.values
