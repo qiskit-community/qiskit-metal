@@ -59,6 +59,8 @@ Quantization
 
 """
 
+from .. import config
+
 from .em import cpw_calculations
 from .em import kappa_calculation
 from .quantization import lumped_capacitive

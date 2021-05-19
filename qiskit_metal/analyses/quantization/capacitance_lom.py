@@ -15,11 +15,17 @@
 from typing import Union
 from copy import deepcopy
 import pandas as pd
+from pyEPR.ansys import ureg
+from pyEPR.calcs.convert import Convert
 
 from ..base import NeedsRenderer
 from ..base import QAnalysis
 
 from ... import Dict
+from ... import config
+
+if not config.is_building_docs():
+    from .lumped_capacitive import extract_transmon_coupled_Noscillator
 
 
 class CapExtraction(QAnalysis, NeedsRenderer):
@@ -73,7 +79,9 @@ class CapExtraction(QAnalysis, NeedsRenderer):
         self.setup_name = None
 
         # output variables
-        self._capacitance_matrix = None
+        self._capacitance_matrix = None  # from latest simulation iteration
+        self._units = None  # of the self._capacitance_matrix
+        self._capacitance_all_passes = {}  # for analysis inspection
 
     def _render(self, **design_selection) -> str:
         """Renders the design from qiskit metal into the selected renderer.
@@ -97,12 +105,24 @@ class CapExtraction(QAnalysis, NeedsRenderer):
     def _analyze(self) -> str:
         """Executes the analysis step of the Run. First it initializes the renderer setup
         to prepare for the capacitance calculation, then it executes it.
-        Finally it recovers the output of the analysis and stores it in self.capacitance_matrix_df
+        Finally it recovers the output of the analysis and stores it in self.capacitance_matrix
         """
         self.setup_name = self.renderer.initialize_cap_extract(**self.setup)
 
         self.renderer.analyze_setup(self.setup_name)
-        self.capacitance_matrix_df = self.renderer.get_capacitance_matrix()
+
+        # extract main (latest) capacitance matrix
+        self.capacitance_matrix, self._units = self.renderer.get_capacitance_matrix(
+        )
+        # extract the capacitance matrices for all passes
+        for i in range(1, 1000):  #1000 is an arbitrary large number
+            try:
+                df_cmat, user_units = self.renderer.get_capacitance_matrix(
+                    solution_kind='AdaptivePass', pass_number=i)
+                c_units = ureg(user_units).to('farads').magnitude
+                self._capacitance_all_passes[i] = df_cmat.values * c_units,
+            except pd.errors.EmptyDataError:
+                break
 
     def run(self,
             name: str = None,
@@ -164,9 +184,21 @@ class CapExtraction(QAnalysis, NeedsRenderer):
 
 class LOManalysis(QAnalysis):
     """Extracts and LOM model from a provided capacitance matrix.
+
+    Default Setup:
+        junctions (Dict)
+            Lj (float): Junction inductance (in nH)
+            Cj (float): Junction capacitance (in fF)
+        freq_readout (float): Coupling readout frequency (in GHz).
+        freq_bus (Union[list, float]): Coupling bus frequencies (in GHz).
+            freq_bus can be a list with the order they appear in the capMatrix.
+
     """
-    default_setup = Dict()
+    default_setup = Dict(junctions=Dict(Lj=12, Cj=2),
+                         freq_readout=7.0,
+                         freq_bus=[6.0, 6.2])
     """Default setup"""
+
     def __init__(self, design: 'QDesign', *args, **kwargs):
         """Initialize the analysis step to extract the LOM model from the system capacitance
 
@@ -178,9 +210,12 @@ class LOManalysis(QAnalysis):
 
         # input variables
         self._capacitance_matrix = None
+        self._units = None
+        self._capacitance_all_passes = {}
 
         # output variables
-        self._lom_output = None
+        self._lom_output = None  # last pass only
+        self._lom_output_all = None  # all the passes
 
     @property
     def capacitance_matrix(self) -> pd.DataFrame:
@@ -204,7 +239,7 @@ class LOManalysis(QAnalysis):
             print("unuspported type. Only accepts pandas dataframes")
 
     @property
-    def lumped_oscillator_dic(self) -> dict:
+    def lumped_oscillator(self) -> pd.DataFrame:
         """Stores the output of the LOM analysis
 
         Returns:
@@ -212,8 +247,8 @@ class LOManalysis(QAnalysis):
         """
         return self._lom_output
 
-    @lumped_oscillator_dic.setter
-    def lumped_oscillator_dic(self, lom_dict: dict):
+    @lumped_oscillator.setter
+    def lumped_oscillator(self, lom_dict: pd.DataFrame):
         """Allows editing the output of the LOM analysis
 
         Args:
@@ -221,38 +256,51 @@ class LOManalysis(QAnalysis):
         """
         self._lom_output = lom_dict
 
+    def get_lumped_oscillator(self):
+        """Executes the lumped oscillator extraction from the capacitance matrix,
+        and based on the setup values
 
-    def get_lumped_oscillator(self,
-                              Lj_nH: float,
-                              Cj_fF: float,
-                              N: int,
-                              fr: Union[list, float],
-                              fb: Union[list, float],
-                              maxPass: int,
-                              variation: str = '',
-                              all_passes: str = 'False',
-                              g_scale: float = 1):
-        """Executes the lumped oscillator extraction from the simulation
-
-        Args:
-            Lj_nH (float): Junction inductance (in nH)
-            Cj_fF (float): Junction capacitance (in fF)
-            N (int): Coupling pads (1 readout, N - 1 bus)
-            fr (Union[list, float]): Coupling bus and readout frequencies (in GHz).
-                fr can be a list with the order they appear in the capMatrix.
-            fb (Union[list, float]): Coupling bus and readout frequencies (in GHz).
-                fb can be a list with the order they appear in the capMatrix.
-            maxPass (int): maximum number of passes. Ignored for 'LastAdaptive' solutions types.
-                Defaults to 1.
-            variation (str, optional): An empty string returns nominal variation.
-                Otherwise need the list. Defaults to ''.
-            all_passes (str, optional): Change to True to return results for every simulated pass.
-                False, will only return the final one. Defaults to 'False'.
-            g_scale (float, optional): Scale factor. Defaults to 1.
+        Returns:
+            dict: Pass numbers (keys) and their respective capacitance matrices (values)
         """
-        solution_kind = 'AdaptivePass' if all_passes else 'LastAdaptive'
-        self._lom_output = self.renderer.lumped_oscillator_vs_passes(
-            Lj_nH, Cj_fF, N, fr, fb, maxPass, variation, solution_kind, g_scale)
+        s = self.setup
+
+        if self.capacitance_matrix is None:
+            print("the capacitance_matrix was not initialized")
+        else:
+            if not self._capacitance_all_passes:
+                self._capacitance_all_passes[1] = self.capacitance_matrix.values
+
+        ic_amps = Convert.Ic_from_Lj(s.junctions.Lj, 'nH', 'A')
+        cj = ureg(f'{s.junctions.Cj} fF').to('farad').magnitude
+        fr = ureg(f'{s.freq_readout} GHz').to('GHz').magnitude
+        fb = [ureg(f'{freq} GHz').to('GHz').magnitude for freq in s.freq_bus]
+
+        # derive N
+        N = 2
+        if isinstance(fr, list):
+            N += len(fr) - 1
+        if isinstance(fb, list):
+            N += len(fb) - 1
+
+        # get the LOM for every pass
+        all_res = {}
+        for idx_cmat, df_cmat in self._capacitance_all_passes.items():
+            res = extract_transmon_coupled_Noscillator(
+                df_cmat[0],
+                ic_amps,
+                cj,
+                N,
+                fb,
+                fr,
+                g_scale=1,
+                print_info=bool(idx_cmat == len(self._capacitance_all_passes)))
+            all_res[idx_cmat] = res
+        all_res = pd.DataFrame(all_res).transpose()
+        all_res['χr MHz'] = abs(all_res['chi_in_MHz'].apply(lambda x: x[0]))
+        all_res['gr MHz'] = abs(all_res['gbus'].apply(lambda x: x[0]))
+        self._lom_output = all_res
+        return self.lumped_oscillator
 
     def plot_convergence_main(self, *args, **kwargs):
         """Plots alpha and frequency versus pass number, as well as convergence of delta (in %).
@@ -281,6 +329,7 @@ class LOManalysis(QAnalysis):
 class CapExtractAndLOM(CapExtraction, LOManalysis):
     """Compute Capacitance matrix, then derive from it the lom parameters.
     """
+
     def __init__(self, design: 'QDesign', renderer_name: str = 'q3d'):
         """Initialize class to simulate the capacitance matrix and extract the lom model
 

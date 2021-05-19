@@ -39,7 +39,7 @@ class Eigenmode(QAnalysis, NeedsRenderer):
                          min_converged=1,
                          pct_refinement=30,
                          basis_order=-1,
-                         variables=Dict(Lj='10 nH', Cj='0 fF'))
+                         vars=Dict(Lj='10 nH', Cj='0 fF'))
     """Default setup"""
 
     def __init__(self, design: 'QDesign', renderer_name: str = 'hfss'):

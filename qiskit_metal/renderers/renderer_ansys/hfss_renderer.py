@@ -407,7 +407,9 @@ class QHFSSRenderer(QAnsysRenderer):
                               min_passes: int = None,
                               min_converged: int = None,
                               pct_refinement: int = None,
-                              basis_order: int = None):
+                              basis_order: int = None,
+                              *args,
+                              **kwargs):
         """Create a solution setup in Ansys HFSS Driven Modal. If user does
         not provide arguments, they will be obtained from default_setup dict.  
         
@@ -488,7 +490,9 @@ class QHFSSRenderer(QAnsysRenderer):
                             min_passes: int = None,
                             min_converged: int = None,
                             pct_refinement: int = None,
-                            basis_order: int = None):
+                            basis_order: int = None,
+                            *args,
+                            **kwargs):
         """Create a solution setup in Ansys HFSS Eigenmode.  If user does not
         provide arguments, they will be obtained from hfss_options dict.
 

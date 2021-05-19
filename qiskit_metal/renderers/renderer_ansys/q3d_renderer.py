@@ -184,7 +184,9 @@ class QQ3DRenderer(QAnsysRenderer):
                       percent_refinement: int = None,
                       auto_increase_solution_order: bool = None,
                       solution_order: str = None,
-                      solver_type: str = None):
+                      solver_type: str = None,
+                      *args,
+                      **kwargs):
         """Create a solution setup in Ansys Q3D. If user does not provide
         arguments, they will be obtained from q3d_options dict.
 
@@ -399,68 +401,15 @@ class QQ3DRenderer(QAnsysRenderer):
                 variation=variation,
                 solution_kind=solution_kind,
                 pass_number=pass_number)
-            return df_cmat
+            return df_cmat, user_units
 
-    def lumped_oscillator_vs_passes(self,
-                                    Lj_nH: float,
-                                    Cj_fF: float,
-                                    N: int,
-                                    fr: Union[list, float],
-                                    fb: Union[list, float],
-                                    maxPass: int = 1,
-                                    variation: str = '',
-                                    solution_kind: str = 'LastAdaptive',
-                                    g_scale: float = 1) -> dict:
-        """Obtain dictionary composed of pass numbers (keys) and their
-        respective capacitance matrices (values). All capacitance matrices
-        utilize the same values for Lj_nH and onwards in the list of arguments.
-
-        Args:
-            Lj_nH (float): Junction inductance (in nH)
-            Cj_fF (float): Junction capacitance (in fF)
-            N (int): Coupling pads (1 readout, N - 1 bus)
-            fr (Union[list, float]):Readout frequencies (in GHz). fr can be a list with the order
-                they appear in the capMatrix.
-            fb (Union[list, float]): Coupling bus frequencies (in GHz). fb can be a list with the order
-                they appear in the capMatrix.
-            maxPass (int): maximum number of passes. Ignored for 'LastAdaptive' solutions types. Defaults to 1.
-            variation (str, optional): An empty string returns nominal variation. Otherwise need the list. Defaults to ''.
-            solution_kind (str, optional): Solution type ('AdaptivePass' or 'LastAdaptive'). Defaults to 'LastAdaptive'.
-            g_scale (float, optional): Scale factor. Defaults to 1.
-
-        Returns:
-            dict: A dictionary composed of pass numbers (keys) and their respective capacitance matrices (values)
+    def lumped_oscillator_vs_passes(self, *args, **kwargs):
         """
-        if solution_kind == 'LastAdaptive':
-            maxPass = 1
-        IC_Amps = Convert.Ic_from_Lj(Lj_nH, 'nH', 'A')
-        CJ = ureg(f'{Cj_fF} fF').to('farad').magnitude
-        fr = ureg(f'{fr} GHz').to('GHz').magnitude
-        fb = [ureg(f'{freq} GHz').to('GHz').magnitude for freq in fb]
-        RES = {}
-        for i in range(1, maxPass + 1):
-            try:
-                df_cmat, user_units, _, _ = self.pinfo.setup.get_matrix(
-                    variation=variation,
-                    solution_kind=solution_kind,
-                    pass_number=i)
-                c_units = ureg(user_units).to('farads').magnitude
-                res = extract_transmon_coupled_Noscillator(
-                    df_cmat.values * c_units,
-                    IC_Amps,
-                    CJ,
-                    N,
-                    fb,
-                    fr,
-                    g_scale=1,
-                    print_info=bool(i == maxPass - 1))
-                RES[i] = res
-            except pd.errors.EmptyDataError:
-                break
-        RES = pd.DataFrame(RES).transpose()
-        RES['χr MHz'] = abs(RES['chi_in_MHz'].apply(lambda x: x[0]))
-        RES['gr MHz'] = abs(RES['gbus'].apply(lambda x: x[0]))
-        return RES
+        (deprecated) use analysis.quantitative.capacitance_lom.get_lumped_oscillator()
+        """
+        self.logger.warning(
+            'This method is deprecated. Change your scripts to use'
+            'analysis.quantitative.capacitance_lom.get_lumped_oscillator()')
 
     def plot_convergence_main(self, RES: pd.DataFrame):
         """Plot alpha and frequency versus pass number, as well as convergence
