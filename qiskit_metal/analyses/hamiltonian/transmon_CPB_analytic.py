@@ -33,10 +33,7 @@ class Hcpb_analytic:
     Used calculate the exact eigenvalues for arbitrary Ej, Ec, ng values.
     """
 
-    def __init__(self,
-                 Ej: float = None,
-                 Ec: float = None,
-                 ng: float = 0.5):
+    def __init__(self, Ej: float = None, Ec: float = None, ng: float = 0.5):
         """
         Generate a Cooper-pair box (CPB) model.
 
@@ -70,13 +67,11 @@ class Hcpb_analytic:
             float: eigenvalue of the Hamiltonian
         '''
         if self._ng == 0:
-            index =  k + 1.0 - ((k + 1.0) % 2.0)
+            index = k + 1.0 - ((k + 1.0) % 2.0)
         else:
-            index =  k + 1.0 - ((k + 1.0) % 2.0) + 
-            2.0 * self._ng *((-1.0)**(k - 0.5 * (np.sign(self._ng) - 1.0))) 
+            index = k + 1.0 - ((k + 1.0) % 2.0) + 2.0 * self._ng * (
+                (-1.0)**(k - 0.5 * (np.sign(self._ng) - 1.0)))
 
-        self.evals = self._Ec*mathieu_a(index, -0.5*self._Ej/self._Ec)       
+        self.evals = self._Ec * mathieu_a(index, -0.5 * self._Ej / self._Ec)
         #return self.evals[k]
         return self.evals
-
-
