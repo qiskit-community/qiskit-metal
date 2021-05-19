@@ -12,17 +12,16 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 """Module containing Design interface components."""
-
 from copy import deepcopy
-from typing import TYPE_CHECKING, Any, Iterable, List, Optional, TypeVar, Union, Dict as Dict_
-from .. import logger
+from typing import TYPE_CHECKING, List, Union
+#from typing import Any, Optional, TypeVar, Dict as Dict_, Iterable
+from qiskit_metal.qlibrary.core._parsed_dynamic_attrs import is_ipython_magic
+from qiskit_metal import logger
+from qiskit_metal import config
 
-from .. import config
 if not config.is_building_docs():
     # Only import QComponent if the docs are NOT being built
     from ..qlibrary.core import QComponent
-
-from ..qlibrary.core._parsed_dynamic_attrs import is_ipython_magic
 
 if TYPE_CHECKING:
     # For linting typechecking, import modules that can't be loaded here under normal conditions.
@@ -93,7 +92,7 @@ class Components:
         if name in self._design.name_to_id:
             component_id = self._design.name_to_id[name]
             return component_id
-        elif not is_ipython_magic(name):
+        if not is_ipython_magic(name):
             # Name not registered, not in cache for components' names.
             # IPython checking methods
             # https://github.com/jupyter/notebook/issues/2014
@@ -102,8 +101,8 @@ class Components:
                     f'In Components.find_id(), the name={name} is not used in design._components'
                 )
             return 0
-        else:
-            raise AttributeError(name)
+
+        raise AttributeError(name)
 
     # def is_name_used(self, new_name: str) -> int:
     #     """Check to see if name being used in components.
@@ -122,7 +121,9 @@ class Components:
     #         item for item in all_names if new_name == item[0]]
     #     if len(search_result) != 0:
     #         self.logger.warning(
-    #             f'Called interface_components, component_id({search_result[0][0]}, id={search_result[0][1]}) is already using name={new_name}.')
+    #             f'Called interface_components, '
+    #             f' component_id({search_result[0][0]}, id={search_result[0][1]})'
+    #             f' is already using name={new_name}.')
     #         return search_result[0][1]
     #     else:
     #         return 0
@@ -153,12 +154,16 @@ class Components:
             if not is_ipython_magic(name):
                 if not quiet:
                     self.logger.warning(
-                        f'In Components.__getitem__, name={name} is not registered in the design class. Return None for QComponent.'
-                    )
+                        f'In Components.__getitem__, name={name} is not '
+                        f'registered in the design class. Return '
+                        f'None for QComponent.')
                 return None
             else:
                 raise AttributeError(name)
+
             return None
+
+        raise AttributeError(name)
 
     def __setitem__(self, name: str, value: 'QComponent'):
         """Replace QComponent for an existing name. Use this at your own risk.
@@ -180,12 +185,13 @@ class Components:
         component_id = self.find_id(name)
         if component_id:
             self.logger.debug(
-                f'The name={name} already exists in design._components.  A component_id={component_id} will be replaced.'
-            )
+                f'The name={name} already exists in design._components.  '
+                f'A component_id={component_id} will be replaced.')
             self.components[component_id] = deepcopy(value)
         else:
             self.logger.warning(
-                f'Usualy new components are added to design during init.  The name={name} is not in design._components, and added as a new component.'
+                f'Usualy new components are added to design during init.  '
+                f'The name={name} is not in design._components, and added as a new component.'
             )
             value.name = name
             value._add_to_design()
@@ -194,7 +200,8 @@ class Components:
         """Provide same behavior as __getitem__.
 
         Args:
-            name (str): Name of component used to find the QComponent in design._components dict, vs using unique int id.
+            name (str): Name of component used to find the QComponent in
+                    design._components dict, vs using unique int id.
 
         Returns:
             QComponent: Class which describes the component. None if
@@ -207,7 +214,8 @@ class Components:
     #     """Provide same behavior as __setitem__.
 
     #     Args:
-    #         name (str): Name of component used to find the QComponent in design._components dict, vs using unique int id.
+    #         name (str): Name of component used to find the QComponent in
+    #                   design._components dict, vs using unique int id.
     #         value (QComponent): Component with the name used in arguments.
     #     """
     #     pass
@@ -230,7 +238,8 @@ class Components:
         return self.find_id(item, quiet)
 
     # def __delitem__(self, name: str):
-    #     """Will delete component from design class along with deleting the net_info and element tables.
+    #     """Will delete component from design class along with deleting the
+    #      net_info and element tables.
 
     #     Args:
     #         name (str): Name of component to delete from design._components.
@@ -247,8 +256,8 @@ class Components:
 
         return str(self._design._components.__repr__())
 
-    #     #     def __repr__(slef):
-    #     #         # make sure to define repreentation for print purpose
+    #     #     def __repr__(self):
+    #     #         # make sure to define representation for print purpose
     #     #         # Why every class needs one?  https://dbader.org/blog/python-repr-vs-str
     #     #         return str(self.__actual_place_I_store_components__.give_me_repr())
 
@@ -306,7 +315,7 @@ class Components:
 
         return all_items
 
-        #     #### Down the line for serializaton and pickling. Skip for now
+        #     #### Down the line for serialization and pickling. Skip for now
         #     def __getstate__(self):
         #         """
         #         Serialize the object.
