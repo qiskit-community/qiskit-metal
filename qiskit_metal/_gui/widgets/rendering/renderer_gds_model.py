@@ -13,16 +13,14 @@
 # that they have been altered from the originals.
 # Tree model for GDS renderer
 
-import PySide2
-from PySide2 import QtWidgets
 from PySide2.QtWidgets import QTreeView, QWidget
 
-from .widgets.bases.dict_tree_base import QTreeModel_Base
+from qiskit_metal._gui.widgets.bases.dict_tree_base import QTreeModel_Base
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from .main_window import MetalGUI
+    from qiskit_metal._gui.main_window.orig.main_window import MetalGUI
 
 
 class RendererGDS_Model(QTreeModel_Base):

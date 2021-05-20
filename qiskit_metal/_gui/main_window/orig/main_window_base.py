@@ -25,12 +25,11 @@ from PySide2.QtCore import QTimer
 from PySide2.QtGui import QIcon
 from PySide2.QtWidgets import QApplication, QFileDialog, QMainWindow, QMessageBox, QDockWidget
 
-from .. import Dict, config
-from ..toolbox_python._logging import setup_logger
-from . import __version__
-from .main_window_ui import Ui_MainWindow
-from .utility._handle_qt_messages import slot_catch_error
-from .widgets.log_widget.log_metal import LogHandler_for_QTextLog
+from qiskit_metal import config
+from qiskit_metal.toolbox_python._logging import setup_logger
+from qiskit_metal._gui import __version__
+from qiskit_metal._gui.utility._handle_qt_messages import slot_catch_error
+from qiskit_metal._gui.widgets.log_widget.log_metal import LogHandler_for_QTextLog
 
 
 class QMainWindowExtensionBase(QMainWindow):

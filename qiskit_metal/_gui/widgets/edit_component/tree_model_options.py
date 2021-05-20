@@ -17,10 +17,10 @@ from typing import TYPE_CHECKING
 from PySide2.QtCore import QModelIndex, Qt
 from PySide2.QtGui import QFont
 from PySide2.QtWidgets import QTreeView, QWidget
-from ..bases.dict_tree_base import LeafNode, BranchNode, QTreeModel_Base, parse_param_from_str
+from ..bases.dict_tree_base import LeafNode, BranchNode, QTreeModel_Base
 
 if TYPE_CHECKING:
-    from ...main_window import MetalGUI
+    from qiskit_metal._gui.main_window.orig.main_window import MetalGUI
 
 
 class QTreeModel_Options(QTreeModel_Base):

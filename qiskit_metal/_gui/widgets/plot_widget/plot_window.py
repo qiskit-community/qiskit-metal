@@ -21,8 +21,7 @@ toolbars available.
 
 from typing import TYPE_CHECKING
 
-from PySide2 import QtWidgets
-from PySide2.QtWidgets import (QApplication, QFileDialog, QLabel, QMainWindow,
+from PySide2.QtWidgets import (QMainWindow,
                                QMessageBox)
 
 from ... import config
@@ -30,11 +29,11 @@ if not config.is_building_docs():
     # Only import PlotCanvas if the docs are NOT being built
     from ....renderers.renderer_mpl.mpl_canvas import PlotCanvas
 
-from ...plot_window_ui import Ui_MainWindowPlot
+from qiskit_metal._gui.widgets.plot_window.plot_window_ui import Ui_MainWindowPlot
 
 if TYPE_CHECKING:
     # https://stackoverflow.com/questions/39740632/python-type-hinting-without-cyclic-imports
-    from ...main_window import MetalGUI, QMainWindowExtension
+    from qiskit_metal._gui.main_window.orig.main_window import MetalGUI, QMainWindowExtension
 
 
 class QMainWindowPlot(QMainWindow):

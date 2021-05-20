@@ -101,7 +101,6 @@ del setup_logger
 ### User-accessible scope
 
 # Metal Dict
-from .toolbox_python.attr_dict import Dict
 
 # Due to order of imports
 from ._is_design import is_design, is_component
@@ -118,7 +117,7 @@ from . import toolbox_python
 from . import toolbox_metal
 
 # Metal GUI
-from ._gui.main_window import MetalGUI
+from qiskit_metal._gui.main_window.orig.main_window import MetalGUI
 
 # Utility modules
 # For plotting in matplotlib;  May be superseded by a renderer?

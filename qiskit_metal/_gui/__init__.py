@@ -35,22 +35,16 @@ Main Window
 """
 # pylint: disable=invalid-name
 
-import logging
-from .. import __version__
-
 from .. import config
 if config.is_building_docs():
     # imported here for the docstrings
-    from qiskit_metal._gui.list_model_base import DynamicList
-    from qiskit_metal._gui.main_window_base import QMainWindowExtensionBase
-    from qiskit_metal._gui.main_window_base import QMainWindowBaseHandler
-    from qiskit_metal._gui.main_window import QMainWindowExtension
-    from qiskit_metal._gui.main_window import MetalGUI
-    from qiskit_metal._gui.tree_view_base import QTreeView_Base
-    from qiskit_metal._gui.renderer_gds_gui import RendererGDSWidget
-    from qiskit_metal._gui.renderer_gds_model import RendererGDS_Model
-    from qiskit_metal._gui.elements_window import ElementsWindow
-    from qiskit_metal._gui.elements_window import ElementTableModel
+    from qiskit_metal._gui.widgets.rendering.list_model_base import DynamicList
+    from qiskit_metal._gui.main_window.orig.main_window import QMainWindowExtension
+    from qiskit_metal._gui.main_window.orig.main_window import MetalGUI
+    from qiskit_metal._gui.widgets.rendering.tree_view_base import QTreeView_Base
+    from qiskit_metal._gui.widgets.rendering.renderer_gds_model import RendererGDS_Model
+    from qiskit_metal._gui.widgets.elements_window.elements_window import ElementsWindow
+    from qiskit_metal._gui.widgets.elements_window.elements_window import ElementTableModel
     from qiskit_metal._gui.widgets.all_components.table_view_all_components import QTableView_AllComponents
     from qiskit_metal._gui.widgets.all_components.table_model_all_components import QTableModel_AllComponents
     from qiskit_metal._gui.widgets.bases.dict_tree_base import BranchNode

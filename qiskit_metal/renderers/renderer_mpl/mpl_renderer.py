@@ -13,42 +13,24 @@
 # that they have been altered from the originals.
 """MPL Renderer."""
 import logging
-import random
-import sys
-from typing import TYPE_CHECKING, List
+from typing import TYPE_CHECKING
 
-import matplotlib as mpl
-import matplotlib.patches as patches
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from cycler import cycler
 from descartes import PolygonPatch
-from IPython.display import display
 from matplotlib.axes import Axes
-from matplotlib.backends.backend_qt5agg import \
-    FigureCanvasQTAgg as FigureCanvas
-from matplotlib.cbook import _OrderedSet
 from matplotlib.collections import LineCollection, PatchCollection
-from matplotlib.figure import Figure
-from matplotlib.transforms import Bbox
 
 from shapely.geometry import CAP_STYLE, JOIN_STYLE, LineString
 
 from ... import Dict
 from ...designs import QDesign
-from ..renderer_base.renderer_gui_base import QRendererGui
-from .mpl_interaction import MplInteraction, PanAndZoom
-from .mpl_toolbox import _axis_set_watermark_img, clear_axis, get_prop_cycle
 
 from .. import config
 if not config.is_building_docs():
-    from ...toolbox_python.utility_functions import log_error_easy
     from qiskit_metal.toolbox_python.utility_functions import bad_fillet_idxs
 
 if TYPE_CHECKING:
-    from ..._gui.main_window import MetalGUI
-    from ..._gui.widgets.plot_widget.plot_window import QMainWindowPlot
     from .mpl_canvas import PlotCanvas
     from qiskit_metal.elements.elements_handler import QGeometryTables
 

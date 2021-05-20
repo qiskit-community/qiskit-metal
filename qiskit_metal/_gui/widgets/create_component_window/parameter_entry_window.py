@@ -52,7 +52,7 @@ from .model_view.tree_model_param_entry import TreeModelParamEntry, LeafNode, No
 from .parameter_entry_window_ui import Ui_MainWindow
 
 if TYPE_CHECKING:
-    from ...main_window import MetalGUI
+    from qiskit_metal._gui.main_window.orig.main_window import MetalGUI
 
 
 class ParameterEntryWindow(QMainWindow):

@@ -169,5 +169,4 @@ class Ui_MainWindowPlot(object):
                                              "Activate the ruler", None, -1))
 
 
-from .widgets.bases.expanding_toolbar import QToolBarExpanding
-from . import main_window_rc_rc
+from qiskit_metal._gui.widgets.bases.expanding_toolbar import QToolBarExpanding

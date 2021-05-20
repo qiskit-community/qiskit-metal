@@ -1,21 +1,21 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file './renderer_hfss_ui.ui',
-# licensing of './renderer_hfss_ui.ui' applies.
+# Form implementation generated from reading ui file './renderer_q3d_ui.ui',
+# licensing of './renderer_q3d_ui.ui' applies.
 #
-# Created: Fri May  7 19:27:12 2021
+# Created: Fri May  7 19:27:13 2021
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
 
-from PySide2 import QtCore, QtGui, QtWidgets
+from PySide2 import QtCore, QtWidgets
 
 
 class Ui_MainWindow(object):
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(646, 544)
+        MainWindow.resize(651, 544)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.instructionsLabel = QtWidgets.QLabel(self.centralwidget)
@@ -45,7 +45,7 @@ class Ui_MainWindow(object):
         self.listView.setGeometry(QtCore.QRect(10, 31, 301, 431))
         self.listView.setObjectName("listView")
         self.treeView = QTreeView_Base(self.centralwidget)
-        self.treeView.setGeometry(QtCore.QRect(325, 30, 311, 381))
+        self.treeView.setGeometry(QtCore.QRect(325, 30, 311, 431))
         self.treeView.setRootIsDecorated(False)
         self.treeView.setObjectName("treeView")
         self.instructionsLabel_2 = QtWidgets.QLabel(self.centralwidget)
@@ -62,18 +62,9 @@ class Ui_MainWindow(object):
         self.confirmButton = QtWidgets.QPushButton(self.horizontalLayoutWidget)
         self.confirmButton.setObjectName("confirmButton")
         self.horizontalLayout.addWidget(self.confirmButton)
-        self.solnComboBox = QtWidgets.QComboBox(self.centralwidget)
-        self.solnComboBox.setGeometry(QtCore.QRect(380, 440, 211, 26))
-        self.solnComboBox.setObjectName("solnComboBox")
-        self.solnComboBox.addItem("")
-        self.solnComboBox.addItem("")
-        self.solutionLabel = QtWidgets.QLabel(self.centralwidget)
-        self.solutionLabel.setGeometry(QtCore.QRect(410, 420, 141, 16))
-        self.solutionLabel.setAlignment(QtCore.Qt.AlignCenter)
-        self.solutionLabel.setObjectName("solutionLabel")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar()
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 646, 22))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 651, 22))
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
@@ -94,8 +85,8 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(
-            QtWidgets.QApplication.translate("MainWindow", "HFSS Renderer",
-                                             None, -1))
+            QtWidgets.QApplication.translate("MainWindow", "Q3D Renderer", None,
+                                             -1))
         self.instructionsLabel.setText(
             QtWidgets.QApplication.translate("MainWindow",
                                              "Check off components to export:",
@@ -115,18 +106,6 @@ class Ui_MainWindow(object):
         self.confirmButton.setText(
             QtWidgets.QApplication.translate("MainWindow", "Confirm Selection",
                                              None, -1))
-        self.solnComboBox.setItemText(
-            0,
-            QtWidgets.QApplication.translate("MainWindow", "Eigenmode", None,
-                                             -1))
-        self.solnComboBox.setItemText(
-            1,
-            QtWidgets.QApplication.translate("MainWindow", "Driven Modal", None,
-                                             -1))
-        self.solutionLabel.setText(
-            QtWidgets.QApplication.translate("MainWindow", "Solution type:",
-                                             None, -1))
 
 
-from .tree_view_base import QTreeView_Base
-from . import main_window_rc_rc
+from qiskit_metal._gui.widgets.rendering.tree_view_base import QTreeView_Base

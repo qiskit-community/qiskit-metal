@@ -13,29 +13,23 @@
 # that they have been altered from the originals.
 """Main module that handles a component  inside the main window."""
 
-import ast
 import inspect
 from pathlib import Path
 from typing import TYPE_CHECKING, Union
 
-import numpy as np
-import PySide2
-from PySide2 import QtCore, QtGui, QtWidgets
-from PySide2.QtCore import QAbstractTableModel, QModelIndex, Qt
-from PySide2.QtGui import QFont, QColor
-from PySide2.QtWidgets import (QAbstractItemView, QApplication, QFileDialog,
-                               QLabel, QMainWindow, QMessageBox, QTabWidget)
+from PySide2 import QtGui, QtWidgets
+from PySide2.QtGui import QFont
+from PySide2.QtWidgets import (QAbstractItemView, QTabWidget)
 
 from .... import logger
-from ...component_widget_ui import Ui_ComponentWidget
+from qiskit_metal._gui.widgets.component_widget.component_widget_ui import Ui_ComponentWidget
 from .tree_model_options import QTreeModel_Options
 
 __all__ = ['create_QTextDocument', 'format_docstr']
 
 if TYPE_CHECKING:
-    from ...main_window import MetalGUI, QMainWindowExtension
+    from qiskit_metal._gui.main_window.orig.main_window import MetalGUI
     from ....qlibrary import QComponent
-    from ....designs import QDesign
 
 try:  # For source doc
     import pygments

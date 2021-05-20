@@ -14,23 +14,17 @@
 """Dict tree base."""
 
 import ast
-from pathlib import Path
 from typing import Union, TYPE_CHECKING
 
-import numpy as np
-import PySide2
-from PySide2 import QtCore, QtGui, QtWidgets
+from PySide2 import QtCore
 from PySide2.QtCore import QAbstractItemModel, QModelIndex, QTimer, Qt
 from PySide2.QtGui import QFont
-from PySide2.QtWidgets import (QAbstractItemView, QApplication, QFileDialog,
-                               QWidget, QTreeView, QLabel, QMainWindow,
-                               QMessageBox, QTabWidget)
-from .... import logger
+from PySide2.QtWidgets import (QWidget, QTreeView)
 
 if TYPE_CHECKING:
     from ....designs.design_base import QDesign
     from ....qlibrary.core import QComponent
-    from ...main_window import MetalGUI
+    from qiskit_metal._gui.main_window.orig.main_window import MetalGUI
 
 __all__ = ['get_nested_dict_item', 'parse_param_from_str']
 

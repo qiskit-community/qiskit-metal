@@ -19,35 +19,35 @@ import os
 from pathlib import Path
 from typing import List, TYPE_CHECKING
 
-from PySide2.QtCore import QTimer, Qt, QSize
+from PySide2.QtCore import QTimer, Qt
 from PySide2.QtWidgets import (QDockWidget, QFileDialog, QLabel, QMainWindow,
                                QMessageBox)
 from PySide2.QtGui import QIcon, QPixmap
 from qiskit_metal._gui.widgets.qlibrary_display.delegate_qlibrary import LibraryDelegate
 from qiskit_metal._gui.widgets.qlibrary_display.file_model_qlibrary import QFileSystemLibraryModel
 from qiskit_metal._gui.widgets.qlibrary_display.proxy_model_qlibrary import LibraryFileProxyModel
-from .elements_window import ElementsWindow
+from qiskit_metal._gui.widgets.elements_window.elements_window import ElementsWindow
 from .main_window_base import QMainWindowBaseHandler, QMainWindowExtensionBase, kick_start_qApp
-from .main_window_ui import Ui_MainWindow
-from .renderer_gds_gui import RendererGDSWidget
-from .renderer_hfss_gui import RendererHFSSWidget
-from .renderer_q3d_gui import RendererQ3DWidget
-from .utility._handle_qt_messages import slot_catch_error
-from .widgets.all_components.table_model_all_components import \
+from qiskit_metal._gui.main_window.orig.main_window_ui import Ui_MainWindow
+from qiskit_metal._gui.widgets.rendering.renderer_gds_gui import RendererGDSWidget
+from qiskit_metal._gui.widgets.rendering.renderer_hfss_gui import RendererHFSSWidget
+from qiskit_metal._gui.widgets.rendering.renderer_q3d_gui import RendererQ3DWidget
+from qiskit_metal._gui.utility._handle_qt_messages import slot_catch_error
+from qiskit_metal._gui.widgets.all_components.table_model_all_components import \
     QTableModel_AllComponents
-from .widgets.build_history.build_history_scroll_area import BuildHistoryScrollArea
-from .widgets.create_component_window import parameter_entry_window as pew
-from .widgets.edit_component.component_widget import ComponentWidget
-from .widgets.plot_widget.plot_window import QMainWindowPlot
-from .widgets.variable_table import PropertyTableWidget
-from .. import config, qlibrary
-from ..designs.design_base import QDesign
+from qiskit_metal._gui.widgets.build_history.build_history_scroll_area import BuildHistoryScrollArea
+from qiskit_metal._gui.widgets.create_component_window import parameter_entry_window as pew
+from qiskit_metal._gui.widgets.edit_component.component_widget import ComponentWidget
+from qiskit_metal._gui.widgets.plot_widget.plot_window import QMainWindowPlot
+from qiskit_metal._gui.widgets.variable_table import PropertyTableWidget
+from qiskit_metal import config, qlibrary
+from qiskit_metal.designs.design_base import QDesign
 
 if not config.is_building_docs():
-    from ..toolbox_metal.import_export import load_metal_design
+    from qiskit_metal.toolbox_metal.import_export import load_metal_design
 
 if TYPE_CHECKING:
-    from ..renderers.renderer_mpl.mpl_canvas import PlotCanvas
+    from qiskit_metal.renderers.renderer_mpl.mpl_canvas import PlotCanvas
 
 
 class QMainWindowExtension(QMainWindowExtensionBase):

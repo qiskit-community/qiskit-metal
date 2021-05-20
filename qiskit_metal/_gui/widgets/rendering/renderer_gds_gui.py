@@ -12,16 +12,16 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-from PySide2.QtWidgets import (QAbstractItemView, QMainWindow, QMessageBox)
+from PySide2.QtWidgets import (QAbstractItemView, QFileDialog, QMainWindow,
+                               QMessageBox)
 
-from .list_model_base import DynamicList
-from .renderer_q3d_model import RendererQ3D_Model
-from .renderer_q3d_ui import Ui_MainWindow
-from .endcap_q3d_gui import EndcapQ3DWidget
+from qiskit_metal._gui.widgets.rendering.list_model_base import DynamicList
+from .renderer_gds_model import RendererGDS_Model
+from .renderer_gds_ui import Ui_MainWindow
 
 
-class RendererQ3DWidget(QMainWindow):
-    """Contains methods associated with Ansys Q3D Renderer button."""
+class RendererGDSWidget(QMainWindow):
+    """Contains methods associated with GDS Renderer button."""
 
     def __init__(self, parent: 'QMainWindow', gui: 'MetalGUI'):
         """Get access to design, which has the components. Then set up the
@@ -45,7 +45,7 @@ class RendererQ3DWidget(QMainWindow):
         self.list_model = DynamicList(self.design)
         self.listView.setModel(self.list_model)
 
-        self.tree_model = RendererQ3D_Model(self, gui, self.ui.treeView)
+        self.tree_model = RendererGDS_Model(self, gui, self.ui.treeView)
         self.ui.treeView.setModel(self.tree_model)
         self.ui.treeView.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
         self.ui.treeView.setHorizontalScrollMode(
@@ -85,15 +85,34 @@ class RendererQ3DWidget(QMainWindow):
         """
         return self.list_model.get_checked()
 
-    def choose_checked_components(self):
-        """Sends checked components to the next window that allows the user to
-        select which unconnected pins are to be open."""
-        components_to_render = self.get_checked()
-        if components_to_render:
-            self.endcap_q3d_window = EndcapQ3DWidget(self, self._gui,
-                                                     components_to_render)
-            self.endcap_q3d_window.show()
+    def browse_folders(self):
+        """Browses available folders in system."""
+        destination_folder = QFileDialog.getSaveFileName(
+            None,
+            'Select a new location to export to',
+            'my_qdesign.gds',
+            selectedFilter='*.gds')[0]
+        self.ui.lineEdit.setText(destination_folder)
+
+    def export_file(self):
+        """Renders a subset or all of the components in design and exports it.
+
+        If the list of components to export is smaller than the total
+        number of components, highlight_qcomponents is included as an
+        argument. Otherwise it is not.
+        """
+        filename = self.ui.lineEdit.text()
+        components_to_export = self.get_checked()
+        a_gds = self.design.renderers.gds
+        if filename and components_to_export:
+            if len(components_to_export) == len(self.design.components):
+                a_gds.export_to_gds(filename)
+            else:
+                a_gds.export_to_gds(filename,
+                                    highlight_qcomponents=components_to_export)
             self.close()
         else:
-            QMessageBox.warning(self, "Error",
-                                "Please select at least one component.")
+            QMessageBox.warning(
+                self, "Error",
+                "Please enter a valid file name and \n select at least one component."
+            )

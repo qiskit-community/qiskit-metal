@@ -1,0 +1,47 @@
+Issues with self-container widgets:
+# -- GUI has a list of all functions so that it can be run from a Jupyter notebook
+-- Buttons won\'t know which design they\'re editing without that passed in
+    unless they have an inside look at the backend
+    example: Button rename clicked-on qcomponent
+
+
+
+GUI (holding the widgets)
+
+Design (holding the design)
+
+Anki/Metal Handler (holding the GUI)
+
+MainWindow, of QT, holding all the functions for GUI to call
+
+    --- Plot Renderer (UI - MainWindow)
+    --- Docking
+
+Anki/Metal Handler (holding the App)
+
+App Edits
+
+
+##
+GUI has a list of all functions so that it can be run from a Jupyter notebook
+Also, if widgets hold their own functions, isn\'t that opposite of dependency inversion?'
+We'd end up passing the design to the individual widgets which feels wrong
+There can be multiple designs
+
+
+
+
+
+
+Pool of Widgets  ---> Different Modes          -----> MainWindow
+-- coolWidg            ModeA: coolWidg, hotWidg
+-- hotWidg             ModeB: coolWidg, lukeWidg
+-- lukeWidg
+
+What if we need 2 different hotWidg, each with slightly different features _> subclass it
+
+Widgets that beget widgets tho?
+    -- QRenderers
+
+Widget changing another widget\'s functionality --> new mode ?
+New Widgets --> new mode

@@ -15,19 +15,16 @@
 from typing import TYPE_CHECKING
 from typing import List
 
-from PySide2 import QtCore, QtWidgets
-from PySide2.QtCore import QModelIndex, Qt, QTimer
+from PySide2 import QtWidgets
+from PySide2.QtCore import QModelIndex, QTimer
 from PySide2.QtGui import QContextMenuEvent
-from PySide2.QtWidgets import (QInputDialog, QLabel, QLineEdit, QMenu,
-                               QMessageBox, QTableView, QVBoxLayout,
-                               QAbstractItemView)
+from PySide2.QtWidgets import (QInputDialog, QLineEdit, QMenu,
+                               QMessageBox, QTableView, QAbstractItemView)
 
-from ...utility._handle_qt_messages import slot_catch_error
 from ..bases.QWidget_PlaceholderText import QWidget_PlaceholderText
 
 if TYPE_CHECKING:
-    from ...main_window import MetalGUI
-    from .table_model_all_components import QTableModel_AllComponents
+    from qiskit_metal._gui.main_window.orig.main_window import MetalGUI
 
 
 class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):

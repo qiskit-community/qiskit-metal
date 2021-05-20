@@ -14,10 +14,10 @@
 
 from PySide2.QtWidgets import (QAbstractItemView, QMainWindow, QMessageBox)
 
-from .list_model_base import DynamicList
+from qiskit_metal._gui.widgets.rendering.list_model_base import DynamicList
 from .renderer_hfss_model import RendererHFSS_Model
 from .renderer_hfss_ui import Ui_MainWindow
-from .endcap_hfss_gui import EndcapHFSSWidget
+from qiskit_metal._gui.widgets.rendering.endcap_hfss_gui import EndcapHFSSWidget
 
 
 class RendererHFSSWidget(QMainWindow):

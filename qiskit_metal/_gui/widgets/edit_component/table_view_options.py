@@ -15,14 +15,14 @@
 
 from typing import TYPE_CHECKING
 
-from PySide2 import QtCore, QtWidgets
-from PySide2.QtCore import Qt, QTimer
+from PySide2 import QtWidgets
+from PySide2.QtCore import QTimer
 from PySide2.QtWidgets import QTableView, QAbstractItemView
 
 from ..bases.QWidget_PlaceholderText import QWidget_PlaceholderText
 
 if TYPE_CHECKING:
-    from ...main_window import MetalGUI
+  pass
 
 
 class QTableView_Options(QTableView, QWidget_PlaceholderText):

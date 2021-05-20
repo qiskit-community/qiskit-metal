@@ -1024,7 +1024,6 @@ class Ui_MainWindow(object):
             QtWidgets.QApplication.translate("MainWindow", "clickme", None, -1))
 
 
-from .widgets.qlibrary_display.tree_view_qlibrary import TreeViewQLibrary
-from .widgets.log_widget.log_metal import QTextEditLogger
-from .widgets.all_components.table_view_all_components import QTableView_AllComponents
-from . import main_window_rc_rc
+from qiskit_metal._gui.widgets.qlibrary_display.tree_view_qlibrary import TreeViewQLibrary
+from qiskit_metal._gui.widgets.log_widget.log_metal import QTextEditLogger
+from qiskit_metal._gui.widgets.all_components.table_view_all_components import QTableView_AllComponents

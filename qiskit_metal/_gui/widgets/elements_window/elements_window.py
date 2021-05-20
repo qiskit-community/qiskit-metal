@@ -15,7 +15,6 @@
 
 from typing import TYPE_CHECKING
 
-import numpy as np
 from PySide2 import QtCore, QtWidgets
 from PySide2.QtCore import QAbstractTableModel, QModelIndex
 from PySide2.QtWidgets import QMainWindow
@@ -24,7 +23,7 @@ from .elements_ui import Ui_ElementsWindow
 
 if TYPE_CHECKING:
     # https://stackoverflow.com/questions/39740632/python-type-hinting-without-cyclic-imports
-    from .main_window import MetalGUI, QMainWindowExtension
+    from qiskit_metal._gui.main_window.orig.main_window import MetalGUI, QMainWindowExtension
 
 
 class ElementsWindow(QMainWindow):

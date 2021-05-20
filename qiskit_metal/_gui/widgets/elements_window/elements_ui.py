@@ -172,4 +172,3 @@ class Ui_ElementsWindow(object):
                                              None, -1))
 
 
-from . import main_window_rc_rc

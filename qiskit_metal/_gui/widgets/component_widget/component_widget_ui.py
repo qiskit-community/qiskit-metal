@@ -8,7 +8,7 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PySide2 import QtCore, QtGui, QtWidgets
+from PySide2 import QtGui, QtWidgets
 
 
 class Ui_ComponentWidget(object):
@@ -137,5 +137,4 @@ class Ui_ComponentWidget(object):
                                              -1))
 
 
-from .widgets.edit_component.tree_view_options import QTreeView_Options
-from . import main_window_rc_rc
+from qiskit_metal._gui.widgets.edit_component.tree_view_options import QTreeView_Options
