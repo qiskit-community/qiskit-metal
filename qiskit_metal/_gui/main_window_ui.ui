@@ -401,7 +401,7 @@
        <property name="spacing">
         <number>0</number>
        </property>
-       <item row="0" column="3">
+       <item row="0" column="2">
         <widget class="QToolButton" name="btn_comp_zoom">
          <property name="toolTip">
           <string>Focus on component in drawing window</string>
@@ -419,16 +419,6 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QToolButton" name="btn_comp_actions">
-         <property name="text">
-          <string>Do</string>
-         </property>
-         <property name="popupMode">
-          <enum>QToolButton::MenuButtonPopup</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="2">
         <widget class="QToolButton" name="btn_comp_del">
          <property name="toolTip">
           <string>Delete a selected component</string>
@@ -451,6 +441,13 @@
          </property>
          <property name="toolButtonStyle">
           <enum>Qt::ToolButtonIconOnly</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QToolButton" name="btn_comp_rename">
+         <property name="text">
+          <string>Rename</string>
          </property>
         </widget>
        </item>

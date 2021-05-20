@@ -12,14 +12,12 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-from .dialog_popup_ui import Ui_Dialog
-from .add_delete_table_ui import Ui_MainWindow
-from .prop_val_table_model import PropValTable
-from .right_click_table_view import RightClickView
-from PySide2 import QtWidgets, QtGui, QtCore
-from PySide2.QtGui import QFont
 from PySide2.QtCore import QModelIndex
-from PySide2.QtWidgets import QMainWindow, QTableView, QDialog
+from PySide2.QtWidgets import QDialog, QMainWindow
+
+from .add_delete_table_ui import Ui_MainWindow
+from .dialog_popup_ui import Ui_Dialog
+from .prop_val_table_model import PropValTable
 
 
 class PropertyTableWidget(QMainWindow):
