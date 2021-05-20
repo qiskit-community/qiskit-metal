@@ -548,14 +548,16 @@ class Sweeping():
                     f'Heads-Up: {option_name}={item} Failed to converge.  ')
 
             sweep_values = Dict()
-            sweep_values['convergence_eig_f'] = df_f
-            sweep_values['convergence_t'] = df_t
+
             sweep_values['convergence'] = convergence
             sweep_values['option_name'] = option_path[-1]
             sweep_values['frequency'] = freqs
             sweep_values['kappa_over_2pis'] = kappa_over_2pis
             sweep_values['quality_factor'] = self.get_quality_factor(
                 freqs, kappa_over_2pis)
+
+            sweep_values['convergence_eig_f'] = df_f
+            sweep_values['convergence_t'] = df_t
             all_sweep[item] = sweep_values
 
             #Decide if need to clean the design.
