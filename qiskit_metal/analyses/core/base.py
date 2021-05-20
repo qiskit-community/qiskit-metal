@@ -38,7 +38,9 @@ class QAnalysis(ABC):
     @abstractmethod
     def run(self):
         """Abstract method. Must be implemented by the subclass.
-        execute the full analysis. Needs to run after the setup steps
+        Use as an alias for the main run method. Call the main run method run_***().
+        Make sure the method names run_***() between two QAnalysis subclsses is unique,
+        in case you expect them to be both inherited from the same subclass.
         """
         pass
 

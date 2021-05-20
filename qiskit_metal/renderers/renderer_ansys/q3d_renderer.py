@@ -405,11 +405,11 @@ class QQ3DRenderer(QAnsysRenderer):
 
     def lumped_oscillator_vs_passes(self, *args, **kwargs):
         """
-        (deprecated) use analysis.quantitative.capacitance_lom.get_lumped_oscillator()
+        (deprecated) use analysis.quantitative.capacitance_lom.run_lom()
         """
         self.logger.warning(
             'This method is deprecated. Change your scripts to use'
-            'analysis.quantitative.capacitance_lom.get_lumped_oscillator()')
+            'analysis.quantitative.capacitance_lom.run_lom()')
 
     def plot_convergence_main(self, RES: pd.DataFrame):
         """Plot alpha and frequency versus pass number, as well as convergence

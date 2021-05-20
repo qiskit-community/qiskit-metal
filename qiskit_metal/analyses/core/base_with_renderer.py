@@ -12,8 +12,11 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
+from abc import abstractmethod
+from . import QAnalysis
 
-class NeedsRenderer():
+
+class QAnalysisRenderer(QAnalysis):
     """Just a way to centralize the selection and naming of the renderer.
     Could refactor code to transform this class into a class-less function.
     """
@@ -90,3 +93,16 @@ class NeedsRenderer():
             pathlib.WindowsPath: path to png formatted screenshot.
         """
         return self.renderer.save_screenshot()
+
+    def run(self, *args, **kwargs):
+        """Alias for run_sim()
+        """
+        self.run_sim(*args, **kwargs)
+
+    @abstractmethod
+    def run_sim(self, *args, **kwargs):
+        """Abstract method. Must be implemented by the subclass.
+        Write in here the code to launch the simualtions.
+        You will be able to execute this with the alias run()
+        """
+        pass

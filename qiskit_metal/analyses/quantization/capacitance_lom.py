@@ -18,7 +18,7 @@ import pandas as pd
 from pyEPR.ansys import ureg
 from pyEPR.calcs.convert import Convert
 
-from ..core import NeedsRenderer
+from ..core import QAnalysisRenderer
 from ..core import QAnalysis
 
 from ... import Dict
@@ -28,7 +28,7 @@ if not config.is_building_docs():
     from .lumped_capacitive import extract_transmon_coupled_Noscillator
 
 
-class CapExtraction(QAnalysis, NeedsRenderer):
+class CapExtraction(QAnalysisRenderer):
     """Compute Capacitance matrix using the selected renderer.
     """
     default_setup = Dict(sim=Dict(name="Setup",
@@ -124,12 +124,12 @@ class CapExtraction(QAnalysis, NeedsRenderer):
             except pd.errors.EmptyDataError:
                 break
 
-    def run(self,
-            name: str = None,
-            components: Union[list, None] = None,
-            open_terminations: Union[list, None] = None,
-            box_plus_buffer: bool = True) -> (str, str):
-        """Executes the entire capacitance matrix extraction.
+    def run_sim(self,
+                name: str = None,
+                components: Union[list, None] = None,
+                open_terminations: Union[list, None] = None,
+                box_plus_buffer: bool = True) -> (str, str):
+        """Executes the capacitance matrix extraction.
         First it makes sure the tool is running. Then it does the necessary to render the design.
         Finally it runs the setup defined in this class. So you need to modify the setup ahead.
         You can modify the setup by using the methods defined in the QAnalysis super-class.
@@ -161,7 +161,7 @@ class CapExtraction(QAnalysis, NeedsRenderer):
 
     @property
     def capacitance_matrix(self) -> pd.DataFrame:
-        """Stores the last-pass capacitance matrix after run() concludes.
+        """Stores the last-pass capacitance matrix after run_sim() concludes.
         It is populated by _analyze() with a pandas database.
 
         Returns:
@@ -193,7 +193,6 @@ class LOManalysis(QAnalysis):
         freq_readout (float): Coupling readout frequency (in GHz).
         freq_bus (Union[list, float]): Coupling bus frequencies (in GHz).
             freq_bus can be a list with the order they appear in the capMatrix.
-
     """
     default_setup = Dict(lom=Dict(
         junctions=Dict(Lj=12, Cj=2), freq_readout=7.0, freq_bus=[6.0, 6.2]))
@@ -244,7 +243,7 @@ class LOManalysis(QAnalysis):
         """Stores the output of the LOM analysis
 
         Returns:
-            dict: Pass number (keys) and their respective capacitance matrices (values)
+            dict: Pass number (keys) and their respective lump oscillator information (values)
         """
         return self._lom_output
 
@@ -253,11 +252,17 @@ class LOManalysis(QAnalysis):
         """Allows editing the output of the LOM analysis
 
         Args:
-            lom_dict (dict): Pass number (keys) and their respective capacitance matrices (values)
+            lom_dict (dict): Pass number (keys) and their respective
+                lump oscillator information (values)
         """
         self._lom_output = lom_dict
 
-    def get_lumped_oscillator(self):
+    def run(self):
+        """Alias for run_lom()
+        """
+        return self.run_lom(*args, **kwargs)
+
+    def run_lom(self):
         """Executes the lumped oscillator extraction from the capacitance matrix,
         and based on the setup values
 
@@ -305,15 +310,15 @@ class LOManalysis(QAnalysis):
         self._lom_output = all_res
         return self.lumped_oscillator
 
-    def plot_convergence_main(self, *args, **kwargs):
+    def plot_convergence(self, *args, **kwargs):
         """Plots alpha and frequency versus pass number, as well as convergence of delta (in %).
 
         Args:
-            It accepts the same inputs as get_lumped_oscillator(), to allow regenerating the LOM
+            It accepts the same inputs as run_lom(), to allow regenerating the LOM
             results before plotting them.
         """
         if self._lom_output is None or args or kwargs:
-            self.get_lumped_oscillator(*args, **kwargs)
+            self.run_lom(*args, **kwargs)
         # TODO: remove analysis plots from pyEPR and move it here
         self.renderer.plot_convergence_main(self._lom_output)
 
@@ -321,15 +326,15 @@ class LOManalysis(QAnalysis):
         """Plot convergence of chi and g, both in MHz, as a function of pass number.
 
         Args:
-            It accepts the same inputs as get_lumped_oscillator(), to allow regenerating the LOM
+            It accepts the same inputs as run_lom(), to allow regenerating the LOM
             results before plotting them.
         """
         if self._lom_output is None or args or kwargs:
-            self.get_lumped_oscillator(*args, **kwargs)
+            self.run_lom(*args, **kwargs)
         self.renderer.plot_convergence_chi(self._lom_output)
 
 
-class CapExtractAndLOM(CapExtraction, LOManalysis):
+class CapExtractAndLOM(LOManalysis, CapExtraction):
     """Compute Capacitance matrix, then derive from it the lom parameters.
     """
 
@@ -342,3 +347,14 @@ class CapExtractAndLOM(CapExtraction, LOManalysis):
         """
         # set design and renderer
         super().__init__(design, renderer_name)
+
+    def run(self, *args, **kwargs):
+        """Executes sequentually the system capacitance simulation and lom extraction
+        executing the methods CapExtraction.run_sim(*args, **kwargs) and LOManalysis.run_lom()
+        For imput parameter, see documentation for CapExtraction.run_sim()
+
+        Returns:
+            (dict): Pass numbers (keys) and respective lump oscillator information (values)
+        """
+        self.run_sim(*args, **kwargs)
+        return self.run_lom()

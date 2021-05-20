@@ -820,16 +820,16 @@ class QAnsysRenderer(QRendererAnalysis):
         setup = self.new_ansys_setup(**kwargs)  #TODO: activate_ansys_setup?
         return setup.name
 
-    def initialize_eigenmode(self, variables: Dict, **kwargs):
+    def initialize_eigenmode(self, vars: Dict, **kwargs):
         """Any task that needs to occur before running a simulation, such as creating a setup
 
         Args:
-            variables (Dict): list of parametric variables to set in the renderer
+            vars (Dict): list of parametric variables to set in the renderer
 
         Returns:
             str: Name of the setup that has been updated
         """
-        self.set_variables(variables)
+        self.set_variables(vars)
         setup = self.new_ansys_setup(**kwargs)  #TODO: activate_ansys_setup?
         return setup.name
 

@@ -23,4 +23,4 @@ Module containing base classes and interfaces to be inherited by analyses classe
 """
 
 from .base import QAnalysis
-from .analysis_interfaces import NeedsRenderer
+from .base_with_renderer import QAnalysisRenderer
