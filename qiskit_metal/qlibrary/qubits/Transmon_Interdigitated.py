@@ -73,7 +73,7 @@ class TransmonInterdigitated(QComponent):
         * rotation: '0.0' -- the angle at which the entire structure is rotated
         * rotation_top_pad: '180' -- internal coordinate defining the angle of rotation
           between top and bottom pads
-        * layer: '1' -- all objcets are drawn assuming they are part of the same layer on a
+        * layer: '1' -- all objects are drawn assuming they are part of the same layer on a
           the chip
     """
 

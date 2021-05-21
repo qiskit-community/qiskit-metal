@@ -18,6 +18,7 @@ RouteFramed
    .. autosummary::
       :toctree: ../stubs/
    
+      RouteFramed.TOOLTIP
       RouteFramed.class_name
       RouteFramed.component_metadata
       RouteFramed.default_options

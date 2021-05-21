@@ -78,6 +78,14 @@ class CoupledLineTee(QComponent):
                            layer='1')
     """Default connector options"""
 
+    TOOLTIP = """Generates a three pin (+) 
+    structure comprised of a primary two 
+    pin CPW transmission line, and a 
+    secondary one pin neighboring CPW 
+    transmission line that is 
+    capacitively/inductively coupled 
+    to the primary."""
+
     def make(self):
         """Build the component."""
         p = self.p

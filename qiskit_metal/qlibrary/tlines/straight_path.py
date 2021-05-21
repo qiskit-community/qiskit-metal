@@ -22,6 +22,8 @@ class RouteStraight(QRoute):
     component_metadata = Dict(short_name='cpw')
     """Component metadata"""
 
+    TOOLTIP = """Draw a straight Route connecting two pins."""
+
     def make(self):
         """The make function implements the logic that creates the geometry
         (poly, path, etc.) from the qcomponent.options dictionary of

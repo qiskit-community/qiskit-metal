@@ -18,6 +18,7 @@ CoupledLineTee
    .. autosummary::
       :toctree: ../stubs/
    
+      CoupledLineTee.TOOLTIP
       CoupledLineTee.class_name
       CoupledLineTee.component_metadata
       CoupledLineTee.default_options

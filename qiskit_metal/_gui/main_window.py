@@ -543,6 +543,8 @@ class MetalGUI(QMainWindowBaseHandler):
 
         self.ui.dockLibrary_tree_view.setItemDelegate(
             LibraryDelegate(self.main_window))  # try empty one if no work
+        self.ui.dockLibrary_tree_view.itemDelegate().tool_tip_signal.connect(
+            self.ui.dockLibrary_tree_view.setToolTip)
 
         self.ui.dockLibrary_tree_view.qlibrary_filepath_signal.connect(
             self._create_new_component_object_from_qlibrary)
@@ -550,6 +552,9 @@ class MetalGUI(QMainWindowBaseHandler):
             self._refresh_component_build)
         self.ui.dockLibrary_tree_view.qlibrary_file_dirtied_signal.connect(
             self._set_rebuild_needed)
+
+        self.ui.dockLibrary_tree_view.viewport().setAttribute(Qt.WA_Hover, True)
+        self.ui.dockLibrary_tree_view.viewport().setMouseTracking(True)
 
     ################################################
     # UI

@@ -18,6 +18,7 @@ TransmonInterdigitated
    .. autosummary::
       :toctree: ../stubs/
    
+      TransmonInterdigitated.TOOLTIP
       TransmonInterdigitated.class_name
       TransmonInterdigitated.component_metadata
       TransmonInterdigitated.default_options
