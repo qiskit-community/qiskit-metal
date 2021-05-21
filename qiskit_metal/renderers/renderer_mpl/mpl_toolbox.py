@@ -206,11 +206,9 @@ def draw_all_objects(components, ax, func=lambda x: x, root_name='components'):
     #  TODO: This is very outdated, remove
 
 
-    Arguments:
+    Args:
         components {[type]} -- [description]
         ax {[type]} -- [description]
-
-    Keyword Arguments:
         func {[type]} -- [description] Defaults to {lambdax:x}
         root_name {str} -- [description] Defaults to {'components'}
     """

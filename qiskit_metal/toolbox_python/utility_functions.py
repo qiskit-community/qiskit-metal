@@ -123,7 +123,7 @@ def data_frame_empty_typed(column_types: dict):
     """Creates and empty DataFrame with dtypes for each column given by the
     dictionary.
 
-    Arguments:
+    Args:
         column_types (dict): A key, dtype pairs
 
     Returns:
@@ -138,7 +138,7 @@ def data_frame_empty_typed(column_types: dict):
 def clean_name(text: str):
     """Clean a string to a proper variable name in python.
 
-    Arguments:
+    Args:
         text (str): Original string
 
     Returns:
@@ -208,7 +208,7 @@ def log_error_easy(logger: logging.Logger,
                    do_print=False):
     """Print log message.
 
-    Arguments:
+    Args:
         logger (logging.Logger): The logger.
         pre_text (str): Initial text to write.  Defaults to ''.
         post_text (str): End text to write.  Defaults to ''.

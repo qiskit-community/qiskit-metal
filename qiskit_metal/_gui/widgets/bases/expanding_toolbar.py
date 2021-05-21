@@ -24,7 +24,7 @@ class QToolBarExpanding(QToolBar):
     Example:
         ```toolbar = gui.ui.toolBarView```
 
-    Arguments:
+    Args:
         QToolbar (QToolbar): QToolbar
     """
 
@@ -58,7 +58,7 @@ class QToolBarExpanding(QToolBar):
         space. (This excludes screen space owned by any of the widget's
         children.)
 
-        Arguments:
+        Args:
             evt (QtCore.QEvent): QtCore event
         """
         # should ideally have a timeout thread
@@ -72,7 +72,7 @@ class QToolBarExpanding(QToolBar):
         space. If the mouse enters a child widget it will not cause a
         leaveEvent().
 
-        Arguments:
+        Args:
             evt (QtCore.QEvent): QtCore event
         """
         # print('<- EXIT')

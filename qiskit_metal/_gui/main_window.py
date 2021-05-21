@@ -302,7 +302,7 @@ class MetalGUI(QMainWindowBaseHandler):
     def _set_enabled_design_widgets(self, enabled: bool = True):
         """Make rebuild and all the other main button disabled.
 
-        Arguments:
+        Args:
             enabled (bool): True to enable, False to disable the design widgets.  Defaults to True.
         """
 
@@ -685,7 +685,7 @@ class MetalGUI(QMainWindowBaseHandler):
     def edit_component(self, name: str):
         """Set the component to be examined by the component widget.
 
-        Arguments:
+        Args:
             name (str): Name of component to exmaine.
         """
         if self.component_window:

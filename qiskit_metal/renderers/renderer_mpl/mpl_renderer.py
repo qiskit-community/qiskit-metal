@@ -159,7 +159,7 @@ class QMplRenderer():
     def render(self, ax: Axes):
         """Assumes that the axis has been cleared already and so on.
 
-        Arguments:
+        Args:
             ax (matplotlib.axes.Axes): mpl axis to draw on
         """
 
@@ -282,7 +282,7 @@ class QMplRenderer():
         """Render a table of junction geometry.
         A junction is basically drawn like a path with finite width and no fillet.
 
-        Arguments:
+        Args:
             table (DataFrame): Element table
             ax (matplotlib.axes.Axes): Axis to render on
             extra_kw (dict): Style params
@@ -315,7 +315,7 @@ class QMplRenderer():
                     extra_kw: dict = None):
         """Render a table of poly geometry.
 
-        Arguments:
+        Args:
             table (DataFrame): Element table
             ax (matplotlib.axes.Axes): Axis to render on
             kw (dict): Style params
@@ -329,7 +329,7 @@ class QMplRenderer():
     def render_fillet(self, table):
         """Renders fillet path.
 
-        Arguments:
+        Args:
             table (DataFrame): Table of elements with fillets
 
         Returns:
@@ -341,7 +341,7 @@ class QMplRenderer():
     def fillet_path(self, row):
         """Output the filleted path.
 
-        Arguments:
+        Args:
             row (DataFrame): Row to fillet.
 
         Returns:
@@ -381,7 +381,7 @@ class QMplRenderer():
         """Returns the filleted path based on the start, corner, and end
         vertices and the fillet radius.
 
-        Arguments:
+        Args:
             vertex_start (np.ndarray): x-y coordinates of starting vertex.
             vertex_corner (np.ndarray): x-y coordinates of corner vertex.
             vertex_end (np.ndarray): x-y coordinates of end vertex.
@@ -436,7 +436,7 @@ class QMplRenderer():
                     extra_kw: dict = None):
         """Render a table of path geometry.
 
-        Arguments:
+        Args:
             table (DataFrame): Element table
             ax (matplotlib.axes.Axes): Axis to render on
             kw (dict): Style params

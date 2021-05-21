@@ -38,7 +38,8 @@ class LibraryDelegate(QItemDelegate):
     def __init__(self, parent: QWidget = None):
         """
          Initializer for LibraryDelegate
-        Arguments:
+
+        Args:
             parent(QWidget): parent
         """
         super().__init__(parent)
@@ -52,7 +53,8 @@ class LibraryDelegate(QItemDelegate):
         The Delegate may belong to a view using a ProxyModel. However,
         the source model for that Proxy Model(s) should be a QFileSystemLibraryModel
         and is returned by this function
-        Arguments:
+
+        Args:
             model(QAbstractItemModel): Current model
             source_type(type): Expected source model type
         Returns:

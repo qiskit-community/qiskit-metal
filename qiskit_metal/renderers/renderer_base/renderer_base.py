@@ -127,7 +127,7 @@ class QRenderer():
     def get_renderer(name: str):
         """Returns an already loaded and instantiated renderer.
 
-        Arguments:
+        Args:
             name (str): rendering name
 
         Returns:
@@ -236,7 +236,7 @@ class QRenderer():
         """Init function to register a renderer class with the design when
         first instantiated. Registers the renderer's template options.
 
-        Arguments:
+        Args:
             design (QDesign): The parent design
             template_key (str): Key to use
             render_template (dict): template of render to copy
@@ -353,7 +353,7 @@ class QRenderer():
 
         Overwrite `initiate_renderer`.
 
-        Arguments:
+        Args:
             re_initiate (bool) : If False will only apply this function once.
                                  If True, will re-apply.  Defaults to False.
 
@@ -426,7 +426,7 @@ class QRenderer():
     def render_chips(self, all_chips):
         """Render all chips of the design. Calls render_chip for each chip.
 
-        Args: 
+        Args:
             all_chips (list): All chip names to render.
 
         Raises:

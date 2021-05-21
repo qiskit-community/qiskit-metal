@@ -212,7 +212,7 @@ class QTextEditLogger(QTextEdit):
     def set_level(self, level: int):
         """Set level on all handlers.
 
-        Arguments:
+        Args:
             level (logging.level): The level of logging, eg.., logging.ERROR
         """
         print(f'Setting level: {level}')
@@ -247,7 +247,7 @@ class QTextEditLogger(QTextEdit):
         where
             `_log_handler is LogHandler_for_QTextLog`
 
-        Arguments:
+        Args:
             name (string): Name of logger to be added
             handler (logging.Handler): Handler
         """
@@ -265,7 +265,7 @@ class QTextEditLogger(QTextEdit):
         def toggle_show_log(self2, val: bool):
             """Toggle the value of the.
 
-            Arguments:
+            Args:
                 self2 (QTextEdit): self
                 val (bool): True or False
 
@@ -312,7 +312,7 @@ class QTextEditLogger(QTextEdit):
         self.clear()
         for name, record in self.logged_lines:
             if name in self.get_all_checked():
-                self.log_message(record, not (name is 'Errors'))
+                self.log_message(record, name != 'Errors')
 
     def log_message_to(self, name, record):
         """Set where to log messages to.
@@ -323,12 +323,12 @@ class QTextEditLogger(QTextEdit):
         """
         self.logged_lines.append((name, record))
         if name in self.get_all_checked():
-            self.log_message(record, not (name is 'Errors'))
+            self.log_message(record, name != 'Errors')
 
     def log_message(self, message, format_as_html=True):
         """Do the actual logging.
 
-        Arguments:
+        Args:
             message (str): The message to log.
             format_as_html (bool): True to format as HTML, False otherwise.  Defaults to True.
         """
@@ -388,7 +388,7 @@ class LogHandler_for_QTextLog(logging.Handler):
                  logger: logging.Logger,
                  log_string=None):
         """
-        Arguments:
+        Args:
             name (str): The name.
             parent (logger): The parent logger.
             log_qtextedit (QTextEditLogger): Text edit logger.
@@ -421,7 +421,7 @@ class LogHandler_for_QTextLog(logging.Handler):
         sequences. Used to display text that might contain such characters in
         HTML.
 
-        Arguments:
+        Args:
             record (LogRecord): The log recorder
         """
         # print(record)
