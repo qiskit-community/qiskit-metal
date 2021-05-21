@@ -24,6 +24,22 @@ from ... import config
 
 class CapExtraction(QAnalysisRenderer):
     """Compute Capacitance matrix using the selected renderer.
+
+    Default Setup:
+        name (str): Name of capacitive simulation setup. Defaults to "Setup".
+        freq_ghz (int): Frequency in GHz. Defaults to 5.
+        save_fields (bool): Whether or not to save fields. Defaults to False.
+        enabled (bool): Whether or not setup is enabled. Defaults to True.
+        max_passes (int): Maximum number of passes. Defaults to 15.
+        min_passes (int): Minimum number of passes. Defaults to 2.
+        min_converged_passes (int): Minimum number of converged passes.
+            Defaults to 2.
+        percent_error (float): Error tolerance as a percentage. Defaults to 0.5.
+        percent_refinement (int): Refinement as a percentage. Defaults to 0.5.
+        auto_increase_solution_order (bool): Whether or not to increase
+            solution order automatically. Defaults to True.
+        solution_order (str): Solution order. Defaults to 'High'.
+        solver_type (str): Solver type. Defaults to 'Iterative'.
     """
     default_setup = Dict(sim=Dict(name="Setup",
                                   freq_ghz=5.,

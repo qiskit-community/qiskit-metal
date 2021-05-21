@@ -27,6 +27,18 @@ from ..core import QAnalysisRenderer
 
 class EigenmodeSim(QAnalysisRenderer):
     """Compute eigenmode, then derive from it using the epr method
+
+    Default Setup:
+        name (str): Name of eigenmode setup. Defaults to "Setup".
+        min_freq_ghz (int): Minimum frequency in GHz. Defaults to 1.
+        max_delta_f (float): Absolute value of maximum difference in
+            frequency. Defaults to 0.5.
+        max_passes (int): Maximum number of passes. Defaults to 10.
+        min_passes (int): Minimum number of passes. Defaults to 1.
+        min_converged (int): Minimum number of converged passes. Defaults to 1.
+        pct_refinement (int): Percent refinement. Defaults to 30.
+        basis_order (int): Basis order. Defaults to 1.
+        vars (Dict): Variables (key) and values (value) to define in the renderer.
     """
     default_setup = Dict(sim=Dict(name="Setup",
                                   min_freq_ghz=1,
@@ -36,7 +48,7 @@ class EigenmodeSim(QAnalysisRenderer):
                                   min_passes=1,
                                   min_converged=1,
                                   pct_refinement=30,
-                                  basis_order=-1,
+                                  basis_order=1,
                                   vars=Dict(Lj='10 nH', Cj='0 fF')))
     """Default setup"""
 

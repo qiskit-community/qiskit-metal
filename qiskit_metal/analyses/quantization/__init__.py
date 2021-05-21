@@ -23,7 +23,8 @@ Module containing all Qiskit Metal quantization analyses.
 """
 
 from .. import config
-from .capacitive_sim import CapExtraction
+from .sim_capacitive import CapExtraction
 from .lumped_oscillator_model import CapExtractAndLOM, LOManalysis
-from .eigenmode_sim import EigenmodeSim
+from .sim_eigenmode import EigenmodeSim
 from .energy_participation_ratio import EigenmodeAndEPR, EPRanalysis
+from .sim_impedance import ImpedanceAnalysis

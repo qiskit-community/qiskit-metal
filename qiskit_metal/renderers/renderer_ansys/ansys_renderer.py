@@ -820,11 +820,12 @@ class QAnsysRenderer(QRendererAnalysis):
         setup = self.new_ansys_setup(**kwargs)  #TODO: activate_ansys_setup?
         return setup.name
 
-    def initialize_eigenmode(self, vars: Dict, **kwargs):
+    def initialize_eigenmode(self, vars: Dict = {}, **kwargs):
         """Any task that needs to occur before running a simulation, such as creating a setup
 
         Args:
-            vars (Dict): list of parametric variables to set in the renderer
+            vars (Dict, optional): list of parametric variables to set in the renderer.
+                Defaults to {}.
 
         Returns:
             str: Name of the setup that has been updated
@@ -833,18 +834,21 @@ class QAnsysRenderer(QRendererAnalysis):
         setup = self.new_ansys_setup(**kwargs)  #TODO: activate_ansys_setup?
         return setup.name
 
-    def initialize_drivenmodal(self, variables: Dict, **kwargs):
+    def initialize_drivenmodal(self, sweep_setup: Dict, vars: Dict = {}, **kwargs):
         """Any task that needs to occur before running a simulation, such as creating a setup
 
         Args:
-            variables (Dict): list of parametric variables to set in the renderer
+            sweep_setup (Dict): list of parametric variables to set the frequency sweep.
+            vars (Dict, optional): list of parametric variables to set in the renderer.
+                Defaults to {}.
 
         Returns:
             str: Name of the setup that has been updated
         """
-        self.set_variables(variables)
+        self.set_variables(vars)
         setup = self.new_ansys_setup(**kwargs)  #TODO: activate_ansys_setup?
-        return setup.name
+        sweep = self.add_sweep(setup.name, **sweep_setup)
+        return setup.name, sweep.name
 
     def activate_ansys_setup(self, setup_name: str):
         """For active design, either get existing setup, make new setup with name, 
