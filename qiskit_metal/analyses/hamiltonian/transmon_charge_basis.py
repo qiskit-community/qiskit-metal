@@ -145,10 +145,8 @@ class Hcpb:
         Args:
             k (int): index of wavevector corresponding to the
                      \|k> eigenstate
-
-        Keyword Args:
             pts (int): Number of points to approximate the wavevector
-                       in the interval [-pi, pi]
+                       in the interval [-pi, pi]. Defaults to 1001.
 
         Returns:
             array: Wavevector corresponding the \|k> eigenstate
@@ -212,6 +210,7 @@ class Hcpb:
         Args:
             n_transmon (int): Truncate up to n levels of the
                               Transmon Hamiltonian
+
         Returns:
             Qobj: Returns a Qutip Qobj for the diagonalized
             transmon
@@ -226,12 +225,10 @@ class Hcpb:
 
         Args:
             n_transmon (int): Number of energy levels to consider
-
-        Keyword Args:
             thresh (float): Threshold for keeping small values
                             in the number operator i.e `n_{i,i+2}`
                             terms drop off exponentially. If None
-                            retain all terms.
+                            retain all terms. Defaults to None
 
         Returns:
             Qobj: Returns a Qutip Qobj corresponding to the
