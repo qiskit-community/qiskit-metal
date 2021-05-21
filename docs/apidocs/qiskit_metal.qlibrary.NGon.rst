@@ -18,6 +18,7 @@ NGon
    .. autosummary::
       :toctree: ../stubs/
    
+      NGon.TOOLTIP
       NGon.class_name
       NGon.component_metadata
       NGon.default_options

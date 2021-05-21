@@ -45,6 +45,8 @@ class BaseQubit(QComponent):
     component_metadata = Dict(short_name='Q', _qgeometry_table_poly='True')
     """Component metadata"""
 
+    TOOLTIP = """Qubit"""
+
     def __init__(self,
                  design,
                  name: str = None,

@@ -18,6 +18,7 @@ TransmonCross
    .. autosummary::
       :toctree: ../stubs/
    
+      TransmonCross.TOOLTIP
       TransmonCross.class_name
       TransmonCross.component_metadata
       TransmonCross.default_options

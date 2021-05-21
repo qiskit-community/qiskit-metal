@@ -93,6 +93,8 @@ class TunableCoupler01(BaseQubit):
                               _qgeometry_table_poly='True',
                               _qgeometry_table_junction='True')
 
+    TOOLTIP = """One of the tunable couplers"""
+
     def make(self):
         """Builds the component."""
         p = self.p

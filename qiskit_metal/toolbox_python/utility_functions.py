@@ -13,22 +13,20 @@
 # that they have been altered from the originals.
 """Simply utility functions to improve QOL of QM developers and QM users."""
 
+import importlib
+import inspect
 import logging
+import os
 import re
 import sys
 import traceback
 import warnings
-import logging
-import sys
-import os
-import pandas as pd
-import numpy as np
-from scipy.spatial import distance
-from typing import Tuple, TYPE_CHECKING
-
 from copy import deepcopy
+from typing import TYPE_CHECKING, Tuple
+
+import pandas as pd
+
 from qiskit_metal.draw import Vector
-from numpy.linalg import norm
 
 if TYPE_CHECKING:
     from qiskit_metal import logger

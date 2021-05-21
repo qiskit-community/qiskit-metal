@@ -51,6 +51,8 @@ class NGon(QComponent):
     )
     """Default drawing options"""
 
+    TOOLTIP = """A n-gon polygon"""
+
     def make(self):
         """The make function implements the logic that creates the geoemtry
         (poly, path, etc.) from the qcomponent.options dictionary of

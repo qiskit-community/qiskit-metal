@@ -117,6 +117,8 @@ class QComponent():
     component_metadata = Dict()
     """Component metadata"""
 
+    TOOLTIP = """QComponent"""
+
     options = {}
     """A dictionary of the component-designer-defined options.
     These options are used in the make function to create the QGeometry and QPins.

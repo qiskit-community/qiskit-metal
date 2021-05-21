@@ -18,6 +18,7 @@ TransmonPocketCL
    .. autosummary::
       :toctree: ../stubs/
    
+      TransmonPocketCL.TOOLTIP
       TransmonPocketCL.class_name
       TransmonPocketCL.component_metadata
       TransmonPocketCL.default_options

@@ -18,6 +18,7 @@ RectangleHollow
    .. autosummary::
       :toctree: ../stubs/
    
+      RectangleHollow.TOOLTIP
       RectangleHollow.class_name
       RectangleHollow.component_metadata
       RectangleHollow.default_options

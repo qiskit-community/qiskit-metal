@@ -46,6 +46,8 @@ class ShortToGround(QComponent):
                            layer='1')
     """Default connector options"""
 
+    TOOLTIP = """A basic short to ground termination"""
+
     def make(self):
         """Build the component."""
         p = self.p  # p for parsed parameters. Access to the parsed options.
