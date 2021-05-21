@@ -174,7 +174,7 @@ class LibraryDelegate(QItemDelegate):
         class definition
 
         Args:
-            abs_file_path: absolute file path to the file containing the QComponent class definition
+            abs_file_path (str): absolute file path to the file containing the QComponent class definition
 
         getting class from absolute file path -
         https://stackoverflow.com/questions/452969/does-python-have-an-equivalent-to-java-class-forname

@@ -117,7 +117,7 @@ class TreeViewQLibrary(QTreeView):
         Sets tooltip
 
         Args:
-            qcomp_tooltip: Tooltip to be set
+            qcomp_tooltip (str): Tooltip to be set
 
         """
         if qcomp_tooltip is None or len(qcomp_tooltip) < 1:
