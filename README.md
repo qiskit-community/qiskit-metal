@@ -167,7 +167,7 @@ Here are some things to consider when setting up a development environment:
 If you are planning to develop the qiskit metal codebase, you'll want to use these instructions to [setup user environment](/docs/NEW_DEVELOPER_SETUP.md)
 
 
-### Other Common Issues
+### Common Issues
 
 For other common installation issues, please refer to the [FAQ](https://qiskit.org/documentation/metal/faq.html)
 

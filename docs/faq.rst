@@ -98,9 +98,9 @@ Then re-install the qiskit-metal package with pip, for example, if you are using
 
 ``python -m pip install --no-deps -e .``
 
-**Why am I seeing a critical error from qt about not controlling layer-backing?**
+**Q: Why am I seeing a critical error from qt about not controlling layer-backing?**
 
-If you are seeing: `CRITICAL [_qt_message_handler]: ....  WARNING: Layer-backing can not be explicitly controlled on 10.14 when built against the 10.14 SDK ...` you are likely running a MAC OS version that has trouble with the libraries.
+**A:** If you are seeing: `CRITICAL [_qt_message_handler]: ....  WARNING: Layer-backing can not be explicitly controlled on 10.14 when built against the 10.14 SDK ...` you are likely running a MAC OS version that has trouble with the libraries.
 Based on information that is available online, this problem does not appear to have a solution. However, it does not seem like this error affects Qiskit Metal's functionality.
 If you find problem with this, you might want to try using an older version of the dependency packages, beginning with lowering your python version to 3.7.x.
 
