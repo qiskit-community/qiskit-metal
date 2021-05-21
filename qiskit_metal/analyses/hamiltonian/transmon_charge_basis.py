@@ -47,7 +47,7 @@ class Hcpb:
                  ng: float = 0.5):
         """Generate a Cooper-pair box (CPB) model.
 
-        Arguments:
+        Args:
             nlevels (int): Number of charge states of the CPB [-nlevels, nlevels+1]
             Ej (float): Josephson energy of the JJ
             Ec (float): Charging energy of the CPB
@@ -119,7 +119,7 @@ class Hcpb:
     def evalue_k(self, k: int):
         """Return the eigenvalue of the Hamiltonian for level k.
 
-        Arguments:
+        Args:
             k (int): Index of the eigenvalue
 
         Returns:
@@ -130,7 +130,7 @@ class Hcpb:
     def evec_k(self, k: int):
         """Return the eigenvector of the CPB Hamiltonian for level k.
 
-        Arguments:
+        Args:
             k (int): Index of eigenvector
 
         Returns:
@@ -142,11 +142,11 @@ class Hcpb:
         """Return the wavevector of the CPB Hamiltonian in the flux basis. Made
         compact over the interval of [-pi, pi].
 
-        Arguments:
+        Args:
             k (int): index of wavevector corresponding to the
                      \|k> eigenstate
 
-        Keyword Arguments:
+        Keyword Args:
             pts (int): Number of points to approximate the wavevector
                        in the interval [-pi, pi]
 
@@ -170,7 +170,7 @@ class Hcpb:
 
         \|i> and \|j>.
 
-        Arguments:
+        Args:
             i (int): Index of state \|i>
             j (int): Index of state \|j>
 
@@ -191,7 +191,7 @@ class Hcpb:
         """Compute the value of the number operator for coupling elements
         together in the energy eigen-basis.
 
-        Arguments:
+        Args:
             i (int): \|i> Index of the transmon
             j (int): \|j> Index of the transmon
 
@@ -209,7 +209,7 @@ class Hcpb:
         """Wrapper around Qutip to output the diagonalized Hamiltonian
         truncated up to n levels of the transmon for modeling.
 
-        Arguments:
+        Args:
             n_transmon (int): Truncate up to n levels of the
                               Transmon Hamiltonian
         Returns:
@@ -224,10 +224,10 @@ class Hcpb:
         Transmon Hamiltonian in the energy eigen-basis. Used for computing the
         coupling between other elements in the system.
 
-        Arguments:
+        Args:
             n_transmon (int): Number of energy levels to consider
 
-        Keyword Arguments:
+        Keyword Args:
             thresh (float): Threshold for keeping small values
                             in the number operator i.e `n_{i,i+2}`
                             terms drop off exponentially. If None
@@ -257,11 +257,11 @@ class Hcpb:
         fabrication. Updates the class to include these Ej and Ec as the new
         values for extracting properties.
 
-        Arguments:
+        Args:
             f01 (float): Desired qubit frequency
             anharm (float): Desired qubit anharmonicity (should be negative)
 
-        Keyword Arguments:
+        Keyword Args:
             Passed to least_squares
 
         Returns:
@@ -294,7 +294,7 @@ class Hcpb:
     def params_from_freq_fixEC(self, f01: float, Ec: float, **kwargs):
         """Find transmon Ej given a fixed EC and frequency.
 
-        Arguments:
+        Args:
             f01 (float): Desired qubit frequency
             Ec (float): Qubit EC (4ECn^2) in same units as f01
 

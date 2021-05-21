@@ -37,7 +37,7 @@ def get_nested_dict_item(dic: dict, key_list: list):
     Get a nested dictionary item.
     If key_list is empty, return dic itself.
 
-    Arguments:
+    Args:
         dic (dict): dictionary of items
         key_list (list): list of keys
 
@@ -84,7 +84,7 @@ class BranchNode(Node):
 
     def __init__(self, name: str, parent=None, cur_type=dict):
         """
-        Arguments:
+        Args:
             name (str): Name of this branch
             parent ([type]): The parent (Default: None)
             data (dict): Node data (Default: None)
@@ -162,7 +162,7 @@ class BranchNode(Node):
     def childAtRow(self, row: int):  # pylint: disable=invalid-name disable=inconsistent-return-statements
         """Gets the child at the given row
 
-        Arguments:
+        Args:
             row (int): the row
 
         Returns:
@@ -174,7 +174,7 @@ class BranchNode(Node):
     def rowOfChild(self, child):  # pylint: disable=invalid-name
         """Gets the row of the given child
 
-        Arguments:
+        Args:
             child (Node): the child
 
         Returns:
@@ -188,7 +188,7 @@ class BranchNode(Node):
     def childWithKey(self, key: str):  # pylint: disable=invalid-name
         """Gets the child with the given key
 
-        Arguments:
+        Args:
             key (str): the key
 
         Returns:
@@ -204,7 +204,7 @@ class BranchNode(Node):
         """
         Insert the given child
 
-        Arguments:
+        Args:
             child (Node): the child
         """
         child.parent = self
@@ -252,7 +252,7 @@ class LeafNode(Node):
 
     def __init__(self, name: str, value: Any, parent=None):
         """
-        Arguments:
+        Args:
             name (str): Label for the leaf node
             value: (Any): Value for the leaf node
             parent (Node): The parent (Default: None)
@@ -369,7 +369,7 @@ class TreeModelParamEntry(QAbstractItemModel):
         Organized as a tree model where child nodes are more specific properties
         of a given parent node.
 
-        Arguments:
+        Args:
             parent (QWidget): The parent widget
             view (QTreeView):  Model's related QTreeView
             data_dict (OrderedDict): Data to be stored in the model's tree
@@ -394,7 +394,7 @@ class TreeModelParamEntry(QAbstractItemModel):
                           value: Any = None):
         """
         Add new leaf node to model's backing tree structure
-        Arguments:
+        Args:
             cur_index (QModelIndex): Index of parent of new leaf
             key (str): Key value in leaf node's key-value pair
             value (Any): Value in lead node's key-value pair
@@ -421,7 +421,7 @@ class TreeModelParamEntry(QAbstractItemModel):
                             fake_value: Any = None):
         """
         Adds new branch node to model's backing tree
-        Arguments:
+        Args:
             cur_index (QModelIndex): Index of parent of new branch
             key (str): Key value, aka, name of new branch
             fake_key (str): Placeholder leaf's key since QTreeView cannot display childless BranchNodes
@@ -443,7 +443,7 @@ class TreeModelParamEntry(QAbstractItemModel):
     def delete_node(self, cur_index: QModelIndex):
         """
         Removes node from backing tree
-        Arguments:
+        Args:
             cur_index (QModelIndex): Index of node to be removed from backing tree
 
         Returns:
@@ -545,7 +545,7 @@ class TreeModelParamEntry(QAbstractItemModel):
     def rowCount(self, parent: QModelIndex):
         """Get the number of rows
 
-        Arguments:
+        Args:
             parent (QModelIndex): The parent
 
         Returns:
@@ -565,7 +565,7 @@ class TreeModelParamEntry(QAbstractItemModel):
     def columnCount(self, parent: QModelIndex = None):  # pylint: disable=unused-argument
         """Get the number of columns
 
-        Arguments:
+        Args:
             parent (QModelIndex): The parent
 
         Returns:
@@ -576,7 +576,7 @@ class TreeModelParamEntry(QAbstractItemModel):
     def data(self, index: QModelIndex, role: Qt.ItemDataRole = Qt.DisplayRole):  # pylint: disable=too-many-return-statements,too-many-branches
         """Gets the node data
 
-        Arguments:
+        Args:
             index (QModelIndex): index to get data for
             role (Qt.ItemDataRole): the role (Default: Qt.DisplayRole)
 
@@ -634,7 +634,7 @@ class TreeModelParamEntry(QAbstractItemModel):
         Returns true if successful; otherwise returns false.
         The dataChanged() signal should be emitted if the data was successfully set.
 
-        Arguments:
+        Args:
             index (QModelIndex): The index
             value (Any): The value
             role (Qt.ItemDataRole): The role of the data (Default: Qt.EditRole)
@@ -752,7 +752,7 @@ class TreeModelParamEntry(QAbstractItemModel):
                    role: Qt.ItemDataRole):
         """ Set the headers to be displayed.
 
-        Arguments:
+        Args:
             section (int): section number
             orientation (Qt.Orientation): the orientation
             role (Qt.ItemDataRole): the role
@@ -775,7 +775,7 @@ class TreeModelParamEntry(QAbstractItemModel):
     def index(self, row: int, column: int, parent: QModelIndex):
         """What is my index?
 
-        Arguments:
+        Args:
             row (int): the row
             column (int): the column
             parent (QModelIndex): the parent
@@ -798,7 +798,7 @@ class TreeModelParamEntry(QAbstractItemModel):
     def parent(self, child: QModelIndex):
         """Gets the parent index of the given node
 
-        Arguments:
+        Args:
             child (node): the child
 
         Returns:
@@ -823,7 +823,7 @@ class TreeModelParamEntry(QAbstractItemModel):
     def nodeFromIndex(self, index: QModelIndex) -> Union[BranchNode, LeafNode]:  # pylint: disable=invalid-name
         """Utility method we define to get the node from the index.
 
-        Arguments:
+        Args:
             index (QModelIndex): The model index
 
         Returns:

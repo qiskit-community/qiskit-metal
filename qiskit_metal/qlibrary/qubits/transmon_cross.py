@@ -154,7 +154,7 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
     def make_connection_pad(self, name: str):
         """Makes individual connector pad.
 
-        Arguments:
+        Args:
             name (str) : Name of the connector pad
         """
 

@@ -43,7 +43,7 @@ KEY, NODE = range(2)
 def get_nested_dict_item(dic: dict, key_list: list):
     """Get a nested dictionary item. If key_list is empty, return dic itself.
 
-    Arguments:
+    Args:
         dic (dict): Dictionary of items
         key_list (list): List of keys
 
@@ -78,7 +78,7 @@ class BranchNode:
 
     def __init__(self, name: str, parent=None, data: dict = None):
         """
-        Arguments:
+        Args:
             name (str): Name of this branch
             parent ([type]): The parent.  Defaults to None.
             data (dict): Node data.  Defaults to None.
@@ -108,7 +108,7 @@ class BranchNode:
     def childAtRow(self, row: int):
         """Gets the child at the given row.
 
-        Arguments:
+        Args:
             row (int): The row
 
         Returns:
@@ -120,7 +120,7 @@ class BranchNode:
     def rowOfChild(self, child):
         """Gets the row of the given child.
 
-        Arguments:
+        Args:
             child (Node): The child
 
         Returns:
@@ -134,7 +134,7 @@ class BranchNode:
     def childWithKey(self, key):
         """Gets the child with the given key.
 
-        Arguments:
+        Args:
             key (str): The key
 
         Returns:
@@ -149,7 +149,7 @@ class BranchNode:
     def insertChild(self, child):
         """Insert the given child.
 
-        Arguments:
+        Args:
             child (Node): The child
         """
         child.parent = self
@@ -177,7 +177,7 @@ class LeafNode:
 
     def __init__(self, label: str, parent=None, path=None):
         """
-        Arguments:
+        Args:
             label (str): Label for the leaf node
             parent (Node): The parent.  Defaults to None.
             path (list): Node path.  Defaults to None.
@@ -225,7 +225,7 @@ class QTreeModel_Base(QAbstractItemModel):
         Organized as a tree model where child nodes are more specific
         properties of a given parent node.
 
-        Arguments:
+        Args:
             parent (QWidget): The parent widget
             gui (MetalGUI): The main user interface
             view (QTreeView): View corresponding to a tree structure
@@ -345,7 +345,7 @@ class QTreeModel_Base(QAbstractItemModel):
     def rowCount(self, parent: QModelIndex):
         """Get the number of rows.
 
-        Arguments:
+        Args:
             parent (QModelIndex): The parent
 
         Returns:
@@ -360,7 +360,7 @@ class QTreeModel_Base(QAbstractItemModel):
     def columnCount(self, parent: QModelIndex):
         """Get the number of columns.
 
-        Arguments:
+        Args:
             parent (QModelIndex): The parent
 
         Returns:
@@ -371,7 +371,7 @@ class QTreeModel_Base(QAbstractItemModel):
     def data(self, index: QModelIndex, role: Qt.ItemDataRole = Qt.DisplayRole):
         """Gets the node data.
 
-        Arguments:
+        Args:
             index (QModelIndex): Index to get data for
             role (Qt.ItemDataRole): The role.  Defaults to Qt.DisplayRole.
 
@@ -422,7 +422,7 @@ class QTreeModel_Base(QAbstractItemModel):
         Returns true if successful; otherwise returns false. The dataChanged()
         signal should be emitted if the data was successfully set.
 
-        Arguments:
+        Args:
             index (QModelIndex): The index
             value: The value
             role (Qt.ItemDataRole): The role of the data..  Defaults to Qt.EditRole.
@@ -485,7 +485,7 @@ class QTreeModel_Base(QAbstractItemModel):
                    role: Qt.ItemDataRole):
         """Set the headers to be displayed.
 
-        Arguments:
+        Args:
             section (int): Section number
             orientation (Qt.Orientation): The orientation
             role (Qt.ItemDataRole): The role
@@ -508,7 +508,7 @@ class QTreeModel_Base(QAbstractItemModel):
     def index(self, row: int, column: int, parent: QModelIndex):
         """Return my index.
 
-        Arguments:
+        Args:
             row (int): The row
             column (int): The column
             parent (QModelIndex): The parent
@@ -525,7 +525,7 @@ class QTreeModel_Base(QAbstractItemModel):
     def parent(self, child):
         """Gets the parent index of the given node.
 
-        Arguments:
+        Args:
             child (node): The child
 
         Returns:
@@ -547,7 +547,7 @@ class QTreeModel_Base(QAbstractItemModel):
     def nodeFromIndex(self, index: QModelIndex) -> Union[BranchNode, LeafNode]:
         """Utility method we define to get the node from the index.
 
-        Arguments:
+        Args:
             index (QModelIndex): The model index
 
         Returns:
@@ -577,7 +577,7 @@ class QTreeModel_Base(QAbstractItemModel):
 def parse_param_from_str(text):
     """Attempt to parse a value from a string using ast.
 
-    Arguments:
+    Args:
         text (str): String to parse
 
     Return:

@@ -31,7 +31,7 @@ class QRoutePoint:
 
     def __init__(self, position: np.array, direction: np.array = None):
         """
-        Arguments:
+        Args:
             position (np.ndarray of 2 points): Center point of the pin.
             direction (np.ndarray of 2 points): *Normal vector*
                 This is the normal vector to the surface on which the pin mates.
@@ -111,7 +111,7 @@ class QRoute(QComponent):
         Calls the QComponent __init__() to create a new Metal component.
         Before that, it adds the variables that are needed to support routing.
 
-        Arguments:
+        Args:
             type (string): Supports Route (single layer trace) and CPW (adds the gap around it). Defaults to "CPW".
 
         Attributes:
@@ -144,7 +144,7 @@ class QRoute(QComponent):
         """Enriches the default_options to support different types of route
         styles.
 
-        Arguments:
+        Args:
             options (dict): User options that will override the defaults
 
         Return:
@@ -175,7 +175,7 @@ class QRoute(QComponent):
     def _get_connected_pin(self, pin_data: Dict):
         """Recovers a pin from the dictionary.
 
-        Arguments:
+        Args:
             pin_data: dict {component: string, pin: string}
 
         Return:
@@ -187,7 +187,7 @@ class QRoute(QComponent):
         """Defines the CPW pins and returns the pin coordinates and normal
         direction vector.
 
-        Arguments:
+        Args:
             name: String (supported pin names are: start, end)
 
         Return:
@@ -223,7 +223,7 @@ class QRoute(QComponent):
     def set_lead(self, name: str) -> QRoutePoint:
         """Defines the lead_extension by adding a point to the self.head/tail.
 
-        Arguments:
+        Args:
             name: String (supported pin names are: start, end)
 
         Return:
@@ -263,7 +263,7 @@ class QRoute(QComponent):
         """Defines the jogged lead_extension by adding a series of turns to the
         self.head/tail.
 
-        Arguments:
+        Args:
             name: String (supported pin names are: start, end)
 
         Return:
@@ -377,7 +377,7 @@ class QRoute(QComponent):
     def del_colinear_points(self, inarray):
         """Delete colinear points from the given array.
 
-        Arguments:
+        Args:
             inarray (list): List of points
 
         Returns:
@@ -439,7 +439,7 @@ class QRoute(QComponent):
         """Return the unit and target vector in which the CPW should process as
         its coordinate sys.
 
-        Arguments:
+        Args:
             start (QRoutePoint): Reference start point (direction from here)
             end (QRoutePoint): Reference end point (direction to here)
             snap (bool): True to snap to grid.  Defaults to False.
@@ -478,7 +478,7 @@ class QRoute(QComponent):
         """Computes how much length to deduce for compensating the fillet
         settings.
 
-        Arguments:
+        Args:
             points (list or array): List of vertices that will be receiving the corner rounding radius
 
         Return:
@@ -498,7 +498,7 @@ class QRoute(QComponent):
         the anchor. Method directly modifies the anchor_pt.direction, thus
         there is no return value.
 
-        Arguments:
+        Args:
             ref_pt (QRoutePoint): Reference point
             anchor_pt (QRoutePoint): Anchor point. if it already has a direction, the method will not overwrite it
         """
@@ -522,7 +522,7 @@ class QRoute(QComponent):
         """Turns the CPW points into design elements, and add them to the
         design object.
 
-        Arguments:
+        Args:
             pts (np.ndarray): Array of points
         """
 
@@ -576,7 +576,7 @@ class QRouteLead:
         """Initialize the QRouteLead by giving it a starting point and a
         direction.
 
-        Arguments:
+        Args:
             pin: object describing the "reference_pin" (not cpw_pin) this is attached to.
                 this is currently (8/4/2020) a dictionary
 
@@ -595,7 +595,7 @@ class QRouteLead:
     def go_straight(self, length: float):
         """Add a point ot 'length' distance in the same direction.
 
-        Arguments:
+        Args:
             length (float) : How much to move by
         """
         self.pts = np.append(self.pts, [self.pts[-1] + self.direction * length],
@@ -605,7 +605,7 @@ class QRouteLead:
         """Straight line 90deg counter-clock-wise direction w.r.t. lead tip
         direction.
 
-        Arguments:
+        Args:
             length (float): How much to move by
         """
         self.direction = draw.Vector.rotate(self.direction, np.pi / 2)
@@ -615,7 +615,7 @@ class QRouteLead:
     def go_right(self, length: float):
         """Straight line 90deg clock-wise direction w.r.t. lead tip direction.
 
-        Arguments:
+        Args:
             length (float): How much to move by
         """
         self.direction = draw.Vector.rotate(self.direction, -1 * np.pi / 2)

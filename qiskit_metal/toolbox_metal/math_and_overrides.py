@@ -27,7 +27,7 @@ DECIMAL_PRECISION = 10
 def set_decimal_precision(value: int):
     """Override the decimal_precision default (10).
 
-    Arguments:
+    Args:
         value: Any integer. If present, decimal part will be truncated (flooring)
     """
     global DECIMAL_PRECISION
@@ -37,7 +37,7 @@ def set_decimal_precision(value: int):
 def dot(vector_1: np.array, vector_2: np.array) -> float:
     """Numpy dot product with decimal_precision.
 
-    Arguments:
+    Args:
         vector_1 (np.array): First of the dot product vectors
         vector_2 (np.array): Second of the dot product vectors
 
@@ -51,7 +51,7 @@ def dot(vector_1: np.array, vector_2: np.array) -> float:
 def round(value) -> float:
     """Numpy rounding with decimal_precision.
 
-    Arguments:
+    Args:
         value: Any numerical type supported by np.round()
 
     Returns:
@@ -63,7 +63,7 @@ def round(value) -> float:
 def cross(vector_1: np.array, vector_2: np.array) -> float:
     """Numpy cross product with decimal_precision.
 
-    Arguments:
+    Args:
         vector_1 (np.array): First of the cross product vectors
         vector_2 (np.array): Second of the cross product vectors
 

@@ -65,7 +65,7 @@ class ParameterEntryWindow(QMainWindow):
                  gui: 'MetalGUI' = None):
         """
         Parameter Entry Widget when qcomponent is chosen from GUI's QLibrary
-        Arguments:
+        Args:
             qcomp_class (Type): QComponent to be instantiated
             design (DesignPlanar): Current design being used
             parent (QWidget): Parent widget
@@ -129,7 +129,7 @@ class ParameterEntryWindow(QMainWindow):
             Throws up critical QMessageBox with current exception in the event an exception is
             thrown by func
 
-            Arguments:
+            Args:
                 func (Callable): current function causing exceptions - should  be ONLY  qcpe instance methods
                     because decoraters
                 assumes arg[0] is a self who has a valid logger
@@ -197,7 +197,7 @@ class ParameterEntryWindow(QMainWindow):
     def format_docstr(self, doc: Union[str, None]) -> str:
         """Format a docstring
 
-        Arguments:
+        Args:
             doc (Union[str, None]): string to format
 
         Returns:
@@ -394,7 +394,7 @@ def create_parameter_entry_window(gui: 'MetalGUI',
 def dockify(main_window, docked_title, gui):
     """Dockify the given GUI
 
-    Arguments:
+    Args:
         gui (MetalGUI): the GUI
 
     Returns:
@@ -418,7 +418,7 @@ def get_class_from_abs_file_path(abs_file_path: str):
     Gets the corresponding class object for the absolute file path to the file containing that
     class definition
 
-    Arguments:
+    Args:
         abs_file_path (str): absolute file path to the file containing the QComponent class definition
 
     getting class from absolute file path -

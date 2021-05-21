@@ -34,7 +34,7 @@ class QTableView_Options(QTableView, QWidget_PlaceholderText):
 
     def __init__(self, parent: QtWidgets.QWidget):
         """
-        Arguments:
+        Args:
             parent (QtWidgets.QWidget): parent widget
         """
         QTableView.__init__(self, parent)
@@ -57,7 +57,7 @@ class QTableView_Options(QTableView, QWidget_PlaceholderText):
     def autoresize_columns(self, max_width: int = 200):
         """Rezie columsn to contents with maximim.
 
-        Arguments:
+        Args:
             max (int): automatically resize the columns to the given size.  Defaults to 200.
         """
         self.resizeColumnsToContents()

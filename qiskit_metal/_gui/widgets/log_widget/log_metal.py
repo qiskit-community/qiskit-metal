@@ -54,7 +54,7 @@ class QTextEditLogger(QTextEdit):
         Get as:
             gui.ui.log_text
 
-        Arguments:
+        Args:
             img_path (str): Path to images.  Defaults to '/'.
             dock_window (QDockWidget): The dock window widget.  Defaults to None.
         """
@@ -86,7 +86,7 @@ class QTextEditLogger(QTextEdit):
     def toggle_autoscroll(self, checked: bool):
         """Toggle the autoscroll.
 
-        Arguments:
+        Args:
             checked (bool): True to toggle on, False otherwise
         """
         self._auto_scroll = bool(checked)
@@ -94,7 +94,7 @@ class QTextEditLogger(QTextEdit):
     def toggle_timestamps(self, checked: bool):
         """Toggle the timestamp.
 
-        Arguments:
+        Args:
             checked (bool): True to toggle on, False otherwise
         """
         self._show_timestamps = bool(checked)
@@ -137,7 +137,7 @@ class QTextEditLogger(QTextEdit):
         def make_trg(lvl):
             """Make a trg.
 
-            Arguments:
+            Args:
                 lvl (logging.level): The level of logging, eg.., logging.ERROR
 
             Returns:
@@ -212,7 +212,7 @@ class QTextEditLogger(QTextEdit):
     def set_level(self, level: int):
         """Set level on all handlers.
 
-        Arguments:
+        Args:
             level (logging.level): The level of logging, eg.., logging.ERROR
         """
         print(f'Setting level: {level}')
@@ -223,7 +223,7 @@ class QTextEditLogger(QTextEdit):
     def set_window_title_level(self, level: int):
         """Set the window title level.
 
-        Arguments:
+        Args:
             level (int): the level
         """
         self._level_name = logging.getLevelName(level).lower()
@@ -247,7 +247,7 @@ class QTextEditLogger(QTextEdit):
         where
             `_log_handler is LogHandler_for_QTextLog`
 
-        Arguments:
+        Args:
             name (string): Name of logger to be added
             handler (logging.Handler): Handler
         """
@@ -265,7 +265,7 @@ class QTextEditLogger(QTextEdit):
         def toggle_show_log(self2, val: bool):
             """Toggle the value of the.
 
-            Arguments:
+            Args:
                 self2 (QTextEdit): self
                 val (bool): True or False
 
@@ -317,7 +317,7 @@ class QTextEditLogger(QTextEdit):
     def log_message_to(self, name, record):
         """Set where to log messages to.
 
-        Arguments:
+        Args:
             name (str): The name
             record (bool): True to send to records, False otherwise
         """
@@ -328,7 +328,7 @@ class QTextEditLogger(QTextEdit):
     def log_message(self, message, format_as_html=True):
         """Do the actual logging.
 
-        Arguments:
+        Args:
             message (str): The message to log.
             format_as_html (bool): True to format as HTML, False otherwise.  Defaults to True.
         """
@@ -388,7 +388,7 @@ class LogHandler_for_QTextLog(logging.Handler):
                  logger: logging.Logger,
                  log_string=None):
         """
-        Arguments:
+        Args:
             name (str): The name.
             parent (logger): The parent logger.
             log_qtextedit (QTextEditLogger): Text edit logger.
@@ -421,7 +421,7 @@ class LogHandler_for_QTextLog(logging.Handler):
         sequences. Used to display text that might contain such characters in
         HTML.
 
-        Arguments:
+        Args:
             record (LogRecord): The log recorder
         """
         # print(record)

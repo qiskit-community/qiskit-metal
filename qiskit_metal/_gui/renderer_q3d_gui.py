@@ -27,7 +27,7 @@ class RendererQ3DWidget(QMainWindow):
         """Get access to design, which has the components. Then set up the
         model and view.
 
-        Arguments:
+        Args:
             parent (QMainWindow): The parent window
             gui (MetalGUI): The metal GUI
         """
@@ -55,7 +55,7 @@ class RendererQ3DWidget(QMainWindow):
         """Swaps out reference to design, which changes the reference to the
         dictionary.
 
-        Arguments:
+        Args:
             new_design (QDesign): The design
         """
         self.list_model.update_src(self.design)

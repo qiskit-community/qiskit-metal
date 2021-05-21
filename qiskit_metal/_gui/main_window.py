@@ -59,7 +59,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
     To access the GUI Handler above this, call:
         self.handler = gui
 
-    Arguments:
+    Args:
         QMainWindow (QMainWindow): Main window
     """
 
@@ -86,7 +86,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
     def _set_element_tab(self, yesno: bool):
         """Set which part of the element table is in use.
 
-        Arguments:
+        Args:
             yesno (bool): True for View, False for Elements
         """
 
@@ -190,7 +190,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
     def activate_developer_mode(self, ison: bool):
         """
         Sets the correct UI features for developer mode
-        Arguments:
+        Args:
             ison: Whether developer mode is active
 
         """
@@ -219,7 +219,7 @@ class MetalGUI(QMainWindowBaseHandler):
     The GUI can be controlled by the user using the mouse and keyboard or
     API for full control.
 
-    Arguments:
+    Args:
         QMainWindowBase (QMainWindowBase): Base window
     """
 
@@ -236,7 +236,7 @@ class MetalGUI(QMainWindowBaseHandler):
 
     def __init__(self, design: QDesign = None):
         """
-        Arguments:
+        Args:
             design (QDesign, optional): Pass in the design that the GUI should handle.
                 Defaults to None.
         """
@@ -302,7 +302,7 @@ class MetalGUI(QMainWindowBaseHandler):
     def _set_enabled_design_widgets(self, enabled: bool = True):
         """Make rebuild and all the other main button disabled.
 
-        Arguments:
+        Args:
             enabled (bool): True to enable, False to disable the design widgets.  Defaults to True.
         """
 
@@ -328,7 +328,7 @@ class MetalGUI(QMainWindowBaseHandler):
     def set_design(self, design: QDesign):
         """Core function to set a new design.
 
-        Arguments:
+        Args:
             design (QDesign): A qiskit metal design, such as a planar one.
                 The design contains all components and elements
         """
@@ -412,7 +412,7 @@ class MetalGUI(QMainWindowBaseHandler):
     def _set_element_tab(self, yesno: bool):
         """Set the elements tabl to Elements or View.
 
-        Arguments:
+        Args:
             yesno (bool): True for elements, False for view
         """
         if yesno:
@@ -453,7 +453,7 @@ class MetalGUI(QMainWindowBaseHandler):
                                  dock_location=Qt.BottomDockWidgetArea):
         """The the doc to a different parent window.
 
-        Arguments:
+        Args:
             dock (QDockWidget): Dock to move
             new_parent (QMainWindow): New parent window
             dock_location (Qt dock location): Location of the dock.  Defaults to Qt.BottomDockWidgetArea.
@@ -486,7 +486,7 @@ class MetalGUI(QMainWindowBaseHandler):
         """
         Must be defined outside of _setup_library_widget to ensure self == MetalGUI and will retain opened ScrollArea
 
-        Arguments:
+        Args:
             relative_index: QModelIndex of the desired QComponent file in the Qlibrary GUI display
 
         """
@@ -500,7 +500,7 @@ class MetalGUI(QMainWindowBaseHandler):
     def _refresh_component_build(self, qis_abs_path):
         """Refresh build for a component along a given path.
 
-        Arguments:
+        Args:
             qis_abs_path (str): Absolute component path.
         """
         self.design.reload_and_rebuild_components(qis_abs_path)
@@ -556,7 +556,7 @@ class MetalGUI(QMainWindowBaseHandler):
     def toggle_docks(self, do_hide: bool = None):
         """Show or hide the full plot-area widget / show or hide all docks.
 
-        Arguments:
+        Args:
             do_hide (bool): Hide or show. Defaults to None -- toggle.
         """
         self.main_window.toggle_all_docks(do_hide)
@@ -578,7 +578,7 @@ class MetalGUI(QMainWindowBaseHandler):
         """Return access to the canvas axes. If num is specified, returns the
         n-th axis.
 
-        Arguments:
+        Args:
             num (int, optional): If num is specified, returns the n-th axis.  Defaults to None.
 
         Returns:
@@ -670,7 +670,7 @@ class MetalGUI(QMainWindowBaseHandler):
     def save_file(self, filename: str = None):
         """Save the file.
 
-        Arguments:
+        Args:
             filename (str): Filename to save.  Defaults to None.
         """
         self.design.save_design(filename)
@@ -680,7 +680,7 @@ class MetalGUI(QMainWindowBaseHandler):
     def edit_component(self, name: str):
         """Set the component to be examined by the component widget.
 
-        Arguments:
+        Args:
             name (str): Name of component to exmaine.
         """
         if self.component_window:
@@ -689,7 +689,7 @@ class MetalGUI(QMainWindowBaseHandler):
     def highlight_components(self, component_names: List[str]):
         """Hihglight a list of components.
 
-        Arguments:
+        Args:
             component_names (List[str]): List of component names to highlight
         """
         self.canvas.highlight_components(component_names)
@@ -697,7 +697,7 @@ class MetalGUI(QMainWindowBaseHandler):
     def zoom_on_components(self, components: List[str]):
         """Zoom to the components.
 
-        Arguments:
+        Args:
             components (List[str]): List of components to zoom to
         """
         bounds = self.canvas.find_component_bounds(components)
@@ -715,7 +715,7 @@ class MetalGUI(QMainWindowBaseHandler):
         """Creates a separate window that displays the recent successful/fails
         of all components for the design.
 
-        Arguments:
+        Args:
             _ (object, optional): Default parameters for slot  - used to call from action
         """
         self.build_log_window = BuildHistoryScrollArea(

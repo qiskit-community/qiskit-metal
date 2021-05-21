@@ -28,7 +28,7 @@ class QTreeModel_Options(QTreeModel_Base):
     include placeholder text, and data method to include 3rd column for parsed
     values.
 
-    Arguments:
+    Args:
         QTreeModel_Base (QAbstractItemModel): Base class for nested dicts
     """
 
@@ -37,7 +37,7 @@ class QTreeModel_Options(QTreeModel_Base):
         as a tree model where child nodes are more specific properties of a
         given parent node.
 
-        Arguments:
+        Args:
             parent (QWidget): The parent widget
             gui (MetalGUI): The main user interface
             view (QTreeView): View corresponding to a tree structure
@@ -54,7 +54,7 @@ class QTreeModel_Options(QTreeModel_Base):
     def rowCount(self, parent: QModelIndex):
         """Get the number of rows.
 
-        Arguments:
+        Args:
             parent (QModelIndex): The parent
 
         Returns:
@@ -83,7 +83,7 @@ class QTreeModel_Options(QTreeModel_Base):
     def data(self, index: QModelIndex, role: Qt.ItemDataRole = Qt.DisplayRole):
         """Gets the node data.
 
-        Arguments:
+        Args:
             index (QModelIndex): Index to get data for
             role (Qt.ItemDataRole): The role..  Defaults to Qt.DisplayRole.
 

@@ -30,7 +30,7 @@ def wavefunction(L, C, n, x):
     """This function calculates the nth wavefunction of the harmonic oscillator
     for a given value of inductance (L) and capacitance (C) at a charge x.
 
-    Arguments:
+    Args:
         L (float): The inductance of the inductor in an LC circuit.
         C (float): The capacitance of the capacitor in an LC circuit.
         n (int): The energy state of the harmonic oscillator.

@@ -32,7 +32,7 @@ class QRendererGui(QRenderer):
 
     def __init__(self, gui, design: QDesign, initiate=True, fig=None, ax=None):
         """
-        Arguments:
+        Args:
             gui (MetalGUI): the GUI.
             design (QDesign): The design.
             initiate (bool): True to initiate the renderer.  Defaults to True.
@@ -48,7 +48,7 @@ class QRendererGui(QRenderer):
     def set_fig(self, fig):
         """Set the given figure.
 
-        Arguments:
+        Args:
             fig (figure): Figure to set
         """
         self.fig = fig
@@ -56,7 +56,7 @@ class QRendererGui(QRenderer):
     def set_ax(self, ax):
         """Set the given ax.
 
-        Arguments:
+        Args:
             ax (ax): ax to set
         """
         self.ax = ax
@@ -64,7 +64,7 @@ class QRendererGui(QRenderer):
     def setup_fig(self, fig):
         """Setup the given figure.
 
-        Arguments:
+        Args:
             fig (figure): figure to setup
 
         Raises:
@@ -75,7 +75,7 @@ class QRendererGui(QRenderer):
     def style_axis(self, ax):
         """Style the axis.
 
-        Arguments:
+        Args:
             ax (ax): ax to style
 
         Raises:
@@ -86,7 +86,7 @@ class QRendererGui(QRenderer):
     def render_design(self, selection=None):
         """Render the design.
 
-        Arguments:
+        Args:
             selection (selection): Not used
         """
         # TOOD: handle selection
@@ -96,7 +96,7 @@ class QRendererGui(QRenderer):
     def render_component(self, component):
         """Render the given component.
 
-        Arguments:
+        Args:
             component (QComponent): the component
 
         Raises:

@@ -24,7 +24,7 @@ class DynamicList(QStandardItemModel):
     def __init__(self, orig_design: 'QDesign'):
         """Set the original design source and populate list.
 
-        Arguments:
+        Args:
             orig_design (QDesign): The design
         """
         super().__init__()
@@ -39,7 +39,7 @@ class DynamicList(QStandardItemModel):
     def update_src(self, new_design: 'QDesign'):
         """Change the data source to a new one.
 
-        Arguments:
+        Args:
             new_design (QDesign): The new data source
         """
         self._design = new_design

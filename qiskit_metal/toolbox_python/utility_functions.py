@@ -48,7 +48,7 @@ __all__ = [
 def copy_update(options, *args, deep_copy=True, **kwargs):
     """Utility funciton to merge two dictionaries.
 
-    Arguments:
+    Args:
         options (object): Options
         deep_copy (bool): True to do a deep copy
         kwargs (dict): Dictionary of parameters
@@ -69,7 +69,7 @@ def dict_start_with(my_dict, start_with, as_=list):
     """Case sensitive https://stackoverflow.com/questions/17106819/accessing-
     python-dict-values-with-the-key-start-characters.
 
-    Arguments:
+    Args:
         my_dict (dict): The dictionary
         starts_with (str): String to check of
         as_ (type): A list of dict.  Defaults to list.
@@ -125,7 +125,7 @@ def data_frame_empty_typed(column_types: dict):
     """Creates and empty DataFrame with dtypes for each column given by the
     dictionary.
 
-    Arguments:
+    Args:
         column_types (dict): A key, dtype pairs
 
     Returns:
@@ -140,7 +140,7 @@ def data_frame_empty_typed(column_types: dict):
 def clean_name(text: str):
     """Clean a string to a proper variable name in python.
 
-    Arguments:
+    Args:
         text (str): Original string
 
     Returns:
@@ -194,7 +194,7 @@ def print_traceback_easy(start=26):
     """Utility function to print traceback for debug. Will report in series the
     string version of the frames that we are currently in.
 
-    Arguments:
+    Args:
         start (int): Starting position of the traceback frame.
                      Defaults to 26. Assumes runs from Jupyter notebooks.
                      In general set to zero.
@@ -210,7 +210,7 @@ def log_error_easy(logger: logging.Logger,
                    do_print=False):
     """Print log message.
 
-    Arguments:
+    Args:
         logger (logging.Logger): The logger.
         pre_text (str): Initial text to write.  Defaults to ''.
         post_text (str): End text to write.  Defaults to ''.
@@ -264,7 +264,7 @@ def monkey_patch(self, func, func_name=None):
 
     See: https://stackoverflow.com/questions/38485123/monkey-patching-bound-methods-in-python
 
-    Arguments:
+    Args:
         func (function): function
         func_name (str): name of the function.  Defaults to None.
     """
@@ -285,7 +285,7 @@ def monkey_patch(self, func, func_name=None):
 #     Note, there is a rounding error issues. So when the lenght of the segment is calculated,
 #     it is rounded by using fillet_comparison_precision.
 
-#     Arguments:
+#     Args:
 #         coords (list): List of tuples in (x,y) format. Each tuple represents a vertex on a LineSegment.
 
 #         a_fillet (float): The radius to fillet a vertex.
@@ -331,7 +331,7 @@ def toggle_numbers(numbers: list, totlength: int) -> list:
     """
     Given a list of integers called 'numbers', return the toggle of them from zero to totlength - 1.
 
-    Arguments:
+    Args:
         numbers (list): Integers in the original list, in sorted order.
         totlength (int): Number of elements in complete list. Ex: [0, 1, 2, 3, ..., n - 1] has totlength n.
 
@@ -361,7 +361,7 @@ def bad_fillet_idxs(coords: list,
     Get list of vertex indices in a linestring (isclosed = False) or polygon (isclosed = True) that cannot be filleted based on
     proximity to neighbors. By default, this list excludes the first and last vertices if the shape is a linestring.
 
-    Arguments:
+    Args:
         coords (list): Ordered list of tuples of vertex coordinates.
         fradius (float): User-specified fillet radius from QGeometry table.
         precision (int, optional): Digits of precision used for round(). Defaults to 9.
@@ -412,7 +412,7 @@ def get_range_of_vertex_to_not_fillet(coords: list,
     If the range is just one point, meaning, not a segment, the tuple will contain
     the same index for start and end.
 
-    Arguments:
+    Args:
         coords (list): Ordered list of tuples of vertex coordinates.
         fradius (float): User-specified fillet radius from QGeometry table.
         precision (int, optional): Digits of precision used for round(). Defaults to 9.
@@ -448,7 +448,7 @@ def compress_vertex_list(individual_vertex: list) -> list:
     and make them one compressed list. If the vertex is a point and not a line
     segment, the returned tuple's start and end are the same index.
 
-    Arguments:
+    Args:
         individual_vertex (list): List of UNIQUE ints.  Each int refers to an index of a LineString.
 
     Returns:
@@ -503,7 +503,7 @@ def compress_vertex_list(individual_vertex: list) -> list:
 def can_write_to_path_with_warning(file: str) -> int:
     """Check if can write file.
 
-    Arguments:
+    Args:
         file (str): Has the path and/or just the file name.
 
     Returns:
@@ -524,7 +524,7 @@ def can_write_to_path_with_warning(file: str) -> int:
 def can_write_to_path(file: str) -> Tuple[int, str]:
     """Check to see if path exists and file can be written.
 
-    Arguments:
+    Args:
         file (str): Has the path and/or just the file name.
 
     Returns:

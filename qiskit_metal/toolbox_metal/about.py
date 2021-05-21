@@ -125,7 +125,7 @@ def open_docs(page='https://qiskit.org/documentation/metal/'):
 def orient_me(do_print: bool = True) -> Union[None, str]:
     """Full system, python, user, and environemnt information.
 
-    Arguments:
+    Args:
         do_print(bool): Return the string if True, else format and print.
     """
 

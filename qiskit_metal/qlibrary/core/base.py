@@ -138,7 +138,7 @@ class QComponent():
         """Create a new Metal component and adds it's default_options to the
         design.
 
-        Arguments:
+        Args:
             design (QDesign): The parent design.
             name (str): Name of the component. Auto-named if possible.
             options (dict): User options that will override the defaults.  Defaults to None.
@@ -321,7 +321,7 @@ class QComponent():
         """Init function to register a component class with the design when
         first instantiated. Registers the design template options.
 
-        Arguments:
+        Args:
             design (QDesign): The parent design
             template_key (str): Key to use
             component_template (dict): Template of components to copy, with renderer options
@@ -428,7 +428,7 @@ class QComponent():
 
         The options can be extended by plugins, such as renderers.
 
-        Arguments:
+        Args:
             design (QDesign): Design class. Should be the class, not the instance.
             component_template (Dict): Template options to overwrite the class ones (default: None)
             logger_ (logging.Logger): A logger for errors.  Defaults to None.
@@ -474,7 +474,7 @@ class QComponent():
         """When design.overwrite_enabled, the user is allowed to delete an
         existing component within the design if the name is being used.
 
-        Arguments:
+        Args:
             check_name (str, optional): Name of new component.  Defaults to None.
 
         Returns:
@@ -576,7 +576,7 @@ class QComponent():
         account for units conversion, some basic arithmetic, and design
         variables. This is the main parsing function of Qiskit Metal.
 
-        Arguments:
+        Args:
             value (str): String to parse *or*
             variable_dict (dict): dict pointer of variables
 
@@ -622,7 +622,7 @@ class QComponent():
         units, variables, strings, lists, and dictionaries. Explained by
         example below.
 
-        Arguments:
+        Args:
             options (dict) : If left None, then self.options is used.  Defaults to None.
 
         Returns:
@@ -637,7 +637,7 @@ class QComponent():
     def _is_name_used(self, check_name: str) -> int:
         """Used to check if name of component already exists.
 
-        Arguments:
+        Args:
             check_name (str): Name which user requested to apply to current component.
 
         Returns:
@@ -673,7 +673,7 @@ class QComponent():
         intended connection. Adds the new pin as a subdictionary to parent
         component's pins dictionary.
 
-        Arguments:
+        Args:
             * name (str): name of the pin
             * points (numpy.ndarray): [[x1,y1],[x2,y2]] for the normal/tangent line
             * width (float): the width of the intended connection (eg. qubit bus pad arm)
@@ -772,7 +772,7 @@ class QComponent():
     def get_pin(self, name: str) -> Dict:
         """Interface for components to get pin data.
 
-        Arguments:
+        Args:
             name (str): Name of the desired pin.
 
         Returns:
@@ -845,7 +845,7 @@ class QComponent():
             This method is expecting self to be added to design._components dict.  More importantly,
             the unique id of self component needs to be in design._components dict.
 
-        Arguments:
+        Args:
             pin_name_self (str): Name of pin within the component.
             comp2_id (int): Component within design, but not self.
             pin2_name (str): The pin of comp2_id that pin_name_self will connect to.
@@ -894,7 +894,7 @@ class QComponent():
         """Add a dependency between one component and another. Calls parent
         design.
 
-        Arguments:
+        Args:
             parent (str): The component on which the child depends
             child (str): The child cannot live without the parent.
         """
@@ -916,7 +916,7 @@ class QComponent():
 
         Takes any additional options in options.
 
-        Arguments:
+        Args:
             kind (str): The kind of QGeometry, such as 'path', 'poly', etc.
                         All geometry in the dictionary should have the same kind,
                         such as Polygon or LineString.
@@ -973,7 +973,7 @@ class QComponent():
         assume those qgeometry.tables are used for the component. The method
         will search a dict populated by all the renderers during their init.
 
-        Arguments:
+        Args:
             kind (str): Name of table, like junction, path, or poly.
 
         Returns:
@@ -1057,7 +1057,7 @@ class QComponent():
         component as a python dict, where the dict keys are the names of the
         qgeometry and the corresponding values are the shapely geometries.
 
-        Arguments:
+        Args:
             element_type (str): Name of element table or type; e.g., 'poly' and 'path'
 
         Returns:
@@ -1076,7 +1076,7 @@ class QComponent():
         """Returns a list of element qgeometry (shapely geometry) of the
         component as a python list of shapely geometries.
 
-        Arguments:
+        Args:
             element_type (str): Name of element table or type; e.g., 'poly' and 'path'.
                                 Can also specify all
 
@@ -1094,7 +1094,7 @@ class QComponent():
             self, element_type: str) -> pd.DataFrame:
         """Returns the entire element table for the component.
 
-        Arguments:
+        Args:
             element_type (str): Name of element table or type; e.g., 'poly' and 'path'
 
         Returns:
@@ -1124,7 +1124,7 @@ class QComponent():
                        plot_kw: dict = None) -> List:
         """Draw all the qgeometry of the component (polys and path etc.)
 
-        Arguments:
+        Args:
             ax (matplotlib.axes.Axes): Matplotlib axis to draw on.  Defaults to None.
                                        When None, it gets the current axis.
             plot_kw (dict): Parameters dictionary.

@@ -51,7 +51,7 @@ def good_fillet_idxs(coords: list,
     Get list of vertex indices in a linestring (isclosed = False) or polygon (isclosed = True) that can be filleted based on
     proximity to neighbors.
 
-    Arguments:
+    Args:
         coords (list): Ordered list of tuples of vertex coordinates.
         fradius (float): User-specified fillet radius from QGeometry table.
         precision (int, optional): Digits of precision used for round(). Defaults to 9.
@@ -74,7 +74,7 @@ def get_clean_name(name: str) -> str:
     begin with a letter or underscore followed by an unlimited string of
     letters, numbers, and underscores.
 
-    Arguments:
+    Args:
         name (str): Initial, possibly unusable, string to be modified.
 
     Returns:
@@ -186,7 +186,7 @@ class QAnsysRenderer(QRenderer):
                  render_options: Dict = None):
         """Create a QRenderer for Ansys.
 
-        Arguments:
+        Args:
             design (QDesign): Use QGeometry within QDesign to obtain elements for Ansys.
             initiate (bool, optional): True to initiate the renderer. Defaults to True.
             render_template (Dict, optional): Typically used by GUI for template options for GDS. Defaults to None.
@@ -209,7 +209,7 @@ class QAnsysRenderer(QRenderer):
         """Open a session of Ansys. Default is version 2020 R2, but can be
         overridden.
 
-        Arguments:
+        Args:
             path (str): Path to the Ansys executable. Defaults to None
             executable (str): Name of the ansys executable. Defaults to 'reg_ansysedt.exe'
             path_var (str): Name of the OS environment variable that contains the path to the Ansys executable.
@@ -247,7 +247,7 @@ class QAnsysRenderer(QRenderer):
 
         If the optional parameters are provided: if present, opens the project file and design in Ansys.
 
-        Arguments:
+        Args:
             project_path (str, optional): Path without file name
             project_name (str, optional): File name (with or without extension)
             design_name (str, optional): Name of the default design to open from the project file
@@ -300,7 +300,7 @@ class QAnsysRenderer(QRenderer):
     def connect_ansys_design(self, design_name: str = None):
         """Used to switch between existing designs.
 
-        Arguments:
+        Args:
             design_name (str, optional): Name within the active project. Defaults to None.
         """
 
@@ -367,7 +367,7 @@ class QAnsysRenderer(QRenderer):
         """Plot fields in Ansys. The options are populated by the component's
         options.
 
-        Arguments:
+        Args:
             object_name (str): Used to plot on faces of.
             name (str, optional): "NAME:<PlotName>" Defaults to None.
             UserSpecifyName (int, optional): 0 if default name for plot is used, 1 otherwise.
@@ -501,7 +501,7 @@ class QAnsysRenderer(QRenderer):
         Can give multiple names, for example:
         hfss.plot_ansys_delete(['Mag_E1', 'Mag_E1_2'])
 
-        Arguments:
+        Args:
             names (list): Names of plots to delete from modeler window.
         """
         # (["Mag_E1"]
@@ -511,7 +511,7 @@ class QAnsysRenderer(QRenderer):
     def add_message(self, msg: str, severity: int = 0):
         """Add message to Message Manager box in Ansys.
 
-        Arguments:
+        Args:
             msg (str): Message to add.
             severity (int): 0 = Informational, 1 = Warning, 2 = Error, 3 = Fatal.
         """
@@ -520,7 +520,7 @@ class QAnsysRenderer(QRenderer):
     def save_screenshot(self, path: str = None, show: bool = True):
         """Save the screenshot.
 
-        Arguments:
+        Args:
             path (str, optional): Path to save location.  Defaults to None.
             show (bool, optional): Whether or not to display the screenshot.  Defaults to True.
 
@@ -570,7 +570,7 @@ class QAnsysRenderer(QRenderer):
         bounding box, it runs the risk of rendered components being too close to the edge of the chip or even
         falling outside its boundaries.
 
-        Arguments:
+        Args:
             selection (Union[list, None], optional): List of components to render. Defaults to None.
             open_pins (Union[list, None], optional): List of tuples of pins that are open. Defaults to None.
             box_plus_buffer (bool): Either calculate a bounding box based on the location of rendered geometries
@@ -605,7 +605,7 @@ class QAnsysRenderer(QRenderer):
         """
         Render components by breaking them down into individual elements.
 
-        Arguments:
+        Args:
             table_type (str): Table type (poly, path, or junction).
         """
         table = self.design.qgeometry.tables[table_type]
@@ -626,7 +626,7 @@ class QAnsysRenderer(QRenderer):
         junction elements, as the former consist of two rendered shapes, not
         just one.
 
-        Arguments:
+        Args:
             qgeom (pd.Series): GeoSeries of element properties.
             is_junction (bool): Whether or not qgeom belongs to junction table.
         """
@@ -646,7 +646,7 @@ class QAnsysRenderer(QRenderer):
                RLC boundary condition.
             2. A line that is later used to calculate the voltage in post-processing analysis.
 
-        Arguments:
+        Args:
             qgeom (pd.Series): GeoSeries of element properties.
         """
         ansys_options = dict(transparency=0.0)
@@ -691,7 +691,7 @@ class QAnsysRenderer(QRenderer):
     def render_element_poly(self, qgeom: pd.Series):
         """Render a closed polygon.
 
-        Arguments:
+        Args:
             qgeom (pd.Series): GeoSeries of element properties.
         """
         ansys_options = dict(transparency=0.0)
@@ -759,7 +759,7 @@ class QAnsysRenderer(QRenderer):
     def render_element_path(self, qgeom: pd.Series):
         """Render a path-type element.
 
-        Arguments:
+        Args:
             qgeom (pd.Series): GeoSeries of element properties.
         """
         ansys_options = dict(transparency=0.0)
@@ -843,7 +843,7 @@ class QAnsysRenderer(QRenderer):
         takes on the form (component_name, pin_name) and corresponds to a
         single pin.
 
-        Arguments:
+        Args:
             open_pins (Union[list, None], optional): List of tuples of pins that are open. Defaults to None.
         """
         open_pins = open_pins if open_pins else []
@@ -957,7 +957,7 @@ class QAnsysRenderer(QRenderer):
         """
         Render all chips containing components in self.qcomp_ids.
 
-        Arguments:
+        Args:
             draw_sample_holder (bool, optional): Option to draw vacuum box around chip. Defaults to True.
             box_plus_buffer (bool, optional): Whether or not to use a box plus buffer. Defaults to True.
         """
@@ -986,7 +986,7 @@ class QAnsysRenderer(QRenderer):
         """
         Render individual chips.
 
-        Arguments:
+        Args:
             chip_name (str): Name of chip.
             draw_sample_holder (bool): Option to draw vacuum box around chip.
         """

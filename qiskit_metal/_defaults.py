@@ -27,7 +27,7 @@ class DefaultMetalOptions(Dict):
         1. Components - each time a new component is registered (instantiated).
         2. The metal code codebase, in functions such as drawing and in qdesign base
 
-    Arguments:
+    Args:
         generic (Dict): Dictionary of options.  Defaults to None.
     """
 
@@ -63,7 +63,7 @@ class DefaultMetalOptions(Dict):
     def update_default_options(self, cust_key: str, cust_value=None):
         """Allow instance of class to update the default_options.
 
-        Arguments:
+        Args:
             cust_key (str): Type of component
             cust_value (object): Value for the given key.  Defaults to None.
         """
@@ -77,7 +77,7 @@ class DefaultOptionsRenderer():
 
     This class is a skeleton and is expected to be updated when the renderer is updated.
 
-    Arguments:
+    Args:
         draw_substrate (Dict): This is the dictionary defining the draw substrate parameters.
         bounding_box (Dict): This is the dictionary defining the bounding box parameters.
     """
@@ -127,7 +127,7 @@ class DefaultOptionsRenderer():
                                cust_value: Dict = None):
         """Allow instance of class to update the default_options.
 
-        Arguments:
+        Args:
             cust_key (str): Type of component.  Defaults to None.
             cust_value (Dict): The key/value pairs to describe component.  Defaults to None.
 

@@ -51,7 +51,7 @@ def guided_wavelength(freq,
     transmission line. Assumes the substrate has relative permiability of 1.
     Assumes package grounds are far away.
 
-    Arguments:
+    Args:
         freq (float): The frequency of interest, in Hz (eg. 5*10**9).
         line_width (float): The width of the CPW trace (center) line, in meters (eg. 10*10**-6).
         line_gap (float): The width of the CPW gap (dielectric space), in meters (eg. 6*10**-6).
@@ -102,7 +102,7 @@ def lumped_cpw(freq,
     transmission line. Assumes a lossless superconductor. The internal
     geometric series inductance is ignored.
 
-    Arguments:
+    Args:
         freq (float): The frequency of interest, in Hz (eg. 5*10**9).
         line_width (float): The width of the CPW trace (center) line, in meters (eg. 10*10**-6).
         line_gap (float): The width of the CPW gap (dielectric space), in meters (eg. 6*10**-6).
@@ -187,7 +187,7 @@ def effective_dielectric_constant(freq, s, w, h, t, q, Kk0, Kk01, eRD=11.45):
     constant for a planar CPW transmission line. Assumes package ground can be
     ignored.
 
-    Arguments:
+    Args:
         freq (float): The frequency of interest (eg. 5*10**9)
         s (float): The width of the CPW trace (center) line, in meters (eg. 10*10**-6).
         w (float): The width of the CPW gap (dielectric space), in meters (eg. 6*10**-6).
@@ -223,7 +223,7 @@ def elliptic_int_constants(s, w, h):
     """Calculates the complete elliptic integral of the first kind for CPW
     lumped element equivalent circuit calculations.
 
-    Arguments:
+    Args:
         s (float): The width of the CPW trace (center) line, in meters (eg. 10*10**-6).
         w (float): The width of the CPW gap (dielectric space), in meters (eg. 6*10**-6).
         h (float): Thickness of the dielectric substrate, in meters (eg. 760*10**-6).

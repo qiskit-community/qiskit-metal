@@ -50,7 +50,7 @@ class RightClickView(QTableView):
     def contextMenuEvent(self, event: QContextMenuEvent):
         """Create options for drop-down context menu.
 
-        Arguments:
+        Args:
             event (QContextMenuEvent): The event
         """
         self.right_click_menu = QMenu(self)
@@ -67,7 +67,7 @@ class RightClickView(QTableView):
     def getPosition(self, clickedIndex: QPoint):
         """Obtain location of clicked cell in form of row name and number.
 
-        Arguments:
+        Args:
             clickedIndex (QPoint): The QPoint of the click
 
         Returns:
@@ -82,7 +82,7 @@ class RightClickView(QTableView):
     def deleteRow(self, row_name: str, row_number: int):
         """Create message box to confirm row deletion.
 
-        Arguments:
+        Args:
             row_name (str): Name of the row to delete
             row_number (int): Number of the row being deleted
         """
@@ -97,7 +97,7 @@ class RightClickView(QTableView):
     def renameRow(self, row_name: str, index: QModelIndex):
         """Create message box to confirm row renaming and new name.
 
-        Arguments:
+        Args:
             row_name (str): Name of the row to rename
             index (QModelIndex): Index of the row to rename
         """

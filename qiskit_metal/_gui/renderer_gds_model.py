@@ -28,7 +28,7 @@ if TYPE_CHECKING:
 class RendererGDS_Model(QTreeModel_Base):
     """Tree model for GDS renderer.
 
-    Arguments:
+    Args:
         QTreeModel_Base (QAbstractItemModel): Base class for nested dicts
     """
 
@@ -37,7 +37,7 @@ class RendererGDS_Model(QTreeModel_Base):
         Organized as a tree model where child nodes are more specific
         properties of a given parent node.
 
-        Arguments:
+        Args:
             parent (QWidget): The parent widget
             gui (MetalGUI): The main user interface
             view (QTreeView): View corresponding to a tree structure

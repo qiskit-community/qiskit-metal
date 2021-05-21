@@ -22,7 +22,7 @@ def timeout(timeout_seconds: int):
     """Simple decorator that fails a test that takes longer than time_seconds
     to run.
 
-    Arguments:
+    Args:
         timeout_seconds (int): Maximum amount of time, in seconds, your test should run
 
     Returns:

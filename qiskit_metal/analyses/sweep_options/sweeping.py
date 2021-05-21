@@ -26,7 +26,7 @@ class Sweeping():
         """Give QDesign to this class so Sweeping can access the registered
         QRenderers.
 
-        Arguments:
+        Args:
             design (QDesign): Used to access the QRenderers.
         """
         self.design = design
@@ -36,7 +36,7 @@ class Sweeping():
         """Get value from dict based on key.  This method is used for unknown
         depth, dict search, within a dict.
 
-        Arguments:
+        Args:
             a_dict (dict): Dictionary to get values from
             search (str): String to search for
 
@@ -50,7 +50,7 @@ class Sweeping():
                                 option_sweep: list) -> Tuple[list, Dict, int]:
         """ Implement error checking of data for sweeping.
 
-        Arguments:
+        Args:
             qcomp_name (str): Component that contains the option to be swept.
             option_name (str): The option within qcomp_name to sweep.
             option_sweep (list): Each entry in the list is a value
@@ -105,7 +105,7 @@ class Sweeping():
         Assume: Error checking has already occurred for existence of Ansys,
         project, and HFSS eigenmode design has been connected to pinfo.
 
-        Arguments:
+        Args:
             setup_args (Dict):  Maximum  keys used in setup_args.
 
         **setup_args** dict contents:
@@ -196,7 +196,7 @@ class Sweeping():
         Assume: Error checking has already occurred for existence of Ansys,
         project, and HFSS eigenmode design has been connected to pinfo.
 
-        Arguments:
+        Args:
             setup_args (Dict):  Maximum  keys used in setup_args.
 
         **setup_args** dict contents:
@@ -288,7 +288,7 @@ class Sweeping():
     def warning_for_setup(self, setup_args: dict, key: str, data_type: str):
         """Give a warning based on key/value of dict.
 
-        Arguments:
+        Args:
             setup_args (dict): Holds the key/value of setup arguments
                         that are of interest.
             key (str): Name of setup argument.
@@ -309,7 +309,7 @@ class Sweeping():
         Assume: Error checking has already occurred for existence of Ansys,
         project, and Q3d Extractor design has been connected to pinfo.
 
-        Arguments:
+        Args:
             setup_args (Dict): Maximum  keys used in setup_args.
 
         **setup_args** dict contents:
@@ -446,7 +446,7 @@ class Sweeping():
         Ansys must be open with inserted project. A design, "HFSS Design"
         with eigenmode solution-type will be inserted by this method.
 
-        Arguments:
+        Args:
             qcomp_name (str): A component that contains the option to be
                                 swept. Assume qcomp_name is in qcomp_render.
             option_name (str): The option within qcomp_name to sweep.
@@ -573,7 +573,7 @@ class Sweeping():
         Ansys must be open with inserted project. A design, "HFSS Design"
         with Driven Modal solution-type will be inserted by this method.
 
-        Arguments:
+        Args:
             qcomp_name (str): A component that contains the option to be
                                 swept. Assume qcomp_name is in qcomp_render.
             option_name (str): The option within qcomp_name to sweep.
@@ -728,7 +728,7 @@ class Sweeping():
         """The Dict all_sweep holds three matrices for each iteration of a
         option in Metal.
 
-        Arguments:
+        Args:
             all_sweep (Dict): To hold the output for each iteration of option
                              from Metal.
             a_hfss (QHFSSRenderer): Reference to Metal Ansys renderer.
@@ -768,7 +768,7 @@ class Sweeping():
             - Fifth parameter: List of junctions (qcomp, qgeometry_name) to omit altogether during rendering
             - Sixth parameter: Whether to render chip via box plus buffer or fixed chip size
 
-        Arguments:
+        Args:
             dm_render_args (Dict): Holds the arguments used for render_design.
 
         Returns:
@@ -793,7 +793,7 @@ class Sweeping():
         add sweep to Ansys.  If there are unexpected arguments, they will
         be removed.
 
-        Arguments:
+        Args:
             a_hfss (QHFSSRenderer): Reference to Ansys renderer.
             setup_name (str): Name of active setup in active project.
             dm_add_sweep_args (Dict): Arguments to pass to
@@ -827,7 +827,7 @@ class Sweeping():
         """To render to Ansys, we need every argument in render_design.
         This method confirms all arguments are present.
 
-        Arguments:
+        Args:
             dm_render_args (Dict): Dict that has the key=argument name,
                         value=data for argument.
 
@@ -878,7 +878,7 @@ class Sweeping():
         """Calculate Quality Factor = freqs/kappa_over_2pis.  Before division,
         some error checking.
 
-        Arguments:
+        Args:
             freqs (Union[list, None], optional): The eigenmode frequency.
                                                 Defaults to None.
             kappa_over_2pis (Union[list, None], optional): The kappa/(2*pi).
@@ -918,7 +918,7 @@ class Sweeping():
         """Ansys must be open with an inserted project.  A design,
         "Q3D Extractor Design", will be inserted by this method.
 
-        Arguments:
+        Args:
             qcomp_name (str): A component that contains the option to be swept.
             option_name (str): The option within qcomp_name to sweep.
             option_sweep (list): Each entry in the list is a value for

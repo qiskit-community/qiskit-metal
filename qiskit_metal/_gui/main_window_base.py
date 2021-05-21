@@ -72,7 +72,7 @@ class QMainWindowExtensionBase(QMainWindow):
                 destroySubWindows: bool = True):
         """When the window is cleaned up from memory.
 
-        Arguments:
+        Args:
             destroyWindow (bool): Whether or not to destroy the window.  Defaults to True.
             destroySubWindows (bool): Whether or not to destroy sub windows  Defaults to True.
         """
@@ -83,7 +83,7 @@ class QMainWindowExtensionBase(QMainWindow):
     def set_force_close(self, ison: bool):
         """Set method for force_close
 
-        Arguments:
+        Args:
             ison (bool): value
         """
         self.force_close = ison
@@ -180,7 +180,7 @@ class QMainWindowExtensionBase(QMainWindow):
         """Grad a screenshot of the main window, save to file, copy to
         clipboard and visualize in jupyter.
 
-        Arguments:
+        Args:
             name (string): File name without extension
             type_ (string): File format and name extension
             display (bool): Indicates whether to visualize or not in jupyter notebook
@@ -215,7 +215,7 @@ class QMainWindowExtensionBase(QMainWindow):
     def toggle_all_docks(self, do_hide: bool = None):
         """Show or hide all docks.
 
-        Arguments:
+        Args:
             do_hide (bool): Hide or show.  Defaults to None -- toggle.
         """
         # Get all docks to show/hide. Ignore edit source
@@ -310,7 +310,7 @@ class QMainWindowBaseHandler():
     def __init__(self, logger: logging.Logger = None, handler=False):
         """Can pass in logger.
 
-        Arguments:
+        Args:
             logger (logging.Logger): The logger.  Defaults to None.
             handler (bool): Not used.  Defaults to False.
 
@@ -465,7 +465,7 @@ class QMainWindowBaseHandler():
     def create_log_handler(self, name_toshow: str, logger: logging.Logger):
         """Creates a log handler.
 
-        Arguments:
+        Args:
             name_toshow (str): Display name
             logger (logging.Logger): The logger
 
@@ -508,7 +508,7 @@ class QMainWindowBaseHandler():
     def load_stylesheet(self, path=None):
         """Load and set stylesheet for the main gui.
 
-        Arguments:
+        Args:
             path (str) : Path to stylesheet or its name.
                 Can be: 'default', 'qdarkstyle' or None.
                 `qdarkstyle` requires
@@ -555,7 +555,7 @@ class QMainWindowBaseHandler():
     def _load_stylesheet_from_file(self, path: str):
         """Load the sylesheet from a file.
 
-        Arguments:
+        Args:
             path (str): Path to file
 
         Returns:
@@ -615,7 +615,7 @@ class QMainWindowBaseHandler():
     def set_font_size(self, font_size: int):
         """Set font size of the applicaiton globally in points.
 
-        Arguments:
+        Args:
             font_size (int): New font size
         """
         app = self.qApp

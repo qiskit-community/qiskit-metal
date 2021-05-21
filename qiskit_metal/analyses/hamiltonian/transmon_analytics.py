@@ -36,7 +36,7 @@ def kidx_raw(m, my_ng):
     This function calculates the integers which correct sort the eigenstates and eigenenergies
     of the solution to Mathieu's equation.
 
-        Arguments:
+        Args:
             m (int): The energy level of the qubit (m=0,1,2,3,etc.)
             my_ng (float): the offset charge of the Josephjunction island (in units of 2e)
 
@@ -57,7 +57,7 @@ def kidx(m, my_ng):
     kidxRAW(m, my_ng) are used. If non-integer values of kidxRAW are used, then
     the modulo operation below needs to be updated to include the offset.
 
-        Arguments:
+        Args:
             m (int): The energy level of the qubit (m=0,1,2,3,etc.)
             ng (float): the offset charge of the Josephjunction island (in units of 2e)
 
@@ -81,7 +81,7 @@ def transmon_eigenvalue(m, my_ng):
     calculate the index using the function defined above, and then the calculated
     index is used to calculate the energy eigenvalue using Mathieu's characteristic values.
 
-        Arguments:
+        Args:
             m (int): The energy level of the qubit (m=0,1,2,3,etc.)
             ng (float): the offset charge of the Josephjunction island (in units of 2e)
 

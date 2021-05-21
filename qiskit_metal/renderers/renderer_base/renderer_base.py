@@ -127,7 +127,7 @@ class QRenderer():
     def get_renderer(name: str):
         """Returns an already loaded and instantiated renderer.
 
-        Arguments:
+        Args:
             name (str): rendering name
 
         Returns:
@@ -151,7 +151,7 @@ class QRenderer():
                  render_template: Dict = None,
                  render_options: Dict = None):
         """
-        Arguments:
+        Args:
             design (QDesign): The design
             initiate (bool): True to initiate the renderer.  Defaults to True.
             render_template (Dict, optional): Typically used by GUI for template options for GDS.  Defaults to None.
@@ -236,7 +236,7 @@ class QRenderer():
         """Init function to register a renderer class with the design when
         first instantiated. Registers the renderer's template options.
 
-        Arguments:
+        Args:
             design (QDesign): The parent design
             template_key (str): Key to use
             render_template (dict): template of render to copy
@@ -259,7 +259,7 @@ class QRenderer():
 
         The options can be extended by plugins, such as renderers.
 
-        Arguments:
+        Args:
             design (QDesign): A design class.
             render_template (Dict, optional): Template options to overwrite the class ones. Defaults to None.
             logger_ (logging.Logger, optional): A logger for errors. Defaults to None.
@@ -311,7 +311,7 @@ class QRenderer():
         Then give the template options to render
         to store in self.options.  Then user can over-ride the render_options.
 
-        Arguments:
+        Args:
             render_options (Dict, optional): If user wants to over-ride the template
                                              options.  Defaults to None.
             render_template (Dict, optional): All the template options for each child.
@@ -328,7 +328,7 @@ class QRenderer():
         """During init of renderer, this needs to happen. In particular, each
         renderer needs to update custom columns and values within QDesign.
 
-        Arguments:
+        Args:
             class_name (str): Name from cls.name for each renderer.
         """
         status = set()
@@ -353,7 +353,7 @@ class QRenderer():
 
         Overwrite `initiate_renderer`.
 
-        Arguments:
+        Args:
             re_initiate (bool) : If False will only apply this function once.
                                  If True, will re-apply.  Defaults to False.
 
@@ -382,7 +382,7 @@ class QRenderer():
         unique components to be sent to the renderer. The second returned item, an
         integer, specifies which of these 3 cases applies.
 
-        Arguments:
+        Args:
             highlight_qcomponents (Union[list, None], optional): Components to render. Defaults to None.
 
         Returns:
@@ -426,7 +426,7 @@ class QRenderer():
     def render_chips(self, all_chips):
         """Render all chips of the design. Calls render_chip for each chip.
 
-        Arguments:
+        Args:
             all_chips (list): All chip names to render.
 
         Raises:
@@ -442,7 +442,7 @@ class QRenderer():
     def render_chip(self, name):
         """Render the given chip.
 
-        Arguments:
+        Args:
             name (str): Chip to render.
 
         Raises:
@@ -459,7 +459,7 @@ class QRenderer():
         """Render all components of the design.
         If selection is none, then render all components.
 
-        Arguments:
+        Args:
             selection (QComponent): Component to render.
 
         Raises:
@@ -475,7 +475,7 @@ class QRenderer():
     def render_component(self, qcomponent):
         """Render the specified qcomponent.
 
-        Arguments:
+        Args:
             qcomponent (QComponent): QComponent to render.
 
         Raises:
@@ -491,7 +491,7 @@ class QRenderer():
     def render_element(self, element):
         """Render the specified element.
 
-        Arguments:
+        Args:
             element (Element): Element to render
 
         Raises:
@@ -515,7 +515,7 @@ class QRenderer():
     def render_element_path(self, path):
         """Render an element path.
 
-        Arguments:
+        Args:
             path (str): Path to render.
 
         Raises:
@@ -531,7 +531,7 @@ class QRenderer():
     def render_element_poly(self, poly):
         """Render an element poly.
 
-        Arguments:
+        Args:
             poly (Poly): Poly to render
 
         Raises:

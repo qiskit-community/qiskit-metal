@@ -45,7 +45,7 @@ class QTableModel_Options(QAbstractTableModel):
                  parent: 'ComponentWidget' = None,
                  view=None):
         """
-        Arguments:
+        Args:
             gui (MetalGUI): The GUI
             parent (ComponentWidget): The parent ComponentWidget.  Defaults to None.
             view (object): The view.  Defaults to None.
@@ -79,7 +79,7 @@ class QTableModel_Options(QAbstractTableModel):
     def rowCount(self, parent: QModelIndex = None):
         """Returns the number of rows.
 
-        Arguments:
+        Args:
             parent (QModelIndex): Unused.  Defaults to None.
 
         Returns:
@@ -96,7 +96,7 @@ class QTableModel_Options(QAbstractTableModel):
     def columnCount(self, parent: QModelIndex = None):
         """Returns the number of columns.
 
-        Arguments:
+        Args:
             parent (QModelIndex): Unused.  Defaults to None.
 
         Returns:
@@ -107,7 +107,7 @@ class QTableModel_Options(QAbstractTableModel):
     def headerData(self, section, orientation, role=Qt.DisplayRole):
         """Set the headers to be displayed.
 
-        Arguments:
+        Args:
             section (int): Section number
             orientation (Qt orientation): Section orientation
             role (Qt display role): Display role.  Defaults to DisplayRole.
@@ -135,7 +135,7 @@ class QTableModel_Options(QAbstractTableModel):
         this function just to see how it's done, as we manually adjust each
         treeView to have NoEditTriggers.
 
-        Arguments:
+        Args:
             index (QModelIndex): The index
 
         Returns:
@@ -210,7 +210,7 @@ class QTableModel_Options(QAbstractTableModel):
         """Sets the role data for the item at index to value. The dataChanged()
         signal should be emitted if the data was successfully set.
 
-        Arguments:
+        Args:
             index (QtCore.QModelIndex): The index
             value (str): The value
             role (QtCore.Qt.EditRole): The edit role
@@ -275,7 +275,7 @@ class QTableModel_Options(QAbstractTableModel):
 def parse_param_from_str(text):
     """Attempt to parse a value from a string using ast.
 
-    Arguments:
+    Args:
         text (str): String to parse
 
     Return:

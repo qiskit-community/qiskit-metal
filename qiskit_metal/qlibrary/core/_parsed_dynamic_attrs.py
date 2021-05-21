@@ -71,7 +71,7 @@ class ParsedDynamicAttributes_Component():
 
     def __init__(self, component: 'QComponent', key_list: List[str] = None):
         """
-        Arguments:
+        Args:
             component (QComponent): Component to get options from.
             key_list (List[str]): List of keys.  Defaults to None.
         """
@@ -134,7 +134,7 @@ class ParsedDynamicAttributes_Component():
     def __getitem__(self, name: str):
         """Get the item associated with the given name.
 
-        Arguments:
+        Args:
             name (str): Name of the item
 
         Return:
@@ -226,7 +226,7 @@ self.p.a.c
 def get_nested_dict_item(dic: dict, key_list: list, level=0):
     """Get the nested dictionary item.
 
-    Arguments:
+    Args:
         dic (dict): Dictionary of nested items
         key_list (list): List of keys
         level (int): Internal for recussion.  Defaults to 0.

@@ -44,7 +44,7 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
 
     def __init__(self, parent: QtWidgets.QWidget):
         """
-        Arguments:
+        Args:
             parent (QWidget): Parent widget
         """
         QTableView.__init__(self, parent)
@@ -98,7 +98,7 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         The default implementation ignores the context event.
         See the QContextMenuEvent documentation for more details.
 
-        Arguments:
+        Args:
             event (QContextMenuEvent): The event
         """
         self._event = event  # debug
@@ -116,7 +116,7 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
     def get_name_from_event(self, event):
         """Get the event name.
 
-        Arguments:
+        Args:
             event (QContextMenuEvent): The event
 
         Returns:
@@ -135,7 +135,7 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
     def do_menu_delete(self, event):
         """Called when the user clicks the context menu delete.
 
-        Arguments:
+        Args:
             event (QContextMenuEvent): The event
         """
         name, row = self.get_name_from_event(event)
@@ -150,7 +150,7 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
     def _do_delete(self, name: str):
         """Do delte a component by name.
 
-        Arguments:
+        Args:
             name (str): Name of the component to delete
         """
         self.logger.info(f'Deleting {name}')
@@ -161,7 +161,7 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
     def do_menu_rename(self, event):
         """Called when the user clicks the context menu rename.
 
-        Arguments:
+        Args:
             event (QContextMenuEvent): The event
         """
         name, row = self.get_name_from_event(event)
@@ -192,7 +192,7 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
 
         In the init, we had to connect with self.clicked.connect(self.viewClicked)
 
-        Arguments:
+        Args:
             index (QModelIndex): The index
         """
         if self.gui is None or not index.isValid():
@@ -218,7 +218,7 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
 
         Note that single click will also get called.
 
-        Arguments:
+        Args:
             index (QModelIndex): The index
         """
         if self.gui is None or not index.isValid():
@@ -233,7 +233,7 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         """Based on user highlighting  rows of components in GUI, return the
         name of components.
 
-        Arguments:
+        Args:
             rows (List[int]): User highlighted rows.
 
         Returns:

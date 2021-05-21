@@ -62,7 +62,7 @@ class QNet():
                          pin2_name: str) -> int:
         """Error check the arguments before using them.
 
-        Arguments:
+        Args:
             comp1_id (int): Name of component 1.
             pin1_name (str): Corresponding pin name for component1.
             comp2_id (int): Name of component 2.
@@ -99,7 +99,7 @@ class QNet():
         """Add two entries into the _net_info table. If either component/pin is
         already in net_info, the connection will NOT be added to the net_info.
 
-        Arguments:
+        Args:
             comp1_id (int): Name of component 1.
             pin1_name (str): Corresponding pin name for component1.
             comp2_id (int): Name of component 2.
@@ -140,7 +140,7 @@ class QNet():
         """Removes the two entries with net_id_to_remove. If id is in
         _net_info, the entry will be removed.
 
-        Arguments:
+        Args:
             net_id_to_remove (int): The id to remove.
         """
 
@@ -151,7 +151,7 @@ class QNet():
     def delete_all_pins_for_component(self, component_id_to_remove: int) -> set:
         """Delete all the pins for a given component id.
 
-        Arguments:
+        Args:
             component_id_to_remove (int): Component ID to remove
 
         Returns:
@@ -171,7 +171,7 @@ class QNet():
             self, net_id_search: int) -> pd.core.frame.DataFrame:
         """Search with a net_id to get component id and pin name.
 
-        Arguments:
+        Args:
             net_id_search (int): Unique net id which connects two pins within a design.
 
         Returns:

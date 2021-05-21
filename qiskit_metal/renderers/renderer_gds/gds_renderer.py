@@ -288,7 +288,7 @@ class QGDSRenderer(QRenderer):
                  render_options: Dict = None):
         """Create a QRenderer for GDS interface: export and import.
 
-        Arguments:
+        Args:
             design (QDesign): Use QGeometry within QDesign  to obtain elements
                             for GDS file.
             initiate (bool, optional): True to initiate the renderer.
@@ -351,7 +351,7 @@ class QGDSRenderer(QRenderer):
     def _can_write_to_path(self, file: str) -> int:
         """Check if can write file.
 
-        Arguments:
+        Args:
             file (str): Has the path and/or just the file name.
 
         Returns:
@@ -379,7 +379,7 @@ class QGDSRenderer(QRenderer):
         or False. Names of chip and table should be same as the QGeometry
         tables.
 
-        Arguments:
+        Args:
             chip_name (str): Name of "chip".  Example is "main".
             table_name (str): Name for "table".  Example is "poly", and "path".
             table (geopandas.GeoSeries): Table with similar qgeometries.
@@ -398,7 +398,7 @@ class QGDSRenderer(QRenderer):
             gs_table: geopandas.GeoSeries) -> Tuple[float, float, float, float]:
         """Get the bounds for all of the elements in gs_table.
 
-        Arguments:
+        Args:
             gs_table (pandas.GeoSeries): A pandas GeoSeries used to describe
                                         components in a design.
 
@@ -418,7 +418,7 @@ class QGDSRenderer(QRenderer):
         all boxes.  In another words, the smallest minx and miny; and the
         largest maxx and maxy.
 
-        Arguments:
+        Args:
             all_bounds (list): List of bounds. Each tuple corresponds to a box.
 
         Returns:
@@ -442,7 +442,7 @@ class QGDSRenderer(QRenderer):
         """Calculate the center of a line segment with endpoints (x1,y1) and
         (x2,y2).
 
-        Arguments:
+        Args:
             x1 (float): x of endpoint (x1,y1)
             y1 (float): y of endpoint (x1,y1)
             x2 (float): x of endpoint (x2,y2)
@@ -465,7 +465,7 @@ class QGDSRenderer(QRenderer):
         and self.bounding_box_scale_y, and the max bounds of the tuples
         provided.
 
-        Arguments:
+        Args:
             chip_name (str): Name of chip.
             all_bounds (list): Each tuple=(minx, miny, maxx, maxy) in list
                             represents bounding box for poly, path, etc.
@@ -508,7 +508,7 @@ class QGDSRenderer(QRenderer):
         """Confirm the list doesn't have names of components repeated. Comfirm
         that the name of component exists in QDesign.
 
-        Arguments:
+        Args:
             highlight_qcomponents (list, optional): List of strings which
                                         denote the name of QComponents to render.
                                         Empty list means to render entire design.
@@ -564,7 +564,7 @@ class QGDSRenderer(QRenderer):
 
         4. Gather Geometries to export to GDS format.
 
-        Arguments:
+        Args:
             highlight_qcomponents (list): List of strings which denote the name
                             of QComponents to render.
                             If empty, render all components in design.
@@ -650,7 +650,7 @@ class QGDSRenderer(QRenderer):
         elements.  The gdspy elements are placed in
         self.chip_info[chip_name]['q_subtract_true'].
 
-        Arguments:
+        Args:
             chip_name (str): Chip_name that is being processed.
             all_table_subtracts (list): Add to self.chip_info by layer number.
             all_table_no_subtracts (list): Add to self.chip_info by layer number.
@@ -711,7 +711,7 @@ class QGDSRenderer(QRenderer):
         based on default_options. If so, then remove the row, and append
         shorter LineString with no fillet, within the dataframe.
 
-        Arguments:
+        Args:
             chip_name (str): The name of chip.
             chip_layer (int): The layer within the chip to be evaluated.
             all_sub_true_or_false (str): To be used within self.chip_info:
@@ -777,7 +777,7 @@ class QGDSRenderer(QRenderer):
                             denote no fillet.
         key: line, value: shorter LineString
 
-        Arguments:
+        Args:
             a_shapely (shapely.geometry.LineString): A shapely object that
                                                     needs to be evaluated.
             a_fillet (float): From component developer.
@@ -926,7 +926,7 @@ class QGDSRenderer(QRenderer):
         when fillet'd, they will cause the appearance of incorrect fillet when
         graphed.
 
-        Arguments:
+        Args:
             coords (list): User provide a list of tuples.
                     The tuple is (x,y) location for a vertex.
                     The list represents a LineString.
@@ -978,7 +978,7 @@ class QGDSRenderer(QRenderer):
         elements and gather bounds for all the elements in qgeometries. Use
         format: f'{chip_name}_{table_name}s'.
 
-        Arguments:
+        Args:
             chip_name (str): Name of chip.  Example is 'main'.
             table_name (str): There are multiple tables in QGeometry table.
                                 Example: 'path' and 'poly'.
@@ -1018,7 +1018,7 @@ class QGDSRenderer(QRenderer):
         table with fewer elements, for just the qcomponents within the
         unique_qcomponents list.
 
-        Arguments:
+        Args:
             table_name (str): Can be "path", "poly", etc. from the
                             QGeometry tables.
             unique_qcomponents (list): User requested list of qcomponent
@@ -1070,7 +1070,7 @@ class QGDSRenderer(QRenderer):
     def _check_cheese(self, chip: str, layer: int) -> int:
         """Examine the option for cheese_view_in_file.
 
-        Arguments:
+        Args:
             chip (str): User defined chip name.
             layer (int): Layer used in chip.
 
@@ -1103,7 +1103,7 @@ class QGDSRenderer(QRenderer):
     def _check_no_cheese(self, chip: str, layer: int) -> int:
         """Examine the option for no_cheese_view_in_file.
 
-        Arguments:
+        Args:
             chip (str): User defined chip name.
             layer (int): Layer used in chip.
 
@@ -1138,7 +1138,7 @@ class QGDSRenderer(QRenderer):
         """Use methods to check two options and give review of values for
         no_cheese_view_in_file and cheese_view_in_file.
 
-        Arguments:
+        Args:
             chip (str): User defined chip name.
             layer (int): Layer used in chip.
 
@@ -1221,7 +1221,7 @@ class QGDSRenderer(QRenderer):
                                cheese_sub_layer: int, nocheese_sub_layer: int):
         """Instantiate class to do cheesing.
 
-        Arguments:
+        Args:
             minx (float): Chip minimum x location.
             miny (float): Chip minimum y location.
             maxx (float): Chip maximum x location.
@@ -1379,7 +1379,7 @@ class QGDSRenderer(QRenderer):
         object. Before the buffer is created for no-cheese, the LineStrings and
         Polygons are all combined.
 
-        Arguments:
+        Args:
             sub_df (geopandas.GeoDataFrame): The subset of QGeometry tables
                                                 for each chip, and layer,
             and only if the layer has a ground plane.
@@ -1450,7 +1450,7 @@ class QGDSRenderer(QRenderer):
         """There can be more than one chip in QGeometry. All chips export to
         one gds file. Each chip uses its own subtract rectangle.
 
-        Arguments:
+        Args:
             chip_name (str): Name of chip to render.
 
         Returns:
@@ -1472,7 +1472,7 @@ class QGDSRenderer(QRenderer):
         elements that have subtract as true.  Every layer within a chip will
         have cell named:  f'TOP_{chip_name}_{chip_layer}'.
 
-        Arguments:
+        Args:
             file_name (str): The path and file name to write the gds file.
                              Name needs to include desired extension,
                              i.e. "a_path_and_name.gds".
@@ -1518,7 +1518,7 @@ class QGDSRenderer(QRenderer):
                              precision: float, max_points: int):
         """Handle the positive vs negative mask.
 
-        Arguments:
+        Args:
             lib (gdspy.GdsLibrary): The gdspy library to export.
             chip_only_top (gdspy.library.Cell): The gdspy cell for top.
             chip_name (str): Name of chip to render.
@@ -1546,7 +1546,7 @@ class QGDSRenderer(QRenderer):
         """Check options to see if negative mask is requested for the
         chip and layer.
 
-        Arguments:
+        Args:
             chip (str): Chip name to search for in options.
             layer (int): Layer to search for within chip.  Determine if this
                          layer should have negative mask.
@@ -1566,7 +1566,7 @@ class QGDSRenderer(QRenderer):
                        chip_layer: int, precision: float, max_points: int):
         """Apply logic for negative_mask.
 
-        Arguments:
+        Args:
             lib (gdspy.GdsLibrary): The gdspy library to export.
             chip_only_top (gdspy.library.Cell): The gdspy cell for top.
             ground_cell (gdspy.library.Cell): Cell created for each layer.
@@ -1617,7 +1617,7 @@ class QGDSRenderer(QRenderer):
                        chip_layer: int, precision: float, max_points: int):
         """Apply logic for positive mask.
 
-        Arguments:
+        Args:
             lib (gdspy.GdsLibrary): The gdspy library to export.
             chip_only_top (gdspy.library.Cell): The gdspy cell for top.
             ground_cell (gdspy.library.Cell): Cell created for each layer.
@@ -1663,7 +1663,7 @@ class QGDSRenderer(QRenderer):
                                  ground_cell: gdspy.library.Cell):
         """For each layer, add the subtract=false components to ground.
 
-        Arguments:
+        Args:
             chip_name (str): Name of chip to render.
             chip_layer (int): Name of layer to render.
             ground_cell (gdspy.library.Cell): The cell in lib to add to.
@@ -1685,7 +1685,7 @@ class QGDSRenderer(QRenderer):
                                          ground_cell: gdspy.library.Cell):
         """Add the ground cell to the top of cell for chip.
 
-        Arguments:
+        Args:
             lib (gdspy.GdsLibrary): Holds all of the chips to export to gds.
             chip_only_top (gdspy.library.Cell): Cell which for a single chip.
             ground_cell (gdspy.library.Cell): The ground cell to add to
@@ -1705,7 +1705,7 @@ class QGDSRenderer(QRenderer):
         """Given a row in the Junction table, give the characteristics of
         LineString in row.geometry.
 
-        Arguments:
+        Args:
             row (pandas.core.frame.Pandas): A row from Junction table
                                         of QGeometry.
 
@@ -1738,7 +1738,7 @@ class QGDSRenderer(QRenderer):
         row.geometry, and if needed create two pads to connect the junction to
         qubit.
 
-        Arguments:
+        Args:
             row (pandas.core.frame.Pandas): A row from Junction table
                                             of QGeometry.
             a_cell_bounding_box (numpy.ndarray): Give the bounding box of cell
@@ -1816,7 +1816,7 @@ class QGDSRenderer(QRenderer):
         2. The angle made by second tuple - fist tuple  for delta y/ delta x
         is used to rotate the cell.
 
-        Arguments:
+        Args:
             chip_name (str): The name of chip.
             lib (gdspy.library): The library used to export the entire QDesign.
             chip_only_top (gdspy.library.Cell): The cell used for
@@ -1897,7 +1897,7 @@ class QGDSRenderer(QRenderer):
          the method will gather the pads for a layer, and do the boolean just
          once. Then add the junctions to difference.
 
-        Arguments:
+        Args:
             chip_name (str): The name of chip.
             jj_layer (int): The layer the
             lib (gdspy.library): The library used to export the entire QDesign.
@@ -1957,7 +1957,7 @@ class QGDSRenderer(QRenderer):
         name for correct cell.  Also, get rid of cell that had the pads
         since subtraction happened and we don't need it any more.
 
-        Arguments:
+        Args:
             lib (gdspy.library): [The library used to export the entire QDesign.
             chip_only_top (gdspy.library.Cell): [description]
             chip_only_top_layer (gdspy.library.Cell): Cell under chip,
@@ -1983,7 +1983,7 @@ class QGDSRenderer(QRenderer):
         the jjs will be added to result.  The boolean is very
         time intensive, so just want to do it once.
 
-        Arguments:
+        Args:
             lib (gdspy.library): The library used to export the entire QDesign.
             row (pandas.core.frame.Pandas): Each row is from the qgeometry junction table.
             hold_all_pads_cell (gdspy.library.Cell): Collect all the pads with movement.
@@ -2016,7 +2016,7 @@ class QGDSRenderer(QRenderer):
         """Get the extention pads, then add or subtract to extracted cell based on
         positive or negative mask.
 
-        Arguments:
+        Args:
             lib (gdspy.library): The library used to export the entire QDesign.
             row (pandas.core.frame.Pandas): Each row is from the qgeometry
                                             junction table.
@@ -2059,7 +2059,7 @@ class QGDSRenderer(QRenderer):
         QGeometry element types of both "path" and "poly", will be used, to
         convert QGeometry to GDS formatted file.
 
-        Arguments:
+        Args:
             file_name (str): File name which can also include directory path.
                              If the file exists, it will be overwritten.
             highlight_qcomponents (list): List of strings which denote
@@ -2110,7 +2110,7 @@ class QGDSRenderer(QRenderer):
             layer: int, data_type: int, no_cheese_buffer: float) -> list:
         """Convert a shapely MultiPolygon to corresponding gdspy.
 
-        Arguments:
+        Args:
             multi_poly (shapely.geometry.multipolygon.MultiPolygon): The
                                 shapely geometry of no-cheese boundary.
             layer (int): The layer of the input multipolygon.
@@ -2172,7 +2172,7 @@ class QGDSRenderer(QRenderer):
         """Convert the design.qgeometry table to format used by GDS renderer.
         Convert the class to a series of GDSII elements.
 
-        Arguments:
+        Args:
             qgeometry_element (pd.Series): Expect a shapely object.
 
         Returns:

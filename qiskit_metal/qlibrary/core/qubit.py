@@ -52,7 +52,7 @@ class BaseQubit(QComponent):
                  options_connection_pads: dict = None,
                  make: bool = True):
         """
-        Arguments:
+        Args:
             design (QDesign): The parent design.
             name (str): Name of the component.
             options (dict): User options that will override the defaults.  Defaults to None.

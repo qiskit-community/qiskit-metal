@@ -52,7 +52,7 @@ phi0 = phinot / (2 * np.pi)  # reduced magnetic flux quantum
 def Ic_from_Lj(Lj: float) -> float:
     """Critical current In SI units.
 
-    Arguments:
+    Args:
         Lj (float): In Henries
 
     Returns:
@@ -64,7 +64,7 @@ def Ic_from_Lj(Lj: float) -> float:
 def Ic_from_Ej(Ej: float) -> float:
     """Critical current In SI units.
 
-    Arguments:
+    Args:
         Ej (float): In Joules
 
     Returns:
@@ -76,7 +76,7 @@ def Ic_from_Ej(Ej: float) -> float:
 def Cs_from_Ec(Ec: float) -> float:
     """Get total shunt capacitance from charging energy In SI units.
 
-    Arguments:
+    Args:
         Ec (float): In Joules
 
     Returns:
@@ -90,7 +90,7 @@ def transmon_props(Ic: float, Cq: float):
 
     Calculate LJ, EJ, EC, wq, eps from Ic,Cq.
 
-    Arguments:
+    Args:
         Ic (float): Junction Ic (in A)
         Cq (float): Junction capacitance (in F)
 
@@ -125,7 +125,7 @@ def chi(g: float, wr: float, w01: float, w12: float):
 
     All args need to be in the same units.
 
-    Arguments:
+    Args:
         g (float): Qubit-cavity linear coupling.
         wr (float): Frequency of resonator.
         w01 (float): Qubit 01 transition frequency
@@ -169,7 +169,7 @@ def extract_transmon_coupled_Noscillator(capMatrix,
     Calculate the χ The full dispersive splitting using analytical
     approximations, i.e., return the `|0> --> |1>` splitting.
 
-    Arguments:
+    Args:
         capMatrix (np.ndarray): Order of the capacitance matrix must be
           bus1...busN-1, ground, Qubit_pad1, Qubit_pad2, readout. (in F)
           If not in the correct order, use df_reorder_matrix_basis() to put
@@ -419,7 +419,7 @@ def levels_vs_ng_real_units(Cq, IC, N=301, do_disp=0, do_plots=0):
     function of the ng ration -- it subtracts the vaccuum flucations so that
     the groud state is set to zero energy.
 
-    Arguments:
+    Args:
         C (float): In fF
         Ic (float): In nA
         N (int): Number of charge values to use (needs to be odd)
@@ -532,7 +532,7 @@ def get_C_and_Ic(Cin_est, Icin_est, f01, f02on2):
     """Get the capacitance and critical current for a transmon of a certain
     frequency and anharmonicity.
 
-    Arguments:
+    Args:
         Cin_est (float): Initial guess for capacitance (in fF)
         Icin_est (float): Initial guess for critical current (in nA)
         f01 (float): Transmon frequency (in GHz)
@@ -566,7 +566,7 @@ def cos_to_mega_and_delta(Cin, ICin, f01, f02on2):
     f02/2 from 'levels_vs_ng_real_units' and least square with measured
     f01,f02on2.
 
-    Arguments:
+    Args:
         Cin (float): Cin
         ICin (float): ICin
         f01 (float): f01
@@ -589,7 +589,7 @@ def cos_to_mega_and_delta(Cin, ICin, f01, f02on2):
 def chargeline_T1(Ccharge, Cq, f01):
     """Calculate the charge line `T1`.
 
-    Arguments:
+    Args:
         Cchare (float): Ccharge
         Cq (float): Cq
         f01 (float): f01
@@ -610,7 +610,7 @@ def readin_q3d_matrix(path: str, delim_whitespace=True):
 
     When exporting pick "save as type: data table"
 
-    Arguments:
+    Args:
         path (str): Path to file
 
     Returns:
@@ -685,7 +685,7 @@ def readin_q3d_matrix(path: str, delim_whitespace=True):
 def readin_q3d_matrix_m(path: str) -> pd.DataFrame:
     """Read in Q3D cap matrix from a .m file exported by Ansys Q3d.
 
-    Arguments:
+    Args:
         path (str): Path to .m file
 
     Returns:
@@ -708,7 +708,7 @@ def load_q3d_capacitance_matrix(path, user_units='fF', _disp=True):
     """Load Q3D capcitance file exported as Maxwell matrix. Do not export
     conductance. Units are read in automatically and converted to user units.
 
-    Arguments:
+    Args:
         path (str): Path to file.
         user_units (str): Units.  Defaults to 'fF'.
         _disp (bool): whehter or not to display messages.  Defaults to True.
@@ -736,7 +736,7 @@ def load_q3d_capacitance_matrix(path, user_units='fF', _disp=True):
 def df_cmat_style_print(df_cmat: pd.DataFrame):
     """Display the dataframe in the cmat style.
 
-    Arguments:
+    Args:
         df_cmat (dataframe): Dataframe to display
     """
     from IPython.display import display
@@ -750,7 +750,7 @@ def df_cmat_style_print(df_cmat: pd.DataFrame):
 def move_index_to(i_from: List[int], i_to: List[int], len_):
     """Utility function to swap index.
 
-    Arguments:
+    Args:
         i_from (int): Data frame to swap index
         i_to (int): Data frame to index
         len_ (int): Length of array
@@ -769,7 +769,7 @@ def move_index_to(i_from: List[int], i_to: List[int], len_):
 def df_reorder_matrix_basis(df, i_from, i_to):
     """Data frame handle reording of matrix basis.
 
-    Arguments:
+    Args:
         df (DataFrame): Data frame to swap
         i_from (int): Index to move from
         i_to (int): Index to move to

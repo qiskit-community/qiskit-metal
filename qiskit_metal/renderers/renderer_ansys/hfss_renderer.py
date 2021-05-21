@@ -82,7 +82,7 @@ class QHFSSRenderer(QAnsysRenderer):
         """Create a QRenderer for HFSS simulations, subclassed from
         QAnsysRenderer.
 
-        Arguments:
+        Args:
             design (QDesign): Use QGeometry within QDesign to obtain elements for Ansys.
             initiate (bool, optional): True to initiate the renderer. Defaults to True.
             render_template (Dict, optional): Typically used by GUI for template options for GDS. Defaults to None.
@@ -170,7 +170,7 @@ class QHFSSRenderer(QAnsysRenderer):
         the risk of rendered components being too close to the edge of the chip
         or even falling outside its boundaries.
 
-        Arguments:
+        Args:
             selection (Union[list, None], optional): List of components to
                                         render. Defaults to None.
             open_pins (Union[list, None], optional): List of tuples of pins
@@ -227,7 +227,7 @@ class QHFSSRenderer(QAnsysRenderer):
         in port_list. Port_list is formatted as [(qcomp_0, pin_0, impedance_0),
         (qcomp_1, pin_1, impedance_1), ...].
 
-        Arguments:
+        Args:
             port_list (list): List of tuples of pins to be rendered as ports.
         """
         for qcomp, pin, impedance in port_list:
@@ -282,7 +282,7 @@ class QHFSSRenderer(QAnsysRenderer):
         and lumped ports, or omitted altogether. Ports are characterized by an impedance
         value given in the list jj_to_port when render_design() is called.
 
-        Arguments:
+        Args:
             qgeom (pd.Series): GeoSeries of element properties.
         """
         qcomp = self.design._components[qgeom['component']].name
@@ -343,7 +343,7 @@ class QHFSSRenderer(QAnsysRenderer):
         """Render a junction as a port with a bounding box given by xmin/xmax
         and ymin/ymax, a height z, and a horizontal or vertical axis.
 
-        Arguments:
+        Args:
             qgeom (pd.Series): GeoSeries of element properties.
             xmin (float): Smallest x coordinate
             xmax (float): Largest x coordinate
@@ -385,7 +385,7 @@ class QHFSSRenderer(QAnsysRenderer):
         """Render a junction as an inductor with a bounding box given by
         xmin/xmax and ymin/ymax, a height z, and a horizontal or vertical axis.
 
-        Arguments:
+        Args:
             qgeom (pd.Series): GeoSeries of element properties.
             xmin (float): Smallest x coordinate
             xmax (float): Largest x coordinate
@@ -431,7 +431,7 @@ class QHFSSRenderer(QAnsysRenderer):
     def add_drivenmodal_design(self, name: str, connect: bool = True):
         """Add a driven modal design with the given name to the project.
 
-        Arguments:
+        Args:
             name (str): Name of the new driven modal design
             connect (bool, optional): Should we connect this session to this design? Defaults to True
         """
@@ -449,7 +449,7 @@ class QHFSSRenderer(QAnsysRenderer):
         If the design exists, that will be added WITHOUT altering the suffix of
         the design name.
 
-        Arguments:
+        Args:
             name (str): Name of the new q3d design
 
         """
@@ -488,7 +488,7 @@ class QHFSSRenderer(QAnsysRenderer):
         """For active design, either get existing setup, make new setup with
         name, or make new setup with default name.
 
-        Arguments:
+        Args:
             setup_name_activate (str, optional): If name exists for setup, then have pinfo
                 reference it.  If name for setup does not exist, create a new setup with the name.
                 If name is None, create a new setup with default name.
@@ -538,7 +538,7 @@ class QHFSSRenderer(QAnsysRenderer):
         """Create a solution setup in Ansys HFSS Driven Modal.   If user does
         not provide arguments, they will be obtained from hfss_options dict.
 
-        Arguments:
+        Args:
             freq_ghz (float, optional): Frequency in GHz. Defaults to 5.
             name (str, optional): Name of driven modal setup. Defaults to "Setup".
             max_delta_s (float, optional): Absolute value of maximum
@@ -584,7 +584,7 @@ class QHFSSRenderer(QAnsysRenderer):
     def add_eigenmode_design(self, name: str, connect: bool = True):
         """Add an eigenmode design with the given name to the project.
 
-        Arguments:
+        Args:
             name (str): Name of the new eigenmode design
             connect (bool, optional): Should we connect this session to this design? Defaults to True
 
@@ -604,7 +604,7 @@ class QHFSSRenderer(QAnsysRenderer):
         the design exists, that will be added WITHOUT altering the suffix of
         the design name.
 
-        Arguments:
+        Args:
             name (str): Name of the new q3d design
         """
         if self.pinfo:
@@ -641,7 +641,7 @@ class QHFSSRenderer(QAnsysRenderer):
         """For active design, either get existing setup, make new setup with
         name, or make new setup with default name.
 
-        Arguments:
+        Args:
             setup_name_activate (str, optional): If name exists for setup, then have pinfo
                 reference it.  If name for setup does not exist, create a new setup with the
                 name.  If name is None, create a new setup with default name.
@@ -694,7 +694,7 @@ class QHFSSRenderer(QAnsysRenderer):
         """Create a solution setup in Ansys HFSS Eigenmode.  If user does not
         provide arguments, they will be obtained from hfss_options dict.
 
-        Arguments:
+        Args:
             name (str, optional): Name of eigenmode setup. Defaults to "Setup".
             min_freq_ghz (int, optional): Minimum frequency in GHz. Defaults to 1.
             n_modes (int, optional): Number of modes. Defaults to 1.
@@ -742,7 +742,7 @@ class QHFSSRenderer(QAnsysRenderer):
     def edit_eigenmode_setup(self, setup_args: Dict):
         """User can pass key/values to edit the setup for active eigenmode setup.
 
-        Arguments:
+        Args:
             setup_args (Dict): a Dict with possible keys/values.
 
         **setup_args** dict contents:
@@ -856,7 +856,7 @@ class QHFSSRenderer(QAnsysRenderer):
     def edit_drivenmodal_setup(self, setup_args: Dict):
         """User can pass key/values to edit the setup for active driven modal setup.
 
-        Arguments:
+        Args:
             setup_args (Dict): a Dict with possible keys/values.
 
         **setup_args** dict contents:
@@ -950,7 +950,7 @@ class QHFSSRenderer(QAnsysRenderer):
         """Set the eigenmode in pyEPR for a design with solution_type set to
         Eigenmode.
 
-        Arguments:
+        Args:
             mode (int): Identify a mode from 1 to n_modes.
             setup_name (str): Select a setup from the active design.
         """
@@ -1001,7 +1001,7 @@ class QHFSSRenderer(QAnsysRenderer):
     def analyze_setup(self, setup_name: str):
         """Run a specific solution setup in Ansys HFSS.
 
-        Arguments:
+        Args:
             setup_name (str): Name of setup.
         """
         if self.pinfo:
@@ -1019,7 +1019,7 @@ class QHFSSRenderer(QAnsysRenderer):
                   save_fields=False):
         """Add a frequency sweep to a driven modal setup.
 
-        Arguments:
+        Args:
             setup_name (str, optional): Name of driven modal simulation setup.
                                     Defaults to "Setup".
             start_ghz (float, optional): Starting frequency of sweep in GHz.
@@ -1048,7 +1048,7 @@ class QHFSSRenderer(QAnsysRenderer):
     def analyze_sweep(self, sweep_name: str, setup_name: str):
         """Analyze a single sweep within the setup.
 
-        Arguments:
+        Args:
             sweep_name (str): Name of sweep to analyze.
             setup_name (str): Name of setup to analyze.
         """
@@ -1061,7 +1061,7 @@ class QHFSSRenderer(QAnsysRenderer):
     def get_params(self, param_name: Union[list, None] = None):
         """Get one or more parameters (S, Y, or Z) as a function of frequency.
 
-        Arguments:
+        Args:
             param_name (Union[list, None], optional): Parameters to obtain. Defaults to None.
         """
         if self.current_sweep:
@@ -1107,7 +1107,7 @@ class QHFSSRenderer(QAnsysRenderer):
         """Plot one or more parameters (S, Y, or Z) as a function of frequency.
         S = scattering matrix, Y = Admittance, Z= impedance.
 
-        Arguments:
+        Args:
             param_name (Union[list, None], optional): Parameters to plot. Defaults to None.
         """
         freqs, Pcurves, Pparams = self.get_params(param_name)
@@ -1136,7 +1136,7 @@ class QHFSSRenderer(QAnsysRenderer):
     def get_convergences(self, variation: str = None):
         """Get convergence for convergence_t and convergence_f.
 
-        Arguments:
+        Args:
             variation (str, optional):  Information from pyEPR; variation should be in the form
             variation = "scale_factor='1.2001'". Defaults to None.
 
@@ -1158,7 +1158,7 @@ class QHFSSRenderer(QAnsysRenderer):
                           fig: mpl.figure.Figure = None):
         """Plot the convergences in Ansys window.
 
-        Arguments:
+        Args:
             variation (str, optional): Information from pyEPR; variation should be in the form
             variation = "scale_factor='1.2001'". Defaults to None.
             fig (matplotlib.figure.Figure, optional): A mpl figure. Defaults to None.
@@ -1179,7 +1179,7 @@ def hfss_plot_convergences_report(convergence_t: pd.core.frame.DataFrame,
     frequency and solved elements vs. pass number. Plot delta frequency vs.
     solved elements.
 
-    Arguments:
+    Args:
         convergence_t (pandas.core.frame.DataFrame): Convergence vs pass number of the eigenemode freqs.
         convergence_f (pandas.core.frame.DataFrame): Convergence vs pass number of the eigenemode freqs.
         fig (matplotlib.figure.Figure, optional): A mpl figure. Defaults to None.
@@ -1223,7 +1223,7 @@ def hfss_report_f_convergence(oDesign: epr.ansys.HfssDesign,
         2       5.114490        5.505828        6.242423
         3       5.278594        5.604426        6.296777
 
-    Arguments:
+    Args:
         oDesign (pyEPR.ansys.HfssDesign): Active design within Ansys.
         setup (pyEPR.ansys.HfssEMSetup): The setup of active project and design within Ansys.
         logger (logging.Logger): To give feedback to user.

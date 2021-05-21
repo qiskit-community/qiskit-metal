@@ -63,7 +63,7 @@ class QDesign():
                  enable_renderers: bool = True):
         """Create a new Metal QDesign.
 
-        Arguments:
+        Args:
             metadata (Dict): Dictionary of metadata.  Defaults to None.
 
             overwrite_enabled (bool): When True - If the string name, used for component, already
@@ -173,7 +173,7 @@ class QDesign():
         dictionary. This will overwrite only the new keys that you pass in. All
         other keys will be unaffected.
 
-        Arguments:
+        Args:
             new_metadata (dict): New metadatadata dict to update
         """
         self._metadata.update(new_metadata)
@@ -249,7 +249,7 @@ class QDesign():
         """Utility function to get a dictionary containing chip dimensions
         (size and center).
 
-        Arguments:
+        Args:
             chip_name (str): Name of the chip.
 
         Returns:
@@ -261,7 +261,7 @@ class QDesign():
     def get_chip_z(self, chip_name: str = 'main') -> str:
         """Utility function to return the z value of a chip.
 
-        Arguments:
+        Args:
             chip_name (str): Returns the size of the given chip.  Defaults to 'main'.
 
         Returns:
@@ -273,7 +273,7 @@ class QDesign():
     def get_chip_layer(self, chip_name: str = 'main') -> int:
         """Return the chip layer number for the ground plane.
 
-        Arguments:
+        Args:
             chip_name (str, optional): User can overwrite name of chip.  Defaults to 'main'.
 
         Returns:
@@ -289,7 +289,7 @@ class QDesign():
     def rename_variable(self, old_key: str, new_key: str):
         """Renames a variable in the variables dictionary. Preserves order.
 
-        Arguments:
+        Args:
             old_key (str): Previous variable name
             new_key (str): New variable name
         """
@@ -323,7 +323,7 @@ class QDesign():
         Component's pin will know if pin is connected to another component,
         if there is a non-zero net_id.
 
-        Arguments:
+        Args:
             comp1_id (int):  Unique id of component used for pin1_name.
             pin1_name (str): Name of pin in comp1_id.
             comp2_id (int): Unique id of component used for pin2_name.
@@ -355,7 +355,7 @@ class QDesign():
     #     unique integers.  This method will search through the dict to find
     #     the component with search_name.
 
-    #     Arguments:
+    #     Args:
     #         search_name (str): Name of the component
 
     #     Returns:
@@ -399,7 +399,7 @@ class QDesign():
     def _delete_all_pins_for_component(self, comp_id: int) -> set:
         """Remove component from self._qnet._net_info.
 
-        Arguments:
+        Args:
             comp_id (int): Component ID for which pins are to be removed
 
         Returns:
@@ -461,7 +461,7 @@ class QDesign():
         Reload the module and class of a given component and updates
         all class instances. Then rebuilds all QComponents of that class
 
-        Arguments:
+        Args:
             qis_abs_path: Absolute to the QComponent source file to be reloaded
 
         Raises:
@@ -504,7 +504,7 @@ class QDesign():
         passes a string for component_id, the method assumes the component_name
         was passed.  Then will look for the id using the component_name.
 
-        Arguments:
+        Args:
             component_id (int): id of component within design, can pass a string for component_name
             new_component_name (str): New name
 
@@ -573,7 +573,7 @@ class QDesign():
         If component has dependencices return false and do not delete,
         unless force=True.
 
-        Arguments:
+        Args:
             component_name (str): Name of component to delete.
             force (bool): Force delete component even if it has children.
                           Defaults to False.
@@ -603,7 +603,7 @@ class QDesign():
     def _delete_component(self, component_id: int) -> bool:
         """Delete component without doing any checks.
 
-        Arguments:
+        Args:
             component_id (int): ID of component to delete
 
         Returns:
@@ -675,7 +675,7 @@ class QDesign():
         all_options_superimposes needs to be either empty or exactly the length
         of original_qcomponents, otherwise, an empty dict will be returned.
 
-        Arguments:
+        Args:
             original_qcomponents (list): Must be a list of original QComponents.
             new_component_names (list): Must be a list of QComponent names.
             all_options_superimpose (list, optional): Must be list of dicts
@@ -720,7 +720,7 @@ class QDesign():
         add it to QDesign._components using
         options_overwrite.
 
-        Arguments:
+        Args:
             original_class (QComponent): The QComponent to copy.
             new_component_name (str): The name should not already
               be in QDesign, if it is, the copy fill fail.
@@ -757,7 +757,7 @@ class QDesign():
         """Load a Metal design from a saved Metal file. Will also update
         default dictionaries. (Class method).
 
-        Arguments:
+        Args:
             path (str): Path to saved Metal design.
 
         Returns:
@@ -771,7 +771,7 @@ class QDesign():
         """Save the metal design to a Metal file. If no path is given, then
         tried to use self.save_path if it is set.
 
-        Arguments:
+        Args:
             path (str): Path to save the design to.  Defaults to None.
 
         Returns:
@@ -808,7 +808,7 @@ class QDesign():
         iterable (list, tuple) to account for units conversion, some basic
         arithmetic, and design variables.
 
-        Arguments:
+        Args:
             value (str): String to parse *or*
             variable_dict (dict): dict pointer of variables
 
@@ -854,7 +854,7 @@ class QDesign():
         options. Use self.parse_value to parse only some options from a params
         dictionary.
 
-        Arguments:
+        Args:
             params (dict): Input dict to pull form
             param_names (str): Keys of dictionary to parse and return as a dictionary.
                                Example value: 'x,y,z,cpw_width'
@@ -877,7 +877,7 @@ class QDesign():
     def set_design_name(self, name: str):
         """Set the name of the design in the metadata.
 
-        Arguments:
+        Args:
             name (str) : Name of design
         """
         self.update_metadata({'design_name': name})
@@ -896,7 +896,7 @@ class QDesign():
     def add_dependency(self, parent: str, child: str):
         """Add a dependency between one component and another.
 
-        Arguments:
+        Args:
             parent (str): The component on which the child depends.
             child (str): The child cannot live without the parent.
         """
@@ -904,7 +904,7 @@ class QDesign():
     def remove_dependency(self, parent: str, child: str):
         """Remove a dependency between one component and another.
 
-        Arguments:
+        Args:
             parent (str): The component on which the child depends.
             child (str): The child cannot live without the parent.
         """
@@ -913,7 +913,7 @@ class QDesign():
         """Update the component and any dependencies it may have. Mediator type
         function to update all children.
 
-        Arguments:
+        Args:
             component_name (str): Component name to update
             dependencies (bool): True to update all dependencies.  Defaults to True.
         """
@@ -1004,7 +1004,7 @@ class QDesign():
                   keys: render_name (hfss), value: Dict which has
                           keys: 'inductance', value: (inductance_value)
 
-        Arguments:
+        Args:
             table_name (str): Table used within QGeometry tables
                                 i.e. path, poly, junction.
             renderer_name (str): The name of software to export QDesign,
@@ -1064,7 +1064,7 @@ class QDesign():
     def get_list_of_tables_in_metadata(self, a_metadata: dict) -> list:
         """Look at the metadata dict to get list of tables the component uses.
 
-        Arguments:
+        Args:
             a_metadata (dict): Use dict from gather_all_childern for metadata.
 
         Returns:

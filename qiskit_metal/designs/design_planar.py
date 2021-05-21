@@ -37,7 +37,7 @@ class DesignPlanar(QDesign):
                  enable_renderers: bool = True):
         """Pass metadata to QDesign.
 
-        Arguments:
+        Args:
             metadata (dict, optional): Pass to QDesign. Defaults to {}.
             overwrite_enabled (bool, optional): Passed to QDesign base class. Defaults to False.
             enable_renderers (bool, optional): Passed to QDesign base class. Defaults to True.
@@ -81,7 +81,7 @@ class DesignPlanar(QDesign):
         information then return a tuple=(minx, miny, maxx, maxy). Used for
         subtraction while exporting design.
 
-        Arguments:
+        Args:
             chip_name (str): Name of chip that you want the size of.
 
         Returns:

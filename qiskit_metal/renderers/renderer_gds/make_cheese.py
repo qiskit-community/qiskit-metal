@@ -64,7 +64,7 @@ class Cheesing():
     ):
         """Create the cheesing based on the no-cheese multi_poly.
 
-        Arguments:
+        Args:
             multi_poly (shapely.geometry.multipolygon.MultiPolygon): The area
                                             on chip per layer for no-cheese.
             all_nocheese_gds (list): The same as multi_poly, but a list to be
@@ -295,7 +295,7 @@ class Cheesing():
         """Get the existing chip_only_top_name cell, then add the holes to it.
         Also, add ground_cheesed_cell under chip_only_top_name
 
-        Arguments:
+        Args:
             diff_holes_cell (gdspy.library.Cell): New cell with cheesed ground
         """
 
@@ -319,7 +319,7 @@ class Cheesing():
         """Given a cell with all the holes, subtract the keepout region.
         Then return a new cell with the result.
 
-        Arguments:
+        Args:
             gather_holes_cell (gdspy.library.Cell): Holds a grid of all
                                                 the holes for cheesing.
 
@@ -384,7 +384,7 @@ class Cheesing():
         ground. Place the difference into a new cell, which will eventually
         be added under Top.
 
-        Arguments:
+        Args:
             diff_holes_cell ([type]): Cell which contains all the holes.
 
         Returns:
@@ -417,7 +417,7 @@ class Cheesing():
     def _move_to_under_top_chip_layer_name(self, a_cell: gdspy.library.Cell):
         """Move the cell to under TOP_<chip name>_<layer number>.
 
-        Arguments:
+        Args:
             a_cell (gdspy.library.Cell): A GDSPY cell.
         """
         chip_only_top_chip_layer_name = f'TOP_{self.chip_name}_{self.layer}'

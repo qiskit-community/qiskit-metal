@@ -375,7 +375,7 @@ class RouteFramed(QRoute):
         """Generate the list of 2D coordinates comprising a CPW between
         startpin and endpin.
 
-        Arguments:
+        Args:
             startpin (str): Name of startpin
             endpin (str): Name of endpin
             width (float): Width of CPW in mm

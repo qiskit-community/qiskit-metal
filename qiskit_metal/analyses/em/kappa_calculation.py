@@ -30,7 +30,7 @@ __all__ = ['kappa_in']
 def kappa_in(*argv):
     """A simple calculator for the kappa value of a readout resonator.
 
-    Arguments:
+    Args:
         freq (float): The frequency of interest, in Hz
         C_in (float): Effective capacitance between CPW and environment (from Q3D), in Farads
         freq_res (float): Lowest resonant frequency of a CPW (from HFSS), in Hz

@@ -71,7 +71,7 @@ class QMplRenderer():
     def __init__(self, canvas: 'PlotCanvas', design: QDesign,
                  logger: logging.Logger):
         """
-        Arguments:
+        Args:
             canvas (PlotCanvas): The canvas
             design (QDesign): The design
             logger (logging.Logger): The logger
@@ -99,7 +99,7 @@ class QMplRenderer():
     def get_color_num(self, num: int) -> str:
         """Get the color from the given number.
 
-        Arguments:
+        Args:
             num (int): number
 
         Return:
@@ -110,7 +110,7 @@ class QMplRenderer():
     def hide_component(self, name):
         """Hide the component with the given name.
 
-        Arguments:
+        Args:
             name (str): Component name
         """
         comp_id = self.design.components[name].id
@@ -119,7 +119,7 @@ class QMplRenderer():
     def show_component(self, name):
         """Show the component with the given name.
 
-        Arguments:
+        Args:
             name (str): Component name
         """
         comp_id = self.design.components[name].id
@@ -128,7 +128,7 @@ class QMplRenderer():
     def hide_layer(self, name):
         """Hide the layer with the given name.
 
-        Arguments:
+        Args:
             name (str): Layer name
         """
         self.hidden_layers.add(name)
@@ -136,7 +136,7 @@ class QMplRenderer():
     def show_layer(self, name):
         """Show the layer with the given name.
 
-        Arguments:
+        Args:
             name (str): Layer name
         """
         self.hidden_layers.discard(name)
@@ -144,7 +144,7 @@ class QMplRenderer():
     def set_design(self, design: QDesign):
         """Set the design.
 
-        Arguments:
+        Args:
             design (QDesign): The design
         """
         self.design = design
@@ -159,7 +159,7 @@ class QMplRenderer():
     def render(self, ax: Axes):
         """Assumes that the axis has been cleared already and so on.
 
-        Arguments:
+        Args:
             ax (matplotlib.axes.Axes): mpl axis to draw on
         """
 
@@ -169,7 +169,7 @@ class QMplRenderer():
     def get_mask(self, table: pd.DataFrame) -> pd.Series:
         """Gets the mask.
 
-        Arguments:
+        Args:
             table (pd.DataFrame): dataframe
 
         Returns:
@@ -188,7 +188,7 @@ class QMplRenderer():
     def _render_poly_array(self, ax: Axes, poly_array: np.array, mpl_kw: dict):
         """Render the poly array.
 
-        Arguments:
+        Args:
             ax (Axes): The axis
             poly_array (np.array): The poly
             mpl_kw (dict): The parameters dictionary
@@ -225,7 +225,7 @@ class QMplRenderer():
                   extra=None):
         """Get the style.
 
-        Arguments:
+        Args:
             element_type (str): The type of element.
             subtracted (bool): True to subtrat the key.  Defaults to False.
             layer (layer): The layer.  Defaults to None.
@@ -253,7 +253,7 @@ class QMplRenderer():
     def render_tables(self, ax: Axes):
         """Render the tables.
 
-        Arguments:
+        Args:
             ax (Axes): The axes
         """
         for element_type, table in self.qgeometry.tables.items():
@@ -282,7 +282,7 @@ class QMplRenderer():
         """Render a table of junction geometry.
         A junction is basically drawn like a path with finite width and no fillet.
 
-        Arguments:
+        Args:
             table (DataFrame): Element table
             ax (matplotlib.axes.Axes): Axis to render on
             extra_kw (dict): Style params
@@ -315,7 +315,7 @@ class QMplRenderer():
                     extra_kw: dict = None):
         """Render a table of poly geometry.
 
-        Arguments:
+        Args:
             table (DataFrame): Element table
             ax (matplotlib.axes.Axes): Axis to render on
             kw (dict): Style params
@@ -329,7 +329,7 @@ class QMplRenderer():
     def render_fillet(self, table):
         """Renders fillet path.
 
-        Arguments:
+        Args:
             table (DataFrame): Table of elements with fillets
 
         Returns:
@@ -341,7 +341,7 @@ class QMplRenderer():
     def fillet_path(self, row):
         """Output the filleted path.
 
-        Arguments:
+        Args:
             row (DataFrame): Row to fillet.
 
         Returns:
@@ -381,7 +381,7 @@ class QMplRenderer():
         """Returns the filleted path based on the start, corner, and end
         vertices and the fillet radius.
 
-        Arguments:
+        Args:
             vertex_start (np.ndarray): x-y coordinates of starting vertex.
             vertex_corner (np.ndarray): x-y coordinates of corner vertex.
             vertex_end (np.ndarray): x-y coordinates of end vertex.
@@ -436,7 +436,7 @@ class QMplRenderer():
                     extra_kw: dict = None):
         """Render a table of path geometry.
 
-        Arguments:
+        Args:
             table (DataFrame): Element table
             ax (matplotlib.axes.Axes): Axis to render on
             kw (dict): Style params

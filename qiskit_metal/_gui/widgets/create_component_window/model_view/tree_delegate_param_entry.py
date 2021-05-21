@@ -34,7 +34,7 @@ class ParamDelegate(QItemDelegate):
         Note that the index contains information about the model being used.
         The editor's parent widget is specified by parent, and the item options by option.
 
-        Arguments:
+        Args:
             parent (QWidget): Parent widget
             option (QStyleOptionViewItem): Style options for the related view
             index (QModelIndex): Specific index being edited
@@ -52,7 +52,7 @@ class ParamDelegate(QItemDelegate):
     def setEditorData(self, editor: QWidget, index: QModelIndex):
         """
         Overriding inherited setEditorData class
-        Arguments:
+        Args:
             editor (QWidget): Current editor for the data
             index (QModelIndex): Current index being modified
 
@@ -67,7 +67,7 @@ class ParamDelegate(QItemDelegate):
                      index: QModelIndex):
         """
         Overriding inherited setModelData class
-        Arguments:
+        Args:
             editor (QWidget): Current editor for the data
             model (QAbstractItemModel): Current model whose data is being set
             index (QModelIndex): Current index being modified

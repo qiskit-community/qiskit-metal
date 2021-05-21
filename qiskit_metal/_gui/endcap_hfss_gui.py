@@ -36,7 +36,7 @@ class EndcapHFSSWidget(QMainWindow):
         """Get access to design, which has the components. Then set up the
         model and view.
 
-        Arguments:
+        Args:
             parent (QMainWindow): The parent window
             gui (MetalGUI): The metal GUI
             components_to_render (list): A list of components to render to Ansys HFSS
@@ -111,7 +111,7 @@ class EndcapHFSSWidget(QMainWindow):
         begin with. These are the default endcap settings for all pins in
         components_to_render.
 
-        Arguments:
+        Args:
             components_to_render (list, optional): List of components to render.  Defaults to None.
 
         Returns:

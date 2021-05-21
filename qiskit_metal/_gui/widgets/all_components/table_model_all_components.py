@@ -49,7 +49,7 @@ class QTableModel_AllComponents(QAbstractTableModel):
                  parent=None,
                  tableView: 'QTableView_AllComponents' = None):
         """
-        Arguments:
+        Args:
             gui (MetalGUI): The GUI.  Defaults to None.
             logger (logger): The logger.
             parent (QWidget): Parent widget.  Defaults to None.
@@ -118,7 +118,7 @@ class QTableModel_AllComponents(QAbstractTableModel):
     def rowCount(self, parent: QModelIndex = None):
         """Returns the number of rows.
 
-        Arguments:
+        Args:
             parent (QModelIndex): Unused.  Defaults to None.
 
         Returns:
@@ -138,7 +138,7 @@ class QTableModel_AllComponents(QAbstractTableModel):
     def columnCount(self, parent: QModelIndex = None):
         """Returns the number of columns.
 
-        Arguments:
+        Args:
             parent (QModelIndex): Unused.  Defaults to None.
 
         Returns:
@@ -152,7 +152,7 @@ class QTableModel_AllComponents(QAbstractTableModel):
                    role=Qt.DisplayRole):
         """Set the headers to be displayed.
 
-        Arguments:
+        Args:
             section (int): Section number
             orientation (Qt orientation): Section orientation
             role (Qt display role): Display role.  Defaults to DisplayRole.
@@ -176,7 +176,7 @@ class QTableModel_AllComponents(QAbstractTableModel):
     def flags(self, index):
         """Set the item flags at the given index.
 
-        Arguments:
+        Args:
             index (QModelIndex): The index
 
         Returns:

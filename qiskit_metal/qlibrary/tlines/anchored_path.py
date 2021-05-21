@@ -30,7 +30,7 @@ def intersecting(a: np.array, b: np.array, c: np.array, d: np.array) -> bool:
     """Returns whether segment ab intersects or overlaps with segment cd, where
     a, b, c, and d are all coordinates.
 
-    Arguments:
+    Args:
         a (np.array): Coordinate
         b (np.array): Coordinate
         c (np.array): Coordinate
@@ -143,7 +143,7 @@ class RouteAnchors(QRoute):
         """Checks whether the given component's perimeter intersects or
         overlaps a given segment.
 
-        Arguments:
+        Args:
             segment (list): 2 vertices, in the form [np.array([x0, y0]), np.array([x1, y1])]
             component_name (str): Alphanumeric component name
 
@@ -173,7 +173,7 @@ class RouteAnchors(QRoute):
         """Check that no component's bounding box in self.design intersects or
         overlaps a given segment.
 
-        Arguments:
+        Args:
             segment (list): 2 vertices, in the form [np.array([x0, y0]), np.array([x1, y1])]
 
         Returns:
@@ -208,7 +208,7 @@ class RouteAnchors(QRoute):
         """Try connecting start and end with single or 2-segment/S-shaped CPWs
         if possible.
 
-        Arguments:
+        Args:
             start_pt (QRoutePoint): QRoutePoint of the start
             end_pt (QRoutePoint): QRoutePoint of the end
 

@@ -35,7 +35,7 @@ class AnimatedText():
                  start=True,
                  loc=[0.5, 0.5]):
         """
-        Arguments:
+        Args:
             ax (plt.Axes): The axis.
             text (str): Text to animate.
             canvas (canvas): The canvas.
