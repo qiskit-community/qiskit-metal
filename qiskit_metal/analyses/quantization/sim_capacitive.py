@@ -12,14 +12,14 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-from typing import Union
+from typing import Union, Tuple
 import pandas as pd
 from pyEPR.ansys import ureg
+from qiskit_metal.designs import QDesign  # pylint: disable=unused-import
 
 from ..core import QAnalysisRenderer
 
 from ... import Dict
-from ... import config
 
 
 class CapExtraction(QAnalysisRenderer):
@@ -134,11 +134,12 @@ class CapExtraction(QAnalysisRenderer):
             except pd.errors.EmptyDataError:
                 break
 
-    def run_sim(self,
-                name: str = None,
-                components: Union[list, None] = None,
-                open_terminations: Union[list, None] = None,
-                box_plus_buffer: bool = True) -> (str, str):
+    def run_sim(  # pylint: disable=arguments-differ
+            self,
+            name: str = None,
+            components: Union[list, None] = None,
+            open_terminations: Union[list, None] = None,
+            box_plus_buffer: bool = True) -> Tuple[str, str]:
         """Executes the capacitance matrix extraction.
         First it makes sure the tool is running. Then it does the necessary to render the design.
         Finally it runs the setup defined in this class. So you need to modify the setup ahead.

@@ -102,9 +102,6 @@ class TransmonPocket(BaseQubit):
             * loc_H: '+1' -- Height location only +-1
     """
 
-    #_img = 'transmon_pocket1.png'
-
-    # Default drawing options
     default_options = Dict(
         chip='main',
         pos_x='0um',

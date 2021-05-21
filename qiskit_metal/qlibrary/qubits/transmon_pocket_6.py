@@ -105,8 +105,6 @@ class TransmonPocket6(BaseQubit):
         QComponent_Qubit_Transmon_Pocket.png
     """
 
-    #_img = 'transmon_pocket1.png'
-
     # Default drawing options
     default_options = Dict(
         chip='main',

@@ -12,14 +12,14 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-from typing import Union
-
+from typing import Union, Tuple
 import pandas as pd
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 from pyEPR.reports import (plot_convergence_f_vspass, plot_convergence_max_df,
                            plot_convergence_maxdf_vs_sol,
                            plot_convergence_solved_elem)
+from qiskit_metal.designs import QDesign  # pylint: disable=unused-import
 
 from ... import Dict
 from ..core import QAnalysisRenderer
@@ -99,14 +99,15 @@ class EigenmodeSim(QAnalysisRenderer):
         self.convergence_t, self.convergence_f = self.renderer.get_convergences(
         )
 
-    def run_sim(self,
-                name: str = None,
-                components: Union[list, None] = None,
-                open_terminations: Union[list, None] = None,
-                port_list: Union[list, None] = None,
-                jj_to_port: Union[list, None] = None,
-                ignored_jjs: Union[list, None] = None,
-                box_plus_buffer: bool = True) -> (str, str):
+    def run_sim(  # pylint: disable=arguments-differ
+            self,
+            name: str = None,
+            components: Union[list, None] = None,
+            open_terminations: Union[list, None] = None,
+            port_list: Union[list, None] = None,
+            jj_to_port: Union[list, None] = None,
+            ignored_jjs: Union[list, None] = None,
+            box_plus_buffer: bool = True) -> Tuple[str, str]:
         """Executes the entire eigenmode analysis and convergence result export.
         First it makes sure the tool is running. Then it does what's necessary to render the design.
         Finally it runs the setup defined in this class. So you need to modify the setup ahead.
@@ -219,8 +220,8 @@ class EigenmodeSim(QAnalysisRenderer):
             fig = plt.figure(figsize=(11, 3.))
 
             # Grid spec and axes;    height_ratios=[4, 1], wspace=0.5
-            gs = mpl.gridspec.GridSpec(1, 3, width_ratios=[1.2, 1.5, 1])
-            axs = [fig.add_subplot(gs[i]) for i in range(3)]
+            gspec = mpl.gridspec.GridSpec(1, 3, width_ratios=[1.2, 1.5, 1])
+            axs = [fig.add_subplot(gspec[i]) for i in range(3)]
 
             ax0t = axs[1].twinx()
             plot_convergence_f_vspass(axs[0], convergence_f)
@@ -237,7 +238,12 @@ class EigenmodeSim(QAnalysisRenderer):
 
     ##### Below methods are related to EPR
 
-    def plot_fields(self, object_name, eigenmode=1, *args, **kwargs):
+    def plot_fields(  # pylint: disable=keyword-arg-before-vararg
+            self,
+            object_name,
+            eigenmode: int = 1,
+            *args,
+            **kwargs):
         """Plots electro(magnetic) fields in the renderer.
         Accepts as args everything parameter accepted by the homonymous renderer method.
 

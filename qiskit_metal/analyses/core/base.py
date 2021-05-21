@@ -12,21 +12,37 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-from copy import deepcopy
 from abc import abstractmethod, ABC
 import inspect
 
-from ... import Dict, config, logger
+from ... import Dict, logger
 
 
 class QAnalysis(ABC):
-    """Methods and variables that every analysis class should inherit
-    Has default_setup = Dict() defined. Requires to define default_setup in all inheriting classes
+    """`QAnalysis` is the core class from which all Metal analysis are derived.
+
+    The class defines the user interface for working with analysis.
+
+    For front-end user:
+        * Manipulates the setup dictionary to fine-tune the analysis parameters.
+
+    For creator user:
+        * Creates a class that inherits this or the QAnalysisRenderer classes.
+        * Implements the `run` and `run_***` methods to define the analysis procedures.
+        * Defines the methods to communicate with the QRenderers. (see QAnalysisRenderer)
+        * Defines default_setup, which describes the parameteric interface to the analysis class.
+
+    Default Setup:
+        Nested default setup parameters can be overwritten with the setup_update method,
+        or directly by using the dot operator enabled by the Dict type.
     """
+
     default_setup = Dict()
     """Default setup"""
 
     def __init__(self, *args, **kwargs):
+        """Creates a new Analysis object with a setup derived from the default_setup Dict.
+        """
         super().__init__(*args, **kwargs)
         self._setup = self._gather_all_children_setup()
 
@@ -42,7 +58,6 @@ class QAnalysis(ABC):
         Make sure the method names run_***() between two QAnalysis subclsses is unique,
         in case you expect them to be both inherited from the same subclass.
         """
-        pass
 
     @property
     def setup(self):
@@ -99,7 +114,6 @@ class QAnalysis(ABC):
 
         If the key is the same, the setup option of the youngest child is used.
         """
-
         setup_from_children = Dict()
         parents = inspect.getmro(self.__class__)
 

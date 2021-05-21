@@ -48,14 +48,15 @@ def good_fillet_idxs(coords: list,
                      precision: int = 9,
                      isclosed: bool = False):
     """
-    Get list of vertex indices in a linestring (isclosed = False) or polygon (isclosed = True) that can be filleted based on
-    proximity to neighbors.
+    Get list of vertex indices in a linestring (isclosed = False) or polygon (isclosed = True)
+    that can be filleted based on proximity to neighbors.
 
     Args:
         coords (list): Ordered list of tuples of vertex coordinates.
         fradius (float): User-specified fillet radius from QGeometry table.
         precision (int, optional): Digits of precision used for round(). Defaults to 9.
-        isclosed (bool, optional): Boolean denoting whether the shape is a linestring or polygon. Defaults to False.
+        isclosed (bool, optional): Boolean denoting whether the shape is a linestring or
+            polygon. Defaults to False.
 
     Returns:
         list: List of indices of vertices that can be filleted.
@@ -834,7 +835,10 @@ class QAnsysRenderer(QRendererAnalysis):
         setup = self.new_ansys_setup(**kwargs)  #TODO: activate_ansys_setup?
         return setup.name
 
-    def initialize_drivenmodal(self, sweep_setup: Dict, vars: Dict = {}, **kwargs):
+    def initialize_drivenmodal(self,
+                               sweep_setup: Dict,
+                               vars: Dict = {},
+                               **kwargs):
         """Any task that needs to occur before running a simulation, such as creating a setup
 
         Args:
@@ -1544,7 +1548,7 @@ class QAnsysRenderer(QRendererAnalysis):
                 Defaults to dict().
 
         Returns:
-            (float, float, float): ℰ_elec, ℰ_elec_substrate, ℰ_mag
+            (float, float, float): energy_elec, energy_elec_substrate, energy_mag
         """
         if junctions is not None or dissipatives is not None:
             self.epr_start(junctions, dissipatives)
@@ -1553,12 +1557,12 @@ class QAnsysRenderer(QRendererAnalysis):
 
         if self.pinfo.dissipative['dielectrics_bulk'] is not None:
             eprd = self.epr_distributed_analysis
-            ℰ_elec = eprd.calc_energy_electric()
-            ℰ_elec_substrate = eprd.calc_energy_electric(
+            energy_elec = eprd.calc_energy_electric()
+            energy_elec_substrate = eprd.calc_energy_electric(
                 None, self.pinfo.dissipative['dielectrics_bulk'][0])
-            ℰ_mag = eprd.calc_energy_magnetic()
+            energy_mag = eprd.calc_energy_magnetic()
 
-            return ℰ_elec, ℰ_elec_substrate, ℰ_mag
+            return energy_elec, energy_elec_substrate, energy_mag
         self.logger.error('dielectrics_bulk needs to be defined')
 
     def epr_run_analysis(self,

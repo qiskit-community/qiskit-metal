@@ -12,12 +12,12 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-from typing import Union
 import pandas as pd
 from pyEPR.ansys import ureg
 from pyEPR.calcs.convert import Convert
 
-from ..core import QAnalysis
+from qiskit_metal.designs import QDesign  # pylint: disable=unused-import
+from ..core import QAnalysis, QAnalysisRenderer
 from . import CapExtraction
 
 from ... import Dict
@@ -27,7 +27,9 @@ if not config.is_building_docs():
     from .lumped_capacitive import extract_transmon_coupled_Noscillator
 
 
-class LOManalysis(QAnalysis):
+# TODO: eliminate every reference to "renderer" in this file
+#  then change inheritance from QAnalysisRenderer to QAnalysis
+class LOManalysis(QAnalysisRenderer):
     """Extracts and LOM model from a provided capacitance matrix.
 
     Default Setup:
@@ -101,7 +103,7 @@ class LOManalysis(QAnalysis):
         """
         self._lom_output = lom_dict
 
-    def run(self):
+    def run(self, *args, **kwargs):
         """Alias for run_lom()
         """
         return self.run_lom(*args, **kwargs)
@@ -125,15 +127,15 @@ class LOManalysis(QAnalysis):
 
         ic_amps = Convert.Ic_from_Lj(s.junctions.Lj, 'nH', 'A')
         cj = ureg(f'{s.junctions.Cj} fF').to('farad').magnitude
-        fr = ureg(f'{s.freq_readout} GHz').to('GHz').magnitude
-        fb = [ureg(f'{freq} GHz').to('GHz').magnitude for freq in s.freq_bus]
+        fread = ureg(f'{s.freq_readout} GHz').to('GHz').magnitude
+        fbus = [ureg(f'{freq} GHz').to('GHz').magnitude for freq in s.freq_bus]
 
-        # derive N
-        N = 2
-        if isinstance(fr, list):
-            N += len(fr) - 1
-        if isinstance(fb, list):
-            N += len(fb) - 1
+        # derive number of coupling pads
+        num_cpads = 2
+        if isinstance(fread, list):
+            num_cpads += len(fread) - 1
+        if isinstance(fbus, list):
+            num_cpads += len(fbus) - 1
 
         # get the LOM for every pass
         all_res = {}
@@ -142,9 +144,9 @@ class LOManalysis(QAnalysis):
                 df_cmat[0],
                 ic_amps,
                 cj,
-                N,
-                fb,
-                fr,
+                num_cpads,
+                fbus,
+                fread,
                 g_scale=1,
                 print_info=bool(idx_cmat == len(self._capacitance_all_passes)))
             all_res[idx_cmat] = res

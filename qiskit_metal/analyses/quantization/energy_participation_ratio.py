@@ -12,28 +12,33 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-from ... import Dict
-from ..core import QAnalysis
+from qiskit_metal.designs import QDesign  # pylint: disable=unused-import
+from ..core import QAnalysis, QAnalysisRenderer
 from . import EigenmodeSim
 
-class EPRanalysis(QAnalysis):
-    """Compute eigenmode, then derive from it using the epr method
+from ... import Dict
+
+
+# TODO: eliminate every reference to "renderer" in this file
+#  then change inheritance from QAnalysisRenderer to QAnalysis
+class EPRanalysis(QAnalysisRenderer):
+    """From an input eigenmode dataset, apply the Energy Particpation Ratio analysis method
 
     Default Setup:
-        junctions (Dict): Enumerates the Non-linear (Josephson) junctions that
-            need to be considered during the EPR analysis.
-            keys (str): Name of the junction
-            values (Dict):
-                Lj_variable (str): Name of renderer variable that specifies junction inductance.
-                rect (str): Name of renderer rectangle on which the lumped boundary condition
+        * junctions (Dict): Enumerates the Non-linear (Josephson) junctions that
+            * need to be considered during the EPR analysis.
+            * keys (str): Name of the junction
+            * values (Dict):
+                * Lj_variable (str): Name of renderer variable that specifies junction inductance.
+                * rect (str): Name of renderer rectangle on which the lumped boundary condition
                     is defined.
-                line (str): Name of renderer line spanning the length of rect
+                * line (str): Name of renderer line spanning the length of rect
                     (voltage, orientation, ZPF).
-                Cj_variable (str): Name of renderer variable that specifies junction capacitance.
-        dissipatives (Dict): Enumerate dissipatives in the system
-            keys (str): Possible keys are: 'dielectrics_bulk', 'dielectric_surfaces',
+                * Cj_variable (str): Name of renderer variable that specifies junction capacitance.
+        * dissipatives (Dict): Enumerate dissipatives in the system
+            * keys (str): Possible keys are: 'dielectrics_bulk', 'dielectric_surfaces',
                 'resistive_surfaces', 'seams'.
-            values (list of str): names of the shapes composing that dissipative.
+            * values (list of str): names of the shapes composing that dissipative.
     """
     # TODO: add the other variables to the description above
     default_setup = Dict(epr=Dict(junctions=Dict(
@@ -58,9 +63,9 @@ class EPRanalysis(QAnalysis):
         #  EigenmodeSim class. this will likely require to find them inside pinfo
 
         # output variables
-        self.ℰ_elec = None
-        self.ℰ_mag = None
-        self.ℰ_elec_sub = None
+        self.energy_elec = None
+        self.energy_mag = None
+        self.energy_elec_sub = None
 
     def run(self):
         """Alias for run_lom()
@@ -100,17 +105,17 @@ class EPRanalysis(QAnalysis):
         """Calculate the energy stored in the system based on the eigenmode results
         """
         # execute EPR and energy extraction
-        self.ℰ_elec, self.ℰ_elec_sub, self.ℰ_mag = self.renderer.epr_get_stored_energy(
-            **self.epr_start(no_junctions))
+        self.energy_elec, self.energy_elec_sub, self.energy_mag = \
+            self.renderer.epr_get_stored_energy(**self.epr_start(no_junctions))
 
         # present a human-friendly output
         print(f"""
-        ℰ_elec_all       = {self.ℰ_elec}
-        ℰ_elec_substrate = {self.ℰ_elec_sub}
-        EPR of substrate = {self.ℰ_elec_sub / self.ℰ_elec * 100 :.1f}%
+        energy_elec_all       = {self.energy_elec}
+        energy_elec_substrate = {self.energy_elec_sub}
+        EPR of substrate = {self.energy_elec_sub / self.energy_elec * 100 :.1f}%
 
-        ℰ_mag    = {self.ℰ_mag}
-        ℰ_mag % of ℰ_elec_all  = {self.ℰ_mag / self.ℰ_elec * 100 :.1f}%
+        energy_mag    = {self.energy_mag}
+        energy_mag % of energy_elec_all  = {self.energy_mag / self.energy_elec * 100 :.1f}%
         """)
 
     def run_analysis(self):

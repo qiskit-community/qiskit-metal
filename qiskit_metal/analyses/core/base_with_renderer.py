@@ -13,6 +13,8 @@
 # that they have been altered from the originals.
 
 from abc import abstractmethod
+from qiskit_metal.designs import QDesign  # pylint: disable=unused-import
+
 from . import QAnalysis
 
 
@@ -26,7 +28,7 @@ class QAnalysisRenderer(QAnalysis):
 
         Args:
             design (QDesign): The Metal design you are working on.
-            renderer_name (str): A string corresponding to the name of the renderer you intend to use.
+            renderer_name (str): Name of the renderer you intend to use.
         """
         super().__init__(*args, **kwargs)
 
@@ -38,11 +40,11 @@ class QAnalysisRenderer(QAnalysis):
         self.renderer = self.select_renderer(renderer_name)
 
     def select_renderer(self, renderer_name: str):
-        """Makes sure the renderer has been registered with qiskit-metal. If yes it sets the analysis
-        class variables to be able to reach it easily. Else it throws an error.
+        """Makes sure the renderer has been registered with qiskit-metal. If yes it sets the
+        analysis class variables to be able to reach it easily. Else it throws an error.
 
         Args:
-            renderer_name (str): A string corresponding to the name of the renderer you intend to use.
+            renderer_name (str): Name of the renderer you intend to use.
 
         Returns:
             QRenderer: The renderer to be used in the analysis.
@@ -105,4 +107,3 @@ class QAnalysisRenderer(QAnalysis):
         Write in here the code to launch the simualtions.
         You will be able to execute this with the alias run()
         """
-        pass
