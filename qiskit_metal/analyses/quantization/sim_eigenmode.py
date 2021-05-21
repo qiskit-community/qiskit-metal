@@ -40,8 +40,7 @@ class EigenmodeSim(QAnalysisRenderer):
         basis_order (int): Basis order. Defaults to 1.
         vars (Dict): Variables (key) and values (value) to define in the renderer.
     """
-    default_setup = Dict(sim=Dict(name="Setup",
-                                  min_freq_ghz=1,
+    default_setup = Dict(sim=Dict(min_freq_ghz=1,
                                   n_modes=1,
                                   max_delta_f=0.5,
                                   max_passes=10,
@@ -69,25 +68,6 @@ class EigenmodeSim(QAnalysisRenderer):
         self._convergence_t = None
         self._convergence_f = None
 
-    def _render(self, **design_selection):
-        """Renders the design from qiskit metal into the selected renderer.
-        First it decides the tentative name of the design. Then it runs the renderer method
-        that executes the design rendering. It returns the final design name.
-
-        Returns:
-            str: Final design name that the renderer used.
-        """
-        base_name = self.design.name
-        if "name" in design_selection:
-            if design_selection["name"] is not None:
-                base_name = design_selection["name"]
-                del design_selection["name"]
-        design_name = base_name + "_" + self.renderer_name
-        design_name = self.renderer.execute_design(design_name,
-                                                   solution_type='eigenmode',
-                                                   **design_selection)
-        return design_name
-
     def _analyze(self):
         """Executes the analysis step of the Run. First it initializes the renderer setup
         to prepare for eignemode analysis, then it executes it. Finally it recovers the
@@ -96,8 +76,7 @@ class EigenmodeSim(QAnalysisRenderer):
         self.setup_name = self.renderer.initialize_eigenmode(**self.setup.sim)
 
         self.renderer.analyze_setup(self.setup_name)
-        self.convergence_t, self.convergence_f = self.renderer.get_convergences(
-        )
+        self.compute_convergences()
 
     def run_sim(  # pylint: disable=arguments-differ
             self,
@@ -137,6 +116,7 @@ class EigenmodeSim(QAnalysisRenderer):
             self._initialize_renderer()
 
         renderer_design_name = self._render(name=name,
+                                            solution_type='eigenmode',
                                             selection=components,
                                             open_pins=open_terminations,
                                             port_list=port_list,
@@ -183,7 +163,7 @@ class EigenmodeSim(QAnalysisRenderer):
         """
         self._convergence_t = conv
 
-    def recompute_convergences(self, variation: str = None):
+    def compute_convergences(self, variation: str = None):
         """convergence plots are computed as part of run(). However, in special cases
         you might need to recalculate them using a different variation.
 

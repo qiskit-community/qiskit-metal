@@ -707,7 +707,7 @@ class QAnsysRenderer(QRendererAnalysis):
                          solution_type: str,
                          connect: bool = True):
         """Add an Ansys design with the given name to the Ansys project.
-        Valid solutions_type values are: 'capacitance' (q3d), 'eignemode' and 'drivenmodal' (hfss)
+        Valid solutions_type values are: 'capacitive' (q3d), 'eignemode' and 'drivenmodal' (hfss)
 
         Args:
             design_name (str): name of the Design to be created in Ansys
@@ -719,7 +719,7 @@ class QAnsysRenderer(QRendererAnalysis):
         """
         if self.pinfo:
             try:
-                if solution_type == 'capacitance':
+                if solution_type == 'capacitive':
                     adesign = self.pinfo.project.new_q3d_design(design_name)
                 elif solution_type == 'eigenmode':
                     adesign = self.pinfo.project.new_em_design(design_name)

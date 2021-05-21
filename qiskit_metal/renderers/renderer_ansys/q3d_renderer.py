@@ -440,7 +440,7 @@ class QQ3DRenderer(QAnsysRenderer):
         self.logger.warning(
             'This method is deprecated. Change your scripts to use new_ansys_design()'
         )
-        self.new_ansys_design(name, 'capacitance', connect)
+        self.new_ansys_design(name, 'capacitive', connect)
 
     def activate_q3d_design(self, name: str = "MetalQ3ds"):
         """
@@ -449,4 +449,4 @@ class QQ3DRenderer(QAnsysRenderer):
         self.logger.warning(
             'This method is deprecated. Change your scripts to use activate_ansys_design()'
         )
-        self.activate_ansys_design(name, 'capacitance')
+        self.activate_ansys_design(name, 'capacitive')

@@ -43,8 +43,7 @@ class ImpedanceAnalysis(QAnalysisRenderer):
             type (str): Type of sweep. Defaults to "Fast".
             save_fields (bool): Whether or not to save fields. Defaults to False.
     """
-    default_setup = Dict(sim=Dict(name="Setup",
-                                  freq_ghz=5,
+    default_setup = Dict(sim=Dict(freq_ghz=5,
                                   max_delta_s=0.1,
                                   max_passes=10,
                                   min_passes=1,
@@ -80,27 +79,6 @@ class ImpedanceAnalysis(QAnalysisRenderer):
         self._params_y = None
         self._params_s = None
 
-    def _render(self, **design_selection):
-        """Renders the design from qiskit metal into the selected renderer.
-        First it decides the tentative name of the design. Then it runs the renderer method
-        that executes the design rendering. It returns the final design name.
-
-        Returns:
-            str: Final design name that the renderer used.
-        """
-        # TODO: move to QAnalysisRender? solution_type='drivenmodal' is the only difference.
-        # TODO: also move the default_setup['sim']['name']
-        base_name = self.design.name
-        if "name" in design_selection:
-            if design_selection["name"] is not None:
-                base_name = design_selection["name"]
-                del design_selection["name"]
-        design_name = base_name + "_" + self.renderer_name
-        design_name = self.renderer.execute_design(design_name,
-                                                   solution_type='drivenmodal',
-                                                   **design_selection)
-        return design_name
-
     def _analyze(self):
         """Executes the analysis step of the Run. First it initializes the renderer setup
         to prepare for drivenmodal analysis, then it executes it. Finally it recovers the
@@ -112,7 +90,7 @@ class ImpedanceAnalysis(QAnalysisRenderer):
         self.renderer.analyze_sweep(self.sweep_name, self.setup_name)
         # TODO: return the impedance, admittance and scattering matrices for later use
 
-    def get_impedance(self, param_name: list = ['Z11', 'Z21']):  # pylint: disable=dangerous-default-value
+    def get_impedance(self, param_name: list = ['Z11', 'Z21']):
         """Create the impedence plot
 
         Args:
@@ -122,7 +100,7 @@ class ImpedanceAnalysis(QAnalysisRenderer):
         # TODO: move the plot-making to this analysis module. Renderer should recover full data
         return self.renderer.plot_params(param_name)
 
-    def get_admittance(self, param_name: list = ['Y11', 'Y21']):  # pylint: disable=dangerous-default-value
+    def get_admittance(self, param_name: list = ['Y11', 'Y21']):
         """Create the impedence plot
 
         Args:
@@ -132,7 +110,7 @@ class ImpedanceAnalysis(QAnalysisRenderer):
         # TODO: move the plot in this analysis module. Renderer should recover the entire data
         return self.renderer.plot_params(param_name)
 
-    def get_scattering(self, param_name: list = ['S11', 'S21', 'S22']):  # pylint: disable=dangerous-default-value
+    def get_scattering(self, param_name: list = ['S11', 'S21', 'S22']):
         """Create the scattering plot
 
         Args:
@@ -182,6 +160,7 @@ class ImpedanceAnalysis(QAnalysisRenderer):
             self._initialize_renderer()
 
         renderer_design_name = self._render(name=name,
+                                            solution_type='drivenmodal',
                                             selection=components,
                                             open_pins=open_terminations,
                                             port_list=port_list,

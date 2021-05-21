@@ -41,8 +41,7 @@ class CapExtraction(QAnalysisRenderer):
         solution_order (str): Solution order. Defaults to 'High'.
         solver_type (str): Solver type. Defaults to 'Iterative'.
     """
-    default_setup = Dict(sim=Dict(name="Setup",
-                                  freq_ghz=5.,
+    default_setup = Dict(sim=Dict(freq_ghz=5.,
                                   save_fields=False,
                                   enabled=True,
                                   max_passes=15,
@@ -54,26 +53,6 @@ class CapExtraction(QAnalysisRenderer):
                                   solution_order='High',
                                   solver_type='Iterative'))
     """Default setup"""
-
-    # TODO: add type check to the setup.setter. redefine above to support types
-    # def set_setup(self,
-    #                   name: str = "Setup",
-    #                   freq_ghz: float = 5.,
-    #                   save_fields: bool = False,
-    #                   enabled: bool = True,
-    #                   max_passes: int = 15,
-    #                   min_passes: int = 2,
-    #                   min_converged_passes: int = 2,
-    #                   percent_error: float = 0.5,
-    #                   percent_refinement: int = 30,
-    #                   auto_increase_solution_order: bool = True,
-    #                   solution_order: str = 'High',
-    #                   solver_type: str = 'Iterative',
-    #                   **kwargs):
-    #     params = locals()
-    #     self._setup = Dict({k:params[k] for k in params if k not in ('kwargs','self')})
-    #     if len(kwargs) > 0:
-    #         print(f"I do not support these variables at this time: {kwargs}")
 
     def __init__(self, design: 'QDesign', renderer_name: str = 'q3d'):
         """Initialize the class to extract the capacitance matrix
@@ -92,25 +71,6 @@ class CapExtraction(QAnalysisRenderer):
         self._capacitance_matrix = None  # from latest simulation iteration
         self._units = None  # of the self._capacitance_matrix
         self._capacitance_all_passes = {}  # for analysis inspection
-
-    def _render(self, **design_selection) -> str:
-        """Renders the design from qiskit metal into the selected renderer.
-        First it decides the tentative name of the design. Then it runs the renderer method
-        that executes the design rendering. It returns the final design name.
-
-        Returns:
-            str: Final design name that the renderer used
-        """
-        base_name = self.design.name
-        if "name" in design_selection:
-            if design_selection["name"] is not None:
-                base_name = design_selection["name"]
-            del design_selection["name"]
-        design_name = base_name + "_" + self.renderer_name
-        design_name = self.renderer.execute_design(design_name,
-                                                   solution_type='capacitance',
-                                                   **design_selection)
-        return design_name
 
     def _analyze(self) -> str:
         """Executes the analysis step of the Run. First it initializes the renderer setup
@@ -163,6 +123,7 @@ class CapExtraction(QAnalysisRenderer):
             self._initialize_renderer()
 
         renderer_design_name = self._render(name=name,
+                                            solution_type='capacitive',
                                             selection=components,
                                             open_pins=open_terminations,
                                             box_plus_buffer=box_plus_buffer)

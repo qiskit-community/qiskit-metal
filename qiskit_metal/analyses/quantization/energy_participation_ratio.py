@@ -22,31 +22,32 @@ from ... import Dict
 # TODO: eliminate every reference to "renderer" in this file
 #  then change inheritance from QAnalysisRenderer to QAnalysis
 class EPRanalysis(QAnalysisRenderer):
-    """From an input eigenmode dataset, apply the Energy Particpation Ratio analysis method
+    """From an input eigenmode dataset, apply the Energy Participation Ratio analysis method.
 
     Default Setup:
-        * junctions (Dict): Enumerates the Non-linear (Josephson) junctions that
-            * need to be considered during the EPR analysis.
-            * keys (str): Name of the junction
+        * junctions (Dict):
+            * keys (str): Name of each Non-linear (Josephson) junction to consider in EPR
             * values (Dict):
                 * Lj_variable (str): Name of renderer variable that specifies junction inductance.
+                * Cj_variable (str): Name of renderer variable that specifies junction capacitance.
                 * rect (str): Name of renderer rectangle on which the lumped boundary condition
                     is defined.
                 * line (str): Name of renderer line spanning the length of rect
                     (voltage, orientation, ZPF).
-                * Cj_variable (str): Name of renderer variable that specifies junction capacitance.
-        * dissipatives (Dict): Enumerate dissipatives in the system
-            * keys (str): Possible keys are: 'dielectrics_bulk', 'dielectric_surfaces',
-                'resistive_surfaces', 'seams'.
-            * values (list of str): names of the shapes composing that dissipative.
+        * dissipatives (Dict):
+            * keys (str): Categories of dissipatives that can appear in the syste. Possible keys
+                are: 'dielectrics_bulk', 'dielectric_surfaces', 'resistive_surfaces', 'seams'.
+            * values (list of str): Names of the shapes composing that dissipative.
+        * cos_trunc (int): truncation of the cosine function
+        * fock_trunc (int): truncation of the fock
+        * sweep_variable (str): Variable to sweep during EPR
     """
-    # TODO: add the other variables to the description above
     default_setup = Dict(epr=Dict(junctions=Dict(
         jj=Dict(Lj_variable='Lj', Cj_variable='Cj', rect='', line='')),
                                   dissipatives=Dict(dielectrics_bulk=['main']),
                                   cos_trunc=8,
                                   fock_trunc=7,
-                                  swp_variable='Lj'))
+                                  sweep_variable='Lj'))
     """Default setup"""
 
     def __init__(self, design: 'QDesign', *args, **kwargs):
@@ -81,7 +82,7 @@ class EPRanalysis(QAnalysisRenderer):
             self.run_analysis()
             self.spectrum_analysis(self.setup.epr.cos_trunc,
                                    self.setup.epr.fock_trunc)
-            self.report_hamiltonian(self.setup.epr.swp_variable)
+            self.report_hamiltonian(self.setup.epr.sweep_variable)
 
     # TODO: all the epr methods should not use the renderer. Now they are forced to because of the
     #  pyEPR dependency from pinfo. pinfo however is Ansys specific and cannot be generalized as-is
@@ -130,11 +131,11 @@ class EPRanalysis(QAnalysisRenderer):
         """
         self.renderer.epr_spectrum_analysis(cos_trunc, fock_trunc)
 
-    def report_hamiltonian(self, swp_variable, numeric=True):
+    def report_hamiltonian(self, sweep_variable, numeric=True):
         """Short-cut to the same-name method found in renderers.ansys_renderer.py
         Eventually, the analysis code needs to be only here, and the renderer method deprecated
         """
-        self.renderer.epr_report_hamiltonian(swp_variable, numeric)
+        self.renderer.epr_report_hamiltonian(sweep_variable, numeric)
 
     def get_frequencies(self):
         """Short-cut to the same-name method found in renderers.ansys_renderer.py

@@ -16,12 +16,18 @@ from abc import abstractmethod
 from qiskit_metal.designs import QDesign  # pylint: disable=unused-import
 
 from . import QAnalysis
-
+from ... import Dict
 
 class QAnalysisRenderer(QAnalysis):
     """Just a way to centralize the selection and naming of the renderer.
     Could refactor code to transform this class into a class-less function.
+
+    Default Setup:
+        name (str): Name of capacitive simulation setup. Defaults to "Setup".
     """
+
+    default_setup = Dict(sim=Dict(name="Setup"))
+    """Default setup"""
 
     def __init__(self, design: 'QDesign', renderer_name: str, *args, **kwargs):
         """Variables and method needed from all those Analysis types that need a renderer.
@@ -62,25 +68,48 @@ class QAnalysisRenderer(QAnalysis):
             )
         return renderer
 
-    def _initialize_renderer(self):
-        """Starts the renderer by executing the routine of the selected renderer.
-        """
-        self.renderer.start()
-
-    def _close_renderer(self):
-        """Stops the renderer by executing the routine of the selected renderer.
-        """
-        self.renderer.stop()
-
     def start(self):
         """Starts the renderer by executing the routine of the selected renderer.
         """
         self._initialize_renderer()
 
+    def _initialize_renderer(self):
+        """Starts the renderer by executing the routine of the selected renderer.
+        """
+        self.renderer.start()
+
+    def _render(self, solution_type, **design_selection) -> str:
+        """Renders the design from qiskit metal into the selected renderer.
+        First it decides the tentative name of the design. Then it runs the renderer method
+        that executes the design rendering. It returns the final design name.
+
+        Args:
+            solution_type (str): type of simulation solution to apply.
+                Supported so far: eigenmode, capacitive, drivenmodal
+
+        Returns:
+            (str): Final design name that the renderer used.
+        """
+        base_name = self.design.name
+        if "name" in design_selection:
+            if design_selection["name"] is not None:
+                base_name = design_selection["name"]
+            del design_selection["name"]
+        design_name = base_name + "_" + self.renderer_name
+        design_name = self.renderer.execute_design(design_name,
+                                                   solution_type=solution_type,
+                                                   **design_selection)
+        return design_name
+
     def close(self):
         """Stops the renderer by executing the routine of the selected renderer.
         """
         self._close_renderer()
+
+    def _close_renderer(self):
+        """Stops the renderer by executing the routine of the selected renderer.
+        """
+        self.renderer.stop()
 
     @property
     def renderer_initialized(self):
