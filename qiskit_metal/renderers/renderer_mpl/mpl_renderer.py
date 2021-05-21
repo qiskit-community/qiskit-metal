@@ -159,7 +159,7 @@ class QMplRenderer():
     def render(self, ax: Axes):
         """Assumes that the axis has been cleared already and so on.
 
-        Arguments:
+        Args:
             ax (matplotlib.axes.Axes): mpl axis to draw on
         """
 
@@ -279,11 +279,34 @@ class QMplRenderer():
                         ax: Axes,
                         subtracted: bool = False,
                         extra_kw: dict = None):
-        """For Now, do nothing.
+        """Render a table of junction geometry.
+        A junction is basically drawn like a path with finite width and no fillet.
 
-        TODO:render junction tables.
+        Args:
+            table (DataFrame): Element table
+            ax (matplotlib.axes.Axes): Axis to render on
+            extra_kw (dict): Style params
         """
-        pass
+        if len(table) > 0:
+            mask = (table.width == 0) | table.width.isna()
+            table1 = table[~mask]
+            if len(table1) > 0:
+                table1.geometry = table1[['geometry', 'width']].apply(
+                    lambda x: x[0].buffer(distance=float(x[1]) / 2.,
+                                          cap_style=CAP_STYLE.flat,
+                                          join_style=JOIN_STYLE.mitre,
+                                          resolution=int(self.options[
+                                              'resolution'])),
+                    axis=1)
+                kw = self.get_style('poly',
+                                    subtracted=subtracted,
+                                    extra=extra_kw)
+                self.render_poly(table1, ax, subtracted=subtracted, extra_kw=kw)
+            table1 = table[mask]
+            if len(table1) > 0:
+                self.logger.warning(
+                    'One or more junctions have zero width. Consider changing this.'
+                )
 
     def render_poly(self,
                     table: pd.DataFrame,
@@ -292,7 +315,7 @@ class QMplRenderer():
                     extra_kw: dict = None):
         """Render a table of poly geometry.
 
-        Arguments:
+        Args:
             table (DataFrame): Element table
             ax (matplotlib.axes.Axes): Axis to render on
             kw (dict): Style params
@@ -306,7 +329,7 @@ class QMplRenderer():
     def render_fillet(self, table):
         """Renders fillet path.
 
-        Arguments:
+        Args:
             table (DataFrame): Table of elements with fillets
 
         Returns:
@@ -318,7 +341,7 @@ class QMplRenderer():
     def fillet_path(self, row):
         """Output the filleted path.
 
-        Arguments:
+        Args:
             row (DataFrame): Row to fillet.
 
         Returns:
@@ -358,7 +381,7 @@ class QMplRenderer():
         """Returns the filleted path based on the start, corner, and end
         vertices and the fillet radius.
 
-        Arguments:
+        Args:
             vertex_start (np.ndarray): x-y coordinates of starting vertex.
             vertex_corner (np.ndarray): x-y coordinates of corner vertex.
             vertex_end (np.ndarray): x-y coordinates of end vertex.
@@ -413,7 +436,7 @@ class QMplRenderer():
                     extra_kw: dict = None):
         """Render a table of path geometry.
 
-        Arguments:
+        Args:
             table (DataFrame): Element table
             ax (matplotlib.axes.Axes): Axis to render on
             kw (dict): Style params

@@ -98,7 +98,7 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         The default implementation ignores the context event.
         See the QContextMenuEvent documentation for more details.
 
-        Arguments:
+        Args:
             event (QContextMenuEvent): The event
         """
         self._event = event  # debug
@@ -166,6 +166,16 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         """
         name, row = self.get_name_from_event(event)
 
+        self.do_menu_rename_helper(name, row)
+
+    def do_menu_rename_helper(self, name: str, row: int):
+        """
+        Allows users to rename a created QComponent
+        Args:
+            name (str): Old name for QComponent
+            row (int): Row of QComponent in Model
+
+        """
         if row > -1:
             text, okPressed = QInputDialog.getText(self,
                                                    f"Rename component {name}",
@@ -243,3 +253,75 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
 
         self.logger.debug(f'Highlighting {selected_names}')
         self.gui.highlight_components(selected_names)
+
+    def delete_selected_rows(self, *args):
+        """
+        Deletes selected rows of QComponents
+
+        Args:
+            *args: Allows function to be a slot
+            even for signals that pass in args
+
+        """
+        index_list = self.selectedIndexes()
+        model = self.model()
+
+        index_dict = {}
+        name_set = set()
+        for ind in index_list:
+            if ind.row() not in index_dict:
+                index_dict[ind.row()] = ind
+                name_index = model.index(ind.row(), 0)
+                name = model.data(name_index)
+                name_set.add(name)
+
+        for name in name_set:
+            if name is not None:
+                ret = QMessageBox.question(
+                    self, '',
+                    f"Are you sure you want to delete component {name}",
+                    QMessageBox.Yes | QMessageBox.No)
+                if ret == QMessageBox.Yes:
+                    self._do_delete(name)
+
+    def rename_row(self, *args):
+        """
+        Rename single component
+        Args:
+            *args: Allows function to be a slot
+            even for signals that pass in args
+
+        """
+
+        index_list = self.selectedIndexes()
+        if len(index_list) == 0:
+            return
+
+        index = index_list[0]
+        for ind in index_list:
+            if ind.row() != index.row():
+                return
+        model = self.model()
+        name_index = model.index(index.row(), 0)
+        name = model.data(name_index)
+        self.do_menu_rename_helper(name, index.row())
+
+    def name_of_selected_qcomponent(self):
+        """
+        Returns names of selected qcomponents
+        Returns:
+            list(str): names of selected qcomponents
+
+        """
+        model = self.model()
+        index_list = self.selectedIndexes()
+        name_set = set()
+        if len(index_list) == 0:
+            return
+
+        for ind in index_list:
+            name_ind = model.index(ind.row(), 0)
+            name = model.data(name_ind)
+            name_set.add(name)
+
+        return list(name_set)

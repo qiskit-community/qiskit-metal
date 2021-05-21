@@ -16,22 +16,25 @@
 To see the docstring of QComponent in Jupyter notebook, use:
 >> ?QComponent
 """
+# pylint: disable=too-many-lines, too-many-public-methods
 
 import logging
 import inspect
 from copy import deepcopy
 from typing import TYPE_CHECKING, Any, Iterable, List, Union, Tuple, Dict as Dict_
-
+from datetime import datetime
 import pandas as pd
 import numpy as np
-from ... import draw
-from ... import is_design, logger
-from ...draw import BaseGeometry
-from ...toolbox_python.attr_dict import Dict
-from ._parsed_dynamic_attrs import ParsedDynamicAttributes_Component
-from ...toolbox_python.display import format_dict_ala_z
-from datetime import datetime
-from ... import config
+
+from qiskit_metal import draw
+from qiskit_metal import is_design, logger
+
+from qiskit_metal import config
+from qiskit_metal.draw import BaseGeometry
+from qiskit_metal.toolbox_python.attr_dict import Dict
+from qiskit_metal.toolbox_python.display import format_dict_ala_z
+from qiskit_metal.qlibrary.core._parsed_dynamic_attrs import ParsedDynamicAttributes_Component
+
 if not config.is_building_docs():
     from ...draw import Vector
 
@@ -101,6 +104,7 @@ class QComponent():
 
         >> {'a': 10, 'b': 20, 'c': {'d': 30, 'e': 4, 'f': {'g': 6, 'h': 70}}, 'z': 33}
     """
+    # pylint: disable=too-many-instance-attributes
 
     default_options = Dict(
         # Note: If something is added here, _gather_all_children_options(cls) needs to be changed.
@@ -112,6 +116,8 @@ class QComponent():
 
     component_metadata = Dict()
     """Component metadata"""
+
+    TOOLTIP = """QComponent"""
 
     options = {}
     """A dictionary of the component-designer-defined options.
@@ -134,7 +140,7 @@ class QComponent():
         """Create a new Metal component and adds it's default_options to the
         design.
 
-        Arguments:
+        Args:
             design (QDesign): The parent design.
             name (str): Name of the component. Auto-named if possible.
             options (dict): User options that will override the defaults.  Defaults to None.
@@ -178,7 +184,7 @@ class QComponent():
                 'parent of this QComponent.")
 
         self._design = design  # reference to parent
-
+        # pylint: disable=literal-comparison
         if self._delete_evaluation(name) is 'NameInUse':
             raise ValueError(
                 f"{name} already exists! Please choose a different name for your new QComponent"
@@ -317,7 +323,7 @@ class QComponent():
         """Init function to register a component class with the design when
         first instantiated. Registers the design template options.
 
-        Arguments:
+        Args:
             design (QDesign): The parent design
             template_key (str): Key to use
             component_template (dict): Template of components to copy, with renderer options
@@ -393,6 +399,7 @@ class QComponent():
         return set(self.pins.keys())
 
     @property
+    # pylint: disable=invalid-name
     def id(self) -> int:
         """The unique id of component within a design.
 
@@ -407,6 +414,7 @@ class QComponent():
         Method will obtain an unique id for the component within a
         design, THEN add itself to design.
         """
+        # pylint: disable=protected-access
         self.design._components[self.id] = self
         self.design.name_to_id[self.name] = self._id
 
@@ -422,7 +430,7 @@ class QComponent():
 
         The options can be extended by plugins, such as renderers.
 
-        Arguments:
+        Args:
             design (QDesign): Design class. Should be the class, not the instance.
             component_template (Dict): Template options to overwrite the class ones (default: None)
             logger_ (logging.Logger): A logger for errors.  Defaults to None.
@@ -510,14 +518,14 @@ class QComponent():
 
     def rebuild(self):
         """Builds the QComponent.
-        
+
         This is the main action function of a
         QComponent, call it qc. It converts the qc.options into QGeometry with
         all of the required options, such as the geometry points, layer number,
         materials, etc. needed to render.
 
         The build clears the existing QGeometry and QPins and then calls the qc.make function,
-        which is writen by the component developer to implement the logic (using the metal.
+        which is written by the component developer to implement the logic (using the metal.
         draw module) to convert the qc.options into the QGeometry.
 
         *Build status:*
@@ -533,6 +541,8 @@ class QComponent():
         try:
             if self._made:  # already made, just remaking
                 self.design.qgeometry.delete_component_id(self.id)
+
+                # pylint: disable=protected-access
                 self.design._delete_all_pins_for_component(self.id)
 
             self.make()
@@ -568,7 +578,7 @@ class QComponent():
         account for units conversion, some basic arithmetic, and design
         variables. This is the main parsing function of Qiskit Metal.
 
-        Arguments:
+        Args:
             value (str): String to parse *or*
             variable_dict (dict): dict pointer of variables
 
@@ -614,7 +624,7 @@ class QComponent():
         units, variables, strings, lists, and dictionaries. Explained by
         example below.
 
-        Arguments:
+        Args:
             options (dict) : If left None, then self.options is used.  Defaults to None.
 
         Returns:
@@ -665,7 +675,7 @@ class QComponent():
         intended connection. Adds the new pin as a subdictionary to parent
         component's pins dictionary.
 
-        Arguments:
+        Args:
             * name (str): name of the pin
             * points (numpy.ndarray): [[x1,y1],[x2,y2]] for the normal/tangent line
             * width (float): the width of the intended connection (eg. qubit bus pad arm)
@@ -788,6 +798,7 @@ class QComponent():
             str: Status test, or None
         """
         # Add check for if user inputs nonsense?
+        # pylint: disable=protected-access
         false_component = False
         false_pin = False
         pin_in_use = False
@@ -844,6 +855,7 @@ class QComponent():
         Returns:
             int: A unique net_id for the connection.
         """
+        # pylint: disable=protected-access
 
         net_id_rtn = 0
 
@@ -862,15 +874,15 @@ class QComponent():
         if self.design._components[self._id].pins[pin_name_self].net_id:
             # Pin already in use.
             logger.warning(
-                f'Component_id {self._id} not connected.  The pin {pin_name_self} is already connected to something else.'
-            )
+                f'Component_id {self._id} not connected.  The pin '
+                f'{pin_name_self} is already connected to something else.')
             return net_id_rtn
 
         if self.design._components[comp2_id].pins[pin2_name].net_id:
             # Pin already in use.
             logger.warning(
-                f'Component_id {comp2_id} not connected.  The pin {pin2_name} is already connected to something else.'
-            )
+                f'Component_id {comp2_id} not connected.  The pin '
+                f'{pin2_name} is already connected to something else.')
             return net_id_rtn
 
         net_id_rtn = self.design.connect_pins(self.id, pin_name_self, comp2_id,
@@ -884,7 +896,7 @@ class QComponent():
         """Add a dependency between one component and another. Calls parent
         design.
 
-        Arguments:
+        Args:
             parent (str): The component on which the child depends
             child (str): The child cannot live without the parent.
         """
@@ -906,7 +918,7 @@ class QComponent():
 
         Takes any additional options in options.
 
-        Arguments:
+        Args:
             kind (str): The kind of QGeometry, such as 'path', 'poly', etc.
                         All geometry in the dictionary should have the same kind,
                         such as Polygon or LineString.
@@ -964,7 +976,7 @@ class QComponent():
         will search a dict populated by all the renderers during their init.
 
         Args:
-            kind (str): Name of table, like juction, path, or poly.
+            kind (str): Name of table, like junction, path, or poly.
 
         Returns:
             Dict: key is column names for tables, value is data for the column.
@@ -1011,6 +1023,8 @@ class QComponent():
 ######################################
 
     def __repr__(self, *args):
+        # pylint: disable=invalid-name
+
         b = '\033[95m\033[1m'
         b1 = '\033[94m\033[1m'
         e = '\033[0m'
@@ -1039,28 +1053,32 @@ class QComponent():
         """
         return self.design.qgeometry.get_element_types()
 
-    def qgeometry_dict(self, element_type: str) -> Dict_[str, BaseGeometry]:
+    def qgeometry_dict(  # pylint: disable=inconsistent-return-statements
+            self, element_type: str) -> Dict_[str, BaseGeometry]:
         """Returns a dict of element qgeometry (shapely geometry) of the
         component as a python dict, where the dict keys are the names of the
         qgeometry and the corresponding values are the shapely geometries.
 
-        Arguments:
+        Args:
             element_type (str): Name of element table or type; e.g., 'poly' and 'path'
 
         Returns:
             List[BaseGeometry]: Geometry diction or None if an error in the name of the element
             type (ie. table)
         """
+
         if element_type == 'all' or self.design.qgeometry.check_element_type(
                 element_type):
             return self.design.qgeometry.get_component_geometry_dict(
                 self.name, element_type)
 
-    def qgeometry_list(self, element_type: str = 'all') -> List[BaseGeometry]:
+    def qgeometry_list(  # pylint: disable=inconsistent-return-statements
+            self,
+            element_type: str = 'all') -> List[BaseGeometry]:
         """Returns a list of element qgeometry (shapely geometry) of the
         component as a python list of shapely geometries.
 
-        Arguments:
+        Args:
             element_type (str): Name of element table or type; e.g., 'poly' and 'path'.
                                 Can also specify all
 
@@ -1068,21 +1086,24 @@ class QComponent():
             List[BaseGeometry]: Geometry list or None if an error in the name of the element type
             (ie. table)
         """
+
         if element_type == 'all' or self.design.qgeometry.check_element_type(
                 element_type):
             return self.design.qgeometry.get_component_geometry_list(
                 self.name, element_type)
 
-    def qgeometry_table(self, element_type: str) -> pd.DataFrame:
+    def qgeometry_table(  # pylint: disable=inconsistent-return-statements
+            self, element_type: str) -> pd.DataFrame:
         """Returns the entire element table for the component.
 
-        Arguments:
+        Args:
             element_type (str): Name of element table or type; e.g., 'poly' and 'path'
 
         Returns:
             pd.DataFrame: Element table for the component or None if an error in the name of
             the element type (ie. table)
         """
+
         if element_type == 'all' or self.design.qgeometry.check_element_type(
                 element_type):
             return self.design.qgeometry.get_component(self.name, element_type)
@@ -1105,7 +1126,7 @@ class QComponent():
                        plot_kw: dict = None) -> List:
         """Draw all the qgeometry of the component (polys and path etc.)
 
-        Arguments:
+        Args:
             ax (matplotlib.axes.Axes): Matplotlib axis to draw on.  Defaults to None.
                                        When None, it gets the current axis.
             plot_kw (dict): Parameters dictionary.

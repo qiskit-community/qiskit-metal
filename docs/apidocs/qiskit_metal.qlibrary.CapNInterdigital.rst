@@ -18,6 +18,7 @@ CapNInterdigital
    .. autosummary::
       :toctree: ../stubs/
    
+      CapNInterdigital.TOOLTIP
       CapNInterdigital.class_name
       CapNInterdigital.component_metadata
       CapNInterdigital.default_options

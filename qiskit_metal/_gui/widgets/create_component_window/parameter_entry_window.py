@@ -37,12 +37,12 @@ import random
 from collections import OrderedDict, Callable
 from inspect import signature
 from pathlib import Path
-from typing import TYPE_CHECKING, Union
+from typing import TYPE_CHECKING, Union, Type
 
 import numpy as np
 from PySide2 import QtGui, QtWidgets
 from PySide2.QtCore import Qt
-from PySide2.QtWidgets import QDockWidget
+from PySide2.QtWidgets import QDockWidget, QWidget
 from PySide2.QtWidgets import (QMainWindow, QMessageBox)
 
 from qiskit_metal import designs
@@ -59,17 +59,17 @@ class ParameterEntryWindow(QMainWindow):
     """Parameter entry window class"""
 
     def __init__(self,
-                 qcomp_class,
+                 qcomp_class: Type,
                  design: designs.DesignPlanar,
-                 parent=None,
-                 gui=None):
+                 parent: QWidget = None,
+                 gui: 'MetalGUI' = None):
         """
         Parameter Entry Widget when qcomponent is chosen from GUI's QLibrary
         Args:
-            qcomp_class: QComponent to be instantiated
-            design: Current design being used
-            parent: Parent widget
-            gui: Metal GUI
+            qcomp_class (Type): QComponent to be instantiated
+            design (DesignPlanar): Current design being used
+            parent (QWidget): Parent widget
+            gui (MetalGUI): Metal GUI
         """
 
         super().__init__(parent)
@@ -130,7 +130,7 @@ class ParameterEntryWindow(QMainWindow):
             thrown by func
 
             Args:
-                func: current function causing exceptions - should  be ONLY  qcpe instance methods
+                func (Callable): current function causing exceptions - should  be ONLY  qcpe instance methods
                     because decoraters
                 assumes arg[0] is a self who has a valid logger
 
@@ -151,7 +151,7 @@ class ParameterEntryWindow(QMainWindow):
                             lqce.__class__.__name__) + ":\n" + str(lqce)
 
                     # modality set by critical, Don't set Title -- will NOT show
-                    # up on MacOs
+                    # up on MacOs¥
                     args[0].error_pop_up.critical(args[0], "", error_message)
 
             return wrapper
@@ -413,13 +413,13 @@ def dockify(main_window, docked_title, gui):
     return dock
 
 
-def get_class_from_abs_file_path(abs_file_path):
+def get_class_from_abs_file_path(abs_file_path: str):
     """
     Gets the corresponding class object for the absolute file path to the file containing that
     class definition
 
     Args:
-        abs_file_path: absolute file path to the file containing the QComponent class definition
+        abs_file_path (str): absolute file path to the file containing the QComponent class definition
 
     getting class from absolute file path -
     https://stackoverflow.com/questions/452969/does-python-have-an-equivalent-to-java-class-forname

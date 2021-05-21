@@ -15,13 +15,16 @@
 Delegate for display of QComponents in Library tab
 """
 
-from PySide2.QtWidgets import QItemDelegate, QWidget, QStyleOptionViewItem
-from PySide2.QtCore import QAbstractProxyModel, QModelIndex, Qt, QAbstractItemModel
-from PySide2.QtGui import QTextDocument, QPainter
+import importlib
+import inspect
+import os
+
+from PySide2.QtCore import QAbstractItemModel, QAbstractProxyModel, QModelIndex, Qt, Signal
+from PySide2.QtGui import QPainter, QTextDocument
+from PySide2.QtWidgets import QItemDelegate, QStyle, QStyleOptionViewItem, QWidget
+
 from qiskit_metal._gui.widgets.qlibrary_display.file_model_qlibrary import QFileSystemLibraryModel
 from qiskit_metal.toolbox_metal.exceptions import QLibraryGUIException
-
-USER_COMP_DIR = "user_components"
 
 
 class LibraryDelegate(QItemDelegate):
@@ -30,14 +33,14 @@ class LibraryDelegate(QItemDelegate):
     Requires LibraryModel
     """
 
+    tool_tip_signal = Signal(str)
+
     def __init__(self, parent: QWidget = None):
         """
          Initializer for LibraryDelegate
 
-
-        Arguments:
+        Args:
             parent(QWidget): parent
-
         """
         super().__init__(parent)
         #  The Delegate may belong to a view using a ProxyModel but even so
@@ -51,19 +54,13 @@ class LibraryDelegate(QItemDelegate):
         the source model for that Proxy Model(s) should be a QFileSystemLibraryModel
         and is returned by this function
 
-
-        Arguments:
+        Args:
             model(QAbstractItemModel): Current model
             source_type(type): Expected source model type
-
         Returns:
-            QFileSystemLibraryModel: Source model 
-
+            QFileSystemLibraryModel: Source model
         Raises:
             QLibraryGUIException: If unable to find the source model for the given model
-
-
-
         """
         while True:
             # https://stackoverflow.com/questions/50478661/python-isinstance-not-working-as-id-expect
@@ -85,16 +82,14 @@ class LibraryDelegate(QItemDelegate):
         """
         Displays dirty files in red with corresponding rebuild buttons
         if in developer mode (is_dev_mode). Otherwise, renders normally
-
-
         Args:
             painter (QPainter): Current painter
             option (QStyleOptionViewItem): Current option
             index (QModelIndex): Current index of related model
-
-
-
         """
+
+        self.emit_tool_tip(option, index)
+
         if self.is_dev_mode:
             source_model = self.get_source_model(index.model(),
                                                  self.source_model_type)
@@ -148,3 +143,58 @@ class LibraryDelegate(QItemDelegate):
 
         else:
             QItemDelegate.paint(self, painter, option, index)
+
+    def emit_tool_tip(self, option: QStyleOptionViewItem, index: QModelIndex):
+        """
+
+        Args:
+            option (QStyleOptionViewItem): Contains current style flags
+            index (QModelIndex): Index being moused over
+
+        Emits:
+           tool_tip_signal(str): The TOOLTIP for the QComponent of the index
+        """
+        if option.state & QStyle.State_MouseOver:  # if option.state  == QStyle.State_MouseOver: Qt.WA_Hover
+            source_model = self.get_source_model(index.model(),
+                                                 self.source_model_type)
+
+            model = index.model()
+            full_path = source_model.filePath(model.mapToSource(index))
+
+            # try:
+            try:
+                current_class = self.get_class_from_abs_file_path(full_path)
+                information = current_class.TOOLTIP
+            except:
+                information = ""
+
+            self.tool_tip_signal.emit(information)
+
+    def get_class_from_abs_file_path(self, abs_file_path):
+        """
+        Gets the corresponding class object for the absolute file path to the file containing that
+        class definition
+
+        Args:
+            abs_file_path (str): absolute file path to the file containing the QComponent class definition
+
+        getting class from absolute file path -
+        https://stackoverflow.com/questions/452969/does-python-have-an-equivalent-to-java-class-forname
+
+        """
+        qis_abs_path = abs_file_path[abs_file_path.
+                                     index(__name__.split('.')[0]):]
+
+        # Windows users' qis_abs_path may use os.sep or '/' due to PySide's
+        # handling of file names
+        qis_mod_path = qis_abs_path.replace(os.sep, '.')[:-len('.py')]
+        qis_mod_path = qis_mod_path.replace(
+            "/", '.')  # users cannot use '/' in filename
+
+        mymodule = importlib.import_module(qis_mod_path)
+        members = inspect.getmembers(mymodule, inspect.isclass)
+        class_owner = qis_mod_path.split('.')[-1]
+        for memtup in members:
+            if len(memtup) > 1:
+                if str(memtup[1].__module__).endswith(class_owner):
+                    return memtup[1]

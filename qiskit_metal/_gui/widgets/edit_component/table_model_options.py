@@ -210,7 +210,7 @@ class QTableModel_Options(QAbstractTableModel):
         """Sets the role data for the item at index to value. The dataChanged()
         signal should be emitted if the data was successfully set.
 
-        Arguments:
+        Args:
             index (QtCore.QModelIndex): The index
             value (str): The value
             role (QtCore.Qt.EditRole): The edit role

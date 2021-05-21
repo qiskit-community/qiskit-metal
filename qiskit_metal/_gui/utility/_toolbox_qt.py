@@ -28,7 +28,7 @@ def blend_colors(color1: QColor,
                  alpha=255) -> QColor:
     """Blend two qt colors together.
 
-    Arguments:
+    Args:
         color1 (QColor): first color
         color2 (QColor): second color
         r (float): ratio

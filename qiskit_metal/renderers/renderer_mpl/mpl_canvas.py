@@ -634,7 +634,7 @@ class PlotCanvas(FigureCanvas):
     def zoom_to_rectangle(self, bounds: tuple, ax: Axes = None):
         """Zoom to the specified rectangle.
 
-        Arguments:
+        Args:
             bounds (tuple): Tuple containing `minx, miny, maxx, maxy`
                      values for the bounds of the series as a whole.
             ax (Axes): Does for all if none (default: {None})
@@ -651,7 +651,7 @@ class PlotCanvas(FigureCanvas):
     def find_component_bounds(self, components: List[str], zoom: float = 1.2):
         """Find bounds of a set of components.
 
-        Arguments:
+        Args:
             components (List[str]): A list of component names
             zoom (float): Fraction to expand the bounding vbox by
 
@@ -660,10 +660,10 @@ class PlotCanvas(FigureCanvas):
         """
         if len(components) == 0:
             self.logger.error('At least one component must be provided.')
-
         # initialize bounds
         bounds = [float("inf"), float("inf"), float("-inf"), float("-inf")]
         for name in components:
+            # self.design.components[name]
             component = self.design.components[name]
             # return (minx, miny, maxx, maxy)
             newbounds = component.qgeometry_bounds()
@@ -676,6 +676,7 @@ class PlotCanvas(FigureCanvas):
                 max(newbounds[2], bounds[2]),
                 max(newbounds[3], bounds[3])
             ]
+
         return bounds
 
     def set_component(self, name: str):

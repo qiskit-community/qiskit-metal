@@ -230,7 +230,7 @@ class ComponentWidget(QTabWidget):
     def set_component(self, name: str):
         """Main interface to set the component (by name)
 
-        Arguments:
+        Args:
             name (str): Set the component name, if None then clears
         """
         self.component_name = name

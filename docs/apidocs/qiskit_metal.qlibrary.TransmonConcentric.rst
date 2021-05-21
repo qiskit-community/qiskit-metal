@@ -18,6 +18,7 @@ TransmonConcentric
    .. autosummary::
       :toctree: ../stubs/
    
+      TransmonConcentric.TOOLTIP
       TransmonConcentric.class_name
       TransmonConcentric.component_metadata
       TransmonConcentric.default_options

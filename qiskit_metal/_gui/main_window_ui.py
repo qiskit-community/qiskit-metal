@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file './main_window_ui.ui',
 # licensing of './main_window_ui.ui' applies.
 #
-# Created: Wed May  5 16:57:40 2021
+# Created: Fri May 14 15:07:55 2021
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -133,12 +133,7 @@ class Ui_MainWindow(object):
                         QtGui.QIcon.Off)
         self.btn_comp_zoom.setIcon(icon6)
         self.btn_comp_zoom.setObjectName("btn_comp_zoom")
-        self.gridLayout.addWidget(self.btn_comp_zoom, 0, 3, 1, 1)
-        self.btn_comp_actions = QtWidgets.QToolButton(self.dockWidgetContents)
-        self.btn_comp_actions.setPopupMode(
-            QtWidgets.QToolButton.MenuButtonPopup)
-        self.btn_comp_actions.setObjectName("btn_comp_actions")
-        self.gridLayout.addWidget(self.btn_comp_actions, 0, 1, 1, 1)
+        self.gridLayout.addWidget(self.btn_comp_zoom, 0, 2, 1, 1)
         self.btn_comp_del = QtWidgets.QToolButton(self.dockWidgetContents)
         icon7 = QtGui.QIcon()
         icon7.addPixmap(QtGui.QPixmap(":/delete"), QtGui.QIcon.Normal,
@@ -147,7 +142,10 @@ class Ui_MainWindow(object):
         self.btn_comp_del.setPopupMode(QtWidgets.QToolButton.DelayedPopup)
         self.btn_comp_del.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
         self.btn_comp_del.setObjectName("btn_comp_del")
-        self.gridLayout.addWidget(self.btn_comp_del, 0, 2, 1, 1)
+        self.gridLayout.addWidget(self.btn_comp_del, 0, 1, 1, 1)
+        self.btn_comp_rename = QtWidgets.QToolButton(self.dockWidgetContents)
+        self.btn_comp_rename.setObjectName("btn_comp_rename")
+        self.gridLayout.addWidget(self.btn_comp_rename, 0, 0, 1, 1)
         self.verticalLayout_3.addLayout(self.gridLayout)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setSpacing(0)
@@ -738,8 +736,6 @@ class Ui_MainWindow(object):
         self.btn_comp_zoom.setText(
             QtWidgets.QApplication.translate(
                 "MainWindow", "Focus on component in drawing window", None, -1))
-        self.btn_comp_actions.setText(
-            QtWidgets.QApplication.translate("MainWindow", "Do", None, -1))
         self.btn_comp_del.setToolTip(
             QtWidgets.QApplication.translate("MainWindow",
                                              "Delete a selected component",
@@ -754,6 +750,8 @@ class Ui_MainWindow(object):
                                              None, -1))
         self.btn_comp_del.setText(
             QtWidgets.QApplication.translate("MainWindow", "Delete", None, -1))
+        self.btn_comp_rename.setText(
+            QtWidgets.QApplication.translate("MainWindow", "Rename", None, -1))
         self.filter_text_design.setPlaceholderText(
             QtWidgets.QApplication.translate("MainWindow", "Filter", None, -1))
         self.dockLibrary.setToolTip(
@@ -1024,7 +1022,7 @@ class Ui_MainWindow(object):
             QtWidgets.QApplication.translate("MainWindow", "clickme", None, -1))
 
 
-from .widgets.log_widget.log_metal import QTextEditLogger
 from .widgets.qlibrary_display.tree_view_qlibrary import TreeViewQLibrary
 from .widgets.all_components.table_view_all_components import QTableView_AllComponents
+from .widgets.log_widget.log_metal import QTextEditLogger
 from . import main_window_rc_rc

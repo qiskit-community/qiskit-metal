@@ -1,6 +1,5 @@
-# pylint disable=too-many-lines
 # -*- coding: utf-8 -*-
-
+# pylint: disable=too-many-lines, cyclic-import
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2021.
@@ -15,8 +14,8 @@
 """The base class of all QDesigns in Qiskit Metal."""
 
 import importlib
-import inspect
-import os
+#import inspect
+#import os
 from datetime import datetime
 from typing import Any, Dict as Dict_, Iterable, List, TYPE_CHECKING, Union
 
@@ -24,10 +23,10 @@ import pandas as pd
 
 from qiskit_metal.qgeometries.qgeometries_handler import QGeometryTables
 from qiskit_metal.toolbox_metal.parsing import is_true, parse_options, parse_value
-from .interface_components import Components
-from .net_info import QNet
-from .. import Dict, config, logger
-from ..config import DefaultMetalOptions, DefaultOptionsRenderer
+from qiskit_metal.designs.interface_components import Components
+from qiskit_metal.designs.net_info import QNet
+from qiskit_metal import Dict, config, logger
+from qiskit_metal.config import DefaultMetalOptions, DefaultOptionsRenderer
 from qiskit_metal.toolbox_metal.exceptions import QiskitMetalDesignError
 
 if not config.is_building_docs():
@@ -45,13 +44,12 @@ __all__ = ['QDesign']
 #:ivar var1: initial value: par2
 
 
-# pylint disable=too-many-public-methods, too-many-instance-attributes
-class QDesign(
-):  # pylint disable=too-many-public-methods, too-many-instance-attributes
+class QDesign():
     """QDesign is the base class for Qiskit Metal Designs.
 
     A design is the most top-level object in all of Qiskit Metal.
     """
+    # pylint: disable=too-many-instance-attributes, too-many-public-methods
 
     # Dummy private attribute used to check if an instanciated object is
     # indeed a QDesign class. The problem is that the `isinstance`
@@ -65,7 +63,7 @@ class QDesign(
                  enable_renderers: bool = True):
         """Create a new Metal QDesign.
 
-        Arguments:
+        Args:
             metadata (Dict): Dictionary of metadata.  Defaults to None.
 
             overwrite_enabled (bool): When True - If the string name, used for component, already
@@ -158,11 +156,12 @@ class QDesign(
         # Need to add columns to Junction tables before create_tables().
         self._qgeometry.create_tables()
 
-    def _init_metadata(self) -> Dict:  # pylint disable=no-self-use
+    @classmethod
+    def _init_metadata(cls) -> Dict:
         """Initialize default metadata dictionary.
 
         Returns:
-            Dict: default metadata dictioanry
+            Dict: default metadata dictionary
         """
         now = datetime.now()  # current date and time
         return Dict(design_name='my_design',
@@ -241,8 +240,8 @@ class QDesign(
         Returns:
             pd.core.frame.DataFrame: copy of net_info table.
         """
-        return self._qnet._net_info.copy(
-            deep=True)  # pylint disable=protected_access
+        # pylint: disable=protected-access
+        return self._qnet._net_info.copy(deep=True)
 
 #########Proxy properties##################################################
 
@@ -307,14 +306,13 @@ class QDesign(
         Returns:
             QNet: QNet with all pins removed
         """
-        df_net_info = self._qnet._net_info  # pylint disable=protected_access
-        for (index, netID, comp_id, pin_name) in df_net_info.itertuples(
-        ):  # pylint disable=unused_variable, invalid_name, line-too-long
+        # pylint: disable=protected-access
+        df_net_info = self._qnet._net_info
+        for (_, _, comp_id, pin_name) in df_net_info.itertuples():
             self._components[comp_id].pins[pin_name].net_id = 0
 
         # remove rows, but save column names
-        self._qnet._net_info = self._qnet._net_info.iloc[
-            0:0]  # pylint disable=protected_access
+        self._qnet._net_info = self._qnet._net_info.iloc[0:0]
         return self._qnet
 
     def connect_pins(self, comp1_id: int, pin1_name: str, comp2_id: int,
@@ -354,7 +352,8 @@ class QDesign(
     # def get_component(self, search_name: str) -> 'QComponent':
     #     """The design contains a dict of all the components, which is correlated to
     #     a net_list connections, and qgeometry table. The key of the components dict are
-    #     unique integers.  This method will search through the dict to find the component with search_name.
+    #     unique integers.  This method will search through the dict to find
+    #     the component with search_name.
 
     #     Args:
     #         search_name (str): Name of the component
@@ -362,25 +361,27 @@ class QDesign(
     #     Returns:
     #         QComponent: A component within design with the name search_name.
 
-    #     *Note:* If None is returned the component wass not found. A warning through logger.warning().
+    #     *Note:* If None is returned the component was not found.
+    #     A warning through logger.warning().
 
-    #     *Note:* If multiple components have the same name, only the first component found in the search
-    #     will be returned, ALONG with logger.warning().
+    #     *Note:* If multiple components have the same name, only the first component
+    #     found in the search will be returned, ALONG with logger.warning().
     #     """
-    #     alist = [(value.name, key)
+    #     a_list = [(value.name, key)
     #              for key, value in self._components.items() if value.name == search_name]
 
-    #     length = len(alist)
+    #     length = len(a_list)
     #     if length == 1:
-    #         return_component = self._components[alist[0][1]]
+    #         return_component = self._components[a_list[0][1]]
     #     elif length == 0:
     #         self.logger.warning(
     #             f'Name of component:{search_name} not found. Returned None')
     #         return_component = None
     #     else:
     #         self.logger.warning(
-    #             f'Component:{search_name} is used multiple times, return the first component in list: (name, component_id) {str(alist)}')
-    #         return_component = self._components[alist[0][1]]
+    #             f'Component:{search_name} is used multiple times, '
+    #             f'return the first component in list: (name, component_id) {str(a_list)}')
+    #         return_component = self._components[a_list[0][1]]
 
     #     return return_component
 
@@ -389,7 +390,8 @@ class QDesign(
         within this design.
 
         Returns:
-            list[tuples]: Each tuple has the text name of component and UNIQUE integer ID for component.  # pylint disable=line-too-long
+            list[tuples]: Each tuple has the text name of component and
+                        UNIQUE integer ID for component.
         """
         alist = [(value.name, key) for key, value in self._components.items()]
         return alist
@@ -459,7 +461,7 @@ class QDesign(
         Reload the module and class of a given component and updates
         all class instances. Then rebuilds all QComponents of that class
 
-        Arguments:
+        Args:
             qis_abs_path: Absolute to the QComponent source file to be reloaded
 
         Raises:
@@ -467,7 +469,8 @@ class QDesign(
         """
 
         try:
-            for comp in self.components:  # runs so few times, it's fine to reload object multiple times
+            # runs so few times, it's fine to reload object multiple times
+            for comp in self.components:
                 imported_module = importlib.import_module(
                     self.components[comp].__module__)
                 reloaded_module = importlib.reload(imported_module)
@@ -476,21 +479,23 @@ class QDesign(
                                     self.components[comp].__class__.__name__)
 
                 print(f"template options: {self.template_options}")
+                # pylint: disable=protected-access
                 if self.components[comp].__class__._get_unique_class_name(
                 ) in self.template_options:
                     print(f"popping: {new_class}")
-                    self.template_options.pop(new_class._get_unique_class_name(
-                    ))  # pylint disable=protected-access, line-too-long
+                    # pylint: disable=protected-access
+                    self.template_options.pop(
+                        new_class._get_unique_class_name())
 
                 self.components[comp].__class__ = new_class
 
-                self.logger.debug(
-                    f'Finished reloading '
-                    f'component_class_name={new_class.__name__}; component_module_name={imported_module}'
-                )
+                self.logger.debug(f'Finished reloading '
+                                  f'component_class_name={new_class.__name__}; '
+                                  f'component_module_name={imported_module}')
             self.rebuild()
 
-        except QiskitMetalDesignError as e:  # pylint disable=broad-except
+        # pylint: disable=broad-except
+        except QiskitMetalDesignError as e:
             self.logger.error(
                 f"Failed to refresh/rebuild {qis_abs_path} due to: {e}")
 
@@ -499,7 +504,7 @@ class QDesign(
         passes a string for component_id, the method assumes the component_name
         was passed.  Then will look for the id using the component_name.
 
-        Arguments:
+        Args:
             component_id (int): id of component within design, can pass a string for component_name
             new_component_name (str): New name
 
@@ -534,7 +539,7 @@ class QDesign(
 
         if a_component_id in self._components:
             # Check if name is already being used.
-            if new_component_name in self.name_to_id:  # pylint disable=line-too-long
+            if new_component_name in self.name_to_id:
                 logger.warning(
                     f'Called design.rename_component,'
                     f' component_id({self.name_to_id[new_component_name]}'
@@ -546,12 +551,11 @@ class QDesign(
 
             # Remove old name from cache, add new name
             self.name_to_id.pop(a_component.name, None)
-            self.name_to_id[
-                new_component_name] = a_component.id  # pylint disable=line-too-long
+            self.name_to_id[new_component_name] = a_component.id
 
             # do rename
-            self._components[
-                component_id]._name = new_component_name  # pylint disable=protected-access, line-too-long
+            # pylint: disable=protected-access
+            self._components[component_id]._name = new_component_name
 
             return True
         logger.warning(
@@ -559,19 +563,20 @@ class QDesign(
             f' is not in design.components dictionary.')
         return -3
 
-    def delete_component(
-            self,
-            component_name: str,
-            force: bool = False) -> bool:  #pylint disable=unused-argument
+    def delete_component(self,
+                         component_name: str,
+                         force: bool = False) -> bool:
+        #pylint: disable=unused-argument
         """Deletes component and pins attached to said component.
 
         If no component by that name is present, then just return True
         If component has dependencices return false and do not delete,
         unless force=True.
 
-        Arguments:
+        Args:
             component_name (str): Name of component to delete.
-            force (bool): Force delete component even if it has children.  Defaults to False.
+            force (bool): Force delete component even if it has children.
+                          Defaults to False.
 
         Returns:
             bool: Is there no such component
@@ -659,7 +664,7 @@ class QDesign(
 
         return return_response
 
-    def copy_multiple_qcomponents(  # pylint disable=dangerous-default-value
+    def copy_multiple_qcomponents(  # pylint: disable=dangerous-default-value
         self,
         original_qcomponents: list,
         new_component_names: list,
@@ -682,7 +687,8 @@ class QDesign(
             Dict: Number of keys will be the same length of original_qcomponent.
                 Each key will be the new_component_name.
                 Each value will be either a QComponent or None.
-                If the copy did not happen, the value will be None, and the key will extracted from new_componet_names.
+                If the copy did not happen, the value will be None, and the
+                key will extracted from new_componet_names.
         """
         copied_info = dict()
         length = len(original_qcomponents)
@@ -705,13 +711,11 @@ class QDesign(
 
         return copied_info
 
-    def copy_qcomponent(
+    def copy_qcomponent(  # pylint: disable=dangerous-default-value, inconsistent-return-statements
         self,
         original_qcomponent: 'QComponent',
         new_component_name: str,
-        options_superimpose: dict = dict(
-        )  # pylint disable=dangerous-default-value
-    ) -> Union['QComponent', None]:
+        options_superimpose: dict = dict()) -> Union['QComponent', None]:
         """Copy a qcomponent in QDesign and
         add it to QDesign._components using
         options_overwrite.
@@ -728,7 +732,6 @@ class QDesign(
         Returns:
             union['QComponent', None]: None if not copied, otherwise, a QComponent instance.
         """
-
         # overwrite original option with new options
         options = {**original_qcomponent.options, **options_superimpose}
         path_class_name = original_qcomponent.class_name
@@ -743,9 +746,9 @@ class QDesign(
                                                 options=options)
                 return a_qcomponent
             return None
-        else:
-            # The new name is already in QDesign.
-            return None
+        # else:
+        #    #The new name is already in QDesign.
+        #    return None
 
 #########I/O###############################################################
 
@@ -754,7 +757,7 @@ class QDesign(
         """Load a Metal design from a saved Metal file. Will also update
         default dictionaries. (Class method).
 
-        Arguments:
+        Args:
             path (str): Path to saved Metal design.
 
         Returns:
@@ -768,7 +771,7 @@ class QDesign(
         """Save the metal design to a Metal file. If no path is given, then
         tried to use self.save_path if it is set.
 
-        Arguments:
+        Args:
             path (str): Path to save the design to.  Defaults to None.
 
         Returns:
@@ -805,7 +808,7 @@ class QDesign(
         iterable (list, tuple) to account for units conversion, some basic
         arithmetic, and design variables.
 
-        Arguments:
+        Args:
             value (str): String to parse *or*
             variable_dict (dict): dict pointer of variables
 
@@ -851,7 +854,7 @@ class QDesign(
         options. Use self.parse_value to parse only some options from a params
         dictionary.
 
-        Arguments:
+        Args:
             params (dict): Input dict to pull form
             param_names (str): Keys of dictionary to parse and return as a dictionary.
                                Example value: 'x,y,z,cpw_width'
@@ -893,32 +896,29 @@ class QDesign(
     def add_dependency(self, parent: str, child: str):
         """Add a dependency between one component and another.
 
-        Arguments:
+        Args:
             parent (str): The component on which the child depends.
             child (str): The child cannot live without the parent.
         """
-        pass  # pylint disable=unnecessary-pass
 
     def remove_dependency(self, parent: str, child: str):
         """Remove a dependency between one component and another.
 
-        Arguments:
+        Args:
             parent (str): The component on which the child depends.
             child (str): The child cannot live without the parent.
         """
-        pass  # pylint disable=unnecessary-pass
 
     def update_component(self, component_name: str, dependencies: bool = True):
         """Update the component and any dependencies it may have. Mediator type
         function to update all children.
 
-        Arguments:
+        Args:
             component_name (str): Component name to update
             dependencies (bool): True to update all dependencies.  Defaults to True.
         """
         # Get dependency graph
         # Remake components in order
-        pass  # pylint disable=unnecessary-pass
 
 
 ######### Renderers ###############################################################
@@ -986,9 +986,12 @@ class QDesign(
         of QGeometry table i.e. path, junction, poly etc.
 
         Example of data format is:
-        self.renderer_defaults_by_table[table_name][renderer_name][column_name] = column_value  # pylint disable=line-too-long
-        The type for default value placed in a table column is determined by populate_element_extenstions() on line:  # pylint disable=line-too-long
-        cls.element_extensions[table][col_name] = type(col_value)  # pylint disable=line-too-long
+        self.renderer_defaults_by_table[table_name][renderer_name][column_name] =
+        column_value
+
+        The type for default value placed in a table column is determined by
+        populate_element_extentions() on line:
+        cls.element_extensions[table][col_name] = type(col_value)
         in renderer_base.py.
 
         Dict layout and examples within parenthesis:
@@ -1002,10 +1005,14 @@ class QDesign(
                           keys: 'inductance', value: (inductance_value)
 
         Args:
-            table_name (str): Table used within QGeometry tables i.e. path, poly, junction.
-            renderer_name (str): The name of software to export QDesign, i.e. gds, ansys.
-            column_name (str): The column name within the table, i.e. filename, inductance.
-            column_value (Object): The type can vary based on column. The data is placed under column_name.
+            table_name (str): Table used within QGeometry tables
+                                i.e. path, poly, junction.
+            renderer_name (str): The name of software to export QDesign,
+                                i.e. gds, Ansys.
+            column_name (str): The column name within the table,
+                                i.e. filename, inductance.
+            column_value (Object): The type can vary based on column.
+                                The data is placed under column_name.
 
         Returns:
             set: Each integer in the set has different meanings.

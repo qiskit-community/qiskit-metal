@@ -18,6 +18,7 @@ CircleRaster
    .. autosummary::
       :toctree: ../stubs/
    
+      CircleRaster.TOOLTIP
       CircleRaster.class_name
       CircleRaster.component_metadata
       CircleRaster.default_options
