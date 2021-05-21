@@ -46,7 +46,7 @@ with open(here / "requirements.txt", encoding="utf-8") as f:
 setup(
     name="qiskit_metal",
     version="0.0.3",
-    description="Qiskit Metal | for quantum device design & analisys",
+    description="Qiskit Metal | for quantum device design & analysis",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/Qiskit/qiskit-metal",
