@@ -192,7 +192,7 @@ class BranchNode(Node):
             key (str): the key
 
         Returns:
-            Node (Node): The child with the same name as the given key.
+            Node: The child with the same name as the given key.
             None is returned if the child is not found
         """
         for childname, childnode in self.children:
