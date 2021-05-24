@@ -27,6 +27,7 @@ Sweeping
       Sweeping.error_check_sweep_input
       Sweeping.get_quality_factor
       Sweeping.get_size_of_matrix
+      Sweeping.hfss_em_get_convergence
       Sweeping.option_value
       Sweeping.populate_dm_all_sweep
       Sweeping.prep_drivenmodal_setup
