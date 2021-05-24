@@ -45,7 +45,7 @@ def get_poly_pts(poly: Polygon):
     """Return the coordinates of a Shapely polygon with the last repeating
     point removed.
 
-    Arguments:
+    Args:
         poly (shapely.Polygon): Shapely polygin
 
     Returns:
@@ -59,7 +59,7 @@ def get_all_geoms(obj, func=lambda x: x, root_name='components'):
 
     Used to compute the bounding box.
 
-    Arguments:
+    Args:
         obj (dict, list, element, component): Object to get from.
         func (function): Function to use if mapping. Defaults to (lambda x: x).
         root_name (str): Name to prepend in the flattening. Defaults to 'components'.
@@ -118,7 +118,7 @@ name if not (root_name == '') else name
 def flatten_all_filter(components: dict, filter_obj=None):
     """Internal function to flatten a dict of shapely objects.
 
-    Arguments:
+    Args:
         components (dict): Dictionary of components
         filter_obj (class): Filter based on this class.  Defaults to None.
 
@@ -146,7 +146,7 @@ def flatten_all_filter(components: dict, filter_obj=None):
 def get_all_component_bounds(components: dict, filter_obj=Polygon):
     """Pass in a dict of components to calcualte the total bounding box.
 
-    Arguments:
+    Args:
         components (dict): Dictionary of components
         filter_obj (Polygon): Only use instances of this object to
                               calcualte the bounds
@@ -168,7 +168,7 @@ def round_coordinate_sequence(geom_ref, precision):
     """Rounds the vertices of a coordinate sequence (both interior and
     exterior).
 
-    Arguments:
+    Args:
         geometry (shapely.geometry) : A shapely geometry, should not be a MultiPoly
         precison (int) : The decimal precision to round to (eg. 3 -> 0.001)
     Returns:
@@ -260,7 +260,7 @@ def intersect(p1x, p1y, p2x, p2y, x0, y0):
     """Intersect segment defined by p1 and p2 with ray coming out of x0,y0 ray
     can be horizontal y=y0  x=x0+dx , want dx>0.
 
-    Arguments:
+    Args:
         p1x (float): x coordinate of point 1 of segment
         p1y (float): y coordinate of point 1 of segment
         p2x (float): x coordinate of point 2 of segment
@@ -316,7 +316,7 @@ def vec_unit_planar(vector: np.array):
     vector where is XY components now a unit vector. I.e., Normalizes only in
     the XY plane, leaves the Z plane alone.
 
-    Arguments:
+    Args:
         vector (np.array): Input 2D or 3D
 
     Returns:
@@ -382,7 +382,7 @@ class Vector:
             y_\mathrm{off} &= y_0 - x_0 \sin{\theta} - y_0 \cos{\theta}
             \end{split}
 
-        Arguments:
+        Args:
             xy (Vec2D): A 2D vector.
             radians (float): Counter clockwise angle.
             origin (tuple): point to rotate about.  Defaults to (0, 0).
@@ -406,7 +406,7 @@ class Vector:
         """Counter-clockwise rotation of the vector in radians. Positive angles
         are counter-clockwise and negative are clockwise rotations.
 
-        Arguments:
+        Args:
             xy (Vec2D): A 2D vector.
             radians (float): Counter clockwise angle
 
@@ -424,7 +424,7 @@ class Vector:
     def angle(vector: Vec2D) -> float:
         """Return the angle in radians of a vector.
 
-        Arguments:
+        Args:
             vector (Union[list, np.ndarray): A 2D vector
 
         Returns:
@@ -458,7 +458,7 @@ class Vector:
     def angle_between(v1: Vec2D, v2: Vec2D) -> float:
         """Returns the angle in radians between vectors 'v1' and 'v2'.
 
-        Arguments:
+        Args:
             v1 (Vec2D): First vector
             v2 (Vec2D): Second vector
 
@@ -474,7 +474,7 @@ class Vector:
     def add_z(vec2D: np.array, z: float = 0.):
         """Turn a 2D vector into a 3D vector by adding the z coorindate.
 
-        Arguments:
+        Args:
             vec2D (np.array): Input 2D vector.
             z (float): Add this value to the 3rd dimension.  Defaults to {0}.
 
@@ -490,7 +490,7 @@ class Vector:
     def normed(vec: Vec2D) -> Vec2D:
         """Return normed vector.
 
-        Arguments:
+        Args:
             vec (Vec2D): Vector
 
         Returns:
@@ -502,7 +502,7 @@ class Vector:
     def norm(vec: Vec2D) -> float:
         """Return the norm of a 2D vector.
 
-        Arguments:
+        Args:
             vec (Vec2D): 2D vector
 
         Returns:
@@ -514,7 +514,7 @@ class Vector:
         """Check if two vectors are within an infentesmimal distance set by
         `tol` and machine epsilon.
 
-        Arguments:
+        Args:
             v1 (Vec2D): First vector to check
             v2 (Vec2D): Second vector to check
             tol (int): How much to multiply the machine precision, np.finfo(float).eps,
@@ -531,7 +531,7 @@ class Vector:
         """Check if a vector is essentially zero within machine precision, set
         by `tol` and machine epsilon.
 
-        Arguments:
+        Args:
             vec (Vec2D): Vector to check
             tol (int): How much to multiply the machine precision, np.finfo(float).eps,
                        by as the tolerance.  Defaults to 100.
@@ -563,7 +563,7 @@ class Vector:
     def two_points_described(points2D: List[Vec2D]) -> Tuple[np.ndarray]:
         """Get the distance, units and tagents.
 
-        Arguments:
+        Args:
             points (np.array or list): 2D list of points
 
         Returns:
@@ -599,7 +599,7 @@ class Vector:
     def snap_unit_vector(vec_n: Vec2D, flip: bool = False) -> Vec2D:
         """snaps to either the x or y unit vectors.
 
-        Arguments:
+        Args:
             vec_n (Vec2D): 2D vector
             flip (bool): True to flip.  Defaults to False.
 

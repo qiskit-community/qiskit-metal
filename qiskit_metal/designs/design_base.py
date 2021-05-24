@@ -63,7 +63,7 @@ class QDesign():
                  enable_renderers: bool = True):
         """Create a new Metal QDesign.
 
-        Arguments:
+        Args:
             metadata (Dict): Dictionary of metadata.  Defaults to None.
 
             overwrite_enabled (bool): When True - If the string name, used for component, already
@@ -461,7 +461,7 @@ class QDesign():
         Reload the module and class of a given component and updates
         all class instances. Then rebuilds all QComponents of that class
 
-        Arguments:
+        Args:
             qis_abs_path: Absolute to the QComponent source file to be reloaded
 
         Raises:
@@ -504,7 +504,7 @@ class QDesign():
         passes a string for component_id, the method assumes the component_name
         was passed.  Then will look for the id using the component_name.
 
-        Arguments:
+        Args:
             component_id (int): id of component within design, can pass a string for component_name
             new_component_name (str): New name
 
@@ -573,7 +573,7 @@ class QDesign():
         If component has dependencices return false and do not delete,
         unless force=True.
 
-        Arguments:
+        Args:
             component_name (str): Name of component to delete.
             force (bool): Force delete component even if it has children.
                           Defaults to False.
@@ -757,7 +757,7 @@ class QDesign():
         """Load a Metal design from a saved Metal file. Will also update
         default dictionaries. (Class method).
 
-        Arguments:
+        Args:
             path (str): Path to saved Metal design.
 
         Returns:
@@ -771,7 +771,7 @@ class QDesign():
         """Save the metal design to a Metal file. If no path is given, then
         tried to use self.save_path if it is set.
 
-        Arguments:
+        Args:
             path (str): Path to save the design to.  Defaults to None.
 
         Returns:
@@ -808,7 +808,7 @@ class QDesign():
         iterable (list, tuple) to account for units conversion, some basic
         arithmetic, and design variables.
 
-        Arguments:
+        Args:
             value (str): String to parse *or*
             variable_dict (dict): dict pointer of variables
 
@@ -854,7 +854,7 @@ class QDesign():
         options. Use self.parse_value to parse only some options from a params
         dictionary.
 
-        Arguments:
+        Args:
             params (dict): Input dict to pull form
             param_names (str): Keys of dictionary to parse and return as a dictionary.
                                Example value: 'x,y,z,cpw_width'
@@ -896,7 +896,7 @@ class QDesign():
     def add_dependency(self, parent: str, child: str):
         """Add a dependency between one component and another.
 
-        Arguments:
+        Args:
             parent (str): The component on which the child depends.
             child (str): The child cannot live without the parent.
         """
@@ -904,7 +904,7 @@ class QDesign():
     def remove_dependency(self, parent: str, child: str):
         """Remove a dependency between one component and another.
 
-        Arguments:
+        Args:
             parent (str): The component on which the child depends.
             child (str): The child cannot live without the parent.
         """
@@ -913,7 +913,7 @@ class QDesign():
         """Update the component and any dependencies it may have. Mediator type
         function to update all children.
 
-        Arguments:
+        Args:
             component_name (str): Component name to update
             dependencies (bool): True to update all dependencies.  Defaults to True.
         """

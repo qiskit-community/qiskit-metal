@@ -64,7 +64,7 @@ def is_qgeometry_table(obj):
     The problem is that the `isinstance` built-in method fails
     when this module is reloaded.
 
-    Arguments:
+    Args:
         obj (object): Test this object
 
     Returns:
@@ -247,7 +247,7 @@ class QGeometryTables(object):
     def __init__(self, design: 'QDesign'):
         """The constructor for the `QGeometryTables` class.
 
-        Arguments:
+        Args:
             design: Design in use
         """
         self._design = design
@@ -282,7 +282,7 @@ class QGeometryTables(object):
         """Add renderer element extension to ELEMENT_COLUMNS. Called when the
         load function of a renderer is called.
 
-        Arguments:
+        Args:
             renderer_name (str): Name of renderer
             qgeometry (dict):  dict of dict.  Keys give element type names,
                               such as base, poly, path, etc.
@@ -383,7 +383,7 @@ class QGeometryTables(object):
 
         Throws an error if not valid.
 
-        Arguments:
+        Args:
             table_name (str): Name of element table (e.g., 'poly')
             column_dict (dict): Dictionary to check
 
@@ -407,7 +407,7 @@ class QGeometryTables(object):
     def get_rname(self, renderer_name: str, key: str) -> str:
         """Get name for renderer property.
 
-        Arguments:
+        Args:
             renderer_name (str): Name of the renderer
             key (str): Key to get the name for
 
@@ -448,7 +448,7 @@ class QGeometryTables(object):
             **other_options):
         """Main interface to add qgeometries.
 
-        Arguments:
+        Args:
             kind (str): Must be in get_element_types ('path', 'poly', etc.).
             component_name (str): Component name.
             geometry (dict): Dict of shapely geometry.
@@ -598,7 +598,7 @@ class QGeometryTables(object):
     def delete_component(self, name: str):
         """Delete component by name.
 
-        Arguments:
+        Args:
             name (str): Name of component (case sensitive)
         """
         # TODO: Add unit test
@@ -629,7 +629,7 @@ class QGeometryTables(object):
         """Return the table for just a given component. If all, returns a
         dictionary with kets as table names and tables of components as values.
 
-        Arguments:
+        Args:
             name (str): Name of component (case sensitive).  Defaults to 'all'.
             table_name (str): Element table name ('poly', 'path', etc.).  Defaults to {'all'}.
 
@@ -662,7 +662,7 @@ class QGeometryTables(object):
         """Returns a tuple containing minx, miny, maxx, maxy values for the
         bounds of the component as a whole.
 
-        Arguments:
+        Args:
             name (str): Component name
 
         Returns:
@@ -677,7 +677,7 @@ class QGeometryTables(object):
     def rename_component(self, component_id: int, new_name: str):
         """Rename component by ID (integer) cast to string format.
 
-        Arguments:
+        Args:
             component_id (int) : ID of component (case sensitive)
             new_name (str) : The new name of the component (case sensitive)
         """
@@ -700,7 +700,7 @@ class QGeometryTables(object):
         """Return just the bare element geometry (shapely geometry objects) as
         a list, for the selected component.
 
-        Arguments:
+        Args:
             name (str) : Name of component (case sensitive)
             table_name (str) : Element type ('poly', 'path', etc.).
                                Can also be 'all' to return all. This is the default.
@@ -723,7 +723,7 @@ class QGeometryTables(object):
     def get_component_geometry(self, name: str) -> GeoSeries:
         """Returns geometry of a given component.
 
-        Arguments:
+        Args:
             name (str) : Name of component (case sensitive)
 
         Returns:
@@ -750,7 +750,7 @@ class QGeometryTables(object):
         a dict, with key being the names of the qgeometry and the values as the
         shapely geometry, for the selected component.
 
-        Arguments:
+        Args:
             name (str) : Name of component (case sensitive)
             table_name (str) : Element type ('poly', 'path', etc.). Defaults to 'all'.
 
@@ -779,7 +779,7 @@ class QGeometryTables(object):
                            log_issue: bool = True) -> bool:
         """Check if the name `table_name` is in the element tables.
 
-        Arguments:
+        Args:
             table_name (str): Element type ('poly', 'path', etc.) or 'all'
             log_issue (bool): Throw an error in the log if name missing.  Defaults to True.
 
