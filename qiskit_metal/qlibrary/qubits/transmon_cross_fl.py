@@ -65,6 +65,8 @@ class TransmonCrossFL(TransmonCross):  # pylint: disable=invalid-name
                                            t_gap='3um'))
     """Default drawing options"""
 
+    TOOLTIP = """The base `TransmonCrossFL` class."""
+
     def make(self):
         """Define the way the options are turned into QGeometry."""
         super().make()

@@ -18,6 +18,7 @@ RoutePathfinder
    .. autosummary::
       :toctree: ../stubs/
    
+      RoutePathfinder.TOOLTIP
       RoutePathfinder.class_name
       RoutePathfinder.component_metadata
       RoutePathfinder.default_options

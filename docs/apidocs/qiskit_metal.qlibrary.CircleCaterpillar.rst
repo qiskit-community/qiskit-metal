@@ -18,6 +18,7 @@ CircleCaterpillar
    .. autosummary::
       :toctree: ../stubs/
    
+      CircleCaterpillar.TOOLTIP
       CircleCaterpillar.class_name
       CircleCaterpillar.component_metadata
       CircleCaterpillar.default_options

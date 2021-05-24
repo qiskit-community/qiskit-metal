@@ -19,7 +19,7 @@ import numpy as np
 
 
 class ResonatorCoilRect(QComponent):
-    """A rectnagle spiral resonator based on length input. The X dimension is
+    """A rectangle spiral resonator based on length input. The X dimension is
     modified by the code based on the total length inputed.
 
     Inherits `QComponent` class
@@ -69,6 +69,9 @@ class ResonatorCoilRect(QComponent):
                            chip='main',
                            layer='1')
     """Default drawing options"""
+
+    TOOLTIP = """A rectangle spiral resonator based on length input. The X dimension is
+    modified by the code based on the total length inputed."""
 
     def make(self):
         """The make function implements the logic that creates the geoemtry

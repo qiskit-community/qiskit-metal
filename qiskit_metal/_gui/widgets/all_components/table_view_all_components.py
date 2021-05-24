@@ -98,7 +98,7 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         The default implementation ignores the context event.
         See the QContextMenuEvent documentation for more details.
 
-        Arguments:
+        Args:
             event (QContextMenuEvent): The event
         """
         self._event = event  # debug

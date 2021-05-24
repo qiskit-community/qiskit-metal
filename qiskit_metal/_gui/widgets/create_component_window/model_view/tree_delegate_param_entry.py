@@ -35,9 +35,9 @@ class ParamDelegate(QItemDelegate):
         The editor's parent widget is specified by parent, and the item options by option.
 
         Args:
-            parent: Parent widget
-            option: Style options for the related view
-            index: Specific index being edited
+            parent (QWidget): Parent widget
+            option (QStyleOptionViewItem): Style options for the related view
+            index (QModelIndex): Specific index being edited
 
         Returns:
             Returns the editor to be used for editing the data item with the given index.
@@ -49,12 +49,12 @@ class ParamDelegate(QItemDelegate):
 
         return QItemDelegate.createEditor(self, parent, option, index)
 
-    def setEditorData(self, editor, index: QModelIndex):
+    def setEditorData(self, editor: QWidget, index: QModelIndex):
         """
         Overriding inherited setEditorData class
         Args:
-            editor: Current editor for the data
-            index: Current index being modified
+            editor (QWidget): Current editor for the data
+            index (QModelIndex): Current index being modified
 
         """
         text = index.model().data(index, Qt.DisplayRole)
@@ -63,13 +63,14 @@ class ParamDelegate(QItemDelegate):
         else:
             QItemDelegate.setEditorData(self, editor, index)
 
-    def setModelData(self, editor, model: QAbstractItemModel, index):
+    def setModelData(self, editor: QWidget, model: QAbstractItemModel,
+                     index: QModelIndex):
         """
         Overriding inherited setModelData class
         Args:
-            editor: Current editor for the data
-            model: Current model whose data is being set
-            index: Current index being modified
+            editor (QWidget): Current editor for the data
+            model (QAbstractItemModel): Current model whose data is being set
+            index (QModelIndex): Current index being modified
 
         """
         if index.column() == TreeModelParamEntry.TYPE:

@@ -18,6 +18,7 @@ TransmonCrossFL
    .. autosummary::
       :toctree: ../stubs/
    
+      TransmonCrossFL.TOOLTIP
       TransmonCrossFL.class_name
       TransmonCrossFL.component_metadata
       TransmonCrossFL.default_options

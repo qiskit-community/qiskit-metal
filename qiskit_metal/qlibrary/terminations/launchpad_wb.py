@@ -83,6 +83,8 @@ class LaunchpadWirebond(QComponent):
     )
     """Default options"""
 
+    TOOLTIP = """Launch pad to feed/read signals to/from the chip."""
+
     def make(self):
         """This is executed by the user to generate the qgeometry for the
         component."""
