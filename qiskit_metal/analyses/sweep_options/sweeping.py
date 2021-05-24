@@ -581,7 +581,7 @@ class Sweeping():
         Args:
             a_hfss (QHFSSRenderer): Reference to renderer to Ansys.
             variation (str, optional): Information from pyEPR; variation should
-                         be in the form variation = "scale_factor='1.2001'".
+                        be in the form variation = "scale_factor='1.2001'".
                         Defaults to None.
 
         Returns:
