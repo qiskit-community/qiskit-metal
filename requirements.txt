@@ -9,7 +9,7 @@ pandas
 pint
 pyEPR-quantum>=0.8.4.6
 pygments
-pyside2  #conda on Windows OS: you must delete this line if you want to use python 3.9. You must delete or make <5.15.1 for lower versions of python. the 5.15.1/2 PyPI packages are incompatible with conda.
+pyside2
 qutip
 scipy
 shapely  #conda on Windows OS: pip install of shapely will fail on import for missing geos_c.dll, if <= v1.7.x. For as long as a 1.8.0 version is not released (already patched in github), you will need to run `conda install shapely` (before installing qiskit_metal).
