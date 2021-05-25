@@ -622,7 +622,8 @@ def lumped_oscillator_from_path(path: str, Lj_nH: float, Cj_fF: float, N: int,
                                 fr: Union[list, float],
                                 fb: Union[list, float]) -> pd.DataFrame:
     """Obtain a single result dataframe from a Q3D capacitance file pointed to by path.
-    Similar to lumped_oscillator_vs_passes() but for a user provided capacitance matrix file.
+    Similar to member method lumped_oscillator_vs_passes() of QQ3DRenderer but for a user
+    provided capacitance matrix file.
 
     Args:
         path (str): Path to file.
@@ -652,7 +653,10 @@ def lumped_oscillator_from_path(path: str, Lj_nH: float, Cj_fF: float, N: int,
                                                N,
                                                fb,
                                                fr,
-                                               g_scale=1)
+                                               g_scale=1,
+                                               print_info=True)
+
+    RES = pd.DataFrame([RES])
     RES['χr MHz'] = abs(RES['chi_in_MHz'].apply(lambda x: x[0]))
     RES['gr MHz'] = abs(RES['gbus'].apply(lambda x: x[0]))
     return RES
