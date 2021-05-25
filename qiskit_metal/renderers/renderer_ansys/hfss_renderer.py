@@ -1134,24 +1134,25 @@ class QHFSSRenderer(QAnsysRenderer):
             return epr.DistributedAnalysis(self.pinfo)
 
     def get_convergences(self, variation: str = None):
-        """Get convergence for convergence_t and convergence_f.
+        """Get convergence for convergence_t, convergence_f, and text from GUI for solution data.
 
         Args:
             variation (str, optional):  Information from pyEPR; variation should be in the form
             variation = "scale_factor='1.2001'". Defaults to None.
 
         Returns:
-            tuple[pandas.core.frame.DataFrame, pandas.core.frame.DataFrame]:
+            tuple[pandas.core.frame.DataFrame, pandas.core.frame.DataFrame, str]:
             1st DataFrame: Convergence_t
             2nd DataFrame: Convergence_f
+            3rd str: Text from GUI of solution data.
         """
         if self.pinfo:
             design = self.pinfo.design
             setup = self.pinfo.setup
-            convergence_t, _ = setup.get_convergence(variation)
+            convergence_t, text = setup.get_convergence(variation)
             convergence_f = hfss_report_f_convergence(
                 design, setup, self.logger, [])  # TODO; Fix variation []
-            return convergence_t, convergence_f
+            return convergence_t, convergence_f, text
 
     def plot_convergences(self,
                           variation: str = None,
@@ -1164,7 +1165,7 @@ class QHFSSRenderer(QAnsysRenderer):
             fig (matplotlib.figure.Figure, optional): A mpl figure. Defaults to None.
         """
         if self.pinfo:
-            convergence_t, convergence_f = self.get_convergences(variation)
+            convergence_t, convergence_f, _ = self.get_convergences(variation)
             hfss_plot_convergences_report(convergence_t,
                                           convergence_f,
                                           fig=fig,
