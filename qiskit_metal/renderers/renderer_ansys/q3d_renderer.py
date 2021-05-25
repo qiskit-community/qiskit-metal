@@ -536,52 +536,6 @@ class QQ3DRenderer(QAnsysRenderer):
         RES['gr MHz'] = abs(RES['gbus'].apply(lambda x: x[0]))
         return RES
 
-    def lumped_oscillator_from_path(self,
-                                    path: str,
-                                    Lj_nH: float,
-                                    Cj_fF: float,
-                                    N: int,
-                                    fr: Union[list, float],
-                                    fb: Union[list, float],
-                                    maxPass: int,
-                                    variation: str = '',
-                                    g_scale: float = 1) -> dict:
-        """Obtain a single result dataframe from a Q3D capacitance file pointed to by path.
-        Similar to lumped_oscillator_vs_passes() but for a user provided capacitance matrix file.
-
-        Args:
-            path (str): Path to file.
-            Lj_nH (float): Junction inductance (in nH)
-            Cj_fF (float): Junction capacitance (in fF)
-            N (int): Coupling pads (1 readout, N - 1 bus)
-            fr (Union[list, float]):Readout frequencies (in GHz). fr can be a list with the order
-                they appear in the capMatrix.
-            fb (Union[list, float]): Coupling bus frequencies (in GHz). fb can be a list with the order
-                they appear in the capMatrix.
-            g_scale (float, optional): Scale factor. Defaults to 1..
-
-        Returns:
-            dict: A single dataframe corresponding to a single capacitance matrix
-        """
-        IC_Amps = Convert.Ic_from_Lj(Lj_nH, 'nH', 'A')
-        CJ = ureg(f'{Cj_fF} fF').to('farad').magnitude
-        fr = ureg(f'{fr} GHz').to('GHz').magnitude
-        fb = [ureg(f'{freq} GHz').to('GHz').magnitude for freq in fb]
-
-        df_cmat, user_units, _, _, = load_q3d_capacitance_matrix(path)
-        c_units = ureg(user_units).to('farads').magnitude
-
-        RES = extract_transmon_coupled_Noscillator(df_cmat.values * c_units,
-                                                   IC_Amps,
-                                                   CJ,
-                                                   N,
-                                                   fb,
-                                                   fr,
-                                                   g_scale=1)
-        RES['χr MHz'] = abs(RES['chi_in_MHz'].apply(lambda x: x[0]))
-        RES['gr MHz'] = abs(RES['gbus'].apply(lambda x: x[0]))
-        return RES
-
     def plot_convergence_main(self, RES: pd.DataFrame):
         """Plot alpha and frequency versus pass number, as well as convergence
         of delta (in %).
@@ -662,3 +616,43 @@ class QQ3DRenderer(QAnsysRenderer):
             self.logger.warning(
                 "Have you run connect_ansys()?  Cannot find a reference to Ansys in QRenderer."
             )
+
+
+def lumped_oscillator_from_path(path: str, Lj_nH: float, Cj_fF: float, N: int,
+                                fr: Union[list, float],
+                                fb: Union[list, float]) -> pd.DataFrame:
+    """Obtain a single result dataframe from a Q3D capacitance file pointed to by path.
+    Similar to lumped_oscillator_vs_passes() but for a user provided capacitance matrix file.
+
+    Args:
+        path (str): Path to file.
+        Lj_nH (float): Junction inductance (in nH)
+        Cj_fF (float): Junction capacitance (in fF)
+        N (int): Coupling pads (1 readout, N - 1 bus)
+        fr (Union[list, float]):Readout frequencies (in GHz). fr can be a list with the order
+            they appear in the capMatrix.
+        fb (Union[list, float]): Coupling bus frequencies (in GHz). fb can be a list with the order
+            they appear in the capMatrix.
+        g_scale (float, optional): Scale factor. Defaults to 1..
+
+    Returns:
+        dict: A single dataframe corresponding to a single capacitance matrix
+    """
+    IC_Amps = Convert.Ic_from_Lj(Lj_nH, 'nH', 'A')
+    CJ = ureg(f'{Cj_fF} fF').to('farad').magnitude
+    fr = ureg(f'{fr} GHz').to('GHz').magnitude
+    fb = [ureg(f'{freq} GHz').to('GHz').magnitude for freq in fb]
+
+    df_cmat, user_units, _, _, = load_q3d_capacitance_matrix(path)
+    c_units = ureg(user_units).to('farads').magnitude
+
+    RES = extract_transmon_coupled_Noscillator(df_cmat.values * c_units,
+                                               IC_Amps,
+                                               CJ,
+                                               N,
+                                               fb,
+                                               fr,
+                                               g_scale=1)
+    RES['χr MHz'] = abs(RES['chi_in_MHz'].apply(lambda x: x[0]))
+    RES['gr MHz'] = abs(RES['gbus'].apply(lambda x: x[0]))
+    return RES
