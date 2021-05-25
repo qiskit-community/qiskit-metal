@@ -12,39 +12,42 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 """MPL Canvas."""
-import logging
-import random
-import sys
+#import logging
+#import random
+#import sys
 from typing import TYPE_CHECKING, List
 
 import matplotlib
 import matplotlib as mpl
 import matplotlib.patches as patches
 import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
+#import numpy as np
+#import pandas as pd
 from cycler import cycler
-from descartes import PolygonPatch
-from IPython.display import display
+#from descartes import PolygonPatch
+#from IPython.display import display
 from matplotlib.axes import Axes
 from matplotlib.backends.backend_qt5agg import \
     FigureCanvasQTAgg as FigureCanvas
-from matplotlib.cbook import _OrderedSet
-from matplotlib.collections import LineCollection, PatchCollection
+#from matplotlib.cbook import _OrderedSet
+#from matplotlib.collections import LineCollection, PatchCollection
 from matplotlib.figure import Figure
 from matplotlib.transforms import Bbox
-from PySide2 import QtCore
+#from PySide2 import QtCore
 from PySide2.QtCore import QTimer
-from PySide2.QtGui import QIcon
-from PySide2.QtWidgets import (QApplication, QMainWindow, QMenu, QMessageBox,
-                               QPushButton, QSizePolicy, QVBoxLayout, QWidget)
-from shapely.geometry import CAP_STYLE, JOIN_STYLE, LineString
+#from PySide2.QtGui import QIcon
+# from PySide2.QtWidgets import (QApplication, QMainWindow, QMenu, QMessageBox,
+#                                QPushButton, QVBoxLayout, QWidget)
+from PySide2.QtWidgets import QSizePolicy
+#from shapely.geometry import CAP_STYLE, JOIN_STYLE, LineString
 
 from ... import Dict
 from ...designs import QDesign
-from .mpl_interaction import MplInteraction, PanAndZoom
+from .mpl_interaction import PanAndZoom
+#from .mpl_interaction import MplInteraction
 from .mpl_renderer import QMplRenderer
-from .mpl_toolbox import _axis_set_watermark_img, clear_axis, get_prop_cycle
+from .mpl_toolbox import _axis_set_watermark_img, clear_axis
+#from .mpl_toolbox import get_prop_cycle
 from .extensions.animated_text import AnimatedText
 
 from .. import config
@@ -325,8 +328,10 @@ class PlotCanvas(FigureCanvas):
         `canvas = gui.canvas`
     """
 
-    # See https://github.com/matplotlib/matplotlib/blob/master/lib/matplotlib/backends/backend_qt5agg.py
-    # Consider using pyqtgraph https://stackoverflow.com/questions/40126176/fast-live-plotting-in-matplotlib-pyplot.
+    # See
+    # https://github.com/matplotlib/matplotlib/blob/master/lib/matplotlib/backends/backend_qt5agg.py
+    # Consider using pyqtgraph
+    # https://stackoverflow.com/questions/40126176/fast-live-plotting-in-matplotlib-pyplot.
 
     def __init__(self,
                  design: QDesign,
@@ -617,12 +622,15 @@ class PlotCanvas(FigureCanvas):
     def welcome_message(self):
         """The GUI displays a message to let users know they are using Qiskit
         Metal."""
+
+        # pylint: disable=attribute-defined-outside-init
         self._welcome_text = AnimatedText(
             self.axes[0],
             "Welcome to Qiskit Metal Early Access Alpha",
             self,
             start=False,
             kw={'fontsize': 20})
+
         self._welcome_start_timer = QTimer.singleShot(
             250, self._welcome_message_start)
 
@@ -691,10 +699,10 @@ class PlotCanvas(FigureCanvas):
         """Clear the annotations.
 
         Raises:
-            Exception: Error while clearning the annotations
+            Exception: Error while clearing the annotations
         """
         try:
-            for ax in self.axes:
+            for dummy_ax in self.axes:
                 for patch in self._annotations['patch']:
                     # ax.patches.remove(patch)
                     # print(patch)
@@ -713,7 +721,7 @@ class PlotCanvas(FigureCanvas):
         self._annotations['text'] = []
 
     def highlight_components(self, component_names: List[str]):
-        """Higjlight a list of components.
+        """Highlight a list of components.
 
         Args:
             component_names (List[str]): A list of component names
@@ -735,7 +743,7 @@ class PlotCanvas(FigureCanvas):
 
         component_id_list = self.design.components.get_list_ints(
             component_names)
-
+        # pylint: disable=protected-access
         for component_id in component_id_list:
             component_id = int(component_id)
 
@@ -800,11 +808,14 @@ class PlotCanvas(FigureCanvas):
                             arrow = patches.FancyArrowPatch(
                                 m, m + n * 0.05, **kw)
                             self._annotations['patch'] += [arrow]
-                            """A fancy arrow patch. It draws an arrow using the ArrowStyle.
-                            The head and tail positions are fixed at the specified start and end points of the arrow,
-                            but the size and shape (in display coordinates) of the arrow does not change when the axis
-                            is moved or zoomed.
-                            """
+                            # """A fancy arrow patch. It draws an arrow using
+                            # the ArrowStyle.
+                            # The head and tail positions are fixed at the
+                            # specified start and end points of the arrow,
+                            # but the size and shape (in display coordinates)
+                            # of the arrow does not change when the axis
+                            # is moved or zoomed.
+                            # """
                             for ax in self.axes:
                                 ax.add_patch(arrow)
 
