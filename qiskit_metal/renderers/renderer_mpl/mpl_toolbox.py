@@ -116,7 +116,7 @@ def render(
     # plot_format=True,
     labels=None,
     __depth=-1,  # how many sublists in we are
-        _iteration=0):  # how many components we have plotted
+    _iteration=0):  # how many components we have plotted
     """Main plotting function. Plots onto an axis.
 
     Args:
@@ -178,7 +178,8 @@ def render(
     # We have now a single object to draw
     obj = components
 
-    if isinstance(obj, (shapely.geometry.MultiPolygon, shapely.geometry.Polygon)):
+    if isinstance(obj,
+                  (shapely.geometry.MultiPolygon, shapely.geometry.Polygon)):
         render_poly(obj, ax=ax, kw=kw)  # , **kwargs)
 
     else:
@@ -203,7 +204,6 @@ def render(
 # def draw_all_objects(components, ax, func=lambda x: x, root_name='components'):
 #     """
 #     #  TODO: This is very outdated, remove
-
 
 #     Args:
 #         components {[type]} -- [description]
