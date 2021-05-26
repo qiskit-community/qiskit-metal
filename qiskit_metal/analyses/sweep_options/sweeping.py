@@ -576,7 +576,7 @@ class Sweeping():
         a_hfss: 'QHFSSRenderer',
         variation: str = None
     ) -> Tuple[pd.core.frame.DataFrame, pd.core.frame.DataFrame, str, bool]:
-        """Use QHFSSRenderer to get convergence data from Ansys. 
+        """Use QHFSSRenderer to get convergence data from Ansys for eigenmode. 
 
         Args:
             a_hfss (QHFSSRenderer): Reference to renderer to Ansys.
@@ -588,11 +588,28 @@ class Sweeping():
             Tuple[pd.core.frame.DataFrame, pd.core.frame.DataFramestr, str, str]:
             1st DataFrame: Convergence_t
             2nd DataFrame: Convergence_f
-            3rd str: Text from GUI of solution data.
+            3rd list: Text from GUI of solution data.
             4th bool: If data converged.
         """
         convergence_t, convergence_f, gui_text = a_hfss.get_convergences(
             variation)
+
+        text_list, convergence = self.parse_text_from_hfss_convergence(gui_text)
+
+        return convergence_t, convergence_f, text_list, convergence
+
+    def parse_text_from_hfss_convergence(self,
+                                         gui_text: str) -> Tuple[list, bool]:
+        """Parse the text obtained from hfss after analysis. 
+
+        Args:
+            gui_text (str): Text from GUI of solution data.
+
+        Returns:
+            Tuple[list, bool]: All parsed information
+            1st list: Text from GUI of solution data.
+            2nd bool: If data converged. 
+        """
         text_list = gui_text.splitlines()
 
         # Find convergence information in text.
@@ -609,8 +626,30 @@ class Sweeping():
             self.design.logger.warning(
                 'Either could not find Converged information or too many '
                 'entries in text. Force convergence to be False.')
+        return text_list, convergence
 
-        return convergence_t, convergence_f, text_list, convergence
+    def hfss_dm_get_convergence(
+            self,
+            a_hfss: 'QHFSSRenderer',
+            variation: str = None) -> Tuple[pd.core.frame.DataFrame, str, bool]:
+        """Use QHFSSRenderer to get convergence data from Ansys for drivenmodal.
+
+        Args:
+            a_hfss (QHFSSRenderer): Reference to renderer to Ansys.
+            variation (str, optional): Information from pyEPR; variation should
+                            be in the form variation = "scale_factor='1.2001'". 
+                            Defaults to None.
+
+        Returns:
+            Tuple[pd.core.frame.DataFrame, str, bool]: 
+            1st DataFrame: Convergence_t
+            2nd list: Text from GUI of solution data.
+            3rd bool: If data converged.
+        """
+
+        convergence_t, _, gui_text = a_hfss.get_convergences(variation)
+        text_list, convergence = self.parse_text_from_hfss_convergence(gui_text)
+        return convergence_t, text_list, convergence
 
     def sweep_one_option_get_drivenmodal_solution_data(
             self,
@@ -630,8 +669,6 @@ class Sweeping():
             qcomp_name (str): A component that contains the option to be
                                 swept. Assume qcomp_name is in qcomp_render.
             option_name (str): The option within qcomp_name to sweep.
-                                Follow details from
-                                renderer in QHFSSRenderer.render_design.
             option_sweep (list): Each entry in the list is a value for
                                 option_name.
             dm_render_args (Dict): Arguments to pass to render_design().
@@ -762,8 +799,8 @@ class Sweeping():
             matrix_size = self.get_size_of_matrix(dm_render_args)
 
             self.populate_dm_all_sweep(all_sweep, a_hfss, dm_add_sweep_args,
-                                       setup_args, matrix_size, item)
-
+                                       setup_args, matrix_size, item,
+                                       option_name)
             #Decide if need to clean the design.
             obj_names = a_hfss.pinfo.get_all_object_names()
             if obj_names:
@@ -777,7 +814,7 @@ class Sweeping():
 
     def populate_dm_all_sweep(self, all_sweep: Dict, a_hfss: 'QHFSSRenderer',
                               dm_add_sweep_args: Dict, setup_args: Dict,
-                              matrix_size: int, item: str):
+                              matrix_size: int, item: str, option_name: str):
         """The Dict all_sweep holds three matrices for each iteration of a
         option in Metal.
 
@@ -789,6 +826,7 @@ class Sweeping():
             setup_args (Dict): Has name of setup.
             matrix_size (int): Size of matrix to retreive from Ansys sweep.
             item (str): Each value of option in Metal to iterate through.
+            option_name (str): The option within qcomp_name to sweep.
         """
         sweep_values = Dict()
         if matrix_size == 0:
@@ -799,9 +837,15 @@ class Sweeping():
             a_hfss.analyze_sweep(dm_add_sweep_args.name, setup_args.name)
             s_Pparms, y_Pparams, z_Pparams = a_hfss.get_all_Pparms_matrices(
                 matrix_size)
+
+            convergence_t, dummy_text_list, convergence = self.hfss_dm_get_convergence(
+                a_hfss, variation=None)
+            sweep_values['option_name'] = option_name
+            sweep_values['convergence'] = convergence
             sweep_values['s_matrix'] = s_Pparms
             sweep_values['y_matrix'] = y_Pparams
             sweep_values['z_matrix'] = z_Pparams
+            sweep_values['convergence_t'] = convergence_t
         all_sweep[item] = sweep_values
 
     def get_size_of_matrix(self, dm_render_args: Dict) -> int:
