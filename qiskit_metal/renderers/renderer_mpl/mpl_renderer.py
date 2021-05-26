@@ -40,8 +40,6 @@ __all__ = ['QMplRenderer']
 
 to_poly_patch = np.vectorize(PolygonPatch)
 
-# TODO: subclass from QRendererGui - define QRendererGui from this class as interface class
-
 
 class QMplRenderer():
     """Matplotlib handle all rendering of an axis.
