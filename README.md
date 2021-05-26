@@ -130,7 +130,7 @@ Alternatively, you can remove your conda environment by executing the commands b
 conda env list
 conda env remove -n <env_name_exist>
 ``` 
-Notice that using the `conda env update` command might introduce inconsistencies in your virtual environment, that could render it unusable. That can occur when a conda update occurs after any number of pip install.
+Notice that using the `conda env update` command might introduce inconsistencies in your virtual environment, and render it unusable. This occurs in general when using conda install commands after any number of pip install commands.
 
 #### Without conda: Setup in a virtual environment (alternative setup)
 
