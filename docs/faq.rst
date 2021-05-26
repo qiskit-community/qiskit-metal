@@ -13,6 +13,31 @@ Frequently asked questions.
 Setting up environment
 ----------------------
 
+**Q: jupyter notebook/lab cannot find qiskit_metal. Why is that?**
+
+**A:** If you are seeing: ``ModuleNotFoundError: No module named 'qiskit_metal'`` in jupyter notebook/lab, you are using a jupyter installation outside of your current environment and you therefore need to create a kernel that refers to the environment where you installed qiskit_metal. To do so, install and configure ipykernel.
+
+*conda*:
+
+.. code-block:: RST
+
+   conda activate <env_name>
+   conda install ipykernel
+   ipython kernel install --user --name=<any_name_for_kernel>
+
+*virtualenv*:
+
+.. code-block:: RST
+
+   source <env_name>/bin/activate  # or .\<env_name>\Scripts\activate
+   python -m pip install ipykernel
+   ipython kernel install --user --name=<any_name_for_kernel>
+
+You can now restart jupyter notebook/lab and switch to the newly created kernel using the menu `Kernel>Change Kernel`.
+
+If jupyter notebook/lab is still unable to find qiskit_metal, you might need to re-install qiskit_metal after installing ipykernel.
+
+You can avoid this problem altogether by freshly installing `jupyter` of `jupyterlab` inside the environment, as opposed to using a previous installation.
 
 **Q: Why do I have an inactive developer path on MacOs?**
 
@@ -79,7 +104,7 @@ After downloading the wheels, install ``gdal`` first, then ``fiona``, then again
 
 **Q: Why is my installation complaining about missing ``geos_c.dll``?**
 
-**A:** Based on: `this <https://github.com/Toblerity/Shapely/pull/1108>`_, this is a known bug with the ``shapely`` package <1.8. that should be fixed with a more recent shapely package. Meanwhile, you can use the shapely package from conda by installing it as ``conda install shapely`` before installing ``qiskit-metal``, which installs the missing file as a dependency.
+**A:** Based on: `this issue <https://github.com/Toblerity/Shapely/pull/1108>`_, this is a known bug with the ``shapely`` package <1.8. that should be fixed with a more recent shapely package. Meanwhile, you can use the shapely package from conda by installing it as ``conda install shapely`` before installing ``qiskit-metal``, which installs the missing file as a dependency.
 
 **Q: Why is "xcb" found but not loaded?**
 

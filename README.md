@@ -6,7 +6,7 @@
 ### Quantum device design project
 We are thrilled to ask you to join this journey to revolutionize quantum devices. This is a first-of-its-kind, open-source project for engineers and scientists to design superconducting quantum devices with ease.
 
-Qiskit-metal is licensed under Apache 2.0. IBM reserves no copyright over outputs of qiskit-metal.
+Qiskit Metal is licensed under Apache 2.0. IBM reserves no copyright over outputs of Qiskit Metal.
 
 #### Watch the recorded tutorials
 The streaming will also be recorded and made available [here](https://www.youtube.com/playlist?list=PLOFEBzvs-VvqHl5ZqVmhB_FcSqmLufsjb) for offline review.
@@ -56,10 +56,10 @@ Notes:
 * For your own sanity, it is recommended to read this document in its entirety before proceeding.
 * On Windows, the conda environment is strongly recommended because Shapely is difficult to install directly via pip.
 
-#### Conda environment setup (preferred setup)
+#### Setup in a conda environment (preferred setup)
 
 If you did not yet install conda, please follow these [instructions](https://docs.conda.io/projects/conda/en/latest/user-guide/install/).
-We will setup a conda environment to use the local copy of qiskit-metal you obtained in the previous section. This approach enables you to immediately observe the effect of your code modifications.
+We will setup a conda environment to use the local copy of Qiskit Metal you obtained in the previous section. This approach enables you to immediately observe the effect of your code modifications.
 
 For this section you will need to use the command line. If you use github desktop, you can open one from the menu `Repository -> Open In....`
 
@@ -84,7 +84,7 @@ python -m pip install --no-deps -r requirements-dev.txt -e .
 
 This creates a new environment with name `<env_name>` with all the necessary library dependencies.
 Then it activates the new environment.
-Finally installs the local qiskit-metal code inside that environment.
+Finally installs the local Qiskit Metal code inside that environment.
 
 The `-e` flag install qiskit\_metal in [editable mode](https://pip.pypa.io/en/stable/reference/pip_install/#cmdoption-e).
 You can add the `-v` flag if you would like to observe the verbose output during the installation.
@@ -106,21 +106,16 @@ Notes:
 * Remember to type the period (".") at the end of the pip install command.
 * **Important**: Remember to `conda activate <env_name>` if you intend to use qiskit-metal.  See what a [conda environment is](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html)
 
-At this point you can already use qiskit-metal through jupyter notebook.
-However, if you prefer using jupyter lab, you will need to execute a couple of extra steps.
+##### Jupyter notebook and Jupyter lab hints
+The file `environment.yml` contains jupyter. Therefore, launching `jupyter notebook` from your activated new environment `<env_name>`, will make jupyter notebook python execution default to the `<env_name>` python installation.
 
-##### (Optional) Jupyter lab
-Launching jupyter lab will execute python code in the conda `base` environment by default.
-To change environment to the Qiskit Metal one you just finished setting up, denoted by `<env_name>`, which we usually just call `metal`, you will need first to add to jupyter lab's list of available kernels. 
-From the command line, run the following lines (inside an active <env_name> environment):
-```sh
-conda activate <env_name>
-conda install ipykernel
-ipython kernel install --user --name=<any_name_for_kernel>
-```
-Using the above command, you will now have the current conda environment in any Jupyter notebook.
+However, if you did not install jupyter in your `<env_name>` (to save disk space, or to use an existing favorite install), jupyter notebook will execute the python code in the `<other_env>` (typically `base`) where it was installed.
 
-Once inside `jupyter lab`, you can switch to the newly created Metal kernel to use qiskit-metal. Use the Menu `Kernel>Change Kernel`.
+Similarly, `jupyterlab` will in general execute python code from the `base` environment.
+
+In the two above cases, you will need to setup a jupyter kernel that points to your `<env_name>` environment, to be able to find and execute successfully the qiskit-metal package.
+
+Check for the instructions to install a new kernel in the [FAQ](https://qiskit.org/documentation/metal/faq.html).
 
 #### Subsequent updates of the conda environment
 
@@ -137,7 +132,7 @@ conda env remove -n <env_name_exist>
 ``` 
 Notice that using the `conda env update` command might introduce inconsistencies in your virtual environment, that could render it unusable. That can occur when a conda update occurs after any number of pip install.
 
-#### Without conda: Virtual environment setup (alternative setup)
+#### Without conda: Setup in a virtual environment (alternative setup)
 
 ##### Prerequisites
 The package dependency `gdspy`, needs C++ compilation to successfully install in a base or virtualenv. Make sure the right compiler is installed on your machine if you encounter errors during the installation process described above.
@@ -158,18 +153,18 @@ where `<virtual_env_path/name>` is the name of your new Python virtual environme
 
 Here are some things to consider when setting up a development environment:
 * If using a virtual environment, make sure `pip` is up to date. In initial environment testing, PySide2 is installable with only the latest version of `pip`.
-* Add the path of your qiskit-metal folder to your PATH
-* Library errors when activating conda environments, or initializing jupyter notebook/lab, indicate a conflict between python libraries in the base and sub environments. Go ahead and manually delete the library from the base environment `site-packages` folder, shows in the error message. You might need to reinstall them in the sub environment, or create a new one.
- If Jupyter notebook has trouble finding a dll for a package that works in the new environment outside of Jupyter, then try opening Jupyter notebook from the new environment instead of from `base`
+* In some setups, you might need to add the qiskit-metal folder path to your PATH variable
+* Library errors when activating conda environments, or initializing jupyter notebook/lab, might indicate a conflict between python libraries in the base and sub environments. Go ahead and manually delete the library from the base environment `site-packages` folder, shown in the error message. You might need to reinstall them in the sub environment, or create a new one.
+* If Jupyter notebook has trouble finding a dll for a package that works in the new environment outside of Jupyter, then try opening Jupyter notebook from the new environment instead of from `base`
+
+### Other Common Issues
+
+For other common installation issues, please refer to the [FAQ](https://qiskit.org/documentation/metal/faq.html)
 
 ### Additional steps for developers
 
 If you are planning to develop the qiskit metal codebase, you'll want to use these instructions to [setup user environment](/docs/NEW_DEVELOPER_SETUP.md)
 
-
-### Common Issues
-
-For other common installation issues, please refer to the [FAQ](https://qiskit.org/documentation/metal/faq.html)
 
 ## Authors and Citation
 
