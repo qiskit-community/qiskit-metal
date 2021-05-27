@@ -12,12 +12,14 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 """ Sweep a qcomponent option, and get results of analysis."""
+# pylint: disable=too-many-lines
+from typing import Tuple, Union
 import pandas as pd
 
-from typing import Tuple, Union, Dict
 from qiskit_metal import Dict
+# pylint: disable=unused-import
+# QHFSSRenderer used to describe types in arguments.
 from qiskit_metal.renderers.renderer_ansys.hfss_renderer import QHFSSRenderer
-# from typing import List, Iterable, Any
 
 
 class Sweeping():
@@ -835,6 +837,7 @@ class Sweeping():
             sweep_values['z_matrix'] = None
         else:
             a_hfss.analyze_sweep(dm_add_sweep_args.name, setup_args.name)
+            # pylint: disable=invalid-name
             s_Pparms, y_Pparams, z_Pparams = a_hfss.get_all_Pparms_matrices(
                 matrix_size)
 
@@ -848,7 +851,8 @@ class Sweeping():
             sweep_values['convergence_t'] = convergence_t
         all_sweep[item] = sweep_values
 
-    def get_size_of_matrix(self, dm_render_args: Dict) -> int:
+    @classmethod
+    def get_size_of_matrix(cls, dm_render_args: Dict) -> int:
         """Determine the size of s_matrix, y_matrix, z_matrix.
         s_matrix =
         size of list of pins to render to lumped port +
@@ -857,12 +861,14 @@ class Sweeping():
         size of matrix = size of 3rd parameter + size of fourth parfameter
 
         List of arguments for render_design:
-            - First parameter: List of components to render (empty list if rendering whole Metal design) <br>
-            - Second parameter: List of pins (qcomp, pin) with open endcaps <br>
-            - Third parameter: List of pins (qcomp, pin, impedance) to render as lumped ports <br>
+            - First parameter: List of components to render
+                            (empty list if rendering whole Metal design)
+            - Second parameter: List of pins (qcomp, pin) with open endcaps
+            - Third parameter: List of pins (qcomp, pin, impedance) to render as lumped ports
             - Fourth parameter: List of junctions (qcomp, qgeometry_name, impedance, draw_ind)
-               to render as lumped ports or as lumped port in parallel with a sheet inductance <br>
-            - Fifth parameter: List of junctions (qcomp, qgeometry_name) to omit altogether during rendering
+               to render as lumped ports or as lumped port in parallel with a sheet inductance
+            - Fifth parameter: List of junctions (qcomp, qgeometry_name) to
+                            omit altogether during rendering
             - Sixth parameter: Whether to render chip via box plus buffer or fixed chip size
 
         Args:
@@ -911,16 +917,17 @@ class Sweeping():
         unexpected_keys = set(dm_add_sweep_args.keys()) - allowed_keys
 
         if unexpected_keys:
-            [dm_add_sweep_args.pop(key) for key in unexpected_keys]
+            #[dm_add_sweep_args.pop(key) for key in unexpected_keys]
             self.design.logger.warning(
                 f'Removed keys: {unexpected_keys} from '
                 'dm_add_sweep_args Dict before using it. ')
 
+        # pylint: disable=protected-access
         all_sweep_names = a_hfss.pinfo.setup._setup_module.GetSweeps(setup_name)
         if dm_add_sweep_args.name not in all_sweep_names:
             a_hfss.add_sweep(setup_name=setup_name, **dm_add_sweep_args)
 
-    def error_check_render_design_args(self, dm_render_args: Dict) -> int:
+    def error_check_render_design_args(self, dm_render_args: Dict) -> int:  # pylint: disable=too-many-return-statements
         """To render to Ansys, we need every argument in render_design.
         This method confirms all arguments are present.
 
@@ -933,7 +940,6 @@ class Sweeping():
             * 0 All the expected keys in Dict.
             * 1 A key is missing in dm_render_args Dict, look at warning message.
         """
-
         all_keys = dm_render_args.keys()
 
         if 'selection' not in all_keys:
@@ -1142,7 +1148,8 @@ class Sweeping():
         sweep_values['convergence_data'] = convergence_df
         all_sweep[item] = sweep_values
 
-    def _test_if_q3d_analysis_converged(self, target: float, current: float,
+    @classmethod
+    def _test_if_q3d_analysis_converged(cls, target: float, current: float,
                                         passes_min: int) -> Union[bool, None]:
         """Use solution-data from Ansys-Q3d to determine if converged.
 
@@ -1161,9 +1168,8 @@ class Sweeping():
             if current <= target and passes_min > 1:
                 is_converged = True
                 return is_converged
-            else:
-                is_converged = False
-                return is_converged
+            is_converged = False
+            return is_converged
 
         is_converged = None
         return is_converged
