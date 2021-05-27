@@ -13,7 +13,6 @@
 # that they have been altered from the originals.
 """Initialize default renderers for Metal."""
 
-from .. import config
 from .. import Dict
 
 
