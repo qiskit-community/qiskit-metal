@@ -31,7 +31,6 @@ import pandas as pd
 import scipy.optimize as opt
 from pint import UnitRegistry
 
-from pyEPR.ansys import ureg
 from pyEPR.calcs.convert import Convert
 
 __all__ = [
@@ -758,6 +757,7 @@ def lumped_oscillator_from_path(path: str, Lj_nH: float, Cj_fF: float, N: int,
     Returns:
         dict: A single dataframe corresponding to a single capacitance matrix
     """
+    ureg = UnitRegistry()
     IC_Amps = Convert.Ic_from_Lj(Lj_nH, 'nH', 'A')
     CJ = ureg(f'{Cj_fF} fF').to('farad').magnitude
     fr = ureg(f'{fr} GHz').to('GHz').magnitude
