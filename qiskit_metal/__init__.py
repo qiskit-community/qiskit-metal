@@ -14,7 +14,7 @@
 
 # pylint: disable=wrong-import-order
 # pylint: disable=wrong-import-position
-
+"""Qiskit Metal"""
 __version__ = '0.0.3'
 __license__ = "Apache 2.0"
 __copyright__ = 'Copyright IBM 2019-2020'
@@ -25,12 +25,13 @@ __status__ = "Development"
 ###########################################################################
 ### Basic Setups
 ## Setup Qt
-def __setup_Qt_backend():
+def __setup_Qt_backend():  # pylint: disable=invalid-name
     """Setup matplotlib to use Qt5's visualization.
 
     This function needs to remain in the __init__ of the library's root
     to prevent Qt windows from hanging.
     """
+    # pylint: disable=import-outside-toplevel
     import os
     os.environ["QT_API"] = "pyside2"
 
@@ -49,16 +50,18 @@ def __setup_Qt_backend():
 
     if 1:
 
-        if QtCore.QCoreApplication.instance() == None:
+        if QtCore.QCoreApplication.instance() is None:
             # No application launched yet
 
             # zkm: The following seems to fix warning.
             # For example if user ran %gui qt already.
             #  Qt WebEngine seems to be initialized from a plugin.
-            # Please set Qt::AA_ShareOpenGLContexts using QCoreApplication::setAttribute before constructing QGuiApplication.
+            # Please set Qt::AA_ShareOpenGLContexts using
+            # QCoreApplication::setAttribute before constructing QGuiApplication.
             # https://stackoverflow.com/questions/56159475/qt-webengine-seems-to-be-initialized
-            # Enables resource sharing between the OpenGL contexts used by classes like QOpenGLWidget and QQuickWidget.
-            # has to do with render mode 'gles'. tehre is also desktop and software.
+            # Enables resource sharing between the OpenGL contexts used by classes
+            # like QOpenGLWidget and QQuickWidget.
+            # Has to do with render mode 'gles'. tehre is also desktop and software.
             # QCoreApplication.setAttribute(QtCore.Qt.AA_UseOpenGLES)
             # QCoreApplication.setAttribute(QtCore.Qt.AA_ShareOpenGLContexts)
             # QCoreApplication.setAttribute(QtCore.Qt.AA_DisableShaderDiskCache)
@@ -66,11 +69,13 @@ def __setup_Qt_backend():
 
             # Enables high-DPI scaling in Qt on supported platforms (see also High DPI Displays).
             # Supported platforms are X11, Windows and Android.
-            # Enabling makes Qt scale the main (device independent) coordinate system
-            # according to display scale factors provided by the operating system.
+            # Enabling makes Qt scale the main (device independent) coordinate
+            # system according to display scale factors provided by the
+            # operating system.
             set_attribute('AA_EnableHighDpiScaling')
 
-            # Make QIcon::pixmap() generate high-dpi pixmaps that can be larger than the requested size.
+            # Make QIcon::pixmap() generate high-dpi pixmaps that can be larger
+            # than the requested size.
             set_attribute('AA_UseHighDpiPixmaps')
 
             # Other options of interest:
@@ -78,8 +83,10 @@ def __setup_Qt_backend():
             # AA_MacDontSwapCtrlAndMeta
 
     if not os.getenv('QISKIT_METAL_HEADLESS', None):
+        # pylint: disable=import-outside-toplevel
         import matplotlib as mpl
         mpl.use("Qt5Agg")
+        # pylint: disable=redefined-outer-name
         import matplotlib.pyplot as plt
         plt.ion()  # interactive
 
