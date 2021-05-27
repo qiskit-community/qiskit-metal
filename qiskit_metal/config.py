@@ -126,7 +126,7 @@ def is_building_docs():
     Returns:
         bool: True if .buildingdocs exists
     """
-    from pathlib import Path
+    from pathlib import Path  # pylint: disable=import-outside-toplevel
     build_docs_file = Path(__file__).parent.parent / "docs" / ".buildingdocs"
     return Path.exists(build_docs_file)
 

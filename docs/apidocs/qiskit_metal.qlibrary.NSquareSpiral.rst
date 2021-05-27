@@ -18,6 +18,7 @@ NSquareSpiral
    .. autosummary::
       :toctree: ../stubs/
    
+      NSquareSpiral.TOOLTIP
       NSquareSpiral.class_name
       NSquareSpiral.component_metadata
       NSquareSpiral.default_options

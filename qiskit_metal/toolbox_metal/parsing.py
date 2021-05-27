@@ -202,7 +202,7 @@ TRUE_STR = [
 def is_true(value: Union[str, int, bool, float]) -> bool:
     """Check if a value is true or not.
 
-    Arguments:
+    Args:
         value (str): Value to check
 
     Returns:
@@ -232,7 +232,7 @@ def _parse_string_to_float(expr: str):
 
     Original code: pyEPR.hfss - see file.
 
-    Arguments:
+    Args:
         expr (str): String expression such as '1nm'.
 
     Internal:
@@ -263,7 +263,7 @@ def _parse_string_to_float(expr: str):
 def is_variable_name(test_str: str):
     """Is the test string a valid name for a variable or not?
 
-    Arguments:
+    Args:
         test_str (str): Test string
 
     Returns:
@@ -276,7 +276,7 @@ def is_for_ast_eval(test_str: str):
     """Is the test string a valid list of dict string, such as "[1, 2]", that
     can be evaluated by ast eval.
 
-    Arguments:
+    Args:
         test_str (str): Test string
 
     Returns:
@@ -289,7 +289,7 @@ def is_for_ast_eval(test_str: str):
 def is_numeric_possible(test_str: str):
     """Is the test string a valid possible numerical with /or w/o units.
 
-    Arguments:
+    Args:
         test_str (str): Test string
 
     Returns:
@@ -334,7 +334,7 @@ def parse_value(value: str, variable_dict: dict):
         See the docstring for this module.
             >> ?qiskit_metal.toolbox_metal.parsing
 
-    Arguments:
+    Args:
         value (str): String to parse
         variable_dict (dict): dict pointer of variables
 

@@ -12,8 +12,10 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 """ Sweep a qcomponent option, and get results of analysis."""
-from typing import Tuple, Union, Dict
+import pandas as pd
 
+from typing import Tuple, Union, Dict
+from qiskit_metal import Dict
 from qiskit_metal.renderers.renderer_ansys.hfss_renderer import QHFSSRenderer
 # from typing import List, Iterable, Any
 
@@ -32,12 +34,12 @@ class Sweeping():
         self.design = design
 
     @classmethod
-    def option_value(cls, a_dict, search: str) -> str:
+    def option_value(cls, a_dict: Dict, search: str) -> str:
         """Get value from dict based on key.  This method is used for unknown
         depth, dict search, within a dict.
 
         Args:
-            a_dict (dict): Dictionary to get values from
+            a_dict (Dict): Dictionary to get values from
             search (str): String to search for
 
         Returns:
@@ -64,7 +66,7 @@ class Sweeping():
             * 0 Error not detected in the input-data.
             * 1 qcomp_name not registered in design.
             * 2 option_name is empty.
-            * 3 option_name is not found as key in dict.
+            * 3 option_name is not found as key in Dict.
             * 4 option_sweep is empty, need at least one entry.
         """
         option_path = None
@@ -285,11 +287,11 @@ class Sweeping():
         a_hfss.activate_eigenmode_setup(setup_args.name)
         return 0
 
-    def warning_for_setup(self, setup_args: dict, key: str, data_type: str):
-        """Give a warning based on key/value of dict.
+    def warning_for_setup(self, setup_args: Dict, key: str, data_type: str):
+        """Give a warning based on key/value of Dict.
 
         Args:
-            setup_args (dict): Holds the key/value of setup arguments
+            setup_args (Dict): Holds the key/value of setup arguments
                         that are of interest.
             key (str): Name of setup argument.
             data_type (str): The data type the argument should be.
@@ -441,7 +443,7 @@ class Sweeping():
             box_plus_buffer_render: bool = True,
             setup_args: Dict = None,
             leave_last_design: bool = True,
-            design_name: str = "Sweep_Eigenmode") -> Tuple[dict, int]:
+            design_name: str = "Sweep_Eigenmode") -> Tuple[Dict, int]:
         """
         Ansys must be open with inserted project. A design, "HFSS Design"
         with eigenmode solution-type will be inserted by this method.
@@ -477,7 +479,7 @@ class Sweeping():
                                     project. Defaults to "Sweep_Eigenmode".
 
         Returns:
-            Tuple[dict, int]: The dict key is each value of option_sweep, the
+            Tuple[Dict, int]: The dict key is each value of option_sweep, the
             value is the solution-data for each sweep.
             The int is the observation of searching for data from arguments as
             defined below.
@@ -496,7 +498,7 @@ class Sweeping():
         # pylint: disable=too-many-arguments
 
         #Dict of all swept information.
-        all_sweep = dict()
+        all_sweep = Dict()
         option_path, a_value, check_result, = self.error_check_sweep_input(
             qcomp_name, option_name, option_sweep)
         if check_result != 0:
@@ -539,13 +541,23 @@ class Sweeping():
             all_solutions = setup.get_solutions()
             #setup_names = all_solutions.list_variations()
             freqs, kappa_over_2pis = all_solutions.eigenmodes()
+            df_t, df_f, _, convergence = self.hfss_em_get_convergence(a_hfss)
 
-            sweep_values = dict()
+            if not convergence:
+                self.design.logger.warning(
+                    f'Heads-Up: {option_name}={item} Failed to converge.  ')
+
+            sweep_values = Dict()
+
+            sweep_values['convergence'] = convergence
             sweep_values['option_name'] = option_path[-1]
             sweep_values['frequency'] = freqs
             sweep_values['kappa_over_2pis'] = kappa_over_2pis
             sweep_values['quality_factor'] = self.get_quality_factor(
                 freqs, kappa_over_2pis)
+
+            sweep_values['convergence_eig_f'] = df_f
+            sweep_values['convergence_t'] = df_t
             all_sweep[item] = sweep_values
 
             #Decide if need to clean the design.
@@ -559,6 +571,86 @@ class Sweeping():
         a_hfss.disconnect_ansys()
         return all_sweep, 0
 
+    def hfss_em_get_convergence(
+        self,
+        a_hfss: 'QHFSSRenderer',
+        variation: str = None
+    ) -> Tuple[pd.core.frame.DataFrame, pd.core.frame.DataFrame, str, bool]:
+        """Use QHFSSRenderer to get convergence data from Ansys for eigenmode. 
+
+        Args:
+            a_hfss (QHFSSRenderer): Reference to renderer to Ansys.
+            variation (str, optional): Information from pyEPR; variation should
+                        be in the form variation = "scale_factor='1.2001'".
+                        Defaults to None.
+
+        Returns:
+            Tuple[pd.core.frame.DataFrame, pd.core.frame.DataFramestr, str, str]:
+            1st DataFrame: Convergence_t
+            2nd DataFrame: Convergence_f
+            3rd list: Text from GUI of solution data.
+            4th bool: If data converged.
+        """
+        convergence_t, convergence_f, gui_text = a_hfss.get_convergences(
+            variation)
+
+        text_list, convergence = self.parse_text_from_hfss_convergence(gui_text)
+
+        return convergence_t, convergence_f, text_list, convergence
+
+    def parse_text_from_hfss_convergence(self,
+                                         gui_text: str) -> Tuple[list, bool]:
+        """Parse the text obtained from hfss after analysis. 
+
+        Args:
+            gui_text (str): Text from GUI of solution data.
+
+        Returns:
+            Tuple[list, bool]: All parsed information
+            1st list: Text from GUI of solution data.
+            2nd bool: If data converged. 
+        """
+        text_list = gui_text.splitlines()
+
+        # Find convergence information in text.
+        convergence_bool = [
+            string for string in text_list if 'Converged' in string
+        ]
+        if len(convergence_bool) == 1:
+            if 'Yes' in convergence_bool[0]:
+                convergence = True
+            else:
+                convergence = False
+        else:
+            convergence = False
+            self.design.logger.warning(
+                'Either could not find Converged information or too many '
+                'entries in text. Force convergence to be False.')
+        return text_list, convergence
+
+    def hfss_dm_get_convergence(
+            self,
+            a_hfss: 'QHFSSRenderer',
+            variation: str = None) -> Tuple[pd.core.frame.DataFrame, str, bool]:
+        """Use QHFSSRenderer to get convergence data from Ansys for drivenmodal.
+
+        Args:
+            a_hfss (QHFSSRenderer): Reference to renderer to Ansys.
+            variation (str, optional): Information from pyEPR; variation should
+                            be in the form variation = "scale_factor='1.2001'". 
+                            Defaults to None.
+
+        Returns:
+            Tuple[pd.core.frame.DataFrame, str, bool]: 
+            1st DataFrame: Convergence_t
+            2nd list: Text from GUI of solution data.
+            3rd bool: If data converged.
+        """
+
+        convergence_t, _, gui_text = a_hfss.get_convergences(variation)
+        text_list, convergence = self.parse_text_from_hfss_convergence(gui_text)
+        return convergence_t, text_list, convergence
+
     def sweep_one_option_get_drivenmodal_solution_data(
             self,
             qcomp_name: str,
@@ -568,7 +660,7 @@ class Sweeping():
             dm_add_sweep_args: Dict,
             setup_args: Dict = None,
             leave_last_design: bool = True,
-            design_name: str = "Sweep_DrivenModal") -> Tuple[dict, int]:
+            design_name: str = "Sweep_DrivenModal") -> Tuple[Dict, int]:
         """
         Ansys must be open with inserted project. A design, "HFSS Design"
         with Driven Modal solution-type will be inserted by this method.
@@ -577,8 +669,6 @@ class Sweeping():
             qcomp_name (str): A component that contains the option to be
                                 swept. Assume qcomp_name is in qcomp_render.
             option_name (str): The option within qcomp_name to sweep.
-                                Follow details from
-                                renderer in QHFSSRenderer.render_design.
             option_sweep (list): Each entry in the list is a value for
                                 option_name.
             dm_render_args (Dict): Arguments to pass to render_design().
@@ -638,7 +728,7 @@ class Sweeping():
                                     project. Defaults to "Sweep_DrivenModal".
 
         Returns:
-            Tuple[dict, int]: The dict key is each value of option_sweep, the
+            Tuple[Dict, int]: The dict key is each value of option_sweep, the
             value is the solution-data for each sweep.
             There is a pandas dataframe for Scatter matrix, Impedance matrix,
             and Admittance matrix.
@@ -649,9 +739,9 @@ class Sweeping():
             * 0 Have list of capacitance matrix.
             * 1 qcomp_name not registered in design.
             * 2 option_name is empty.
-            * 3 option_name is not found as key in dict.
+            * 3 option_name is not found as key in Dict.
             * 4 option_sweep is empty, need at least one entry.
-            * 5 last key in option_name is not in dict.
+            * 5 last key in option_name is not in Dict.
             * 6 project not in app
             * 7 design not in app
             * 8 setup not implement, check the setup_args.
@@ -661,7 +751,7 @@ class Sweeping():
         # pylint: disable=too-many-arguments
 
         #Dict of all swept information.
-        all_sweep = dict()
+        all_sweep = Dict()
         option_path, a_value, check_result, = self.error_check_sweep_input(
             qcomp_name, option_name, option_sweep)
         if check_result != 0:
@@ -709,8 +799,8 @@ class Sweeping():
             matrix_size = self.get_size_of_matrix(dm_render_args)
 
             self.populate_dm_all_sweep(all_sweep, a_hfss, dm_add_sweep_args,
-                                       setup_args, matrix_size, item)
-
+                                       setup_args, matrix_size, item,
+                                       option_name)
             #Decide if need to clean the design.
             obj_names = a_hfss.pinfo.get_all_object_names()
             if obj_names:
@@ -724,7 +814,7 @@ class Sweeping():
 
     def populate_dm_all_sweep(self, all_sweep: Dict, a_hfss: 'QHFSSRenderer',
                               dm_add_sweep_args: Dict, setup_args: Dict,
-                              matrix_size: int, item: str):
+                              matrix_size: int, item: str, option_name: str):
         """The Dict all_sweep holds three matrices for each iteration of a
         option in Metal.
 
@@ -736,8 +826,9 @@ class Sweeping():
             setup_args (Dict): Has name of setup.
             matrix_size (int): Size of matrix to retreive from Ansys sweep.
             item (str): Each value of option in Metal to iterate through.
+            option_name (str): The option within qcomp_name to sweep.
         """
-        sweep_values = dict()
+        sweep_values = Dict()
         if matrix_size == 0:
             sweep_values['s_matrix'] = None
             sweep_values['y_matrix'] = None
@@ -746,9 +837,15 @@ class Sweeping():
             a_hfss.analyze_sweep(dm_add_sweep_args.name, setup_args.name)
             s_Pparms, y_Pparams, z_Pparams = a_hfss.get_all_Pparms_matrices(
                 matrix_size)
+
+            convergence_t, dummy_text_list, convergence = self.hfss_dm_get_convergence(
+                a_hfss, variation=None)
+            sweep_values['option_name'] = option_name
+            sweep_values['convergence'] = convergence
             sweep_values['s_matrix'] = s_Pparms
             sweep_values['y_matrix'] = y_Pparams
             sweep_values['z_matrix'] = z_Pparams
+            sweep_values['convergence_t'] = convergence_t
         all_sweep[item] = sweep_values
 
     def get_size_of_matrix(self, dm_render_args: Dict) -> int:
@@ -914,7 +1011,7 @@ class Sweeping():
             endcaps_render: list,
             setup_args: Dict = None,
             leave_last_design: bool = True,
-            design_name: str = "Sweep_Capacitance") -> Tuple[dict, int]:
+            design_name: str = "Sweep_Capacitance") -> Tuple[Dict, int]:
         """Ansys must be open with an inserted project.  A design,
         "Q3D Extractor Design", will be inserted by this method.
 
@@ -934,7 +1031,7 @@ class Sweeping():
             design_name(str): Name of q3d_design to use in project.
 
         Returns:
-            dict or int: If dict, the key is each value of option_sweep, the
+            Dict or int: If dict, the key is each value of option_sweep, the
             value is the capacitance matrix for each sweep.
             If int, observation of searching for data from arguments as
             defined below:
@@ -942,9 +1039,9 @@ class Sweeping():
             * 0 Have list of capacitance matrix.
             * 1 qcomp_name not registered in design.
             * 2 option_name is empty.
-            * 3 option_name is not found as key in dict.
+            * 3 option_name is not found as key in Dict.
             * 4 option_sweep is empty, need at least one entry.
-            * 5 last key in option_name is not in dict.
+            * 5 last key in option_name is not in Dict.
             * 6 project not in app
             * 7 design not in app
             * 8 setup not implement, check the setup_args.
@@ -954,7 +1051,7 @@ class Sweeping():
         # pylint: disable=too-many-locals
 
         #Dict of all swept information.
-        all_sweep = dict()
+        all_sweep = Dict()
         option_path, a_value, check_result = self.error_check_sweep_input(
             qcomp_name, option_name, option_sweep)
         if check_result != 0:
@@ -994,7 +1091,7 @@ class Sweeping():
                 a_q3d.pinfo.setup.name)  #Analyze said solution setup.
             cap_matrix = a_q3d.get_capacitance_matrix()
 
-            sweep_values = dict()
+            sweep_values = Dict()
             sweep_values['option_name'] = option_path[-1]
             sweep_values['capacitance'] = cap_matrix
             all_sweep[item] = sweep_values

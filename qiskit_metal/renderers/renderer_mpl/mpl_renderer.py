@@ -13,50 +13,32 @@
 # that they have been altered from the originals.
 """MPL Renderer."""
 import logging
-import random
-import sys
-from typing import TYPE_CHECKING, List
 
-import matplotlib as mpl
-import matplotlib.patches as patches
-import matplotlib.pyplot as plt
+from typing import TYPE_CHECKING
+
 import numpy as np
 import pandas as pd
-from cycler import cycler
+
 from descartes import PolygonPatch
-from IPython.display import display
 from matplotlib.axes import Axes
-from matplotlib.backends.backend_qt5agg import \
-    FigureCanvasQTAgg as FigureCanvas
-from matplotlib.cbook import _OrderedSet
 from matplotlib.collections import LineCollection, PatchCollection
-from matplotlib.figure import Figure
-from matplotlib.transforms import Bbox
-
 from shapely.geometry import CAP_STYLE, JOIN_STYLE, LineString
-
 from ... import Dict
 from ...designs import QDesign
-from ..renderer_base.renderer_gui_base import QRendererGui
-from .mpl_interaction import MplInteraction, PanAndZoom
-from .mpl_toolbox import _axis_set_watermark_img, clear_axis, get_prop_cycle
 
 from .. import config
 if not config.is_building_docs():
-    from ...toolbox_python.utility_functions import log_error_easy
     from qiskit_metal.toolbox_python.utility_functions import bad_fillet_idxs
 
 if TYPE_CHECKING:
     from ..._gui.main_window import MetalGUI
     from ..._gui.widgets.plot_widget.plot_window import QMainWindowPlot
     from .mpl_canvas import PlotCanvas
-    from qiskit_metal.elements.elements_handler import QGeometryTables
+    from qiskit_metal.qgeometries.qgeometries_handler import QGeometryTables
 
 __all__ = ['QMplRenderer']
 
 to_poly_patch = np.vectorize(PolygonPatch)
-
-# TODO: subclass from QRendererGui - define QRendererGui from this class as interface class
 
 
 class QMplRenderer():
@@ -68,6 +50,7 @@ class QMplRenderer():
         self = gui.canvas.metal_renderer
     """
 
+    # pylint: disable=too-many-instance-attributes
     def __init__(self, canvas: 'PlotCanvas', design: QDesign,
                  logger: logging.Logger):
         """
@@ -122,7 +105,7 @@ class QMplRenderer():
         Args:
             name (str): Component name
         """
-        comp_id = self.design.components[name].id
+        comp_id = self.design.components[name].id  # pylint: disable=unused-variable
         self._hidden_components.discard(name)
 
     def hide_layer(self, name):
@@ -159,7 +142,7 @@ class QMplRenderer():
     def render(self, ax: Axes):
         """Assumes that the axis has been cleared already and so on.
 
-        Arguments:
+        Args:
             ax (matplotlib.axes.Axes): mpl axis to draw on
         """
 
@@ -185,7 +168,8 @@ class QMplRenderer():
 
         return ~mask  # not
 
-    def _render_poly_array(self, ax: Axes, poly_array: np.array, mpl_kw: dict):
+    @classmethod
+    def _render_poly_array(cls, ax: Axes, poly_array: np.array, mpl_kw: dict):
         """Render the poly array.
 
         Args:
@@ -218,22 +202,24 @@ class QMplRenderer():
     }
     """Styles"""
 
-    def get_style(self,
-                  element_type: str,
-                  subtracted=False,
-                  layer=None,
-                  extra=None):
+    def get_style(
+            self,
+            element_type: str,
+            subtracted=False,
+            layer=None,  # pylint: disable=unused-variable, unused-argument
+            extra=None):
         """Get the style.
 
         Args:
             element_type (str): The type of element.
-            subtracted (bool): True to subtrat the key.  Defaults to False.
+            subtracted (bool): True to subtract the key.  Defaults to False.
             layer (layer): The layer.  Defaults to None.
             extra (dict): Extra stuff to add.  Defaults to None.
 
         Return:
             dict: Style dictionary
         """
+
         # element_type - poly path
         extra = extra or {}
 
@@ -261,7 +247,7 @@ class QMplRenderer():
             table = table[self.get_mask(table)]
 
             # subtracted
-            mask = table['subtract'] == True
+            mask = table['subtract'] is True
             render_func = getattr(self, f'render_{element_type}')
             render_func(table[mask], ax, subtracted=True)
 
@@ -282,7 +268,7 @@ class QMplRenderer():
         """Render a table of junction geometry.
         A junction is basically drawn like a path with finite width and no fillet.
 
-        Arguments:
+        Args:
             table (DataFrame): Element table
             ax (matplotlib.axes.Axes): Axis to render on
             extra_kw (dict): Style params
@@ -315,7 +301,7 @@ class QMplRenderer():
                     extra_kw: dict = None):
         """Render a table of poly geometry.
 
-        Arguments:
+        Args:
             table (DataFrame): Element table
             ax (matplotlib.axes.Axes): Axis to render on
             kw (dict): Style params
@@ -329,7 +315,7 @@ class QMplRenderer():
     def render_fillet(self, table):
         """Renders fillet path.
 
-        Arguments:
+        Args:
             table (DataFrame): Table of elements with fillets
 
         Returns:
@@ -341,7 +327,7 @@ class QMplRenderer():
     def fillet_path(self, row):
         """Output the filleted path.
 
-        Arguments:
+        Args:
             row (DataFrame): Row to fillet.
 
         Returns:
@@ -372,7 +358,8 @@ class QMplRenderer():
         newpath = np.concatenate((newpath, np.array([end])))
         return LineString(newpath)
 
-    def _calc_fillet(self,
+    @classmethod
+    def _calc_fillet(cls,
                      vertex_start,
                      vertex_corner,
                      vertex_end,
@@ -381,7 +368,7 @@ class QMplRenderer():
         """Returns the filleted path based on the start, corner, and end
         vertices and the fillet radius.
 
-        Arguments:
+        Args:
             vertex_start (np.ndarray): x-y coordinates of starting vertex.
             vertex_corner (np.ndarray): x-y coordinates of corner vertex.
             vertex_end (np.ndarray): x-y coordinates of end vertex.
@@ -400,7 +387,7 @@ class QMplRenderer():
             np.dot(vertex_start - vertex_corner, vertex_end - vertex_corner) /
             (np.linalg.norm(vertex_start - vertex_corner) *
              np.linalg.norm(vertex_end - vertex_corner)))
-        if end_angle == 0 or end_angle == np.pi:
+        if end_angle in (0, np.pi):
             return False
         # Determine direction so we know which way to fillet
         # TODO - replace with generalized code accounting for different rotations
@@ -436,7 +423,7 @@ class QMplRenderer():
                     extra_kw: dict = None):
         """Render a table of path geometry.
 
-        Arguments:
+        Args:
             table (DataFrame): Element table
             ax (matplotlib.axes.Axes): Axis to render on
             kw (dict): Style params

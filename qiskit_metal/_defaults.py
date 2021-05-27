@@ -71,7 +71,7 @@ class DefaultMetalOptions(Dict):
 
 
 # Can't really use this until default_draw_substrate.color_plane is resolved.
-class DefaultOptionsRenderer():
+class DefaultOptionsRenderer():  # pylint: disable=too-few-public-methods
     """`DefaultOptionsRenderer` is the class that encapsulate generic data used
     throughout qiskit metal classes for renderers.
 

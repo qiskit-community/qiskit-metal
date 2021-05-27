@@ -19,7 +19,7 @@ import builtins
 import json
 import queue
 from collections import OrderedDict
-from typing import Union, TYPE_CHECKING
+from typing import Union, TYPE_CHECKING, Any
 
 import numpy as np
 from PySide2 import QtCore
@@ -185,7 +185,7 @@ class BranchNode(Node):
                 return i
         return -1
 
-    def childWithKey(self, key):  # pylint: disable=invalid-name
+    def childWithKey(self, key: str):  # pylint: disable=invalid-name
         """Gets the child with the given key
 
         Args:
@@ -250,12 +250,12 @@ class LeafNode(Node):
     whose positions denote their nesting depth (shallow to deep).
     """
 
-    def __init__(self, name: str, value, parent=None):
+    def __init__(self, name: str, value: Any, parent=None):
         """
         Args:
             name (str): Label for the leaf node
+            value: (Any): Value for the leaf node
             parent (Node): The parent (Default: None)
-            path (list): Node path (Default: None)
         """
         super().__init__()
         self.parent = parent
@@ -371,9 +371,9 @@ class TreeModelParamEntry(QAbstractItemModel):
 
         Args:
             parent (QWidget): The parent widget
-            view:  Model's related QTreeView
-            data_dict: Data to be stored in the model's tree
-            design: Current design using the model
+            view (QTreeView):  Model's related QTreeView
+            data_dict (OrderedDict): Data to be stored in the model's tree
+            design (QDesign): Current design using the model
         """
         super().__init__(parent=parent)
         self._rowCount = -1  # pylint: disable=invalid-name
@@ -388,13 +388,16 @@ class TreeModelParamEntry(QAbstractItemModel):
             data_dict = {}
         self.init_load(data_dict)
 
-    def add_new_leaf_node(self, cur_index: QModelIndex, key, value=None):
+    def add_new_leaf_node(self,
+                          cur_index: QModelIndex,
+                          key: str,
+                          value: Any = None):
         """
         Add new leaf node to model's backing tree structure
         Args:
-            cur_index: Index of parent of new leaf
-            key: Key value in leaf node's key-value pair
-            value: Value in lead node's key-value pair
+            cur_index (QModelIndex): Index of parent of new leaf
+            key (str): Key value in leaf node's key-value pair
+            value (Any): Value in lead node's key-value pair
 
         Returns:
 
@@ -413,16 +416,16 @@ class TreeModelParamEntry(QAbstractItemModel):
 
     def add_new_branch_node(self,
                             cur_index: QModelIndex,
-                            key,
-                            fake_key,
-                            fake_value=None):
+                            key: str,
+                            fake_key: str,
+                            fake_value: Any = None):
         """
         Adds new branch node to model's backing tree
         Args:
-            cur_index: Index of parent of new branch
-            key: Key value, aka, name of new branch
-            fake_key: Placeholder leaf's key since QTreeView cannot display childless BranchNodes
-            fake_value: Placeholder leaf's value since QTreeView cant display childless BranchNodes
+            cur_index (QModelIndex): Index of parent of new branch
+            key (str): Key value, aka, name of new branch
+            fake_key (str): Placeholder leaf's key since QTreeView cannot display childless BranchNodes
+            fake_value (Any): Placeholder leaf's value since QTreeView cant display childless BranchNodes
 
         """
         parent_node = self.nodeFromIndex(cur_index)
@@ -441,7 +444,7 @@ class TreeModelParamEntry(QAbstractItemModel):
         """
         Removes node from backing tree
         Args:
-            cur_index: Index of node to be removed from backing tree
+            cur_index (QModelIndex): Index of node to be removed from backing tree
 
         Returns:
 
@@ -625,7 +628,7 @@ class TreeModelParamEntry(QAbstractItemModel):
     def setData(
             self,  # pylint: disable=too-many-return-statements
             index: QModelIndex,
-            value,
+            value: Any,
             role: Qt.ItemDataRole = Qt.EditRole) -> bool:
         """Set the LeafNode value and corresponding data entry to value.
         Returns true if successful; otherwise returns false.
@@ -633,7 +636,7 @@ class TreeModelParamEntry(QAbstractItemModel):
 
         Args:
             index (QModelIndex): The index
-            value: The value
+            value (Any): The value
             role (Qt.ItemDataRole): The role of the data (Default: Qt.EditRole)
 
         Returns:

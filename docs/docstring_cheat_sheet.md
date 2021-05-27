@@ -60,7 +60,7 @@ def __init__(self, <arguments here>):
    <blank line>                                    # Blank line inserts a new line
    This text appears on a new line
    <blank line>                                    # Blank line separates sections
-   Args:    # Don’t list if there are no arguments # Arguments: is also acceptable
+   Args:                                           # Don’t list if there are no arguments 
       Name1 (type): description                    # One argument per line
          Additional line of name1                  # Additional text must be indented
       Name2 (type): description. Defaults to value.   # Only list Default if there is a default value

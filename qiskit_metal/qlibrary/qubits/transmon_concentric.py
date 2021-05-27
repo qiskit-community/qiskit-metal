@@ -86,6 +86,8 @@ class TransmonConcentric(BaseQubit):
     )
     """Default drawing options"""
 
+    TOOLTIP = """The base `TrasmonConcentric` class."""
+
     def make(self):
         """Convert self.options into QGeometry."""
 

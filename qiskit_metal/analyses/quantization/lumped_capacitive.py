@@ -90,7 +90,7 @@ def transmon_props(Ic: float, Cq: float):
 
     Calculate LJ, EJ, EC, wq, eps from Ic,Cq.
 
-    Arguments:
+    Args:
         Ic (float): Junction Ic (in A)
         Cq (float): Junction capacitance (in F)
 
@@ -125,7 +125,7 @@ def chi(g: float, wr: float, w01: float, w12: float):
 
     All args need to be in the same units.
 
-    Arguments:
+    Args:
         g (float): Qubit-cavity linear coupling.
         wr (float): Frequency of resonator.
         w01 (float): Qubit 01 transition frequency
@@ -708,7 +708,7 @@ def load_q3d_capacitance_matrix(path, user_units='fF', _disp=True):
     """Load Q3D capcitance file exported as Maxwell matrix. Do not export
     conductance. Units are read in automatically and converted to user units.
 
-    Arguments:
+    Args:
         path (str): Path to file.
         user_units (str): Units.  Defaults to 'fF'.
         _disp (bool): whehter or not to display messages.  Defaults to True.
@@ -750,7 +750,7 @@ def df_cmat_style_print(df_cmat: pd.DataFrame):
 def move_index_to(i_from: List[int], i_to: List[int], len_):
     """Utility function to swap index.
 
-    Arguments:
+    Args:
         i_from (int): Data frame to swap index
         i_to (int): Data frame to index
         len_ (int): Length of array
@@ -769,7 +769,7 @@ def move_index_to(i_from: List[int], i_to: List[int], len_):
 def df_reorder_matrix_basis(df, i_from, i_to):
     """Data frame handle reording of matrix basis.
 
-    Arguments:
+    Args:
         df (DataFrame): Data frame to swap
         i_from (int): Index to move from
         i_to (int): Index to move to

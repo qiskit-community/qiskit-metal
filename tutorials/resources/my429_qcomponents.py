@@ -118,7 +118,8 @@ class MyQComponent4(QComponent):
                            width=p.height,
                            layer=p.layer,
                            subtract=False)
-        line2 = draw.LineString([((-p.width/2)-2*p.gap, 0), ((p.width/2)+2*p.gap, 0)])
+        line2 = draw.LineString([((-p.width / 2) - 2 * p.gap, 0),
+                                 ((p.width / 2) + 2 * p.gap, 0)])
         line2 = draw.translate(line2, p.pos_x, p.pos_y)
         self.add_qgeometry('path', {'cut': line2},
                            width=p.height + 2 * p.gap,

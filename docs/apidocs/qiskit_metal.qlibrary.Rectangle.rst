@@ -18,6 +18,7 @@ Rectangle
    .. autosummary::
       :toctree: ../stubs/
    
+      Rectangle.TOOLTIP
       Rectangle.class_name
       Rectangle.component_metadata
       Rectangle.default_options

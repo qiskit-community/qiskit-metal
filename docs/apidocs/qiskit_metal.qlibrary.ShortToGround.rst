@@ -18,6 +18,7 @@ ShortToGround
    .. autosummary::
       :toctree: ../stubs/
    
+      ShortToGround.TOOLTIP
       ShortToGround.class_name
       ShortToGround.component_metadata
       ShortToGround.default_options

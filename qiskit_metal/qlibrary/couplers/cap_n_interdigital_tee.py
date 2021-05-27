@@ -19,7 +19,7 @@ import numpy as np
 
 class CapNInterdigitalTee(QComponent):
     """Generates a three pin (+) structure comprised of a primary two pin CPW
-    transmission line,     and a secondary one pin neighboring CPW transmission
+    transmission line, and a secondary one pin neighboring CPW transmission
     line that is capacitively coupled to the primary. Such a structure can be
     used, as an example, for generating CPW resonator hangars off of a
     transmission line. (0,0) represents the center position of the component.
@@ -79,6 +79,10 @@ class CapNInterdigitalTee(QComponent):
                            chip='main',
                            layer='1')
     """Default connector options"""
+
+    TOOLTIP = """Generates a three pin (+) structure comprised of a primary two pin CPW
+    transmission line, and a secondary one pin neighboring CPW transmission
+    line that is capacitively coupled to the primary."""
 
     def make(self):
         """Build the component."""

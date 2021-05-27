@@ -18,6 +18,7 @@ TunableCoupler01
    .. autosummary::
       :toctree: ../stubs/
    
+      TunableCoupler01.TOOLTIP
       TunableCoupler01.class_name
       TunableCoupler01.component_metadata
       TunableCoupler01.default_options

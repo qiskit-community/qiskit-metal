@@ -508,7 +508,7 @@ class QMainWindowBaseHandler():
     def load_stylesheet(self, path=None):
         """Load and set stylesheet for the main gui.
 
-        Arguments:
+        Args:
             path (str) : Path to stylesheet or its name.
                 Can be: 'default', 'qdarkstyle' or None.
                 `qdarkstyle` requires
