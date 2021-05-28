@@ -23,6 +23,7 @@ lumped_capacitive
       get_C_and_Ic
       levels_vs_ng_real_units
       load_q3d_capacitance_matrix
+      lumped_oscillator_from_path
       move_index_to
       readin_q3d_matrix
       readin_q3d_matrix_m
