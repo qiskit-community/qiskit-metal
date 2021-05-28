@@ -157,7 +157,7 @@ For other common installation issues, please refer to the [FAQ](https://qiskit.o
 
 If you are planning to develop the qiskit metal codebase, you need extra packages, which you can install by running the following command instead of (or after) the previous one:
 ```
-python -m pip install --no-deps -r requirements-dev.txt
+python -m pip install -r requirements-dev.txt
 ```
 You'll want to also use these instructions to [setup user environment](/docs/NEW_DEVELOPER_SETUP.md)
 
