@@ -12,6 +12,6 @@ pygments
 pyside2
 qutip
 scipy
-shapely  #conda on Windows OS: pip install of shapely will fail on import for missing geos_c.dll, if <= v1.7.x. For as long as a 1.8.0 version is not released (already patched in github), you will need to run `conda install shapely` (before installing qiskit_metal).
+shapely  #using conda on Windows OS: pip install of shapely will fail on import for missing geos_c.dll, if <= v1.7.x. For as long as a 1.8.0 version is not released (already patched in github), you will need to run `conda install shapely` (before installing qiskit_metal).
 
 # jupyter (if you need a fresh install) or ipykernel (if you prefer to make of this a new kernel to use from an existing jupyter install)

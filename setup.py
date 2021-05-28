@@ -5,7 +5,8 @@ Run using:
 
 Most used flags:
     -e, --editable <path/url>
-        Install a project in editable mode (i.e. setuptools “develop mode”) from a local project path or a VCS url.
+        Install a project in editable mode (i.e. setuptools “develop mode”)
+        from a local project path or a VCS url.
 
     -v, --verbose
         Give more output.
@@ -13,25 +14,20 @@ Most used flags:
 # pylint: disable=invalid-name
 
 from pathlib import Path
+import os
 from setuptools import setup, find_packages
 
-import os
 if os.name == 'nt':
     try:
         import fiona
-    except:
-        print(
-            ">>>>>> Packages fiona and gdal have a known install issue on windows. <<<<<<"
-        )
-        print(
-            ">>>>>>>>>>> Please install fiona before installing qiskit-metal. <<<<<<<<<<<"
-        )
-        print(
-            ">>>>>>> For detailed instructions refer to the qiskit-metal FAQ page <<<<<<<"
-        )
-        print(
-            ">>>>>>>>>>>>> https://qiskit.org/documentation/metal/faq.html <<<<<<<<<<<<<<"
-        )
+    except ImportError:
+        print("\n\n \
+            QISKIT METAL INFORMATION: >>>>>>>>> To help you with the install. <<<<<<<<<<\n \
+            >>>>>> Packages fiona and gdal have a known install issue on Windows. <<<<<<\n \
+            >>>>>>>>>>> Please install fiona before installing qiskit-metal. <<<<<<<<<<<\n \
+            >>>>>>> For detailed instructions refer to the qiskit-metal FAQ page <<<<<<<\n \
+            >>>>>>>>>>>>> https://qiskit.org/documentation/metal/faq.html <<<<<<<<<<<<<<\n"
+             )
         raise
 
 here = Path(__file__).parent.absolute()  # pylint: disable=no-member
