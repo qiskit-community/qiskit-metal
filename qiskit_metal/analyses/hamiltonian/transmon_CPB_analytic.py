@@ -54,7 +54,7 @@ class Hcpb_analytic:
         #self._calc_H()
 
     def evalue_k(self, k: int):
-        '''
+        """
         Return the eigenvalue of the Hamiltonian for level k.
 
         Arguments:
@@ -62,7 +62,7 @@ class Hcpb_analytic:
 
         Returns:
             float: eigenvalue of the Hamiltonian
-        '''
+        """
         if self._ng == 0:
             index = k + 1.0 - ((k + 1.0) % 2.0)
         else:
