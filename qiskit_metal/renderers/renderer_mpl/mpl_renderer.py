@@ -56,8 +56,6 @@ __all__ = ['QMplRenderer']
 
 to_poly_patch = np.vectorize(PolygonPatch)
 
-# TODO: subclass from QRendererGui - define QRendererGui from this class as interface class
-
 
 class QMplRenderer():
     """Matplotlib handle all rendering of an axis.
@@ -166,7 +164,7 @@ class QMplRenderer():
         """
 
         # TODO: Ideally these should be replaced with interface functions,
-        # not direct access to undelying internal representation
+        # not direct access to underlying internal representation
 
         mask = table.layer.isin(self.hidden_layers)
         mask = table.component.isin(self._hidden_components)
@@ -213,7 +211,7 @@ class QMplRenderer():
         """Get the style.
         Args:
             element_type (str): The type of element.
-            subtracted (bool): True to subtrat the key.  Defaults to False.
+            subtracted (bool): True to subtract the key.  Defaults to False.
             layer (layer): The layer.  Defaults to None.
             extra (dict): Extra stuff to add.  Defaults to None.
         Return:
@@ -489,7 +487,7 @@ class QMplRenderer():
 #         represents the "port" of a connector point. These are referenced for smart placement
 #             of Metal components, such as when using functions like Metal_CPW_Connect.
 
-#         TODO: add some filter for sense of what components are visibile?
+#         TODO: add some filter for sense of what components are visible?
 #               or on what chip the connectors are
 #         '''
 
