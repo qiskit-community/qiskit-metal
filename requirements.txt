@@ -1,7 +1,7 @@
 addict
 descartes
 gdspy>=1.5.2
-geopandas  #Windows OS: This will give fiona errors if you are trying to pip installing qiskit-metal. If using `conda env`, you must first run `conda install fiona`. If using `python venv` you must first download the gdal and fiona wheels from https://www.lfd.uci.edu/~gohlke/pythonlibs/ and manually pip install them in that order.
+geopandas; platform_system != "Windows"  #pip install geopandas causes fiona errors. Therefore, if you use `conda env`, you must first run `conda install fiona`, while if you use `python venv` you must first download the gdal and fiona wheels from https://www.lfd.uci.edu/~gohlke/pythonlibs/ and manually pip install them in that order.
 ipython
 matplotlib
 numpy

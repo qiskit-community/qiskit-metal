@@ -21,6 +21,26 @@ __copyright__ = 'Copyright IBM 2019-2020'
 __author__ = 'Zlatko Minev, Thomas McConkey, and them IBM Quantum Team'
 __status__ = "Development"
 
+###########################################################################
+### Windows OS catch for library geopandas not installed with setup.py
+
+import os
+if os.name == 'nt':
+    try:
+        import geopandas
+    except ImportError:
+        print(" \
+            QISKIT METAL INFORMATION: >>>>>>>>>> One last installation step. <<<<<<<<<<<\n \
+            >>>>>> Packages fiona and gdal have a known install issue on Windows. <<<<<<\n \
+            >>>>>>>>>> geopandas depends on fiona, and fiona depends on gdal. <<<<<<<<<<\n \
+            >> To prevent the unavoidable pip installation fail, we excluded geopandas <\n \
+            >>>>>> from the list of qiskit-metal package dependencies in Windows. <<<<<<\n \
+            >>>>>>>> Before you can use Qiskit Metal, please install geopandas. <<<<<<<<\n \
+            >>>> For more information, you can follow the instructions on this FAQ <<<<<\n \
+            >>>>>>>>>>>>> https://qiskit.org/documentation/metal/faq.html <<<<<<<<<<<<<<\n"
+             )
+        raise
+
 
 ###########################################################################
 ### Basic Setups
@@ -31,7 +51,6 @@ def __setup_Qt_backend():
     This function needs to remain in the __init__ of the library's root
     to prevent Qt windows from hanging.
     """
-    import os
     os.environ["QT_API"] = "pyside2"
 
     from PySide2 import QtCore  #, QtWidgets
@@ -55,10 +74,12 @@ def __setup_Qt_backend():
             # zkm: The following seems to fix warning.
             # For example if user ran %gui qt already.
             #  Qt WebEngine seems to be initialized from a plugin.
-            # Please set Qt::AA_ShareOpenGLContexts using QCoreApplication::setAttribute before constructing QGuiApplication.
+            # Please set Qt::AA_ShareOpenGLContexts using QCoreApplication::setAttribute
+            #  before constructing QGuiApplication.
             # https://stackoverflow.com/questions/56159475/qt-webengine-seems-to-be-initialized
-            # Enables resource sharing between the OpenGL contexts used by classes like QOpenGLWidget and QQuickWidget.
-            # has to do with render mode 'gles'. tehre is also desktop and software.
+            # Enables resource sharing between the OpenGL contexts used by classes
+            #  like QOpenGLWidget and QQuickWidget.
+            # Has to do with render mode 'gles'. There is also desktop and software.
             # QCoreApplication.setAttribute(QtCore.Qt.AA_UseOpenGLES)
             # QCoreApplication.setAttribute(QtCore.Qt.AA_ShareOpenGLContexts)
             # QCoreApplication.setAttribute(QtCore.Qt.AA_DisableShaderDiskCache)
@@ -70,7 +91,8 @@ def __setup_Qt_backend():
             # according to display scale factors provided by the operating system.
             set_attribute('AA_EnableHighDpiScaling')
 
-            # Make QIcon::pixmap() generate high-dpi pixmaps that can be larger than the requested size.
+            # Make QIcon::pixmap() generate high-dpi pixmaps that can be larger than
+            #  the requested size.
             set_attribute('AA_UseHighDpiPixmaps')
 
             # Other options of interest:
@@ -80,8 +102,8 @@ def __setup_Qt_backend():
     if not os.getenv('QISKIT_METAL_HEADLESS', None):
         import matplotlib as mpl
         mpl.use("Qt5Agg")
-        import matplotlib.pyplot as plt
-        plt.ion()  # interactive
+        import matplotlib.pyplot as mplt
+        mplt.ion()  # interactive
 
 
 __setup_Qt_backend()

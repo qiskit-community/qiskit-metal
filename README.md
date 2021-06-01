@@ -28,7 +28,7 @@ qiskit_metal.open_docs()
 
 Finally, you can also choose to build the documentation locally. To do so, from command line, change directory to `docs` and execute `python build_docs.py`.
 
-## Installation
+## Installation from the github repository
 ### Video Instructions
 
 <a href="https://www.youtube.com/watch?v=sYVDtnJb-ZM&ab_channel=Qiskit">

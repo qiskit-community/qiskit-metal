@@ -37,7 +37,37 @@ You can now restart jupyter notebook/lab and switch to the newly created kernel 
 
 If jupyter notebook/lab is still unable to find qiskit_metal, you might need to re-install qiskit_metal after installing ipykernel.
 
-You can avoid this problem altogether by freshly installing `jupyter` of `jupyterlab` inside the environment, as opposed to using a previous installation.
+You can completely prevent the ModuleNotFoundError by installing `jupyter` or `jupyterlab` inside the environment, instead of using a pre-existing installation.
+
+**Q: Why is the pip installation asking to install geopandas? Or why is it asking for a path to gdal-config?**
+
+**A:** If you have been directed here from a Qiskit Metal warning, or you are seeing: *A GDAL API version must be specified. Provide a path to gdal-config using a GDAL_CONFIG environment variable or use a GDAL_VERSION environment variable.* you are probably a Windows user, trying to install qiskit-metal thorugh pip on a brand new environment.
+This is the result of a known limitation of the PyPI Windows wheels for ``gdal`` and ``fiona``.
+
+*conda:*
+
+Conda has valid ``gdal`` and ``fiona`` packages. Simply run:
+
+.. code-block:: RST
+
+   conda install geopandas
+   python -m pip install -e .   (replace this line with the one you executed before the error)
+
+*python venv:*
+
+You will need to download and install the binary wheels from `here <https://www.lfd.uci.edu/~gohlke/pythonlibs/>_`.
+After downloading the wheels, install ``gdal`` first, then ``fiona``, then ``geopandas``. Finally re-install ``qiskit-metal``. Replace the wheel names in the example below with the names of the files you downloaded:
+
+.. code-block:: RST
+
+   python -m pip install .\GDAL-3.2.3-cp38-cp38-win_amd64.whl
+   python -m pip install .\Fiona-1.8.19-cp38-cp38-win_amd64.whl
+   python -m pip install geopandas
+   python -m pip install -e .   (replace this line with the one you executed before the error)
+
+**Q: Why is my installation complaining about missing ``geos_c.dll``?**
+
+**A:** Based on: `this issue <https://github.com/Toblerity/Shapely/pull/1108>`_, this is a known bug with the ``shapely`` package <1.8. that should be fixed with a more recent shapely package. Meanwhile, you can use the shapely package from conda by installing it as ``conda install shapely`` before installing ``qiskit-metal``, which installs the missing file as a dependency.
 
 **Q: Why do I have an inactive developer path on MacOs?**
 
@@ -81,30 +111,6 @@ Then open the applicable settings.json in your VS Code. (See how to open command
    "terminal.integrated.env.osx": {
       "PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
       }
-
-**Q: Why is the pip installation asking for a path to gdal-config?**
-
-**A:** If you are seeing: *A GDAL API version must be specified. Provide a path to gdal-config using a GDAL_CONFIG environment variable or use a GDAL_VERSION environment variable.* you are probably trying to install qiskit-metal on a brand new environment.
-This is the result of a known limitation of the PyPI windows packages ``gdal`` and ``fiona``.
-
-*conda:*
-
-Conda has valid ``gdal`` and ``fiona`` packages. Simply run ``conda install fiona`` before trying again to install qiskit-metal.
-
-*python venv:*
-
-You will need to download and install the binary wheels from `here <https://www.lfd.uci.edu/~gohlke/pythonlibs/>_`.
-After downloading the wheels, install ``gdal`` first, then ``fiona``, then again ``qiskit-metal``. Replace the wheel names in the example below with the names of the files you downloaded:
-
-.. code-block:: RST
-
-   python -m pip install .\GDAL-3.2.3-cp38-cp38-win_amd64.whl
-   python -m pip install .\Fiona-1.8.19-cp38-cp38-win_amd64.whl
-   python -m pip install -e .   (replace this line with the one you executed before the error)
-
-**Q: Why is my installation complaining about missing ``geos_c.dll``?**
-
-**A:** Based on: `this issue <https://github.com/Toblerity/Shapely/pull/1108>`_, this is a known bug with the ``shapely`` package <1.8. that should be fixed with a more recent shapely package. Meanwhile, you can use the shapely package from conda by installing it as ``conda install shapely`` before installing ``qiskit-metal``, which installs the missing file as a dependency.
 
 **Q: Why is "xcb" found but not loaded?**
 
