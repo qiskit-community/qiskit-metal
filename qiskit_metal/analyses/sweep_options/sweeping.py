@@ -1113,13 +1113,10 @@ class Sweeping():
 
         Args:
             all_sweep (Dict): Reference to hold each item which corresponds
-            to option_name.
-
+              to option_name.
             a_q3d (QQ3DRenderer): Reference to Ansys-Q3D renderer.
-
             item (str): The value of each item that we want to sweep
-            in option_name.
-
+              in option_name.
             option_name (str): The option of QComponent that we want to sweep.
         """
 
@@ -1157,7 +1154,7 @@ class Sweeping():
             target (float): Delta percentage for target. Default is None.
             current (float): Delta percentage for current. Default is None.
             passes_min (int): Regarding convergence, minimum number of passes.
-            Default is None.
+              Default is None.
 
         Returns:
             Union[bool, None]: Had solution data converged.  Default is None.
@@ -1214,7 +1211,7 @@ class Sweeping():
 
         Returns:
             Union[None, float]: Regarding convergence, minimum number of passes.
-            Default is None.
+              Default is None.
         """
 
         min_num_of_passes = None
