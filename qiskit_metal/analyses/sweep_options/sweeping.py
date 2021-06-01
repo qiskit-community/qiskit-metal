@@ -12,12 +12,14 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 """ Sweep a qcomponent option, and get results of analysis."""
+# pylint: disable=too-many-lines
+from typing import Tuple, Union
 import pandas as pd
 
-from typing import Tuple, Union, Dict
 from qiskit_metal import Dict
+# pylint: disable=unused-import
+# QHFSSRenderer used to describe types in arguments.
 from qiskit_metal.renderers.renderer_ansys.hfss_renderer import QHFSSRenderer
-# from typing import List, Iterable, Any
 
 
 class Sweeping():
@@ -576,7 +578,7 @@ class Sweeping():
         a_hfss: 'QHFSSRenderer',
         variation: str = None
     ) -> Tuple[pd.core.frame.DataFrame, pd.core.frame.DataFrame, str, bool]:
-        """Use QHFSSRenderer to get convergence data from Ansys for eigenmode. 
+        """Use QHFSSRenderer to get convergence data from Ansys for eigenmode.
 
         Args:
             a_hfss (QHFSSRenderer): Reference to renderer to Ansys.
@@ -600,7 +602,7 @@ class Sweeping():
 
     def parse_text_from_hfss_convergence(self,
                                          gui_text: str) -> Tuple[list, bool]:
-        """Parse the text obtained from hfss after analysis. 
+        """Parse the text obtained from hfss after analysis.
 
         Args:
             gui_text (str): Text from GUI of solution data.
@@ -608,7 +610,7 @@ class Sweeping():
         Returns:
             Tuple[list, bool]: All parsed information
             1st list: Text from GUI of solution data.
-            2nd bool: If data converged. 
+            2nd bool: If data converged.
         """
         text_list = gui_text.splitlines()
 
@@ -637,11 +639,11 @@ class Sweeping():
         Args:
             a_hfss (QHFSSRenderer): Reference to renderer to Ansys.
             variation (str, optional): Information from pyEPR; variation should
-                            be in the form variation = "scale_factor='1.2001'". 
+                            be in the form variation = "scale_factor='1.2001'".
                             Defaults to None.
 
         Returns:
-            Tuple[pd.core.frame.DataFrame, str, bool]: 
+            Tuple[pd.core.frame.DataFrame, str, bool]:
             1st DataFrame: Convergence_t
             2nd list: Text from GUI of solution data.
             3rd bool: If data converged.
@@ -835,6 +837,7 @@ class Sweeping():
             sweep_values['z_matrix'] = None
         else:
             a_hfss.analyze_sweep(dm_add_sweep_args.name, setup_args.name)
+            # pylint: disable=invalid-name
             s_Pparms, y_Pparams, z_Pparams = a_hfss.get_all_Pparms_matrices(
                 matrix_size)
 
@@ -848,7 +851,8 @@ class Sweeping():
             sweep_values['convergence_t'] = convergence_t
         all_sweep[item] = sweep_values
 
-    def get_size_of_matrix(self, dm_render_args: Dict) -> int:
+    @classmethod
+    def get_size_of_matrix(cls, dm_render_args: Dict) -> int:
         """Determine the size of s_matrix, y_matrix, z_matrix.
         s_matrix =
         size of list of pins to render to lumped port +
@@ -857,12 +861,14 @@ class Sweeping():
         size of matrix = size of 3rd parameter + size of fourth parfameter
 
         List of arguments for render_design:
-            - First parameter: List of components to render (empty list if rendering whole Metal design) <br>
-            - Second parameter: List of pins (qcomp, pin) with open endcaps <br>
-            - Third parameter: List of pins (qcomp, pin, impedance) to render as lumped ports <br>
+            - First parameter: List of components to render
+                            (empty list if rendering whole Metal design)
+            - Second parameter: List of pins (qcomp, pin) with open endcaps
+            - Third parameter: List of pins (qcomp, pin, impedance) to render as lumped ports
             - Fourth parameter: List of junctions (qcomp, qgeometry_name, impedance, draw_ind)
-               to render as lumped ports or as lumped port in parallel with a sheet inductance <br>
-            - Fifth parameter: List of junctions (qcomp, qgeometry_name) to omit altogether during rendering
+               to render as lumped ports or as lumped port in parallel with a sheet inductance
+            - Fifth parameter: List of junctions (qcomp, qgeometry_name) to
+                            omit altogether during rendering
             - Sixth parameter: Whether to render chip via box plus buffer or fixed chip size
 
         Args:
@@ -911,16 +917,17 @@ class Sweeping():
         unexpected_keys = set(dm_add_sweep_args.keys()) - allowed_keys
 
         if unexpected_keys:
-            [dm_add_sweep_args.pop(key) for key in unexpected_keys]
+            #[dm_add_sweep_args.pop(key) for key in unexpected_keys]
             self.design.logger.warning(
                 f'Removed keys: {unexpected_keys} from '
                 'dm_add_sweep_args Dict before using it. ')
 
+        # pylint: disable=protected-access
         all_sweep_names = a_hfss.pinfo.setup._setup_module.GetSweeps(setup_name)
         if dm_add_sweep_args.name not in all_sweep_names:
             a_hfss.add_sweep(setup_name=setup_name, **dm_add_sweep_args)
 
-    def error_check_render_design_args(self, dm_render_args: Dict) -> int:
+    def error_check_render_design_args(self, dm_render_args: Dict) -> int:  # pylint: disable=too-many-return-statements
         """To render to Ansys, we need every argument in render_design.
         This method confirms all arguments are present.
 
@@ -933,7 +940,6 @@ class Sweeping():
             * 0 All the expected keys in Dict.
             * 1 A key is missing in dm_render_args Dict, look at warning message.
         """
-
         all_keys = dm_render_args.keys()
 
         if 'selection' not in all_keys:
@@ -1087,14 +1093,7 @@ class Sweeping():
                 selection=qcomp_render,
                 open_pins=endcaps_render)  #Render the items chosen
 
-            a_q3d.analyze_setup(
-                a_q3d.pinfo.setup.name)  #Analyze said solution setup.
-            cap_matrix = a_q3d.get_capacitance_matrix()
-
-            sweep_values = Dict()
-            sweep_values['option_name'] = option_path[-1]
-            sweep_values['capacitance'] = cap_matrix
-            all_sweep[item] = sweep_values
+            self.populate_q3d_all_sweep(all_sweep, a_q3d, item, option_name)
 
             #Decide if need to clean the design.
             obj_names = a_q3d.pinfo.get_all_object_names()
@@ -1107,4 +1106,184 @@ class Sweeping():
         a_q3d.disconnect_ansys()
         return all_sweep, 0
 
-    # The methods allow users to sweep a variable in a components's options.
+    def populate_q3d_all_sweep(self, all_sweep: Dict, a_q3d: 'QQ3DRenderer',
+                               item: str, option_name: str):
+        """Analyze the setup, get convergence and capacitance information,
+        populate all_sweep for each item which corresponds to option_name.
+
+        Args:
+            all_sweep (Dict): Reference to hold each item which corresponds
+              to option_name.
+            a_q3d (QQ3DRenderer): Reference to Ansys-Q3D renderer.
+            item (str): The value of each item that we want to sweep
+              in option_name.
+            option_name (str): The option of QComponent that we want to sweep.
+        """
+
+        #Analyze said solution setup.
+        a_q3d.analyze_setup(a_q3d.pinfo.setup.name)
+
+        # If 'LastAdaptive' is used, then the pass_number won't affect anything.
+        # If 'AdaptivePass' is used, then the pass_number is used.
+        convergence_df, convergence_txt = a_q3d.pinfo.setup.get_convergence()
+        target, current, pass_min = self._parse_text_from_q3d_convergence(
+            convergence_txt)
+        is_converged = self._test_if_q3d_analysis_converged(
+            target, current, pass_min)
+        cap_matrix = a_q3d.get_capacitance_matrix(variation='',
+                                                  solution_kind='LastAdaptive',
+                                                  pass_number=1)
+
+        sweep_values = Dict()
+        sweep_values['option_name'] = option_name
+        #sweep_values['option_name'] = option_path[-1]
+        sweep_values['convergence_target'] = target
+        sweep_values['convergence_current'] = current
+        sweep_values['min_number_passes'] = pass_min
+        sweep_values['is_convergence'] = is_converged
+        sweep_values['capacitance'] = cap_matrix
+        sweep_values['convergence_data'] = convergence_df
+        all_sweep[item] = sweep_values
+
+    @classmethod
+    def _test_if_q3d_analysis_converged(cls, target: float, current: float,
+                                        passes_min: int) -> Union[bool, None]:
+        """Use solution-data from Ansys-Q3d to determine if converged.
+
+        Args:
+            target (float): Delta percentage for target. Default is None.
+            current (float): Delta percentage for current. Default is None.
+            passes_min (int): Regarding convergence, minimum number of passes.
+              Default is None.
+
+        Returns:
+            Union[bool, None]: Had solution data converged.  Default is None.
+        """
+
+        if None not in (target, current, passes_min):
+            # Confirm that all three numbers have an value.
+            if current <= target and passes_min > 1:
+                is_converged = True
+                return is_converged
+            is_converged = False
+            return is_converged
+
+        is_converged = None
+        return is_converged
+
+    def _parse_text_from_q3d_convergence(
+            self,
+            gui_text: str) -> Tuple[Union[None, float], Union[None, float]]:
+        """Parse gui_text using apriori known formatting. Ansys-Q3D
+        solution-data provides gui_text.
+
+        Args:
+            gui_text (str): From Ansys-GUI-SolutionData.
+
+        Returns:
+            1st Union[None, float]: Delta percentage for target. Default is None.
+            2nd Union[None, float]: Delta percentage for current. Default is None.
+        """
+
+        text_list = gui_text.splitlines()
+
+        # Find Target information in text.
+        target_all = [string for string in text_list if 'Target' in string]
+
+        # Find Current information in text.
+        current_all = [string for string in text_list if 'Current' in string]
+
+        # Find Minimum number of passes from solution-data.
+        min_passes_all = [string for string in text_list if 'Minimum' in string]
+
+        target = self._extract_target_delta(target_all)
+        current = self._extract_current_delta(current_all)
+        min_passes = self._extract_min_passes(min_passes_all)
+
+        return target, current, min_passes
+
+    def _extract_min_passes(self, min_passes_all: list) -> Union[None, float]:
+        """Given a pre-formatted list, search and return the "Minimum Number
+        Of Passes."
+
+        Args:
+            min_passes_all (list): Result of search through string returned from Ansys-Q3D.
+
+        Returns:
+            Union[None, float]: Regarding convergence, minimum number of passes.
+              Default is None.
+        """
+
+        min_num_of_passes = None
+        if len(min_passes_all) == 1:
+            if min_passes_all[0]:
+                _, _, min_passes_str = min_passes_all[0].partition(':')
+                try:
+                    min_num_of_passes = int(min_passes_str)
+                except ValueError:
+                    self.design.logger.warning(
+                        f'Target={min_passes_str} in GUI is not an int.'
+                        'Force Minimum Number Of Passes to be None.')
+        else:
+            self.design.logger.warning(
+                'Either could not find Minimum Number of Passes '
+                'information or too many entries in text. '
+                'Force Minimum Number of Passes to be None.')
+        return min_num_of_passes
+
+    def _extract_target_delta(self, target_all: list) -> Union[None, float]:
+        """Given a pre-formatted list, search and return the target-delta
+        percentage for convergence.
+
+        Args:
+            target_all (list): Result of search through string returned from Ansys-Q3D.
+
+        Returns:
+            Union[None, float]: Delta percentage for target. Default is None.
+        """
+
+        target = None
+        if len(target_all) == 1:
+            if target_all[0]:
+                _, _, target_str = target_all[0].partition(':')
+                try:
+                    target = float(target_str)
+                except ValueError:
+                    self.design.logger.warning(
+                        f'Target={target_str} in GUI is not a float.'
+                        'Force Target Delta to be None.')
+        else:
+            self.design.logger.warning(
+                'Either could not find Target Delta information or too many '
+                'entries in text. Force Target Delta to be None.')
+        return target
+
+    def _extract_current_delta(self, current_all: list) -> Union[None, float]:
+        """Given a pre-formatted list, search and return the current-delta
+        percentage for convergence.
+
+        Args:
+            current_all (list): Result of search through string returned from Ansys-Q3D.
+
+        Returns:
+            Union[None, float]: Delta percentage for current. Default is None.
+        """
+
+        current = None
+        if len(current_all) == 1:
+            if current_all[0]:
+                _, _, current_str = current_all[0].partition(':')
+                try:
+                    current = float(current_str)
+                except ValueError:
+                    self.design.logger.warning(
+                        f'Target={current_str} in GUI is not a float.'
+                        'Force Current Delta to be None.')
+        else:
+            self.design.logger.warning(
+                'Either could not find Current Delta information or too many '
+                'entries in text. Force Current Delta to be None.')
+        return current
+
+
+# The methods allow users to sweep a variable in a components's options.
