@@ -171,7 +171,7 @@ class EigenmodeSim(QAnalysisRenderer):
             variation (str, optional):  Information from pyEPR; variation should be in the form
             variation = "scale_factor='1.2001'". Defaults to None.
         """
-        self.convergence_t, self.convergence_f = self.renderer.get_convergences(
+        self.convergence_t, self.convergence_f, _ = self.renderer.get_convergences(
             variation)
 
     def plot_convergences(self,

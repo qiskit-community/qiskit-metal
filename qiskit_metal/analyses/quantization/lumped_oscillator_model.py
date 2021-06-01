@@ -153,7 +153,7 @@ class LOManalysis(QAnalysisRenderer):
         all_res = pd.DataFrame(all_res).transpose()
         all_res['χr MHz'] = abs(all_res['chi_in_MHz'].apply(lambda x: x[0]))
         all_res['gr MHz'] = abs(all_res['gbus'].apply(lambda x: x[0]))
-        self._lom_output = all_res
+        self.lumped_oscillator = all_res
         return self.lumped_oscillator
 
     def plot_convergence(self, *args, **kwargs):
