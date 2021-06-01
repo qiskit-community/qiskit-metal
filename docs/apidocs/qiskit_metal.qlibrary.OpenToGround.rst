@@ -18,6 +18,7 @@ OpenToGround
    .. autosummary::
       :toctree: ../stubs/
    
+      OpenToGround.TOOLTIP
       OpenToGround.class_name
       OpenToGround.component_metadata
       OpenToGround.default_options

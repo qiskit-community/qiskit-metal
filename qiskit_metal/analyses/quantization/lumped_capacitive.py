@@ -23,7 +23,7 @@ Each function prints out the parameters and outputs a dictionary.
 import io
 import re
 from pathlib import Path
-from typing import List
+from typing import List, Union
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -31,12 +31,15 @@ import pandas as pd
 import scipy.optimize as opt
 from pint import UnitRegistry
 
+from pyEPR.calcs.convert import Convert
+
 __all__ = [
     'Ic_from_Lj', 'Ic_from_Ej', 'Cs_from_Ec', 'transmon_props', 'chi',
     'extract_transmon_coupled_Noscillator', 'levels_vs_ng_real_units',
     'get_C_and_Ic', 'cos_to_mega_and_delta', 'chargeline_T1',
     'readin_q3d_matrix', 'readin_q3d_matrix_m', 'load_q3d_capacitance_matrix',
-    'df_cmat_style_print', 'move_index_to', 'df_reorder_matrix_basis'
+    'df_cmat_style_print', 'move_index_to', 'df_reorder_matrix_basis',
+    'lumped_oscillator_from_path'
 ]
 
 # define constants
@@ -90,7 +93,7 @@ def transmon_props(Ic: float, Cq: float):
 
     Calculate LJ, EJ, EC, wq, eps from Ic,Cq.
 
-    Arguments:
+    Args:
         Ic (float): Junction Ic (in A)
         Cq (float): Junction capacitance (in F)
 
@@ -125,7 +128,7 @@ def chi(g: float, wr: float, w01: float, w12: float):
 
     All args need to be in the same units.
 
-    Arguments:
+    Args:
         g (float): Qubit-cavity linear coupling.
         wr (float): Frequency of resonator.
         w01 (float): Qubit 01 transition frequency
@@ -708,7 +711,7 @@ def load_q3d_capacitance_matrix(path, user_units='fF', _disp=True):
     """Load Q3D capcitance file exported as Maxwell matrix. Do not export
     conductance. Units are read in automatically and converted to user units.
 
-    Arguments:
+    Args:
         path (str): Path to file.
         user_units (str): Units.  Defaults to 'fF'.
         _disp (bool): whehter or not to display messages.  Defaults to True.
@@ -733,6 +736,51 @@ def load_q3d_capacitance_matrix(path, user_units='fF', _disp=True):
     return df_cmat, user_units, design_variation, df_cond
 
 
+def lumped_oscillator_from_path(path: str, Lj_nH: float, Cj_fF: float, N: int,
+                                fr: Union[list, float],
+                                fb: Union[list, float]) -> pd.DataFrame:
+    """Obtain a single result dataframe from a Q3D capacitance file pointed to by path.
+    Similar to member method lumped_oscillator_vs_passes() of QQ3DRenderer but for a user
+    provided capacitance matrix file.
+
+    Args:
+        path (str): Path to file.
+        Lj_nH (float): Junction inductance (in nH)
+        Cj_fF (float): Junction capacitance (in fF)
+        N (int): Coupling pads (1 readout, N - 1 bus)
+        fr (Union[list, float]):Readout frequencies (in GHz). fr can be a list with the order
+            they appear in the capMatrix.
+        fb (Union[list, float]): Coupling bus frequencies (in GHz). fb can be a list with the order
+            they appear in the capMatrix.
+        g_scale (float, optional): Scale factor. Defaults to 1..
+
+    Returns:
+        dict: A single dataframe corresponding to a single capacitance matrix
+    """
+    ureg = UnitRegistry()
+    IC_Amps = Convert.Ic_from_Lj(Lj_nH, 'nH', 'A')
+    CJ = ureg(f'{Cj_fF} fF').to('farad').magnitude
+    fr = ureg(f'{fr} GHz').to('GHz').magnitude
+    fb = [ureg(f'{freq} GHz').to('GHz').magnitude for freq in fb]
+
+    df_cmat, user_units, _, _, = load_q3d_capacitance_matrix(path)
+    c_units = ureg(user_units).to('farads').magnitude
+
+    RES = extract_transmon_coupled_Noscillator(df_cmat.values * c_units,
+                                               IC_Amps,
+                                               CJ,
+                                               N,
+                                               fb,
+                                               fr,
+                                               g_scale=1,
+                                               print_info=True)
+
+    RES = pd.DataFrame([RES])
+    RES['χr MHz'] = abs(RES['chi_in_MHz'].apply(lambda x: x[0]))
+    RES['gr MHz'] = abs(RES['gbus'].apply(lambda x: x[0]))
+    return RES
+
+
 def df_cmat_style_print(df_cmat: pd.DataFrame):
     """Display the dataframe in the cmat style.
 
@@ -750,7 +798,7 @@ def df_cmat_style_print(df_cmat: pd.DataFrame):
 def move_index_to(i_from: List[int], i_to: List[int], len_):
     """Utility function to swap index.
 
-    Arguments:
+    Args:
         i_from (int): Data frame to swap index
         i_to (int): Data frame to index
         len_ (int): Length of array
@@ -769,7 +817,7 @@ def move_index_to(i_from: List[int], i_to: List[int], len_):
 def df_reorder_matrix_basis(df, i_from, i_to):
     """Data frame handle reording of matrix basis.
 
-    Arguments:
+    Args:
         df (DataFrame): Data frame to swap
         i_from (int): Index to move from
         i_to (int): Index to move to

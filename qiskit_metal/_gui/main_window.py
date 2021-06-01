@@ -197,8 +197,10 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         if ison:
             QMessageBox.warning(
                 self, "Notice",
-                "If you're editing a component via an external IDE, don't forget to refresh the component's file in the Library before rebuilding so your changes will take effect."
-            )
+                "If you're editing a component via an external IDE,"
+                " don't forget to refresh the component's file"
+                " in the Library before rebuilding so your changes"
+                " will take effect.")
 
         self.gui.ui.dockLibrary_tree_view.set_dev_mode(ison)
         self.gui.is_dev_mode = ison
@@ -300,7 +302,7 @@ class MetalGUI(QMainWindowBaseHandler):
     def _set_enabled_design_widgets(self, enabled: bool = True):
         """Make rebuild and all the other main button disabled.
 
-        Arguments:
+        Args:
             enabled (bool): True to enable, False to disable the design widgets.  Defaults to True.
         """
 
@@ -426,6 +428,12 @@ class MetalGUI(QMainWindowBaseHandler):
     def _setup_variables_widget(self):
         """Setup the variables widget."""
         self.ui.dockVariables.setWidget(self.variables_window)
+        # hookup to delete action
+        self.ui.btn_comp_del.clicked.connect(
+            self.ui.tableComponents.delete_selected_rows)
+        self.ui.btn_comp_rename.clicked.connect(
+            self.ui.tableComponents.rename_row)
+        self.ui.btn_comp_zoom.clicked.connect(self.btn_comp_zoom_fx)
 
     def _setup_plot_widget(self):
         """Create main Window Widget Plot."""
@@ -535,6 +543,8 @@ class MetalGUI(QMainWindowBaseHandler):
 
         self.ui.dockLibrary_tree_view.setItemDelegate(
             LibraryDelegate(self.main_window))  # try empty one if no work
+        self.ui.dockLibrary_tree_view.itemDelegate().tool_tip_signal.connect(
+            self.ui.dockLibrary_tree_view.setToolTip)
 
         self.ui.dockLibrary_tree_view.qlibrary_filepath_signal.connect(
             self._create_new_component_object_from_qlibrary)
@@ -542,6 +552,9 @@ class MetalGUI(QMainWindowBaseHandler):
             self._refresh_component_build)
         self.ui.dockLibrary_tree_view.qlibrary_file_dirtied_signal.connect(
             self._set_rebuild_needed)
+
+        self.ui.dockLibrary_tree_view.viewport().setAttribute(Qt.WA_Hover, True)
+        self.ui.dockLibrary_tree_view.viewport().setMouseTracking(True)
 
     ################################################
     # UI
@@ -672,7 +685,7 @@ class MetalGUI(QMainWindowBaseHandler):
     def edit_component(self, name: str):
         """Set the component to be examined by the component widget.
 
-        Arguments:
+        Args:
             name (str): Name of component to exmaine.
         """
         if self.component_window:
@@ -694,6 +707,13 @@ class MetalGUI(QMainWindowBaseHandler):
         """
         bounds = self.canvas.find_component_bounds(components)
         self.canvas.zoom_to_rectangle(bounds)
+
+    def btn_comp_zoom_fx(self):
+        """
+        Zooms in display on selected QComponent
+        """
+        names = self.ui.tableComponents.name_of_selected_qcomponent()
+        self.zoom_on_components(names)
 
     @slot_catch_error()
     def gui_create_build_log_window(self, _=None):

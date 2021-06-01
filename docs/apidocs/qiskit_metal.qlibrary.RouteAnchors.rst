@@ -18,6 +18,7 @@ RouteAnchors
    .. autosummary::
       :toctree: ../stubs/
    
+      RouteAnchors.TOOLTIP
       RouteAnchors.class_name
       RouteAnchors.component_metadata
       RouteAnchors.default_options

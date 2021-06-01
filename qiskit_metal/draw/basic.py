@@ -45,7 +45,7 @@ __all__ = [
 def rectangle(w: float, h: float, xoff: float = 0, yoff: float = 0):
     """Draw a shapely rectangle of width and height.
 
-    Arguments:
+    Args:
         w (float) :  width
         h (float) :  height
         xoff (float, optional) : Gives the x position of the center.  Defaults to 0.
@@ -187,7 +187,7 @@ def _iter_func_geom_(func, objs, *args, overwrite=False, **kwargs):
         For list:
             to each element
 
-    Arguments:
+    Args:
         func (function): Function the apply
         objs (Dict, List, Tuple or BaseGeometry): Set of objects
         overwrite (bool): Overwrite the parent dict or not. This applies to component qgeometry dictionary.
@@ -390,7 +390,7 @@ def rotate_position(qgeometry,
                     overwrite=False):
     """Orient and then place position. Just a shortcut function.
 
-    Arguments:
+    Args:
         qgeometry (Dict, List, Tuple or BaseGeometry): Set of objects
         angle (float): Rotation angle
         pos (list, np.array): Position to translate to

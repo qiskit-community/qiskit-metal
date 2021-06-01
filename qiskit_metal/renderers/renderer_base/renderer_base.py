@@ -126,7 +126,7 @@ class QRenderer(ABC):
     def get_renderer(name: str):
         """Returns an already loaded and instantiated renderer.
 
-        Arguments:
+        Args:
             name (str): rendering name
 
         Returns:
@@ -235,7 +235,7 @@ class QRenderer(ABC):
         """Init function to register a renderer class with the design when
         first instantiated. Registers the renderer's template options.
 
-        Arguments:
+        Args:
             design (QDesign): The parent design
             template_key (str): Key to use
             render_template (dict): template of render to copy
@@ -350,7 +350,7 @@ class QRenderer(ABC):
         Call any initialization (single run) step required to setup the renderer for the first execution,
         such as connecting to some API or COM, or importing the correct material libraries, etc.
 
-        Arguments:
+        Args:
             force (bool) : If True, need to scrap the existing initialization and re-do
                            If False, will start a new one only if none exists.  Defaults to False.
 

@@ -18,6 +18,7 @@ ResonatorCoilRect
    .. autosummary::
       :toctree: ../stubs/
    
+      ResonatorCoilRect.TOOLTIP
       ResonatorCoilRect.class_name
       ResonatorCoilRect.component_metadata
       ResonatorCoilRect.default_options
