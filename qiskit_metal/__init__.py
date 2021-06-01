@@ -14,7 +14,7 @@
 
 # pylint: disable=wrong-import-order
 # pylint: disable=wrong-import-position
-
+"""Qiskit Metal"""
 __version__ = '0.0.3'
 __license__ = "Apache 2.0"
 __copyright__ = 'Copyright IBM 2019-2020'
@@ -45,12 +45,13 @@ if os.name == 'nt':
 ###########################################################################
 ### Basic Setups
 ## Setup Qt
-def __setup_Qt_backend():
+def __setup_Qt_backend():  # pylint: disable=invalid-name
     """Setup matplotlib to use Qt5's visualization.
 
     This function needs to remain in the __init__ of the library's root
     to prevent Qt windows from hanging.
     """
+    # pylint: disable=import-outside-toplevel
     os.environ["QT_API"] = "pyside2"
 
     from PySide2 import QtCore  #, QtWidgets
@@ -68,7 +69,7 @@ def __setup_Qt_backend():
 
     if 1:
 
-        if QtCore.QCoreApplication.instance() == None:
+        if QtCore.QCoreApplication.instance() is None:
             # No application launched yet
 
             # zkm: The following seems to fix warning.
@@ -87,8 +88,9 @@ def __setup_Qt_backend():
 
             # Enables high-DPI scaling in Qt on supported platforms (see also High DPI Displays).
             # Supported platforms are X11, Windows and Android.
-            # Enabling makes Qt scale the main (device independent) coordinate system
-            # according to display scale factors provided by the operating system.
+            # Enabling makes Qt scale the main (device independent) coordinate
+            # system according to display scale factors provided by the
+            # operating system.
             set_attribute('AA_EnableHighDpiScaling')
 
             # Make QIcon::pixmap() generate high-dpi pixmaps that can be larger than
@@ -100,10 +102,12 @@ def __setup_Qt_backend():
             # AA_MacDontSwapCtrlAndMeta
 
     if not os.getenv('QISKIT_METAL_HEADLESS', None):
+        # pylint: disable=import-outside-toplevel
         import matplotlib as mpl
         mpl.use("Qt5Agg")
-        import matplotlib.pyplot as mplt
-        mplt.ion()  # interactive
+        # pylint: disable=redefined-outer-name
+        import matplotlib.pyplot as plt
+        plt.ion()  # interactive
 
 
 __setup_Qt_backend()

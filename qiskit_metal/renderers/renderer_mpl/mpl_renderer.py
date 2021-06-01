@@ -56,14 +56,10 @@ __all__ = ['QMplRenderer']
 
 to_poly_patch = np.vectorize(PolygonPatch)
 
-# TODO: subclass from QRendererGui - define QRendererGui from this class as interface class
-
 
 class QMplRenderer():
     """Matplotlib handle all rendering of an axis.
-
     The axis is given in the function render.
-
     Access:
         self = gui.canvas.metal_renderer
     """
@@ -98,10 +94,8 @@ class QMplRenderer():
 
     def get_color_num(self, num: int) -> str:
         """Get the color from the given number.
-
         Args:
             num (int): number
-
         Return:
             str: color
         """
@@ -109,7 +103,6 @@ class QMplRenderer():
 
     def hide_component(self, name):
         """Hide the component with the given name.
-
         Args:
             name (str): Component name
         """
@@ -118,7 +111,6 @@ class QMplRenderer():
 
     def show_component(self, name):
         """Show the component with the given name.
-
         Args:
             name (str): Component name
         """
@@ -127,7 +119,6 @@ class QMplRenderer():
 
     def hide_layer(self, name):
         """Hide the layer with the given name.
-
         Args:
             name (str): Layer name
         """
@@ -135,7 +126,6 @@ class QMplRenderer():
 
     def show_layer(self, name):
         """Show the layer with the given name.
-
         Args:
             name (str): Layer name
         """
@@ -143,7 +133,6 @@ class QMplRenderer():
 
     def set_design(self, design: QDesign):
         """Set the design.
-
         Args:
             design (QDesign): The design
         """
@@ -158,7 +147,6 @@ class QMplRenderer():
 
     def render(self, ax: Axes):
         """Assumes that the axis has been cleared already and so on.
-
         Args:
             ax (matplotlib.axes.Axes): mpl axis to draw on
         """
@@ -168,17 +156,15 @@ class QMplRenderer():
 
     def get_mask(self, table: pd.DataFrame) -> pd.Series:
         """Gets the mask.
-
         Args:
             table (pd.DataFrame): dataframe
-
         Returns:
             pd.Series: return pandas index series with boolen mask
             - i.e., which are not hidden or otherwise
         """
 
         # TODO: Ideally these should be replaced with interface functions,
-        # not direct access to undelying internal representation
+        # not direct access to underlying internal representation
 
         mask = table.layer.isin(self.hidden_layers)
         mask = table.component.isin(self._hidden_components)
@@ -187,7 +173,6 @@ class QMplRenderer():
 
     def _render_poly_array(self, ax: Axes, poly_array: np.array, mpl_kw: dict):
         """Render the poly array.
-
         Args:
             ax (Axes): The axis
             poly_array (np.array): The poly
@@ -224,13 +209,11 @@ class QMplRenderer():
                   layer=None,
                   extra=None):
         """Get the style.
-
         Args:
             element_type (str): The type of element.
-            subtracted (bool): True to subtrat the key.  Defaults to False.
+            subtracted (bool): True to subtract the key.  Defaults to False.
             layer (layer): The layer.  Defaults to None.
             extra (dict): Extra stuff to add.  Defaults to None.
-
         Return:
             dict: Style dictionary
         """
@@ -252,7 +235,6 @@ class QMplRenderer():
 
     def render_tables(self, ax: Axes):
         """Render the tables.
-
         Args:
             ax (Axes): The axes
         """
@@ -281,7 +263,6 @@ class QMplRenderer():
                         extra_kw: dict = None):
         """Render a table of junction geometry.
         A junction is basically drawn like a path with finite width and no fillet.
-
         Args:
             table (DataFrame): Element table
             ax (matplotlib.axes.Axes): Axis to render on
@@ -314,7 +295,6 @@ class QMplRenderer():
                     subtracted: bool = False,
                     extra_kw: dict = None):
         """Render a table of poly geometry.
-
         Args:
             table (DataFrame): Element table
             ax (matplotlib.axes.Axes): Axis to render on
@@ -328,10 +308,8 @@ class QMplRenderer():
 
     def render_fillet(self, table):
         """Renders fillet path.
-
         Args:
             table (DataFrame): Table of elements with fillets
-
         Returns:
             DataFrame table with geometry field updated with a polygon filleted path.
         """
@@ -340,10 +318,8 @@ class QMplRenderer():
 
     def fillet_path(self, row):
         """Output the filleted path.
-
         Args:
             row (DataFrame): Row to fillet.
-
         Returns:
             Polygon of the new filleted path.
         """
@@ -380,7 +356,6 @@ class QMplRenderer():
                      points=16):
         """Returns the filleted path based on the start, corner, and end
         vertices and the fillet radius.
-
         Args:
             vertex_start (np.ndarray): x-y coordinates of starting vertex.
             vertex_corner (np.ndarray): x-y coordinates of corner vertex.
@@ -435,7 +410,6 @@ class QMplRenderer():
                     subtracted: bool = False,
                     extra_kw: dict = None):
         """Render a table of path geometry.
-
         Args:
             table (DataFrame): Element table
             ax (matplotlib.axes.Axes): Axis to render on
@@ -513,7 +487,7 @@ class QMplRenderer():
 #         represents the "port" of a connector point. These are referenced for smart placement
 #             of Metal components, such as when using functions like Metal_CPW_Connect.
 
-#         TODO: add some filter for sense of what components are visibile?
+#         TODO: add some filter for sense of what components are visible?
 #               or on what chip the connectors are
 #         '''
 
