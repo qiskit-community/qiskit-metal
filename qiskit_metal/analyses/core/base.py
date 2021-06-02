@@ -16,6 +16,7 @@ from abc import abstractmethod, ABC
 import inspect
 
 from ... import Dict, logger
+from copy import deepcopy
 
 
 class QAnalysis(ABC):
@@ -46,9 +47,6 @@ class QAnalysis(ABC):
         super().__init__(*args, **kwargs)
         self._setup = self._gather_all_children_setup()
 
-        # reference state
-        self._run_kwargs = None
-
     @property
     def logger(self):
         """Returns the logger."""
@@ -78,13 +76,13 @@ class QAnalysis(ABC):
         """Intended to be used to store the kwargs passed to the run() method,
         for repeatibility and for later identification of the QAnalysis instance.
         """
-        self._run_kwargs = kwargs
+        self._setup.run = Dict(kwargs)
 
     def print_run_args(self):
         """Prints the args and kwargs that were used in the last run() of this Analysis instance.
         """
         print("This analysis object run with the following kwargs:\n"
-              f"{self._run_kwargs}\n")
+              f"{self._setup.run}\n")
 
     @property
     def setup(self):
@@ -134,19 +132,20 @@ class QAnalysis(ABC):
             print(
                 f'the section {section} does not exist in this analysis setup')
 
-    def _gather_all_children_setup(self):
+    @classmethod
+    def _gather_all_children_setup(cls):
         """From the QAnalysis core class, traverse the child classes to
         gather the default_setup for each child class.
 
         If the key is the same, the setup option of the youngest child is used.
         """
         setup_from_children = Dict()
-        parents = inspect.getmro(self.__class__)
+        parents = inspect.getmro(cls)
 
         # len-2: base.py is not expected to have default_setup dict to add to design class.
         for child in parents[len(parents) - 2::-1]:
             # The template default options are in a class dict attribute `default_setup`.
             if hasattr(child, 'default_setup'):
-                setup_from_children.update(child.default_setup)
+                setup_from_children.update(deepcopy(child.default_setup))
 
         return setup_from_children

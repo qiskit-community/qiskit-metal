@@ -113,9 +113,10 @@ class EigenmodeSim(QAnalysisRenderer):
             (str, str): Name of the design and name of the setup
         """
         # save input variables to run(). This line must be the first in the method
-        argm = locals()
-        del argm['self']
-        self.save_run_args(**argm)
+        if components is not None:
+            argm = locals()
+            del argm['self']
+            self.save_run_args(**argm)
 
         if not self.renderer_initialized:
             self._initialize_renderer()
