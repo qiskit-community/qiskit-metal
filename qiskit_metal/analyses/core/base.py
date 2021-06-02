@@ -77,6 +77,7 @@ class QAnalysis(ABC):
         """Intended to be used to store the kwargs passed to the run() method,
         for repeatibility and for later identification of the QAnalysis instance.
         """
+        self._setup.run = None
         self._setup.run = Dict(kwargs)
 
     def print_run_args(self):
