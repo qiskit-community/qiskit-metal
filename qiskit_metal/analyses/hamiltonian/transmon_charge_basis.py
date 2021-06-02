@@ -161,6 +161,9 @@ class Hcpb:
         psi = np.array(psi)
         # Sum over Fourier components to get eigenwave
         psi = np.sum(psi, axis=0) / np.sqrt(2 * np.pi)
+        # Normalize Psi
+        norm = np.sqrt(np.dot(psi, psi.conj()))
+        psi = psi / norm
         return psi, phi
 
     def fij(self, i: int, j: int):
