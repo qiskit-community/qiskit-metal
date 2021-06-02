@@ -103,10 +103,10 @@ class LOManalysis(QAnalysisRenderer):
         """
         self._lom_output = lom_dict
 
-    def run(self, *args, **kwargs):
+    def run(self):
         """Alias for run_lom()
         """
-        return self.run_lom(*args, **kwargs)
+        return self.run_lom()
 
     def run_lom(self):
         """Executes the lumped oscillator extraction from the capacitance matrix,

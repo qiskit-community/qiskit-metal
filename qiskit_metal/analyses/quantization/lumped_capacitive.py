@@ -729,8 +729,8 @@ def load_q3d_capacitance_matrix(path, user_units='fF', _disp=True):
     # Report
     if _disp:
         print(
-            "Imported capacitance matrix with UNITS: [%s] now converted to USER UNITS:[%s] from file:\n\t%s"
-            % (Cunits, user_units, path))
+            "Imported capacitance matrix with UNITS: [%s] now converted to USER UNITS:[%s] \
+                from file:\n\t%s" % (Cunits, user_units, path))
         df_cmat_style_print(df_cmat)
 
     return df_cmat, user_units, design_variation, df_cond

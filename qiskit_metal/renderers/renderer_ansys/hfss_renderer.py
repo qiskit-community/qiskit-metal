@@ -788,9 +788,9 @@ class QHFSSRenderer(QAnsysRenderer):
                     o_design = o_project.GetActiveDesign()
                     if o_design.GetSolutionType() == 'Eigenmode':
                         # The set_mode() method is in HfssEMDesignSolutions
-						#  class in pyEPR.
+                        #  class in pyEPR.
                         # The class HfssEMDesignSolutions is instantiated by
-						#  get_setup() and create_em_setup().
+                        #  get_setup() and create_em_setup().
                         setup = self.pinfo.get_setup(setup_name)
                         if 0 < int(mode) <= int(setup.n_modes):
                             setup_solutions = setup.get_solutions()

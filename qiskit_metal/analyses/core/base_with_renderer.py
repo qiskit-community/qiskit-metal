@@ -18,6 +18,7 @@ from qiskit_metal.designs import QDesign  # pylint: disable=unused-import
 from . import QAnalysis
 from ... import Dict
 
+
 class QAnalysisRenderer(QAnalysis):
     """Just a way to centralize the selection and naming of the renderer.
     Could refactor code to transform this class into a class-less function.
@@ -126,7 +127,7 @@ class QAnalysisRenderer(QAnalysis):
         return self.renderer.save_screenshot()
 
     def run(self, *args, **kwargs):
-        """Alias for run_sim()
+        """Alias for run_sim() that saves the 
         """
         self.run_sim(*args, **kwargs)
 
