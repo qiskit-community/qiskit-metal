@@ -32,6 +32,7 @@ Sweeping
       Sweeping.option_value
       Sweeping.parse_text_from_hfss_convergence
       Sweeping.populate_dm_all_sweep
+      Sweeping.populate_q3d_all_sweep
       Sweeping.prep_drivenmodal_setup
       Sweeping.prep_eigenmode_setup
       Sweeping.prep_q3d_setup
