@@ -224,3 +224,6 @@ Qiskit Metal is the work of [many people](https://github.com/Qiskit/qiskit-metal
 ## License
 
 [Apache License 2.0](LICENSE.txt)
+
+## super important instructions
+On Linux Mint do X... 
