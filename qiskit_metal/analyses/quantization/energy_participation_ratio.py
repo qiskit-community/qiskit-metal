@@ -63,12 +63,18 @@ class EPRanalysis(QAnalysisRenderer):
         # TODO: define the input variables == define the output variables of the
         #  EigenmodeSim class. this will likely require to find them inside pinfo
 
+    def reset_variables(self):
+        """Code to set and reset the output variables for this analysis class
+        This is called by the QAnalysis.__init__()
+        """
+        # pylint: disable=attribute-defined-outside-init
+
         # output variables
         self.energy_elec = None
         self.energy_mag = None
         self.energy_elec_sub = None
 
-    def run(self):
+    def run(self):  # pylint: disable=arguments-differ
         """Alias for run_lom()
         """
         return self.run_epr()
@@ -77,6 +83,9 @@ class EPRanalysis(QAnalysisRenderer):
         """Executes the epr analysis from the extracted eigemode,
         and based on the setup values
         """
+        # wipe data from the previous run (if any)
+        self.reset_variables()
+
         self.get_stored_energy(no_junctions)
         if not no_junctions:
             self.run_analysis()
@@ -169,3 +178,9 @@ class EigenmodeAndEPR(EPRanalysis, EigenmodeSim):
         """
         self.run_sim(*args, **kwargs)
         return self.run_epr()
+
+    def run_sim(self, *args, **kwargs):  # pylint: disable=signature-differs
+        """Overridden method to force run_sim() to also wipe the output variables of the analysis.
+        """
+        self.reset_variables()
+        super().run_sim(*args, **kwargs)

@@ -61,6 +61,11 @@ class EigenmodeSim(QAnalysisRenderer):
         # set design and renderer
         super().__init__(design, renderer_name)
 
+    def reset_variables_sim(self):
+        """Code to set and reset the output variables for this analysis class
+        This is called by the QAnalysis.__init__()
+        """
+        # pylint: disable=attribute-defined-outside-init
         # settings variables
         self.setup_name = None
 
@@ -117,6 +122,8 @@ class EigenmodeSim(QAnalysisRenderer):
             argm = locals()
             del argm['self']
             self.save_run_args(**argm)
+        # wipe data from the previous run (if any)
+        self.reset_variables_sim()
 
         if not self.renderer_initialized:
             self._initialize_renderer()

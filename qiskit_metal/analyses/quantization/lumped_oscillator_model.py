@@ -58,6 +58,11 @@ class LOManalysis(QAnalysisRenderer):
         self._units = None
         self._capacitance_all_passes = {}
 
+    def reset_variables(self):
+        """Code to set and reset the output variables for this analysis class
+        This is called by the QAnalysis.__init__()
+        """
+        # pylint: disable=attribute-defined-outside-init
         # output variables
         self._lom_output = None  # last pass only
         self._lom_output_all = None  # all the passes
@@ -103,7 +108,7 @@ class LOManalysis(QAnalysisRenderer):
         """
         self._lom_output = lom_dict
 
-    def run(self):
+    def run(self):  # pylint: disable=arguments-differ
         """Alias for run_lom()
         """
         return self.run_lom()
@@ -115,6 +120,9 @@ class LOManalysis(QAnalysisRenderer):
         Returns:
             dict: Pass numbers (keys) and their respective capacitance matrices (values)
         """
+        # wipe data from the previous run (if any)
+        self.reset_variables()
+
         s = self.setup.lom
 
         if self.capacitance_matrix is None:
@@ -204,3 +212,9 @@ class CapExtractAndLOM(LOManalysis, CapExtraction):
         """
         self.run_sim(*args, **kwargs)
         return self.run_lom()
+
+    def run_sim(self, *args, **kwargs):  # pylint: disable=signature-differs
+        """Overridden method to force run_sim() to also wipe the output variables of the analysis.
+        """
+        self.reset_variables()
+        super().run_sim(*args, **kwargs)

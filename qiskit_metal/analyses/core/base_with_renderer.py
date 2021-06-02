@@ -127,7 +127,8 @@ class QAnalysisRenderer(QAnalysis):
         return self.renderer.save_screenshot()
 
     def run(self, *args, **kwargs):
-        """Alias for run_sim() that saves the 
+        """Alias for run_sim() necessary to implement super-class method, while
+        preventing method name collision when sim and non-sim QAnalysis classes are inherited.
         """
         self.run_sim(*args, **kwargs)
 
@@ -136,4 +137,17 @@ class QAnalysisRenderer(QAnalysis):
         """Abstract method. Must be implemented by the subclass.
         Write in here the code to launch the simualtions.
         You will be able to execute this with the alias run()
+        """
+
+    def reset_variables(self):
+        """Alias for reset_variables_sim() necessary to implement super-class method, while
+        preventing method name collision when sim and non-sim QAnalysis classes are inherited.
+        """
+        self.reset_variables_sim()
+
+    @abstractmethod
+    def reset_variables_sim(self):
+        """Abstract method. Must be implemented by the subclass.
+        Code to set and reset the output variables for this analysis class
+        This is called by the QAnalysis.__init__()
         """

@@ -46,6 +46,7 @@ class QAnalysis(ABC):
         """
         super().__init__(*args, **kwargs)
         self._setup = self._gather_all_children_setup()
+        self.reset_variables()
 
     @property
     def logger(self):
@@ -149,3 +150,10 @@ class QAnalysis(ABC):
                 setup_from_children.update(deepcopy(child.default_setup))
 
         return setup_from_children
+
+    @abstractmethod
+    def reset_variables(self):
+        """Abstract method. Must be implemented by the subclass.
+        Code to set and reset the output variables for this analysis class
+        This is called by the QAnalysis.__init__()
+        """
