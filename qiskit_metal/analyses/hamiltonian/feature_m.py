@@ -21,9 +21,11 @@ class FeatureM():
     """
     Provides M functionality for X use cases
     """
-    def __init__(m_var):
+
+    def __init__(self, m_var):
         "Allows for M functionality given X and Y use cases"
         self.m_var = m_var
+
     def m_function(self, x):
         "FeatureM allows for M functionality for use case 1"
         return self.m_var * x
@@ -31,4 +33,3 @@ class FeatureM():
     def m_function_2(self, x):
         "FeatureM allows for M functionality for use case 2"
         return self.m_var * x**2
-
