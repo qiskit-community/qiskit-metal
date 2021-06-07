@@ -252,7 +252,6 @@ class MetalGUI(QMainWindowBaseHandler):
 
         super().__init__()
 
-
         # use set_design
         self.design = None  # type: QDesign
 
@@ -304,8 +303,7 @@ class MetalGUI(QMainWindowBaseHandler):
                    "in a Jupyter Notebook or elsewhere to ensure " \
                    "the design is not lost."
 
-
-        self.init_warning = QMessageBox(QMessageBox.Warning,None, chip_warning)
+        self.init_warning = QMessageBox(QMessageBox.Warning, None, chip_warning)
         self.init_warning.exec_()
 
     def _raise(self):
