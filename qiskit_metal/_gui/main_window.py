@@ -248,7 +248,10 @@ class MetalGUI(QMainWindowBaseHandler):
         if not self.qApp:
             logging.error("Could not start Qt event loop using QApplication.")
 
+        self.display_init_warnings()
+
         super().__init__()
+
 
         # use set_design
         self.design = None  # type: QDesign
@@ -289,6 +292,21 @@ class MetalGUI(QMainWindowBaseHandler):
             self.set_design(design)
         else:
             self._set_enabled_design_widgets(False)
+
+    def display_init_warnings(self):
+        """
+        Displays relevant warning messages when starting the MetalGUI.
+        """
+
+        chip_warning = "Any chip designs created inside the interactive " \
+                   "MetalGUI will NOT be saved. " \
+                   "Please make sure all chip designs are coded out " \
+                   "in a Jupyter Notebook or elsewhere to ensure " \
+                   "the design is not lost."
+
+
+        self.init_warning = QMessageBox(QMessageBox.Warning,None, chip_warning)
+        self.init_warning.exec_()
 
     def _raise(self):
         """Raises the window to the top."""
