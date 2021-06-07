@@ -172,9 +172,6 @@
     <addaction name="separator"/>
     <addaction name="actionLabelDesign"/>
     <addaction name="actionLoad"/>
-    <addaction name="actionSave"/>
-    <addaction name="actionSaveAs"/>
-    <addaction name="separator"/>
     <addaction name="actionDelete_All"/>
     <addaction name="separator"/>
     <addaction name="actionClose_window"/>
@@ -209,20 +206,17 @@
     <addaction name="actionScreenshot"/>
     <addaction name="separator"/>
     <addaction name="actionMetal_Window"/>
-    <addaction name="actionSave_window_state"/>
     <addaction name="menuStylesheet"/>
    </widget>
    <widget class="QMenu" name="menuAnalysis">
     <property name="title">
      <string>Analysis</string>
     </property>
-    <addaction name="separator"/>
    </widget>
    <widget class="QMenu" name="menuRender">
     <property name="title">
      <string>Render</string>
     </property>
-    <addaction name="separator"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="minimumSize">
@@ -290,7 +284,6 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionLoad"/>
-   <addaction name="actionSave"/>
    <addaction name="actionDelete_All"/>
    <addaction name="separator"/>
    <addaction name="action_full_refresh"/>
