@@ -19,7 +19,7 @@ import os
 from pathlib import Path
 from typing import List, TYPE_CHECKING
 
-from PySide2.QtCore import QTimer, Qt, QSize
+from PySide2.QtCore import QTimer, Qt
 from PySide2.QtWidgets import (QDockWidget, QFileDialog, QLabel, QMainWindow,
                                QMessageBox)
 from PySide2.QtGui import QIcon, QPixmap
@@ -400,6 +400,9 @@ class MetalGUI(QMainWindowBaseHandler):
         self.ui.dockLog.parent().resizeDocks([self.ui.dockLog], [120],
                                              Qt.Vertical)
 
+        # toolBarView additions
+        self._add_additional_qactions_tool_bar_view()
+
         # Tab positions
         self.ui.tabWidget.setCurrentIndex(0)
 
@@ -408,6 +411,51 @@ class MetalGUI(QMainWindowBaseHandler):
         and main ui is loaded."""
         if self.component_window:
             self.component_window.setCurrentIndex(0)
+
+    def _add_additional_qactions_tool_bar_view(self):
+        """Add QActions to toolBarView that cannot be added via QDesign"""
+
+        # Design
+        self.dock_design_qaction = self.ui.dockDesign.toggleViewAction()
+        design_icon = QIcon()
+        design_icon.addPixmap(QPixmap(":/design"), QIcon.Normal, QIcon.Off)
+        self.dock_design_qaction.setIcon(design_icon)
+        self.ui.toolBarView.insertAction(self.ui.actionToggleDocks,
+                                         self.dock_design_qaction)
+
+        # Variables
+        self.dock_variables_qaction = self.ui.dockVariables.toggleViewAction()
+        variables_icon = QIcon()
+        variables_icon.addPixmap(QPixmap(":/variables"), QIcon.Normal,
+                                 QIcon.Off)
+        self.dock_variables_qaction.setIcon(variables_icon)
+        self.ui.toolBarView.insertAction(self.ui.actionToggleDocks,
+                                         self.dock_variables_qaction)
+
+        # Connectors
+        self.dock_connectors_qaction = self.ui.dockConnectors.toggleViewAction()
+        connectors_icon = QIcon()
+        connectors_icon.addPixmap(QPixmap(":/connectors"), QIcon.Normal,
+                                  QIcon.Off)
+        self.dock_connectors_qaction.setIcon(connectors_icon)
+        self.ui.toolBarView.insertAction(self.ui.actionToggleDocks,
+                                         self.dock_connectors_qaction)
+
+        # Log
+        self.dock_log_qaction = self.ui.dockLog.toggleViewAction()
+        log_icon = QIcon()
+        log_icon.addPixmap(QPixmap(":/log"), QIcon.Normal, QIcon.Off)
+        self.dock_log_qaction.setIcon(log_icon)
+        self.ui.toolBarView.insertAction(self.ui.actionToggleDocks,
+                                         self.dock_log_qaction)
+
+        # Library
+        self.dock_library_qaction = self.ui.dockLibrary.toggleViewAction()
+        library_icon = QIcon()
+        library_icon.addPixmap(QPixmap(":/component"), QIcon.Normal, QIcon.Off)
+        self.dock_library_qaction.setIcon(library_icon)
+        self.ui.toolBarView.insertAction(self.ui.actionToggleDocks,
+                                         self.dock_library_qaction)
 
     def _set_element_tab(self, yesno: bool):
         """Set the elements tabl to Elements or View.
