@@ -457,8 +457,6 @@ class MetalGUI(QMainWindowBaseHandler):
         self.ui.toolBarView.insertAction(self.ui.actionToggleDocks,
                                          self.dock_log_qaction)
 
-
-
     def _set_element_tab(self, yesno: bool):
         """Set the elements tabl to Elements or View.
 
