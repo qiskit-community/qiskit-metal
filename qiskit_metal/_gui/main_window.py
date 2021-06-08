@@ -415,6 +415,14 @@ class MetalGUI(QMainWindowBaseHandler):
     def _add_additional_qactions_tool_bar_view(self):
         """Add QActions to toolBarView that cannot be added via QDesign"""
 
+        # Library
+        self.dock_library_qaction = self.ui.dockLibrary.toggleViewAction()
+        library_icon = QIcon()
+        library_icon.addPixmap(QPixmap(":/component"), QIcon.Normal, QIcon.Off)
+        self.dock_library_qaction.setIcon(library_icon)
+        self.ui.toolBarView.insertAction(self.ui.actionToggleDocks,
+                                         self.dock_library_qaction)
+
         # Design
         self.dock_design_qaction = self.ui.dockDesign.toggleViewAction()
         design_icon = QIcon()
@@ -449,13 +457,7 @@ class MetalGUI(QMainWindowBaseHandler):
         self.ui.toolBarView.insertAction(self.ui.actionToggleDocks,
                                          self.dock_log_qaction)
 
-        # Library
-        self.dock_library_qaction = self.ui.dockLibrary.toggleViewAction()
-        library_icon = QIcon()
-        library_icon.addPixmap(QPixmap(":/component"), QIcon.Normal, QIcon.Off)
-        self.dock_library_qaction.setIcon(library_icon)
-        self.ui.toolBarView.insertAction(self.ui.actionToggleDocks,
-                                         self.dock_library_qaction)
+
 
     def _set_element_tab(self, yesno: bool):
         """Set the elements tabl to Elements or View.
