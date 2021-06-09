@@ -1080,3 +1080,25 @@ class QDesign():
                     uses_table.append(table_name)
 
         return uses_table
+
+
+    def to_python_script(self):
+        python_script = """
+from qiskit_metal import designs, MetalGUI
+
+design = designs.DesignPlanar()
+
+gui = MetalGUI(design)
+"""
+        for comp_name in self.components:
+            comp = self.components[comp_name]
+            python_script +=  comp.to_script()
+            python_script += """
+            """
+        python_script += """
+gui.rebuild()
+        """
+
+        print(python_script)
+        #return python_script
+

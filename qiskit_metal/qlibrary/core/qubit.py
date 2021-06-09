@@ -105,3 +105,21 @@ class BaseQubit(QComponent):
                     self.class_name]['_default_connection_pads'])
             self.options.connection_pads[name].update(
                 my_options_connection_pads)
+
+
+    def to_script(self) -> str:
+        module = self._get_unique_class_name()
+        cls = '.'.join(module.split('.')[ :-1 ])
+        obj_name = module.split('.')[-1]
+        options_connection_pads  = self.options['connection_pads']
+
+        return f"""
+from {cls} import {obj_name} 
+options = {self.options}
+{self.name} = {obj_name}(design, name='{self.name}', 
+options=options,
+options_connection_pads={options_connection_pads},
+make=True)
+{self.name}.meta = {self.metadata}
+    """
+

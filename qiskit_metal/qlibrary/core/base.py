@@ -176,6 +176,8 @@ class QComponent():
         self._id = None
         self._made = False
 
+        self._component_template = component_template
+
         # Status: used to handle building of a component and checking if it succeeded or failed.
         self.status = 'Not Built'
         if not is_design(design):
@@ -515,6 +517,31 @@ class QComponent():
             NotImplementedError: Overwrite this function by subclassing.
         """
         raise NotImplementedError()
+
+    def to_script(self) -> str:
+        """
+
+        Returns: Code that if copy-pasted into a .py file would generate
+        an instance of this class with the same properties as the instance calling
+        this function
+
+        """
+
+        module = self._get_unique_class_name()
+        cls = '.'.join(module.split('.')[ :-1 ])
+        obj_name = module.split('.')[-1]
+        comp_templ = self._component_template
+
+        return f"""
+from {cls} import {obj_name} 
+options = {self.options}
+{self.name} = {obj_name}(design, 
+name='{self.name}', 
+options=options, 
+component_template={comp_templ},
+make=True)
+{self.name}.meta = {self.metadata}
+    """
 
     def rebuild(self):
         """Builds the QComponent.
