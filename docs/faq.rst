@@ -35,6 +35,10 @@ Setting up environment
 
 You can now restart jupyter notebook/lab and switch to the newly created kernel using the menu `Kernel>Change Kernel`.
 
+.. image:: images/kernels.png
+   :alt: Missing Image
+
+
 If jupyter notebook/lab is still unable to find qiskit_metal, you might need to re-install qiskit_metal after installing ipykernel.
 
 You can completely prevent the ModuleNotFoundError by installing `jupyter` or `jupyterlab` inside the environment, instead of using a pre-existing installation.
