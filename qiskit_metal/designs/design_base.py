@@ -1080,3 +1080,15 @@ class QDesign():
                     uses_table.append(table_name)
 
         return uses_table
+
+
+    def to_python_script(self):
+        python_script = """"""
+        for comp_name in self.components:
+            comp = self.components[comp_name]
+            python_script +=  comp.to_script()
+            python_script += """
+gui.rebuild()
+            """
+        return python_script
+
