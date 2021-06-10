@@ -326,8 +326,7 @@ class QRoute(QComponent):
                     "\nwhere # is any signed or unsigned integer or floating point value.\n"
                     "For example the following will all lead to the same turn:\n"
                     "\"L\", \"L90\", \"R-90\", 90, "
-                    "\"90\", \"A,90\", \"left\", \"left90\", \"right-90\""
-                )
+                    "\"90\", \"A,90\", \"left\", \"left90\", \"right-90\"")
 
         # return the last QRoutePoint of the lead
         return lead.get_tip()
