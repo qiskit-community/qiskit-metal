@@ -245,6 +245,7 @@ class Cheesing():
                                        a_poly_set,
                                        'not',
                                        max_points=self.max_points,
+                                       precision=self.precision,
                                        layer=self.layer,
                                        datatype=self.datatype_cheese + 2)
             else:
