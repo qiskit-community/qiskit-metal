@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file './main_window_ui.ui',
 # licensing of './main_window_ui.ui' applies.
 #
-# Created: Fri May 14 15:07:55 2021
+# Created: Mon Jun  7 17:21:02 2021
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -507,12 +507,7 @@ class Ui_MainWindow(object):
         self.toolBarDesign.addAction(self.actionBuildHistory)
         self.toolBarDesign.addAction(self.actionDeveloperMode)
         self.toolBarDesign.addSeparator()
-        self.toolBarView.addAction(self.actionViewDummyLabel)
-        self.toolBarView.addAction(self.actionDesign)
-        self.toolBarView.addAction(self.actionVariables)
         self.toolBarView.addSeparator()
-        self.toolBarView.addAction(self.actionConnectors)
-        self.toolBarView.addAction(self.actionLog)
         self.toolBarView.addSeparator()
         self.toolBarView.addAction(self.actionToggleDocks)
         self.toolBarView.addAction(self.actionScreenshot)
