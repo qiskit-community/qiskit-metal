@@ -13,7 +13,8 @@
 # that they have been altered from the originals.
 
 import pandas as pd
-from pyEPR.ansys import ureg
+from pint import UnitRegistry
+
 from pyEPR.calcs.convert import Convert
 
 from qiskit_metal.designs import QDesign  # pylint: disable=unused-import
@@ -30,7 +31,7 @@ if not config.is_building_docs():
 # TODO: eliminate every reference to "renderer" in this file
 #  then change inheritance from QAnalysisRenderer to QAnalysis
 class LOManalysis(QAnalysisRenderer):
-    """Extracts and LOM model from a provided capacitance matrix.
+    """Performs the LOM analysis on the user-provided capacitance matrix.
 
     Default Setup:
         junctions (Dict)
@@ -133,6 +134,7 @@ class LOManalysis(QAnalysisRenderer):
             if not self._capacitance_all_passes:
                 self._capacitance_all_passes[1] = self.capacitance_matrix.values
 
+        ureg = UnitRegistry()
         ic_amps = Convert.Ic_from_Lj(s.junctions.Lj, 'nH', 'A')
         cj = ureg(f'{s.junctions.Cj} fF').to('farad').magnitude
         fread = ureg(f'{s.freq_readout} GHz').to('GHz').magnitude

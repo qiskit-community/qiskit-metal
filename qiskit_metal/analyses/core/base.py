@@ -20,7 +20,7 @@ from copy import deepcopy
 
 
 class QAnalysis(ABC):
-    """`QAnalysis` is the core class from which all Metal analysis are derived.
+    """`QAnalysis` is the core class from which all Metal analysis classes are derived.
 
     The class defines the user interface for working with analysis.
 

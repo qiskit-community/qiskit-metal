@@ -20,11 +20,11 @@ from ... import Dict
 
 
 class QAnalysisRenderer(QAnalysis):
-    """Just a way to centralize the selection and naming of the renderer.
-    Could refactor code to transform this class into a class-less function.
+    """A subclass of `QAnalysis`, intended to standardize across all Analysis classes
+    select and name renderers.
 
     Default Setup:
-        name (str): Name of capacitive simulation setup. Defaults to "Setup".
+        name (str): Name of simulation setup. Defaults to "Setup".
     """
 
     default_setup = Dict(sim=Dict(name="Setup"))
@@ -54,7 +54,7 @@ class QAnalysisRenderer(QAnalysis):
             renderer_name (str): Name of the renderer you intend to use.
 
         Returns:
-            QRenderer: The renderer to be used in the analysis.
+            (QRenderer): The renderer to be used in the analysis.
         """
         # did user select a usable renderer (registered)?
         try:
@@ -122,7 +122,7 @@ class QAnalysisRenderer(QAnalysis):
         """Saves the screenshot.
 
         Returns:
-            pathlib.WindowsPath: path to png formatted screenshot.
+            (pathlib.WindowsPath): path to png formatted screenshot.
         """
         return self.renderer.save_screenshot()
 
