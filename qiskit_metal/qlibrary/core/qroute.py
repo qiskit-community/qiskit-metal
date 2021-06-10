@@ -20,6 +20,7 @@ from typing import List, Tuple, Union, AnyStr
 from collections.abc import Mapping
 from qiskit_metal.toolbox_metal import math_and_overrides as mao
 import math
+import re
 
 
 class QRoutePoint:
@@ -290,25 +291,43 @@ class QRoute(QComponent):
 
         # then change the lead by adding points
         for turn, length in options_lead.values():
-            if turn in ("left", "L"):
+            if isinstance(turn, (float, int)):
+                # turn is a number indicating the angle
+                lead.go_angle(length, turn)
+            elif re.search(r'^[-+]?(\d+\.\d+|\d+)$', turn):
+                # turn is a string of a number indicating the angle
+                lead.go_angle(length, float(turn))
+            elif turn in ("left", "L"):
+                # implicit turn -90 degrees
                 lead.go_left(length)
             elif turn in ("right", "R"):
+                # implicit turn 90 degrees
                 lead.go_right(length)
             elif turn in ("straight", "D", "S"):
+                # implicit 0 degrees movement
                 lead.go_straight(length)
-            elif turn in ("right45", "R45"):
-                lead.go_right45(length)
-            elif turn in ("left45", "L45"):
-                lead.go_left45(length)
+            elif re.search(r'^(left|L)[-+]?(\d+\.\d+|\d+)$', turn):
+                # left turn by the specified int/float degrees. can be signed
+                angle = re.sub(r'^(left|L)', "", turn)
+                lead.go_angle(length, float(angle))
+            elif re.search(r'^(right|R)[-+]?(\d+\.\d+|\d+)$', turn):
+                # right turn by the specified int/float degrees. can be signed
+                angle = re.sub(r'^(right|R)', "", turn)
+                lead.go_angle(length, -1 * float(angle))
             elif ('A' or 'angle') in turn:
+                # turn by the specified int/float degrees. Positive numbers turn left.
                 turn, angle = turn.split(',')
                 lead.go_angle(length, float(angle))
             else:
                 raise Exception(
-                    "the first term needs to represent a direction in english, "
-                    +
-                    "the second term should be a string indicating the length" +
-                    "the pair that caused this error is" + turn + ":" + length)
+                    f"\nThe input string {turn} is not supported. Please specify the jog turn "
+                    "using one of the supported formats:\n\"L\", \"L#\", \"R\", \"R#\", #, "
+                    "\"#\", \"A,#\", \"left\", \"left#\", \"right\", \"right#\""
+                    "\nwhere # is any signed or unsigned integer or floating point value.\n"
+                    "For example the following will all lead to the same turn:\n"
+                    "\"L\", \"L90\", \"R-90\", 90, "
+                    "\"90\", \"A,90\", \"left\", \"left90\", \"right-90\""
+                )
 
         # return the last QRoutePoint of the lead
         return lead.get_tip()
@@ -638,7 +657,7 @@ class QRouteLead:
             length(float): How much to move by
         """
         self.direction = draw.Vector.rotate(self.direction, -1 * np.pi / 4)
-        self.pts = np.append(self.pts, [self.pts[-1] + self.direction*length],
+        self.pts = np.append(self.pts, [self.pts[-1] + self.direction * length],
                              axis=0)
 
     def go_left45(self, length: float):
@@ -648,7 +667,7 @@ class QRouteLead:
             length(float): How much to move by
         """
         self.direction = draw.Vector.rotate(self.direction, np.pi / 4)
-        self.pts = np.append(self.pts, [self.pts[-1] + self.direction*length],
+        self.pts = np.append(self.pts, [self.pts[-1] + self.direction * length],
                              axis=0)
 
     def go_angle(self, length: float, angle: float):
@@ -658,8 +677,8 @@ class QRouteLead:
             length(float): How much to move by
             angle(float): rotation angle w.r.t lead tip direction
         """
-        self.direction = draw.Vector.rotate(self.direction, np.pi/180*angle)
-        self.pts = np.append(self.pts, [self.pts[-1] + self.direction*length],
+        self.direction = draw.Vector.rotate(self.direction, np.pi / 180 * angle)
+        self.pts = np.append(self.pts, [self.pts[-1] + self.direction * length],
                              axis=0)
 
     @property
