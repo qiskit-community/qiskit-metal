@@ -66,16 +66,50 @@ class QRoute(QComponent):
             * end_pin=Dict -- Component and pin string pair. Define which pin to start from
                 * component: '' -- Name of component to end on, which has a pin
                 * pin: '' -- Name of pin used for pin_end
-        * fillet: '0'
         * lead: Dict
             * start_straight: '0mm' -- Lead-in, defined as the straight segment extension from start_pin.  Defaults to 0.1um.
             * end_straight: '0mm' -- Lead-out, defined as the straight segment extension from end_pin.  Defaults to 0.1um.
             * start_jogged_extension: '' -- Lead-in, jogged extension of lead-in. Described as list of tuples
             * end_jogged_extension: '' -- Lead-out, jogged extension of lead-out. Described as list of tuples
+        * fillet: '0'
         * total_length: '7mm'
         * chip: 'main' -- Which chip is this component attached to.  Defaults to 'main'.
         * layer: '1' -- Which layer this component should be rendered on.  Defaults to '1'.
         * trace_width: 'cpw_width' -- Defines the width of the line.  Defaults to 'cpw_width'.
+
+    How to specify a QRoute with *_jogged_extensions
+        Currently it is expected for it to be a OrderedDict with incremental keys.
+        the value of each key specifies the direction of the jog and the extension past the jog.
+        For example:
+
+        .. code-block:: python
+            :linenos:
+
+            jogs = OrderedDict()
+            jogs[0] = ["R", '200um']
+            jogs[1] = ["R", '200um']
+            jogs[2] = ["L", '200um']
+            jogs[3] = ["L", '500um']
+            jogs[4] = ["R", '200um']
+            jogs_other = ....
+            
+            options = {'lead': {
+                'start_straight': '0.3mm',
+                'end_straight': '0.3mm',
+                'start_jogged_extension': jogs,
+                'end_jogged_extension': jogs_other
+            }}
+
+        The jog direction can be specified in several ways. Feel free to pick the one more
+        convenient for your coding style:
+
+        >> "L", "L#", "R", "R#", #, "#", "A,#", "left", "left#", "right", "right#"
+
+        where # is any signed or unsigned integer or floating point value.
+        For example the following will all lead to the same turn:
+
+        >> "L", "L90", "R-90", 90, "90", "A,90", "left", "left90", "right-90"
+
     """
 
     component_metadata = Dict(short_name='route', _qgeometry_table_path='True')
@@ -115,16 +149,21 @@ class QRoute(QComponent):
         Before that, it adds the variables that are needed to support routing.
 
         Args:
-            type (string): Supports Route (single layer trace) and CPW (adds the gap around it). Defaults to "CPW".
-
-        Attributes:
-            head (QRouteLead()): Stores sequential points to start the route
-            tail (QRouteLead()): (optional) Stores sequential points to terminate the route
-            intermediate_pts: (list or numpy Nx2 or dict) Sequence of points between and other than head and tail.  Defaults to None.
-                              Type could be either list or numpy Nx2, or dict/OrderedDict nesting lists or numpy Nx2
-            start_pin_name (string): Head pin name.  Defaults to "start".
-            end_pin_name (string): Tail pin name.  Defaults to "end".
+            design (QDesign): The parent design.
+            name (str): Name of the component. Auto-named if possible.
+            options (dict): User options that will override the defaults.  Defaults to None.
+            type (string): Supports Route (single layer trace) and CPW (adds the gap around it).
+                Defaults to "CPW".
         """
+        # Class key Attributes:
+        #     * head (QRouteLead()): Stores sequential points to start the route.
+        #     * tail (QRouteLead()): (optional) Stores sequential points to terminate the route.
+        #     * intermediate_pts: (list or numpy Nx2 or dict) Sequence of points between and other
+        #         than head and tail.  Defaults to None. Type could be either list or numpy Nx2,
+        #         or dict/OrderedDict nesting lists or numpy Nx2.
+        #     * start_pin_name (string): Head pin name.  Defaults to "start".
+        #     * end_pin_name (string): Tail pin name.  Defaults to "end".
+
         self.head = QRouteLead()
         self.tail = QRouteLead()
 
