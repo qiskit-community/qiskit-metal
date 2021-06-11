@@ -714,7 +714,7 @@ class QAnsysRenderer(QRenderer):
             x_min, y_min, x_max, y_max = qc_shapely.bounds
             poly_ansys = self.modeler.draw_rect_corner(
                 *parse_units([[x_min, y_min, qc_chip_z], x_max - x_min,
-                              y_max - y_min, qc_chip_z]), **ansys_options)
+                              y_max - y_min, 0]), **ansys_options)
             self.modeler.rename_obj(poly_ansys, name)
 
         else:
