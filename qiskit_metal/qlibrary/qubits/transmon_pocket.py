@@ -161,6 +161,9 @@ class TransmonPocket(BaseQubit):
         # self.p allows us to directly access parsed values (string -> numbers) form the user option
         p = self.p
 
+        # extract chip name
+        chip = p.chip
+
         # since we will reuse these options, parse them once and define them as varaibles
         pad_width = p.pad_width
         pad_height = p.pad_height
@@ -187,13 +190,13 @@ class TransmonPocket(BaseQubit):
         [rect_jj, pad_top, pad_bot, rect_pk] = polys
 
         # Use the geometry to create Metal qgeometry
-        self.add_qgeometry('poly', dict(pad_top=pad_top, pad_bot=pad_bot))
-        self.add_qgeometry('poly', dict(rect_pk=rect_pk), subtract=True)
+        self.add_qgeometry('poly', dict(pad_top=pad_top, pad_bot=pad_bot), chip=chip)
+        self.add_qgeometry('poly', dict(rect_pk=rect_pk), subtract=True, chip=chip)
         # self.add_qgeometry('poly', dict(
         #     rect_jj=rect_jj), helper=True)
         self.add_qgeometry('junction',
                            dict(rect_jj=rect_jj),
-                           width=p.inductor_width)
+                           width=p.inductor_width, chip=chip)
 
     def make_connection_pads(self):
         """Makes standard transmon in a pocket."""
@@ -210,6 +213,9 @@ class TransmonPocket(BaseQubit):
         # self.p allows us to directly access parsed values (string -> numbers) form the user option
         p = self.p
         pc = self.p.connection_pads[name]  # parser on connector options
+        
+        # extract chip name
+        chip = p.chip
 
         # define commonly used variables once
         cpw_width = pc.cpw_width
@@ -252,12 +258,12 @@ class TransmonPocket(BaseQubit):
                                        [p.pos_x, p.pos_y])
         [connector_pad, connector_wire_path, connector_wire_CON] = objects
 
-        self.add_qgeometry('poly', {f'{name}_connector_pad': connector_pad})
+        self.add_qgeometry('poly', {f'{name}_connector_pad': connector_pad}, chip=chip)
         self.add_qgeometry('path', {f'{name}_wire': connector_wire_path},
-                           width=cpw_width)
+                           width=cpw_width, chip=chip)
         self.add_qgeometry('path', {f'{name}_wire_sub': connector_wire_path},
                            width=cpw_width + 2 * pc.cpw_gap,
-                           subtract=True)
+                           subtract=True, chip=chip)
 
         ############################################################
 
