@@ -860,8 +860,8 @@ class QAnsysRenderer(QRendererAnalysis):
 
         Args:
             setup_name (str, optional): If name exists for setup, then have pinfo reference it. 
-            If name for setup does not exist, create a new setup with the name.  If name is None, 
-            create a new setup with default name.
+              If name for setup does not exist, create a new setup with the name.
+              If name is None, create a new setup with default name.
         """
         if self.pinfo:
             if self.pinfo.project:

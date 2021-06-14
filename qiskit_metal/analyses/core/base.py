@@ -58,18 +58,22 @@ class QAnalysis(ABC):
         """Abstract method. Must be implemented by the subclass.
         Use as an alias for the main analysis method. Call the main analysis method run_***().
         Subclass implementation of run() must:
-        * always call the main analysis method(s) named run_***().
+        * always call the main analysis method(s) named `run_***()`.
         * never implement the analysis, which should be instead in the method run_***().
-        run_***() must always call self.save_run_args(*args, **kwargs) to save the inputs.
+
+        `run_***()` must always call self.save_run_args(`*args`, `**kwargs`) to save the inputs.
 
         Example:
-            def run(self, *args, **kwargs):
-                self.run_sim(*args, **kwargs)
-            def run_sim(self, *args, **kwargs):
-                self.save_run_args(*args, **kwargs)
-                <......>
 
-        Make sure the name of the method run_***() does not conflict with that of another
+            ::
+
+                def run(self, *args, **kwargs):
+                    self.run_sim(*args, **kwargs)
+                def run_sim(self, *args, **kwargs):
+                    self.save_run_args(*args, **kwargs)
+                    <......>
+
+        Make sure the name of the method `run_***()` does not conflict with that of another
         QAnalysis subclass, in case you expect them to be both inherited from the same subclass.
         """
 

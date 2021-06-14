@@ -34,19 +34,19 @@ class LOManalysis(QAnalysisRenderer):
     """Performs the LOM analysis on the user-provided capacitance matrix.
 
     Default Setup:
-        junctions (Dict)
-            Lj (float): Junction inductance (in nH)
-            Cj (float): Junction capacitance (in fF)
-        freq_readout (float): Coupling readout frequency (in GHz).
-        freq_bus (Union[list, float]): Coupling bus frequencies (in GHz).
-            freq_bus can be a list with the order they appear in the capMatrix.
+        * junctions (Dict)
+            * Lj (float): Junction inductance (in nH)
+            * Cj (float): Junction capacitance (in fF)
+        * freq_readout (float): Coupling readout frequency (in GHz).
+        * freq_bus (Union[list, float]): Coupling bus frequencies (in GHz).
+            * freq_bus can be a list with the order they appear in the capMatrix.
     """
     default_setup = Dict(lom=Dict(
         junctions=Dict(Lj=12, Cj=2), freq_readout=7.0, freq_bus=[6.0, 6.2]))
     """Default setup"""
 
     def __init__(self, design: 'QDesign', *args, **kwargs):
-        """Initialize the analysis step to extract the LOM model from the system capacitance
+        """Initialize the analysis step to extract the LOM model from the system capacitance.
 
         Args:
             design (QDesign): pointer to the main qiskit-metal design. Used to access the Qrenderer
@@ -60,8 +60,8 @@ class LOManalysis(QAnalysisRenderer):
         self._capacitance_all_passes = {}
 
     def reset_variables(self):
-        """Code to set and reset the output variables for this analysis class
-        This is called by the QAnalysis.__init__()
+        """Code to set and reset the output variables for this analysis class.
+        This is called by the QAnalysis.__init__().
         """
         # pylint: disable=attribute-defined-outside-init
         # output variables
@@ -70,7 +70,7 @@ class LOManalysis(QAnalysisRenderer):
 
     @property
     def capacitance_matrix(self) -> pd.DataFrame:
-        """Returns the capacitance matrix as a pandas dataframe
+        """Returns the capacitance matrix as a pandas dataframe.
 
         Returns:
             pd.DataFrame: Capacitance Matrix from the last pass
@@ -79,7 +79,7 @@ class LOManalysis(QAnalysisRenderer):
 
     @capacitance_matrix.setter
     def capacitance_matrix(self, cap_mtrx: pd.DataFrame):
-        """Sets the capacitance matrix
+        """Sets the capacitance matrix.
 
         Args:
             cap_mtrx (pd.DataFrame): Capactiance Matrix to store in the Analysis instance
@@ -92,7 +92,7 @@ class LOManalysis(QAnalysisRenderer):
 
     @property
     def lumped_oscillator(self) -> pd.DataFrame:
-        """Stores the output of the LOM analysis
+        """Stores the output of the LOM analysis.
 
         Returns:
             dict: Pass number (keys) and their respective lump oscillator information (values)
@@ -101,7 +101,7 @@ class LOManalysis(QAnalysisRenderer):
 
     @lumped_oscillator.setter
     def lumped_oscillator(self, lom_dict: pd.DataFrame):
-        """Allows editing the output of the LOM analysis
+        """Allows editing the output of the LOM analysis.
 
         Args:
             lom_dict (dict): Pass number (keys) and their respective
@@ -116,7 +116,7 @@ class LOManalysis(QAnalysisRenderer):
 
     def run_lom(self):
         """Executes the lumped oscillator extraction from the capacitance matrix,
-        and based on the setup values
+        and based on the setup values.
 
         Returns:
             dict: Pass numbers (keys) and their respective capacitance matrices (values)
@@ -169,9 +169,8 @@ class LOManalysis(QAnalysisRenderer):
     def plot_convergence(self, *args, **kwargs):
         """Plots alpha and frequency versus pass number, as well as convergence of delta (in %).
 
-        Args:
-            It accepts the same inputs as run_lom(), to allow regenerating the LOM
-            results before plotting them.
+        It accepts the same inputs as run_lom(), to allow regenerating the LOM
+        results before plotting them.
         """
         if self._lom_output is None or args or kwargs:
             self.run_lom(*args, **kwargs)
@@ -181,9 +180,8 @@ class LOManalysis(QAnalysisRenderer):
     def plot_convergence_chi(self, *args, **kwargs):
         """Plot convergence of chi and g, both in MHz, as a function of pass number.
 
-        Args:
-            It accepts the same inputs as run_lom(), to allow regenerating the LOM
-            results before plotting them.
+        It accepts the same inputs as run_lom(), to allow regenerating the LOM
+        results before plotting them.
         """
         if self._lom_output is None or args or kwargs:
             self.run_lom(*args, **kwargs)
@@ -206,8 +204,8 @@ class CapExtractAndLOM(LOManalysis, CapExtraction):
 
     def run(self, *args, **kwargs):
         """Executes sequentually the system capacitance simulation and lom extraction
-        executing the methods CapExtraction.run_sim(*args, **kwargs) and LOManalysis.run_lom()
-        For imput parameter, see documentation for CapExtraction.run_sim()
+        executing the methods CapExtraction.run_sim(`*args`, `**kwargs`) and LOManalysis.run_lom().
+        For imput parameter, see documentation for CapExtraction.run_sim().
 
         Returns:
             (dict): Pass numbers (keys) and respective lump oscillator information (values)

@@ -51,7 +51,7 @@ class EPRanalysis(QAnalysisRenderer):
     """Default setup"""
 
     def __init__(self, design: 'QDesign', *args, **kwargs):
-        """Compute eigenmode, then derive from it using the epr method
+        """Compute eigenmode, then derive from it using the epr method.
 
         Args:
             design (QDesign): pointer to the main qiskit-metal design. Used to access the Qrenderer
@@ -64,8 +64,8 @@ class EPRanalysis(QAnalysisRenderer):
         #  EigenmodeSim class. this will likely require to find them inside pinfo
 
     def reset_variables(self):
-        """Code to set and reset the output variables for this analysis class
-        This is called by the QAnalysis.__init__()
+        """Code to set and reset the output variables for this analysis class.
+        This is called by the QAnalysis.__init__().
         """
         # pylint: disable=attribute-defined-outside-init
 
@@ -75,13 +75,13 @@ class EPRanalysis(QAnalysisRenderer):
         self.energy_elec_sub = None
 
     def run(self):  # pylint: disable=arguments-differ
-        """Alias for run_lom()
+        """Alias for run_lom().
         """
         return self.run_epr()
 
     def run_epr(self, no_junctions=False):
         """Executes the epr analysis from the extracted eigemode,
-        and based on the setup values
+        and based on the setup values.
         """
         # wipe data from the previous run (if any)
         self.reset_variables()
@@ -99,7 +99,7 @@ class EPRanalysis(QAnalysisRenderer):
 
     def epr_start(self, no_junctions=False):
         """
-        Initialize epr package
+        Initialize epr package.
         """
         # pandas cannot handle Dict so need to convert Dict to dict
         system = dict()
@@ -112,7 +112,7 @@ class EPRanalysis(QAnalysisRenderer):
         return system
 
     def get_stored_energy(self, no_junctions=False):
-        """Calculate the energy stored in the system based on the eigenmode results
+        """Calculate the energy stored in the system based on the eigenmode results.
         """
         # execute EPR and energy extraction
         self.energy_elec, self.energy_elec_sub, self.energy_mag = \
@@ -129,33 +129,33 @@ class EPRanalysis(QAnalysisRenderer):
         """)
 
     def run_analysis(self):
-        """Short-cut to the same-name method found in renderers.ansys_renderer.py
-        Eventually, the analysis code needs to be only here, and the renderer method deprecated
+        """Short-cut to the same-name method found in renderers.ansys_renderer.py.
+        Eventually, the analysis code needs to be only here, and the renderer method deprecated.
         """
         self.renderer.epr_run_analysis()
 
     def spectrum_analysis(self, cos_trunc: int = 8, fock_trunc: int = 7):
-        """Short-cut to the same-name method found in renderers.ansys_renderer.py
-        Eventually, the analysis code needs to be only here, and the renderer method deprecated
+        """Short-cut to the same-name method found in renderers.ansys_renderer.py.
+        Eventually, the analysis code needs to be only here, and the renderer method deprecated.
         """
         self.renderer.epr_spectrum_analysis(cos_trunc, fock_trunc)
 
     def report_hamiltonian(self, sweep_variable, numeric=True):
-        """Short-cut to the same-name method found in renderers.ansys_renderer.py
-        Eventually, the analysis code needs to be only here, and the renderer method deprecated
+        """Short-cut to the same-name method found in renderers.ansys_renderer.py.
+        Eventually, the analysis code needs to be only here, and the renderer method deprecated.
         """
         self.renderer.epr_report_hamiltonian(sweep_variable, numeric)
 
     def get_frequencies(self):
-        """Short-cut to the same-name method found in renderers.ansys_renderer.py
-        Eventually, the analysis code needs to be only here, and the renderer method deprecated
+        """Short-cut to the same-name method found in renderers.ansys_renderer.py.
+        Eventually, the analysis code needs to be only here, and the renderer method deprecated.
         """
         system = self.epr_start(no_junctions=True)
         return self.renderer.epr_get_frequencies(**system)
 
 
 class EigenmodeAndEPR(EPRanalysis, EigenmodeSim):
-    """Compute eigenmode, then derive from it using the epr method
+    """Compute eigenmode, then derive from it using the epr method.
     """
 
     def __init__(self, design: 'QDesign', renderer_name: str = 'hfss'):
@@ -170,8 +170,8 @@ class EigenmodeAndEPR(EPRanalysis, EigenmodeSim):
 
     def run(self, *args, **kwargs):
         """Executes sequentually the system capacitance simulation and lom extraction
-        executing the methods CapExtraction.run_sim(*args, **kwargs) and LOManalysis.run_lom()
-        For imput parameter, see documentation for CapExtraction.run_sim()
+        executing the methods CapExtraction.run_sim(`*args`, `**kwargs`) and LOManalysis.run_lom().
+        For imput parameter, see documentation for CapExtraction.run_sim().
 
         Returns:
             (dict): Pass numbers (keys) and respective lump oscillator information (values)

@@ -66,6 +66,7 @@ class QRenderer(ABC):
 
     # TODO: To add: default parameters for the renderer for component element values.
     element_table_data = dict()
+    """Element table data."""
 
     @classmethod
     def load(cls):

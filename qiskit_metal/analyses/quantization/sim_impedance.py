@@ -24,24 +24,25 @@ class ImpedanceAnalysis(QAnalysisRenderer):
     """Uses drivenmodal simulation to extract the impedance
 
     Default Setup:
-        name (str): Name of driven modal setup. Defaults to "Setup".
-        freq_ghz (int): Frequency in GHz. Defaults to 5.
-        max_delta_s (float): Absolute value of maximum difference in
+        * name (str): Name of driven modal setup. Defaults to "Setup".
+        * freq_ghz (int): Frequency in GHz. Defaults to 5.
+        * max_delta_s (float): Absolute value of maximum difference in
             scattering parameter S. Defaults to 0.1.
-        max_passes (int): Maximum number of passes. Defaults to 10.
-        min_passes (int): Minimum number of passes. Defaults to 1.
-        min_converged (int): Minimum number of converged passes. Defaults to 1.
-        pct_refinement (int): Percent refinement. Defaults to 30.
-        basis_order (int): Basis order. Defaults to 1.
-        vars (Dict): Variables (key) and values (value) to define in the renderer.
-        sweep_setup (Dict): Description of the drivenmodal sweep
-            name (str): Name of sweep. Defaults to "Sweep".
-            start_ghz (float): Starting frequency of sweep in GHz. Defaults to 2.0.
-            stop_ghz (float): Ending frequency of sweep in GHz. Defaults to 8.0.
-            count (int): Total number of frequencies. Defaults to 101.
-            step_ghz (float): Difference between adjacent frequencies. Defaults to None.
-            type (str): Type of sweep. Defaults to "Fast".
-            save_fields (bool): Whether or not to save fields. Defaults to False.
+        * max_passes (int): Maximum number of passes. Defaults to 10.
+        * min_passes (int): Minimum number of passes. Defaults to 1.
+        * min_converged (int): Minimum number of converged passes. Defaults to 1.
+        * pct_refinement (int): Percent refinement. Defaults to 30.
+        * basis_order (int): Basis order. Defaults to 1.
+        * vars (Dict): Variables (key) and values (value) to define in the renderer.
+        * sweep_setup (Dict): Description of the drivenmodal sweep
+            * name (str): Name of sweep. Defaults to "Sweep".
+            * start_ghz (float): Starting frequency of sweep in GHz. Defaults to 2.0.
+            * stop_ghz (float): Ending frequency of sweep in GHz. Defaults to 8.0.
+            * count (int): Total number of frequencies. Defaults to 101.
+            * step_ghz (float): Difference between adjacent frequencies. Defaults to None.
+            * type (str): Type of sweep. Defaults to "Fast".
+            * save_fields (bool): Whether or not to save fields. Defaults to False.
+
     """
     default_setup = Dict(sim=Dict(freq_ghz=5,
                                   max_delta_s=0.1,

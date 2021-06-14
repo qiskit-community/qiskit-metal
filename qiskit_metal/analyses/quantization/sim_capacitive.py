@@ -26,20 +26,20 @@ class CapExtraction(QAnalysisRenderer):
     """Compute Capacitance matrix using the selected renderer.
 
     Default Setup:
-        name (str): Name of capacitive simulation setup. Defaults to "Setup".
-        freq_ghz (int): Frequency in GHz. Defaults to 5.
-        save_fields (bool): Whether or not to save fields. Defaults to False.
-        enabled (bool): Whether or not setup is enabled. Defaults to True.
-        max_passes (int): Maximum number of passes. Defaults to 15.
-        min_passes (int): Minimum number of passes. Defaults to 2.
-        min_converged_passes (int): Minimum number of converged passes.
+        * name (str): Name of capacitive simulation setup. Defaults to "Setup".
+        * freq_ghz (int): Frequency in GHz. Defaults to 5.
+        * save_fields (bool): Whether or not to save fields. Defaults to False.
+        * enabled (bool): Whether or not setup is enabled. Defaults to True.
+        * max_passes (int): Maximum number of passes. Defaults to 15.
+        * min_passes (int): Minimum number of passes. Defaults to 2.
+        * min_converged_passes (int): Minimum number of converged passes.
             Defaults to 2.
-        percent_error (float): Error tolerance as a percentage. Defaults to 0.5.
-        percent_refinement (int): Refinement as a percentage. Defaults to 0.5.
-        auto_increase_solution_order (bool): Whether or not to increase
+        * percent_error (float): Error tolerance as a percentage. Defaults to 0.5.
+        * percent_refinement (int): Refinement as a percentage. Defaults to 0.5.
+        * auto_increase_solution_order (bool): Whether or not to increase
             solution order automatically. Defaults to True.
-        solution_order (str): Solution order. Defaults to 'High'.
-        solver_type (str): Solver type. Defaults to 'Iterative'.
+        * solution_order (str): Solution order. Defaults to 'High'.
+        * solver_type (str): Solver type. Defaults to 'Iterative'.
     """
     default_setup = Dict(sim=Dict(freq_ghz=5.,
                                   save_fields=False,
@@ -55,7 +55,7 @@ class CapExtraction(QAnalysisRenderer):
     """Default setup"""
 
     def __init__(self, design: 'QDesign', renderer_name: str = 'q3d'):
-        """Initialize the class to extract the capacitance matrix
+        """Initialize the class to extract the capacitance matrix.
 
         Args:
             design (QDesign): pointer to the main qiskit-metal design. Used to access the Qrenderer
@@ -65,8 +65,8 @@ class CapExtraction(QAnalysisRenderer):
         super().__init__(design, renderer_name)
 
     def reset_variables_sim(self):
-        """Code to set and reset the output variables for this analysis class
-        This is called by the QAnalysis.__init__()
+        """Code to set and reset the output variables for this analysis class.
+        This is called by the QAnalysis.__init__().
         """
         # pylint: disable=attribute-defined-outside-init
         # settings variables
@@ -80,7 +80,7 @@ class CapExtraction(QAnalysisRenderer):
     def _analyze(self) -> str:
         """Executes the analysis step of the Run. First it initializes the renderer setup
         to prepare for the capacitance calculation, then it executes it.
-        Finally it recovers the output of the analysis and stores it in self.capacitance_matrix
+        Finally it recovers the output of the analysis and stores it in self.capacitance_matrix.
         """
         # pylint: disable=attribute-defined-outside-init
         self.setup_name = self.renderer.initialize_cap_extract(**self.setup.sim)
