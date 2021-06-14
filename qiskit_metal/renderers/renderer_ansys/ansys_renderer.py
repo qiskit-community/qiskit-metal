@@ -713,7 +713,7 @@ class QAnsysRenderer(QRenderer):
             self.logger.debug(f'Drawing a rectangle: {name}')
             x_min, y_min, x_max, y_max = qc_shapely.bounds
             poly_ansys = self.modeler.draw_rect_corner(
-                *parse_units([[x_min, y_min, qc_chip_z], x_max - x_min,
+                *parse_units([[x_min, y_min, self.design.get_chip_z(qgeom.chip)], x_max - x_min,
                               y_max - y_min, 0]), **ansys_options)
             self.modeler.rename_obj(poly_ansys, name)
 
