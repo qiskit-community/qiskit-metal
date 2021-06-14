@@ -43,13 +43,14 @@ class LOManalysis(QAnalysisRenderer):
     """
     default_setup = Dict(lom=Dict(
         junctions=Dict(Lj=12, Cj=2), freq_readout=7.0, freq_bus=[6.0, 6.2]))
-    """Default setup"""
+    """Default setup."""
 
     def __init__(self, design: 'QDesign', *args, **kwargs):
         """Initialize the analysis step to extract the LOM model from the system capacitance.
 
         Args:
-            design (QDesign): pointer to the main qiskit-metal design. Used to access the Qrenderer
+            design (QDesign): Pointer to the main qiskit-metal design.
+                Used to access the Qrenderer.
         """
         # set design and renderer
         super().__init__(design, *args, **kwargs)
@@ -73,7 +74,7 @@ class LOManalysis(QAnalysisRenderer):
         """Returns the capacitance matrix as a pandas dataframe.
 
         Returns:
-            pd.DataFrame: Capacitance Matrix from the last pass
+            pd.DataFrame: Capacitance Matrix from the last pass.
         """
         return self._capacitance_matrix
 
@@ -82,7 +83,7 @@ class LOManalysis(QAnalysisRenderer):
         """Sets the capacitance matrix.
 
         Args:
-            cap_mtrx (pd.DataFrame): Capactiance Matrix to store in the Analysis instance
+            cap_mtrx (pd.DataFrame): Capactiance Matrix to store in the Analysis instance.
         """
         if isinstance(cap_mtrx, pd.DataFrame):
             self._capacitance_matrix = cap_mtrx
@@ -95,7 +96,7 @@ class LOManalysis(QAnalysisRenderer):
         """Stores the output of the LOM analysis.
 
         Returns:
-            dict: Pass number (keys) and their respective lump oscillator information (values)
+            dict: Pass number (keys) and their respective lump oscillator information (values).
         """
         return self._lom_output
 
@@ -105,12 +106,12 @@ class LOManalysis(QAnalysisRenderer):
 
         Args:
             lom_dict (dict): Pass number (keys) and their respective
-                lump oscillator information (values)
+                lump oscillator information (values).
         """
         self._lom_output = lom_dict
 
     def run(self):  # pylint: disable=arguments-differ
-        """Alias for run_lom()
+        """Alias for run_lom().
         """
         return self.run_lom()
 
@@ -119,7 +120,7 @@ class LOManalysis(QAnalysisRenderer):
         and based on the setup values.
 
         Returns:
-            dict: Pass numbers (keys) and their respective capacitance matrices (values)
+            dict: Pass numbers (keys) and their respective capacitance matrices (values).
         """
         # wipe data from the previous run (if any)
         self.reset_variables()
@@ -193,11 +194,11 @@ class CapExtractAndLOM(LOManalysis, CapExtraction):
     """
 
     def __init__(self, design: 'QDesign', renderer_name: str = 'q3d'):
-        """Initialize class to simulate the capacitance matrix and extract the lom model
+        """Initialize class to simulate the capacitance matrix and extract the lom model.
 
         Args:
-            design (QDesign): pointer to the main qiskit-metal design. Used to access the Qrenderer
-            renderer_name (str, optional): which renderer to use. Defaults to 'q3d'.
+            design (QDesign): Pointer to the main qiskit-metal design. Used to access the Qrenderer.
+            renderer_name (str, optional): Which renderer to use. Defaults to 'q3d'.
         """
         # set design and renderer
         super().__init__(design, renderer_name)
@@ -208,7 +209,7 @@ class CapExtractAndLOM(LOManalysis, CapExtraction):
         For imput parameter, see documentation for CapExtraction.run_sim().
 
         Returns:
-            (dict): Pass numbers (keys) and respective lump oscillator information (values)
+            (dict): Pass numbers (keys) and respective lump oscillator information (values).
         """
         self.run_sim(*args, **kwargs)
         return self.run_lom()

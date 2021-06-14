@@ -186,7 +186,7 @@ class QAnsysRenderer(QRendererAnalysis):
         port_inductor_gap=
         '10um'  # spacing between port and inductor if junction is drawn both ways
     )
-    """Default setup"""
+    """Default setup."""
 
     # When additional columns are added to QGeometry, this is the example to populate it.
     # e.g. element_extensions = dict(
@@ -211,7 +211,7 @@ class QAnsysRenderer(QRendererAnalysis):
                                   resistance=default_options['_Rj'],
                                   mesh_kw_jj=parse_units(
                                       default_options['max_mesh_length_jj'])))
-    """Element table data"""
+    """Element table data."""
 
     def __init__(self, design: 'QDesign', initiate=True, options: Dict = None):
         """Create a QRenderer for Ansys.
@@ -233,6 +233,7 @@ class QAnsysRenderer(QRendererAnalysis):
 
     @property
     def initialized(self):
+        """Returns True if initialized, False otherwise."""
         if self._pinfo:
             if self._pinfo.project:
                 try:
@@ -292,7 +293,7 @@ class QAnsysRenderer(QRendererAnalysis):
         return True
 
     def _close_renderer(self):
-        """Not used by the gds renderer at this time. only returns True
+        """Not used by the gds renderer at this time. only returns True.
 
         Returns:
             bool: True

@@ -26,7 +26,7 @@ from ..core import QAnalysisRenderer
 
 
 class EigenmodeSim(QAnalysisRenderer):
-    """Compute eigenmode, then derive from it using the epr method
+    """Compute eigenmode, then derive from it using the epr method.
 
     Default Setup:
         * name (str): Name of eigenmode setup. Defaults to "Setup".
@@ -50,21 +50,22 @@ class EigenmodeSim(QAnalysisRenderer):
                                   pct_refinement=30,
                                   basis_order=1,
                                   vars=Dict(Lj='10 nH', Cj='0 fF')))
-    """Default setup"""
+    """Default setup."""
 
     def __init__(self, design: 'QDesign', renderer_name: str = 'hfss'):
-        """Compute eigenmode, then derive from it using the epr method
+        """Compute eigenmode, then derive from it using the epr method.
 
         Args:
-            design (QDesign): pointer to the main qiskit-metal design. Used to access the Qrenderer
-            renderer_name (str, optional): which renderer to use. Defaults to 'hfss'.
+            design (QDesign): Pointer to the main qiskit-metal design.
+                Used to access the Qrenderer.
+            renderer_name (str, optional): Which renderer to use. Defaults to 'hfss'.
         """
         # set design and renderer
         super().__init__(design, renderer_name)
 
     def reset_variables_sim(self):
         """Code to set and reset the output variables for this analysis class
-        This is called by the QAnalysis.__init__()
+        This is called by the QAnalysis.__init__().
         """
         # pylint: disable=attribute-defined-outside-init
         # settings variables
@@ -116,7 +117,7 @@ class EigenmodeSim(QAnalysisRenderer):
                 of rendered geometries or use chip size from design class. Defaults to True.
 
         Returns:
-            (str, str): Name of the design and name of the setup
+            (str, str): Name of the design and name of the setup.
         """
         # save input variables to run(). This line must be the first in the method
         if components is not None:

@@ -292,7 +292,7 @@ class QComponent():
         Init method.
 
         Returns:
-            dict: metadata from all children
+            dict: Metadata from all children.
         """
 
         metadata_from_children = {}

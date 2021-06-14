@@ -48,14 +48,15 @@ class EPRanalysis(QAnalysisRenderer):
                                   cos_trunc=8,
                                   fock_trunc=7,
                                   sweep_variable='Lj'))
-    """Default setup"""
+    """Default setup."""
 
     def __init__(self, design: 'QDesign', *args, **kwargs):
         """Compute eigenmode, then derive from it using the epr method.
 
         Args:
-            design (QDesign): pointer to the main qiskit-metal design. Used to access the Qrenderer
-            renderer_name (str, optional): which renderer to use. Defaults to 'hfss'.
+            design (QDesign): Pointer to the main qiskit-metal design.
+                Used to access the Qrenderer.
+            renderer_name (str, optional): Which renderer to use. Defaults to 'hfss'.
         """
         # set design and renderer
         super().__init__(design, *args, **kwargs)
@@ -159,11 +160,11 @@ class EigenmodeAndEPR(EPRanalysis, EigenmodeSim):
     """
 
     def __init__(self, design: 'QDesign', renderer_name: str = 'hfss'):
-        """Compute eigenmode, then derive from it using the epr method
+        """Compute eigenmode, then derive from it using the epr method.
 
         Args:
-            design (QDesign): pointer to the main qiskit-metal design. Used to access the Qrenderer
-            renderer_name (str, optional): which renderer to use. Defaults to 'hfss'.
+            design (QDesign): Pointer to the main qiskit-metal design. Used to access the Qrenderer.
+            renderer_name (str, optional): Which renderer to use. Defaults to 'hfss'.
         """
         # set design and renderer
         super().__init__(design, renderer_name)
@@ -174,7 +175,7 @@ class EigenmodeAndEPR(EPRanalysis, EigenmodeSim):
         For imput parameter, see documentation for CapExtraction.run_sim().
 
         Returns:
-            (dict): Pass numbers (keys) and respective lump oscillator information (values)
+            (dict): Pass numbers (keys) and respective lump oscillator information (values).
         """
         self.run_sim(*args, **kwargs)
         return self.run_epr()

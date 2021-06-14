@@ -52,14 +52,15 @@ class CapExtraction(QAnalysisRenderer):
                                   auto_increase_solution_order=True,
                                   solution_order='High',
                                   solver_type='Iterative'))
-    """Default setup"""
+    """Default setup."""
 
     def __init__(self, design: 'QDesign', renderer_name: str = 'q3d'):
         """Initialize the class to extract the capacitance matrix.
 
         Args:
-            design (QDesign): pointer to the main qiskit-metal design. Used to access the Qrenderer
-            renderer_name (str, optional): which renderer to use. Defaults to 'q3d'.
+            design (QDesign): Pointer to the main qiskit-metal design.
+                Used to access the Qrenderer.
+            renderer_name (str, optional): Which renderer to use. Defaults to 'q3d'.
         """
         # set design and renderer
         super().__init__(design, renderer_name)
@@ -123,7 +124,7 @@ class CapExtraction(QAnalysisRenderer):
                 of rendered geometries or use chip size from design class. Defaults to True.
 
         Returns:
-            (str, str): Name of the design and name of the setup
+            (str, str): Name of the design and name of the setup.
         """
         # save input variables to run(). This line must be the first in the method
         if components is not None:
@@ -151,7 +152,7 @@ class CapExtraction(QAnalysisRenderer):
         It is populated by _analyze() with a pandas database.
 
         Returns:
-            pd.DataFrame: Capacitance Matrix from the last pass
+            pd.DataFrame: Capacitance Matrix from the last pass.
         """
         return self._capacitance_matrix
 
@@ -160,7 +161,7 @@ class CapExtraction(QAnalysisRenderer):
         """Sets the capacitance matrix.
 
         Args:
-            cap_mtrx (pd.DataFrame): Capactiance Matrix to store in the Analysis instance
+            cap_mtrx (pd.DataFrame): Capactiance Matrix to store in the Analysis instance.
         """
         if isinstance(cap_mtrx, pd.DataFrame):
             self._capacitance_matrix = cap_mtrx

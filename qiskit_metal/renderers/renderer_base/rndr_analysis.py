@@ -28,8 +28,8 @@ class QRendererAnalysis(QRenderer):
     def __init__(self, design: 'QDesign', initiate=False, options: Dict = None):
         """
         Args:
-            design (QDesign): The design
-            initiate (bool): True to initiate the renderer (Default: False)
+            design (QDesign): The design.
+            initiate (bool): True to initiate the renderer (Default: False).
             settings (Dict, optional): Used to override default settings. Defaults to None.
         """
         super().__init__(design=design,
@@ -55,7 +55,7 @@ class QRendererAnalysis(QRenderer):
     @abstractmethod
     def render_chip(self, name):
         """Abstract method. Must be implemented by the subclass.
-        Render the given chip
+        Render the given chip.
 
         Args:
             name (str): chip to render
@@ -69,17 +69,17 @@ class QRendererAnalysis(QRenderer):
         If selection is none, then render all components.
 
         Args:
-            selection (QComponent): component to render
+            selection (QComponent): Component to render.
         """
         pass
 
     @abstractmethod
     def render_component(self, component):
         """Abstract method. Must be implemented by the subclass.
-        Render the specified component
+        Render the specified component.
 
         Args:
-            component (QComponent): Component to render
+            component (QComponent): Component to render.
         """
         pass
 
@@ -89,7 +89,7 @@ class QRendererAnalysis(QRenderer):
         Render the specified element
 
         Args:
-            element (Element): element to render
+            element (Element): Element to render.
         """
         pass
         # if isinstance(element, path):
@@ -104,20 +104,20 @@ class QRendererAnalysis(QRenderer):
     @abstractmethod
     def render_element_path(self, path):
         """Abstract method. Must be implemented by the subclass.
-        Render an element path
+        Render an element path.
 
         Args:
-            path (str): Path to render
+            path (str): Path to render.
         """
         pass
 
     @abstractmethod
     def render_element_poly(self, poly):
         """Abstract method. Must be implemented by the subclass.
-        Render an element poly
+        Render an element poly.
 
         Args:
-            poly (Poly): Poly to render
+            poly (Poly): Poly to render.
         """
         pass
 

@@ -21,7 +21,7 @@ from ..core import QAnalysisRenderer
 
 
 class ImpedanceAnalysis(QAnalysisRenderer):
-    """Uses drivenmodal simulation to extract the impedance
+    """Uses drivenmodal simulation to extract the impedance.
 
     Default Setup:
         * name (str): Name of driven modal setup. Defaults to "Setup".
@@ -59,21 +59,22 @@ class ImpedanceAnalysis(QAnalysisRenderer):
                                                    step_ghz=None,
                                                    type="Fast",
                                                    save_fields=False)))
-    """Default setup"""
+    """Default setup."""
 
     def __init__(self, design: 'QDesign', renderer_name: str = 'hfss'):
-        """Compute drivenmodal and then extracts impedance, admittance and scattering paramters
+        """Compute drivenmodal and then extracts impedance, admittance and scattering paramters.
 
         Args:
-            design (QDesign): pointer to the main qiskit-metal design. Used to access the Qrenderer
-            renderer_name (str, optional): which renderer to use. Defaults to 'hfss'.
+            design (QDesign): Pointer to the main qiskit-metal design.
+                Used to access the Qrenderer.
+            renderer_name (str, optional): Which renderer to use. Defaults to 'hfss'.
         """
         # set design and renderer
         super().__init__(design, renderer_name)
 
     def reset_variables_sim(self):
-        """Code to set and reset the output variables for this analysis class
-        This is called by the QAnalysis.__init__()
+        """Code to set and reset the output variables for this analysis class.
+        This is called by the QAnalysis.__init__().
         """
         # pylint: disable=attribute-defined-outside-init
         # settings variables
@@ -97,7 +98,7 @@ class ImpedanceAnalysis(QAnalysisRenderer):
         # TODO: return the impedance, admittance and scattering matrices for later use
 
     def get_impedance(self, param_name: list = ['Z11', 'Z21']):
-        """Create the impedence plot
+        """Create the impedence plot.
 
         Args:
             param_name (list): List of strings describing which impedance values
@@ -107,7 +108,7 @@ class ImpedanceAnalysis(QAnalysisRenderer):
         return self.renderer.plot_params(param_name)
 
     def get_admittance(self, param_name: list = ['Y11', 'Y21']):
-        """Create the impedence plot
+        """Create the impedence plot.
 
         Args:
             param_name (list): List of strings describing which admittance values
@@ -117,7 +118,7 @@ class ImpedanceAnalysis(QAnalysisRenderer):
         return self.renderer.plot_params(param_name)
 
     def get_scattering(self, param_name: list = ['S11', 'S21', 'S22']):
-        """Create the scattering plot
+        """Create the scattering plot.
 
         Args:
             param_name (list): List of strings describing which scattering values

@@ -87,7 +87,7 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
             connector_location=
             '0'  # 0 => 'west' arm, 90 => 'north' arm, 180 => 'east' arm
         ))
-    """Default options"""
+    """Default options."""
 
     component_metadata = Dict(short_name='Cross',
                               _qgeometry_table_poly='True',

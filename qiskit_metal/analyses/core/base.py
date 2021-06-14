@@ -39,7 +39,7 @@ class QAnalysis(ABC):
     """
 
     default_setup = Dict()
-    """Default setup"""
+    """Default setup."""
 
     def __init__(self, *args, **kwargs):
         """Creates a new Analysis object with a setup derived from the default_setup Dict.
@@ -92,10 +92,10 @@ class QAnalysis(ABC):
 
     @property
     def setup(self):
-        """Getter: Dictionary intended to be used to modify the analysis behavior
+        """Getter: Dictionary intended to be used to modify the analysis behavior.
 
         Returns:
-            Dict: current setup
+            Dict: Current setup.
         """
         return self._setup
 
@@ -106,7 +106,7 @@ class QAnalysis(ABC):
         Non specified keys, will be assigned the default_setup value.
 
         Args:
-            setup_dict (Dict): define the settings to change. The rest will be set to defaults
+            setup_dict (Dict): Define the settings to change. The rest will be set to defaults.
         """
         if isinstance(setup_dict, dict):
             # first reset the setup
@@ -121,7 +121,7 @@ class QAnalysis(ABC):
         If you intend to change a single setting, the better way is: `setup.setting1 = value`.
 
         Args:
-            section (str): setup section that contains the setup keys to update
+            section (str): Setup section that contains the setup keys to update.
         """
         if section in self._setup:
             unsupported_keys = list()
@@ -159,6 +159,6 @@ class QAnalysis(ABC):
     @abstractmethod
     def reset_variables(self):
         """Abstract method. Must be implemented by the subclass.
-        Code to set and reset the output variables for this analysis class
-        This is called by the QAnalysis.__init__()
+        Code to set and reset the output variables for this analysis class.
+        This is called by the QAnalysis.__init__().
         """

@@ -318,16 +318,17 @@ class QGDSRenderer(QRenderer):
         QGDSRenderer.load()
 
     def _initiate_renderer(self):
-        """Not used by the gds renderer at this time. only returns True
+        """Not used by the gds renderer at this time. only returns True.
         """
         return True
 
     def _close_renderer(self):
-        """Not used by the gds renderer at this time. only returns True
+        """Not used by the gds renderer at this time. only returns True.
         """
         return True
 
     def render_design(self):
+        """Export the design to GDS."""
         self.export_to_gds(file_name=self.design.name, highlight_qcomponents=[])
         pass
 

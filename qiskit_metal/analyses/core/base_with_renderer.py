@@ -85,7 +85,7 @@ class QAnalysisRenderer(QAnalysis):
         that executes the design rendering. It returns the final design name.
 
         Args:
-            solution_type (str): type of simulation solution to apply.
+            solution_type (str): The type of simulation solution to apply.
                 Supported so far: eigenmode, capacitive, drivenmodal
 
         Returns:
@@ -122,7 +122,7 @@ class QAnalysisRenderer(QAnalysis):
         """Saves the screenshot.
 
         Returns:
-            (pathlib.WindowsPath): path to png formatted screenshot.
+            (pathlib.WindowsPath): Path to png formatted screenshot.
         """
         return self.renderer.save_screenshot()
 
@@ -136,7 +136,7 @@ class QAnalysisRenderer(QAnalysis):
     def run_sim(self, *args, **kwargs):
         """Abstract method. Must be implemented by the subclass.
         Write in here the code to launch the simualtions.
-        You will be able to execute this with the alias run()
+        You will be able to execute this with the alias run().
         """
 
     def reset_variables(self):
@@ -148,6 +148,6 @@ class QAnalysisRenderer(QAnalysis):
     @abstractmethod
     def reset_variables_sim(self):
         """Abstract method. Must be implemented by the subclass.
-        Code to set and reset the output variables for this analysis class
-        This is called by the QAnalysis.__init__()
+        Code to set and reset the output variables for this analysis class.
+        This is called by the QAnalysis.__init__().
         """

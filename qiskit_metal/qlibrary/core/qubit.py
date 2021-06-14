@@ -35,7 +35,7 @@ class BaseQubit(QComponent):
                            pos_y='0um',
                            connection_pads=Dict(),
                            _default_connection_pads=Dict())
-    """Default options"""
+    """Default options."""
 
     component_metadata = Dict(short_name='Q', _qgeometry_table_poly='True')
     """Component metadata"""
