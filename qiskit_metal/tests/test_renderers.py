@@ -156,6 +156,49 @@ class TestRenderers(unittest.TestCase):
         self.assertEqual(options['plot_ansys_fields_options']['PlotGeomInfo_3'],
                          "1")
 
+    def test_renderer_qansysrenderer_default_setup(self):
+        """Test that default_setup in QAnsysRenderer have not been accidentally changed."""
+        default_setup = QAnsysRenderer.default_setup
+
+        self.assertEqual(len(default_setup), 4)
+        self.assertEqual(len(default_setup['drivenmodal']), 8)
+        self.assertEqual(len(default_setup['eigenmode']), 9)
+        self.assertEqual(len(default_setup['q3d']), 12)
+        self.assertEqual(default_setup['port_inductor_gap'], '10um')
+
+        self.assertEqual(default_setup['drivenmodal']['name'], "Setup")
+        self.assertEqual(default_setup['drivenmodal']['freq_ghz'], '5.0')
+        self.assertEqual(default_setup['drivenmodal']['max_delta_s'], '0.1')
+        self.assertEqual(default_setup['drivenmodal']['max_passes'], '10')
+        self.assertEqual(default_setup['drivenmodal']['min_passes'], '1')
+        self.assertEqual(default_setup['drivenmodal']['min_converged'], '1')
+        self.assertEqual(default_setup['drivenmodal']['pct_refinement'], '30')
+        self.assertEqual(default_setup['drivenmodal']['basis_order'], '1')
+
+        self.assertEqual(default_setup['eigenmode']['name'], "Setup")
+        self.assertEqual(default_setup['eigenmode']['min_freq_ghz'], '1')
+        self.assertEqual(default_setup['eigenmode']['n_modes'], '1')
+        self.assertEqual(default_setup['eigenmode']['max_delta_f'], '0.5')
+        self.assertEqual(default_setup['eigenmode']['max_passes'], '10')
+        self.assertEqual(default_setup['eigenmode']['min_passes'], '1')
+        self.assertEqual(default_setup['eigenmode']['min_converged'], '1')
+        self.assertEqual(default_setup['eigenmode']['pct_refinement'], '30')
+        self.assertEqual(default_setup['eigenmode']['basis_order'], '-1')
+
+        self.assertEqual(default_setup['q3d']['name'], 'Setup')
+        self.assertEqual(default_setup['q3d']['freq_ghz'], '5.0')
+        self.assertEqual(default_setup['q3d']['save_fields'], 'False')
+        self.assertEqual(default_setup['q3d']['enabled'], 'True')
+        self.assertEqual(default_setup['q3d']['max_passes'], '15')
+        self.assertEqual(default_setup['q3d']['min_passes'], '2')
+        self.assertEqual(default_setup['q3d']['min_converged_passes'], '2')
+        self.assertEqual(default_setup['q3d']['percent_error'], '0.5')
+        self.assertEqual(default_setup['q3d']['percent_refinement'], '30')
+        self.assertEqual(default_setup['q3d']['auto_increase_solution_order'],
+                         'True')
+        self.assertEqual(default_setup['q3d']['solution_order'], 'High')
+        self.assertEqual(default_setup['q3d']['solver_type'], 'Iterative')
+
     def test_renderer_qq3d_render_options(self):
         """Test that defaults in QQ3DRenderer were not accidentally changed."""
         design = designs.DesignPlanar()

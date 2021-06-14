@@ -24,11 +24,7 @@ import unittest
 import numpy as np
 import pandas as pd
 
-from qiskit_metal.analyses.core.base import QAnalysis
-from qiskit_metal.analyses.core.base_with_renderer import QAnalysisRenderer
 from qiskit_metal.analyses.quantization import lumped_capacitive
-from qiskit_metal.analyses.quantization.energy_participation_ratio import EPRanalysis
-from qiskit_metal.analyses.quantization.energy_participation_ratio import EigenmodeAndEPR
 from qiskit_metal.analyses.hamiltonian.transmon_charge_basis import Hcpb
 from qiskit_metal.analyses.hamiltonian.HO_wavefunctions import wavefunction
 from qiskit_metal.analyses.em import cpw_calculations, kappa_calculation
@@ -49,87 +45,6 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
     def tearDown(self):
         """Tie any loose ends."""
         pass
-
-    def test_analyses_instantiate_hcpb(self):
-        """Test instantiation of Hcpb in analytic_transmon.py."""
-        try:
-            Hcpb()
-        except Exception:
-            self.fail("Hcpb() failed")
-
-        try:
-            Hcpb(nlevels=15)
-        except Exception:
-            self.fail("Hcpb(nlevels=15) failed")
-
-        try:
-            Hcpb(nlevels=15, Ej=13971.3)
-        except Exception:
-            self.fail("Hcpb(nlevels=15, Ej=13971.3) failed")
-
-        try:
-            Hcpb(nlevels=15, Ej=13971.3, Ec=295.2)
-        except Exception:
-            self.fail("Hcpb(nlevels=15, Ej=13971.3, Ec=295.2) failed")
-
-        try:
-            Hcpb(nlevels=15, Ej=13971.3, Ec=295.2, ng=0.001)
-        except Exception:
-            self.fail("Hcpb(nlevels=15, Ej=13971.3, Ec=295.2, ng=0.001) failed")
-
-    def test_analyses_instantiate_sweeping(self):
-        """Test instantiation of Sweeping in analytic_transmon.py."""
-        try:
-            design = designs.DesignPlanar()
-            Sweeping(design)
-        except Exception:
-            self.fail("Sweeping failed.")
-
-    def test_analyses_instantiate_eigenmode_and_epr(self):
-        """Test instantiation of EigenmodeAndEPR."""
-        try:
-            design = designs.DesignPlanar()
-            EigenmodeAndEPR(design)
-        except Exception:
-            self.fail("EigenmodeAndEPR failed.")
-
-    def test_analyses_qanlysis_default_setup(self):
-        """Test that the contents of default_setup in QAnalysis haven't accidentally changed."""
-        default_setup = QAnalysis.default_setup
-        self.assertEqual(len(default_setup), 0)
-
-    def test_analyses_qanalysisrenderer_default_setup(self):
-        """Test that the contents of default_setup in QAnalysisRenderer haven't accidentally
-        changed."""
-        default_setup = QAnalysisRenderer.default_setup
-
-        self.assertEqual(len(default_setup), 1)
-        self.assertEqual(len(default_setup['sim']), 1)
-        self.assertEqual(default_setup['sim']['name'], "Setup")
-
-    def test_analyses_epranalysis_default_setup(self):
-        """Test that the contents of default_setup in EPRanalysis haven't accidentally changed."""
-        default_setup = EPRanalysis.default_setup
-
-        self.assertEqual(len(default_setup), 1)
-        self.assertEqual(len(default_setup['epr']), 5)
-        self.assertEqual(len(default_setup['epr']['junctions']), 1)
-        self.assertEqual(len(default_setup['epr']['junctions']['jj']), 4)
-        self.assertEqual(len(default_setup['epr']['dissipatives']), 1)
-
-        self.assertEqual(default_setup['epr']['junctions']['jj']['Lj_variable'],
-                         'Lj')
-        self.assertEqual(default_setup['epr']['junctions']['jj']['Cj_variable'],
-                         'Cj')
-        self.assertEqual(default_setup['epr']['junctions']['jj']['rect'], '')
-        self.assertEqual(default_setup['epr']['junctions']['jj']['line'], '')
-
-        self.assertEqual(
-            default_setup['epr']['dissipatives']['dielectrics_bulk'], ['main'])
-
-        self.assertEqual(default_setup['epr']['cos_trunc'], 8)
-        self.assertEqual(default_setup['epr']['fock_trunc'], 7)
-        self.assertEqual(default_setup['epr']['sweep_variable'], 'Lj')
 
     def test_analyses_cpw_guided_wavelength(self):
         """Test the functionality of guided_wavelength in
