@@ -885,9 +885,9 @@ class QAnsysRenderer(QRenderer):
                 if 'chip' not in comps[qcomp].options:
                     self.chip_designation_error()
                     return []
-                elif comps[qcomp].options.chip != 'main':
-                    self.chip_not_main()
-                    return []
+                #elif comps[qcomp].options.chip != 'main':
+                #    self.chip_not_main()
+                #    return []
                 chip_names.add(comps[qcomp].options.chip)
         else:  # Strict subset rendered.
             icomps = self.design._components
@@ -895,9 +895,9 @@ class QAnsysRenderer(QRenderer):
                 if 'chip' not in icomps[qcomp_id].options:
                     self.chip_designation_error()
                     return []
-                elif icomps[qcomp_id].options.chip != 'main':
-                    self.chip_not_main()
-                    return []
+                #elif icomps[qcomp_id].options.chip != 'main':
+                #    self.chip_not_main()
+                #    return []
                 chip_names.add(icomps[qcomp_id].options.chip)
         return list(chip_names)
 
