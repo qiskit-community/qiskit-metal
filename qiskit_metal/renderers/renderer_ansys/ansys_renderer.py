@@ -989,9 +989,10 @@ class QAnsysRenderer(QRenderer):
             self.render_chip(chip_name, draw_sample_holder)
         
         if draw_sample_holder:  # HFSS
-            # as of now, information on sample_holder_top and _bottom are stored under the each chip.
-            # will fix this in the next commit.
-            p = self.design.get_chip_size(chip_name)
+            if 'sample_holder_top' in self.design.variables.keys():
+                p = self.design.variables
+            else:
+                p = self.design.get_chip_size(chip_list[0])
             vac_height = parse_units(
                 [p['sample_holder_top'], p['sample_holder_bottom']])
             # very simple algorithm to build the vacuum box. It could be made better in the future
