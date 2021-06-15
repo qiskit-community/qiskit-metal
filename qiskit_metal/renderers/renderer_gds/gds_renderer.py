@@ -2239,6 +2239,7 @@ class QGDSRenderer(QRenderer):
                                        a_poly_set,
                                        'not',
                                        max_points=max_points,
+                                       precision=precision,
                                        layer=qgeometry_element.layer,
                                        datatype=10)
                 return a_poly
