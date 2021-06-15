@@ -962,25 +962,31 @@ class QAnsysRenderer(QRenderer):
             box_plus_buffer (bool, optional): Whether or not to use a box plus buffer. Defaults to True.
         """
         chip_list = self.get_chip_names()
-        if box_plus_buffer:  # Get bounding box of components first
-            min_x_main, min_y_main, max_x_main, max_y_main = parse_units(
-                self.get_min_bounding_box())
-            self.cw_x = max_x_main - min_x_main  # chip width along x
-            self.cw_y = max_y_main - min_y_main  # chip width along y
-            self.cw_x += 2 * parse_units(self._options['x_buffer_width_mm'])
-            self.cw_y += 2 * parse_units(self._options['y_buffer_width_mm'])
-            self.cc_x = (max_x_main + min_x_main) / 2  # x coord of chip center
-            self.cc_y = (max_y_main + min_y_main) / 2  # y coord of chip center
-        else:  # Adhere to chip placement and dimensions in QDesign
-            p = self.design.get_chip_size(
-                'main')  # x/y center/width same for all chips
-            self.cw_x, self.cw_y, _ = parse_units(
-                [p['size_x'], p['size_y'], p['size_z']])
-            self.cc_x, self.cc_y, _ = parse_units(
-                [p['center_x'], p['center_y'], p['center_z']])
+        self.cw_x, self.cw_y = Dict(), Dict()
+        self.cc_x, self.cc_y = Dict(), Dict()
+
         for chip_name in chip_list:
-            self.render_chip(chip_name, draw_sample_holder and
-                             (chip_name == 'main'))
+            if box_plus_buffer:  # Get bounding box of components first
+                min_x_main, min_y_main, max_x_main, max_y_main = parse_units(
+                    self.get_min_bounding_box())
+                self.cw_x.update({chip_name: max_x_main - min_x_main})  # chip width along x
+                self.cw_y.update({chip_name: max_y_main - min_y_main})  # chip width along y
+                self.cw_x[chip_name] += 2 * parse_units(self._options['x_buffer_width_mm'])
+                self.cw_y[chip_name] += 2 * parse_units(self._options['y_buffer_width_mm'])
+                self.cc_x.update({chip_name: (max_x_main + min_x_main) / 2})  # x coord of chip center
+                self.cc_y.update({chip_name: (max_y_main + min_y_main) / 2})  # y coord of chip center
+            else:  # Adhere to chip placement and dimensions in QDesign
+                p = self.design.get_chip_size(
+                    chip_name)  # x/y center/width same for all chips
+                self.cw_x.update({chip_name: parse_units(p['size_x'])})
+                self.cw_y.update({chip_name: parse_units(p['size_y'])})
+                self.cc_x.update({chip_name: parse_units(p['center_x'])})
+                self.cc_y.update({chip_name: parse_units(p['center_y'])})
+                #self.cw_x, self.cw_y, _ = parse_units(
+                #    [p['size_x'], p['size_y'], p['size_z']])
+                #self.cc_x, self.cc_y, _ = parse_units(
+                #    [p['center_x'], p['center_y'], p['center_z']])
+            self.render_chip(chip_name, draw_sample_holder)
 
     def render_chip(self, chip_name: str, draw_sample_holder: bool):
         """
@@ -994,25 +1000,27 @@ class QAnsysRenderer(QRenderer):
         ops = self.design._chips[chip_name]
         p = self.design.get_chip_size(chip_name)
         z_coord, height = parse_units([p['center_z'], p['size_z']])
-        plane = self.modeler.draw_rect_center([self.cc_x, self.cc_y, z_coord],
-                                              x_size=self.cw_x,
-                                              y_size=self.cw_y,
+        plane = self.modeler.draw_rect_center([self.cc_x[chip_name], self.cc_y[chip_name], z_coord],
+                                              x_size=self.cw_x[chip_name],
+                                              y_size=self.cw_y[chip_name],
+                                              z_size=0,
                                               name=f'ground_{chip_name}_plane',
                                               **ansys_options)
         whole_chip = self.modeler.draw_box_center(
-            [self.cc_x, self.cc_y, height / 2], [self.cw_x, self.cw_y, -height],
+            [self.cc_x[chip_name], self.cc_y[chip_name], z_coord + height / 2], [self.cw_x[chip_name], self.cw_y[chip_name], -height],
             name=chip_name,
             material=ops['material'],
             color=(186, 186, 205),
             transparency=0.2,
             wireframe=False)
-        if draw_sample_holder:  # HFSS
-            vac_height = parse_units(
-                [p['sample_holder_top'], p['sample_holder_bottom']])
-            vacuum_box = self.modeler.draw_box_center(
-                [self.cc_x, self.cc_y, (vac_height[0] - vac_height[1]) / 2],
-                [self.cw_x, self.cw_y, sum(vac_height)],
-                name='sample_holder')
+        # draw sample_holder should be moved to render_chips in order to accommodate a design containing more than one chip that only needs one sample holder.
+        #if draw_sample_holder:  # HFSS
+        #    vac_height = parse_units(
+        #        [p['sample_holder_top'], p['sample_holder_bottom']])
+        #    vacuum_box = self.modeler.draw_box_center(
+        #        [self.cc_x, self.cc_y, (vac_height[0] - vac_height[1]) / 2],
+        #        [self.cw_x, self.cw_y, sum(vac_height)],
+        #        name='sample_holder')
         if self.chip_subtract_dict[chip_name]:
             # Any layer which has subtract=True qgeometries will have a ground plane
             # TODO: Material property assignment may become layer-dependent.
