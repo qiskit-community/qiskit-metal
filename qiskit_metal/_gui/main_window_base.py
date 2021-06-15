@@ -45,6 +45,7 @@ class QMainWindowExtensionBase(QMainWindow):
         super().__init__()
         # Set manually
         self.handler = None  # type: QMainWindowBaseHandler
+        self.force_close = False
 
     @property
     def logger(self) -> logging.Logger:
@@ -79,11 +80,24 @@ class QMainWindowExtensionBase(QMainWindow):
         super().destroy(destroyWindow=destroyWindow,
                         destroySubWindows=destroySubWindows)
 
+    def set_force_close(self, ison: bool):
+        """Set method for force_close
+
+        Args:
+            ison (bool): value
+        """
+        self.force_close = ison
+
     def closeEvent(self, event):
         """whenever a window is closed.
 
         Passed an event which we can choose to accept or reject.
         """
+
+        if self.force_close:
+            super().closeEvent(event)
+            return
+
         if self.ok_to_continue():
             self.save_window_settings()
             super().closeEvent(event)
@@ -494,7 +508,7 @@ class QMainWindowBaseHandler():
     def load_stylesheet(self, path=None):
         """Load and set stylesheet for the main gui.
 
-        Arguments:
+        Args:
             path (str) : Path to stylesheet or its name.
                 Can be: 'default', 'qdarkstyle' or None.
                 `qdarkstyle` requires

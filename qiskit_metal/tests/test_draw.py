@@ -68,10 +68,9 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
     def test_draw_basic_is_rectangle(self):
         """Test is_rectangle in basic.py."""
         my_rectangle = basic.rectangle(0.5, 1.5, 2.1, 3.2)
-        my_integer = 7
 
-        self.assertEqual(basic.is_rectangle(my_rectangle), True)
-        self.assertEqual(basic.is_rectangle(my_integer), False)
+        self.assertTrue(basic.is_rectangle(my_rectangle))
+        self.assertFalse(basic.is_rectangle(7))
 
     def test_draw_basic_subtract(self):
         """Test subtract in basic.py."""
@@ -85,10 +84,19 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
                              (1.85, 2.85)]
 
         self.assertEqual(len(actual_subtract), len(expected_subtract))
-        my_range = len(actual_subtract)
+
+        # the shape resulting from a subtract could use as origin point any of the vertices.
+        for idx, point in enumerate(expected_subtract):
+            if actual_subtract[0] == point:
+                offset = idx
+
+        my_range = len(
+            actual_subtract) - 1  #first and last elements are the same. Ignore.
         for i in range(my_range):
+            exp_i = (i + offset) % (my_range)
             for j in range(2):
-                self.assertEqual(actual_subtract[i][j], expected_subtract[i][j])
+                self.assertEqual(actual_subtract[i][j],
+                                 expected_subtract[exp_i][j])
 
     def test_draw_basic_union(self):
         """Test union in basic.py."""
@@ -111,10 +119,18 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
 
         for x in range(2):
             self.assertEqual(len(actual[x]), len(expected[x]))
-            for i in range(len(actual[x])):
+
+            # the shape resulting from a union could use as origin point any of the vertices.
+            for idx, point in enumerate(expected[x]):
+                if actual[x][0] == point:
+                    offset = idx
+
+            my_range = len(actual[x]) - 1  #last element repeats first. Ignore.
+            for i in range(my_range):
+                exp_i = (i + offset) % (my_range)
                 for j in range(2):
                     self.assertAlmostEqualRel(actual[x][i][j],
-                                              expected[x][i][j],
+                                              expected[x][exp_i][j],
                                               rel_tol=1e-3)
 
     def test_draw_basic_flip_merge(self):
@@ -404,8 +420,8 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
         list_1 = [1, 2, 3, 4, 5]
         list_2 = [1, 2, 3, 1, 5]
 
-        self.assertEqual(utility.check_duplicate_list(list_1), False)
-        self.assertEqual(utility.check_duplicate_list(list_2), True)
+        self.assertFalse(utility.check_duplicate_list(list_1))
+        self.assertTrue(utility.check_duplicate_list(list_2))
 
     def test_draw_utility_array_chop(self):
         """Test array_chop in utility.py."""
@@ -600,8 +616,8 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
         vect_1 = np.array(points_list_1)
         vect_2 = np.array(points_list_2)
 
-        self.assertEqual(vector.is_zero(vect_1), False)
-        self.assertEqual(vector.is_zero(vect_2), True)
+        self.assertFalse(vector.is_zero(vect_1))
+        self.assertTrue(vector.is_zero(vect_2))
 
     def test_draw_vector_two_points_described(self):
         """Test two_points_described in Vector class in utility.py."""

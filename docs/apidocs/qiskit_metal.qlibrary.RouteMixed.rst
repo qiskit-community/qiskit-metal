@@ -18,6 +18,7 @@ RouteMixed
    .. autosummary::
       :toctree: ../stubs/
    
+      RouteMixed.TOOLTIP
       RouteMixed.class_name
       RouteMixed.component_metadata
       RouteMixed.default_options

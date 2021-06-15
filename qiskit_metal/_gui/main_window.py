@@ -14,22 +14,18 @@
 """GUI front-end interface for Qiskit Metal in PySide2."""
 # pylint: disable=invalid-name
 
-import importlib
-import importlib.util
 import logging
 import os
-import shutil
-import sys
 from pathlib import Path
 from typing import List, TYPE_CHECKING
 
-from PySide2.QtCore import Qt, QTimer, QModelIndex
-from PySide2.QtWidgets import (QDockWidget, QFileDialog, QInputDialog, QLabel,
-                               QLineEdit, QMainWindow, QMessageBox,
-                               QFileSystemModel)
-
-from .. import config
-from ..designs.design_base import QDesign
+from PySide2.QtCore import QTimer, Qt
+from PySide2.QtWidgets import (QDockWidget, QFileDialog, QLabel, QMainWindow,
+                               QMessageBox)
+from PySide2.QtGui import QIcon, QPixmap
+from qiskit_metal._gui.widgets.qlibrary_display.delegate_qlibrary import LibraryDelegate
+from qiskit_metal._gui.widgets.qlibrary_display.file_model_qlibrary import QFileSystemLibraryModel
+from qiskit_metal._gui.widgets.qlibrary_display.proxy_model_qlibrary import LibraryFileProxyModel
 from .elements_window import ElementsWindow
 from .main_window_base import QMainWindowBaseHandler, QMainWindowExtensionBase, kick_start_qApp
 from .main_window_ui import Ui_MainWindow
@@ -37,23 +33,21 @@ from .renderer_gds_gui import RendererGDSWidget
 from .renderer_hfss_gui import RendererHFSSWidget
 from .renderer_q3d_gui import RendererQ3DWidget
 from .utility._handle_qt_messages import slot_catch_error
-from qiskit_metal._gui.widgets.library_new_qcomponent.library_proxy_model import LibraryFileProxyModel
 from .widgets.all_components.table_model_all_components import \
     QTableModel_AllComponents
+from .widgets.build_history.build_history_scroll_area import BuildHistoryScrollArea
+from .widgets.create_component_window import parameter_entry_window as pew
 from .widgets.edit_component.component_widget import ComponentWidget
 from .widgets.plot_widget.plot_window import QMainWindowPlot
 from .widgets.variable_table import PropertyTableWidget
-from .widgets.build_history.build_history_scroll_area import BuildHistoryScrollArea
-from .. import qlibrary
-from .widgets.library_new_qcomponent import parameter_entry_window as pew
+from .. import config, qlibrary
+from ..designs.design_base import QDesign
 
 if not config.is_building_docs():
     from ..toolbox_metal.import_export import load_metal_design
 
 if TYPE_CHECKING:
     from ..renderers.renderer_mpl.mpl_canvas import PlotCanvas
-
-import time
 
 
 class QMainWindowExtension(QMainWindowExtensionBase):
@@ -188,34 +182,33 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         self.gui.rebuild()
 
     @slot_catch_error()
-    def new_qcomponent(self, _=None):
-        """Create a new qcomponent call by button."""
-        path = str(
-            Path(self.gui.path_gui).parent / 'qlibrary' / 'user_components' /
-            'my_qcomponent.py')
-        filename = QFileDialog.getSaveFileName(
-            parent=None,
-            caption='Select a location to save QComponent python file to',
-            dir=path)[0]
-        if filename:
-            text, okPressed = QInputDialog.getText(
-                self, "Name your QComponent class",
-                "Name your QComponent class:", QLineEdit.Normal, "MyQComponent")
-            if okPressed and text != '':
-                text_inst, okPressed = QInputDialog.getText(
-                    self, "Give a name to your instance of the class",
-                    "Name of instance:", QLineEdit.Normal, "qcomp1")
-                if okPressed and text_inst != '':
-                    init_path = filename.rsplit("/", 1)[0] + "/__init__.py"
-                    if not os.path.exists(init_path):
-                        with open(init_path, "w"):
-                            pass
-                    self.gui.new_qcomponent_file(filename, text, text_inst)
-
-    @slot_catch_error()
     def create_build_log_window(self, _=None):
         """"Handles click on Build History button."""
         self.gui.gui_create_build_log_window()
+
+    @slot_catch_error()
+    def activate_developer_mode(self, ison: bool):
+        """
+        Sets the correct UI features for developer mode
+        Args:
+            ison: Whether developer mode is active
+
+        """
+        if ison:
+            QMessageBox.warning(
+                self, "Notice",
+                "If you're editing a component via an external IDE,"
+                " don't forget to refresh the component's file"
+                " in the Library before rebuilding so your changes"
+                " will take effect.")
+
+        self.gui.ui.dockLibrary_tree_view.set_dev_mode(ison)
+        self.gui.is_dev_mode = ison
+        self.gui._set_rebuild_unneeded()
+        # import rebuild
+        # rebuild.activate_developer_mode(RebuildAction, RebuildFunction, QLibraryTree)
+        # else:
+        #  deactivateDeveMode()
 
 
 class MetalGUI(QMainWindowBaseHandler):
@@ -251,8 +244,8 @@ class MetalGUI(QMainWindowBaseHandler):
         from .utility._handle_qt_messages import QtCore, _qt_message_handler
         QtCore.qInstallMessageHandler(_qt_message_handler)
 
-        qApp = kick_start_qApp()
-        if not qApp:
+        self.qApp = kick_start_qApp()
+        if not self.qApp:
             logging.error("Could not start Qt event loop using QApplication.")
 
         super().__init__()
@@ -267,6 +260,15 @@ class MetalGUI(QMainWindowBaseHandler):
         self.variables_window = PropertyTableWidget(self, gui=self)
 
         self.build_log_window = None
+        self.is_dev_mode = False
+        self.action_rebuild_deactive_icon = QIcon()
+        self.action_rebuild_deactive_icon.addPixmap(QPixmap(":/rebuild"),
+                                                    QIcon.Normal, QIcon.Off)
+        self.action_rebuild_active_icon = QIcon()
+        self.action_rebuild_active_icon.addPixmap(QPixmap(":/rebuild_needed"),
+                                                  QIcon.Normal, QIcon.Off)
+        self.ui.actionRebuild.setIcon(self.action_rebuild_deactive_icon)
+        #self.ui.toolBarDesign.setIconSize(QSize(20,20))
 
         self._setup_component_widget()
         self._setup_plot_widget()
@@ -300,7 +302,7 @@ class MetalGUI(QMainWindowBaseHandler):
     def _set_enabled_design_widgets(self, enabled: bool = True):
         """Make rebuild and all the other main button disabled.
 
-        Arguments:
+        Args:
             enabled (bool): True to enable, False to disable the design widgets.  Defaults to True.
         """
 
@@ -398,6 +400,9 @@ class MetalGUI(QMainWindowBaseHandler):
         self.ui.dockLog.parent().resizeDocks([self.ui.dockLog], [120],
                                              Qt.Vertical)
 
+        # toolBarView additions
+        self._add_additional_qactions_tool_bar_view()
+
         # Tab positions
         self.ui.tabWidget.setCurrentIndex(0)
 
@@ -406,6 +411,51 @@ class MetalGUI(QMainWindowBaseHandler):
         and main ui is loaded."""
         if self.component_window:
             self.component_window.setCurrentIndex(0)
+
+    def _add_additional_qactions_tool_bar_view(self):
+        """Add QActions to toolBarView that cannot be added via QDesign"""
+
+        # Library
+        self.dock_library_qaction = self.ui.dockLibrary.toggleViewAction()
+        library_icon = QIcon()
+        library_icon.addPixmap(QPixmap(":/component"), QIcon.Normal, QIcon.Off)
+        self.dock_library_qaction.setIcon(library_icon)
+        self.ui.toolBarView.insertAction(self.ui.actionToggleDocks,
+                                         self.dock_library_qaction)
+
+        # Design
+        self.dock_design_qaction = self.ui.dockDesign.toggleViewAction()
+        design_icon = QIcon()
+        design_icon.addPixmap(QPixmap(":/design"), QIcon.Normal, QIcon.Off)
+        self.dock_design_qaction.setIcon(design_icon)
+        self.ui.toolBarView.insertAction(self.ui.actionToggleDocks,
+                                         self.dock_design_qaction)
+
+        # Variables
+        self.dock_variables_qaction = self.ui.dockVariables.toggleViewAction()
+        variables_icon = QIcon()
+        variables_icon.addPixmap(QPixmap(":/variables"), QIcon.Normal,
+                                 QIcon.Off)
+        self.dock_variables_qaction.setIcon(variables_icon)
+        self.ui.toolBarView.insertAction(self.ui.actionToggleDocks,
+                                         self.dock_variables_qaction)
+
+        # Connectors
+        self.dock_connectors_qaction = self.ui.dockConnectors.toggleViewAction()
+        connectors_icon = QIcon()
+        connectors_icon.addPixmap(QPixmap(":/connectors"), QIcon.Normal,
+                                  QIcon.Off)
+        self.dock_connectors_qaction.setIcon(connectors_icon)
+        self.ui.toolBarView.insertAction(self.ui.actionToggleDocks,
+                                         self.dock_connectors_qaction)
+
+        # Log
+        self.dock_log_qaction = self.ui.dockLog.toggleViewAction()
+        log_icon = QIcon()
+        log_icon.addPixmap(QPixmap(":/log"), QIcon.Normal, QIcon.Off)
+        self.dock_log_qaction.setIcon(log_icon)
+        self.ui.toolBarView.insertAction(self.ui.actionToggleDocks,
+                                         self.dock_log_qaction)
 
     def _set_element_tab(self, yesno: bool):
         """Set the elements tabl to Elements or View.
@@ -426,6 +476,12 @@ class MetalGUI(QMainWindowBaseHandler):
     def _setup_variables_widget(self):
         """Setup the variables widget."""
         self.ui.dockVariables.setWidget(self.variables_window)
+        # hookup to delete action
+        self.ui.btn_comp_del.clicked.connect(
+            self.ui.tableComponents.delete_selected_rows)
+        self.ui.btn_comp_rename.clicked.connect(
+            self.ui.tableComponents.rename_row)
+        self.ui.btn_comp_zoom.clicked.connect(self.btn_comp_zoom_fx)
 
     def _setup_plot_widget(self):
         """Create main Window Widget Plot."""
@@ -474,8 +530,7 @@ class MetalGUI(QMainWindowBaseHandler):
                                           tableView=self.ui.tableComponents)
         self.ui.tableComponents.setModel(model)
 
-    def create_new_component_object_from_qlibrary(self,
-                                                  relative_index: QModelIndex):
+    def _create_new_component_object_from_qlibrary(self, full_path: str):
         """
         Must be defined outside of _setup_library_widget to ensure self == MetalGUI and will retain opened ScrollArea
 
@@ -483,22 +538,26 @@ class MetalGUI(QMainWindowBaseHandler):
             relative_index: QModelIndex of the desired QComponent file in the Qlibrary GUI display
 
         """
-
-        filename = self.library_proxy_model.data(relative_index)
-
-        if self.ui.dockLibrary.library_model.isDir(
-                self.library_proxy_model.mapToSource(relative_index)):
-            self.logger.info(f"{filename} is a directory")
-            return
-
-        full_path = self.ui.dockLibrary.library_model.filePath(
-            self.library_proxy_model.mapToSource(relative_index))
         try:
             self.param_window = pew.create_parameter_entry_window(
                 self, full_path, self.main_window)
         except Exception as e:
             self.logger.error(
                 f"Unable to open param entry window due to Exception: {e} ")
+
+    def _refresh_component_build(self, qis_abs_path):
+        """Refresh build for a component along a given path.
+
+        Args:
+            qis_abs_path (str): Absolute component path.
+        """
+        self.design.reload_and_rebuild_components(qis_abs_path)
+        # Table models
+        self.ui.tableComponents.model().refresh()
+
+        # Redraw plots
+        self.refresh_plot()
+        self.autoscale()
 
     def _setup_library_widget(self):
         """
@@ -513,24 +572,37 @@ class MetalGUI(QMainWindowBaseHandler):
         self.QLIBRARY_FOLDERNAME = qlibrary.__name__
 
         # create model for Qlibrary directory
-        self.ui.dockLibrary.library_model = QFileSystemModel()
+        self.ui.dockLibrary.library_model = QFileSystemLibraryModel()
+
         self.ui.dockLibrary.library_model.setRootPath(self.QLIBRARY_ROOT)
 
         # QSortFilterProxyModel
         #QSortFilterProxyModel: sorting items, filtering out items, or both.  maps the original model indexes to new indexes, allows a given source model to be restructured as far as views are concerned without requiring any transformations on the underlying data, and without duplicating the data in memory.
-        self.library_proxy_model = LibraryFileProxyModel()
-        self.library_proxy_model.setSourceModel(
+        self.ui.dockLibrary.proxy_library_model = LibraryFileProxyModel()
+        self.ui.dockLibrary.proxy_library_model.setSourceModel(
             self.ui.dockLibrary.library_model)
 
-        self.ui.dockLibrary_tree_view.setModel(self.library_proxy_model)
+        self.ui.dockLibrary_tree_view.setModel(
+            self.ui.dockLibrary.proxy_library_model)
         self.ui.dockLibrary_tree_view.setRootIndex(
-            self.library_proxy_model.mapFromSource(
+            self.ui.dockLibrary.proxy_library_model.mapFromSource(
                 self.ui.dockLibrary.library_model.index(
                     self.ui.dockLibrary.library_model.rootPath())))
-        self.ui.dockLibrary_tree_view.doubleClicked.connect(
-            self.create_new_component_object_from_qlibrary)
-        self.ui.dockLibrary_tree_view.clicked.connect(
-            self.create_new_component_object_from_qlibrary)
+
+        self.ui.dockLibrary_tree_view.setItemDelegate(
+            LibraryDelegate(self.main_window))  # try empty one if no work
+        self.ui.dockLibrary_tree_view.itemDelegate().tool_tip_signal.connect(
+            self.ui.dockLibrary_tree_view.setToolTip)
+
+        self.ui.dockLibrary_tree_view.qlibrary_filepath_signal.connect(
+            self._create_new_component_object_from_qlibrary)
+        self.ui.dockLibrary_tree_view.qlibrary_rebuild_signal.connect(
+            self._refresh_component_build)
+        self.ui.dockLibrary_tree_view.qlibrary_file_dirtied_signal.connect(
+            self._set_rebuild_needed)
+
+        self.ui.dockLibrary_tree_view.viewport().setAttribute(Qt.WA_Hover, True)
+        self.ui.dockLibrary_tree_view.viewport().setMouseTracking(True)
 
     ################################################
     # UI
@@ -543,6 +615,15 @@ class MetalGUI(QMainWindowBaseHandler):
         self.main_window.toggle_all_docks(do_hide)
         self.qApp.processEvents(
         )  # Process all events, so that if we take screenshot next it won't be partially updated
+
+    def _set_rebuild_needed(self):
+        if self.is_dev_mode:
+            self.main_window.ui.actionRebuild.setIcon(
+                self.action_rebuild_active_icon)
+
+    def _set_rebuild_unneeded(self):
+        self.main_window.ui.actionRebuild.setIcon(
+            self.action_rebuild_deactive_icon)
 
     ################################################
     # Plotting
@@ -582,12 +663,31 @@ class MetalGUI(QMainWindowBaseHandler):
         return self.plot_win.canvas
 
     def rebuild(self, autoscale: bool = False):
-        """Rebuild all components in the design from scratch and refresh the
-        gui."""
+        """
+        Rebuild all components in the design from scratch and refresh the gui.
+        """
+        self._set_rebuild_unneeded()
+        if self.is_dev_mode:
+            self.refresh_everything()
+
         self.design.rebuild()
         self.refresh()
         if autoscale:
             self.autoscale()
+
+    def refresh_everything(self):
+        """Refresh everything."""
+
+        df = self.ui.dockLibrary.library_model.dirtied_files
+        values = {list(df[k])[0] for k in df.keys()}
+
+        for file in values:  # dirtied_files size changes during clean_file
+            if '.py' in file:
+                file = file[file.index('qiskit_metal'):]
+                self.design.reload_and_rebuild_components(file)
+                self.ui.dockLibrary.library_model.clean_file(file)
+        self.refresh()
+        self.autoscale()
 
     def refresh(self):
         """Refreshes everything. Overkill in general.
@@ -633,24 +733,11 @@ class MetalGUI(QMainWindowBaseHandler):
     def edit_component(self, name: str):
         """Set the component to be examined by the component widget.
 
-        Arguments:
+        Args:
             name (str): Name of component to exmaine.
         """
         if self.component_window:
             self.component_window.set_component(name)
-
-    def edit_component_source(self, name: str = None):
-        """For the selected component in the edit component widet (see
-        gui.edit_component) open up the source editor.
-
-        Arguments:
-            name (str): Name of component to exmaine.
-                If none, just uses the currently selected component if there is one.
-        """
-        if name:
-            self.edit_component(name)
-        if self.component_window:
-            self.component_window.edit_source()
 
     def highlight_components(self, component_names: List[str]):
         """Hihglight a list of components.
@@ -669,68 +756,12 @@ class MetalGUI(QMainWindowBaseHandler):
         bounds = self.canvas.find_component_bounds(components)
         self.canvas.zoom_to_rectangle(bounds)
 
-    def new_qcomponent_file(self, new_path: str, class_name: str,
-                            name_instance: str):
-        """Create a new qcomponent file based on template. The template is
-        stored in qlibrary/_template.py.
-
-        Args:
-            path (str): The path to the file to save to
-            class_name (str): How you want to call the class
-            name_instance (str): Name of the instance of the component to be created
+    def btn_comp_zoom_fx(self):
         """
-
-        if not new_path.endswith('.py'):
-            new_path = new_path + ".py"
-
-        # Copy template file
-        tpath = Path(self.path_gui)
-        tpath = tpath.parent / 'qlibrary' / '_template.py'
-        shutil.copy(str(tpath), str(new_path))
-
-        # Rename the class name
-        path = Path(new_path)
-        text = path.read_text()
-        text = text.replace('MyQComponent', class_name)
-        # Open the file pointed to in text mode, write data to it, and close the file:
-        # An existing file of the same name is overwritten.
-        path.write_text(text)
-
-        # Load module and class and create instance # TODO: make a function
-
-        # Add name
-        if not (path.parent is sys.path):
-            sys.path.insert(0, str(path.parent))
-
-        # TODO: try    except ImportError:
-        module = importlib.import_module(path.stem)
-
-        # Potential Warning
-        # If you are dynamically importing a module that was created since the interpreter
-        # began execution (e.g., created a Python source file), you may need to call
-        #               invalidate_caches()
-        # in order for the new module to be noticed by the import system.
-
-        # Does NOT work:
-        # importlib.import_module(path.stem, str(path.parent))
-
-        # # spec for module and give it name
-        # module_name = f"user_components.{path.stem}"
-        # spec_file = importlib.util.spec_from_file_location(module_name, str(path))
-        # spec_module = importlib.util.module_from_spec(spec_file) # module
-        # spec_file.loader.exec_module(spec_module) # Actual load module
-        # if 1: # add moudle info
-        #     # https://stackoverflow.com/questions/41215729/source-info-missing-from-python-classes-loaded-with-module-from-spec
-        #     sys.modules[module_name] = spec_file
-
-        cls = getattr(module, class_name)  # get class from module
-        qcomp = cls(self.design, name_instance)  # create instance
-
-        # GUI
-        self.refresh_plot()
-        self.highlight_components([name_instance])
-        self.zoom_on_components([name_instance])
-        self.edit_component_source(name_instance)
+        Zooms in display on selected QComponent
+        """
+        names = self.ui.tableComponents.name_of_selected_qcomponent()
+        self.zoom_on_components(names)
 
     @slot_catch_error()
     def gui_create_build_log_window(self, _=None):

@@ -18,6 +18,7 @@ RouteMeander
    .. autosummary::
       :toctree: ../stubs/
    
+      RouteMeander.TOOLTIP
       RouteMeander.class_name
       RouteMeander.component_metadata
       RouteMeander.default_options

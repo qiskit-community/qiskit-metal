@@ -18,6 +18,7 @@ LaunchpadWirebond
    .. autosummary::
       :toctree: ../stubs/
    
+      LaunchpadWirebond.TOOLTIP
       LaunchpadWirebond.class_name
       LaunchpadWirebond.component_metadata
       LaunchpadWirebond.default_options

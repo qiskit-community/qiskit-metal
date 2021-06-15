@@ -34,6 +34,8 @@ class SmileyFace(QComponent):
     default_options = Dict(happy=True, wink=False, orientation=0)
     """Default connector options"""
 
+    TOOLTIP = """TEST COMPONENT It is for fun only"""
+
     def make(self):
         """Build the component."""
         face = draw.shapely.geometry.Point(0, 0).buffer(1)

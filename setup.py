@@ -1,11 +1,12 @@
 """A setuptools based setup module.
 
 Run using:
-    $ python -m pip install -ve .
+    $ python -m pip install <flags> .
 
-Explanation of arguments:
+Most used flags:
     -e, --editable <path/url>
-        Install a project in editable mode (i.e. setuptools “develop mode”) from a local project path or a VCS url.
+        Install a project in editable mode (i.e. setuptools “develop mode”)
+        from a local project path or a VCS url.
 
     -v, --verbose
         Give more output.
@@ -27,7 +28,7 @@ with open(here / "requirements.txt", encoding="utf-8") as f:
 setup(
     name="qiskit_metal",
     version="0.0.3",
-    description="Qiskit Metal | for quantum device design & analsysi",
+    description="Qiskit Metal | for quantum device design & analysis",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/Qiskit/qiskit-metal",
@@ -43,12 +44,14 @@ setup(
         "Operating System :: POSIX :: Linux",
         "Programming Language :: Python :: 3 :: Only",
         "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
         "Topic :: Scientific/Engineering",
     ],
-    keywords="qiskit sdk quantum",
+    keywords="qiskit sdk quantum eda",
     packages=find_packages(),
     package_data={"": ["*.ui", "*.qrc", "_imgs/*.png", "_imgs/*.txt"]},
-    python_requires=">=3.7, <=3.7.8",
+    python_requires=">=3.7",
     install_requires=requirements,
     project_urls={
         "Bug Tracker": "https://github.com/Qiskit/qiskit-metal/issues",

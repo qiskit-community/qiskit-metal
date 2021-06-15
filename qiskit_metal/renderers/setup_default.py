@@ -13,10 +13,9 @@
 # that they have been altered from the originals.
 """Initialize default renderers for Metal."""
 
-from .. import config
 from .. import Dict
 
 
 def setup_renderers():
-    """Use config to set up default renderes."""
+    """Use config to set up default renderers."""
     return Dict()

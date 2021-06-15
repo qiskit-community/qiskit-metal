@@ -18,6 +18,7 @@ RouteStraight
    .. autosummary::
       :toctree: ../stubs/
    
+      RouteStraight.TOOLTIP
       RouteStraight.class_name
       RouteStraight.component_metadata
       RouteStraight.default_options

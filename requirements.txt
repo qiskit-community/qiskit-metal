@@ -1,19 +1,17 @@
 addict
-cycler
 descartes
-docutils
 gdspy>=1.5.2
-GeoPandas
-ipython==7.19.0
-jedi==0.17.2
+geopandas; platform_system != "Windows"  #pip install geopandas causes fiona errors. Therefore, if you use `conda env`, you must first run `conda install fiona`, while if you use `python venv` you must first download the gdal and fiona wheels from https://www.lfd.uci.edu/~gohlke/pythonlibs/ and manually pip install them in that order.
+ipython
 matplotlib
-numpy<1.20
+numpy
 pandas
 pint
 pyEPR-quantum>=0.8.4.6
-Pygments
-pyqode.python==2.12.1
-pyside2>=5.9, <5.14
+pygments
+pyside2
+qutip
 scipy
-Shapely
-pyqode.qt @ git+https://github.com/jojurgens/pyqode.qt.git#egg=pyqode.qt
+shapely  #using conda on Windows OS: pip install of shapely will fail on import for missing geos_c.dll, if <= v1.7.x. For as long as a 1.8.0 version is not released (already patched in github), you will need to run `conda install shapely` (before installing qiskit_metal).
+
+# jupyter (if you need a fresh install) or ipykernel (if you prefer to make of this a new kernel to use from an existing jupyter install)

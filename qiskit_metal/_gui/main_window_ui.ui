@@ -138,7 +138,7 @@
      <x>0</x>
      <y>0</y>
      <width>1300</width>
-     <height>22</height>
+     <height>24</height>
     </rect>
    </property>
    <property name="baseSize">
@@ -199,7 +199,6 @@
      <addaction name="actionStyleOpen"/>
     </widget>
     <addaction name="actionDesign"/>
-    <addaction name="actionComponent"/>
     <addaction name="actionElements"/>
     <addaction name="actionConnectors"/>
     <addaction name="actionLog"/>
@@ -297,7 +296,7 @@
    <addaction name="action_full_refresh"/>
    <addaction name="actionRebuild"/>
    <addaction name="actionBuildHistory"/>
-   <addaction name="actionNew_QComponent"/>
+   <addaction name="actionDeveloperMode"/>
    <addaction name="separator"/>
   </widget>
   <widget class="QToolBar" name="toolBarView">
@@ -328,15 +327,6 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionViewDummyLabel"/>
-   <addaction name="actionDesign"/>
-   <addaction name="actionComponent"/>
-   <addaction name="actionNewComponent"/>
-   <addaction name="actionVariables"/>
-   <addaction name="separator"/>
-   <addaction name="actionConnectors"/>
-   <addaction name="actionLog"/>
-   <addaction name="separator"/>
    <addaction name="actionToggleDocks"/>
    <addaction name="actionScreenshot"/>
   </widget>
@@ -404,7 +394,7 @@
        <property name="spacing">
         <number>0</number>
        </property>
-       <item row="0" column="3">
+       <item row="0" column="2">
         <widget class="QToolButton" name="btn_comp_zoom">
          <property name="toolTip">
           <string>Focus on component in drawing window</string>
@@ -422,16 +412,6 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QToolButton" name="btn_comp_actions">
-         <property name="text">
-          <string>Do</string>
-         </property>
-         <property name="popupMode">
-          <enum>QToolButton::MenuButtonPopup</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="2">
         <widget class="QToolButton" name="btn_comp_del">
          <property name="toolTip">
           <string>Delete a selected component</string>
@@ -454,6 +434,13 @@
          </property>
          <property name="toolButtonStyle">
           <enum>Qt::ToolButtonIconOnly</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QToolButton" name="btn_comp_rename">
+         <property name="text">
+          <string>Rename</string>
          </property>
         </widget>
        </item>
@@ -564,7 +551,7 @@
       <widget class="QLineEdit" name="dockLibrary_filter"/>
      </item>
      <item>
-      <widget class="QTreeView" name="dockLibrary_tree_view"/>
+      <widget class="TreeViewQLibrary" name="dockLibrary_tree_view"/>
      </item>
     </layout>
    </widget>
@@ -861,30 +848,6 @@
     <string>Ctrl+D</string>
    </property>
   </action>
-  <action name="actionComponent">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="checked">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="main_window_rc.qrc">
-     <normaloff>:/component</normaloff>:/component</iconset>
-   </property>
-   <property name="text">
-    <string>Edit component</string>
-   </property>
-   <property name="toolTip">
-    <string>Edit a component of the design (show/hide)</string>
-   </property>
-   <property name="statusTip">
-    <string>Edit a design component</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+E</string>
-   </property>
-  </action>
   <action name="actionElements">
    <property name="checkable">
     <bool>true</bool>
@@ -1081,7 +1044,8 @@
   <action name="actionRebuild">
    <property name="icon">
     <iconset resource="main_window_rc.qrc">
-     <normaloff>:/rebuild</normaloff>:/rebuild</iconset>
+     <normaloff>:/rebuild</normaloff>
+     <activeon>:/rebuild</activeon>:/rebuild</iconset>
    </property>
    <property name="text">
     <string>Rebuild</string>
@@ -1211,21 +1175,6 @@
     <string>Meta+F, Ctrl+F</string>
    </property>
   </action>
-  <action name="actionNew_QComponent">
-   <property name="icon">
-    <iconset resource="main_window_rc.qrc">
-     <normaloff>:/add</normaloff>:/add</iconset>
-   </property>
-   <property name="text">
-    <string>New QComponent</string>
-   </property>
-   <property name="toolTip">
-    <string>Create a new QComponent file</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+N, Meta+N</string>
-   </property>
-  </action>
   <action name="actionGDS">
    <property name="icon">
     <iconset resource="main_window_rc.qrc">
@@ -1271,6 +1220,22 @@
     <string>Ctrl+B</string>
    </property>
   </action>
+  <action name="actionDeveloperMode">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="main_window_rc.qrc">
+     <normaloff>:/_imgs/lightbulb.png</normaloff>
+     <normalon>:/_imgs/support.png</normalon>:/_imgs/lightbulb.png</iconset>
+   </property>
+   <property name="text">
+    <string>DeveloperMode</string>
+   </property>
+   <property name="toolTip">
+    <string>clickme</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -1282,6 +1247,11 @@
    <class>QTableView_AllComponents</class>
    <extends>QTableView</extends>
    <header>.widgets.all_components.table_view_all_components</header>
+  </customwidget>
+  <customwidget>
+   <class>TreeViewQLibrary</class>
+   <extends>QTreeView</extends>
+   <header>.widgets.qlibrary_display.tree_view_qlibrary</header>
   </customwidget>
  </customwidgets>
  <resources>
@@ -1513,22 +1483,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>actionComponent</sender>
-   <signal>triggered()</signal>
-   <receiver>dockComponent</receiver>
-   <slot>show()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>170</x>
-     <y>465</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>dockConnectors</sender>
    <signal>visibilityChanged(bool)</signal>
    <receiver>actionConnectors</receiver>
@@ -1553,22 +1507,6 @@
     <hint type="sourcelabel">
      <x>502</x>
      <y>878</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>dockComponent</sender>
-   <signal>visibilityChanged(bool)</signal>
-   <receiver>actionComponent</receiver>
-   <slot>setChecked(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>170</x>
-     <y>465</y>
     </hint>
     <hint type="destinationlabel">
      <x>-1</x>
@@ -1685,22 +1623,6 @@
     <hint type="destinationlabel">
      <x>154</x>
      <y>347</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionComponent</sender>
-   <signal>triggered()</signal>
-   <receiver>dockComponent</receiver>
-   <slot>raise()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>170</x>
-     <y>465</y>
     </hint>
    </hints>
   </connection>
@@ -1849,22 +1771,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>actionNew_QComponent</sender>
-   <signal>triggered()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>new_qcomponent()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>649</x>
-     <y>449</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>actionGDS</sender>
    <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
@@ -1912,6 +1818,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionDeveloperMode</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>activate_developer_mode()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>649</x>
+     <y>423</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>showHelp()</slot>
@@ -1934,5 +1856,6 @@
   <slot>create_build_log_window()</slot>
   <slot>show_renderer_hfss()</slot>
   <slot>show_renderer_q3d()</slot>
+  <slot>activate_developer_mode()</slot>
  </slots>
 </ui>

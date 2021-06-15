@@ -29,6 +29,7 @@ Hamiltonian
     :toctree:
 
     Hcpb
+    Hcpb_analytic
     HO_wavefunctions
     transmon_analytics
 
@@ -65,4 +66,5 @@ from .quantization import lumped_capacitive
 from .hamiltonian.transmon_charge_basis import Hcpb
 from .hamiltonian import HO_wavefunctions
 from .hamiltonian import transmon_analytics
+from .hamiltonian.transmon_CPB_analytic import Hcpb_analytic
 from .sweep_options.sweeping import Sweeping

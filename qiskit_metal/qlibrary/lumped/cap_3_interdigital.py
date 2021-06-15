@@ -78,6 +78,8 @@ class Cap3Interdigital(QComponent):
                            orientation='0')
     """Default drawing options"""
 
+    TOOLTIP = """Create a three finger planar capacitor with a ground pocket cuttout."""
+
     def make(self):
         """This is executed by the user to generate the qgeometry for the
         component."""

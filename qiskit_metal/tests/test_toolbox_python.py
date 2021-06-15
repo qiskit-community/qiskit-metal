@@ -23,6 +23,7 @@ from qiskit_metal.toolbox_python.display import Color
 from qiskit_metal.toolbox_python.display import MetalTutorialMagics
 from qiskit_metal.toolbox_python import display
 from qiskit_metal.toolbox_python import utility_functions
+from qiskit_metal.toolbox_python._logging import LogStore
 
 
 class TestToolboxPython(unittest.TestCase):
@@ -36,24 +37,31 @@ class TestToolboxPython(unittest.TestCase):
         """Tie any loose ends."""
         pass
 
+    def test_instantiate_log_store(self):
+        """Test instantiation of LogStore class."""
+        try:
+            LogStore('my title', 100)
+        except Exception:
+            self.fail("LogStore failed")
+
     def test_instantiate_headings(self):
         """Test instantiation of Headings class."""
         try:
-            Headings
+            Headings()
         except Exception:
             self.fail("Headings failed")
 
     def test_instantiate_metal_tutorial_magics(self):
         """Test instantiation of MetalTutorialMagics class."""
         try:
-            MetalTutorialMagics
+            MetalTutorialMagics()
         except Exception:
             self.fail("MetalTutorialMagics failed")
 
     def test_instantiate_color(self):
         """Test instantiation of Color class."""
         try:
-            Color
+            Color()
         except Exception:
             self.fail("Color failed")
 
