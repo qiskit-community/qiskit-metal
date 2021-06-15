@@ -987,6 +987,32 @@ class QAnsysRenderer(QRenderer):
                 #self.cc_x, self.cc_y, _ = parse_units(
                 #    [p['center_x'], p['center_y'], p['center_z']])
             self.render_chip(chip_name, draw_sample_holder)
+        
+        if draw_sample_holder:  # HFSS
+            # as of now, information on sample_holder_top and _bottom are stored under the each chip.
+            # will fix this in the next commit.
+            p = self.design.get_chip_size(chip_name)
+            vac_height = parse_units(
+                [p['sample_holder_top'], p['sample_holder_bottom']])
+            # very simple algorithm to build the vacuum box. It could be made better in the future
+            # assuming that both
+            cc_x = np.array([item for item in self.cc_x.values()])
+            cc_y = np.array([item for item in self.cc_y.values()])
+            cw_x = np.array([item for item in self.cw_x.values()])
+            cw_y = np.array([item for item in self.cw_y.values()])
+            
+            cc_x_left, cc_x_right = np.min(cc_x - cw_x/2), np.max(cc_x + cw_x/2)
+            cc_y_left, cc_y_right = np.min(cc_y - cw_y/2), np.max(cc_y + cw_y/2)
+            
+            cc_x = (cc_x_left + cc_x_right)/2
+            cc_y = (cc_y_left + cc_y_right)/2
+            cw_x = cc_x_right - cc_x_left
+            cw_y = cc_y_right - cc_y_left
+            
+            vacuum_box = self.modeler.draw_box_center(
+                [cc_x, cc_y, (vac_height[0] - vac_height[1]) / 2],
+                [cw_x, cw_y, sum(vac_height)],
+                name='sample_holder')
 
     def render_chip(self, chip_name: str, draw_sample_holder: bool):
         """
@@ -1013,14 +1039,6 @@ class QAnsysRenderer(QRenderer):
             color=(186, 186, 205),
             transparency=0.2,
             wireframe=False)
-        # draw sample_holder should be moved to render_chips in order to accommodate a design containing more than one chip that only needs one sample holder.
-        #if draw_sample_holder:  # HFSS
-        #    vac_height = parse_units(
-        #        [p['sample_holder_top'], p['sample_holder_bottom']])
-        #    vacuum_box = self.modeler.draw_box_center(
-        #        [self.cc_x, self.cc_y, (vac_height[0] - vac_height[1]) / 2],
-        #        [self.cw_x, self.cw_y, sum(vac_height)],
-        #        name='sample_holder')
         if self.chip_subtract_dict[chip_name]:
             # Any layer which has subtract=True qgeometries will have a ground plane
             # TODO: Material property assignment may become layer-dependent.
