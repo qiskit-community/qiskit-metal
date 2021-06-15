@@ -50,6 +50,8 @@ class DesignFlipChip(QDesign):
                          overwrite_enabled=overwrite_enabled,
                          enable_renderers=enable_renderers)
         self.variables['chip_spacing'] = '8 um'
+        self.variables['sample_holder_top'] = '890um' # how tall is the vacuum above z=0
+        self.variables['sample_holder_bottom'] = '1650um' # how tall is the vacuum below z=0
         self.add_chip_info()
 
     def add_chip_info(self):
@@ -74,6 +76,8 @@ class DesignFlipChip(QDesign):
                 layer_start = '0',
                 layer_end = '2048')
 
+        
+
         self._chips['C_chip']['size'] = Dict(
             center_x='0.0mm',
             center_y='0.0mm',
@@ -81,8 +85,8 @@ class DesignFlipChip(QDesign):
             size_x='9mm',
             size_y='9mm',
             size_z='-280um',  # chip extends in negative z direction by 280 um
-            sample_holder_top='890um',  # how tall is the vacuum above center_z
-            sample_holder_bottom='1650um'  # how tall is the vacuum below z=0
+            sample_holder_top = self.variables['sample_holder_top'],
+            sample_holder_bottom = self.variables['sample_holder_bottom']
         )
         
         self._chips['Q_chip']['size'] = Dict(
@@ -92,8 +96,8 @@ class DesignFlipChip(QDesign):
             size_x='9mm',
             size_y='9mm',
             size_z='280um',  # chip extends in positive z direction by 280 um
-            sample_holder_top='890um',  # how tall is the vacuum above center_z
-            sample_holder_bottom='1650um'  # how tall is the vacuum below z=0
+            sample_holder_top = self.variables['sample_holder_top'],
+            sample_holder_bottom = self.variables['sample_holder_bottom']
         )
 
     def get_chip_spacing(self, value):
