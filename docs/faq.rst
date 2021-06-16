@@ -73,7 +73,7 @@ After downloading the wheels, install ``gdal`` first, then ``fiona``, then ``geo
 
 **A:** Based on: `this issue <https://github.com/Toblerity/Shapely/pull/1108>`_, this is a known bug with the ``shapely`` package <1.8. that should be fixed with a more recent shapely package. Meanwhile, you can use the shapely package from conda by installing it as ``conda install shapely`` before installing ``qiskit-metal``, which installs the missing file as a dependency.
 
-**Q: Why do I have an inactive developer path on MacOs?**
+**Q: Why do I have an invalid active developer path on MacOs?**
 
 **A:** If you are seeing: ``xcrun: error: invalid active developer path (/Library/Developer/CommandLineTools), missing xcrun at /Library/Developer/CommandLineTools/usr/bin/xcrun`` you may be missing the Command Line Tools.
 
