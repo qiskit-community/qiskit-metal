@@ -39,16 +39,7 @@ class LibraryFileProxyModel(QSortFilterProxyModel):
         # (QComponent files) OR (Directories)
         self.accepted_files__regex = r"(^((?!\.))(?!__init__)(?!_template)(?!__pycache__).*\.py)|(?!__pycache__)(?!base)(^([^.]+)$)"  # pylint: disable=line-too-long
         self.setFilterRegExp(self.accepted_files__regex)
-        self.is_dev_mode = False
 
-    def set_dev_mode(self, ison: bool):
-        """
-        Set dev mode
-        Args:
-            ison(bool): Whether dev mode is on
-
-        """
-        self.is_dev_mode = ison
 
     def filterAcceptsColumn(
             self, source_column: int, source_parent: QModelIndex) -> bool:  #pylint: disable=unused-argument
@@ -86,9 +77,6 @@ class LibraryFileProxyModel(QSortFilterProxyModel):
         if role == Qt.SizeHintRole:
             return QSize(10, 25)
 
-        # Don't return any data for REBUILD column - Delegate handles that
-        if role == Qt.DisplayRole and index.column() == self.sourceModel(
-        ).REBUILD:
-            return ""
+
 
         return super().data(index, role)
