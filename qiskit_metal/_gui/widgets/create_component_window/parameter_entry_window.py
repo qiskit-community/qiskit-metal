@@ -443,8 +443,17 @@ def get_class_from_abs_file_path(abs_file_path: str):
                 return memtup[1]
 
 
-def create_default_from_type(my_t: type, param_name=None):
-    """Create default values for a given type"""
+def create_default_from_type(my_t: type, param_name:str=None):
+    """
+    Create default values for a given type
+
+    Args:
+        my_t: argument type
+        param_name: default parameter name (will replace "fake-param") for non-dictionary types
+
+    Returns:
+        a default parameter
+    """
     if param_name is not None:
         return param_name + "-" + str(random.randint(0, 1000))
     if my_t == int:
