@@ -453,7 +453,6 @@ class QDesign():
 
     def rebuild(self):  # remake_all_components
         """Remakes all components with their current parameters."""
-        print("is rebuilding...")
         for _, obj in self._components.items():  # pylint: disable=unused-variable
             obj.rebuild()
 

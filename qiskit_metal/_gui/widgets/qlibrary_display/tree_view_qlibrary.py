@@ -41,7 +41,7 @@ class TreeViewQLibrary(QTreeView):
         self.tool_tip_str = "Library of QComponents"
 
     def setModel(self, model: QtCore.QAbstractItemModel):
-        """Overriding setModel to hook up clean/dirty file signals to model before setting Model
+        """Overriding setModel to ensure only correct QAbstractItemModel subclass is used
 
         Args:
             model (QtCore.QAbstractItemModel): Model to be set
@@ -55,12 +55,10 @@ class TreeViewQLibrary(QTreeView):
                 f"Invalid model. Expected type {LibraryFileProxyModel} but got type {type(model)}"
             )
 
-        source_model = model.sourceModel()
-
         super().setModel(model)
 
     def mousePressEvent(self, event: QtGui.QMouseEvent):
-        """Overrides inherited mousePressEvent to emit appropriate rebuild or filepath signals
+        """Overrides inherited mousePressEvent to emit appropriate filepath signals
          based on which columns were clicked, and to allow user to clear any selections
         by clicking off the displayed tree.
 
