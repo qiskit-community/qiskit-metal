@@ -852,7 +852,9 @@ class QAnsysRenderer(QRenderer):
             pin_dict = self.design.components[comp].pins[pin]
             width, gap = parse_units([pin_dict['width'], pin_dict['gap']])
             mid, normal = parse_units(pin_dict['middle']), pin_dict['normal']
-            rect_mid = np.append(mid + normal * gap / 2, [0])
+            chip_name = self.design.components[comp].options.chip
+            qc_chip_z = parse_units(self.design.get_chip_z(chip_name))
+            rect_mid = np.append(mid + normal * gap / 2, [qc_chip_z])
             # Assumption: pins only point in x or y directions
             # If this assumption is not satisfied, draw_rect_center no longer works -> must use draw_polyline
             endcap_name = f'endcap_{comp}_{pin}'
