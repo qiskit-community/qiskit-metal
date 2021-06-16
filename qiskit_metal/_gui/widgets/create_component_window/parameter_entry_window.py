@@ -255,7 +255,7 @@ class ParameterEntryWindow(QMainWindow):
 
     @QComponentParameterEntryExceptionDecorators.entry_exception_pop_up_warning
     def add_k_v_row(self):
-        """ Add key, value row to parent row based on what row is highlighed in treeview"""
+        """ Add key, value row to parent row based on what row is highlighted in treeview"""
         cur_index = self.ui.qcomponent_param_tree_view.currentIndex()
 
         key = "fake-param"
@@ -292,8 +292,9 @@ class ParameterEntryWindow(QMainWindow):
                 if param.default:
                     param_dict[param.name] = param.default
                 else:
+                    class_name = self.qcomp_class.__name__ if param.name == 'name' else None
                     param_dict[param.name] = create_default_from_type(
-                        param.annotation)
+                        param.annotation, param_name=class_name)
 
         try:
 
@@ -442,8 +443,20 @@ def get_class_from_abs_file_path(abs_file_path: str):
                 return memtup[1]
 
 
-def create_default_from_type(my_t: type):
-    """Create default values for a given type"""
+def create_default_from_type(my_t: type, param_name: str = None):
+    """
+    Create default values for a given type.
+
+    Args:
+        my_t (type): argument type.
+        param_name (str): default parameter name (will replace "fake-param") for non-dictionary
+            types.
+
+    Returns:
+        object: a default parameter.
+    """
+    if param_name is not None:
+        return param_name + "-" + str(random.randint(0, 1000))
     if my_t == int:
         return 0
     elif my_t == float:
