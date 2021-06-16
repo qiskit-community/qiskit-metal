@@ -40,7 +40,6 @@ class LibraryFileProxyModel(QSortFilterProxyModel):
         self.accepted_files__regex = r"(^((?!\.))(?!__init__)(?!_template)(?!__pycache__).*\.py)|(?!__pycache__)(?!base)(^([^.]+)$)"  # pylint: disable=line-too-long
         self.setFilterRegExp(self.accepted_files__regex)
 
-
     def filterAcceptsColumn(
             self, source_column: int, source_parent: QModelIndex) -> bool:  #pylint: disable=unused-argument
         """
@@ -76,7 +75,5 @@ class LibraryFileProxyModel(QSortFilterProxyModel):
 
         if role == Qt.SizeHintRole:
             return QSize(10, 25)
-
-
 
         return super().data(index, role)

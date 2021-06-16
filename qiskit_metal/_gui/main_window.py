@@ -186,6 +186,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         """"Handles click on Build History button."""
         self.gui.gui_create_build_log_window()
 
+
 class MetalGUI(QMainWindowBaseHandler):
     """Qiskit Metal Main GUI.
 
