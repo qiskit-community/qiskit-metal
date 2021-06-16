@@ -806,10 +806,10 @@ class QAnsysRenderer(QRenderer):
             x1, y1 = points[1]
             vlen = math.sqrt((x1 - x0)**2 + (y1 - y0)**2)
             p0 = np.array([
-                x0, y0, 0
+                x0, y0, qc_chip_z
             ]) + qc_width / (2 * vlen) * np.array([y0 - y1, x1 - x0, 0])
             p1 = np.array([
-                x0, y0, 0
+                x0, y0, qc_chip_z
             ]) + qc_width / (2 * vlen) * np.array([y1 - y0, x0 - x1, 0])
             shortline = self.modeler.draw_polyline([p0, p1],
                                                    closed=False)  # sweepline
