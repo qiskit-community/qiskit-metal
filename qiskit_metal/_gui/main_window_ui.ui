@@ -327,13 +327,6 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionViewDummyLabel"/>
-   <addaction name="actionDesign"/>
-   <addaction name="actionVariables"/>
-   <addaction name="separator"/>
-   <addaction name="actionConnectors"/>
-   <addaction name="actionLog"/>
-   <addaction name="separator"/>
    <addaction name="actionToggleDocks"/>
    <addaction name="actionScreenshot"/>
   </widget>
