@@ -56,10 +56,11 @@ In the near future we aim to (see near-term roadmap image):
 
 
 Longer term:
+
 * Hamiltonian analysis 
    * Pulse & gate analysis & time dynamics simulations 
    * Integration with quantum analysis packages: qiskit pulse, qutip (interested in listing your package here? Let us know :) )
-   * INtegration with scQubits 
+   * Integration with scQubits 
 * Import from GDS
 * Features you request! So, let us know in the Slack channel :)
 
